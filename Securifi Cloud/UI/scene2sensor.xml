@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SensorList>
+    <Sensor type="security">
+        <Name>Livingroom Light</Name>
+        <Id>3674</Id>
+        <Status>1</Status>
+        <DeviceType>1</DeviceType>
+        <ValueVariables Count="1">
+            <LastKnownValue Index="1" Name="SWITCH BINARY">true</LastKnownValue>
+        </ValueVariables>
+    </Sensor>
+    
+    <Sensor type="normal">
+        <Name>Kitchen Door</Name>
+        <Id>3675</Id>
+        <Status>1</Status>
+        <DeviceType>3</DeviceType>
+        <ValueVariables Count="3">
+            <LastKnownValue Index="1" Name="STATE">true</LastKnownValue>
+            <LastKnownValue Index="2" Name="LOW BATTERY">0</LastKnownValue>
+            <LastKnownValue Index="3" Name="TAMPER">true</LastKnownValue>
+        </ValueVariables>
+    </Sensor>
+    <Sensor type="normal">
+        <Name>Kitchen Door</Name>
+        <Id>3675</Id>
+        <Status>1</Status>
+        <DeviceType>3</DeviceType>
+        <ValueVariables Count="3">
+            <LastKnownValue Index="1" Name="STATE">false</LastKnownValue>
+            <LastKnownValue Index="2" Name="LOW BATTERY">0</LastKnownValue>
+            <LastKnownValue Index="3" Name="TAMPER">true</LastKnownValue>
+        </ValueVariables>
+    </Sensor>
+    <Sensor type="normal">
+        <Name>Study Door</Name>
+        <Id>3675</Id>
+        <Status>1</Status>
+        <DeviceType>3</DeviceType>
+        <ValueVariables Count="3">
+            <LastKnownValue Index="1" Name="STATE">false</LastKnownValue>
+            <LastKnownValue Index="2" Name="LOW BATTERY">1</LastKnownValue>
+            <LastKnownValue Index="3" Name="TAMPER">false</LastKnownValue>
+        </ValueVariables>
+    </Sensor>
+
+    </Sensor>
+</SensorList>

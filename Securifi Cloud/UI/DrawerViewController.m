@@ -1,0 +1,445 @@
+//
+//  MenuViewController.m
+//  ECSlidingViewController
+//
+//  Created by Michael Enriquez on 1/23/12.
+//  Copyright (c) 2012 EdgeCase. All rights reserved.
+//
+
+#import "DrawerViewController.h"
+#import "SensorTopViewController.h"
+#import <SecurifiToolkit/SecurifiToolkit.h>
+#import "AlmondPlusConstants.h"
+#import "SFIOfflineDataManager.h"
+#import "SNLog.h"
+
+@interface DrawerViewController()
+@property (nonatomic, strong) NSArray *locationItems;
+@property (nonatomic, strong) NSArray *settingsItems;
+@property (nonatomic, strong) NSDictionary* dataDictionary;
+@end
+
+@implementation DrawerViewController
+@synthesize locationItems;
+@synthesize settingsItems;
+@synthesize dataDictionary;
+@synthesize  drawTable;
+//PY 111013 - Integration with new UI
+@synthesize almondList;
+@synthesize currentMAC;
+
+#pragma mark - View Cycle
+- (void)awakeFromNib
+{
+    self.locationItems = [NSArray arrayWithObjects:@"Taipei Office", @"Taichung Home", @"Tyrol Cabin", @"4", @"5", @"6", @"7", nil];
+    //PY 300114 - Account to be removed for Beta Testers
+   // self.settingsItems = [NSArray arrayWithObjects:@"Account", @"Logout",@"Logout All" , nil];
+    self.settingsItems = [NSArray arrayWithObjects:@"Logout",@"Logout All" , nil];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    //Read Almond list from file
+    //Upload old list and start refreshing
+
+    self.almondList = [SFIOfflineDataManager readAlmondList];
+    //[self loadAlmondList];
+    dataDictionary = [[NSMutableDictionary alloc] init];
+    [dataDictionary setValue:self.almondList forKey:ALMONDLIST];
+    [dataDictionary setValue:settingsItems forKey:SETTINGS_LIST];
+    [self.slidingViewController setAnchorRightRevealAmount:250.0f];
+    self.slidingViewController.underLeftWidthLayout = ECFullWidth;
+    self.drawTable.backgroundColor = [UIColor colorWithRed:34/255.0 green:34/255.0 blue:34/255.0 alpha:1.0];
+    
+    UISwipeGestureRecognizer *showTabSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(revealTab:)];
+    showTabSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
+    [self.view addGestureRecognizer:showTabSwipe];
+    
+    self.drawTable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    self.almondList = [SFIOfflineDataManager readAlmondList];
+    [dataDictionary setValue:self.almondList forKey:ALMONDLIST];
+    [self.drawTable reloadData];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(AlmondListResponseCallback:)
+//                                                 name:ALMOND_LIST_NOTIFIER
+//                                               object:nil];
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+//    [[NSNotificationCenter defaultCenter] removeObserver:self
+//                                                    name:ALMOND_LIST_NOTIFIER
+//                                                  object:nil];
+    
+
+}
+
+#pragma mark - Table Methods
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return [dataDictionary count] + 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex
+{
+    //Number of rows it should expect should be based on the section
+    NSArray *array ;
+    switch (sectionIndex) {
+        case 0:
+            array  = [dataDictionary objectForKey:ALMONDLIST];
+            NSLog(@"Almond List count %d", [array count]);
+            return [array count] + 1;
+            break;
+        case 1:
+            array  = [dataDictionary objectForKey:SETTINGS_LIST];
+            return [array count];
+            break;
+        case 2:
+            return 0;
+            break;
+        default:
+            break;
+    }
+    return 0;
+    
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    
+    if(section == 0){
+        return @"LOCATION";
+    }else if(section == 1){
+        return @"SETTINGS";
+    }
+    return @"";
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 65;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 18)];
+    /* Create custom view to display section header... */
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 25, tableView.frame.size.width, 18)];
+    [label setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
+    [label setTextColor:[UIColor colorWithRed:119/255.0 green:119/255.0 blue:119/255.0 alpha:1.0]];
+    NSString *string;
+    if(section == 0){
+        string = @"LOCATION";
+    }else if(section == 1){
+        string = @"SETTINGS";
+    }else{
+        string = @"";
+    }
+    /* Section header is in 0th index... */
+    [label setText:string];
+    [view addSubview:label];
+    [view setBackgroundColor:[UIColor colorWithRed:34/255.0 green:34/255.0 blue:34/255.0 alpha:1.0]];
+    return view;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellIdentifier = @"MenuItemCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+    }
+    
+    if(indexPath.section == 0){
+        NSArray *array = [dataDictionary objectForKey:ALMONDLIST];
+        if(indexPath.row == [array count]){
+            //Create Add symbol
+            cell = [self createAddSymbolCell:cell];
+        }else{
+            //Add almond list
+            cell = [self createAlmondListCell:cell indexPath:indexPath];
+        }
+    }else{
+        cell = [self createSettingsCell:cell indexPath:indexPath];
+    }
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //NSString *identifier = [NSString stringWithFormat:@"%@Top", [self.menuItems objectAtIndex:indexPath.row]];
+    
+    //  UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:identifier];
+    //
+    //  [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
+    //    CGRect frame = self.slidingViewController.topViewController.view.frame;
+    //    self.slidingViewController.topViewController = newTopViewController;
+    //    self.slidingViewController.topViewController.view.frame = frame;
+    //    [self.slidingViewController resetTopView];
+    //  }];
+    if(indexPath.section == 0){
+        NSArray *array = [dataDictionary objectForKey:ALMONDLIST];
+        if(indexPath.row == [array count]){
+            //Add almond - Affiliation process
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+            UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AffiliationNavigationTop"];
+            [self presentViewController:mainView animated:YES completion:nil];
+        }else{
+            int codeIndex = 0;
+            //Display the corresponding Sensor List
+            UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"TabTop"];
+            SFIAlmondPlus *currentAlmond = [array objectAtIndex:indexPath.row];
+            self.currentMAC = currentAlmond.almondplusMAC;
+            //[SNLog Log:@"Method Name: %s Selected MAC is @%@", __PRETTY_FUNCTION__,self.currentMAC];
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [paths objectAtIndex:0];
+            NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
+            NSArray *listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+            
+            //PY 111013 - Integration with new UI
+            codeIndex = indexPath.row;
+            if (indexPath.row >= [listAvailableColors count]){
+                codeIndex = codeIndex % [listAvailableColors count];
+            }
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            [prefs setObject:self.currentMAC  forKey:CURRENT_ALMOND_MAC];
+            [prefs setObject:currentAlmond.almondplusName forKey:CURRENT_ALMOND_MAC_NAME];
+            [prefs setInteger:codeIndex forKey:COLORCODE];
+            [prefs synchronize];
+
+            [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
+                CGRect frame = self.slidingViewController.topViewController.view.frame;
+                self.slidingViewController.topViewController = newTopViewController;
+                self.slidingViewController.topViewController.view.frame = frame;
+                [self.slidingViewController resetTopView];
+            }];
+        }
+    }else if(indexPath.section == 1){
+        //Settings
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        //PY 300114 - Account to be removed for Beta Testers
+//        if(indexPath.row == 1)
+        if(indexPath.row == 0)
+        {
+            //Logout Action
+            GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+            
+            cloudCommand.commandType=LOGOUT_COMMAND;
+            cloudCommand.command=nil;
+            [SNLog Log:@"Method Name: %s Before Writing to socket -- LogoutCommand", __PRETTY_FUNCTION__];
+            
+            NSError *error=nil;
+            [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+            
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            [prefs removeObjectForKey:EMAIL];
+            [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
+            [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
+            [prefs removeObjectForKey:COLORCODE];
+            [prefs synchronize];
+            
+            //Delete files
+            [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
+            [SFIOfflineDataManager deleteFile:HASH_FILENAME];
+            [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
+            [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
+            
+            //[self dismissViewControllerAnimated:NO completion:nil];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+            UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
+            //[self presentViewController:mainView animated:YES completion:nil];
+            [self presentViewController:mainView animated:YES completion:nil];
+
+        
+        }
+        //PY 300114 - Account to be removed for Beta Testers
+//        else  if(indexPath.row == 2)
+         else  if(indexPath.row == 1)
+        {
+            //Logout All Action
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+            UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"LogoutAllTop"];
+            [self presentViewController:mainView animated:YES completion:nil];
+        }
+    }
+}
+
+#pragma mark - Table cell creation
+
+-(UITableViewCell*) createAddSymbolCell: (UITableViewCell*)cell{
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MenuItemCell"];
+    UIImageView *imgAddDevice =[[UIImageView alloc]initWithFrame:CGRectMake(25, 10, 24,24)];
+    imgAddDevice.userInteractionEnabled = YES;
+    imgAddDevice.image = [UIImage imageNamed:@"addAlmond.png"];
+    
+    [cell addSubview:imgAddDevice];
+    
+    UILabel *lblName = [[UILabel alloc]initWithFrame:CGRectMake(60, 10, 180, 30)];
+    lblName.backgroundColor = [UIColor clearColor];
+    lblName.textColor = [UIColor whiteColor];
+    [lblName setFont:[UIFont fontWithName:@"Avenir-Roman" size:16]];
+    
+    lblName.text = @"Add";
+    
+    [cell addSubview:lblName];
+    
+    [cell setBackgroundColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]];
+    return cell;
+}
+
+-(UITableViewCell*) createAlmondListCell: (UITableViewCell*)cell indexPath:(NSIndexPath *)indexPath{
+    
+    
+    UIImageView *imgLocation;
+    UILabel *lblName;
+    
+    
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MenuItemCell"];
+    
+    imgLocation = [[UIImageView alloc]initWithFrame:CGRectMake(25, 10, 24,21.5)];
+    imgLocation.userInteractionEnabled = YES;
+    imgLocation.image = [UIImage imageNamed:@"almondHome.png"];
+    [cell addSubview:imgLocation];
+    
+    
+    lblName = [[UILabel alloc]initWithFrame:CGRectMake(60, 10, 180, 30)];
+    lblName.backgroundColor = [UIColor clearColor];
+    lblName.textColor = [UIColor whiteColor];
+    [lblName setFont:[UIFont fontWithName:@"Avenir-Roman" size:16]];
+    
+    NSArray *array = [dataDictionary objectForKey:ALMONDLIST];
+    SFIAlmondPlus *currentAlmond = [array objectAtIndex:indexPath.row];
+    lblName.text = currentAlmond.almondplusName;
+    
+    [cell addSubview:lblName];
+    
+    [cell setBackgroundColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]];
+    
+    return cell;
+    
+}
+
+
+-(UITableViewCell*) createSettingsCell: (UITableViewCell*)cell indexPath:(NSIndexPath *)indexPath{
+    NSArray *array = [dataDictionary objectForKey:SETTINGS_LIST];
+    NSString *cellValue = [array objectAtIndex:indexPath.row];
+    
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MenuItemCell"];
+    UIImageView *imgSettings;
+    imgSettings.userInteractionEnabled = YES;
+    
+    switch(indexPath.row){
+        
+        case 0:
+            imgSettings =[[UIImageView alloc]initWithFrame:CGRectMake(25, 10, 24,24)];
+            imgSettings.image = [UIImage imageNamed:@"account.png"];
+            break;
+        case 1:
+            imgSettings =[[UIImageView alloc]initWithFrame:CGRectMake(25, 10, 24.5,19)];
+            imgSettings.image = [UIImage imageNamed:@"logout.png"];
+            break;
+        case 2:
+            imgSettings =[[UIImageView alloc]initWithFrame:CGRectMake(25, 10, 25,17.5)];
+            imgSettings.image = [UIImage imageNamed:@"logout.png"];
+            break;
+        case 3:
+            imgSettings =[[UIImageView alloc]initWithFrame:CGRectMake(25, 10, 24,24)];
+            imgSettings.image = [UIImage imageNamed:@"account.png"];
+            break;
+    }
+    
+    
+    [cell addSubview:imgSettings];
+    
+    UILabel *lblName = [[UILabel alloc]initWithFrame:CGRectMake(60, 10, 180, 30)];
+    lblName.backgroundColor = [UIColor clearColor];
+    lblName.textColor = [UIColor whiteColor];
+    [lblName setFont:[UIFont fontWithName:@"Avenir-Roman" size:16]];
+    
+    lblName.text = cellValue;
+    
+    [cell addSubview:lblName];
+    
+    [cell setBackgroundColor:[UIColor colorWithRed:51/255.0 green:51/255.0 blue:51/255.0 alpha:1.0]];
+    return cell;
+}
+
+
+#pragma mark - Cloud Command : Sender and Receivers
+
+-(void)loadAlmondList{
+    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+    
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    
+    AlmondListRequest *almondListCommand = [[AlmondListRequest alloc] init];
+    
+    cloudCommand.commandType=ALMOND_LIST;
+    cloudCommand.command=almondListCommand;
+    @try {
+        [SNLog Log:@"Method Name: %s Before Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
+        
+        NSError *error=nil;
+        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        
+        if (ret == nil)
+        {
+            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
+            
+        }
+        [SNLog Log:@"Method Name: %s After Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
+        
+    }
+    @catch (NSException *exception) {
+        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
+    }
+    
+    cloudCommand=nil;
+    almondListCommand=nil;
+    
+}
+
+-(void)AlmondListResponseCallback:(id)sender
+{
+    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    
+    if(data !=nil){
+        [SNLog Log:@"Method Name: %s Received Almond List response", __PRETTY_FUNCTION__];
+        
+        AlmondListResponse *obj = [[AlmondListResponse alloc] init];
+        obj = (AlmondListResponse *)[data valueForKey:@"data"];
+        
+        self.almondList = [[NSMutableArray alloc]init];
+        [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
+        
+        self.almondList = obj.almondPlusMACList;
+        //Write Almond List offline
+        [SFIOfflineDataManager writeAlmondList:self.almondList];
+        [dataDictionary setValue:self.almondList forKey:ALMONDLIST];
+        [self.drawTable reloadData];
+        
+    }
+    
+    
+}
+
+#pragma mark - Class Methods
+- (IBAction)revealTab:(id)sender
+{
+    NSLog(@"Reveal Tab: Drawer View");
+    [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
+//        CGRect frame = self.slidingViewController.topViewController.view.frame;
+//        self.slidingViewController.topViewController = newTopViewController;
+//        self.slidingViewController.topViewController.view.frame = frame;
+        [self.slidingViewController resetTopView];
+    }];
+}
+
+
+@end
