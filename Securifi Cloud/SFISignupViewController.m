@@ -17,14 +17,28 @@
 
 #define SIGNUP   1
 #define LOGIN    2
-@interface SFISignupViewController ()
+#define REGEX_PASSWORD_ONE_UPPERCASE @"^(?=.*[A-Z]).*$"  //Should contains one or more uppercase letters
+#define REGEX_PASSWORD_ONE_LOWERCASE @"^(?=.*[a-z]).*$"  //Should contains one or more lowercase letters
+#define REGEX_PASSWORD_ONE_NUMBER @"^(?=.*[0-9]).*$"  //Should contains one or more number
+#define REGEX_PASSWORD_ONE_SYMBOL @"^(?=.*[!@#$%&_]).*$"  //Should contains one or more symbol
+#define REGEX_EMAIL @"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$"
 
+@interface SFISignupViewController ()
+typedef enum {
+    PasswordStrengthTypeTooShort,
+    PasswordStrengthTypeWeak,
+    PasswordStrengthTypeModerate,
+    PasswordStrengthTypeStrong
+}PasswordStrengthType;
+
+- (PasswordStrengthType)checkPasswordStrength:(NSString *)password;
 @end
 
 @implementation SFISignupViewController
 @synthesize emailID,password, confirmPassword;
 @synthesize headingLabel, subHeadingLabel;
 @synthesize state, cloudState;
+@synthesize passwordStrengthIndicator, lblPasswordStrength;
 
 #pragma mark - View lifecycle
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -213,7 +227,10 @@
     }else if (textField == self.confirmPassword){
         [textField resignFirstResponder];
         NSLog(@"Signup Action!!");
-        [self signupButtonHandler:nil];
+        //[self signupButtonHandler:nil];
+        //Check password
+        PasswordStrengthType pwdStrength = [self checkPasswordStrength:self.password.text];
+        [self displayPasswordIndicator:pwdStrength];
     }
     return YES;
 }
@@ -222,7 +239,7 @@
 - (void)keyboardDidShow:(NSNotification *)notification
 {
     //Assign new frame to your view
-    [self.view setFrame:CGRectMake(0,-60,self.view.frame.size.width,self.view.frame.size.height)]; //here taken -20 for example i.e. your view will be scrolled to -20. change its value according to your requirement.
+    [self.view setFrame:CGRectMake(0,-105,self.view.frame.size.width,self.view.frame.size.height)]; //here taken -20 for example i.e. your view will be scrolled to -20. change its value according to your requirement.
     
 }
 
@@ -231,6 +248,13 @@
     [self.view setFrame:CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height)];
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    if(textField == self.password){
+        PasswordStrengthType pwdStrength = [self checkPasswordStrength:self.password.text];
+        [self displayPasswordIndicator:pwdStrength];
+    }
+    return TRUE;
+}
 
 
 
@@ -270,10 +294,19 @@
             headingLabel.text = @"Oops!";
             subHeadingLabel.text = @"You forgot to enter your email id.";
         }
+        //Valid email
+        else if(![self validateEmail:emailID.text]) {
+            //Email Address is invalid.
+            headingLabel.text = @"Oops!";
+            subHeadingLabel.text = @"You have entered an invalid email id.";
+        }
         //If password empty
         else if([password.text isEqualToString:@""]){
             headingLabel.text = @"Oops!";
             subHeadingLabel.text = @"You forgot to enter your password.";
+        }else if(password.text.length < 6){
+            headingLabel.text = @"Oops!";
+            subHeadingLabel.text = @"The password should be atleast 6 characters long.";
         }
         //Match password and confirm password
         else if(![password.text isEqualToString:confirmPassword.text]){
@@ -346,6 +379,8 @@
     self.confirmPassword.hidden = TRUE;
     self.loginButton.hidden = TRUE;
     self.forgotPwdButton.hidden = FALSE;
+    self.lblPasswordStrength.hidden = TRUE;
+    self.passwordStrengthIndicator.hidden = TRUE;
     self.footerLabel.text = @"Did not receive any email?";
     [self.footerButton setTitle:@"Resend activation link" forState:UIControlStateNormal];
     [self.footerButton setTitle:@"Resend activation link" forState:UIControlStateHighlighted];
@@ -369,6 +404,9 @@
     self.confirmPassword.hidden = FALSE;
     self.loginButton.hidden = TRUE;
     self.forgotPwdButton.hidden = TRUE;
+    self.lblPasswordStrength.text = @"";
+    self.lblPasswordStrength.hidden = FALSE;
+    self.passwordStrengthIndicator.hidden = FALSE;
     self.footerLabel.text = @"By tapping Continue you are inidcating that \nyour have read and agreed to our";
     [self.footerButton setTitle:@"Terms and Conditions" forState:UIControlStateNormal];
     [self.footerButton setTitle:@"Terms and Conditions" forState:UIControlStateHighlighted];
@@ -377,6 +415,88 @@
     //PY Button tag
     self.footerButton.tag = 1;
     
+}
+
+
+-(PasswordStrengthType)checkPasswordStrength:(NSString *)strPassword {
+    int len = strPassword.length;
+    //will contains password strength
+    int strength = 0;
+    
+    if (len == 0) {
+        return PasswordStrengthTypeTooShort;
+    } else if (len < 6) {
+        return PasswordStrengthTypeTooShort;
+    } else if (len <= 9) {
+        strength += 1;
+    } else{
+        strength += 2;
+    }
+    
+    strength += [self validateString:strPassword withPattern:REGEX_PASSWORD_ONE_UPPERCASE caseSensitive:YES];
+    strength += [self validateString:strPassword withPattern:REGEX_PASSWORD_ONE_LOWERCASE caseSensitive:YES];
+    strength += [self validateString:strPassword withPattern:REGEX_PASSWORD_ONE_NUMBER caseSensitive:YES];
+    strength += [self validateString:strPassword withPattern:REGEX_PASSWORD_ONE_SYMBOL caseSensitive:YES];
+
+    if(strength < 3){
+        return PasswordStrengthTypeWeak;
+    }else if(3 <= strength && strength < 6){
+        return PasswordStrengthTypeModerate;
+    }else{
+        return PasswordStrengthTypeStrong;
+    }
+}
+
+// Validate the input string with the given pattern and
+// return the result as a boolean
+- (int)validateString:(NSString *)string withPattern:(NSString *)pattern caseSensitive:(BOOL)caseSensitive
+{
+    NSError *error = nil;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:((caseSensitive) ? 0 : NSRegularExpressionCaseInsensitive) error:&error];
+    
+    NSAssert(regex, @"Unable to create regular expression");
+    
+    NSRange textRange = NSMakeRange(0, string.length);
+    NSRange matchRange = [regex rangeOfFirstMatchInString:string options:NSMatchingReportProgress range:textRange];
+    
+    BOOL didValidate = 0;
+    
+    // Did we find a matching range
+    if (matchRange.location != NSNotFound)
+        didValidate = 1;
+
+    return didValidate;
+}
+
+-(void)displayPasswordIndicator:(PasswordStrengthType)pwdStrength{
+    if(pwdStrength == PasswordStrengthTypeTooShort){
+        passwordStrengthIndicator.progress = 0.2;
+        passwordStrengthIndicator.progressTintColor  = [UIColor colorWithRed:220/255.0f green:20/255.0f blue:60/255.0f alpha:1.0f];
+        lblPasswordStrength.text = @"Too Short";
+    }else if(pwdStrength == PasswordStrengthTypeWeak){
+        passwordStrengthIndicator.progress = 0.4;
+        passwordStrengthIndicator.progressTintColor  = [UIColor colorWithRed:255/255.0f green:215/255.0f blue:0/255.0f alpha:1.0f];
+        lblPasswordStrength.text = @"Weak";
+    }else if(pwdStrength == PasswordStrengthTypeModerate){
+        passwordStrengthIndicator.progress = 0.6;
+        passwordStrengthIndicator.progressTintColor  =  [UIColor colorWithRed:255/255.0f green:140/255.0f blue:48/255.0f alpha:1.0f];
+        lblPasswordStrength.text = @"Medium";
+    }else if(pwdStrength == PasswordStrengthTypeStrong){
+        passwordStrengthIndicator.progress = 1;
+        passwordStrengthIndicator.progressTintColor  = [UIColor colorWithRed:34/255.0f green:139/255.0f blue:34/255.0f alpha:1.0f];
+        lblPasswordStrength.text = @"Strong";
+    }
+}
+
+-(BOOL) validateEmail:(NSString*) emailString
+{
+    NSRegularExpression *regEx = [[NSRegularExpression alloc] initWithPattern:REGEX_EMAIL options:NSRegularExpressionCaseInsensitive error:nil];
+    NSUInteger regExMatches = [regEx numberOfMatchesInString:emailString options:0 range:NSMakeRange(0, [emailString length])];
+    if (regExMatches == 0) {
+        return NO;
+    }
+    else
+        return YES;
 }
 
 #pragma mark - Reconnection

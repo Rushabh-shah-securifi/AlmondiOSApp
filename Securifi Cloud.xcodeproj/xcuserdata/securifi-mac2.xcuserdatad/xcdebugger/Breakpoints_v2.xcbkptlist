@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414506071.892777"
+            timestampString = "414659954.378829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3278"
-            endingLineNumber = "3278"
+            startingLineNumber = "3354"
+            endingLineNumber = "3354"
             landmarkName = "-initiliazeImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414506071.892777"
+            timestampString = "414659954.378829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2549"
-            endingLineNumber = "2549"
+            startingLineNumber = "2625"
+            endingLineNumber = "2625"
             landmarkName = "-createColoredListCell:listRow:"
             landmarkType = "5">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414506071.892777"
+            timestampString = "414659954.378829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4221"
-            endingLineNumber = "4221"
+            startingLineNumber = "4297"
+            endingLineNumber = "4297"
             landmarkName = "-loadDeviceList"
             landmarkType = "5">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414506071.892777"
+            timestampString = "414659954.378829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2943"
-            endingLineNumber = "2943"
+            startingLineNumber = "3019"
+            endingLineNumber = "3019"
             landmarkName = "-initiliazeImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414506071.892777"
+            timestampString = "414659954.378829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2910"
-            endingLineNumber = "2910"
+            startingLineNumber = "2986"
+            endingLineNumber = "2986"
             landmarkName = "-initiliazeImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414506071.892777"
+            timestampString = "414659954.378829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2904"
-            endingLineNumber = "2904"
+            startingLineNumber = "2980"
+            endingLineNumber = "2980"
             landmarkName = "-initiliazeImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -218,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414506071.892777"
+            timestampString = "414659954.378829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2899"
-            endingLineNumber = "2899"
+            startingLineNumber = "2975"
+            endingLineNumber = "2975"
             landmarkName = "-initiliazeImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -250,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414506071.892777"
+            timestampString = "414659954.378829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3610"
-            endingLineNumber = "3610"
+            startingLineNumber = "3686"
+            endingLineNumber = "3686"
             landmarkName = "-onDeviceClicked:"
             landmarkType = "5">
          </BreakpointContent>
@@ -392,7 +392,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414418338.158765"
+            timestampString = "414659954.378829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "406"
@@ -456,11 +456,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414506071.892777"
+            timestampString = "414659954.378829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3156"
-            endingLineNumber = "3156"
+            startingLineNumber = "3232"
+            endingLineNumber = "3232"
             landmarkName = "-initiliazeImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -472,11 +472,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414506071.892777"
+            timestampString = "414659954.378829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2200"
-            endingLineNumber = "2200"
+            startingLineNumber = "2274"
+            endingLineNumber = "2274"
             landmarkName = "-createColoredListCell:listRow:"
             landmarkType = "5">
          </BreakpointContent>
@@ -487,28 +487,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Securifi Cloud/SFIMainViewController.m"
-            timestampString = "414397686.211155"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "204"
-            endingLineNumber = "204"
-            landmarkName = "-displayNoCloudConnectionImage"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414506071.892777"
+            timestampString = "414659954.378829"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1558"
-            endingLineNumber = "1558"
+            startingLineNumber = "1629"
+            endingLineNumber = "1629"
             landmarkName = "-createColoredListCell:listRow:"
             landmarkType = "5">
          </BreakpointContent>

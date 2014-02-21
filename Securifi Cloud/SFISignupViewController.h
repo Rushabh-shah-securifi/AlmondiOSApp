@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *footerButton;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 @property (weak, nonatomic) IBOutlet UIButton *forgotPwdButton;
+@property (nonatomic, retain) IBOutlet UIProgressView *passwordStrengthIndicator;
+@property (nonatomic, retain) IBOutlet UILabel *lblPasswordStrength;
 @property NSInteger state;
 @property NSInteger cloudState;
 

@@ -356,21 +356,21 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     if(currentSensor.isTampered){
                         expandedRowHeight = EXPANDED_ROW_HEIGHT + 50;
                         
-                        if(currentSensor.isBatteryLow){
-                            expandedRowHeight+= 20;
-                        }
+//                        if(currentSensor.isBatteryLow){
+//                            expandedRowHeight+= 20;
+//                        }
                     }else{
                         expandedRowHeight = EXPANDED_ROW_HEIGHT;
-                        if(currentSensor.isBatteryLow){
-                            expandedRowHeight+= 30;
-                        }
+//                        if(currentSensor.isBatteryLow){
+//                            expandedRowHeight+= 30;
+//                        }
                     }
                     break;
                 case 12:
                     if(currentSensor.isTampered){
-                        expandedRowHeight = 300;
+                        expandedRowHeight = 270;
                     }else{
-                        expandedRowHeight = 260;
+                        expandedRowHeight = 230;
                     }
                     break;
                 case 13:
@@ -1028,8 +1028,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 }
                 
                 //TODO: Remove later - For testing
-                lblDeviceStatus.numberOfLines = 2;
-                lblDeviceStatus.text =  [NSString stringWithFormat:@"ON, %.0f%%\nLOW BATTERY", intLevel];
+//                lblDeviceStatus.numberOfLines = 2;
+//                lblDeviceStatus.text =  [NSString stringWithFormat:@"ON, %.0f%%\nLOW BATTERY", intLevel];
                 
             }
 
@@ -1137,17 +1137,19 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             break;
         }
         case 11:
+        {
             //Motion Sensor
+            NSMutableString *strStatus = [[NSMutableString alloc]init];
             imgDevice.frame = CGRectMake(LEFT_LABEL_WIDTH/3.25, 12, 53,70);
             currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
             if([currentStateValue isEqualToString:@"true"]){
                 imgDevice.image = [UIImage imageNamed:DT11_MOTION_SENSOR_TRUE];
-                lblDeviceStatus.text = @"MOTION DETECTED";
+                [strStatus appendString:@"MOTION DETECTED"];
             }else if([currentStateValue isEqualToString:@"false"]){
                 imgDevice.image = [UIImage imageNamed:DT11_MOTION_SENSOR_FALSE];
-                lblDeviceStatus.text = @"NO MOTION";
+                [strStatus appendString:@"NO MOTION"];
             }else{
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
                 if(currentStateValue==nil){
@@ -1156,18 +1158,28 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     lblDeviceStatus.text = currentValue;
                 }
             }
+            if(currentSensor.isBatteryLow){
+                [strStatus appendString:@"\nLOW BATTERY"];
+                lblDeviceStatus.numberOfLines = 2;
+                lblDeviceStatus.text = strStatus;
+            }else{
+                lblDeviceStatus.text = strStatus;
+            }
             break;
+        }
         case 12:
+        {
             //ContactSwitch
+            NSMutableString *strStatus= [[NSMutableString alloc]init];
             currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
             if([currentStateValue isEqualToString:@"true"]){
                 imgDevice.image = [UIImage imageNamed:DT12_CONTACT_SWITCH_TRUE];
-                lblDeviceStatus.text = @"OPEN";
+                [strStatus appendString:@"OPEN"];
             }else if([currentStateValue isEqualToString:@"false"]){
                 imgDevice.image = [UIImage imageNamed:DT12_CONTACT_SWITCH_FALSE];
-                lblDeviceStatus.text = @"CLOSED";
+                [strStatus appendString:@"CLOSED"];
             }else{
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
                 if(currentStateValue==nil){
@@ -1176,19 +1188,30 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     lblDeviceStatus.text = currentValue;
                 }
             }
+            
+            if(currentSensor.isBatteryLow){
+                [strStatus appendString:@"\nLOW BATTERY"];
+                lblDeviceStatus.numberOfLines = 2;
+                lblDeviceStatus.text = strStatus;
+            }else{
+                lblDeviceStatus.text = strStatus;
+            }
             break;
+        }
         case 13:
+        {
             //Fire Sensor
+            NSMutableString *strStatus= [[NSMutableString alloc]init];
             imgDevice.frame = CGRectMake(LEFT_LABEL_WIDTH/3.5, 12, 53,70);
             currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
             if([currentStateValue isEqualToString:@"true"]){
                 imgDevice.image = [UIImage imageNamed:DT13_FIRE_SENSOR_TRUE];
-                lblDeviceStatus.text = @"ALARM: FIRE DETECTED";
+                [strStatus appendString:@"ALARM: FIRE DETECTED"];
             }else if([currentStateValue isEqualToString:@"false"]){
                 imgDevice.image = [UIImage imageNamed:DT13_FIRE_SENSOR_FALSE];
-                lblDeviceStatus.text = @"OK";
+                [strStatus appendString:@"OK"];
             }else{
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
                 if(currentStateValue==nil){
@@ -1197,7 +1220,16 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     lblDeviceStatus.text = currentValue;
                 }
             }
+            
+            if(currentSensor.isBatteryLow){
+                [strStatus appendString:@"\nLOW BATTERY"];
+                lblDeviceStatus.numberOfLines = 2;
+                lblDeviceStatus.text = strStatus;
+            }else{
+                lblDeviceStatus.text = strStatus;
+            }
             break;
+        }
         case 14:
             //Water Sensor
         {
@@ -1208,6 +1240,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 //            UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
 //            UIGraphicsEndImageContext();
 //            imgDevice.image = result;
+            
+            NSMutableString *strStatus= [[NSMutableString alloc]init];
             imgDevice.frame = CGRectMake(LEFT_LABEL_WIDTH/3.5, 12, 53,70);
             
             currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
@@ -1215,10 +1249,10 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             //PY Show only State
             if([currentStateValue isEqualToString:@"true"]){
                 imgDevice.image = [UIImage imageNamed:DT14_WATER_SENSOR_TRUE];
-                lblDeviceStatus.text = @"FLOODED";
+                [strStatus appendString:@"FLOODED"];
             }else if([currentStateValue isEqualToString:@"false"]){
                 imgDevice.image = [UIImage imageNamed:DT14_WATER_SENSOR_FALSE];
-                lblDeviceStatus.text = @"OK";
+                [strStatus appendString:@"OK"];
             }else{
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
                 if(currentStateValue==nil){
@@ -1228,23 +1262,29 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 }
             }
             
-            //TODO: Remove later - For testing
-            lblDeviceStatus.numberOfLines = 2;
-            lblDeviceStatus.text = @"OK\nLOW BATTERY";
+            if(currentSensor.isBatteryLow){
+                [strStatus appendString:@"\nLOW BATTERY"];
+                lblDeviceStatus.numberOfLines = 2;
+                lblDeviceStatus.text = strStatus;
+            }else{
+                lblDeviceStatus.text = strStatus;
+            }
             
             break;
         }
         case 15:
+        {
             //Gas Sensor
+            NSMutableString *strStatus= [[NSMutableString alloc]init];
             currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
             if([currentStateValue isEqualToString:@"true"]){
                 imgDevice.image = [UIImage imageNamed:DT15_GAS_SENSOR_TRUE];
-                lblDeviceStatus.text = @"ALARM: GAS DETECTED";
+                [strStatus appendString:@"ALARM: GAS DETECTED"];
             }else if([currentStateValue isEqualToString:@"false"]){
                 imgDevice.image = [UIImage imageNamed:DT15_GAS_SENSOR_FALSE];
-                lblDeviceStatus.text = @"OK";
+                [strStatus appendString:@"OK"];
             }else{
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
                 if(currentStateValue==nil){
@@ -1253,19 +1293,30 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     lblDeviceStatus.text = currentValue;
                 }
             }
+            
+            if(currentSensor.isBatteryLow){
+                [strStatus appendString:@"\nLOW BATTERY"];
+                lblDeviceStatus.numberOfLines = 2;
+                lblDeviceStatus.text = strStatus;
+            }else{
+                lblDeviceStatus.text = strStatus;
+            }
             break;
+        }
         case 17:
+        {
             //Vibration Sensor
+            NSMutableString *strStatus = [[NSMutableString alloc]init];
             imgDevice.frame = CGRectMake(LEFT_LABEL_WIDTH/3.5, 12, 53,70);
             currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
             if([currentStateValue isEqualToString:@"true"]){
                 imgDevice.image = [UIImage imageNamed:DT17_VIBRATION_SENSOR_TRUE];
-                lblDeviceStatus.text = @"VIBRATION DETECTED";
+                [strStatus appendString:@"VIBRATION DETECTED"];
             }else if([currentStateValue isEqualToString:@"false"]){
                 imgDevice.image = [UIImage imageNamed:DT17_VIBRATION_SENSOR_FALSE];
-                lblDeviceStatus.text = @"NO VIBRATION";
+                [strStatus appendString:@"NO VIBRATION"];
             }else{
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
                 if(currentStateValue==nil){
@@ -1274,18 +1325,29 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     lblDeviceStatus.text = currentValue;
                 }
             }
+            
+            if(currentSensor.isBatteryLow){
+                [strStatus appendString:@"\nLOW BATTERY"];
+                lblDeviceStatus.numberOfLines = 2;
+                lblDeviceStatus.text = strStatus;
+            }else{
+                lblDeviceStatus.text = strStatus;
+            }
             break;
+        }
         case 19:
+        {
             //Keyfob
+            NSMutableString *strStatus = [[NSMutableString alloc]init];
             currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
             if([currentStateValue isEqualToString:@"true"]){
                 imgDevice.image = [UIImage imageNamed:DT19_KEYFOB_TRUE];
-                lblDeviceStatus.text = @"LOCKED";
+                [strStatus appendString:@"LOCKED"];
             }else if([currentStateValue isEqualToString:@"false"]){
                 imgDevice.image = [UIImage imageNamed:DT19_KEYFOB_FALSE];
-                lblDeviceStatus.text = @"UNLOCKED";
+                [strStatus appendString:@"UNLOCKED"];
             }else{
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
                 if(currentStateValue==nil){
@@ -1294,7 +1356,16 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     lblDeviceStatus.text = currentValue;
                 }
             }
+            
+            if(currentSensor.isBatteryLow){
+                [strStatus appendString:@"\nLOW BATTERY"];
+                lblDeviceStatus.numberOfLines = 2;
+                lblDeviceStatus.text = strStatus;
+            }else{
+                lblDeviceStatus.text = strStatus;
+            }
             break;
+        }
         case 22:
             //Electric Measurement Switch - AC
             currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
@@ -2002,14 +2073,15 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     [belowBackgroundLabel addSubview:expandedLblText];
                     
                     UIButton *btnDismiss = [[UIButton alloc]init];
-                    btnDismiss.backgroundColor = [UIColor whiteColor];
+                    btnDismiss.backgroundColor = [UIColor clearColor];
                     [btnDismiss addTarget:self
                                 action:@selector(dismissTamper:)
                       forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
+//                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:0.6] forState:UIControlStateNormal ];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+5, 65,20);
+                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
                     
@@ -2021,44 +2093,44 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     
                     baseYCordinate = baseYCordinate+5;
                     
-                    if (currentSensor.isBatteryLow){
-                        //baseYCordinate = baseYCordinate+25;
-                        expandedRowHeight = expandedRowHeight + 20;
-                        expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, baseYCordinate-5, 200, 30)];
-                        expandedLblText.text = BATTERY_IS_LOW;
-                        expandedLblText.textColor = [UIColor whiteColor];
-                        [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                        [belowBackgroundLabel addSubview:expandedLblText];
-                        
-                        baseYCordinate+=25;
-                        UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
-                        imgLine.image = [UIImage imageNamed:@"line.png"];
-                        imgLine.alpha = 0.5;
-                        [belowBackgroundLabel addSubview:imgLine];
-                        
-                        baseYCordinate = baseYCordinate+5;
-                    }
+//                    if (currentSensor.isBatteryLow){
+//                        //baseYCordinate = baseYCordinate+25;
+//                        expandedRowHeight = expandedRowHeight + 20;
+//                        expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, baseYCordinate-5, 200, 30)];
+//                        expandedLblText.text = BATTERY_IS_LOW;
+//                        expandedLblText.textColor = [UIColor whiteColor];
+//                        [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                        [belowBackgroundLabel addSubview:expandedLblText];
+//                        
+//                        baseYCordinate+=25;
+//                        UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+//                        imgLine.image = [UIImage imageNamed:@"line.png"];
+//                        imgLine.alpha = 0.5;
+//                        [belowBackgroundLabel addSubview:imgLine];
+//                        
+//                        baseYCordinate = baseYCordinate+5;
+//                    }
                 }
                 else{
                     expandedRowHeight = EXPANDED_ROW_HEIGHT;
                     baseYCordinate = baseYCordinate+25;
-                    if (currentSensor.isBatteryLow){
-                        //baseYCordinate = baseYCordinate+25;
-                        expandedRowHeight = expandedRowHeight + 40;
-                        expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, baseYCordinate-5, 200, 30)];
-                        expandedLblText.text = BATTERY_IS_LOW;
-                        expandedLblText.textColor = [UIColor whiteColor];
-                        [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                        [belowBackgroundLabel addSubview:expandedLblText];
-                        
-                        baseYCordinate+=25;
-                        UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
-                        imgLine.image = [UIImage imageNamed:@"line.png"];
-                        imgLine.alpha = 0.5;
-                        [belowBackgroundLabel addSubview:imgLine];
-                        
-                        baseYCordinate = baseYCordinate+5;
-                    }
+//                    if (currentSensor.isBatteryLow){
+//                        //baseYCordinate = baseYCordinate+25;
+//                        expandedRowHeight = expandedRowHeight + 40;
+//                        expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, baseYCordinate-5, 200, 30)];
+//                        expandedLblText.text = BATTERY_IS_LOW;
+//                        expandedLblText.textColor = [UIColor whiteColor];
+//                        [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                        [belowBackgroundLabel addSubview:expandedLblText];
+//                        
+//                        baseYCordinate+=25;
+//                        UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+//                        imgLine.image = [UIImage imageNamed:@"line.png"];
+//                        imgLine.alpha = 0.5;
+//                        [belowBackgroundLabel addSubview:imgLine];
+//                        
+//                        baseYCordinate = baseYCordinate+5;
+//                    }
                 }
                 break;
             }
@@ -2066,7 +2138,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             {
                 if(currentSensor.isTampered){
                     baseYCordinate = baseYCordinate+25;
-                    expandedRowHeight = 300;
+                    expandedRowHeight = 270;
                     expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
                     expandedLblText.text = DEVICE_TAMPERED;
                     expandedLblText.textColor = [UIColor whiteColor];
@@ -2074,14 +2146,15 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     [belowBackgroundLabel addSubview:expandedLblText];
                     
                     UIButton *btnDismiss = [[UIButton alloc]init];
-                    btnDismiss.backgroundColor = [UIColor whiteColor];
+                    btnDismiss.backgroundColor = [UIColor clearColor];
                     [btnDismiss addTarget:self
                                    action:@selector(dismissTamper:)
                          forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
+//                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:0.6] forState:UIControlStateNormal ];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+5, 65,20);
+                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
                     
@@ -2093,49 +2166,49 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     
                     baseYCordinate = baseYCordinate+5;
                 }else{
-                    expandedRowHeight = 260;
+                    expandedRowHeight = 230;
                     baseYCordinate = baseYCordinate+25;
                 }
                 //Do not display the most important one
-                for(int i =0; i < [currentKnownValues count]; i++){
-                    // if(i!= currentSensor.mostImpValueIndex ){
-                    
-                    currentDeviceValue = [currentKnownValues objectAtIndex:i];
-                    //Display only battery - PY 291113
-                    NSString *batteryStatus;
-                    if([currentDeviceValue.valueName isEqualToString:@"LOW BATTERY"]){
-                        expandedLblText = [[UILabel alloc]init];
-                        [expandedLblText setBackgroundColor:[UIColor clearColor]];
-                        //Check the status of value
-                        if([currentValue isEqualToString:@"1"]){
-                            //Battery Low
-                            batteryStatus = @"Low Battery";
-                        }else{
-                            //Battery OK
-                            batteryStatus = @"Battery OK";
-                        }
-                        expandedLblText.text = batteryStatus;
-                        expandedLblText.textColor = [UIColor whiteColor];
-                        [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                        
-                        //// NSLog(@"Y Cordinate %f", baseYCordinate);
-                        expandedLblText.frame = CGRectMake(10,baseYCordinate-5,299,30);
-                        [belowBackgroundLabel addSubview:expandedLblText];
-                    }
-                    
-                    
-                    //                    expandedLblText.text = [NSString stringWithFormat:@"%@:  %@", currentDeviceValue.valueName, currentDeviceValue.value];
-                    
-                    // }
-                }
+//                for(int i =0; i < [currentKnownValues count]; i++){
+//                    // if(i!= currentSensor.mostImpValueIndex ){
+//                    
+//                    currentDeviceValue = [currentKnownValues objectAtIndex:i];
+//                    //Display only battery - PY 291113
+//                    NSString *batteryStatus;
+//                    if([currentDeviceValue.valueName isEqualToString:@"LOW BATTERY"]){
+//                        expandedLblText = [[UILabel alloc]init];
+//                        [expandedLblText setBackgroundColor:[UIColor clearColor]];
+//                        //Check the status of value
+//                        if([currentValue isEqualToString:@"1"]){
+//                            //Battery Low
+//                            batteryStatus = @"Low Battery";
+//                        }else{
+//                            //Battery OK
+//                            batteryStatus = @"Battery OK";
+//                        }
+//                        expandedLblText.text = batteryStatus;
+//                        expandedLblText.textColor = [UIColor whiteColor];
+//                        [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                        
+//                        //// NSLog(@"Y Cordinate %f", baseYCordinate);
+//                        expandedLblText.frame = CGRectMake(10,baseYCordinate-5,299,30);
+//                        [belowBackgroundLabel addSubview:expandedLblText];
+//                    }
+//                    
+//                    
+//                    //                    expandedLblText.text = [NSString stringWithFormat:@"%@:  %@", currentDeviceValue.valueName, currentDeviceValue.value];
+//                    
+//                    // }
+//                }
                 
-                baseYCordinate+=25;
-                UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
-                imgLine.image = [UIImage imageNamed:@"line.png"];
-                imgLine.alpha = 0.5;
-                [belowBackgroundLabel addSubview:imgLine];
-                
-                baseYCordinate = baseYCordinate+5;
+//                baseYCordinate+=25;
+//                UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+//                imgLine.image = [UIImage imageNamed:@"line.png"];
+//                imgLine.alpha = 0.5;
+//                [belowBackgroundLabel addSubview:imgLine];
+//                
+//                baseYCordinate = baseYCordinate+5;
                 
 //                expandedLblText = [[UILabel alloc]init];
 //                [expandedLblText setBackgroundColor:[UIColor clearColor]];
@@ -2171,14 +2244,15 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     [belowBackgroundLabel addSubview:expandedLblText];
                     
                     UIButton *btnDismiss = [[UIButton alloc]init];
-                    btnDismiss.backgroundColor = [UIColor whiteColor];
+                    btnDismiss.backgroundColor = [UIColor clearColor];
                     [btnDismiss addTarget:self
                                    action:@selector(dismissTamper:)
                          forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
+//                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:0.6] forState:UIControlStateNormal ];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+5, 65,20);
+                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
                     
@@ -2247,14 +2321,15 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     [belowBackgroundLabel addSubview:expandedLblText];
                     
                     UIButton *btnDismiss = [[UIButton alloc]init];
-                    btnDismiss.backgroundColor = [UIColor whiteColor];
+                    btnDismiss.backgroundColor = [UIColor clearColor];
                     [btnDismiss addTarget:self
                                    action:@selector(dismissTamper:)
                          forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
+//                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:0.6] forState:UIControlStateNormal ];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+5, 65,20);
+                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
                     
@@ -2283,14 +2358,14 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     [belowBackgroundLabel addSubview:expandedLblText];
                     
                     UIButton *btnDismiss = [[UIButton alloc]init];
-                    btnDismiss.backgroundColor = [UIColor whiteColor];
+                    btnDismiss.backgroundColor = [UIColor clearColor];
                     [btnDismiss addTarget:self
                                    action:@selector(dismissTamper:)
                          forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
+//                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+5, 65,20);
+                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
                     
@@ -2319,14 +2394,15 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     [belowBackgroundLabel addSubview:expandedLblText];
                     
                     UIButton *btnDismiss = [[UIButton alloc]init];
-                    btnDismiss.backgroundColor = [UIColor whiteColor];
+                    btnDismiss.backgroundColor = [UIColor clearColor];
                     [btnDismiss addTarget:self
                                    action:@selector(dismissTamper:)
                          forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
+//                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:0.6] forState:UIControlStateNormal ];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+5, 65,20);
+                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
                     
