@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414659954.378829"
+            timestampString = "414932672.52319"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4297"
-            endingLineNumber = "4297"
+            startingLineNumber = "4299"
+            endingLineNumber = "4299"
             landmarkName = "-loadDeviceList"
             landmarkType = "5">
          </BreakpointContent>
@@ -494,6 +494,132 @@
             startingLineNumber = "1629"
             endingLineNumber = "1629"
             landmarkName = "-createColoredListCell:listRow:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Securifi Cloud/UI/SensorsViewController.m"
+            timestampString = "414932672.52319"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "4432"
+            endingLineNumber = "4432"
+            landmarkName = "-sendMobileCommand"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[SensorsViewController sendMobileCommand]"
+                  moduleName = "Almond"
+                  urlString = "file://localhost/Users/securifi-mac2/Documents/git/iosapp/Securifi%20Cloud/UI/SensorsViewController.m"
+                  timestampString = "414927192.966552"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "4430"
+                  endingLineNumber = "4430"
+                  offsetFromSymbolStart = "758">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[SensorsViewController sendMobileCommand]"
+                  moduleName = "Almond"
+                  urlString = "file://localhost/Users/securifi-mac2/Documents/git/iosapp/Securifi%20Cloud/UI/SensorsViewController.m"
+                  timestampString = "414927192.966968"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "4430"
+                  endingLineNumber = "4430"
+                  offsetFromSymbolStart = "868">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../iostoolkit/SecurifiToolkit/SecurifiToolkit.m"
+            timestampString = "414920461.908483"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "526"
+            endingLineNumber = "526"
+            landmarkName = "+sendtoCloud:error:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../iostoolkit/SecurifiToolkit/SecurifiToolkit.m"
+            timestampString = "414920696.994686"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "706"
+            endingLineNumber = "706"
+            landmarkName = "+sendtoCloud:error:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../iostoolkit/SecurifiToolkit/SecurifiToolkit.m"
+            timestampString = "414920704.802818"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "747"
+            endingLineNumber = "747"
+            landmarkName = "+sendtoCloud:error:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../iostoolkit/SecurifiToolkit/SecurifiToolkit.m"
+            timestampString = "414920708.106089"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "769"
+            endingLineNumber = "769"
+            landmarkName = "+sendtoCloud:error:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../iostoolkit/SecurifiToolkit/SecurifiToolkit.m"
+            timestampString = "414921605.447165"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "791"
+            endingLineNumber = "791"
+            landmarkName = "+sendtoCloud:error:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

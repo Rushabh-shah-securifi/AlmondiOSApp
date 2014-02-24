@@ -270,6 +270,7 @@
 #pragma mark - Cloud Command : Sender and Receivers
 
 - (IBAction)sendAffiliationCode:(id)sender {
+    
     [txtAffiliationCode resignFirstResponder];
     NSLog(@"Affiliation Code: %@", self.txtAffiliationCode.text);
     
@@ -309,6 +310,43 @@
     
     cloudCommand=nil;
 }
+
+//-(void)dummyShowReasonCode:(int)reasonCode{
+//
+//    //Display content
+//    self.lblEnterMsg.hidden = TRUE;
+//    self.txtAffiliationCode.hidden = TRUE;
+//    self.btnAffiliationCode.hidden = TRUE;
+//    self.lblHooray.hidden = FALSE;
+//    self.lblMessage.hidden = FALSE;
+//    self.lblHooray.text = @"Oops!";
+//    
+//    //Handle different reason codes
+//    NSString *failureReason;
+//    switch(reasonCode){
+//        case 1:
+//            failureReason = @"Please try later.";
+//            break;
+//        case 2:
+//        case 3:
+//            failureReason = @"Please enter a valid code.";
+//            break;
+//        case 4:
+//            failureReason = @"This Almond is already linked to another user. \nContact us at support@securifi.com";
+//            break;
+//        case 5:
+//        case 6:
+//        case 7:
+//            //Logout
+//            failureReason = @"Please login again and retry.";
+//            self.lblMessage.text = [NSString stringWithFormat:@"Almond could not be affiliated.\n%@",failureReason];;
+//            //[self logoutUser];
+//            break;
+//    }
+//    
+//    NSString *log = [NSString stringWithFormat:@"Almond could not be affiliated.\n%@",failureReason];
+//    self.lblMessage.text = log;
+//}
 
 -(void) AffiliationUserCompleteNotifier:(id)sender
 {
@@ -392,7 +430,7 @@
                 failureReason = @"Please enter a valid code.";
                 break;
             case 4:
-                failureReason = @"It is already affiliated to your account.";
+                failureReason = @"This Almond is already linked to another user. \nContact us at support@securifi.com";
                 break;
             case 5:
             case 6:

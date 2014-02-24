@@ -336,9 +336,14 @@ typedef enum {
     NSLog(@"Button Text: %@ Tag: %d", btn.currentTitle, btn.tag);
     switch (btn.tag) {
         case 1:
+        {
             //Terms and Condition
             NSLog(@"Terms and Condition");
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+            UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFITermsViewController"];
+            [self presentViewController:mainView animated:YES completion:nil];
             break;
+        }
         case 2:
             //Resend activation link
             NSLog(@"Resend activation link");
@@ -407,7 +412,7 @@ typedef enum {
     self.lblPasswordStrength.text = @"";
     self.lblPasswordStrength.hidden = FALSE;
     self.passwordStrengthIndicator.hidden = FALSE;
-    self.footerLabel.text = @"By tapping Continue you are inidcating that \nyour have read and agreed to our";
+    self.footerLabel.text = @"By tapping Continue you are indicating that \nyou have read and agreed to our";
     [self.footerButton setTitle:@"Terms and Conditions" forState:UIControlStateNormal];
     [self.footerButton setTitle:@"Terms and Conditions" forState:UIControlStateHighlighted];
     [self.footerButton setTitle:@"Terms and Conditions" forState:UIControlStateDisabled];

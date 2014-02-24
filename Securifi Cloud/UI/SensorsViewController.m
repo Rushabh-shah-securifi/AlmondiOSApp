@@ -3762,7 +3762,9 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
 
 -(void) refreshDataForAlmond{
-    
+    if([self.currentMAC isEqualToString:NO_ALMOND]){
+        return;
+    }
     self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
     self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
     self.offlineHash = [SFIOfflineDataManager readHashList:self.currentMAC];
