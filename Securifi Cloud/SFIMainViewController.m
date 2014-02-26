@@ -271,7 +271,7 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
 - (void)reachabilityDidChange:(NSNotification *)notification {
     //Reachability *reachability = (Reachability *)[notification object];
     [SNLog Log:@"Method Name: %s Reachability State : %d", __PRETTY_FUNCTION__, state];
-    if (state == NETWORK_DOWN || state == SDK_UNINITIALIZED || state == SDK_INITIALIZING)
+    if (state == NETWORK_DOWN || state == SDK_UNINITIALIZED)
     {
         if ([SFIReachabilityManager isReachable]) {
             NSLog(@"Reachable - MAIN");
@@ -293,14 +293,13 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
     state= [SecurifiToolkit getConnectionState];
     [SNLog Log:@"Method Name: %s BECOME ACTIVE State : %d", __PRETTY_FUNCTION__, state];
     
-    if (state == NETWORK_DOWN || state == SDK_UNINITIALIZED)
+    //PY 250214 - To remove multiple connection removed -  state == SDK_INITIALIZING
+    if (state == NETWORK_DOWN || state == SDK_UNINITIALIZED) // || state == SDK_INITIALIZING)
     {
         //Start HUD till networkUP/DOWN or Login response notification comes
         HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         //HUD.delegate = self;
         HUD.dimBackground = YES;
-        
-        
         [SecurifiToolkit initSDK];
     }
 }
@@ -355,7 +354,12 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
          HUD = nil;
          });
          */
-        
+//        if(state == SDK_UNINITIALIZED || state == NETWORK_DOWN){
+//            [SecurifiToolkit initSDKCloud];
+//        }
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+//        UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
+//        [self presentViewController:mainView animated:YES completion:nil];
         
     }
     else

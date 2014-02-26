@@ -14,4 +14,5 @@
     MBProgressHUD               *HUD;
 }
 @property NSInteger state;
+@property BOOL isCloudConnectionBroken;
 @end

@@ -63,6 +63,9 @@
 @property (nonatomic,retain) NSString *currentChangedName;
 @property (nonatomic,retain) NSString *currentChangedLocation;
 
+//PY 260214 - Cloud is offline
+@property BOOL isCloudOnline;
+
 -(UITableViewCell*) createAddSymbolCell: (UITableViewCell*)cell;
 -(UITableViewCell*) createColoredListCell: (UITableViewCell*)cell listRow:(int)indexPathRow;
 @end

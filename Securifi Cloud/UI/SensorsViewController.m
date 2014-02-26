@@ -16,6 +16,8 @@
 //#import "SFIDeviceListViewController.h"
 #import "SFIOfflineDataManager.h"
 #import "SNLog.h"
+#import "SFIReachabilityManager.h"
+#import "Reachability.h"
 
 @interface SensorsViewController () {
     NSMutableArray *_objects;
@@ -49,10 +51,13 @@
 @synthesize isSliderExpanded, isEditing;
 @synthesize sensorTable;
 @synthesize txtInvisible;
+@synthesize isCloudOnline;
 
 @synthesize currentChangedLocation, currentChangedName;
 
 static NSString *simpleTableIdentifier = @"SensorCell";
+
+#pragma mark - View Related
 - (void)awakeFromNib
 {
     [super awakeFromNib];
@@ -157,14 +162,14 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     //    HUD.dimBackground = YES;
     //    HUD.labelText = @"Loading sensor data.";
     //[self getDeviceHash];
-
     
+    isCloudOnline = TRUE;
     
 }
 
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
+
     //PY 111013 - Integration with new UI
     NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
     if([almondList count] == 0){
@@ -250,6 +255,21 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                                                     name:SENSOR_CHANGE_NOTIFIER
                                                   object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(networkDownNotifier:)
+                                                 name:NETWORK_DOWN_NOTIFIER
+                                               object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(networkUpNotifier:)
+                                                 name:NETWORK_UP_NOTIFIER
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityDidChange:)
+                                                 name:kReachabilityChangedNotification object:nil];
+    
 }
 
 
@@ -290,10 +310,75 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                                                        name:SENSOR_CHANGE_NOTIFIER
                                                      object:nil];
     
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NETWORK_UP_NOTIFIER
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NETWORK_DOWN_NOTIFIER
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kReachabilityChangedNotification
+                                                  object:nil];
     
 }
 
+#pragma mark - Reconnection
+
+-(void)networkUpNotifier:(id)sender
+{
+    [SNLog Log:@"Method Name: %s Sensor controller :In networkUP notifier", __PRETTY_FUNCTION__];
+    isCloudOnline = TRUE;
+    [self.tableView reloadData];
+}
+
+
+-(void)networkDownNotifier:(id)sender
+{
+    [SNLog Log:@"Method Name: %s Sensor controller :In network down notifier", __PRETTY_FUNCTION__];
+    isCloudOnline = FALSE;
+    [self.tableView reloadData];
+}
+
+- (void)reachabilityDidChange:(NSNotification *)notification {
+    if (![SFIReachabilityManager isReachable]) {
+        NSLog(@"Unreachable");
+        isCloudOnline = FALSE;
+        [self.tableView reloadData];
+    }
+}
+
 #pragma mark - Table View
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if(isCloudOnline){
+        return 0;
+    }else{
+        return 35;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    if(isCloudOnline){
+        return nil;
+    }else{
+    UIView* header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 30)];
+    header.backgroundColor = [UIColor clearColor];// [UIColor colorWithHue:196.0/360.0 saturation:100/100.0 brightness:100/100.0 alpha:1];
+    
+    UILabel *backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,1,(LEFT_LABEL_WIDTH)+(self.tableView.frame.size.width-LEFT_LABEL_WIDTH-25)+1,30)];
+    backgroundLabel.backgroundColor = [UIColor colorWithRed:125/255.0 green:125/255.0 blue:125/255.0 alpha:1.0];
+    
+    
+    UILabel *lblOffline = [[UILabel alloc] initWithFrame:CGRectMake(10,1,self.tableView.frame.size.width-20,30)];
+    lblOffline.backgroundColor = [UIColor clearColor];
+    lblOffline.text = CLOUD_OFFLINE;
+    lblOffline.textColor = [UIColor whiteColor];
+    lblOffline.textAlignment = NSTextAlignmentCenter;
+    [lblOffline setFont:[UIFont fontWithName:@"Avenir-Roman" size:12]];
+    [backgroundLabel addSubview:lblOffline];
+    [header addSubview:backgroundLabel];
+    return header;
+    }
+}
+
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {

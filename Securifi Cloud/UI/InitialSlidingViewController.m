@@ -17,6 +17,7 @@
 
 @implementation InitialSlidingViewController
 @synthesize state;
+@synthesize isCloudConnectionBroken;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -58,7 +59,13 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(LogoutAllResponseCallback:)
-                                                 name:@"LogoutAllResponseNotifier"
+                                                 name:LOGOUT_ALL_NOTIFIER
+                                               object:nil];
+    
+    isCloudConnectionBroken = FALSE;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(LoginResponseCallback:)
+                                                 name:LOGIN_NOTIFIER
                                                object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(becomesActive:)
@@ -84,8 +91,12 @@
                                                   object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                 name:@"LogoutAllResponseNotifier"
+                                                 name:LOGOUT_ALL_NOTIFIER
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:LOGIN_NOTIFIER
+                                                  object:nil];
 //    [[NSNotificationCenter defaultCenter] removeObserver:self
 //                                                    name:UIApplicationDidBecomeActiveNotification
 //                                                  object:nil];
@@ -120,7 +131,7 @@
 -(void)networkDownNotifier:(id)sender
 {
     self.state=[SecurifiToolkit getConnectionState];
-    [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, state];
+    [SNLog Log:@"Method Name: %s State : %d ", __PRETTY_FUNCTION__, state];
 //    HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 //    HUD.dimBackground = YES;
 //    HUD.labelText=@"Network Down";
@@ -129,7 +140,7 @@
 //        NSLog(@"Reachable: Reconnect to SDK");
 //
 //        [SecurifiToolkit initSDK];
-//        //TODO: Reconnection times
+//        //Reconnection times
 //        
 //    }
 //    dispatch_async( dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -144,6 +155,13 @@
 //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
 //    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
 //    [self presentViewController:mainView animated:YES completion:nil];
+    
+    if(state == CLOUD_CONNECTION_BROKEN){
+        //Try to login and check
+        NSLog(@"Try to reconnect! Cloud ended connection");
+        isCloudConnectionBroken = TRUE;
+        [SecurifiToolkit initSDK];
+    }
     
 }
 
@@ -197,6 +215,75 @@
     
     
     
+}
+
+-(void)LoginResponseCallback:(id)sender{
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    //Login failed
+    if(isCloudConnectionBroken){
+        [SNLog Log:@"In Method Name: %s Cloud broken connection response", __PRETTY_FUNCTION__];
+  
+        isCloudConnectionBroken = FALSE;
+    if ([notifier userInfo] == nil)
+    {
+        [SNLog Log:@"In Method Name: %s TEMP Pass failed", __PRETTY_FUNCTION__];
+        //Logout
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        [prefs removeObjectForKey:EMAIL];
+        [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
+        [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
+        [prefs removeObjectForKey:COLORCODE];
+        [prefs synchronize];
+        
+        //Delete files
+        [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
+        [SFIOfflineDataManager deleteFile:HASH_FILENAME];
+        [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
+        [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
+        
+        dispatch_queue_t queue = dispatch_queue_create("com.securifi.almondplus", NULL);
+        dispatch_async(queue, ^{
+            [SFIDatabaseUpdateService stopDatabaseUpdateService];
+        });
+  
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+        UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
+        [self presentViewController:mainView animated:YES completion:nil];
+        
+    }
+    else
+    {
+        [SNLog Log:@"In Method Name: %s Received login response", __PRETTY_FUNCTION__];
+        
+        LoginResponse *obj = [[LoginResponse alloc] init];
+        obj = (LoginResponse *)[data valueForKey:@"data"];
+        
+        //Login unsuccessful
+        if (obj.isSuccessful == 0)
+        {
+            [SNLog Log:@"In Method Name: %s Logout because of reason: %@ Reason Code: %d ", __PRETTY_FUNCTION__, obj.reason, obj.reasonCode];
+            //Logout
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            [prefs removeObjectForKey:EMAIL];
+            [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
+            [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
+            [prefs removeObjectForKey:COLORCODE];
+            [prefs synchronize];
+            
+            //Delete files
+            [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
+            [SFIOfflineDataManager deleteFile:HASH_FILENAME];
+            [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
+            [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+            UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
+            [self presentViewController:mainView animated:YES completion:nil];
+        }
+    }
+        }
 }
 
 

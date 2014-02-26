@@ -14,6 +14,7 @@
 #define NOT_LOGGED_IN           2
 #define LOGGED_IN               3
 #define SDK_INITIALIZING        5
+#define CLOUD_CONNECTION_BROKEN 6
 #define CLOUD_CONNECTION_TIMEOUT 20
 
 #define CURRENT_ALMOND_MAC  @"AlmondMAC"
@@ -83,6 +84,7 @@
 
 #define TAMPER @"TAMPER"
 #define LOW_BATTERY @"LOW BATTERY"
+#define CLOUD_OFFLINE @"Cloud is offline. Please retry later."
 
 #define HELP_URL @"https://connect.securifi.com/help"
 

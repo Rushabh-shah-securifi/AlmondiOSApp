@@ -121,6 +121,10 @@
                                              selector:@selector(AlmondListResponseCallback:)
                                                  name:ALMOND_LIST_NOTIFIER
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(LogoutResponseCallback:)
+                                                 name:LOGOUT_NOTIFIER
+                                               object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -134,6 +138,9 @@
                                                   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:AFFILIATION_COMPLETE_NOTIFIER
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:LOGOUT_NOTIFIER
                                                   object:nil];
 }
 //
@@ -219,24 +226,24 @@
     
     NSError *error=nil;
     [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
-    
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs removeObjectForKey:EMAIL];
-    [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
-    [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
-    [prefs synchronize];
-    
-    //Delete files
-    [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
-    [SFIOfflineDataManager deleteFile:HASH_FILENAME];
-    [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
-    [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
-    
-    //[self dismissViewControllerAnimated:NO completion:nil];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
-    //[self presentViewController:mainView animated:YES completion:nil];
-    [self presentViewController:mainView animated:YES completion:nil];
+//    
+//    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+//    [prefs removeObjectForKey:EMAIL];
+//    [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
+//    [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
+//    [prefs synchronize];
+//    
+//    //Delete files
+//    [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
+//    [SFIOfflineDataManager deleteFile:HASH_FILENAME];
+//    [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
+//    [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
+//    
+//    //[self dismissViewControllerAnimated:NO completion:nil];
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+//    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
+//    //[self presentViewController:mainView animated:YES completion:nil];
+//    [self presentViewController:mainView animated:YES completion:nil];
 }
 
 //- (IBAction)doneButtonHandler:(id)sender{
@@ -518,6 +525,52 @@
     // [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+-(void)LogoutResponseCallback:(id)sender
+{
+    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    
+    if(data !=nil){
+        [SNLog Log:@"Method Name: %s Received Logout response", __PRETTY_FUNCTION__];
+        
+        LogoutResponse *obj = [[LogoutResponse alloc] init];
+        obj = (LogoutResponse *)[data valueForKey:@"data"];
+        if(obj.isSuccessful){
+            //Logout Successful
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            [prefs removeObjectForKey:EMAIL];
+            [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
+            [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
+            [prefs removeObjectForKey:COLORCODE];
+            [prefs synchronize];
+            
+            //Delete files
+            [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
+            [SFIOfflineDataManager deleteFile:HASH_FILENAME];
+            [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
+            [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
+            
+            //[self dismissViewControllerAnimated:NO completion:nil];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+            UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
+            //[self presentViewController:mainView animated:YES completion:nil];
+            [self presentViewController:mainView animated:YES completion:nil];
+        }else{
+            NSLog(@"Could not logout - Reason %@", obj.reason);
+            NSString *alertMsg = @"Sorry. Logout was unsuccessful. Please try again.";
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Logout Unsuccessful"
+                                                            message:alertMsg
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles:nil];
+            [alert show];
+        }
+        
+    }
+    
+    
+}
 
 
 

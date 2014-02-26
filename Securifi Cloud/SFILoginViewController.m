@@ -502,12 +502,14 @@
     [SNLog Log:@"Method Name: %s DOWN State : %d", __PRETTY_FUNCTION__, state];
     if(self.state == NETWORK_DOWN){
         //state = SDK_UNINITIALIZED;
-        [HUD hide:YES];
-        HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        HUD.dimBackground = YES;
-        HUD.labelText=@"Network Down";
-        [HUD hide:YES afterDelay:1];
+//        [HUD hide:YES];
+//        HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//        HUD.dimBackground = YES;
+//        HUD.labelText=@"Network Down";
+//        [HUD hide:YES afterDelay:1];
+//        state = NOT_LOGGED_IN;
     }else if(self.state ==SDK_UNINITIALIZED){
+        [HUD hide:YES];
         [SecurifiToolkit initSDKCloud];
     }
 }

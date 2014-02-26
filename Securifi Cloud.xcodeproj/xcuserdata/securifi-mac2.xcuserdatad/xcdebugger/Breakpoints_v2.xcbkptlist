@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414659954.378829"
+            timestampString = "415102800.734466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3354"
-            endingLineNumber = "3354"
+            startingLineNumber = "3439"
+            endingLineNumber = "3439"
             landmarkName = "-initiliazeImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -26,11 +26,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414659954.378829"
+            timestampString = "415102800.734466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2625"
-            endingLineNumber = "2625"
+            startingLineNumber = "2710"
+            endingLineNumber = "2710"
             landmarkName = "-createColoredListCell:listRow:"
             landmarkType = "5">
          </BreakpointContent>
@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SFIAffiliationViewController.m"
-            timestampString = "411894617.862006"
+            timestampString = "415004641.083771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "174"
-            endingLineNumber = "174"
+            startingLineNumber = "181"
+            endingLineNumber = "181"
             landmarkName = "-textField:shouldChangeCharactersInRange:replacementString:"
             landmarkType = "5">
          </BreakpointContent>
@@ -106,11 +106,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SFIAffiliationViewController.m"
-            timestampString = "411894617.862006"
+            timestampString = "415004641.083771"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
+            startingLineNumber = "189"
+            endingLineNumber = "189"
             landmarkName = "-convertDecimalToMAC:"
             landmarkType = "5">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414932672.52319"
+            timestampString = "415102800.734466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4299"
-            endingLineNumber = "4299"
+            startingLineNumber = "4384"
+            endingLineNumber = "4384"
             landmarkName = "-loadDeviceList"
             landmarkType = "5">
          </BreakpointContent>
@@ -170,11 +170,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414659954.378829"
+            timestampString = "415102800.734466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3019"
-            endingLineNumber = "3019"
+            startingLineNumber = "3104"
+            endingLineNumber = "3104"
             landmarkName = "-initiliazeImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -186,11 +186,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414659954.378829"
+            timestampString = "415102800.734466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2986"
-            endingLineNumber = "2986"
+            startingLineNumber = "3071"
+            endingLineNumber = "3071"
             landmarkName = "-initiliazeImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414659954.378829"
+            timestampString = "415102800.734466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2980"
-            endingLineNumber = "2980"
+            startingLineNumber = "3065"
+            endingLineNumber = "3065"
             landmarkName = "-initiliazeImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -218,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414659954.378829"
+            timestampString = "415102800.734466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2975"
-            endingLineNumber = "2975"
+            startingLineNumber = "3060"
+            endingLineNumber = "3060"
             landmarkName = "-initiliazeImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -250,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414659954.378829"
+            timestampString = "415102800.734466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3686"
-            endingLineNumber = "3686"
+            startingLineNumber = "3771"
+            endingLineNumber = "3771"
             landmarkName = "-onDeviceClicked:"
             landmarkType = "5">
          </BreakpointContent>
@@ -376,11 +376,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "412691913.448658"
+            timestampString = "415102800.734466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "328"
-            endingLineNumber = "328"
+            startingLineNumber = "413"
+            endingLineNumber = "413"
             landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -392,11 +392,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414659954.378829"
+            timestampString = "415102800.734466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "406"
-            endingLineNumber = "406"
+            startingLineNumber = "491"
+            endingLineNumber = "491"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -456,11 +456,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414659954.378829"
+            timestampString = "415102800.734466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "3232"
-            endingLineNumber = "3232"
+            startingLineNumber = "3317"
+            endingLineNumber = "3317"
             landmarkName = "-initiliazeImages"
             landmarkType = "5">
          </BreakpointContent>
@@ -472,11 +472,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414659954.378829"
+            timestampString = "415102800.734466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2274"
-            endingLineNumber = "2274"
+            startingLineNumber = "2359"
+            endingLineNumber = "2359"
             landmarkName = "-createColoredListCell:listRow:"
             landmarkType = "5">
          </BreakpointContent>
@@ -488,11 +488,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414659954.378829"
+            timestampString = "415102800.734466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1629"
-            endingLineNumber = "1629"
+            startingLineNumber = "1714"
+            endingLineNumber = "1714"
             landmarkName = "-createColoredListCell:listRow:"
             landmarkType = "5">
          </BreakpointContent>
@@ -504,11 +504,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Securifi Cloud/UI/SensorsViewController.m"
-            timestampString = "414932672.52319"
+            timestampString = "415102800.734466"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4432"
-            endingLineNumber = "4432"
+            startingLineNumber = "4517"
+            endingLineNumber = "4517"
             landmarkName = "-sendMobileCommand"
             landmarkType = "5">
             <Locations>
@@ -519,11 +519,11 @@
                   symbolName = "-[SensorsViewController sendMobileCommand]"
                   moduleName = "Almond"
                   urlString = "file://localhost/Users/securifi-mac2/Documents/git/iosapp/Securifi%20Cloud/UI/SensorsViewController.m"
-                  timestampString = "414927192.966552"
+                  timestampString = "415103674.288262"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "4430"
-                  endingLineNumber = "4430"
+                  startingLineNumber = "4517"
+                  endingLineNumber = "4517"
                   offsetFromSymbolStart = "758">
                </Location>
                <Location
@@ -533,11 +533,11 @@
                   symbolName = "-[SensorsViewController sendMobileCommand]"
                   moduleName = "Almond"
                   urlString = "file://localhost/Users/securifi-mac2/Documents/git/iosapp/Securifi%20Cloud/UI/SensorsViewController.m"
-                  timestampString = "414927192.966968"
+                  timestampString = "415103674.288613"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "4430"
-                  endingLineNumber = "4430"
+                  startingLineNumber = "4517"
+                  endingLineNumber = "4517"
                   offsetFromSymbolStart = "868">
                </Location>
             </Locations>
@@ -550,27 +550,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../iostoolkit/SecurifiToolkit/SecurifiToolkit.m"
-            timestampString = "414920461.908483"
+            timestampString = "415091356.995911"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "526"
-            endingLineNumber = "526"
-            landmarkName = "+sendtoCloud:error:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "../iostoolkit/SecurifiToolkit/SecurifiToolkit.m"
-            timestampString = "414920696.994686"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "706"
-            endingLineNumber = "706"
+            startingLineNumber = "636"
+            endingLineNumber = "636"
             landmarkName = "+sendtoCloud:error:"
             landmarkType = "5">
          </BreakpointContent>
@@ -582,11 +566,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../iostoolkit/SecurifiToolkit/SecurifiToolkit.m"
-            timestampString = "414920704.802818"
+            timestampString = "415091356.995911"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "747"
-            endingLineNumber = "747"
+            startingLineNumber = "826"
+            endingLineNumber = "826"
+            landmarkName = "+sendtoCloud:error:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../iostoolkit/SecurifiToolkit/SecurifiToolkit.m"
+            timestampString = "415103887.389619"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "868"
+            endingLineNumber = "868"
             landmarkName = "+sendtoCloud:error:"
             landmarkType = "5">
          </BreakpointContent>
@@ -597,13 +597,77 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "../iostoolkit/SecurifiToolkit/SecurifiToolkit.m"
-            timestampString = "414920708.106089"
+            filePath = "Securifi Cloud/UI/DrawerViewController.m"
+            timestampString = "415002526.23331"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "769"
-            endingLineNumber = "769"
-            landmarkName = "+sendtoCloud:error:"
+            startingLineNumber = "231"
+            endingLineNumber = "231"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../iostoolkit/SecurifiToolkit/CommandParser.m"
+            timestampString = "415023821.790487"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1748"
+            endingLineNumber = "1748"
+            landmarkName = "endElementSAX()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../iostoolkit/SecurifiToolkit/CommandParser.m"
+            timestampString = "415023821.790487"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1740"
+            endingLineNumber = "1740"
+            landmarkName = "endElementSAX()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../iostoolkit/SecurifiToolkit/CommandParser.m"
+            timestampString = "415023821.790487"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1745"
+            endingLineNumber = "1745"
+            landmarkName = "endElementSAX()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Securifi Cloud/UI/DrawerViewController.m"
+            timestampString = "415004433.4991"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "437"
+            endingLineNumber = "437"
+            landmarkName = "-LogoutResponseCallback:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -614,12 +678,92 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../iostoolkit/SecurifiToolkit/SecurifiToolkit.m"
-            timestampString = "414921605.447165"
+            timestampString = "415091356.995911"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "791"
-            endingLineNumber = "791"
+            startingLineNumber = "445"
+            endingLineNumber = "445"
             landmarkName = "+sendtoCloud:error:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../iostoolkit/SecurifiToolkit/SingleTon.m"
+            timestampString = "415090818.049193"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "804"
+            endingLineNumber = "804"
+            landmarkName = "-stream:handleEvent:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Securifi Cloud/UI/InitialSlidingViewController.m"
+            timestampString = "415090818.049193"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
+            landmarkName = "-LogoutAllResponseCallback:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Securifi Cloud/SFILogoutAllViewController.m"
+            timestampString = "415024286.890559"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
+            landmarkName = "-LogoutAllResponseCallback:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Securifi Cloud/UI/SensorsViewController.m"
+            timestampString = "415102883.512013"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "329"
+            endingLineNumber = "329"
+            landmarkName = "-networkUpNotifier:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Securifi Cloud/UI/SensorsViewController.m"
+            timestampString = "415103375.252105"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "343"
+            endingLineNumber = "343"
+            landmarkName = "-reachabilityDidChange:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

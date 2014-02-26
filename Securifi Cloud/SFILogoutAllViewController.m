@@ -64,39 +64,54 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(LogoutAllResponseCallback:)
-                                                 name:@"LogoutAllResponseNotifier"
+                                                 name:LOGOUT_ALL_NOTIFIER
                                                object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
     
-    if (keyboardToolbar == nil)
-    {
-        keyboardToolbar= [[UIToolbar alloc] initWithFrame:CGRectMake(0,0, self.view.bounds.size.width, 44)];
-        
-        UIBarButtonItem *previousButton = [[UIBarButtonItem alloc]
-                                           initWithTitle:@"Previous"
-                                           style:UIBarButtonItemStyleBordered
-                                           target:self action:@selector(previousField:)];
-        
-        UIBarButtonItem *nextButton = [[UIBarButtonItem alloc]
-                                       initWithTitle:@"Next"
-                                       style:UIBarButtonItemStyleBordered
-                                       target:self action:@selector(nextField:)];
-        
-        UIBarButtonItem *extra  =  [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(resignKeyboard:)];
-        
-        [keyboardToolbar setItems:[[NSArray alloc] initWithObjects:previousButton, nextButton, extra, doneButton, nil]];
-        [keyboardToolbar setBarStyle:UIBarStyleBlackTranslucent];
-        
-        emailID.inputAccessoryView = keyboardToolbar;
-        password.inputAccessoryView = keyboardToolbar;
-        
-        //change text user and pass field
-//        password.borderStyle = UITextBorderStyleRoundedRect;
-//        emailID.borderStyle = UITextBorderStyleRoundedRect;
-    }
+//    if (keyboardToolbar == nil)
+//    {
+//        keyboardToolbar= [[UIToolbar alloc] initWithFrame:CGRectMake(0,0, self.view.bounds.size.width, 44)];
+//        
+//        UIBarButtonItem *previousButton = [[UIBarButtonItem alloc]
+//                                           initWithTitle:@"Previous"
+//                                           style:UIBarButtonItemStyleBordered
+//                                           target:self action:@selector(previousField:)];
+//        
+//        UIBarButtonItem *nextButton = [[UIBarButtonItem alloc]
+//                                       initWithTitle:@"Next"
+//                                       style:UIBarButtonItemStyleBordered
+//                                       target:self action:@selector(nextField:)];
+//        
+//        UIBarButtonItem *extra  =  [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+//        
+//        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(resignKeyboard:)];
+//        
+//        [keyboardToolbar setItems:[[NSArray alloc] initWithObjects:previousButton, nextButton, extra, doneButton, nil]];
+//        [keyboardToolbar setBarStyle:UIBarStyleBlackTranslucent];
+//        
+//        emailID.inputAccessoryView = keyboardToolbar;
+//        password.inputAccessoryView = keyboardToolbar;
+//        
+//        //change text user and pass field
+////        password.borderStyle = UITextBorderStyleRoundedRect;
+////        emailID.borderStyle = UITextBorderStyleRoundedRect;
+//    }
     
 }
+
+#pragma mark - Keyboard Methods
+//- (void)keyboardDidShow:(NSNotification *)notification
+//{
+//    //Assign new frame to your view
+//    [self.view setFrame:CGRectMake(0,-10,self.view.frame.size.width,self.view.frame.size.height)]; //here taken -20 for example i.e. your view will be scrolled to -20. change its value according to your requirement.
+//    
+//}
+//
+//-(void)keyboardDidHide:(NSNotification *)notification
+//{
+//    [self.view setFrame:CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height)];
+//}
 
 
 - (void) resignKeyboard:(id)sender {
@@ -142,6 +157,7 @@
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - Cloud commands
 -(void)LogoutAllResponseCallback:(id)sender
 {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
@@ -155,49 +171,80 @@
         obj = (LogoutAllResponse *)[data valueForKey:@"data"];
         
         [SNLog Log:@"Method Name: %s is Successful : %d", __PRETTY_FUNCTION__,obj.isSuccessful];
-        [SNLog Log:@"Method Name: %s Reason : %@", __PRETTY_FUNCTION__,obj.Reason];
+        [SNLog Log:@"Method Name: %s Reason : %@", __PRETTY_FUNCTION__,obj.reason];
         
 
         if (obj.isSuccessful == 0)
         {
-            logMessageLabel.text=obj.Reason;
+            logMessageLabel.text=obj.reason;
         }
         else
         {
+
+            
+            [SNLog Log:@"Method Name: %s Logout All successful - All connections closed!", __PRETTY_FUNCTION__];
+            dispatch_queue_t queue = dispatch_queue_create("com.securifi.almondplus", NULL);
+            dispatch_async(queue, ^{
+                [SFIDatabaseUpdateService stopDatabaseUpdateService];
+            });
+            
             //PY 170913 - Use navigation controller
-            [self.navigationController popViewControllerAnimated:YES];
+            //[self.navigationController popViewControllerAnimated:YES];
+            //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            [prefs removeObjectForKey:EMAIL];
+            [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
+            [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
+            [prefs removeObjectForKey:USERID];
+            [prefs removeObjectForKey:PASSWORD];
+            [prefs removeObjectForKey:COLORCODE];
+            [prefs synchronize];
+            
+            //Delete files
+            [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
+            [SFIOfflineDataManager deleteFile:HASH_FILENAME];
+            [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
+            [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+            UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
+            [self presentViewController:mainView animated:YES completion:nil];
+            
+//            //PY 170913 - Use navigation controller
+//            [self.navigationController popViewControllerAnimated:YES];
             
         }
     }
-//    else{
-//        [SNLog Log:@"Method Name: %s Logout All successful - All connections closed!", __PRETTY_FUNCTION__];
-//        dispatch_queue_t queue = dispatch_queue_create("com.securifi.almondplus", NULL);
-//        dispatch_async(queue, ^{
-//            [SFIDatabaseUpdateService stopDatabaseUpdateService];
-//        });
-//        
-//        //PY 170913 - Use navigation controller
-//        //[self.navigationController popViewControllerAnimated:YES];
-//        //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-//        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-//        [prefs removeObjectForKey:EMAIL];
-//        [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
-//        [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
-//        [prefs removeObjectForKey:USERID];
-//        [prefs removeObjectForKey:PASSWORD];
-//        [prefs synchronize];
-//        
-//        //Delete files
-//        [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
-//        [SFIOfflineDataManager deleteFile:HASH_FILENAME];
-//        [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
-//        [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
-//        
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-//        UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
-//        [self presentViewController:mainView animated:YES completion:nil];
-//
-//    }
+    else{
+        [SNLog Log:@"Method Name: %s Logout All successful - All connections closed!", __PRETTY_FUNCTION__];
+        dispatch_queue_t queue = dispatch_queue_create("com.securifi.almondplus", NULL);
+        dispatch_async(queue, ^{
+            [SFIDatabaseUpdateService stopDatabaseUpdateService];
+        });
+        
+        //PY 170913 - Use navigation controller
+        //[self.navigationController popViewControllerAnimated:YES];
+        //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        [prefs removeObjectForKey:EMAIL];
+        [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
+        [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
+        [prefs removeObjectForKey:USERID];
+        [prefs removeObjectForKey:PASSWORD];
+        [prefs removeObjectForKey:COLORCODE];
+        [prefs synchronize];
+        
+        //Delete files
+        [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
+        [SFIOfflineDataManager deleteFile:HASH_FILENAME];
+        [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
+        [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
+        
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+        UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
+        [self presentViewController:mainView animated:YES completion:nil];
+
+    }
     
     
 }
