@@ -1,9 +1,9 @@
 //
-//  NavigationTopViewController.m
-//  ECSlidingViewController
+//  SensorTopViewController.m
+//  Securifi Cloud
 //
-//  Created by Michael Enriquez on 2/13/12.
-//  Copyright (c) 2012 EdgeCase. All rights reserved.
+//  Created by Priya Yerunkar
+//  Copyright (c) 2013 Securifi-Mac2. All rights reserved.
 //
 
 #import "SensorTopViewController.h"

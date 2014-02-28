@@ -2,7 +2,7 @@
 //  SFITermsViewController.m
 //  Securifi Cloud
 //
-//  Created by Securifi-Mac2 on 24/02/14.
+//  Created by Priya Yerunkar on 24/02/14.
 //  Copyright (c) 2014 Securifi. All rights reserved.
 //
 

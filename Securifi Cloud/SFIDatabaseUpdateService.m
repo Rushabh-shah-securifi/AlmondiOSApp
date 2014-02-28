@@ -17,11 +17,7 @@
     //    [// [SNLog logManager] addLogStrategy:logger];
     
     // [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    //    //TODO: Remove Later - to test
-    //    [[NSNotificationCenter defaultCenter] addObserver:self
-    //                                             selector:@selector(AlmondListResponseCallback:)
-    //                                                 name:@"AlmondListResponseNotifier"
-    //                                               object:nil];
+
     
     [[NSNotificationCenter defaultCenter]    addObserver:self
                                                 selector:@selector(DeviceDataCloudResponseCallback:)
@@ -41,6 +37,11 @@
                                                 selector:@selector(DynamicAlmondListDeleteCallback:)
                                                     name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
                                                   object:nil];
+    
+    [[NSNotificationCenter defaultCenter]    addObserver:self
+                                                selector:@selector(DynamicAlmondNameChangeCallback:)
+                                                    name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
+                                                  object:nil];
 }
 
 +(void)stopDatabaseUpdateService{
@@ -56,6 +57,9 @@
                                                      object:nil];
     [[NSNotificationCenter defaultCenter]    removeObserver:self
                                                        name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
+                                                     object:nil];
+    [[NSNotificationCenter defaultCenter]    removeObserver:self
+                                                       name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
                                                      object:nil];
 }
 
@@ -76,6 +80,7 @@
 //
 //}
 
+#pragma mark - Cloud command handlers
 +(void)DeviceDataCloudResponseCallback:(id)sender
 {
     // [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
@@ -271,4 +276,28 @@
             
         }
     }
+
++(void)DynamicAlmondNameChangeCallback:(id)sender
+{
+    // [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    
+    if(data !=nil){
+        // [SNLog Log:@"Method Name: %s Received DynamicAlmondNameChangeCallback", __PRETTY_FUNCTION__];
+        
+        DynamicAlmondNameChangeResponse *obj = [[DynamicAlmondNameChangeResponse alloc] init];
+        obj = (DynamicAlmondNameChangeResponse *)[data valueForKey:@"data"];
+        NSMutableArray *offlineAlmondList = [SFIOfflineDataManager readAlmondList];
+        for(SFIAlmondPlus *currentOfflineAlmond in offlineAlmondList){
+            if([currentOfflineAlmond.almondplusMAC isEqualToString:obj.almondplusMAC]){
+                //Change the name of the current almond in the offline list
+                currentOfflineAlmond.almondplusName = obj.almondplusName;
+                break;
+            }
+        }
+        //Update the list
+        [SFIOfflineDataManager writeAlmondList:offlineAlmondList];
+    }
+}
     @end

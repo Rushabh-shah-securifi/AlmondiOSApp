@@ -1,9 +1,9 @@
 //
-//  MenuViewController.h
-//  ECSlidingViewController
+//  DrawerViewController.h
+//  Securifi Cloud
 //
-//  Created by Michael Enriquez on 1/23/12.
-//  Copyright (c) 2012 EdgeCase. All rights reserved.
+//  Created by Priya Yerunkar
+//  Copyright (c) 2013 Securifi-Mac2. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
