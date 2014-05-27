@@ -93,10 +93,11 @@
 		1C41B16819343CEB006F0DD8 /* water_drop1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C41B11419343CEB006F0DD8 /* water_drop1.png */; };
 		1C41B16919343CEB006F0DD8 /* water_drop2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C41B11519343CEB006F0DD8 /* water_drop2.png */; };
 		1C41B16A19343CEB006F0DD8 /* window_106x140.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C41B11619343CEB006F0DD8 /* window_106x140.png */; };
+		1C41B17319344562006F0DD8 /* SFIAffiliationViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C41B17119344562006F0DD8 /* SFIAffiliationViewController.h */; };
+		1C41B17419344562006F0DD8 /* SFIAffiliationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C41B17219344562006F0DD8 /* SFIAffiliationViewController.m */; };
 		2244791717A80C9C002C43C2 /* SFIMainViewTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 2244791617A80C9C002C43C2 /* SFIMainViewTile.m */; };
 		2244791D17A81649002C43C2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2244791C17A81649002C43C2 /* QuartzCore.framework */; };
 		225093BF17A8086000B94C6E /* SFIMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 225093BE17A8086000B94C6E /* SFIMainViewController.m */; };
-		2253388117A6A4F50051BF0F /* SFIAffiliationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2253388017A6A4F50051BF0F /* SFIAffiliationViewController.m */; };
 		22A19D9A1797C5AA003E6148 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A19D991797C5AA003E6148 /* SystemConfiguration.framework */; };
 		22A76D54179181DE0099CD8F /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A76D53179181DE0099CD8F /* libxml2.dylib */; };
 		22E024B4175C932A0081D707 /* SFISingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E024B3175C932A0081D707 /* SFISingleton.m */; };
@@ -325,13 +326,13 @@
 		1C41B11419343CEB006F0DD8 /* water_drop1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = water_drop1.png; path = images/water_drop1.png; sourceTree = "<group>"; };
 		1C41B11519343CEB006F0DD8 /* water_drop2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = water_drop2.png; path = images/water_drop2.png; sourceTree = "<group>"; };
 		1C41B11619343CEB006F0DD8 /* window_106x140.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = window_106x140.png; path = images/window_106x140.png; sourceTree = "<group>"; };
+		1C41B17119344562006F0DD8 /* SFIAffiliationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIAffiliationViewController.h; sourceTree = "<group>"; };
+		1C41B17219344562006F0DD8 /* SFIAffiliationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIAffiliationViewController.m; sourceTree = "<group>"; };
 		2244791517A80C9C002C43C2 /* SFIMainViewTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIMainViewTile.h; sourceTree = "<group>"; };
 		2244791617A80C9C002C43C2 /* SFIMainViewTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIMainViewTile.m; sourceTree = "<group>"; };
 		2244791C17A81649002C43C2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		225093BD17A8086000B94C6E /* SFIMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIMainViewController.h; sourceTree = "<group>"; };
 		225093BE17A8086000B94C6E /* SFIMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIMainViewController.m; sourceTree = "<group>"; };
-		2253387F17A6A4F50051BF0F /* SFIAffiliationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFIAffiliationViewController.h; path = ../SFIAffiliationViewController.h; sourceTree = "<group>"; };
-		2253388017A6A4F50051BF0F /* SFIAffiliationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFIAffiliationViewController.m; path = ../SFIAffiliationViewController.m; sourceTree = "<group>"; };
 		22A19D991797C5AA003E6148 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		22A76D53179181DE0099CD8F /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		22E024B2175C932A0081D707 /* SFISingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISingleton.h; sourceTree = "<group>"; };
@@ -726,12 +727,12 @@
 		CECA72F017E6C3F1002809A3 /* Cloud */ = {
 			isa = PBXGroup;
 			children = (
+				1C41B17119344562006F0DD8 /* SFIAffiliationViewController.h */,
+				1C41B17219344562006F0DD8 /* SFIAffiliationViewController.m */,
 				CE7C304C1811550200BB895B /* SFIActivationViewController.h */,
 				CE7C304D1811550200BB895B /* SFIActivationViewController.m */,
 				22FAE88317A8E27D002FFEE8 /* SFISignupViewController.h */,
 				22FAE88417A8E27D002FFEE8 /* SFISignupViewController.m */,
-				2253387F17A6A4F50051BF0F /* SFIAffiliationViewController.h */,
-				2253388017A6A4F50051BF0F /* SFIAffiliationViewController.m */,
 				909A21EC165DF7D100C767F5 /* SFILoginViewController.h */,
 				909A21ED165DF7D100C767F5 /* SFILoginViewController.m */,
 				CE5A9CBC17E6EDB800DC7534 /* SFILogoutAllViewController.h */,
@@ -943,6 +944,7 @@
 				CEC937131845D1DD00E99FED /* SFIWirelessSummary.h in Headers */,
 				CE93A151189A509200587F46 /* SFIHelpViewController.h in Headers */,
 				CEDBB9F81876DC0E00CE4927 /* SFIWirelessUserViewController.h in Headers */,
+				1C41B17319344562006F0DD8 /* SFIAffiliationViewController.h in Headers */,
 				CED1C7AA18339453007726B4 /* SFIWirelessSetting.h in Headers */,
 				CEC937081845C1E300E99FED /* SFIRouterTableViewController.h in Headers */,
 				CE23D4041872DB7500995003 /* RouterTempController.h in Headers */,
@@ -1176,6 +1178,7 @@
 				CE5D0BC11807D16300224009 /* InitialSlidingViewController.m in Sources */,
 				909A21CC165DA60400C767F5 /* SFIAppDelegate.m in Sources */,
 				CE9F1A1918BB51350004A7BE /* SFITermsViewController.m in Sources */,
+				1C41B17419344562006F0DD8 /* SFIAffiliationViewController.m in Sources */,
 				CE5D0BC61807D16300224009 /* SensorTopViewController.m in Sources */,
 				909A21EE165DF7D100C767F5 /* SFILoginViewController.m in Sources */,
 				CECD693E1832400800B77A46 /* SFIBlockedDevice.m in Sources */,
@@ -1193,7 +1196,6 @@
 				CED1C7C01834E2D4007726B4 /* SFIWirelessTableViewController.m in Sources */,
 				CEE19F1318211B8E00F91AAD /* SFIRouterDevicesListViewController.m in Sources */,
 				CE5A9CBE17E6EDB800DC7534 /* SFILogoutAllViewController.m in Sources */,
-				2253388117A6A4F50051BF0F /* SFIAffiliationViewController.m in Sources */,
 				CE5D0BC71807D16300224009 /* SFIColors.m in Sources */,
 				CED1C7C71834F609007726B4 /* SFIOptionViewController.m in Sources */,
 				CE5D0C161807D24E00224009 /* BVReorderTableView.m in Sources */,
