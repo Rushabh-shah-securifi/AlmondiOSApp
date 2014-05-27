@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C41B0B6193432D2006F0DD8 /* libSecurifiToolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C41B0AF193432C7006F0DD8 /* libSecurifiToolkit.a */; };
+		1C41B0BD19343884006F0DD8 /* BugSense-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C41B0BC19343884006F0DD8 /* BugSense-iOS.framework */; };
 		2244791717A80C9C002C43C2 /* SFIMainViewTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 2244791617A80C9C002C43C2 /* SFIMainViewTile.m */; };
 		2244791D17A81649002C43C2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2244791C17A81649002C43C2 /* QuartzCore.framework */; };
 		225093BF17A8086000B94C6E /* SFIMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 225093BE17A8086000B94C6E /* SFIMainViewController.m */; };
@@ -40,7 +42,6 @@
 		CE23D4051872DB7500995003 /* RouterTempController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE23D4031872DB7500995003 /* RouterTempController.m */; };
 		CE2B1EFE182D09D800554784 /* SceneTempController.h in Headers */ = {isa = PBXBuildFile; fileRef = CE2B1EFC182D09D800554784 /* SceneTempController.h */; };
 		CE2B1EFF182D09D800554784 /* SceneTempController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2B1EFD182D09D800554784 /* SceneTempController.m */; };
-		CE30B24F18B61DD500AC4B6D /* libSecurifiToolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CE30B24818B61D5900AC4B6D /* libSecurifiToolkit.a */; };
 		CE3DBBD11897B19B0042EA00 /* app-icon-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3DBBCA1897B19B0042EA00 /* app-icon-76x76.png */; };
 		CE3DBBD21897B19B0042EA00 /* app-icon-120x120.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3DBBCB1897B19B0042EA00 /* app-icon-120x120.png */; };
 		CE3DBBD31897B19B0042EA00 /* app-icon-152x152.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3DBBCC1897B19B0042EA00 /* app-icon-152x152.png */; };
@@ -157,7 +158,6 @@
 		CE97CB39187A8BB500E767BB /* blocked_user.png in Resources */ = {isa = PBXBuildFile; fileRef = CE97CB37187A8BB500E767BB /* blocked_user.png */; };
 		CE97CB3A187A8BB500E767BB /* connected_user.png in Resources */ = {isa = PBXBuildFile; fileRef = CE97CB38187A8BB500E767BB /* connected_user.png */; };
 		CE97CB3F187AC89200E767BB /* line.png in Resources */ = {isa = PBXBuildFile; fileRef = CE97CB3E187AC89200E767BB /* line.png */; };
-		CE99340118B49213005946F4 /* BugSense-iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE9933FD18B49072005946F4 /* BugSense-iOS.framework */; };
 		CE9A8E5918B332D500003659 /* no_cloud_640x960.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9A8E5718B332D500003659 /* no_cloud_640x960.png */; };
 		CE9A8E5A18B332D500003659 /* no_cloud_640x1136.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9A8E5818B332D500003659 /* no_cloud_640x1136.png */; };
 		CE9CA19A1883C86B00CFEA2A /* getting_started.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9CA1991883C86B00CFEA2A /* getting_started.png */; };
@@ -207,30 +207,30 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		CE30B24718B61D5900AC4B6D /* PBXContainerItemProxy */ = {
+		1C41B0AE193432C7006F0DD8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = CE30B24018B61D5800AC4B6D /* SecurifiToolkit.xcodeproj */;
+			containerPortal = 1C41B09419342DB3006F0DD8 /* SecurifiToolkit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 221185BA178D371200EE23ED;
 			remoteInfo = SecurifiToolkit;
 		};
-		CE30B24918B61D5900AC4B6D /* PBXContainerItemProxy */ = {
+		1C41B0B0193432C7006F0DD8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = CE30B24018B61D5800AC4B6D /* SecurifiToolkit.xcodeproj */;
+			containerPortal = 1C41B09419342DB3006F0DD8 /* SecurifiToolkit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 221185CB178D371200EE23ED;
 			remoteInfo = SecurifiToolkitTests;
 		};
-		CE30B24B18B61D5900AC4B6D /* PBXContainerItemProxy */ = {
+		1C41B0B2193432C7006F0DD8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = CE30B24018B61D5800AC4B6D /* SecurifiToolkit.xcodeproj */;
+			containerPortal = 1C41B09419342DB3006F0DD8 /* SecurifiToolkit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 221185F5178D453A00EE23ED;
 			remoteInfo = SecurifiCloudResources;
 		};
-		CE30B24D18B61DB600AC4B6D /* PBXContainerItemProxy */ = {
+		1C41B0B4193432CE006F0DD8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = CE30B24018B61D5800AC4B6D /* SecurifiToolkit.xcodeproj */;
+			containerPortal = 1C41B09419342DB3006F0DD8 /* SecurifiToolkit.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 221185B9178D371200EE23ED;
 			remoteInfo = SecurifiToolkit;
@@ -238,6 +238,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1C41B09419342DB3006F0DD8 /* SecurifiToolkit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SecurifiToolkit.xcodeproj; path = ../iostoolkit/SecurifiToolkit.xcodeproj; sourceTree = SOURCE_ROOT; };
+		1C41B0BC19343884006F0DD8 /* BugSense-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = "BugSense-iOS.framework"; sourceTree = "<group>"; };
 		2244791517A80C9C002C43C2 /* SFIMainViewTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIMainViewTile.h; sourceTree = "<group>"; };
 		2244791617A80C9C002C43C2 /* SFIMainViewTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIMainViewTile.m; sourceTree = "<group>"; };
 		2244791C17A81649002C43C2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -277,7 +279,6 @@
 		909A21BB165DA60400C767F5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		909A21BD165DA60400C767F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		909A21BF165DA60400C767F5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		909A21C3165DA60400C767F5 /* Securifi Cloud-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = "Securifi Cloud-Info.plist"; path = "/Users/securifi/Securifi Cloud/Securifi Cloud/Securifi Cloud-Info.plist"; sourceTree = "<absolute>"; };
 		909A21C5165DA60400C767F5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		909A21C7165DA60400C767F5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		909A21C9165DA60400C767F5 /* Securifi Cloud-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Securifi Cloud-Prefix.pch"; sourceTree = "<group>"; };
@@ -306,7 +307,6 @@
 		CE23D4031872DB7500995003 /* RouterTempController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouterTempController.m; sourceTree = "<group>"; };
 		CE2B1EFC182D09D800554784 /* SceneTempController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneTempController.h; sourceTree = "<group>"; };
 		CE2B1EFD182D09D800554784 /* SceneTempController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneTempController.m; sourceTree = "<group>"; };
-		CE30B24018B61D5800AC4B6D /* SecurifiToolkit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SecurifiToolkit.xcodeproj; path = ../iostoolkit/SecurifiToolkit.xcodeproj; sourceTree = "<group>"; };
 		CE3DBBCA1897B19B0042EA00 /* app-icon-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-76x76.png"; path = "images/app-icon-76x76.png"; sourceTree = SOURCE_ROOT; };
 		CE3DBBCB1897B19B0042EA00 /* app-icon-120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-120x120.png"; path = "images/app-icon-120x120.png"; sourceTree = SOURCE_ROOT; };
 		CE3DBBCC1897B19B0042EA00 /* app-icon-152x152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-152x152.png"; path = "images/app-icon-152x152.png"; sourceTree = SOURCE_ROOT; };
@@ -456,8 +456,6 @@
 		CE97CB37187A8BB500E767BB /* blocked_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blocked_user.png; sourceTree = "<group>"; };
 		CE97CB38187A8BB500E767BB /* connected_user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connected_user.png; sourceTree = "<group>"; };
 		CE97CB3E187AC89200E767BB /* line.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = line.png; sourceTree = "<group>"; };
-		CE9933FD18B49072005946F4 /* BugSense-iOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "BugSense-iOS.framework"; path = "Securifi Cloud/BugSense-iOS.framework"; sourceTree = "<group>"; };
-		CE9933FF18B49205005946F4 /* BugSense-iOS */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "BugSense-iOS"; path = "Securifi Cloud/BugSense-iOS.framework/Versions/A/BugSense-iOS"; sourceTree = "<group>"; };
 		CE9A8E5718B332D500003659 /* no_cloud_640x960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_cloud_640x960.png; path = images/no_cloud_640x960.png; sourceTree = "<group>"; };
 		CE9A8E5818B332D500003659 /* no_cloud_640x1136.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_cloud_640x1136.png; path = images/no_cloud_640x1136.png; sourceTree = "<group>"; };
 		CE9CA1991883C86B00CFEA2A /* getting_started.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = getting_started.png; sourceTree = "<group>"; };
@@ -517,16 +515,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE30B24F18B61DD500AC4B6D /* libSecurifiToolkit.a in Frameworks */,
-				CE99340118B49213005946F4 /* BugSense-iOS.framework in Frameworks */,
-				CE15FFB11868457B00371183 /* Security.framework in Frameworks */,
+				1C41B0BD19343884006F0DD8 /* BugSense-iOS.framework in Frameworks */,
+				1C41B0B6193432D2006F0DD8 /* libSecurifiToolkit.a in Frameworks */,
 				CE556F831823BE00002A0878 /* libz.dylib in Frameworks */,
+				22A76D54179181DE0099CD8F /* libxml2.dylib in Frameworks */,
+				CE15FFB11868457B00371183 /* Security.framework in Frameworks */,
 				CE556F751823943B002A0878 /* MessageUI.framework in Frameworks */,
 				CE5B01CF17F997EB0026B6A1 /* AudioToolbox.framework in Frameworks */,
 				CE5B01CD17F97AE40026B6A1 /* AVFoundation.framework in Frameworks */,
 				2244791D17A81649002C43C2 /* QuartzCore.framework in Frameworks */,
 				22A19D9A1797C5AA003E6148 /* SystemConfiguration.framework in Frameworks */,
-				22A76D54179181DE0099CD8F /* libxml2.dylib in Frameworks */,
 				909A21E6165DA6C100C767F5 /* CFNetwork.framework in Frameworks */,
 				909A21BC165DA60400C767F5 /* UIKit.framework in Frameworks */,
 				909A21BE165DA60400C767F5 /* Foundation.framework in Frameworks */,
@@ -537,6 +535,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1C41B0A8193432C7006F0DD8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1C41B0AF193432C7006F0DD8 /* libSecurifiToolkit.a */,
+				1C41B0B1193432C7006F0DD8 /* SecurifiToolkitTests.octest */,
+				1C41B0B3193432C7006F0DD8 /* SecurifiToolkit.bundle */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		909A21AC165DA60400C767F5 = {
 			isa = PBXGroup;
 			children = (
@@ -558,8 +566,8 @@
 		909A21BA165DA60400C767F5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CE9933FF18B49205005946F4 /* BugSense-iOS */,
-				CE9933FD18B49072005946F4 /* BugSense-iOS.framework */,
+				1C41B09419342DB3006F0DD8 /* SecurifiToolkit.xcodeproj */,
+				1C41B0BC19343884006F0DD8 /* BugSense-iOS.framework */,
 				CE15FFB01868457B00371183 /* Security.framework */,
 				CE556F5918237ACA002A0878 /* MessageUI.framework */,
 				CE6002F71822715200D47AEE /* libz.dylib */,
@@ -569,7 +577,6 @@
 				2244791C17A81649002C43C2 /* QuartzCore.framework */,
 				22A19D991797C5AA003E6148 /* SystemConfiguration.framework */,
 				22A76D53179181DE0099CD8F /* libxml2.dylib */,
-				CE30B24018B61D5800AC4B6D /* SecurifiToolkit.xcodeproj */,
 				909A21E5165DA6C100C767F5 /* CFNetwork.framework */,
 				909A21BB165DA60400C767F5 /* UIKit.framework */,
 				909A21BD165DA60400C767F5 /* Foundation.framework */,
@@ -619,22 +626,11 @@
 				CE15FFB71868502D00371183 /* cert.der */,
 				CE15FFB518684DB900371183 /* certificate.cer */,
 				CE15FFB21868462E00371183 /* cert.cer */,
-				909A21C3165DA60400C767F5 /* Securifi Cloud-Info.plist */,
 				909A21C4165DA60400C767F5 /* InfoPlist.strings */,
 				909A21C7165DA60400C767F5 /* main.m */,
 				909A21C9165DA60400C767F5 /* Securifi Cloud-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		CE30B24118B61D5800AC4B6D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				CE30B24818B61D5900AC4B6D /* libSecurifiToolkit.a */,
-				CE30B24A18B61D5900AC4B6D /* SecurifiToolkitTests.octest */,
-				CE30B24C18B61D5900AC4B6D /* SecurifiToolkit.bundle */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		CE539F9017FAE33300640820 /* Logs */ = {
@@ -1028,7 +1024,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				CE30B24E18B61DB600AC4B6D /* PBXTargetDependency */,
+				1C41B0B5193432CE006F0DD8 /* PBXTargetDependency */,
 			);
 			name = "Securifi Cloud";
 			productName = "Securifi Cloud";
@@ -1042,7 +1038,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = SFI;
-				LastUpgradeCheck = 0450;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Securifi;
 				TargetAttributes = {
 					909A21B6165DA60400C767F5 = {
@@ -1062,8 +1058,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = CE30B24118B61D5800AC4B6D /* Products */;
-					ProjectRef = CE30B24018B61D5800AC4B6D /* SecurifiToolkit.xcodeproj */;
+					ProductGroup = 1C41B0A8193432C7006F0DD8 /* Products */;
+					ProjectRef = 1C41B09419342DB3006F0DD8 /* SecurifiToolkit.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1074,25 +1070,25 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		CE30B24818B61D5900AC4B6D /* libSecurifiToolkit.a */ = {
+		1C41B0AF193432C7006F0DD8 /* libSecurifiToolkit.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libSecurifiToolkit.a;
-			remoteRef = CE30B24718B61D5900AC4B6D /* PBXContainerItemProxy */;
+			remoteRef = 1C41B0AE193432C7006F0DD8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CE30B24A18B61D5900AC4B6D /* SecurifiToolkitTests.octest */ = {
+		1C41B0B1193432C7006F0DD8 /* SecurifiToolkitTests.octest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = SecurifiToolkitTests.octest;
-			remoteRef = CE30B24918B61D5900AC4B6D /* PBXContainerItemProxy */;
+			remoteRef = 1C41B0B0193432C7006F0DD8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		CE30B24C18B61D5900AC4B6D /* SecurifiToolkit.bundle */ = {
+		1C41B0B3193432C7006F0DD8 /* SecurifiToolkit.bundle */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = SecurifiToolkit.bundle;
-			remoteRef = CE30B24B18B61D5900AC4B6D /* PBXContainerItemProxy */;
+			remoteRef = 1C41B0B2193432C7006F0DD8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1284,10 +1280,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		CE30B24E18B61DB600AC4B6D /* PBXTargetDependency */ = {
+		1C41B0B5193432CE006F0DD8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = SecurifiToolkit;
-			targetProxy = CE30B24D18B61DB600AC4B6D /* PBXContainerItemProxy */;
+			targetProxy = 1C41B0B4193432CE006F0DD8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1323,7 +1319,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1343,10 +1338,10 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "18A98636-0CAA-4B1C-ACA5-2804EF1D0311";
-				SDKROOT = iphoneos7.0;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1355,7 +1350,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -1368,11 +1362,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "18A98636-0CAA-4B1C-ACA5-2804EF1D0311";
-				SDKROOT = iphoneos7.0;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1381,34 +1375,22 @@
 		909A21DF165DA60400C767F5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Rammohan Malasani (B8BT5S4R4B)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Rammohan Malasani (B8BT5S4R4B)";
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"/Users/securifi-mac2/Documents/git/**",
 					"$(inherited)",
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Securifi Cloud/Securifi Cloud-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"/Applications/Xcode\\ 2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
-					"/Users/securifi-mac2/Documents/git/toolkit",
-				);
-				"HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(inherited)",
-					"/Applications/Xcode\\ 2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,",
-					"/Users/securifi-mac2/Documents/git/iostoolkit/**",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				INFOPLIST_FILE = "Securifi Cloud/Securifi Cloud-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"/Users/securifi-mac2/Documents/git/iostoolkit",
-				);
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Almond;
@@ -1424,33 +1406,23 @@
 		909A21E0165DA60400C767F5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Rammohan Malasani (B8BT5S4R4B)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Rammohan Malasani (B8BT5S4R4B)";
 				FRAMEWORK_SEARCH_PATHS = (
-					"/Users/securifi-mac2/Documents/git/**",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Securifi",
+					Cloud,
+					"$(PROJECT_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Securifi Cloud/Securifi Cloud-Prefix.pch";
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"/Applications/Xcode\\ 2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
-					"/Users/securifi-mac2/Documents/git/iostoolkit/**",
-				);
-				"HEADER_SEARCH_PATHS[arch=*]" = (
-					"$(inherited)",
-					"/Applications/Xcode\\ 2.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
-					"/Users/securifi-mac2/Documents/git/iostoolkit/**",
-				);
+				HEADER_SEARCH_PATHS = "$(inherited)";
+				"HEADER_SEARCH_PATHS[arch=*]" = "$(inherited)";
 				INFOPLIST_FILE = "Securifi Cloud/Securifi Cloud-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"/Users/securifi-mac2/Documents/git/iostoolkit",
-				);
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Almond;

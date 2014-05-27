@@ -7,7 +7,6 @@
 //
 
 #import "SFIReachabilityManager.h"
-#import "AlmondPlusSDKConstants.h"
 #import "Reachability.h"
 
 @implementation SFIReachabilityManager

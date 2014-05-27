@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "SFISensor.h"
-#import "SFIDeviceKnownValues.h"
 #import "SFIRouterReboot.h"
 #import "SFIConnectedDevice.h"
 #import "SFIDevicesList.h"

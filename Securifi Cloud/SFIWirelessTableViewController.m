@@ -7,9 +7,7 @@
 //
 
 #import "SFIWirelessTableViewController.h"
-#import "GenericCommandRequest.h"
 #import "SNLog.h"
-#import <SecurifiToolkit/SecurifiToolkit.h>
 #import "SFIGenericRouterCommand.h"
 #import "AlmondPlusConstants.h"
 #import "SFIParser.h"

@@ -7,17 +7,12 @@
 //
 
 #import "SFIAppDelegate.h"
-#import <SecurifiToolkit/SecurifiToolkit.h>
-#import <objc/runtime.h>
+#import <BugSense-iOS/BugSenseController.h>
 #import "SNLog.h"
 #import "SFIColors.h"
 #import "AlmondPlusConstants.h"
-#import "AlmondPlusSDKConstants.h"
 #import "SFIReachabilityManager.h"
 #import "AlmondPlusConstants.h"
-
-#import <BugSense-iOS/BugSenseController.h>
-
 
 
 @implementation SFIAppDelegate
