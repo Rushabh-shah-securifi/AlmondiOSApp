@@ -21,7 +21,7 @@
 /*!
  Writes data to the particular log strategy
  */
-- (void) writeToLog: (NSInteger) logLevel: (NSString *) logData;
+- (void)writeToLog:(NSInteger)logLevel entry:(NSString *)logData;
 
 @property(nonatomic) NSInteger logAtLevel;
 
@@ -34,54 +34,50 @@
     @discussion  This class implements SNLog as a singleton object and allows for multiple, simultaneous logging strategies
 */
 
-@interface SNLog : NSObject {
-	@private
-	NSMutableArray *logStrategies; /*< List of log strategies to log to */
-	
-}
+@interface SNLog : NSObject
 
 /*!
  Returns the shared log instance for any setup (adding strategies, etc.)
  @return SNLog singleton
  */
-+ (SNLog *) logManager;
++ (SNLog *)logManager;
 
 /*!
  Sends the string format to the logs with the default log level (1)
  @param format NSString format
  */
-+ (void) Log: (NSString *) format, ...;
++ (void)Log:(NSString *)format, ...;
 
 /*!
  Sends the string format to the logs
  @param format NSString format
  @param logLevel Logging level, the higher the level the more important
  */
-+ (void) Log: (NSInteger) logLevel: (NSString *) format, ...;
++ (void)Log:(NSInteger)logLevel format:(NSString *)format, ...;
 
 //PY 240913 - To read log file
-+(NSString*) readLogs;
-+(NSString*) readSDKLogs;
++ (NSString *)readLogs;
+
++ (NSString *)readSDKLogs;
+
 /*!
  Writes the given log entry to all the logs.  Use the class method Log instead.
  @param logEntry Log entry to write
  */
-- (void) writeToLogs: (NSInteger) logLevel: (NSString *) logEntry;
+- (void)writeToLogs:(NSInteger)logLevel entry:(NSString *)logEntry;
 
 /*!
  Adds a new log strategy to SNLog.  Must implement the SNLogStrategy protocol.
  @param logStrategy Object which implements the SNLogStrategy protocol
  */
- - (void) addLogStrategy: (id<SNLogStrategy>) logStrategy;
+- (void)addLogStrategy:(id <SNLogStrategy>)logStrategy;
 
 /*!
  Creates the final log entry string
  */
-- (NSString *) formatLogEntry:(NSInteger) logLevel: (NSString *) logData;
+- (NSString *)formatLogEntry:(NSInteger)logLevel :(NSString *)logData;
 
 @end
-
-
 
 
 /*!
@@ -90,9 +86,7 @@
     @discussion  This class implements a logging strategy which writes to the console while debugging.
 */
 
-@interface SNConsoleLogger : NSObject<SNLogStrategy>
-{
-}
+@interface SNConsoleLogger : NSObject <SNLogStrategy>
 
 @end
 
@@ -103,19 +97,15 @@
     @discussion  This class implements a logging strategy which write to a given file.
 */
 
-@interface SNFileLogger : NSObject<SNLogStrategy>
-{
-	NSString *logFilePath; /*!< Path to log file */
-	NSInteger truncateBytes; /*!< Bytes at which to truncate file */
-}
+@interface SNFileLogger : NSObject <SNLogStrategy>
 
 /*!
- Construcs a new SNFileLogger with the given file path
+ Constructs a new SNFileLogger with the given file path
  @param filePath Path to log file
  @param truncateSize Truncates log file at the given bytes
  @return New instance
  */
-- (id) initWithPathAndSize: (NSString *) filePath: (NSInteger) truncateSize;
+- (id)initWithPathAndSize:(NSString *)filePath truncateTo:(NSInteger)truncateSize;
 
 @end
 
