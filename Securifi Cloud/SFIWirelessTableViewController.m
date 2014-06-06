@@ -563,11 +563,11 @@
     if(selectedOptionType == 2){
         //Set wireless mode
         currentSetting.wirelessMode = optionValue;
-        currentSetting.wirelessModeCode = [[wirelessModeIntergerMap objectForKey:optionValue] integerValue];
+        currentSetting.wirelessModeCode = [[wirelessModeIntergerMap objectForKey:optionValue] intValue];
     }
     else if(selectedOptionType == 3){
         //Set channel
-        currentSetting.channel = [optionValue integerValue];
+        currentSetting.channel = [optionValue intValue];
     }else if(selectedOptionType == 4){
         //Set encryption accordingly
         currentSetting.encryptionType = [encryptionSecurityMap objectForKey:optionValue];
@@ -646,7 +646,7 @@
         pwdLength = WPA_MIN_CHAR_COUNT;
         securityType = @"WPA";
     }
-    NSString *alertMsg = [NSString stringWithFormat:@"%@ Password Length must be %d characters or more. Your password \"%@\" is only %d characters long", securityType, pwdLength, currentPassword, [currentPassword length]];
+    NSString *alertMsg = [NSString stringWithFormat:@"%@ Password Length must be %d characters or more. Your password \"%@\" is only %lu characters long", securityType, pwdLength, currentPassword, (unsigned long)[currentPassword length]];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invalid Password Length"
                                                     message:alertMsg
                                                    delegate:nil

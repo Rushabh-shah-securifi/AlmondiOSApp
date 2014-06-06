@@ -182,13 +182,13 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     
     
     if(deviceListType == 2){
-        cell = [self createConnectedListCell:cell listRow:indexPath.row];
+        cell = [self createConnectedListCell:cell listRow:(int) indexPath.row];
     }else if (deviceListType == 3){
-        cell = [self createBlockedListCell:cell listRow:indexPath.row];
+        cell = [self createBlockedListCell:cell listRow:(int) indexPath.row];
     }else if (deviceListType == 5){
-        cell = [self createBlockedContentListCell:cell listRow:indexPath.row];
+        cell = [self createBlockedContentListCell:cell listRow:(int) indexPath.row];
     }else if (deviceListType == 7){
-        cell = [self createSettingsListCell:cell listRow:indexPath.row];
+        cell = [self createSettingsListCell:cell listRow:(int) indexPath.row];
     }
     
     

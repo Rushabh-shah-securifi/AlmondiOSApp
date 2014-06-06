@@ -21,9 +21,9 @@
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
-    self.hue = [decoder decodeIntegerForKey:@"HUE"];
-    self.saturation = [decoder decodeIntegerForKey:@"SATURATION"];
-    self.brightness = [decoder decodeIntegerForKey:@"BRIGHTNESS"];
+    self.hue = [decoder decodeIntForKey:@"HUE"];
+    self.saturation = [decoder decodeIntForKey:@"SATURATION"];
+    self.brightness = [decoder decodeIntForKey:@"BRIGHTNESS"];
     self.colorName = [decoder decodeObjectForKey:@"NAME"];
 
     return self;

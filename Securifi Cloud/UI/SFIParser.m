@@ -21,14 +21,13 @@
 @synthesize routerSummary, currentWirelessSummary, wirelessSummaryArray;
 
 //TODO: Remove - Dummy
--(NSMutableArray *)loadDataFromXML:(NSString*)xmlFileName{
-    
-    NSString* path = [[NSBundle mainBundle] pathForResource: xmlFileName ofType: @"xml"];
-    NSData* data = [NSData dataWithContentsOfFile: path];
-    NSXMLParser* xmlparser = [[NSXMLParser alloc] initWithData: data];
-    sensors = [[NSMutableArray alloc]init];
-    [xmlparser setDelegate:self];
-    [xmlparser parse];
+- (NSMutableArray *)loadDataFromXML:(NSString *)xmlFileName {
+    NSString *path = [[NSBundle mainBundle] pathForResource:xmlFileName ofType:@"xml"];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    NSXMLParser *xmlParser = [[NSXMLParser alloc] initWithData:data];
+    sensors = [[NSMutableArray alloc] init];
+    [xmlParser setDelegate:self];
+    [xmlParser parse];
     return sensors;
 }
 
@@ -41,10 +40,9 @@
     return genericCommandResponse;
 }
 
-- (void) parser:(NSXMLParser *)parser didStartElement:(NSString *)elementname namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
+- (void) parser:(NSXMLParser *)xmlParser didStartElement:(NSString *)elementname namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
-    
-    currentNodeContent = @"";
+    currentNodeContent = [NSMutableString string];
     //START TODO: Remove - Dummy
     if ([elementname isEqualToString:@"Sensor"])
     {
@@ -52,7 +50,7 @@
         currentSensor.type = [attributeDict valueForKey:@"type"];
     }
     if ([elementname isEqualToString:@"ValueVariables"]){
-        currentSensor.valueCount = [[attributeDict valueForKey:@"Count"] integerValue];
+        currentSensor.valueCount = [[attributeDict valueForKey:@"Count"] unsignedIntValue];
         if(currentSensor.valueCount!=0){
             knownValues = [[NSMutableArray alloc]init];
         }
@@ -61,7 +59,7 @@
     if ([elementname isEqualToString:@"LastKnownValue"])
     {
         currentKnownValue = [SFIDeviceKnownValues alloc];
-        currentKnownValue.index = [[attributeDict valueForKey:@"Index"] integerValue];
+        currentKnownValue.index = [[attributeDict valueForKey:@"Index"] unsignedIntValue];
         currentKnownValue.valueName = [attributeDict valueForKey:@"Name"];
     }
     //END TODO: Remove - Dummy
@@ -74,7 +72,7 @@
     {
         connectedDevices = [[SFIDevicesList alloc]init];
         genericCommandResponse.commandType = 2;
-        [connectedDevices setDeviceCount:[[attributeDict valueForKey:COUNT]integerValue]];
+        [connectedDevices setDeviceCount:[[attributeDict valueForKey:COUNT] unsignedIntValue]];
         self.connectedDevicesArray = [[NSMutableArray alloc]init];
     }else if ([elementname isEqualToString:CONNECTED_DEVICE])
     {
@@ -85,7 +83,7 @@
     {
         blockedDevices = [[SFIDevicesList alloc]init];
         genericCommandResponse.commandType = 3;
-        [blockedDevices setDeviceCount:[[attributeDict valueForKey:COUNT]integerValue]];
+        [blockedDevices setDeviceCount:[[attributeDict valueForKey:COUNT]unsignedIntValue]];
         self.blockedDevicesArray = [[NSMutableArray alloc]init];
     }else if ([elementname isEqualToString:BLOCKED_MAC])
     {
@@ -97,7 +95,7 @@
     {
         blockedContent = [[SFIDevicesList alloc]init];
         genericCommandResponse.commandType = 5;
-        [blockedDevices setDeviceCount:[[attributeDict valueForKey:COUNT]integerValue]];
+        [blockedDevices setDeviceCount:[[attributeDict valueForKey:COUNT]unsignedIntValue]];
         self.blockedContentArray = [[NSMutableArray alloc]init];
     }else if ([elementname isEqualToString:BLOCKED_TEXT])
     {
@@ -109,18 +107,18 @@
     {
         wirelessSettings = [[SFIDevicesList alloc]init];
         genericCommandResponse.commandType = 7;
-        [wirelessSettings setDeviceCount:[[attributeDict valueForKey:COUNT]integerValue]];
+        [wirelessSettings setDeviceCount:[[attributeDict valueForKey:COUNT]unsignedIntValue]];
         self.wirelessSettingsArray = [[NSMutableArray alloc]init];
     }else if ([elementname isEqualToString:WIRELESS_SETTING])
     {
         if(genericCommandResponse.commandType == 7){
             self.currentWirelessSetting = [[SFIWirelessSetting alloc]init];
-            [self.currentWirelessSetting setIndex:[[attributeDict valueForKey:INDEX]integerValue]];
+            [self.currentWirelessSetting setIndex:[[attributeDict valueForKey:INDEX] intValue]];
         }
         //PY 271113 - Router Summary
         else if(genericCommandResponse.commandType == 9){
             self.currentWirelessSummary = [[SFIWirelessSummary alloc]init];
-            [self.currentWirelessSummary setWirelessIndex:[[attributeDict valueForKey:INDEX]integerValue]];
+            [self.currentWirelessSummary setWirelessIndex:[[attributeDict valueForKey:INDEX] intValue]];
             NSLog(@"Enabled: %@",[attributeDict valueForKey:ENABLED] );
             if([[attributeDict valueForKey:ENABLED] isEqualToString:@"true"]){
                 [self.currentWirelessSummary setEnabledStatus:@"enabled"];
@@ -137,27 +135,27 @@
         genericCommandResponse.commandType = 9;
     }else if ([elementname isEqualToString:WIRELESS_SETTINGS_SUMMARY])
     {
-        [routerSummary setWirelessSettingsCount:[[attributeDict valueForKey:COUNT]integerValue]];
+        [routerSummary setWirelessSettingsCount:[[attributeDict valueForKey:COUNT] intValue]];
         self.wirelessSummaryArray = [[NSMutableArray alloc]init];
     }else if ([elementname isEqualToString:CONNECTED_DEVICES_SUMMARY])
     {
-        [routerSummary setConnectedDeviceCount:[[attributeDict valueForKey:COUNT]integerValue]];
+        [routerSummary setConnectedDeviceCount:[[attributeDict valueForKey:COUNT] intValue]];
     }else if ([elementname isEqualToString:BLOCKED_MAC_SUMMARY])
     {
-        [routerSummary setBlockedMACCount:[[attributeDict valueForKey:COUNT]integerValue]];
+        [routerSummary setBlockedMACCount:[[attributeDict valueForKey:COUNT] intValue]];
     }else if ([elementname isEqualToString:BLOCKED_CONTENT_SUMMARY])
     {
-        [routerSummary setBlockedContentCount:[[attributeDict valueForKey:COUNT]integerValue]];
+        [routerSummary setBlockedContentCount:[[attributeDict valueForKey:COUNT] intValue]];
     }
 }
 
-- (void) parser:(NSXMLParser *)parser didEndElement:(NSString *)elementname namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
+- (void) parser:(NSXMLParser *)xmlParser didEndElement:(NSString *)elementname namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
 {
     NSLog(@"End Element: %@",elementname);
     //START TODO: Remove - Dummy
     if ([elementname isEqualToString:@"Id"])
     {
-        currentSensor.sensorId = [currentNodeContent integerValue];
+        currentSensor.sensorId = [currentNodeContent intValue];
     }
     if ([elementname isEqualToString:@"Name"])
     {
@@ -165,11 +163,11 @@
     }
     if ([elementname isEqualToString:@"Status"])
     {
-        currentSensor.status = [currentNodeContent integerValue];
+        currentSensor.status = [currentNodeContent intValue];
     }
     if ([elementname isEqualToString:@"DeviceType"])
     {
-        currentSensor.deviceType = [currentNodeContent integerValue];
+        currentSensor.deviceType = [currentNodeContent intValue];
     }
     if ([elementname isEqualToString:@"LastKnownValue"]){
         currentKnownValue.value = currentNodeContent;
@@ -193,7 +191,7 @@
     
     if ([elementname isEqualToString:REBOOT])
     {
-        [routerReboot setReboot:[currentNodeContent integerValue]];
+        [routerReboot setReboot:(unsigned int) [currentNodeContent intValue]];
         genericCommandResponse.command = routerReboot;
     }else if ([elementname isEqualToString:CONNECTED_DEVICES])
     {
@@ -248,7 +246,7 @@
         self.currentWirelessSetting.password = currentNodeContent;
     }else if ([elementname isEqualToString:CHANNEL])
     {
-        self.currentWirelessSetting.channel = [currentNodeContent integerValue];
+        self.currentWirelessSetting.channel = [currentNodeContent intValue];
     }else if ([elementname isEqualToString:ENCRYPTION_TYPE])
     {
         self.currentWirelessSetting.encryptionType = currentNodeContent;
@@ -262,7 +260,7 @@
     }
     else if ([elementname isEqualToString:COUNTRY_REGION])
     {
-        self.currentWirelessSetting.countryRegion = [currentNodeContent integerValue];
+        self.currentWirelessSetting.countryRegion = [currentNodeContent intValue];
     }
     else if ([elementname isEqualToString:WIRELESS_SETTING])
     {
@@ -289,7 +287,7 @@
     }
 }
 
-- (void) parser:(NSXMLParser *)parser foundCharacters:(NSString *)string
+- (void) parser:(NSXMLParser *)xmlParser foundCharacters:(NSString *)string
 {
     currentNodeContent = (NSMutableString *) [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }

@@ -237,7 +237,7 @@
         xmlArray = self.addBlockedContentArray;
     }
     
-    NSString *payload = [NSString stringWithFormat:@"<root><AlmondBlockedContent action=\"%@\" count=\"%d\">",self.actionType, [xmlArray count]];
+    NSString *payload = [NSString stringWithFormat:@"<root><AlmondBlockedContent action=\"%@\" count=\"%lu\">",self.actionType, (unsigned long)[xmlArray count]];
     int i = 1;
     for(SFIBlockedContent *currentContent in xmlArray){
         NSString *newString = [NSString stringWithFormat:@"<BlockedText index=\"%d\">%@</BlockedText>",i, currentContent.blockedText];

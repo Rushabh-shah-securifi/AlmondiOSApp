@@ -280,7 +280,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     SFIScene *currentScene = [scenes objectAtIndex:section];
     if(currentScene.isExpanded){
         
-        return [[sceneSensorMap objectForKey:[NSString stringWithFormat:@"%d",section]] count];
+        return [[sceneSensorMap objectForKey:[NSString stringWithFormat:@"%ld",(long)section]] count];
     }else{
         return 0;
     }
@@ -291,7 +291,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 {
 
        // if(indexPath.row != [sensors count]){
-        NSArray *currentSensorArray = [sceneSensorMap objectForKey:[NSString stringWithFormat:@"%d",indexPath.section]];
+        NSArray *currentSensorArray = [sceneSensorMap objectForKey:[NSString stringWithFormat:@"%ld",(long)indexPath.section]];
             SFISensor *currentSensor = [currentSensorArray objectAtIndex:indexPath.row];
             if(currentSensor.isExpanded){
                return 160;
@@ -321,8 +321,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Device Index: Section:: %d  Row:: %d", indexPath.section, indexPath.row);
-    NSArray *currentSensorArray = [sceneSensorMap objectForKey:[NSString stringWithFormat:@"%d",indexPath.section]];
+    NSLog(@"Device Index: Section:: %ld  Row:: %ld", (long)indexPath.section, (long)indexPath.row);
+    NSArray *currentSensorArray = [sceneSensorMap objectForKey:[NSString stringWithFormat:@"%ld",(long)indexPath.section]];
     SFISensor *currentSensor = [currentSensorArray objectAtIndex:indexPath.row];
     if(!currentSensor.isExpanded){
         //Expand it
@@ -383,7 +383,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
     NSArray *sensorArray = [[NSArray alloc]init];
-    sensorArray = [sceneSensorMap objectForKey:[NSString stringWithFormat:@"%d", indexPath.section]];
+    sensorArray = [sceneSensorMap objectForKey:[NSString stringWithFormat:@"%ld", (long)indexPath.section]];
     SFISensor *currentSensor = [sensorArray objectAtIndex:indexPath.row];
     cell.textLabel.text = currentSensor.name;
     
@@ -606,7 +606,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 }
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation) fromInterfaceOrientation {
-    NSLog(@"Rotation %d", fromInterfaceOrientation);
+    NSLog(@"Rotation %ld", fromInterfaceOrientation);
     [self.tableView reloadData];
 }
 
@@ -688,8 +688,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
     if (indexPath != nil)
     {
-        NSLog(@"Section %d Row %d", indexPath.section, indexPath.row);
-        NSArray *currentSensorArray = [sceneSensorMap objectForKey:[NSString stringWithFormat:@"%d",indexPath.section]];
+        NSLog(@"Section %ld Row %ld", indexPath.section, (long)indexPath.row);
+        NSArray *currentSensorArray = [sceneSensorMap objectForKey:[NSString stringWithFormat:@"%ld",indexPath.section]];
         SFISensor *currentSensor =[currentSensorArray objectAtIndex:btn.tag];
         int currentDeviceType = currentSensor.deviceType;
         NSMutableArray *currentKnownValues = currentSensor.knownValues;
@@ -737,8 +737,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
     if (indexPath != nil)
     {
-        NSLog(@"Section %d Row %d", indexPath.section, indexPath.row);
-        NSArray *currentSensorArray = [sceneSensorMap objectForKey:[NSString stringWithFormat:@"%d",indexPath.section]];
+        NSLog(@"Section %ld Row %ld", indexPath.section, indexPath.row);
+        NSArray *currentSensorArray = [sceneSensorMap objectForKey:[NSString stringWithFormat:@"%ld",(long)indexPath.section]];
         SFISensor *currentSensor = [currentSensorArray objectAtIndex:btn.tag];
         if(!currentSensor.isExpanded){
             //Expand it

@@ -201,7 +201,7 @@
             NSArray *listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
             
             //PY 111013 - Integration with new UI
-            codeIndex = indexPath.row;
+            codeIndex = (int) indexPath.row;
             if (indexPath.row >= [listAvailableColors count]){
                 codeIndex = codeIndex % [listAvailableColors count];
             }

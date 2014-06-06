@@ -518,7 +518,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         return cell;
     }
     
-    cell = [self createColoredListCell:cell listRow:indexPath.row];
+    cell = [self createColoredListCell:cell listRow:(int)indexPath.row];
     return cell;
     
 }

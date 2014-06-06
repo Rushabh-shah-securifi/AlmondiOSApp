@@ -11,15 +11,9 @@
 #import "SNLog.h"
 #import "SFIGenericRouterCommand.h"
 #import "SFIParser.h"
-#import <SecurifiToolkit/SecurifiToolkit.h>
 #import "SFIWirelessUsers.h"
-#import "AlmondPlusConstants.h"
 #import "SFIConstants.h"
 #import "SFIOfflineDataManager.h"
-
-@interface SFIWirelessUserViewController ()
-
-@end
 
 @implementation SFIWirelessUserViewController
 @synthesize currentMAC, actionType, addBlockedDeviceList, blockedDeviceList, blockedDevices, combinedList, connectedDevices;
@@ -55,9 +49,9 @@
     NSString *colorCode = [prefs stringForKey:COLORCODE];
     
     if(colorCode!=nil){
-        currentColor = [listAvailableColors objectAtIndex:[colorCode integerValue]];
+        currentColor = [listAvailableColors objectAtIndex:(NSUInteger) [colorCode integerValue]];
     }else{
-        currentColor = [listAvailableColors objectAtIndex:self.currentColorIndex];
+        currentColor = [listAvailableColors objectAtIndex:(NSUInteger) self.currentColorIndex];
     }
     
     //Navigation bar button
@@ -147,13 +141,13 @@
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    cell = [self createColoredListCell:cell listRow:indexPath.row];   
+    cell = [self createColoredListCell:cell listRow:(int)indexPath.row];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SFIWirelessUsers *currentUser = [combinedList objectAtIndex:indexPath.row];
+    SFIWirelessUsers *currentUser = [combinedList objectAtIndex:(NSUInteger) indexPath.row];
     if(currentUser.isSelected){
         if(currentUser.isBlocked){
             actionType = @"set";
@@ -192,7 +186,7 @@
     UILabel *lblDeviceManufacturer;
     
     //Get current user from the list
-    SFIWirelessUsers *currentUser = [combinedList objectAtIndex:indexPathRow];
+    SFIWirelessUsers *currentUser = [combinedList objectAtIndex:(NSUInteger) indexPathRow];
 
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
     UILabel *leftBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,5,LEFT_LABEL_WIDTH,WIRELESS_USER_ROW_HEIGHT-10)];
@@ -241,27 +235,27 @@
             //Unblocked User
             imgStatus.image = [UIImage imageNamed:@"connected_user.png"];
             lblStatus.text = @"Unblocked";
-            leftBackgroundLabel.backgroundColor = [UIColor colorWithHue:currentColor.hue/360.0 saturation:currentColor.saturation/100.0 brightness:currentColor.brightness/100.0 alpha:1];
-            rightBackgroundLabel.backgroundColor = [UIColor colorWithHue:currentColor.hue/360.0 saturation:currentColor.saturation/100.0 brightness:currentColor.brightness/100.0 alpha:1];
+            leftBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (currentColor.hue / 360.0) saturation:(CGFloat) (currentColor.saturation / 100.0) brightness:(CGFloat) (currentColor.brightness / 100.0) alpha:1];
+            rightBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (currentColor.hue / 360.0) saturation:(CGFloat) (currentColor.saturation / 100.0) brightness:(CGFloat) (currentColor.brightness / 100.0) alpha:1];
         }else{
             //Blocked User
             imgStatus.image = [UIImage imageNamed:@"blocked_user.png"];
             lblStatus.text = @"Blocked";
-            leftBackgroundLabel.backgroundColor = [UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:67/100.0 alpha:1];
-            rightBackgroundLabel.backgroundColor = [UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:67.0/100.0 alpha:1];
+            leftBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (67 / 100.0) alpha:1];
+            rightBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (67.0 / 100.0) alpha:1];
         }
     }else{
          if(currentUser.isSelected){
              //Blocked User
              imgStatus.image = [UIImage imageNamed:@"blocked_user.png"];
              lblStatus.text = @"Blocked";
-             leftBackgroundLabel.backgroundColor = [UIColor colorWithHue:currentColor.hue/360.0 saturation:currentColor.saturation/100.0 brightness:currentColor.brightness/100.0 alpha:1];
-             rightBackgroundLabel.backgroundColor = [UIColor colorWithHue:currentColor.hue/360.0 saturation:currentColor.saturation/100.0 brightness:currentColor.brightness/100.0 alpha:1];
+             leftBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (currentColor.hue / 360.0) saturation:(CGFloat) (currentColor.saturation / 100.0) brightness:(CGFloat) (currentColor.brightness / 100.0) alpha:1];
+             rightBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (currentColor.hue / 360.0) saturation:(CGFloat) (currentColor.saturation / 100.0) brightness:(CGFloat) (currentColor.brightness / 100.0) alpha:1];
          }else{
              imgStatus.image = [UIImage imageNamed:@"connected_user.png"];
              lblStatus.text = @"Connected";
-             leftBackgroundLabel.backgroundColor = [UIColor colorWithHue:currentColor.hue/360.0 saturation:currentColor.saturation/100.0 brightness:currentColor.brightness/100.0 alpha:1];
-             rightBackgroundLabel.backgroundColor = [UIColor colorWithHue:currentColor.hue/360.0 saturation:currentColor.saturation/100.0 brightness:currentColor.brightness/100.0 alpha:1];
+             leftBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (currentColor.hue / 360.0) saturation:(CGFloat) (currentColor.saturation / 100.0) brightness:(CGFloat) (currentColor.brightness / 100.0) alpha:1];
+             rightBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (currentColor.hue / 360.0) saturation:(CGFloat) (currentColor.saturation / 100.0) brightness:(CGFloat) (currentColor.brightness / 100.0) alpha:1];
          }
     }
 
@@ -423,7 +417,7 @@
     
     //Send SET/ADD Command
     NSMutableString *payload = [[NSMutableString alloc]init];
-    NSString *xmlString = [NSString stringWithFormat:@"<root><AlmondBlockedMACs action=\"%@\" count=\"%d\">", actionType, [blockedDeviceList count]];
+    NSString *xmlString = [NSString stringWithFormat:@"<root><AlmondBlockedMACs action=\"%@\" count=\"%lu\">", actionType, (unsigned long)[blockedDeviceList count]];
     [payload appendString:xmlString];
     int i = 1;
     for(SFIWirelessUsers *currentDevice in blockedDeviceList){
@@ -474,22 +468,18 @@
     @catch (NSException *exception) {
         [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
     }
-    
-    cloudCommand=nil;
-    genericCommand=nil;
 }
 
 -(void)GenericResponseCallback:(id)sender
 {
     [SNLog Log:@"Method Name: %s ", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
         [SNLog Log:@"Method Name: %s Received GenericCommandResponse",__PRETTY_FUNCTION__];
         
-        GenericCommandResponse *obj = [[GenericCommandResponse alloc] init];
-        obj = (GenericCommandResponse *)[data valueForKey:@"data"];
+        GenericCommandResponse *obj = (GenericCommandResponse *)[data valueForKey:@"data"];
         
         BOOL isSuccessful = obj.isSuccessful;
         if(isSuccessful){
@@ -558,15 +548,13 @@
 -(void)DynamicAlmondListDeleteCallback:(id)sender{
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
         [SNLog Log:@"Method Name: %s Received DynamicAlmondListCallback", __PRETTY_FUNCTION__];
         
-        AlmondListResponse *obj = [[AlmondListResponse alloc] init];
-        obj = (AlmondListResponse *)[data valueForKey:@"data"];
-        
-        
+        AlmondListResponse *obj = (AlmondListResponse *)[data valueForKey:@"data"];
+
         if(obj.isSuccessful){
             
             [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];

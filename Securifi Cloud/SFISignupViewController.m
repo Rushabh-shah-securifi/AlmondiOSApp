@@ -424,7 +424,7 @@ typedef enum {
 
 
 -(PasswordStrengthType)checkPasswordStrength:(NSString *)strPassword {
-    int len = strPassword.length;
+    NSInteger len = strPassword.length;
     //will contains password strength
     int strength = 0;
     
