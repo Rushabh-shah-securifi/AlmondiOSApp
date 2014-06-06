@@ -102,7 +102,7 @@
         [SNLog Log:@"Method Name: %s Before Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance]sendtoCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -162,7 +162,7 @@
         [SNLog Log:@"Method Name: %s Before Writing to socket -- DeviceHash Command", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance]sendtoCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -273,7 +273,7 @@
         [SNLog Log:@"Method Name: %s Before Writing to socket -- Device List Command", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance]sendtoCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -330,7 +330,7 @@
 
         [SNLog Log:@"Method Name: %s Before Writing to socket -- Device Value Command", __PRETTY_FUNCTION__];
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance]sendtoCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {

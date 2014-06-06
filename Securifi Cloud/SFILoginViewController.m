@@ -307,7 +307,7 @@
             [SNLog Log:@"Method Name: %s Before Writing to socket -- LoginCommand", __PRETTY_FUNCTION__];
             
             NSError *error=nil;
-            id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+            id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
             
             if (ret == nil)
             {
@@ -466,12 +466,12 @@
 -(void)networkUpNotifier:(id)sender
 {
     [SNLog Log:@"Method Name: %s Login controller :In networkUP notifier", __PRETTY_FUNCTION__];
-    state= [SecurifiToolkit getConnectionState];
+    state= [[SecurifiToolkit sharedInstance]getConnectionState];
     [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, state];
     //PY 311013 Reconnection Logic
     [HUD hide:YES];
     if(state == SDK_UNINITIALIZED){
-        [SecurifiToolkit initSDKCloud];
+        [[SecurifiToolkit sharedInstance]initSDKCloud];
         [HUD hide:YES];
     }
     [SNLog Log:@"Method Name: %s State Again : %d", __PRETTY_FUNCTION__, state];
@@ -498,7 +498,7 @@
 
 -(void)networkDownNotifier:(id)sender
 {
-    self.state=[SecurifiToolkit getConnectionState];
+    self.state=[[SecurifiToolkit sharedInstance]getConnectionState];
     [SNLog Log:@"Method Name: %s DOWN State : %d", __PRETTY_FUNCTION__, state];
     if(self.state == NETWORK_DOWN){
         //state = SDK_UNINITIALIZED;
@@ -510,7 +510,7 @@
 //        state = NOT_LOGGED_IN;
     }else if(self.state ==SDK_UNINITIALIZED){
         [HUD hide:YES];
-        [SecurifiToolkit initSDKCloud];
+        [[SecurifiToolkit sharedInstance] initSDKCloud];
     }
 }
 
@@ -522,7 +522,7 @@
         HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         HUD.dimBackground = YES;
         HUD.labelText=@"Reconnecting...";
-        [SecurifiToolkit initSDK];
+        [[SecurifiToolkit sharedInstance] initSDK];
         [HUD hide:YES afterDelay:1];
     } else {
         NSLog(@"Unreachable");
@@ -547,7 +547,7 @@
         
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -628,7 +628,7 @@
         [SNLog Log:@"Method Name: %s Before Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {

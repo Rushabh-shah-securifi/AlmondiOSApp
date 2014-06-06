@@ -192,7 +192,7 @@
         [SNLog Log:@"Method Name: %s Before Writing to socket -- Generic Command Request", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendtoCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {

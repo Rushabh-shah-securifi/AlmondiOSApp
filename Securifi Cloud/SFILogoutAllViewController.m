@@ -284,7 +284,7 @@
         [SNLog Log:@"Method Name: %s Before Writing to socket -- Logout All Command", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {

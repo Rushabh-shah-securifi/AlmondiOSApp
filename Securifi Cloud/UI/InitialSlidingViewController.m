@@ -112,11 +112,11 @@
 -(void)networkUpNotifier:(id)sender
 {
     [SNLog Log:@"Method Name: %s In networkUP notifier", __PRETTY_FUNCTION__];
-    state= [SecurifiToolkit getConnectionState];
+    state= [[SecurifiToolkit sharedInstance] getConnectionState];
     [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, state];
     
     if(state == SDK_UNINITIALIZED){
-        [SecurifiToolkit initSDK];
+        [[SecurifiToolkit sharedInstance] initSDK];
     }
     else if (state == NOT_LOGGED_IN){
         [SNLog Log:@"Method Name: %s Logout Initialiaze SDK", __PRETTY_FUNCTION__];
@@ -130,7 +130,7 @@
 
 -(void)networkDownNotifier:(id)sender
 {
-    self.state=[SecurifiToolkit getConnectionState];
+    self.state=[[SecurifiToolkit sharedInstance] getConnectionState];
     [SNLog Log:@"Method Name: %s State : %d ", __PRETTY_FUNCTION__, state];
 //    HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 //    HUD.dimBackground = YES;
@@ -139,7 +139,7 @@
 //    if ([SFIReachabilityManager isReachable]) {
 //        NSLog(@"Reachable: Reconnect to SDK");
 //
-//        [SecurifiToolkit initSDK];
+//        [[SecurifiToolkit sharedInstance] initSDK];
 //        //Reconnection times
 //        
 //    }
@@ -160,7 +160,7 @@
         //Try to login and check
         NSLog(@"Try to reconnect! Cloud ended connection");
         isCloudConnectionBroken = TRUE;
-        [SecurifiToolkit initSDK];
+        [[SecurifiToolkit sharedInstance] initSDK];
     }
     
 }
@@ -173,7 +173,7 @@
         HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         HUD.dimBackground = YES;
         HUD.labelText=@"Reconnecting...";
-        [SecurifiToolkit initSDK];
+        [[SecurifiToolkit sharedInstance] initSDK];
         [HUD hide:YES afterDelay:1];
     } else {
         NSLog(@"Unreachable");

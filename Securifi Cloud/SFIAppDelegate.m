@@ -12,7 +12,6 @@
 #import "SFIColors.h"
 #import "AlmondPlusConstants.h"
 #import "SFIReachabilityManager.h"
-#import "AlmondPlusConstants.h"
 
 
 @implementation SFIAppDelegate
@@ -88,31 +87,40 @@
     [NSKeyedArchiver archiveRootObject:listAvailableColors toFile:filePath];
 }
 
+/*
 - (void)networkUP:(id)sender
 {
     [SNLog Log:@"Method Name: %s NetworkUP Notification", __PRETTY_FUNCTION__];
 }
+*/
 
+/*
 - (void)connectCloud
 {
     id ret=nil;
     unsigned int i=1;
-    
+
     while (ret == nil && i<10)
     {
         NSLog(@"From Thread");
-        ret = [SecurifiToolkit initSDK];
+        [[SecurifiToolkit sharedInstance] initSDK];
+*/
+/*
         if (ret == nil)
         {
             [SNLog Log:@"Method Name: %s SDKInit Error", __PRETTY_FUNCTION__];
 
         }
+*//*
+
         [SNLog Log:@"Method Name: %s Sleeping for %d seconds", __PRETTY_FUNCTION__,i];
         sleep(i);
         i+=1;
     }
 }
+*/
 
+/*
 - (void)networkDOWN:(id)sender
 {
     [SNLog Log:@"Method Name: %s NetworkUP Notification", __PRETTY_FUNCTION__];
@@ -124,6 +132,7 @@
     //Should be handled from SDK
     //[NSThread detachNewThreadSelector:@selector(connectCloud) toTarget:self withObject:nil];
 }
+*/
 
 
 - (void) application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
@@ -218,11 +227,11 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    state = [SecurifiToolkit getConnectionState];
+    state = [[SecurifiToolkit sharedInstance]getConnectionState];
     NSLog(@"Application becomes active: state %d", state);
     if (state == NETWORK_DOWN || state == SDK_UNINITIALIZED)
     {
-        [SecurifiToolkit initSDK];
+        [[SecurifiToolkit sharedInstance]initSDK];
     }
 }
 

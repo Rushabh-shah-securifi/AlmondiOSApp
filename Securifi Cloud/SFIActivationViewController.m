@@ -97,8 +97,8 @@
         
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
-        
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
+                                                  
         if (ret == nil)
         {
             [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];

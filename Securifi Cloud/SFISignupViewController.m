@@ -509,11 +509,11 @@ typedef enum {
 -(void)networkUpNotifier:(id)sender
 {
     [SNLog Log:@"Method Name: %s Signup controller :In networkUP notifier", __PRETTY_FUNCTION__];
-    cloudState= [SecurifiToolkit getConnectionState];
+    cloudState= [[SecurifiToolkit sharedInstance] getConnectionState];
     [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, cloudState];
     //PY 311013 Reconnection Logic
     if(cloudState == SDK_UNINITIALIZED){
-        [SecurifiToolkit initSDKCloud];
+        [[SecurifiToolkit sharedInstance] initSDKCloud];
         [HUD hide:YES];
     }
     [SNLog Log:@"Method Name: %s State Again : %d", __PRETTY_FUNCTION__, cloudState];
@@ -522,7 +522,7 @@ typedef enum {
 
 -(void)networkDownNotifier:(id)sender
 {
-    self.cloudState=[SecurifiToolkit getConnectionState];
+    self.cloudState=[[SecurifiToolkit sharedInstance] getConnectionState];
     [SNLog Log:@"Method Name: %s DOWN State : %d", __PRETTY_FUNCTION__, cloudState];
     if(self.cloudState == NETWORK_DOWN){
         [HUD hide: YES];
@@ -541,7 +541,7 @@ typedef enum {
         HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         HUD.dimBackground = YES;
         HUD.labelText=@"Reconnecting...";
-        [SecurifiToolkit initSDK];
+       [[SecurifiToolkit sharedInstance] initSDK];
         [HUD hide:YES afterDelay:1];
     } else {
         NSLog(@"Unreachable");
@@ -565,7 +565,7 @@ typedef enum {
         [SNLog Log:@"Method Name: %s Before Writing to socket -- LoginCommand", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -677,7 +677,7 @@ typedef enum {
         
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -806,7 +806,7 @@ typedef enum {
         [SNLog Log:@"Method Name: %s Before Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -868,7 +868,7 @@ typedef enum {
         
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -946,7 +946,7 @@ typedef enum {
         
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {

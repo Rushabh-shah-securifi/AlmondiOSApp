@@ -4279,7 +4279,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         //[SNLog Log:@"Method Name: %s Before Writing to socket -- DeviceHash Command", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -4383,7 +4383,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         //[SNLog Log:@"Method Name: %s Before Writing to socket -- Device List Command", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -4444,7 +4444,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         
         //[SNLog Log:@"Method Name: %s Before Writing to socket -- Device Value Command", __PRETTY_FUNCTION__];
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -4524,7 +4524,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         //[SNLog Log:@"Method Name: %s Before Writing to socket -- MobileCommandRequest Command", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -4959,7 +4959,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         //[SNLog Log:@"Method Name: %s Before Writing to socket -- Sensor Forced Update Command", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -5014,7 +5014,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         [SNLog Log:@"Method Name: %s Before Writing to socket -- Sensor Forced Update Command", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {

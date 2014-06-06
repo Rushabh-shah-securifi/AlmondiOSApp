@@ -118,7 +118,7 @@
 
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance]sendtoCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {

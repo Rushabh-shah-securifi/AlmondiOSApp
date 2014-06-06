@@ -225,7 +225,7 @@
     [SNLog Log:@"Method Name: %s Before Writing to socket -- LogoutCommand", __PRETTY_FUNCTION__];
     
     NSError *error=nil;
-    [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+    [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
 //    
 //    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 //    [prefs removeObjectForKey:EMAIL];
@@ -297,7 +297,7 @@
         
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -486,7 +486,7 @@
         [SNLog Log:@"Method Name: %s Before Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {
@@ -596,7 +596,7 @@
 //
 //
 //        NSError *error=nil;
-//        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+//        id ret = [[SecurifiToolkit sharedInstance]sendtoCloud:cloudCommand error:&error];
 //
 //        if (ret == nil)
 //        {

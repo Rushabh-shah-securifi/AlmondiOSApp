@@ -49,7 +49,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    state= [SecurifiToolkit getConnectionState];
+    state= [[SecurifiToolkit sharedInstance] getConnectionState];
     
     //self.lblUserEmail.text = @"HELLO!!!";
     //    SNFileLogger *logger = [[SNFileLogger alloc] init];
@@ -112,7 +112,7 @@
     
     //PY 160913 - To restore connection after Logout
     [super viewDidAppear:animated];
-    state= [SecurifiToolkit getConnectionState];
+    state= [[SecurifiToolkit sharedInstance] getConnectionState];
     [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, state];
     
     if (state == NETWORK_DOWN || state == SDK_UNINITIALIZED)
@@ -122,7 +122,7 @@
         HUD.labelText = @"Connecting. Please wait!";
         [SNLog Log:@"Method Name: %s Initialiaze SDK", __PRETTY_FUNCTION__];
         state = 5;
-        [SecurifiToolkit initSDK];
+        [[SecurifiToolkit sharedInstance] initSDK];
         
     }else if (state == LOGGED_IN){
         
@@ -134,7 +134,7 @@
         //Just establish connection
         
         
-        [SecurifiToolkit initSDKCloud];
+        [[SecurifiToolkit sharedInstance] initSDKCloud];
         [SNLog Log:@"Method Name: %s Display login screen", __PRETTY_FUNCTION__];
     }
 }
@@ -219,11 +219,11 @@
 -(void)networkUpNotifier:(id)sender
 {
     [SNLog Log:@"Method Name: %s MainView controller :In networkUP notifier", __PRETTY_FUNCTION__];
-    state= [SecurifiToolkit getConnectionState];
+    state= [[SecurifiToolkit sharedInstance] getConnectionState];
     [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, state];
     //PY 311013 Reconnection Logic
     if(state == SDK_UNINITIALIZED){
-        [SecurifiToolkit initSDK];
+        [[SecurifiToolkit sharedInstance] initSDK];
         [HUD hide:YES];
     }
     else if (state == NOT_LOGGED_IN){
@@ -253,11 +253,11 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
 -(void)networkDownNotifier:(id)sender
 {
     
-    self.state=[SecurifiToolkit getConnectionState];
+    self.state=[[SecurifiToolkit sharedInstance] getConnectionState];
     [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, state];
     
     if(state == SDK_INITIALIZING || state == SDK_UNINITIALIZED){
-        [SecurifiToolkit initSDK];
+        [[SecurifiToolkit sharedInstance] initSDK];
     }else{
     HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     //HUD.dimBackground = YES;
@@ -278,10 +278,10 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
             //        HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             //        HUD.dimBackground = YES;
             //        HUD.labelText=@"Reconnecting...";
-            [SecurifiToolkit initSDK];
+            [[SecurifiToolkit sharedInstance] initSDK];
             //        [HUD hide:YES afterDelay:1];
         } else {
-            NSLog(@"Unreachable");
+            NSLog(@"Network Unreachable");
             isConnectedToCloud = FALSE;
         }
     }
@@ -290,7 +290,7 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
 
 -(void)becomesActive:(id)sender
 {
-    state= [SecurifiToolkit getConnectionState];
+    state= [[SecurifiToolkit sharedInstance] getConnectionState];
     [SNLog Log:@"Method Name: %s BECOME ACTIVE State : %d", __PRETTY_FUNCTION__, state];
     
     //PY 250214 - To remove multiple connection removed -  state == SDK_INITIALIZING
@@ -300,7 +300,7 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
         HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
         //HUD.delegate = self;
         HUD.dimBackground = YES;
-        [SecurifiToolkit initSDK];
+        [[SecurifiToolkit sharedInstance] initSDK];
     }
 }
 
@@ -314,7 +314,7 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
     //Always run UI code on main thread from Notification callback
     
     runOnMainQueueWithoutDeadLocking(^{
-        state=[SecurifiToolkit getConnectionState];
+        state=[[SecurifiToolkit sharedInstance] getConnectionState];
         //[self.collectionView reloadData];
         [HUD hide:YES];
         
@@ -355,7 +355,7 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
          });
          */
 //        if(state == SDK_UNINITIALIZED || state == NETWORK_DOWN){
-//            [SecurifiToolkit initSDKCloud];
+//            [[SecurifiToolkit sharedInstance] initSDKCloud];
 //        }
 //        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
 //        UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
@@ -436,7 +436,7 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
         [SNLog Log:@"Method Name: %s Before Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
         
         NSError *error=nil;
-        id ret = [SecurifiToolkit sendtoCloud:cloudCommand error:&error];
+        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
         
         if (ret == nil)
         {

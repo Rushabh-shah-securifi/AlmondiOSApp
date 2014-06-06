@@ -8,16 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-//#import "SFISingleton.h"
-
 @interface SFIAppDelegate : UIResponder <UIApplicationDelegate>
-{
-   // SFISingleton *singleton_obj;
-}
 
 @property NSInteger state;
-@property (strong, nonatomic) UIWindow *window;
--(void)networkUP:(id)sender;
--(void)networkDOWN:(id)sender;
--(void)connectCloud;
+@property(strong, nonatomic) UIWindow *window;
+
 @end
