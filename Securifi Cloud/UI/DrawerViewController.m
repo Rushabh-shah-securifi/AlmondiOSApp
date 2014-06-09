@@ -12,40 +12,17 @@
 #import "SNLog.h"
 
 @interface DrawerViewController ()
-//@property(nonatomic, strong) NSArray *locationItems;
-@property(nonatomic, strong) NSArray *settingsItems;
-@property(nonatomic, strong) NSDictionary *dataDictionary;
+@property(nonatomic, strong, readonly) NSDictionary *dataDictionary;
+@property(nonatomic, strong) NSString *currentMAC;
 @end
 
 @implementation DrawerViewController
-//@synthesize locationItems;
-@synthesize settingsItems;
-@synthesize dataDictionary;
-@synthesize drawTable;
-//PY 111013 - Integration with new UI
-@synthesize almondList;
-@synthesize currentMAC;
 
 #pragma mark - View Cycle
-
-- (void)awakeFromNib {
-//    self.locationItems = @[@"Taipei Office", @"Taichung Home", @"Tyrol Cabin", @"4", @"5", @"6", @"7"];
-    //PY 300114 - Account to be removed for Beta Testers
-    // self.settingsItems = [NSArray arrayWithObjects:@"Account", @"Logout",@"Logout All" , nil];
-    self.settingsItems = @[@"Logout", @"Logout All"];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    //Read Almond list from file
-    //Upload old list and start refreshing
-
-    self.almondList = [SFIOfflineDataManager readAlmondList];
-    //[self loadAlmondList];
-    dataDictionary = [[NSMutableDictionary alloc] init];
-    [dataDictionary setValue:self.almondList forKey:ALMONDLIST];
-    [dataDictionary setValue:settingsItems forKey:SETTINGS_LIST];
     [self.slidingViewController setAnchorRightRevealAmount:250.0f];
     self.slidingViewController.underLeftWidthLayout = ECFullWidth;
     self.drawTable.backgroundColor = [UIColor colorWithRed:(CGFloat) (34 / 255.0) green:(CGFloat) (34 / 255.0) blue:(CGFloat) (34 / 255.0) alpha:1.0];
@@ -60,8 +37,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    self.almondList = [SFIOfflineDataManager readAlmondList];
-    [dataDictionary setValue:self.almondList forKey:ALMONDLIST];
+    [self updateAlmostList];
+
     [self.drawTable reloadData];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(LogoutResponseCallback:)
@@ -77,10 +54,20 @@
                                                   object:nil];
 }
 
+- (void)updateAlmostList {
+    NSArray *almondList = [SFIOfflineDataManager readAlmondList];
+    NSArray *settingsList = @[@"Logout", @"Logout All"];
+
+    _dataDictionary = @{
+            ALMONDLIST : almondList,
+            SETTINGS_LIST : settingsList
+    };
+}
+
 #pragma mark - Table Methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [dataDictionary count] + 1;
+    return [self.dataDictionary count] + 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex {
@@ -88,11 +75,11 @@
     NSArray *array;
     switch (sectionIndex) {
         case 0:
-            array = dataDictionary[ALMONDLIST];
+            array = self.dataDictionary[ALMONDLIST];
             NSLog(@"Almond List count %d", [array count]);
             return [array count] + 1;
         case 1:
-            array = dataDictionary[SETTINGS_LIST];
+            array = self.dataDictionary[SETTINGS_LIST];
             return [array count];
         case 2:
             return 0;
@@ -147,7 +134,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case 0: {
-            NSArray *array = dataDictionary[ALMONDLIST];
+            NSArray *array = self.dataDictionary[ALMONDLIST];
             if (indexPath.row == [array count]) {
                 //Create Add symbol
                 return [self tableViewTableViewCreateAddSymbolCell:tableView];
@@ -165,18 +152,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //NSString *identifier = [NSString stringWithFormat:@"%@Top", [self.menuItems objectAtIndex:indexPath.row]];
-
-    //  UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:identifier];
-    //
-    //  [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
-    //    CGRect frame = self.slidingViewController.topViewController.view.frame;
-    //    self.slidingViewController.topViewController = newTopViewController;
-    //    self.slidingViewController.topViewController.view.frame = frame;
-    //    [self.slidingViewController resetTopView];
-    //  }];
     if (indexPath.section == 0) {
-        NSArray *array = dataDictionary[ALMONDLIST];
+        NSArray *array = self.dataDictionary[ALMONDLIST];
         if (indexPath.row == [array count]) {
             //Add almond - Affiliation process
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -220,8 +197,7 @@
     else if (indexPath.section == 1) {
         //Settings
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
-        //PY 300114 - Account to be removed for Beta Testers
-//        if(indexPath.row == 1)
+
         if (indexPath.row == 0) {
             //Logout Action
             GenericCommand *cloudCommand = [[GenericCommand alloc] init];
@@ -231,6 +207,7 @@
 
             NSError *error = nil;
             [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
+            //todo handle error?
 
             //PY 250214 - Wait for callback from cloud
 //            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -254,8 +231,6 @@
 
 
         }
-            //PY 300114 - Account to be removed for Beta Testers
-//        else  if(indexPath.row == 2)
         else if (indexPath.row == 1) {
             //Logout All Action
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
@@ -316,7 +291,7 @@
     lblName.textColor = [UIColor whiteColor];
     [lblName setFont:[UIFont fontWithName:@"Avenir-Roman" size:16]];
 
-    NSArray *array = dataDictionary[ALMONDLIST];
+    NSArray *array = self.dataDictionary[ALMONDLIST];
     SFIAlmondPlus *currentAlmond = array[(NSUInteger) indexPath.row];
     lblName.text = currentAlmond.almondplusName;
 
@@ -338,7 +313,7 @@
 
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:id];
 
-    NSArray *array = dataDictionary[SETTINGS_LIST];
+    NSArray *array = self.dataDictionary[SETTINGS_LIST];
     NSString *cellValue = array[(NSUInteger) indexPath.row];
 
     UIImageView *imgSettings;
@@ -381,63 +356,6 @@
 
 
 #pragma mark - Cloud Command : Sender and Receivers
-
-/*
-- (void)loadAlmondList {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-
-    AlmondListRequest *almondListCommand = [[AlmondListRequest alloc] init];
-
-    cloudCommand.commandType = ALMOND_LIST;
-    cloudCommand.command = almondListCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
-
-        NSError *error = nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-        if (ret == nil) {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__, [error localizedDescription]];
-
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
-
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
-    }
-}
-*/
-
-
-/*
-- (void)AlmondListResponseCallback:(id)sender {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-
-    if (data != nil) {
-        [SNLog Log:@"Method Name: %s Received Almond List response", __PRETTY_FUNCTION__];
-
-        AlmondListResponse *obj = [[AlmondListResponse alloc] init];
-        obj = (AlmondListResponse *) [data valueForKey:@"data"];
-
-        self.almondList = [[NSMutableArray alloc] init];
-        [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
-
-        self.almondList = obj.almondPlusMACList;
-        //Write Almond List offline
-        [SFIOfflineDataManager writeAlmondList:self.almondList];
-        [dataDictionary setValue:self.almondList forKey:ALMONDLIST];
-        [self.drawTable reloadData];
-
-    }
-
-
-}
-*/
 
 - (void)LogoutResponseCallback:(id)sender {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
@@ -487,9 +405,6 @@
 - (IBAction)revealTab:(id)sender {
     NSLog(@"Reveal Tab: Drawer View");
     [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
-//        CGRect frame = self.slidingViewController.topViewController.view.frame;
-//        self.slidingViewController.topViewController = newTopViewController;
-//        self.slidingViewController.topViewController.view.frame = frame;
         [self.slidingViewController resetTopView];
     }];
 }
