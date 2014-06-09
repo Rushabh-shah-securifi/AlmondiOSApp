@@ -7,24 +7,19 @@
 //
 
 #import "SensorsViewController.h"
-#import "BVReorderTableView.h"
-#import "SFIParser.h"
-#import "SFIColors.h"
 #import "SFIConstants.h"
-#import <SecurifiToolkit/SecurifiToolkit.h>
 #import "AlmondPlusConstants.h"
-//#import "SFIDeviceListViewController.h"
 #import "SFIOfflineDataManager.h"
 #import "SNLog.h"
 #import "SFIReachabilityManager.h"
 #import "Reachability.h"
 
-@interface SensorsViewController () {
-    NSMutableArray *_objects;
-}
+@interface SensorsViewController ()
+@property  MBProgressHUD *HUD;
 @end
 
 @implementation SensorsViewController
+
 //@synthesize sampleItems;
 @synthesize sensors, sensorsCopy;
 @synthesize checkHeight;
@@ -45,291 +40,293 @@
 @synthesize deviceValueList;
 @synthesize offlineHash;
 @synthesize isEmpty;
-@synthesize mobileCommandTimer, sensorChangeCommandTimer, sensorDataCommandTimer;
-@synthesize isMobileCommandSuccessful, isSensorChangeCommandSuccessful; // isSensorDataCommandSuccessful;
+@synthesize mobileCommandTimer;
+@synthesize sensorDataCommandTimer;
+@synthesize sensorChangeCommandTimer;
+@synthesize isMobileCommandSuccessful;
+@synthesize isSensorChangeCommandSuccessful;
 @synthesize expandedRowHeight;
-@synthesize isSliderExpanded, isEditing;
+@synthesize isSliderExpanded;
+@synthesize isEditing;
 @synthesize sensorTable;
 @synthesize txtInvisible;
 @synthesize isCloudOnline;
 
-@synthesize currentChangedLocation, currentChangedName;
+@synthesize currentChangedLocation;
+@synthesize currentChangedName;
 
 static NSString *simpleTableIdentifier = @"SensorCell";
 
 #pragma mark - View Related
-- (void)awakeFromNib
-{
+
+- (void)awakeFromNib {
     [super awakeFromNib];
-    
-    NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
-                                     [UIFont fontWithName:@"Avenir-Roman" size:18.0], NSFontAttributeName, nil];
-    
+
+    NSDictionary *titleAttributes = @{
+            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+            NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
+    };
+
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
     //self.sampleItems = [NSArray arrayWithObjects:@"One", @"Two", @"Three", nil];
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
+
     self.checkHeight = -1;
-    
-    //PY 041013 - To fix: Reverese order move from Add symbol
+
+    _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = @"Loading sensor data.";
+    _HUD.dimBackground = YES;
+
+    //PY 041013 - To fix: Reverse order move from Add symbol
     moveCount = -1;
-    
-    self.tableView.autoresizingMask= UIViewAutoresizingFlexibleWidth;
-    self.tableView.autoresizesSubviews= YES;
+
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.tableView.autoresizesSubviews = YES;
     //self.tableView.backgroundColor = [UIColor blackColor];
-    
+
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+
     //Display Drawer Gesture
     UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(revealTab:)];
     showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
     [self.tableView addGestureRecognizer:showMenuSwipe];
-    
+
     ////    //Display Tab Gesture
     //    UISwipeGestureRecognizer *showTabSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(revealTab:)];
     //    showTabSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
     //    [self.tableView addGestureRecognizer:showTabSwipe];
-    
+
     //PY 111013 - Integration with new UI
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    self.currentMAC  = [prefs objectForKey:CURRENT_ALMOND_MAC];
-    NSString *currentMACName  = [prefs objectForKey:CURRENT_ALMOND_MAC_NAME];
+    self.currentMAC = [prefs objectForKey:CURRENT_ALMOND_MAC];
+
     NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
-    if (self.currentMAC == nil){
-        if([almondList count]!=0){
-            SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
+    if (self.currentMAC == nil) {
+        if ([almondList count] != 0) {
+            SFIAlmondPlus *currentAlmond = almondList[0];
             self.currentMAC = currentAlmond.almondplusMAC;
-            currentMACName = currentAlmond.almondplusName;
+
+            NSString *currentMACName = currentAlmond.almondplusName;
             [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
             [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
-            if(currentMACName!=nil){
+            if (currentMACName != nil) {
                 self.navigationItem.title = currentMACName; //[NSString stringWithFormat:@"Sensors at %@", self.currentMAC];
             }
-            
-        }else{
-            self.currentMAC = NO_ALMOND;
-            self.navigationItem.title = @"Get Started";
+
         }
-    }else{
-        if([almondList count] == 0){
+        else {
             self.currentMAC = NO_ALMOND;
             self.navigationItem.title = @"Get Started";
         }
     }
-    
+    else {
+        if ([almondList count] == 0) {
+            self.currentMAC = NO_ALMOND;
+            self.navigationItem.title = @"Get Started";
+        }
+    }
+
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = paths[0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
-    
+
     listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
     NSString *colorCode = [prefs stringForKey:COLORCODE];
-    
-    if(colorCode!=nil){
-        currentColor = [listAvailableColors objectAtIndex:[colorCode integerValue]];
-    }else{
-        currentColor = [listAvailableColors objectAtIndex:self.currentColorIndex];
+
+    if (colorCode != nil) {
+        currentColor = listAvailableColors[(NSUInteger) [colorCode integerValue]];
     }
-    baseBrightness = currentColor.brightness;
-    changeHue = currentColor.hue;
-    changeSaturation = currentColor.saturation;
-    
+    else {
+        currentColor = listAvailableColors[(NSUInteger) self.currentColorIndex];
+    }
+
+    baseBrightness = (unsigned int) currentColor.brightness;
+    changeHue = (unsigned int) currentColor.hue;
+    changeSaturation = (unsigned int) currentColor.saturation;
+
     expandedRowHeight = 200;
-    
-    
-    
-    
-    
+
     //Set title
     //    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
     //    NSString *currentMAC = [standardUserDefaults objectForKey:@"CurrentMAC"];
-    
+
     //    sensors = [[NSMutableArray alloc]init];
     //    sensors = [[SFIParser alloc] loadDataFromXML:@"sensordata"];
     //// NSLog(@"Data: %lu", (unsigned long)[sensors count]);
-    
-    
-    
-    
-    
-    
+
     //    //Call command : Get HASH - Command 74 - Match if list is upto date
     //    HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     //    HUD.dimBackground = YES;
     //    HUD.labelText = @"Loading sensor data.";
     //[self getDeviceHash];
-    
+
     isCloudOnline = TRUE;
-    
 }
 
--(void) viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
     //PY 111013 - Integration with new UI
     NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
-    if([almondList count] == 0){
+    if ([almondList count] == 0) {
         self.currentMAC = NO_ALMOND;
         self.navigationItem.title = @"Get Started";
         [self.deviceList removeAllObjects];
         [self.deviceValueList removeAllObjects];
         [self.tableView reloadData];
-    }else{
-        
+    }
+    else {
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        self.currentMAC  = [prefs objectForKey:CURRENT_ALMOND_MAC];
-        NSString *currentMACName  = [prefs objectForKey:CURRENT_ALMOND_MAC_NAME];
+        self.currentMAC = [prefs objectForKey:CURRENT_ALMOND_MAC];
+        NSString *currentMACName = [prefs objectForKey:CURRENT_ALMOND_MAC_NAME];
         self.navigationItem.title = currentMACName;
-        
+
         self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
         self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
         self.offlineHash = [SFIOfflineDataManager readHashList:self.currentMAC];
-        
+
         [self initiliazeImages];
-        
+
         //Call command : Get HASH - Command 74 - Match if list is upto date
-        HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        HUD.dimBackground = YES;
-        HUD.labelText = @"Loading sensor data.";
+        [self.HUD show:YES];
+
         [self getDeviceHash];
-        
+
         //PY 311013 - Timeout for Sensor Command
         sensorDataCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
-                                                              target:self
-                                                            selector:@selector(cancelSensorCommand:)
-                                                            userInfo:nil
-                                                             repeats:NO];
-
+                                                                  target:self
+                                                                selector:@selector(cancelSensorCommand:)
+                                                                userInfo:nil
+                                                                 repeats:NO];
     }
-    
-    
-    
-    
+
     //PY 111013 - Integration with new UI
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(HashResponseCallback:)
                                                  name:HASH_NOTIFIER
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(DeviceListResponseCallback:)
                                                  name:DEVICE_DATA_NOTIFIER
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(DeviceValueListResponseCallback:)
                                                  name:DEVICE_VALUE_NOTIFIER
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(MobileCommandResponseCallback:)
                                                  name:MOBILE_COMMAND_NOTIFIER
                                                object:nil];
-    
-    [[NSNotificationCenter defaultCenter]    addObserver:self
-                                                selector:@selector(DeviceDataCloudResponseCallback:)
-                                                    name:DEVICE_DATA_CLOUD_NOTIFIER
-                                                  object:nil];
-    
-    [[NSNotificationCenter defaultCenter]    addObserver:self
-                                                selector:@selector(DeviceCloudValueListResponseCallback:)
-                                                    name:DEVICE_VALUE_CLOUD_NOTIFIER
-                                                  object:nil];
-    
-    [[NSNotificationCenter defaultCenter]    addObserver:self
-                                                selector:@selector(DynamicAlmondListAddCallback:)
-                                                    name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
-                                                  object:nil];
-    
-    [[NSNotificationCenter defaultCenter]    addObserver:self
-                                                selector:@selector(DynamicAlmondListDeleteCallback:)
-                                                    name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                                                  object:nil];
-    
-    [[NSNotificationCenter defaultCenter]    addObserver:self
-                                                selector:@selector(SensorChangeCallback:)
-                                                    name:SENSOR_CHANGE_NOTIFIER
-                                                  object:nil];
-    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(DeviceDataCloudResponseCallback:)
+                                                 name:DEVICE_DATA_CLOUD_NOTIFIER
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(DeviceCloudValueListResponseCallback:)
+                                                 name:DEVICE_VALUE_CLOUD_NOTIFIER
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(DynamicAlmondListAddCallback:)
+                                                 name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(DynamicAlmondListDeleteCallback:)
+                                                 name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(SensorChangeCallback:)
+                                                 name:SENSOR_CHANGE_NOTIFIER
+                                               object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(networkDownNotifier:)
                                                  name:NETWORK_DOWN_NOTIFIER
                                                object:nil];
-    
-    
+
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(networkUpNotifier:)
                                                  name:NETWORK_UP_NOTIFIER
                                                object:nil];
-    
-    [[NSNotificationCenter defaultCenter]    addObserver:self
-                                                selector:@selector(DynamicAlmondNameChangeCallback:)
-                                                    name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
-                                                  object:nil];
-    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(DynamicAlmondNameChangeCallback:)
+                                                 name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
+                                               object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityDidChange:)
                                                  name:kReachabilityChangedNotification object:nil];
-    
 }
 
 
--(void)viewWillDisappear:(BOOL)animated{
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:HASH_NOTIFIER
                                                   object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:DEVICE_DATA_NOTIFIER
                                                   object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:DEVICE_VALUE_NOTIFIER
                                                   object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:MOBILE_COMMAND_NOTIFIER
                                                   object:nil];
-    
-    [[NSNotificationCenter defaultCenter]    removeObserver:self
-                                                       name:DEVICE_DATA_CLOUD_NOTIFIER
-                                                     object:nil];
-    
-    [[NSNotificationCenter defaultCenter]    removeObserver:self
-                                                       name:DEVICE_VALUE_CLOUD_NOTIFIER
-                                                     object:nil];
-    
-    [[NSNotificationCenter defaultCenter]    removeObserver:self
-                                                       name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
-                                                     object:nil];
-    
-    [[NSNotificationCenter defaultCenter]    removeObserver:self
-                                                       name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                                                     object:nil];
-    
-    [[NSNotificationCenter defaultCenter]    removeObserver:self
-                                                       name:SENSOR_CHANGE_NOTIFIER
-                                                     object:nil];
-    
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:DEVICE_DATA_CLOUD_NOTIFIER
+                                                  object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:DEVICE_VALUE_CLOUD_NOTIFIER
+                                                  object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
+                                                  object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
+                                                  object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:SENSOR_CHANGE_NOTIFIER
+                                                  object:nil];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NETWORK_UP_NOTIFIER
                                                   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NETWORK_DOWN_NOTIFIER
                                                   object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
                                                   object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kReachabilityChangedNotification
                                                   object:nil];
-    
+
 }
 
 #pragma mark - Reconnection
@@ -366,26 +363,26 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    if(isCloudOnline){
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (isCloudOnline) {
         return nil;
-    }else{
-    UIView* header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 30)];
-    header.backgroundColor = [UIColor clearColor];// [UIColor colorWithHue:196.0/360.0 saturation:100/100.0 brightness:100/100.0 alpha:1];
-    
-    UILabel *backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,1,(LEFT_LABEL_WIDTH)+(self.tableView.frame.size.width-LEFT_LABEL_WIDTH-25)+1,30)];
-    backgroundLabel.backgroundColor = [UIColor colorWithRed:125/255.0 green:125/255.0 blue:125/255.0 alpha:1.0];
-    
-    
-    UILabel *lblOffline = [[UILabel alloc] initWithFrame:CGRectMake(10,1,self.tableView.frame.size.width-20,30)];
-    lblOffline.backgroundColor = [UIColor clearColor];
-    lblOffline.text = CLOUD_OFFLINE;
-    lblOffline.textColor = [UIColor whiteColor];
-    lblOffline.textAlignment = NSTextAlignmentCenter;
-    [lblOffline setFont:[UIFont fontWithName:@"Avenir-Roman" size:12]];
-    [backgroundLabel addSubview:lblOffline];
-    [header addSubview:backgroundLabel];
-    return header;
+    }
+    else {
+        UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 30)];
+        header.backgroundColor = [UIColor clearColor];// [UIColor colorWithHue:196.0/360.0 saturation:100/100.0 brightness:100/100.0 alpha:1];
+
+        UILabel *backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 1, (LEFT_LABEL_WIDTH) + (self.tableView.frame.size.width - LEFT_LABEL_WIDTH - 25) + 1, 30)];
+        backgroundLabel.backgroundColor = [UIColor colorWithRed:(CGFloat) (125 / 255.0) green:(CGFloat) (125 / 255.0) blue:(CGFloat) (125 / 255.0) alpha:1.0];
+
+        UILabel *lblOffline = [[UILabel alloc] initWithFrame:CGRectMake(10, 1, self.tableView.frame.size.width - 20, 30)];
+        lblOffline.backgroundColor = [UIColor clearColor];
+        lblOffline.text = CLOUD_OFFLINE;
+        lblOffline.textColor = [UIColor whiteColor];
+        lblOffline.textAlignment = NSTextAlignmentCenter;
+        [lblOffline setFont:[UIFont fontWithName:@"Avenir-Roman" size:12]];
+        [backgroundLabel addSubview:lblOffline];
+        [header addSubview:backgroundLabel];
+        return header;
     }
 }
 
@@ -411,24 +408,24 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 }
 
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath; {
     //    if (self.checkHeight == indexPath.row)
     //        return 185;
     //    else
-    if([currentMAC isEqualToString:NO_ALMOND]){
+    if ([currentMAC isEqualToString:NO_ALMOND]) {
         return 400;
     }
-    
-    if(isEmpty){
+
+    if (isEmpty) {
         return 400;
     }
-    if(indexPath.row != [self.deviceList count]){
-        SFIDevice *currentSensor = [self.deviceList objectAtIndex:indexPath.row];
+
+    if (indexPath.row != [self.deviceList count]) {
+        SFIDevice *currentSensor = self.deviceList[(NSUInteger) indexPath.row];
         //        cell.textLabel.text = currentDevice.deviceName;
         //        SFISensor *currentSensor = [self.deviceList objectAtIndex:indexPath.row];
-        if(currentSensor.isExpanded){
-            switch(currentSensor.deviceType){
+        if (currentSensor.isExpanded) {
+            switch (currentSensor.deviceType) {
                 case 1:
                     //Switch - 2 values
                     expandedRowHeight = EXPANDED_ROW_HEIGHT;
@@ -448,13 +445,14 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     expandedRowHeight = 455;
                     break;
                 case 11:
-                    if(currentSensor.isTampered){
+                    if (currentSensor.isTampered) {
                         expandedRowHeight = EXPANDED_ROW_HEIGHT + 50;
-                        
+
 //                        if(currentSensor.isBatteryLow){
 //                            expandedRowHeight+= 20;
 //                        }
-                    }else{
+                    }
+                    else {
                         expandedRowHeight = EXPANDED_ROW_HEIGHT;
 //                        if(currentSensor.isBatteryLow){
 //                            expandedRowHeight+= 30;
@@ -462,9 +460,10 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     }
                     break;
                 case 12:
-                    if(currentSensor.isTampered){
+                    if (currentSensor.isTampered) {
                         expandedRowHeight = 270;
-                    }else{
+                    }
+                    else {
                         expandedRowHeight = 230;
                     }
                     break;
@@ -473,9 +472,10 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 case 15:
                 case 17:
                 case 19:
-                    if(currentSensor.isTampered){
+                    if (currentSensor.isTampered) {
                         expandedRowHeight = EXPANDED_ROW_HEIGHT + 50;
-                    }else{
+                    }
+                    else {
                         expandedRowHeight = EXPANDED_ROW_HEIGHT;
                     }
                     break;
@@ -494,44 +494,41 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     return SENSOR_ROW_HEIGHT;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     // NSLog(@"In CELL CREATION");
-    
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    
+
     //No add symbol for sensors
     //    if(indexPath.row == [self.deviceList  count]){
     //        cell = [self createAddSymbolCell:cell];
     //        return cell;
     //    }
-    
+
     //    if(indexPath.row == 0){
     //        self.changeBrightness = 98;
     //    }
-    if([currentMAC isEqualToString:NO_ALMOND]){
+    if ([currentMAC isEqualToString:NO_ALMOND]) {
         cell = [self createNoAlmondCell:cell];
         return cell;
     }
-    if (self.isEmpty){
+    if (self.isEmpty) {
         cell = [self createEmptyCell:cell];
         return cell;
     }
-    
-    cell = [self createColoredListCell:cell listRow:(int)indexPath.row];
+
+    cell = [self createColoredListCell:cell listRow:(int) indexPath.row];
     return cell;
-    
+
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     return NO;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self.deviceList removeObjectAtIndex:indexPath.row];
+        [self.deviceList removeObjectAtIndex:(NSUInteger) indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
@@ -546,6 +543,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 //}
 
 
+/*
 // This method is called when starting the re-ording process. You insert a blank row object into your
 // data source and return the object you want to save for later. This method is only called once.
 - (id)saveObjectAndInsertBlankRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -565,7 +563,9 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     //[sensors replaceObjectAtIndex:indexPath.row withObject:dummySensor];
     return object;
 }
+*/
 
+/*
 // This method is called when the selected row is dragged to a new position. You simply update your
 // data source to reflect that the rows have switched places. This can be called multiple times
 // during the reordering process.
@@ -626,8 +626,10 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     //[sensors removeObjectAtIndex:fromIndexPath.row];
     
 }
+*/
 
 
+/*
 // This method is called when the selected row is released to its new position. The object is the same
 // object you returned in saveObjectAndInsertBlankRowAtIndexPath:. Simply update the data source so the
 // object is in its new position. You should do any saving/cleanup here.
@@ -658,9 +660,11 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     
     // do any additional cleanup here
 }
+*/
 
 #pragma mark - Table View Cell Creation
 
+/*
 -(UITableViewCell*) createAddSymbolCell: (UITableViewCell*)cell{
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
     UIImageView *imgAddDevice =[[UIImageView alloc]initWithFrame:CGRectMake(110, 10, 80,SENSOR_ROW_HEIGHT-10)];
@@ -678,6 +682,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     [cell addSubview:imgAddDevice];
     return cell;
 }
+*/
 
 -(UITableViewCell*) createEmptyCell: (UITableViewCell*)cell{
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
@@ -747,7 +752,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         changeBrightness = (baseBrightness - 70) + ((positionIndex - 7) * 10);
     }
     
-    SFIDevice *currentSensor =[self.deviceList objectAtIndex:indexPathRow];
+    SFIDevice *currentSensor = self.deviceList[(NSUInteger) indexPathRow];
     // Get Device Type
     int currentDeviceType = currentSensor.deviceType;
     
@@ -779,7 +784,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     //Left Square - Creation
     leftBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,5,LEFT_LABEL_WIDTH,SENSOR_ROW_HEIGHT-10)];
     leftBackgroundLabel.userInteractionEnabled = YES;
-    leftBackgroundLabel.backgroundColor = [UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1];
+    leftBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (changeHue / 360.0) saturation:(CGFloat) (changeSaturation / 100.0) brightness:(CGFloat) (changeBrightness / 100.0) alpha:1];
     [cell addSubview:leftBackgroundLabel];
     
     btnDeviceImg = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -787,7 +792,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     [btnDeviceImg addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
     
     if(currentDeviceType == 7){
-        //Incase of thermostat show value instead of image
+        //In case of thermostat show value instead of image
         //For Integer Value
         lblDeviceValue = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH/5, 12, 60, 70)];
         lblDeviceValue.backgroundColor = [UIColor clearColor];
@@ -832,7 +837,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     
     //Right Rectangle - Creation
     rightBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH+11,5,self.tableView.frame.size.width - LEFT_LABEL_WIDTH - 25,SENSOR_ROW_HEIGHT-10)];
-    rightBackgroundLabel.backgroundColor = [UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1];
+    rightBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (changeHue / 360.0) saturation:(CGFloat) (changeSaturation / 100.0) brightness:(CGFloat) (changeBrightness / 100.0) alpha:1];
     [cell addSubview:rightBackgroundLabel];
     
     lblDeviceName = [[UILabel alloc]initWithFrame:CGRectMake(15, 10, (self.tableView.frame.size.width - LEFT_LABEL_WIDTH - 90), 30)];
@@ -873,26 +878,30 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     int currentDeviceId = currentSensor.deviceID;
     int deviceValueID;
     NSMutableArray *currentKnownValues = nil;
-    SFIDeviceKnownValues *currentDeviceValue;
+
     //Pass current device info in map
-    for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-        deviceValueID = currentDeviceValue.deviceID;
+    for(SFIDeviceValue *deviceValue in self.deviceValueList) {
+        deviceValueID = deviceValue.deviceID;
         if(currentDeviceId == deviceValueID){
-            currentKnownValues = currentDeviceValue.knownValues;
+            currentKnownValues = deviceValue.knownValues;
         }
     }
     
     //Get the value to be displayed on right rectangle
     NSString *currentValue;
     NSString *currentStateValue;
+
+    SFIDeviceKnownValues *currentDeviceValue;
     switch (currentDeviceType) {
         case 1:
             //Switch
             //Only one value
-            currentDeviceValue = [currentKnownValues objectAtIndex:0];
+            currentDeviceValue = currentKnownValues[0];
             currentValue = currentDeviceValue.value;
+
             imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-            imgDevice.frame = CGRectMake(LEFT_LABEL_WIDTH/3.5, 12, 53,70);
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
+
             if(currentDeviceValue.isUpdating){
                 lblDeviceStatus.text = @"Updating sensor data.\nPlease wait.";
             }else{
@@ -919,10 +928,10 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 //            currentStateValue = currentDeviceValue.value;
             
             //Get Percentage
-            SFIDeviceKnownValues *currentLevelKnownValue = [currentKnownValues objectAtIndex:currentSensor.mostImpValueIndex];
+            SFIDeviceKnownValues *currentLevelKnownValue = currentKnownValues[(NSUInteger) currentSensor.mostImpValueIndex];
             NSString *currentLevel = currentLevelKnownValue.value;
             
-            imgDevice.frame = CGRectMake(LEFT_LABEL_WIDTH/3.5, 12, 53,70);
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
             
             //PY 291113
             imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
@@ -983,7 +992,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         }
         case 3:
             //Binary Sensor
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY 291113 - Show only State
             if([currentStateValue isEqualToString:@"true"]){
@@ -1071,17 +1080,17 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         {
             
             //Get State
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             
             //Get Percentage
-            SFIDeviceKnownValues *currentLevelKnownValue = [currentKnownValues objectAtIndex:currentSensor.mostImpValueIndex];
+            SFIDeviceKnownValues *currentLevelKnownValue = currentKnownValues[(NSUInteger) currentSensor.mostImpValueIndex];
             NSString *currentLevel = currentLevelKnownValue.value;
             
             float intLevel = [currentLevel floatValue];
             intLevel = intLevel/256 * 100;
             
-            imgDevice.frame = CGRectMake(LEFT_LABEL_WIDTH/3.5, 12, 53,70);
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
             
             //PY 291113 - Show only State
             imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
@@ -1132,7 +1141,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         }
         case 5:
             //Door Lock
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
             if([currentStateValue isEqualToString:@"true"]){
@@ -1152,7 +1161,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             break;
         case 6:
             //Alarm
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - TODO: Change later
             if([currentStateValue isEqualToString:@"true"]){
@@ -1175,21 +1184,23 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             //Thermostat
             NSString *strValue = @"";
             
-            
             NSString *strStatus;
             NSString *strOperatingMode;
             NSString *heatingSetpoint;
             NSString *coolingSetpoint;
-            
-            for(SFIDeviceKnownValues *currentKnownValue in currentKnownValues){
-                if([currentKnownValue.valueName isEqualToString:@"SENSOR MULTILEVEL"]){
+
+            for (SFIDeviceKnownValues *currentKnownValue in currentKnownValues) {
+                if ([currentKnownValue.valueName isEqualToString:@"SENSOR MULTILEVEL"]) {
                     strValue = currentKnownValue.value;
                     //lblDeviceValue.text = [NSString stringWithFormat:@"%@°",currentKnownValue.value] ;
-                }else if ([currentKnownValue.valueName isEqualToString:@"THERMOSTAT SETPOINT HEATING"]){
+                }
+                else if ([currentKnownValue.valueName isEqualToString:@"THERMOSTAT SETPOINT HEATING"]) {
                     heatingSetpoint = [NSString stringWithFormat:@" HI %@°", currentKnownValue.value];
-                }else if ([currentKnownValue.valueName isEqualToString:@"THERMOSTAT SETPOINT COOLING"]){
+                }
+                else if ([currentKnownValue.valueName isEqualToString:@"THERMOSTAT SETPOINT COOLING"]) {
                     coolingSetpoint = [NSString stringWithFormat:@" LO %@°", currentKnownValue.value];
-                }else if ([currentKnownValue.valueName isEqualToString:@"THERMOSTAT OPERATING STATE"]){
+                }
+                else if ([currentKnownValue.valueName isEqualToString:@"THERMOSTAT OPERATING STATE"]) {
                     strOperatingMode = currentKnownValue.value;
                 }
             }
@@ -1200,10 +1211,10 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             NSArray *thermostatValues = [strValue componentsSeparatedByString:@"."];
             
             
-            NSString *strIntegerValue = [thermostatValues objectAtIndex:0];
+            NSString *strIntegerValue = thermostatValues[0];
             NSString *strDecimalValue = @"";
             if([thermostatValues count]==2){
-                strDecimalValue = [thermostatValues objectAtIndex:1];
+                strDecimalValue = thermostatValues[1];
                 lblDecimalValue.text = [NSString stringWithFormat:@".%@",strDecimalValue];
             }
             
@@ -1235,8 +1246,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         {
             //Motion Sensor
             NSMutableString *strStatus = [[NSMutableString alloc]init];
-            imgDevice.frame = CGRectMake(LEFT_LABEL_WIDTH/3.25, 12, 53,70);
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.25), 12, 53,70);
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
             if([currentStateValue isEqualToString:@"true"]){
@@ -1266,7 +1277,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         {
             //ContactSwitch
             NSMutableString *strStatus= [[NSMutableString alloc]init];
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
             if([currentStateValue isEqualToString:@"true"]){
@@ -1297,8 +1308,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         {
             //Fire Sensor
             NSMutableString *strStatus= [[NSMutableString alloc]init];
-            imgDevice.frame = CGRectMake(LEFT_LABEL_WIDTH/3.5, 12, 53,70);
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
             if([currentStateValue isEqualToString:@"true"]){
@@ -1337,9 +1348,9 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 //            imgDevice.image = result;
             
             NSMutableString *strStatus= [[NSMutableString alloc]init];
-            imgDevice.frame = CGRectMake(LEFT_LABEL_WIDTH/3.5, 12, 53,70);
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
             
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
             if([currentStateValue isEqualToString:@"true"]){
@@ -1371,7 +1382,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         {
             //Gas Sensor
             NSMutableString *strStatus= [[NSMutableString alloc]init];
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
             if([currentStateValue isEqualToString:@"true"]){
@@ -1402,8 +1413,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         {
             //Vibration Sensor
             NSMutableString *strStatus = [[NSMutableString alloc]init];
-            imgDevice.frame = CGRectMake(LEFT_LABEL_WIDTH/3.5, 12, 53,70);
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
             if([currentStateValue isEqualToString:@"true"]){
@@ -1434,7 +1445,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         {
             //Keyfob
             NSMutableString *strStatus = [[NSMutableString alloc]init];
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
             if([currentStateValue isEqualToString:@"true"]){
@@ -1463,9 +1474,9 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         }
         case 22:
             //Electric Measurement Switch - AC
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
-            imgDevice.frame = CGRectMake(LEFT_LABEL_WIDTH/3.5, 10, 53,70);
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 10, 53,70);
             //PY 291113 - Show only State
             imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
             if(currentDeviceValue.isUpdating){
@@ -1486,9 +1497,9 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             break;
         case 23:
             //Electric Measurement Switch - DC
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
-            imgDevice.frame = CGRectMake(LEFT_LABEL_WIDTH/3.5, 12, 53,70);
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
             //PY 291113 - Show only State
             imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
             if(currentDeviceValue.isUpdating){
@@ -1524,10 +1535,10 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             NSArray *temperatureValues = [strValue componentsSeparatedByString:@"."];
             
             
-            NSString *strIntegerValue = [temperatureValues objectAtIndex:0];
+            NSString *strIntegerValue = temperatureValues[0];
             NSString *strDecimalValue = @"";
             if([temperatureValues count]==2){
-                strDecimalValue = [temperatureValues objectAtIndex:1];
+                strDecimalValue = temperatureValues[1];
                 lblDecimalValue.text = [NSString stringWithFormat:@".%@",strDecimalValue];
             }
             
@@ -1553,7 +1564,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         }
         case 34:
             //Keyfob
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
             if([currentStateValue isEqualToString:@"true"]){
@@ -1572,7 +1583,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             }
             break;
         default:
-            imgDevice.frame = CGRectMake(LEFT_LABEL_WIDTH/3.5, 12, 53,70);
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
             imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
             break;
     }
@@ -1587,17 +1598,16 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     
     //Expanded View
     if(currentSensor.isExpanded){
-//        [[self view] endEditing:YES];
         //Settings icon - white
         imgSettings.alpha = 1.0;
         
         //Show values also
         UILabel *belowBackgroundLabel = [[UILabel alloc] init];
         belowBackgroundLabel.userInteractionEnabled = YES;
-        belowBackgroundLabel.backgroundColor = [UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1];
+        belowBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (changeHue / 360.0) saturation:(CGFloat) (changeSaturation / 100.0) brightness:(CGFloat) (changeBrightness / 100.0) alpha:1];
         
         
-        UILabel *expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10,10,299,30)];
+        UILabel *expandedLblText;
         float baseYCordinate = -20;
         //expandedLblText.backgroundColor = [UIColor greenColor];
         switch (currentDeviceType) {
@@ -1654,11 +1664,11 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 
                 //Set slider value
                 float currentSliderValue = 0.0;
-                
-                for(int i =0; i < [currentKnownValues count]; i++){
-                    currentDeviceValue = [currentKnownValues objectAtIndex:i];
+
+                for (int i = 0; i < [currentKnownValues count]; i++) {
+                    currentDeviceValue = currentKnownValues[(NSUInteger) i];
                     //Get slider value
-                    if([currentDeviceValue.valueName isEqualToString:@"SWITCH MULTILEVEL"]){
+                    if ([currentDeviceValue.valueName isEqualToString:@"SWITCH MULTILEVEL"]) {
                         currentSliderValue = [currentDeviceValue.value floatValue];
                         break;
                     }
@@ -1714,7 +1724,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 for(int i =0; i < [currentKnownValues count]; i++){
                     // if(i!= currentSensor.mostImpValueIndex ){
                     
-                    currentDeviceValue = [currentKnownValues objectAtIndex:i];
+                    currentDeviceValue = currentKnownValues[(NSUInteger) i];
                     //Display only battery - PY 291113
                     NSString *batteryStatus;
                     if([currentDeviceValue.valueName isEqualToString:@"BATTERY"]){
@@ -1803,7 +1813,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 float currentSliderValue = 0.0;
                 
                 for(int i =0; i < [currentKnownValues count]; i++){
-                    currentDeviceValue = [currentKnownValues objectAtIndex:i];
+                    currentDeviceValue = currentKnownValues[(NSUInteger) i];
                     //Get slider value
                     if([currentDeviceValue.valueName isEqualToString:@"SWITCH MULTILEVEL"]){
                         currentSliderValue = [currentDeviceValue.value floatValue];
@@ -1939,7 +1949,6 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 lblMinCool.backgroundColor = [UIColor clearColor];
                 [belowBackgroundLabel addSubview:lblMinCool];
 
-                
                 //Display Cooling slider
                 UISlider *coolSlider = [[UISlider alloc] init];
                 //CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -1958,14 +1967,10 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 UITapGestureRecognizer *coolTapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(coolingSliderTapped:)] ;
                 [coolSlider addGestureRecognizer:coolTapSlider];
                 
-                [coolSlider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"]
-                             forState:UIControlStateNormal];
-                [coolSlider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"]
-                             forState:UIControlStateHighlighted];
-                [coolSlider setMinimumTrackImage:[UIImage imageNamed:@"seekbar_dark_patch 2.png"]
-                                    forState:UIControlStateNormal];
-                [coolSlider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"]
-                                    forState:UIControlStateNormal];
+                [coolSlider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"] forState:UIControlStateNormal];
+                [coolSlider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"] forState:UIControlStateHighlighted];
+                [coolSlider setMinimumTrackImage:[UIImage imageNamed:@"seekbar_dark_patch 2.png"] forState:UIControlStateNormal];
+                [coolSlider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"] forState:UIControlStateNormal];
                 [belowBackgroundLabel addSubview:coolSlider];
                 
 //                UIImageView *maxCoolImage = [[UIImageView alloc]initWithFrame:CGRectMake(self.tableView.frame.size.width - 160 + 100, baseYCordinate-3, 24,24)];
@@ -1980,7 +1985,6 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 lblMaxCool.backgroundColor = [UIColor clearColor];
                 [belowBackgroundLabel addSubview:lblMaxCool];
 
-                
                 baseYCordinate+=30;
                 UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
                 imgLine2.image = [UIImage imageNamed:@"line.png"];
@@ -1998,21 +2002,16 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 
                 //Font for segment control
                 UIFont *font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
-                NSDictionary *attributes = [NSDictionary dictionaryWithObject:font
-                                                                       forKey:NSFontAttributeName];
+                NSDictionary *attributes = @{NSFontAttributeName : font};
                 
-                NSArray *modeItemArray = [NSArray arrayWithObjects: @"Auto", @"Heat", @"Cool", @"Off",nil];
-                UISegmentedControl *scMode = [[UISegmentedControl alloc] initWithItems:modeItemArray];
+                UISegmentedControl *scMode = [[UISegmentedControl alloc] initWithItems:@[@"Auto", @"Heat", @"Cool", @"Off"]];
                 scMode.frame = CGRectMake(self.tableView.frame.size.width - 220, baseYCordinate, 180, 20);
                 scMode.tag = indexPathRow;
                 scMode.tintColor = [UIColor whiteColor];
-                [scMode addTarget:self
-                              action:@selector(modeSelected:)
-                    forControlEvents:UIControlEventValueChanged];
-                [scMode setTitleTextAttributes:attributes
-                                         forState:UIControlStateNormal];
+                [scMode addTarget:self action:@selector(modeSelected:) forControlEvents:UIControlEventValueChanged];
+                [scMode setTitleTextAttributes:attributes forState:UIControlStateNormal];
                 [belowBackgroundLabel addSubview:scMode];
-                
+
                 baseYCordinate+=30;
                 UIImageView *imgLine3 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
                 imgLine3.image = [UIImage imageNamed:@"line.png"];
@@ -2028,20 +2027,15 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 lblFanMode.text = @"Fan";
                 [belowBackgroundLabel addSubview:lblFanMode];
                 
-                NSArray *fanItemArray = [NSArray arrayWithObjects: @"Auto Low", @"On Low",nil];
-                UISegmentedControl *scFanMode = [[UISegmentedControl alloc] initWithItems:fanItemArray];
+                UISegmentedControl *scFanMode = [[UISegmentedControl alloc] initWithItems:@[@"Auto Low", @"On Low"]];
                 scFanMode.frame = CGRectMake(self.tableView.frame.size.width - 190, baseYCordinate, 150, 20);
                 scFanMode.tag = indexPathRow;
                 
-                [scFanMode setTitleTextAttributes:attributes
-                                                forState:UIControlStateNormal];
-                [scFanMode addTarget:self
-                                     action:@selector(fanModeSelected:)
-                           forControlEvents:UIControlEventValueChanged];
+                [scFanMode setTitleTextAttributes:attributes forState:UIControlStateNormal];
+                [scFanMode addTarget:self action:@selector(fanModeSelected:) forControlEvents:UIControlEventValueChanged];
                 scFanMode.tintColor = [UIColor whiteColor];
                 [belowBackgroundLabel addSubview:scFanMode];
 
-                
                 baseYCordinate+=30;
                 UIImageView *imgLine4 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
                 imgLine4.image = [UIImage imageNamed:@"line.png"];
@@ -2174,7 +2168,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                       forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:0.6] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal ];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                     btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
                     btnDismiss.tag = indexPathRow;
@@ -2926,7 +2920,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     // NSLog(@"Rotation %d", fromInterfaceOrientation);
     [self.tableView reloadData];
 }
--(void)initiliazeImages{
+
+- (void)initiliazeImages {
     int currentDeviceType;
     NSMutableArray *currentKnownValues;
     SFIDeviceKnownValues *currentDeviceValue;
@@ -2935,58 +2930,66 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     int deviceValueID;
     int currentDeviceId;
     BOOL isImpFlagSet = FALSE;
-    for(SFIDevice *currentSensor in self.deviceList){
+
+    for (SFIDevice *currentSensor in self.deviceList) {
         isImpFlagSet = FALSE;
         currentDeviceType = currentSensor.deviceType;
         currentDeviceId = currentSensor.deviceID;
         // NSLog(@"Device Type: %d", currentDeviceType);
-        for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-            deviceValueID = currentDeviceValue.deviceID;
-            if(currentDeviceId == deviceValueID){
+
+        for (
+                SFIDeviceValue *deviceValue in self.deviceValueList) {
+            deviceValueID = deviceValue.deviceID;
+            if (currentDeviceId == deviceValueID) {
                 // //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-                currentKnownValues = currentDeviceValue.knownValues;
+                currentKnownValues = deviceValue.knownValues;
                 break;
             }
         }
+
         switch (currentDeviceType) {
             case 1:
-                currentDeviceValue = [currentKnownValues objectAtIndex:0];
+                currentDeviceValue = currentKnownValues[0];
                 currentValue = currentDeviceValue.value;
                 // NSLog(@"Case1 : Device Value: %@", currentValue);
-                if([currentValue isEqualToString:@"true"]){
+                if ([currentValue isEqualToString:@"true"]) {
                     currentSensor.imageName = DT1_BINARY_SWITCH_TRUE;
-                }else if([currentValue isEqualToString:@"false"]){
+                }
+                else if ([currentValue isEqualToString:@"false"]) {
                     currentSensor.imageName = DT1_BINARY_SWITCH_FALSE;
-                }else{
+                }
+                else {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
                 break;
             case 2:
                 //Multilevel switch
                 // NSLog(@"Case2 : Device Value Count %d", [currentKnownValues count]);
-                
-                if([currentKnownValues count] == 0){
+
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (
+                        int i = 0; i < [currentKnownValues count]; i++) {
+                    SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case2 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"SWITCH MULTILEVEL"]){
+                    if ([currentDeviceTypeName isEqualToString:@"SWITCH MULTILEVEL"]) {
                         currentSensor.stateIndex = i;
                         currentSensor.mostImpValueIndex = i;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"0"]){
+
+                        if ([currentValue isEqualToString:@"0"]) {
                             currentSensor.imageName = DT4_LEVEL_CONTROL_FALSE;
-                        }else {
+                        }
+                        else {
                             currentSensor.imageName = DT4_LEVEL_CONTROL_TRUE;
                         }
-                        
+
                     }
                 }
-                
+
 //                if([currentKnownValues count] == 0){
 //                    currentSensor.imageName = @"Reload_icon.png";
 //                }
@@ -3018,27 +3021,29 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 break;
             case 3:
                 // NSLog(@"Case3 : Device Value Count %d", [currentKnownValues count]);
-                if([currentKnownValues count] == 0){
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (
+                        int i = 0; i < [currentKnownValues count]; i++) {
+                    SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case3 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"SENSOR BINARY"]){
+                    if ([currentDeviceTypeName isEqualToString:@"SENSOR BINARY"]) {
                         currentSensor.stateIndex = i;
-                        
+
                         // // NSLog(@"State %@", currentValue);
                         currentSensor.mostImpValueIndex = i;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"true"]){
+
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.imageName = DT3_BINARY_SENSOR_TRUE;
-                        }else {
+                        }
+                        else {
                             currentSensor.imageName = DT3_BINARY_SENSOR_FALSE;
                         }
-                        
+
                     }
                     //                    if([currentDeviceTypeName isEqualToString:TAMPER]){
                     //                        //// NSLog(@"Type: %@ Value: %@", currentDeviceTypeName, currentValue);
@@ -3084,126 +3089,136 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             case 4:
                 //Level Control
                 // NSLog(@"Case4 : Device Value Count %d", [currentKnownValues count]);
-                if([currentKnownValues count] == 0){
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (int i = 0; i < [currentKnownValues count]; i++) {
+                    SFIDeviceKnownValues *curDeviceValues;
+                    curDeviceValues = [currentKnownValues objectAtIndex:(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case4 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"SWITCH BINARY"]){
+                    if ([currentDeviceTypeName isEqualToString:@"SWITCH BINARY"]) {
                         currentSensor.stateIndex = i;
-                        
+
                         // // NSLog(@"State %@", currentValue);
                         //                        currentSensor.mostImpValueIndex = i;
                         //                        currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"true"]){
+
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.imageName = DT2_MULTILEVEL_SWITCH_TRUE;
-                        }else if([currentValue isEqualToString:@"false"]){
+                        }
+                        else if ([currentValue isEqualToString:@"false"]) {
                             currentSensor.imageName = DT2_MULTILEVEL_SWITCH_FALSE;
-                        }else{
+                        }
+                        else {
                             currentSensor.imageName = @"Reload_icon.png";
                         }
-                        
-                    }else if ([currentDeviceTypeName isEqualToString:@"SWITCH MULTILEVEL"]){
+
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"SWITCH MULTILEVEL"]) {
                         currentSensor.mostImpValueIndex = i;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
                     }
                 }
-                
-                
+
+
                 break;
             case 5:
                 //Door Lock
                 // NSLog(@"Case5 : Device Value Count %d", [currentKnownValues count]);
-                if([currentKnownValues count] == 0){
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (int i = 0; i < [currentKnownValues count]; i++) {
+                    SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case5 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"DOOR LOCK "]){
+                    if ([currentDeviceTypeName isEqualToString:@"DOOR LOCK "]) {
                         currentSensor.stateIndex = i;
                         currentSensor.mostImpValueIndex = i;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"true"]){
+
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.imageName = DT5_DOOR_LOCK_TRUE;
-                        }else if([currentValue isEqualToString:@"false"]){
+                        }
+                        else if ([currentValue isEqualToString:@"false"]) {
                             currentSensor.imageName = DT5_DOOR_LOCK_FALSE;
-                        }else{
+                        }
+                        else {
                             currentSensor.imageName = @"Reload_icon.png";
                         }
-                        
+
                     }
                 }
                 break;
             case 6:
                 //Alarm : TODO Later
                 // NSLog(@"Case6 : Device Value Count %d", [currentKnownValues count]);
-                if([currentKnownValues count] == 0){
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (int i = 0; i < [currentKnownValues count]; i++) {
+                    SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case6 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"LOCK_STATE"]){
+                    if ([currentDeviceTypeName isEqualToString:@"LOCK_STATE"]) {
                         currentSensor.stateIndex = i;
                         currentSensor.mostImpValueIndex = i;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"true"]){
+
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.imageName = DT6_ALARM_TRUE;
-                        }else {
+                        }
+                        else {
                             currentSensor.imageName = DT6_ALARM_FALSE;
                         }
-                        
+
                     }
                 }
                 break;
             case 11:
                 //Motion Sensor
                 // NSLog(@"Case11 : Device Value Count %d", [currentKnownValues count]);
-                if([currentKnownValues count] == 0){
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (int index = 0; index < [currentKnownValues count]; index++) {
+                    SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case11 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"STATE"]){
-                        currentSensor.stateIndex = i;
-                        currentSensor.mostImpValueIndex = i;
+                    if ([currentDeviceTypeName isEqualToString:@"STATE"]) {
+                        currentSensor.stateIndex = index;
+                        currentSensor.mostImpValueIndex = index;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"true"]){
+
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.imageName = DT11_MOTION_SENSOR_TRUE;
-                        }else {
+                        }
+                        else {
                             currentSensor.imageName = DT11_MOTION_SENSOR_FALSE;
                         }
-                        
+
                     }
-                    //PY 170214 - Tamper Handling
-                    else if ([currentDeviceTypeName isEqualToString:TAMPER]){
-                        if([currentValue isEqualToString:@"true"]){
+                        //PY 170214 - Tamper Handling
+                    else if ([currentDeviceTypeName isEqualToString:TAMPER]) {
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.isTampered = TRUE;
-                        }else{
+                        }
+                        else {
                             currentSensor.isTampered = FALSE;
                         }
-                        currentSensor.tamperValueIndex = i;
+                        currentSensor.tamperValueIndex = index;
                     }
-                    //PY 180214 - Low Battery Handling
-                    else if ([currentDeviceTypeName isEqualToString:LOW_BATTERY]){
-                        if([currentValue isEqualToString:@"true"]){
+                        //PY 180214 - Low Battery Handling
+                    else if ([currentDeviceTypeName isEqualToString:LOW_BATTERY]) {
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.isBatteryLow = TRUE;
-                        }else{
+                        }
+                        else {
                             currentSensor.isBatteryLow = FALSE;
                         }
                     }
@@ -3212,43 +3227,46 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             case 12:
                 //Contact Switch
                 // NSLog(@"Case12 : Device Value Count %d", [currentKnownValues count]);
-                if([currentKnownValues count] == 0){
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (int index = 0; index < [currentKnownValues count]; index++) {
+                    SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case12 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"STATE"]){
-                        currentSensor.stateIndex = i;
-                        
+                    if ([currentDeviceTypeName isEqualToString:@"STATE"]) {
+                        currentSensor.stateIndex = index;
+
                         // // NSLog(@"State %@", currentValue);
-                        currentSensor.mostImpValueIndex = i;
+                        currentSensor.mostImpValueIndex = index;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"true"]){
+
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.imageName = DT12_CONTACT_SWITCH_TRUE;
-                        }else {
+                        }
+                        else {
                             currentSensor.imageName = DT12_CONTACT_SWITCH_FALSE;
                         }
-                        
+
                     }
-                    //PY 170214 - Tamper Handling
-                    else if ([currentDeviceTypeName isEqualToString:TAMPER]){
-                        if([currentValue isEqualToString:@"true"]){
+                        //PY 170214 - Tamper Handling
+                    else if ([currentDeviceTypeName isEqualToString:TAMPER]) {
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.isTampered = TRUE;
-                            
-                        }else{
+
+                        }
+                        else {
                             currentSensor.isTampered = FALSE;
                         }
-                        currentSensor.tamperValueIndex = i;
+                        currentSensor.tamperValueIndex = index;
                     }
-                    //PY 180214 - Low Battery Handling
-                    else if ([currentDeviceTypeName isEqualToString:LOW_BATTERY]){
-                        if([currentValue isEqualToString:@"true"]){
+                        //PY 180214 - Low Battery Handling
+                    else if ([currentDeviceTypeName isEqualToString:LOW_BATTERY]) {
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.isBatteryLow = TRUE;
-                        }else{
+                        }
+                        else {
                             currentSensor.isBatteryLow = FALSE;
                         }
                     }
@@ -3257,84 +3275,91 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             case 13:
                 //Fire Sensor
                 // NSLog(@"Case13 : Device Value Count %d", [currentKnownValues count]);
-                if([currentKnownValues count] == 0){
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (int index = 0; index < [currentKnownValues count]; index++) {
+                    SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case13 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"STATE"]){
-                        currentSensor.stateIndex = i;
-                        currentSensor.mostImpValueIndex = i;
+                    if ([currentDeviceTypeName isEqualToString:@"STATE"]) {
+                        currentSensor.stateIndex = index;
+                        currentSensor.mostImpValueIndex = index;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"true"]){
+
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.imageName = DT13_FIRE_SENSOR_TRUE;
-                        }else {
+                        }
+                        else {
                             currentSensor.imageName = DT13_FIRE_SENSOR_FALSE;
                         }
-                        
+
                     }
-                    //PY 170214 - Tamper Handling
-                    else if ([currentDeviceTypeName isEqualToString:TAMPER]){
-                        if([currentValue isEqualToString:@"true"]){
+                        //PY 170214 - Tamper Handling
+                    else if ([currentDeviceTypeName isEqualToString:TAMPER]) {
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.isTampered = TRUE;
-                           
-                        }else{
+
+                        }
+                        else {
                             currentSensor.isTampered = FALSE;
                         }
-                         currentSensor.tamperValueIndex = i;
+                        currentSensor.tamperValueIndex = index;
                     }
-                    //PY 180214 - Low Battery Handling
-                    else if ([currentDeviceTypeName isEqualToString:LOW_BATTERY]){
-                        if([currentValue isEqualToString:@"true"]){
+                        //PY 180214 - Low Battery Handling
+                    else if ([currentDeviceTypeName isEqualToString:LOW_BATTERY]) {
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.isBatteryLow = TRUE;
-                        }else{
+                        }
+                        else {
                             currentSensor.isBatteryLow = FALSE;
                         }
                     }
                 }
                 break;
+
             case 14:
                 //Water Sensor
                 // NSLog(@"Case14 : Device Value Count %d", [currentKnownValues count]);
-                if([currentKnownValues count] == 0){
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (int index = 0; index < [currentKnownValues count]; index++) {
+                    SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case14 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"STATE"]){
-                        currentSensor.stateIndex = i;
-                        currentSensor.mostImpValueIndex = i;
+                    if ([currentDeviceTypeName isEqualToString:@"STATE"]) {
+                        currentSensor.stateIndex = index;
+                        currentSensor.mostImpValueIndex = index;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"true"]){
+
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.imageName = DT14_WATER_SENSOR_TRUE;
-                        }else {
+                        }
+                        else {
                             currentSensor.imageName = DT14_WATER_SENSOR_FALSE;
                         }
-                        
+
                     }
-                    //PY 170214 - Tamper Handling
-                    else if ([currentDeviceTypeName isEqualToString:TAMPER]){
-                        if([currentValue isEqualToString:@"true"]){
+                        //PY 170214 - Tamper Handling
+                    else if ([currentDeviceTypeName isEqualToString:TAMPER]) {
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.isTampered = TRUE;
-                            
-                        }else{
+
+                        }
+                        else {
                             currentSensor.isTampered = FALSE;
                         }
-                        currentSensor.tamperValueIndex = i;
+                        currentSensor.tamperValueIndex = index;
                     }
-                    //PY 180214 - Low Battery Handling
-                    else if ([currentDeviceTypeName isEqualToString:LOW_BATTERY]){
-                        if([currentValue isEqualToString:@"true"]){
+                        //PY 180214 - Low Battery Handling
+                    else if ([currentDeviceTypeName isEqualToString:LOW_BATTERY]) {
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.isBatteryLow = TRUE;
-                        }else{
+                        }
+                        else {
                             currentSensor.isBatteryLow = FALSE;
                         }
                     }
@@ -3343,41 +3368,44 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             case 15:
                 //Gas Sensor
                 // NSLog(@"Case15 : Device Value Count %d", [currentKnownValues count]);
-                if([currentKnownValues count] == 0){
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (int index = 0; index < [currentKnownValues count]; index++) {
+                    SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case15 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"STATE"]){
-                        currentSensor.stateIndex = i;
-                        currentSensor.mostImpValueIndex = i;
+                    if ([currentDeviceTypeName isEqualToString:@"STATE"]) {
+                        currentSensor.stateIndex = index;
+                        currentSensor.mostImpValueIndex = index;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"true"]){
+
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.imageName = DT15_GAS_SENSOR_TRUE;
-                        }else {
+                        }
+                        else {
                             currentSensor.imageName = DT15_GAS_SENSOR_FALSE;
                         }
-                        
+
                     }
-                    //PY 170214 - Tamper Handling
-                    else if ([currentDeviceTypeName isEqualToString:TAMPER]){
-                        if([currentValue isEqualToString:@"true"]){
+                        //PY 170214 - Tamper Handling
+                    else if ([currentDeviceTypeName isEqualToString:TAMPER]) {
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.isTampered = TRUE;
-                            
-                        }else{
+
+                        }
+                        else {
                             currentSensor.isTampered = FALSE;
                         }
-                        currentSensor.tamperValueIndex = i;
+                        currentSensor.tamperValueIndex = index;
                     }
-                    //PY 180214 - Low Battery Handling
-                    else if ([currentDeviceTypeName isEqualToString:LOW_BATTERY]){
-                        if([currentValue isEqualToString:@"true"]){
+                        //PY 180214 - Low Battery Handling
+                    else if ([currentDeviceTypeName isEqualToString:LOW_BATTERY]) {
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.isBatteryLow = TRUE;
-                        }else{
+                        }
+                        else {
                             currentSensor.isBatteryLow = FALSE;
                         }
                     }
@@ -3387,41 +3415,44 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             case 17:
                 //Vibration Sensor
                 // NSLog(@"Case17 : Device Value Count %d", [currentKnownValues count]);
-                if([currentKnownValues count] == 0){
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (int index = 0; index < [currentKnownValues count]; index++) {
+                    SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case17 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"STATE"]){
-                        currentSensor.stateIndex = i;
-                        currentSensor.mostImpValueIndex = i;
+                    if ([currentDeviceTypeName isEqualToString:@"STATE"]) {
+                        currentSensor.stateIndex = index;
+                        currentSensor.mostImpValueIndex = index;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"true"]){
+
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.imageName = DT17_VIBRATION_SENSOR_TRUE;
-                        }else {
+                        }
+                        else {
                             currentSensor.imageName = DT17_VIBRATION_SENSOR_FALSE;
                         }
-                        
+
                     }
-                    //PY 170214 - Tamper Handling
-                    else if ([currentDeviceTypeName isEqualToString:TAMPER]){
-                        if([currentValue isEqualToString:@"true"]){
+                        //PY 170214 - Tamper Handling
+                    else if ([currentDeviceTypeName isEqualToString:TAMPER]) {
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.isTampered = TRUE;
-                            
-                        }else{
+
+                        }
+                        else {
                             currentSensor.isTampered = FALSE;
                         }
-                        currentSensor.tamperValueIndex = i;
+                        currentSensor.tamperValueIndex = index;
                     }
-                    //PY 180214 - Low Battery Handling
-                    else if ([currentDeviceTypeName isEqualToString:LOW_BATTERY]){
-                        if([currentValue isEqualToString:@"true"]){
+                        //PY 180214 - Low Battery Handling
+                    else if ([currentDeviceTypeName isEqualToString:LOW_BATTERY]) {
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.isBatteryLow = TRUE;
-                        }else{
+                        }
+                        else {
                             currentSensor.isBatteryLow = FALSE;
                         }
                     }
@@ -3430,41 +3461,44 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             case 19:
                 //Keyfob
                 // NSLog(@"Case19 : Device Value Count %d", [currentKnownValues count]);
-                if([currentKnownValues count] == 0){
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (int index = 0; index < [currentKnownValues count]; index++) {
+                    SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case19 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"STATE"]){
-                        currentSensor.stateIndex = i;
-                        currentSensor.mostImpValueIndex = i;
+                    if ([currentDeviceTypeName isEqualToString:@"STATE"]) {
+                        currentSensor.stateIndex = index;
+                        currentSensor.mostImpValueIndex = index;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"true"]){
+
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.imageName = DT19_KEYFOB_TRUE;
-                        }else {
+                        }
+                        else {
                             currentSensor.imageName = DT19_KEYFOB_FALSE;
                         }
-                        
+
                     }
-                    //PY 170214 - Tamper Handling
-                    else if ([currentDeviceTypeName isEqualToString:TAMPER]){
-                        if([currentValue isEqualToString:@"true"]){
+                        //PY 170214 - Tamper Handling
+                    else if ([currentDeviceTypeName isEqualToString:TAMPER]) {
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.isTampered = TRUE;
-                            
-                        }else{
+
+                        }
+                        else {
                             currentSensor.isTampered = FALSE;
                         }
-                        currentSensor.tamperValueIndex = i;
+                        currentSensor.tamperValueIndex = index;
                     }
-                    //PY 180214 - Low Battery Handling
-                    else if ([currentDeviceTypeName isEqualToString:LOW_BATTERY]){
-                        if([currentValue isEqualToString:@"true"]){
+                        //PY 180214 - Low Battery Handling
+                    else if ([currentDeviceTypeName isEqualToString:LOW_BATTERY]) {
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.isBatteryLow = TRUE;
-                        }else{
+                        }
+                        else {
                             currentSensor.isBatteryLow = FALSE;
                         }
                     }
@@ -3473,83 +3507,89 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             case 22:
                 //Electric Measurement switch - AC
                 // NSLog(@"Case22 : Device Value Count %d", [currentKnownValues count]);
-                if([currentKnownValues count] == 0){
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (int i = 0; i < [currentKnownValues count]; i++) {
+                    SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case22 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"SWITCH BINARY"]){
+                    if ([currentDeviceTypeName isEqualToString:@"SWITCH BINARY"]) {
                         currentSensor.stateIndex = i;
-                        
+
                         // // NSLog(@"State %@", currentValue);
                         currentSensor.mostImpValueIndex = i;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"true"]){
+
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.imageName = DT22_AC_SWITCH_TRUE;
-                        }else if([currentValue isEqualToString:@"false"]){
+                        }
+                        else if ([currentValue isEqualToString:@"false"]) {
                             currentSensor.imageName = DT22_AC_SWITCH_FALSE;
-                        }else{
+                        }
+                        else {
                             currentSensor.imageName = @"Reload_icon.png";
                         }
-                        
+
                     }
                 }
                 break;
             case 23:
                 //Electric Measurement switch - DC
                 // NSLog(@"Case23 : Device Value Count %d", [currentKnownValues count]);
-                if([currentKnownValues count] == 0){
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (int i = 0; i < [currentKnownValues count]; i++) {
+                    SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case23 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"SWITCH BINARY"]){
+                    if ([currentDeviceTypeName isEqualToString:@"SWITCH BINARY"]) {
                         currentSensor.stateIndex = i;
                         currentSensor.mostImpValueIndex = i;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"true"]){
+
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.imageName = DT23_DC_SWITCH_TRUE;
-                        }else if([currentValue isEqualToString:@"false"]){
+                        }
+                        else if ([currentValue isEqualToString:@"false"]) {
                             currentSensor.imageName = DT23_DC_SWITCH_FALSE;
-                        }else{
+                        }
+                        else {
                             currentSensor.imageName = @"Reload_icon.png";
                         }
-                        
+
                     }
                 }
                 break;
             case 34:
                 //Shade
                 // NSLog(@"Case34 : Device Value Count %d", [currentKnownValues count]);
-                if([currentKnownValues count] == 0){
+                if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
-                for(int i = 0; i < [currentKnownValues count]; i++){
-                    SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
+                for (int i = 0; i < [currentKnownValues count]; i++) {
+                    SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
                     // NSLog(@"Case34 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
-                    if([currentDeviceTypeName isEqualToString:@"SWITCH BINARY"]){
+                    if ([currentDeviceTypeName isEqualToString:@"SWITCH BINARY"]) {
                         currentSensor.stateIndex = i;
                         currentSensor.mostImpValueIndex = i;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
-                        
-                        if([currentValue isEqualToString:@"true"]){
+
+                        if ([currentValue isEqualToString:@"true"]) {
                             currentSensor.imageName = DT34_SHADE_TRUE;
-                        }else if([currentValue isEqualToString:@"false"]){
+                        }
+                        else if ([currentValue isEqualToString:@"false"]) {
                             currentSensor.imageName = DT34_SHADE_FALSE;
-                        }else{
+                        }
+                        else {
                             currentSensor.imageName = @"Reload_icon.png";
                         }
-                        
+
                     }
                 }
                 break;
@@ -3560,10 +3600,10 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     }
 }
 
--(void)onSettingClicked:(id)sender {
+- (void)onSettingClicked:(id)sender {
     //// NSLog(@"%@", [gestureRecognizer view]);
-    UIButton *btn = (UIButton*) sender;
-    
+    UIButton *btn = (UIButton *) sender;
+
     //    if(self.checkHeight == btn.tag){
     //        // NSLog(@"Clicked Again");
     //        self.checkHeight = -1;
@@ -3578,10 +3618,10 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     //  NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
     //    changeBrightness = 98;
     //    [self.sensorTableView reloadData];
-    
+
     //Get the sensor for which setting was clicked
-    SFIDevice *currentSensor = [self.deviceList objectAtIndex:btn.tag];
-    if(!currentSensor.isExpanded){
+    SFIDevice *currentSensor = self.deviceList[(NSUInteger) btn.tag];
+    if (!currentSensor.isExpanded) {
         //Expand it
         //Remove the long press for reordering when expanded sensor has slider
         //Device type 2 - 4 - 7
@@ -3592,7 +3632,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 isSliderExpanded = TRUE;
                 self.sensorTable.canReorder = FALSE;
                 break;
-                
+
             default:
                 break;
         }
@@ -3601,7 +3641,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 //            self.sensorTable.canReorder = FALSE;
 //        }
         currentSensor.isExpanded = TRUE;
-    }else{
+    }
+    else {
         //Enable the long press for reordering
         //Device type 2 - 4 - 7
         switch (currentSensor.deviceType) {
@@ -3611,21 +3652,21 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 isSliderExpanded = FALSE;
                 self.sensorTable.canReorder = TRUE;
                 break;
-                
+
             default:
                 break;
         }
-        
+
 //        if(currentSensor.deviceType == 2){
 //            isSliderExpanded = FALSE;
 //            self.sensorTable.canReorder = TRUE;
 //        }
         currentSensor.isExpanded = FALSE;
     }
-     NSLog(@"Current Type: %d", currentSensor.deviceType);
+    NSLog(@"Current Type: %d", currentSensor.deviceType);
     [self.tableView reloadData];
     // [self.tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:FALSE];
-    
+
 }
 
 -(void) onAddAlmondClicked:(id) sender{
@@ -3639,104 +3680,111 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 //}
 
 
--(void)dismissTamper:(id)sender {
+- (void)dismissTamper:(id)sender {
     // NSLog(@"Dismiss Tamper");
-    UIButton *btn = (UIButton*) sender;
+    UIButton *btn = (UIButton *) sender;
     int deviceValueID;
     int currentDeviceId;
     NSMutableArray *currentKnownValues;
-    SFIDevice *currentSensor =[self.deviceList objectAtIndex:btn.tag];
+
+    SFIDevice *currentSensor = self.deviceList[(NSUInteger) btn.tag];
     currentDeviceId = currentSensor.deviceID;
-    for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-        deviceValueID = currentDeviceValue.deviceID;
-        if(currentDeviceId == deviceValueID){
+
+    for (SFIDeviceValue *value in self.deviceValueList) {
+        deviceValueID = value.deviceID;
+        if (currentDeviceId == deviceValueID) {
             //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-            currentKnownValues = currentDeviceValue.knownValues;
+            currentKnownValues = value.knownValues;
             break;
         }
     }
-    
-    SFIDeviceKnownValues *currentDeviceValue;
-    currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.tamperValueIndex];
+
+    SFIDeviceKnownValues *currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.tamperValueIndex];
     currentDeviceValue.value = @"false";
+
     self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
     self.currentIndexID = currentDeviceValue.index;
     self.currentValue = currentDeviceValue.value;
-    [self sendMobileCommand];
 
+    [self sendMobileCommand];
 }
 
 
--(void)onDeviceClicked:(id)sender {
+- (void)onDeviceClicked:(id)sender {
     //// NSLog(@"%@", [gestureRecognizer view]);
-    UIButton *btn = (UIButton*) sender;
-    
+    UIButton *btn = (UIButton *) sender;
+
     [SNLog Log:@"Method Name: %s Device Clicked: TIME => %f", __PRETTY_FUNCTION__, CFAbsoluteTimeGetCurrent()];
-    
+
     // NSLog(@"Device Index Clicked: %ld", (long)btn.tag);
     int deviceValueID;
     int currentDeviceId;
     NSMutableArray *currentKnownValues;
-    SFIDevice *currentSensor =[self.deviceList objectAtIndex:btn.tag];
+
+    SFIDevice *currentSensor = self.deviceList[(NSUInteger) btn.tag];
     int currentDeviceType = currentSensor.deviceType;
     currentDeviceId = currentSensor.deviceID;
-    for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-        deviceValueID = currentDeviceValue.deviceID;
-        if(currentDeviceId == deviceValueID){
+
+    for (SFIDeviceValue *value in self.deviceValueList) {
+        deviceValueID = value.deviceID;
+        if (currentDeviceId == deviceValueID) {
             //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-            currentKnownValues = currentDeviceValue.knownValues;
+            currentKnownValues = value.knownValues;
             break;
         }
     }
-    
+
     //[SNLog Log:@"Method Name: %s ID Match: Selected currentDeviceType is @%d", __PRETTY_FUNCTION__,currentDeviceType];
-    
+
     SFIDeviceKnownValues *currentDeviceValue;
     NSString *currentValue;
-    NSString * mostImpIndexName;
+    NSString *mostImpIndexName;
     switch (currentDeviceType) {
         case 1:
             //Switch
             //Only one value
-            currentDeviceValue = [currentKnownValues objectAtIndex:0];
+            currentDeviceValue = currentKnownValues[0];
             currentValue = currentDeviceValue.value;
             currentDeviceValue.isUpdating = true;
-            if([currentValue isEqualToString:@"true"]){
+            if ([currentValue isEqualToString:@"true"]) {
                 // NSLog(@"Change to OFF");
                 currentDeviceValue.value = @"false";
                 //currentSensor.imageName = @"switch_off.png";
                 //imgDevice.image = [UIImage imageNamed:@"bulb_on.png"];
                 self.currentValue = @"false";
-            }else if([currentValue isEqualToString:@"false"]){
+            }
+            else if ([currentValue isEqualToString:@"false"]) {
                 // NSLog(@"Change to ON");
                 currentDeviceValue.value = @"true";
                 //currentSensor.imageName = @"switch_on.png";
                 //imgDevice.frame = CGRectMake(35, 25, 27,42);
                 //imgDevice.image = [UIImage imageNamed:@"bulb_off.png"];
                 self.currentValue = @"true";
-            }else{
+            }
+            else {
                 return;
             }
             //currentDeviceValue.value = @"Updating sensor data.\nPlease wait.";
-            
+
             currentSensor.imageName = @"Wait_Icon.png";
             self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
             self.currentIndexID = 1;
-            
+
             [self sendMobileCommand];
             [self.tableView reloadData];
             break;
         case 2:
             //Multilevel switch
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.mostImpValueIndex];
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.mostImpValueIndex];
             currentValue = currentDeviceValue.value;
             //Do not wait for response from Cloud
             currentDeviceValue.isUpdating = true;
-            if([currentValue isEqualToString:@"0"]){
+            if ([currentValue isEqualToString:@"0"]) {
                 // NSLog(@"Change to ON - Set value as 99");
                 currentDeviceValue.value = @"99";
                 self.currentValue = @"99";
-            }else{
+            }
+            else {
                 // NSLog(@"Change to OFF - Set value as 0");
                 currentDeviceValue.value = @"0";
                 self.currentValue = @"0";
@@ -3749,7 +3797,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 //            else{
 //                return;
 //            }
-            
+
             currentSensor.imageName = @"Wait_Icon.png";
             self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
             self.currentIndexID = currentDeviceValue.index;
@@ -3760,8 +3808,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         case 3:
             //Sensor
             mostImpIndexName = currentSensor.mostImpValueName;
-            if([mostImpIndexName isEqualToString:TAMPER]){
-                currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.mostImpValueIndex];
+            if ([mostImpIndexName isEqualToString:TAMPER]) {
+                currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.mostImpValueIndex];
                 //Do not wait for response from Cloud
                 currentDeviceValue.value = @"false";
                 //currentDeviceValue.value = @"Updating sensor data. Please wait.";
@@ -3778,22 +3826,24 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             break;
         case 4:
             //Level Control
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentValue = currentDeviceValue.value;
             //Do not wait for response from Cloud
             currentDeviceValue.isUpdating = true;
-            if([currentValue isEqualToString:@"true"]){
+            if ([currentValue isEqualToString:@"true"]) {
                 // NSLog(@"Change to OFF");
                 currentDeviceValue.value = @"false";
                 self.currentValue = @"false";
-            }else if([currentValue isEqualToString:@"false"]){
+            }
+            else if ([currentValue isEqualToString:@"false"]) {
                 // NSLog(@"Change to ON");
                 currentDeviceValue.value = @"true";
                 self.currentValue = @"true";
-            }else{
+            }
+            else {
                 return;
             }
-            
+
             currentSensor.imageName = @"Wait_Icon.png";
             self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
             self.currentIndexID = currentDeviceValue.index;
@@ -3806,22 +3856,24 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             //Sensor
             //            mostImpIndexName = currentSensor.mostImpValueName;
             //            if([mostImpIndexName isEqualToString:TAMPER]){
-            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
+            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentValue = currentDeviceValue.value;
             //Do not wait for response from Cloud
             currentDeviceValue.isUpdating = true;
-            if([currentValue isEqualToString:@"true"]){
+            if ([currentValue isEqualToString:@"true"]) {
                 // NSLog(@"Change to OFF");
                 currentDeviceValue.value = @"false";
                 self.currentValue = @"false";
-            }else if([currentValue isEqualToString:@"false"]){
+            }
+            else if ([currentValue isEqualToString:@"false"]) {
                 // NSLog(@"Change to ON");
                 currentDeviceValue.value = @"true";
                 self.currentValue = @"true";
-            }else{
+            }
+            else {
                 return;
             }
-            
+
             currentSensor.imageName = @"Wait_Icon.png";
             self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
             self.currentIndexID = currentDeviceValue.index;
@@ -3829,7 +3881,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             [self sendMobileCommand];
             // [[self view] endEditing:YES];
             [self.tableView reloadData];
-            
+
             //            }
             //imgDevice.frame = CGRectMake(25, 20, 40.5,60);
             //imgDevice.image = [UIImage imageNamed:@"door_on.png"];
@@ -3841,97 +3893,96 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             //imgDevice.image = [UIImage imageNamed:@"door_tamper.png"];
             break;
     }
-    
-    
+
+
 }
 
 
 
--(void)onAddDeviceClicked:(id)sender {
-    // NSLog(@"Add Device action");
-}
+//-(void)onAddDeviceClicked:(id)sender {
+//    // NSLog(@"Add Device action");
+//}
 
 
-
-
-
-
--(void) refreshDataForAlmond{
-    if([self.currentMAC isEqualToString:NO_ALMOND]){
+- (void)refreshDataForAlmond {
+    if ([self.currentMAC isEqualToString:NO_ALMOND]) {
         return;
     }
     self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
     self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
     self.offlineHash = [SFIOfflineDataManager readHashList:self.currentMAC];
-    //Call command : Get HASH - Command 74 - Match if list is upto date
-    HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    HUD.dimBackground = YES;
-    HUD.labelText = @"Loading sensor data.";
+
+    //Call command : Get HASH - Command 74 - Match if list is up to date
+    [self.HUD show:YES];
     [self getDeviceHash];
-    
+
     //PY 311013 - Timeout for Sensor Command
     sensorDataCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
                                                               target:self
                                                             selector:@selector(cancelSensorCommand:)
                                                             userInfo:nil
                                                              repeats:NO];
-    
+
     [self initiliazeImages];
-    
+
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = paths[0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
-    
+
     listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-    
-    currentColor = [listAvailableColors objectAtIndex:0];
-    
-    baseBrightness = currentColor.brightness;
-    changeHue = currentColor.hue;
-    changeSaturation = currentColor.saturation;
+
+    currentColor = listAvailableColors[0];
+
+    baseBrightness = (unsigned int) currentColor.brightness;
+    changeHue = (unsigned int) currentColor.hue;
+    changeSaturation = (unsigned int) currentColor.saturation;
 }
 
 #pragma mark - Sliding controls
+
 - (void)sliderTapped:(UIGestureRecognizer *)gestureRecognizer {
     // NSLog(@"Send mobile command - Tapped");
-    UISlider* slider = (UISlider*)gestureRecognizer.view;
-    if (slider.highlighted)
-        return; // tap on thumb, let slider deal with it
-    CGPoint pt = [gestureRecognizer locationInView: slider];
+    UISlider *slider = (UISlider *) gestureRecognizer.view;
+    if (slider.highlighted) {
+        return;
+    } // tap on thumb, let slider deal with it
+
+    CGPoint pt = [gestureRecognizer locationInView:slider];
     CGFloat percentage = pt.x / slider.bounds.size.width;
     CGFloat delta = percentage * (slider.maximumValue - slider.minimumValue);
     CGFloat value = slider.minimumValue + delta;
     // NSLog(@"Tapped Value: %f", value);
     // NSLog(@"Device Index Clicked: %ld", (long)slider.tag);
     [slider setValue:value animated:YES];
-    
+
     //Send value to cloud
-    int sliderValue=(int)value;
+    int sliderValue = (int) value;
     int deviceValueID;
     int currentDeviceId;
     NSMutableArray *currentKnownValues;
-    SFIDevice *currentSensor =[self.deviceList objectAtIndex:slider.tag];
+    SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
     //int currentDeviceType = currentSensor.deviceType;
     currentDeviceId = currentSensor.deviceID;
-    for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-        deviceValueID = currentDeviceValue.deviceID;
-        if(currentDeviceId == deviceValueID){
+
+    for (SFIDeviceValue *deviceValue in self.deviceValueList) {
+        deviceValueID = deviceValue.deviceID;
+        if (currentDeviceId == deviceValueID) {
             //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-            currentKnownValues = currentDeviceValue.knownValues;
+            currentKnownValues = deviceValue.knownValues;
             break;
         }
     }
-    
+
     //[SNLog Log:@"Method Name: %s ID Match: Selected currentDeviceType is @%d", __PRETTY_FUNCTION__,currentDeviceType];
-    
+
     SFIDeviceKnownValues *currentDeviceValue;
-    NSString * mostImpIndexName;
-    
+    NSString *mostImpIndexName;
+
     mostImpIndexName = currentSensor.mostImpValueName;
-    if([mostImpIndexName isEqualToString:@"SWITCH MULTILEVEL"]){
-        currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.mostImpValueIndex];
+    if ([mostImpIndexName isEqualToString:@"SWITCH MULTILEVEL"]) {
+        currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.mostImpValueIndex];
         //Do not wait for response from Cloud
-        currentDeviceValue.value = [NSString stringWithFormat:@"%d",sliderValue];
+        currentDeviceValue.value = [NSString stringWithFormat:@"%d", sliderValue];
         self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
         self.currentIndexID = currentDeviceValue.index;
         self.currentValue = currentDeviceValue.value;
@@ -3945,36 +3996,38 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
 - (IBAction)sliderDidEndSliding:(id)sender {
     // NSLog(@"Send mobile command");
-    UISlider *slider=(UISlider *)sender;
-    int sliderValue=(int)(slider.value);
+    UISlider *slider = (UISlider *) sender;
+    int sliderValue = (int) (slider.value);
     // NSLog(@"sliderValue = %d",sliderValue);
-    
+
     // NSLog(@"Device Index Clicked: %ld", (long)slider.tag);
     int deviceValueID;
     int currentDeviceId;
     NSMutableArray *currentKnownValues;
-    SFIDevice *currentSensor =[self.deviceList objectAtIndex:slider.tag];
+
+    SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
     //int currentDeviceType = currentSensor.deviceType;
     currentDeviceId = currentSensor.deviceID;
-    for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-        deviceValueID = currentDeviceValue.deviceID;
-        if(currentDeviceId == deviceValueID){
+
+    for (SFIDeviceValue *value in self.deviceValueList) {
+        deviceValueID = value.deviceID;
+        if (currentDeviceId == deviceValueID) {
             //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-            currentKnownValues = currentDeviceValue.knownValues;
+            currentKnownValues = value.knownValues;
             break;
         }
     }
-    
+
     //[SNLog Log:@"Method Name: %s ID Match: Selected currentDeviceType is @%d", __PRETTY_FUNCTION__,currentDeviceType];
-    
+
     SFIDeviceKnownValues *currentDeviceValue;
-    NSString * mostImpIndexName;
-    
+    NSString *mostImpIndexName;
+
     mostImpIndexName = currentSensor.mostImpValueName;
-    if([mostImpIndexName isEqualToString:@"SWITCH MULTILEVEL"]){
-        currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.mostImpValueIndex];
+    if ([mostImpIndexName isEqualToString:@"SWITCH MULTILEVEL"]) {
+        currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.mostImpValueIndex];
         //Do not wait for response from Cloud
-        currentDeviceValue.value = [NSString stringWithFormat:@"%d",sliderValue];
+        currentDeviceValue.value = [NSString stringWithFormat:@"%d", sliderValue];
         self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
         self.currentIndexID = currentDeviceValue.index;
         self.currentValue = currentDeviceValue.value;
@@ -4003,7 +4056,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     int deviceValueID;
     int currentDeviceId;
     NSMutableArray *currentKnownValues;
-    SFIDevice *currentSensor =[self.deviceList objectAtIndex:slider.tag];
+    SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
     //int currentDeviceType = currentSensor.deviceType;
     currentDeviceId = currentSensor.deviceID;
     for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
@@ -4042,7 +4095,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     int deviceValueID;
     int currentDeviceId;
     NSMutableArray *currentKnownValues;
-    SFIDevice *currentSensor =[self.deviceList objectAtIndex:slider.tag];
+
+    SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
     //int currentDeviceType = currentSensor.deviceType;
     currentDeviceId = currentSensor.deviceID;
     for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
@@ -4090,7 +4144,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     int deviceValueID;
     int currentDeviceId;
     NSMutableArray *currentKnownValues;
-    SFIDevice *currentSensor =[self.deviceList objectAtIndex:slider.tag];
+    SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
     //int currentDeviceType = currentSensor.deviceType;
     currentDeviceId = currentSensor.deviceID;
     for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
@@ -4121,30 +4175,30 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
 - (IBAction)heatingSliderDidEndSliding:(id)sender {
     // NSLog(@"Send mobile command");
-    UISlider *slider=(UISlider *)sender;
-    int sliderValue=(int)(slider.value);
-    // NSLog(@"sliderValue = %d",sliderValue);
-    
-    // NSLog(@"Device Index Clicked: %ld", (long)slider.tag);
+    UISlider *slider = (UISlider *) sender;
+    int sliderValue = (int) (slider.value);
+
     int deviceValueID;
     int currentDeviceId;
     NSMutableArray *currentKnownValues;
-    SFIDevice *currentSensor =[self.deviceList objectAtIndex:slider.tag];
+
+    SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
     currentDeviceId = currentSensor.deviceID;
-    for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
+
+    for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
         deviceValueID = currentDeviceValue.deviceID;
-        if(currentDeviceId == deviceValueID){
+        if (currentDeviceId == deviceValueID) {
             //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
             currentKnownValues = currentDeviceValue.knownValues;
             break;
         }
     }
-    
+
     //Change value locally and send mobile command
-    for(SFIDeviceKnownValues *currentDeviceValue in currentKnownValues){
-        if([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT SETPOINT HEATING"]){
+    for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
+        if ([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT SETPOINT HEATING"]) {
             //Do not wait for response from Cloud
-            currentDeviceValue.value = [NSString stringWithFormat:@"%d",sliderValue];
+            currentDeviceValue.value = [NSString stringWithFormat:@"%d", sliderValue];
             self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
             self.currentIndexID = currentDeviceValue.index;
             self.currentValue = currentDeviceValue.value;
@@ -4157,33 +4211,36 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 }
 
 #pragma mark - Segment Control Method
--(void)modeSelected:(id)sender{
-   UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
-   NSString *strModeValue = [segmentedControl titleForSegmentAtIndex: [segmentedControl selectedSegmentIndex]];
-   NSLog(@"Mode Selected title %@",strModeValue);
+
+- (void)modeSelected:(id)sender {
+    UISegmentedControl *ctrl = (UISegmentedControl *) sender;
+    NSString *strModeValue = [ctrl titleForSegmentAtIndex:(NSUInteger) ctrl.selectedSegmentIndex];
+    NSLog(@"Mode Selected title %@", strModeValue);
 
     int deviceValueID;
     int currentDeviceId;
     NSMutableArray *currentKnownValues;
-    SFIDevice *currentSensor =[self.deviceList objectAtIndex:segmentedControl.tag];
+
+    SFIDevice *currentSensor = self.deviceList[(NSUInteger) ctrl.tag];
     currentDeviceId = currentSensor.deviceID;
-    for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
+
+    for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
         deviceValueID = currentDeviceValue.deviceID;
-        if(currentDeviceId == deviceValueID){
+        if (currentDeviceId == deviceValueID) {
             //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
             currentKnownValues = currentDeviceValue.knownValues;
             break;
         }
     }
-    
+
     //Change value locally and send mobile command
-    for(SFIDeviceKnownValues *currentDeviceValue in currentKnownValues){
-        if([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT MODE"]){
+    for (SFIDeviceKnownValues *value in currentKnownValues) {
+        if ([value.valueName isEqualToString:@"THERMOSTAT MODE"]) {
             //Do not wait for response from Cloud
-            currentDeviceValue.value = strModeValue;
+            value.value = strModeValue;
             self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
-            self.currentIndexID = currentDeviceValue.index;
-            self.currentValue = currentDeviceValue.value;
+            self.currentIndexID = value.index;
+            self.currentValue = value.value;
             [self sendMobileCommand];
             [self initiliazeImages];
             [self.tableView reloadData];
@@ -4192,33 +4249,35 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     }
 }
 
--(void)fanModeSelected:(id)sender{
-    UISegmentedControl *segmentedControl = (UISegmentedControl *)sender;
-    NSString *strFanModeValue = [segmentedControl titleForSegmentAtIndex: [segmentedControl selectedSegmentIndex]];
-    NSLog(@"Fan Mode Selected title %@",strFanModeValue);
-    
+- (void)fanModeSelected:(id)sender {
+    UISegmentedControl *ctrl = (UISegmentedControl *) sender;
+    NSString *strFanModeValue = [ctrl titleForSegmentAtIndex:(NSUInteger) ctrl.selectedSegmentIndex];
+    NSLog(@"Fan Mode Selected title %@", strFanModeValue);
+
     int deviceValueID;
     int currentDeviceId;
     NSMutableArray *currentKnownValues;
-    SFIDevice *currentSensor =[self.deviceList objectAtIndex:segmentedControl.tag];
+
+    SFIDevice *currentSensor = self.deviceList[(NSUInteger) ctrl.tag];
     currentDeviceId = currentSensor.deviceID;
-    for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
+
+    for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
         deviceValueID = currentDeviceValue.deviceID;
-        if(currentDeviceId == deviceValueID){
+        if (currentDeviceId == deviceValueID) {
             //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
             currentKnownValues = currentDeviceValue.knownValues;
             break;
         }
     }
-    
+
     //Change value locally and send mobile command
-    for(SFIDeviceKnownValues *currentDeviceValue in currentKnownValues){
-        if([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT FAN MODE"]){
+    for (SFIDeviceKnownValues *deviceValue in currentKnownValues) {
+        if ([deviceValue.valueName isEqualToString:@"THERMOSTAT FAN MODE"]) {
             //Do not wait for response from Cloud
-            currentDeviceValue.value = strFanModeValue;
+            deviceValue.value = strFanModeValue;
             self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
-            self.currentIndexID = currentDeviceValue.index;
-            self.currentValue = currentDeviceValue.value;
+            self.currentIndexID = deviceValue.index;
+            self.currentValue = deviceValue.value;
             [self sendMobileCommand];
             [self initiliazeImages];
             [self.tableView reloadData];
@@ -4262,9 +4321,10 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 }
 
 #pragma mark - Cloud Commands and Handlers
+
 -(void)getDeviceHash{
     if([self.currentMAC isEqualToString:NO_ALMOND]){
-        [HUD hide:YES];
+        [self.HUD hide:YES];
         return;
     }
     //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
@@ -4291,25 +4351,20 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     @catch (NSException *exception) {
         //[SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
     }
-    
-    cloudCommand=nil;
-    deviceHashCommand=nil;
-    
 }
 
 -(void)HashResponseCallback:(id)sender
 {
     //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
         //[SNLog Log:@"Method Name: %s Received Device Hash response", __PRETTY_FUNCTION__];
         
         NSString *currentHash;
         
-        DeviceDataHashResponse *obj = [[DeviceDataHashResponse alloc] init];
-        obj = (DeviceDataHashResponse *)[data valueForKey:@"data"];
+        DeviceDataHashResponse *obj = (DeviceDataHashResponse *)[data valueForKey:@"data"];
         
         if(obj.isSuccessful){
             //Hash Present
@@ -4335,7 +4390,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 else{
                     
                     //Hash sent by cloud as null - No Device
-                    HUD.hidden = YES;
+                    [self.HUD hide:YES];
                     
                     //Open next activity with blank view
                     //                    [HUD hide:YES];
@@ -4350,7 +4405,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             }
             else{
                 //No Hash from cloud
-                HUD.hidden = YES;
+                self.HUD.hidden = YES;
                 //Open next activity with blank view
                 //                [HUD hide:YES];
                 //                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
@@ -4370,118 +4425,105 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     }
 }
 
--(void)loadDeviceList{
+- (void)loadDeviceList {
     //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    
+
     DeviceListRequest *deviceListCommand = [[DeviceListRequest alloc] init];
     deviceListCommand.almondMAC = self.currentMAC;
-    
-    cloudCommand.commandType=DEVICEDATA;
-    cloudCommand.command=deviceListCommand;
+
+    cloudCommand.commandType = DEVICEDATA;
+    cloudCommand.command = deviceListCommand;
     @try {
         //[SNLog Log:@"Method Name: %s Before Writing to socket -- Device List Command", __PRETTY_FUNCTION__];
-        
-        NSError *error=nil;
+
+        NSError *error = nil;
         id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-        
-        if (ret == nil)
-        {
+
+        if (ret == nil) {
             //[SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
         }
-        
+
         //[SNLog Log:@"Method Name: %s After Writing to socket -- Device List Command", __PRETTY_FUNCTION__];
-        
+
     }
     @catch (NSException *exception) {
         //[SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
     }
-    
-    cloudCommand=nil;
-    deviceListCommand=nil;
-    
 }
 
--(void)DeviceListResponseCallback:(id)sender
-{
+- (void)DeviceListResponseCallback:(id)sender {
     //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
-    
-    if(data !=nil){
+    NSDictionary *data = [notifier userInfo];
+
+    if (data != nil) {
         //[SNLog Log:@"Method Name: %s Received Device List response", __PRETTY_FUNCTION__];
-        
-        DeviceListResponse *obj = [[DeviceListResponse alloc] init];
-        obj = (DeviceListResponse *)[data valueForKey:@"data"];
-        
-        self.deviceList= [[NSMutableArray alloc]init];
+
+        DeviceListResponse *obj = (DeviceListResponse *) [data valueForKey:@"data"];
+
+        self.deviceList = [[NSMutableArray alloc] init];
         //[SNLog Log:@"Method Name: %s List size : %d",__PRETTY_FUNCTION__,[obj.deviceList count]];
         self.deviceList = obj.deviceList;
-        
+
         //Write offline
         [SFIOfflineDataManager writeDeviceList:self.deviceList currentMAC:self.currentMAC];
         //If count of devicelist is == 0, donot get device value
         //HUD.hidden = YES;
-        if([self.deviceList count] == 0){
+        if ([self.deviceList count] == 0) {
             return;
         }
         //Get Device Value
         [self loadDeviceValue];
     }
-    
+
 }
 
--(void)loadDeviceValue{
+- (void)loadDeviceValue {
     //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    
-    DeviceValueRequest *deviceValueListCommand = [[DeviceValueRequest alloc] init];
-    deviceValueListCommand.almondMAC = self.currentMAC;
-    
-    cloudCommand.commandType=DEVICE_VALUE;
-    cloudCommand.command=deviceValueListCommand;
+
+    DeviceValueRequest *command = [[DeviceValueRequest alloc] init];
+    command.almondMAC = self.currentMAC;
+
+    cloudCommand.commandType = DEVICE_VALUE;
+    cloudCommand.command = command;
     @try {
-        
+
         //[SNLog Log:@"Method Name: %s Before Writing to socket -- Device Value Command", __PRETTY_FUNCTION__];
-        NSError *error=nil;
+        NSError *error = nil;
         id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-        
-        if (ret == nil)
-        {
+
+        if (ret == nil) {
             //[SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
         }
-        
+
         //[SNLog Log:@"Method Name: %s After Writing to socket -- Device Value Command", __PRETTY_FUNCTION__];
     }
     @catch (NSException *exception) {
         //[SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
     }
-    
-    cloudCommand=nil;
-    deviceValueListCommand=nil;
-    
 }
 
--(void)DeviceValueListResponseCallback:(id)sender
-{
-    HUD.hidden = YES;
+- (void)DeviceValueListResponseCallback:(id)sender {
+    self.HUD.hidden = YES;
+
     //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
-    
-    if(data !=nil){
+    NSDictionary *data = [notifier userInfo];
+
+    if (data != nil) {
         //[SNLog Log:@"Method Name: %s Received Device Value List response", __PRETTY_FUNCTION__];
-        
-        DeviceValueResponse *obj = [[DeviceValueResponse alloc] init];
-        obj = (DeviceValueResponse *)[data valueForKey:@"data"];
-        
-        self.deviceValueList= [[NSMutableArray alloc]init];
+
+        DeviceValueResponse *obj = (DeviceValueResponse *) [data valueForKey:@"data"];
+
+        self.deviceValueList = [[NSMutableArray alloc] init];
         //[SNLog Log:@"Method Name: %s List size : %d",__PRETTY_FUNCTION__,[obj.deviceValueList count]];
         self.deviceValueList = obj.deviceValueList;
-        
+
         //Write offline
         [SFIOfflineDataManager writeDeviceValueList:self.deviceValueList currentMAC:self.currentMAC];
-        
+
         //Reload table
         [self initiliazeImages];
         // [[self view] endEditing:YES];
@@ -4489,16 +4531,16 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         [self.tableView performSelectorOnMainThread:@selector(reloadData)
                                          withObject:nil
                                       waitUntilDone:NO];
-        
-        
+
+
         //TODO: If count of devicevaluelist is < 0, display a message
-        
+
         //        //Display next screen
         //        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
         //        SFIDeviceListViewController *deviceListView = (SFIDeviceListViewController*) [storyboard instantiateViewControllerWithIdentifier:@"SFIDeviceListViewController"];
         //        [self.navigationController pushViewController:deviceListView animated:YES];
     }
-    
+
 }
 
 
@@ -4544,10 +4586,6 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                                                         userInfo:nil
                                                          repeats:NO];
     isMobileCommandSuccessful = FALSE;
-    
-    cloudCommand=nil;
-    mobileCommand=nil;
-    
 }
 
 //PY 311013 - Timeout for Mobile Command
@@ -4567,7 +4605,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 //PY 311013 - Timeout for loading sensor data Command
 -(void)cancelSensorCommand:(id)sender{
     [sensorDataCommandTimer invalidate];
-    [HUD hide:YES];
+    [self.HUD hide:YES];
 }
 
 -(void)MobileCommandResponseCallback:(id)sender
@@ -4578,13 +4616,12 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     
     //[SNLog Log:@"Method Name: %s ", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
         //[SNLog Log:@"Method Name: %s Received MobileCommandResponse",__PRETTY_FUNCTION__];
         
-        MobileCommandResponse *obj = [[MobileCommandResponse alloc] init];
-        obj = (MobileCommandResponse *)[data valueForKey:@"data"];
+        MobileCommandResponse *obj = (MobileCommandResponse *)[data valueForKey:@"data"];
         
         BOOL isSuccessful = obj.isSuccessful;
         if(isSuccessful){
@@ -4636,7 +4673,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 //Write to local database
                 [SFIOfflineDataManager writeDeviceValueList:mobileDeviceValueList currentMAC:self.currentMAC];
             }else{
-                //[SNLog Log:@"Method Name: %s Error in retreiving device list", __PRETTY_FUNCTION__];
+                //[SNLog Log:@"Method Name: %s Error in retrieving device list", __PRETTY_FUNCTION__];
             }
             
         }else{
@@ -4660,11 +4697,11 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
-        DeviceListResponse *obj = [[DeviceListResponse alloc] init];
-        obj = (DeviceListResponse *)[data valueForKey:@"data"];
+        DeviceListResponse *obj = (DeviceListResponse *)[data valueForKey:@"data"];
+
         BOOL isCurrentMAC = FALSE;
         NSString *cloudMAC = obj.almondMAC;
         [SNLog Log:@"Method Name: %s Current MAC ==> @%@ Cloud MAC ==> @%@ DEVICE DATA LIST SIZE: ",__PRETTY_FUNCTION__,currentMAC, cloudMAC, [obj.deviceList count]];
@@ -4729,16 +4766,14 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 {
     //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
         //[SNLog Log:@"Method Name: %s Received DeviceValueListResponse",__PRETTY_FUNCTION__];
         
-        DeviceValueResponse *obj = [[DeviceValueResponse alloc] init];
-        obj = (DeviceValueResponse *)[data valueForKey:@"data"];
-        
-        
-        BOOL isCurrentMAC = FALSE;
+        DeviceValueResponse *obj = (DeviceValueResponse *)[data valueForKey:@"data"];
+
+        BOOL isCurrentMAC;
         BOOL isDeviceValueChanged = FALSE;
         NSString *cloudMAC = obj.almondMAC;
         //[SNLog Log:@"Method Name: %s Update Offline Storage - Sensor DEVICE VALUE LIST SIZE: %d",__PRETTY_FUNCTION__, [obj.deviceValueList count]];
@@ -4830,31 +4865,28 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 }
 
 
--(void)DynamicAlmondListAddCallback:(id)sender{
+- (void)DynamicAlmondListAddCallback:(id)sender {
     //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
-    
-    if(data !=nil){
+    NSDictionary *data = [notifier userInfo];
+
+    if (data != nil) {
         //[SNLog Log:@"Method Name: %s Received DynamicAlmondListAddCallback", __PRETTY_FUNCTION__];
-        
-        AlmondListResponse *obj = [[AlmondListResponse alloc] init];
-        obj = (AlmondListResponse *)[data valueForKey:@"data"];
-        
-        
-        
-        if(obj.isSuccessful){
+
+        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
+
+        if (obj.isSuccessful) {
             //[SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
             //When previously no almonds were there
             //[SNLog Log:@"Method Name: %s Current MAC : %@", __PRETTY_FUNCTION__,self.currentMAC];
-            if([self.currentMAC isEqualToString:NO_ALMOND]){
+            if ([self.currentMAC isEqualToString:NO_ALMOND]) {
                 //[SNLog Log:@"Method Name: %s Previously no almond", __PRETTY_FUNCTION__];
                 NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
                 NSString *currentMACName;
                 NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-                
-                if([almondList count]!=0){
-                    SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
+
+                if ([almondList count] != 0) {
+                    SFIAlmondPlus *currentAlmond = almondList[0];
                     self.currentMAC = currentAlmond.almondplusMAC;
                     currentMACName = currentAlmond.almondplusName;
                     [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
@@ -4862,7 +4894,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     [prefs synchronize];
                     self.navigationItem.title = currentMACName;
                     [self refreshDataForAlmond];
-                }else{
+                }
+                else {
                     self.currentMAC = NO_ALMOND;
                     self.navigationItem.title = @"Get Started";
                     [self.deviceList removeAllObjects];
@@ -4870,54 +4903,52 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
                     [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
                     [prefs synchronize];
-                   //  [[self view] endEditing:YES];
+                    //  [[self view] endEditing:YES];
                     //To remove text fields keyboard. It was throwing error when it was being called from the background thread
                     [self.tableView performSelectorOnMainThread:@selector(reloadData)
                                                      withObject:nil
                                                   waitUntilDone:NO];
                 }
-                
-                
             }
         }
-        
+
     }
 }
 
--(void)DynamicAlmondListDeleteCallback:(id)sender{
+- (void)DynamicAlmondListDeleteCallback:(id)sender {
     //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
-    
-    if(data !=nil){
+    NSDictionary *data = [notifier userInfo];
+
+    if (data != nil) {
         //[SNLog Log:@"Method Name: %s Received DynamicAlmondListCallback", __PRETTY_FUNCTION__];
-        
-        AlmondListResponse *obj = [[AlmondListResponse alloc] init];
-        obj = (AlmondListResponse *)[data valueForKey:@"data"];
-        
-        
-        if(obj.isSuccessful){
-            
+
+        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
+
+        if (obj.isSuccessful) {
+
             //[SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
-            
-            SFIAlmondPlus *deletedAlmond = [obj.almondPlusMACList objectAtIndex:0];
-            if([self.currentMAC isEqualToString:deletedAlmond.almondplusMAC]){
+
+            SFIAlmondPlus *deletedAlmond = obj.almondPlusMACList[0];
+            if ([self.currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
                 //[SNLog Log:@"Method Name: %s Remove this view", __PRETTY_FUNCTION__];
                 NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
                 NSString *currentMACName;
                 NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-                
-                if([almondList count]!=0){
-                    SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
+
+                if ([almondList count] != 0) {
+                    SFIAlmondPlus *currentAlmond = almondList[0];
                     self.currentMAC = currentAlmond.almondplusMAC;
                     currentMACName = currentAlmond.almondplusName;
                     [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
                     [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
-                    [prefs setObject:0 forKey:COLORCODE];
+                    [prefs removeObjectForKey:COLORCODE];
+//                    [prefs setObject:0 forKey:COLORCODE]; //todo this is wrong sort of assignment, so I am interpreting as "remove" per previous line. Need to review.
                     [prefs synchronize];
                     self.navigationItem.title = currentMACName;
                     [self refreshDataForAlmond];
-                }else{
+                }
+                else {
                     self.currentMAC = NO_ALMOND;
                     self.navigationItem.title = @"Get Started";
                     [self.deviceList removeAllObjects];
@@ -4932,48 +4963,40 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                                                      withObject:nil
                                                   waitUntilDone:NO];
                 }
-                
-                
             }
-            
         }
-        
     }
 }
 
 
-- (IBAction)refreshSensorData:(id)sender{
+- (IBAction)refreshSensorData:(id)sender {
     // NSLog(@"Refresh Sensor Data");
-    if([self.currentMAC isEqualToString:NO_ALMOND]){
+    if ([self.currentMAC isEqualToString:NO_ALMOND]) {
         return;
     }
     //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    
+
     SensorForcedUpdateRequest *forcedUpdateCommand = [[SensorForcedUpdateRequest alloc] init];
     forcedUpdateCommand.almondMAC = self.currentMAC;
-    
-    cloudCommand.commandType=DEVICE_DATA_FORCED_UPDATE_REQUEST;
-    cloudCommand.command=forcedUpdateCommand;
+
+    cloudCommand.commandType = DEVICE_DATA_FORCED_UPDATE_REQUEST;
+    cloudCommand.command = forcedUpdateCommand;
     @try {
         //[SNLog Log:@"Method Name: %s Before Writing to socket -- Sensor Forced Update Command", __PRETTY_FUNCTION__];
-        
-        NSError *error=nil;
+
+        NSError *error = nil;
         id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-        
-        if (ret == nil)
-        {
+
+        if (ret == nil) {
             //[SNLog Log:@"Method Name: %s Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
         }
         //[SNLog Log:@"Method Name: %s After Writing to socket -- Sensor Forced Update Command", __PRETTY_FUNCTION__];
-        
+
     }
     @catch (NSException *exception) {
         //[SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
     }
-    
-    cloudCommand=nil;
-    forcedUpdateCommand=nil;
 }
 
 
@@ -4985,7 +5008,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     
     UIButton *btnObj = (UIButton*) sender;
     NSLog(@"Save button clicked for device: %ld", (long)btnObj.tag);
-    SFIDevice *currentSensor =[self.deviceList objectAtIndex:btnObj.tag];
+    SFIDevice *currentSensor = self.deviceList[(NSUInteger) btnObj.tag];
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     
@@ -5035,11 +5058,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                                                          repeats:NO];
     isSensorChangeCommandSuccessful = FALSE;
     
-    cloudCommand=nil;
-    sensorChangeCommand=nil;
     currentChangedName = nil;
     currentChangedLocation = nil;
-    
 }
 
 //PY 311013 - Timeout for Sensor Change Command
@@ -5057,22 +5077,20 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 }
 
 
--(void)SensorChangeCallback:(id)sender{
-    //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+- (void)SensorChangeCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
-    
-    if(data !=nil){
+    NSDictionary *data = [notifier userInfo];
+
+    if (data != nil) {
         isSensorChangeCommandSuccessful = TRUE;
         [SNLog Log:@"Method Name: %s Received SensorChangeCallback", __PRETTY_FUNCTION__];
-        
-        SensorChangeResponse *obj = [[SensorChangeResponse alloc] init];
-        obj = (SensorChangeResponse *)[data valueForKey:@"data"];
-        
-        
-        if(obj.isSuccessful){
-             [SNLog Log:@"Method Name: %s Sensor Data Changed Successfully", __PRETTY_FUNCTION__];
-        }else{
+
+        SensorChangeResponse *obj = (SensorChangeResponse *) [data valueForKey:@"data"];
+
+        if (obj.isSuccessful) {
+            [SNLog Log:@"Method Name: %s Sensor Data Changed Successfully", __PRETTY_FUNCTION__];
+        }
+        else {
             //TODO: Later
             [SNLog Log:@"Method Name: %s Could not update data, Revert to old value", __PRETTY_FUNCTION__];
             self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
@@ -5081,32 +5099,22 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             [self.tableView performSelectorOnMainThread:@selector(reloadData)
                                              withObject:nil
                                           waitUntilDone:NO];
-            
+
         }
     }
 }
 
--(void)DynamicAlmondNameChangeCallback:(id)sender
-{
-    // [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+- (void)DynamicAlmondNameChangeCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
-    
-    if(data !=nil){
-        // [SNLog Log:@"Method Name: %s Received DynamicAlmondNameChangeCallback", __PRETTY_FUNCTION__];
-        
-        DynamicAlmondNameChangeResponse *obj = [[DynamicAlmondNameChangeResponse alloc] init];
-        obj = (DynamicAlmondNameChangeResponse *)[data valueForKey:@"data"];
-//        NSMutableArray *offlineAlmondList = [SFIOfflineDataManager readAlmondList];
-//        for(SFIAlmondPlus *currentOfflineAlmond in offlineAlmondList){
-            if([self.currentMAC isEqualToString:obj.almondplusMAC]){
-                //Change the name of the current almond in the offline list
-                 NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-                [prefs setObject:obj.almondplusName forKey:CURRENT_ALMOND_MAC_NAME];
-                self.navigationItem.title = obj.almondplusName; //[NSString stringWithFormat:@"Sensors at %@", self.currentMAC];
+    NSDictionary *data = [notifier userInfo];
 
-//                break;
-//            }
+    if (data != nil) {
+        DynamicAlmondNameChangeResponse *obj = (DynamicAlmondNameChangeResponse *) [data valueForKey:@"data"];
+        if ([self.currentMAC isEqualToString:obj.almondplusMAC]) {
+            //Change the name of the current almond in the offline list
+            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            [prefs setObject:obj.almondplusName forKey:CURRENT_ALMOND_MAC_NAME];
+            self.navigationItem.title = obj.almondplusName; //[NSString stringWithFormat:@"Sensors at %@", self.currentMAC];
         }
 
     }
