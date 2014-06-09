@@ -7,26 +7,12 @@
 //
 
 #import "SFIMainViewController.h"
-#import <QuartzCore/QuartzCore.h>
-#import "SFIMainViewTile.h"
-#import <SecurifiToolkit/SecurifiToolkit.h>
-#import "SFIAlmondListViewController.h"
-#import "SFILoginViewController.h"
-#import "SFIAffiliationViewController.h"
-#import "SFISignupViewController.h"
-#import "SFILogoutAllViewController.h"
-#import "SFIDatabaseUpdateService.h"
 #import "SNLog.h"
 #import "AlmondPlusConstants.h"
-#import "SFICollectionHeaderView.h"
 #import "SFIOfflineDataManager.h"
 #import "SFIReachabilityManager.h"
 #import "Reachability.h"
 
-
-@interface SFIMainViewController ()
-
-@end
 
 @implementation SFIMainViewController
 @synthesize viewData;
@@ -309,7 +295,7 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
 {
     [SNLog Log:@"In Method Name: %s ", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    NSDictionary *data = [notifier userInfo];
     
     //Always run UI code on main thread from Notification callback
     
@@ -365,8 +351,7 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
     else
     {
         [SNLog Log:@"In Method Name: %s Received login response", __PRETTY_FUNCTION__];
-        LoginResponse *obj = [[LoginResponse alloc] init];
-        obj = (LoginResponse *)[data valueForKey:@"data"];
+        LoginResponse *obj = (LoginResponse *)[data valueForKey:@"data"];
         
         //        NSLog(@"UserID %@",obj.userID);
         //        NSLog(@"TempPass %@",obj.tempPass);
@@ -416,56 +401,49 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
             UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
             [self presentViewController:mainView animated:YES completion:nil];
         }
-        obj=nil;
     }
     
     //Reload to reflect current view
     
 }
 
--(void)loadAlmondList{
+- (void)loadAlmondList {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    
+
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    
+
     AlmondListRequest *almondListCommand = [[AlmondListRequest alloc] init];
-    
-    cloudCommand.commandType=ALMOND_LIST;
-    cloudCommand.command=almondListCommand;
+
+    cloudCommand.commandType = ALMOND_LIST;
+    cloudCommand.command = almondListCommand;
     @try {
         [SNLog Log:@"Method Name: %s Before Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
-        
-        NSError *error=nil;
+
+        NSError *error = nil;
         id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-        
-        if (ret == nil)
-        {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
-            
+
+        if (ret == nil) {
+            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__, [error localizedDescription]];
+
         }
         [SNLog Log:@"Method Name: %s After Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
-        
+
     }
     @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
+        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
     }
-    
-    cloudCommand=nil;
-    almondListCommand=nil;
-    
 }
 
 -(void)AlmondListResponseCallback:(id)sender
 {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
         [SNLog Log:@"Method Name: %s Received Almond List response", __PRETTY_FUNCTION__];
         
-        AlmondListResponse *obj = [[AlmondListResponse alloc] init];
-        obj = (AlmondListResponse *)[data valueForKey:@"data"];
+        AlmondListResponse *obj = (AlmondListResponse *)[data valueForKey:@"data"];
         [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
         //Write Almond List offline
         [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
