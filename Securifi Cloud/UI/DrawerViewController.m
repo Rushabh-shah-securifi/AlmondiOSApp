@@ -145,28 +145,23 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellIdentifier = @"MenuItemCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-    }
-
-    if (indexPath.section == 0) {
-        NSArray *array = dataDictionary[ALMONDLIST];
-        if (indexPath.row == [array count]) {
-            //Create Add symbol
-            cell = [self createAddSymbolCell:cell];
+    switch (indexPath.section) {
+        case 0: {
+            NSArray *array = dataDictionary[ALMONDLIST];
+            if (indexPath.row == [array count]) {
+                //Create Add symbol
+                return [self tableViewTableViewCreateAddSymbolCell:tableView];
+            }
+            else {
+                //Add almond list
+                return [self tableViewCreateAlmondListCell:tableView indexPath:indexPath];
+            }
         }
-        else {
-            //Add almond list
-            cell = [self createAlmondListCell:cell indexPath:indexPath];
+
+        default: {
+            return [self tableViewCreateSettingsCell:tableView indexPath:indexPath];
         }
     }
-    else {
-        cell = [self createSettingsCell:cell indexPath:indexPath];
-    }
-
-    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -272,8 +267,15 @@
 
 #pragma mark - Table cell creation
 
-- (UITableViewCell *)createAddSymbolCell:(UITableViewCell *)cell {
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MenuItemCell"];
+- (UITableViewCell *)tableViewTableViewCreateAddSymbolCell:(UITableView*)tableView {
+    NSString *id = @"AddSymbolCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
+    if (cell != nil) {
+        return cell;
+    }
+    
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:id];
+
     UIImageView *imgAddDevice = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 24)];
     imgAddDevice.userInteractionEnabled = YES;
     imgAddDevice.image = [UIImage imageNamed:@"addAlmond.png"];
@@ -293,18 +295,22 @@
     return cell;
 }
 
-- (UITableViewCell *)createAlmondListCell:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableViewCreateAlmondListCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+    NSString *id = @"AlmondListCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
+    if (cell != nil) {
+        return cell;
+    }
+
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:id];
+
     UIImageView *imgLocation;
-    UILabel *lblName;
-
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MenuItemCell"];
-
     imgLocation = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 21.5)];
     imgLocation.userInteractionEnabled = YES;
     imgLocation.image = [UIImage imageNamed:@"almondHome.png"];
     [cell addSubview:imgLocation];
 
-
+    UILabel *lblName;
     lblName = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 30)];
     lblName.backgroundColor = [UIColor clearColor];
     lblName.textColor = [UIColor whiteColor];
@@ -323,14 +329,19 @@
 }
 
 
-- (UITableViewCell *)createSettingsCell:(UITableViewCell *)cell indexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableViewCreateSettingsCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+    NSString *id = @"SettingsCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
+    if (cell != nil) {
+        return cell;
+    }
+
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:id];
+
     NSArray *array = dataDictionary[SETTINGS_LIST];
     NSString *cellValue = array[(NSUInteger) indexPath.row];
 
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MenuItemCell"];
     UIImageView *imgSettings;
-    imgSettings.userInteractionEnabled = YES;
-
     switch (indexPath.row) {
         case 0:
             imgSettings = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 24)];
@@ -348,9 +359,10 @@
             imgSettings = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 24)];
             imgSettings.image = [UIImage imageNamed:@"account.png"];
             break;
-        default:break;
+        default:
+            break;
     }
-
+    imgSettings.userInteractionEnabled = YES;
 
     [cell addSubview:imgSettings];
 
