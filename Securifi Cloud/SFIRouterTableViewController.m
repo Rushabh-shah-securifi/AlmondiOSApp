@@ -9,35 +9,33 @@
 #import "SFIRouterTableViewController.h"
 #import "SFIColors.h"
 #import "AlmondPlusConstants.h"
-#import <SecurifiToolkit/SecurifiToolkit.h>
 #import "SNLog.h"
 #import "SFIGenericRouterCommand.h"
 #import "SFIParser.h"
-#import "SFIRouterReboot.h"
 #import "SFIRouterDevicesListViewController.h"
-#import "SFIBlockedContentViewController.h"
-#import "SFIWirelessSummary.h"
-#import "SFIBlockedContentViewController.h"
-#import "SFIWirelessUserViewController.h"
 #import "SFIOfflineDataManager.h"
 
 
-@interface SFIRouterTableViewController ()
-
-@end
-
 @implementation SFIRouterTableViewController
-@synthesize listAvailableColors, mobileInternalIndex, currentMAC;
-@synthesize expectedGenericDataLength,totalGenericDataReceivedLength, command;
-@synthesize routerSummary, isRebooting;
+
+@synthesize mobileInternalIndex;
+@synthesize currentMAC;
+@synthesize listAvailableColors;
+@synthesize expectedGenericDataLength;
+@synthesize command;
+@synthesize totalGenericDataReceivedLength;
+@synthesize routerSummary;
+@synthesize isRebooting;
+
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
-    NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
-                                     [UIFont fontWithName:@"Avenir-Roman" size:18.0], NSFontAttributeName, nil];
-    
+
+    NSDictionary *titleAttributes = @{
+            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+            NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
+    };
+
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
 
 }
@@ -51,66 +49,68 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = paths[0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
-    
+
     listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-    
+
     //Set title
     NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
     self.currentMAC = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC];
-    NSString *currentMACName  = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC_NAME];
+    NSString *currentMACName = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC_NAME];
     NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
-    if (self.currentMAC == nil){
-        if([almondList count]!=0){
-            SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
+    if (self.currentMAC == nil) {
+        if ([almondList count] != 0) {
+            SFIAlmondPlus *currentAlmond = almondList[0];
             self.currentMAC = currentAlmond.almondplusMAC;
             currentMACName = currentAlmond.almondplusName;
             [standardUserDefaults setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
             [standardUserDefaults setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
-            if(currentMACName!=nil){
+            if (currentMACName != nil) {
                 self.navigationItem.title = currentMACName; //[NSString stringWithFormat:@"Sensors at %@", self.currentMAC];
             }
-            
-        }else{
+
+        }
+        else {
             self.currentMAC = NO_ALMOND;
             self.navigationItem.title = @"Get Started";
         }
-    }else{
-        if([almondList count] == 0){
+    }
+    else {
+        if ([almondList count] == 0) {
             self.currentMAC = NO_ALMOND;
             self.navigationItem.title = @"Get Started";
-        }else{
-            if(currentMACName!=nil){
+        }
+        else {
+            if (currentMACName != nil) {
                 self.navigationItem.title = currentMACName;
             }
         }
     }
-    
+
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+
     //Display Drawer Gesture
     UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(revealMenu:)];
     showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
     [self.tableView addGestureRecognizer:showMenuSwipe];
-   
-    
+
+
 }
 
 
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     isRebooting = FALSE;
-    
+
     NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
     self.currentMAC = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC];
-    
+
     //If Almond is there or not
     NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
    if([almondList count] == 0){
@@ -120,7 +120,6 @@
     }
 
 
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(GenericResponseCallback:)
                                                  name:GENERIC_COMMAND_NOTIFIER
@@ -129,32 +128,32 @@
                                              selector:@selector(GenericNotificationCallback:)
                                                  name:GENERIC_COMMAND_CLOUD_NOTIFIER
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter]    addObserver:self
                                                 selector:@selector(DynamicAlmondListAddCallback:)
                                                     name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
                                                   object:nil];
-    
+
     [[NSNotificationCenter defaultCenter]    addObserver:self
                                                 selector:@selector(DynamicAlmondListDeleteCallback:)
                                                     name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
                                                   object:nil];
-    
+
     if(![self.currentMAC isEqualToString:NO_ALMOND]){
         [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
     }
-    
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:GENERIC_COMMAND_NOTIFIER
                                                   object:nil];
-    
+
     [[NSNotificationCenter defaultCenter]    removeObserver:self
                                                        name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
                                                      object:nil];
-    
+
     [[NSNotificationCenter defaultCenter]    removeObserver:self
                                                        name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
                                                      object:nil];
@@ -206,69 +205,67 @@
         return 100;
     }
     return 85;
-    
+
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
+
+    //todo sinclair investigate this
     //PY 070114
     //START: HACK FOR MEMORY LEAKS
-    for(UIView *currentView in cell.contentView.subviews){
+    for (UIView *currentView in cell.contentView.subviews) {
         [currentView removeFromSuperview];
     }
     [cell removeFromSuperview];
     //END: HACK FOR MEMORY LEAKS
-    
-   
-    
 
-     
     //if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     //}
-    
-    if([self.currentMAC isEqualToString:NO_ALMOND]){
+
+    if ([self.currentMAC isEqualToString:NO_ALMOND]) {
         cell = [self createNoAlmondCell:cell];
         return cell;
     }
-      
-    UILabel *backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,5,self.tableView.frame.size.width-20,130)];
-    
-    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(10,5,self.tableView.frame.size.width,30)];
+
+    UILabel *backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.tableView.frame.size.width - 20, 130)];
+
+    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.tableView.frame.size.width, 30)];
     lblTitle.backgroundColor = [UIColor clearColor];
     lblTitle.textColor = [UIColor whiteColor];
     [lblTitle setFont:[UIFont fontWithName:@"Avenir-Light" size:25]];
-    
-    
-    UILabel *lblSummary = [[UILabel alloc] initWithFrame:CGRectMake(10,40,self.tableView.frame.size.width,30)];
+
+
+    UILabel *lblSummary = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, self.tableView.frame.size.width, 30)];
     lblSummary.backgroundColor = [UIColor clearColor];
     lblSummary.textColor = [UIColor whiteColor];
     [lblSummary setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
-    
+
     SFIColors *currentColor;
-    
+
     //PY 270114 - Remove other options as for now Router Summary returns value only for reboot for Almond+
     //Router Reboot
-    currentColor = [listAvailableColors objectAtIndex:3];
+    currentColor = listAvailableColors[3];
     lblTitle.text = @"Router Reboot";
-    
-    if(routerSummary == nil){
-        lblSummary.text=[NSString stringWithFormat:@"Last reboot %@", @""];
-    }else{
-        if(isRebooting){
+
+    if (routerSummary == nil) {
+        lblSummary.text = [NSString stringWithFormat:@"Last reboot %@", @""];
+    }
+    else {
+        if (isRebooting) {
             lblSummary.numberOfLines = 3;
-            lblSummary.frame = CGRectMake(10,35,self.tableView.frame.size.width-20,60);
-            lblSummary.text= @"Router is rebooting. It will take at least \n2 minutes for the router to boot.\nPlease refresh after sometime.";
-        }else{
-            lblSummary.text=[NSString stringWithFormat:@"Last reboot %@ ago", routerSummary.routerUptime];
+            lblSummary.frame = CGRectMake(10, 35, self.tableView.frame.size.width - 20, 60);
+            lblSummary.text = @"Router is rebooting. It will take at least \n2 minutes for the router to boot.\nPlease refresh after sometime.";
+        }
+        else {
+            lblSummary.text = [NSString stringWithFormat:@"Last reboot %@ ago", routerSummary.routerUptime];
         }
     }
-    
+
 //    switch(indexPath.row){
 //        case 0:
 //        {
@@ -332,10 +329,11 @@
 //            
 //            break;
 //    }
-    
+
     [backgroundLabel addSubview:lblTitle];
-     [backgroundLabel addSubview:lblSummary];
-    backgroundLabel.backgroundColor = [UIColor colorWithHue:currentColor.hue/360.0 saturation:currentColor.saturation/100.0 brightness:currentColor.brightness/100.0 alpha:1];
+    [backgroundLabel addSubview:lblSummary];
+    backgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (currentColor.hue / 360.0) saturation:(CGFloat) (currentColor.saturation / 100.0) brightness:(CGFloat) (currentColor.brightness / 100.0) alpha:1];
+
     [cell addSubview:backgroundLabel];
     return cell;
 }
@@ -343,7 +341,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"Row Clicked %d", indexPath.row);
-    
+
     //PY 270114 - Remove other options as for now Router Summary returns value only for reboot for Almond+
     //Router Reboot
     {
@@ -355,8 +353,8 @@
                                       otherButtonTitles:nil];
         [actionSheet showInView:self.view];
     }
-    
-    
+
+
 //    switch(indexPath.row){
 //        case 0:
 //            //Get wireless settings
@@ -401,27 +399,27 @@
     }
     [cell removeFromSuperview];
     //END: HACK FOR MEMORY LEAKS
-    
+
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Cell"];
     //    cell.textLabel.text = @"No almond is linked to your account";
     //    cell.textLabel.numberOfLines = 2;
     //    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     UIImageView *imgGettingStarted;
     UIButton *btnAddAlmond;
-    
+
     imgGettingStarted = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width,400)];
     imgGettingStarted.userInteractionEnabled = YES;
     [imgGettingStarted setImage:[UIImage imageNamed:@"getting_started.png"]];
     imgGettingStarted.contentMode = UIViewContentModeScaleAspectFit;
-    
+
     btnAddAlmond = [UIButton buttonWithType:UIButtonTypeCustom];
     btnAddAlmond.frame = imgGettingStarted.bounds;
     btnAddAlmond.backgroundColor = [UIColor clearColor];
     [btnAddAlmond addTarget:self action:@selector(onAddAlmondClicked:) forControlEvents:UIControlEventTouchUpInside];
     [imgGettingStarted addSubview:btnAddAlmond];
-    
+
     [cell addSubview:imgGettingStarted];
-    
+
     return cell;
 }
 
@@ -445,7 +443,7 @@
                                   destructiveButtonTitle:@"Yes"
                                   otherButtonTitles:nil];
     [actionSheet showInView:self.view];
-    
+
 }
 
 
@@ -464,6 +462,8 @@
             break;
         case 1:
             NSLog(@"Clicked on no");
+            break;
+        default:
             break;
     }
 }
@@ -488,10 +488,10 @@
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     //NSString *currentMAC  = [prefs objectForKey:CURRENT_ALMOND_MAC];
-    
+
     //Generate internal index between 1 to 100
     self.mobileInternalIndex = (arc4random() % 1000) + 1;
-    
+
     GenericCommandRequest *rebootGenericCommand = [[GenericCommandRequest alloc] init];
     rebootGenericCommand.almondMAC = self.currentMAC;
     rebootGenericCommand.applicationID = APPLICATION_ID;
@@ -501,71 +501,67 @@
     cloudCommand.command=rebootGenericCommand;
     @try {
         [SNLog Log:@"Method Name: %s Before Writing to socket -- Generic Command Request", __PRETTY_FUNCTION__];
-        
+
         NSError *error=nil;
         id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-        
+
         if (ret == nil)
         {
             [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
         }
         [SNLog Log:@"Method Name: %s After Writing to socket -- Generic Command Request", __PRETTY_FUNCTION__];
-        
+
     }
     @catch (NSException *exception) {
         [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
     }
-    
-    cloudCommand=nil;
-    rebootGenericCommand=nil;
 }
 
 -(void)GenericResponseCallback:(id)sender
 {
     [SNLog Log:@"Method Name: %s ", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
-    
-    if(data !=nil){
-        [SNLog Log:@"Method Name: %s Received GenericCommandResponse",__PRETTY_FUNCTION__];
-        
-        GenericCommandResponse *obj = [[GenericCommandResponse alloc] init];
-        obj = (GenericCommandResponse *)[data valueForKey:@"data"];
-        
+    NSDictionary *data = [notifier userInfo];
+
+    if (data != nil) {
+        [SNLog Log:@"Method Name: %s Received GenericCommandResponse", __PRETTY_FUNCTION__];
+
+        GenericCommandResponse *obj = (GenericCommandResponse *) [data valueForKey:@"data"];
+
         BOOL isSuccessful = obj.isSuccessful;
-        if(isSuccessful){
+        if (isSuccessful) {
             genericData = [[NSMutableData alloc] init];
-            genericString = [[NSString alloc]init];
-            
+            genericString = [[NSString alloc] init];
+
             //Display proper message
             NSLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
             NSLog(@"Response Data: %@", obj.genericData);
             NSLog(@"Decoded Data: %@", obj.decodedData);
-            NSData* data =  [obj.decodedData mutableCopy];
-            NSLog(@"Data: %@", data);
-            
-            [genericData appendData:data];
-            
+
+            NSData *decoded_data = [obj.decodedData mutableCopy];
+            NSLog(@"Data: %@", decoded_data);
+
+            [genericData appendData:decoded_data];
+
             [genericData getBytes:&expectedGenericDataLength range:NSMakeRange(0, 4)];
-            [SNLog Log:@"Method Name: %s Expected Length: %d", __PRETTY_FUNCTION__,expectedGenericDataLength];
-            [genericData getBytes:&command range:NSMakeRange(4,4)];
-            [SNLog Log:@"Method Name: %s Command: %d", __PRETTY_FUNCTION__,command];
-            
+            [SNLog Log:@"Method Name: %s Expected Length: %d", __PRETTY_FUNCTION__, expectedGenericDataLength];
+            [genericData getBytes:&command range:NSMakeRange(4, 4)];
+            [SNLog Log:@"Method Name: %s Command: %d", __PRETTY_FUNCTION__, command];
+
             //Remove 8 bytes from received command
             [genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
-            
+
             NSString *decodedString = [[NSString alloc] initWithData:genericData encoding:NSUTF8StringEncoding];
             SFIGenericRouterCommand *genericRouterCommand = [[SFIParser alloc] loadDataFromString:decodedString];
             NSLog(@"Command Type %d", genericRouterCommand.commandType);
-            
-            switch(genericRouterCommand.commandType){
-                case 1:
-                {
+
+            switch (genericRouterCommand.commandType) {
+                case 1: {
                     //Reboot
-                    SFIRouterReboot *routerReboot = (SFIRouterReboot*)genericRouterCommand.command;
+                    SFIRouterReboot *routerReboot = (SFIRouterReboot *) genericRouterCommand.command;
                     NSLog(@"Reboot Reply: %d", routerReboot.reboot);
-                }
                     break;
+                }
 //                case 2:
 //                {
 //                    //Get Connected Device List
@@ -604,77 +600,75 @@
 //                    [self.navigationController pushViewController:viewController animated:YES];
 //               }
 //                    break;
-                case 7:
-                {
+                case 7: {
                     //Get Wireless Settings
-                    SFIDevicesList *routerSettings = (SFIDevicesList*)genericRouterCommand.command;
+                    SFIDevicesList *routerSettings = (SFIDevicesList *) genericRouterCommand.command;
                     NSLog(@"Wifi settings Reply: %d", [routerSettings.deviceList count]);
                     //Display list
-                    SFIRouterDevicesListViewController *viewController =[[SFIRouterDevicesListViewController alloc] init];
+                    SFIRouterDevicesListViewController *viewController = [[SFIRouterDevicesListViewController alloc] init];
                     viewController.deviceList = routerSettings.deviceList;
                     viewController.deviceListType = genericRouterCommand.commandType;
                     [self.navigationController pushViewController:viewController animated:YES];
-                }
                     break;
-                case 9:
-                {
+                }
+                case 9: {
                     //Get Wireless Summary
-                    routerSummary = (SFIRouterSummary*)genericRouterCommand.command;
-                    //TODO: Reload table
+                    routerSummary = (SFIRouterSummary *) genericRouterCommand.command;
                     [self.tableView reloadData];
 
-                }
                     break;
-                    
+                }
+
+                default:
+                    break;
+
             }
             // }
-        }else{
+        }
+        else {
             NSLog(@"Reason: %@", obj.reason);
         }
     }
 }
 
--(void)GenericNotificationCallback:(id)sender
-{
+- (void)GenericNotificationCallback:(id)sender {
     [SNLog Log:@"Method Name: %s ", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
-    
-    if(data !=nil){
-        [SNLog Log:@"Method Name: %s Received GenericNotification",__PRETTY_FUNCTION__];
-        
-        GenericCommandResponse *obj = [[GenericCommandResponse alloc] init];
-        obj = (GenericCommandResponse *)[data valueForKey:@"data"];
-        
+    NSDictionary *data = [notifier userInfo];
+
+    if (data != nil) {
+        [SNLog Log:@"Method Name: %s Received GenericNotification", __PRETTY_FUNCTION__];
+
+        GenericCommandResponse *obj = (GenericCommandResponse *) [data valueForKey:@"data"];
+
         BOOL isSuccessful = obj.isSuccessful;
-        if(isSuccessful){
+        if (isSuccessful) {
             genericData = [[NSMutableData alloc] init];
-            genericString = [[NSString alloc]init];
-            
+            genericString = [[NSString alloc] init];
+
             //Display proper message
             NSLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
             NSLog(@"Response Data: %@", obj.genericData);
             NSLog(@"Decoded Data: %@", obj.decodedData);
-            NSData* data =  [obj.decodedData mutableCopy];
-            NSLog(@"Data: %@", data);
-            
-            [genericData appendData:data];
-            
+            NSData *data_decoded = [obj.decodedData mutableCopy];
+            NSLog(@"Data: %@", data_decoded);
+
+            [genericData appendData:data_decoded];
+
             [genericData getBytes:&expectedGenericDataLength range:NSMakeRange(0, 4)];
-            [genericData getBytes:&command range:NSMakeRange(4,4)];
-            
+            [genericData getBytes:&command range:NSMakeRange(4, 4)];
+
             //Remove 8 bytes from received command
             [genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
-            
+
             NSString *decodedString = [[NSString alloc] initWithData:genericData encoding:NSUTF8StringEncoding];
             SFIGenericRouterCommand *genericRouterCommand = [[SFIParser alloc] loadDataFromString:decodedString];
             NSLog(@"Command Type %d", genericRouterCommand.commandType);
-            
-            switch(genericRouterCommand.commandType){
-                case 1:
-                {
+
+            switch (genericRouterCommand.commandType) {
+                case 1: {
                     //Reboot
-                    SFIRouterReboot *routerReboot = (SFIRouterReboot*)genericRouterCommand.command;
+                    SFIRouterReboot *routerReboot = (SFIRouterReboot *) genericRouterCommand.command;
                     NSLog(@"Reboot Reply: %d", routerReboot.reboot);
                     HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
                     HUD.dimBackground = YES;
@@ -683,38 +677,40 @@
                     self.isRebooting = FALSE;
                     //Get router summary
                     [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
+                    break;
                 }
+                default:
                     break;
             }
-        }else{
+        }
+        else {
             NSLog(@"Reason: %@", obj.reason);
         }
     }
 }
 
--(void)DynamicAlmondListAddCallback:(id)sender{
+- (void)DynamicAlmondListAddCallback:(id)sender {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
-    
-    if(data !=nil){
+    NSDictionary *data = [notifier userInfo];
+
+    if (data != nil) {
         [SNLog Log:@"Method Name: %s Received DynamicAlmondListAddCallback", __PRETTY_FUNCTION__];
-        
-        AlmondListResponse *obj = [[AlmondListResponse alloc] init];
-        obj = (AlmondListResponse *)[data valueForKey:@"data"];
-   
-        if(obj.isSuccessful){
-            [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
+
+        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
+
+        if (obj.isSuccessful) {
+            [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
             //When previously no almonds were there
-            [SNLog Log:@"Method Name: %s Current MAC : %@", __PRETTY_FUNCTION__,self.currentMAC];
-            if([self.currentMAC isEqualToString:NO_ALMOND]){
+            [SNLog Log:@"Method Name: %s Current MAC : %@", __PRETTY_FUNCTION__, self.currentMAC];
+            if ([self.currentMAC isEqualToString:NO_ALMOND]) {
                 [SNLog Log:@"Method Name: %s Previously no almond", __PRETTY_FUNCTION__];
                 NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
                 NSString *currentMACName;
                 NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-                
-                if([almondList count]!=0){
-                    SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
+
+                if ([almondList count] != 0) {
+                    SFIAlmondPlus *currentAlmond = almondList[0];
                     self.currentMAC = currentAlmond.almondplusMAC;
                     currentMACName = currentAlmond.almondplusName;
                     [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
@@ -722,7 +718,8 @@
                     [prefs synchronize];
                     self.navigationItem.title = currentMACName;
                     [self refreshDataForAlmond];
-                }else{
+                }
+                else {
                     self.currentMAC = NO_ALMOND;
                     self.navigationItem.title = @"Get Started";
                     [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
@@ -730,39 +727,34 @@
                     [prefs synchronize];
                     [self.tableView reloadData];
                 }
-                
-                
             }
         }
-        
+
     }
 }
 
--(void)DynamicAlmondListDeleteCallback:(id)sender{
+- (void)DynamicAlmondListDeleteCallback:(id)sender {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
-    
-    if(data !=nil){
+    NSDictionary *data = [notifier userInfo];
+
+    if (data != nil) {
         [SNLog Log:@"Method Name: %s Received DynamicAlmondListCallback", __PRETTY_FUNCTION__];
-        
-        AlmondListResponse *obj = [[AlmondListResponse alloc] init];
-        obj = (AlmondListResponse *)[data valueForKey:@"data"];
-        
-        
-        if(obj.isSuccessful){
-            
-            [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
-            
-            SFIAlmondPlus *deletedAlmond = [obj.almondPlusMACList objectAtIndex:0];
-            if([self.currentMAC isEqualToString:deletedAlmond.almondplusMAC]){
+
+        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
+
+        if (obj.isSuccessful) {
+            [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
+
+            SFIAlmondPlus *deletedAlmond = obj.almondPlusMACList[0];
+            if ([self.currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
                 [SNLog Log:@"Method Name: %s Remove this view", __PRETTY_FUNCTION__];
                 NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
                 NSString *currentMACName;
                 NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-                
-                if([almondList count]!=0){
-                    SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
+
+                if ([almondList count] != 0) {
+                    SFIAlmondPlus *currentAlmond = almondList[0];
                     self.currentMAC = currentAlmond.almondplusMAC;
                     currentMACName = currentAlmond.almondplusName;
                     [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
@@ -770,7 +762,8 @@
                     [prefs synchronize];
                     self.navigationItem.title = currentMACName;
                     [self refreshDataForAlmond];
-                }else{
+                }
+                else {
                     self.currentMAC = NO_ALMOND;
                     self.navigationItem.title = @"Get Started";
                     [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
@@ -778,65 +771,11 @@
                     [prefs synchronize];
                     [self.tableView reloadData];
                 }
-                
-                
             }
-            
         }
-        
+
     }
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 @end
