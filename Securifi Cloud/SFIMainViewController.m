@@ -11,138 +11,131 @@
 #import "AlmondPlusConstants.h"
 #import "SFIOfflineDataManager.h"
 #import "SFIReachabilityManager.h"
+#import "SFIDatabaseUpdateService.h"
 #import "Reachability.h"
+#import "MBProgressHUD.h"
 
+@interface SFIMainViewController ()
+@property(nonatomic, readonly) MBProgressHUD *HUD;
+@property(nonatomic, readonly) NSTimer *displayNoCloudTimer;
+@property(nonatomic, readonly) NSInteger state;
+@property(nonatomic, readonly) BOOL isConnectedToCloud;
+@end
 
 @implementation SFIMainViewController
-@synthesize viewData;
-@synthesize state;
-@synthesize imgSplash;
-@synthesize isConnectedToCloud;
-@synthesize displayNoCloudTimer;
 
 #pragma mark - View Lifecycle
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
-
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    state= [[SecurifiToolkit sharedInstance] getConnectionState];
-    
+
+    [self setConnectionState];
+
+    _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _HUD.dimBackground = YES;
+
     //self.lblUserEmail.text = @"HELLO!!!";
     //    SNFileLogger *logger = [[SNFileLogger alloc] init];
     //    [[SNLog logManager] addLogStrategy:logger];
-    [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, state];
-    
+    [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, self.state];
+
     //Set the splash image differently for 3.5 inch and 4 inch screen
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     if (screenBounds.size.height == 568) {
         // code for 4-inch screen
-        imgSplash.image = [UIImage imageNamed:@"launch-image-640x1136"];
-    } else {
-        // code for 3.5-inch screen
-        imgSplash.image = [UIImage imageNamed:@"launch-image-640x960"];
+        self.imgSplash.image = [UIImage imageNamed:@"launch-image-640x1136"];
     }
-    
-    
-    displayNoCloudTimer = [NSTimer scheduledTimerWithTimeInterval:CLOUD_CONNECTION_TIMEOUT
-                                                              target:self
-                                                            selector:@selector(displayNoCloudConnectionImage)
-                                                            userInfo:nil
-                                                             repeats:NO];
+    else {
+        // code for 3.5-inch screen
+        self.imgSplash.image = [UIImage imageNamed:@"launch-image-640x960"];
+    }
+
+
+    _displayNoCloudTimer = [NSTimer scheduledTimerWithTimeInterval:CLOUD_CONNECTION_TIMEOUT
+                                                            target:self
+                                                          selector:@selector(displayNoCloudConnectionImage)
+                                                          userInfo:nil
+                                                           repeats:NO];
 }
 
--(void)viewDidAppear:(BOOL)animated{
-    //PY 170913 Add observers
-    
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginResponseNotifier:)
                                                  name:LOGIN_NOTIFIER
                                                object:nil];
-    
-    
+
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(becomesActive:)
                                                  name:UIApplicationDidBecomeActiveNotification
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(AlmondListResponseCallback:)
                                                  name:ALMOND_LIST_NOTIFIER
                                                object:nil];
-    
+
     //PY 311013 Reconnection Logic
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(networkDownNotifier:)
                                                  name:NETWORK_DOWN_NOTIFIER
                                                object:nil];
-    
-    
+
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(networkUpNotifier:)
                                                  name:NETWORK_UP_NOTIFIER
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityDidChange:)
                                                  name:kReachabilityChangedNotification object:nil];
-    
-    
-    //PY 160913 - To restore connection after Logout
-    [super viewDidAppear:animated];
-    state= [[SecurifiToolkit sharedInstance] getConnectionState];
-    [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, state];
-    
-    if (state == NETWORK_DOWN || state == SDK_UNINITIALIZED)
-    {
-        HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        HUD.dimBackground = YES;
-        HUD.labelText = @"Connecting. Please wait!";
+
+
+    [self setConnectionState];
+    [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, self.state];
+
+    if (self.state == NETWORK_DOWN || self.state == SDK_UNINITIALIZED) {
+        self.HUD.labelText = @"Connecting. Please wait!";
         [SNLog Log:@"Method Name: %s Initialiaze SDK", __PRETTY_FUNCTION__];
-        state = 5;
+        _state = 5;
         [[SecurifiToolkit sharedInstance] initSDK];
-        
-    }else if (state == LOGGED_IN){
-        
+
+    }
+    else if (self.state == LOGGED_IN) {
+
         //Reload collection view
         [SNLog Log:@"Method Name: %s Display main screen", __PRETTY_FUNCTION__];
 
-    }else if (state == NOT_LOGGED_IN){
+    }
+    else if (self.state == NOT_LOGGED_IN) {
         [SNLog Log:@"Method Name: %s Logout Initialiaze SDK", __PRETTY_FUNCTION__];
         //Just establish connection
-        
-        
+
+
         [[SecurifiToolkit sharedInstance] initSDKCloud];
         [SNLog Log:@"Method Name: %s Display login screen", __PRETTY_FUNCTION__];
     }
 }
 
-
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
-    [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, state];
-    
+
+    [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, self.state];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:LOGIN_NOTIFIER
                                                   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIApplicationDidBecomeActiveNotification
                                                   object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:ALMOND_LIST_NOTIFIER
                                                   object:nil];
-    
+
     //PY 311013 Reconnection Logic
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NETWORK_UP_NOTIFIER
@@ -153,18 +146,28 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kReachabilityChangedNotification
                                                   object:nil];
-    
+
 }
 
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - State management
+
+- (void)setConnectionState {
+    _state = [[SecurifiToolkit sharedInstance] getConnectionState];
+}
+
+- (void)markConnectedToCloud:(BOOL)connected {
+    _isConnectedToCloud = connected;
+}
+
 #pragma mark - Orientation Handling
--(BOOL) shouldAutorotate {
+
+- (BOOL)shouldAutorotate {
     return NO;
 }
 
@@ -173,92 +176,88 @@
 }
 
 
--(NSUInteger)supportedInterfaceOrientations
-{
+- (NSUInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
 }
 
 
 #pragma mark - Class methods
-- (IBAction)LogsButtonHandler:(id)sender{
+
+/*
+- (IBAction)LogsButtonHandler:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFILogViewController"];
     [self.navigationController pushViewController:mainView animated:YES];
 }
+*/
 
--(void)displayNoCloudConnectionImage{
-    if(!isConnectedToCloud){
+- (void)displayNoCloudConnectionImage {
+    if (!self.isConnectedToCloud) {
         //Set the splash image differently for 3.5 inch and 4 inch screen
         CGRect screenBounds = [[UIScreen mainScreen] bounds];
         if (screenBounds.size.height == 568) {
             // code for 4-inch screen
-            imgSplash.image = [UIImage imageNamed:@"no_cloud_640x1136"];
-        } else {
+            self.imgSplash.image = [UIImage imageNamed:@"no_cloud_640x1136"];
+        }
+        else {
             // code for 3.5-inch screen
-            imgSplash.image = [UIImage imageNamed:@"no_cloud_640x960"];
+            self.imgSplash.image = [UIImage imageNamed:@"no_cloud_640x960"];
         }
     }
 }
 
 #pragma mark - Reconnection
 
--(void)networkUpNotifier:(id)sender
-{
+- (void)networkUpNotifier:(id)sender {
     [SNLog Log:@"Method Name: %s MainView controller :In networkUP notifier", __PRETTY_FUNCTION__];
-    state= [[SecurifiToolkit sharedInstance] getConnectionState];
-    [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, state];
+    [self setConnectionState];
+    [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, self.state];
+
     //PY 311013 Reconnection Logic
-    if(state == SDK_UNINITIALIZED){
+    if (self.state == SDK_UNINITIALIZED) {
         [[SecurifiToolkit sharedInstance] initSDK];
-        [HUD hide:YES];
+        [self.HUD hide:YES];
     }
-    else if (state == NOT_LOGGED_IN){
-        isConnectedToCloud = TRUE;
-        [displayNoCloudTimer invalidate];
+    else if (self.state == NOT_LOGGED_IN) {
+        [self markConnectedToCloud:YES];
+        [self.displayNoCloudTimer invalidate];
         [SNLog Log:@"Method Name: %s Logout Initialiaze SDK", __PRETTY_FUNCTION__];
         [SNLog Log:@"Method Name: %s Display login screen", __PRETTY_FUNCTION__];
-        [HUD hide:YES];
+        [self.HUD hide:YES];
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
         UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
         [self presentViewController:mainView animated:YES completion:nil];
     }
 }
 
-void runOnMainQueueWithoutDeadLocking(void (^block)(void))
-{
-    if ([NSThread isMainThread])
-    {
+void runOnMainQueueWithoutDeadLocking(void (^block)(void)) {
+    if ([NSThread isMainThread]) {
         block();
     }
-    else
-    {
+    else {
         dispatch_sync(dispatch_get_main_queue(), block);
     }
 }
 
--(void)networkDownNotifier:(id)sender
-{
-    
-    self.state=[[SecurifiToolkit sharedInstance] getConnectionState];
-    [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, state];
-    
-    if(state == SDK_INITIALIZING || state == SDK_UNINITIALIZED){
+- (void)networkDownNotifier:(id)sender {
+    [self setConnectionState];
+    [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, self.state];
+
+    if (self.state == SDK_INITIALIZING || self.state == SDK_UNINITIALIZED) {
         [[SecurifiToolkit sharedInstance] initSDK];
-    }else{
-    HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    //HUD.dimBackground = YES;
-    HUD.labelText=@"Network Down";
-    [HUD hide:YES afterDelay:1];
-    isConnectedToCloud = FALSE;
+    }
+    else {
+        self.HUD.labelText = @"Network Down";
+        [self.HUD hide:YES afterDelay:1];
+        [self markConnectedToCloud:NO];
     }
 }
 
 
 - (void)reachabilityDidChange:(NSNotification *)notification {
     //Reachability *reachability = (Reachability *)[notification object];
-    [SNLog Log:@"Method Name: %s Reachability State : %d", __PRETTY_FUNCTION__, state];
-    if (state == NETWORK_DOWN || state == SDK_UNINITIALIZED)
-    {
+    [SNLog Log:@"Method Name: %s Reachability State : %d", __PRETTY_FUNCTION__, self.state];
+    if (self.state == NETWORK_DOWN || self.state == SDK_UNINITIALIZED) {
         if ([SFIReachabilityManager isReachable]) {
             NSLog(@"Reachable - MAIN");
             //        HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -266,52 +265,47 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
             //        HUD.labelText=@"Reconnecting...";
             [[SecurifiToolkit sharedInstance] initSDK];
             //        [HUD hide:YES afterDelay:1];
-        } else {
+        }
+        else {
             NSLog(@"Network Unreachable");
-            isConnectedToCloud = FALSE;
+            [self markConnectedToCloud:NO];
         }
     }
 }
 
 
--(void)becomesActive:(id)sender
-{
-    state= [[SecurifiToolkit sharedInstance] getConnectionState];
-    [SNLog Log:@"Method Name: %s BECOME ACTIVE State : %d", __PRETTY_FUNCTION__, state];
-    
+- (void)becomesActive:(id)sender {
+    [self setConnectionState];
+    [SNLog Log:@"Method Name: %s BECOME ACTIVE State : %d", __PRETTY_FUNCTION__, self.state];
+
     //PY 250214 - To remove multiple connection removed -  state == SDK_INITIALIZING
-    if (state == NETWORK_DOWN || state == SDK_UNINITIALIZED) // || state == SDK_INITIALIZING)
+    if (self.state == NETWORK_DOWN || self.state == SDK_UNINITIALIZED) // || state == SDK_INITIALIZING)
     {
         //Start HUD till networkUP/DOWN or Login response notification comes
-        HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-        //HUD.delegate = self;
-        HUD.dimBackground = YES;
         [[SecurifiToolkit sharedInstance] initSDK];
     }
 }
 
 #pragma mark - Cloud Command : Sender and Receivers
--(void)loginResponseNotifier:(id)sender
-{
+
+- (void)loginResponseNotifier:(id)sender {
     [SNLog Log:@"In Method Name: %s ", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    
+
     //Always run UI code on main thread from Notification callback
-    
+
     runOnMainQueueWithoutDeadLocking(^{
-        state=[[SecurifiToolkit sharedInstance] getConnectionState];
-        //[self.collectionView reloadData];
-        [HUD hide:YES];
-        
+        [self setConnectionState];
+        [self.HUD hide:YES];
+
         //HUD.labelText=@"Connected to Server";
         //Disable HUD after successful login
         //[HUD hide:YES afterDelay:1];
     });
-    
+
     //Login failed
-    if ([notifier userInfo] == nil)
-    {
+    if ([notifier userInfo] == nil) {
         [SNLog Log:@"In Method Name: %s Temppass not found", __PRETTY_FUNCTION__];
 //        //PY081113 - Delete personal data
 //        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -346,41 +340,38 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
 //        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
 //        UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
 //        [self presentViewController:mainView animated:YES completion:nil];
-        
+
     }
-    else
-    {
+    else {
         [SNLog Log:@"In Method Name: %s Received login response", __PRETTY_FUNCTION__];
-        LoginResponse *obj = (LoginResponse *)[data valueForKey:@"data"];
-        
+        LoginResponse *obj = (LoginResponse *) [data valueForKey:@"data"];
+
         //        NSLog(@"UserID %@",obj.userID);
         //        NSLog(@"TempPass %@",obj.tempPass);
         //        NSLog(@"isSuccessful : %d",obj.isSuccessful);
         //        NSLog(@"Reason : %@",obj.reason);
-        
-        isConnectedToCloud = TRUE;
-        [displayNoCloudTimer invalidate];
-        
-        if (obj.isSuccessful == 1)
-        {
+
+        [self markConnectedToCloud:YES];
+        [self.displayNoCloudTimer invalidate];
+
+        if (obj.isSuccessful == 1) {
             [SNLog Log:@"Method Name: %s Login Successful -- Load different view", __PRETTY_FUNCTION__];
-            
+
             //Almond List
-            HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            HUD.dimBackground = YES;
-            HUD.labelText = @"Loading your personal data.";
-            
+            self.HUD.labelText = @"Loading your personal data.";
+
             //Start update service
             dispatch_queue_t queue = dispatch_queue_create("com.securifi.almondplus", NULL);
             dispatch_async(queue, ^{
                 [SFIDatabaseUpdateService stopDatabaseUpdateService];
                 [SFIDatabaseUpdateService startDatabaseUpdateService];
             });
-            
+
             //Retrieve Almond List, Device List and Device Value - Before displaying the screen
             [self loadAlmondList];
-            
-        }else{
+
+        }
+        else {
             //PY081113 - Delete personal data
             NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
             [prefs removeObjectForKey:EMAIL];
@@ -390,21 +381,21 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
             [prefs removeObjectForKey:PASSWORD];
             [prefs removeObjectForKey:COLORCODE];
             [prefs synchronize];
-            
+
             //Delete files
             [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
             [SFIOfflineDataManager deleteFile:HASH_FILENAME];
             [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
             [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
-            
+
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
             UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
             [self presentViewController:mainView animated:YES completion:nil];
         }
     }
-    
+
     //Reload to reflect current view
-    
+
 }
 
 - (void)loadAlmondList {
@@ -434,31 +425,28 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void))
     }
 }
 
--(void)AlmondListResponseCallback:(id)sender
-{
+- (void)AlmondListResponseCallback:(id)sender {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    
-    if(data !=nil){
+
+    if (data != nil) {
         [SNLog Log:@"Method Name: %s Received Almond List response", __PRETTY_FUNCTION__];
-        
-        AlmondListResponse *obj = (AlmondListResponse *)[data valueForKey:@"data"];
-        [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
+
+        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
+        [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
         //Write Almond List offline
         [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
 
 
-
     }
-    HUD.hidden = YES;
+    self.HUD.hidden = YES;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"InitialSlide"];
     [self presentViewController:mainView
                        animated:YES
                      completion:nil];
 }
-
 
 
 @end

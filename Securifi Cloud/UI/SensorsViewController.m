@@ -76,10 +76,12 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
     self.checkHeight = -1;
 
-    _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
+    _HUD = [[MBProgressHUD alloc] initWithView:self.parentViewController.view];
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.labelText = @"Loading sensor data.";
     _HUD.dimBackground = YES;
+    [self.parentViewController.view addSubview:_HUD];
 
     //PY 041013 - To fix: Reverse order move from Add symbol
     moveCount = -1;

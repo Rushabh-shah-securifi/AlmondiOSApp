@@ -10,11 +10,12 @@
 #import "ECSlidingViewController.h"
 #import "MBProgressHUD.h"
 
-@interface SFIHelpViewController : UIViewController <UIWebViewDelegate>{
-      MBProgressHUD               *HUD;
-}
-@property (nonatomic, strong) IBOutlet UIWebView *webView;
+@interface SFIHelpViewController : UIViewController <UIWebViewDelegate>
+
+@property(nonatomic, strong) IBOutlet UIWebView *webView;
 
 - (IBAction)revealMenu:(id)sender;
+
 - (IBAction)backButtonHandler:(id)sender;
+
 @end

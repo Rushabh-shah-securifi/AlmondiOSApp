@@ -14,21 +14,37 @@
 #import "SFIParser.h"
 #import "SFIRouterDevicesListViewController.h"
 #import "SFIOfflineDataManager.h"
+#import "ECSlidingViewController.h"
+#import "MBProgressHUD.h"
 
 
-@implementation SFIRouterTableViewController
+@interface SFIRouterTableViewController ()
+@property(nonatomic, retain) SFIRouterSummary *routerSummary;
+@property BOOL isRebooting;
+@property unsigned int mobileInternalIndex;
+@property NSString *currentMAC;
+@property(nonatomic, retain) NSMutableArray *listAvailableColors;
+//PY 301013 - Generic Command Request
+@property unsigned int expectedGenericDataLength;
+@property unsigned int command;
+@property(nonatomic, readonly) MBProgressHUD *HUD;
+@end
+
+@implementation SFIRouterTableViewController {
+    //PY 301013 - Generic Command Request
+    NSMutableData *genericData;
+    NSString *genericString;
+}
 
 @synthesize mobileInternalIndex;
 @synthesize currentMAC;
 @synthesize listAvailableColors;
 @synthesize expectedGenericDataLength;
 @synthesize command;
-@synthesize totalGenericDataReceivedLength;
 @synthesize routerSummary;
 @synthesize isRebooting;
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [super awakeFromNib];
 
     NSDictionary *titleAttributes = @{
@@ -37,20 +53,15 @@
     };
 
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-
-}
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    _HUD = [[MBProgressHUD alloc] initWithView:self.parentViewController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.dimBackground = YES;
+    [self.parentViewController.view addSubview:_HUD];
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
@@ -99,12 +110,10 @@
     UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(revealMenu:)];
     showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
     [self.tableView addGestureRecognizer:showMenuSwipe];
-
-
 }
 
 
--(void) viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     isRebooting = FALSE;
 
@@ -113,10 +122,10 @@
 
     //If Almond is there or not
     NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
-   if([almondList count] == 0){
+    if ([almondList count] == 0) {
         self.currentMAC = NO_ALMOND;
         self.navigationItem.title = @"Get Started";
-       [self.tableView reloadData];
+        [self.tableView reloadData];
     }
 
 
@@ -129,66 +138,61 @@
                                                  name:GENERIC_COMMAND_CLOUD_NOTIFIER
                                                object:nil];
 
-    [[NSNotificationCenter defaultCenter]    addObserver:self
-                                                selector:@selector(DynamicAlmondListAddCallback:)
-                                                    name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
-                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(DynamicAlmondListAddCallback:)
+                                                 name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
+                                               object:nil];
 
-    [[NSNotificationCenter defaultCenter]    addObserver:self
-                                                selector:@selector(DynamicAlmondListDeleteCallback:)
-                                                    name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(DynamicAlmondListDeleteCallback:)
+                                                 name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
+                                               object:nil];
 
-    if(![self.currentMAC isEqualToString:NO_ALMOND]){
+    if (![self.currentMAC isEqualToString:NO_ALMOND]) {
         [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
     }
-
 }
 
--(void)viewWillDisappear:(BOOL)animated{
+- (void)viewWillDisappear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:GENERIC_COMMAND_NOTIFIER
                                                   object:nil];
 
-    [[NSNotificationCenter defaultCenter]    removeObserver:self
-                                                       name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
-                                                     object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
+                                                  object:nil];
 
-    [[NSNotificationCenter defaultCenter]    removeObserver:self
-                                                       name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                                                     object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
+                                                  object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:GENERIC_COMMAND_CLOUD_NOTIFIER
                                                   object:nil];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return YES;
 }
 
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation) fromInterfaceOrientation {
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     //NSLog(@"Rotation %d", fromInterfaceOrientation);
     [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    if([currentMAC isEqualToString:NO_ALMOND]){
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if ([currentMAC isEqualToString:NO_ALMOND]) {
         return 1;
     }
     // Return the number of rows in the section.
@@ -196,12 +200,11 @@
     return 1;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
-{
-    if([currentMAC isEqualToString:NO_ALMOND]){
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath; {
+    if ([currentMAC isEqualToString:NO_ALMOND]) {
         return 400;
     }
-    if(isRebooting){
+    if (isRebooting) {
         return 100;
     }
     return 85;
@@ -338,19 +341,18 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Row Clicked %d", indexPath.row);
 
     //PY 270114 - Remove other options as for now Router Summary returns value only for reboot for Almond+
     //Router Reboot
     {
         UIActionSheet *actionSheet = [[UIActionSheet alloc]
-                                      initWithTitle:nil
-                                      delegate:self
-                                      cancelButtonTitle:@"No"
-                                      destructiveButtonTitle:@"Yes"
-                                      otherButtonTitles:nil];
+                initWithTitle:nil
+                     delegate:self
+            cancelButtonTitle:@"No"
+       destructiveButtonTitle:@"Yes"
+            otherButtonTitles:nil];
         [actionSheet showInView:self.view];
     }
 
@@ -391,10 +393,12 @@
 }
 
 #pragma mark - Table cell creation
--(UITableViewCell*) createNoAlmondCell: (UITableViewCell*)cell{
+
+- (UITableViewCell *)createNoAlmondCell:(UITableViewCell *)cell {
     //PY 070114
     //START: HACK FOR MEMORY LEAKS
-    for(UIView *currentView in cell.contentView.subviews){
+    for (
+            UIView *currentView in cell.contentView.subviews) {
         [currentView removeFromSuperview];
     }
     [cell removeFromSuperview];
@@ -407,7 +411,7 @@
     UIImageView *imgGettingStarted;
     UIButton *btnAddAlmond;
 
-    imgGettingStarted = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width,400)];
+    imgGettingStarted = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 400)];
     imgGettingStarted.userInteractionEnabled = YES;
     [imgGettingStarted setImage:[UIImage imageNamed:@"getting_started.png"]];
     imgGettingStarted.contentMode = UIViewContentModeScaleAspectFit;
@@ -424,58 +428,59 @@
 }
 
 #pragma mark - Class Methods
--(void) refreshDataForAlmond{
+
+- (void)refreshDataForAlmond {
     [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
 }
 
 
-- (IBAction)revealMenu:(id)sender
-{
+- (IBAction)revealMenu:(id)sender {
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
 
-- (IBAction)rebootButtonHandler:(id)sender{
+- (IBAction)rebootButtonHandler:(id)sender {
     //Send Generic Command
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
-                                  initWithTitle:@"Reboot the router?"
-                                  delegate:self
-                                  cancelButtonTitle:@"No"
-                                  destructiveButtonTitle:@"Yes"
-                                  otherButtonTitles:nil];
+            initWithTitle:@"Reboot the router?"
+                 delegate:self
+        cancelButtonTitle:@"No"
+   destructiveButtonTitle:@"Yes"
+        otherButtonTitles:nil];
     [actionSheet showInView:self.view];
 
 }
 
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
         case 0:
             NSLog(@"Clicked on yes");
-            HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            HUD.dimBackground = YES;
-            HUD.labelText = @"Router is rebooting.";
-            [HUD hide:YES afterDelay:1];
+
+            self.HUD.labelText = @"Router is rebooting.";
+            [self.HUD hide:YES afterDelay:1];
+
             self.isRebooting = TRUE;
             [self sendGenericCommandRequest:REBOOT_COMMAND];
             [self.tableView reloadData];
             break;
+
         case 1:
             NSLog(@"Clicked on no");
             break;
+
         default:
             break;
     }
 }
 
 
-
--(void) onAddAlmondClicked:(id) sender{
-    if([self.currentMAC isEqualToString:NO_ALMOND]){
+- (void)onAddAlmondClicked:(id)sender {
+    if ([self.currentMAC isEqualToString:NO_ALMOND]) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
         UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AffiliationNavigationTop"];
         [self presentViewController:mainView animated:YES completion:nil];
-    }else{
+    }
+    else {
         //Get wireless settings
         [self sendGenericCommandRequest:GET_WIRELESS_SETTINGS_COMMAND];
     }
@@ -483,7 +488,7 @@
 
 #pragma mark - Cloud command senders and handlers
 
--(void) sendGenericCommandRequest:(NSString*)data{
+- (void)sendGenericCommandRequest:(NSString *)data {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -495,30 +500,28 @@
     GenericCommandRequest *rebootGenericCommand = [[GenericCommandRequest alloc] init];
     rebootGenericCommand.almondMAC = self.currentMAC;
     rebootGenericCommand.applicationID = APPLICATION_ID;
-    rebootGenericCommand.mobileInternalIndex = [NSString stringWithFormat:@"%d",self.mobileInternalIndex];
+    rebootGenericCommand.mobileInternalIndex = [NSString stringWithFormat:@"%d", self.mobileInternalIndex];
     rebootGenericCommand.data = data;
-    cloudCommand.commandType=GENERIC_COMMAND_REQUEST;
-    cloudCommand.command=rebootGenericCommand;
+    cloudCommand.commandType = GENERIC_COMMAND_REQUEST;
+    cloudCommand.command = rebootGenericCommand;
     @try {
         [SNLog Log:@"Method Name: %s Before Writing to socket -- Generic Command Request", __PRETTY_FUNCTION__];
 
-        NSError *error=nil;
+        NSError *error = nil;
         id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
 
-        if (ret == nil)
-        {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
+        if (ret == nil) {
+            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__, [error localizedDescription]];
         }
         [SNLog Log:@"Method Name: %s After Writing to socket -- Generic Command Request", __PRETTY_FUNCTION__];
 
     }
     @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
+        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
     }
 }
 
--(void)GenericResponseCallback:(id)sender
-{
+- (void)GenericResponseCallback:(id)sender {
     [SNLog Log:@"Method Name: %s ", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
@@ -670,12 +673,11 @@
                     //Reboot
                     SFIRouterReboot *routerReboot = (SFIRouterReboot *) genericRouterCommand.command;
                     NSLog(@"Reboot Reply: %d", routerReboot.reboot);
-                    HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-                    HUD.dimBackground = YES;
-                    HUD.labelText = @"Router is now online.";
-                    [HUD hide:YES afterDelay:1];
+
+                    self.HUD.labelText = @"Router is now online.";
+                    [self.HUD hide:YES afterDelay:1];
+
                     self.isRebooting = FALSE;
-                    //Get router summary
                     [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
                     break;
                 }

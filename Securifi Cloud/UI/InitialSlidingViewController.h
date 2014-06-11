@@ -7,12 +7,7 @@
 //
 
 #import "ECSlidingViewController.h"
-#import "MBProgressHUD.h"
 
 @interface InitialSlidingViewController : ECSlidingViewController
-{
-    MBProgressHUD               *HUD;
-}
-@property NSInteger state;
-@property BOOL isCloudConnectionBroken;
+
 @end

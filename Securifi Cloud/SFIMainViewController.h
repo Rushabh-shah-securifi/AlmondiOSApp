@@ -7,21 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MBProgressHUD.h"
-#import "SFIDatabaseUpdateService.h"
 
 
-@interface SFIMainViewController : UIViewController // : UICollectionViewController <UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, MBProgressHUDDelegate>
-{
-    MBProgressHUD               *HUD;
-    SFIDatabaseUpdateService *databaseUpdateService;
-} 
-@property (nonatomic, retain) NSMutableArray *viewData;
-@property NSInteger state;
-@property (nonatomic, retain) IBOutlet UIImageView *imgSplash;
-@property BOOL isConnectedToCloud;
-@property NSTimer *displayNoCloudTimer;
+@interface SFIMainViewController : UIViewController
 
+@property(nonatomic, retain) IBOutlet UIImageView *imgSplash;
 
-- (IBAction)LogsButtonHandler:(id)sender;
+//- (IBAction)LogsButtonHandler:(id)sender;
+
 @end

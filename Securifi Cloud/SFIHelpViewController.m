@@ -11,15 +11,14 @@
 #import "AlmondPlusConstants.h"
 
 @interface SFIHelpViewController ()
-
+@property(nonatomic, strong, readonly) MBProgressHUD *HUD;
 @end
 
 @implementation SFIHelpViewController
-@synthesize webView;
 
 #pragma mark - View Methods
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
@@ -27,53 +26,55 @@
     return self;
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [super awakeFromNib];
-    
-    NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
-                                     [UIFont fontWithName:@"Avenir-Roman" size:18.0], NSFontAttributeName, nil];
-    
+
+    NSDictionary *titleAttributes = @{
+            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+            NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
+    };
+
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    webView.delegate = self;
-     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:HELP_URL]]];
-    
+
+    _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _HUD.dimBackground = YES;
+    _HUD.labelText = @"Loading...";
+
+    // Do any additional setup after loading the view.
+    self.webView.delegate = self;
+    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:HELP_URL]]];
+
     //Display Drawer Gesture
     UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(revealMenu:)];
     showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
     [self.view addGestureRecognizer:showMenuSwipe];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+
     if (![self.slidingViewController.underLeftViewController isKindOfClass:[DrawerViewController class]]) {
-        self.slidingViewController.underLeftViewController  = [self.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
+        self.slidingViewController.underLeftViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
     }
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Orientation Handling
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return YES;
 }
 
 
--(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation) fromInterfaceOrientation {
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
 //    [webView reload];
 //    [webView stringByEvaluatingJavaScriptFromString:@"var e = document.createEvent('Events'); e.initEvent('orientationchange', true, false); document.dispatchEvent(e);"];
 }
@@ -81,36 +82,30 @@
 #pragma mark - UIWebView delegate
 
 
-- (void)webViewDidStartLoad:(UIWebView *)webView {
-    HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    HUD.dimBackground = YES;
-    HUD.labelText = @"Loading...";
-    [HUD hide:YES afterDelay:10];
+- (void)webViewDidStartLoad:(UIWebView *)aWebView {
+    [self.HUD hide:YES afterDelay:10];
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView {
+- (void)webViewDidFinishLoad:(UIWebView *)aWebView {
     NSLog(@"Loaded");
-    [HUD hide:YES];
+    [self.HUD hide:YES];
 }
 
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
+- (void)webView:(UIWebView *)aWebView didFailLoadWithError:(NSError *)error {
     NSLog(@"Error Loading");
-    [HUD hide:YES];
+    [self.HUD hide:YES];
 }
 
 
 #pragma mark - Class Methods
 
-- (IBAction)revealMenu:(id)sender
-{
+- (IBAction)revealMenu:(id)sender {
     [self.slidingViewController anchorTopViewTo:ECRight];
 }
 
-- (IBAction)backButtonHandler:(id)sender
-{
-    [webView goBack];
+- (IBAction)backButtonHandler:(id)sender {
+    [self.webView goBack];
 }
-
 
 
 @end
