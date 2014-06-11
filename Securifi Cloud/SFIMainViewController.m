@@ -99,7 +99,7 @@
         self.HUD.labelText = @"Connecting. Please wait!";
         [SNLog Log:@"Method Name: %s Initialiaze SDK", __PRETTY_FUNCTION__];
         _state = 5;
-        [[SecurifiToolkit sharedInstance] initSDK];
+//        [[SecurifiToolkit sharedInstance] initSDK];
 
     }
     else if (self.state == LOGGED_IN) {
@@ -213,7 +213,7 @@
 
     //PY 311013 Reconnection Logic
     if (self.state == SDK_UNINITIALIZED) {
-        [[SecurifiToolkit sharedInstance] initSDK];
+//        [[SecurifiToolkit sharedInstance] initSDK];
         [self.HUD hide:YES];
     }
     else if (self.state == NOT_LOGGED_IN) {
@@ -242,7 +242,7 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void)) {
     [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, self.state];
 
     if (self.state == SDK_INITIALIZING || self.state == SDK_UNINITIALIZED) {
-        [[SecurifiToolkit sharedInstance] initSDK];
+//        [[SecurifiToolkit sharedInstance] initSDK];
     }
     else {
         self.HUD.labelText = @"Network Down";
@@ -261,7 +261,7 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void)) {
             //        HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             //        HUD.dimBackground = YES;
             //        HUD.labelText=@"Reconnecting...";
-            [[SecurifiToolkit sharedInstance] initSDK];
+//            [[SecurifiToolkit sharedInstance] initSDK];
             //        [HUD hide:YES afterDelay:1];
         }
         else {
@@ -280,7 +280,7 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void)) {
     if (self.state == NETWORK_DOWN || self.state == SDK_UNINITIALIZED) // || state == SDK_INITIALIZING)
     {
         //Start HUD till networkUP/DOWN or Login response notification comes
-        [[SecurifiToolkit sharedInstance] initSDK];
+//        [[SecurifiToolkit sharedInstance] initSDK];
     }
 }
 

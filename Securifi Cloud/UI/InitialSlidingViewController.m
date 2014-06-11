@@ -118,7 +118,7 @@
     [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, self.state];
 
     if (self.state == SDK_UNINITIALIZED) {
-        [[SecurifiToolkit sharedInstance] initSDK];
+//        [[SecurifiToolkit sharedInstance] initSDK];
     }
     else if (self.state == NOT_LOGGED_IN) {
         [SNLog Log:@"Method Name: %s Logout Initialiaze SDK", __PRETTY_FUNCTION__];
@@ -139,7 +139,7 @@
         //Try to login and check
         NSLog(@"Try to reconnect! Cloud ended connection");
         [self markCloudConnectionBroken:TRUE];
-        [[SecurifiToolkit sharedInstance] initSDK];
+//        [[SecurifiToolkit sharedInstance] initSDK];
     }
 }
 
@@ -148,7 +148,7 @@
     //Reachability *reachability = (Reachability *)[notification object];
     if ([[SFIReachabilityManager sharedManager] isReachable]) {
         NSLog(@"Reachable - SLIDE");
-        [[SecurifiToolkit sharedInstance] initSDK];
+//        [[SecurifiToolkit sharedInstance] initSDK];
         self.HUD.labelText = @"Reconnecting...";
         [self.HUD hide:YES afterDelay:1];
     }

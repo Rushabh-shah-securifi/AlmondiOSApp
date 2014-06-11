@@ -125,14 +125,15 @@ typedef enum {
                                                     name:LOGIN_NOTIFIER
                                                   object:nil];
 
-
     //PY 311013 Reconnection Logic
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NETWORK_UP_NOTIFIER
                                                   object:nil];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NETWORK_DOWN_NOTIFIER
                                                   object:nil];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kSFIReachabilityChangedNotification
                                                   object:nil];
@@ -140,6 +141,7 @@ typedef enum {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:VALIDATE_RESPONSE_NOTIFIER
                                                   object:nil];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:RESET_PWD_RESPONSE_NOTIFIER
                                                   object:nil];
@@ -547,7 +549,7 @@ typedef enum {
         self.HUD.labelText = @"Reconnecting...";
         [self.HUD hide:YES afterDelay:1];
 
-        [[SecurifiToolkit sharedInstance] initSDK];
+//        [[SecurifiToolkit sharedInstance] initSDK];
     }
     else {
         NSLog(@"Unreachable");

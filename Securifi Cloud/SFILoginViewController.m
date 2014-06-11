@@ -458,7 +458,7 @@
     if ([[SFIReachabilityManager sharedManager] isReachable]) {
         NSLog(@"Reachable");
         self.HUD.labelText = @"Reconnecting...";
-        [[SecurifiToolkit sharedInstance] initSDK];
+//        [[SecurifiToolkit sharedInstance] initSDK];
         [self.HUD hide:YES afterDelay:1];
     }
     else {
