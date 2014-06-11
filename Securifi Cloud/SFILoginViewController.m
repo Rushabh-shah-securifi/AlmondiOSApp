@@ -50,7 +50,6 @@
     [super viewDidLoad];
 
     _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//    _HUD = [MBProgressHUD
     _HUD.dimBackground = YES;
 
     //PY 170913 - To stop the view from going below tab bar
@@ -364,8 +363,8 @@
                                                      selector:@selector(AlmondListResponseCallback:)
                                                          name:ALMOND_LIST_NOTIFIER
                                                        object:nil];
-            dispatch_queue_t queue = dispatch_queue_create("com.securifi.almondplus", NULL);
-            dispatch_async(queue, ^{
+
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [SFIDatabaseUpdateService stopDatabaseUpdateService];
                 [SFIDatabaseUpdateService startDatabaseUpdateService];
             });

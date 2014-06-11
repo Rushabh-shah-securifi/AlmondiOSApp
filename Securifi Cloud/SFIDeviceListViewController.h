@@ -14,4 +14,5 @@
 @property (nonatomic,retain) NSString *currentMAC;
 @property (nonatomic, retain) NSMutableArray *deviceList;
 @property (nonatomic, retain) NSMutableArray *deviceValueList;
+
 @end

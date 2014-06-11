@@ -652,9 +652,7 @@ typedef enum {
                                                          name:ALMOND_LIST_NOTIFIER
                                                        object:nil];
 
-            //todo sinclair - this leaks! fix me
-            dispatch_queue_t queue = dispatch_queue_create("com.securifi.almondplus", NULL);
-            dispatch_async(queue, ^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [SFIDatabaseUpdateService stopDatabaseUpdateService];
                 [SFIDatabaseUpdateService startDatabaseUpdateService];
             });

@@ -183,8 +183,8 @@
 
             
             [SNLog Log:@"Method Name: %s Logout All successful - All connections closed!", __PRETTY_FUNCTION__];
-            dispatch_queue_t queue = dispatch_queue_create("com.securifi.almondplus", NULL);
-            dispatch_async(queue, ^{
+
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [SFIDatabaseUpdateService stopDatabaseUpdateService];
             });
             
@@ -217,8 +217,7 @@
     }
     else{
         [SNLog Log:@"Method Name: %s Logout All successful - All connections closed!", __PRETTY_FUNCTION__];
-        dispatch_queue_t queue = dispatch_queue_create("com.securifi.almondplus", NULL);
-        dispatch_async(queue, ^{
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [SFIDatabaseUpdateService stopDatabaseUpdateService];
         });
         
