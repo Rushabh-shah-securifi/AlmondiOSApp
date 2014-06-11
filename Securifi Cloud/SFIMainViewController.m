@@ -258,7 +258,7 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void)) {
     //Reachability *reachability = (Reachability *)[notification object];
     [SNLog Log:@"Method Name: %s Reachability State : %d", __PRETTY_FUNCTION__, self.state];
     if (self.state == NETWORK_DOWN || self.state == SDK_UNINITIALIZED) {
-        if ([SFIReachabilityManager isReachable]) {
+        if ([[SFIReachabilityManager sharedManager] isReachable]) {
             NSLog(@"Reachable - MAIN");
             //        HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
             //        HUD.dimBackground = YES;

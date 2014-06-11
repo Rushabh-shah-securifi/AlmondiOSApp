@@ -542,7 +542,7 @@ typedef enum {
 
 - (void)reachabilityDidChange:(NSNotification *)notification {
     //Reachability *reachability = (Reachability *)[notification object];
-    if ([SFIReachabilityManager isReachable]) {
+    if ([[SFIReachabilityManager sharedManager] isReachable]) {
         NSLog(@"Reachable");
 
         [self.HUD hide:YES];

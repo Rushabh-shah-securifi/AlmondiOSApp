@@ -9,9 +9,15 @@
 #import "SFIReachabilityManager.h"
 #import "Reachability.h"
 
+@interface SFIReachabilityManager ()
+@property(strong, nonatomic, readonly) Reachability *reachability;
+@end
+
 @implementation SFIReachabilityManager
+
 #pragma mark -
 #pragma mark Default Manager
+
 + (SFIReachabilityManager *)sharedManager {
     static SFIReachabilityManager *_sharedManager = nil;
     static dispatch_once_t onceToken;
@@ -20,38 +26,45 @@
     });
     return _sharedManager;
 }
+
 #pragma mark -
-#pragma mark Memory Management
+#pragma mark Initialization
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        // Initialize Reachability
+        _reachability = [Reachability reachabilityWithHostname:CLOUD_SERVER];
+        // Start Monitoring
+        [self.reachability startNotifier];
+    }
+    return self;
+}
+
 - (void)dealloc {
     // Stop Notifier
     if (_reachability) {
         [_reachability stopNotifier];
     }
 }
+
 #pragma mark -
-#pragma mark Class Methods
-+ (BOOL)isReachable {
-    return [[[SFIReachabilityManager sharedManager] reachability] isReachable];
+#pragma mark Public methods
+
+- (BOOL)isReachable {
+    return self.reachability.isReachable;
 }
-+ (BOOL)isUnreachable {
-    return ![[[SFIReachabilityManager sharedManager] reachability] isReachable];
+
+- (BOOL)isUnreachable {
+    return !self.reachability.isReachable;
 }
-+ (BOOL)isReachableViaWWAN {
-    return [[[SFIReachabilityManager sharedManager] reachability] isReachableViaWWAN];
+
+- (BOOL)isReachableViaWWAN {
+    return self.reachability.isReachableViaWWAN;
 }
-+ (BOOL)isReachableViaWiFi {
-    return [[[SFIReachabilityManager sharedManager] reachability] isReachableViaWiFi];
+
+- (BOOL)isReachableViaWiFi {
+    return self.reachability.isReachableViaWiFi;
 }
-#pragma mark -
-#pragma mark Private Initialization
-- (id)init {
-    self = [super init];
-    if (self) {
-        // Initialize Reachability
-        self.reachability = [Reachability reachabilityWithHostname:CLOUD_SERVER];
-        // Start Monitoring
-        [self.reachability startNotifier];
-    }
-    return self;
-}
+
 @end

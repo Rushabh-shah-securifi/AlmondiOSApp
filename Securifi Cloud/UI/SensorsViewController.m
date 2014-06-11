@@ -349,7 +349,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 }
 
 - (void)reachabilityDidChange:(NSNotification *)notification {
-    if (![SFIReachabilityManager isReachable]) {
+    if ([[SFIReachabilityManager sharedManager] isUnreachable]) {
         NSLog(@"Unreachable");
         isCloudOnline = FALSE;
         [self.tableView reloadData];
