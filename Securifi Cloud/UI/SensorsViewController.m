@@ -11,8 +11,6 @@
 #import "AlmondPlusConstants.h"
 #import "SFIOfflineDataManager.h"
 #import "SNLog.h"
-#import "SFIReachabilityManager.h"
-#import "Reachability.h"
 
 @interface SensorsViewController ()
 @property  MBProgressHUD *HUD;
@@ -271,7 +269,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityDidChange:)
-                                                 name:kReachabilityChangedNotification object:nil];
+                                                 name:kSFIReachabilityChangedNotification object:nil];
 }
 
 
@@ -326,7 +324,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                                                   object:nil];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kReachabilityChangedNotification
+                                                    name:kSFIReachabilityChangedNotification
                                                   object:nil];
 
 }

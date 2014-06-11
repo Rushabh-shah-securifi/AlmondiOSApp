@@ -11,8 +11,6 @@
 #import "SFIOfflineDataManager.h"
 #import "SFIDatabaseUpdateService.h"
 #import "AlmondPlusConstants.h"
-#import "SFIReachabilityManager.h"
-#import "Reachability.h"
 #import "MBProgressHUD.h"
 
 @interface SFILoginViewController ()
@@ -133,7 +131,8 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityDidChange:)
-                                                 name:kReachabilityChangedNotification object:nil];
+                                                 name:kSFIReachabilityChangedNotification
+                                               object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(resetPasswordResponseCallback:)
@@ -158,7 +157,7 @@
                                                     name:NETWORK_DOWN_NOTIFIER
                                                   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kReachabilityChangedNotification
+                                                    name:kSFIReachabilityChangedNotification
                                                   object:nil];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self

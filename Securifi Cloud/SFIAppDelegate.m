@@ -11,7 +11,6 @@
 #import "SNLog.h"
 #import "SFIColors.h"
 #import "AlmondPlusConstants.h"
-#import "SFIReachabilityManager.h"
 
 
 @implementation SFIAppDelegate

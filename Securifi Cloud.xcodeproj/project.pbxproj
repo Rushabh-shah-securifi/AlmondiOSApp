@@ -198,8 +198,6 @@
 		CEDBB9FF1876DC3500CE4927 /* SFIWirelessUsers.h in Headers */ = {isa = PBXBuildFile; fileRef = CEDBB9FD1876DC3500CE4927 /* SFIWirelessUsers.h */; };
 		CEDBBA001876DC3500CE4927 /* SFIWirelessUsers.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDBB9FE1876DC3500CE4927 /* SFIWirelessUsers.m */; };
 		CEE19EE1181F9A7800F91AAD /* SFIRouterTopController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE19EE0181F9A7800F91AAD /* SFIRouterTopController.m */; };
-		CEE19EF9181FBB5900F91AAD /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE19EF8181FBB5900F91AAD /* Reachability.m */; };
-		CEE19EFF181FBD6200F91AAD /* SFIReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE19EFE181FBD6200F91AAD /* SFIReachabilityManager.m */; };
 		CEE19F03181FCCBD00F91AAD /* SFIRouterReboot.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE19F02181FCCBD00F91AAD /* SFIRouterReboot.m */; };
 		CEE19F06181FDA6500F91AAD /* SFIConnectedDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE19F05181FDA6500F91AAD /* SFIConnectedDevice.m */; };
 		CEE19F09181FDAA900F91AAD /* SFIDevicesList.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE19F08181FDAA900F91AAD /* SFIDevicesList.m */; };
@@ -465,10 +463,6 @@
 		CEDBB9FE1876DC3500CE4927 /* SFIWirelessUsers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIWirelessUsers.m; sourceTree = "<group>"; };
 		CEE19EDF181F9A7800F91AAD /* SFIRouterTopController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterTopController.h; sourceTree = "<group>"; };
 		CEE19EE0181F9A7800F91AAD /* SFIRouterTopController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterTopController.m; sourceTree = "<group>"; };
-		CEE19EF7181FBB5900F91AAD /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
-		CEE19EF8181FBB5900F91AAD /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
-		CEE19EFD181FBD6200F91AAD /* SFIReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIReachabilityManager.h; sourceTree = "<group>"; };
-		CEE19EFE181FBD6200F91AAD /* SFIReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIReachabilityManager.m; sourceTree = "<group>"; };
 		CEE19F01181FCCBD00F91AAD /* SFIRouterReboot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterReboot.h; sourceTree = "<group>"; };
 		CEE19F02181FCCBD00F91AAD /* SFIRouterReboot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterReboot.m; sourceTree = "<group>"; };
 		CEE19F04181FDA6500F91AAD /* SFIConnectedDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIConnectedDevice.h; sourceTree = "<group>"; };
@@ -561,7 +555,6 @@
 			isa = PBXGroup;
 			children = (
 				CEE19F00181FCCA600F91AAD /* RouterModels */,
-				CEE19EF6181FBB5900F91AAD /* Reachability */,
 				CE5D0C0E1807D24E00224009 /* Vendor */,
 				CE5D0BA31807D03800224009 /* UI */,
 				CEE16A1C17B398B700F08218 /* AppDelegate */,
@@ -886,17 +879,6 @@
 			name = Views;
 			sourceTree = "<group>";
 		};
-		CEE19EF6181FBB5900F91AAD /* Reachability */ = {
-			isa = PBXGroup;
-			children = (
-				CEE19EF7181FBB5900F91AAD /* Reachability.h */,
-				CEE19EF8181FBB5900F91AAD /* Reachability.m */,
-				CEE19EFD181FBD6200F91AAD /* SFIReachabilityManager.h */,
-				CEE19EFE181FBD6200F91AAD /* SFIReachabilityManager.m */,
-			);
-			path = Reachability;
-			sourceTree = "<group>";
-		};
 		CEE19F00181FCCA600F91AAD /* RouterModels */ = {
 			isa = PBXGroup;
 			children = (
@@ -1189,7 +1171,6 @@
 				CED1C7AB18339453007726B4 /* SFIWirelessSetting.m in Sources */,
 				908C9C10169290F4004E2C33 /* CustomAlertView.m in Sources */,
 				CEC937141845D1DD00E99FED /* SFIWirelessSummary.m in Sources */,
-				CEE19EF9181FBB5900F91AAD /* Reachability.m in Sources */,
 				903CD9291693932E0063945C /* MBProgressHUD.m in Sources */,
 				CE539F9917FAF11B00640820 /* SFICollectionHeaderView.m in Sources */,
 				22E024B4175C932A0081D707 /* SFISingleton.m in Sources */,
@@ -1213,7 +1194,6 @@
 				CE23D4051872DB7500995003 /* RouterTempController.m in Sources */,
 				CE5D0BC01807D16300224009 /* DrawerViewController.m in Sources */,
 				CE5D0BCA1807D16300224009 /* SFIScene.m in Sources */,
-				CEE19EFF181FBD6200F91AAD /* SFIReachabilityManager.m in Sources */,
 				2244791717A80C9C002C43C2 /* SFIMainViewTile.m in Sources */,
 				22FAE88517A8E27D002FFEE8 /* SFISignupViewController.m in Sources */,
 				CEC937101845D1CF00E99FED /* SFIRouterSummary.m in Sources */,

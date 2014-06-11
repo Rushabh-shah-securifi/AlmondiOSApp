@@ -10,9 +10,7 @@
 #import "SNLog.h"
 #import "AlmondPlusConstants.h"
 #import "SFIOfflineDataManager.h"
-#import "SFIReachabilityManager.h"
 #import "SFIDatabaseUpdateService.h"
-#import "Reachability.h"
 #import "MBProgressHUD.h"
 
 @interface SFIMainViewController ()
@@ -91,7 +89,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityDidChange:)
-                                                 name:kReachabilityChangedNotification object:nil];
+                                                 name:kSFIReachabilityChangedNotification object:nil];
 
 
     [self setConnectionState];
@@ -144,7 +142,7 @@
                                                     name:NETWORK_DOWN_NOTIFIER
                                                   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kReachabilityChangedNotification
+                                                    name:kSFIReachabilityChangedNotification
                                                   object:nil];
 
 }

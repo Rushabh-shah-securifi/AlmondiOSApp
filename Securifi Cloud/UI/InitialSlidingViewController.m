@@ -9,10 +9,8 @@
 #import "InitialSlidingViewController.h"
 #import "SNLog.h"
 #import "AlmondPlusConstants.h"
-#import "SFIReachabilityManager.h"
 #import "SFIOfflineDataManager.h"
 #import "SFIDatabaseUpdateService.h"
-#import "Reachability.h"
 #import "MBProgressHUD.h"
 
 @interface InitialSlidingViewController ()
@@ -57,7 +55,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityDidChange:)
-                                                 name:kReachabilityChangedNotification object:nil];
+                                                 name:kSFIReachabilityChangedNotification object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(LogoutAllResponseCallback:)
@@ -84,7 +82,7 @@
                                                     name:NETWORK_DOWN_NOTIFIER
                                                   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kReachabilityChangedNotification
+                                                    name:kSFIReachabilityChangedNotification
                                                   object:nil];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self
