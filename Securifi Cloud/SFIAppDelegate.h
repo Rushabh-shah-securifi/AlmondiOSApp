@@ -10,7 +10,6 @@
 
 @interface SFIAppDelegate : UIResponder <UIApplicationDelegate>
 
-@property NSInteger state;
 @property(strong, nonatomic) UIWindow *window;
 
 @end
