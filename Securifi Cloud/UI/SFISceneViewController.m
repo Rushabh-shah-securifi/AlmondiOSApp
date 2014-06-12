@@ -688,8 +688,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
     if (indexPath != nil)
     {
-        NSLog(@"Section %ld Row %ld", indexPath.section, (long)indexPath.row);
-        NSArray *currentSensorArray = [sceneSensorMap objectForKey:[NSString stringWithFormat:@"%ld",indexPath.section]];
+        NSLog(@"Section %ld Row %ld", (long)indexPath.section, (long)indexPath.row);
+        NSArray *currentSensorArray = [sceneSensorMap objectForKey:[NSString stringWithFormat:@"%ld", (long)indexPath.section]];
         SFISensor *currentSensor =[currentSensorArray objectAtIndex:btn.tag];
         int currentDeviceType = currentSensor.deviceType;
         NSMutableArray *currentKnownValues = currentSensor.knownValues;
@@ -737,7 +737,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:buttonPosition];
     if (indexPath != nil)
     {
-        NSLog(@"Section %ld Row %ld", indexPath.section, indexPath.row);
+        NSLog(@"Section %ld Row %ld", (long)indexPath.section, (long)indexPath.row);
         NSArray *currentSensorArray = [sceneSensorMap objectForKey:[NSString stringWithFormat:@"%ld",(long)indexPath.section]];
         SFISensor *currentSensor = [currentSensorArray objectAtIndex:btn.tag];
         if(!currentSensor.isExpanded){

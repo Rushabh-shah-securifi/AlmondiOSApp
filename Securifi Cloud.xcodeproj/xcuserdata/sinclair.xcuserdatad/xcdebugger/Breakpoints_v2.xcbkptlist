@@ -10,12 +10,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../iostoolkit/SecurifiToolkit/SingleTon.m"
-            timestampString = "424160352.484576"
+            timestampString = "424241458.502577"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "127"
-            endingLineNumber = "127"
-            landmarkName = "+removeSingletonObject"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
+            landmarkName = "-initNetworkCommunication"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../iostoolkit/SecurifiToolkit/SingleTon.m"
-            timestampString = "424160419.332484"
+            timestampString = "424241458.502577"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
-            landmarkName = "-initReconnectSDK"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "-initNetworkCommunication"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -42,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "../iostoolkit/SecurifiToolkit/SingleTon.m"
-            timestampString = "424160434.231416"
+            timestampString = "424241458.502577"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "54"
-            endingLineNumber = "54"
-            landmarkName = "+createSingletonObj"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "-init"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
