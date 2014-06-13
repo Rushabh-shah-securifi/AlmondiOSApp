@@ -13,25 +13,11 @@
 #import "AlmondPlusConstants.h"
 #import "MBProgressHUD.h"
 
-@interface SFILoginViewController ()
-
-@property NSInteger state;
+@interface SFILoginViewController () <UITextFieldDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @end
 
 @implementation SFILoginViewController
-@synthesize userName;
-@synthesize password;
-@synthesize state;
-
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)awakeFromNib {
     [super awakeFromNib];
@@ -47,67 +33,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     _HUD.dimBackground = YES;
+    [self.view addSubview:_HUD];
 
     //PY 170913 - To stop the view from going below tab bar
     self.edgesForExtendedLayout = UIRectEdgeNone;
 
-    //    UIToolbar *toolbar = [[UIToolbar alloc] init];
-    //    toolbar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
-    //    toolbar.tintColor=[UIColor blackColor];
-    //
-    //    NSMutableArray *items = [[NSMutableArray alloc] init];
-    //
-    //    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-    //
-    //    [items addObject:flexibleSpace];
-    //    [items addObject:[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(doneHandler)]];
-    //
-    //    [toolbar setItems:items animated:NO];
-    //    [self.view addSubview:toolbar];
-
-    // Do any additional setup after loading the view.
-//    if (keyboardToolbar == nil)
-//    {
-//        keyboardToolbar= [[UIToolbar alloc] initWithFrame:CGRectMake(0,0, self.view.bounds.size.width, 44)];
-//        
-//        UIBarButtonItem *previousButton = [[UIBarButtonItem alloc]
-//                                           initWithTitle:@"Previous"
-//                                           style:UIBarButtonItemStyleBordered
-//                                           target:self action:@selector(previousField:)];
-//        
-//        UIBarButtonItem *nextButton = [[UIBarButtonItem alloc]
-//                                       initWithTitle:@"Next"
-//                                       style:UIBarButtonItemStyleBordered
-//                                       target:self action:@selector(nextField:)];
-//        
-//        UIBarButtonItem *extra  =  [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//        
-//        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(resignKeyboard:)];
-//        
-//        [keyboardToolbar setItems:[[NSArray alloc] initWithObjects:previousButton, nextButton, extra, doneButton, nil]];
-//        [keyboardToolbar setBarStyle:UIBarStyleBlackTranslucent];
-    //[keyboardToolbar setTintColor:[UIColor blackColor]];
-
-//        userName.inputAccessoryView = keyboardToolbar;
-//        password.inputAccessoryView = keyboardToolbar;
-//        deviceID.inputAccessoryView = keyboardToolbar;
-
-    //change text user and pass field
-//        password.borderStyle = UITextBorderStyleRoundedRect;
-//        userName.borderStyle = UITextBorderStyleRoundedRect;
-//        deviceID.borderStyle = UITextBorderStyleRoundedRect;
-
-    //Activity Indicator
-    //ai = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-
-    /*
-     ai.center = self.view.center;
-     [self.view addSubview:ai];
-     [ai startAnimating];
-     */
-    // }
+    self.userName.delegate = self;
+    self.password.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -117,12 +51,10 @@
                                                  name:LOGIN_NOTIFIER
                                                object:nil];
 
-    //PY 311013 Reconnection Logic
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(networkDownNotifier:)
                                                  name:NETWORK_DOWN_NOTIFIER
                                                object:nil];
-
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(networkUpNotifier:)
@@ -143,19 +75,18 @@
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
 
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:LOGIN_NOTIFIER
                                                   object:nil];
 
-    //PY 311013 Reconnection Logic
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NETWORK_UP_NOTIFIER
                                                   object:nil];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NETWORK_DOWN_NOTIFIER
                                                   object:nil];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:kSFIReachabilityChangedNotification
                                                   object:nil];
@@ -163,7 +94,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:RESET_PWD_RESPONSE_NOTIFIER
                                                   object:nil];
-
 }
 
 #pragma mark - Orientation Handling
@@ -183,40 +113,6 @@
 
 #pragma mark - Class Methods
 
-/*
-- (void)doneHandler {
-    //PY 170913 - Use navigation controller
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)networkHandlerUP:(id)sender {
-    //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-}
-
-- (void)networkHandlerDOWN:(id)sender {
-    //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    self.userName.hidden = false;
-    self.password.hidden = false;
-    //self.loginButton.hidden = false;
-}
-*/
-
-/*
-- (void)resignKeyboard:(id)sender {
-
-    if ([userName isFirstResponder]) {
-        [userName resignFirstResponder];
-
-    }
-    else if ([password isFirstResponder]) {
-        NSLog(@"Login");
-        [password resignFirstResponder];
-    }
-}
-*/
-
-
-/*
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == self.userName) {
         [textField resignFirstResponder];
@@ -229,66 +125,44 @@
     }
     return YES;
 }
-*/
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 - (void)signupButton:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFISignupViewController"];
-    //[self.navigationController pushViewController:mainView animated:YES];
     [self presentViewController:mainView animated:YES completion:nil];
 }
 
 - (IBAction)forgotPwdButtonHandler:(id)sender {
-    NSLog(@"Forgot Button Handler");
     [self sendResetPasswordRequest];
 }
 
 - (IBAction)loginClick:(id)sender {
-    if ([userName isFirstResponder]) {
-        [userName resignFirstResponder];
+    if ([self.userName isFirstResponder]) {
+        [self.userName resignFirstResponder];
 
     }
-    else if ([password isFirstResponder]) {
-        [password resignFirstResponder];
+    else if ([self.password isFirstResponder]) {
+        [self.password resignFirstResponder];
     }
 
-    if ([[userName text] isEqualToString:@""] || [[password text] isEqualToString:@""]) {
+    if ([[self.userName text] isEqualToString:@""] || [[self.password text] isEqualToString:@""]) {
         self.headingLabel.text = @"Oops";
         self.subHeadingLabel.text = @"Please enter Username and Password";
     }
     else {
-        GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-
         Login *loginCommand = [[Login alloc] init];
-        loginCommand.UserID = [NSString stringWithString:userName.text];
-        loginCommand.Password = [NSString stringWithString:password.text];
+        loginCommand.UserID = [NSString stringWithString:self.userName.text];
+        loginCommand.Password = [NSString stringWithString:self.password.text];
 
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         [prefs setObject:loginCommand.UserID forKey:EMAIL];
         [prefs synchronize];
 
+        GenericCommand *cloudCommand = [[GenericCommand alloc] init];
         cloudCommand.commandType = LOGIN_COMMAND;
         cloudCommand.command = loginCommand;
-        @try {
-            [SNLog Log:@"Method Name: %s Before Writing to socket -- LoginCommand", __PRETTY_FUNCTION__];
 
-            NSError *error = nil;
-            id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-            if (ret == nil) {
-                [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__, [error localizedDescription]];
-            }
-
-            [SNLog Log:@"Method Name: %s Before Writing to socket -- LoginCommand", __PRETTY_FUNCTION__];
-        }
-        @catch (NSException *exception) {
-            [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
-        }
+        [self asyncSendCommand:cloudCommand];
     }
 }
 
@@ -299,112 +173,78 @@
     //Login failed
     if ([notifier userInfo] == nil) {
         [SNLog Log:@"In Method Name: %s TEMP Pass failed", __PRETTY_FUNCTION__];
-        /*
-         self.loginButton.hidden = false;
-         self.userName.hidden = false;
-         self.password.hidden = false;
-         */
+        return;
     }
-    else {
-        [SNLog Log:@"In Method Name: %s Received login response", __PRETTY_FUNCTION__];
 
-        LoginResponse *obj = (LoginResponse *) [data valueForKey:@"data"];
+    LoginResponse *obj = (LoginResponse *) [data valueForKey:@"data"];
 
-        [SNLog Log:@"In Method Name: %s UserID %@", __PRETTY_FUNCTION__, obj.userID];
-        [SNLog Log:@"In Method Name: %s TempPass %@", __PRETTY_FUNCTION__, obj.tempPass];
-        [SNLog Log:@"In Method Name: %s isSuccessful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-        [SNLog Log:@"In Method Name: %s Reason : %@", __PRETTY_FUNCTION__, obj.reason];
-        //[SNLog Log:@"In Method Name: %s Reason : %d", __PRETTY_FUNCTION__,obj.reasonCode];
-        NSLog(@"Reason Code: %d", obj.reasonCode);
+    [SNLog Log:@"In Method Name: %s UserID %@", __PRETTY_FUNCTION__, obj.userID];
+    [SNLog Log:@"In Method Name: %s TempPass %@", __PRETTY_FUNCTION__, obj.tempPass];
+    [SNLog Log:@"In Method Name: %s isSuccessful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
+    [SNLog Log:@"In Method Name: %s Reason : %@", __PRETTY_FUNCTION__, obj.reason];
 
-        if (obj.isSuccessful == 0) {
-            //Enable User/Pass field
-            /*
-             self.loginButton.hidden = false;
-             self.userName.hidden = false;
-             self.password.hidden = false;
-             */
-            // logMessage.text=@"Invalid Credentials";
+    if (!obj.isSuccessful) {
+        NSLog(@"Login failure reason Code: %d", obj.reasonCode);
+        self.headingLabel.text = @"Oops";
 
-            NSString *failureReason;
-            self.headingLabel.text = @"Oops";
-            UIStoryboard *storyboard;
-            UIViewController *mainView;
-            switch (obj.reasonCode) {
-                case 1:
-                    failureReason = @"The email was not found.";
-                    break;
-                case 2:
-                    failureReason = @"The password is incorrect.";
-                    break;
-                case 3:
-                    //Display Activation Screen
-                    self.headingLabel.text = @"Almost there.";
-                    failureReason = @"You need to activate your account.";
-                    storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-                    mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFIActivationViewController"];
-                    [self presentViewController:mainView animated:YES completion:nil];
-                    break;
-                case 4:
-                    failureReason = @"The email or password is incorrect";
-                    break;
-                default:
-                    failureReason = @"Sorry! Login was unsuccessful.";
+        NSString *failureReason;
+        switch (obj.reasonCode) {
+            case 1: {
+                failureReason = @"The email was not found.";
+                break;
             }
+            case 2: {
+                failureReason = @"The password is incorrect.";
+                break;
+            }
+            case 3: {
+                //Display Activation Screen
+                self.headingLabel.text = @"Almost there.";
+                failureReason = @"You need to activate your account.";
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
 
-            self.subHeadingLabel.text = failureReason;
+                UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFIActivationViewController"];
+                [self presentViewController:mainView animated:YES completion:nil];
+                break;
+            }
+            case 4:
+                failureReason = @"The email or password is incorrect";
+                break;
+            default:
+                failureReason = @"Sorry! Login was unsuccessful.";
         }
-        else if (obj.isSuccessful == 1) {
-            [SNLog Log:@"In Method Name: %s Login Successful -- Load different view", __PRETTY_FUNCTION__];
-            self.HUD.labelText = @"Loading your personal data.";
-            //Retrieve Almond List, Device List and Device Value - Before displaying the screen
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(AlmondListResponseCallback:)
-                                                         name:ALMOND_LIST_NOTIFIER
-                                                       object:nil];
 
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [SFIDatabaseUpdateService stopDatabaseUpdateService];
-                [SFIDatabaseUpdateService startDatabaseUpdateService];
-            });
+        self.subHeadingLabel.text = failureReason;
 
-            [self loadAlmondList];
-
-            //Load CollectionView
-
-            //Load Main View
-            //        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone"bundle:nil];
-            //        UINavigationController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SFIMainViewController"];
-            //        [self presentViewController:viewController animated:YES completion:NULL];
-            //PY 170913 - Use navigation controller
-            //[self.navigationController popViewControllerAnimated:YES];
-
-        }
+        return;
     }
+
+    self.HUD.labelText = @"Loading your personal data.";
+
+    //Retrieve Almond List, Device List and Device Value - Before displaying the screen
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(almondListResponseCallback:)
+                                                 name:ALMOND_LIST_NOTIFIER
+                                               object:nil];
+
+    //todo sinclair - why are we doing this?
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [SFIDatabaseUpdateService stopDatabaseUpdateService];
+        [SFIDatabaseUpdateService startDatabaseUpdateService];
+    });
+
+    [self loadAlmondList];
 }
 
 - (IBAction)backClick:(id)sender {
-    if ([userName isFirstResponder]) {
-        [userName resignFirstResponder];
+    if ([self.userName isFirstResponder]) {
+        [self.userName resignFirstResponder];
 
     }
-    else if ([password isFirstResponder]) {
-        [password resignFirstResponder];
+    else if ([self.password isFirstResponder]) {
+        [self.password resignFirstResponder];
     }
 }
-
-
-/*
-- (void)alertStatus:(NSString *)msg :(NSString *)title {
-
-    CustomAlertView *alertView = [[CustomAlertView alloc] initWithTitle:title
-                                                                message:msg
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Ok"
-                                                      otherButtonTitles:nil, nil];
-    [alertView show];
-}
-*/
 
 
 #pragma mark - Reconnection
@@ -412,7 +252,7 @@
 - (void)networkUpNotifier:(id)sender {
     [SNLog Log:@"Method Name: %s Login controller :In networkUP notifier", __PRETTY_FUNCTION__];
 
-    state = [[SecurifiToolkit sharedInstance] getConnectionState];
+    NSInteger state = [[SecurifiToolkit sharedInstance] getConnectionState];
     [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, state];
 
     if (state == SDK_UNINITIALIZED) {
@@ -422,22 +262,11 @@
     [self.HUD hide:YES];
 }
 
-//void runOnMainQueueWithoutDeadLocking(void (^block)(void))
-//{
-//    if ([NSThread isMainThread])
-//    {
-//        block();
-//    }
-//    else
-//    {
-//        dispatch_sync(dispatch_get_main_queue(), block);
-//    }
-//}
-
 - (void)networkDownNotifier:(id)sender {
-    self.state = [[SecurifiToolkit sharedInstance] getConnectionState];
+    NSInteger state = [[SecurifiToolkit sharedInstance] getConnectionState];
     [SNLog Log:@"Method Name: %s DOWN State : %d", __PRETTY_FUNCTION__, state];
-    if (self.state == NETWORK_DOWN) {
+
+    if (state == NETWORK_DOWN) {
         //state = SDK_UNINITIALIZED;
 //        [HUD hide:YES];
 //        HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -446,7 +275,7 @@
 //        [HUD hide:YES afterDelay:1];
 //        state = NOT_LOGGED_IN;
     }
-    else if (self.state == SDK_UNINITIALIZED) {
+    else if (state == SDK_UNINITIALIZED) {
         [self.HUD hide:YES];
         [[SecurifiToolkit sharedInstance] initSDKCloud];
     }
@@ -458,7 +287,6 @@
     if ([[SFIReachabilityManager sharedManager] isReachable]) {
         NSLog(@"Reachable");
         self.HUD.labelText = @"Reconnecting...";
-//        [[SecurifiToolkit sharedInstance] initSDK];
         [self.HUD hide:YES afterDelay:1];
     }
     else {
@@ -473,32 +301,19 @@
     NSString *email = [prefs objectForKey:EMAIL];
     NSLog(@"Email : %@", email);
 
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-
     ResetPasswordRequest *resetCommand = [[ResetPasswordRequest alloc] init];
-    resetCommand.email = userName.text;
+    resetCommand.email = self.userName.text;
 
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = RESET_PASSWORD_REQUEST;
     cloudCommand.command = resetCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- SignupCommand", __PRETTY_FUNCTION__];
 
-        NSError *error = nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-        if (ret == nil) {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__, [error localizedDescription]];
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- SignupCommand", __PRETTY_FUNCTION__];
-
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
-    }
+    [self asyncSendCommand:cloudCommand];
 }
 
 - (void)resetPasswordResponseCallback:(id)sender {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
@@ -534,7 +349,8 @@
             case 5:
                 failureReason = @"Sorry! Your password cannot be \nreset at the moment. Try again later.";
                 break;
-            default:break;
+            default:
+                break;
         }
 
         self.headingLabel.text = @"Oops!";
@@ -556,25 +372,10 @@
     cloudCommand.commandType = ALMOND_LIST;
     cloudCommand.command = almondListCommand;
 
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
-
-        NSError *error = nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-        if (ret == nil) {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__, [error localizedDescription]];
-
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
-
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
-    }
+    [self asyncSendCommand:cloudCommand];
 }
 
-- (void)AlmondListResponseCallback:(id)sender {
+- (void)almondListResponseCallback:(id)sender {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
 
     NSNotification *notifier = (NSNotification *) sender;
@@ -590,6 +391,9 @@
     }
 
     self.HUD.hidden = YES;
+
+    //todo sinclair - this ctrl should not be creating and pushing the main view. There may be already a main view on the stack; call back and allow parent to dismiss this view.
+
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"InitialSlide"];
     [self presentViewController:mainView
@@ -597,74 +401,8 @@
                      completion:nil];
 }
 
-
-/*
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- 
- if ([segue.identifier isEqualToString:@"loginView"]) {
- NSLog(@"in login saguea");
- // NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
- // NSLog(@"Clicked on %d",indexPath.row);
- 
- // SFILoginViewController *destViewController = segue.destinationViewController;
- //destViewController.deviceName = [data objectAtIndex:indexPath.row];
- }
- }
- */
-
-//#if 0
-//Working example of populating Detail view with device lists
-//
-//-(void)dataRequestCompletedWithJsonObject:(id)jsonObject
-//{
-//    NSLog(@"Delegate Data : %@",jsonObject);
-//    NSDictionary *jsonData = (NSDictionary*)jsonObject;
-//    NSString *loginRes = (NSString *) [jsonData objectForKey:@"login"];
-//    
-//    NSLog(@"Login Response: %@",loginRes);
-//    if ([loginRes isEqualToString:@"fail"])
-//    {
-//        [self alertStatus:@"Please check your Username and/or Password" :@"Login Failed"];
-//    }
-//    else
-//    {
-//        // NSLog(@"Nirav Data : %@",recipeDictionary);
-//        // On Login click control will come here if successful launch navigation controller
-//        //NSArray* deviceArray = (NSArray*)[jsonData objectForKey:@"devicelist"];
-//        
-//        NSString* deviceCount = (NSString *)[jsonData objectForKey:@"deviceCount"];
-//        
-//        self.deviceList = [[NSMutableArray alloc] init];
-//        NSLog(@"Device count %d",[deviceCount integerValue]);
-//        int i;
-//        
-//        for (i=1;i<=[deviceCount integerValue];i++)
-//        {
-//            NSString *deviceName = [NSString stringWithFormat:@"device%d",i];
-//            [deviceList addObject:[jsonData objectForKey:deviceName]];
-//        }
-//        
-//        for (id dic in deviceList) {
-//            NSLog(@"value:%@",dic);
-//            // NSLog(@"%@\n",[dic string]);
-//            /*Recipe *recipe = [[Recipe alloc] init];
-//             recipe.name = [dic objectForKey:@"title"];
-//             recipe.thumbNail = [dic objectForKey:@"thumb"];
-//             recipe.twitterShareCount = [[dic objectForKey:@"twc"] intValue];
-//             recipe.macAddr = [dic objectForKey:@"mac"];
-//             recipe.status = [[dic objectForKey:@"status"] intValue];
-//             [recipes addObject:recipe];
-//             */
-//        }
-//        
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone"bundle:nil];
-//        UINavigationController *navView = [storyboard instantiateViewControllerWithIdentifier:@"SFINavigationController"];
-//        SFIViewController *tableView = (SFIViewController *)navView.topViewController;
-//        tableView.data = [deviceList mutableCopy];
-//        
-//        [self presentViewController:navView animated:NO completion:NULL];
-//    }
-//}
-//#endif
+- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+}
 
 @end

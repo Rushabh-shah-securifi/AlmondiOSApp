@@ -16,15 +16,9 @@
 @property(strong, nonatomic) IBOutlet UILabel *subHeadingLabel;
 @property(weak, nonatomic) IBOutlet UIButton *forgotPwdButton;
 
-//- (void)resignKeyboard:(id)sender;
-
 - (IBAction)backClick:(id)sender;
 
 - (IBAction)loginClick:(id)sender;
-
-//- (void)networkHandlerUP:(id)sender;
-//
-//- (void)networkHandlerDOWN:(id)sender;
 
 - (IBAction)signupButton:(id)sender;
 
