@@ -559,34 +559,21 @@ typedef enum {
 #pragma mark - Cloud Command : Sender and Receivers
 
 - (void)sendLoginCommand {
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-
     Login *loginCommand = [[Login alloc] init];
-    loginCommand.UserID = [NSString stringWithString:emailID.text];
-    loginCommand.Password = [NSString stringWithString:password.text];
+    loginCommand.UserID = [NSString stringWithString:self.emailID.text];
+    loginCommand.Password = [NSString stringWithString:self.password.text];
 
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs setObject:loginCommand.UserID forKey:EMAIL];
     [prefs synchronize];
 
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = LOGIN_COMMAND;
     cloudCommand.command = loginCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- LoginCommand", __PRETTY_FUNCTION__];
 
-        NSError *error = nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-        if (ret == nil) {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__, [error localizedDescription]];
-        }
-
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- LoginCommand", __PRETTY_FUNCTION__];
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
-    }
+    [self asyncSendCommand:cloudCommand];
 }
+
 
 - (void)loginResponse:(id)sender {
 
@@ -664,31 +651,15 @@ typedef enum {
 
 
 - (void)sendSignupCommand {
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-
     Signup *signupCommand = [[Signup alloc] init];
-    signupCommand.UserID = [NSString stringWithString:emailID.text];
-    signupCommand.Password = [NSString stringWithString:password.text];
+    signupCommand.UserID = [NSString stringWithString:self.emailID.text];
+    signupCommand.Password = [NSString stringWithString:self.password.text];
 
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = SIGNUP_COMMAND;
     cloudCommand.command = signupCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- SignupCommand", __PRETTY_FUNCTION__];
 
-
-        NSError *error = nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-        if (ret == nil) {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__, [error localizedDescription]];
-
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- SignupCommand", __PRETTY_FUNCTION__];
-
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
-    }
+    [self asyncSendCommand:cloudCommand];
 }
 
 - (void)SignupResponseCallback:(id)sender {
@@ -785,30 +756,13 @@ typedef enum {
 
 
 - (void)loadAlmondList {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-
     AlmondListRequest *almondListCommand = [[AlmondListRequest alloc] init];
 
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = ALMOND_LIST;
     cloudCommand.command = almondListCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
 
-        NSError *error = nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-        if (ret == nil) {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__, [error localizedDescription]];
-
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
-
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
-    }
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
 - (void)AlmondListResponseCallback:(id)sender {
@@ -835,32 +789,14 @@ typedef enum {
 }
 
 - (void)sendReactivationRequest {
-//    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-//    NSString *email = [prefs objectForKey:EMAIL];
-//    NSLog(@"Email : %@", email);
+    ValidateAccountRequest *validateCommand = [[ValidateAccountRequest alloc] init];
+    validateCommand.email = self.emailID.text;
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-
-    ValidateAccountRequest *validateCommand = [[ValidateAccountRequest alloc] init];
-    validateCommand.email = emailID.text;
-
     cloudCommand.commandType = VALIDATE_REQUEST;
     cloudCommand.command = validateCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- SignupCommand", __PRETTY_FUNCTION__];
 
-        NSError *error = nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-        if (ret == nil) {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__, [error localizedDescription]];
-
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- SignupCommand", __PRETTY_FUNCTION__];
-
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
-    }
+    [self asyncSendCommand:cloudCommand];
 }
 
 - (void)validateResponseCallback:(id)sender {
@@ -905,30 +841,14 @@ typedef enum {
 }
 
 - (void)sendResetPasswordRequest {
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-
     ResetPasswordRequest *resetCommand = [[ResetPasswordRequest alloc] init];
     resetCommand.email = emailID.text;
 
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = RESET_PASSWORD_REQUEST;
     cloudCommand.command = resetCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- SignupCommand", __PRETTY_FUNCTION__];
 
-
-        NSError *error = nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-        if (ret == nil) {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__, [error localizedDescription]];
-
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- SignupCommand", __PRETTY_FUNCTION__];
-
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
-    }
+    [self asyncSendCommand:cloudCommand];
 }
 
 - (void)resetPasswordResponseCallback:(id)sender {
@@ -978,6 +898,10 @@ typedef enum {
         self.headingLabel.text = @"Almost there";
         self.subHeadingLabel.text = @"Password reset link has been sent to your account.";
     }
+}
+
+- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
 @end

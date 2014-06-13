@@ -11,8 +11,6 @@
 #import "SFIGenericRouterCommand.h"
 #import "AlmondPlusConstants.h"
 #import "SFIParser.h"
-#import "SFIDevicesList.h"
-#import "SFIOptionViewController.h"
 #import "SFIOfflineDataManager.h"
 
 @interface SFIWirelessTableViewController ()
@@ -182,6 +180,7 @@
     //lblSettingName.textColor = [UIColor whiteColor];
     [lblSettingName setFont:[UIFont fontWithName:@"Avenir-Light" size:15]];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     switch(indexPath.row){
         case 0:
         {
@@ -413,59 +412,38 @@
     [self sendGenericCommandRequest:payload];
 }
 
--(void) sendGenericCommandRequest:(NSString*)data{
+- (void)sendGenericCommandRequest:(NSString *)data {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    //NSString *currentMAC  = [prefs objectForKey:CURRENT_ALMOND_MAC];
-    
+
     //Generate internal index between 1 to 100
     self.mobileInternalIndex = (arc4random() % 1000) + 1;
-    
+
     NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
     NSString *currentMAC = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC];
-    
-    
+
     GenericCommandRequest *setWirelessSettingGenericCommand = [[GenericCommandRequest alloc] init];
     setWirelessSettingGenericCommand.almondMAC = currentMAC;
     setWirelessSettingGenericCommand.applicationID = APPLICATION_ID;
-    setWirelessSettingGenericCommand.mobileInternalIndex = [NSString stringWithFormat:@"%d",self.mobileInternalIndex];
+    setWirelessSettingGenericCommand.mobileInternalIndex = [NSString stringWithFormat:@"%d", self.mobileInternalIndex];
     setWirelessSettingGenericCommand.data = data;
-    cloudCommand.commandType=GENERIC_COMMAND_REQUEST;
-    cloudCommand.command=setWirelessSettingGenericCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- Generic Command Request", __PRETTY_FUNCTION__];
-        
-        NSError *error=nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-        
-        if (ret == nil)
-        {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- Generic Command Request", __PRETTY_FUNCTION__];
-        
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
-    }
-    
-    cloudCommand=nil;
-    setWirelessSettingGenericCommand=nil;
-}
 
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = GENERIC_COMMAND_REQUEST;
+    cloudCommand.command = setWirelessSettingGenericCommand;
+
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+}
 
 -(void)GenericResponseCallback:(id)sender
 {
     [SNLog Log:@"Method Name: %s ", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
         [SNLog Log:@"Method Name: %s Received GenericCommandResponse",__PRETTY_FUNCTION__];
         
-        GenericCommandResponse *obj = [[GenericCommandResponse alloc] init];
-        obj = (GenericCommandResponse *)[data valueForKey:@"data"];
+        GenericCommandResponse *obj = (GenericCommandResponse *)[data valueForKey:@"data"];
         
         BOOL isSuccessful = obj.isSuccessful;
         if(isSuccessful){
@@ -511,15 +489,13 @@
 -(void)DynamicAlmondListDeleteCallback:(id)sender{
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
         [SNLog Log:@"Method Name: %s Received DynamicAlmondListCallback", __PRETTY_FUNCTION__];
         
-        AlmondListResponse *obj = [[AlmondListResponse alloc] init];
-        obj = (AlmondListResponse *)[data valueForKey:@"data"];
-        
-        
+        AlmondListResponse *obj = (AlmondListResponse *)[data valueForKey:@"data"];
+
         if(obj.isSuccessful){
             
             [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
@@ -531,18 +507,18 @@
             if([currentMAC isEqualToString:deletedAlmond.almondplusMAC]){
                 [SNLog Log:@"Method Name: %s Remove this view", __PRETTY_FUNCTION__];
                 NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
-                NSString *currentMACName;
-               
+
                 if([almondList count]!=0){
                     SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
                     currentMAC = currentAlmond.almondplusMAC;
-                    currentMACName = currentAlmond.almondplusName;
+
+                    NSString *currentMACName = currentAlmond.almondplusName;
+
                     [prefs setObject:currentMAC forKey:CURRENT_ALMOND_MAC];
                     [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
                     [prefs synchronize];
                     self.navigationItem.title = currentMACName;
                 }else{
-                    currentMAC = NO_ALMOND;
                     self.navigationItem.title = @"Get Started";
                     [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
                     [prefs removeObjectForKey:CURRENT_ALMOND_MAC];

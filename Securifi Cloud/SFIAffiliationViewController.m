@@ -216,34 +216,12 @@
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)logoutUser{
-    //Logout Action
+- (void)logoutUser {
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    
-    cloudCommand.commandType=LOGOUT_COMMAND;
-    cloudCommand.command=nil;
-    [SNLog Log:@"Method Name: %s Before Writing to socket -- LogoutCommand", __PRETTY_FUNCTION__];
-    
-    NSError *error=nil;
-    [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-//    
-//    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-//    [prefs removeObjectForKey:EMAIL];
-//    [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
-//    [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
-//    [prefs synchronize];
-//    
-//    //Delete files
-//    [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
-//    [SFIOfflineDataManager deleteFile:HASH_FILENAME];
-//    [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
-//    [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
-//    
-//    //[self dismissViewControllerAnimated:NO completion:nil];
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-//    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
-//    //[self presentViewController:mainView animated:YES completion:nil];
-//    [self presentViewController:mainView animated:YES completion:nil];
+    cloudCommand.commandType = LOGOUT_COMMAND;
+    cloudCommand.command = nil;
+
+    [self asyncSendCommand:cloudCommand];
 }
 
 //- (IBAction)doneButtonHandler:(id)sender{
@@ -277,45 +255,23 @@
 #pragma mark - Cloud Command : Sender and Receivers
 
 - (IBAction)sendAffiliationCode:(id)sender {
-    
     [txtAffiliationCode resignFirstResponder];
     NSLog(@"Affiliation Code: %@", self.txtAffiliationCode.text);
-    
-    if(self.txtAffiliationCode.text.length == 0){
+
+    if (self.txtAffiliationCode.text.length == 0) {
         return;
     }
-    
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+
     AffiliationUserRequest *affiliationCommand = [[AffiliationUserRequest alloc] init];
     affiliationCommand.Code = self.txtAffiliationCode.text;
-    
-    cloudCommand.commandType=AFFILIATION_CODE_REQUEST;
-    cloudCommand.command=affiliationCommand;
-    
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- AffiliationCodeCommand", __PRETTY_FUNCTION__];
-        
-        
-        NSError *error=nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-        
-        if (ret == nil)
-        {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
-        }
-        
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- AffiliationCodeCommand", __PRETTY_FUNCTION__];
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
-    }
-    
-    //    //Refresh View
+
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = AFFILIATION_CODE_REQUEST;
+    cloudCommand.command = affiliationCommand;
+
+    [self asyncSendCommand:cloudCommand];
+
     self.lblEnterMsg.text = @"Please wait while your Almond is being linked to cloud.";
-    //    txtAffiliationCode.hidden = YES;
-    //    btnAffiliationCode.hidden = YES;
-    
-    cloudCommand=nil;
 }
 
 //-(void)dummyShowReasonCode:(int)reasonCode{
@@ -474,48 +430,25 @@
 }
 
 -(void)loadAlmondList{
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    
     AlmondListRequest *almondListCommand = [[AlmondListRequest alloc] init];
     
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType=ALMOND_LIST;
     cloudCommand.command=almondListCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
-        
-        NSError *error=nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-        
-        if (ret == nil)
-        {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
-            
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
-        
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
-    }
-    
-    cloudCommand=nil;
-    almondListCommand=nil;
-    
+
+    [self asyncSendCommand:cloudCommand];
 }
 
 -(void)AlmondListResponseCallback:(id)sender
 {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
         [SNLog Log:@"Method Name: %s Received Almond List response", __PRETTY_FUNCTION__];
         
-        AlmondListResponse *obj = [[AlmondListResponse alloc] init];
-        obj = (AlmondListResponse *)[data valueForKey:@"data"];
+        AlmondListResponse *obj = (AlmondListResponse *)[data valueForKey:@"data"];
         [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
         //Write Almond List offline
         [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
@@ -529,13 +462,12 @@
 {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
         [SNLog Log:@"Method Name: %s Received Logout response", __PRETTY_FUNCTION__];
         
-        LogoutResponse *obj = [[LogoutResponse alloc] init];
-        obj = (LogoutResponse *)[data valueForKey:@"data"];
+        LogoutResponse *obj = (LogoutResponse *)[data valueForKey:@"data"];
         if(obj.isSuccessful){
             //Logout Successful
             NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
@@ -611,6 +543,10 @@
 //
 //    cloudCommand=nil;
 //}
+
+- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+}
 
 
 @end

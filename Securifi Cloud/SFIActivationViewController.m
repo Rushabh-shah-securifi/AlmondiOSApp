@@ -80,39 +80,19 @@
 
 #pragma mark - Cloud command and handlers
 
--(void)sendReactivationRequest{
+- (void)sendReactivationRequest {
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     NSString *email = [prefs objectForKey:EMAIL];
     NSLog(@"Email : %@", email);
-    
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    
+
     ValidateAccountRequest *validateCommand = [[ValidateAccountRequest alloc] init];
     validateCommand.email = email;
-    
-    cloudCommand.commandType=VALIDATE_REQUEST;
-    cloudCommand.command=validateCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- SignupCommand", __PRETTY_FUNCTION__];
-        
-        
-        NSError *error=nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-                                                  
-        if (ret == nil)
-        {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
-            
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- SignupCommand", __PRETTY_FUNCTION__];
-        
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
-    }
-    
-    cloudCommand=nil;
-    validateCommand=nil;
+
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = VALIDATE_REQUEST;
+    cloudCommand.command = validateCommand;
+
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
 -(void)validateResponseCallback:(id)sender{

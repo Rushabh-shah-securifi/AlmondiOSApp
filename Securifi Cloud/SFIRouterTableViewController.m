@@ -490,11 +490,7 @@
 
 - (void)sendGenericCommandRequest:(NSString *)data {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    //NSString *currentMAC  = [prefs objectForKey:CURRENT_ALMOND_MAC];
 
-    //Generate internal index between 1 to 100
     self.mobileInternalIndex = (arc4random() % 1000) + 1;
 
     GenericCommandRequest *rebootGenericCommand = [[GenericCommandRequest alloc] init];
@@ -502,24 +498,18 @@
     rebootGenericCommand.applicationID = APPLICATION_ID;
     rebootGenericCommand.mobileInternalIndex = [NSString stringWithFormat:@"%d", self.mobileInternalIndex];
     rebootGenericCommand.data = data;
+
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = GENERIC_COMMAND_REQUEST;
     cloudCommand.command = rebootGenericCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- Generic Command Request", __PRETTY_FUNCTION__];
 
-        NSError *error = nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-        if (ret == nil) {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__, [error localizedDescription]];
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- Generic Command Request", __PRETTY_FUNCTION__];
-
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
-    }
+    [self asyncSendCommand:cloudCommand];
 }
+
+- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+}
+
 
 - (void)GenericResponseCallback:(id)sender {
     [SNLog Log:@"Method Name: %s ", __PRETTY_FUNCTION__];

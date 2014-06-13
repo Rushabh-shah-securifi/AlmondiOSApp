@@ -11,24 +11,50 @@
 #import "AlmondPlusConstants.h"
 #import "SFIOfflineDataManager.h"
 #import "SNLog.h"
+#import "SFIColors.h"
+#import "MBProgressHUD.h"
+#import "ECSlidingViewController.h"
 
 @interface SensorsViewController ()
 @property  MBProgressHUD *HUD;
+
+@property NSTimer *mobileCommandTimer;
+@property NSTimer *sensorChangeCommandTimer;
+@property NSTimer *sensorDataCommandTimer;
+@property BOOL isMobileCommandSuccessful;
+@property BOOL isSensorChangeCommandSuccessful;
+@property(nonatomic) unsigned int changeBrightness;
+@property(nonatomic) unsigned int baseBrightness;
+@property(nonatomic) unsigned int changeHue;
+@property(nonatomic) unsigned int changeSaturation;
+@property(nonatomic, retain) NSMutableArray *listAvailableColors;
+@property(nonatomic) NSInteger currentColorIndex;
+@property(nonatomic, retain) SFIColors *currentColor;
+
+@property(nonatomic, retain) NSString *currentMAC;
+@property(nonatomic, retain) NSMutableArray *deviceList;
+@property(nonatomic, retain) NSMutableArray *deviceValueList;
+@property(nonatomic, retain) NSString *offlineHash;
+@property NSString *currentDeviceID;
+@property unsigned int currentIndexID;
+@property NSString *currentValue;
+@property unsigned int currentInternalIndex;
+@property BOOL isEmpty;
+
+@property BOOL isSliderExpanded;
+@property unsigned int expandedRowHeight;
+
+@property(nonatomic, retain) NSString *currentChangedName;
+@property(nonatomic, retain) NSString *currentChangedLocation;
+
 @end
 
 @implementation SensorsViewController
 
-//@synthesize sampleItems;
-@synthesize sensors, sensorsCopy;
-@synthesize checkHeight;
 @synthesize changeBrightness;
 @synthesize baseBrightness;
 @synthesize changeSaturation;
 @synthesize changeHue;
-@synthesize baseHue;
-@synthesize prevObject;
-@synthesize moveCount, startIndex;
-@synthesize isReverseMove;
 @synthesize listAvailableColors;
 @synthesize currentColor;
 @synthesize currentColorIndex;
@@ -45,10 +71,8 @@
 @synthesize isSensorChangeCommandSuccessful;
 @synthesize expandedRowHeight;
 @synthesize isSliderExpanded;
-@synthesize isEditing;
 @synthesize sensorTable;
 @synthesize txtInvisible;
-@synthesize isCloudOnline;
 
 @synthesize currentChangedLocation;
 @synthesize currentChangedName;
@@ -72,17 +96,12 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.checkHeight = -1;
-
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.parentViewController.view];
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.labelText = @"Loading sensor data.";
     _HUD.dimBackground = YES;
     [self.parentViewController.view addSubview:_HUD];
-
-    //PY 041013 - To fix: Reverse order move from Add symbol
-    moveCount = -1;
 
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
@@ -165,7 +184,13 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     //    HUD.labelText = @"Loading sensor data.";
     //[self getDeviceHash];
 
-    isCloudOnline = TRUE;
+//    self.isCloudOnline = TRUE;
+}
+
+- (BOOL)isCloudOnline {
+    //todo push this into the SDK; don't ask for a state, as for "is online"
+    NSInteger state = [[SecurifiToolkit sharedInstance] getConnectionState];
+    return state != NETWORK_DOWN && state != CLOUD_CONNECTION_BROKEN && state != SDK_INITIALIZING;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -190,7 +215,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
         self.offlineHash = [SFIOfflineDataManager readHashList:self.currentMAC];
 
-        [self initiliazeImages];
+        [self initializeImages];
 
         //Call command : Get HASH - Command 74 - Match if list is upto date
         [self.HUD show:YES];
@@ -272,7 +297,6 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                                                  name:kSFIReachabilityChangedNotification object:nil];
 }
 
-
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 
@@ -334,29 +358,28 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 -(void)networkUpNotifier:(id)sender
 {
     [SNLog Log:@"Method Name: %s Sensor controller :In networkUP notifier", __PRETTY_FUNCTION__];
-    isCloudOnline = TRUE;
+//    self.isCloudOnline = TRUE;
     [self.tableView reloadData];
 }
-
 
 -(void)networkDownNotifier:(id)sender
 {
     [SNLog Log:@"Method Name: %s Sensor controller :In network down notifier", __PRETTY_FUNCTION__];
-    isCloudOnline = FALSE;
+//    self.isCloudOnline = FALSE;
     [self.tableView reloadData];
 }
 
 - (void)reachabilityDidChange:(NSNotification *)notification {
     if ([[SFIReachabilityManager sharedManager] isUnreachable]) {
         NSLog(@"Unreachable");
-        isCloudOnline = FALSE;
+//        self.isCloudOnline = FALSE;
         [self.tableView reloadData];
     }
 }
 
 #pragma mark - Table View
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if(isCloudOnline){
+    if(self.isCloudOnline){
         return 0;
     }else{
         return 35;
@@ -364,7 +387,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (isCloudOnline) {
+    if (self.isCloudOnline) {
         return nil;
     }
     else {
@@ -386,20 +409,17 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     }
 }
 
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     //PY 031013 - +1 is for the Add symbol
-    if([self.currentMAC isEqualToString:NO_ALMOND]){
+    if ([self.currentMAC isEqualToString:NO_ALMOND]) {
         // NSLog(@"No Almond - Number of Rows");
         return 1;
     }
-    if([self.deviceList count] == 0){
+    if ([self.deviceList count] == 0) {
         self.isEmpty = TRUE;
         return 1; //No results found
     }
@@ -407,8 +427,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     return [self.deviceList count]; //No add symbol for sensors + 1;
 }
 
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath; {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     //    if (self.checkHeight == indexPath.row)
     //        return 185;
     //    else
@@ -495,19 +514,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    // NSLog(@"In CELL CREATION");
-
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
 
-    //No add symbol for sensors
-    //    if(indexPath.row == [self.deviceList  count]){
-    //        cell = [self createAddSymbolCell:cell];
-    //        return cell;
-    //    }
-
-    //    if(indexPath.row == 0){
-    //        self.changeBrightness = 98;
-    //    }
     if ([currentMAC isEqualToString:NO_ALMOND]) {
         cell = [self createNoAlmondCell:cell];
         return cell;
@@ -2241,7 +2249,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                          forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:0.6] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal ];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                     btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
                     btnDismiss.tag = indexPathRow;
@@ -2339,7 +2347,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                          forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:0.6] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal ];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                     btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
                     btnDismiss.tag = indexPathRow;
@@ -2376,7 +2384,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                          forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
-                     [btnDismiss setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:0.6] forState:UIControlStateNormal ];
+                     [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal ];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                     btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
                     btnDismiss.tag = indexPathRow;
@@ -2416,7 +2424,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                          forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:0.6] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal ];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                     btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
                     btnDismiss.tag = indexPathRow;
@@ -2489,7 +2497,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                          forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:0.6] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal ];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                     btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
                     btnDismiss.tag = indexPathRow;
@@ -2870,7 +2878,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                    action:@selector(saveSensorData:)
          forControlEvents:UIControlEventTouchDown];
         [btnSave setTitle:@"Save" forState:UIControlStateNormal];
-        [btnSave setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
+        [btnSave setTitleColor:[UIColor colorWithHue:(CGFloat) (changeHue / 360.0) saturation:(CGFloat) (changeSaturation / 100.0) brightness:(CGFloat) (changeBrightness / 100.0) alpha:1] forState:UIControlStateNormal ];
         [btnSave.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
         btnSave.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate, 65,30);
         btnSave.tag = indexPathRow;
@@ -2890,8 +2898,6 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
 
 #pragma mark - Class Methods
-
-
 
 - (IBAction)revealMenu:(id)sender
 {
@@ -2915,13 +2921,12 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     return YES;
 }
 
-
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation) fromInterfaceOrientation {
     // NSLog(@"Rotation %d", fromInterfaceOrientation);
     [self.tableView reloadData];
 }
 
-- (void)initiliazeImages {
+- (void)initializeImages {
     int currentDeviceType;
     NSMutableArray *currentKnownValues;
     SFIDeviceKnownValues *currentDeviceValue;
@@ -3669,16 +3674,11 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
 }
 
--(void) onAddAlmondClicked:(id) sender{
+- (void)onAddAlmondClicked:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AffiliationNavigationTop"];
     [self presentViewController:mainView animated:YES completion:nil];
 }
-
-//- (void)scrollViewWillBeginDragging:(UIScrollView *)activeScrollView {
-//    [[self view] endEditing:YES];
-//}
-
 
 - (void)dismissTamper:(id)sender {
     // NSLog(@"Dismiss Tamper");
@@ -3817,7 +3817,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 self.currentIndexID = currentDeviceValue.index;
                 self.currentValue = currentDeviceValue.value;
                 [self sendMobileCommand];
-                [self initiliazeImages];
+                [self initializeImages];
                 // [[self view] endEditing:YES];
                 [self.tableView reloadData];
             }
@@ -3897,13 +3897,6 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
 }
 
-
-
-//-(void)onAddDeviceClicked:(id)sender {
-//    // NSLog(@"Add Device action");
-//}
-
-
 - (void)refreshDataForAlmond {
     if ([self.currentMAC isEqualToString:NO_ALMOND]) {
         return;
@@ -3923,7 +3916,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                                                             userInfo:nil
                                                              repeats:NO];
 
-    [self initiliazeImages];
+    [self initializeImages];
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
@@ -3987,7 +3980,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         self.currentIndexID = currentDeviceValue.index;
         self.currentValue = currentDeviceValue.value;
         [self sendMobileCommand];
-        [self initiliazeImages];
+        [self initializeImages];
         //  [[self view] endEditing:YES];
         [self.tableView reloadData];
     }
@@ -4032,7 +4025,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         self.currentIndexID = currentDeviceValue.index;
         self.currentValue = currentDeviceValue.value;
         [self sendMobileCommand];
-        [self initiliazeImages];
+        [self initializeImages];
         // [[self view] endEditing:YES];
         [self.tableView reloadData];
     }
@@ -4077,7 +4070,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             self.currentIndexID = currentDeviceValue.index;
             self.currentValue = currentDeviceValue.value;
             [self sendMobileCommand];
-            [self initiliazeImages];
+            [self initializeImages];
             [self.tableView reloadData];
             break;
         }
@@ -4117,7 +4110,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             self.currentIndexID = currentDeviceValue.index;
             self.currentValue = currentDeviceValue.value;
             [self sendMobileCommand];
-            [self initiliazeImages];
+            [self initializeImages];
             [self.tableView reloadData];
             break;
         }
@@ -4165,7 +4158,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             self.currentIndexID = currentDeviceValue.index;
             self.currentValue = currentDeviceValue.value;
             [self sendMobileCommand];
-            [self initiliazeImages];
+            [self initializeImages];
             [self.tableView reloadData];
             break;
         }
@@ -4203,7 +4196,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             self.currentIndexID = currentDeviceValue.index;
             self.currentValue = currentDeviceValue.value;
             [self sendMobileCommand];
-            [self initiliazeImages];
+            [self initializeImages];
             [self.tableView reloadData];
             break;
         }
@@ -4242,7 +4235,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             self.currentIndexID = value.index;
             self.currentValue = value.value;
             [self sendMobileCommand];
-            [self initiliazeImages];
+            [self initializeImages];
             [self.tableView reloadData];
             break;
         }
@@ -4279,7 +4272,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             self.currentIndexID = deviceValue.index;
             self.currentValue = deviceValue.value;
             [self sendMobileCommand];
-            [self initiliazeImages];
+            [self initializeImages];
             [self.tableView reloadData];
             break;
         }
@@ -4335,22 +4328,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     
     cloudCommand.commandType=DEVICEDATA_HASH;
     cloudCommand.command=deviceHashCommand;
-    @try {
-        //[SNLog Log:@"Method Name: %s Before Writing to socket -- DeviceHash Command", __PRETTY_FUNCTION__];
-        
-        NSError *error=nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-        
-        if (ret == nil)
-        {
-            //[SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
-        }
-        //[SNLog Log:@"Method Name: %s After Writing to socket -- DeviceHash Command", __PRETTY_FUNCTION__];
-        
-    }
-    @catch (NSException *exception) {
-        //[SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
-    }
+
+    [self asyncSendCommand:cloudCommand];
 }
 
 -(void)HashResponseCallback:(id)sender
@@ -4427,29 +4406,14 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
 - (void)loadDeviceList {
     //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-
     DeviceListRequest *deviceListCommand = [[DeviceListRequest alloc] init];
     deviceListCommand.almondMAC = self.currentMAC;
 
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = DEVICEDATA;
     cloudCommand.command = deviceListCommand;
-    @try {
-        //[SNLog Log:@"Method Name: %s Before Writing to socket -- Device List Command", __PRETTY_FUNCTION__];
 
-        NSError *error = nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-        if (ret == nil) {
-            //[SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
-        }
-
-        //[SNLog Log:@"Method Name: %s After Writing to socket -- Device List Command", __PRETTY_FUNCTION__];
-
-    }
-    @catch (NSException *exception) {
-        //[SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
-    }
+    [self asyncSendCommand:cloudCommand];
 }
 
 - (void)DeviceListResponseCallback:(id)sender {
@@ -4480,29 +4444,14 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 }
 
 - (void)loadDeviceValue {
-    //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-
     DeviceValueRequest *command = [[DeviceValueRequest alloc] init];
     command.almondMAC = self.currentMAC;
 
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = DEVICE_VALUE;
     cloudCommand.command = command;
-    @try {
 
-        //[SNLog Log:@"Method Name: %s Before Writing to socket -- Device Value Command", __PRETTY_FUNCTION__];
-        NSError *error = nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-        if (ret == nil) {
-            //[SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
-        }
-
-        //[SNLog Log:@"Method Name: %s After Writing to socket -- Device Value Command", __PRETTY_FUNCTION__];
-    }
-    @catch (NSException *exception) {
-        //[SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
-    }
+    [self asyncSendCommand:cloudCommand];
 }
 
 - (void)DeviceValueListResponseCallback:(id)sender {
@@ -4525,7 +4474,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         [SFIOfflineDataManager writeDeviceValueList:self.deviceValueList currentMAC:self.currentMAC];
 
         //Reload table
-        [self initiliazeImages];
+        [self initializeImages];
         // [[self view] endEditing:YES];
         //To remove text fields keyboard. It was throwing error when it was being called from the background thread
         [self.tableView performSelectorOnMainThread:@selector(reloadData)
@@ -4543,62 +4492,48 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
 }
 
+- (void)sendMobileCommand {
+    [SNLog Log:@"Method Name: %s sendMobileCommand", __PRETTY_FUNCTION__];
 
--(void)sendMobileCommand{
-    //[SNLog Log:@"Method Name: %s sendMobileCommand", __PRETTY_FUNCTION__];
-    
-    
     //Generate internal index between 1 to 100
     self.currentInternalIndex = (arc4random() % 100) + 1;
-    
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    
+
     MobileCommandRequest *mobileCommand = [[MobileCommandRequest alloc] init];
     mobileCommand.almondMAC = self.currentMAC;
     mobileCommand.deviceID = self.currentDeviceID;
-    mobileCommand.indexID = [NSString stringWithFormat:@"%d",self.currentIndexID];
+    mobileCommand.indexID = [NSString stringWithFormat:@"%d", self.currentIndexID];
     mobileCommand.changedValue = self.currentValue;
-    mobileCommand.internalIndex = [NSString stringWithFormat:@"%d",self.currentInternalIndex];
-    
-    cloudCommand.commandType=MOBILE_COMMAND;
-    cloudCommand.command=mobileCommand;
-    @try {
-        //[SNLog Log:@"Method Name: %s Before Writing to socket -- MobileCommandRequest Command", __PRETTY_FUNCTION__];
-        
-        NSError *error=nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-        
-        if (ret == nil)
-        {
-            //[SNLog Log:@"Method Name: %s Main APP Error %@",__PRETTY_FUNCTION__,[error localizedDescription]];
-        }
-        
-        //[SNLog Log:@"Method Name: %s After Writing to socket -- MobileCommandRequest Command",__PRETTY_FUNCTION__];
-    }
-    @catch (NSException *exception) {
-        //[SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
-    }
-    
+    mobileCommand.internalIndex = [NSString stringWithFormat:@"%d", self.currentInternalIndex];
+
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = MOBILE_COMMAND;
+    cloudCommand.command = mobileCommand;
+
+    [self asyncSendCommand:cloudCommand];
+
+    //todo decide what to do about this
     //PY 311013 - Timeout for Mobile Command
-    mobileCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
+    [self.mobileCommandTimer invalidate];
+    self.mobileCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
                                                           target:self
                                                         selector:@selector(cancelMobileCommand:)
                                                         userInfo:nil
                                                          repeats:NO];
-    isMobileCommandSuccessful = FALSE;
+    self.isMobileCommandSuccessful = FALSE;
 }
 
 //PY 311013 - Timeout for Mobile Command
--(void)cancelMobileCommand:(id)sender{
-    [mobileCommandTimer invalidate];
+- (void)cancelMobileCommand:(id)sender {
+    [self.mobileCommandTimer invalidate];
     //// NSLog(@"cancelMobileCommand %@", isMobileCommandSuccessful);
-    if(!isMobileCommandSuccessful){
+    if (!self.isMobileCommandSuccessful) {
         //Cancel the mobile event - Revert back
-        //// NSLog(@"Change the state back");
         self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
-        [self initiliazeImages];
-        // [[self view] endEditing:YES];
-        [self.tableView reloadData];
+        [self initializeImages];
+
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.tableView reloadData];
+        });
     }
 }
 
@@ -4683,7 +4618,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         
     }
     self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
-    [self initiliazeImages];
+    [self initializeImages];
     // [[self view] endEditing:YES];
     //To remove text fields keyboard. It was throwing error when it was being called from the background thread
     [self.tableView performSelectorOnMainThread:@selector(reloadData)
@@ -4750,8 +4685,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 //Reload Device Value List which was updated by Offline Data Manager
                 self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
             }
-            
-            [self initiliazeImages];
+
+            [self initializeImages];
             // [[self view] endEditing:YES];
             //To remove text fields keyboard. It was throwing error when it was being called from the background thread
             [self.tableView performSelectorOnMainThread:@selector(reloadData)
@@ -4849,7 +4784,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             
             if(isCurrentMAC){// && isDeviceValueChanged){
                 //[SNLog Log:@"Method Name: %s Value Changed - Refresh",__PRETTY_FUNCTION__];
-                [self initiliazeImages];
+                [self initializeImages];
                 //To remove text fields keyboard. It was throwing error when it was being called from the background thread
                 [self.tableView performSelectorOnMainThread:@selector(reloadData)
             withObject:nil
@@ -4974,29 +4909,15 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     if ([self.currentMAC isEqualToString:NO_ALMOND]) {
         return;
     }
-    //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
 
     SensorForcedUpdateRequest *forcedUpdateCommand = [[SensorForcedUpdateRequest alloc] init];
     forcedUpdateCommand.almondMAC = self.currentMAC;
 
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = DEVICE_DATA_FORCED_UPDATE_REQUEST;
     cloudCommand.command = forcedUpdateCommand;
-    @try {
-        //[SNLog Log:@"Method Name: %s Before Writing to socket -- Sensor Forced Update Command", __PRETTY_FUNCTION__];
 
-        NSError *error = nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-        if (ret == nil) {
-            //[SNLog Log:@"Method Name: %s Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
-        }
-        //[SNLog Log:@"Method Name: %s After Writing to socket -- Sensor Forced Update Command", __PRETTY_FUNCTION__];
-
-    }
-    @catch (NSException *exception) {
-        //[SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
-    }
+    [self asyncSendCommand:cloudCommand];
 }
 
 
@@ -5010,8 +4931,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     NSLog(@"Save button clicked for device: %ld", (long)btnObj.tag);
     SFIDevice *currentSensor = self.deviceList[(NSUInteger) btnObj.tag];
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    
+
     SensorChangeRequest *sensorChangeCommand = [[SensorChangeRequest alloc] init];
     sensorChangeCommand.almondMAC = self.currentMAC;
     sensorChangeCommand.deviceID = [NSString stringWithFormat:@"%d", currentSensor.deviceID];
@@ -5029,27 +4949,15 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         currentSensor.location = currentChangedLocation;
     }
     sensorChangeCommand.mobileInternalIndex = [NSString stringWithFormat:@"%d",(arc4random() % 10000) + 1];
-    
-    
+
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType=SENSOR_CHANGE_REQUEST;
     cloudCommand.command=sensorChangeCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- Sensor Forced Update Command", __PRETTY_FUNCTION__];
-        
-        NSError *error=nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-        
-        if (ret == nil)
-        {
-            [SNLog Log:@"Method Name: %s Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- Sensor Forced Update Command", __PRETTY_FUNCTION__];
-        
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
-    }
-    
+
+    [self asyncSendCommand:cloudCommand];
+
+    //todo sinclair - push timeout into the SDK and invoke timeout action using a closure??
+
     //PY 230114 - Timeout for Sensor Change Command
     sensorChangeCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
                                                           target:self
@@ -5070,7 +4978,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         //Cancel the event - Revert back
         //// NSLog(@"Change the state back");
         self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
-        [self initiliazeImages];
+        [self initializeImages];
         // [[self view] endEditing:YES];
         [self.tableView reloadData];
     }
@@ -5094,7 +5002,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             //TODO: Later
             [SNLog Log:@"Method Name: %s Could not update data, Revert to old value", __PRETTY_FUNCTION__];
             self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
-            [self initiliazeImages];
+            [self initializeImages];
             //To remove text fields keyboard. It was throwing error when it was being called from the background thread
             [self.tableView performSelectorOnMainThread:@selector(reloadData)
                                              withObject:nil
@@ -5120,5 +5028,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     }
 }
 
+- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+}
 
 @end

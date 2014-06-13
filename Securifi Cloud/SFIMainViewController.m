@@ -398,28 +398,13 @@ void runOnMainQueueWithoutDeadLocking(void (^block)(void)) {
 - (void)loadAlmondList {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
 
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-
     AlmondListRequest *almondListCommand = [[AlmondListRequest alloc] init];
 
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = ALMOND_LIST;
     cloudCommand.command = almondListCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
 
-        NSError *error = nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-        if (ret == nil) {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__, [error localizedDescription]];
-
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- Almond List Command", __PRETTY_FUNCTION__];
-
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
-    }
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
 - (void)AlmondListResponseCallback:(id)sender {

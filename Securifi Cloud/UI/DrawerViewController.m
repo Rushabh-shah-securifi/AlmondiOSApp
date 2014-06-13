@@ -203,11 +203,11 @@
             GenericCommand *cloudCommand = [[GenericCommand alloc] init];
             cloudCommand.commandType = LOGOUT_COMMAND;
             cloudCommand.command = nil;
-            [SNLog Log:@"Method Name: %s Before Writing to socket -- LogoutCommand", __PRETTY_FUNCTION__];
 
-            NSError *error = nil;
-            [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-            //todo handle error?
+            [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+//
+//            NSError *error = nil;
+//            [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
 
             //PY 250214 - Wait for callback from cloud
 //            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];

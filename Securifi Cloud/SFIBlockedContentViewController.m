@@ -251,59 +251,37 @@
 
 #pragma mark - Cloud command handlers
 
--(void) sendGenericCommandRequest:(NSString*)data{
+- (void)sendGenericCommandRequest:(NSString *)data {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    //NSString *currentMAC  = [prefs objectForKey:CURRENT_ALMOND_MAC];
-    
-    //Generate internal index between 1 to 100
+
     self.mobileInternalIndex = (arc4random() % 1000) + 1;
-    
+
     NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
     NSString *currentMAC = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC];
-    
-    
+
     GenericCommandRequest *setWirelessSettingGenericCommand = [[GenericCommandRequest alloc] init];
     setWirelessSettingGenericCommand.almondMAC = currentMAC;
     setWirelessSettingGenericCommand.applicationID = APPLICATION_ID;
-    setWirelessSettingGenericCommand.mobileInternalIndex = [NSString stringWithFormat:@"%d",self.mobileInternalIndex];
+    setWirelessSettingGenericCommand.mobileInternalIndex = [NSString stringWithFormat:@"%d", self.mobileInternalIndex];
     setWirelessSettingGenericCommand.data = data;
-    cloudCommand.commandType=GENERIC_COMMAND_REQUEST;
-    cloudCommand.command=setWirelessSettingGenericCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- Generic Command Request", __PRETTY_FUNCTION__];
-        
-        NSError *error=nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-        
-        if (ret == nil)
-        {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- Generic Command Request", __PRETTY_FUNCTION__];
-        
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
-    }
-    
-    cloudCommand=nil;
-    setWirelessSettingGenericCommand=nil;
-}
 
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = GENERIC_COMMAND_REQUEST;
+    cloudCommand.command = setWirelessSettingGenericCommand;
+
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+}
 
 -(void)GenericResponseCallback:(id)sender
 {
     [SNLog Log:@"Method Name: %s ", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
         [SNLog Log:@"Method Name: %s Received GenericCommandResponse",__PRETTY_FUNCTION__];
         
-        GenericCommandResponse *obj = [[GenericCommandResponse alloc] init];
-        obj = (GenericCommandResponse *)[data valueForKey:@"data"];
+        GenericCommandResponse *obj = (GenericCommandResponse *)[data valueForKey:@"data"];
         
         BOOL isSuccessful = obj.isSuccessful;
         if(isSuccessful){

@@ -262,42 +262,29 @@
 }
 
 - (IBAction)logoutAllButtonHandler:(id)sender {
-    
-    logMessageLabel.text=@"";
-    
-    if ([emailID isFirstResponder])
-        [emailID resignFirstResponder];
-    
-    else if ([password isFirstResponder])
-        [password resignFirstResponder];
-    
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    
+    self.logMessageLabel.text = @"";
+
+    if ([self.emailID isFirstResponder]) {
+        [self.emailID resignFirstResponder];
+
+    }
+    else if ([self.password isFirstResponder]) {
+        [self.password resignFirstResponder];
+    }
+
     LogoutAllRequest *logoutAllCommand = [[LogoutAllRequest alloc] init];
-    logoutAllCommand.UserID = [NSString stringWithString:emailID.text];
-    logoutAllCommand.Password = [NSString stringWithString:password.text];
-    
-    cloudCommand.commandType=LOGOUT_ALL_COMMAND;
-    cloudCommand.command=logoutAllCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- Logout All Command", __PRETTY_FUNCTION__];
-        
-        NSError *error=nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-        
-        if (ret == nil)
-        {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
-        }
-        
-        [SNLog Log:@"Method Name: %s After Writing to socket -- Logout All Command", __PRETTY_FUNCTION__];
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
-    }
-    
-    cloudCommand=nil;
-    logoutAllCommand=nil;
+    logoutAllCommand.UserID = [NSString stringWithString:self.emailID.text];
+    logoutAllCommand.Password = [NSString stringWithString:self.password.text];
+
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = LOGOUT_ALL_COMMAND;
+    cloudCommand.command = logoutAllCommand;
+
+    [self asyncSendCommand:cloudCommand];
+}
+
+- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

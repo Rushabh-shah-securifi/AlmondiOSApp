@@ -442,9 +442,6 @@
 
 - (void)sendGenericCommandRequest:(NSString *)commandData {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    //NSString *currentMAC  = [prefs objectForKey:CURRENT_ALMOND_MAC];
 
     //Generate internal index between 1 to 1000
     self.mobileInternalIndex = (arc4random() % 1000) + 1;
@@ -454,196 +451,126 @@
     genericCommand.applicationID = APPLICATION_ID;
     genericCommand.mobileInternalIndex = [NSString stringWithFormat:@"%d", self.mobileInternalIndex];
     genericCommand.data = commandData;
+
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = GENERIC_COMMAND_REQUEST;
     cloudCommand.command = genericCommand;
-    @try {
-        [SNLog Log:@"Method Name: %s Before Writing to socket -- Generic Command Request", __PRETTY_FUNCTION__];
 
-        NSError *error = nil;
-        id ret = [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-        if (ret == nil) {
-            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__, [error localizedDescription]];
-        }
-        [SNLog Log:@"Method Name: %s After Writing to socket -- Generic Command Request", __PRETTY_FUNCTION__];
-
-    }
-    @catch (NSException *exception) {
-        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__, exception.reason];
-    }
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
 - (void)GenericResponseCallback:(id)sender {
-    [SNLog Log:@"Method Name: %s ", __PRETTY_FUNCTION__];
+    [SNLog Log:@"Method Name: %s Received GenericCommandResponse", __PRETTY_FUNCTION__];
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
 
-    if (data != nil) {
-        [SNLog Log:@"Method Name: %s Received GenericCommandResponse", __PRETTY_FUNCTION__];
+    GenericCommandResponse *obj = (GenericCommandResponse *) [data valueForKey:@"data"];
+    if (!obj.isSuccessful) {
+        NSLog(@"Obj not successful. Reason: %@", obj.reason);
+        return;
+    }
 
-        GenericCommandResponse *obj = (GenericCommandResponse *) [data valueForKey:@"data"];
+    self.genericData = [[NSMutableData alloc] init];
+    self.genericString = [[NSString alloc] init];
 
-        BOOL isSuccessful = obj.isSuccessful;
-        if (isSuccessful) {
-            genericData = [[NSMutableData alloc] init];
-            genericString = [[NSString alloc] init];
+    //Display proper message
+    NSLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
+    NSLog(@"Response Data: %@", obj.genericData);
+    NSLog(@"Decoded Data: %@", obj.decodedData);
 
-            //Display proper message
-            NSLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
-            NSLog(@"Response Data: %@", obj.genericData);
-            NSLog(@"Decoded Data: %@", obj.decodedData);
-            NSData *data = [obj.decodedData mutableCopy];
-            NSLog(@"Data: %@", data);
+    NSData *data_copy = [obj.decodedData copy];
+    [SNLog Log:@"Method Name: %s data: %@", __PRETTY_FUNCTION__, data_copy];
 
-            [genericData appendData:data];
+    [self.genericData appendData:data_copy];
 
-            [genericData getBytes:&expectedGenericDataLength range:NSMakeRange(0, 4)];
-            [SNLog Log:@"Method Name: %s Expected Length: %d", __PRETTY_FUNCTION__, expectedGenericDataLength];
-            [genericData getBytes:&command range:NSMakeRange(4, 4)];
-            [SNLog Log:@"Method Name: %s Command: %d", __PRETTY_FUNCTION__, command];
+    [self.genericData getBytes:&expectedGenericDataLength range:NSMakeRange(0, 4)];
+    [SNLog Log:@"Method Name: %s Expected Length: %d", __PRETTY_FUNCTION__, expectedGenericDataLength];
 
-            //Remove 8 bytes from received command
-            [genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
+    [self.genericData getBytes:&command range:NSMakeRange(4, 4)];
+    [SNLog Log:@"Method Name: %s Command: %d", __PRETTY_FUNCTION__, command];
 
-            NSString *decodedString = [[NSString alloc] initWithData:genericData encoding:NSUTF8StringEncoding];
-            SFIGenericRouterCommand *genericRouterCommand = [[SFIParser alloc] loadDataFromString:decodedString];
-            NSLog(@"Command Type %d", genericRouterCommand.commandType);
+    //Remove 8 bytes from received command
+    [self.genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
 
-            switch (genericRouterCommand.commandType) {
-                case 2: {
-                    //Get Connected Device List
-                    SFIDevicesList *routerConnectedDevices = (SFIDevicesList *) genericRouterCommand.command;
-                    NSLog(@"Connected Devices Reply: %d", [routerConnectedDevices.deviceList count]);
-                    self.connectedDevices = routerConnectedDevices.deviceList;
-                    [self loadBlockedUsers];
-                    //Display list
-//                    SFIRouterDevicesListViewController *viewController =[[SFIRouterDevicesListViewController alloc] init];
-//                    viewController.deviceList = routerConnectedDevices.deviceList;
-//                    viewController.deviceListType = genericRouterCommand.commandType;
-//                    [self.navigationController pushViewController:viewController animated:YES];
-                }
-                    break;
-                case 3: {
-                    //Get Blocked Device List
-                    SFIDevicesList *routerBlockedDevices = (SFIDevicesList *) genericRouterCommand.command;
-                    NSLog(@"Blocked Devices Reply: %d", [routerBlockedDevices.deviceList count]);
-                    self.blockedDevices = routerBlockedDevices.deviceList;
-                    [self processResult];
-                    //Display list
-//                    SFIRouterDevicesListViewController *viewController =[[SFIRouterDevicesListViewController alloc] init];
-//                    viewController.deviceList = routerBlockedDevices.deviceList;
-//                    viewController.deviceListType = genericRouterCommand.commandType;
-//                    [self.navigationController pushViewController:viewController animated:YES];
+    NSString *decodedString = [[NSString alloc] initWithData:self.genericData encoding:NSUTF8StringEncoding];
+    SFIGenericRouterCommand *genericRouterCommand = [[SFIParser alloc] loadDataFromString:decodedString];
+    NSLog(@"Command Type %d", genericRouterCommand.commandType);
 
-                }
-                    break;
+    switch (genericRouterCommand.commandType) {
+        case 2: {
+            //Get Connected Device List
+            SFIDevicesList *routerConnectedDevices = (SFIDevicesList *) genericRouterCommand.command;
+            NSLog(@"Connected Devices Reply: %d", [routerConnectedDevices.deviceList count]);
+            self.connectedDevices = routerConnectedDevices.deviceList;
+            [self loadBlockedUsers];
 
-            }
+            break;
         }
-        else {
-            NSLog(@"Reason: %@", obj.reason);
+        case 3: {
+            //Get Blocked Device List
+            SFIDevicesList *routerBlockedDevices = (SFIDevicesList *) genericRouterCommand.command;
+            NSLog(@"Blocked Devices Reply: %d", [routerBlockedDevices.deviceList count]);
+            self.blockedDevices = routerBlockedDevices.deviceList;
+            [self processResult];
+
+            break;
+        }
+
+        default: {
+            break;
         }
     }
 }
 
 - (void)DynamicAlmondListDeleteCallback:(id)sender {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
 
-    if (data != nil) {
-        [SNLog Log:@"Method Name: %s Received DynamicAlmondListCallback", __PRETTY_FUNCTION__];
+    [SNLog Log:@"Method Name: %s Received DynamicAlmondListCallback", __PRETTY_FUNCTION__];
+    AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
+    if (!obj.isSuccessful) {
+         return;
+    }
 
-        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
+    [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
 
-        if (obj.isSuccessful) {
+    SFIAlmondPlus *deletedAlmond = [obj.almondPlusMACList objectAtIndex:0];
+    if ([self.currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
+        [SNLog Log:@"Method Name: %s Remove this view", __PRETTY_FUNCTION__];
 
-            [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
 
-            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-            //NSString *currentMAC = [prefs objectForKey:CURRENT_ALMOND_MAC];
+        if ([almondList count] != 0) {
+            SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
+            self.currentMAC = currentAlmond.almondplusMAC;
 
-            SFIAlmondPlus *deletedAlmond = [obj.almondPlusMACList objectAtIndex:0];
-            if ([self.currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
-                [SNLog Log:@"Method Name: %s Remove this view", __PRETTY_FUNCTION__];
-                NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
-                NSString *currentMACName;
-
-                if ([almondList count] != 0) {
-                    SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
-                    self.currentMAC = currentAlmond.almondplusMAC;
-                    currentMACName = currentAlmond.almondplusName;
-                    [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
-                    [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
-                    [prefs synchronize];
-                    self.navigationItem.title = currentMACName;
-                }
-                else {
-                    self.currentMAC = NO_ALMOND;
-                    self.navigationItem.title = @"Get Started";
-                    [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
-                    [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
-                    [prefs synchronize];
-                }
-
-                [self.navigationController popToRootViewControllerAnimated:YES];
-            }
-
+            NSString *currentMACName = currentAlmond.almondplusName;
+            [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
+            [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
+            [prefs synchronize];
+            self.navigationItem.title = currentMACName;
+        }
+        else {
+            self.currentMAC = NO_ALMOND;
+            self.navigationItem.title = @"Get Started";
+            [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
+            [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
+            [prefs synchronize];
         }
 
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-
- */
 
 @end
