@@ -698,6 +698,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                     <connections>
                         <outlet property="forgotPwdButton" destination="5GG-3f-pqZ" id="8ia-gH-o04"/>
                         <outlet property="headingLabel" destination="Zuk-ja-Rsi" id="dyq-Yn-K4x"/>
+                        <outlet property="loginButton" destination="fGC-bJ-KoF" id="A69-zI-x0v"/>
                         <outlet property="password" destination="7Fl-1P-IHp" id="iJj-Ca-feE"/>
                         <outlet property="subHeadingLabel" destination="Zon-6Z-KzY" id="K92-w7-tv6"/>
                         <outlet property="userName" destination="Y3d-aA-TFm" id="gg7-ho-Eez"/>

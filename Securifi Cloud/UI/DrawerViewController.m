@@ -7,7 +7,6 @@
 //
 
 #import "DrawerViewController.h"
-#import "AlmondPlusConstants.h"
 #import "SFIOfflineDataManager.h"
 #import "SNLog.h"
 
@@ -41,7 +40,7 @@
 
     [self.drawTable reloadData];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(LogoutResponseCallback:)
+                                             selector:@selector(onLogoutResponse:)
                                                  name:LOGOUT_NOTIFIER
                                                object:nil];
 }
@@ -200,36 +199,7 @@
 
         if (indexPath.row == 0) {
             //Logout Action
-            GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-            cloudCommand.commandType = LOGOUT_COMMAND;
-            cloudCommand.command = nil;
-
-            [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
-//
-//            NSError *error = nil;
-//            [[SecurifiToolkit sharedInstance] sendToCloud:cloudCommand error:&error];
-
-            //PY 250214 - Wait for callback from cloud
-//            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-//            [prefs removeObjectForKey:EMAIL];
-//            [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
-//            [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
-//            [prefs removeObjectForKey:COLORCODE];
-//            [prefs synchronize];
-//            
-//            //Delete files
-//            [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
-//            [SFIOfflineDataManager deleteFile:HASH_FILENAME];
-//            [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
-//            [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
-//            
-//            //[self dismissViewControllerAnimated:NO completion:nil];
-//            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-//            UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
-//            //[self presentViewController:mainView animated:YES completion:nil];
-//            [self presentViewController:mainView animated:YES completion:nil];
-
-
+            [[SecurifiToolkit sharedInstance] asyncSendLogout];
         }
         else if (indexPath.row == 1) {
             //Logout All Action
@@ -357,37 +327,16 @@
 
 #pragma mark - Cloud Command : Sender and Receivers
 
-- (void)LogoutResponseCallback:(id)sender {
+- (void)onLogoutResponse:(id)sender {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-
     if (data != nil) {
         [SNLog Log:@"Method Name: %s Received Logout response", __PRETTY_FUNCTION__];
 
         LogoutResponse *obj = (LogoutResponse *) [data valueForKey:@"data"];
-        if (obj.isSuccessful) {
-            //Logout Successful
-            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-            [prefs removeObjectForKey:EMAIL];
-            [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
-            [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
-            [prefs removeObjectForKey:COLORCODE];
-            [prefs synchronize];
-
-            //Delete files
-            [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
-            [SFIOfflineDataManager deleteFile:HASH_FILENAME];
-            [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
-            [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
-
-            //[self dismissViewControllerAnimated:NO completion:nil];
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-            UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
-            //[self presentViewController:mainView animated:YES completion:nil];
-            [self presentViewController:mainView animated:YES completion:nil];
-        }
-        else {
+        if (!obj.isSuccessful) {
             NSLog(@"Could not logout - Reason %@", obj.reason);
             NSString *alertMsg = @"Sorry. Logout was unsuccessful. Please try again.";
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Logout Unsuccessful"

@@ -10,7 +10,6 @@
 #import "SNLog.h"
 #import "SFIOfflineDataManager.h"
 #import "SFIDatabaseUpdateService.h"
-#import "AlmondPlusConstants.h"
 #import "MBProgressHUD.h"
 
 @interface SFILoginViewController () <UITextFieldDelegate>
@@ -19,19 +18,16 @@
 
 @implementation SFILoginViewController
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
+- (void)viewDidLoad {
+    [super viewDidLoad];
 
     NSDictionary *titleAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
             NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
     };
-
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-}
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+    self.loginButton.enabled = YES;
 
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     _HUD.dimBackground = YES;
@@ -111,7 +107,23 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-#pragma mark - Class Methods
+#pragma mark - UITextFieldDelegate methods
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    // do nothing
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    return textField.text.length > 0;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    // do nothing
+}
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == self.userName) {
@@ -125,6 +137,9 @@
     }
     return YES;
 }
+
+#pragma mark - Event handlers
+
 
 - (void)signupButton:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
@@ -182,6 +197,7 @@
     [SNLog Log:@"In Method Name: %s TempPass %@", __PRETTY_FUNCTION__, obj.tempPass];
     [SNLog Log:@"In Method Name: %s isSuccessful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
     [SNLog Log:@"In Method Name: %s Reason : %@", __PRETTY_FUNCTION__, obj.reason];
+    [SNLog Log:@"In Method Name: %s Reason Code : %d", __PRETTY_FUNCTION__, obj.reasonCode];
 
     if (!obj.isSuccessful) {
         NSLog(@"Login failure reason Code: %d", obj.reasonCode);
@@ -251,46 +267,28 @@
 
 - (void)networkUpNotifier:(id)sender {
     [SNLog Log:@"Method Name: %s Login controller :In networkUP notifier", __PRETTY_FUNCTION__];
-
-    NSInteger state = [[SecurifiToolkit sharedInstance] getConnectionState];
-    [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, state];
-
-    if (state == SDK_UNINITIALIZED) {
-        [[SecurifiToolkit sharedInstance] initSDKCloud];
-    }
-
     [self.HUD hide:YES];
 }
 
 - (void)networkDownNotifier:(id)sender {
-    NSInteger state = [[SecurifiToolkit sharedInstance] getConnectionState];
-    [SNLog Log:@"Method Name: %s DOWN State : %d", __PRETTY_FUNCTION__, state];
-
-    if (state == NETWORK_DOWN) {
-        //state = SDK_UNINITIALIZED;
-//        [HUD hide:YES];
-//        HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//        HUD.dimBackground = YES;
-//        HUD.labelText=@"Network Down";
-//        [HUD hide:YES afterDelay:1];
-//        state = NOT_LOGGED_IN;
-    }
-    else if (state == SDK_UNINITIALIZED) {
-        [self.HUD hide:YES];
-        [[SecurifiToolkit sharedInstance] initSDKCloud];
+    BOOL online = [[SecurifiToolkit sharedInstance] isCloudOnline];
+    if (!online) {
+        self.HUD.labelText = @"Reconnecting...";
+        [self.HUD hide:YES afterDelay:1];
     }
 }
 
 
 - (void)reachabilityDidChange:(NSNotification *)notification {
-    //Reachability *reachability = (Reachability *)[notification object];
-    if ([[SFIReachabilityManager sharedManager] isReachable]) {
-        NSLog(@"Reachable");
+    BOOL reachable = [[SFIReachabilityManager sharedManager] isReachable];
+    if (!reachable) {
+        NSLog(@"Unreachable");
+    }
+
+    BOOL online = [[SecurifiToolkit sharedInstance] isCloudOnline];
+    if (!online) {
         self.HUD.labelText = @"Reconnecting...";
         [self.HUD hide:YES afterDelay:1];
-    }
-    else {
-        NSLog(@"Unreachable");
     }
 }
 
@@ -392,13 +390,7 @@
 
     self.HUD.hidden = YES;
 
-    //todo sinclair - this ctrl should not be creating and pushing the main view. There may be already a main view on the stack; call back and allow parent to dismiss this view.
-
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"InitialSlide"];
-    [self presentViewController:mainView
-                       animated:YES
-                     completion:nil];
+    [self.delegate controllerDidCompleteLogin:self];
 }
 
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {

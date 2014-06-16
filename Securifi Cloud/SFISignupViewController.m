@@ -31,7 +31,7 @@ typedef enum {
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property NSInteger state;
-@property NSInteger cloudState;
+//@property NSInteger cloudState;
 
 @end
 
@@ -516,23 +516,15 @@ typedef enum {
 #pragma mark - Reconnection
 
 - (void)networkUpNotifier:(id)sender {
-    [SNLog Log:@"Method Name: %s Signup controller :In networkUP notifier", __PRETTY_FUNCTION__];
-    self.cloudState = [[SecurifiToolkit sharedInstance] getConnectionState];
-    [SNLog Log:@"Method Name: %s State : %d", __PRETTY_FUNCTION__, self.cloudState];
-
-    //PY 311013 Reconnection Logic
-    if (self.cloudState == SDK_UNINITIALIZED) {
+    if (!self.isCloudOnline) {
         [[SecurifiToolkit sharedInstance] initSDKCloud];
         [self.HUD hide:YES];
     }
-    [SNLog Log:@"Method Name: %s State Again : %d", __PRETTY_FUNCTION__, self.cloudState];
 }
 
 
 - (void)networkDownNotifier:(id)sender {
-    self.cloudState = [[SecurifiToolkit sharedInstance] getConnectionState];
-    [SNLog Log:@"Method Name: %s DOWN State : %d", __PRETTY_FUNCTION__, self.cloudState];
-    if (self.cloudState == NETWORK_DOWN) {
+    if (!self.isCloudOnline) {
         [self.HUD hide:YES];
         self.HUD.labelText = @"Network Down";
         [self.HUD hide:YES afterDelay:1];
@@ -554,6 +546,12 @@ typedef enum {
     else {
         NSLog(@"Unreachable");
     }
+}
+
+#pragma mark - State management
+
+- (BOOL)isCloudOnline {
+    return [[SecurifiToolkit sharedInstance] isCloudOnline];
 }
 
 #pragma mark - Cloud Command : Sender and Receivers

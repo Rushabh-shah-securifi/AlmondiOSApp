@@ -13,6 +13,4 @@
 
 @property(nonatomic, retain) IBOutlet UIImageView *imgSplash;
 
-//- (IBAction)LogsButtonHandler:(id)sender;
-
 @end

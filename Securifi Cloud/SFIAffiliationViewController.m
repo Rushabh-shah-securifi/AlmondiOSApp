@@ -7,10 +7,8 @@
 //
 
 #import "SFIAffiliationViewController.h"
-#import <SecurifiToolkit/SecurifiToolkit.h>
 #import "SNLog.h"
 #import "SFIOfflineDataManager.h"
-#import "AlmondPlusConstants.h"
 
 @interface SFIAffiliationViewController ()
 
@@ -38,11 +36,11 @@
 - (void)awakeFromNib
 {
     [super awakeFromNib];
-    
+
     NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                      [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
                                      [UIFont fontWithName:@"Avenir-Roman" size:18.0], NSFontAttributeName, nil];
-    
+
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
 }
 
@@ -51,19 +49,19 @@
     [super viewDidLoad];
     //    SNFileLogger *logger = [[SNFileLogger alloc] init];
     //    [[SNLog logManager] addLogStrategy:logger];
-    
+
     //    [[NSNotificationCenter defaultCenter] addObserver:self
     //                                             selector:@selector(AffiliationUserResponseNotifier:)
     //                                                 name:AFFILIATION_CODE_NOTIFIER
     //                                               object:nil];
-    
-    
-    
+
+
+
 	// Do any additional setup after loading the view.
     //self.affiliationCode.enabled=NO;
-    
+
     //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneHandler)];
-    
+
     //    UIToolbar *toolbar = [[UIToolbar alloc] init];
     //    toolbar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
     //    toolbar.tintColor=[UIColor blackColor];
@@ -77,17 +75,17 @@
     //
     //    [toolbar setItems:items animated:NO];
     //    [self.view addSubview:toolbar];
-    
-    
+
+
     //UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Logout" style:UIBarButtonItemStylePlain target:self action:@selector(logout)];
-    
+
     //self.navigationItem.rightBarButtonItem = anotherButton;
-    
+
     self.navigationItem.title = @"Link Almond";
-    
-    
+
+
     //NSLog(@"Return Testing %@", [self convertDecimalToMAC:@"251176230573596"]);
-    
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -111,12 +109,12 @@
     self.imgLine3.hidden = TRUE;
     self.imgLine4.hidden = TRUE;
     self.imgLine5.hidden = TRUE;
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(AffiliationUserCompleteNotifier:)
                                                  name:AFFILIATION_COMPLETE_NOTIFIER
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(AlmondListResponseCallback:)
                                                  name:ALMOND_LIST_NOTIFIER
@@ -130,9 +128,9 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    
+
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:ALMOND_LIST_NOTIFIER
                                                   object:nil];
@@ -188,14 +186,14 @@
     //Step 1: Conversion from decimal to hexadecimal
     NSLog(@"%llu", (unsigned long long)[decimalString longLongValue]);
     NSString *hexIP = [NSString stringWithFormat:@"%llX", (unsigned long long)[decimalString longLongValue]];
-    
+
     NSMutableString *wifiMAC = [[NSMutableString alloc]init];
     //Step 2: Divide in pairs of 2 hex
     for (int i=0; i < [hexIP length]; i=i+2) {
         NSString *ichar  = [NSString stringWithFormat:@"%c%c:", [hexIP characterAtIndex:i], [hexIP characterAtIndex:i+1]];
         [wifiMAC appendString:ichar];
     }
-    
+
     [wifiMAC deleteCharactersInRange:NSMakeRange([wifiMAC length]-1, 1)];
     NSLog(@"WifiMAC: %@", wifiMAC);
     return wifiMAC;
@@ -203,7 +201,7 @@
 
 - (IBAction)cancelButtonHandler:(id)sender
 {
-    
+
     //[codeTimer invalidate];
     //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     //    //UIViewController *loginView = [storyboard instantiateViewControllerWithIdentifier:@"SFILoginViewController"];
@@ -314,15 +312,15 @@
 -(void) AffiliationUserCompleteNotifier:(id)sender
 {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = (NSDictionary *)[notifier userInfo];
-    
-    
+
+
     AffiliationUserComplete *obj = [[AffiliationUserComplete alloc] init];
     obj = (AffiliationUserComplete *)[data valueForKey:@"data"];
-    
-    
+
+
     BOOL isSuccessful = obj.isSuccessful;
     self.lblEnterMsg.hidden = TRUE;
     self.txtAffiliationCode.hidden = TRUE;
@@ -330,7 +328,7 @@
     if(isSuccessful){
         //        [SNLog Log:@"Method Name: %s AlmondMAC : %@", __PRETTY_FUNCTION__, obj.almondplusMAC];
         //        [SNLog Log:@"Method Name: %s AlmondName : %@", __PRETTY_FUNCTION__, obj.almondplusName];
-        
+
         //Display content
         self.lblHooray.hidden = FALSE;
         self.lblMessage.hidden = FALSE;
@@ -347,12 +345,12 @@
         self.imgLine3.hidden = FALSE;
         self.imgLine4.hidden = FALSE;
         self.imgLine5.hidden = FALSE;
-        
+
         self.lblName.text = obj.almondplusName;
-        
+
         self.lblSSID.text = obj.wifiSSID;
         self.lblPassword.text = obj.wifiPassword;
-        
+
         //        //Step 1: Conversion from decimal to hexadecimal
         //        NSString *hexIP = [NSString stringWithFormat:@"%lX", (long)[obj.almondplusMAC integerValue]];
         //        NSMutableString *wifiMAC;
@@ -363,17 +361,17 @@
         //        }
         //
         //        [wifiMAC deleteCharactersInRange:NSMakeRange([wifiMAC length]-1, 1)];
-        
+
         self.lblMAC.text = [self convertDecimalToMAC:obj.almondplusMAC];
-        
+
         //Change title
         self.navigationItem.title = @"Almond Linked";
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(cancelButtonHandler:)];
         self.navigationItem.leftBarButtonItem = nil;
-        
+
         //        NSString *log = [NSString stringWithFormat:@"Almond named %@ with MAC Address %@  has been successfully affiliated.",obj.almondplusName,obj.almondplusMAC];
         //        [SNLog Log:@"Method Name: %s Wifi SSID : %@ Wifi Password : %@", __PRETTY_FUNCTION__,obj.wifiSSID, obj.wifiPassword];
-        
+
         //self.lblMessage.text = log;
     }else{
         [SNLog Log:@"Method Name: %s AlmondMAC : %@", __PRETTY_FUNCTION__, obj.reason];
@@ -381,7 +379,7 @@
         self.lblHooray.hidden = FALSE;
         self.lblMessage.hidden = FALSE;
         self.lblHooray.text = @"Oops!";
-        
+
         //Handle different reason codes
         NSString *failureReason;
         switch(obj.reasonCode){
@@ -404,14 +402,14 @@
                 [self logoutUser];
                 break;
         }
-        
+
         NSString *log = [NSString stringWithFormat:@"Almond could not be affiliated.\n%@",failureReason];
         self.lblMessage.text = log;
     }
-    
+
     //    //Get new Almond list - Handled by automatic update
     //    [self loadAlmondList];
-    
+
     //
     //
     //    UIAlertView *alert = [[UIAlertView alloc]
@@ -426,12 +424,12 @@
     //     onThread:[NSThread mainThread]
     //     withObject:nil
     //     waitUntilDone:NO];
-    
+
 }
 
 -(void)loadAlmondList{
     AlmondListRequest *almondListCommand = [[AlmondListRequest alloc] init];
-    
+
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType=ALMOND_LIST;
     cloudCommand.command=almondListCommand;
@@ -444,51 +442,31 @@
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    
+
     if(data !=nil){
         [SNLog Log:@"Method Name: %s Received Almond List response", __PRETTY_FUNCTION__];
-        
+
         AlmondListResponse *obj = (AlmondListResponse *)[data valueForKey:@"data"];
         [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
         //Write Almond List offline
         [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
     }
-    
+
     //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     // [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)LogoutResponseCallback:(id)sender
-{
+- (void)LogoutResponseCallback:(id)sender {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    
-    if(data !=nil){
+
+    if (data != nil) {
         [SNLog Log:@"Method Name: %s Received Logout response", __PRETTY_FUNCTION__];
-        
-        LogoutResponse *obj = (LogoutResponse *)[data valueForKey:@"data"];
-        if(obj.isSuccessful){
-            //Logout Successful
-            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-            [prefs removeObjectForKey:EMAIL];
-            [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
-            [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
-            [prefs removeObjectForKey:COLORCODE];
-            [prefs synchronize];
-            
-            //Delete files
-            [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
-            [SFIOfflineDataManager deleteFile:HASH_FILENAME];
-            [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
-            [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
-            
-            //[self dismissViewControllerAnimated:NO completion:nil];
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-            UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
-            //[self presentViewController:mainView animated:YES completion:nil];
-            [self presentViewController:mainView animated:YES completion:nil];
-        }else{
+
+        LogoutResponse *obj = (LogoutResponse *) [data valueForKey:@"data"];
+        if (!obj.isSuccessful) {
             NSLog(@"Could not logout - Reason %@", obj.reason);
             NSString *alertMsg = @"Sorry. Logout was unsuccessful. Please try again.";
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Logout Unsuccessful"
@@ -498,10 +476,7 @@
                                                   otherButtonTitles:nil];
             [alert show];
         }
-        
     }
-    
-    
 }
 
 

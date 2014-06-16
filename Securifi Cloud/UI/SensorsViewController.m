@@ -188,9 +188,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 }
 
 - (BOOL)isCloudOnline {
-    //todo push this into the SDK; don't ask for a state, as for "is online"
-    NSInteger state = [[SecurifiToolkit sharedInstance] getConnectionState];
-    return state != NETWORK_DOWN && state != CLOUD_CONNECTION_BROKEN && state != SDK_INITIALIZING;
+    return [[SecurifiToolkit sharedInstance] isCloudOnline];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

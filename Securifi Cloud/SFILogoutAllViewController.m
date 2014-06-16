@@ -7,134 +7,62 @@
 //
 
 #import "SFILogoutAllViewController.h"
-#import <SecurifiToolkit/SecurifiToolkit.h>
 #import "SNLog.h"
-#import "SFIDatabaseUpdateService.h"
-#import "AlmondPlusConstants.h"
-#import "SFIOfflineDataManager.h"
 
 @implementation SFILogoutAllViewController
-@synthesize emailID,password,keyboardToolbar;
-@synthesize logMessageLabel;
 
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [super awakeFromNib];
-    
-    NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
-                                     [UIFont fontWithName:@"Avenir-Roman" size:18.0], NSFontAttributeName, nil];
-    
+
+    NSDictionary *titleAttributes = @{
+            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+            NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
+    };
+
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-//    UIToolbar *toolbar = [[UIToolbar alloc] init];
-//    toolbar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
-//    toolbar.tintColor=[UIColor blackColor];
 
-//    SNFileLogger *logger = [[SNFileLogger alloc] init];
-//    [[SNLog logManager] addLogStrategy:logger];
-
-    
-  //  NSMutableArray *items = [[NSMutableArray alloc] init];
-    
-//    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//    
-//    [items addObject:flexibleSpace];
-//    [items addObject:[[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(doneHandler)]];
-//    
-//    [toolbar setItems:items animated:NO];
-//    [self.view addSubview:toolbar];
-    //Register callback for signup response
-    
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(LogoutAllResponseCallback:)
                                                  name:LOGOUT_ALL_NOTIFIER
                                                object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-    
-//    if (keyboardToolbar == nil)
-//    {
-//        keyboardToolbar= [[UIToolbar alloc] initWithFrame:CGRectMake(0,0, self.view.bounds.size.width, 44)];
-//        
-//        UIBarButtonItem *previousButton = [[UIBarButtonItem alloc]
-//                                           initWithTitle:@"Previous"
-//                                           style:UIBarButtonItemStyleBordered
-//                                           target:self action:@selector(previousField:)];
-//        
-//        UIBarButtonItem *nextButton = [[UIBarButtonItem alloc]
-//                                       initWithTitle:@"Next"
-//                                       style:UIBarButtonItemStyleBordered
-//                                       target:self action:@selector(nextField:)];
-//        
-//        UIBarButtonItem *extra  =  [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//        
-//        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(resignKeyboard:)];
-//        
-//        [keyboardToolbar setItems:[[NSArray alloc] initWithObjects:previousButton, nextButton, extra, doneButton, nil]];
-//        [keyboardToolbar setBarStyle:UIBarStyleBlackTranslucent];
-//        
-//        emailID.inputAccessoryView = keyboardToolbar;
-//        password.inputAccessoryView = keyboardToolbar;
-//        
-//        //change text user and pass field
-////        password.borderStyle = UITextBorderStyleRoundedRect;
-////        emailID.borderStyle = UITextBorderStyleRoundedRect;
-//    }
-    
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:LOGOUT_ALL_NOTIFIER object:nil];
 }
 
 #pragma mark - Keyboard Methods
-//- (void)keyboardDidShow:(NSNotification *)notification
-//{
-//    //Assign new frame to your view
-//    [self.view setFrame:CGRectMake(0,-10,self.view.frame.size.width,self.view.frame.size.height)]; //here taken -20 for example i.e. your view will be scrolled to -20. change its value according to your requirement.
-//    
-//}
-//
-//-(void)keyboardDidHide:(NSNotification *)notification
-//{
-//    [self.view setFrame:CGRectMake(0,0,self.view.frame.size.width,self.view.frame.size.height)];
-//}
 
-
-- (void) resignKeyboard:(id)sender {
-    
-    if ([emailID isFirstResponder])
-        [emailID resignFirstResponder];
-    
-    else if ([password isFirstResponder])
-        [password resignFirstResponder];
+- (void)resignKeyboard:(id)sender {
+    if ([self.emailID isFirstResponder]) {
+        [self.emailID resignFirstResponder];
+    }
+    else if ([self.password isFirstResponder]) {
+        [self.password resignFirstResponder];
+    }
 }
 
-- (void) previousField:(id)sender {
-    if ([emailID isFirstResponder])
-        [password becomeFirstResponder];
-    else if ([password isFirstResponder])
-        [emailID becomeFirstResponder];
+- (void)previousField:(id)sender {
+    if ([self.emailID isFirstResponder]) {
+        [self.password becomeFirstResponder];
+    }
+    else if ([self.password isFirstResponder]) {
+        [self.emailID becomeFirstResponder];
+    }
 }
 
-- (void) nextField:(id)sender{
-    if ([emailID isFirstResponder])
-        [password becomeFirstResponder];
-    else if ([password isFirstResponder])
-        [emailID becomeFirstResponder];
+- (void)nextField:(id)sender {
+    if ([self.emailID isFirstResponder]) {
+        [self.password becomeFirstResponder];
+    }
+    else if ([self.password isFirstResponder]) {
+        [self.emailID becomeFirstResponder];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -149,116 +77,39 @@
 }
 
 - (IBAction)backClick:(id)sender {
-    if ([emailID isFirstResponder])
-        [emailID resignFirstResponder];
-    
-    else if ([password isFirstResponder])
-        [password resignFirstResponder];
+    if ([self.emailID isFirstResponder]) {
+        [self.emailID resignFirstResponder];
+    }
+    else if ([self.password isFirstResponder]) {
+        [self.password resignFirstResponder];
+    }
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Cloud commands
--(void)LogoutAllResponseCallback:(id)sender
-{
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+
+- (void)LogoutAllResponseCallback:(id)sender {
+    [SNLog Log:@"In %s: ", __PRETTY_FUNCTION__];
+
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
-    
-    if(data !=nil){
-        [SNLog Log:@"Method Name: %s Received Logout response", __PRETTY_FUNCTION__];
-        
-        LogoutAllResponse *obj = [[LogoutAllResponse alloc] init];
-        obj = (LogoutAllResponse *)[data valueForKey:@"data"];
-        
-        [SNLog Log:@"Method Name: %s is Successful : %d", __PRETTY_FUNCTION__,obj.isSuccessful];
-        [SNLog Log:@"Method Name: %s Reason : %@", __PRETTY_FUNCTION__,obj.reason];
-        
+    NSDictionary *data = [notifier userInfo];
 
-        if (obj.isSuccessful == 0)
-        {
-            logMessageLabel.text=obj.reason;
-        }
-        else
-        {
+    if (data != nil) {
+        [SNLog Log:@"%s: Received Logout response", __PRETTY_FUNCTION__];
 
-            
-            [SNLog Log:@"Method Name: %s Logout All successful - All connections closed!", __PRETTY_FUNCTION__];
+        LogoutAllResponse *obj = (LogoutAllResponse *) [data valueForKey:@"data"];
 
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [SFIDatabaseUpdateService stopDatabaseUpdateService];
-            });
-            
-            //PY 170913 - Use navigation controller
-            //[self.navigationController popViewControllerAnimated:YES];
-            //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-            [prefs removeObjectForKey:EMAIL];
-            [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
-            [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
-            [prefs removeObjectForKey:USERID];
-            [prefs removeObjectForKey:PASSWORD];
-            [prefs removeObjectForKey:COLORCODE];
-            [prefs synchronize];
-            
-            //Delete files
-            [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
-            [SFIOfflineDataManager deleteFile:HASH_FILENAME];
-            [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
-            [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
-            
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-            UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
-            [self presentViewController:mainView animated:YES completion:nil];
-            
-//            //PY 170913 - Use navigation controller
-//            [self.navigationController popViewControllerAnimated:YES];
-            
+        [SNLog Log:@"%s: is Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
+        [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
+
+        if (!obj.isSuccessful) {
+            self.logMessageLabel.text = obj.reason;
         }
     }
-    else{
-        [SNLog Log:@"Method Name: %s Logout All successful - All connections closed!", __PRETTY_FUNCTION__];
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [SFIDatabaseUpdateService stopDatabaseUpdateService];
-        });
-        
-        //PY 170913 - Use navigation controller
-        //[self.navigationController popViewControllerAnimated:YES];
-        //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        [prefs removeObjectForKey:EMAIL];
-        [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
-        [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
-        [prefs removeObjectForKey:USERID];
-        [prefs removeObjectForKey:PASSWORD];
-        [prefs removeObjectForKey:COLORCODE];
-        [prefs synchronize];
-        
-        //Delete files
-        [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
-        [SFIOfflineDataManager deleteFile:HASH_FILENAME];
-        [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
-        [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
-        
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-        UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"Navigation"];
-        [self presentViewController:mainView animated:YES completion:nil];
-
-    }
-    
-    
 }
 
-- (void)doneHandler
-{
-
-    //PY 170913 - Use navigation controller
+- (void)doneHandler {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (IBAction)logoutAllButtonHandler:(id)sender {
@@ -266,37 +117,12 @@
 
     if ([self.emailID isFirstResponder]) {
         [self.emailID resignFirstResponder];
-
     }
     else if ([self.password isFirstResponder]) {
         [self.password resignFirstResponder];
     }
 
-    LogoutAllRequest *logoutAllCommand = [[LogoutAllRequest alloc] init];
-    logoutAllCommand.UserID = [NSString stringWithString:self.emailID.text];
-    logoutAllCommand.Password = [NSString stringWithString:self.password.text];
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = LOGOUT_ALL_COMMAND;
-    cloudCommand.command = logoutAllCommand;
-
-    [self asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendLogoutAllWithEmail:self.emailID.text password:self.password.text];
 }
-
-- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:@"LogoutAllResponseNotifier"
-                                                  object:nil];
-}
-
 
 @end

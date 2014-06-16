@@ -606,7 +606,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 }
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation) fromInterfaceOrientation {
-    NSLog(@"Rotation %ld", fromInterfaceOrientation);
+    NSLog(@"Rotation %ld", (long) fromInterfaceOrientation);
     [self.tableView reloadData];
 }
 
