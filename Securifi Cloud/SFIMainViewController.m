@@ -77,38 +77,6 @@
     }
 }
 
-//- (void)viewDid:(BOOL)animated {
-//    [super viewWillDisappear:animated];
-//
-//    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-//
-//    [center removeObserver:self
-//                      name:NETWORK_UP_NOTIFIER
-//                    object:nil];
-//
-//    [center removeObserver:self
-//                      name:NETWORK_DOWN_NOTIFIER
-//                    object:nil];
-//
-//    [center removeObserver:self
-//                      name:LOGIN_NOTIFIER
-//                    object:nil];
-//
-//    [center removeObserver:self
-//                      name:LOGOUT_NOTIFIER
-//                    object:nil];
-//
-//    [center removeObserver:self
-//                      name:LOGOUT_ALL_NOTIFIER
-//                    object:nil];
-//
-//    [center removeObserver:self
-//                      name:ALMOND_LIST_NOTIFIER
-//                    object:nil];
-//
-//}
-
-
 #pragma mark - State management
 
 - (BOOL)isCloudOnline {
@@ -186,44 +154,6 @@
 
 #pragma mark - Cloud Command : Sender and Receivers
 
-//- (void)loginResponseNotifier:(id)sender {
-//    [SNLog Log:@"%s", __PRETTY_FUNCTION__];
-//
-//    NSNotification *notifier = (NSNotification *) sender;
-//    NSDictionary *data = [notifier userInfo];
-//
-//    dispatch_async(dispatch_get_main_queue(), ^() {
-//        [self.HUD hide:YES];
-//    });
-//
-//    //Login failed
-//    if ([notifier userInfo] == nil) {
-//        [SNLog Log:@"%s: Temppass not found", __PRETTY_FUNCTION__];
-//    }
-//    else {
-//        [SNLog Log:@"%s: Received login response", __PRETTY_FUNCTION__];
-//        LoginResponse *obj = (LoginResponse *) [data valueForKey:@"data"];
-//
-//        [self.displayNoCloudTimer invalidate];
-//
-//        if (obj.isSuccessful) {
-//            [SNLog Log:@"%s: Login Successful -- Load different view", __PRETTY_FUNCTION__];
-//
-//            //Almond List
-////            self.HUD.labelText = @"Loading your personal data.";
-//
-//            //Start update service
-////            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-////                [SFIDatabaseUpdateService stopDatabaseUpdateService];
-////                [SFIDatabaseUpdateService startDatabaseUpdateService];
-////            });
-//
-//            //Retrieve Almond List, Device List and Device Value - Before displaying the screen
-//            [self loadAlmondList];
-//        }
-//    }
-//}
-
 - (void)loadAlmondList {
     [[SecurifiToolkit sharedInstance] asyncLoadAlmondList];
 }
@@ -271,23 +201,6 @@
     else {
         [self presentLogonScreen];
     }
-
-//    NSNotification *notifier = (NSNotification *) sender;
-//    if ([notifier userInfo] == nil) {
-//        [self presentLogonScreen];
-//        return;
-//    }
-//
-//    NSDictionary *data = [notifier userInfo];
-//    LoginResponse *obj = (LoginResponse *) [data valueForKey:@"data"];
-//
-//    //Login unsuccessful
-//    if (obj.isSuccessful) {
-//        [self loadAlmondList];
-//    }
-//    else {
-//        [self presentLogonScreen];
-//    }
 }
 
 - (void)onAlmondListResponse:(id)sender {

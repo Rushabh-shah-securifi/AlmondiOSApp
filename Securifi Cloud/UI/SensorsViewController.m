@@ -354,22 +354,19 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
 -(void)networkUpNotifier:(id)sender
 {
-    [SNLog Log:@"Method Name: %s Sensor controller :In networkUP notifier", __PRETTY_FUNCTION__];
-//    self.isCloudOnline = TRUE;
+    [SNLog Log:@"%s: Sensor controller :In networkUP notifier", __PRETTY_FUNCTION__];
     [self.tableView reloadData];
 }
 
 -(void)networkDownNotifier:(id)sender
 {
-    [SNLog Log:@"Method Name: %s Sensor controller :In network down notifier", __PRETTY_FUNCTION__];
-//    self.isCloudOnline = FALSE;
+    [SNLog Log:@"%s: Sensor controller :In network down notifier", __PRETTY_FUNCTION__];
     [self.tableView reloadData];
 }
 
 - (void)reachabilityDidChange:(NSNotification *)notification {
     if ([[SFIReachabilityManager sharedManager] isUnreachable]) {
         NSLog(@"Unreachable");
-//        self.isCloudOnline = FALSE;
         [self.tableView reloadData];
     }
 }
@@ -2943,7 +2940,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 SFIDeviceValue *deviceValue in self.deviceValueList) {
             deviceValueID = deviceValue.deviceID;
             if (currentDeviceId == deviceValueID) {
-                // //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
+                // //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
                 currentKnownValues = deviceValue.knownValues;
                 break;
             }
@@ -3690,7 +3687,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     for (SFIDeviceValue *value in self.deviceValueList) {
         deviceValueID = value.deviceID;
         if (currentDeviceId == deviceValueID) {
-            //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
+            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
             currentKnownValues = value.knownValues;
             break;
         }
@@ -3711,7 +3708,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     //// NSLog(@"%@", [gestureRecognizer view]);
     UIButton *btn = (UIButton *) sender;
 
-    [SNLog Log:@"Method Name: %s Device Clicked: TIME => %f", __PRETTY_FUNCTION__, CFAbsoluteTimeGetCurrent()];
+    [SNLog Log:@"%s: Device Clicked: TIME => %f", __PRETTY_FUNCTION__, CFAbsoluteTimeGetCurrent()];
 
     // NSLog(@"Device Index Clicked: %ld", (long)btn.tag);
     int deviceValueID;
@@ -3725,13 +3722,13 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     for (SFIDeviceValue *value in self.deviceValueList) {
         deviceValueID = value.deviceID;
         if (currentDeviceId == deviceValueID) {
-            //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
+            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
             currentKnownValues = value.knownValues;
             break;
         }
     }
 
-    //[SNLog Log:@"Method Name: %s ID Match: Selected currentDeviceType is @%d", __PRETTY_FUNCTION__,currentDeviceType];
+    //[SNLog Log:@"%s: ID Match: Selected currentDeviceType is @%d", __PRETTY_FUNCTION__,currentDeviceType];
 
     SFIDeviceKnownValues *currentDeviceValue;
     NSString *currentValue;
@@ -3957,13 +3954,13 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     for (SFIDeviceValue *deviceValue in self.deviceValueList) {
         deviceValueID = deviceValue.deviceID;
         if (currentDeviceId == deviceValueID) {
-            //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
+            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
             currentKnownValues = deviceValue.knownValues;
             break;
         }
     }
 
-    //[SNLog Log:@"Method Name: %s ID Match: Selected currentDeviceType is @%d", __PRETTY_FUNCTION__,currentDeviceType];
+    //[SNLog Log:@"%s: ID Match: Selected currentDeviceType is @%d", __PRETTY_FUNCTION__,currentDeviceType];
 
     SFIDeviceKnownValues *currentDeviceValue;
     NSString *mostImpIndexName;
@@ -4002,13 +3999,13 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     for (SFIDeviceValue *value in self.deviceValueList) {
         deviceValueID = value.deviceID;
         if (currentDeviceId == deviceValueID) {
-            //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
+            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
             currentKnownValues = value.knownValues;
             break;
         }
     }
 
-    //[SNLog Log:@"Method Name: %s ID Match: Selected currentDeviceType is @%d", __PRETTY_FUNCTION__,currentDeviceType];
+    //[SNLog Log:@"%s: ID Match: Selected currentDeviceType is @%d", __PRETTY_FUNCTION__,currentDeviceType];
 
     SFIDeviceKnownValues *currentDeviceValue;
     NSString *mostImpIndexName;
@@ -4052,7 +4049,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
         deviceValueID = currentDeviceValue.deviceID;
         if(currentDeviceId == deviceValueID){
-            //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
+            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
             currentKnownValues = currentDeviceValue.knownValues;
             break;
         }
@@ -4092,7 +4089,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
         deviceValueID = currentDeviceValue.deviceID;
         if(currentDeviceId == deviceValueID){
-            //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
+            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
             currentKnownValues = currentDeviceValue.knownValues;
             break;
         }
@@ -4140,7 +4137,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
         deviceValueID = currentDeviceValue.deviceID;
         if(currentDeviceId == deviceValueID){
-            //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
+            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
             currentKnownValues = currentDeviceValue.knownValues;
             break;
         }
@@ -4178,7 +4175,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
         deviceValueID = currentDeviceValue.deviceID;
         if (currentDeviceId == deviceValueID) {
-            //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
+            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
             currentKnownValues = currentDeviceValue.knownValues;
             break;
         }
@@ -4217,7 +4214,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
         deviceValueID = currentDeviceValue.deviceID;
         if (currentDeviceId == deviceValueID) {
-            //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
+            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
             currentKnownValues = currentDeviceValue.knownValues;
             break;
         }
@@ -4254,7 +4251,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
         deviceValueID = currentDeviceValue.deviceID;
         if (currentDeviceId == deviceValueID) {
-            //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
+            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
             currentKnownValues = currentDeviceValue.knownValues;
             break;
         }
@@ -4336,7 +4333,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
-        //[SNLog Log:@"Method Name: %s Received Device Hash response", __PRETTY_FUNCTION__];
+        //[SNLog Log:@"%s: Received Device Hash response", __PRETTY_FUNCTION__];
         
         NSString *currentHash;
         
@@ -4345,17 +4342,17 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         if(obj.isSuccessful){
             //Hash Present
             currentHash = obj.almondHash;
-            //[SNLog Log:@"Method Name: %s Current Hash ==> @%@ Offline Hash ==> @%@",__PRETTY_FUNCTION__,currentHash, self.offlineHash];
+            //[SNLog Log:@"%s: Current Hash ==> @%@ Offline Hash ==> @%@",__PRETTY_FUNCTION__,currentHash, self.offlineHash];
             if(![currentHash isEqualToString:@""] && currentHash!=nil){
                 if(![currentHash isEqualToString:@"null"]){
                     if([currentHash isEqualToString:self.offlineHash]){
-                        //[SNLog Log:@"Method Name: %s Hash Match: Get Device Values", __PRETTY_FUNCTION__];
+                        //[SNLog Log:@"%s: Hash Match: Get Device Values", __PRETTY_FUNCTION__];
                         //Get Device Values
                         [self loadDeviceValue];
                         
                         
                     }else{
-                        //[SNLog Log:@"Method Name: %s Hash MisMatch: Get Device Values", __PRETTY_FUNCTION__];
+                        //[SNLog Log:@"%s: Hash MisMatch: Get Device Values", __PRETTY_FUNCTION__];
                         //Save hash in file for each almond
                         [SFIOfflineDataManager writeHashList:currentHash currentMAC:self.currentMAC];
                         //Get Device List
@@ -4395,7 +4392,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         }else{
             //success = false
             NSString *reason = obj.reason;
-            [SNLog Log:@"Method Name: %s Hash Not Found Reason: @%@", __PRETTY_FUNCTION__,reason];
+            [SNLog Log:@"%s: Hash Not Found Reason: @%@", __PRETTY_FUNCTION__,reason];
         }
         
     }
@@ -4419,12 +4416,12 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        //[SNLog Log:@"Method Name: %s Received Device List response", __PRETTY_FUNCTION__];
+        //[SNLog Log:@"%s: Received Device List response", __PRETTY_FUNCTION__];
 
         DeviceListResponse *obj = (DeviceListResponse *) [data valueForKey:@"data"];
 
         self.deviceList = [[NSMutableArray alloc] init];
-        //[SNLog Log:@"Method Name: %s List size : %d",__PRETTY_FUNCTION__,[obj.deviceList count]];
+        //[SNLog Log:@"%s: List size : %d",__PRETTY_FUNCTION__,[obj.deviceList count]];
         self.deviceList = obj.deviceList;
 
         //Write offline
@@ -4459,12 +4456,12 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        //[SNLog Log:@"Method Name: %s Received Device Value List response", __PRETTY_FUNCTION__];
+        //[SNLog Log:@"%s: Received Device Value List response", __PRETTY_FUNCTION__];
 
         DeviceValueResponse *obj = (DeviceValueResponse *) [data valueForKey:@"data"];
 
         self.deviceValueList = [[NSMutableArray alloc] init];
-        //[SNLog Log:@"Method Name: %s List size : %d",__PRETTY_FUNCTION__,[obj.deviceValueList count]];
+        //[SNLog Log:@"%s: List size : %d",__PRETTY_FUNCTION__,[obj.deviceValueList count]];
         self.deviceValueList = obj.deviceValueList;
 
         //Write offline
@@ -4490,7 +4487,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 }
 
 - (void)sendMobileCommand {
-    [SNLog Log:@"Method Name: %s sendMobileCommand", __PRETTY_FUNCTION__];
+    [SNLog Log:@"%s: sendMobileCommand", __PRETTY_FUNCTION__];
 
     //Generate internal index between 1 to 100
     self.currentInternalIndex = (arc4random() % 100) + 1;
@@ -4546,12 +4543,12 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     [mobileCommandTimer invalidate];
     isMobileCommandSuccessful = TRUE;
     
-    //[SNLog Log:@"Method Name: %s ", __PRETTY_FUNCTION__];
+    //[SNLog Log:@"%s: ", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
-        //[SNLog Log:@"Method Name: %s Received MobileCommandResponse",__PRETTY_FUNCTION__];
+        //[SNLog Log:@"%s: Received MobileCommandResponse",__PRETTY_FUNCTION__];
         
         MobileCommandResponse *obj = (MobileCommandResponse *)[data valueForKey:@"data"];
         
@@ -4565,7 +4562,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
                 deviceValueID = currentDeviceValue.deviceID;
                 if([self.currentDeviceID integerValue] == deviceValueID){
-                    // //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
+                    // //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
                     currentKnownValues = currentDeviceValue.knownValues;
                 }
             }
@@ -4573,25 +4570,25 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             NSArray *mobileDeviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
 
             //To save on the offline list
-            //[SNLog Log:@"Method Name: %s Update Offline List before 82 triggers", __PRETTY_FUNCTION__];
+            //[SNLog Log:@"%s: Update Offline List before 82 triggers", __PRETTY_FUNCTION__];
             NSMutableArray * mobileDeviceKnownValues;
             if(mobileDeviceValueList!=nil)
             {
                 for (SFIDeviceValue *currentMobileValue in mobileDeviceValueList){
-                    //[SNLog Log:@"Method Name: %s Mobile DeviceID: %d" , __PRETTY_FUNCTION__,currentMobileValue.deviceID];
+                    //[SNLog Log:@"%s: Mobile DeviceID: %d" , __PRETTY_FUNCTION__,currentMobileValue.deviceID];
                     if(currentMobileValue.deviceID == [self.currentDeviceID integerValue]){
-                        //[SNLog Log:@"Method Name: %s Device found in list: %@" , __PRETTY_FUNCTION__,self.currentDeviceID];
+                        //[SNLog Log:@"%s: Device found in list: %@" , __PRETTY_FUNCTION__,self.currentDeviceID];
                         mobileDeviceKnownValues = currentMobileValue.knownValues;
                         for(SFIDeviceKnownValues *currentMobileKnownValue in mobileDeviceKnownValues){
-                            //[SNLog Log:@"Method Name: %s Mobile Device Known Value Index: %d" , __PRETTY_FUNCTION__,currentMobileKnownValue.index];
+                            //[SNLog Log:@"%s: Mobile Device Known Value Index: %d" , __PRETTY_FUNCTION__,currentMobileKnownValue.index];
                             
                             for(SFIDeviceKnownValues *currentLocalKnownValue in currentKnownValues){
-                                //[SNLog Log:@"Method Name: %s Activity Local Device Known Value Index: %d " , __PRETTY_FUNCTION__,currentLocalKnownValue.index];
+                                //[SNLog Log:@"%s: Activity Local Device Known Value Index: %d " , __PRETTY_FUNCTION__,currentLocalKnownValue.index];
                                 if(currentMobileKnownValue.index == currentLocalKnownValue.index){
                                     //Update Value
-                                    //[SNLog Log:@"Method Name: %s BEFORE update => Cloud: %@ Mobile: %@" , __PRETTY_FUNCTION__,currentLocalKnownValue.value , currentMobileKnownValue.value];
+                                    //[SNLog Log:@"%s: BEFORE update => Cloud: %@ Mobile: %@" , __PRETTY_FUNCTION__,currentLocalKnownValue.value , currentMobileKnownValue.value];
                                     [currentMobileKnownValue setValue:currentLocalKnownValue.value];
-                                    //[SNLog Log:@"Method Name: %s AFTER update => Cloud: %@ Mobile: %@" , __PRETTY_FUNCTION__,currentLocalKnownValue.value , currentMobileKnownValue.value];
+                                    //[SNLog Log:@"%s: AFTER update => Cloud: %@ Mobile: %@" , __PRETTY_FUNCTION__,currentLocalKnownValue.value , currentMobileKnownValue.value];
                                     currentMobileKnownValue.isUpdating = false;
                                     break;
                                 }
@@ -4604,7 +4601,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 //Write to local database
                 [SFIOfflineDataManager writeDeviceValueList:mobileDeviceValueList currentMAC:self.currentMAC];
             }else{
-                //[SNLog Log:@"Method Name: %s Error in retrieving device list", __PRETTY_FUNCTION__];
+                //[SNLog Log:@"%s: Error in retrieving device list", __PRETTY_FUNCTION__];
             }
             
         }else{
@@ -4620,7 +4617,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     [self.tableView performSelectorOnMainThread:@selector(reloadData)
                                      withObject:nil
                                   waitUntilDone:NO];
-    [SNLog Log:@"Method Name: %s Response on UI: TIME => %f", __PRETTY_FUNCTION__, CFAbsoluteTimeGetCurrent()];
+    [SNLog Log:@"%s: Response on UI: TIME => %f", __PRETTY_FUNCTION__, CFAbsoluteTimeGetCurrent()];
     
 }
 
@@ -4635,16 +4632,16 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
         BOOL isCurrentMAC = FALSE;
         NSString *cloudMAC = obj.almondMAC;
-        [SNLog Log:@"Method Name: %s Current MAC ==> @%@ Cloud MAC ==> @%@ DEVICE DATA LIST SIZE: ",__PRETTY_FUNCTION__,currentMAC, cloudMAC, [obj.deviceList count]];
+        [SNLog Log:@"%s: Current MAC ==> @%@ Cloud MAC ==> @%@ DEVICE DATA LIST SIZE: ",__PRETTY_FUNCTION__,currentMAC, cloudMAC, [obj.deviceList count]];
         if([cloudMAC isEqualToString:self.currentMAC]){
             
             //Save isExpanded
             for(SFIDevice *currentCloudDevice in obj.deviceList){
-                //[SNLog Log:@"Method Name: %s Cloud DeviceID: %d" , __PRETTY_FUNCTION__,currentCloudDevice.deviceID];
+                //[SNLog Log:@"%s: Cloud DeviceID: %d" , __PRETTY_FUNCTION__,currentCloudDevice.deviceID];
                 for(SFIDevice *currentMobileDevice in self.deviceList){
-                    //[SNLog Log:@"Method Name: %s Mobile DeviceID: %d" , __PRETTY_FUNCTION__,currentMobileDevice.deviceID];
+                    //[SNLog Log:@"%s: Mobile DeviceID: %d" , __PRETTY_FUNCTION__,currentMobileDevice.deviceID];
                     if(currentCloudDevice.deviceID == currentMobileDevice.deviceID){
-                        //[SNLog Log:@"Method Name: %s Device ID Match - Update isExpanded" , __PRETTY_FUNCTION__];
+                        //[SNLog Log:@"%s: Device ID Match - Update isExpanded" , __PRETTY_FUNCTION__];
                         currentCloudDevice.isExpanded = currentMobileDevice.isExpanded;
                     }
                 }
@@ -4700,14 +4697,14 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     NSDictionary *data = [notifier userInfo];
     
     if(data !=nil){
-        //[SNLog Log:@"Method Name: %s Received DeviceValueListResponse",__PRETTY_FUNCTION__];
+        //[SNLog Log:@"%s: Received DeviceValueListResponse",__PRETTY_FUNCTION__];
         
         DeviceValueResponse *obj = (DeviceValueResponse *)[data valueForKey:@"data"];
 
         BOOL isCurrentMAC;
         BOOL isDeviceValueChanged = FALSE;
         NSString *cloudMAC = obj.almondMAC;
-        //[SNLog Log:@"Method Name: %s Update Offline Storage - Sensor DEVICE VALUE LIST SIZE: %d",__PRETTY_FUNCTION__, [obj.deviceValueList count]];
+        //[SNLog Log:@"%s: Update Offline Storage - Sensor DEVICE VALUE LIST SIZE: %d",__PRETTY_FUNCTION__, [obj.deviceValueList count]];
         
         if([cloudMAC isEqualToString:self.currentMAC]){
             
@@ -4726,7 +4723,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
                 deviceValueID = currentDeviceValue.deviceID;
                 if([self.currentDeviceID integerValue] == deviceValueID){
-                    // //[SNLog Log:@"Method Name: %s ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
+                    // //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
                     currentKnownValues = currentDeviceValue.knownValues;
                 }
             }
@@ -4737,24 +4734,24 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             {
                 BOOL isDeviceFound = FALSE;
                 for (SFIDeviceValue *currentMobileValue in mobileDeviceValueList){
-                    //[SNLog Log:@"Method Name: %s Mobile DeviceID: %d ", __PRETTY_FUNCTION__,currentMobileValue.deviceID];
+                    //[SNLog Log:@"%s: Mobile DeviceID: %d ", __PRETTY_FUNCTION__,currentMobileValue.deviceID];
                     for(SFIDeviceValue *currentCloudValue in cloudDeviceValueList){
-                        //[SNLog Log:@"Method Name: %s Cloud DeviceID:  %d ", __PRETTY_FUNCTION__, currentCloudValue.deviceID];
+                        //[SNLog Log:@"%s: Cloud DeviceID:  %d ", __PRETTY_FUNCTION__, currentCloudValue.deviceID];
                         if(currentMobileValue.deviceID == currentCloudValue.deviceID){
                             isDeviceFound = TRUE;
                             currentCloudValue.isPresent = TRUE;
-                            //[SNLog Log:@"Method Name: %s Current Device Value Changed - Update", __PRETTY_FUNCTION__];
+                            //[SNLog Log:@"%s: Current Device Value Changed - Update", __PRETTY_FUNCTION__];
                             //mobileDeviceKnownValues = currentMobileValue.knownValues;
                             cloudDeviceKnownValues = currentCloudValue.knownValues;
                             for(SFIDeviceKnownValues *currentMobileKnownValue in currentKnownValues){
-                                //[SNLog Log:@"Method Name: %s Mobile Device Known Value Index: %d " , __PRETTY_FUNCTION__,currentMobileKnownValue.index];
+                                //[SNLog Log:@"%s: Mobile Device Known Value Index: %d " , __PRETTY_FUNCTION__,currentMobileKnownValue.index];
                                 for(SFIDeviceKnownValues *currentCloudKnownValue in cloudDeviceKnownValues){
-                                    //[SNLog Log:@"Method Name: %s Cloud Device Known Value Index: %d " , __PRETTY_FUNCTION__,currentCloudKnownValue.index];
+                                    //[SNLog Log:@"%s: Cloud Device Known Value Index: %d " , __PRETTY_FUNCTION__,currentCloudKnownValue.index];
                                     if(currentMobileKnownValue.index == currentCloudKnownValue.index){
                                         //Update Value
-                                        //[SNLog Log:@"Method Name: %s BEFORE update => Cloud: %@  Mobile: %@" , __PRETTY_FUNCTION__,currentCloudKnownValue.value , currentMobileKnownValue.value];
+                                        //[SNLog Log:@"%s: BEFORE update => Cloud: %@  Mobile: %@" , __PRETTY_FUNCTION__,currentCloudKnownValue.value , currentMobileKnownValue.value];
                                         [currentMobileKnownValue setValue:currentCloudKnownValue.value];
-                                        //[SNLog Log:@"Method Name: %s AFTER update => Cloud: %@  Mobile: %@" ,__PRETTY_FUNCTION__, currentCloudKnownValue.value , currentMobileKnownValue.value];
+                                        //[SNLog Log:@"%s: AFTER update => Cloud: %@  Mobile: %@" ,__PRETTY_FUNCTION__, currentCloudKnownValue.value , currentMobileKnownValue.value];
                                         
                                         break;
                                     }
@@ -4779,7 +4776,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             }
             
             if(isCurrentMAC){// && isDeviceValueChanged){
-                //[SNLog Log:@"Method Name: %s Value Changed - Refresh",__PRETTY_FUNCTION__];
+                //[SNLog Log:@"%s: Value Changed - Refresh",__PRETTY_FUNCTION__];
                 [self initializeImages];
                 //To remove text fields keyboard. It was throwing error when it was being called from the background thread
                 [self.tableView performSelectorOnMainThread:@selector(reloadData)
@@ -4802,16 +4799,16 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        //[SNLog Log:@"Method Name: %s Received DynamicAlmondListAddCallback", __PRETTY_FUNCTION__];
+        //[SNLog Log:@"%s: Received DynamicAlmondListAddCallback", __PRETTY_FUNCTION__];
 
         AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
 
         if (obj.isSuccessful) {
-            //[SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
+            //[SNLog Log:@"%s: List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
             //When previously no almonds were there
-            //[SNLog Log:@"Method Name: %s Current MAC : %@", __PRETTY_FUNCTION__,self.currentMAC];
+            //[SNLog Log:@"%s: Current MAC : %@", __PRETTY_FUNCTION__,self.currentMAC];
             if ([self.currentMAC isEqualToString:NO_ALMOND]) {
-                //[SNLog Log:@"Method Name: %s Previously no almond", __PRETTY_FUNCTION__];
+                //[SNLog Log:@"%s: Previously no almond", __PRETTY_FUNCTION__];
                 NSArray *almondList = [SFIOfflineDataManager readAlmondList];
                 NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 
@@ -4856,17 +4853,17 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        //[SNLog Log:@"Method Name: %s Received DynamicAlmondListCallback", __PRETTY_FUNCTION__];
+        //[SNLog Log:@"%s: Received DynamicAlmondListCallback", __PRETTY_FUNCTION__];
 
         AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
 
         if (obj.isSuccessful) {
 
-            //[SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
+            //[SNLog Log:@"%s: List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
 
             SFIAlmondPlus *deletedAlmond = obj.almondPlusMACList[0];
             if ([self.currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
-                //[SNLog Log:@"Method Name: %s Remove this view", __PRETTY_FUNCTION__];
+                //[SNLog Log:@"%s: Remove this view", __PRETTY_FUNCTION__];
                 NSArray *almondList = [SFIOfflineDataManager readAlmondList];
                 NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 
@@ -4995,16 +4992,16 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
     if (data != nil) {
         isSensorChangeCommandSuccessful = TRUE;
-        [SNLog Log:@"Method Name: %s Received SensorChangeCallback", __PRETTY_FUNCTION__];
+        [SNLog Log:@"%s: Received SensorChangeCallback", __PRETTY_FUNCTION__];
 
         SensorChangeResponse *obj = (SensorChangeResponse *) [data valueForKey:@"data"];
 
         if (obj.isSuccessful) {
-            [SNLog Log:@"Method Name: %s Sensor Data Changed Successfully", __PRETTY_FUNCTION__];
+            [SNLog Log:@"%s: Sensor Data Changed Successfully", __PRETTY_FUNCTION__];
         }
         else {
             //TODO: Later
-            [SNLog Log:@"Method Name: %s Could not update data, Revert to old value", __PRETTY_FUNCTION__];
+            [SNLog Log:@"%s: Could not update data, Revert to old value", __PRETTY_FUNCTION__];
             self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
             [self initializeImages];
             //To remove text fields keyboard. It was throwing error when it was being called from the background thread
