@@ -7,18 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+
 @protocol wirelessOptionDelegate;
 
 @interface SFIOptionViewController : UITableViewController
-@property (nonatomic, retain) NSArray *optionList;
-@property (nonatomic,retain) NSString *optionTitle;
+@property(nonatomic, retain) NSArray *optionList;
+@property(nonatomic, retain) NSString *optionTitle;
 @property unsigned int optionType;
-@property (nonatomic, assign) id<wirelessOptionDelegate> selectedOptionDelegate;
-@property (nonatomic,retain) NSString *currentOption;
+@property(nonatomic, assign) id <wirelessOptionDelegate> selectedOptionDelegate;
+@property(nonatomic, retain) NSString *currentOption;
 @end
 
 @protocol wirelessOptionDelegate
 @optional
--(void)optionSelected:(NSString *)optionValue forOptionType:(unsigned int)optionType;
+- (void)optionSelected:(NSString *)optionValue forOptionType:(unsigned int)optionType;
 
 @end

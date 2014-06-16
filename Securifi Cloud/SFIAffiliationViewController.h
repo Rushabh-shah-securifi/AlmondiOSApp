@@ -27,12 +27,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgLine5;
 @property (weak, nonatomic) IBOutlet UITextField *txtAffiliationCode;
 @property (weak, nonatomic) IBOutlet UIButton *btnAffiliationCode;
-//@property NSInteger counter;
-//@property NSTimer *codeTimer;
-
 
 - (IBAction)sendAffiliationCode:(id)sender;
 - (IBAction)cancelButtonHandler:(id)sender;
-//- (IBAction)doneButtonHandler:(id)sender;
-//- (void)AffiliationUserResponseNotifier:(id)sender;
+
 @end

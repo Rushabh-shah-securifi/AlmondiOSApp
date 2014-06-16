@@ -7,7 +7,6 @@
 //
 
 #import "DrawerViewController.h"
-#import "SFIOfflineDataManager.h"
 #import "SNLog.h"
 
 @interface DrawerViewController ()
@@ -35,26 +34,16 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
     [self updateAlmostList];
-
     [self.drawTable reloadData];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onLogoutResponse:)
-                                                 name:LOGOUT_NOTIFIER
-                                               object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:LOGOUT_NOTIFIER
-                                                  object:nil];
 }
 
 - (void)updateAlmostList {
-    NSArray *almondList = [SFIOfflineDataManager readAlmondList];
+    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
     NSArray *settingsList = @[@"Logout", @"Logout All"];
 
     _dataDictionary = @{
@@ -105,6 +94,7 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 18)];
+
     /* Create custom view to display section header... */
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 25, tableView.frame.size.width, 18)];
     [label setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
@@ -212,13 +202,13 @@
 
 #pragma mark - Table cell creation
 
-- (UITableViewCell *)tableViewTableViewCreateAddSymbolCell:(UITableView*)tableView {
+- (UITableViewCell *)tableViewTableViewCreateAddSymbolCell:(UITableView *)tableView {
     NSString *id = @"AddSymbolCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
     if (cell != nil) {
         return cell;
     }
-    
+
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:id];
 
     UIImageView *imgAddDevice = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 24)];
@@ -325,30 +315,6 @@
 }
 
 
-#pragma mark - Cloud Command : Sender and Receivers
-
-- (void)onLogoutResponse:(id)sender {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data != nil) {
-        [SNLog Log:@"Method Name: %s Received Logout response", __PRETTY_FUNCTION__];
-
-        LogoutResponse *obj = (LogoutResponse *) [data valueForKey:@"data"];
-        if (!obj.isSuccessful) {
-            NSLog(@"Could not logout - Reason %@", obj.reason);
-            NSString *alertMsg = @"Sorry. Logout was unsuccessful. Please try again.";
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Logout Unsuccessful"
-                                                            message:alertMsg
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles:nil];
-            [alert show];
-        }
-    }
-}
-
 #pragma mark - Class Methods
 
 - (IBAction)revealTab:(id)sender {
@@ -357,6 +323,5 @@
         [self.slidingViewController resetTopView];
     }];
 }
-
 
 @end

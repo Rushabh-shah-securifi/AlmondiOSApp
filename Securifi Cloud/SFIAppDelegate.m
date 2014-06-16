@@ -10,8 +10,6 @@
 #import <BugSense-iOS/BugSenseController.h>
 #import "SNLog.h"
 #import "SFIColors.h"
-#import "SFIOfflineDataManager.h"
-#import "SFIDatabaseUpdateService.h"
 #import "SFILoginViewController.h"
 
 
@@ -29,20 +27,30 @@
     [self initializeColors];
     [BugSenseController sharedControllerWithBugSenseAPIKey:@"ccf42e26"];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onLoginResponse:)
-                                                 name:LOGIN_NOTIFIER
-                                               object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onLogoutResponse:)
-                                                 name:LOGOUT_NOTIFIER
-                                               object:nil];
+/*
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onLogoutAllResponse:)
-                                                 name:LOGOUT_ALL_NOTIFIER
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(onLoginResponse:)
+                   name:LOGIN_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onLogoutResponse:)
+                   name:LOGOUT_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onLogoutAllResponse:)
+                   name:LOGOUT_ALL_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onAlmondListResponse:)
+                   name:ALMOND_LIST_NOTIFIER
+                 object:nil];
+*/
 
     return YES;
 }
@@ -117,7 +125,7 @@
 #pragma mark - Login and Logout handling
 
 - (void)onLogoutResponse:(id)sender {
-    NSLog(@"Recevied onLogoutResponse");
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 
     NSNotification *notifier = (NSNotification *) sender;
     if ([notifier userInfo] == nil) {
@@ -133,7 +141,7 @@
 }
 
 - (void)onLogoutAllResponse:(id)sender {
-    NSLog(@"Recevied onLogoutAllResponse");
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     
     NSNotification *notifier = (NSNotification *) sender;
     if ([notifier userInfo] == nil) {
@@ -149,7 +157,7 @@
 }
 
 - (void)onLoginResponse:(id)sender {
-    NSLog(@"Recevied onLoginResponse");
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 
     NSNotification *notifier = (NSNotification *) sender;
     if ([notifier userInfo] == nil) {
@@ -166,25 +174,26 @@
     }
 }
 
-//todo encapsulate in the sdk
-- (void)deleteLoginCredentials {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [SFIDatabaseUpdateService stopDatabaseUpdateService];
-    });
+- (void)onAlmondListResponse:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
 
-    //Logout
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs removeObjectForKey:EMAIL];
-    [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
-    [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
-    [prefs removeObjectForKey:COLORCODE];
-    [prefs synchronize];
+    if (data != nil) {
+        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
 
-    //Delete files
-    [SFIOfflineDataManager deleteFile:ALMONDLIST_FILENAME];
-    [SFIOfflineDataManager deleteFile:HASH_FILENAME];
-    [SFIOfflineDataManager deleteFile:DEVICELIST_FILENAME];
-    [SFIOfflineDataManager deleteFile:DEVICEVALUE_FILENAME];
+        //Write Almond List offline
+        [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
+    }
+
+    UIViewController *ctrl = self.window.rootViewController;
+    if (ctrl.presentedViewController) {
+        [ctrl.presentedViewController dismissViewControllerAnimated:YES completion:^{
+            [self presentMainView];
+        }];
+    }
+    else {
+        [self presentMainView];
+    }
 }
 
 - (void)presentLogonScreen {
@@ -192,10 +201,7 @@
         return;
     }
     self.presentingLoginController = YES;
-    NSLog(@"Presenting logon controller");
-
-    // Clear out old credentials
-    [self deleteLoginCredentials];
+    NSLog(@"%s: Presenting logon controller", __PRETTY_FUNCTION__);
 
     // Present login screen
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
@@ -215,7 +221,7 @@
     }
 }
 
-- (void)controllerDidCompleteLogin:(SFILoginViewController *)loginCtrl {
+- (void)loginControllerDidCompleteLogin:(SFILoginViewController *)loginCtrl {
     UIViewController *ctrl = self.window.rootViewController;
     [ctrl.presentedViewController dismissViewControllerAnimated:YES completion:^{
         [self presentMainView];
@@ -224,6 +230,8 @@
 }
 
 - (void)presentMainView {
+    NSLog(@"%s: Presenting main view", __PRETTY_FUNCTION__);
+
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"InitialSlide"];
 

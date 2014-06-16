@@ -8,9 +8,6 @@
 
 #import "SFISignupViewController.h"
 #import "SNLog.h"
-#import "SFIOfflineDataManager.h"
-#import "SFIDatabaseUpdateService.h"
-#import "AlmondPlusConstants.h"
 #import "MBProgressHUD.h"
 
 #define SIGNUP   1
@@ -31,8 +28,6 @@ typedef enum {
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property NSInteger state;
-//@property NSInteger cloudState;
-
 @end
 
 @implementation SFISignupViewController
@@ -112,7 +107,6 @@ typedef enum {
                                                object:nil];
 }
 
-
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [SNLog Log:@"Method Name: %s", __PRETTY_FUNCTION__];
@@ -125,7 +119,6 @@ typedef enum {
                                                     name:LOGIN_NOTIFIER
                                                   object:nil];
 
-    //PY 311013 Reconnection Logic
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:NETWORK_UP_NOTIFIER
                                                   object:nil];
@@ -580,27 +573,24 @@ typedef enum {
 
     //Login failed
     if ([notifier userInfo] == nil) {
-        [SNLog Log:@"In Method Name: %s TEMP Pass failed", __PRETTY_FUNCTION__];
+        [SNLog Log:@"%s: TEMP Pass failed", __PRETTY_FUNCTION__];
 
     }
     else {
-        [SNLog Log:@"In Method Name: %s Received login response", __PRETTY_FUNCTION__];
+        [SNLog Log:@"%s: Received login response", __PRETTY_FUNCTION__];
 
         LoginResponse *obj = (LoginResponse *) [data valueForKey:@"data"];
 
-        [SNLog Log:@"In Method Name: %s UserID %@", __PRETTY_FUNCTION__, obj.userID];
-        [SNLog Log:@"In Method Name: %s TempPass %@", __PRETTY_FUNCTION__, obj.tempPass];
-        [SNLog Log:@"In Method Name: %s isSuccessful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-        [SNLog Log:@"In Method Name: %s Reason : %@", __PRETTY_FUNCTION__, obj.reason];
-        //[SNLog Log:@"In Method Name: %s Reason : %d", __PRETTY_FUNCTION__,obj.reasonCode];
+        [SNLog Log:@"%s: UserID %@", __PRETTY_FUNCTION__, obj.userID];
+        [SNLog Log:@"%s: TempPass %@", __PRETTY_FUNCTION__, obj.tempPass];
+        [SNLog Log:@"%s: isSuccessful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
+        [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
+        //[SNLog Log:@"%s: Reason : %d", __PRETTY_FUNCTION__,obj.reasonCode];
         NSLog(@"Reason Code: %d", obj.reasonCode);
 
         if (obj.isSuccessful == 0) {
-
-
             NSString *failureReason;
-//            UIStoryboard *storyboard;
-//            UIViewController *mainView;
+
             switch (obj.reasonCode) {
                 case 1:
                     failureReason = @"The email was not found.";
@@ -625,7 +615,7 @@ typedef enum {
 
         }
         else if (obj.isSuccessful == 1) {
-            [SNLog Log:@"In Method Name: %s Login Successful -- Load different view", __PRETTY_FUNCTION__];
+            [SNLog Log:@"%s: Login Successful -- Load different view", __PRETTY_FUNCTION__];
 
             self.HUD.dimBackground = YES;
             self.HUD.labelText = @"Loading your personal data.";
@@ -637,10 +627,10 @@ typedef enum {
                                                          name:ALMOND_LIST_NOTIFIER
                                                        object:nil];
 
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [SFIDatabaseUpdateService stopDatabaseUpdateService];
-                [SFIDatabaseUpdateService startDatabaseUpdateService];
-            });
+//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//                [SFIDatabaseUpdateService stopDatabaseUpdateService];
+//                [SFIDatabaseUpdateService startDatabaseUpdateService];
+//            });
 
             [self loadAlmondList];
         }
@@ -661,15 +651,14 @@ typedef enum {
 }
 
 - (void)SignupResponseCallback:(id)sender {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     SignupResponse *obj = (SignupResponse *) [data valueForKey:@"data"];
 
-    [SNLog Log:@"Method Name: %s Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-    [SNLog Log:@"Method Name: %s Reason : %@", __PRETTY_FUNCTION__, obj.Reason];
-    //[SNLog Log:@"Method Name: %s Reason : %d", __PRETTY_FUNCTION__, obj.reasonCode];
+    [SNLog Log:@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
+    [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.Reason];
+    //[SNLog Log:@"%s: Reason : %d", __PRETTY_FUNCTION__, obj.reasonCode];
     NSLog(@"Reason Code %d", obj.reasonCode);
     if (obj.isSuccessful == 0) {
         //PY 181013: Reason Code
@@ -764,26 +753,24 @@ typedef enum {
 }
 
 - (void)AlmondListResponseCallback:(id)sender {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-
-    if (data != nil) {
-        [SNLog Log:@"Method Name: %s Received Almond List response", __PRETTY_FUNCTION__];
-
-        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
-        [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
-        //Write Almond List offline
-        [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
-    }
-
-    self.HUD.hidden = YES;
-
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"InitialSlide"];
-    [self presentViewController:mainView
-                       animated:YES
-                     completion:nil];
+//    NSNotification *notifier = (NSNotification *) sender;
+//    NSDictionary *data = [notifier userInfo];
+//
+//    if (data != nil) {
+//        [SNLog Log:@"%s: Received Almond List response", __PRETTY_FUNCTION__];
+//
+//        //Write Almond List offline
+//        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
+//        [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
+//    }
+//
+//    self.HUD.hidden = YES;
+//
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+//    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"InitialSlide"];
+//    [self presentViewController:mainView
+//                       animated:YES
+//                     completion:nil];
 }
 
 - (void)sendReactivationRequest {
@@ -798,14 +785,13 @@ typedef enum {
 }
 
 - (void)validateResponseCallback:(id)sender {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
 
-    [SNLog Log:@"Method Name: %s Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-    [SNLog Log:@"Method Name: %s Reason : %@", __PRETTY_FUNCTION__, obj.reason];
+    [SNLog Log:@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
+    [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
 
     if (obj.isSuccessful == 0) {
         NSLog(@"Reason Code %d", obj.reasonCode);
@@ -850,14 +836,13 @@ typedef enum {
 }
 
 - (void)resetPasswordResponseCallback:(id)sender {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     ResetPasswordResponse *obj = (ResetPasswordResponse *) [data valueForKey:@"data"];
 
-    [SNLog Log:@"Method Name: %s Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-    [SNLog Log:@"Method Name: %s Reason : %@", __PRETTY_FUNCTION__, obj.reason];
+    [SNLog Log:@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
+    [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
 
     if (obj.isSuccessful == 0) {
         NSLog(@"Reason Code %d", obj.reasonCode);

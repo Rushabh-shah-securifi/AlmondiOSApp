@@ -9,7 +9,6 @@
 #import "SensorsViewController.h"
 #import "SFIConstants.h"
 #import "AlmondPlusConstants.h"
-#import "SFIOfflineDataManager.h"
 #import "SNLog.h"
 #import "SFIColors.h"
 #import "MBProgressHUD.h"
@@ -32,8 +31,8 @@
 @property(nonatomic, retain) SFIColors *currentColor;
 
 @property(nonatomic, retain) NSString *currentMAC;
-@property(nonatomic, retain) NSMutableArray *deviceList;
-@property(nonatomic, retain) NSMutableArray *deviceValueList;
+@property(nonatomic, retain) NSArray *deviceList;
+@property(nonatomic, retain) NSArray *deviceValueList;
 @property(nonatomic, retain) NSString *offlineHash;
 @property NSString *currentDeviceID;
 @property unsigned int currentIndexID;
@@ -124,7 +123,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     self.currentMAC = [prefs objectForKey:CURRENT_ALMOND_MAC];
 
-    NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
+    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
     if (self.currentMAC == nil) {
         if ([almondList count] != 0) {
             SFIAlmondPlus *currentAlmond = almondList[0];
@@ -195,12 +194,12 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     [super viewWillAppear:animated];
 
     //PY 111013 - Integration with new UI
-    NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
+    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
     if ([almondList count] == 0) {
         self.currentMAC = NO_ALMOND;
         self.navigationItem.title = @"Get Started";
-        [self.deviceList removeAllObjects];
-        [self.deviceValueList removeAllObjects];
+        self.deviceList = @[];
+        self.deviceValueList = @[];
         [self.tableView reloadData];
     }
     else {
@@ -534,8 +533,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self.deviceList removeObjectAtIndex:(NSUInteger) indexPath.row];
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//        [self.deviceList removeObjectAtIndex:(NSUInteger) indexPath.row];
+//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     }
 }
 
@@ -4469,7 +4468,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         self.deviceValueList = obj.deviceValueList;
 
         //Write offline
-        [SFIOfflineDataManager writeDeviceValueList:self.deviceValueList currentMAC:self.currentMAC];
+        [[SecurifiToolkit sharedInstance] writeDeviceValueList:self.deviceValueList currentMAC:self.currentMAC];
 
         //Reload table
         [self initializeImages];
@@ -4560,8 +4559,6 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         if(isSuccessful){
             //Command updated values
             //update offline storage
-            NSMutableArray *mobileDeviceValueList;
-            mobileDeviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
             int deviceValueID;
             NSMutableArray *currentKnownValues;
             
@@ -4573,7 +4570,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 }
             }
             
-            
+            NSArray *mobileDeviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
+
             //To save on the offline list
             //[SNLog Log:@"Method Name: %s Update Offline List before 82 triggers", __PRETTY_FUNCTION__];
             NSMutableArray * mobileDeviceKnownValues;
@@ -4717,13 +4715,11 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             //Match values and update the exact known value for the device
             
             NSMutableArray *cloudDeviceValueList;
-            NSMutableArray *mobileDeviceValueList;
             //  NSMutableArray *mobileDeviceKnownValues;
             NSMutableArray *cloudDeviceKnownValues;
             
             cloudDeviceValueList = obj.deviceValueList;
-            mobileDeviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
-            
+
             int deviceValueID;
             NSMutableArray *currentKnownValues;
             
@@ -4734,7 +4730,9 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     currentKnownValues = currentDeviceValue.knownValues;
                 }
             }
-            
+
+            NSMutableArray *mobileDeviceValueList = [NSMutableArray arrayWithArray:[SFIOfflineDataManager readDeviceValueList:self.currentMAC]];
+
             if(mobileDeviceValueList!=nil)
             {
                 BOOL isDeviceFound = FALSE;
@@ -4814,28 +4812,32 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             //[SNLog Log:@"Method Name: %s Current MAC : %@", __PRETTY_FUNCTION__,self.currentMAC];
             if ([self.currentMAC isEqualToString:NO_ALMOND]) {
                 //[SNLog Log:@"Method Name: %s Previously no almond", __PRETTY_FUNCTION__];
-                NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
-                NSString *currentMACName;
+                NSArray *almondList = [SFIOfflineDataManager readAlmondList];
                 NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = almondList[0];
                     self.currentMAC = currentAlmond.almondplusMAC;
-                    currentMACName = currentAlmond.almondplusName;
+                    NSString *currentMACName = currentAlmond.almondplusName;
+
                     [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
                     [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
                     [prefs synchronize];
+
                     self.navigationItem.title = currentMACName;
                     [self refreshDataForAlmond];
                 }
                 else {
                     self.currentMAC = NO_ALMOND;
                     self.navigationItem.title = @"Get Started";
-                    [self.deviceList removeAllObjects];
-                    [self.deviceValueList removeAllObjects];
+
+                    self.deviceList = @[];
+                    self.deviceValueList = @[];
+
                     [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
                     [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
                     [prefs synchronize];
+
                     //  [[self view] endEditing:YES];
                     //To remove text fields keyboard. It was throwing error when it was being called from the background thread
                     [self.tableView performSelectorOnMainThread:@selector(reloadData)
@@ -4865,31 +4867,35 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             SFIAlmondPlus *deletedAlmond = obj.almondPlusMACList[0];
             if ([self.currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
                 //[SNLog Log:@"Method Name: %s Remove this view", __PRETTY_FUNCTION__];
-                NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
-                NSString *currentMACName;
+                NSArray *almondList = [SFIOfflineDataManager readAlmondList];
                 NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = almondList[0];
                     self.currentMAC = currentAlmond.almondplusMAC;
-                    currentMACName = currentAlmond.almondplusName;
+                    NSString *currentMACName = currentAlmond.almondplusName;
+
                     [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
                     [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
                     [prefs removeObjectForKey:COLORCODE];
 //                    [prefs setObject:0 forKey:COLORCODE]; //todo this is wrong sort of assignment, so I am interpreting as "remove" per previous line. Need to review.
                     [prefs synchronize];
+
                     self.navigationItem.title = currentMACName;
                     [self refreshDataForAlmond];
                 }
                 else {
                     self.currentMAC = NO_ALMOND;
                     self.navigationItem.title = @"Get Started";
-                    [self.deviceList removeAllObjects];
-                    [self.deviceValueList removeAllObjects];
+
+                    self.deviceList = @[];
+                    self.deviceValueList = @[];
+
                     [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
                     [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
                     [prefs removeObjectForKey:COLORCODE];
                     [prefs synchronize];
+
                     // [[self view] endEditing:YES];
                     //To remove text fields keyboard. It was throwing error when it was being called from the background thread
                     [self.tableView performSelectorOnMainThread:@selector(reloadData)

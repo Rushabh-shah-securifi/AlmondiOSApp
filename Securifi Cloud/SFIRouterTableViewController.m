@@ -13,7 +13,6 @@
 #import "SFIGenericRouterCommand.h"
 #import "SFIParser.h"
 #import "SFIRouterDevicesListViewController.h"
-#import "SFIOfflineDataManager.h"
 #import "ECSlidingViewController.h"
 #import "MBProgressHUD.h"
 
@@ -73,7 +72,8 @@
     NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
     self.currentMAC = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC];
     NSString *currentMACName = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC_NAME];
-    NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
+
+    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
     if (self.currentMAC == nil) {
         if ([almondList count] != 0) {
             SFIAlmondPlus *currentAlmond = almondList[0];
@@ -121,18 +121,18 @@
     self.currentMAC = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC];
 
     //If Almond is there or not
-    NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
+    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
     if ([almondList count] == 0) {
         self.currentMAC = NO_ALMOND;
         self.navigationItem.title = @"Get Started";
         [self.tableView reloadData];
     }
 
-
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(GenericResponseCallback:)
                                                  name:GENERIC_COMMAND_NOTIFIER
                                                object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(GenericNotificationCallback:)
                                                  name:GENERIC_COMMAND_CLOUD_NOTIFIER
@@ -165,6 +165,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
                                                   object:nil];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:GENERIC_COMMAND_CLOUD_NOTIFIER
                                                   object:nil];
@@ -512,12 +513,12 @@
 
 
 - (void)GenericResponseCallback:(id)sender {
-    [SNLog Log:@"Method Name: %s ", __PRETTY_FUNCTION__];
+    [SNLog Log:@"%s: ", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        [SNLog Log:@"Method Name: %s Received GenericCommandResponse", __PRETTY_FUNCTION__];
+        [SNLog Log:@"%s: Received GenericCommandResponse", __PRETTY_FUNCTION__];
 
         GenericCommandResponse *obj = (GenericCommandResponse *) [data valueForKey:@"data"];
 
@@ -537,9 +538,9 @@
             [genericData appendData:decoded_data];
 
             [genericData getBytes:&expectedGenericDataLength range:NSMakeRange(0, 4)];
-            [SNLog Log:@"Method Name: %s Expected Length: %d", __PRETTY_FUNCTION__, expectedGenericDataLength];
+            [SNLog Log:@"%s: Expected Length: %d", __PRETTY_FUNCTION__, expectedGenericDataLength];
             [genericData getBytes:&command range:NSMakeRange(4, 4)];
-            [SNLog Log:@"Method Name: %s Command: %d", __PRETTY_FUNCTION__, command];
+            [SNLog Log:@"%s: Command: %d", __PRETTY_FUNCTION__, command];
 
             //Remove 8 bytes from received command
             [genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
@@ -625,12 +626,12 @@
 }
 
 - (void)GenericNotificationCallback:(id)sender {
-    [SNLog Log:@"Method Name: %s ", __PRETTY_FUNCTION__];
+    [SNLog Log:@"%s: ", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        [SNLog Log:@"Method Name: %s Received GenericNotification", __PRETTY_FUNCTION__];
+        [SNLog Log:@"%s: Received GenericNotification", __PRETTY_FUNCTION__];
 
         GenericCommandResponse *obj = (GenericCommandResponse *) [data valueForKey:@"data"];
 
@@ -687,27 +688,28 @@
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        [SNLog Log:@"Method Name: %s Received DynamicAlmondListAddCallback", __PRETTY_FUNCTION__];
+        [SNLog Log:@"%s: Received DynamicAlmondListAddCallback", __PRETTY_FUNCTION__];
 
         AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
 
         if (obj.isSuccessful) {
-            [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
-            //When previously no almonds were there
-            [SNLog Log:@"Method Name: %s Current MAC : %@", __PRETTY_FUNCTION__, self.currentMAC];
+            [SNLog Log:@"%s: List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
+            [SNLog Log:@"%s: Current MAC : %@", __PRETTY_FUNCTION__, self.currentMAC];
             if ([self.currentMAC isEqualToString:NO_ALMOND]) {
-                [SNLog Log:@"Method Name: %s Previously no almond", __PRETTY_FUNCTION__];
-                NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
-                NSString *currentMACName;
+                [SNLog Log:@"%s: Previously no almond", __PRETTY_FUNCTION__];
+                
+                NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
                 NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = almondList[0];
                     self.currentMAC = currentAlmond.almondplusMAC;
-                    currentMACName = currentAlmond.almondplusName;
+
+                    NSString *currentMACName = currentAlmond.almondplusName;
                     [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
                     [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
                     [prefs synchronize];
+
                     self.navigationItem.title = currentMACName;
                     [self refreshDataForAlmond];
                 }
@@ -731,27 +733,29 @@
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        [SNLog Log:@"Method Name: %s Received DynamicAlmondListCallback", __PRETTY_FUNCTION__];
+        [SNLog Log:@"%s: Received DynamicAlmondListCallback", __PRETTY_FUNCTION__];
 
         AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
 
         if (obj.isSuccessful) {
-            [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
+            [SNLog Log:@"%s: List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
 
             SFIAlmondPlus *deletedAlmond = obj.almondPlusMACList[0];
             if ([self.currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
-                [SNLog Log:@"Method Name: %s Remove this view", __PRETTY_FUNCTION__];
-                NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
-                NSString *currentMACName;
+                [SNLog Log:@"%s: Remove this view", __PRETTY_FUNCTION__];
+
+                NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
                 NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = almondList[0];
                     self.currentMAC = currentAlmond.almondplusMAC;
-                    currentMACName = currentAlmond.almondplusName;
+
+                    NSString *currentMACName = currentAlmond.almondplusName;
                     [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
                     [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
                     [prefs synchronize];
+
                     self.navigationItem.title = currentMACName;
                     [self refreshDataForAlmond];
                 }

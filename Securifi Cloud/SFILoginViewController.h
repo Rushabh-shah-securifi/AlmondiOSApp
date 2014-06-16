@@ -12,7 +12,7 @@
 
 @protocol SFILoginViewDelegate
 
-- (void)controllerDidCompleteLogin:(SFILoginViewController *)ctrl;
+- (void)loginControllerDidCompleteLogin:(SFILoginViewController *)ctrl;
 
 @end
 

@@ -7,15 +7,15 @@
 //
 
 #import "SFIMainViewController.h"
-#import "SNLog.h"
 #import "AlmondPlusConstants.h"
-#import "SFIOfflineDataManager.h"
-#import "SFIDatabaseUpdateService.h"
 #import "MBProgressHUD.h"
+#import "SNLog.h"
+#import "SFILoginViewController.h"
 
-@interface SFIMainViewController ()
+@interface SFIMainViewController () <SFILoginViewDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSTimer *displayNoCloudTimer;
+@property BOOL presentingLoginController;
 @end
 
 @implementation SFIMainViewController
@@ -35,66 +35,78 @@
                                                           selector:@selector(displayNoCloudConnectionImage)
                                                           userInfo:nil
                                                            repeats:NO];
+
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+
+    [center addObserver:self
+               selector:@selector(networkDownNotifier:)
+                   name:NETWORK_DOWN_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(networkUpNotifier:)
+                   name:NETWORK_UP_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onLoginResponse:)
+                   name:LOGIN_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onLogoutResponse:)
+                   name:LOGOUT_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onLogoutAllResponse:)
+                   name:LOGOUT_ALL_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onAlmondListResponse:)
+                   name:ALMOND_LIST_NOTIFIER
+                 object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(loginResponseNotifier:)
-                                                 name:LOGIN_NOTIFIER
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(almondListResponseCallback:)
-                                                 name:ALMOND_LIST_NOTIFIER
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(networkDownNotifier:)
-                                                 name:NETWORK_DOWN_NOTIFIER
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(networkUpNotifier:)
-                                                 name:NETWORK_UP_NOTIFIER
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reachabilityDidChange:)
-                                                 name:kSFIReachabilityChangedNotification
-                                               object:nil];
 
     if (!self.isCloudOnline) {
         self.HUD.labelText = @"Connecting. Please wait!";
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:LOGIN_NOTIFIER
-                                                  object:nil];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:ALMOND_LIST_NOTIFIER
-                                                  object:nil];
-
-    //PY 311013 Reconnection Logic
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NETWORK_UP_NOTIFIER
-                                                  object:nil];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NETWORK_DOWN_NOTIFIER
-                                                  object:nil];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kSFIReachabilityChangedNotification
-                                                  object:nil];
-
-}
+//- (void)viewDid:(BOOL)animated {
+//    [super viewWillDisappear:animated];
+//
+//    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+//
+//    [center removeObserver:self
+//                      name:NETWORK_UP_NOTIFIER
+//                    object:nil];
+//
+//    [center removeObserver:self
+//                      name:NETWORK_DOWN_NOTIFIER
+//                    object:nil];
+//
+//    [center removeObserver:self
+//                      name:LOGIN_NOTIFIER
+//                    object:nil];
+//
+//    [center removeObserver:self
+//                      name:LOGOUT_NOTIFIER
+//                    object:nil];
+//
+//    [center removeObserver:self
+//                      name:LOGOUT_ALL_NOTIFIER
+//                    object:nil];
+//
+//    [center removeObserver:self
+//                      name:ALMOND_LIST_NOTIFIER
+//                    object:nil];
+//
+//}
 
 
 #pragma mark - State management
@@ -162,85 +174,179 @@
     }
 }
 
-- (void)reachabilityDidChange:(NSNotification *)notification {
+#pragma mark - SFILoginViewController delegate methods
+
+- (void)loginControllerDidCompleteLogin:(SFILoginViewController *)loginCtrl {
+    [SNLog Log:@"%s", __PRETTY_FUNCTION__];
+    [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
+        [self presentMainView];
+        self.presentingLoginController = NO;
+    }];
 }
 
 #pragma mark - Cloud Command : Sender and Receivers
 
-- (void)loginResponseNotifier:(id)sender {
-    [SNLog Log:@"In Method Name: %s ", __PRETTY_FUNCTION__];
-
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-
-    //Always run UI code on main thread from Notification callback
-
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.HUD hide:YES];
-    });
-
-    //Login failed
-    if ([notifier userInfo] == nil) {
-        [SNLog Log:@"In Method Name: %s Temppass not found", __PRETTY_FUNCTION__];
-    }
-    else {
-        [SNLog Log:@"In Method Name: %s Received login response", __PRETTY_FUNCTION__];
-        LoginResponse *obj = (LoginResponse *) [data valueForKey:@"data"];
-
-        [self.displayNoCloudTimer invalidate];
-
-        if (obj.isSuccessful) {
-            [SNLog Log:@"Method Name: %s Login Successful -- Load different view", __PRETTY_FUNCTION__];
-
-            //Almond List
-            self.HUD.labelText = @"Loading your personal data.";
-
-            //Start update service
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [SFIDatabaseUpdateService stopDatabaseUpdateService];
-                [SFIDatabaseUpdateService startDatabaseUpdateService];
-            });
-
-            //Retrieve Almond List, Device List and Device Value - Before displaying the screen
-            [self loadAlmondList];
-        }
-    }
-}
+//- (void)loginResponseNotifier:(id)sender {
+//    [SNLog Log:@"%s", __PRETTY_FUNCTION__];
+//
+//    NSNotification *notifier = (NSNotification *) sender;
+//    NSDictionary *data = [notifier userInfo];
+//
+//    dispatch_async(dispatch_get_main_queue(), ^() {
+//        [self.HUD hide:YES];
+//    });
+//
+//    //Login failed
+//    if ([notifier userInfo] == nil) {
+//        [SNLog Log:@"%s: Temppass not found", __PRETTY_FUNCTION__];
+//    }
+//    else {
+//        [SNLog Log:@"%s: Received login response", __PRETTY_FUNCTION__];
+//        LoginResponse *obj = (LoginResponse *) [data valueForKey:@"data"];
+//
+//        [self.displayNoCloudTimer invalidate];
+//
+//        if (obj.isSuccessful) {
+//            [SNLog Log:@"%s: Login Successful -- Load different view", __PRETTY_FUNCTION__];
+//
+//            //Almond List
+////            self.HUD.labelText = @"Loading your personal data.";
+//
+//            //Start update service
+////            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+////                [SFIDatabaseUpdateService stopDatabaseUpdateService];
+////                [SFIDatabaseUpdateService startDatabaseUpdateService];
+////            });
+//
+//            //Retrieve Almond List, Device List and Device Value - Before displaying the screen
+//            [self loadAlmondList];
+//        }
+//    }
+//}
 
 - (void)loadAlmondList {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-
-    AlmondListRequest *almondListCommand = [[AlmondListRequest alloc] init];
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = ALMOND_LIST;
-    cloudCommand.command = almondListCommand;
-
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncLoadAlmondList];
 }
 
-- (void)almondListResponseCallback:(id)sender {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+#pragma mark - Login and Logout handling
+
+- (void)onLogoutResponse:(id)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+
+    NSNotification *notifier = (NSNotification *) sender;
+    if ([notifier userInfo] == nil) {
+        [self presentLogonScreen];
+        return;
+    }
+
+    NSDictionary *data = [notifier userInfo];
+    LogoutResponse *obj = (LogoutResponse *) [data valueForKey:@"data"];
+    if (obj.isSuccessful) {
+        [self presentLogonScreen];
+    }
+}
+
+- (void)onLogoutAllResponse:(id)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    if ([notifier userInfo] == nil) {
+        [self presentLogonScreen];
+        return;
+    }
+    
+    NSDictionary *data = [notifier userInfo];
+    LogoutAllResponse *obj = (LogoutAllResponse *) [data valueForKey:@"data"];
+    if (obj.isSuccessful) {
+        [self presentLogonScreen];
+    }
+}
+
+- (void)onLoginResponse:(id)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+
+    if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
+        [self loadAlmondList];
+    }
+    else {
+        [self presentLogonScreen];
+    }
+
+//    NSNotification *notifier = (NSNotification *) sender;
+//    if ([notifier userInfo] == nil) {
+//        [self presentLogonScreen];
+//        return;
+//    }
+//
+//    NSDictionary *data = [notifier userInfo];
+//    LoginResponse *obj = (LoginResponse *) [data valueForKey:@"data"];
+//
+//    //Login unsuccessful
+//    if (obj.isSuccessful) {
+//        [self loadAlmondList];
+//    }
+//    else {
+//        [self presentLogonScreen];
+//    }
+}
+
+- (void)onAlmondListResponse:(id)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
 
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        [SNLog Log:@"Method Name: %s Received Almond List response", __PRETTY_FUNCTION__];
-
         AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
-        [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
+
         //Write Almond List offline
         [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
     }
 
-    self.HUD.hidden = YES;
+    if (self.presentedViewController) {
+        [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
+            [self presentMainView];
+        }];
+    }
+    else {
+        [self presentMainView];
+    }
+}
+
+- (void)presentLogonScreen {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
+
+    if (self.presentingLoginController) {
+        return;
+    }
+    self.presentingLoginController = YES;
+    NSLog(@"%s: Presenting logon controller", __PRETTY_FUNCTION__);
+
+    // Present login screen
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+    SFILoginViewController *loginCtrl = [storyboard instantiateViewControllerWithIdentifier:@"SFILoginViewController"];
+    loginCtrl.delegate = self;
+
+    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:loginCtrl];
+
+    if (self.presentedViewController) {
+        [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
+            [self presentViewController:navCtrl animated:YES completion:nil];
+        }];
+    }
+    else {
+        [self presentViewController:navCtrl animated:YES completion:nil];
+    }
+}
+
+- (void)presentMainView {
+    NSLog(@"%s: Presenting main view", __PRETTY_FUNCTION__);
 
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"InitialSlide"];
-    [self presentViewController:mainView
-                       animated:YES
-                     completion:nil];
+
+    [self presentViewController:mainView animated:YES completion:nil];
 }
+
 
 @end

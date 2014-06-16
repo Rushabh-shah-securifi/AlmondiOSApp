@@ -8,45 +8,19 @@
 
 #import "SFIAffiliationViewController.h"
 #import "SNLog.h"
-#import "SFIOfflineDataManager.h"
-
-@interface SFIAffiliationViewController ()
-
-@end
 
 @implementation SFIAffiliationViewController
-@synthesize btnAffiliationCode,txtAffiliationCode, lblMessage;
-@synthesize lblHooray, lblMAC, lblName, lblPassword, lblSSID;
-@synthesize lblMACTitle, lblNameTitle, lblPasswordTitle, lblSSIDTitle, lblEnterMsg;
-@synthesize imgLine1, imgLine2, imgLine3, imgLine4, imgLine5;
 
-//@synthesize counter;
-//@synthesize timerLabel;
-//@synthesize codeTimer;
+- (void)viewDidLoad {
+    [super viewDidLoad];
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-
-    NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
-                                     [UIFont fontWithName:@"Avenir-Roman" size:18.0], NSFontAttributeName, nil];
+    NSDictionary *titleAttributes = @{
+            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+            NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
+    };
 
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-}
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
     //    SNFileLogger *logger = [[SNFileLogger alloc] init];
     //    [[SNLog logManager] addLogStrategy:logger];
 
@@ -57,7 +31,7 @@
 
 
 
-	// Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
     //self.affiliationCode.enabled=NO;
 
     //    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneHandler)];
@@ -88,11 +62,13 @@
 
 }
 
--(void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    txtAffiliationCode.hidden = NO;
-    btnAffiliationCode.hidden = NO;
-    lblEnterMsg.hidden = NO;
+
+    self.txtAffiliationCode.hidden = NO;
+    self.btnAffiliationCode.hidden = NO;
+    self.lblEnterMsg.hidden = NO;
+
     //Invisible Affiliation Complete Elements
     self.lblHooray.hidden = TRUE;
     self.lblMessage.hidden = TRUE;
@@ -111,22 +87,22 @@
     self.imgLine5.hidden = TRUE;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(AffiliationUserCompleteNotifier:)
+                                             selector:@selector(onAffiliationUserComplete:)
                                                  name:AFFILIATION_COMPLETE_NOTIFIER
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(AlmondListResponseCallback:)
+                                             selector:@selector(onAlmondListResponse:)
                                                  name:ALMOND_LIST_NOTIFIER
                                                object:nil];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(LogoutResponseCallback:)
+                                             selector:@selector(onLogoutResponse:)
                                                  name:LOGOUT_NOTIFIER
                                                object:nil];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
+- (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
 
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
@@ -134,9 +110,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:ALMOND_LIST_NOTIFIER
                                                   object:nil];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:AFFILIATION_COMPLETE_NOTIFIER
                                                   object:nil];
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:LOGOUT_NOTIFIER
                                                   object:nil];
@@ -153,15 +131,9 @@
 //    	[theTimer invalidate];
 //        timerLabel.text=[NSString stringWithFormat:@"-- : --"];
 //        affiliationCode.text= [NSString stringWithFormat:@"------"];
-//        [SNLog Log:@"Method Name: %s Code Timeout", __PRETTY_FUNCTION__];
+//        [SNLog Log:@"%s: Code Timeout", __PRETTY_FUNCTION__];
 //    }
 //}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 
 #pragma mark - Keyboard Methods
@@ -182,26 +154,25 @@
 
 #pragma mark - Class Methods
 
--(NSString*)convertDecimalToMAC:(NSString*)decimalString{
+- (NSString *)convertDecimalToMAC:(NSString *)decimalString {
     //Step 1: Conversion from decimal to hexadecimal
-    NSLog(@"%llu", (unsigned long long)[decimalString longLongValue]);
-    NSString *hexIP = [NSString stringWithFormat:@"%llX", (unsigned long long)[decimalString longLongValue]];
+    NSLog(@"%llu", (unsigned long long) [decimalString longLongValue]);
+    NSString *hexIP = [NSString stringWithFormat:@"%llX", (unsigned long long) [decimalString longLongValue]];
 
-    NSMutableString *wifiMAC = [[NSMutableString alloc]init];
+    NSMutableString *wifiMAC = [[NSMutableString alloc] init];
     //Step 2: Divide in pairs of 2 hex
-    for (int i=0; i < [hexIP length]; i=i+2) {
-        NSString *ichar  = [NSString stringWithFormat:@"%c%c:", [hexIP characterAtIndex:i], [hexIP characterAtIndex:i+1]];
+    for (
+            NSUInteger i = 0; i < [hexIP length]; i = i + 2) {
+        NSString *ichar = [NSString stringWithFormat:@"%c%c:", [hexIP characterAtIndex:i], [hexIP characterAtIndex:i + 1]];
         [wifiMAC appendString:ichar];
     }
 
-    [wifiMAC deleteCharactersInRange:NSMakeRange([wifiMAC length]-1, 1)];
+    [wifiMAC deleteCharactersInRange:NSMakeRange([wifiMAC length] - 1, 1)];
     NSLog(@"WifiMAC: %@", wifiMAC);
     return wifiMAC;
 }
 
-- (IBAction)cancelButtonHandler:(id)sender
-{
-
+- (IBAction)cancelButtonHandler:(id)sender {
     //[codeTimer invalidate];
     //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     //    //UIViewController *loginView = [storyboard instantiateViewControllerWithIdentifier:@"SFILoginViewController"];
@@ -237,8 +208,8 @@
 //    AffiliationUserRequest *obj = [[AffiliationUserRequest alloc] init];
 //    obj = (AffiliationUserRequest *)[data valueForKey:@"data"];
 //
-//    [SNLog Log:@"In Method Name: %s UserID : %@", __PRETTY_FUNCTION__,obj.UserID];
-//    [SNLog Log:@"In Method Name: %s Code : %@", __PRETTY_FUNCTION__,obj.Code];
+//    [SNLog Log:@"In %s: UserID : %@", __PRETTY_FUNCTION__,obj.UserID];
+//    [SNLog Log:@"In %s: Code : %@", __PRETTY_FUNCTION__,obj.Code];
 //
 //
 ////    counter=121;
@@ -253,7 +224,7 @@
 #pragma mark - Cloud Command : Sender and Receivers
 
 - (IBAction)sendAffiliationCode:(id)sender {
-    [txtAffiliationCode resignFirstResponder];
+    [self.txtAffiliationCode resignFirstResponder];
     NSLog(@"Affiliation Code: %@", self.txtAffiliationCode.text);
 
     if (self.txtAffiliationCode.text.length == 0) {
@@ -309,25 +280,20 @@
 //    self.lblMessage.text = log;
 //}
 
--(void) AffiliationUserCompleteNotifier:(id)sender
-{
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-
+- (void)onAffiliationUserComplete:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
+    NSDictionary *data = [notifier userInfo];
 
-
-    AffiliationUserComplete *obj = [[AffiliationUserComplete alloc] init];
-    obj = (AffiliationUserComplete *)[data valueForKey:@"data"];
-
+    AffiliationUserComplete *obj = (AffiliationUserComplete *) [data valueForKey:@"data"];
 
     BOOL isSuccessful = obj.isSuccessful;
     self.lblEnterMsg.hidden = TRUE;
     self.txtAffiliationCode.hidden = TRUE;
     self.btnAffiliationCode.hidden = TRUE;
-    if(isSuccessful){
-        //        [SNLog Log:@"Method Name: %s AlmondMAC : %@", __PRETTY_FUNCTION__, obj.almondplusMAC];
-        //        [SNLog Log:@"Method Name: %s AlmondName : %@", __PRETTY_FUNCTION__, obj.almondplusName];
+
+    if (isSuccessful) {
+        //        [SNLog Log:@"%s: AlmondMAC : %@", __PRETTY_FUNCTION__, obj.almondplusMAC];
+        //        [SNLog Log:@"%s: AlmondName : %@", __PRETTY_FUNCTION__, obj.almondplusName];
 
         //Display content
         self.lblHooray.hidden = FALSE;
@@ -370,11 +336,12 @@
         self.navigationItem.leftBarButtonItem = nil;
 
         //        NSString *log = [NSString stringWithFormat:@"Almond named %@ with MAC Address %@  has been successfully affiliated.",obj.almondplusName,obj.almondplusMAC];
-        //        [SNLog Log:@"Method Name: %s Wifi SSID : %@ Wifi Password : %@", __PRETTY_FUNCTION__,obj.wifiSSID, obj.wifiPassword];
+        //        [SNLog Log:@"%s: Wifi SSID : %@ Wifi Password : %@", __PRETTY_FUNCTION__,obj.wifiSSID, obj.wifiPassword];
 
         //self.lblMessage.text = log;
-    }else{
-        [SNLog Log:@"Method Name: %s AlmondMAC : %@", __PRETTY_FUNCTION__, obj.reason];
+    }
+    else {
+        [SNLog Log:@"%s: AlmondMAC : %@", __PRETTY_FUNCTION__, obj.reason];
         //Display content
         self.lblHooray.hidden = FALSE;
         self.lblMessage.hidden = FALSE;
@@ -382,7 +349,7 @@
 
         //Handle different reason codes
         NSString *failureReason;
-        switch(obj.reasonCode){
+        switch (obj.reasonCode) {
             case 1:
                 failureReason = @"Please try later.";
                 break;
@@ -398,12 +365,15 @@
             case 7:
                 //Logout
                 failureReason = @"Please login again and retry.";
-                self.lblMessage.text = [NSString stringWithFormat:@"Almond could not be affiliated.\n%@",failureReason];;
+                self.lblMessage.text = [NSString stringWithFormat:@"Almond could not be affiliated.\n%@", failureReason];;
                 [self logoutUser];
+                break;
+
+            default:
                 break;
         }
 
-        NSString *log = [NSString stringWithFormat:@"Almond could not be affiliated.\n%@",failureReason];
+        NSString *log = [NSString stringWithFormat:@"Almond could not be affiliated.\n%@", failureReason];
         self.lblMessage.text = log;
     }
 
@@ -427,43 +397,43 @@
 
 }
 
--(void)loadAlmondList{
+- (void)loadAlmondList {
     AlmondListRequest *almondListCommand = [[AlmondListRequest alloc] init];
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType=ALMOND_LIST;
-    cloudCommand.command=almondListCommand;
+    cloudCommand.commandType = ALMOND_LIST;
+    cloudCommand.command = almondListCommand;
 
     [self asyncSendCommand:cloudCommand];
 }
 
--(void)AlmondListResponseCallback:(id)sender
-{
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-
-    if(data !=nil){
-        [SNLog Log:@"Method Name: %s Received Almond List response", __PRETTY_FUNCTION__];
-
-        AlmondListResponse *obj = (AlmondListResponse *)[data valueForKey:@"data"];
-        [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
-        //Write Almond List offline
-        [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
-    }
+- (void)onAlmondListResponse:(id)sender {
+//    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+//    NSNotification *notifier = (NSNotification *) sender;
+//    NSDictionary *data = [notifier userInfo];
+//
+//    if (data != nil) {
+//        [SNLog Log:@"%s: Received Almond List response", __PRETTY_FUNCTION__];
+//
+//        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
+//
+//        [SNLog Log:@"%s: List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
+//        //Write Almond List offline
+//        [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
+//    }
 
     //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     // [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)LogoutResponseCallback:(id)sender {
+- (void)onLogoutResponse:(id)sender {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
 
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        [SNLog Log:@"Method Name: %s Received Logout response", __PRETTY_FUNCTION__];
+        [SNLog Log:@"%s: Received Logout response", __PRETTY_FUNCTION__];
 
         LogoutResponse *obj = (LogoutResponse *) [data valueForKey:@"data"];
         if (!obj.isSuccessful) {
@@ -478,8 +448,6 @@
         }
     }
 }
-
-
 
 //
 //- (IBAction)getAffiliationCode:(id)sender {
@@ -499,7 +467,7 @@
 //    cloudCommand.command=nil;
 //
 //    @try {
-//        [SNLog Log:@"Method Name: %s Before Writing to socket -- AffiliationCodeCommand", __PRETTY_FUNCTION__];
+//        [SNLog Log:@"%s: Before Writing to socket -- AffiliationCodeCommand", __PRETTY_FUNCTION__];
 //
 //
 //        NSError *error=nil;
@@ -507,13 +475,13 @@
 //
 //        if (ret == nil)
 //        {
-//            [SNLog Log:@"Method Name: %s Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
+//            [SNLog Log:@"%s: Main APP Error %@", __PRETTY_FUNCTION__,[error localizedDescription]];
 //        }
 //
-//        [SNLog Log:@"Method Name: %s Before Writing to socket -- AffiliationCodeCommand", __PRETTY_FUNCTION__];
+//        [SNLog Log:@"%s: Before Writing to socket -- AffiliationCodeCommand", __PRETTY_FUNCTION__];
 //    }
 //    @catch (NSException *exception) {
-//        [SNLog Log:@"Method Name: %s Exception : %@", __PRETTY_FUNCTION__,exception.reason];
+//        [SNLog Log:@"%s: Exception : %@", __PRETTY_FUNCTION__,exception.reason];
 //    }
 //
 //    cloudCommand=nil;

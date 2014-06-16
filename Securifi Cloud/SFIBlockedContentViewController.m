@@ -8,15 +8,9 @@
 
 #import "SFIBlockedContentViewController.h"
 #import "SNLog.h"
-#import <SecurifiToolkit/SecurifiToolkit.h>
 #import "AlmondPlusConstants.h"
 #import "SFIGenericRouterCommand.h"
 #import "SFIParser.h"
-#import "SFIOfflineDataManager.h"
-
-@interface SFIBlockedContentViewController ()
-
-@end
 
 @implementation SFIBlockedContentViewController
 @synthesize blockedContentArray, mobileInternalIndex, addBlockedContentArray, setBlockedContentArray;
@@ -341,19 +335,19 @@
             SFIAlmondPlus *deletedAlmond = [obj.almondPlusMACList objectAtIndex:0];
             if([currentMAC isEqualToString:deletedAlmond.almondplusMAC]){
                 [SNLog Log:@"Method Name: %s Remove this view", __PRETTY_FUNCTION__];
-                NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
-                NSString *currentMACName;
-                
+                NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
+
                 if([almondList count]!=0){
                     SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
                     currentMAC = currentAlmond.almondplusMAC;
-                    currentMACName = currentAlmond.almondplusName;
+
+                    NSString *currentMACName = currentAlmond.almondplusName;
                     [prefs setObject:currentMAC forKey:CURRENT_ALMOND_MAC];
                     [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
+
                     [prefs synchronize];
                     self.navigationItem.title = currentMACName;
                 }else{
-                    currentMAC = NO_ALMOND;
                     self.navigationItem.title = @"Get Started";
                     [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
                     [prefs removeObjectForKey:CURRENT_ALMOND_MAC];

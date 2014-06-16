@@ -8,8 +8,6 @@
 
 #import "SFILoginViewController.h"
 #import "SNLog.h"
-#import "SFIOfflineDataManager.h"
-#import "SFIDatabaseUpdateService.h"
 #import "MBProgressHUD.h"
 
 @interface SFILoginViewController () <UITextFieldDelegate>
@@ -244,10 +242,10 @@
                                                object:nil];
 
     //todo sinclair - why are we doing this?
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [SFIDatabaseUpdateService stopDatabaseUpdateService];
-        [SFIDatabaseUpdateService startDatabaseUpdateService];
-    });
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        [SFIDatabaseUpdateService stopDatabaseUpdateService];
+//        [SFIDatabaseUpdateService startDatabaseUpdateService];
+//    });
 
     [self loadAlmondList];
 }
@@ -362,35 +360,29 @@
 
 
 - (void)loadAlmondList {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+    [SNLog Log:@"%s", __PRETTY_FUNCTION__];
+    [[SecurifiToolkit sharedInstance] asyncLoadAlmondList];
 
-    AlmondListRequest *almondListCommand = [[AlmondListRequest alloc] init];
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = ALMOND_LIST;
-    cloudCommand.command = almondListCommand;
-
-    [self asyncSendCommand:cloudCommand];
+    //todo sinclair moved from the almond list callback---see how it works
+    [self.delegate loginControllerDidCompleteLogin:self];
 }
 
 - (void)almondListResponseCallback:(id)sender {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+//    NSNotification *notifier = (NSNotification *) sender;
+//
+//    NSDictionary *data = [notifier userInfo];
+//    if (data != nil) {
+//        [SNLog Log:@"Method Name: %s Received Almond List response", __PRETTY_FUNCTION__];
+//
+//        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
+//        [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
+//        //Write Almond List offline
+//        [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
+//    }
+//
+//    self.HUD.hidden = YES;
 
-    NSNotification *notifier = (NSNotification *) sender;
-
-    NSDictionary *data = [notifier userInfo];
-    if (data != nil) {
-        [SNLog Log:@"Method Name: %s Received Almond List response", __PRETTY_FUNCTION__];
-
-        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
-        [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
-        //Write Almond List offline
-        [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
-    }
-
-    self.HUD.hidden = YES;
-
-    [self.delegate controllerDidCompleteLogin:self];
+//    [self.delegate loginControllerDidCompleteLogin:self];
 }
 
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {

@@ -13,7 +13,6 @@
 #import "SFIParser.h"
 #import "SFIWirelessUsers.h"
 #import "SFIConstants.h"
-#import "SFIOfflineDataManager.h"
 
 @interface SFIWirelessUserViewController ()
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -548,7 +547,7 @@
         [SNLog Log:@"Method Name: %s Remove this view", __PRETTY_FUNCTION__];
 
         NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        NSMutableArray *almondList = [SFIOfflineDataManager readAlmondList];
+        NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
 
         if ([almondList count] != 0) {
             SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];

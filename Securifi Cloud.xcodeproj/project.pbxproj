@@ -165,9 +165,7 @@
 		CE5D0C161807D24E00224009 /* BVReorderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D0C141807D24E00224009 /* BVReorderTableView.m */; };
 		CE656F5F183A0A12003936F6 /* SFIBlockedContentViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CE656F5D183A0A12003936F6 /* SFIBlockedContentViewController.h */; };
 		CE656F60183A0A12003936F6 /* SFIBlockedContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE656F5E183A0A12003936F6 /* SFIBlockedContentViewController.m */; };
-		CE6DC94217EC134F006F48C4 /* SFIOfflineDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CE6DC94117EC134F006F48C4 /* SFIOfflineDataManager.m */; };
 		CE7C304E1811550200BB895B /* SFIActivationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7C304D1811550200BB895B /* SFIActivationViewController.m */; };
-		CE884BEE17F04A86000014AD /* SFIDatabaseUpdateService.m in Sources */ = {isa = PBXBuildFile; fileRef = CE884BED17F04A86000014AD /* SFIDatabaseUpdateService.m */; };
 		CE93A151189A509200587F46 /* SFIHelpViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CE93A14F189A509200587F46 /* SFIHelpViewController.h */; };
 		CE93A152189A509200587F46 /* SFIHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE93A150189A509200587F46 /* SFIHelpViewController.m */; };
 		CE93A160189A775200587F46 /* SFINavViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CE93A15E189A775200587F46 /* SFINavViewController.h */; };
@@ -426,12 +424,8 @@
 		CE6002F71822715200D47AEE /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		CE656F5D183A0A12003936F6 /* SFIBlockedContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIBlockedContentViewController.h; sourceTree = "<group>"; };
 		CE656F5E183A0A12003936F6 /* SFIBlockedContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIBlockedContentViewController.m; sourceTree = "<group>"; };
-		CE6DC94017EC134F006F48C4 /* SFIOfflineDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SFIOfflineDataManager.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		CE6DC94117EC134F006F48C4 /* SFIOfflineDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SFIOfflineDataManager.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CE7C304C1811550200BB895B /* SFIActivationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIActivationViewController.h; sourceTree = "<group>"; };
 		CE7C304D1811550200BB895B /* SFIActivationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIActivationViewController.m; sourceTree = "<group>"; };
-		CE884BEC17F04A86000014AD /* SFIDatabaseUpdateService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIDatabaseUpdateService.h; sourceTree = "<group>"; };
-		CE884BED17F04A86000014AD /* SFIDatabaseUpdateService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIDatabaseUpdateService.m; sourceTree = "<group>"; };
 		CE93A14F189A509200587F46 /* SFIHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIHelpViewController.h; sourceTree = "<group>"; };
 		CE93A150189A509200587F46 /* SFIHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIHelpViewController.m; sourceTree = "<group>"; };
 		CE93A15E189A775200587F46 /* SFINavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFINavViewController.h; sourceTree = "<group>"; };
@@ -657,10 +651,6 @@
 		CE6DC93C17EC1324006F48C4 /* OfflineStorage */ = {
 			isa = PBXGroup;
 			children = (
-				CE6DC94017EC134F006F48C4 /* SFIOfflineDataManager.h */,
-				CE6DC94117EC134F006F48C4 /* SFIOfflineDataManager.m */,
-				CE884BEC17F04A86000014AD /* SFIDatabaseUpdateService.h */,
-				CE884BED17F04A86000014AD /* SFIDatabaseUpdateService.m */,
 			);
 			name = OfflineStorage;
 			sourceTree = "<group>";
@@ -1145,13 +1135,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE93A152189A509200587F46 /* SFIHelpViewController.m in Sources */,
-				CE6DC94217EC134F006F48C4 /* SFIOfflineDataManager.m in Sources */,
 				CE656F60183A0A12003936F6 /* SFIBlockedContentViewController.m in Sources */,
 				CE2B1EFF182D09D800554784 /* SceneTempController.m in Sources */,
 				CEDBB9F91876DC0E00CE4927 /* SFIWirelessUserViewController.m in Sources */,
 				CEE19F03181FCCBD00F91AAD /* SFIRouterReboot.m in Sources */,
 				CE5D0BC51807D16300224009 /* SensorsViewController.m in Sources */,
-				CE884BEE17F04A86000014AD /* SFIDatabaseUpdateService.m in Sources */,
 				909A21C8165DA60400C767F5 /* main.m in Sources */,
 				CE7C304E1811550200BB895B /* SFIActivationViewController.m in Sources */,
 				CE5D0BCC1807D16300224009 /* SFISceneViewController.m in Sources */,
@@ -1323,7 +1311,7 @@
 				PROVISIONING_PROFILE = "";
 				PUBLIC_HEADERS_FOLDER_PATH = "";
 				TARGETED_DEVICE_FAMILY = 1;
-				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/**";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iostoolkit\"/**";
 				"USER_HEADER_SEARCH_PATHS[arch=*]" = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1355,7 +1343,7 @@
 				PROVISIONING_PROFILE = "";
 				PUBLIC_HEADERS_FOLDER_PATH = "";
 				TARGETED_DEVICE_FAMILY = 1;
-				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iosapp\"/**";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iostoolkit\"/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
