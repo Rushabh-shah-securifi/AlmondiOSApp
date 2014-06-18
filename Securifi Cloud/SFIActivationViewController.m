@@ -81,8 +81,7 @@
 #pragma mark - Cloud command and handlers
 
 - (void)sendReactivationRequest {
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    NSString *email = [prefs objectForKey:EMAIL];
+    NSString *email = [[SecurifiToolkit sharedInstance] loginEmail];
     NSLog(@"Email : %@", email);
 
     ValidateAccountRequest *validateCommand = [[ValidateAccountRequest alloc] init];

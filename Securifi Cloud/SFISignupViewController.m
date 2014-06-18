@@ -550,21 +550,8 @@ typedef enum {
 #pragma mark - Cloud Command : Sender and Receivers
 
 - (void)sendLoginCommand {
-    Login *loginCommand = [[Login alloc] init];
-    loginCommand.UserID = [NSString stringWithString:self.emailID.text];
-    loginCommand.Password = [NSString stringWithString:self.password.text];
-
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    [prefs setObject:loginCommand.UserID forKey:EMAIL];
-    [prefs synchronize];
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = LOGIN_COMMAND;
-    cloudCommand.command = loginCommand;
-
-    [self asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendLoginWithEmail:self.emailID.text password:self.password.text];
 }
-
 
 - (void)loginResponse:(id)sender {
 

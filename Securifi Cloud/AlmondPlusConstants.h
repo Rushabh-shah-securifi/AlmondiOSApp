@@ -29,9 +29,6 @@
 #define COLORCODE @"ColorCode"
 #define ALMONDLIST @"AlmondList"
 #define SETTINGS_LIST @"Settings"
-#define EMAIL @"Email"
-#define PASSWORD @"tempPasswordPrefKey"
-#define USERID @"userIDPrefKey"
 
 #define APPLICATION_ID @"1001"
 #define REBOOT_COMMAND @"<root><Reboot>1</Reboot></root>"

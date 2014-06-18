@@ -163,19 +163,7 @@
         self.subHeadingLabel.text = @"Please enter Username and Password";
     }
     else {
-        Login *loginCommand = [[Login alloc] init];
-        loginCommand.UserID = [NSString stringWithString:self.userName.text];
-        loginCommand.Password = [NSString stringWithString:self.password.text];
-
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        [prefs setObject:loginCommand.UserID forKey:EMAIL];
-        [prefs synchronize];
-
-        GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-        cloudCommand.commandType = LOGIN_COMMAND;
-        cloudCommand.command = loginCommand;
-
-        [self asyncSendCommand:cloudCommand];
+        [[SecurifiToolkit sharedInstance] asyncSendLoginWithEmail:self.userName.text password:self.password.text];
     }
 }
 
@@ -293,8 +281,7 @@
 #pragma mark - Cloud Command : Sender and Receivers
 
 - (void)sendResetPasswordRequest {
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    NSString *email = [prefs objectForKey:EMAIL];
+    NSString *email = [[SecurifiToolkit sharedInstance] loginEmail];
     NSLog(@"Email : %@", email);
 
     ResetPasswordRequest *resetCommand = [[ResetPasswordRequest alloc] init];
