@@ -7,34 +7,14 @@
 //
 
 #import "SFIActivationViewController.h"
-#import "AlmondPlusConstants.h"
-#import <SecurifiToolkit/SecurifiToolkit.h>
 #import "SNLog.h"
 
-@interface SFIActivationViewController ()
-
-@end
 
 @implementation SFIActivationViewController
-@synthesize headingLabel, subHeadingLabel;
+@synthesize headingLabel;
+@synthesize subHeadingLabel;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
+- (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(validateResponseCallback:)
@@ -42,19 +22,17 @@
                                                object:nil];
 }
 
-- (void)viewDidDisappear:(BOOL)animated
-{
+- (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [SNLog Log:@"Method Name: %s", __PRETTY_FUNCTION__];
-    
-    
+
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:VALIDATE_RESPONSE_NOTIFIER
                                                   object:nil];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -62,19 +40,16 @@
 #pragma mark - Button Handlers
 
 
-- (IBAction)loginButtonHandler:(id)sender{
-      NSLog(@"Login");
+- (IBAction)loginButtonHandler:(id)sender {
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
-- (IBAction)activationResendButtonHandler:(id)sender{
-    NSLog(@"Activation Resend");
+- (IBAction)activationResendButtonHandler:(id)sender {
     [self sendReactivationRequest];
     //[self dismissViewControllerAnimated:NO completion:nil];
 }
 
-- (IBAction)backButtonHandler:(id)sender{
-    NSLog(@"Back Button");
+- (IBAction)backButtonHandler:(id)sender {
     [self dismissViewControllerAnimated:NO completion:nil];
 }
 
@@ -82,7 +57,7 @@
 
 - (void)sendReactivationRequest {
     NSString *email = [[SecurifiToolkit sharedInstance] loginEmail];
-    NSLog(@"Email : %@", email);
+    [SNLog Log:@"%s: sending reactivation link to email: %@", __PRETTY_FUNCTION__, email];
 
     ValidateAccountRequest *validateCommand = [[ValidateAccountRequest alloc] init];
     validateCommand.email = email;
@@ -94,25 +69,21 @@
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
--(void)validateResponseCallback:(id)sender{
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+- (void)validateResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = (NSDictionary *)[notifier userInfo];
-    
-    
-    ValidateAccountResponse *obj = [[ValidateAccountResponse alloc] init];
-    obj = (ValidateAccountResponse *)[data valueForKey:@"data"];
-    
-    [SNLog Log:@"Method Name: %s Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-    [SNLog Log:@"Method Name: %s Reason : %@", __PRETTY_FUNCTION__, obj.reason];
-    
-    
-    if (obj.isSuccessful == 0)
-    {
-        NSLog(@"Reason Code %d", obj.reasonCode);
-        //PY 181013: Reason Code
+    NSDictionary *data = [notifier userInfo];
+
+    ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
+
+    [SNLog Log:@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
+    [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
+
+    if (obj.isSuccessful) {
+        self.subHeadingLabel.text = @"Reactivation link has been sent to your account.";
+    }
+    else {
         NSString *failureReason;
-        switch(obj.reasonCode){
+        switch (obj.reasonCode) {
             case 1:
                 failureReason = @"The username was not found";
                 break;
@@ -128,11 +99,11 @@
             case 5:
                 failureReason = @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.";
                 break;
+            default:
+                break;
         }
         self.headingLabel.text = @"Oops!";
         self.subHeadingLabel.text = failureReason;
-    }else{
-         self.subHeadingLabel.text = @"Reactivation link has been sent to your account.";
     }
 }
 

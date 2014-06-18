@@ -9,13 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface SFIActivationViewController : UIViewController
-//@property (weak, nonatomic) IBOutlet UIButton *loginButton;
-//@property (weak, nonatomic) IBOutlet UIButton *activationResendButton;
-//@property (weak, nonatomic) IBOutlet UIButton *backButton;
-@property (weak, nonatomic) IBOutlet UILabel *headingLabel;
-@property (weak, nonatomic) IBOutlet UILabel *subHeadingLabel;
+@property(weak, nonatomic) IBOutlet UILabel *headingLabel;
+@property(weak, nonatomic) IBOutlet UILabel *subHeadingLabel;
 
 - (IBAction)loginButtonHandler:(id)sender;
+
 - (IBAction)activationResendButtonHandler:(id)sender;
+
 - (IBAction)backButtonHandler:(id)sender;
 @end
