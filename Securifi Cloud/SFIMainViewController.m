@@ -11,8 +11,9 @@
 #import "MBProgressHUD.h"
 #import "SNLog.h"
 #import "SFILoginViewController.h"
+#import "SFILogoutAllViewController.h"
 
-@interface SFIMainViewController () <SFILoginViewDelegate>
+@interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSTimer *displayNoCloudTimer;
 @property BOOL presentingLoginController;
@@ -66,6 +67,11 @@
     [center addObserver:self
                selector:@selector(onAlmondListResponse:)
                    name:ALMOND_LIST_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onPresentLogoutAll)
+                   name:UI_ON_PRESENT_LOGOUT_ALL
                  object:nil];
 }
 
@@ -146,10 +152,13 @@
 
 - (void)loginControllerDidCompleteLogin:(SFILoginViewController *)loginCtrl {
     [SNLog Log:@"%s", __PRETTY_FUNCTION__];
-    [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
-        [self presentMainView];
-        self.presentingLoginController = NO;
-    }];
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
+            [self presentMainView];
+            self.presentingLoginController = NO;
+        }];
+    });
 }
 
 #pragma mark - Cloud Command : Sender and Receivers
@@ -165,30 +174,28 @@
 
     NSNotification *notifier = (NSNotification *) sender;
     if ([notifier userInfo] == nil) {
-        [self presentLogonScreen];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self presentLogonScreen];
+        });
         return;
     }
 
     NSDictionary *data = [notifier userInfo];
     LogoutResponse *obj = (LogoutResponse *) [data valueForKey:@"data"];
     if (obj.isSuccessful) {
-        [self presentLogonScreen];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self presentLogonScreen];
+        });
     }
 }
 
 - (void)onLogoutAllResponse:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
-    
-    NSNotification *notifier = (NSNotification *) sender;
-    if ([notifier userInfo] == nil) {
-        [self presentLogonScreen];
-        return;
-    }
-    
-    NSDictionary *data = [notifier userInfo];
-    LogoutAllResponse *obj = (LogoutAllResponse *) [data valueForKey:@"data"];
-    if (obj.isSuccessful) {
-        [self presentLogonScreen];
+
+    if (![[SecurifiToolkit sharedInstance] isLoggedIn]) {
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self presentLogonScreen];
+        });
     }
 }
 
@@ -199,7 +206,9 @@
         [self loadAlmondList];
     }
     else {
-        [self presentLogonScreen];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self presentLogonScreen];
+        });
     }
 }
 
@@ -225,6 +234,21 @@
         [self presentMainView];
     }
 }
+
+- (void)onPresentLogoutAll {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.presentedViewController) {
+            [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
+                [self presentLogoutAllView];
+            }];
+        }
+        else {
+            [self presentLogoutAllView];
+        }
+    });
+}
+
+#pragma mark - UIView management; mainly, we need to manage logon and logout all, and setting up the main screen on logon.
 
 - (void)presentLogonScreen {
     NSLog(@"%s", __PRETTY_FUNCTION__);
@@ -259,6 +283,37 @@
     UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"InitialSlide"];
 
     [self presentViewController:mainView animated:YES completion:nil];
+}
+
+- (void)presentLogoutAllView {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+    SFILogoutAllViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SFILogoutAllViewController"];
+    ctrl.delegate = self;
+
+    UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    [self presentViewController:nctrl animated:YES completion:nil];
+}
+
+#pragma mark - SFILogoutAllDelegate methods
+
+- (void)logoutAllControllerDidLogoutAll:(SFILogoutAllViewController *)ctrl {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self presentLogonScreen];
+    });
+}
+
+- (void)logoutAllControllerDidCancel:(SFILogoutAllViewController *)ctrl {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
+            if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
+                [self presentMainView];
+            }
+            else {
+                [self presentLogonScreen];
+            }
+        }];
+    });
+
 }
 
 

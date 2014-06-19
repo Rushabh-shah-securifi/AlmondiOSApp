@@ -13,9 +13,14 @@
 #define NETWORK_DOWN            1
 #define NOT_LOGGED_IN           2
 #define LOGGED_IN               3
-#define SDK_INITIALIZING        5
-#define CLOUD_CONNECTION_BROKEN 6
 #define CLOUD_CONNECTION_TIMEOUT 20
+
+
+
+// UI Notifications
+#define UI_ON_PRESENT_LOGOUT_ALL            @"UI_ON_PRESENT_LOGOUT_ALL"
+
+
 
 #define CURRENT_ALMOND_MAC  @"AlmondMAC"
 #define CURRENT_ALMOND_MAC_NAME  @"AlmondMACName"
