@@ -174,7 +174,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                     <action selector="forgotPwdButtonHandler:" destination="uve-iF-kia" eventType="touchUpInside" id="K2S-Y1-DHv"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="v4I-0f-ocy">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="v4I-0f-ocy">
                                 <rect key="frame" x="10" y="161" width="274" height="47"/>
                                 <color key="textColor" red="0.73333333329999995" green="0.73333333329999995" blue="0.73333333329999995" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="20"/>
@@ -200,7 +200,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                     <outlet property="delegate" destination="uve-iF-kia" id="nnn-qz-WIF"/>
                                 </connections>
                             </textField>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Securifi Cloud Account." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sqj-7H-5pB">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Securifi Cloud Account." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sqj-7H-5pB">
                                 <rect key="frame" x="3" y="56" width="320" height="82"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="26"/>
@@ -234,11 +234,11 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                     <constraint firstAttribute="height" constant="1" id="bT9-vK-9ie"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="yB4-be-r8d">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Line_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="yB4-be-r8d">
                                 <rect key="frame" x="10" y="164" width="300" height="1"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Line_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="dzr-03-sSx">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="Line_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="dzr-03-sSx">
                                 <rect key="frame" x="10" y="257" width="300" height="1"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -259,7 +259,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                     <navigationItem title="Sign up" id="ACA-wf-XmG">
                                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="LEF-4p-mVj">
                                             <connections>
-                                                <action selector="backClick:" destination="uve-iF-kia" id="RZd-uR-jBh"/>
+                                                <action selector="onCancel:" destination="uve-iF-kia" id="RZd-uR-jBh"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" title="Continue" id="NgM-B4-G5a">
@@ -559,8 +559,8 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                     <action selector="forgotPwdButtonHandler:" destination="pAu-yL-9WX" eventType="touchUpInside" id="0Rx-7c-eM8"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" clearsOnBeginEditing="YES" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Y3d-aA-TFm">
-                                <rect key="frame" x="17" y="111" width="293" height="47"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" clearsOnBeginEditing="YES" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Y3d-aA-TFm">
+                                <rect key="frame" x="10" y="110" width="293" height="47"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="47" id="zAO-Om-g0c"/>
@@ -701,7 +701,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                         <outlet property="loginButton" destination="fGC-bJ-KoF" id="A69-zI-x0v"/>
                         <outlet property="password" destination="7Fl-1P-IHp" id="iJj-Ca-feE"/>
                         <outlet property="subHeadingLabel" destination="Zon-6Z-KzY" id="K92-w7-tv6"/>
-                        <outlet property="userName" destination="Y3d-aA-TFm" id="gg7-ho-Eez"/>
+                        <outlet property="emailID" destination="Y3d-aA-TFm" id="gg7-ho-Eez"/>
                         <outlet property="view" destination="5Wo-rI-VjW" id="8Fs-1T-scp"/>
                     </connections>
                 </viewController>
@@ -778,12 +778,12 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                     <navigationItem key="navigationItem" title="Logout All" id="gkX-Ri-AcU">
                         <barButtonItem key="leftBarButtonItem" title="Cancel" id="uLI-GV-SIY">
                             <connections>
-                                <action selector="backClick:" destination="ySY-9Q-ckD" id="Xgl-GC-4KA"/>
+                                <action selector="onCancel:" destination="ySY-9Q-ckD" id="Xgl-GC-4KA"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Continue" id="Fgq-Wy-sze">
                             <connections>
-                                <action selector="logoutAllButtonHandler:" destination="ySY-9Q-ckD" id="OvR-2f-fdf"/>
+                                <action selector="onLogoutAll:" destination="ySY-9Q-ckD" id="OvR-2f-fdf"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -797,7 +797,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CDu-9l-EZc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2841" y="-155"/>
+            <point key="canvasLocation" x="-3245" y="-141"/>
         </scene>
         <!--Nav View Controller-->
         <scene sceneID="fMa-mY-eOc">
@@ -1625,24 +1625,6 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                 <placeholder placeholderIdentifier="IBFirstResponder" id="edQ-Qm-48m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3251" y="559"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="GPt-es-ZYA">
-            <objects>
-                <navigationController storyboardIdentifier="LogoutAllTop" automaticallyAdjustsScrollViewInsets="NO" id="WMb-Pr-CAn" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="GjW-wU-Kjp">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="ySY-9Q-ckD" kind="relationship" relationship="rootViewController" id="N9Y-AO-Vnr"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="BLi-OG-o0B" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3251" y="-145"/>
         </scene>
         <!--Router Table View Controller - Router-->
         <scene sceneID="Gcb-cn-G1X">
