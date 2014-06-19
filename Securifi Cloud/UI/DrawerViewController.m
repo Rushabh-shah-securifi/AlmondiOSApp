@@ -8,6 +8,7 @@
 
 #import "DrawerViewController.h"
 #import "SNLog.h"
+#import "AlmondPlusConstants.h"
 
 @interface DrawerViewController ()
 @property(nonatomic, strong, readonly) NSDictionary *dataDictionary;
@@ -34,7 +35,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self updateAlmostList];
+    [self resetAlmondList];
     [self.drawTable reloadData];
 }
 
@@ -42,7 +43,7 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)updateAlmostList {
+- (void)resetAlmondList {
     NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
     NSArray *settingsList = @[@"Logout", @"Logout All"];
 
@@ -193,9 +194,7 @@
         }
         else if (indexPath.row == 1) {
             //Logout All Action
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-            UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"LogoutAllTop"];
-            [self presentViewController:mainView animated:YES completion:nil];
+            [self presentLogoutAllView];
         }
     }
 }
@@ -322,6 +321,13 @@
     [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
         [self.slidingViewController resetTopView];
     }];
+}
+
+#pragma mark - SFILogoutAllDelegate methods
+
+- (void)presentLogoutAllView {
+    // Delegate to the main view, which will manage presenting the logout all controller
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:UI_ON_PRESENT_LOGOUT_ALL object:nil]];
 }
 
 @end
