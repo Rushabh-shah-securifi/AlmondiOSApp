@@ -20,7 +20,7 @@
 
 @property(weak, nonatomic) id <SFILoginViewDelegate> delegate;
 
-@property(weak, nonatomic) IBOutlet UITextField *userName;
+@property(weak, nonatomic) IBOutlet UITextField *emailID;
 @property(weak, nonatomic) IBOutlet UITextField *password;
 @property(strong, nonatomic) IBOutlet UILabel *headingLabel;
 @property(strong, nonatomic) IBOutlet UILabel *subHeadingLabel;

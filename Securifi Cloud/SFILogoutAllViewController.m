@@ -9,10 +9,13 @@
 #import "SFILogoutAllViewController.h"
 #import "SNLog.h"
 
+@interface SFILogoutAllViewController () <UITextFieldDelegate>
+@end
+
 @implementation SFILogoutAllViewController
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
+- (void)viewDidLoad {
+    [super viewDidLoad];
 
     NSDictionary *titleAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
@@ -20,50 +23,59 @@
     };
 
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(LogoutAllResponseCallback:)
+                                             selector:@selector(onLogoutAllResponseCallback:)
                                                  name:LOGOUT_ALL_NOTIFIER
                                                object:nil];
+
+    self.emailID.text = [[SecurifiToolkit sharedInstance] loginEmail];
+
+    self.emailID.delegate = self;
+    self.password.delegate = self;
+
+    [self enableContinueButton:NO];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    [self.emailID becomeFirstResponder];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+
+    self.emailID.delegate = nil;
+    self.password.delegate = nil;
+
     [[NSNotificationCenter defaultCenter] removeObserver:self name:LOGOUT_ALL_NOTIFIER object:nil];
 }
 
-#pragma mark - Keyboard Methods
+- (void)enableContinueButton:(BOOL)enabled {
+    self.navigationItem.rightBarButtonItem.enabled = enabled;
+}
 
-- (void)resignKeyboard:(id)sender {
+#pragma mark - Actions
+
+- (IBAction)onCancel:(id)sender {
+    [self.delegate logoutAllControllerDidCancel:self];
+}
+
+- (IBAction)onLogoutAll:(id)sender {
+    self.logMessageLabel.text = @"";
+
     if ([self.emailID isFirstResponder]) {
         [self.emailID resignFirstResponder];
     }
     else if ([self.password isFirstResponder]) {
         [self.password resignFirstResponder];
     }
+
+    [[SecurifiToolkit sharedInstance] asyncSendLogoutAllWithEmail:self.emailID.text password:self.password.text];
 }
 
-- (void)previousField:(id)sender {
-    if ([self.emailID isFirstResponder]) {
-        [self.password becomeFirstResponder];
-    }
-    else if ([self.password isFirstResponder]) {
-        [self.emailID becomeFirstResponder];
-    }
-}
-
-- (void)nextField:(id)sender {
-    if ([self.emailID isFirstResponder]) {
-        [self.password becomeFirstResponder];
-    }
-    else if ([self.password isFirstResponder]) {
-        [self.emailID becomeFirstResponder];
-    }
-}
+#pragma mark - UITextField delegate methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField == self.emailID) {
@@ -76,53 +88,51 @@
     return YES;
 }
 
-- (IBAction)backClick:(id)sender {
-    if ([self.emailID isFirstResponder]) {
-        [self.emailID resignFirstResponder];
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    UITextField *other;
+    if (self.emailID == textField) {
+        other = self.password;
     }
-    else if ([self.password isFirstResponder]) {
-        [self.password resignFirstResponder];
+    else {
+        other = self.emailID;
     }
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+
+    NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    BOOL enabled = str.length > 0 && other.text.length > 0;
+    [self enableContinueButton:enabled];
+
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    BOOL enabled = self.emailID.text.length > 0 && self.password.text.length > 0;
+    [self enableContinueButton:enabled];
 }
 
 #pragma mark - Cloud commands
 
-- (void)LogoutAllResponseCallback:(id)sender {
+- (void)onLogoutAllResponseCallback:(id)sender {
     [SNLog Log:@"In %s: ", __PRETTY_FUNCTION__];
 
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
-    if (data != nil) {
-        [SNLog Log:@"%s: Received Logout response", __PRETTY_FUNCTION__];
-
-        LogoutAllResponse *obj = (LogoutAllResponse *) [data valueForKey:@"data"];
-
-        [SNLog Log:@"%s: is Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-        [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
-
-        if (!obj.isSuccessful) {
-            self.logMessageLabel.text = obj.reason;
-        }
-    }
-}
-
-- (void)doneHandler {
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (IBAction)logoutAllButtonHandler:(id)sender {
-    self.logMessageLabel.text = @"";
-
-    if ([self.emailID isFirstResponder]) {
-        [self.emailID resignFirstResponder];
-    }
-    else if ([self.password isFirstResponder]) {
-        [self.password resignFirstResponder];
+    if (data == nil) {
+        self.logMessageLabel.text = @"Logout from all devices was not successful.";
+        return;
     }
 
-    [[SecurifiToolkit sharedInstance] asyncSendLogoutAllWithEmail:self.emailID.text password:self.password.text];
+    LogoutAllResponse *obj = (LogoutAllResponse *) [data valueForKey:@"data"];
+
+    [SNLog Log:@"%s: is Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
+    [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
+
+    if (obj.isSuccessful) {
+        [self.delegate logoutAllControllerDidLogoutAll:self];
+    }
+    else {
+        self.logMessageLabel.text = @"Logout from all devices was not successful.";
+    }
 }
 
 @end

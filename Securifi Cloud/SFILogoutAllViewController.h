@@ -8,14 +8,25 @@
 
 #import <UIKit/UIKit.h>
 
+@class SFILogoutAllViewController;
+
+@protocol SFILogoutAllDelegate
+
+- (void)logoutAllControllerDidLogoutAll:(SFILogoutAllViewController*)ctrl;
+
+- (void)logoutAllControllerDidCancel:(SFILogoutAllViewController*)ctrl;
+
+@end
+
 @interface SFILogoutAllViewController : UIViewController
+
+@property(weak, nonatomic) id<SFILogoutAllDelegate> delegate;
 
 @property(weak, nonatomic) IBOutlet UITextField *password;
 @property(weak, nonatomic) IBOutlet UITextField *emailID;
 @property(weak, nonatomic) IBOutlet UILabel *logMessageLabel;
 
-
-- (IBAction)logoutAllButtonHandler:(id)sender;
+- (IBAction)onLogoutAll:(id)sender;
 
 @end
 

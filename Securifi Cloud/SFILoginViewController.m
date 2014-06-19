@@ -34,12 +34,15 @@
     //PY 170913 - To stop the view from going below tab bar
     self.edgesForExtendedLayout = UIRectEdgeNone;
 
-    self.userName.delegate = self;
+    self.emailID.delegate = self;
     self.password.delegate = self;
+
+    [self enableContinueButton:NO];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(loginResponse:)
                                                  name:LOGIN_NOTIFIER
@@ -64,10 +67,15 @@
                                              selector:@selector(resetPasswordResponseCallback:)
                                                  name:RESET_PWD_RESPONSE_NOTIFIER
                                                object:nil];
+
+    [self.emailID becomeFirstResponder];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+
+    self.emailID.delegate = nil;
+    self.password.delegate = nil;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:LOGIN_NOTIFIER
@@ -90,6 +98,10 @@
                                                   object:nil];
 }
 
+- (void)enableContinueButton:(BOOL)enabled {
+    self.navigationItem.rightBarButtonItem.enabled = enabled;
+}
+
 #pragma mark - Orientation Handling
 
 - (BOOL)shouldAutorotate {
@@ -105,11 +117,8 @@
     return UIInterfaceOrientationMaskPortrait;
 }
 
-#pragma mark - UITextFieldDelegate methods
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    return YES;
-}
+#pragma mark - UITextField delegate methods
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     // do nothing
@@ -120,11 +129,28 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    // do nothing
+    BOOL enabled = self.emailID.text.length > 0 && self.password.text.length > 0;
+    [self enableContinueButton:enabled];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    UITextField *other;
+    if (self.emailID == textField) {
+        other = self.password;
+    }
+    else {
+        other = self.emailID;
+    }
+
+    NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    BOOL enabled = str.length > 0 && other.text.length > 0;
+    [self enableContinueButton:enabled];
+
+    return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if (textField == self.userName) {
+    if (textField == self.emailID) {
         [textField resignFirstResponder];
         [self.password becomeFirstResponder];
     }
@@ -150,20 +176,20 @@
 }
 
 - (IBAction)loginClick:(id)sender {
-    if ([self.userName isFirstResponder]) {
-        [self.userName resignFirstResponder];
+    if ([self.emailID isFirstResponder]) {
+        [self.emailID resignFirstResponder];
 
     }
     else if ([self.password isFirstResponder]) {
         [self.password resignFirstResponder];
     }
 
-    if ([[self.userName text] isEqualToString:@""] || [[self.password text] isEqualToString:@""]) {
+    if ([self.emailID.text isEqualToString:@""] || [self.password.text isEqualToString:@""]) {
         self.headingLabel.text = @"Oops";
         self.subHeadingLabel.text = @"Please enter Username and Password";
     }
     else {
-        [[SecurifiToolkit sharedInstance] asyncSendLoginWithEmail:self.userName.text password:self.password.text];
+        [[SecurifiToolkit sharedInstance] asyncSendLoginWithEmail:self.emailID.text password:self.password.text];
     }
 }
 
@@ -173,17 +199,17 @@
 
     //Login failed
     if ([notifier userInfo] == nil) {
-        [SNLog Log:@"In Method Name: %s TEMP Pass failed", __PRETTY_FUNCTION__];
+        [SNLog Log:@"In %s: TEMP Pass failed", __PRETTY_FUNCTION__];
         return;
     }
 
     LoginResponse *obj = (LoginResponse *) [data valueForKey:@"data"];
 
-    [SNLog Log:@"In Method Name: %s UserID %@", __PRETTY_FUNCTION__, obj.userID];
-    [SNLog Log:@"In Method Name: %s TempPass %@", __PRETTY_FUNCTION__, obj.tempPass];
-    [SNLog Log:@"In Method Name: %s isSuccessful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-    [SNLog Log:@"In Method Name: %s Reason : %@", __PRETTY_FUNCTION__, obj.reason];
-    [SNLog Log:@"In Method Name: %s Reason Code : %d", __PRETTY_FUNCTION__, obj.reasonCode];
+    [SNLog Log:@"In %s: UserID %@", __PRETTY_FUNCTION__, obj.userID];
+    [SNLog Log:@"In %s: TempPass %@", __PRETTY_FUNCTION__, obj.tempPass];
+    [SNLog Log:@"In %s: isSuccessful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
+    [SNLog Log:@"In %s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
+    [SNLog Log:@"In %s: Reason Code : %d", __PRETTY_FUNCTION__, obj.reasonCode];
 
     if (!obj.isSuccessful) {
         NSLog(@"Login failure reason Code: %d", obj.reasonCode);
@@ -239,8 +265,8 @@
 }
 
 - (IBAction)backClick:(id)sender {
-    if ([self.userName isFirstResponder]) {
-        [self.userName resignFirstResponder];
+    if ([self.emailID isFirstResponder]) {
+        [self.emailID resignFirstResponder];
 
     }
     else if ([self.password isFirstResponder]) {
@@ -252,7 +278,7 @@
 #pragma mark - Reconnection
 
 - (void)networkUpNotifier:(id)sender {
-    [SNLog Log:@"Method Name: %s Login controller :In networkUP notifier", __PRETTY_FUNCTION__];
+    [SNLog Log:@"%s: In networkUP notifier", __PRETTY_FUNCTION__];
     [self.HUD hide:YES];
 }
 
@@ -285,7 +311,7 @@
     NSLog(@"Email : %@", email);
 
     ResetPasswordRequest *resetCommand = [[ResetPasswordRequest alloc] init];
-    resetCommand.email = self.userName.text;
+    resetCommand.email = self.emailID.text;
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = RESET_PASSWORD_REQUEST;
@@ -295,15 +321,15 @@
 }
 
 - (void)resetPasswordResponseCallback:(id)sender {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+    [SNLog Log:@"%s", __PRETTY_FUNCTION__];
 
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     ResetPasswordResponse *obj = (ResetPasswordResponse *) [data valueForKey:@"data"];
 
-    [SNLog Log:@"Method Name: %s Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-    [SNLog Log:@"Method Name: %s Reason : %@", __PRETTY_FUNCTION__, obj.reason];
+    [SNLog Log:@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
+    [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
 
     if (obj.isSuccessful == 0) {
         NSLog(@"Reason Code %d", obj.reasonCode);
@@ -359,10 +385,10 @@
 //
 //    NSDictionary *data = [notifier userInfo];
 //    if (data != nil) {
-//        [SNLog Log:@"Method Name: %s Received Almond List response", __PRETTY_FUNCTION__];
+//        [SNLog Log:@"%s: Received Almond List response", __PRETTY_FUNCTION__];
 //
 //        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
-//        [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
+//        [SNLog Log:@"%s: List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
 //        //Write Almond List offline
 //        [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
 //    }
