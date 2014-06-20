@@ -200,6 +200,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         self.navigationItem.title = @"Get Started";
         self.deviceList = @[];
         self.deviceValueList = @[];
+
         [self.tableView reloadData];
     }
     else {
@@ -355,19 +356,19 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 -(void)networkUpNotifier:(id)sender
 {
     [SNLog Log:@"%s: Sensor controller :In networkUP notifier", __PRETTY_FUNCTION__];
-    [self.tableView reloadData];
+    [self asyncReloadTable];
 }
 
 -(void)networkDownNotifier:(id)sender
 {
     [SNLog Log:@"%s: Sensor controller :In network down notifier", __PRETTY_FUNCTION__];
-    [self.tableView reloadData];
+    [self asyncReloadTable];
 }
 
 - (void)reachabilityDidChange:(NSNotification *)notification {
     if ([[SFIReachabilityManager sharedManager] isUnreachable]) {
         NSLog(@"Unreachable");
-        [self.tableView reloadData];
+        [self asyncReloadTable];
     }
 }
 
@@ -2912,12 +2913,12 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
-    return YES;
+    return NO;
 }
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation) fromInterfaceOrientation {
     // NSLog(@"Rotation %d", fromInterfaceOrientation);
-    [self.tableView reloadData];
+    [self asyncReloadTable];
 }
 
 - (void)initializeImages {
@@ -3663,7 +3664,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         currentSensor.isExpanded = FALSE;
     }
     NSLog(@"Current Type: %d", currentSensor.deviceType);
-    [self.tableView reloadData];
+
+    [self asyncReloadTable];
     // [self.tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:FALSE];
 
 }
@@ -3765,7 +3767,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             self.currentIndexID = 1;
 
             [self sendMobileCommand];
-            [self.tableView reloadData];
+
+            [self asyncReloadTable];
             break;
         case 2:
             //Multilevel switch
@@ -3813,7 +3816,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 [self sendMobileCommand];
                 [self initializeImages];
                 // [[self view] endEditing:YES];
-                [self.tableView reloadData];
+                [self asyncReloadTable];
             }
             //imgDevice.frame = CGRectMake(25, 20, 40.5,60);
             //imgDevice.image = [UIImage imageNamed:@"door_on.png"];
@@ -3843,7 +3846,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             self.currentIndexID = currentDeviceValue.index;
             // NSLog(@"Index ID %d", self.currentIndexID);
             [self sendMobileCommand];
-            [self.tableView reloadData];
+            [self asyncReloadTable];
             break;
 
         case 22:
@@ -3874,7 +3877,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             // NSLog(@"Index ID %d", self.currentIndexID);
             [self sendMobileCommand];
             // [[self view] endEditing:YES];
-            [self.tableView reloadData];
+            [self asyncReloadTable];
 
             //            }
             //imgDevice.frame = CGRectMake(25, 20, 40.5,60);
@@ -4065,7 +4068,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             self.currentValue = currentDeviceValue.value;
             [self sendMobileCommand];
             [self initializeImages];
-            [self.tableView reloadData];
+            [self asyncReloadTable];
             break;
         }
     }
@@ -4153,7 +4156,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             self.currentValue = currentDeviceValue.value;
             [self sendMobileCommand];
             [self initializeImages];
-            [self.tableView reloadData];
+            [self asyncReloadTable];
             break;
         }
     }
@@ -4471,10 +4474,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         [self initializeImages];
         // [[self view] endEditing:YES];
         //To remove text fields keyboard. It was throwing error when it was being called from the background thread
-        [self.tableView performSelectorOnMainThread:@selector(reloadData)
-                                         withObject:nil
-                                      waitUntilDone:NO];
 
+        [self asyncReloadTable];
 
         //TODO: If count of devicevaluelist is < 0, display a message
 
@@ -4525,9 +4526,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
         [self initializeImages];
 
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.tableView reloadData];
-        });
+        [self asyncReloadTable];
     }
 }
 
@@ -4614,9 +4613,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     [self initializeImages];
     // [[self view] endEditing:YES];
     //To remove text fields keyboard. It was throwing error when it was being called from the background thread
-    [self.tableView performSelectorOnMainThread:@selector(reloadData)
-                                     withObject:nil
-                                  waitUntilDone:NO];
+    [self asyncReloadTable];
     [SNLog Log:@"%s: Response on UI: TIME => %f", __PRETTY_FUNCTION__, CFAbsoluteTimeGetCurrent()];
     
 }
@@ -4680,13 +4677,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             }
 
             [self initializeImages];
-            // [[self view] endEditing:YES];
-            //To remove text fields keyboard. It was throwing error when it was being called from the background thread
-            [self.tableView performSelectorOnMainThread:@selector(reloadData)
-                                             withObject:nil
-                                          waitUntilDone:NO];
+            [self asyncReloadTable];
         }
-        
     }
 }
 
@@ -4774,15 +4766,10 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                 }
                 self.deviceValueList = mobileDeviceValueList;
             }
-            
-            if(isCurrentMAC){// && isDeviceValueChanged){
-                //[SNLog Log:@"%s: Value Changed - Refresh",__PRETTY_FUNCTION__];
+
+            if (isCurrentMAC) {
                 [self initializeImages];
-                //To remove text fields keyboard. It was throwing error when it was being called from the background thread
-                [self.tableView performSelectorOnMainThread:@selector(reloadData)
-            withObject:nil
-            waitUntilDone:NO];
-                //[self.tableView reloadData];
+                [self asyncReloadTable];
             }
         }
         
@@ -4835,11 +4822,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
                     [prefs synchronize];
 
-                    //  [[self view] endEditing:YES];
-                    //To remove text fields keyboard. It was throwing error when it was being called from the background thread
-                    [self.tableView performSelectorOnMainThread:@selector(reloadData)
-                                                     withObject:nil
-                                                  waitUntilDone:NO];
+                    [self asyncReloadTable];
                 }
             }
         }
@@ -4893,11 +4876,7 @@ static NSString *simpleTableIdentifier = @"SensorCell";
                     [prefs removeObjectForKey:COLORCODE];
                     [prefs synchronize];
 
-                    // [[self view] endEditing:YES];
-                    //To remove text fields keyboard. It was throwing error when it was being called from the background thread
-                    [self.tableView performSelectorOnMainThread:@selector(reloadData)
-                                                     withObject:nil
-                                                  waitUntilDone:NO];
+                    [self asyncReloadTable];
                 }
             }
         }
@@ -4981,7 +4960,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
         self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
         [self initializeImages];
         // [[self view] endEditing:YES];
-        [self.tableView reloadData];
+
+        [self asyncReloadTable];
     }
 }
 
@@ -5005,10 +4985,8 @@ static NSString *simpleTableIdentifier = @"SensorCell";
             self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
             [self initializeImages];
             //To remove text fields keyboard. It was throwing error when it was being called from the background thread
-            [self.tableView performSelectorOnMainThread:@selector(reloadData)
-                                             withObject:nil
-                                          waitUntilDone:NO];
 
+            [self asyncReloadTable];
         }
     }
 }
@@ -5031,6 +5009,12 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+}
+
+- (void)asyncReloadTable {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+    });
 }
 
 @end
