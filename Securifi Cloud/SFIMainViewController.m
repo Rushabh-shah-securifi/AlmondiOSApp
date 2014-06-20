@@ -16,6 +16,7 @@
 @interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSTimer *displayNoCloudTimer;
+@property(nonatomic, readonly) NSTimer *cloudReconnectTimer;
 @property BOOL presentingLoginController;
 @end
 
@@ -26,18 +27,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    _HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    _HUD.dimBackground = YES;
-
     [self displaySplashImage];
 
-    _displayNoCloudTimer = [NSTimer scheduledTimerWithTimeInterval:CLOUD_CONNECTION_TIMEOUT
-                                                            target:self
-                                                          selector:@selector(displayNoCloudConnectionImage)
-                                                          userInfo:nil
-                                                           repeats:NO];
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    _HUD.dimBackground = YES;
+    [self.view addSubview:_HUD];
+
+    [self scheduleDisplayNoCloudTimer];
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+
+    [center addObserver:self 
+               selector:@selector(onReachabilityDidChange:) 
+                   name:kSFIReachabilityChangedNotification 
+                 object:nil];
 
     [center addObserver:self
                selector:@selector(networkDownNotifier:)
@@ -78,15 +81,48 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    if (!self.isCloudOnline) {
-        self.HUD.labelText = @"Connecting. Please wait!";
-    }
+    [self conditionalTryConnectOrLogon:YES];
 }
 
-#pragma mark - State management
+#pragma mark - Connection Management
 
 - (BOOL)isCloudOnline {
     return [[SecurifiToolkit sharedInstance] isCloudOnline];
+}
+
+- (void)conditionalTryConnectOrLogon:(BOOL)showHud {
+    if ([self isCloudOnline]) {
+        // Already connected. Nothing to do.
+        return;
+    }
+
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    if (![toolkit isReachable]) {
+        // No network route to cloud. Nothing to do.
+        return;
+    }
+
+    // Try to connect iff we are the top-level presenting view and network is down
+    if (self.presentedViewController != nil) {
+        return;
+    }
+
+    if (![toolkit hasLoginCredentials]) {
+        // If no logon credentials we just put up the screen and then handle connection from there.
+        [self presentLogonScreen];
+        return;
+    }
+
+    // Else try to connect
+    if (showHud) {
+        self.HUD.labelText = @"Connecting. Please wait!";
+        [self.HUD show:YES];
+    }
+
+    [self scheduleDisplayNoCloudTimer];
+
+    [toolkit initSDK];
 }
 
 #pragma mark - Orientation Handling
@@ -134,18 +170,19 @@
 
 #pragma mark - Reconnection
 
+- (void)onReachabilityDidChange:(id)sender {
+    [self conditionalTryConnectOrLogon:NO];
+}
+
 - (void)networkUpNotifier:(id)sender {
     if (self.isCloudOnline) {
         [self.HUD hide:YES];
-        [self.displayNoCloudTimer invalidate];
+        [self invalidateTimers];
     }
 }
 
 - (void)networkDownNotifier:(id)sender {
-    if (!self.isCloudOnline) {
-        self.HUD.labelText = @"Network Down";
-        [self.HUD hide:YES afterDelay:1];
-    }
+    [self conditionalTryConnectOrLogon:NO];
 }
 
 #pragma mark - SFILoginViewController delegate methods
@@ -313,8 +350,57 @@
             }
         }];
     });
-
 }
 
+#pragma mark - Timers
+
+- (void)invalidateTimers {
+    [self.displayNoCloudTimer invalidate];
+    _displayNoCloudTimer = nil;
+
+    [self.cloudReconnectTimer invalidate];
+    _cloudReconnectTimer = nil;
+}
+
+- (void)scheduleDisplayNoCloudTimer {
+    _displayNoCloudTimer = [NSTimer scheduledTimerWithTimeInterval:CLOUD_CONNECTION_TIMEOUT
+                                                            target:self
+                                                          selector:@selector(onNoCloudConnectionTimeout)
+                                                          userInfo:nil
+                                                           repeats:NO];
+}
+
+- (void)scheduleReconnectTimer {
+    _cloudReconnectTimer = [NSTimer scheduledTimerWithTimeInterval:CLOUD_CONNECTION_RETRY
+                                                            target:self
+                                                          selector:@selector(onNoCloudConnectionRetry)
+                                                          userInfo:nil
+                                                           repeats:NO];
+}
+
+- (void)onNoCloudConnectionTimeout {
+    _displayNoCloudTimer = nil;
+
+    [self.HUD hide:YES];
+
+    if ([self isCloudOnline]) {
+        [self displaySplashImage];
+    }
+    else {
+        [self displayNoCloudConnectionImage];
+        [self scheduleReconnectTimer];
+    }
+}
+
+- (void)onNoCloudConnectionRetry {
+    _cloudReconnectTimer = nil;
+
+    if ([self isCloudOnline]) {
+        [self displaySplashImage];
+    }
+    else {
+        [self conditionalTryConnectOrLogon:NO];
+    }
+}
 
 @end

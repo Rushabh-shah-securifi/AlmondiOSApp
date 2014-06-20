@@ -171,11 +171,6 @@
                                                   object:nil];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return YES;
 }
@@ -216,7 +211,7 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
-    //todo sinclair investigate this
+    //todo sinclair - because the subviews are always being regenerated below....
     //PY 070114
     //START: HACK FOR MEMORY LEAKS
     for (UIView *currentView in cell.contentView.subviews) {
@@ -242,7 +237,6 @@
     lblTitle.backgroundColor = [UIColor clearColor];
     lblTitle.textColor = [UIColor whiteColor];
     [lblTitle setFont:[UIFont fontWithName:@"Avenir-Light" size:25]];
-
 
     UILabel *lblSummary = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, self.tableView.frame.size.width, 30)];
     lblSummary.backgroundColor = [UIColor clearColor];
@@ -697,7 +691,7 @@
             [SNLog Log:@"%s: Current MAC : %@", __PRETTY_FUNCTION__, self.currentMAC];
             if ([self.currentMAC isEqualToString:NO_ALMOND]) {
                 [SNLog Log:@"%s: Previously no almond", __PRETTY_FUNCTION__];
-                
+
                 NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
                 NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 

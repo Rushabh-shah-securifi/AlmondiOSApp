@@ -9,13 +9,13 @@
 #ifndef Securifi_Cloud_Header_h
 #define Securifi_Cloud_Header_h
 
-#define SDK_UNINITIALIZED       0
-#define NETWORK_DOWN            1
-#define NOT_LOGGED_IN           2
-#define LOGGED_IN               3
-#define CLOUD_CONNECTION_TIMEOUT 20
+#define SDK_UNINITIALIZED           0
+#define NETWORK_DOWN                1
+#define NOT_LOGGED_IN               2
+#define LOGGED_IN                   3
 
-
+#define CLOUD_CONNECTION_TIMEOUT    20
+#define CLOUD_CONNECTION_RETRY      5
 
 // UI Notifications
 #define UI_ON_PRESENT_LOGOUT_ALL            @"UI_ON_PRESENT_LOGOUT_ALL"
