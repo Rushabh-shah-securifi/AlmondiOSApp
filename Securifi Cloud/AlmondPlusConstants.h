@@ -84,6 +84,7 @@
 #define BLOCKED_MAC_SUMMARY @"AlmondBlockedMACSummary"
 #define BLOCKED_CONTENT_SUMMARY @"AlmondBlockedContentSummary"
 
+#define STATE @"STATE"
 #define TAMPER @"TAMPER"
 #define LOW_BATTERY @"LOW BATTERY"
 #define CLOUD_OFFLINE @"Cloud is offline. Please retry later."
