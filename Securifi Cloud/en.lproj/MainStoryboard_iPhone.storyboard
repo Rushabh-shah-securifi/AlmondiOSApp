@@ -1212,12 +1212,11 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="GhA-uG-Qkl">
                             <connections>
-                                <action selector="refreshSensorData:" destination="Dqh-ha-t71" id="MQ8-Vf-80C"/>
+                                <action selector="onRefreshSensorData:" destination="Dqh-ha-t71" id="MQ8-Vf-80C"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="sensorTable" destination="InE-3J-sSr" id="osx-Cf-DNT"/>
                         <outlet property="txtInvisible" destination="65y-r0-TV4" id="cjp-CS-6Qb"/>
                     </connections>
                 </tableViewController>
