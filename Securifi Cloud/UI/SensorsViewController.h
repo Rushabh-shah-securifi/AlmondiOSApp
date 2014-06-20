@@ -13,9 +13,8 @@
 
 - (IBAction)revealMenu:(id)sender;
 
-- (IBAction)refreshSensorData:(id)sender;
+- (IBAction)onRefreshSensorData:(id)sender;
 
-@property(nonatomic, retain) IBOutlet BVReorderTableView *sensorTable;
-@property(nonatomic, retain) IBOutlet UITextField *txtInvisible;
+@property(nonatomic, weak) IBOutlet UITextField *txtInvisible;
 
 @end
