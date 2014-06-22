@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SFIRouterTableViewController : UITableViewController <UIActionSheetDelegate>
+@interface SFIRouterTableViewController : UITableViewController
 
-- (IBAction)revealMenu:(id)sender;
+- (IBAction)onRevealMenuAction:(id)sender;
 
 @end

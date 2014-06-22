@@ -1295,7 +1295,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                     <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="rebootButtonHandler:" destination="HEX-sc-QVa" eventType="touchUpInside" id="8Yx-xc-ERr"/>
+                                    <action selector="onRebootButtonAction:" destination="HEX-sc-QVa" eventType="touchUpInside" id="8Yx-xc-ERr"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jJC-wb-JRH">
@@ -1376,7 +1376,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                     <navigationItem key="navigationItem" title="Router" id="JT5-4e-PUf">
                         <barButtonItem key="leftBarButtonItem" image="drawer.png" id="Uda-tP-hkD">
                             <connections>
-                                <action selector="revealMenu:" destination="HEX-sc-QVa" id="n2g-lh-SXN"/>
+                                <action selector="onRevealMenuAction:" destination="HEX-sc-QVa" id="n2g-lh-SXN"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1653,7 +1653,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                     <navigationItem key="navigationItem" title="Router" id="GoG-ga-R1W">
                         <barButtonItem key="leftBarButtonItem" image="drawer.png" id="uVj-eD-iUa">
                             <connections>
-                                <action selector="revealMenu:" destination="SMk-sp-L36" id="cX9-pb-CNG"/>
+                                <action selector="onRevealMenuAction:" destination="SMk-sp-L36" id="cX9-pb-CNG"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
