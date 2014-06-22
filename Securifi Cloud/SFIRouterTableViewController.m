@@ -43,17 +43,6 @@
 @synthesize routerSummary;
 @synthesize isRebooting;
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-
-    NSDictionary *titleAttributes = @{
-            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
-            NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
-    };
-
-    self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -61,6 +50,13 @@
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.dimBackground = YES;
     [self.parentViewController.view addSubview:_HUD];
+
+    NSDictionary *titleAttributes = @{
+            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+            NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
+    };
+    self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
+    self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
