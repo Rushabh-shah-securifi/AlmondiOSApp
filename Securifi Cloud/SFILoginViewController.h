@@ -27,13 +27,11 @@
 @property(weak, nonatomic) IBOutlet UIButton *forgotPwdButton;
 @property(weak, nonatomic) IBOutlet UIBarButtonItem *loginButton;
 
-- (IBAction)backClick:(id)sender;
+- (IBAction)onLoginAction:(id)sender;
 
-- (IBAction)loginClick:(id)sender;
+- (IBAction)onSignupButton:(id)sender;
 
-- (IBAction)signupButton:(id)sender;
-
-- (IBAction)forgotPwdButtonHandler:(id)sender;
+- (IBAction)onForgetPasswordAction:(id)sender;
 
 @end
 

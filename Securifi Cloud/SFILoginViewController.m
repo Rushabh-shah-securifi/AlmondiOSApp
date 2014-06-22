@@ -25,8 +25,6 @@
     };
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
 
-    self.loginButton.enabled = YES;
-
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     _HUD.dimBackground = YES;
     [self.view addSubview:_HUD];
@@ -37,35 +35,25 @@
     self.emailID.delegate = self;
     self.password.delegate = self;
 
-    [self enableContinueButton:NO];
+    [self enableLoginButton:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(loginResponse:)
+                                             selector:@selector(onLoginResponse:)
                                                  name:LOGIN_NOTIFIER
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(networkDownNotifier:)
-                                                 name:NETWORK_DOWN_NOTIFIER
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(networkUpNotifier:)
-                                                 name:NETWORK_UP_NOTIFIER
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reachabilityDidChange:)
-                                                 name:kSFIReachabilityChangedNotification
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(resetPasswordResponseCallback:)
                                                  name:RESET_PWD_RESPONSE_NOTIFIER
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onKeyboardDidHide:)
+                                                 name:UIKeyboardDidHideNotification
                                                object:nil];
 
     [self.emailID becomeFirstResponder];
@@ -82,24 +70,21 @@
                                                   object:nil];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NETWORK_UP_NOTIFIER
-                                                  object:nil];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NETWORK_DOWN_NOTIFIER
-                                                  object:nil];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kSFIReachabilityChangedNotification
-                                                  object:nil];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:RESET_PWD_RESPONSE_NOTIFIER
                                                   object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardDidHideNotification
+                                                  object:nil];
+
 }
 
-- (void)enableContinueButton:(BOOL)enabled {
-    self.navigationItem.rightBarButtonItem.enabled = enabled;
+- (void)enableLoginButton:(BOOL)enabled {
+    self.loginButton.enabled = enabled;
+}
+
+- (BOOL)validateCredentials {
+    return self.emailID.text.length > 0 && self.password.text.length > 0;
 }
 
 #pragma mark - Orientation Handling
@@ -112,11 +97,9 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-
 - (NSUInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
 }
-
 
 #pragma mark - UITextField delegate methods
 
@@ -129,8 +112,8 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    BOOL enabled = self.emailID.text.length > 0 && self.password.text.length > 0;
-    [self enableContinueButton:enabled];
+    BOOL enabled = [self validateCredentials];
+    [self enableLoginButton:enabled];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -144,7 +127,7 @@
 
     NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
     BOOL enabled = str.length > 0 && other.text.length > 0;
-    [self enableContinueButton:enabled];
+    [self enableLoginButton:enabled];
 
     return YES;
 }
@@ -154,37 +137,44 @@
         [textField resignFirstResponder];
         [self.password becomeFirstResponder];
     }
-    else if (textField == self.password) {
-        NSLog(@"Login Action!!");
+
+    if (textField == self.password) {
         [textField resignFirstResponder];
-        [self loginClick:nil];
     }
+
     return YES;
 }
 
-#pragma mark - Event handlers
+#pragma mark - Keyboard handler
 
+- (void)onKeyboardDidHide:(id)notice {
+    if ([self validateCredentials]) {
+        [self onLoginAction:nil];
+    }
+}
 
-- (void)signupButton:(id)sender {
+#pragma mark - UI Actions
+
+- (void)onSignupButton:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFISignupViewController"];
     [self presentViewController:mainView animated:YES completion:nil];
 }
 
-- (IBAction)forgotPwdButtonHandler:(id)sender {
+- (IBAction)onForgetPasswordAction:(id)sender {
     [self sendResetPasswordRequest];
 }
 
-- (IBAction)loginClick:(id)sender {
+- (IBAction)onLoginAction:(id)sender {
     if ([self.emailID isFirstResponder]) {
         [self.emailID resignFirstResponder];
-
     }
-    else if ([self.password isFirstResponder]) {
+
+    if ([self.password isFirstResponder]) {
         [self.password resignFirstResponder];
     }
 
-    if ([self.emailID.text isEqualToString:@""] || [self.password.text isEqualToString:@""]) {
+    if (self.emailID.text.length == 0 || self.password.text.length == 0) {
         self.headingLabel.text = @"Oops";
         self.subHeadingLabel.text = @"Please enter Username and Password";
     }
@@ -193,7 +183,9 @@
     }
 }
 
-- (void)loginResponse:(id)sender {
+#pragma mark - Event handlers
+
+- (void)onLoginResponse:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
@@ -229,10 +221,11 @@
                 //Display Activation Screen
                 self.headingLabel.text = @"Almost there.";
                 failureReason = @"You need to activate your account.";
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
 
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
                 UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFIActivationViewController"];
                 [self presentViewController:mainView animated:YES completion:nil];
+
                 break;
             }
             case 4:
@@ -247,61 +240,7 @@
         return;
     }
 
-    self.HUD.labelText = @"Loading your personal data.";
-
-    //Retrieve Almond List, Device List and Device Value - Before displaying the screen
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(almondListResponseCallback:)
-                                                 name:ALMOND_LIST_NOTIFIER
-                                               object:nil];
-
-    //todo sinclair - why are we doing this?
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        [SFIDatabaseUpdateService stopDatabaseUpdateService];
-//        [SFIDatabaseUpdateService startDatabaseUpdateService];
-//    });
-
-    [self loadAlmondList];
-}
-
-- (IBAction)backClick:(id)sender {
-    if ([self.emailID isFirstResponder]) {
-        [self.emailID resignFirstResponder];
-
-    }
-    else if ([self.password isFirstResponder]) {
-        [self.password resignFirstResponder];
-    }
-}
-
-
-#pragma mark - Reconnection
-
-- (void)networkUpNotifier:(id)sender {
-    [SNLog Log:@"%s: In networkUP notifier", __PRETTY_FUNCTION__];
-    [self.HUD hide:YES];
-}
-
-- (void)networkDownNotifier:(id)sender {
-    BOOL online = [[SecurifiToolkit sharedInstance] isCloudOnline];
-    if (!online) {
-        self.HUD.labelText = @"Reconnecting...";
-        [self.HUD hide:YES afterDelay:1];
-    }
-}
-
-
-- (void)reachabilityDidChange:(NSNotification *)notification {
-    BOOL reachable = [[SFIReachabilityManager sharedManager] isReachable];
-    if (!reachable) {
-        NSLog(@"Unreachable");
-    }
-
-    BOOL online = [[SecurifiToolkit sharedInstance] isCloudOnline];
-    if (!online) {
-        self.HUD.labelText = @"Reconnecting...";
-        [self.HUD hide:YES afterDelay:1];
-    }
+    [self.delegate loginControllerDidCompleteLogin:self];
 }
 
 #pragma mark - Cloud Command : Sender and Receivers
@@ -369,33 +308,6 @@
         self.headingLabel.text = @"Almost there.";
         self.subHeadingLabel.text = @"Password reset link has been sent to your account.";
     }
-}
-
-
-- (void)loadAlmondList {
-    [SNLog Log:@"%s", __PRETTY_FUNCTION__];
-    [[SecurifiToolkit sharedInstance] asyncLoadAlmondList];
-
-    //todo sinclair moved from the almond list callback---see how it works
-    [self.delegate loginControllerDidCompleteLogin:self];
-}
-
-- (void)almondListResponseCallback:(id)sender {
-//    NSNotification *notifier = (NSNotification *) sender;
-//
-//    NSDictionary *data = [notifier userInfo];
-//    if (data != nil) {
-//        [SNLog Log:@"%s: Received Almond List response", __PRETTY_FUNCTION__];
-//
-//        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
-//        [SNLog Log:@"%s: List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
-//        //Write Almond List offline
-//        [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
-//    }
-//
-//    self.HUD.hidden = YES;
-
-//    [self.delegate loginControllerDidCompleteLogin:self];
 }
 
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
