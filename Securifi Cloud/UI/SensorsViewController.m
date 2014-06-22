@@ -369,19 +369,6 @@
     });
 }
 
-- (void)asyncReloadDeviceCellAtRow:(NSUInteger)row {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (row >= self.deviceList.count) {
-            // Just in case something gets changed out from underneath
-            [self.tableView reloadData];
-        }
-        else {
-            NSIndexPath *path = [NSIndexPath indexPathForRow:row inSection:0];
-            [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationFade];
-        }
-    });
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (self.isCloudOnline) {
         return 0;
@@ -501,6 +488,7 @@
 
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:no_almond_cell_id];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 400)];
         imageView.userInteractionEnabled = YES;
@@ -525,9 +513,13 @@
     SFIDevice *currentSensor = self.deviceList[(NSUInteger) indexPathRow];
     int currentDeviceType = currentSensor.deviceType;
 
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:sensor_cell_id];
+    NSUInteger height = [self computeSensorRowHeight:currentSensor];
+    NSString *id = currentSensor.isExpanded ? [NSString stringWithFormat:@"SensorExpanded_%ld", (unsigned long)height] : sensor_cell_id;
+
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:sensor_cell_id];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:id];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     //PY 070114
     //START: HACK FOR MEMORY LEAKS
@@ -3267,20 +3259,21 @@
 
 - (void)onSettingClicked:(id)sender {
     UIButton *btn = (UIButton *) sender;
-    NSUInteger row = (NSUInteger) btn.tag;
+    NSUInteger clicked_row = (NSUInteger) btn.tag;
 
     //Get the sensor for which setting was clicked
     NSArray *devices = self.deviceList;
-    if (row >= devices.count) {
+    if (clicked_row >= devices.count) {
         return;
     }
-    SFIDevice *currentSensor = devices[row];
 
-    if (!currentSensor.isExpanded) {
+    SFIDevice *sensor = devices[clicked_row];
+
+    if (!sensor.isExpanded) {
         //Expand it
         //Remove the long press for reordering when expanded sensor has slider
         //Device type 2 - 4 - 7
-        switch (currentSensor.deviceType) {
+        switch (sensor.deviceType) {
             case 2:
             case 4:
             case 7:
@@ -3292,12 +3285,12 @@
                 break;
         }
 
-        currentSensor.isExpanded = TRUE;
+        sensor.isExpanded = TRUE;
     }
     else {
         //Enable the long press for reordering
         //Device type 2 - 4 - 7
-        switch (currentSensor.deviceType) {
+        switch (sensor.deviceType) {
             case 2:
             case 4:
             case 7:
@@ -3308,10 +3301,32 @@
             default:
                 break;
         }
-        currentSensor.isExpanded = FALSE;
+        sensor.isExpanded = FALSE;
     }
 
-    [self asyncReloadDeviceCellAtRow:row];
+    NSMutableArray *pathes = [NSMutableArray array];
+    [pathes addObject:[NSIndexPath indexPathForRow:clicked_row inSection:0]];
+
+    // Ensure other rows are not expanded
+    for (NSUInteger index=0; index < devices.count; index++) {
+        if (index != clicked_row) {
+            SFIDevice *s = devices[index];
+            if (s.isExpanded) {
+                s.isExpanded = NO;
+                [pathes addObject:[NSIndexPath indexPathForRow:index inSection:0]];
+            }
+        }
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (clicked_row >= self.deviceList.count) {
+            // Just in case something gets changed out from underneath
+            [self.tableView reloadData];
+        }
+        else {
+            [self.tableView reloadRowsAtIndexPaths:pathes withRowAnimation:UITableViewRowAnimationFade];
+        }
+    });
 }
 
 - (void)onAddAlmondClicked:(id)sender {
