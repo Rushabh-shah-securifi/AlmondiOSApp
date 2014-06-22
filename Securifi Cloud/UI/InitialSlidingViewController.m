@@ -34,6 +34,13 @@
     self.topViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabTop"];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    UITabBarController *ctrl = (UITabBarController *) self.topViewController;
+    ctrl.tabBar.tintColor = [UIColor blackColor];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityDidChange:)

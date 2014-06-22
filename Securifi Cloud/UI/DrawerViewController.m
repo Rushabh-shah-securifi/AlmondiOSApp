@@ -155,6 +155,9 @@
             int codeIndex = 0;
             //Display the corresponding Sensor List
             UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"TabTop"];
+            UITabBarController *ctrl = (UITabBarController *) newTopViewController;
+            ctrl.tabBar.tintColor = [UIColor blackColor];
+
             SFIAlmondPlus *currentAlmond = array[(NSUInteger) indexPath.row];
             self.currentMAC = currentAlmond.almondplusMAC;
 
