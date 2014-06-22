@@ -556,7 +556,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                     <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="forgotPwdButtonHandler:" destination="pAu-yL-9WX" eventType="touchUpInside" id="0Rx-7c-eM8"/>
+                                    <action selector="onForgetPasswordAction:" destination="pAu-yL-9WX" eventType="touchUpInside" id="0Rx-7c-eM8"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" clearsOnBeginEditing="YES" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Y3d-aA-TFm">
@@ -643,7 +643,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                     <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="signupButton:" destination="pAu-yL-9WX" eventType="touchUpInside" id="OXN-Th-6ga"/>
+                                    <action selector="onSignupButton:" destination="pAu-yL-9WX" eventType="touchUpInside" id="OXN-Th-6ga"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -669,7 +669,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                             <constraint firstItem="7L7-hG-UZX" firstAttribute="bottom" secondItem="7Fl-1P-IHp" secondAttribute="bottom" id="ZtW-JF-4JP"/>
                             <constraint firstItem="7Fl-1P-IHp" firstAttribute="top" secondItem="Zon-6Z-KzY" secondAttribute="bottom" constant="45" id="a1T-Ul-zBx"/>
                             <constraint firstItem="UMh-WG-lC3" firstAttribute="leading" secondItem="tRT-t7-eNX" secondAttribute="leading" id="aSw-2d-nzc"/>
-                            <constraint firstItem="Y3d-aA-TFm" firstAttribute="leading" secondItem="5Wo-rI-VjW" secondAttribute="leading" constant="17" id="apV-Zk-cDX"/>
+                            <constraint firstItem="Y3d-aA-TFm" firstAttribute="leading" secondItem="5Wo-rI-VjW" secondAttribute="leading" constant="10" id="apV-Zk-cDX"/>
                             <constraint firstAttribute="trailing" secondItem="7Fl-1P-IHp" secondAttribute="trailing" constant="17" id="flH-bb-21f"/>
                             <constraint firstItem="wee-4l-TQb" firstAttribute="trailing" secondItem="Zuk-ja-Rsi" secondAttribute="trailing" id="gO9-qo-Js6"/>
                             <constraint firstItem="wee-4l-TQb" firstAttribute="leading" secondItem="UMh-WG-lC3" secondAttribute="leading" id="iIR-Cs-Kki"/>
@@ -689,7 +689,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                     <navigationItem key="navigationItem" title="Almond" id="ObR-J1-LOM">
                         <barButtonItem key="rightBarButtonItem" title="Login" id="fGC-bJ-KoF">
                             <connections>
-                                <action selector="loginClick:" destination="pAu-yL-9WX" id="ngR-8T-CCK"/>
+                                <action selector="onLoginAction:" destination="pAu-yL-9WX" id="ngR-8T-CCK"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
