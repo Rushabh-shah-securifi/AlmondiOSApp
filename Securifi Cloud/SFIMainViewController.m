@@ -68,11 +68,6 @@
                  object:nil];
 
     [center addObserver:self
-               selector:@selector(onAlmondListResponse:)
-                   name:ALMOND_LIST_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
                selector:@selector(onPresentLogoutAll)
                    name:UI_ON_PRESENT_LOGOUT_ALL
                  object:nil];
@@ -192,15 +187,27 @@
 
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
-            [self presentMainView];
+            self.HUD.labelText = @"Loading your personal data.";
             self.presentingLoginController = NO;
+            [self conditionalLoadAlmondList];
         }];
     });
 }
 
 #pragma mark - Cloud Command : Sender and Receivers
 
-- (void)loadAlmondList {
+- (void)conditionalLoadAlmondList {
+    if (self.presentedViewController != nil) {
+        return;
+    }
+
+    // Only take responsibility for loading almond list when this is the top level view.
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onAlmondListResponse:)
+                                                 name:ALMOND_LIST_NOTIFIER
+                                               object:nil];
+
     [[SecurifiToolkit sharedInstance] asyncLoadAlmondList];
 }
 
@@ -240,7 +247,7 @@
     NSLog(@"%s", __PRETTY_FUNCTION__);
 
     if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
-        [self loadAlmondList];
+        [self conditionalLoadAlmondList];
     }
     else {
         dispatch_async(dispatch_get_main_queue(), ^() {
@@ -252,14 +259,22 @@
 - (void)onAlmondListResponse:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
 
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:ALMOND_LIST_NOTIFIER object:nil];
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
         AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
 
-        //Write Almond List offline
-        [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
+        if (obj.isSuccessful) {
+            //Write Almond List offline
+            [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
+        }
     }
 
     if (self.presentedViewController) {
