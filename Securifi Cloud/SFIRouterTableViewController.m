@@ -20,6 +20,7 @@
 @interface SFIRouterTableViewController () <UIActionSheetDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSArray *listAvailableColors;
+@property(nonatomic, strong) UIImageView *splashImg;
 
 @property NSString *currentMAC;
 @property(nonatomic, strong) SFIRouterSummary *routerSummary;
@@ -130,6 +131,22 @@
                                                  name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
                                                object:nil];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onNetworkChange:)
+                                                 name:NETWORK_DOWN_NOTIFIER
+                                               object:nil];
+
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onNetworkChange:)
+                                                 name:NETWORK_UP_NOTIFIER
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onNetworkChange:)
+                                                 name:kSFIReachabilityChangedNotification object:nil];
+
+
     if (![self isNoAlmondLoaded]) {
         [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
     }
@@ -151,6 +168,19 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:GENERIC_COMMAND_CLOUD_NOTIFIER
                                                   object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NETWORK_UP_NOTIFIER
+                                                  object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NETWORK_DOWN_NOTIFIER
+                                                  object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:kSFIReachabilityChangedNotification
+                                                  object:nil];
+
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -164,6 +194,48 @@
 
 - (BOOL)isNoAlmondLoaded {
     return [self.currentMAC isEqualToString:NO_ALMOND];
+}
+
+- (BOOL)isCloudOnline {
+    return [[SecurifiToolkit sharedInstance] isCloudOnline];
+}
+
+#pragma mark - Network and cloud events
+
+- (void)onNetworkChange:(id)notice {
+    [self displayNoCloudConnectionImage];
+}
+
+- (void)displayNoCloudConnectionImage {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self.isCloudOnline) {
+            UIImage *image;
+
+            //Set the splash image differently for 3.5 inch and 4 inch screen
+            CGRect screenBounds = [[UIScreen mainScreen] bounds];
+            if (screenBounds.size.height == 568) {
+                // code for 4-inch screen
+                image = [UIImage imageNamed:@"no_cloud_640x1136"];
+            }
+            else {
+                // code for 3.5-inch screen
+                image = [UIImage imageNamed:@"no_cloud_640x960"];
+            }
+
+            if (!self.splashImg) {
+                self.splashImg = [[UIImageView alloc] initWithFrame:self.tableView.frame];
+                [self.view addSubview:self.splashImg];
+            }
+
+            self.splashImg.image = image;
+            self.tableView.scrollEnabled = NO;
+        }
+        else if (self.splashImg) {
+            [self.splashImg removeFromSuperview];
+            self.splashImg = nil;
+            self.tableView.scrollEnabled = YES;
+        }
+    });
 }
 
 #pragma mark - Table view data source

@@ -95,6 +95,8 @@
 		1C41B16A19343CEB006F0DD8 /* window_106x140.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C41B11619343CEB006F0DD8 /* window_106x140.png */; };
 		1C41B17319344562006F0DD8 /* SFIAffiliationViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 1C41B17119344562006F0DD8 /* SFIAffiliationViewController.h */; };
 		1C41B17419344562006F0DD8 /* SFIAffiliationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C41B17219344562006F0DD8 /* SFIAffiliationViewController.m */; };
+		1DF0306C0C7943B90740B6BB /* SFICloudStatusBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF03048FDE77FF138C06B2C /* SFICloudStatusBarButtonItem.h */; };
+		1DF03F5D958C948279ED7B5B /* SFICloudStatusBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0352BB56CC806F804C806 /* SFICloudStatusBarButtonItem.m */; };
 		2244791717A80C9C002C43C2 /* SFIMainViewTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 2244791617A80C9C002C43C2 /* SFIMainViewTile.m */; };
 		2244791D17A81649002C43C2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2244791C17A81649002C43C2 /* QuartzCore.framework */; };
 		225093BF17A8086000B94C6E /* SFIMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 225093BE17A8086000B94C6E /* SFIMainViewController.m */; };
@@ -324,6 +326,8 @@
 		1C41B11619343CEB006F0DD8 /* window_106x140.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = window_106x140.png; path = images/window_106x140.png; sourceTree = "<group>"; };
 		1C41B17119344562006F0DD8 /* SFIAffiliationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIAffiliationViewController.h; sourceTree = "<group>"; };
 		1C41B17219344562006F0DD8 /* SFIAffiliationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIAffiliationViewController.m; sourceTree = "<group>"; };
+		1DF03048FDE77FF138C06B2C /* SFICloudStatusBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICloudStatusBarButtonItem.h; sourceTree = "<group>"; };
+		1DF0352BB56CC806F804C806 /* SFICloudStatusBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICloudStatusBarButtonItem.m; sourceTree = "<group>"; };
 		2244791517A80C9C002C43C2 /* SFIMainViewTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIMainViewTile.h; sourceTree = "<group>"; };
 		2244791617A80C9C002C43C2 /* SFIMainViewTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIMainViewTile.m; sourceTree = "<group>"; };
 		2244791C17A81649002C43C2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -617,6 +621,8 @@
 				CE5D0BB51807D16300224009 /* SFIConstants.m */,
 				CE93A14F189A509200587F46 /* SFIHelpViewController.h */,
 				CE93A150189A509200587F46 /* SFIHelpViewController.m */,
+				1DF0352BB56CC806F804C806 /* SFICloudStatusBarButtonItem.m */,
+				1DF03048FDE77FF138C06B2C /* SFICloudStatusBarButtonItem.h */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -921,6 +927,7 @@
 				CEC937081845C1E300E99FED /* SFIRouterTableViewController.h in Headers */,
 				CE23D4041872DB7500995003 /* RouterTempController.h in Headers */,
 				CECD693D1832400800B77A46 /* SFIBlockedDevice.h in Headers */,
+				1DF0306C0C7943B90740B6BB /* SFICloudStatusBarButtonItem.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1186,6 +1193,7 @@
 				22FAE88517A8E27D002FFEE8 /* SFISignupViewController.m in Sources */,
 				CEC937101845D1CF00E99FED /* SFIRouterSummary.m in Sources */,
 				CE5D0BCB1807D16300224009 /* SFISceneTopViewController.m in Sources */,
+				1DF03F5D958C948279ED7B5B /* SFICloudStatusBarButtonItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
