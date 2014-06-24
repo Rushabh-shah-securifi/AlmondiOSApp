@@ -149,7 +149,7 @@
     
     
     SFIBlockedContent *currentBlockedValue = [blockedContentArray objectAtIndex:indexPath.row];
-    UILabel *backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,1,self.tableView.frame.size.width-20,40)];
+    UILabel *backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,1,tableView.frame.size.width-20,40)];
     backgroundLabel.userInteractionEnabled = YES;
     
     if(currentBlockedValue.isSelected){
@@ -161,7 +161,7 @@
         //backgroundLabel.backgroundColor = [UIColor clearColor];
     }
     
-    UILabel *lblOption = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, self.tableView.frame.size.width, 20)];
+    UILabel *lblOption = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, tableView.frame.size.width, 20)];
     lblOption.backgroundColor = [UIColor clearColor];
     [lblOption setFont:[UIFont fontWithName:@"Avenir-Roman" size:14]];
     lblOption.text = currentBlockedValue.blockedText;

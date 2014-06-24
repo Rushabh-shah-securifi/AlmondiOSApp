@@ -37,8 +37,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-    UITabBarController *ctrl = (UITabBarController *) self.topViewController;
-    ctrl.tabBar.tintColor = [UIColor blackColor];
+//    UITabBarController *ctrl = (UITabBarController *) self.topViewController;
+//    ctrl.tabBar.tintColor = [UIColor blackColor];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

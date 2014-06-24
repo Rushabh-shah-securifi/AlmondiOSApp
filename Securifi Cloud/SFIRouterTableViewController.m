@@ -15,9 +15,11 @@
 #import "SFIRouterDevicesListViewController.h"
 #import "ECSlidingViewController.h"
 #import "MBProgressHUD.h"
+#import "SFICloudStatusBarButtonItem.h"
 
 
 @interface SFIRouterTableViewController () <UIActionSheetDelegate>
+@property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSArray *listAvailableColors;
 @property(nonatomic, strong) UIImageView *splashImg;
@@ -33,6 +35,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithStandard];
+    self.navigationItem.rightBarButtonItem = _statusBarButton;
 
     _HUD = [[MBProgressHUD alloc] initWithView:self.parentViewController.view];
     _HUD.removeFromSuperViewOnHide = NO;
@@ -150,6 +155,8 @@
     if (![self isNoAlmondLoaded]) {
         [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
     }
+
+    [self markCloudStatusIcon];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -200,9 +207,19 @@
     return [[SecurifiToolkit sharedInstance] isCloudOnline];
 }
 
+- (void)markCloudStatusIcon {
+    if (self.isCloudOnline) {
+        [self.statusBarButton markState:SFICloudStatusStateConnected];
+    }
+    else {
+        [self.statusBarButton markState:SFICloudStatusStateAlmondOffline];
+    }
+}
+
 #pragma mark - Network and cloud events
 
 - (void)onNetworkChange:(id)notice {
+    [self markCloudStatusIcon];
     [self displayNoCloudConnectionImage];
 }
 

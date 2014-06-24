@@ -13,10 +13,12 @@
 #import "SFIColors.h"
 #import "MBProgressHUD.h"
 #import "ECSlidingViewController.h"
+#import "SFICloudStatusBarButtonItem.h"
 
 @interface SensorsViewController () <ReorderTableViewDelegate>
-@property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, weak, readonly) BVReorderTableView *sensorTable;
+@property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
+@property(nonatomic, readonly) MBProgressHUD *HUD;
 
 @property NSTimer *mobileCommandTimer;
 @property NSTimer *sensorChangeCommandTimer;
@@ -69,6 +71,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithStandard];
+    self.navigationItem.rightBarButtonItem = _statusBarButton;
+
+    self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
 
     _sensorTable = (BVReorderTableView *) self.tableView;
     _sensorTable.delegate = self;
@@ -243,6 +251,11 @@
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onDynamicAlmondNameChangeCallback:)
+                                                 name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onNetworkDownNotifier:)
                                                  name:NETWORK_DOWN_NOTIFIER
                                                object:nil];
@@ -254,13 +267,10 @@
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onDynamicAlmondNameChangeCallback:)
-                                                 name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onReachabilityDidChange:)
                                                  name:kSFIReachabilityChangedNotification object:nil];
+
+    [self markCloudStatusIcon];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -303,14 +313,15 @@
                                                   object:nil];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NETWORK_UP_NOTIFIER
-                                                  object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NETWORK_DOWN_NOTIFIER
+                                                    name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
                                                   object:nil];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
+                                                    name:NETWORK_UP_NOTIFIER
+                                                  object:nil];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:NETWORK_DOWN_NOTIFIER
                                                   object:nil];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self
@@ -347,17 +358,26 @@
 - (void)onNetworkUpNotifier:(id)sender {
     [SNLog Log:@"%s: Sensor controller :In networkUP notifier", __PRETTY_FUNCTION__];
     [self asyncReloadTable];
+    [self markCloudStatusIcon];
 }
 
 - (void)onNetworkDownNotifier:(id)sender {
     [SNLog Log:@"%s: Sensor controller :In network down notifier", __PRETTY_FUNCTION__];
+    [self markCloudStatusIcon];
     [self asyncReloadTable];
 }
 
 - (void)onReachabilityDidChange:(NSNotification *)notification {
-    if ([[SFIReachabilityManager sharedManager] isUnreachable]) {
-        NSLog(@"Unreachable");
-        [self asyncReloadTable];
+    [self markCloudStatusIcon];
+    [self asyncReloadTable];
+}
+
+- (void)markCloudStatusIcon {
+    if (self.isCloudOnline) {
+        [self.statusBarButton markState:SFICloudStatusStateConnected];
+    }
+    else {
+        [self.statusBarButton markState:SFICloudStatusStateAlmondOffline];
     }
 }
 
@@ -370,35 +390,11 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (self.isCloudOnline) {
-        return 0;
-    }
-    else {
-        return 35;
-    }
+    return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (self.isCloudOnline) {
-        return nil;
-    }
-    else {
-        UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 30)];
-        header.backgroundColor = [UIColor clearColor];// [UIColor colorWithHue:196.0/360.0 saturation:100/100.0 brightness:100/100.0 alpha:1];
-
-        UILabel *backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 1, (LEFT_LABEL_WIDTH) + (self.tableView.frame.size.width - LEFT_LABEL_WIDTH - 25) + 1, 30)];
-        backgroundLabel.backgroundColor = [UIColor colorWithRed:(CGFloat) (125 / 255.0) green:(CGFloat) (125 / 255.0) blue:(CGFloat) (125 / 255.0) alpha:1.0];
-
-        UILabel *lblOffline = [[UILabel alloc] initWithFrame:CGRectMake(10, 1, self.tableView.frame.size.width - 20, 30)];
-        lblOffline.backgroundColor = [UIColor clearColor];
-        lblOffline.text = CLOUD_OFFLINE;
-        lblOffline.textColor = [UIColor whiteColor];
-        lblOffline.textAlignment = NSTextAlignmentCenter;
-        [lblOffline setFont:[UIFont fontWithName:@"Avenir-Roman" size:12]];
-        [backgroundLabel addSubview:lblOffline];
-        [header addSubview:backgroundLabel];
-        return header;
-    }
+    return nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -606,7 +602,6 @@
     [btnDevice addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
     [leftBackgroundLabel addSubview:btnDevice];
 
-    
     //Right Rectangle - Creation
     rightBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH+11,5,self.tableView.frame.size.width - LEFT_LABEL_WIDTH - 25,SENSOR_ROW_HEIGHT-10)];
     rightBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (self.changeHue / 360.0) saturation:(CGFloat) (self.changeSaturation / 100.0) brightness:(CGFloat) (self.changeBrightness / 100.0) alpha:1];

@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "BVReorderTableView.h"
 
+@class SFICloudStatusBarButtonItem;
+
 @interface SensorsViewController : UITableViewController <UITextFieldDelegate>
 
 - (IBAction)revealMenu:(id)sender;
