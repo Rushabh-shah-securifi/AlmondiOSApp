@@ -116,6 +116,10 @@
 		1C695306195978B500C9157D /* connection_status_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C6952F2195978B500C9157D /* connection_status_5.png */; };
 		1C695307195978B500C9157D /* connection_status_5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C6952F3195978B500C9157D /* connection_status_5@2x.png */; };
 		1DF0306C0C7943B90740B6BB /* SFICloudStatusBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF03048FDE77FF138C06B2C /* SFICloudStatusBarButtonItem.h */; };
+		1DF030A2A018C8E3748E0838 /* SFISensorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0392A57C01986D4266259 /* SFISensorTableViewCell.m */; };
+		1DF032D89EC21443A3A14E9F /* SFIHighlightedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F26B3D131E43FF35137 /* SFIHighlightedButton.m */; };
+		1DF033B8EE957186BED70A76 /* SFISensorTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF0370031F08F7752442415 /* SFISensorTableViewCell.h */; };
+		1DF0349B7F4A80683A7DEAFA /* SFIHighlightedButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF03EF880A4099E95CFD0F8 /* SFIHighlightedButton.h */; };
 		1DF03F5D958C948279ED7B5B /* SFICloudStatusBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0352BB56CC806F804C806 /* SFICloudStatusBarButtonItem.m */; };
 		2244791717A80C9C002C43C2 /* SFIMainViewTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 2244791617A80C9C002C43C2 /* SFIMainViewTile.m */; };
 		2244791D17A81649002C43C2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2244791C17A81649002C43C2 /* QuartzCore.framework */; };
@@ -368,6 +372,10 @@
 		1C6952F3195978B500C9157D /* connection_status_5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection_status_5@2x.png"; sourceTree = "<group>"; };
 		1DF03048FDE77FF138C06B2C /* SFICloudStatusBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICloudStatusBarButtonItem.h; sourceTree = "<group>"; };
 		1DF0352BB56CC806F804C806 /* SFICloudStatusBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICloudStatusBarButtonItem.m; sourceTree = "<group>"; };
+		1DF0370031F08F7752442415 /* SFISensorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorTableViewCell.h; sourceTree = "<group>"; };
+		1DF0392A57C01986D4266259 /* SFISensorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorTableViewCell.m; sourceTree = "<group>"; };
+		1DF03EF880A4099E95CFD0F8 /* SFIHighlightedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIHighlightedButton.h; sourceTree = "<group>"; };
+		1DF03F26B3D131E43FF35137 /* SFIHighlightedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIHighlightedButton.m; sourceTree = "<group>"; };
 		2244791517A80C9C002C43C2 /* SFIMainViewTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIMainViewTile.h; sourceTree = "<group>"; };
 		2244791617A80C9C002C43C2 /* SFIMainViewTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIMainViewTile.m; sourceTree = "<group>"; };
 		2244791C17A81649002C43C2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -691,6 +699,8 @@
 				CE93A150189A509200587F46 /* SFIHelpViewController.m */,
 				1DF0352BB56CC806F804C806 /* SFICloudStatusBarButtonItem.m */,
 				1DF03048FDE77FF138C06B2C /* SFICloudStatusBarButtonItem.h */,
+				1DF03F26B3D131E43FF35137 /* SFIHighlightedButton.m */,
+				1DF03EF880A4099E95CFD0F8 /* SFIHighlightedButton.h */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -777,6 +787,8 @@
 				CE5D0BAF1807D16300224009 /* SensorsViewController.m */,
 				CE5D0BB01807D16300224009 /* SensorTopViewController.h */,
 				CE5D0BB11807D16300224009 /* SensorTopViewController.m */,
+				1DF0392A57C01986D4266259 /* SFISensorTableViewCell.m */,
+				1DF0370031F08F7752442415 /* SFISensorTableViewCell.h */,
 			);
 			name = SensorTab;
 			sourceTree = "<group>";
@@ -997,6 +1009,8 @@
 				CE23D4041872DB7500995003 /* RouterTempController.h in Headers */,
 				CECD693D1832400800B77A46 /* SFIBlockedDevice.h in Headers */,
 				1DF0306C0C7943B90740B6BB /* SFICloudStatusBarButtonItem.h in Headers */,
+				1DF0349B7F4A80683A7DEAFA /* SFIHighlightedButton.h in Headers */,
+				1DF033B8EE957186BED70A76 /* SFISensorTableViewCell.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1283,6 +1297,8 @@
 				CEC937101845D1CF00E99FED /* SFIRouterSummary.m in Sources */,
 				CE5D0BCB1807D16300224009 /* SFISceneTopViewController.m in Sources */,
 				1DF03F5D958C948279ED7B5B /* SFICloudStatusBarButtonItem.m in Sources */,
+				1DF032D89EC21443A3A14E9F /* SFIHighlightedButton.m in Sources */,
+				1DF030A2A018C8E3748E0838 /* SFISensorTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

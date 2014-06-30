@@ -8,8 +8,9 @@
 @class SFICloudStatusBarButtonItem;
 
 typedef NS_ENUM(NSUInteger, SFICloudStatusState) {
-    SFICloudStatusStateConnected = 1,
+    SFICloudStatusStateDisconnected = 1,
     SFICloudStatusStateConnecting,
+    SFICloudStatusStateConnected,
     SFICloudStatusStateAlmondOffline,
 };
 

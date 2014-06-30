@@ -32,12 +32,14 @@
 
 + (UIImage *)imageForState:(SFICloudStatusState)state {
     switch (state) {
-        case SFICloudStatusStateConnected:
-            return [UIImage imageNamed:@"connection_status_03.png"];
+        case SFICloudStatusStateDisconnected:
+            return [UIImage imageNamed:@"connection_status_01.png"];
         case SFICloudStatusStateConnecting:
             return [UIImage imageNamed:@"connection_status_02.png"];
+        case SFICloudStatusStateConnected:
+            return [UIImage imageNamed:@"connection_status_03.png"];
         case SFICloudStatusStateAlmondOffline:
-            return [UIImage imageNamed:@"connection_status_01.png"];
+            return [UIImage imageNamed:@"connection_status_04.png"];
         default: 
             return nil;
     }
