@@ -14,6 +14,7 @@
 #import "MBProgressHUD.h"
 #import "ECSlidingViewController.h"
 #import "SFICloudStatusBarButtonItem.h"
+#import "SFIHighlightedButton.h"
 
 @interface SensorsViewController () <ReorderTableViewDelegate>
 @property(nonatomic, weak, readonly) BVReorderTableView *sensorTable;
@@ -539,7 +540,9 @@
     UILabel *leftBackgroundLabel;
     UILabel *rightBackgroundLabel;
     UIButton *btnSettingsCell;
-    
+
+//    UIColor *standard_blue = [self makeStandardBlue];
+    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
 
     int positionIndex = indexPathRow % 15;
     if (positionIndex < 7) {
@@ -552,9 +555,9 @@
     //Left Square - Creation
     leftBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,5,LEFT_LABEL_WIDTH,SENSOR_ROW_HEIGHT-10)];
     leftBackgroundLabel.userInteractionEnabled = YES;
-    leftBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (self.changeHue / 360.0) saturation:(CGFloat) (self.changeSaturation / 100.0) brightness:(CGFloat) (self.changeBrightness / 100.0) alpha:1];
+    leftBackgroundLabel.backgroundColor = [self makeStandardBlue];
     [cell addSubview:leftBackgroundLabel];
-    
+
     btnDeviceImg = [UIButton buttonWithType:UIButtonTypeCustom];
     btnDeviceImg.backgroundColor = [UIColor clearColor];
     [btnDeviceImg addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -603,56 +606,48 @@
     [leftBackgroundLabel addSubview:btnDevice];
 
     //Right Rectangle - Creation
-    rightBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH+11,5,self.tableView.frame.size.width - LEFT_LABEL_WIDTH - 25,SENSOR_ROW_HEIGHT-10)];
-    rightBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (self.changeHue / 360.0) saturation:(CGFloat) (self.changeSaturation / 100.0) brightness:(CGFloat) (self.changeBrightness / 100.0) alpha:1];
+    rightBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH + 11, 5, self.tableView.frame.size.width - LEFT_LABEL_WIDTH - 25, SENSOR_ROW_HEIGHT - 10)];
+    rightBackgroundLabel.backgroundColor = [self makeStandardBlue];
     [cell addSubview:rightBackgroundLabel];
-    
-    lblDeviceName = [[UILabel alloc]initWithFrame:CGRectMake(15, 10, (self.tableView.frame.size.width - LEFT_LABEL_WIDTH - 90), 30)];
+
+    lblDeviceName = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, (self.tableView.frame.size.width - LEFT_LABEL_WIDTH - 90), 30)];
     lblDeviceName.backgroundColor = [UIColor clearColor];
     lblDeviceName.textColor = [UIColor whiteColor];
     lblDeviceStatus.font = [UIFont fontWithName:@"Avenir-Heavy" size:16];
     [rightBackgroundLabel addSubview:lblDeviceName];
-    
-    lblDeviceStatus = [[UILabel alloc]initWithFrame:CGRectMake(15, 25, 180, 60)];
+
+    lblDeviceStatus = [[UILabel alloc] initWithFrame:CGRectMake(15, 25, 180, 60)];
     lblDeviceStatus.backgroundColor = [UIColor clearColor];
     lblDeviceStatus.textColor = [UIColor whiteColor];
     lblDeviceStatus.numberOfLines = 2;
     lblDeviceStatus.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
     [rightBackgroundLabel addSubview:lblDeviceStatus];
-    
-    imgSettings = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width-60, 37, 23, 23)];
+
+    imgSettings = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 60, 37, 23, 23)];
     imgSettings.image = [UIImage imageNamed:@"icon_config.png"];
     imgSettings.alpha = 0.5;
     imgSettings.userInteractionEnabled = YES;
-    
+
     btnSettings = [UIButton buttonWithType:UIButtonTypeCustom];
     btnSettings.frame = imgSettings.bounds;
     btnSettings.backgroundColor = [UIColor clearColor];
     [btnSettings addTarget:self action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
     [imgSettings addSubview:btnSettings];
-    
+
     btnSettingsCell = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnSettingsCell.frame = CGRectMake(self.tableView.frame.size.width-80, 5, 60, 80);
+    btnSettingsCell.frame = CGRectMake(self.tableView.frame.size.width - 80, 5, 60, 80);
     btnSettingsCell.backgroundColor = [UIColor clearColor];
     [btnSettingsCell addTarget:self action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
     [cell addSubview:btnSettingsCell];
-   
+
     //Fill values
     lblDeviceName.text = currentSensor.deviceName;
-    
+
     //Set values according to device type
     int currentDeviceId = currentSensor.deviceID;
-    int deviceValueID;
-    NSMutableArray *currentKnownValues = nil;
 
-    //Pass current device info in map
-    for (SFIDeviceValue *deviceValue in self.deviceValueList) {
-        deviceValueID = deviceValue.deviceID;
-        if (currentDeviceId == deviceValueID) {
-            currentKnownValues = deviceValue.knownValues;
-        }
-    }
-    
+    NSMutableArray *currentKnownValues = [self currentKnownValuesForDevice:currentDeviceId];
+
     //Get the value to be displayed on right rectangle
     NSString *currentValue;
     NSString *currentStateValue;
@@ -666,101 +661,82 @@
             currentValue = currentDeviceValue.value;
 
             imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
 
-            if(currentDeviceValue.isUpdating){
+            if (currentDeviceValue.isUpdating) {
                 lblDeviceStatus.text = @"Updating sensor data.\nPlease wait.";
-            }else{
-                if([currentValue isEqualToString:@"true"]){
-                    lblDeviceStatus.text = @"ON";
-                }else if([currentValue isEqualToString:@"false"]){
-                    lblDeviceStatus.text = @"OFF";
-                }else{
-                    if(currentValue==nil){
-                        lblDeviceStatus.text = @"Could not update sensor\ndata.";
-                    }else{
-                        lblDeviceStatus.text = currentValue;
-                    }
-                }
             }
+            else if (currentValue == nil) {
+                lblDeviceStatus.text = @"Could not update sensor\ndata.";
+            }
+            else {
+                lblDeviceStatus.text = [currentDeviceValue choiceForBoolValueTrueValue:@"ON" falseValue:@"OFF" nilValue:currentValue];
+            }
+
             break;
-            
-        case 2:
-        {
-             //Multilevel switch
-            
+
+        case 2: {
+            //Multilevel switch
+
 //            //Get State
 //            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
 //            currentStateValue = currentDeviceValue.value;
-            
+
             //Get Percentage
             SFIDeviceKnownValues *currentLevelKnownValue = currentKnownValues[(NSUInteger) currentSensor.mostImpValueIndex];
             NSString *currentLevel = currentLevelKnownValue.value;
-            
-            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
-            
+
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
+
             //PY 291113
             imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-            if(currentSensor.imageName == nil){
+            if (currentSensor.imageName == nil) {
                 imgDevice.image = [UIImage imageNamed:DT2_MULTILEVEL_SWITCH_TRUE];
             }
-            
-            if(currentDeviceValue.isUpdating){
+
+            if (currentDeviceValue.isUpdating) {
                 lblDeviceStatus.text = @"Updating sensor data.\nPlease wait.";
-            }else{
-                if(![currentLevel isEqualToString:@""]){
-                    if([currentLevel isEqualToString:@"0"]){
-                        lblDeviceStatus.text =  @"OFF";
-                    }else{
+            }
+            else {
+                lblDeviceStatus.text = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
+                                                                               nonZeroValue:[NSString stringWithFormat:@"Dimmable, %@%%", currentLevel]
+                                                                                   nilValue:@"Could not update sensor\ndata."];
+
+/*
+                if (![currentLevel isEqualToString:@""]) {
+                    if ([currentLevel isEqualToString:@"0"]) {
+                        lblDeviceStatus.text = @"OFF";
+                    }
+                    else {
                         lblDeviceStatus.text = [NSString stringWithFormat:@"Dimmable, %@%%", currentLevel];
                     }
-                }else{
-                    lblDeviceStatus.text =  @"Could not update sensor\ndata.";
                 }
+                else {
+                    lblDeviceStatus.text = @"Could not update sensor\ndata.";
+                }
+*/
             }
-                
-                
-                
-                
-//                if([currentStateValue isEqualToString:@"true"]){
-//                    if(![currentLevel isEqualToString:@""]){
-//                        lblDeviceStatus.text =  [NSString stringWithFormat:@"ON, %@%%", currentLevel];
-//                    }else{
-//                        lblDeviceStatus.text =  @"ON";
-//                    }
-//                }else if([currentStateValue isEqualToString:@"false"]){
-//                    if(![currentLevel isEqualToString:@""]){
-//                        lblDeviceStatus.text = [NSString stringWithFormat:@"OFF, %@%%", currentLevel];
-//                    }else{
-//                        lblDeviceStatus.text =  @"OFF";
-//                    }
-//                }else{
-//                    if(currentStateValue==nil){
-//                        lblDeviceStatus.text = @"Could not update sensor\ndata.";
-//                        if(currentDeviceValue == nil){
-//                            if(![currentLevel isEqualToString:@""]){
-//                                lblDeviceStatus.text = [NSString stringWithFormat:@"Dimmable, %@%%", currentLevel];
-//                            }else{
-//                                lblDeviceStatus.text =  @"Dimmable";
-//                            }
-//                        }
-//                    }else{
-//                        if(![currentLevel isEqualToString:@""]){
-//                            lblDeviceStatus.text = [NSString stringWithFormat:@"Dimmable, %@%%", currentLevel];
-//                        }else{
-//                            lblDeviceStatus.text =  @"Dimmable";
-//                        }
-//                    }
-//                }
-//            }
-            
             break;
         }
-        case 3:
+        case 3: {
             //Binary Sensor
             currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
-            currentStateValue = currentDeviceValue.value;
-            //PY 291113 - Show only State
+//            currentStateValue = currentDeviceValue.value;
+
+            lblDeviceStatus.text = [currentDeviceValue choiceForBoolValueTrueValue:@"OPEN"
+                                                                        falseValue:@"CLOSED"
+                                                                          nilValue:@"Could not update sensor\ndata."
+                                                                       nonNilValue:currentValue];
+
+            NSString *imageName = [currentDeviceValue choiceForBoolValueTrueValue:DT3_BINARY_SENSOR_TRUE
+                                                                       falseValue:DT3_BINARY_SENSOR_FALSE
+                                                                         nilValue:currentSensor.imageName];
+            imgDevice.image = [UIImage imageNamed:imageName];
+        }
+
+/*
+
+
             if([currentStateValue isEqualToString:@"true"]){
                 imgDevice.image = [UIImage imageNamed:DT3_BINARY_SENSOR_TRUE];
                 lblDeviceStatus.text = @"OPEN";
@@ -775,8 +751,9 @@
                     lblDeviceStatus.text = currentValue;
                 }
             }
-            
-            
+*/
+
+
             //            if([currentSensor.mostImpValueName isEqualToString:TAMPER]){
             //                // imgDevice.frame = CGRectMake(25, 15, 53,60);
             //                lblDeviceStatus.text = @"TAMPERED";
@@ -809,9 +786,9 @@
             //                    }
             //                }
             //            }
-            
-            
-            
+
+
+
             //            currentDeviceValue = [currentKnownValues objectAtIndex:0];
             //            currentValue = currentDeviceValue.value;
             //            if([currentValue isEqualToString:@"true"]){
@@ -823,7 +800,7 @@
             //            }
             //            imgDevice.image = [UIImage imageNamed:@"door_on.png"];
             break;
-            
+
         case 4:
 //            //Level Control
 //            currentDeviceValue = [currentKnownValues objectAtIndex:currentSensor.stateIndex];
@@ -844,63 +821,99 @@
 //                }
 //            }
         {
-            
+
             //Get State
             currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
-            currentStateValue = currentDeviceValue.value;
-            
+
             //Get Percentage
             SFIDeviceKnownValues *currentLevelKnownValue = currentKnownValues[(NSUInteger) currentSensor.mostImpValueIndex];
-            NSString *currentLevel = currentLevelKnownValue.value;
-            
-            float intLevel = [currentLevel floatValue];
-            intLevel = intLevel/256 * 100;
-            
-            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
-            
-            //PY 291113 - Show only State
-            imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-            if(currentSensor.imageName == nil){
-                imgDevice.image = [UIImage imageNamed:DT4_LEVEL_CONTROL_TRUE];
-            }
-            if(currentDeviceValue.isUpdating){
+
+            NSString *image_name = (currentSensor.imageName == nil) ? DT4_LEVEL_CONTROL_TRUE : currentSensor.imageName;
+            imgDevice.image = [UIImage imageNamed:image_name];
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
+
+            if (currentDeviceValue.isUpdating) {
                 lblDeviceStatus.text = @"Updating sensor data.\nPlease wait.";
-            }else{
-                if([currentStateValue isEqualToString:@"true"]){
-                    if(![currentLevel isEqualToString:@""]){
-                        lblDeviceStatus.text =  [NSString stringWithFormat:@"ON, %.0f%%", intLevel];
-                    }else{
-                        lblDeviceStatus.text =  @"ON";
+            }
+            else {
+                float intLevel = [currentLevelKnownValue floatValue];
+                intLevel = (intLevel / 256) * 100;
+
+                // Set soem defaults
+                NSString *status_str;
+
+                if (!currentDeviceValue.hasValue) {
+                    if (currentDeviceValue == nil) {
+                        status_str = @"Could not update sensor\ndata.";
                     }
-                }else if([currentStateValue isEqualToString:@"false"]){
-                    if(![currentLevel isEqualToString:@""]){
+                    else if (currentLevelKnownValue.hasValue) {
+                        status_str = [NSString stringWithFormat:@"Dimmable, %.0f%%", intLevel];
+                    }
+                    else {
+                        status_str = @"Dimmable";
+                    }
+                }
+                else if (currentDeviceValue.boolValue == true) {
+                    if ([currentLevelKnownValue hasValue]) {
+                        status_str = [NSString stringWithFormat:@"ON, %.0f%%", intLevel];
+                    }
+                    else {
+                        status_str = @"ON";
+                    }
+                }
+                else {
+                    if ([currentLevelKnownValue hasValue]) {
+                        status_str = [NSString stringWithFormat:@"OFF, %.0f%%", intLevel];
+                    }
+                    else {
+                        status_str = @"OFF";
+                    }
+                }
+
+                lblDeviceStatus.text = status_str;
+
+/*
+                if ([currentStateValue isEqualToString:@"true"]) {
+                    if (![currentLevel isEqualToString:@""]) {
+                        lblDeviceStatus.text = [NSString stringWithFormat:@"ON, %.0f%%", intLevel];
+                    }
+                    else {
+                        lblDeviceStatus.text = @"ON";
+                    }
+                }
+                else if ([currentStateValue isEqualToString:@"false"]) {
+                    if (![currentLevel isEqualToString:@""]) {
                         lblDeviceStatus.text = [NSString stringWithFormat:@"OFF, %.0f%%", intLevel];
-                    }else{
-                        lblDeviceStatus.text =  @"OFF";
                     }
-                }else{
-                    if(currentStateValue==nil){
-                        lblDeviceStatus.text = @"Could not update sensor\ndata.";
-                        if(currentDeviceValue == nil){
-                            if(![currentLevel isEqualToString:@""]){
-                                lblDeviceStatus.text = [NSString stringWithFormat:@"Dimmable, %.0f%%", intLevel];
-                            }else{
-                                lblDeviceStatus.text =  @"Dimmable";
-                            }
-                        }
-                    }else{
-                        if(![currentLevel isEqualToString:@""]){
+                    else {
+                        lblDeviceStatus.text = @"OFF";
+                    }
+                }
+                else if (currentStateValue == nil) {
+                    lblDeviceStatus.text = @"Could not update sensor\ndata.";
+                    if (currentDeviceValue == nil) {
+                        if (![currentLevel isEqualToString:@""]) {
                             lblDeviceStatus.text = [NSString stringWithFormat:@"Dimmable, %.0f%%", intLevel];
-                        }else{
-                            lblDeviceStatus.text =  @"Dimmable";
+                        }
+                        else {
+                            lblDeviceStatus.text = @"Dimmable";
                         }
                     }
                 }
-                
+                else {
+                    if (![currentLevel isEqualToString:@""]) {
+                        lblDeviceStatus.text = [NSString stringWithFormat:@"Dimmable, %.0f%%", intLevel];
+                    }
+                    else {
+                        lblDeviceStatus.text = @"Dimmable";
+                    }
+                }
+*/
+
                 //TODO: Remove later - For testing
 //                lblDeviceStatus.numberOfLines = 2;
 //                lblDeviceStatus.text =  [NSString stringWithFormat:@"ON, %.0f%%\nLOW BATTERY", intLevel];
-                
+
             }
 
             break;
@@ -910,17 +923,20 @@
             currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
-            if([currentStateValue isEqualToString:@"true"]){
+            if ([currentStateValue isEqualToString:@"true"]) {
                 imgDevice.image = [UIImage imageNamed:DT5_DOOR_LOCK_TRUE];
                 lblDeviceStatus.text = @"LOCKED";
-            }else if([currentStateValue isEqualToString:@"false"]){
+            }
+            else if ([currentStateValue isEqualToString:@"false"]) {
                 imgDevice.image = [UIImage imageNamed:DT5_DOOR_LOCK_FALSE];
                 lblDeviceStatus.text = @"UNLOCKED";
-            }else{
+            }
+            else {
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-                if(currentStateValue==nil){
+                if (currentStateValue == nil) {
                     lblDeviceStatus.text = @"Could not update sensor\ndata.";
-                }else{
+                }
+                else {
                     lblDeviceStatus.text = currentValue;
                 }
             }
@@ -930,26 +946,28 @@
             currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - TODO: Change later
-            if([currentStateValue isEqualToString:@"true"]){
+            if ([currentStateValue isEqualToString:@"true"]) {
                 imgDevice.image = [UIImage imageNamed:DT6_ALARM_TRUE];
                 lblDeviceStatus.text = @"ON";
-            }else if([currentStateValue isEqualToString:@"false"]){
+            }
+            else if ([currentStateValue isEqualToString:@"false"]) {
                 imgDevice.image = [UIImage imageNamed:DT6_ALARM_FALSE];
                 lblDeviceStatus.text = @"OFF";
-            }else{
+            }
+            else {
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-                if(currentStateValue==nil){
+                if (currentStateValue == nil) {
                     lblDeviceStatus.text = @"Could not update sensor\ndata.";
-                }else{
+                }
+                else {
                     lblDeviceStatus.text = currentValue;
                 }
             }
             break;
-        case 7:
-        {
+        case 7: {
             //Thermostat
             NSString *strValue = @"";
-            
+
             NSString *strStatus;
             NSString *strOperatingMode;
             NSString *heatingSetpoint;
@@ -970,142 +988,149 @@
                     strOperatingMode = currentKnownValue.value;
                 }
             }
-            
+
             strStatus = [NSString stringWithFormat:@"%@, %@, %@", strOperatingMode, coolingSetpoint, heatingSetpoint];
-            
+
             //Calculate values
             NSArray *thermostatValues = [strValue componentsSeparatedByString:@"."];
-            
+
             NSString *strIntegerValue = thermostatValues[0];
-            NSString *strDecimalValue = @"";
             if ([thermostatValues count] == 2) {
-                strDecimalValue = thermostatValues[1];
+                NSString *strDecimalValue = thermostatValues[1];
                 lblDecimalValue.text = [NSString stringWithFormat:@".%@", strDecimalValue];
             }
-            
+
             lblDeviceValue.text = strIntegerValue;
-            if ([strIntegerValue length] == 1){
-                lblDecimalValue.frame = CGRectMake((self.tableView.frame.size.width/4)-25, 40, 20, 30);
-                lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH-25, 25, 20, 20);
-            }else if([strIntegerValue length] == 3){
+            if ([strIntegerValue length] == 1) {
+                lblDecimalValue.frame = CGRectMake((self.tableView.frame.size.width / 4) - 25, 40, 20, 30);
+                lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 25, 20, 20);
+            }
+            else if ([strIntegerValue length] == 3) {
                 [lblDeviceValue setFont:[UIFont fontWithName:@"Avenir-Heavy" size:30]];
-                [lblDecimalValue setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
-                [lblDegree setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
-                lblDecimalValue.frame = CGRectMake(LEFT_LABEL_WIDTH-10, 38, 20, 30);
-                lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH-10, 30, 20, 20);
-            }else if([strIntegerValue length] == 4){
+                [lblDecimalValue setFont:heavy_font];
+                [lblDegree setFont:heavy_font];
+                lblDecimalValue.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 38, 20, 30);
+                lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 30, 20, 20);
+            }
+            else if ([strIntegerValue length] == 4) {
                 [lblDeviceValue setFont:[UIFont fontWithName:@"Avenir-Heavy" size:22]];
                 [lblDecimalValue setFont:[UIFont fontWithName:@"Avenir-Heavy" size:10]];
                 [lblDegree setFont:[UIFont fontWithName:@"Avenir-Heavy" size:10]];
-                lblDecimalValue.frame = CGRectMake(LEFT_LABEL_WIDTH-12, 35, 20, 30);
-                lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH-12, 30, 20, 20);
+                lblDecimalValue.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 35, 20, 30);
+                lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 30, 20, 20);
             }
-            
 
-            
-            
+
             lblDeviceStatus.text = strStatus;
             break;
         }
-        case 11:
-        {
+        case 11: {
             //Motion Sensor
-            NSMutableString *strStatus = [[NSMutableString alloc]init];
-            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.25), 12, 53,70);
+            NSMutableString *strStatus = [[NSMutableString alloc] init];
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.25), 12, 53, 70);
             currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
-            if([currentStateValue isEqualToString:@"true"]){
+            if ([currentStateValue isEqualToString:@"true"]) {
                 imgDevice.image = [UIImage imageNamed:DT11_MOTION_SENSOR_TRUE];
                 [strStatus appendString:@"MOTION DETECTED"];
-            }else if([currentStateValue isEqualToString:@"false"]){
+            }
+            else if ([currentStateValue isEqualToString:@"false"]) {
                 imgDevice.image = [UIImage imageNamed:DT11_MOTION_SENSOR_FALSE];
                 [strStatus appendString:@"NO MOTION"];
-            }else{
+            }
+            else {
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-                if(currentStateValue==nil){
+                if (currentStateValue == nil) {
                     lblDeviceStatus.text = @"Could not update sensor\ndata.";
-                }else{
+                }
+                else {
                     lblDeviceStatus.text = currentValue;
                 }
             }
-            if(currentSensor.isBatteryLow){
+            if (currentSensor.isBatteryLow) {
                 [strStatus appendString:@"\nLOW BATTERY"];
                 lblDeviceStatus.numberOfLines = 2;
                 lblDeviceStatus.text = strStatus;
-            }else{
+            }
+            else {
                 lblDeviceStatus.text = strStatus;
             }
             break;
         }
-        case 12:
-        {
+        case 12: {
             //ContactSwitch
-            NSMutableString *strStatus= [[NSMutableString alloc]init];
+            NSMutableString *strStatus = [[NSMutableString alloc] init];
             currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
-            if([currentStateValue isEqualToString:@"true"]){
+            if ([currentStateValue isEqualToString:@"true"]) {
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
 //                imgDevice.image = [UIImage imageNamed:DT12_CONTACT_SWITCH_TRUE];
                 [strStatus appendString:@"OPEN"];
-            }else if([currentStateValue isEqualToString:@"false"]){
+            }
+            else if ([currentStateValue isEqualToString:@"false"]) {
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
 //                imgDevice.image = [UIImage imageNamed:DT12_CONTACT_SWITCH_FALSE];
                 [strStatus appendString:@"CLOSED"];
-            }else{
+            }
+            else {
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-                if(currentStateValue==nil){
+                if (currentStateValue == nil) {
                     lblDeviceStatus.text = @"Could not update sensor\ndata.";
-                }else{
+                }
+                else {
                     lblDeviceStatus.text = currentValue;
                 }
             }
-            
-            if(currentSensor.isBatteryLow){
+
+            if (currentSensor.isBatteryLow) {
                 [strStatus appendString:@"\nLOW BATTERY"];
                 lblDeviceStatus.numberOfLines = 2;
                 lblDeviceStatus.text = strStatus;
-            }else{
+            }
+            else {
                 lblDeviceStatus.text = strStatus;
             }
             break;
         }
-        case 13:
-        {
+        case 13: {
             //Fire Sensor
-            NSMutableString *strStatus= [[NSMutableString alloc]init];
-            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
+            NSMutableString *strStatus = [[NSMutableString alloc] init];
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
             currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
-            if([currentStateValue isEqualToString:@"true"]){
+            if ([currentStateValue isEqualToString:@"true"]) {
                 imgDevice.image = [UIImage imageNamed:DT13_FIRE_SENSOR_TRUE];
                 [strStatus appendString:@"ALARM: FIRE DETECTED"];
-            }else if([currentStateValue isEqualToString:@"false"]){
+            }
+            else if ([currentStateValue isEqualToString:@"false"]) {
                 imgDevice.image = [UIImage imageNamed:DT13_FIRE_SENSOR_FALSE];
                 [strStatus appendString:@"OK"];
-            }else{
+            }
+            else {
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-                if(currentStateValue==nil){
+                if (currentStateValue == nil) {
                     lblDeviceStatus.text = @"Could not update sensor\ndata.";
-                }else{
+                }
+                else {
                     lblDeviceStatus.text = currentValue;
                 }
             }
-            
-            if(currentSensor.isBatteryLow){
+
+            if (currentSensor.isBatteryLow) {
                 [strStatus appendString:@"\nLOW BATTERY"];
                 lblDeviceStatus.numberOfLines = 2;
                 lblDeviceStatus.text = strStatus;
-            }else{
+            }
+            else {
                 lblDeviceStatus.text = strStatus;
             }
             break;
         }
-        case 14:
+        case 14: {
             //Water Sensor
-        {
 //            NSString *text = @"89";
 //            UIGraphicsBeginImageContext(CGSizeMake(53, 70));
 //            [text drawAtPoint:CGPointMake(0, 0)
@@ -1113,128 +1138,141 @@
 //            UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
 //            UIGraphicsEndImageContext();
 //            imgDevice.image = result;
-            
-            NSMutableString *strStatus= [[NSMutableString alloc]init];
-            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
-            
+
+            NSMutableString *strStatus = [[NSMutableString alloc] init];
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
+
             currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
-            if([currentStateValue isEqualToString:@"true"]){
+            if ([currentStateValue isEqualToString:@"true"]) {
                 imgDevice.image = [UIImage imageNamed:DT14_WATER_SENSOR_TRUE];
                 [strStatus appendString:@"FLOODED"];
-            }else if([currentStateValue isEqualToString:@"false"]){
+            }
+            else if ([currentStateValue isEqualToString:@"false"]) {
                 imgDevice.image = [UIImage imageNamed:DT14_WATER_SENSOR_FALSE];
                 [strStatus appendString:@"OK"];
-            }else{
+            }
+            else {
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-                if(currentStateValue==nil){
+                if (currentStateValue == nil) {
                     lblDeviceStatus.text = @"Could not update sensor\ndata.";
-                }else{
+                }
+                else {
                     lblDeviceStatus.text = currentValue;
                 }
             }
-            
-            if(currentSensor.isBatteryLow){
+
+            if (currentSensor.isBatteryLow) {
                 [strStatus appendString:@"\nLOW BATTERY"];
                 lblDeviceStatus.numberOfLines = 2;
                 lblDeviceStatus.text = strStatus;
-            }else{
+            }
+            else {
                 lblDeviceStatus.text = strStatus;
             }
-            
+
             break;
         }
-        case 15:
-        {
+        case 15: {
             //Gas Sensor
-            NSMutableString *strStatus= [[NSMutableString alloc]init];
+            NSMutableString *strStatus = [[NSMutableString alloc] init];
             currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
-            if([currentStateValue isEqualToString:@"true"]){
+            if ([currentStateValue isEqualToString:@"true"]) {
                 imgDevice.image = [UIImage imageNamed:DT15_GAS_SENSOR_TRUE];
                 [strStatus appendString:@"ALARM: GAS DETECTED"];
-            }else if([currentStateValue isEqualToString:@"false"]){
+            }
+            else if ([currentStateValue isEqualToString:@"false"]) {
                 imgDevice.image = [UIImage imageNamed:DT15_GAS_SENSOR_FALSE];
                 [strStatus appendString:@"OK"];
-            }else{
+            }
+            else {
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-                if(currentStateValue==nil){
+                if (currentStateValue == nil) {
                     lblDeviceStatus.text = @"Could not update sensor\ndata.";
-                }else{
+                }
+                else {
                     lblDeviceStatus.text = currentValue;
                 }
             }
-            
-            if(currentSensor.isBatteryLow){
+
+            if (currentSensor.isBatteryLow) {
                 [strStatus appendString:@"\nLOW BATTERY"];
                 lblDeviceStatus.numberOfLines = 2;
                 lblDeviceStatus.text = strStatus;
-            }else{
+            }
+            else {
                 lblDeviceStatus.text = strStatus;
             }
             break;
         }
-        case 17:
-        {
+        case 17: {
             //Vibration Sensor
-            NSMutableString *strStatus = [[NSMutableString alloc]init];
-            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
+            NSMutableString *strStatus = [[NSMutableString alloc] init];
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
             currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
-            if([currentStateValue isEqualToString:@"true"]){
+            if ([currentStateValue isEqualToString:@"true"]) {
                 imgDevice.image = [UIImage imageNamed:DT17_VIBRATION_SENSOR_TRUE];
                 [strStatus appendString:@"VIBRATION DETECTED"];
-            }else if([currentStateValue isEqualToString:@"false"]){
+            }
+            else if ([currentStateValue isEqualToString:@"false"]) {
                 imgDevice.image = [UIImage imageNamed:DT17_VIBRATION_SENSOR_FALSE];
                 [strStatus appendString:@"NO VIBRATION"];
-            }else{
+            }
+            else {
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-                if(currentStateValue==nil){
+                if (currentStateValue == nil) {
                     lblDeviceStatus.text = @"Could not update sensor\ndata.";
-                }else{
+                }
+                else {
                     lblDeviceStatus.text = currentValue;
                 }
             }
-            
-            if(currentSensor.isBatteryLow){
+
+            if (currentSensor.isBatteryLow) {
                 [strStatus appendString:@"\nLOW BATTERY"];
                 lblDeviceStatus.numberOfLines = 2;
                 lblDeviceStatus.text = strStatus;
-            }else{
+            }
+            else {
                 lblDeviceStatus.text = strStatus;
             }
             break;
         }
-        case 19:
-        {
+        case 19: {
             //Keyfob
-            NSMutableString *strStatus = [[NSMutableString alloc]init];
+            NSMutableString *strStatus = [[NSMutableString alloc] init];
             currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
-            if([currentStateValue isEqualToString:@"true"]){
+            if ([currentStateValue isEqualToString:@"true"]) {
                 imgDevice.image = [UIImage imageNamed:DT19_KEYFOB_TRUE];
                 [strStatus appendString:@"LOCKED"];
-            }else if([currentStateValue isEqualToString:@"false"]){
+            }
+            else if ([currentStateValue isEqualToString:@"false"]) {
                 imgDevice.image = [UIImage imageNamed:DT19_KEYFOB_FALSE];
                 [strStatus appendString:@"UNLOCKED"];
-            }else{
+            }
+            else {
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-                if(currentStateValue==nil){
+                if (currentStateValue == nil) {
                     lblDeviceStatus.text = @"Could not update sensor\ndata.";
-                }else{
+                }
+                else {
                     lblDeviceStatus.text = currentValue;
                 }
             }
-            
-            if(currentSensor.isBatteryLow){
+
+            if (currentSensor.isBatteryLow) {
                 [strStatus appendString:@"\nLOW BATTERY"];
                 lblDeviceStatus.numberOfLines = 2;
                 lblDeviceStatus.text = strStatus;
-            }else{
+            }
+            else {
                 lblDeviceStatus.text = strStatus;
             }
             break;
@@ -1243,26 +1281,31 @@
             //Electric Measurement Switch - AC
             currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
-            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 10, 53,70);
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 10, 53, 70);
             //PY 291113 - Show only State
             imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-            if(currentDeviceValue.isUpdating){
+            if (currentDeviceValue.isUpdating) {
                 lblDeviceStatus.text = @"Updating sensor data.\nPlease wait.";
-            }else{
-                if([currentStateValue isEqualToString:@"true"]){
+            }
+            else {
+                if ([currentStateValue isEqualToString:@"true"]) {
                     lblDeviceStatus.text = @"ON";
-                }else if([currentStateValue isEqualToString:@"false"]){
+                }
+                else if ([currentStateValue isEqualToString:@"false"]) {
                     lblDeviceStatus.text = @"OFF";
-                }else{
-                    if(currentStateValue==nil){
+                }
+                else {
+                    if (currentStateValue == nil) {
                         lblDeviceStatus.text = @"Could not update sensor\ndata.";
-                    }else{
+                    }
+                    else {
                         lblDeviceStatus.text = currentValue;
                     }
                 }
+                break;
             }
-            break;
-        case 23:
+            // pass through!
+        case 23: {
             //Electric Measurement Switch - DC
             currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
@@ -1285,95 +1328,101 @@
                 }
             }
             break;
-        case 27:
+        }
+        case 27: {
             //Temperature Sensor
-        {
             NSString *strValue = @"";
-            
-            for(SFIDeviceKnownValues *currentKnownValue in currentKnownValues){
-                if([currentKnownValue.valueName isEqualToString:@"MEASURED_VALUE"]){
+
+            for (SFIDeviceKnownValues *currentKnownValue in currentKnownValues) {
+                if ([currentKnownValue.valueName isEqualToString:@"MEASURED_VALUE"]) {
                     strValue = currentKnownValue.value;
-                }else if ([currentKnownValue.valueName isEqualToString:@"TOLERANCE"]){
-                   lblDeviceStatus.text = [NSString stringWithFormat:@"Tolerance: %@", currentKnownValue.value];
+                }
+                else if ([currentKnownValue.valueName isEqualToString:@"TOLERANCE"]) {
+                    lblDeviceStatus.text = [NSString stringWithFormat:@"Tolerance: %@", currentKnownValue.value];
                 }
             }
- 
+
             //Calculate values
             NSArray *temperatureValues = [strValue componentsSeparatedByString:@"."];
-            
-            
+
+
             NSString *strIntegerValue = temperatureValues[0];
-            NSString *strDecimalValue = @"";
-            if([temperatureValues count]==2){
-                strDecimalValue = temperatureValues[1];
-                lblDecimalValue.text = [NSString stringWithFormat:@".%@",strDecimalValue];
+
+            if ([temperatureValues count] == 2) {
+                NSString *strDecimalValue = temperatureValues[1];
+                lblDecimalValue.text = [NSString stringWithFormat:@".%@", strDecimalValue];
             }
-            
+
             lblDeviceValue.text = strIntegerValue;
-            if ([strIntegerValue length] == 1){
-                lblDecimalValue.frame = CGRectMake(LEFT_LABEL_WIDTH-25, 40, 20, 30);
-                lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH-25, 25, 20, 20);
-            }else if([strIntegerValue length] == 3){
+            if ([strIntegerValue length] == 1) {
+                lblDecimalValue.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 40, 20, 30);
+                lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 25, 20, 20);
+            }
+            else if ([strIntegerValue length] == 3) {
                 [lblDeviceValue setFont:[UIFont fontWithName:@"Avenir-Heavy" size:30]];
-                [lblDecimalValue setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
-                [lblDegree setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
-                lblDecimalValue.frame = CGRectMake(LEFT_LABEL_WIDTH-10, 38, 20, 30);
-                lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH-10, 30, 20, 20);
-            }else if([strIntegerValue length] == 4){
+                [lblDecimalValue setFont:heavy_font];
+                [lblDegree setFont:heavy_font];
+                lblDecimalValue.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 38, 20, 30);
+                lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 30, 20, 20);
+            }
+            else if ([strIntegerValue length] == 4) {
                 [lblDeviceValue setFont:[UIFont fontWithName:@"Avenir-Heavy" size:22]];
                 [lblDecimalValue setFont:[UIFont fontWithName:@"Avenir-Heavy" size:10]];
                 [lblDegree setFont:[UIFont fontWithName:@"Avenir-Heavy" size:10]];
-                lblDecimalValue.frame = CGRectMake(LEFT_LABEL_WIDTH-12, 35, 20, 30);
-                lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH-12, 30, 20, 20);
+                lblDecimalValue.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 35, 20, 30);
+                lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 30, 20, 20);
             }
-            
+
             break;
         }
-        case 34:
+        case 34: {
             //Keyfob
             currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
-            if([currentStateValue isEqualToString:@"true"]){
+            if ([currentStateValue isEqualToString:@"true"]) {
                 imgDevice.image = [UIImage imageNamed:DT34_SHADE_TRUE];
                 lblDeviceStatus.text = @"OPEN";
-            }else if([currentStateValue isEqualToString:@"false"]){
+            }
+            else if ([currentStateValue isEqualToString:@"false"]) {
                 imgDevice.image = [UIImage imageNamed:DT34_SHADE_FALSE];
                 lblDeviceStatus.text = @"CLOSED";
-            }else{
+            }
+            else {
                 imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-                if(currentStateValue==nil){
+                if (currentStateValue == nil) {
                     lblDeviceStatus.text = @"Could not update sensor\ndata.";
-                }else{
+                }
+                else {
                     lblDeviceStatus.text = currentValue;
                 }
             }
             break;
-        default:
-            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
+        }
+        default: {
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
             imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
             break;
+        }
     }
-    
 
     btnDevice.tag = indexPathRow;
     btnDeviceImg.tag = indexPathRow;
     btnSettings.tag = indexPathRow;
     btnSettingsCell.tag = indexPathRow;
-    
+
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+
     //Expanded View
     if(currentSensor.isExpanded){
         //Settings icon - white
         imgSettings.alpha = 1.0;
-        
+
         //Show values also
         UILabel *belowBackgroundLabel = [[UILabel alloc] init];
         belowBackgroundLabel.userInteractionEnabled = YES;
-        belowBackgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (self.changeHue / 360.0) saturation:(CGFloat) (self.changeSaturation / 100.0) brightness:(CGFloat) (self.changeBrightness / 100.0) alpha:1];
-        
-        
+        belowBackgroundLabel.backgroundColor = [self makeStandardBlue];
+
         UILabel *expandedLblText;
         float baseYCordinate = -20;
         //expandedLblText.backgroundColor = [UIColor greenColor];
@@ -1406,7 +1455,7 @@
                 UIImageView *minImage = [[UIImageView alloc]initWithFrame:CGRectMake(10.0, baseYCordinate-5, 24,24)];
                 [minImage setImage:[UIImage imageNamed:@"dimmer_min.png"]];
                 [belowBackgroundLabel addSubview:minImage];
-                
+
                 //Display slider
                 UISlider *slider = [[UISlider alloc] init];
                 CGRect screenBounds = [[UIScreen mainScreen] bounds];
@@ -1417,7 +1466,7 @@
                     // code for 3.5-inch screen
                     slider.frame = CGRectMake(40.0, baseYCordinate-10, (self.tableView.frame.size.width - 110), 10.0);
                 }
-                
+
 //                UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(40.0, baseYCordinate-10, (self.tableView.frame.size.width - 110), 10.0)];
                 slider.tag = indexPathRow;
                 slider.minimumValue = 0;
@@ -1425,8 +1474,8 @@
                 [slider addTarget:self action:@selector(sliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
                 UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sliderTapped:)] ;
                 [slider addGestureRecognizer:tapSlider];
-                
-                
+
+
                 //Set slider value
                 float currentSliderValue = 0.0;
 
@@ -1438,9 +1487,9 @@
                         break;
                     }
                 }
-                
+
                 [slider setValue:currentSliderValue animated:YES];
-                
+
                 [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"]
                              forState:UIControlStateNormal];
                 [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"]
@@ -1450,19 +1499,19 @@
                 [slider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"]
                                     forState:UIControlStateNormal];
                 [belowBackgroundLabel addSubview:slider];
-                
+
                 UIImageView *maxImage = [[UIImageView alloc]initWithFrame:CGRectMake((self.tableView.frame.size.width - 110) + 50, baseYCordinate-5, 24,24)];
                 [maxImage setImage:[UIImage imageNamed:@"dimmer_max.png"]];
                 [belowBackgroundLabel addSubview:maxImage];
-                
+
                 baseYCordinate+=25;
                 UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
                 imgLine.image = [UIImage imageNamed:@"line.png"];
                 imgLine.alpha = 0.5;
                 [belowBackgroundLabel addSubview:imgLine];
-                
+
                 baseYCordinate = baseYCordinate+5;
-                
+
 //                expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, 40, 299, 30)];
 //                [expandedLblText setBackgroundColor:[UIColor clearColor]];
 //                
@@ -1487,7 +1536,7 @@
                 //Do not display the most important one
                 for(int i =0; i < [currentKnownValues count]; i++){
                     // if(i!= currentSensor.mostImpValueIndex ){
-                    
+
                     currentDeviceValue = currentKnownValues[(NSUInteger) i];
                     //Display only battery - PY 291113
                     NSString *batteryStatus;
@@ -1511,18 +1560,18 @@
                         [belowBackgroundLabel addSubview:expandedLblText];
                     }
                     //                    expandedLblText.text = [NSString stringWithFormat:@"%@:  %@", currentDeviceValue.valueName, currentDeviceValue.value];
-                    
+
                     // }
                 }
-                
+
                 baseYCordinate+=25;
                 UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
                 imgLine.image = [UIImage imageNamed:@"line.png"];
                 imgLine.alpha = 0.5;
                 [belowBackgroundLabel addSubview:imgLine];
-                
+
                 baseYCordinate = baseYCordinate+5;
-                
+
 //                expandedLblText = [[UILabel alloc]init];
 //                [expandedLblText setBackgroundColor:[UIColor clearColor]];
 //                
@@ -1545,47 +1594,49 @@
 //                [belowBackgroundLabel addSubview:expandedLblText];
                 break;
             }
-            case 4:{
+            case 4: {
                 //Level Control
-                baseYCordinate+=35;
-                UIImageView *minImage = [[UIImageView alloc]initWithFrame:CGRectMake(10.0, baseYCordinate-5, 24,24)];
+                baseYCordinate += 35;
+                UIImageView *minImage = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, baseYCordinate - 5, 24, 24)];
                 [minImage setImage:[UIImage imageNamed:@"dimmer_min.png"]];
                 [belowBackgroundLabel addSubview:minImage];
-                
+
                 //Display slider
                 UISlider *slider = [[UISlider alloc] init];
                 CGRect screenBounds = [[UIScreen mainScreen] bounds];
                 if (screenBounds.size.height == 568) {
                     // code for 4-inch screen
                     slider.frame = CGRectMake(40.0, baseYCordinate, self.tableView.frame.size.width - 110, 10.0);
-                } else {
-                    // code for 3.5-inch screen
-                    slider.frame = CGRectMake(40.0, baseYCordinate-10, (self.tableView.frame.size.width - 110), 10.0);
                 }
-                
+                else {
+                    // code for 3.5-inch screen
+                    slider.frame = CGRectMake(40.0, baseYCordinate - 10, (self.tableView.frame.size.width - 110), 10.0);
+                }
+
 //                UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(40.0, baseYCordinate-10, self.tableView.frame.size.width - 110, 10.0)];
                 slider.tag = indexPathRow;
                 slider.minimumValue = 0;
                 slider.maximumValue = 255;
                 [slider addTarget:self action:@selector(sliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-                UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sliderTapped:)] ;
+                UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sliderTapped:)];
                 [slider addGestureRecognizer:tapSlider];
-                
-                
+
+
                 //Set slider value
                 float currentSliderValue = 0.0;
-                
-                for(int i =0; i < [currentKnownValues count]; i++){
+
+                for (
+                        int i = 0; i < [currentKnownValues count]; i++) {
                     currentDeviceValue = currentKnownValues[(NSUInteger) i];
                     //Get slider value
-                    if([currentDeviceValue.valueName isEqualToString:@"SWITCH MULTILEVEL"]){
+                    if ([currentDeviceValue.valueName isEqualToString:@"SWITCH MULTILEVEL"]) {
                         currentSliderValue = [currentDeviceValue.value floatValue];
                         break;
                     }
                 }
-                
+
                 [slider setValue:currentSliderValue animated:YES];
-                
+
                 [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"]
                              forState:UIControlStateNormal];
                 [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"]
@@ -1595,18 +1646,18 @@
                 [slider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"]
                                     forState:UIControlStateNormal];
                 [belowBackgroundLabel addSubview:slider];
-                
-                UIImageView *maxImage = [[UIImageView alloc]initWithFrame:CGRectMake((self.tableView.frame.size.width - 110) + 50, baseYCordinate-5, 24,24)];
+
+                UIImageView *maxImage = [[UIImageView alloc] initWithFrame:CGRectMake((self.tableView.frame.size.width - 110) + 50, baseYCordinate - 5, 24, 24)];
                 [maxImage setImage:[UIImage imageNamed:@"dimmer_max.png"]];
                 [belowBackgroundLabel addSubview:maxImage];
-                
-                baseYCordinate+=25;
-                UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+
+                baseYCordinate += 25;
+                UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
                 imgLine.image = [UIImage imageNamed:@"line.png"];
                 imgLine.alpha = 0.5;
                 [belowBackgroundLabel addSubview:imgLine];
-                
-                baseYCordinate = baseYCordinate+5;
+
+                baseYCordinate = baseYCordinate + 5;
                 break;
             }
             case 5:{
@@ -1619,69 +1670,70 @@
                 baseYCordinate = baseYCordinate+25;
                 break;
             }
-            case 7:{
+            case 7: {
                 //Thermostat
-                baseYCordinate+=40;
-                
+                baseYCordinate += 40;
+
                 //Heating Setpoint
-                UILabel *lblHeating = [[UILabel alloc]initWithFrame:CGRectMake(10.0, baseYCordinate-5, 60, 30)];
+                UILabel *lblHeating = [[UILabel alloc] initWithFrame:CGRectMake(10.0, baseYCordinate - 5, 60, 30)];
                 lblHeating.textColor = [UIColor whiteColor];
                 [lblHeating setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                 lblHeating.text = @"Heating";
                 [belowBackgroundLabel addSubview:lblHeating];
-                
+
 //                UIImageView *minHeatImage = [[UIImageView alloc]initWithFrame:CGRectMake(80.0, baseYCordinate-3, 24,24)];
 //                [minHeatImage setImage:[UIImage imageNamed:@"dimmer_min.png"]];
 //                [belowBackgroundLabel addSubview:minHeatImage];
-                UILabel *lblMinHeat = [[UILabel alloc]initWithFrame:CGRectMake(70.0, baseYCordinate-3, 30,24)];
+                UILabel *lblMinHeat = [[UILabel alloc] initWithFrame:CGRectMake(70.0, baseYCordinate - 3, 30, 24)];
                 [lblMinHeat setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                 lblMinHeat.text = @"35°";
                 lblMinHeat.textColor = [UIColor whiteColor];
                 lblMinHeat.textAlignment = NSTextAlignmentCenter;
                 lblMinHeat.backgroundColor = [UIColor clearColor];
                 [belowBackgroundLabel addSubview:lblMinHeat];
-                
+
                 //Display heating slider
                 UISlider *heatSlider = [[UISlider alloc] init];
                 CGRect screenBounds = [[UIScreen mainScreen] bounds];
                 if (screenBounds.size.height == 568) {
                     // code for 4-inch screen
                     heatSlider.frame = CGRectMake(100.0, baseYCordinate, self.tableView.frame.size.width - 160, 10.0);
-                } else {
+                }
+                else {
                     // code for 3.5-inch screen
-                    heatSlider.frame = CGRectMake(100.0, baseYCordinate-10, self.tableView.frame.size.width - 160, 10.0);
+                    heatSlider.frame = CGRectMake(100.0, baseYCordinate - 10, self.tableView.frame.size.width - 160, 10.0);
                 }
 //                UISlider *heatSlider = [[UISlider alloc] initWithFrame:CGRectMake(100.0, baseYCordinate-10, self.tableView.frame.size.width - 160, 10.0)];
                 heatSlider.tag = indexPathRow;
                 heatSlider.minimumValue = 35;
                 heatSlider.maximumValue = 95;
                 [heatSlider addTarget:self action:@selector(heatingSliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-                UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(heatingSliderTapped:)] ;
+                UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(heatingSliderTapped:)];
                 [heatSlider addGestureRecognizer:tapSlider];
-                
+
                 [heatSlider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"]
-                             forState:UIControlStateNormal];
+                                 forState:UIControlStateNormal];
                 [heatSlider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"]
-                             forState:UIControlStateHighlighted];
+                                 forState:UIControlStateHighlighted];
                 [heatSlider setMinimumTrackImage:[UIImage imageNamed:@"seekbar_dark_patch 2.png"]
-                                    forState:UIControlStateNormal];
+                                        forState:UIControlStateNormal];
                 [heatSlider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"]
-                                    forState:UIControlStateNormal];
+                                        forState:UIControlStateNormal];
                 [belowBackgroundLabel addSubview:heatSlider];
-                
-                UILabel *lblMaxHeat = [[UILabel alloc]initWithFrame:CGRectMake(100 + (self.tableView.frame.size.width - 160), baseYCordinate-3, 30,24)];
+
+                UILabel *lblMaxHeat = [[UILabel alloc] initWithFrame:CGRectMake(100 + (self.tableView.frame.size.width - 160), baseYCordinate - 3, 30, 24)];
                 [lblMaxHeat setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                 lblMaxHeat.text = @"95°";
                 lblMaxHeat.textColor = [UIColor whiteColor];
                 lblMaxHeat.textAlignment = NSTextAlignmentCenter;
                 lblMaxHeat.backgroundColor = [UIColor clearColor];
                 [belowBackgroundLabel addSubview:lblMaxHeat];
-                
+
 //                UIImageView *maxHeatImage = [[UIImageView alloc]initWithFrame:CGRectMake(100 + (self.tableView.frame.size.width - 160), baseYCordinate-3, 24,24)];
 //                [maxHeatImage setImage:[UIImage imageNamed:@"dimmer_max.png"]];
 //                [belowBackgroundLabel addSubview:maxHeatImage];
-                
-                baseYCordinate+=40;
+
+                baseYCordinate += 40;
                 //PY 170114
 //                UIImageView *imgLine1 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
 //                imgLine1.image = [UIImage imageNamed:@"line.png"];
@@ -1689,19 +1741,19 @@
 //                [belowBackgroundLabel addSubview:imgLine1];
 //                
 //                baseYCordinate = baseYCordinate+10;
-                
+
                 //Cooling Setpoint
-                UILabel *lblCooling = [[UILabel alloc]initWithFrame:CGRectMake(10.0, baseYCordinate-5, 60, 30)];
+                UILabel *lblCooling = [[UILabel alloc] initWithFrame:CGRectMake(10.0, baseYCordinate - 5, 60, 30)];
                 lblCooling.textColor = [UIColor whiteColor];
                 [lblCooling setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                 lblCooling.text = @"Cooling";
                 [belowBackgroundLabel addSubview:lblCooling];
-                
+
 //                UIImageView *minCoolingImage = [[UIImageView alloc]initWithFrame:CGRectMake(80.0, baseYCordinate-3, 24,24)];
 //                [minCoolingImage setImage:[UIImage imageNamed:@"dimmer_min.png"]];
 //                [belowBackgroundLabel addSubview:minCoolingImage];
-                
-                UILabel *lblMinCool = [[UILabel alloc]initWithFrame:CGRectMake(70.0, baseYCordinate-3, 30,24)];
+
+                UILabel *lblMinCool = [[UILabel alloc] initWithFrame:CGRectMake(70.0, baseYCordinate - 3, 30, 24)];
                 [lblMinCool setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                 lblMinCool.text = @"35°";
                 lblMinCool.textColor = [UIColor whiteColor];
@@ -1715,29 +1767,30 @@
                 if (screenBounds.size.height == 568) {
                     // code for 4-inch screen
                     coolSlider.frame = CGRectMake(100.0, baseYCordinate, self.tableView.frame.size.width - 160, 10.0);
-                } else {
+                }
+                else {
                     // code for 3.5-inch screen
-                    coolSlider.frame = CGRectMake(100.0, baseYCordinate-10, self.tableView.frame.size.width - 160, 10.0);
+                    coolSlider.frame = CGRectMake(100.0, baseYCordinate - 10, self.tableView.frame.size.width - 160, 10.0);
                 }
 //                UISlider *coolSlider = [[UISlider alloc] initWithFrame:CGRectMake(100.0, baseYCordinate-10, self.tableView.frame.size.width - 160, 10.0)];
                 coolSlider.tag = indexPathRow;
                 coolSlider.minimumValue = 35;
                 coolSlider.maximumValue = 95;
                 [coolSlider addTarget:self action:@selector(coolingSliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-                UITapGestureRecognizer *coolTapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(coolingSliderTapped:)] ;
+                UITapGestureRecognizer *coolTapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(coolingSliderTapped:)];
                 [coolSlider addGestureRecognizer:coolTapSlider];
-                
+
                 [coolSlider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"] forState:UIControlStateNormal];
                 [coolSlider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"] forState:UIControlStateHighlighted];
                 [coolSlider setMinimumTrackImage:[UIImage imageNamed:@"seekbar_dark_patch 2.png"] forState:UIControlStateNormal];
                 [coolSlider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"] forState:UIControlStateNormal];
                 [belowBackgroundLabel addSubview:coolSlider];
-                
+
 //                UIImageView *maxCoolImage = [[UIImageView alloc]initWithFrame:CGRectMake(self.tableView.frame.size.width - 160 + 100, baseYCordinate-3, 24,24)];
 //                [maxCoolImage setImage:[UIImage imageNamed:@"dimmer_max.png"]];
 //                [belowBackgroundLabel addSubview:maxCoolImage];
-                
-                UILabel *lblMaxCool = [[UILabel alloc]initWithFrame:CGRectMake(100 + (self.tableView.frame.size.width - 160), baseYCordinate-3, 30,24)];
+
+                UILabel *lblMaxCool = [[UILabel alloc] initWithFrame:CGRectMake(100 + (self.tableView.frame.size.width - 160), baseYCordinate - 3, 30, 24)];
                 [lblMaxCool setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                 lblMaxCool.text = @"95°";
                 lblMaxCool.textColor = [UIColor whiteColor];
@@ -1745,25 +1798,25 @@
                 lblMaxCool.backgroundColor = [UIColor clearColor];
                 [belowBackgroundLabel addSubview:lblMaxCool];
 
-                baseYCordinate+=30;
-                UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+                baseYCordinate += 30;
+                UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
                 imgLine2.image = [UIImage imageNamed:@"line.png"];
                 imgLine2.alpha = 0.5;
                 [belowBackgroundLabel addSubview:imgLine2];
-                
-                baseYCordinate = baseYCordinate+10;
-                
+
+                baseYCordinate = baseYCordinate + 10;
+
                 //Mode
-                UILabel *lblMode = [[UILabel alloc]initWithFrame:CGRectMake(10.0, baseYCordinate-5, 100, 30)];
+                UILabel *lblMode = [[UILabel alloc] initWithFrame:CGRectMake(10.0, baseYCordinate - 5, 100, 30)];
                 lblMode.textColor = [UIColor whiteColor];
                 [lblMode setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                 lblMode.text = @"Thermostat";
                 [belowBackgroundLabel addSubview:lblMode];
-                
+
                 //Font for segment control
                 UIFont *font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
                 NSDictionary *attributes = @{NSFontAttributeName : font};
-                
+
                 UISegmentedControl *scMode = [[UISegmentedControl alloc] initWithItems:@[@"Auto", @"Heat", @"Cool", @"Off"]];
                 scMode.frame = CGRectMake(self.tableView.frame.size.width - 220, baseYCordinate, 180, 20);
                 scMode.tag = indexPathRow;
@@ -1772,65 +1825,65 @@
                 [scMode setTitleTextAttributes:attributes forState:UIControlStateNormal];
                 [belowBackgroundLabel addSubview:scMode];
 
-                baseYCordinate+=30;
-                UIImageView *imgLine3 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+                baseYCordinate += 30;
+                UIImageView *imgLine3 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
                 imgLine3.image = [UIImage imageNamed:@"line.png"];
                 imgLine3.alpha = 0.5;
                 [belowBackgroundLabel addSubview:imgLine3];
-                
-                baseYCordinate = baseYCordinate+10;
-                
+
+                baseYCordinate = baseYCordinate + 10;
+
                 //Fan Mode
-                UILabel *lblFanMode = [[UILabel alloc]initWithFrame:CGRectMake(10.0, baseYCordinate-5, 60, 30)];
+                UILabel *lblFanMode = [[UILabel alloc] initWithFrame:CGRectMake(10.0, baseYCordinate - 5, 60, 30)];
                 lblFanMode.textColor = [UIColor whiteColor];
                 [lblFanMode setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                 lblFanMode.text = @"Fan";
                 [belowBackgroundLabel addSubview:lblFanMode];
-                
+
                 UISegmentedControl *scFanMode = [[UISegmentedControl alloc] initWithItems:@[@"Auto Low", @"On Low"]];
                 scFanMode.frame = CGRectMake(self.tableView.frame.size.width - 190, baseYCordinate, 150, 20);
                 scFanMode.tag = indexPathRow;
-                
+
                 [scFanMode setTitleTextAttributes:attributes forState:UIControlStateNormal];
                 [scFanMode addTarget:self action:@selector(fanModeSelected:) forControlEvents:UIControlEventValueChanged];
                 scFanMode.tintColor = [UIColor whiteColor];
                 [belowBackgroundLabel addSubview:scFanMode];
 
-                baseYCordinate+=30;
-                UIImageView *imgLine4 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+                baseYCordinate += 30;
+                UIImageView *imgLine4 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
                 imgLine4.image = [UIImage imageNamed:@"line.png"];
                 imgLine4.alpha = 0.5;
                 [belowBackgroundLabel addSubview:imgLine4];
-                
-                baseYCordinate = baseYCordinate+5;
-                
-                
+
+                baseYCordinate = baseYCordinate + 5;
+
+
                 //Status
-                UILabel *lblStatus = [[UILabel alloc]initWithFrame:CGRectMake(10.0, baseYCordinate, 60, 30)];
+                UILabel *lblStatus = [[UILabel alloc] initWithFrame:CGRectMake(10.0, baseYCordinate, 60, 30)];
                 lblStatus.textColor = [UIColor whiteColor];
                 [lblStatus setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                 lblStatus.text = @"Status";
-                
+
                 [belowBackgroundLabel addSubview:lblStatus];
-                
+
                 //baseYCordinate+=25;
-                
+
                 //Operating state
-                UILabel *lblOperatingState = [[UILabel alloc]initWithFrame:CGRectMake(self.tableView.frame.size.width - 250, baseYCordinate, 220, 30)];
+                UILabel *lblOperatingState = [[UILabel alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 250, baseYCordinate, 220, 30)];
                 lblOperatingState.textColor = [UIColor whiteColor];
                 lblOperatingState.backgroundColor = [UIColor clearColor];
                 [lblOperatingState setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                 lblOperatingState.textAlignment = NSTextAlignmentRight;
                 [belowBackgroundLabel addSubview:lblOperatingState];
-                
-                baseYCordinate+=25;
+
+                baseYCordinate += 25;
 //                UIImageView *imgLine5 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
 //                imgLine5.image = [UIImage imageNamed:@"line.png"];
 //                imgLine5.alpha = 0.5;
 //                [belowBackgroundLabel addSubview:imgLine5];
 //                
 //                baseYCordinate = baseYCordinate+10;
-                
+
 //                //Fan State
 //                UILabel *lblFanState = [[UILabel alloc]initWithFrame:CGRectMake(10.0, baseYCordinate-5, 200, 30)];
 //                lblFanState.textColor = [UIColor whiteColor];
@@ -1844,30 +1897,31 @@
 //                [belowBackgroundLabel addSubview:imgLine6];
 //                
 //                baseYCordinate = baseYCordinate+10;
-                
+
                 //Battery
-                UILabel *lblBattery = [[UILabel alloc]initWithFrame:CGRectMake(self.tableView.frame.size.width - 250, baseYCordinate-5, 220, 30)];
+                UILabel *lblBattery = [[UILabel alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 250, baseYCordinate - 5, 220, 30)];
                 lblBattery.textColor = [UIColor whiteColor];
                 [lblBattery setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                 [lblBattery setBackgroundColor:[UIColor clearColor]];
                 lblBattery.textAlignment = NSTextAlignmentRight;
                 [belowBackgroundLabel addSubview:lblBattery];
-                
-                baseYCordinate+=25;
-                UIImageView *imgLine7 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+
+                baseYCordinate += 25;
+                UIImageView *imgLine7 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
                 imgLine7.image = [UIImage imageNamed:@"line.png"];
                 imgLine7.alpha = 0.5;
                 [belowBackgroundLabel addSubview:imgLine7];
-                
-                baseYCordinate = baseYCordinate+5;
-                
+
+                baseYCordinate = baseYCordinate + 5;
+
                 //Set slider value
                 float currentHeatingSliderValue = 0.0;
                 float currentCoolingSliderValue = 0.0;
-                
-                NSMutableString *strState = [[NSMutableString alloc]init];
 
-                for (NSUInteger i = 0; i < [currentKnownValues count]; i++) {
+                NSMutableString *strState = [[NSMutableString alloc] init];
+
+                for (
+                        NSUInteger i = 0; i < [currentKnownValues count]; i++) {
                     currentDeviceValue = currentKnownValues[i];
                     //Get slider value
                     if ([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT SETPOINT HEATING"]) {
@@ -1912,12 +1966,12 @@
                     }
 
                 }
-                
+
                 lblOperatingState.text = strState;
-                
+
                 [heatSlider setValue:currentHeatingSliderValue animated:YES];
                 [coolSlider setValue:currentCoolingSliderValue animated:YES];
-                
+
                 break;
             }
             case 11:{
@@ -1929,12 +1983,12 @@
                     expandedLblText.textColor = [UIColor whiteColor];
                     [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                     [belowBackgroundLabel addSubview:expandedLblText];
-                    
+
                     UIButton *btnDismiss = [[UIButton alloc]init];
                     btnDismiss.backgroundColor = [UIColor clearColor];
                     [btnDismiss addTarget:self
-                                action:@selector(onDismissTamper:)
-                      forControlEvents:UIControlEventTouchDown];
+                                   action:@selector(onDismissTamper:)
+                         forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
                     [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal ];
@@ -1942,15 +1996,15 @@
                     btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
-                    
+
                     baseYCordinate+=35;
                     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
                     imgLine.image = [UIImage imageNamed:@"line.png"];
                     imgLine.alpha = 0.5;
                     [belowBackgroundLabel addSubview:imgLine];
-                    
+
                     baseYCordinate = baseYCordinate+5;
-                    
+
 //                    if (currentSensor.isBatteryLow){
 //                        //baseYCordinate = baseYCordinate+25;
 //                        self.expandedRowHeight = self.expandedRowHeight + 20;
@@ -1991,38 +2045,36 @@
                 }
                 break;
             }
-            case 12:
-            {
-                if(currentSensor.isTampered){
-                    baseYCordinate = baseYCordinate+25;
-                    expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
+            case 12: {
+                if (currentSensor.isTampered) {
+                    baseYCordinate = baseYCordinate + 25;
+                    expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
                     expandedLblText.text = DEVICE_TAMPERED;
                     expandedLblText.textColor = [UIColor whiteColor];
                     [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                     [belowBackgroundLabel addSubview:expandedLblText];
-                    
-                    UIButton *btnDismiss = [[UIButton alloc]init];
+
+                    UIButton *btnDismiss = [[UIButton alloc] init];
                     btnDismiss.backgroundColor = [UIColor clearColor];
-                    [btnDismiss addTarget:self
-                                   action:@selector(onDismissTamper:)
-                         forControlEvents:UIControlEventTouchDown];
+                    [btnDismiss addTarget:self action:@selector(onDismissTamper:) forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
+                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate + 6, 65, 20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
-                    
-                    baseYCordinate+=35;
-                    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+
+                    baseYCordinate += 35;
+                    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
                     imgLine.image = [UIImage imageNamed:@"line.png"];
                     imgLine.alpha = 0.5;
                     [belowBackgroundLabel addSubview:imgLine];
-                    
-                    baseYCordinate = baseYCordinate+5;
-                }else{
-                    baseYCordinate = baseYCordinate+25;
+
+                    baseYCordinate = baseYCordinate + 5;
+                }
+                else {
+                    baseYCordinate = baseYCordinate + 25;
                 }
                 //Do not display the most important one
 //                for(int i =0; i < [currentKnownValues count]; i++){
@@ -2056,7 +2108,7 @@
 //                    
 //                    // }
 //                }
-                
+
 //                baseYCordinate+=25;
 //                UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
 //                imgLine.image = [UIImage imageNamed:@"line.png"];
@@ -2064,7 +2116,7 @@
 //                [belowBackgroundLabel addSubview:imgLine];
 //                
 //                baseYCordinate = baseYCordinate+5;
-                
+
 //                expandedLblText = [[UILabel alloc]init];
 //                [expandedLblText setBackgroundColor:[UIColor clearColor]];
 //                
@@ -2087,190 +2139,184 @@
 //                [belowBackgroundLabel addSubview:expandedLblText];
                 break;
             }
-            case 13:{
+            case 13: {
                 //Fire Sensor
-                if(currentSensor.isTampered){
-                    baseYCordinate = baseYCordinate+25;
-                    expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
+                if (currentSensor.isTampered) {
+                    baseYCordinate = baseYCordinate + 25;
+                    expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
                     expandedLblText.text = DEVICE_TAMPERED;
                     expandedLblText.textColor = [UIColor whiteColor];
                     [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                     [belowBackgroundLabel addSubview:expandedLblText];
-                    
-                    UIButton *btnDismiss = [[UIButton alloc]init];
+
+                    UIButton *btnDismiss = [[UIButton alloc] init];
                     btnDismiss.backgroundColor = [UIColor clearColor];
-                    [btnDismiss addTarget:self
-                                   action:@selector(onDismissTamper:)
-                         forControlEvents:UIControlEventTouchDown];
+                    [btnDismiss addTarget:self action:@selector(onDismissTamper:) forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
+                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate + 6, 65, 20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
-                    
-                    baseYCordinate+=35;
-                    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+
+                    baseYCordinate += 35;
+                    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
                     imgLine.image = [UIImage imageNamed:@"line.png"];
                     imgLine.alpha = 0.5;
                     [belowBackgroundLabel addSubview:imgLine];
-                    
-                    baseYCordinate = baseYCordinate+5;
-                }else{
-                    baseYCordinate = baseYCordinate+25;
+
+                    baseYCordinate = baseYCordinate + 5;
+                }
+                else {
+                    baseYCordinate = baseYCordinate + 25;
                 }
                 break;
             }
-            case 14:{
+            case 14: {
                 //Water Sensor
-                if(currentSensor.isTampered){
-                    baseYCordinate = baseYCordinate+25;
-                    expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
+                if (currentSensor.isTampered) {
+                    baseYCordinate = baseYCordinate + 25;
+                    expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
                     expandedLblText.text = DEVICE_TAMPERED;
                     expandedLblText.textColor = [UIColor whiteColor];
                     [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                     [belowBackgroundLabel addSubview:expandedLblText];
-                    
-                    UIButton *btnDismiss = [[UIButton alloc]init];
+
+                    UIButton *btnDismiss = [[UIButton alloc] init];
                     btnDismiss.backgroundColor = [UIColor clearColor];
-                    [btnDismiss addTarget:self
-                                   action:@selector(onDismissTamper:)
-                         forControlEvents:UIControlEventTouchDown];
+                    [btnDismiss addTarget:self action:@selector(onDismissTamper:) forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
-                     [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
+                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate + 6, 65, 20);
                     btnDismiss.tag = indexPathRow;
 //                    [[btnDismiss layer] setBorderWidth:1.0f];
 //                    [[btnDismiss layer] setBorderColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:0.6].CGColor];
-                    
+
                     [belowBackgroundLabel addSubview:btnDismiss];
-                    
-                    baseYCordinate+=35;
-                    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+
+                    baseYCordinate += 35;
+                    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
                     imgLine.image = [UIImage imageNamed:@"line.png"];
                     imgLine.alpha = 0.5;
                     [belowBackgroundLabel addSubview:imgLine];
-                    
-                    baseYCordinate = baseYCordinate+5;
-                }else{
-                    baseYCordinate = baseYCordinate+25;
+
+                    baseYCordinate = baseYCordinate + 5;
+                }
+                else {
+                    baseYCordinate = baseYCordinate + 25;
                 }
                 break;
             }
-            case 15:{
+            case 15: {
                 //Gas Sensor
-                if(currentSensor.isTampered){
-                    baseYCordinate = baseYCordinate+25;
-                    expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
+                if (currentSensor.isTampered) {
+                    baseYCordinate = baseYCordinate + 25;
+                    expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
                     expandedLblText.text = DEVICE_TAMPERED;
                     expandedLblText.textColor = [UIColor whiteColor];
                     [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                     [belowBackgroundLabel addSubview:expandedLblText];
-                    
-                    UIButton *btnDismiss = [[UIButton alloc]init];
+
+                    UIButton *btnDismiss = [[UIButton alloc] init];
                     btnDismiss.backgroundColor = [UIColor clearColor];
-                    [btnDismiss addTarget:self
-                                   action:@selector(onDismissTamper:)
-                         forControlEvents:UIControlEventTouchDown];
+                    [btnDismiss addTarget:self action:@selector(onDismissTamper:) forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
+                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate + 6, 65, 20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
-                    
-                    baseYCordinate+=35;
-                    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+
+                    baseYCordinate += 35;
+                    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
                     imgLine.image = [UIImage imageNamed:@"line.png"];
                     imgLine.alpha = 0.5;
                     [belowBackgroundLabel addSubview:imgLine];
-                    
-                    baseYCordinate = baseYCordinate+5;
-                }else{
-                    baseYCordinate = baseYCordinate+25;
+
+                    baseYCordinate = baseYCordinate + 5;
+                }
+                else {
+                    baseYCordinate = baseYCordinate + 25;
                 }
                 break;
             }
-            case 17:{
+            case 17: {
                 //Vibration Sensor
-                if(currentSensor.isTampered){
-                    baseYCordinate = baseYCordinate+25;
-                    expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
+                if (currentSensor.isTampered) {
+                    baseYCordinate = baseYCordinate + 25;
+                    expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
                     expandedLblText.text = DEVICE_TAMPERED;
                     expandedLblText.textColor = [UIColor whiteColor];
                     [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                     [belowBackgroundLabel addSubview:expandedLblText];
-                    
-                    UIButton *btnDismiss = [[UIButton alloc]init];
+
+                    UIButton *btnDismiss = [[UIButton alloc] init];
                     btnDismiss.backgroundColor = [UIColor clearColor];
-                    [btnDismiss addTarget:self
-                                   action:@selector(onDismissTamper:)
-                         forControlEvents:UIControlEventTouchDown];
+                    [btnDismiss addTarget:self action:@selector(onDismissTamper:) forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
+                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate + 6, 65, 20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
-                    
-                    baseYCordinate+=35;
-                    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+
+                    baseYCordinate += 35;
+                    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
                     imgLine.image = [UIImage imageNamed:@"line.png"];
                     imgLine.alpha = 0.5;
                     [belowBackgroundLabel addSubview:imgLine];
-                    
-                    baseYCordinate = baseYCordinate+5;
-                }else{
-                    baseYCordinate = baseYCordinate+25;
+
+                    baseYCordinate = baseYCordinate + 5;
+                }
+                else {
+                    baseYCordinate = baseYCordinate + 25;
                 }
                 break;
             }
-            case 19:{
+            case 19: {
                 //KeyFob
-                if(currentSensor.isTampered){
-                    baseYCordinate = baseYCordinate+25;
-                    expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
+                if (currentSensor.isTampered) {
+                    baseYCordinate = baseYCordinate + 25;
+                    expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
                     expandedLblText.text = DEVICE_TAMPERED;
                     expandedLblText.textColor = [UIColor whiteColor];
                     [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
                     [belowBackgroundLabel addSubview:expandedLblText];
-                    
-                    UIButton *btnDismiss = [[UIButton alloc]init];
+
+                    UIButton *btnDismiss = [[UIButton alloc] init];
                     btnDismiss.backgroundColor = [UIColor clearColor];
-                    [btnDismiss addTarget:self
-                                   action:@selector(onDismissTamper:)
-                         forControlEvents:UIControlEventTouchDown];
+                    [btnDismiss addTarget:self action:@selector(onDismissTamper:) forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
-                    [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal ];
+                    [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal];
                     [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
+                    btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate + 6, 65, 20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
-                    
-                    baseYCordinate+=35;
-                    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+
+                    baseYCordinate += 35;
+                    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
                     imgLine.image = [UIImage imageNamed:@"line.png"];
                     imgLine.alpha = 0.5;
                     [belowBackgroundLabel addSubview:imgLine];
-                    
-                    baseYCordinate = baseYCordinate+5;
-                }else{
-                    baseYCordinate = baseYCordinate+25;
+
+                    baseYCordinate = baseYCordinate + 5;
+                }
+                else {
+                    baseYCordinate = baseYCordinate + 25;
                 }
                 break;
             }
-            case 22:
-            {
+            case 22: {
                 //Show values and calculations
                 //Calculate values
                 unsigned int activePower = 0;
                 unsigned int acPowerMultiplier = 0;
-                unsigned int acPowerDivisor  = 0;
+                unsigned int acPowerDivisor = 0;
                 unsigned int rmsVoltage = 0;
                 unsigned int acVoltageMultipier = 0;
                 unsigned int acVoltageDivisor = 0;
@@ -2279,7 +2325,7 @@
                 unsigned int acCurrentDivisor = 0;
                 NSString *currentDeviceTypeName;
                 NSString *hexString;
-                if(currentKnownValues!=nil){
+                if (currentKnownValues != nil) {
                     for (NSUInteger i = 0; i < [currentKnownValues count]; i++) {
                         SFIDeviceKnownValues *curDeviceValues = currentKnownValues[i];
                         currentDeviceTypeName = curDeviceValues.valueName;
@@ -2327,57 +2373,57 @@
                         }
                     }
                 }
-                
-                float power = (float)activePower * acPowerMultiplier/acPowerDivisor;
-                float voltage = (float)rmsVoltage * acVoltageMultipier / acVoltageDivisor;
-                float current = (float)rmsCurrent * acCurrentMultipier / acCurrentDivisor;
-                
+
+                float power = (float) activePower * acPowerMultiplier / acPowerDivisor;
+                float voltage = (float) rmsVoltage * acVoltageMultipier / acVoltageDivisor;
+                float current = (float) rmsCurrent * acCurrentMultipier / acCurrentDivisor;
+
                 // NSLog(@"Power %f Voltage %f Current %f", power, voltage, current);
-                
-                expandedLblText = [[UILabel alloc]init];
+
+                expandedLblText = [[UILabel alloc] init];
                 [expandedLblText setBackgroundColor:[UIColor clearColor]];
-                
+
                 //Display Power
                 expandedLblText.text = [NSString stringWithFormat:@"Power is %.3fW", power];
                 expandedLblText.textColor = [UIColor whiteColor];
                 [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                baseYCordinate = baseYCordinate+25;
-                expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
+                baseYCordinate = baseYCordinate + 25;
+                expandedLblText.frame = CGRectMake(10, baseYCordinate, 299, 30);
                 [belowBackgroundLabel addSubview:expandedLblText];
-                
-                expandedLblText = [[UILabel alloc]init];
+
+                expandedLblText = [[UILabel alloc] init];
                 [expandedLblText setBackgroundColor:[UIColor clearColor]];
-                
+
                 //Display Voltage
                 expandedLblText.text = [NSString stringWithFormat:@"Voltage is %.3fV", voltage];
                 expandedLblText.textColor = [UIColor whiteColor];
                 [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                baseYCordinate = baseYCordinate+25;
-                expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
+                baseYCordinate = baseYCordinate + 25;
+                expandedLblText.frame = CGRectMake(10, baseYCordinate, 299, 30);
                 [belowBackgroundLabel addSubview:expandedLblText];
-                
-                
-                expandedLblText = [[UILabel alloc]init];
+
+
+                expandedLblText = [[UILabel alloc] init];
                 [expandedLblText setBackgroundColor:[UIColor clearColor]];
-                
-                
-                
+
+
+
                 //Display Current
                 expandedLblText.text = [NSString stringWithFormat:@"Current is %.3fA", current];
                 expandedLblText.textColor = [UIColor whiteColor];
                 [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                baseYCordinate = baseYCordinate+25;
-                expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
+                baseYCordinate = baseYCordinate + 25;
+                expandedLblText.frame = CGRectMake(10, baseYCordinate, 299, 30);
                 [belowBackgroundLabel addSubview:expandedLblText];
-                
-                baseYCordinate+=25;
-                UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+
+                baseYCordinate += 25;
+                UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
                 imgLine.image = [UIImage imageNamed:@"line.png"];
                 imgLine.alpha = 0.5;
                 [belowBackgroundLabel addSubview:imgLine];
-                
-                baseYCordinate = baseYCordinate+5;
-                
+
+                baseYCordinate = baseYCordinate + 5;
+
 //                expandedLblText =[[UILabel alloc]init];
 //                [expandedLblText setBackgroundColor:[UIColor clearColor]];
 //                
@@ -2453,16 +2499,16 @@
                         }
                     }
                 }
-                
+
                 float power = (float)dcPower * dcPowerMultiplier/dcPowerDivisor;
                 float voltage = (float)dcVoltage * dcVoltageMultipier / dcVoltageDivisor;
                 float current = (float)dcCurrent * dcCurrentMultipier / dcCurrentDivisor;
-                
+
                 // NSLog(@"Power %f Voltage %f Current %f", power, voltage, current);
-                
+
                 expandedLblText = [[UILabel alloc]init];
                 [expandedLblText setBackgroundColor:[UIColor clearColor]];
-                
+
                 //Display Power
                 expandedLblText.text = [NSString stringWithFormat:@"Power is %.3fW", power];
                 expandedLblText.textColor = [UIColor whiteColor];
@@ -2470,10 +2516,10 @@
                 baseYCordinate = baseYCordinate+25;
                 expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
                 [belowBackgroundLabel addSubview:expandedLblText];
-                
+
                 expandedLblText = [[UILabel alloc]init];
                 [expandedLblText setBackgroundColor:[UIColor clearColor]];
-                
+
                 //Display Voltage
                 expandedLblText.text = [NSString stringWithFormat:@"Voltage is %.3fV", voltage];
                 expandedLblText.textColor = [UIColor whiteColor];
@@ -2481,13 +2527,13 @@
                 baseYCordinate = baseYCordinate+25;
                 expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
                 [belowBackgroundLabel addSubview:expandedLblText];
-                
-                
+
+
                 expandedLblText = [[UILabel alloc]init];
                 [expandedLblText setBackgroundColor:[UIColor clearColor]];
-                
-                
-                
+
+
+
                 //Display Current
                 expandedLblText.text = [NSString stringWithFormat:@"Current is %.3fA", current];
                 expandedLblText.textColor = [UIColor whiteColor];
@@ -2495,15 +2541,15 @@
                 baseYCordinate = baseYCordinate+25;
                 expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
                 [belowBackgroundLabel addSubview:expandedLblText];
-                
+
                 baseYCordinate+=25;
                 UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
                 imgLine.image = [UIImage imageNamed:@"line.png"];
                 imgLine.alpha = 0.5;
                 [belowBackgroundLabel addSubview:imgLine];
-                
+
                 baseYCordinate = baseYCordinate+5;
-                
+
                 break;
             }
             case 26:{
@@ -2545,100 +2591,87 @@
 //                [belowBackgroundLabel addSubview:expandedLblText];
                 break;
         }
-        
-        //Settings for all the sensors
-        expandedLblText = [[UILabel alloc]init];
-        [expandedLblText setBackgroundColor:[UIColor clearColor]];
-        expandedLblText.textColor = [UIColor whiteColor];
-        [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
 
-        expandedLblText.frame = CGRectMake(10,baseYCordinate-5,299,30);
+        //Settings for all the sensors
+        expandedLblText = [[UILabel alloc] init];
+        expandedLblText.backgroundColor = [UIColor clearColor];
+        expandedLblText.textColor = [UIColor whiteColor];
+        expandedLblText.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+
+        expandedLblText.frame = CGRectMake(10, baseYCordinate - 5, 299, 30);
         expandedLblText.text = [NSString stringWithFormat:@"SENSOR SETTINGS"];
         [belowBackgroundLabel addSubview:expandedLblText];
-        
-        baseYCordinate = baseYCordinate+25;
-        
-        UIImageView *imgLine1 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+
+        baseYCordinate = baseYCordinate + 25;
+
+        UIImageView *imgLine1 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
         imgLine1.image = [UIImage imageNamed:@"line.png"];
         imgLine1.alpha = 0.5;
         [belowBackgroundLabel addSubview:imgLine1];
-        
+
         //Display Name
-        expandedLblText = [[UILabel alloc]init];
+        baseYCordinate = baseYCordinate + 5;
+        expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 100, 30)];
         expandedLblText.text = @"Name";
-        [expandedLblText setBackgroundColor:[UIColor clearColor]];
+        expandedLblText.backgroundColor = [UIColor clearColor];
         expandedLblText.textColor = [UIColor whiteColor];
-        [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
-        baseYCordinate = baseYCordinate+5;
-        expandedLblText.frame = CGRectMake(10,baseYCordinate,100,30);
+        expandedLblText.font = heavy_font;
         [belowBackgroundLabel addSubview:expandedLblText];
-        
+
 //        baseYCordinate = baseYCordinate+25;
         UITextField *tfName = [[UITextField alloc] initWithFrame:CGRectMake(110, baseYCordinate, self.tableView.frame.size.width - 150, 30)];
         tfName.text = currentSensor.deviceName;
         tfName.textAlignment = NSTextAlignmentRight;
         tfName.textColor = [UIColor whiteColor];
-        //tfName.delegate = self;
-        [tfName setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
-         tfName.tag = indexPathRow;
-        [tfName addTarget:self action:@selector(tfNameDidChange:) forControlEvents:UIControlEventEditingChanged];
-        //[tfName resignFirstResponder];
+        tfName.font = heavy_font;
+        tfName.tag = indexPathRow;
         [tfName setReturnKeyType:UIReturnKeyDone];
-        [tfName addTarget:self
-                action:@selector(tfNameFinished:)
-                 forControlEvents:UIControlEventEditingDidEndOnExit];
+        [tfName addTarget:self action:@selector(sensorNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        [tfName addTarget:self action:@selector(sensorNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
         [belowBackgroundLabel addSubview:tfName];
-    
-        
-        baseYCordinate = baseYCordinate+25;
-        UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+
+        baseYCordinate = baseYCordinate + 25;
+        UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
         imgLine2.image = [UIImage imageNamed:@"line.png"];
         imgLine2.alpha = 0.5;
         [belowBackgroundLabel addSubview:imgLine2];
-        
+
         //Display Location - PY 291113
-        expandedLblText = [[UILabel alloc]init];
-        [expandedLblText setBackgroundColor:[UIColor clearColor]];
+        baseYCordinate = baseYCordinate + 5;
+        expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 100, 30)];
+        expandedLblText.backgroundColor = [UIColor clearColor];
         expandedLblText.text = @"Located at";
         expandedLblText.textColor = [UIColor whiteColor];
-        [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
-        baseYCordinate = baseYCordinate+5;
-        expandedLblText.frame = CGRectMake(10,baseYCordinate,100,30);
+        expandedLblText.font = heavy_font;
         [belowBackgroundLabel addSubview:expandedLblText];
-        
+
         //baseYCordinate = baseYCordinate+25;
         UITextField *tfLocation = [[UITextField alloc] initWithFrame:CGRectMake(110, baseYCordinate, self.tableView.frame.size.width - 150, 30)];
         tfLocation.text = currentSensor.location;
         tfLocation.textAlignment = NSTextAlignmentRight;
         tfLocation.textColor = [UIColor whiteColor];
-        [tfLocation resignFirstResponder];
         tfLocation.delegate = self;
-        [tfLocation setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
-        [tfLocation addTarget:self action:@selector(tfLocationDidChange:) forControlEvents:UIControlEventEditingChanged];
-         tfLocation.tag = indexPathRow;
-        [tfLocation setReturnKeyType:UIReturnKeyDone];
-        [tfLocation addTarget:self
-                   action:@selector(tfLocationFinished:)
-         forControlEvents:UIControlEventEditingDidEndOnExit];
+        tfLocation.font = heavy_font;
+        tfLocation.tag = indexPathRow;
+        tfLocation.returnKeyType = UIReturnKeyDone;
+        [tfLocation addTarget:self action:@selector(sensorLocationTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        [tfLocation addTarget:self action:@selector(sensorLocationTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
         [belowBackgroundLabel addSubview:tfLocation];
-        
-        baseYCordinate = baseYCordinate+25;
-        UIImageView *imgLine3 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+
+        baseYCordinate = baseYCordinate + 25;
+        UIImageView *imgLine3 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
         imgLine3.image = [UIImage imageNamed:@"line.png"];
         imgLine3.alpha = 0.5;
         [belowBackgroundLabel addSubview:imgLine3];
-        
-        baseYCordinate = baseYCordinate+10;
-        UIButton *btnSave = [[UIButton alloc]init];
+
+        baseYCordinate = baseYCordinate + 10;
+        UIButton *btnSave = [[SFIHighlightedButton alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate, 65, 30)];
         btnSave.backgroundColor = [UIColor whiteColor];
-        [btnSave addTarget:self
-                   action:@selector(onSaveSensorData:)
-         forControlEvents:UIControlEventTouchDown];
-        [btnSave setTitle:@"Save" forState:UIControlStateNormal];
-        [btnSave setTitleColor:[UIColor colorWithHue:(CGFloat) (self.changeHue / 360.0) saturation:(CGFloat) (self.changeSaturation / 100.0) brightness:(CGFloat) (self.changeBrightness / 100.0) alpha:1] forState:UIControlStateNormal ];
-        [btnSave.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
-        btnSave.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate, 65,30);
+        btnSave.titleLabel.font = heavy_font;
         btnSave.tag = indexPathRow;
+        [btnSave addTarget:self action:@selector(onSaveSensorData:) forControlEvents:UIControlEventTouchUpInside];
+        [btnSave setTitle:@"Save" forState:UIControlStateNormal];
+        [btnSave setTitleColor:[self makeStandardBlue] forState:UIControlStateNormal];
         [belowBackgroundLabel addSubview:btnSave];
 
         NSUInteger rowHeight = [self computeSensorRowHeight:currentSensor];
@@ -2648,8 +2681,12 @@
     }
 
     [cell addSubview:imgSettings];
-    
+
     return cell;
+}
+
+- (UIColor *)makeStandardBlue {
+    return [UIColor colorWithHue:(CGFloat) (self.changeHue / 360.0) saturation:(CGFloat) (self.changeSaturation / 100.0) brightness:(CGFloat) (self.changeBrightness / 100.0) alpha:1];
 }
 
 - (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor {
@@ -2772,28 +2809,18 @@
 
 - (void)initializeImages {
     int currentDeviceType;
-    NSMutableArray *currentKnownValues;
     SFIDeviceKnownValues *currentDeviceValue;
     NSString *currentValue;
     NSString *currentDeviceTypeName;
-    int deviceValueID;
+
     int currentDeviceId;
-    BOOL isImpFlagSet = FALSE;
 
     for (SFIDevice *currentSensor in self.deviceList) {
-        isImpFlagSet = FALSE;
         currentDeviceType = currentSensor.deviceType;
         currentDeviceId = currentSensor.deviceID;
         // NSLog(@"Device Type: %d", currentDeviceType);
 
-        for (SFIDeviceValue *deviceValue in self.deviceValueList) {
-            deviceValueID = deviceValue.deviceID;
-            if (currentDeviceId == deviceValueID) {
-                // //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-                currentKnownValues = deviceValue.knownValues;
-                break;
-            }
-        }
+        NSMutableArray *currentKnownValues = [self currentKnownValuesForDevice:currentDeviceId];
 
         switch (currentDeviceType) {
             case 1: {
@@ -2930,7 +2957,7 @@
                 for (int i = 0; i < [currentKnownValues count]; i++) {
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
-                    currentValue = curDeviceValues.value;
+
                     // NSLog(@"Case6 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
                     if ([currentDeviceTypeName isEqualToString:@"LOCK_STATE"]) {
                         currentSensor.stateIndex = i;
@@ -2952,7 +2979,7 @@
                         int index = 0; index < [currentKnownValues count]; index++) {
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
-                    currentValue = curDeviceValues.value;
+
                     // NSLog(@"Case11 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
                     if ([currentDeviceTypeName isEqualToString:STATE]) {
                         currentSensor.stateIndex = index;
@@ -3012,7 +3039,6 @@
                 for (int index = 0; index < [currentKnownValues count]; index++) {
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
-                    currentValue = curDeviceValues.value;
                     // NSLog(@"Case13 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
                     if ([currentDeviceTypeName isEqualToString:STATE]) {
                         currentSensor.stateIndex = index;
@@ -3042,7 +3068,6 @@
                 for (int index = 0; index < [currentKnownValues count]; index++) {
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
-                    currentValue = curDeviceValues.value;
 
                     if ([currentDeviceTypeName isEqualToString:STATE]) {
                         currentSensor.stateIndex = index;
@@ -3070,7 +3095,6 @@
                 for (int index = 0; index < [currentKnownValues count]; index++) {
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
-                    currentValue = curDeviceValues.value;
 
                     if ([currentDeviceTypeName isEqualToString:STATE]) {
                         currentSensor.stateIndex = index;
@@ -3098,7 +3122,7 @@
                 for (int index = 0; index < [currentKnownValues count]; index++) {
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
-                    currentValue = curDeviceValues.value;
+
                     // NSLog(@"Case17 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
                     if ([currentDeviceTypeName isEqualToString:STATE]) {
                         currentSensor.stateIndex = index;
@@ -3128,7 +3152,6 @@
                 for (int index = 0; index < [currentKnownValues count]; index++) {
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
-                    currentValue = curDeviceValues.value;
 
                     if ([currentDeviceTypeName isEqualToString:STATE]) {
                         currentSensor.stateIndex = index;
@@ -3334,15 +3357,8 @@
     UIButton *button = (UIButton *) sender;
     NSUInteger sensor_pos = (NSUInteger) button.tag;
 
-    NSArray *currentKnownValues;
-
     SFIDevice *sensor = self.deviceList[sensor_pos];
-    for (SFIDeviceValue *value in self.deviceValueList) {
-        if (sensor.deviceID == value.deviceID) {
-            currentKnownValues = value.knownValues;
-            break;
-        }
-    }
+    NSArray *currentKnownValues = [self currentKnownValuesForDevice:sensor.deviceID];
 
     SFIDeviceKnownValues *currentDeviceValue = currentKnownValues[(NSUInteger) sensor.tamperValueIndex];
     currentDeviceValue.value = @"false";
@@ -3355,34 +3371,18 @@
 }
 
 - (void)onDeviceClicked:(id)sender {
-    //// NSLog(@"%@", [gestureRecognizer view]);
     UIButton *btn = (UIButton *) sender;
-
-    [SNLog Log:@"%s: Device Clicked: TIME => %f", __PRETTY_FUNCTION__, CFAbsoluteTimeGetCurrent()];
-
-    // NSLog(@"Device Index Clicked: %ld", (long)btn.tag);
-    int deviceValueID;
-    int currentDeviceId;
-    NSMutableArray *currentKnownValues;
 
     SFIDevice *currentSensor = self.deviceList[(NSUInteger) btn.tag];
     int currentDeviceType = currentSensor.deviceType;
-    currentDeviceId = currentSensor.deviceID;
+    int currentDeviceId = currentSensor.deviceID;
 
-    for (SFIDeviceValue *value in self.deviceValueList) {
-        deviceValueID = value.deviceID;
-        if (currentDeviceId == deviceValueID) {
-            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-            currentKnownValues = value.knownValues;
-            break;
-        }
-    }
-
-    //[SNLog Log:@"%s: ID Match: Selected currentDeviceType is @%d", __PRETTY_FUNCTION__,currentDeviceType];
+    NSMutableArray *currentKnownValues = [self currentKnownValuesForDevice:currentDeviceId];
 
     SFIDeviceKnownValues *currentDeviceValue;
     NSString *currentValue;
     NSString *mostImpIndexName;
+
     switch (currentDeviceType) {
         case 1:
             //Switch
@@ -3577,10 +3577,55 @@
     self.changeSaturation = (unsigned int) self.currentColor.saturation;
 }
 
+#pragma mark - Sensor Values
+
+- (SFIDeviceKnownValues *)currentKnownValuesForDevice:(int)deviceId valueName:(NSString *)aValueName {
+    NSArray *currentKnownValues = [self currentKnownValuesForDevice:deviceId];
+    for (SFIDeviceKnownValues *value in currentKnownValues) {
+        if ([value.valueName isEqualToString:aValueName]) {
+            return value;
+        }
+    }
+    return nil;
+}
+
+- (NSMutableArray *)currentKnownValuesForDevice:(int)deviceId {
+    for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
+        if (deviceId == currentDeviceValue.deviceID) {
+            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
+            return currentDeviceValue.knownValues;
+        }
+    }
+    return nil;
+}
+
 #pragma mark - Sliding controls
 
 - (void)sliderTapped:(UIGestureRecognizer *)gestureRecognizer {
-    // NSLog(@"Send mobile command - Tapped");
+    [self onSensorSliderTap:gestureRecognizer valueName:@"SWITCH MULTILEVEL"];
+}
+
+- (IBAction)sliderDidEndSliding:(id)sender {
+    [self onSensorSliderDidEndSliding:sender valueName:@"SWITCH MULTILEVEL"];
+}
+
+- (void)coolingSliderTapped:(UIGestureRecognizer *)gestureRecognizer {
+    [self onSensorSliderTap:gestureRecognizer valueName:@"THERMOSTAT SETPOINT COOLING"];
+}
+
+- (IBAction)coolingSliderDidEndSliding:(id)sender {
+    [self onSensorSliderDidEndSliding:sender valueName:@"THERMOSTAT SETPOINT COOLING"];
+}
+
+- (void)heatingSliderTapped:(UIGestureRecognizer *)gestureRecognizer {
+    [self onSensorSliderTap:gestureRecognizer valueName:@"THERMOSTAT SETPOINT HEATING"];
+}
+
+- (IBAction)heatingSliderDidEndSliding:(id)sender {
+    [self onSensorSliderDidEndSliding:sender valueName:@"THERMOSTAT SETPOINT HEATING"];
+}
+
+- (void)onSensorSliderTap:(UIGestureRecognizer *)gestureRecognizer valueName:(NSString *)valueName {
     UISlider *slider = (UISlider *) gestureRecognizer.view;
     if (slider.highlighted) {
         return;
@@ -3590,339 +3635,74 @@
     CGFloat percentage = pt.x / slider.bounds.size.width;
     CGFloat delta = percentage * (slider.maximumValue - slider.minimumValue);
     CGFloat value = slider.minimumValue + delta;
-    // NSLog(@"Tapped Value: %f", value);
-    // NSLog(@"Device Index Clicked: %ld", (long)slider.tag);
     [slider setValue:value animated:YES];
 
-    //Send value to cloud
-    int sliderValue = (int) value;
-    int deviceValueID;
-    int currentDeviceId;
-    NSMutableArray *currentKnownValues;
     SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
-    //int currentDeviceType = currentSensor.deviceType;
-    currentDeviceId = currentSensor.deviceID;
+    int currentDeviceId = currentSensor.deviceID;
 
-    for (SFIDeviceValue *deviceValue in self.deviceValueList) {
-        deviceValueID = deviceValue.deviceID;
-        if (currentDeviceId == deviceValueID) {
-            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-            currentKnownValues = deviceValue.knownValues;
-            break;
-        }
-    }
+    // Update values
+    SFIDeviceKnownValues *deviceValue = [self currentKnownValuesForDevice:currentDeviceId valueName:valueName];
+    deviceValue.value = [NSString stringWithFormat:@"%d", (int) value];
 
-    //[SNLog Log:@"%s: ID Match: Selected currentDeviceType is @%d", __PRETTY_FUNCTION__,currentDeviceType];
+    // Keep track of them
+    self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
+    self.currentIndexID = deviceValue.index;
+    self.currentValue = deviceValue.value;
 
-    SFIDeviceKnownValues *currentDeviceValue;
-    NSString *mostImpIndexName;
+    // Send them back to the cloud
+    [self sendMobileCommand];
 
-    mostImpIndexName = currentSensor.mostImpValueName;
-    if ([mostImpIndexName isEqualToString:@"SWITCH MULTILEVEL"]) {
-        currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.mostImpValueIndex];
-        //Do not wait for response from Cloud
-        currentDeviceValue.value = [NSString stringWithFormat:@"%d", sliderValue];
-        self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
-        self.currentIndexID = currentDeviceValue.index;
-        self.currentValue = currentDeviceValue.value;
-        [self sendMobileCommand];
-        [self initializeImages];
-        //  [[self view] endEditing:YES];
-        [self.tableView reloadData];
-    }
+    [self initializeImages];
+    [self asyncReloadTable];
 }
 
-
-- (IBAction)sliderDidEndSliding:(id)sender {
-    // NSLog(@"Send mobile command");
+- (void)onSensorSliderDidEndSliding:(id)sender valueName:(NSString *)valueName {
     UISlider *slider = (UISlider *) sender;
-    int sliderValue = (int) (slider.value);
-    // NSLog(@"sliderValue = %d",sliderValue);
-
-    // NSLog(@"Device Index Clicked: %ld", (long)slider.tag);
-    int deviceValueID;
-    int currentDeviceId;
-    NSMutableArray *currentKnownValues;
 
     SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
-    //int currentDeviceType = currentSensor.deviceType;
-    currentDeviceId = currentSensor.deviceID;
+    int currentDeviceId = currentSensor.deviceID;
 
-    for (SFIDeviceValue *value in self.deviceValueList) {
-        deviceValueID = value.deviceID;
-        if (currentDeviceId == deviceValueID) {
-            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-            currentKnownValues = value.knownValues;
-            break;
-        }
-    }
+    SFIDeviceKnownValues *deviceValue = [self currentKnownValuesForDevice:currentDeviceId valueName:valueName];
+    deviceValue.value = [NSString stringWithFormat:@"%d", (int) (slider.value)]; //Do not wait for response from Cloud
 
-    //[SNLog Log:@"%s: ID Match: Selected currentDeviceType is @%d", __PRETTY_FUNCTION__,currentDeviceType];
+    self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
+    self.currentIndexID = deviceValue.index;
+    self.currentValue = deviceValue.value;
 
-    SFIDeviceKnownValues *currentDeviceValue;
-    NSString *mostImpIndexName;
+    [self sendMobileCommand];
 
-    mostImpIndexName = currentSensor.mostImpValueName;
-    if ([mostImpIndexName isEqualToString:@"SWITCH MULTILEVEL"]) {
-        currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.mostImpValueIndex];
-        //Do not wait for response from Cloud
-        currentDeviceValue.value = [NSString stringWithFormat:@"%d", sliderValue];
-        self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
-        self.currentIndexID = currentDeviceValue.index;
-        self.currentValue = currentDeviceValue.value;
-        [self sendMobileCommand];
-        [self initializeImages];
-        // [[self view] endEditing:YES];
-        [self.tableView reloadData];
-    }
-}
-
-- (void)coolingSliderTapped:(UIGestureRecognizer *)gestureRecognizer {
-    // NSLog(@"Send mobile command - Tapped");
-    UISlider* slider = (UISlider*)gestureRecognizer.view;
-    if (slider.highlighted)
-        return; // tap on thumb, let slider deal with it
-    CGPoint pt = [gestureRecognizer locationInView: slider];
-    CGFloat percentage = pt.x / slider.bounds.size.width;
-    CGFloat delta = percentage * (slider.maximumValue - slider.minimumValue);
-    CGFloat value = slider.minimumValue + delta;
-    // NSLog(@"Tapped Value: %f", value);
-    // NSLog(@"Device Index Clicked: %ld", (long)slider.tag);
-    [slider setValue:value animated:YES];
-
-    //Send value to cloud
-    int sliderValue=(int)value;
-    int deviceValueID;
-    int currentDeviceId;
-    NSMutableArray *currentKnownValues;
-    SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
-    //int currentDeviceType = currentSensor.deviceType;
-    currentDeviceId = currentSensor.deviceID;
-    for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-        deviceValueID = currentDeviceValue.deviceID;
-        if(currentDeviceId == deviceValueID){
-            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-            currentKnownValues = currentDeviceValue.knownValues;
-            break;
-        }
-    }
-
-    //Change value locally and send mobile command
-    for(SFIDeviceKnownValues *currentDeviceValue in currentKnownValues){
-        if([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT SETPOINT COOLING"]){
-            //Do not wait for response from Cloud
-            currentDeviceValue.value = [NSString stringWithFormat:@"%d",sliderValue];
-            self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
-            self.currentIndexID = currentDeviceValue.index;
-            self.currentValue = currentDeviceValue.value;
-            [self sendMobileCommand];
-            [self initializeImages];
-            [self asyncReloadTable];
-            break;
-        }
-    }
-}
-
-
-- (IBAction)coolingSliderDidEndSliding:(id)sender {
-    // NSLog(@"Send mobile command");
-    UISlider *slider=(UISlider *)sender;
-    int sliderValue=(int)(slider.value);
-    // NSLog(@"sliderValue = %d",sliderValue);
-
-    // NSLog(@"Device Index Clicked: %ld", (long)slider.tag);
-    int deviceValueID;
-    int currentDeviceId;
-    NSMutableArray *currentKnownValues;
-
-    SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
-    //int currentDeviceType = currentSensor.deviceType;
-    currentDeviceId = currentSensor.deviceID;
-    for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-        deviceValueID = currentDeviceValue.deviceID;
-        if(currentDeviceId == deviceValueID){
-            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-            currentKnownValues = currentDeviceValue.knownValues;
-            break;
-        }
-    }
-
-    //Change value locally and send mobile command
-    for(SFIDeviceKnownValues *currentDeviceValue in currentKnownValues){
-        if([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT SETPOINT COOLING"]){
-            //Do not wait for response from Cloud
-            currentDeviceValue.value = [NSString stringWithFormat:@"%d",sliderValue];
-            self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
-            self.currentIndexID = currentDeviceValue.index;
-            self.currentValue = currentDeviceValue.value;
-            [self sendMobileCommand];
-            [self initializeImages];
-            [self.tableView reloadData];
-            break;
-        }
-    }
-
-}
-
-
-- (void)heatingSliderTapped:(UIGestureRecognizer *)gestureRecognizer {
-    // NSLog(@"Send mobile command - Tapped");
-    UISlider* slider = (UISlider*)gestureRecognizer.view;
-    if (slider.highlighted)
-        return; // tap on thumb, let slider deal with it
-    CGPoint pt = [gestureRecognizer locationInView: slider];
-    CGFloat percentage = pt.x / slider.bounds.size.width;
-    CGFloat delta = percentage * (slider.maximumValue - slider.minimumValue);
-    CGFloat value = slider.minimumValue + delta;
-    // NSLog(@"Tapped Value: %f", value);
-    // NSLog(@"Device Index Clicked: %ld", (long)slider.tag);
-    [slider setValue:value animated:YES];
-
-    //Send value to cloud
-    int sliderValue=(int)value;
-    int deviceValueID;
-    int currentDeviceId;
-    NSMutableArray *currentKnownValues;
-    SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
-    //int currentDeviceType = currentSensor.deviceType;
-    currentDeviceId = currentSensor.deviceID;
-    for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-        deviceValueID = currentDeviceValue.deviceID;
-        if(currentDeviceId == deviceValueID){
-            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-            currentKnownValues = currentDeviceValue.knownValues;
-            break;
-        }
-    }
-
-    //Change value locally and send mobile command
-    for(SFIDeviceKnownValues *currentDeviceValue in currentKnownValues){
-        if([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT SETPOINT HEATING"]){
-            //Do not wait for response from Cloud
-            currentDeviceValue.value = [NSString stringWithFormat:@"%d",sliderValue];
-            self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
-            self.currentIndexID = currentDeviceValue.index;
-            self.currentValue = currentDeviceValue.value;
-            [self sendMobileCommand];
-            [self initializeImages];
-            [self asyncReloadTable];
-            break;
-        }
-    }
-}
-
-
-- (IBAction)heatingSliderDidEndSliding:(id)sender {
-    // NSLog(@"Send mobile command");
-    UISlider *slider = (UISlider *) sender;
-    int sliderValue = (int) (slider.value);
-
-    int deviceValueID;
-    int currentDeviceId;
-    NSMutableArray *currentKnownValues;
-
-    SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
-    currentDeviceId = currentSensor.deviceID;
-
-    for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-        deviceValueID = currentDeviceValue.deviceID;
-        if (currentDeviceId == deviceValueID) {
-            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-            currentKnownValues = currentDeviceValue.knownValues;
-            break;
-        }
-    }
-
-    //Change value locally and send mobile command
-    for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        if ([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT SETPOINT HEATING"]) {
-            //Do not wait for response from Cloud
-            currentDeviceValue.value = [NSString stringWithFormat:@"%d", sliderValue];
-            self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
-            self.currentIndexID = currentDeviceValue.index;
-            self.currentValue = currentDeviceValue.value;
-            [self sendMobileCommand];
-            [self initializeImages];
-            [self.tableView reloadData];
-            break;
-        }
-    }
+    [self initializeImages];
+    [self asyncReloadTable];
 }
 
 #pragma mark - Segment Control Method
 
 - (void)modeSelected:(id)sender {
-    UISegmentedControl *ctrl = (UISegmentedControl *) sender;
-    NSString *strModeValue = [ctrl titleForSegmentAtIndex:(NSUInteger) ctrl.selectedSegmentIndex];
-    NSLog(@"Mode Selected title %@", strModeValue);
-
-    int deviceValueID;
-    int currentDeviceId;
-    NSMutableArray *currentKnownValues;
-
-    SFIDevice *currentSensor = self.deviceList[(NSUInteger) ctrl.tag];
-    currentDeviceId = currentSensor.deviceID;
-
-    for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-        deviceValueID = currentDeviceValue.deviceID;
-        if (currentDeviceId == deviceValueID) {
-            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-            currentKnownValues = currentDeviceValue.knownValues;
-            break;
-        }
-    }
-
-    //Change value locally and send mobile command
-    for (SFIDeviceKnownValues *value in currentKnownValues) {
-        if ([value.valueName isEqualToString:@"THERMOSTAT MODE"]) {
-            //Do not wait for response from Cloud
-            value.value = strModeValue;
-            self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
-            self.currentIndexID = value.index;
-            self.currentValue = value.value;
-            [self sendMobileCommand];
-            [self initializeImages];
-            [self.tableView reloadData];
-            break;
-        }
-    }
+    [self onUpdateSegmentedControlValue:sender valueName:@"THERMOSTAT MODE"];
 }
 
 - (void)fanModeSelected:(id)sender {
-    UISegmentedControl *ctrl = (UISegmentedControl *) sender;
-    NSString *strFanModeValue = [ctrl titleForSegmentAtIndex:(NSUInteger) ctrl.selectedSegmentIndex];
-    NSLog(@"Fan Mode Selected title %@", strFanModeValue);
+    [self onUpdateSegmentedControlValue:sender valueName:@"THERMOSTAT FAN MODE"];
+}
 
-    int deviceValueID;
-    int currentDeviceId;
-    NSMutableArray *currentKnownValues;
+- (void)onUpdateSegmentedControlValue:(id)sender valueName:(NSString *)valueName {
+    UISegmentedControl *ctrl = (UISegmentedControl *) sender;
+    NSString *strModeValue = [ctrl titleForSegmentAtIndex:(NSUInteger) ctrl.selectedSegmentIndex];
 
     SFIDevice *currentSensor = self.deviceList[(NSUInteger) ctrl.tag];
-    currentDeviceId = currentSensor.deviceID;
+    int currentDeviceId = currentSensor.deviceID;
 
-    for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-        deviceValueID = currentDeviceValue.deviceID;
-        if (currentDeviceId == deviceValueID) {
-            //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-            currentKnownValues = currentDeviceValue.knownValues;
-            break;
-        }
-    }
+    SFIDeviceKnownValues *deviceValue = [self currentKnownValuesForDevice:currentDeviceId valueName:valueName];
+    deviceValue.value = strModeValue;
 
-    //Change value locally and send mobile command
-    for (SFIDeviceKnownValues *deviceValue in currentKnownValues) {
-        if ([deviceValue.valueName isEqualToString:@"THERMOSTAT FAN MODE"]) {
-            //Do not wait for response from Cloud
-            deviceValue.value = strFanModeValue;
-            self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
-            self.currentIndexID = deviceValue.index;
-            self.currentValue = deviceValue.value;
-            [self sendMobileCommand];
-            [self initializeImages];
-            [self.tableView reloadData];
-            break;
-        }
-    }
+    self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
+    self.currentIndexID = deviceValue.index;
+    self.currentValue = deviceValue.value;
+
+    [self sendMobileCommand];
+
+    [self initializeImages];
+    [self asyncReloadTable];
 }
 
 #pragma mark - Keyboard methods
@@ -3934,23 +3714,23 @@
     return YES;
 }
 
-- (void)tfNameDidChange:(UITextField *)tfName {
+- (void)sensorNameTextFieldDidChange:(UITextField *)tfName {
     NSLog(@"tfName for device: %ld Value: %@", (long) tfName.tag, tfName.text);
     self.currentChangedName = tfName.text;
 }
 
-- (void)tfLocationDidChange:(UITextField *)tfLocation {
+- (void)sensorLocationTextFieldDidChange:(UITextField *)tfLocation {
     NSLog(@"tfLocation for device: %ld Value: %@", (long) tfLocation.tag, tfLocation.text);
     self.currentChangedLocation = tfLocation.text;
 }
 
-- (void)tfNameFinished:(UITextField *)tfName {
+- (void)sensorNameTextFieldFinished:(UITextField *)tfName {
     NSLog(@"tfName for device: %ld Value: %@", (long) tfName.tag, tfName.text);
     self.currentChangedName = tfName.text;
     [tfName resignFirstResponder];
 }
 
-- (void)tfLocationFinished:(UITextField *)tfLocation {
+- (void)sensorLocationTextFieldFinished:(UITextField *)tfLocation {
     NSLog(@"tfLocation for device: %ld Value: %@", (long) tfLocation.tag, tfLocation.text);
     self.currentChangedLocation = tfLocation.text;
     [tfLocation resignFirstResponder];
@@ -4176,8 +3956,7 @@
     [self.HUD hide:YES];
 }
 
--(void)onMobileCommandResponseCallback:(id)sender
-{
+- (void)onMobileCommandResponseCallback:(id)sender {
     //PY 311013 - Timeout for Mobile Command
     [self.mobileCommandTimer invalidate];
     self.isMobileCommandSuccessful = TRUE;
@@ -4186,44 +3965,35 @@
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
-    if(data !=nil){
+    if (data != nil) {
         //[SNLog Log:@"%s: Received MobileCommandResponse",__PRETTY_FUNCTION__];
 
-        MobileCommandResponse *obj = (MobileCommandResponse *)[data valueForKey:@"data"];
+        MobileCommandResponse *obj = (MobileCommandResponse *) [data valueForKey:@"data"];
 
         BOOL isSuccessful = obj.isSuccessful;
-        if(isSuccessful){
+        if (isSuccessful) {
             //Command updated values
             //update offline storage
-            int deviceValueID;
-            NSMutableArray *currentKnownValues;
+            int deviceValueID = [self.currentDeviceID integerValue];
 
-            for(SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-                deviceValueID = currentDeviceValue.deviceID;
-                if([self.currentDeviceID integerValue] == deviceValueID){
-                    // //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-                    currentKnownValues = currentDeviceValue.knownValues;
-                }
-            }
-
+            NSArray *currentKnownValues = [self currentKnownValuesForDevice:deviceValueID];
             NSArray *mobileDeviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
 
             //To save on the offline list
             //[SNLog Log:@"%s: Update Offline List before 82 triggers", __PRETTY_FUNCTION__];
-            NSMutableArray * mobileDeviceKnownValues;
-            if(mobileDeviceValueList!=nil)
-            {
-                for (SFIDeviceValue *currentMobileValue in mobileDeviceValueList){
+            NSMutableArray *mobileDeviceKnownValues;
+            if (mobileDeviceValueList != nil) {
+                for (SFIDeviceValue *currentMobileValue in mobileDeviceValueList) {
                     //[SNLog Log:@"%s: Mobile DeviceID: %d" , __PRETTY_FUNCTION__,currentMobileValue.deviceID];
-                    if(currentMobileValue.deviceID == [self.currentDeviceID integerValue]){
+                    if (currentMobileValue.deviceID == [self.currentDeviceID integerValue]) {
                         //[SNLog Log:@"%s: Device found in list: %@" , __PRETTY_FUNCTION__,self.currentDeviceID];
                         mobileDeviceKnownValues = currentMobileValue.knownValues;
-                        for(SFIDeviceKnownValues *currentMobileKnownValue in mobileDeviceKnownValues){
+                        for (SFIDeviceKnownValues *currentMobileKnownValue in mobileDeviceKnownValues) {
                             //[SNLog Log:@"%s: Mobile Device Known Value Index: %d" , __PRETTY_FUNCTION__,currentMobileKnownValue.index];
 
-                            for(SFIDeviceKnownValues *currentLocalKnownValue in currentKnownValues){
+                            for (SFIDeviceKnownValues *currentLocalKnownValue in currentKnownValues) {
                                 //[SNLog Log:@"%s: Activity Local Device Known Value Index: %d " , __PRETTY_FUNCTION__,currentLocalKnownValue.index];
-                                if(currentMobileKnownValue.index == currentLocalKnownValue.index){
+                                if (currentMobileKnownValue.index == currentLocalKnownValue.index) {
                                     //Update Value
                                     //[SNLog Log:@"%s: BEFORE update => Cloud: %@ Mobile: %@" , __PRETTY_FUNCTION__,currentLocalKnownValue.value , currentMobileKnownValue.value];
                                     [currentMobileKnownValue setValue:currentLocalKnownValue.value];
@@ -4239,11 +4009,13 @@
                 }
                 //Write to local database
                 [SFIOfflineDataManager writeDeviceValueList:mobileDeviceValueList currentMAC:self.currentMAC];
-            }else{
+            }
+            else {
                 //[SNLog Log:@"%s: Error in retrieving device list", __PRETTY_FUNCTION__];
             }
 
-        }else{
+        }
+        else {
             //TODO: Display message
             // NSLog(@"Reason: %@", obj.reason);
         }
@@ -4258,26 +4030,25 @@
 
 }
 
--(void)onDeviceDataCloudResponseCallback:(id)sender {
+- (void)onDeviceDataCloudResponseCallback:(id)sender {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
 
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
-    if(data !=nil){
-        DeviceListResponse *obj = (DeviceListResponse *)[data valueForKey:@"data"];
+    if (data != nil) {
+        DeviceListResponse *obj = (DeviceListResponse *) [data valueForKey:@"data"];
 
         BOOL isCurrentMAC = FALSE;
         NSString *cloudMAC = obj.almondMAC;
-        [SNLog Log:@"%s: Current MAC ==> @%@ Cloud MAC ==> @%@ DEVICE DATA LIST SIZE: ",__PRETTY_FUNCTION__,self.currentMAC, cloudMAC, [obj.deviceList count]];
-        if([cloudMAC isEqualToString:self.currentMAC]){
-
+        [SNLog Log:@"%s: Current MAC ==> @%@ Cloud MAC ==> @%@ DEVICE DATA LIST SIZE: ", __PRETTY_FUNCTION__, self.currentMAC, cloudMAC, [obj.deviceList count]];
+        if ([cloudMAC isEqualToString:self.currentMAC]) {
             //Save isExpanded
-            for(SFIDevice *currentCloudDevice in obj.deviceList){
+            for (SFIDevice *currentCloudDevice in obj.deviceList) {
                 //[SNLog Log:@"%s: Cloud DeviceID: %d" , __PRETTY_FUNCTION__,currentCloudDevice.deviceID];
-                for(SFIDevice *currentMobileDevice in self.deviceList){
+                for (SFIDevice *currentMobileDevice in self.deviceList) {
                     //[SNLog Log:@"%s: Mobile DeviceID: %d" , __PRETTY_FUNCTION__,currentMobileDevice.deviceID];
-                    if(currentCloudDevice.deviceID == currentMobileDevice.deviceID){
+                    if (currentCloudDevice.deviceID == currentMobileDevice.deviceID) {
                         //[SNLog Log:@"%s: Device ID Match - Update isExpanded" , __PRETTY_FUNCTION__];
                         currentCloudDevice.isExpanded = currentMobileDevice.isExpanded;
                     }
@@ -4305,12 +4076,12 @@
         //        });
 
         //Update UI
-        if(isCurrentMAC){
+        if (isCurrentMAC) {
             self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
 
             //Compare the list with device value list size and correct the list accordingly if any device was deleted
             //Compare the size
-            if([self.deviceList count] < [self.deviceValueList count]){
+            if ([self.deviceList count] < [self.deviceValueList count]) {
                 // NSLog(@"Sensor View: Some device was deleted!");
                 //Reload Device Value List which was updated by Offline Data Manager
                 self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
@@ -4490,9 +4261,7 @@
     }
 
     UIButton *btnObj = (UIButton *) sender;
-    NSLog(@"Save button clicked for device: %ld", (long) btnObj.tag);
     SFIDevice *currentSensor = self.deviceList[(NSUInteger) btnObj.tag];
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
 
     SensorChangeRequest *sensorChangeCommand = [[SensorChangeRequest alloc] init];
     sensorChangeCommand.almondMAC = self.currentMAC;
