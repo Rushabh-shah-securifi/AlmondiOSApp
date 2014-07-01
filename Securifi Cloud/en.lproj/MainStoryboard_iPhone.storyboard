@@ -159,6 +159,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="M4K-eh-pVC">
                                         <rect key="frame" x="33" y="219" width="274" height="47"/>
+                                        <color key="textColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                         <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="20"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                                         <connections>

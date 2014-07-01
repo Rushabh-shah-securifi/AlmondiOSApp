@@ -10,10 +10,14 @@
 #import "SNLog.h"
 #import "MBProgressHUD.h"
 
-#define SIGNUP   1
-#define LOGIN    2
-
 #define PWD_MIN_LENGTH 6
+
+#define CONINUE_BUTTON_SIGNUP               1
+#define CONINUE_BUTTON_LOGIN                2
+
+#define FOOTER_TERMS_CONDS                  1
+#define FOOTER_RESEND_ACTIVATION_LINK       2
+#define FOOTER_SIGNUP_DIFF_EMAIL            3
 
 #define REGEX_PASSWORD_ONE_UPPERCASE @"^(?=.*[A-Z]).*$"  //Should contains one or more uppercase letters
 #define REGEX_PASSWORD_ONE_LOWERCASE @"^(?=.*[a-z]).*$"  //Should contains one or more lowercase letters
@@ -31,7 +35,6 @@ typedef enum {
 
 @property(nonatomic) UITextField *activeTextField;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
-@property NSInteger state;
 @end
 
 @implementation SFISignupViewController
@@ -49,33 +52,22 @@ typedef enum {
     self.navigationItem.title = @"Sign up";
 
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelAction:)];
-    UIBarButtonItem *continueButton = [[UIBarButtonItem alloc] initWithTitle:@"Continue" style:UIBarButtonItemStylePlain target:self action:@selector(onSignupAction:)];
+    UIBarButtonItem *continueButton = [[UIBarButtonItem alloc] initWithTitle:@"Continue" style:UIBarButtonItemStylePlain target:self action:@selector(onContinueAction:)];
 
     self.navigationItem.leftBarButtonItem = cancelButton;
     self.navigationItem.rightBarButtonItem = continueButton;
 
     [self enableContinueButton:NO];
 
-    self.state = SIGNUP;
-
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.dimBackground = YES;
     [self.view addSubview:_HUD];
 
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-    [center addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
-
-    //PY 181013 - Button tag
-    self.footerButton.tag = 1; //Terms and Condition
-
-    self.emailID.delegate = self;
-    self.password.delegate = self;
-    self.confirmPassword.delegate = self;
-
     self.scrollView.scrollEnabled = NO;
     self.scrollView.scrollsToTop = NO;
+
+    [self displayScreenToSignup];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -87,29 +79,9 @@ typedef enum {
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
-               selector:@selector(SignupResponseCallback:)
+               selector:@selector(onSignupResponseCallback:)
                    name:SIGN_UP_NOTIFIER
                  object:nil];
-
-    [center addObserver:self
-               selector:@selector(loginResponse:)
-                   name:LOGIN_NOTIFIER
-                 object:nil];
-
-    //PY 311013 Reconnection Logic
-    [center addObserver:self
-               selector:@selector(networkDownNotifier:)
-                   name:NETWORK_DOWN_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(networkUpNotifier:)
-                   name:NETWORK_UP_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(reachabilityDidChange:)
-                   name:kSFIReachabilityChangedNotification object:nil];
 
     [center addObserver:self
                selector:@selector(validateResponseCallback:)
@@ -117,10 +89,14 @@ typedef enum {
                  object:nil];
 
     [center addObserver:self
-               selector:@selector(resetPasswordResponseCallback:)
-                   name:RESET_PWD_RESPONSE_NOTIFIER
+               selector:@selector(keyboardDidShow:)
+                   name:UIKeyboardDidShowNotification
                  object:nil];
 
+    [center addObserver:self
+               selector:@selector(keyboardDidHide:)
+                   name:UIKeyboardDidHideNotification
+                 object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -136,27 +112,11 @@ typedef enum {
                     object:nil];
 
     [center removeObserver:self
-                      name:LOGIN_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:NETWORK_UP_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:NETWORK_DOWN_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:kSFIReachabilityChangedNotification
-                    object:nil];
-
-    [center removeObserver:self
                       name:VALIDATE_RESPONSE_NOTIFIER
                     object:nil];
 
     [center removeObserver:self
-                      name:RESET_PWD_RESPONSE_NOTIFIER
+                      name:UIKeyboardDidShowNotification
                     object:nil];
 
     [center removeObserver:self
@@ -166,49 +126,28 @@ typedef enum {
 
 #pragma mark - Modes
 
-- (void)displayScreenToLogin {
-    self.state = LOGIN;
-
-    self.password.text = @"";
-    self.password.hidden = FALSE;
-    self.confirmPassword.hidden = TRUE;
-    self.loginButton.hidden = TRUE;
-    self.forgotPwdButton.hidden = FALSE;
-    self.lblPasswordStrength.hidden = TRUE;
-    self.passwordStrengthIndicator.hidden = TRUE;
-    self.footerLabel.text = @"Did not receive any email?";
-
-    [self.footerButton setTitle:@"Resend activation link" forState:UIControlStateNormal];
-    [self.footerButton setTitle:@"Resend activation link" forState:UIControlStateHighlighted];
-    [self.footerButton setTitle:@"Resend activation link" forState:UIControlStateDisabled];
-    [self.footerButton setTitle:@"Resend activation link" forState:UIControlStateSelected];
-    //PY 181013 - Button tag
-    self.footerButton.tag = 2; //Resend activation Link
-}
-
 - (void)displayScreenToSignup {
-    self.state = SIGNUP;
-
-    [self setStandardHeadline];
-
-    self.emailID.enabled = TRUE;
     self.emailID.text = @"";
     self.password.text = @"";
-    self.password.hidden = FALSE;
     self.confirmPassword.text = @"";
-    self.confirmPassword.hidden = FALSE;
-    self.loginButton.hidden = TRUE;
-    self.forgotPwdButton.hidden = TRUE;
     self.lblPasswordStrength.text = @"";
-    self.lblPasswordStrength.hidden = FALSE;
-    self.passwordStrengthIndicator.hidden = FALSE;
-    self.footerLabel.text = @"By tapping Continue you are indicating that \nyou have read and agreed to our";
+    self.lblPasswordStrength.hidden = NO;
+    self.passwordStrengthIndicator.hidden = NO;
 
-    self.footerButton.tag = 1;
-    [self.footerButton setTitle:@"Terms and Conditions" forState:UIControlStateNormal];
-    [self.footerButton setTitle:@"Terms and Conditions" forState:UIControlStateHighlighted];
-    [self.footerButton setTitle:@"Terms and Conditions" forState:UIControlStateDisabled];
-    [self.footerButton setTitle:@"Terms and Conditions" forState:UIControlStateSelected];
+    [self setStandardHeadline];
+    [self setContinueButtonTag:CONINUE_BUTTON_SIGNUP];
+    [self setFooterForTag:FOOTER_TERMS_CONDS];
+}
+
+- (void)displayScreenToLogin {
+    // Do not null out email text field because it is needed for re-sending confirmation email
+    self.lblPasswordStrength.text = @"";
+    self.lblPasswordStrength.hidden = YES;
+    self.passwordStrengthIndicator.hidden = YES;
+
+    [self setAlmostDoneHeadline];
+    [self setContinueButtonTag:CONINUE_BUTTON_LOGIN];
+    [self setFooterForTag:FOOTER_RESEND_ACTIVATION_LINK];
 }
 
 - (void)setStandardHeadline {
@@ -216,8 +155,62 @@ typedef enum {
     self.subHeadingLabel.text = @"Access your Almonds and\nyour home devices from anywhere.";
 }
 
+- (void)setSigningUpHeadline {
+    self.headingLabel.text = @"Signing up.";
+    self.subHeadingLabel.text = @"Please wait one moment...";
+}
+
+- (void)setAlmostDoneHeadline {
+    self.headingLabel.text = @"Almost done.";
+    self.subHeadingLabel.text = @"An activation link was sent to your email. \n Follow it, then tap Continue to login.";
+}
+
+- (void)setFooterForTag:(int)tag {
+    NSString *label;
+    NSString *button;
+
+    switch (tag) {
+        case FOOTER_TERMS_CONDS: {
+            label = @"By tapping Continue you are indicating that \nyou have read and agreed to our";
+            button = @"Terms and Conditions";
+            break;
+        }
+
+        case FOOTER_RESEND_ACTIVATION_LINK:
+            label = @"";
+            button = @"Resend the activation email";
+            break;
+
+        case FOOTER_SIGNUP_DIFF_EMAIL: {
+            label = @"Do you want to create another account?";
+            button = @"Signup using another email";
+            break;
+        }
+
+        default:   {
+            return;
+        }
+    }
+
+    self.footerLabel.text = label;
+
+    self.footerButton.tag = tag;
+    [self.footerButton setTitle:button forState:UIControlStateNormal];
+    [self.footerButton setTitle:button forState:UIControlStateHighlighted];
+    [self.footerButton setTitle:button forState:UIControlStateDisabled];
+    [self.footerButton setTitle:button forState:UIControlStateSelected];
+}
+
 - (void)enableContinueButton:(BOOL)enabled {
     self.navigationItem.rightBarButtonItem.enabled = enabled;
+}
+
+- (void)setContinueButtonTag:(int)tag {
+    self.navigationItem.rightBarButtonItem.tag = tag;
+}
+
+- (int)continueButtonTag {
+    return self.navigationItem.rightBarButtonItem.tag;
 }
 
 #pragma mark - Orientation Handling
@@ -250,7 +243,7 @@ typedef enum {
     // Your app might not need or want this behavior.
     CGRect aRect = self.view.frame;
     aRect.size.height -= kbSize.height;
-    
+
     CGRect rect = self.activeTextField.frame;
     if (!CGRectContainsPoint(aRect, rect.origin)) {
         [self.scrollView scrollRectToVisible:rect animated:YES];
@@ -292,23 +285,10 @@ typedef enum {
     }
     else if (textField == self.password) {
         [textField resignFirstResponder];
-        if (self.state == SIGNUP) {
-            [self.confirmPassword becomeFirstResponder];
-        }
-        else {
-            //Send Login command
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(loginResponse:)
-                                                         name:LOGIN_NOTIFIER
-                                                       object:nil];
-            [self sendLoginCommand];
-        }
+        [self.confirmPassword becomeFirstResponder];
     }
     else if (textField == self.confirmPassword) {
         [textField resignFirstResponder];
-        NSLog(@"Signup Action!!");
-        //[self signupButtonHandler:nil];
-        //Check password
         PasswordStrengthType pwdStrength = [self checkPasswordStrength:self.password.text];
         [self displayPasswordIndicator:pwdStrength];
     }
@@ -336,13 +316,13 @@ typedef enum {
 - (BOOL)validateSignupValues {
     if (self.emailID.text.length == 0) {
         self.headingLabel.text = @"Oops!";
-        self.subHeadingLabel.text = @"You forgot to enter your email id.";
+        self.subHeadingLabel.text = @"You forgot to enter your email ID.";
         return NO;
     }
     else if (![self validateEmail:self.emailID.text]) {
         //Email Address is invalid.
         self.headingLabel.text = @"Oops!";
-        self.subHeadingLabel.text = @"You have entered an invalid email id.";
+        self.subHeadingLabel.text = @"You have entered an invalid email ID.";
         return NO;
     }
     else if (self.password.text.length == 0) {
@@ -368,21 +348,17 @@ typedef enum {
     }
 }
 
-- (IBAction)onSignupAction:(id)sender {
+- (IBAction)onContinueAction:(id)sender {
     [self dismissKeyboard];
 
-    if (self.state == SIGNUP) {
+    int tag = [self continueButtonTag];
+
+    if (tag == CONINUE_BUTTON_LOGIN) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else if (tag == CONINUE_BUTTON_SIGNUP) {
         if ([self validateSignupValues]) {
             [self sendSignupCommand];
-        }
-    }
-    else if (self.state == LOGIN) {
-        if ([self validateSignupValues]) {
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(loginResponse:)
-                                                         name:LOGIN_NOTIFIER
-                                                       object:nil];
-            [self sendLoginCommand];
         }
     }
 }
@@ -393,43 +369,28 @@ typedef enum {
 
 - (IBAction)footerButtonHandler:(id)sender {
     UIButton *btn = (UIButton *) sender;
-    NSLog(@"Button Text: %@ Tag: %d", btn.currentTitle, btn.tag);
     switch (btn.tag) {
-        case 1: {
-            //Terms and Condition
+        case FOOTER_TERMS_CONDS: {
             NSLog(@"Terms and Condition");
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
             UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFITermsViewController"];
             [self presentViewController:mainView animated:YES completion:nil];
             break;
         }
-        case 2:
+        case FOOTER_RESEND_ACTIVATION_LINK: {
             //Resend activation link
             NSLog(@"Resend activation link");
             [self sendReactivationRequest];
             break;
-        case 3:
-            //Signup using another email
+        }
+        case FOOTER_SIGNUP_DIFF_EMAIL: {
             NSLog(@"Signup using another email");
-            //Show sign up screen with empty
             [self displayScreenToSignup];
             break;
+        }
         default:
             break;
     }
-}
-
-- (IBAction)onForgotPasswordAction:(id)sender {
-    NSLog(@"Forgot Button Handler");
-    [self sendResetPasswordRequest];
-}
-
-- (IBAction)onLoginAction:(id)sender {
-    NSLog(@"Login Button Handler");
-    self.state = LOGIN;
-    self.headingLabel.text = @"Login";
-    self.subHeadingLabel.text = @"Access your Almonds and \nyour home devices from anywhere.";
-    [self displayScreenToLogin];
 }
 
 #pragma mark - Password strength
@@ -523,123 +484,11 @@ typedef enum {
     }
 }
 
-#pragma mark - Reconnection
-
-- (void)networkUpNotifier:(id)sender {
-    if (!self.isCloudOnline) {
-        [[SecurifiToolkit sharedInstance] initSDKCloud];
-        [self.HUD hide:YES];
-    }
-}
-
-- (void)networkDownNotifier:(id)sender {
-    if (!self.isCloudOnline) {
-        [self.HUD hide:YES];
-        self.HUD.labelText = @"Network Down";
-        [self.HUD hide:YES afterDelay:1];
-    }
-}
-
-- (void)reachabilityDidChange:(NSNotification *)notification {
-    //Reachability *reachability = (Reachability *)[notification object];
-    if ([[SFIReachabilityManager sharedManager] isReachable]) {
-        NSLog(@"Reachable");
-
-        [self.HUD hide:YES];
-        self.HUD.labelText = @"Reconnecting...";
-        [self.HUD hide:YES afterDelay:1];
-
-//        [[SecurifiToolkit sharedInstance] initSDK];
-    }
-    else {
-        NSLog(@"Unreachable");
-    }
-}
-
-#pragma mark - State management
-
-- (BOOL)isCloudOnline {
-    return [[SecurifiToolkit sharedInstance] isCloudOnline];
-}
-
 #pragma mark - Cloud Command : Sender and Receivers
 
-- (void)sendLoginCommand {
-    [[SecurifiToolkit sharedInstance] asyncSendLoginWithEmail:self.emailID.text password:self.password.text];
-}
-
-- (void)loginResponse:(id)sender {
-
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-
-    //Login failed
-    if ([notifier userInfo] == nil) {
-        [SNLog Log:@"%s: TEMP Pass failed", __PRETTY_FUNCTION__];
-
-    }
-    else {
-        [SNLog Log:@"%s: Received login response", __PRETTY_FUNCTION__];
-
-        LoginResponse *obj = (LoginResponse *) [data valueForKey:@"data"];
-
-        [SNLog Log:@"%s: UserID %@", __PRETTY_FUNCTION__, obj.userID];
-        [SNLog Log:@"%s: TempPass %@", __PRETTY_FUNCTION__, obj.tempPass];
-        [SNLog Log:@"%s: isSuccessful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-        [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
-        //[SNLog Log:@"%s: Reason : %d", __PRETTY_FUNCTION__,obj.reasonCode];
-        NSLog(@"Reason Code: %d", obj.reasonCode);
-
-        if (obj.isSuccessful == 0) {
-            NSString *failureReason;
-
-            switch (obj.reasonCode) {
-                case 1:
-                    failureReason = @"The email was not found.";
-                    break;
-                case 2:
-                    failureReason = @"The password is incorrect.";
-                    break;
-                case 3:
-                    failureReason = @"The email is not activated.";
-//                    storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-//                    mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFIActivationViewController"];
-//                    [self presentViewController:mainView animated:YES completion:nil];
-                    break;
-                case 4:
-                    failureReason = @"The email or password is incorrect";
-                    break;
-                default:
-                    failureReason = @"Sorry! Login was unsuccessful.";
-            }
-            self.headingLabel.text = @"Oops";
-            self.subHeadingLabel.text = failureReason;
-
-        }
-        else if (obj.isSuccessful == 1) {
-            [SNLog Log:@"%s: Login Successful -- Load different view", __PRETTY_FUNCTION__];
-
-            self.HUD.dimBackground = YES;
-            self.HUD.labelText = @"Loading your personal data.";
-            [self.HUD show:YES];
-
-            //Retrieve Almond List, Device List and Device Value - Before displaying the screen
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(AlmondListResponseCallback:)
-                                                         name:ALMOND_LIST_NOTIFIER
-                                                       object:nil];
-
-//            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//                [SFIDatabaseUpdateService stopDatabaseUpdateService];
-//                [SFIDatabaseUpdateService startDatabaseUpdateService];
-//            });
-
-            [self loadAlmondList];
-        }
-    }
-}
-
 - (void)sendSignupCommand {
+    [self setSigningUpHeadline];
+
     Signup *signupCommand = [[Signup alloc] init];
     signupCommand.UserID = [NSString stringWithString:self.emailID.text];
     signupCommand.Password = [NSString stringWithString:self.password.text];
@@ -651,7 +500,7 @@ typedef enum {
     [self asyncSendCommand:cloudCommand];
 }
 
-- (void)SignupResponseCallback:(id)sender {
+- (void)onSignupResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
@@ -659,118 +508,42 @@ typedef enum {
 
     [SNLog Log:@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
     [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.Reason];
-    //[SNLog Log:@"%s: Reason : %d", __PRETTY_FUNCTION__, obj.reasonCode];
-    NSLog(@"Reason Code %d", obj.reasonCode);
-    if (obj.isSuccessful == 0) {
-        //PY 181013: Reason Code
+
+    if (obj.isSuccessful) {
+        [self displayScreenToLogin];
+    }
+    else {
         NSString *failureReason;
         switch (obj.reasonCode) {
             case 1:
                 failureReason = @"The email ID is invalid.";
                 break;
+
             case 2:
                 failureReason = [NSString stringWithFormat:@"The password should be atleast %d characters long.", PWD_MIN_LENGTH];
                 break;
+
             case 3:
                 failureReason = @"An account already exists with this email.";
-                self.forgotPwdButton.hidden = FALSE;
-                self.loginButton.hidden = FALSE;
-                self.password.hidden = TRUE;
-                self.confirmPassword.hidden = TRUE;
-                self.emailID.enabled = FALSE;
-                self.footerLabel.text = @"Do you want to create another account?";
-                //self.footerButton.titleLabel.text = @"Signup using another email";
-                [self.footerButton setTitle:@"Signup using another email" forState:UIControlStateNormal];
-                [self.footerButton setTitle:@"Signup using another email" forState:UIControlStateHighlighted];
-                [self.footerButton setTitle:@"Signup using another email" forState:UIControlStateDisabled];
-                [self.footerButton setTitle:@"Signup using another email" forState:UIControlStateSelected];
-                //PY 181013 - Button tag
-                self.footerButton.tag = 3; //Signup using another email.
+                [self setFooterForTag:FOOTER_SIGNUP_DIFF_EMAIL];
                 break;
+
             case 4:
-                //                failureReason = @"Your user has been created. Please try to login.";
-                //                self.forgotPwdButton.hidden = FALSE;
-                //                self.loginButton.hidden = FALSE;
-                //                self.password.hidden = TRUE;
-                //                self.confirmPassword.hidden = TRUE;
-                //                self.emailID.enabled = FALSE;
                 //Ready for login
-                self.headingLabel.text = @"Almost done.";
-                self.subHeadingLabel.text = @"An activation link was sent to your email. \n Follow it, then login below.";
                 [self displayScreenToLogin];
                 break;
+
             case 5:
                 failureReason = @"The email or password was incorrect.";
                 break;
+
             default:
                 failureReason = @"Sorry! Signup was unsuccessful.";
         }
+
         self.headingLabel.text = @"Oops!";
         self.subHeadingLabel.text = failureReason;
-
-
     }
-    else {
-        //        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone"bundle:nil];
-        //        UINavigationController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SFIMainViewController"];
-        //        [self presentViewController:viewController animated:YES completion:NULL];
-
-        //Login Screen
-        self.headingLabel.text = @"Almost done.";
-        self.subHeadingLabel.text = @"An activation link was sent to your email. \n Follow it, then login below.";
-        [self displayScreenToLogin];
-        //PY 170913 - Use navigation controller
-        //[self.navigationController popViewControllerAnimated:YES];
-
-
-    }
-    //NSString *log = [NSString stringWithFormat:@"%@\n\n%@ : %d",self.emailID.text,@"Registered",obj.isSuccessful];
-
-    /*
-     UIAlertView *alert = [[UIAlertView alloc]
-     initWithTitle:@"User Registration"
-     message:log
-     delegate:self
-     cancelButtonTitle:NSLocalizedString(@"OK", @"")
-     otherButtonTitles: nil];
-     
-     [alert
-     performSelector:@selector(show)
-     onThread:[NSThread mainThread]
-     withObject:nil
-     waitUntilDone:NO];
-     */
-}
-
-- (void)loadAlmondList {
-    AlmondListRequest *almondListCommand = [[AlmondListRequest alloc] init];
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = ALMOND_LIST;
-    cloudCommand.command = almondListCommand;
-
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
-}
-
-- (void)AlmondListResponseCallback:(id)sender {
-//    NSNotification *notifier = (NSNotification *) sender;
-//    NSDictionary *data = [notifier userInfo];
-//
-//    if (data != nil) {
-//        [SNLog Log:@"%s: Received Almond List response", __PRETTY_FUNCTION__];
-//
-//        //Write Almond List offline
-//        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
-//        [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
-//    }
-//
-//    self.HUD.hidden = YES;
-//
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-//    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"InitialSlide"];
-//    [self presentViewController:mainView
-//                       animated:YES
-//                     completion:nil];
 }
 
 - (void)sendReactivationRequest {
@@ -793,7 +566,10 @@ typedef enum {
     [SNLog Log:@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
     [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
 
-    if (obj.isSuccessful == 0) {
+    if (obj.isSuccessful) {
+        [self displayScreenToLogin];
+    }
+    else {
         NSLog(@"Reason Code %d", obj.reasonCode);
         //PY 181013: Reason Code
         NSString *failureReason;
@@ -818,70 +594,6 @@ typedef enum {
         }
         self.headingLabel.text = @"Oops!";
         self.subHeadingLabel.text = failureReason;
-    }
-    else {
-        self.headingLabel.text = @"Almost there";
-        self.subHeadingLabel.text = @"Reactivation link has been sent to your account.";
-    }
-}
-
-- (void)sendResetPasswordRequest {
-    ResetPasswordRequest *resetCommand = [[ResetPasswordRequest alloc] init];
-    resetCommand.email = self.emailID.text;
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = RESET_PASSWORD_REQUEST;
-    cloudCommand.command = resetCommand;
-
-    [self asyncSendCommand:cloudCommand];
-}
-
-- (void)resetPasswordResponseCallback:(id)sender {
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-
-    ResetPasswordResponse *obj = (ResetPasswordResponse *) [data valueForKey:@"data"];
-
-    [SNLog Log:@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-    [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
-
-    if (obj.isSuccessful == 0) {
-        NSLog(@"Reason Code %d", obj.reasonCode);
-
-        NSString *failureReason;
-        switch (obj.reasonCode) {
-            case 1:
-                failureReason = @"The username was not found";
-                break;
-            case 2: {
-                //Display Activation Screen
-                self.headingLabel.text = @"Almost there.";
-                failureReason = @"You need to activate your account.";
-
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-
-                UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFIActivationViewController"];
-                [self presentViewController:mainView animated:YES completion:nil];
-                break;
-            }
-            case 3:
-                failureReason = @"Sorry! Your password cannot be \nreset at the moment. Try again later.";
-                break;
-            case 4:
-                failureReason = @"The email ID is invalid.";
-                break;
-            case 5:
-                failureReason = @"Sorry! Your password cannot be \nreset at the moment. Try again later.";
-                break;
-            default:
-                break;
-        }
-        self.headingLabel.text = @"Oops!";
-        self.subHeadingLabel.text = failureReason;
-    }
-    else {
-        self.headingLabel.text = @"Almost there";
-        self.subHeadingLabel.text = @"Password reset link has been sent to your account.";
     }
 }
 
