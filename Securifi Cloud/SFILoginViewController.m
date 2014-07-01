@@ -32,14 +32,17 @@
     //PY 170913 - To stop the view from going below tab bar
     self.edgesForExtendedLayout = UIRectEdgeNone;
 
-    self.emailID.delegate = self;
-    self.password.delegate = self;
-
     [self enableLoginButton:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+
+    self.emailID.delegate = self;
+    self.password.delegate = self;
+
+    self.emailID.text = nil;
+    self.password.text = nil;
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
@@ -50,6 +53,11 @@
     [center addObserver:self
                selector:@selector(resetPasswordResponseCallback:)
                    name:RESET_PWD_RESPONSE_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onKeyboardDidShow:)
+                   name:UIKeyboardDidShowNotification
                  object:nil];
 
     [center addObserver:self
@@ -72,6 +80,10 @@
 
     [center removeObserver:self
                       name:RESET_PWD_RESPONSE_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:UIKeyboardDidShowNotification
                     object:nil];
 
     [center removeObserver:self
@@ -112,24 +124,7 @@
     return textField.text.length > 0;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
-    BOOL enabled = [self validateCredentials];
-    [self enableLoginButton:enabled];
-}
-
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    UITextField *other;
-    if (self.emailID == textField) {
-        other = self.password;
-    }
-    else {
-        other = self.emailID;
-    }
-
-    NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    BOOL enabled = str.length > 0 && other.text.length > 0;
-    [self enableLoginButton:enabled];
-
     return YES;
 }
 
@@ -148,10 +143,13 @@
 
 #pragma mark - Keyboard handler
 
+- (void)onKeyboardDidShow:(id)notification {
+    [self enableLoginButton:NO];
+}
+
 - (void)onKeyboardDidHide:(id)notice {
-    if ([self validateCredentials]) {
-        [self onLoginAction:nil];
-    }
+    BOOL valid = [self validateCredentials];
+    [self enableLoginButton:valid];
 }
 
 #pragma mark - UI Actions

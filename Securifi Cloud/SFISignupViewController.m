@@ -81,6 +81,10 @@ typedef enum {
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
+    self.emailID.delegate = self;
+    self.password.delegate = self;
+    self.confirmPassword.delegate = self;
+
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
                selector:@selector(SignupResponseCallback:)
@@ -121,6 +125,10 @@ typedef enum {
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+
+    self.emailID.delegate = nil;
+    self.password.delegate = nil;
+    self.confirmPassword.delegate = nil;
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self

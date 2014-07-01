@@ -516,8 +516,8 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                                     <action selector="onForgetPasswordAction:" destination="pAu-yL-9WX" eventType="touchUpInside" id="0Rx-7c-eM8"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" clearsOnBeginEditing="YES" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Y3d-aA-TFm">
-                                <rect key="frame" x="10" y="89" width="293" height="47"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" clearsOnBeginEditing="YES" minimumFontSize="14" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Y3d-aA-TFm">
+                                <rect key="frame" x="10" y="110" width="293" height="47"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="47" id="zAO-Om-g0c"/>
@@ -618,7 +618,7 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                             <constraint firstItem="tRT-t7-eNX" firstAttribute="trailing" secondItem="wee-4l-TQb" secondAttribute="trailing" id="HRV-1X-CSa"/>
                             <constraint firstItem="Zuk-ja-Rsi" firstAttribute="top" secondItem="5Wo-rI-VjW" secondAttribute="top" id="INu-gG-TGr"/>
                             <constraint firstItem="wee-4l-TQb" firstAttribute="trailing" secondItem="5GG-3f-pqZ" secondAttribute="trailing" id="K1v-nP-hLK"/>
-                            <constraint firstItem="Y3d-aA-TFm" firstAttribute="bottom" secondItem="Twc-2m-Cz1" secondAttribute="bottom" id="NaZ-Vi-0AE"/>
+                            <constraint firstItem="Y3d-aA-TFm" firstAttribute="bottom" secondItem="Twc-2m-Cz1" secondAttribute="bottom" constant="-1" id="NaZ-Vi-0AE"/>
                             <constraint firstItem="eAh-uH-o4N" firstAttribute="leading" secondItem="5Wo-rI-VjW" secondAttribute="leading" constant="10" id="SLd-28-Zja"/>
                             <constraint firstItem="UMh-WG-lC3" firstAttribute="trailing" secondItem="wee-4l-TQb" secondAttribute="trailing" id="Vfs-wF-OEK"/>
                             <constraint firstItem="Twc-2m-Cz1" firstAttribute="leading" secondItem="eAh-uH-o4N" secondAttribute="leading" id="WbK-dF-RFP"/>
@@ -633,8 +633,8 @@ Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed 
                             <constraint firstItem="wee-4l-TQb" firstAttribute="centerX" secondItem="7L7-hG-UZX" secondAttribute="centerX" id="iPF-Cc-GrK"/>
                             <constraint firstItem="Twc-2m-Cz1" firstAttribute="leading" secondItem="7Fl-1P-IHp" secondAttribute="leading" id="iR0-zh-nZx"/>
                             <constraint firstItem="wee-4l-TQb" firstAttribute="centerX" secondItem="Twc-2m-Cz1" secondAttribute="centerX" id="ouV-yY-ObP"/>
-                            <constraint firstItem="Twc-2m-Cz1" firstAttribute="trailing" secondItem="Y3d-aA-TFm" secondAttribute="trailing" id="qBp-sW-WmW"/>
-                            <constraint firstItem="Y3d-aA-TFm" firstAttribute="top" secondItem="eAh-uH-o4N" secondAttribute="bottom" id="r5s-g2-dh4"/>
+                            <constraint firstItem="Twc-2m-Cz1" firstAttribute="trailing" secondItem="Y3d-aA-TFm" secondAttribute="trailing" constant="7" id="qBp-sW-WmW"/>
+                            <constraint firstItem="Y3d-aA-TFm" firstAttribute="top" secondItem="eAh-uH-o4N" secondAttribute="bottom" constant="-1" id="r5s-g2-dh4"/>
                             <constraint firstItem="eAh-uH-o4N" firstAttribute="top" secondItem="Zuk-ja-Rsi" secondAttribute="bottom" constant="28" id="sLV-y3-t2g"/>
                             <constraint firstItem="wee-4l-TQb" firstAttribute="trailing" secondItem="Zon-6Z-KzY" secondAttribute="trailing" id="uGd-pU-Zvo"/>
                             <constraint firstItem="tRT-t7-eNX" firstAttribute="leading" secondItem="5Wo-rI-VjW" secondAttribute="leading" id="uI8-qc-Qdk"/>
