@@ -3974,7 +3974,7 @@
         if (isSuccessful) {
             //Command updated values
             //update offline storage
-            int deviceValueID = [self.currentDeviceID integerValue];
+            int deviceValueID = (int) [self.currentDeviceID integerValue];
 
             NSArray *currentKnownValues = [self currentKnownValuesForDevice:deviceValueID];
             NSArray *mobileDeviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
