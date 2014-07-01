@@ -41,22 +41,22 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onLoginResponse:)
-                                                 name:LOGIN_NOTIFIER
-                                               object:nil];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self
+               selector:@selector(onLoginResponse:)
+                   name:LOGIN_NOTIFIER
+                 object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(resetPasswordResponseCallback:)
-                                                 name:RESET_PWD_RESPONSE_NOTIFIER
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(resetPasswordResponseCallback:)
+                   name:RESET_PWD_RESPONSE_NOTIFIER
+                 object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onKeyboardDidHide:)
-                                                 name:UIKeyboardDidHideNotification
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(onKeyboardDidHide:)
+                   name:UIKeyboardDidHideNotification
+                 object:nil];
 
-    [self.emailID becomeFirstResponder];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -65,17 +65,18 @@
     self.emailID.delegate = nil;
     self.password.delegate = nil;
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:LOGIN_NOTIFIER
-                                                  object:nil];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver:self
+                      name:LOGIN_NOTIFIER
+                    object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:RESET_PWD_RESPONSE_NOTIFIER
-                                                  object:nil];
+    [center removeObserver:self
+                      name:RESET_PWD_RESPONSE_NOTIFIER
+                    object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardDidHideNotification
-                                                  object:nil];
+    [center removeObserver:self
+                      name:UIKeyboardDidHideNotification
+                    object:nil];
 
 }
 
@@ -158,7 +159,8 @@
 - (void)onSignupButton:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFISignupViewController"];
-    [self presentViewController:mainView animated:YES completion:nil];
+    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:mainView];
+    [self presentViewController:navCtrl animated:YES completion:nil];
 }
 
 - (IBAction)onForgetPasswordAction:(id)sender {
