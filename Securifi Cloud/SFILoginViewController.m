@@ -44,6 +44,8 @@
     self.emailID.text = nil;
     self.password.text = nil;
 
+    [self tryEnableLostPwdButton];
+
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
                selector:@selector(onLoginResponse:)
@@ -96,6 +98,10 @@
     self.loginButton.enabled = enabled;
 }
 
+- (void)tryEnableLostPwdButton {
+    self.forgotPwdButton.enabled = (self.emailID.text.length > 0);
+}
+
 - (BOOL)validateCredentials {
     return self.emailID.text.length > 0 && self.password.text.length > 0;
 }
@@ -141,6 +147,10 @@
     return YES;
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+//    [self tryEnableLostPwdButton];
+}
+
 #pragma mark - Keyboard handler
 
 - (void)onKeyboardDidShow:(id)notification {
@@ -150,6 +160,8 @@
 - (void)onKeyboardDidHide:(id)notice {
     BOOL valid = [self validateCredentials];
     [self enableLoginButton:valid];
+
+    [self tryEnableLostPwdButton];
 }
 
 #pragma mark - UI Actions
