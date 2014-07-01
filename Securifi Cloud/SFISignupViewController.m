@@ -117,10 +117,6 @@ typedef enum {
                    name:RESET_PWD_RESPONSE_NOTIFIER
                  object:nil];
 
-    [center addObserver:self
-               selector:@selector(onKeyboardDidHide:)
-                   name:UIKeyboardDidHideNotification
-                 object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -216,10 +212,6 @@ typedef enum {
     self.navigationItem.rightBarButtonItem.enabled = enabled;
 }
 
-- (BOOL)validateCredentials {
-    return self.emailID.text.length > 0 && self.password.text.length > 0 && [self.password.text isEqualToString:self.confirmPassword.text];
-}
-
 #pragma mark - Orientation Handling
 
 - (BOOL)shouldAutorotate {
@@ -236,13 +228,9 @@ typedef enum {
 
 #pragma mark - Keyboard Methods
 
-- (void)onKeyboardDidHide:(id)notice {
-//    if ([self validateCredentials]) {
-//        [self onSignupAction:nil];
-//    }
-}
-
 - (void)keyboardDidShow:(NSNotification *)aNotification {
+    [self enableContinueButton:NO];
+
     NSDictionary *info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
 
@@ -270,6 +258,9 @@ typedef enum {
     if (!CGRectContainsPoint(self.view.frame, rect.origin)) {
         [self.scrollView scrollRectToVisible:rect animated:YES];
     }
+
+    BOOL valid = [self validateSignupValues];
+    [self enableContinueButton:valid];
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -283,8 +274,6 @@ typedef enum {
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    BOOL enabled = [self validateCredentials];
-    [self enableContinueButton:enabled];
     self.activeTextField = nil;
 }
 
@@ -319,23 +308,6 @@ typedef enum {
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
-
-    BOOL enabled = NO;
-    if (self.emailID == textField) {
-        enabled = self.password.text.length >= PWD_MIN_LENGTH &&  [self.password.text isEqualToString:self.confirmPassword.text];
-    }
-    else if (self.password == textField) {
-        enabled = self.emailID.text.length > 0 && [str isEqualToString:self.confirmPassword.text];
-
-        PasswordStrengthType pwdStrength = [self checkPasswordStrength:str];
-        [self displayPasswordIndicator:pwdStrength];
-    }
-    else if (self.confirmPassword == textField) {
-        enabled = self.emailID.text.length > 0 && [str isEqualToString:self.password.text];
-    }
-    [self enableContinueButton:enabled];
-
     return YES;
 }
 
