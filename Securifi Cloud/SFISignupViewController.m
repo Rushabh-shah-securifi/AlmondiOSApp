@@ -210,7 +210,7 @@ typedef enum {
 }
 
 - (int)continueButtonTag {
-    return self.navigationItem.rightBarButtonItem.tag;
+    return (int) self.navigationItem.rightBarButtonItem.tag;
 }
 
 #pragma mark - Orientation Handling
@@ -259,9 +259,6 @@ typedef enum {
     if (!CGRectContainsPoint(self.view.frame, rect.origin)) {
         [self.scrollView scrollRectToVisible:rect animated:YES];
     }
-
-    BOOL valid = [self validateSignupValues];
-    [self enableContinueButton:valid];
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -271,7 +268,7 @@ typedef enum {
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-    return textField.text.length > 0;
+    return YES;//textField.text.length > 0;
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
@@ -291,7 +288,11 @@ typedef enum {
         [textField resignFirstResponder];
         PasswordStrengthType pwdStrength = [self checkPasswordStrength:self.password.text];
         [self displayPasswordIndicator:pwdStrength];
+
+        BOOL valid = [self validateSignupValues];
+        [self enableContinueButton:valid];
     }
+
     return YES;
 }
 
@@ -333,7 +334,7 @@ typedef enum {
     }
     else if (self.password.text.length < PWD_MIN_LENGTH) {
         self.headingLabel.text = @"Oops!";
-        self.subHeadingLabel.text = [NSString stringWithFormat:@"The password should be atleast %d characters long.", PWD_MIN_LENGTH];
+        self.subHeadingLabel.text = [NSString stringWithFormat:@"The password should be at least %d characters long.", PWD_MIN_LENGTH];
         return NO;
     }
     else if (![self.password.text isEqualToString:self.confirmPassword.text]) {
