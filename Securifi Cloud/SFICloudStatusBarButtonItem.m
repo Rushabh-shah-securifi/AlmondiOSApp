@@ -38,10 +38,9 @@
     NSString *name;
 
     switch (state) {
-        case SFICloudStatusStateDisconnected: {
+        case SFICloudStatusStateDisconnected:
             name = @"connection_status_01.png";
             break;
-        }
         case SFICloudStatusStateConnecting:
             name = @"connection_status_02.png";
             break;
