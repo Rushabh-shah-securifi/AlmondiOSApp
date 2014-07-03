@@ -3328,6 +3328,10 @@
     }
 
     dispatch_async(dispatch_get_main_queue(), ^() {
+        // forget uncommitted edits
+        self.currentChangedName = nil;
+        self.currentChangedLocation = nil;
+
         if (clicked_row >= self.deviceList.count) {
             // Just in case something gets changed out from underneath
             [self.tableView reloadData];
