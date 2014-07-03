@@ -51,6 +51,23 @@
     [center removeObserver:self
                       name:kSFIReachabilityChangedNotification
                     object:nil];
+
+    [center removeObserver:self
+                      name:GENERIC_COMMAND_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:GENERIC_COMMAND_CLOUD_NOTIFIER
+                    object:nil];
+
 }
 
 - (void)viewDidLoad {
@@ -141,26 +158,6 @@
                selector:@selector(onNetworkChange:)
                    name:kSFIReachabilityChangedNotification object:nil];
 
-    [self markCloudStatusIcon];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    self.isRebooting = FALSE;
-
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    self.currentMAC = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC];
-
-    //If Almond is there or not
-    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-    if ([almondList count] == 0) {
-        self.currentMAC = NO_ALMOND;
-        self.navigationItem.title = @"Get Started";
-        [self.tableView reloadData];
-    }
-
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-
     [center addObserver:self
                selector:@selector(onGenericResponseCallback:)
                    name:GENERIC_COMMAND_NOTIFIER
@@ -181,30 +178,27 @@
                    name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
                  object:nil];
 
+    [self markCloudStatusIcon];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.isRebooting = FALSE;
+
+    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    self.currentMAC = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC];
+
+    //If Almond is there or not
+    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
+    if ([almondList count] == 0) {
+        self.currentMAC = NO_ALMOND;
+        self.navigationItem.title = @"Get Started";
+        [self.tableView reloadData];
+    }
+
     if (![self isNoAlmondLoaded]) {
         [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
     }
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-
-    [center removeObserver:self
-                      name:GENERIC_COMMAND_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:GENERIC_COMMAND_CLOUD_NOTIFIER
-                    object:nil];
-
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {

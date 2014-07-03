@@ -76,6 +76,46 @@
     [center removeObserver:self
                       name:kSFIReachabilityChangedNotification
                     object:nil];
+
+    [center removeObserver:self
+                      name:HASH_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:DEVICE_DATA_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:DEVICE_VALUE_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:MOBILE_COMMAND_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:DEVICE_DATA_CLOUD_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:DEVICE_VALUE_CLOUD_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:SENSOR_CHANGE_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
+                    object:nil];
 }
 
 - (void)viewDidLoad {
@@ -186,49 +226,6 @@
                selector:@selector(onReachabilityDidChange:)
                    name:kSFIReachabilityChangedNotification object:nil];
 
-    [self markCloudStatusIcon];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-
-    //PY 111013 - Integration with new UI
-    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-    if ([almondList count] == 0) {
-        self.currentMAC = NO_ALMOND;
-        self.navigationItem.title = @"Get Started";
-        self.deviceList = @[];
-        self.deviceValueList = @[];
-
-        [self.tableView reloadData];
-    }
-    else {
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        self.currentMAC = [prefs objectForKey:CURRENT_ALMOND_MAC];
-        NSString *currentMACName = [prefs objectForKey:CURRENT_ALMOND_MAC_NAME];
-        self.navigationItem.title = currentMACName;
-
-        self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
-        self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
-        self.offlineHash = [SFIOfflineDataManager readHashList:self.currentMAC];
-
-        [self initializeImages];
-
-        if (![self isNoAlmondMAC]) {
-            [self.HUD show:YES];
-            [self sendDeviceHashCommand];
-        }
-
-        //PY 311013 - Timeout for Sensor Command
-        self.sensorDataCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
-                                                                       target:self
-                                                                     selector:@selector(onLoadSensorDataCommandTimeout:)
-                                                                     userInfo:nil
-                                                                      repeats:NO];
-    }
-
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-
     [center addObserver:self
                selector:@selector(onHashResponseCallback:)
                    name:HASH_NOTIFIER
@@ -278,53 +275,47 @@
                selector:@selector(onDynamicAlmondNameChangeCallback:)
                    name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
                  object:nil];
+
+    [self markCloudStatusIcon];
+
+    [self initAlmondList];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+- (void) initAlmondList {
+    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
+    if ([almondList count] == 0) {
+        self.currentMAC = NO_ALMOND;
+        self.navigationItem.title = @"Get Started";
+        self.deviceList = @[];
+        self.deviceValueList = @[];
 
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [self.tableView reloadData];
+    }
+    else {
+        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+        self.currentMAC = [prefs objectForKey:CURRENT_ALMOND_MAC];
+        self.navigationItem.title = [prefs objectForKey:CURRENT_ALMOND_MAC_NAME];
 
-    [center removeObserver:self
-                      name:HASH_NOTIFIER
-                    object:nil];
+        self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
+        self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
+        self.offlineHash = [SFIOfflineDataManager readHashList:self.currentMAC];
 
-    [center removeObserver:self
-                      name:DEVICE_DATA_NOTIFIER
-                    object:nil];
+        [self initializeImages];
 
-    [center removeObserver:self
-                      name:DEVICE_VALUE_NOTIFIER
-                    object:nil];
+        if (![self isNoAlmondMAC]) {
+            [self.HUD show:YES];
+            [self sendDeviceHashCommand];
 
-    [center removeObserver:self
-                      name:MOBILE_COMMAND_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:DEVICE_DATA_CLOUD_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:DEVICE_VALUE_CLOUD_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:SENSOR_CHANGE_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
-                    object:nil];
+            [self.sensorDataCommandTimer invalidate];
+            self.sensorDataCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
+                                                                           target:self
+                                                                         selector:@selector(onLoadSensorDataCommandTimeout:)
+                                                                         userInfo:nil
+                                                                          repeats:NO];
+        }
+    }
 }
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return NO;
