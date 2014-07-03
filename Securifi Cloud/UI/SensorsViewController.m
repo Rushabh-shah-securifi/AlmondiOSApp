@@ -328,10 +328,6 @@
 
 #pragma mark - State
 
-- (BOOL)isCloudOnline {
-    return [[SecurifiToolkit sharedInstance] isCloudOnline];
-}
-
 - (BOOL)isDeviceListEmpty {
     return self.deviceList.count == 0;
 }
@@ -355,7 +351,7 @@
 }
 
 - (void)onNetworkConnectingNotifier:(id)notification {
-    [self.statusBarButton markState:SFICloudStatusStateConnecting];
+    [self markCloudStatusIcon];
 }
 
 - (void)onReachabilityDidChange:(NSNotification *)notification {
@@ -364,7 +360,12 @@
 }
 
 - (void)markCloudStatusIcon {
-    if (self.isCloudOnline) {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    if ([toolkit isCloudConnecting]) {
+        [self.statusBarButton markState:SFICloudStatusStateConnecting];
+    }
+    else if ([toolkit isCloudOnline]) {
         [self.statusBarButton markState:SFICloudStatusStateConnected];
     }
     else {

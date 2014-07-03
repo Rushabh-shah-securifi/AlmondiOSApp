@@ -219,7 +219,12 @@
 }
 
 - (void)markCloudStatusIcon {
-    if (self.isCloudOnline) {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    if ([toolkit isCloudConnecting]) {
+        [self.statusBarButton markState:SFICloudStatusStateConnecting];
+    }
+    else if ([toolkit isCloudOnline]) {
         [self.statusBarButton markState:SFICloudStatusStateConnected];
     }
     else {
@@ -230,7 +235,7 @@
 #pragma mark - Network and cloud events
 
 - (void)onNetworkConnectingNotifier:(id)notification {
-    [self.statusBarButton markState:SFICloudStatusStateConnecting];
+    [self markCloudStatusIcon];
 }
 
 - (void)onNetworkChange:(id)notice {
