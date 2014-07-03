@@ -33,6 +33,26 @@
 
 @implementation SFIRouterTableViewController
 
+- (void)dealloc {
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+
+    [center removeObserver:self
+                      name:NETWORK_UP_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:NETWORK_CONNECTING_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:NETWORK_DOWN_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:kSFIReachabilityChangedNotification
+                    object:nil];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -99,6 +119,29 @@
     UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onRevealMenuAction:)];
     showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
     [self.tableView addGestureRecognizer:showMenuSwipe];
+
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+
+    [center addObserver:self
+               selector:@selector(onNetworkChange:)
+                   name:NETWORK_DOWN_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onNetworkConnectingNotifier:)
+                   name:NETWORK_CONNECTING_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onNetworkChange:)
+                   name:NETWORK_UP_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onNetworkChange:)
+                   name:kSFIReachabilityChangedNotification object:nil];
+
+    [self markCloudStatusIcon];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -116,77 +159,51 @@
         [self.tableView reloadData];
     }
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onGenericResponseCallback:)
-                                                 name:GENERIC_COMMAND_NOTIFIER
-                                               object:nil];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onGenericNotificationCallback:)
-                                                 name:GENERIC_COMMAND_CLOUD_NOTIFIER
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(onGenericResponseCallback:)
+                   name:GENERIC_COMMAND_NOTIFIER
+                 object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onDynamicAlmondListAddCallback:)
-                                                 name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(onGenericNotificationCallback:)
+                   name:GENERIC_COMMAND_CLOUD_NOTIFIER
+                 object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onDynamicAlmondListDeleteCallback:)
-                                                 name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(onDynamicAlmondListAddCallback:)
+                   name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
+                 object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onNetworkChange:)
-                                                 name:NETWORK_DOWN_NOTIFIER
-                                               object:nil];
-
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onNetworkChange:)
-                                                 name:NETWORK_UP_NOTIFIER
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onNetworkChange:)
-                                                 name:kSFIReachabilityChangedNotification object:nil];
-
+    [center addObserver:self
+               selector:@selector(onDynamicAlmondListDeleteCallback:)
+                   name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
+                 object:nil];
 
     if (![self isNoAlmondLoaded]) {
         [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
     }
-
-    [self markCloudStatusIcon];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:GENERIC_COMMAND_NOTIFIER
-                                                  object:nil];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
-                                                  object:nil];
+    [center removeObserver:self
+                      name:GENERIC_COMMAND_NOTIFIER
+                    object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                                                  object:nil];
+    [center removeObserver:self
+                      name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
+                    object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:GENERIC_COMMAND_CLOUD_NOTIFIER
-                                                  object:nil];
+    [center removeObserver:self
+                      name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
+                    object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NETWORK_UP_NOTIFIER
-                                                  object:nil];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NETWORK_DOWN_NOTIFIER
-                                                  object:nil];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kSFIReachabilityChangedNotification
-                                                  object:nil];
+    [center removeObserver:self
+                      name:GENERIC_COMMAND_CLOUD_NOTIFIER
+                    object:nil];
 
 }
 
@@ -217,6 +234,10 @@
 }
 
 #pragma mark - Network and cloud events
+
+- (void)onNetworkConnectingNotifier:(id)notification {
+    [self.statusBarButton markState:SFICloudStatusStateConnecting];
+}
 
 - (void)onNetworkChange:(id)notice {
     [self markCloudStatusIcon];

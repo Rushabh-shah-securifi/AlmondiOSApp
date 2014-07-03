@@ -58,8 +58,28 @@
 
 #pragma mark - View Related
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
+- (void)dealloc {
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+
+    [center removeObserver:self
+                      name:NETWORK_CONNECTING_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:NETWORK_UP_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:NETWORK_DOWN_NOTIFIER
+                    object:nil];
+
+    [center removeObserver:self
+                      name:kSFIReachabilityChangedNotification
+                    object:nil];
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
 
     NSDictionary *titleAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
@@ -67,11 +87,6 @@
     };
 
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-    //self.sampleItems = [NSArray arrayWithObjects:@"One", @"Two", @"Three", nil];
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
 
     _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithStandard];
     self.navigationItem.rightBarButtonItem = _statusBarButton;
@@ -150,21 +165,28 @@
     self.changeHue = (unsigned int) self.currentColor.hue;
     self.changeSaturation = (unsigned int) self.currentColor.saturation;
 
-    //Set title
-    //    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    //    NSString *currentMAC = [standardUserDefaults objectForKey:@"CurrentMAC"];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-    //    sensors = [[NSMutableArray alloc]init];
-    //    sensors = [[SFIParser alloc] loadDataFromXML:@"sensordata"];
-    //// NSLog(@"Data: %lu", (unsigned long)[sensors count]);
+    [center addObserver:self
+               selector:@selector(onNetworkDownNotifier:)
+                   name:NETWORK_DOWN_NOTIFIER
+                 object:nil];
 
-    //    //Call command : Get HASH - Command 74 - Match if list is upto date
-    //    HUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    //    HUD.dimBackground = YES;
-    //    HUD.labelText = @"Loading sensor data.";
-    //[self getDeviceHash];
+    [center addObserver:self
+               selector:@selector(onNetworkConnectingNotifier:)
+                   name:NETWORK_CONNECTING_NOTIFIER
+                 object:nil];
 
-//    self.isCloudOnline = TRUE;
+    [center addObserver:self
+               selector:@selector(onNetworkUpNotifier:)
+                   name:NETWORK_UP_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onReachabilityDidChange:)
+                   name:kSFIReachabilityChangedNotification object:nil];
+
+    [self markCloudStatusIcon];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -205,130 +227,103 @@
                                                                       repeats:NO];
     }
 
-    //PY 111013 - Integration with new UI
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onHashResponseCallback:)
-                                                 name:HASH_NOTIFIER
-                                               object:nil];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onDeviceListResponseCallback:)
-                                                 name:DEVICE_DATA_NOTIFIER
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(onHashResponseCallback:)
+                   name:HASH_NOTIFIER
+                 object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onDeviceValueListResponseCallback:)
-                                                 name:DEVICE_VALUE_NOTIFIER
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(onDeviceListResponseCallback:)
+                   name:DEVICE_DATA_NOTIFIER
+                 object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onMobileCommandResponseCallback:)
-                                                 name:MOBILE_COMMAND_NOTIFIER
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(onDeviceValueListResponseCallback:)
+                   name:DEVICE_VALUE_NOTIFIER
+                 object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onDeviceDataCloudResponseCallback:)
-                                                 name:DEVICE_DATA_CLOUD_NOTIFIER
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(onMobileCommandResponseCallback:)
+                   name:MOBILE_COMMAND_NOTIFIER
+                 object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onDeviceCloudValueListResponseCallback:)
-                                                 name:DEVICE_VALUE_CLOUD_NOTIFIER
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(onDeviceDataCloudResponseCallback:)
+                   name:DEVICE_DATA_CLOUD_NOTIFIER
+                 object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onDynamicAlmondListAddCallback:)
-                                                 name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(onDeviceCloudValueListResponseCallback:)
+                   name:DEVICE_VALUE_CLOUD_NOTIFIER
+                 object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onDynamicAlmondListDeleteCallback:)
-                                                 name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(onDynamicAlmondListAddCallback:)
+                   name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
+                 object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onSensorChangeCallback:)
-                                                 name:SENSOR_CHANGE_NOTIFIER
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(onDynamicAlmondListDeleteCallback:)
+                   name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
+                 object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onDynamicAlmondNameChangeCallback:)
-                                                 name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
-                                               object:nil];
+    [center addObserver:self
+               selector:@selector(onSensorChangeCallback:)
+                   name:SENSOR_CHANGE_NOTIFIER
+                 object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onNetworkDownNotifier:)
-                                                 name:NETWORK_DOWN_NOTIFIER
-                                               object:nil];
-
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onNetworkUpNotifier:)
-                                                 name:NETWORK_UP_NOTIFIER
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onReachabilityDidChange:)
-                                                 name:kSFIReachabilityChangedNotification object:nil];
-
-    [self markCloudStatusIcon];
+    [center addObserver:self
+               selector:@selector(onDynamicAlmondNameChangeCallback:)
+                   name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
+                 object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:HASH_NOTIFIER
-                                                  object:nil];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:DEVICE_DATA_NOTIFIER
-                                                  object:nil];
+    [center removeObserver:self
+                      name:HASH_NOTIFIER
+                    object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:DEVICE_VALUE_NOTIFIER
-                                                  object:nil];
+    [center removeObserver:self
+                      name:DEVICE_DATA_NOTIFIER
+                    object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:MOBILE_COMMAND_NOTIFIER
-                                                  object:nil];
+    [center removeObserver:self
+                      name:DEVICE_VALUE_NOTIFIER
+                    object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:DEVICE_DATA_CLOUD_NOTIFIER
-                                                  object:nil];
+    [center removeObserver:self
+                      name:MOBILE_COMMAND_NOTIFIER
+                    object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:DEVICE_VALUE_CLOUD_NOTIFIER
-                                                  object:nil];
+    [center removeObserver:self
+                      name:DEVICE_DATA_CLOUD_NOTIFIER
+                    object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
-                                                  object:nil];
+    [center removeObserver:self
+                      name:DEVICE_VALUE_CLOUD_NOTIFIER
+                    object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                                                  object:nil];
+    [center removeObserver:self
+                      name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
+                    object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:SENSOR_CHANGE_NOTIFIER
-                                                  object:nil];
+    [center removeObserver:self
+                      name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
+                    object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
-                                                  object:nil];
+    [center removeObserver:self
+                      name:SENSOR_CHANGE_NOTIFIER
+                    object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NETWORK_UP_NOTIFIER
-                                                  object:nil];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:NETWORK_DOWN_NOTIFIER
-                                                  object:nil];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kSFIReachabilityChangedNotification
-                                                  object:nil];
-
+    [center removeObserver:self
+                      name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
+                    object:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -366,6 +361,10 @@
     [SNLog Log:@"%s: Sensor controller :In network down notifier", __PRETTY_FUNCTION__];
     [self markCloudStatusIcon];
     [self asyncReloadTable];
+}
+
+- (void)onNetworkConnectingNotifier:(id)notification {
+    [self.statusBarButton markState:SFICloudStatusStateConnecting];
 }
 
 - (void)onReachabilityDidChange:(NSNotification *)notification {
