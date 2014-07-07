@@ -115,6 +115,7 @@
 		1C695305195978B500C9157D /* connection_status_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C6952F1195978B500C9157D /* connection_status_4@2x.png */; };
 		1C695306195978B500C9157D /* connection_status_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C6952F2195978B500C9157D /* connection_status_5.png */; };
 		1C695307195978B500C9157D /* connection_status_5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C6952F3195978B500C9157D /* connection_status_5@2x.png */; };
+		1CA3FBD4196A9C9E0038EB64 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = 1CA3FBD3196A9C9E0038EB64 /* termsofuse.html */; };
 		1DF0306C0C7943B90740B6BB /* SFICloudStatusBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF03048FDE77FF138C06B2C /* SFICloudStatusBarButtonItem.h */; };
 		1DF030A2A018C8E3748E0838 /* SFISensorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0392A57C01986D4266259 /* SFISensorTableViewCell.m */; };
 		1DF032D89EC21443A3A14E9F /* SFIHighlightedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F26B3D131E43FF35137 /* SFIHighlightedButton.m */; };
@@ -370,6 +371,7 @@
 		1C6952F1195978B500C9157D /* connection_status_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection_status_4@2x.png"; sourceTree = "<group>"; };
 		1C6952F2195978B500C9157D /* connection_status_5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = connection_status_5.png; sourceTree = "<group>"; };
 		1C6952F3195978B500C9157D /* connection_status_5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "connection_status_5@2x.png"; sourceTree = "<group>"; };
+		1CA3FBD3196A9C9E0038EB64 /* termsofuse.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = termsofuse.html; sourceTree = "<group>"; };
 		1DF03048FDE77FF138C06B2C /* SFICloudStatusBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICloudStatusBarButtonItem.h; sourceTree = "<group>"; };
 		1DF0352BB56CC806F804C806 /* SFICloudStatusBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICloudStatusBarButtonItem.m; sourceTree = "<group>"; };
 		1DF0370031F08F7752442415 /* SFISensorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorTableViewCell.h; sourceTree = "<group>"; };
@@ -647,6 +649,7 @@
 		909A21C2165DA60400C767F5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				1CA3FBD3196A9C9E0038EB64 /* termsofuse.html */,
 				CE4CC27C189B78D300952073 /* app-icon-29x29.png */,
 				CE4CC27D189B78D300952073 /* app-icon-40x40.png */,
 				CE4CC27E189B78D300952073 /* app-icon-58x58.png */,
@@ -1130,6 +1133,7 @@
 				1C41B13C19343CEB006F0DD8 /* fire_01.png in Resources */,
 				1C41B15819343CEB006F0DD8 /* motion_sensor_true.png in Resources */,
 				909A21D5165DA60400C767F5 /* MainStoryboard_iPhone.storyboard in Resources */,
+				1CA3FBD4196A9C9E0038EB64 /* termsofuse.html in Resources */,
 				CE5D0BC21807D16300224009 /* scene1sensor.xml in Resources */,
 				909A21D8165DA60400C767F5 /* MainStoryboard_iPad.storyboard in Resources */,
 				1C41B16019343CEB006F0DD8 /* shade_106x140.png in Resources */,

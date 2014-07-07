@@ -9,6 +9,7 @@
 #import "SFISignupViewController.h"
 #import "SNLog.h"
 #import "MBProgressHUD.h"
+#import "SFITermsViewController.h"
 
 #define PWD_MIN_LENGTH 6
 
@@ -372,20 +373,16 @@ typedef enum {
     UIButton *btn = (UIButton *) sender;
     switch (btn.tag) {
         case FOOTER_TERMS_CONDS: {
-            NSLog(@"Terms and Condition");
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-            UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFITermsViewController"];
-            [self presentViewController:mainView animated:YES completion:nil];
+            UIViewController *ctrl = [SFITermsViewController new];
+            UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+            [self presentViewController:navCtrl animated:YES completion:nil];
             break;
         }
         case FOOTER_RESEND_ACTIVATION_LINK: {
-            //Resend activation link
-            NSLog(@"Resend activation link");
             [self sendReactivationRequest];
             break;
         }
         case FOOTER_SIGNUP_DIFF_EMAIL: {
-            NSLog(@"Signup using another email");
             [self displayScreenToSignup];
             break;
         }

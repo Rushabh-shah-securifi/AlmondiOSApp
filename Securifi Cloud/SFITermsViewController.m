@@ -8,51 +8,29 @@
 
 #import "SFITermsViewController.h"
 
-@interface SFITermsViewController ()
-
-@end
-
 @implementation SFITermsViewController
-@synthesize tvTermsConditions, navBar;
 
-#pragma mark - View Methods
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
-                                     [UIFont fontWithName:@"Avenir-Roman" size:18.0], NSFontAttributeName, nil];
-    
-    self.navBar.titleTextAttributes = titleAttributes;
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    [tvTermsConditions setScrollEnabled:YES];
-    [tvTermsConditions setUserInteractionEnabled:YES];
+
+    self.navigationController.navigationBar.titleTextAttributes = @{
+            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+            NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
+    };
+
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(backButtonHandler:)];
+    self.navigationItem.leftBarButtonItem = backButton;
+
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.frame];
+
+    NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"termsofuse" ofType:@"html"];
+    NSString* htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+    [webView loadHTMLString:htmlString baseURL:nil];
+
+    [self.view addSubview:webView];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Class Methods
-- (IBAction)backButtonHandler:(id)sender
-{
+- (void)backButtonHandler:(id)sender {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
