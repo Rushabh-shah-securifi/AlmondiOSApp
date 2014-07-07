@@ -187,11 +187,11 @@
     }
 
     if (self.emailID.text.length == 0 || self.password.text.length == 0) {
-        self.headingLabel.text = @"Oops";
-        self.subHeadingLabel.text = @"Please enter Username and Password";
+        [self setOopsMsg:@"Please enter Username and Password"];
     }
     else {
         [[SecurifiToolkit sharedInstance] asyncSendLoginWithEmail:self.emailID.text password:self.password.text];
+        self.loginButton.enabled = NO;
     }
 }
 
@@ -217,37 +217,29 @@
 
     if (!obj.isSuccessful) {
         NSLog(@"Login failure reason Code: %d", obj.reasonCode);
-        self.headingLabel.text = @"Oops";
 
-        NSString *failureReason;
         switch (obj.reasonCode) {
             case 1: {
-                failureReason = @"The email was not found.";
+                [self setOopsMsg:@"The email was not found."];
                 break;
             }
             case 2: {
-                failureReason = @"The password is incorrect.";
+                [self setOopsMsg:@"The password is incorrect."];
                 break;
             }
             case 3: {
                 //Display Activation Screen
-                self.headingLabel.text = @"Almost there.";
-                failureReason = @"You need to activate your account.";
-
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-                UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFIActivationViewController"];
-                [self presentViewController:mainView animated:YES completion:nil];
+                [self setHeadline:@"Almost there." subHeadline:@"You need to activate your account." loginButtonEnabled:NO];
+                [self presentActivationScreen];
 
                 break;
             }
             case 4:
-                failureReason = @"The email or password is incorrect";
+                [self setOopsMsg:@"The email or password is incorrect"];
                 break;
             default:
-                failureReason = @"Sorry! Login was unsuccessful.";
+                [self setOopsMsg:@"Sorry! Login was unsuccessful."];
         }
-
-        self.subHeadingLabel.text = failureReason;
 
         return;
     }
@@ -284,46 +276,54 @@
 
     if (obj.isSuccessful == 0) {
         NSLog(@"Reason Code %d", obj.reasonCode);
-        NSString *failureReason;
-        UIStoryboard *storyboard;
-        UIViewController *mainView;
-
         switch (obj.reasonCode) {
             case 1:
-                failureReason = @"The username was not found";
+                [self setOopsMsg:@"The username was not found"];
                 break;
             case 2:
                 //Display Activation Screen
-                self.headingLabel.text = @"Almost there.";
-                failureReason = @"You need to activate your account.";
-                storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-                mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFIActivationViewController"];
-                [self presentViewController:mainView animated:YES completion:nil];
+                [self setHeadline:@"Almost there." subHeadline:@"You need to activate your account." loginButtonEnabled:NO];
+                [self presentActivationScreen];
                 break;
             case 3:
-                failureReason = @"Sorry! Your password cannot be \nreset at the moment. Try again later.";
+                [self setOopsMsg:@"Sorry! Your password cannot be \nreset at the moment. Try again later."];
                 break;
             case 4:
-                failureReason = @"The email ID is invalid.";
+                [self setOopsMsg:@"The email ID is invalid."];
                 break;
             case 5:
-                failureReason = @"Sorry! Your password cannot be \nreset at the moment. Try again later.";
+                [self setOopsMsg:@"Sorry! Your password cannot be \nreset at the moment. Try again later."];
                 break;
             default:
                 break;
         }
 
-        self.headingLabel.text = @"Oops!";
-        self.subHeadingLabel.text = failureReason;
     }
     else {
-        self.headingLabel.text = @"Almost there.";
-        self.subHeadingLabel.text = @"Password reset link has been sent to your account.";
+        [self setHeadline:@"Almost there." subHeadline:@"Password reset link has been sent to your account." loginButtonEnabled:NO];
     }
+}
+
+- (void)presentActivationScreen {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFIActivationViewController"];
+    [self presentViewController:mainView animated:YES completion:nil];
 }
 
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+}
+
+- (void)setOopsMsg:(NSString *)msg {
+    [self setHeadline:@"Oops" subHeadline:msg loginButtonEnabled:YES];
+}
+
+- (void)setHeadline:(NSString *)headline subHeadline:(NSString*)subHeadline loginButtonEnabled:(BOOL)enabled {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.headingLabel.text = headline;
+        self.subHeadingLabel.text = subHeadline;
+        self.loginButton.enabled = enabled;
+    });
 }
 
 @end
