@@ -17,12 +17,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    NSDictionary *titleAttributes = @{
+    self.navigationController.navigationBar.titleTextAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
             NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
     };
 
-    self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Continue" style:UIBarButtonItemStylePlain target:self action:@selector(onLogoutAll:)];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onLogoutAllResponseCallback:)
@@ -94,18 +95,6 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    UITextField *other;
-    if (self.emailID == textField) {
-        other = self.password;
-    }
-    else {
-        other = self.emailID;
-    }
-
-    NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    BOOL enabled = str.length > 0 && other.text.length > 0;
-    [self enableContinueButton:enabled];
-
     return YES;
 }
 

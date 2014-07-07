@@ -609,7 +609,7 @@
             </objects>
             <point key="canvasLocation" x="-2841" y="-825"/>
         </scene>
-        <!--Logout All View Controller - Logout All-->
+        <!--Logout All View Controller-->
         <scene sceneID="9mG-Tp-k7e">
             <objects>
                 <viewController storyboardIdentifier="SFILogoutAllViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ySY-9Q-ckD" customClass="SFILogoutAllViewController" sceneMemberID="viewController">
@@ -675,18 +675,6 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" title="Logout All" id="gkX-Ri-AcU">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="uLI-GV-SIY">
-                            <connections>
-                                <action selector="onCancel:" destination="ySY-9Q-ckD" id="Xgl-GC-4KA"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Continue" id="Fgq-Wy-sze">
-                            <connections>
-                                <action selector="onLogoutAll:" destination="ySY-9Q-ckD" id="OvR-2f-fdf"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
