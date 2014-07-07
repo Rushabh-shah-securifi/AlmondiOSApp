@@ -40,7 +40,12 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
-    [self.emailID becomeFirstResponder];
+    if (self.emailID.text.length == 0) {
+        [self.emailID becomeFirstResponder];
+    }
+    else {
+        [self.password becomeFirstResponder];
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
