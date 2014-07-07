@@ -31,8 +31,6 @@
 
     //PY 170913 - To stop the view from going below tab bar
     self.edgesForExtendedLayout = UIRectEdgeNone;
-
-    [self enableLoginButton:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -45,6 +43,7 @@
     self.password.text = nil;
 
     [self tryEnableLostPwdButton];
+    [self enableLoginButton:NO];
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self

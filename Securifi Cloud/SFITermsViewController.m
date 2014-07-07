@@ -21,6 +21,8 @@
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(backButtonHandler:)];
     self.navigationItem.leftBarButtonItem = backButton;
 
+    self.navigationItem.title = @"Terms and Conditions";
+
     UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.frame];
 
     NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"termsofuse" ofType:@"html"];
