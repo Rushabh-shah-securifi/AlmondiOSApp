@@ -64,7 +64,7 @@
 
     [center addObserver:self
                selector:@selector(onLogoutAllResponse:)
-                   name:LOGOUT_ALL_NOTIFIER
+                   name:kSFIDidLogoutAllNotification
                  object:nil];
 
     [center addObserver:self

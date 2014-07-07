@@ -26,7 +26,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onLogoutAllResponseCallback:)
-                                                 name:LOGOUT_ALL_NOTIFIER
+                                                 name:kSFIDidLogoutAllNotification
                                                object:nil];
 
     self.emailID.text = [[SecurifiToolkit sharedInstance] loginEmail];
@@ -49,7 +49,7 @@
     self.emailID.delegate = nil;
     self.password.delegate = nil;
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:LOGOUT_ALL_NOTIFIER object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSFIDidLogoutAllNotification object:nil];
 }
 
 - (void)enableContinueButton:(BOOL)enabled {
