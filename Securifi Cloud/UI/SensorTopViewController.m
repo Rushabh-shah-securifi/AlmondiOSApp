@@ -19,7 +19,7 @@
     [self.navigationController pushViewController:ctrl animated:YES];
 
     if (![self.slidingViewController.underLeftViewController isKindOfClass:[DrawerViewController class]]) {
-        self.slidingViewController.underLeftViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
+        self.slidingViewController.underLeftViewController = [DrawerViewController new];
     }
 }
 
