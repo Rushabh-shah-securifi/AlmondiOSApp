@@ -634,7 +634,6 @@
     //Set values according to device type
     int currentDeviceId = currentSensor.deviceID;
 
-    NSMutableArray *currentKnownValues = [self currentKnownValuesForDevice:currentDeviceId];
 
     //Get the value to be displayed on right rectangle
     NSString *currentValue;
@@ -645,7 +644,7 @@
         case 1:
             //Switch
             //Only one value
-            currentDeviceValue = currentKnownValues[0];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:0];
             currentValue = currentDeviceValue.value;
 
             imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
@@ -671,7 +670,7 @@
 //            currentStateValue = currentDeviceValue.value;
 
             //Get Percentage
-            SFIDeviceKnownValues *currentLevelKnownValue = currentKnownValues[(NSUInteger) currentSensor.mostImpValueIndex];
+            SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.mostImpValueIndex];
             NSString *currentLevel = currentLevelKnownValue.value;
 
             imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
@@ -708,7 +707,7 @@
         }
         case 3: {
             //Binary Sensor
-            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.stateIndex];
 //            currentStateValue = currentDeviceValue.value;
 
             lblDeviceStatus.text = [currentDeviceValue choiceForBoolValueTrueValue:@"OPEN"
@@ -811,10 +810,10 @@
         {
 
             //Get State
-            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.stateIndex];
 
             //Get Percentage
-            SFIDeviceKnownValues *currentLevelKnownValue = currentKnownValues[(NSUInteger) currentSensor.mostImpValueIndex];
+            SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.mostImpValueIndex];
 
             NSString *image_name = (currentSensor.imageName == nil) ? DT4_LEVEL_CONTROL_TRUE : currentSensor.imageName;
             imgDevice.image = [UIImage imageNamed:image_name];
@@ -908,7 +907,7 @@
         }
         case 5:
             //Door Lock
-            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
             if ([currentStateValue isEqualToString:@"true"]) {
@@ -931,7 +930,7 @@
             break;
         case 6:
             //Alarm
-            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - TODO: Change later
             if ([currentStateValue isEqualToString:@"true"]) {
@@ -961,6 +960,7 @@
             NSString *heatingSetpoint;
             NSString *coolingSetpoint;
 
+            NSArray *currentKnownValues = [self currentKnownValuesForDevice:currentDeviceId];
             for (SFIDeviceKnownValues *currentKnownValue in currentKnownValues) {
                 if ([currentKnownValue.valueName isEqualToString:@"SENSOR MULTILEVEL"]) {
                     strValue = currentKnownValue.value;
@@ -1016,7 +1016,7 @@
             //Motion Sensor
             NSMutableString *strStatus = [[NSMutableString alloc] init];
             imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.25), 12, 53, 70);
-            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
             if ([currentStateValue isEqualToString:@"true"]) {
@@ -1049,7 +1049,7 @@
         case 12: {
             //ContactSwitch
             NSMutableString *strStatus = [[NSMutableString alloc] init];
-            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
             if ([currentStateValue isEqualToString:@"true"]) {
@@ -1086,7 +1086,7 @@
             //Fire Sensor
             NSMutableString *strStatus = [[NSMutableString alloc] init];
             imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
-            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY - Show only State
             if ([currentStateValue isEqualToString:@"true"]) {
@@ -1130,7 +1130,7 @@
             NSMutableString *strStatus = [[NSMutableString alloc] init];
             imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
 
-            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
             if ([currentStateValue isEqualToString:@"true"]) {
@@ -1165,7 +1165,7 @@
         case 15: {
             //Gas Sensor
             NSMutableString *strStatus = [[NSMutableString alloc] init];
-            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
             if ([currentStateValue isEqualToString:@"true"]) {
@@ -1200,7 +1200,7 @@
             //Vibration Sensor
             NSMutableString *strStatus = [[NSMutableString alloc] init];
             imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
-            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
             if ([currentStateValue isEqualToString:@"true"]) {
@@ -1234,7 +1234,7 @@
         case 19: {
             //Keyfob
             NSMutableString *strStatus = [[NSMutableString alloc] init];
-            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
             if ([currentStateValue isEqualToString:@"true"]) {
@@ -1267,7 +1267,7 @@
         }
         case 22:
             //Electric Measurement Switch - AC
-            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 10, 53, 70);
             //PY 291113 - Show only State
@@ -1295,22 +1295,26 @@
             // pass through!
         case 23: {
             //Electric Measurement Switch - DC
-            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
-            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH/3.5), 12, 53,70);
+            imgDevice.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
             //PY 291113 - Show only State
             imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
-            if(currentDeviceValue.isUpdating){
+            if (currentDeviceValue.isUpdating) {
                 lblDeviceStatus.text = @"Updating sensor data.\nPlease wait.";
-            }else{
-                if([currentStateValue isEqualToString:@"true"]){
+            }
+            else {
+                if ([currentStateValue isEqualToString:@"true"]) {
                     lblDeviceStatus.text = @"ON";
-                }else if([currentStateValue isEqualToString:@"false"]){
+                }
+                else if ([currentStateValue isEqualToString:@"false"]) {
                     lblDeviceStatus.text = @"OFF";
-                }else{
-                    if(currentStateValue==nil){
+                }
+                else {
+                    if (currentStateValue == nil) {
                         lblDeviceStatus.text = @"Could not update sensor\ndata.";
-                    }else{
+                    }
+                    else {
                         lblDeviceStatus.text = currentValue;
                     }
                 }
@@ -1321,6 +1325,7 @@
             //Temperature Sensor
             NSString *strValue = @"";
 
+            NSArray *currentKnownValues = [self currentKnownValuesForDevice:currentDeviceId];
             for (SFIDeviceKnownValues *currentKnownValue in currentKnownValues) {
                 if ([currentKnownValue.valueName isEqualToString:@"MEASURED_VALUE"]) {
                     strValue = currentKnownValue.value;
@@ -1365,7 +1370,7 @@
         }
         case 34: {
             //Keyfob
-            currentDeviceValue = currentKnownValues[(NSUInteger) currentSensor.stateIndex];
+            currentDeviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valuesIndex:currentSensor.stateIndex];
             currentStateValue = currentDeviceValue.value;
             //PY Show only State
             if ([currentStateValue isEqualToString:@"true"]) {
@@ -1467,9 +1472,8 @@
                 //Set slider value
                 float currentSliderValue = 0.0;
 
-                for (int i = 0; i < [currentKnownValues count]; i++) {
-                    currentDeviceValue = currentKnownValues[(NSUInteger) i];
-                    //Get slider value
+                NSArray *currentKnownValues = [self currentKnownValuesForDevice:currentDeviceId];
+                for (currentDeviceValue in currentKnownValues) {
                     if ([currentDeviceValue.valueName isEqualToString:@"SWITCH MULTILEVEL"]) {
                         currentSliderValue = [currentDeviceValue.value floatValue];
                         break;
@@ -1478,14 +1482,10 @@
 
                 [slider setValue:currentSliderValue animated:YES];
 
-                [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"]
-                             forState:UIControlStateNormal];
-                [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"]
-                             forState:UIControlStateHighlighted];
-                [slider setMinimumTrackImage:[UIImage imageNamed:@"seekbar_dark_patch 2.png"]
-                                    forState:UIControlStateNormal];
-                [slider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"]
-                                    forState:UIControlStateNormal];
+                [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"] forState:UIControlStateNormal];
+                [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"] forState:UIControlStateHighlighted];
+                [slider setMinimumTrackImage:[UIImage imageNamed:@"seekbar_dark_patch 2.png"] forState:UIControlStateNormal];
+                [slider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"] forState:UIControlStateNormal];
                 [belowBackgroundLabel addSubview:slider];
 
                 UIImageView *maxImage = [[UIImageView alloc]initWithFrame:CGRectMake((self.tableView.frame.size.width - 110) + 50, baseYCordinate-5, 24,24)];
@@ -1521,35 +1521,30 @@
             }
             case 3:
             {
-                //Do not display the most important one
-                for(int i =0; i < [currentKnownValues count]; i++){
-                    // if(i!= currentSensor.mostImpValueIndex ){
-
-                    currentDeviceValue = currentKnownValues[(NSUInteger) i];
+                NSArray *currentKnownValues = [self currentKnownValuesForDevice:currentDeviceId];
+                for (currentDeviceValue in currentKnownValues) {
                     //Display only battery - PY 291113
                     NSString *batteryStatus;
-                    if([currentDeviceValue.valueName isEqualToString:@"BATTERY"]){
-                        expandedLblText = [[UILabel alloc]init];
-                        [expandedLblText setBackgroundColor:[UIColor clearColor]];
+                    if ([currentDeviceValue.valueName isEqualToString:@"BATTERY"]) {
+                        expandedLblText = [[UILabel alloc] init];
+                        expandedLblText.backgroundColor = [UIColor clearColor];
                         //Check the status of value
-                        if([currentValue isEqualToString:@"1"]){
+                        if ([currentValue isEqualToString:@"1"]) {
                             //Battery Low
                             batteryStatus = @"Low Battery";
-                        }else{
+                        }
+                        else {
                             //Battery OK
                             batteryStatus = @"Battery OK";
                         }
                         expandedLblText.text = batteryStatus;
                         expandedLblText.textColor = [UIColor whiteColor];
-                        [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
-                        baseYCordinate = baseYCordinate+25;
-                        //// NSLog(@"Y Cordinate %f", baseYCordinate);
-                        expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
+                        expandedLblText.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+
+                        baseYCordinate = baseYCordinate + 25;
+                        expandedLblText.frame = CGRectMake(10, baseYCordinate, 299, 30);
                         [belowBackgroundLabel addSubview:expandedLblText];
                     }
-                    //                    expandedLblText.text = [NSString stringWithFormat:@"%@:  %@", currentDeviceValue.valueName, currentDeviceValue.value];
-
-                    // }
                 }
 
                 baseYCordinate+=25;
@@ -1614,10 +1609,8 @@
                 //Set slider value
                 float currentSliderValue = 0.0;
 
-                for (
-                        int i = 0; i < [currentKnownValues count]; i++) {
-                    currentDeviceValue = currentKnownValues[(NSUInteger) i];
-                    //Get slider value
+                NSArray *currentKnownValues = [self currentKnownValuesForDevice:currentDeviceId];
+                for (currentDeviceValue in currentKnownValues) {
                     if ([currentDeviceValue.valueName isEqualToString:@"SWITCH MULTILEVEL"]) {
                         currentSliderValue = [currentDeviceValue.value floatValue];
                         break;
@@ -1909,9 +1902,8 @@
 
                 NSMutableString *strState = [[NSMutableString alloc] init];
 
-                for (
-                        NSUInteger i = 0; i < [currentKnownValues count]; i++) {
-                    currentDeviceValue = currentKnownValues[i];
+                NSArray *currentKnownValues = [self currentKnownValuesForDevice:currentDeviceId];
+                for (currentDeviceValue in currentKnownValues) {
                     //Get slider value
                     if ([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT SETPOINT HEATING"]) {
                         currentHeatingSliderValue = [currentDeviceValue.value floatValue];
@@ -1975,9 +1967,7 @@
 
                     UIButton *btnDismiss = [[UIButton alloc]init];
                     btnDismiss.backgroundColor = [UIColor clearColor];
-                    [btnDismiss addTarget:self
-                                   action:@selector(onDismissTamper:)
-                         forControlEvents:UIControlEventTouchDown];
+                    [btnDismiss addTarget:self action:@selector(onDismissTamper:) forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
                     [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal ];
@@ -2312,54 +2302,54 @@
                 unsigned int rmsCurrent = 0;
                 unsigned int acCurrentMultipier = 0;
                 unsigned int acCurrentDivisor = 0;
+
                 NSString *currentDeviceTypeName;
                 NSString *hexString;
-                if (currentKnownValues != nil) {
-                    for (NSUInteger i = 0; i < [currentKnownValues count]; i++) {
-                        SFIDeviceKnownValues *curDeviceValues = currentKnownValues[i];
-                        currentDeviceTypeName = curDeviceValues.valueName;
-                        hexString = curDeviceValues.value;
-                        //                          NSString *hexIP = [NSString stringWithFormat:@"%lX", (long)[currentDevice.deviceIP integerValue]];
-                        //							hexString = hexString.substring(2);
-                        // NSLog(@"HEX STRING: %@", hexString);
-                        NSScanner *scanner = [NSScanner scannerWithString:hexString];
 
-                        if ([currentDeviceTypeName isEqualToString:@"ACTIVE_POWER"]) {
-                            [scanner scanHexInt:&activePower];
-                            //activePower = Integer.parseInt(hexString, 16);
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"AC_POWERMULTIPLIER"]) {
-                            [scanner scanHexInt:&acPowerMultiplier];
-                            //acPowerMultiplier = Integer.parseInt(hexString, 16);
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"AC_POWERDIVISOR"]) {
-                            [scanner scanHexInt:&acPowerDivisor];
-                            //acPowerDivisor = Integer.parseInt(hexString, 16);
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"RMS_VOLTAGE"]) {
-                            [scanner scanHexInt:&rmsVoltage];
-                            //rmsVoltage = Integer.parseInt(hexString, 16);
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"AC_VOLTAGEMULTIPLIER"]) {
-                            [scanner scanHexInt:&acVoltageMultipier];
-                            //acVoltageMultipier = Integer.parseInt(hexString, 16);
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"AC_VOLTAGEDIVISOR"]) {
-                            [scanner scanHexInt:&acVoltageDivisor];
-                            //acVoltageDivisor = Integer.parseInt(hexString, 16);
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"RMS_CURRENT"]) {
-                            [scanner scanHexInt:&rmsCurrent];
-                            //rmsCurrent = Integer.parseInt(hexString, 16);
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"AC_CURRENTMULTIPLIER"]) {
-                            [scanner scanHexInt:&acCurrentMultipier];
-                            //acCurrentMultipier = Integer.parseInt(hexString, 16);
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"AC_CURRENTDIVISOR"]) {
-                            [scanner scanHexInt:&acCurrentDivisor];
-                            //acCurrentDivisor = Integer.parseInt(hexString, 16);
-                        }
+                NSArray *currentKnownValues = [self currentKnownValuesForDevice:currentDeviceId];
+                for (currentDeviceValue in currentKnownValues) {
+                    currentDeviceTypeName = currentDeviceValue.valueName;
+                    hexString = currentDeviceValue.value;
+                    //                          NSString *hexIP = [NSString stringWithFormat:@"%lX", (long)[currentDevice.deviceIP integerValue]];
+                    //							hexString = hexString.substring(2);
+                    // NSLog(@"HEX STRING: %@", hexString);
+                    NSScanner *scanner = [NSScanner scannerWithString:hexString];
+
+                    if ([currentDeviceTypeName isEqualToString:@"ACTIVE_POWER"]) {
+                        [scanner scanHexInt:&activePower];
+                        //activePower = Integer.parseInt(hexString, 16);
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"AC_POWERMULTIPLIER"]) {
+                        [scanner scanHexInt:&acPowerMultiplier];
+                        //acPowerMultiplier = Integer.parseInt(hexString, 16);
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"AC_POWERDIVISOR"]) {
+                        [scanner scanHexInt:&acPowerDivisor];
+                        //acPowerDivisor = Integer.parseInt(hexString, 16);
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"RMS_VOLTAGE"]) {
+                        [scanner scanHexInt:&rmsVoltage];
+                        //rmsVoltage = Integer.parseInt(hexString, 16);
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"AC_VOLTAGEMULTIPLIER"]) {
+                        [scanner scanHexInt:&acVoltageMultipier];
+                        //acVoltageMultipier = Integer.parseInt(hexString, 16);
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"AC_VOLTAGEDIVISOR"]) {
+                        [scanner scanHexInt:&acVoltageDivisor];
+                        //acVoltageDivisor = Integer.parseInt(hexString, 16);
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"RMS_CURRENT"]) {
+                        [scanner scanHexInt:&rmsCurrent];
+                        //rmsCurrent = Integer.parseInt(hexString, 16);
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"AC_CURRENTMULTIPLIER"]) {
+                        [scanner scanHexInt:&acCurrentMultipier];
+                        //acCurrentMultipier = Integer.parseInt(hexString, 16);
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"AC_CURRENTDIVISOR"]) {
+                        [scanner scanHexInt:&acCurrentDivisor];
+                        //acCurrentDivisor = Integer.parseInt(hexString, 16);
                     }
                 }
 
@@ -2394,8 +2384,6 @@
 
                 expandedLblText = [[UILabel alloc] init];
                 [expandedLblText setBackgroundColor:[UIColor clearColor]];
-
-
 
                 //Display Current
                 expandedLblText.text = [NSString stringWithFormat:@"Current is %.3fA", current];
@@ -2449,43 +2437,43 @@
                 unsigned int dcCurrent = 0;
                 unsigned int dcCurrentMultipier = 0;
                 unsigned int dcCurrentDivisor = 0;
+
                 NSString *currentDeviceTypeName;
                 NSString *hexString;
-                if(currentKnownValues!=nil){
-                    for (NSUInteger i = 0; i < [currentKnownValues count]; i++) {
-                        SFIDeviceKnownValues *curDeviceValues = [currentKnownValues objectAtIndex:i];
-                        currentDeviceTypeName = curDeviceValues.valueName;
-                        hexString = curDeviceValues.value;
 
-                        NSScanner *scanner = [NSScanner scannerWithString:hexString];
+                NSArray *currentKnownValues = [self currentKnownValuesForDevice:currentDeviceId];
+                for (currentDeviceValue in currentKnownValues) {
+                    currentDeviceTypeName = currentDeviceValue.valueName;
+                    hexString = currentDeviceValue.value;
 
-                        if ([currentDeviceTypeName isEqualToString:@"DC_POWER"]) {
-                            [scanner scanHexInt:&dcPower];
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"DC_POWERMULTIPLIER"]) {
-                            [scanner scanHexInt:&dcPowerMultiplier];
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"DC_POWERDIVISOR"]) {
-                            [scanner scanHexInt:&dcPowerDivisor];
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"DC_VOLTAGE"]) {
-                            [scanner scanHexInt:&dcVoltage];
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"DC_VOLTAGEMULTIPLIER"]) {
-                            [scanner scanHexInt:&dcVoltageMultipier];
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"DC_VOLTAGEDIVISOR"]) {
-                            [scanner scanHexInt:&dcVoltageDivisor];
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"DC_CURRENT"]) {
-                            [scanner scanHexInt:&dcCurrent];
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"DC_CURRENTMULTIPLIER"]) {
-                            [scanner scanHexInt:&dcCurrentMultipier];
-                        }
-                        else if ([currentDeviceTypeName isEqualToString:@"DC_CURRENTDIVISOR"]) {
-                            [scanner scanHexInt:&dcCurrentDivisor];
-                        }
+                    NSScanner *scanner = [NSScanner scannerWithString:hexString];
+
+                    if ([currentDeviceTypeName isEqualToString:@"DC_POWER"]) {
+                        [scanner scanHexInt:&dcPower];
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"DC_POWERMULTIPLIER"]) {
+                        [scanner scanHexInt:&dcPowerMultiplier];
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"DC_POWERDIVISOR"]) {
+                        [scanner scanHexInt:&dcPowerDivisor];
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"DC_VOLTAGE"]) {
+                        [scanner scanHexInt:&dcVoltage];
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"DC_VOLTAGEMULTIPLIER"]) {
+                        [scanner scanHexInt:&dcVoltageMultipier];
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"DC_VOLTAGEDIVISOR"]) {
+                        [scanner scanHexInt:&dcVoltageDivisor];
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"DC_CURRENT"]) {
+                        [scanner scanHexInt:&dcCurrent];
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"DC_CURRENTMULTIPLIER"]) {
+                        [scanner scanHexInt:&dcCurrentMultipier];
+                    }
+                    else if ([currentDeviceTypeName isEqualToString:@"DC_CURRENTDIVISOR"]) {
+                        [scanner scanHexInt:&dcCurrentDivisor];
                     }
                 }
 
@@ -2520,8 +2508,6 @@
 
                 expandedLblText = [[UILabel alloc]init];
                 [expandedLblText setBackgroundColor:[UIColor clearColor]];
-
-
 
                 //Display Current
                 expandedLblText.text = [NSString stringWithFormat:@"Current is %.3fA", current];
@@ -3572,12 +3558,20 @@
 
 #pragma mark - Sensor Values
 
-- (SFIDeviceKnownValues *)currentKnownValuesForDevice:(int)deviceId valueName:(NSString *)aValueName {
+- (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice:(int)deviceId valueName:(NSString *)aValueName {
     NSArray *currentKnownValues = [self currentKnownValuesForDevice:deviceId];
     for (SFIDeviceKnownValues *value in currentKnownValues) {
         if ([value.valueName isEqualToString:aValueName]) {
             return value;
         }
+    }
+    return nil;
+}
+
+- (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice:(int)deviceId valuesIndex:(NSInteger)index {
+    NSArray *values = [self currentKnownValuesForDevice:deviceId];
+    if (index < values.count) {
+        return values[(NSUInteger) index];
     }
     return nil;
 }
@@ -3634,7 +3628,7 @@
     int currentDeviceId = currentSensor.deviceID;
 
     // Update values
-    SFIDeviceKnownValues *deviceValue = [self currentKnownValuesForDevice:currentDeviceId valueName:valueName];
+    SFIDeviceKnownValues *deviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valueName:valueName];
     deviceValue.value = [NSString stringWithFormat:@"%d", (int) value];
 
     // Keep track of them
@@ -3655,7 +3649,7 @@
     SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
     int currentDeviceId = currentSensor.deviceID;
 
-    SFIDeviceKnownValues *deviceValue = [self currentKnownValuesForDevice:currentDeviceId valueName:valueName];
+    SFIDeviceKnownValues *deviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valueName:valueName];
     deviceValue.value = [NSString stringWithFormat:@"%d", (int) (slider.value)]; //Do not wait for response from Cloud
 
     self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
@@ -3685,7 +3679,7 @@
     SFIDevice *currentSensor = self.deviceList[(NSUInteger) ctrl.tag];
     int currentDeviceId = currentSensor.deviceID;
 
-    SFIDeviceKnownValues *deviceValue = [self currentKnownValuesForDevice:currentDeviceId valueName:valueName];
+    SFIDeviceKnownValues *deviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valueName:valueName];
     deviceValue.value = strModeValue;
 
     self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
