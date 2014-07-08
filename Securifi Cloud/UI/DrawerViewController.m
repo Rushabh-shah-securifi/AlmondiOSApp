@@ -24,19 +24,19 @@
 
     [self.slidingViewController setAnchorRightRevealAmount:250.0f];
     self.slidingViewController.underLeftWidthLayout = ECFullWidth;
-    self.drawTable.backgroundColor = [UIColor colorWithRed:(CGFloat) (34 / 255.0) green:(CGFloat) (34 / 255.0) blue:(CGFloat) (34 / 255.0) alpha:1.0];
+    self.tableView.backgroundColor = [UIColor colorWithRed:(CGFloat) (34 / 255.0) green:(CGFloat) (34 / 255.0) blue:(CGFloat) (34 / 255.0) alpha:1.0];
 
     UISwipeGestureRecognizer *showTabSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(revealTab:)];
     showTabSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.view addGestureRecognizer:showTabSwipe];
 
-    self.drawTable.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self resetAlmondList];
-    [self.drawTable reloadData];
+    [self.tableView reloadData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -64,11 +64,11 @@
     NSArray *array;
     switch (sectionIndex) {
         case 0:
-            array = self.dataDictionary[ALMONDLIST];
+            array = [self getAlmondList];
             NSLog(@"Almond List count %d", [array count]);
             return [array count] + 1;
         case 1:
-            array = self.dataDictionary[SETTINGS_LIST];
+            array = [self getSettingsList];
             return [array count];
         case 2:
             return 0;
@@ -77,6 +77,14 @@
     }
     return 0;
 
+}
+
+- (NSArray *)getSettingsList {
+    return self.dataDictionary[SETTINGS_LIST];
+}
+
+- (NSArray *)getAlmondList {
+    return self.dataDictionary[ALMONDLIST];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
@@ -124,7 +132,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
         case 0: {
-            NSArray *array = self.dataDictionary[ALMONDLIST];
+            NSArray *array = [self getAlmondList];
             if (indexPath.row == [array count]) {
                 //Create Add symbol
                 return [self tableViewTableViewCreateAddSymbolCell:tableView];
@@ -143,7 +151,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        NSArray *array = self.dataDictionary[ALMONDLIST];
+        NSArray *array = [self getAlmondList];
         if (indexPath.row == [array count]) {
             //Add almond - Affiliation process
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -154,14 +162,12 @@
         else {
             int codeIndex = 0;
             //Display the corresponding Sensor List
-            UIViewController *newTopViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"TabTop"];
-//            UITabBarController *ctrl = (UITabBarController *) newTopViewController;
-//            ctrl.tabBar.tintColor = [UIColor blackColor];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+            UIViewController *newTopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabTop"];
 
             SFIAlmondPlus *currentAlmond = array[(NSUInteger) indexPath.row];
             self.currentMAC = currentAlmond.almondplusMAC;
 
-            //[SNLog Log:@"Method Name: %s Selected MAC is @%@", __PRETTY_FUNCTION__,self.currentMAC];
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             NSString *documentsDirectory = paths[0];
             NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
@@ -253,7 +259,7 @@
     lblName.textColor = [UIColor whiteColor];
     [lblName setFont:[UIFont fontWithName:@"Avenir-Roman" size:16]];
 
-    NSArray *array = self.dataDictionary[ALMONDLIST];
+    NSArray *array = [self getAlmondList];
     SFIAlmondPlus *currentAlmond = array[(NSUInteger) indexPath.row];
     lblName.text = currentAlmond.almondplusName;
 
@@ -275,7 +281,7 @@
 
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:id];
 
-    NSArray *array = self.dataDictionary[SETTINGS_LIST];
+    NSArray *array = [self getSettingsList];
     NSString *cellValue = array[(NSUInteger) indexPath.row];
 
     UIImageView *imgSettings;

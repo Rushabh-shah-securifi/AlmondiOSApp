@@ -1371,54 +1371,6 @@
             </objects>
             <point key="canvasLocation" x="197" y="-586"/>
         </scene>
-        <!--Drawer View Controller-->
-        <scene sceneID="SjF-1s-uVK">
-            <objects>
-                <viewController storyboardIdentifier="Menu" autoresizesArchivedViewToFullSize="NO" id="OW0-U2-bDH" customClass="DrawerViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="RAp-Am-sph"/>
-                        <viewControllerLayoutGuide type="bottom" id="pbU-fp-oYk"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="QUe-9I-aTM">
-                        <rect key="frame" x="0.0" y="94" width="320" height="386"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="VpR-ud-JSr">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="386"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="sectionIndexTrackingBackgroundColor" red="1" green="0.26968374699999997" blue="0.61354745079999995" alpha="1" colorSpace="calibratedRGB"/>
-                                <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="MenuItemCell" id="GKT-t2-naL">
-                                        <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GKT-t2-naL" id="sLF-YX-cuv">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                        </tableViewCellContentView>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="OW0-U2-bDH" id="f1d-pT-e1p"/>
-                                    <outlet property="delegate" destination="OW0-U2-bDH" id="j6K-Y2-v75"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO"/>
-                    <connections>
-                        <outlet property="drawTable" destination="VpR-ud-JSr" id="2mn-t3-sfP"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uzJ-P6-Tec" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1992" y="-1327"/>
-        </scene>
         <!--Main View Controller-->
         <scene sceneID="qgd-qj-mZq">
             <objects>

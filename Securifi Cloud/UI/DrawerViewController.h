@@ -10,6 +10,5 @@
 #import "ECSlidingViewController.h"
 #import <MessageUI/MessageUI.h>
 
-@interface DrawerViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITabBarControllerDelegate, MFMailComposeViewControllerDelegate>
-@property(nonatomic, retain) IBOutlet UITableView *drawTable;
+@interface DrawerViewController : UITableViewController <UITabBarControllerDelegate, MFMailComposeViewControllerDelegate>
 @end

@@ -34,7 +34,7 @@
     [super viewWillAppear:animated];
     
     if (![self.slidingViewController.underLeftViewController isKindOfClass:[DrawerViewController class]]) {
-        self.slidingViewController.underLeftViewController  = [self.storyboard instantiateViewControllerWithIdentifier:@"Menu"];
+        self.slidingViewController.underLeftViewController = [DrawerViewController new];
     }
     
     //Problem with detecting swipe gesture for Delete
