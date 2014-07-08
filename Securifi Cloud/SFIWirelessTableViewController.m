@@ -510,9 +510,7 @@
                 }
                 else {
                     self.navigationItem.title = @"Get Started";
-                    [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
-                    [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
-                    [prefs synchronize];
+                    [[SecurifiToolkit sharedInstance] removeCurrentAlmond];
                 }
 
                 [self.navigationController popToRootViewControllerAnimated:YES];

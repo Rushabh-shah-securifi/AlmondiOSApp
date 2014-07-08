@@ -339,19 +339,11 @@
 
                 if([almondList count]!=0){
                     SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
-                    currentMAC = currentAlmond.almondplusMAC;
-
-                    NSString *currentMACName = currentAlmond.almondplusName;
-                    [prefs setObject:currentMAC forKey:CURRENT_ALMOND_MAC];
-                    [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
-
-                    [prefs synchronize];
-                    self.navigationItem.title = currentMACName;
+                    [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:0];
+                    self.navigationItem.title = currentAlmond.almondplusName;
                 }else{
                     self.navigationItem.title = @"Get Started";
-                    [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
-                    [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
-                    [prefs synchronize];
+                    [[SecurifiToolkit sharedInstance] removeCurrentAlmond];
                 }
                 
                 [self.navigationController popToRootViewControllerAnimated:YES];

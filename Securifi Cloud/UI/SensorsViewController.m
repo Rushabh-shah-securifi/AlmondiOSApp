@@ -4163,9 +4163,7 @@
                     self.deviceList = @[];
                     self.deviceValueList = @[];
 
-                    [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
-                    [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
-                    [prefs synchronize];
+                    [[SecurifiToolkit sharedInstance] removeCurrentAlmond];
 
                     [self asyncReloadTable];
                 }
@@ -4209,10 +4207,7 @@
                     self.deviceList = @[];
                     self.deviceValueList = @[];
 
-                    [prefs removeObjectForKey:CURRENT_ALMOND_MAC_NAME];
-                    [prefs removeObjectForKey:CURRENT_ALMOND_MAC];
-                    [prefs removeObjectForKey:COLORCODE];
-                    [prefs synchronize];
+                    [[SecurifiToolkit sharedInstance] removeCurrentAlmond];
 
                     [self asyncReloadTable];
                 }
