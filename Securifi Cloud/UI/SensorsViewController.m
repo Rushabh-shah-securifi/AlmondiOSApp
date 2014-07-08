@@ -3708,23 +3708,23 @@
 }
 
 - (void)sensorNameTextFieldDidChange:(UITextField *)tfName {
-    NSLog(@"tfName for device: %ld Value: %@", (long) tfName.tag, tfName.text);
+    DLog(@"tfName for device: %ld Value: %@", (long) tfName.tag, tfName.text);
     self.currentChangedName = tfName.text;
 }
 
 - (void)sensorLocationTextFieldDidChange:(UITextField *)tfLocation {
-    NSLog(@"tfLocation for device: %ld Value: %@", (long) tfLocation.tag, tfLocation.text);
+    DLog(@"tfLocation for device: %ld Value: %@", (long) tfLocation.tag, tfLocation.text);
     self.currentChangedLocation = tfLocation.text;
 }
 
 - (void)sensorNameTextFieldFinished:(UITextField *)tfName {
-    NSLog(@"tfName for device: %ld Value: %@", (long) tfName.tag, tfName.text);
+    DLog(@"tfName for device: %ld Value: %@", (long) tfName.tag, tfName.text);
     self.currentChangedName = tfName.text;
     [tfName resignFirstResponder];
 }
 
 - (void)sensorLocationTextFieldFinished:(UITextField *)tfLocation {
-    NSLog(@"tfLocation for device: %ld Value: %@", (long) tfLocation.tag, tfLocation.text);
+    DLog(@"tfLocation for device: %ld Value: %@", (long) tfLocation.tag, tfLocation.text);
     self.currentChangedLocation = tfLocation.text;
     [tfLocation resignFirstResponder];
 }
@@ -4251,12 +4251,12 @@
         return;
     }
     if (self.currentChangedName != nil) {
-        NSLog(@"Name changed!");
+        DLog(@"Name changed!");
         sensorChangeCommand.changedName = self.currentChangedName;
         currentSensor.deviceName = self.currentChangedName;
     }
     if (self.currentChangedLocation != nil) {
-        NSLog(@"Location changed!");
+        DLog(@"Location changed!");
         sensorChangeCommand.changedLocation = self.currentChangedLocation;
         currentSensor.location = self.currentChangedLocation;
     }
