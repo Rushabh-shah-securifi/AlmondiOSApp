@@ -13,3 +13,9 @@
     #import <Foundation/Foundation.h>
     #import <SecurifiToolkit/SecurifiToolkit.h>
 #endif
+
+#if( DEBUG )
+#define DLog(args...) NSLog(args)
+#else
+#define DLog(args...)
+#endif

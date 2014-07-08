@@ -151,8 +151,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        NSArray *array = [self getAlmondList];
-        if (indexPath.row == [array count]) {
+
+        NSArray *almondList = [self getAlmondList];
+        if (indexPath.row == [almondList count]) {
             //Add almond - Affiliation process
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
@@ -160,12 +161,11 @@
             [self presentViewController:mainView animated:YES completion:nil];
         }
         else {
-            int codeIndex = 0;
             //Display the corresponding Sensor List
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
             UIViewController *newTopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabTop"];
 
-            SFIAlmondPlus *currentAlmond = array[(NSUInteger) indexPath.row];
+            SFIAlmondPlus *currentAlmond = almondList[(NSUInteger) indexPath.row];
             self.currentMAC = currentAlmond.almondplusMAC;
 
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -174,16 +174,12 @@
             NSArray *listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
 
             //PY 111013 - Integration with new UI
-            codeIndex = (int) indexPath.row;
+            int codeIndex = (int) indexPath.row;
             if (indexPath.row >= [listAvailableColors count]) {
                 codeIndex = codeIndex % [listAvailableColors count];
             }
 
-            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-            [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
-            [prefs setObject:currentAlmond.almondplusName forKey:CURRENT_ALMOND_MAC_NAME];
-            [prefs setInteger:codeIndex forKey:COLORCODE];
-            [prefs synchronize];
+            [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:codeIndex];
 
             [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
                 CGRect frame = self.slidingViewController.topViewController.view.frame;

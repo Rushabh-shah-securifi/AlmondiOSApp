@@ -165,15 +165,13 @@
     if (self.currentMAC == nil) {
         if ([almondList count] != 0) {
             SFIAlmondPlus *currentAlmond = almondList[0];
+            [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:0];
             self.currentMAC = currentAlmond.almondplusMAC;
 
             NSString *currentMACName = currentAlmond.almondplusName;
-            [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
-            [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
             if (currentMACName != nil) {
-                self.navigationItem.title = currentMACName; //[NSString stringWithFormat:@"Sensors at %@", self.currentMAC];
+                self.navigationItem.title = currentMACName;
             }
-
         }
         else {
             self.currentMAC = NO_ALMOND;
@@ -315,7 +313,6 @@
         }
     }
 }
-
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return NO;
@@ -1463,9 +1460,9 @@
                 slider.minimumValue = 0;
                 slider.maximumValue = 99;
                 [slider addTarget:self action:@selector(sliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-                UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sliderTapped:)] ;
-                [slider addGestureRecognizer:tapSlider];
 
+//                UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sliderTapped:)] ;
+//                [slider addGestureRecognizer:tapSlider];
 
                 //Set slider value
                 float currentSliderValue = 0.0;
@@ -1609,8 +1606,9 @@
                 slider.minimumValue = 0;
                 slider.maximumValue = 255;
                 [slider addTarget:self action:@selector(sliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-                UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sliderTapped:)];
-                [slider addGestureRecognizer:tapSlider];
+
+//                UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sliderTapped:)];
+//                [slider addGestureRecognizer:tapSlider];
 
 
                 //Set slider value
@@ -4153,14 +4151,9 @@
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = almondList[0];
+                    [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:0];
                     self.currentMAC = currentAlmond.almondplusMAC;
-                    NSString *currentMACName = currentAlmond.almondplusName;
-
-                    [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
-                    [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
-                    [prefs synchronize];
-
-                    self.navigationItem.title = currentMACName;
+                    self.navigationItem.title = currentAlmond.almondplusName;
                     [self refreshDataForAlmond];
                 }
                 else {
@@ -4204,16 +4197,9 @@
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = almondList[0];
+                    [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:0];
                     self.currentMAC = currentAlmond.almondplusMAC;
-                    NSString *currentMACName = currentAlmond.almondplusName;
-
-                    [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
-                    [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
-                    [prefs removeObjectForKey:COLORCODE];
-//                    [prefs setObject:0 forKey:COLORCODE]; //todo this is wrong sort of assignment, so I am interpreting as "remove" per previous line. Need to review.
-                    [prefs synchronize];
-
-                    self.navigationItem.title = currentMACName;
+                    self.navigationItem.title = currentAlmond.almondplusName;
                     [self refreshDataForAlmond];
                 }
                 else {

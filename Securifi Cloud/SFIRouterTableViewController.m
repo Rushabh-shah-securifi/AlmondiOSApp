@@ -103,14 +103,11 @@
     if (self.currentMAC == nil) {
         if ([almondList count] != 0) {
             SFIAlmondPlus *currentAlmond = almondList[0];
+            [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:0];
             self.currentMAC = currentAlmond.almondplusMAC;
-            currentMACName = currentAlmond.almondplusName;
-            [standardUserDefaults setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
-            [standardUserDefaults setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
-            if (currentMACName != nil) {
-                self.navigationItem.title = currentMACName; //[NSString stringWithFormat:@"Sensors at %@", self.currentMAC];
+            if (currentAlmond.almondplusName) {
+                self.navigationItem.title = currentAlmond.almondplusName;
             }
-
         }
         else {
             self.currentMAC = NO_ALMOND;
@@ -683,14 +680,9 @@
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = almondList[0];
+                    [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:0];
                     self.currentMAC = currentAlmond.almondplusMAC;
-
-                    NSString *currentMACName = currentAlmond.almondplusName;
-                    [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
-                    [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
-                    [prefs synchronize];
-
-                    self.navigationItem.title = currentMACName;
+                    self.navigationItem.title = currentAlmond.almondplusName;
                     [self refreshDataForAlmond];
                 }
                 else {
@@ -729,14 +721,9 @@
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = almondList[0];
+                    [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:0];
                     self.currentMAC = currentAlmond.almondplusMAC;
-
-                    NSString *currentMACName = currentAlmond.almondplusName;
-                    [prefs setObject:self.currentMAC forKey:CURRENT_ALMOND_MAC];
-                    [prefs setObject:currentMACName forKey:CURRENT_ALMOND_MAC_NAME];
-                    [prefs synchronize];
-
-                    self.navigationItem.title = currentMACName;
+                    self.navigationItem.title = currentAlmond.almondplusName;
                     [self refreshDataForAlmond];
                 }
                 else {
