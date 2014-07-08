@@ -31,8 +31,8 @@
 //    SNFileLogger *logger = [[SNFileLogger alloc] init];
 //    [[SNLog logManager] addLogStrategy:logger];
 
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    self.currentMAC = [prefs objectForKey:CURRENT_ALMOND_MAC];
+//    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+    self.currentMAC = [[SecurifiToolkit sharedInstance] currentAlmondName];
     self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
     self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
 }

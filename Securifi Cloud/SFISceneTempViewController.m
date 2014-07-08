@@ -35,14 +35,12 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-	//Set title
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *currentMACName  = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC_NAME];
-    if(currentMACName!=nil){
-        self.navigationItem.title = currentMACName;
+
+    SFIAlmondPlus *plus = [[SecurifiToolkit sharedInstance] currentAlmond];
+    if (plus.almondplusName != nil) {
+        self.navigationItem.title = plus.almondplusName;
     }
 }
 

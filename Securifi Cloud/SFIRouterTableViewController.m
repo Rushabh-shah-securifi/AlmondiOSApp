@@ -95,9 +95,8 @@
     _listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
 
     //Set title
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    self.currentMAC = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC];
-    NSString *currentMACName = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC_NAME];
+    SFIAlmondPlus *plus = [[SecurifiToolkit sharedInstance] currentAlmond];
+    self.currentMAC = plus.almondplusMAC;
 
     NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
     if (self.currentMAC == nil) {
@@ -120,8 +119,8 @@
             self.navigationItem.title = @"Get Started";
         }
         else {
-            if (currentMACName != nil) {
-                self.navigationItem.title = currentMACName;
+            if (plus.almondplusName != nil) {
+                self.navigationItem.title = plus.almondplusName;
             }
         }
     }
@@ -182,8 +181,10 @@
     [super viewWillAppear:animated];
     self.isRebooting = FALSE;
 
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    self.currentMAC = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+
+    self.currentMAC = plus.almondplusMAC;
 
     //If Almond is there or not
     NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
@@ -676,7 +677,6 @@
                 [SNLog Log:@"%s: Previously no almond", __PRETTY_FUNCTION__];
 
                 NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-                NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = almondList[0];
@@ -715,7 +715,6 @@
                 [SNLog Log:@"%s: Remove this view", __PRETTY_FUNCTION__];
 
                 NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-                NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = almondList[0];

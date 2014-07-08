@@ -37,13 +37,15 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    self.currentMAC = [prefs objectForKey:CURRENT_ALMOND_MAC];
-    listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-    NSString *colorCode = [prefs stringForKey:COLORCODE];
 
-    if (colorCode != nil) {
-        currentColor = [listAvailableColors objectAtIndex:(NSUInteger) [colorCode integerValue]];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    self.currentMAC = plus.almondplusMAC;
+
+    listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+    int colorCode = plus.colorCodeIndex;
+    if (colorCode != 0) {
+        currentColor = [listAvailableColors objectAtIndex:(NSUInteger) colorCode];
     }
     else {
         currentColor = [listAvailableColors objectAtIndex:(NSUInteger) self.currentColorIndex];
@@ -546,7 +548,6 @@
     if ([self.currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
         [SNLog Log:@"Method Name: %s Remove this view", __PRETTY_FUNCTION__];
 
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
         NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
 
         if ([almondList count] != 0) {

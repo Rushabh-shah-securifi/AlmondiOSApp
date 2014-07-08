@@ -39,8 +39,8 @@
 {
     [super viewDidLoad];
 	//Set title
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *currentMACName  = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC_NAME];
+//    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *currentMACName  = [[SecurifiToolkit sharedInstance] currentAlmondName];
     if(currentMACName!=nil){
         self.navigationItem.title = currentMACName;
     }

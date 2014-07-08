@@ -10,7 +10,6 @@
 #import "SFIColors.h"
 #import "SFIScene.h"
 #import "SFIParser.h"
-#import "AlmondPlusConstants.h"
 
 @interface SFISceneViewController ()
 
@@ -92,31 +91,24 @@ static NSString *simpleTableIdentifier = @"SensorCell";
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    
-//    self.view.autoresizingMask= UIViewAutoresizingFlexibleWidth;
-//    self.view.autoresizesSubviews= YES;
-    
-    
+
     //Set title
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-   // NSString *currentMAC = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC];
-    NSString *currentMACName  = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC_NAME];
-    if(currentMACName!=nil){
-        self.navigationItem.title = currentMACName;
+    SFIAlmondPlus *plus = [[SecurifiToolkit sharedInstance] currentAlmond];
+    if (plus.almondplusName != nil) {
+        self.navigationItem.title = plus.almondplusName;
     }
+
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
     listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-    
     self.sceneSensorColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-    
+
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+
     //Display Drawer Gesture
     UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(revealMenu:)];
     showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;

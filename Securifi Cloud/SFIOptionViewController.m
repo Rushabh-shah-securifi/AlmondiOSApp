@@ -137,8 +137,8 @@
         if (obj.isSuccessful) {
             [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
 
-            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-            NSString *currentMAC = [prefs objectForKey:CURRENT_ALMOND_MAC];
+//            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+            NSString *currentMAC = [[SecurifiToolkit sharedInstance] currentAlmondName];
 
             SFIAlmondPlus *deletedAlmond = [obj.almondPlusMACList objectAtIndex:0];
             if ([currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {

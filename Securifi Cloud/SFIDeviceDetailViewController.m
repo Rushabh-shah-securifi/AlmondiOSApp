@@ -7,7 +7,6 @@
 //
 
 #import "SFIDeviceDetailViewController.h"
-#import "AlmondPlusConstants.h"
 #import "SFIOfflineDataManager.h"
 #import "SNLog.h"
 
@@ -35,15 +34,11 @@
     
     self.doRefreshView = FALSE;
     [SNLog Log:@"Method Name: %s Selected Device ID is @%d Value Count: %d Device Type: %d", __PRETTY_FUNCTION__,self.deviceValue.deviceID, self.deviceValue.valueCount, self.currentDeviceType ];
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    self.currentMAC  = [prefs objectForKey:CURRENT_ALMOND_MAC];
-    
+    self.currentMAC  = [[SecurifiToolkit sharedInstance] currentAlmondName];
     self.currentDeviceID = [NSString stringWithFormat:@"%d",self.deviceValue.deviceID];
     
     self.deviceKnownValues = self.deviceValue.knownValues;
     [self displayActivity];
-    
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated{

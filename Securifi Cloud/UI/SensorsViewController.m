@@ -157,11 +157,12 @@
     showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
     [self.tableView addGestureRecognizer:showMenuSwipe];
 
-    //PY 111013 - Integration with new UI
-    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    self.currentMAC = [prefs objectForKey:CURRENT_ALMOND_MAC];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
-    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    self.currentMAC = plus.almondplusMAC;
+
+    NSArray *almondList = [toolkit almondList];
     if (self.currentMAC == nil) {
         if ([almondList count] != 0) {
             SFIAlmondPlus *currentAlmond = almondList[0];
@@ -190,10 +191,9 @@
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
 
     self.listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-    NSString *colorCode = [prefs stringForKey:COLORCODE];
-
-    if (colorCode != nil) {
-        self.currentColor = self.listAvailableColors[(NSUInteger) [colorCode integerValue]];
+    int colorCode = plus.colorCodeIndex;
+    if (colorCode != 0) {
+        self.currentColor = self.listAvailableColors[(NSUInteger) colorCode];
     }
     else {
         self.currentColor = self.listAvailableColors[(NSUInteger) self.currentColorIndex];
@@ -290,9 +290,9 @@
         [self.tableView reloadData];
     }
     else {
-        NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-        self.currentMAC = [prefs objectForKey:CURRENT_ALMOND_MAC];
-        self.navigationItem.title = [prefs objectForKey:CURRENT_ALMOND_MAC_NAME];
+        SFIAlmondPlus *plus = [[SecurifiToolkit sharedInstance] currentAlmond];
+        self.currentMAC = plus.almondplusMAC;
+        self.navigationItem.title = plus.almondplusName;
 
         self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
         self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
@@ -4147,7 +4147,6 @@
             if ([self isNoAlmondMAC]) {
                 //[SNLog Log:@"%s: Previously no almond", __PRETTY_FUNCTION__];
                 NSArray *almondList = [SFIOfflineDataManager readAlmondList];
-                NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = almondList[0];
@@ -4191,7 +4190,6 @@
             if ([self.currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
                 //[SNLog Log:@"%s: Remove this view", __PRETTY_FUNCTION__];
                 NSArray *almondList = [SFIOfflineDataManager readAlmondList];
-                NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = almondList[0];

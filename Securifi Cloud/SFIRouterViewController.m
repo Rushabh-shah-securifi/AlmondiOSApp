@@ -46,15 +46,13 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    self.currentMAC = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC];
-    NSString *currentMACName  = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC_NAME];
-    if(currentMACName!=nil){
-        self.navigationItem.title = currentMACName;
+
+    SFIAlmondPlus *plus = [[SecurifiToolkit sharedInstance] currentAlmond];
+    self.currentMAC = plus.almondplusMAC;
+    if (plus.almondplusName != nil) {
+        self.navigationItem.title = plus.almondplusName;
     }
 }
 

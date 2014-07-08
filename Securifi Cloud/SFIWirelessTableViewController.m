@@ -412,8 +412,9 @@
     //Generate internal index between 1 to 100
     self.mobileInternalIndex = (arc4random() % 1000) + 1;
 
-    NSUserDefaults *standardUserDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *currentMAC = [standardUserDefaults objectForKey:CURRENT_ALMOND_MAC];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    NSString *currentMAC = plus.almondplusMAC;
 
     GenericCommandRequest *setWirelessSettingGenericCommand = [[GenericCommandRequest alloc] init];
     setWirelessSettingGenericCommand.almondMAC = currentMAC;
@@ -495,8 +496,9 @@
 
             [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
 
-            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-            NSString *currentMAC = [prefs objectForKey:CURRENT_ALMOND_MAC];
+            SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+            SFIAlmondPlus *plus = [toolkit currentAlmond];
+            NSString *currentMAC = plus.almondplusMAC;
 
             SFIAlmondPlus *deletedAlmond = [obj.almondPlusMACList objectAtIndex:0];
             if ([currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
