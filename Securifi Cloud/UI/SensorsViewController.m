@@ -4135,12 +4135,8 @@
         AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
 
         if (obj.isSuccessful) {
-            //[SNLog Log:@"%s: List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
-            //When previously no almonds were there
-            //[SNLog Log:@"%s: Current MAC : %@", __PRETTY_FUNCTION__,self.currentMAC];
             if ([self isNoAlmondMAC]) {
-                //[SNLog Log:@"%s: Previously no almond", __PRETTY_FUNCTION__];
-                NSArray *almondList = [SFIOfflineDataManager readAlmondList];
+                NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = almondList[0];
@@ -4172,18 +4168,12 @@
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        //[SNLog Log:@"%s: Received DynamicAlmondListCallback", __PRETTY_FUNCTION__];
-
         AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
 
         if (obj.isSuccessful) {
-
-            //[SNLog Log:@"%s: List size : %d", __PRETTY_FUNCTION__,[obj.almondPlusMACList count]];
-
             SFIAlmondPlus *deletedAlmond = obj.almondPlusMACList[0];
             if ([self.currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
-                //[SNLog Log:@"%s: Remove this view", __PRETTY_FUNCTION__];
-                NSArray *almondList = [SFIOfflineDataManager readAlmondList];
+                NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = almondList[0];
