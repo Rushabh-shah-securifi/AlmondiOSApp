@@ -19,6 +19,13 @@
 
 #pragma mark - View Cycle
 
+- (void)dealloc {
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver:self name:kSFIDidUpdateAlmondList object:nil];
+    [center removeObserver:self name:kSFIDidChangeAlmondName object:nil];
+}
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -31,6 +38,17 @@
     [self.view addGestureRecognizer:showTabSwipe];
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidUpdateAlmondList object:nil];
+    [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidChangeAlmondName object:nil];
+}
+
+- (void)onAlmondListDidChange:(id)notice {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self resetAlmondList];
+        [self.tableView reloadData];
+    });
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -235,36 +253,25 @@
 }
 
 - (UITableViewCell *)tableViewCreateAlmondListCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
-    NSString *id = @"AlmondListCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
-    if (cell != nil) {
-        return cell;
-    }
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"AlmondListCell"];
+    cell.backgroundColor = [UIColor colorWithRed:(CGFloat) (51 / 255.0) green:(CGFloat) (51 / 255.0) blue:(CGFloat) (51 / 255.0) alpha:1.0];
 
-    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:id];
-
-    UIImageView *imgLocation;
-    imgLocation = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 21.5)];
+    UIImageView *imgLocation = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 21.5)];
     imgLocation.userInteractionEnabled = YES;
     imgLocation.image = [UIImage imageNamed:@"almondHome.png"];
     [cell addSubview:imgLocation];
 
-    UILabel *lblName;
-    lblName = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 30)];
-    lblName.backgroundColor = [UIColor clearColor];
-    lblName.textColor = [UIColor whiteColor];
-    [lblName setFont:[UIFont fontWithName:@"Avenir-Roman" size:16]];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 30)];
+    nameLabel.backgroundColor = [UIColor clearColor];
+    nameLabel.textColor = [UIColor whiteColor];
+    nameLabel.font = [UIFont fontWithName:@"Avenir-Roman" size:16];
+    [cell addSubview:nameLabel];
 
     NSArray *array = [self getAlmondList];
-    SFIAlmondPlus *currentAlmond = array[(NSUInteger) indexPath.row];
-    lblName.text = currentAlmond.almondplusName;
-
-    [cell addSubview:lblName];
-
-    [cell setBackgroundColor:[UIColor colorWithRed:(CGFloat) (51 / 255.0) green:(CGFloat) (51 / 255.0) blue:(CGFloat) (51 / 255.0) alpha:1.0]];
+    SFIAlmondPlus *almond = array[(NSUInteger) indexPath.row];
+    nameLabel.text = almond.almondplusName;
 
     return cell;
-
 }
 
 
