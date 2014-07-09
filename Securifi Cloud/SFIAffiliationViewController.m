@@ -98,7 +98,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onLogoutResponse:)
-                                                 name:LOGOUT_NOTIFIER
+                                                 name:kSFIDidLogoutNotification
                                                object:nil];
 }
 
@@ -116,7 +116,7 @@
                                                   object:nil];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:LOGOUT_NOTIFIER
+                                                    name:kSFIDidLogoutNotification
                                                   object:nil];
 }
 //
