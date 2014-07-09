@@ -54,7 +54,7 @@
 
     [center addObserver:self
                selector:@selector(onLoginResponse:)
-                   name:LOGIN_NOTIFIER
+                   name:kSFIDidCompleteLoginNotification
                  object:nil];
 
     [center addObserver:self

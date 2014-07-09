@@ -48,7 +48,7 @@
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
                selector:@selector(onLoginResponse:)
-                   name:LOGIN_NOTIFIER
+                   name:kSFIDidCompleteLoginNotification
                  object:nil];
 
     [center addObserver:self
@@ -76,7 +76,7 @@
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self
-                      name:LOGIN_NOTIFIER
+                      name:kSFIDidCompleteLoginNotification
                     object:nil];
 
     [center removeObserver:self
@@ -208,12 +208,6 @@
 
     LoginResponse *obj = (LoginResponse *) [data valueForKey:@"data"];
 
-    [SNLog Log:@"In %s: UserID %@", __PRETTY_FUNCTION__, obj.userID];
-    [SNLog Log:@"In %s: TempPass %@", __PRETTY_FUNCTION__, obj.tempPass];
-    [SNLog Log:@"In %s: isSuccessful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-    [SNLog Log:@"In %s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
-    [SNLog Log:@"In %s: Reason Code : %d", __PRETTY_FUNCTION__, obj.reasonCode];
-
     if (!obj.isSuccessful) {
         NSLog(@"Login failure reason Code: %d", obj.reasonCode);
 
@@ -233,16 +227,19 @@
 
                 break;
             }
-            case 4:
+            case 4: {
                 [self setOopsMsg:@"The email or password is incorrect"];
                 break;
-            default:
+            }
+            default: {
                 [self setOopsMsg:@"Sorry! Login was unsuccessful."];
+            }
         }
 
         return;
     }
 
+    // If this far, then login was successful. Notify the delegate.
     [self.delegate loginControllerDidCompleteLogin:self];
 }
 
