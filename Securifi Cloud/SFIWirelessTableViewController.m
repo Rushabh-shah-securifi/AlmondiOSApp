@@ -12,6 +12,10 @@
 #import "AlmondPlusConstants.h"
 #import "SFIParser.h"
 
+@interface SFIWirelessTableViewController ()
+@property(nonatomic, strong) SFIAlmondPlus *currentAlmond;
+@end
+
 @implementation SFIWirelessTableViewController
 @synthesize mobileInternalIndex, currentSetting;
 @synthesize selectedValueDelegate;
@@ -85,8 +89,6 @@
     [countryChannelMap setObject:countryRegion7 forKey:@"7"];
 
 
-
-
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
 
@@ -97,11 +99,7 @@
     //self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    self.currentAlmond = [[SecurifiToolkit sharedInstance] currentAlmond];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -111,10 +109,7 @@
                                                  name:GENERIC_COMMAND_NOTIFIER
                                                object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(DynamicAlmondListDeleteCallback:)
-                                                 name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidUpdateAlmondList object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -122,9 +117,7 @@
                                                     name:GENERIC_COMMAND_NOTIFIER
                                                   object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSFIDidUpdateAlmondList object:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -132,19 +125,16 @@
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    //NSLog(@"Rotation %d", fromInterfaceOrientation);
     [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
     return 6;
 }
 
@@ -482,47 +472,22 @@
     }
 }
 
-- (void)DynamicAlmondListDeleteCallback:(id)sender {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
+#pragma mark - Dynamic updates
 
-    if (data != nil) {
-        [SNLog Log:@"Method Name: %s Received DynamicAlmondListCallback", __PRETTY_FUNCTION__];
-
-        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
-
-        if (obj.isSuccessful) {
-
-            [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
-
-            SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            SFIAlmondPlus *plus = [toolkit currentAlmond];
-            NSString *currentMAC = plus.almondplusMAC;
-
-            SFIAlmondPlus *deletedAlmond = [obj.almondPlusMACList objectAtIndex:0];
-            if ([currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
-                [SNLog Log:@"Method Name: %s Remove this view", __PRETTY_FUNCTION__];
-
-                NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-                if ([almondList count] != 0) {
-                    SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
-                    [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:0];
-                    self.navigationItem.title = currentAlmond.almondplusName;
-                }
-                else {
-                    self.navigationItem.title = @"Get Started";
-                    [[SecurifiToolkit sharedInstance] removeCurrentAlmond];
-                }
-
-                [self.navigationController popToRootViewControllerAnimated:YES];
-            }
-
-        }
-
+- (void)onAlmondListDidChange:(id)sender {
+    if (self.currentAlmond == nil) {
+        return; // shouldn't happen
     }
+
+    SFIAlmondPlus *plus = [[SecurifiToolkit sharedInstance] currentAlmond];
+    if ([plus.almondplusMAC isEqualToString:self.currentAlmond.almondplusMAC]) {
+        return; // no changes
+    }
+
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+#pragma mark - Private methods
 
 - (void)optionSelected:(NSString *)optionValue forOptionType:(unsigned int)selectedOptionType {
     NSLog(@"option Value: %@ Option Type: %d", optionValue, selectedOptionType);

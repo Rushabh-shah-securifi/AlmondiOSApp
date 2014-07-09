@@ -102,11 +102,7 @@
                     object:nil];
 
     [center removeObserver:self
-                      name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
+                      name:kSFIDidUpdateAlmondList
                     object:nil];
 
     [center removeObserver:self
@@ -114,7 +110,7 @@
                     object:nil];
 
     [center removeObserver:self
-                      name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
+                      name:kSFIDidChangeAlmondName
                     object:nil];
 }
 
@@ -255,13 +251,8 @@
                  object:nil];
 
     [center addObserver:self
-               selector:@selector(onDynamicAlmondListAddCallback:)
-                   name:DYNAMIC_ALMOND_LIST_ADD_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onDynamicAlmondListDeleteCallback:)
-                   name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
+               selector:@selector(onAlmondListDidChange:)
+                   name:kSFIDidUpdateAlmondList
                  object:nil];
 
     [center addObserver:self
@@ -270,8 +261,8 @@
                  object:nil];
 
     [center addObserver:self
-               selector:@selector(onDynamicAlmondNameChangeCallback:)
-                   name:DYNAMIC_ALMOND_NAME_CHANGE_NOTIFIER
+               selector:@selector(onAlmondNameDidChange:)
+                   name:kSFIDidChangeAlmondName
                  object:nil];
 
     [self markCloudStatusIcon];
@@ -3944,47 +3935,33 @@
 }
 
 - (void)onMobileCommandResponseCallback:(id)sender {
-    //PY 311013 - Timeout for Mobile Command
+    // Timeout the commander timer
     [self.mobileCommandTimer invalidate];
     self.isMobileCommandSuccessful = TRUE;
 
-    //[SNLog Log:@"%s: ", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        //[SNLog Log:@"%s: Received MobileCommandResponse",__PRETTY_FUNCTION__];
-
         MobileCommandResponse *obj = (MobileCommandResponse *) [data valueForKey:@"data"];
 
         BOOL isSuccessful = obj.isSuccessful;
         if (isSuccessful) {
-            //Command updated values
-            //update offline storage
             int deviceValueID = (int) [self.currentDeviceID integerValue];
 
             NSArray *currentKnownValues = [self currentKnownValuesForDevice:deviceValueID];
             NSArray *mobileDeviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
 
             //To save on the offline list
-            //[SNLog Log:@"%s: Update Offline List before 82 triggers", __PRETTY_FUNCTION__];
             NSMutableArray *mobileDeviceKnownValues;
             if (mobileDeviceValueList != nil) {
                 for (SFIDeviceValue *currentMobileValue in mobileDeviceValueList) {
-                    //[SNLog Log:@"%s: Mobile DeviceID: %d" , __PRETTY_FUNCTION__,currentMobileValue.deviceID];
                     if (currentMobileValue.deviceID == [self.currentDeviceID integerValue]) {
-                        //[SNLog Log:@"%s: Device found in list: %@" , __PRETTY_FUNCTION__,self.currentDeviceID];
                         mobileDeviceKnownValues = currentMobileValue.knownValues;
                         for (SFIDeviceKnownValues *currentMobileKnownValue in mobileDeviceKnownValues) {
-                            //[SNLog Log:@"%s: Mobile Device Known Value Index: %d" , __PRETTY_FUNCTION__,currentMobileKnownValue.index];
-
                             for (SFIDeviceKnownValues *currentLocalKnownValue in currentKnownValues) {
-                                //[SNLog Log:@"%s: Activity Local Device Known Value Index: %d " , __PRETTY_FUNCTION__,currentLocalKnownValue.index];
                                 if (currentMobileKnownValue.index == currentLocalKnownValue.index) {
-                                    //Update Value
-                                    //[SNLog Log:@"%s: BEFORE update => Cloud: %@ Mobile: %@" , __PRETTY_FUNCTION__,currentLocalKnownValue.value , currentMobileKnownValue.value];
                                     [currentMobileKnownValue setValue:currentLocalKnownValue.value];
-                                    //[SNLog Log:@"%s: AFTER update => Cloud: %@ Mobile: %@" , __PRETTY_FUNCTION__,currentLocalKnownValue.value , currentMobileKnownValue.value];
                                     currentMobileKnownValue.isUpdating = false;
                                     break;
                                 }
@@ -3992,28 +3969,16 @@
                         }
                         [currentMobileValue setKnownValues:mobileDeviceKnownValues];
                     }
-
                 }
-                //Write to local database
-                [SFIOfflineDataManager writeDeviceValueList:mobileDeviceValueList currentMAC:self.currentMAC];
-            }
-            else {
-                //[SNLog Log:@"%s: Error in retrieving device list", __PRETTY_FUNCTION__];
-            }
 
+                [[SecurifiToolkit sharedInstance] writeDeviceValueList:mobileDeviceValueList currentMAC:self.currentMAC];
+            }
         }
-        else {
-            //TODO: Display message
-            // NSLog(@"Reason: %@", obj.reason);
-        }
-
     }
+
     self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
     [self initializeImages];
-    // [[self view] endEditing:YES];
-    //To remove text fields keyboard. It was throwing error when it was being called from the background thread
     [self asyncReloadTable];
-    [SNLog Log:@"%s: Response on UI: TIME => %f", __PRETTY_FUNCTION__, CFAbsoluteTimeGetCurrent()];
 
 }
 
@@ -4124,78 +4089,23 @@
     [self asyncReloadTable];
 }
 
-- (void)onDynamicAlmondListAddCallback:(id)sender {
-    //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
+- (void)onAlmondListDidChange:(id)sender {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
 
-    if (data != nil) {
-        //[SNLog Log:@"%s: Received DynamicAlmondListAddCallback", __PRETTY_FUNCTION__];
-
-        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
-
-        if (obj.isSuccessful) {
-            if ([self isNoAlmondMAC]) {
-                NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-
-                if ([almondList count] != 0) {
-                    SFIAlmondPlus *currentAlmond = almondList[0];
-                    [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:0];
-                    self.currentMAC = currentAlmond.almondplusMAC;
-                    self.navigationItem.title = currentAlmond.almondplusName;
-                    [self refreshDataForAlmond];
-                }
-                else {
-                    self.currentMAC = NO_ALMOND;
-                    self.navigationItem.title = @"Get Started";
-
-                    self.deviceList = @[];
-                    self.deviceValueList = @[];
-
-                    [[SecurifiToolkit sharedInstance] removeCurrentAlmond];
-
-                    [self asyncReloadTable];
-                }
-            }
-        }
-
+    if (plus == nil) {
+        self.currentMAC = NO_ALMOND;
+        self.navigationItem.title = @"Get Started";
+        self.deviceList = @[];
+        self.deviceValueList = @[];
     }
-}
-
-- (void)onDynamicAlmondListDeleteCallback:(id)sender {
-    //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-
-    if (data != nil) {
-        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
-
-        if (obj.isSuccessful) {
-            SFIAlmondPlus *deletedAlmond = obj.almondPlusMACList[0];
-            if ([self.currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
-                NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-
-                if ([almondList count] != 0) {
-                    SFIAlmondPlus *currentAlmond = almondList[0];
-                    [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:0];
-                    self.currentMAC = currentAlmond.almondplusMAC;
-                    self.navigationItem.title = currentAlmond.almondplusName;
-                    [self refreshDataForAlmond];
-                }
-                else {
-                    self.currentMAC = NO_ALMOND;
-                    self.navigationItem.title = @"Get Started";
-
-                    self.deviceList = @[];
-                    self.deviceValueList = @[];
-
-                    [[SecurifiToolkit sharedInstance] removeCurrentAlmond];
-
-                    [self asyncReloadTable];
-                }
-            }
-        }
+    else {
+        self.currentMAC = plus.almondplusMAC;
+        self.navigationItem.title = plus.almondplusName;
+        [self refreshDataForAlmond];
     }
+
+    [self asyncReloadTable];
 }
 
 - (IBAction)onRefreshSensorData:(id)sender {
@@ -4297,19 +4207,16 @@
     }
 }
 
-- (void)onDynamicAlmondNameChangeCallback:(id)sender {
+- (void)onAlmondNameDidChange:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
 
-    if (data != nil) {
-        DynamicAlmondNameChangeResponse *obj = (DynamicAlmondNameChangeResponse *) [data valueForKey:@"data"];
-        if ([self.currentMAC isEqualToString:obj.almondplusMAC]) {
-            //Change the name of the current almond in the offline list
-            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-            [prefs setObject:obj.almondplusName forKey:CURRENT_ALMOND_MAC_NAME];
-            self.navigationItem.title = obj.almondplusName; //[NSString stringWithFormat:@"Sensors at %@", self.currentMAC];
-        }
-
+    SFIAlmondPlus *obj = (SFIAlmondPlus *) [data valueForKey:@"data"];
+    if ([self.currentMAC isEqualToString:obj.almondplusMAC]) {
+        self.navigationItem.title = obj.almondplusName;
     }
 }
 

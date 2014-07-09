@@ -12,6 +12,10 @@
 #import "SFIBlockedContent.h"
 #import "SNLog.h"
 
+@interface SFIRouterDevicesListViewController ()
+@property(nonatomic, strong) SFIAlmondPlus *currentAlmond;
+@end
+
 @implementation SFIRouterDevicesListViewController
 @synthesize deviceList;
 @synthesize deviceListType;
@@ -99,20 +103,17 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+    self.currentAlmond = [[SecurifiToolkit sharedInstance] currentAlmond];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(DynamicAlmondListDeleteCallback:)
-                                                 name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidUpdateAlmondList object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kSFIDidUpdateAlmondList object:nil];
 }
 
 
@@ -121,19 +122,16 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    //NSLog(@"Rotation %d", fromInterfaceOrientation);
     [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
     return [self.deviceList count];
 }
 
@@ -497,42 +495,19 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     [self.tableView reloadData];
 }
 
-#pragma mark - Cloud command handlers
+#pragma mark - Dynamic updates
 
-- (void)DynamicAlmondListDeleteCallback:(id)sender {
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-
-    if (data != nil) {
-        [SNLog Log:@"Method Name: %s Received DynamicAlmondListCallback", __PRETTY_FUNCTION__];
-
-        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
-        if (obj.isSuccessful) {
-
-            [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
-
-//            NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-            NSString *currentMAC = [[SecurifiToolkit sharedInstance] currentAlmondName];
-
-            SFIAlmondPlus *deletedAlmond = [obj.almondPlusMACList objectAtIndex:0];
-            if ([currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
-                [SNLog Log:@"Method Name: %s Remove this view", __PRETTY_FUNCTION__];
-                NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-
-                if ([almondList count] != 0) {
-                    SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
-                    [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:0];
-                    self.navigationItem.title = currentAlmond.almondplusName;
-                }
-                else {
-                    self.navigationItem.title = @"Get Started";
-                    [[SecurifiToolkit sharedInstance] removeCurrentAlmond];
-                }
-
-                [self.navigationController popToRootViewControllerAnimated:YES];
-            }
-        }
+- (void)onAlmondListDidChange:(id)sender {
+    if (self.currentAlmond == nil) {
+        return; // shouldn't happen
     }
+
+    SFIAlmondPlus *plus = [[SecurifiToolkit sharedInstance] currentAlmond];
+    if ([plus.almondplusMAC isEqualToString:self.currentAlmond.almondplusMAC]) {
+        return; // no changes
+    }
+
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 @end

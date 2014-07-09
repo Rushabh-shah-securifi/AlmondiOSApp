@@ -80,21 +80,12 @@
                                              selector:@selector(GenericResponseCallback:)
                                                  name:GENERIC_COMMAND_NOTIFIER
                                                object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(DynamicAlmondListDeleteCallback:)
-                                                 name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
-                                               object:nil];
 }
 
 
 - (void)viewWillDisappear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:GENERIC_COMMAND_NOTIFIER
-                                                  object:nil];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:DYNAMIC_ALMOND_LIST_DELETE_NOTIFIER
                                                   object:nil];
 }
 
@@ -524,45 +515,6 @@
         default: {
             break;
         }
-    }
-}
-
-- (void)DynamicAlmondListDeleteCallback:(id)sender {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data == nil) {
-        return;
-    }
-
-    [SNLog Log:@"Method Name: %s Received DynamicAlmondListCallback", __PRETTY_FUNCTION__];
-    AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
-    if (!obj.isSuccessful) {
-         return;
-    }
-
-    [SNLog Log:@"Method Name: %s List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
-
-    SFIAlmondPlus *deletedAlmond = [obj.almondPlusMACList objectAtIndex:0];
-    if ([self.currentMAC isEqualToString:deletedAlmond.almondplusMAC]) {
-        [SNLog Log:@"Method Name: %s Remove this view", __PRETTY_FUNCTION__];
-
-        NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-
-        if ([almondList count] != 0) {
-            SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
-            [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:0];
-            self.currentMAC = currentAlmond.almondplusMAC;
-            self.navigationItem.title = currentAlmond.almondplusName;
-        }
-        else {
-            self.currentMAC = NO_ALMOND;
-            self.navigationItem.title = @"Get Started";
-            [[SecurifiToolkit sharedInstance] removeCurrentAlmond];
-        }
-
-        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 
