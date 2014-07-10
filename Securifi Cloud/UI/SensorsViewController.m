@@ -327,15 +327,18 @@
 #pragma mark - Reconnection
 
 - (void)onNetworkUpNotifier:(id)sender {
-    [SNLog Log:@"%s: Sensor controller :In networkUP notifier", __PRETTY_FUNCTION__];
+    DLog(@"%s: Sensor controller :In networkUP notifier", __PRETTY_FUNCTION__);
     [self asyncReloadTable];
     [self markCloudStatusIcon];
 }
 
 - (void)onNetworkDownNotifier:(id)sender {
-    [SNLog Log:@"%s: Sensor controller :In network down notifier", __PRETTY_FUNCTION__];
+    DLog(@"%s: Sensor controller :In network down notifier", __PRETTY_FUNCTION__);
     [self markCloudStatusIcon];
     [self asyncReloadTable];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:NO]; // make sure it is hidden
+    });
 }
 
 - (void)onNetworkConnectingNotifier:(id)notification {
@@ -345,6 +348,9 @@
 - (void)onReachabilityDidChange:(NSNotification *)notification {
     [self markCloudStatusIcon];
     [self asyncReloadTable];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:NO]; // make sure it is hidden
+    });
 }
 
 - (void)markCloudStatusIcon {

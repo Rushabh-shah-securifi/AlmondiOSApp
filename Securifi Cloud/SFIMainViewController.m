@@ -24,6 +24,17 @@
 
 #pragma mark - View Lifecycle
 
+- (void)dealloc {
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver:self name:kSFIReachabilityChangedNotification object:nil];
+    [center removeObserver:self name:NETWORK_DOWN_NOTIFIER object:nil];
+    [center removeObserver:self name:NETWORK_UP_NOTIFIER object:nil];
+    [center removeObserver:self name:kSFIDidCompleteLoginNotification object:nil];
+    [center removeObserver:self name:kSFIDidLogoutNotification object:nil];
+    [center removeObserver:self name:kSFIDidLogoutAllNotification object:nil];
+    [center removeObserver:self name:UI_ON_PRESENT_LOGOUT_ALL object:nil];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
