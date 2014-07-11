@@ -94,11 +94,11 @@
                     object:nil];
 
     [center removeObserver:self
-                      name:DEVICE_DATA_CLOUD_NOTIFIER
+                      name:kSFIDidChangeDeviceData
                     object:nil];
 
     [center removeObserver:self
-                      name:DEVICE_VALUE_CLOUD_NOTIFIER
+                      name:kSFIDidChangeDeviceValueList
                     object:nil];
 
     [center removeObserver:self
@@ -242,12 +242,12 @@
 
     [center addObserver:self
                selector:@selector(onDeviceDataCloudResponseCallback:)
-                   name:DEVICE_DATA_CLOUD_NOTIFIER
+                   name:kSFIDidChangeDeviceData
                  object:nil];
 
     [center addObserver:self
                selector:@selector(onDeviceCloudValueListResponseCallback:)
-                   name:DEVICE_VALUE_CLOUD_NOTIFIER
+                   name:kSFIDidChangeDeviceValueList
                  object:nil];
 
     [center addObserver:self
@@ -3723,14 +3723,7 @@
 #pragma mark - Cloud Commands and Handlers
 
 - (void)sendDeviceHashCommand {
-    DeviceDataHashRequest *deviceHashCommand = [[DeviceDataHashRequest alloc] init];
-    deviceHashCommand.almondMAC = self.currentMAC;
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = DEVICEDATA_HASH;
-    cloudCommand.command = deviceHashCommand;
-
-    [self asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncRequestDeviceHash:self.currentMAC];
 }
 
 -(void)onHashResponseCallback:(id)sender
@@ -3806,25 +3799,14 @@
 }
 
 - (void)sendDeviceListCommand {
-    //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    DeviceListRequest *deviceListCommand = [[DeviceListRequest alloc] init];
-    deviceListCommand.almondMAC = self.currentMAC;
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = DEVICEDATA;
-    cloudCommand.command = deviceListCommand;
-
-    [self asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncRequestDeviceList:self.currentMAC];
 }
 
 - (void)onDeviceListResponseCallback:(id)sender {
-    //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        //[SNLog Log:@"%s: Received Device List response", __PRETTY_FUNCTION__];
-
         DeviceListResponse *obj = (DeviceListResponse *) [data valueForKey:@"data"];
 
         self.deviceList = [[NSMutableArray alloc] init];
@@ -3858,37 +3840,27 @@
 - (void)onDeviceValueListResponseCallback:(id)sender {
     self.HUD.hidden = YES;
 
-    //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-
-    if (data != nil) {
-        //[SNLog Log:@"%s: Received Device Value List response", __PRETTY_FUNCTION__];
-
-        DeviceValueResponse *obj = (DeviceValueResponse *) [data valueForKey:@"data"];
-
-        self.deviceValueList = [[NSMutableArray alloc] init];
-        //[SNLog Log:@"%s: List size : %d",__PRETTY_FUNCTION__,[obj.deviceValueList count]];
-        self.deviceValueList = obj.deviceValueList;
-
-        //Write offline
-        [[SecurifiToolkit sharedInstance] writeDeviceValueList:self.deviceValueList currentMAC:self.currentMAC];
-
-        //Reload table
-        [self initializeImages];
-        // [[self view] endEditing:YES];
-        //To remove text fields keyboard. It was throwing error when it was being called from the background thread
-
-        [self asyncReloadTable];
-
-        //TODO: If count of devicevaluelist is < 0, display a message
-
-        //        //Display next screen
-        //        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-        //        SFIDeviceListViewController *deviceListView = (SFIDeviceListViewController*) [storyboard instantiateViewControllerWithIdentifier:@"SFIDeviceListViewController"];
-        //        [self.navigationController pushViewController:deviceListView animated:YES];
+    if (data == nil) {
+        return;
+    }
+    
+    DeviceValueResponse *obj = (DeviceValueResponse *) [data valueForKey:@"data"];
+    if (![obj.almondMAC isEqualToString:self.currentMAC]) {
+        return;
     }
 
+    NSMutableArray *newList = obj.deviceValueList;
+    [[SecurifiToolkit sharedInstance] writeDeviceValueList:newList currentMAC:self.currentMAC];
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if ([obj.almondMAC isEqualToString:self.currentMAC]) {
+            self.deviceValueList = newList;
+            [self initializeImages];
+            [self.tableView reloadData];
+        }
+    });
 }
 
 - (void)sendMobileCommand {
@@ -3924,13 +3896,13 @@
 //PY 311013 - Timeout for Mobile Command
 - (void)onSendMobileCommandTimeout:(id)sender {
     [self.mobileCommandTimer invalidate];
-    //// NSLog(@"cancelMobileCommand %@", isMobileCommandSuccessful);
     if (!self.isMobileCommandSuccessful) {
-        //Cancel the mobile event - Revert back
-        self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
-        [self initializeImages];
-
-        [self asyncReloadTable];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            //Cancel the mobile event - Revert back
+            self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
+            [self initializeImages];
+            [self.tableView reloadData];
+        });
     }
 }
 
@@ -3947,108 +3919,95 @@
 
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    
+    MobileCommandResponse *obj = (MobileCommandResponse *) [data valueForKey:@"data"];
 
-    if (data != nil) {
-        MobileCommandResponse *obj = (MobileCommandResponse *) [data valueForKey:@"data"];
-
-        BOOL isSuccessful = obj.isSuccessful;
-        if (isSuccessful) {
-            int deviceValueID = (int) [self.currentDeviceID integerValue];
-
-            NSArray *currentKnownValues = [self currentKnownValuesForDevice:deviceValueID];
-            NSArray *mobileDeviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
-
-            //To save on the offline list
-            NSMutableArray *mobileDeviceKnownValues;
-            if (mobileDeviceValueList != nil) {
-                for (SFIDeviceValue *currentMobileValue in mobileDeviceValueList) {
-                    if (currentMobileValue.deviceID == [self.currentDeviceID integerValue]) {
-                        mobileDeviceKnownValues = currentMobileValue.knownValues;
-                        for (SFIDeviceKnownValues *currentMobileKnownValue in mobileDeviceKnownValues) {
-                            for (SFIDeviceKnownValues *currentLocalKnownValue in currentKnownValues) {
-                                if (currentMobileKnownValue.index == currentLocalKnownValue.index) {
-                                    [currentMobileKnownValue setValue:currentLocalKnownValue.value];
-                                    currentMobileKnownValue.isUpdating = false;
-                                    break;
-                                }
-                            }
-                        }
-                        [currentMobileValue setKnownValues:mobileDeviceKnownValues];
-                    }
-                }
-
-                [[SecurifiToolkit sharedInstance] writeDeviceValueList:mobileDeviceValueList currentMAC:self.currentMAC];
-            }
-        }
+    BOOL isSuccessful = obj.isSuccessful;
+    if (!isSuccessful) {
+        return;        
     }
 
-    self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
-    [self initializeImages];
-    [self asyncReloadTable];
+    int deviceValueID = (int) [self.currentDeviceID integerValue];
 
+    NSArray *currentKnownValues = [self currentKnownValuesForDevice:deviceValueID];
+    NSArray *mobileDeviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
+
+    //To save on the offline list
+    NSMutableArray *mobileDeviceKnownValues;
+    if (mobileDeviceValueList != nil) {
+        for (SFIDeviceValue *currentMobileValue in mobileDeviceValueList) {
+            if (currentMobileValue.deviceID == [self.currentDeviceID integerValue]) {
+                mobileDeviceKnownValues = currentMobileValue.knownValues;
+                for (SFIDeviceKnownValues *currentMobileKnownValue in mobileDeviceKnownValues) {
+                    for (SFIDeviceKnownValues *currentLocalKnownValue in currentKnownValues) {
+                        if (currentMobileKnownValue.index == currentLocalKnownValue.index) {
+                            [currentMobileKnownValue setValue:currentLocalKnownValue.value];
+                            currentMobileKnownValue.isUpdating = false;
+                            break;
+                        }
+                    }
+                }
+                [currentMobileValue setKnownValues:mobileDeviceKnownValues];
+            }
+        }
+
+        [[SecurifiToolkit sharedInstance] writeDeviceValueList:mobileDeviceValueList currentMAC:self.currentMAC];
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
+        [self initializeImages];
+        [self asyncReloadTable];
+    });
 }
 
 - (void)onDeviceDataCloudResponseCallback:(id)sender {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    
+    NSString *cloudMAC = [data valueForKey:@"data"];
+    BOOL isCurrentMAC = [cloudMAC isEqualToString:self.currentMAC];
+    if (!isCurrentMAC) {
+        return;
+    }
 
-    if (data != nil) {
-        DeviceListResponse *obj = (DeviceListResponse *) [data valueForKey:@"data"];
+    // Update UI
+    NSMutableArray *newDeviceList = [SFIOfflineDataManager readDeviceList:cloudMAC];
+    NSArray *newDeviceValueList;
 
-        BOOL isCurrentMAC = FALSE;
-        NSString *cloudMAC = obj.almondMAC;
-        [SNLog Log:@"%s: Current MAC ==> @%@ Cloud MAC ==> @%@ DEVICE DATA LIST SIZE: ", __PRETTY_FUNCTION__, self.currentMAC, cloudMAC, [obj.deviceList count]];
-        if ([cloudMAC isEqualToString:self.currentMAC]) {
-            //Save isExpanded
-            for (SFIDevice *currentCloudDevice in obj.deviceList) {
-                //[SNLog Log:@"%s: Cloud DeviceID: %d" , __PRETTY_FUNCTION__,currentCloudDevice.deviceID];
-                for (SFIDevice *currentMobileDevice in self.deviceList) {
-                    //[SNLog Log:@"%s: Mobile DeviceID: %d" , __PRETTY_FUNCTION__,currentMobileDevice.deviceID];
-                    if (currentCloudDevice.deviceID == currentMobileDevice.deviceID) {
-                        //[SNLog Log:@"%s: Device ID Match - Update isExpanded" , __PRETTY_FUNCTION__];
-                        currentCloudDevice.isExpanded = currentMobileDevice.isExpanded;
-                    }
-                }
+    // Compare the list with device value list size and correct the list accordingly if any device was deleted
+    if ([newDeviceList count] < [self.deviceValueList count]) {
+        // Reload Device Value List which was updated by Offline Data Manager
+        newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
+    }
+
+    // Restore isExpanded state
+    NSArray *oldDeviceList = self.deviceList;
+    for (SFIDevice *newDevice in newDeviceList) {
+        for (SFIDevice *currentMobileDevice in oldDeviceList) {
+            if (newDevice.deviceID == currentMobileDevice.deviceID) {
+                newDevice.isExpanded = currentMobileDevice.isExpanded;
             }
-
-            //self.deviceList = obj.deviceList;
-            //            if([self isDeviceListEmpty]){
-            //                self.isEmpty = TRUE;
-            //            }else{
-            //                self.isEmpty = FALSE;
-            //            }
-            isCurrentMAC = TRUE;
-            [SFIOfflineDataManager writeDeviceList:obj.deviceList currentMAC:self.currentMAC];
-
-        }
-
-        //TODO: get only hash and update it
-        //[self getDeviceHash];
-
-        //Run in background
-        //        dispatch_queue_t queue = dispatch_queue_create("com.securifi.almondplus", NULL);
-        //        dispatch_async(queue, ^{
-        //            [self getDeviceHash];
-        //        });
-
-        //Update UI
-        if (isCurrentMAC) {
-            self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
-
-            //Compare the list with device value list size and correct the list accordingly if any device was deleted
-            //Compare the size
-            if ([self.deviceList count] < [self.deviceValueList count]) {
-                // NSLog(@"Sensor View: Some device was deleted!");
-                //Reload Device Value List which was updated by Offline Data Manager
-                self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
-            }
-
-            [self initializeImages];
-            [self asyncReloadTable];
         }
     }
+
+    // Push changes to the UI
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if ([cloudMAC isEqualToString:self.currentMAC]) {
+            self.deviceList = newDeviceList;
+            if (newDeviceValueList) {
+                self.deviceValueList = newDeviceValueList;
+            }
+            [self initializeImages];
+            [self.tableView reloadData];
+        }
+    });
 }
 
 - (void)onDeviceCloudValueListResponseCallback:(id)sender {
@@ -4058,60 +4017,40 @@
         return;
     }
 
-    DeviceValueResponse *obj = (DeviceValueResponse *) [data valueForKey:@"data"];
-    NSString *cloudMAC = obj.almondMAC;
+    NSString *cloudMAC = [data valueForKey:@"data"];
     if (![cloudMAC isEqualToString:self.currentMAC]) {
         return;
     }
 
-    //Match values and update the exact known value for the device
-    NSMutableArray *currentValues = [NSMutableArray arrayWithArray:[SFIOfflineDataManager readDeviceValueList:self.currentMAC]];
-
-    if (currentValues != nil) {
-        NSMutableArray *cloudValues = obj.deviceValueList;
-
-        for (SFIDeviceValue *deviceValue in currentValues) {
-            for (SFIDeviceValue *cloudValue in cloudValues) {
-                if (deviceValue.deviceID == cloudValue.deviceID) {
-                    cloudValue.isPresent = TRUE;
-
-                    for (SFIDeviceKnownValues *deviceKnowValues in deviceValue.knownValues) {
-                        for (SFIDeviceKnownValues *cloudKNowValues in cloudValue.knownValues) {
-                            if (deviceKnowValues.index == cloudKNowValues.index) {
-                                //Update Value
-                                [deviceKnowValues setValue:cloudKNowValues.value];
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
+    NSArray *newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if ([cloudMAC isEqualToString:self.currentMAC]) {
+            self.deviceValueList = newDeviceValueList;
+            [self initializeImages];
+            [self.tableView reloadData];
         }
-
-        self.deviceValueList = currentValues;
-    }
-
-    [self initializeImages];
-    [self asyncReloadTable];
+    });
 }
 
 - (void)onAlmondListDidChange:(id)sender {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
 
-    if (plus == nil) {
-        self.currentMAC = NO_ALMOND;
-        self.navigationItem.title = @"Get Started";
-        self.deviceList = @[];
-        self.deviceValueList = @[];
-    }
-    else {
-        self.currentMAC = plus.almondplusMAC;
-        self.navigationItem.title = plus.almondplusName;
-        [self refreshDataForAlmond];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (plus == nil) {
+            self.currentMAC = NO_ALMOND;
+            self.navigationItem.title = @"Get Started";
+            self.deviceList = @[];
+            self.deviceValueList = @[];
+        }
+        else {
+            self.currentMAC = plus.almondplusMAC;
+            self.navigationItem.title = plus.almondplusName;
+            [self refreshDataForAlmond];
+        }
 
-    [self asyncReloadTable];
+        [self.tableView reloadData];
+    });
 }
 
 - (IBAction)onRefreshSensorData:(id)sender {
