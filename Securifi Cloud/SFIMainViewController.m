@@ -32,6 +32,7 @@
     [center removeObserver:self name:kSFIDidCompleteLoginNotification object:nil];
     [center removeObserver:self name:kSFIDidLogoutNotification object:nil];
     [center removeObserver:self name:kSFIDidLogoutAllNotification object:nil];
+    [center removeObserver:self name:kSFIDidUpdateAlmondList object:nil];
     [center removeObserver:self name:UI_ON_PRESENT_LOGOUT_ALL object:nil];
 }
 
@@ -76,6 +77,11 @@
     [center addObserver:self
                selector:@selector(onLogoutAllResponse:)
                    name:kSFIDidLogoutAllNotification
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onAlmondListResponse:)
+                   name:kSFIDidUpdateAlmondList
                  object:nil];
 
     [center addObserver:self
@@ -208,6 +214,7 @@
 #pragma mark - Cloud Command : Sender and Receivers
 
 - (void)conditionalLoadAlmondList {
+/*
     if (self.presentedViewController != nil) {
         return;
     }
@@ -219,7 +226,8 @@
                                                  name:ALMOND_LIST_NOTIFIER
                                                object:nil];
 
-    [[SecurifiToolkit sharedInstance] asyncLoadAlmondList];
+    [[SecurifiToolkit sharedInstance] asyncRequestAlmondList];
+*/
 }
 
 #pragma mark - Login and Logout handling
@@ -270,7 +278,9 @@
 - (void)onAlmondListResponse:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:ALMOND_LIST_NOTIFIER object:nil];
+    if (self.presentedViewController != nil) {
+        return;
+    }
 
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
