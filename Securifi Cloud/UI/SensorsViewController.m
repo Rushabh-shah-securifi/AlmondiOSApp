@@ -78,10 +78,6 @@
                     object:nil];
 
     [center removeObserver:self
-                      name:HASH_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
                       name:MOBILE_COMMAND_NOTIFIER
                     object:nil];
 
@@ -211,11 +207,6 @@
     [center addObserver:self
                selector:@selector(onReachabilityDidChange:)
                    name:kSFIReachabilityChangedNotification object:nil];
-
-    [center addObserver:self
-               selector:@selector(onHashResponseCallback:)
-                   name:HASH_NOTIFIER
-                 object:nil];
 
     [center addObserver:self
                selector:@selector(onMobileCommandResponseCallback:)
@@ -3504,6 +3495,9 @@
 
 - (void)refreshDataForAlmond {
     if ([self isNoAlmondMAC]) {
+        self.navigationItem.title = @"Get Started";
+        self.deviceList = @[];
+        self.deviceValueList = @[];
         return;
     }
 
@@ -3512,7 +3506,7 @@
     self.offlineHash = [SFIOfflineDataManager readHashList:self.currentMAC];
 
     //Call command : Get HASH - Command 74 - Match if list is up to date
-    [self.HUD show:YES];
+//    [self.HUD show:YES];
     [self sendDeviceHashCommand];
 
     //PY 311013 - Timeout for Sensor Command
@@ -3523,15 +3517,16 @@
                                                                   repeats:NO];
 
     [self initializeImages];
+    [self initializeColors];
+}
 
+- (void)initializeColors {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
 
     self.listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-
     self.currentColor = self.listAvailableColors[0];
-
     self.baseBrightness = (unsigned int) self.currentColor.brightness;
     self.changeHue = (unsigned int) self.currentColor.hue;
     self.changeSaturation = (unsigned int) self.currentColor.saturation;
@@ -3708,75 +3703,6 @@
 
 - (void)sendDeviceHashCommand {
     [[SecurifiToolkit sharedInstance] asyncRequestDeviceHash:self.currentMAC];
-}
-
-- (void)onHashResponseCallback:(id)sender {
-    //[SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-
-    if (data != nil) {
-        //[SNLog Log:@"%s: Received Device Hash response", __PRETTY_FUNCTION__];
-
-        NSString *currentHash;
-
-        DeviceDataHashResponse *obj = (DeviceDataHashResponse *) [data valueForKey:@"data"];
-
-        if (obj.isSuccessful) {
-            //Hash Present
-            currentHash = obj.almondHash;
-            //[SNLog Log:@"%s: Current Hash ==> @%@ Offline Hash ==> @%@",__PRETTY_FUNCTION__,currentHash, self.offlineHash];
-            if (![currentHash isEqualToString:@""] && currentHash != nil) {
-                if (![currentHash isEqualToString:@"null"]) {
-                    if ([currentHash isEqualToString:self.offlineHash]) {
-                        [[SecurifiToolkit sharedInstance] asyncRequestDeviceValueList:self.currentMAC];
-                    }
-                    else {
-                        //[SNLog Log:@"%s: Hash MisMatch: Get Device Values", __PRETTY_FUNCTION__];
-                        //Save hash in file for each almond
-                        [SFIOfflineDataManager writeHashList:currentHash currentMAC:self.currentMAC];
-                        //Get Device List
-                        [self sendDeviceListCommand];
-
-                    }
-                }
-                else {
-
-                    //Hash sent by cloud as null - No Device
-                    [self.HUD hide:YES];
-
-                    //Open next activity with blank view
-                    //                    [HUD hide:YES];
-                    //                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-                    //                    SFIDeviceListViewController *deviceListView = (SFIDeviceListViewController*) [storyboard instantiateViewControllerWithIdentifier:@"SFIDeviceListViewController"];
-                    //                    //Remove later - when stored in file
-                    //                    // SFIDeviceListViewController *deviceListView = (SFIDeviceListViewController*)mainView;
-                    //                    //                    deviceListView.deviceList = self.deviceList;
-                    //                    //                    deviceListView.deviceValueList = self.deviceValueList;
-                    //                    [self.navigationController pushViewController:deviceListView animated:YES];
-                }
-            }
-            else {
-                //No Hash from cloud
-                self.HUD.hidden = YES;
-                //Open next activity with blank view
-                //                [HUD hide:YES];
-                //                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-                //                SFIDeviceListViewController *deviceListView = (SFIDeviceListViewController*) [storyboard instantiateViewControllerWithIdentifier:@"SFIDeviceListViewController"];
-                //                //Remove later - when stored in file
-                //                // SFIDeviceListViewController *deviceListView = (SFIDeviceListViewController*)mainView;
-                //                //                deviceListView.deviceList = self.deviceList;
-                //                //                deviceListView.deviceValueList = self.deviceValueList;
-                //                [self.navigationController pushViewController:deviceListView animated:YES];
-            }
-        }
-        else {
-            //success = false
-            NSString *reason = obj.reason;
-            [SNLog Log:@"%s: Hash Not Found Reason: @%@", __PRETTY_FUNCTION__, reason];
-        }
-
-    }
 }
 
 - (void)sendDeviceListCommand {
@@ -3966,16 +3892,13 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (plus == nil) {
             self.currentMAC = NO_ALMOND;
-            self.navigationItem.title = @"Get Started";
-            self.deviceList = @[];
-            self.deviceValueList = @[];
         }
         else {
             self.currentMAC = plus.almondplusMAC;
             self.navigationItem.title = plus.almondplusName;
-            [self refreshDataForAlmond];
         }
 
+        [self refreshDataForAlmond];
         [self.tableView reloadData];
     });
 }
