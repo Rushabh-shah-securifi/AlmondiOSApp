@@ -125,14 +125,12 @@
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.parentViewController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Loading sensor data.";
+    _HUD.labelText = @"Loading sensor data";
     _HUD.dimBackground = YES;
     [self.parentViewController.view addSubview:_HUD];
 
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
-    //self.tableView.backgroundColor = [UIColor blackColor];
-
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
@@ -141,52 +139,12 @@
     showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
     [self.tableView addGestureRecognizer:showMenuSwipe];
 
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [self markCloudStatusIcon];
+    [self initializeNotifications];
+    [self initializeAlomdData];
+}
 
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    self.currentMAC = plus.almondplusMAC;
-
-    NSArray *almondList = [toolkit almondList];
-    if (self.currentMAC == nil) {
-        if ([almondList count] != 0) {
-            SFIAlmondPlus *currentAlmond = almondList[0];
-            [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:0];
-            self.currentMAC = currentAlmond.almondplusMAC;
-
-            NSString *currentMACName = currentAlmond.almondplusName;
-            if (currentMACName != nil) {
-                self.navigationItem.title = currentMACName;
-            }
-        }
-        else {
-            self.currentMAC = NO_ALMOND;
-            self.navigationItem.title = @"Get Started";
-        }
-    }
-    else {
-        if ([almondList count] == 0) {
-            self.currentMAC = NO_ALMOND;
-            self.navigationItem.title = @"Get Started";
-        }
-    }
-
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = paths[0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
-
-    self.listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-    int colorCode = plus.colorCodeIndex;
-    if (colorCode != 0) {
-        self.currentColor = self.listAvailableColors[(NSUInteger) colorCode];
-    }
-    else {
-        self.currentColor = self.listAvailableColors[(NSUInteger) self.currentColorIndex];
-    }
-
-    self.baseBrightness = (unsigned int) self.currentColor.brightness;
-    self.changeHue = (unsigned int) self.currentColor.hue;
-    self.changeSaturation = (unsigned int) self.currentColor.saturation;
-
+- (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
     [center addObserver:self
@@ -229,54 +187,50 @@
                  object:nil];
 
     [center addObserver:self
-               selector:@selector(onSensorChangeCallback:)
-                   name:SENSOR_CHANGE_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
                selector:@selector(onAlmondNameDidChange:)
                    name:kSFIDidChangeAlmondName
                  object:nil];
 
-    [self markCloudStatusIcon];
-
-    [self initAlmondList];
+    [center addObserver:self
+               selector:@selector(onSensorChangeCallback:)
+                   name:SENSOR_CHANGE_NOTIFIER
+                 object:nil];
 }
 
-- (void) initAlmondList {
-    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-    if ([almondList count] == 0) {
+- (void)initializeAlomdData {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+
+    if (plus == nil) {
         self.currentMAC = NO_ALMOND;
+    }
+    else {
+        self.currentMAC = plus.almondplusMAC;
+    }
+
+    if ([self isNoAlmondMAC]) {
         self.navigationItem.title = @"Get Started";
         self.deviceList = @[];
         self.deviceValueList = @[];
-
-        [self.tableView reloadData];
     }
     else {
-        SFIAlmondPlus *plus = [[SecurifiToolkit sharedInstance] currentAlmond];
-        self.currentMAC = plus.almondplusMAC;
         self.navigationItem.title = plus.almondplusName;
-
-        self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
-        self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
+        self.deviceList = [toolkit deviceList:self.currentMAC];
+        self.deviceValueList = [toolkit deviceValuesList:self.currentMAC];
         self.offlineHash = [SFIOfflineDataManager readHashList:self.currentMAC];
 
-        [self initializeImages];
-
-        if (![self isNoAlmondMAC]) {
+        if (self.deviceValueList.count == 0) {
             [self.HUD show:YES];
-//            [self sendDeviceHashCommand];
-
-            [self sendDeviceListCommand];
-
-            [self.sensorDataCommandTimer invalidate];
-            self.sensorDataCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
-                                                                           target:self
-                                                                         selector:@selector(onLoadSensorDataCommandTimeout:)
-                                                                         userInfo:nil
-                                                                          repeats:NO];
         }
+
+        self.sensorDataCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
+                                                                       target:self
+                                                                     selector:@selector(onLoadSensorDataCommandTimeout:)
+                                                                     userInfo:nil
+                                                                      repeats:NO];
+
+        [self initializeImages];
+        [self initializeColors:plus];
     }
 }
 
@@ -3493,40 +3447,20 @@
 
 }
 
-- (void)refreshDataForAlmond {
-    if ([self isNoAlmondMAC]) {
-        self.navigationItem.title = @"Get Started";
-        self.deviceList = @[];
-        self.deviceValueList = @[];
-        return;
-    }
-
-    self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
-    self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
-    self.offlineHash = [SFIOfflineDataManager readHashList:self.currentMAC];
-
-    //Call command : Get HASH - Command 74 - Match if list is up to date
-//    [self.HUD show:YES];
-    [self sendDeviceHashCommand];
-
-    //PY 311013 - Timeout for Sensor Command
-    self.sensorDataCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
-                                                                   target:self
-                                                                 selector:@selector(onLoadSensorDataCommandTimeout:)
-                                                                 userInfo:nil
-                                                                  repeats:NO];
-
-    [self initializeImages];
-    [self initializeColors];
-}
-
-- (void)initializeColors {
+- (void)initializeColors:(SFIAlmondPlus *)plus {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
 
     self.listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-    self.currentColor = self.listAvailableColors[0];
+    int colorCode = plus.colorCodeIndex;
+    if (colorCode != 0) {
+        self.currentColor = self.listAvailableColors[(NSUInteger) colorCode];
+    }
+    else {
+        self.currentColor = self.listAvailableColors[(NSUInteger) self.currentColorIndex];
+    }
+
     self.baseBrightness = (unsigned int) self.currentColor.brightness;
     self.changeHue = (unsigned int) self.currentColor.hue;
     self.changeSaturation = (unsigned int) self.currentColor.saturation;
@@ -3701,9 +3635,9 @@
 
 #pragma mark - Cloud Commands and Handlers
 
-- (void)sendDeviceHashCommand {
-    [[SecurifiToolkit sharedInstance] asyncRequestDeviceHash:self.currentMAC];
-}
+//- (void)sendDeviceHashCommand {
+//    [[SecurifiToolkit sharedInstance] asyncRequestDeviceHash:self.currentMAC];
+//}
 
 - (void)sendDeviceListCommand {
     [[SecurifiToolkit sharedInstance] asyncRequestDeviceList:self.currentMAC];
@@ -3874,6 +3808,17 @@
     }
 
     NSArray *newDeviceList = [SFIOfflineDataManager readDeviceList:cloudMAC];
+
+    // Restore isExpanded state
+    NSArray *oldDeviceList = self.deviceList;
+    for (SFIDevice *newDevice in newDeviceList) {
+        for (SFIDevice *oldDevice in oldDeviceList) {
+            if (newDevice.deviceID == oldDevice.deviceID) {
+                newDevice.isExpanded = oldDevice.isExpanded;
+            }
+        }
+    }
+
     NSArray *newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
     dispatch_async(dispatch_get_main_queue(), ^() {
         if ([cloudMAC isEqualToString:self.currentMAC]) {
@@ -3886,19 +3831,8 @@
 }
 
 - (void)onAlmondListDidChange:(id)sender {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-
     dispatch_async(dispatch_get_main_queue(), ^() {
-        if (plus == nil) {
-            self.currentMAC = NO_ALMOND;
-        }
-        else {
-            self.currentMAC = plus.almondplusMAC;
-            self.navigationItem.title = plus.almondplusName;
-        }
-
-        [self refreshDataForAlmond];
+        [self initializeAlomdData];
         [self.tableView reloadData];
     });
 }
