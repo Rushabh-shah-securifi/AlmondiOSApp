@@ -196,8 +196,9 @@
             if (indexPath.row >= [listAvailableColors count]) {
                 codeIndex = codeIndex % [listAvailableColors count];
             }
+            currentAlmond.colorCodeIndex = codeIndex;
 
-            [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:codeIndex];
+            [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
 
             [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
                 CGRect frame = self.slidingViewController.topViewController.view.frame;
