@@ -286,18 +286,6 @@
         [self.HUD hide:YES];
     });
 
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-
-    if (data != nil) {
-        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
-
-        if (obj.isSuccessful) {
-            //Write Almond List offline
-            [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
-        }
-    }
-
     if (self.presentedViewController) {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
             [self presentMainView];
