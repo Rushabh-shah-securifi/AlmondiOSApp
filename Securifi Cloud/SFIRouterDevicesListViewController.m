@@ -503,11 +503,9 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     }
 
     SFIAlmondPlus *plus = [[SecurifiToolkit sharedInstance] currentAlmond];
-    if ([plus.almondplusMAC isEqualToString:self.currentAlmond.almondplusMAC]) {
-        return; // no changes
+    if (plus == nil || ![plus.almondplusMAC isEqualToString:self.currentAlmond.almondplusMAC]) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
-
-    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 @end

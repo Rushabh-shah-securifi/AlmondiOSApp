@@ -338,7 +338,7 @@
 
                 if ([almondList count] != 0) {
                     SFIAlmondPlus *currentAlmond = [almondList objectAtIndex:0];
-                    [toolkit setCurrentAlmond:currentAlmond colorCodeIndex:0];
+                    [toolkit setCurrentAlmond:currentAlmond];
                     self.navigationItem.title = currentAlmond.almondplusName;
                 }
                 else {

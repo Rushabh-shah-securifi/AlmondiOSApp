@@ -98,7 +98,7 @@
     if (self.currentMAC == nil) {
         if ([almondList count] != 0) {
             SFIAlmondPlus *currentAlmond = almondList[0];
-            [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond colorCodeIndex:0];
+            [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
             self.currentMAC = currentAlmond.almondplusMAC;
             if (currentAlmond.almondplusName) {
                 self.navigationItem.title = currentAlmond.almondplusName;
