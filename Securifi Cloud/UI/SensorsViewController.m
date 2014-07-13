@@ -256,16 +256,17 @@
 #pragma mark - Reconnection
 
 - (void)onNetworkUpNotifier:(id)sender {
-    DLog(@"%s: Sensor controller :In networkUP notifier", __PRETTY_FUNCTION__);
-    [self asyncReloadTable];
-    [self markCloudStatusIcon];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self markCloudStatusIcon];
+        [self.tableView reloadData];
+        [self.HUD hide:NO]; // make sure it is hidden
+    });
 }
 
 - (void)onNetworkDownNotifier:(id)sender {
-    DLog(@"%s: Sensor controller :In network down notifier", __PRETTY_FUNCTION__);
-    [self markCloudStatusIcon];
-    [self asyncReloadTable];
     dispatch_async(dispatch_get_main_queue(), ^() {
+        [self markCloudStatusIcon];
+        [self.tableView reloadData];
         [self.HUD hide:NO]; // make sure it is hidden
     });
 }
@@ -276,8 +277,8 @@
 
 - (void)onReachabilityDidChange:(NSNotification *)notification {
     [self markCloudStatusIcon];
-    [self asyncReloadTable];
     dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
         [self.HUD hide:NO]; // make sure it is hidden
     });
 }
@@ -3549,8 +3550,10 @@
     // Send them back to the cloud
     [self sendMobileCommand];
 
-    [self initializeImages];
-    [self asyncReloadTable];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self initializeImages];
+        [self.tableView reloadData];
+    });
 }
 
 - (void)onSensorSliderDidEndSliding:(id)sender valueName:(NSString *)valueName {
@@ -3568,8 +3571,10 @@
 
     [self sendMobileCommand];
 
-    [self initializeImages];
-    [self asyncReloadTable];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self initializeImages];
+        [self.tableView reloadData];
+    });
 }
 
 #pragma mark - Segment Control Method
@@ -3595,11 +3600,13 @@
     self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
     self.currentIndexID = deviceValue.index;
     self.currentValue = deviceValue.value;
-
     [self sendMobileCommand];
 
-    [self initializeImages];
-    [self asyncReloadTable];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self initializeImages];
+        [self.tableView reloadData];
+    });
+
 }
 
 #pragma mark - Keyboard methods
@@ -3745,7 +3752,7 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
         [self initializeImages];
-        [self asyncReloadTable];
+        [self.tableView reloadData];
     });
 }
 
@@ -3905,40 +3912,38 @@
 
 - (void)onSensorChangeCommandTimeout:(id)sender {
     [self.sensorChangeCommandTimer invalidate];
+
     if (!self.isSensorChangeCommandSuccessful) {
-        //Cancel the event - Revert back
-        //// DLog(@"Change the state back");
-        self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
-        [self initializeImages];
-        // [[self view] endEditing:YES];
-
-        [self asyncReloadTable];
-
-        [self.HUD hide:YES];
+        NSMutableArray *list = [SFIOfflineDataManager readDeviceList:self.currentMAC];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            self.deviceList = list;
+            [self initializeImages];
+            //To remove text fields keyboard. It was throwing error when it was being called from the background thread
+            [self.tableView reloadData];
+            [self.HUD hide:YES];
+        });
     }
 }
 
 - (void)onSensorChangeCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-
+    
     if (data != nil) {
         self.isSensorChangeCommandSuccessful = TRUE;
         [SNLog Log:@"%s: Received SensorChangeCallback", __PRETTY_FUNCTION__];
 
         SensorChangeResponse *obj = (SensorChangeResponse *) [data valueForKey:@"data"];
-
-        if (obj.isSuccessful) {
-            [SNLog Log:@"%s: Sensor Data Changed Successfully", __PRETTY_FUNCTION__];
-        }
-        else {
-            //TODO: Later
+        if (!obj.isSuccessful) {
             [SNLog Log:@"%s: Could not update data, Revert to old value", __PRETTY_FUNCTION__];
-            self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
-            [self initializeImages];
-            //To remove text fields keyboard. It was throwing error when it was being called from the background thread
 
-            [self asyncReloadTable];
+            NSMutableArray *list = [SFIOfflineDataManager readDeviceList:self.currentMAC];
+            dispatch_async(dispatch_get_main_queue(), ^() {
+                self.deviceList = list;
+                [self initializeImages];
+                //To remove text fields keyboard. It was throwing error when it was being called from the background thread
+                [self.tableView reloadData];
+            });
         }
     }
 }
