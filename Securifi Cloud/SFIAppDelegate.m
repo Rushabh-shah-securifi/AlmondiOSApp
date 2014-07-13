@@ -18,7 +18,7 @@
     [SFIReachabilityManager sharedManager];
 
     [self initializeColors];
-    [BugSenseController sharedControllerWithBugSenseAPIKey:@"ccf42e26"];
+    [BugSenseController sharedControllerWithBugSenseAPIKey:@"a9525243"];
 
     return YES;
 }
