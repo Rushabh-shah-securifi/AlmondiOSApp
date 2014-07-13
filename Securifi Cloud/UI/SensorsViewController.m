@@ -40,7 +40,6 @@
 @property(nonatomic) NSString *currentMAC;
 @property(nonatomic) NSArray *deviceList;
 @property(nonatomic) NSArray *deviceValueList;
-@property(nonatomic) NSString *offlineHash;
 
 @property NSString *currentDeviceID;
 @property unsigned int currentIndexID;
@@ -217,17 +216,18 @@
         self.navigationItem.title = plus.almondplusName;
         self.deviceList = [toolkit deviceList:self.currentMAC];
         self.deviceValueList = [toolkit deviceValuesList:self.currentMAC];
-        self.offlineHash = [SFIOfflineDataManager readHashList:self.currentMAC];
 
         if (self.deviceValueList.count == 0) {
-            [self.HUD show:YES];
-        }
+//            [self.HUD show:YES];
 
-        self.sensorDataCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
-                                                                       target:self
-                                                                     selector:@selector(onLoadSensorDataCommandTimeout:)
-                                                                     userInfo:nil
-                                                                      repeats:NO];
+            [self sendDeviceValueCommand];
+
+//            self.sensorDataCommandTimer = [NSTimer scheduledTimerWithTimeInterval:10.0
+//                                                                           target:self
+//                                                                         selector:@selector(onLoadSensorDataCommandTimeout:)
+//                                                                         userInfo:nil
+//                                                                          repeats:NO];
+        }
 
         [self initializeImages];
         [self initializeColors:plus];
@@ -3639,9 +3639,9 @@
 //    [[SecurifiToolkit sharedInstance] asyncRequestDeviceHash:self.currentMAC];
 //}
 
-- (void)sendDeviceListCommand {
-    [[SecurifiToolkit sharedInstance] asyncRequestDeviceList:self.currentMAC];
-}
+//- (void)sendDeviceListCommand {
+//    [[SecurifiToolkit sharedInstance] asyncRequestDeviceList:self.currentMAC];
+//}
 
 - (void)sendDeviceValueCommand {
     [[SecurifiToolkit sharedInstance] asyncRequestDeviceValueList:self.currentMAC];
@@ -3686,6 +3686,7 @@
             self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
             [self initializeImages];
             [self.tableView reloadData];
+            [self.HUD hide:YES];
         });
     }
 }
@@ -3758,6 +3759,7 @@
     NSString *cloudMAC = [data valueForKey:@"data"];
     BOOL isCurrentMAC = [cloudMAC isEqualToString:self.currentMAC];
     if (!isCurrentMAC) {
+        // An Almond not currently being views was changed
         return;
     }
 
@@ -3804,6 +3806,7 @@
 
     NSString *cloudMAC = [data valueForKey:@"data"];
     if (![cloudMAC isEqualToString:self.currentMAC]) {
+        // An Almond not currently being views was changed
         return;
     }
 
@@ -3834,6 +3837,8 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self initializeAlomdData];
         [self.tableView reloadData];
+
+        [self.HUD hide:YES];
     });
 }
 
@@ -3908,6 +3913,8 @@
         // [[self view] endEditing:YES];
 
         [self asyncReloadTable];
+
+        [self.HUD hide:YES];
     }
 }
 
