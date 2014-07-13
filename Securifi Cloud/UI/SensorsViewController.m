@@ -3811,6 +3811,7 @@
     }
 
     NSArray *newDeviceList = [SFIOfflineDataManager readDeviceList:cloudMAC];
+    NSArray *newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
 
     // Restore isExpanded state
     NSArray *oldDeviceList = self.deviceList;
@@ -3822,7 +3823,6 @@
         }
     }
 
-    NSArray *newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
     dispatch_async(dispatch_get_main_queue(), ^() {
         if ([cloudMAC isEqualToString:self.currentMAC]) {
             self.deviceList = newDeviceList;
