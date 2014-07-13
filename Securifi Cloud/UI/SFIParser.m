@@ -119,7 +119,7 @@
         else if(genericCommandResponse.commandType == 9){
             self.currentWirelessSummary = [[SFIWirelessSummary alloc]init];
             [self.currentWirelessSummary setWirelessIndex:[[attributeDict valueForKey:INDEX] intValue]];
-            NSLog(@"Enabled: %@",[attributeDict valueForKey:ENABLED] );
+            DLog(@"Enabled: %@",[attributeDict valueForKey:ENABLED] );
             if([[attributeDict valueForKey:ENABLED] isEqualToString:@"true"]){
                 [self.currentWirelessSummary setEnabledStatus:@"enabled"];
             }else{
@@ -151,7 +151,7 @@
 
 - (void) parser:(NSXMLParser *)xmlParser didEndElement:(NSString *)elementname namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
 {
-    NSLog(@"End Element: %@",elementname);
+    DLog(@"End Element: %@",elementname);
     //START TODO: Remove - Dummy
     if ([elementname isEqualToString:@"Id"])
     {

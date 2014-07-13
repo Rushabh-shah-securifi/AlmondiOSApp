@@ -62,12 +62,12 @@
 
 - (void)reachabilityDidChange:(NSNotification *)notification {
     if ([[SFIReachabilityManager sharedManager] isReachable]) {
-        NSLog(@"Reachable - SLIDE");
+        DLog(@"Reachable - SLIDE");
         self.HUD.labelText = @"Reconnecting...";
         [self.HUD hide:YES afterDelay:1];
     }
     else {
-        NSLog(@"Unreachable");
+        DLog(@"Unreachable");
     }
 }
 

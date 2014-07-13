@@ -83,7 +83,7 @@
     switch (sectionIndex) {
         case 0:
             array = [self getAlmondList];
-            NSLog(@"Almond List count %d", [array count]);
+            DLog(@"Almond List count %d", [array count]);
             return [array count] + 1;
         case 1:
             array = [self getSettingsList];

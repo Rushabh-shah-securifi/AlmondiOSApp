@@ -239,7 +239,7 @@
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    // NSLog(@"Rotation %d", fromInterfaceOrientation);
+    // DLog(@"Rotation %d", fromInterfaceOrientation);
     [self asyncReloadTable];
 }
 
@@ -2003,7 +2003,7 @@
 //                        expandedLblText.textColor = [UIColor whiteColor];
 //                        [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
 //                        
-//                        //// NSLog(@"Y Cordinate %f", baseYCordinate);
+//                        //// DLog(@"Y Cordinate %f", baseYCordinate);
 //                        expandedLblText.frame = CGRectMake(10,baseYCordinate-5,299,30);
 //                        [belowBackgroundLabel addSubview:expandedLblText];
 //                    }
@@ -2238,7 +2238,7 @@
                     hexString = currentDeviceValue.value;
                     //                          NSString *hexIP = [NSString stringWithFormat:@"%lX", (long)[currentDevice.deviceIP integerValue]];
                     //							hexString = hexString.substring(2);
-                    // NSLog(@"HEX STRING: %@", hexString);
+                    // DLog(@"HEX STRING: %@", hexString);
                     NSScanner *scanner = [NSScanner scannerWithString:hexString];
 
                     if ([currentDeviceTypeName isEqualToString:@"ACTIVE_POWER"]) {
@@ -2283,7 +2283,7 @@
                 float voltage = (float) rmsVoltage * acVoltageMultipier / acVoltageDivisor;
                 float current = (float) rmsCurrent * acCurrentMultipier / acCurrentDivisor;
 
-                // NSLog(@"Power %f Voltage %f Current %f", power, voltage, current);
+                // DLog(@"Power %f Voltage %f Current %f", power, voltage, current);
 
                 expandedLblText = [[UILabel alloc] init];
                 [expandedLblText setBackgroundColor:[UIColor clearColor]];
@@ -2407,7 +2407,7 @@
                 float voltage = (float)dcVoltage * dcVoltageMultipier / dcVoltageDivisor;
                 float current = (float)dcCurrent * dcCurrentMultipier / dcCurrentDivisor;
 
-                // NSLog(@"Power %f Voltage %f Current %f", power, voltage, current);
+                // DLog(@"Power %f Voltage %f Current %f", power, voltage, current);
 
                 expandedLblText = [[UILabel alloc]init];
                 [expandedLblText setBackgroundColor:[UIColor clearColor]];
@@ -2719,7 +2719,7 @@
     for (SFIDevice *currentSensor in self.deviceList) {
         currentDeviceType = currentSensor.deviceType;
         currentDeviceId = currentSensor.deviceID;
-        // NSLog(@"Device Type: %d", currentDeviceType);
+        // DLog(@"Device Type: %d", currentDeviceType);
 
         NSMutableArray *currentKnownValues = [self currentKnownValuesForDevice:currentDeviceId];
 
@@ -2727,7 +2727,7 @@
             case 1: {
                 currentDeviceValue = currentKnownValues[0];
                 currentValue = currentDeviceValue.value;
-                // NSLog(@"Case1 : Device Value: %@", currentValue);
+                // DLog(@"Case1 : Device Value: %@", currentValue);
                 if ([currentValue isEqualToString:@"true"]) {
                     currentSensor.imageName = DT1_BINARY_SWITCH_TRUE;
                 }
@@ -2742,7 +2742,7 @@
 
             case 2: {
                 //Multilevel switch
-                // NSLog(@"Case2 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case2 : Device Value Count %d", [currentKnownValues count]);
 
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
@@ -2764,7 +2764,7 @@
             }
 
             case 3: {
-                // NSLog(@"Case3 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case3 : Device Value Count %d", [currentKnownValues count]);
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
@@ -2775,7 +2775,7 @@
                     if ([currentDeviceTypeName isEqualToString:@"SENSOR BINARY"]) {
                         currentSensor.stateIndex = i;
 
-                        // // NSLog(@"State %@", currentValue);
+                        // // DLog(@"State %@", currentValue);
                         currentSensor.mostImpValueIndex = i;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
                         currentSensor.imageName = [curDeviceValues.value boolValue] ? DT3_BINARY_SENSOR_TRUE : DT3_BINARY_SENSOR_FALSE;
@@ -2787,7 +2787,7 @@
 
             case 4: {
                 //Level Control
-                // NSLog(@"Case4 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case4 : Device Value Count %d", [currentKnownValues count]);
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
@@ -2796,7 +2796,7 @@
                     curDeviceValues = [currentKnownValues objectAtIndex:(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
-                    // NSLog(@"Case4 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
+                    // DLog(@"Case4 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
                     if ([currentDeviceTypeName isEqualToString:@"SWITCH BINARY"]) {
                         currentSensor.stateIndex = i;
 
@@ -2821,7 +2821,7 @@
 
             case 5: {
                 //Door Lock
-                // NSLog(@"Case5 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case5 : Device Value Count %d", [currentKnownValues count]);
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
@@ -2830,7 +2830,7 @@
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
-                    // NSLog(@"Case5 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
+                    // DLog(@"Case5 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
                     if ([currentDeviceTypeName isEqualToString:@"DOOR LOCK "]) {
                         currentSensor.stateIndex = i;
                         currentSensor.mostImpValueIndex = i;
@@ -2851,7 +2851,7 @@
             }
             case 6: {
                 //Alarm : TODO Later
-                // NSLog(@"Case6 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case6 : Device Value Count %d", [currentKnownValues count]);
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
@@ -2859,7 +2859,7 @@
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
 
-                    // NSLog(@"Case6 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
+                    // DLog(@"Case6 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
                     if ([currentDeviceTypeName isEqualToString:@"LOCK_STATE"]) {
                         currentSensor.stateIndex = i;
                         currentSensor.mostImpValueIndex = i;
@@ -2872,7 +2872,7 @@
 
             case 11: {
                 //Motion Sensor
-                // NSLog(@"Case11 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case11 : Device Value Count %d", [currentKnownValues count]);
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
@@ -2881,7 +2881,7 @@
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
 
-                    // NSLog(@"Case11 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
+                    // DLog(@"Case11 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
                     if ([currentDeviceTypeName isEqualToString:STATE]) {
                         currentSensor.stateIndex = index;
                         currentSensor.mostImpValueIndex = index;
@@ -2900,9 +2900,9 @@
             }
 
             case 12: {
-                NSLog(@"Contact switch sensor: %@", currentSensor);
+                DLog(@"Contact switch sensor: %@", currentSensor);
                 //Contact Switch
-                // NSLog(@"Case12 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case12 : Device Value Count %d", [currentKnownValues count]);
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
@@ -2912,7 +2912,7 @@
 
                     currentDeviceTypeName = curDeviceValues.valueName;
 //                    currentValue = curDeviceValues.value;
-                    // NSLog(@"Case12 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
+                    // DLog(@"Case12 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
 
                     if ([currentDeviceTypeName isEqualToString:STATE]) {
                         currentSensor.stateIndex = index;
@@ -2933,14 +2933,14 @@
 
             case 13: {
                 //Fire Sensor
-                // NSLog(@"Case13 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case13 : Device Value Count %d", [currentKnownValues count]);
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
                 for (int index = 0; index < [currentKnownValues count]; index++) {
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
-                    // NSLog(@"Case13 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
+                    // DLog(@"Case13 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
                     if ([currentDeviceTypeName isEqualToString:STATE]) {
                         currentSensor.stateIndex = index;
                         currentSensor.mostImpValueIndex = index;
@@ -2962,7 +2962,7 @@
 
             case 14: {
                 //Water Sensor
-                // NSLog(@"Case14 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case14 : Device Value Count %d", [currentKnownValues count]);
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
@@ -2989,7 +2989,7 @@
 
             case 15: {
                 //Gas Sensor
-                // NSLog(@"Case15 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case15 : Device Value Count %d", [currentKnownValues count]);
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
@@ -3016,7 +3016,7 @@
 
             case 17: {
                 //Vibration Sensor
-                // NSLog(@"Case17 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case17 : Device Value Count %d", [currentKnownValues count]);
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
@@ -3024,7 +3024,7 @@
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) index];
                     currentDeviceTypeName = curDeviceValues.valueName;
 
-                    // NSLog(@"Case17 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
+                    // DLog(@"Case17 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
                     if ([currentDeviceTypeName isEqualToString:STATE]) {
                         currentSensor.stateIndex = index;
                         currentSensor.mostImpValueIndex = index;
@@ -3046,7 +3046,7 @@
 
             case 19: {
                 //Keyfob
-                // NSLog(@"Case19 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case19 : Device Value Count %d", [currentKnownValues count]);
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
@@ -3074,7 +3074,7 @@
 
             case 22: {
                 //Electric Measurement switch - AC
-                // NSLog(@"Case22 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case22 : Device Value Count %d", [currentKnownValues count]);
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
@@ -3082,11 +3082,11 @@
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
-                    // NSLog(@"Case22 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
+                    // DLog(@"Case22 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
                     if ([currentDeviceTypeName isEqualToString:@"SWITCH BINARY"]) {
                         currentSensor.stateIndex = i;
 
-                        // // NSLog(@"State %@", currentValue);
+                        // // DLog(@"State %@", currentValue);
                         currentSensor.mostImpValueIndex = i;
                         currentSensor.mostImpValueName = currentDeviceTypeName;
 
@@ -3107,7 +3107,7 @@
 
             case 23: {
                 //Electric Measurement switch - DC
-                // NSLog(@"Case23 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case23 : Device Value Count %d", [currentKnownValues count]);
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
@@ -3116,7 +3116,7 @@
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
-                    // NSLog(@"Case23 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
+                    // DLog(@"Case23 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
                     if ([currentDeviceTypeName isEqualToString:@"SWITCH BINARY"]) {
                         currentSensor.stateIndex = i;
                         currentSensor.mostImpValueIndex = i;
@@ -3139,7 +3139,7 @@
 
             case 34: {
                 //Shade
-                // NSLog(@"Case34 : Device Value Count %d", [currentKnownValues count]);
+                // DLog(@"Case34 : Device Value Count %d", [currentKnownValues count]);
                 if ([currentKnownValues count] == 0) {
                     currentSensor.imageName = @"Reload_icon.png";
                 }
@@ -3147,7 +3147,7 @@
                     SFIDeviceKnownValues *curDeviceValues = currentKnownValues[(NSUInteger) i];
                     currentDeviceTypeName = curDeviceValues.valueName;
                     currentValue = curDeviceValues.value;
-                    // NSLog(@"Case34 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
+                    // DLog(@"Case34 : Device Value: %@ => %@", currentDeviceTypeName, currentValue);
                     if ([currentDeviceTypeName isEqualToString:@"SWITCH BINARY"]) {
                         currentSensor.stateIndex = i;
                         currentSensor.mostImpValueIndex = i;
@@ -3296,14 +3296,14 @@
             currentValue = currentDeviceValue.value;
             currentDeviceValue.isUpdating = true;
             if ([currentValue isEqualToString:@"true"]) {
-                // NSLog(@"Change to OFF");
+                // DLog(@"Change to OFF");
                 currentDeviceValue.value = @"false";
                 //currentSensor.imageName = @"switch_off.png";
                 //imgDevice.image = [UIImage imageNamed:@"bulb_on.png"];
                 self.currentValue = @"false";
             }
             else if ([currentValue isEqualToString:@"false"]) {
-                // NSLog(@"Change to ON");
+                // DLog(@"Change to ON");
                 currentDeviceValue.value = @"true";
                 //currentSensor.imageName = @"switch_on.png";
                 //imgDevice.frame = CGRectMake(35, 25, 27,42);
@@ -3330,17 +3330,17 @@
             //Do not wait for response from Cloud
             currentDeviceValue.isUpdating = true;
             if ([currentValue isEqualToString:@"0"]) {
-                // NSLog(@"Change to ON - Set value as 99");
+                // DLog(@"Change to ON - Set value as 99");
                 currentDeviceValue.value = @"99";
                 self.currentValue = @"99";
             }
             else {
-                // NSLog(@"Change to OFF - Set value as 0");
+                // DLog(@"Change to OFF - Set value as 0");
                 currentDeviceValue.value = @"0";
                 self.currentValue = @"0";
             }
 //            }else if([currentValue isEqualToString:@"false"]){
-//                // NSLog(@"Change to ON");
+//                // DLog(@"Change to ON");
 //                currentDeviceValue.value = @"true";
 //                self.currentValue = @"true";
 //            }
@@ -3351,7 +3351,7 @@
             currentSensor.imageName = @"Wait_Icon.png";
             self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
             self.currentIndexID = currentDeviceValue.index;
-            // NSLog(@"Index ID %d", self.currentIndexID);
+            // DLog(@"Index ID %d", self.currentIndexID);
             [self sendMobileCommand];
             [self.tableView reloadData];
             break;
@@ -3381,12 +3381,12 @@
             //Do not wait for response from Cloud
             currentDeviceValue.isUpdating = true;
             if ([currentValue isEqualToString:@"true"]) {
-                // NSLog(@"Change to OFF");
+                // DLog(@"Change to OFF");
                 currentDeviceValue.value = @"false";
                 self.currentValue = @"false";
             }
             else if ([currentValue isEqualToString:@"false"]) {
-                // NSLog(@"Change to ON");
+                // DLog(@"Change to ON");
                 currentDeviceValue.value = @"true";
                 self.currentValue = @"true";
             }
@@ -3397,7 +3397,7 @@
             currentSensor.imageName = @"Wait_Icon.png";
             self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
             self.currentIndexID = currentDeviceValue.index;
-            // NSLog(@"Index ID %d", self.currentIndexID);
+            // DLog(@"Index ID %d", self.currentIndexID);
             [self sendMobileCommand];
             [self asyncReloadTable];
             break;
@@ -3411,12 +3411,12 @@
             //Do not wait for response from Cloud
             currentDeviceValue.isUpdating = true;
             if ([currentValue isEqualToString:@"true"]) {
-                // NSLog(@"Change to OFF");
+                // DLog(@"Change to OFF");
                 currentDeviceValue.value = @"false";
                 self.currentValue = @"false";
             }
             else if ([currentValue isEqualToString:@"false"]) {
-                // NSLog(@"Change to ON");
+                // DLog(@"Change to ON");
                 currentDeviceValue.value = @"true";
                 self.currentValue = @"true";
             }
@@ -3427,7 +3427,7 @@
             currentSensor.imageName = @"Wait_Icon.png";
             self.currentDeviceID = [NSString stringWithFormat:@"%d", currentDeviceId];
             self.currentIndexID = currentDeviceValue.index;
-            // NSLog(@"Index ID %d", self.currentIndexID);
+            // DLog(@"Index ID %d", self.currentIndexID);
             [self sendMobileCommand];
             // [[self view] endEditing:YES];
             [self asyncReloadTable];
@@ -3606,7 +3606,7 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     //[[self view] endEditing:YES];
-    // NSLog(@"textFieldShouldReturn");
+    // DLog(@"textFieldShouldReturn");
     [textField resignFirstResponder];
     return YES;
 }
@@ -3648,7 +3648,7 @@
 }
 
 - (void)sendMobileCommand {
-    [SNLog Log:@"%s: sendMobileCommand", __PRETTY_FUNCTION__];
+    DLog(@"%s: sendMobileCommand", __PRETTY_FUNCTION__);
 
     //Generate internal index between 1 to 100
     self.currentInternalIndex = (arc4random() % 100) + 1;
@@ -3907,7 +3907,7 @@
     [self.sensorChangeCommandTimer invalidate];
     if (!self.isSensorChangeCommandSuccessful) {
         //Cancel the event - Revert back
-        //// NSLog(@"Change the state back");
+        //// DLog(@"Change the state back");
         self.deviceList = [SFIOfflineDataManager readDeviceList:self.currentMAC];
         [self initializeImages];
         // [[self view] endEditing:YES];

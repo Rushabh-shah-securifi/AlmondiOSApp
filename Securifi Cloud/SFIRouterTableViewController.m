@@ -9,7 +9,6 @@
 #import "SFIRouterTableViewController.h"
 #import "SFIColors.h"
 #import "AlmondPlusConstants.h"
-#import "SNLog.h"
 #import "SFIGenericRouterCommand.h"
 #import "SFIParser.h"
 #import "SFIRouterDevicesListViewController.h"
@@ -195,7 +194,7 @@
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    //NSLog(@"Rotation %d", fromInterfaceOrientation);
+    //DLog(@"Rotation %d", fromInterfaceOrientation);
     [self.tableView reloadData];
 }
 
@@ -437,7 +436,7 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
         case 0:
-            NSLog(@"Clicked on yes");
+            DLog(@"Clicked on yes");
 
             self.HUD.labelText = @"Router is rebooting.";
             [self.HUD hide:YES afterDelay:1];
@@ -448,7 +447,7 @@
             break;
 
         case 1:
-            NSLog(@"Clicked on no");
+            DLog(@"Clicked on no");
             break;
 
         default:
@@ -459,8 +458,6 @@
 #pragma mark - Cloud command senders and handlers
 
 - (void)sendGenericCommandRequest:(NSString *)data {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-
     self.mobileInternalIndex = (arc4random() % 1000) + 1;
 
     GenericCommandRequest *rebootGenericCommand = [[GenericCommandRequest alloc] init];
@@ -477,25 +474,21 @@
 }
 
 - (void)onGenericResponseCallback:(id)sender {
-    [SNLog Log:@"%s: ", __PRETTY_FUNCTION__];
-
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        [SNLog Log:@"%s: Received GenericCommandResponse", __PRETTY_FUNCTION__];
-
         GenericCommandResponse *obj = (GenericCommandResponse *) [data valueForKey:@"data"];
 
         BOOL isSuccessful = obj.isSuccessful;
         if (isSuccessful) {
             //Display proper message
-            NSLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
-            NSLog(@"Response Data: %@", obj.genericData);
-            NSLog(@"Decoded Data: %@", obj.decodedData);
+            DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
+            DLog(@"Response Data: %@", obj.genericData);
+            DLog(@"Decoded Data: %@", obj.decodedData);
 
             NSData *decoded_data = [obj.decodedData mutableCopy];
-            NSLog(@"Data: %@", decoded_data);
+            DLog(@"Data: %@", decoded_data);
 
             NSMutableData *genericData = [[NSMutableData alloc] init];
             [genericData appendData:decoded_data];
@@ -504,16 +497,14 @@
             unsigned int commandData;
 
             [genericData getBytes:&expectedDataLength range:NSMakeRange(0, 4)];
-            [SNLog Log:@"%s: Expected Length: %d", __PRETTY_FUNCTION__, expectedDataLength];
             [genericData getBytes:&commandData range:NSMakeRange(4, 4)];
-            [SNLog Log:@"%s: Command: %d", __PRETTY_FUNCTION__, commandData];
 
             //Remove 8 bytes from received command
             [genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
 
             NSString *decodedString = [[NSString alloc] initWithData:genericData encoding:NSUTF8StringEncoding];
             SFIGenericRouterCommand *genericRouterCommand = [[SFIParser alloc] loadDataFromString:decodedString];
-            NSLog(@"Command Type %d", genericRouterCommand.commandType);
+            DLog(@"Command Type %d", genericRouterCommand.commandType);
 
             switch (genericRouterCommand.commandType) {
                 case 1: {
@@ -526,7 +517,7 @@
 //                {
 //                    //Get Connected Device List
 //                    SFIDevicesList *routerConnectedDevices = (SFIDevicesList*)genericRouterCommand.command;
-//                    NSLog(@"Connected Devices Reply: %d", [routerConnectedDevices.deviceList count]);
+//                    DLog(@"Connected Devices Reply: %d", [routerConnectedDevices.deviceList count]);
 //                    //Display list
 //                    SFIRouterDevicesListViewController *viewController =[[SFIRouterDevicesListViewController alloc] init];
 //                    viewController.deviceList = routerConnectedDevices.deviceList;
@@ -538,7 +529,7 @@
 //                {
 //                    //Get Blocked Device List
 //                    SFIDevicesList *routerBlockedDevices = (SFIDevicesList*)genericRouterCommand.command;
-//                    NSLog(@"Blocked Devices Reply: %d", [routerBlockedDevices.deviceList count]);
+//                    DLog(@"Blocked Devices Reply: %d", [routerBlockedDevices.deviceList count]);
 //                    //Display list
 //                    SFIRouterDevicesListViewController *viewController =[[SFIRouterDevicesListViewController alloc] init];
 //                    viewController.deviceList = routerBlockedDevices.deviceList;
@@ -552,7 +543,7 @@
 //                {
 //                    //Get Blocked Device Content
 //                    SFIDevicesList *routerBlockedContent = (SFIDevicesList*)genericRouterCommand.command;
-//                    NSLog(@"Blocked content Reply: %d", [routerBlockedContent.deviceList count]);
+//                    DLog(@"Blocked content Reply: %d", [routerBlockedContent.deviceList count]);
 //                    //Display list
 //                    SFIRouterDevicesListViewController *viewController =[[SFIRouterDevicesListViewController alloc] init];
 //                    viewController.deviceList = routerBlockedContent.deviceList;
@@ -563,7 +554,7 @@
                 case 7: {
                     //Get Wireless Settings
                     SFIDevicesList *routerSettings = (SFIDevicesList *) genericRouterCommand.command;
-                    NSLog(@"Wifi settings Reply: %d", [routerSettings.deviceList count]);
+                    DLog(@"Wifi settings Reply: %d", [routerSettings.deviceList count]);
                     //Display list
                     SFIRouterDevicesListViewController *viewController = [[SFIRouterDevicesListViewController alloc] init];
                     viewController.deviceList = routerSettings.deviceList;
@@ -586,20 +577,16 @@
             // }
         }
         else {
-            NSLog(@"Reason: %@", obj.reason);
+            DLog(@"Reason: %@", obj.reason);
         }
     }
 }
 
 - (void)onGenericNotificationCallback:(id)sender {
-    [SNLog Log:@"%s: ", __PRETTY_FUNCTION__];
-
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        [SNLog Log:@"%s: Received GenericNotification", __PRETTY_FUNCTION__];
-
         GenericCommandResponse *obj = (GenericCommandResponse *) [data valueForKey:@"data"];
 
         BOOL isSuccessful = obj.isSuccessful;
@@ -607,11 +594,11 @@
             NSMutableData *genericData = [[NSMutableData alloc] init];
 
             //Display proper message
-            NSLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
-            NSLog(@"Response Data: %@", obj.genericData);
-            NSLog(@"Decoded Data: %@", obj.decodedData);
+            DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
+            DLog(@"Response Data: %@", obj.genericData);
+            DLog(@"Decoded Data: %@", obj.decodedData);
             NSData *data_decoded = [obj.decodedData mutableCopy];
-            NSLog(@"Data: %@", data_decoded);
+            DLog(@"Data: %@", data_decoded);
 
             [genericData appendData:data_decoded];
 
@@ -626,7 +613,7 @@
 
             NSString *decodedString = [[NSString alloc] initWithData:genericData encoding:NSUTF8StringEncoding];
             SFIGenericRouterCommand *genericRouterCommand = [[SFIParser alloc] loadDataFromString:decodedString];
-            NSLog(@"Command Type %d", genericRouterCommand.commandType);
+            DLog(@"Command Type %d", genericRouterCommand.commandType);
 
             switch (genericRouterCommand.commandType) {
                 case 1: {
@@ -646,7 +633,7 @@
             }
         }
         else {
-            NSLog(@"Reason: %@", obj.reason);
+            DLog(@"Reason: %@", obj.reason);
         }
     }
 }

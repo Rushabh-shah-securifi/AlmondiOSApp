@@ -233,7 +233,7 @@
 #pragma mark - Login and Logout handling
 
 - (void)onLogoutResponse:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    DLog(@"%s", __PRETTY_FUNCTION__);
 
     NSNotification *notifier = (NSNotification *) sender;
     if ([notifier userInfo] == nil) {
@@ -253,7 +253,7 @@
 }
 
 - (void)onLogoutAllResponse:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    DLog(@"%s", __PRETTY_FUNCTION__);
 
     if (![[SecurifiToolkit sharedInstance] isLoggedIn]) {
         dispatch_async(dispatch_get_main_queue(), ^() {
@@ -263,7 +263,7 @@
 }
 
 - (void)onLoginResponse:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    DLog(@"%s", __PRETTY_FUNCTION__);
 
     if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
         [self conditionalLoadAlmondList];
@@ -276,7 +276,7 @@
 }
 
 - (void)onAlmondListResponse:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    DLog(@"%s", __PRETTY_FUNCTION__);
 
     if (self.presentedViewController != nil) {
         return;
@@ -312,13 +312,13 @@
 #pragma mark - UIView management; mainly, we need to manage logon and logout all, and setting up the main screen on logon.
 
 - (void)presentLogonScreen {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    DLog(@"%s", __PRETTY_FUNCTION__);
 
     if (self.presentingLoginController) {
         return;
     }
     self.presentingLoginController = YES;
-    NSLog(@"%s: Presenting logon controller", __PRETTY_FUNCTION__);
+    DLog(@"%s: Presenting logon controller", __PRETTY_FUNCTION__);
 
     // Present login screen
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
@@ -338,7 +338,7 @@
 }
 
 - (void)presentMainView {
-    NSLog(@"%s: Presenting main view", __PRETTY_FUNCTION__);
+    DLog(@"%s: Presenting main view", __PRETTY_FUNCTION__);
 
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"InitialSlide"];
