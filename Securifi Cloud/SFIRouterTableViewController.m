@@ -93,32 +93,32 @@
     SFIAlmondPlus *plus = [[SecurifiToolkit sharedInstance] currentAlmond];
     self.currentMAC = plus.almondplusMAC;
 
-    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-    if (self.currentMAC == nil) {
-        if ([almondList count] != 0) {
-            SFIAlmondPlus *currentAlmond = almondList[0];
-            [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
-            self.currentMAC = currentAlmond.almondplusMAC;
-            if (currentAlmond.almondplusName) {
-                self.navigationItem.title = currentAlmond.almondplusName;
-            }
-        }
-        else {
-            self.currentMAC = NO_ALMOND;
-            self.navigationItem.title = @"Get Started";
-        }
-    }
-    else {
-        if ([almondList count] == 0) {
-            self.currentMAC = NO_ALMOND;
-            self.navigationItem.title = @"Get Started";
-        }
-        else {
-            if (plus.almondplusName != nil) {
-                self.navigationItem.title = plus.almondplusName;
-            }
-        }
-    }
+//    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
+//    if (self.currentMAC == nil) {
+//        if ([almondList count] != 0) {
+//            SFIAlmondPlus *currentAlmond = almondList[0];
+//            [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
+//            self.currentMAC = currentAlmond.almondplusMAC;
+//            if (currentAlmond.almondplusName) {
+//                self.navigationItem.title = currentAlmond.almondplusName;
+//            }
+//        }
+//        else {
+//            self.currentMAC = NO_ALMOND;
+//            self.navigationItem.title = @"Get Started";
+//        }
+//    }
+//    else {
+//        if ([almondList count] == 0) {
+//            self.currentMAC = NO_ALMOND;
+//            self.navigationItem.title = @"Get Started";
+//        }
+//        else {
+//            if (plus.almondplusName != nil) {
+//                self.navigationItem.title = plus.almondplusName;
+//            }
+//        }
+//    }
 
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -554,7 +554,7 @@
                 case 7: {
                     //Get Wireless Settings
                     SFIDevicesList *routerSettings = (SFIDevicesList *) genericRouterCommand.command;
-                    DLog(@"Wifi settings Reply: %d", [routerSettings.deviceList count]);
+                    DLog(@"Wifi settings Reply: %ld", (long) [routerSettings.deviceList count]);
                     //Display list
                     SFIRouterDevicesListViewController *viewController = [[SFIRouterDevicesListViewController alloc] init];
                     viewController.deviceList = routerSettings.deviceList;
