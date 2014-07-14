@@ -3722,37 +3722,46 @@
         return;        
     }
 
+    if ([self isNoAlmondMAC]) {
+        return;
+    }
+
     int deviceValueID = (int) [self.currentDeviceID integerValue];
+    NSString *mac = self.currentMAC;
 
-    NSArray *currentKnownValues = [self currentKnownValuesForDevice:deviceValueID];
-    NSArray *mobileDeviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
+    NSArray *currentValues = [self currentKnownValuesForDevice:deviceValueID];
+    NSArray *storedValues = [SFIOfflineDataManager readDeviceValueList:mac];
 
-    //To save on the offline list
-    NSMutableArray *mobileDeviceKnownValues;
-    if (mobileDeviceValueList != nil) {
-        for (SFIDeviceValue *currentMobileValue in mobileDeviceValueList) {
-            if (currentMobileValue.deviceID == [self.currentDeviceID integerValue]) {
-                mobileDeviceKnownValues = currentMobileValue.knownValues;
+    if (storedValues == nil) {
+        storedValues = @[];
+    }
+    else {
+        for (SFIDeviceValue *stored in storedValues) {
+            if (stored.deviceID == deviceValueID) {
+                NSMutableArray *mobileDeviceKnownValues = stored.knownValues;
                 for (SFIDeviceKnownValues *currentMobileKnownValue in mobileDeviceKnownValues) {
-                    for (SFIDeviceKnownValues *currentLocalKnownValue in currentKnownValues) {
+                    for (SFIDeviceKnownValues *currentLocalKnownValue in currentValues) {
                         if (currentMobileKnownValue.index == currentLocalKnownValue.index) {
-                            [currentMobileKnownValue setValue:currentLocalKnownValue.value];
+                            currentMobileKnownValue.value = currentLocalKnownValue.value;
                             currentMobileKnownValue.isUpdating = false;
                             break;
                         }
                     }
                 }
-                [currentMobileValue setKnownValues:mobileDeviceKnownValues];
+                stored.knownValues = mobileDeviceKnownValues;
             }
         }
 
-        [[SecurifiToolkit sharedInstance] writeDeviceValueList:mobileDeviceValueList currentMAC:self.currentMAC];
+        [[SecurifiToolkit sharedInstance] writeDeviceValueList:storedValues currentMAC:mac];
     }
-    
+
     dispatch_async(dispatch_get_main_queue(), ^() {
-        self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
-        [self initializeImages];
-        [self.tableView reloadData];
+        self.deviceValueList = storedValues;
+        if (self.isViewLoaded) {
+            [self initializeImages];
+            [self.tableView reloadData];
+            [self.HUD hide:YES];
+        }
     });
 }
 
@@ -3770,7 +3779,10 @@
         return;
     }
 
-    NSMutableArray *newDeviceList = [SFIOfflineDataManager readDeviceList:cloudMAC];
+    NSArray *newDeviceList = [SFIOfflineDataManager readDeviceList:cloudMAC];
+    if (newDeviceList == nil) {
+        newDeviceList = @[];
+    }
 
     // Compare the list with device value list size and correct the list accordingly if any device was deleted
     NSArray *newDeviceValueList;
@@ -3818,7 +3830,14 @@
     }
 
     NSArray *newDeviceList = [SFIOfflineDataManager readDeviceList:cloudMAC];
+    if (newDeviceList == nil) {
+        newDeviceList = @[];
+    }
+
     NSArray *newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
+    if (newDeviceValueList == nil) {
+        newDeviceValueList = @[];
+    }
 
     // Restore isExpanded state
     NSArray *oldDeviceList = self.deviceList;
@@ -3914,38 +3933,40 @@
     [self.sensorChangeCommandTimer invalidate];
 
     if (!self.isSensorChangeCommandSuccessful) {
-        NSMutableArray *list = [SFIOfflineDataManager readDeviceList:self.currentMAC];
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            self.deviceList = list;
-            [self initializeImages];
-            //To remove text fields keyboard. It was throwing error when it was being called from the background thread
-            [self.tableView reloadData];
-            [self.HUD hide:YES];
-        });
+        [self resetDeviceListFromSaved];
     }
 }
 
 - (void)onSensorChangeCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    
-    if (data != nil) {
-        self.isSensorChangeCommandSuccessful = TRUE;
-        [SNLog Log:@"%s: Received SensorChangeCallback", __PRETTY_FUNCTION__];
-
-        SensorChangeResponse *obj = (SensorChangeResponse *) [data valueForKey:@"data"];
-        if (!obj.isSuccessful) {
-            [SNLog Log:@"%s: Could not update data, Revert to old value", __PRETTY_FUNCTION__];
-
-            NSMutableArray *list = [SFIOfflineDataManager readDeviceList:self.currentMAC];
-            dispatch_async(dispatch_get_main_queue(), ^() {
-                self.deviceList = list;
-                [self initializeImages];
-                //To remove text fields keyboard. It was throwing error when it was being called from the background thread
-                [self.tableView reloadData];
-            });
-        }
+    if (data == nil) {
+        return;
     }
+
+    self.isSensorChangeCommandSuccessful = TRUE;
+    [SNLog Log:@"%s: Received SensorChangeCallback", __PRETTY_FUNCTION__];
+
+    SensorChangeResponse *obj = (SensorChangeResponse *) [data valueForKey:@"data"];
+    if (!obj.isSuccessful) {
+        [SNLog Log:@"%s: Could not update data, Revert to old value", __PRETTY_FUNCTION__];
+        [self resetDeviceListFromSaved];
+    }
+}
+
+- (void)resetDeviceListFromSaved {
+    NSArray *list = [SFIOfflineDataManager readDeviceList:self.currentMAC];
+    if (list == nil) {
+        list = @[];
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.deviceList = list;
+        [self initializeImages];
+        //To remove text fields keyboard. It was throwing error when it was being called from the background thread
+        [self.tableView reloadData];
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)onAlmondNameDidChange:(id)sender {
