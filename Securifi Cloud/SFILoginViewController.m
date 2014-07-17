@@ -26,6 +26,7 @@
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
 
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    _HUD.labelText = @"One moment please...";
     _HUD.dimBackground = YES;
     [self.view addSubview:_HUD];
 
@@ -41,6 +42,9 @@
 
     self.emailID.text = nil;
     self.password.text = nil;
+
+    self.emailID.clearsOnBeginEditing = NO;
+    self.password.returnKeyType = UIReturnKeyDone;
 
     [self tryEnableLostPwdButton];
     [self enableLoginButton:NO];
@@ -105,6 +109,12 @@
     return self.emailID.text.length > 0 && self.password.text.length > 0;
 }
 
+- (void)hideHud {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
+}
+
 #pragma mark - Orientation Handling
 
 - (BOOL)shouldAutorotate {
@@ -158,8 +168,12 @@
 
 - (void)onKeyboardDidHide:(id)notice {
     BOOL valid = [self validateCredentials];
-    [self enableLoginButton:valid];
 
+    if (valid) {
+        [self sendLoginWithEmailRequest];
+    }
+
+    [self enableLoginButton:NO];
     [self tryEnableLostPwdButton];
 }
 
@@ -173,30 +187,34 @@
 }
 
 - (IBAction)onForgetPasswordAction:(id)sender {
+    [self.HUD show:YES];
     [self sendResetPasswordRequest];
 }
 
 - (IBAction)onLoginAction:(id)sender {
-    if ([self.emailID isFirstResponder]) {
-        [self.emailID resignFirstResponder];
-    }
+    [self.emailID endEditing:YES];
+    [self.password endEditing:YES];
 
-    if ([self.password isFirstResponder]) {
-        [self.password resignFirstResponder];
-    }
-
-    if (self.emailID.text.length == 0 || self.password.text.length == 0) {
-        [self setOopsMsg:@"Please enter Username and Password"];
+    if ([self validateCredentials]) {
+        [self sendLoginWithEmailRequest];
     }
     else {
-        [[SecurifiToolkit sharedInstance] asyncSendLoginWithEmail:self.emailID.text password:self.password.text];
-        self.loginButton.enabled = NO;
+        [self setOopsMsg:@"Please enter Username and Password"];
     }
+}
+
+- (void)sendLoginWithEmailRequest {
+    [self.HUD show:YES];
+
+    [[SecurifiToolkit sharedInstance] asyncSendLoginWithEmail:self.emailID.text password:self.password.text];
+    self.loginButton.enabled = NO;
 }
 
 #pragma mark - Event handlers
 
 - (void)onLoginResponse:(id)sender {
+    [self hideHud];
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
@@ -236,6 +254,8 @@
             }
         }
 
+        [self enableLoginButton:YES];
+
         return;
     }
 
@@ -260,6 +280,8 @@
 }
 
 - (void)resetPasswordResponseCallback:(id)sender {
+    [self hideHud];
+
     [SNLog Log:@"%s", __PRETTY_FUNCTION__];
 
     NSNotification *notifier = (NSNotification *) sender;
