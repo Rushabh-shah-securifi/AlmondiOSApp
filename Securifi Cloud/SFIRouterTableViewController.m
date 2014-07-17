@@ -228,39 +228,7 @@
 
 - (void)onNetworkChange:(id)notice {
     [self markCloudStatusIcon];
-    [self displayNoCloudConnectionImage];
-}
-
-- (void)displayNoCloudConnectionImage {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (!self.isCloudOnline) {
-            UIImage *image;
-
-            //Set the splash image differently for 3.5 inch and 4 inch screen
-            CGRect screenBounds = [[UIScreen mainScreen] bounds];
-            if (screenBounds.size.height == 568) {
-                // code for 4-inch screen
-                image = [UIImage imageNamed:@"no_cloud_640x1136"];
-            }
-            else {
-                // code for 3.5-inch screen
-                image = [UIImage imageNamed:@"no_cloud_640x960"];
-            }
-
-            if (!self.splashImg) {
-                self.splashImg = [[UIImageView alloc] initWithFrame:self.tableView.frame];
-                [self.view addSubview:self.splashImg];
-            }
-
-            self.splashImg.image = image;
-            self.tableView.scrollEnabled = NO;
-        }
-        else if (self.splashImg) {
-            [self.splashImg removeFromSuperview];
-            self.splashImg = nil;
-            self.tableView.scrollEnabled = YES;
-        }
-    });
+    [self asyncReloadTable];
 }
 
 #pragma mark - Table view data source
@@ -283,15 +251,27 @@
     if (self.isRebooting) {
         return 100;
     }
+
+    if (![self isCloudOnline]) {
+        return 400;
+    }
+
     return 85;
 
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([self isNoAlmondLoaded]) {
+        tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
     }
 
+    if (![self isCloudOnline]) {
+        tableView.scrollEnabled = NO;
+        return [self createAlmondNoConnectCell:tableView];
+    }
+
+    tableView.scrollEnabled = YES;
     return [self createAlmondCell:tableView];
 }
 
@@ -324,6 +304,41 @@
 
     [imgGettingStarted addSubview:btnAddAlmond];
     [cell addSubview:imgGettingStarted];
+
+    return cell;
+}
+
+- (UITableViewCell *)createAlmondNoConnectCell:(UITableView *)tableView {
+    static NSString *cell_id = @"NoAlmondConnect";
+
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+        CGFloat width = self.tableView.frame.size.width;
+
+        UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, width, 50)];
+        lblNoSensor.textAlignment = NSTextAlignmentCenter;
+        [lblNoSensor setFont:[UIFont fontWithName:@"Avenir-Light" size:35]];
+        lblNoSensor.text = @"Almond is Offline.";
+        lblNoSensor.textColor = [UIColor grayColor];
+        [cell addSubview:lblNoSensor];
+
+        UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:CGRectMake(width / 2 - 50, 150, 100, 100)];
+        imgRouter.userInteractionEnabled = NO;
+        [imgRouter setImage:[UIImage imageNamed:@"offline_150x150.png"]];
+        imgRouter.contentMode = UIViewContentModeScaleAspectFit;
+        [cell addSubview:imgRouter];
+
+        UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 280, width, 40)];
+        lblAddSensor.textAlignment = NSTextAlignmentCenter;
+        [lblAddSensor setFont:[UIFont fontWithName:@"Avenir-Heavy" size:20]];
+        lblAddSensor.text = @"Please check the router.";
+        lblAddSensor.textColor = [UIColor grayColor];
+        [cell addSubview:lblAddSensor];
+    }
 
     return cell;
 }
@@ -387,12 +402,21 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self isNoAlmondLoaded]) {
+        return;
+    }
+
+    if (![self isCloudOnline]) {
+        return;
+    }
+
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
             initWithTitle:nil
                  delegate:self
         cancelButtonTitle:@"No"
    destructiveButtonTitle:@"Yes"
         otherButtonTitles:nil];
+
     [actionSheet showInView:self.view];
 }
 
