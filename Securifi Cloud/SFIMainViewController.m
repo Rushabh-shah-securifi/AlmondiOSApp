@@ -32,7 +32,6 @@
     [center removeObserver:self name:kSFIDidCompleteLoginNotification object:nil];
     [center removeObserver:self name:kSFIDidLogoutNotification object:nil];
     [center removeObserver:self name:kSFIDidLogoutAllNotification object:nil];
-    [center removeObserver:self name:kSFIDidUpdateAlmondList object:nil];
     [center removeObserver:self name:UI_ON_PRESENT_LOGOUT_ALL object:nil];
 }
 
@@ -65,7 +64,7 @@
                  object:nil];
 
     [center addObserver:self
-               selector:@selector(onLoginResponse:)
+               selector:@selector(onDidCompleteLogin:)
                    name:kSFIDidCompleteLoginNotification
                  object:nil];
 
@@ -77,11 +76,6 @@
     [center addObserver:self
                selector:@selector(onLogoutAllResponse:)
                    name:kSFIDidLogoutAllNotification
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onAlmondListResponse:)
-                   name:kSFIDidUpdateAlmondList
                  object:nil];
 
     [center addObserver:self
@@ -200,34 +194,12 @@
 #pragma mark - SFILoginViewController delegate methods
 
 - (void)loginControllerDidCompleteLogin:(SFILoginViewController *)loginCtrl {
-    [SNLog Log:@"%s", __PRETTY_FUNCTION__];
-
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
-            self.HUD.labelText = @"Loading your personal data.";
             self.presentingLoginController = NO;
-            [self conditionalLoadAlmondList];
+            [self presentMainView];
         }];
     });
-}
-
-#pragma mark - Cloud Command : Sender and Receivers
-
-- (void)conditionalLoadAlmondList {
-/*
-    if (self.presentedViewController != nil) {
-        return;
-    }
-
-    // Only take responsibility for loading almond list when this is the top level view.
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onAlmondListResponse:)
-                                                 name:ALMOND_LIST_NOTIFIER
-                                               object:nil];
-
-    [[SecurifiToolkit sharedInstance] asyncRequestAlmondList];
-*/
 }
 
 #pragma mark - Login and Logout handling
@@ -262,37 +234,16 @@
     }
 }
 
-- (void)onLoginResponse:(id)sender {
+- (void)onDidCompleteLogin:(id)sender {
     DLog(@"%s", __PRETTY_FUNCTION__);
 
     if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
-        [self conditionalLoadAlmondList];
+        [self presentMainView];
     }
     else {
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self presentLogonScreen];
         });
-    }
-}
-
-- (void)onAlmondListResponse:(id)sender {
-    DLog(@"%s", __PRETTY_FUNCTION__);
-
-    if (self.presentedViewController != nil) {
-        return;
-    }
-
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.HUD hide:YES];
-    });
-
-    if (self.presentedViewController) {
-        [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
-            [self presentMainView];
-        }];
-    }
-    else {
-        [self presentMainView];
     }
 }
 
