@@ -61,7 +61,6 @@
 + (UIColor *)tintForState:(SFICloudStatusState)state {
     switch (state) {
         case SFICloudStatusStateConnected:
-            return [UIColor colorWithRed:0.0 green:(CGFloat) (175.0 / 255.0) blue:(CGFloat) (0.0 / 255.0) alpha:1]; // Green
         case SFICloudStatusStateDisconnected:
         case SFICloudStatusStateConnecting:
         case SFICloudStatusStateAlmondOffline:
