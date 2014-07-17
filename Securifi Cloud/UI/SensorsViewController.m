@@ -3861,10 +3861,16 @@
 
 - (void)onAlmondListDidChange:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self.isViewLoaded) {
+            return;
+        }
+
+        [self.HUD show:YES];
+
         [self initializeAlomdData];
         [self.tableView reloadData];
 
-        [self.HUD hide:YES];
+        [self.HUD hide:YES afterDelay:1.5];
     });
 }
 
