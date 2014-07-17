@@ -218,15 +218,7 @@
         self.deviceValueList = [toolkit deviceValuesList:self.currentMAC];
 
         if (self.deviceValueList.count == 0) {
-//            [self.HUD show:YES];
-
             [self sendDeviceValueCommand];
-
-//            self.sensorDataCommandTimer = [NSTimer scheduledTimerWithTimeInterval:10.0
-//                                                                           target:self
-//                                                                         selector:@selector(onLoadSensorDataCommandTimeout:)
-//                                                                         userInfo:nil
-//                                                                          repeats:NO];
         }
 
         [self initializeImages];
@@ -3642,14 +3634,6 @@
 
 #pragma mark - Cloud Commands and Handlers
 
-//- (void)sendDeviceHashCommand {
-//    [[SecurifiToolkit sharedInstance] asyncRequestDeviceHash:self.currentMAC];
-//}
-
-//- (void)sendDeviceListCommand {
-//    [[SecurifiToolkit sharedInstance] asyncRequestDeviceList:self.currentMAC];
-//}
-
 - (void)sendDeviceValueCommand {
     [[SecurifiToolkit sharedInstance] asyncRequestDeviceValueList:self.currentMAC];
 }
@@ -3705,6 +3689,10 @@
 }
 
 - (void)onMobileCommandResponseCallback:(id)sender {
+    if (!self) {
+        return;
+    }
+
     // Timeout the commander timer
     [self.mobileCommandTimer invalidate];
     self.isMobileCommandSuccessful = TRUE;
@@ -3715,40 +3703,34 @@
         return;
     }
     
-    MobileCommandResponse *obj = (MobileCommandResponse *) [data valueForKey:@"data"];
-
-    BOOL isSuccessful = obj.isSuccessful;
-    if (!isSuccessful) {
-        return;        
-    }
-
-    if ([self isNoAlmondMAC]) {
-        return;
-    }
-
     int deviceValueID = (int) [self.currentDeviceID integerValue];
     NSString *mac = self.currentMAC;
 
-    NSArray *currentValues = [self currentKnownValuesForDevice:deviceValueID];
+    NSArray *currentDeviceValues = [self currentKnownValuesForDevice:deviceValueID];
     NSArray *storedValues = [SFIOfflineDataManager readDeviceValueList:mac];
 
     if (storedValues == nil) {
         storedValues = @[];
     }
     else {
-        for (SFIDeviceValue *stored in storedValues) {
-            if (stored.deviceID == deviceValueID) {
-                NSMutableArray *mobileDeviceKnownValues = stored.knownValues;
-                for (SFIDeviceKnownValues *currentMobileKnownValue in mobileDeviceKnownValues) {
-                    for (SFIDeviceKnownValues *currentLocalKnownValue in currentValues) {
-                        if (currentMobileKnownValue.index == currentLocalKnownValue.index) {
-                            currentMobileKnownValue.value = currentLocalKnownValue.value;
-                            currentMobileKnownValue.isUpdating = false;
+        MobileCommandResponse *obj = (MobileCommandResponse *) [data valueForKey:@"data"];
+        BOOL isSuccessful = obj.isSuccessful;
+
+        for (SFIDeviceValue *storedValue in storedValues) {
+            if (storedValue.deviceID == deviceValueID) {
+                NSMutableArray *storedKnownDeviceValues = storedValue.knownValues;
+
+                for (SFIDeviceKnownValues *storedKnownValues in storedKnownDeviceValues) {
+                    for (SFIDeviceKnownValues *currentKnownValues in currentDeviceValues) {
+                        if (storedKnownValues.index == currentKnownValues.index) {
+                            storedKnownValues.value = isSuccessful ? currentKnownValues.value : storedKnownValues.value;
+                            storedKnownValues.isUpdating = false;
                             break;
                         }
                     }
                 }
-                stored.knownValues = mobileDeviceKnownValues;
+
+                storedValue.knownValues = storedKnownDeviceValues;
             }
         }
 
@@ -3756,8 +3738,20 @@
     }
 
     dispatch_async(dispatch_get_main_queue(), ^() {
-        self.deviceValueList = storedValues;
+        if (!self) {
+            return;
+        }
+
+        if ([self isNoAlmondMAC]) {
+            return;
+        }
+
+        if (![self.currentMAC isEqualToString:mac]) {
+            return;
+        }
+
         if (self.isViewLoaded) {
+            self.deviceValueList = storedValues;
             [self initializeImages];
             [self.tableView reloadData];
             [self.HUD hide:YES];
@@ -3766,6 +3760,10 @@
 }
 
 - (void)onDeviceListDidChange:(id)sender {
+    if (!self) {
+        return;
+    }
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
@@ -3817,6 +3815,10 @@
 }
 
 - (void)onDeviceValueListDidChange:(id)sender {
+    if (!self) {
+        return;
+    }
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
@@ -3861,6 +3863,9 @@
 
 - (void)onAlmondListDidChange:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
         if (!self.isViewLoaded) {
             return;
         }
@@ -3875,6 +3880,9 @@
 }
 
 - (IBAction)onRefreshSensorData:(id)sender {
+    if (!self) {
+        return;
+    }
     if ([self isNoAlmondMAC]) {
         return;
     }
@@ -3890,6 +3898,9 @@
 }
 
 - (void)onSaveSensorData:(id)sender {
+    if (!self) {
+        return;
+    }
     if ([self isNoAlmondMAC]) {
         return;
     }
@@ -3944,6 +3955,10 @@
 }
 
 - (void)onSensorChangeCallback:(id)sender {
+    if (!self) {
+        return;
+    }
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
@@ -3976,6 +3991,10 @@
 }
 
 - (void)onAlmondNameDidChange:(id)sender {
+    if (!self) {
+        return;
+    }
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
