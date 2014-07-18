@@ -25,10 +25,10 @@
     };
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
 
-    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.labelText = @"One moment please...";
     _HUD.dimBackground = YES;
-    [self.view addSubview:_HUD];
+    [self.navigationController.view addSubview:_HUD];
 
     //PY 170913 - To stop the view from going below tab bar
     self.edgesForExtendedLayout = UIRectEdgeNone;
