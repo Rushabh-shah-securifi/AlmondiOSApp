@@ -15,6 +15,7 @@
 #import "ECSlidingViewController.h"
 #import "SFICloudStatusBarButtonItem.h"
 #import "SFIHighlightedButton.h"
+#import "iToast.h"
 
 @interface SensorsViewController () <ReorderTableViewDelegate>
 @property(nonatomic, weak, readonly) BVReorderTableView *sensorTable;
@@ -59,46 +60,7 @@
 
 - (void)dealloc {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-
-    [center removeObserver:self
-                      name:NETWORK_CONNECTING_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:NETWORK_UP_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:NETWORK_DOWN_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:kSFIReachabilityChangedNotification
-                    object:nil];
-
-    [center removeObserver:self
-                      name:MOBILE_COMMAND_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:kSFIDidChangeDeviceList
-                    object:nil];
-
-    [center removeObserver:self
-                      name:kSFIDidChangeDeviceValueList
-                    object:nil];
-
-    [center removeObserver:self
-                      name:kSFIDidUpdateAlmondList
-                    object:nil];
-
-    [center removeObserver:self
-                      name:SENSOR_CHANGE_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:kSFIDidChangeAlmondName
-                    object:nil];
+    [center removeObserver:self];
 }
 
 - (void)viewDidLoad {
@@ -122,11 +84,11 @@
     _sensorTable.canReorder = NO;
 
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
-    _HUD = [[MBProgressHUD alloc] initWithView:self.parentViewController.view];
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.labelText = @"Loading sensor data";
     _HUD.dimBackground = YES;
-    [self.parentViewController.view addSubview:_HUD];
+    [self.navigationController.view addSubview:_HUD];
 
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
@@ -137,6 +99,10 @@
     UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(revealTab:)];
     showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
     [self.tableView addGestureRecognizer:showMenuSwipe];
+
+    // Ensure values have at least an empty list
+    self.deviceList = @[];
+    self.deviceValueList = @[];
 
     [self markCloudStatusIcon];
     [self initializeNotifications];
@@ -200,12 +166,8 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
 
-    if (plus == nil) {
-        self.currentMAC = NO_ALMOND;
-    }
-    else {
-        self.currentMAC = plus.almondplusMAC;
-    }
+    NSString *const mac = (plus == nil) ? NO_ALMOND : plus.almondplusMAC;
+    self.currentMAC = mac;
 
     if ([self isNoAlmondMAC]) {
         self.navigationItem.title = @"Get Started";
@@ -214,11 +176,11 @@
     }
     else {
         self.navigationItem.title = plus.almondplusName;
-        self.deviceList = [toolkit deviceList:self.currentMAC];
-        self.deviceValueList = [toolkit deviceValuesList:self.currentMAC];
+        self.deviceList = [toolkit deviceList:mac];
+        self.deviceValueList = [toolkit deviceValuesList:mac];
 
-        if (self.deviceValueList.count == 0) {
-            [self sendDeviceValueCommand];
+        if (self.deviceList.count == 0) {
+            [toolkit asyncRequestDeviceList:mac];
         }
 
         [self initializeImages];
@@ -231,7 +193,6 @@
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    // DLog(@"Rotation %d", fromInterfaceOrientation);
     [self asyncReloadTable];
 }
 
@@ -243,6 +204,20 @@
 
 - (BOOL)isNoAlmondMAC {
     return [self.currentMAC isEqualToString:NO_ALMOND];
+}
+
+- (BOOL)isSameAsCurrentMAC:(NSString*)aMac {
+    NSString *current = self.currentMAC;
+    if (current == nil && aMac == nil) {
+        return NO;
+    }
+    if (current == nil && aMac != nil) {
+        return NO;
+    }
+    if (current != nil && aMac == nil) {
+        return NO;
+    }
+    return [current isEqualToString:aMac];
 }
 
 #pragma mark - Reconnection
@@ -3723,7 +3698,7 @@
                 for (SFIDeviceKnownValues *storedKnownValues in storedKnownDeviceValues) {
                     for (SFIDeviceKnownValues *currentKnownValues in currentDeviceValues) {
                         if (storedKnownValues.index == currentKnownValues.index) {
-                            storedKnownValues.value = isSuccessful ? currentKnownValues.value : storedKnownValues.value;
+                            storedKnownValues.value = isSuccessful ? currentKnownValues.value : nil;
                             storedKnownValues.isUpdating = false;
                             break;
                         }
@@ -3746,7 +3721,7 @@
             return;
         }
 
-        if (![self.currentMAC isEqualToString:mac]) {
+        if (![self isSameAsCurrentMAC:mac]) {
             return;
         }
 
@@ -3760,6 +3735,7 @@
 }
 
 - (void)onDeviceListDidChange:(id)sender {
+    NSLog(@"Sensors: did receive device list change");
     if (!self) {
         return;
     }
@@ -3771,8 +3747,7 @@
     }
     
     NSString *cloudMAC = [data valueForKey:@"data"];
-    BOOL isCurrentMAC = [cloudMAC isEqualToString:self.currentMAC];
-    if (!isCurrentMAC) {
+    if (![self isSameAsCurrentMAC:cloudMAC]) {
         // An Almond not currently being views was changed
         return;
     }
@@ -3782,12 +3757,11 @@
         newDeviceList = @[];
     }
 
-    // Compare the list with device value list size and correct the list accordingly if any device was deleted
-    NSArray *newDeviceValueList;
-    if ([newDeviceList count] < [self.deviceValueList count]) {
-        // Reload Device Value List which was updated by Offline Data Manager
-        newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
-    }
+    NSArray *newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
+//    if ([newDeviceList count] < [self.deviceValueList count]) {
+//        // Reload Device Value List which was updated by Offline Data Manager
+//        newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
+//    }
 
     // Restore isExpanded state
     NSArray *oldDeviceList = self.deviceList;
@@ -3801,20 +3775,28 @@
 
     // Push changes to the UI
     dispatch_async(dispatch_get_main_queue(), ^() {
-        if ([cloudMAC isEqualToString:self.currentMAC]) {
+        if ([self isSameAsCurrentMAC:cloudMAC]) {
+            [self.HUD show:YES];
+        }
+    });
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if ([self isSameAsCurrentMAC:cloudMAC]) {
             self.deviceList = newDeviceList;
             if (newDeviceValueList) {
                 self.deviceValueList = newDeviceValueList;
             }
             [self initializeImages];
             [self.tableView reloadData];
-
-            [self.HUD hide:YES];
         }
+
+        [self.HUD hide:YES afterDelay:1.5];
     });
 }
 
 - (void)onDeviceValueListDidChange:(id)sender {
+    NSLog(@"Sensors: did receive device values list change");
+
     if (!self) {
         return;
     }
@@ -3826,7 +3808,7 @@
     }
 
     NSString *cloudMAC = [data valueForKey:@"data"];
-    if (![cloudMAC isEqualToString:self.currentMAC]) {
+    if (![self isSameAsCurrentMAC:cloudMAC]) {
         // An Almond not currently being views was changed
         return;
     }
@@ -3852,16 +3834,40 @@
     }
 
     dispatch_async(dispatch_get_main_queue(), ^() {
-        if ([cloudMAC isEqualToString:self.currentMAC]) {
-            self.deviceList = newDeviceList;
-            self.deviceValueList = newDeviceValueList;
-            [self initializeImages];
-            [self.tableView reloadData];
+        if (!self) {
+            return;
         }
+
+        if (![self isSameAsCurrentMAC:cloudMAC]) {
+            return;
+        }
+
+        self.deviceList = newDeviceList;
+        self.deviceValueList = newDeviceValueList;
+        [self initializeImages];
+        [self.tableView reloadData];
     });
 }
 
 - (void)onAlmondListDidChange:(id)sender {
+    NSLog(@"Sensors: did receive ALmond List change");
+
+    if (!self) {
+        return;
+    }
+
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+
+    SFIAlmondPlus *plus = [data valueForKey:@"data"];
+
+    if (plus != nil && [self isSameAsCurrentMAC:plus.almondplusMAC]) {
+        // No reason to alert user
+        return;
+    }
+
+    // If plus is nil, then there are no almonds attached, and the UI needs to deal with it.
+
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
@@ -3904,6 +3910,8 @@
     if ([self isNoAlmondMAC]) {
         return;
     }
+
+    [[[iToast makeText:@"Saving..."] setGravity:iToastGravityCenter] show];
 
     UIButton *btnObj = (UIButton *) sender;
     SFIDevice *currentSensor = self.deviceList[(NSUInteger) btnObj.tag];
@@ -3991,20 +3999,22 @@
 }
 
 - (void)onAlmondNameDidChange:(id)sender {
-    if (!self) {
-        return;
-    }
-
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
         return;
     }
 
-    SFIAlmondPlus *obj = (SFIAlmondPlus *) [data valueForKey:@"data"];
-    if ([self.currentMAC isEqualToString:obj.almondplusMAC]) {
-        self.navigationItem.title = obj.almondplusName;
-    }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
+
+        SFIAlmondPlus *obj = (SFIAlmondPlus *) [data valueForKey:@"data"];
+        if ([self isSameAsCurrentMAC:obj.almondplusMAC]) {
+            self.navigationItem.title = obj.almondplusName;
+        }
+    });
 }
 
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
