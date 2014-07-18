@@ -12,6 +12,7 @@
 
 @interface SFILoginViewController () <UITextFieldDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
+@property(nonatomic) BOOL lastEditiedFieldWasPasswd;
 @end
 
 @implementation SFILoginViewController
@@ -44,12 +45,18 @@
     self.password.text = nil;
 
     self.emailID.clearsOnBeginEditing = NO;
+    self.emailID.returnKeyType = UIReturnKeyNext;
     self.password.returnKeyType = UIReturnKeyDone;
 
     [self tryEnableLostPwdButton];
     [self enableLoginButton:NO];
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self
+               selector:@selector(onNetworkDown:)
+                   name:NETWORK_DOWN_NOTIFIER
+                 object:nil];
+
     [center addObserver:self
                selector:@selector(onLoginResponse:)
                    name:kSFIDidCompleteLoginNotification
@@ -79,6 +86,11 @@
     self.password.delegate = nil;
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+
+    [center removeObserver:self
+                      name:NETWORK_DOWN_NOTIFIER
+                    object:nil];
+
     [center removeObserver:self
                       name:kSFIDidCompleteLoginNotification
                     object:nil];
@@ -111,7 +123,7 @@
 
 - (void)hideHud {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.HUD hide:YES];
+        [self.HUD hide:YES afterDelay:1.0];
     });
 }
 
@@ -157,7 +169,9 @@
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-//    [self tryEnableLostPwdButton];
+    // To prevent the Login Action being invoked when the keyboard hides after editing hte email address,
+    // we keep track of the last edited one here.
+    self.lastEditiedFieldWasPasswd = (textField == self.password);
 }
 
 #pragma mark - Keyboard handler
@@ -169,7 +183,7 @@
 - (void)onKeyboardDidHide:(id)notice {
     BOOL valid = [self validateCredentials];
 
-    if (valid) {
+    if (valid && self.lastEditiedFieldWasPasswd) {
         [self sendLoginWithEmailRequest];
     }
 
@@ -211,6 +225,12 @@
 }
 
 #pragma mark - Event handlers
+
+- (void)onNetworkDown:(id)sender {
+    [self hideHud];
+    BOOL valid = [self validateCredentials];
+    [self enableLoginButton:valid];
+}
 
 - (void)onLoginResponse:(id)sender {
     [self hideHud];
