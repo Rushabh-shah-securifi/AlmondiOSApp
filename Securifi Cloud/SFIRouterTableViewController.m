@@ -21,12 +21,13 @@
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSArray *listAvailableColors;
-@property(nonatomic, strong) UIImageView *splashImg;
 
 @property NSString *currentMAC;
 @property(nonatomic, strong) SFIRouterSummary *routerSummary;
 
 @property BOOL isRebooting;
+@property BOOL isAlmondUnavailable;
+
 @property unsigned int mobileInternalIndex;
 @end
 
@@ -34,35 +35,7 @@
 
 - (void)dealloc {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-
-    [center removeObserver:self
-                      name:NETWORK_UP_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:NETWORK_CONNECTING_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:NETWORK_DOWN_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:kSFIReachabilityChangedNotification
-                    object:nil];
-
-    [center removeObserver:self
-                      name:GENERIC_COMMAND_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:kSFIDidUpdateAlmondList
-                    object:nil];
-
-    [center removeObserver:self
-                      name:GENERIC_COMMAND_CLOUD_NOTIFIER
-                    object:nil];
-
+    [center removeObserver:self];
 }
 
 - (void)viewDidLoad {
@@ -220,6 +193,12 @@
     }
 }
 
+- (void)asyncReloadTable {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+    });
+}
+
 #pragma mark - Network and cloud events
 
 - (void)onNetworkConnectingNotifier:(id)notification {
@@ -266,7 +245,7 @@
         return [self createNoAlmondCell:tableView];
     }
 
-    if (![self isCloudOnline]) {
+    if (self.isAlmondUnavailable) {
         tableView.scrollEnabled = NO;
         return [self createAlmondNoConnectCell:tableView];
     }
@@ -406,7 +385,7 @@
         return;
     }
 
-    if (![self isCloudOnline]) {
+    if (self.isAlmondUnavailable) {
         return;
     }
 
@@ -425,7 +404,6 @@
 - (void)refreshDataForAlmond {
     [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
 }
-
 
 - (IBAction)onRevealMenuAction:(id)sender {
     [self.slidingViewController anchorTopViewTo:ECRight];
@@ -500,43 +478,56 @@
 - (void)onGenericResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
 
-    if (data != nil) {
-        GenericCommandResponse *obj = (GenericCommandResponse *) [data valueForKey:@"data"];
+    GenericCommandResponse *obj = (GenericCommandResponse *) [data valueForKey:@"data"];
 
-        BOOL isSuccessful = obj.isSuccessful;
-        if (isSuccessful) {
-            //Display proper message
-            DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
-            DLog(@"Response Data: %@", obj.genericData);
-            DLog(@"Decoded Data: %@", obj.decodedData);
+    BOOL isSuccessful = obj.isSuccessful;
+    if (!isSuccessful) {
+        DLog(@"Reason: %@", obj.reason);
 
-            NSData *decoded_data = [obj.decodedData mutableCopy];
-            DLog(@"Data: %@", decoded_data);
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            self.isAlmondUnavailable = YES;
+            [self.tableView reloadData];
+        });
 
-            NSMutableData *genericData = [[NSMutableData alloc] init];
-            [genericData appendData:decoded_data];
+        return;
+    }
+    self.isAlmondUnavailable = NO;
 
-            unsigned int expectedDataLength;
-            unsigned int commandData;
+    //Display proper message
+    DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
+    DLog(@"Response Data: %@", obj.genericData);
+    DLog(@"Decoded Data: %@", obj.decodedData);
 
-            [genericData getBytes:&expectedDataLength range:NSMakeRange(0, 4)];
-            [genericData getBytes:&commandData range:NSMakeRange(4, 4)];
+    NSData *decoded_data = [obj.decodedData copy];
+    DLog(@"Data: %@", decoded_data);
 
-            //Remove 8 bytes from received command
-            [genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
+    NSMutableData *genericData = [[NSMutableData alloc] init];
+    [genericData appendData:decoded_data];
 
-            NSString *decodedString = [[NSString alloc] initWithData:genericData encoding:NSUTF8StringEncoding];
-            SFIGenericRouterCommand *genericRouterCommand = [[SFIParser alloc] loadDataFromString:decodedString];
-            DLog(@"Command Type %d", genericRouterCommand.commandType);
+    unsigned int expectedDataLength;
+    unsigned int commandData;
 
-            switch (genericRouterCommand.commandType) {
-                case 1: {
-                    //Reboot
-                    SFIRouterReboot *routerReboot = (SFIRouterReboot *) genericRouterCommand.command;
-                    NSLog(@"Reboot Reply: %d", routerReboot.reboot);
-                    break;
-                }
+    [genericData getBytes:&expectedDataLength range:NSMakeRange(0, 4)];
+    [genericData getBytes:&commandData range:NSMakeRange(4, 4)];
+
+    //Remove 8 bytes from received command
+    [genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
+
+    NSString *decodedString = [[NSString alloc] initWithData:genericData encoding:NSUTF8StringEncoding];
+    SFIGenericRouterCommand *genericRouterCommand = [[SFIParser alloc] loadDataFromString:decodedString];
+    DLog(@"Command Type %d", genericRouterCommand.commandType);
+
+    switch (genericRouterCommand.commandType) {
+        case 1: {
+            //Reboot
+            SFIRouterReboot *routerReboot = (SFIRouterReboot *) genericRouterCommand.command;
+            NSLog(@"Reboot Reply: %d", routerReboot.reboot);
+            break;
+        }
 //                case 2:
 //                {
 //                    //Get Connected Device List
@@ -559,7 +550,7 @@
 //                    viewController.deviceList = routerBlockedDevices.deviceList;
 //                    viewController.deviceListType = genericRouterCommand.commandType;
 //                    [self.navigationController pushViewController:viewController animated:YES];
-//                    
+//
 //                }
 //                    break;
 //                    //TODO: Case 4: Set blocked device
@@ -575,97 +566,92 @@
 //                    [self.navigationController pushViewController:viewController animated:YES];
 //               }
 //                    break;
-                case 7: {
-                    //Get Wireless Settings
-                    SFIDevicesList *routerSettings = (SFIDevicesList *) genericRouterCommand.command;
-                    DLog(@"Wifi settings Reply: %ld", (long) [routerSettings.deviceList count]);
-                    //Display list
-                    SFIRouterDevicesListViewController *viewController = [[SFIRouterDevicesListViewController alloc] init];
-                    viewController.deviceList = routerSettings.deviceList;
-                    viewController.deviceListType = genericRouterCommand.commandType;
-                    [self.navigationController pushViewController:viewController animated:YES];
-                    break;
-                }
-                case 9: {
-                    //Get Wireless Summary
-                    self.routerSummary = (SFIRouterSummary *) genericRouterCommand.command;
-                    [self.tableView reloadData];
-
-                    break;
-                }
-
-                default:
-                    break;
-
-            }
-            // }
+        case 7: {
+            //Get Wireless Settings
+            SFIDevicesList *routerSettings = (SFIDevicesList *) genericRouterCommand.command;
+            DLog(@"Wifi settings Reply: %ld", (long) [routerSettings.deviceList count]);
+            //Display list
+            SFIRouterDevicesListViewController *viewController = [[SFIRouterDevicesListViewController alloc] init];
+            viewController.deviceList = routerSettings.deviceList;
+            viewController.deviceListType = genericRouterCommand.commandType;
+            [self.navigationController pushViewController:viewController animated:YES];
+            break;
         }
-        else {
-            DLog(@"Reason: %@", obj.reason);
+        case 9: {
+            //Get Wireless Summary
+            self.routerSummary = (SFIRouterSummary *) genericRouterCommand.command;
+            [self.tableView reloadData];
+
+            break;
         }
+
+        default:
+            break;
+
     }
 }
 
 - (void)onGenericNotificationCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-
-    if (data != nil) {
-        GenericCommandResponse *obj = (GenericCommandResponse *) [data valueForKey:@"data"];
-
-        BOOL isSuccessful = obj.isSuccessful;
-        if (isSuccessful) {
-            NSMutableData *genericData = [[NSMutableData alloc] init];
-
-            //Display proper message
-            DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
-            DLog(@"Response Data: %@", obj.genericData);
-            DLog(@"Decoded Data: %@", obj.decodedData);
-            NSData *data_decoded = [obj.decodedData mutableCopy];
-            DLog(@"Data: %@", data_decoded);
-
-            [genericData appendData:data_decoded];
-
-            unsigned int expectedDataLength;
-            unsigned int commandData;
-
-            [genericData getBytes:&expectedDataLength range:NSMakeRange(0, 4)];
-            [genericData getBytes:&commandData range:NSMakeRange(4, 4)];
-
-            //Remove 8 bytes from received command
-            [genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
-
-            NSString *decodedString = [[NSString alloc] initWithData:genericData encoding:NSUTF8StringEncoding];
-            SFIGenericRouterCommand *genericRouterCommand = [[SFIParser alloc] loadDataFromString:decodedString];
-            DLog(@"Command Type %d", genericRouterCommand.commandType);
-
-            switch (genericRouterCommand.commandType) {
-                case 1: {
-                    //Reboot
-                    SFIRouterReboot *routerReboot = (SFIRouterReboot *) genericRouterCommand.command;
-                    NSLog(@"Reboot Reply: %d", routerReboot.reboot);
-
-                    self.HUD.labelText = @"Router is now online.";
-                    [self.HUD hide:YES afterDelay:1];
-
-                    self.isRebooting = FALSE;
-                    [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-        else {
-            DLog(@"Reason: %@", obj.reason);
-        }
+    if (data == nil) {
+        return;
     }
-}
 
-- (void)asyncReloadTable {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-    });
+    GenericCommandResponse *obj = (GenericCommandResponse *) [data valueForKey:@"data"];
+    if (!obj.isSuccessful) {
+        DLog(@"Reason: %@", obj.reason);
+
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            self.isAlmondUnavailable = YES;
+            [self.tableView reloadData];
+        });
+
+        return;
+    }
+    self.isAlmondUnavailable = NO;
+
+
+    NSMutableData *genericData = [[NSMutableData alloc] init];
+
+    //Display proper message
+    DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
+    DLog(@"Response Data: %@", obj.genericData);
+    DLog(@"Decoded Data: %@", obj.decodedData);
+    NSData *data_decoded = [obj.decodedData mutableCopy];
+    DLog(@"Data: %@", data_decoded);
+
+    [genericData appendData:data_decoded];
+
+    unsigned int expectedDataLength;
+    unsigned int commandData;
+
+    [genericData getBytes:&expectedDataLength range:NSMakeRange(0, 4)];
+    [genericData getBytes:&commandData range:NSMakeRange(4, 4)];
+
+    //Remove 8 bytes from received command
+    [genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
+
+    NSString *decodedString = [[NSString alloc] initWithData:genericData encoding:NSUTF8StringEncoding];
+    SFIGenericRouterCommand *genericRouterCommand = [[SFIParser alloc] loadDataFromString:decodedString];
+    DLog(@"Command Type %d", genericRouterCommand.commandType);
+
+    switch (genericRouterCommand.commandType) {
+        case 1: {
+            //Reboot
+            SFIRouterReboot *routerReboot = (SFIRouterReboot *) genericRouterCommand.command;
+            NSLog(@"Reboot Reply: %d", routerReboot.reboot);
+
+            self.HUD.labelText = @"Router is now online.";
+            [self.HUD hide:YES afterDelay:1];
+
+            self.isRebooting = FALSE;
+            [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (void)onAlmondListDidChange:(id)sender {
