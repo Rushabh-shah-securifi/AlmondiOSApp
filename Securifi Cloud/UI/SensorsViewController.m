@@ -3950,11 +3950,6 @@
 
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
-    if (!toolkit.isCloudOnline) {
-         return;
-    }
-    
     [toolkit asyncRequestDeviceValueList:self.currentMAC];
 
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);

@@ -157,10 +157,6 @@
         return;
     }
 
-    if (![self isCloudOnline]) {
-         return;
-    }
-
     [self sendWirelessSummaryCommand];
 
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
