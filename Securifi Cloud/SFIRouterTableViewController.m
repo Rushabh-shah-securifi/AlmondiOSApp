@@ -19,6 +19,7 @@
 
 @interface SFIRouterTableViewController () <UIActionSheetDelegate>
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
+@property NSTimer *hudTimer;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSArray *listAvailableColors;
 
@@ -44,10 +45,12 @@
     _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithStandard];
     self.navigationItem.rightBarButtonItem = _statusBarButton;
 
-    _HUD = [[MBProgressHUD alloc] initWithView:self.parentViewController.view];
+    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = @"Loading router data";
     _HUD.dimBackground = YES;
-    [self.parentViewController.view addSubview:_HUD];
+    [self.navigationController.view addSubview:_HUD];
 
     NSDictionary *titleAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
@@ -66,40 +69,19 @@
     SFIAlmondPlus *plus = [[SecurifiToolkit sharedInstance] currentAlmond];
     self.currentMAC = plus.almondplusMAC;
 
-//    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-//    if (self.currentMAC == nil) {
-//        if ([almondList count] != 0) {
-//            SFIAlmondPlus *currentAlmond = almondList[0];
-//            [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
-//            self.currentMAC = currentAlmond.almondplusMAC;
-//            if (currentAlmond.almondplusName) {
-//                self.navigationItem.title = currentAlmond.almondplusName;
-//            }
-//        }
-//        else {
-//            self.currentMAC = NO_ALMOND;
-//            self.navigationItem.title = @"Get Started";
-//        }
-//    }
-//    else {
-//        if ([almondList count] == 0) {
-//            self.currentMAC = NO_ALMOND;
-//            self.navigationItem.title = @"Get Started";
-//        }
-//        else {
-//            if (plus.almondplusName != nil) {
-//                self.navigationItem.title = plus.almondplusName;
-//            }
-//        }
-//    }
-
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-    //Display Drawer Gesture
+    // Display Drawer Gesture
     UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onRevealMenuAction:)];
     showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
     [self.tableView addGestureRecognizer:showMenuSwipe];
+
+    // Pull down to refresh device values
+    UIRefreshControl *refresh = [UIRefreshControl new];
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force router data refresh" attributes:titleAttributes];
+    [refresh addTarget:self action:@selector(onRefreshRouter:) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refresh;
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
@@ -157,9 +139,8 @@
         [self.tableView reloadData];
     }
 
-    if (![self isNoAlmondLoaded]) {
-        [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
-    }
+    [self showHudOnTimeout];
+    [self sendWirelessSummaryCommand];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -169,6 +150,29 @@
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     //DLog(@"Rotation %d", fromInterfaceOrientation);
     [self.tableView reloadData];
+}
+
+- (void)onRefreshRouter:(id)sender {
+    if ([self isNoAlmondLoaded]) {
+        return;
+    }
+
+    if (![self isCloudOnline]) {
+         return;
+    }
+
+    [self sendWirelessSummaryCommand];
+
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+        [self.refreshControl endRefreshing];
+    });
+}
+
+- (void)sendWirelessSummaryCommand {
+    if (![self isNoAlmondLoaded]) {
+        [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
+    }
 }
 
 - (BOOL)isNoAlmondLoaded {
@@ -196,6 +200,25 @@
 - (void)asyncReloadTable {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
+    });
+}
+
+#pragma mark HUD mgt
+
+- (void)showHudOnTimeout {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.hudTimer invalidate];
+        self.hudTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(onHudTimeout:) userInfo:nil repeats:NO];
+        [self.HUD show:YES];
+    });
+}
+
+- (void)onHudTimeout:(id)sender {
+    [self.hudTimer invalidate];
+    self.hudTimer = nil;
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
     });
 }
 
@@ -491,6 +514,8 @@
         dispatch_async(dispatch_get_main_queue(), ^() {
             self.isAlmondUnavailable = YES;
             [self.tableView reloadData];
+            [self.HUD hide:YES];
+            [self.refreshControl endRefreshing];
         });
 
         return;
@@ -579,8 +604,10 @@
         }
         case 9: {
             //Get Wireless Summary
-            self.routerSummary = (SFIRouterSummary *) genericRouterCommand.command;
-            [self.tableView reloadData];
+            dispatch_async(dispatch_get_main_queue(), ^() {
+                self.routerSummary = (SFIRouterSummary *) genericRouterCommand.command;
+                [self.tableView reloadData];
+            });
 
             break;
         }
@@ -589,6 +616,12 @@
             break;
 
     }
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+        [self.refreshControl endRefreshing];
+    });
+
 }
 
 - (void)onGenericNotificationCallback:(id)sender {
