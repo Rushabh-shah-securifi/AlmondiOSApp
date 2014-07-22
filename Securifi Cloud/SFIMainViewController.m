@@ -9,7 +9,6 @@
 #import "SFIMainViewController.h"
 #import "AlmondPlusConstants.h"
 #import "MBProgressHUD.h"
-#import "SNLog.h"
 #import "SFILoginViewController.h"
 #import "SFILogoutAllViewController.h"
 
