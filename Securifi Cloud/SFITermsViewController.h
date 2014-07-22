@@ -8,5 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class SFITermsViewController;
+
+@protocol SFITermsViewControllerDelegate
+- (void)termsViewControllerDidDismiss:(SFITermsViewController *)ctrl userAcceptedLicense:(BOOL)didAccept;
+@end
+
+
 @interface SFITermsViewController : UIViewController
+
+@property (weak) id<SFITermsViewControllerDelegate> delegate;
+
 @end

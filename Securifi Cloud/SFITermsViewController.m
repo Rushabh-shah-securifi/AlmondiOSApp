@@ -18,10 +18,13 @@
             NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
     };
 
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(backButtonHandler:)];
-    self.navigationItem.leftBarButtonItem = backButton;
-
+    self.navigationController.toolbarHidden = NO;
     self.navigationItem.title = @"Terms and Conditions";
+
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Decline" style:UIBarButtonItemStylePlain target:self action:@selector(didNotAcceptTermsAction:)];
+    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    UIBarButtonItem *acceptButton = [[UIBarButtonItem alloc] initWithTitle:@"Accept" style:UIBarButtonItemStylePlain target:self action:@selector(acceptTermsAction:)];
+    self.toolbarItems = @[cancelButton, spacer, acceptButton];
 
     UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.frame];
 
@@ -32,7 +35,13 @@
     [self.view addSubview:webView];
 }
 
-- (void)backButtonHandler:(id)sender {
+- (void)didNotAcceptTermsAction:(id)sender {
+    [self.delegate termsViewControllerDidDismiss:self userAcceptedLicense:NO];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)acceptTermsAction:(id)sender {
+    [self.delegate termsViewControllerDidDismiss:self userAcceptedLicense:YES];
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 

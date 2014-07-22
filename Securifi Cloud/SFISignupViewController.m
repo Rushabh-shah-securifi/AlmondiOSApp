@@ -27,7 +27,7 @@
 #define REGEX_PASSWORD_ONE_SYMBOL @"^(?=.*[!@#$%&_]).*$"  //Should contains one or more symbol
 #define REGEX_EMAIL @"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$"
 
-@interface SFISignupViewController () <UITextFieldDelegate>
+@interface SFISignupViewController () <UITextFieldDelegate, SFITermsViewControllerDelegate>
 typedef enum {
     PasswordStrengthTypeTooShort,
     PasswordStrengthTypeTooLong,
@@ -38,6 +38,7 @@ typedef enum {
 
 @property(nonatomic) UITextField *activeTextField;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
+@property BOOL acceptedLicenseTerms;
 @end
 
 @implementation SFISignupViewController
@@ -204,7 +205,15 @@ typedef enum {
     [self.footerButton setTitle:button forState:UIControlStateSelected];
 }
 
+- (void)tryEnableContinueButton {
+    BOOL valid = [self validateSignupValues];
+    BOOL enabled = self.acceptedLicenseTerms && valid;
+
+    self.navigationItem.rightBarButtonItem.enabled = enabled;
+}
+
 - (void)enableContinueButton:(BOOL)enabled {
+    enabled = self.acceptedLicenseTerms && enabled;
     self.navigationItem.rightBarButtonItem.enabled = enabled;
 }
 
@@ -289,11 +298,10 @@ typedef enum {
     }
     else if (textField == self.confirmPassword) {
         [textField resignFirstResponder];
+
         PasswordStrengthType pwdStrength = [self checkPasswordStrength:self.password.text];
         [self displayPasswordIndicator:pwdStrength];
-
-        BOOL valid = [self validateSignupValues];
-        [self enableContinueButton:valid];
+        [self tryEnableContinueButton];
     }
 
     return YES;
@@ -380,7 +388,9 @@ typedef enum {
     UIButton *btn = (UIButton *) sender;
     switch (btn.tag) {
         case FOOTER_TERMS_CONDS: {
-            UIViewController *ctrl = [SFITermsViewController new];
+            SFITermsViewController *ctrl = [SFITermsViewController new];
+            ctrl.delegate = self;
+
             UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
             [self presentViewController:navCtrl animated:YES completion:nil];
             break;
@@ -612,6 +622,13 @@ typedef enum {
 
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+}
+
+#pragma mark - SFITermsViewControllerDelegate methods
+
+- (void)termsViewControllerDidDismiss:(SFITermsViewController *)ctrl userAcceptedLicense:(BOOL)didAccept {
+    self.acceptedLicenseTerms = didAccept;
+    [self tryEnableContinueButton];
 }
 
 @end
