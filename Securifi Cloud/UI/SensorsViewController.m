@@ -22,6 +22,7 @@
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 
+@property NSTimer *hudTimer;
 @property NSTimer *mobileCommandTimer;
 @property NSTimer *sensorChangeCommandTimer;
 @property NSTimer *sensorDataCommandTimer;
@@ -83,6 +84,11 @@
     _sensorTable.delegate = self;
     _sensorTable.canReorder = NO;
 
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.tableView.autoresizesSubviews = YES;
+    self.tableView.separatorColor = [UIColor clearColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
@@ -90,15 +96,16 @@
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
 
-    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    self.tableView.autoresizesSubviews = YES;
-    self.tableView.separatorColor = [UIColor clearColor];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
-    //Display Drawer Gesture
+    // Display Drawer Gesture
     UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(revealTab:)];
     showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
     [self.tableView addGestureRecognizer:showMenuSwipe];
+
+    // Pull down to refresh device values
+    UIRefreshControl *refresh = [UIRefreshControl new];
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force sensor data refresh" attributes:titleAttributes];
+    [refresh addTarget:self action:@selector(onRefreshSensorData:) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refresh;
 
     // Ensure values have at least an empty list
     self.deviceList = @[];
@@ -180,7 +187,18 @@
         self.deviceValueList = [toolkit deviceValuesList:mac];
 
         if (self.deviceList.count == 0) {
+            NSLog(@"Sensors: requesting device list on empty list");
+            [self showHudOnTimeout];
             [toolkit asyncRequestDeviceList:mac];
+        }
+        else if (self.deviceValueList.count == 0) {
+            NSLog(@"Sensors: requesting device values on empty list");
+            [self showHudOnTimeout];
+            [toolkit tryRequestDeviceValueList:mac];
+        }
+        else if ([toolkit tryRequestDeviceValueList:mac]) {
+            [self showHudOnTimeout];
+            NSLog(@"Sensors: requesting device values on new connection");
         }
 
         [self initializeImages];
@@ -196,10 +214,30 @@
     [self asyncReloadTable];
 }
 
+#pragma mark HUD mgt
+
+- (void)showHudOnTimeout {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.hudTimer invalidate];
+        self.hudTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(onHudTimeout:) userInfo:nil repeats:NO];
+        [self.HUD show:YES];
+    });
+}
+
+- (void)onHudTimeout:(id)sender {
+    [self.hudTimer invalidate];
+    self.hudTimer = nil;
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
+}
+
 #pragma mark - State
 
 - (BOOL)isDeviceListEmpty {
-    return self.deviceList.count == 0;
+    // don't show any tiles until there are values for the devices; no values == no way to fetch from almond
+    return self.deviceList.count == 0 || self.deviceValueList.count == 0;
 }
 
 - (BOOL)isNoAlmondMAC {
@@ -3801,6 +3839,10 @@
         return;
     }
 
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
@@ -3809,12 +3851,14 @@
 
     NSString *cloudMAC = [data valueForKey:@"data"];
     if (![self isSameAsCurrentMAC:cloudMAC]) {
+        NSLog(@"Sensors: ignore device values list change, c:%@, m:%@", self.currentMAC, cloudMAC);
         // An Almond not currently being views was changed
         return;
     }
 
     NSArray *newDeviceList = [SFIOfflineDataManager readDeviceList:cloudMAC];
     if (newDeviceList == nil) {
+        NSLog(@"Device list is empty: %@", cloudMAC);
         newDeviceList = @[];
     }
 
@@ -3841,6 +3885,8 @@
         if (![self isSameAsCurrentMAC:cloudMAC]) {
             return;
         }
+
+        [self.refreshControl endRefreshing];
 
         self.deviceList = newDeviceList;
         self.deviceValueList = newDeviceValueList;
@@ -3893,14 +3939,28 @@
         return;
     }
 
-    SensorForcedUpdateRequest *forcedUpdateCommand = [[SensorForcedUpdateRequest alloc] init];
-    forcedUpdateCommand.almondMAC = self.currentMAC;
+//    SensorForcedUpdateRequest *cmd = [[SensorForcedUpdateRequest alloc] init];
+//    cmd.almondMAC = self.currentMAC;
+//
+//    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+//    cloudCommand.commandType = DEVICE_DATA_FORCED_UPDATE_REQUEST;
+//    cloudCommand.command = cmd;
+//
+//    [self asyncSendCommand:cloudCommand];
 
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = DEVICE_DATA_FORCED_UPDATE_REQUEST;
-    cloudCommand.command = forcedUpdateCommand;
 
-    [self asyncSendCommand:cloudCommand];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    if (!toolkit.isCloudOnline) {
+         return;
+    }
+    
+    [toolkit asyncRequestDeviceValueList:self.currentMAC];
+
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+        [self.refreshControl endRefreshing];
+    });
 }
 
 - (void)onSaveSensorData:(id)sender {
@@ -3983,21 +4043,6 @@
     }
 }
 
-- (void)resetDeviceListFromSaved {
-    NSArray *list = [SFIOfflineDataManager readDeviceList:self.currentMAC];
-    if (list == nil) {
-        list = @[];
-    }
-
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        self.deviceList = list;
-        [self initializeImages];
-        //To remove text fields keyboard. It was throwing error when it was being called from the background thread
-        [self.tableView reloadData];
-        [self.HUD hide:YES];
-    });
-}
-
 - (void)onAlmondNameDidChange:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
@@ -4014,6 +4059,21 @@
         if ([self isSameAsCurrentMAC:obj.almondplusMAC]) {
             self.navigationItem.title = obj.almondplusName;
         }
+    });
+}
+
+- (void)resetDeviceListFromSaved {
+    NSArray *list = [SFIOfflineDataManager readDeviceList:self.currentMAC];
+    if (list == nil) {
+        list = @[];
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.deviceList = list;
+        [self initializeImages];
+        //To remove text fields keyboard. It was throwing error when it was being called from the background thread
+        [self.tableView reloadData];
+        [self.HUD hide:YES];
     });
 }
 

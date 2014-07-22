@@ -13,10 +13,10 @@
 
 @interface SensorsViewController : UITableViewController <UITextFieldDelegate>
 
+@property(nonatomic, weak) IBOutlet UITextField *txtInvisible;
+
 - (IBAction)revealMenu:(id)sender;
 
 - (IBAction)onRefreshSensorData:(id)sender;
-
-@property(nonatomic, weak) IBOutlet UITextField *txtInvisible;
 
 @end
