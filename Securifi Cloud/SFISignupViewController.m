@@ -12,9 +12,10 @@
 #import "SFITermsViewController.h"
 
 #define PWD_MIN_LENGTH 6
+#define PWD_MAX_LENGTH 32
 
-#define CONINUE_BUTTON_SIGNUP               1
-#define CONINUE_BUTTON_LOGIN                2
+#define CONTINUE_BUTTON_SIGNUP              1
+#define CONTINUE_BUTTON_LOGIN               2
 
 #define FOOTER_TERMS_CONDS                  1
 #define FOOTER_RESEND_ACTIVATION_LINK       2
@@ -29,6 +30,7 @@
 @interface SFISignupViewController () <UITextFieldDelegate>
 typedef enum {
     PasswordStrengthTypeTooShort,
+    PasswordStrengthTypeTooLong,
     PasswordStrengthTypeWeak,
     PasswordStrengthTypeModerate,
     PasswordStrengthTypeStrong
@@ -136,7 +138,7 @@ typedef enum {
     self.passwordStrengthIndicator.hidden = NO;
 
     [self setStandardHeadline];
-    [self setContinueButtonTag:CONINUE_BUTTON_SIGNUP];
+    [self setContinueButtonTag:CONTINUE_BUTTON_SIGNUP];
     [self setFooterForTag:FOOTER_TERMS_CONDS];
 }
 
@@ -147,7 +149,7 @@ typedef enum {
     self.passwordStrengthIndicator.hidden = YES;
 
     [self setAlmostDoneHeadline];
-    [self setContinueButtonTag:CONINUE_BUTTON_LOGIN];
+    [self setContinueButtonTag:CONTINUE_BUTTON_LOGIN];
     [self setFooterForTag:FOOTER_RESEND_ACTIVATION_LINK];
 }
 
@@ -335,7 +337,12 @@ typedef enum {
     }
     else if (self.password.text.length < PWD_MIN_LENGTH) {
         self.headingLabel.text = @"Oops!";
-        self.subHeadingLabel.text = [NSString stringWithFormat:@"The password should be at least %d characters long.", PWD_MIN_LENGTH];
+        self.subHeadingLabel.text = [NSString stringWithFormat:@"The password should be %d - %d characters long.", PWD_MIN_LENGTH, PWD_MAX_LENGTH];
+        return NO;
+    }
+    else if (self.password.text.length > PWD_MAX_LENGTH) {
+        self.headingLabel.text = @"Oops!";
+        self.subHeadingLabel.text = [NSString stringWithFormat:@"The password should be %d - %d characters long.", PWD_MIN_LENGTH, PWD_MAX_LENGTH];
         return NO;
     }
     else if (![self.password.text isEqualToString:self.confirmPassword.text]) {
@@ -355,10 +362,10 @@ typedef enum {
 
     int tag = [self continueButtonTag];
 
-    if (tag == CONINUE_BUTTON_LOGIN) {
+    if (tag == CONTINUE_BUTTON_LOGIN) {
         [self dismissViewControllerAnimated:YES completion:nil];
     }
-    else if (tag == CONINUE_BUTTON_SIGNUP) {
+    else if (tag == CONTINUE_BUTTON_SIGNUP) {
         if ([self validateSignupValues]) {
             [self sendSignupCommand];
         }
@@ -403,6 +410,9 @@ typedef enum {
     }
     else if (len < PWD_MIN_LENGTH) {
         return PasswordStrengthTypeTooShort;
+    }
+    else if (len > PWD_MAX_LENGTH) {
+        return PasswordStrengthTypeTooLong;
     }
     else if (len <= 9) {
         strength += 1;
@@ -453,6 +463,11 @@ typedef enum {
         self.passwordStrengthIndicator.progress = 0.2;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
         self.lblPasswordStrength.text = @"Password: Too Short";
+    }
+    else if (pwdStrength == PasswordStrengthTypeTooLong) {
+        self.passwordStrengthIndicator.progress = 0.2;
+        self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
+        self.lblPasswordStrength.text = @"Password: Too Long";
     }
     else if (pwdStrength == PasswordStrengthTypeWeak) {
         self.passwordStrengthIndicator.progress = 0.4;
@@ -518,7 +533,7 @@ typedef enum {
                 break;
 
             case 2:
-                failureReason = [NSString stringWithFormat:@"The password should be atleast %d characters long.", PWD_MIN_LENGTH];
+                failureReason = [NSString stringWithFormat:@"The password should be %d - %d characters long.", PWD_MIN_LENGTH, PWD_MAX_LENGTH];
                 break;
 
             case 3:
