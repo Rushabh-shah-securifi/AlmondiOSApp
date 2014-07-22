@@ -7,7 +7,6 @@
 //
 
 #import "DrawerViewController.h"
-#import "SNLog.h"
 #import "AlmondPlusConstants.h"
 
 @interface DrawerViewController ()
@@ -44,21 +43,17 @@
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidChangeAlmondName object:nil];
 }
 
-- (void)onAlmondListDidChange:(id)notice {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self resetAlmondList];
-        [self.tableView reloadData];
-    });
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self resetAlmondList];
     [self.tableView reloadData];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+- (void)onAlmondListDidChange:(id)notice {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self resetAlmondList];
+        [self.tableView reloadData];
+    });
 }
 
 - (void)resetAlmondList {
@@ -83,7 +78,7 @@
     switch (sectionIndex) {
         case 0:
             array = [self getAlmondList];
-            DLog(@"Almond List count %d", [array count]);
+            DLog(@"Almond List count %ld", (long) [array count]);
             return [array count] + 1;
         case 1:
             array = [self getSettingsList];
@@ -157,7 +152,7 @@
             }
             else {
                 //Add almond list
-                return [self tableViewCreateAlmondListCell:tableView indexPath:indexPath];
+                return [self tableViewCreateAlmondListCellIndexPath:indexPath];
             }
         }
 
@@ -180,8 +175,6 @@
         }
         else {
             //Display the corresponding Sensor List
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-            UIViewController *newTopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabTop"];
 
             SFIAlmondPlus *currentAlmond = almondList[(NSUInteger) indexPath.row];
             self.currentMAC = currentAlmond.almondplusMAC;
@@ -191,7 +184,6 @@
             NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
             NSArray *listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
 
-            //PY 111013 - Integration with new UI
             int codeIndex = (int) indexPath.row;
             if (indexPath.row >= [listAvailableColors count]) {
                 codeIndex = codeIndex % [listAvailableColors count];
@@ -201,6 +193,9 @@
             [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
 
             [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+                UIViewController *newTopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabTop"];
+
                 CGRect frame = self.slidingViewController.topViewController.view.frame;
                 self.slidingViewController.topViewController = newTopViewController;
                 self.slidingViewController.topViewController.view.frame = frame;
@@ -253,7 +248,7 @@
     return cell;
 }
 
-- (UITableViewCell *)tableViewCreateAlmondListCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableViewCreateAlmondListCellIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"AlmondListCell"];
     cell.backgroundColor = [UIColor colorWithRed:(CGFloat) (51 / 255.0) green:(CGFloat) (51 / 255.0) blue:(CGFloat) (51 / 255.0) alpha:1.0];
 
