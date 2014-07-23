@@ -327,7 +327,7 @@
     [self presentViewController:ctrl animated:YES completion:nil];
 
     // Activate gestures in Reveal; must be done after it has been set up
-    [ctrl panGestureRecognizer];
+//    [ctrl panGestureRecognizer];
     [ctrl tapGestureRecognizer];
 }
 
