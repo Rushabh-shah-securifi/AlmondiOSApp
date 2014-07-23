@@ -418,7 +418,7 @@
     [backgroundLabel addSubview:lblSummary];
     backgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (currentColor.hue / 360.0) saturation:(CGFloat) (currentColor.saturation / 100.0) brightness:(CGFloat) (currentColor.brightness / 100.0) alpha:1];
 
-    [cell addSubview:backgroundLabel];
+    [cell.contentView addSubview:backgroundLabel];
     return cell;
 }
 
