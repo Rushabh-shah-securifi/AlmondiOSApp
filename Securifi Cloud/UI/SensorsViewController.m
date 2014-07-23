@@ -27,7 +27,6 @@
 @property NSTimer *hudTimer;
 @property NSTimer *mobileCommandTimer;
 @property NSTimer *sensorChangeCommandTimer;
-@property NSTimer *sensorDataCommandTimer;
 
 @property BOOL isMobileCommandSuccessful;
 @property BOOL isSensorChangeCommandSuccessful;
@@ -487,9 +486,10 @@
 
     //Left Square - Creation
     leftBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10,5,LEFT_LABEL_WIDTH,SENSOR_ROW_HEIGHT-10)];
+    leftBackgroundLabel.tag = 111;
     leftBackgroundLabel.userInteractionEnabled = YES;
     leftBackgroundLabel.backgroundColor = [self makeStandardBlue];
-    [cell addSubview:leftBackgroundLabel];
+    [cell.contentView addSubview:leftBackgroundLabel];
 
     btnDeviceImg = [UIButton buttonWithType:UIButtonTypeCustom];
     btnDeviceImg.backgroundColor = [UIColor clearColor];
@@ -520,16 +520,16 @@
         lblDegree.font = [UIFont fontWithName:@"Avenir-Heavy" size:18];
         lblDegree.text = @"°";
 
-        [cell addSubview:lblDeviceValue];
-        [cell addSubview:lblDecimalValue];
-        [cell addSubview:lblDegree];
+        [cell.contentView addSubview:lblDeviceValue];
+        [cell.contentView addSubview:lblDecimalValue];
+        [cell.contentView addSubview:lblDegree];
     }
     else {
         imgDevice = [[UIImageView alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH / 3, 12, 53, 70)];
         imgDevice.userInteractionEnabled = YES;
         [imgDevice addSubview:btnDeviceImg];
         btnDeviceImg.frame = imgDevice.bounds;
-        [cell addSubview:imgDevice];
+        [cell.contentView addSubview:imgDevice];
     }
 
     btnDevice = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -541,7 +541,7 @@
     //Right Rectangle - Creation
     rightBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH + 11, 5, self.tableView.frame.size.width - LEFT_LABEL_WIDTH - 25, SENSOR_ROW_HEIGHT - 10)];
     rightBackgroundLabel.backgroundColor = [self makeStandardBlue];
-    [cell addSubview:rightBackgroundLabel];
+    [cell.contentView addSubview:rightBackgroundLabel];
 
     lblDeviceName = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, (self.tableView.frame.size.width - LEFT_LABEL_WIDTH - 90), 30)];
     lblDeviceName.backgroundColor = [UIColor clearColor];
@@ -571,7 +571,7 @@
     btnSettingsCell.frame = CGRectMake(self.tableView.frame.size.width - 80, 5, 60, 80);
     btnSettingsCell.backgroundColor = [UIColor clearColor];
     [btnSettingsCell addTarget:self action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [cell addSubview:btnSettingsCell];
+    [cell.contentView addSubview:btnSettingsCell];
 
     //Fill values
     lblDeviceName.text = currentSensor.deviceName;
@@ -2597,10 +2597,10 @@
         NSUInteger rowHeight = [self computeSensorRowHeight:currentSensor];
 
         belowBackgroundLabel.frame = CGRectMake(10, 86, (LEFT_LABEL_WIDTH) + (self.tableView.frame.size.width - LEFT_LABEL_WIDTH - 25) + 1, rowHeight - SENSOR_ROW_HEIGHT);
-        [cell addSubview:belowBackgroundLabel];
+        [cell.contentView addSubview:belowBackgroundLabel];
     }
 
-    [cell addSubview:imgSettings];
+    [cell.contentView addSubview:imgSettings];
 
     return cell;
 }
@@ -3696,12 +3696,6 @@
             [self.HUD hide:YES];
         });
     }
-}
-
-//PY 311013 - Timeout for loading sensor data Command
-- (void)onLoadSensorDataCommandTimeout:(id)sender {
-    [self.sensorDataCommandTimer invalidate];
-    [self.HUD hide:YES];
 }
 
 - (void)onMobileCommandResponseCallback:(id)sender {
