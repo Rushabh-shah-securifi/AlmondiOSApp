@@ -18,9 +18,9 @@
     SensorsViewController *ctrl = [[SensorsViewController alloc] init];
     [self.navigationController pushViewController:ctrl animated:YES];
 
-    if (![self.slidingViewController.underLeftViewController isKindOfClass:[DrawerViewController class]]) {
-        self.slidingViewController.underLeftViewController = [DrawerViewController new];
-    }
+//    if (![self.slidingViewController.underLeftViewController isKindOfClass:[DrawerViewController class]]) {
+//        self.slidingViewController.underLeftViewController = [DrawerViewController new];
+//    }
 }
 
 @end

@@ -11,12 +11,18 @@
 #import "MBProgressHUD.h"
 #import "SFILoginViewController.h"
 #import "SFILogoutAllViewController.h"
+#import "SWRevealViewController.h"
+#import "SFIRouterTableViewController.h"
+#import "SensorsViewController.h"
+#import "DrawerViewController.h"
 
-@interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate>
+@interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, DrawerViewControllerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSTimer *displayNoCloudTimer;
 @property(nonatomic, readonly) NSTimer *cloudReconnectTimer;
 @property BOOL presentingLoginController;
+@property(nonatomic, weak) SensorsViewController *sensorCtrl;
+@property(nonatomic, weak) SFIRouterTableViewController *routerCtrl;
 @end
 
 @implementation SFIMainViewController
@@ -290,10 +296,50 @@
 - (void)presentMainView {
     DLog(@"%s: Presenting main view", __PRETTY_FUNCTION__);
 
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"InitialSlide"];
+    // Set up the front view controller based on a Tab Bar controller
+    UIImage *icon;
+    //
+    SensorsViewController *sensorCtrl = [SensorsViewController new];
+    self.sensorCtrl = sensorCtrl;
+    //
+    UINavigationController *sensorNav = [[UINavigationController alloc] initWithRootViewController:sensorCtrl];
+    icon = [UIImage imageNamed:@"icon_sensor.png"];
+    sensorNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Sensors" image:icon selectedImage:icon];
+    //
+    SFIRouterTableViewController *routerCtrl = [SFIRouterTableViewController new];
+    self.routerCtrl = routerCtrl;
+    //
+    UINavigationController *routerNav = [[UINavigationController alloc] initWithRootViewController:routerCtrl];
+    icon = [UIImage imageNamed:@"icon_router.png"];
+    routerNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Router" image:icon selectedImage:icon];
+    //
+    UITabBarController *front = [UITabBarController new];
+    [front setViewControllers:@[sensorNav, routerNav]];
 
-    [self presentViewController:mainView animated:YES completion:nil];
+    // The rear one is the drawer selector
+    DrawerViewController *rear = [DrawerViewController new];
+    rear.delegate = self;
+    
+    SWRevealViewController *ctrl;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+        ctrl = [[SWRevealViewController alloc] initWithRearViewController:rear frontViewController:front];
+    }
+    else {
+        ctrl = [[SWRevealViewController alloc] initWithRearViewController:rear frontViewController:front];
+    }
+
+    [self presentViewController:ctrl animated:YES completion:nil];
+
+    // Activate gestures in Reveal; must be done after it has been set up
+    [ctrl panGestureRecognizer];
+    [ctrl tapGestureRecognizer];
+}
+
+- (void)drawerViewController:(DrawerViewController *)ctrl didSelectAlmond:(SFIAlmondPlus *)almond {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit setCurrentAlmond:almond];
+    [self.sensorCtrl reloadCurrentAlmond];
+    [self.routerCtrl reloadCurrentAlmond];
 }
 
 - (void)presentLogoutAllView {

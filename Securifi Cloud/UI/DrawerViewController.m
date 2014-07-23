@@ -8,6 +8,7 @@
 
 #import "DrawerViewController.h"
 #import "AlmondPlusConstants.h"
+#import "SWRevealViewController.h"
 
 @interface DrawerViewController ()
 @property(nonatomic, strong, readonly) NSDictionary *dataDictionary;
@@ -28,14 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self.slidingViewController setAnchorRightRevealAmount:250.0f];
-    self.slidingViewController.underLeftWidthLayout = ECFullWidth;
     self.tableView.backgroundColor = [UIColor colorWithRed:(CGFloat) (34 / 255.0) green:(CGFloat) (34 / 255.0) blue:(CGFloat) (34 / 255.0) alpha:1.0];
-
-    UISwipeGestureRecognizer *showTabSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(revealTab:)];
-    showTabSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
-    [self.view addGestureRecognizer:showTabSwipe];
-
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -190,17 +184,10 @@
             }
             currentAlmond.colorCodeIndex = codeIndex;
 
-            [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
+            [self.delegate drawerViewController:self didSelectAlmond:currentAlmond];
 
-            [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-                UIViewController *newTopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TabTop"];
-
-                CGRect frame = self.slidingViewController.topViewController.view.frame;
-                self.slidingViewController.topViewController = newTopViewController;
-                self.slidingViewController.topViewController.view.frame = frame;
-                [self.slidingViewController resetTopView];
-            }];
+            SWRevealViewController *revealController = [self revealViewController];
+            [revealController revealToggleAnimated:YES];
         }
     }
     else if (indexPath.section == 1) {
@@ -321,15 +308,6 @@
     return cell;
 }
 
-
-#pragma mark - Class Methods
-
-- (IBAction)revealTab:(id)sender {
-    NSLog(@"Reveal Tab: Drawer View");
-    [self.slidingViewController anchorTopViewOffScreenTo:ECRight animations:nil onComplete:^{
-        [self.slidingViewController resetTopView];
-    }];
-}
 
 #pragma mark - SFILogoutAllDelegate methods
 

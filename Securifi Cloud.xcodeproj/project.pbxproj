@@ -124,6 +124,8 @@
 		1DF032D89EC21443A3A14E9F /* SFIHighlightedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F26B3D131E43FF35137 /* SFIHighlightedButton.m */; };
 		1DF033B8EE957186BED70A76 /* SFISensorTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF0370031F08F7752442415 /* SFISensorTableViewCell.h */; };
 		1DF0349B7F4A80683A7DEAFA /* SFIHighlightedButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF03EF880A4099E95CFD0F8 /* SFIHighlightedButton.h */; };
+		1DF0374BB04809F45072747D /* SWRevealViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF03FEEEB07DEFCC2A71F1A /* SWRevealViewController.h */; };
+		1DF03DA6C5EDD408BAE009D1 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03889EFFD270100841A97 /* SWRevealViewController.m */; };
 		1DF03F365CE4D33B95EDE097 /* iToast.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF03B2C2583D475772E588D /* iToast.h */; };
 		1DF03F5D958C948279ED7B5B /* SFICloudStatusBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0352BB56CC806F804C806 /* SFICloudStatusBarButtonItem.m */; };
 		2244791717A80C9C002C43C2 /* SFIMainViewTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 2244791617A80C9C002C43C2 /* SFIMainViewTile.m */; };
@@ -380,12 +382,14 @@
 		1DF030CDD0A761BB35A5E1DD /* offline_150x150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = offline_150x150.png; path = images/offline_150x150.png; sourceTree = "<group>"; };
 		1DF0352BB56CC806F804C806 /* SFICloudStatusBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICloudStatusBarButtonItem.m; sourceTree = "<group>"; };
 		1DF0370031F08F7752442415 /* SFISensorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorTableViewCell.h; sourceTree = "<group>"; };
+		1DF03889EFFD270100841A97 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		1DF0392A57C01986D4266259 /* SFISensorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorTableViewCell.m; sourceTree = "<group>"; };
 		1DF03B2C2583D475772E588D /* iToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iToast.h; sourceTree = "<group>"; };
 		1DF03EF880A4099E95CFD0F8 /* SFIHighlightedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIHighlightedButton.h; sourceTree = "<group>"; };
 		1DF03F26B3D131E43FF35137 /* SFIHighlightedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIHighlightedButton.m; sourceTree = "<group>"; };
 		1DF03F7E3234A3C160672AAA /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		1DF03F82E57CA82EEA4703EB /* iToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iToast.m; sourceTree = "<group>"; };
+		1DF03FEEEB07DEFCC2A71F1A /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		2244791517A80C9C002C43C2 /* SFIMainViewTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIMainViewTile.h; sourceTree = "<group>"; };
 		2244791617A80C9C002C43C2 /* SFIMainViewTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIMainViewTile.m; sourceTree = "<group>"; };
 		2244791C17A81649002C43C2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -595,6 +599,15 @@
 			path = images/cloudstatus;
 			sourceTree = "<group>";
 		};
+		1DF039766C8DCA109CE006D9 /* SWRevealViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1DF03FEEEB07DEFCC2A71F1A /* SWRevealViewController.h */,
+				1DF03889EFFD270100841A97 /* SWRevealViewController.m */,
+			);
+			path = SWRevealViewController;
+			sourceTree = "<group>";
+		};
 		1DF03CA6A14DDE1938FF1E4F /* Toast */ = {
 			isa = PBXGroup;
 			children = (
@@ -732,6 +745,7 @@
 				CE5D0C0F1807D24E00224009 /* ECSlidingViewController */,
 				CE5D0C121807D24E00224009 /* Reorder */,
 				1DF03CA6A14DDE1938FF1E4F /* Toast */,
+				1DF039766C8DCA109CE006D9 /* SWRevealViewController */,
 			);
 			path = Vendor;
 			sourceTree = "<group>";
@@ -1035,6 +1049,7 @@
 				1DF0349B7F4A80683A7DEAFA /* SFIHighlightedButton.h in Headers */,
 				1DF033B8EE957186BED70A76 /* SFISensorTableViewCell.h in Headers */,
 				1DF03F365CE4D33B95EDE097 /* iToast.h in Headers */,
+				1DF0374BB04809F45072747D /* SWRevealViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1327,6 +1342,7 @@
 				1DF032D89EC21443A3A14E9F /* SFIHighlightedButton.m in Sources */,
 				1DF030A2A018C8E3748E0838 /* SFISensorTableViewCell.m in Sources */,
 				1DF0328A2C9BD89E686AF6E4 /* iToast.m in Sources */,
+				1DF03DA6C5EDD408BAE009D1 /* SWRevealViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

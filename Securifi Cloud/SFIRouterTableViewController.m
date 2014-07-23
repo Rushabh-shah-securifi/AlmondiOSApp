@@ -15,6 +15,7 @@
 #import "ECSlidingViewController.h"
 #import "MBProgressHUD.h"
 #import "SFICloudStatusBarButtonItem.h"
+#import "SWRevealViewController.h"
 
 
 @interface SFIRouterTableViewController () <UIActionSheetDelegate>
@@ -57,7 +58,13 @@
             NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
     };
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
+
+    SWRevealViewController *revealController = [self revealViewController];
+    UIBarButtonItem *revealButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"drawer.png"] style:UIBarButtonItemStylePlain target:revealController action:@selector(revealToggle:)];
+    self.navigationItem.leftBarButtonItem = revealButton;
+
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
@@ -124,18 +131,23 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self initializeAlmondData];
+}
+
+- (void)initializeAlmondData {
     self.isRebooting = FALSE;
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
 
-    self.currentMAC = plus.almondplusMAC;
-
-    //If Almond is there or not
-    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-    if ([almondList count] == 0) {
-        self.currentMAC = NO_ALMOND;
+    if (plus == nil) {
         self.navigationItem.title = @"Get Started";
+        self.currentMAC = NO_ALMOND;
+        [self.tableView reloadData];
+    }
+    else {
+        self.currentMAC = plus.almondplusMAC;
+        self.navigationItem.title = plus.almondplusName;
         [self.tableView reloadData];
     }
 
@@ -155,6 +167,12 @@
 - (void)didReceiveMemoryWarning {
     NSLog(@"%s, Did receive memory warning", __PRETTY_FUNCTION__);
     [super didReceiveMemoryWarning];
+}
+
+- (void)reloadCurrentAlmond {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self initializeAlmondData];
+    });
 }
 
 - (void)onRefreshRouter:(id)sender {

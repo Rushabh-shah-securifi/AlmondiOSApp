@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class SensorsViewController;
+@class SFIRouterTableViewController;
+
 
 @interface SFIMainViewController : UIViewController
 

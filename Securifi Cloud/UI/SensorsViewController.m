@@ -7,15 +7,17 @@
 //
 
 #import "SensorsViewController.h"
-#import "SFIConstants.h"
 #import "AlmondPlusConstants.h"
+#import "SFIConstants.h"
 #import "SNLog.h"
 #import "SFIColors.h"
-#import "MBProgressHUD.h"
-#import "ECSlidingViewController.h"
 #import "SFICloudStatusBarButtonItem.h"
 #import "SFIHighlightedButton.h"
 #import "iToast.h"
+#import "MBProgressHUD.h"
+#import "SWRevealViewController.h"
+#import "BVReorderTableView.h"
+
 
 @interface SensorsViewController () <ReorderTableViewDelegate>
 @property(nonatomic, weak, readonly) BVReorderTableView *sensorTable;
@@ -77,14 +79,16 @@
     _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithStandard];
     self.navigationItem.rightBarButtonItem = _statusBarButton;
 
+    SWRevealViewController *revealController = [self revealViewController];
+    UIBarButtonItem *revealButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"drawer.png"] style:UIBarButtonItemStylePlain target:revealController action:@selector(revealToggle:)];
+    self.navigationItem.leftBarButtonItem = revealButton;
+
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
 
 //    _sensorTable = (BVReorderTableView *) self.tableView;
 //    _sensorTable.delegate = self;
 //    _sensorTable.canReorder = NO;
-
-
 
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
@@ -98,11 +102,6 @@
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
 
-    // Display Drawer Gesture
-    UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(revealTab:)];
-    showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
-    [self.tableView addGestureRecognizer:showMenuSwipe];
-
     // Pull down to refresh device values
     UIRefreshControl *refresh = [UIRefreshControl new];
     refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force sensor data refresh" attributes:titleAttributes];
@@ -115,7 +114,7 @@
 
     [self markCloudStatusIcon];
     [self initializeNotifications];
-    [self initializeAlomdData];
+    [self initializeAlmondData];
 }
 
 - (void)initializeNotifications {
@@ -171,7 +170,7 @@
                  object:nil];
 }
 
-- (void)initializeAlomdData {
+- (void)initializeAlmondData {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
 
@@ -219,6 +218,13 @@
 - (void)didReceiveMemoryWarning {
     NSLog(@"%s, Did receive memory warning", __PRETTY_FUNCTION__);
     [super didReceiveMemoryWarning];
+}
+
+- (void)reloadCurrentAlmond {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self initializeAlmondData];
+        [self.tableView reloadData];
+    });
 }
 
 #pragma mark HUD mgt
@@ -438,7 +444,7 @@
     NSUInteger height = [self computeSensorRowHeight:currentSensor];
     NSString *id = currentSensor.isExpanded ?
             [NSString stringWithFormat:@"SensorExpanded_%d_%ld", currentDeviceType, (unsigned long) height] :
-            [NSString stringWithFormat:@"Sensor_%d_%ld", currentDeviceType, (unsigned long) height];
+            @"SensorSmall";
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
     if (cell == nil) {
@@ -2711,16 +2717,6 @@
 
 #pragma mark - Class Methods
 
-- (IBAction)revealMenu:(id)sender {
-    [self.slidingViewController anchorTopViewTo:ECRight];
-}
-
-- (IBAction)revealTab:(id)sender {
-    if (!self.isSliderExpanded) {
-        [self.slidingViewController anchorTopViewTo:ECRight];
-    }
-}
-
 - (void)initializeImages {
     int currentDeviceType;
     SFIDeviceKnownValues *currentDeviceValue;
@@ -3931,7 +3927,7 @@
 
         [self.HUD show:YES];
 
-        [self initializeAlomdData];
+        [self initializeAlmondData];
         [self.tableView reloadData];
 
         [self.HUD hide:YES afterDelay:1.5];

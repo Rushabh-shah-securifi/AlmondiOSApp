@@ -10,6 +10,8 @@
 
 @interface SFIRouterTableViewController : UITableViewController
 
+- (void)reloadCurrentAlmond;
+
 - (IBAction)onRevealMenuAction:(id)sender;
 
 @end
