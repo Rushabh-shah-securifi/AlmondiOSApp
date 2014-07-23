@@ -152,6 +152,11 @@
     [self.tableView reloadData];
 }
 
+- (void)didReceiveMemoryWarning {
+    NSLog(@"%s, Did receive memory warning", __PRETTY_FUNCTION__);
+    [super didReceiveMemoryWarning];
+}
+
 - (void)onRefreshRouter:(id)sender {
     if ([self isNoAlmondLoaded]) {
         return;
@@ -436,8 +441,8 @@
         cancelButtonTitle:@"No"
    destructiveButtonTitle:@"Yes"
         otherButtonTitles:nil];
-    [actionSheet showInView:self.view];
 
+    [actionSheet showInView:self.view];
 }
 
 - (void)onAddAlmondAction:(id)sender {
@@ -456,23 +461,29 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch (buttonIndex) {
-        case 0:
+        case 0: {
             DLog(@"Clicked on yes");
 
-            self.HUD.labelText = @"Router is rebooting.";
-            [self.HUD hide:YES afterDelay:1];
+            dispatch_async(dispatch_get_main_queue(), ^() {
+                self.HUD.labelText = @"Router is rebooting.";
+                [self.HUD hide:YES afterDelay:1];
 
-            self.isRebooting = TRUE;
-            [self sendGenericCommandRequest:REBOOT_COMMAND];
-            [self.tableView reloadData];
+                self.isRebooting = TRUE;
+                [self sendGenericCommandRequest:REBOOT_COMMAND];
+                [self.tableView reloadData];
+            });
+
             break;
+        }
 
-        case 1:
+        case 1: {
             DLog(@"Clicked on no");
             break;
+        }
 
-        default:
+        default: {
             break;
+        }
     }
 }
 

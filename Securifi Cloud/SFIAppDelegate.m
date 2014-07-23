@@ -19,6 +19,8 @@
     [SFIReachabilityManager sharedManager];
     [self initializeColors];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+
     return YES;
 }
 
@@ -57,6 +59,11 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [[SecurifiToolkit sharedInstance] shutdown];
+}
+
+- (void)onMemoryWarning:(id)sender {
+    BOOL gen = [BugSenseController sendCustomEventWithTag:@"app_mem_warn"];
+    NSLog(@"Posted app_mem_warn: %@", gen ? @"YES" : @"NO");
 }
 
 #pragma mark - Set up

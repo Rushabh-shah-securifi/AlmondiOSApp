@@ -80,9 +80,11 @@
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
 
-    _sensorTable = (BVReorderTableView *) self.tableView;
-    _sensorTable.delegate = self;
-    _sensorTable.canReorder = NO;
+//    _sensorTable = (BVReorderTableView *) self.tableView;
+//    _sensorTable.delegate = self;
+//    _sensorTable.canReorder = NO;
+
+
 
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
@@ -212,6 +214,11 @@
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
     [self asyncReloadTable];
+}
+
+- (void)didReceiveMemoryWarning {
+    NSLog(@"%s, Did receive memory warning", __PRETTY_FUNCTION__);
+    [super didReceiveMemoryWarning];
 }
 
 #pragma mark HUD mgt
@@ -425,13 +432,13 @@
 }
 
 - (UITableViewCell *)createColoredListCell:(UITableView *)tableView listRow:(int)indexPathRow {
-    static NSString *sensor_cell_id = @"SensorCell";
-
     SFIDevice *currentSensor = self.deviceList[(NSUInteger) indexPathRow];
     int currentDeviceType = currentSensor.deviceType;
 
     NSUInteger height = [self computeSensorRowHeight:currentSensor];
-    NSString *id = currentSensor.isExpanded ? [NSString stringWithFormat:@"SensorExpanded_%ld", (unsigned long)height] : sensor_cell_id;
+    NSString *id = currentSensor.isExpanded ?
+            [NSString stringWithFormat:@"SensorExpanded_%d_%ld", currentDeviceType, (unsigned long) height] :
+            [NSString stringWithFormat:@"Sensor_%d_%ld", currentDeviceType, (unsigned long) height];
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
     if (cell == nil) {
