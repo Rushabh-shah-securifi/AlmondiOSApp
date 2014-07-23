@@ -144,6 +144,11 @@
                  object:nil];
 
     [center addObserver:self
+               selector:@selector(onCurrentAlmondChanged:)
+                   name:kSFIDidChangeCurrentAlmond
+                 object:nil];
+
+    [center addObserver:self
                selector:@selector(onDeviceListDidChange:)
                    name:kSFIDidChangeDeviceList
                  object:nil];
@@ -219,10 +224,10 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)reloadCurrentAlmond {
+- (void)onCurrentAlmondChanged:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self initializeAlmondData];
-        [self.tableView reloadData];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     });
 }
 

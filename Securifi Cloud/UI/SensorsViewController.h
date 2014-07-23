@@ -12,6 +12,4 @@
 
 @property(nonatomic, weak) IBOutlet UITextField *txtInvisible;
 
-- (void)reloadCurrentAlmond;
-
 @end

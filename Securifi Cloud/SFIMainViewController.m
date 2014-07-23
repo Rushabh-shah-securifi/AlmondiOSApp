@@ -16,13 +16,11 @@
 #import "SensorsViewController.h"
 #import "DrawerViewController.h"
 
-@interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, DrawerViewControllerDelegate>
+@interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSTimer *displayNoCloudTimer;
 @property(nonatomic, readonly) NSTimer *cloudReconnectTimer;
 @property BOOL presentingLoginController;
-@property(nonatomic, weak) SensorsViewController *sensorCtrl;
-@property(nonatomic, weak) SFIRouterTableViewController *routerCtrl;
 @end
 
 @implementation SFIMainViewController
@@ -300,26 +298,24 @@
     UIImage *icon;
     //
     SensorsViewController *sensorCtrl = [SensorsViewController new];
-    self.sensorCtrl = sensorCtrl;
     //
     UINavigationController *sensorNav = [[UINavigationController alloc] initWithRootViewController:sensorCtrl];
     icon = [UIImage imageNamed:@"icon_sensor.png"];
     sensorNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Sensors" image:icon selectedImage:icon];
     //
     SFIRouterTableViewController *routerCtrl = [SFIRouterTableViewController new];
-    self.routerCtrl = routerCtrl;
     //
     UINavigationController *routerNav = [[UINavigationController alloc] initWithRootViewController:routerCtrl];
     icon = [UIImage imageNamed:@"icon_router.png"];
     routerNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Router" image:icon selectedImage:icon];
     //
     UITabBarController *front = [UITabBarController new];
-    [front setViewControllers:@[sensorNav, routerNav]];
+    front.tabBar.tintColor = [UIColor blackColor];
+    front.viewControllers = @[sensorNav, routerNav];
 
     // The rear one is the drawer selector
     DrawerViewController *rear = [DrawerViewController new];
-    rear.delegate = self;
-    
+
     SWRevealViewController *ctrl;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         ctrl = [[SWRevealViewController alloc] initWithRearViewController:rear frontViewController:front];
@@ -333,13 +329,6 @@
     // Activate gestures in Reveal; must be done after it has been set up
     [ctrl panGestureRecognizer];
     [ctrl tapGestureRecognizer];
-}
-
-- (void)drawerViewController:(DrawerViewController *)ctrl didSelectAlmond:(SFIAlmondPlus *)almond {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [toolkit setCurrentAlmond:almond];
-    [self.sensorCtrl reloadCurrentAlmond];
-    [self.routerCtrl reloadCurrentAlmond];
 }
 
 - (void)presentLogoutAllView {

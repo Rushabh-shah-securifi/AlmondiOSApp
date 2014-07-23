@@ -12,7 +12,6 @@
 #import "SFIGenericRouterCommand.h"
 #import "SFIParser.h"
 #import "SFIRouterDevicesListViewController.h"
-#import "ECSlidingViewController.h"
 #import "MBProgressHUD.h"
 #import "SFICloudStatusBarButtonItem.h"
 #import "SWRevealViewController.h"
@@ -122,6 +121,11 @@
                  object:nil];
 
     [center addObserver:self
+               selector:@selector(onCurrentAlmondChanged:)
+                   name:kSFIDidChangeCurrentAlmond
+                 object:nil];
+
+    [center addObserver:self
                selector:@selector(onAlmondListDidChange:)
                    name:kSFIDidUpdateAlmondList
                  object:nil];
@@ -169,7 +173,7 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)reloadCurrentAlmond {
+- (void)onCurrentAlmondChanged:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self initializeAlmondData];
     });
@@ -432,7 +436,7 @@
     }
 
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
-            initWithTitle:nil
+            initWithTitle:@"Reboot the router?"
                  delegate:self
         cancelButtonTitle:@"No"
    destructiveButtonTitle:@"Yes"
@@ -447,21 +451,17 @@
     [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
 }
 
-- (IBAction)onRevealMenuAction:(id)sender {
-    [self.slidingViewController anchorTopViewTo:ECRight];
-}
-
-- (IBAction)onRebootButtonAction:(id)sender {
-    //Send Generic Command
-    UIActionSheet *actionSheet = [[UIActionSheet alloc]
-            initWithTitle:@"Reboot the router?"
-                 delegate:self
-        cancelButtonTitle:@"No"
-   destructiveButtonTitle:@"Yes"
-        otherButtonTitles:nil];
-
-    [actionSheet showInView:self.view];
-}
+//- (IBAction)onRebootButtonAction:(id)sender {
+//    //Send Generic Command
+//    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+//            initWithTitle:@"Reboot the router?"
+//                 delegate:self
+//        cancelButtonTitle:@"No"
+//   destructiveButtonTitle:@"Yes"
+//        otherButtonTitles:nil];
+//
+//    [actionSheet showInView:self.view];
+//}
 
 - (void)onAddAlmondAction:(id)sender {
     if ([self isNoAlmondLoaded]) {
