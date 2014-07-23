@@ -7,7 +7,6 @@
 //
 
 #import "SFIScannerViewController.h"
-#import <AudioToolbox/AudioToolbox.h>
 #import "SNLog.h"
 @interface SFIScannerViewController ()
 

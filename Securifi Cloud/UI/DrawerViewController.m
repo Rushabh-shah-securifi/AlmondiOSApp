@@ -184,7 +184,7 @@
             }
             currentAlmond.colorCodeIndex = codeIndex;
 
-            [self.delegate drawerViewController:self didSelectAlmond:currentAlmond];
+            [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
 
             SWRevealViewController *revealController = [self revealViewController];
             [revealController revealToggleAnimated:YES];

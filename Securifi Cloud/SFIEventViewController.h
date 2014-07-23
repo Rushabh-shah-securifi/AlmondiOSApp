@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ECSlidingViewController.h"
 @interface SFIEventViewController : UIViewController
 - (IBAction)revealMenu:(id)sender;
 @end

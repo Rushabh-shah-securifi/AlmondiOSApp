@@ -128,15 +128,12 @@
 		1DF03DA6C5EDD408BAE009D1 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03889EFFD270100841A97 /* SWRevealViewController.m */; };
 		1DF03F365CE4D33B95EDE097 /* iToast.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF03B2C2583D475772E588D /* iToast.h */; };
 		1DF03F5D958C948279ED7B5B /* SFICloudStatusBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0352BB56CC806F804C806 /* SFICloudStatusBarButtonItem.m */; };
-		2244791717A80C9C002C43C2 /* SFIMainViewTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 2244791617A80C9C002C43C2 /* SFIMainViewTile.m */; };
 		2244791D17A81649002C43C2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2244791C17A81649002C43C2 /* QuartzCore.framework */; };
 		225093BF17A8086000B94C6E /* SFIMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 225093BE17A8086000B94C6E /* SFIMainViewController.m */; };
 		22A19D9A1797C5AA003E6148 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A19D991797C5AA003E6148 /* SystemConfiguration.framework */; };
 		22A76D54179181DE0099CD8F /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 22A76D53179181DE0099CD8F /* libxml2.dylib */; };
-		22E024B4175C932A0081D707 /* SFISingleton.m in Sources */ = {isa = PBXBuildFile; fileRef = 22E024B3175C932A0081D707 /* SFISingleton.m */; };
 		22FAE88517A8E27D002FFEE8 /* SFISignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22FAE88417A8E27D002FFEE8 /* SFISignupViewController.m */; };
 		903CD9291693932E0063945C /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 903CD9281693932E0063945C /* MBProgressHUD.m */; };
-		908C9C10169290F4004E2C33 /* CustomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 908C9C0F169290F4004E2C33 /* CustomAlertView.m */; };
 		909A21BC165DA60400C767F5 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 909A21BB165DA60400C767F5 /* UIKit.framework */; };
 		909A21BE165DA60400C767F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 909A21BD165DA60400C767F5 /* Foundation.framework */; };
 		909A21C0165DA60400C767F5 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 909A21BF165DA60400C767F5 /* CoreGraphics.framework */; };
@@ -151,10 +148,6 @@
 		CE15FFB31868462E00371183 /* cert.cer in Resources */ = {isa = PBXBuildFile; fileRef = CE15FFB21868462E00371183 /* cert.cer */; };
 		CE15FFB618684DB900371183 /* certificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = CE15FFB518684DB900371183 /* certificate.cer */; };
 		CE15FFB81868502D00371183 /* cert.der in Resources */ = {isa = PBXBuildFile; fileRef = CE15FFB71868502D00371183 /* cert.der */; };
-		CE23D4041872DB7500995003 /* RouterTempController.h in Headers */ = {isa = PBXBuildFile; fileRef = CE23D4021872DB7500995003 /* RouterTempController.h */; };
-		CE23D4051872DB7500995003 /* RouterTempController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE23D4031872DB7500995003 /* RouterTempController.m */; };
-		CE2B1EFE182D09D800554784 /* SceneTempController.h in Headers */ = {isa = PBXBuildFile; fileRef = CE2B1EFC182D09D800554784 /* SceneTempController.h */; };
-		CE2B1EFF182D09D800554784 /* SceneTempController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE2B1EFD182D09D800554784 /* SceneTempController.m */; };
 		CE3DBBD11897B19B0042EA00 /* app-icon-76x76.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3DBBCA1897B19B0042EA00 /* app-icon-76x76.png */; };
 		CE3DBBD21897B19B0042EA00 /* app-icon-120x120.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3DBBCB1897B19B0042EA00 /* app-icon-120x120.png */; };
 		CE3DBBD31897B19B0042EA00 /* app-icon-152x152.png in Resources */ = {isa = PBXBuildFile; fileRef = CE3DBBCC1897B19B0042EA00 /* app-icon-152x152.png */; };
@@ -172,8 +165,6 @@
 		CE4CC282189B78D300952073 /* app-icon-58x58.png in Resources */ = {isa = PBXBuildFile; fileRef = CE4CC27E189B78D300952073 /* app-icon-58x58.png */; };
 		CE4CC283189B78D300952073 /* app-icon-80x80.png in Resources */ = {isa = PBXBuildFile; fileRef = CE4CC27F189B78D300952073 /* app-icon-80x80.png */; };
 		CE539F9317FAE34000640820 /* SNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = CE539F9217FAE34000640820 /* SNLog.m */; };
-		CE539F9617FAE65C00640820 /* SFILogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE539F9517FAE65C00640820 /* SFILogViewController.m */; };
-		CE539F9917FAF11B00640820 /* SFICollectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE539F9817FAF11B00640820 /* SFICollectionHeaderView.m */; };
 		CE556F751823943B002A0878 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE556F5918237ACA002A0878 /* MessageUI.framework */; };
 		CE556F831823BE00002A0878 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CE6002F71822715200D47AEE /* libz.dylib */; };
 		CE5A9CBE17E6EDB800DC7534 /* SFILogoutAllViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5A9CBD17E6EDB800DC7534 /* SFILogoutAllViewController.m */; };
@@ -181,28 +172,20 @@
 		CE5B01CD17F97AE40026B6A1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE5B01CC17F97AE40026B6A1 /* AVFoundation.framework */; };
 		CE5B01CF17F997EB0026B6A1 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE5B01CE17F997EB0026B6A1 /* AudioToolbox.framework */; };
 		CE5D0BC01807D16300224009 /* DrawerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D0BA81807D16300224009 /* DrawerViewController.m */; };
-		CE5D0BC11807D16300224009 /* InitialSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D0BAA1807D16300224009 /* InitialSlidingViewController.m */; };
 		CE5D0BC21807D16300224009 /* scene1sensor.xml in Resources */ = {isa = PBXBuildFile; fileRef = CE5D0BAB1807D16300224009 /* scene1sensor.xml */; };
 		CE5D0BC31807D16300224009 /* scene2sensor.xml in Resources */ = {isa = PBXBuildFile; fileRef = CE5D0BAC1807D16300224009 /* scene2sensor.xml */; };
 		CE5D0BC41807D16300224009 /* scene3sensor.xml in Resources */ = {isa = PBXBuildFile; fileRef = CE5D0BAD1807D16300224009 /* scene3sensor.xml */; };
 		CE5D0BC51807D16300224009 /* SensorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D0BAF1807D16300224009 /* SensorsViewController.m */; };
-		CE5D0BC61807D16300224009 /* SensorTopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D0BB11807D16300224009 /* SensorTopViewController.m */; };
 		CE5D0BC71807D16300224009 /* SFIColors.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D0BB31807D16300224009 /* SFIColors.m */; };
 		CE5D0BC81807D16300224009 /* SFIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D0BB51807D16300224009 /* SFIConstants.m */; };
 		CE5D0BC91807D16300224009 /* SFIParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D0BB71807D16300224009 /* SFIParser.m */; };
 		CE5D0BCA1807D16300224009 /* SFIScene.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D0BB91807D16300224009 /* SFIScene.m */; };
-		CE5D0BCB1807D16300224009 /* SFISceneTopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D0BBB1807D16300224009 /* SFISceneTopViewController.m */; };
 		CE5D0BCC1807D16300224009 /* SFISceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D0BBD1807D16300224009 /* SFISceneViewController.m */; };
 		CE5D0BCD1807D16300224009 /* SFISensor.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D0BBF1807D16300224009 /* SFISensor.m */; };
-		CE5D0C151807D24E00224009 /* ECSlidingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D0C111807D24E00224009 /* ECSlidingViewController.m */; };
 		CE5D0C161807D24E00224009 /* BVReorderTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5D0C141807D24E00224009 /* BVReorderTableView.m */; };
 		CE656F5F183A0A12003936F6 /* SFIBlockedContentViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CE656F5D183A0A12003936F6 /* SFIBlockedContentViewController.h */; };
 		CE656F60183A0A12003936F6 /* SFIBlockedContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE656F5E183A0A12003936F6 /* SFIBlockedContentViewController.m */; };
 		CE7C304E1811550200BB895B /* SFIActivationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE7C304D1811550200BB895B /* SFIActivationViewController.m */; };
-		CE93A151189A509200587F46 /* SFIHelpViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CE93A14F189A509200587F46 /* SFIHelpViewController.h */; };
-		CE93A152189A509200587F46 /* SFIHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE93A150189A509200587F46 /* SFIHelpViewController.m */; };
-		CE93A160189A775200587F46 /* SFINavViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CE93A15E189A775200587F46 /* SFINavViewController.h */; };
-		CE93A161189A775200587F46 /* SFINavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE93A15F189A775200587F46 /* SFINavViewController.m */; };
 		CE93DB37188FC30500860EC2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE93DB36188FC30500860EC2 /* Images.xcassets */; };
 		CE9A8E5918B332D500003659 /* no_cloud_640x960.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9A8E5718B332D500003659 /* no_cloud_640x960.png */; };
 		CE9A8E5A18B332D500003659 /* no_cloud_640x1136.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9A8E5818B332D500003659 /* no_cloud_640x1136.png */; };
@@ -228,7 +211,6 @@
 		CEDBB9F91876DC0E00CE4927 /* SFIWirelessUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDBB9F71876DC0E00CE4927 /* SFIWirelessUserViewController.m */; };
 		CEDBB9FF1876DC3500CE4927 /* SFIWirelessUsers.h in Headers */ = {isa = PBXBuildFile; fileRef = CEDBB9FD1876DC3500CE4927 /* SFIWirelessUsers.h */; };
 		CEDBBA001876DC3500CE4927 /* SFIWirelessUsers.m in Sources */ = {isa = PBXBuildFile; fileRef = CEDBB9FE1876DC3500CE4927 /* SFIWirelessUsers.m */; };
-		CEE19EE1181F9A7800F91AAD /* SFIRouterTopController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE19EE0181F9A7800F91AAD /* SFIRouterTopController.m */; };
 		CEE19F03181FCCBD00F91AAD /* SFIRouterReboot.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE19F02181FCCBD00F91AAD /* SFIRouterReboot.m */; };
 		CEE19F06181FDA6500F91AAD /* SFIConnectedDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE19F05181FDA6500F91AAD /* SFIConnectedDevice.m */; };
 		CEE19F09181FDAA900F91AAD /* SFIDevicesList.m in Sources */ = {isa = PBXBuildFile; fileRef = CEE19F08181FDAA900F91AAD /* SFIDevicesList.m */; };
@@ -390,21 +372,15 @@
 		1DF03F7E3234A3C160672AAA /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		1DF03F82E57CA82EEA4703EB /* iToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iToast.m; sourceTree = "<group>"; };
 		1DF03FEEEB07DEFCC2A71F1A /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
-		2244791517A80C9C002C43C2 /* SFIMainViewTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIMainViewTile.h; sourceTree = "<group>"; };
-		2244791617A80C9C002C43C2 /* SFIMainViewTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIMainViewTile.m; sourceTree = "<group>"; };
 		2244791C17A81649002C43C2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		225093BD17A8086000B94C6E /* SFIMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIMainViewController.h; sourceTree = "<group>"; };
 		225093BE17A8086000B94C6E /* SFIMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIMainViewController.m; sourceTree = "<group>"; };
 		22A19D991797C5AA003E6148 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		22A76D53179181DE0099CD8F /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
-		22E024B2175C932A0081D707 /* SFISingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISingleton.h; sourceTree = "<group>"; };
-		22E024B3175C932A0081D707 /* SFISingleton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISingleton.m; sourceTree = "<group>"; };
 		22FAE88317A8E27D002FFEE8 /* SFISignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISignupViewController.h; sourceTree = "<group>"; };
 		22FAE88417A8E27D002FFEE8 /* SFISignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISignupViewController.m; sourceTree = "<group>"; };
 		903CD9271693932E0063945C /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		903CD9281693932E0063945C /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
-		908C9C0F169290F4004E2C33 /* CustomAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAlertView.m; sourceTree = "<group>"; };
-		908C9C1216929102004E2C33 /* CustomAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomAlertView.h; sourceTree = "<group>"; };
 		909A21B7165DA60400C767F5 /* Almond.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Almond.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		909A21BB165DA60400C767F5 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		909A21BD165DA60400C767F5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -423,10 +399,6 @@
 		CE15FFB21868462E00371183 /* cert.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cert.cer; sourceTree = SOURCE_ROOT; };
 		CE15FFB518684DB900371183 /* certificate.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = certificate.cer; sourceTree = SOURCE_ROOT; };
 		CE15FFB71868502D00371183 /* cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = cert.der; sourceTree = SOURCE_ROOT; };
-		CE23D4021872DB7500995003 /* RouterTempController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouterTempController.h; sourceTree = "<group>"; };
-		CE23D4031872DB7500995003 /* RouterTempController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouterTempController.m; sourceTree = "<group>"; };
-		CE2B1EFC182D09D800554784 /* SceneTempController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneTempController.h; sourceTree = "<group>"; };
-		CE2B1EFD182D09D800554784 /* SceneTempController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneTempController.m; sourceTree = "<group>"; };
 		CE3DBBCA1897B19B0042EA00 /* app-icon-76x76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-76x76.png"; path = "images/app-icon-76x76.png"; sourceTree = SOURCE_ROOT; };
 		CE3DBBCB1897B19B0042EA00 /* app-icon-120x120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-120x120.png"; path = "images/app-icon-120x120.png"; sourceTree = SOURCE_ROOT; };
 		CE3DBBCC1897B19B0042EA00 /* app-icon-152x152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-152x152.png"; path = "images/app-icon-152x152.png"; sourceTree = SOURCE_ROOT; };
@@ -445,10 +417,6 @@
 		CE4CC27F189B78D300952073 /* app-icon-80x80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "app-icon-80x80.png"; path = "images/app-icon-80x80.png"; sourceTree = SOURCE_ROOT; };
 		CE539F9117FAE34000640820 /* SNLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNLog.h; sourceTree = "<group>"; };
 		CE539F9217FAE34000640820 /* SNLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNLog.m; sourceTree = "<group>"; };
-		CE539F9417FAE65C00640820 /* SFILogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = SFILogViewController.h; sourceTree = "<group>"; };
-		CE539F9517FAE65C00640820 /* SFILogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SFILogViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		CE539F9717FAF11B00640820 /* SFICollectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICollectionHeaderView.h; sourceTree = "<group>"; };
-		CE539F9817FAF11B00640820 /* SFICollectionHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICollectionHeaderView.m; sourceTree = "<group>"; };
 		CE556F5918237ACA002A0878 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		CE5A9CBC17E6EDB800DC7534 /* SFILogoutAllViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFILogoutAllViewController.h; sourceTree = "<group>"; };
 		CE5A9CBD17E6EDB800DC7534 /* SFILogoutAllViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFILogoutAllViewController.m; sourceTree = "<group>"; };
@@ -458,15 +426,11 @@
 		CE5B01CE17F997EB0026B6A1 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		CE5D0BA71807D16300224009 /* DrawerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrawerViewController.h; path = UI/DrawerViewController.h; sourceTree = "<group>"; };
 		CE5D0BA81807D16300224009 /* DrawerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DrawerViewController.m; path = UI/DrawerViewController.m; sourceTree = "<group>"; };
-		CE5D0BA91807D16300224009 /* InitialSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InitialSlidingViewController.h; path = UI/InitialSlidingViewController.h; sourceTree = "<group>"; };
-		CE5D0BAA1807D16300224009 /* InitialSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InitialSlidingViewController.m; path = UI/InitialSlidingViewController.m; sourceTree = "<group>"; };
 		CE5D0BAB1807D16300224009 /* scene1sensor.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = scene1sensor.xml; path = UI/scene1sensor.xml; sourceTree = "<group>"; };
 		CE5D0BAC1807D16300224009 /* scene2sensor.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = scene2sensor.xml; path = UI/scene2sensor.xml; sourceTree = "<group>"; };
 		CE5D0BAD1807D16300224009 /* scene3sensor.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = scene3sensor.xml; path = UI/scene3sensor.xml; sourceTree = "<group>"; };
 		CE5D0BAE1807D16300224009 /* SensorsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SensorsViewController.h; path = UI/SensorsViewController.h; sourceTree = "<group>"; };
 		CE5D0BAF1807D16300224009 /* SensorsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SensorsViewController.m; path = UI/SensorsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		CE5D0BB01807D16300224009 /* SensorTopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SensorTopViewController.h; path = UI/SensorTopViewController.h; sourceTree = "<group>"; };
-		CE5D0BB11807D16300224009 /* SensorTopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SensorTopViewController.m; path = UI/SensorTopViewController.m; sourceTree = "<group>"; };
 		CE5D0BB21807D16300224009 /* SFIColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFIColors.h; path = UI/SFIColors.h; sourceTree = "<group>"; };
 		CE5D0BB31807D16300224009 /* SFIColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFIColors.m; path = UI/SFIColors.m; sourceTree = "<group>"; };
 		CE5D0BB41807D16300224009 /* SFIConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFIConstants.h; path = UI/SFIConstants.h; sourceTree = "<group>"; };
@@ -475,14 +439,10 @@
 		CE5D0BB71807D16300224009 /* SFIParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SFIParser.m; path = UI/SFIParser.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CE5D0BB81807D16300224009 /* SFIScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = SFIScene.h; path = UI/SFIScene.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		CE5D0BB91807D16300224009 /* SFIScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SFIScene.m; path = UI/SFIScene.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		CE5D0BBA1807D16300224009 /* SFISceneTopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = SFISceneTopViewController.h; path = UI/SFISceneTopViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		CE5D0BBB1807D16300224009 /* SFISceneTopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SFISceneTopViewController.m; path = UI/SFISceneTopViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CE5D0BBC1807D16300224009 /* SFISceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = SFISceneViewController.h; path = UI/SFISceneViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		CE5D0BBD1807D16300224009 /* SFISceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SFISceneViewController.m; path = UI/SFISceneViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		CE5D0BBE1807D16300224009 /* SFISensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = SFISensor.h; path = UI/SFISensor.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		CE5D0BBF1807D16300224009 /* SFISensor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; name = SFISensor.m; path = UI/SFISensor.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		CE5D0C101807D24E00224009 /* ECSlidingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECSlidingViewController.h; sourceTree = "<group>"; };
-		CE5D0C111807D24E00224009 /* ECSlidingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECSlidingViewController.m; sourceTree = "<group>"; };
 		CE5D0C131807D24E00224009 /* BVReorderTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BVReorderTableView.h; sourceTree = "<group>"; };
 		CE5D0C141807D24E00224009 /* BVReorderTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BVReorderTableView.m; sourceTree = "<group>"; };
 		CE5EB64317E856C100985636 /* AlmondPlusConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AlmondPlusConstants.h; sourceTree = "<group>"; };
@@ -492,10 +452,6 @@
 		CE656F5E183A0A12003936F6 /* SFIBlockedContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIBlockedContentViewController.m; sourceTree = "<group>"; };
 		CE7C304C1811550200BB895B /* SFIActivationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIActivationViewController.h; sourceTree = "<group>"; };
 		CE7C304D1811550200BB895B /* SFIActivationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIActivationViewController.m; sourceTree = "<group>"; };
-		CE93A14F189A509200587F46 /* SFIHelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIHelpViewController.h; sourceTree = "<group>"; };
-		CE93A150189A509200587F46 /* SFIHelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIHelpViewController.m; sourceTree = "<group>"; };
-		CE93A15E189A775200587F46 /* SFINavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFINavViewController.h; sourceTree = "<group>"; };
-		CE93A15F189A775200587F46 /* SFINavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFINavViewController.m; sourceTree = "<group>"; };
 		CE93DB36188FC30500860EC2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		CE9A8E5718B332D500003659 /* no_cloud_640x960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_cloud_640x960.png; path = images/no_cloud_640x960.png; sourceTree = "<group>"; };
 		CE9A8E5818B332D500003659 /* no_cloud_640x1136.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_cloud_640x1136.png; path = images/no_cloud_640x1136.png; sourceTree = "<group>"; };
@@ -521,8 +477,6 @@
 		CEDBB9F71876DC0E00CE4927 /* SFIWirelessUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIWirelessUserViewController.m; sourceTree = "<group>"; };
 		CEDBB9FD1876DC3500CE4927 /* SFIWirelessUsers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWirelessUsers.h; sourceTree = "<group>"; };
 		CEDBB9FE1876DC3500CE4927 /* SFIWirelessUsers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIWirelessUsers.m; sourceTree = "<group>"; };
-		CEE19EDF181F9A7800F91AAD /* SFIRouterTopController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterTopController.h; sourceTree = "<group>"; };
-		CEE19EE0181F9A7800F91AAD /* SFIRouterTopController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterTopController.m; sourceTree = "<group>"; };
 		CEE19F01181FCCBD00F91AAD /* SFIRouterReboot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterReboot.h; sourceTree = "<group>"; };
 		CEE19F02181FCCBD00F91AAD /* SFIRouterReboot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterReboot.m; sourceTree = "<group>"; };
 		CEE19F04181FDA6500F91AAD /* SFIConnectedDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIConnectedDevice.h; sourceTree = "<group>"; };
@@ -668,8 +622,6 @@
 				CEE16A1D17B398E700F08218 /* Controllers */,
 				909A21D6165DA60400C767F5 /* MainStoryboard_iPad.storyboard */,
 				909A21D3165DA60400C767F5 /* MainStoryboard_iPhone.storyboard */,
-				22E024B2175C932A0081D707 /* SFISingleton.h */,
-				22E024B3175C932A0081D707 /* SFISingleton.m */,
 				909A21C2165DA60400C767F5 /* Supporting Files */,
 				CEE16A1E17B3994800F08218 /* Views */,
 				CE93DB36188FC30500860EC2 /* Images.xcassets */,
@@ -723,14 +675,10 @@
 				CE9C5B45188655C6006F2306 /* RouterTab */,
 				CE5D0BA71807D16300224009 /* DrawerViewController.h */,
 				CE5D0BA81807D16300224009 /* DrawerViewController.m */,
-				CE5D0BA91807D16300224009 /* InitialSlidingViewController.h */,
-				CE5D0BAA1807D16300224009 /* InitialSlidingViewController.m */,
 				CE5D0BB21807D16300224009 /* SFIColors.h */,
 				CE5D0BB31807D16300224009 /* SFIColors.m */,
 				CE5D0BB41807D16300224009 /* SFIConstants.h */,
 				CE5D0BB51807D16300224009 /* SFIConstants.m */,
-				CE93A14F189A509200587F46 /* SFIHelpViewController.h */,
-				CE93A150189A509200587F46 /* SFIHelpViewController.m */,
 				1DF0352BB56CC806F804C806 /* SFICloudStatusBarButtonItem.m */,
 				1DF03048FDE77FF138C06B2C /* SFICloudStatusBarButtonItem.h */,
 				1DF03F26B3D131E43FF35137 /* SFIHighlightedButton.m */,
@@ -742,21 +690,11 @@
 		CE5D0C0E1807D24E00224009 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				CE5D0C0F1807D24E00224009 /* ECSlidingViewController */,
 				CE5D0C121807D24E00224009 /* Reorder */,
 				1DF03CA6A14DDE1938FF1E4F /* Toast */,
 				1DF039766C8DCA109CE006D9 /* SWRevealViewController */,
 			);
 			path = Vendor;
-			sourceTree = "<group>";
-		};
-		CE5D0C0F1807D24E00224009 /* ECSlidingViewController */ = {
-			isa = PBXGroup;
-			children = (
-				CE5D0C101807D24E00224009 /* ECSlidingViewController.h */,
-				CE5D0C111807D24E00224009 /* ECSlidingViewController.m */,
-			);
-			path = ECSlidingViewController;
 			sourceTree = "<group>";
 		};
 		CE5D0C121807D24E00224009 /* Reorder */ = {
@@ -780,8 +718,6 @@
 			children = (
 				CE5D0BB61807D16300224009 /* SFIParser.h */,
 				CE5D0BB71807D16300224009 /* SFIParser.m */,
-				CEE19EDF181F9A7800F91AAD /* SFIRouterTopController.h */,
-				CEE19EE0181F9A7800F91AAD /* SFIRouterTopController.m */,
 				CEC937061845C1E300E99FED /* SFIRouterTableViewController.h */,
 				CEC937071845C1E300E99FED /* SFIRouterTableViewController.m */,
 				CEE19F1118211B8E00F91AAD /* SFIRouterDevicesListViewController.h */,
@@ -805,8 +741,6 @@
 				CE5D0BBF1807D16300224009 /* SFISensor.m */,
 				CE5D0BB81807D16300224009 /* SFIScene.h */,
 				CE5D0BB91807D16300224009 /* SFIScene.m */,
-				CE5D0BBA1807D16300224009 /* SFISceneTopViewController.h */,
-				CE5D0BBB1807D16300224009 /* SFISceneTopViewController.m */,
 				CE5D0BBC1807D16300224009 /* SFISceneViewController.h */,
 				CE5D0BBD1807D16300224009 /* SFISceneViewController.m */,
 				CE5D0BAB1807D16300224009 /* scene1sensor.xml */,
@@ -821,8 +755,6 @@
 			children = (
 				CE5D0BAE1807D16300224009 /* SensorsViewController.h */,
 				CE5D0BAF1807D16300224009 /* SensorsViewController.m */,
-				CE5D0BB01807D16300224009 /* SensorTopViewController.h */,
-				CE5D0BB11807D16300224009 /* SensorTopViewController.m */,
 				1DF0392A57C01986D4266259 /* SFISensorTableViewCell.m */,
 				1DF0370031F08F7752442415 /* SFISensorTableViewCell.h */,
 			);
@@ -844,18 +776,8 @@
 				CE5A9CBD17E6EDB800DC7534 /* SFILogoutAllViewController.m */,
 				CE5B01C617F979E50026B6A1 /* SFIScannerViewController.h */,
 				CE5B01C717F979E50026B6A1 /* SFIScannerViewController.m */,
-				CE539F9417FAE65C00640820 /* SFILogViewController.h */,
-				CE539F9517FAE65C00640820 /* SFILogViewController.m */,
-				CE539F9717FAF11B00640820 /* SFICollectionHeaderView.h */,
-				CE539F9817FAF11B00640820 /* SFICollectionHeaderView.m */,
 				CE466A66182784BD00E55DF9 /* SFIEventViewController.h */,
 				CE466A67182784BD00E55DF9 /* SFIEventViewController.m */,
-				CE2B1EFC182D09D800554784 /* SceneTempController.h */,
-				CE2B1EFD182D09D800554784 /* SceneTempController.m */,
-				CE23D4021872DB7500995003 /* RouterTempController.h */,
-				CE23D4031872DB7500995003 /* RouterTempController.m */,
-				CE93A15E189A775200587F46 /* SFINavViewController.h */,
-				CE93A15F189A775200587F46 /* SFINavViewController.m */,
 				CE9F1A1618BB51350004A7BE /* SFITermsViewController.h */,
 				CE9F1A1718BB51350004A7BE /* SFITermsViewController.m */,
 			);
@@ -985,10 +907,6 @@
 			children = (
 				903CD9281693932E0063945C /* MBProgressHUD.m */,
 				903CD9271693932E0063945C /* MBProgressHUD.h */,
-				908C9C0F169290F4004E2C33 /* CustomAlertView.m */,
-				908C9C1216929102004E2C33 /* CustomAlertView.h */,
-				2244791517A80C9C002C43C2 /* SFIMainViewTile.h */,
-				2244791617A80C9C002C43C2 /* SFIMainViewTile.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -1030,20 +948,16 @@
 				CE9F1A1818BB51350004A7BE /* SFITermsViewController.h in Headers */,
 				CED1C7BF1834E2D4007726B4 /* SFIWirelessTableViewController.h in Headers */,
 				CED1C7C61834F609007726B4 /* SFIOptionViewController.h in Headers */,
-				CE93A160189A775200587F46 /* SFINavViewController.h in Headers */,
 				CE656F5F183A0A12003936F6 /* SFIBlockedContentViewController.h in Headers */,
-				CE2B1EFE182D09D800554784 /* SceneTempController.h in Headers */,
 				CEC9370F1845D1CF00E99FED /* SFIRouterSummary.h in Headers */,
 				CE466A68182784BD00E55DF9 /* SFIEventViewController.h in Headers */,
 				CED1C7A3183388C0007726B4 /* SFIBlockedContent.h in Headers */,
 				CEDBB9FF1876DC3500CE4927 /* SFIWirelessUsers.h in Headers */,
 				CEC937131845D1DD00E99FED /* SFIWirelessSummary.h in Headers */,
-				CE93A151189A509200587F46 /* SFIHelpViewController.h in Headers */,
 				CEDBB9F81876DC0E00CE4927 /* SFIWirelessUserViewController.h in Headers */,
 				1C41B17319344562006F0DD8 /* SFIAffiliationViewController.h in Headers */,
 				CED1C7AA18339453007726B4 /* SFIWirelessSetting.h in Headers */,
 				CEC937081845C1E300E99FED /* SFIRouterTableViewController.h in Headers */,
-				CE23D4041872DB7500995003 /* RouterTempController.h in Headers */,
 				CECD693D1832400800B77A46 /* SFIBlockedDevice.h in Headers */,
 				1DF0306C0C7943B90740B6BB /* SFICloudStatusBarButtonItem.h in Headers */,
 				1DF0349B7F4A80683A7DEAFA /* SFIHighlightedButton.h in Headers */,
@@ -1286,34 +1200,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE93A152189A509200587F46 /* SFIHelpViewController.m in Sources */,
 				CE656F60183A0A12003936F6 /* SFIBlockedContentViewController.m in Sources */,
-				CE2B1EFF182D09D800554784 /* SceneTempController.m in Sources */,
 				CEDBB9F91876DC0E00CE4927 /* SFIWirelessUserViewController.m in Sources */,
 				CEE19F03181FCCBD00F91AAD /* SFIRouterReboot.m in Sources */,
 				CE5D0BC51807D16300224009 /* SensorsViewController.m in Sources */,
 				909A21C8165DA60400C767F5 /* main.m in Sources */,
 				CE7C304E1811550200BB895B /* SFIActivationViewController.m in Sources */,
 				CE5D0BCC1807D16300224009 /* SFISceneViewController.m in Sources */,
-				CE5D0C151807D24E00224009 /* ECSlidingViewController.m in Sources */,
 				CE539F9317FAE34000640820 /* SNLog.m in Sources */,
-				CE5D0BC11807D16300224009 /* InitialSlidingViewController.m in Sources */,
 				909A21CC165DA60400C767F5 /* SFIAppDelegate.m in Sources */,
 				CE9F1A1918BB51350004A7BE /* SFITermsViewController.m in Sources */,
 				1C41B17419344562006F0DD8 /* SFIAffiliationViewController.m in Sources */,
-				CE5D0BC61807D16300224009 /* SensorTopViewController.m in Sources */,
 				909A21EE165DF7D100C767F5 /* SFILoginViewController.m in Sources */,
 				CECD693E1832400800B77A46 /* SFIBlockedDevice.m in Sources */,
 				CEDBBA001876DC3500CE4927 /* SFIWirelessUsers.m in Sources */,
 				CE5B01C817F979E50026B6A1 /* SFIScannerViewController.m in Sources */,
-				CEE19EE1181F9A7800F91AAD /* SFIRouterTopController.m in Sources */,
-				CE93A161189A775200587F46 /* SFINavViewController.m in Sources */,
 				CED1C7AB18339453007726B4 /* SFIWirelessSetting.m in Sources */,
-				908C9C10169290F4004E2C33 /* CustomAlertView.m in Sources */,
 				CEC937141845D1DD00E99FED /* SFIWirelessSummary.m in Sources */,
 				903CD9291693932E0063945C /* MBProgressHUD.m in Sources */,
-				CE539F9917FAF11B00640820 /* SFICollectionHeaderView.m in Sources */,
-				22E024B4175C932A0081D707 /* SFISingleton.m in Sources */,
 				CED1C7C01834E2D4007726B4 /* SFIWirelessTableViewController.m in Sources */,
 				CEE19F1318211B8E00F91AAD /* SFIRouterDevicesListViewController.m in Sources */,
 				CE5A9CBE17E6EDB800DC7534 /* SFILogoutAllViewController.m in Sources */,
@@ -1326,18 +1230,14 @@
 				CED1C7A4183388C1007726B4 /* SFIBlockedContent.m in Sources */,
 				CE466A69182784BD00E55DF9 /* SFIEventViewController.m in Sources */,
 				225093BF17A8086000B94C6E /* SFIMainViewController.m in Sources */,
-				CE539F9617FAE65C00640820 /* SFILogViewController.m in Sources */,
 				CE5D0BC91807D16300224009 /* SFIParser.m in Sources */,
 				CEE19F09181FDAA900F91AAD /* SFIDevicesList.m in Sources */,
 				CE5D0BC81807D16300224009 /* SFIConstants.m in Sources */,
 				CEC937091845C1E300E99FED /* SFIRouterTableViewController.m in Sources */,
-				CE23D4051872DB7500995003 /* RouterTempController.m in Sources */,
 				CE5D0BC01807D16300224009 /* DrawerViewController.m in Sources */,
 				CE5D0BCA1807D16300224009 /* SFIScene.m in Sources */,
-				2244791717A80C9C002C43C2 /* SFIMainViewTile.m in Sources */,
 				22FAE88517A8E27D002FFEE8 /* SFISignupViewController.m in Sources */,
 				CEC937101845D1CF00E99FED /* SFIRouterSummary.m in Sources */,
-				CE5D0BCB1807D16300224009 /* SFISceneTopViewController.m in Sources */,
 				1DF03F5D958C948279ED7B5B /* SFICloudStatusBarButtonItem.m in Sources */,
 				1DF032D89EC21443A3A14E9F /* SFIHighlightedButton.m in Sources */,
 				1DF030A2A018C8E3748E0838 /* SFISensorTableViewCell.m in Sources */,

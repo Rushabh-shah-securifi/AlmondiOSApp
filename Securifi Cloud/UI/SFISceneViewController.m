@@ -585,10 +585,6 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 }
 
 #pragma mark - Class Methods
-- (IBAction)revealMenu:(id)sender
-{
-    [self.slidingViewController anchorTopViewTo:ECRight];
-}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
@@ -878,5 +874,10 @@ static NSString *simpleTableIdentifier = @"SensorCell";
 //        [[NSNotificationCenter defaultCenter] postNotificationName:@"DeleteSwipedCellNotification" object:indexPath];
 //    }];
 }
+
+- (IBAction)revealMenu:(id)sender {
+
+}
+
 
 @end

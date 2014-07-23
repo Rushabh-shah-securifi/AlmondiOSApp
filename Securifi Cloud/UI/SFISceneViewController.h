@@ -7,10 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ECSlidingViewController.h"
 #import "SFISensor.h"
 @interface SFISceneViewController : UITableViewController <UITableViewDataSource, UITabBarControllerDelegate>
-- (IBAction)revealMenu:(id)sender;
 @property (nonatomic, retain) NSArray  *sensors;
 @property (nonatomic, retain) NSMutableDictionary  *sceneSensorMap;
 @property (nonatomic, retain) NSArray  *scenes;
@@ -20,4 +18,7 @@
 @property (nonatomic) unsigned int changeBrightness;
 @property (nonatomic) unsigned int changeHue;
 @property (nonatomic) unsigned int changeSaturation;
+
+- (IBAction)revealMenu:(id)sender;
+
 @end

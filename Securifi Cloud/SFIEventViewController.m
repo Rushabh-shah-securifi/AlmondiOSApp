@@ -7,11 +7,7 @@
 //
 
 #import "SFIEventViewController.h"
-#import "AlmondPlusConstants.h"
 
-@interface SFIEventViewController ()
-
-@end
 
 @implementation SFIEventViewController
 
@@ -53,9 +49,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)revealMenu:(id)sender
-{
-    [self.slidingViewController anchorTopViewTo:ECRight];
+- (IBAction)revealMenu:(id)sender {
+
 }
 
 
