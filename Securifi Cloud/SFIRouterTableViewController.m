@@ -28,6 +28,7 @@
 
 @property BOOL isRebooting;
 @property BOOL isAlmondUnavailable;
+@property BOOL shownHudOnce;
 
 @property unsigned int mobileInternalIndex;
 @end
@@ -77,11 +78,6 @@
 
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
-    // Display Drawer Gesture
-    UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(onRevealMenuAction:)];
-    showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
-    [self.tableView addGestureRecognizer:showMenuSwipe];
 
     // Pull down to refresh device values
     UIRefreshControl *refresh = [UIRefreshControl new];
@@ -155,7 +151,10 @@
         [self.tableView reloadData];
     }
 
-    [self showHudOnTimeout];
+    if (!self.shownHudOnce) {
+        self.shownHudOnce = YES;
+        [self showHudOnTimeout];
+    }
     [self sendWirelessSummaryCommand];
 }
 
@@ -175,7 +174,11 @@
 
 - (void)onCurrentAlmondChanged:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self initializeAlmondData];
+        self.shownHudOnce = NO;
+        if (self.isViewLoaded && self.view.window) {
+            // View is visible; reload now; otherwise, viewWillAppear will invoke it for us
+            [self initializeAlmondData];
+        }
     });
 }
 
