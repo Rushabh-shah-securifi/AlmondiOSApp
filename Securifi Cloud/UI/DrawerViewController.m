@@ -146,7 +146,7 @@
             }
             else {
                 //Add almond list
-                return [self tableViewCreateAlmondListCellIndexPath:indexPath];
+                return [self tableViewCreateAlmondListCell:tableView indexPath:indexPath];
             }
         }
 
@@ -235,24 +235,38 @@
     return cell;
 }
 
-- (UITableViewCell *)tableViewCreateAlmondListCellIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"AlmondListCell"];
+- (UITableViewCell *)tableViewCreateAlmondListCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+    NSString *id = @"AlmondListCell";
+
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:id];
+
+        UIImageView *imgLocation = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 21.5)];
+        imgLocation.userInteractionEnabled = YES;
+        imgLocation.image = [UIImage imageNamed:@"almondHome.png"];
+        [cell.contentView addSubview:imgLocation];
+
+        UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 30)];
+        nameLabel.tag = 101;
+        nameLabel.backgroundColor = [UIColor clearColor];
+        nameLabel.textColor = [UIColor whiteColor];
+        nameLabel.font = [UIFont fontWithName:@"Avenir-Roman" size:16];
+        [cell.contentView addSubview:nameLabel];
+    }
+
     cell.backgroundColor = [UIColor colorWithRed:(CGFloat) (51 / 255.0) green:(CGFloat) (51 / 255.0) blue:(CGFloat) (51 / 255.0) alpha:1.0];
 
-    UIImageView *imgLocation = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 21.5)];
-    imgLocation.userInteractionEnabled = YES;
-    imgLocation.image = [UIImage imageNamed:@"almondHome.png"];
-    [cell addSubview:imgLocation];
+    for (UIView *view in [cell.contentView subviews]) {
+        if (view.tag == 101) {
+            UILabel *nameLabel = (UILabel *) view;
 
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 30)];
-    nameLabel.backgroundColor = [UIColor clearColor];
-    nameLabel.textColor = [UIColor whiteColor];
-    nameLabel.font = [UIFont fontWithName:@"Avenir-Roman" size:16];
-    [cell addSubview:nameLabel];
-
-    NSArray *array = [self getAlmondList];
-    SFIAlmondPlus *almond = array[(NSUInteger) indexPath.row];
-    nameLabel.text = almond.almondplusName;
+            NSArray *array = [self getAlmondList];
+            SFIAlmondPlus *almond = array[(NSUInteger) indexPath.row];
+            nameLabel.text = almond.almondplusName;
+            break;
+        }
+    }
 
     return cell;
 }
