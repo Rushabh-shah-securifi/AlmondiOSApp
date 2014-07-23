@@ -19,17 +19,37 @@
 
 #pragma mark - View Cycle
 
+//- (id)initWithStyle:(UITableViewStyle)style {
+//    self = [super initWithStyle:UITableViewStylePlain];
+//    if (self) {
+//
+//    }
+//
+//    return self;
+//}
+
+
 - (void)dealloc {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center removeObserver:self name:kSFIDidUpdateAlmondList object:nil];
-    [center removeObserver:self name:kSFIDidChangeAlmondName object:nil];
+    [center removeObserver:self];
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return NO;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleDefault;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.tableView.backgroundColor = [UIColor colorWithRed:(CGFloat) (34 / 255.0) green:(CGFloat) (34 / 255.0) blue:(CGFloat) (34 / 255.0) alpha:1.0];
+    self.extendedLayoutIncludesOpaqueBars = YES;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+
+    self.tableView.backgroundColor = [self headerBackgroundColor];
+    self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -67,23 +87,21 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex {
-    //Number of rows it should expect should be based on the section
-    NSArray *array;
     switch (sectionIndex) {
-        case 0:
-            array = [self getAlmondList];
+        case 0: {
+            NSArray *array = [self getAlmondList];
             DLog(@"Almond List count %ld", (long) [array count]);
             return [array count] + 1;
-        case 1:
-            array = [self getSettingsList];
+        }
+        case 1: {
+            NSArray *array = [self getSettingsList];
             return [array count];
+        }
         case 2:
             return 0;
         default:
-            break;
+            return 0;
     }
-    return 0;
-
 }
 
 - (NSArray *)getSettingsList {
@@ -105,35 +123,37 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 65;
+    return (section == 0) ? 65 : 65;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 18)];
+    CGRect frame = (section == 0) ?
+            CGRectMake(10, 25, tableView.frame.size.width, 18) :
+            CGRectMake(10, 25, tableView.frame.size.width, 18);
 
-    /* Create custom view to display section header... */
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 25, tableView.frame.size.width, 18)];
-    [label setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
-    [label setTextColor:[UIColor colorWithRed:(CGFloat) (119 / 255.0) green:(CGFloat) (119 / 255.0) blue:(CGFloat) (119 / 255.0) alpha:1.0]];
+    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    label.font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
+    label.textColor = [UIColor colorWithRed:(CGFloat) (119 / 255.0) green:(CGFloat) (119 / 255.0) blue:(CGFloat) (119 / 255.0) alpha:1.0];
 
-    NSString *string;
     if (section == 0) {
-        string = @"LOCATION";
+        label.text = @"LOCATION";
     }
     else if (section == 1) {
-        string = @"SETTINGS";
+        label.text = @"SETTINGS";
     }
     else {
-        string = @"";
+        label.text = @"";
     }
 
-    /* Section header is in 0th index... */
-    [label setText:string];
-
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 65)];
+    view.backgroundColor = [self headerBackgroundColor];
     [view addSubview:label];
-    [view setBackgroundColor:[UIColor colorWithRed:(CGFloat) (34 / 255.0) green:(CGFloat) (34 / 255.0) blue:(CGFloat) (34 / 255.0) alpha:1.0]];
 
     return view;
+}
+
+- (UIColor *)headerBackgroundColor {
+    return [UIColor colorWithRed:(CGFloat) (34 / 255.0) green:(CGFloat) (34 / 255.0) blue:(CGFloat) (34 / 255.0) alpha:1.0];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
