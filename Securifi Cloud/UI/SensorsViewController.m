@@ -181,6 +181,15 @@
     NSString *const mac = (plus == nil) ? NO_ALMOND : plus.almondplusMAC;
     self.currentMAC = mac;
 
+    // Reset values
+    self.currentDeviceID = nil;
+    self.currentIndexID = 0;
+    self.currentValue = nil;
+    self.currentInternalIndex = 0;
+    self.isSliderExpanded = NO;
+    self.currentChangedName = nil;
+    self.currentChangedLocation = nil;
+
     if ([self isNoAlmondMAC]) {
         self.navigationItem.title = @"Get Started";
         self.deviceList = @[];
