@@ -9,5 +9,5 @@
 #import "SFIGenericRouterCommand.h"
 
 @implementation SFIGenericRouterCommand
-@synthesize command, commandType;
+
 @end
