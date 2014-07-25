@@ -66,6 +66,11 @@
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
 
+    // Display Drawer Gesture
+    UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:revealController action:@selector(revealToggle:)];
+    showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.tableView addGestureRecognizer:showMenuSwipe];
+
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];

@@ -16,11 +16,9 @@
 #import "iToast.h"
 #import "MBProgressHUD.h"
 #import "SWRevealViewController.h"
-#import "BVReorderTableView.h"
 
 
-@interface SensorsViewController () <ReorderTableViewDelegate>
-@property(nonatomic, weak, readonly) BVReorderTableView *sensorTable;
+@interface SensorsViewController ()
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 
@@ -84,6 +82,11 @@
 
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
+
+    // Display Drawer Gesture
+    UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:revealController action:@selector(revealToggle:)];
+    showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
+    [self.tableView addGestureRecognizer:showMenuSwipe];
 
 //    _sensorTable = (BVReorderTableView *) self.tableView;
 //    _sensorTable.delegate = self;
@@ -2722,13 +2725,6 @@
 }
 
 
-// This method is called when the selected row is released to its new position. The object is the same
-// object you returned in saveObjectAndInsertBlankRowAtIndexPath:. Simply update the data source so the
-// object is in its new position. You should do any saving/cleanup here.
-- (void)finishReorderingWithObject:(id)object atIndexPath:(NSIndexPath *)indexPath; {
-    // do nothing
-}
-
 #pragma mark - Class Methods
 
 - (void)initializeImages {
@@ -3220,7 +3216,6 @@
             case 4:
             case 7:
                 self.isSliderExpanded = TRUE;
-                self.sensorTable.canReorder = FALSE;
                 break;
 
             default:
@@ -3237,7 +3232,6 @@
             case 4:
             case 7:
                 self.isSliderExpanded = FALSE;
-                self.sensorTable.canReorder = FALSE;
                 break;
 
             default:
