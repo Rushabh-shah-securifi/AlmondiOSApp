@@ -9,6 +9,5 @@
 #import "SFIRouterSummary.h"
 
 @implementation SFIRouterSummary
-@synthesize blockedContentCount, blockedMACCount, connectedDeviceCount, routerUptime;
-@synthesize wirelessSettings, wirelessSettingsCount;
+
 @end

@@ -9,5 +9,5 @@
 #import "SFIWirelessUsers.h"
 
 @implementation SFIWirelessUsers
-@synthesize deviceIP, deviceMAC, isBlocked, isSelected, manufacturer, name;
+
 @end

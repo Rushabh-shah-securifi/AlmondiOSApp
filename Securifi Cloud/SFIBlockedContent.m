@@ -9,5 +9,5 @@
 #import "SFIBlockedContent.h"
 
 @implementation SFIBlockedContent
-@synthesize blockedText, isSelected;
+
 @end

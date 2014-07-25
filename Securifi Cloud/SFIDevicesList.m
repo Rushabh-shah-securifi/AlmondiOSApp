@@ -9,5 +9,5 @@
 #import "SFIDevicesList.h"
 
 @implementation SFIDevicesList
-@synthesize deviceList, deviceCount;
+
 @end

@@ -9,5 +9,5 @@
 #import "SFIWirelessSummary.h"
 
 @implementation SFIWirelessSummary
-@synthesize enabledStatus, ssid, wirelessIndex;
+
 @end

@@ -9,7 +9,5 @@
 #import "SFIWirelessSetting.h"
 
 @implementation SFIWirelessSetting
-@synthesize channel, encryptionType, password, security, ssid, index;
-@synthesize countryRegion, wirelessMode;
 
 @end

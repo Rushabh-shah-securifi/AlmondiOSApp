@@ -9,5 +9,5 @@
 #import "SFIRouterReboot.h"
 
 @implementation SFIRouterReboot
-@synthesize reboot;
+
 @end

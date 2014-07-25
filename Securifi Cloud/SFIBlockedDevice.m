@@ -9,5 +9,5 @@
 #import "SFIBlockedDevice.h"
 
 @implementation SFIBlockedDevice
-@synthesize deviceMAC;
+
 @end

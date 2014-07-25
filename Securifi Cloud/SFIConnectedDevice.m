@@ -9,5 +9,5 @@
 #import "SFIConnectedDevice.h"
 
 @implementation SFIConnectedDevice
-@synthesize name, deviceMAC, deviceIP;
+
 @end
