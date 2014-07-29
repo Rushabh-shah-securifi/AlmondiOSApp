@@ -15,7 +15,12 @@
 @implementation SFIAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+#ifdef DEBUG
+    [BugSenseController sharedControllerWithBugSenseAPIKey:@"172e1935"];
+#else
     [BugSenseController sharedControllerWithBugSenseAPIKey:@"a9525243"];
+#endif
+
     [SFIReachabilityManager sharedManager];
     [self initializeColors];
 
