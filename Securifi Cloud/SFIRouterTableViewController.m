@@ -29,16 +29,12 @@
 @property BOOL isRebooting;
 @property BOOL isAlmondUnavailable;
 @property BOOL shownHudOnce;
+@property BOOL disposed;
 
 @property unsigned int mobileInternalIndex;
 @end
 
 @implementation SFIRouterTableViewController
-
-- (void)dealloc {
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center removeObserver:self];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -90,6 +86,29 @@
     [refresh addTarget:self action:@selector(onRefreshRouter:) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresh;
 
+    [self initializeNotifications];
+    [self markCloudStatusIcon];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self initializeAlmondData];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
+        self.disposed = YES;
+
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center removeObserver:self];
+
+        [self.hudTimer invalidate];
+    }
+}
+
+- (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
     [center addObserver:self
@@ -130,13 +149,6 @@
                selector:@selector(onAlmondListDidChange:)
                    name:kSFIDidUpdateAlmondList
                  object:nil];
-
-    [self markCloudStatusIcon];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self initializeAlmondData];
 }
 
 - (void)initializeAlmondData {
@@ -261,7 +273,12 @@
 
 - (void)onNetworkChange:(id)notice {
     [self markCloudStatusIcon];
-    [self asyncReloadTable];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
+        [self.tableView reloadData];
+    });
 }
 
 #pragma mark - Table view data source
@@ -472,6 +489,9 @@
 //}
 
 - (void)onAddAlmondAction:(id)sender {
+    if (self.disposed) {
+        return;
+    }
     if ([self isNoAlmondLoaded]) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
         UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AffiliationNavigationTop"];
@@ -491,6 +511,9 @@
             DLog(@"Clicked on yes");
 
             dispatch_async(dispatch_get_main_queue(), ^() {
+                if (self.disposed) {
+                    return;
+                }
                 self.HUD.labelText = @"Router is rebooting.";
                 [self.HUD hide:YES afterDelay:1];
 
@@ -532,6 +555,14 @@
 }
 
 - (void)onGenericResponseCallback:(id)sender {
+    if (!self) {
+        return;
+    }
+
+    if (self.disposed) {
+        return;
+    }
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
@@ -545,6 +576,9 @@
         DLog(@"Reason: %@", obj.reason);
 
         dispatch_async(dispatch_get_main_queue(), ^() {
+            if (self.disposed) {
+                return;
+            }
             self.isAlmondUnavailable = YES;
             [self.tableView reloadData];
             [self.HUD hide:YES];
@@ -626,18 +660,29 @@
 //                    break;
         case 7: {
             //Get Wireless Settings
-            SFIDevicesList *routerSettings = (SFIDevicesList *) genericRouterCommand.command;
-            DLog(@"Wifi settings Reply: %ld", (long) [routerSettings.deviceList count]);
-            //Display list
-            SFIRouterDevicesListViewController *viewController = [[SFIRouterDevicesListViewController alloc] init];
-            viewController.deviceList = routerSettings.deviceList;
-            viewController.deviceListType = genericRouterCommand.commandType;
-            [self.navigationController pushViewController:viewController animated:YES];
+            dispatch_async(dispatch_get_main_queue(), ^() {
+                if (self.disposed) {
+                    return;
+                }
+
+                SFIDevicesList *routerSettings = (SFIDevicesList *) genericRouterCommand.command;
+                DLog(@"Wifi settings Reply: %ld", (long) [routerSettings.deviceList count]);
+
+                SFIRouterDevicesListViewController *viewController = [[SFIRouterDevicesListViewController alloc] init];
+                viewController.deviceList = routerSettings.deviceList;
+                viewController.deviceListType = genericRouterCommand.commandType;
+
+                [self.navigationController pushViewController:viewController animated:YES];
+            });
             break;
         }
         case 9: {
-            //Get Wireless Summary
+            // Get Wireless Summary
             dispatch_async(dispatch_get_main_queue(), ^() {
+                if (self.disposed) {
+                    return;
+                }
+
                 self.routerSummary = (SFIRouterSummary *) genericRouterCommand.command;
                 [self.tableView reloadData];
             });
@@ -647,17 +692,22 @@
 
         default:
             break;
-
-    }
+    } // end switch
 
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
         [self.HUD hide:YES];
         [self.refreshControl endRefreshing];
     });
-
 }
 
 - (void)onGenericNotificationCallback:(id)sender {
+    if (self.disposed) {
+        return;
+    }
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
@@ -669,6 +719,10 @@
         DLog(@"Reason: %@", obj.reason);
 
         dispatch_async(dispatch_get_main_queue(), ^() {
+            if (self.disposed) {
+                return;
+            }
+
             self.isAlmondUnavailable = YES;
             [self.tableView reloadData];
         });
@@ -676,7 +730,6 @@
         return;
     }
     self.isAlmondUnavailable = NO;
-
 
     NSMutableData *genericData = [[NSMutableData alloc] init];
 
@@ -704,15 +757,21 @@
 
     switch (genericRouterCommand.commandType) {
         case 1: {
-            //Reboot
-            SFIRouterReboot *routerReboot = (SFIRouterReboot *) genericRouterCommand.command;
-            NSLog(@"Reboot Reply: %d", routerReboot.reboot);
+            dispatch_async(dispatch_get_main_queue(), ^() {
+                if (self.disposed) {
+                    return;
+                }
 
-            self.HUD.labelText = @"Router is now online.";
-            [self.HUD hide:YES afterDelay:1];
+                //Reboot
+                SFIRouterReboot *routerReboot = (SFIRouterReboot *) genericRouterCommand.command;
+                NSLog(@"Reboot Reply: %d", routerReboot.reboot);
 
-            self.isRebooting = FALSE;
-            [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
+                self.HUD.labelText = @"Router is now online.";
+                [self.HUD hide:YES afterDelay:1];
+
+                self.isRebooting = FALSE;
+                [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
+            });
             break;
         }
         default:
@@ -721,20 +780,26 @@
 }
 
 - (void)onAlmondListDidChange:(id)sender {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
 
-    if (plus == nil) {
-        self.currentMAC = NO_ALMOND;
-        self.navigationItem.title = @"Get Started";
-    }
-    else {
-        self.currentMAC = plus.almondplusMAC;
-        self.navigationItem.title = plus.almondplusName;
-        [self refreshDataForAlmond];
-    }
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        SFIAlmondPlus *plus = [toolkit currentAlmond];
 
-    [self asyncReloadTable];
+        if (plus == nil) {
+            self.currentMAC = NO_ALMOND;
+            self.navigationItem.title = @"Get Started";
+        }
+        else {
+            self.currentMAC = plus.almondplusMAC;
+            self.navigationItem.title = plus.almondplusName;
+            [self refreshDataForAlmond];
+        }
+
+        [self.tableView reloadData];
+    });
 }
 
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
