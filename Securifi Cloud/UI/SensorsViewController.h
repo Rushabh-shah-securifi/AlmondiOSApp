@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SensorsViewController : UITableViewController <UITextFieldDelegate>
-
-@property(nonatomic, weak) IBOutlet UITextField *txtInvisible;
+@interface SensorsViewController : UITableViewController
 
 @end

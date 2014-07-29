@@ -18,7 +18,7 @@
 #import "SWRevealViewController.h"
 
 
-@interface SensorsViewController ()
+@interface SensorsViewController () <UITextFieldDelegate>
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 
@@ -52,16 +52,13 @@
 @property(nonatomic, retain) NSString *currentChangedName;
 @property(nonatomic, retain) NSString *currentChangedLocation;
 
+@property BOOL disposed;
+
 @end
 
 @implementation SensorsViewController
 
 #pragma mark - View Related
-
-- (void)dealloc {
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center removeObserver:self];
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -117,6 +114,19 @@
     [self markCloudStatusIcon];
     [self initializeNotifications];
     [self initializeAlmondData];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
+        self.disposed = YES;
+
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center removeObserver:self];
+
+        [self.hudTimer invalidate];
+    }
 }
 
 - (void)initializeNotifications {
@@ -376,7 +386,7 @@
         return SENSOR_ROW_HEIGHT;
     }
 
-    SFIDevice *sensor = self.deviceList[(NSUInteger) indexPath.row];
+    SFIDevice *sensor = [self tryGetDevice:indexPath.row];
     return (CGFloat) [self computeSensorRowHeight:sensor];
 }
 
@@ -454,7 +464,7 @@
 }
 
 - (UITableViewCell *)createColoredListCell:(UITableView *)tableView listRow:(int)indexPathRow {
-    SFIDevice *currentSensor = self.deviceList[(NSUInteger) indexPathRow];
+    SFIDevice *currentSensor = [self tryGetDevice:indexPathRow];
     int currentDeviceType = currentSensor.deviceType;
 
     NSUInteger height = [self computeSensorRowHeight:currentSensor];
@@ -881,7 +891,9 @@
                 lblDeviceStatus.text = @"UNLOCKED";
             }
             else {
-                imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
+                if (currentSensor.imageName) {
+                    imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
+                }
                 if (currentStateValue == nil) {
                     lblDeviceStatus.text = @"Could not update sensor\ndata.";
                 }
@@ -1208,7 +1220,10 @@
                 [strStatus appendString:@"UNLOCKED"];
             }
             else {
-                imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
+                if (currentSensor.imageName) {
+                    imgDevice.image = [UIImage imageNamed:currentSensor.imageName];
+                }
+
                 if (currentStateValue == nil) {
                     lblDeviceStatus.text = @"Could not update sensor\ndata.";
                 }
@@ -2706,7 +2721,7 @@
 // data source and return the object you want to save for later. This method is only called once.
 - (id)saveObjectAndInsertBlankRowAtIndexPath:(NSIndexPath *)indexPath {
     NSUInteger row = (NSUInteger) indexPath.row;
-    return [self.deviceList objectAtIndex:row];
+    return [self tryGetDevice:row];
 }
 
 // This method is called when the selected row is dragged to a new position. You simply update your
@@ -2715,7 +2730,7 @@
 - (void)moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
     NSUInteger row = (NSUInteger) fromIndexPath.row;
 
-    id object = [self.deviceList objectAtIndex:row];
+    id object = [self tryGetDevice:row];;
 
     NSMutableArray *temp = [NSMutableArray arrayWithArray:self.deviceList];
     [temp removeObjectAtIndex:row];
@@ -3277,9 +3292,12 @@
 
 - (void)onDismissTamper:(id)sender {
     UIButton *button = (UIButton *) sender;
-    NSUInteger sensor_pos = (NSUInteger) button.tag;
 
-    SFIDevice *sensor = self.deviceList[sensor_pos];
+    SFIDevice *sensor = [self tryGetDevice:button.tag];
+    if (sensor == nil) {
+        return;
+    }
+
     NSArray *currentKnownValues = [self currentKnownValuesForDevice:sensor.deviceID];
 
     SFIDeviceKnownValues *currentDeviceValue = currentKnownValues[(NSUInteger) sensor.tamperValueIndex];
@@ -3295,7 +3313,11 @@
 - (void)onDeviceClicked:(id)sender {
     UIButton *btn = (UIButton *) sender;
 
-    SFIDevice *currentSensor = self.deviceList[(NSUInteger) btn.tag];
+    SFIDevice *currentSensor = [self tryGetDevice:btn.tag];
+    if (currentSensor == nil) {
+        return;
+    }
+
     int currentDeviceType = currentSensor.deviceType;
     int currentDeviceId = currentSensor.deviceID;
 
@@ -3540,6 +3562,10 @@
 }
 
 - (void)onSensorSliderTap:(UIGestureRecognizer *)gestureRecognizer valueName:(NSString *)valueName {
+    if (self.disposed) {
+        return;
+    }
+
     UISlider *slider = (UISlider *) gestureRecognizer.view;
     if (slider.highlighted) {
         return;
@@ -3551,7 +3577,10 @@
     CGFloat value = slider.minimumValue + delta;
     [slider setValue:value animated:YES];
 
-    SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
+    SFIDevice *currentSensor = [self tryGetDevice:slider.tag];
+    if (currentSensor == nil) {
+        return;
+    }
     int currentDeviceId = currentSensor.deviceID;
 
     // Update values
@@ -3567,15 +3596,25 @@
     [self sendMobileCommand];
 
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
         [self initializeImages];
         [self.tableView reloadData];
     });
 }
 
 - (void)onSensorSliderDidEndSliding:(id)sender valueName:(NSString *)valueName {
-    UISlider *slider = (UISlider *) sender;
+    if (self.disposed) {
+        return;
+    }
 
-    SFIDevice *currentSensor = self.deviceList[(NSUInteger) slider.tag];
+    UISlider *slider = (UISlider *) sender;
+    SFIDevice *currentSensor = [self tryGetDevice:slider.tag];
+    if (currentSensor == nil) {
+        return;
+    }
+
     int currentDeviceId = currentSensor.deviceID;
 
     SFIDeviceKnownValues *deviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valueName:valueName];
@@ -3588,6 +3627,9 @@
     [self sendMobileCommand];
 
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
         [self initializeImages];
         [self.tableView reloadData];
     });
@@ -3604,10 +3646,15 @@
 }
 
 - (void)onUpdateSegmentedControlValue:(id)sender valueName:(NSString *)valueName {
+    if (self.disposed) {
+        return;
+    }
+
     UISegmentedControl *ctrl = (UISegmentedControl *) sender;
     NSString *strModeValue = [ctrl titleForSegmentAtIndex:(NSUInteger) ctrl.selectedSegmentIndex];
 
-    SFIDevice *currentSensor = self.deviceList[(NSUInteger) ctrl.tag];
+    NSInteger index = ctrl.tag;
+    SFIDevice *currentSensor = [self tryGetDevice:index];
     int currentDeviceId = currentSensor.deviceID;
 
     SFIDeviceKnownValues *deviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valueName:valueName];
@@ -3619,10 +3666,23 @@
     [self sendMobileCommand];
 
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
         [self initializeImages];
         [self.tableView reloadData];
     });
 
+}
+
+- (SFIDevice *)tryGetDevice:(NSInteger)index {
+    NSUInteger uIndex = (NSUInteger) index;
+
+    NSArray *list = self.deviceList;
+    if (uIndex < list.count) {
+        return list[uIndex];
+    }
+    return nil;
 }
 
 #pragma mark - Keyboard methods
@@ -3694,9 +3754,18 @@
 
 //PY 311013 - Timeout for Mobile Command
 - (void)onSendMobileCommandTimeout:(id)sender {
+    if (self.disposed) {
+        return;
+    }
+
     [self.mobileCommandTimer invalidate];
+
     if (!self.isMobileCommandSuccessful) {
         dispatch_async(dispatch_get_main_queue(), ^() {
+            if (self.disposed) {
+                return;
+            }
+
             //Cancel the mobile event - Revert back
             self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
             [self initializeImages];
@@ -3708,6 +3777,9 @@
 
 - (void)onMobileCommandResponseCallback:(id)sender {
     if (!self) {
+        return;
+    }
+    if (self.disposed) {
         return;
     }
 
@@ -3759,6 +3831,9 @@
         if (!self) {
             return;
         }
+        if (self.disposed) {
+            return;
+        }
 
         if ([self isNoAlmondMAC]) {
             return;
@@ -3780,6 +3855,9 @@
 - (void)onDeviceListDidChange:(id)sender {
     NSLog(@"Sensors: did receive device list change");
     if (!self) {
+        return;
+    }
+    if (self.disposed) {
         return;
     }
 
@@ -3818,12 +3896,18 @@
 
     // Push changes to the UI
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
         if ([self isSameAsCurrentMAC:cloudMAC]) {
             [self.HUD show:YES];
         }
     });
 
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
         if ([self isSameAsCurrentMAC:cloudMAC]) {
             self.deviceList = newDeviceList;
             if (newDeviceValueList) {
@@ -3845,6 +3929,12 @@
     }
 
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
+        if (self.disposed) {
+            return;
+        }
         [self.HUD hide:YES];
     });
 
@@ -3886,6 +3976,9 @@
         if (!self) {
             return;
         }
+        if (self.disposed) {
+            return;
+        }
 
         if (![self isSameAsCurrentMAC:cloudMAC]) {
             return;
@@ -3924,6 +4017,9 @@
             return;
         }
         if (!self.isViewLoaded) {
+            return;
+        }
+        if (self.disposed) {
             return;
         }
 
@@ -3973,8 +4069,11 @@
 
     [[[iToast makeText:@"Saving..."] setGravity:iToastGravityCenter] show];
 
-    UIButton *btnObj = (UIButton *) sender;
-    SFIDevice *currentSensor = self.deviceList[(NSUInteger) btnObj.tag];
+    UIButton *button = (UIButton *) sender;
+    SFIDevice *currentSensor = [self tryGetDevice:button.tag];
+    if (currentSensor == nil) {
+        return;
+    }
 
     SensorChangeRequest *sensorChangeCommand = [[SensorChangeRequest alloc] init];
     sensorChangeCommand.almondMAC = self.currentMAC;
@@ -4054,6 +4153,9 @@
         if (!self) {
             return;
         }
+        if (self.disposed) {
+            return;
+        }
 
         SFIAlmondPlus *obj = (SFIAlmondPlus *) [data valueForKey:@"data"];
         if ([self isSameAsCurrentMAC:obj.almondplusMAC]) {
@@ -4069,6 +4171,9 @@
     }
 
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
         self.deviceList = list;
         [self initializeImages];
         //To remove text fields keyboard. It was throwing error when it was being called from the background thread
