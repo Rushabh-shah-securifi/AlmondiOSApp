@@ -252,13 +252,14 @@ typedef enum {
     self.scrollView.scrollIndicatorInsets = contentInsets;
 
     // If active text field is hidden by keyboard, scroll it so it's visible
-    // Your app might not need or want this behavior.
+    CGRect fieldRect = self.activeTextField.frame;
+    fieldRect = CGRectOffset(fieldRect, 0, 3 * CGRectGetHeight(fieldRect));
+
     CGRect aRect = self.view.frame;
     aRect.size.height -= kbSize.height;
 
-    CGRect rect = self.activeTextField.frame;
-    if (!CGRectContainsPoint(aRect, rect.origin)) {
-        [self.scrollView scrollRectToVisible:rect animated:YES];
+    if (!CGRectContainsPoint(aRect, fieldRect.origin)) {
+        [self.scrollView scrollRectToVisible:fieldRect animated:YES];
     }
 }
 
