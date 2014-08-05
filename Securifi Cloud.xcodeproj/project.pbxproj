@@ -116,6 +116,7 @@
 		1C695306195978B500C9157D /* connection_status_5.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C6952F2195978B500C9157D /* connection_status_5.png */; };
 		1C695307195978B500C9157D /* connection_status_5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C6952F3195978B500C9157D /* connection_status_5@2x.png */; };
 		1CA3FBD4196A9C9E0038EB64 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = 1CA3FBD3196A9C9E0038EB64 /* termsofuse.html */; };
+		1DF03024C97A5D51E46E8592 /* SFISlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF034D8B81EDA1177368B2F /* SFISlider.h */; };
 		1DF0306C0C7943B90740B6BB /* SFICloudStatusBarButtonItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF03048FDE77FF138C06B2C /* SFICloudStatusBarButtonItem.h */; };
 		1DF030A2A018C8E3748E0838 /* SFISensorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0392A57C01986D4266259 /* SFISensorTableViewCell.m */; };
 		1DF0328A2C9BD89E686AF6E4 /* iToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F82E57CA82EEA4703EB /* iToast.m */; };
@@ -124,6 +125,7 @@
 		1DF032D89EC21443A3A14E9F /* SFIHighlightedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F26B3D131E43FF35137 /* SFIHighlightedButton.m */; };
 		1DF033B8EE957186BED70A76 /* SFISensorTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF0370031F08F7752442415 /* SFISensorTableViewCell.h */; };
 		1DF0349B7F4A80683A7DEAFA /* SFIHighlightedButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF03EF880A4099E95CFD0F8 /* SFIHighlightedButton.h */; };
+		1DF0358F5966445C0D786EC8 /* SFISlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03DF98EAAFC5ED95C64BF /* SFISlider.m */; };
 		1DF0374BB04809F45072747D /* SWRevealViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF03FEEEB07DEFCC2A71F1A /* SWRevealViewController.h */; };
 		1DF03DA6C5EDD408BAE009D1 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03889EFFD270100841A97 /* SWRevealViewController.m */; };
 		1DF03F365CE4D33B95EDE097 /* iToast.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DF03B2C2583D475772E588D /* iToast.h */; };
@@ -362,11 +364,13 @@
 		1CA3FBD3196A9C9E0038EB64 /* termsofuse.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = termsofuse.html; sourceTree = "<group>"; };
 		1DF03048FDE77FF138C06B2C /* SFICloudStatusBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICloudStatusBarButtonItem.h; sourceTree = "<group>"; };
 		1DF030CDD0A761BB35A5E1DD /* offline_150x150.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = offline_150x150.png; path = images/offline_150x150.png; sourceTree = "<group>"; };
+		1DF034D8B81EDA1177368B2F /* SFISlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISlider.h; sourceTree = "<group>"; };
 		1DF0352BB56CC806F804C806 /* SFICloudStatusBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICloudStatusBarButtonItem.m; sourceTree = "<group>"; };
 		1DF0370031F08F7752442415 /* SFISensorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorTableViewCell.h; sourceTree = "<group>"; };
 		1DF03889EFFD270100841A97 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		1DF0392A57C01986D4266259 /* SFISensorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorTableViewCell.m; sourceTree = "<group>"; };
 		1DF03B2C2583D475772E588D /* iToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iToast.h; sourceTree = "<group>"; };
+		1DF03DF98EAAFC5ED95C64BF /* SFISlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISlider.m; sourceTree = "<group>"; };
 		1DF03EF880A4099E95CFD0F8 /* SFIHighlightedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIHighlightedButton.h; sourceTree = "<group>"; };
 		1DF03F26B3D131E43FF35137 /* SFIHighlightedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIHighlightedButton.m; sourceTree = "<group>"; };
 		1DF03F7E3234A3C160672AAA /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
@@ -683,6 +687,8 @@
 				1DF03048FDE77FF138C06B2C /* SFICloudStatusBarButtonItem.h */,
 				1DF03F26B3D131E43FF35137 /* SFIHighlightedButton.m */,
 				1DF03EF880A4099E95CFD0F8 /* SFIHighlightedButton.h */,
+				1DF03DF98EAAFC5ED95C64BF /* SFISlider.m */,
+				1DF034D8B81EDA1177368B2F /* SFISlider.h */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -964,6 +970,7 @@
 				1DF033B8EE957186BED70A76 /* SFISensorTableViewCell.h in Headers */,
 				1DF03F365CE4D33B95EDE097 /* iToast.h in Headers */,
 				1DF0374BB04809F45072747D /* SWRevealViewController.h in Headers */,
+				1DF03024C97A5D51E46E8592 /* SFISlider.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1243,6 +1250,7 @@
 				1DF030A2A018C8E3748E0838 /* SFISensorTableViewCell.m in Sources */,
 				1DF0328A2C9BD89E686AF6E4 /* iToast.m in Sources */,
 				1DF03DA6C5EDD408BAE009D1 /* SWRevealViewController.m in Sources */,
+				1DF0358F5966445C0D786EC8 /* SFISlider.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

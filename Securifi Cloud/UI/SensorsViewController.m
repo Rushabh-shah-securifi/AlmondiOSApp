@@ -16,6 +16,7 @@
 #import "iToast.h"
 #import "MBProgressHUD.h"
 #import "SWRevealViewController.h"
+#import "SFISlider.h"
 
 
 @interface SensorsViewController () <UITextFieldDelegate>
@@ -1367,10 +1368,12 @@
         imgSettings.alpha = 1.0;
 
         //Show values also
-        UILabel *belowBackgroundLabel = [[UILabel alloc] init];
-        belowBackgroundLabel.tag = SENSOR_VIEW_EXCLUDE_TOUCHES_BACKGROUND_VIEW_TAG;
+        UIView *belowBackgroundLabel = [[UIView alloc] init];
         belowBackgroundLabel.userInteractionEnabled = YES;
         belowBackgroundLabel.backgroundColor = [self makeStandardBlue];
+
+        // Set the height high enough to ensure touch events are not missed.
+        const CGFloat slider_height = 25.0;
 
         UILabel *expandedLblText;
         float baseYCordinate = -20;
@@ -1406,24 +1409,23 @@
                 [belowBackgroundLabel addSubview:minImage];
 
                 //Display slider
-                UISlider *slider = [[UISlider alloc] init];
+                UISlider *slider = [SFISlider new];
                 CGRect screenBounds = [[UIScreen mainScreen] bounds];
                 if (screenBounds.size.height == 568) {
                     // code for 4-inch screen
-                    slider.frame = CGRectMake(40.0, baseYCordinate, self.tableView.frame.size.width - 110, 10.0);
+                    slider.frame = CGRectMake(40.0, baseYCordinate, self.tableView.frame.size.width - 110, slider_height);
                 } else {
                     // code for 3.5-inch screen
-                    slider.frame = CGRectMake(40.0, baseYCordinate-10, (self.tableView.frame.size.width - 110), 10.0);
+                    slider.frame = CGRectMake(40.0, baseYCordinate-10, (self.tableView.frame.size.width - 110), slider_height);
                 }
 
-//                UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(40.0, baseYCordinate-10, (self.tableView.frame.size.width - 110), 10.0)];
                 slider.tag = indexPathRow;
                 slider.minimumValue = 0;
                 slider.maximumValue = 99;
                 [slider addTarget:self action:@selector(sliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
 
-//                UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sliderTapped:)] ;
-//                [slider addGestureRecognizer:tapSlider];
+                UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sliderTapped:)] ;
+                [slider addGestureRecognizer:tapSlider];
 
                 //Set slider value
                 float currentSliderValue = 0.0;
@@ -1438,8 +1440,8 @@
 
                 [slider setValue:currentSliderValue animated:YES];
 
-                [slider setThumbImage:[[UIImage imageNamed:@"seekbar_thumb 2.png"] stretchableImageWithLeftCapWidth:60 topCapHeight:25] forState:UIControlStateNormal];
-                [slider setThumbImage:[[UIImage imageNamed:@"seekbar_thumb 2.png"] stretchableImageWithLeftCapWidth:60 topCapHeight:25] forState:UIControlStateHighlighted];
+                [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"] forState:UIControlStateNormal];
+                [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"] forState:UIControlStateHighlighted];
                 [slider setMinimumTrackImage:[UIImage imageNamed:@"seekbar_dark_patch 2.png"] forState:UIControlStateNormal];
                 [slider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"] forState:UIControlStateNormal];
                 [belowBackgroundLabel addSubview:slider];
@@ -1541,26 +1543,24 @@
                 [belowBackgroundLabel addSubview:minImage];
 
                 //Display slider
-                UISlider *slider = [[UISlider alloc] init];
+                UISlider *slider = [SFISlider new];
                 CGRect screenBounds = [[UIScreen mainScreen] bounds];
                 if (screenBounds.size.height == 568) {
                     // code for 4-inch screen
-                    slider.frame = CGRectMake(40.0, baseYCordinate, self.tableView.frame.size.width - 110, 10.0);
+                    slider.frame = CGRectMake(40.0, baseYCordinate, self.tableView.frame.size.width - 110, slider_height);
                 }
                 else {
                     // code for 3.5-inch screen
-                    slider.frame = CGRectMake(40.0, baseYCordinate - 10, (self.tableView.frame.size.width - 110), 10.0);
+                    slider.frame = CGRectMake(40.0, baseYCordinate - 10, (self.tableView.frame.size.width - 110), slider_height);
                 }
 
-//                UISlider *slider = [[UISlider alloc] initWithFrame:CGRectMake(40.0, baseYCordinate-10, self.tableView.frame.size.width - 110, 10.0)];
                 slider.tag = indexPathRow;
                 slider.minimumValue = 0;
                 slider.maximumValue = 255;
                 [slider addTarget:self action:@selector(sliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
 
-//                UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sliderTapped:)];
-//                [slider addGestureRecognizer:tapSlider];
-
+                UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sliderTapped:)];
+                [slider addGestureRecognizer:tapSlider];
 
                 //Set slider value
                 float currentSliderValue = 0.0;
@@ -1631,32 +1631,29 @@
                 [belowBackgroundLabel addSubview:lblMinHeat];
 
                 //Display heating slider
-                UISlider *heatSlider = [[UISlider alloc] init];
+                UISlider *heatSlider = [SFISlider new];
                 CGRect screenBounds = [[UIScreen mainScreen] bounds];
                 if (screenBounds.size.height == 568) {
                     // code for 4-inch screen
-                    heatSlider.frame = CGRectMake(100.0, baseYCordinate, self.tableView.frame.size.width - 160, 10.0);
+                    heatSlider.frame = CGRectMake(100.0, baseYCordinate, self.tableView.frame.size.width - 160, slider_height);
                 }
                 else {
                     // code for 3.5-inch screen
-                    heatSlider.frame = CGRectMake(100.0, baseYCordinate - 10, self.tableView.frame.size.width - 160, 10.0);
+                    heatSlider.frame = CGRectMake(100.0, baseYCordinate - 10, self.tableView.frame.size.width - 160, slider_height);
                 }
-//                UISlider *heatSlider = [[UISlider alloc] initWithFrame:CGRectMake(100.0, baseYCordinate-10, self.tableView.frame.size.width - 160, 10.0)];
                 heatSlider.tag = indexPathRow;
                 heatSlider.minimumValue = 35;
                 heatSlider.maximumValue = 95;
                 [heatSlider addTarget:self action:@selector(heatingSliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+
                 UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(heatingSliderTapped:)];
                 [heatSlider addGestureRecognizer:tapSlider];
 
-                [heatSlider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"]
-                                 forState:UIControlStateNormal];
-                [heatSlider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"]
-                                 forState:UIControlStateHighlighted];
-                [heatSlider setMinimumTrackImage:[UIImage imageNamed:@"seekbar_dark_patch 2.png"]
-                                        forState:UIControlStateNormal];
-                [heatSlider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"]
-                                        forState:UIControlStateNormal];
+                [heatSlider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"] forState:UIControlStateNormal];
+                [heatSlider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"]forState:UIControlStateHighlighted];
+                [heatSlider setMinimumTrackImage:[UIImage imageNamed:@"seekbar_dark_patch 2.png"] forState:UIControlStateNormal];
+                [heatSlider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"]forState:UIControlStateNormal];
+
                 [belowBackgroundLabel addSubview:heatSlider];
 
                 UILabel *lblMaxHeat = [[UILabel alloc] initWithFrame:CGRectMake(100 + (self.tableView.frame.size.width - 160), baseYCordinate - 3, 30, 24)];
@@ -1700,21 +1697,22 @@
                 [belowBackgroundLabel addSubview:lblMinCool];
 
                 //Display Cooling slider
-                UISlider *coolSlider = [[UISlider alloc] init];
+                UISlider *coolSlider = [SFISlider new];
                 //CGRect screenBounds = [[UIScreen mainScreen] bounds];
                 if (screenBounds.size.height == 568) {
                     // code for 4-inch screen
-                    coolSlider.frame = CGRectMake(100.0, baseYCordinate, self.tableView.frame.size.width - 160, 10.0);
+                    coolSlider.frame = CGRectMake(100.0, baseYCordinate, self.tableView.frame.size.width - 160, slider_height);
                 }
                 else {
                     // code for 3.5-inch screen
-                    coolSlider.frame = CGRectMake(100.0, baseYCordinate - 10, self.tableView.frame.size.width - 160, 10.0);
+                    coolSlider.frame = CGRectMake(100.0, baseYCordinate - 10, self.tableView.frame.size.width - 160, slider_height);
                 }
 //                UISlider *coolSlider = [[UISlider alloc] initWithFrame:CGRectMake(100.0, baseYCordinate-10, self.tableView.frame.size.width - 160, 10.0)];
                 coolSlider.tag = indexPathRow;
                 coolSlider.minimumValue = 35;
                 coolSlider.maximumValue = 95;
                 [coolSlider addTarget:self action:@selector(coolingSliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+
                 UITapGestureRecognizer *coolTapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(coolingSliderTapped:)];
                 [coolSlider addGestureRecognizer:coolTapSlider];
 

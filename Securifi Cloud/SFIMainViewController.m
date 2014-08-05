@@ -424,10 +424,6 @@
         return NO;
     }
 
-    if (view.tag == SENSOR_VIEW_EXCLUDE_TOUCHES_BACKGROUND_VIEW_TAG) {
-        return NO;
-    }
-
     return YES;
 }
 
