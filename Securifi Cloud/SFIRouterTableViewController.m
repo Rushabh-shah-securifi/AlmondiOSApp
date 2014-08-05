@@ -62,11 +62,6 @@
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
 
-    // Display Drawer Gesture
-    UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:revealController action:@selector(revealToggle:)];
-    showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
-    [self.tableView addGestureRecognizer:showMenuSwipe];
-
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
@@ -238,12 +233,6 @@
     else {
         [self.statusBarButton markState:SFICloudStatusStateAlmondOffline];
     }
-}
-
-- (void)asyncReloadTable {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-    });
 }
 
 #pragma mark HUD mgt
