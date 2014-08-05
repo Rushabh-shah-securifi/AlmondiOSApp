@@ -22,7 +22,6 @@
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 
-@property NSTimer *hudTimer;
 @property NSTimer *mobileCommandTimer;
 @property NSTimer *sensorChangeCommandTimer;
 
@@ -80,15 +79,6 @@
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
 
-    // Display Drawer Gesture
-    UISwipeGestureRecognizer *showMenuSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:revealController action:@selector(revealToggle:)];
-    showMenuSwipe.direction = UISwipeGestureRecognizerDirectionRight;
-    [self.tableView addGestureRecognizer:showMenuSwipe];
-
-//    _sensorTable = (BVReorderTableView *) self.tableView;
-//    _sensorTable.delegate = self;
-//    _sensorTable.canReorder = NO;
-
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
     self.tableView.separatorColor = [UIColor clearColor];
@@ -124,8 +114,6 @@
 
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
-
-        [self.hudTimer invalidate];
     }
 }
 
@@ -215,16 +203,16 @@
 
         if (self.deviceList.count == 0) {
             NSLog(@"Sensors: requesting device list on empty list");
-            [self showHudOnTimeout];
+            [self showHudWithTimeout];
             [toolkit asyncRequestDeviceList:mac];
         }
         else if (self.deviceValueList.count == 0) {
             NSLog(@"Sensors: requesting device values on empty list");
-            [self showHudOnTimeout];
+            [self showHudWithTimeout];
             [toolkit tryRequestDeviceValueList:mac];
         }
         else if ([toolkit tryRequestDeviceValueList:mac]) {
-            [self showHudOnTimeout];
+            [self showHudWithTimeout];
             NSLog(@"Sensors: requesting device values on new connection");
         }
 
@@ -255,20 +243,10 @@
 
 #pragma mark HUD mgt
 
-- (void)showHudOnTimeout {
+- (void)showHudWithTimeout {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.hudTimer invalidate];
-        self.hudTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(onHudTimeout:) userInfo:nil repeats:NO];
         [self.HUD show:YES];
-    });
-}
-
-- (void)onHudTimeout:(id)sender {
-    [self.hudTimer invalidate];
-    self.hudTimer = nil;
-
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.HUD hide:YES];
+        [self.HUD hide:YES afterDelay:5];
     });
 }
 
@@ -1390,6 +1368,7 @@
 
         //Show values also
         UILabel *belowBackgroundLabel = [[UILabel alloc] init];
+        belowBackgroundLabel.tag = SENSOR_VIEW_EXCLUDE_TOUCHES_BACKGROUND_VIEW_TAG;
         belowBackgroundLabel.userInteractionEnabled = YES;
         belowBackgroundLabel.backgroundColor = [self makeStandardBlue];
 
@@ -1459,8 +1438,8 @@
 
                 [slider setValue:currentSliderValue animated:YES];
 
-                [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"] forState:UIControlStateNormal];
-                [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"] forState:UIControlStateHighlighted];
+                [slider setThumbImage:[[UIImage imageNamed:@"seekbar_thumb 2.png"] stretchableImageWithLeftCapWidth:60 topCapHeight:25] forState:UIControlStateNormal];
+                [slider setThumbImage:[[UIImage imageNamed:@"seekbar_thumb 2.png"] stretchableImageWithLeftCapWidth:60 topCapHeight:25] forState:UIControlStateHighlighted];
                 [slider setMinimumTrackImage:[UIImage imageNamed:@"seekbar_dark_patch 2.png"] forState:UIControlStateNormal];
                 [slider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"] forState:UIControlStateNormal];
                 [belowBackgroundLabel addSubview:slider];
@@ -3900,15 +3879,6 @@
             return;
         }
         if ([self isSameAsCurrentMAC:cloudMAC]) {
-            [self.HUD show:YES];
-        }
-    });
-
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.disposed) {
-            return;
-        }
-        if ([self isSameAsCurrentMAC:cloudMAC]) {
             self.deviceList = newDeviceList;
             if (newDeviceValueList) {
                 self.deviceValueList = newDeviceValueList;
@@ -3961,6 +3931,12 @@
     if (newDeviceValueList == nil) {
         newDeviceValueList = @[];
     }
+
+    if (newDeviceList.count != newDeviceValueList.count) {
+        NSLog(@"Warning: device list and values lists are incongruent, d:%ld, v:%ld", newDeviceList.count, newDeviceValueList.count);
+    }
+
+    DLog(@"Changing device value list: %@", newDeviceValueList);
 
     // Restore isExpanded state
     NSArray *oldDeviceList = self.deviceList;
