@@ -16,7 +16,7 @@
 #import "SensorsViewController.h"
 #import "DrawerViewController.h"
 
-@interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate>
+@interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, UIGestureRecognizerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSTimer *displayNoCloudTimer;
 @property(nonatomic, readonly) NSTimer *cloudReconnectTimer;
@@ -327,8 +327,10 @@
     [self presentViewController:ctrl animated:YES completion:nil];
 
     // Activate gestures in Reveal; must be done after it has been set up
-//    [ctrl panGestureRecognizer];
+    [ctrl panGestureRecognizer];
     [ctrl tapGestureRecognizer];
+
+    ctrl.panGestureRecognizer.delegate = self;
 }
 
 - (void)presentLogoutAllView {
@@ -410,6 +412,23 @@
     else {
         [self conditionalTryConnectOrLogon:NO];
     }
+}
+
+#pragma mark - UIGestureRecognizerDelegate methods
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    UIView *view = touch.view;
+
+    if ([view isKindOfClass:[UISlider class]]) {
+        // prevent recognizing touches on the slider
+        return NO;
+    }
+
+    if (view.tag == SENSOR_VIEW_EXCLUDE_TOUCHES_BACKGROUND_VIEW_TAG) {
+        return NO;
+    }
+
+    return YES;
 }
 
 @end
