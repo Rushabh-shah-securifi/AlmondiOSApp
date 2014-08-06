@@ -9,7 +9,6 @@
 #import "SFISignupViewController.h"
 #import "SNLog.h"
 #import "MBProgressHUD.h"
-#import "SFITermsViewController.h"
 
 #define PWD_MIN_LENGTH 6
 #define PWD_MAX_LENGTH 32
@@ -27,7 +26,7 @@
 #define REGEX_PASSWORD_ONE_SYMBOL @"^(?=.*[!@#$%&_]).*$"  //Should contains one or more symbol
 #define REGEX_EMAIL @"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$"
 
-@interface SFISignupViewController () <UITextFieldDelegate, SFITermsViewControllerDelegate>
+@interface SFISignupViewController () <UITextFieldDelegate>
 typedef enum {
     PasswordStrengthTypeTooShort,
     PasswordStrengthTypeTooLong,
@@ -36,6 +35,7 @@ typedef enum {
     PasswordStrengthTypeStrong
 } PasswordStrengthType;
 
+@property(nonatomic) UIWebView *webview;
 @property(nonatomic) UITextField *activeTextField;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property BOOL acceptedLicenseTerms;
@@ -55,14 +55,6 @@ typedef enum {
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
     self.navigationItem.title = @"Sign up";
 
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelAction:)];
-    UIBarButtonItem *continueButton = [[UIBarButtonItem alloc] initWithTitle:@"Continue" style:UIBarButtonItemStylePlain target:self action:@selector(onContinueAction:)];
-
-    self.navigationItem.leftBarButtonItem = cancelButton;
-    self.navigationItem.rightBarButtonItem = continueButton;
-
-    [self enableContinueButton:NO];
-
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.dimBackground = YES;
@@ -71,7 +63,7 @@ typedef enum {
     self.scrollView.scrollEnabled = NO;
     self.scrollView.scrollsToTop = NO;
 
-    [self displayScreenToSignup];
+    [self showTermsAndConditions];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -128,6 +120,50 @@ typedef enum {
                     object:nil];
 }
 
+- (void)showTermsAndConditions {
+    UIBarButtonItem *declineButton = [[UIBarButtonItem alloc] initWithTitle:@"Decline" style:UIBarButtonItemStylePlain target:self action:@selector(onCancelAction:)];
+    self.navigationItem.leftBarButtonItem = declineButton;
+
+    UIBarButtonItem *acceptButton = [[UIBarButtonItem alloc] initWithTitle:@"Accept" style:UIBarButtonItemStylePlain target:self action:@selector(onAcceptedTermsAndConditions)];
+    self.navigationItem.rightBarButtonItem = acceptButton;
+
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.frame];
+
+    NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"termsofuse" ofType:@"html"];
+    NSString* htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+    [webView loadHTMLString:htmlString baseURL:nil];
+
+    self.webview = webView;
+    self.scrollView.alpha = 0.0;
+    [self.view addSubview:webView];
+}
+
+- (void)showSignupForm {
+    [self displayScreenToSignup];
+
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelAction:)];
+    self.navigationItem.leftBarButtonItem = cancelButton;
+
+    UIBarButtonItem *continueButton = [[UIBarButtonItem alloc] initWithTitle:@"Continue" style:UIBarButtonItemStylePlain target:self action:@selector(onContinueAction:)];
+    continueButton.tag = CONTINUE_BUTTON_SIGNUP;
+    self.navigationItem.rightBarButtonItem = continueButton;
+    [self enableContinueButton:NO];
+
+    [UIView animateWithDuration:0.5 animations:^() {
+        self.webview.alpha = 0.0;
+        self.scrollView.alpha = 1.0;
+
+    } completion:^(BOOL finished) {
+        [self.webview removeFromSuperview];
+        self.webview = nil;
+    }];
+}
+
+- (void)onAcceptedTermsAndConditions {
+    self.acceptedLicenseTerms = YES;
+    [self showSignupForm];
+}
+
 #pragma mark - Modes
 
 - (void)displayScreenToSignup {
@@ -175,8 +211,8 @@ typedef enum {
 
     switch (tag) {
         case FOOTER_TERMS_CONDS: {
-            label = @"By tapping Continue you are indicating that \nyou have read and agreed to our";
-            button = @"Terms and Conditions";
+            label = nil;
+            button = nil;
             break;
         }
 
@@ -197,12 +233,19 @@ typedef enum {
     }
 
     self.footerLabel.text = label;
-
     self.footerButton.tag = tag;
-    [self.footerButton setTitle:button forState:UIControlStateNormal];
-    [self.footerButton setTitle:button forState:UIControlStateHighlighted];
-    [self.footerButton setTitle:button forState:UIControlStateDisabled];
-    [self.footerButton setTitle:button forState:UIControlStateSelected];
+
+    if (button) {
+        [self.footerButton setTitle:button forState:UIControlStateNormal];
+        [self.footerButton setTitle:button forState:UIControlStateHighlighted];
+        [self.footerButton setTitle:button forState:UIControlStateDisabled];
+        [self.footerButton setTitle:button forState:UIControlStateSelected];
+        self.footerButton.hidden = NO;
+    }
+    else {
+        self.footerButton.hidden = YES;
+    }
+
 }
 
 - (void)tryEnableContinueButton {
@@ -245,7 +288,7 @@ typedef enum {
     [self enableContinueButton:NO];
 
     NSDictionary *info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGSize kbSize = [info[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
 
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
     self.scrollView.contentInset = contentInsets;
@@ -389,11 +432,7 @@ typedef enum {
     UIButton *btn = (UIButton *) sender;
     switch (btn.tag) {
         case FOOTER_TERMS_CONDS: {
-            SFITermsViewController *ctrl = [SFITermsViewController new];
-            ctrl.delegate = self;
-
-            UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-            [self presentViewController:navCtrl animated:YES completion:nil];
+            // do nothing
             break;
         }
         case FOOTER_RESEND_ACTIVATION_LINK: {
@@ -625,11 +664,5 @@ typedef enum {
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
-#pragma mark - SFITermsViewControllerDelegate methods
-
-- (void)termsViewControllerDidDismiss:(SFITermsViewController *)ctrl userAcceptedLicense:(BOOL)didAccept {
-    self.acceptedLicenseTerms = didAccept;
-    [self tryEnableContinueButton];
-}
 
 @end

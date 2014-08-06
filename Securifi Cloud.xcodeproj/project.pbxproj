@@ -192,7 +192,6 @@
 		CE9A8E5918B332D500003659 /* no_cloud_640x960.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9A8E5718B332D500003659 /* no_cloud_640x960.png */; };
 		CE9A8E5A18B332D500003659 /* no_cloud_640x1136.png in Resources */ = {isa = PBXBuildFile; fileRef = CE9A8E5818B332D500003659 /* no_cloud_640x1136.png */; };
 		CE9F1A1818BB51350004A7BE /* SFITermsViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CE9F1A1618BB51350004A7BE /* SFITermsViewController.h */; };
-		CE9F1A1918BB51350004A7BE /* SFITermsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE9F1A1718BB51350004A7BE /* SFITermsViewController.m */; };
 		CEC937081845C1E300E99FED /* SFIRouterTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CEC937061845C1E300E99FED /* SFIRouterTableViewController.h */; };
 		CEC937091845C1E300E99FED /* SFIRouterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEC937071845C1E300E99FED /* SFIRouterTableViewController.m */; };
 		CEC9370F1845D1CF00E99FED /* SFIRouterSummary.h in Headers */ = {isa = PBXBuildFile; fileRef = CEC9370D1845D1CF00E99FED /* SFIRouterSummary.h */; };
@@ -460,7 +459,6 @@
 		CE9A8E5718B332D500003659 /* no_cloud_640x960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_cloud_640x960.png; path = images/no_cloud_640x960.png; sourceTree = "<group>"; };
 		CE9A8E5818B332D500003659 /* no_cloud_640x1136.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = no_cloud_640x1136.png; path = images/no_cloud_640x1136.png; sourceTree = "<group>"; };
 		CE9F1A1618BB51350004A7BE /* SFITermsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFITermsViewController.h; sourceTree = "<group>"; };
-		CE9F1A1718BB51350004A7BE /* SFITermsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFITermsViewController.m; sourceTree = "<group>"; };
 		CEC937061845C1E300E99FED /* SFIRouterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterTableViewController.h; sourceTree = "<group>"; };
 		CEC937071845C1E300E99FED /* SFIRouterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterTableViewController.m; sourceTree = "<group>"; };
 		CEC9370D1845D1CF00E99FED /* SFIRouterSummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterSummary.h; sourceTree = "<group>"; };
@@ -785,7 +783,6 @@
 				CE466A66182784BD00E55DF9 /* SFIEventViewController.h */,
 				CE466A67182784BD00E55DF9 /* SFIEventViewController.m */,
 				CE9F1A1618BB51350004A7BE /* SFITermsViewController.h */,
-				CE9F1A1718BB51350004A7BE /* SFITermsViewController.m */,
 			);
 			name = Cloud;
 			sourceTree = "<group>";
@@ -1216,7 +1213,6 @@
 				CE5D0BCC1807D16300224009 /* SFISceneViewController.m in Sources */,
 				CE539F9317FAE34000640820 /* SNLog.m in Sources */,
 				909A21CC165DA60400C767F5 /* SFIAppDelegate.m in Sources */,
-				CE9F1A1918BB51350004A7BE /* SFITermsViewController.m in Sources */,
 				1C41B17419344562006F0DD8 /* SFIAffiliationViewController.m in Sources */,
 				909A21EE165DF7D100C767F5 /* SFILoginViewController.m in Sources */,
 				CECD693E1832400800B77A46 /* SFIBlockedDevice.m in Sources */,

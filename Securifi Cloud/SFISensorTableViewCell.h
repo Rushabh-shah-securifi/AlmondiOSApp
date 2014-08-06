@@ -7,4 +7,7 @@
 
 
 @interface SFISensorTableViewCell : UITableViewCell
+
+@property SFIDevice *sensor;
+
 @end
