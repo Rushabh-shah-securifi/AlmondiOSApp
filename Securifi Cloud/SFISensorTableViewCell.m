@@ -65,7 +65,7 @@
     const CGRect cell_frame = self.frame;
     const NSInteger row_index = self.tag;
 
-    UILabel *leftBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, LEFT_LABEL_WIDTH, SENSOR_ROW_HEIGHT - 10)];
+    UIView *leftBackgroundLabel = [[UIView alloc] initWithFrame:CGRectMake(10, 5, LEFT_LABEL_WIDTH, SENSOR_ROW_HEIGHT - 10)];
     leftBackgroundLabel.tag = 111;
     leftBackgroundLabel.userInteractionEnabled = YES;
     leftBackgroundLabel.backgroundColor = [self makeStandardBlue];
@@ -75,10 +75,10 @@
     deviceButton.tag = row_index;
     deviceButton.frame = leftBackgroundLabel.bounds;
     deviceButton.backgroundColor = [UIColor clearColor];
-    [deviceButton addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [deviceButton addTarget:nil action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
     [leftBackgroundLabel addSubview:deviceButton];
 
-    UILabel *rightBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH + 11, 5, cell_frame.size.width - LEFT_LABEL_WIDTH - 25, SENSOR_ROW_HEIGHT - 10)];
+    UIView *rightBackgroundLabel = [[UIView alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH + 11, 5, cell_frame.size.width - LEFT_LABEL_WIDTH - 25, SENSOR_ROW_HEIGHT - 10)];
     rightBackgroundLabel.backgroundColor = [self makeStandardBlue];
     [self.contentView addSubview:rightBackgroundLabel];
 
@@ -108,21 +108,22 @@
     settingsButton.tag = row_index;
     settingsButton.frame = imgSettings.bounds;
     settingsButton.backgroundColor = [UIColor clearColor];
-    [settingsButton addTarget:self action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [settingsButton addTarget:nil action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
     [imgSettings addSubview:settingsButton];
 
     UIButton *settingsButtonCell = [UIButton buttonWithType:UIButtonTypeCustom];
     settingsButtonCell.tag = row_index;
     settingsButtonCell.frame = CGRectMake(cell_frame.size.width - 80, 5, 60, 80);
     settingsButtonCell.backgroundColor = [UIColor clearColor];
-    [settingsButtonCell addTarget:self action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [settingsButtonCell addTarget:nil action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:settingsButtonCell];
 }
 
 - (void)layoutDeviceImageCell {
     UIButton *deviceImageButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    deviceImageButton.tag = self.tag;
     deviceImageButton.backgroundColor = [UIColor clearColor];
-    [deviceImageButton addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [deviceImageButton addTarget:nil action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
 
     if (self.device.deviceType == 7 /*thermostat */) {
         // In case of thermostat show value instead of image
@@ -248,36 +249,10 @@
     }
 }
 
-#pragma mark - Event handling
-
-- (void)onSettingClicked:(id)sender {
-
-}
-
-- (void)onDeviceClicked:(id)sender {
-
-}
-
 #pragma mark - Device layout
 
 - (void)configureSwitch_1 {
-    self.deviceImageView.image = [UIImage imageNamed:self.device.imageName];
-
-    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceValuesIndex:0];
-    NSString *currentValue = values.value;
-
-    NSString *status;
-    if (values.isUpdating) {
-        status = @"Updating sensor data.\nPlease wait.";
-    }
-    else if (currentValue == nil) {
-        status = @"Could not update sensor\ndata.";
-    }
-    else {
-        status = [values choiceForBoolValueTrueValue:@"ON" falseValue:@"OFF" nilValue:currentValue];
-    }
-
-    self.deviceValueLabel.text = status;
+    [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
 }
 
 - (void)configureMultiLevelSwitch_2 {
