@@ -5,10 +5,14 @@
 //
 #import <Foundation/Foundation.h>
 
+@class SFIColors;
 
 @interface SFISensorTableViewCell : UITableViewCell
 
-@property SFIDevice *sensor;
-@property SFIDeviceValue *deviceValues;
+@property(nonatomic) SFIDevice *device;
+@property(nonatomic) SFIDeviceValue *deviceValue;
+@property(nonatomic) SFIColors *currentColor;
+
+- (void)markWillReuse;
 
 @end

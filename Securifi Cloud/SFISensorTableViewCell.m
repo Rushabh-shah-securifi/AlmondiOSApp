@@ -5,33 +5,128 @@
 //
 #import "SFISensorTableViewCell.h"
 #import "SFIConstants.h"
+#import "SFIColors.h"
 
 
 @interface SFISensorTableViewCell ()
-@property UIImageView *deviceImage;
-@property UILabel *deviceStatusLabel;
-@property UILabel *deviceValueLabel;
+@property(nonatomic) UIImageView *deviceImageView;
+@property(nonatomic) UILabel *deviceStatusLabel;
+@property(nonatomic) UILabel *deviceValueLabel;
 
 // For thermostat
-@property UILabel *decimalValueLabel;
-@property UILabel *degreeLabel;
+@property(nonatomic) UILabel *decimalValueLabel;
+@property(nonatomic) UILabel *degreeLabel;
+
+@property(nonatomic) BOOL dirty;
 
 @end
 
 @implementation SFISensorTableViewCell
 
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+
+    return self;
+}
+
+- (void)markWillReuse {
+    self.dirty = YES;
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
 
-    self.deviceImage.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
+    if (self.dirty) {
+        self.dirty = NO;
 
+        [self tearDown];
+        [self layoutTileFrame];
+        [self layoutDeviceImageCell];
+        [self layoutDevice];
+    }
+}
+
+- (void)tearDown {
+    for (UIView *currentView in self.contentView.subviews) {
+        [currentView removeFromSuperview];
+    }
+    self.deviceImageView = nil;
+    self.deviceStatusLabel = nil;
+    self.deviceValueLabel = nil;
+    self.decimalValueLabel = nil;
+    self.decimalValueLabel = nil;
+}
+
+- (void)layoutTileFrame {
+    const SFIDevice *currentSensor = self.device;
+    const CGRect cell_frame = self.frame;
+    const NSInteger row_index = self.tag;
+
+    UILabel *leftBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, LEFT_LABEL_WIDTH, SENSOR_ROW_HEIGHT - 10)];
+    leftBackgroundLabel.tag = 111;
+    leftBackgroundLabel.userInteractionEnabled = YES;
+    leftBackgroundLabel.backgroundColor = [self makeStandardBlue];
+    [self.contentView addSubview:leftBackgroundLabel];
+
+    UIButton *deviceButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    deviceButton.tag = row_index;
+    deviceButton.frame = leftBackgroundLabel.bounds;
+    deviceButton.backgroundColor = [UIColor clearColor];
+    [deviceButton addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [leftBackgroundLabel addSubview:deviceButton];
+
+    UILabel *rightBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH + 11, 5, cell_frame.size.width - LEFT_LABEL_WIDTH - 25, SENSOR_ROW_HEIGHT - 10)];
+    rightBackgroundLabel.backgroundColor = [self makeStandardBlue];
+    [self.contentView addSubview:rightBackgroundLabel];
+
+    UILabel *deviceNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, (cell_frame.size.width - LEFT_LABEL_WIDTH - 90), 30)];
+    deviceNameLabel.backgroundColor = [UIColor clearColor];
+    deviceNameLabel.textColor = [UIColor whiteColor];
+    deviceNameLabel.text = currentSensor.deviceName;
+    [rightBackgroundLabel addSubview:deviceNameLabel];
+
+    UILabel *deviceStatusLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 25, 180, 60)];
+    deviceStatusLabel.backgroundColor = [UIColor clearColor];
+    deviceStatusLabel.textColor = [UIColor whiteColor];
+    deviceStatusLabel.numberOfLines = 2;
+    deviceStatusLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    [rightBackgroundLabel addSubview:deviceStatusLabel];
+    self.deviceStatusLabel = deviceStatusLabel;
+
+    //todo seems like the button could take place of image view
+
+    UIImageView *imgSettings = [[UIImageView alloc] initWithFrame:CGRectMake(cell_frame.size.width - 60, 37, 23, 23)];
+    imgSettings.image = [UIImage imageNamed:@"icon_config.png"];
+    imgSettings.alpha = 0.5;
+    imgSettings.userInteractionEnabled = YES;
+    [self.contentView addSubview:imgSettings];
+
+    UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    settingsButton.tag = row_index;
+    settingsButton.frame = imgSettings.bounds;
+    settingsButton.backgroundColor = [UIColor clearColor];
+    [settingsButton addTarget:self action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [imgSettings addSubview:settingsButton];
+
+    UIButton *settingsButtonCell = [UIButton buttonWithType:UIButtonTypeCustom];
+    settingsButtonCell.tag = row_index;
+    settingsButtonCell.frame = CGRectMake(cell_frame.size.width - 80, 5, 60, 80);
+    settingsButtonCell.backgroundColor = [UIColor clearColor];
+    [settingsButtonCell addTarget:self action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.contentView addSubview:settingsButtonCell];
+}
+
+- (void)layoutDeviceImageCell {
     UIButton *deviceImageButton = [UIButton buttonWithType:UIButtonTypeCustom];
     deviceImageButton.backgroundColor = [UIColor clearColor];
     [deviceImageButton addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
 
-    if (self.sensor.deviceType == 7 /*thermostat */) {
-        //In case of thermostat show value instead of image
-        //For Integer Value
+    if (self.device.deviceType == 7 /*thermostat */) {
+        // In case of thermostat show value instead of image
+        // For Integer Value
         self.deviceValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH / 5, 12, 60, 70)];
         self.deviceValueLabel.backgroundColor = [UIColor clearColor];
         self.deviceValueLabel.textColor = [UIColor whiteColor];
@@ -39,14 +134,14 @@
         self.deviceValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:45];
         [self.deviceValueLabel addSubview:deviceImageButton];
 
-        //For Decimal Value
+        // For Decimal Value
         self.decimalValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 10, 40, 20, 30)];
         self.decimalValueLabel.backgroundColor = [UIColor clearColor];
         self.decimalValueLabel.textColor = [UIColor whiteColor];
         self.decimalValueLabel.textAlignment = NSTextAlignmentCenter;
         self.decimalValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:18];
 
-        //For Degree
+        // For Degree
         self.degreeLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 10, 25, 20, 20)];
         self.degreeLabel.backgroundColor = [UIColor clearColor];
         self.degreeLabel.textColor = [UIColor whiteColor];
@@ -59,19 +154,114 @@
         [self.contentView addSubview:self.degreeLabel];
     }
     else {
-        self.deviceImage = [[UIImageView alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH / 3, 12, 53, 70)];
-        self.deviceImage.userInteractionEnabled = YES;
+        self.deviceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH / 3, 12, 53, 70)];
+        self.deviceImageView.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
+        self.deviceImageView.userInteractionEnabled = YES;
 
-        [self.deviceImage addSubview:deviceImageButton];
-        deviceImageButton.frame = self.deviceImage.bounds;
+        [self.deviceImageView addSubview:deviceImageButton];
+        deviceImageButton.frame = self.deviceImageView.bounds;
 
-        [self.contentView addSubview:self.deviceImage];
+        [self.contentView addSubview:self.deviceImageView];
     }
 }
 
+- (void)layoutDevice {
+    const SFIDevice *currentSensor = self.device;
+
+    switch (currentSensor.deviceType) {
+        case 1: {
+            [self configureSwitch_1];
+            break;
+        }
+        case 2: {
+            [self configureMultiLevelSwitch_2];
+            break;
+        }
+        case 3: {
+            [self configureBinarySensor_3];
+            break;
+        }
+        case 4: {
+            [self configureLevelControl_4];
+            break;
+        }
+        case 5: {
+            [self configureDoorLocked_5];
+            break;
+        }
+        case 6: {
+            [self configureAlarm_6];
+            break;
+        }
+        case 7: {
+            [self configureThermostat_7];
+            break;
+        }
+        case 11: {
+            [self configureMotionSensor_11];
+            break;
+        }
+        case 12: {
+            [self configureContactSwitch_12];
+            break;
+        }
+        case 13: {
+            [self configureFireSensor_13];
+            break;
+        }
+        case 14: {
+            [self configureWaterSensor_14];
+            break;
+        }
+        case 15: {
+            [self configureGasSensor_15];
+            break;
+        }
+        case 17: {
+            [self configureGasSensor_17];
+            break;
+        }
+        case 19: {
+            [self configureKeyFob_19];
+            break;
+        }
+        case 22: {
+            [self configureElectricMeasurementSwitch_22];
+            break;
+        }
+        case 23: {
+            [self configureElectricMeasurementSwitch_23];
+            break;
+        }
+        case 27: {
+            [self configureTempSensor_27];
+            break;
+        }
+        case 34: {
+            [self configureShadeSensor_34];
+            break;
+        }
+        default: {
+            self.deviceImageView.image = [UIImage imageNamed:currentSensor.imageName];
+            break;
+        }
+    }
+}
+
+#pragma mark - Event handling
+
+- (void)onSettingClicked:(id)sender {
+
+}
+
+- (void)onDeviceClicked:(id)sender {
+
+}
+
+#pragma mark - Device layout
 
 - (void)configureSwitch_1 {
-    self.deviceImage.image = [UIImage imageNamed:self.sensor.imageName];
+    self.deviceImageView.image = [UIImage imageNamed:self.device.imageName];
 
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceValuesIndex:0];
     NSString *currentValue = values.value;
@@ -91,8 +281,8 @@
 }
 
 - (void)configureMultiLevelSwitch_2 {
-    NSString *name = [self.sensor imageName:DT2_MULTILEVEL_SWITCH_TRUE];
-    self.deviceImage.image = [UIImage imageNamed:name];
+    NSString *name = [self.device imageName:DT2_MULTILEVEL_SWITCH_TRUE];
+    self.deviceImageView.image = [UIImage imageNamed:name];
 
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceValuesIndex:0];
     if (values.isUpdating) {
@@ -100,7 +290,7 @@
     }
     else {
         //Get Percentage
-        SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceValuesIndex:self.sensor.mostImpValueIndex];
+        SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceValuesIndex:self.device.mostImpValueIndex];
         NSString *currentLevel = currentLevelKnownValue.value;
 
         self.deviceStatusLabel.text = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
@@ -114,8 +304,8 @@
 }
 
 - (void)configureLevelControl_4 {
-    NSString *image_name = [self.sensor imageName:DT4_LEVEL_CONTROL_TRUE];
-    self.deviceImage.image = [UIImage imageNamed:image_name];
+    NSString *image_name = [self.device imageName:DT4_LEVEL_CONTROL_TRUE];
+    self.deviceImageView.image = [UIImage imageNamed:image_name];
 
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDevice];
     if (values.isUpdating) {
@@ -123,7 +313,7 @@
     }
     else {
         //Get Percentage
-        SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceValuesIndex:self.sensor.mostImpValueIndex];
+        SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceValuesIndex:self.device.mostImpValueIndex];
         float intLevel = [currentLevelKnownValue floatValue];
         intLevel = (intLevel / 256) * 100;
 
@@ -221,7 +411,7 @@
 }
 
 - (void)configureMotionSensor_11 {
-    self.deviceImage.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.25), 12, 53, 70); //todo why different?
+    self.deviceImageView.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.25), 12, 53, 70); //todo why different?
     [self configureBinaryStateSensor:DT11_MOTION_SENSOR_TRUE imageNameFalse:DT11_MOTION_SENSOR_FALSE statusTrue:@"MOTION DETECTED" statusFalse:@"NO MOTION"];
 }
 
@@ -311,209 +501,42 @@
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDevice];
 
-    NSString *imageName = [values choiceForBoolValueTrueValue:imageNameTrue falseValue:imageNameFalse nilValue:self.sensor.imageName];
-    self.deviceImage.image = [UIImage imageNamed:imageName];
+    NSString *imageName = [values choiceForBoolValueTrueValue:imageNameTrue falseValue:imageNameFalse nilValue:self.device.imageName];
+    self.deviceImageView.image = [UIImage imageNamed:imageName];
 
     NSString *status = [values choiceForBoolValueTrueValue:statusTrue falseValue:statusFalse nilValue:@"Could not update sensor\ndata."];
-    if (self.sensor.isBatteryLow) {
+    if (self.device.isBatteryLow) {
         status = [status stringByAppendingString:@"\nLOW BATTERY"];
         self.deviceStatusLabel.numberOfLines = 2;
     }
     self.deviceStatusLabel.text = status;
 }
 
-- (void)initialize:(UITableView *)tableView listRow:(int)indexPathRow device:(SFIDevice *)currentSensor {
-    int currentDeviceType = currentSensor.deviceType;
-
-    UITableViewCell *cell = self;
-
-    UIImageView *deviceImage;
-    UILabel *deviceNameLabel;
-    UILabel *deviceStatusLabel;
-
-    UIImageView *imgSettings;
-    UIButton *btnDevice;
-    UIButton *btnDeviceImg;
-    UIButton *btnSettings;
-    UILabel *leftBackgroundLabel;
-    UILabel *rightBackgroundLabel;
-    UIButton *btnSettingsCell;
-
-//    UIColor *standard_blue = [self makeStandardBlue];
-
-    const CGRect cell_frame = self.frame;
-
-
-    //Left Square - Creation
-    leftBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, LEFT_LABEL_WIDTH, SENSOR_ROW_HEIGHT - 10)];
-    leftBackgroundLabel.tag = 111;
-    leftBackgroundLabel.userInteractionEnabled = YES;
-    leftBackgroundLabel.backgroundColor = [self makeStandardBlue];
-    [cell.contentView addSubview:leftBackgroundLabel];
-
-    btnDeviceImg = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnDeviceImg.backgroundColor = [UIColor clearColor];
-    [btnDeviceImg addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
-
-    btnDevice = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnDevice.frame = leftBackgroundLabel.bounds;
-    btnDevice.backgroundColor = [UIColor clearColor];
-    [btnDevice addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [leftBackgroundLabel addSubview:btnDevice];
-
-    //Right Rectangle - Creation
-    rightBackgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH + 11, 5, cell_frame.size.width - LEFT_LABEL_WIDTH - 25, SENSOR_ROW_HEIGHT - 10)];
-    rightBackgroundLabel.backgroundColor = [self makeStandardBlue];
-    [cell.contentView addSubview:rightBackgroundLabel];
-
-    deviceNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, (cell_frame.size.width - LEFT_LABEL_WIDTH - 90), 30)];
-    deviceNameLabel.backgroundColor = [UIColor clearColor];
-    deviceNameLabel.textColor = [UIColor whiteColor];
-    deviceStatusLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:16];
-    [rightBackgroundLabel addSubview:deviceNameLabel];
-
-    deviceStatusLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 25, 180, 60)];
-    deviceStatusLabel.backgroundColor = [UIColor clearColor];
-    deviceStatusLabel.textColor = [UIColor whiteColor];
-    deviceStatusLabel.numberOfLines = 2;
-    deviceStatusLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
-    [rightBackgroundLabel addSubview:deviceStatusLabel];
-
-    imgSettings = [[UIImageView alloc] initWithFrame:CGRectMake(cell_frame.size.width - 60, 37, 23, 23)];
-    imgSettings.image = [UIImage imageNamed:@"icon_config.png"];
-    imgSettings.alpha = 0.5;
-    imgSettings.userInteractionEnabled = YES;
-
-    btnSettings = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnSettings.frame = imgSettings.bounds;
-    btnSettings.backgroundColor = [UIColor clearColor];
-    [btnSettings addTarget:self action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [imgSettings addSubview:btnSettings];
-
-    btnSettingsCell = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnSettingsCell.frame = CGRectMake(cell_frame.size.width - 80, 5, 60, 80);
-    btnSettingsCell.backgroundColor = [UIColor clearColor];
-    [btnSettingsCell addTarget:self action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [cell.contentView addSubview:btnSettingsCell];
-
-    //Fill values
-    deviceNameLabel.text = currentSensor.deviceName;
-
-    switch (currentDeviceType) {
-        case 1: {
-            [self configureSwitch_1];
-            break;
-        }
-        case 2: {
-            [self configureMultiLevelSwitch_2];
-            break;
-        }
-        case 3: {
-            [self configureBinarySensor_3];
-            break;
-        }
-        case 4: {
-            [self configureLevelControl_4];
-            break;
-        }
-        case 5: {
-            [self configureDoorLocked_5];
-            break;
-        }
-        case 6: {
-            [self configureAlarm_6];
-            break;
-        }
-        case 7: {
-            [self configureThermostat_7];
-            break;
-        }
-        case 11: {
-            [self configureMotionSensor_11];
-            break;
-        }
-        case 12: {
-            [self configureContactSwitch_12];
-            break;
-        }
-        case 13: {
-            [self configureFireSensor_13];
-            break;
-        }
-        case 14: {
-            [self configureWaterSensor_14];
-            break;
-        }
-        case 15: {
-            [self configureGasSensor_15];
-            break;
-        }
-        case 17: {
-            [self configureGasSensor_17];
-            break;
-        }
-        case 19: {
-            [self configureKeyFob_19];
-            break;
-        }
-        case 22: {
-            [self configureElectricMeasurementSwitch_22];
-            break;
-        }
-        case 23: {
-            [self configureElectricMeasurementSwitch_23];
-            break;
-        }
-        case 27: {
-            [self configureTempSensor_27];
-            break;
-        }
-        case 34: {
-            [self configureShadeSensor_34];
-            break;
-        }
-        default: {
-            deviceImage.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
-            deviceImage.image = [UIImage imageNamed:currentSensor.imageName];
-            break;
-        }
-    }
-
-    btnDevice.tag = indexPathRow;
-    btnDeviceImg.tag = indexPathRow;
-    btnSettings.tag = indexPathRow;
-    btnSettingsCell.tag = indexPathRow;
-
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [cell.contentView addSubview:imgSettings];
-}
+#pragma mark - Device Values
 
 - (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice {
-    return [self tryGetCurrentKnownValuesForDeviceValuesIndex:self.sensor.stateIndex];
+    return [self tryGetCurrentKnownValuesForDeviceValuesIndex:self.device.stateIndex];
 }
 
 - (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDeviceValuesIndex:(int)stateIndex {
     NSArray *values = [self currentKnownValuesForDevice];
-    if (stateIndex < values.count) {
-        return values[(NSUInteger) index];
+    if (values.count > 0 && stateIndex < values.count) {
+        return values[(NSUInteger) stateIndex];
     }
     return nil;
 }
 
 - (NSArray *)currentKnownValuesForDevice {
-    return self.deviceValues.knownValues;
+    return self.deviceValue.knownValues;
 }
 
 - (UIColor *)makeStandardBlue {
-    return [UIColor colorWithHue:(CGFloat) (self.changeHue / 360.0) saturation:(CGFloat) (self.changeSaturation / 100.0) brightness:(CGFloat) (self.changeBrightness / 100.0) alpha:1];
-}
+    SFIColors *color = self.currentColor;
 
-- (void)onSettingClicked:(id)onSettingClicked {
-
-}
-
-- (void)onDeviceClicked:(id)onDeviceClicked {
-
+    return [UIColor colorWithHue:(CGFloat) (color.hue / 360.0)
+                      saturation:(CGFloat) (color.saturation / 100.0)
+                      brightness:(CGFloat) (color.brightness / 100.0)
+                           alpha:1];
 }
 
 @end
