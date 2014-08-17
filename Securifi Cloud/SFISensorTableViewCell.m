@@ -6,6 +6,7 @@
 #import "SFISensorTableViewCell.h"
 #import "SFIConstants.h"
 #import "SFIColors.h"
+#import "SFISensorDetailView.h"
 
 
 @interface SFISensorTableViewCell ()
@@ -45,7 +46,7 @@
         [self tearDown];
         [self layoutTileFrame];
         [self layoutDeviceImageCell];
-        [self layoutDevice];
+        [self layoutDeviceInfo];
     }
 }
 
@@ -166,7 +167,7 @@
     }
 }
 
-- (void)layoutDevice {
+- (void)layoutDeviceInfo {
     const SFIDevice *currentSensor = self.device;
 
     switch (currentSensor.deviceType) {
@@ -246,7 +247,19 @@
             self.deviceImageView.image = [UIImage imageNamed:currentSensor.imageName];
             break;
         }
+    } // for each device
+
+    if (self.device.isExpanded) {
+        SFISensorDetailView *detailView = [SFISensorDetailView new];
+        detailView.frame = self.frame;
+        detailView.tag = self.tag;
+        detailView.device = self.device;
+        detailView.deviceValue = self.deviceValue;
+        detailView.currentColor = self.currentColor;
+
+        [self.contentView addSubview:detailView];
     }
+
 }
 
 #pragma mark - Device layout

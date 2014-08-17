@@ -1,18 +1,17 @@
 //
-//  SFISensorTableViewCell.h
+//  SFISensorDetailView.h
 //
-//  Created by sinclair on 6/25/14.
+//  Created by sinclair on 8/15/14.
 //
 #import <UIKit/UIKit.h>
 
 @class SFIColors;
 
-@interface SFISensorTableViewCell : UITableViewCell
+
+@interface SFISensorDetailView : UIView
 
 @property(nonatomic) SFIDevice *device;
 @property(nonatomic) SFIDeviceValue *deviceValue;
 @property(nonatomic) SFIColors *currentColor;
-
-- (void)markWillReuse;
 
 @end
