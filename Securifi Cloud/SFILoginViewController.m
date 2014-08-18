@@ -12,7 +12,9 @@
 
 @interface SFILoginViewController () <UITextFieldDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
-@property(nonatomic) BOOL lastEditiedFieldWasPasswd;
+@property(nonatomic) BOOL lastEditedFieldWasPasswd;
+@property(nonatomic) NSTimer *timeoutTimer;
+@property(nonatomic) BOOL isLoggingIn;
 @end
 
 @implementation SFILoginViewController
@@ -79,6 +81,11 @@
 
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self hideHud];
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
 
@@ -110,11 +117,15 @@
 }
 
 - (void)enableLoginButton:(BOOL)enabled {
-    self.loginButton.enabled = enabled;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.loginButton.enabled = enabled;
+    });
 }
 
 - (void)tryEnableLostPwdButton {
-    self.forgotPwdButton.enabled = (self.emailID.text.length > 0);
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.forgotPwdButton.enabled = (self.emailID.text.length > 0);
+    });
 }
 
 - (BOOL)validateCredentials {
@@ -123,6 +134,8 @@
 
 - (void)hideHud {
     dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.timeoutTimer invalidate];
+        self.timeoutTimer = nil;
         [self.HUD hide:YES afterDelay:1.0];
     });
 }
@@ -171,7 +184,7 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     // To prevent the Login Action being invoked when the keyboard hides after editing hte email address,
     // we keep track of the last edited one here.
-    self.lastEditiedFieldWasPasswd = (textField == self.password);
+    self.lastEditedFieldWasPasswd = (textField == self.password);
 }
 
 #pragma mark - Keyboard handler
@@ -183,7 +196,7 @@
 - (void)onKeyboardDidHide:(id)notice {
     BOOL valid = [self validateCredentials];
 
-    if (valid && self.lastEditiedFieldWasPasswd) {
+    if (valid && self.lastEditedFieldWasPasswd) {
         [self sendLoginWithEmailRequest];
     }
 
@@ -218,29 +231,67 @@
 }
 
 - (void)sendLoginWithEmailRequest {
-    [self.HUD show:YES];
+    self.isLoggingIn = YES;
+    [self showHudWithTimeout:10];
 
     [[SecurifiToolkit sharedInstance] asyncSendLoginWithEmail:self.emailID.text password:self.password.text];
-    self.loginButton.enabled = NO;
+    [self enableLoginButton:NO]; // will be reactivated in callback handler
+}
+
+- (void)markResetLoggingInState {
+    self.isLoggingIn = NO;
+}
+
+- (void)showHudWithTimeout:(int)timeoutSecs {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.timeoutTimer invalidate];
+        self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:timeoutSecs
+                                                                   target:self
+                                                                 selector:@selector(onTimeout)
+                                                                 userInfo:nil
+                                                                  repeats:NO];
+        [self.HUD show:YES];
+    });
 }
 
 #pragma mark - Event handlers
 
+- (void)onTimeout {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^() {
+        [self hideHud];
+
+        [self setOopsMsg:@"Sorry! Could not complete the request."];
+        [self markResetLoggingInState];
+
+        BOOL valid = [self validateCredentials];
+        [self enableLoginButton:valid];
+    });
+}
+
 - (void)onNetworkDown:(id)sender {
     [self hideHud];
+
+    if (self.isLoggingIn) {
+        [self setOopsMsg:@"Sorry! Could not complete the request."];
+        [self markResetLoggingInState];
+    }
+
     BOOL valid = [self validateCredentials];
     [self enableLoginButton:valid];
 }
 
 - (void)onLoginResponse:(id)sender {
+    [self markResetLoggingInState];
     [self hideHud];
 
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
-    //Login failed
+    // Login failed
     if ([notifier userInfo] == nil) {
-        [SNLog Log:@"In %s: TEMP Pass failed", __PRETTY_FUNCTION__];
+        // Should never reach this path. UserInfo should be non-null.
+        [self setOopsMsg:@"Sorry! Login was unsuccessful."];
+        [SNLog Log:@"%s: login failed with nil userInfo ", __PRETTY_FUNCTION__];
         return;
     }
 
@@ -352,6 +403,7 @@
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
+// Shows the specified error message and enabled the Login Button
 - (void)setOopsMsg:(NSString *)msg {
     [self setHeadline:@"Oops" subHeadline:msg loginButtonEnabled:YES];
 }
