@@ -147,35 +147,22 @@
     }
 }
 
-- (void)addSaveButton {
-    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
-
-    int button_wdith = 65;
-    int right_margin = 10;
-    UIButton *saveButton = [[SFIHighlightedButton alloc] initWithFrame:CGRectMake(self.frame.size.width - button_wdith - right_margin, self.baseYCoordinate, button_wdith, 30)];
-    saveButton.tag = self.tag;
-    saveButton.backgroundColor = [UIColor whiteColor];
-    saveButton.titleLabel.font = heavy_font;
-    [saveButton addTarget:nil action:@selector(onSaveSensorData:) forControlEvents:UIControlEventTouchUpInside];
-    [saveButton setTitle:@"Save" forState:UIControlStateNormal];
-    [saveButton setTitleColor:[self makeStandardBlue] forState:UIControlStateNormal];
-    [self addSubview:saveButton];
+- (void)addDisplayNameField {
+    [self addFieldNameValue:@"Name" fieldValue:self.device.deviceName];
 }
 
 - (void)addDeviceLocationField {
+    [self addFieldNameValue:@"Located at" fieldValue:self.device.location];
+}
+
+- (void)addFieldNameValue:(NSString *)fieldName fieldValue:(NSString *)fieldValue {
+    [self addFieldNameLabel:fieldName];
+
     UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
 
-    UILabel *expandedLblText;
-    expandedLblText = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect]];
-    expandedLblText.backgroundColor = [UIColor clearColor];
-    expandedLblText.text = @"Located at";
-    expandedLblText.textColor = [UIColor whiteColor];
-    expandedLblText.font = heavy_font;
-    [self addSubview:expandedLblText];
-
-    UITextField *deviceLocationTextField = [[UITextField alloc] initWithFrame:[self makeFieldValueRect]];
+    UITextField *deviceLocationTextField = [[UITextField alloc] initWithFrame:[self makeFieldValueRect:120]];
     deviceLocationTextField.tag = self.tag;
-    deviceLocationTextField.text = self.device.location;
+    deviceLocationTextField.text = fieldValue;
     deviceLocationTextField.textAlignment = NSTextAlignmentRight;
     deviceLocationTextField.textColor = [UIColor whiteColor];
     deviceLocationTextField.delegate = self;
@@ -188,65 +175,73 @@
     [self markYOffset:25];
 }
 
-- (CGRect)makeFieldValueRect {
-    return CGRectMake(110, self.baseYCoordinate, self.frame.size.width - 120, 30);
-}
-
-- (CGRect)makeFieldNameLabelRect {
-    return CGRectMake(10, self.baseYCoordinate, 100, 30);
-}
-
-- (void)addDisplayNameField {
+- (void)addFieldNameLabel:(NSString *)fieldName {
     UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
 
-    UILabel *expandedLblText;
-    expandedLblText = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect]];
-    expandedLblText.text = @"Name";
-    expandedLblText.backgroundColor = [UIColor clearColor];
-    expandedLblText.textColor = [UIColor whiteColor];
-    expandedLblText.font = heavy_font;
-    [self addSubview:expandedLblText];
+    UILabel *label;
+    label = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:100]];
+    label.backgroundColor = [UIColor clearColor];
+    label.text = fieldName;
+    label.textColor = [UIColor whiteColor];
+    label.font = heavy_font;
 
-    UITextField *deviceNameTextField = [[UITextField alloc] initWithFrame:[self makeFieldValueRect]];
-    deviceNameTextField.text = self.device.deviceName;
-    deviceNameTextField.textAlignment = NSTextAlignmentRight;
-    deviceNameTextField.textColor = [UIColor whiteColor];
-    deviceNameTextField.font = heavy_font;
-    deviceNameTextField.tag = self.tag;
-    deviceNameTextField.returnKeyType = UIReturnKeyDone;
-    [deviceNameTextField addTarget:nil action:@selector(sensorNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    [deviceNameTextField addTarget:nil action:@selector(sensorNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
-    [self addSubview:deviceNameTextField];
+    [self addSubview:label];
+}
 
-    [self markYOffset:25];
+- (void)addSaveButton {
+    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
+
+    int button_width = 65;
+    int right_margin = 10;
+
+    UIButton *saveButton = [[SFIHighlightedButton alloc] initWithFrame:CGRectMake(self.frame.size.width - button_width - right_margin, self.baseYCoordinate, button_width, 30)];
+    saveButton.tag = self.tag;
+    saveButton.backgroundColor = [UIColor whiteColor];
+    saveButton.titleLabel.font = heavy_font;
+    [saveButton addTarget:nil action:@selector(onSaveSensorData:) forControlEvents:UIControlEventTouchUpInside];
+    [saveButton setTitle:@"Save" forState:UIControlStateNormal];
+    [saveButton setTitleColor:[self makeStandardBlue] forState:UIControlStateNormal];
+
+    [self addSubview:saveButton];
+}
+
+- (CGRect)makeFieldValueRect:(int)leftOffset {
+    return CGRectMake(leftOffset - 10, self.baseYCoordinate, self.frame.size.width - leftOffset, 30);
+}
+
+- (CGRect)makeFieldNameLabelRect:(int)width {
+    return CGRectMake(10, self.baseYCoordinate, width, 30);
 }
 
 - (void)addSensorLabel {
-    UILabel *expandedLblText = [[UILabel alloc] init];
-    expandedLblText.backgroundColor = [UIColor clearColor];
-    expandedLblText.textColor = [UIColor whiteColor];
-    expandedLblText.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
-    expandedLblText.frame = CGRectMake(10, self.baseYCoordinate - 5, 299, 30);
-    expandedLblText.text = [NSString stringWithFormat:@"SENSOR SETTINGS"];
-    [self addSubview:expandedLblText];
+    UILabel *label = [[UILabel alloc] init];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    label.frame = CGRectMake(10, self.baseYCoordinate - 5, 299, 30);
+    label.text = [NSString stringWithFormat:@"SENSOR SETTINGS"];
+    [self addSubview:label];
     [self markYOffset:25];
 }
 
 - (void)addTamperButton {
-    UIFont *font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
 
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, self.baseYCoordinate, 200, 30)];
+    UILabel *label;
+    label = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
+    label.backgroundColor = [UIColor clearColor];
     label.text = DEVICE_TAMPERED;
     label.textColor = [UIColor whiteColor];
-    label.font = font;
+    label.font = heavy_font;
+
     [self addSubview:label];
 
     UIButton *button = [[UIButton alloc] init];
-    button.frame = CGRectMake(self.frame.size.width - 100, self.baseYCoordinate + 6, 65, 20);
+    button.frame = [self makeFieldValueRect:235];//CGRectMake(self.frame.size.width - 100, self.baseYCoordinate + 6, 65, 20);
     button.tag = self.tag;
     [button addTarget:nil action:@selector(onDismissTamper:) forControlEvents:UIControlEventTouchDown];
     button.backgroundColor = [UIColor clearColor];
-    button.titleLabel.font = font;
+    button.titleLabel.font = heavy_font;
     [button setTitle:@"Dismiss" forState:UIControlStateNormal];
 
     UIColor *color = [UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6];
