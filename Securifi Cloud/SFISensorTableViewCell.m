@@ -274,7 +274,7 @@
 
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceValuesIndex:0];
     if (values.isUpdating) {
-        self.deviceStatusLabel.text = @"Updating sensor data.\nPlease wait.";
+        [self setUpdatingSensorStatus];
     }
     else {
         //Get Percentage
@@ -297,7 +297,7 @@
 
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDevice];
     if (values.isUpdating) {
-        self.deviceStatusLabel.text = @"Updating sensor data.\nPlease wait.";
+        [self setUpdatingSensorStatus];
     }
     else {
         //Get Percentage
@@ -492,12 +492,21 @@
     NSString *imageName = [values choiceForBoolValueTrueValue:imageNameTrue falseValue:imageNameFalse nilValue:self.device.imageName];
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 
-    NSString *status = [values choiceForBoolValueTrueValue:statusTrue falseValue:statusFalse nilValue:@"Could not update sensor\ndata."];
-    if (self.device.isBatteryLow) {
-        status = [status stringByAppendingString:@"\nLOW BATTERY"];
-        self.deviceStatusLabel.numberOfLines = 2;
+    if (values.isUpdating) {
+        [self setUpdatingSensorStatus];
     }
-    self.deviceStatusLabel.text = status;
+    else {
+        NSString *status = [values choiceForBoolValueTrueValue:statusTrue falseValue:statusFalse nilValue:@"Could not update sensor\ndata."];
+        if (self.device.isBatteryLow) {
+            status = [status stringByAppendingString:@"\nLOW BATTERY"];
+            self.deviceStatusLabel.numberOfLines = 2;
+        }
+        self.deviceStatusLabel.text = status;
+    }
+}
+
+- (void)setUpdatingSensorStatus {
+    self.deviceStatusLabel.text = @"Updating sensor data.\nPlease wait.";
 }
 
 #pragma mark - Device Values

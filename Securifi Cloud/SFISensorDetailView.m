@@ -150,7 +150,9 @@
 - (void)addSaveButton {
     UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
 
-    UIButton *saveButton = [[SFIHighlightedButton alloc] initWithFrame:CGRectMake(self.frame.size.width - 100, self.baseYCoordinate, 65, 30)];
+    int button_wdith = 65;
+    int right_margin = 10;
+    UIButton *saveButton = [[SFIHighlightedButton alloc] initWithFrame:CGRectMake(self.frame.size.width - button_wdith - right_margin, self.baseYCoordinate, button_wdith, 30)];
     saveButton.tag = self.tag;
     saveButton.backgroundColor = [UIColor whiteColor];
     saveButton.titleLabel.font = heavy_font;
@@ -164,14 +166,14 @@
     UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
 
     UILabel *expandedLblText;
-    expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, self.baseYCoordinate, 100, 30)];
+    expandedLblText = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect]];
     expandedLblText.backgroundColor = [UIColor clearColor];
     expandedLblText.text = @"Located at";
     expandedLblText.textColor = [UIColor whiteColor];
     expandedLblText.font = heavy_font;
     [self addSubview:expandedLblText];
 
-    UITextField *deviceLocationTextField = [[UITextField alloc] initWithFrame:CGRectMake(110, self.baseYCoordinate, self.frame.size.width - 150, 30)];
+    UITextField *deviceLocationTextField = [[UITextField alloc] initWithFrame:[self makeFieldValueRect]];
     deviceLocationTextField.tag = self.tag;
     deviceLocationTextField.text = self.device.location;
     deviceLocationTextField.textAlignment = NSTextAlignmentRight;
@@ -186,18 +188,26 @@
     [self markYOffset:25];
 }
 
+- (CGRect)makeFieldValueRect {
+    return CGRectMake(110, self.baseYCoordinate, self.frame.size.width - 120, 30);
+}
+
+- (CGRect)makeFieldNameLabelRect {
+    return CGRectMake(10, self.baseYCoordinate, 100, 30);
+}
+
 - (void)addDisplayNameField {
     UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
 
     UILabel *expandedLblText;
-    expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, self.baseYCoordinate, 100, 30)];
+    expandedLblText = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect]];
     expandedLblText.text = @"Name";
     expandedLblText.backgroundColor = [UIColor clearColor];
     expandedLblText.textColor = [UIColor whiteColor];
     expandedLblText.font = heavy_font;
     [self addSubview:expandedLblText];
 
-    UITextField *deviceNameTextField = [[UITextField alloc] initWithFrame:CGRectMake(110, self.baseYCoordinate, self.frame.size.width - 150, 30)];
+    UITextField *deviceNameTextField = [[UITextField alloc] initWithFrame:[self makeFieldValueRect]];
     deviceNameTextField.text = self.device.deviceName;
     deviceNameTextField.textAlignment = NSTextAlignmentRight;
     deviceNameTextField.textColor = [UIColor whiteColor];
@@ -247,7 +257,7 @@
 }
 
 - (void)addLine {
-    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, self.baseYCoordinate, self.frame.size.width - 35, 1)];
+    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, self.baseYCoordinate, self.frame.size.width - 15, 1)];
     imgLine.image = [UIImage imageNamed:@"line.png"];
     imgLine.alpha = 0.5;
     [self addSubview:imgLine];
