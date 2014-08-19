@@ -14,7 +14,7 @@
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic) BOOL lastEditedFieldWasPasswd;
 @property(nonatomic) NSTimer *timeoutTimer;
-@property(nonatomic) BOOL isLoggingIn;
+@property(atomic) BOOL isLoggingIn;
 @end
 
 @implementation SFILoginViewController
@@ -35,6 +35,13 @@
 
     //PY 170913 - To stop the view from going below tab bar
     self.edgesForExtendedLayout = UIRectEdgeNone;
+
+    self.emailID.clearsOnBeginEditing = NO;
+    self.emailID.returnKeyType = UIReturnKeyNext;
+    self.password.returnKeyType = UIReturnKeyDone;
+
+    self.emailID.text = nil;
+    self.password.text = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -43,15 +50,8 @@
     self.emailID.delegate = self;
     self.password.delegate = self;
 
-    self.emailID.text = nil;
-    self.password.text = nil;
-
-    self.emailID.clearsOnBeginEditing = NO;
-    self.emailID.returnKeyType = UIReturnKeyNext;
-    self.password.returnKeyType = UIReturnKeyDone;
-
     [self tryEnableLostPwdButton];
-    [self enableLoginButton:NO];
+    [self tryEnableLoginButton];
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
@@ -122,6 +122,12 @@
     });
 }
 
+- (void)tryEnableLoginButton {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.loginButton.enabled = [self validateCredentials];
+    });
+}
+
 - (void)tryEnableLostPwdButton {
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.forgotPwdButton.enabled = (self.emailID.text.length > 0);
@@ -165,6 +171,18 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    UITextField *other;
+    if (self.emailID == textField) {
+        other = self.password;
+    }
+    else {
+        other = self.emailID;
+    }
+
+    NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    BOOL enabled = str.length > 0 && other.text.length > 0;
+    [self enableLoginButton:enabled];
+
     return YES;
 }
 
@@ -190,7 +208,7 @@
 #pragma mark - Keyboard handler
 
 - (void)onKeyboardDidShow:(id)notification {
-    [self enableLoginButton:NO];
+    [self tryEnableLoginButton];
 }
 
 - (void)onKeyboardDidHide:(id)notice {
@@ -200,7 +218,7 @@
         [self sendLoginWithEmailRequest];
     }
 
-    [self enableLoginButton:NO];
+    [self tryEnableLoginButton];
     [self tryEnableLostPwdButton];
 }
 
@@ -263,8 +281,7 @@
         [self setOopsMsg:@"Sorry! Could not complete the request."];
         [self markResetLoggingInState];
 
-        BOOL valid = [self validateCredentials];
-        [self enableLoginButton:valid];
+        [self tryEnableLoginButton];
     });
 }
 
@@ -276,8 +293,7 @@
         [self markResetLoggingInState];
     }
 
-    BOOL valid = [self validateCredentials];
-    [self enableLoginButton:valid];
+    [self tryEnableLoginButton];
 }
 
 - (void)onLoginResponse:(id)sender {
