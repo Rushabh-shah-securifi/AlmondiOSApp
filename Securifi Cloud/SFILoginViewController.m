@@ -212,10 +212,8 @@
 }
 
 - (void)onKeyboardDidHide:(id)notice {
-    BOOL valid = [self validateCredentials];
-
-    if (valid && self.lastEditedFieldWasPasswd) {
-        [self sendLoginWithEmailRequest];
+    if (self.lastEditedFieldWasPasswd && !self.isLoggingIn) {
+        [self trySendLoginRequest:NO];
     }
 
     [self tryEnableLoginButton];
@@ -237,13 +235,31 @@
 }
 
 - (IBAction)onLoginAction:(id)sender {
-    [self.emailID endEditing:YES];
-    [self.password endEditing:YES];
+    [self trySendLoginRequest:YES];
 
+    if (self.emailID.isEditing || self.password.isEditing) {
+        // Will dismiss keyboard, which will cause onKeyboardDidHide to issue the login request when the Password
+        // field was the last edited. So, we change the state here before dismissing the keyboard.
+        //
+        // Note potential race condition: cannot completely rely on timing of self.isLoggingIn on trysendLoginRequest:
+        // to lockout keyboard event handler, so we use this method instead.
+
+        self.lastEditedFieldWasPasswd = NO;
+
+        // Dismiss keyboard
+        [self.emailID endEditing:YES];
+        [self.password endEditing:YES];
+    }
+
+    [self tryEnableLoginButton];
+    [self tryEnableLostPwdButton];
+}
+
+- (void)trySendLoginRequest:(BOOL)showOops {
     if ([self validateCredentials]) {
         [self sendLoginWithEmailRequest];
     }
-    else {
+    else if (showOops) {
         [self setOopsMsg:@"Please enter Username and Password"];
     }
 }
