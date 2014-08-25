@@ -13,7 +13,7 @@
 #import "SFILogoutAllViewController.h"
 #import "SWRevealViewController.h"
 #import "SFIRouterTableViewController.h"
-#import "SensorsViewController.h"
+#import "SFISensorsViewController.h"
 #import "DrawerViewController.h"
 
 @interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, UIGestureRecognizerDelegate>
@@ -297,7 +297,7 @@
     // Set up the front view controller based on a Tab Bar controller
     UIImage *icon;
     //
-    SensorsViewController *sensorCtrl = [SensorsViewController new];
+    SFISensorsViewController *sensorCtrl = [SFISensorsViewController new];
     //
     UINavigationController *sensorNav = [[UINavigationController alloc] initWithRootViewController:sensorCtrl];
     icon = [UIImage imageNamed:@"icon_sensor.png"];
