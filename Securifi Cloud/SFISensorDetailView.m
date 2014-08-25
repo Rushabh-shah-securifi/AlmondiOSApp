@@ -9,9 +9,13 @@
 #import "SFISlider.h"
 #import "SFIColors.h"
 
-@interface SFISensorDetailView ()
+@interface SFISensorDetailView () <UITextFieldDelegate>
 @property(nonatomic, readonly) float baseYCoordinate;
-@property(nonatomic) BOOL layedOut;
+@property(nonatomic) BOOL layoutCalled;
+@property(nonatomic) UITextField *deviceNameField;
+@property(nonatomic) UITextField *deviceLocationField;
+
+@property(nonatomic) UITextField *firstResponderField;
 @end
 
 @implementation SFISensorDetailView
@@ -20,12 +24,16 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.userInteractionEnabled = YES;
-        self.layedOut = NO;
+        self.layoutCalled = NO;
         _baseYCoordinate = -20;
     }
 
     return self;
 }
+
+
+
+#pragma mark - Layout
 
 - (void)markYOffset:(int)val {
     _baseYCoordinate += val;
@@ -34,10 +42,16 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
 
-    if (self.layedOut) {
+    if (self.firstResponderField) {
+        if (!self.firstResponderField.isFirstResponder) {
+            [self.firstResponderField becomeFirstResponder];
+        }
+    }
+
+    if (self.layoutCalled) {
         return;
     }
-    self.layedOut = YES;
+    self.layoutCalled = YES;
 
     self.backgroundColor = [self makeStandardBlue];
 
@@ -147,32 +161,128 @@
     }
 }
 
+#pragma mark - Public methods
+
+- (NSString *)deviceName {
+    return self.deviceNameField.text;
+}
+
+- (NSString *)deviceLocation {
+    return self.deviceLocationField.text;
+}
+
+#pragma mark - Event handling
+
+// Save button tapped
+- (void)onSaveSensorNameLocationChanges:(id)sender {
+    [self.delegate sensorDetailViewDidPressSaveButton:self];
+}
+
+- (void)onSensorNameTextFieldDidChange:(id)sender {
+
+}
+
+- (void)onSensorNameTextFieldFinishedEditing:(id)sender {
+
+}
+
+- (void)onSensorLocationTextFieldDidChange:(id)sender {
+
+}
+
+- (void)onSensorLocationTextFieldFinishedEditing:(id)sender {
+
+}
+
+- (void)onDismissTamper:(id)sender {
+    [self.delegate sensorDetailViewDidPressDismissTamperButton:self];
+}
+
+- (void)onSliderTapped:(id)sender {
+    UIGestureRecognizer *recognizer = sender;
+
+    SFISlider *slider = (SFISlider *) recognizer.view;
+    if (slider.highlighted) {
+        return;
+    } // tap on thumb, let slider deal with it
+
+    CGPoint pt = [recognizer locationInView:slider];
+    CGFloat percentage = pt.x / slider.bounds.size.width;
+    CGFloat delta = percentage * (slider.maximumValue - slider.minimumValue);
+    CGFloat value = slider.minimumValue + delta;
+    [slider setValue:value animated:YES];
+
+    NSString *newValue = [NSString stringWithFormat:@"%d", (int) value];
+    [self.delegate sensorDetailViewDidChangeSensorValue:self valueName:slider.deviceValueName newValue:newValue];
+}
+
+- (void)onSliderDidEndSliding:(id)sender {
+    SFISlider *slider = sender;
+    NSString *newValue = [NSString stringWithFormat:@"%d", (int) (slider.value)];
+    [self.delegate sensorDetailViewDidChangeSensorValue:self valueName:slider.deviceValueName newValue:newValue];
+}
+
+- (void)onThermostatFanModeSelected:(id)sender {
+    [self onUpdateSegmentedControlValue:sender valueName:@"THERMOSTAT FAN MODE"];
+}
+
+- (void)onThermostatModeSelected:(id)sender {
+    [self onUpdateSegmentedControlValue:sender valueName:@"THERMOSTAT MODE"];
+}
+
+- (void)onUpdateSegmentedControlValue:(id)sender valueName:(NSString *)valueName {
+    UISegmentedControl *ctrl = (UISegmentedControl *) sender;
+    NSString *strModeValue = [ctrl titleForSegmentAtIndex:(NSUInteger) ctrl.selectedSegmentIndex];
+
+    [self.delegate sensorDetailViewDidChangeSensorValue:self valueName:valueName newValue:strModeValue];
+}
+
+#pragma mark - UITextFieldDelegate methods
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    self.firstResponderField = textField;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    if (self.firstResponderField == textField) {
+        self.firstResponderField = nil;
+    }
+}
+
+#pragma mark - Layout primitives
+
 - (void)addDisplayNameField {
-    [self addFieldNameValue:@"Name" fieldValue:self.device.deviceName];
+    UITextField *field = [self addFieldNameValue:@"Name" fieldValue:self.device.deviceName];
+    [field addTarget:self action:@selector(onSensorNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [field addTarget:self action:@selector(onSensorNameTextFieldFinishedEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    self.deviceNameField = field;
 }
 
 - (void)addDeviceLocationField {
-    [self addFieldNameValue:@"Located at" fieldValue:self.device.location];
+    UITextField *field = [self addFieldNameValue:@"Located at" fieldValue:self.device.location];
+    [field addTarget:self action:@selector(onSensorLocationTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    [field addTarget:self action:@selector(onSensorLocationTextFieldFinishedEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    self.deviceLocationField = field;
 }
 
-- (void)addFieldNameValue:(NSString *)fieldName fieldValue:(NSString *)fieldValue {
+- (UITextField *)addFieldNameValue:(NSString *)fieldName fieldValue:(NSString *)fieldValue {
     [self addFieldNameLabel:fieldName];
 
     UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
 
-    UITextField *deviceLocationTextField = [[UITextField alloc] initWithFrame:[self makeFieldValueRect:120]];
-    deviceLocationTextField.tag = self.tag;
-    deviceLocationTextField.text = fieldValue;
-    deviceLocationTextField.textAlignment = NSTextAlignmentRight;
-    deviceLocationTextField.textColor = [UIColor whiteColor];
-    deviceLocationTextField.delegate = self;
-    deviceLocationTextField.font = heavy_font;
-    deviceLocationTextField.returnKeyType = UIReturnKeyDone;
-    [deviceLocationTextField addTarget:nil action:@selector(sensorLocationTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    [deviceLocationTextField addTarget:nil action:@selector(sensorLocationTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
-    [self addSubview:deviceLocationTextField];
+    UITextField *field = [[UITextField alloc] initWithFrame:[self makeFieldValueRect:120]];
+    field.tag = self.tag;
+    field.text = fieldValue;
+    field.textAlignment = NSTextAlignmentRight;
+    field.textColor = [UIColor whiteColor];
+    field.delegate = self;
+    field.font = heavy_font;
+    field.returnKeyType = UIReturnKeyDone;
+    [self addSubview:field];
 
     [self markYOffset:25];
+
+    return field;
 }
 
 - (void)addFieldNameLabel:(NSString *)fieldName {
@@ -194,15 +304,15 @@
     int button_width = 65;
     int right_margin = 10;
 
-    UIButton *saveButton = [[SFIHighlightedButton alloc] initWithFrame:CGRectMake(self.frame.size.width - button_width - right_margin, self.baseYCoordinate, button_width, 30)];
-    saveButton.tag = self.tag;
-    saveButton.backgroundColor = [UIColor whiteColor];
-    saveButton.titleLabel.font = heavy_font;
-    [saveButton addTarget:nil action:@selector(onSaveSensorData:) forControlEvents:UIControlEventTouchUpInside];
-    [saveButton setTitle:@"Save" forState:UIControlStateNormal];
-    [saveButton setTitleColor:[self makeStandardBlue] forState:UIControlStateNormal];
+    UIButton *button = [[SFIHighlightedButton alloc] initWithFrame:CGRectMake(self.frame.size.width - button_width - right_margin, self.baseYCoordinate, button_width, 30)];
+    button.tag = self.tag;
+    button.backgroundColor = [UIColor whiteColor];
+    button.titleLabel.font = heavy_font;
+    [button addTarget:self action:@selector(onSaveSensorNameLocationChanges:) forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:@"Save" forState:UIControlStateNormal];
+    [button setTitleColor:[self makeStandardBlue] forState:UIControlStateNormal];
 
-    [self addSubview:saveButton];
+    [self addSubview:button];
 }
 
 - (CGRect)makeFieldValueRect:(int)leftOffset {
@@ -239,10 +349,11 @@
     UIButton *button = [[UIButton alloc] init];
     button.frame = [self makeFieldValueRect:235];//CGRectMake(self.frame.size.width - 100, self.baseYCoordinate + 6, 65, 20);
     button.tag = self.tag;
-    [button addTarget:nil action:@selector(onDismissTamper:) forControlEvents:UIControlEventTouchDown];
     button.backgroundColor = [UIColor clearColor];
     button.titleLabel.font = heavy_font;
     [button setTitle:@"Dismiss" forState:UIControlStateNormal];
+
+    [button addTarget:self action:@selector(onDismissTamper:) forControlEvents:UIControlEventTouchDown];
 
     UIColor *color = [UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6];
     [button setTitleColor:color forState:UIControlStateNormal];
@@ -259,12 +370,12 @@
     [self markYOffset:5];
 }
 
-- (UISlider*)makeSliderWithMinValue:(float)minVal maxValue:(float)maxValue {
+- (UISlider*)makeSliderWithMinValue:(float)minVal maxValue:(float)maxValue valueName:(NSString*)valueName {
     // Set the height high enough to ensure touch events are not missed.
     const CGFloat slider_height = 25.0;
 
     //Display slider
-    UISlider *slider = [SFISlider new];
+    SFISlider *slider = [SFISlider new];
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     if (screenBounds.size.height == 568) {
         // code for 4-inch screen
@@ -276,11 +387,13 @@
     }
 
     slider.tag = self.tag;
+    slider.deviceValueName = valueName;
     slider.minimumValue = minVal;
     slider.maximumValue = maxValue;
-    [slider addTarget:nil action:@selector(sliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
 
-    UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:nil action:@selector(sliderTapped:)];
+    [slider addTarget:self action:@selector(onSliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+
+    UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSliderTapped:)];
     [slider addGestureRecognizer:tapSlider];
 
     [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"] forState:UIControlStateNormal];
@@ -288,8 +401,21 @@
     [slider setMinimumTrackImage:[UIImage imageNamed:@"seekbar_dark_patch 2.png"] forState:UIControlStateNormal];
     [slider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"] forState:UIControlStateNormal];
 
+    // Initialize the slider value
+    float sliderValue = 0.0;
+    NSArray *currentKnownValues = [self currentKnownValuesForDevice];
+    for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
+        if ([currentDeviceValue.valueName isEqualToString:valueName]) {
+            sliderValue = [currentDeviceValue.value floatValue];
+            break;
+        }
+    }
+    [slider setValue:sliderValue animated:YES];
+
     return slider;
 }
+
+#pragma mark - Sensor layouts
 
 - (void)configureMultiLevelSwitch_2 {
     [self markYOffset:35];
@@ -299,16 +425,7 @@
     [self addSubview:minImage];
 
     // Display slider
-    UISlider *slider = [self makeSliderWithMinValue:0 maxValue:99];
-    float currentSliderValue = 0.0;
-    NSArray *currentKnownValues = [self currentKnownValuesForDevice];
-    for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        if ([currentDeviceValue.valueName isEqualToString:@"SWITCH MULTILEVEL"]) {
-            currentSliderValue = [currentDeviceValue.value floatValue];
-            break;
-        }
-    }
-    [slider setValue:currentSliderValue animated:YES];
+    UISlider *slider = [self makeSliderWithMinValue:0 maxValue:99 valueName:@"SWITCH MULTILEVEL"];
     [self addSubview:slider];
 
     UIImageView *maxImage = [[UIImageView alloc] initWithFrame:CGRectMake((self.frame.size.width - 110) + 50, self.baseYCoordinate - 5, 24, 24)];
@@ -327,8 +444,9 @@
         if ([currentDeviceValue.valueName isEqualToString:@"BATTERY"]) {
             UILabel *label = [[UILabel alloc] init];
             label.backgroundColor = [UIColor clearColor];
+
             //Check the status of value
-            NSString *currentValue;
+            NSString *currentValue = currentDeviceValue.value;
             if ([currentValue isEqualToString:@"1"]) {
                 //Battery Low
                 batteryStatus = @"Low Battery";
@@ -337,6 +455,7 @@
                 //Battery OK
                 batteryStatus = @"Battery OK";
             }
+
             label.text = batteryStatus;
             label.textColor = [UIColor whiteColor];
             label.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
@@ -359,16 +478,7 @@
     [self addSubview:minImage];
 
     // Display slider
-    UISlider *slider = [self makeSliderWithMinValue:0 maxValue:255];
-    float currentSliderValue = 0.0;
-    NSArray *currentKnownValues = [self currentKnownValuesForDevice];
-    for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        if ([currentDeviceValue.valueName isEqualToString:@"SWITCH MULTILEVEL"]) {
-            currentSliderValue = [currentDeviceValue.value floatValue];
-            break;
-        }
-    }
-    [slider setValue:currentSliderValue animated:YES];
+    UISlider *slider = [self makeSliderWithMinValue:0 maxValue:255 valueName:@"SWITCH MULTILEVEL"];
     [self addSubview:slider];
 
     UIImageView *maxImage = [[UIImageView alloc] initWithFrame:CGRectMake((self.frame.size.width - 110) + 50, self.baseYCoordinate - 5, 24, 24)];
@@ -402,7 +512,7 @@
     const CGRect frame = self.frame;
 
     // Heat Slider
-    UISlider *heatSlider = [self makeSliderWithMinValue:35 maxValue:95];
+    UISlider *heatSlider = [self makeSliderWithMinValue:35 maxValue:95 valueName:@"THERMOSTAT SETPOINT HEATING"];
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     const CGFloat slider_height = 25.0;
     if (screenBounds.size.height == 568) {
@@ -441,7 +551,7 @@
     [self addSubview:lblMinCool];
 
     // Display Cooling slider
-    UISlider *coolSlider = [self makeSliderWithMinValue:35 maxValue:95];
+    UISlider *coolSlider = [self makeSliderWithMinValue:35 maxValue:95 valueName:@"THERMOSTAT SETPOINT COOLING"];
     if (screenBounds.size.height == 568) {
         // code for 4-inch screen
         coolSlider.frame = CGRectMake(100.0, self.baseYCoordinate, frame.size.width - 160, slider_height);
@@ -478,7 +588,7 @@
     scMode.frame = CGRectMake(self.frame.size.width - 220, self.baseYCoordinate, 180, 20);
     scMode.tag = self.tag;
     scMode.tintColor = [UIColor whiteColor];
-    [scMode addTarget:nil action:@selector(modeSelected:) forControlEvents:UIControlEventValueChanged];
+    [scMode addTarget:self action:@selector(onThermostatModeSelected:) forControlEvents:UIControlEventValueChanged];
     [scMode setTitleTextAttributes:attributes forState:UIControlStateNormal];
     [self addSubview:scMode];
 
@@ -486,7 +596,7 @@
     [self addLine];
     [self markYOffset:5];
 
-    //Fan Mode
+    // Fan Mode
     UILabel *lblFanMode = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate - 5, 60, 30)];
     lblFanMode.textColor = [UIColor whiteColor];
     lblFanMode.font = heavy_12;
@@ -498,14 +608,14 @@
     scFanMode.tag = self.tag;
 
     [scFanMode setTitleTextAttributes:attributes forState:UIControlStateNormal];
-    [scFanMode addTarget:nil action:@selector(fanModeSelected:) forControlEvents:UIControlEventValueChanged];
+    [scFanMode addTarget:self action:@selector(onThermostatFanModeSelected:) forControlEvents:UIControlEventValueChanged];
     scFanMode.tintColor = [UIColor whiteColor];
     [self addSubview:scFanMode];
 
     [self markYOffset:30];
     [self addLine];
 
-    //Status
+    // Status
     UILabel *lblStatus = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate, 60, 30)];
     lblStatus.textColor = [UIColor whiteColor];
     lblStatus.text = @"Status";
@@ -533,22 +643,11 @@
     [self markYOffset:25];
     [self addLine];
 
-    //Set slider value
-    float currentHeatingSliderValue = 0.0;
-    float currentCoolingSliderValue = 0.0;
-
     NSMutableString *strState = [[NSMutableString alloc] init];
 
     NSArray *currentKnownValues = [self currentKnownValuesForDevice];
     for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        //Get slider value
-        if ([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT SETPOINT HEATING"]) {
-            currentHeatingSliderValue = [currentDeviceValue.value floatValue];
-        }
-        else if ([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT SETPOINT COOLING"]) {
-            currentCoolingSliderValue = [currentDeviceValue.value floatValue];
-        }
-        else if ([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT MODE"]) {
+        if ([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT MODE"]) {
             if ([currentDeviceValue.value isEqualToString:@"Auto"]) {
                 scMode.selectedSegmentIndex = 0;
             }
@@ -582,9 +681,6 @@
     }
 
     lblOperatingState.text = strState;
-
-    [heatSlider setValue:currentHeatingSliderValue animated:YES];
-    [coolSlider setValue:currentCoolingSliderValue animated:YES];
 }
 
 - (void)configureMotionSensor_11 {
@@ -900,6 +996,8 @@
 - (void)configureShadeSensor_34 {
 
 }
+
+#pragma mark - Helpers
 
 - (UIColor *)makeStandardBlue {
     SFIColors *color = self.currentColor;

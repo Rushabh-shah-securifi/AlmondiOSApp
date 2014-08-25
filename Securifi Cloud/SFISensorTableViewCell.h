@@ -6,13 +6,34 @@
 #import <UIKit/UIKit.h>
 
 @class SFIColors;
+@class SFISensorTableViewCell;
+
+@protocol SFISensorTableViewCellDelegate
+
+- (void)tableViewCellDidClickDevice:(SFISensorTableViewCell*)cell;
+
+- (void)tableViewCellDidPressSettings:(SFISensorTableViewCell*)cell;
+
+- (void)tableViewCellDidSaveChanges:(SFISensorTableViewCell*)cell;
+
+- (void)tableViewCellDidDismissTamper:(SFISensorTableViewCell*)cell;
+
+- (void)tableViewCellDidChangeValue:(SFISensorTableViewCell*)cell valueName:(NSString*)valueName newValue:(NSString*)newValue;
+
+@end
+
 
 @interface SFISensorTableViewCell : UITableViewCell
+
+@property (weak) id<SFISensorTableViewCellDelegate> delegate;
 
 @property(nonatomic) SFIDevice *device;
 @property(nonatomic) SFIDeviceValue *deviceValue;
 @property(nonatomic) SFIColors *currentColor;
 
 - (void)markWillReuse;
+
+- (NSString*)deviceName;
+- (NSString*)deviceLocation;
 
 @end

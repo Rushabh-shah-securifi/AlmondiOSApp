@@ -9,10 +9,12 @@
 #import "SFISensorDetailView.h"
 
 
-@interface SFISensorTableViewCell ()
+@interface SFISensorTableViewCell () <SFISensorDetailViewDelegate>
 @property(nonatomic) UIImageView *deviceImageView;
 @property(nonatomic) UILabel *deviceStatusLabel;
 @property(nonatomic) UILabel *deviceValueLabel;
+
+@property(nonatomic) SFISensorDetailView *detailView;
 
 // For thermostat
 @property(nonatomic) UILabel *decimalValueLabel;
@@ -76,7 +78,7 @@
     deviceButton.tag = row_index;
     deviceButton.frame = leftBackgroundLabel.bounds;
     deviceButton.backgroundColor = [UIColor clearColor];
-    [deviceButton addTarget:nil action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [deviceButton addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
     [leftBackgroundLabel addSubview:deviceButton];
 
     UIView *rightBackgroundLabel = [[UIView alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH + 11, 5, cell_frame.size.width - LEFT_LABEL_WIDTH - 25, SENSOR_ROW_HEIGHT - 10)];
@@ -109,14 +111,14 @@
     settingsButton.tag = row_index;
     settingsButton.frame = imgSettings.bounds;
     settingsButton.backgroundColor = [UIColor clearColor];
-    [settingsButton addTarget:nil action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [settingsButton addTarget:self action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
     [imgSettings addSubview:settingsButton];
 
     UIButton *settingsButtonCell = [UIButton buttonWithType:UIButtonTypeCustom];
     settingsButtonCell.tag = row_index;
     settingsButtonCell.frame = CGRectMake(cell_frame.size.width - 80, 5, 60, 80);
     settingsButtonCell.backgroundColor = [UIColor clearColor];
-    [settingsButtonCell addTarget:nil action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [settingsButtonCell addTarget:self action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:settingsButtonCell];
 }
 
@@ -124,7 +126,7 @@
     UIButton *deviceImageButton = [UIButton buttonWithType:UIButtonTypeCustom];
     deviceImageButton.tag = self.tag;
     deviceImageButton.backgroundColor = [UIColor clearColor];
-    [deviceImageButton addTarget:nil action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [deviceImageButton addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
 
     if (self.device.deviceType == 7 /*thermostat */) {
         // In case of thermostat show value instead of image
@@ -258,8 +260,44 @@
         detailView.currentColor = self.currentColor;
 
         [self.contentView addSubview:detailView];
+        self.detailView = detailView;
+        self.detailView.delegate = self;
     }
 
+}
+
+#pragma mark - Changed values
+
+- (NSString *)deviceName {
+    return self.detailView.deviceName;
+}
+
+- (NSString *)deviceLocation {
+    return self.detailView.deviceLocation;
+}
+
+#pragma mark - Event handling
+
+- (void)onSettingClicked:(id)sender {
+    [self.delegate tableViewCellDidPressSettings:self];
+}
+
+- (void)onDeviceClicked:(id)sender {
+    [self.delegate tableViewCellDidClickDevice:self];
+}
+
+#pragma mark - SFISensorDetailViewDelegate methods
+
+- (void)sensorDetailViewDidPressSaveButton:(SFISensorDetailView *)view {
+    [self.delegate tableViewCellDidSaveChanges:self];
+}
+
+- (void)sensorDetailViewDidPressDismissTamperButton:(SFISensorDetailView *)view {
+    [self.delegate tableViewCellDidDismissTamper:self];
+}
+
+- (void)sensorDetailViewDidChangeSensorValue:(SFISensorDetailView *)view valueName:(NSString *)valueName newValue:(NSString *)aValue {
+    [self.delegate tableViewCellDidChangeValue:self valueName:valueName newValue:aValue];
 }
 
 #pragma mark - Device layout
@@ -489,13 +527,13 @@
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDevice];
 
-    NSString *imageName = [values choiceForBoolValueTrueValue:imageNameTrue falseValue:imageNameFalse nilValue:self.device.imageName];
-    self.deviceImageView.image = [UIImage imageNamed:imageName];
-
     if (values.isUpdating) {
         [self setUpdatingSensorStatus];
     }
     else {
+        NSString *imageName = [values choiceForBoolValueTrueValue:imageNameTrue falseValue:imageNameFalse nilValue:self.device.imageName];
+        self.deviceImageView.image = [UIImage imageNamed:imageName];
+
         NSString *status = [values choiceForBoolValueTrueValue:statusTrue falseValue:statusFalse nilValue:@"Could not update sensor\ndata."];
         if (self.device.isBatteryLow) {
             status = [status stringByAppendingString:@"\nLOW BATTERY"];
@@ -506,6 +544,7 @@
 }
 
 - (void)setUpdatingSensorStatus {
+    self.deviceImageView.image = [UIImage imageNamed:@"Wait_Icon.png"];
     self.deviceStatusLabel.text = @"Updating sensor data.\nPlease wait.";
 }
 
