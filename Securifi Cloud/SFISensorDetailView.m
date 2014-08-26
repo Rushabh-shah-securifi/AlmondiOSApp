@@ -53,7 +53,7 @@
     }
     self.layoutCalled = YES;
 
-    self.backgroundColor = [self makeStandardBlue];
+    self.backgroundColor = self.color;
 
     NSUInteger rowHeight = [self computeSensorRowHeight:self.device];
     self.frame = CGRectMake(10, 86, (LEFT_LABEL_WIDTH) + (self.frame.size.width - LEFT_LABEL_WIDTH - 25) + 1, rowHeight - SENSOR_ROW_HEIGHT);
@@ -310,7 +310,7 @@
     button.titleLabel.font = heavy_font;
     [button addTarget:self action:@selector(onSaveSensorNameLocationChanges:) forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"Save" forState:UIControlStateNormal];
-    [button setTitleColor:[self makeStandardBlue] forState:UIControlStateNormal];
+    [button setTitleColor:self.color forState:UIControlStateNormal];
 
     [self addSubview:button];
 }
@@ -998,15 +998,6 @@
 }
 
 #pragma mark - Helpers
-
-- (UIColor *)makeStandardBlue {
-    SFIColors *color = self.currentColor;
-
-    return [UIColor colorWithHue:(CGFloat) (color.hue / 360.0)
-                      saturation:(CGFloat) (color.saturation / 100.0)
-                      brightness:(CGFloat) (color.brightness / 100.0)
-                           alpha:1];
-}
 
 - (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor {
     if (!currentSensor.isExpanded) {

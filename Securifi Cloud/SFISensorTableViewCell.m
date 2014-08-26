@@ -68,32 +68,36 @@
     const CGRect cell_frame = self.frame;
     const NSInteger row_index = self.tag;
 
+    UIColor *const cell_color = [self makeCellColor];
+    UIColor *const clear_color = [UIColor clearColor];
+    UIColor *const white_color = [UIColor whiteColor];
+
     UIView *leftBackgroundLabel = [[UIView alloc] initWithFrame:CGRectMake(10, 5, LEFT_LABEL_WIDTH, SENSOR_ROW_HEIGHT - 10)];
     leftBackgroundLabel.tag = 111;
     leftBackgroundLabel.userInteractionEnabled = YES;
-    leftBackgroundLabel.backgroundColor = [self makeCellColor];
+    leftBackgroundLabel.backgroundColor = cell_color;
     [self.contentView addSubview:leftBackgroundLabel];
 
     UIButton *deviceButton = [UIButton buttonWithType:UIButtonTypeCustom];
     deviceButton.tag = row_index;
     deviceButton.frame = leftBackgroundLabel.bounds;
-    deviceButton.backgroundColor = [UIColor clearColor];
+    deviceButton.backgroundColor = clear_color;
     [deviceButton addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
     [leftBackgroundLabel addSubview:deviceButton];
 
     UIView *rightBackgroundLabel = [[UIView alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH + 11, 5, cell_frame.size.width - LEFT_LABEL_WIDTH - 25, SENSOR_ROW_HEIGHT - 10)];
-    rightBackgroundLabel.backgroundColor = [self makeCellColor];
+    rightBackgroundLabel.backgroundColor = cell_color;
     [self.contentView addSubview:rightBackgroundLabel];
 
     UILabel *deviceNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, (cell_frame.size.width - LEFT_LABEL_WIDTH - 90), 30)];
-    deviceNameLabel.backgroundColor = [UIColor clearColor];
-    deviceNameLabel.textColor = [UIColor whiteColor];
+    deviceNameLabel.backgroundColor = clear_color;
+    deviceNameLabel.textColor = white_color;
     deviceNameLabel.text = currentSensor.deviceName;
     [rightBackgroundLabel addSubview:deviceNameLabel];
 
     UILabel *deviceStatusLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 25, 180, 60)];
-    deviceStatusLabel.backgroundColor = [UIColor clearColor];
-    deviceStatusLabel.textColor = [UIColor whiteColor];
+    deviceStatusLabel.backgroundColor = clear_color;
+    deviceStatusLabel.textColor = white_color;
     deviceStatusLabel.numberOfLines = 2;
     deviceStatusLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
     [rightBackgroundLabel addSubview:deviceStatusLabel];
@@ -110,45 +114,48 @@
     UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     settingsButton.tag = row_index;
     settingsButton.frame = imgSettings.bounds;
-    settingsButton.backgroundColor = [UIColor clearColor];
+    settingsButton.backgroundColor = clear_color;
     [settingsButton addTarget:self action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
     [imgSettings addSubview:settingsButton];
 
     UIButton *settingsButtonCell = [UIButton buttonWithType:UIButtonTypeCustom];
     settingsButtonCell.tag = row_index;
     settingsButtonCell.frame = CGRectMake(cell_frame.size.width - 80, 5, 60, 80);
-    settingsButtonCell.backgroundColor = [UIColor clearColor];
+    settingsButtonCell.backgroundColor = clear_color;
     [settingsButtonCell addTarget:self action:@selector(onSettingClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:settingsButtonCell];
 }
 
 - (void)layoutDeviceImageCell {
+    UIColor *clear_color = [UIColor clearColor];
+    UIColor *white_color = [UIColor whiteColor];
+
     UIButton *deviceImageButton = [UIButton buttonWithType:UIButtonTypeCustom];
     deviceImageButton.tag = self.tag;
-    deviceImageButton.backgroundColor = [UIColor clearColor];
+    deviceImageButton.backgroundColor = clear_color;
     [deviceImageButton addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
 
     if (self.device.deviceType == 7 /*thermostat */) {
         // In case of thermostat show value instead of image
         // For Integer Value
         self.deviceValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH / 5, 12, 60, 70)];
-        self.deviceValueLabel.backgroundColor = [UIColor clearColor];
-        self.deviceValueLabel.textColor = [UIColor whiteColor];
+        self.deviceValueLabel.backgroundColor = clear_color;
+        self.deviceValueLabel.textColor = white_color;
         self.deviceValueLabel.textAlignment = NSTextAlignmentCenter;
         self.deviceValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:45];
         [self.deviceValueLabel addSubview:deviceImageButton];
 
         // For Decimal Value
         self.decimalValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 10, 40, 20, 30)];
-        self.decimalValueLabel.backgroundColor = [UIColor clearColor];
-        self.decimalValueLabel.textColor = [UIColor whiteColor];
+        self.decimalValueLabel.backgroundColor = clear_color;
+        self.decimalValueLabel.textColor = white_color;
         self.decimalValueLabel.textAlignment = NSTextAlignmentCenter;
         self.decimalValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:18];
 
         // For Degree
         self.degreeLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 10, 25, 20, 20)];
-        self.degreeLabel.backgroundColor = [UIColor clearColor];
-        self.degreeLabel.textColor = [UIColor whiteColor];
+        self.degreeLabel.backgroundColor = clear_color;
+        self.degreeLabel.textColor = white_color;
         self.degreeLabel.textAlignment = NSTextAlignmentCenter;
         self.degreeLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:18];
         self.degreeLabel.text = @"°";
@@ -257,7 +264,7 @@
         detailView.tag = self.tag;
         detailView.device = self.device;
         detailView.deviceValue = self.deviceValue;
-        detailView.currentColor = self.deviceColor;
+        detailView.color = [self makeCellColor];
 
         [self.contentView addSubview:detailView];
         self.detailView = detailView;

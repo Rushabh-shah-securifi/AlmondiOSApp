@@ -26,7 +26,7 @@
 
 @property(nonatomic) SFIDevice *device;
 @property(nonatomic) SFIDeviceValue *deviceValue;
-@property(nonatomic) SFIColors *currentColor;
+@property(nonatomic) UIColor *color;
 
 - (NSString*)deviceName;
 - (NSString*)deviceLocation;
