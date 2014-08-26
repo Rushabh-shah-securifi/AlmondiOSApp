@@ -14,22 +14,18 @@
 #import "SWRevealViewController.h"
 #import "SFISensorTableViewCell.h"
 
-@interface SFISensorsViewController () <UITextFieldDelegate, SFISensorTableViewCellDelegate>
+@interface SFISensorsViewController () <SFISensorTableViewCellDelegate>
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 
-@property NSTimer *mobileCommandTimer;
-@property NSTimer *sensorChangeCommandTimer;
+@property(nonatomic) NSTimer *mobileCommandTimer;
+@property(nonatomic) NSTimer *sensorChangeCommandTimer;
 
-@property BOOL isMobileCommandSuccessful;
-@property BOOL isSensorChangeCommandSuccessful;
+//todo review: do not seem foolproof in face of many back-to-back commands
+@property(nonatomic) BOOL isMobileCommandSuccessful;
+@property(nonatomic) BOOL isSensorChangeCommandSuccessful;
 
-@property(nonatomic) unsigned int changeBrightness;
-@property(nonatomic) unsigned int baseBrightness;
-@property(nonatomic) unsigned int changeHue;
-@property(nonatomic) unsigned int changeSaturation;
-
-@property(nonatomic) NSMutableArray *listAvailableColors;
+@property(nonatomic) NSArray *listAvailableColors;
 @property(nonatomic) NSInteger currentColorIndex;
 @property(nonatomic) SFIColors *currentColor;
 
@@ -37,10 +33,7 @@
 @property(nonatomic) NSArray *deviceList;
 @property(nonatomic) NSArray *deviceValueList;
 
-@property NSString *currentDeviceID;
-@property unsigned int currentIndexID;
-@property NSString *currentValue;
-@property unsigned int currentInternalIndex;
+@property(nonatomic) unsigned int currentInternalIndex;
 
 @property BOOL disposed;
 
@@ -174,9 +167,6 @@
     self.currentMAC = mac;
 
     // Reset values
-    self.currentDeviceID = nil;
-    self.currentIndexID = 0;
-    self.currentValue = nil;
     self.currentInternalIndex = 0;
 
     if ([self isNoAlmondMAC]) {
@@ -222,13 +212,6 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)onCurrentAlmondChanged:(id)sender {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self initializeAlmondData];
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-    });
-}
-
 #pragma mark - HUD mgt
 
 - (void)showHudWithTimeout {
@@ -250,10 +233,15 @@
 }
 
 - (BOOL)isSameAsCurrentMAC:(NSString *)aMac {
-    NSString *current = self.currentMAC;
-    if (current == nil || aMac == nil) {
+    if (aMac == nil) {
         return NO;
     }
+
+    NSString *current = self.currentMAC;
+    if (current == nil) {
+        return NO;
+    }
+
     return [current isEqualToString:aMac];
 }
 
@@ -424,14 +412,6 @@
 }
 
 - (UITableViewCell *)createSensorCell:(UITableView *)tableView listRow:(int)indexPathRow {
-    int positionIndex = indexPathRow % 15;
-    if (positionIndex < 7) {
-        self.changeBrightness = self.baseBrightness - (positionIndex * 10);
-    }
-    else {
-        self.changeBrightness = (self.baseBrightness - 70) + ((positionIndex - 7) * 10);
-    }
-
     SFIDevice *currentSensor = [self tryGetDevice:indexPathRow];
     int currentDeviceType = currentSensor.deviceType;
 
@@ -522,10 +502,86 @@
     }
 }
 
+#pragma mark - Add Almond actions
+
+- (void)onAddAlmondClicked:(id)sender {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AffiliationNavigationTop"];
+    [self presentViewController:mainView animated:YES completion:nil];
+}
+
 #pragma mark - SFISensorTableViewCellDelegate methods
 
 - (void)tableViewCellDidClickDevice:(SFISensorTableViewCell *)cell {
-    [self onDeviceClickedForIndex:(NSUInteger) cell.tag];
+    const NSInteger clicked_row = cell.tag;
+
+    SFIDevice *device = [self tryGetDevice:clicked_row];
+    if (device == nil) {
+        return;
+    }
+
+    const int device_id = device.deviceID;
+
+    SFIDeviceKnownValues *deviceValues;
+
+    switch (device.deviceType) {
+        case 1: {
+            // Switch
+            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:0];
+            if (!deviceValues.hasValue) {
+                return; // nothing to do
+            }
+            [deviceValues setBoolValue:!deviceValues.boolValue];
+            break;
+        }
+
+        case 2: {
+            // Multilevel switch
+            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.mostImpValueIndex];
+
+            int newValue = (deviceValues.intValue == 0) ? 99 : 0;
+            [deviceValues setIntValue:newValue];
+            break;
+        }
+
+        case 3: {
+            if (![device isTamperMostImportantValue]) {
+                return; // nothing to do
+            }
+            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.mostImpValueIndex];
+            [deviceValues setBoolValue:NO];
+            break;
+        }
+
+        case 4:
+        case 22: {
+            /* Level Control */
+            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.stateIndex];
+            if (!deviceValues.hasValue) {
+                return; // nothing to do
+            }
+            [deviceValues setBoolValue:!deviceValues.boolValue];
+            break;
+        }
+        default: {
+            return; // nothing to do
+        }
+    }
+
+    // Mark value state
+    deviceValues.isUpdating = true;
+
+    // Send update to the cloud
+    [self sendMobileCommandForDevice:device deviceValue:deviceValues];
+
+    // Reload the affected row
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (clicked_row >= self.deviceList.count) {
+            return;
+        }
+        NSIndexPath *path = [NSIndexPath indexPathForRow:clicked_row inSection:0];
+        [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
+    });
 }
 
 - (void)tableViewCellDidPressSettings:(SFISensorTableViewCell *)cell {
@@ -624,19 +680,10 @@
 
     NSArray *currentKnownValues = [self currentKnownValuesForDevice:device.deviceID];
 
-    SFIDeviceKnownValues *currentDeviceValue = currentKnownValues[(NSUInteger) device.tamperValueIndex];
-    [currentDeviceValue setBoolValue:NO];
+    SFIDeviceKnownValues *deviceValues = currentKnownValues[(NSUInteger) device.tamperValueIndex];
+    [deviceValues setBoolValue:NO];
 
-    //todo remove me
-    self.currentDeviceID = [NSString stringWithFormat:@"%d", device.deviceID];
-    self.currentIndexID = currentDeviceValue.index;
-    self.currentValue = currentDeviceValue.value;
-
-    [self sendMobileCommandForAlmond:self.currentMAC
-                            deviceId:device.deviceID
-                             indexId:currentDeviceValue.index
-                        changedValue:currentDeviceValue.value
-                       internalIndex:self.currentInternalIndex];
+    [self sendMobileCommandForDevice:device deviceValue:deviceValues];
 }
 
 - (void)tableViewCellDidChangeValue:(SFISensorTableViewCell *)cell valueName:(NSString *)valueName newValue:(NSString *)newValue {
@@ -647,16 +694,11 @@
     SFIDevice *device = cell.device;
     int currentDeviceId = device.deviceID;
 
-    SFIDeviceKnownValues *deviceValue = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valueName:valueName];
-    deviceValue.value = newValue;
+    SFIDeviceKnownValues *deviceValues = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valueName:valueName];
+    deviceValues.value = newValue;
 
-    [self sendMobileCommandForAlmond:self.currentMAC
-                            deviceId:device.deviceID
-                             indexId:deviceValue.index
-                        changedValue:newValue
-                       internalIndex:self.currentInternalIndex];
+    [self sendMobileCommandForDevice:device deviceValue:deviceValues];
 }
-
 
 #pragma mark - Class Methods
 
@@ -665,86 +707,6 @@
         SFIDeviceValue *value = [self tryCurrentDeviceValues:currentSensor.deviceID];
         [currentSensor initializeFromValues:value];
     }
-}
-
-- (void)onAddAlmondClicked:(id)sender {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AffiliationNavigationTop"];
-    [self presentViewController:mainView animated:YES completion:nil];
-}
-
-- (void)onDeviceClickedForIndex:(NSUInteger)clicked_row {
-    SFIDevice *device = [self tryGetDevice:clicked_row];
-    if (device == nil) {
-        return;
-    }
-
-    const int device_id = device.deviceID;
-
-    SFIDeviceKnownValues *deviceValue;
-
-    switch (device.deviceType) {
-        case 1: {
-            // Switch
-            deviceValue = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:0];
-            if (!deviceValue.hasValue) {
-                return; // nothing to do
-            }
-            [deviceValue setBoolValue:!deviceValue.boolValue];
-            break;
-        }
-
-        case 2: {
-            // Multilevel switch
-            deviceValue = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.mostImpValueIndex];
-
-            int newValue = (deviceValue.intValue == 0) ? 99 : 0;
-            [deviceValue setIntValue:newValue];
-            break;
-        }
-
-        case 3: {
-            if (![device isTamperMostImportantValue]) {
-                return; // nothing to do
-            }
-            deviceValue = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.mostImpValueIndex];
-            [deviceValue setBoolValue:NO];
-            break;
-        }
-
-        case 4:
-        case 22: {
-            /* Level Control */
-            deviceValue = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.stateIndex];
-            if (!deviceValue.hasValue) {
-                return; // nothing to do
-            }
-            [deviceValue setBoolValue:!deviceValue.boolValue];
-            break;
-        }
-        default: {
-            return; // nothing to do
-        }
-    }
-
-    // Mark value state
-    deviceValue.isUpdating = true;
-
-    // Send update to the cloud
-    [self sendMobileCommandForAlmond:self.currentMAC
-                            deviceId:device.deviceID
-                             indexId:deviceValue.index
-                        changedValue:deviceValue.value
-                       internalIndex:self.currentInternalIndex];
-
-    // Reload the affected row
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (clicked_row >= self.deviceList.count) {
-            return;
-        }
-        NSIndexPath *path = [NSIndexPath indexPathForRow:clicked_row inSection:0];
-        [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
-    });
 }
 
 - (void)initializeColors:(SFIAlmondPlus *)plus {
@@ -760,10 +722,6 @@
     else {
         self.currentColor = self.listAvailableColors[(NSUInteger) self.currentColorIndex];
     }
-
-    self.baseBrightness = (unsigned int) self.currentColor.brightness;
-    self.changeHue = (unsigned int) self.currentColor.hue;
-    self.changeSaturation = (unsigned int) self.currentColor.saturation;
 }
 
 #pragma mark - Sensor Values
@@ -813,57 +771,8 @@
     return nil;
 }
 
-#pragma mark - Keyboard methods
+#pragma mark - Cloud callbacks and timeouts
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    //[[self view] endEditing:YES];
-    // DLog(@"textFieldShouldReturn");
-    [textField resignFirstResponder];
-    return YES;
-}
-
-#pragma mark - Cloud Commands and Handlers
-
-- (void)sendDeviceValueCommand {
-    [[SecurifiToolkit sharedInstance] asyncRequestDeviceValueList:self.currentMAC];
-}
-
-- (void)sendMobileCommandForAlmond:(NSString *)almondMac
-                          deviceId:(unsigned int)deviceId
-                           indexId:(unsigned int)indexId
-                      changedValue:(NSString*)changedValue
-                     internalIndex:(unsigned int)internalIndex
-{
-    DLog(@"%s: sendMobileCommand", __PRETTY_FUNCTION__);
-
-    //Generate internal index between 1 to 100
-    self.currentInternalIndex = (arc4random() % 100) + 1;
-
-    MobileCommandRequest *mobileCommand = [[MobileCommandRequest alloc] init];
-    mobileCommand.almondMAC = almondMac;
-    mobileCommand.deviceID = [NSString stringWithFormat:@"%d", deviceId];
-    mobileCommand.indexID = [NSString stringWithFormat:@"%d", indexId];
-    mobileCommand.changedValue = changedValue;
-    mobileCommand.internalIndex = [NSString stringWithFormat:@"%d", internalIndex];
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = MOBILE_COMMAND;
-    cloudCommand.command = mobileCommand;
-
-    [self asyncSendCommand:cloudCommand];
-
-    //todo decide what to do about this
-    //PY 311013 - Timeout for Mobile Command
-    [self.mobileCommandTimer invalidate];
-    self.mobileCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
-                                                               target:self
-                                                             selector:@selector(onSendMobileCommandTimeout:)
-                                                             userInfo:nil
-                                                              repeats:NO];
-    self.isMobileCommandSuccessful = FALSE;
-}
-
-//PY 311013 - Timeout for Mobile Command
 - (void)onSendMobileCommandTimeout:(id)sender {
     if (self.disposed) {
         return;
@@ -955,10 +864,6 @@
     }
 
     NSArray *newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
-//    if ([newDeviceList count] < [self.deviceValueList count]) {
-//        // Reload Device Value List which was updated by Offline Data Manager
-//        newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
-//    }
 
     // Restore isExpanded state
     NSArray *oldDeviceList = self.deviceList;
@@ -1066,6 +971,13 @@
     });
 }
 
+- (void)onCurrentAlmondChanged:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self initializeAlmondData];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    });
+}
+
 - (void)onAlmondListDidChange:(id)sender {
     NSLog(@"Sensors: did receive ALmond List change");
 
@@ -1105,23 +1017,13 @@
     });
 }
 
-- (IBAction)onRefreshSensorData:(id)sender {
+- (void)onRefreshSensorData:(id)sender {
     if (!self) {
         return;
     }
     if ([self isNoAlmondMAC]) {
         return;
     }
-
-//    SensorForcedUpdateRequest *cmd = [[SensorForcedUpdateRequest alloc] init];
-//    cmd.almondMAC = self.currentMAC;
-//
-//    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-//    cloudCommand.commandType = DEVICE_DATA_FORCED_UPDATE_REQUEST;
-//    cloudCommand.command = cmd;
-//
-//    [self asyncSendCommand:cloudCommand];
-
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncRequestDeviceValueList:self.currentMAC];
@@ -1181,6 +1083,37 @@
             self.navigationItem.title = obj.almondplusName;
         }
     });
+}
+
+#pragma mark - Helpers
+
+- (void)sendMobileCommandForDevice:(SFIDevice *)device deviceValue:(SFIDeviceKnownValues *)deviceValues {
+    DLog(@"%s: sendMobileCommand", __PRETTY_FUNCTION__);
+
+    // Generate internal index between 1 to 100
+    self.currentInternalIndex = (arc4random() % 100) + 1;
+
+    MobileCommandRequest *mobileCommand = [[MobileCommandRequest alloc] init];
+    mobileCommand.almondMAC = self.currentMAC;
+    mobileCommand.deviceID = [NSString stringWithFormat:@"%d", device.deviceID];
+    mobileCommand.indexID = [NSString stringWithFormat:@"%d", deviceValues.index];
+    mobileCommand.changedValue = deviceValues.value;
+    mobileCommand.internalIndex = [NSString stringWithFormat:@"%d", self.currentInternalIndex];
+
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = MOBILE_COMMAND;
+    cloudCommand.command = mobileCommand;
+
+    [self asyncSendCommand:cloudCommand];
+
+    //todo decide what to do about this
+    [self.mobileCommandTimer invalidate];
+    self.mobileCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
+                                                               target:self
+                                                             selector:@selector(onSendMobileCommandTimeout:)
+                                                             userInfo:nil
+                                                              repeats:NO];
+    self.isMobileCommandSuccessful = FALSE;
 }
 
 - (void)resetDeviceListFromSaved {
