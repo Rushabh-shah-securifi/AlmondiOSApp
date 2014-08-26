@@ -18,6 +18,11 @@
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 
+@property(nonatomic, readonly) NSString *almondMac;
+@property(nonatomic, readonly) SFIColors *almondColor;
+@property(nonatomic) NSArray *deviceList;
+@property(nonatomic) NSArray *deviceValueList;
+
 @property(nonatomic) NSTimer *mobileCommandTimer;
 @property(nonatomic) NSTimer *sensorChangeCommandTimer;
 
@@ -25,18 +30,7 @@
 @property(nonatomic) BOOL isMobileCommandSuccessful;
 @property(nonatomic) BOOL isSensorChangeCommandSuccessful;
 
-@property(nonatomic) NSArray *listAvailableColors;
-@property(nonatomic) NSInteger currentColorIndex;
-@property(nonatomic) SFIColors *currentColor;
-
-@property(nonatomic) NSString *currentMAC;
-@property(nonatomic) NSArray *deviceList;
-@property(nonatomic) NSArray *deviceValueList;
-
-@property(nonatomic) unsigned int currentInternalIndex;
-
-@property BOOL disposed;
-
+@property BOOL isViewControllerDisposed;
 @end
 
 @implementation SFISensorsViewController
@@ -94,7 +88,7 @@
     [super viewWillDisappear:animated];
 
     if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
-        self.disposed = YES;
+        self.isViewControllerDisposed = YES;
 
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
@@ -164,10 +158,7 @@
     SFIAlmondPlus *plus = [toolkit currentAlmond];
 
     NSString *const mac = (plus == nil) ? NO_ALMOND : plus.almondplusMAC;
-    self.currentMAC = mac;
-
-    // Reset values
-    self.currentInternalIndex = 0;
+    _almondMac = mac;
 
     if ([self isNoAlmondMAC]) {
         self.navigationItem.title = @"Get Started";
@@ -229,7 +220,7 @@
 }
 
 - (BOOL)isNoAlmondMAC {
-    return [self.currentMAC isEqualToString:NO_ALMOND];
+    return [self.almondMac isEqualToString:NO_ALMOND];
 }
 
 - (BOOL)isSameAsCurrentMAC:(NSString *)aMac {
@@ -237,7 +228,7 @@
         return NO;
     }
 
-    NSString *current = self.currentMAC;
+    NSString *current = self.almondMac;
     if (current == nil) {
         return NO;
     }
@@ -412,11 +403,11 @@
 }
 
 - (UITableViewCell *)createSensorCell:(UITableView *)tableView listRow:(int)indexPathRow {
-    SFIDevice *currentSensor = [self tryGetDevice:indexPathRow];
-    int currentDeviceType = currentSensor.deviceType;
+    SFIDevice *device = [self tryGetDevice:indexPathRow];
+    int currentDeviceType = device.deviceType;
 
-    NSUInteger height = [self computeSensorRowHeight:currentSensor];
-    NSString *id = currentSensor.isExpanded ?
+    NSUInteger height = [self computeSensorRowHeight:device];
+    NSString *id = device.isExpanded ?
             [NSString stringWithFormat:@"SensorExpanded_%d_%ld", currentDeviceType, (unsigned long) height] :
             @"SensorSmall";
 
@@ -425,11 +416,11 @@
         cell = [[SFISensorTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:id];
     }
     cell.tag = indexPathRow;
-    cell.currentColor = self.currentColor;
-    cell.device = currentSensor;
+    cell.device = device;
+    cell.deviceColor = self.almondColor;
     cell.delegate = self;
 
-    unsigned int deviceId = currentSensor.deviceID;
+    unsigned int deviceId = device.deviceID;
     for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
         if (deviceId == currentDeviceValue.deviceID) {
             cell.deviceValue = currentDeviceValue;
@@ -638,15 +629,10 @@
     }
 
     SensorChangeRequest *cmd = [[SensorChangeRequest alloc] init];
-    cmd.almondMAC = self.currentMAC;
+    cmd.almondMAC = self.almondMac;
     cmd.deviceID = [NSString stringWithFormat:@"%d", device.deviceID];
     cmd.changedName = cell.deviceName;
     cmd.changedLocation = cell.deviceLocation;
-
-    //todo sinclair - do we need to do this here?
-    device.deviceName = cell.deviceName;
-    device.location = cell.deviceLocation;
-
     cmd.mobileInternalIndex = [NSString stringWithFormat:@"%d", (arc4random() % 10000) + 1];
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
@@ -678,7 +664,7 @@
         return;
     }
 
-    NSArray *currentKnownValues = [self currentKnownValuesForDevice:device.deviceID];
+    NSArray *currentKnownValues = [self tryCurrentKnownValuesForDevice:device.deviceID];
 
     SFIDeviceKnownValues *deviceValues = currentKnownValues[(NSUInteger) device.tamperValueIndex];
     [deviceValues setBoolValue:NO];
@@ -687,7 +673,7 @@
 }
 
 - (void)tableViewCellDidChangeValue:(SFISensorTableViewCell *)cell valueName:(NSString *)valueName newValue:(NSString *)newValue {
-    if (self.disposed) {
+    if (self.isViewControllerDisposed) {
         return;
     }
 
@@ -709,25 +695,21 @@
     }
 }
 
-- (void)initializeColors:(SFIAlmondPlus *)plus {
+- (void)initializeColors:(SFIAlmondPlus *)almond {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
 
-    self.listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-    int colorCode = plus.colorCodeIndex;
-    if (colorCode != 0) {
-        self.currentColor = self.listAvailableColors[(NSUInteger) colorCode];
-    }
-    else {
-        self.currentColor = self.listAvailableColors[(NSUInteger) self.currentColorIndex];
-    }
+    NSArray *colors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+
+    NSUInteger colorCode = (NSUInteger) almond.colorCodeIndex;
+    _almondColor = colors[colorCode];
 }
 
 #pragma mark - Sensor Values
 
 - (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice:(int)deviceId valueName:(NSString *)aValueName {
-    NSArray *currentKnownValues = [self currentKnownValuesForDevice:deviceId];
+    NSArray *currentKnownValues = [self tryCurrentKnownValuesForDevice:deviceId];
     for (SFIDeviceKnownValues *value in currentKnownValues) {
         if ([value.valueName isEqualToString:aValueName]) {
             return value;
@@ -737,7 +719,7 @@
 }
 
 - (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice:(int)deviceId valuesIndex:(NSInteger)index {
-    NSArray *values = [self currentKnownValuesForDevice:deviceId];
+    NSArray *values = [self tryCurrentKnownValuesForDevice:deviceId];
     if (index < values.count) {
         return values[(NSUInteger) index];
     }
@@ -753,7 +735,7 @@
     return nil;
 }
 
-- (NSMutableArray *)currentKnownValuesForDevice:(int)deviceId {
+- (NSArray *)tryCurrentKnownValuesForDevice:(int)deviceId {
     SFIDeviceValue *value = [self tryCurrentDeviceValues:deviceId];
     if (value) {
         return value.knownValues;
@@ -774,7 +756,7 @@
 #pragma mark - Cloud callbacks and timeouts
 
 - (void)onSendMobileCommandTimeout:(id)sender {
-    if (self.disposed) {
+    if (self.isViewControllerDisposed) {
         return;
     }
 
@@ -782,12 +764,12 @@
 
     if (!self.isMobileCommandSuccessful) {
         dispatch_async(dispatch_get_main_queue(), ^() {
-            if (self.disposed) {
+            if (self.isViewControllerDisposed) {
                 return;
             }
 
             //Cancel the mobile event - Revert back
-            self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
+            self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.almondMac];
             [self initializeDevices];
             [self.tableView reloadData];
             [self.HUD hide:YES];
@@ -799,7 +781,7 @@
     if (!self) {
         return;
     }
-    if (self.disposed) {
+    if (self.isViewControllerDisposed) {
         return;
     }
 
@@ -813,13 +795,13 @@
         return;
     }
 
-    NSString *mac = self.currentMAC;
+    NSString *mac = self.almondMac;
 
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
         }
-        if (self.disposed) {
+        if (self.isViewControllerDisposed) {
             return;
         }
 
@@ -842,7 +824,7 @@
     if (!self) {
         return;
     }
-    if (self.disposed) {
+    if (self.isViewControllerDisposed) {
         return;
     }
 
@@ -877,7 +859,7 @@
 
     // Push changes to the UI
     dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.disposed) {
+        if (self.isViewControllerDisposed) {
             return;
         }
         if ([self isSameAsCurrentMAC:cloudMAC]) {
@@ -904,7 +886,7 @@
         if (!self) {
             return;
         }
-        if (self.disposed) {
+        if (self.isViewControllerDisposed) {
             return;
         }
         [self.HUD hide:YES];
@@ -918,7 +900,7 @@
 
     NSString *cloudMAC = [data valueForKey:@"data"];
     if (![self isSameAsCurrentMAC:cloudMAC]) {
-        NSLog(@"Sensors: ignore device values list change, c:%@, m:%@", self.currentMAC, cloudMAC);
+        NSLog(@"Sensors: ignore device values list change, c:%@, m:%@", self.almondMac, cloudMAC);
         // An Almond not currently being views was changed
         return;
     }
@@ -954,7 +936,7 @@
         if (!self) {
             return;
         }
-        if (self.disposed) {
+        if (self.isViewControllerDisposed) {
             return;
         }
 
@@ -1004,7 +986,7 @@
         if (!self.isViewLoaded) {
             return;
         }
-        if (self.disposed) {
+        if (self.isViewControllerDisposed) {
             return;
         }
 
@@ -1026,7 +1008,7 @@
     }
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [toolkit asyncRequestDeviceValueList:self.currentMAC];
+    [toolkit asyncRequestDeviceValueList:self.almondMac];
 
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
@@ -1074,7 +1056,7 @@
         if (!self) {
             return;
         }
-        if (self.disposed) {
+        if (self.isViewControllerDisposed) {
             return;
         }
 
@@ -1088,17 +1070,15 @@
 #pragma mark - Helpers
 
 - (void)sendMobileCommandForDevice:(SFIDevice *)device deviceValue:(SFIDeviceKnownValues *)deviceValues {
-    DLog(@"%s: sendMobileCommand", __PRETTY_FUNCTION__);
-
     // Generate internal index between 1 to 100
-    self.currentInternalIndex = (arc4random() % 100) + 1;
+    unsigned int internalIndex = (arc4random() % 100) + 1;
 
     MobileCommandRequest *mobileCommand = [[MobileCommandRequest alloc] init];
-    mobileCommand.almondMAC = self.currentMAC;
+    mobileCommand.almondMAC = self.almondMac;
     mobileCommand.deviceID = [NSString stringWithFormat:@"%d", device.deviceID];
     mobileCommand.indexID = [NSString stringWithFormat:@"%d", deviceValues.index];
     mobileCommand.changedValue = deviceValues.value;
-    mobileCommand.internalIndex = [NSString stringWithFormat:@"%d", self.currentInternalIndex];
+    mobileCommand.internalIndex = [NSString stringWithFormat:@"%d", internalIndex];
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = MOBILE_COMMAND;
@@ -1117,18 +1097,17 @@
 }
 
 - (void)resetDeviceListFromSaved {
-    NSArray *list = [SFIOfflineDataManager readDeviceList:self.currentMAC];
+    NSArray *list = [SFIOfflineDataManager readDeviceList:self.almondMac];
     if (list == nil) {
         list = @[];
     }
 
     dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.disposed) {
+        if (self.isViewControllerDisposed) {
             return;
         }
         self.deviceList = list;
         [self initializeDevices];
-        //To remove text fields keyboard. It was throwing error when it was being called from the background thread
         [self.tableView reloadData];
         [self.HUD hide:YES];
     });
