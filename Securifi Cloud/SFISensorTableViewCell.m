@@ -71,7 +71,7 @@
     UIView *leftBackgroundLabel = [[UIView alloc] initWithFrame:CGRectMake(10, 5, LEFT_LABEL_WIDTH, SENSOR_ROW_HEIGHT - 10)];
     leftBackgroundLabel.tag = 111;
     leftBackgroundLabel.userInteractionEnabled = YES;
-    leftBackgroundLabel.backgroundColor = [self makeStandardBlue];
+    leftBackgroundLabel.backgroundColor = [self makeCellColor];
     [self.contentView addSubview:leftBackgroundLabel];
 
     UIButton *deviceButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -82,7 +82,7 @@
     [leftBackgroundLabel addSubview:deviceButton];
 
     UIView *rightBackgroundLabel = [[UIView alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH + 11, 5, cell_frame.size.width - LEFT_LABEL_WIDTH - 25, SENSOR_ROW_HEIGHT - 10)];
-    rightBackgroundLabel.backgroundColor = [self makeStandardBlue];
+    rightBackgroundLabel.backgroundColor = [self makeCellColor];
     [self.contentView addSubview:rightBackgroundLabel];
 
     UILabel *deviceNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, (cell_frame.size.width - LEFT_LABEL_WIDTH - 90), 30)];
@@ -257,7 +257,7 @@
         detailView.tag = self.tag;
         detailView.device = self.device;
         detailView.deviceValue = self.deviceValue;
-        detailView.currentColor = self.currentColor;
+        detailView.currentColor = self.deviceColor;
 
         [self.contentView addSubview:detailView];
         self.detailView = detailView;
@@ -566,12 +566,22 @@
     return self.deviceValue.knownValues;
 }
 
-- (UIColor *)makeStandardBlue {
-    SFIColors *color = self.currentColor;
+- (UIColor *)makeCellColor {
+    SFIColors *color = self.deviceColor;
+
+    int positionIndex = self.tag % 15;
+
+    int brightness = 0;
+    if (positionIndex < 7) {
+        brightness = color.brightness - (positionIndex * 10);
+    }
+    else {
+        brightness = (color.brightness - 70) + ((positionIndex - 7) * 10);
+    }
 
     return [UIColor colorWithHue:(CGFloat) (color.hue / 360.0)
                       saturation:(CGFloat) (color.saturation / 100.0)
-                      brightness:(CGFloat) (color.brightness / 100.0)
+                      brightness:(CGFloat) (brightness / 100.0)
                            alpha:1];
 }
 
