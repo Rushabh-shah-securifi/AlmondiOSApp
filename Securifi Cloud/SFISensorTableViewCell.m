@@ -177,9 +177,9 @@
 }
 
 - (void)layoutDeviceInfo {
-    const SFIDevice *currentSensor = self.device;
+    SFIDevice *const device = self.device;
 
-    switch (currentSensor.deviceType) {
+    switch (device.deviceType) {
         case 1: {
             [self configureSwitch_1];
             break;
@@ -253,7 +253,7 @@
             break;
         }
         default: {
-            self.deviceImageView.image = [UIImage imageNamed:currentSensor.imageName];
+            self.deviceImageView.image = [UIImage imageNamed:device.imageName];
             break;
         }
     } // for each device
@@ -262,13 +262,13 @@
         SFISensorDetailView *detailView = [SFISensorDetailView new];
         detailView.frame = self.frame;
         detailView.tag = self.tag;
-        detailView.device = self.device;
+        detailView.delegate = self;
+        detailView.device = device;
         detailView.deviceValue = self.deviceValue;
         detailView.color = [self makeCellColor];
 
         [self.contentView addSubview:detailView];
         self.detailView = detailView;
-        self.detailView.delegate = self;
     }
 
 }
@@ -391,7 +391,6 @@
     for (SFIDeviceKnownValues *currentKnownValue in currentKnownValues) {
         if ([currentKnownValue.valueName isEqualToString:@"SENSOR MULTILEVEL"]) {
             strValue = currentKnownValue.value;
-            //lblDeviceValue.text = [NSString stringWithFormat:@"%@°",currentKnownValue.value] ;
         }
         else if ([currentKnownValue.valueName isEqualToString:@"THERMOSTAT SETPOINT HEATING"]) {
             heatingSetPoint = [NSString stringWithFormat:@" HI %@°", currentKnownValue.value];
@@ -407,14 +406,13 @@
     NSString *strStatus = [NSString stringWithFormat:@"%@, %@, %@", strOperatingMode, coolingSetPoint, heatingSetPoint];
     self.deviceStatusLabel.text = strStatus;
 
-    //Calculate values
+    // Calculate values
     NSArray *thermostatValues = [strValue componentsSeparatedByString:@"."];
 
     NSString *const strIntegerValue = thermostatValues[0];
     self.deviceValueLabel.text = strIntegerValue;
 
-
-    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
+    UIFont *heavy_14 = [UIFont fontWithName:@"Avenir-Heavy" size:14];
 
     if ([thermostatValues count] == 2) {
         NSString *strDecimalValue = thermostatValues[1];
@@ -426,17 +424,19 @@
         self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 25, 20, 20);
     }
     else if ([strIntegerValue length] == 3) {
-        self.deviceValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:30];
-        self.decimalValueLabel.font = heavy_font;
-        self.degreeLabel.font = heavy_font;
+        self.deviceValueLabel.font = [heavy_14 fontWithSize:30];
+        self.decimalValueLabel.font = heavy_14;
+        self.degreeLabel.font = heavy_14;
 
         self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 38, 20, 30);
         self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 30, 20, 20);
     }
     else if ([strIntegerValue length] == 4) {
-        self.deviceValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:22];
-        self.decimalValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:10];
-        self.degreeLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:10];
+        UIFont *heavy_10 = [heavy_14 fontWithSize:10];
+
+        self.deviceValueLabel.font = [heavy_14 fontWithSize:22];
+        self.decimalValueLabel.font = heavy_10;
+        self.degreeLabel.font = heavy_10;
 
         self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 35, 20, 30);
         self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 30, 20, 20);
