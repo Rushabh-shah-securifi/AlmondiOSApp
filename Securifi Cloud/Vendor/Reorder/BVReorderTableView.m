@@ -128,9 +128,9 @@
 //    //To cancel the gesture if slider tab is open
 //    NSLog(@"LongPress => Row Clicked: %d", indexPath.row);
 //    NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-//    currentMAC  = [prefs objectForKey:CURRENT_ALMOND_MAC];
+//    almondMac  = [prefs objectForKey:CURRENT_ALMOND_MAC];
 //    if(deviceList == nil){
-//        deviceList = [SFIOfflineDataManager readDeviceList:currentMAC];
+//        deviceList = [SFIOfflineDataManager readDeviceList:almondMac];
 //    }
 //    
 //    SFIDevice *currentSensor = [deviceList objectAtIndex:indexPath.row];

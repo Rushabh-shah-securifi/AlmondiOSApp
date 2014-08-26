@@ -4015,7 +4015,7 @@
     }
 
 //    SensorForcedUpdateRequest *cmd = [[SensorForcedUpdateRequest alloc] init];
-//    cmd.almondMAC = self.currentMAC;
+//    cmd.almondMAC = self.almondMac;
 //
 //    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
 //    cloudCommand.commandType = DEVICE_DATA_FORCED_UPDATE_REQUEST;
