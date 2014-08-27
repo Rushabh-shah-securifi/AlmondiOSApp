@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ECSlidingViewController.h"
+
 @interface SFISceneTempViewController : UIViewController
 - (IBAction)revealMenu:(id)sender;
 @end

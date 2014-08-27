@@ -576,7 +576,7 @@
 }
 
 - (void)tableViewCellDidPressSettings:(SFISensorTableViewCell *)cell {
-    const int clicked_row = cell.tag;
+    const int clicked_row = (int) cell.tag;
 
     //Get the sensor for which setting was clicked
     NSArray *devices = self.deviceList;

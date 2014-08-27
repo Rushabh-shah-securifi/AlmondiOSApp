@@ -196,7 +196,6 @@
 		1CED60D319AC85AB0023512F /* SFISensor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600419AC85AB0023512F /* SFISensor.m */; };
 		1CED60D419AC85AB0023512F /* SFISlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600619AC85AB0023512F /* SFISlider.m */; };
 		1CED60D519AC85AB0023512F /* SNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600919AC85AB0023512F /* SNLog.m */; };
-		1DF03BBB991C786325F3B657 /* CustomAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03EB3AA944E73F457FB19 /* CustomAlertView.m */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -443,8 +442,6 @@
 		1CED600619AC85AB0023512F /* SFISlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISlider.m; sourceTree = "<group>"; };
 		1CED600819AC85AB0023512F /* SNLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNLog.h; sourceTree = "<group>"; };
 		1CED600919AC85AB0023512F /* SNLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNLog.m; sourceTree = "<group>"; };
-		1DF03CEA5CF393DF12D99DA7 /* CustomAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAlertView.h; sourceTree = "<group>"; };
-		1DF03EB3AA944E73F457FB19 /* CustomAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAlertView.m; sourceTree = "<group>"; };
 		9FF187E6539C4F59B4C93302 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -501,8 +498,6 @@
 				1C7581A219AD7BD00074C601 /* SFIOptionViewController.m */,
 				1C7581A319AD7BD00074C601 /* SFIScannerViewController.h */,
 				1C7581A419AD7BD00074C601 /* SFIScannerViewController.m */,
-				1DF03EB3AA944E73F457FB19 /* CustomAlertView.m */,
-				1DF03CEA5CF393DF12D99DA7 /* CustomAlertView.h */,
 			);
 			path = Legacy;
 			sourceTree = "<group>";
@@ -926,6 +921,17 @@
 				TargetAttributes = {
 					1CED5EF019AC82FD0023512F = {
 						DevelopmentTeam = R336EY8885;
+						SystemCapabilities = {
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
+							com.apple.GameCenter = {
+								enabled = 0;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 0;
+							};
+						};
 					};
 					1CED5F0B19AC82FD0023512F = {
 						TestTargetID = 1CED5EF019AC82FD0023512F;
@@ -1181,7 +1187,6 @@
 				1C7581F019AD80090074C601 /* SFIWirelessUserViewController.m in Sources */,
 				1C7581ED19AD80090074C601 /* SFIWirelessSummary.m in Sources */,
 				1CED60D419AC85AB0023512F /* SFISlider.m in Sources */,
-				1DF03BBB991C786325F3B657 /* CustomAlertView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1263,6 +1268,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1302,6 +1308,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1327,6 +1334,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PODS_ROOT)/CrashlyticsFramework\"",
@@ -1347,6 +1355,7 @@
 					"/Users/sinclair/MingFuClients/securifi/iostoolkit/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/**";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1359,6 +1368,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PODS_ROOT)/CrashlyticsFramework\"",
@@ -1379,6 +1389,7 @@
 					"/Users/sinclair/MingFuClients/securifi/iostoolkit/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/**";
 				WRAPPER_EXTENSION = app;
 			};

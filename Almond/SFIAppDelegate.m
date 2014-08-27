@@ -7,19 +7,27 @@
 //
 
 #import "SFIAppDelegate.h"
-#import <BugSense-iOS/BugSenseController.h>
+//#import <BugSense-iOS/BugSenseController.h>
 #import "SNLog.h"
 #import "SFIColors.h"
+#import "GAI.h"
 
 
 @implementation SFIAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-#ifdef DEBUG
-    [BugSenseController sharedControllerWithBugSenseAPIKey:@"172e1935"];
-#else
-    [BugSenseController sharedControllerWithBugSenseAPIKey:@"a9525243"];
-#endif
+//#ifdef DEBUG
+//    [BugSenseController sharedControllerWithBugSenseAPIKey:@"172e1935"];
+//#else
+//    [BugSenseController sharedControllerWithBugSenseAPIKey:@"a9525243"];
+//#endif
+
+//    [GAI sharedInstance].trackUncaughtExceptions = YES;
+//    [GAI sharedInstance].dispatchInterval = 20;
+//    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
+    
+    // Initialize tracker. Replace with your tracking ID.
+//    [[GAI sharedInstance] trackerWithTrackingId:@"UA-XXXX-Y"];
 
     [SFIReachabilityManager sharedManager];
     [self initializeColors];
@@ -67,8 +75,8 @@
 }
 
 - (void)onMemoryWarning:(id)sender {
-    BOOL gen = [BugSenseController sendCustomEventWithTag:@"app_mem_warn"];
-    NSLog(@"Posted app_mem_warn: %@", gen ? @"YES" : @"NO");
+//    BOOL gen = [BugSenseController sendCustomEventWithTag:@"app_mem_warn"];
+//    NSLog(@"Posted app_mem_warn: %@", gen ? @"YES" : @"NO");
 }
 
 #pragma mark - Set up

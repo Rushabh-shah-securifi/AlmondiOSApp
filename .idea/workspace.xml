@@ -1,0 +1,2757 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="2b7a464b-5bc8-494e-b4b9-78cea9362f57" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Almond.xcodeproj/project.xcworkspace/xcuserdata/sinclair.xcuserdatad/UserInterfaceState.xcuserstate" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Almond.xcworkspace/xcuserdata/sinclair.xcuserdatad/UserInterfaceState.xcuserstate" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Almond.xcodeproj/project.xcworkspace/xcshareddata/Almond.xccheckout" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Almond.xcworkspace/xcshareddata/Almond.xccheckout" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Almond.xcodeproj/xcuserdata/sinclair.xcuserdatad/xcschemes/Almond.xcscheme" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Almond/en.lproj/InfoPlist.strings" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Almond.xcodeproj/project.xcworkspace/contents.xcworkspacedata" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Almond.xcworkspace/contents.xcworkspacedata" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Almond.xcodeproj/project.pbxproj" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Almond.xcodeproj/xcuserdata/sinclair.xcuserdatad/xcschemes/xcschememanagement.plist" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Almond/Almond/en.lproj/InfoPlist.strings" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Almond/Securifi Cloud-Info.plist" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Almond/Securifi Cloud-Prefix.pch" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/project.pbxproj" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/project.xcworkspace/contents.xcworkspacedata" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/project.xcworkspace/xcshareddata/Securifi Cloud.xccheckout" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/project.xcworkspace/xcuserdata/nuchat.xcuserdatad/UserInterfaceState.xcuserstate" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/project.xcworkspace/xcuserdata/securifi-mac2.xcuserdatad/UserInterfaceState.xcuserstate" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/project.xcworkspace/xcuserdata/securifi-mac2.xcuserdatad/WorkspaceSettings.xcsettings" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/project.xcworkspace/xcuserdata/securifi.xcuserdatad/UserInterfaceState.xcuserstate" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/project.xcworkspace/xcuserdata/securifi.xcuserdatad/WorkspaceSettings.xcsettings" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/project.xcworkspace/xcuserdata/sinclair.xcuserdatad/UserInterfaceState.xcuserstate" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/project.xcworkspace/xcuserdata/sinclair.xcuserdatad/WorkspaceSettings.xcsettings" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/xcuserdata/nuchat.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/xcuserdata/nuchat.xcuserdatad/xcschemes/Securifi Cloud.xcscheme" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/xcuserdata/nuchat.xcuserdatad/xcschemes/xcschememanagement.plist" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/xcuserdata/securifi-mac2.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/xcuserdata/securifi-mac2.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/xcuserdata/securifi-mac2.xcuserdatad/xcschemes/Securifi Cloud.xcscheme" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/xcuserdata/securifi-mac2.xcuserdatad/xcschemes/xcschememanagement.plist" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/xcuserdata/securifi.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/xcuserdata/securifi.xcuserdatad/xcschemes/Securifi Cloud.xcscheme" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/xcuserdata/securifi.xcuserdatad/xcschemes/xcschememanagement.plist" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/xcuserdata/sinclair.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud.xcodeproj/xcuserdata/sinclair.xcuserdatad/xcschemes/xcschememanagement.plist" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud/AlmondPlus.ipa" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIAlmondListViewController.h" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIAlmondListViewController.m" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIEventViewController.h" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIEventViewController.m" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFISwitchViewController.h" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFISwitchViewController.m" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFITermsViewController.h" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIThermViewController.h" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIThermViewController.m" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIViewController.h" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIViewController.m" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWebService.h" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWebService.m" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/AlmondPlusConstants.h" afterPath="$PROJECT_DIR$/Almond/AlmondPlusConstants.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/AppIcon.appiconset/Contents.json" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/AppIcon.appiconset/Contents.json" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/AppIcon.appiconset/app-icon-120x120.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/AppIcon.appiconset/app-icon-120x120.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/AppIcon.appiconset/app-icon-152x152.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/AppIcon.appiconset/app-icon-152x152.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/AppIcon.appiconset/app-icon-29x29.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/AppIcon.appiconset/app-icon-29x29.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/AppIcon.appiconset/app-icon-40x40-1.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/AppIcon.appiconset/app-icon-40x40-1.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/AppIcon.appiconset/app-icon-58x58-1.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/AppIcon.appiconset/app-icon-58x58-1.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/AppIcon.appiconset/app-icon-58x58.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/AppIcon.appiconset/app-icon-58x58.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/AppIcon.appiconset/app-icon-76x76.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/AppIcon.appiconset/app-icon-76x76.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/AppIcon.appiconset/app-icon-80x80-1.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/AppIcon.appiconset/app-icon-80x80-1.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/AppIcon.appiconset/app-icon-80x80.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/AppIcon.appiconset/app-icon-80x80.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/LaunchImage.launchimage/1024x768.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/LaunchImage.launchimage/1024x768.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/LaunchImage.launchimage/2048x1536.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/LaunchImage.launchimage/2048x1536.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/LaunchImage.launchimage/768x1024.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/LaunchImage.launchimage/768x1024.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/LaunchImage.launchimage/Contents.json" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/LaunchImage.launchimage/Contents.json" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/LaunchImage.launchimage/launch-image-1536x2048-1.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/LaunchImage.launchimage/launch-image-1536x2048-1.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/LaunchImage.launchimage/launch-image-640x1136.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/LaunchImage.launchimage/launch-image-640x1136.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Images.xcassets/LaunchImage.launchimage/launch-image-640x960.png" afterPath="$PROJECT_DIR$/Almond/Images.xcassets/LaunchImage.launchimage/launch-image-640x960.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/MBProgressHUD.h" afterPath="$PROJECT_DIR$/Almond/Vendor/MBProgressHUD.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/MBProgressHUD.m" afterPath="$PROJECT_DIR$/Almond/Vendor/MBProgressHUD.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/NSString+ASBase64/NSString+ASBase64.h" afterPath="$PROJECT_DIR$/Almond/NSString+ASBase64/NSString+ASBase64.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/NSString+ASBase64/NSString+ASBase64.m" afterPath="$PROJECT_DIR$/Almond/NSString+ASBase64/NSString+ASBase64.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIActivationViewController.h" afterPath="$PROJECT_DIR$/Almond/Login/SFIActivationViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIActivationViewController.m" afterPath="$PROJECT_DIR$/Almond/Login/SFIActivationViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIAffiliationViewController.h" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIAffiliationViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIAffiliationViewController.m" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIAffiliationViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIAppDelegate.h" afterPath="$PROJECT_DIR$/Almond/SFIAppDelegate.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIAppDelegate.m" afterPath="$PROJECT_DIR$/Almond/SFIAppDelegate.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIBlockedContent.h" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIBlockedContent.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIBlockedContent.m" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIBlockedContent.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIBlockedContentViewController.h" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIBlockedContentViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIBlockedContentViewController.m" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIBlockedContentViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIBlockedDevice.h" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIBlockedDevice.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIBlockedDevice.m" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIBlockedDevice.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFICloudStatusBarButtonItem.h" afterPath="$PROJECT_DIR$/Almond/UI/SFICloudStatusBarButtonItem.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFICloudStatusBarButtonItem.m" afterPath="$PROJECT_DIR$/Almond/UI/SFICloudStatusBarButtonItem.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIConnectedDevice.h" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIConnectedDevice.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIConnectedDevice.m" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIConnectedDevice.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIDeviceDetailViewController.h" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIDeviceDetailViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIDeviceDetailViewController.m" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIDeviceDetailViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIDeviceListViewController.h" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIDeviceListViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIDeviceListViewController.m" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIDeviceListViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIDevicesList.h" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIDevicesList.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIDevicesList.m" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIDevicesList.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIDimmerViewController.h" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIDimmerViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIDimmerViewController.m" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIDimmerViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIDoorSensorViewController.h" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIDoorSensorViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIDoorSensorViewController.m" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIDoorSensorViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIGenericRouterCommand.h" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIGenericRouterCommand.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIGenericRouterCommand.m" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIGenericRouterCommand.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIHighlightedButton.h" afterPath="$PROJECT_DIR$/Almond/UI/SFIHighlightedButton.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIHighlightedButton.m" afterPath="$PROJECT_DIR$/Almond/UI/SFIHighlightedButton.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFILoginViewController.h" afterPath="$PROJECT_DIR$/Almond/Login/SFILoginViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFILoginViewController.m" afterPath="$PROJECT_DIR$/Almond/Login/SFILoginViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFILogoutAllViewController.h" afterPath="$PROJECT_DIR$/Almond/Login/SFILogoutAllViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFILogoutAllViewController.m" afterPath="$PROJECT_DIR$/Almond/Login/SFILogoutAllViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIMainViewController.h" afterPath="$PROJECT_DIR$/Almond/UI/SFIMainViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIMainViewController.m" afterPath="$PROJECT_DIR$/Almond/UI/SFIMainViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIOptionViewController.h" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIOptionViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIOptionViewController.m" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIOptionViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIRouterDevicesListViewController.h" afterPath="$PROJECT_DIR$/Almond/Router/SFIRouterDevicesListViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIRouterDevicesListViewController.m" afterPath="$PROJECT_DIR$/Almond/Router/SFIRouterDevicesListViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIRouterReboot.h" afterPath="$PROJECT_DIR$/Almond/Router/SFIRouterReboot.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIRouterReboot.m" afterPath="$PROJECT_DIR$/Almond/Router/SFIRouterReboot.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIRouterSummary.h" afterPath="$PROJECT_DIR$/Almond/Router/SFIRouterSummary.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIRouterSummary.m" afterPath="$PROJECT_DIR$/Almond/Router/SFIRouterSummary.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIRouterTableViewController.h" afterPath="$PROJECT_DIR$/Almond/Router/SFIRouterTableViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIRouterTableViewController.m" afterPath="$PROJECT_DIR$/Almond/Router/SFIRouterTableViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIRouterViewController.h" afterPath="$PROJECT_DIR$/Almond/Router/SFIRouterViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIRouterViewController.m" afterPath="$PROJECT_DIR$/Almond/Router/SFIRouterViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIScannerViewController.h" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIScannerViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIScannerViewController.m" afterPath="$PROJECT_DIR$/Almond/Legacy/SFIScannerViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFISceneTempViewController.h" afterPath="$PROJECT_DIR$/Almond/Legacy/SFISceneTempViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFISceneTempViewController.m" afterPath="$PROJECT_DIR$/Almond/Legacy/SFISceneTempViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFISensorDetailView.h" afterPath="$PROJECT_DIR$/Almond/Sensor/SFISensorDetailView.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFISensorDetailView.m" afterPath="$PROJECT_DIR$/Almond/Sensor/SFISensorDetailView.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFISensorTableViewCell.h" afterPath="$PROJECT_DIR$/Almond/Sensor/SFISensorTableViewCell.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFISensorTableViewCell.m" afterPath="$PROJECT_DIR$/Almond/Sensor/SFISensorTableViewCell.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFISensorsViewController.h" afterPath="$PROJECT_DIR$/Almond/Sensor/SFISensorsViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFISensorsViewController.m" afterPath="$PROJECT_DIR$/Almond/Sensor/SFISensorsViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFISignupViewController.h" afterPath="$PROJECT_DIR$/Almond/Signup/SFISignupViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFISignupViewController.m" afterPath="$PROJECT_DIR$/Almond/Signup/SFISignupViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFISlider.h" afterPath="$PROJECT_DIR$/Almond/UI/SFISlider.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFISlider.m" afterPath="$PROJECT_DIR$/Almond/UI/SFISlider.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessOptionViewController.h" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessOptionViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessOptionViewController.m" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessOptionViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessSetting.h" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessSetting.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessSetting.m" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessSetting.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessSettingsViewController.h" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessSettingsViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessSettingsViewController.m" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessSettingsViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessSummary.h" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessSummary.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessSummary.m" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessSummary.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessTableViewController.h" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessTableViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessTableViewController.m" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessTableViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessUserViewController.h" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessUserViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessUserViewController.m" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessUserViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessUsers.h" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessUsers.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessUsers.m" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessUsers.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessViewController.h" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SFIWirelessViewController.m" afterPath="$PROJECT_DIR$/Almond/Wireless/SFIWirelessViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SNLog.h" afterPath="$PROJECT_DIR$/Almond/Util/SNLog.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/SNLog.m" afterPath="$PROJECT_DIR$/Almond/Util/SNLog.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/DrawerViewController.h" afterPath="$PROJECT_DIR$/Almond/UI/DrawerViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/DrawerViewController.m" afterPath="$PROJECT_DIR$/Almond/UI/DrawerViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/SFIColors.h" afterPath="$PROJECT_DIR$/Almond/UI/SFIColors.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/SFIColors.m" afterPath="$PROJECT_DIR$/Almond/UI/SFIColors.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/SFIConstants.h" afterPath="$PROJECT_DIR$/Almond/UI/SFIConstants.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/SFIConstants.m" afterPath="$PROJECT_DIR$/Almond/UI/SFIConstants.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/SFIParser.h" afterPath="$PROJECT_DIR$/Almond/UI/SFIParser.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/SFIParser.m" afterPath="$PROJECT_DIR$/Almond/UI/SFIParser.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/SFIScene.h" afterPath="$PROJECT_DIR$/Almond/UI/SFIScene.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/SFIScene.m" afterPath="$PROJECT_DIR$/Almond/UI/SFIScene.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/SFISceneViewController.h" afterPath="$PROJECT_DIR$/Almond/UI/SFISceneViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/SFISceneViewController.m" afterPath="$PROJECT_DIR$/Almond/UI/SFISceneViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/SFISensor.h" afterPath="$PROJECT_DIR$/Almond/UI/SFISensor.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/SFISensor.m" afterPath="$PROJECT_DIR$/Almond/UI/SFISensor.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/SensorsViewController.h" afterPath="$PROJECT_DIR$/Almond/UI/SensorsViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/SensorsViewController.m" afterPath="$PROJECT_DIR$/Almond/UI/SensorsViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/scene1sensor.xml" afterPath="$PROJECT_DIR$/Almond/UI/scene1sensor.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/scene2sensor.xml" afterPath="$PROJECT_DIR$/Almond/UI/scene2sensor.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/scene3sensor.xml" afterPath="$PROJECT_DIR$/Almond/UI/scene3sensor.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/UI/sensordata.xml" afterPath="$PROJECT_DIR$/Almond/UI/sensordata.xml" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Vendor/Reorder/BVReorderTableView.h" afterPath="$PROJECT_DIR$/Almond/Vendor/Reorder/BVReorderTableView.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Vendor/Reorder/BVReorderTableView.m" afterPath="$PROJECT_DIR$/Almond/Vendor/Reorder/BVReorderTableView.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Vendor/SWRevealViewController/SWRevealViewController.h" afterPath="$PROJECT_DIR$/Almond/Vendor/SWRevealViewController/SWRevealViewController.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Vendor/SWRevealViewController/SWRevealViewController.m" afterPath="$PROJECT_DIR$/Almond/Vendor/SWRevealViewController/SWRevealViewController.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Vendor/Toast/LICENSE.txt" afterPath="$PROJECT_DIR$/Almond/Vendor/Toast/LICENSE.txt" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Vendor/Toast/iToast.h" afterPath="$PROJECT_DIR$/Almond/Vendor/Toast/iToast.h" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/Vendor/Toast/iToast.m" afterPath="$PROJECT_DIR$/Almond/Vendor/Toast/iToast.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/cert.cer" afterPath="$PROJECT_DIR$/Almond/cert.cer" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/en.lproj/MainStoryboard_iPad.storyboard" afterPath="$PROJECT_DIR$/Almond/en.lproj/MainStoryboard_iPad.storyboard" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/en.lproj/MainStoryboard_iPhone.storyboard" afterPath="$PROJECT_DIR$/Almond/en.lproj/MainStoryboard_iPhone.storyboard" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/main.m" afterPath="$PROJECT_DIR$/Almond/main.m" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Securifi Cloud/termsofuse.html" afterPath="$PROJECT_DIR$/Almond/termsofuse.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/cert.cer" afterPath="$PROJECT_DIR$/Almond/certs/cert.cer" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/cert.der" afterPath="$PROJECT_DIR$/Almond/certs/cert.der" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/certificate.cer" afterPath="$PROJECT_DIR$/Almond/certs/certificate.cer" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/0_app-icon-120x120.png" afterPath="$PROJECT_DIR$/Almond/images/0_app-icon-120x120.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/1024x768.png" afterPath="$PROJECT_DIR$/Almond/images/1024x768.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/2048x1536.png" afterPath="$PROJECT_DIR$/Almond/images/2048x1536.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/768x1024.png" afterPath="$PROJECT_DIR$/Almond/images/768x1024.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/Default.png" afterPath="$PROJECT_DIR$/Almond/images/Default.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/Default@2x.png" afterPath="$PROJECT_DIR$/Almond/images/Default@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/Line_icon.png" afterPath="$PROJECT_DIR$/Almond/images/Line_icon.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/Reload_icon.png" afterPath="$PROJECT_DIR$/Almond/images/Reload_icon.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/Wait_Icon.png" afterPath="$PROJECT_DIR$/Almond/images/Wait_Icon.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/account.png" afterPath="$PROJECT_DIR$/Almond/images/account.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/addAlmond.png" afterPath="$PROJECT_DIR$/Almond/images/addAlmond.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/add_new.png" afterPath="$PROJECT_DIR$/Almond/images/add_new.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/alarm_1.png" afterPath="$PROJECT_DIR$/Almond/images/alarm_1.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/alarm_2.png" afterPath="$PROJECT_DIR$/Almond/images/alarm_2.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/almondHome.png" afterPath="$PROJECT_DIR$/Almond/images/almondHome.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/app-icon-120x120.png" afterPath="$PROJECT_DIR$/Almond/images/app-icon-120x120.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/app-icon-152x152.png" afterPath="$PROJECT_DIR$/Almond/images/app-icon-152x152.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/app-icon-29x29.png" afterPath="$PROJECT_DIR$/Almond/images/app-icon-29x29.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/app-icon-40x40.png" afterPath="$PROJECT_DIR$/Almond/images/app-icon-40x40.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/app-icon-58x58.png" afterPath="$PROJECT_DIR$/Almond/images/app-icon-58x58.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/app-icon-76x76.png" afterPath="$PROJECT_DIR$/Almond/images/app-icon-76x76.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/app-icon-80x80.png" afterPath="$PROJECT_DIR$/Almond/images/app-icon-80x80.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/app-store-icon-1024x1024.png" afterPath="$PROJECT_DIR$/Almond/images/app-store-icon-1024x1024.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/back_icon.png" afterPath="$PROJECT_DIR$/Almond/images/back_icon.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/back_icon@2x.png" afterPath="$PROJECT_DIR$/Almond/images/back_icon@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/binary_sensor.png" afterPath="$PROJECT_DIR$/Almond/images/binary_sensor.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/blocked_user.png" afterPath="$PROJECT_DIR$/Almond/images/blocked_user.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/blue_down_bar.png" afterPath="$PROJECT_DIR$/Almond/images/blue_down_bar.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/bulb.png" afterPath="$PROJECT_DIR$/Almond/images/bulb.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/bulb_off.png" afterPath="$PROJECT_DIR$/Almond/images/bulb_off.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/bulb_on.png" afterPath="$PROJECT_DIR$/Almond/images/bulb_on.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_01.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_01.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_01@2x.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_01@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_02.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_02.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_02@2x.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_02@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_03.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_03.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_03@2x.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_03@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_04.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_04.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_04@2x.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_04@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_05.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_05.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_05@2x.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_05@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_1.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_1.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_1@2x.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_1@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_2.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_2.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_2@2x.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_2@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_3.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_3.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_3@2x.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_3@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_4.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_4.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_4@2x.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_4@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_5.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_5.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/cloudstatus/connection_status_5@2x.png" afterPath="$PROJECT_DIR$/Almond/images/cloudstatus/connection_status_5@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/connected_user.png" afterPath="$PROJECT_DIR$/Almond/images/connected_user.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/default_device.png" afterPath="$PROJECT_DIR$/Almond/images/default_device.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/demo_event.png" afterPath="$PROJECT_DIR$/Almond/images/demo_event.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/demo_log.png" afterPath="$PROJECT_DIR$/Almond/images/demo_log.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/demo_router.png" afterPath="$PROJECT_DIR$/Almond/images/demo_router.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/demo_scene.png" afterPath="$PROJECT_DIR$/Almond/images/demo_scene.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/dimmer.png" afterPath="$PROJECT_DIR$/Almond/images/dimmer.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/dimmer_max.png" afterPath="$PROJECT_DIR$/Almond/images/dimmer_max.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/dimmer_min.png" afterPath="$PROJECT_DIR$/Almond/images/dimmer_min.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/done.png" afterPath="$PROJECT_DIR$/Almond/images/done.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/door_lock_1.png" afterPath="$PROJECT_DIR$/Almond/images/door_lock_1.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/door_lock_2.png" afterPath="$PROJECT_DIR$/Almond/images/door_lock_2.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/door_off.png" afterPath="$PROJECT_DIR$/Almond/images/door_off.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/door_off_battery.png" afterPath="$PROJECT_DIR$/Almond/images/door_off_battery.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/door_off_tamper.png" afterPath="$PROJECT_DIR$/Almond/images/door_off_tamper.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/door_on.png" afterPath="$PROJECT_DIR$/Almond/images/door_on.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/door_on_battery.png" afterPath="$PROJECT_DIR$/Almond/images/door_on_battery.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/door_on_tamper.png" afterPath="$PROJECT_DIR$/Almond/images/door_on_tamper.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/drawer.png" afterPath="$PROJECT_DIR$/Almond/images/drawer.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/drawer@2x.png" afterPath="$PROJECT_DIR$/Almond/images/drawer@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/fire_01.png" afterPath="$PROJECT_DIR$/Almond/images/fire_01.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/fire_02.png" afterPath="$PROJECT_DIR$/Almond/images/fire_02.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/getting_started.png" afterPath="$PROJECT_DIR$/Almond/images/getting_started.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/heart_icon_120x120.png" afterPath="$PROJECT_DIR$/Almond/images/heart_icon_120x120.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_config.png" afterPath="$PROJECT_DIR$/Almond/images/icon_config.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_events.png" afterPath="$PROJECT_DIR$/Almond/images/icon_events.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_events@2x.png" afterPath="$PROJECT_DIR$/Almond/images/icon_events@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_help.png" afterPath="$PROJECT_DIR$/Almond/images/icon_help.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_help@2x.png" afterPath="$PROJECT_DIR$/Almond/images/icon_help@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_log.png" afterPath="$PROJECT_DIR$/Almond/images/icon_log.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_log@2x.png" afterPath="$PROJECT_DIR$/Almond/images/icon_log@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_round_1.png" afterPath="$PROJECT_DIR$/Almond/images/icon_round_1.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_round_2.png" afterPath="$PROJECT_DIR$/Almond/images/icon_round_2.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_round_3.png" afterPath="$PROJECT_DIR$/Almond/images/icon_round_3.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_router.png" afterPath="$PROJECT_DIR$/Almond/images/icon_router.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_router@2x.png" afterPath="$PROJECT_DIR$/Almond/images/icon_router@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_scenes.png" afterPath="$PROJECT_DIR$/Almond/images/icon_scenes.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_scenes@2x.png" afterPath="$PROJECT_DIR$/Almond/images/icon_scenes@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_sensor.png" afterPath="$PROJECT_DIR$/Almond/images/icon_sensor.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/icon_sensor@2x.png" afterPath="$PROJECT_DIR$/Almond/images/icon_sensor@2x.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/key_fob_1.png" afterPath="$PROJECT_DIR$/Almond/images/key_fob_1.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/key_fob_2.png" afterPath="$PROJECT_DIR$/Almond/images/key_fob_2.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/launch-image-1536x2048.png" afterPath="$PROJECT_DIR$/Almond/images/launch-image-1536x2048.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/launch-image-640x1136.png" afterPath="$PROJECT_DIR$/Almond/images/launch-image-640x1136.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/launch-image-640x960.png" afterPath="$PROJECT_DIR$/Almond/images/launch-image-640x960.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/line.png" afterPath="$PROJECT_DIR$/Almond/images/line.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/logout.png" afterPath="$PROJECT_DIR$/Almond/images/logout.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/logs.png" afterPath="$PROJECT_DIR$/Almond/images/logs.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/metering_1.png" afterPath="$PROJECT_DIR$/Almond/images/metering_1.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/metering_2.png" afterPath="$PROJECT_DIR$/Almond/images/metering_2.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/motion_sensor_false.png" afterPath="$PROJECT_DIR$/Almond/images/motion_sensor_false.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/motion_sensor_true.png" afterPath="$PROJECT_DIR$/Almond/images/motion_sensor_true.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/no_cloud_640x1136.png" afterPath="$PROJECT_DIR$/Almond/images/no_cloud_640x1136.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/no_cloud_640x960.png" afterPath="$PROJECT_DIR$/Almond/images/no_cloud_640x960.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/offline_150x150.png" afterPath="$PROJECT_DIR$/Almond/images/offline_150x150.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/router_1.png" afterPath="$PROJECT_DIR$/Almond/images/router_1.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/seekbar_background 2.png" afterPath="$PROJECT_DIR$/Almond/images/seekbar_background 2.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/seekbar_dark_patch 2.png" afterPath="$PROJECT_DIR$/Almond/images/seekbar_dark_patch 2.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/seekbar_thumb 2.png" afterPath="$PROJECT_DIR$/Almond/images/seekbar_thumb 2.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/seekbar_thumb.png" afterPath="$PROJECT_DIR$/Almond/images/seekbar_thumb.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/settings.png" afterPath="$PROJECT_DIR$/Almond/images/settings.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/shade_106x140.png" afterPath="$PROJECT_DIR$/Almond/images/shade_106x140.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/switch_off.png" afterPath="$PROJECT_DIR$/Almond/images/switch_off.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/switch_on.png" afterPath="$PROJECT_DIR$/Almond/images/switch_on.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/thermostat.png" afterPath="$PROJECT_DIR$/Almond/images/thermostat.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/tick_mark.png" afterPath="$PROJECT_DIR$/Almond/images/tick_mark.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/vibration_sensor_1.png" afterPath="$PROJECT_DIR$/Almond/images/vibration_sensor_1.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/vibration_sensor_2.png" afterPath="$PROJECT_DIR$/Almond/images/vibration_sensor_2.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/water_drop1.png" afterPath="$PROJECT_DIR$/Almond/images/water_drop1.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/water_drop2.png" afterPath="$PROJECT_DIR$/Almond/images/water_drop2.png" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/images/window_106x140.png" afterPath="$PROJECT_DIR$/Almond/images/window_106x140.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/.name" afterPath="$PROJECT_DIR$/.idea/.name" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/AlmondPlusSDKConstants.h" afterPath="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/AlmondPlusSDKConstants.h" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/OfflineStorage/SFIOfflineDataManager.m" afterPath="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/OfflineStorage/SFIOfflineDataManager.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/Reachability/SFIReachabilityManager.m" afterPath="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/Reachability/SFIReachabilityManager.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SecurifiToolkit.m" afterPath="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SecurifiToolkit.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SingleTon.m" afterPath="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SingleTon.m" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/iosapp.iml" afterPath="$PROJECT_DIR$/.idea/iosapp.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit.xcodeproj/project.pbxproj" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/xcode.xml" afterPath="$PROJECT_DIR$/.idea/xcode.xml" />
+    </list>
+    <ignored path="iosapp.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="iphoneos_06b4819a379df7bd4e4864cb40b839b2cff43e2c" />
+  <component name="FavoritesManager">
+    <favorites_list name="Securifi Cloud" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="SFIBlockedContentViewController.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Almond/Legacy/SFIBlockedContentViewController.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5475">
+              <caret line="14" column="47" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="47" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SFIRouterTableViewController.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Almond/Router/SFIRouterTableViewController.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="11216" max-vertical-offset="12060">
+              <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SFIWirelessViewController.h" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Almond/Wireless/SFIWirelessViewController.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540">
+              <caret line="12" column="36" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SFIWirelessSettingsViewController.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Almond/Wireless/SFIWirelessSettingsViewController.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="855">
+              <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SFIWirelessViewController.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Almond/Wireless/SFIWirelessViewController.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="64" max-vertical-offset="3720">
+              <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SFIWirelessOptionViewController.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Almond/Wireless/SFIWirelessOptionViewController.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="1890">
+              <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SFIDimmerViewController.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Almond/Legacy/SFIDimmerViewController.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="36" max-vertical-offset="2430">
+              <caret line="15" column="39" selection-start-line="15" selection-start-column="39" selection-end-line="15" selection-end-column="39" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GenericCommandRequest.h" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/GenericCommandRequest.h">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.3150525" vertical-offset="0" max-vertical-offset="857">
+              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SFIParser.m" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Almond/UI/SFIParser.m">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4395">
+              <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="true" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../iostoolkit" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SingleTon.m" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/Securifi Cloud/UI/SFISceneViewController.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIEventViewController.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFILogViewController.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/UI/DrawerViewController.h" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/UI/DrawerViewController.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIBlockedContent.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIBlockedDevice.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIConnectedDevice.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIDevicesList.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIGenericRouterCommand.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIRouterReboot.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIRouterSummary.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIWirelessSetting.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIWirelessSummary.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIWirelessUsers.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIAppDelegate.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/UI/SFIParser.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/UI/SFIParser.h" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIMainViewController.h" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFISplashImageViewContrller.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFISplashImageViewContrller.h" />
+        <option value="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SingleTon.h" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIRouterTableViewController.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/UI/SensorsViewController.h" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFISlider.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFISignupCoordinator.h" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFITermsViewController.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFISignupCoordinator.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFISignupViewController.m" />
+        <option value="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SFIDeviceValue.h" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/UI/SensorsViewController.m" />
+        <option value="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SecurifiToolkit.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFILoginViewController.m" />
+        <option value="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SingleTon.m" />
+        <option value="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/Network/SUnit.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFISensorsViewController.h" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFIMainViewController.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFISensorTableViewCell.h" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFISlider.h" />
+        <option value="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SFIDeviceKnownValues.m" />
+        <option value="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SFIDeviceKnownValues.h" />
+        <option value="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SFIDevice.m" />
+        <option value="$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SFIDevice.h" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFISensorsViewController.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFISensorDetailView.m" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFISensorDetailView.h" />
+        <option value="$PROJECT_DIR$/Securifi Cloud/SFISensorTableViewCell.m" />
+        <option value="$PROJECT_DIR$/Almond/Legacy/CustomAlertView.h" />
+        <option value="$PROJECT_DIR$/Almond/Legacy/SFIDeviceListViewController.m" />
+        <option value="$PROJECT_DIR$/Almond/Router/SFIRouterTableViewController.m" />
+        <option value="$PROJECT_DIR$/Almond/Wireless/SFIWirelessViewController.m" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="y" value="22" />
+    <option name="width" value="1775" />
+    <option name="height" value="1003" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="1" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SecurifiToolkit" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SecurifiToolkit" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SecurifiCloudResources" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Supporting Files" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SecurifiToolkit" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Products" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Almond" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Almond" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Frameworks" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Almond" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Almond" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Almond" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Almond" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="UI" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeRootNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Almond" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Almond" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Legacy" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.XcodeViewNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Cidr.FilesView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Securifi Cloud" />
+              <option name="myItemType" value="com.jetbrains.cidr.projectView.CidrFilesViewHelper$1$1" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="recentsLimit" value="5" />
+    <property name="options.lastSelected" value="XcodeSettings" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
+    <property name="LayoutCode.rearrangeEntriesC/C++/Objective-C" value="false" />
+    <property name="FullScreen" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Securifi Cloud/Vendor/SWRevealViewController" />
+    <property name="OBJC.PRESERVED_TARGET_SELECTION" value="Almond" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="262" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="264" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="267" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="1062" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="262" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="264" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="267" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="1062" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
+    <property name="restartRequiresConfirmation" value="true" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/sinclair/MingFuClients/securifi/iosapp/Securifi Cloud/UI/SensorsViewController.m" />
+  </component>
+  <component name="RunManager" selected="Application.Framework">
+    <configuration default="true" type="AppleRunConfiguration" factoryName="Application" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Securifi Cloud" TARGET_NAME="Securifi Cloud" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="Securifi Cloud" RUN_TARGET_NAME="Securifi Cloud" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="true" type="OCUnitRunConfiguration" factoryName="XCTest/Kiwi" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="SecurifiToolkit" TARGET_NAME="SecurifiToolkitTests" CONFIG_NAME="Debug" TEST_MODE="SUITE_TEST">
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="OCGoogleTestRunConfigurationType" factoryName="Google Test" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Securifi Cloud" TARGET_NAME="Securifi Cloud" CONFIG_NAME="Debug" TEST_MODE="SUITE_TEST">
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="false" name="Framework" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="SecurifiToolkit" TARGET_NAME="Framework" CONFIG_NAME="Debug" SCHEME_NAME="Framework" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="false" name="SecurifiCloudResources" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="SecurifiToolkit" TARGET_NAME="SecurifiCloudResources" CONFIG_NAME="Debug" SCHEME_NAME="SecurifiCloudResources" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="false" name="SecurifiToolkit" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="SecurifiToolkit" TARGET_NAME="SecurifiToolkit" CONFIG_NAME="Debug" SCHEME_NAME="SecurifiToolkit" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="false" name="Almond" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Almond" TARGET_NAME="Almond" CONFIG_NAME="Debug" SCHEME_NAME="Almond" RUN_TARGET_PROJECT_NAME="Almond" RUN_TARGET_NAME="Almond" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="false" name="Pods-BugSense" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Pods" TARGET_NAME="Pods-BugSense" CONFIG_NAME="Debug" SCHEME_NAME="Pods-BugSense" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="false" name="Pods-CrashlyticsFramework" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Pods" TARGET_NAME="Pods-CrashlyticsFramework" CONFIG_NAME="Debug" SCHEME_NAME="Pods-CrashlyticsFramework" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="false" name="Pods-GoogleAnalytics-iOS-SDK" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Pods" TARGET_NAME="Pods-GoogleAnalytics-iOS-SDK" CONFIG_NAME="Debug" SCHEME_NAME="Pods-GoogleAnalytics-iOS-SDK" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="false" name="Pods-iToast" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Pods" TARGET_NAME="Pods-iToast" CONFIG_NAME="Debug" SCHEME_NAME="Pods-iToast" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="false" name="Pods-MBProgressHUD" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Pods" TARGET_NAME="Pods-MBProgressHUD" CONFIG_NAME="Debug" SCHEME_NAME="Pods-MBProgressHUD" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="false" name="Pods-SWRevealViewController" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Pods" TARGET_NAME="Pods-SWRevealViewController" CONFIG_NAME="Debug" SCHEME_NAME="Pods-SWRevealViewController" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <configuration default="false" name="Pods" type="AppleRunConfiguration" factoryName="Application" WORKING_DIR="" PASS_PARENT_ENVS="FALSE" PROJECT_NAME="Pods" TARGET_NAME="Pods" CONFIG_NAME="Debug" SCHEME_NAME="Pods" MAKE_ACTIVE="TRUE" WAIT_FOR="FALSE">
+      <envs />
+      <EXTENSION ID="org.jetbrains.appcode.reveal.RevealRunConfigurationExtension">
+        <REVEAL_SETTINGS autoInject="false" autoInstall="true" askToEnableAutoInstall="true" />
+      </EXTENSION>
+      <method />
+    </configuration>
+    <list size="11">
+      <item index="0" class="java.lang.String" itemvalue="Application.Framework" />
+      <item index="1" class="java.lang.String" itemvalue="Application.SecurifiCloudResources" />
+      <item index="2" class="java.lang.String" itemvalue="Application.SecurifiToolkit" />
+      <item index="3" class="java.lang.String" itemvalue="Application.Almond" />
+      <item index="4" class="java.lang.String" itemvalue="Application.Pods-BugSense" />
+      <item index="5" class="java.lang.String" itemvalue="Application.Pods-CrashlyticsFramework" />
+      <item index="6" class="java.lang.String" itemvalue="Application.Pods-GoogleAnalytics-iOS-SDK" />
+      <item index="7" class="java.lang.String" itemvalue="Application.Pods-iToast" />
+      <item index="8" class="java.lang.String" itemvalue="Application.Pods-MBProgressHUD" />
+      <item index="9" class="java.lang.String" itemvalue="Application.Pods-SWRevealViewController" />
+      <item index="10" class="java.lang.String" itemvalue="Application.Pods" />
+    </list>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="StructureViewFactory">
+    <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2b7a464b-5bc8-494e-b4b9-78cea9362f57" name="Default" comment="" />
+      <created>1401165337684</created>
+      <option name="number" value="Default" />
+      <updated>1401165337684</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Closed memory leaks in SSL certificate creation and network stream creation. Extensive clean up and dead-code stripping.">
+      <created>1401955915371</created>
+      <option name="number" value="00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1401955915371</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Disabled SSL certificate loading and check code as it appears not to be needed. Consolidated all places where network is torn down and removed from run loop.">
+      <created>1401958160560</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1401958160560</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Clean up: stripped dead code, stripped dead stores, reformatted some for clarity. Marked some leaks. Will fix in subsequent commits.">
+      <created>1402030049956</created>
+      <option name="number" value="00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1402030049956</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Implemented a singleton pattern in SecurifiToolkit. It was then simple to remove memory leaks around async queue creation. Some other clean up and rationalization of method return values. More to be done.">
+      <created>1402034329243</created>
+      <option name="number" value="00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1402034329243</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Clean up: fixed all compiler warnings">
+      <created>1402038338657</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1402038338657</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Clean up: fixed all compiler warnings">
+      <created>1402038400132</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1402038400132</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Clean up: fixed compiler warnings by changing signature of initReconnectSDK and cleaning up control logic for managing reconnect attempts.">
+      <created>1402038812475</created>
+      <option name="number" value="00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1402038812475</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Clean up: fixed compiler warnings and other problems">
+      <created>1402043957208</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1402043957208</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Updated MPProgressHUD to latest, v.0.8, which brings iOS 7 compatability and bug fixes.">
+      <created>1402283225918</created>
+      <option name="number" value="00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1402283225918</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Clean up: stripped dead imports and code">
+      <created>1402287260442</created>
+      <option name="number" value="00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1402287260442</updated>
+    </task>
+    <task id="LOCAL-00011" summary="The controller was leaking HUD views each time it was shown. Lots of code clean up and some other fixes. More clean up and refactoring needed.">
+      <created>1402295918355</created>
+      <option name="number" value="00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1402295918355</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Clean up: reformat and other syntax modernizations in prep for bug fixing. There's a nice leak in this controller's management of subviews. Will track down next...">
+      <created>1402298852647</created>
+      <option name="number" value="00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1402298852647</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Clean up: strip dead code and other fix-ups as part of leak investigation.">
+      <created>1402298901088</created>
+      <option name="number" value="00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1402298901088</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Fixed a bad leak in the way table view cells were being managed. App now runs closer to a steady state.">
+      <created>1402300830143</created>
+      <option name="number" value="00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1402300830143</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Refactored and clean up. Removed unused properties Rationalized the way the current list of Almonds is loaded, and removed double loading that was occurring on instantiation of the controller.&#10;">
+      <created>1402302313542</created>
+      <option name="number" value="00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1402302313542</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Minor clean up">
+      <created>1402302360356</created>
+      <option name="number" value="00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1402302360356</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Plugged various leaks. Code clean up.">
+      <created>1402452569943</created>
+      <option name="number" value="00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1402452569943</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Minor clean up">
+      <created>1402452581432</created>
+      <option name="number" value="00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1402452581432</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Plug a serious leak causing instantiation of a ctrl each time the parent became visible.">
+      <created>1402453050872</created>
+      <option name="number" value="00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1402453050872</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Fixed build settings: build all architectures for RELEASE builds">
+      <created>1402454108246</created>
+      <option name="number" value="00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1402454108246</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Plug leaks in dispatch_queue creation by using the system's default queue">
+      <created>1402457340083</created>
+      <option name="number" value="00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1402457340083</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Cleaning up Reachability in preparation of pushing it into the SDK">
+      <created>1402458443762</created>
+      <option name="number" value="00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1402458443762</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Pushed responsibility for reconnecting to the network into the SDK itself. UI does not initiate this process anymore.">
+      <created>1402465996896</created>
+      <option name="number" value="00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1402465996896</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Tracked down and closed a leak">
+      <created>1402471792116</created>
+      <option name="number" value="00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1402471792116</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Did significant refactoring of SingleTon and SecurifiToolkit. Connection management is more reliable, and responsibilities between classes is now demarcated. SecurifiToolkit coordinates all network set-up and tear-down. SingleTon is no longer a singleton.">
+      <created>1402553266763</created>
+      <option name="number" value="00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1402553266763</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Some clean up">
+      <created>1402553486092</created>
+      <option name="number" value="00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1402553486092</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Some clean up">
+      <created>1402553517030</created>
+      <option name="number" value="00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1402553517030</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Use SDK's async methods for sending commands. Fixed a problem with the HUD always showing up. Clean up.">
+      <created>1402638232025</created>
+      <option name="number" value="00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1402638232025</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Removed hard coded test logon credentials.">
+      <created>1402639530023</created>
+      <option name="number" value="00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1402639530023</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Introducing new methods for submitting commands to the SDK.">
+      <created>1402647818587</created>
+      <option name="number" value="00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1402647818587</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Updated for changes in SDK governing how commands are submitted to the cloud. In UI, many submissions blocked the main thread. Now, submissions are asynchronous and return immediately.">
+      <created>1402647936714</created>
+      <option name="number" value="00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1402647936714</updated>
+    </task>
+    <task id="LOCAL-00032" summary="fixed compiler warning by changing app icon to 80x80 dimensions.">
+      <created>1402647971571</created>
+      <option name="number" value="00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1402647971571</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Passing underlying socket to the underlying routine that sends commands. Logging payload string, not bytes, is easier for debugging.">
+      <created>1402650746880</created>
+      <option name="number" value="00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1402650746880</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Continuing to refine process for managing socket's lifecycle. Introduced a delegate protocol allowing the SDK to be informed of changes.">
+      <created>1402903370790</created>
+      <option name="number" value="00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1402903370790</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Extensive changes: begininning process to encapsualte key functionality inside the SDK, including credentials. Removed getConnectionState and replaced with higher level methods.">
+      <created>1402903475389</created>
+      <option name="number" value="00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1402903475389</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Consoldiated and factored out functionality for managing and responding to logon requests. More work needed.">
+      <created>1402903532473</created>
+      <option name="number" value="00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1402903532473</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Moved from the UI layer">
+      <created>1402904321998</created>
+      <option name="number" value="00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1402904321998</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Evaluate the SSL connection's trust by using the CA certificate root.">
+      <created>1402931632343</created>
+      <option name="number" value="00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1402931632343</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Moving the &quot;database&quot; functionality into the SDK">
+      <created>1402931675238</created>
+      <option name="number" value="00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1402931675238</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Set kCFStreamSSLValidatesCertificateChain to YES. Some logging improvements.">
+      <created>1402935360284</created>
+      <option name="number" value="00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1402935360284</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Clean up">
+      <created>1402935378608</created>
+      <option name="number" value="00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1402935378608</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Clean up: strip dead code; some logging improvements.">
+      <created>1402935443979</created>
+      <option name="number" value="00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1402935443979</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Pushed all responsibility for storing email, pass token, and account ID into the SDK. This information is now stored securely in the app's keychain.">
+      <created>1403060570933</created>
+      <option name="number" value="00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1403060570933</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Clean up">
+      <created>1403064501521</created>
+      <option name="number" value="00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1403064501521</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Introduced a dispatch_semaphore that allows clients to wait on for connection establishment. This will allow  us to remove the infinite while loop in the SecurifiToolkit serving the same purpose (but without guarantee of exiting).">
+      <created>1403158720672</created>
+      <option name="number" value="00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1403158720672</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Syncing behavior with Android: remove retry thread. Reconnect on demand. Other clean up and improvements. We now wait on a dispatch_semaphore provided by the SingleTon when first establishing the network connection.">
+      <created>1403158856028</created>
+      <option name="number" value="00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1403158856028</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Surpress logging">
+      <created>1403158881682</created>
+      <option name="number" value="00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1403158881682</updated>
+    </task>
+    <task id="LOCAL-00048" summary="Make Logout All work. Various functional clean up and polish.">
+      <created>1403159379750</created>
+      <option name="number" value="00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1403159379750</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Push responsibility for presenting and managing Logout and Logout All into the main controller.">
+      <created>1403159489177</created>
+      <option name="number" value="00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1403159489177</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Push responsibility for presenting and managing Logout and Logout All into the main controller.">
+      <created>1403159523616</created>
+      <option name="number" value="00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1403159523616</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Disabled landscape mode for entire app. Don't have time for this release to sort out all problems with that orientation.">
+      <created>1403159561585</created>
+      <option name="number" value="00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1403159561585</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Clean up">
+      <created>1403159583487</created>
+      <option name="number" value="00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1403159583487</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Push notifications from the network onto their own queue. Fixed concurrency bug in shutdown process causing a retain cycle; do it synchronously instead.">
+      <created>1403234398153</created>
+      <option name="number" value="00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1403234398153</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Add a connection retry process to the Main View">
+      <created>1403234447510</created>
+      <option name="number" value="00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1403234447510</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Make sure table reloading is done on the main thread">
+      <created>1403236852019</created>
+      <option name="number" value="00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1403236852019</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Started refactoring and clean up. Fixed problem with dynamic sensor value updates causing update not to be shown in UI. Fixed a number of problems with table view cell management. Removed and reduced stored and shared state; there is much more to be done. Added cell animation on reload---it looks better.">
+      <created>1403261552366</created>
+      <option name="number" value="00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1403261552367</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Added &quot;STATE&quot; constant">
+      <created>1403261575198</created>
+      <option name="number" value="00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1403261575198</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Added &quot;STATE&quot; constant">
+      <created>1403261623428</created>
+      <option name="number" value="00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1403261623428</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Removed IBOUTLET reference to sensors table.">
+      <created>1403261668834</created>
+      <option name="number" value="00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1403261668834</updated>
+    </task>
+    <task id="LOCAL-00060" summary="Fine tune the cell animations, and make sure distinct cells for each size is created.">
+      <created>1403402688808</created>
+      <option name="number" value="00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1403402688808</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Set icon tinit colors to black per style guidelines">
+      <created>1403422875919</created>
+      <option name="number" value="00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1403422875919</updated>
+    </task>
+    <task id="LOCAL-00062" summary="Resolved layout metric conflict in login controller &quot;email&quot; field">
+      <created>1403424730316</created>
+      <option name="number" value="00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1403424730316</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Clena up and further rationalization: on successful login, the controller no longer attempts to load Almond data and allows its delegate to do this instead.">
+      <created>1403424865129</created>
+      <option name="number" value="00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1403424865130</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Set icon tinit colors to black per style guidelines">
+      <created>1403424888640</created>
+      <option name="number" value="00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1403424888640</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Clean up and further rationalization: the controller was intercepting and responding to events it should have allowed its children to handle.">
+      <created>1403424957444</created>
+      <option name="number" value="00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1403424957444</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Clean up. Re-did table cell creation/mgt.">
+      <created>1403427227160</created>
+      <option name="number" value="00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1403427227160</updated>
+    </task>
+    <task id="LOCAL-00067" summary="When the cloud is offline, display a message and do not show the router list.">
+      <created>1403428669526</created>
+      <option name="number" value="00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1403428669526</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Added connection status icons to the top nav bar for Sensors and Routers">
+      <created>1403602950433</created>
+      <option name="number" value="00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1403602950433</updated>
+    </task>
+    <task id="LOCAL-00069" summary="On going refactoring. Consolidate UISlider and UISegmentControl callback code. Other clean up and consolidation. Lots more to do.">
+      <created>1404094555343</created>
+      <option name="number" value="00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1404094555343</updated>
+    </task>
+    <task id="LOCAL-00070" summary="Button that sets its background to indicate press down">
+      <created>1404094598431</created>
+      <option name="number" value="00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1404094598431</updated>
+    </task>
+    <task id="LOCAL-00071" summary="Integrated new icons">
+      <created>1404094637688</created>
+      <option name="number" value="00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1404094637688</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Prototyping some ideas for adding behaviors to value holders">
+      <created>1404094678166</created>
+      <option name="number" value="00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1404094678167</updated>
+    </task>
+    <task id="LOCAL-00073" summary="Reworking the layout esp. for 3.5 inch screens, and making the sign-up process work. More work to be done.">
+      <created>1404189679583</created>
+      <option name="number" value="00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1404189679583</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Don't bring up the keyboard immediately on preseninting the view, because it obscures the Sign Up button. Other minor clean up.">
+      <created>1404189750720</created>
+      <option name="number" value="00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1404189750720</updated>
+    </task>
+    <task id="LOCAL-00075" summary="Rationalize process for enabling Continue button">
+      <created>1404190359680</created>
+      <option name="number" value="00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1404190359680</updated>
+    </task>
+    <task id="LOCAL-00076" summary="Fixing some keyboard event handling problems.">
+      <created>1404192220378</created>
+      <option name="number" value="00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1404192220378</updated>
+    </task>
+    <task id="LOCAL-00077" summary="Polishing the sign-up experience">
+      <created>1404195609028</created>
+      <option name="number" value="00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1404195609028</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Added a formal &quot;shutdown&quot; method. On termination, the app now shutsdown the SDK.">
+      <created>1404195901423</created>
+      <option name="number" value="00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1404195901424</updated>
+    </task>
+    <task id="LOCAL-00079" summary="The &quot;wait on connection establishment&quot; semaphore was using a groslly low wait time. On older hardware this might have been causing problems.">
+      <created>1404195979309</created>
+      <option name="number" value="00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1404195979309</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Keychains perist after the app is deleted from a device. So, we keep track whether the app is a fresh install and force the user to re-login.">
+      <created>1404196600549</created>
+      <option name="number" value="00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1404196600549</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Removed dead code">
+      <created>1404196666980</created>
+      <option name="number" value="00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1404196666980</updated>
+    </task>
+    <task id="LOCAL-00082" summary="Minor clean up">
+      <created>1404197198571</created>
+      <option name="number" value="00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1404197198572</updated>
+    </task>
+    <task id="LOCAL-00083" summary="UI polish and clean up">
+      <created>1404197638939</created>
+      <option name="number" value="00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1404197638939</updated>
+    </task>
+    <task id="LOCAL-00084" summary="UI Polish">
+      <created>1404197804031</created>
+      <option name="number" value="00084" />
+      <option name="project" value="LOCAL" />
+      <updated>1404197804032</updated>
+    </task>
+    <task id="LOCAL-00085" summary="Only enable the Lost Password button when an email address is specified.">
+      <created>1404200598902</created>
+      <option name="number" value="00085" />
+      <option name="project" value="LOCAL" />
+      <updated>1404200598902</updated>
+    </task>
+    <task id="LOCAL-00086" summary="Set tint color to black or green, depending on connection state.">
+      <created>1404281575459</created>
+      <option name="number" value="00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1404281575460</updated>
+    </task>
+    <task id="LOCAL-00087" summary="Minor clean up">
+      <created>1404281615502</created>
+      <option name="number" value="00087" />
+      <option name="project" value="LOCAL" />
+      <updated>1404281615512</updated>
+    </task>
+    <task id="LOCAL-00088" summary="SDK now posts a &quot;network connecting&quot; event, and the UI shows a &quot;connecting&quot; status icon.">
+      <created>1404355294788</created>
+      <option name="number" value="00088" />
+      <option name="project" value="LOCAL" />
+      <updated>1404355294789</updated>
+    </task>
+    <task id="LOCAL-00089" summary="Moved notification set up into view loading.">
+      <created>1404356809014</created>
+      <option name="number" value="00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1404356809015</updated>
+    </task>
+    <task id="LOCAL-00090" summary="Consolidated and transformed #define int values for representing connection state into an enum.">
+      <created>1404357715506</created>
+      <option name="number" value="00090" />
+      <option name="project" value="LOCAL" />
+      <updated>1404357715515</updated>
+    </task>
+    <task id="LOCAL-00091" summary="Added method to SDK allowing client to determine whether network is in &quot;connecting&quot; state">
+      <created>1404359005111</created>
+      <option name="number" value="00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1404359005111</updated>
+    </task>
+    <task id="LOCAL-00092" summary="Push truth for network connection state into the SDK and consolidate logic for setting status icon in UI">
+      <created>1404359042251</created>
+      <option name="number" value="00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1404359042251</updated>
+    </task>
+    <task id="LOCAL-00093" summary="Introduced a timeout on waiting for connection establishment. Encapsulated the socket's output and input streams by moving &quot;write command&quot; method into the SingleTon itself.">
+      <created>1404371406365</created>
+      <option name="number" value="00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1404371406365</updated>
+    </task>
+    <task id="LOCAL-00094" summary="Reset current changed name and location buffer when expanding a tile for editing">
+      <created>1404374991778</created>
+      <option name="number" value="00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1404374991778</updated>
+    </task>
+    <task id="LOCAL-00095" summary="Various fixed and polish. Disable the login button while logging in.">
+      <created>1404716067591</created>
+      <option name="number" value="00095" />
+      <option name="project" value="LOCAL" />
+      <updated>1404716067591</updated>
+    </task>
+    <task id="LOCAL-00096" summary="Wait for network bring up is completed before dispatching the command">
+      <created>1404717386222</created>
+      <option name="number" value="00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1404717386222</updated>
+    </task>
+    <task id="LOCAL-00097" summary="Added actual Terms of Use and License">
+      <created>1404724770042</created>
+      <option name="number" value="00097" />
+      <option name="project" value="LOCAL" />
+      <updated>1404724770042</updated>
+    </task>
+    <task id="LOCAL-00098" summary="Encapsulate and layer the Logout All notification mechanism">
+      <created>1404725326340</created>
+      <option name="number" value="00098" />
+      <option name="project" value="LOCAL" />
+      <updated>1404725326340</updated>
+    </task>
+    <task id="LOCAL-00099" summary="Fixed some layout problems in LogoutAll view">
+      <created>1404731423560</created>
+      <option name="number" value="00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1404731423561</updated>
+    </task>
+    <task id="LOCAL-00100" summary="Fixed some layout problems in LogoutAll view">
+      <created>1404731954348</created>
+      <option name="number" value="00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1404731954349</updated>
+    </task>
+    <task id="LOCAL-00101" summary="Polishing the UI">
+      <created>1404732376346</created>
+      <option name="number" value="00101" />
+      <option name="project" value="LOCAL" />
+      <updated>1404732376346</updated>
+    </task>
+    <task id="LOCAL-00102" summary="Fixed layout problem in DrawerViewController. Converted it to a UITableViewController and removed corresponding storyboard---not needed for a basic view like this.">
+      <created>1404796504775</created>
+      <option name="number" value="00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1404796504775</updated>
+    </task>
+    <task id="LOCAL-00103" summary="Fixed layout problem in DrawerViewController. Converted it to a UITableViewController and removed corresponding storyboard---not needed for a basic view like this.">
+      <created>1404796519203</created>
+      <option name="number" value="00103" />
+      <option name="project" value="LOCAL" />
+      <updated>1404796519203</updated>
+    </task>
+    <task id="LOCAL-00104" summary="Pushed management of &quot;Current Almond&quot; into the SDK">
+      <created>1404799287579</created>
+      <option name="number" value="00104" />
+      <option name="project" value="LOCAL" />
+      <updated>1404799287579</updated>
+    </task>
+    <task id="LOCAL-00105" summary="Introduced DEBUG logging mode. Added DEBUG=0 to Release build settings">
+      <created>1404799325381</created>
+      <option name="number" value="00105" />
+      <option name="project" value="LOCAL" />
+      <updated>1404799325381</updated>
+    </task>
+    <task id="LOCAL-00106" summary="Converted many NSLog to DLog">
+      <created>1404799855809</created>
+      <option name="number" value="00106" />
+      <option name="project" value="LOCAL" />
+      <updated>1404799855809</updated>
+    </task>
+    <task id="LOCAL-00107" summary="Pushed management of &quot;Current Almond&quot; into the SDK">
+      <created>1404801742213</created>
+      <option name="number" value="00107" />
+      <option name="project" value="LOCAL" />
+      <updated>1404801742213</updated>
+    </task>
+    <task id="LOCAL-00108" summary="Pushed management of &quot;Current Almond&quot; into the SDK">
+      <created>1404803404301</created>
+      <option name="number" value="00108" />
+      <option name="project" value="LOCAL" />
+      <updated>1404803404301</updated>
+    </task>
+    <task id="LOCAL-00109" summary="Added armor plating to prevent &quot;index out of bounds&quot; crashes especially when frequent dynamic updates are going on">
+      <created>1404807482210</created>
+      <option name="number" value="00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1404807482210</updated>
+    </task>
+    <task id="LOCAL-00110" summary="Encapsulating routines into the database manager. Converted DatabaseUpdateService into a singleton instance. The SDK was not actually starting up the update service, so this is fixed now.">
+      <created>1404872249715</created>
+      <option name="number" value="00110" />
+      <option name="project" value="LOCAL" />
+      <updated>1404872249715</updated>
+    </task>
+    <task id="LOCAL-00111" summary="Encapsulated all handling of Dynamic updates into the SDK">
+      <created>1404877740274</created>
+      <option name="number" value="00111" />
+      <option name="project" value="LOCAL" />
+      <updated>1404877740274</updated>
+    </task>
+    <task id="LOCAL-00112" summary="Added support for Almond name pdates and changes to the Almond list">
+      <created>1404881343389</created>
+      <option name="number" value="00112" />
+      <option name="project" value="LOCAL" />
+      <updated>1404881343389</updated>
+    </task>
+    <task id="LOCAL-00113" summary="Refined Current Almond selection on handling of dynamic updates">
+      <created>1404883006733</created>
+      <option name="number" value="00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1404883006733</updated>
+    </task>
+    <task id="LOCAL-00114" summary="Logout now succeeds even when the network is down. Pushed logout notification into the SDK, which can then handle it before notifying the UI layer.">
+      <created>1404884932357</created>
+      <option name="number" value="00114" />
+      <option name="project" value="LOCAL" />
+      <updated>1404884932357</updated>
+    </task>
+    <task id="LOCAL-00115" summary="Pushing Login Response handling into the SDK, which then notifies the UI.">
+      <created>1404887708391</created>
+      <option name="number" value="00115" />
+      <option name="project" value="LOCAL" />
+      <updated>1404887708391</updated>
+    </task>
+    <task id="LOCAL-00116" summary="Be sure logon credentials are cleared prior to processing logon">
+      <created>1404889787796</created>
+      <option name="number" value="00116" />
+      <option name="project" value="LOCAL" />
+      <updated>1404889787796</updated>
+    </task>
+    <task id="LOCAL-00117" summary="clean up">
+      <created>1404889794732</created>
+      <option name="number" value="00117" />
+      <option name="project" value="LOCAL" />
+      <updated>1404889794732</updated>
+    </task>
+    <task id="LOCAL-00118" summary="Added debug description">
+      <created>1404956108764</created>
+      <option name="number" value="00118" />
+      <option name="project" value="LOCAL" />
+      <updated>1404956108764</updated>
+    </task>
+    <task id="LOCAL-00119" summary="Added 'copy' attribute to properties">
+      <created>1404956134693</created>
+      <option name="number" value="00119" />
+      <option name="project" value="LOCAL" />
+      <updated>1404956134693</updated>
+    </task>
+    <task id="LOCAL-00120" summary="Added debug logging statement">
+      <created>1404956158853</created>
+      <option name="number" value="00120" />
+      <option name="project" value="LOCAL" />
+      <updated>1404956158853</updated>
+    </task>
+    <task id="LOCAL-00121" summary="Minor clean up">
+      <created>1404956223330</created>
+      <option name="number" value="00121" />
+      <option name="project" value="LOCAL" />
+      <updated>1404956223331</updated>
+    </task>
+    <task id="LOCAL-00122" summary="Clean up">
+      <created>1404956329800</created>
+      <option name="number" value="00122" />
+      <option name="project" value="LOCAL" />
+      <updated>1404956329800</updated>
+    </task>
+    <task id="LOCAL-00123" summary="Introduced SUnit command wrapper that coordinates request-response loops in network layer.">
+      <created>1404970194962</created>
+      <option name="number" value="00123" />
+      <option name="project" value="LOCAL" />
+      <updated>1404970194962</updated>
+    </task>
+    <task id="LOCAL-00124" summary="Shorten the timeout when waiting on the semaphore">
+      <created>1404976915032</created>
+      <option name="number" value="00124" />
+      <option name="project" value="LOCAL" />
+      <updated>1404976915032</updated>
+    </task>
+    <task id="LOCAL-00125" summary="Minor clean up">
+      <created>1404976993867</created>
+      <option name="number" value="00125" />
+      <option name="project" value="LOCAL" />
+      <updated>1404976993867</updated>
+    </task>
+    <task id="LOCAL-00126" summary="Clean up">
+      <created>1404977022443</created>
+      <option name="number" value="00126" />
+      <option name="project" value="LOCAL" />
+      <updated>1404977022443</updated>
+    </task>
+    <task id="LOCAL-00127" summary="Clean up: reinstating the serial command queue because it provides an orderly way to manage SingleTon instances as they are torn down and replaced. Other changes.">
+      <created>1404979970487</created>
+      <option name="number" value="00127" />
+      <option name="project" value="LOCAL" />
+      <updated>1404979970488</updated>
+    </task>
+    <task id="LOCAL-00128" summary="Make sure &quot;Fetch device list and hash&quot; are done using the same SingleTon as was used to initialize the connection; otherwise, a feedback loop could be created causing infinite network ops.">
+      <created>1404990494590</created>
+      <option name="number" value="00128" />
+      <option name="project" value="LOCAL" />
+      <updated>1404990494590</updated>
+    </task>
+    <task id="LOCAL-00129" summary="Clean up">
+      <created>1404990504616</created>
+      <option name="number" value="00129" />
+      <option name="project" value="LOCAL" />
+      <updated>1404990504616</updated>
+    </task>
+    <task id="LOCAL-00130" summary="Added synchronization for reading and writing to the database. Probably need to revist this design later, but the focus right now is on correctness and preventing corruption.">
+      <created>1405054160084</created>
+      <option name="number" value="00130" />
+      <option name="project" value="LOCAL" />
+      <updated>1405054160084</updated>
+    </task>
+    <task id="LOCAL-00131" summary="Pulled out the data manager routines and put them into the toolkit. Changed the event handling such that the UI subscribes to an event published by the toolkit, which handles the dynamic updates, stores the results, and then notifies the UI. Before now, there were various parties in the system managing changes.">
+      <created>1405054262627</created>
+      <option name="number" value="00131" />
+      <option name="project" value="LOCAL" />
+      <updated>1405054262627</updated>
+    </task>
+    <task id="LOCAL-00132" summary="Clean up">
+      <created>1405054275000</created>
+      <option name="number" value="00132" />
+      <option name="project" value="LOCAL" />
+      <updated>1405054275000</updated>
+    </task>
+    <task id="LOCAL-00133" summary="No longer needed">
+      <created>1405054308170</created>
+      <option name="number" value="00133" />
+      <option name="project" value="LOCAL" />
+      <updated>1405054308170</updated>
+    </task>
+    <task id="LOCAL-00134" summary="No longer neededRemoved SFIDatabaseUpdateService. It is no longer needed.">
+      <created>1405054659549</created>
+      <option name="number" value="00134" />
+      <option name="project" value="LOCAL" />
+      <updated>1405054659549</updated>
+    </task>
+    <task id="LOCAL-00135" summary="Added support for managing device list and device value list changes">
+      <created>1405068116823</created>
+      <option name="number" value="00135" />
+      <option name="project" value="LOCAL" />
+      <updated>1405068116823</updated>
+    </task>
+    <task id="LOCAL-00136" summary="Reimplemented the serialization and implemented  - (void)description">
+      <created>1405068154470</created>
+      <option name="number" value="00136" />
+      <option name="project" value="LOCAL" />
+      <updated>1405068154470</updated>
+    </task>
+    <task id="LOCAL-00137" summary="Added some debug logging to track updates to the devlices list and device values list">
+      <created>1405068175616</created>
+      <option name="number" value="00137" />
+      <option name="project" value="LOCAL" />
+      <updated>1405068175616</updated>
+    </task>
+    <task id="LOCAL-00138" summary="Updated for change in notification name">
+      <created>1405068222186</created>
+      <option name="number" value="00138" />
+      <option name="project" value="LOCAL" />
+      <updated>1405068222186</updated>
+    </task>
+    <task id="LOCAL-00139" summary="Various improvements to ensure changes to devices and values are coordinated on the main queue.">
+      <created>1405068257715</created>
+      <option name="number" value="00139" />
+      <option name="project" value="LOCAL" />
+      <updated>1405068257715</updated>
+    </task>
+    <task id="LOCAL-00140" summary="Added support in the SDK for requesting and responding to Almond hash values.">
+      <created>1405130532298</created>
+      <option name="number" value="00140" />
+      <option name="project" value="LOCAL" />
+      <updated>1405130532298</updated>
+    </task>
+    <task id="LOCAL-00141" summary="Refining process for deleting almonds. Other clean up.">
+      <created>1405139539238</created>
+      <option name="number" value="00141" />
+      <option name="project" value="LOCAL" />
+      <updated>1405139539238</updated>
+    </task>
+    <task id="LOCAL-00142" summary="Rationalizing and consolidating process for initializing the view and responding to changes both to the almond list and device values.">
+      <created>1405139585073</created>
+      <option name="number" value="00142" />
+      <option name="project" value="LOCAL" />
+      <updated>1405139585073</updated>
+    </task>
+    <task id="LOCAL-00143" summary="Updated per changes in SDK for setting the Current Almond">
+      <created>1405139617546</created>
+      <option name="number" value="00143" />
+      <option name="project" value="LOCAL" />
+      <updated>1405139617546</updated>
+    </task>
+    <task id="LOCAL-00144" summary="Removed direct managenemt of Almond List. This is handled by the SDK.">
+      <created>1405139670381</created>
+      <option name="number" value="00144" />
+      <option name="project" value="LOCAL" />
+      <updated>1405139670381</updated>
+    </task>
+    <task id="LOCAL-00145" summary="Clean up">
+      <created>1405139682206</created>
+      <option name="number" value="00145" />
+      <option name="project" value="LOCAL" />
+      <updated>1405139682206</updated>
+    </task>
+    <task id="LOCAL-00146" summary="Keep track of Device Hash requests per each connection context. Request Device Hashes when the current connection has been changed.">
+      <created>1405234763180</created>
+      <option name="number" value="00146" />
+      <option name="project" value="LOCAL" />
+      <updated>1405234763180</updated>
+    </task>
+    <task id="LOCAL-00147" summary="Surpress showing a HUD when changing the current Almond.">
+      <created>1405234870264</created>
+      <option name="number" value="00147" />
+      <option name="project" value="LOCAL" />
+      <updated>1405234870264</updated>
+    </task>
+    <task id="LOCAL-00148" summary="Cleaned up logging: NSLog -&gt; DLog">
+      <created>1405238644018</created>
+      <option name="number" value="00148" />
+      <option name="project" value="LOCAL" />
+      <updated>1405238644018</updated>
+    </task>
+    <task id="LOCAL-00149" summary="New BugSense Key">
+      <created>1405238657773</created>
+      <option name="number" value="00149" />
+      <option name="project" value="LOCAL" />
+      <updated>1405238657773</updated>
+    </task>
+    <task id="LOCAL-00150" summary="Reset back to DEBUG builds">
+      <created>1405239414380</created>
+      <option name="number" value="00150" />
+      <option name="project" value="LOCAL" />
+      <updated>1405239414380</updated>
+    </task>
+    <task id="LOCAL-00151" summary="Iniitialize Bug Sense first, then the Securifi code, to ensure any crashes on start up are caught.">
+      <created>1405239564766</created>
+      <option name="number" value="00151" />
+      <option name="project" value="LOCAL" />
+      <updated>1405239564766</updated>
+    </task>
+    <task id="LOCAL-00152" summary="Router view is not responsible for setting &quot;Current Almond&quot;">
+      <created>1405254807005</created>
+      <option name="number" value="00152" />
+      <option name="project" value="LOCAL" />
+      <updated>1405254807005</updated>
+    </task>
+    <task id="LOCAL-00153" summary="Minor clean up">
+      <created>1405254833802</created>
+      <option name="number" value="00153" />
+      <option name="project" value="LOCAL" />
+      <updated>1405254833802</updated>
+    </task>
+    <task id="LOCAL-00154" summary="Added a separate side channel for submitting &quot;cloud initialization&quot; commands at network start up. They are processed before other queued commands.">
+      <created>1405254892640</created>
+      <option name="number" value="00154" />
+      <option name="project" value="LOCAL" />
+      <updated>1405254892640</updated>
+    </task>
+    <task id="LOCAL-00155" summary="Implemented 'description' for logging">
+      <created>1405254913860</created>
+      <option name="number" value="00155" />
+      <option name="project" value="LOCAL" />
+      <updated>1405254913860</updated>
+    </task>
+    <task id="LOCAL-00156" summary="Clean up: allow commands to time out while waiting for cloud initialization.">
+      <created>1405260767629</created>
+      <option name="number" value="00156" />
+      <option name="project" value="LOCAL" />
+      <updated>1405260767629</updated>
+    </task>
+    <task id="LOCAL-00157" summary="Clean up: make sure UI updates are coordinated on the main thread">
+      <created>1405260835113</created>
+      <option name="number" value="00157" />
+      <option name="project" value="LOCAL" />
+      <updated>1405260835113</updated>
+    </task>
+    <task id="LOCAL-00158" summary="Clean up">
+      <created>1405300246976</created>
+      <option name="number" value="00158" />
+      <option name="project" value="LOCAL" />
+      <updated>1405300246976</updated>
+    </task>
+    <task id="LOCAL-00159" summary="Added armour plating in the command callback handlers to protect against null pointers">
+      <created>1405300296467</created>
+      <option name="number" value="00159" />
+      <option name="project" value="LOCAL" />
+      <updated>1405300296467</updated>
+    </task>
+    <task id="LOCAL-00160" summary="Performance improvements to eliminate most waiting on semaphores.">
+      <created>1405568608039</created>
+      <option name="number" value="00160" />
+      <option name="project" value="LOCAL" />
+      <updated>1405568608039</updated>
+    </task>
+    <task id="LOCAL-00161" summary="Added more armor plating in markCloudInitialization">
+      <created>1405569825549</created>
+      <option name="number" value="00161" />
+      <option name="project" value="LOCAL" />
+      <updated>1405569825549</updated>
+    </task>
+    <task id="LOCAL-00162" summary="Clean up: on login, present the main view controller immediately---do not wait for Almond List response.">
+      <created>1405569873433</created>
+      <option name="number" value="00162" />
+      <option name="project" value="LOCAL" />
+      <updated>1405569873433</updated>
+    </task>
+    <task id="LOCAL-00163" summary="Show a HUD when the Almond List updates">
+      <created>1405569905813</created>
+      <option name="number" value="00163" />
+      <option name="project" value="LOCAL" />
+      <updated>1405569905813</updated>
+    </task>
+    <task id="LOCAL-00164" summary="Removed the green tint on the 'cloud connected' icon">
+      <created>1405570541914</created>
+      <option name="number" value="00164" />
+      <option name="project" value="LOCAL" />
+      <updated>1405570541914</updated>
+    </task>
+    <task id="LOCAL-00165" summary="Added some armour plating in the callback handlers in case the view is being released while the callback is happening. Some other clean up. We process mobile command responses for all almonds, not just the current one; need to push this into the SDK.">
+      <created>1405572694897</created>
+      <option name="number" value="00165" />
+      <option name="project" value="LOCAL" />
+      <updated>1405572694897</updated>
+    </task>
+    <task id="LOCAL-00166" summary="Minor clean up">
+      <created>1405572715514</created>
+      <option name="number" value="00166" />
+      <option name="project" value="LOCAL" />
+      <updated>1405572715514</updated>
+    </task>
+    <task id="LOCAL-00167" summary="Post a login action on dismissing keyboard. Show a HUD when logging in.">
+      <created>1405572756759</created>
+      <option name="number" value="00167" />
+      <option name="project" value="LOCAL" />
+      <updated>1405572756759</updated>
+    </task>
+    <task id="LOCAL-00168" summary="No longer serialize isPresent device value attribute. It is an ephemeral value.">
+      <created>1405573166729</created>
+      <option name="number" value="00168" />
+      <option name="project" value="LOCAL" />
+      <updated>1405573166729</updated>
+    </task>
+    <task id="LOCAL-00169" summary="Fixed some problems when processing device values for which devices are missing. In this case, we request a Hash and load new devices.">
+      <created>1405573676211</created>
+      <option name="number" value="00169" />
+      <option name="project" value="LOCAL" />
+      <updated>1405573676211</updated>
+    </task>
+    <task id="LOCAL-00170" summary="FIxed log msg">
+      <created>1405574551972</created>
+      <option name="number" value="00170" />
+      <option name="project" value="LOCAL" />
+      <updated>1405574551972</updated>
+    </task>
+    <task id="LOCAL-00171" summary="Changes wait time interval from 1 sec to 500ms">
+      <created>1405574582107</created>
+      <option name="number" value="00171" />
+      <option name="project" value="LOCAL" />
+      <updated>1405574582107</updated>
+    </task>
+    <task id="LOCAL-00172" summary="Added proper &quot;Almond Is Offline&quot; message on Routers tab">
+      <created>1405582043529</created>
+      <option name="number" value="00172" />
+      <option name="project" value="LOCAL" />
+      <updated>1405582043529</updated>
+    </task>
+    <task id="LOCAL-00173" summary="Adjusted semaphore waits and timeouts in order to lower latencies. Logon to first Sensor now down to 3-4 seconds.">
+      <created>1405649022959</created>
+      <option name="number" value="00173" />
+      <option name="project" value="LOCAL" />
+      <updated>1405649022959</updated>
+    </task>
+    <task id="LOCAL-00174" summary="Added support for &quot;Alond is Down&quot; message">
+      <created>1405649089765</created>
+      <option name="number" value="00174" />
+      <option name="project" value="LOCAL" />
+      <updated>1405649089765</updated>
+    </task>
+    <task id="LOCAL-00175" summary="Present the HUD full screen">
+      <created>1405650815637</created>
+      <option name="number" value="00175" />
+      <option name="project" value="LOCAL" />
+      <updated>1405650815637</updated>
+    </task>
+    <task id="LOCAL-00176" summary="kSFIDidUpdateAlmondList now posts the current Almond selection">
+      <created>1405655627674</created>
+      <option name="number" value="00176" />
+      <option name="project" value="LOCAL" />
+      <updated>1405655627674</updated>
+    </task>
+    <task id="LOCAL-00177" summary="onDeviceListResponse only posts a notification when the new and old device lists are different">
+      <created>1405657384442</created>
+      <option name="number" value="00177" />
+      <option name="project" value="LOCAL" />
+      <updated>1405657384442</updated>
+    </task>
+    <task id="LOCAL-00178" summary="The singleton was not calling its delegate on &quot;shutdown&quot;">
+      <created>1405659387390</created>
+      <option name="number" value="00178" />
+      <option name="project" value="LOCAL" />
+      <updated>1405659387390</updated>
+    </task>
+    <task id="LOCAL-00179" summary="be sure to dismiss the HUD if a logon request fails due to connection failure">
+      <created>1405659427941</created>
+      <option name="number" value="00179" />
+      <option name="project" value="LOCAL" />
+      <updated>1405659427941</updated>
+    </task>
+    <task id="LOCAL-00180" summary="Changed kSFIDidChangeDeviceList: post only when a device is added or removed">
+      <created>1405662577118</created>
+      <option name="number" value="00180" />
+      <option name="project" value="LOCAL" />
+      <updated>1405662577118</updated>
+    </task>
+    <task id="LOCAL-00181" summary="Added toast on pressing Save button. Various changes to how HUD is shown/managed. More armour plating around notification callbacks.">
+      <created>1405663428880</created>
+      <option name="number" value="00181" />
+      <option name="project" value="LOCAL" />
+      <updated>1405663428880</updated>
+    </task>
+    <task id="LOCAL-00182" summary="DEVICE_VALUE_LIST_RESPONSE was not setting the Almond MAC value, making it difficult for the SDK to process the list. Other clean up.">
+      <created>1405933965751</created>
+      <option name="number" value="00182" />
+      <option name="project" value="LOCAL" />
+      <updated>1405933965751</updated>
+    </task>
+    <task id="LOCAL-00183" summary="Clean up">
+      <created>1405933986757</created>
+      <option name="number" value="00183" />
+      <option name="project" value="LOCAL" />
+      <updated>1405933986757</updated>
+    </task>
+    <task id="LOCAL-00184" summary="Added tryRequestDeviceValueList method to manage per-connection per-almond device list requests">
+      <created>1405934032249</created>
+      <option name="number" value="00184" />
+      <option name="project" value="LOCAL" />
+      <updated>1405934032249</updated>
+    </task>
+    <task id="LOCAL-00185" summary="Clean up">
+      <created>1405934088141</created>
+      <option name="number" value="00185" />
+      <option name="project" value="LOCAL" />
+      <updated>1405934088141</updated>
+    </task>
+    <task id="LOCAL-00186" summary="Clean up">
+      <created>1405942849517</created>
+      <option name="number" value="00186" />
+      <option name="project" value="LOCAL" />
+      <updated>1405942849517</updated>
+    </task>
+    <task id="LOCAL-00187" summary="Defined a special debug logger for the network layer">
+      <created>1405942883720</created>
+      <option name="number" value="00187" />
+      <option name="project" value="LOCAL" />
+      <updated>1405942883720</updated>
+    </task>
+    <task id="LOCAL-00188" summary="Fixed bug that would cause the command queue to give up on dispatching a command. Renamed notification constants and values so that they are consistent with each other. Dynamic data is now posted on its own queue so that it does not hold up normal command processing.">
+      <created>1405943021130</created>
+      <option name="number" value="00188" />
+      <option name="project" value="LOCAL" />
+      <updated>1405943021130</updated>
+    </task>
+    <task id="LOCAL-00189" summary="Reworked some logic for handling hash responses. Added dynamic response callback queue.">
+      <created>1405943732011</created>
+      <option name="number" value="00189" />
+      <option name="project" value="LOCAL" />
+      <updated>1405943732011</updated>
+    </task>
+    <task id="LOCAL-00190" summary="signal cloud init latch for each total queued command count">
+      <created>1405943786358</created>
+      <option name="number" value="00190" />
+      <option name="project" value="LOCAL" />
+      <updated>1405943786358</updated>
+    </task>
+    <task id="LOCAL-00191" summary="Enforce max password length">
+      <created>1405990864994</created>
+      <option name="number" value="00191" />
+      <option name="project" value="LOCAL" />
+      <updated>1405990864994</updated>
+    </task>
+    <task id="LOCAL-00192" summary="clean up">
+      <created>1405990968814</created>
+      <option name="number" value="00192" />
+      <option name="project" value="LOCAL" />
+      <updated>1405990968814</updated>
+    </task>
+    <task id="LOCAL-00193" summary="Added pull to refresh">
+      <created>1406013662658</created>
+      <option name="number" value="00193" />
+      <option name="project" value="LOCAL" />
+      <updated>1406013662658</updated>
+    </task>
+    <task id="LOCAL-00194" summary="Show a spinner when the tab is shown. Added pull to refresh function.">
+      <created>1406014574299</created>
+      <option name="number" value="00194" />
+      <option name="project" value="LOCAL" />
+      <updated>1406014574299</updated>
+    </task>
+    <task id="LOCAL-00195" summary="Allow refresh actions to fire when cloud is offline">
+      <created>1406014997563</created>
+      <option name="number" value="00195" />
+      <option name="project" value="LOCAL" />
+      <updated>1406014997563</updated>
+    </task>
+    <task id="LOCAL-00196" summary="clean up">
+      <created>1406015062817</created>
+      <option name="number" value="00196" />
+      <option name="project" value="LOCAL" />
+      <updated>1406015062817</updated>
+    </task>
+    <task id="LOCAL-00197" summary="Require the user to accept or decline the terms of use before signing up.">
+      <created>1406016533497</created>
+      <option name="number" value="00197" />
+      <option name="project" value="LOCAL" />
+      <updated>1406016533497</updated>
+    </task>
+    <task id="LOCAL-00198" summary="Added memory warning logging">
+      <created>1406089962657</created>
+      <option name="number" value="00198" />
+      <option name="project" value="LOCAL" />
+      <updated>1406089962657</updated>
+    </task>
+    <task id="LOCAL-00199" summary="The main tab view is now built once and then re-used as Almonds are selected. Switched to using SWRevealViewController.">
+      <created>1406098128241</created>
+      <option name="number" value="00199" />
+      <option name="project" value="LOCAL" />
+      <updated>1406098128241</updated>
+    </task>
+    <task id="LOCAL-00200" summary="Re-use Almond list cells instead of creating distinct ones for each Almond">
+      <created>1406098796353</created>
+      <option name="number" value="00200" />
+      <option name="project" value="LOCAL" />
+      <updated>1406098796353</updated>
+    </task>
+    <task id="LOCAL-00201" summary="Plugged a serious leak in the table view cell code. Object allocation is still high and not steady state, but at least objects are being reclaimed.">
+      <created>1406099492363</created>
+      <option name="number" value="00201" />
+      <option name="project" value="LOCAL" />
+      <updated>1406099492363</updated>
+    </task>
+    <task id="LOCAL-00202" summary="Plugged a serious leak in the table view cell code. Object allocation is still high and not steady state, but at least objects are being reclaimed.">
+      <created>1406099859310</created>
+      <option name="number" value="00202" />
+      <option name="project" value="LOCAL" />
+      <updated>1406099859310</updated>
+    </task>
+    <task id="LOCAL-00203" summary="Pruned dead source files and stroyboards">
+      <created>1406116434857</created>
+      <option name="number" value="00203" />
+      <option name="project" value="LOCAL" />
+      <updated>1406116434857</updated>
+    </task>
+    <task id="LOCAL-00204" summary="The SDK now posts an event when the current Almond selection changes, and the UI listens and reacts to the change. This is the mechanism by which the selection in the Drawer view is conveyed to the sensors and router views.">
+      <created>1406116520582</created>
+      <option name="number" value="00204" />
+      <option name="project" value="LOCAL" />
+      <updated>1406116520582</updated>
+    </task>
+    <task id="LOCAL-00205" summary="Disable pan gesture recognizer for now, because it interferes with sensor sliders.">
+      <created>1406125466435</created>
+      <option name="number" value="00205" />
+      <option name="project" value="LOCAL" />
+      <updated>1406125466435</updated>
+    </task>
+    <task id="LOCAL-00206" summary="Adjusted layout on table view">
+      <created>1406125481976</created>
+      <option name="number" value="00206" />
+      <option name="project" value="LOCAL" />
+      <updated>1406125481976</updated>
+    </task>
+    <task id="LOCAL-00207" summary="Clean up">
+      <created>1406125497090</created>
+      <option name="number" value="00207" />
+      <option name="project" value="LOCAL" />
+      <updated>1406125497090</updated>
+    </task>
+    <task id="LOCAL-00208" summary="Reset state in initializeAlmondData">
+      <created>1406167177535</created>
+      <option name="number" value="00208" />
+      <option name="project" value="LOCAL" />
+      <updated>1406167177535</updated>
+    </task>
+    <task id="LOCAL-00209" summary="Clean up">
+      <created>1406257415673</created>
+      <option name="number" value="00209" />
+      <option name="project" value="LOCAL" />
+      <updated>1406257415673</updated>
+    </task>
+    <task id="LOCAL-00210" summary="Clean up">
+      <created>1406257438161</created>
+      <option name="number" value="00210" />
+      <option name="project" value="LOCAL" />
+      <updated>1406257438161</updated>
+    </task>
+    <task id="LOCAL-00211" summary="Re-added &quot;Swipe to reveal&quot; gesture">
+      <created>1406259176573</created>
+      <option name="number" value="00211" />
+      <option name="project" value="LOCAL" />
+      <updated>1406259176573</updated>
+    </task>
+    <task id="LOCAL-00212" summary="Re-fixed the Logout All field alignments, which must have been whacked during last edit in storyboard.">
+      <created>1406259222986</created>
+      <option name="number" value="00212" />
+      <option name="project" value="LOCAL" />
+      <updated>1406259222986</updated>
+    </task>
+    <task id="LOCAL-00213" summary="Added more protection in async callbacks to detect when the view is being dismissed.">
+      <created>1406604026198</created>
+      <option name="number" value="00213" />
+      <option name="project" value="LOCAL" />
+      <updated>1406604026198</updated>
+    </task>
+    <task id="LOCAL-00214" summary="Added more protection in async callbacks to detect when the view is being dismissed. Wrapped devices list in an accessor that will protect against &quot;array out of bounds&quot; errors caused when the devices list is changed out while another routine is using it.">
+      <created>1406604102134</created>
+      <option name="number" value="00214" />
+      <option name="project" value="LOCAL" />
+      <updated>1406604102134</updated>
+    </task>
+    <task id="LOCAL-00215" summary="Added back DEBUG crash reporting config">
+      <created>1406604141887</created>
+      <option name="number" value="00215" />
+      <option name="project" value="LOCAL" />
+      <updated>1406604141887</updated>
+    </task>
+    <task id="LOCAL-00216" summary="Fixed UIContraints causing layout problems in Sign Up screen. Tweeked the animations that move feeds to visible on the sign up screen, on 3.5 inch screens.">
+      <created>1406860073466</created>
+      <option name="number" value="00216" />
+      <option name="project" value="LOCAL" />
+      <updated>1406860073467</updated>
+    </task>
+    <task id="LOCAL-00217" summary="Fixed some problems when processing device list callbacks that could the system to cache stale information until the user logs out. Added some optimizations in device list request processing to prevent back-to-back requests.">
+      <created>1407156237114</created>
+      <option name="number" value="00217" />
+      <option name="project" value="LOCAL" />
+      <updated>1407156237114</updated>
+    </task>
+    <task id="LOCAL-00218" summary="Synchronize access to willFetchDeviceListFlag">
+      <created>1407199393254</created>
+      <option name="number" value="00218" />
+      <option name="project" value="LOCAL" />
+      <updated>1407199393254</updated>
+    </task>
+    <task id="LOCAL-00219" summary="Installed a gesture recognizer delegate to handle touch handling conflicts with UISliders">
+      <created>1407199486070</created>
+      <option name="number" value="00219" />
+      <option name="project" value="LOCAL" />
+      <updated>1407199486070</updated>
+    </task>
+    <task id="LOCAL-00220" summary="Installed a gesture recognizer delegate to handle touch handling conflicts with UISliders. Some cleanup in HUD management.">
+      <created>1407199565280</created>
+      <option name="number" value="00220" />
+      <option name="project" value="LOCAL" />
+      <updated>1407199565280</updated>
+    </task>
+    <task id="LOCAL-00221" summary="Removed swipe recongizer because the undrling SWReavelViewController will handle this for us.">
+      <created>1407199605288</created>
+      <option name="number" value="00221" />
+      <option name="project" value="LOCAL" />
+      <updated>1407199605288</updated>
+    </task>
+    <task id="LOCAL-00222" summary="Found root cause of UISlider performance problems: increase height of control and increase size of slider knob's effective touch region.">
+      <created>1407213332247</created>
+      <option name="number" value="00222" />
+      <option name="project" value="LOCAL" />
+      <updated>1407213332247</updated>
+    </task>
+    <task id="LOCAL-00223" summary="Changed the Sign Up flow, forcing user to accept license immediately.">
+      <created>1407313425814</created>
+      <option name="number" value="00223" />
+      <option name="project" value="LOCAL" />
+      <updated>1407313425814</updated>
+    </task>
+    <task id="LOCAL-00224" summary="Refactoring the sensors">
+      <created>1407980171890</created>
+      <option name="number" value="00224" />
+      <option name="project" value="LOCAL" />
+      <updated>1407980171890</updated>
+    </task>
+    <task id="LOCAL-00225" summary="Refactoring the sensors">
+      <created>1408074658514</created>
+      <option name="number" value="00225" />
+      <option name="project" value="LOCAL" />
+      <updated>1408074658514</updated>
+    </task>
+    <task id="LOCAL-00226" summary="Refactoring the sensors">
+      <created>1408076438783</created>
+      <option name="number" value="00226" />
+      <option name="project" value="LOCAL" />
+      <updated>1408076438783</updated>
+    </task>
+    <task id="LOCAL-00227" summary="Refactoring the sensors">
+      <created>1408264538910</created>
+      <option name="number" value="00227" />
+      <option name="project" value="LOCAL" />
+      <updated>1408264538910</updated>
+    </task>
+    <task id="LOCAL-00228" summary="tweeking the metrics">
+      <created>1408329828314</created>
+      <option name="number" value="00228" />
+      <option name="project" value="LOCAL" />
+      <updated>1408329828314</updated>
+    </task>
+    <task id="LOCAL-00229" summary="Adjusted behavior on timeout of cloud initialization process to ensure the network connection is shutdown.">
+      <created>1408350242942</created>
+      <option name="number" value="00229" />
+      <option name="project" value="LOCAL" />
+      <updated>1408350242942</updated>
+    </task>
+    <task id="LOCAL-00230" summary="show an error message when the login fails due to network connection problems. Be sure the Login button state is set from the Main queue.">
+      <created>1408350314797</created>
+      <option name="number" value="00230" />
+      <option name="project" value="LOCAL" />
+      <updated>1408350314798</updated>
+    </task>
+    <task id="LOCAL-00231" summary="Tweeking metrics">
+      <created>1408350335408</created>
+      <option name="number" value="00231" />
+      <option name="project" value="LOCAL" />
+      <updated>1408350335408</updated>
+    </task>
+    <task id="LOCAL-00232" summary="Keep the login button enabled whenever credentials are provided. Rely on HUD to prevent double tapping.">
+      <created>1408427545223</created>
+      <option name="number" value="00232" />
+      <option name="project" value="LOCAL" />
+      <updated>1408427545223</updated>
+    </task>
+    <task id="LOCAL-00233" summary="Trying to figure our source of occasional segfaults in networking: when shutting down network sockets, synchronize on the same locker used by the method that sends data through the sockets.">
+      <created>1408427657426</created>
+      <option name="number" value="00233" />
+      <option name="project" value="LOCAL" />
+      <updated>1408427657426</updated>
+    </task>
+    <task id="LOCAL-00234" summary="Redesigned the event handlers to solve login problem: hitting the Login button would cause two successive login requests to be handled and follow on results manifesting as user being logged in but without any Almonds attached.">
+      <created>1408598300468</created>
+      <option name="number" value="00234" />
+      <option name="project" value="LOCAL" />
+      <updated>1408598300468</updated>
+    </task>
+    <task id="LOCAL-00235" summary="fixed up some logging statements">
+      <created>1408598323736</created>
+      <option name="number" value="00235" />
+      <option name="project" value="LOCAL" />
+      <updated>1408598323736</updated>
+    </task>
+    <task id="LOCAL-00236" summary="cleaned up some of the latch signal handler code used during network establishment and cloud initialization phases: do not ignore timeout when network stream is connected.">
+      <created>1408598454360</created>
+      <option name="number" value="00236" />
+      <option name="project" value="LOCAL" />
+      <updated>1408598454360</updated>
+    </task>
+    <task id="LOCAL-00237" summary="Backed out changes because we re-opened 1.0 codebase">
+      <created>1408932107161</created>
+      <option name="number" value="00237" />
+      <option name="project" value="LOCAL" />
+      <updated>1408932107161</updated>
+    </task>
+    <task id="LOCAL-00238" summary="clean up">
+      <created>1408932114853</created>
+      <option name="number" value="00238" />
+      <option name="project" value="LOCAL" />
+      <updated>1408932114853</updated>
+    </task>
+    <task id="LOCAL-00239" summary="Added - (void)setBoolValue:(BOOL)value;&#10;">
+      <created>1408942299261</created>
+      <option name="number" value="00239" />
+      <option name="project" value="LOCAL" />
+      <updated>1408942299261</updated>
+    </task>
+    <task id="LOCAL-00240" summary="Encapsulating business logic">
+      <created>1408976911262</created>
+      <option name="number" value="00240" />
+      <option name="project" value="LOCAL" />
+      <updated>1408976911262</updated>
+    </task>
+    <task id="LOCAL-00241" summary="Switched to delegation model from using Responder Chain for propagating events from table cells.">
+      <created>1408976990216</created>
+      <option name="number" value="00241" />
+      <option name="project" value="LOCAL" />
+      <updated>1408976990216</updated>
+    </task>
+    <task id="LOCAL-00242" summary="Building out a replacement Sensors view controller">
+      <created>1408977464680</created>
+      <option name="number" value="00242" />
+      <option name="project" value="LOCAL" />
+      <updated>1408977464680</updated>
+    </task>
+    <task id="LOCAL-00243" summary="Clean up">
+      <created>1409030781852</created>
+      <option name="number" value="00243" />
+      <option name="project" value="LOCAL" />
+      <updated>1409030781853</updated>
+    </task>
+    <task id="LOCAL-00244" summary="Clean up">
+      <created>1409035716610</created>
+      <option name="number" value="00244" />
+      <option name="project" value="LOCAL" />
+      <updated>1409035716610</updated>
+    </task>
+    <task id="LOCAL-00245" summary="Clean up. Compute cell shading values.">
+      <created>1409035912086</created>
+      <option name="number" value="00245" />
+      <option name="project" value="LOCAL" />
+      <updated>1409035912086</updated>
+    </task>
+    <task id="LOCAL-00246" summary="clean up">
+      <created>1409035933464</created>
+      <option name="number" value="00246" />
+      <option name="project" value="LOCAL" />
+      <updated>1409035933464</updated>
+    </task>
+    <task id="LOCAL-00247" summary="Tweeking cell colors">
+      <created>1409036662493</created>
+      <option name="number" value="00247" />
+      <option name="project" value="LOCAL" />
+      <updated>1409036662493</updated>
+    </task>
+    <task id="LOCAL-00248" summary="clean up">
+      <created>1409037388386</created>
+      <option name="number" value="00248" />
+      <option name="project" value="LOCAL" />
+      <updated>1409037388386</updated>
+    </task>
+    <option name="localTasksCounter" value="249" />
+    <servers />
+  </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="22" width="1775" height="1003" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299435" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299435" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30960453" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29152542" sideWeight="0.4997367" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26327685" sideWeight="0.5002633" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299435" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3118644" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299435" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24960506" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.17787914" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38079095" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <option name="myTodoPanelSettings">
+      <TodoPanelSettings />
+    </option>
+    <MESSAGE value="Synchronize access to willFetchDeviceListFlag" />
+    <MESSAGE value="Installed a gesture recognizer delegate to handle touch handling conflicts with UISliders" />
+    <MESSAGE value="Installed a gesture recognizer delegate to handle touch handling conflicts with UISliders. Some cleanup in HUD management." />
+    <MESSAGE value="Removed swipe recongizer because the undrling SWReavelViewController will handle this for us." />
+    <MESSAGE value="Found root cause of UISlider performance problems: increase height of control and increase size of slider knob's effective touch region." />
+    <MESSAGE value="Changed the Sign Up flow, forcing user to accept license immediately." />
+    <MESSAGE value="Refactoring the sensors" />
+    <MESSAGE value="tweeking the metrics" />
+    <MESSAGE value="Adjusted behavior on timeout of cloud initialization process to ensure the network connection is shutdown." />
+    <MESSAGE value="show an error message when the login fails due to network connection problems. Be sure the Login button state is set from the Main queue." />
+    <MESSAGE value="Tweeking metrics" />
+    <MESSAGE value="Keep the login button enabled whenever credentials are provided. Rely on HUD to prevent double tapping." />
+    <MESSAGE value="Trying to figure our source of occasional segfaults in networking: when shutting down network sockets, synchronize on the same locker used by the method that sends data through the sockets." />
+    <MESSAGE value="Redesigned the event handlers to solve login problem: hitting the Login button would cause two successive login requests to be handled and follow on results manifesting as user being logged in but without any Almonds attached." />
+    <MESSAGE value="fixed up some logging statements" />
+    <MESSAGE value="cleaned up some of the latch signal handler code used during network establishment and cloud initialization phases: do not ignore timeout when network stream is connected." />
+    <MESSAGE value="Backed out changes because we re-opened 1.0 codebase" />
+    <MESSAGE value="Added - (void)setBoolValue:(BOOL)value;&#10;" />
+    <MESSAGE value="Encapsulating business logic" />
+    <MESSAGE value="Switched to delegation model from using Responder Chain for propagating events from table cells." />
+    <MESSAGE value="Building out a replacement Sensors view controller" />
+    <MESSAGE value="Clean up" />
+    <MESSAGE value="Clean up. Compute cell shading values." />
+    <MESSAGE value="Tweeking cell colors" />
+    <MESSAGE value="clean up" />
+    <option name="LAST_COMMIT_MESSAGE" value="clean up" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SingleTon.m</url>
+          <line>568</line>
+          <option name="timeStamp" value="140" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SecurifiToolkit.m</url>
+          <line>823</line>
+          <option name="timeStamp" value="151" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SecurifiToolkit.m</url>
+          <line>944</line>
+          <option name="timeStamp" value="194" />
+        </line-breakpoint>
+      </breakpoints>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <default-breakpoints>
+        <breakpoint enabled="true" type="CidrExceptionBreakpoint">
+          <properties />
+        </breakpoint>
+      </default-breakpoints>
+      <option name="time" value="235" />
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/usr/include/dispatch/queue.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="6217" max-vertical-offset="13470">
+          <caret line="426" column="26" selection-start-line="426" selection-start-column="26" selection-end-line="426" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SecurifiToolkit.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1155" max-vertical-offset="2130">
+          <caret line="74" column="11" selection-start-line="74" selection-start-column="11" selection-end-line="74" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/keychain/KeyChainWrapper.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2103" max-vertical-offset="2685">
+          <caret line="158" column="17" selection-start-line="158" selection-start-column="17" selection-end-line="158" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SFIDeviceValue.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="480">
+          <caret line="13" column="10" selection-start-line="13" selection-start-column="10" selection-end-line="13" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/OfflineStorage/SFIOfflineDataManager.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22637106" vertical-offset="3001" max-vertical-offset="4995">
+          <caret line="213" column="3" selection-start-line="213" selection-start-column="3" selection-end-line="213" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/AlmondPlusSDKConstants.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3329384" vertical-offset="109" max-vertical-offset="1695">
+          <caret line="26" column="42" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="42" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIWindow.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.57345974" vertical-offset="1166" max-vertical-offset="2010">
+          <caret line="110" column="29" selection-start-line="110" selection-start-column="29" selection-end-line="110" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIControl.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3329384" vertical-offset="124" max-vertical-offset="1905">
+          <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/Network/SUnit.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="945">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/Network/SUnit.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="315" max-vertical-offset="1695">
+          <caret line="45" column="14" selection-start-line="45" selection-start-column="14" selection-end-line="45" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SecurifiToolkit.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4618" max-vertical-offset="17175">
+          <caret line="337" column="154" selection-start-line="337" selection-start-column="34" selection-end-line="337" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SingleTon.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="4035" max-vertical-offset="21690">
+          <caret line="292" column="28" selection-start-line="292" selection-start-column="27" selection-end-line="292" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/MobileCommandRequest.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
+          <caret line="12" column="18" selection-start-line="12" selection-start-column="18" selection-end-line="12" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UISlider.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="239" max-vertical-offset="900">
+          <caret line="53" column="39" selection-start-line="53" selection-start-column="4" selection-end-line="53" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SFIDeviceKnownValues.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="795">
+          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UITableView.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="124" max-vertical-offset="4665">
+          <caret line="27" column="4" selection-start-line="27" selection-start-column="4" selection-end-line="27" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SFIDevice.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6375">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SFIDevice.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="885">
+          <caret line="14" column="45" selection-start-line="14" selection-start-column="43" selection-end-line="14" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/SFIDeviceKnownValues.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="825">
+          <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#2#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/CommandTypes.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="825">
+          <caret line="34" column="8" selection-start-line="34" selection-start-column="8" selection-end-line="34" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIView.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2749" max-vertical-offset="8535">
+          <caret line="202" column="63" selection-start-line="202" selection-start-column="63" selection-end-line="202" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Legacy/SFIAffiliationViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7515">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Legacy/SFIBlockedContent.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="859">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Legacy/SFIBlockedContentViewController.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="859">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Legacy/SFIConnectedDevice.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="859">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Legacy/SFIDeviceDetailViewController.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="859">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Legacy/SFIScannerViewController.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="859">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Legacy/SFIAffiliationViewController.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="600">
+          <caret line="8" column="14" selection-start-line="8" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Legacy/SFIDeviceListViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.2619325" vertical-offset="0" max-vertical-offset="3750">
+          <caret line="15" column="30" selection-start-line="15" selection-start-column="30" selection-end-line="15" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Legacy/SFISceneTempViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="975">
+          <caret line="15" column="16" selection-start-line="15" selection-start-column="16" selection-end-line="15" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Legacy/SFIDeviceDetailViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6810">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/UI/SFIParser.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4395">
+          <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Legacy/SFIBlockedContentViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5475">
+          <caret line="14" column="47" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Router/SFIRouterTableViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="11216" max-vertical-offset="12060">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../iostoolkit/SecurifiToolkit/GenericCommandRequest.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3150525" vertical-offset="0" max-vertical-offset="857">
+          <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Wireless/SFIWirelessViewController.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="540">
+          <caret line="12" column="36" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Wireless/SFIWirelessSettingsViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="855">
+          <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Wireless/SFIWirelessSettingsViewController.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.19253209" vertical-offset="0" max-vertical-offset="857">
+          <caret line="11" column="11" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Wireless/SFIWirelessViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="64" max-vertical-offset="3720">
+          <caret line="23" column="16" selection-start-line="23" selection-start-column="16" selection-end-line="23" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Wireless/SFIWirelessOptionViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="1890">
+          <caret line="14" column="16" selection-start-line="14" selection-start-column="16" selection-end-line="14" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Almond/Legacy/SFIDimmerViewController.m">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="36" max-vertical-offset="2430">
+          <caret line="15" column="39" selection-start-line="15" selection-start-column="39" selection-end-line="15" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
+
