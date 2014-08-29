@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SFITableViewController.h"
 
-@interface SensorsViewController : UITableViewController
+@interface SensorsViewController : SFITableViewController
 
 @end

@@ -11,18 +11,13 @@
 #import "SFIConstants.h"
 #import "SNLog.h"
 #import "SFIColors.h"
-#import "SFICloudStatusBarButtonItem.h"
 #import "SFIHighlightedButton.h"
 #import "iToast.h"
 #import "MBProgressHUD.h"
-#import "SWRevealViewController.h"
 #import "SFISlider.h"
 
 
 @interface SensorsViewController () <UITextFieldDelegate>
-@property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
-@property(nonatomic, readonly) MBProgressHUD *HUD;
-
 @property NSTimer *mobileCommandTimer;
 @property NSTimer *sensorChangeCommandTimer;
 
@@ -63,38 +58,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    NSDictionary *titleAttributes = @{
-            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
-            NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
-    };
-
-    self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-
-    _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithStandard];
-    self.navigationItem.rightBarButtonItem = _statusBarButton;
-
-    SWRevealViewController *revealController = [self revealViewController];
-    UIBarButtonItem *revealButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"drawer.png"] style:UIBarButtonItemStylePlain target:revealController action:@selector(revealToggle:)];
-    self.navigationItem.leftBarButtonItem = revealButton;
-
-    self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
-
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
-    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Loading sensor data";
-    _HUD.dimBackground = YES;
-    [self.navigationController.view addSubview:_HUD];
-
     // Pull down to refresh device values
     UIRefreshControl *refresh = [UIRefreshControl new];
-    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force sensor data refresh" attributes:titleAttributes];
+    NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force sensor data refresh" attributes:attributes];
     [refresh addTarget:self action:@selector(onRefreshSensorData:) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresh;
 
@@ -102,7 +74,6 @@
     self.deviceList = @[];
     self.deviceValueList = @[];
 
-    [self markCloudStatusIcon];
     [self initializeNotifications];
     [self initializeAlmondData];
 }
@@ -120,25 +91,6 @@
 
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-
-    [center addObserver:self
-               selector:@selector(onNetworkDownNotifier:)
-                   name:NETWORK_DOWN_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onNetworkConnectingNotifier:)
-                   name:NETWORK_CONNECTING_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onNetworkUpNotifier:)
-                   name:NETWORK_UP_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onReachabilityDidChange:)
-                   name:kSFIReachabilityChangedNotification object:nil];
 
     [center addObserver:self
                selector:@selector(onMobileCommandResponseCallback:)
@@ -274,50 +226,6 @@
         return NO;
     }
     return [current isEqualToString:aMac];
-}
-
-#pragma mark - Reconnection
-
-- (void)onNetworkUpNotifier:(id)sender {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markCloudStatusIcon];
-        [self.tableView reloadData];
-        [self.HUD hide:NO]; // make sure it is hidden
-    });
-}
-
-- (void)onNetworkDownNotifier:(id)sender {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markCloudStatusIcon];
-        [self.tableView reloadData];
-        [self.HUD hide:NO]; // make sure it is hidden
-    });
-}
-
-- (void)onNetworkConnectingNotifier:(id)notification {
-    [self markCloudStatusIcon];
-}
-
-- (void)onReachabilityDidChange:(NSNotification *)notification {
-    [self markCloudStatusIcon];
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-        [self.HUD hide:NO]; // make sure it is hidden
-    });
-}
-
-- (void)markCloudStatusIcon {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
-    if ([toolkit isCloudConnecting]) {
-        [self.statusBarButton markState:SFICloudStatusStateConnecting];
-    }
-    else if ([toolkit isCloudOnline]) {
-        [self.statusBarButton markState:SFICloudStatusStateConnected];
-    }
-    else {
-        [self.statusBarButton markState:SFICloudStatusStateAlmondOffline];
-    }
 }
 
 #pragma mark - Table View
