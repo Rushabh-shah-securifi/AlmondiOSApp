@@ -38,7 +38,7 @@
 
     UIRefreshControl *refresh = [UIRefreshControl new];
     NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
-    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force scoreboard refresh" attributes:attributes];
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refresh Scoreboard" attributes:attributes];
     [refresh addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresh;
 }
