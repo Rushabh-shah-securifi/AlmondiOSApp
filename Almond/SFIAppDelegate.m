@@ -68,8 +68,7 @@
 }
 
 - (void)onMemoryWarning:(id)sender {
-//    BOOL gen = [BugSenseController sendCustomEventWithTag:@"app_mem_warn"];
-//    NSLog(@"Posted app_mem_warn: %@", gen ? @"YES" : @"NO");
+    [[Analytics sharedInstance] markMemoryWarning];
 }
 
 #pragma mark - Set up
@@ -127,7 +126,7 @@
     [listAvailableColors addObject:colorYellow];
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = paths[0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
     [NSKeyedArchiver archiveRootObject:listAvailableColors toFile:filePath];
 }

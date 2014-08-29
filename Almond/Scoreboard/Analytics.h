@@ -19,6 +19,8 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 - (void)initialize;
 
+- (void)markMemoryWarning;
+
 - (void)markRouterReboot;
 
 - (void)markSensorTiming:(NSTimeInterval)timeToToggle;

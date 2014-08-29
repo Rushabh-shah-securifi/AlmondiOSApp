@@ -33,6 +33,10 @@
     [[GAI sharedInstance] trackerWithTrackingId:GA_ID];
 }
 
+- (void)markMemoryWarning {
+    [self markEvent:@"app_mem_warn"];
+}
+
 - (void)markRouterReboot {
     [self markEvent:@"router_reboot"];
 }
