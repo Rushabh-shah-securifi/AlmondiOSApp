@@ -32,6 +32,7 @@
 		1C7581F019AD80090074C601 /* SFIWirelessUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581E719AD80090074C601 /* SFIWirelessUserViewController.m */; };
 		1C7581F419AD81140074C601 /* SFIRouterDevicesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581F319AD81140074C601 /* SFIRouterDevicesListViewController.m */; };
 		1C7581F619AD84AF0074C601 /* libSecurifiToolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C7581F519AD84AF0074C601 /* libSecurifiToolkit.a */; };
+		1C75821019B036C70074C601 /* ScoreboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C75820F19B036C70074C601 /* ScoreboardViewController.m */; };
 		1CED5EF519AC82FD0023512F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF419AC82FD0023512F /* Foundation.framework */; };
 		1CED5EF719AC82FD0023512F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF619AC82FD0023512F /* CoreGraphics.framework */; };
 		1CED5EF919AC82FD0023512F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF819AC82FD0023512F /* UIKit.framework */; };
@@ -254,6 +255,8 @@
 		1C7581F219AD81140074C601 /* SFIRouterDevicesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterDevicesListViewController.h; sourceTree = "<group>"; };
 		1C7581F319AD81140074C601 /* SFIRouterDevicesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterDevicesListViewController.m; sourceTree = "<group>"; };
 		1C7581F519AD84AF0074C601 /* libSecurifiToolkit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSecurifiToolkit.a; path = "../iostoolkit/build/Debug-iphoneos/libSecurifiToolkit.a"; sourceTree = "<group>"; };
+		1C75820E19B036C70074C601 /* ScoreboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardViewController.h; sourceTree = "<group>"; };
+		1C75820F19B036C70074C601 /* ScoreboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardViewController.m; sourceTree = "<group>"; };
 		1CED5EF119AC82FD0023512F /* Almond.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Almond.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CED5EF419AC82FD0023512F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1CED5EF619AC82FD0023512F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -593,6 +596,7 @@
 				1CED5F0619AC82FD0023512F /* Images.xcassets */,
 				1CED5F3019AC85AA0023512F /* images */,
 				1CED5EFB19AC82FD0023512F /* Supporting Files */,
+				1DF035F4D64D8394ADBFF721 /* Scoreboard */,
 			);
 			path = Almond;
 			sourceTree = "<group>";
@@ -867,6 +871,15 @@
 				1CED600919AC85AB0023512F /* SNLog.m */,
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		1DF035F4D64D8394ADBFF721 /* Scoreboard */ = {
+			isa = PBXGroup;
+			children = (
+				1C75820E19B036C70074C601 /* ScoreboardViewController.h */,
+				1C75820F19B036C70074C601 /* ScoreboardViewController.m */,
+			);
+			path = Scoreboard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1178,6 +1191,7 @@
 				1C7581EB19AD80090074C601 /* SFIWirelessSetting.m in Sources */,
 				1CED60CE19AC85AB0023512F /* SFIHighlightedButton.m in Sources */,
 				1CED60D119AC85AB0023512F /* SFIScene.m in Sources */,
+				1C75821019B036C70074C601 /* ScoreboardViewController.m in Sources */,
 				1CED60B919AC85AB0023512F /* SFILogoutAllViewController.m in Sources */,
 				1C7581B219AD7BD00074C601 /* SFIOptionViewController.m in Sources */,
 				1C7581AB19AD7BD00074C601 /* SFIConnectedDevice.m in Sources */,
