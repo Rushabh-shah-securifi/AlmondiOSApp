@@ -27,7 +27,7 @@
 //    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
     
     // Initialize tracker. Replace with your tracking ID.
-//    [[GAI sharedInstance] trackerWithTrackingId:@"UA-XXXX-Y"];
+    [[GAI sharedInstance] trackerWithTrackingId:@"UA-52832244-1"];
 
     [SFIReachabilityManager sharedManager];
     [self initializeColors];

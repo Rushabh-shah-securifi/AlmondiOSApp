@@ -1,5 +1,4 @@
 PODS:
-  - BugSense (3.6)
   - CrashlyticsFramework (2.2.2)
   - GoogleAnalytics-iOS-SDK (3.0.9)
   - iToast (0.0.1)
@@ -7,7 +6,6 @@ PODS:
   - SWRevealViewController (2.3.0)
 
 DEPENDENCIES:
-  - BugSense (~> 3.6)
   - CrashlyticsFramework (~> 2.2.1)
   - GoogleAnalytics-iOS-SDK (~> 3.0)
   - iToast (~> 0.0)
@@ -15,7 +13,6 @@ DEPENDENCIES:
   - SWRevealViewController (~> 2.3)
 
 SPEC CHECKSUMS:
-  BugSense: f53ea197df382f077356c454d0d4b8c48b3f1c5e
   CrashlyticsFramework: bce4c0e83b50f22aafde946b41a34a6b8ca7acd0
   GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   iToast: 4de112d3dd42a3a8bf685572e6cda723c9cbc4f2
