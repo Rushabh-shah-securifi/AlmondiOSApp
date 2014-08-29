@@ -8,6 +8,8 @@
 
 #import "Analytics.h"
 #import "GAI.h"
+#import "GAIFields.h"
+#import "GAIDictionaryBuilder.h"
 
 #define GA_ID @"UA-52832244-1"
 
@@ -32,42 +34,53 @@
 }
 
 - (void)markRouterReboot {
-    id <GAITracker> tracker = [self trackerForName:@"router_reboot"];
-    [tracker send:@{@"mark":@1}];
+    [self markEvent:@"router_reboot"];
 }
 
 - (void)markSensorTiming:(NSTimeInterval)timeToToggle {
     double milliseconds = (double) (timeToToggle * 1000);
     NSNumber *num = @(milliseconds);
 
-    id <GAITracker> tracker = [self trackerForName:@"sensor_on_off"];
-    [tracker send:@{@"time":num}];
+    GAI *gai = [GAI sharedInstance];
+    id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
+
+    [tracker set:kGAIEvent value:@"sensor_on_off"];
+    [tracker send:@{@"time" : num}];
 }
 
 - (void)markLoginForm {
-    id <GAITracker> tracker = [self trackerForName:@"login_form"];
-    [tracker send:@{@"mark":@1}];
+    [self trackScreen:@"login_form"];
 }
 
 - (void)markAlmondAffiliation {
-    id <GAITracker> tracker = [self trackerForName:@"router_affiliation"];
-    [tracker send:@{@"mark":@1}];
+    [self trackScreen:@"router_affiliation"];
 }
 
 - (void)markSignUpForm {
-    id <GAITracker> tracker = [self trackerForName:@"signup_form"];
-    [tracker send:@{@"mark":@1}];
+    [self trackScreen:@"signup_form"];
 }
 
 - (void)markDeclineSignupLicense {
-    id <GAITracker> tracker = [self trackerForName:@"license_decline"];
-    [tracker send:@{@"mark":@1}];
+    [self markEvent:@"license_decline"];
 }
 
-- (id <GAITracker>)trackerForName:(NSString*)name {
+- (void)markEvent:(NSString *)eventName {
     GAI *gai = [GAI sharedInstance];
-    id <GAITracker> tracker = [gai trackerWithName:name trackingId:GA_ID];
-    return tracker;
+    id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
+
+    NSDictionary *params = [[GAIDictionaryBuilder createEventWithCategory:@"action"     // Event category (required)
+                                                                   action:eventName     // Event action (required)
+                                                                    label:@"invoke"     // Event label
+                                                                    value:nil] build];
+
+    [tracker send:params];
+}
+
+- (void)trackScreen:(NSString *)name {
+    GAI *gai = [GAI sharedInstance];
+    id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
+    NSDictionary *params = @{kGAIScreenName : name};
+    [tracker send:params];
 }
 
 @end
