@@ -86,11 +86,6 @@
                  object:nil];
 
     [center addObserver:self
-               selector:@selector(onNetworkConnectingNotifier:)
-                   name:NETWORK_CONNECTING_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
                selector:@selector(onNetworkChange:)
                    name:NETWORK_UP_NOTIFIER
                  object:nil];
