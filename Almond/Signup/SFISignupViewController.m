@@ -9,6 +9,7 @@
 #import "SFISignupViewController.h"
 #import "SNLog.h"
 #import "MBProgressHUD.h"
+#import "Analytics.h"
 
 #define PWD_MIN_LENGTH 6
 #define PWD_MAX_LENGTH 32
@@ -64,6 +65,7 @@ typedef enum {
     self.scrollView.scrollsToTop = NO;
 
     [self showTermsAndConditions];
+    [[Analytics sharedInstance] markSignUpForm];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -121,7 +123,7 @@ typedef enum {
 }
 
 - (void)showTermsAndConditions {
-    UIBarButtonItem *declineButton = [[UIBarButtonItem alloc] initWithTitle:@"Decline" style:UIBarButtonItemStylePlain target:self action:@selector(onCancelAction:)];
+    UIBarButtonItem *declineButton = [[UIBarButtonItem alloc] initWithTitle:@"Decline" style:UIBarButtonItemStylePlain target:self action:@selector(onDeclineAction:)];
     self.navigationItem.leftBarButtonItem = declineButton;
 
     UIBarButtonItem *acceptButton = [[UIBarButtonItem alloc] initWithTitle:@"Accept" style:UIBarButtonItemStylePlain target:self action:@selector(onAcceptedTermsAndConditions)];
@@ -422,6 +424,11 @@ typedef enum {
             [self sendSignupCommand];
         }
     }
+}
+
+- (void)onDeclineAction:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [[Analytics sharedInstance] markDeclineSignupLicense];
 }
 
 - (IBAction)onCancelAction:(id)sender {

@@ -7,10 +7,9 @@
 //
 
 #import "SFIAppDelegate.h"
-//#import <BugSense-iOS/BugSenseController.h>
 #import "SNLog.h"
 #import "SFIColors.h"
-#import "GAI.h"
+#import "Analytics.h"
 
 
 @implementation SFIAppDelegate
@@ -22,14 +21,8 @@
 //    [BugSenseController sharedControllerWithBugSenseAPIKey:@"a9525243"];
 //#endif
 
-//    [GAI sharedInstance].trackUncaughtExceptions = YES;
-//    [GAI sharedInstance].dispatchInterval = 20;
-//    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
-    
-    // Initialize tracker. Replace with your tracking ID.
-    [[GAI sharedInstance] trackerWithTrackingId:@"UA-52832244-1"];
+    [[Analytics sharedInstance] initialize];
 
-    [SFIReachabilityManager sharedManager];
     [self initializeColors];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
@@ -65,13 +58,13 @@
     NSLog(@"Application becomes active: online=%@", online ? @"YES" : @"NO");
 
     if (!online) {
-        [[SecurifiToolkit sharedInstance] initSDK];
+        [[SecurifiToolkit sharedInstance] initToolkit];
     }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    [[SecurifiToolkit sharedInstance] shutdown];
+    [[SecurifiToolkit sharedInstance] shutdownToolkit];
 }
 
 - (void)onMemoryWarning:(id)sender {

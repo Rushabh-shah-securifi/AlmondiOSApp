@@ -9,6 +9,7 @@
 #import "SFILoginViewController.h"
 #import "SNLog.h"
 #import "MBProgressHUD.h"
+#import "Analytics.h"
 
 @interface SFILoginViewController () <UITextFieldDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -79,6 +80,8 @@
                    name:UIKeyboardDidHideNotification
                  object:nil];
 
+
+    [[Analytics sharedInstance] markLoginForm];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

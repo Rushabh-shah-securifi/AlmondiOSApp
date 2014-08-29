@@ -8,6 +8,7 @@
 
 #import "SFIAffiliationViewController.h"
 #import "SNLog.h"
+#import "Analytics.h"
 
 @implementation SFIAffiliationViewController
 
@@ -57,9 +58,9 @@
 
     self.navigationItem.title = @"Link Almond";
 
+    [[Analytics sharedInstance] markAlmondAffiliation];
 
     //NSLog(@"Return Testing %@", [self convertDecimalToMAC:@"251176230573596"]);
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -13,6 +13,7 @@
 #import "SFIParser.h"
 #import "SFIRouterDevicesListViewController.h"
 #import "MBProgressHUD.h"
+#import "Analytics.h"
 
 
 @interface SFIRouterTableViewController () <UIActionSheetDelegate>
@@ -463,6 +464,8 @@
                 self.isRebooting = TRUE;
                 [self sendGenericCommandRequest:REBOOT_COMMAND];
                 [self.tableView reloadData];
+
+                [[Analytics sharedInstance] markRouterReboot];
             });
 
             break;
