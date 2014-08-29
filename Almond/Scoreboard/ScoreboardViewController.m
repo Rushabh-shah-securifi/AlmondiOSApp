@@ -7,11 +7,13 @@
 //
 
 #import "ScoreboardViewController.h"
+#import "SFICloudStatusBarButtonItem.h"
 
 #define SEC_CONNECTION  0
 #define SEC_REQUESTS    1
 
 @interface ScoreboardViewController ()
+@property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @property(nonatomic) Scoreboard *scoreboard;
 @property(nonatomic) NSTimer *updateTimer;
 @end
@@ -30,8 +32,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    UIBarButtonItem *refresh = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(onRefresh)];
-    self.navigationItem.rightBarButtonItem = refresh;
+    _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithStandard];
+    self.navigationItem.rightBarButtonItem = _statusBarButton;
+
+    UIRefreshControl *refresh = [UIRefreshControl new];
+    NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force scoreboard refresh" attributes:attributes];
+    [refresh addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refresh;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -56,6 +64,7 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self loadScoreboard];
         [self.tableView reloadData];
+        [self.refreshControl endRefreshing];
     });
 }
 
@@ -101,13 +110,10 @@
     }
 
     NSDate *created = self.scoreboard.created;
-
     NSTimeInterval delta = -1 * [created timeIntervalSinceNow];
+    NSString *time = [NSDateFormatter localizedStringFromDate:created dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterMediumStyle];
 
-    id locale = [NSLocale currentLocale];
-    NSString *time = [created descriptionWithLocale:locale];
-
-    return [NSString stringWithFormat:@"Last refreshed %.0f secs ago on %@", delta, time];
+    return [NSString stringWithFormat:@"Last refreshed %.0f secs ago @ %@", delta, time];
 }
 
 

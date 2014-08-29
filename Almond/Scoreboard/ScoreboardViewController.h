@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SFITableViewController.h"
 
-@interface ScoreboardViewController : UITableViewController
+@interface ScoreboardViewController : SFITableViewController
 
 @end

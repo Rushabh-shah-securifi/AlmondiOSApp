@@ -15,6 +15,7 @@
 #import "SFIRouterTableViewController.h"
 #import "SFISensorsViewController.h"
 #import "DrawerViewController.h"
+#import "ScoreboardViewController.h"
 
 @interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, UIGestureRecognizerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -309,9 +310,14 @@
     icon = [UIImage imageNamed:@"icon_router.png"];
     routerNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Router" image:icon selectedImage:icon];
     //
+    ScoreboardViewController *scoreCtrl = [ScoreboardViewController new];
+    UINavigationController *scoreNav = [[UINavigationController alloc] initWithRootViewController:scoreCtrl];
+    icon = [UIImage imageNamed:@"icon_router.png"];
+    scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
+
     UITabBarController *front = [UITabBarController new];
     front.tabBar.tintColor = [UIColor blackColor];
-    front.viewControllers = @[sensorNav, routerNav];
+    front.viewControllers = @[sensorNav, routerNav, scoreNav];
 
     // The rear one is the drawer selector
     DrawerViewController *rear = [DrawerViewController new];

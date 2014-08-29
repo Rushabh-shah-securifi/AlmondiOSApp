@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SFITableViewController.h"
 
-@interface SFIRouterTableViewController : UITableViewController
+@interface SFIRouterTableViewController : SFITableViewController
 
 @end

@@ -13,14 +13,10 @@
 #import "SFIParser.h"
 #import "SFIRouterDevicesListViewController.h"
 #import "MBProgressHUD.h"
-#import "SFICloudStatusBarButtonItem.h"
-#import "SWRevealViewController.h"
 
 
 @interface SFIRouterTableViewController () <UIActionSheetDelegate>
-@property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @property NSTimer *hudTimer;
-@property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSArray *listAvailableColors;
 
 @property NSString *currentMAC;
@@ -39,29 +35,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithStandard];
-    self.navigationItem.rightBarButtonItem = _statusBarButton;
-
-    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
-    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Loading router data";
-    _HUD.dimBackground = YES;
-    [self.navigationController.view addSubview:_HUD];
-
-    NSDictionary *titleAttributes = @{
-            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
-            NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
-    };
-    self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-
-    SWRevealViewController *revealController = [self revealViewController];
-    UIBarButtonItem *revealButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"drawer.png"] style:UIBarButtonItemStylePlain target:revealController action:@selector(revealToggle:)];
-    self.navigationItem.leftBarButtonItem = revealButton;
-
-    self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
-
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
@@ -77,12 +50,12 @@
 
     // Pull down to refresh device values
     UIRefreshControl *refresh = [UIRefreshControl new];
-    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force router data refresh" attributes:titleAttributes];
+    NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force router data refresh" attributes:attributes];
     [refresh addTarget:self action:@selector(onRefreshRouter:) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresh;
 
     [self initializeNotifications];
-    [self markCloudStatusIcon];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -221,20 +194,6 @@
     return [[SecurifiToolkit sharedInstance] isCloudOnline];
 }
 
-- (void)markCloudStatusIcon {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
-    if ([toolkit isCloudConnecting]) {
-        [self.statusBarButton markState:SFICloudStatusStateConnecting];
-    }
-    else if ([toolkit isCloudOnline]) {
-        [self.statusBarButton markState:SFICloudStatusStateConnected];
-    }
-    else {
-        [self.statusBarButton markState:SFICloudStatusStateAlmondOffline];
-    }
-}
-
 #pragma mark HUD mgt
 
 - (void)showHudOnTimeout {
@@ -256,12 +215,7 @@
 
 #pragma mark - Network and cloud events
 
-- (void)onNetworkConnectingNotifier:(id)notification {
-    [self markCloudStatusIcon];
-}
-
 - (void)onNetworkChange:(id)notice {
-    [self markCloudStatusIcon];
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.disposed) {
             return;

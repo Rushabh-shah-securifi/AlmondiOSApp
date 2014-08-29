@@ -33,6 +33,7 @@
 		1C7581F419AD81140074C601 /* SFIRouterDevicesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581F319AD81140074C601 /* SFIRouterDevicesListViewController.m */; };
 		1C7581F619AD84AF0074C601 /* libSecurifiToolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C7581F519AD84AF0074C601 /* libSecurifiToolkit.a */; };
 		1C75821019B036C70074C601 /* ScoreboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C75820F19B036C70074C601 /* ScoreboardViewController.m */; };
+		1C75821319B054660074C601 /* SFITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C75821219B054660074C601 /* SFITableViewController.m */; };
 		1CED5EF519AC82FD0023512F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF419AC82FD0023512F /* Foundation.framework */; };
 		1CED5EF719AC82FD0023512F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF619AC82FD0023512F /* CoreGraphics.framework */; };
 		1CED5EF919AC82FD0023512F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF819AC82FD0023512F /* UIKit.framework */; };
@@ -257,6 +258,8 @@
 		1C7581F519AD84AF0074C601 /* libSecurifiToolkit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSecurifiToolkit.a; path = "../iostoolkit/build/Debug-iphoneos/libSecurifiToolkit.a"; sourceTree = "<group>"; };
 		1C75820E19B036C70074C601 /* ScoreboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardViewController.h; sourceTree = "<group>"; };
 		1C75820F19B036C70074C601 /* ScoreboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardViewController.m; sourceTree = "<group>"; };
+		1C75821119B054660074C601 /* SFITableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFITableViewController.h; sourceTree = "<group>"; };
+		1C75821219B054660074C601 /* SFITableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFITableViewController.m; sourceTree = "<group>"; };
 		1CED5EF119AC82FD0023512F /* Almond.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Almond.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CED5EF419AC82FD0023512F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1CED5EF619AC82FD0023512F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -860,6 +863,8 @@
 				1CED600419AC85AB0023512F /* SFISensor.m */,
 				1CED600519AC85AB0023512F /* SFISlider.h */,
 				1CED600619AC85AB0023512F /* SFISlider.m */,
+				1C75821119B054660074C601 /* SFITableViewController.h */,
+				1C75821219B054660074C601 /* SFITableViewController.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1186,6 +1191,7 @@
 				1CED60CA19AC85AB0023512F /* SensorsViewController.m in Sources */,
 				1C7581EE19AD80090074C601 /* SFIWirelessTableViewController.m in Sources */,
 				1C7581AE19AD7BD00074C601 /* SFIDevicesList.m in Sources */,
+				1C75821319B054660074C601 /* SFITableViewController.m in Sources */,
 				1C7581B019AD7BD00074C601 /* SFIDoorSensorViewController.m in Sources */,
 				1CED60CB19AC85AB0023512F /* SFICloudStatusBarButtonItem.m in Sources */,
 				1C7581EB19AD80090074C601 /* SFIWirelessSetting.m in Sources */,
