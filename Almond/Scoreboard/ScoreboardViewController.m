@@ -95,7 +95,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case SEC_CONNECTION:
-            return @"Connections";
+            return @"Network";
         case SEC_REQUESTS:
             return @"Commands & Updates";
         default:
@@ -132,7 +132,7 @@
     if (indexPath.section == SEC_CONNECTION) {
         switch (indexPath.row) {
             case 0: {
-                field = @"Connection Count";
+                field = @"Established Connections";
                 value = [scoreboard formattedValue:scoreboard.connectionCount];
                 break;
             }
@@ -140,13 +140,11 @@
                 field = @"Failed Connections";
                 value = [scoreboard formattedValue:scoreboard.connectionFailedCount];
                 break;
-
             }
             case 2: {
                 field = @"Reachability Changes";
                 value = [scoreboard formattedValue:scoreboard.reachabilityChangedCount];
                 break;
-
             }
             default : {
 
@@ -161,13 +159,13 @@
                 break;
             }
             case 1: {
-                field = @"Requests";
-                value = [scoreboard formattedValue:scoreboard.requestCount];
+                field = @"Command Requests";
+                value = [scoreboard formattedValue:scoreboard.commandRequestCount];
                 break;
             }
             case 2: {
-                field = @"Responses";
-                value = [scoreboard formattedValue:scoreboard.responseCount];
+                field = @"Command Responses";
+                value = [scoreboard formattedValue:scoreboard.commandResponseCount];
                 break;
             }
             default : {
