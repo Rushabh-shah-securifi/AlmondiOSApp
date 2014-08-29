@@ -37,7 +37,11 @@
 }
 
 - (void)markSensorTiming:(NSTimeInterval)timeToToggle {
+    double milliseconds = (double) (timeToToggle * 1000);
+    NSNumber *num = @(milliseconds);
 
+    id <GAITracker> tracker = [self trackerForName:@"sensor_on_off"];
+    [tracker send:@{@"time":num}];
 }
 
 - (void)markLoginForm {
