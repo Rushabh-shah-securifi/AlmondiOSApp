@@ -3112,9 +3112,9 @@
         //Remove the long press for reordering when expanded sensor has slider
         //Device type 2 - 4 - 7
         switch (sensor.deviceType) {
-            case 2:
-            case 4:
-            case 7:
+            case SFIDeviceType_MultiLevelSwitch_2:
+            case SFIDeviceType_MultiLevelOnOff_4:
+            case SFIDeviceType_Thermostat_7:
                 self.isSliderExpanded = TRUE;
                 break;
 
@@ -3128,9 +3128,9 @@
         //Enable the long press for reordering
         //Device type 2 - 4 - 7
         switch (sensor.deviceType) {
-            case 2:
-            case 4:
-            case 7:
+            case SFIDeviceType_MultiLevelSwitch_2:
+            case SFIDeviceType_MultiLevelOnOff_4:
+            case SFIDeviceType_Thermostat_7:
                 self.isSliderExpanded = FALSE;
                 break;
 
@@ -3652,7 +3652,10 @@
             }
 
             //Cancel the mobile event - Revert back
-            self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.currentMAC];
+            SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+            NSArray *storedValues = [toolkit deviceValuesList:self.currentMAC];
+
+            self.deviceValueList = storedValues;
             [self initializeImages];
             [self.tableView reloadData];
             [self.HUD hide:YES];
@@ -3682,7 +3685,9 @@
     NSString *mac = self.currentMAC;
 
     NSArray *currentDeviceValues = [self currentKnownValuesForDevice:deviceValueID];
-    NSArray *storedValues = [SFIOfflineDataManager readDeviceValueList:mac];
+
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSArray *storedValues = [toolkit deviceValuesList:mac];
 
     if (storedValues == nil) {
         storedValues = @[];
@@ -3758,12 +3763,14 @@
         return;
     }
 
-    NSArray *newDeviceList = [SFIOfflineDataManager readDeviceList:cloudMAC];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    NSArray *newDeviceList = [toolkit deviceList:cloudMAC];
     if (newDeviceList == nil) {
         newDeviceList = @[];
     }
 
-    NSArray *newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
+    NSArray *newDeviceValueList = [toolkit deviceValuesList:cloudMAC];
 //    if ([newDeviceList count] < [self.deviceValueList count]) {
 //        // Reload Device Value List which was updated by Offline Data Manager
 //        newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
@@ -3827,13 +3834,15 @@
         return;
     }
 
-    NSArray *newDeviceList = [SFIOfflineDataManager readDeviceList:cloudMAC];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    NSArray *newDeviceList = [toolkit deviceList:cloudMAC];
     if (newDeviceList == nil) {
         NSLog(@"Device list is empty: %@", cloudMAC);
         newDeviceList = @[];
     }
 
-    NSArray *newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
+    NSArray *newDeviceValueList = [toolkit deviceValuesList:cloudMAC];
     if (newDeviceValueList == nil) {
         newDeviceValueList = @[];
     }
@@ -4047,7 +4056,7 @@
 }
 
 - (void)resetDeviceListFromSaved {
-    NSArray *list = [SFIOfflineDataManager readDeviceList:self.currentMAC];
+    NSArray *list = [[SecurifiToolkit sharedInstance] deviceList:self.currentMAC];
     if (list == nil) {
         list = @[];
     }
