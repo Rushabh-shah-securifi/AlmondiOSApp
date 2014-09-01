@@ -132,7 +132,7 @@
 
     [self scheduleDisplayNoCloudTimer];
 
-    [toolkit initSDK];
+    [toolkit initToolkit];
 }
 
 #pragma mark - Orientation Handling
@@ -316,6 +316,7 @@
     scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
 
     UITabBarController *front = [UITabBarController new];
+    front.tabBar.translucent = NO;
     front.tabBar.tintColor = [UIColor blackColor];
     front.viewControllers = @[sensorNav, routerNav, scoreNav];
 

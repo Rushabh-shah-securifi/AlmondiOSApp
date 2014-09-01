@@ -25,6 +25,7 @@
             NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
     };
 
+    self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
 
     SWRevealViewController *revealController = [self revealViewController];
