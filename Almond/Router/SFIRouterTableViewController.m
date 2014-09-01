@@ -406,7 +406,7 @@
    destructiveButtonTitle:@"Yes"
         otherButtonTitles:nil];
 
-    [actionSheet showInView:self.view];
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
 }
 
 #pragma mark - Class Methods
