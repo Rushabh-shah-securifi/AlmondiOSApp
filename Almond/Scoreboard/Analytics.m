@@ -11,7 +11,7 @@
 #import "GAIFields.h"
 #import "GAIDictionaryBuilder.h"
 
-#define GA_ID @"UA-52832244-1"
+#define GA_ID @"UA-52832244-2"
 
 @implementation Analytics
 
@@ -24,6 +24,10 @@
     return _sharedManager;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)initialize {
     //    [GAI sharedInstance].trackUncaughtExceptions = YES;
     //    [GAI sharedInstance].dispatchInterval = 20;
@@ -31,6 +35,30 @@
 
     // Initialize tracker. Replace with your tracking ID.
     [[GAI sharedInstance] trackerWithTrackingId:GA_ID];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCompleteMobileCommandRequest:) name:kSFIDidCompleteMobileCommandRequest object:nil];
+}
+
+- (void)onCompleteMobileCommandRequest:(NSNotification *)notification {
+    NSDictionary *info = notification.userInfo;
+    if (!info) {
+        return;
+    }
+    info = info[@"data"];
+    if (!info) {
+        return;
+    }
+
+    MobileCommandRequest *cmd = info[@"command"];
+    if (!cmd) {
+        NSLog(@"Analytics: unable to process kSFIDidCompleteMobileCommandRequest: command payload was nil");
+        return;
+    }
+
+    NSNumber *roundTripTime = info[@"timing"];
+    NSTimeInterval resTime = roundTripTime.doubleValue;
+
+    [self markSensor:cmd.deviceType timeToComplete:resTime];
 }
 
 - (void)markMemoryWarning {
@@ -41,15 +69,21 @@
     [self markEvent:@"router_reboot"];
 }
 
-- (void)markSensorTiming:(NSTimeInterval)timeToToggle {
-    double milliseconds = (double) (timeToToggle * 1000);
+- (void)markSensor:(SFIDeviceType)deviceType timeToComplete:(NSTimeInterval)resResTime {
+    double milliseconds = (double) (resResTime * 1000);
     NSNumber *num = @(milliseconds);
 
     GAI *gai = [GAI sharedInstance];
     id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
 
-    [tracker set:kGAIEvent value:@"sensor_on_off"];
-    [tracker send:@{@"time" : num}];
+    NSString *deviceTypeStr = [SFIDevice nameForType:deviceType];
+    NSDictionary *params = @{
+            @"time" : num,
+            @"device" : deviceTypeStr
+    };
+
+    [tracker set:kGAIEvent value:@"sensor_click"];
+    [tracker send:params];
 }
 
 - (void)markLoginForm {

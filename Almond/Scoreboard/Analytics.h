@@ -23,7 +23,7 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 - (void)markRouterReboot;
 
-- (void)markSensorTiming:(NSTimeInterval)timeToToggle;
+- (void)markSensor:(SFIDeviceType)deviceType timeToComplete:(NSTimeInterval)resResTime;
 
 - (void)markLoginForm;
 
