@@ -9,11 +9,5 @@
 #import "SFISensor.h"
 
 @implementation SFISensor
-@synthesize name, type, sensorId, status;
-@synthesize isExpanded;
-@synthesize deviceType;
-@synthesize valueCount, knownValues;
-@synthesize imageName;
-@synthesize mostImpValueIndex, mostImpValueName;
-@synthesize stateIndex;
+
 @end
