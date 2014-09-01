@@ -13,6 +13,7 @@
 #import "SFISensorTableViewCell.h"
 
 @interface SFISensorsViewController () <SFISensorTableViewCellDelegate>
+@property(nonatomic, readonly) SFIAlmondPlus *almond;
 @property(nonatomic, readonly) NSString *almondMac;
 @property(nonatomic, readonly) SFIColors *almondColor;
 @property(nonatomic) NSArray *deviceList;
@@ -107,7 +108,9 @@
 
 - (void)initializeAlmondData {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
     SFIAlmondPlus *plus = [toolkit currentAlmond];
+    _almond = plus;
 
     NSString *const mac = (plus == nil) ? NO_ALMOND : plus.almondplusMAC;
     _almondMac = mac;
@@ -698,7 +701,8 @@
             }
 
             //Cancel the mobile event - Revert back
-            self.deviceValueList = [SFIOfflineDataManager readDeviceValueList:self.almondMac];
+            SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+            self.deviceValueList = [toolkit deviceValuesList:self.almondMac];
             [self initializeDevices];
             [self.tableView reloadData];
             [self.HUD hide:YES];
@@ -769,12 +773,14 @@
         return;
     }
 
-    NSArray *newDeviceList = [SFIOfflineDataManager readDeviceList:cloudMAC];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    NSArray *newDeviceList = [toolkit deviceList:cloudMAC];
     if (newDeviceList == nil) {
         newDeviceList = @[];
     }
 
-    NSArray *newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
+    NSArray *newDeviceValueList = [toolkit deviceValuesList:cloudMAC];
 
     // Restore isExpanded state
     NSArray *oldDeviceList = self.deviceList;
@@ -834,13 +840,15 @@
         return;
     }
 
-    NSArray *newDeviceList = [SFIOfflineDataManager readDeviceList:cloudMAC];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    NSArray *newDeviceList = [toolkit deviceList:cloudMAC];
     if (newDeviceList == nil) {
         NSLog(@"Device list is empty: %@", cloudMAC);
         newDeviceList = @[];
     }
 
-    NSArray *newDeviceValueList = [SFIOfflineDataManager readDeviceValueList:cloudMAC];
+    NSArray *newDeviceValueList = [toolkit deviceValuesList:cloudMAC];
     if (newDeviceValueList == nil) {
         newDeviceValueList = @[];
     }
@@ -999,35 +1007,22 @@
 #pragma mark - Helpers
 
 - (void)sendMobileCommandForDevice:(SFIDevice *)device deviceValue:(SFIDeviceKnownValues *)deviceValues {
-    // Generate internal index between 1 to 100
-    unsigned int internalIndex = (arc4random() % 100) + 1;
-
-    MobileCommandRequest *mobileCommand = [[MobileCommandRequest alloc] init];
-    mobileCommand.almondMAC = self.almondMac;
-    mobileCommand.deviceID = [NSString stringWithFormat:@"%d", device.deviceID];
-    mobileCommand.deviceType = device.deviceType;
-    mobileCommand.indexID = [NSString stringWithFormat:@"%d", deviceValues.index];
-    mobileCommand.changedValue = deviceValues.value;
-    mobileCommand.internalIndex = [NSString stringWithFormat:@"%d", internalIndex];
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = MOBILE_COMMAND;
-    cloudCommand.command = mobileCommand;
-
-    [self asyncSendCommand:cloudCommand];
-
     //todo decide what to do about this
     [self.mobileCommandTimer invalidate];
+
+    self.isMobileCommandSuccessful = NO;
     self.mobileCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
                                                                target:self
                                                              selector:@selector(onSendMobileCommandTimeout:)
                                                              userInfo:nil
                                                               repeats:NO];
-    self.isMobileCommandSuccessful = FALSE;
+
+
+    [[SecurifiToolkit sharedInstance] asyncChangeAlmond:self.almond device:device value:deviceValues];
 }
 
 - (void)resetDeviceListFromSaved {
-    NSArray *list = [SFIOfflineDataManager readDeviceList:self.almondMac];
+    NSArray *list = [[SecurifiToolkit sharedInstance] deviceList:self.almondMac];
     if (list == nil) {
         list = @[];
     }
