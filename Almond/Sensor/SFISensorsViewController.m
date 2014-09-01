@@ -346,58 +346,77 @@
     }
 
     switch (currentSensor.deviceType) {
-        case 1:
-            //Switch - 2 values
+        case SFIDeviceType_BinarySwitch_1:
             return EXPANDED_ROW_HEIGHT;
-
-        case 2:
-            //Multilevel switch - 3 values
+        case SFIDeviceType_MultiLevelSwitch_2:
             return 270;
-
-        case 3:
-            //Sensor - 3 values
+        case SFIDeviceType_BinarySensor_3:
             return 260;
-
-        case 4:
+        case SFIDeviceType_MultiLevelOnOff_4:
             return 270;
-
-        case 7:
+        case SFIDeviceType_Thermostat_7:
             return 455;
-
-        case 11:
+        case SFIDeviceType_MotionSensor_11:
             if (currentSensor.isTampered) {
                 return EXPANDED_ROW_HEIGHT + 50;
             }
             else {
                 return EXPANDED_ROW_HEIGHT;
             }
-        case 12:
+        case SFIDeviceType_ContactSwitch_12:
             if (currentSensor.isTampered) {
                 return 270;
             }
             else {
                 return 230;
             }
-
-        case 13:
-        case 14:
-        case 15:
-        case 17:
-        case 19:
+        case SFIDeviceType_FireSensor_13:
+        case SFIDeviceType_WaterSensor_14:
+        case SFIDeviceType_GasSensor_15:
+        case SFIDeviceType_VibrationOrMovementSensor_17:
+        case SFIDeviceType_KeyFob_19:
             if (currentSensor.isTampered) {
                 return EXPANDED_ROW_HEIGHT + 50;
             }
             else {
                 return EXPANDED_ROW_HEIGHT;
             }
-
-        case 22:
-            //Multilevel switch - 5 values
+        case SFIDeviceType_SmartACSwitch_22:
             return 320;
 
+        case SFIDeviceType_UnknownDevice_0:
+        case SFIDeviceType_DoorLock_5:
+        case SFIDeviceType_Alarm_6:
+        case SFIDeviceType_Controller_8:
+        case SFIDeviceType_SceneController_9:
+        case SFIDeviceType_StandardCIE_10:
+        case SFIDeviceType_PersonalEmergencyDevice_16:
+        case SFIDeviceType_RemoteControl_18:
+        case SFIDeviceType_Keypad_20:
+        case SFIDeviceType_StandardWarningDevice_21:
+        case SFIDeviceType_SmartDCSwitch_23:
+        case SFIDeviceType_OccupancySensor_24:
+        case SFIDeviceType_LightSensor_25:
+        case SFIDeviceType_WindowCovering_26:
+        case SFIDeviceType_TemperatureSensor_27:
+        case SFIDeviceType_SimpleMetering_28:
+        case SFIDeviceType_ColorControl_29:
+        case SFIDeviceType_PressureSensor_30:
+        case SFIDeviceType_FlowSensor_31:
+        case SFIDeviceType_ColorDimmableLight_32:
+        case SFIDeviceType_HAPump_33:
+        case SFIDeviceType_Shade_34:
+        case SFIDeviceType_SmokeDetector_36:
+        case SFIDeviceType_FloodSensor_37:
+        case SFIDeviceType_ShockSensor_38:
+        case SFIDeviceType_DoorSensor_39:
+        case SFIDeviceType_MoistureSensor_40:
+        case SFIDeviceType_MovementSensor_41:
+        case SFIDeviceType_Siren_42:
+        case SFIDeviceType_MultiSwitch_43:
+        case SFIDeviceType_UnknownOnOffModule_44:
         default:
             return EXPANDED_ROW_HEIGHT;
-
     }
 }
 
@@ -424,7 +443,7 @@
     SFIDeviceKnownValues *deviceValues;
 
     switch (device.deviceType) {
-        case 1: {
+        case SFIDeviceType_BinarySwitch_1: {
             // Switch
             deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:0];
             if (!deviceValues.hasValue) {
@@ -434,7 +453,7 @@
             break;
         }
 
-        case 2: {
+        case SFIDeviceType_MultiLevelSwitch_2: {
             // Multilevel switch
             deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.mostImpValueIndex];
 
@@ -443,7 +462,7 @@
             break;
         }
 
-        case 3: {
+        case SFIDeviceType_BinarySensor_3: {
             if (![device isTamperMostImportantValue]) {
                 return; // nothing to do
             }
@@ -452,8 +471,9 @@
             break;
         }
 
-        case 4:
-        case 22: {
+        case SFIDeviceType_MultiLevelOnOff_4:
+        case SFIDeviceType_SmartACSwitch_22:
+        case SFIDeviceType_SmartDCSwitch_23: {
             /* Level Control */
             deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.stateIndex];
             if (!deviceValues.hasValue) {
@@ -462,10 +482,11 @@
             [deviceValues setBoolValue:!deviceValues.boolValue];
             break;
         }
+
         default: {
             return; // nothing to do
         }
-    }
+    } // end switch
 
     // Mark value state
     deviceValues.isUpdating = true;
@@ -984,6 +1005,7 @@
     MobileCommandRequest *mobileCommand = [[MobileCommandRequest alloc] init];
     mobileCommand.almondMAC = self.almondMac;
     mobileCommand.deviceID = [NSString stringWithFormat:@"%d", device.deviceID];
+    mobileCommand.deviceType = device.deviceType;
     mobileCommand.indexID = [NSString stringWithFormat:@"%d", deviceValues.index];
     mobileCommand.changedValue = deviceValues.value;
     mobileCommand.internalIndex = [NSString stringWithFormat:@"%d", internalIndex];
