@@ -15,7 +15,7 @@
 
 - (void)sensorDetailViewDidPressDismissTamperButton:(SFISensorDetailView*)view;
 
-- (void)sensorDetailViewDidChangeSensorValue:(SFISensorDetailView*)view valueName:(NSString*)valueName newValue:(NSString*)aValue;
+- (void)sensorDetailViewDidChangeSensorValue:(SFISensorDetailView*)view propertyType:(SFIDevicePropertyType)propertyType newValue:(NSString*)aValue;
 
 @end
 

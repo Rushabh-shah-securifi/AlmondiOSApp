@@ -238,28 +238,29 @@
     [slider setValue:value animated:YES];
 
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) value];
-    [self.delegate sensorDetailViewDidChangeSensorValue:self valueName:slider.deviceValueName newValue:newValue];
+    [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:slider.propertyType newValue:newValue];
 }
 
 - (void)onSliderDidEndSliding:(id)sender {
     SFISlider *slider = sender;
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) (slider.value)];
-    [self.delegate sensorDetailViewDidChangeSensorValue:self valueName:slider.deviceValueName newValue:newValue];
+
+    [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:slider.propertyType newValue:newValue];
 }
 
 - (void)onThermostatFanModeSelected:(id)sender {
-    [self onUpdateSegmentedControlValue:sender valueName:@"THERMOSTAT FAN MODE"];
+    [self onUpdateSegmentedControlValue:sender propertyType:SFIDevicePropertyType_THERMOSTAT_FAN_MODE];
 }
 
 - (void)onThermostatModeSelected:(id)sender {
-    [self onUpdateSegmentedControlValue:sender valueName:@"THERMOSTAT MODE"];
+    [self onUpdateSegmentedControlValue:sender propertyType:SFIDevicePropertyType_THERMOSTAT_MODE];
 }
 
-- (void)onUpdateSegmentedControlValue:(id)sender valueName:(NSString *)valueName {
+- (void)onUpdateSegmentedControlValue:(id)sender propertyType:(SFIDevicePropertyType)propertyType {
     UISegmentedControl *ctrl = (UISegmentedControl *) sender;
     NSString *strModeValue = [ctrl titleForSegmentAtIndex:(NSUInteger) ctrl.selectedSegmentIndex];
 
-    [self.delegate sensorDetailViewDidChangeSensorValue:self valueName:valueName newValue:strModeValue];
+    [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:propertyType newValue:strModeValue];
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -395,7 +396,7 @@
     [self markYOffset:5];
 }
 
-- (UISlider *)makeSliderWithMinValue:(float)minVal maxValue:(float)maxValue valueName:(NSString *)valueName {
+- (UISlider *)makeSliderWithMinValue:(float)minVal maxValue:(float)maxValue propertyType:(SFIDevicePropertyType)propertyType {
     // Set the height high enough to ensure touch events are not missed.
     const CGFloat slider_height = 25.0;
 
@@ -412,7 +413,7 @@
     }
 
     slider.tag = self.tag;
-    slider.deviceValueName = valueName;
+    slider.propertyType = propertyType;
     slider.minimumValue = minVal;
     slider.maximumValue = maxValue;
 
@@ -430,7 +431,7 @@
     float sliderValue = 0.0;
     NSArray *currentKnownValues = [self currentKnownValuesForDevice];
     for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        if ([currentDeviceValue.valueName isEqualToString:valueName]) {
+        if (currentDeviceValue.propertyType == propertyType) {
             sliderValue = [currentDeviceValue.value floatValue];
             break;
         }
@@ -450,7 +451,7 @@
     [self addSubview:minImage];
 
     // Display slider
-    UISlider *slider = [self makeSliderWithMinValue:0 maxValue:99 valueName:@"SWITCH MULTILEVEL"];
+    UISlider *slider = [self makeSliderWithMinValue:0 maxValue:99 propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
     [self addSubview:slider];
 
     UIImageView *maxImage = [[UIImageView alloc] initWithFrame:CGRectMake((self.frame.size.width - 110) + 50, self.baseYCoordinate - 5, 24, 24)];
@@ -464,14 +465,14 @@
 - (void)configureBinarySensor_3 {
     NSArray *currentKnownValues = [self currentKnownValuesForDevice];
     for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        //Display only battery - PY 291113
-        NSString *batteryStatus;
-        if ([currentDeviceValue.valueName isEqualToString:@"BATTERY"]) {
+        if (currentDeviceValue.propertyType == SFIDevicePropertyType_BATTERY) {
             UILabel *label = [[UILabel alloc] init];
             label.backgroundColor = [UIColor clearColor];
 
             //Check the status of value
             NSString *currentValue = currentDeviceValue.value;
+
+            NSString *batteryStatus;
             if ([currentValue isEqualToString:@"1"]) {
                 //Battery Low
                 batteryStatus = @"Low Battery";
@@ -488,6 +489,8 @@
             [self markYOffset:25];
             label.frame = CGRectMake(10, self.baseYCoordinate, 299, 30);
             [self addSubview:label];
+
+            break;
         }
     }
 
@@ -503,7 +506,7 @@
     [self addSubview:minImage];
 
     // Display slider
-    UISlider *slider = [self makeSliderWithMinValue:0 maxValue:255 valueName:@"SWITCH MULTILEVEL"];
+    UISlider *slider = [self makeSliderWithMinValue:0 maxValue:255 propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
     [self addSubview:slider];
 
     UIImageView *maxImage = [[UIImageView alloc] initWithFrame:CGRectMake((self.frame.size.width - 110) + 50, self.baseYCoordinate - 5, 24, 24)];
@@ -537,7 +540,7 @@
     const CGRect frame = self.frame;
 
     // Heat Slider
-    UISlider *heatSlider = [self makeSliderWithMinValue:35 maxValue:95 valueName:@"THERMOSTAT SETPOINT HEATING"];
+    UISlider *heatSlider = [self makeSliderWithMinValue:35 maxValue:95 propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING];
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
     const CGFloat slider_height = 25.0;
     if (screenBounds.size.height == 568) {
@@ -576,7 +579,7 @@
     [self addSubview:lblMinCool];
 
     // Display Cooling slider
-    UISlider *coolSlider = [self makeSliderWithMinValue:35 maxValue:95 valueName:@"THERMOSTAT SETPOINT COOLING"];
+    UISlider *coolSlider = [self makeSliderWithMinValue:35 maxValue:95 propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING];
     if (screenBounds.size.height == 568) {
         // code for 4-inch screen
         coolSlider.frame = CGRectMake(100.0, self.baseYCoordinate, frame.size.width - 160, slider_height);
@@ -672,36 +675,51 @@
 
     NSArray *currentKnownValues = [self currentKnownValuesForDevice];
     for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        if ([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT MODE"]) {
-            if ([currentDeviceValue.value isEqualToString:@"Auto"]) {
-                scMode.selectedSegmentIndex = 0;
+        switch (currentDeviceValue.propertyType) {
+            case SFIDevicePropertyType_THERMOSTAT_MODE: {
+                if ([currentDeviceValue.value isEqualToString:@"Auto"]) {
+                    scMode.selectedSegmentIndex = 0;
+                }
+                else if ([currentDeviceValue.value isEqualToString:@"Heat"]) {
+                    scMode.selectedSegmentIndex = 1;
+                }
+                else if ([currentDeviceValue.value isEqualToString:@"Cool"]) {
+                    scMode.selectedSegmentIndex = 2;
+                }
+                else if ([currentDeviceValue.value isEqualToString:@"Off"]) {
+                    scMode.selectedSegmentIndex = 3;
+                }
+                break;
             }
-            else if ([currentDeviceValue.value isEqualToString:@"Heat"]) {
-                scMode.selectedSegmentIndex = 1;
+
+            case SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE: {
+                [strState appendString:[NSString stringWithFormat:@"Thermostat is %@. ", currentDeviceValue.value]];
+                break;
             }
-            else if ([currentDeviceValue.value isEqualToString:@"Cool"]) {
-                scMode.selectedSegmentIndex = 2;
+
+            case SFIDevicePropertyType_THERMOSTAT_FAN_MODE: {
+                if ([currentDeviceValue.value isEqualToString:@"Auto Low"]) {
+                    scFanMode.selectedSegmentIndex = 0;
+                }
+                else {
+                    scFanMode.selectedSegmentIndex = 1;
+                }
+                break;
             }
-            else if ([currentDeviceValue.value isEqualToString:@"Off"]) {
-                scMode.selectedSegmentIndex = 3;
+
+            case SFIDevicePropertyType_THERMOSTAT_FAN_STATE: {
+                [strState appendString:[NSString stringWithFormat:@"Fan is %@.", currentDeviceValue.value]];
+                break;
             }
-        }
-        else if ([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT OPERATING STATE"]) {
-            [strState appendString:[NSString stringWithFormat:@"Thermostat is %@. ", currentDeviceValue.value]];
-        }
-        else if ([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT FAN MODE"]) {
-            if ([currentDeviceValue.value isEqualToString:@"Auto Low"]) {
-                scFanMode.selectedSegmentIndex = 0;
+
+            case SFIDevicePropertyType_BATTERY: {
+                lblBattery.text = [NSString stringWithFormat:@"Battery is at %@%%.", currentDeviceValue.value];
+                break;
             }
-            else {
-                scFanMode.selectedSegmentIndex = 1;
+
+            default: {
+                break;
             }
-        }
-        else if ([currentDeviceValue.valueName isEqualToString:@"THERMOSTAT FAN STATE"]) {
-            [strState appendString:[NSString stringWithFormat:@"Fan is %@.", currentDeviceValue.value]];
-        }
-        else if ([currentDeviceValue.valueName isEqualToString:@"BATTERY"]) {
-            lblBattery.text = [NSString stringWithFormat:@"Battery is at %@%%.", currentDeviceValue.value];
         }
     }
 
@@ -772,8 +790,6 @@
 }
 
 - (void)configureElectricMeasurementSwitch_22 {
-    //Show values and calculations
-    //Calculate values
     unsigned int activePower = 0;
     unsigned int acPowerMultiplier = 0;
     unsigned int acPowerDivisor = 0;
@@ -784,53 +800,45 @@
     unsigned int acCurrentMultiplier = 0;
     unsigned int acCurrentDivisor = 0;
 
-    NSString *currentDeviceTypeName;
-    NSString *hexString;
-
     NSArray *currentKnownValues = [self currentKnownValuesForDevice];
     for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        currentDeviceTypeName = currentDeviceValue.valueName;
-        hexString = currentDeviceValue.value;
-        //                          NSString *hexIP = [NSString stringWithFormat:@"%lX", (long)[currentDevice.deviceIP integerValue]];
-        //							hexString = hexString.substring(2);
-        // DLog(@"HEX STRING: %@", hexString);
-        NSScanner *scanner = [NSScanner scannerWithString:hexString];
+        NSScanner *scanner = [NSScanner scannerWithString:currentDeviceValue.value];
 
-        if ([currentDeviceTypeName isEqualToString:@"ACTIVE_POWER"]) {
-            [scanner scanHexInt:&activePower];
-            //activePower = Integer.parseInt(hexString, 16);
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"AC_POWERMULTIPLIER"]) {
-            [scanner scanHexInt:&acPowerMultiplier];
-            //acPowerMultiplier = Integer.parseInt(hexString, 16);
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"AC_POWERDIVISOR"]) {
-            [scanner scanHexInt:&acPowerDivisor];
-            //acPowerDivisor = Integer.parseInt(hexString, 16);
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"RMS_VOLTAGE"]) {
-            [scanner scanHexInt:&rmsVoltage];
-            //rmsVoltage = Integer.parseInt(hexString, 16);
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"AC_VOLTAGEMULTIPLIER"]) {
-            [scanner scanHexInt:&acVoltageMultiplier];
-            //acVoltageMultipier = Integer.parseInt(hexString, 16);
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"AC_VOLTAGEDIVISOR"]) {
-            [scanner scanHexInt:&acVoltageDivisor];
-            //acVoltageDivisor = Integer.parseInt(hexString, 16);
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"RMS_CURRENT"]) {
-            [scanner scanHexInt:&rmsCurrent];
-            //rmsCurrent = Integer.parseInt(hexString, 16);
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"AC_CURRENTMULTIPLIER"]) {
-            [scanner scanHexInt:&acCurrentMultiplier];
-            //acCurrentMultipier = Integer.parseInt(hexString, 16);
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"AC_CURRENTDIVISOR"]) {
-            [scanner scanHexInt:&acCurrentDivisor];
-            //acCurrentDivisor = Integer.parseInt(hexString, 16);
+        switch (currentDeviceValue.propertyType) {
+            case SFIDevicePropertyType_AC_CURRENTDIVISOR: {
+                [scanner scanHexInt:&acCurrentDivisor];
+                break;
+            }
+            case SFIDevicePropertyType_AC_CURRENTMULTIPLIER: {
+                [scanner scanHexInt:&acCurrentMultiplier];
+                break;
+            }
+            case SFIDevicePropertyType_AC_POWERDIVISOR: {
+                [scanner scanHexInt:&acPowerDivisor];
+                break;
+            }
+            case SFIDevicePropertyType_AC_POWERMULTIPLIER: {
+                [scanner scanHexInt:&acPowerMultiplier];
+                break;
+            }
+            case SFIDevicePropertyType_AC_VOLTAGEMULTIPLIER: {
+                [scanner scanHexInt:&acVoltageMultiplier];
+                break;
+            }
+            case SFIDevicePropertyType_ACTIVE_POWER: {
+                [scanner scanHexInt:&activePower];
+                break;
+            }
+            case SFIDevicePropertyType_RMS_CURRENT: {
+                [scanner scanHexInt:&rmsCurrent];
+                break;
+            }
+            case SFIDevicePropertyType_RMS_VOLTAGE: {
+                [scanner scanHexInt:&rmsVoltage];
+                break;
+            }
+            default:
+                break;
         }
     }
 
@@ -876,9 +884,6 @@
 }
 
 - (void)configureElectricMeasurementSwitch_23 {
-    //Electric Measure - DC
-    //Show values and calculations
-    //Calculate values
     unsigned int dcPower = 0;
     unsigned int dcPowerMultiplier = 0;
     unsigned int dcPowerDivisor = 0;
@@ -889,42 +894,40 @@
     unsigned int dcCurrentMultiplier = 0;
     unsigned int dcCurrentDivisor = 0;
 
-    NSString *currentDeviceTypeName;
-    NSString *hexString;
-
     NSArray *currentKnownValues = [self currentKnownValuesForDevice];
     for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        currentDeviceTypeName = currentDeviceValue.valueName;
-        hexString = currentDeviceValue.value;
+        NSScanner *scanner = [NSScanner scannerWithString:currentDeviceValue.value];
 
-        NSScanner *scanner = [NSScanner scannerWithString:hexString];
-
-        if ([currentDeviceTypeName isEqualToString:@"DC_POWER"]) {
-            [scanner scanHexInt:&dcPower];
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"DC_POWERMULTIPLIER"]) {
-            [scanner scanHexInt:&dcPowerMultiplier];
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"DC_POWERDIVISOR"]) {
-            [scanner scanHexInt:&dcPowerDivisor];
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"DC_VOLTAGE"]) {
-            [scanner scanHexInt:&dcVoltage];
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"DC_VOLTAGEMULTIPLIER"]) {
-            [scanner scanHexInt:&dcVoltageMultiplier];
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"DC_VOLTAGEDIVISOR"]) {
-            [scanner scanHexInt:&dcVoltageDivisor];
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"DC_CURRENT"]) {
-            [scanner scanHexInt:&dcCurrent];
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"DC_CURRENTMULTIPLIER"]) {
-            [scanner scanHexInt:&dcCurrentMultiplier];
-        }
-        else if ([currentDeviceTypeName isEqualToString:@"DC_CURRENTDIVISOR"]) {
-            [scanner scanHexInt:&dcCurrentDivisor];
+        switch (currentDeviceValue.propertyType) {
+            case SFIDevicePropertyType_DC_CURRENT:
+                [scanner scanHexInt:&dcCurrent];
+                break;
+            case SFIDevicePropertyType_DC_CURRENTDIVISOR:
+                [scanner scanHexInt:&dcCurrentDivisor];
+                break;
+            case SFIDevicePropertyType_DC_CURRENTMULTIPLIER:
+                [scanner scanHexInt:&dcCurrentMultiplier];
+                break;
+            case SFIDevicePropertyType_DC_POWER:
+                [scanner scanHexInt:&dcPower];
+                break;
+            case SFIDevicePropertyType_DC_POWERDIVISOR:
+                [scanner scanHexInt:&dcPowerDivisor];
+                break;
+            case SFIDevicePropertyType_DC_POWERMULTIPLIER:
+                [scanner scanHexInt:&dcPowerMultiplier];
+                break;
+            case SFIDevicePropertyType_DC_VOLTAGE:
+                [scanner scanHexInt:&dcVoltage];
+                break;
+            case SFIDevicePropertyType_DC_VOLTAGEDIVISOR:
+                [scanner scanHexInt:&dcVoltageDivisor];
+                break;
+            case SFIDevicePropertyType_DC_VOLTAGEMULTIPLIER:
+                [scanner scanHexInt:&dcVoltageMultiplier];
+                break;
+            default:
+                break;
         }
     }
 

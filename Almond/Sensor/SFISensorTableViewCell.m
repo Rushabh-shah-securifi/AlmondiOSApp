@@ -180,78 +180,114 @@
     SFIDevice *const device = self.device;
 
     switch (device.deviceType) {
-        case 1: {
-            [self configureSwitch_1];
+        case SFIDeviceType_UnknownDevice_0:
             break;
-        }
-        case 2: {
+        case SFIDeviceType_BinarySwitch_1:
+            [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            break;
+        case SFIDeviceType_MultiLevelSwitch_2:
             [self configureMultiLevelSwitch_2];
             break;
-        }
-        case 3: {
-            [self configureBinarySensor_3];
+        case SFIDeviceType_BinarySensor_3:
+            [self configureBinaryStateSensor:DT3_BINARY_SENSOR_TRUE imageNameFalse:DT3_BINARY_SENSOR_FALSE statusTrue:@"OPEN" statusFalse:@"CLOSED"];
             break;
-        }
-        case 4: {
+        case SFIDeviceType_MultiLevelOnOff_4:
             [self configureLevelControl_4];
             break;
-        }
-        case 5: {
-            [self configureDoorLocked_5];
+        case SFIDeviceType_DoorLock_5:
+            [self configureBinaryStateSensor:DT5_DOOR_LOCK_TRUE imageNameFalse:DT5_DOOR_LOCK_FALSE statusTrue:@"LOCKED" statusFalse:@"UNLOCKED"];
             break;
-        }
-        case 6: {
-            [self configureAlarm_6];
+        case SFIDeviceType_Alarm_6:
+            [self configureBinaryStateSensor:DT6_ALARM_TRUE imageNameFalse:DT6_ALARM_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
             break;
-        }
-        case 7: {
+        case SFIDeviceType_Thermostat_7:
             [self configureThermostat_7];
             break;
-        }
-        case 11: {
-            [self configureMotionSensor_11];
+        case SFIDeviceType_Controller_8:
+            break;
+        case SFIDeviceType_SceneController_9:
+            break;
+        case SFIDeviceType_StandardCIE_10:
+            break;
+        case SFIDeviceType_MotionSensor_11: {
+            self.deviceImageView.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.25), 12, 53, 70); //todo why different?
+            [self configureBinaryStateSensor:DT11_MOTION_SENSOR_TRUE imageNameFalse:DT11_MOTION_SENSOR_FALSE statusTrue:@"MOTION DETECTED" statusFalse:@"NO MOTION"];
             break;
         }
-        case 12: {
-            [self configureContactSwitch_12];
+        case SFIDeviceType_ContactSwitch_12:
+            [self configureBinaryStateSensor:DT12_CONTACT_SWITCH_TRUE imageNameFalse:DT12_CONTACT_SWITCH_FALSE statusTrue:@"OPEN" statusFalse:@"CLOSED"];
             break;
-        }
-        case 13: {
-            [self configureFireSensor_13];
+        case SFIDeviceType_FireSensor_13:
+            [self configureBinaryStateSensor:DT13_FIRE_SENSOR_TRUE imageNameFalse:DT13_FIRE_SENSOR_FALSE statusTrue:@"ALARM: FIRE DETECTED" statusFalse:@"OK"];
             break;
-        }
-        case 14: {
-            [self configureWaterSensor_14];
+        case SFIDeviceType_WaterSensor_14:
+            [self configureBinaryStateSensor:DT14_WATER_SENSOR_TRUE imageNameFalse:DT14_WATER_SENSOR_FALSE statusTrue:@"FLOODED" statusFalse:@"OK"];
             break;
-        }
-        case 15: {
-            [self configureGasSensor_15];
+        case SFIDeviceType_GasSensor_15:
+            [self configureBinaryStateSensor:DT15_GAS_SENSOR_TRUE imageNameFalse:DT15_GAS_SENSOR_FALSE statusTrue:@"ALARM: GAS DETECTED" statusFalse:@"OK"];
             break;
-        }
-        case 17: {
-            [self configureGasSensor_17];
+        case SFIDeviceType_PersonalEmergencyDevice_16:
             break;
-        }
-        case 19: {
-            [self configureKeyFob_19];
+        case SFIDeviceType_VibrationOrMovementSensor_17:
+            [self configureBinaryStateSensor:DT17_VIBRATION_SENSOR_TRUE imageNameFalse:DT17_VIBRATION_SENSOR_FALSE statusTrue:@"VIBRATION DETECTED" statusFalse:@"NO VIBRATION"];
             break;
-        }
-        case 22: {
-            [self configureElectricMeasurementSwitch_22];
+        case SFIDeviceType_RemoteControl_18:
             break;
-        }
-        case 23: {
-            [self configureElectricMeasurementSwitch_23];
+        case SFIDeviceType_KeyFob_19:
+            [self configureBinaryStateSensor:DT19_KEYFOB_TRUE imageNameFalse:DT19_KEYFOB_FALSE statusTrue:@"LOCKED" statusFalse:@"UNLOCKED"];
             break;
-        }
-        case 27: {
+        case SFIDeviceType_Keypad_20:
+            break;
+        case SFIDeviceType_StandardWarningDevice_21:
+            break;
+        case SFIDeviceType_SmartACSwitch_22:
+            [self configureBinaryStateSensor:DT22_AC_SWITCH_TRUE imageNameFalse:DT22_AC_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            break;
+        case SFIDeviceType_SmartDCSwitch_23:
+            [self configureBinaryStateSensor:DT23_DC_SWITCH_TRUE imageNameFalse:DT23_DC_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            break;
+        case SFIDeviceType_OccupancySensor_24:
+            break;
+        case SFIDeviceType_LightSensor_25:
+            break;
+        case SFIDeviceType_WindowCovering_26:
+            break;
+        case SFIDeviceType_TemperatureSensor_27:
             [self configureTempSensor_27];
             break;
-        }
-        case 34: {
-            [self configureShadeSensor_34];
+        case SFIDeviceType_SimpleMetering_28:
             break;
-        }
+        case SFIDeviceType_ColorControl_29:
+            break;
+        case SFIDeviceType_PressureSensor_30:
+            break;
+        case SFIDeviceType_FlowSensor_31:
+            break;
+        case SFIDeviceType_ColorDimmableLight_32:
+            break;
+        case SFIDeviceType_HAPump_33:
+            break;
+        case SFIDeviceType_Shade_34:
+            [self configureBinaryStateSensor:DT34_SHADE_TRUE imageNameFalse:DT34_SHADE_FALSE statusTrue:@"OPEN" statusFalse:@"CLOSED"];
+            break;
+        case SFIDeviceType_SmokeDetector_36:
+            break;
+        case SFIDeviceType_FloodSensor_37:
+            break;
+        case SFIDeviceType_ShockSensor_38:
+            break;
+        case SFIDeviceType_DoorSensor_39:
+            break;
+        case SFIDeviceType_MoistureSensor_40:
+            break;
+        case SFIDeviceType_MovementSensor_41:
+            break;
+        case SFIDeviceType_Siren_42:
+            break;
+        case SFIDeviceType_MultiSwitch_43:
+            break;
+        case SFIDeviceType_UnknownOnOffModule_44:
+            break;
         default: {
             self.deviceImageView.image = [UIImage imageNamed:device.imageName];
             break;
@@ -303,15 +339,11 @@
     [self.delegate tableViewCellDidDismissTamper:self];
 }
 
-- (void)sensorDetailViewDidChangeSensorValue:(SFISensorDetailView *)view valueName:(NSString *)valueName newValue:(NSString *)aValue {
-    [self.delegate tableViewCellDidChangeValue:self valueName:valueName newValue:aValue];
+- (void)sensorDetailViewDidChangeSensorValue:(SFISensorDetailView *)view propertyType:(SFIDevicePropertyType)propertyType newValue:(NSString *)aValue {
+    [self.delegate tableViewCellDidChangeValue:self propertyType:propertyType newValue:aValue];
 }
 
 #pragma mark - Device layout
-
-- (void)configureSwitch_1 {
-    [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
-}
 
 - (void)configureMultiLevelSwitch_2 {
     NSString *name = [self.device imageName:DT2_MULTILEVEL_SWITCH_TRUE];
@@ -330,10 +362,6 @@
                                                                               nonZeroValue:[NSString stringWithFormat:@"Dimmable, %@%%", currentLevel]
                                                                                   nilValue:@"Could not update sensor\ndata."];
     }
-}
-
-- (void)configureBinarySensor_3 {
-    [self configureBinaryStateSensor:DT3_BINARY_SENSOR_TRUE imageNameFalse:DT3_BINARY_SENSOR_FALSE statusTrue:@"OPEN" statusFalse:@"CLOSED"];
 }
 
 - (void)configureLevelControl_4 {
@@ -373,14 +401,6 @@
     }
 }
 
-- (void)configureDoorLocked_5 {
-    [self configureBinaryStateSensor:DT5_DOOR_LOCK_TRUE imageNameFalse:DT5_DOOR_LOCK_FALSE statusTrue:@"LOCKED" statusFalse:@"UNLOCKED"];
-}
-
-- (void)configureAlarm_6 {
-    [self configureBinaryStateSensor:DT6_ALARM_TRUE imageNameFalse:DT6_ALARM_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
-}
-
 - (void)configureThermostat_7 {
     NSString *strValue = @"";
     NSString *strOperatingMode;
@@ -389,16 +409,17 @@
 
     NSArray *currentKnownValues = [self currentKnownValuesForDevice];
     for (SFIDeviceKnownValues *currentKnownValue in currentKnownValues) {
-        if ([currentKnownValue.valueName isEqualToString:@"SENSOR MULTILEVEL"]) {
+        SFIDevicePropertyType propertyType = currentKnownValue.propertyType;
+        if (propertyType == SFIDevicePropertyType_SENSOR_MULTILEVEL) {
             strValue = currentKnownValue.value;
         }
-        else if ([currentKnownValue.valueName isEqualToString:@"THERMOSTAT SETPOINT HEATING"]) {
+        else if (propertyType == SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING) {
             heatingSetPoint = [NSString stringWithFormat:@" HI %@°", currentKnownValue.value];
         }
-        else if ([currentKnownValue.valueName isEqualToString:@"THERMOSTAT SETPOINT COOLING"]) {
+        else if (propertyType == SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING) {
             coolingSetPoint = [NSString stringWithFormat:@" LO %@°", currentKnownValue.value];
         }
-        else if ([currentKnownValue.valueName isEqualToString:@"THERMOSTAT OPERATING STATE"]) {
+        else if (propertyType == SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE) {
             strOperatingMode = currentKnownValue.value;
         }
     }
@@ -443,52 +464,16 @@
     }
 }
 
-- (void)configureMotionSensor_11 {
-    self.deviceImageView.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.25), 12, 53, 70); //todo why different?
-    [self configureBinaryStateSensor:DT11_MOTION_SENSOR_TRUE imageNameFalse:DT11_MOTION_SENSOR_FALSE statusTrue:@"MOTION DETECTED" statusFalse:@"NO MOTION"];
-}
-
-- (void)configureContactSwitch_12 {
-    [self configureBinaryStateSensor:DT12_CONTACT_SWITCH_TRUE imageNameFalse:DT12_CONTACT_SWITCH_FALSE statusTrue:@"OPEN" statusFalse:@"CLOSED"];
-}
-
-- (void)configureFireSensor_13 {
-    [self configureBinaryStateSensor:DT13_FIRE_SENSOR_TRUE imageNameFalse:DT13_FIRE_SENSOR_FALSE statusTrue:@"ALARM: FIRE DETECTED" statusFalse:@"OK"];
-}
-
-- (void)configureWaterSensor_14 {
-    [self configureBinaryStateSensor:DT14_WATER_SENSOR_TRUE imageNameFalse:DT14_WATER_SENSOR_FALSE statusTrue:@"FLOODED" statusFalse:@"OK"];
-}
-
-- (void)configureGasSensor_15 {
-    [self configureBinaryStateSensor:DT15_GAS_SENSOR_TRUE imageNameFalse:DT15_GAS_SENSOR_FALSE statusTrue:@"ALARM: GAS DETECTED" statusFalse:@"OK"];
-}
-
-- (void)configureGasSensor_17 {
-    [self configureBinaryStateSensor:DT17_VIBRATION_SENSOR_TRUE imageNameFalse:DT17_VIBRATION_SENSOR_FALSE statusTrue:@"VIBRATION DETECTED" statusFalse:@"NO VIBRATION"];
-}
-
-- (void)configureKeyFob_19 {
-    [self configureBinaryStateSensor:DT19_KEYFOB_TRUE imageNameFalse:DT19_KEYFOB_FALSE statusTrue:@"LOCKED" statusFalse:@"UNLOCKED"];
-}
-
-- (void)configureElectricMeasurementSwitch_22 {
-    [self configureBinaryStateSensor:DT22_AC_SWITCH_TRUE imageNameFalse:DT22_AC_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
-}
-
-- (void)configureElectricMeasurementSwitch_23 {
-    [self configureBinaryStateSensor:DT23_DC_SWITCH_TRUE imageNameFalse:DT23_DC_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
-}
-
 - (void)configureTempSensor_27 {
     NSString *strValue = @"";
 
     NSArray *currentKnownValues = [self currentKnownValuesForDevice];
     for (SFIDeviceKnownValues *currentKnownValue in currentKnownValues) {
-        if ([currentKnownValue.valueName isEqualToString:@"MEASURED_VALUE"]) {
+        SFIDevicePropertyType propertyType = currentKnownValue.propertyType;
+        if (propertyType == SFIDevicePropertyType_MEASURED_VALUE) {
             strValue = currentKnownValue.value;
         }
-        else if ([currentKnownValue.valueName isEqualToString:@"TOLERANCE"]) {
+        else if (propertyType == SFIDevicePropertyType_TOLERANCE) {
             self.deviceStatusLabel.text = [NSString stringWithFormat:@"Tolerance: %@", currentKnownValue.value];
         }
     }
@@ -525,10 +510,6 @@
         self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 35, 20, 30);
         self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 30, 20, 20);
     }
-}
-
-- (void)configureShadeSensor_34 {
-    [self configureBinaryStateSensor:DT34_SHADE_TRUE imageNameFalse:DT34_SHADE_FALSE statusTrue:@"OPEN" statusFalse:@"CLOSED"];
 }
 
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {

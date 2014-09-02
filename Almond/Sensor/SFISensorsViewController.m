@@ -618,6 +618,20 @@
     [self sendMobileCommandForDevice:device deviceValue:deviceValues];
 }
 
+- (void)tableViewCellDidChangeValue:(SFISensorTableViewCell *)cell propertyType:(SFIDevicePropertyType)propertyType newValue:(NSString *)newValue {
+    if (self.isViewControllerDisposed) {
+        return;
+    }
+
+    SFIDevice *device = cell.device;
+    int currentDeviceId = device.deviceID;
+
+    SFIDeviceKnownValues *deviceValues = [self tryGetCurrentKnownValuesForDevice:currentDeviceId propertyType:propertyType];
+    deviceValues.value = newValue;
+
+    [self sendMobileCommandForDevice:device deviceValue:deviceValues];
+}
+
 #pragma mark - Class Methods
 
 - (void)initializeDevices {
@@ -639,6 +653,16 @@
 }
 
 #pragma mark - Sensor Values
+
+- (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice:(int)deviceId propertyType:(SFIDevicePropertyType)aPropertyType {
+    NSArray *currentKnownValues = [self tryCurrentKnownValuesForDevice:deviceId];
+    for (SFIDeviceKnownValues *value in currentKnownValues) {
+        if (value.propertyType == aPropertyType) {
+            return value;
+        }
+    }
+    return nil;
+}
 
 - (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice:(int)deviceId valueName:(NSString *)aValueName {
     NSArray *currentKnownValues = [self tryCurrentKnownValuesForDevice:deviceId];

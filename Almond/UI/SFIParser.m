@@ -60,7 +60,10 @@
     {
         currentKnownValue = [SFIDeviceKnownValues alloc];
         currentKnownValue.index = [[attributeDict valueForKey:@"Index"] unsignedIntValue];
-        currentKnownValue.valueName = [attributeDict valueForKey:@"Name"];
+
+        NSString *name = [attributeDict valueForKey:@"Name"];
+        currentKnownValue.propertyType = [SFIDeviceKnownValues nameToPropertyType:name];
+        currentKnownValue.valueName = name;
     }
     //END TODO: Remove - Dummy
     
