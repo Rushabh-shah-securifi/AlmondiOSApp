@@ -56,7 +56,7 @@
 }
 
 - (void)loadScoreboard {
-    self.scoreboard = [[SecurifiToolkit sharedInstance] scoreboard];
+    self.scoreboard = [[SecurifiToolkit sharedInstance] scoreboardSnapshot];
 }
 
 #pragma mark - Event handlers
