@@ -14,10 +14,15 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 #import <SecurifiToolkit/SecurifiToolkit.h>
+#import <CocoaLumberjack/CocoaLumberjack.h>
 #endif
 
+#define ELog(args...) DDLogError(args)
+#define NSLog(args...) DDLogInfo(args)
+#define DLog(args...) DDLogDebug(args)
+
 #if( DEBUG )
-#define DLog(args...) NSLog(args)
+#define LOG_LEVEL_DEF LOG_LEVEL_DEBUG
 #else
-#define DLog(args...)
+#define LOG_LEVEL_DEF LOG_LEVEL_ERROR
 #endif

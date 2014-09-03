@@ -57,7 +57,7 @@
 
 - (void)sendReactivationRequest {
     NSString *email = [[SecurifiToolkit sharedInstance] loginEmail];
-    [SNLog Log:@"%s: sending reactivation link to email: %@", __PRETTY_FUNCTION__, email];
+    NSLog(@"%s: sending reactivation link to email: %@", __PRETTY_FUNCTION__, email);
 
     ValidateAccountRequest *validateCommand = [[ValidateAccountRequest alloc] init];
     validateCommand.email = email;
@@ -75,8 +75,8 @@
 
     ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
 
-    [SNLog Log:@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-    [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
 
     if (obj.isSuccessful) {
         self.subHeadingLabel.text = @"Reactivation link has been sent to your account.";

@@ -1,4 +1,13 @@
 PODS:
+  - CocoaLumberjack (2.0.0-beta):
+    - CocoaLumberjack/CLI
+    - CocoaLumberjack/Core
+    - CocoaLumberjack/Extensions
+  - CocoaLumberjack/CLI (2.0.0-beta):
+    - CocoaLumberjack/Core
+  - CocoaLumberjack/Core (2.0.0-beta)
+  - CocoaLumberjack/Extensions (2.0.0-beta):
+    - CocoaLumberjack/Core
   - CrashlyticsFramework (2.2.2)
   - GoogleAnalytics-iOS-SDK (3.0.9)
   - iToast (0.0.1)
@@ -6,6 +15,7 @@ PODS:
   - SWRevealViewController (2.3.0)
 
 DEPENDENCIES:
+  - CocoaLumberjack (= 2.0.0-beta)
   - CrashlyticsFramework (~> 2.2.1)
   - GoogleAnalytics-iOS-SDK (~> 3.0)
   - iToast (~> 0.0)
@@ -13,6 +23,7 @@ DEPENDENCIES:
   - SWRevealViewController (~> 2.3)
 
 SPEC CHECKSUMS:
+  CocoaLumberjack: aadc76d7bd6c839ca84b38ed50cbf89d7cf8c693
   CrashlyticsFramework: bce4c0e83b50f22aafde946b41a34a6b8ca7acd0
   GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
   iToast: 4de112d3dd42a3a8bf685572e6cda723c9cbc4f2

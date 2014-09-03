@@ -326,14 +326,14 @@
     if ([notifier userInfo] == nil) {
         // Should never reach this path. UserInfo should be non-null.
         [self setOopsMsg:@"Sorry! Login was unsuccessful."];
-        [SNLog Log:@"%s: login failed with nil userInfo ", __PRETTY_FUNCTION__];
+        ELog(@"Login response: failed with nil userInfo");
         return;
     }
 
     LoginResponse *obj = (LoginResponse *) [data valueForKey:@"data"];
 
     if (!obj.isSuccessful) {
-        NSLog(@"Login failure reason Code: %d", obj.reasonCode);
+        ELog(@"Login failure reason Code: %d", obj.reasonCode);
 
         switch (obj.reasonCode) {
             case 1: {
@@ -373,7 +373,7 @@
 
 - (void)sendResetPasswordRequest {
     NSString *email = [[SecurifiToolkit sharedInstance] loginEmail];
-    NSLog(@"Email : %@", email);
+    NSLog(@"Sent reset email, email: %@", email);
 
     ResetPasswordRequest *resetCommand = [[ResetPasswordRequest alloc] init];
     resetCommand.email = self.emailID.text;
@@ -388,18 +388,12 @@
 - (void)resetPasswordResponseCallback:(id)sender {
     [self hideHud];
 
-    [SNLog Log:@"%s", __PRETTY_FUNCTION__];
-
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     ResetPasswordResponse *obj = (ResetPasswordResponse *) [data valueForKey:@"data"];
 
-    [SNLog Log:@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-    [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
-
     if (obj.isSuccessful == 0) {
-        NSLog(@"Reason Code %d", obj.reasonCode);
         switch (obj.reasonCode) {
             case 1:
                 [self setOopsMsg:@"The username was not found"];

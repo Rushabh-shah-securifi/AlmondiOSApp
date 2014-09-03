@@ -576,8 +576,8 @@ typedef enum {
 
     SignupResponse *obj = (SignupResponse *) [data valueForKey:@"data"];
 
-    [SNLog Log:@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-    [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.Reason];
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.Reason);
 
     if (obj.isSuccessful) {
         [self displayScreenToLogin];
@@ -633,8 +633,8 @@ typedef enum {
 
     ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
 
-    [SNLog Log:@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-    [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
 
     if (obj.isSuccessful) {
         [self displayScreenToLogin];

@@ -106,8 +106,6 @@
 #pragma mark - Cloud commands
 
 - (void)onLogoutAllResponseCallback:(id)sender {
-    [SNLog Log:@"In %s: ", __PRETTY_FUNCTION__];
-
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
@@ -118,13 +116,12 @@
 
     LogoutAllResponse *obj = (LogoutAllResponse *) [data valueForKey:@"data"];
 
-    [SNLog Log:@"%s: is Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful];
-    [SNLog Log:@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason];
-
     if (obj.isSuccessful) {
+        NSLog(@"LogoutAll response sucess");
         [self.delegate logoutAllControllerDidLogoutAll:self];
     }
     else {
+        NSLog(@"LogoutAll response no sucess");
         self.logMessageLabel.text = @"Logout from all devices was not successful.";
     }
 }

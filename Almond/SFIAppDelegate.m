@@ -21,6 +21,9 @@
 //    [BugSenseController sharedControllerWithBugSenseAPIKey:@"a9525243"];
 //#endif
 
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+
     [[Analytics sharedInstance] initialize];
 
     [self initializeColors];
@@ -31,7 +34,7 @@
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    [SNLog Log:@"Method Name: %s Registration Error %@", __PRETTY_FUNCTION__, error];
+    DDLogError(@"Method Name: Registration Error %@", error);
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {

@@ -1,7 +1,8 @@
-platform :ios, '7.1'
+platform :ios, '7.0'
 
 #inhibit_all_warnings!
 
+pod 'CocoaLumberjack', '2.0.0-beta'
 pod 'CrashlyticsFramework', '~> 2.2.1'
 pod 'GoogleAnalytics-iOS-SDK', '~> 3.0'
 pod 'iToast', '~> 0.0'
