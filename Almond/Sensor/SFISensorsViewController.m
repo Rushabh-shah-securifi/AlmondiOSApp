@@ -604,20 +604,6 @@
     [self sendMobileCommandForDevice:device deviceValue:deviceValues];
 }
 
-- (void)tableViewCellDidChangeValue:(SFISensorTableViewCell *)cell valueName:(NSString *)valueName newValue:(NSString *)newValue {
-    if (self.isViewControllerDisposed) {
-        return;
-    }
-
-    SFIDevice *device = cell.device;
-    int currentDeviceId = device.deviceID;
-
-    SFIDeviceKnownValues *deviceValues = [self tryGetCurrentKnownValuesForDevice:currentDeviceId valueName:valueName];
-    deviceValues.value = newValue;
-
-    [self sendMobileCommandForDevice:device deviceValue:deviceValues];
-}
-
 - (void)tableViewCellDidChangeValue:(SFISensorTableViewCell *)cell propertyType:(SFIDevicePropertyType)propertyType newValue:(NSString *)newValue {
     if (self.isViewControllerDisposed) {
         return;
@@ -835,7 +821,7 @@
 }
 
 - (void)onDeviceValueListDidChange:(id)sender {
-    NSLog(@"Sensors: did receive device values list change");
+    DLog(@"Sensors: did receive device values list change");
 
     if (!self) {
         return;
@@ -859,7 +845,7 @@
 
     NSString *cloudMAC = [data valueForKey:@"data"];
     if (![self isSameAsCurrentMAC:cloudMAC]) {
-        NSLog(@"Sensors: ignore device values list change, c:%@, m:%@", self.almondMac, cloudMAC);
+        DLog(@"Sensors: ignore device values list change, c:%@, m:%@", self.almondMac, cloudMAC);
         // An Almond not currently being views was changed
         return;
     }
@@ -868,7 +854,7 @@
 
     NSArray *newDeviceList = [toolkit deviceList:cloudMAC];
     if (newDeviceList == nil) {
-        NSLog(@"Device list is empty: %@", cloudMAC);
+        DLog(@"Device list is empty: %@", cloudMAC);
         newDeviceList = @[];
     }
 
@@ -878,7 +864,7 @@
     }
 
     if (newDeviceList.count != newDeviceValueList.count) {
-        NSLog(@"Warning: device list and values lists are incongruent, d:%ld, v:%ld", newDeviceList.count, newDeviceValueList.count);
+        ELog(@"Warning: device list and values lists are incongruent, d:%ld, v:%ld", newDeviceList.count, newDeviceValueList.count);
     }
 
     DLog(@"Changing device value list: %@", newDeviceValueList);
@@ -997,11 +983,11 @@
     }
 
     self.isSensorChangeCommandSuccessful = TRUE;
-    [SNLog Log:@"%s: Received SensorChangeCallback", __PRETTY_FUNCTION__];
+    DLog(@"%s: Received SensorChangeCallback");
 
     SensorChangeResponse *obj = (SensorChangeResponse *) [data valueForKey:@"data"];
     if (!obj.isSuccessful) {
-        [SNLog Log:@"%s: Could not update data, Revert to old value", __PRETTY_FUNCTION__];
+        NSLog(@"%s: Could not update data, Revert to old value", __PRETTY_FUNCTION__);
         [self resetDeviceListFromSaved];
     }
 }
