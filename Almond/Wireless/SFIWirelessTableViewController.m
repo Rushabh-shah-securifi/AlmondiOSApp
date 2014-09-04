@@ -413,7 +413,7 @@
     setWirelessSettingGenericCommand.data = data;
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = GENERIC_COMMAND_REQUEST;
+    cloudCommand.commandType = CommandType_GENERIC_COMMAND_REQUEST;
     cloudCommand.command = setWirelessSettingGenericCommand;
 
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];

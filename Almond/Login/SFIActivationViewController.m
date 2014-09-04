@@ -63,7 +63,7 @@
     validateCommand.email = email;
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = VALIDATE_REQUEST;
+    cloudCommand.commandType = CommandType_VALIDATE_REQUEST;
     cloudCommand.command = validateCommand;
 
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];

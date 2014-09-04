@@ -188,7 +188,7 @@
 
 - (void)logoutUser {
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = LOGOUT_COMMAND;
+    cloudCommand.commandType = CommandType_LOGOUT_COMMAND;
     cloudCommand.command = nil;
 
     [self asyncSendCommand:cloudCommand];
@@ -236,7 +236,7 @@
     affiliationCommand.Code = self.txtAffiliationCode.text;
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = AFFILIATION_CODE_REQUEST;
+    cloudCommand.commandType = CommandType_AFFILIATION_CODE_REQUEST;
     cloudCommand.command = affiliationCommand;
 
     [self asyncSendCommand:cloudCommand];
@@ -402,7 +402,7 @@
     AlmondListRequest *almondListCommand = [[AlmondListRequest alloc] init];
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = ALMOND_LIST;
+    cloudCommand.commandType = CommandType_ALMOND_LIST;
     cloudCommand.command = almondListCommand;
 
     [self asyncSendCommand:cloudCommand];

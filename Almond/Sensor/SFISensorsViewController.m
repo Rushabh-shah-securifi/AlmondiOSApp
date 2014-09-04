@@ -568,7 +568,7 @@
     cmd.mobileInternalIndex = [NSString stringWithFormat:@"%d", (arc4random() % 10000) + 1];
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = SENSOR_CHANGE_REQUEST;
+    cloudCommand.commandType = CommandType_SENSOR_CHANGE_REQUEST;
     cloudCommand.command = cmd;
 
     [self asyncSendCommand:cloudCommand];

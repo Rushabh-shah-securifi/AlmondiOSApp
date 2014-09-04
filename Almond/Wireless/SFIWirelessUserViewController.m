@@ -445,7 +445,7 @@
     genericCommand.data = commandData;
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = GENERIC_COMMAND_REQUEST;
+    cloudCommand.commandType = CommandType_GENERIC_COMMAND_REQUEST;
     cloudCommand.command = genericCommand;
 
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];

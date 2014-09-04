@@ -379,7 +379,7 @@
     resetCommand.email = self.emailID.text;
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = RESET_PASSWORD_REQUEST;
+    cloudCommand.commandType = CommandType_RESET_PASSWORD_REQUEST;
     cloudCommand.command = resetCommand;
 
     [self asyncSendCommand:cloudCommand];

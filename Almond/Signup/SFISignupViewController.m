@@ -564,7 +564,7 @@ typedef enum {
     signupCommand.Password = [NSString stringWithString:self.password.text];
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = SIGNUP_COMMAND;
+    cloudCommand.commandType = CommandType_SIGNUP_COMMAND;
     cloudCommand.command = signupCommand;
 
     [self asyncSendCommand:cloudCommand];
@@ -621,7 +621,7 @@ typedef enum {
     validateCommand.email = self.emailID.text;
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = VALIDATE_REQUEST;
+    cloudCommand.commandType = CommandType_VALIDATE_REQUEST;
     cloudCommand.command = validateCommand;
 
     [self asyncSendCommand:cloudCommand];
