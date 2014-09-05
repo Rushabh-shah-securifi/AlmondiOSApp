@@ -141,8 +141,6 @@
 		1CED608319AC85AB0023512F /* icon_scenes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5F8719AC85AB0023512F /* icon_scenes@2x.png */; };
 		1CED608419AC85AB0023512F /* icon_sensor.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5F8819AC85AB0023512F /* icon_sensor.png */; };
 		1CED608519AC85AB0023512F /* icon_sensor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5F8919AC85AB0023512F /* icon_sensor@2x.png */; };
-		1CED608619AC85AB0023512F /* key_fob_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5F8A19AC85AB0023512F /* key_fob_1.png */; };
-		1CED608719AC85AB0023512F /* key_fob_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5F8B19AC85AB0023512F /* key_fob_2.png */; };
 		1CED608819AC85AB0023512F /* launch-image-1536x2048.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5F8C19AC85AB0023512F /* launch-image-1536x2048.png */; };
 		1CED608919AC85AB0023512F /* launch-image-640x1136.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5F8D19AC85AB0023512F /* launch-image-640x1136.png */; };
 		1CED608A19AC85AB0023512F /* launch-image-640x960.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5F8E19AC85AB0023512F /* launch-image-640x960.png */; };
@@ -199,6 +197,8 @@
 		1CED60D319AC85AB0023512F /* SFISensor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600419AC85AB0023512F /* SFISensor.m */; };
 		1CED60D419AC85AB0023512F /* SFISlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600619AC85AB0023512F /* SFISlider.m */; };
 		1CED60D519AC85AB0023512F /* SNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600919AC85AB0023512F /* SNLog.m */; };
+		1DF03695283498FA1D26D5EF /* 19_key_fob_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DF03F995F5E5F7FF9875BBC /* 19_key_fob_1.png */; };
+		1DF03EE86A8696543C048871 /* 19_key_fob_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DF03641418B99C1489F48CE /* 19_key_fob_2.png */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -374,8 +374,6 @@
 		1CED5F8719AC85AB0023512F /* icon_scenes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_scenes@2x.png"; sourceTree = "<group>"; };
 		1CED5F8819AC85AB0023512F /* icon_sensor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_sensor.png; sourceTree = "<group>"; };
 		1CED5F8919AC85AB0023512F /* icon_sensor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_sensor@2x.png"; sourceTree = "<group>"; };
-		1CED5F8A19AC85AB0023512F /* key_fob_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = key_fob_1.png; sourceTree = "<group>"; };
-		1CED5F8B19AC85AB0023512F /* key_fob_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = key_fob_2.png; sourceTree = "<group>"; };
 		1CED5F8C19AC85AB0023512F /* launch-image-1536x2048.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launch-image-1536x2048.png"; sourceTree = "<group>"; };
 		1CED5F8D19AC85AB0023512F /* launch-image-640x1136.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launch-image-640x1136.png"; sourceTree = "<group>"; };
 		1CED5F8E19AC85AB0023512F /* launch-image-640x960.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "launch-image-640x960.png"; sourceTree = "<group>"; };
@@ -451,6 +449,8 @@
 		1CED600619AC85AB0023512F /* SFISlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISlider.m; sourceTree = "<group>"; };
 		1CED600819AC85AB0023512F /* SNLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNLog.h; sourceTree = "<group>"; };
 		1CED600919AC85AB0023512F /* SNLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNLog.m; sourceTree = "<group>"; };
+		1DF03641418B99C1489F48CE /* 19_key_fob_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 19_key_fob_2.png; sourceTree = "<group>"; };
+		1DF03F995F5E5F7FF9875BBC /* 19_key_fob_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 19_key_fob_1.png; sourceTree = "<group>"; };
 		9FF187E6539C4F59B4C93302 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -728,8 +728,6 @@
 				1CED5F8719AC85AB0023512F /* icon_scenes@2x.png */,
 				1CED5F8819AC85AB0023512F /* icon_sensor.png */,
 				1CED5F8919AC85AB0023512F /* icon_sensor@2x.png */,
-				1CED5F8A19AC85AB0023512F /* key_fob_1.png */,
-				1CED5F8B19AC85AB0023512F /* key_fob_2.png */,
 				1CED5F8C19AC85AB0023512F /* launch-image-1536x2048.png */,
 				1CED5F8D19AC85AB0023512F /* launch-image-640x1136.png */,
 				1CED5F8E19AC85AB0023512F /* launch-image-640x960.png */,
@@ -762,6 +760,8 @@
 				1CED5FA919AC85AB0023512F /* water_drop1.png */,
 				1CED5FAA19AC85AB0023512F /* water_drop2.png */,
 				1CED5FAB19AC85AB0023512F /* window_106x140.png */,
+				1DF03F995F5E5F7FF9875BBC /* 19_key_fob_1.png */,
+				1DF03641418B99C1489F48CE /* 19_key_fob_2.png */,
 			);
 			path = images;
 			sourceTree = "<group>";
@@ -1068,7 +1068,6 @@
 				1CED607219AC85AB0023512F /* fire_01.png in Resources */,
 				1CED609C19AC85AB0023512F /* settings.png in Resources */,
 				1CED605219AC85AB0023512F /* connection_status_1.png in Resources */,
-				1CED608619AC85AB0023512F /* key_fob_1.png in Resources */,
 				1CED603C19AC85AB0023512F /* app-icon-58x58.png in Resources */,
 				1CED604319AC85AB0023512F /* blocked_user.png in Resources */,
 				1CED607A19AC85AB0023512F /* icon_help@2x.png in Resources */,
@@ -1077,7 +1076,6 @@
 				1CED60C719AC85AB0023512F /* scene2sensor.xml in Resources */,
 				1CED607519AC85AB0023512F /* heart_icon_120x120.png in Resources */,
 				1CED604B19AC85AB0023512F /* connection_status_02@2x.png in Resources */,
-				1CED608719AC85AB0023512F /* key_fob_2.png in Resources */,
 				1CED608D19AC85AB0023512F /* logout.png in Resources */,
 				1CED60C819AC85AB0023512F /* scene3sensor.xml in Resources */,
 				1CED604719AC85AB0023512F /* bulb_on.png in Resources */,
@@ -1119,6 +1117,8 @@
 				1CED608819AC85AB0023512F /* launch-image-1536x2048.png in Resources */,
 				1CED603B19AC85AB0023512F /* app-icon-40x40.png in Resources */,
 				1CED606319AC85AB0023512F /* demo_scene.png in Resources */,
+				1DF03695283498FA1D26D5EF /* 19_key_fob_1.png in Resources */,
+				1DF03EE86A8696543C048871 /* 19_key_fob_2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1311,7 +1311,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1345,7 +1345,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1375,7 +1375,7 @@
 					"\"${PROJECT_DIR}/../iostoolkit\"",
 				);
 				INFOPLIST_FILE = "Almond/Almond-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/sinclair/MingFuClients/securifi/iostoolkit/build/Debug-iphoneos",
@@ -1409,7 +1409,7 @@
 					"\"${PROJECT_DIR}/../iostoolkit\"",
 				);
 				INFOPLIST_FILE = "Almond/Almond-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"/Users/sinclair/MingFuClients/securifi/iostoolkit/build/Debug-iphoneos",
