@@ -16,9 +16,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 #ifdef DEBUG
-    [BugSenseController sharedControllerWithBugSenseAPIKey:@"172e1935"];
-#else
     [BugSenseController sharedControllerWithBugSenseAPIKey:@"a9525243"];
+#else
+    [BugSenseController sharedControllerWithBugSenseAPIKey:@"172e1935"];
 #endif
 
     [SFIReachabilityManager sharedManager];
@@ -126,7 +126,7 @@
     [listAvailableColors addObject:colorYellow];
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *documentsDirectory = paths[0];
     NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
     [NSKeyedArchiver archiveRootObject:listAvailableColors toFile:filePath];
 }
