@@ -315,8 +315,8 @@
 
 - (UITableViewCell *)createSensorCell:(UITableView *)tableView listRow:(int)indexPathRow {
     SFIDevice *device = [self tryGetDevice:indexPathRow];
-    int currentDeviceType = device.deviceType;
 
+    SFIDeviceType currentDeviceType = device.deviceType;
     NSUInteger height = [self computeSensorRowHeight:device];
     NSString *id = device.isExpanded ?
             [NSString stringWithFormat:@"SensorExpanded_%d_%ld", currentDeviceType, (unsigned long) height] :
@@ -644,16 +644,6 @@
     NSArray *currentKnownValues = [self tryCurrentKnownValuesForDevice:deviceId];
     for (SFIDeviceKnownValues *value in currentKnownValues) {
         if (value.propertyType == aPropertyType) {
-            return value;
-        }
-    }
-    return nil;
-}
-
-- (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice:(int)deviceId valueName:(NSString *)aValueName {
-    NSArray *currentKnownValues = [self tryCurrentKnownValuesForDevice:deviceId];
-    for (SFIDeviceKnownValues *value in currentKnownValues) {
-        if ([value.valueName isEqualToString:aValueName]) {
             return value;
         }
     }

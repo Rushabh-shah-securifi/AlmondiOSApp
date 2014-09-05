@@ -39,8 +39,15 @@
 #define DT15_GAS_SENSOR_FALSE @"fire_01.png"
 #define DT17_VIBRATION_SENSOR_TRUE @"vibration_sensor_2.png"
 #define DT17_VIBRATION_SENSOR_FALSE @"vibration_sensor_1.png"
-#define DT19_KEYFOB_TRUE @"key_fob_1.png"
-#define DT19_KEYFOB_FALSE @"key_fob_2.png"
+#define DT19_KEYFOB_TRUE @"19_key_fob_1.png"
+#define DT19_KEYFOB_FALSE @"19_key_fob_2.png"
+
+#define DT20_KEYPAD_TRUE @"19_key_fob_1.png"
+#define DT20_KEYPAD_FALSE @"19_key_fob_2.png"
+
+#define DT21_STANDARD_WARNING_DEVICE_TRUE @"19_key_fob_1.png"
+#define DT21_STANDARD_WARNING_DEVICE_FALSE  @"19_key_fob_2.png"
+
 #define DT22_AC_SWITCH_TRUE @"metering_2.png"
 #define DT22_AC_SWITCH_FALSE @"metering_1.png"
 #define DT23_DC_SWITCH_TRUE @"metering_2.png"
@@ -51,6 +58,14 @@
 //#define DT27_TEMP_SENSOR_FALSE @"door_off.png"
 #define DT34_SHADE_TRUE @"shade_106x140.png"
 #define DT34_SHADE_FALSE @"shade_106x140.png"
+#define DT36_SMOKE_DETECTOR_TRUE @"water_drop2.png"
+#define DT36_SMOKE_DETECTOR_FALSE @"water_drop1.png"
+#define DT37_FLOOD_TRUE @"water_drop2.png"
+#define DT37_FLOOD_FALSE @"water_drop1.png"
+#define DT38_SHOCK_TRUE @"vibration_sensor_2.png"
+#define DT38_SHOCK_FALSE @"vibration_sensor_1.png"
+#define DT39_DOOR_SENSOR_TRUE @"door_off.png"
+#define DT39_DOOR_SENSOR_FALSE @"door_on.png"
 
 #define DEVICE_TAMPERED @"Device has been tampered with."
 #define BATTERY_IS_LOW @"Alert! Battery is low."
