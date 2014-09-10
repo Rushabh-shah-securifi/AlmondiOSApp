@@ -518,155 +518,85 @@
 }
 
 - (void)configureThermostat_7 {
-    UIFont *const heavy_12 = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    // Temp selectors
+    [self markYOffset:40];
+    [self addTempSelector:@"Heating" propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING];
 
     [self markYOffset:40];
-
-    // Heating Set Point
-    UILabel *lblHeating = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate - 5, 60, 30)];
-    lblHeating.textColor = [UIColor whiteColor];
-    lblHeating.font = heavy_12;
-    lblHeating.text = @"Heating";
-    [self addSubview:lblHeating];
-
-    UILabel *lblMinHeat = [[UILabel alloc] initWithFrame:CGRectMake(70.0, self.baseYCoordinate - 3, 30, 24)];
-    lblMinHeat.font = heavy_12;
-    lblMinHeat.text = @"35°";
-    lblMinHeat.textColor = [UIColor whiteColor];
-    lblMinHeat.textAlignment = NSTextAlignmentCenter;
-    lblMinHeat.backgroundColor = [UIColor clearColor];
-    [self addSubview:lblMinHeat];
-
-    const CGRect frame = self.frame;
-
-    // Heat Slider
-    UISlider *heatSlider = [self makeSliderWithMinValue:35 maxValue:95 propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING];
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    const CGFloat slider_height = 25.0;
-    if (screenBounds.size.height == 568) {
-        // code for 4-inch screen
-        heatSlider.frame = CGRectMake(100.0, self.baseYCoordinate, frame.size.width - 160, slider_height);
-    }
-    else {
-        // code for 3.5-inch screen
-        heatSlider.frame = CGRectMake(100.0, self.baseYCoordinate - 10, frame.size.width - 160, slider_height);
-    }
-    [self addSubview:heatSlider];
-
-    UILabel *lblMaxHeat = [[UILabel alloc] initWithFrame:CGRectMake(100 + (frame.size.width - 160), self.baseYCoordinate - 3, 30, 24)];
-    lblMaxHeat.font = heavy_12;
-    lblMaxHeat.text = @"95°";
-    lblMaxHeat.textColor = [UIColor whiteColor];
-    lblMaxHeat.textAlignment = NSTextAlignmentCenter;
-    lblMaxHeat.backgroundColor = [UIColor clearColor];
-    [self addSubview:lblMaxHeat];
-
-    [self markYOffset:40];
-
-    // Cooling Set Point
-    UILabel *lblCooling = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate - 5, 60, 30)];
-    lblCooling.textColor = [UIColor whiteColor];
-    lblCooling.font = heavy_12;
-    lblCooling.text = @"Cooling";
-    [self addSubview:lblCooling];
-
-    UILabel *lblMinCool = [[UILabel alloc] initWithFrame:CGRectMake(70.0, self.baseYCoordinate - 3, 30, 24)];
-    lblMinCool.font = heavy_12;
-    lblMinCool.text = @"35°";
-    lblMinCool.textColor = [UIColor whiteColor];
-    lblMinCool.textAlignment = NSTextAlignmentCenter;
-    lblMinCool.backgroundColor = [UIColor clearColor];
-    [self addSubview:lblMinCool];
-
-    // Display Cooling slider
-    UISlider *coolSlider = [self makeSliderWithMinValue:35 maxValue:95 propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING];
-    if (screenBounds.size.height == 568) {
-        // code for 4-inch screen
-        coolSlider.frame = CGRectMake(100.0, self.baseYCoordinate, frame.size.width - 160, slider_height);
-    }
-    else {
-        // code for 3.5-inch screen
-        coolSlider.frame = CGRectMake(100.0, self.baseYCoordinate - 10, frame.size.width - 160, slider_height);
-    }
-    [self addSubview:coolSlider];
-
-    UILabel *lblMaxCool = [[UILabel alloc] initWithFrame:CGRectMake(100 + (frame.size.width - 160), self.baseYCoordinate - 3, 30, 24)];
-    lblMaxCool.font = heavy_12;
-    lblMaxCool.text = @"95°";
-    lblMaxCool.textColor = [UIColor whiteColor];
-    lblMaxCool.textAlignment = NSTextAlignmentCenter;
-    lblMaxCool.backgroundColor = [UIColor clearColor];
-    [self addSubview:lblMaxCool];
+    [self addTempSelector:@"Cooling" propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING];
 
     [self markYOffset:30];
     [self addLine];
     [self markYOffset:5];
 
+    UIFont *const heavy_12 = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    UIColor *const white_color = [UIColor whiteColor];
+    UIColor *const clear_color = [UIColor clearColor];
+
     //Mode
-    UILabel *lblMode = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate - 5, 100, 30)];
-    lblMode.textColor = [UIColor whiteColor];
-    lblMode.font = heavy_12;
-    lblMode.text = @"Thermostat";
-    [self addSubview:lblMode];
+    UILabel *modeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate - 5, 100, 30)];
+    modeLabel.textColor = white_color;
+    modeLabel.font = heavy_12;
+    modeLabel.text = @"Thermostat";
+    [self addSubview:modeLabel];
 
     //Font for segment control
     NSDictionary *attributes = @{NSFontAttributeName : heavy_12};
 
-    UISegmentedControl *scMode = [[UISegmentedControl alloc] initWithItems:@[@"Auto", @"Heat", @"Cool", @"Off"]];
-    scMode.frame = CGRectMake(self.frame.size.width - 220, self.baseYCoordinate, 180, 20);
-    scMode.tag = self.tag;
-    scMode.tintColor = [UIColor whiteColor];
-    [scMode addTarget:self action:@selector(onThermostatModeSelected:) forControlEvents:UIControlEventValueChanged];
-    [scMode setTitleTextAttributes:attributes forState:UIControlStateNormal];
-    [self addSubview:scMode];
+    UISegmentedControl *modeSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Auto", @"Heat", @"Cool", @"Off"]];
+    modeSegmentControl.frame = CGRectMake(self.frame.size.width - 190, self.baseYCoordinate, 180, 20);
+    modeSegmentControl.tag = self.tag;
+    modeSegmentControl.tintColor = white_color;
+    [modeSegmentControl addTarget:self action:@selector(onThermostatModeSelected:) forControlEvents:UIControlEventValueChanged];
+    [modeSegmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
+    [self addSubview:modeSegmentControl];
 
     [self markYOffset:30];
     [self addLine];
     [self markYOffset:5];
 
     // Fan Mode
-    UILabel *lblFanMode = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate - 5, 60, 30)];
-    lblFanMode.textColor = [UIColor whiteColor];
-    lblFanMode.font = heavy_12;
-    lblFanMode.text = @"Fan";
-    [self addSubview:lblFanMode];
+    UILabel *fanModeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate - 5, 60, 30)];
+    fanModeLabel.textColor = white_color;
+    fanModeLabel.font = heavy_12;
+    fanModeLabel.text = @"Fan";
+    [self addSubview:fanModeLabel];
 
-    UISegmentedControl *scFanMode = [[UISegmentedControl alloc] initWithItems:@[@"Auto Low", @"On Low"]];
-    scFanMode.frame = CGRectMake(self.frame.size.width - 190, self.baseYCoordinate, 150, 20);
-    scFanMode.tag = self.tag;
-
-    [scFanMode setTitleTextAttributes:attributes forState:UIControlStateNormal];
-    [scFanMode addTarget:self action:@selector(onThermostatFanModeSelected:) forControlEvents:UIControlEventValueChanged];
-    scFanMode.tintColor = [UIColor whiteColor];
-    [self addSubview:scFanMode];
+    UISegmentedControl *fanModeSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Auto Low", @"On Low"]];
+    fanModeSegmentControl.frame = CGRectMake(self.frame.size.width - 160, self.baseYCoordinate, 150, 20);
+    fanModeSegmentControl.tag = self.tag;
+    fanModeSegmentControl.tintColor = white_color;
+    [fanModeSegmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
+    [fanModeSegmentControl addTarget:self action:@selector(onThermostatFanModeSelected:) forControlEvents:UIControlEventValueChanged];
+    [self addSubview:fanModeSegmentControl];
 
     [self markYOffset:30];
     [self addLine];
 
     // Status
-    UILabel *lblStatus = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate, 60, 30)];
-    lblStatus.textColor = [UIColor whiteColor];
-    lblStatus.text = @"Status";
-    lblStatus.font = heavy_12;
-    [self addSubview:lblStatus];
+    UILabel *statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate, 60, 30)];
+    statusLabel.textColor = white_color;
+    statusLabel.text = @"Status";
+    statusLabel.font = heavy_12;
+    [self addSubview:statusLabel];
 
-    //Operating state
-    UILabel *lblOperatingState = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 250, self.baseYCoordinate, 220, 30)];
-    lblOperatingState.textColor = [UIColor whiteColor];
-    lblOperatingState.backgroundColor = [UIColor clearColor];
-    lblOperatingState.font = heavy_12;
-    lblOperatingState.textAlignment = NSTextAlignmentRight;
-    [self addSubview:lblOperatingState];
+    // Operating state
+    UILabel *opStateLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 230, self.baseYCoordinate, 220, 30)];
+    opStateLabel.textColor = white_color;
+    opStateLabel.backgroundColor = clear_color;
+    opStateLabel.font = heavy_12;
+    opStateLabel.textAlignment = NSTextAlignmentRight;
+    [self addSubview:opStateLabel];
 
     [self markYOffset:25];
 
-    //Battery
-    UILabel *lblBattery = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 250, self.baseYCoordinate - 5, 220, 30)];
-    lblBattery.textColor = [UIColor whiteColor];
-    lblBattery.font = heavy_12;
-    lblBattery.backgroundColor = [UIColor clearColor];
-    lblBattery.textAlignment = NSTextAlignmentRight;
-    [self addSubview:lblBattery];
+    // Battery
+    UILabel *batteryLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 230, self.baseYCoordinate - 5, 220, 30)];
+    batteryLabel.textColor = white_color;
+    batteryLabel.font = heavy_12;
+    batteryLabel.backgroundColor = clear_color;
+    batteryLabel.textAlignment = NSTextAlignmentRight;
+    [self addSubview:batteryLabel];
 
     [self markYOffset:25];
     [self addLine];
@@ -678,16 +608,16 @@
         switch (currentDeviceValue.propertyType) {
             case SFIDevicePropertyType_THERMOSTAT_MODE: {
                 if ([currentDeviceValue.value isEqualToString:@"Auto"]) {
-                    scMode.selectedSegmentIndex = 0;
+                    modeSegmentControl.selectedSegmentIndex = 0;
                 }
                 else if ([currentDeviceValue.value isEqualToString:@"Heat"]) {
-                    scMode.selectedSegmentIndex = 1;
+                    modeSegmentControl.selectedSegmentIndex = 1;
                 }
                 else if ([currentDeviceValue.value isEqualToString:@"Cool"]) {
-                    scMode.selectedSegmentIndex = 2;
+                    modeSegmentControl.selectedSegmentIndex = 2;
                 }
                 else if ([currentDeviceValue.value isEqualToString:@"Off"]) {
-                    scMode.selectedSegmentIndex = 3;
+                    modeSegmentControl.selectedSegmentIndex = 3;
                 }
                 break;
             }
@@ -699,10 +629,10 @@
 
             case SFIDevicePropertyType_THERMOSTAT_FAN_MODE: {
                 if ([currentDeviceValue.value isEqualToString:@"Auto Low"]) {
-                    scFanMode.selectedSegmentIndex = 0;
+                    fanModeSegmentControl.selectedSegmentIndex = 0;
                 }
                 else {
-                    scFanMode.selectedSegmentIndex = 1;
+                    fanModeSegmentControl.selectedSegmentIndex = 1;
                 }
                 break;
             }
@@ -713,7 +643,7 @@
             }
 
             case SFIDevicePropertyType_BATTERY: {
-                lblBattery.text = [NSString stringWithFormat:@"Battery is at %@%%.", currentDeviceValue.value];
+                batteryLabel.text = [NSString stringWithFormat:@"Battery is at %@%%.", currentDeviceValue.value];
                 break;
             }
 
@@ -723,7 +653,49 @@
         }
     }
 
-    lblOperatingState.text = strState;
+    opStateLabel.text = strState;
+}
+
+- (void)addTempSelector:(NSString *)labelText propertyType:(SFIDevicePropertyType)propertyType {
+    UIFont *const heavy_12 = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    CGRect screenBounds = [[UIScreen mainScreen] bounds];
+    const CGRect frame = self.frame;
+    const CGFloat slider_height = 25.0;
+
+    // Set Point label
+    UILabel *setPointLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate - 5, 60, 30)];
+    setPointLabel.textColor = [UIColor whiteColor];
+    setPointLabel.font = heavy_12;
+    setPointLabel.text = labelText;
+    [self addSubview:setPointLabel];
+
+    UILabel *minTempLabel = [[UILabel alloc] initWithFrame:CGRectMake(70.0, self.baseYCoordinate - 3, 30, 24)];
+    minTempLabel.font = heavy_12;
+    minTempLabel.text = @"35°";
+    minTempLabel.textColor = [UIColor whiteColor];
+    minTempLabel.textAlignment = NSTextAlignmentCenter;
+    minTempLabel.backgroundColor = [UIColor clearColor];
+    [self addSubview:minTempLabel];
+
+    // Display slider
+    UISlider *tempSlider = [self makeSliderWithMinValue:35 maxValue:95 propertyType:propertyType];
+    if (screenBounds.size.height == 568) {
+        // code for 4-inch screen
+        tempSlider.frame = CGRectMake(100.0, self.baseYCoordinate, frame.size.width - 130, slider_height);
+    }
+    else {
+        // code for 3.5-inch screen
+        tempSlider.frame = CGRectMake(100.0, self.baseYCoordinate - 10, frame.size.width - 130, slider_height);
+    }
+    [self addSubview:tempSlider];
+
+    UILabel *maxTempLabel = [[UILabel alloc] initWithFrame:CGRectMake(100 + (frame.size.width - 130), self.baseYCoordinate - 3, 30, 24)];
+    maxTempLabel.font = heavy_12;
+    maxTempLabel.text = @"95°";
+    maxTempLabel.textColor = [UIColor whiteColor];
+    maxTempLabel.textAlignment = NSTextAlignmentCenter;
+    maxTempLabel.backgroundColor = [UIColor clearColor];
+    [self addSubview:maxTempLabel];
 }
 
 - (void)configureMotionSensor_11 {
