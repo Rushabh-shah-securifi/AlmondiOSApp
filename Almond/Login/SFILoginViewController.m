@@ -340,8 +340,6 @@
 
     ELog(@"Login failure reason Code: %d", obj.reasonCode);
 
-    [self enableLoginButton:YES];
-
     switch (obj.reasonCode) {
         case 1: {
             [self setOopsMsg:@"The email was not found."];
@@ -353,7 +351,7 @@
         }
         case 3: {
             //Display Activation Screen
-            [self setHeadline:@"Almost there." subHeadline:@"You need to activate your account." loginButtonEnabled:NO];
+            [self setHeadline:@"Almost there." subHeadline:@"You need to activate your account." loginButtonEnabled:YES];
             [self presentActivationScreen];
             break;
         }
