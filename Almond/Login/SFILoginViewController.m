@@ -332,41 +332,39 @@
 
     LoginResponse *obj = (LoginResponse *) [data valueForKey:@"data"];
 
-    if (!obj.isSuccessful) {
-        ELog(@"Login failure reason Code: %d", obj.reasonCode);
-
-        switch (obj.reasonCode) {
-            case 1: {
-                [self setOopsMsg:@"The email was not found."];
-                break;
-            }
-            case 2: {
-                [self setOopsMsg:@"The password is incorrect."];
-                break;
-            }
-            case 3: {
-                //Display Activation Screen
-                [self setHeadline:@"Almost there." subHeadline:@"You need to activate your account." loginButtonEnabled:NO];
-                [self presentActivationScreen];
-
-                break;
-            }
-            case 4: {
-                [self setOopsMsg:@"The email or password is incorrect"];
-                break;
-            }
-            default: {
-                [self setOopsMsg:@"Sorry! Login was unsuccessful."];
-            }
-        }
-
-        [self enableLoginButton:YES];
-
+    if (obj.isSuccessful) {
+        // If this far, then login was successful. Notify the delegate.
+        [self.delegate loginControllerDidCompleteLogin:self];
         return;
     }
 
-    // If this far, then login was successful. Notify the delegate.
-    [self.delegate loginControllerDidCompleteLogin:self];
+    ELog(@"Login failure reason Code: %d", obj.reasonCode);
+
+    [self enableLoginButton:YES];
+
+    switch (obj.reasonCode) {
+        case 1: {
+            [self setOopsMsg:@"The email was not found."];
+            break;
+        }
+        case 2: {
+            [self setOopsMsg:@"The password is incorrect."];
+            break;
+        }
+        case 3: {
+            //Display Activation Screen
+            [self setHeadline:@"Almost there." subHeadline:@"You need to activate your account." loginButtonEnabled:NO];
+            [self presentActivationScreen];
+            break;
+        }
+        case 4: {
+            [self setOopsMsg:@"The email or password is incorrect"];
+            break;
+        }
+        default: {
+            [self setOopsMsg:@"Sorry! Login was unsuccessful."];
+        }
+    }
 }
 
 #pragma mark - Cloud Command : Sender and Receivers
@@ -393,7 +391,10 @@
 
     ResetPasswordResponse *obj = (ResetPasswordResponse *) [data valueForKey:@"data"];
 
-    if (obj.isSuccessful == 0) {
+    if (obj.isSuccessful) {
+        [self setHeadline:@"Almost there." subHeadline:@"Password reset link has been sent to your account." loginButtonEnabled:NO];
+    }
+    else {
         switch (obj.reasonCode) {
             case 1:
                 [self setOopsMsg:@"The username was not found"];
@@ -415,17 +416,15 @@
             default:
                 break;
         }
-
-    }
-    else {
-        [self setHeadline:@"Almost there." subHeadline:@"Password reset link has been sent to your account." loginButtonEnabled:NO];
     }
 }
 
 - (void)presentActivationScreen {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFIActivationViewController"];
-    [self presentViewController:mainView animated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+        UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFIActivationViewController"];
+        [self presentViewController:mainView animated:YES completion:nil];
+    });
 }
 
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
