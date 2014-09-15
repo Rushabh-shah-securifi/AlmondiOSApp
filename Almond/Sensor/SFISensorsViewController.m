@@ -343,6 +343,7 @@
     return cell;
 }
 
+//todo duplicate code; can't we delegate to SFIDetailView?
 - (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor {
     if (!currentSensor.isExpanded) {
         return SENSOR_ROW_HEIGHT;
@@ -358,7 +359,7 @@
         case SFIDeviceType_MultiLevelOnOff_4:
             return 270;
         case SFIDeviceType_Thermostat_7:
-            return 455;
+            return 465;
         case SFIDeviceType_MotionSensor_11:
             if (currentSensor.isTampered) {
                 return EXPANDED_ROW_HEIGHT + 50;
