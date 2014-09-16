@@ -11,6 +11,7 @@
 #import "iToast.h"
 #import "MBProgressHUD.h"
 #import "SFISensorTableViewCell.h"
+#import "SFISensorDetailView.h"
 
 @interface SFISensorsViewController () <SFISensorTableViewCellDelegate>
 @property(nonatomic, readonly) SFIAlmondPlus *almond;
@@ -343,85 +344,8 @@
     return cell;
 }
 
-//todo duplicate code; can't we delegate to SFIDetailView?
 - (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor {
-    if (!currentSensor.isExpanded) {
-        return SENSOR_ROW_HEIGHT;
-    }
-
-    switch (currentSensor.deviceType) {
-        case SFIDeviceType_BinarySwitch_1:
-            return EXPANDED_ROW_HEIGHT;
-        case SFIDeviceType_MultiLevelSwitch_2:
-            return 270;
-        case SFIDeviceType_BinarySensor_3:
-            return 260;
-        case SFIDeviceType_MultiLevelOnOff_4:
-            return 270;
-        case SFIDeviceType_Thermostat_7:
-            return 465;
-        case SFIDeviceType_MotionSensor_11:
-            if (currentSensor.isTampered) {
-                return EXPANDED_ROW_HEIGHT + 50;
-            }
-            else {
-                return EXPANDED_ROW_HEIGHT;
-            }
-        case SFIDeviceType_ContactSwitch_12:
-            if (currentSensor.isTampered) {
-                return 270;
-            }
-            else {
-                return 230;
-            }
-        case SFIDeviceType_FireSensor_13:
-        case SFIDeviceType_WaterSensor_14:
-        case SFIDeviceType_GasSensor_15:
-        case SFIDeviceType_VibrationOrMovementSensor_17:
-        case SFIDeviceType_KeyFob_19:
-            if (currentSensor.isTampered) {
-                return EXPANDED_ROW_HEIGHT + 50;
-            }
-            else {
-                return EXPANDED_ROW_HEIGHT;
-            }
-        case SFIDeviceType_SmartACSwitch_22:
-            return 320;
-
-        case SFIDeviceType_UnknownDevice_0:
-        case SFIDeviceType_DoorLock_5:
-        case SFIDeviceType_Alarm_6:
-        case SFIDeviceType_Controller_8:
-        case SFIDeviceType_SceneController_9:
-        case SFIDeviceType_StandardCIE_10:
-        case SFIDeviceType_PersonalEmergencyDevice_16:
-        case SFIDeviceType_RemoteControl_18:
-        case SFIDeviceType_Keypad_20:
-        case SFIDeviceType_StandardWarningDevice_21:
-        case SFIDeviceType_SmartDCSwitch_23:
-        case SFIDeviceType_OccupancySensor_24:
-        case SFIDeviceType_LightSensor_25:
-        case SFIDeviceType_WindowCovering_26:
-        case SFIDeviceType_TemperatureSensor_27:
-        case SFIDeviceType_SimpleMetering_28:
-        case SFIDeviceType_ColorControl_29:
-        case SFIDeviceType_PressureSensor_30:
-        case SFIDeviceType_FlowSensor_31:
-        case SFIDeviceType_ColorDimmableLight_32:
-        case SFIDeviceType_HAPump_33:
-        case SFIDeviceType_Shade_34:
-        case SFIDeviceType_SmokeDetector_36:
-        case SFIDeviceType_FloodSensor_37:
-        case SFIDeviceType_ShockSensor_38:
-        case SFIDeviceType_DoorSensor_39:
-        case SFIDeviceType_MoistureSensor_40:
-        case SFIDeviceType_MovementSensor_41:
-        case SFIDeviceType_Siren_42:
-        case SFIDeviceType_MultiSwitch_43:
-        case SFIDeviceType_UnknownOnOffModule_44:
-        default:
-            return EXPANDED_ROW_HEIGHT;
-    }
+    return [SFISensorDetailView computeSensorRowHeight:currentSensor];
 }
 
 #pragma mark - Add Almond actions
