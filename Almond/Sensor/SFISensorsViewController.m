@@ -521,9 +521,7 @@
         return;
     }
 
-    NSArray *currentKnownValues = [self tryCurrentKnownValuesForDevice:device.deviceID];
-
-    SFIDeviceKnownValues *deviceValues = currentKnownValues[(NSUInteger) device.tamperValueIndex];
+    SFIDeviceKnownValues *deviceValues = [self tryGetCurrentKnownValuesForDevice:device.deviceID propertyType:SFIDevicePropertyType_TAMPER];
     [deviceValues setBoolValue:NO];
 
     [self sendMobileCommandForDevice:device deviceValue:deviceValues];
@@ -566,20 +564,24 @@
 #pragma mark - Sensor Values
 
 - (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice:(int)deviceId propertyType:(SFIDevicePropertyType)aPropertyType {
-    NSArray *currentKnownValues = [self tryCurrentKnownValuesForDevice:deviceId];
-    for (SFIDeviceKnownValues *value in currentKnownValues) {
-        if (value.propertyType == aPropertyType) {
-            return value;
-        }
+    SFIDeviceValue *value = [self tryCurrentDeviceValues:deviceId];
+    if (!value) {
+        return nil;
     }
-    return nil;
+    return [value knownValuesForProperty:aPropertyType];
 }
 
 - (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice:(int)deviceId valuesIndex:(NSInteger)index {
-    NSArray *values = [self tryCurrentKnownValuesForDevice:deviceId];
+    SFIDeviceValue *value = [self tryCurrentDeviceValues:deviceId];
+    if (!value) {
+        return nil;
+    }
+
+    NSArray *values = value.knownDevicesValues;
     if (index < values.count) {
         return values[(NSUInteger) index];
     }
+
     return nil;
 }
 
@@ -588,14 +590,6 @@
         if (deviceId == currentDeviceValue.deviceID) {
             return currentDeviceValue;
         }
-    }
-    return nil;
-}
-
-- (NSArray *)tryCurrentKnownValuesForDevice:(int)deviceId {
-    SFIDeviceValue *value = [self tryCurrentDeviceValues:deviceId];
-    if (value) {
-        return value.knownValues;
     }
     return nil;
 }
@@ -898,7 +892,7 @@
     }
 
     self.isSensorChangeCommandSuccessful = TRUE;
-    DLog(@"%s: Received SensorChangeCallback");
+    DLog(@"%s: Received SensorChangeCallback", __PRETTY_FUNCTION__);
 
     SensorChangeResponse *obj = (SensorChangeResponse *) [data valueForKey:@"data"];
     if (!obj.isSuccessful) {

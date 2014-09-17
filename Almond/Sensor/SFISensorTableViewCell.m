@@ -435,32 +435,14 @@
 }
 
 - (void)configureThermostat_7 {
-    NSString *strValue = @"";
-    NSString *strOperatingMode;
-    NSString *heatingSetPoint;
-    NSString *coolingSetPoint;
-
-    NSArray *currentKnownValues = [self currentKnownValuesForDevice];
-    for (SFIDeviceKnownValues *currentKnownValue in currentKnownValues) {
-        SFIDevicePropertyType propertyType = currentKnownValue.propertyType;
-        if (propertyType == SFIDevicePropertyType_SENSOR_MULTILEVEL) {
-            strValue = currentKnownValue.value;
-        }
-        else if (propertyType == SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING) {
-            heatingSetPoint = [NSString stringWithFormat:@" HI %@°", currentKnownValue.value];
-        }
-        else if (propertyType == SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING) {
-            coolingSetPoint = [NSString stringWithFormat:@" LO %@°", currentKnownValue.value];
-        }
-        else if (propertyType == SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE) {
-            strOperatingMode = currentKnownValue.value;
-        }
-    }
-
-    NSString *strStatus = [NSString stringWithFormat:@"%@, %@, %@", strOperatingMode, coolingSetPoint, heatingSetPoint];
-    self.deviceStatusLabel.text = strStatus;
+    // Status label
+    NSString *strOperatingMode = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE default:@"Unknown"];
+    NSString *coolingSetPoint = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING default:@"-"];
+    NSString *heatingSetPoint = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING default:@"-"];
+    self.deviceStatusLabel.text = [NSString stringWithFormat:@"%@,  LO %@\u00B0,  HI %@\u00B0", strOperatingMode, coolingSetPoint, heatingSetPoint]; // U+00B0 == degree sign
 
     // Calculate values
+    NSString *strValue = [self.deviceValue valueForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
     NSArray *thermostatValues = [strValue componentsSeparatedByString:@"."];
 
     NSString *const strIntegerValue = thermostatValues[0];
@@ -498,24 +480,17 @@
 }
 
 - (void)configureTempSensor_27 {
-    NSString *strValue = @"";
-
-    NSArray *currentKnownValues = [self currentKnownValuesForDevice];
-    for (SFIDeviceKnownValues *currentKnownValue in currentKnownValues) {
-        SFIDevicePropertyType propertyType = currentKnownValue.propertyType;
-        if (propertyType == SFIDevicePropertyType_MEASURED_VALUE) {
-            strValue = currentKnownValue.value;
-        }
-        else if (propertyType == SFIDevicePropertyType_TOLERANCE) {
-            self.deviceStatusLabel.text = [NSString stringWithFormat:@"Tolerance: %@", currentKnownValue.value];
-        }
-    }
+    NSString *str = [self.deviceValue valueForProperty:SFIDevicePropertyType_TOLERANCE default:@""];
+    self.deviceStatusLabel.text = [NSString stringWithFormat:@"Tolerance: %@", str];
 
     //Calculate values
+    NSString *strValue = [self.deviceValue valueForProperty:SFIDevicePropertyType_MEASURED_VALUE default:@""];
     NSArray *temperatureValues = [strValue componentsSeparatedByString:@"."];
 
-
-    NSString *strIntegerValue = temperatureValues[0];
+    NSString *strIntegerValue = @"";
+    if ([temperatureValues count] > 0) {
+        strIntegerValue = temperatureValues[0];
+    }
 
     if ([temperatureValues count] == 2) {
         NSString *strDecimalValue = temperatureValues[1];
@@ -523,11 +498,13 @@
     }
 
     self.deviceValueLabel.text = strIntegerValue;
-    if ([strIntegerValue length] == 1) {
+
+    NSUInteger str_length = [strIntegerValue length];
+    if (str_length == 1) {
         self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 40, 20, 30);
         self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 25, 20, 20);
     }
-    else if ([strIntegerValue length] == 3) {
+    else if (str_length == 3) {
         UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
 
         self.deviceValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:30];
@@ -536,7 +513,7 @@
         self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 38, 20, 30);
         self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 30, 20, 20);
     }
-    else if ([strIntegerValue length] == 4) {
+    else if (str_length == 4) {
         self.deviceValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:22];
         self.decimalValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:10];
         self.degreeLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:10];
@@ -646,7 +623,7 @@
 }
 
 - (NSArray *)currentKnownValuesForDevice {
-    return self.deviceValue.knownValues;
+    return self.deviceValue.knownDevicesValues;
 }
 
 - (UIColor *)makeCellColor {

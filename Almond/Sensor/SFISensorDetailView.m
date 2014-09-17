@@ -143,7 +143,7 @@
             break;
         }
         case SFIDeviceType_MultiLevelSwitch_2: {
-            [self configureMultiLevelSwitch_2];
+            [self configureMultiLevelSwitchMinValue:0 maxValue:99];
             break;
         }
         case SFIDeviceType_BinarySensor_3: {
@@ -151,7 +151,7 @@
             break;
         }
         case SFIDeviceType_MultiLevelOnOff_4: {
-            [self configureLevelControl_4];
+            [self configureMultiLevelSwitchMinValue:0 maxValue:255];
             break;
         }
         case SFIDeviceType_DoorLock_5: {
@@ -465,21 +465,11 @@
 
     //Display slider
     SFISlider *slider = [SFISlider new];
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    if (screenBounds.size.height == 568) {
-        // code for 4-inch screen
-        slider.frame = CGRectMake(40.0, self.baseYCoordinate, self.frame.size.width - 110, slider_height);
-    }
-    else {
-        // code for 3.5-inch screen
-        slider.frame = CGRectMake(40.0, self.baseYCoordinate - 10, (self.frame.size.width - 110), slider_height);
-    }
-
+    slider.frame = CGRectMake(40.0, self.baseYCoordinate, (self.frame.size.width - 90), slider_height);
     slider.tag = self.tag;
     slider.propertyType = propertyType;
     slider.minimumValue = minVal;
     slider.maximumValue = maxValue;
-
     [slider addTarget:self action:@selector(onSliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
 
     UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSliderTapped:)];
@@ -491,20 +481,14 @@
     [slider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"] forState:UIControlStateNormal];
 
     // Initialize the slider value
-    float sliderValue = 0.0;
-    NSArray *currentKnownValues = [self currentKnownValuesForDevice];
-    for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        if (currentDeviceValue.propertyType == propertyType) {
-            sliderValue = [currentDeviceValue.value floatValue];
-            break;
-        }
-    }
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:propertyType];
+    float sliderValue = [currentDeviceValue floatValue];
     [slider setValue:sliderValue animated:YES];
 
     return slider;
 }
 
-- (void)addStatusLabel:(NSArray *)statusMsgs {
+- (void)addStatusLabel:(NSArray *)statusMessages {
     UIFont *const heavy_12 = [UIFont fontWithName:@"Avenir-Heavy" size:12];
     UIColor *const white_color = [UIColor whiteColor];
     UIColor *const clear_color = [UIColor clearColor];
@@ -522,10 +506,10 @@
     valueLabel.backgroundColor = clear_color;
     valueLabel.font = heavy_12;
     valueLabel.textAlignment = NSTextAlignmentRight;
-    valueLabel.numberOfLines = statusMsgs.count;
+    valueLabel.numberOfLines = statusMessages.count;
     [self addSubview:valueLabel];
 
-    valueLabel.text = [statusMsgs componentsJoinedByString:@"\n"];
+    valueLabel.text = [statusMessages componentsJoinedByString:@"\n"];
 }
 
 - (void)addHorizontalPicker:(NSString *)labelText propertyType:(SFIDevicePropertyType)propertyType {
@@ -566,18 +550,18 @@
 
 #pragma mark - Sensor layouts
 
-- (void)configureMultiLevelSwitch_2 {
+- (void)configureMultiLevelSwitchMinValue:(int)minValue maxValue:(int)maxValue {
     [self markYOffset:35];
 
-    UIImageView *minImage = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate - 5, 24, 24)];
+    UIImageView *minImage = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate, 24, 24)];
     [minImage setImage:[UIImage imageNamed:@"dimmer_min.png"]];
     [self addSubview:minImage];
 
     // Display slider
-    UISlider *slider = [self makeSliderWithMinValue:0 maxValue:99 propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+    UISlider *slider = [self makeSliderWithMinValue:minValue maxValue:maxValue propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
     [self addSubview:slider];
 
-    UIImageView *maxImage = [[UIImageView alloc] initWithFrame:CGRectMake((self.frame.size.width - 110) + 50, self.baseYCoordinate - 5, 24, 24)];
+    UIImageView *maxImage = [[UIImageView alloc] initWithFrame:CGRectMake((self.frame.size.width - 90) + 50, self.baseYCoordinate, 24, 24)];
     [maxImage setImage:[UIImage imageNamed:@"dimmer_max.png"]];
     [self addSubview:maxImage];
 
@@ -586,57 +570,20 @@
 }
 
 - (void)configureBinarySensor_3 {
-    NSArray *currentKnownValues = [self currentKnownValuesForDevice];
-    for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        if (currentDeviceValue.propertyType == SFIDevicePropertyType_BATTERY) {
-            UILabel *label = [[UILabel alloc] init];
-            label.backgroundColor = [UIColor clearColor];
-
-            //Check the status of value
-            NSString *currentValue = currentDeviceValue.value;
-
-            NSString *batteryStatus;
-            if ([currentValue isEqualToString:@"1"]) {
-                //Battery Low
-                batteryStatus = @"Low Battery";
-            }
-            else {
-                //Battery OK
-                batteryStatus = @"Battery OK";
-            }
-
-            label.text = batteryStatus;
-            label.textColor = [UIColor whiteColor];
-            label.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
-
-            [self markYOffset:25];
-            label.frame = CGRectMake(10, self.baseYCoordinate, 299, 30);
-            [self addSubview:label];
-
-            break;
-        }
-    }
-
-    [self markYOffset:25];;
-    [self addLine];
-}
-
-- (void)configureLevelControl_4 {
-    //Level Control
-    [self markYOffset:35];
-    UIImageView *minImage = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate - 5, 24, 24)];
-    [minImage setImage:[UIImage imageNamed:@"dimmer_min.png"]];
-    [self addSubview:minImage];
-
-    // Display slider
-    UISlider *slider = [self makeSliderWithMinValue:0 maxValue:255 propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
-    [self addSubview:slider];
-
-    UIImageView *maxImage = [[UIImageView alloc] initWithFrame:CGRectMake((self.frame.size.width - 110) + 50, self.baseYCoordinate - 5, 24, 24)];
-    [maxImage setImage:[UIImage imageNamed:@"dimmer_max.png"]];
-    [self addSubview:maxImage];
+    SFIDeviceKnownValues *values = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BATTERY];
+    NSString *batteryStatus = [values choiceForLevelValueZeroValue:@"Battery OK" nonZeroValue:@"Low Battery" nilValue:@"Battery Unknown"];
 
     [self markYOffset:25];
+
+    UILabel *label = [[UILabel alloc] init];
+    label.backgroundColor = [UIColor clearColor];
+    label.text = batteryStatus;
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    label.frame = CGRectMake(10, self.baseYCoordinate, 299, 30);
+    [self addSubview:label];
+
+    [self markYOffset:25];;
     [self addLine];
 }
 
@@ -654,6 +601,8 @@
 
     UIFont *const heavy_12 = [UIFont fontWithName:@"Avenir-Heavy" size:12];
     UIColor *const white_color = [UIColor whiteColor];
+    NSDictionary *const attributes = @{NSFontAttributeName : heavy_12};
+    SFIDeviceValue *const deviceValue = self.deviceValue;
 
     // Mode
     UILabel *modeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate, 100, 30)];
@@ -661,16 +610,23 @@
     modeLabel.font = heavy_12;
     modeLabel.text = @"Mode";
     [self addSubview:modeLabel];
-
-    //Font for segment control
-    NSDictionary *attributes = @{NSFontAttributeName : heavy_12};
-
+    //
     UISegmentedControl *modeSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Auto", @"Heat", @"Cool", @"Off"]];
     modeSegmentControl.frame = CGRectMake(90.0, self.baseYCoordinate, self.frame.size.width - 100, 25.0); //CGRectMake(self.frame.size.width - 190, self.baseYCoordinate, 180, 25);
     modeSegmentControl.tag = self.tag;
     modeSegmentControl.tintColor = white_color;
     [modeSegmentControl addTarget:self action:@selector(onThermostatModeSelected:) forControlEvents:UIControlEventValueChanged];
     [modeSegmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
+    //
+    NSDictionary *choices = @{
+            @"Auto" : @0,
+            @"Heat" : @1,
+            @"Cool" : @2,
+            @"Off" : @3,
+    };
+    //
+    NSNumber *modeSegment_index = [deviceValue choiceForPropertyValue:SFIDevicePropertyType_THERMOSTAT_MODE choices:choices default:@0];
+    modeSegmentControl.selectedSegmentIndex = modeSegment_index.intValue;
     [self addSubview:modeSegmentControl];
 
     [self markYOffset:35];
@@ -683,71 +639,31 @@
     fanModeLabel.font = heavy_12;
     fanModeLabel.text = @"Fan";
     [self addSubview:fanModeLabel];
-
+    //
     UISegmentedControl *fanModeSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Auto Low", @"On Low"]];
     fanModeSegmentControl.frame = CGRectMake(90.0, self.baseYCoordinate, self.frame.size.width - 100, 25.0); //CGRectMake(self.frame.size.width - 190, self.baseYCoordinate, 180, 25);
     fanModeSegmentControl.tag = self.tag;
     fanModeSegmentControl.tintColor = white_color;
     [fanModeSegmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
     [fanModeSegmentControl addTarget:self action:@selector(onThermostatFanModeSelected:) forControlEvents:UIControlEventValueChanged];
+    //
+    NSNumber *fanModeSegment_index = [deviceValue choiceForPropertyValue:SFIDevicePropertyType_THERMOSTAT_FAN_MODE choices:@{@"Auto Low" : @0} default:@1];
+    fanModeSegmentControl.selectedSegmentIndex = fanModeSegment_index.intValue;
+    //
     [self addSubview:fanModeSegmentControl];
 
     [self markYOffset:35];
     [self addLine];
 
-    NSString *thermostat_str = @"";
-    NSString *fan_str = @"";
-    NSString *battery_str = @"";
-
-    NSArray *currentKnownValues = [self currentKnownValuesForDevice];
-    for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        switch (currentDeviceValue.propertyType) {
-            case SFIDevicePropertyType_THERMOSTAT_MODE: {
-                if ([currentDeviceValue.value isEqualToString:@"Auto"]) {
-                    modeSegmentControl.selectedSegmentIndex = 0;
-                }
-                else if ([currentDeviceValue.value isEqualToString:@"Heat"]) {
-                    modeSegmentControl.selectedSegmentIndex = 1;
-                }
-                else if ([currentDeviceValue.value isEqualToString:@"Cool"]) {
-                    modeSegmentControl.selectedSegmentIndex = 2;
-                }
-                else if ([currentDeviceValue.value isEqualToString:@"Off"]) {
-                    modeSegmentControl.selectedSegmentIndex = 3;
-                }
-                break;
-            }
-
-            case SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE: {
-                thermostat_str = [NSString stringWithFormat:@"Thermostat is %@", currentDeviceValue.value];
-                break;
-            }
-
-            case SFIDevicePropertyType_THERMOSTAT_FAN_MODE: {
-                if ([currentDeviceValue.value isEqualToString:@"Auto Low"]) {
-                    fanModeSegmentControl.selectedSegmentIndex = 0;
-                }
-                else {
-                    fanModeSegmentControl.selectedSegmentIndex = 1;
-                }
-                break;
-            }
-
-            case SFIDevicePropertyType_THERMOSTAT_FAN_STATE: {
-                fan_str = [NSString stringWithFormat:@"Fan is %@", currentDeviceValue.value];
-                break;
-            }
-
-            case SFIDevicePropertyType_BATTERY: {
-                battery_str = [NSString stringWithFormat:@"Battery is at %@%%", currentDeviceValue.value];
-                break;
-            }
-
-            default: {
-                break;
-            }
-        }
-    }
+    // Status
+    NSString *values = [deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE default:@""];
+    NSString *thermostat_str = [NSString stringWithFormat:@"Thermostat is %@", values];
+    //
+    values = [deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_FAN_STATE default:@""];
+    NSString *fan_str = [NSString stringWithFormat:@"Fan is %@", values];
+    //
+    values = [deviceValue valueForProperty:SFIDevicePropertyType_BATTERY default:@""];
+    NSString *battery_str = [NSString stringWithFormat:@"Battery is at %@%%", values];
 
     [self addStatusLabel:@[thermostat_str, fan_str, battery_str]];
     [self markYOffset:55];
@@ -1085,7 +1001,7 @@
 }
 
 - (NSArray *)currentKnownValuesForDevice {
-    return self.deviceValue.knownValues;
+    return self.deviceValue.knownDevicesValues;
 }
 
 #pragma mark - Picker methods
@@ -1098,14 +1014,12 @@
 
 // converts the known value into an picker view element index
 - (NSInteger)getSelectedIndex:(SFIDevicePropertyType)propertyType {
-    NSInteger temp = 0;
-    NSArray *currentKnownValues = [self currentKnownValuesForDevice];
-    for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        if (currentDeviceValue.propertyType == propertyType) {
-            temp = [currentDeviceValue.value intValue];
-            break;
-        }
+    NSString *val = [self.deviceValue valueForProperty:propertyType];
+    if (!val) {
+        return 0;
     }
+
+    NSInteger temp = val.intValue;
 
     if (temp < TEMP_LOWEST_SETTABLE) {
         temp = TEMP_LOWEST_SETTABLE;
@@ -1127,13 +1041,13 @@
 
 - (NSString *)horizontalPickerView:(V8HorizontalPickerView *)picker titleForElementAtIndex:(NSInteger)index {
     index = index + TEMP_LOWEST_SETTABLE;
-    return [NSString stringWithFormat:@"%d\u00B0", index]; // U+00B0 == degree sign
+    return [NSString stringWithFormat:@"%ld\u00B0", (long)index]; // U+00B0 == degree sign
 }
 
 - (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {
     SFIDevicePropertyType type = (SFIDevicePropertyType) picker.tag;
     NSInteger temp = index + TEMP_LOWEST_SETTABLE;
-    NSString *value = [NSString stringWithFormat:@"%d", temp];
+    NSString *value = [NSString stringWithFormat:@"%ld", (long)temp];
     [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:type newValue:value];
 }
 
