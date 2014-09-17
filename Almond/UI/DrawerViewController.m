@@ -72,7 +72,7 @@
 
 - (void)resetAlmondList {
     NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-    NSArray *settingsList = @[@"Logout", @"Logout All"];
+    NSArray *settingsList = @[@"Account", @"Logout", @"Logout All"];
 
     _dataDictionary = @{
             ALMONDLIST : almondList,
@@ -214,11 +214,18 @@
         //Settings
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
+        //PY 150914 - Account Settings
         if (indexPath.row == 0) {
+            //Account
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"AccountsStoryboard_iPhone" bundle:nil];
+            UITableViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AccountNavigationTop"];
+            [self presentViewController:mainView animated:YES completion:nil];
+        }
+        else if (indexPath.row == 1) {
             //Logout Action
             [[SecurifiToolkit sharedInstance] asyncSendLogout];
         }
-        else if (indexPath.row == 1) {
+        else if (indexPath.row == 2) {
             //Logout All Action
             [self presentLogoutAllView];
         }
