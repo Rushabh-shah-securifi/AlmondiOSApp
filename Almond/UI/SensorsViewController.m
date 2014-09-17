@@ -3414,7 +3414,7 @@
     for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
         if (deviceId == currentDeviceValue.deviceID) {
             //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];
-            return currentDeviceValue.knownValues;
+            return currentDeviceValue.knownDevicesValues;
         }
     }
     return nil;
@@ -3698,7 +3698,7 @@
 
         for (SFIDeviceValue *storedValue in storedValues) {
             if (storedValue.deviceID == deviceValueID) {
-                NSMutableArray *storedKnownDeviceValues = storedValue.knownValues;
+                NSArray *storedKnownDeviceValues = storedValue.knownDevicesValues;
 
                 for (SFIDeviceKnownValues *storedKnownValues in storedKnownDeviceValues) {
                     for (SFIDeviceKnownValues *currentKnownValues in currentDeviceValues) {
@@ -3710,7 +3710,7 @@
                     }
                 }
 
-                storedValue.knownValues = storedKnownDeviceValues;
+                [storedValue replaceKnownDeviceValues:storedKnownDeviceValues];
             }
         }
 
