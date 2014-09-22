@@ -246,7 +246,7 @@
         }
 
         case SFIDeviceType_KeyFob_19: {
-            [self configureBinaryStateSensor:DT19_KEYFOB_TRUE imageNameFalse:DT19_KEYFOB_FALSE statusTrue:@"LOCKED" statusFalse:@"UNLOCKED"];
+            [self configureKeyFab_19];
             break;
         }
 
@@ -304,7 +304,6 @@
         case SFIDeviceType_SceneController_9:
         case SFIDeviceType_StandardCIE_10:
         case SFIDeviceType_PersonalEmergencyDevice_16:
-        case SFIDeviceType_RemoteControl_18:
         case SFIDeviceType_StandardWarningDevice_21:
         case SFIDeviceType_OccupancySensor_24:
         case SFIDeviceType_LightSensor_25:
@@ -476,6 +475,27 @@
 
         self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 35, 20, 30);
         self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 30, 20, 20);
+    }
+}
+
+- (void)configureKeyFab_19 {
+    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDevice];
+    if (values.isUpdating) {
+        [self setUpdatingSensorStatus];
+    }
+    else {
+        SFIDeviceValue *const deviceValue = self.deviceValue;
+
+        NSString *state = [deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : @"ALL DISARMED", @"2":@"PERIMETER ARMED", @"3":@"ALL ARMED"} default:@"Could not update sensor\ndata."];
+        if (self.device.isBatteryLow) {
+            state = [state stringByAppendingString:@"\nLOW BATTERY"];
+            self.deviceStatusLabel.numberOfLines = 2;
+        }
+        self.deviceStatusLabel.text = state;
+
+        NSString *imageForNoValue = [self imageForNoValue];
+        NSString *imageName = [deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : DT19_KEYFOB_FALSE, @"2":DT19_KEYFOB_TRUE, @"3":DT19_KEYFOB_TRUE} default:imageForNoValue];
+        self.deviceImageView.image = [UIImage imageNamed:imageName];
     }
 }
 
