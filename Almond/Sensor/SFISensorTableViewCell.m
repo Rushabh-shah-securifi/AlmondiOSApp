@@ -378,9 +378,6 @@
 #pragma mark - Device layout
 
 - (void)configureMultiLevelSwitch_2 {
-    NSString *name = [self.device imageName:DT2_MULTILEVEL_SWITCH_TRUE];
-    self.deviceImageView.image = [UIImage imageNamed:name];
-
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceValuesIndex:0];
     if (values.isUpdating) {
         [self setUpdatingSensorStatus];
@@ -393,13 +390,16 @@
         self.deviceStatusLabel.text = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
                                                                               nonZeroValue:[NSString stringWithFormat:@"Dimmable, %@%%", currentLevel]
                                                                                   nilValue:@"Could not update sensor\ndata."];
+
+        NSString *imageName = [currentLevelKnownValue choiceForLevelValueZeroValue:DT2_MULTILEVEL_SWITCH_FALSE
+                                                                      nonZeroValue:DT2_MULTILEVEL_SWITCH_TRUE
+                                                                          nilValue:DT2_MULTILEVEL_SWITCH_TRUE];
+
+        self.deviceImageView.image = [UIImage imageNamed:imageName];
     }
 }
 
 - (void)configureLevelControl_4 {
-    NSString *image_name = [self.device imageName:DT4_LEVEL_CONTROL_TRUE];
-    self.deviceImageView.image = [UIImage imageNamed:image_name];
-
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDevice];
     if (values.isUpdating) {
         [self setUpdatingSensorStatus];
@@ -410,26 +410,33 @@
         float intLevel = [currentLevelKnownValue floatValue];
         intLevel = (intLevel / 256) * 100;
 
-        // Set some defaults
         NSString *status_str;
+        NSString *image_name;
 
         if (!values.hasValue) {
             status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"Dimmable"
                                                                  nonZeroValue:[NSString stringWithFormat:@"Dimmable, %.0f%%", intLevel]
                                                                      nilValue:@"Could not update sensor\ndata."];
+
+            image_name = [self.device imageName:DT4_LEVEL_CONTROL_TRUE];
         }
         else if (values.boolValue == true) {
             status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"ON"
                                                                  nonZeroValue:[NSString stringWithFormat:@"ON, %.0f%%", intLevel]
                                                                      nilValue:@"ON"];
+
+            image_name = [self.device imageName:DT4_LEVEL_CONTROL_TRUE];
         }
         else {
             status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
                                                                  nonZeroValue:[NSString stringWithFormat:@"OFF, %.0f%%", intLevel]
                                                                      nilValue:@"OFF"];
+
+            image_name = [self.device imageName:DT4_LEVEL_CONTROL_FALSE];
         }
 
         self.deviceStatusLabel.text = status_str;
+        self.deviceImageView.image = [UIImage imageNamed:image_name];
     }
 }
 
