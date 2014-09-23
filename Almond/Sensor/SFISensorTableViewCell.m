@@ -21,7 +21,7 @@
 @property(nonatomic) UILabel *degreeLabel;
 
 @property(nonatomic) BOOL dirty;
-
+@property(nonatomic) BOOL updatingState;
 @end
 
 @implementation SFISensorTableViewCell
@@ -35,8 +35,16 @@
     return self;
 }
 
-- (void)markWillReuse {
+- (void)showUpdatingDeviceValuesStatus {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.updatingState = YES;
+        [self setUpdatingSensorStatus];
+    });
+}
+
+- (void)markWillReuseCell:(BOOL)updating {
     self.dirty = YES;
+    self.updatingState = updating;
 }
 
 - (void)layoutSubviews {
@@ -48,7 +56,27 @@
         [self tearDown];
         [self layoutTileFrame];
         [self layoutDeviceImageCell];
-        [self layoutDeviceInfo];
+
+        if (self.updatingState) {
+            [self setUpdatingSensorStatus];
+        }
+        else {
+            [self layoutDeviceInfo];
+        }
+
+        SFIDevice *device = self.device;
+        if (device.isExpanded) {
+            SFISensorDetailView *detailView = [SFISensorDetailView new];
+            detailView.frame = self.frame;
+            detailView.tag = self.tag;
+            detailView.delegate = self;
+            detailView.device = device;
+            detailView.deviceValue = self.deviceValue;
+            detailView.color = [self makeCellColor];
+
+            [self.contentView addSubview:detailView];
+            self.detailView = detailView;
+        }
     }
 }
 
@@ -135,7 +163,7 @@
     deviceImageButton.backgroundColor = clear_color;
     [deviceImageButton addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
 
-    if (self.device.deviceType == 7 /*thermostat */) {
+    if (self.device.deviceType == SFIDeviceType_Thermostat_7) {
         // In case of thermostat show value instead of image
         // For Integer Value
         self.deviceValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH / 5, 12, 60, 70)];
@@ -164,16 +192,15 @@
         [self.contentView addSubview:self.decimalValueLabel];
         [self.contentView addSubview:self.degreeLabel];
     }
-    else {
-        self.deviceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH / 3, 12, 53, 70)];
-        self.deviceImageView.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
-        self.deviceImageView.userInteractionEnabled = YES;
 
-        [self.deviceImageView addSubview:deviceImageButton];
-        deviceImageButton.frame = self.deviceImageView.bounds;
+    self.deviceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH / 3, 12, 53, 70)];
+    self.deviceImageView.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
+    self.deviceImageView.userInteractionEnabled = YES;
 
-        [self.contentView addSubview:self.deviceImageView];
-    }
+    [self.deviceImageView addSubview:deviceImageButton];
+    deviceImageButton.frame = self.deviceImageView.bounds;
+
+    [self.contentView addSubview:self.deviceImageView];
 }
 
 - (void)layoutDeviceInfo {
@@ -211,6 +238,7 @@
         }
 
         case SFIDeviceType_Thermostat_7: {
+            [self showDeviceValueLabels:YES];
             [self configureThermostat_7];
             break;
         }
@@ -325,20 +353,6 @@
 
         }
     } // for each device
-
-    if (self.device.isExpanded) {
-        SFISensorDetailView *detailView = [SFISensorDetailView new];
-        detailView.frame = self.frame;
-        detailView.tag = self.tag;
-        detailView.delegate = self;
-        detailView.device = device;
-        detailView.deviceValue = self.deviceValue;
-        detailView.color = [self makeCellColor];
-
-        [self.contentView addSubview:detailView];
-        self.detailView = detailView;
-    }
-
 }
 
 #pragma mark - Changed values
@@ -378,69 +392,60 @@
 #pragma mark - Device layout
 
 - (void)configureMultiLevelSwitch_2 {
-    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceValuesIndex:0];
-    if (values.isUpdating) {
-        [self setUpdatingSensorStatus];
-    }
-    else {
-        //Get Percentage
-        SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceValuesIndex:self.device.mostImpValueIndex];
-        NSString *currentLevel = currentLevelKnownValue.value;
+    //Get Percentage
+    SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceValuesIndex:self.device.mostImpValueIndex];
+    NSString *currentLevel = currentLevelKnownValue.value;
 
-        self.deviceStatusLabel.text = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
-                                                                              nonZeroValue:[NSString stringWithFormat:@"Dimmable, %@%%", currentLevel]
-                                                                                  nilValue:@"Could not update sensor\ndata."];
+    self.deviceStatusLabel.text = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
+                                                                          nonZeroValue:[NSString stringWithFormat:@"Dimmable, %@%%", currentLevel]
+                                                                              nilValue:@"Could not update sensor\ndata."];
 
-        NSString *imageName = [currentLevelKnownValue choiceForLevelValueZeroValue:DT2_MULTILEVEL_SWITCH_FALSE
-                                                                      nonZeroValue:DT2_MULTILEVEL_SWITCH_TRUE
-                                                                          nilValue:DT2_MULTILEVEL_SWITCH_TRUE];
+    NSString *imageName = [currentLevelKnownValue choiceForLevelValueZeroValue:DT2_MULTILEVEL_SWITCH_FALSE
+                                                                  nonZeroValue:DT2_MULTILEVEL_SWITCH_TRUE
+                                                                      nilValue:DT2_MULTILEVEL_SWITCH_TRUE];
 
-        self.deviceImageView.image = [UIImage imageNamed:imageName];
-    }
+    self.deviceImageView.image = [UIImage imageNamed:imageName];
 }
 
 - (void)configureLevelControl_4 {
+    //Get Percentage
+    SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceValuesIndex:self.device.mostImpValueIndex];
+    float intLevel = [currentLevelKnownValue floatValue];
+    intLevel = (intLevel / 256) * 100;
+
+    NSString *status_str;
+    NSString *image_name;
+
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDevice];
-    if (values.isUpdating) {
-        [self setUpdatingSensorStatus];
+    if (!values.hasValue) {
+        status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"Dimmable"
+                                                             nonZeroValue:[NSString stringWithFormat:@"Dimmable, %.0f%%", intLevel]
+                                                                 nilValue:@"Could not update sensor\ndata."];
+
+        image_name = [self.device imageName:DT4_LEVEL_CONTROL_TRUE];
+    }
+    else if (values.boolValue == true) {
+        status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"ON"
+                                                             nonZeroValue:[NSString stringWithFormat:@"ON, %.0f%%", intLevel]
+                                                                 nilValue:@"ON"];
+
+        image_name = [self.device imageName:DT4_LEVEL_CONTROL_TRUE];
     }
     else {
-        //Get Percentage
-        SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceValuesIndex:self.device.mostImpValueIndex];
-        float intLevel = [currentLevelKnownValue floatValue];
-        intLevel = (intLevel / 256) * 100;
+        status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
+                                                             nonZeroValue:[NSString stringWithFormat:@"OFF, %.0f%%", intLevel]
+                                                                 nilValue:@"OFF"];
 
-        NSString *status_str;
-        NSString *image_name;
-
-        if (!values.hasValue) {
-            status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"Dimmable"
-                                                                 nonZeroValue:[NSString stringWithFormat:@"Dimmable, %.0f%%", intLevel]
-                                                                     nilValue:@"Could not update sensor\ndata."];
-
-            image_name = [self.device imageName:DT4_LEVEL_CONTROL_TRUE];
-        }
-        else if (values.boolValue == true) {
-            status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"ON"
-                                                                 nonZeroValue:[NSString stringWithFormat:@"ON, %.0f%%", intLevel]
-                                                                     nilValue:@"ON"];
-
-            image_name = [self.device imageName:DT4_LEVEL_CONTROL_TRUE];
-        }
-        else {
-            status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
-                                                                 nonZeroValue:[NSString stringWithFormat:@"OFF, %.0f%%", intLevel]
-                                                                     nilValue:@"OFF"];
-
-            image_name = [self.device imageName:DT4_LEVEL_CONTROL_FALSE];
-        }
-
-        self.deviceStatusLabel.text = status_str;
-        self.deviceImageView.image = [UIImage imageNamed:image_name];
+        image_name = [self.device imageName:DT4_LEVEL_CONTROL_FALSE];
     }
+
+    self.deviceStatusLabel.text = status_str;
+    self.deviceImageView.image = [UIImage imageNamed:image_name];
 }
 
 - (void)configureThermostat_7 {
+    NSLog(@"configureThermostat_7");
+
     // Status label
     NSString *strOperatingMode = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE default:@"Unknown"];
     NSString *coolingSetPoint = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING default:@"-"];
@@ -486,24 +491,18 @@
 }
 
 - (void)configureKeyFab_19 {
-    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDevice];
-    if (values.isUpdating) {
-        [self setUpdatingSensorStatus];
-    }
-    else {
-        SFIDeviceValue *const deviceValue = self.deviceValue;
+    SFIDeviceValue *const deviceValue = self.deviceValue;
 
-        NSString *state = [deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : @"ALL DISARMED", @"2":@"PERIMETER ARMED", @"3":@"ALL ARMED"} default:@"Could not update sensor\ndata."];
-        if (self.device.isBatteryLow) {
-            state = [state stringByAppendingString:@"\nLOW BATTERY"];
-            self.deviceStatusLabel.numberOfLines = 2;
-        }
-        self.deviceStatusLabel.text = state;
-
-        NSString *imageForNoValue = [self imageForNoValue];
-        NSString *imageName = [deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : DT19_KEYFOB_FALSE, @"2":DT19_KEYFOB_TRUE, @"3":DT19_KEYFOB_TRUE} default:imageForNoValue];
-        self.deviceImageView.image = [UIImage imageNamed:imageName];
+    NSString *state = [deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : @"ALL DISARMED", @"2":@"PERIMETER ARMED", @"3":@"ALL ARMED"} default:@"Could not update sensor\ndata."];
+    if (self.device.isBatteryLow) {
+        state = [state stringByAppendingString:@"\nLOW BATTERY"];
+        self.deviceStatusLabel.numberOfLines = 2;
     }
+    self.deviceStatusLabel.text = state;
+
+    NSString *imageForNoValue = [self imageForNoValue];
+    NSString *imageName = [deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : DT19_KEYFOB_FALSE, @"2":DT19_KEYFOB_TRUE, @"3":DT19_KEYFOB_TRUE} default:imageForNoValue];
+    self.deviceImageView.image = [UIImage imageNamed:imageName];
 }
 
 - (void)configureTempSensor_27 {
@@ -556,83 +555,35 @@
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDevice];
 
-    if (values.isUpdating) {
-        [self setUpdatingSensorStatus];
-    }
-    else {
-        NSString *imageForNoValue = [self imageForNoValue];
-        NSString *imageName = [values choiceForBoolValueTrueValue:imageNameTrue falseValue:imageNameFalse nilValue:imageForNoValue];
-        self.deviceImageView.image = [UIImage imageNamed:imageName];
+    NSString *imageForNoValue = [self imageForNoValue];
+    NSString *imageName = [values choiceForBoolValueTrueValue:imageNameTrue falseValue:imageNameFalse nilValue:imageForNoValue];
+    self.deviceImageView.image = [UIImage imageNamed:imageName];
 
-        NSString *status = [values choiceForBoolValueTrueValue:statusTrue falseValue:statusFalse nilValue:@"Could not update sensor\ndata."];
-        if (self.device.isBatteryLow) {
-            status = [status stringByAppendingString:@"\nLOW BATTERY"];
-            self.deviceStatusLabel.numberOfLines = 2;
-        }
-        self.deviceStatusLabel.text = status;
+    NSString *status = [values choiceForBoolValueTrueValue:statusTrue falseValue:statusFalse nilValue:@"Could not update sensor\ndata."];
+    if (self.device.isBatteryLow) {
+        status = [status stringByAppendingString:@"\nLOW BATTERY"];
+        self.deviceStatusLabel.numberOfLines = 2;
     }
+    self.deviceStatusLabel.text = status;
 }
 
 - (NSString *)imageForNoValue {
     if (self.deviceValue.valueCount == 0) {
         return @"Reload_icon.png";
     }
-
-    switch (self.device.deviceType) {
-        case SFIDeviceType_UnknownDevice_0:
-        case SFIDeviceType_BinarySwitch_1:
-        case SFIDeviceType_MultiLevelSwitch_2:
-        case SFIDeviceType_BinarySensor_3:
-        case SFIDeviceType_MultiLevelOnOff_4:
-        case SFIDeviceType_DoorLock_5:
-        case SFIDeviceType_Alarm_6:
-        case SFIDeviceType_Thermostat_7:
-        case SFIDeviceType_Controller_8:
-        case SFIDeviceType_SceneController_9:
-        case SFIDeviceType_StandardCIE_10:
-        case SFIDeviceType_MotionSensor_11:
-        case SFIDeviceType_ContactSwitch_12:
-        case SFIDeviceType_FireSensor_13:
-        case SFIDeviceType_WaterSensor_14:
-        case SFIDeviceType_GasSensor_15:
-        case SFIDeviceType_PersonalEmergencyDevice_16:
-        case SFIDeviceType_VibrationOrMovementSensor_17:
-        case SFIDeviceType_RemoteControl_18:
-        case SFIDeviceType_KeyFob_19:
-        case SFIDeviceType_Keypad_20:
-        case SFIDeviceType_StandardWarningDevice_21:
-        case SFIDeviceType_SmartACSwitch_22:
-        case SFIDeviceType_SmartDCSwitch_23:
-        case SFIDeviceType_OccupancySensor_24:
-        case SFIDeviceType_LightSensor_25:
-        case SFIDeviceType_WindowCovering_26:
-        case SFIDeviceType_TemperatureSensor_27:
-        case SFIDeviceType_SimpleMetering_28:
-        case SFIDeviceType_ColorControl_29:
-        case SFIDeviceType_PressureSensor_30:
-        case SFIDeviceType_FlowSensor_31:
-        case SFIDeviceType_ColorDimmableLight_32:
-        case SFIDeviceType_HAPump_33:
-        case SFIDeviceType_Shade_34:
-        case SFIDeviceType_SmokeDetector_36:
-        case SFIDeviceType_FloodSensor_37:
-        case SFIDeviceType_ShockSensor_38:
-        case SFIDeviceType_DoorSensor_39:
-        case SFIDeviceType_MoistureSensor_40:
-        case SFIDeviceType_MovementSensor_41:
-        case SFIDeviceType_Siren_42:
-        case SFIDeviceType_MultiSwitch_43:
-        case SFIDeviceType_UnknownOnOffModule_44:
-        default: {
-            return @"default_device.png";
-            
-        }
-    }
+    return @"default_device.png";
 }
 
 - (void)setUpdatingSensorStatus {
+    [self showDeviceValueLabels:NO];
     self.deviceImageView.image = [UIImage imageNamed:@"Wait_Icon.png"];
     self.deviceStatusLabel.text = @"Updating sensor data.\nPlease wait.";
+}
+
+- (void)showDeviceValueLabels:(BOOL)show {
+    self.deviceValueLabel.hidden = !show;
+    self.decimalValueLabel.hidden = !show;
+    self.degreeLabel.hidden = !show;
 }
 
 #pragma mark - Device Values

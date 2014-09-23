@@ -20,6 +20,12 @@
 @property(nonatomic) NSArray *deviceList;
 @property(nonatomic) NSArray *deviceValueList;
 
+// devices which are in the state of being updated; 
+// values are SFIDevice.deviceID numbers; 
+// this set is updated each time a device is updated, finishes updating, or timeouts updating.
+// mutations are coordinated on the main queue
+@property(nonatomic) NSSet *updatingDevices; 
+
 @property(nonatomic) NSTimer *mobileCommandTimer;
 @property(nonatomic) NSTimer *sensorChangeCommandTimer;
 
@@ -37,6 +43,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.updatingDevices = [NSSet set];
+    
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
     self.tableView.separatorColor = [UIColor clearColor];
@@ -319,9 +327,7 @@
 
     SFIDeviceType currentDeviceType = device.deviceType;
     NSUInteger height = [self computeSensorRowHeight:device];
-    NSString *id = device.isExpanded ?
-            [NSString stringWithFormat:@"SensorExpanded_%d_%ld", currentDeviceType, (unsigned long) height] :
-            @"SensorSmall";
+    NSString *id = [NSString stringWithFormat:@"s_t:%d_h:%ld_e:%d,", currentDeviceType, (unsigned long) height, device.isExpanded];
 
     SFISensorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
     if (cell == nil) {
@@ -340,7 +346,10 @@
         }
     }
 
-    [cell markWillReuse];
+    BOOL updating = [self isDeviceUpdating:device];
+    NSLog(@"device: updating: %@, expanded:%@", (updating ? @"YES": @"NO"), (device.isExpanded ? @"YES": @"NO"));
+    [cell markWillReuseCell:updating];
+
     return cell;
 }
 
@@ -416,20 +425,12 @@
         }
     } // end switch
 
-    // Mark value state
-    deviceValues.isUpdating = true;
+    // Tell the cell to show 'updating' status
+    [self markDeviceUpdating:device];
+    [cell showUpdatingDeviceValuesStatus];
 
     // Send update to the cloud
     [self sendMobileCommandForDevice:device deviceValue:deviceValues];
-
-    // Reload the affected row
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (clicked_row >= self.deviceList.count) {
-            return;
-        }
-        NSIndexPath *path = [NSIndexPath indexPathForRow:clicked_row inSection:0];
-        [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
-    });
 }
 
 - (void)tableViewCellDidPressSettings:(SFISensorTableViewCell *)cell {
@@ -442,7 +443,7 @@
     }
 
     // Toggle expansion
-    SFIDevice *sensor = [self tryGetDevice:clicked_row];
+    SFIDevice *sensor = cell.device;
     sensor.isExpanded = !sensor.isExpanded;
 
     NSMutableArray *paths = [NSMutableArray array];
@@ -531,6 +532,9 @@
     if (self.isViewControllerDisposed) {
         return;
     }
+
+    [self markDeviceUpdating:cell.device];
+    [cell showUpdatingDeviceValuesStatus];
 
     SFIDevice *device = cell.device;
     int currentDeviceId = device.deviceID;
@@ -701,12 +705,13 @@
 
     NSArray *newDeviceValueList = [toolkit deviceValuesList:cloudMAC];
 
-    // Restore isExpanded state
+    // Restore isExpanded state and clear 'updating' state
     NSArray *oldDeviceList = self.deviceList;
     for (SFIDevice *newDevice in newDeviceList) {
         for (SFIDevice *oldDevice in oldDeviceList) {
             if (newDevice.deviceID == oldDevice.deviceID) {
                 newDevice.isExpanded = oldDevice.isExpanded;
+                [self clearDeviceUpdating:oldDevice];
             }
         }
     }
@@ -778,12 +783,13 @@
 
     DLog(@"Changing device value list: %@", newDeviceValueList);
 
-    // Restore isExpanded state
+    // Restore isExpanded state and clear 'updating' state
     NSArray *oldDeviceList = self.deviceList;
     for (SFIDevice *newDevice in newDeviceList) {
         for (SFIDevice *oldDevice in oldDeviceList) {
             if (newDevice.deviceID == oldDevice.deviceID) {
                 newDevice.isExpanded = oldDevice.isExpanded;
+                [self clearDeviceUpdating:oldDevice];
             }
         }
     }
@@ -810,6 +816,8 @@
 }
 
 - (void)onCurrentAlmondChanged:(id)sender {
+    [self clearAllDeviceUpdating];
+
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self initializeAlmondData];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -834,6 +842,8 @@
     }
 
     // If plus is nil, then there are no almonds attached, and the UI needs to deal with it.
+
+    [self clearAllDeviceUpdating];
 
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
@@ -946,6 +956,8 @@
         list = @[];
     }
 
+    [self clearAllDeviceUpdating];
+
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.isViewControllerDisposed) {
             return;
@@ -959,6 +971,45 @@
 
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+}
+
+#pragma mark - Device updating state
+
+- (void)markDeviceUpdating:(SFIDevice*)device {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        unsigned int deviceId = device.deviceID;
+        NSNumber *key = @(deviceId);
+        NSLog(@"makring device %@, %@", [SFIDevice nameForType:device.deviceType], key);
+
+        self.updatingDevices = [self.updatingDevices setByAddingObject:key];
+    });
+}
+
+- (void)clearAllDeviceUpdating {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.updatingDevices = [NSSet set];
+    });
+}
+
+- (void)clearDeviceUpdating:(SFIDevice*)device {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        unsigned int deviceId = device.deviceID;
+        NSNumber *key = @(deviceId);
+
+        NSSet *set = self.updatingDevices;
+        if ([set containsObject:key]) {
+            NSMutableSet *mutableSet = [NSMutableSet setWithSet:set];
+            [mutableSet removeObject:key];
+
+            self.updatingDevices = [NSSet setWithSet:mutableSet];
+        }
+    });
+}
+
+- (BOOL)isDeviceUpdating:(SFIDevice*)device {
+    unsigned int deviceId = device.deviceID;
+    NSNumber *key = @(deviceId);
+    return [self.updatingDevices containsObject:key];
 }
 
 @end
