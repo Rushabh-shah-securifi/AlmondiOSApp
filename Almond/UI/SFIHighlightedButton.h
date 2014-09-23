@@ -8,4 +8,7 @@
 
 @interface SFIHighlightedButton : UIButton
 
+@property UIColor *highlightedBackgroundColor;
+@property UIColor *normalBackgroundColor;
+
 @end

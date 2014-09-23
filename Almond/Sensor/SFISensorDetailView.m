@@ -388,18 +388,27 @@
 }
 
 - (void)addSaveButton {
-    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
-
     int button_width = 65;
     int right_margin = 10;
+    CGRect frame = CGRectMake(self.frame.size.width - button_width - right_margin, self.baseYCoordinate, button_width, 30);
 
-    UIButton *button = [[SFIHighlightedButton alloc] initWithFrame:CGRectMake(self.frame.size.width - button_width - right_margin, self.baseYCoordinate, button_width, 30)];
+    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
+
+    UIColor *whiteColor = [UIColor whiteColor];
+    UIColor *normalColor = self.color;
+    UIColor *highlightColor = whiteColor;
+
+    SFIHighlightedButton *button = [[SFIHighlightedButton alloc] initWithFrame:frame];
     button.tag = self.tag;
-    button.backgroundColor = [UIColor whiteColor];
+    button.normalBackgroundColor = normalColor;
+    button.highlightedBackgroundColor = highlightColor;
     button.titleLabel.font = heavy_font;
     [button addTarget:self action:@selector(onSaveSensorNameLocationChanges:) forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"Save" forState:UIControlStateNormal];
-    [button setTitleColor:self.color forState:UIControlStateNormal];
+    [button setTitleColor:whiteColor forState:UIControlStateNormal];
+    [button setTitleColor:normalColor forState:UIControlStateHighlighted];
+    button.layer.borderWidth = 1.0f;
+    button.layer.borderColor = whiteColor.CGColor;
 
     [self addSubview:button];
 }
@@ -1041,7 +1050,7 @@
 
 - (NSString *)horizontalPickerView:(V8HorizontalPickerView *)picker titleForElementAtIndex:(NSInteger)index {
     index = index + TEMP_LOWEST_SETTABLE;
-    return [NSString stringWithFormat:@"%ld\u00B0", (long)index]; // U+00B0 == degree sign
+    return [NSString stringWithFormat:@"%ld\u00B0", (long) index]; // U+00B0 == degree sign
 }
 
 - (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {
@@ -1056,7 +1065,7 @@
     }
 
     NSInteger temp = index + TEMP_LOWEST_SETTABLE;
-    NSString *value = [NSString stringWithFormat:@"%ld", (long)temp];
+    NSString *value = [NSString stringWithFormat:@"%ld", (long) temp];
     [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:type newValue:value];
 }
 
