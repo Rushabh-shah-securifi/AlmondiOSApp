@@ -444,8 +444,6 @@
 }
 
 - (void)configureThermostat_7 {
-    NSLog(@"configureThermostat_7");
-
     // Status label
     NSString *strOperatingMode = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE default:@"Unknown"];
     NSString *coolingSetPoint = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING default:@"-"];
