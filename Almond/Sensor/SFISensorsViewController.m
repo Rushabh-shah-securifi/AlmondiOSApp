@@ -23,8 +23,9 @@
 // devices which are in the state of being updated; 
 // values are SFIDevice.deviceID numbers; 
 // this set is updated each time a device is updated, finishes updating, or timeouts updating.
-// mutations are coordinated on the main queue
+// mutations are coordinated on the updateQ
 @property(nonatomic) NSSet *updatingDevices; 
+@property(nonatomic, readonly) dispatch_queue_t updateQ;
 
 @property(nonatomic) NSTimer *mobileCommandTimer;
 @property(nonatomic) NSTimer *sensorChangeCommandTimer;
@@ -44,6 +45,7 @@
     [super viewDidLoad];
 
     self.updatingDevices = [NSSet set];
+    _updateQ = dispatch_queue_create("com.securifi.sensorsview.updateq", DISPATCH_QUEUE_SERIAL);
     
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
@@ -347,7 +349,6 @@
     }
 
     BOOL updating = [self isDeviceUpdating:device];
-    NSLog(@"device: updating: %@, expanded:%@", (updating ? @"YES": @"NO"), (device.isExpanded ? @"YES": @"NO"));
     [cell markWillReuseCell:updating];
 
     return cell;
@@ -368,13 +369,7 @@
 #pragma mark - SFISensorTableViewCellDelegate methods
 
 - (void)tableViewCellDidClickDevice:(SFISensorTableViewCell *)cell {
-    const NSInteger clicked_row = cell.tag;
-
-    SFIDevice *device = [self tryGetDevice:clicked_row];
-    if (device == nil) {
-        return;
-    }
-
+    SFIDevice *device = cell.device;
     const int device_id = device.deviceID;
 
     SFIDeviceKnownValues *deviceValues;
@@ -481,10 +476,7 @@
 
     [[[iToast makeText:@"Saving..."] setGravity:iToastGravityCenter] show];
 
-    SFIDevice *device = [self tryGetDevice:cell.tag];
-    if (device == nil) {
-        return;
-    }
+    SFIDevice *device = cell.device;
 
     SensorChangeRequest *cmd = [[SensorChangeRequest alloc] init];
     cmd.almondMAC = self.almondMac;
@@ -517,10 +509,7 @@
         return;
     }
 
-    SFIDevice *device = [self tryGetDevice:cell.tag];
-    if (device == nil) {
-        return;
-    }
+    SFIDevice *device = cell.device;
 
     SFIDeviceKnownValues *deviceValues = [self tryGetCurrentKnownValuesForDevice:device.deviceID propertyType:SFIDevicePropertyType_TAMPER];
     [deviceValues setBoolValue:NO];
@@ -976,23 +965,21 @@
 #pragma mark - Device updating state
 
 - (void)markDeviceUpdating:(SFIDevice*)device {
-    dispatch_async(dispatch_get_main_queue(), ^() {
+    dispatch_async(self.updateQ, ^() {
         unsigned int deviceId = device.deviceID;
         NSNumber *key = @(deviceId);
-        NSLog(@"makring device %@, %@", [SFIDevice nameForType:device.deviceType], key);
-
         self.updatingDevices = [self.updatingDevices setByAddingObject:key];
     });
 }
 
 - (void)clearAllDeviceUpdating {
-    dispatch_async(dispatch_get_main_queue(), ^() {
+    dispatch_async(self.updateQ, ^() {
         self.updatingDevices = [NSSet set];
     });
 }
 
 - (void)clearDeviceUpdating:(SFIDevice*)device {
-    dispatch_async(dispatch_get_main_queue(), ^() {
+    dispatch_async(self.updateQ, ^() {
         unsigned int deviceId = device.deviceID;
         NSNumber *key = @(deviceId);
 
