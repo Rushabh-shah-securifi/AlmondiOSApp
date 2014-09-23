@@ -435,26 +435,32 @@
 - (void)addTamperButton {
     UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
 
+    UIColor *whiteColor = [UIColor whiteColor];
+//    UIColor *whiteColor = [UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6];
+    UIColor *normalColor = self.color;
+    UIColor *highlightColor = whiteColor;
+
     UILabel *label;
     label = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
-    label.backgroundColor = [UIColor clearColor];
+    label.backgroundColor = self.color;
     label.text = DEVICE_TAMPERED;
-    label.textColor = [UIColor whiteColor];
+    label.textColor = whiteColor;
     label.font = heavy_font;
 
     [self addSubview:label];
 
-    UIButton *button = [[UIButton alloc] init];
+    SFIHighlightedButton *button = [[SFIHighlightedButton alloc] initWithFrame:CGRectZero];
     button.frame = [self makeFieldValueRect:235];//CGRectMake(self.frame.size.width - 100, self.baseYCoordinate + 6, 65, 20);
     button.tag = self.tag;
-    button.backgroundColor = [UIColor clearColor];
+    button.normalBackgroundColor = normalColor;
+    button.highlightedBackgroundColor = highlightColor;
     button.titleLabel.font = heavy_font;
     [button setTitle:@"Dismiss" forState:UIControlStateNormal];
-
+    [button setTitleColor:whiteColor forState:UIControlStateNormal];
+    [button setTitleColor:normalColor forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(onDismissTamper:) forControlEvents:UIControlEventTouchDown];
-
-    UIColor *color = [UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6];
-    [button setTitleColor:color forState:UIControlStateNormal];
+    button.layer.borderWidth = 1.0f;
+    button.layer.borderColor = whiteColor.CGColor;
 
     [self addSubview:button];
     [self markYOffset:35];
