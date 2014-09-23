@@ -17,8 +17,9 @@
 @property(nonatomic, readonly) SFIAlmondPlus *almond;
 @property(nonatomic, readonly) NSString *almondMac;
 @property(nonatomic, readonly) SFIColors *almondColor;
+
 @property(nonatomic) NSArray *deviceList;
-@property(nonatomic) NSArray *deviceValueList;
+@property(nonatomic, readonly) NSDictionary *deviceValueTable;
 
 // devices which are in the state of being updated; 
 // values are SFIDevice.deviceID numbers; 
@@ -61,7 +62,7 @@
 
     // Ensure values have at least an empty list
     self.deviceList = @[];
-    self.deviceValueList = @[];
+    [self setDeviceValues:@[]];
 
     [self initializeNotifications];
     [self initializeAlmondData];
@@ -129,19 +130,19 @@
     if ([self isNoAlmondMAC]) {
         self.navigationItem.title = @"Get Started";
         self.deviceList = @[];
-        self.deviceValueList = @[];
+        [self setDeviceValues:@[]];
     }
     else {
         self.navigationItem.title = plus.almondplusName;
         self.deviceList = [toolkit deviceList:mac];
-        self.deviceValueList = [toolkit deviceValuesList:mac];
+        [self setDeviceValues:[toolkit deviceValuesList:mac]];
 
         if (self.deviceList.count == 0) {
             NSLog(@"Sensors: requesting device list on empty list");
             [self showHudWithTimeout];
             [toolkit asyncRequestDeviceList:mac];
         }
-        else if (self.deviceValueList.count == 0) {
+        else if (self.deviceValueTable.count == 0) {
             NSLog(@"Sensors: requesting device values on empty list");
             [self showHudWithTimeout];
             [toolkit tryRequestDeviceValueList:mac];
@@ -182,7 +183,7 @@
 
 - (BOOL)isDeviceListEmpty {
     // don't show any tiles until there are values for the devices; no values == no way to fetch from almond
-    return self.deviceList.count == 0 || self.deviceValueList.count == 0;
+    return self.deviceList.count == 0 || self.deviceValueTable.count == 0;
 }
 
 - (BOOL)isNoAlmondMAC {
@@ -340,13 +341,7 @@
     cell.deviceColor = self.almondColor;
     cell.delegate = self;
 
-    unsigned int deviceId = device.deviceID;
-    for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-        if (deviceId == currentDeviceValue.deviceID) {
-            cell.deviceValue = currentDeviceValue;
-            break;
-        }
-    }
+    cell.deviceValue = [self tryCurrentDeviceValues:device.deviceID];
 
     BOOL updating = [self isDeviceUpdating:device];
     [cell markWillReuseCell:updating];
@@ -579,12 +574,7 @@
 }
 
 - (SFIDeviceValue *)tryCurrentDeviceValues:(int)deviceId {
-    for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
-        if (deviceId == currentDeviceValue.deviceID) {
-            return currentDeviceValue;
-        }
-    }
-    return nil;
+    return self.deviceValueTable[@(deviceId)];
 }
 
 - (SFIDevice *)tryGetDevice:(NSInteger)index {
@@ -595,6 +585,16 @@
         return list[uIndex];
     }
     return nil;
+}
+
+// calls should be coordinated on the main queue
+- (void)setDeviceValues:(NSArray*)values {
+    NSMutableDictionary *table = [NSMutableDictionary dictionary];
+    for (SFIDeviceValue *value in values) {
+        NSNumber *key = @(value.deviceID);
+        table[key] = value;
+    }
+    _deviceValueTable = [NSDictionary dictionaryWithDictionary:table];
 }
 
 #pragma mark - Cloud callbacks and timeouts
@@ -614,7 +614,7 @@
 
             //Cancel the mobile event - Revert back
             SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            self.deviceValueList = [toolkit deviceValuesList:self.almondMac];
+            [self setDeviceValues:[toolkit deviceValuesList:self.almondMac]];
             [self initializeDevices];
             [self.tableView reloadData];
             [self.HUD hide:YES];
@@ -713,7 +713,7 @@
         if ([self isSameAsCurrentMAC:cloudMAC]) {
             self.deviceList = newDeviceList;
             if (newDeviceValueList) {
-                self.deviceValueList = newDeviceValueList;
+                [self setDeviceValues:newDeviceValueList];
             }
             [self initializeDevices];
             [self.tableView reloadData];
@@ -798,7 +798,7 @@
         [self.refreshControl endRefreshing];
 
         self.deviceList = newDeviceList;
-        self.deviceValueList = newDeviceValueList;
+        [self setDeviceValues:newDeviceValueList];
         [self initializeDevices];
         [self.tableView reloadData];
     });
