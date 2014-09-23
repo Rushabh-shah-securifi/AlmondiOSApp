@@ -104,11 +104,11 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
 
-    if (self.firstResponderField) {
-        if (!self.firstResponderField.isFirstResponder) {
-            [self.firstResponderField becomeFirstResponder];
-        }
-    }
+//    if (self.firstResponderField) {
+//        if (!self.firstResponderField.isFirstResponder) {
+//            [self.firstResponderField becomeFirstResponder];
+//        }
+//    }
 
     if (self.layoutCalled) {
         return;
@@ -264,6 +264,7 @@
 // Save button tapped
 - (void)onSaveSensorNameLocationChanges:(id)sender {
     [self.delegate sensorDetailViewDidPressSaveButton:self];
+    [self.firstResponderField resignFirstResponder];
 }
 
 - (void)onSensorNameTextFieldDidChange:(id)sender {
@@ -328,7 +329,13 @@
 
 #pragma mark - UITextFieldDelegate methods
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    [self.delegate sensorDetailViewWillStartMakingChanges:self];
+    return YES;
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [textField selectAll:self];
     self.firstResponderField = textField;
 }
 
@@ -337,6 +344,12 @@
         self.firstResponderField = nil;
     }
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self.delegate sensorDetailViewWillCancelMakingChanges:self];
+    return YES;
+}
+
 
 #pragma mark - Layout primitives
 
@@ -479,14 +492,23 @@
     const CGFloat slider_height = 25.0;
 
     //Display slider
-    SFISlider *slider = [SFISlider new];
-    slider.frame = CGRectMake(40.0, self.baseYCoordinate, (self.frame.size.width - 90), slider_height);
+    CGRect frame = CGRectMake(40.0, self.baseYCoordinate, (self.frame.size.width - 90), slider_height);
+    SFISlider *slider = [[SFISlider alloc] initWithFrame:frame];
     slider.tag = self.tag;
     slider.propertyType = propertyType;
     slider.minimumValue = minVal;
     slider.maximumValue = maxValue;
+    slider.popUpViewColor = [self.color complementaryColor];
+    slider.textColor = [slider.popUpViewColor blackOrWhiteContrastingColor];
+    slider.font = [UIFont fontWithName:@"Avenir-Heavy" size:22];
     [slider addTarget:self action:@selector(onSliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-
+    //
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterPercentStyle;
+    formatter.multiplier = @(1); // don't multiply numbers by 100
+    slider.numberFormatter = formatter;
+    slider.maxFractionDigitsDisplayed = 0;
+    //
     UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSliderTapped:)];
     [slider addGestureRecognizer:tapSlider];
 
@@ -498,7 +520,7 @@
     // Initialize the slider value
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:propertyType];
     float sliderValue = [currentDeviceValue floatValue];
-    [slider setValue:sliderValue animated:YES];
+    [slider setValue:sliderValue animated:NO];
 
     return slider;
 }

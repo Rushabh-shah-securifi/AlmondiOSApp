@@ -377,6 +377,14 @@
 
 #pragma mark - SFISensorDetailViewDelegate methods
 
+- (void)sensorDetailViewWillStartMakingChanges:(SFISensorDetailView *)view {
+    [self.delegate tableViewCellWillStartMakingChanges:self];
+}
+
+- (void)sensorDetailViewWillCancelMakingChanges:(SFISensorDetailView *)view {
+    [self.delegate tableViewCellWillCancelMakingChanges:self];
+}
+
 - (void)sensorDetailViewDidPressSaveButton:(SFISensorDetailView *)view {
     [self.delegate tableViewCellDidSaveChanges:self];
 }

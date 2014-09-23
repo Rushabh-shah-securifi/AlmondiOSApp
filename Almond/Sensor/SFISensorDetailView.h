@@ -13,6 +13,10 @@
 // called when Save button is pressed
 - (void)sensorDetailViewDidPressSaveButton:(SFISensorDetailView*)view;
 
+- (void)sensorDetailViewWillStartMakingChanges:(SFISensorDetailView*)view;
+
+- (void)sensorDetailViewWillCancelMakingChanges:(SFISensorDetailView*)view;
+
 - (void)sensorDetailViewDidPressDismissTamperButton:(SFISensorDetailView*)view;
 
 - (void)sensorDetailViewDidChangeSensorValue:(SFISensorDetailView*)view propertyType:(SFIDevicePropertyType)propertyType newValue:(NSString*)aValue;
