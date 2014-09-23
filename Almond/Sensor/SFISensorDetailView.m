@@ -641,7 +641,7 @@
     [self addSubview:fanModeLabel];
     //
     UISegmentedControl *fanModeSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Auto Low", @"On Low"]];
-    fanModeSegmentControl.frame = CGRectMake(90.0, self.baseYCoordinate, self.frame.size.width - 100, 25.0); //CGRectMake(self.frame.size.width - 190, self.baseYCoordinate, 180, 25);
+    fanModeSegmentControl.frame = CGRectMake(90.0, self.baseYCoordinate, self.frame.size.width - 100, 25.0);
     fanModeSegmentControl.tag = self.tag;
     fanModeSegmentControl.tintColor = white_color;
     [fanModeSegmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
@@ -1046,6 +1046,15 @@
 
 - (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {
     SFIDevicePropertyType type = (SFIDevicePropertyType) picker.tag;
+    NSInteger previousIndex = [self getSelectedIndex:type];
+
+    if (previousIndex == index) {
+        // no change to process
+        // note this delegate is called when the initial value is set at time of UI set up; so we have to be careful
+        // to trap this no-op state to prevent unnecessary updates being sent to the cloud
+        return;
+    }
+
     NSInteger temp = index + TEMP_LOWEST_SETTABLE;
     NSString *value = [NSString stringWithFormat:@"%ld", (long)temp];
     [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:type newValue:value];
