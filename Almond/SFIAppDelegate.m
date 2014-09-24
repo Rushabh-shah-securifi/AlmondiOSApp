@@ -10,16 +10,13 @@
 #import "SNLog.h"
 #import "SFIColors.h"
 #import "Analytics.h"
+#import "Crashlytics.h"
 
 
 @implementation SFIAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-//#ifdef DEBUG
-//    [BugSenseController sharedControllerWithBugSenseAPIKey:@"172e1935"];
-//#else
-//    [BugSenseController sharedControllerWithBugSenseAPIKey:@"a9525243"];
-//#endif
+    [Crashlytics startWithAPIKey:@"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3"];
 
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
