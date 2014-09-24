@@ -379,13 +379,15 @@
         }
     }
 
-    UIView *backgroundLabel = [[UIView alloc] initWithFrame:CGRectMake(10, 5, self.tableView.frame.size.width - 20, 130)];
-    SFIColors *currentColor = self.listAvailableColors[3];
-    backgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (currentColor.hue / 360.0) saturation:(CGFloat) (currentColor.saturation / 100.0) brightness:(CGFloat) (currentColor.brightness / 100.0) alpha:1];
-    [backgroundLabel addSubview:titleLabel];
-    [backgroundLabel addSubview:summaryLabel];
+    SFIColors *currentColor = self.listAvailableColors[3]; //todo this is brittle; fix me
+    UIColor *color = [UIColor colorWithHue:(CGFloat) (currentColor.hue / 360.0) saturation:(CGFloat) (currentColor.saturation / 100.0) brightness:(CGFloat) (currentColor.brightness / 100.0) alpha:1];
 
-    [cell.contentView addSubview:backgroundLabel];
+    UIView *container = [[UIView alloc] initWithFrame:CGRectMake(10, 5, self.tableView.frame.size.width - 20, 130)];
+    container.backgroundColor = color;
+    [container addSubview:titleLabel];
+    [container addSubview:summaryLabel];
+
+    [cell.contentView addSubview:container];
     return cell;
 }
 
