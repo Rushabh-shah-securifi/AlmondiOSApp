@@ -67,7 +67,7 @@
 #define DT39_DOOR_SENSOR_TRUE @"door_off.png"
 #define DT39_DOOR_SENSOR_FALSE @"door_on.png"
 
-#define DEVICE_TAMPERED @"Device has been tampered with."
+#define DEVICE_TAMPERED @"Device has been tampered"
 #define BATTERY_IS_LOW @"Alert! Battery is low."
 
 + (void)dismissKeyboard;
