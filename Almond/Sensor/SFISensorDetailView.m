@@ -969,7 +969,7 @@
         case SFIDeviceType_MultiLevelOnOff_4:
             return 280;
         case SFIDeviceType_Thermostat_7:
-            return 465;
+            return 470;
         case SFIDeviceType_MotionSensor_11:
             if (currentSensor.isTampered) {
                 return EXPANDED_ROW_HEIGHT + 50;
