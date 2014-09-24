@@ -18,15 +18,19 @@
 @property(nonatomic, readonly) NSString *almondMac;
 @property(nonatomic, readonly) SFIColors *almondColor;
 
-@property(nonatomic) NSArray *deviceList;
+@property(nonatomic, readonly) NSArray *deviceList;
+@property(nonatomic, readonly) NSDictionary *deviceIndexTable; // device ID :: table cell row
 @property(nonatomic, readonly) NSDictionary *deviceValueTable;
 
 // devices which are in the state of being updated; 
 // values are SFIDevice.deviceID numbers; 
 // this set is updated each time a device is updated, finishes updating, or timeouts updating.
 // mutations are coordinated on the updateQ
-@property(nonatomic) NSSet *updatingDevices; 
+@property(nonatomic) NSSet *updatingDevices;
 @property(nonatomic, readonly) dispatch_queue_t updateQ;
+
+// when YES, we defer showing sensor updates; basically, prevents first responder from being relinquished while editing
+@property BOOL isUpdatingDeviceSettings;
 
 @property(nonatomic) NSTimer *mobileCommandTimer;
 @property(nonatomic) NSTimer *sensorChangeCommandTimer;
@@ -47,7 +51,7 @@
 
     self.updatingDevices = [NSSet set];
     _updateQ = dispatch_queue_create("com.securifi.sensorsview.updateq", DISPATCH_QUEUE_SERIAL);
-    
+
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
     self.tableView.separatorColor = [UIColor clearColor];
@@ -126,6 +130,8 @@
 
     NSString *const mac = (plus == nil) ? NO_ALMOND : plus.almondplusMAC;
     _almondMac = mac;
+
+    self.isUpdatingDeviceSettings = NO;
 
     if ([self isNoAlmondMAC]) {
         self.navigationItem.title = @"Get Started";
@@ -364,6 +370,10 @@
 #pragma mark - SFISensorTableViewCellDelegate methods
 
 - (void)tableViewCellDidClickDevice:(SFISensorTableViewCell *)cell {
+    if (self.isViewControllerDisposed) {
+        return;
+    }
+
     SFIDevice *device = cell.device;
     const int device_id = device.deviceID;
 
@@ -416,7 +426,7 @@
     } // end switch
 
     // Tell the cell to show 'updating' status
-    [self markDeviceUpdating:device];
+    [self markDeviceUpdatingState:device];
     [cell showUpdatingDeviceValuesStatus];
 
     // Send update to the cloud
@@ -424,17 +434,16 @@
 }
 
 - (void)tableViewCellDidPressSettings:(SFISensorTableViewCell *)cell {
-    const int clicked_row = (int) cell.tag;
-
-    //Get the sensor for which setting was clicked
-    NSArray *devices = self.deviceList;
-    if (clicked_row >= devices.count) {
+    if (self.isViewControllerDisposed) {
         return;
     }
 
     // Toggle expansion
     SFIDevice *sensor = cell.device;
     sensor.isExpanded = !sensor.isExpanded;
+
+    const int clicked_row = [self deviceCellRow:sensor.deviceID];
+    NSArray *devices = self.deviceList;
 
     NSMutableArray *paths = [NSMutableArray array];
     [paths addObject:[NSIndexPath indexPathForRow:clicked_row inSection:0]];
@@ -461,14 +470,29 @@
     });
 }
 
-- (void)tableViewCellDidSaveChanges:(SFISensorTableViewCell *)cell {
-    if (!self) {
-        return;
-    }
-    if ([self isNoAlmondMAC]) {
+- (void)tableViewCellWillStartMakingChanges:(SFISensorTableViewCell *)cell {
+    if (self.isViewControllerDisposed) {
         return;
     }
 
+    self.isUpdatingDeviceSettings = YES;
+}
+
+- (void)tableViewCellWillCancelMakingChanges:(SFISensorTableViewCell *)cell {
+    if (self.isViewControllerDisposed) {
+        return;
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.isUpdatingDeviceSettings = NO;
+        [self.tableView reloadData];
+    });
+}
+
+- (void)tableViewCellDidSaveChanges:(SFISensorTableViewCell *)cell {
+    if (self.isViewControllerDisposed) {
+        return;
+    }
     [[[iToast makeText:@"Saving..."] setGravity:iToastGravityCenter] show];
 
     SFIDevice *device = cell.device;
@@ -480,8 +504,10 @@
     cmd.changedLocation = cell.deviceLocation;
     cmd.mobileInternalIndex = [NSString stringWithFormat:@"%d", (arc4random() % 10000) + 1];
 
+    NSLog(@"xml: %@", cmd.toXml);
+
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_SENSOR_CHANGE_REQUEST;
+    cloudCommand.commandType = CommandType_MOBILE_COMMAND;
     cloudCommand.command = cmd;
 
     [self asyncSendCommand:cloudCommand];
@@ -493,20 +519,19 @@
                                                                    selector:@selector(onSensorChangeCommandTimeout:)
                                                                    userInfo:nil
                                                                     repeats:NO];
+
     self.isSensorChangeCommandSuccessful = FALSE;
+    self.isUpdatingDeviceSettings = NO;
 }
 
 - (void)tableViewCellDidDismissTamper:(SFISensorTableViewCell *)cell {
-    if (!self) {
-        return;
-    }
-    if ([self isNoAlmondMAC]) {
+    if (self.isViewControllerDisposed) {
         return;
     }
 
     SFIDevice *device = cell.device;
 
-    SFIDeviceKnownValues *deviceValues = [self tryGetCurrentKnownValuesForDevice:device.deviceID propertyType:SFIDevicePropertyType_TAMPER];
+    SFIDeviceKnownValues *deviceValues  = [cell.deviceValue knownValuesForProperty:SFIDevicePropertyType_TAMPER];
     [deviceValues setBoolValue:NO];
 
     [self sendMobileCommandForDevice:device deviceValue:deviceValues];
@@ -517,13 +542,12 @@
         return;
     }
 
-    [self markDeviceUpdating:cell.device];
+    [self markDeviceUpdatingState:cell.device];
     [cell showUpdatingDeviceValuesStatus];
 
     SFIDevice *device = cell.device;
-    int currentDeviceId = device.deviceID;
 
-    SFIDeviceKnownValues *deviceValues = [self tryGetCurrentKnownValuesForDevice:currentDeviceId propertyType:propertyType];
+    SFIDeviceKnownValues *deviceValues  = [cell.deviceValue knownValuesForProperty:propertyType];
     deviceValues.value = newValue;
 
     [self sendMobileCommandForDevice:device deviceValue:deviceValues];
@@ -550,14 +574,6 @@
 }
 
 #pragma mark - Sensor Values
-
-- (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice:(int)deviceId propertyType:(SFIDevicePropertyType)aPropertyType {
-    SFIDeviceValue *value = [self tryCurrentDeviceValues:deviceId];
-    if (!value) {
-        return nil;
-    }
-    return [value knownValuesForProperty:aPropertyType];
-}
 
 - (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice:(int)deviceId valuesIndex:(NSInteger)index {
     SFIDeviceValue *value = [self tryCurrentDeviceValues:deviceId];
@@ -588,7 +604,28 @@
 }
 
 // calls should be coordinated on the main queue
-- (void)setDeviceValues:(NSArray*)values {
+- (void)setDeviceList:(NSArray *)devices {
+    NSMutableDictionary *table = [NSMutableDictionary dictionary];
+
+    int row = 0;
+    for (SFIDevice *device in devices) {
+        NSNumber *key = @(device.deviceID);
+        table[key] = @(row);
+        row++;
+    }
+
+    _deviceList = devices;
+    _deviceIndexTable = [NSDictionary dictionaryWithDictionary:table];
+}
+
+- (NSInteger)deviceCellRow:(int)deviceId {
+    NSNumber *key = @(deviceId);
+    NSNumber *row = self.deviceIndexTable[key];
+    return [row integerValue];
+}
+
+// calls should be coordinated on the main queue
+- (void)setDeviceValues:(NSArray *)values {
     NSMutableDictionary *table = [NSMutableDictionary dictionary];
     for (SFIDeviceValue *value in values) {
         NSNumber *key = @(value.deviceID);
@@ -700,7 +737,7 @@
         for (SFIDevice *oldDevice in oldDeviceList) {
             if (newDevice.deviceID == oldDevice.deviceID) {
                 newDevice.isExpanded = oldDevice.isExpanded;
-                [self clearDeviceUpdating:oldDevice];
+                [self clearDeviceUpdatingState:oldDevice];
             }
         }
     }
@@ -749,7 +786,7 @@
     NSString *cloudMAC = [data valueForKey:@"data"];
     if (![self isSameAsCurrentMAC:cloudMAC]) {
         DLog(@"Sensors: ignore device values list change, c:%@, m:%@", self.almondMac, cloudMAC);
-        // An Almond not currently being views was changed
+        // An Almond not currently being viewed was changed
         return;
     }
 
@@ -759,6 +796,7 @@
     if (newDeviceList == nil) {
         DLog(@"Device list is empty: %@", cloudMAC);
         newDeviceList = @[];
+        [self clearAllDeviceUpdatingState];
     }
 
     NSArray *newDeviceValueList = [toolkit deviceValuesList:cloudMAC];
@@ -778,7 +816,7 @@
         for (SFIDevice *oldDevice in oldDeviceList) {
             if (newDevice.deviceID == oldDevice.deviceID) {
                 newDevice.isExpanded = oldDevice.isExpanded;
-                [self clearDeviceUpdating:oldDevice];
+                [self clearDeviceUpdatingState:oldDevice];
             }
         }
     }
@@ -797,15 +835,19 @@
 
         [self.refreshControl endRefreshing];
 
-        self.deviceList = newDeviceList;
+        [self setDeviceList:newDeviceList];
         [self setDeviceValues:newDeviceValueList];
         [self initializeDevices];
-        [self.tableView reloadData];
+
+        // defer showing changes when a sensor is being edited (name, location, etc.)
+        if (!self.isUpdatingDeviceSettings) {
+            [self.tableView reloadData];
+        }
     });
 }
 
 - (void)onCurrentAlmondChanged:(id)sender {
-    [self clearAllDeviceUpdating];
+    [self clearAllDeviceUpdatingState];
 
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self initializeAlmondData];
@@ -832,7 +874,7 @@
 
     // If plus is nil, then there are no almonds attached, and the UI needs to deal with it.
 
-    [self clearAllDeviceUpdating];
+    [self clearAllDeviceUpdatingState];
 
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
@@ -861,6 +903,8 @@
     if ([self isNoAlmondMAC]) {
         return;
     }
+
+    [self clearAllDeviceUpdatingState];
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncRequestDeviceValueList:self.almondMac];
@@ -945,13 +989,13 @@
         list = @[];
     }
 
-    [self clearAllDeviceUpdating];
+    [self clearAllDeviceUpdatingState];
 
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.isViewControllerDisposed) {
             return;
         }
-        self.deviceList = list;
+        [self setDeviceList:list];
         [self initializeDevices];
         [self.tableView reloadData];
         [self.HUD hide:YES];
@@ -964,7 +1008,7 @@
 
 #pragma mark - Device updating state
 
-- (void)markDeviceUpdating:(SFIDevice*)device {
+- (void)markDeviceUpdatingState:(SFIDevice*)device {
     dispatch_async(self.updateQ, ^() {
         unsigned int deviceId = device.deviceID;
         NSNumber *key = @(deviceId);
@@ -972,13 +1016,13 @@
     });
 }
 
-- (void)clearAllDeviceUpdating {
+- (void)clearAllDeviceUpdatingState {
     dispatch_async(self.updateQ, ^() {
         self.updatingDevices = [NSSet set];
     });
 }
 
-- (void)clearDeviceUpdating:(SFIDevice*)device {
+- (void)clearDeviceUpdatingState:(SFIDevice*)device {
     dispatch_async(self.updateQ, ^() {
         unsigned int deviceId = device.deviceID;
         NSNumber *key = @(deviceId);
