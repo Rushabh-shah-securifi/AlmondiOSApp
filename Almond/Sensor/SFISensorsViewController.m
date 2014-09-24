@@ -442,7 +442,7 @@
     SFIDevice *sensor = cell.device;
     sensor.isExpanded = !sensor.isExpanded;
 
-    const int clicked_row = [self deviceCellRow:sensor.deviceID];
+    const int clicked_row = (int) [self deviceCellRow:sensor.deviceID];
     NSArray *devices = self.deviceList;
 
     NSMutableArray *paths = [NSMutableArray array];
@@ -805,7 +805,7 @@
     }
 
     if (newDeviceList.count != newDeviceValueList.count) {
-        ELog(@"Warning: device list and values lists are incongruent, d:%ld, v:%ld", newDeviceList.count, newDeviceValueList.count);
+        ELog(@"Warning: device list and values lists are incongruent, d:%ld, v:%ld", (unsigned long)newDeviceList.count, newDeviceValueList.count);
     }
 
     DLog(@"Changing device value list: %@", newDeviceValueList);
