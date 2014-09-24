@@ -71,18 +71,16 @@
 
 - (void)markSensor:(SFIDeviceType)deviceType timeToComplete:(NSTimeInterval)resResTime {
     double milliseconds = (double) (resResTime * 1000);
-    NSNumber *num = @(milliseconds);
+    NSNumber *interval = @(milliseconds);
+
+    NSString *deviceTypeStr = [SFIDevice nameForType:deviceType];
+    NSDictionary *params = [[GAIDictionaryBuilder createTimingWithCategory:@"sensor_click"
+                                                                  interval:interval
+                                                                      name:@"device"
+                                                                     label:deviceTypeStr] build];
 
     GAI *gai = [GAI sharedInstance];
     id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
-
-    NSString *deviceTypeStr = [SFIDevice nameForType:deviceType];
-    NSDictionary *params = @{
-            @"time" : num,
-            @"device" : deviceTypeStr
-    };
-
-    [tracker set:kGAIEvent value:@"sensor_click"];
     [tracker send:params];
 }
 
