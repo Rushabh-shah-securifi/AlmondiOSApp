@@ -312,7 +312,7 @@
     //
     ScoreboardViewController *scoreCtrl = [ScoreboardViewController new];
     UINavigationController *scoreNav = [[UINavigationController alloc] initWithRootViewController:scoreCtrl];
-    icon = [UIImage imageNamed:@"icon_router.png"];
+    icon = [UIImage imageNamed:@"878-binoculars.png"];
     scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
 
     UITabBarController *front = [UITabBarController new];
