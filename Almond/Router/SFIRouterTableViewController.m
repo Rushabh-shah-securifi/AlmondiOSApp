@@ -333,7 +333,9 @@
 }
 
 - (UITableViewCell *)createAlmondCell:(UITableView *)tableView {
-    static NSString *CellIdentifier = @"Cell";
+    NSLog(@"createAlmondCell");
+
+    static NSString *CellIdentifier = @"AlmondCell";
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -350,41 +352,38 @@
     [cell removeFromSuperview];
     //END: HACK FOR MEMORY LEAKS
 
-    UILabel *backgroundLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.tableView.frame.size.width - 20, 130)];
-
-    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.tableView.frame.size.width, 30)];
-    lblTitle.backgroundColor = [UIColor clearColor];
-    lblTitle.textColor = [UIColor whiteColor];
-    [lblTitle setFont:[UIFont fontWithName:@"Avenir-Light" size:25]];
-
-    UILabel *lblSummary = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, self.tableView.frame.size.width, 30)];
-    lblSummary.backgroundColor = [UIColor clearColor];
-    lblSummary.textColor = [UIColor whiteColor];
-    [lblSummary setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
-
-    SFIColors *currentColor;
-
     //PY 270114 - Remove other options as for now Router Summary returns value only for reboot for Almond+
     //Router Reboot
-    currentColor = self.listAvailableColors[3];
-    lblTitle.text = @"Router Reboot";
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.tableView.frame.size.width, 30)];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    titleLabel.textColor = [UIColor whiteColor];
+    titleLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:25];
+    titleLabel.text = @"Router Reboot";
 
+    UILabel *summaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, self.tableView.frame.size.width, 30)];
+    summaryLabel.backgroundColor = [UIColor clearColor];
+    summaryLabel.textColor = [UIColor whiteColor];
+    summaryLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:13];
+    //
     if (self.routerSummary == nil) {
-        lblSummary.text = [NSString stringWithFormat:@"Last reboot %@", @""];
+        summaryLabel.text = [NSString stringWithFormat:@"Last reboot %@", @""];
     }
     else {
         if (self.isRebooting) {
-            lblSummary.numberOfLines = 3;
-            lblSummary.frame = CGRectMake(10, 35, self.tableView.frame.size.width - 20, 60);
-            lblSummary.text = @"Router is rebooting. It will take at least \n2 minutes for the router to boot.\nPlease refresh after sometime.";
+            summaryLabel.numberOfLines = 3;
+            summaryLabel.frame = CGRectMake(10, 35, self.tableView.frame.size.width - 20, 60);
+            summaryLabel.text = @"Router is rebooting. It will take at least \n2 minutes for the router to boot.\nPlease refresh after sometime.";
         }
         else {
-            lblSummary.text = [NSString stringWithFormat:@"Last reboot %@ ago", self.routerSummary.routerUptime];
+            summaryLabel.text = [NSString stringWithFormat:@"Last reboot %@ ago", self.routerSummary.routerUptime];
         }
     }
-    [backgroundLabel addSubview:lblTitle];
-    [backgroundLabel addSubview:lblSummary];
+
+    UIView *backgroundLabel = [[UIView alloc] initWithFrame:CGRectMake(10, 5, self.tableView.frame.size.width - 20, 130)];
+    SFIColors *currentColor = self.listAvailableColors[3];
     backgroundLabel.backgroundColor = [UIColor colorWithHue:(CGFloat) (currentColor.hue / 360.0) saturation:(CGFloat) (currentColor.saturation / 100.0) brightness:(CGFloat) (currentColor.brightness / 100.0) alpha:1];
+    [backgroundLabel addSubview:titleLabel];
+    [backgroundLabel addSubview:summaryLabel];
 
     [cell.contentView addSubview:backgroundLabel];
     return cell;
