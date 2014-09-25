@@ -15,11 +15,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UILabel *lblSSID;
 @property (weak, nonatomic) IBOutlet UILabel *lblMAC;
-@property (weak, nonatomic) IBOutlet UILabel *lblPassword;
 @property (weak, nonatomic) IBOutlet UILabel *lblNameTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblSSIDTitle;
 @property (weak, nonatomic) IBOutlet UILabel *lblMACTitle;
-@property (weak, nonatomic) IBOutlet UILabel *lblPasswordTitle;
 @property (weak, nonatomic) IBOutlet UIImageView *imgLine1;
 @property (weak, nonatomic) IBOutlet UIImageView *imgLine2;
 @property (weak, nonatomic) IBOutlet UIImageView *imgLine3;
