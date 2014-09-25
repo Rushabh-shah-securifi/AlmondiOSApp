@@ -71,18 +71,16 @@
 
 - (void)markSensor:(SFIDeviceType)deviceType timeToComplete:(NSTimeInterval)resResTime {
     double milliseconds = (double) (resResTime * 1000);
-    NSNumber *num = @(milliseconds);
+    NSNumber *interval = @(milliseconds);
+
+    NSString *deviceTypeStr = [SFIDevice nameForType:deviceType];
+    NSDictionary *params = [[GAIDictionaryBuilder createTimingWithCategory:@"sensor_click"
+                                                                  interval:interval
+                                                                      name:@"device"
+                                                                     label:deviceTypeStr] build];
 
     GAI *gai = [GAI sharedInstance];
     id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
-
-    NSString *deviceTypeStr = [SFIDevice nameForType:deviceType];
-    NSDictionary *params = @{
-            @"time" : num,
-            @"device" : deviceTypeStr
-    };
-
-    [tracker set:kGAIEvent value:@"sensor_click"];
     [tracker send:params];
 }
 
@@ -103,21 +101,25 @@
 }
 
 - (void)markEvent:(NSString *)eventName {
-    GAI *gai = [GAI sharedInstance];
-    id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
-
     NSDictionary *params = [[GAIDictionaryBuilder createEventWithCategory:@"action"     // Event category (required)
                                                                    action:eventName     // Event action (required)
                                                                     label:@"invoke"     // Event label
                                                                     value:nil] build];
 
+    GAI *gai = [GAI sharedInstance];
+    id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
+
     [tracker send:params];
 }
 
 - (void)trackScreen:(NSString *)name {
+    GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createScreenView];
+    NSMutableDictionary *params = [builder build];
+    
     GAI *gai = [GAI sharedInstance];
     id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
-    NSDictionary *params = @{kGAIScreenName : name};
+
+    [tracker set:kGAIDescription value:name];
     [tracker send:params];
 }
 

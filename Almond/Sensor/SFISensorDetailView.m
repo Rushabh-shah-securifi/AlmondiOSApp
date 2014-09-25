@@ -9,6 +9,7 @@
 #import "SFISlider.h"
 #import "V8HorizontalPickerView.h"
 #import "Colours.h"
+#import "SFICopyLabel.h"
 
 
 #define PICKER_ELEMENT_WIDTH 30
@@ -103,12 +104,6 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-
-    if (self.firstResponderField) {
-        if (!self.firstResponderField.isFirstResponder) {
-            [self.firstResponderField becomeFirstResponder];
-        }
-    }
 
     if (self.layoutCalled) {
         return;
@@ -264,6 +259,7 @@
 // Save button tapped
 - (void)onSaveSensorNameLocationChanges:(id)sender {
     [self.delegate sensorDetailViewDidPressSaveButton:self];
+    [self.firstResponderField resignFirstResponder];
 }
 
 - (void)onSensorNameTextFieldDidChange:(id)sender {
@@ -328,7 +324,13 @@
 
 #pragma mark - UITextFieldDelegate methods
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    [self.delegate sensorDetailViewWillStartMakingChanges:self];
+    return YES;
+}
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [textField selectAll:self];
     self.firstResponderField = textField;
 }
 
@@ -337,6 +339,12 @@
         self.firstResponderField = nil;
     }
 }
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self.delegate sensorDetailViewWillCancelMakingChanges:self];
+    return YES;
+}
+
 
 #pragma mark - Layout primitives
 
@@ -388,18 +396,27 @@
 }
 
 - (void)addSaveButton {
-    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
-
     int button_width = 65;
     int right_margin = 10;
+    CGRect frame = CGRectMake(self.frame.size.width - button_width - right_margin, self.baseYCoordinate, button_width, 30);
 
-    UIButton *button = [[SFIHighlightedButton alloc] initWithFrame:CGRectMake(self.frame.size.width - button_width - right_margin, self.baseYCoordinate, button_width, 30)];
+    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
+
+    UIColor *whiteColor = [UIColor whiteColor];
+    UIColor *normalColor = self.color;
+    UIColor *highlightColor = whiteColor;
+
+    SFIHighlightedButton *button = [[SFIHighlightedButton alloc] initWithFrame:frame];
     button.tag = self.tag;
-    button.backgroundColor = [UIColor whiteColor];
+    button.normalBackgroundColor = normalColor;
+    button.highlightedBackgroundColor = highlightColor;
     button.titleLabel.font = heavy_font;
     [button addTarget:self action:@selector(onSaveSensorNameLocationChanges:) forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"Save" forState:UIControlStateNormal];
-    [button setTitleColor:self.color forState:UIControlStateNormal];
+    [button setTitleColor:whiteColor forState:UIControlStateNormal];
+    [button setTitleColor:normalColor forState:UIControlStateHighlighted];
+    button.layer.borderWidth = 1.0f;
+    button.layer.borderColor = whiteColor.CGColor;
 
     [self addSubview:button];
 }
@@ -426,26 +443,32 @@
 - (void)addTamperButton {
     UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
 
+    UIColor *whiteColor = [UIColor whiteColor];
+//    UIColor *whiteColor = [UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6];
+    UIColor *normalColor = self.color;
+    UIColor *highlightColor = whiteColor;
+
     UILabel *label;
     label = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
-    label.backgroundColor = [UIColor clearColor];
+    label.backgroundColor = self.color;
     label.text = DEVICE_TAMPERED;
-    label.textColor = [UIColor whiteColor];
+    label.textColor = whiteColor;
     label.font = heavy_font;
 
     [self addSubview:label];
 
-    UIButton *button = [[UIButton alloc] init];
+    SFIHighlightedButton *button = [[SFIHighlightedButton alloc] initWithFrame:CGRectZero];
     button.frame = [self makeFieldValueRect:235];//CGRectMake(self.frame.size.width - 100, self.baseYCoordinate + 6, 65, 20);
     button.tag = self.tag;
-    button.backgroundColor = [UIColor clearColor];
+    button.normalBackgroundColor = normalColor;
+    button.highlightedBackgroundColor = highlightColor;
     button.titleLabel.font = heavy_font;
     [button setTitle:@"Dismiss" forState:UIControlStateNormal];
-
+    [button setTitleColor:whiteColor forState:UIControlStateNormal];
+    [button setTitleColor:normalColor forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(onDismissTamper:) forControlEvents:UIControlEventTouchDown];
-
-    UIColor *color = [UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6];
-    [button setTitleColor:color forState:UIControlStateNormal];
+    button.layer.borderWidth = 1.0f;
+    button.layer.borderColor = whiteColor.CGColor;
 
     [self addSubview:button];
     [self markYOffset:35];
@@ -464,14 +487,23 @@
     const CGFloat slider_height = 25.0;
 
     //Display slider
-    SFISlider *slider = [SFISlider new];
-    slider.frame = CGRectMake(40.0, self.baseYCoordinate, (self.frame.size.width - 90), slider_height);
+    CGRect frame = CGRectMake(40.0, self.baseYCoordinate, (self.frame.size.width - 90), slider_height);
+    SFISlider *slider = [[SFISlider alloc] initWithFrame:frame];
     slider.tag = self.tag;
     slider.propertyType = propertyType;
     slider.minimumValue = minVal;
     slider.maximumValue = maxValue;
+    slider.popUpViewColor = [self.color complementaryColor];
+    slider.textColor = [slider.popUpViewColor blackOrWhiteContrastingColor];
+    slider.font = [UIFont fontWithName:@"Avenir-Heavy" size:22];
     [slider addTarget:self action:@selector(onSliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-
+    //
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterPercentStyle;
+    formatter.multiplier = @(1); // don't multiply numbers by 100
+    slider.numberFormatter = formatter;
+    slider.maxFractionDigitsDisplayed = 0;
+    //
     UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSliderTapped:)];
     [slider addGestureRecognizer:tapSlider];
 
@@ -483,7 +515,7 @@
     // Initialize the slider value
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:propertyType];
     float sliderValue = [currentDeviceValue floatValue];
-    [slider setValue:sliderValue animated:YES];
+    [slider setValue:sliderValue animated:NO];
 
     return slider;
 }
@@ -501,7 +533,8 @@
     [self addSubview:statusLabel];
 
     // Messages
-    UILabel *valueLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 230, self.baseYCoordinate, 220, 50)];
+    SFICopyLabel *valueLabel = [[SFICopyLabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 230, self.baseYCoordinate, 220, 50)];
+    valueLabel.userInteractionEnabled = YES; // allow user to copy value
     valueLabel.textColor = white_color;
     valueLabel.backgroundColor = clear_color;
     valueLabel.font = heavy_12;
@@ -641,7 +674,7 @@
     [self addSubview:fanModeLabel];
     //
     UISegmentedControl *fanModeSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Auto Low", @"On Low"]];
-    fanModeSegmentControl.frame = CGRectMake(90.0, self.baseYCoordinate, self.frame.size.width - 100, 25.0); //CGRectMake(self.frame.size.width - 190, self.baseYCoordinate, 180, 25);
+    fanModeSegmentControl.frame = CGRectMake(90.0, self.baseYCoordinate, self.frame.size.width - 100, 25.0);
     fanModeSegmentControl.tag = self.tag;
     fanModeSegmentControl.tintColor = white_color;
     [fanModeSegmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
@@ -932,7 +965,7 @@
         case SFIDeviceType_MultiLevelOnOff_4:
             return 280;
         case SFIDeviceType_Thermostat_7:
-            return 465;
+            return 470;
         case SFIDeviceType_MotionSensor_11:
             if (currentSensor.isTampered) {
                 return EXPANDED_ROW_HEIGHT + 50;
@@ -1041,13 +1074,22 @@
 
 - (NSString *)horizontalPickerView:(V8HorizontalPickerView *)picker titleForElementAtIndex:(NSInteger)index {
     index = index + TEMP_LOWEST_SETTABLE;
-    return [NSString stringWithFormat:@"%ld\u00B0", (long)index]; // U+00B0 == degree sign
+    return [NSString stringWithFormat:@"%ld\u00B0", (long) index]; // U+00B0 == degree sign
 }
 
 - (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {
     SFIDevicePropertyType type = (SFIDevicePropertyType) picker.tag;
+    NSInteger previousIndex = [self getSelectedIndex:type];
+
+    if (previousIndex == index) {
+        // no change to process
+        // note this delegate is called when the initial value is set at time of UI set up; so we have to be careful
+        // to trap this no-op state to prevent unnecessary updates being sent to the cloud
+        return;
+    }
+
     NSInteger temp = index + TEMP_LOWEST_SETTABLE;
-    NSString *value = [NSString stringWithFormat:@"%ld", (long)temp];
+    NSString *value = [NSString stringWithFormat:@"%ld", (long) temp];
     [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:type newValue:value];
 }
 

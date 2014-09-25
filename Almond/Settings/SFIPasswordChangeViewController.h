@@ -2,12 +2,12 @@
 //  SFIPasswordChangeViewController.h
 //  Almond
 //
-//  Created by Securifi-Mac2 on 17/09/14.
+//  Created by Priya Yerunkar on 17/09/14.
 //  Copyright (c) 2014 Securifi Ltd. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-
+@class MBProgressHUD;
 @interface SFIPasswordChangeViewController : UIViewController
 
 @property(weak, nonatomic) IBOutlet UILabel *headingLabel;
@@ -19,6 +19,7 @@
 @property(weak, nonatomic) IBOutlet UITextField *changedPassword;
 @property(weak, nonatomic) IBOutlet UITextField *confirmPassword;
 
+@property(nonatomic, readonly) MBProgressHUD *HUD;
 
 - (IBAction)doneButtonHandler:(id)sender;
 - (IBAction)cancelButtonHandler:(id)sender;

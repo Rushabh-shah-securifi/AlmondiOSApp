@@ -45,10 +45,8 @@
 #pragma mark - Cloud command and handlers
 
 - (void)sendReactivationRequest {
-    NSString *email = [[SecurifiToolkit sharedInstance] loginEmail];
-
     ValidateAccountRequest *validateCommand = [[ValidateAccountRequest alloc] init];
-    validateCommand.email = email;
+    validateCommand.email = self.emailID;
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_VALIDATE_REQUEST;

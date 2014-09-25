@@ -8,6 +8,7 @@
 
 #import "SFIAccountsTableViewController.h"
 #import "MBProgressHUD.h"
+#import "iToast.h"
 
 @interface SFIAccountsTableViewController ()
 
@@ -27,14 +28,24 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 #define COUNTRY     5
 #define ZIPCODE     6
 
-#define EXPANDED_PROFILE_ROW_HEIGHT 510
+#define NAME_CHANGED_OWNED_ALMOND   1
+#define NAME_CHANGED_SHARED_ALMOND  2
+
+#define DELETE_ACCOUNT_CONFIRMATION     0
+#define UNLINK_ALMOND_CONFIRMATION      1
+#define USER_INVITE_ALERT               2
+
+#define EXPANDED_PROFILE_ROW_HEIGHT 520
+#define EXPANDED_OWNED_ALMOND_ROW_HEIGHT 170
+#define EXPANDED_SHARED_ALMOND_ROW_HEIGHT 120
 
 @implementation SFIAccountsTableViewController
 
 @synthesize userProfile, ownedAlmondList, sharedAlmondList;
 @synthesize changedFirstName, changedLastName, tfFirstName, tfLastName;
 @synthesize changedAddress1, changedAddress2, changedAddress3, changedCountry, changedZipcode;
-@synthesize tfAddress1, tfAddress2, tfAddress3, tfCountry, tfZipCode;
+@synthesize tfAddress1, tfAddress2, tfAddress3, tfCountry, tfZipCode, changedAlmondName;
+@synthesize currentAlmondMAC, changedEmailID, nameChangedForAlmond;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -70,6 +81,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     self.navigationItem.title = @"Settings";
     
+    ownedAlmondList = [[NSMutableArray alloc]init];
+    sharedAlmondList = [[NSMutableArray alloc]init];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -81,9 +95,52 @@ static NSString *simpleTableIdentifier = @"AccountCell";
                    name:USER_PROFILE_NOTIFIER
                  object:nil];
     
+    [center addObserver:self
+               selector:@selector(delAccountResponseCallback:)
+                   name:DELETE_ACCOUNT_RESPONSE_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(updateProfileResponseCallback:)
+                   name:UPDATE_USER_PROFILE_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(ownedAlmondDataResponseCallback:)
+                   name:ALMOND_AFFILIATION_DATA_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(unlinkAlmondResponseCallback:)
+                   name:UNLINK_ALMOND_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(userInviteResponseCallback:)
+                   name:USER_INVITE_NOTIFIER
+                 object:nil];
 
+    [center addObserver:self
+               selector:@selector(delSecondaryUserResponseCallback:)
+                   name:DELETE_SECONDARY_USER_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(almondNameChangeResponseCallback:)
+                   name:ALMOND_NAME_CHANGE_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(sharedAlmondDataResponseCallback:)
+                   name:ME_AS_SECONDARY_USER_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(delMeAsSecondaryUserResponseCallback:)
+                   name:DELETE_ME_AS_SECONDARY_USER_NOTIFIER
+                 object:nil];
+    
     [self sendUserProfileRequest];
-    //[self showHudWithTimeout];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -92,6 +149,42 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self
                       name:USER_PROFILE_NOTIFIER
+                    object:nil];
+    
+    [center removeObserver:self
+                      name:DELETE_ACCOUNT_RESPONSE_NOTIFIER
+                    object:nil];
+    
+    [center removeObserver:self
+                      name:UPDATE_USER_PROFILE_NOTIFIER
+                    object:nil];
+    
+    [center removeObserver:self
+                      name:ALMOND_AFFILIATION_DATA_NOTIFIER
+                    object:nil];
+    
+    [center removeObserver:self
+                      name:UNLINK_ALMOND_NOTIFIER
+                    object:nil];
+    
+    [center removeObserver:self
+                      name:USER_INVITE_NOTIFIER
+                    object:nil];
+    
+    [center removeObserver:self
+                      name:DELETE_SECONDARY_USER_NOTIFIER
+                    object:nil];
+    
+    [center removeObserver:self
+                      name:ALMOND_NAME_CHANGE_NOTIFIER
+                    object:nil];
+    
+    [center removeObserver:self
+                      name:ME_AS_SECONDARY_USER_NOTIFIER
+                    object:nil];
+    
+    [center removeObserver:self
+                      name:DELETE_ME_AS_SECONDARY_USER_NOTIFIER
                     object:nil];
 }
 
@@ -119,20 +212,35 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    switch (indexPath.row) {
-        case 0:
-            if(userProfile.isExpanded){
-                return EXPANDED_PROFILE_ROW_HEIGHT;
-            }else{
-                return 110;
-            }
-            break;
-            
-        default:
-            return 90;
-            break;
+    if (indexPath.row == 0){
+        if(userProfile.isExpanded){
+            return EXPANDED_PROFILE_ROW_HEIGHT;
+        }
     }
-}
+    else if([ownedAlmondList count] > 0){
+        if(indexPath.row > 0 && indexPath.row <= [ownedAlmondList count]){
+            SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:indexPath.row-1];
+            if(currentAlmond.isExpanded){
+                if([currentAlmond.accessEmailIDs count]>0){
+                    return EXPANDED_OWNED_ALMOND_ROW_HEIGHT + 30 + ([currentAlmond.accessEmailIDs count] * 30);
+                }
+                return EXPANDED_OWNED_ALMOND_ROW_HEIGHT;
+            }
+        }
+    } else if([sharedAlmondList count] > 0){
+         if(indexPath.row > [ownedAlmondList count] && indexPath.row <= ([ownedAlmondList count] +[sharedAlmondList count])){
+             SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:indexPath.row-1];
+             if(currentAlmond.isExpanded){
+                 return EXPANDED_SHARED_ALMOND_ROW_HEIGHT;
+             }
+         }
+    }
+    else{
+        return 120;
+    }
+   
+    return 120;
+ }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -143,7 +251,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 1;
+    return 1 + [ownedAlmondList count] + [sharedAlmondList count];
 }
 
 
@@ -151,21 +259,28 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     
-    cell = [self createUserProfileCell:cell listRow:indexPath.row];
+    if(indexPath.row == 0){
+        cell = [self createUserProfileCell:cell listRow:indexPath.row];
+    }
+    
+    if ([ownedAlmondList count] > 0){
+        if(indexPath.row > 0 && indexPath.row <= [ownedAlmondList count]){
+            cell = [self createOwnedAlmondCell:cell listRow:indexPath.row];
+        }
+    }
+    
+    if([sharedAlmondList count] > 0){
+        if(indexPath.row > [ownedAlmondList count] && indexPath.row <= ([ownedAlmondList count] +[sharedAlmondList count])){
+            cell = [self createSharedAlmondCell:cell listRow:indexPath.row];
+        }
+    }
     return cell;
     
 }
 
-
+#pragma mark - Custom cell creation
 -(UITableViewCell*) createUserProfileCell: (UITableViewCell*)cell listRow:(int)indexPathRow{
-    //    //PY 070114
-    //    //START: HACK FOR MEMORY LEAKS
-    //    for(UIView *currentView in cell.contentView.subviews){
-    //        [currentView removeFromSuperview];
-    //    }
-    //    [cell removeFromSuperview];
-    //    //END: HACK FOR MEMORY LEAKS
-    
+   
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -237,7 +352,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [backgroundLabel addSubview:lblEmail];
     }else{
         //Expanded View
-        backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, EXPANDED_PROFILE_ROW_HEIGHT);
+        backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, EXPANDED_PROFILE_ROW_HEIGHT-10);
         imgArrow.image = [UIImage imageNamed:@"up_arrow.png"];
         
         //PRIMARY EMAIL
@@ -282,6 +397,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         btnChangePassword.backgroundColor = [UIColor clearColor];
         [btnChangePassword setTitle:@"Change Password" forState:UIControlStateNormal];
         [btnChangePassword.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangePassword setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangePassword.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangePassword addTarget:self action:@selector(onChangePasswordClicked:) forControlEvents:UIControlEventTouchUpInside];
         [backgroundLabel addSubview:btnChangePassword];
@@ -306,6 +422,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         btnChangeFName.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangeFName.backgroundColor = [UIColor clearColor];
         [btnChangeFName.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangeFName setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeFName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangeFName addTarget:self action:@selector(onFirstNameClicked:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -358,6 +475,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         btnChangeLName.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangeLName.backgroundColor = [UIColor clearColor];
         [btnChangeLName.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangeLName setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeLName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangeLName addTarget:self action:@selector(onLastNameClicked:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -407,6 +525,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         btnChangeAddress.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangeAddress.backgroundColor = [UIColor clearColor];
         [btnChangeAddress.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangeAddress setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeAddress.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangeAddress addTarget:self action:@selector(onAddressChangeClicked:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -492,6 +611,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         btnChangeCountry.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangeCountry.backgroundColor = [UIColor clearColor];
         [btnChangeCountry.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangeCountry setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeCountry.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangeCountry addTarget:self action:@selector(onCountryClicked:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -541,6 +661,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         btnChangeZipCode.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangeZipCode.backgroundColor = [UIColor clearColor];
         [btnChangeZipCode.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangeZipCode setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeZipCode.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangeZipCode addTarget:self action:@selector(onZipCodeClicked:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -599,6 +720,331 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 }
 
 
+-(UITableViewCell*) createOwnedAlmondCell: (UITableViewCell*)cell listRow:(int)indexPathRow{
+    
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    
+    float baseYCordinate = 0;
+    
+    UIView *backgroundLabel = [[UIView alloc]init];
+    backgroundLabel.userInteractionEnabled = TRUE;
+    
+    backgroundLabel.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:168.0/255.0 blue:225.0/255.0 alpha:1.0];
+    
+    SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:indexPathRow-1];
+    
+    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(30, baseYCordinate+7, self.tableView.frame.size.width-90, 30)];
+    lblTitle.backgroundColor = [UIColor clearColor];
+    lblTitle.textColor = [UIColor whiteColor];
+    [lblTitle setFont:[UIFont fontWithName:@"Avenir-Light" size:25]];
+    lblTitle.text = currentAlmond.almondplusName;
+    lblTitle.textAlignment = NSTextAlignmentCenter;
+    [backgroundLabel addSubview:lblTitle];
+    
+    UIImageView *imgArrow = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width-60, 12, 23, 23)];
+    [backgroundLabel addSubview:imgArrow];
+    
+    UIButton *btnExpandOwnedRow = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnExpandOwnedRow.frame =  CGRectMake(self.tableView.frame.size.width-80, baseYCordinate+5, 50, 50);
+    btnExpandOwnedRow.backgroundColor = [UIColor clearColor];
+    [btnExpandOwnedRow addTarget:self action:@selector(onOwnedAlmondClicked:) forControlEvents:UIControlEventTouchUpInside];
+    btnExpandOwnedRow.tag = indexPathRow-1;
+    [backgroundLabel addSubview:btnExpandOwnedRow];
+    
+    
+    baseYCordinate = 45;
+    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.alpha = 0.5;
+    [backgroundLabel addSubview:imgLine];
+    baseYCordinate+=5;
+    
+    if(!currentAlmond.isExpanded){
+        
+        backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, 110);
+        
+        imgArrow.image = [UIImage imageNamed:@"down_arrow.png"];
+        
+        baseYCordinate+=5;
+        
+        UILabel *lblStatus = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width - 30, 20)];
+        lblStatus.backgroundColor = [UIColor clearColor];
+        lblStatus.textColor = [UIColor whiteColor];
+        [lblStatus setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
+
+        lblStatus.text = @"You own this Almond";
+        
+        lblStatus.textAlignment = NSTextAlignmentCenter;
+        [backgroundLabel addSubview:lblStatus];
+        baseYCordinate+=20;
+        
+        UILabel *lblShared = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width  -30, 30)];
+        lblShared.backgroundColor = [UIColor clearColor];
+        lblShared.textColor = [UIColor whiteColor];
+        [lblShared setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        lblShared.text = [NSString stringWithFormat:@"Shared with %d other(s)", currentAlmond.userCount];
+        lblShared.textAlignment = NSTextAlignmentCenter;
+        [backgroundLabel addSubview:lblShared];
+    }else{
+        //Expanded View
+        float expandedLabelSize = EXPANDED_OWNED_ALMOND_ROW_HEIGHT;
+        if([currentAlmond.accessEmailIDs count]>0){
+             expandedLabelSize = expandedLabelSize + 30 + ([currentAlmond.accessEmailIDs count] * 25);
+        }
+        backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, expandedLabelSize-10);
+        imgArrow.image = [UIImage imageNamed:@"up_arrow.png"];
+        
+        //Almond Name
+        UILabel *lblAlmondTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 120, 30)];
+        lblAlmondTitle.backgroundColor = [UIColor clearColor];
+        lblAlmondTitle.textColor = [UIColor whiteColor];
+        [lblAlmondTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+        lblAlmondTitle.text = @"DEVICE NAME";
+        lblAlmondTitle.textAlignment = NSTextAlignmentLeft;
+        [backgroundLabel addSubview:lblAlmondTitle];
+        
+        UIButton *btnUnlinkAlmond = [UIButton buttonWithType:UIButtonTypeCustom];
+        btnUnlinkAlmond.frame = CGRectMake(160, baseYCordinate, 130, 30);
+        btnUnlinkAlmond.backgroundColor = [UIColor clearColor];
+        [btnUnlinkAlmond setTitle:@"Unlink" forState:UIControlStateNormal];
+        [btnUnlinkAlmond.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnUnlinkAlmond setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
+        btnUnlinkAlmond.tag = indexPathRow - 1;
+        btnUnlinkAlmond.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        [btnUnlinkAlmond addTarget:self action:@selector(onUnlinkAlmondClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [backgroundLabel addSubview:btnUnlinkAlmond];
+        
+        baseYCordinate+=25;
+        
+        UITextField *tfAlmondName = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, 180, 30)];
+        tfAlmondName.placeholder = @"Almond Name";
+        [tfAlmondName setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
+        tfAlmondName.text = currentAlmond.almondplusName;
+        tfAlmondName.textAlignment = NSTextAlignmentLeft;
+        tfAlmondName.textColor = [UIColor whiteColor];
+        tfAlmondName.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+        tfAlmondName.tag = indexPathRow - 1;;
+        [tfAlmondName setReturnKeyType:UIReturnKeyDone];
+        tfAlmondName.delegate = self;
+        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
+        [backgroundLabel addSubview:tfAlmondName];
+        
+        UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
+        btnChangeAlmondName.frame = CGRectMake(160, baseYCordinate, 130, 30);
+        btnChangeAlmondName.backgroundColor = [UIColor clearColor];
+        [btnChangeAlmondName setTitle:@"Rename Almond" forState:UIControlStateNormal];
+        [btnChangeAlmondName.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangeAlmondName setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
+        btnChangeAlmondName.tag = indexPathRow - 1;
+        btnChangeAlmondName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        [btnChangeAlmondName addTarget:self action:@selector(onChangeAlmondNameClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [backgroundLabel addSubview:btnChangeAlmondName];
+        
+        baseYCordinate+=30;
+        UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+        imgLine2.image = [UIImage imageNamed:@"line.png"];
+        imgLine2.alpha = 0.2;
+        [backgroundLabel addSubview:imgLine2];
+        
+        if([currentAlmond.accessEmailIDs count]>0){
+            baseYCordinate+=5;
+            UILabel *lblEmailTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 120, 30)];
+            lblEmailTitle.backgroundColor = [UIColor clearColor];
+            lblEmailTitle.textColor = [UIColor whiteColor];
+            [lblEmailTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+            lblEmailTitle.text = @"ACCESS EMAIL";
+            lblEmailTitle.textAlignment = NSTextAlignmentLeft;
+            [backgroundLabel addSubview:lblEmailTitle];
+            
+            
+            //Show text field for each email id
+            
+            for(int index=0; index < [currentAlmond.accessEmailIDs count];index++){
+                baseYCordinate+=25;
+                NSString *currentEmail = [currentAlmond.accessEmailIDs objectAtIndex:index];
+                UILabel *lblEmail = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 220, 30)];
+                lblEmail.backgroundColor = [UIColor clearColor];
+                lblEmail.textColor = [UIColor whiteColor];
+                [lblEmail setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+                lblEmail.text = currentEmail;
+                lblEmail.textAlignment = NSTextAlignmentLeft;
+                [backgroundLabel addSubview:lblEmail];
+                
+                UIButton *btnEmailRemove = [UIButton buttonWithType:UIButtonTypeCustom];
+                btnEmailRemove.frame = CGRectMake(160, baseYCordinate, 130, 30);
+                btnEmailRemove.backgroundColor = [UIColor clearColor];
+                [btnEmailRemove setTitle:@"Remove" forState:UIControlStateNormal];
+                [btnEmailRemove.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+                btnEmailRemove.tag = index;
+                btnEmailRemove.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+                [btnEmailRemove addTarget:self action:@selector(onEmailRemoveClicked:) forControlEvents:UIControlEventTouchUpInside];
+                [backgroundLabel addSubview:btnEmailRemove];
+            }
+            
+            baseYCordinate+=30;
+            UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+            imgLine.image = [UIImage imageNamed:@"line.png"];
+            imgLine.alpha = 0.2;
+            [backgroundLabel addSubview:imgLine];
+        }
+        
+        baseYCordinate+=12;
+        
+        UIButton *btnInvite = [[UIButton alloc]init];
+        btnInvite.frame = CGRectMake(self.tableView.frame.size.width/2 - 60, baseYCordinate, 110, 30);
+        btnInvite.backgroundColor = [UIColor clearColor];
+        [[btnInvite layer] setBorderWidth:2.0f];
+        [[btnInvite layer] setBorderColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:1.0].CGColor];
+        [btnInvite setTitle:@"INVITE MORE" forState:UIControlStateNormal];
+        [btnInvite setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:1.0] forState:UIControlStateNormal ];
+        [btnInvite.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+        btnInvite.tag = indexPathRow - 1;
+        btnInvite.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        [btnInvite addTarget:self action:@selector(onInviteClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [backgroundLabel addSubview:btnInvite];
+    }
+    
+    
+    [cell addSubview:backgroundLabel];
+    return cell;
+}
+
+
+-(UITableViewCell*) createSharedAlmondCell: (UITableViewCell*)cell listRow:(int)indexPathRow{
+    
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    
+    float baseYCordinate = 0;
+    
+    UIView *backgroundLabel = [[UIView alloc]init];
+    backgroundLabel.userInteractionEnabled = TRUE;
+    
+    backgroundLabel.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:203.0/255.0 blue:124.0/255.0 alpha:1.0];
+    
+    indexPathRow = indexPathRow - [ownedAlmondList count];
+    SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:indexPathRow-1];
+    
+    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(30, baseYCordinate+7, self.tableView.frame.size.width-90, 30)];
+    lblTitle.backgroundColor = [UIColor clearColor];
+    lblTitle.textColor = [UIColor whiteColor];
+    [lblTitle setFont:[UIFont fontWithName:@"Avenir-Light" size:25]];
+    lblTitle.text = currentAlmond.almondplusName;
+    lblTitle.textAlignment = NSTextAlignmentCenter;
+    [backgroundLabel addSubview:lblTitle];
+    
+    UIImageView *imgArrow = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width-60, 12, 23, 23)];
+    [backgroundLabel addSubview:imgArrow];
+    
+    UIButton *btnExpandOwnedRow = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnExpandOwnedRow.frame =  CGRectMake(self.tableView.frame.size.width-80, baseYCordinate+5, 50, 50);
+    btnExpandOwnedRow.backgroundColor = [UIColor clearColor];
+    [btnExpandOwnedRow addTarget:self action:@selector(onSharedAlmondClicked:) forControlEvents:UIControlEventTouchUpInside];
+    btnExpandOwnedRow.tag = indexPathRow-1;
+    [backgroundLabel addSubview:btnExpandOwnedRow];
+    
+    
+    baseYCordinate = 45;
+    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.alpha = 0.5;
+    [backgroundLabel addSubview:imgLine];
+    baseYCordinate+=5;
+    
+    if(!currentAlmond.isExpanded){
+        
+        backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, 110);
+        
+        imgArrow.image = [UIImage imageNamed:@"down_arrow.png"];
+        
+        baseYCordinate+=5;
+        
+        UILabel *lblStatus = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width - 30, 20)];
+        lblStatus.backgroundColor = [UIColor clearColor];
+        lblStatus.textColor = [UIColor whiteColor];
+        [lblStatus setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
+        
+        lblStatus.text = @"Shared with you by";
+        
+        lblStatus.textAlignment = NSTextAlignmentCenter;
+        [backgroundLabel addSubview:lblStatus];
+        baseYCordinate+=20;
+        
+        UILabel *lblShared = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width  -30, 30)];
+        lblShared.backgroundColor = [UIColor clearColor];
+        lblShared.textColor = [UIColor whiteColor];
+        [lblShared setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        lblShared.text = currentAlmond.ownerEmailID;
+        lblShared.textAlignment = NSTextAlignmentCenter;
+        [backgroundLabel addSubview:lblShared];
+    }else{
+        //Expanded View
+        backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, EXPANDED_SHARED_ALMOND_ROW_HEIGHT-10);
+        imgArrow.image = [UIImage imageNamed:@"up_arrow.png"];
+        
+        //Almond Name
+        UILabel *lblAlmondTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 120, 30)];
+        lblAlmondTitle.backgroundColor = [UIColor clearColor];
+        lblAlmondTitle.textColor = [UIColor whiteColor];
+        [lblAlmondTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+        lblAlmondTitle.text = @"DEVICE NAME";
+        lblAlmondTitle.textAlignment = NSTextAlignmentLeft;
+        [backgroundLabel addSubview:lblAlmondTitle];
+        
+        UIButton *btnUnlinkAlmond = [UIButton buttonWithType:UIButtonTypeCustom];
+        btnUnlinkAlmond.frame = CGRectMake(160, baseYCordinate, 130, 30);
+        btnUnlinkAlmond.backgroundColor = [UIColor clearColor];
+        [btnUnlinkAlmond setTitle:@"Remove" forState:UIControlStateNormal];
+        [btnUnlinkAlmond.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnUnlinkAlmond setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
+        btnUnlinkAlmond.tag = indexPathRow - 1;
+        btnUnlinkAlmond.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        [btnUnlinkAlmond addTarget:self action:@selector(onRemoveSharedAlmondClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [backgroundLabel addSubview:btnUnlinkAlmond];
+        
+        baseYCordinate+=25;
+        
+        UITextField *tfAlmondName = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, 180, 30)];
+        tfAlmondName.placeholder = @"Almond Name";
+        [tfAlmondName setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
+        tfAlmondName.text = currentAlmond.almondplusName;
+        tfAlmondName.textAlignment = NSTextAlignmentLeft;
+        tfAlmondName.textColor = [UIColor whiteColor];
+        tfAlmondName.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+        tfAlmondName.tag = indexPathRow - 1;;
+        [tfAlmondName setReturnKeyType:UIReturnKeyDone];
+        tfAlmondName.delegate = self;
+        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
+        [backgroundLabel addSubview:tfAlmondName];
+        
+        UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
+        btnChangeAlmondName.frame = CGRectMake(160, baseYCordinate, 130, 30);
+        btnChangeAlmondName.backgroundColor = [UIColor clearColor];
+        [btnChangeAlmondName setTitle:@"Rename Almond" forState:UIControlStateNormal];
+        [btnChangeAlmondName.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangeAlmondName setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
+        btnChangeAlmondName.tag = indexPathRow - 1;
+        btnChangeAlmondName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        [btnChangeAlmondName addTarget:self action:@selector(onChangeSharedAlmondNameClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [backgroundLabel addSubview:btnChangeAlmondName];
+        
+        baseYCordinate+=30;
+        UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+        imgLine2.image = [UIImage imageNamed:@"line.png"];
+        imgLine2.alpha = 0.2;
+        [backgroundLabel addSubview:imgLine2];
+    }
+    
+    
+    [cell addSubview:backgroundLabel];
+    return cell;
+}
+
 #pragma mark - Class methods
 -(void)onProfileClicked:(id)sender {
     if(userProfile.isExpanded){
@@ -624,8 +1070,12 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     DLog(@"onFirstNameClicked");
     UIButton *btn = (UIButton*) sender;
     if([btn.titleLabel.text isEqualToString:@"Done"]){
-        //TODO: Send first name change request
-        DLog(@"last name to send to cloud %@", changedFirstName);
+        //Send first name change request
+        DLog(@"first name to send to cloud %@", changedFirstName);
+        if(changedFirstName.length!=0){
+            userProfile.firstName = changedFirstName;
+            [self sendUpdateUserProfileRequest];
+        }
         [btn setTitle:@"Edit" forState:UIControlStateNormal] ;
         [tfFirstName resignFirstResponder];
     }else{
@@ -639,9 +1089,13 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     DLog(@"onLastNameClicked");
     UIButton *btn = (UIButton*) sender;
     if([btn.titleLabel.text isEqualToString:@"Done"]){
-        //TODO: Send last name change request
+        //Send last name change request
         [tfLastName resignFirstResponder];
         DLog(@"last name to send to cloud %@", changedLastName);
+        if(changedLastName.length!=0){
+            userProfile.lastName = changedLastName;
+            [self sendUpdateUserProfileRequest];
+        }
         [btn setTitle:@"Edit" forState:UIControlStateNormal] ;
     }else{
         [btn setTitle:@"Done" forState:UIControlStateNormal] ;
@@ -655,8 +1109,24 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     UIButton *btn = (UIButton*) sender;
     if([btn.titleLabel.text isEqualToString:@"Done"]){
         [tfAddress1 resignFirstResponder];
-        //TODO: Send address change request
+        //Send address change request
         DLog(@"address to send to cloud %@ %@ %@", changedAddress1, changedAddress2, changedAddress3);
+        BOOL isChanged = FALSE;
+        if(changedAddress1.length!=0){
+            userProfile.addressLine1 = changedAddress1;
+            isChanged = TRUE;
+        }
+        if(changedAddress2.length!=0){
+            userProfile.addressLine2= changedAddress2;
+            isChanged = TRUE;
+        }
+        if(changedAddress3.length!=0){
+            userProfile.addressLine3 = changedAddress3;
+            isChanged = TRUE;
+        }
+        if(isChanged){
+            [self sendUpdateUserProfileRequest];
+        }
         [btn setTitle:@"Edit" forState:UIControlStateNormal] ;
     }else{
         [btn setTitle:@"Done" forState:UIControlStateNormal] ;
@@ -672,8 +1142,12 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     UIButton *btn = (UIButton*) sender;
     if([btn.titleLabel.text isEqualToString:@"Done"]){
          [tfCountry resignFirstResponder];
-        //TODO: Send country change request
+        //Send country change request
         DLog(@"countryto send to cloud %@", changedCountry);
+        if(changedCountry.length!=0){
+            userProfile.country = changedCountry;
+            [self sendUpdateUserProfileRequest];
+        }
         [btn setTitle:@"Edit" forState:UIControlStateNormal] ;
     }else{
         [btn setTitle:@"Done" forState:UIControlStateNormal] ;
@@ -687,8 +1161,12 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     UIButton *btn = (UIButton*) sender;
     if([btn.titleLabel.text isEqualToString:@"Done"]){
          [tfZipCode resignFirstResponder];
-        //TODO: Send zipcode change request
+        //Send zipcode change request
         DLog(@"zipcode to send to cloud %@", changedZipcode);
+        if(changedZipcode.length!=0){
+            userProfile.zipCode = changedZipcode;
+            [self sendUpdateUserProfileRequest];
+        }
         [btn setTitle:@"Edit" forState:UIControlStateNormal] ;
     }else{
         [btn setTitle:@"Done" forState:UIControlStateNormal] ;
@@ -699,22 +1177,872 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 -(void) onDeleteAccountClicked:(id)sender{
     DLog(@"onDeleteAccountClicked");
-    //TODO: Send request to delete
     //Confirmation Box
-    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Delete Account" message:@"Deleting the account will unlink your Almond(s) and delete user preferences. To confirm account deletion enter your password below." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Delete Account" message:@"Deleting the account will unlink your Almond(s) and delete user preferences. To confirm account deletion enter your password below." delegate:self cancelButtonTitle:@"Cancel"  otherButtonTitles:@"Delete", nil];
     alert.alertViewStyle = UIAlertViewStyleSecureTextInput;
-    [alert addButtonWithTitle:@"DELETE ACCOUNT"];
+    alert.tag = DELETE_ACCOUNT_CONFIRMATION;
+    [[alert textFieldAtIndex:0] setDelegate:self];
     [alert show];
 
 }
 
+-(void)onOwnedAlmondClicked:(id)sender{
+    DLog(@"onOwnedAlmondClicked");
+    UIButton *btn = (UIButton*) sender;
+    int index = btn.tag;
+    SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:index];
+     DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
+    if(currentAlmond.isExpanded){
+        currentAlmond.isExpanded = FALSE;
+    }else{
+        currentAlmond.isExpanded = TRUE;
+    }
+    [self.tableView reloadData];
+}
+
+-(void)onChangeAlmondNameClicked:(id)sender {
+    DLog(@"onChangeAlmondNameClicked");
+    UIButton *btn = (UIButton*) sender;
+    int index = btn.tag;
+    SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:index];
+    DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
+    DLog(@"New Almond Name %@", changedAlmondName);
+    currentAlmondMAC = currentAlmond.almondplusMAC;
+    if(changedAlmondName.length == 0){
+        return;
+    }else if (changedAlmondName.length > 32){
+         [[[iToast makeText:@"Almond Name cannot be more than 32 characters."] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        return;
+    }
+    nameChangedForAlmond = NAME_CHANGED_OWNED_ALMOND;
+    [self sendAlmondNameChangeRequest:currentAlmond.almondplusMAC];
+}
+
+
+-(void)onChangeSharedAlmondNameClicked:(id)sender {
+    DLog(@"onChangeSharedAlmondNameClicked");
+    UIButton *btn = (UIButton*) sender;
+    int index = btn.tag;
+    SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:index];
+    DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
+    DLog(@"New Almond Name %@", changedAlmondName);
+    currentAlmondMAC = currentAlmond.almondplusMAC;
+    if(changedAlmondName.length == 0){
+        return;
+    }else if (changedAlmondName.length > 32){
+        [[[iToast makeText:@"Almond Name cannot be more than 32 characters."] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        return;
+    }
+    
+    nameChangedForAlmond = NAME_CHANGED_SHARED_ALMOND;
+    [self sendAlmondNameChangeRequest:currentAlmond.almondplusMAC];
+}
+
+-(void)onUnlinkAlmondClicked:(id)sender{
+    DLog(@"onUnlinkAlmondClicked");
+    UIButton *btn = (UIButton*) sender;
+    int index = btn.tag;
+    SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:index];
+    DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
+    
+    //Confirmation Box
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Unlink Almond" message:@"To confirm unlinking Almond enter your password below." delegate:self cancelButtonTitle:@"Cancel"  otherButtonTitles:@"Unlink", nil];
+    alert.alertViewStyle = UIAlertViewStyleSecureTextInput;
+    alert.tag = UNLINK_ALMOND_CONFIRMATION;
+    [[alert textFieldAtIndex:0] setDelegate:self];
+    [alert show];
+    
+    currentAlmondMAC = currentAlmond.almondplusMAC;
+    
+}
+
+-(void)onInviteClicked:(id)sender{
+    DLog(@"onInviteClicked");
+    UIButton *btn = (UIButton*) sender;
+    int index = btn.tag;
+    SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:index];
+    DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
+    currentAlmondMAC = currentAlmond.almondplusMAC;
+    
+    //Invitation Email Input Box
+    NSString *alertMessage = [NSString stringWithFormat:@"By inviting someone they can access %@",currentAlmond.almondplusName];
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Invite By Email" message:alertMessage delegate:self cancelButtonTitle:@"Cancel"  otherButtonTitles:@"Invite", nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    alert.tag = USER_INVITE_ALERT;
+    [[alert textFieldAtIndex:0] setDelegate:self];
+    [alert show];
+
+}
+
+-(void)onEmailRemoveClicked:(id)sender{
+    DLog(@"onEmailRemoveClicked");
+    UIButton *btn = (UIButton*) sender;
+    int index = btn.tag;
+    
+    CGPoint buttonOrigin = btn.frame.origin;
+    CGPoint pointInTableview = [self.tableView convertPoint:buttonOrigin fromView:btn.superview];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:pointInTableview];
+    SFIAlmondPlus *currentAlmond;
+    if (indexPath) {
+        currentAlmond = [ownedAlmondList objectAtIndex:indexPath.row - 1];
+    }
+    currentAlmondMAC = currentAlmond.almondplusMAC;
+    changedEmailID = [currentAlmond.accessEmailIDs objectAtIndex:index];
+    DLog(@"Selected Almond Name %@",currentAlmond.almondplusName);
+    DLog(@"Selected Email %@",  [currentAlmond.accessEmailIDs objectAtIndex:index]);
+    [self sendDelSecondaryUserRequest:[currentAlmond.accessEmailIDs objectAtIndex:index] almondMAC:currentAlmond.almondplusMAC];
+}
+
+-(void)onSharedAlmondClicked:(id)sender{
+    DLog(@"onSharedAlmondClicked");
+    UIButton *btn = (UIButton*) sender;
+    int index = btn.tag;
+    SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:index];
+    DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
+    if(currentAlmond.isExpanded){
+        currentAlmond.isExpanded = FALSE;
+    }else{
+        currentAlmond.isExpanded = TRUE;
+    }
+    [self.tableView reloadData];
+}
+
+-(void)onRemoveSharedAlmondClicked:(id)sender{
+    DLog(@"onRemoveSharedAlmondClicked");
+    UIButton *btn = (UIButton*) sender;
+    int index = btn.tag;
+    SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:index];
+    DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
+    currentAlmondMAC = currentAlmond.almondplusMAC;
+    
+    //Remove Shared Almond
+    [self sendDelMeAsSecondaryUserRequest:currentAlmond.almondplusMAC];
+}
+
+
+#pragma  mark - Alertview delgate
+- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
+{
+    
+    UITextField *password=[alertView textFieldAtIndex:0];
+    BOOL flag = TRUE;
+    if(password.text.length == 0){
+        flag = FALSE;
+    }
+    return flag;
+    
+}
+
+
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
     NSLog(@"Button Index =%ld",(long)buttonIndex);
-    if (buttonIndex == 1) {  //Delete Account
-        UITextField *password = [alertView textFieldAtIndex:0];
-        NSLog(@"password: %@", password.text);
+    if(alertView.tag == DELETE_ACCOUNT_CONFIRMATION){
+        if (buttonIndex == 1) {  //Delete Account
+            UITextField *password = [alertView textFieldAtIndex:0];
+            NSLog(@"password: %@", password.text);
+            //Send request to delete
+            [self sendDeleteAccountRequest:password.text];
+        }
     }
+    else if(alertView.tag == UNLINK_ALMOND_CONFIRMATION){
+        if (buttonIndex == 1) {  //Unlink Almond
+            UITextField *password = [alertView textFieldAtIndex:0];
+            NSLog(@"password: %@", password.text);
+            //Send request to delete
+            [self sendUnlinkAlmondRequest:password.text almondMAC:currentAlmondMAC];
+        }
+    }
+    else if(alertView.tag == USER_INVITE_ALERT){
+        if (buttonIndex == 1) {  //Invite user to share Almond
+            UITextField *emailID = [alertView textFieldAtIndex:0];
+            NSLog(@"emailID: %@", emailID.text);
+            changedEmailID = emailID.text;
+            //Send request to delete
+            [self sendUserInviteRequest:emailID.text almondMAC:currentAlmondMAC];
+        }
+    }
+    
+    
+}
+
+
+
+
+
+
+#pragma mark - Cloud Command : Sender and Receivers
+
+- (void)sendUserProfileRequest {
+    UserProfileRequest *userProfileRequest = [[UserProfileRequest alloc] init];
+    
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = CommandType_USER_PROFILE_REQUEST;
+    cloudCommand.command = userProfileRequest;
+   
+    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = @"Loading account details...";
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+    [self.HUD show:YES];
+    
+    [self asyncSendCommand:cloudCommand];
+}
+
+- (void)userProfileResponseCallback:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    UserProfileResponse *obj = (UserProfileResponse *) [data valueForKey:@"data"];
+    
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
+    
+    if (obj.isSuccessful) {
+        //Store user profile information
+        userProfile = [[SFIUserProfile alloc]init];
+        userProfile.firstName = obj.firstName;
+        userProfile.lastName = obj.lastName;
+        userProfile.addressLine1 = obj.addressLine1;
+        userProfile.addressLine2 = obj.addressLine2;
+        userProfile.addressLine3 = obj.addressLine3;
+        userProfile.country = obj.country;
+        userProfile.zipCode = obj.zipCode;
+        
+        //Get from keychain
+        userProfile.userEmail =  [[SecurifiToolkit sharedInstance] loginEmail];
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.tableView reloadData];
+            //[self.HUD hide:YES];
+        });
+        
+    }
+    else {
+        NSLog(@"Reason Code %d", obj.reasonCode);
+    }
+    
+    [self sendOwnedAlmondDataRequest];
+}
+
+- (void)sendDeleteAccountRequest:(NSString*)password {
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = @"Deleting account...";
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+    [self.HUD show:YES];
+    
+    [[SecurifiToolkit sharedInstance] asyncRequestDeleteCloudAccount:password];
+}
+
+- (void)delAccountResponseCallback:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    DeleteAccountResponse *obj = (DeleteAccountResponse *) [data valueForKey:@"data"];
+    
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
+    
+    [self.HUD hide:YES];
+    if (!obj.isSuccessful) {
+        NSLog(@"Reason Code %d", obj.reasonCode);
+        //Display appropriate reason
+        NSString *failureReason;
+        switch (obj.reasonCode) {
+            case 1:
+                failureReason = @"There was some error on cloud. Please try later.";
+                break;
+                
+            case 2:
+                failureReason = @"Sorry! You are not registered with us yet.";
+                break;
+                
+            case 3:
+                failureReason = @"You need to activate your account.";
+                break;
+                
+            case 4:
+                failureReason = @"You need to fill all the fields.";
+                break;
+                
+            case 5:
+                failureReason = @"The current password was incorrect.";
+                break;
+                
+            case 6:
+                failureReason = @"There was some error on cloud. Please try later.";
+                break;
+
+                
+            default:
+                failureReason = @"Sorry! Deletion of account was unsuccessful.";
+                break;
+                
+        }
+        [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+
+    }
+}
+
+- (void)sendUpdateUserProfileRequest {
+    UpdateUserProfileRequest *updateUserProfileRequest = [[UpdateUserProfileRequest alloc] init];
+    
+    // Generate internal index between 1 to 100
+    unsigned int internalIndex = (arc4random() % 100) + 1;
+    
+    updateUserProfileRequest.firstName = userProfile.firstName;
+    updateUserProfileRequest.lastName = userProfile.lastName;
+    updateUserProfileRequest.addressLine1 = userProfile.addressLine1;
+    updateUserProfileRequest.addressLine2 = userProfile.addressLine2;
+    updateUserProfileRequest.addressLine3 = userProfile.addressLine3;
+    updateUserProfileRequest.country = userProfile.country;
+    updateUserProfileRequest.zipCode = userProfile.zipCode;
+    updateUserProfileRequest.internalIndex = [NSString stringWithFormat:@"%d", internalIndex];
+    
+    
+    
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = CommandType_UPDATE_USER_PROFILE_REQUEST;
+    cloudCommand.command = updateUserProfileRequest;
+    
+    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = @"Updating account details...";
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+    [self.HUD show:YES];
+    
+    [self asyncSendCommand:cloudCommand];
+}
+
+
+-(void)updateProfileResponseCallback:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    UpdateUserProfileResponse *obj = (UpdateUserProfileResponse *) [data valueForKey:@"data"];
+    
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
+    
+    [self.HUD hide:YES];
+    if (!obj.isSuccessful) {
+        
+        NSLog(@"Reason Code %d", obj.reasonCode);
+        //Display appropriate reason
+        NSString *failureReason;
+        switch (obj.reasonCode) {
+            case 1:
+                failureReason = @"There was some error on cloud. Please try later.";
+                break;
+                
+            case 2:
+                failureReason = @"You need to fill all the fields.";
+                break;
+                
+            case 3:
+                failureReason = @"Sorry! You are not registered with us yet.";
+                break;
+                
+                
+            default:
+                failureReason = @"Sorry! Update was unsuccessful.";
+                break;
+                
+        }
+        [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+    }
+}
+
+-(void) sendOwnedAlmondDataRequest{
+    AlmondAffiliationData *ownedAlmondListRequest = [[AlmondAffiliationData alloc] init];
+    
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = CommandType_ALMOND_AFFILIATION_DATA_REQUEST;
+    cloudCommand.command = ownedAlmondListRequest;
+    
+//    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
+//    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+//    _HUD.removeFromSuperViewOnHide = NO;
+//    _HUD.labelText = @"Loading account details...";
+//    _HUD.dimBackground = YES;
+//    [self.navigationController.view addSubview:_HUD];
+//    [self.HUD show:YES];
+    
+    [self asyncSendCommand:cloudCommand];
+}
+
+-(void)ownedAlmondDataResponseCallback:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    AlmondAffiliationDataResponse *obj = (AlmondAffiliationDataResponse *) [data valueForKey:@"data"];
+    
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    
+    if(obj.isSuccessful){
+        //Update almond list
+        NSLog(@"Owned Almond Count %d", obj.almondCount);
+        ownedAlmondList = obj.almondList;
+        //For testing purpose
+//
+//        NSMutableArray *emailArray =  [NSMutableArray arrayWithObjects:@"abc@gmail.com", @"xyz@gmail.com", nil];
+//        [[ownedAlmondList objectAtIndex:0]setAccessEmailIDs:emailArray];
+        
+        //Display in table
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.tableView reloadData];
+           // [self.HUD hide:YES];
+        });
+        
+    }else{
+        NSLog(@"Reason %@", obj.reason);
+    }
+    //[self.HUD hide:YES];
+    
+    [self sendSharedWithMeAlmondRequest];
+}
+
+
+
+- (void)sendUnlinkAlmondRequest:(NSString*)password almondMAC:(NSString*)almondMAC {
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = @"Unlinking Almond...";
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+    [self.HUD show:YES];
+    
+    [[SecurifiToolkit sharedInstance] asyncRequestUnlinkAlmond:almondMAC password:password];
+}
+
+-(void)unlinkAlmondResponseCallback:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    UnlinkAlmondResponse *obj = (UnlinkAlmondResponse *) [data valueForKey:@"data"];
+    
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    
+    if(obj.isSuccessful){
+        //Remove almond locally
+        NSArray *currentOwnedAlmondList = ownedAlmondList;
+        NSMutableArray *newOwnedAlmondList = [NSMutableArray array];
+        
+        // Update Almond List
+        for (SFIAlmondPlus *current in currentOwnedAlmondList) {
+            if (![current.almondplusMAC isEqualToString:currentAlmondMAC]) {
+                [newOwnedAlmondList addObject:current];
+            }
+        }
+        
+        ownedAlmondList = newOwnedAlmondList;
+
+        
+        //Display in table
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.tableView reloadData];
+            [self.HUD hide:YES];
+        });
+        
+    }else{
+        NSLog(@"Reason %@", obj.reason);
+        //Display appropriate reason
+        NSString *failureReason;
+        switch (obj.reasonCode) {
+            case 1:
+                failureReason = @"There was some error on cloud. Please try later.";
+                break;
+                
+            case 2:
+                failureReason = @"Sorry! You are not registered with us yet.";
+                break;
+                
+            case 3:
+                failureReason = @"You need to activate your account.";
+                break;
+                
+            case 4:
+                failureReason = @"You need to fill all the fields.";
+                break;
+                
+            case 5:
+                failureReason = @"The current password was incorrect.";
+                break;
+                
+            case 6:
+                failureReason = @"There was some error on cloud. Please try later.";
+                break;
+                
+                
+            default:
+                failureReason = @"Sorry! Unlinking of Almond was unsuccessful.";
+                break;
+                
+        }
+        [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+    }
+    [self.HUD hide:YES];
+}
+
+- (void)sendUserInviteRequest:(NSString*)emailID almondMAC:(NSString*)almondMAC {
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = @"Inviting user to share Almond...";
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+    [self.HUD show:YES];
+    
+    [[SecurifiToolkit sharedInstance] asyncRequestInviteForSharingAlmond:almondMAC inviteEmail:emailID];
+}
+
+-(void)userInviteResponseCallback:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    UserInviteResponse *obj = (UserInviteResponse *) [data valueForKey:@"data"];
+    
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    
+    if(obj.isSuccessful){
+        //Add shared user locally
+        NSMutableArray *changedAlmondList = ownedAlmondList;
+        for(SFIAlmondPlus *currentAlmond in changedAlmondList){
+            NSMutableArray *currentEmailArray;
+            if([currentAlmond.almondplusMAC isEqualToString:currentAlmondMAC]){
+                currentEmailArray = currentAlmond.accessEmailIDs;
+                if(currentEmailArray == nil){
+                    currentEmailArray = [[NSMutableArray alloc]init];
+                }
+                [currentEmailArray addObject:changedEmailID];
+            }
+            currentAlmond.accessEmailIDs = currentEmailArray;
+        }
+        
+        ownedAlmondList = changedAlmondList;
+
+        //Display in table
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.tableView reloadData];
+            [self.HUD hide:YES];
+        });
+        
+    }else{
+        NSLog(@"Reason %@", obj.reason);
+        //Display appropriate reason
+        NSString *failureReason;
+        switch (obj.reasonCode) {
+            case 1:
+                failureReason = @"There was some error on cloud. Please try later.";
+                break;
+                
+            case 2:
+                failureReason = @"This user does not have a Securifi account.";
+                break;
+                
+            case 3:
+                failureReason = @"The user has not verified the Securifi account yet.";
+                break;
+                
+            case 4:
+                failureReason = @"You do not own this almond.";
+                break;
+                
+            case 5:
+                failureReason = @"You need to fill all the fields.";
+                break;
+                
+            case 6:
+                failureReason = @"You have already shared this almond with the user.";
+                break;
+                
+            case 7:
+                failureReason = @"You can not add yourself as secondary user.";
+                break;
+                
+                
+            default:
+                failureReason = @"Sorry! Sharing of Almond was unsuccessful.";
+                break;
+                
+        }
+        [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+    }
+    [self.HUD hide:YES];
+}
+
+- (void)sendDelSecondaryUserRequest:(NSString*)emailID almondMAC:(NSString*)almondMAC {
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = @"Remove user from shared list...";
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+    [self.HUD show:YES];
+    
+    [[SecurifiToolkit sharedInstance] asyncRequestDelSecondaryUser:almondMAC email:emailID];
+}
+
+-(void)delSecondaryUserResponseCallback:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    DeleteSecondaryUserResponse *obj = (DeleteSecondaryUserResponse *) [data valueForKey:@"data"];
+    
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    
+    if(obj.isSuccessful){
+        //Remove access email id locally
+         NSMutableArray *changedAlmondList = ownedAlmondList;
+        // Update Almond List
+        for (SFIAlmondPlus *currentAlmond in changedAlmondList) {
+            if([currentAlmond.almondplusMAC isEqualToString:currentAlmondMAC]){
+                //Remove access email id
+                NSArray *currentAccessEmailList = currentAlmond.accessEmailIDs;
+                NSMutableArray *newAccessEmailList = [NSMutableArray array];
+                for(NSString *currentEmail in currentAccessEmailList){
+                    if(![currentEmail isEqualToString:changedEmailID]){
+                        [newAccessEmailList addObject:currentEmail];
+                    }
+                }
+                currentAlmond.accessEmailIDs = newAccessEmailList;
+            }
+        }
+        
+        ownedAlmondList = changedAlmondList;
+        
+        //Display in table
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.tableView reloadData];
+            [self.HUD hide:YES];
+        });
+        
+    }else{
+        NSLog(@"Reason %@", obj.reason);
+        //Display appropriate reason
+        NSString *failureReason;
+        switch (obj.reasonCode) {
+            case 1:
+                failureReason = @"There was some error on cloud. Please try later.";
+                break;
+                
+            case 2:
+                failureReason = @"You need to fill all the fields. This user does not have a Securifi account.";
+                break;
+                
+            case 4:
+                failureReason = @"You are not associated with this Almond";
+                break;
+                
+            case 5:
+                failureReason = @"Secondary user not found.";
+                break;
+                
+            case 6:
+                failureReason = @"Secondary user is not associated with the given Almond.";
+                break;
+                
+                
+            default:
+                failureReason = @"Sorry! Something went wrong. Try later.";
+                break;
+                
+        }
+        [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+    }
+    [self.HUD hide:YES];
+}
+
+-(void)sendAlmondNameChangeRequest:(NSString*)almondplusMAC{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = @"Change almond name...";
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+    [self.HUD show:YES];
+    
+    [[SecurifiToolkit sharedInstance] asyncRequestChangeAlmondName:changedAlmondName almondMAC:almondplusMAC];
+    
+    [self.almondNameChangeTimer invalidate];
+    self.almondNameChangeTimer = [NSTimer scheduledTimerWithTimeInterval:10.0
+                                                               target:self
+                                                             selector:@selector(onChangeAlmondNameTimeout:)
+                                                             userInfo:nil
+                                                              repeats:NO];
+    
+     self.isAlmondNameChangeSuccessful = FALSE;
+}
+
+
+- (void)onChangeAlmondNameTimeout:(id)sender {
+    [self.almondNameChangeTimer invalidate];
+    
+    if (!self.isAlmondNameChangeSuccessful) {
+        [self.HUD hide:YES];
+        [[[iToast makeText:@"Sorry! We were unable to change Almond's name"] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+    }
+}
+
+
+-(void)almondNameChangeResponseCallback:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    AlmondNameChangeResponse *obj = (AlmondNameChangeResponse *) [data valueForKey:@"data"];
+    
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    
+    // Timeout the commander timer
+    [self.almondNameChangeTimer invalidate];
+    self.isAlmondNameChangeSuccessful = TRUE;
+    
+    if(obj.isSuccessful){
+        if(nameChangedForAlmond == NAME_CHANGED_OWNED_ALMOND){
+        //Change Owned Almond Name
+        for(SFIAlmondPlus *currentAlmond in ownedAlmondList){
+            if([currentAlmond.almondplusMAC isEqualToString:currentAlmondMAC]){
+                currentAlmond.almondplusName = changedAlmondName;
+            }
+        }
+            
+        }else if(nameChangedForAlmond == NAME_CHANGED_SHARED_ALMOND){
+            //Change Shared Almond Name
+            for(SFIAlmondPlus *currentAlmond in sharedAlmondList){
+                if([currentAlmond.almondplusMAC isEqualToString:currentAlmondMAC]){
+                    currentAlmond.almondplusName = changedAlmondName;
+                }
+            }
+            
+        }
+        
+        //Display in table
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.tableView reloadData];
+            [self.HUD hide:YES];
+        });
+        
+    }else{
+        [[[iToast makeText:@"Sorry! We were unable to change Almond's name"] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+    }
+    [self.HUD hide:YES];
+}
+
+-(void)sendSharedWithMeAlmondRequest{
+    MeAsSecondaryUserRequest *sharedAlmondListRequest = [[MeAsSecondaryUserRequest alloc] init];
+    
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = CommandType_ME_AS_SECONDARY_USER_REQUEST;
+    cloudCommand.command = sharedAlmondListRequest;
+    
+    //    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
+//        _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+//        _HUD.removeFromSuperViewOnHide = NO;
+//        _HUD.labelText = @"Loading secondary Almond information...";
+//        _HUD.dimBackground = YES;
+//        [self.navigationController.view addSubview:_HUD];
+//        [self.HUD show:YES];
+    
+    [self asyncSendCommand:cloudCommand];
+}
+
+-(void)sharedAlmondDataResponseCallback:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    MeAsSecondaryUserResponse *obj = (MeAsSecondaryUserResponse *) [data valueForKey:@"data"];
+    
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    
+    if(obj.isSuccessful){
+        //Update almond list
+        NSLog(@"Shared Almond Count %d", obj.almondCount);
+        sharedAlmondList = obj.almondList;
+        //Display in table
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.tableView reloadData];
+            [self.HUD hide:YES];
+        });
+        
+    }else{
+        NSLog(@"Reason %@", obj.reason);
+    }
+    [self.HUD hide:YES];
+}
+
+- (void)sendDelMeAsSecondaryUserRequest:(NSString*)almondMAC {
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = @"Remove shared almond...";
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+    [self.HUD show:YES];
+    
+    [[SecurifiToolkit sharedInstance] asyncRequestDelMeAsSecondaryUser:almondMAC];
+}
+
+-(void)delMeAsSecondaryUserResponseCallback:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    DeleteMeAsSecondaryUserResponse *obj = (DeleteMeAsSecondaryUserResponse *) [data valueForKey:@"data"];
+    
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    
+    if(obj.isSuccessful){
+        //Remove almond locally
+        NSArray *currentSharedAlmondList = sharedAlmondList;
+        NSMutableArray *newSharedAlmondList = [NSMutableArray array];
+        
+        // Update Almond List
+        for (SFIAlmondPlus *current in currentSharedAlmondList) {
+            if (![current.almondplusMAC isEqualToString:currentAlmondMAC]) {
+                [newSharedAlmondList addObject:current];
+            }
+        }
+        
+        sharedAlmondList = newSharedAlmondList;
+        
+        
+        //Display in table
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.tableView reloadData];
+            [self.HUD hide:YES];
+        });
+    }else{
+        NSLog(@"Reason %@", obj.reason);
+        //Display appropriate reason
+        NSString *failureReason;
+        switch (obj.reasonCode) {
+            case 1:
+                failureReason = @"There was some error on cloud. Please try later.";
+                break;
+                
+            case 2:
+                failureReason = @"You need to fill all the fields.";
+                break;
+                
+            case 3:
+                failureReason = @"You are not associated with this Almond..";
+                break;
+                
+                
+            default:
+                failureReason = @"Sorry! Removing of shared Almond was unsuccessful.";
+                break;
+                
+        }
+        [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+    }
+    [self.HUD hide:YES];
+}
+
+- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
 #pragma mark - Keyboard methods
@@ -801,65 +2129,15 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     self.changedZipcode = tfName.text;
 }
 
-
-
-#pragma mark - Cloud Command : Sender and Receivers
-
-- (void)sendUserProfileRequest {
-    UserProfileRequest *userProfileRequest = [[UserProfileRequest alloc] init];
-    
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_USER_PROFILE_REQUEST;
-    cloudCommand.command = userProfileRequest;
-   
-    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
-    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Loading account details...";
-    _HUD.dimBackground = YES;
-    [self.navigationController.view addSubview:_HUD];
-    [self.HUD show:YES];
-    
-    [self asyncSendCommand:cloudCommand];
+-(void)almondNameTextFieldDidChange:(UITextField *)tfName {
+    DLog(@"almondName: %@", tfName.text);
+    self.changedAlmondName = tfName.text;
 }
 
-- (void)userProfileResponseCallback:(id)sender {
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    
-    UserProfileResponse *obj = (UserProfileResponse *) [data valueForKey:@"data"];
-    
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
-    
-    if (obj.isSuccessful) {
-        //Store user profile information
-        userProfile = [[SFIUserProfile alloc]init];
-        userProfile.firstName = obj.firstName;
-        userProfile.lastName = obj.lastName;
-        userProfile.addressLine1 = obj.addressLine1;
-        userProfile.addressLine2 = obj.addressLine2;
-        userProfile.addressLine3 = obj.addressLine3;
-        userProfile.country = obj.country;
-        userProfile.zipCode = obj.zipCode;
-        
-        //Get from keychain
-        userProfile.userEmail =  [[SecurifiToolkit sharedInstance] loginEmail];
-        
-        
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.tableView reloadData];
-            [self.HUD hide:YES];
-        });
-        
-    }
-    else {
-        NSLog(@"Reason Code %d", obj.reasonCode);
-    }
-}
-
-- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+- (void)almondNameTextFieldFinished:(UITextField *)tfName {
+    DLog(@"almondName: %@", tfName.text);
+    self.changedAlmondName = tfName.text;
+    [tfName resignFirstResponder];
 }
 
 @end

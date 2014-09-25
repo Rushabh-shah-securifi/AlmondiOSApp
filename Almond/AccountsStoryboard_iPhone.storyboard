@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment defaultVersion="1792" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Accounts Table View Controller - Settings-->
+        <!--Settings-->
         <scene sceneID="t6f-Ma-UOa">
             <objects>
                 <tableViewController storyboardIdentifier="SFIAccountsTableViewController" title="Settings" useStoryboardIdentifierAsRestorationIdentifier="YES" id="LRJ-C2-ya9" customClass="SFIAccountsTableViewController" sceneMemberID="viewController">
@@ -42,7 +44,7 @@
             </objects>
             <point key="canvasLocation" x="679" y="-437"/>
         </scene>
-        <!--Password Change View Controller - Change Password-->
+        <!--Change Password-->
         <scene sceneID="Do9-OO-H0U">
             <objects>
                 <viewController storyboardIdentifier="SFIPasswordChangeViewController" id="i3f-Xj-3C4" customClass="SFIPasswordChangeViewController" sceneMemberID="viewController">
@@ -56,7 +58,6 @@
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To change your account password enter your current password and new password below." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="295" translatesAutoresizingMaskIntoConstraints="NO" id="awl-41-cEs">
                                 <rect key="frame" x="13" y="72" width="295" height="69"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="69" id="FAK-Y0-qQF"/>
                                 </constraints>
@@ -90,14 +91,12 @@
                             </textField>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="2Fn-Jy-txD">
                                 <rect key="frame" x="8" y="289" width="300" height="3"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </progressView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="81z-N5-qEk" userLabel="Password Stength Label">
                                 <rect key="frame" x="8" y="299" width="300" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="fyf-Fg-Cdh"/>
+                                    <constraint firstAttribute="height" constant="21" id="A39-SU-WaY"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="15"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -106,25 +105,25 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="2Fn-Jy-txD" secondAttribute="trailing" constant="12" id="0T8-FM-Xf9"/>
-                            <constraint firstItem="sfM-G0-KWE" firstAttribute="leading" secondItem="mbL-nR-glA" secondAttribute="leading" id="1w6-sb-r14"/>
-                            <constraint firstItem="4FX-cz-A28" firstAttribute="top" secondItem="81z-N5-qEk" secondAttribute="bottom" constant="248" id="33T-2M-okq"/>
-                            <constraint firstItem="2Fn-Jy-txD" firstAttribute="leading" secondItem="81z-N5-qEk" secondAttribute="leading" id="4N9-aV-Gqr"/>
-                            <constraint firstItem="2Fn-Jy-txD" firstAttribute="top" secondItem="mbL-nR-glA" secondAttribute="bottom" constant="23" id="4iY-ew-cea"/>
                             <constraint firstItem="3uz-RY-rCm" firstAttribute="top" secondItem="awl-41-cEs" secondAttribute="bottom" constant="46" id="83n-W8-Oal"/>
+                            <constraint firstItem="mbL-nR-glA" firstAttribute="trailing" secondItem="3uz-RY-rCm" secondAttribute="trailing" id="B1o-tq-9vK"/>
                             <constraint firstItem="awl-41-cEs" firstAttribute="centerX" secondItem="3uz-RY-rCm" secondAttribute="centerX" id="D7b-WH-NFG"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="2Fn-Jy-txD" secondAttribute="trailing" constant="-4" id="ERn-U8-BcC"/>
                             <constraint firstItem="awl-41-cEs" firstAttribute="centerX" secondItem="sfM-G0-KWE" secondAttribute="centerX" id="JIN-27-xvt"/>
+                            <constraint firstItem="2Fn-Jy-txD" firstAttribute="leading" secondItem="UpL-fL-EhS" secondAttribute="leadingMargin" constant="-8" id="KDh-bh-iiI"/>
+                            <constraint firstItem="81z-N5-qEk" firstAttribute="top" secondItem="2Fn-Jy-txD" secondAttribute="bottom" constant="8" symbolic="YES" id="Kdf-Vx-FQ2"/>
+                            <constraint firstItem="mbL-nR-glA" firstAttribute="top" secondItem="3uz-RY-rCm" secondAttribute="bottom" constant="23" id="MCA-Wc-zSc"/>
+                            <constraint firstItem="2Fn-Jy-txD" firstAttribute="top" secondItem="mbL-nR-glA" secondAttribute="bottom" constant="23" id="NHa-dc-Oyp"/>
                             <constraint firstItem="sfM-G0-KWE" firstAttribute="leading" secondItem="3uz-RY-rCm" secondAttribute="leading" id="SgA-ZP-qMt"/>
-                            <constraint firstItem="awl-41-cEs" firstAttribute="centerX" secondItem="mbL-nR-glA" secondAttribute="centerX" id="Ui4-k1-uDB"/>
+                            <constraint firstItem="2Fn-Jy-txD" firstAttribute="trailing" secondItem="awl-41-cEs" secondAttribute="trailing" id="Th0-EW-deO"/>
+                            <constraint firstItem="2Fn-Jy-txD" firstAttribute="trailing" secondItem="81z-N5-qEk" secondAttribute="trailing" id="UMd-fJ-YdI"/>
                             <constraint firstItem="3uz-RY-rCm" firstAttribute="top" secondItem="sfM-G0-KWE" secondAttribute="bottom" constant="15" id="Wr8-u4-2nD"/>
                             <constraint firstItem="sfM-G0-KWE" firstAttribute="top" secondItem="Az6-9y-DYz" secondAttribute="bottom" constant="76" id="YYO-t2-ASW"/>
-                            <constraint firstItem="2Fn-Jy-txD" firstAttribute="leading" secondItem="UpL-fL-EhS" secondAttribute="leading" constant="8" id="cDH-xN-N50"/>
-                            <constraint firstItem="81z-N5-qEk" firstAttribute="top" secondItem="2Fn-Jy-txD" secondAttribute="bottom" constant="8" symbolic="YES" id="jIt-uh-IIi"/>
+                            <constraint firstItem="2Fn-Jy-txD" firstAttribute="leading" secondItem="81z-N5-qEk" secondAttribute="leading" id="fdY-yL-jvj"/>
+                            <constraint firstItem="mbL-nR-glA" firstAttribute="leading" secondItem="3uz-RY-rCm" secondAttribute="leading" id="kai-wY-Oeo"/>
                             <constraint firstItem="awl-41-cEs" firstAttribute="top" secondItem="Az6-9y-DYz" secondAttribute="bottom" constant="8" id="qHl-RF-9Tn"/>
                             <constraint firstItem="sfM-G0-KWE" firstAttribute="leading" secondItem="UpL-fL-EhS" secondAttribute="leading" constant="40" id="qPx-xS-Snc"/>
                             <constraint firstItem="awl-41-cEs" firstAttribute="centerX" secondItem="UpL-fL-EhS" secondAttribute="centerX" id="s9k-by-kkm"/>
-                            <constraint firstItem="2Fn-Jy-txD" firstAttribute="trailing" secondItem="81z-N5-qEk" secondAttribute="trailing" id="tiO-oR-bbD"/>
-                            <constraint firstItem="2Fn-Jy-txD" firstAttribute="trailing" secondItem="awl-41-cEs" secondAttribute="trailing" id="udb-hZ-fXV"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Change Password" id="KWr-AR-IIt">

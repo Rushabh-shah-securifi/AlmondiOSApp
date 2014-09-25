@@ -21,7 +21,9 @@
 @property (nonatomic, retain) NSString *changedAddress3;
 @property (nonatomic, retain) NSString *changedCountry;
 @property (nonatomic, retain) NSString *changedZipcode;
-
+@property (nonatomic, retain) NSString *changedAlmondName;
+@property (nonatomic, retain) NSString *currentAlmondMAC;
+@property (nonatomic, retain) NSString *changedEmailID;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 
 @property(nonatomic, readonly)UITextField *tfFirstName;
@@ -31,6 +33,10 @@
 @property(nonatomic, readonly)UITextField *tfAddress3;
 @property(nonatomic, readonly)UITextField *tfCountry;
 @property(nonatomic, readonly)UITextField *tfZipCode;
+
+@property (nonatomic) int nameChangedForAlmond;
+@property NSTimer *almondNameChangeTimer;
+@property BOOL isAlmondNameChangeSuccessful;
 
 - (IBAction)doneButtonHandler:(id)sender;
 @end

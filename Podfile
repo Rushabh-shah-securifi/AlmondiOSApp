@@ -2,6 +2,7 @@ platform :ios, '7.0'
 
 #inhibit_all_warnings!
 
+pod 'ASValueTrackingSlider'
 pod 'CocoaLumberjack', '2.0.0-beta'
 pod 'Colours', '~> 5.5'
 pod 'CrashlyticsFramework', '~> 2.2.1'

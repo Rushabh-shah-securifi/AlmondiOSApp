@@ -14,6 +14,10 @@
 
 - (void)tableViewCellDidPressSettings:(SFISensorTableViewCell*)cell;
 
+- (void)tableViewCellWillStartMakingChanges:(SFISensorTableViewCell*)cell;
+
+- (void)tableViewCellWillCancelMakingChanges:(SFISensorTableViewCell*)cell;
+
 - (void)tableViewCellDidSaveChanges:(SFISensorTableViewCell*)cell;
 
 - (void)tableViewCellDidDismissTamper:(SFISensorTableViewCell*)cell;
@@ -31,7 +35,14 @@
 @property(nonatomic) SFIDeviceValue *deviceValue;
 @property(nonatomic) SFIColors *deviceColor;
 
-- (void)markWillReuse;
+// called to indicate that the device/device value is being updated with the cloud;
+// causes the view to show intermediate "updating" state
+- (void)showUpdatingDeviceValuesStatus;
+
+// Called by the table view delegate prior to returning it to the controller
+// Resets the view and prepares it for viewing.
+// updating parameter YES forces the cell to show "updating" message
+- (void)markWillReuseCell:(BOOL)updating;
 
 - (NSString*)deviceName;
 - (NSString*)deviceLocation;

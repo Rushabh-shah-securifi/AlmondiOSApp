@@ -64,10 +64,10 @@
 #define DT37_FLOOD_FALSE @"water_drop1.png"
 #define DT38_SHOCK_TRUE @"vibration_sensor_2.png"
 #define DT38_SHOCK_FALSE @"vibration_sensor_1.png"
-#define DT39_DOOR_SENSOR_TRUE @"door_off.png"
-#define DT39_DOOR_SENSOR_FALSE @"door_on.png"
+#define DT39_DOOR_SENSOR_TRUE @"door_on.png"
+#define DT39_DOOR_SENSOR_FALSE @"door_off.png"
 
-#define DEVICE_TAMPERED @"Device has been tampered with."
+#define DEVICE_TAMPERED @"Device has been tampered"
 #define BATTERY_IS_LOW @"Alert! Battery is low."
 
 + (void)dismissKeyboard;

@@ -8,12 +8,22 @@
 
 @implementation SFIHighlightedButton
 
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.highlightedBackgroundColor = [UIColor blackColor];
+        self.normalBackgroundColor = [UIColor whiteColor];
+    }
+
+    return self;
+}
+
 - (void)setHighlighted:(BOOL)highlighted {
     if (highlighted) {
-        self.backgroundColor = [UIColor blackColor];
+        self.backgroundColor = self.highlightedBackgroundColor;
     }
     else {
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = self.normalBackgroundColor;
     }
     [super setHighlighted:highlighted];
 }
