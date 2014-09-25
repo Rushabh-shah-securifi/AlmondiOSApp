@@ -101,21 +101,25 @@
 }
 
 - (void)markEvent:(NSString *)eventName {
-    GAI *gai = [GAI sharedInstance];
-    id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
-
     NSDictionary *params = [[GAIDictionaryBuilder createEventWithCategory:@"action"     // Event category (required)
                                                                    action:eventName     // Event action (required)
                                                                     label:@"invoke"     // Event label
                                                                     value:nil] build];
 
+    GAI *gai = [GAI sharedInstance];
+    id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
+
     [tracker send:params];
 }
 
 - (void)trackScreen:(NSString *)name {
+    GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createScreenView];
+    NSMutableDictionary *params = [builder build];
+    
     GAI *gai = [GAI sharedInstance];
     id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
-    NSDictionary *params = @{kGAIScreenName : name};
+
+    [tracker set:kGAIDescription value:name];
     [tracker send:params];
 }
 
