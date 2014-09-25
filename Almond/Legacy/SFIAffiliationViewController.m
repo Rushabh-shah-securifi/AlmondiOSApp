@@ -7,7 +7,6 @@
 //
 
 #import "SFIAffiliationViewController.h"
-#import "SNLog.h"
 #import "Analytics.h"
 
 @implementation SFIAffiliationViewController
@@ -92,7 +91,7 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     NSUInteger newLength = [textField.text length] + [string length] - range.length;
-    return (newLength > AFFILIATION_CODE_CHAR_COUNT) ? NO : YES;
+    return newLength <= AFFILIATION_CODE_CHAR_COUNT;
 }
 
 #pragma mark - Class Methods
@@ -260,14 +259,10 @@
 }
 
 - (void)onLogoutResponse:(id)sender {
-    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
-
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 
     if (data != nil) {
-        [SNLog Log:@"%s: Received Logout response", __PRETTY_FUNCTION__];
-
         LogoutResponse *obj = (LogoutResponse *) [data valueForKey:@"data"];
         if (!obj.isSuccessful) {
             NSLog(@"Could not logout - Reason %@", obj.reason);
