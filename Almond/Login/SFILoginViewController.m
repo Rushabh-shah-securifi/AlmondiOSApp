@@ -10,6 +10,7 @@
 #import "SNLog.h"
 #import "MBProgressHUD.h"
 #import "Analytics.h"
+#import "SFIActivationViewController.h"
 
 @interface SFILoginViewController () <UITextFieldDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -294,7 +295,7 @@
 #pragma mark - Event handlers
 
 - (void)onTimeout {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^() {
+    dispatch_async(dispatch_get_main_queue(), ^() {
         [self hideHud];
 
         [self setOopsMsg:@"Sorry! Could not complete the request."];
@@ -420,8 +421,9 @@
 - (void)presentActivationScreen {
     dispatch_async(dispatch_get_main_queue(), ^() {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-        UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFIActivationViewController"];
-        [self presentViewController:mainView animated:YES completion:nil];
+        SFIActivationViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SFIActivationViewController"];
+        ctrl.emailID = self.emailID.text;
+        [self presentViewController:ctrl animated:YES completion:nil];
     });
 }
 
