@@ -3410,7 +3410,7 @@
     return nil;
 }
 
-- (NSMutableArray *)currentKnownValuesForDevice:(int)deviceId {
+- (NSArray *)currentKnownValuesForDevice:(int)deviceId {
     for (SFIDeviceValue *currentDeviceValue in self.deviceValueList) {
         if (deviceId == currentDeviceValue.deviceID) {
             //[SNLog Log:@"%s: ID Match: Selected Device ID is @%d", __PRETTY_FUNCTION__,deviceValueID];

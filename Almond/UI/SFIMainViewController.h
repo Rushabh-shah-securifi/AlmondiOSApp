@@ -8,10 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class SensorsViewController;
-@class SFIRouterTableViewController;
-
-
 @interface SFIMainViewController : UIViewController
 
 @property(nonatomic, retain) IBOutlet UIImageView *imgSplash;
