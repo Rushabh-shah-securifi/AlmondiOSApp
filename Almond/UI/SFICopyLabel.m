@@ -33,7 +33,8 @@
 #pragma mark Clipboard
 
 - (void)copy:(id)sender {
-    NSLog(@"Copy handler, label: “%@”.", self.text);
+    UIPasteboard *pb = [UIPasteboard generalPasteboard];
+    [pb setString:self.text];
 }
 
 - (BOOL)canPerformAction:(SEL)action withSender:(id)sender {
