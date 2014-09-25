@@ -9,6 +9,7 @@
 #import "SFISlider.h"
 #import "V8HorizontalPickerView.h"
 #import "Colours.h"
+#import "SFICopyLabel.h"
 
 
 #define PICKER_ELEMENT_WIDTH 30
@@ -103,12 +104,6 @@
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-
-//    if (self.firstResponderField) {
-//        if (!self.firstResponderField.isFirstResponder) {
-//            [self.firstResponderField becomeFirstResponder];
-//        }
-//    }
 
     if (self.layoutCalled) {
         return;
@@ -538,7 +533,8 @@
     [self addSubview:statusLabel];
 
     // Messages
-    UILabel *valueLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 230, self.baseYCoordinate, 220, 50)];
+    SFICopyLabel *valueLabel = [[SFICopyLabel alloc] initWithFrame:CGRectMake(self.frame.size.width - 230, self.baseYCoordinate, 220, 50)];
+    valueLabel.userInteractionEnabled = YES; // allow user to copy value
     valueLabel.textColor = white_color;
     valueLabel.backgroundColor = clear_color;
     valueLabel.font = heavy_12;

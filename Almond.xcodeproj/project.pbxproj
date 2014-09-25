@@ -200,6 +200,7 @@
 		1CED60D319AC85AB0023512F /* SFISensor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600419AC85AB0023512F /* SFISensor.m */; };
 		1CED60D419AC85AB0023512F /* SFISlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600619AC85AB0023512F /* SFISlider.m */; };
 		1CED60D519AC85AB0023512F /* SNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600919AC85AB0023512F /* SNLog.m */; };
+		1DF031F5FE02FF77A500E6AB /* SFICopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03A74219C9A2A23078623 /* SFICopyLabel.m */; };
 		1DF03695283498FA1D26D5EF /* 19_key_fob_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DF03F995F5E5F7FF9875BBC /* 19_key_fob_1.png */; };
 		1DF03EE86A8696543C048871 /* 19_key_fob_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DF03641418B99C1489F48CE /* 19_key_fob_2.png */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
@@ -456,6 +457,8 @@
 		1CED600819AC85AB0023512F /* SNLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNLog.h; sourceTree = "<group>"; };
 		1CED600919AC85AB0023512F /* SNLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNLog.m; sourceTree = "<group>"; };
 		1DF03641418B99C1489F48CE /* 19_key_fob_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 19_key_fob_2.png; sourceTree = "<group>"; };
+		1DF03A74219C9A2A23078623 /* SFICopyLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICopyLabel.m; sourceTree = "<group>"; };
+		1DF03D6EACE27C6B6CF1DDD9 /* SFICopyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICopyLabel.h; sourceTree = "<group>"; };
 		1DF03F995F5E5F7FF9875BBC /* 19_key_fob_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 19_key_fob_1.png; sourceTree = "<group>"; };
 		9FF187E6539C4F59B4C93302 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -878,6 +881,8 @@
 				1CED600619AC85AB0023512F /* SFISlider.m */,
 				1C75821119B054660074C601 /* SFITableViewController.h */,
 				1C75821219B054660074C601 /* SFITableViewController.m */,
+				1DF03A74219C9A2A23078623 /* SFICopyLabel.m */,
+				1DF03D6EACE27C6B6CF1DDD9 /* SFICopyLabel.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1240,6 +1245,7 @@
 				1C7581F019AD80090074C601 /* SFIWirelessUserViewController.m in Sources */,
 				1C7581ED19AD80090074C601 /* SFIWirelessSummary.m in Sources */,
 				1CED60D419AC85AB0023512F /* SFISlider.m in Sources */,
+				1DF031F5FE02FF77A500E6AB /* SFICopyLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
