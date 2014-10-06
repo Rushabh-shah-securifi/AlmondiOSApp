@@ -164,7 +164,7 @@
     deviceImageButton.backgroundColor = clear_color;
     [deviceImageButton addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
 
-    if (self.device.deviceType == SFIDeviceType_Thermostat_7) {
+    if (self.device.deviceType == SFIDeviceType_Thermostat_7 || self.device.deviceType == SFIDeviceType_TemperatureSensor_27) {
         // In case of thermostat show value instead of image
         // For Integer Value
         self.deviceValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH / 5, 12, 60, 70)];
@@ -229,7 +229,7 @@
         }
 
         case SFIDeviceType_DoorLock_5: {
-            [self configureBinaryStateSensor:DT5_DOOR_LOCK_TRUE imageNameFalse:DT5_DOOR_LOCK_FALSE statusTrue:@"LOCKED" statusFalse:@"UNLOCKED"];
+            [self configureBinaryStateSensor:DT5_DOOR_LOCK_TRUE imageNameFalse:DT5_DOOR_LOCK_FALSE statusNonZeroValue:@"LOCKED" statusZeroValue:@"UNLOCKED"];
             break;
         }
 
@@ -241,6 +241,11 @@
         case SFIDeviceType_Thermostat_7: {
             [self showDeviceValueLabels:YES];
             [self configureThermostat_7];
+            break;
+        }
+
+        case SFIDeviceType_StandardCIE_10: {
+            [self configureUnknownDevice];
             break;
         }
 
@@ -269,18 +274,28 @@
             break;
         }
 
+        case SFIDeviceType_PersonalEmergencyDevice_16: {
+            [self configureUnknownDevice];
+            break;
+        }
+
         case SFIDeviceType_VibrationOrMovementSensor_17: {
             [self configureBinaryStateSensor:DT17_VIBRATION_SENSOR_TRUE imageNameFalse:DT17_VIBRATION_SENSOR_FALSE statusTrue:@"VIBRATION DETECTED" statusFalse:@"NO VIBRATION"];
             break;
         }
 
+        case SFIDeviceType_RemoteControl_18: {
+            [self configureUnknownDevice];
+            break;
+        }
+
         case SFIDeviceType_KeyFob_19: {
-            [self configureKeyFab_19];
+            [self configureKeyFob_19];
             break;
         }
 
         case SFIDeviceType_Keypad_20: {
-            [self configureBinaryStateSensor:DT19_KEYFOB_TRUE imageNameFalse:DT19_KEYFOB_FALSE statusTrue:@"LOCKED" statusFalse:@"UNLOCKED"];
+            [self configureUnknownDevice];
             break;
         }
 
@@ -294,12 +309,18 @@
             break;
         }
 
+        case SFIDeviceType_LightSensor_25: {
+            [self configureLightSensor_25];
+            break;
+        }
+
         case SFIDeviceType_WindowCovering_26: {
             [self configureBinaryStateSensor:DT26_WINDOW_COVERING_TRUE imageNameFalse:DT26_WINDOW_COVERING_FALSE statusTrue:@"OPEN" statusFalse:@"CLOSED"];
             break;
         }
 
         case SFIDeviceType_TemperatureSensor_27: {
+            [self showDeviceValueLabels:YES];
             [self configureTempSensor_27];
             break;
         }
@@ -310,12 +331,12 @@
         }
 
         case SFIDeviceType_SmokeDetector_36: {
-            [self configureBinaryStateSensor:DT39_DOOR_SENSOR_TRUE imageNameFalse:DT39_DOOR_SENSOR_FALSE statusTrue:@"OPEN" statusFalse:@"CLOSED"];
+            [self configureBinaryStateSensor:DT36_SMOKE_DETECTOR_TRUE imageNameFalse:DT36_SMOKE_DETECTOR_FALSE statusNonZeroValue:@"OK" statusZeroValue:@"SMOKE DETECTED!"];
             break;
         }
 
         case SFIDeviceType_FloodSensor_37: {
-            [self configureBinaryStateSensor:DT37_FLOOD_TRUE imageNameFalse:DT37_FLOOD_FALSE statusTrue:@"OKAY" statusFalse:@"FLOODED"];
+            [self configureBinaryStateSensor:DT37_FLOOD_TRUE imageNameFalse:DT37_FLOOD_FALSE statusNonZeroValue:@"OK" statusZeroValue:@"FLOODED"];
             break;
         }
 
@@ -329,31 +350,103 @@
             break;
         }
 
+        case SFIDeviceType_MoistureSensor_40: {
+            [self configureMoistureSensor_40];
+            break;
+        }
+
+        case SFIDeviceType_MovementSensor_41: {
+            [self configureBinaryStateSensor:DT41_MOTION_SENSOR_TRUE imageNameFalse:DT41_MOTION_SENSOR_FALSE statusTrue:@"MOTION DETECTED" statusFalse:@"NO MOTION"];
+            break;
+        }
+
+        case SFIDeviceType_Siren_42: {
+            [self configureBinaryStateSensor:DT42_ALARM_TRUE imageNameFalse:DT42_ALARM_FALSE statusTrue:@"RINGING" statusFalse:@"OFF"];
+            break;
+        }
+
+        case SFIDeviceType_UnknownOnOffModule_44: {
+            [self configureUnknownDevice];
+            break;
+        }
+
+        case SFIDeviceType_BinaryPowerSwitch_45: {
+            [self configureBinaryPowerSwitch_45];
+            break;
+        }
+
         case SFIDeviceType_Controller_8:
         case SFIDeviceType_SceneController_9:
-        case SFIDeviceType_StandardCIE_10:
-        case SFIDeviceType_PersonalEmergencyDevice_16:
         case SFIDeviceType_StandardWarningDevice_21:
         case SFIDeviceType_OccupancySensor_24:
-        case SFIDeviceType_LightSensor_25:
         case SFIDeviceType_SimpleMetering_28:
         case SFIDeviceType_ColorControl_29:
         case SFIDeviceType_PressureSensor_30:
         case SFIDeviceType_FlowSensor_31:
         case SFIDeviceType_ColorDimmableLight_32:
         case SFIDeviceType_HAPump_33:
-        case SFIDeviceType_MoistureSensor_40:
-        case SFIDeviceType_MovementSensor_41:
-        case SFIDeviceType_Siren_42:
         case SFIDeviceType_MultiSwitch_43:
-        case SFIDeviceType_UnknownOnOffModule_44:
 
         case SFIDeviceType_UnknownDevice_0:
         default: {
             self.deviceImageView.image = [UIImage imageNamed:@"default_device.png"];
-
         }
     } // for each device
+}
+
+- (void)configureUnknownDevice {
+    [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"TRUE" statusFalse:@"FALSE"];
+}
+
+- (void)setTemperatureValue:(NSString *)value {
+    NSArray *tempValues = [value componentsSeparatedByString:@"."];
+    switch ([tempValues count]) {
+        case 0:
+            [self setTemperatureIntegerValue:nil decimalValue:nil];
+            break;
+        case 1:
+            [self setTemperatureIntegerValue:tempValues[0] decimalValue:nil];
+            break;
+        default:
+            [self setTemperatureIntegerValue:tempValues[0] decimalValue:tempValues[1]];
+            break;
+    }
+}
+
+- (void)setTemperatureIntegerValue:(NSString *)integerValue decimalValue:(NSString*)decimalValue {
+    UIFont *heavy_14 = [UIFont fontWithName:@"Avenir-Heavy" size:14];
+
+    self.deviceValueLabel.text = integerValue;
+
+    if (decimalValue.length > 0) {
+        self.decimalValueLabel.text = [NSString stringWithFormat:@".%@", decimalValue];
+    }
+    else {
+        self.decimalValueLabel.text = nil;
+    }
+
+    if ([integerValue length] == 1) {
+        self.decimalValueLabel.frame = CGRectMake((self.frame.size.width / 4) - 25, 40, 20, 30);
+        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 25, 20, 20);
+    }
+    else if ([integerValue length] == 3) {
+        self.deviceValueLabel.font = [heavy_14 fontWithSize:30];
+        self.decimalValueLabel.font = heavy_14;
+        self.degreeLabel.font = heavy_14;
+
+        self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 38, 20, 30);
+        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 30, 20, 20);
+    }
+    else if ([integerValue length] == 4) {
+        UIFont *heavy_10 = [heavy_14 fontWithSize:10];
+
+        self.deviceValueLabel.font = [heavy_14 fontWithSize:22];
+        self.decimalValueLabel.font = heavy_10;
+        self.degreeLabel.font = heavy_10;
+
+        self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 35, 20, 30);
+        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 30, 20, 20);
+    }
 }
 
 #pragma mark - Changed values
@@ -454,124 +547,140 @@
 
 - (void)configureThermostat_7 {
     // Status label
-    NSString *strOperatingMode = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE default:@"Unknown"];
+    NSString *operatingMode = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE default:@"Unknown"];
     NSString *coolingSetPoint = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING default:@"-"];
     NSString *heatingSetPoint = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING default:@"-"];
-    self.deviceStatusLabel.text = [NSString stringWithFormat:@"%@,  LO %@\u00B0,  HI %@\u00B0", strOperatingMode, coolingSetPoint, heatingSetPoint]; // U+00B0 == degree sign
+    self.deviceStatusLabel.text = [NSString stringWithFormat:@"%@,  LO %@\u00B0,  HI %@\u00B0", operatingMode, coolingSetPoint, heatingSetPoint]; // U+00B0 == degree sign
 
     // Calculate values
-    NSString *strValue = [self.deviceValue valueForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
-    NSArray *thermostatValues = [strValue componentsSeparatedByString:@"."];
-
-    NSString *const strIntegerValue = thermostatValues[0];
-    self.deviceValueLabel.text = strIntegerValue;
-
-    UIFont *heavy_14 = [UIFont fontWithName:@"Avenir-Heavy" size:14];
-
-    if ([thermostatValues count] == 2) {
-        NSString *strDecimalValue = thermostatValues[1];
-        self.decimalValueLabel.text = [NSString stringWithFormat:@".%@", strDecimalValue];
-    }
-
-    if ([strIntegerValue length] == 1) {
-        self.decimalValueLabel.frame = CGRectMake((self.frame.size.width / 4) - 25, 40, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 25, 20, 20);
-    }
-    else if ([strIntegerValue length] == 3) {
-        self.deviceValueLabel.font = [heavy_14 fontWithSize:30];
-        self.decimalValueLabel.font = heavy_14;
-        self.degreeLabel.font = heavy_14;
-
-        self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 38, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 30, 20, 20);
-    }
-    else if ([strIntegerValue length] == 4) {
-        UIFont *heavy_10 = [heavy_14 fontWithSize:10];
-
-        self.deviceValueLabel.font = [heavy_14 fontWithSize:22];
-        self.decimalValueLabel.font = heavy_10;
-        self.degreeLabel.font = heavy_10;
-
-        self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 35, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 30, 20, 20);
-    }
+    NSString *value = [self.deviceValue valueForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
+    [self setTemperatureValue:value];
 }
 
-- (void)configureKeyFab_19 {
+- (void)configureKeyFob_19 {
     SFIDeviceValue *const deviceValue = self.deviceValue;
 
-    NSString *state = [deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : @"ALL DISARMED", @"2":@"PERIMETER ARMED", @"3":@"ALL ARMED"} default:@"Could not update sensor\ndata."];
+    NSMutableArray *status = [NSMutableArray array];
+    [status addObject:[deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : @"ALL DISARMED", @"2":@"PERIMETER ARMED", @"3":@"ALL ARMED"} default:@"Could not update sensor\ndata."]];
     if (self.device.isBatteryLow) {
-        state = [state stringByAppendingString:@"\nLOW BATTERY"];
-        self.deviceStatusLabel.numberOfLines = 2;
+        [status addObject:@"LOW BATTERY"];
     }
-    self.deviceStatusLabel.text = state;
+    [self setDeviceStatusMessages:status];
 
     NSString *imageForNoValue = [self imageForNoValue];
     NSString *imageName = [deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : DT19_KEYFOB_FALSE, @"2":DT19_KEYFOB_TRUE, @"3":DT19_KEYFOB_TRUE} default:imageForNoValue];
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 }
 
-- (void)configureTempSensor_27 {
-    NSString *str = [self.deviceValue valueForProperty:SFIDevicePropertyType_TOLERANCE default:@""];
-    self.deviceStatusLabel.text = [NSString stringWithFormat:@"Tolerance: %@", str];
+- (void)configureLightSensor_25 {
+    SFIDeviceKnownValues *stateValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_ILLUMINANCE];
+    NSString *value = [stateValue value];
 
-    //Calculate values
-    NSString *strValue = [self.deviceValue valueForProperty:SFIDevicePropertyType_MEASURED_VALUE default:@""];
-    NSArray *temperatureValues = [strValue componentsSeparatedByString:@"."];
+    NSMutableArray *status = [NSMutableArray array];
+    [status addObject:[NSString stringWithFormat:@"Illuminance %@", value]];
 
-    NSString *strIntegerValue = @"";
-    if ([temperatureValues count] > 0) {
-        strIntegerValue = temperatureValues[0];
+    NSString *battery = [self.deviceValue valueForProperty:SFIDevicePropertyType_BATTERY default:@""];
+    if (battery.length > 0 ) {
+        [status addObject:[NSString stringWithFormat:@"Battery %@%%", battery]];
     }
+    [self setDeviceStatusMessages:status];
 
-    if ([temperatureValues count] == 2) {
-        NSString *strDecimalValue = temperatureValues[1];
-        self.decimalValueLabel.text = [NSString stringWithFormat:@".%@", strDecimalValue];
+    NSString *imageName;
+    if ([value isEqualToString:@"0 lux"]) {
+        imageName = DT25_LIGHT_SENSOR_FALSE;
     }
-
-    self.deviceValueLabel.text = strIntegerValue;
-
-    NSUInteger str_length = [strIntegerValue length];
-    if (str_length == 1) {
-        self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 40, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 25, 20, 20);
+    else {
+        imageName = DT25_LIGHT_SENSOR_TRUE;
     }
-    else if (str_length == 3) {
-        UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
-
-        self.deviceValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:30];
-        self.decimalValueLabel.font = heavy_font;
-        self.degreeLabel.font = heavy_font;
-        self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 38, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 30, 20, 20);
-    }
-    else if (str_length == 4) {
-        self.deviceValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:22];
-        self.decimalValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:10];
-        self.degreeLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:10];
-        self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 35, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 30, 20, 20);
-    }
+    self.deviceImageView.image = [UIImage imageNamed:imageName];
 }
 
-- (void)configureFloodSensor_37 {
+- (void)configureTempSensor_27 {
+    NSString *temp = [self.deviceValue valueForProperty:SFIDevicePropertyType_TEMPERATURE default:@""];
+    [self setTemperatureValue:temp];
 
+    NSString *humidity = [self.deviceValue valueForProperty:SFIDevicePropertyType_HUMIDITY default:@""];
+    NSString *battery = [self.deviceValue valueForProperty:SFIDevicePropertyType_BATTERY default:@""];
+
+    NSMutableArray *status = [NSMutableArray array];
+    if (humidity.length > 0) {
+        [status addObject:[NSString stringWithFormat:@"Humidity %@", humidity]];
+    }
+    if (battery.length > 0 ) {
+        [status addObject:[NSString stringWithFormat:@"Battery %@%%", battery]];
+    }
+    [self setDeviceStatusMessages:status];
+}
+
+- (void)configureMoistureSensor_40 {
+    NSString *temp = [self.deviceValue valueForProperty:SFIDevicePropertyType_TEMPERATURE default:@""];
+    NSString *battery = [self.deviceValue valueForProperty:SFIDevicePropertyType_BATTERY default:@""];
+
+    SFIDeviceKnownValues *stateValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BASIC];
+
+    NSString *imageForNoValue = [self imageForNoValue];
+    NSString *imageName = [stateValue choiceForBoolValueTrueValue:DT40_MOISTURE_TRUE falseValue:DT40_MOISTURE_FALSE nilValue:imageForNoValue];
+    self.deviceImageView.image = [UIImage imageNamed:imageName];
+
+    NSMutableArray *status = [NSMutableArray array];
+    [status addObject:[stateValue choiceForLevelValueZeroValue:@"OK" nonZeroValue:@"FLOODED" nilValue:@""]];
+    if (temp.length > 0 ) {
+        [status addObject:[NSString stringWithFormat:@"Temp %@", temp]];
+    }
+    if (battery.length > 0 ) {
+        [status addObject:[NSString stringWithFormat:@"Battery %@%%", battery]];
+    }
+    [self setDeviceStatusMessages:status];
+}
+
+- (void)configureBinaryPowerSwitch_45 {
+    SFIDeviceKnownValues *stateValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_BINARY];
+
+    NSMutableArray *status = [NSMutableArray array];
+    [status addObject:[stateValue choiceForBoolValueTrueValue:@"ON" falseValue:@"OFF" nilValue:@""]];
+    NSString *power = [self.deviceValue valueForProperty:SFIDevicePropertyType_POWER default:@""];
+    if (power.length > 0 ) {
+        [status addObject:[NSString stringWithFormat:@"Power %@W", power]];
+    }
+    [self setDeviceStatusMessages:status];
+
+    NSString *imageForNoValue = [self imageForNoValue];
+    NSString *imageName = [stateValue choiceForBoolValueTrueValue:DT45_BINARY_POWER_TRUE falseValue:DT45_BINARY_POWER_FALSE nilValue:imageForNoValue];
+    self.deviceImageView.image = [UIImage imageNamed:imageName];
 }
 
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDevice];
+    NSString *imageName = [values choiceForBoolValueTrueValue:imageNameTrue falseValue:imageNameFalse nilValue:[self imageForNoValue]];
+    NSString *status = [values choiceForBoolValueTrueValue:statusTrue falseValue:statusFalse nilValue:@"Could not update sensor\ndata."];
+    [self configureBinaryStateSensorImageName:imageName statusMesssage:status];
+}
 
-    NSString *imageForNoValue = [self imageForNoValue];
-    NSString *imageName = [values choiceForBoolValueTrueValue:imageNameTrue falseValue:imageNameFalse nilValue:imageForNoValue];
+- (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusNonZeroValue:(NSString *)statusTrue statusZeroValue:(NSString *)statusFalse {
+    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDevice];
+    NSString *imageName = [values choiceForLevelValueZeroValue:imageNameFalse nonZeroValue:imageNameTrue nilValue:[self imageForNoValue]];
+    NSString *status = [values choiceForLevelValueZeroValue:statusTrue nonZeroValue:statusFalse nilValue:@"Could not update sensor\ndata."];
+    [self configureBinaryStateSensorImageName:imageName statusMesssage:status];
+}
+
+- (void)configureBinaryStateSensorImageName:(NSString *)imageName statusMesssage:(NSString *)message {
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 
-    NSString *status = [values choiceForBoolValueTrueValue:statusTrue falseValue:statusFalse nilValue:@"Could not update sensor\ndata."];
+    NSMutableArray *status = [NSMutableArray array];
+
+//    [status addObject:[SFIDevice nameForType:self.device.deviceType]];
+    [status addObject:message];
     if (self.device.isBatteryLow) {
-        status = [status stringByAppendingString:@"\nLOW BATTERY"];
-        self.deviceStatusLabel.numberOfLines = 2;
+        [status addObject:@"LOW BATTERY"];
     }
-    self.deviceStatusLabel.text = status;
+    else {
+        NSString *battery = [self.deviceValue valueForProperty:SFIDevicePropertyType_BATTERY default:@""];
+        if (battery.length > 0 ) {
+            [status addObject:[NSString stringWithFormat:@"Battery %@%%", battery]];
+        }
+    }
+
+    [self setDeviceStatusMessages:status];
 }
 
 - (NSString *)imageForNoValue {
@@ -591,6 +700,11 @@
     self.deviceValueLabel.hidden = !show;
     self.decimalValueLabel.hidden = !show;
     self.degreeLabel.hidden = !show;
+}
+
+- (void)setDeviceStatusMessages:(NSArray*)status {
+    self.deviceStatusLabel.numberOfLines = (status.count > 1) ? 0 : 1;
+    self.deviceStatusLabel.text = [status componentsJoinedByString:@"\n"];
 }
 
 #pragma mark - Device Values
