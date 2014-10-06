@@ -229,7 +229,7 @@
         }
 
         case SFIDeviceType_DoorLock_5: {
-            [self configureBinaryStateSensor:DT5_DOOR_LOCK_TRUE imageNameFalse:DT5_DOOR_LOCK_FALSE statusNonZeroValue:@"LOCKED" statusZeroValue:@"UNLOCKED"];
+            [self configureBinaryStateSensor:DT5_DOOR_LOCK_TRUE imageNameFalse:DT5_DOOR_LOCK_FALSE statusNonZeroValue:@"UNLOCKED" statusZeroValue:@"LOCKED"];
             break;
         }
 
@@ -550,11 +550,28 @@
     NSString *operatingMode = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE default:@"Unknown"];
     NSString *coolingSetPoint = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING default:@"-"];
     NSString *heatingSetPoint = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING default:@"-"];
-    self.deviceStatusLabel.text = [NSString stringWithFormat:@"%@,  LO %@\u00B0,  HI %@\u00B0", operatingMode, coolingSetPoint, heatingSetPoint]; // U+00B0 == degree sign
+    NSString *state = [NSString stringWithFormat:@"%@,  LO %@\u00B0,  HI %@\u00B0", operatingMode, coolingSetPoint, heatingSetPoint]; // U+00B0 == degree sign
+
+    NSMutableArray *status = [NSMutableArray array];
+    [status addObject:state];
+    [self tryAddBatteryStatus:status];
+    [self setDeviceStatusMessages:status];
 
     // Calculate values
     NSString *value = [self.deviceValue valueForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
     [self setTemperatureValue:value];
+}
+
+- (void)tryAddBatteryStatus:(NSMutableArray*)status {
+    if (self.device.isBatteryLow) {
+        [status addObject:@"LOW BATTERY"];
+    }
+    else {
+        NSString *battery = [self.deviceValue valueForProperty:SFIDevicePropertyType_BATTERY default:@""];
+        if (battery.length > 0 ) {
+            [status addObject:[NSString stringWithFormat:@"Battery %@%%", battery]];
+        }
+    }
 }
 
 - (void)configureKeyFob_19 {
@@ -562,9 +579,7 @@
 
     NSMutableArray *status = [NSMutableArray array];
     [status addObject:[deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : @"ALL DISARMED", @"2":@"PERIMETER ARMED", @"3":@"ALL ARMED"} default:@"Could not update sensor\ndata."]];
-    if (self.device.isBatteryLow) {
-        [status addObject:@"LOW BATTERY"];
-    }
+    [self tryAddBatteryStatus:status];
     [self setDeviceStatusMessages:status];
 
     NSString *imageForNoValue = [self imageForNoValue];
@@ -578,11 +593,7 @@
 
     NSMutableArray *status = [NSMutableArray array];
     [status addObject:[NSString stringWithFormat:@"Illuminance %@", value]];
-
-    NSString *battery = [self.deviceValue valueForProperty:SFIDevicePropertyType_BATTERY default:@""];
-    if (battery.length > 0 ) {
-        [status addObject:[NSString stringWithFormat:@"Battery %@%%", battery]];
-    }
+    [self tryAddBatteryStatus:status];
     [self setDeviceStatusMessages:status];
 
     NSString *imageName;
@@ -599,23 +610,16 @@
     NSString *temp = [self.deviceValue valueForProperty:SFIDevicePropertyType_TEMPERATURE default:@""];
     [self setTemperatureValue:temp];
 
-    NSString *humidity = [self.deviceValue valueForProperty:SFIDevicePropertyType_HUMIDITY default:@""];
-    NSString *battery = [self.deviceValue valueForProperty:SFIDevicePropertyType_BATTERY default:@""];
-
     NSMutableArray *status = [NSMutableArray array];
+    NSString *humidity = [self.deviceValue valueForProperty:SFIDevicePropertyType_HUMIDITY default:@""];
     if (humidity.length > 0) {
         [status addObject:[NSString stringWithFormat:@"Humidity %@", humidity]];
     }
-    if (battery.length > 0 ) {
-        [status addObject:[NSString stringWithFormat:@"Battery %@%%", battery]];
-    }
+    [self tryAddBatteryStatus:status];
     [self setDeviceStatusMessages:status];
 }
 
 - (void)configureMoistureSensor_40 {
-    NSString *temp = [self.deviceValue valueForProperty:SFIDevicePropertyType_TEMPERATURE default:@""];
-    NSString *battery = [self.deviceValue valueForProperty:SFIDevicePropertyType_BATTERY default:@""];
-
     SFIDeviceKnownValues *stateValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BASIC];
 
     NSString *imageForNoValue = [self imageForNoValue];
@@ -624,12 +628,11 @@
 
     NSMutableArray *status = [NSMutableArray array];
     [status addObject:[stateValue choiceForLevelValueZeroValue:@"OK" nonZeroValue:@"FLOODED" nilValue:@""]];
+    NSString *temp = [self.deviceValue valueForProperty:SFIDevicePropertyType_TEMPERATURE default:@""];
     if (temp.length > 0 ) {
         [status addObject:[NSString stringWithFormat:@"Temp %@", temp]];
     }
-    if (battery.length > 0 ) {
-        [status addObject:[NSString stringWithFormat:@"Battery %@%%", battery]];
-    }
+    [self tryAddBatteryStatus:status];
     [self setDeviceStatusMessages:status];
 }
 
@@ -642,6 +645,7 @@
     if (power.length > 0 ) {
         [status addObject:[NSString stringWithFormat:@"Power %@W", power]];
     }
+    [self tryAddBatteryStatus:status];
     [self setDeviceStatusMessages:status];
 
     NSString *imageForNoValue = [self imageForNoValue];
@@ -667,19 +671,8 @@
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 
     NSMutableArray *status = [NSMutableArray array];
-
-//    [status addObject:[SFIDevice nameForType:self.device.deviceType]];
     [status addObject:message];
-    if (self.device.isBatteryLow) {
-        [status addObject:@"LOW BATTERY"];
-    }
-    else {
-        NSString *battery = [self.deviceValue valueForProperty:SFIDevicePropertyType_BATTERY default:@""];
-        if (battery.length > 0 ) {
-            [status addObject:[NSString stringWithFormat:@"Battery %@%%", battery]];
-        }
-    }
-
+    [self tryAddBatteryStatus:status];
     [self setDeviceStatusMessages:status];
 }
 
