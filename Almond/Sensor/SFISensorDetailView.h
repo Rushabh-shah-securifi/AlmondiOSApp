@@ -21,6 +21,8 @@
 
 - (void)sensorDetailViewDidChangeSensorValue:(SFISensorDetailView*)view propertyType:(SFIDevicePropertyType)propertyType newValue:(NSString*)aValue;
 
+- (void)sensorDetailViewDidChangeSensorValue:(SFISensorDetailView*)view propertyName:(NSString*)propertyName newValue:(NSString*)aValue;
+
 @end
 
 

@@ -10,7 +10,7 @@
 
 @interface SFIConstants : NSObject
 #define SENSOR_ROW_HEIGHT 90
-#define EXPANDED_ROW_HEIGHT 230
+#define EXPANDED_ROW_HEIGHT 235
 #define WIRELESS_USER_ROW_HEIGHT 100
 #define LEFT_LABEL_WIDTH 80
 

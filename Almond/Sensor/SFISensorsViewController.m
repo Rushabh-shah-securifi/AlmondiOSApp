@@ -553,6 +553,22 @@
     [self sendMobileCommandForDevice:device deviceValue:deviceValues];
 }
 
+- (void)tableViewCellDidChangeValue:(SFISensorTableViewCell *)cell propertyName:(NSString *)propertyName newValue:(NSString *)newValue {
+    if (self.isViewControllerDisposed) {
+        return;
+    }
+
+    [self markDeviceUpdatingState:cell.device];
+    [cell showUpdatingDeviceValuesStatus];
+
+    SFIDevice *device = cell.device;
+
+    SFIDeviceKnownValues *deviceValues  = [cell.deviceValue knownValuesForPropertyName:propertyName];
+    deviceValues.value = newValue;
+
+    [self sendMobileCommandForDevice:device deviceValue:deviceValues];
+}
+
 #pragma mark - Class Methods
 
 - (void)initializeDevices {
@@ -969,6 +985,13 @@
 #pragma mark - Helpers
 
 - (void)sendMobileCommandForDevice:(SFIDevice *)device deviceValue:(SFIDeviceKnownValues *)deviceValues {
+    if (device == nil) {
+        return;
+    }
+    if (deviceValues == nil) {
+        return;
+    }
+
     //todo decide what to do about this
     [self.mobileCommandTimer invalidate];
 

@@ -30,6 +30,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
+        self.deviceValue = [SFIDeviceValue new]; // ensure no null pointers; layout code assumes there exists a Device Value that returns answers
     }
 
     return self;
@@ -79,6 +80,14 @@
             self.detailView = detailView;
         }
     }
+}
+
+- (void)setDeviceValue:(SFIDeviceValue *)deviceValue {
+    if (!deviceValue) {
+        //do not allow null values!
+        deviceValue = [SFIDeviceValue new];
+    }
+    _deviceValue = deviceValue;
 }
 
 - (void)tearDown {
@@ -413,7 +422,7 @@
     }
 }
 
-- (void)setTemperatureIntegerValue:(NSString *)integerValue decimalValue:(NSString*)decimalValue {
+- (void)setTemperatureIntegerValue:(NSString *)integerValue decimalValue:(NSString *)decimalValue {
     UIFont *heavy_14 = [UIFont fontWithName:@"Avenir-Heavy" size:14];
 
     self.deviceValueLabel.text = integerValue;
@@ -491,6 +500,10 @@
     [self.delegate tableViewCellDidChangeValue:self propertyType:propertyType newValue:aValue];
 }
 
+- (void)sensorDetailViewDidChangeSensorValue:(SFISensorDetailView *)view propertyName:(NSString*)propertyName newValue:(NSString *)aValue {
+    [self.delegate tableViewCellDidChangeValue:self propertyName:propertyName newValue:aValue];
+}
+
 #pragma mark - Device layout
 
 - (void)configureMultiLevelSwitch_2 {
@@ -554,7 +567,7 @@
 
     NSMutableArray *status = [NSMutableArray array];
     [status addObject:state];
-    [self tryAddBatteryStatus:status];
+    [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 
     // Calculate values
@@ -562,28 +575,16 @@
     [self setTemperatureValue:value];
 }
 
-- (void)tryAddBatteryStatus:(NSMutableArray*)status {
-    if (self.device.isBatteryLow) {
-        [status addObject:@"LOW BATTERY"];
-    }
-    else {
-        NSString *battery = [self.deviceValue valueForProperty:SFIDevicePropertyType_BATTERY default:@""];
-        if (battery.length > 0 ) {
-            [status addObject:[NSString stringWithFormat:@"Battery %@%%", battery]];
-        }
-    }
-}
-
 - (void)configureKeyFob_19 {
     SFIDeviceValue *const deviceValue = self.deviceValue;
 
     NSMutableArray *status = [NSMutableArray array];
-    [status addObject:[deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : @"ALL DISARMED", @"2":@"PERIMETER ARMED", @"3":@"ALL ARMED"} default:@"Could not update sensor\ndata."]];
-    [self tryAddBatteryStatus:status];
+    [status addObject:[deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : @"ALL DISARMED", @"2" : @"PERIMETER ARMED", @"3" : @"ALL ARMED"} default:@"Could not update sensor\ndata."]];
+    [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 
     NSString *imageForNoValue = [self imageForNoValue];
-    NSString *imageName = [deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : DT19_KEYFOB_FALSE, @"2":DT19_KEYFOB_TRUE, @"3":DT19_KEYFOB_TRUE} default:imageForNoValue];
+    NSString *imageName = [deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : DT19_KEYFOB_FALSE, @"2" : DT19_KEYFOB_TRUE, @"3" : DT19_KEYFOB_TRUE} default:imageForNoValue];
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 }
 
@@ -593,7 +594,7 @@
 
     NSMutableArray *status = [NSMutableArray array];
     [status addObject:[NSString stringWithFormat:@"Illuminance %@", value]];
-    [self tryAddBatteryStatus:status];
+    [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 
     NSString *imageName;
@@ -615,7 +616,7 @@
     if (humidity.length > 0) {
         [status addObject:[NSString stringWithFormat:@"Humidity %@", humidity]];
     }
-    [self tryAddBatteryStatus:status];
+    [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 }
 
@@ -629,10 +630,10 @@
     NSMutableArray *status = [NSMutableArray array];
     [status addObject:[stateValue choiceForLevelValueZeroValue:@"OK" nonZeroValue:@"FLOODED" nilValue:@""]];
     NSString *temp = [self.deviceValue valueForProperty:SFIDevicePropertyType_TEMPERATURE default:@""];
-    if (temp.length > 0 ) {
+    if (temp.length > 0) {
         [status addObject:[NSString stringWithFormat:@"Temp %@", temp]];
     }
-    [self tryAddBatteryStatus:status];
+    [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 }
 
@@ -642,10 +643,10 @@
     NSMutableArray *status = [NSMutableArray array];
     [status addObject:[stateValue choiceForBoolValueTrueValue:@"ON" falseValue:@"OFF" nilValue:@""]];
     NSString *power = [self.deviceValue valueForProperty:SFIDevicePropertyType_POWER default:@""];
-    if (power.length > 0 ) {
+    if (power.length > 0) {
         [status addObject:[NSString stringWithFormat:@"Power %@W", power]];
     }
-    [self tryAddBatteryStatus:status];
+    [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 
     NSString *imageForNoValue = [self imageForNoValue];
@@ -671,8 +672,10 @@
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 
     NSMutableArray *status = [NSMutableArray array];
-    [status addObject:message];
-    [self tryAddBatteryStatus:status];
+    if (message) {
+        [status addObject:message];
+    }
+    [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 }
 
@@ -695,9 +698,21 @@
     self.degreeLabel.hidden = !show;
 }
 
-- (void)setDeviceStatusMessages:(NSArray*)status {
+- (void)setDeviceStatusMessages:(NSArray *)status {
     self.deviceStatusLabel.numberOfLines = (status.count > 1) ? 0 : 1;
     self.deviceStatusLabel.text = [status componentsJoinedByString:@"\n"];
+}
+
+- (void)tryAddBatteryStatusMessage:(NSMutableArray *)status {
+    if (self.device.isBatteryLow) {
+        [status addObject:@"LOW BATTERY"];
+    }
+    else {
+        NSString *battery = [self.deviceValue valueForProperty:SFIDevicePropertyType_BATTERY default:@""];
+        if (battery.length > 0) {
+            [status addObject:[NSString stringWithFormat:@"Battery %@%%", battery]];
+        }
+    }
 }
 
 #pragma mark - Device Values
