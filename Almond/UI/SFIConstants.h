@@ -10,7 +10,7 @@
 
 @interface SFIConstants : NSObject
 #define SENSOR_ROW_HEIGHT 90
-#define EXPANDED_ROW_HEIGHT 230
+#define EXPANDED_ROW_HEIGHT 235
 #define WIRELESS_USER_ROW_HEIGHT 100
 #define LEFT_LABEL_WIDTH 80
 
@@ -52,20 +52,32 @@
 #define DT22_AC_SWITCH_FALSE @"metering_1.png"
 #define DT23_DC_SWITCH_TRUE @"metering_2.png"
 #define DT23_DC_SWITCH_FALSE @"metering_1.png"
+
+#define DT25_LIGHT_SENSOR_TRUE @"bulb_on.png"
+#define DT25_LIGHT_SENSOR_FALSE @"bulb_off.png"
+
 #define DT26_WINDOW_COVERING_TRUE @"window_106x140.png"
 #define DT26_WINDOW_COVERING_FALSE @"window_106x140.png"
 //#define DT27_TEMP_SENSOR_TRUE @"door_on.png"
 //#define DT27_TEMP_SENSOR_FALSE @"door_off.png"
 #define DT34_SHADE_TRUE @"shade_106x140.png"
 #define DT34_SHADE_FALSE @"shade_106x140.png"
-#define DT36_SMOKE_DETECTOR_TRUE @"water_drop2.png"
-#define DT36_SMOKE_DETECTOR_FALSE @"water_drop1.png"
+#define DT36_SMOKE_DETECTOR_TRUE @"fire_02.png"
+#define DT36_SMOKE_DETECTOR_FALSE @"fire_01.png"
 #define DT37_FLOOD_TRUE @"water_drop2.png"
 #define DT37_FLOOD_FALSE @"water_drop1.png"
 #define DT38_SHOCK_TRUE @"vibration_sensor_2.png"
 #define DT38_SHOCK_FALSE @"vibration_sensor_1.png"
 #define DT39_DOOR_SENSOR_TRUE @"door_on.png"
 #define DT39_DOOR_SENSOR_FALSE @"door_off.png"
+#define DT40_MOISTURE_TRUE @"water_drop2.png"
+#define DT40_MOISTURE_FALSE @"water_drop1.png"
+#define DT41_MOTION_SENSOR_TRUE @"motion_sensor_true.png"
+#define DT41_MOTION_SENSOR_FALSE @"motion_sensor_false.png"
+#define DT42_ALARM_TRUE @"alarm_2.png"
+#define DT42_ALARM_FALSE @"alarm_1.png"
+#define DT45_BINARY_POWER_TRUE @"door_on.png"
+#define DT45_BINARY_POWER_FALSE @"door_off.png"
 
 #define DEVICE_TAMPERED @"Device has been tampered"
 #define BATTERY_IS_LOW @"Alert! Battery is low."

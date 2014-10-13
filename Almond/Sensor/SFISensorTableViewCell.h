@@ -23,6 +23,7 @@
 - (void)tableViewCellDidDismissTamper:(SFISensorTableViewCell*)cell;
 
 - (void)tableViewCellDidChangeValue:(SFISensorTableViewCell*)cell propertyType:(SFIDevicePropertyType)propertyType newValue:(NSString*)newValue;
+- (void)tableViewCellDidChangeValue:(SFISensorTableViewCell*)cell propertyName:(NSString*)propertyName newValue:(NSString*)newValue;
 
 @end
 

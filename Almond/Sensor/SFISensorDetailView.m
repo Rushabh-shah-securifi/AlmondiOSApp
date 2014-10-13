@@ -12,7 +12,7 @@
 #import "SFICopyLabel.h"
 
 
-#define PICKER_ELEMENT_WIDTH 30
+#define TEMP_PICKER_ELEMENT_WIDTH 30
 #define TEMP_LOWEST_SETTABLE 35
 #define TEMP_HIGHEST_SETTABLE 95
 
@@ -122,21 +122,17 @@
 
     // Settings for all the sensors
     [self addSensorLabel];
-    [self addLine];
+    [self addShortLine];
     [self addDisplayNameField];
-    [self addLine];
+    [self addShortLine];
     [self addDeviceLocationField];
-    [self addLine];
+    [self addShortLine];
     [self markYOffset:5];
     [self addSaveButton];
 }
 
 - (void)layoutDevices {
     switch (self.device.deviceType) {
-        case SFIDeviceType_BinarySwitch_1: {
-            [self markYOffset:25];
-            break;
-        }
         case SFIDeviceType_MultiLevelSwitch_2: {
             [self configureMultiLevelSwitchMinValue:0 maxValue:99];
             break;
@@ -150,43 +146,11 @@
             break;
         }
         case SFIDeviceType_DoorLock_5: {
-            [self markYOffset:25];
-            break;
-        }
-        case SFIDeviceType_Alarm_6: {
-            [self markYOffset:25];
+            [self configureDoorLock_5];
             break;
         }
         case SFIDeviceType_Thermostat_7: {
             [self configureThermostat_7];
-            break;
-        }
-        case SFIDeviceType_MotionSensor_11: {
-            [self configureMotionSensor_11];
-            break;
-        }
-        case SFIDeviceType_ContactSwitch_12: {
-            [self configureContactSwitch_12];
-            break;
-        }
-        case SFIDeviceType_FireSensor_13: {
-            [self configureFireSensor_13];
-            break;
-        }
-        case SFIDeviceType_WaterSensor_14: {
-            [self configureWaterSensor_14];
-            break;
-        }
-        case SFIDeviceType_GasSensor_15: {
-            [self configureGasSensor_15];
-            break;
-        }
-        case SFIDeviceType_VibrationOrMovementSensor_17: {
-            [self configureGasSensor_17];
-            break;
-        }
-        case SFIDeviceType_KeyFob_19: {
-            [self configureKeyFob_19];
             break;
         }
         case SFIDeviceType_SmartACSwitch_22: {
@@ -197,37 +161,35 @@
             [self configureElectricMeasurementSwitch_23];
             break;
         }
-        case SFIDeviceType_WindowCovering_26: {
-            [self markYOffset:25];
-            break;
-        }
-        case SFIDeviceType_TemperatureSensor_27: {
-            [self configureTempSensor_27];
-            [self markYOffset:25];
-            break;
-        }
-        case SFIDeviceType_Shade_34: {
-            [self configureShadeSensor_34];
-            [self markYOffset:25];
-            break;
-        }
 
         case SFIDeviceType_UnknownDevice_0:
+        case SFIDeviceType_BinarySwitch_1:
+        case SFIDeviceType_Alarm_6:
         case SFIDeviceType_Controller_8:;
         case SFIDeviceType_SceneController_9:;
         case SFIDeviceType_StandardCIE_10:
+        case SFIDeviceType_MotionSensor_11:
+        case SFIDeviceType_ContactSwitch_12:
+        case SFIDeviceType_FireSensor_13:
+        case SFIDeviceType_WaterSensor_14:
+        case SFIDeviceType_GasSensor_15:
         case SFIDeviceType_PersonalEmergencyDevice_16:
+        case SFIDeviceType_VibrationOrMovementSensor_17:
         case SFIDeviceType_RemoteControl_18:
+        case SFIDeviceType_KeyFob_19:
         case SFIDeviceType_Keypad_20:
         case SFIDeviceType_StandardWarningDevice_21:
         case SFIDeviceType_OccupancySensor_24:
         case SFIDeviceType_LightSensor_25:
+        case SFIDeviceType_WindowCovering_26:
+        case SFIDeviceType_TemperatureSensor_27:
         case SFIDeviceType_SimpleMetering_28:
         case SFIDeviceType_ColorControl_29:
         case SFIDeviceType_PressureSensor_30:
         case SFIDeviceType_FlowSensor_31:
         case SFIDeviceType_ColorDimmableLight_32:
         case SFIDeviceType_HAPump_33:
+        case SFIDeviceType_Shade_34:
         case SFIDeviceType_SmokeDetector_36:
         case SFIDeviceType_FloodSensor_37:
         case SFIDeviceType_ShockSensor_38:
@@ -238,9 +200,18 @@
         case SFIDeviceType_MultiSwitch_43:
         case SFIDeviceType_UnknownOnOffModule_44:
         default: {
-            [self markYOffset:25];
+            [self markYOffset:30];
+            [self tryAddTamper];
             break;
         }
+    }
+}
+
+// Adds a tamper message and dismiss button when needed; otherwise, does nothing; advances the y-offset
+- (void)tryAddTamper {
+    if (self.device.isTampered) {
+        [self addTamperButton];
+        [self addLine];
     }
 }
 
@@ -322,6 +293,18 @@
     [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:propertyType newValue:strModeValue];
 }
 
+- (void)onSavePinCodeChanges:(id)sender {
+    [self.firstResponderField resignFirstResponder];
+
+    V8HorizontalPickerView *picker = [self pickerViewForTag:SFIDevicePropertyType_USER_CODE];
+    NSString *propertyName = [self makePinCodeDevicePropertyValueName:picker.currentSelectedIndex + 1];
+
+    UITextField *field = [self textFieldForTag:SFIDevicePropertyType_USER_CODE];
+    NSString *value = field.text;
+
+    [self.delegate sensorDetailViewDidChangeSensorValue:self propertyName:propertyName newValue:value];
+}
+
 #pragma mark - UITextFieldDelegate methods
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
@@ -365,7 +348,7 @@
 - (UITextField *)addFieldNameValue:(NSString *)fieldName fieldValue:(NSString *)fieldValue {
     [self addFieldNameLabel:fieldName];
 
-    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
+    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
 
     UITextField *field = [[UITextField alloc] initWithFrame:[self makeFieldValueRect:120]];
     field.tag = self.tag;
@@ -383,7 +366,7 @@
 }
 
 - (void)addFieldNameLabel:(NSString *)fieldName {
-    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
+    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
 
     UILabel *label;
     label = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:100]];
@@ -396,11 +379,21 @@
 }
 
 - (void)addSaveButton {
-    int button_width = 65;
+    SFIHighlightedButton *button = [self addButton:@"Save"];
+    [button addTarget:self action:@selector(onSaveSensorNameLocationChanges:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (SFIHighlightedButton *)addButton:(NSString *)buttonName {
+    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
+    CGSize stringBoundingBox = [buttonName sizeWithAttributes:@{NSFontAttributeName : heavy_font}];
+
+    int button_width = (int) (stringBoundingBox.width + 20);
+    if (button_width < 60) {
+        button_width = 60;
+    }
+
     int right_margin = 10;
     CGRect frame = CGRectMake(self.frame.size.width - button_width - right_margin, self.baseYCoordinate, button_width, 30);
-
-    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
 
     UIColor *whiteColor = [UIColor whiteColor];
     UIColor *normalColor = self.color;
@@ -411,14 +404,15 @@
     button.normalBackgroundColor = normalColor;
     button.highlightedBackgroundColor = highlightColor;
     button.titleLabel.font = heavy_font;
-    [button addTarget:self action:@selector(onSaveSensorNameLocationChanges:) forControlEvents:UIControlEventTouchUpInside];
-    [button setTitle:@"Save" forState:UIControlStateNormal];
+    [button setTitle:buttonName forState:UIControlStateNormal];
     [button setTitleColor:whiteColor forState:UIControlStateNormal];
     [button setTitleColor:normalColor forState:UIControlStateHighlighted];
     button.layer.borderWidth = 1.0f;
     button.layer.borderColor = whiteColor.CGColor;
 
     [self addSubview:button];
+
+    return button;
 }
 
 - (CGRect)makeFieldValueRect:(int)leftOffset {
@@ -471,13 +465,21 @@
     button.layer.borderColor = whiteColor.CGColor;
 
     [self addSubview:button];
-    [self markYOffset:35];
+    [self markYOffset:40];
 }
 
 - (void)addLine {
     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, self.baseYCoordinate, self.frame.size.width - 15, 1)];
     imgLine.image = [UIImage imageNamed:@"line.png"];
-    imgLine.alpha = 0.5;
+    imgLine.alpha = 0.6;
+    [self addSubview:imgLine];
+    [self markYOffset:5];
+}
+
+- (void)addShortLine {
+    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(10, self.baseYCoordinate, self.frame.size.width - 20, 1)];
+    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.alpha = 0.3;
     [self addSubview:imgLine];
     [self markYOffset:5];
 }
@@ -560,7 +562,7 @@
     // Picker
     V8HorizontalPickerView *picker = [[V8HorizontalPickerView alloc] initWithFrame:CGRectZero];
     picker.tag = propertyType; // we stored the type of property in the tag info; will use in delegate methods and callbacks
-    picker.frame = CGRectMake(70.0, self.baseYCoordinate, self.frame.size.width - 80, PICKER_ELEMENT_WIDTH);
+    picker.frame = CGRectMake(70.0, self.baseYCoordinate, self.frame.size.width - 80, 30);
     picker.layer.cornerRadius = 4;
     picker.layer.borderWidth = 1.0;
     picker.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -573,7 +575,8 @@
     picker.delegate = self;
     picker.dataSource = self;
 
-    SFIPickerIndicatorView *indicatorView = [[SFIPickerIndicatorView alloc] initWithFrame:CGRectMake(0, 0, PICKER_ELEMENT_WIDTH, 2)];
+    NSInteger width = [self horizontalPickerView:picker widthForElementAtIndex:0];
+    SFIPickerIndicatorView *indicatorView = [[SFIPickerIndicatorView alloc] initWithFrame:CGRectMake(0, 0, width, 2)];
     indicatorView.color = contrastingColor;
     picker.selectionIndicatorView = indicatorView;
 
@@ -585,6 +588,7 @@
 
 - (void)configureMultiLevelSwitchMinValue:(int)minValue maxValue:(int)maxValue {
     [self markYOffset:35];
+    [self tryAddTamper];
 
     UIImageView *minImage = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate, 24, 24)];
     [minImage setImage:[UIImage imageNamed:@"dimmer_min.png"]];
@@ -603,10 +607,11 @@
 }
 
 - (void)configureBinarySensor_3 {
+    [self markYOffset:30];
+    [self tryAddTamper];
+
     SFIDeviceKnownValues *values = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BATTERY];
     NSString *batteryStatus = [values choiceForLevelValueZeroValue:@"Battery OK" nonZeroValue:@"Low Battery" nilValue:@"Battery Unknown"];
-
-    [self markYOffset:25];
 
     UILabel *label = [[UILabel alloc] init];
     label.backgroundColor = [UIColor clearColor];
@@ -620,9 +625,118 @@
     [self addLine];
 }
 
-- (void)configureThermostat_7 {
-    // Temp selectors
+/*
+	@SuppressLint("NewApi")
+	private void showUserCode(final List<DeviceKnownValues> currentKnownValues, int colorForRow, int position) {
+		int maximumUser = 0;
+		Log.i("CustomListViewAdatper", "Maximum Users " + maximumUser);
+		for (DeviceKnownValues values : currentKnownValues)
+			if (values.getValueName().equals("MAXIMUM_USERS")) {
+				maximumUser = Util.getIntegerValue(values.getValue());
+				break;
+			}
+		Log.i("CustomListViewAdatper", "Maximum Users " + maximumUser);
+		if (maximumUser <= 0) {
+			holder.bottomPart.removeAllViews();
+			return;// No User Codes.
+		}
+		View parentView = addSensorDetails(R.id.doorLock, R.layout.door_lock);
+
+		final EditText pin = (EditText) parentView.findViewById(R.id.pin);
+		pin.setTextColor(colorForRow);
+		pin.setText(getPinValue(currentKnownValues, (String) pin.getTag()));
+
+		final Button savePin = (Button) parentView.findViewById(R.id.savePin);
+		savePin.setTag(position);
+		savePin.setEnabled(true);
+		savePin.setBackground(context.getResources().getDrawable(R.drawable.button_border));
+
+		savePin.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Util.hideKeyboard((Activity) context);
+				if (StringUtils.isEmpty(pin.getText().toString()) || pin.getText().toString().length() < 5) {
+					if (responseTimeToast == null)
+						responseTimeToast = Toast.makeText(context, "PassCode cannot be less than 5 digits", Toast.LENGTH_LONG);
+					else
+						responseTimeToast.setText("PassCode cannot be less than 5 digits");
+					responseTimeToast.show();
+					return;
+				}
+				v.setBackgroundColor(android.graphics.Color.GRAY);
+				onSensorValueChange((String) pin.getTag(), v, pin.getText() != null ? pin.getText().toString() : "");
+			}
+		});
+
+		final DropdownSpinner spinner = (DropdownSpinner) parentView.findViewById(R.id.userCodeKey);
+		dropDownSpinner = spinner;
+		spinner.lineColor = colorForRow;
+		// Add Maximum Users
+		if (spinner.list == null || spinner.list.size() == 0)
+			for (int i = 1; i <= maximumUser; i++)
+				spinner.addItem(i + "");
+		spinner.setTextColor(Color.WHITE);
+		spinner.setItemBackgroundColor(Color.WHITE);
+		spinner.setItemTextColor(colorForRow);
+		spinner.setVisibleItemNo(5);
+
+		spinner.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+				spinner.setText(pos + 1 + "");
+				pin.setTag("USER_CODE_" + (pos + 1));
+				pin.setText(getPinValue(currentKnownValues, (String) pin.getTag()));
+			}
+		});
+	}
+
+ */
+
+- (void)configureDoorLock_5 {
     [self markYOffset:30];
+    [self tryAddTamper];
+
+    int maxUsers = [self maximumPinCodes];
+    if (maxUsers <= 0) {
+        // nothing to do
+        return;
+    }
+
+    [self addHorizontalPicker:@"Pins" propertyType:SFIDevicePropertyType_USER_CODE];
+
+    [self markYOffset:40];
+    [self addShortLine];
+
+    UITextField *field = [self addFieldNameValue:@"Code" fieldValue:@""];
+    field.tag = SFIDevicePropertyType_USER_CODE;
+
+    NSDictionary *textAttributes = @{
+            NSForegroundColorAttributeName: [[UIColor whiteColor] colorWithAlphaComponent:0.5],
+            NSFontAttributeName : [field.font fontWithSize:10],
+    };
+    field.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Pin Code is not provided." attributes:textAttributes];
+
+//    [field addTarget:self action:@selector(onPinCodeTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+//    [field addTarget:self action:@selector(onPinCodeTextFieldFinishedEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self setPinCodeTextField:1]; // preset the text field for first pin
+
+    [self markYOffset:5];
+    [self addShortLine];
+    [self markYOffset:5];
+
+    SFIHighlightedButton *button = [self addButton:@"Save Pin"];
+    [button addTarget:self action:@selector(onSavePinCodeChanges:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self markYOffset:40];
+    [self addLine];
+    [self markYOffset:5];
+}
+
+- (void)configureThermostat_7 {
+    [self markYOffset:30];
+    [self tryAddTamper];
+
+    // Temp selectors
     [self addHorizontalPicker:@"Heating" propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING];
 
     [self markYOffset:40];
@@ -645,7 +759,7 @@
     [self addSubview:modeLabel];
     //
     UISegmentedControl *modeSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Auto", @"Heat", @"Cool", @"Off"]];
-    modeSegmentControl.frame = CGRectMake(90.0, self.baseYCoordinate, self.frame.size.width - 100, 25.0); //CGRectMake(self.frame.size.width - 190, self.baseYCoordinate, 180, 25);
+    modeSegmentControl.frame = CGRectMake(90.0, self.baseYCoordinate, self.frame.size.width - 100, 25.0);
     modeSegmentControl.tag = self.tag;
     modeSegmentControl.tintColor = white_color;
     [modeSegmentControl addTarget:self action:@selector(onThermostatModeSelected:) forControlEvents:UIControlEventValueChanged];
@@ -701,69 +815,6 @@
     [self addStatusLabel:@[thermostat_str, fan_str, battery_str]];
     [self markYOffset:55];
     [self addLine];
-}
-
-- (void)configureMotionSensor_11 {
-    [self markYOffset:25];
-
-    if (self.device.isTampered) {
-        [self addTamperButton];
-        [self addLine];
-    }
-}
-
-- (void)configureContactSwitch_12 {
-    [self markYOffset:25];
-
-    if (self.device.isTampered) {
-        [self addTamperButton];
-        [self addLine];
-    }
-}
-
-- (void)configureFireSensor_13 {
-    [self markYOffset:25];
-
-    if (self.device.isTampered) {
-        [self addTamperButton];
-        [self addLine];
-    }
-}
-
-- (void)configureWaterSensor_14 {
-    [self markYOffset:25];
-
-    if (self.device.isTampered) {
-        [self addTamperButton];
-        [self addLine];
-    }
-}
-
-- (void)configureGasSensor_15 {
-    [self markYOffset:25];
-
-    if (self.device.isTampered) {
-        [self addTamperButton];
-        [self addLine];
-    }
-}
-
-- (void)configureGasSensor_17 {
-    [self markYOffset:25];
-
-    if (self.device.isTampered) {
-        [self addTamperButton];
-        [self addLine];
-    }
-}
-
-- (void)configureKeyFob_19 {
-    [self markYOffset:25];
-
-    if (self.device.isTampered) {
-        [self addTamperButton];
-        [self addLine];
-    }
 }
 
 - (void)configureElectricMeasurementSwitch_22 {
@@ -827,7 +878,8 @@
     NSString *voltage_str = [NSString stringWithFormat:@"Voltage is %.3fV", voltage];
     NSString *current_str = [NSString stringWithFormat:@"Current is %.3fA", current];
 
-    [self markYOffset:25];
+    [self markYOffset:30];
+    [self tryAddTamper];
     [self addStatusLabel:@[power_str, voltage_str, current_str]];
     [self markYOffset:55];
     [self addLine];
@@ -889,63 +941,35 @@
     NSString *voltage_str = [NSString stringWithFormat:@"Voltage is %.3fV", voltage];
     NSString *current_str = [NSString stringWithFormat:@"Current is %.3fA", current];
 
-    [self markYOffset:25];
+    [self markYOffset:30];
+    [self tryAddTamper];
     [self addStatusLabel:@[power_str, voltage_str, current_str]];
     [self markYOffset:55];
     [self addLine];
 }
 
-- (void)configureTempSensor_27 {
-/*
-    NSString *strValue = @"";
+#pragma mark - Door Lock Pin Code helpers
 
-    NSArray *currentKnownValues = [self currentKnownValuesForDevice];
-    for (SFIDeviceKnownValues *currentKnownValue in currentKnownValues) {
-        if ([currentKnownValue.valueName isEqualToString:@"MEASURED_VALUE"]) {
-            strValue = currentKnownValue.value;
-        }
-        else if ([currentKnownValue.valueName isEqualToString:@"TOLERANCE"]) {
-            self.deviceStatusLabel.text = [NSString stringWithFormat:@"Tolerance: %@", currentKnownValue.value];
-        }
-    }
-
-    //Calculate values
-    NSArray *temperatureValues = [strValue componentsSeparatedByString:@"."];
-
-
-    NSString *strIntegerValue = temperatureValues[0];
-
-    if ([temperatureValues count] == 2) {
-        NSString *strDecimalValue = temperatureValues[1];
-        self.decimalValueLabel.text = [NSString stringWithFormat:@".%@", strDecimalValue];
-    }
-
-    self.deviceValueLabel.text = strIntegerValue;
-    if ([strIntegerValue length] == 1) {
-        self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 40, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 25, 20, 20);
-    }
-    else if ([strIntegerValue length] == 3) {
-        UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
-
-        self.deviceValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:30];
-        self.decimalValueLabel.font = heavy_font;
-        self.degreeLabel.font = heavy_font;
-        self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 38, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 30, 20, 20);
-    }
-    else if ([strIntegerValue length] == 4) {
-        self.deviceValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:22];
-        self.decimalValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:10];
-        self.degreeLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:10];
-        self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 35, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 30, 20, 20);
-    }
-*/
+- (int)maximumPinCodes {
+    SFIDeviceKnownValues *values = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_MAXIMUM_USERS];
+    int maxUsers = [values intValue];
+    return maxUsers;
 }
 
-- (void)configureShadeSensor_34 {
+- (NSString*)pingCodeValue:(NSInteger)pinIndex {
+    NSString *valueName = [self makePinCodeDevicePropertyValueName:pinIndex];
 
+    SFIDeviceKnownValues *values = [self.deviceValue knownValuesForPropertyName:valueName];
+    if (!values) {
+        return @"";
+    }
+    return values.value;
+}
+
+- (NSString *)makePinCodeDevicePropertyValueName:(NSInteger)pinIndex {
+    NSString *valueName = [SFIDeviceKnownValues propertyTypeToName:SFIDevicePropertyType_USER_CODE];
+    valueName = [NSString stringWithFormat:@"%@_%d", valueName, pinIndex];
+    return valueName;
 }
 
 #pragma mark - Helpers
@@ -955,57 +979,43 @@
         return SENSOR_ROW_HEIGHT;
     }
 
+    NSUInteger tamperedExtra = currentSensor.isTampered ? 45 : 0; // accounts for the row presenting the tampered msg and dismiss button
+
     switch (currentSensor.deviceType) {
-        case SFIDeviceType_BinarySwitch_1:
-            return EXPANDED_ROW_HEIGHT;
         case SFIDeviceType_MultiLevelSwitch_2:
-            return 280;
+            return 280 + tamperedExtra;
+
         case SFIDeviceType_BinarySensor_3:
-            return 260;
+            return 260 + tamperedExtra;
+
         case SFIDeviceType_MultiLevelOnOff_4:
-            return 280;
+            return 280 + tamperedExtra;
+
+        case SFIDeviceType_DoorLock_5:
+            return 370 + tamperedExtra;
+
         case SFIDeviceType_Thermostat_7:
-            return 470;
-        case SFIDeviceType_MotionSensor_11:
-            if (currentSensor.isTampered) {
-                return EXPANDED_ROW_HEIGHT + 50;
-            }
-            else {
-                return EXPANDED_ROW_HEIGHT;
-            }
-        case SFIDeviceType_ContactSwitch_12:
-            if (currentSensor.isTampered) {
-                return 270;
-            }
-            else {
-                return 230;
-            }
-
-        case SFIDeviceType_FireSensor_13:
-        case SFIDeviceType_WaterSensor_14:
-        case SFIDeviceType_GasSensor_15:
-        case SFIDeviceType_VibrationOrMovementSensor_17:
-        case SFIDeviceType_KeyFob_19:
-            if (currentSensor.isTampered) {
-                return EXPANDED_ROW_HEIGHT + 50;
-            }
-            else {
-                return EXPANDED_ROW_HEIGHT;
-            }
-
+            return 470 + tamperedExtra;
 
         case SFIDeviceType_SmartACSwitch_22:
         case SFIDeviceType_SmartDCSwitch_23:
-            return 290;
+            return 290 + tamperedExtra;
 
         case SFIDeviceType_UnknownDevice_0:
-        case SFIDeviceType_DoorLock_5:
+        case SFIDeviceType_BinarySwitch_1:
         case SFIDeviceType_Alarm_6:
         case SFIDeviceType_Controller_8:
         case SFIDeviceType_SceneController_9:
         case SFIDeviceType_StandardCIE_10:
+        case SFIDeviceType_MotionSensor_11:
+        case SFIDeviceType_ContactSwitch_12:
+        case SFIDeviceType_FireSensor_13:
+        case SFIDeviceType_WaterSensor_14:
+        case SFIDeviceType_GasSensor_15:
         case SFIDeviceType_PersonalEmergencyDevice_16:
+        case SFIDeviceType_VibrationOrMovementSensor_17:
         case SFIDeviceType_RemoteControl_18:
+        case SFIDeviceType_KeyFob_19:
         case SFIDeviceType_Keypad_20:
         case SFIDeviceType_StandardWarningDevice_21:
         case SFIDeviceType_OccupancySensor_24:
@@ -1029,7 +1039,7 @@
         case SFIDeviceType_MultiSwitch_43:
         case SFIDeviceType_UnknownOnOffModule_44:
         default:
-            return EXPANDED_ROW_HEIGHT;
+            return EXPANDED_ROW_HEIGHT + tamperedExtra;
     }
 }
 
@@ -1041,56 +1051,179 @@
 
 - (void)setPickerRow:(SFIDevicePropertyType)propertyType picker:(V8HorizontalPickerView *)picker {
     // Initialize the slider value
-    NSInteger row = [self getSelectedIndex:propertyType];
+    NSInteger row = [self getPickerViewSelectedIndex:propertyType];
     [picker scrollToElement:row animated:NO];
 }
 
 // converts the known value into an picker view element index
-- (NSInteger)getSelectedIndex:(SFIDevicePropertyType)propertyType {
-    NSString *val = [self.deviceValue valueForProperty:propertyType];
-    if (!val) {
-        return 0;
-    }
+- (NSInteger)getPickerViewSelectedIndex:(SFIDevicePropertyType)propertyType {
+    switch (propertyType) {
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING:
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING: {
+            // thermostat
+            NSString *val = [self.deviceValue valueForProperty:propertyType];
+            if (!val) {
+                return 0;
+            }
 
-    NSInteger temp = val.intValue;
+            NSInteger temp = val.intValue;
 
-    if (temp < TEMP_LOWEST_SETTABLE) {
-        temp = TEMP_LOWEST_SETTABLE;
-    }
-    else if (temp > TEMP_HIGHEST_SETTABLE) {
-        temp = TEMP_HIGHEST_SETTABLE;
-    }
+            if (temp < TEMP_LOWEST_SETTABLE) {
+                temp = TEMP_LOWEST_SETTABLE;
+            }
+            else if (temp > TEMP_HIGHEST_SETTABLE) {
+                temp = TEMP_HIGHEST_SETTABLE;
+            }
 
-    return temp - TEMP_LOWEST_SETTABLE;
+            return temp - TEMP_LOWEST_SETTABLE;
+        }
+
+        case SFIDevicePropertyType_USER_CODE: {
+            // door lock 5
+
+        }
+
+        default: {
+            return 0;
+        }
+    }
 }
 
 - (NSInteger)horizontalPickerView:(V8HorizontalPickerView *)picker widthForElementAtIndex:(NSInteger)index {
-    return PICKER_ELEMENT_WIDTH;
+    SFIDevicePropertyType propertyType = (SFIDevicePropertyType) picker.tag;
+
+    switch (propertyType) {
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING:
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING: {
+            // thermostat
+            return TEMP_PICKER_ELEMENT_WIDTH;
+        }
+
+        case SFIDevicePropertyType_USER_CODE: {
+            // door lock 5
+            return 50;
+        }
+
+        default: {
+            return 0;
+        }
+    }
 }
 
 - (NSInteger)numberOfElementsInHorizontalPickerView:(V8HorizontalPickerView *)picker {
-    return TEMP_HIGHEST_SETTABLE - TEMP_LOWEST_SETTABLE;
+    SFIDevicePropertyType propertyType = (SFIDevicePropertyType) picker.tag;
+
+    switch (propertyType) {
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING:
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING: {
+            // thermostat
+            return TEMP_HIGHEST_SETTABLE - TEMP_LOWEST_SETTABLE;
+        }
+
+        case SFIDevicePropertyType_USER_CODE: {
+            // door lock 5
+            int maxUsers = [self maximumPinCodes];
+            if (maxUsers < 0) {
+                maxUsers = 0;
+            }
+            return maxUsers;
+        }
+
+        default: {
+            return 0;
+        }
+    }
+
 }
 
 - (NSString *)horizontalPickerView:(V8HorizontalPickerView *)picker titleForElementAtIndex:(NSInteger)index {
-    index = index + TEMP_LOWEST_SETTABLE;
-    return [NSString stringWithFormat:@"%ld\u00B0", (long) index]; // U+00B0 == degree sign
+    SFIDevicePropertyType propertyType = (SFIDevicePropertyType) picker.tag;
+
+    switch (propertyType) {
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING:
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING: {
+            // thermostat
+            index = index + TEMP_LOWEST_SETTABLE;
+            return [NSString stringWithFormat:@"%ld\u00B0", (long) index]; // U+00B0 == degree sign
+        }
+
+        case SFIDevicePropertyType_USER_CODE: {
+            // door lock 5
+            NSInteger row = index + 1;
+            return [NSString stringWithFormat:@"Pin %ld", (long) row];
+        }
+
+        default: {
+            return @"";
+        }
+    }
 }
 
 - (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {
-    SFIDevicePropertyType type = (SFIDevicePropertyType) picker.tag;
-    NSInteger previousIndex = [self getSelectedIndex:type];
+    SFIDevicePropertyType propertyType = (SFIDevicePropertyType) picker.tag;
 
-    if (previousIndex == index) {
-        // no change to process
-        // note this delegate is called when the initial value is set at time of UI set up; so we have to be careful
-        // to trap this no-op state to prevent unnecessary updates being sent to the cloud
-        return;
+    switch (propertyType) {
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING:
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING: {
+            // thermostat
+            NSInteger previousIndex = [self getPickerViewSelectedIndex:propertyType];
+
+            if (previousIndex == index) {
+                // no change to process
+                // note this delegate is called when the initial value is set at time of UI set up; so we have to be careful
+                // to trap this no-op state to prevent unnecessary updates being sent to the cloud
+                return;
+            }
+
+            NSInteger temp = index + TEMP_LOWEST_SETTABLE;
+            NSString *value = [NSString stringWithFormat:@"%ld", (long) temp];
+            [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:propertyType newValue:value];
+
+            return;
+        }
+
+        case SFIDevicePropertyType_USER_CODE: {
+            // door lock 5
+            [self setPinCodeTextField:index+1];
+
+            return;
+        }
+
+        default: {
+            return;
+        }
+    }
+}
+
+- (void)setPinCodeTextField:(NSInteger)index {
+    NSString *value = [self pingCodeValue:index];
+    UITextField *field = [self textFieldForTag:SFIDevicePropertyType_USER_CODE];
+    field.text = value;
+}
+
+- (UITextField*)textFieldForTag:(NSInteger)tag {
+    for (UIView *view in self.subviews) {
+        if (view.tag == tag) {
+            if ([view isKindOfClass:[UITextField class]]) {
+                UITextField *field = (UITextField *) view;
+                return field;
+            }
+        }
+    }
+    return nil;
+}
+
+- (V8HorizontalPickerView*)pickerViewForTag:(NSInteger)tag {
+    for (UIView *view in self.subviews) {
+        if (view.tag == tag) {
+            if ([view isKindOfClass:[V8HorizontalPickerView class]]) {
+                V8HorizontalPickerView *picker = (V8HorizontalPickerView *) view;
+                return picker;
+            }
+        }
     }
 
-    NSInteger temp = index + TEMP_LOWEST_SETTABLE;
-    NSString *value = [NSString stringWithFormat:@"%ld", (long) temp];
-    [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:type newValue:value];
+    return nil;
 }
 
 @end
