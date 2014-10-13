@@ -188,6 +188,7 @@
         self.decimalValueLabel.backgroundColor = clear_color;
         self.decimalValueLabel.textColor = white_color;
         self.decimalValueLabel.textAlignment = NSTextAlignmentCenter;
+        self.decimalValueLabel.adjustsFontSizeToFitWidth = YES;
         self.decimalValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:18];
 
         // For Degree
@@ -196,7 +197,7 @@
         self.degreeLabel.textColor = white_color;
         self.degreeLabel.textAlignment = NSTextAlignmentCenter;
         self.degreeLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:18];
-        self.degreeLabel.text = @"°";
+        self.degreeLabel.text = @"\u00B0"; // degree sign
 
         [self.contentView addSubview:self.deviceValueLabel];
         [self.contentView addSubview:self.decimalValueLabel];
@@ -410,19 +411,32 @@
 - (void)setTemperatureValue:(NSString *)value {
     NSArray *tempValues = [value componentsSeparatedByString:@"."];
     switch ([tempValues count]) {
-        case 0:
-            [self setTemperatureIntegerValue:nil decimalValue:nil];
+        case 0: {
+            [self setTemperatureIntegerValue:nil decimalValue:nil degreesValue:nil];
             break;
-        case 1:
-            [self setTemperatureIntegerValue:tempValues[0] decimalValue:nil];
+        }
+        case 1: {
+            [self setTemperatureIntegerValue:tempValues[0] decimalValue:nil degreesValue:nil];
             break;
-        default:
-            [self setTemperatureIntegerValue:tempValues[0] decimalValue:tempValues[1]];
+        }
+        default: {
+            NSString *decimal = tempValues[1];
+            NSString *degrees = nil;
+
+            // check for embedded degrees marker
+            NSRange range = [decimal rangeOfString:@"\u00B0"];
+            if (range.length > 0) {
+                degrees = [decimal substringFromIndex:range.location];
+                decimal = [decimal substringToIndex:range.location];
+            }
+
+            [self setTemperatureIntegerValue:tempValues[0] decimalValue:decimal degreesValue:degrees];
             break;
+        }
     }
 }
 
-- (void)setTemperatureIntegerValue:(NSString *)integerValue decimalValue:(NSString *)decimalValue {
+- (void)setTemperatureIntegerValue:(NSString *)integerValue decimalValue:(NSString *)decimalValue degreesValue:(NSString *)degreesValue {
     UIFont *heavy_14 = [UIFont fontWithName:@"Avenir-Heavy" size:14];
 
     self.deviceValueLabel.text = integerValue;
@@ -434,11 +448,19 @@
         self.decimalValueLabel.text = nil;
     }
 
-    if ([integerValue length] == 1) {
+    if (degreesValue.length > 0) {
+        self.degreeLabel.text = degreesValue;
+    }
+    else {
+        self.degreeLabel.text = @"\u00B0";
+    }
+
+    NSUInteger integerValue_length = [integerValue length];
+    if (integerValue_length == 1) {
         self.decimalValueLabel.frame = CGRectMake((self.frame.size.width / 4) - 25, 40, 20, 30);
         self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 25, 20, 20);
     }
-    else if ([integerValue length] == 3) {
+    else if (integerValue_length == 3) {
         self.deviceValueLabel.font = [heavy_14 fontWithSize:30];
         self.decimalValueLabel.font = heavy_14;
         self.degreeLabel.font = heavy_14;
@@ -446,7 +468,7 @@
         self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 38, 20, 30);
         self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 30, 20, 20);
     }
-    else if ([integerValue length] == 4) {
+    else if (integerValue_length == 4) {
         UIFont *heavy_10 = [heavy_14 fontWithSize:10];
 
         self.deviceValueLabel.font = [heavy_14 fontWithSize:22];
