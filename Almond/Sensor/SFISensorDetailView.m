@@ -12,7 +12,7 @@
 #import "SFICopyLabel.h"
 
 
-#define TEMP_PICKER_ELEMENT_WIDTH 30
+#define TEMP_PICKER_ELEMENT_WIDTH 40
 #define TEMP_LOWEST_SETTABLE 35
 #define TEMP_HIGHEST_SETTABLE 95
 
@@ -115,12 +115,16 @@
     NSUInteger rowHeight = [SFISensorDetailView computeSensorRowHeight:self.device];
     self.frame = CGRectMake(10, 86, (LEFT_LABEL_WIDTH) + (self.frame.size.width - LEFT_LABEL_WIDTH - 25) + 1, rowHeight - SENSOR_ROW_HEIGHT);
 
-    UIImageView *imgSettings;
-    imgSettings.alpha = 1.0;
+    // Add standard offset from top-level
+    [self markYOffset:30];
 
-    [self layoutDevices];
+    // Try adding tamper switch. Only some devices support it.
+    [self tryAddTamper];
 
-    // Settings for all the sensors
+    // Customized per device
+    [self layoutDeviceSettings];
+
+    // Settings common to all sensors
     [self addSensorLabel];
     [self addShortLine];
     [self addDisplayNameField];
@@ -131,7 +135,7 @@
     [self addSaveButton];
 }
 
-- (void)layoutDevices {
+- (void)layoutDeviceSettings {
     switch (self.device.deviceType) {
         case SFIDeviceType_MultiLevelSwitch_2: {
             [self configureMultiLevelSwitchMinValue:0 maxValue:99];
@@ -200,8 +204,7 @@
         case SFIDeviceType_MultiSwitch_43:
         case SFIDeviceType_UnknownOnOffModule_44:
         default: {
-            [self markYOffset:30];
-            [self tryAddTamper];
+            // nothing to do
             break;
         }
     }
@@ -547,11 +550,14 @@
     valueLabel.text = [statusMessages componentsJoinedByString:@"\n"];
 }
 
-- (void)addHorizontalPicker:(NSString *)labelText propertyType:(SFIDevicePropertyType)propertyType {
+- (void)addHorizontalPicker:(NSString *)labelText propertyType:(SFIDevicePropertyType)propertyType selectionPointMiddle:(BOOL)yesOrLeftSelection {
     UIFont *const heavy_12 = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    UIFont *const heavy_16 = [UIFont fontWithName:@"Avenir-Heavy" size:16];
+
+    const int control_height = 40;
 
     // Set Point label
-    UILabel *setPointLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate, 60, 30)];
+    UILabel *setPointLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate, 60, control_height)];
     setPointLabel.textColor = [UIColor whiteColor];
     setPointLabel.font = heavy_12;
     setPointLabel.text = labelText;
@@ -562,34 +568,41 @@
     // Picker
     V8HorizontalPickerView *picker = [[V8HorizontalPickerView alloc] initWithFrame:CGRectZero];
     picker.tag = propertyType; // we stored the type of property in the tag info; will use in delegate methods and callbacks
-    picker.frame = CGRectMake(70.0, self.baseYCoordinate, self.frame.size.width - 80, 30);
+    picker.frame = CGRectMake(70.0, self.baseYCoordinate, self.frame.size.width - 80, control_height);
     picker.layer.cornerRadius = 4;
     picker.layer.borderWidth = 1.0;
     picker.layer.borderColor = [UIColor whiteColor].CGColor;
     picker.backgroundColor = [UIColor clearColor];
     picker.selectedTextColor = contrastingColor;
-    picker.elementFont = heavy_12;
+    picker.elementFont = heavy_16;
     picker.textColor = [UIColor whiteColor];
     picker.indicatorPosition = V8HorizontalPickerIndicatorBottom;
-    picker.selectionPoint = CGPointMake((picker.frame.size.width) / 2, 0);   // middle of picker
     picker.delegate = self;
     picker.dataSource = self;
 
-    NSInteger width = [self horizontalPickerView:picker widthForElementAtIndex:0];
-    SFIPickerIndicatorView *indicatorView = [[SFIPickerIndicatorView alloc] initWithFrame:CGRectMake(0, 0, width, 2)];
+    // width depends on propertyType
+    const NSInteger element_width = [self horizontalPickerView:picker widthForElementAtIndex:0];
+
+    if (yesOrLeftSelection) {
+        picker.selectionPoint = CGPointMake((picker.frame.size.width) / 2, 0);   // middle of picker
+    }
+    else {
+        picker.selectionPoint = CGPointMake(element_width / 2, 0);   // left end of picker
+    }
+
+    SFIPickerIndicatorView *indicatorView = [[SFIPickerIndicatorView alloc] initWithFrame:CGRectMake(0, 0, element_width, 2)];
     indicatorView.color = contrastingColor;
     picker.selectionIndicatorView = indicatorView;
 
     [self addSubview:picker];
-    [self setPickerRow:propertyType picker:picker];
+    [self setPickerSelection:picker propertyType:propertyType];
+
+    [self markYOffset:control_height + 10];
 }
 
 #pragma mark - Sensor layouts
 
 - (void)configureMultiLevelSwitchMinValue:(int)minValue maxValue:(int)maxValue {
-    [self markYOffset:35];
-    [self tryAddTamper];
-
     UIImageView *minImage = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate, 24, 24)];
     [minImage setImage:[UIImage imageNamed:@"dimmer_min.png"]];
     [self addSubview:minImage];
@@ -607,9 +620,6 @@
 }
 
 - (void)configureBinarySensor_3 {
-    [self markYOffset:30];
-    [self tryAddTamper];
-
     SFIDeviceKnownValues *values = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BATTERY];
     NSString *batteryStatus = [values choiceForLevelValueZeroValue:@"Battery OK" nonZeroValue:@"Low Battery" nilValue:@"Battery Unknown"];
 
@@ -693,28 +703,24 @@
  */
 
 - (void)configureDoorLock_5 {
-    [self markYOffset:30];
-    [self tryAddTamper];
-
     int maxUsers = [self maximumPinCodes];
     if (maxUsers <= 0) {
         // nothing to do
         return;
     }
 
-    [self addHorizontalPicker:@"Pins" propertyType:SFIDevicePropertyType_USER_CODE];
-
-    [self markYOffset:40];
+    [self addHorizontalPicker:@"Pins" propertyType:SFIDevicePropertyType_USER_CODE selectionPointMiddle:NO];
     [self addShortLine];
 
     UITextField *field = [self addFieldNameValue:@"Code" fieldValue:@""];
     field.tag = SFIDevicePropertyType_USER_CODE;
+    field.keyboardType = UIKeyboardTypeNumberPad;
 
     NSDictionary *textAttributes = @{
-            NSForegroundColorAttributeName: [[UIColor whiteColor] colorWithAlphaComponent:0.5],
+            NSForegroundColorAttributeName : [[UIColor whiteColor] colorWithAlphaComponent:0.5],
             NSFontAttributeName : [field.font fontWithSize:10],
     };
-    field.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Pin Code is not provided." attributes:textAttributes];
+    field.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Pin Code is not specified." attributes:textAttributes];
 
 //    [field addTarget:self action:@selector(onPinCodeTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
 //    [field addTarget:self action:@selector(onPinCodeTextFieldFinishedEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
@@ -733,16 +739,9 @@
 }
 
 - (void)configureThermostat_7 {
-    [self markYOffset:30];
-    [self tryAddTamper];
-
     // Temp selectors
-    [self addHorizontalPicker:@"Heating" propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING];
-
-    [self markYOffset:40];
-    [self addHorizontalPicker:@"Cooling" propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING];
-
-    [self markYOffset:40];
+    [self addHorizontalPicker:@"Heating" propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING selectionPointMiddle:YES];
+    [self addHorizontalPicker:@"Cooling" propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING selectionPointMiddle:YES];
     [self addLine];
     [self markYOffset:5];
 
@@ -878,8 +877,6 @@
     NSString *voltage_str = [NSString stringWithFormat:@"Voltage is %.3fV", voltage];
     NSString *current_str = [NSString stringWithFormat:@"Current is %.3fA", current];
 
-    [self markYOffset:30];
-    [self tryAddTamper];
     [self addStatusLabel:@[power_str, voltage_str, current_str]];
     [self markYOffset:55];
     [self addLine];
@@ -941,8 +938,6 @@
     NSString *voltage_str = [NSString stringWithFormat:@"Voltage is %.3fV", voltage];
     NSString *current_str = [NSString stringWithFormat:@"Current is %.3fA", current];
 
-    [self markYOffset:30];
-    [self tryAddTamper];
     [self addStatusLabel:@[power_str, voltage_str, current_str]];
     [self markYOffset:55];
     [self addLine];
@@ -956,7 +951,7 @@
     return maxUsers;
 }
 
-- (NSString*)pingCodeValue:(NSInteger)pinIndex {
+- (NSString *)pingCodeValue:(NSInteger)pinIndex {
     NSString *valueName = [self makePinCodeDevicePropertyValueName:pinIndex];
 
     SFIDeviceKnownValues *values = [self.deviceValue knownValuesForPropertyName:valueName];
@@ -983,7 +978,7 @@
 
     switch (currentSensor.deviceType) {
         case SFIDeviceType_MultiLevelSwitch_2:
-            return 280 + tamperedExtra;
+            return 275 + tamperedExtra;
 
         case SFIDeviceType_BinarySensor_3:
             return 260 + tamperedExtra;
@@ -995,7 +990,7 @@
             return 370 + tamperedExtra;
 
         case SFIDeviceType_Thermostat_7:
-            return 470 + tamperedExtra;
+            return 490 + tamperedExtra;
 
         case SFIDeviceType_SmartACSwitch_22:
         case SFIDeviceType_SmartDCSwitch_23:
@@ -1049,7 +1044,7 @@
 
 #pragma mark - Picker methods
 
-- (void)setPickerRow:(SFIDevicePropertyType)propertyType picker:(V8HorizontalPickerView *)picker {
+- (void)setPickerSelection:(V8HorizontalPickerView *)picker propertyType:(SFIDevicePropertyType)propertyType {
     // Initialize the slider value
     NSInteger row = [self getPickerViewSelectedIndex:propertyType];
     [picker scrollToElement:row animated:NO];
@@ -1101,7 +1096,7 @@
 
         case SFIDevicePropertyType_USER_CODE: {
             // door lock 5
-            return 50;
+            return 60;
         }
 
         default: {
@@ -1184,7 +1179,7 @@
 
         case SFIDevicePropertyType_USER_CODE: {
             // door lock 5
-            [self setPinCodeTextField:index+1];
+            [self setPinCodeTextField:index + 1];
 
             return;
         }
@@ -1201,7 +1196,7 @@
     field.text = value;
 }
 
-- (UITextField*)textFieldForTag:(NSInteger)tag {
+- (UITextField *)textFieldForTag:(NSInteger)tag {
     for (UIView *view in self.subviews) {
         if (view.tag == tag) {
             if ([view isKindOfClass:[UITextField class]]) {
@@ -1213,7 +1208,7 @@
     return nil;
 }
 
-- (V8HorizontalPickerView*)pickerViewForTag:(NSInteger)tag {
+- (V8HorizontalPickerView *)pickerViewForTag:(NSInteger)tag {
     for (UIView *view in self.subviews) {
         if (view.tag == tag) {
             if ([view isKindOfClass:[V8HorizontalPickerView class]]) {
