@@ -504,6 +504,11 @@
     [self.delegate tableViewCellDidChangeValue:self propertyName:propertyName newValue:aValue];
 }
 
+- (void)sensorDetailViewDidRejectSensorValue:(SFISensorDetailView *)view validationToast:(NSString *)aMsg {
+    [self.delegate tableViewCellDidDidFailValidation:self validationToast:aMsg];
+}
+
+
 #pragma mark - Device layout
 
 - (void)configureMultiLevelSwitch_2 {

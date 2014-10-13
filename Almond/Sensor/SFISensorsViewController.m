@@ -176,12 +176,18 @@
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark - HUD mgt
+#pragma mark - HUD and Toast mgt
 
 - (void)showHudWithTimeout {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD show:YES];
         [self.HUD hide:YES afterDelay:5];
+    });
+}
+
+- (void)showToast:(NSString *)msg {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [[[iToast makeText:msg] setGravity:iToastGravityCenter] show];
     });
 }
 
@@ -493,8 +499,9 @@
     if (self.isViewControllerDisposed) {
         return;
     }
-    [[[iToast makeText:@"Saving..."] setGravity:iToastGravityCenter] show];
 
+    [self showToast:@"Saving..."];
+    
     SFIDevice *device = cell.device;
 
     SensorChangeRequest *cmd = [[SensorChangeRequest alloc] init];
@@ -567,6 +574,10 @@
     deviceValues.value = newValue;
 
     [self sendMobileCommandForDevice:device deviceValue:deviceValues];
+}
+
+- (void)tableViewCellDidDidFailValidation:(SFISensorTableViewCell *)cell validationToast:(NSString *)toastMsg {
+    [self showToast:toastMsg];
 }
 
 #pragma mark - Class Methods

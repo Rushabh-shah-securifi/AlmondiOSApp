@@ -299,13 +299,22 @@
 - (void)onSavePinCodeChanges:(id)sender {
     [self.firstResponderField resignFirstResponder];
 
-    V8HorizontalPickerView *picker = [self pickerViewForTag:SFIDevicePropertyType_USER_CODE];
-    NSString *propertyName = [self makePinCodeDevicePropertyValueName:picker.currentSelectedIndex + 1];
-
     UITextField *field = [self textFieldForTag:SFIDevicePropertyType_USER_CODE];
-    NSString *value = field.text;
+    NSUInteger length = field.text.length;
+    BOOL validated = (length >= 5 && length <= 8);
 
-    [self.delegate sensorDetailViewDidChangeSensorValue:self propertyName:propertyName newValue:value];
+
+    if (validated) {
+        NSString *value = field.text;
+
+        V8HorizontalPickerView *picker = [self pickerViewForTag:SFIDevicePropertyType_USER_CODE];
+        NSString *propertyName = [self makePinCodeDevicePropertyValueName:picker.currentSelectedIndex + 1];
+
+        [self.delegate sensorDetailViewDidChangeSensorValue:self propertyName:propertyName newValue:value];
+    }
+    else {
+        [self.delegate sensorDetailViewDidRejectSensorValue:self validationToast:@"PassCode must be 5 to 8 digits long"];
+    }
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -635,73 +644,6 @@
     [self addLine];
 }
 
-/*
-	@SuppressLint("NewApi")
-	private void showUserCode(final List<DeviceKnownValues> currentKnownValues, int colorForRow, int position) {
-		int maximumUser = 0;
-		Log.i("CustomListViewAdatper", "Maximum Users " + maximumUser);
-		for (DeviceKnownValues values : currentKnownValues)
-			if (values.getValueName().equals("MAXIMUM_USERS")) {
-				maximumUser = Util.getIntegerValue(values.getValue());
-				break;
-			}
-		Log.i("CustomListViewAdatper", "Maximum Users " + maximumUser);
-		if (maximumUser <= 0) {
-			holder.bottomPart.removeAllViews();
-			return;// No User Codes.
-		}
-		View parentView = addSensorDetails(R.id.doorLock, R.layout.door_lock);
-
-		final EditText pin = (EditText) parentView.findViewById(R.id.pin);
-		pin.setTextColor(colorForRow);
-		pin.setText(getPinValue(currentKnownValues, (String) pin.getTag()));
-
-		final Button savePin = (Button) parentView.findViewById(R.id.savePin);
-		savePin.setTag(position);
-		savePin.setEnabled(true);
-		savePin.setBackground(context.getResources().getDrawable(R.drawable.button_border));
-
-		savePin.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Util.hideKeyboard((Activity) context);
-				if (StringUtils.isEmpty(pin.getText().toString()) || pin.getText().toString().length() < 5) {
-					if (responseTimeToast == null)
-						responseTimeToast = Toast.makeText(context, "PassCode cannot be less than 5 digits", Toast.LENGTH_LONG);
-					else
-						responseTimeToast.setText("PassCode cannot be less than 5 digits");
-					responseTimeToast.show();
-					return;
-				}
-				v.setBackgroundColor(android.graphics.Color.GRAY);
-				onSensorValueChange((String) pin.getTag(), v, pin.getText() != null ? pin.getText().toString() : "");
-			}
-		});
-
-		final DropdownSpinner spinner = (DropdownSpinner) parentView.findViewById(R.id.userCodeKey);
-		dropDownSpinner = spinner;
-		spinner.lineColor = colorForRow;
-		// Add Maximum Users
-		if (spinner.list == null || spinner.list.size() == 0)
-			for (int i = 1; i <= maximumUser; i++)
-				spinner.addItem(i + "");
-		spinner.setTextColor(Color.WHITE);
-		spinner.setItemBackgroundColor(Color.WHITE);
-		spinner.setItemTextColor(colorForRow);
-		spinner.setVisibleItemNo(5);
-
-		spinner.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-				spinner.setText(pos + 1 + "");
-				pin.setTag("USER_CODE_" + (pos + 1));
-				pin.setText(getPinValue(currentKnownValues, (String) pin.getTag()));
-			}
-		});
-	}
-
- */
-
 - (void)configureDoorLock_5 {
     int maxUsers = [self maximumPinCodes];
     if (maxUsers <= 0) {
@@ -712,18 +654,16 @@
     [self addHorizontalPicker:@"Pins" propertyType:SFIDevicePropertyType_USER_CODE selectionPointMiddle:NO];
     [self addShortLine];
 
-    UITextField *field = [self addFieldNameValue:@"Code" fieldValue:@""];
+    UITextField *field = [self addFieldNameValue:@"PassCode" fieldValue:@""];
     field.tag = SFIDevicePropertyType_USER_CODE;
     field.keyboardType = UIKeyboardTypeNumberPad;
-
+    //
     NSDictionary *textAttributes = @{
             NSForegroundColorAttributeName : [[UIColor whiteColor] colorWithAlphaComponent:0.5],
             NSFontAttributeName : [field.font fontWithSize:10],
     };
-    field.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Pin Code is not specified." attributes:textAttributes];
+    field.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"PassCode is not specified." attributes:textAttributes];
 
-//    [field addTarget:self action:@selector(onPinCodeTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-//    [field addTarget:self action:@selector(onPinCodeTextFieldFinishedEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
     [self setPinCodeTextField:1]; // preset the text field for first pin
 
     [self markYOffset:5];
@@ -731,6 +671,7 @@
     [self markYOffset:5];
 
     SFIHighlightedButton *button = [self addButton:@"Save Pin"];
+    button.tag = SFIDevicePropertyType_USER_CODE;
     [button addTarget:self action:@selector(onSavePinCodeChanges:) forControlEvents:UIControlEventTouchUpInside];
 
     [self markYOffset:40];

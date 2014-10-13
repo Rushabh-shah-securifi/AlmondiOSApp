@@ -23,6 +23,8 @@
 
 - (void)sensorDetailViewDidChangeSensorValue:(SFISensorDetailView*)view propertyName:(NSString*)propertyName newValue:(NSString*)aValue;
 
+- (void)sensorDetailViewDidRejectSensorValue:(SFISensorDetailView *)view validationToast:(NSString*)aMsg;
+
 @end
 
 
