@@ -758,128 +758,53 @@
 }
 
 - (void)configureElectricMeasurementSwitch_22 {
-    unsigned int activePower = 0;
-    unsigned int acPowerMultiplier = 0;
-    unsigned int acPowerDivisor = 0;
-    unsigned int rmsVoltage = 0;
-    unsigned int acVoltageMultiplier = 0;
-    unsigned int acVoltageDivisor = 0;
-    unsigned int rmsCurrent = 0;
-    unsigned int acCurrentMultiplier = 0;
-    unsigned int acCurrentDivisor = 0;
+    SFIDeviceValue *deviceValue = self.deviceValue;
 
-    NSArray *currentKnownValues = [self currentKnownValuesForDevice];
-    for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        NSScanner *scanner = [NSScanner scannerWithString:currentDeviceValue.value];
-
-        switch (currentDeviceValue.propertyType) {
-            case SFIDevicePropertyType_AC_CURRENTDIVISOR: {
-                [scanner scanHexInt:&acCurrentDivisor];
-                break;
-            }
-            case SFIDevicePropertyType_AC_CURRENTMULTIPLIER: {
-                [scanner scanHexInt:&acCurrentMultiplier];
-                break;
-            }
-            case SFIDevicePropertyType_AC_POWERDIVISOR: {
-                [scanner scanHexInt:&acPowerDivisor];
-                break;
-            }
-            case SFIDevicePropertyType_AC_POWERMULTIPLIER: {
-                [scanner scanHexInt:&acPowerMultiplier];
-                break;
-            }
-            case SFIDevicePropertyType_AC_VOLTAGEMULTIPLIER: {
-                [scanner scanHexInt:&acVoltageMultiplier];
-                break;
-            }
-            case SFIDevicePropertyType_ACTIVE_POWER: {
-                [scanner scanHexInt:&activePower];
-                break;
-            }
-            case SFIDevicePropertyType_RMS_CURRENT: {
-                [scanner scanHexInt:&rmsCurrent];
-                break;
-            }
-            case SFIDevicePropertyType_RMS_VOLTAGE: {
-                [scanner scanHexInt:&rmsVoltage];
-                break;
-            }
-            default:
-                break;
-        }
-    }
+    unsigned int acCurrentDivisor = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_CURRENTDIVISOR] hexToIntValue];
+    unsigned int acCurrentMultiplier = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_CURRENTMULTIPLIER] hexToIntValue];
+    unsigned int acPowerDivisor = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_POWERDIVISOR] hexToIntValue];
+    unsigned int acPowerMultiplier = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_POWERMULTIPLIER] hexToIntValue];
+    unsigned int acVoltageMultiplier = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_VOLTAGEMULTIPLIER] hexToIntValue];
+    unsigned int acVoltageDivisor = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_VOLTAGEDIVISOR] hexToIntValue];
+    unsigned int activePower = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_ACTIVE_POWER] hexToIntValue];
+    unsigned int rmsCurrent = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_RMS_CURRENT] hexToIntValue];
+    unsigned int rmsVoltage = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_RMS_VOLTAGE] hexToIntValue];
 
     float power = (float) activePower * acPowerMultiplier / acPowerDivisor;
     float voltage = (float) rmsVoltage * acVoltageMultiplier / acVoltageDivisor;
     float current = (float) rmsCurrent * acCurrentMultiplier / acCurrentDivisor;
 
     NSString *power_str = [NSString stringWithFormat:@"Power is %.3fW", power];
-    NSString *voltage_str = [NSString stringWithFormat:@"Voltage is %.3fV", voltage];
     NSString *current_str = [NSString stringWithFormat:@"Current is %.3fA", current];
+    NSString *voltage_str = [NSString stringWithFormat:@"Voltage is %.3fV", voltage];
 
-    [self addStatusLabel:@[power_str, voltage_str, current_str]];
+    [self addStatusLabel:@[power_str, current_str, voltage_str]];
     [self markYOffset:55];
     [self addLine];
 }
 
 - (void)configureElectricMeasurementSwitch_23 {
-    unsigned int dcPower = 0;
-    unsigned int dcPowerMultiplier = 0;
-    unsigned int dcPowerDivisor = 0;
-    unsigned int dcVoltage = 0;
-    unsigned int dcVoltageMultiplier = 0;
-    unsigned int dcVoltageDivisor = 0;
-    unsigned int dcCurrent = 0;
-    unsigned int dcCurrentMultiplier = 0;
-    unsigned int dcCurrentDivisor = 0;
+    SFIDeviceValue *deviceValue = self.deviceValue;
 
-    NSArray *currentKnownValues = [self currentKnownValuesForDevice];
-    for (SFIDeviceKnownValues *currentDeviceValue in currentKnownValues) {
-        NSScanner *scanner = [NSScanner scannerWithString:currentDeviceValue.value];
-
-        switch (currentDeviceValue.propertyType) {
-            case SFIDevicePropertyType_DC_CURRENT:
-                [scanner scanHexInt:&dcCurrent];
-                break;
-            case SFIDevicePropertyType_DC_CURRENTDIVISOR:
-                [scanner scanHexInt:&dcCurrentDivisor];
-                break;
-            case SFIDevicePropertyType_DC_CURRENTMULTIPLIER:
-                [scanner scanHexInt:&dcCurrentMultiplier];
-                break;
-            case SFIDevicePropertyType_DC_POWER:
-                [scanner scanHexInt:&dcPower];
-                break;
-            case SFIDevicePropertyType_DC_POWERDIVISOR:
-                [scanner scanHexInt:&dcPowerDivisor];
-                break;
-            case SFIDevicePropertyType_DC_POWERMULTIPLIER:
-                [scanner scanHexInt:&dcPowerMultiplier];
-                break;
-            case SFIDevicePropertyType_DC_VOLTAGE:
-                [scanner scanHexInt:&dcVoltage];
-                break;
-            case SFIDevicePropertyType_DC_VOLTAGEDIVISOR:
-                [scanner scanHexInt:&dcVoltageDivisor];
-                break;
-            case SFIDevicePropertyType_DC_VOLTAGEMULTIPLIER:
-                [scanner scanHexInt:&dcVoltageMultiplier];
-                break;
-            default:
-                break;
-        }
-    }
+    unsigned int dcCurrent = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_DC_CURRENT] hexToIntValue];
+    unsigned int dcCurrentDivisor = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_DC_CURRENTDIVISOR] hexToIntValue];
+    unsigned int dcCurrentMultiplier = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_DC_CURRENTMULTIPLIER] hexToIntValue];
+    unsigned int dcPower = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_DC_POWER] hexToIntValue];
+    unsigned int dcPowerDivisor = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_DC_POWERDIVISOR] hexToIntValue];
+    unsigned int dcPowerMultiplier = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_DC_POWERMULTIPLIER] hexToIntValue];
+    unsigned int dcVoltage = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_DC_VOLTAGE] hexToIntValue];
+    unsigned int dcVoltageDivisor = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_DC_VOLTAGEDIVISOR] hexToIntValue];
+    unsigned int dcVoltageMultiplier = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_DC_VOLTAGEMULTIPLIER] hexToIntValue];
 
     float power = (float) dcPower * dcPowerMultiplier / dcPowerDivisor;
     float voltage = (float) dcVoltage * dcVoltageMultiplier / dcVoltageDivisor;
     float current = (float) dcCurrent * dcCurrentMultiplier / dcCurrentDivisor;
 
     NSString *power_str = [NSString stringWithFormat:@"Power is %.3fW", power];
-    NSString *voltage_str = [NSString stringWithFormat:@"Voltage is %.3fV", voltage];
     NSString *current_str = [NSString stringWithFormat:@"Current is %.3fA", current];
+    NSString *voltage_str = [NSString stringWithFormat:@"Voltage is %.3fV", voltage];
 
-    [self addStatusLabel:@[power_str, voltage_str, current_str]];
+    [self addStatusLabel:@[power_str, current_str, voltage_str]];
     [self markYOffset:55];
     [self addLine];
 }
@@ -928,7 +853,7 @@
             return 280 + tamperedExtra;
 
         case SFIDeviceType_DoorLock_5:
-            return 370 + tamperedExtra;
+            return 380 + tamperedExtra;
 
         case SFIDeviceType_Thermostat_7:
             return 490 + tamperedExtra;
@@ -977,10 +902,6 @@
         default:
             return EXPANDED_ROW_HEIGHT + tamperedExtra;
     }
-}
-
-- (NSArray *)currentKnownValuesForDevice {
-    return self.deviceValue.knownDevicesValues;
 }
 
 #pragma mark - Picker methods
