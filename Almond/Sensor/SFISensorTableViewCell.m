@@ -590,7 +590,20 @@
     NSString *operatingMode = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE default:@"Unknown"];
     NSString *coolingSetPoint = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING default:@"-"];
     NSString *heatingSetPoint = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING default:@"-"];
-    NSString *state = [NSString stringWithFormat:@"%@,  LO %@\u00B0,  HI %@\u00B0", operatingMode, coolingSetPoint, heatingSetPoint]; // U+00B0 == degree sign
+
+    NSString *const degrees_symbol = @"\u00B0";
+
+    if ([coolingSetPoint rangeOfString:degrees_symbol].length == 0) {
+        // no degrees so add one
+        coolingSetPoint = [coolingSetPoint stringByAppendingString:degrees_symbol];
+    }
+
+    if ([heatingSetPoint rangeOfString:degrees_symbol].length == 0) {
+        // no degrees so add one
+        heatingSetPoint = [heatingSetPoint stringByAppendingString:degrees_symbol];
+    }
+
+    NSString *state = [NSString stringWithFormat:@"%@,  LO %@,  HI %@", operatingMode, coolingSetPoint, heatingSetPoint];
 
     NSMutableArray *status = [NSMutableArray array];
     [status addObject:state];
