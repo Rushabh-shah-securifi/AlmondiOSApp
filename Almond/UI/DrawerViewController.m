@@ -217,9 +217,10 @@
         //PY 150914 - Account Settings
         if (indexPath.row == 0) {
             //Account
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"AccountsStoryboard_iPhone" bundle:nil];
-            UITableViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AccountNavigationTop"];
-            [self presentViewController:mainView animated:YES completion:nil];
+            [self presentAccountsView];
+//            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"AccountsStoryboard_iPhone" bundle:nil];
+//            UITableViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AccountNavigationTop"];
+//            [self presentViewController:mainView animated:YES completion:nil];
         }
         else if (indexPath.row == 1) {
             //Logout Action
@@ -355,6 +356,11 @@
 - (void)presentLogoutAllView {
     // Delegate to the main view, which will manage presenting the logout all controller
     [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:UI_ON_PRESENT_LOGOUT_ALL object:nil]];
+}
+
+- (void)presentAccountsView {
+    // Delegate to the main view, which will manage presenting the account controller
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:UI_ON_PRESENT_ACCOUNTS object:nil]];
 }
 
 @end

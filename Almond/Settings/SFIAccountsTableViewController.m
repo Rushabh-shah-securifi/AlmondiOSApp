@@ -9,6 +9,7 @@
 #import "SFIAccountsTableViewController.h"
 #import "MBProgressHUD.h"
 #import "iToast.h"
+#import "SFILoginViewController.h"
 
 @interface SFIAccountsTableViewController ()
 
@@ -45,7 +46,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 @synthesize changedFirstName, changedLastName, tfFirstName, tfLastName;
 @synthesize changedAddress1, changedAddress2, changedAddress3, changedCountry, changedZipcode;
 @synthesize tfAddress1, tfAddress2, tfAddress3, tfCountry, tfZipCode, changedAlmondName;
-@synthesize currentAlmondMAC, changedEmailID, nameChangedForAlmond;
+@synthesize currentAlmondMAC, changedEmailID, nameChangedForAlmond, tfRenameAlmond;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -140,6 +141,11 @@ static NSString *simpleTableIdentifier = @"AccountCell";
                    name:DELETE_ME_AS_SECONDARY_USER_NOTIFIER
                  object:nil];
     
+    [center addObserver:self
+               selector:@selector(mobileCommandResponseCallback:)
+                   name:MOBILE_COMMAND_NOTIFIER
+                 object:nil];
+    
     [self sendUserProfileRequest];
 }
 
@@ -186,6 +192,10 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [center removeObserver:self
                       name:DELETE_ME_AS_SECONDARY_USER_NOTIFIER
                     object:nil];
+    
+    [center removeObserver:self
+                      name:MOBILE_COMMAND_NOTIFIER
+                    object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -205,7 +215,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 #pragma mark - Button Handlers
 - (IBAction)doneButtonHandler:(id)sender{
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+     [self.delegate userAccountDidDone:self];
 }
 
 #pragma mark - Table view data source
@@ -260,18 +271,18 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     
     if(indexPath.row == 0){
-        cell = [self createUserProfileCell:cell listRow:indexPath.row];
+        cell = [self createUserProfileCell:cell listRow:(int)indexPath.row];
     }
     
     if ([ownedAlmondList count] > 0){
         if(indexPath.row > 0 && indexPath.row <= [ownedAlmondList count]){
-            cell = [self createOwnedAlmondCell:cell listRow:indexPath.row];
+            cell = [self createOwnedAlmondCell:cell listRow:(int)indexPath.row];
         }
     }
     
     if([sharedAlmondList count] > 0){
         if(indexPath.row > [ownedAlmondList count] && indexPath.row <= ([ownedAlmondList count] +[sharedAlmondList count])){
-            cell = [self createSharedAlmondCell:cell listRow:indexPath.row];
+            cell = [self createSharedAlmondCell:cell listRow:(int)indexPath.row];
         }
     }
     return cell;
@@ -818,19 +829,34 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         
         baseYCordinate+=25;
         
-        UITextField *tfAlmondName = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, 180, 30)];
-        tfAlmondName.placeholder = @"Almond Name";
-        [tfAlmondName setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
-        tfAlmondName.text = currentAlmond.almondplusName;
-        tfAlmondName.textAlignment = NSTextAlignmentLeft;
-        tfAlmondName.textColor = [UIColor whiteColor];
-        tfAlmondName.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
-        tfAlmondName.tag = indexPathRow - 1;;
-        [tfAlmondName setReturnKeyType:UIReturnKeyDone];
-        tfAlmondName.delegate = self;
-        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
-        [backgroundLabel addSubview:tfAlmondName];
+        tfRenameAlmond = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, 180, 30)];
+        tfRenameAlmond.placeholder = @"Almond Name";
+        [tfRenameAlmond setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
+        tfRenameAlmond.text = currentAlmond.almondplusName;
+        tfRenameAlmond.textAlignment = NSTextAlignmentLeft;
+        tfRenameAlmond.textColor = [UIColor whiteColor];
+        tfRenameAlmond.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+        tfRenameAlmond.tag = indexPathRow - 1;;
+        [tfRenameAlmond setReturnKeyType:UIReturnKeyDone];
+        tfRenameAlmond.delegate = self;
+        tfRenameAlmond.enabled = FALSE;
+        [tfRenameAlmond addTarget:self action:@selector(almondNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        [tfRenameAlmond addTarget:self action:@selector(almondNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
+        [backgroundLabel addSubview:tfRenameAlmond];
+        
+//        UITextField *tfAlmondName = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, 180, 30)];
+//        tfAlmondName.placeholder = @"Almond Name";
+//        [tfAlmondName setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
+//        tfAlmondName.text = currentAlmond.almondplusName;
+//        tfAlmondName.textAlignment = NSTextAlignmentLeft;
+//        tfAlmondName.textColor = [UIColor whiteColor];
+//        tfAlmondName.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+//        tfAlmondName.tag = indexPathRow - 1;;
+//        [tfAlmondName setReturnKeyType:UIReturnKeyDone];
+//        tfAlmondName.delegate = self;
+//        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+//        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
+//        [backgroundLabel addSubview:tfAlmondName];
         
         UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
         btnChangeAlmondName.frame = CGRectMake(160, baseYCordinate, 130, 30);
@@ -926,7 +952,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     backgroundLabel.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:203.0/255.0 blue:124.0/255.0 alpha:1.0];
     
-    indexPathRow = indexPathRow - [ownedAlmondList count];
+    indexPathRow = indexPathRow - (int)[ownedAlmondList count];
     SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:indexPathRow-1];
     
     UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(30, baseYCordinate+7, self.tableView.frame.size.width-90, 30)];
@@ -1008,19 +1034,34 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         
         baseYCordinate+=25;
         
-        UITextField *tfAlmondName = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, 180, 30)];
-        tfAlmondName.placeholder = @"Almond Name";
-        [tfAlmondName setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
-        tfAlmondName.text = currentAlmond.almondplusName;
-        tfAlmondName.textAlignment = NSTextAlignmentLeft;
-        tfAlmondName.textColor = [UIColor whiteColor];
-        tfAlmondName.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
-        tfAlmondName.tag = indexPathRow - 1;;
-        [tfAlmondName setReturnKeyType:UIReturnKeyDone];
-        tfAlmondName.delegate = self;
-        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
-        [backgroundLabel addSubview:tfAlmondName];
+        tfRenameAlmond = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, 180, 30)];
+        tfRenameAlmond.placeholder = @"Almond Name";
+        [tfRenameAlmond setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
+        tfRenameAlmond.text = currentAlmond.almondplusName;
+        tfRenameAlmond.textAlignment = NSTextAlignmentLeft;
+        tfRenameAlmond.textColor = [UIColor whiteColor];
+        tfRenameAlmond.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+        tfRenameAlmond.tag = indexPathRow - 1;;
+        [tfRenameAlmond setReturnKeyType:UIReturnKeyDone];
+        tfRenameAlmond.delegate = self;
+        tfRenameAlmond.enabled = FALSE;
+        [tfRenameAlmond addTarget:self action:@selector(almondNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        [tfRenameAlmond addTarget:self action:@selector(almondNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
+        [backgroundLabel addSubview:tfRenameAlmond];
+        
+//        UITextField *tfAlmondName = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, 180, 30)];
+//        tfAlmondName.placeholder = @"Almond Name";
+//        [tfAlmondName setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
+//        tfAlmondName.text = currentAlmond.almondplusName;
+//        tfAlmondName.textAlignment = NSTextAlignmentLeft;
+//        tfAlmondName.textColor = [UIColor whiteColor];
+//        tfAlmondName.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+//        tfAlmondName.tag = indexPathRow - 1;;
+//        [tfAlmondName setReturnKeyType:UIReturnKeyDone];
+//        tfAlmondName.delegate = self;
+//        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+//        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
+//        [backgroundLabel addSubview:tfAlmondName];
         
         UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
         btnChangeAlmondName.frame = CGRectMake(160, baseYCordinate, 130, 30);
@@ -1189,7 +1230,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 -(void)onOwnedAlmondClicked:(id)sender{
     DLog(@"onOwnedAlmondClicked");
     UIButton *btn = (UIButton*) sender;
-    int index = btn.tag;
+    NSUInteger index = (NSUInteger)btn.tag;
     SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:index];
      DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
     if(currentAlmond.isExpanded){
@@ -1203,7 +1244,11 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 -(void)onChangeAlmondNameClicked:(id)sender {
     DLog(@"onChangeAlmondNameClicked");
     UIButton *btn = (UIButton*) sender;
-    int index = btn.tag;
+    NSUInteger index = (NSUInteger)btn.tag;
+    if([btn.titleLabel.text isEqualToString:@"Done"]){
+        [tfRenameAlmond resignFirstResponder];
+        [btn setTitle:@"Rename Almond" forState:UIControlStateNormal] ;
+
     SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:index];
     DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
     DLog(@"New Almond Name %@", changedAlmondName);
@@ -1216,32 +1261,49 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }
     nameChangedForAlmond = NAME_CHANGED_OWNED_ALMOND;
     [self sendAlmondNameChangeRequest:currentAlmond.almondplusMAC];
+    }else{
+        [btn setTitle:@"Done" forState:UIControlStateNormal];
+        tfRenameAlmond.enabled = TRUE;
+        [tfRenameAlmond becomeFirstResponder];
+        
+    }
 }
 
 
 -(void)onChangeSharedAlmondNameClicked:(id)sender {
     DLog(@"onChangeSharedAlmondNameClicked");
     UIButton *btn = (UIButton*) sender;
-    int index = btn.tag;
-    SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:index];
-    DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
-    DLog(@"New Almond Name %@", changedAlmondName);
-    currentAlmondMAC = currentAlmond.almondplusMAC;
-    if(changedAlmondName.length == 0){
-        return;
-    }else if (changedAlmondName.length > 32){
-        [[[iToast makeText:@"Almond Name cannot be more than 32 characters."] setGravity:iToastGravityBottom] show:iToastTypeWarning];
-        return;
-    }
+    NSUInteger index = (NSUInteger)btn.tag;
     
-    nameChangedForAlmond = NAME_CHANGED_SHARED_ALMOND;
-    [self sendAlmondNameChangeRequest:currentAlmond.almondplusMAC];
+    if([btn.titleLabel.text isEqualToString:@"Done"]){
+        [tfRenameAlmond resignFirstResponder];
+        [btn setTitle:@"Rename Almond" forState:UIControlStateNormal] ;
+        SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:index];
+        DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
+        DLog(@"New Almond Name %@", changedAlmondName);
+        currentAlmondMAC = currentAlmond.almondplusMAC;
+        if(changedAlmondName.length == 0){
+            return;
+        }else if (changedAlmondName.length > 32){
+            [[[iToast makeText:@"Almond Name cannot be more than 32 characters."] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+            return;
+        }
+        
+        nameChangedForAlmond = NAME_CHANGED_SHARED_ALMOND;
+        [self sendAlmondNameChangeRequest:currentAlmond.almondplusMAC];
+    }else{
+        [btn setTitle:@"Done" forState:UIControlStateNormal];
+        tfRenameAlmond.enabled = TRUE;
+        [tfRenameAlmond becomeFirstResponder];
+      
+    }
+
 }
 
 -(void)onUnlinkAlmondClicked:(id)sender{
     DLog(@"onUnlinkAlmondClicked");
     UIButton *btn = (UIButton*) sender;
-    int index = btn.tag;
+    NSUInteger index = (NSUInteger)btn.tag;
     SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:index];
     DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
     
@@ -1259,7 +1321,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 -(void)onInviteClicked:(id)sender{
     DLog(@"onInviteClicked");
     UIButton *btn = (UIButton*) sender;
-    int index = btn.tag;
+    NSUInteger index = (NSUInteger)btn.tag;
     SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:index];
     DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
     currentAlmondMAC = currentAlmond.almondplusMAC;
@@ -1277,7 +1339,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 -(void)onEmailRemoveClicked:(id)sender{
     DLog(@"onEmailRemoveClicked");
     UIButton *btn = (UIButton*) sender;
-    int index = btn.tag;
+    NSUInteger index = (NSUInteger)btn.tag;
     
     CGPoint buttonOrigin = btn.frame.origin;
     CGPoint pointInTableview = [self.tableView convertPoint:buttonOrigin fromView:btn.superview];
@@ -1296,7 +1358,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 -(void)onSharedAlmondClicked:(id)sender{
     DLog(@"onSharedAlmondClicked");
     UIButton *btn = (UIButton*) sender;
-    int index = btn.tag;
+    NSUInteger index = (NSUInteger)btn.tag;
     SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:index];
     DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
     if(currentAlmond.isExpanded){
@@ -1310,7 +1372,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 -(void)onRemoveSharedAlmondClicked:(id)sender{
     DLog(@"onRemoveSharedAlmondClicked");
     UIButton *btn = (UIButton*) sender;
-    int index = btn.tag;
+    NSUInteger index = (NSUInteger)btn.tag;
     SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:index];
     DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
     currentAlmondMAC = currentAlmond.almondplusMAC;
@@ -1319,6 +1381,26 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [self sendDelMeAsSecondaryUserRequest:currentAlmond.almondplusMAC];
 }
 
+//- (void)presentLogonScreen {
+//    DLog(@"%s", __PRETTY_FUNCTION__);
+//
+//    
+//    // Present login screen
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+//    SFILoginViewController *loginCtrl = [storyboard instantiateViewControllerWithIdentifier:@"SFILoginViewController"];
+//    loginCtrl.delegate = self;
+//    
+//    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:loginCtrl];
+//    
+//    if (self.presentedViewController) {
+//        [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
+//            [self presentViewController:navCtrl animated:YES completion:nil];
+//        }];
+//    }
+//    else {
+//        [self presentViewController:navCtrl animated:YES completion:nil];
+//    }
+//}
 
 #pragma  mark - Alertview delgate
 - (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
@@ -1486,6 +1568,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
 
+    }else{
+         [self.delegate userAccountDidDelete:self];
     }
 }
 
@@ -1648,7 +1732,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         //Display in table
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.tableView reloadData];
-            [self.HUD hide:YES];
+           // [self.HUD hide:YES];
         });
         
     }else{
@@ -1730,7 +1814,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         //Display in table
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.tableView reloadData];
-            [self.HUD hide:YES];
+            //[self.HUD hide:YES];
         });
         
     }else{
@@ -1819,7 +1903,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         //Display in table
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.tableView reloadData];
-            [self.HUD hide:YES];
+            //[self.HUD hide:YES];
         });
         
     }else{
@@ -1923,11 +2007,30 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         //Display in table
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.tableView reloadData];
-            [self.HUD hide:YES];
+            //[self.HUD hide:YES];
         });
         
     }else{
         [[[iToast makeText:@"Sorry! We were unable to change Almond's name"] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+    }
+    [self.HUD hide:YES];
+}
+
+-(void)mobileCommandResponseCallback:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    MobileCommandResponse *obj = (MobileCommandResponse *) [data valueForKey:@"data"];
+    
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    
+    // Timeout the commander timer
+    [self.almondNameChangeTimer invalidate];
+    self.isAlmondNameChangeSuccessful = TRUE;
+    
+    if(!obj.isSuccessful){
+        NSString *failureReason = obj.reason;
+        [[[iToast makeText:[NSString stringWithFormat:@"Sorry! We were unable to change Almond's name. %@", failureReason]] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
     [self.HUD hide:YES];
 }
@@ -1965,7 +2068,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         //Display in table
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.tableView reloadData];
-            [self.HUD hide:YES];
         });
         
     }else{
@@ -2011,7 +2113,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         //Display in table
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.tableView reloadData];
-            [self.HUD hide:YES];
         });
     }else{
         NSLog(@"Reason %@", obj.reason);

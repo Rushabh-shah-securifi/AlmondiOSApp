@@ -8,7 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "SFIUserProfile.h"
+
 @class MBProgressHUD;
+
+@class SFIAccountsTableViewController;
+
+@protocol SFIAccountDeleteDelegate
+
+- (void)userAccountDidDelete:(SFIAccountsTableViewController*)ctrl;
+- (void)userAccountDidDone:(SFIAccountsTableViewController *)ctrl;
+
+@end
+
 @interface SFIAccountsTableViewController : UITableViewController <UITableViewDataSource, UITextFieldDelegate>
 @property (nonatomic, retain) NSMutableArray *ownedAlmondList;
 @property (nonatomic, retain) NSMutableArray *sharedAlmondList;
@@ -33,6 +44,9 @@
 @property(nonatomic, readonly)UITextField *tfAddress3;
 @property(nonatomic, readonly)UITextField *tfCountry;
 @property(nonatomic, readonly)UITextField *tfZipCode;
+@property(nonatomic, readonly)UITextField *tfRenameAlmond;
+
+@property(weak, nonatomic) id<SFIAccountDeleteDelegate> delegate;
 
 @property (nonatomic) int nameChangedForAlmond;
 @property NSTimer *almondNameChangeTimer;

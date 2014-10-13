@@ -15,8 +15,9 @@
 #import "SFIRouterTableViewController.h"
 #import "SFISensorsViewController.h"
 #import "DrawerViewController.h"
+#import "SFIAccountsTableViewController.h"
 
-@interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, UIGestureRecognizerDelegate>
+@interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, SFIAccountDeleteDelegate, UIGestureRecognizerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSTimer *displayNoCloudTimer;
 @property(nonatomic, readonly) NSTimer *cloudReconnectTimer;
@@ -36,6 +37,7 @@
     [center removeObserver:self name:kSFIDidLogoutNotification object:nil];
     [center removeObserver:self name:kSFIDidLogoutAllNotification object:nil];
     [center removeObserver:self name:UI_ON_PRESENT_LOGOUT_ALL object:nil];
+    [center removeObserver:self name:UI_ON_PRESENT_ACCOUNTS object:nil];
 }
 
 - (void)viewDidLoad {
@@ -84,6 +86,11 @@
     [center addObserver:self
                selector:@selector(onPresentLogoutAll)
                    name:UI_ON_PRESENT_LOGOUT_ALL
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onPresentAccounts)
+                   name:UI_ON_PRESENT_ACCOUNTS
                  object:nil];
 }
 
@@ -241,6 +248,9 @@
     DLog(@"%s", __PRETTY_FUNCTION__);
 
     if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
+        BOOL isActivated = [[SecurifiToolkit sharedInstance] isActivated];
+        int minsRemaining = [[SecurifiToolkit sharedInstance] minsRemaining];
+        DLog(@"Mins Remaining: %d", minsRemaining);
         [self presentMainView];
     }
     else {
@@ -259,6 +269,19 @@
         }
         else {
             [self presentLogoutAllView];
+        }
+    });
+}
+
+- (void)onPresentAccounts {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.presentedViewController) {
+            [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
+                [self presentAccountsView];
+            }];
+        }
+        else {
+            [self presentAccountsView];
         }
     });
 }
@@ -349,6 +372,15 @@
     [self presentViewController:nctrl animated:YES completion:nil];
 }
 
+- (void)presentAccountsView {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"AccountsStoryboard_iPhone" bundle:nil];
+    SFIAccountsTableViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SFIAccountsTableViewController"];
+    ctrl.delegate = self;
+    
+    UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    [self presentViewController:nctrl animated:YES completion:nil];
+}
+
 #pragma mark - SFILogoutAllDelegate methods
 
 - (void)logoutAllControllerDidLogoutAll:(SFILogoutAllViewController *)ctrl {
@@ -358,6 +390,26 @@
 }
 
 - (void)logoutAllControllerDidCancel:(SFILogoutAllViewController *)ctrl {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
+            if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
+                [self presentMainView];
+            }
+            else {
+                [self presentLogonScreen];
+            }
+        }];
+    });
+}
+
+- (void)userAccountDidDelete:(SFIAccountsTableViewController *)ctrl {
+    DLog(@"%s: Presenting login view", __PRETTY_FUNCTION__);
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self presentLogonScreen];
+    });
+}
+
+- (void)userAccountDidDone:(SFIAccountsTableViewController *)ctrl{
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
             if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {

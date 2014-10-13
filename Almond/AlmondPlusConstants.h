@@ -14,7 +14,7 @@
 
 // UI Notifications
 #define UI_ON_PRESENT_LOGOUT_ALL            @"UI_ON_PRESENT_LOGOUT_ALL"
-
+#define UI_ON_PRESENT_ACCOUNTS              @"UI_ON_PRESENT_ACCOUNTS"
 
 
 #define CURRENT_ALMOND_MAC  @"AlmondMAC"
