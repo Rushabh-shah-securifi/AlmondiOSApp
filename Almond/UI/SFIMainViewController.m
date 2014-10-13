@@ -248,9 +248,6 @@
     DLog(@"%s", __PRETTY_FUNCTION__);
 
     if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
-        BOOL isActivated = [[SecurifiToolkit sharedInstance] isActivated];
-        int minsRemaining = [[SecurifiToolkit sharedInstance] minsRemaining];
-        DLog(@"Mins Remaining: %d", minsRemaining);
         [self presentMainView];
     }
     else {
