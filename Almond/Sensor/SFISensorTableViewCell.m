@@ -185,7 +185,7 @@
         [self.deviceValueLabel addSubview:deviceImageButton];
 
         // For Decimal Value
-        self.decimalValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 10, 40, 20, 30)];
+        self.decimalValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 20, 40, 20, 30)];
         self.decimalValueLabel.backgroundColor = clear_color;
         self.decimalValueLabel.textColor = white_color;
         self.decimalValueLabel.textAlignment = NSTextAlignmentCenter;
@@ -193,11 +193,11 @@
         self.decimalValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:18];
 
         // For Degree
-        self.degreeLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 10, 25, 20, 20)];
+        self.degreeLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 20, 25, 20, 20)];
         self.degreeLabel.backgroundColor = clear_color;
         self.degreeLabel.textColor = white_color;
         self.degreeLabel.textAlignment = NSTextAlignmentCenter;
-        self.degreeLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:18];
+        self.degreeLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:16];
         self.degreeLabel.text = @"\u00B0"; // degree sign
 
         [self.contentView addSubview:self.deviceValueLabel];
