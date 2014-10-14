@@ -654,7 +654,7 @@
     [self addHorizontalPicker:@"Pins" propertyType:SFIDevicePropertyType_USER_CODE selectionPointMiddle:NO];
     [self addShortLine];
 
-    UITextField *field = [self addFieldNameValue:@"PassCode" fieldValue:@""];
+    UITextField *field = [self addFieldNameValue:@"Code" fieldValue:@""];
     field.tag = SFIDevicePropertyType_USER_CODE;
     field.keyboardType = UIKeyboardTypeNumberPad;
     //
@@ -662,7 +662,7 @@
             NSForegroundColorAttributeName : [[UIColor whiteColor] colorWithAlphaComponent:0.5],
             NSFontAttributeName : [field.font fontWithSize:10],
     };
-    field.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"PassCode is not specified." attributes:textAttributes];
+    field.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Code is not specified." attributes:textAttributes];
 
     [self setPinCodeTextField:1]; // preset the text field for first pin
 
