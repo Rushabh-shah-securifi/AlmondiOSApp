@@ -386,16 +386,6 @@
     SFIDeviceKnownValues *deviceValues;
 
     switch (device.deviceType) {
-        case SFIDeviceType_BinarySwitch_1: {
-            // Switch
-            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:0];
-            if (!deviceValues.hasValue) {
-                return; // nothing to do
-            }
-            [deviceValues setBoolValue:!deviceValues.boolValue];
-            break;
-        }
-
         case SFIDeviceType_MultiLevelSwitch_2: {
             // Multilevel switch
             deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.mostImpValueIndex];
@@ -414,10 +404,23 @@
             break;
         }
 
+        case SFIDeviceType_DoorLock_5:
+        case SFIDeviceType_Alarm_6: {
+            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.mostImpValueIndex];
+
+            int newValue = (deviceValues.intValue == 0) ? 255 : 0;
+            [deviceValues setIntValue:newValue];
+            break;
+        }
+
+        case SFIDeviceType_BinarySwitch_1:
         case SFIDeviceType_MultiLevelOnOff_4:
+        case SFIDeviceType_StandardWarningDevice_21:
         case SFIDeviceType_SmartACSwitch_22:
-        case SFIDeviceType_SmartDCSwitch_23: {
-            /* Level Control */
+        case SFIDeviceType_SmartDCSwitch_23:
+        case SFIDeviceType_Siren_42:
+        case SFIDeviceType_UnknownOnOffModule_44:
+        case SFIDeviceType_BinaryPowerSwitch_45: {
             deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.stateIndex];
             if (!deviceValues.hasValue) {
                 return; // nothing to do
