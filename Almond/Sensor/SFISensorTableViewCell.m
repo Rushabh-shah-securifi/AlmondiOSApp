@@ -127,13 +127,14 @@
     rightBackgroundLabel.backgroundColor = cell_color;
     [self.contentView addSubview:rightBackgroundLabel];
 
-    UILabel *deviceNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, (cell_frame.size.width - LEFT_LABEL_WIDTH - 90), 30)];
+    UILabel *deviceNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, (cell_frame.size.width - LEFT_LABEL_WIDTH - 40), 30)];
     deviceNameLabel.backgroundColor = clear_color;
     deviceNameLabel.textColor = white_color;
     deviceNameLabel.text = currentSensor.deviceName;
+    deviceNameLabel.font = [deviceNameLabel.font fontWithSize:16];
     [rightBackgroundLabel addSubview:deviceNameLabel];
 
-    UILabel *deviceStatusLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 25, 180, 60)];
+    UILabel *deviceStatusLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 180, 60)];
     deviceStatusLabel.backgroundColor = clear_color;
     deviceStatusLabel.textColor = white_color;
     deviceStatusLabel.numberOfLines = 2;
@@ -143,7 +144,7 @@
 
     //todo seems like the button could take place of image view
 
-    UIImageView *settingsImage = [[UIImageView alloc] initWithFrame:CGRectMake(cell_frame.size.width - 60, 37, 23, 23)];
+    UIImageView *settingsImage = [[UIImageView alloc] initWithFrame:CGRectMake(cell_frame.size.width - 50, 37, 23, 23)];
     settingsImage.image = [UIImage imageNamed:@"icon_config.png"];
     settingsImage.alpha = (CGFloat) (self.device.isExpanded ? 1.0 : 0.5); // change color of image when expanded
     settingsImage.userInteractionEnabled = YES;
