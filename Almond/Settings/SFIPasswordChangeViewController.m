@@ -9,23 +9,7 @@
 #import "SFIPasswordChangeViewController.h"
 #import "MBProgressHUD.h"
 
-#define PWD_MIN_LENGTH 6
-#define PWD_MAX_LENGTH 32
-
-#define REGEX_PASSWORD_ONE_UPPERCASE @"^(?=.*[A-Z]).*$"  //Should contains one or more uppercase letters
-#define REGEX_PASSWORD_ONE_LOWERCASE @"^(?=.*[a-z]).*$"  //Should contains one or more lowercase letters
-#define REGEX_PASSWORD_ONE_NUMBER @"^(?=.*[0-9]).*$"  //Should contains one or more number
-#define REGEX_PASSWORD_ONE_SYMBOL @"^(?=.*[!@#$%&_]).*$"  //Should contains one or more symbol
-#define REGEX_EMAIL @"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$"
-
 @interface SFIPasswordChangeViewController ()
-typedef enum {
-    PasswordStrengthTypeTooShort,
-    PasswordStrengthTypeTooLong,
-    PasswordStrengthTypeWeak,
-    PasswordStrengthTypeModerate,
-    PasswordStrengthTypeStrong
-} PasswordStrengthType;
 
 @property(nonatomic) UITextField *activeTextField;
 @end
@@ -99,63 +83,6 @@ typedef enum {
 
 #pragma mark - Password strength
 
-- (PasswordStrengthType)checkPasswordStrength:(NSString *)strPassword {
-    NSInteger len = strPassword.length;
-    //will contains password strength
-    int strength = 0;
-    
-    if (len == 0) {
-        return PasswordStrengthTypeTooShort;
-    }
-    else if (len < PWD_MIN_LENGTH) {
-        return PasswordStrengthTypeTooShort;
-    }
-    else if (len > PWD_MAX_LENGTH) {
-        return PasswordStrengthTypeTooLong;
-    }
-    else if (len <= 9) {
-        strength += 1;
-    }
-    else {
-        strength += 2;
-    }
-    
-    strength += [self validateString:strPassword withPattern:REGEX_PASSWORD_ONE_UPPERCASE caseSensitive:YES];
-    strength += [self validateString:strPassword withPattern:REGEX_PASSWORD_ONE_LOWERCASE caseSensitive:YES];
-    strength += [self validateString:strPassword withPattern:REGEX_PASSWORD_ONE_NUMBER caseSensitive:YES];
-    strength += [self validateString:strPassword withPattern:REGEX_PASSWORD_ONE_SYMBOL caseSensitive:YES];
-    
-    if (strength < 3) {
-        return PasswordStrengthTypeWeak;
-    }
-    else if (3 <= strength && strength < 6) {
-        return PasswordStrengthTypeModerate;
-    }
-    else {
-        return PasswordStrengthTypeStrong;
-    }
-}
-
-// Validate the input string with the given pattern and
-// return the result as a boolean
-- (int)validateString:(NSString *)string withPattern:(NSString *)pattern caseSensitive:(BOOL)caseSensitive {
-    NSError *error = nil;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:((caseSensitive) ? 0 : NSRegularExpressionCaseInsensitive) error:&error];
-    
-    NSAssert(regex, @"Unable to create regular expression");
-    
-    NSRange textRange = NSMakeRange(0, string.length);
-    NSRange matchRange = [regex rangeOfFirstMatchInString:string options:NSMatchingReportProgress range:textRange];
-    
-    BOOL didValidate = 0;
-    
-    // Did we find a matching range
-    if (matchRange.location != NSNotFound) {
-        didValidate = 1;
-    }
-    
-    return didValidate;
-}
 - (void)displayPasswordIndicator:(PasswordStrengthType)pwdStrength {
     if(![self.confirmPassword.text isEqualToString:self.changedPassword.text]){
         self.passwordStrengthIndicator.progress = 0.1;
@@ -220,7 +147,8 @@ typedef enum {
     else if (textField == self.confirmPassword) {
         [textField resignFirstResponder];
         
-        PasswordStrengthType pwdStrength = [self checkPasswordStrength:self.changedPassword.text];
+        SFICredentialsValidator *validator = [[SFICredentialsValidator alloc]init];
+        PasswordStrengthType pwdStrength = [validator validatePassword:self.changedPassword.text];
         [self displayPasswordIndicator:pwdStrength];
     }
     

@@ -11,8 +11,6 @@
 #import "MBProgressHUD.h"
 #import "Analytics.h"
 
-#define PWD_MIN_LENGTH 6
-#define PWD_MAX_LENGTH 32
 
 #define CONTINUE_BUTTON_SIGNUP              1
 #define CONTINUE_BUTTON_LOGIN               2
@@ -21,20 +19,7 @@
 #define FOOTER_RESEND_ACTIVATION_LINK       2
 #define FOOTER_SIGNUP_DIFF_EMAIL            3
 
-#define REGEX_PASSWORD_ONE_UPPERCASE @"^(?=.*[A-Z]).*$"  //Should contains one or more uppercase letters
-#define REGEX_PASSWORD_ONE_LOWERCASE @"^(?=.*[a-z]).*$"  //Should contains one or more lowercase letters
-#define REGEX_PASSWORD_ONE_NUMBER @"^(?=.*[0-9]).*$"  //Should contains one or more number
-#define REGEX_PASSWORD_ONE_SYMBOL @"^(?=.*[!@#$%&_]).*$"  //Should contains one or more symbol
-#define REGEX_EMAIL @"^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$"
-
 @interface SFISignupViewController () <UITextFieldDelegate>
-typedef enum {
-    PasswordStrengthTypeTooShort,
-    PasswordStrengthTypeTooLong,
-    PasswordStrengthTypeWeak,
-    PasswordStrengthTypeModerate,
-    PasswordStrengthTypeStrong
-} PasswordStrengthType;
 
 @property(nonatomic) UIWebView *webview;
 @property(nonatomic) UITextField *activeTextField;
@@ -344,8 +329,8 @@ typedef enum {
     }
     else if (textField == self.confirmPassword) {
         [textField resignFirstResponder];
-
-        PasswordStrengthType pwdStrength = [self checkPasswordStrength:self.password.text];
+        SFICredentialsValidator *validator = [[SFICredentialsValidator alloc]init];
+        PasswordStrengthType pwdStrength = [validator validatePassword:self.password.text];
         [self displayPasswordIndicator:pwdStrength];
         [self tryEnableContinueButton];
     }
@@ -372,12 +357,13 @@ typedef enum {
 }
 
 - (BOOL)validateSignupValues {
+    SFICredentialsValidator *validator = [[SFICredentialsValidator alloc]init];
     if (self.emailID.text.length == 0) {
         self.headingLabel.text = @"Oops!";
         self.subHeadingLabel.text = @"You forgot to enter your email ID.";
         return NO;
     }
-    else if (![self validateEmail:self.emailID.text]) {
+    else if (![validator validateEmail:self.emailID.text]) {
         //Email Address is invalid.
         self.headingLabel.text = @"Oops!";
         self.subHeadingLabel.text = @"You have entered an invalid email ID.";
@@ -457,64 +443,6 @@ typedef enum {
 
 #pragma mark - Password strength
 
-- (PasswordStrengthType)checkPasswordStrength:(NSString *)strPassword {
-    NSInteger len = strPassword.length;
-    //will contains password strength
-    int strength = 0;
-
-    if (len == 0) {
-        return PasswordStrengthTypeTooShort;
-    }
-    else if (len < PWD_MIN_LENGTH) {
-        return PasswordStrengthTypeTooShort;
-    }
-    else if (len > PWD_MAX_LENGTH) {
-        return PasswordStrengthTypeTooLong;
-    }
-    else if (len <= 9) {
-        strength += 1;
-    }
-    else {
-        strength += 2;
-    }
-
-    strength += [self validateString:strPassword withPattern:REGEX_PASSWORD_ONE_UPPERCASE caseSensitive:YES];
-    strength += [self validateString:strPassword withPattern:REGEX_PASSWORD_ONE_LOWERCASE caseSensitive:YES];
-    strength += [self validateString:strPassword withPattern:REGEX_PASSWORD_ONE_NUMBER caseSensitive:YES];
-    strength += [self validateString:strPassword withPattern:REGEX_PASSWORD_ONE_SYMBOL caseSensitive:YES];
-
-    if (strength < 3) {
-        return PasswordStrengthTypeWeak;
-    }
-    else if (3 <= strength && strength < 6) {
-        return PasswordStrengthTypeModerate;
-    }
-    else {
-        return PasswordStrengthTypeStrong;
-    }
-}
-
-// Validate the input string with the given pattern and
-// return the result as a boolean
-- (int)validateString:(NSString *)string withPattern:(NSString *)pattern caseSensitive:(BOOL)caseSensitive {
-    NSError *error = nil;
-    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:pattern options:((caseSensitive) ? 0 : NSRegularExpressionCaseInsensitive) error:&error];
-
-    NSAssert(regex, @"Unable to create regular expression");
-
-    NSRange textRange = NSMakeRange(0, string.length);
-    NSRange matchRange = [regex rangeOfFirstMatchInString:string options:NSMatchingReportProgress range:textRange];
-
-    BOOL didValidate = 0;
-
-    // Did we find a matching range
-    if (matchRange.location != NSNotFound) {
-        didValidate = 1;
-    }
-
-    return didValidate;
-}
-
 - (void)displayPasswordIndicator:(PasswordStrengthType)pwdStrength {
     if (pwdStrength == PasswordStrengthTypeTooShort) {
         self.passwordStrengthIndicator.progress = 0.2;
@@ -543,16 +471,6 @@ typedef enum {
     }
 }
 
-- (BOOL)validateEmail:(NSString *)emailString {
-    NSRegularExpression *regEx = [[NSRegularExpression alloc] initWithPattern:REGEX_EMAIL options:NSRegularExpressionCaseInsensitive error:nil];
-    NSUInteger regExMatches = [regEx numberOfMatchesInString:emailString options:0 range:NSMakeRange(0, [emailString length])];
-    if (regExMatches == 0) {
-        return NO;
-    }
-    else {
-        return YES;
-    }
-}
 
 #pragma mark - Cloud Command : Sender and Receivers
 
