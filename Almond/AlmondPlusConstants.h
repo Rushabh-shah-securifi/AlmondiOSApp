@@ -86,4 +86,6 @@
 
 #define HELP_URL @"https://connect.securifi.com/help"
 
+#define ACCOUNT_ACTIVATION_NOTIFICATION @"AccountActivicationNotification"
+
 #endif

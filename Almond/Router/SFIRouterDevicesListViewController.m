@@ -11,6 +11,7 @@
 #import "SFIBlockedDevice.h"
 #import "SFIBlockedContent.h"
 #import "SNLog.h"
+#import "UIFont+Securifi.h"
 
 @interface SFIRouterDevicesListViewController ()
 @property(nonatomic, strong) SFIAlmondPlus *currentAlmond;
@@ -180,14 +181,14 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     UILabel *lblDeviceName = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, 280, 20)];
     lblDeviceName.backgroundColor = [UIColor clearColor];
     lblDeviceName.textColor = [UIColor whiteColor];
-    [lblDeviceName setFont:[UIFont fontWithName:@"Avenir-Heavy" size:16]];
+    [lblDeviceName setFont:[UIFont standardHeadingBoldFont]];
     lblDeviceName.text = currentDevice.name;
     [backgroundLabel addSubview:lblDeviceName];
 
     UILabel *lblDeviceIP = [[UILabel alloc] initWithFrame:CGRectMake(15, 30, 280, 30)];
     lblDeviceIP.backgroundColor = [UIColor clearColor];
     lblDeviceIP.textColor = [UIColor whiteColor];
-    [lblDeviceIP setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+    [lblDeviceIP setFont:[UIFont standardUILabelFont]];
 
     //Get IP address
     //Step 1: Conversion from decimal to hexadecimal
@@ -217,7 +218,7 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     UILabel *lblDeviceMAC = [[UILabel alloc] initWithFrame:CGRectMake(15, 50, 280, 30)];
     lblDeviceMAC.backgroundColor = [UIColor clearColor];
     lblDeviceMAC.textColor = [UIColor whiteColor];
-    [lblDeviceMAC setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+    [lblDeviceMAC setFont:[UIFont standardUILabelFont]];
     lblDeviceMAC.text = [NSString stringWithFormat:@"Device MAC: %@", [currentDevice.deviceMAC uppercaseString]];
     [backgroundLabel addSubview:lblDeviceMAC];
 
@@ -239,7 +240,7 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     UILabel *lblDeviceMAC = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, 280, 20)];
     lblDeviceMAC.backgroundColor = [UIColor clearColor];
     lblDeviceMAC.textColor = [UIColor whiteColor];
-    [lblDeviceMAC setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
+    [lblDeviceMAC setFont:[UIFont securifiBoldFontLarge]];
     lblDeviceMAC.text = [NSString stringWithFormat:@"Device MAC: %@", [currentDevice.deviceMAC uppercaseString]];
     [backgroundLabel addSubview:lblDeviceMAC];
 
@@ -261,7 +262,7 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     UILabel *lblBlockedText = [[UILabel alloc] initWithFrame:CGRectMake(15, 15, 280, 20)];
     lblBlockedText.backgroundColor = [UIColor clearColor];
     lblBlockedText.textColor = [UIColor whiteColor];
-    [lblBlockedText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
+    [lblBlockedText setFont:[UIFont securifiBoldFontLarge]];
     lblBlockedText.text = [NSString stringWithFormat:@"Blocked Text: %@", currentDevice.blockedText];
     [backgroundLabel addSubview:lblBlockedText];
 
@@ -304,7 +305,7 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     UILabel *lblSSID = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, 220, 20)];
     lblSSID.backgroundColor = [UIColor clearColor];
     lblSSID.textColor = [UIColor whiteColor];
-    [lblSSID setFont:[UIFont fontWithName:@"Avenir-Light" size:20]];
+    [lblSSID setFont:[UIFont securifiLightFont:20]];
     lblSSID.text = currentDevice.ssid; //[NSString stringWithFormat:@"SSID: %@",  currentDevice.ssid];
     [backgroundLabel addSubview:lblSSID];
 
@@ -317,14 +318,14 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     UILabel *lblPassword = [[UILabel alloc] initWithFrame:CGRectMake(15, 32, 100, 30)];
     lblPassword.backgroundColor = [UIColor clearColor];
     lblPassword.textColor = [UIColor whiteColor];
-    [lblPassword setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+    [lblPassword setFont:[UIFont standardUILabelFont]];
     lblPassword.text = @"Password";
     [backgroundLabel addSubview:lblPassword];
 
     UILabel *txtPassword = [[UILabel alloc] initWithFrame:CGRectMake(115, 32, self.tableView.frame.size.width - 155, 30)];
     txtPassword.backgroundColor = [UIColor clearColor];
     txtPassword.textColor = [UIColor whiteColor];
-    [txtPassword setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+    [txtPassword setFont:[UIFont standardUILabelFont]];
     txtPassword.text = currentDevice.password;
     txtPassword.textAlignment = NSTextAlignmentRight;
     [backgroundLabel addSubview:txtPassword];
@@ -337,7 +338,7 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     UILabel *lblChannel = [[UILabel alloc] initWithFrame:CGRectMake(15, 62, 100, 30)];
     lblChannel.backgroundColor = [UIColor clearColor];
     lblChannel.textColor = [UIColor whiteColor];
-    [lblChannel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+    [lblChannel setFont:[UIFont standardUILabelFont]];
     lblChannel.text = @"Channel";
     [backgroundLabel addSubview:lblChannel];
 
@@ -345,7 +346,7 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     UILabel *txtChannel = [[UILabel alloc] initWithFrame:CGRectMake(115, 62, self.tableView.frame.size.width - 155, 30)];
     txtChannel.backgroundColor = [UIColor clearColor];
     txtChannel.textColor = [UIColor whiteColor];
-    [txtChannel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+    [txtChannel setFont:[UIFont standardUILabelFont]];
     txtChannel.text = [NSString stringWithFormat:@"%d", currentDevice.channel];
     txtChannel.textAlignment = NSTextAlignmentRight;
     [backgroundLabel addSubview:txtChannel];
@@ -358,14 +359,14 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     UILabel *lblEncryptionType = [[UILabel alloc] initWithFrame:CGRectMake(15, 92, 280, 30)];
     lblEncryptionType.backgroundColor = [UIColor clearColor];
     lblEncryptionType.textColor = [UIColor whiteColor];
-    [lblEncryptionType setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+    [lblEncryptionType setFont:[UIFont standardUILabelFont]];
     lblEncryptionType.text = @"Encryption Type";
     [backgroundLabel addSubview:lblEncryptionType];
 
     UILabel *txtEncryptionType = [[UILabel alloc] initWithFrame:CGRectMake(115, 92, self.tableView.frame.size.width - 155, 30)];
     txtEncryptionType.backgroundColor = [UIColor clearColor];
     txtEncryptionType.textColor = [UIColor whiteColor];
-    [txtEncryptionType setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+    [txtEncryptionType setFont:[UIFont standardUILabelFont]];
     txtEncryptionType.text = currentDevice.encryptionType;
     txtEncryptionType.textAlignment = NSTextAlignmentRight;
     [backgroundLabel addSubview:txtEncryptionType];
@@ -379,14 +380,14 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     UILabel *lblSecurity = [[UILabel alloc] initWithFrame:CGRectMake(15, 122, 280, 30)];
     lblSecurity.backgroundColor = [UIColor clearColor];
     lblSecurity.textColor = [UIColor whiteColor];
-    [lblSecurity setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+    [lblSecurity setFont:[UIFont standardUILabelFont]];
     lblSecurity.text = @"Security";
     [backgroundLabel addSubview:lblSecurity];
 
     UILabel *txtSecurity = [[UILabel alloc] initWithFrame:CGRectMake(115, 122, self.tableView.frame.size.width - 155, 30)];
     txtSecurity.backgroundColor = [UIColor clearColor];
     txtSecurity.textColor = [UIColor whiteColor];
-    [txtSecurity setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+    [txtSecurity setFont:[UIFont standardUILabelFont]];
     txtSecurity.text = currentDevice.security;
     txtSecurity.textAlignment = NSTextAlignmentRight;
     [backgroundLabel addSubview:txtSecurity];
@@ -400,14 +401,14 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     UILabel *lblWirelessMode = [[UILabel alloc] initWithFrame:CGRectMake(15, 152, 280, 30)];
     lblWirelessMode.backgroundColor = [UIColor clearColor];
     lblWirelessMode.textColor = [UIColor whiteColor];
-    [lblWirelessMode setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+    [lblWirelessMode setFont:[UIFont standardUILabelFont]];
     lblWirelessMode.text = @"Wireless Mode";
     [backgroundLabel addSubview:lblWirelessMode];
 
     UILabel *txtWirelessMode = [[UILabel alloc] initWithFrame:CGRectMake(115, 152, self.tableView.frame.size.width - 155, 30)];
     txtWirelessMode.backgroundColor = [UIColor clearColor];
     txtWirelessMode.textColor = [UIColor whiteColor];
-    [txtWirelessMode setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+    [txtWirelessMode setFont:[UIFont standardUILabelFont]];
     txtWirelessMode.text = currentDevice.wirelessMode;
     txtWirelessMode.textAlignment = NSTextAlignmentRight;
     [backgroundLabel addSubview:txtWirelessMode];
@@ -421,14 +422,14 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     UILabel *lblCountryRegion = [[UILabel alloc] initWithFrame:CGRectMake(15, 182, 280, 30)];
     lblCountryRegion.backgroundColor = [UIColor clearColor];
     lblCountryRegion.textColor = [UIColor whiteColor];
-    [lblCountryRegion setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+    [lblCountryRegion setFont:[UIFont standardUILabelFont]];
     lblCountryRegion.text = @"Country Region";
     [backgroundLabel addSubview:lblCountryRegion];
 
     UILabel *txtCountryRegion = [[UILabel alloc] initWithFrame:CGRectMake(115, 182, self.tableView.frame.size.width - 155, 30)];
     txtCountryRegion.backgroundColor = [UIColor clearColor];
     txtCountryRegion.textColor = [UIColor whiteColor];
-    [txtCountryRegion setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+    [txtCountryRegion setFont:[UIFont standardUILabelFont]];
     txtCountryRegion.text = [NSString stringWithFormat:@"%d", currentDevice.countryRegion];
     txtCountryRegion.textAlignment = NSTextAlignmentRight;
     [backgroundLabel addSubview:txtCountryRegion];

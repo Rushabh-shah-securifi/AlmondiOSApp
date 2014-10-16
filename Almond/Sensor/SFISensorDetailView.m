@@ -10,6 +10,7 @@
 #import "V8HorizontalPickerView.h"
 #import "Colours.h"
 #import "SFICopyLabel.h"
+#import "UIFont+Securifi.h"
 
 
 #define TEMP_PICKER_ELEMENT_WIDTH 40
@@ -360,7 +361,7 @@
 - (UITextField *)addFieldNameValue:(NSString *)fieldName fieldValue:(NSString *)fieldValue {
     [self addFieldNameLabel:fieldName];
 
-    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    UIFont *heavy_font = [UIFont securifiBoldFont];
 
     UITextField *field = [[UITextField alloc] initWithFrame:[self makeFieldValueRect:120]];
     field.tag = self.tag;
@@ -378,7 +379,7 @@
 }
 
 - (void)addFieldNameLabel:(NSString *)fieldName {
-    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    UIFont *heavy_font = [UIFont securifiBoldFont];
 
     UILabel *label;
     label = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:100]];
@@ -396,7 +397,7 @@
 }
 
 - (SFIHighlightedButton *)addButton:(NSString *)buttonName {
-    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
+    UIFont *heavy_font = [UIFont securifiBoldFontLarge];
     CGSize stringBoundingBox = [buttonName sizeWithAttributes:@{NSFontAttributeName : heavy_font}];
 
     int button_width = (int) (stringBoundingBox.width + 20);
@@ -439,7 +440,7 @@
     UILabel *label = [[UILabel alloc] init];
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
-    label.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    label.font = [UIFont securifiBoldFont];
     label.frame = CGRectMake(10, self.baseYCoordinate - 5, 299, 30);
     label.text = [NSString stringWithFormat:@"SENSOR SETTINGS"];
     [self addSubview:label];
@@ -447,7 +448,7 @@
 }
 
 - (void)addTamperButton {
-    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    UIFont *heavy_font = [UIFont securifiBoldFont];
 
     UIColor *whiteColor = [UIColor whiteColor];
 //    UIColor *whiteColor = [UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6];
@@ -509,7 +510,7 @@
     slider.maximumValue = maxValue;
     slider.popUpViewColor = [self.color complementaryColor];
     slider.textColor = [slider.popUpViewColor blackOrWhiteContrastingColor];
-    slider.font = [UIFont fontWithName:@"Avenir-Heavy" size:22];
+    slider.font = [UIFont securifiBoldFont:22];
     [slider addTarget:self action:@selector(onSliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
     //
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -535,7 +536,7 @@
 }
 
 - (void)addStatusLabel:(NSArray *)statusMessages {
-    UIFont *const heavy_12 = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    UIFont *const heavy_12 = [UIFont securifiBoldFont];
     UIColor *const white_color = [UIColor whiteColor];
     UIColor *const clear_color = [UIColor clearColor];
 
@@ -560,8 +561,8 @@
 }
 
 - (void)addHorizontalPicker:(NSString *)labelText propertyType:(SFIDevicePropertyType)propertyType selectionPointMiddle:(BOOL)yesOrLeftSelection {
-    UIFont *const heavy_12 = [UIFont fontWithName:@"Avenir-Heavy" size:12];
-    UIFont *const heavy_16 = [UIFont fontWithName:@"Avenir-Heavy" size:16];
+    UIFont *const heavy_12 = [UIFont securifiBoldFont];
+    UIFont *const heavy_16 = [UIFont standardHeadingBoldFont];
 
     const int control_height = 40;
 
@@ -636,7 +637,7 @@
     label.backgroundColor = [UIColor clearColor];
     label.text = batteryStatus;
     label.textColor = [UIColor whiteColor];
-    label.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    label.font = [UIFont securifiBoldFont];
     label.frame = CGRectMake(10, self.baseYCoordinate, 299, 30);
     [self addSubview:label];
 
@@ -686,7 +687,7 @@
     [self addLine];
     [self markYOffset:5];
 
-    UIFont *const heavy_12 = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    UIFont *const heavy_12 = [UIFont securifiBoldFont];
     UIColor *const white_color = [UIColor whiteColor];
     NSDictionary *const attributes = @{NSFontAttributeName : heavy_12};
     SFIDeviceValue *const deviceValue = self.deviceValue;

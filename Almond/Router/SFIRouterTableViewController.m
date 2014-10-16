@@ -14,6 +14,7 @@
 #import "SFIRouterDevicesListViewController.h"
 #import "MBProgressHUD.h"
 #import "Analytics.h"
+#import "UIFont+Securifi.h"
 
 
 @interface SFIRouterTableViewController () <UIActionSheetDelegate>
@@ -310,7 +311,7 @@
 
         UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, width, 50)];
         lblNoSensor.textAlignment = NSTextAlignmentCenter;
-        [lblNoSensor setFont:[UIFont fontWithName:@"Avenir-Light" size:35]];
+        [lblNoSensor setFont:[UIFont securifiLightFont:35]];
         lblNoSensor.text = @"Almond is Offline.";
         lblNoSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblNoSensor];
@@ -323,7 +324,7 @@
 
         UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 280, width, 40)];
         lblAddSensor.textAlignment = NSTextAlignmentCenter;
-        [lblAddSensor setFont:[UIFont fontWithName:@"Avenir-Heavy" size:20]];
+        [lblAddSensor setFont:[UIFont securifiBoldFont:20]];
         lblAddSensor.text = @"Please check the router.";
         lblAddSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblAddSensor];
@@ -357,13 +358,13 @@
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.tableView.frame.size.width, 30)];
     titleLabel.backgroundColor = [UIColor clearColor];
     titleLabel.textColor = [UIColor whiteColor];
-    titleLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:25];
+    titleLabel.font = [UIFont securifiBoldFont:25];
     titleLabel.text = @"Router Reboot";
 
     UILabel *summaryLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, self.tableView.frame.size.width, 30)];
     summaryLabel.backgroundColor = [UIColor clearColor];
     summaryLabel.textColor = [UIColor whiteColor];
-    summaryLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:13];
+    summaryLabel.font = [UIFont securifiBoldFont:13];
     //
     if (self.routerSummary == nil) {
         summaryLabel.text = [NSString stringWithFormat:@"Last reboot %@", @""];

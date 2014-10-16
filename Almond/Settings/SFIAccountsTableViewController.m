@@ -10,6 +10,7 @@
 #import "MBProgressHUD.h"
 #import "iToast.h"
 #import "SFILoginViewController.h"
+#import "UIFont+Securifi.h"
 
 @interface SFIAccountsTableViewController ()
 
@@ -63,7 +64,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
                                      [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
-                                     [UIFont fontWithName:@"Avenir-Roman" size:18.0], NSFontAttributeName, nil];
+                                     [UIFont standardNavigationTitleFont], NSFontAttributeName, nil];
     
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
@@ -73,6 +74,11 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.navigationController.navigationBar.titleTextAttributes = @{
+                                                                    NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+                                                                    NSFontAttributeName : [UIFont standardNavigationTitleFont]
+                                                                    };
     
     self.tableView.autoresizingMask= UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews= YES;
@@ -289,6 +295,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
 }
 
+
 #pragma mark - Custom cell creation
 -(UITableViewCell*) createUserProfileCell: (UITableViewCell*)cell listRow:(int)indexPathRow{
    
@@ -308,7 +315,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate+7, self.tableView.frame.size.width-30, 30)];
     lblTitle.backgroundColor = [UIColor clearColor];
     lblTitle.textColor = [UIColor whiteColor];
-    [lblTitle setFont:[UIFont fontWithName:@"Avenir-Light" size:25]];
+    [lblTitle setFont:[UIFont securifiLightFont:25]];
     lblTitle.text = @"Account";
     lblTitle.textAlignment = NSTextAlignmentCenter;
     [backgroundLabel addSubview:lblTitle];
@@ -341,7 +348,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblName = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width - 30, 20)];
         lblName.backgroundColor = [UIColor clearColor];
         lblName.textColor = [UIColor whiteColor];
-        [lblName setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
+        [lblName setFont:[UIFont securifiBoldFontLarge]];
         if([userProfile.firstName isEqualToString:@""] && [userProfile.lastName isEqualToString:@""]){
             lblName.text = @"We don't know your name yet";
         }else if(userProfile.firstName == NULL){
@@ -357,7 +364,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblEmail = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width  -30, 30)];
         lblEmail.backgroundColor = [UIColor clearColor];
         lblEmail.textColor = [UIColor whiteColor];
-        [lblEmail setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [lblEmail setFont:[UIFont standardUITextFieldFont]];
         lblEmail.text = userProfile.userEmail;
         lblEmail.textAlignment = NSTextAlignmentCenter;
         [backgroundLabel addSubview:lblEmail];
@@ -370,7 +377,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblEmailTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width  -30, 30)];
         lblEmailTitle.backgroundColor = [UIColor clearColor];
         lblEmailTitle.textColor = [UIColor whiteColor];
-        [lblEmailTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+        [lblEmailTitle setFont:[UIFont securifiBoldFont:13]];
         lblEmailTitle.text = @"PRIMARY EMAIL";
         lblEmailTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblEmailTitle];
@@ -380,7 +387,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblEmail = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width  -30, 30)];
         lblEmail.backgroundColor = [UIColor clearColor];
         lblEmail.textColor = [UIColor whiteColor];
-        [lblEmail setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [lblEmail setFont:[UIFont standardUITextFieldFont]];
         lblEmail.text = userProfile.userEmail;
         lblEmail.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblEmail];
@@ -398,7 +405,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblPasswordTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 80, 30)];
         lblPasswordTitle.backgroundColor = [UIColor clearColor];
         lblPasswordTitle.textColor = [UIColor whiteColor];
-        [lblPasswordTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+        [lblPasswordTitle setFont:[UIFont securifiBoldFont:13]];
         lblPasswordTitle.text = @"PASSWORD";
         lblPasswordTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblPasswordTitle];
@@ -407,7 +414,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         btnChangePassword.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangePassword.backgroundColor = [UIColor clearColor];
         [btnChangePassword setTitle:@"Change Password" forState:UIControlStateNormal];
-        [btnChangePassword.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangePassword.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnChangePassword setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangePassword.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangePassword addTarget:self action:@selector(onChangePasswordClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -424,7 +431,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblFNameTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 80, 30)];
         lblFNameTitle.backgroundColor = [UIColor clearColor];
         lblFNameTitle.textColor = [UIColor whiteColor];
-        [lblFNameTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+        [lblFNameTitle setFont:[UIFont securifiBoldFont:13]];
         lblFNameTitle.text = @"FIRST NAME";
         lblFNameTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblFNameTitle];
@@ -432,7 +439,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UIButton *btnChangeFName = [UIButton buttonWithType:UIButtonTypeCustom];
         btnChangeFName.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangeFName.backgroundColor = [UIColor clearColor];
-        [btnChangeFName.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangeFName.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnChangeFName setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeFName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangeFName addTarget:self action:@selector(onFirstNameClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -455,7 +462,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         tfFirstName.textAlignment = NSTextAlignmentLeft;
         tfFirstName.textColor = [UIColor whiteColor];
-        tfFirstName.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+        tfFirstName.font = [UIFont standardUITextFieldFont];
         tfFirstName.tag = FIRST_NAME;
         //[tfName becomeFirstResponder];
         [tfFirstName setReturnKeyType:UIReturnKeyDone];
@@ -477,7 +484,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblLNameTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 80, 30)];
         lblLNameTitle.backgroundColor = [UIColor clearColor];
         lblLNameTitle.textColor = [UIColor whiteColor];
-        [lblLNameTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+        [lblLNameTitle setFont:[UIFont securifiBoldFont:13]];
         lblLNameTitle.text = @"LAST NAME";
         lblLNameTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblLNameTitle];
@@ -485,7 +492,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UIButton *btnChangeLName = [UIButton buttonWithType:UIButtonTypeCustom];
         btnChangeLName.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangeLName.backgroundColor = [UIColor clearColor];
-        [btnChangeLName.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangeLName.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnChangeLName setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeLName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangeLName addTarget:self action:@selector(onLastNameClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -507,7 +514,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         tfLastName.textAlignment = NSTextAlignmentLeft;
         tfLastName.textColor = [UIColor whiteColor];
-        tfLastName.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+        tfLastName.font = [UIFont standardUITextFieldFont];
         tfLastName.tag = LAST_NAME;
         [tfLastName setReturnKeyType:UIReturnKeyDone];
         tfLastName.delegate = self;
@@ -527,7 +534,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblAddressTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 80, 30)];
         lblAddressTitle.backgroundColor = [UIColor clearColor];
         lblAddressTitle.textColor = [UIColor whiteColor];
-        [lblAddressTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+        [lblAddressTitle setFont:[UIFont securifiBoldFont:13]];
         lblAddressTitle.text = @"ADDRESS";
         lblAddressTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblAddressTitle];
@@ -535,7 +542,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UIButton *btnChangeAddress = [UIButton buttonWithType:UIButtonTypeCustom];
         btnChangeAddress.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangeAddress.backgroundColor = [UIColor clearColor];
-        [btnChangeAddress.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangeAddress.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnChangeAddress setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeAddress.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangeAddress addTarget:self action:@selector(onAddressChangeClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -557,7 +564,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         tfAddress1.textAlignment = NSTextAlignmentLeft;
         tfAddress1.textColor = [UIColor whiteColor];
-        tfAddress1.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+        tfAddress1.font = [UIFont standardUITextFieldFont];
         tfAddress1.tag = ADDRESS_1;
         [tfAddress1 setReturnKeyType:UIReturnKeyDone];
         tfAddress1.delegate = self;
@@ -575,7 +582,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         tfAddress2.textAlignment = NSTextAlignmentLeft;
         tfAddress2.textColor = [UIColor whiteColor];
-        tfAddress2.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+        tfAddress2.font = [UIFont standardUITextFieldFont];
         tfAddress2.tag = ADDRESS_2;
         [tfAddress2 setReturnKeyType:UIReturnKeyDone];
         tfAddress2.delegate = self;
@@ -593,7 +600,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         tfAddress3.textAlignment = NSTextAlignmentLeft;
         tfAddress3.textColor = [UIColor whiteColor];
-        tfAddress3.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+        tfAddress3.font = [UIFont standardUITextFieldFont];
         tfAddress3.tag = ADDRESS_3;
         [tfAddress3 setReturnKeyType:UIReturnKeyDone];
         tfAddress3.delegate = self;
@@ -613,7 +620,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblCountryTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 80, 30)];
         lblCountryTitle.backgroundColor = [UIColor clearColor];
         lblCountryTitle.textColor = [UIColor whiteColor];
-        [lblCountryTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+        [lblCountryTitle setFont:[UIFont securifiBoldFont:13]];
         lblCountryTitle.text = @"COUNTRY";
         lblCountryTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblCountryTitle];
@@ -621,7 +628,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UIButton *btnChangeCountry = [UIButton buttonWithType:UIButtonTypeCustom];
         btnChangeCountry.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangeCountry.backgroundColor = [UIColor clearColor];
-        [btnChangeCountry.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangeCountry.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnChangeCountry setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeCountry.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangeCountry addTarget:self action:@selector(onCountryClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -643,7 +650,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         tfCountry.textAlignment = NSTextAlignmentLeft;
         tfCountry.textColor = [UIColor whiteColor];
-        tfCountry.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+        tfCountry.font = [UIFont standardUITextFieldFont];
         tfCountry.tag = COUNTRY;
         [tfCountry setReturnKeyType:UIReturnKeyDone];
         tfCountry.delegate = self;
@@ -663,7 +670,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblZipCodeTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 80, 30)];
         lblZipCodeTitle.backgroundColor = [UIColor clearColor];
         lblZipCodeTitle.textColor = [UIColor whiteColor];
-        [lblZipCodeTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+        [lblZipCodeTitle setFont:[UIFont securifiBoldFont:13]];
         lblZipCodeTitle.text = @"ZIP CODE";
         lblZipCodeTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblZipCodeTitle];
@@ -671,7 +678,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UIButton *btnChangeZipCode = [UIButton buttonWithType:UIButtonTypeCustom];
         btnChangeZipCode.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangeZipCode.backgroundColor = [UIColor clearColor];
-        [btnChangeZipCode.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangeZipCode.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnChangeZipCode setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeZipCode.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangeZipCode addTarget:self action:@selector(onZipCodeClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -693,7 +700,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
         tfZipCode.textAlignment = NSTextAlignmentLeft;
         tfZipCode.textColor = [UIColor whiteColor];
-        tfZipCode.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+        tfZipCode.font = [UIFont standardUITextFieldFont];
         tfZipCode.tag = ZIPCODE;
         [tfZipCode setReturnKeyType:UIReturnKeyDone];
         tfZipCode.delegate = self;
@@ -718,7 +725,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [[btnDeleteAccount layer] setBorderColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:1.0].CGColor];
         [btnDeleteAccount setTitle:@"DELETE ACCOUNT" forState:UIControlStateNormal];
         [btnDeleteAccount setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:1.0] forState:UIControlStateNormal ];
-        [btnDeleteAccount.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+        [btnDeleteAccount.titleLabel setFont:[UIFont securifiBoldFont:13]];
         btnDeleteAccount.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         [btnDeleteAccount addTarget:self action:@selector(onDeleteAccountClicked:) forControlEvents:UIControlEventTouchUpInside];
         [backgroundLabel addSubview:btnDeleteAccount];
@@ -749,7 +756,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(30, baseYCordinate+7, self.tableView.frame.size.width-90, 30)];
     lblTitle.backgroundColor = [UIColor clearColor];
     lblTitle.textColor = [UIColor whiteColor];
-    [lblTitle setFont:[UIFont fontWithName:@"Avenir-Light" size:25]];
+    [lblTitle setFont:[UIFont securifiLightFont:25]];
     lblTitle.text = currentAlmond.almondplusName;
     lblTitle.textAlignment = NSTextAlignmentCenter;
     [backgroundLabel addSubview:lblTitle];
@@ -783,7 +790,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblStatus = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width - 30, 20)];
         lblStatus.backgroundColor = [UIColor clearColor];
         lblStatus.textColor = [UIColor whiteColor];
-        [lblStatus setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
+        [lblStatus setFont:[UIFont securifiBoldFont:14]];
 
         lblStatus.text = @"You own this Almond";
         
@@ -794,7 +801,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblShared = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width  -30, 30)];
         lblShared.backgroundColor = [UIColor clearColor];
         lblShared.textColor = [UIColor whiteColor];
-        [lblShared setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [lblShared setFont:[UIFont standardUITextFieldFont]];
         lblShared.text = [NSString stringWithFormat:@"Shared with %d other(s)", currentAlmond.userCount];
         lblShared.textAlignment = NSTextAlignmentCenter;
         [backgroundLabel addSubview:lblShared];
@@ -811,7 +818,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblAlmondTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 120, 30)];
         lblAlmondTitle.backgroundColor = [UIColor clearColor];
         lblAlmondTitle.textColor = [UIColor whiteColor];
-        [lblAlmondTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+        [lblAlmondTitle setFont:[UIFont standardUITextFieldFont]];
         lblAlmondTitle.text = @"DEVICE NAME";
         lblAlmondTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblAlmondTitle];
@@ -820,7 +827,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         btnUnlinkAlmond.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnUnlinkAlmond.backgroundColor = [UIColor clearColor];
         [btnUnlinkAlmond setTitle:@"Unlink" forState:UIControlStateNormal];
-        [btnUnlinkAlmond.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnUnlinkAlmond.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnUnlinkAlmond setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnUnlinkAlmond.tag = indexPathRow - 1;
         btnUnlinkAlmond.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -835,7 +842,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         tfRenameAlmond.text = currentAlmond.almondplusName;
         tfRenameAlmond.textAlignment = NSTextAlignmentLeft;
         tfRenameAlmond.textColor = [UIColor whiteColor];
-        tfRenameAlmond.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+        tfRenameAlmond.font = [UIFont standardUITextFieldFont];
         tfRenameAlmond.tag = indexPathRow - 1;;
         [tfRenameAlmond setReturnKeyType:UIReturnKeyDone];
         tfRenameAlmond.delegate = self;
@@ -844,25 +851,12 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [tfRenameAlmond addTarget:self action:@selector(almondNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
         [backgroundLabel addSubview:tfRenameAlmond];
         
-//        UITextField *tfAlmondName = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, 180, 30)];
-//        tfAlmondName.placeholder = @"Almond Name";
-//        [tfAlmondName setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
-//        tfAlmondName.text = currentAlmond.almondplusName;
-//        tfAlmondName.textAlignment = NSTextAlignmentLeft;
-//        tfAlmondName.textColor = [UIColor whiteColor];
-//        tfAlmondName.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
-//        tfAlmondName.tag = indexPathRow - 1;;
-//        [tfAlmondName setReturnKeyType:UIReturnKeyDone];
-//        tfAlmondName.delegate = self;
-//        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-//        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
-//        [backgroundLabel addSubview:tfAlmondName];
         
         UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
         btnChangeAlmondName.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangeAlmondName.backgroundColor = [UIColor clearColor];
         [btnChangeAlmondName setTitle:@"Rename Almond" forState:UIControlStateNormal];
-        [btnChangeAlmondName.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangeAlmondName.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnChangeAlmondName setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeAlmondName.tag = indexPathRow - 1;
         btnChangeAlmondName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -880,7 +874,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
             UILabel *lblEmailTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 120, 30)];
             lblEmailTitle.backgroundColor = [UIColor clearColor];
             lblEmailTitle.textColor = [UIColor whiteColor];
-            [lblEmailTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+            [lblEmailTitle setFont:[UIFont securifiBoldFont:13]];
             lblEmailTitle.text = @"ACCESS EMAIL";
             lblEmailTitle.textAlignment = NSTextAlignmentLeft;
             [backgroundLabel addSubview:lblEmailTitle];
@@ -894,7 +888,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
                 UILabel *lblEmail = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 220, 30)];
                 lblEmail.backgroundColor = [UIColor clearColor];
                 lblEmail.textColor = [UIColor whiteColor];
-                [lblEmail setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+                [lblEmail setFont:[UIFont standardUITextFieldFont]];
                 lblEmail.text = currentEmail;
                 lblEmail.textAlignment = NSTextAlignmentLeft;
                 [backgroundLabel addSubview:lblEmail];
@@ -903,7 +897,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
                 btnEmailRemove.frame = CGRectMake(160, baseYCordinate, 130, 30);
                 btnEmailRemove.backgroundColor = [UIColor clearColor];
                 [btnEmailRemove setTitle:@"Remove" forState:UIControlStateNormal];
-                [btnEmailRemove.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+                [btnEmailRemove.titleLabel setFont:[UIFont standardUIButtonFont]];
                 btnEmailRemove.tag = index;
                 btnEmailRemove.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
                 [btnEmailRemove addTarget:self action:@selector(onEmailRemoveClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -926,7 +920,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [[btnInvite layer] setBorderColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:1.0].CGColor];
         [btnInvite setTitle:@"INVITE MORE" forState:UIControlStateNormal];
         [btnInvite setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:1.0] forState:UIControlStateNormal ];
-        [btnInvite.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+        [btnInvite.titleLabel setFont:[UIFont securifiBoldFont:13]];
         btnInvite.tag = indexPathRow - 1;
         btnInvite.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         [btnInvite addTarget:self action:@selector(onInviteClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -958,7 +952,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(30, baseYCordinate+7, self.tableView.frame.size.width-90, 30)];
     lblTitle.backgroundColor = [UIColor clearColor];
     lblTitle.textColor = [UIColor whiteColor];
-    [lblTitle setFont:[UIFont fontWithName:@"Avenir-Light" size:25]];
+    [lblTitle setFont:[UIFont securifiLightFont:25]];
     lblTitle.text = currentAlmond.almondplusName;
     lblTitle.textAlignment = NSTextAlignmentCenter;
     [backgroundLabel addSubview:lblTitle];
@@ -992,7 +986,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblStatus = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width - 30, 20)];
         lblStatus.backgroundColor = [UIColor clearColor];
         lblStatus.textColor = [UIColor whiteColor];
-        [lblStatus setFont:[UIFont fontWithName:@"Avenir-Heavy" size:14]];
+        [lblStatus setFont:[UIFont securifiBoldFontLarge]];
         
         lblStatus.text = @"Shared with you by";
         
@@ -1003,7 +997,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblShared = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width  -30, 30)];
         lblShared.backgroundColor = [UIColor clearColor];
         lblShared.textColor = [UIColor whiteColor];
-        [lblShared setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [lblShared setFont:[UIFont standardUITextFieldFont]];
         lblShared.text = currentAlmond.ownerEmailID;
         lblShared.textAlignment = NSTextAlignmentCenter;
         [backgroundLabel addSubview:lblShared];
@@ -1016,7 +1010,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UILabel *lblAlmondTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 120, 30)];
         lblAlmondTitle.backgroundColor = [UIColor clearColor];
         lblAlmondTitle.textColor = [UIColor whiteColor];
-        [lblAlmondTitle setFont:[UIFont fontWithName:@"Avenir-Heavy" size:13]];
+        [lblAlmondTitle setFont:[UIFont securifiBoldFont:13]];
         lblAlmondTitle.text = @"DEVICE NAME";
         lblAlmondTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblAlmondTitle];
@@ -1025,7 +1019,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         btnUnlinkAlmond.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnUnlinkAlmond.backgroundColor = [UIColor clearColor];
         [btnUnlinkAlmond setTitle:@"Remove" forState:UIControlStateNormal];
-        [btnUnlinkAlmond.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnUnlinkAlmond.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnUnlinkAlmond setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnUnlinkAlmond.tag = indexPathRow - 1;
         btnUnlinkAlmond.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -1040,7 +1034,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         tfRenameAlmond.text = currentAlmond.almondplusName;
         tfRenameAlmond.textAlignment = NSTextAlignmentLeft;
         tfRenameAlmond.textColor = [UIColor whiteColor];
-        tfRenameAlmond.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
+        tfRenameAlmond.font = [UIFont standardUITextFieldFont];
         tfRenameAlmond.tag = indexPathRow - 1;;
         [tfRenameAlmond setReturnKeyType:UIReturnKeyDone];
         tfRenameAlmond.delegate = self;
@@ -1049,25 +1043,12 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [tfRenameAlmond addTarget:self action:@selector(almondNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
         [backgroundLabel addSubview:tfRenameAlmond];
         
-//        UITextField *tfAlmondName = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, 180, 30)];
-//        tfAlmondName.placeholder = @"Almond Name";
-//        [tfAlmondName setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
-//        tfAlmondName.text = currentAlmond.almondplusName;
-//        tfAlmondName.textAlignment = NSTextAlignmentLeft;
-//        tfAlmondName.textColor = [UIColor whiteColor];
-//        tfAlmondName.font = [UIFont fontWithName:@"Avenir-Roman" size:13];
-//        tfAlmondName.tag = indexPathRow - 1;;
-//        [tfAlmondName setReturnKeyType:UIReturnKeyDone];
-//        tfAlmondName.delegate = self;
-//        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-//        [tfAlmondName addTarget:self action:@selector(almondNameTextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
-//        [backgroundLabel addSubview:tfAlmondName];
         
         UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
         btnChangeAlmondName.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangeAlmondName.backgroundColor = [UIColor clearColor];
         [btnChangeAlmondName setTitle:@"Rename Almond" forState:UIControlStateNormal];
-        [btnChangeAlmondName.titleLabel setFont:[UIFont fontWithName:@"Avenir-Roman" size:13]];
+        [btnChangeAlmondName.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnChangeAlmondName setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeAlmondName.tag = indexPathRow - 1;
         btnChangeAlmondName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -1093,7 +1074,11 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }else{
         userProfile.isExpanded = TRUE;
     }
-    [self.tableView reloadData];
+    //Reload only User profile row
+    NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:0 inSection:0];
+    NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
+    [self.tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationFade];
+   // [self.tableView reloadData];
     
     
 }
@@ -1238,6 +1223,11 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }else{
         currentAlmond.isExpanded = TRUE;
     }
+    //Reload only that particular row
+    NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:index+1 inSection:0];
+    NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
+    [self.tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationFade];
+    
     [self.tableView reloadData];
 }
 
@@ -1366,7 +1356,12 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }else{
         currentAlmond.isExpanded = TRUE;
     }
-    [self.tableView reloadData];
+    //Reload only that particular row
+    int indexPathRow = index + (int)[ownedAlmondList count];
+    NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:indexPathRow+1 inSection:0];
+    NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
+    [self.tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationFade];
+    //[self.tableView reloadData];
 }
 
 -(void)onRemoveSharedAlmondClicked:(id)sender{

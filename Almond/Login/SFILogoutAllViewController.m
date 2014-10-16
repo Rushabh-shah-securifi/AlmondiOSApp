@@ -8,6 +8,7 @@
 
 #import "SFILogoutAllViewController.h"
 #import "SNLog.h"
+#import "UIFont+Securifi.h"
 
 @interface SFILogoutAllViewController () <UITextFieldDelegate>
 @end
@@ -19,7 +20,7 @@
 
     self.navigationController.navigationBar.titleTextAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
-            NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
+            NSFontAttributeName : [UIFont standardNavigationTitleFont]
     };
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];

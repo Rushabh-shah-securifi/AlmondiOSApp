@@ -11,6 +11,7 @@
 #import "SFIGenericRouterCommand.h"
 #import "AlmondPlusConstants.h"
 #import "SFIParser.h"
+#import "UIFont+Securifi.h"
 
 @interface SFIWirelessTableViewController ()
 @property(nonatomic, strong) SFIAlmondPlus *currentAlmond;
@@ -150,7 +151,7 @@
     UILabel *lblSettingName = [[UILabel alloc] initWithFrame:CGRectMake(5, 10, 120, 20)];
     lblSettingName.backgroundColor = [UIColor clearColor];
     //lblSettingName.textColor = [UIColor whiteColor];
-    [lblSettingName setFont:[UIFont fontWithName:@"Avenir-Light" size:15]];
+    [lblSettingName setFont:[UIFont securifiLightFont:15]];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     switch (indexPath.row) {
@@ -160,7 +161,7 @@
             ssid.textColor = [UIColor blackColor];
             ssid.delegate = self;
             ssid.text = currentSetting.ssid;
-            [ssid setFont:[UIFont fontWithName:@"Avenir-Light" size:15]];
+            [ssid setFont:[UIFont securifiLightFont:15]];
             [ssid setTextAlignment:NSTextAlignmentRight];
             ssid.textColor = [UIColor grayColor];
             [backgroundLabel addSubview:ssid];
@@ -173,7 +174,7 @@
             password.delegate = self;
             password.text = currentSetting.password;
             password.textColor = [UIColor grayColor];
-            [password setFont:[UIFont fontWithName:@"Avenir-Light" size:15]];
+            [password setFont:[UIFont securifiLightFont:15]];
             [password setTextAlignment:NSTextAlignmentRight];
             [backgroundLabel addSubview:password];
             break;
@@ -184,7 +185,7 @@
             lblWirelessMode = [[UILabel alloc] initWithFrame:CGRectMake(125, 10, self.tableView.frame.size.width - 175, 20)];
             lblWirelessMode.backgroundColor = [UIColor clearColor];
             lblWirelessMode.textColor = [UIColor grayColor];
-            [lblWirelessMode setFont:[UIFont fontWithName:@"Avenir-Light" size:15]];
+            [lblWirelessMode setFont:[UIFont securifiLightFont:15]];
             lblWirelessMode.text = currentSetting.wirelessMode;
             [lblWirelessMode setTextAlignment:NSTextAlignmentRight];
             [backgroundLabel addSubview:lblWirelessMode];
@@ -198,7 +199,7 @@
             lblChannel.backgroundColor = [UIColor clearColor];
             [lblChannel setTextAlignment:NSTextAlignmentRight];
             lblChannel.textColor = [UIColor grayColor];
-            [lblChannel setFont:[UIFont fontWithName:@"Avenir-Light" size:15]];
+            [lblChannel setFont:[UIFont securifiLightFont:15]];
             lblChannel.text = [NSString stringWithFormat:@"%d", currentSetting.channel];
             [backgroundLabel addSubview:lblChannel];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -209,7 +210,7 @@
             lblSecurity = [[UILabel alloc] initWithFrame:CGRectMake(125, 10, self.tableView.frame.size.width - 175, 20)];
             lblSecurity.backgroundColor = [UIColor clearColor];
             lblSecurity.textColor = [UIColor grayColor];
-            [lblSecurity setFont:[UIFont fontWithName:@"Avenir-Light" size:15]];
+            [lblSecurity setFont:[UIFont securifiLightFont:15]];
             lblSecurity.text = currentSetting.security;
             [lblSecurity setTextAlignment:NSTextAlignmentRight];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -222,7 +223,7 @@
             lblEncryption = [[UILabel alloc] initWithFrame:CGRectMake(125, 10, self.tableView.frame.size.width - 175, 20)];
             lblEncryption.backgroundColor = [UIColor clearColor];
             lblEncryption.textColor = [UIColor grayColor];
-            [lblEncryption setFont:[UIFont fontWithName:@"Avenir-Light" size:15]];
+            [lblEncryption setFont:[UIFont securifiLightFont:15]];
             [lblEncryption setTextAlignment:NSTextAlignmentRight];
             lblEncryption.text = currentSetting.encryptionType;
             [backgroundLabel addSubview:lblEncryption];

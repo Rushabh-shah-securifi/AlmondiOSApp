@@ -8,6 +8,24 @@
 
 #import <Foundation/Foundation.h>
 
-@interface UIFont_Securifi : NSObject
+@interface UIFont (Securifi)
 
++ (UIFont*)securifiFont:(CGFloat)fontSize;
++ (UIFont*)securifiBoldFont:(CGFloat)fontSize;
++ (UIFont*)securifiLightFont:(CGFloat)fontSize;
+
++ (UIFont*)securifiNormalFont;
++ (UIFont*)securifiBoldFont;
++ (UIFont*)securifiLightFont;
+
++ (UIFont*)securifiBoldFontLarge;
++ (UIFont*)securifiBoldFontSmall;
+
++ (UIFont*)standardUILabelFont;
++ (UIFont*)standardUITextFieldFont;
++ (UIFont*)standardUIButtonFont;
+
++ (UIFont*)standardHeadingFont;
++ (UIFont*)standardHeadingBoldFont;
++ (UIFont*)standardNavigationTitleFont;
 @end

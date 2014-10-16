@@ -13,6 +13,7 @@
 #import "SFIParser.h"
 #import "SFIWirelessUsers.h"
 #import "SFIConstants.h"
+#import "UIFont+Securifi.h"
 
 @interface SFIWirelessUserViewController ()
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -184,7 +185,7 @@
     lblStatus = [[UILabel alloc] initWithFrame:CGRectMake(0, 60, LEFT_LABEL_WIDTH, 20)];
     lblStatus.backgroundColor = [UIColor clearColor];
     lblStatus.textColor = [UIColor whiteColor];
-    [lblStatus setFont:[UIFont fontWithName:@"Avenir-Light" size:12]];
+    [lblStatus setFont:[UIFont securifiLightFont]];
     lblStatus.textAlignment = NSTextAlignmentCenter;
     [leftBackgroundLabel addSubview:imgStatus];
     [leftBackgroundLabel addSubview:lblStatus];
@@ -197,22 +198,22 @@
     lblDeviceName = [[UILabel alloc] init];
     lblDeviceName.backgroundColor = [UIColor clearColor];
     lblDeviceName.textColor = [UIColor whiteColor];
-    [lblDeviceName setFont:[UIFont fontWithName:@"Avenir-Heavy" size:16]];
+    [lblDeviceName setFont:[UIFont standardHeadingBoldFont]];
 
     lblDeviceMAC = [[UILabel alloc] init];
     lblDeviceMAC.backgroundColor = [UIColor clearColor];
     lblDeviceMAC.textColor = [UIColor whiteColor];
-    [lblDeviceMAC setFont:[UIFont fontWithName:@"Avenir-Light" size:12]];
+    [lblDeviceMAC setFont:[UIFont securifiLightFont]];
 
     lblDeviceIP = [[UILabel alloc] init];
     lblDeviceIP.backgroundColor = [UIColor clearColor];
     lblDeviceIP.textColor = [UIColor whiteColor];
-    [lblDeviceIP setFont:[UIFont fontWithName:@"Avenir-Light" size:12]];
+    [lblDeviceIP setFont:[UIFont securifiLightFont]];
 
     lblDeviceManufacturer = [[UILabel alloc] init];
     lblDeviceManufacturer.backgroundColor = [UIColor clearColor];
     lblDeviceManufacturer.textColor = [UIColor whiteColor];
-    [lblDeviceManufacturer setFont:[UIFont fontWithName:@"Avenir-Light" size:12]];
+    [lblDeviceManufacturer setFont:[UIFont securifiLightFont]];
 
 
 

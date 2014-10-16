@@ -11,6 +11,7 @@
 #import "MBProgressHUD.h"
 #import "Analytics.h"
 #import "SFIActivationViewController.h"
+#import "UIFont+Securifi.h"
 
 @interface SFILoginViewController () <UITextFieldDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -26,7 +27,7 @@
 
     NSDictionary *titleAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
-            NSFontAttributeName : [UIFont fontWithName:@"Avenir-Roman" size:18.0]
+            NSFontAttributeName : [UIFont standardNavigationTitleFont]
     };
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
 

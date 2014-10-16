@@ -15,6 +15,7 @@
 #import "iToast.h"
 #import "MBProgressHUD.h"
 #import "SFISlider.h"
+#import "UIFont+Securifi.h"
 
 
 @interface SensorsViewController () <UITextFieldDelegate>
@@ -302,7 +303,7 @@
 
         UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, self.tableView.frame.size.width, 30)];
         lblNoSensor.textAlignment = NSTextAlignmentCenter;
-        [lblNoSensor setFont:[UIFont fontWithName:@"Avenir-Light" size:20]];
+        [lblNoSensor setFont:[UIFont securifiLightFont:20]];
         lblNoSensor.text = @"You don't have any sensors yet.";
         lblNoSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblNoSensor];
@@ -315,7 +316,7 @@
 
         UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 180, self.tableView.frame.size.width, 30)];
         lblAddSensor.textAlignment = NSTextAlignmentCenter;
-        [lblAddSensor setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+        [lblAddSensor setFont:[UIFont standardUILabelFont]];
         lblAddSensor.text = @"Add a sensor from your Almond.";
         lblAddSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblAddSensor];
@@ -388,7 +389,7 @@
     UIButton *btnSettingsCell;
 
 //    UIColor *standard_blue = [self makeStandardBlue];
-    UIFont *heavy_font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
+    UIFont *heavy_font = [UIFont securifiBoldFontLarge];
 
     int positionIndex = indexPathRow % 15;
     if (positionIndex < 7) {
@@ -416,7 +417,7 @@
         lblDeviceValue.backgroundColor = [UIColor clearColor];
         lblDeviceValue.textColor = [UIColor whiteColor];
         lblDeviceValue.textAlignment = NSTextAlignmentCenter;
-        lblDeviceValue.font = [UIFont fontWithName:@"Avenir-Heavy" size:45];
+        lblDeviceValue.font = [UIFont securifiBoldFont:45];
         [lblDeviceValue addSubview:btnDeviceImg];
 
         //For Decimal Value
@@ -424,14 +425,14 @@
         lblDecimalValue.backgroundColor = [UIColor clearColor];
         lblDecimalValue.textColor = [UIColor whiteColor];
         lblDecimalValue.textAlignment = NSTextAlignmentCenter;
-        lblDecimalValue.font = [UIFont fontWithName:@"Avenir-Heavy" size:18];
+        lblDecimalValue.font = [UIFont securifiBoldFont:18];
 
         //For Degree
         lblDegree = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 10, 25, 20, 20)];
         lblDegree.backgroundColor = [UIColor clearColor];
         lblDegree.textColor = [UIColor whiteColor];
         lblDegree.textAlignment = NSTextAlignmentCenter;
-        lblDegree.font = [UIFont fontWithName:@"Avenir-Heavy" size:18];
+        lblDegree.font = [UIFont securifiBoldFont:18];
         lblDegree.text = @"°";
 
         [cell.contentView addSubview:lblDeviceValue];
@@ -460,14 +461,14 @@
     lblDeviceName = [[UILabel alloc] initWithFrame:CGRectMake(15, 10, (self.tableView.frame.size.width - LEFT_LABEL_WIDTH - 90), 30)];
     lblDeviceName.backgroundColor = [UIColor clearColor];
     lblDeviceName.textColor = [UIColor whiteColor];
-    lblDeviceStatus.font = [UIFont fontWithName:@"Avenir-Heavy" size:16];
+    lblDeviceStatus.font = [UIFont standardHeadingBoldFont];
     [rightBackgroundLabel addSubview:lblDeviceName];
 
     lblDeviceStatus = [[UILabel alloc] initWithFrame:CGRectMake(15, 25, 180, 60)];
     lblDeviceStatus.backgroundColor = [UIColor clearColor];
     lblDeviceStatus.textColor = [UIColor whiteColor];
     lblDeviceStatus.numberOfLines = 2;
-    lblDeviceStatus.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    lblDeviceStatus.font = [UIFont standardUILabelFont];
     [rightBackgroundLabel addSubview:lblDeviceStatus];
 
     imgSettings = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 60, 37, 23, 23)];
@@ -855,16 +856,16 @@
                 lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 25, 20, 20);
             }
             else if ([strIntegerValue length] == 3) {
-                [lblDeviceValue setFont:[UIFont fontWithName:@"Avenir-Heavy" size:30]];
+                [lblDeviceValue setFont:[UIFont securifiBoldFont:30]];
                 [lblDecimalValue setFont:heavy_font];
                 [lblDegree setFont:heavy_font];
                 lblDecimalValue.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 38, 20, 30);
                 lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 30, 20, 20);
             }
             else if ([strIntegerValue length] == 4) {
-                [lblDeviceValue setFont:[UIFont fontWithName:@"Avenir-Heavy" size:22]];
-                [lblDecimalValue setFont:[UIFont fontWithName:@"Avenir-Heavy" size:10]];
-                [lblDegree setFont:[UIFont fontWithName:@"Avenir-Heavy" size:10]];
+                [lblDeviceValue setFont:[UIFont securifiBoldFont:22]];
+                [lblDecimalValue setFont:[UIFont securifiBoldFontSmall]];
+                [lblDegree setFont:[UIFont securifiBoldFontSmall]];
                 lblDecimalValue.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 35, 20, 30);
                 lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 30, 20, 20);
             }
@@ -983,7 +984,7 @@
 //            NSString *text = @"89";
 //            UIGraphicsBeginImageContext(CGSizeMake(53, 70));
 //            [text drawAtPoint:CGPointMake(0, 0)
-//                     withFont:[UIFont fontWithName:@"Avenir-Heavy" size:36]];
+//                     withFont:[UIFont securifiBoldFont:36]];
 //            UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
 //            UIGraphicsEndImageContext();
 //            imgDevice.image = result;
@@ -1216,16 +1217,16 @@
                 lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 25, 20, 20);
             }
             else if ([strIntegerValue length] == 3) {
-                [lblDeviceValue setFont:[UIFont fontWithName:@"Avenir-Heavy" size:30]];
+                [lblDeviceValue setFont:[UIFont securifiBoldFont:30]];
                 [lblDecimalValue setFont:heavy_font];
                 [lblDegree setFont:heavy_font];
                 lblDecimalValue.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 38, 20, 30);
                 lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 30, 20, 20);
             }
             else if ([strIntegerValue length] == 4) {
-                [lblDeviceValue setFont:[UIFont fontWithName:@"Avenir-Heavy" size:22]];
-                [lblDecimalValue setFont:[UIFont fontWithName:@"Avenir-Heavy" size:10]];
-                [lblDegree setFont:[UIFont fontWithName:@"Avenir-Heavy" size:10]];
+                [lblDeviceValue setFont:[UIFont securifiBoldFont:22]];
+                [lblDecimalValue setFont:[UIFont securifiBoldFontSmall]];
+                [lblDegree setFont:[UIFont securifiBoldFontSmall]];
                 lblDecimalValue.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 35, 20, 30);
                 lblDegree.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 30, 20, 20);
             }
@@ -1295,7 +1296,7 @@
 //                //Display Name
 //                expandedLblText.text = [NSString stringWithFormat:@"Name: %@", currentSensor.deviceName];
 //                expandedLblText.textColor = [UIColor whiteColor];
-//                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                [belowBackgroundLabel addSubview:expandedLblText];
 //                
 //                
@@ -1306,7 +1307,7 @@
 //                //Display Location - PY 291113
 //                expandedLblText.text = [NSString stringWithFormat:@"Location: %@", currentSensor.location];
 //                expandedLblText.textColor = [UIColor whiteColor];
-//                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                [belowBackgroundLabel addSubview:expandedLblText];
                 break;
             case 2:
@@ -1372,7 +1373,7 @@
 //                //Display Name
 //                expandedLblText.text = [NSString stringWithFormat:@"Name: %@", currentSensor.deviceName];
 //                expandedLblText.textColor = [UIColor whiteColor];
-//                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                [belowBackgroundLabel addSubview:expandedLblText];
 //                
 //                
@@ -1381,7 +1382,7 @@
 //                //Display Location
 //                expandedLblText.text = [NSString stringWithFormat:@"Location: %@", currentSensor.location];
 //                expandedLblText.textColor = [UIColor whiteColor];
-//                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                [belowBackgroundLabel addSubview:expandedLblText];
                 break;
             }
@@ -1405,7 +1406,7 @@
                         }
                         expandedLblText.text = batteryStatus;
                         expandedLblText.textColor = [UIColor whiteColor];
-                        expandedLblText.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+                        expandedLblText.font = [UIFont standardUILabelFont];
 
                         baseYCordinate = baseYCordinate + 25;
                         expandedLblText.frame = CGRectMake(10, baseYCordinate, 299, 30);
@@ -1427,7 +1428,7 @@
 //                //Display Name
 //                expandedLblText.text = [NSString stringWithFormat:@"Name: %@", currentSensor.deviceName];
 //                expandedLblText.textColor = [UIColor whiteColor];
-//                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                baseYCordinate = baseYCordinate+25;
 //                expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
 //                [belowBackgroundLabel addSubview:expandedLblText];
@@ -1437,7 +1438,7 @@
 //                [expandedLblText setBackgroundColor:[UIColor clearColor]];
 //                expandedLblText.text = [NSString stringWithFormat:@"Location: %@", currentSensor.location];
 //                expandedLblText.textColor = [UIColor whiteColor];
-//                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                baseYCordinate = baseYCordinate+25;
 //                expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
 //                [belowBackgroundLabel addSubview:expandedLblText];
@@ -1523,7 +1524,7 @@
                 //Heating Setpoint
                 UILabel *lblHeating = [[UILabel alloc] initWithFrame:CGRectMake(10.0, baseYCordinate - 5, 60, 30)];
                 lblHeating.textColor = [UIColor whiteColor];
-                [lblHeating setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [lblHeating setFont:[UIFont standardUILabelFont]];
                 lblHeating.text = @"Heating";
                 [belowBackgroundLabel addSubview:lblHeating];
 
@@ -1531,7 +1532,7 @@
 //                [minHeatImage setImage:[UIImage imageNamed:@"dimmer_min.png"]];
 //                [belowBackgroundLabel addSubview:minHeatImage];
                 UILabel *lblMinHeat = [[UILabel alloc] initWithFrame:CGRectMake(70.0, baseYCordinate - 3, 30, 24)];
-                [lblMinHeat setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [lblMinHeat setFont:[UIFont standardUILabelFont]];
                 lblMinHeat.text = @"35°";
                 lblMinHeat.textColor = [UIColor whiteColor];
                 lblMinHeat.textAlignment = NSTextAlignmentCenter;
@@ -1565,7 +1566,7 @@
                 [belowBackgroundLabel addSubview:heatSlider];
 
                 UILabel *lblMaxHeat = [[UILabel alloc] initWithFrame:CGRectMake(100 + (self.tableView.frame.size.width - 160), baseYCordinate - 3, 30, 24)];
-                [lblMaxHeat setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [lblMaxHeat setFont:[UIFont standardUILabelFont]];
                 lblMaxHeat.text = @"95°";
                 lblMaxHeat.textColor = [UIColor whiteColor];
                 lblMaxHeat.textAlignment = NSTextAlignmentCenter;
@@ -1588,7 +1589,7 @@
                 //Cooling Setpoint
                 UILabel *lblCooling = [[UILabel alloc] initWithFrame:CGRectMake(10.0, baseYCordinate - 5, 60, 30)];
                 lblCooling.textColor = [UIColor whiteColor];
-                [lblCooling setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [lblCooling setFont:[UIFont standardUILabelFont]];
                 lblCooling.text = @"Cooling";
                 [belowBackgroundLabel addSubview:lblCooling];
 
@@ -1597,7 +1598,7 @@
 //                [belowBackgroundLabel addSubview:minCoolingImage];
 
                 UILabel *lblMinCool = [[UILabel alloc] initWithFrame:CGRectMake(70.0, baseYCordinate - 3, 30, 24)];
-                [lblMinCool setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [lblMinCool setFont:[UIFont standardUILabelFont]];
                 lblMinCool.text = @"35°";
                 lblMinCool.textColor = [UIColor whiteColor];
                 lblMinCool.textAlignment = NSTextAlignmentCenter;
@@ -1635,7 +1636,7 @@
 //                [belowBackgroundLabel addSubview:maxCoolImage];
 
                 UILabel *lblMaxCool = [[UILabel alloc] initWithFrame:CGRectMake(100 + (self.tableView.frame.size.width - 160), baseYCordinate - 3, 30, 24)];
-                [lblMaxCool setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [lblMaxCool setFont:[UIFont standardUILabelFont]];
                 lblMaxCool.text = @"95°";
                 lblMaxCool.textColor = [UIColor whiteColor];
                 lblMaxCool.textAlignment = NSTextAlignmentCenter;
@@ -1653,12 +1654,12 @@
                 //Mode
                 UILabel *lblMode = [[UILabel alloc] initWithFrame:CGRectMake(10.0, baseYCordinate - 5, 100, 30)];
                 lblMode.textColor = [UIColor whiteColor];
-                [lblMode setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [lblMode setFont:[UIFont standardUILabelFont]];
                 lblMode.text = @"Thermostat";
                 [belowBackgroundLabel addSubview:lblMode];
 
                 //Font for segment control
-                UIFont *font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+                UIFont *font = [UIFont standardUILabelFont];
                 NSDictionary *attributes = @{NSFontAttributeName : font};
 
                 UISegmentedControl *scMode = [[UISegmentedControl alloc] initWithItems:@[@"Auto", @"Heat", @"Cool", @"Off"]];
@@ -1680,7 +1681,7 @@
                 //Fan Mode
                 UILabel *lblFanMode = [[UILabel alloc] initWithFrame:CGRectMake(10.0, baseYCordinate - 5, 60, 30)];
                 lblFanMode.textColor = [UIColor whiteColor];
-                [lblFanMode setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [lblFanMode setFont:[UIFont standardUILabelFont]];
                 lblFanMode.text = @"Fan";
                 [belowBackgroundLabel addSubview:lblFanMode];
 
@@ -1705,7 +1706,7 @@
                 //Status
                 UILabel *lblStatus = [[UILabel alloc] initWithFrame:CGRectMake(10.0, baseYCordinate, 60, 30)];
                 lblStatus.textColor = [UIColor whiteColor];
-                [lblStatus setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [lblStatus setFont:[UIFont standardUILabelFont]];
                 lblStatus.text = @"Status";
 
                 [belowBackgroundLabel addSubview:lblStatus];
@@ -1716,7 +1717,7 @@
                 UILabel *lblOperatingState = [[UILabel alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 250, baseYCordinate, 220, 30)];
                 lblOperatingState.textColor = [UIColor whiteColor];
                 lblOperatingState.backgroundColor = [UIColor clearColor];
-                [lblOperatingState setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [lblOperatingState setFont:[UIFont standardUILabelFont]];
                 lblOperatingState.textAlignment = NSTextAlignmentRight;
                 [belowBackgroundLabel addSubview:lblOperatingState];
 
@@ -1731,7 +1732,7 @@
 //                //Fan State
 //                UILabel *lblFanState = [[UILabel alloc]initWithFrame:CGRectMake(10.0, baseYCordinate-5, 200, 30)];
 //                lblFanState.textColor = [UIColor whiteColor];
-//                [lblFanState setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                [lblFanState setFont:[UIFont standardUILabelFont]];
 //                [belowBackgroundLabel addSubview:lblFanState];
 //                
 //                baseYCordinate+=25;
@@ -1745,7 +1746,7 @@
                 //Battery
                 UILabel *lblBattery = [[UILabel alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 250, baseYCordinate - 5, 220, 30)];
                 lblBattery.textColor = [UIColor whiteColor];
-                [lblBattery setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [lblBattery setFont:[UIFont standardUILabelFont]];
                 [lblBattery setBackgroundColor:[UIColor clearColor]];
                 lblBattery.textAlignment = NSTextAlignmentRight;
                 [belowBackgroundLabel addSubview:lblBattery];
@@ -1824,7 +1825,7 @@
                     expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
                     expandedLblText.text = DEVICE_TAMPERED;
                     expandedLblText.textColor = [UIColor whiteColor];
-                    [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                    [expandedLblText setFont:[UIFont standardUILabelFont]];
                     [belowBackgroundLabel addSubview:expandedLblText];
 
                     UIButton *btnDismiss = [[UIButton alloc]init];
@@ -1833,7 +1834,7 @@
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
                     [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal ];
-                    [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                    [btnDismiss.titleLabel setFont:[UIFont standardUILabelFont]];
                     btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate+6, 65,20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
@@ -1852,7 +1853,7 @@
 //                        expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, baseYCordinate-5, 200, 30)];
 //                        expandedLblText.text = BATTERY_IS_LOW;
 //                        expandedLblText.textColor = [UIColor whiteColor];
-//                        [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                        [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                        [belowBackgroundLabel addSubview:expandedLblText];
 //                        
 //                        baseYCordinate+=25;
@@ -1872,7 +1873,7 @@
 //                        expandedLblText = [[UILabel alloc]initWithFrame:CGRectMake(10, baseYCordinate-5, 200, 30)];
 //                        expandedLblText.text = BATTERY_IS_LOW;
 //                        expandedLblText.textColor = [UIColor whiteColor];
-//                        [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                        [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                        [belowBackgroundLabel addSubview:expandedLblText];
 //                        
 //                        baseYCordinate+=25;
@@ -1892,7 +1893,7 @@
                     expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
                     expandedLblText.text = DEVICE_TAMPERED;
                     expandedLblText.textColor = [UIColor whiteColor];
-                    [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                    [expandedLblText setFont:[UIFont standardUILabelFont]];
                     [belowBackgroundLabel addSubview:expandedLblText];
 
                     UIButton *btnDismiss = [[UIButton alloc] init];
@@ -1901,7 +1902,7 @@
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
                     [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal];
-                    [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                    [btnDismiss.titleLabel setFont:[UIFont standardUILabelFont]];
                     btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate + 6, 65, 20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
@@ -1937,7 +1938,7 @@
 //                        }
 //                        expandedLblText.text = batteryStatus;
 //                        expandedLblText.textColor = [UIColor whiteColor];
-//                        [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                        [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                        
 //                        //// DLog(@"Y Cordinate %f", baseYCordinate);
 //                        expandedLblText.frame = CGRectMake(10,baseYCordinate-5,299,30);
@@ -1964,7 +1965,7 @@
 //                //Display Name
 //                expandedLblText.text = [NSString stringWithFormat:@"Name: %@", currentSensor.deviceName];
 //                expandedLblText.textColor = [UIColor whiteColor];
-//                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                baseYCordinate = baseYCordinate+25;
 //                expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
 //                [belowBackgroundLabel addSubview:expandedLblText];
@@ -1974,7 +1975,7 @@
 //                [expandedLblText setBackgroundColor:[UIColor clearColor]];
 //                expandedLblText.text = [NSString stringWithFormat:@"Location: %@", currentSensor.location];
 //                expandedLblText.textColor = [UIColor whiteColor];
-//                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                baseYCordinate = baseYCordinate+25;
 //                expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
 //                [belowBackgroundLabel addSubview:expandedLblText];
@@ -1987,7 +1988,7 @@
                     expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
                     expandedLblText.text = DEVICE_TAMPERED;
                     expandedLblText.textColor = [UIColor whiteColor];
-                    [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                    [expandedLblText setFont:[UIFont standardUILabelFont]];
                     [belowBackgroundLabel addSubview:expandedLblText];
 
                     UIButton *btnDismiss = [[UIButton alloc] init];
@@ -1996,7 +1997,7 @@
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
                     [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal];
-                    [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                    [btnDismiss.titleLabel setFont:[UIFont standardUILabelFont]];
                     btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate + 6, 65, 20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
@@ -2021,7 +2022,7 @@
                     expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
                     expandedLblText.text = DEVICE_TAMPERED;
                     expandedLblText.textColor = [UIColor whiteColor];
-                    [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                    [expandedLblText setFont:[UIFont standardUILabelFont]];
                     [belowBackgroundLabel addSubview:expandedLblText];
 
                     UIButton *btnDismiss = [[UIButton alloc] init];
@@ -2030,7 +2031,7 @@
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
                     [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal];
-                    [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                    [btnDismiss.titleLabel setFont:[UIFont standardUILabelFont]];
                     btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate + 6, 65, 20);
                     btnDismiss.tag = indexPathRow;
 //                    [[btnDismiss layer] setBorderWidth:1.0f];
@@ -2058,7 +2059,7 @@
                     expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
                     expandedLblText.text = DEVICE_TAMPERED;
                     expandedLblText.textColor = [UIColor whiteColor];
-                    [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                    [expandedLblText setFont:[UIFont standardUILabelFont]];
                     [belowBackgroundLabel addSubview:expandedLblText];
 
                     UIButton *btnDismiss = [[UIButton alloc] init];
@@ -2067,7 +2068,7 @@
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
                     [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal];
-                    [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                    [btnDismiss.titleLabel setFont:[UIFont standardUILabelFont]];
                     btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate + 6, 65, 20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
@@ -2092,7 +2093,7 @@
                     expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
                     expandedLblText.text = DEVICE_TAMPERED;
                     expandedLblText.textColor = [UIColor whiteColor];
-                    [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                    [expandedLblText setFont:[UIFont standardUILabelFont]];
                     [belowBackgroundLabel addSubview:expandedLblText];
 
                     UIButton *btnDismiss = [[UIButton alloc] init];
@@ -2100,7 +2101,7 @@
                     [btnDismiss addTarget:self action:@selector(onDismissTamper:) forControlEvents:UIControlEventTouchDown];
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
-                    [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                    [btnDismiss.titleLabel setFont:[UIFont standardUILabelFont]];
                     btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate + 6, 65, 20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
@@ -2125,7 +2126,7 @@
                     expandedLblText = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 200, 30)];
                     expandedLblText.text = DEVICE_TAMPERED;
                     expandedLblText.textColor = [UIColor whiteColor];
-                    [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                    [expandedLblText setFont:[UIFont standardUILabelFont]];
                     [belowBackgroundLabel addSubview:expandedLblText];
 
                     UIButton *btnDismiss = [[UIButton alloc] init];
@@ -2134,7 +2135,7 @@
                     [btnDismiss setTitle:@"Dismiss" forState:UIControlStateNormal];
 //                    [btnDismiss setTitleColor:[UIColor colorWithHue:changeHue/360.0 saturation:changeSaturation/100.0 brightness:changeBrightness/100.0 alpha:1] forState:UIControlStateNormal ];
                     [btnDismiss setTitleColor:[UIColor colorWithHue:(CGFloat) (0 / 360.0) saturation:(CGFloat) (0 / 100.0) brightness:(CGFloat) (100 / 100.0) alpha:0.6] forState:UIControlStateNormal];
-                    [btnDismiss.titleLabel setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                    [btnDismiss.titleLabel setFont:[UIFont standardUILabelFont]];
                     btnDismiss.frame = CGRectMake(self.tableView.frame.size.width - 100, baseYCordinate + 6, 65, 20);
                     btnDismiss.tag = indexPathRow;
                     [belowBackgroundLabel addSubview:btnDismiss];
@@ -2227,7 +2228,7 @@
                 //Display Power
                 expandedLblText.text = [NSString stringWithFormat:@"Power is %.3fW", power];
                 expandedLblText.textColor = [UIColor whiteColor];
-                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [expandedLblText setFont:[UIFont standardUILabelFont]];
                 baseYCordinate = baseYCordinate + 25;
                 expandedLblText.frame = CGRectMake(10, baseYCordinate, 299, 30);
                 [belowBackgroundLabel addSubview:expandedLblText];
@@ -2238,7 +2239,7 @@
                 //Display Voltage
                 expandedLblText.text = [NSString stringWithFormat:@"Voltage is %.3fV", voltage];
                 expandedLblText.textColor = [UIColor whiteColor];
-                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [expandedLblText setFont:[UIFont standardUILabelFont]];
                 baseYCordinate = baseYCordinate + 25;
                 expandedLblText.frame = CGRectMake(10, baseYCordinate, 299, 30);
                 [belowBackgroundLabel addSubview:expandedLblText];
@@ -2250,7 +2251,7 @@
                 //Display Current
                 expandedLblText.text = [NSString stringWithFormat:@"Current is %.3fA", current];
                 expandedLblText.textColor = [UIColor whiteColor];
-                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [expandedLblText setFont:[UIFont standardUILabelFont]];
                 baseYCordinate = baseYCordinate + 25;
                 expandedLblText.frame = CGRectMake(10, baseYCordinate, 299, 30);
                 [belowBackgroundLabel addSubview:expandedLblText];
@@ -2269,7 +2270,7 @@
 //                //Display Name
 //                expandedLblText.text = [NSString stringWithFormat:@"Name: %@", currentSensor.deviceName];
 //                expandedLblText.textColor = [UIColor whiteColor];
-//                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                baseYCordinate = baseYCordinate+25;
 //                expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
 //                [belowBackgroundLabel addSubview:expandedLblText];
@@ -2279,7 +2280,7 @@
 //                //Display Location
 //                expandedLblText.text = [NSString stringWithFormat:@"Location: %@", currentSensor.location];
 //                expandedLblText.textColor = [UIColor whiteColor];
-//                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                baseYCordinate = baseYCordinate+25;
 //                expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
 //                [belowBackgroundLabel addSubview:expandedLblText];
@@ -2351,7 +2352,7 @@
                 //Display Power
                 expandedLblText.text = [NSString stringWithFormat:@"Power is %.3fW", power];
                 expandedLblText.textColor = [UIColor whiteColor];
-                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [expandedLblText setFont:[UIFont standardUILabelFont]];
                 baseYCordinate = baseYCordinate+25;
                 expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
                 [belowBackgroundLabel addSubview:expandedLblText];
@@ -2362,7 +2363,7 @@
                 //Display Voltage
                 expandedLblText.text = [NSString stringWithFormat:@"Voltage is %.3fV", voltage];
                 expandedLblText.textColor = [UIColor whiteColor];
-                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [expandedLblText setFont:[UIFont standardUILabelFont]];
                 baseYCordinate = baseYCordinate+25;
                 expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
                 [belowBackgroundLabel addSubview:expandedLblText];
@@ -2374,7 +2375,7 @@
                 //Display Current
                 expandedLblText.text = [NSString stringWithFormat:@"Current is %.3fA", current];
                 expandedLblText.textColor = [UIColor whiteColor];
-                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+                [expandedLblText setFont:[UIFont standardUILabelFont]];
                 baseYCordinate = baseYCordinate+25;
                 expandedLblText.frame = CGRectMake(10,baseYCordinate,299,30);
                 [belowBackgroundLabel addSubview:expandedLblText];
@@ -2413,7 +2414,7 @@
 //                //Display Name
 //                expandedLblText.text = [NSString stringWithFormat:@"Name: %@", currentSensor.deviceName];
 //                expandedLblText.textColor = [UIColor whiteColor];
-//                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                [belowBackgroundLabel addSubview:expandedLblText];
 //                
 //                
@@ -2424,7 +2425,7 @@
 //                //Display Location - PY 291113
 //                expandedLblText.text = [NSString stringWithFormat:@"Location: %@", currentSensor.location];
 //                expandedLblText.textColor = [UIColor whiteColor];
-//                [expandedLblText setFont:[UIFont fontWithName:@"Avenir-Heavy" size:12]];
+//                [expandedLblText setFont:[UIFont standardUILabelFont]];
 //                [belowBackgroundLabel addSubview:expandedLblText];
                 break;
         }
@@ -2433,7 +2434,7 @@
         expandedLblText = [[UILabel alloc] init];
         expandedLblText.backgroundColor = [UIColor clearColor];
         expandedLblText.textColor = [UIColor whiteColor];
-        expandedLblText.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+        expandedLblText.font = [UIFont standardUILabelFont];
 
         expandedLblText.frame = CGRectMake(10, baseYCordinate - 5, 299, 30);
         expandedLblText.text = [NSString stringWithFormat:@"SENSOR SETTINGS"];

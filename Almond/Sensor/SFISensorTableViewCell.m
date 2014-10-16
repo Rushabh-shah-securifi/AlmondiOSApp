@@ -7,6 +7,7 @@
 #import "SFIConstants.h"
 #import "SFIColors.h"
 #import "SFISensorDetailView.h"
+#import "UIFont+Securifi.h"
 
 
 @interface SFISensorTableViewCell () <SFISensorDetailViewDelegate>
@@ -138,7 +139,7 @@
     deviceStatusLabel.backgroundColor = clear_color;
     deviceStatusLabel.textColor = white_color;
     deviceStatusLabel.numberOfLines = 2;
-    deviceStatusLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:12];
+    deviceStatusLabel.font = [UIFont standardUILabelFont];
     [rightBackgroundLabel addSubview:deviceStatusLabel];
     self.deviceStatusLabel = deviceStatusLabel;
 
@@ -181,7 +182,7 @@
         self.deviceValueLabel.backgroundColor = clear_color;
         self.deviceValueLabel.textColor = white_color;
         self.deviceValueLabel.textAlignment = NSTextAlignmentCenter;
-        self.deviceValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:45];
+        self.deviceValueLabel.font = [UIFont securifiBoldFont:45];
         [self.deviceValueLabel addSubview:deviceImageButton];
 
         // For Decimal Value
@@ -190,14 +191,14 @@
         self.decimalValueLabel.textColor = white_color;
         self.decimalValueLabel.textAlignment = NSTextAlignmentCenter;
         self.decimalValueLabel.adjustsFontSizeToFitWidth = YES;
-        self.decimalValueLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:18];
+        self.decimalValueLabel.font = [UIFont securifiBoldFont:18];
 
         // For Degree
         self.degreeLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 20, 25, 20, 20)];
         self.degreeLabel.backgroundColor = clear_color;
         self.degreeLabel.textColor = white_color;
         self.degreeLabel.textAlignment = NSTextAlignmentCenter;
-        self.degreeLabel.font = [UIFont fontWithName:@"Avenir-Heavy" size:16];
+        self.degreeLabel.font = [UIFont standardHeadingBoldFont];
         self.degreeLabel.text = @"\u00B0"; // degree sign
 
         [self.contentView addSubview:self.deviceValueLabel];
@@ -438,7 +439,7 @@
 }
 
 - (void)setTemperatureIntegerValue:(NSString *)integerValue decimalValue:(NSString *)decimalValue degreesValue:(NSString *)degreesValue {
-    UIFont *heavy_14 = [UIFont fontWithName:@"Avenir-Heavy" size:14];
+    UIFont *heavy_14 = [UIFont securifiBoldFontLarge];
 
     self.deviceValueLabel.text = integerValue;
 

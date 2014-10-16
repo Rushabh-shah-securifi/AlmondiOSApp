@@ -9,6 +9,7 @@
 #import "DrawerViewController.h"
 #import "AlmondPlusConstants.h"
 #import "SWRevealViewController.h"
+#import "UIFont+Securifi.h"
 
 @interface DrawerViewController ()
 @property(nonatomic, strong, readonly) NSDictionary *dataDictionary;
@@ -132,7 +133,7 @@
             CGRectMake(10, 25, tableView.frame.size.width, 18);
 
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
-    label.font = [UIFont fontWithName:@"Avenir-Heavy" size:14];
+    label.font = [UIFont securifiBoldFontLarge];
     label.textColor = [UIColor colorWithRed:(CGFloat) (119 / 255.0) green:(CGFloat) (119 / 255.0) blue:(CGFloat) (119 / 255.0) alpha:1.0];
 
     if (section == 0) {
@@ -253,8 +254,7 @@
     UILabel *lblName = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 30)];
     lblName.backgroundColor = [UIColor clearColor];
     lblName.textColor = [UIColor whiteColor];
-    [lblName setFont:[UIFont fontWithName:@"Avenir-Roman" size:16]];
-
+    [lblName setFont:[UIFont standardHeadingFont]];
     lblName.text = @"Add";
 
     [cell addSubview:lblName];
@@ -279,7 +279,7 @@
         nameLabel.tag = 101;
         nameLabel.backgroundColor = [UIColor clearColor];
         nameLabel.textColor = [UIColor whiteColor];
-        nameLabel.font = [UIFont fontWithName:@"Avenir-Roman" size:16];
+        [nameLabel setFont:[UIFont standardHeadingFont]];
         [cell.contentView addSubview:nameLabel];
     }
 
@@ -340,7 +340,7 @@
     UILabel *lblName = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 30)];
     lblName.backgroundColor = [UIColor clearColor];
     lblName.textColor = [UIColor whiteColor];
-    [lblName setFont:[UIFont fontWithName:@"Avenir-Roman" size:16]];
+    [lblName setFont:[UIFont standardHeadingFont]];
 
     lblName.text = cellValue;
 

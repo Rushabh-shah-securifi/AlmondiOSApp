@@ -7,6 +7,7 @@
 //
 
 #import "SFIOptionViewController.h"
+#import "UIFont+Securifi.h"
 
 @interface SFIOptionViewController ()
 @property(nonatomic, strong) SFIAlmondPlus *currentAlmond;
@@ -56,7 +57,7 @@
 
     UILabel *lblOption = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, self.tableView.frame.size.width, 20)];
     lblOption.backgroundColor = [UIColor clearColor];
-    [lblOption setFont:[UIFont fontWithName:@"Avenir-Roman" size:16]];
+    [lblOption setFont:[UIFont standardHeadingFont]];
 
     lblOption.text = optionList[(NSUInteger) indexPath.row];
     lblOption.textColor = [UIColor blackColor];

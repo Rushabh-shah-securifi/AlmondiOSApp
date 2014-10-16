@@ -247,6 +247,10 @@
 - (void)onDidCompleteLogin:(id)sender {
     DLog(@"%s", __PRETTY_FUNCTION__);
 
+    //PY 151014: Activation Header Notification to be set true
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:YES forKey:ACCOUNT_ACTIVATION_NOTIFICATION];
+    
     if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
         [self presentMainView];
     }
@@ -313,6 +317,7 @@
 
 - (void)presentMainView {
     DLog(@"%s: Presenting main view", __PRETTY_FUNCTION__);
+    
 
     // Set up the front view controller based on a Tab Bar controller
     UIImage *icon;
