@@ -190,7 +190,6 @@
 		1CED60C719AC85AB0023512F /* scene2sensor.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5FEE19AC85AB0023512F /* scene2sensor.xml */; };
 		1CED60C819AC85AB0023512F /* scene3sensor.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5FEF19AC85AB0023512F /* scene3sensor.xml */; };
 		1CED60C919AC85AB0023512F /* sensordata.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5FF019AC85AB0023512F /* sensordata.xml */; };
-		1CED60CA19AC85AB0023512F /* SensorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED5FF219AC85AB0023512F /* SensorsViewController.m */; };
 		1CED60CB19AC85AB0023512F /* SFICloudStatusBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED5FF419AC85AB0023512F /* SFICloudStatusBarButtonItem.m */; };
 		1CED60CC19AC85AB0023512F /* SFIColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED5FF619AC85AB0023512F /* SFIColors.m */; };
 		1CED60CD19AC85AB0023512F /* SFIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED5FF819AC85AB0023512F /* SFIConstants.m */; };
@@ -447,8 +446,6 @@
 		1CED5FEE19AC85AB0023512F /* scene2sensor.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = scene2sensor.xml; sourceTree = "<group>"; };
 		1CED5FEF19AC85AB0023512F /* scene3sensor.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = scene3sensor.xml; sourceTree = "<group>"; };
 		1CED5FF019AC85AB0023512F /* sensordata.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = sensordata.xml; sourceTree = "<group>"; };
-		1CED5FF119AC85AB0023512F /* SensorsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorsViewController.h; sourceTree = "<group>"; };
-		1CED5FF219AC85AB0023512F /* SensorsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorsViewController.m; sourceTree = "<group>"; };
 		1CED5FF319AC85AB0023512F /* SFICloudStatusBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICloudStatusBarButtonItem.h; sourceTree = "<group>"; };
 		1CED5FF419AC85AB0023512F /* SFICloudStatusBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICloudStatusBarButtonItem.m; sourceTree = "<group>"; };
 		1CED5FF519AC85AB0023512F /* SFIColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIColors.h; sourceTree = "<group>"; };
@@ -896,8 +893,6 @@
 				1CED5FEE19AC85AB0023512F /* scene2sensor.xml */,
 				1CED5FEF19AC85AB0023512F /* scene3sensor.xml */,
 				1CED5FF019AC85AB0023512F /* sensordata.xml */,
-				1CED5FF119AC85AB0023512F /* SensorsViewController.h */,
-				1CED5FF219AC85AB0023512F /* SensorsViewController.m */,
 				1CED5FF319AC85AB0023512F /* SFICloudStatusBarButtonItem.h */,
 				1CED5FF419AC85AB0023512F /* SFICloudStatusBarButtonItem.m */,
 				1CED5FF519AC85AB0023512F /* SFIColors.h */,
@@ -1293,7 +1288,6 @@
 				1C7581EF19AD80090074C601 /* SFIWirelessUsers.m in Sources */,
 				1CED60B719AC85AB0023512F /* SFIActivationViewController.m in Sources */,
 				1CED60C119AC85AB0023512F /* SFISensorsViewController.m in Sources */,
-				1CED60CA19AC85AB0023512F /* SensorsViewController.m in Sources */,
 				1C7581EE19AD80090074C601 /* SFIWirelessTableViewController.m in Sources */,
 				1C7581AE19AD7BD00074C601 /* SFIDevicesList.m in Sources */,
 				1C75821319B054660074C601 /* SFITableViewController.m in Sources */,
