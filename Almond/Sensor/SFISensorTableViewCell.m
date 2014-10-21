@@ -68,7 +68,7 @@
         }
 
         SFIDevice *device = self.device;
-        if (device.isExpanded) {
+        if (self.isExpandedView) {
             SFISensorDetailView *detailView = [SFISensorDetailView new];
             detailView.frame = self.frame;
             detailView.tag = self.tag;
@@ -147,7 +147,7 @@
 
     UIImageView *settingsImage = [[UIImageView alloc] initWithFrame:CGRectMake(cell_frame.size.width - 50, 37, 23, 23)];
     settingsImage.image = [UIImage imageNamed:@"icon_config.png"];
-    settingsImage.alpha = (CGFloat) (self.device.isExpanded ? 1.0 : 0.5); // change color of image when expanded
+    settingsImage.alpha = (CGFloat) (self.isExpandedView ? 1.0 : 0.5); // change color of image when expanded
     settingsImage.userInteractionEnabled = YES;
     [self.contentView addSubview:settingsImage];
 

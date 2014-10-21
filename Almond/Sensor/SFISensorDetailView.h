@@ -36,7 +36,7 @@
 @property(nonatomic) SFIDeviceValue *deviceValue;
 @property(nonatomic) UIColor *color;
 
-+ (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor;
++ (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor expandedCell:(BOOL)isExpanded;
 
 - (NSString*)deviceName;
 - (NSString*)deviceLocation;

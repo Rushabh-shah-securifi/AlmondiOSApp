@@ -113,7 +113,7 @@
 
     self.backgroundColor = self.color;
 
-    NSUInteger rowHeight = [SFISensorDetailView computeSensorRowHeight:self.device];
+    NSUInteger rowHeight = [SFISensorDetailView computeSensorRowHeight:self.device expandedCell:YES];
     self.frame = CGRectMake(10, 86, (LEFT_LABEL_WIDTH) + (self.frame.size.width - LEFT_LABEL_WIDTH - 25) + 1, rowHeight - SENSOR_ROW_HEIGHT);
 
     // Add standard offset from top-level
@@ -836,8 +836,8 @@
 
 #pragma mark - Helpers
 
-+ (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor {
-    if (!currentSensor.isExpanded) {
++ (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor expandedCell:(BOOL)isExpanded {
+    if (!isExpanded) {
         return SENSOR_ROW_HEIGHT;
     }
 

@@ -36,6 +36,7 @@
 @property(nonatomic) SFIDevice *device;
 @property(nonatomic) SFIDeviceValue *deviceValue;
 @property(nonatomic) SFIColors *deviceColor;
+@property(nonatomic, getter=isExpandedView) BOOL expandedView;
 
 // called to indicate that the device/device value is being updated with the cloud;
 // causes the view to show intermediate "updating" state

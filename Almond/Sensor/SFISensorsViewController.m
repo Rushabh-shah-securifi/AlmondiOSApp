@@ -23,6 +23,9 @@
 @property(nonatomic, readonly) NSDictionary *deviceIndexTable; // device ID :: table cell row
 @property(nonatomic, readonly) NSDictionary *deviceValueTable;
 
+// devices whose cells are "expanded" to show settings
+@property(nonatomic, readonly) NSSet *expandedDeviceIds;
+
 // devices which are in the state of being updated; 
 // values are SFIDevice.deviceID numbers; 
 // this set is updated each time a device is updated, finishes updating, or timeouts updating.
@@ -225,6 +228,42 @@
     return [current isEqualToString:aMac];
 }
 
+#pragma mark - Expanded Cell State
+
+- (BOOL)isExpandedCell:(SFIDevice*)device {
+    return [self.expandedDeviceIds containsObject:@(device.deviceID)];
+}
+
+- (void)markExpandedCell:(SFIDevice*)device  {
+    _expandedDeviceIds = [NSSet setWithObject:@(device.deviceID)];
+}
+
+- (void)clearExpandedCell {
+    _expandedDeviceIds = [NSSet set];
+}
+
+- (BOOL)hasExpandedCell {
+    return [self.expandedDeviceIds count] > 0;
+}
+
+- (void)removeExpandedCellForMissingDevices:(NSArray*)devices {
+    if (![self hasExpandedCell]) {
+        return;
+    }
+
+    NSMutableSet *new_ids = [NSMutableSet set];
+    for (SFIDevice *device in devices) {
+        [new_ids addObject:@(device.deviceID)];
+    }
+
+    [new_ids intersectSet:self.expandedDeviceIds];
+    _expandedDeviceIds = [NSSet setWithSet:new_ids];
+}
+
+-(NSArray*)expandedDevices {
+    return [self.expandedDeviceIds allObjects];
+}
+
 #pragma mark - Table View
 
 - (void)asyncReloadTable {
@@ -362,7 +401,9 @@
 
     SFIDeviceType currentDeviceType = device.deviceType;
     NSUInteger height = [self computeSensorRowHeight:device];
-    NSString *id = [NSString stringWithFormat:@"s_t:%d_h:%ld_e:%d,", currentDeviceType, (unsigned long) height, device.isExpanded];
+    BOOL expanded = [self isExpandedCell:device];
+    
+    NSString *id = [NSString stringWithFormat:@"s_t:%d_h:%ld_e:%d,", currentDeviceType, (unsigned long) height, expanded];
 
     SFISensorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
     if (cell == nil) {
@@ -372,6 +413,7 @@
     cell.device = device;
     cell.deviceColor = self.almondColor;
     cell.delegate = self;
+    cell.expandedView = expanded;
 
     cell.deviceValue = [self tryCurrentDeviceValues:device.deviceID];
 
@@ -382,7 +424,8 @@
 }
 
 - (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor {
-    return [SFISensorDetailView computeSensorRowHeight:currentSensor];
+    BOOL expanded = [self isExpandedCell:currentSensor];
+    return [SFISensorDetailView computeSensorRowHeight:currentSensor expandedCell:expanded];
 }
 
 - (UIView *)createActivationNotificationHeader{
@@ -534,25 +577,27 @@
         return;
     }
 
-    // Toggle expansion
     SFIDevice *sensor = cell.device;
-    sensor.isExpanded = !sensor.isExpanded;
-
     const int clicked_row = (int) [self deviceCellRow:sensor.deviceID];
-    NSArray *devices = self.deviceList;
 
+    // Toggle expansion
     NSMutableArray *paths = [NSMutableArray array];
     [paths addObject:[NSIndexPath indexPathForRow:clicked_row inSection:0]];
 
-    // Ensure other rows are not expanded
-    for (NSUInteger index = 0; index < devices.count; index++) {
-        if (index != clicked_row) {
-            SFIDevice *s = devices[index];
-            if (s.isExpanded) {
-                s.isExpanded = NO;
-                [paths addObject:[NSIndexPath indexPathForRow:index inSection:0]];
-            }
+    for (NSNumber *deviceId in self.expandedDevices) {
+        NSInteger device_id = [deviceId intValue];
+        if (device_id != sensor.deviceID) {
+            const int row = (int) [self deviceCellRow:device_id];
+            [paths addObject:[NSIndexPath indexPathForRow:row inSection:0]];
         }
+    }
+
+    BOOL expanded = [self isExpandedCell:sensor];
+    if (expanded) {
+        [self clearExpandedCell];
+    }
+    else {
+        [self markExpandedCell:sensor];
     }
 
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -847,6 +892,7 @@
     if (newDeviceList == nil) {
         newDeviceList = @[];
     }
+    [self removeExpandedCellForMissingDevices:newDeviceList];
 
     NSArray *newDeviceValueList = [toolkit deviceValuesList:cloudMAC];
 
@@ -855,7 +901,6 @@
     for (SFIDevice *newDevice in newDeviceList) {
         for (SFIDevice *oldDevice in oldDeviceList) {
             if (newDevice.deviceID == oldDevice.deviceID) {
-                newDevice.isExpanded = oldDevice.isExpanded;
                 [self clearDeviceUpdatingState:oldDevice];
             }
         }
@@ -917,6 +962,7 @@
         newDeviceList = @[];
         [self clearAllDeviceUpdatingState];
     }
+    [self removeExpandedCellForMissingDevices:newDeviceList];
 
     NSArray *newDeviceValueList = [toolkit deviceValuesList:cloudMAC];
     if (newDeviceValueList == nil) {
@@ -934,7 +980,6 @@
     for (SFIDevice *newDevice in newDeviceList) {
         for (SFIDevice *oldDevice in oldDeviceList) {
             if (newDevice.deviceID == oldDevice.deviceID) {
-                newDevice.isExpanded = oldDevice.isExpanded;
                 [self clearDeviceUpdatingState:oldDevice];
             }
         }
