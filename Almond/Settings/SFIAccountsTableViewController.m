@@ -1863,8 +1863,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self.HUD show:YES];
-    
-    [[SecurifiToolkit sharedInstance] asyncRequestDelSecondaryUser:almondMAC email:emailID];
+
+    [[SecurifiToolkit sharedInstance] asyncRequestDeleteSecondaryUser:almondMAC email:emailID];
 }
 
 -(void)delSecondaryUserResponseCallback:(id)sender{
@@ -2078,8 +2078,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self.HUD show:YES];
-    
-    [[SecurifiToolkit sharedInstance] asyncRequestDelMeAsSecondaryUser:almondMAC];
+
+    [[SecurifiToolkit sharedInstance] asyncRequestDeleteMeAsSecondaryUser:almondMAC];
 }
 
 -(void)delMeAsSecondaryUserResponseCallback:(id)sender{
