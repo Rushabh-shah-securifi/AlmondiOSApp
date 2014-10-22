@@ -9,13 +9,7 @@
 #import "SFIAccountsTableViewController.h"
 #import "MBProgressHUD.h"
 #import "iToast.h"
-#import "SFILoginViewController.h"
 #import "UIFont+Securifi.h"
-
-@interface SFIAccountsTableViewController ()
-
-@end
-
 
 static NSString *simpleTableIdentifier = @"AccountCell";
 #define CELL_PROFILE        0
@@ -1357,7 +1351,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         currentAlmond.isExpanded = TRUE;
     }
     //Reload only that particular row
-    int indexPathRow = index + (int)[ownedAlmondList count];
+    int indexPathRow = (int) (index + [ownedAlmondList count]);
     NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:indexPathRow+1 inSection:0];
     NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
     [self.tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationFade];
@@ -2030,22 +2024,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [self.HUD hide:YES];
 }
 
--(void)sendSharedWithMeAlmondRequest{
-    MeAsSecondaryUserRequest *sharedAlmondListRequest = [[MeAsSecondaryUserRequest alloc] init];
-    
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_ME_AS_SECONDARY_USER_REQUEST;
-    cloudCommand.command = sharedAlmondListRequest;
-    
-    //    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
-//        _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-//        _HUD.removeFromSuperViewOnHide = NO;
-//        _HUD.labelText = @"Loading secondary Almond information...";
-//        _HUD.dimBackground = YES;
-//        [self.navigationController.view addSubview:_HUD];
-//        [self.HUD show:YES];
-    
-    [self asyncSendCommand:cloudCommand];
+- (void)sendSharedWithMeAlmondRequest {
+    [[SecurifiToolkit sharedInstance] asyncRequestMeAsSecondaryUser];
 }
 
 -(void)sharedAlmondDataResponseCallback:(id)sender{

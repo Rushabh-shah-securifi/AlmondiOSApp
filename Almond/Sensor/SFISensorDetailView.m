@@ -830,7 +830,7 @@
 
 - (NSString *)makePinCodeDevicePropertyValueName:(NSInteger)pinIndex {
     NSString *valueName = [SFIDeviceKnownValues propertyTypeToName:SFIDevicePropertyType_USER_CODE];
-    valueName = [NSString stringWithFormat:@"%@_%d", valueName, pinIndex];
+    valueName = [NSString stringWithFormat:@"%@_%ld", valueName, (long)pinIndex];
     return valueName;
 }
 

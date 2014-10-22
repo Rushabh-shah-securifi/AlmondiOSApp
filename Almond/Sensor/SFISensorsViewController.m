@@ -585,7 +585,7 @@
     [paths addObject:[NSIndexPath indexPathForRow:clicked_row inSection:0]];
 
     for (NSNumber *deviceId in self.expandedDevices) {
-        NSInteger device_id = [deviceId intValue];
+        int device_id = [deviceId intValue];
         if (device_id != sensor.deviceID) {
             const int row = (int) [self deviceCellRow:device_id];
             [paths addObject:[NSIndexPath indexPathForRow:row inSection:0]];
