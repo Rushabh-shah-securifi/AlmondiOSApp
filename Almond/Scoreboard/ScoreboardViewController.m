@@ -196,34 +196,29 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cloudSectionCellForRowAtIndexPath:(NSIndexPath *)indexPath {
     BOOL useProduction = [SecurifiToolkit sharedInstance].useProductionCloud;
 
+    NSString *id = @"cloud";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:id];
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    }
+
     if (indexPath.row == 0) {
-        UITableViewCell *cell = [self getFieldCell:tableView];
-        cell.textLabel.text = @"Servers";
-        cell.detailTextLabel.text = useProduction ? @"Production" : @"Development";
-        return cell;
+        cell.textLabel.text = @"Production";
+        cell.accessoryType = useProduction ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
     else {
-        NSString *id = @"switch_server";
+        cell.textLabel.text = @"Development";
+        cell.accessoryType = useProduction ? UITableViewCellAccessoryNone : UITableViewCellAccessoryCheckmark;
+    }
 
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:id];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
 
-            NSString *label = @"Switch Server...";
-
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            button.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10);
-            [button setTitle:label forState:UIControlStateNormal];
-            [button sizeToFit];
-            button.center = CGPointMake(150, 20);
-
-            [button addTarget:self action:@selector(onSwitchServer) forControlEvents:UIControlEventTouchUpInside];
-
-            [cell.contentView addSubview:button];
-        }
-
-        return cell;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == SEC_CLOUD) {
+        [self onSwitchServer];
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger) indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 
