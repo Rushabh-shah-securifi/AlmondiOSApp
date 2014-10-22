@@ -971,7 +971,8 @@
 				1CED5EEE19AC82FD0023512F /* Frameworks */,
 				1CED5EEF19AC82FD0023512F /* Resources */,
 				A57FF121BE5141E6BB0DE8CA /* Copy Pods Resources */,
-				1C71357819C8032F00A952D9 /* ShellScript */,
+				1C71357819C8032F00A952D9 /* Crashlytics Run */,
+				1CFE442419F79D050065475C /* Incremeent Version Number */,
 			);
 			buildRules = (
 			);
@@ -1210,7 +1211,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1C71357819C8032F00A952D9 /* ShellScript */ = {
+		1C71357819C8032F00A952D9 /* Crashlytics Run */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1218,11 +1219,26 @@
 			inputPaths = (
 				"",
 			);
+			name = "Crashlytics Run";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "${SRCROOT}/Pods/CrashlyticsFramework/Crashlytics.framework/run d68e94e89ffba7d497c7d8a49f2a58f45877e7c3 9116d9e76370d5154529ca44d4de0ae6db6d84c634a4267a7abcd023299faf18";
+		};
+		1CFE442419F79D050065475C /* Incremeent Version Number */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Incremeent Version Number";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "buildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"";
 		};
 		9489006BB9F040F7844D1680 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
