@@ -644,7 +644,6 @@
     cmd.deviceID = [NSString stringWithFormat:@"%d", device.deviceID];
     cmd.changedName = cell.deviceName;
     cmd.changedLocation = cell.deviceLocation;
-    cmd.mobileInternalIndex = [NSString stringWithFormat:@"%d", (arc4random() % 10000) + 1];
 
     NSLog(@"xml: %@", cmd.toXml);
 

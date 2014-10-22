@@ -436,14 +436,12 @@
 - (void)sendGenericCommandRequest:(NSString *)commandData {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
 
-    //Generate internal index between 1 to 1000
-    self.mobileInternalIndex = (arc4random() % 1000) + 1;
-
     GenericCommandRequest *genericCommand = [[GenericCommandRequest alloc] init];
     genericCommand.almondMAC = self.currentMAC;
     genericCommand.applicationID = APPLICATION_ID;
-    genericCommand.mobileInternalIndex = [NSString stringWithFormat:@"%d", self.mobileInternalIndex];
     genericCommand.data = commandData;
+
+    self.mobileInternalIndex = genericCommand.correlationId;
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_GENERIC_COMMAND_REQUEST;

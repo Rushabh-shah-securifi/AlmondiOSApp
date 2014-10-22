@@ -238,18 +238,15 @@
                                     repeats:NO];
     
     
-    //Generate internal index between 1 to 100
-    self.currentInternalIndex = (arc4random() % 100) + 1;
-    
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    
     MobileCommandRequest *mobileCommand = [[MobileCommandRequest alloc] init];
     mobileCommand.almondMAC = self.currentMAC;
     mobileCommand.deviceID = self.currentDeviceID;
     mobileCommand.indexID = [NSString stringWithFormat:@"%d",self.currentIndexID];
     mobileCommand.changedValue = self.currentValue;
-    mobileCommand.internalIndex = [NSString stringWithFormat:@"%d",self.currentInternalIndex];
-    
+
+    self.currentInternalIndex = mobileCommand.correlationId;
+
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType=MOBILE_COMMAND;
     cloudCommand.command=mobileCommand;
     @try {

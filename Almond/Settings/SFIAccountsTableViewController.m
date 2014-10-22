@@ -1563,25 +1563,19 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 }
 
 - (void)sendUpdateUserProfileRequest {
-    UpdateUserProfileRequest *updateUserProfileRequest = [[UpdateUserProfileRequest alloc] init];
+    UpdateUserProfileRequest *request = [[UpdateUserProfileRequest alloc] init];
     
-    // Generate internal index between 1 to 100
-    unsigned int internalIndex = (arc4random() % 100) + 1;
-    
-    updateUserProfileRequest.firstName = userProfile.firstName;
-    updateUserProfileRequest.lastName = userProfile.lastName;
-    updateUserProfileRequest.addressLine1 = userProfile.addressLine1;
-    updateUserProfileRequest.addressLine2 = userProfile.addressLine2;
-    updateUserProfileRequest.addressLine3 = userProfile.addressLine3;
-    updateUserProfileRequest.country = userProfile.country;
-    updateUserProfileRequest.zipCode = userProfile.zipCode;
-    updateUserProfileRequest.internalIndex = [NSString stringWithFormat:@"%d", internalIndex];
-    
-    
-    
+    request.firstName = userProfile.firstName;
+    request.lastName = userProfile.lastName;
+    request.addressLine1 = userProfile.addressLine1;
+    request.addressLine2 = userProfile.addressLine2;
+    request.addressLine3 = userProfile.addressLine3;
+    request.country = userProfile.country;
+    request.zipCode = userProfile.zipCode;
+
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_UPDATE_USER_PROFILE_REQUEST;
-    cloudCommand.command = updateUserProfileRequest;
+    cloudCommand.command = request;
     
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];

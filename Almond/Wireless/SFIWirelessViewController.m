@@ -107,9 +107,6 @@
     //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     //NSString *currentMAC  = [prefs objectForKey:CURRENT_ALMOND_MAC];
 
-    //Generate internal index between 1 to 100
-    self.mobileInternalIndex = (arc4random() % 1000) + 1;
-
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     NSString *currentMAC = plus.almondplusMAC;
@@ -117,8 +114,9 @@
     GenericCommandRequest *setWirelessSettingGenericCommand = [[GenericCommandRequest alloc] init];
     setWirelessSettingGenericCommand.almondMAC = currentMAC;
     setWirelessSettingGenericCommand.applicationID = APPLICATION_ID;
-    setWirelessSettingGenericCommand.mobileInternalIndex = [NSString stringWithFormat:@"%d", self.mobileInternalIndex];
     setWirelessSettingGenericCommand.data = data;
+
+    self.mobileInternalIndex = setWirelessSettingGenericCommand.correlationId;
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = GENERIC_COMMAND_REQUEST;

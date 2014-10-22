@@ -482,17 +482,16 @@
 #pragma mark - Cloud command senders and handlers
 
 - (void)sendGenericCommandRequest:(NSString *)data {
-    self.mobileInternalIndex = (arc4random() % 1000) + 1;
+    GenericCommandRequest *reboot = [GenericCommandRequest new];
+    reboot.almondMAC = self.currentMAC;
+    reboot.applicationID = APPLICATION_ID;
+    reboot.data = data;
 
-    GenericCommandRequest *rebootGenericCommand = [[GenericCommandRequest alloc] init];
-    rebootGenericCommand.almondMAC = self.currentMAC;
-    rebootGenericCommand.applicationID = APPLICATION_ID;
-    rebootGenericCommand.mobileInternalIndex = [NSString stringWithFormat:@"%d", self.mobileInternalIndex];
-    rebootGenericCommand.data = data;
+    self.mobileInternalIndex = reboot.correlationId;
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_GENERIC_COMMAND_REQUEST;
-    cloudCommand.command = rebootGenericCommand;
+    cloudCommand.command = reboot;
 
     [self asyncSendCommand:cloudCommand];
 }

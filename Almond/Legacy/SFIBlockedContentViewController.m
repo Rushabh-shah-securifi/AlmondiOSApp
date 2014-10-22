@@ -11,6 +11,7 @@
 #import "AlmondPlusConstants.h"
 #import "SFIGenericRouterCommand.h"
 #import "SFIParser.h"
+#import "BaseCommandRequest.h"
 
 @implementation SFIBlockedContentViewController
 @synthesize blockedContentArray, mobileInternalIndex, addBlockedContentArray, setBlockedContentArray;
@@ -248,21 +249,20 @@
 - (void)sendGenericCommandRequest:(NSString *)data {
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
 
-    self.mobileInternalIndex = (arc4random() % 1000) + 1;
-
     NSString *currentMAC = [[SecurifiToolkit sharedInstance] currentAlmondName];
 
-    GenericCommandRequest *setWirelessSettingGenericCommand = [[GenericCommandRequest alloc] init];
-    setWirelessSettingGenericCommand.almondMAC = currentMAC;
-    setWirelessSettingGenericCommand.applicationID = APPLICATION_ID;
-    setWirelessSettingGenericCommand.mobileInternalIndex = [NSString stringWithFormat:@"%d", self.mobileInternalIndex];
-    setWirelessSettingGenericCommand.data = data;
+    GenericCommandRequest *request = [[GenericCommandRequest alloc] init];
+    request.almondMAC = currentMAC;
+    request.applicationID = APPLICATION_ID;
+    request.data = data;
 
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = GENERIC_COMMAND_REQUEST;
-    cloudCommand.command = setWirelessSettingGenericCommand;
+    self.mobileInternalIndex = request.correlationId;
 
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+    GenericCommand *command = [[GenericCommand alloc] init];
+    command.commandType = GENERIC_COMMAND_REQUEST;
+    command.command = request;
+
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:command];
 }
 
 -(void)GenericResponseCallback:(id)sender

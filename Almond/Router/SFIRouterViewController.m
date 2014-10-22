@@ -8,17 +8,12 @@
 
 #import "SFIRouterViewController.h"
 #import <SecurifiToolkit/SecurifiToolkit.h>
-#import "SNLog.h"
 #import "AlmondPlusConstants.h"
 #import "SFIParser.h"
 #import "SFIRouterReboot.h"
 #import "SFIGenericRouterCommand.h"
-#import "SFIRouterDevicesListViewController.h"
+#import "SFIWirelessTableViewController.h"
 #import "SFIBlockedContentViewController.h"
-
-@interface SFIRouterViewController ()
-
-@end
 
 @implementation SFIRouterViewController
 @synthesize mobileInternalIndex;
@@ -172,20 +167,17 @@
 
 -(void) sendGenericCommandRequest:(NSString*)data{
     [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+
+    GenericCommandRequest *request = [[GenericCommandRequest alloc] init];
+    request.almondMAC = self.currentMAC;
+    request.applicationID = APPLICATION_ID;
+    request.data = data;
+
+    self.mobileInternalIndex = request.correlationId;
+
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    //NSString *currentMAC  = [prefs objectForKey:CURRENT_ALMOND_MAC];
-    
-    //Generate internal index between 1 to 100
-    self.mobileInternalIndex = (arc4random() % 1000) + 1;
-    
-    GenericCommandRequest *rebootGenericCommand = [[GenericCommandRequest alloc] init];
-    rebootGenericCommand.almondMAC = self.currentMAC;
-    rebootGenericCommand.applicationID = APPLICATION_ID;
-    rebootGenericCommand.mobileInternalIndex = [NSString stringWithFormat:@"%d",self.mobileInternalIndex];
-    rebootGenericCommand.data = data;
     cloudCommand.commandType=GENERIC_COMMAND_REQUEST;
-    cloudCommand.command=rebootGenericCommand;
+    cloudCommand.command= request;
     @try {
         [SNLog Log:@"Method Name: %s Before Writing to socket -- Generic Command Request", __PRETTY_FUNCTION__];
         
@@ -204,7 +196,7 @@
     }
     
     cloudCommand=nil;
-    rebootGenericCommand=nil;
+    request =nil;
 }
 
 -(void)GenericResponseCallback:(id)sender
