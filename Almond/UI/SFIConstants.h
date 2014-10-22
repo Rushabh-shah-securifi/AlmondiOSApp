@@ -71,7 +71,7 @@
 #define DT39_DOOR_SENSOR_TRUE @"door_on.png"
 #define DT39_DOOR_SENSOR_FALSE @"door_off.png"
 #define DT40_MOISTURE_TRUE @"water_drop2.png"
-#define DT40_MOISTURE_FALSE @"water_drop1.png"
+#define DT40_MOISTURE_FALSE @"vibration_sensor_1.png"
 #define DT41_MOTION_SENSOR_TRUE @"motion_sensor_true.png"
 #define DT41_MOTION_SENSOR_FALSE @"motion_sensor_false.png"
 #define DT42_ALARM_TRUE @"alarm_2.png"
