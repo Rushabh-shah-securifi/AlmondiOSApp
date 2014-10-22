@@ -666,7 +666,7 @@
     SFIDeviceKnownValues *stateValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BASIC];
 
     NSString *imageForNoValue = [self imageForNoValue];
-    NSString *imageName = [stateValue choiceForBoolValueTrueValue:DT40_MOISTURE_TRUE falseValue:DT40_MOISTURE_FALSE nilValue:imageForNoValue];
+    NSString *imageName = [stateValue choiceForLevelValueZeroValue:DT40_MOISTURE_FALSE nonZeroValue:DT40_MOISTURE_TRUE nilValue:imageForNoValue];
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 
     NSMutableArray *status = [NSMutableArray array];
