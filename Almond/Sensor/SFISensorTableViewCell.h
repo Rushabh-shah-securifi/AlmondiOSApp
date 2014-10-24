@@ -42,6 +42,8 @@
 // causes the view to show intermediate "updating" state
 - (void)showUpdatingDeviceValuesStatus;
 
+- (void)showStatus:(NSString *)status;
+
 // Called by the table view delegate prior to returning it to the controller
 // Resets the view and prepares it for viewing.
 // updating parameter YES forces the cell to show "updating" message

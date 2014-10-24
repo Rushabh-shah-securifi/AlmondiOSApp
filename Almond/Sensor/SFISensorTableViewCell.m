@@ -23,6 +23,10 @@
 
 @property(nonatomic) BOOL dirty;
 @property(nonatomic) BOOL updatingState;
+
+@property(nonatomic) NSString *updatingStatus;
+@property(nonatomic) NSString *deviceStatus;
+
 @end
 
 @implementation SFISensorTableViewCell
@@ -38,11 +42,15 @@
 }
 
 - (void)showUpdatingDeviceValuesStatus {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        self.updatingState = YES;
-        [self setUpdatingSensorStatus];
-        [self setNeedsDisplay];
-    });
+    [self showStatus:@"Updating sensor data.\nPlease wait."];
+}
+
+- (void)showStatus:(NSString*)status {
+    self.dirty = YES;
+    self.updatingState = YES;
+    self.updatingStatus = status;
+    [self setUpdatingSensorStatus];
+    [self setNeedsDisplay];
 }
 
 - (void)markWillReuseCell:(BOOL)updating {
@@ -79,6 +87,13 @@
 
             [self.contentView addSubview:detailView];
             self.detailView = detailView;
+        }
+
+        if (self.updatingState) {
+            self.deviceStatusLabel.text = self.updatingStatus;
+        }
+        else {
+            self.deviceStatusLabel.text = self.deviceStatus;
         }
     }
 }
@@ -540,14 +555,15 @@
     SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceValuesIndex:self.device.mostImpValueIndex];
     NSString *currentLevel = currentLevelKnownValue.value;
 
-    self.deviceStatusLabel.text = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
-                                                                          nonZeroValue:[NSString stringWithFormat:@"Dimmable, %@%%", currentLevel]
-                                                                              nilValue:@"Could not update sensor\ndata."];
+    NSString *status = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
+                                                               nonZeroValue:[NSString stringWithFormat:@"Dimmable, %@%%", currentLevel]
+                                                                   nilValue:@"Could not update sensor\ndata."];
 
     NSString *imageName = [currentLevelKnownValue choiceForLevelValueZeroValue:DT2_MULTILEVEL_SWITCH_FALSE
                                                                   nonZeroValue:DT2_MULTILEVEL_SWITCH_TRUE
                                                                       nilValue:DT2_MULTILEVEL_SWITCH_TRUE];
 
+    [self setDeviceStatusMessage:status];
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 }
 
@@ -583,7 +599,7 @@
         image_name = [self.device imageName:DT4_LEVEL_CONTROL_FALSE];
     }
 
-    self.deviceStatusLabel.text = status_str;
+    [self setDeviceStatusMessage:status_str];
     self.deviceImageView.image = [UIImage imageNamed:image_name];
 }
 
@@ -731,7 +747,7 @@
 - (void)setUpdatingSensorStatus {
     [self showDeviceValueLabels:NO];
     self.deviceImageView.image = [UIImage imageNamed:@"Wait_Icon.png"];
-    self.deviceStatusLabel.text = @"Updating sensor data.\nPlease wait.";
+    self.deviceStatusLabel.text = self.updatingStatus;
 }
 
 - (void)showDeviceValueLabels:(BOOL)show {
@@ -740,9 +756,15 @@
     self.degreeLabel.hidden = !show;
 }
 
-- (void)setDeviceStatusMessages:(NSArray *)status {
-    self.deviceStatusLabel.numberOfLines = (status.count > 1) ? 0 : 1;
-    self.deviceStatusLabel.text = [status componentsJoinedByString:@"\n"];
+- (void)setDeviceStatusMessages:(NSArray *)statusMsgs {
+    self.deviceStatusLabel.numberOfLines = (statusMsgs.count > 1) ? 0 : 1;
+
+    NSString *status = [statusMsgs componentsJoinedByString:@"\n"];
+    [self setDeviceStatusMessage:status];
+}
+
+- (void)setDeviceStatusMessage:(NSString*)status {
+    self.deviceStatus = status;
 }
 
 - (void)tryAddBatteryStatusMessage:(NSMutableArray *)status {

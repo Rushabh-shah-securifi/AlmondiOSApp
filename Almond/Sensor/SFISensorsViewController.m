@@ -23,15 +23,16 @@
 @property(nonatomic, readonly) NSDictionary *deviceIndexTable; // device ID :: table cell row
 @property(nonatomic, readonly) NSDictionary *deviceValueTable;
 
+// tracks requests sent to update a device; cleared on receipt of the 
 // devices whose cells are "expanded" to show settings
 @property(nonatomic, readonly) NSSet *expandedDeviceIds;
 
-// devices which are in the state of being updated; 
-// values are SFIDevice.deviceID numbers; 
-// this set is updated each time a device is updated, finishes updating, or timeouts updating.
-// mutations are coordinated on the updateQ
-@property(nonatomic) NSSet *updatingDevices;
-@property(nonatomic, readonly) dispatch_queue_t updateQ;
+// devices which are in the state of being updated have special status
+// messages shown. devices whose updating failed also have special messages.
+// these structures track those devices.
+@property(nonatomic, readonly) NSDictionary *updatingDevices;           // 1. sfi_id :: SFIDevice 2. SFIDevice :: sfi_id
+@property(nonatomic, readonly) NSDictionary *deviceStatusMessages;      // SFIDevice :: NSString status message
+@property(nonatomic, readonly) NSObject *deviceStatusMessages_locker;   // sync locker for mutating the dictionary
 
 // when YES, we defer showing sensor updates; basically, prevents first responder from being relinquished while editing
 @property BOOL isUpdatingDeviceSettings;
@@ -39,8 +40,6 @@
 @property(nonatomic) NSTimer *mobileCommandTimer;
 @property(nonatomic) NSTimer *sensorChangeCommandTimer;
 
-//todo review: do not seem foolproof in face of many back-to-back commands
-@property(nonatomic) BOOL isMobileCommandSuccessful;
 @property(nonatomic) BOOL isSensorChangeCommandSuccessful;
 
 @property BOOL isViewControllerDisposed;
@@ -54,9 +53,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.updatingDevices = [NSSet set];
-    _updateQ = dispatch_queue_create("com.securifi.sensorsview.updateq", DISPATCH_QUEUE_SERIAL);
-
+    _deviceStatusMessages_locker = [NSObject new];
+    [self clearAllDeviceUpdatingState];
+    
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
     self.tableView.separatorColor = [UIColor clearColor];
@@ -417,8 +416,14 @@
 
     cell.deviceValue = [self tryCurrentDeviceValues:device.deviceID];
 
-    BOOL updating = [self isDeviceUpdating:device];
-    [cell markWillReuseCell:updating];
+    NSString *status = [self tryDeviceStatusMessage:device];
+    if (status) {
+        [cell showStatus:status];
+        [cell markWillReuseCell:YES];
+    }
+    else {
+        [cell markWillReuseCell:NO];
+    }
 
     return cell;
 }
@@ -564,10 +569,6 @@
         }
     } // end switch
 
-    // Tell the cell to show 'updating' status
-    [self markDeviceUpdatingState:device];
-    [cell showUpdatingDeviceValuesStatus];
-
     // Send update to the cloud
     [self sendMobileCommandForDevice:device deviceValue:deviceValues];
 }
@@ -683,9 +684,6 @@
         return;
     }
 
-    [self markDeviceUpdatingState:cell.device];
-    [cell showUpdatingDeviceValuesStatus];
-
     SFIDevice *device = cell.device;
 
     SFIDeviceKnownValues *deviceValues  = [cell.deviceValue knownValuesForProperty:propertyType];
@@ -699,15 +697,19 @@
         return;
     }
 
-    [self markDeviceUpdatingState:cell.device];
-    [cell showUpdatingDeviceValuesStatus];
-
     SFIDevice *device = cell.device;
 
     SFIDeviceKnownValues *deviceValues  = [cell.deviceValue knownValuesForPropertyName:propertyName];
     deviceValues.value = newValue;
 
     [self sendMobileCommandForDevice:device deviceValue:deviceValues];
+}
+
+- (void)reloadDeviceTableCell:(SFIDevice *)device {
+    NSUInteger cellRow = (NSUInteger) [self deviceCellRow:device.deviceID];
+    NSIndexPath *path = [NSIndexPath indexPathForRow:cellRow inSection:0];
+
+    [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)tableViewCellDidDidFailValidation:(SFISensorTableViewCell *)cell validationToast:(NSString *)toastMsg {
@@ -733,8 +735,6 @@
     NSUInteger colorCode = (NSUInteger) almond.colorCodeIndex;
     _almondColor = colors[colorCode];
 }
-
-
 
 #pragma mark - Sensor Values
 
@@ -806,22 +806,23 @@
 
     [self.mobileCommandTimer invalidate];
 
-    if (!self.isMobileCommandSuccessful) {
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            if (self.isViewControllerDisposed) {
-                return;
-            }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.isViewControllerDisposed) {
+            return;
+        }
 
-            //Cancel the mobile event - Revert back
-            SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-            [self setDeviceValues:[toolkit deviceValuesList:self.almondMac]];
-            [self initializeDevices];
-            [self.tableView reloadData];
-            [self.HUD hide:YES];
-        });
-    }
+        //Cancel the mobile event - Revert back
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        [self setDeviceValues:[toolkit deviceValuesList:self.almondMac]];
+        [self initializeDevices];
+        [self.tableView reloadData];
+        [self.HUD hide:YES];
+
+        [self clearAllDeviceUpdatingState];
+    });
 }
 
+//todo method is not actually processing response!
 - (void)onMobileCommandResponseCallback:(id)sender {
     if (!self) {
         return;
@@ -832,15 +833,15 @@
 
     // Timeout the commander timer
     [self.mobileCommandTimer invalidate];
-    self.isMobileCommandSuccessful = TRUE;
 
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
         return;
     }
-
-    NSString *mac = self.almondMac;
+    
+    MobileCommandResponse *res = data[@"data"];
+    sfi_id c_id = res.mobileInternalIndex;
 
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
@@ -854,13 +855,33 @@
             return;
         }
 
-        if (![self isSameAsCurrentMAC:mac]) {
-            return;
-        }
-
         if (self.isViewLoaded) {
             [self.HUD hide:YES];
         }
+
+        SFIDevice *device = [self tryDeviceForCorrelationId:c_id];
+        if (!device) {
+            // give up: c_id is no longer valid
+            return;
+        }
+
+        if (res.isSuccessful) {
+            // command succeeded; clear "status" state; new device values should be transmitted
+            // via different callback and handled there.
+            [self clearDeviceUpdatingState:device];
+        }
+        else {
+            NSString *status = res.reason;
+            if (status.length > 0) {
+                [self markDeviceStatus:device correlationId:c_id status:status];
+            }
+            else {
+                // it failed but we did not receive a reason; clear the updating state and pretend nothing happened.
+                [self clearDeviceUpdatingState:device];
+            }
+        }
+
+        [self reloadDeviceTableCell:device];
     });
 }
 
@@ -1013,6 +1034,7 @@
     [self clearAllDeviceUpdatingState];
 
     dispatch_async(dispatch_get_main_queue(), ^() {
+        [self clearExpandedCell];
         [self initializeAlmondData];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     });
@@ -1139,18 +1161,20 @@
         return;
     }
 
-    //todo decide what to do about this
-    [self.mobileCommandTimer invalidate];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        //todo decide what to do about this
+        [self.mobileCommandTimer invalidate];
 
-    self.isMobileCommandSuccessful = NO;
-    self.mobileCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
-                                                               target:self
-                                                             selector:@selector(onSendMobileCommandTimeout:)
-                                                             userInfo:nil
-                                                              repeats:NO];
+        self.mobileCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
+                                                                   target:self
+                                                                 selector:@selector(onSendMobileCommandTimeout:)
+                                                                 userInfo:nil
+                                                                  repeats:NO];
 
-
-    [[SecurifiToolkit sharedInstance] asyncChangeAlmond:self.almond device:device value:deviceValues];
+        sfi_id c_id = [[SecurifiToolkit sharedInstance] asyncChangeAlmond:self.almond device:device value:deviceValues];
+        [self markDeviceUpdatingState:device correlationId:c_id];
+        [self reloadDeviceTableCell:device];
+    });
 }
 
 - (void)resetDeviceListFromSaved {
@@ -1176,45 +1200,85 @@
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
-#pragma mark - Device updating state
+#pragma mark - Device updating state and status meessages
 
-- (void)markDeviceUpdatingState:(SFIDevice*)device {
-    dispatch_async(self.updateQ, ^() {
-        unsigned int deviceId = device.deviceID;
-        NSNumber *key = @(deviceId);
-        self.updatingDevices = [self.updatingDevices setByAddingObject:key];
-    });
+- (NSString*)deviceLookupKey:(SFIDevice*)device {
+    return [NSString stringWithFormat:@"d-%d", device.deviceID];
+}
+
+- (void)markDeviceUpdatingState:(SFIDevice*)device correlationId:(sfi_id)c_id {
+    NSString *status = @"Updating sensor data.\nPlease wait.";
+    [self markDeviceStatus:device correlationId:c_id status:status];
+}
+
+- (void)markDeviceStatus:(SFIDevice *)device correlationId:(sfi_id)c_id status:(NSString *)status {
+    if (status == nil) {
+        return;
+    }
+
+    @synchronized (self.deviceStatusMessages_locker) {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:self.updatingDevices];
+
+        NSNumber *key = @(c_id);
+        NSString *device_key = [self deviceLookupKey:device];
+
+        // correlation id to device
+        dict[key] = device;
+        // create reverse lookup
+        dict[device_key] = key;
+
+        _updatingDevices = [NSDictionary dictionaryWithDictionary:dict];
+
+        dict = [NSMutableDictionary dictionaryWithDictionary:self.deviceStatusMessages];
+        dict[device_key] = status;
+        _deviceStatusMessages = [NSDictionary dictionaryWithDictionary:dict];
+    }
 }
 
 - (void)clearAllDeviceUpdatingState {
-    dispatch_async(self.updateQ, ^() {
-        self.updatingDevices = [NSSet set];
-    });
+    @synchronized (self.deviceStatusMessages_locker) {
+        _updatingDevices = [NSDictionary dictionary];
+        _deviceStatusMessages = [NSDictionary dictionary];
+    };
 }
 
 - (void)clearDeviceUpdatingState:(SFIDevice*)device {
-    dispatch_async(self.updateQ, ^() {
-        unsigned int deviceId = device.deviceID;
-        NSNumber *key = @(deviceId);
+    if (!device) {
+        return;
+    }
 
-        NSSet *set = self.updatingDevices;
-        if ([set containsObject:key]) {
-            NSMutableSet *mutableSet = [NSMutableSet setWithSet:set];
-            [mutableSet removeObject:key];
+    @synchronized (self.deviceStatusMessages_locker) {
+        NSNumber *cid_key = self.updatingDevices[device];
+        NSString *device_key = [self deviceLookupKey:device];
 
-            self.updatingDevices = [NSSet setWithSet:mutableSet];
+        NSMutableDictionary *dict;
+
+        dict = [NSMutableDictionary dictionaryWithDictionary:self.updatingDevices];
+        if (cid_key) {
+            [dict removeObjectForKey:cid_key];
         }
-    });
+        [dict removeObjectForKey:device_key];
+        _updatingDevices = [NSDictionary dictionaryWithDictionary:dict];
+
+        dict  = [NSMutableDictionary dictionaryWithDictionary:self.deviceStatusMessages];
+        [dict removeObjectForKey:device_key];
+        _deviceStatusMessages = [NSDictionary dictionaryWithDictionary:dict];
+    };
 }
 
-- (BOOL)isDeviceUpdating:(SFIDevice*)device {
-    unsigned int deviceId = device.deviceID;
-    NSNumber *key = @(deviceId);
-    return [self.updatingDevices containsObject:key];
+- (SFIDevice*)tryDeviceForCorrelationId:(sfi_id)c_id {
+    NSNumber *key = @(c_id);
+    return self.updatingDevices[key];
+}
+
+- (NSString*)tryDeviceStatusMessage:(SFIDevice*)device {
+    NSString *device_key = [self deviceLookupKey:device];
+    return self.deviceStatusMessages[device_key];
 }
 
 #pragma mark - Activation Notification Header
--(void)onCloseNotificationClicked:(id)sender{
+
+- (void)onCloseNotificationClicked:(id)sender {
     DLog(@"onCloseNotificationClicked");
     self.isAccountActivatedNotification = FALSE;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -1222,7 +1286,7 @@
     [self.tableView reloadData];
 }
 
--(void)onResendActivationClicked:(id)sender{
+- (void)onResendActivationClicked:(id)sender {
     //Send activation email command
     DLog(@"onResendActivationClicked");
     [self sendReactivationRequest];
@@ -1231,26 +1295,27 @@
 - (void)sendReactivationRequest {
     ValidateAccountRequest *validateCommand = [[ValidateAccountRequest alloc] init];
     validateCommand.email = [[SecurifiToolkit sharedInstance] loginEmail];
-    
+
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_VALIDATE_REQUEST;
     cloudCommand.command = validateCommand;
-    
+
     [self asyncSendCommand:cloudCommand];
 }
 
 - (void)validateResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    
+
     ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
-    
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
-    
+
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
+
     if (obj.isSuccessful) {
         [[[iToast makeText:@"Reactivation link sent to your registerd email ID."] setGravity:iToastGravityBottom] show:iToastTypeWarning];
-    }else{
+    }
+    else {
         NSLog(@"Reason Code %d", obj.reasonCode);
         //Reason Code
         NSString *failureReason;
@@ -1274,10 +1339,9 @@
                 failureReason = @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.";
                 break;
         }
-        
+
         [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
 }
-
 
 @end
