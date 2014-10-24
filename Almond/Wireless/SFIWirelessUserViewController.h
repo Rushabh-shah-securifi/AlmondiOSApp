@@ -13,7 +13,7 @@
 @interface SFIWirelessUserViewController : UITableViewController
 
 @property(nonatomic, retain) NSString *actionType;
-@property(nonatomic, retain) NSMutableArray *listAvailableColors;
+@property(nonatomic, retain) NSArray *listAvailableColors;
 @property(nonatomic) NSInteger currentColorIndex;
 @property(nonatomic, retain) SFIColors *currentColor;
 @property(nonatomic, retain) NSMutableData *genericData;

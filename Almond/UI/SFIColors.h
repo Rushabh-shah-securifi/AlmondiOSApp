@@ -9,8 +9,14 @@
 #import <Foundation/Foundation.h>
 
 @interface SFIColors : NSObject <NSCoding>
-@property (nonatomic, assign) int hue;
-@property (nonatomic, assign) int saturation;
-@property (nonatomic, assign) int brightness;
-@property (nonatomic, strong) NSString *colorName;
+
++ (NSArray*)colors;
+
+@property (nonatomic, assign, readonly) int hue;
+@property (nonatomic, assign, readonly) int saturation;
+@property (nonatomic, assign, readonly) int brightness;
+@property (nonatomic, strong, readonly) NSString *colorName;
+
+- (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName;
+
 @end

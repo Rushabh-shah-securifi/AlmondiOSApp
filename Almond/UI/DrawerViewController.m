@@ -10,6 +10,7 @@
 #import "AlmondPlusConstants.h"
 #import "SWRevealViewController.h"
 #import "UIFont+Securifi.h"
+#import "SFIColors.h"
 
 @interface DrawerViewController ()
 @property(nonatomic, strong, readonly) NSDictionary *dataDictionary;
@@ -194,10 +195,7 @@
             SFIAlmondPlus *currentAlmond = almondList[(NSUInteger) indexPath.row];
             self.currentMAC = currentAlmond.almondplusMAC;
 
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            NSString *documentsDirectory = paths[0];
-            NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
-            NSArray *listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+            NSArray *listAvailableColors = [SFIColors colors];
 
             int codeIndex = (int) indexPath.row;
             if (indexPath.row >= [listAvailableColors count]) {

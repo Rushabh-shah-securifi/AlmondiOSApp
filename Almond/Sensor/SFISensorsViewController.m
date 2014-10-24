@@ -746,12 +746,7 @@
 }
 
 - (void)initializeColors:(SFIAlmondPlus *)almond {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = paths[0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
-
-    NSArray *colors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-
+    NSArray *colors = [SFIColors colors];
     NSUInteger colorCode = (NSUInteger) almond.colorCodeIndex;
     _almondColor = colors[colorCode];
 }

@@ -35,21 +35,17 @@
     self.combinedList = [[NSMutableArray alloc] init];
     self.navigationItem.title = @"Users";
 
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
-
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     self.currentMAC = plus.almondplusMAC;
 
-    listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+    listAvailableColors = [SFIColors colors];
     int colorCode = plus.colorCodeIndex;
     if (colorCode != 0) {
-        currentColor = [listAvailableColors objectAtIndex:(NSUInteger) colorCode];
+        currentColor = listAvailableColors[(NSUInteger) colorCode];
     }
     else {
-        currentColor = [listAvailableColors objectAtIndex:(NSUInteger) self.currentColorIndex];
+        currentColor = listAvailableColors[(NSUInteger) self.currentColorIndex];
     }
 
     //Navigation bar button

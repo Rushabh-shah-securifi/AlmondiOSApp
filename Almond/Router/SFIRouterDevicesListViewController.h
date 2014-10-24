@@ -15,6 +15,6 @@
 @interface SFIRouterDevicesListViewController : UITableViewController <wirelessSettingsDelegate, wirelessSettingDelegate>
 @property(nonatomic, strong) NSArray *deviceList;
 @property int deviceListType;
-@property(nonatomic, strong) NSMutableArray *listAvailableColors;
+@property(nonatomic, strong) NSArray *listAvailableColors;
 @property(nonatomic, strong) SFIColors *currentColor;
 @end

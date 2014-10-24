@@ -85,25 +85,7 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
         self.navigationItem.title = @"Settings";
     }
 
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
-    //NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
-    listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-    //NSString *colorCode = [prefs stringForKey:COLORCODE];
-
-//    if(colorCode!=nil){
-//        currentColor = [listAvailableColors objectAtIndex:[colorCode integerValue]];
-//    }else{
-//        currentColor = [listAvailableColors objectAtIndex:self.currentColorIndex];
-//    }
-
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    listAvailableColors = [SFIColors colors];
 
     self.currentAlmond = [[SecurifiToolkit sharedInstance] currentAlmond];
 }

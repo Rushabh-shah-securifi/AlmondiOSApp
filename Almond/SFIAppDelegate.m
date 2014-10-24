@@ -8,7 +8,6 @@
 
 #import "SFIAppDelegate.h"
 #import "SNLog.h"
-#import "SFIColors.h"
 #import "Analytics.h"
 #import "Crashlytics.h"
 
@@ -22,8 +21,6 @@
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
 
     [[Analytics sharedInstance] initialize];
-
-    [self initializeColors];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 
@@ -69,66 +66,6 @@
 
 - (void)onMemoryWarning:(id)sender {
     [[Analytics sharedInstance] markMemoryWarning];
-}
-
-#pragma mark - Set up
-
-//todo push this all into SFIColors
-- (void)initializeColors {
-    NSMutableArray *listAvailableColors = [[NSMutableArray alloc] init];
-    SFIColors *colorBlue = [[SFIColors alloc] init];
-    colorBlue.hue = 196;
-    colorBlue.saturation = 100;
-    colorBlue.brightness = 100;
-    colorBlue.colorName = @"blue";
-    [listAvailableColors addObject:colorBlue];
-
-    SFIColors *colorGreen = [[SFIColors alloc] init];
-    colorGreen.hue = 154;
-    colorGreen.saturation = 100;
-    colorGreen.brightness = 90;
-    colorGreen.colorName = @"green";
-    [listAvailableColors addObject:colorGreen];
-
-    SFIColors *colorRed = [[SFIColors alloc] init];
-    colorRed.hue = 19;
-    colorRed.saturation = 100;
-    colorRed.brightness = 89;
-    colorRed.colorName = @"red";
-    [listAvailableColors addObject:colorRed];
-
-    SFIColors *colorPink = [[SFIColors alloc] init];
-    colorPink.hue = 340;
-    colorPink.saturation = 100;
-    colorPink.brightness = 90;
-    colorPink.colorName = @"pink";
-    [listAvailableColors addObject:colorPink];
-
-    SFIColors *colorPurple = [[SFIColors alloc] init];
-    colorPurple.hue = 284;
-    colorPurple.saturation = 100;
-    colorPurple.brightness = 85;
-    colorPurple.colorName = @"purple";
-    [listAvailableColors addObject:colorPurple];
-
-    SFIColors *colorLime = [[SFIColors alloc] init];
-    colorLime.hue = 69;
-    colorLime.saturation = 100;
-    colorLime.brightness = 90;
-    colorLime.colorName = @"lime";
-    [listAvailableColors addObject:colorLime];
-
-    SFIColors *colorYellow = [[SFIColors alloc] init];
-    colorYellow.hue = 45;
-    colorYellow.saturation = 100;
-    colorYellow.brightness = 85;
-    colorYellow.colorName = @"yellow";
-    [listAvailableColors addObject:colorYellow];
-
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = paths[0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
-    [NSKeyedArchiver archiveRootObject:listAvailableColors toFile:filePath];
 }
 
 @end

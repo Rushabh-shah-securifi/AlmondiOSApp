@@ -37,11 +37,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = paths[0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:COLORS];
-
-    _listAvailableColors = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+    _listAvailableColors = [SFIColors colors];
 
     //Set title
     SFIAlmondPlus *plus = [[SecurifiToolkit sharedInstance] currentAlmond];
