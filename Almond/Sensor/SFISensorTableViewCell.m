@@ -41,16 +41,8 @@
     return self;
 }
 
-- (void)showUpdatingDeviceValuesStatus {
-    [self showStatus:@"Updating sensor data.\nPlease wait."];
-}
-
-- (void)showStatus:(NSString*)status {
-    self.dirty = YES;
-    self.updatingState = YES;
+- (void)markStatusMessage:(NSString*)status {
     self.updatingStatus = status;
-    [self setUpdatingSensorStatus];
-    [self setNeedsDisplay];
 }
 
 - (void)markWillReuseCell:(BOOL)updating {

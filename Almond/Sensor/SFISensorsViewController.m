@@ -418,7 +418,7 @@
 
     NSString *status = [self tryDeviceStatusMessage:device];
     if (status) {
-        [cell showStatus:status];
+        [cell markStatusMessage:status];
         [cell markWillReuseCell:YES];
     }
     else {

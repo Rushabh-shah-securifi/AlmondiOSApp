@@ -38,15 +38,14 @@
 @property(nonatomic) SFIColors *deviceColor;
 @property(nonatomic, getter=isExpandedView) BOOL expandedView;
 
-// called to indicate that the device/device value is being updated with the cloud;
-// causes the view to show intermediate "updating" state
-- (void)showUpdatingDeviceValuesStatus;
-
-- (void)showStatus:(NSString *)status;
+// Sets a status message that will be shown in lieu of the normal sensor status.
+// Used to indicate, for example, that the sensor is being updated or failed to be updated.
+// Call this method then call markWillReuseCell:YES
+- (void)markStatusMessage:(NSString *)status;
 
 // Called by the table view delegate prior to returning it to the controller
 // Resets the view and prepares it for viewing.
-// updating parameter YES forces the cell to show "updating" message
+// updating parameter YES forces the cell to show "updating" status message
 - (void)markWillReuseCell:(BOOL)updating;
 
 - (NSString*)deviceName;
