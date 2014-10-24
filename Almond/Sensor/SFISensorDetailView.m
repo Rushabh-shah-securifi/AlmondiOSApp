@@ -17,6 +17,8 @@
 #define TEMP_LOWEST_SETTABLE 35
 #define TEMP_HIGHEST_SETTABLE 95
 
+#define CELL_STATE_PIN_SELECTION @"PinCodeField"
+
 // ===================================================================================
 
 
@@ -665,8 +667,6 @@
     };
     field.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Code is not specified." attributes:textAttributes];
 
-    [self setPinCodeTextField:1]; // preset the text field for first pin
-
     [self markYOffset:5];
     [self addShortLine];
     [self markYOffset:5];
@@ -834,6 +834,12 @@
     return valueName;
 }
 
+- (void)setPinCodeTextField:(NSInteger)index {
+    NSString *value = [self pingCodeValue:index];
+    UITextField *field = [self textFieldForTag:SFIDevicePropertyType_USER_CODE];
+    field.text = value;
+}
+
 #pragma mark - Helpers
 
 + (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor expandedCell:(BOOL)isExpanded {
@@ -938,7 +944,12 @@
 
         case SFIDevicePropertyType_USER_CODE: {
             // door lock 5
+            NSNumber *index = [self.delegate sensorDetailViewCell:self valueForKey:CELL_STATE_PIN_SELECTION];
+            if (index == nil) {
+                return 0;
+            }
 
+            return [index integerValue];
         }
 
         default: {
@@ -1043,7 +1054,8 @@
         case SFIDevicePropertyType_USER_CODE: {
             // door lock 5
             [self setPinCodeTextField:index + 1];
-
+            [self.delegate sensorDetailViewCell:self setValue:@(index) forKey:CELL_STATE_PIN_SELECTION];
+            
             return;
         }
 
@@ -1051,12 +1063,6 @@
             return;
         }
     }
-}
-
-- (void)setPinCodeTextField:(NSInteger)index {
-    NSString *value = [self pingCodeValue:index];
-    UITextField *field = [self textFieldForTag:SFIDevicePropertyType_USER_CODE];
-    field.text = value;
 }
 
 - (UITextField *)textFieldForTag:(NSInteger)tag {

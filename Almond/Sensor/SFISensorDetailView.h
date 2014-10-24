@@ -25,6 +25,10 @@
 
 - (void)sensorDetailViewDidRejectSensorValue:(SFISensorDetailView *)view validationToast:(NSString*)aMsg;
 
+- (void)sensorDetailViewCell:(SFISensorDetailView *)view setValue:(id)value forKey:(NSString *)key;
+
+- (id)sensorDetailViewCell:(SFISensorDetailView *)view valueForKey:(NSString *)key;
+
 @end
 
 

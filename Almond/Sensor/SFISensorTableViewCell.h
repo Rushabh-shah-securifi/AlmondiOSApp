@@ -26,6 +26,11 @@
 - (void)tableViewCellDidChangeValue:(SFISensorTableViewCell*)cell propertyName:(NSString*)propertyName newValue:(NSString*)newValue;
 
 - (void)tableViewCellDidDidFailValidation:(SFISensorTableViewCell *)cell validationToast:(NSString *)toastMsg;
+
+- (void)tableViewCell:(SFISensorTableViewCell *)cell setValue:(id)value forKey:(NSString *)key;
+
+- (id)tableViewCell:(SFISensorTableViewCell *)cell valueForKey:(NSString *)key;
+
 @end
 
 

@@ -24,8 +24,8 @@
 @property(nonatomic) BOOL dirty;
 @property(nonatomic) BOOL updatingState;
 
-@property(nonatomic) NSString *updatingStatus;
-@property(nonatomic) NSString *deviceStatus;
+@property(nonatomic) NSString *updatingStatusMessage;
+@property(nonatomic) NSString *deviceStatusMessage;
 
 @end
 
@@ -41,8 +41,8 @@
     return self;
 }
 
-- (void)markStatusMessage:(NSString*)status {
-    self.updatingStatus = status;
+- (void)markStatusMessage:(NSString *)status {
+    self.updatingStatusMessage = status;
 }
 
 - (void)markWillReuseCell:(BOOL)updating {
@@ -82,10 +82,10 @@
         }
 
         if (self.updatingState) {
-            self.deviceStatusLabel.text = self.updatingStatus;
+            self.deviceStatusLabel.text = self.updatingStatusMessage;
         }
         else {
-            self.deviceStatusLabel.text = self.deviceStatus;
+            self.deviceStatusLabel.text = self.deviceStatusMessage;
         }
     }
 }
@@ -318,6 +318,11 @@
             break;
         }
 
+        case SFIDeviceType_StandardWarningDevice_21: {
+            [self configureBinaryStateSensor:DT21_STANDARD_WARNING_DEVICE_TRUE imageNameFalse:DT21_STANDARD_WARNING_DEVICE_FALSE statusTrue:@"RINGING" statusFalse:@"OFF"];
+            break;
+        }
+
         case SFIDeviceType_SmartACSwitch_22: {
             [self configureBinaryStateSensor:DT22_AC_SWITCH_TRUE imageNameFalse:DT22_AC_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
             break;
@@ -385,7 +390,7 @@
         }
 
         case SFIDeviceType_UnknownOnOffModule_44: {
-            [self configureUnknownDevice];
+            [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"TRUE" statusFalse:@"FALSE"];
             break;
         }
 
@@ -396,7 +401,6 @@
 
         case SFIDeviceType_Controller_8:
         case SFIDeviceType_SceneController_9:
-        case SFIDeviceType_StandardWarningDevice_21:
         case SFIDeviceType_OccupancySensor_24:
         case SFIDeviceType_SimpleMetering_28:
         case SFIDeviceType_ColorControl_29:
@@ -531,7 +535,7 @@
     [self.delegate tableViewCellDidChangeValue:self propertyType:propertyType newValue:aValue];
 }
 
-- (void)sensorDetailViewDidChangeSensorValue:(SFISensorDetailView *)view propertyName:(NSString*)propertyName newValue:(NSString *)aValue {
+- (void)sensorDetailViewDidChangeSensorValue:(SFISensorDetailView *)view propertyName:(NSString *)propertyName newValue:(NSString *)aValue {
     [self.delegate tableViewCellDidChangeValue:self propertyName:propertyName newValue:aValue];
 }
 
@@ -539,6 +543,13 @@
     [self.delegate tableViewCellDidDidFailValidation:self validationToast:aMsg];
 }
 
+- (void)sensorDetailViewCell:(SFISensorDetailView *)view setValue:(id)value forKey:(NSString *)key {
+    [self.delegate tableViewCell:self setValue:value forKey:key];
+}
+
+- (id)sensorDetailViewCell:(SFISensorDetailView *)view valueForKey:(NSString *)key {
+    return [self.delegate tableViewCell:self valueForKey:key];
+}
 
 #pragma mark - Device layout
 
@@ -555,7 +566,7 @@
                                                                   nonZeroValue:DT2_MULTILEVEL_SWITCH_TRUE
                                                                       nilValue:DT2_MULTILEVEL_SWITCH_TRUE];
 
-    [self setDeviceStatusMessage:status];
+    self.deviceStatusMessage = status;
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 }
 
@@ -739,7 +750,7 @@
 - (void)setUpdatingSensorStatus {
     [self showDeviceValueLabels:NO];
     self.deviceImageView.image = [UIImage imageNamed:@"Wait_Icon.png"];
-    self.deviceStatusLabel.text = self.updatingStatus;
+    self.deviceStatusLabel.text = self.updatingStatusMessage;
 }
 
 - (void)showDeviceValueLabels:(BOOL)show {
@@ -750,13 +761,7 @@
 
 - (void)setDeviceStatusMessages:(NSArray *)statusMsgs {
     self.deviceStatusLabel.numberOfLines = (statusMsgs.count > 1) ? 0 : 1;
-
-    NSString *status = [statusMsgs componentsJoinedByString:@"\n"];
-    [self setDeviceStatusMessage:status];
-}
-
-- (void)setDeviceStatusMessage:(NSString*)status {
-    self.deviceStatus = status;
+    self.deviceStatusMessage = [statusMsgs componentsJoinedByString:@"\n"];
 }
 
 - (void)tryAddBatteryStatusMessage:(NSMutableArray *)status {

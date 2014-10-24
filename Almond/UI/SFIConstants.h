@@ -45,8 +45,8 @@
 #define DT20_KEYPAD_TRUE @"19_key_fob_1.png"
 #define DT20_KEYPAD_FALSE @"19_key_fob_2.png"
 
-#define DT21_STANDARD_WARNING_DEVICE_TRUE @"19_key_fob_1.png"
-#define DT21_STANDARD_WARNING_DEVICE_FALSE  @"19_key_fob_2.png"
+#define DT21_STANDARD_WARNING_DEVICE_TRUE @"alarm_2.png"
+#define DT21_STANDARD_WARNING_DEVICE_FALSE  @"alarm_1.png"
 
 #define DT22_AC_SWITCH_TRUE @"metering_2.png"
 #define DT22_AC_SWITCH_FALSE @"metering_1.png"

@@ -34,6 +34,12 @@
 @property(nonatomic, readonly) NSDictionary *deviceStatusMessages;      // SFIDevice :: NSString status message
 @property(nonatomic, readonly) NSObject *deviceStatusMessages_locker;   // sync locker for mutating the dictionary
 
+// Table view cells can call back to the controller to store state information that later can be retrieved to restore
+// the cell. This is useful when a cell is told to reload itself; a picker view might want to scroll to a certain position.
+// This dictionary stores those values. Key is device ID, value is a dictionary.
+@property(nonatomic, readonly) NSDictionary *deviceCellStateValues;
+@property(nonatomic, readonly) NSObject *deviceCellStateValues_locker;   // sync locker for mutating the dictionary
+
 // when YES, we defer showing sensor updates; basically, prevents first responder from being relinquished while editing
 @property BOOL isUpdatingDeviceSettings;
 
@@ -55,7 +61,10 @@
 
     _deviceStatusMessages_locker = [NSObject new];
     [self clearAllDeviceUpdatingState];
-    
+
+    _deviceCellStateValues_locker = [NSObject new];
+    [self clearAllDeviceCellStateValues];
+
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
     self.tableView.separatorColor = [UIColor clearColor];
@@ -135,6 +144,9 @@
 }
 
 - (void)initializeAlmondData {
+    [self clearAllDeviceUpdatingState];
+    [self clearAllDeviceCellStateValues];
+
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
     SFIAlmondPlus *plus = [toolkit currentAlmond];
@@ -500,6 +512,13 @@
     return view;
 }
 
+- (void)reloadDeviceTableCellForDevice:(SFIDevice *)device {
+    NSUInteger cellRow = (NSUInteger) [self deviceCellRow:device.deviceID];
+    NSIndexPath *path = [NSIndexPath indexPathForRow:cellRow inSection:0];
+
+    [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
+}
+
 #pragma mark - Add Almond actions
 
 - (void)onAddAlmondClicked:(id)sender {
@@ -705,15 +724,16 @@
     [self sendMobileCommandForDevice:device deviceValue:deviceValues];
 }
 
-- (void)reloadDeviceTableCell:(SFIDevice *)device {
-    NSUInteger cellRow = (NSUInteger) [self deviceCellRow:device.deviceID];
-    NSIndexPath *path = [NSIndexPath indexPathForRow:cellRow inSection:0];
-
-    [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
-}
-
 - (void)tableViewCellDidDidFailValidation:(SFISensorTableViewCell *)cell validationToast:(NSString *)toastMsg {
     [self showToast:toastMsg];
+}
+
+- (void)tableViewCell:(SFISensorTableViewCell *)cell setValue:(id)value forKey:(NSString *)key {
+    [self setDeviceCellValue:value forKey:key forDevice:cell.device];
+}
+
+- (id)tableViewCell:(SFISensorTableViewCell *)cell valueForKey:(NSString *)key {
+    return [self getDeviceCellValueForKey:key forDevice:cell.device];
 }
 
 #pragma mark - Class Methods
@@ -822,7 +842,6 @@
     });
 }
 
-//todo method is not actually processing response!
 - (void)onMobileCommandResponseCallback:(id)sender {
     if (!self) {
         return;
@@ -881,7 +900,7 @@
             }
         }
 
-        [self reloadDeviceTableCell:device];
+        [self reloadDeviceTableCellForDevice:device];
     });
 }
 
@@ -1031,8 +1050,6 @@
 }
 
 - (void)onCurrentAlmondChanged:(id)sender {
-    [self clearAllDeviceUpdatingState];
-
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self clearExpandedCell];
         [self initializeAlmondData];
@@ -1058,8 +1075,6 @@
     }
 
     // If plus is nil, then there are no almonds attached, and the UI needs to deal with it.
-
-    [self clearAllDeviceUpdatingState];
 
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
@@ -1173,7 +1188,7 @@
 
         sfi_id c_id = [[SecurifiToolkit sharedInstance] asyncChangeAlmond:self.almond device:device value:deviceValues];
         [self markDeviceUpdatingState:device correlationId:c_id];
-        [self reloadDeviceTableCell:device];
+        [self reloadDeviceTableCellForDevice:device];
     });
 }
 
@@ -1200,7 +1215,45 @@
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
-#pragma mark - Device updating state and status meessages
+#pragma mark - Device table view cell state values
+
+- (void)clearAllDeviceCellStateValues {
+    @synchronized (self.deviceCellStateValues_locker) {
+        _deviceCellStateValues = [NSMutableDictionary dictionary];
+    };
+}
+
+-(void)setDeviceCellValue:(id)value forKey:(NSString*)key forDevice:(SFIDevice*)device {
+    if (key == nil) {
+        return;
+    }
+
+    @synchronized (self.deviceCellStateValues_locker) {
+        NSNumber *device_key = @(device.deviceID);
+        NSMutableDictionary *all = (NSMutableDictionary *) self.deviceCellStateValues;
+
+        NSMutableDictionary *dict = all[device_key];
+        if (dict == nil) {
+            dict = [NSMutableDictionary dictionary];
+            all[device_key] = dict;
+        }
+        dict[key] = value;
+    };
+}
+
+-(id)getDeviceCellValueForKey:(NSString*)key forDevice:(SFIDevice*)device {
+    if (key == nil) {
+        return nil;
+    }
+    @synchronized (self.deviceCellStateValues_locker) {
+        NSNumber *device_key = @(device.deviceID);
+        NSMutableDictionary *all = (NSMutableDictionary *) self.deviceCellStateValues;
+        NSMutableDictionary *dict = all[device_key];
+        return dict[key];
+    };
+}
+
+#pragma mark - Device updating state and status messages
 
 - (NSString*)deviceLookupKey:(SFIDevice*)device {
     return [NSString stringWithFormat:@"d-%d", device.deviceID];
