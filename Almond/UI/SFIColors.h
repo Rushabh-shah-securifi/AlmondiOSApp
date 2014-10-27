@@ -6,8 +6,6 @@
 //  Copyright (c) 2013 Ben Vogelzang. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface SFIColors : NSObject <NSCoding>
 
 // Returns the standard list of almond colors
