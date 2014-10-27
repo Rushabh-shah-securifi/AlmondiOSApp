@@ -537,55 +537,16 @@
     }
 
     SFIDevice *device = cell.device;
-    const int device_id = device.deviceID;
+    if (![device isBinaryStateSwitchable]) {
+        return;
+    }
 
-    SFIDeviceKnownValues *deviceValues;
+    SFIDeviceValue *value = [self tryCurrentDeviceValues:device.deviceID];
 
-    switch (device.deviceType) {
-        case SFIDeviceType_MultiLevelSwitch_2: {
-            // Multilevel switch
-            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id propertyType:device.mutableStatePropertyType];
-
-            int newValue = (deviceValues.intValue == 0) ? 99 : 0;
-            [deviceValues setIntValue:newValue];
-            break;
-        }
-
-        case SFIDeviceType_BinarySensor_3: {
-            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id propertyType:device.mutableStatePropertyType];
-            [deviceValues setBoolValue:NO];
-            break;
-        }
-
-        case SFIDeviceType_DoorLock_5:
-        case SFIDeviceType_Alarm_6: {
-            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id propertyType:device.mutableStatePropertyType];
-
-            int newValue = (deviceValues.intValue == 0) ? 255 : 0;
-            [deviceValues setIntValue:newValue];
-            break;
-        }
-
-        case SFIDeviceType_BinarySwitch_1:
-        case SFIDeviceType_MultiLevelOnOff_4:
-        case SFIDeviceType_StandardWarningDevice_21:
-        case SFIDeviceType_SmartACSwitch_22:
-        case SFIDeviceType_SmartDCSwitch_23:
-        case SFIDeviceType_Siren_42:
-        case SFIDeviceType_UnknownOnOffModule_44:
-        case SFIDeviceType_BinaryPowerSwitch_45: {
-            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id propertyType:device.mutableStatePropertyType];
-            if (!deviceValues.hasValue) {
-                return; // nothing to do
-            }
-            [deviceValues setBoolValue:!deviceValues.boolValue];
-            break;
-        }
-
-        default: {
-            return; // nothing to do
-        }
-    } // end switch
+    SFIDeviceKnownValues *deviceValues = [device switchBinaryState:value];
+    if (!deviceValues) {
+        return;
+    }
 
     // Send update to the cloud
     [self sendMobileCommandForDevice:device deviceValue:deviceValues];
@@ -663,8 +624,6 @@
     cmd.deviceID = [NSString stringWithFormat:@"%d", device.deviceID];
     cmd.changedName = cell.deviceName;
     cmd.changedLocation = cell.deviceLocation;
-
-    NSLog(@"xml: %@", cmd.toXml);
 
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_MOBILE_COMMAND;
@@ -744,15 +703,6 @@
 }
 
 #pragma mark - Sensor Values
-
-- (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice:(int)deviceId propertyType:(SFIDevicePropertyType)propertyType {
-    SFIDeviceValue *value = [self tryCurrentDeviceValues:deviceId];
-    if (!value) {
-        return nil;
-    }
-
-    return [value knownValuesForProperty:propertyType];
-}
 
 - (SFIDeviceValue *)tryCurrentDeviceValues:(int)deviceId {
     return self.deviceValueTable[@(deviceId)];
