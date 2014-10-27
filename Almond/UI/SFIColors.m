@@ -64,7 +64,7 @@
     return self;
 }
 
-- (void) encodeWithCoder:(NSCoder *)encoder {
+- (void)encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeInteger:self.hue forKey:@"HUE"];
     [encoder encodeInteger:self.saturation forKey:@"SATURATION"];
     [encoder encodeInteger:self.brightness forKey:@"BRIGHTNESS"];
