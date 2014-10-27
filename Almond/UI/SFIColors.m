@@ -22,14 +22,6 @@
     ];
 }
 
-- (void) encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeInteger:self.hue forKey:@"HUE"];
-    [encoder encodeInteger:self.saturation forKey:@"SATURATION"];
-    [encoder encodeInteger:self.brightness forKey:@"BRIGHTNESS"];
-    [encoder encodeObject:self.colorName forKey:@"NAME"];
-    
-}
-
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName {
     self = [super init];
     if (self) {
@@ -42,13 +34,26 @@
     return self;
 }
 
+- (UIColor *)makeGradatedColorForPositionIndex:(int)index {
+    int positionIndex = index % 15;
+
+    int brightness = 0;
+    if (positionIndex < 7) {
+        brightness = self.brightness - (positionIndex * 10);
+    }
+    else {
+        brightness = (self.brightness - 70) + ((positionIndex - 7) * 10);
+    }
+
+    return [self colorWithBrightness:brightness];
+}
+
 - (UIColor *)colorWithBrightness:(int)brightness {
     return [UIColor colorWithHue:(CGFloat) (self.hue / 360.0)
                       saturation:(CGFloat) (self.saturation / 100.0)
                       brightness:(CGFloat) (brightness / 100.0)
                            alpha:1];
 }
-
 
 - (id)initWithCoder:(NSCoder *)decoder {
     _hue = [decoder decodeIntForKey:@"HUE"];
@@ -57,6 +62,14 @@
     _colorName = [decoder decodeObjectForKey:@"NAME"];
 
     return self;
+}
+
+- (void) encodeWithCoder:(NSCoder *)encoder {
+    [encoder encodeInteger:self.hue forKey:@"HUE"];
+    [encoder encodeInteger:self.saturation forKey:@"SATURATION"];
+    [encoder encodeInteger:self.brightness forKey:@"BRIGHTNESS"];
+    [encoder encodeObject:self.colorName forKey:@"NAME"];
+
 }
 
 @end
