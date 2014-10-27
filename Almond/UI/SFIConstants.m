@@ -10,17 +10,6 @@
 
 @implementation SFIConstants
 
-+ (void)dismissKeyboard {
-    [self globalResignFirstResponder];
-}
-
-+ (void) globalResignFirstResponder {
-    UIWindow * window = [[UIApplication sharedApplication] keyWindow];
-    for (UIView * view in [window subviews]){
-        [self globalResignFirstResponderRec:view];
-    }
-}
-
 + (void) globalResignFirstResponderRec:(UIView*) view {
     if ([view respondsToSelector:@selector(resignFirstResponder)]){
         [view resignFirstResponder];

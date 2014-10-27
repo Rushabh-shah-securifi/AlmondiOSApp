@@ -19,6 +19,8 @@
 
 #define CELL_STATE_PIN_SELECTION @"PinCodeField"
 
+#define DEVICE_TAMPERED_MESSAGE @"Device has been tampered"
+
 // ===================================================================================
 
 
@@ -466,7 +468,7 @@
     UILabel *label;
     label = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
     label.backgroundColor = self.color;
-    label.text = DEVICE_TAMPERED;
+    label.text = DEVICE_TAMPERED_MESSAGE;
     label.textColor = whiteColor;
     label.font = heavy_font;
 

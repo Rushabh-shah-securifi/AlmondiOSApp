@@ -14,7 +14,6 @@
 #define WIRELESS_USER_ROW_HEIGHT 100
 #define LEFT_LABEL_WIDTH 100
 
-
 #define DT1_BINARY_SWITCH_TRUE @"switch_on.png"
 #define DT1_BINARY_SWITCH_FALSE @"switch_off.png"
 #define DT2_MULTILEVEL_SWITCH_TRUE @"dimmer.png"
@@ -79,8 +78,8 @@
 #define DT45_BINARY_POWER_TRUE @"door_on.png"
 #define DT45_BINARY_POWER_FALSE @"door_off.png"
 
-#define DEVICE_TAMPERED @"Device has been tampered"
-#define BATTERY_IS_LOW @"Alert! Battery is low."
+#define DEVICE_UNKNOWN_IMAGE @"default_device.png"
+#define DEVICE_RELOAD_IMAGE @"Reload_icon.png"
+#define DEVICE_UPDATING_IMAGE @"Wait_Icon.png"
 
-+ (void)dismissKeyboard;
 @end

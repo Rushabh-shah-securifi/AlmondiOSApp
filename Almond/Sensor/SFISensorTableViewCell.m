@@ -9,6 +9,8 @@
 #import "UIFont+Securifi.h"
 
 
+#define DEF_COULD_NOT_UPDATE_SENSOR @"Could not update sensor\ndata."
+
 @interface SFISensorTableViewCell () <SFISensorDetailViewDelegate>
 @property(nonatomic) UIImageView *deviceImageView;
 @property(nonatomic) UILabel *deviceStatusLabel;
@@ -262,11 +264,6 @@
             break;
         }
 
-        case SFIDeviceType_StandardCIE_10: {
-            [self configureUnknownDevice];
-            break;
-        }
-
         case SFIDeviceType_MotionSensor_11: {
             [self configureBinaryStateSensor:DT11_MOTION_SENSOR_TRUE imageNameFalse:DT11_MOTION_SENSOR_FALSE statusTrue:@"MOTION DETECTED" statusFalse:@"NO MOTION"];
             break;
@@ -292,28 +289,13 @@
             break;
         }
 
-        case SFIDeviceType_PersonalEmergencyDevice_16: {
-            [self configureUnknownDevice];
-            break;
-        }
-
         case SFIDeviceType_VibrationOrMovementSensor_17: {
             [self configureBinaryStateSensor:DT17_VIBRATION_SENSOR_TRUE imageNameFalse:DT17_VIBRATION_SENSOR_FALSE statusTrue:@"VIBRATION DETECTED" statusFalse:@"NO VIBRATION"];
             break;
         }
 
-        case SFIDeviceType_RemoteControl_18: {
-            [self configureUnknownDevice];
-            break;
-        }
-
         case SFIDeviceType_KeyFob_19: {
             [self configureKeyFob_19];
-            break;
-        }
-
-        case SFIDeviceType_Keypad_20: {
-            [self configureUnknownDevice];
             break;
         }
 
@@ -398,8 +380,13 @@
             break;
         }
 
+        case SFIDeviceType_UnknownDevice_0:
         case SFIDeviceType_Controller_8:
         case SFIDeviceType_SceneController_9:
+        case SFIDeviceType_StandardCIE_10:
+        case SFIDeviceType_PersonalEmergencyDevice_16:
+        case SFIDeviceType_RemoteControl_18:
+        case SFIDeviceType_Keypad_20:
         case SFIDeviceType_OccupancySensor_24:
         case SFIDeviceType_SimpleMetering_28:
         case SFIDeviceType_ColorControl_29:
@@ -408,16 +395,15 @@
         case SFIDeviceType_ColorDimmableLight_32:
         case SFIDeviceType_HAPump_33:
         case SFIDeviceType_MultiSwitch_43:
-
-        case SFIDeviceType_UnknownDevice_0:
         default: {
-            self.deviceImageView.image = [UIImage imageNamed:@"default_device.png"];
+            [self configureUnknownDevice];
         }
     } // for each device
 }
 
 - (void)configureUnknownDevice {
-    [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"TRUE" statusFalse:@"FALSE"];
+//    [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"TRUE" statusFalse:@"FALSE"];
+    [self configureSensorImageName:DEVICE_UNKNOWN_IMAGE statusMesssage:nil];
 }
 
 - (void)setTemperatureValue:(NSString *)value {
@@ -559,7 +545,7 @@
 
     NSString *status = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
                                                                nonZeroValue:[NSString stringWithFormat:@"Dimmable, %@%%", currentLevel]
-                                                                   nilValue:@"Could not update sensor\ndata."];
+                                                                   nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
 
     NSString *imageName = [currentLevelKnownValue choiceForLevelValueZeroValue:DT2_MULTILEVEL_SWITCH_FALSE
                                                                   nonZeroValue:DT2_MULTILEVEL_SWITCH_TRUE
@@ -582,7 +568,7 @@
     if (!values.hasValue) {
         status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"Dimmable"
                                                              nonZeroValue:[NSString stringWithFormat:@"Dimmable, %.0f%%", intLevel]
-                                                                 nilValue:@"Could not update sensor\ndata."];
+                                                                 nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
 
         image_name = DT4_LEVEL_CONTROL_TRUE;
     }
@@ -639,11 +625,11 @@
     SFIDeviceValue *const deviceValue = self.deviceValue;
 
     NSMutableArray *status = [NSMutableArray array];
-    [status addObject:[deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : @"ALL DISARMED", @"2" : @"PERIMETER ARMED", @"3" : @"ALL ARMED"} default:@"Could not update sensor\ndata."]];
+    [status addObject:[deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : @"ALL DISARMED", @"2" : @"PERIMETER ARMED", @"3" : @"ALL ARMED"} default:DEF_COULD_NOT_UPDATE_SENSOR]];
     [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 
-    NSString *imageForNoValue = [self imageForNoValue];
+    NSString *imageForNoValue = [self imageNameForNoValue];
     NSString *imageName = [deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : DT19_KEYFOB_FALSE, @"2" : DT19_KEYFOB_TRUE, @"3" : DT19_KEYFOB_TRUE} default:imageForNoValue];
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 }
@@ -683,7 +669,7 @@
 - (void)configureMoistureSensor_40 {
     SFIDeviceKnownValues *stateValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BASIC];
 
-    NSString *imageForNoValue = [self imageForNoValue];
+    NSString *imageForNoValue = [self imageNameForNoValue];
     NSString *imageName = [stateValue choiceForLevelValueZeroValue:DT40_MOISTURE_FALSE nonZeroValue:DT40_MOISTURE_TRUE nilValue:imageForNoValue];
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 
@@ -709,7 +695,7 @@
     [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 
-    NSString *imageForNoValue = [self imageForNoValue];
+    NSString *imageForNoValue = [self imageNameForNoValue];
     NSString *imageName = [stateValue choiceForBoolValueTrueValue:DT45_BINARY_POWER_TRUE falseValue:DT45_BINARY_POWER_FALSE nilValue:imageForNoValue];
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 }
@@ -717,24 +703,24 @@
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
 
-    NSString *noImage = [self imageForNoValue];
+    NSString *noImage = [self imageNameForNoValue];
     NSString *imageName = [values choiceForBoolValueTrueValue:imageNameTrue falseValue:imageNameFalse nilValue:noImage];
 
-    NSString *status = [values choiceForBoolValueTrueValue:statusTrue falseValue:statusFalse nilValue:@"Could not update sensor\ndata."];
-    [self configureBinaryStateSensorImageName:imageName statusMesssage:status];
+    NSString *status = [values choiceForBoolValueTrueValue:statusTrue falseValue:statusFalse nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
+    [self configureSensorImageName:imageName statusMesssage:status];
 }
 
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusNonZeroValue:(NSString *)statusTrue statusZeroValue:(NSString *)statusFalse {
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
 
-    NSString *noImage = [self imageForNoValue];
+    NSString *noImage = [self imageNameForNoValue];
     NSString *imageName = [values choiceForLevelValueZeroValue:imageNameFalse nonZeroValue:imageNameTrue nilValue:noImage];
 
-    NSString *status = [values choiceForLevelValueZeroValue:statusTrue nonZeroValue:statusFalse nilValue:@"Could not update sensor\ndata."];
-    [self configureBinaryStateSensorImageName:imageName statusMesssage:status];
+    NSString *status = [values choiceForLevelValueZeroValue:statusTrue nonZeroValue:statusFalse nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
+    [self configureSensorImageName:imageName statusMesssage:status];
 }
 
-- (void)configureBinaryStateSensorImageName:(NSString *)imageName statusMesssage:(NSString *)message {
+- (void)configureSensorImageName:(NSString *)imageName statusMesssage:(NSString *)message {
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 
     NSMutableArray *status = [NSMutableArray array];
@@ -745,16 +731,13 @@
     [self setDeviceStatusMessages:status];
 }
 
-- (NSString *)imageForNoValue {
-    if (self.deviceValue.valueCount == 0) {
-        return @"Reload_icon.png";
-    }
-    return @"default_device.png";
+- (NSString *)imageNameForNoValue {
+    return DEVICE_RELOAD_IMAGE;
 }
 
 - (void)setUpdatingSensorStatus {
     [self showDeviceValueLabels:NO];
-    self.deviceImageView.image = [UIImage imageNamed:@"Wait_Icon.png"];
+    self.deviceImageView.image = [UIImage imageNamed:DEVICE_UPDATING_IMAGE];
     self.deviceStatusLabel.text = self.updatingStatusMessage;
 }
 
