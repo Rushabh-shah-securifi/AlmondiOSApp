@@ -81,8 +81,11 @@
 @property(nonatomic) BOOL layoutCalled;
 @property(nonatomic) UITextField *deviceNameField;
 @property(nonatomic) UITextField *deviceLocationField;
-
 @property(nonatomic) UITextField *firstResponderField;
+
+// computed once at layout time and cached
+@property(nonatomic) BOOL isDeviceTampered;
+
 @end
 
 @implementation SFISensorDetailView
@@ -115,7 +118,10 @@
 
     self.backgroundColor = self.color;
 
-    NSUInteger rowHeight = [SFISensorDetailView computeSensorRowHeight:self.device expandedCell:YES];
+    // Set up device state
+    self.isDeviceTampered = [self.device isTampered:self.deviceValue];
+
+    NSUInteger rowHeight = [SFISensorDetailView computeSensorRowHeight:self.device tamperedDevice:self.isDeviceTampered expandedCell:YES];
     self.frame = CGRectMake(10, 86, (LEFT_LABEL_WIDTH) + (self.frame.size.width - LEFT_LABEL_WIDTH - 25) + 1, rowHeight - SENSOR_ROW_HEIGHT);
 
     // Add standard offset from top-level
@@ -215,7 +221,7 @@
 
 // Adds a tamper message and dismiss button when needed; otherwise, does nothing; advances the y-offset
 - (void)tryAddTamper {
-    if (self.device.isTampered) {
+    if (self.isDeviceTampered) {
         [self addTamperButton];
         [self addLine];
     }
@@ -842,12 +848,12 @@
 
 #pragma mark - Helpers
 
-+ (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor expandedCell:(BOOL)isExpanded {
++ (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor tamperedDevice:(BOOL)isTampered expandedCell:(BOOL)isExpanded {
     if (!isExpanded) {
         return SENSOR_ROW_HEIGHT;
     }
 
-    NSUInteger tamperedExtra = currentSensor.isTampered ? 45 : 0; // accounts for the row presenting the tampered msg and dismiss button
+    NSUInteger tamperedExtra = isTampered ? 45 : 0; // accounts for the row presenting the tampered msg and dismiss button
 
     switch (currentSensor.deviceType) {
         case SFIDeviceType_MultiLevelSwitch_2:

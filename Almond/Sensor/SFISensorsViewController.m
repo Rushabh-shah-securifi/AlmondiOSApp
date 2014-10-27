@@ -182,7 +182,6 @@
             NSLog(@"Sensors: requesting device values on new connection");
         }
 
-        [self initializeDevices];
         [self initializeColors:plus];
     }
 }
@@ -330,8 +329,9 @@
         return SENSOR_ROW_HEIGHT;
     }
 
-    SFIDevice *sensor = [self tryGetDevice:indexPath.row];
-    return (CGFloat) [self computeSensorRowHeight:sensor];
+    SFIDevice *device = [self tryGetDevice:indexPath.row];
+    SFIDeviceValue *deviceValue = [self tryCurrentDeviceValues:device.deviceID];
+    return (CGFloat) [self computeSensorRowHeight:device deviceValue:deviceValue];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -409,9 +409,10 @@
 
 - (UITableViewCell *)createSensorCell:(UITableView *)tableView listRow:(int)indexPathRow {
     SFIDevice *device = [self tryGetDevice:indexPathRow];
+    SFIDeviceValue *deviceValue = [self tryCurrentDeviceValues:device.deviceID];
 
     SFIDeviceType currentDeviceType = device.deviceType;
-    NSUInteger height = [self computeSensorRowHeight:device];
+    NSUInteger height = [self computeSensorRowHeight:device deviceValue:deviceValue];
     BOOL expanded = [self isExpandedCell:device];
     
     NSString *id = [NSString stringWithFormat:@"s_t:%d_h:%ld_e:%d,", currentDeviceType, (unsigned long) height, expanded];
@@ -426,7 +427,7 @@
     cell.delegate = self;
     cell.expandedView = expanded;
 
-    cell.deviceValue = [self tryCurrentDeviceValues:device.deviceID];
+    cell.deviceValue = deviceValue;
 
     NSString *status = [self tryDeviceStatusMessage:device];
     if (status) {
@@ -440,13 +441,10 @@
     return cell;
 }
 
-- (UIColor *)makeCellColor:(SFIColors *)color rowIndex:(int)row {
-    return [color makeGradatedColorForPositionIndex:row];
-}
-
-- (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor {
+- (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor deviceValue:(SFIDeviceValue*)deviceValue {
     BOOL expanded = [self isExpandedCell:currentSensor];
-    return [SFISensorDetailView computeSensorRowHeight:currentSensor expandedCell:expanded];
+    BOOL tampered = [currentSensor isTampered:deviceValue];
+    return [SFISensorDetailView computeSensorRowHeight:currentSensor tamperedDevice:tampered expandedCell:expanded];
 }
 
 - (UIView *)createActivationNotificationHeader{
@@ -546,7 +544,7 @@
     switch (device.deviceType) {
         case SFIDeviceType_MultiLevelSwitch_2: {
             // Multilevel switch
-            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.mostImpValueIndex];
+            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id propertyType:device.mutableStatePropertyType];
 
             int newValue = (deviceValues.intValue == 0) ? 99 : 0;
             [deviceValues setIntValue:newValue];
@@ -554,17 +552,14 @@
         }
 
         case SFIDeviceType_BinarySensor_3: {
-            if (![device isTamperMostImportantValue]) {
-                return; // nothing to do
-            }
-            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.mostImpValueIndex];
+            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id propertyType:device.mutableStatePropertyType];
             [deviceValues setBoolValue:NO];
             break;
         }
 
         case SFIDeviceType_DoorLock_5:
         case SFIDeviceType_Alarm_6: {
-            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.mostImpValueIndex];
+            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id propertyType:device.mutableStatePropertyType];
 
             int newValue = (deviceValues.intValue == 0) ? 255 : 0;
             [deviceValues setIntValue:newValue];
@@ -579,7 +574,7 @@
         case SFIDeviceType_Siren_42:
         case SFIDeviceType_UnknownOnOffModule_44:
         case SFIDeviceType_BinaryPowerSwitch_45: {
-            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id valuesIndex:device.stateIndex];
+            deviceValues = [self tryGetCurrentKnownValuesForDevice:device_id propertyType:device.mutableStatePropertyType];
             if (!deviceValues.hasValue) {
                 return; // nothing to do
             }
@@ -742,13 +737,6 @@
 
 #pragma mark - Class Methods
 
-- (void)initializeDevices {
-    for (SFIDevice *currentSensor in self.deviceList) {
-        SFIDeviceValue *value = [self tryCurrentDeviceValues:currentSensor.deviceID];
-        [currentSensor initializeFromValues:value];
-    }
-}
-
 - (void)initializeColors:(SFIAlmondPlus *)almond {
     NSArray *colors = [SFIColors colors];
     NSUInteger colorCode = (NSUInteger) almond.colorCodeIndex;
@@ -757,18 +745,13 @@
 
 #pragma mark - Sensor Values
 
-- (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice:(int)deviceId valuesIndex:(NSInteger)index {
+- (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice:(int)deviceId propertyType:(SFIDevicePropertyType)propertyType {
     SFIDeviceValue *value = [self tryCurrentDeviceValues:deviceId];
     if (!value) {
         return nil;
     }
 
-    NSArray *values = value.knownDevicesValues;
-    if (index < values.count) {
-        return values[(NSUInteger) index];
-    }
-
-    return nil;
+    return [value knownValuesForProperty:propertyType];
 }
 
 - (SFIDeviceValue *)tryCurrentDeviceValues:(int)deviceId {
@@ -833,7 +816,6 @@
         //Cancel the mobile event - Revert back
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         [self setDeviceValues:[toolkit deviceValuesList:self.almondMac]];
-        [self initializeDevices];
         [self.tableView reloadData];
         [self.HUD hide:YES];
 
@@ -954,7 +936,6 @@
             if (newDeviceValueList) {
                 [self setDeviceValues:newDeviceValueList];
             }
-            [self initializeDevices];
             [self.tableView reloadData];
         }
 
@@ -1039,7 +1020,6 @@
 
         [self setDeviceList:newDeviceList];
         [self setDeviceValues:newDeviceValueList];
-        [self initializeDevices];
 
         // defer showing changes when a sensor is being edited (name, location, etc.)
         if (!self.isUpdatingDeviceSettings) {
@@ -1204,7 +1184,6 @@
             return;
         }
         [self setDeviceList:list];
-        [self initializeDevices];
         [self.tableView reloadData];
         [self.HUD hide:YES];
     });

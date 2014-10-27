@@ -554,7 +554,7 @@
 
 - (void)configureMultiLevelSwitch_2 {
     //Get Percentage
-    SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceValuesIndex:self.device.mostImpValueIndex];
+    SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceMutableState];
     NSString *currentLevel = currentLevelKnownValue.value;
 
     NSString *status = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
@@ -571,34 +571,34 @@
 
 - (void)configureLevelControl_4 {
     //Get Percentage
-    SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceValuesIndex:self.device.mostImpValueIndex];
+    SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceMutableState];
     float intLevel = [currentLevelKnownValue floatValue];
     intLevel = (intLevel / 256) * 100;
 
     NSString *status_str;
     NSString *image_name;
 
-    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDevice];
+    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
     if (!values.hasValue) {
         status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"Dimmable"
                                                              nonZeroValue:[NSString stringWithFormat:@"Dimmable, %.0f%%", intLevel]
                                                                  nilValue:@"Could not update sensor\ndata."];
 
-        image_name = [self.device imageName:DT4_LEVEL_CONTROL_TRUE];
+        image_name = DT4_LEVEL_CONTROL_TRUE;
     }
     else if (values.boolValue == true) {
         status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"ON"
                                                              nonZeroValue:[NSString stringWithFormat:@"ON, %.0f%%", intLevel]
                                                                  nilValue:@"ON"];
 
-        image_name = [self.device imageName:DT4_LEVEL_CONTROL_TRUE];
+        image_name = DT4_LEVEL_CONTROL_TRUE;
     }
     else {
         status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
                                                              nonZeroValue:[NSString stringWithFormat:@"OFF, %.0f%%", intLevel]
                                                                  nilValue:@"OFF"];
 
-        image_name = [self.device imageName:DT4_LEVEL_CONTROL_FALSE];
+        image_name = DT4_LEVEL_CONTROL_FALSE;
     }
 
     [self setDeviceStatusMessage:status_str];
@@ -715,15 +715,21 @@
 }
 
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
-    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDevice];
-    NSString *imageName = [values choiceForBoolValueTrueValue:imageNameTrue falseValue:imageNameFalse nilValue:[self imageForNoValue]];
+    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
+
+    NSString *noImage = [self imageForNoValue];
+    NSString *imageName = [values choiceForBoolValueTrueValue:imageNameTrue falseValue:imageNameFalse nilValue:noImage];
+
     NSString *status = [values choiceForBoolValueTrueValue:statusTrue falseValue:statusFalse nilValue:@"Could not update sensor\ndata."];
     [self configureBinaryStateSensorImageName:imageName statusMesssage:status];
 }
 
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusNonZeroValue:(NSString *)statusTrue statusZeroValue:(NSString *)statusFalse {
-    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDevice];
-    NSString *imageName = [values choiceForLevelValueZeroValue:imageNameFalse nonZeroValue:imageNameTrue nilValue:[self imageForNoValue]];
+    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
+
+    NSString *noImage = [self imageForNoValue];
+    NSString *imageName = [values choiceForLevelValueZeroValue:imageNameFalse nonZeroValue:imageNameTrue nilValue:noImage];
+
     NSString *status = [values choiceForLevelValueZeroValue:statusTrue nonZeroValue:statusFalse nilValue:@"Could not update sensor\ndata."];
     [self configureBinaryStateSensorImageName:imageName statusMesssage:status];
 }
@@ -764,7 +770,7 @@
 }
 
 - (void)tryAddBatteryStatusMessage:(NSMutableArray *)status {
-    if (self.device.isBatteryLow) {
+    if ([self.device isBatteryLow:self.deviceValue]) {
         [status addObject:@"LOW BATTERY"];
     }
     else {
@@ -777,20 +783,12 @@
 
 #pragma mark - Device Values
 
-- (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDevice {
-    return [self tryGetCurrentKnownValuesForDeviceValuesIndex:self.device.stateIndex];
+- (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDeviceState {
+    return [self.deviceValue knownValuesForProperty:self.device.statePropertyType];
 }
 
-- (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDeviceValuesIndex:(int)stateIndex {
-    NSArray *values = [self currentKnownValuesForDevice];
-    if (values.count > 0 && stateIndex < values.count) {
-        return values[(NSUInteger) stateIndex];
-    }
-    return nil;
-}
-
-- (NSArray *)currentKnownValuesForDevice {
-    return self.deviceValue.knownDevicesValues;
+- (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDeviceMutableState {
+    return [self.deviceValue knownValuesForProperty:self.device.mutableStatePropertyType];
 }
 
 @end
