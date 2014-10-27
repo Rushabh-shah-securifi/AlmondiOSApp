@@ -5,7 +5,6 @@
 //
 #import "SFISensorTableViewCell.h"
 #import "SFIConstants.h"
-#import "SFIColors.h"
 #import "SFISensorDetailView.h"
 #import "UIFont+Securifi.h"
 
@@ -75,7 +74,7 @@
             detailView.delegate = self;
             detailView.device = device;
             detailView.deviceValue = self.deviceValue;
-            detailView.color = [self makeCellColor];
+            detailView.color = self.cellColor;
 
             [self.contentView addSubview:detailView];
             self.detailView = detailView;
@@ -114,7 +113,7 @@
     const CGRect cell_frame = self.frame;
     const NSInteger row_index = self.tag;
 
-    UIColor *const cell_color = [self makeCellColor];
+    UIColor *const cell_color = self.cellColor;
     UIColor *const clear_color = [UIColor clearColor];
     UIColor *const white_color = [UIColor whiteColor];
 
@@ -792,25 +791,6 @@
 
 - (NSArray *)currentKnownValuesForDevice {
     return self.deviceValue.knownDevicesValues;
-}
-
-- (UIColor *)makeCellColor {
-    SFIColors *color = self.deviceColor;
-
-    int positionIndex = self.tag % 15;
-
-    int brightness = 0;
-    if (positionIndex < 7) {
-        brightness = color.brightness - (positionIndex * 10);
-    }
-    else {
-        brightness = (color.brightness - 70) + ((positionIndex - 7) * 10);
-    }
-
-    return [UIColor colorWithHue:(CGFloat) (color.hue / 360.0)
-                      saturation:(CGFloat) (color.saturation / 100.0)
-                      brightness:(CGFloat) (brightness / 100.0)
-                           alpha:1];
 }
 
 @end

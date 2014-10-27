@@ -42,6 +42,13 @@
     return self;
 }
 
+- (UIColor *)colorWithBrightness:(int)brightness {
+    return [UIColor colorWithHue:(CGFloat) (self.hue / 360.0)
+                      saturation:(CGFloat) (self.saturation / 100.0)
+                      brightness:(CGFloat) (brightness / 100.0)
+                           alpha:1];
+}
+
 
 - (id)initWithCoder:(NSCoder *)decoder {
     _hue = [decoder decodeIntForKey:@"HUE"];

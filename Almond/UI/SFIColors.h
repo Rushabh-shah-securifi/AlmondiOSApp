@@ -19,4 +19,6 @@
 
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName;
 
+- (UIColor *)colorWithBrightness:(int)brightness;
+
 @end

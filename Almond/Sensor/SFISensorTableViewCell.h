@@ -40,7 +40,7 @@
 
 @property(nonatomic) SFIDevice *device;
 @property(nonatomic) SFIDeviceValue *deviceValue;
-@property(nonatomic) SFIColors *deviceColor;
+@property(nonatomic) UIColor *cellColor;
 @property(nonatomic, getter=isExpandedView) BOOL expandedView;
 
 // Sets a status message that will be shown in lieu of the normal sensor status.

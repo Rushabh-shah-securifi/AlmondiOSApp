@@ -422,7 +422,7 @@
     }
     cell.tag = indexPathRow;
     cell.device = device;
-    cell.deviceColor = self.almondColor;
+    cell.cellColor = [self makeCellColor:self.almondColor rowIndex:indexPathRow];
     cell.delegate = self;
     cell.expandedView = expanded;
 
@@ -438,6 +438,20 @@
     }
 
     return cell;
+}
+
+- (UIColor *)makeCellColor:(SFIColors*)color rowIndex:(int)row {
+    int positionIndex = row % 15;
+
+    int brightness = 0;
+    if (positionIndex < 7) {
+        brightness = color.brightness - (positionIndex * 10);
+    }
+    else {
+        brightness = (color.brightness - 70) + ((positionIndex - 7) * 10);
+    }
+
+    return [color colorWithBrightness:brightness];
 }
 
 - (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor {
