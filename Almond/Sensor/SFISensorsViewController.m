@@ -774,25 +774,6 @@
 }
 
 - (void)onMobileCommandResponseCallback:(id)sender {
-    if (!self) {
-        return;
-    }
-    if (self.isViewControllerDisposed) {
-        return;
-    }
-
-    // Timeout the commander timer
-    [self.mobileCommandTimer invalidate];
-
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data == nil) {
-        return;
-    }
-    
-    MobileCommandResponse *res = data[@"data"];
-    sfi_id c_id = res.mobileInternalIndex;
-
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
@@ -808,6 +789,18 @@
         if (self.isViewLoaded) {
             [self.HUD hide:YES];
         }
+
+        // Timeout the commander timer
+        [self.mobileCommandTimer invalidate];
+
+        NSNotification *notifier = (NSNotification *) sender;
+        NSDictionary *data = [notifier userInfo];
+        if (data == nil) {
+            return;
+        }
+
+        MobileCommandResponse *res = data[@"data"];
+        sfi_id c_id = res.mobileInternalIndex;
 
         SFIDevice *device = [self tryDeviceForCorrelationId:c_id];
         if (!device) {
