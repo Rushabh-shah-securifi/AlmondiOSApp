@@ -570,7 +570,7 @@
     valueLabel.text = [statusMessages componentsJoinedByString:@"\n"];
 }
 
-- (void)addHorizontalPicker:(NSString *)labelText propertyType:(SFIDevicePropertyType)propertyType selectionPointMiddle:(BOOL)yesOrLeftSelection {
+- (V8HorizontalPickerView*)addHorizontalPicker:(NSString *)labelText propertyType:(SFIDevicePropertyType)propertyType selectionPointMiddle:(BOOL)yesOrLeftSelection {
     UIFont *const heavy_12 = [UIFont securifiBoldFont];
     UIFont *const heavy_16 = [UIFont standardHeadingBoldFont];
 
@@ -618,6 +618,8 @@
     [self setPickerSelection:picker propertyType:propertyType];
 
     [self markYOffset:control_height + 10];
+    
+    return picker;
 }
 
 #pragma mark - Sensor layouts
@@ -662,7 +664,7 @@
         return;
     }
 
-    [self addHorizontalPicker:@"Pins" propertyType:SFIDevicePropertyType_USER_CODE selectionPointMiddle:NO];
+    V8HorizontalPickerView *pickerView = [self addHorizontalPicker:@"Pins" propertyType:SFIDevicePropertyType_USER_CODE selectionPointMiddle:NO];
     [self addShortLine];
 
     UITextField *field = [self addFieldNameValue:@"Code" fieldValue:@""];
@@ -674,6 +676,10 @@
             NSFontAttributeName : [field.font fontWithSize:10],
     };
     field.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Code is not specified." attributes:textAttributes];
+
+    // the text field is tied to the picker selection; so make sure the field is in place and then reset the picker value to ensure
+    // the field is initialized.
+    [self setPickerSelection:pickerView propertyType:SFIDevicePropertyType_USER_CODE];
 
     [self markYOffset:5];
     [self addShortLine];
