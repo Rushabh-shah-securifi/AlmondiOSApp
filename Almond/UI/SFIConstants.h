@@ -57,8 +57,10 @@
 
 #define DT26_WINDOW_COVERING_TRUE @"window_106x140.png"
 #define DT26_WINDOW_COVERING_FALSE @"window_106x140.png"
-//#define DT27_TEMP_SENSOR_TRUE @"door_on.png"
-//#define DT27_TEMP_SENSOR_FALSE @"door_off.png"
+
+//#define DT27_TEMP_SENSOR_TRUE
+//#define DT27_TEMP_SENSOR_FALSE
+
 #define DT34_SHADE_TRUE @"shade_106x140.png"
 #define DT34_SHADE_FALSE @"shade_106x140.png"
 #define DT36_SMOKE_DETECTOR_TRUE @"fire_02.png"
@@ -75,8 +77,8 @@
 #define DT41_MOTION_SENSOR_FALSE @"motion_sensor_false.png"
 #define DT42_ALARM_TRUE @"alarm_2.png"
 #define DT42_ALARM_FALSE @"alarm_1.png"
-#define DT45_BINARY_POWER_TRUE @"door_on.png"
-#define DT45_BINARY_POWER_FALSE @"door_off.png"
+#define DT45_BINARY_POWER_TRUE @"metering_2.png"
+#define DT45_BINARY_POWER_FALSE @"metering_1.png"
 
 #define DEVICE_UNKNOWN_IMAGE @"default_device.png"
 #define DEVICE_RELOAD_IMAGE @"Reload_icon.png"
