@@ -210,7 +210,7 @@
 
 - (void)showToast:(NSString *)msg {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [[[iToast makeText:msg] setGravity:iToastGravityCenter] show];
+        [[[iToast makeText:msg] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     });
 }
 
@@ -817,6 +817,7 @@
             NSString *status = res.reason;
             if (status.length > 0) {
                 [self markDeviceStatus:device correlationId:c_id status:status];
+                [self showToast:status];
             }
             else {
                 // it failed but we did not receive a reason; clear the updating state and pretend nothing happened.
@@ -1144,9 +1145,12 @@
     };
 }
 
--(void)setDeviceCellValue:(id)value forKey:(NSString*)key forDevice:(SFIDevice*)device {
+- (void)setDeviceCellValue:(id)value forKey:(NSString *)key forDevice:(SFIDevice *)device {
     if (key == nil) {
         return;
+    }
+    if (device == nil) {
+        device;
     }
 
     @synchronized (self.deviceCellStateValues_locker) {
@@ -1162,10 +1166,14 @@
     };
 }
 
--(id)getDeviceCellValueForKey:(NSString*)key forDevice:(SFIDevice*)device {
+- (id)getDeviceCellValueForKey:(NSString *)key forDevice:(SFIDevice *)device {
     if (key == nil) {
         return nil;
     }
+    if (device == nil) {
+        return nil;
+    }
+
     @synchronized (self.deviceCellStateValues_locker) {
         NSNumber *device_key = @(device.deviceID);
         NSMutableDictionary *all = (NSMutableDictionary *) self.deviceCellStateValues;
@@ -1186,6 +1194,9 @@
 }
 
 - (void)markDeviceStatus:(SFIDevice *)device correlationId:(sfi_id)c_id status:(NSString *)status {
+    if (device == nil) {
+        return;
+    }
     if (status == nil) {
         return;
     }
