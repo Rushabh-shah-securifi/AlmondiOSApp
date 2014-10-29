@@ -1150,7 +1150,7 @@
         return;
     }
     if (device == nil) {
-        device;
+        return;
     }
 
     @synchronized (self.deviceCellStateValues_locker) {
