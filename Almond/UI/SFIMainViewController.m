@@ -17,6 +17,7 @@
 #import "DrawerViewController.h"
 #import "SFIAccountsTableViewController.h"
 #import "ScoreboardViewController.h"
+#import "iToast.h"
 
 @interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, SFIAccountDeleteDelegate, UIGestureRecognizerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -115,13 +116,14 @@
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
-    if (![toolkit isReachable]) {
-        // No network route to cloud. Nothing to do.
+    // Try to connect iff we are the top-level presenting view and network is down
+    if (self.presentedViewController != nil) {
         return;
     }
 
-    // Try to connect iff we are the top-level presenting view and network is down
-    if (self.presentedViewController != nil) {
+    if (![toolkit isReachable]) {
+        // No network route to cloud. Nothing to do.
+        [self showToast:@"The cloud server is not reachable"];
         return;
     }
 
@@ -182,6 +184,8 @@
             // code for 3.5-inch screen
             self.imgSplash.image = [UIImage imageNamed:@"no_cloud_640x960"];
         }
+
+        [self showToast:@"Sorry! Could connect to the cloud Server"];
     }
 }
 
@@ -487,6 +491,14 @@
     }
 
     return YES;
+}
+
+#pragma mark - Toast
+
+- (void)showToast:(NSString *)msg {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [[[iToast makeText:msg] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+    });
 }
 
 @end
