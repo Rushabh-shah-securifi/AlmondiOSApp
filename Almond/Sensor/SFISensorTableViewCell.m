@@ -15,6 +15,7 @@
 @property(nonatomic) UIImageView *deviceImageView;
 @property(nonatomic) UILabel *deviceStatusLabel;
 @property(nonatomic) UILabel *deviceValueLabel;
+@property(nonatomic, readonly) UILabel *deviceNameLabel;
 
 @property(nonatomic) SFISensorDetailView *detailView;
 
@@ -134,6 +135,8 @@
 
     UIView *rightBackgroundLabel = [[UIView alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH + 11, 5, cell_frame.size.width - LEFT_LABEL_WIDTH - 25, SENSOR_ROW_HEIGHT - 10)];
     rightBackgroundLabel.backgroundColor = cell_color;
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDeviceNameLabelTapped:)];
+    [rightBackgroundLabel addGestureRecognizer:recognizer];
     [self.contentView addSubview:rightBackgroundLabel];
 
     UILabel *deviceNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 5, (cell_frame.size.width - LEFT_LABEL_WIDTH - 40), 30)];
@@ -142,7 +145,8 @@
     deviceNameLabel.text = currentSensor.deviceName;
     deviceNameLabel.font = [deviceNameLabel.font fontWithSize:16];
     [rightBackgroundLabel addSubview:deviceNameLabel];
-
+    _deviceNameLabel = deviceNameLabel;
+    
     UILabel *deviceStatusLabel = [[UILabel alloc] initWithFrame:CGRectMake(15, 20, 180, 60)];
     deviceStatusLabel.backgroundColor = clear_color;
     deviceStatusLabel.textColor = white_color;
@@ -371,12 +375,17 @@
         }
 
         case SFIDeviceType_UnknownOnOffModule_44: {
-            [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"TRUE" statusFalse:@"FALSE"];
+            [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
             break;
         }
 
         case SFIDeviceType_BinaryPowerSwitch_45: {
             [self configureBinaryPowerSwitch_45];
+            break;
+        }
+
+        case SFIDeviceType_HueLamp_48: {
+            [self configureHueLamp_48];
             break;
         }
 
@@ -496,6 +505,19 @@
 
 - (void)onDeviceClicked:(id)sender {
     [self.delegate tableViewCellDidClickDevice:self];
+}
+
+// toggles the label to reveal the underlying device type
+- (void)onDeviceNameLabelTapped:(id)sender {
+    UILabel *label = self.deviceNameLabel;
+    NSString *name = self.device.deviceName;
+
+    if ([label.text isEqualToString:name]) {
+        label.text = [SFIDevice nameForType:self.device.deviceType];
+    }
+    else {
+        label.text = name;
+    }
 }
 
 #pragma mark - SFISensorDetailViewDelegate methods
@@ -698,6 +720,10 @@
     NSString *imageForNoValue = [self imageNameForNoValue];
     NSString *imageName = [stateValue choiceForBoolValueTrueValue:DT45_BINARY_POWER_TRUE falseValue:DT45_BINARY_POWER_FALSE nilValue:imageForNoValue];
     self.deviceImageView.image = [UIImage imageNamed:imageName];
+}
+
+- (void)configureHueLamp_48 {
+
 }
 
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
