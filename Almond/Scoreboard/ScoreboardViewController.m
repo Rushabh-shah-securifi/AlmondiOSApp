@@ -8,10 +8,12 @@
 
 #import "ScoreboardViewController.h"
 #import "SFICloudStatusBarButtonItem.h"
+#import "ScoreboardEventViewController.h"
 
 #define SEC_CLOUD       0
-#define SEC_NETWORK     1
-#define SEC_REQUESTS    2
+#define SEC_EVENTS      1
+#define SEC_NETWORK     2
+#define SEC_REQUESTS    3
 
 @interface ScoreboardViewController ()
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
@@ -26,6 +28,7 @@
     if (self) {
         self.title = @"Scoreboard";
         [self loadScoreboard];
+        [SecurifiToolkit sharedInstance].collectEvents = YES;
     }
     return self;
 }
@@ -79,13 +82,15 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case SEC_CLOUD:
             return 2;
+        case SEC_EVENTS:
+            return 1;
         case SEC_NETWORK:
             return 3;
         case SEC_REQUESTS:
@@ -99,6 +104,8 @@
     switch (section) {
         case SEC_CLOUD:
             return @"Cloud";
+        case SEC_EVENTS:
+            return @"Events";
         case SEC_NETWORK:
             return @"Network";
         case SEC_REQUESTS:
@@ -123,26 +130,33 @@
 
 
 - (UITableViewCell *)getFieldCell:(UITableView *)tableView {
-    NSString *id = @"field";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
+    NSString *cell_id = @"field";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:id];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return cell;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [self getFieldCell:tableView];
-
     Scoreboard *scoreboard = self.scoreboard;
-    NSString *field = @"";
-    NSString *value = nil;
 
     if (indexPath.section == SEC_CLOUD) {
         return [self tableView:tableView cloudSectionCellForRowAtIndexPath:indexPath];
     }
-    else if (indexPath.section == SEC_NETWORK) {
+    else if (indexPath.section == SEC_EVENTS) {
+        UITableViewCell *cell = [self getFieldCell:tableView];
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        cell.textLabel.text = @"All Events";
+        cell.detailTextLabel.text = [scoreboard formattedValue:[scoreboard allEventsCount]];
+        return cell;
+    }
+
+    NSString *field = @"";
+    NSString *value = nil;
+
+    if (indexPath.section == SEC_NETWORK) {
         switch (indexPath.row) {
             case 0: {
                 field = @"Established Connections";
@@ -187,6 +201,7 @@
         } // end switch
     }
 
+    UITableViewCell *cell = [self getFieldCell:tableView];
     cell.textLabel.text = field;
     cell.detailTextLabel.text = value;
 
@@ -219,6 +234,15 @@
     if (indexPath.section == SEC_CLOUD) {
         [self onSwitchServer];
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger) indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    else if (indexPath.section == SEC_EVENTS) {
+        NSArray *events = [self.scoreboard allEvents];
+        events = [[events reverseObjectEnumerator] allObjects];
+
+        ScoreboardEventViewController *ctrl = [ScoreboardEventViewController new];
+        ctrl.events = events;
+
+        [self.navigationController pushViewController:ctrl animated:YES];
     }
 }
 
