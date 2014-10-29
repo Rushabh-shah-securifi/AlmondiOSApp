@@ -229,6 +229,12 @@
 }
 
 - (void)layoutDeviceInfo {
+    // Protect against null values
+    if (self.deviceValue == nil) {
+        [self configureUnknownDevice];
+        return;
+    }
+
     SFIDevice *const device = self.device;
 
     switch (device.deviceType) {
@@ -614,10 +620,12 @@
 }
 
 - (void)configureThermostat_7 {
+    SFIDeviceValue *const deviceValue = self.deviceValue;
+
     // Status label
-    NSString *operatingMode = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE default:@"Unknown"];
-    NSString *coolingSetPoint = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING default:@"-"];
-    NSString *heatingSetPoint = [self.deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING default:@"-"];
+    NSString *operatingMode = [deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE default:@"Unknown"];
+    NSString *coolingSetPoint = [deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING default:@"-"];
+    NSString *heatingSetPoint = [deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING default:@"-"];
 
     NSString *const degrees_symbol = @"\u00B0";
 
@@ -639,7 +647,7 @@
     [self setDeviceStatusMessages:status];
 
     // Calculate values
-    NSString *value = [self.deviceValue valueForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
+    NSString *value = [deviceValue valueForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
     [self setTemperatureValue:value];
 }
 
@@ -658,6 +666,11 @@
 
 - (void)configureLightSensor_25 {
     SFIDeviceKnownValues *stateValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_ILLUMINANCE];
+    if (!stateValue) {
+        [self configureUnknownDevice];
+        return;
+    }
+
     NSString *value = [stateValue value];
 
     NSMutableArray *status = [NSMutableArray array];
@@ -690,6 +703,10 @@
 
 - (void)configureMoistureSensor_40 {
     SFIDeviceKnownValues *stateValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BASIC];
+    if (!stateValue) {
+        [self configureUnknownDevice];
+        return;
+    }
 
     NSString *imageForNoValue = [self imageNameForNoValue];
     NSString *imageName = [stateValue choiceForLevelValueZeroValue:DT40_MOISTURE_FALSE nonZeroValue:DT40_MOISTURE_TRUE nilValue:imageForNoValue];
@@ -707,6 +724,10 @@
 
 - (void)configureBinaryPowerSwitch_45 {
     SFIDeviceKnownValues *stateValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_BINARY];
+    if (!stateValue) {
+        [self configureUnknownDevice];
+        return;
+    }
 
     NSMutableArray *status = [NSMutableArray array];
     [status addObject:[stateValue choiceForBoolValueTrueValue:@"ON" falseValue:@"OFF" nilValue:@""]];
@@ -728,6 +749,10 @@
 
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
+    if (!values) {
+        [self configureUnknownDevice];
+        return;
+    }
 
     NSString *noImage = [self imageNameForNoValue];
     NSString *imageName = [values choiceForBoolValueTrueValue:imageNameTrue falseValue:imageNameFalse nilValue:noImage];
@@ -738,6 +763,10 @@
 
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusNonZeroValue:(NSString *)statusTrue statusZeroValue:(NSString *)statusFalse {
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
+    if (!values) {
+        [self configureUnknownDevice];
+        return;
+    }
 
     NSString *noImage = [self imageNameForNoValue];
     NSString *imageName = [values choiceForLevelValueZeroValue:imageNameFalse nonZeroValue:imageNameTrue nilValue:noImage];
