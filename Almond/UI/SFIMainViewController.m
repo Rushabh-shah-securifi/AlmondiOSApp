@@ -108,7 +108,7 @@
     return [[SecurifiToolkit sharedInstance] isCloudOnline];
 }
 
-- (void)conditionalTryConnectOrLogon:(BOOL)showHud {
+- (void)conditionalTryConnectOrLogon:(BOOL)onViewAppearing {
     if ([self isCloudOnline]) {
         // Already connected. Nothing to do.
         return;
@@ -123,7 +123,10 @@
 
     if (![toolkit isReachable]) {
         // No network route to cloud. Nothing to do.
-        [self showToast:@"The cloud server is not reachable"];
+        if (!onViewAppearing) {
+            // only show after first attempt fails
+            [self showToast:@"Sorry! Waiting on routing to cloud server"];
+        }
         return;
     }
 
@@ -134,7 +137,7 @@
     }
 
     // Else try to connect
-    if (showHud) {
+    if (onViewAppearing) {
         self.HUD.labelText = @"Connecting. Please wait!";
         [self.HUD show:YES];
     }
@@ -185,7 +188,7 @@
             self.imgSplash.image = [UIImage imageNamed:@"no_cloud_640x960"];
         }
 
-        [self showToast:@"Sorry! Could connect to the cloud Server"];
+        [self showToast:@"Sorry! Could not connect to the cloud Server"];
     }
 }
 
