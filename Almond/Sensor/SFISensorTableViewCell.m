@@ -274,6 +274,11 @@
             break;
         }
 
+        case SFIDeviceType_StandardCIE_10: {
+            [self configureBinaryStateSensor:D10_STANDARD_CIE_TRUE imageNameFalse:D10_STANDARD_CIE_FALSE statusTrue:@"ACTIVE" statusFalse:@"INACTIVE"];
+            break;
+        }
+
         case SFIDeviceType_MotionSensor_11: {
             [self configureBinaryStateSensor:DT11_MOTION_SENSOR_TRUE imageNameFalse:DT11_MOTION_SENSOR_FALSE statusTrue:@"MOTION DETECTED" statusFalse:@"NO MOTION"];
             break;
@@ -398,7 +403,6 @@
         case SFIDeviceType_UnknownDevice_0:
         case SFIDeviceType_Controller_8:
         case SFIDeviceType_SceneController_9:
-        case SFIDeviceType_StandardCIE_10:
         case SFIDeviceType_PersonalEmergencyDevice_16:
         case SFIDeviceType_RemoteControl_18:
         case SFIDeviceType_Keypad_20:

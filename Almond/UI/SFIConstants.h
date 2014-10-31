@@ -26,6 +26,8 @@
 #define DT5_DOOR_LOCK_FALSE @"door_lock_2.png"
 #define DT6_ALARM_TRUE @"alarm_2.png"
 #define DT6_ALARM_FALSE @"alarm_1.png"
+#define D10_STANDARD_CIE_TRUE @"motion_sensor_true.png"
+#define D10_STANDARD_CIE_FALSE @"motion_sensor_false.png"
 #define DT11_MOTION_SENSOR_TRUE @"motion_sensor_true.png"
 #define DT11_MOTION_SENSOR_FALSE @"motion_sensor_false.png"
 #define DT12_CONTACT_SWITCH_TRUE @"door_on.png"
