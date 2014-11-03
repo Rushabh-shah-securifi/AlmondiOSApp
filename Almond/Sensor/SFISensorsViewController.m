@@ -671,6 +671,9 @@
     SFIDeviceKnownValues *deviceValues  = [cell.deviceValue knownValuesForProperty:propertyType];
     deviceValues.value = newValue;
 
+    // provisionally update; on mobile cmd response, the actual new values will be set
+    cell.deviceValue = [cell.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+
     [self sendMobileCommandForDevice:device deviceValue:deviceValues];
 }
 
@@ -683,6 +686,9 @@
 
     SFIDeviceKnownValues *deviceValues  = [cell.deviceValue knownValuesForPropertyName:propertyName];
     deviceValues.value = newValue;
+
+    // provisionally update; on mobile cmd response, the actual new values will be set
+    cell.deviceValue = [cell.deviceValue setKnownValues:deviceValues forPropertyName:propertyName];
 
     [self sendMobileCommandForDevice:device deviceValue:deviceValues];
 }
