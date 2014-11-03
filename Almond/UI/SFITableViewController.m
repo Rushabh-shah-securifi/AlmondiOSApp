@@ -18,6 +18,15 @@
 
 @implementation SFITableViewController
 
+- (instancetype)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:style];
+    if (self) {
+        _enableDrawer = YES;
+    }
+
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -33,7 +42,7 @@
     UIBarButtonItem *revealButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"drawer.png"] style:UIBarButtonItemStylePlain target:revealController action:@selector(revealToggle:)];
     self.navigationItem.leftBarButtonItem = revealButton;
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
-    self.enableDrawer = YES;
+    self.enableDrawer = _enableDrawer; // in case it was set before view loaded
 
     _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithStandard];
     self.navigationItem.rightBarButtonItem = _statusBarButton;
@@ -116,11 +125,8 @@
 
 #pragma mark Drawer management
 
-- (BOOL)enableDrawer {
-    return self.navigationItem.leftBarButtonItem.enabled;
-}
-
 - (void)setEnableDrawer:(BOOL)enableDrawer {
+    _enableDrawer = enableDrawer;
     self.navigationItem.leftBarButtonItem.enabled = enableDrawer;
 }
 
