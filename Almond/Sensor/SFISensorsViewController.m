@@ -184,6 +184,8 @@
 
         [self initializeColors:plus];
     }
+
+    self.enableDrawer = YES;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -597,6 +599,7 @@
     }
 
     self.isUpdatingDeviceSettings = YES;
+    self.enableDrawer = NO;
 }
 
 - (void)tableViewCellWillCancelMakingChanges:(SFISensorTableViewCell *)cell {
@@ -606,6 +609,7 @@
 
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.isUpdatingDeviceSettings = NO;
+        self.enableDrawer = YES;
         [self.tableView reloadData];
     });
 }
@@ -641,6 +645,7 @@
 
     self.isSensorChangeCommandSuccessful = FALSE;
     self.isUpdatingDeviceSettings = NO;
+    self.enableDrawer = YES;
 }
 
 - (void)tableViewCellDidDismissTamper:(SFISensorTableViewCell *)cell {

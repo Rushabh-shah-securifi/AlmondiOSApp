@@ -20,4 +20,7 @@
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 
+// Enabled by default
+@property(nonatomic) BOOL enableDrawer;
+
 @end

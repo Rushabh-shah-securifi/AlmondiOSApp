@@ -536,7 +536,7 @@
     [self.delegate tableViewCellWillStartMakingChanges:self];
 }
 
-- (void)sensorDetailViewWillCancelMakingChanges:(SFISensorDetailView *)view {
+- (void)sensorDetailViewDidCompleteMakingChanges:(SFISensorDetailView *)view {
     [self.delegate tableViewCellWillCancelMakingChanges:self];
 }
 

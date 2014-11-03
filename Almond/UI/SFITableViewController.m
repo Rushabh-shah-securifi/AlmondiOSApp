@@ -33,6 +33,7 @@
     UIBarButtonItem *revealButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"drawer.png"] style:UIBarButtonItemStylePlain target:revealController action:@selector(revealToggle:)];
     self.navigationItem.leftBarButtonItem = revealButton;
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
+    self.enableDrawer = YES;
 
     _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithStandard];
     self.navigationItem.rightBarButtonItem = _statusBarButton;
@@ -68,6 +69,8 @@
                selector:@selector(onReachabilityDidChange:)
                    name:kSFIReachabilityChangedNotification object:nil];
 }
+
+#pragma Event handling
 
 - (void)onNetworkUpNotifier:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -111,5 +114,14 @@
     }
 }
 
+#pragma mark Drawer management
+
+- (BOOL)enableDrawer {
+    return self.navigationItem.leftBarButtonItem.enabled;
+}
+
+- (void)setEnableDrawer:(BOOL)enableDrawer {
+    self.navigationItem.leftBarButtonItem.enabled = enableDrawer;
+}
 
 @end

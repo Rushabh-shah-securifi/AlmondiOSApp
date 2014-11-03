@@ -326,6 +326,8 @@
     else {
         [self.delegate sensorDetailViewDidRejectSensorValue:self validationToast:@"PassCode must be 5 to 8 digits long"];
     }
+
+    [self.delegate sensorDetailViewDidCompleteMakingChanges:self];
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -347,7 +349,16 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [self.delegate sensorDetailViewWillCancelMakingChanges:self];
+    if (textField.text.length == 0) {
+        return NO;
+    }
+
+    if (textField.tag == 0 /* 0 == either name or location field; all others are tagged with SFI property type */ ) {
+        [self.delegate sensorDetailViewDidPressSaveButton:self];
+    }
+    else {
+        [self.delegate sensorDetailViewDidCompleteMakingChanges:self];
+    }
     return YES;
 }
 
@@ -670,6 +681,7 @@
     UITextField *field = [self addFieldNameValue:@"Code" fieldValue:@""];
     field.tag = SFIDevicePropertyType_USER_CODE;
     field.keyboardType = UIKeyboardTypeNumberPad;
+    field.returnKeyType = UIReturnKeyDone;
     //
     NSDictionary *textAttributes = @{
             NSForegroundColorAttributeName : [[UIColor whiteColor] colorWithAlphaComponent:0.5],

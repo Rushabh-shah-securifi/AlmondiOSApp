@@ -15,7 +15,7 @@
 
 - (void)sensorDetailViewWillStartMakingChanges:(SFISensorDetailView*)view;
 
-- (void)sensorDetailViewWillCancelMakingChanges:(SFISensorDetailView*)view;
+- (void)sensorDetailViewDidCompleteMakingChanges:(SFISensorDetailView*)view;
 
 - (void)sensorDetailViewDidPressDismissTamperButton:(SFISensorDetailView*)view;
 
