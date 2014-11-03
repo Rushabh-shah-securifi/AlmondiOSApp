@@ -346,6 +346,9 @@
     if (self.firstResponderField == textField) {
         self.firstResponderField = nil;
     }
+
+    // ensures that if editing is ended because the user tapped outside the cell, the editing state is reset
+    [self.delegate sensorDetailViewDidCompleteMakingChanges:self];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -357,6 +360,7 @@
         [self.delegate sensorDetailViewDidPressSaveButton:self];
     }
     else {
+       // ensures that if editing is ended because the user tapped outside the cell or pressed another button, the editing state is reset
         [self.delegate sensorDetailViewDidCompleteMakingChanges:self];
     }
     return YES;
