@@ -12,14 +12,42 @@
 
 + (NSArray *)colors {
     return @[
-            [[SFIColors alloc] initWithHue:196 saturation:100 brightness:100 colorName:@"blue"],
-            [[SFIColors alloc] initWithHue:154 saturation:100 brightness:90 colorName:@"green"],
-            [[SFIColors alloc] initWithHue:19 saturation:100 brightness:89 colorName:@"red"],
-            [[SFIColors alloc] initWithHue:340 saturation:100 brightness:90 colorName:@"pink"],
-            [[SFIColors alloc] initWithHue:284 saturation:100 brightness:85 colorName:@"purple"],
-            [[SFIColors alloc] initWithHue:69 saturation:100 brightness:90 colorName:@"lime"],
-            [[SFIColors alloc] initWithHue:45 saturation:100 brightness:85 colorName:@"yellow"],
+            [self blueColor],
+            [self greenColor],
+            [self redColor],
+            [self pinkColor],
+            [self purpleColor],
+            [self limeColor],
+            [self yellowColor],
     ];
+}
+
++ (SFIColors *)blueColor {
+    return [[SFIColors alloc] initWithHue:196 saturation:100 brightness:100 colorName:@"blue"];
+}
+
++ (SFIColors *)greenColor {
+    return [[SFIColors alloc] initWithHue:154 saturation:100 brightness:90 colorName:@"green"];
+}
+
++ (SFIColors *)redColor {
+    return [[SFIColors alloc] initWithHue:19 saturation:100 brightness:89 colorName:@"red"];
+}
+
++ (SFIColors *)pinkColor {
+    return [[SFIColors alloc] initWithHue:340 saturation:100 brightness:90 colorName:@"pink"];
+}
+
++ (SFIColors *)purpleColor {
+    return [[SFIColors alloc] initWithHue:284 saturation:100 brightness:85 colorName:@"purple"];
+}
+
++ (SFIColors *)limeColor {
+    return [[SFIColors alloc] initWithHue:69 saturation:100 brightness:90 colorName:@"lime"];
+}
+
++ (SFIColors *)yellowColor {
+    return [[SFIColors alloc] initWithHue:45 saturation:100 brightness:85 colorName:@"yellow"];
 }
 
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName {
@@ -46,6 +74,10 @@
     }
 
     return [self colorWithBrightness:brightness];
+}
+
+- (UIColor *)color {
+    return [self colorWithBrightness:self.brightness];
 }
 
 - (UIColor *)colorWithBrightness:(int)brightness {
