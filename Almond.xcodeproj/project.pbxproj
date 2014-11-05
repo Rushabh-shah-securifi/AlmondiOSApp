@@ -38,6 +38,8 @@
 		1C75821019B036C70074C601 /* ScoreboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C75820F19B036C70074C601 /* ScoreboardViewController.m */; };
 		1C75821319B054660074C601 /* SFITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C75821219B054660074C601 /* SFITableViewController.m */; };
 		1C75821619B05BAC0074C601 /* Analytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C75821519B05BAC0074C601 /* Analytics.m */; };
+		1C988E371A09FB1E0070C276 /* SFICardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C988E361A09FB1E0070C276 /* SFICardTableViewCell.m */; };
+		1CEB0B4A1A09C13C007D31A9 /* SFICardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CEB0B491A09C13C007D31A9 /* SFICardView.m */; };
 		1CED5EF519AC82FD0023512F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF419AC82FD0023512F /* Foundation.framework */; };
 		1CED5EF719AC82FD0023512F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF619AC82FD0023512F /* CoreGraphics.framework */; };
 		1CED5EF919AC82FD0023512F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF819AC82FD0023512F /* UIKit.framework */; };
@@ -281,6 +283,10 @@
 		1C75821219B054660074C601 /* SFITableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFITableViewController.m; sourceTree = "<group>"; };
 		1C75821419B05BAC0074C601 /* Analytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Analytics.h; sourceTree = "<group>"; };
 		1C75821519B05BAC0074C601 /* Analytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Analytics.m; sourceTree = "<group>"; };
+		1C988E351A09FB1E0070C276 /* SFICardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICardTableViewCell.h; sourceTree = "<group>"; };
+		1C988E361A09FB1E0070C276 /* SFICardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICardTableViewCell.m; sourceTree = "<group>"; };
+		1CEB0B481A09C13C007D31A9 /* SFICardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICardView.h; sourceTree = "<group>"; };
+		1CEB0B491A09C13C007D31A9 /* SFICardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICardView.m; sourceTree = "<group>"; };
 		1CED5EF119AC82FD0023512F /* Almond.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Almond.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CED5EF419AC82FD0023512F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1CED5EF619AC82FD0023512F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -916,6 +922,10 @@
 				1C75821219B054660074C601 /* SFITableViewController.m */,
 				1DF03A74219C9A2A23078623 /* SFICopyLabel.m */,
 				1DF03D6EACE27C6B6CF1DDD9 /* SFICopyLabel.h */,
+				1CEB0B481A09C13C007D31A9 /* SFICardView.h */,
+				1CEB0B491A09C13C007D31A9 /* SFICardView.m */,
+				1C988E351A09FB1E0070C276 /* SFICardTableViewCell.h */,
+				1C988E361A09FB1E0070C276 /* SFICardTableViewCell.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1316,6 +1326,7 @@
 				1CED60CB19AC85AB0023512F /* SFICloudStatusBarButtonItem.m in Sources */,
 				1C7581EB19AD80090074C601 /* SFIWirelessSetting.m in Sources */,
 				1CED60CE19AC85AB0023512F /* SFIHighlightedButton.m in Sources */,
+				1C988E371A09FB1E0070C276 /* SFICardTableViewCell.m in Sources */,
 				1CED60D119AC85AB0023512F /* SFIScene.m in Sources */,
 				1C75821019B036C70074C601 /* ScoreboardViewController.m in Sources */,
 				1CED60B919AC85AB0023512F /* SFILogoutAllViewController.m in Sources */,
@@ -1329,6 +1340,7 @@
 				1C7581ED19AD80090074C601 /* SFIWirelessSummary.m in Sources */,
 				1CED60D419AC85AB0023512F /* SFISlider.m in Sources */,
 				1DF031F5FE02FF77A500E6AB /* SFICopyLabel.m in Sources */,
+				1CEB0B4A1A09C13C007D31A9 /* SFICardView.m in Sources */,
 				1DF037FCD2D5C9CC3010E790 /* ScoreboardEventViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
