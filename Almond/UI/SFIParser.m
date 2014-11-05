@@ -43,30 +43,8 @@
 - (void) parser:(NSXMLParser *)xmlParser didStartElement:(NSString *)elementname namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)attributeDict
 {
     currentNodeContent = [NSMutableString string];
-    //START TODO: Remove - Dummy
-    if ([elementname isEqualToString:@"Sensor"])
-    {
-        currentSensor = [SFISensor alloc];
-        currentSensor.type = [attributeDict valueForKey:@"type"];
-    }
-    if ([elementname isEqualToString:@"ValueVariables"]){
-        currentSensor.valueCount = [[attributeDict valueForKey:@"Count"] unsignedIntValue];
-        if(currentSensor.valueCount!=0){
-            knownValues = [[NSMutableArray alloc]init];
-        }
-    }
-    
-    if ([elementname isEqualToString:@"LastKnownValue"])
-    {
-        currentKnownValue = [SFIDeviceKnownValues alloc];
-        currentKnownValue.index = [[attributeDict valueForKey:@"Index"] unsignedIntValue];
 
-        NSString *name = [attributeDict valueForKey:@"Name"];
-        currentKnownValue.propertyType = [SFIDeviceKnownValues nameToPropertyType:name];
-        currentKnownValue.valueName = name;
-    }
-    //END TODO: Remove - Dummy
-    
+
     if ([elementname isEqualToString:REBOOT])
     {
         routerReboot = [[SFIRouterReboot alloc]init];
@@ -92,7 +70,7 @@
     {
         self.currentBlockedDevice = [[SFIBlockedDevice alloc]init];
     }
-    
+
     //PY 131113 - Blocked Content
     else if ([elementname isEqualToString:BLOCKED_CONTENT])
     {
@@ -104,7 +82,7 @@
     {
         self.currentBlockedContent = [[SFIBlockedContent alloc]init];
     }
-    
+
     //PY 131113 - Wireless Settings
     else if ([elementname isEqualToString:WIRELESS_SETTINGS])
     {
@@ -127,7 +105,7 @@
                 [self.currentWirelessSummary setEnabledStatus:@"enabled"];
             }else{
                 [self.currentWirelessSummary setEnabledStatus:@"disabled"];
-                
+
             }
         }
     }
@@ -155,43 +133,7 @@
 - (void) parser:(NSXMLParser *)xmlParser didEndElement:(NSString *)elementname namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
 {
     DLog(@"End Element: %@",elementname);
-    //START TODO: Remove - Dummy
-    if ([elementname isEqualToString:@"Id"])
-    {
-        currentSensor.sensorId = [currentNodeContent intValue];
-    }
-    if ([elementname isEqualToString:@"Name"])
-    {
-        currentSensor.name = currentNodeContent;
-    }
-    if ([elementname isEqualToString:@"Status"])
-    {
-        currentSensor.status = [currentNodeContent intValue];
-    }
-    if ([elementname isEqualToString:@"DeviceType"])
-    {
-        currentSensor.deviceType = [currentNodeContent intValue];
-    }
-    if ([elementname isEqualToString:@"LastKnownValue"]){
-        currentKnownValue.value = currentNodeContent;
-        [knownValues addObject:currentKnownValue];
-        //currentKnownValue = nil;
-        
-    }
-    if ([elementname isEqualToString:@"ValueVariables"])
-    {
-        currentSensor.knownValues = knownValues;
-        //knownValues = nil;
-    }
-    if ([elementname isEqualToString:@"Sensor"])
-    {
-        [sensors addObject:currentSensor];
-        currentSensor = nil;
-        currentNodeContent = nil;
-    }
-    //END TODO: Remove - Dummy
-    
-    
+
     if ([elementname isEqualToString:REBOOT])
     {
         [routerReboot setReboot:(unsigned int) [currentNodeContent intValue]];
@@ -223,7 +165,7 @@
         [blockedDevices setDeviceList:self.blockedDevicesArray];
         genericCommandResponse.command = blockedDevices;
     }
-    
+
     //PY131113 - Blocked Content - GET
     else if ([elementname isEqualToString:BLOCKED_TEXT])
     {
@@ -234,7 +176,7 @@
         [blockedContent setDeviceList:self.blockedContentArray];
         genericCommandResponse.command = blockedContent;
     }
-    
+
     //PY131113 - Wireless Settings - GET
     else if ([elementname isEqualToString:SSID])
     {
@@ -285,7 +227,13 @@
     }else if ([elementname isEqualToString:ROUTER_UPTIME])
     {
         [routerSummary setRouterUptime:currentNodeContent];
-    }else if ([elementname isEqualToString:ROUTER_SUMMARY]){
+    }
+    //PY 051114 - Router Firmware Version
+    else if ([elementname isEqualToString:FIRMWARE_VERSION])
+    {
+        [routerSummary setFirmwareVersion:currentNodeContent];
+    }
+    else if ([elementname isEqualToString:ROUTER_SUMMARY]){
         genericCommandResponse.command = routerSummary;
     }
 }

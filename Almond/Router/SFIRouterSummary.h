@@ -10,10 +10,12 @@
 
 
 @interface SFIRouterSummary : NSObject
-@property int wirelessSettingsCount;
-@property (nonatomic, retain) NSArray *wirelessSettings;
-@property int connectedDeviceCount;
-@property int blockedMACCount;
-@property int blockedContentCount;
-@property (nonatomic, retain) NSString *routerUptime;
+@property(nonatomic) int wirelessSettingsCount;
+@property(nonatomic) NSArray *wirelessSettings;
+@property(nonatomic) int connectedDeviceCount;
+@property(nonatomic) int blockedMACCount;
+@property(nonatomic) int blockedContentCount;
+@property(nonatomic) NSString *routerUptime;
+@property(nonatomic) NSString *firmwareVersion;
+
 @end
