@@ -35,6 +35,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 #define EXPANDED_OWNED_ALMOND_ROW_HEIGHT 170
 #define EXPANDED_SHARED_ALMOND_ROW_HEIGHT 120
 
+
+
 @implementation SFIAccountsTableViewController
 
 @synthesize userProfile, ownedAlmondList, sharedAlmondList;
@@ -212,6 +214,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [self.HUD hide:YES afterDelay:5];
     });
 }
+
 
 #pragma mark - Button Handlers
 - (IBAction)doneButtonHandler:(id)sender{
@@ -580,8 +583,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         tfAddress2.tag = ADDRESS_2;
         [tfAddress2 setReturnKeyType:UIReturnKeyDone];
         tfAddress2.delegate = self;
-        [tfAddress2 addTarget:self action:@selector(address1TextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        [tfAddress2 addTarget:self action:@selector(address1TextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
+        [tfAddress2 addTarget:self action:@selector(address2TextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        [tfAddress2 addTarget:self action:@selector(address2TextFieldFinished:) forControlEvents:UIControlEventEditingDidEndOnExit];
         tfAddress2.enabled = FALSE;
         [backgroundLabel addSubview:tfAddress2];
         
@@ -1457,7 +1460,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     _HUD.labelText = @"Loading account details...";
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
-    [self.HUD show:YES];
+    [self showHudWithTimeout];
     
     [self asyncSendCommand:cloudCommand];
 }
@@ -1494,6 +1497,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }
     else {
         NSLog(@"Reason Code %d", obj.reasonCode);
+        [self.HUD hide:YES];
     }
     
     [self sendOwnedAlmondDataRequest];
@@ -1505,7 +1509,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     _HUD.labelText = @"Deleting account...";
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
-    [self.HUD show:YES];
+    [self showHudWithTimeout];
     
     [[SecurifiToolkit sharedInstance] asyncRequestDeleteCloudAccount:password];
 }
@@ -1583,7 +1587,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     _HUD.labelText = @"Updating account details...";
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
-    [self.HUD show:YES];
+    [self showHudWithTimeout];
     
     [self asyncSendCommand:cloudCommand];
 }
@@ -1640,7 +1644,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 //    _HUD.labelText = @"Loading account details...";
 //    _HUD.dimBackground = YES;
 //    [self.navigationController.view addSubview:_HUD];
-//    [self.HUD show:YES];
+//    [self showHudWithTimeout];
     
     [self asyncSendCommand:cloudCommand];
 }
@@ -1684,7 +1688,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     _HUD.labelText = @"Unlinking Almond...";
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
-    [self.HUD show:YES];
+    [self showHudWithTimeout];
     
     [[SecurifiToolkit sharedInstance] asyncRequestUnlinkAlmond:almondMAC password:password];
 }
@@ -1764,8 +1768,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     _HUD.labelText = @"Inviting user to share Almond...";
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
-    [self.HUD show:YES];
-    
+    [self showHudWithTimeout];
     [[SecurifiToolkit sharedInstance] asyncRequestInviteForSharingAlmond:almondMAC inviteEmail:emailID];
 }
 
@@ -1850,7 +1853,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     _HUD.labelText = @"Remove user from shared list...";
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
-    [self.HUD show:YES];
+    [self showHudWithTimeout];
 
     [[SecurifiToolkit sharedInstance] asyncRequestDeleteSecondaryUser:almondMAC email:emailID];
 }
@@ -1931,8 +1934,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     _HUD.labelText = @"Change almond name...";
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
-    [self.HUD show:YES];
-    
+    [self showHudWithTimeout];
     [[SecurifiToolkit sharedInstance] asyncRequestChangeAlmondName:changedAlmondName almondMAC:almondplusMAC];
     
     [self.almondNameChangeTimer invalidate];
@@ -2051,8 +2053,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     _HUD.labelText = @"Remove shared almond...";
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
-    [self.HUD show:YES];
-
+    [self showHudWithTimeout];
     [[SecurifiToolkit sharedInstance] asyncRequestDeleteMeAsSecondaryUser:almondMAC];
 }
 
