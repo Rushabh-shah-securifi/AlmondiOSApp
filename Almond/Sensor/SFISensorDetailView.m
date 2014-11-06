@@ -1016,7 +1016,7 @@
         case SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING:
         case SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING: {
             // thermostat
-            return TEMP_HIGHEST_SETTABLE - TEMP_LOWEST_SETTABLE;
+            return TEMP_HIGHEST_SETTABLE - TEMP_LOWEST_SETTABLE + 1;
         }
 
         case SFIDevicePropertyType_USER_CODE: {
