@@ -78,6 +78,7 @@
 #define CONNECTED_DEVICES_SUMMARY @"AlmondConnectedDevicesSummary"
 #define BLOCKED_MAC_SUMMARY @"AlmondBlockedMACSummary"
 #define BLOCKED_CONTENT_SUMMARY @"AlmondBlockedContentSummary"
+#define FIRMWARE_VERSION @"FirmwareVersion"
 
 #define STATE @"STATE"
 #define TAMPER @"TAMPER"
