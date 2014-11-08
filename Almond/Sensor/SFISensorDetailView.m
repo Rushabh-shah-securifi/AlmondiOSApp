@@ -1082,8 +1082,12 @@
         }
 
         case SFIDevicePropertyType_USER_CODE: {
-            // door lock 5
+            // door lock 5: update the text field as picker value changes
             [self setPinCodeTextField:index + 1];
+
+            // make note of the selected picker index so picker can be restored to current position on cell reload:
+            // this picker is not associated with a sensor value; it is used to select a value to be shown.
+            // therefore, we need some way to track its state. the sensor table view controller provides such a facility.
             [self.delegate sensorDetailViewCell:self setValue:@(index) forKey:CELL_STATE_PIN_SELECTION];
             
             return;
