@@ -43,6 +43,13 @@
     return self;
 }
 
+- (void)showUpdatingMessage {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.updatingStatusMessage = @"Updating sensor data.\nPlease wait.";
+        [self setUpdatingSensorStatus];
+    });
+}
+
 - (void)markStatusMessage:(NSString *)status {
     self.updatingStatusMessage = status;
 }

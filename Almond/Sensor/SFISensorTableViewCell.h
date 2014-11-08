@@ -43,6 +43,9 @@
 @property(nonatomic) UIColor *cellColor;
 @property(nonatomic, getter=isExpandedView) BOOL expandedView;
 
+// Makes the cell show a message and icon indicating the sensor is being updated
+- (void)showUpdatingMessage;
+
 // Sets a status message that will be shown in lieu of the normal sensor status.
 // Used to indicate, for example, that the sensor is being updated or failed to be updated.
 // Call this method then call markWillReuseCell:YES

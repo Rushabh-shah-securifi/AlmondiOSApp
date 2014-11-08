@@ -144,6 +144,10 @@
 }
 
 - (void)initializeAlmondData {
+    // 2014-11-08 sinclair added due to late reports from QA noticing keyboard can be still up over layed over sensors.
+    // I think this is caused by bug in new Accounts code that has been fixed, but am adding this anyway
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+
     [self clearAllDeviceUpdatingState];
     [self clearAllDeviceCellStateValues];
 
@@ -417,11 +421,11 @@
     NSUInteger height = [self computeSensorRowHeight:device deviceValue:deviceValue];
     BOOL expanded = [self isExpandedCell:device];
     
-    NSString *id = [NSString stringWithFormat:@"s_t:%d_h:%ld_e:%d,", currentDeviceType, (unsigned long) height, expanded];
+    NSString *cell_id = [NSString stringWithFormat:@"s_t:%d_h:%ld_e:%d,", currentDeviceType, (unsigned long) height, expanded];
 
-    SFISensorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
+    SFISensorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
-        cell = [[SFISensorTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:id];
+        cell = [[SFISensorTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
     cell.tag = indexPathRow;
     cell.device = device;
@@ -551,7 +555,7 @@
     }
 
     // Send update to the cloud
-    [self sendMobileCommandForDevice:device deviceValue:deviceValues];
+    [self sendMobileCommandForDevice:device deviceValue:deviceValues deviceCell:cell];
 }
 
 - (void)tableViewCellDidPressSettings:(SFISensorTableViewCell *)cell {
@@ -658,7 +662,7 @@
     SFIDeviceKnownValues *deviceValues  = [cell.deviceValue knownValuesForProperty:SFIDevicePropertyType_TAMPER];
     [deviceValues setBoolValue:NO];
 
-    [self sendMobileCommandForDevice:device deviceValue:deviceValues];
+    [self sendMobileCommandForDevice:device deviceValue:deviceValues deviceCell:cell];
 }
 
 - (void)tableViewCellDidChangeValue:(SFISensorTableViewCell *)cell propertyType:(SFIDevicePropertyType)propertyType newValue:(NSString *)newValue {
@@ -674,7 +678,7 @@
     // provisionally update; on mobile cmd response, the actual new values will be set
     cell.deviceValue = [cell.deviceValue setKnownValues:deviceValues forProperty:propertyType];
 
-    [self sendMobileCommandForDevice:device deviceValue:deviceValues];
+    [self sendMobileCommandForDevice:device deviceValue:deviceValues deviceCell:cell];
 }
 
 - (void)tableViewCellDidChangeValue:(SFISensorTableViewCell *)cell propertyName:(NSString *)propertyName newValue:(NSString *)newValue {
@@ -690,7 +694,7 @@
     // provisionally update; on mobile cmd response, the actual new values will be set
     cell.deviceValue = [cell.deviceValue setKnownValues:deviceValues forPropertyName:propertyName];
 
-    [self sendMobileCommandForDevice:device deviceValue:deviceValues];
+    [self sendMobileCommandForDevice:device deviceValue:deviceValues deviceCell:cell];
 }
 
 - (void)tableViewCellDidDidFailValidation:(SFISensorTableViewCell *)cell validationToast:(NSString *)toastMsg {
@@ -827,16 +831,17 @@
         else {
             NSString *status = res.reason;
             if (status.length > 0) {
-                [self markDeviceStatus:device correlationId:c_id status:status];
+                [self markDeviceUpdatingState:device correlationId:c_id statusMessage:status];
                 [self showToast:status];
             }
             else {
                 // it failed but we did not receive a reason; clear the updating state and pretend nothing happened.
                 [self clearDeviceUpdatingState:device];
+                [self showToast:@"Unable to update sensor"];
             }
-        }
 
-        [self reloadDeviceTableCellForDevice:device];
+            [self reloadDeviceTableCellForDevice:device];
+        }
     });
 }
 
@@ -1102,13 +1107,16 @@
 
 #pragma mark - Helpers
 
-- (void)sendMobileCommandForDevice:(SFIDevice *)device deviceValue:(SFIDeviceKnownValues *)deviceValues {
+- (void)sendMobileCommandForDevice:(SFIDevice *)device deviceValue:(SFIDeviceKnownValues *)deviceValues deviceCell:(SFISensorTableViewCell *)cell {
     if (device == nil) {
         return;
     }
     if (deviceValues == nil) {
         return;
     }
+
+    // Tell the cell to show 'updating' type message to user
+    [cell showUpdatingMessage];
 
     dispatch_async(dispatch_get_main_queue(), ^() {
         //todo decide what to do about this
@@ -1120,9 +1128,10 @@
                                                                  userInfo:nil
                                                                   repeats:NO];
 
+        // dispatch request and keep track of its correlation ID so we can process the response
+        //todo for future: note potential race condition: if we do not process command response on main queue it's possible response is processed before we have completed marking updating state.
         sfi_id c_id = [[SecurifiToolkit sharedInstance] asyncChangeAlmond:self.almond device:device value:deviceValues];
-        [self markDeviceUpdatingState:device correlationId:c_id];
-        [self reloadDeviceTableCellForDevice:device];
+        [self markDeviceUpdatingState:device correlationId:c_id statusMessage:nil];
     });
 }
 
@@ -1199,16 +1208,10 @@
     return [NSString stringWithFormat:@"d-%d", device.deviceID];
 }
 
-- (void)markDeviceUpdatingState:(SFIDevice*)device correlationId:(sfi_id)c_id {
-    NSString *status = @"Updating sensor data.\nPlease wait.";
-    [self markDeviceStatus:device correlationId:c_id status:status];
-}
-
-- (void)markDeviceStatus:(SFIDevice *)device correlationId:(sfi_id)c_id status:(NSString *)status {
+// marks the device as being "updated" and tracks an optional status message that will be shown in the sensor table cell when it is reloaded
+// if the message is nil, then no message is shown.
+- (void)markDeviceUpdatingState:(SFIDevice *)device correlationId:(sfi_id)c_id statusMessage:(NSString *)optionalStatusMessage {
     if (device == nil) {
-        return;
-    }
-    if (status == nil) {
         return;
     }
 
@@ -1226,7 +1229,12 @@
         _updatingDevices = [NSDictionary dictionaryWithDictionary:dict];
 
         dict = [NSMutableDictionary dictionaryWithDictionary:self.deviceStatusMessages];
-        dict[device_key] = status;
+        if (optionalStatusMessage) {
+            dict[device_key] = optionalStatusMessage;
+        }
+        else {
+            [dict removeObjectForKey:device_key];
+        }
         _deviceStatusMessages = [NSDictionary dictionaryWithDictionary:dict];
     }
 }
