@@ -8,11 +8,11 @@
 #import "SFIConstants.h"
 #import "SNLog.h"
 #import "SFIColors.h"
-#import "iToast.h"
 #import "MBProgressHUD.h"
 #import "SFISensorTableViewCell.h"
 #import "SFISensorDetailView.h"
 #import "UIFont+Securifi.h"
+#import "UIViewController+SFIViewController.h"
 
 @interface SFISensorsViewController () <SFISensorTableViewCellDelegate>
 @property(nonatomic, readonly) SFIAlmondPlus *almond;
@@ -211,12 +211,6 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD show:YES];
         [self.HUD hide:YES afterDelay:5];
-    });
-}
-
-- (void)showToast:(NSString *)msg {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [[[iToast makeText:msg] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     });
 }
 
@@ -1317,7 +1311,7 @@
     DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
 
     if (obj.isSuccessful) {
-        [[[iToast makeText:@"Reactivation link sent to your registerd email ID."] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        [self showToast:@"Reactivation link sent to your registerd email ID."];
     }
     else {
         NSLog(@"Reason Code %d", obj.reasonCode);
@@ -1344,7 +1338,7 @@
                 break;
         }
 
-        [[[iToast makeText:failureReason] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        [self showToast:failureReason];
     }
 }
 
