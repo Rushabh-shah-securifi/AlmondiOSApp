@@ -202,6 +202,7 @@
 		1CED60D419AC85AB0023512F /* SFISlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600619AC85AB0023512F /* SFISlider.m */; };
 		1CED60D519AC85AB0023512F /* SNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600919AC85AB0023512F /* SNLog.m */; };
 		1DF031F5FE02FF77A500E6AB /* SFICopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03A74219C9A2A23078623 /* SFICopyLabel.m */; };
+		1DF03314344AECE95B9254D3 /* UIViewController+SFIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03E32FEC8D2B7FA4275FB /* UIViewController+SFIViewController.m */; };
 		1DF03695283498FA1D26D5EF /* 19_key_fob_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DF03F995F5E5F7FF9875BBC /* 19_key_fob_1.png */; };
 		1DF037FCD2D5C9CC3010E790 /* ScoreboardEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03A79B522F8092C9C6F1E /* ScoreboardEventViewController.m */; };
 		1DF03EE86A8696543C048871 /* 19_key_fob_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DF03641418B99C1489F48CE /* 19_key_fob_2.png */; };
@@ -472,10 +473,12 @@
 		1CED600819AC85AB0023512F /* SNLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNLog.h; sourceTree = "<group>"; };
 		1CED600919AC85AB0023512F /* SNLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNLog.m; sourceTree = "<group>"; };
 		1DF0308F5C652469AADD767E /* ScoreboardEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardEventViewController.h; sourceTree = "<group>"; };
+		1DF0335961BDB4E5C1F992D1 /* UIViewController+SFIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+SFIViewController.h"; sourceTree = "<group>"; };
 		1DF03641418B99C1489F48CE /* 19_key_fob_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 19_key_fob_2.png; sourceTree = "<group>"; };
 		1DF03A74219C9A2A23078623 /* SFICopyLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICopyLabel.m; sourceTree = "<group>"; };
 		1DF03A79B522F8092C9C6F1E /* ScoreboardEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardEventViewController.m; sourceTree = "<group>"; };
 		1DF03D6EACE27C6B6CF1DDD9 /* SFICopyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICopyLabel.h; sourceTree = "<group>"; };
+		1DF03E32FEC8D2B7FA4275FB /* UIViewController+SFIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+SFIViewController.m"; sourceTree = "<group>"; };
 		1DF03F995F5E5F7FF9875BBC /* 19_key_fob_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 19_key_fob_1.png; sourceTree = "<group>"; };
 		9FF187E6539C4F59B4C93302 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -926,6 +929,8 @@
 				1CEB0B491A09C13C007D31A9 /* SFICardView.m */,
 				1C988E351A09FB1E0070C276 /* SFICardTableViewCell.h */,
 				1C988E361A09FB1E0070C276 /* SFICardTableViewCell.m */,
+				1DF03E32FEC8D2B7FA4275FB /* UIViewController+SFIViewController.m */,
+				1DF0335961BDB4E5C1F992D1 /* UIViewController+SFIViewController.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1342,6 +1347,7 @@
 				1DF031F5FE02FF77A500E6AB /* SFICopyLabel.m in Sources */,
 				1CEB0B4A1A09C13C007D31A9 /* SFICardView.m in Sources */,
 				1DF037FCD2D5C9CC3010E790 /* ScoreboardEventViewController.m in Sources */,
+				1DF03314344AECE95B9254D3 /* UIViewController+SFIViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
