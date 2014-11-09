@@ -342,16 +342,16 @@
     icon = [UIImage imageNamed:@"icon_router.png"];
     routerNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Router" image:icon selectedImage:icon];
     //
-    ScoreboardViewController *scoreCtrl = [ScoreboardViewController new];
-    UINavigationController *scoreNav = [[UINavigationController alloc] initWithRootViewController:scoreCtrl];
-    icon = [UIImage imageNamed:@"878-binoculars.png"];
-    scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
+//    ScoreboardViewController *scoreCtrl = [ScoreboardViewController new];
+//    UINavigationController *scoreNav = [[UINavigationController alloc] initWithRootViewController:scoreCtrl];
+//    icon = [UIImage imageNamed:@"878-binoculars.png"];
+//    scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
 
     UITabBarController *front = [UITabBarController new];
     front.tabBar.translucent = NO;
     front.tabBar.tintColor = [UIColor blackColor];
-    front.viewControllers = @[sensorNav, routerNav, scoreNav];
-//    front.viewControllers = @[sensorNav, routerNav];
+//    front.viewControllers = @[sensorNav, routerNav, scoreNav];
+    front.viewControllers = @[sensorNav, routerNav];
 
     // The rear one is the drawer selector
     DrawerViewController *rear = [DrawerViewController new];
