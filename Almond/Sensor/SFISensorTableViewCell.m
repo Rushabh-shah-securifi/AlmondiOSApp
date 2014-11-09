@@ -755,7 +755,7 @@
 }
 
 - (void)configureHueLamp_48 {
-
+    [self configureUnknownDevice];
 }
 
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
