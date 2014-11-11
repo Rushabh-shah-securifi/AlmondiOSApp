@@ -8,6 +8,7 @@
 
 #import "SFIRouterDevicesTableViewCell.h"
 #import "SFICardView.h"
+#import "SFIRouterTableViewActions.h"
 
 @implementation SFIRouterDevicesTableViewCell
 
@@ -27,7 +28,7 @@
 
     // Place visual indicator of "blocked" or "connected" status
     UIImage *image = [self getCardIcon];
-    [cardView setCardIcon:image];
+    [cardView setCardIcon:image target:self action:@selector(onToggleBlockDevice:)];
 
     // Embed a card to the right of the icon
     CGRect frame = CGRectMake(80, 0, CGRectGetWidth(self.frame) - 80, CGRectGetHeight(self.frame));
@@ -52,6 +53,10 @@
     }
 
     [cardView addSubview:infoCard];
+}
+
+- (void)onToggleBlockDevice:(id)sender {
+    [self.delegate onEnableWirelessAccessForDevice:self.deviceMAC allow:!self.blockedDevice];
 }
 
 - (UIImage *)getCardIcon {

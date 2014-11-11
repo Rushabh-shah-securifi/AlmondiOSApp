@@ -8,8 +8,11 @@
 
 #import "SFICardTableViewCell.h"
 
+@protocol SFIRouterTableViewActions;
+
 @interface SFIRouterDevicesTableViewCell : SFICardTableViewCell
 
+@property(weak) id <SFIRouterTableViewActions> delegate;
 @property(nonatomic) BOOL blockedDevice;
 @property(nonatomic) NSString *name;
 @property(nonatomic) NSString *deviceIP;

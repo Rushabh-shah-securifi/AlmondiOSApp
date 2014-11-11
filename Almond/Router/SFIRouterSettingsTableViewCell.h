@@ -9,9 +9,13 @@
 #import "SFICardTableViewCell.h"
 
 @class SFIWirelessSetting;
+@class SFIWirelessSummary;
+@protocol SFIRouterTableViewActions;
 
 @interface SFIRouterSettingsTableViewCell : SFICardTableViewCell
 
-@property (nonatomic) SFIWirelessSetting *setting;
+@property (weak) id<SFIRouterTableViewActions> delegate;
+@property (nonatomic) BOOL enabledDevice;
+@property (nonatomic) SFIWirelessSetting *wirelessSetting;
 
 @end

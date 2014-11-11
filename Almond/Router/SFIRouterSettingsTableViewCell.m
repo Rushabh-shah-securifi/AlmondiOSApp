@@ -9,6 +9,7 @@
 #import "SFIRouterSettingsTableViewCell.h"
 #import "SFIWirelessSetting.h"
 #import "SFICardView.h"
+#import "SFIRouterTableViewActions.h"
 
 @implementation SFIRouterSettingsTableViewCell
 
@@ -24,10 +25,10 @@
     [super layoutSubviews];
 
     SFICardView *cardView = self.cardView;
-    SFIWirelessSetting *setting = self.setting;
+    SFIWirelessSetting *setting = self.wirelessSetting;
 
     [cardView addTopBorder:self.backgroundColor];
-    [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactive:) on:YES];
+    [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactivate:) on:self.enabledDevice];
     [cardView addLine];
     [cardView addNameLabel:@"SSID" valueLabel:setting.ssid];
     [cardView addShortLine];
@@ -43,8 +44,9 @@
     [cardView addShortLine];
 }
 
-- (void)onActivateDeactive:(id)sender {
-
+- (void)onActivateDeactivate:(id)sender {
+    UISwitch *ctrl = sender;
+    [self.delegate onEnableDevice:self.wirelessSetting enabled:ctrl.on];
 }
 
 

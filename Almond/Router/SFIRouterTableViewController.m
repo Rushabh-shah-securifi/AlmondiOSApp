@@ -486,8 +486,9 @@
 
     NSMutableArray *summary = [NSMutableArray array];
     if (routerSummary) {
-        for (SFIWirelessSummary *sum in routerSummary.wirelessSummary) {
-            [summary addObject:[NSString stringWithFormat:@"%@ is %@", sum.ssid, sum.enabledStatus]];
+        for (SFIWirelessSummary *sum in routerSummary.wirelessSummaries) {
+            NSString *enabled = sum.enabled ? @"enabled" : @"disabled";
+            [summary addObject:[NSString stringWithFormat:@"%@ is %@", sum.ssid, enabled]];
         }
     }
     else {
@@ -509,8 +510,13 @@
     }
     [cell markReuse];
 
-    cell.cardView.backgroundColor = [[SFIColors blueColor] color];
-    cell.setting = [self tryGetWirelessSettingsForTableRow:row];
+    SFIWirelessSetting *setting = [self tryGetWirelessSettingsForTableRow:row];
+    SFIWirelessSummary *summary = [self.routerSummary summaryFor:setting.ssid];
+
+    cell.cardView.backgroundColor = summary.enabled ? [[SFIColors blueColor] color] : [UIColor lightGrayColor];
+    cell.wirelessSetting = setting;
+    cell.enabledDevice = summary.enabled;
+    cell.delegate = self;
 
     return cell;
 }
@@ -589,6 +595,8 @@
     if (cell == nil) {
         cell = [[SFIRouterDevicesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
+
+    cell.delegate = self;
     [cell markReuse];
 
     SFICardView *card = cell.cardView;
@@ -703,6 +711,20 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *view = [UIView new];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return section == DEF_ROUTER_REBOOT_SECTION ? 20 : 0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if (section != DEF_ROUTER_REBOOT_SECTION) {
+        return nil;
+    }
+
     UIView *view = [UIView new];
     view.backgroundColor = [UIColor clearColor];
     return view;
@@ -1006,6 +1028,42 @@
         [self onExpandCloseSection:self.tableView section:DEF_ROUTER_REBOOT_SECTION];
 
         [[Analytics sharedInstance] markRouterReboot];
+    });
+}
+
+- (void)onEnableDevice:(SFIWirelessSetting *)setting enabled:(BOOL)isEnabled {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
+        self.HUD.labelText = @"Updating settings...";
+        [self.HUD show:YES];
+
+        [self.HUD hide:YES afterDelay:2];
+    });
+}
+
+- (void)onChangeDeviceSSID:(SFIWirelessSetting *)summary newSSID:(NSString *)ssid {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
+        self.HUD.labelText = @"Updating settings...";
+        [self.HUD show:YES];
+
+        [self.HUD hide:YES afterDelay:2];
+    });
+}
+
+- (void)onEnableWirelessAccessForDevice:(NSString *)deviceMAC allow:(BOOL)isAllowed {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
+        self.HUD.labelText = @"Updating settings...";
+        [self.HUD show:YES];
+
+        [self.HUD hide:YES afterDelay:2];
     });
 }
 
