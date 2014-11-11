@@ -6,7 +6,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface UIViewController (SFIViewController)
+@interface UIViewController (Securifi)
 
 // Show a "toast" message at the bottom of the screen
 - (void)showToast:(NSString *)msg;

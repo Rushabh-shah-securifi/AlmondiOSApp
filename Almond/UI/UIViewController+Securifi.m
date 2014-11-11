@@ -3,11 +3,11 @@
 //
 //  Created by sinclair on 11/9/14.
 //
-#import "UIViewController+SFIViewController.h"
+#import "UIViewController+Securifi.h"
 #import "iToast.h"
 
 
-@implementation UIViewController (SFIViewController)
+@implementation UIViewController (Securifi)
 
 #pragma mark - Toast
 
