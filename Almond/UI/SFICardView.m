@@ -9,6 +9,7 @@
 #import "SFICardView.h"
 #import "UIFont+Securifi.h"
 #import "UIView+Borders.h"
+#import "SFIHighlightedButton.h"
 
 @interface SFICardView ()
 @property(nonatomic, readonly) float baseYCoordinate;
@@ -17,6 +18,8 @@
 @property(nonatomic) UIFont *summaryFont;
 @property(nonatomic) UIFont *bodyFont;
 @property(nonatomic, weak) CALayer *topBorder;
+@property(nonatomic, weak) CALayer *leftBorder;
+@property(nonatomic, weak) UIImageView *cardIconView;
 @end
 
 @implementation SFICardView
@@ -53,6 +56,13 @@
     [self.layer addSublayer:self.topBorder];
 }
 
+- (void)addLeftBorder:(UIColor *)color {
+    if (self.leftBorder == nil) {
+        self.leftBorder = [self createLeftBorderWithWidth:1.5 andColor:color];
+    }
+    [self.layer addSublayer:self.leftBorder];
+}
+
 - (void)addLine {
     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, self.baseYCoordinate, self.frame.size.width - 15, 1)];
     imgLine.image = [UIImage imageNamed:@"line.png"];
@@ -69,6 +79,18 @@
     [self markYOffset:5];
 }
 
+- (void)setCardIcon:(UIImage *)image {
+    if (self.cardIconView == nil) {
+        UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 60, 60)];
+        view.image = image;
+        [self addSubview:view];
+        self.cardIconView = view;
+    }
+    else {
+        self.cardIconView.image = image;
+    }
+}
+
 - (UILabel*)addHeader:(NSString *)title {
     UILabel *label = [self makeLabel:title font:self.headlineFont alignment:NSTextAlignmentCenter];
     [self addSubview:label];
@@ -80,7 +102,7 @@
 - (UILabel *)addTitle:(NSString *)title {
     UILabel *label = [self makeTitleLabel:title];
     [self addSubview:label];
-    [self markYOffsetUsingRect:label.frame addAdditional:15];
+    [self markYOffsetUsingRect:label.frame addAdditional:0];
     return label;
 }
 
@@ -140,8 +162,7 @@
     [self addSubview:settingsButtonCell];
 }
 
-//todo misnamed method should be makeXXX
-- (void)addOnOffSwitch:(id)target action:(SEL)action on:(BOOL)isOn {
+- (UISwitch*)makeOnOffSwitch:(id)target action:(SEL)action on:(BOOL)isOn {
     CGFloat width = CGRectGetWidth(self.frame);
     CGRect frame = CGRectMake(width - 60, self.baseYCoordinate, 60, 23);
 
@@ -149,15 +170,52 @@
     control.on = isOn;
     [control addTarget:target action:action forControlEvents:UIControlEventValueChanged];
 
-    [self addSubview:control];
+    return control;
+}
+
+- (UIButton*)makeButton:(id)target action:(SEL)action buttonTitle:(NSString *)buttonTitle {
+    CGFloat width = CGRectGetWidth(self.frame);
+    CGRect frame = CGRectMake(width - 70, self.baseYCoordinate, 60, 30);
+
+    UIFont *heavy_font = [UIFont securifiBoldFont];
+    UIColor *whiteColor = [UIColor whiteColor];
+    UIColor *normalColor = self.backgroundColor;
+    UIColor *highlightColor = whiteColor;
+
+    SFIHighlightedButton *button = [[SFIHighlightedButton alloc] initWithFrame:frame];
+//    button.frame = [self makeFieldValueRect:235];//CGRectMake(self.frame.size.width - 100, self.baseYCoordinate + 6, 65, 20);
+//    button.tag = self.tag;
+    button.normalBackgroundColor = normalColor;
+    button.highlightedBackgroundColor = highlightColor;
+    button.titleLabel.font = heavy_font;
+    [button setTitle:buttonTitle forState:UIControlStateNormal];
+    [button setTitleColor:whiteColor forState:UIControlStateNormal];
+    [button setTitleColor:normalColor forState:UIControlStateHighlighted];
+    [button addTarget:target action:action forControlEvents:UIControlEventTouchDown];
+    button.layer.borderWidth = 1.0f;
+    button.layer.borderColor = whiteColor.CGColor;
+
+    return button;
 }
 
 - (void)addTitleAndOnOffSwitch:(NSString *)title target:(id)target action:(SEL)action on:(BOOL)isSwitchOn {
     UILabel *label = [self makeTitleLabel:title];
     [self addSubview:label];
 
-    [self addOnOffSwitch:target action:action on:isSwitchOn];
+    UISwitch *ctrl = [self makeOnOffSwitch:target action:action on:isSwitchOn];
+    [self addSubview:ctrl];
+
     [self markYOffsetUsingRect:label.frame addAdditional:15];
+}
+
+- (void)addTitleAndButton:(NSString *)title target:(id)target action:(SEL)action buttonTitle:(NSString *)buttonTitle {
+    UILabel *label = [self makeTitleLabel:title];
+    [self addSubview:label];
+
+    UIButton *button = [self makeButton:target action:action buttonTitle:buttonTitle];
+    [self addSubview:button];
+
+    [self markYOffsetUsingRect:button.frame addAdditional:0];
 }
 
 - (UILabel *)makeTitleLabel:(NSString *)title {

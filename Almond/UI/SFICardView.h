@@ -30,6 +30,8 @@
 // Adds a top border to the card
 - (void)addTopBorder:(UIColor *)color;
 
+- (void)addLeftBorder:(UIColor *)color;
+
 // Draws a line across the width of the card, at the current Y-offset.
 // Used for demarcating a group of rows.
 - (void)addLine;
@@ -37,11 +39,17 @@
 // Draws a shorter line across the card, at the current Y-offset. Used for demarcating rows within a group.
 - (void)addShortLine;
 
+- (void)setCardIcon:(UIImage*)image;
+
 // Draws a centered header with given title
 - (UILabel *)addHeader:(NSString *)title;
 
 // Draws a left-aligned header with given title
 - (UILabel *)addTitle:(NSString *)title;
+
+- (void)addTitleAndOnOffSwitch:(NSString*)title target:(id)target action:(SEL)action on:(BOOL)isSwitchOn;
+
+- (void)addTitleAndButton:(NSString*)title target:(id)target action:(SEL)action buttonTitle:(NSString*)buttonTitle;
 
 // Draws a summary message. Usually added after calling addTitle and addHeader to create the standard
 // card header view.
@@ -55,9 +63,6 @@
 // The parameter "editing" controls the current visual state, which changes when the card is being edited or not.
 - (void)addEditIconTarget:(id)target action:(SEL)action editing:(BOOL)editing;
 
-- (void)addOnOffSwitch:(id)target action:(SEL)action on:(BOOL)isOn;
-
-- (void)addTitleAndOnOffSwitch:(NSString*)title target:(id)target action:(SEL)action on:(BOOL)isSwitchOn;
-
+//- (UISwitch *)makeOnOffSwitch:(id)target action:(SEL)action on:(BOOL)isOn;
 
 @end
