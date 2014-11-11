@@ -12,7 +12,7 @@
 #import "SFISensorTableViewCell.h"
 #import "SFISensorDetailView.h"
 #import "UIFont+Securifi.h"
-#import "UIViewController+SFIViewController.h"
+#import "UIViewController+Securifi.h"
 
 @interface SFISensorsViewController () <SFISensorTableViewCellDelegate>
 @property(nonatomic, readonly) SFIAlmondPlus *almond;

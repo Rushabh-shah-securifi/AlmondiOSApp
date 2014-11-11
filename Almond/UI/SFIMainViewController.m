@@ -16,7 +16,7 @@
 #import "SFISensorsViewController.h"
 #import "DrawerViewController.h"
 #import "SFIAccountsTableViewController.h"
-#import "UIViewController+SFIViewController.h"
+#import "UIViewController+Securifi.h"
 //#import "ScoreboardViewController.h"
 
 @interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, SFIAccountDeleteDelegate, UIGestureRecognizerDelegate>
