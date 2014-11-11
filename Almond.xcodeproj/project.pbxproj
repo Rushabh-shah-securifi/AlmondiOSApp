@@ -203,9 +203,9 @@
 		1CED60D419AC85AB0023512F /* SFISlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600619AC85AB0023512F /* SFISlider.m */; };
 		1CED60D519AC85AB0023512F /* SNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600919AC85AB0023512F /* SNLog.m */; };
 		1DF031F5FE02FF77A500E6AB /* SFICopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03A74219C9A2A23078623 /* SFICopyLabel.m */; };
-		1DF035AE9A9DC6AA54A90A8C /* UIViewController+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03B5AB89FD85E73647A1C /* UIViewController+Securifi.m */; };
 		1DF03695283498FA1D26D5EF /* 19_key_fob_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DF03F995F5E5F7FF9875BBC /* 19_key_fob_1.png */; };
 		1DF037FCD2D5C9CC3010E790 /* ScoreboardEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03A79B522F8092C9C6F1E /* ScoreboardEventViewController.m */; };
+		1DF03808425114D5220DF058 /* UIViewController+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF030330F6AE92A78853907 /* UIViewController+Securifi.m */; };
 		1DF03A36D98A00D4E8B5682B /* UIView+Borders.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0319B1FB51685ABC16993 /* UIView+Borders.m */; };
 		1DF03EE86A8696543C048871 /* 19_key_fob_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DF03641418B99C1489F48CE /* 19_key_fob_2.png */; };
 		CE458D5F19ED06B400689251 /* grey_line.png in Resources */ = {isa = PBXBuildFile; fileRef = CE458D5E19ED06B400689251 /* grey_line.png */; };
@@ -476,14 +476,14 @@
 		1CED600619AC85AB0023512F /* SFISlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISlider.m; sourceTree = "<group>"; };
 		1CED600819AC85AB0023512F /* SNLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNLog.h; sourceTree = "<group>"; };
 		1CED600919AC85AB0023512F /* SNLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNLog.m; sourceTree = "<group>"; };
+		1DF030330F6AE92A78853907 /* UIViewController+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+Securifi.m"; path = "UICategories/UIViewController+Securifi.m"; sourceTree = "<group>"; };
 		1DF0308F5C652469AADD767E /* ScoreboardEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardEventViewController.h; sourceTree = "<group>"; };
 		1DF0319B1FB51685ABC16993 /* UIView+Borders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Borders.m"; path = "UICategories/UIView+Borders.m"; sourceTree = "<group>"; };
 		1DF03641418B99C1489F48CE /* 19_key_fob_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 19_key_fob_2.png; sourceTree = "<group>"; };
+		1DF036CAA0B00DB83B575CB0 /* UIViewController+Securifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+Securifi.h"; path = "UICategories/UIViewController+Securifi.h"; sourceTree = "<group>"; };
 		1DF03A74219C9A2A23078623 /* SFICopyLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICopyLabel.m; sourceTree = "<group>"; };
 		1DF03A79B522F8092C9C6F1E /* ScoreboardEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardEventViewController.m; sourceTree = "<group>"; };
 		1DF03AA68A4DE6C8C371E84F /* UIView+Borders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+Borders.h"; path = "UICategories/UIView+Borders.h"; sourceTree = "<group>"; };
-		1DF03B5AB89FD85E73647A1C /* UIViewController+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+Securifi.m"; path = "UI/UIViewController+Securifi.m"; sourceTree = "<group>"; };
-		1DF03B5E7E6B92A2320A1EB0 /* UIViewController+Securifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+Securifi.h"; path = "UI/UIViewController+Securifi.h"; sourceTree = "<group>"; };
 		1DF03D6EACE27C6B6CF1DDD9 /* SFICopyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICopyLabel.h; sourceTree = "<group>"; };
 		1DF03F995F5E5F7FF9875BBC /* 19_key_fob_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 19_key_fob_1.png; sourceTree = "<group>"; };
 		9FF187E6539C4F59B4C93302 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
@@ -970,8 +970,8 @@
 				CE458D6619EF98EA00689251 /* UIFont+Securifi.m */,
 				1DF03AA68A4DE6C8C371E84F /* UIView+Borders.h */,
 				1DF0319B1FB51685ABC16993 /* UIView+Borders.m */,
-				1DF03B5AB89FD85E73647A1C /* UIViewController+Securifi.m */,
-				1DF03B5E7E6B92A2320A1EB0 /* UIViewController+Securifi.h */,
+				1DF036CAA0B00DB83B575CB0 /* UIViewController+Securifi.h */,
+				1DF030330F6AE92A78853907 /* UIViewController+Securifi.m */,
 			);
 			name = UICategories;
 			sourceTree = "<group>";
@@ -1359,7 +1359,7 @@
 				1CEB0B4A1A09C13C007D31A9 /* SFICardView.m in Sources */,
 				1DF037FCD2D5C9CC3010E790 /* ScoreboardEventViewController.m in Sources */,
 				1DF03A36D98A00D4E8B5682B /* UIView+Borders.m in Sources */,
-				1DF035AE9A9DC6AA54A90A8C /* UIViewController+Securifi.m in Sources */,
+				1DF03808425114D5220DF058 /* UIViewController+Securifi.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
