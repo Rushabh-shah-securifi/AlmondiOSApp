@@ -20,16 +20,6 @@
 }
 */
 
-//- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-//    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-//    if (self) {
-//        self.selectionStyle = UITableViewCellSelectionStyleNone;
-//        self.margin = 10;
-//    }
-//
-//    return self;
-//}
-
 - (void)layoutSubviews {
     [super layoutSubviews];
 
