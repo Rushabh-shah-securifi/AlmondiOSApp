@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface SFIWirelessUsers : NSObject
-@property (nonatomic, retain) NSString* name;
-@property (nonatomic, retain) NSString* deviceIP;
-@property (nonatomic, retain) NSString* deviceMAC;
-@property (nonatomic, retain) NSString* manufacturer;
-@property BOOL isBlocked;
-@property BOOL isSelected;
+@property(nonatomic) NSString *name;
+@property(nonatomic) NSString *deviceIP;
+@property(nonatomic) NSString *deviceMAC;
+@property(nonatomic) NSString *manufacturer;
+@property(nonatomic) BOOL isBlocked;
+@property(nonatomic) BOOL isSelected;
 @end
