@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface SFIWirelessSummary : NSObject
-@property int wirelessIndex;
-@property NSString *enabledStatus;
-@property NSString *ssid;
+
+@property(nonatomic) int wirelessIndex;
+@property(nonatomic) BOOL enabled;
+@property(nonatomic) NSString *ssid;
+
 @end

@@ -83,18 +83,12 @@
     else if ([elementName isEqualToString:WIRELESS_SETTING]) {
         if (genericCommandResponse.commandType == SFIGenericRouterCommandType_WIRELESS_SETTINGS) {
             self.currentWirelessSetting = [[SFIWirelessSetting alloc] init];
-            [self.currentWirelessSetting setIndex:[[attributeDict valueForKey:INDEX] intValue]];
+            self.currentWirelessSetting.index = [[attributeDict valueForKey:INDEX] intValue];;
         }
         else if (genericCommandResponse.commandType == SFIGenericRouterCommandType_WIRELESS_SUMMARY) {
             self.currentWirelessSummary = [[SFIWirelessSummary alloc] init];
-            [self.currentWirelessSummary setWirelessIndex:[[attributeDict valueForKey:INDEX] intValue]];
-            DLog(@"Enabled: %@", [attributeDict valueForKey:ENABLED]);
-            if ([[attributeDict valueForKey:ENABLED] isEqualToString:@"true"]) {
-                [self.currentWirelessSummary setEnabledStatus:@"enabled"];
-            }
-            else {
-                [self.currentWirelessSummary setEnabledStatus:@"disabled"];
-            }
+            self.currentWirelessSummary.wirelessIndex = [[attributeDict valueForKey:INDEX] intValue];;
+            self.currentWirelessSummary.enabled = [[attributeDict valueForKey:ENABLED] isEqualToString:@"true"];;
         }
     }
     else if ([elementName isEqualToString:ROUTER_SUMMARY]) {
@@ -195,7 +189,7 @@
     }
         //PY 271113 - Router Summary
     else if ([elementName isEqualToString:WIRELESS_SETTINGS_SUMMARY]) {
-        [routerSummary setWirelessSummary:self.wirelessSummaryArray];
+        [routerSummary setWirelessSummaries:self.wirelessSummaryArray];
     }
     else if ([elementName isEqualToString:ROUTER_UPTIME]) {
         [routerSummary setRouterUptime:currentNodeContent];
