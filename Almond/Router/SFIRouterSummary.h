@@ -11,7 +11,7 @@
 
 @interface SFIRouterSummary : NSObject
 @property(nonatomic) int wirelessSettingsCount;
-@property(nonatomic) NSArray *wirelessSettings;
+@property(nonatomic) NSArray *wirelessSummary; // SFIWirelessSummary
 @property(nonatomic) int connectedDeviceCount;
 @property(nonatomic) int blockedMACCount;
 @property(nonatomic) int blockedContentCount;

@@ -18,13 +18,13 @@
 //<WirelessMode>802.11bgn</WirelessMode>
 //<CountryRegion>0</CountryRegion>
 //</AlmondWirelessSettings>
-@property int index;
-@property (nonatomic, retain) NSString* ssid;
-@property (nonatomic, retain) NSString* password;
-@property int channel;
-@property (nonatomic, retain) NSString* encryptionType;
-@property (nonatomic, retain) NSString* security;
-@property (nonatomic, retain) NSString* wirelessMode;
-@property int wirelessModeCode;
-@property int countryRegion;
+@property(nonatomic) int index;
+@property(nonatomic) NSString *ssid;
+@property(nonatomic) NSString *password;
+@property(nonatomic) int channel;
+@property(nonatomic) NSString *encryptionType;
+@property(nonatomic) NSString *security;
+@property(nonatomic) NSString *wirelessMode;
+@property(nonatomic) int wirelessModeCode;
+@property(nonatomic) int countryRegion;
 @end
