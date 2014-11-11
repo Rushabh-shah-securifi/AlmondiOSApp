@@ -10,11 +10,19 @@
 
 @class SFICardView;
 
+// Provides a standard table cell for managing a CardView layout
 @interface SFICardTableViewCell : UITableViewCell
 
-@property SFICardView *cardView;
-@property CGFloat margin;
+// The card view used for laying out forms
+@property(nonatomic) SFICardView *cardView;
 
+// Margin placed along the left and right side of the card; defaults to 10px
+@property(nonatomic)  CGFloat margin;
+
+// Can be called after layouts to provide a preferred height for the table view cell
+- (CGFloat)computedLayoutHeight;
+
+// Called each time prior to laying out the cell
 - (void)markReuse;
 
 @end

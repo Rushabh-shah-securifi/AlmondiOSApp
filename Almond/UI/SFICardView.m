@@ -8,12 +8,15 @@
 
 #import "SFICardView.h"
 #import "UIFont+Securifi.h"
+#import "UIView+Borders.h"
 
 @interface SFICardView ()
 @property(nonatomic, readonly) float baseYCoordinate;
 @property(nonatomic) UIColor *textColor;
 @property(nonatomic) UIFont *headlineFont;
 @property(nonatomic) UIFont *summaryFont;
+@property(nonatomic) UIFont *bodyFont;
+@property(nonatomic, weak) CALayer *topBorder;
 @end
 
 @implementation SFICardView
@@ -25,13 +28,29 @@
         self.textColor = [UIColor whiteColor];
         self.headlineFont = [UIFont standardHeadingBoldFont];
         self.summaryFont = [UIFont standardUILabelFont];
+        self.bodyFont = [UIFont standardUITextFieldFont];
     }
 
     return self;
 }
 
-- (void)markYOffset:(int)val {
+- (void)markYOffset:(unsigned int)val {
     _baseYCoordinate += val;
+}
+
+- (void)markYOffsetUsingRect:(CGRect)rect addAdditional:(unsigned int)add {
+    _baseYCoordinate += CGRectGetHeight(rect) + add;
+}
+
+- (CGFloat)computedLayoutHeight {
+    return self.baseYCoordinate;
+}
+
+- (void)addTopBorder:(UIColor *)color {
+    if (self.topBorder == nil) {
+        self.topBorder = [self createTopBorderWithHeight:1.5 andColor:color];
+    }
+    [self.layer addSublayer:self.topBorder];
 }
 
 - (void)addLine {
@@ -53,16 +72,15 @@
 - (UILabel*)addHeader:(NSString *)title {
     UILabel *label = [self makeLabel:title font:self.headlineFont alignment:NSTextAlignmentCenter];
     [self addSubview:label];
-    [self markYOffset:25];
+    [self markYOffsetUsingRect:label.frame addAdditional:0];
 
     return label;
 }
 
 - (UILabel *)addTitle:(NSString *)title {
-    UILabel *label = [self makeLabel:title font:self.headlineFont alignment:NSTextAlignmentLeft];
+    UILabel *label = [self makeTitleLabel:title];
     [self addSubview:label];
-    [self markYOffset:25];
-
+    [self markYOffsetUsingRect:label.frame addAdditional:15];
     return label;
 }
 
@@ -80,10 +98,23 @@
 
     UILabel *label = [self makeMultiLineLabel:msg font:self.summaryFont alignment:NSTextAlignmentLeft numberOfLines:lineCount];
     [self addSubview:label];
-
-    [self markYOffset:lineCount * (int) self.summaryFont.pointSize];
+    [self markYOffsetUsingRect:label.frame addAdditional:0];
 
     return label;
+}
+
+- (void)addNameLabel:(NSString*)name valueLabel:(NSString *)value {
+    UILabel *label;
+
+    UIFont *font = self.bodyFont;
+
+    label = [self makeLabel:name font:font alignment:NSTextAlignmentLeft];
+    [self addSubview:label];
+
+    label = [self makeLabel:value font:font alignment:NSTextAlignmentRight];
+    [self addSubview:label];
+
+    [self markYOffsetUsingRect:label.frame addAdditional:5];
 }
 
 - (void)addEditIconTarget:(id)target action:(SEL)action editing:(BOOL)editing {
@@ -109,15 +140,28 @@
     [self addSubview:settingsButtonCell];
 }
 
+//todo misnamed method should be makeXXX
 - (void)addOnOffSwitch:(id)target action:(SEL)action on:(BOOL)isOn {
-    CGFloat width = self.frame.size.width;
-    CGRect frame = CGRectMake(width - 50, 37, 23, 23);
+    CGFloat width = CGRectGetWidth(self.frame);
+    CGRect frame = CGRectMake(width - 60, self.baseYCoordinate, 60, 23);
 
     UISwitch *control = [[UISwitch alloc] initWithFrame:frame];
     control.on = isOn;
     [control addTarget:target action:action forControlEvents:UIControlEventValueChanged];
 
     [self addSubview:control];
+}
+
+- (void)addTitleAndOnOffSwitch:(NSString *)title target:(id)target action:(SEL)action on:(BOOL)isSwitchOn {
+    UILabel *label = [self makeTitleLabel:title];
+    [self addSubview:label];
+
+    [self addOnOffSwitch:target action:action on:isSwitchOn];
+    [self markYOffsetUsingRect:label.frame addAdditional:15];
+}
+
+- (UILabel *)makeTitleLabel:(NSString *)title {
+    return [self makeMultiLineLabel:title font:self.headlineFont alignment:NSTextAlignmentLeft numberOfLines:1];
 }
 
 - (UILabel *)makeLabel:(NSString *)title font:(UIFont*)textFont alignment:(enum NSTextAlignment)alignment {
@@ -127,6 +171,7 @@
 - (UILabel *)makeMultiLineLabel:(NSString *)title font:(UIFont*)textFont alignment:(enum NSTextAlignment)alignment numberOfLines:(int)lineCount {
     CGFloat width = self.frame.size.width - 30;
     CGFloat height = textFont.pointSize * lineCount;
+    height += textFont.pointSize; // padding
     CGRect frame = CGRectMake(10, self.baseYCoordinate, width, height);
 
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
