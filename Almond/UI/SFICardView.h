@@ -39,7 +39,13 @@
 // Draws a shorter line across the card, at the current Y-offset. Used for demarcating rows within a group.
 - (void)addShortLine;
 
+// Displays an icon in the standard left corner of the card.
+// Call this method again to update the image.
 - (void)setCardIcon:(UIImage*)image;
+
+// Displays an icon and clear button in the standard left corner of the card and fired an event when the button is invoked.
+// To update the image, use the method setCardIcon:
+- (void)setCardIcon:(UIImage *)image target:(id)target action:(SEL)action;
 
 // Draws a centered header with given title
 - (UILabel *)addHeader:(NSString *)title;

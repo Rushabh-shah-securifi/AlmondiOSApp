@@ -91,6 +91,17 @@
     }
 }
 
+- (void)setCardIcon:(UIImage *)image target:(id)target action:(SEL)action {
+    [self setCardIcon:image];
+
+    UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    settingsButton.frame = self.cardIconView.frame;
+    settingsButton.backgroundColor = [UIColor clearColor];
+    [settingsButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+
+    [self addSubview:settingsButton];
+}
+
 - (UILabel*)addHeader:(NSString *)title {
     UILabel *label = [self makeLabel:title font:self.headlineFont alignment:NSTextAlignmentCenter];
     [self addSubview:label];
