@@ -17,15 +17,22 @@
 #import "SFICardView.h"
 #import "SFICardTableViewCell.h"
 #import "SFIRouterSettingsTableViewCell.h"
+#import "SFIRouterDevicesTableViewCell.h"
+#import "SFIRouterRebootTableViewCell.h"
+#import "SFIRouterTableViewActions.h"
 
-#define DEF_WIRELESS_SETTINGS_SECTION 0
+#define DEF_WIRELESS_SETTINGS_SECTION   0
+#define DEF_DEVICES_AND_USERS_SECTION   1
+#define DEF_ROUTER_REBOOT_SECTION       3
 
-@interface SFIRouterTableViewController () <UIActionSheetDelegate>
+@interface SFIRouterTableViewController () <SFIRouterTableViewActions>
 @property NSTimer *hudTimer;
 
 @property NSString *currentMAC;
 @property(nonatomic, strong) SFIRouterSummary *routerSummary;
 @property(nonatomic, strong) NSArray *wirelessSettings;
+@property(nonatomic, strong) NSArray *connectedDevices;     // SFIConnectedDevice
+@property(nonatomic, strong) NSArray *blockedDevices;       // SFIBlockedDevice
 
 @property NSNumber *currentExpandedSection; // nil == none expanded
 @property NSUInteger currentExpandedCount; // number of rows in expanded section
@@ -119,6 +126,13 @@
 - (void)initializeAlmondData {
     self.isRebooting = FALSE;
 
+    self.routerSummary = nil;
+    self.wirelessSettings = nil;
+    self.connectedDevices = nil;
+    self.blockedDevices = nil;
+    self.currentExpandedSection = nil;
+    self.currentExpandedCount = 0;
+
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
 
@@ -167,21 +181,9 @@
 
 #pragma mark - Commands
 
-- (void)sendAlmondWirelessSummaryCommand {
-    if (![self isNoAlmondLoaded]) {
-        [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
-    }
-}
-
 - (void)sendRebootAlmondCommand {
     if (![self isNoAlmondLoaded]) {
         [self sendGenericCommandRequest:REBOOT_COMMAND];
-    }
-}
-
-- (void)sendWirelessSettingsCommand {
-    if (![self isNoAlmondLoaded]) {
-        [self sendGenericCommandRequest:GET_WIRELESS_SETTINGS_COMMAND];
     }
 }
 
@@ -238,8 +240,16 @@
     });
 }
 
-- (void)onEditCard:(id)onEditCard {
+- (void)onEditWirelessSettingsCard:(id)sender {
+    [self onExpandCloseSection:self.tableView section:DEF_WIRELESS_SETTINGS_SECTION];
+}
 
+- (void)onEditDevicesAndUsersCard:(id)sender {
+    [self onExpandCloseSection:self.tableView section:DEF_DEVICES_AND_USERS_SECTION];
+}
+
+- (void)onEditRouterRebootCard:(id)sender {
+    [self onExpandCloseSection:self.tableView section:DEF_ROUTER_REBOOT_SECTION];
 }
 
 #pragma mark - Table view data source
@@ -270,6 +280,10 @@
     switch (section) {
         case DEF_WIRELESS_SETTINGS_SECTION:
             return 1 + self.currentExpandedCount;
+        case DEF_DEVICES_AND_USERS_SECTION:
+            return 1 + self.currentExpandedCount;
+        case DEF_ROUTER_REBOOT_SECTION:
+            return 1 + self.currentExpandedCount;
         default:
             return 1;
     }
@@ -289,14 +303,17 @@
         return 400;
     }
 
-    if (indexPath.section == 0 /* wireless summary */) {
-        if (indexPath.row == 0) {
-            return 120;
-        }
-        return 200;
-    }
-    else {
-        return 85;
+    switch (indexPath.section) {
+        case DEF_WIRELESS_SETTINGS_SECTION:
+            if (indexPath.row == 0) {
+                return 120;
+            }
+            return 200;
+
+        case DEF_DEVICES_AND_USERS_SECTION:
+        case DEF_ROUTER_REBOOT_SECTION:
+        default:
+            return 85;
     }
 }
 
@@ -314,14 +331,28 @@
         return 400;
     }
 
-    if (indexPath.section == 0 /* wireless summary */) {
-        if (indexPath.row > 0) {
-            return 300;
+    switch (indexPath.section) {
+        case DEF_WIRELESS_SETTINGS_SECTION:
+            if (indexPath.row > 0) {
+                return 300;
+            }
+
+        case DEF_DEVICES_AND_USERS_SECTION:
+            if (indexPath.row > 0) {
+                return 85;
+            }
+
+        case DEF_ROUTER_REBOOT_SECTION:
+            if (indexPath.row > 0) {
+                return 85;
+            }
+
+        default: {
+            SFICardTableViewCell *cell = (SFICardTableViewCell *) [self tableView:tableView cellForRowAtIndexPath:indexPath];
+            return [cell computedLayoutHeight];
         }
     }
 
-    SFICardTableViewCell *cell = (SFICardTableViewCell *) [self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return [cell computedLayoutHeight];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -350,12 +381,28 @@
                 default:
                     return [self createWirelessSettingCell:tableView tableRow:indexPath.row];
             }
-        case 1:
-            return [self createDevicesAndUsersCell:tableView];
+
+        case DEF_DEVICES_AND_USERS_SECTION:
+            switch (indexPath.row) {
+                case 0:
+                    return [self createDevicesAndUsersSummaryCell:tableView];
+                default:
+                    return [self createDevicesAndUsersEditCell:tableView tableRow:indexPath.row];
+            }
+
         case 2:
             return [self createSoftwareVersionCell:tableView];
+
+        case DEF_ROUTER_REBOOT_SECTION:
+            switch (indexPath.row) {
+                case 0:
+                    return [self createAlmondRebootSummaryCell:tableView];
+                default:
+                    return [self createAlmondRebootEditCell:tableView];
+            }
+
         default:
-            return [self createAlmondRebootCell:tableView];
+            return [self createAlmondRebootSummaryCell:tableView];
     }
 }
 
@@ -435,13 +482,20 @@
     card.backgroundColor = [[SFIColors blueColor] color];
     [card addTitle:@"Wireless Settings"];
 
+    SFIRouterSummary *routerSummary = self.routerSummary;
+
     NSMutableArray *summary = [NSMutableArray array];
-    for (SFIWirelessSummary *sum in self.routerSummary.wirelessSummary) {
-        [summary addObject:[NSString stringWithFormat:@"%@ is %@", sum.ssid, sum.enabledStatus]];
+    if (routerSummary) {
+        for (SFIWirelessSummary *sum in routerSummary.wirelessSummary) {
+            [summary addObject:[NSString stringWithFormat:@"%@ is %@", sum.ssid, sum.enabledStatus]];
+        }
+    }
+    else {
+        [summary addObject:@"Settings are not available."];
     }
     [card addSummary:summary];
 
-    [card addEditIconTarget:self action:@selector(onEditCard:) editing:NO];
+    [card addEditIconTarget:self action:@selector(onEditWirelessSettingsCard:) editing:NO];
 
     return cell;
 }
@@ -456,14 +510,15 @@
     [cell markReuse];
 
     cell.cardView.backgroundColor = [[SFIColors blueColor] color];
-    cell.setting = [self tryGetSettingsForTableRow:row];
+    cell.setting = [self tryGetWirelessSettingsForTableRow:row];
 
     return cell;
 }
 
-- (SFIWirelessSetting *)tryGetSettingsForTableRow:(NSInteger)row {
+- (SFIWirelessSetting *)tryGetWirelessSettingsForTableRow:(NSInteger)row {
     NSArray *settings = self.wirelessSettings;
 
+    // first row is the summary cell; all others are the ones we want; so adjust index accordingly
     row = row - 1;
     if (row < 0) {
         return nil;
@@ -475,20 +530,86 @@
     return settings[(NSUInteger) row];
 }
 
-- (UITableViewCell *)createDevicesAndUsersCell:(UITableView *)tableView {
-    static NSString *CellIdentifier = @"DevicesCell";
-    SFICardTableViewCell *cell = [self getCardCell:tableView identifier:CellIdentifier];
+// either an instance of SFIConnectedDevice or SFIBlockedDevice
+- (id)tryGetDevicesForTableRow:(NSInteger)row {
+    NSArray *connected = self.connectedDevices;
+    NSArray *blocked = self.blockedDevices;
+
+    NSUInteger total = connected.count + blocked.count;
+
+    // first row is the summary cell; all others are the ones we want; so adjust index accordingly
+    row = row - 1;
+    if (row < 0) {
+        return nil;
+    }
+    if (row >= total) {
+        return nil;
+    }
+
+    if (row >= connected.count) {
+        row = row - connected.count;
+    }
+    else {
+        return connected[(NSUInteger) row];
+    }
+
+    return blocked[(NSUInteger) row];
+}
+
+- (UITableViewCell *)createDevicesAndUsersSummaryCell:(UITableView *)tableView {
+    static NSString *cellId = @"DevicesSummary";
+    SFICardTableViewCell *cell = [self getCardCell:tableView identifier:cellId];
 
     SFICardView *card = cell.cardView;
     card.backgroundColor = [[SFIColors greenColor] color];
     [card addTitle:@"Devices & Users"];
 
-    NSArray *summary = @[
-            [NSString stringWithFormat:@"%d connected, %d blocked", self.routerSummary.connectedDeviceCount, self.routerSummary.blockedMACCount],
-    ];
+    SFIRouterSummary *routerSummary = self.routerSummary;
+
+    NSArray *summary;
+    if (routerSummary) {
+        summary = @[
+                [NSString stringWithFormat:@"%d connected, %d blocked", routerSummary.connectedDeviceCount, routerSummary.blockedMACCount],
+        ];
+    }
+    else {
+        summary = @[@"Settings are not available."];
+    }
     [card addSummary:summary];
 
-    [card addEditIconTarget:self action:@selector(onEditCard:) editing:NO];
+    [card addEditIconTarget:self action:@selector(onEditDevicesAndUsersCard:) editing:NO];
+
+    return cell;
+}
+
+- (UITableViewCell *)createDevicesAndUsersEditCell:(UITableView *)tableView tableRow:(NSInteger)row {
+    static NSString *cell_id = @"DevicesEdit";
+
+    SFIRouterDevicesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+    if (cell == nil) {
+        cell = [[SFIRouterDevicesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
+    }
+    [cell markReuse];
+
+    SFICardView *card = cell.cardView;
+    card.backgroundColor = [[SFIColors greenColor] color];
+
+    // This is ugly but required unless we collapse SFIConnectedDevice and SFIBlockedDevice
+    id obj = [self tryGetDevicesForTableRow:row];
+    if (obj != nil) {
+        if ([obj isKindOfClass:[SFIConnectedDevice class]]) {
+            SFIConnectedDevice *device = obj;
+            cell.blockedDevice = NO;
+            cell.deviceIP = device.deviceIP;
+            cell.deviceMAC = device.deviceMAC;
+            cell.name = device.name;
+        }
+        else if ([obj isKindOfClass:[SFIBlockedDevice class]]) {
+            SFIBlockedDevice *device = obj;
+            cell.blockedDevice = YES;
+            cell.deviceMAC = device.deviceMAC;
+        }
+    }
 
     return cell;
 }
@@ -502,19 +623,21 @@
     [card addTitle:@"Software"];
 
     NSString *version = self.routerSummary.firmwareVersion;
+
+    NSArray *summary;
     if (version) {
-        NSArray *summary = @[@"Current version", version];
-        [card addSummary:summary];
+        summary = @[@"Current version", version];
     }
     else {
-        [card addSummary:@[@"Version information is not available"]];
+        summary = @[@"Version information is not available."];
     }
+    [card addSummary:summary];
 
     return cell;
 }
 
-- (UITableViewCell *)createAlmondRebootCell:(UITableView *)tableView {
-    static NSString *CellIdentifier = @"AlmondCell";
+- (UITableViewCell *)createAlmondRebootSummaryCell:(UITableView *)tableView {
+    static NSString *CellIdentifier = @"RebootSummary";
 
     SFICardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
@@ -528,18 +651,39 @@
     [card addTitle:@"Router Reboot"];
 
     NSArray *summary;
-    if (self.routerSummary == nil) {
-        summary = @[@"Router status is not available."];
+    if (self.isRebooting) {
+        summary = @[
+                @"Router is rebooting. It will take at least",
+                @"2 minutes for the router to boot.",
+                @"Please refresh after sometime."
+        ];
     }
-    else if (self.isRebooting) {
-        summary = @[@"Router is rebooting. It will take at least", @"2 minutes for the router to boot.", @"Please refresh after sometime."];
+    else if (self.routerSummary == nil) {
+        summary = @[@"Router status is not available."];
     }
     else {
         summary = @[[NSString stringWithFormat:@"Last reboot %@ ago", self.routerSummary.routerUptime]];
     }
     [card addSummary:summary];
 
-    [card addEditIconTarget:self action:@selector(onEditCard:) editing:NO];
+    [card addEditIconTarget:self action:@selector(onEditRouterRebootCard:) editing:NO];
+
+    return cell;
+}
+
+- (UITableViewCell *)createAlmondRebootEditCell:(UITableView *)tableView {
+    static NSString *cell_id = @"RebootEdit";
+
+    SFIRouterRebootTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+    if (cell == nil) {
+        cell = [[SFIRouterRebootTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
+    }
+
+    cell.delegate = self;
+    [cell markReuse];
+
+    SFICardView *card = cell.cardView;
+    card.backgroundColor = [[SFIColors pinkColor] color];
 
     return cell;
 }
@@ -564,24 +708,7 @@
     return view;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if ([self isNoAlmondLoaded]) {
-//        return;
-//    }
-//
-//    if (self.isAlmondUnavailable) {
-//        return;
-//    }
-//
-//    UIActionSheet *actionSheet = [[UIActionSheet alloc]
-//            initWithTitle:@"Reboot the router?"
-//                 delegate:self
-//        cancelButtonTitle:@"No"
-//   destructiveButtonTitle:@"Yes"
-//        otherButtonTitles:nil];
-//
-//    [actionSheet showFromTabBar:self.tabBarController.tabBar];
-
+- (void)onExpandCloseSection:(UITableView *)tableView section:(NSInteger)section {
     [tableView beginUpdates];
 
     NSInteger currentExpanded = -1;
@@ -594,50 +721,42 @@
         self.currentExpandedCount = 0;
 
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger) currentExpanded] withRowAnimation:UITableViewRowAnimationAutomatic];
-
     }
 
     // add rows if needed
-    if (currentExpanded != indexPath.section) {
-        if (indexPath.section == DEF_WIRELESS_SETTINGS_SECTION) {
+    if (currentExpanded != section) {
+        if (section == DEF_WIRELESS_SETTINGS_SECTION) {
             self.currentExpandedSection = @(DEF_WIRELESS_SETTINGS_SECTION);
             self.currentExpandedCount = self.wirelessSettings.count;
             [tableView reloadSections:[NSIndexSet indexSetWithIndex:DEF_WIRELESS_SETTINGS_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
+        else if (section == DEF_DEVICES_AND_USERS_SECTION) {
+            self.currentExpandedSection = @(DEF_DEVICES_AND_USERS_SECTION);
+            self.currentExpandedCount = self.connectedDevices.count + self.blockedDevices.count;
+            [tableView reloadSections:[NSIndexSet indexSetWithIndex:DEF_DEVICES_AND_USERS_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        else if (section == DEF_ROUTER_REBOOT_SECTION) {
+            self.currentExpandedSection = @(DEF_ROUTER_REBOOT_SECTION);
+            self.currentExpandedCount = 1;
+            [tableView reloadSections:[NSIndexSet indexSetWithIndex:DEF_ROUTER_REBOOT_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
     }
 
     [tableView endUpdates];
-
-//    SFIWirelessTableViewController *ctrl = [SFIWirelessTableViewController new];
-//    ctrl.currentSetting = self.wirelessSettings[0];
-//    [self.navigationController pushViewController:ctrl animated:YES];
-
-
-//    SFIRouterDevicesListViewController *viewController = [[SFIRouterDevicesListViewController alloc] init];
-//    viewController.deviceList = self.wirelessSettings.deviceList;
-//    viewController.deviceListType = SFIGenericRouterCommandType_WIRELESS_SETTINGS;
-//
-//    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Class Methods
 
 - (void)refreshDataForAlmond {
-    [self sendAlmondWirelessSummaryCommand];
-    [self sendWirelessSettingsCommand];
-}
+    if ([self isNoAlmondLoaded]) {
+        return;
+    }
 
-//- (IBAction)onRebootButtonAction:(id)sender {
-//    //Send Generic Command
-//    UIActionSheet *actionSheet = [[UIActionSheet alloc]
-//            initWithTitle:@"Reboot the router?"
-//                 delegate:self
-//        cancelButtonTitle:@"No"
-//   destructiveButtonTitle:@"Yes"
-//        otherButtonTitles:nil];
-//
-//    [actionSheet showInView:self.view];
-//}
+    [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
+    [self sendGenericCommandRequest:GET_WIRELESS_SETTINGS_COMMAND];
+    [self sendGenericCommandRequest:GET_CONNECTED_DEVICE_COMMAND];
+    [self sendGenericCommandRequest:GET_BLOCKED_DEVICE_COMMAND];
+}
 
 - (void)onAddAlmondAction:(id)sender {
     if (self.disposed) {
@@ -651,41 +770,6 @@
     else {
         //Get wireless settings
         [self refreshDataForAlmond];
-    }
-}
-
-#pragma mark - UIActionSheetDelegate methods
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    switch (buttonIndex) {
-        case 0: {
-            DLog(@"Clicked on yes");
-
-            dispatch_async(dispatch_get_main_queue(), ^() {
-                if (self.disposed) {
-                    return;
-                }
-                self.HUD.labelText = @"Router is rebooting.";
-                [self.HUD hide:YES afterDelay:1];
-
-                self.isRebooting = TRUE;
-                [self sendRebootAlmondCommand];
-                [self.tableView reloadData];
-
-                [[Analytics sharedInstance] markRouterReboot];
-            });
-
-            break;
-        }
-
-        case 1: {
-            DLog(@"Clicked on no");
-            break;
-        }
-
-        default: {
-            break;
-        }
     }
 }
 
@@ -741,7 +825,8 @@
     }
     self.isAlmondUnavailable = NO;
 
-    //Display proper message
+    //todo push all of this parsing and manipulation into the parser or SFIGenericRouterCommand!
+
     DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
     DLog(@"Response Data: %@", obj.genericData);
     DLog(@"Decoded Data: %@", obj.decodedData);
@@ -765,85 +850,41 @@
     SFIGenericRouterCommand *genericRouterCommand = [[SFIParser alloc] loadDataFromString:decodedString];
     DLog(@"Command Type %d", genericRouterCommand.commandType);
 
-    switch (genericRouterCommand.commandType) {
-        case SFIGenericRouterCommandType_REBOOT: {
-            //Reboot
-            SFIRouterReboot *routerReboot = (SFIRouterReboot *) genericRouterCommand.command;
-            NSLog(@"Reboot Reply: %d", routerReboot.reboot);
-            break;
-        }
-//                case 2:
-//                {
-//                    //Get Connected Device List
-//                    SFIDevicesList *routerConnectedDevices = (SFIDevicesList*)genericRouterCommand.command;
-//                    DLog(@"Connected Devices Reply: %d", [routerConnectedDevices.deviceList count]);
-//                    //Display list
-//                    SFIRouterDevicesListViewController *viewController =[[SFIRouterDevicesListViewController alloc] init];
-//                    viewController.deviceList = routerConnectedDevices.deviceList;
-//                    viewController.deviceListType = genericRouterCommand.commandType;
-//                    [self.navigationController pushViewController:viewController animated:YES];
-//                }
-//                    break;
-//                case 3:
-//                {
-//                    //Get Blocked Device List
-//                    SFIDevicesList *routerBlockedDevices = (SFIDevicesList*)genericRouterCommand.command;
-//                    DLog(@"Blocked Devices Reply: %d", [routerBlockedDevices.deviceList count]);
-//                    //Display list
-//                    SFIRouterDevicesListViewController *viewController =[[SFIRouterDevicesListViewController alloc] init];
-//                    viewController.deviceList = routerBlockedDevices.deviceList;
-//                    viewController.deviceListType = genericRouterCommand.commandType;
-//                    [self.navigationController pushViewController:viewController animated:YES];
-//
-//                }
-//                    break;
-//                    //TODO: Case 4: Set blocked device
-//                case 5:
-//                {
-//                    //Get Blocked Device Content
-//                    SFIDevicesList *routerBlockedContent = (SFIDevicesList*)genericRouterCommand.command;
-//                    DLog(@"Blocked content Reply: %d", [routerBlockedContent.deviceList count]);
-//                    //Display list
-//                    SFIRouterDevicesListViewController *viewController =[[SFIRouterDevicesListViewController alloc] init];
-//                    viewController.deviceList = routerBlockedContent.deviceList;
-//                    viewController.deviceListType = genericRouterCommand.commandType;
-//                    [self.navigationController pushViewController:viewController animated:YES];
-//               }
-//                    break;
-        case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
-            //Get Wireless Settings
-            dispatch_async(dispatch_get_main_queue(), ^() {
-                if (self.disposed) {
-                    return;
-                }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        switch (genericRouterCommand.commandType) {
+            case SFIGenericRouterCommandType_CONNECTED_DEVICES: {
+                SFIDevicesList *ls = genericRouterCommand.command;
+                self.connectedDevices = ls.deviceList;
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:DEF_DEVICES_AND_USERS_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            }
 
+            case SFIGenericRouterCommandType_BLOCKED_MACS: {
+                SFIDevicesList *ls = genericRouterCommand.command;
+                self.blockedDevices = ls.deviceList;
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:DEF_DEVICES_AND_USERS_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            }
+
+            case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.wirelessSettings = ls.deviceList;
-            });
-            break;
-        }
-        case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
-            // Get Wireless Summary
-            dispatch_async(dispatch_get_main_queue(), ^() {
-                if (self.disposed) {
-                    return;
-                }
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:DEF_WIRELESS_SETTINGS_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            }
 
+            case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
                 self.routerSummary = (SFIRouterSummary *) genericRouterCommand.command;
                 [self.tableView reloadData];
-            });
+                break;
+            }
 
-            break;
+            case SFIGenericRouterCommandType_REBOOT: 
+            case SFIGenericRouterCommandType_BLOCKED_CONTENT:
+            default:
+                break;
         }
 
-        default:
-            break;
-    } // end switch
-
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.disposed) {
-            return;
-        }
         [self.HUD hide:YES];
         [self.refreshControl endRefreshing];
     });
@@ -872,6 +913,8 @@
         return;
     }
     self.isAlmondUnavailable = NO;
+
+    //todo push all of this parsing and manipulation into the parser or SFIGenericRouterCommand!
 
     NSMutableData *genericData = [[NSMutableData alloc] init];
 
@@ -945,6 +988,24 @@
         }
 
         [self.tableView reloadData];
+    });
+}
+
+#pragma mark - SFIRouterTableViewActions protocol methods
+
+- (void)onRebootRouterActionCalled {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
+        self.HUD.labelText = @"Router is rebooting.";
+        [self.HUD show:YES];
+
+        self.isRebooting = TRUE;
+        [self sendRebootAlmondCommand];
+        [self onExpandCloseSection:self.tableView section:DEF_ROUTER_REBOOT_SECTION];
+
+        [[Analytics sharedInstance] markRouterReboot];
     });
 }
 
