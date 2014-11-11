@@ -132,6 +132,7 @@
     // Add Notifications control
     [self addNotificationsControl];
     [self addLine];
+    [self markYOffset:5];
 
     // Try adding tamper switch. Only some devices support it.
     [self tryAddTamper];
@@ -481,8 +482,7 @@
 }
 
 - (void)addNotificationsControl {
-    UILabel *label;
-    label = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
+    UILabel *label = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
     label.backgroundColor = self.color;
     label.text = @"Send Notifications";
     label.textColor = [UIColor whiteColor];
@@ -902,7 +902,7 @@
         return SENSOR_ROW_HEIGHT;
     }
 
-    NSUInteger extra = 45;          // accounts for notification on/off control
+    NSUInteger extra = 55;          // accounts for notification on/off control
     extra += isTampered ? 45 : 0;   // accounts for the row presenting the tampered msg and dismiss button
 
     switch (currentSensor.deviceType) {
