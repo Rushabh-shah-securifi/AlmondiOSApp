@@ -24,6 +24,8 @@
 
 - (void)markYOffset:(unsigned int)val;
 
+- (void)useSmallSummaryFont;
+
 // Can be called after layouts to provide a preferred height for the table view cell
 - (CGFloat)computedLayoutHeight;
 
@@ -64,11 +66,11 @@
 // Standard method for laying out a row of info. The name label is left justified, and the value label is right justified.
 - (void)addNameLabel:(NSString *)name valueLabel:(NSString *)value;
 
+- (void)addNameLabel:(NSString *)name valueTextField:(NSString *)value delegate:(id <UITextFieldDelegate>)delegate tag:(NSInteger)tag;
+
 // For cards or UI elements that can be "edited" or otherwise "expanded", this draws a standard "edit" icon
 // on the card, relative to the current Y-offset, and wires up the button to the specified target and action selector.
 // The parameter "editing" controls the current visual state, which changes when the card is being edited or not.
 - (void)addEditIconTarget:(id)target action:(SEL)action editing:(BOOL)editing;
-
-//- (UISwitch *)makeOnOffSwitch:(id)target action:(SEL)action on:(BOOL)isOn;
 
 @end

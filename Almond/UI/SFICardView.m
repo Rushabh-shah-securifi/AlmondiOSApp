@@ -10,6 +10,8 @@
 #import "UIFont+Securifi.h"
 #import "UIView+Borders.h"
 #import "SFIHighlightedButton.h"
+#import "Colours.h"
+#import "SFICopyLabel.h"
 
 @interface SFICardView ()
 @property(nonatomic, readonly) float baseYCoordinate;
@@ -20,6 +22,7 @@
 @property(nonatomic, weak) CALayer *topBorder;
 @property(nonatomic, weak) CALayer *leftBorder;
 @property(nonatomic, weak) UIImageView *cardIconView;
+@property(nonatomic, weak) UIImageView *settingsIcon;
 @end
 
 @implementation SFICardView
@@ -35,6 +38,10 @@
     }
 
     return self;
+}
+
+- (void)useSmallSummaryFont {
+    self.summaryFont = [[UIFont standardUILabelFont] fontWithSize:10];
 }
 
 - (void)markYOffset:(unsigned int)val {
@@ -150,14 +157,48 @@
     [self markYOffsetUsingRect:label.frame addAdditional:5];
 }
 
+- (void)addNameLabel:(NSString*)name valueTextField:(NSString *)value delegate:(id<UITextFieldDelegate>)delegate tag:(NSInteger)tag {
+    UIFont *font = self.bodyFont;
+
+    UILabel *label = [self makeLabel:name font:font alignment:NSTextAlignmentLeft];
+    [self addSubview:label];
+
+    UITextField *field = [self makeTextField:value];
+    field.delegate = delegate;
+    field.tag = tag;
+    [self addSubview:field];
+
+    [self markYOffsetUsingRect:field.frame addAdditional:5];
+}
+
+- (UITextField *)makeTextField:(NSString *)text  {
+    UIColor *color = [self.backgroundColor blackOrWhiteContrastingColor];
+
+    UITextField *field = [[UITextField alloc] initWithFrame:[self makeFieldValueRect:120]];
+    field.text = text;
+    field.textAlignment = NSTextAlignmentRight;
+    field.textColor = color;
+    field.font = self.bodyFont;
+    field.returnKeyType = UIReturnKeyDone;
+
+    [field addBottomBorderWithHeight:0.5 andColor:color];
+
+    return field;
+}
+
 - (void)addEditIconTarget:(id)target action:(SEL)action editing:(BOOL)editing {
+    if (self.settingsIcon != nil) {
+        return;
+    }
+
     CGFloat width = self.frame.size.width;
     CGRect frame = CGRectMake(width - 50, 37, 23, 23);
 
     UIImageView *settingsImage = [[UIImageView alloc] initWithFrame:frame];
     settingsImage.image = [UIImage imageNamed:@"icon_config.png"];
-    settingsImage.alpha = (CGFloat) (editing ? 1.0 : 0.5); // change color of image when expanded
     settingsImage.userInteractionEnabled = YES;
+    self.settingsIcon = settingsImage;
+    [self setEditIconEditing:editing];
     [self addSubview:settingsImage];
 
     UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -171,6 +212,10 @@
     settingsButtonCell.backgroundColor = [UIColor clearColor];
     [settingsButtonCell addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:settingsButtonCell];
+}
+
+- (void)setEditIconEditing:(BOOL)editing {
+    self.settingsIcon.alpha = (CGFloat) (editing ? 1.0 : 0.5); // change color of image when expanded
 }
 
 - (UISwitch*)makeOnOffSwitch:(id)target action:(SEL)action on:(BOOL)isOn {
@@ -194,8 +239,6 @@
     UIColor *highlightColor = whiteColor;
 
     SFIHighlightedButton *button = [[SFIHighlightedButton alloc] initWithFrame:frame];
-//    button.frame = [self makeFieldValueRect:235];//CGRectMake(self.frame.size.width - 100, self.baseYCoordinate + 6, 65, 20);
-//    button.tag = self.tag;
     button.normalBackgroundColor = normalColor;
     button.highlightedBackgroundColor = highlightColor;
     button.titleLabel.font = heavy_font;
@@ -243,7 +286,7 @@
     height += textFont.pointSize; // padding
     CGRect frame = CGRectMake(10, self.baseYCoordinate, width, height);
 
-    UILabel *label = [[UILabel alloc] initWithFrame:frame];
+    SFICopyLabel *label = [[SFICopyLabel alloc] initWithFrame:frame];
     label.backgroundColor = [UIColor clearColor];
     label.textColor = self.textColor;
     label.font = textFont;
@@ -252,6 +295,10 @@
     label.numberOfLines = lineCount;
 
     return label;
+}
+
+- (CGRect)makeFieldValueRect:(int)leftOffset {
+    return CGRectMake(leftOffset - 10, self.baseYCoordinate, self.frame.size.width - leftOffset - 10, 30);
 }
 
 /*

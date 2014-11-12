@@ -60,7 +60,7 @@
     // Pull down to refresh device values
     UIRefreshControl *refresh = [UIRefreshControl new];
     NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
-    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force router data refresh" attributes:attributes];
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refresh router data" attributes:attributes];
     [refresh addTarget:self action:@selector(onRefreshRouter:) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresh;
 
@@ -125,6 +125,7 @@
 
 - (void)initializeAlmondData {
     self.isRebooting = FALSE;
+    self.enableDrawer = YES;
 
     self.routerSummary = nil;
     self.wirelessSettings = nil;
@@ -344,7 +345,7 @@
 
         case DEF_ROUTER_REBOOT_SECTION:
             if (indexPath.row > 0) {
-                return 85;
+                return 95;
             }
 
         default: {
@@ -475,8 +476,8 @@
 }
 
 - (UITableViewCell *)createWirelessSummaryCell:(UITableView *)tableView {
-    static NSString *CellIdentifier = @"wireless_summary";
-    SFICardTableViewCell *cell = [self getCardCell:tableView identifier:CellIdentifier];
+    static NSString *cell_id = @"wireless_summary";
+    SFICardTableViewCell *cell = [self getCardCell:tableView identifier:cell_id];
 
     SFICardView *card = cell.cardView;
     card.backgroundColor = [[SFIColors blueColor] color];
@@ -496,9 +497,18 @@
     }
     [card addSummary:summary];
 
-    [card addEditIconTarget:self action:@selector(onEditWirelessSettingsCard:) editing:NO];
+    int totalCount = self.wirelessSettings.count;
+    if (routerSummary && totalCount > 0) {
+        BOOL editing = [self isSectionExpanded:DEF_WIRELESS_SETTINGS_SECTION];
+        [card addEditIconTarget:self action:@selector(onEditWirelessSettingsCard:) editing:editing];
+    }
 
     return cell;
+}
+
+- (BOOL)isSectionExpanded:(NSInteger)sectionNumber {
+    NSNumber *number = self.currentExpandedSection;
+    return number != nil && [number isEqualToNumber:@(sectionNumber)];
 }
 
 - (UITableViewCell *)createWirelessSettingCell:(UITableView *)tableView tableRow:(NSInteger)row {
@@ -583,7 +593,11 @@
     }
     [card addSummary:summary];
 
-    [card addEditIconTarget:self action:@selector(onEditDevicesAndUsersCard:) editing:NO];
+    int totalCount = routerSummary.connectedDeviceCount + routerSummary.blockedMACCount;
+    if (routerSummary && totalCount > 0) {
+        BOOL editing = [self isSectionExpanded:DEF_DEVICES_AND_USERS_SECTION];
+        [card addEditIconTarget:self action:@selector(onEditDevicesAndUsersCard:) editing:editing];
+    }
 
     return cell;
 }
@@ -674,7 +688,8 @@
     }
     [card addSummary:summary];
 
-    [card addEditIconTarget:self action:@selector(onEditRouterRebootCard:) editing:NO];
+    BOOL editing = [self isSectionExpanded:DEF_ROUTER_REBOOT_SECTION];
+    [card addEditIconTarget:self action:@selector(onEditRouterRebootCard:) editing:editing];
 
     return cell;
 }
@@ -1015,6 +1030,14 @@
 
 #pragma mark - SFIRouterTableViewActions protocol methods
 
+- (void)willBeginEditing {
+    self.enableDrawer = NO;
+}
+
+- (void)didEndEditing {
+    self.enableDrawer = YES;
+}
+
 - (void)onRebootRouterActionCalled {
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.disposed) {
@@ -1043,7 +1066,7 @@
     });
 }
 
-- (void)onChangeDeviceSSID:(SFIWirelessSetting *)summary newSSID:(NSString *)ssid {
+- (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString *)ssid {
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.disposed) {
             return;

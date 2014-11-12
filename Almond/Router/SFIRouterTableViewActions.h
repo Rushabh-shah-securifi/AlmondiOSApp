@@ -12,11 +12,15 @@
 
 - (void)onRebootRouterActionCalled;
 
-- (void)onEnableDevice:(SFIWirelessSetting *)summary enabled:(BOOL)isEnabled;
+- (void)onEnableDevice:(SFIWirelessSetting *)setting enabled:(BOOL)isEnabled;
 
-- (void)onChangeDeviceSSID:(SFIWirelessSetting *)summary newSSID:(NSString*)ssid;
+- (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString*)ssid;
 
 // NO == block device
 - (void)onEnableWirelessAccessForDevice:(NSString*)deviceMAC allow:(BOOL)isAllowed;
+
+- (void)willBeginEditing;
+
+- (void)didEndEditing;
 
 @end

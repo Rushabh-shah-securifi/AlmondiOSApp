@@ -33,6 +33,7 @@
     // Embed a card to the right of the icon
     CGRect frame = CGRectMake(80, 0, CGRectGetWidth(self.frame) - 80, CGRectGetHeight(self.frame));
     SFICardView *infoCard = [[SFICardView alloc] initWithFrame:frame];
+    [infoCard useSmallSummaryFont];
     //
     // Place a white border between the icon and this card
     [infoCard addLeftBorder:self.backgroundColor];
