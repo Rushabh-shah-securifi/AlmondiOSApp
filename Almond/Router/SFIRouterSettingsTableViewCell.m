@@ -11,6 +11,9 @@
 #import "SFICardView.h"
 #import "SFIRouterTableViewActions.h"
 
+@interface SFIRouterSettingsTableViewCell () <UITextFieldDelegate>
+@end
+
 @implementation SFIRouterSettingsTableViewCell
 
 /*
@@ -30,7 +33,7 @@
     [cardView addTopBorder:self.backgroundColor];
     [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactivate:) on:self.enabledDevice];
     [cardView addLine];
-    [cardView addNameLabel:@"SSID" valueLabel:setting.ssid];
+    [cardView addNameLabel:@"SSID" valueTextField:setting.ssid delegate:self tag:0];
     [cardView addShortLine];
     [cardView addNameLabel:@"Channel" valueLabel:[NSString stringWithFormat:@"%d", setting.channel]];
     [cardView addShortLine];
@@ -44,10 +47,36 @@
     [cardView addShortLine];
 }
 
+#pragma mark - UISwitch actions
+
 - (void)onActivateDeactivate:(id)sender {
     UISwitch *ctrl = sender;
     [self.delegate onEnableDevice:self.wirelessSetting enabled:ctrl.on];
 }
 
+#pragma mark - UITextFieldDelegate methods
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    [self.delegate willBeginEditing];
+    return YES;
+}
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    [textField selectAll:self];
+}
+
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    [self.delegate onChangeDeviceSSID:self.wirelessSetting newSSID:textField.text];
+    [self.delegate didEndEditing];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
 
 @end
