@@ -832,10 +832,12 @@
 
 #pragma mark - Device Values
 
+//todo deprecate and get rid of;
 - (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDeviceState {
     return [self.deviceValue knownValuesForProperty:self.device.statePropertyType];
 }
 
+//todo deprecate and get rid of;
 - (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDeviceMutableState {
     return [self.deviceValue knownValuesForProperty:self.device.mutableStatePropertyType];
 }
