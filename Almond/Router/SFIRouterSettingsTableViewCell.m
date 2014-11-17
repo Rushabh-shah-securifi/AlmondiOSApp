@@ -57,7 +57,7 @@
 #pragma mark - UITextFieldDelegate methods
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    [self.delegate willBeginEditing];
+    [self.delegate routerTableCellWillBeginEditingValue];
     return YES;
 }
 
@@ -71,7 +71,7 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [self.delegate onChangeDeviceSSID:self.wirelessSetting newSSID:textField.text];
-    [self.delegate didEndEditing];
+    [self.delegate routerTableCellDidEndEditingValue];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

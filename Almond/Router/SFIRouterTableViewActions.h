@@ -19,8 +19,8 @@
 // NO == block device
 - (void)onEnableWirelessAccessForDevice:(NSString*)deviceMAC allow:(BOOL)isAllowed;
 
-- (void)willBeginEditing;
+- (void)routerTableCellWillBeginEditingValue;
 
-- (void)didEndEditing;
+- (void)routerTableCellDidEndEditingValue;
 
 @end

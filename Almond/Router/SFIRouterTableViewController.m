@@ -1030,11 +1030,11 @@
 
 #pragma mark - SFIRouterTableViewActions protocol methods
 
-- (void)willBeginEditing {
+- (void)routerTableCellWillBeginEditingValue {
     self.enableDrawer = NO;
 }
 
-- (void)didEndEditing {
+- (void)routerTableCellDidEndEditingValue {
     self.enableDrawer = YES;
 }
 
@@ -1076,6 +1076,37 @@
 
         [self.HUD hide:YES afterDelay:2];
     });
+
+    NSString *payload = [NSString stringWithFormat:SET_WIRELESS_SETTINGS_COMMAND, 1,
+                    currentSetting.index,
+                    self.ssid.text,
+                    self.password.text,
+                    currentSetting.channel,
+                    currentSetting.encryptionType,
+                    currentSetting.security,
+                    currentSetting.wirelessModeCode];
+
+    NSLog(@"PAYLOAD: %@", payload);
+    //
+    //    SFIWirelessSetting *device1 = [[SFIWirelessSetting alloc]init];
+    //    device1.ssid = @"AlmondNetwork";
+    //    device1.password = @"1234567890";
+    //    device1.channel = @"1";
+    //    device1.encryptionType = @"AES";
+    //    device1.security = @"WPA2PSK";
+    //
+    //    SFIWirelessSetting *device2 = [[SFIWirelessSetting alloc]init];
+    //    device2.ssid = @"Guest";
+    //    device2.password = @"1111222200";
+    //    device2.channel = @"1";
+    //    device2.encryptionType = @"AES";
+    //    device2.security = @"WPA2PSK";
+    //
+    //    NSArray *deviceList  = [NSArray arrayWithObjects:device1, device2,nil];
+    //
+    //    [[self  selectedValueDelegate]refreshedList:deviceList] ;
+    //    [self.navigationController popViewControllerAnimated:YES];
+    [self sendGenericCommandRequest:payload];
 }
 
 - (void)onEnableWirelessAccessForDevice:(NSString *)deviceMAC allow:(BOOL)isAllowed {
@@ -1089,5 +1120,26 @@
         [self.HUD hide:YES afterDelay:2];
     });
 }
+
+
+- (void)sendGenericCommandRequest:(NSString *)data {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    NSString *currentMAC = plus.almondplusMAC;
+
+    GenericCommandRequest *setWirelessSettingGenericCommand = [[GenericCommandRequest alloc] init];
+    setWirelessSettingGenericCommand.almondMAC = currentMAC;
+    setWirelessSettingGenericCommand.applicationID = APPLICATION_ID;
+    setWirelessSettingGenericCommand.data = data;
+
+    self.mobileInternalIndex = setWirelessSettingGenericCommand.correlationId;
+
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = CommandType_GENERIC_COMMAND_REQUEST;
+    cloudCommand.command = setWirelessSettingGenericCommand;
+
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+}
+
 
 @end
