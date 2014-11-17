@@ -483,12 +483,25 @@
     card.backgroundColor = [[SFIColors blueColor] color];
     [card addTitle:@"Wireless Settings"];
 
+    // if wireless settings are available, then we use them; otherwise, use the router summary.
+    // the reason for this is to allow the UI to update the settings without having to re-load summary info.
+    // this simplifies the handling of command response callbacks for update settings commands.
+    //
+    NSMutableArray *summary = [NSMutableArray array];
     SFIRouterSummary *routerSummary = self.routerSummary;
 
-    NSMutableArray *summary = [NSMutableArray array];
     if (routerSummary) {
         for (SFIWirelessSummary *sum in routerSummary.wirelessSummaries) {
             NSString *enabled = sum.enabled ? @"enabled" : @"disabled";
+
+            // check for wireless settings
+            for (SFIWirelessSetting *setting in self.wirelessSettings) {
+                if (setting.index == sum.wirelessIndex) {
+                    enabled = setting.enabled ? @"enabled" : @"disabled";
+                    break;
+                }
+            }
+
             [summary addObject:[NSString stringWithFormat:@"%@ is %@", sum.ssid, enabled]];
         }
     }
@@ -497,7 +510,7 @@
     }
     [card addSummary:summary];
 
-    int totalCount = self.wirelessSettings.count;
+    int totalCount = (int) self.wirelessSettings.count;
     if (routerSummary && totalCount > 0) {
         BOOL editing = [self isSectionExpanded:DEF_WIRELESS_SETTINGS_SECTION];
         [card addEditIconTarget:self action:@selector(onEditWirelessSettingsCard:) editing:editing];
@@ -521,11 +534,9 @@
     [cell markReuse];
 
     SFIWirelessSetting *setting = [self tryGetWirelessSettingsForTableRow:row];
-    SFIWirelessSummary *summary = [self.routerSummary summaryFor:setting.ssid];
 
-    cell.cardView.backgroundColor = summary.enabled ? [[SFIColors blueColor] color] : [UIColor lightGrayColor];
+    cell.cardView.backgroundColor = setting.enabled ? [[SFIColors blueColor] color] : [UIColor lightGrayColor];
     cell.wirelessSetting = setting;
-    cell.enabledDevice = summary.enabled;
     cell.delegate = self;
 
     return cell;
@@ -906,6 +917,7 @@
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.wirelessSettings = ls.deviceList;
+                [self.routerSummary updateWirelessSummaryWithSettings:self.wirelessSettings];
                 [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:DEF_WIRELESS_SETTINGS_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
                 break;
             }
@@ -992,13 +1004,13 @@
 //                NSLog(@"Reboot Reply: %d", routerReboot.reboot);
 
                 //todo handle failure case
-                self.HUD.labelText = @"Router is now online.";
+                [self showHUD:@"Router is now online."];
                 [self.HUD hide:YES afterDelay:1];
                 break;
             }
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
-
             }
+
             default:
                 break;
         }
@@ -1043,8 +1055,8 @@
         if (self.disposed) {
             return;
         }
-        self.HUD.labelText = @"Router is rebooting.";
-        [self.HUD show:YES];
+
+        [self showHUD:@"Router is rebooting."];
 
         self.isRebooting = TRUE;
         [self sendRebootAlmondCommand];
@@ -1055,58 +1067,15 @@
 }
 
 - (void)onEnableDevice:(SFIWirelessSetting *)setting enabled:(BOOL)isEnabled {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.disposed) {
-            return;
-        }
-        self.HUD.labelText = @"Updating settings...";
-        [self.HUD show:YES];
-
-        [self.HUD hide:YES afterDelay:2];
-    });
+    SFIWirelessSetting *copy = [setting copy];
+    copy.enabled = isEnabled;
+    [self onUpdateWirelessSettings:copy];
 }
 
 - (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString *)ssid {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.disposed) {
-            return;
-        }
-        self.HUD.labelText = @"Updating settings...";
-        [self.HUD show:YES];
-
-        [self.HUD hide:YES afterDelay:2];
-    });
-
-    NSString *payload = [NSString stringWithFormat:SET_WIRELESS_SETTINGS_COMMAND, 1,
-                    currentSetting.index,
-                    self.ssid.text,
-                    self.password.text,
-                    currentSetting.channel,
-                    currentSetting.encryptionType,
-                    currentSetting.security,
-                    currentSetting.wirelessModeCode];
-
-    NSLog(@"PAYLOAD: %@", payload);
-    //
-    //    SFIWirelessSetting *device1 = [[SFIWirelessSetting alloc]init];
-    //    device1.ssid = @"AlmondNetwork";
-    //    device1.password = @"1234567890";
-    //    device1.channel = @"1";
-    //    device1.encryptionType = @"AES";
-    //    device1.security = @"WPA2PSK";
-    //
-    //    SFIWirelessSetting *device2 = [[SFIWirelessSetting alloc]init];
-    //    device2.ssid = @"Guest";
-    //    device2.password = @"1111222200";
-    //    device2.channel = @"1";
-    //    device2.encryptionType = @"AES";
-    //    device2.security = @"WPA2PSK";
-    //
-    //    NSArray *deviceList  = [NSArray arrayWithObjects:device1, device2,nil];
-    //
-    //    [[self  selectedValueDelegate]refreshedList:deviceList] ;
-    //    [self.navigationController popViewControllerAnimated:YES];
-    [self sendGenericCommandRequest:payload];
+    SFIWirelessSetting *copy = [setting copy];
+    copy.ssid = ssid;
+    [self onUpdateWirelessSettings:copy];
 }
 
 - (void)onEnableWirelessAccessForDevice:(NSString *)deviceMAC allow:(BOOL)isAllowed {
@@ -1114,32 +1083,22 @@
         if (self.disposed) {
             return;
         }
-        self.HUD.labelText = @"Updating settings...";
-        [self.HUD show:YES];
 
+        [self showHUD:@"Updating settings..."];
         [self.HUD hide:YES afterDelay:2];
     });
 }
 
+- (void)onUpdateWirelessSettings:(SFIWirelessSetting *)copy {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
 
-- (void)sendGenericCommandRequest:(NSString *)data {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    NSString *currentMAC = plus.almondplusMAC;
-
-    GenericCommandRequest *setWirelessSettingGenericCommand = [[GenericCommandRequest alloc] init];
-    setWirelessSettingGenericCommand.almondMAC = currentMAC;
-    setWirelessSettingGenericCommand.applicationID = APPLICATION_ID;
-    setWirelessSettingGenericCommand.data = data;
-
-    self.mobileInternalIndex = setWirelessSettingGenericCommand.correlationId;
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_GENERIC_COMMAND_REQUEST;
-    cloudCommand.command = setWirelessSettingGenericCommand;
-
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+        [self showHUD:@"Updating settings..."];
+        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.currentMAC wirelessSettings:copy];
+        [self.HUD hide:YES afterDelay:2];
+    });
 }
-
 
 @end
