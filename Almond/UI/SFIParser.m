@@ -84,6 +84,7 @@
         if (genericCommandResponse.commandType == SFIGenericRouterCommandType_WIRELESS_SETTINGS) {
             self.currentWirelessSetting = [[SFIWirelessSetting alloc] init];
             self.currentWirelessSetting.index = [[attributeDict valueForKey:INDEX] intValue];;
+            self.currentWirelessSetting.enabled = [[attributeDict valueForKey:ENABLED] isEqualToString:@"true"];;
         }
         else if (genericCommandResponse.commandType == SFIGenericRouterCommandType_WIRELESS_SUMMARY) {
             self.currentWirelessSummary = [[SFIWirelessSummary alloc] init];
@@ -173,7 +174,7 @@
         self.currentWirelessSetting.wirelessMode = currentNodeContent;
     }
     else if ([elementName isEqualToString:COUNTRY_REGION]) {
-        self.currentWirelessSetting.countryRegion = [currentNodeContent intValue];
+        self.currentWirelessSetting.countryRegion = currentNodeContent;
     }
     else if ([elementName isEqualToString:WIRELESS_SETTING]) {
         if (genericCommandResponse.commandType == SFIGenericRouterCommandType_WIRELESS_SETTINGS) {
