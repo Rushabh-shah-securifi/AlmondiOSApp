@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SFIWirelessSetting.h"
 @protocol wirelessSettingsDelegate;
 
 @interface SFIWirelessViewController : UIViewController <UITextFieldDelegate>

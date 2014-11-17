@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SFIWirelessSetting.h"
 #import "SFIOptionViewController.h"
 
 @protocol wirelessSettingDelegate;
