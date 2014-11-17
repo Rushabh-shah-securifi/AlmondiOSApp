@@ -799,7 +799,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblShared.backgroundColor = [UIColor clearColor];
         lblShared.textColor = [UIColor whiteColor];
         [lblShared setFont:[UIFont standardUITextFieldFont]];
-        lblShared.text = [NSString stringWithFormat:@"Shared with %d other(s)", currentAlmond.userCount];
+        lblShared.text = [NSString stringWithFormat:@"Shared with %d other(s)", (int)[currentAlmond.accessEmailIDs count]];
         lblShared.textAlignment = NSTextAlignmentCenter;
         [backgroundLabel addSubview:lblShared];
     }else{
