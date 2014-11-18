@@ -483,25 +483,12 @@
     card.backgroundColor = [[SFIColors blueColor] color];
     [card addTitle:@"Wireless Settings"];
 
-    // if wireless settings are available, then we use them; otherwise, use the router summary.
-    // the reason for this is to allow the UI to update the settings without having to re-load summary info.
-    // this simplifies the handling of command response callbacks for update settings commands.
-    //
     NSMutableArray *summary = [NSMutableArray array];
     SFIRouterSummary *routerSummary = self.routerSummary;
 
     if (routerSummary) {
         for (SFIWirelessSummary *sum in routerSummary.wirelessSummaries) {
             NSString *enabled = sum.enabled ? @"enabled" : @"disabled";
-
-            // check for wireless settings
-            for (SFIWirelessSetting *setting in self.wirelessSettings) {
-                if (setting.index == sum.wirelessIndex) {
-                    enabled = setting.enabled ? @"enabled" : @"disabled";
-                    break;
-                }
-            }
-
             [summary addObject:[NSString stringWithFormat:@"%@ is %@", sum.ssid, enabled]];
         }
     }
@@ -632,14 +619,14 @@
     if (obj != nil) {
         if ([obj isKindOfClass:[SFIConnectedDevice class]]) {
             SFIConnectedDevice *device = obj;
-            cell.blockedDevice = NO;
+            cell.allowedDevice = YES;
             cell.deviceIP = device.deviceIP;
             cell.deviceMAC = device.deviceMAC;
             cell.name = device.name;
         }
         else if ([obj isKindOfClass:[SFIBlockedDevice class]]) {
             SFIBlockedDevice *device = obj;
-            cell.blockedDevice = YES;
+            cell.allowedDevice = NO;
             cell.deviceMAC = device.deviceMAC;
         }
     }
@@ -928,7 +915,7 @@
                 break;
             }
 
-            case SFIGenericRouterCommandType_REBOOT: 
+            case SFIGenericRouterCommandType_REBOOT:
             case SFIGenericRouterCommandType_BLOCKED_CONTENT:
             default:
                 break;
@@ -1085,6 +1072,21 @@
         }
 
         [self showHUD:@"Updating settings..."];
+
+        NSMutableSet *blockedMacs = [NSMutableSet set];
+        for (SFIBlockedDevice *device in self.blockedDevices) {
+            [blockedMacs addObject:device.deviceMAC];
+        }
+
+        if (isAllowed) {
+            [blockedMacs removeObject:deviceMAC];
+        }
+        else {
+            [blockedMacs addObject:deviceMAC];
+        }
+
+        [[SecurifiToolkit sharedInstance] asyncSetAlmondWirelessUsersSettings:self.currentMAC blockedDeviceMacs:blockedMacs.allObjects];
+
         [self.HUD hide:YES afterDelay:2];
     });
 }
