@@ -10,6 +10,7 @@
 #import "SNLog.h"
 #import "Analytics.h"
 #import "Crashlytics.h"
+#import "AlmondPlusConstants.h"
 
 
 @implementation SFIAppDelegate
@@ -23,6 +24,30 @@
     [[Analytics sharedInstance] initialize];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+    
+    // Let the device know we want to receive push notifications
+
+    
+    //-- Set Notification
+    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
+    {
+        // iOS 8 Notifications
+        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        
+        [application registerForRemoteNotifications];
+    }
+    else
+    {
+        // iOS < 8 Notifications
+        [application registerForRemoteNotificationTypes:
+         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
+    }
+    
+    NSDictionary *pushDic = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (pushDic != nil) {
+        DLog(@"Notification");
+    }
+
 
     return YES;
 }
@@ -32,7 +57,16 @@
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    DLog(@"Device token is: %@", deviceToken);
+    //PY 181114: Save in preference
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:deviceToken forKey:PUSH_NOTIFICATION_TOKEN];
+    [defaults setBool:YES forKey:PUSH_NOTIFICATION_STATUS];
 
+}
+
+- (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo{
+    NSLog(@"didReceiveRemoteNotification");
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

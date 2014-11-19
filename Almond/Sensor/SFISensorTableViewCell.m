@@ -395,8 +395,9 @@
             break;
         }
 
+            //PY 051114 - Phillips Hue
         case SFIDeviceType_HueLamp_48: {
-            [self configureHueLamp_48];
+            [self configureHueLamp_48:DT48_HUE_LAMP_TRUE imageNameFalse:DT48_HUE_LAMP_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
             break;
         }
 
@@ -747,10 +748,36 @@
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 }
 
-- (void)configureHueLamp_48 {
-
+//PY 051114 - Add Philips Hue
+- (void)configureHueLamp_48:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
+    SFIDeviceKnownValues *stateValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_STATE];
+    if (!stateValue) {
+        [self configureUnknownDevice];
+        return;
+    }
+    
+    NSString *imageForNoValue = [self imageNameForNoValue];
+    NSString *imageName = [stateValue choiceForBoolValueTrueValue:DT48_HUE_LAMP_TRUE falseValue:DT48_HUE_LAMP_FALSE nilValue:imageForNoValue];
+    // imgBulb.image = [[UIImage imageNamed:@"philips_hue_bulb.png"]  imageTintedWithColor:colorPicked];
+    
+    float hue = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
+    float saturation = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SATURATION] floatValue];
+    float brightness = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BRIGHTNESS] floatValue];
+    
+    NSLog(@"%f %f %f", hue, saturation, brightness);
+    
+    //TODO: Set color
+    
+//    //UIColor *currentColor = [UIColor colorWithHue:(hue/182.0)/360.0 saturation:(saturation/255.0)/100.0 brightness:(brightness/255.0)/100.0 alpha:1];
+//    //self.deviceImageView.image = [[UIImage imageNamed:imageName] imageTintedWithColor:[UIColor redColor]];
+//    //self.deviceImageView.image = [self.deviceImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+//    // [self.deviceImageView setTintColor:[UIColor redColor]];
+//    self.deviceImageView.image = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+//    self.deviceImageView.tintColor = [UIColor colorWithRed:0.98 green:0.47 blue:0 alpha:1];
+    
+    NSString *status = [stateValue choiceForBoolValueTrueValue:statusTrue falseValue:statusFalse nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
+    [self configureSensorImageName:imageName statusMesssage:status];
 }
-
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
     if (!values) {

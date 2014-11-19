@@ -87,5 +87,7 @@
 #define HELP_URL @"https://connect.securifi.com/help"
 
 #define ACCOUNT_ACTIVATION_NOTIFICATION @"AccountActivicationNotification"
+#define PUSH_NOTIFICATION_TOKEN @"PushNotificationToken"
+#define PUSH_NOTIFICATION_STATUS @"PushNotificationStatus"
 
 #endif

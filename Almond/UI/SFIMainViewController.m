@@ -40,6 +40,8 @@
     [center removeObserver:self name:kSFIDidLogoutAllNotification object:nil];
     [center removeObserver:self name:UI_ON_PRESENT_LOGOUT_ALL object:nil];
     [center removeObserver:self name:UI_ON_PRESENT_ACCOUNTS object:nil];
+    [center removeObserver:self name:NOTIFICATION_REGISTRATION_NOTIFIER object:nil];
+    [center removeObserver:self name:NOTIFICATION_DEREGISTRATION_NOTIFIER object:nil];
 }
 
 - (void)viewDidLoad {
@@ -93,6 +95,16 @@
     [center addObserver:self
                selector:@selector(onPresentAccounts)
                    name:UI_ON_PRESENT_ACCOUNTS
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(notificationRegistrationResponseCallback:)
+                   name:NOTIFICATION_REGISTRATION_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(notificationDeregistrationResponseCallback:)
+                   name:NOTIFICATION_DEREGISTRATION_NOTIFIER
                  object:nil];
 }
 
@@ -260,6 +272,8 @@
     [defaults setBool:YES forKey:ACCOUNT_ACTIVATION_NOTIFICATION];
     
     if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
+        //PY 181114: Register for Push Notification
+        [self sendPushNotificationRegistration];
         [self presentMainView];
     }
     else {
@@ -481,6 +495,67 @@
     else {
         [self conditionalTryConnectOrLogon:NO];
     }
+}
+
+
+#pragma mark - Notification Registration
+
+
+-(void)sendPushNotificationRegistration{
+    BOOL notificationStatus = [[NSUserDefaults standardUserDefaults] boolForKey:PUSH_NOTIFICATION_STATUS];
+    if (!notificationStatus){
+        //Register for notification
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    }
+    //TODO: For test - Remove
+    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] stringForKey:PUSH_NOTIFICATION_TOKEN];
+    //deviceToken = @"7ff2a7b3707fe43cdf39e25522250e1257ee184c59ca0d901b452040d85fd794";
+    [[SecurifiToolkit sharedInstance] asyncRequestRegisterForNotification:deviceToken];
+
+}
+
+- (void)notificationRegistrationResponseCallback:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    NotificationRegistrationResponse *obj = (NotificationRegistrationResponse *) [data valueForKey:@"data"];
+    
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
+    
+    if (obj.isSuccessful) {
+        DLog(@"Reason Code %d", obj.reasonCode);
+    }
+    else {
+        if(obj.reasonCode!=3){
+            [self showToast:@"Sorry! Push Notification was not registered."];
+        }
+        DLog(@"Reason Code %d", obj.reasonCode);
+    }
+    
+
+}
+
+
+- (void)notificationDeregistrationResponseCallback:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    NotificationDeleteRegistrationResponse *obj = (NotificationDeleteRegistrationResponse *) [data valueForKey:@"data"];
+    
+    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
+    
+    if (obj.isSuccessful) {
+       // [self showToast:@"Push Notification was successfully deregistered."];
+        DLog(@"Reason Code %d", obj.reasonCode);
+    }
+    else {
+        [self showToast:@"Sorry! Push Notification was not deregistered."];
+        DLog(@"Reason Code %d", obj.reasonCode);
+    }
+    
+    
 }
 
 #pragma mark - UIGestureRecognizerDelegate methods

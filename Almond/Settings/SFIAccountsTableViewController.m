@@ -10,6 +10,7 @@
 #import "MBProgressHUD.h"
 #import "iToast.h"
 #import "UIFont+Securifi.h"
+#import "AlmondPlusConstants.h"
 
 static NSString *simpleTableIdentifier = @"AccountCell";
 #define CELL_PROFILE        0
@@ -799,7 +800,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblShared.backgroundColor = [UIColor clearColor];
         lblShared.textColor = [UIColor whiteColor];
         [lblShared setFont:[UIFont standardUITextFieldFont]];
-        lblShared.text = [NSString stringWithFormat:@"Shared with %d other(s)", currentAlmond.userCount];
+        //lblShared.text = [NSString stringWithFormat:@"Shared with %d other(s)", currentAlmond.userCount];
+        lblShared.text = [NSString stringWithFormat:@"Shared with %d other(s)", (int)[currentAlmond.accessEmailIDs count]];
         lblShared.textAlignment = NSTextAlignmentCenter;
         [backgroundLabel addSubview:lblShared];
     }else{
@@ -1440,8 +1442,15 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
 }
 
-
-
+#pragma mark - Push Notification
+-(void)removePushNotification{
+    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] stringForKey:PUSH_NOTIFICATION_TOKEN];
+    //TODO: For test - Remove
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PUSH_NOTIFICATION_STATUS];
+    [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+    //deviceToken = @"7ff2a7b3707fe43cdf39e25522250e1257ee184c59ca0d901b452040d85fd794";
+    [[SecurifiToolkit sharedInstance] asyncRequestDeregisterForNotification:deviceToken];
+}
 
 
 
@@ -1511,6 +1520,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
     
+    
+    [self removePushNotification];
     [[SecurifiToolkit sharedInstance] asyncRequestDeleteCloudAccount:password];
 }
 
