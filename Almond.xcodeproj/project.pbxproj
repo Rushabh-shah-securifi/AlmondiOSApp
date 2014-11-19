@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C0C99131A1B5DD100148010 /* SFINotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C0C99121A1B5DD100148010 /* SFINotificationsViewController.m */; };
+		1C0C99161A1C37D500148010 /* SFINotificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C0C99151A1C37D500148010 /* SFINotificationTableViewCell.m */; };
 		1C33E94F19C025DB0014725A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C33E94E19C025DB0014725A /* QuartzCore.framework */; };
 		1C3B8A0719D26E430069FC54 /* 878-binoculars.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C3B8A0519D26E430069FC54 /* 878-binoculars.png */; };
 		1C3B8A0819D26E430069FC54 /* 878-binoculars@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C3B8A0619D26E430069FC54 /* 878-binoculars@2x.png */; };
@@ -216,6 +218,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C0C99111A1B5DD100148010 /* SFINotificationsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFINotificationsViewController.h; sourceTree = "<group>"; };
+		1C0C99121A1B5DD100148010 /* SFINotificationsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFINotificationsViewController.m; sourceTree = "<group>"; };
+		1C0C99141A1C37D500148010 /* SFINotificationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFINotificationTableViewCell.h; sourceTree = "<group>"; };
+		1C0C99151A1C37D500148010 /* SFINotificationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFINotificationTableViewCell.m; sourceTree = "<group>"; };
 		1C33E94E19C025DB0014725A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1C3B8A0519D26E430069FC54 /* 878-binoculars.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "878-binoculars.png"; sourceTree = "<group>"; };
 		1C3B8A0619D26E430069FC54 /* 878-binoculars@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "878-binoculars@2x.png"; sourceTree = "<group>"; };
@@ -506,6 +512,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1C0C99101A1B5DD100148010 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				1C0C99111A1B5DD100148010 /* SFINotificationsViewController.h */,
+				1C0C99121A1B5DD100148010 /* SFINotificationsViewController.m */,
+				1C0C99141A1C37D500148010 /* SFINotificationTableViewCell.h */,
+				1C0C99151A1C37D500148010 /* SFINotificationTableViewCell.m */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
 		1C75818A19AD7BD00074C601 /* Legacy */ = {
 			isa = PBXGroup;
 			children = (
@@ -603,6 +620,7 @@
 		1CED5EFA19AC82FD0023512F /* Almond */ = {
 			isa = PBXGroup;
 			children = (
+				1C0C99101A1B5DD100148010 /* Notifications */,
 				CE458D6419EF98A700689251 /* UICategories */,
 				CE91314A19C02F6300D94876 /* Accounts */,
 				1C7581D919AD80090074C601 /* Wireless */,
@@ -1246,6 +1264,7 @@
 				1CED60CF19AC85AB0023512F /* SFIMainViewController.m in Sources */,
 				1CED60CD19AC85AB0023512F /* SFIConstants.m in Sources */,
 				1C7581D819AD7FDA0074C601 /* SFIRouterReboot.m in Sources */,
+				1C0C99161A1C37D500148010 /* SFINotificationTableViewCell.m in Sources */,
 				1CED60D319AC85AB0023512F /* SFISensor.m in Sources */,
 				1CED60C219AC85AB0023512F /* SFISensorTableViewCell.m in Sources */,
 				1C7581B319AD7BD00074C601 /* SFIScannerViewController.m in Sources */,
@@ -1262,6 +1281,7 @@
 				1C7581CA19AD7F190074C601 /* SFIRouterTableViewController.m in Sources */,
 				1C7581A719AD7BD00074C601 /* SFIAffiliationViewController.m in Sources */,
 				1C75821619B05BAC0074C601 /* Analytics.m in Sources */,
+				1C0C99131A1B5DD100148010 /* SFINotificationsViewController.m in Sources */,
 				1C7581AA19AD7BD00074C601 /* SFIBlockedDevice.m in Sources */,
 				1C7581A819AD7BD00074C601 /* SFIBlockedContent.m in Sources */,
 				1CED5F0519AC82FD0023512F /* SFIAppDelegate.m in Sources */,
