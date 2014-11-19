@@ -32,6 +32,11 @@
     // Configure the view for the selected state
 }
 
+- (CGFloat)computedLayoutHeight {
+    CGFloat padding = 2 * self.margin;
+    return [self.cardView computedLayoutHeight] + padding;
+}
+
 - (void)markReuse {
     [self.cardView removeFromSuperview];
     self.cardView = [[SFICardView alloc] initWithFrame:self.frame];

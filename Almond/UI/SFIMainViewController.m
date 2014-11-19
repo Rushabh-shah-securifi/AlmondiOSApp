@@ -16,8 +16,8 @@
 #import "SFISensorsViewController.h"
 #import "DrawerViewController.h"
 #import "SFIAccountsTableViewController.h"
-#import "ScoreboardViewController.h"
-#import "iToast.h"
+#import "UIViewController+Securifi.h"
+//#import "ScoreboardViewController.h"
 
 @interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, SFIAccountDeleteDelegate, UIGestureRecognizerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -137,7 +137,7 @@
         // No network route to cloud. Nothing to do.
         if (!onViewAppearing) {
             // only show after first attempt fails
-            [self showToast:@"Sorry! Waiting on routing to cloud server"];
+            [self showToast:@"Sorry! Unable to establish Internet route to cloud service."];
         }
         return;
     }
@@ -200,7 +200,7 @@
             self.imgSplash.image = [UIImage imageNamed:@"no_cloud_640x960"];
         }
 
-        [self showToast:@"Sorry! Could not connect to the cloud Server"];
+        [self showToast:@"Sorry! Could not connect to the cloud service."];
     }
 }
 
@@ -356,16 +356,16 @@
     icon = [UIImage imageNamed:@"icon_router.png"];
     routerNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Router" image:icon selectedImage:icon];
     //
-    ScoreboardViewController *scoreCtrl = [ScoreboardViewController new];
-    UINavigationController *scoreNav = [[UINavigationController alloc] initWithRootViewController:scoreCtrl];
-    icon = [UIImage imageNamed:@"878-binoculars.png"];
-    scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
+//    ScoreboardViewController *scoreCtrl = [ScoreboardViewController new];
+//    UINavigationController *scoreNav = [[UINavigationController alloc] initWithRootViewController:scoreCtrl];
+//    icon = [UIImage imageNamed:@"878-binoculars.png"];
+//    scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
 
     UITabBarController *front = [UITabBarController new];
     front.tabBar.translucent = NO;
     front.tabBar.tintColor = [UIColor blackColor];
-    front.viewControllers = @[sensorNav, routerNav, scoreNav];
-//    front.viewControllers = @[sensorNav, routerNav];
+//    front.viewControllers = @[sensorNav, routerNav, scoreNav];
+    front.viewControllers = @[sensorNav, routerNav];
 
     // The rear one is the drawer selector
     DrawerViewController *rear = [DrawerViewController new];
@@ -569,14 +569,6 @@
     }
 
     return YES;
-}
-
-#pragma mark - Toast
-
-- (void)showToast:(NSString *)msg {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [[[iToast makeText:msg] setGravity:iToastGravityBottom] show:iToastTypeWarning];
-    });
 }
 
 @end

@@ -10,6 +10,9 @@
 		1C33E94F19C025DB0014725A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C33E94E19C025DB0014725A /* QuartzCore.framework */; };
 		1C3B8A0719D26E430069FC54 /* 878-binoculars.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C3B8A0519D26E430069FC54 /* 878-binoculars.png */; };
 		1C3B8A0819D26E430069FC54 /* 878-binoculars@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1C3B8A0619D26E430069FC54 /* 878-binoculars@2x.png */; };
+		1C4E6FCB1A108F5600276EC4 /* SFIRouterSettingsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C4E6FCA1A108F5600276EC4 /* SFIRouterSettingsTableViewCell.m */; };
+		1C4E6FCE1A11B37800276EC4 /* SFIRouterDevicesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C4E6FCD1A11B37800276EC4 /* SFIRouterDevicesTableViewCell.m */; };
+		1C4E6FD11A11B62900276EC4 /* SFIRouterRebootTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C4E6FD01A11B62900276EC4 /* SFIRouterRebootTableViewCell.m */; };
 		1C75815419AC86940074C601 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815319AC86940074C601 /* Security.framework */; };
 		1C75815619AC86A10074C601 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815519AC86A10074C601 /* SystemConfiguration.framework */; };
 		1C75815819AC86A80074C601 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815719AC86A80074C601 /* CFNetwork.framework */; };
@@ -47,11 +50,6 @@
 		1CED5F0119AC82FD0023512F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED5F0019AC82FD0023512F /* main.m */; };
 		1CED5F0519AC82FD0023512F /* SFIAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED5F0419AC82FD0023512F /* SFIAppDelegate.m */; };
 		1CED5F0719AC82FD0023512F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5F0619AC82FD0023512F /* Images.xcassets */; };
-		1CED5F0E19AC82FD0023512F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5F0D19AC82FD0023512F /* XCTest.framework */; };
-		1CED5F0F19AC82FE0023512F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF419AC82FD0023512F /* Foundation.framework */; };
-		1CED5F1019AC82FE0023512F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF819AC82FD0023512F /* UIKit.framework */; };
-		1CED5F1819AC82FE0023512F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5F1619AC82FE0023512F /* InfoPlist.strings */; };
-		1CED5F1A19AC82FE0023512F /* AlmondTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED5F1919AC82FE0023512F /* AlmondTests.m */; };
 		1CED602819AC85AB0023512F /* cert.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5F2619AC85AA0023512F /* cert.cer */; };
 		1CED602919AC85AB0023512F /* cert.der in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5F2719AC85AA0023512F /* cert.der */; };
 		1CED602A19AC85AB0023512F /* certificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 1CED5F2819AC85AA0023512F /* certificate.cer */; };
@@ -204,6 +202,8 @@
 		1DF031F5FE02FF77A500E6AB /* SFICopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03A74219C9A2A23078623 /* SFICopyLabel.m */; };
 		1DF03695283498FA1D26D5EF /* 19_key_fob_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DF03F995F5E5F7FF9875BBC /* 19_key_fob_1.png */; };
 		1DF037FCD2D5C9CC3010E790 /* ScoreboardEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03A79B522F8092C9C6F1E /* ScoreboardEventViewController.m */; };
+		1DF03808425114D5220DF058 /* UIViewController+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF030330F6AE92A78853907 /* UIViewController+Securifi.m */; };
+		1DF03A36D98A00D4E8B5682B /* UIView+Borders.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0319B1FB51685ABC16993 /* UIView+Borders.m */; };
 		1DF03EE86A8696543C048871 /* 19_key_fob_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DF03641418B99C1489F48CE /* 19_key_fob_2.png */; };
 		CE458D5F19ED06B400689251 /* grey_line.png in Resources */ = {isa = PBXBuildFile; fileRef = CE458D5E19ED06B400689251 /* grey_line.png */; };
 		CE458D6219EE43F000689251 /* cross_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = CE458D6019EE43F000689251 /* cross_icon.png */; };
@@ -219,20 +219,16 @@
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		1CED5F1119AC82FE0023512F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1CED5EE919AC82FD0023512F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1CED5EF019AC82FD0023512F;
-			remoteInfo = Almond;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		1C33E94E19C025DB0014725A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1C3B8A0519D26E430069FC54 /* 878-binoculars.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "878-binoculars.png"; sourceTree = "<group>"; };
 		1C3B8A0619D26E430069FC54 /* 878-binoculars@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "878-binoculars@2x.png"; sourceTree = "<group>"; };
+		1C4E6FC91A108F5600276EC4 /* SFIRouterSettingsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterSettingsTableViewCell.h; sourceTree = "<group>"; };
+		1C4E6FCA1A108F5600276EC4 /* SFIRouterSettingsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterSettingsTableViewCell.m; sourceTree = "<group>"; };
+		1C4E6FCC1A11B37800276EC4 /* SFIRouterDevicesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterDevicesTableViewCell.h; sourceTree = "<group>"; };
+		1C4E6FCD1A11B37800276EC4 /* SFIRouterDevicesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterDevicesTableViewCell.m; sourceTree = "<group>"; };
+		1C4E6FCF1A11B62900276EC4 /* SFIRouterRebootTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterRebootTableViewCell.h; sourceTree = "<group>"; };
+		1C4E6FD01A11B62900276EC4 /* SFIRouterRebootTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterRebootTableViewCell.m; sourceTree = "<group>"; };
 		1C75815319AC86940074C601 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1C75815519AC86A10074C601 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		1C75815719AC86A80074C601 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -298,7 +294,6 @@
 		1CED5F0319AC82FD0023512F /* SFIAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SFIAppDelegate.h; sourceTree = "<group>"; };
 		1CED5F0419AC82FD0023512F /* SFIAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SFIAppDelegate.m; sourceTree = "<group>"; };
 		1CED5F0619AC82FD0023512F /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		1CED5F0C19AC82FD0023512F /* AlmondTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlmondTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CED5F0D19AC82FD0023512F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		1CED5F1519AC82FE0023512F /* AlmondTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "AlmondTests-Info.plist"; sourceTree = "<group>"; };
 		1CED5F1719AC82FE0023512F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -471,10 +466,15 @@
 		1CED600619AC85AB0023512F /* SFISlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISlider.m; sourceTree = "<group>"; };
 		1CED600819AC85AB0023512F /* SNLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNLog.h; sourceTree = "<group>"; };
 		1CED600919AC85AB0023512F /* SNLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNLog.m; sourceTree = "<group>"; };
+		1DF030330F6AE92A78853907 /* UIViewController+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+Securifi.m"; path = "UICategories/UIViewController+Securifi.m"; sourceTree = "<group>"; };
 		1DF0308F5C652469AADD767E /* ScoreboardEventViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardEventViewController.h; sourceTree = "<group>"; };
+		1DF0319B1FB51685ABC16993 /* UIView+Borders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIView+Borders.m"; path = "UICategories/UIView+Borders.m"; sourceTree = "<group>"; };
 		1DF03641418B99C1489F48CE /* 19_key_fob_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 19_key_fob_2.png; sourceTree = "<group>"; };
+		1DF036CAA0B00DB83B575CB0 /* UIViewController+Securifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIViewController+Securifi.h"; path = "UICategories/UIViewController+Securifi.h"; sourceTree = "<group>"; };
+		1DF037A2AE0152095459F611 /* SFIRouterTableViewActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterTableViewActions.h; sourceTree = "<group>"; };
 		1DF03A74219C9A2A23078623 /* SFICopyLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICopyLabel.m; sourceTree = "<group>"; };
 		1DF03A79B522F8092C9C6F1E /* ScoreboardEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardEventViewController.m; sourceTree = "<group>"; };
+		1DF03AA68A4DE6C8C371E84F /* UIView+Borders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIView+Borders.h"; path = "UICategories/UIView+Borders.h"; sourceTree = "<group>"; };
 		1DF03D6EACE27C6B6CF1DDD9 /* SFICopyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICopyLabel.h; sourceTree = "<group>"; };
 		1DF03F995F5E5F7FF9875BBC /* 19_key_fob_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 19_key_fob_1.png; sourceTree = "<group>"; };
 		9FF187E6539C4F59B4C93302 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
@@ -512,16 +512,6 @@
 				1CED5EF919AC82FD0023512F /* UIKit.framework in Frameworks */,
 				1CED5EF519AC82FD0023512F /* Foundation.framework in Frameworks */,
 				D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1CED5F0919AC82FD0023512F /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1CED5F0E19AC82FD0023512F /* XCTest.framework in Frameworks */,
-				1CED5F1019AC82FE0023512F /* UIKit.framework in Frameworks */,
-				1CED5F0F19AC82FE0023512F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,6 +554,13 @@
 				1C7581D419AD7FCA0074C601 /* SFIRouterSummary.m */,
 				1C7581C319AD7F190074C601 /* SFIRouterTableViewController.h */,
 				1C7581C419AD7F190074C601 /* SFIRouterTableViewController.m */,
+				1C4E6FC91A108F5600276EC4 /* SFIRouterSettingsTableViewCell.h */,
+				1C4E6FCA1A108F5600276EC4 /* SFIRouterSettingsTableViewCell.m */,
+				1C4E6FCC1A11B37800276EC4 /* SFIRouterDevicesTableViewCell.h */,
+				1C4E6FCD1A11B37800276EC4 /* SFIRouterDevicesTableViewCell.m */,
+				1C4E6FCF1A11B62900276EC4 /* SFIRouterRebootTableViewCell.h */,
+				1C4E6FD01A11B62900276EC4 /* SFIRouterRebootTableViewCell.m */,
+				1DF037A2AE0152095459F611 /* SFIRouterTableViewActions.h */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -600,7 +597,6 @@
 			isa = PBXGroup;
 			children = (
 				1CED5EF119AC82FD0023512F /* Almond.app */,
-				1CED5F0C19AC82FD0023512F /* AlmondTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -957,6 +953,10 @@
 			children = (
 				CE458D6519EF98EA00689251 /* UIFont+Securifi.h */,
 				CE458D6619EF98EA00689251 /* UIFont+Securifi.m */,
+				1DF03AA68A4DE6C8C371E84F /* UIView+Borders.h */,
+				1DF0319B1FB51685ABC16993 /* UIView+Borders.m */,
+				1DF036CAA0B00DB83B575CB0 /* UIViewController+Securifi.h */,
+				1DF030330F6AE92A78853907 /* UIViewController+Securifi.m */,
 			);
 			name = UICategories;
 			sourceTree = "<group>";
@@ -998,24 +998,6 @@
 			productReference = 1CED5EF119AC82FD0023512F /* Almond.app */;
 			productType = "com.apple.product-type.application";
 		};
-		1CED5F0B19AC82FD0023512F /* AlmondTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 1CED5F2019AC82FE0023512F /* Build configuration list for PBXNativeTarget "AlmondTests" */;
-			buildPhases = (
-				1CED5F0819AC82FD0023512F /* Sources */,
-				1CED5F0919AC82FD0023512F /* Frameworks */,
-				1CED5F0A19AC82FD0023512F /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				1CED5F1219AC82FE0023512F /* PBXTargetDependency */,
-			);
-			name = AlmondTests;
-			productName = AlmondTests;
-			productReference = 1CED5F0C19AC82FD0023512F /* AlmondTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1040,9 +1022,6 @@
 							};
 						};
 					};
-					1CED5F0B19AC82FD0023512F = {
-						TestTargetID = 1CED5EF019AC82FD0023512F;
-					};
 				};
 			};
 			buildConfigurationList = 1CED5EEC19AC82FD0023512F /* Build configuration list for PBXProject "Almond" */;
@@ -1058,7 +1037,6 @@
 			projectRoot = "";
 			targets = (
 				1CED5EF019AC82FD0023512F /* Almond */,
-				1CED5F0B19AC82FD0023512F /* AlmondTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1215,14 +1193,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		1CED5F0A19AC82FD0023512F /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1CED5F1819AC82FE0023512F /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1292,6 +1262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C4E6FCB1A108F5600276EC4 /* SFIRouterSettingsTableViewCell.m in Sources */,
 				1CED60CF19AC85AB0023512F /* SFIMainViewController.m in Sources */,
 				1CED60CD19AC85AB0023512F /* SFIConstants.m in Sources */,
 				1C7581D819AD7FDA0074C601 /* SFIRouterReboot.m in Sources */,
@@ -1300,6 +1271,7 @@
 				1C7581B319AD7BD00074C601 /* SFIScannerViewController.m in Sources */,
 				1CED60C519AC85AB0023512F /* DrawerViewController.m in Sources */,
 				1CED5F0119AC82FD0023512F /* main.m in Sources */,
+				1C4E6FCE1A11B37800276EC4 /* SFIRouterDevicesTableViewCell.m in Sources */,
 				1C7581F419AD81140074C601 /* SFIRouterDevicesListViewController.m in Sources */,
 				CE91316019C7068C00D94876 /* SFIUserProfile.m in Sources */,
 				CE91316A19C95AE600D94876 /* SFIPasswordChangeViewController.m in Sources */,
@@ -1323,6 +1295,7 @@
 				1C7581AE19AD7BD00074C601 /* SFIDevicesList.m in Sources */,
 				1C75821319B054660074C601 /* SFITableViewController.m in Sources */,
 				1C7581B019AD7BD00074C601 /* SFIDoorSensorViewController.m in Sources */,
+				1C4E6FD11A11B62900276EC4 /* SFIRouterRebootTableViewCell.m in Sources */,
 				1CED60CB19AC85AB0023512F /* SFICloudStatusBarButtonItem.m in Sources */,
 				1C7581EB19AD80090074C601 /* SFIWirelessSetting.m in Sources */,
 				1CED60CE19AC85AB0023512F /* SFIHighlightedButton.m in Sources */,
@@ -1342,26 +1315,12 @@
 				1DF031F5FE02FF77A500E6AB /* SFICopyLabel.m in Sources */,
 				1CEB0B4A1A09C13C007D31A9 /* SFICardView.m in Sources */,
 				1DF037FCD2D5C9CC3010E790 /* ScoreboardEventViewController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		1CED5F0819AC82FD0023512F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				1CED5F1A19AC82FE0023512F /* AlmondTests.m in Sources */,
+				1DF03A36D98A00D4E8B5682B /* UIView+Borders.m in Sources */,
+				1DF03808425114D5220DF058 /* UIViewController+Securifi.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		1CED5F1219AC82FE0023512F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1CED5EF019AC82FD0023512F /* Almond */;
-			targetProxy = 1CED5F1119AC82FE0023512F /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		1CED5EFD19AC82FD0023512F /* InfoPlist.strings */ = {
@@ -1550,46 +1509,6 @@
 			};
 			name = Release;
 		};
-		1CED5F2119AC82FE0023512F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Almond.app/Almond";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Almond/Almond-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "AlmondTests/AlmondTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		1CED5F2219AC82FE0023512F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Almond.app/Almond";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Almond/Almond-Prefix.pch";
-				INFOPLIST_FILE = "AlmondTests/AlmondTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1607,15 +1526,6 @@
 			buildConfigurations = (
 				1CED5F1E19AC82FE0023512F /* Debug */,
 				1CED5F1F19AC82FE0023512F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		1CED5F2019AC82FE0023512F /* Build configuration list for PBXNativeTarget "AlmondTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1CED5F2119AC82FE0023512F /* Debug */,
-				1CED5F2219AC82FE0023512F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

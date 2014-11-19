@@ -43,6 +43,13 @@
     return self;
 }
 
+- (void)showUpdatingMessage {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.updatingStatusMessage = @"Updating sensor data.\nPlease wait.";
+        [self setUpdatingSensorStatus];
+    });
+}
+
 - (void)markStatusMessage:(NSString *)status {
     self.updatingStatusMessage = status;
 }
@@ -748,6 +755,7 @@
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 }
 
+
 //PY 051114 - Add Philips Hue
 - (void)configureHueLamp_48:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
     SFIDeviceKnownValues *stateValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_STATE];
@@ -778,6 +786,7 @@
     NSString *status = [stateValue choiceForBoolValueTrueValue:statusTrue falseValue:statusFalse nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
     [self configureSensorImageName:imageName statusMesssage:status];
 }
+
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
     if (!values) {
@@ -852,10 +861,12 @@
 
 #pragma mark - Device Values
 
+//todo deprecate and get rid of;
 - (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDeviceState {
     return [self.deviceValue knownValuesForProperty:self.device.statePropertyType];
 }
 
+//todo deprecate and get rid of;
 - (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDeviceMutableState {
     return [self.deviceValue knownValuesForProperty:self.device.mutableStatePropertyType];
 }

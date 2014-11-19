@@ -56,7 +56,15 @@
     [self tryEnableLostPwdButton];
     [self tryEnableLoginButton];
 
+    [self setStandardLoginMsg];
+
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+
+    [center addObserver:self
+               selector:@selector(onReachabilityDidChange:)
+                   name:kSFIReachabilityChangedNotification
+                 object:nil];
+
     [center addObserver:self
                selector:@selector(onNetworkDown:)
                    name:NETWORK_DOWN_NOTIFIER
@@ -306,6 +314,19 @@
     });
 }
 
+- (void)onReachabilityDidChange:(id)sender {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    if ([toolkit isReachable]) {
+        [self setStandardLoginMsg];
+    }
+    else {
+        [self setSorryMsg:@"Unable to establish\nInternet route to cloud service."];
+    }
+
+    [self markResetLoggingInState];
+    [self tryEnableLoginButton];
+}
+
 - (void)onNetworkDown:(id)sender {
     [self hideHud];
 
@@ -435,6 +456,20 @@
 // Shows the specified error message and enabled the Login Button
 - (void)setOopsMsg:(NSString *)msg {
     [self setHeadline:@"Oops" subHeadline:msg loginButtonEnabled:YES];
+}
+
+// Shows the specified error message and enabled the Login Button
+- (void)setSorryMsg:(NSString *)msg {
+    [self setHeadline:@"Sorry!" subHeadline:msg loginButtonEnabled:YES];
+}
+
+// Shows the specified error message and enabled the Login Button
+- (void)setLoginMsg:(NSString *)msg {
+    [self setHeadline:@"Login" subHeadline:msg loginButtonEnabled:YES];
+}
+
+- (void)setStandardLoginMsg {
+    [self setLoginMsg:@"Access your Almonds and\nyour home devices from anywhere."];
 }
 
 - (void)setHeadline:(NSString *)headline subHeadline:(NSString*)subHeadline loginButtonEnabled:(BOOL)enabled {

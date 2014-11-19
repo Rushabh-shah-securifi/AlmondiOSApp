@@ -129,6 +129,11 @@
     // Add standard offset from top-level
     [self markYOffset:30];
 
+    // Add Notifications control
+    [self addNotificationsControl];
+    [self addLine];
+    [self markYOffset:5];
+
     // Try adding tamper switch. Only some devices support it.
     [self tryAddTamper];
 
@@ -330,6 +335,10 @@
     [self.delegate sensorDetailViewDidCompleteMakingChanges:self];
 }
 
+- (void)onNotificationEnabledSwitch:(id)sender {
+
+}
+
 #pragma mark - UITextFieldDelegate methods
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
@@ -472,6 +481,21 @@
     [self markYOffset:25];
 }
 
+- (void)addNotificationsControl {
+    UILabel *label = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
+    label.backgroundColor = self.color;
+    label.text = @"Send Notifications";
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont securifiBoldFont];
+
+    [self addSubview:label];
+
+    UISwitch *ctrl = [self makeOnOffSwitch:self action:@selector(onNotificationEnabledSwitch:) on:YES];
+    [self addSubview:ctrl];
+
+    [self markYOffsetUsingRect:label.frame addAdditional:15];
+}
+
 - (void)addTamperButton {
     UIFont *heavy_font = [UIFont securifiBoldFont];
 
@@ -495,7 +519,8 @@
     button.normalBackgroundColor = normalColor;
     button.highlightedBackgroundColor = highlightColor;
     button.titleLabel.font = heavy_font;
-    [button setTitle:@"Dismiss" forState:UIControlStateNormal];
+    NSString *buttonTitle = @"Dismiss";
+    [button setTitle:buttonTitle forState:UIControlStateNormal];
     [button setTitleColor:whiteColor forState:UIControlStateNormal];
     [button setTitleColor:normalColor forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(onDismissTamper:) forControlEvents:UIControlEventTouchDown];
@@ -877,27 +902,28 @@
         return SENSOR_ROW_HEIGHT;
     }
 
-    NSUInteger tamperedExtra = isTampered ? 45 : 0; // accounts for the row presenting the tampered msg and dismiss button
+    NSUInteger extra = 55;          // accounts for notification on/off control
+    extra += isTampered ? 45 : 0;   // accounts for the row presenting the tampered msg and dismiss button
 
     switch (currentSensor.deviceType) {
         case SFIDeviceType_MultiLevelSwitch_2:
-            return 275 + tamperedExtra;
+            return 275 + extra;
 
         case SFIDeviceType_BinarySensor_3:
-            return 260 + tamperedExtra;
+            return 260 + extra;
 
         case SFIDeviceType_MultiLevelOnOff_4:
-            return 280 + tamperedExtra;
+            return 280 + extra;
 
         case SFIDeviceType_DoorLock_5:
-            return 380 + tamperedExtra;
+            return 380 + extra;
 
         case SFIDeviceType_Thermostat_7:
-            return 490 + tamperedExtra;
+            return 490 + extra;
 
         case SFIDeviceType_SmartACSwitch_22:
         case SFIDeviceType_SmartDCSwitch_23:
-            return 290 + tamperedExtra;
+            return 290 + extra;
 
         case SFIDeviceType_UnknownDevice_0:
         case SFIDeviceType_BinarySwitch_1:
@@ -937,7 +963,7 @@
         case SFIDeviceType_MultiSwitch_43:
         case SFIDeviceType_UnknownOnOffModule_44:
         default:
-            return EXPANDED_ROW_HEIGHT + tamperedExtra;
+            return EXPANDED_ROW_HEIGHT + extra;
     }
 }
 
@@ -1082,8 +1108,12 @@
         }
 
         case SFIDevicePropertyType_USER_CODE: {
-            // door lock 5
+            // door lock 5: update the text field as picker value changes
             [self setPinCodeTextField:index + 1];
+
+            // make note of the selected picker index so picker can be restored to current position on cell reload:
+            // this picker is not associated with a sensor value; it is used to select a value to be shown.
+            // therefore, we need some way to track its state. the sensor table view controller provides such a facility.
             [self.delegate sensorDetailViewCell:self setValue:@(index) forKey:CELL_STATE_PIN_SELECTION];
             
             return;
@@ -1118,6 +1148,23 @@
     }
 
     return nil;
+}
+
+#pragma mark - Borrowed from SFICardView until we unify...
+
+- (void)markYOffsetUsingRect:(CGRect)rect addAdditional:(unsigned int)add {
+    _baseYCoordinate += CGRectGetHeight(rect) + add;
+}
+
+- (UISwitch*)makeOnOffSwitch:(id)target action:(SEL)action on:(BOOL)isOn {
+    CGFloat width = CGRectGetWidth(self.frame);
+    CGRect frame = CGRectMake(width - 60, self.baseYCoordinate, 60, 23);
+
+    UISwitch *control = [[UISwitch alloc] initWithFrame:frame];
+    control.on = isOn;
+    [control addTarget:target action:action forControlEvents:UIControlEventValueChanged];
+
+    return control;
 }
 
 @end
