@@ -82,6 +82,9 @@
 #define DT45_BINARY_POWER_TRUE @"metering_2.png"
 #define DT45_BINARY_POWER_FALSE @"metering_1.png"
 
+#define DT48_HUE_LAMP_TRUE @"hue_bulb_on.png"
+#define DT48_HUE_LAMP_FALSE @"hue_bulb_off.png"
+
 #define DEVICE_UNKNOWN_IMAGE @"default_device.png"
 #define DEVICE_RELOAD_IMAGE @"Reload_icon.png"
 #define DEVICE_UPDATING_IMAGE @"Wait_Icon.png"

@@ -10,7 +10,7 @@
 
 @interface SFINotificationTableViewCell : UITableViewCell
 
-@property NSDate notificationTime;
+@property NSDate *notificationTime;
 @property SFIDeviceType deviceType;
 @property NSString *event;
 
