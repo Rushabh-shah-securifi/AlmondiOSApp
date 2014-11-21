@@ -337,6 +337,7 @@
 
 - (void)onNotificationEnabledSwitch:(id)sender {
 
+    //TODO: Send Request to turn notification on/off
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -490,7 +491,11 @@
 
     [self addSubview:label];
 
-    UISwitch *ctrl = [self makeOnOffSwitch:self action:@selector(onNotificationEnabledSwitch:) on:YES];
+    
+    //Get notification preference for device
+    BOOL isNotification = [self.device isNotificationEnabled:self.device.deviceID currentMAC:self.device.almondMAC];
+
+    UISwitch *ctrl = [self makeOnOffSwitch:self action:@selector(onNotificationEnabledSwitch:) on:isNotification];
     [self addSubview:ctrl];
 
     [self markYOffsetUsingRect:label.frame addAdditional:15];
