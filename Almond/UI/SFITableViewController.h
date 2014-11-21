@@ -20,6 +20,8 @@
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 
+- (void)showHUD:(NSString *)text;
+
 // Enabled by default
 @property(nonatomic) BOOL enableDrawer;
 

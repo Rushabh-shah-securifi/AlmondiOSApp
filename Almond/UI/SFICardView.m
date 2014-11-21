@@ -136,7 +136,7 @@
     NSUInteger lineCount = msgs.count;
     lineCount = (lineCount == 0) ? 1 : lineCount + 1;
 
-    UILabel *label = [self makeMultiLineLabel:msg font:self.summaryFont alignment:NSTextAlignmentLeft numberOfLines:lineCount];
+    UILabel *label = [self makeMultiLineLabel:msg font:self.summaryFont alignment:NSTextAlignmentLeft numberOfLines:(int)lineCount];
     [self addSubview:label];
     [self markYOffsetUsingRect:label.frame addAdditional:0];
 

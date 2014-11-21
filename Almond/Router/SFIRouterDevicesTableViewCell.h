@@ -13,7 +13,7 @@
 @interface SFIRouterDevicesTableViewCell : SFICardTableViewCell
 
 @property(weak) id <SFIRouterTableViewActions> delegate;
-@property(nonatomic) BOOL blockedDevice;
+@property(nonatomic) BOOL allowedDevice;
 @property(nonatomic) NSString *name;
 @property(nonatomic) NSString *deviceIP;
 @property(nonatomic) NSString *deviceMAC;

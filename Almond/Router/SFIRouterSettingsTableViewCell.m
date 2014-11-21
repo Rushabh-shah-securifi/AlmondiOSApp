@@ -7,7 +7,6 @@
 //
 
 #import "SFIRouterSettingsTableViewCell.h"
-#import "SFIWirelessSetting.h"
 #import "SFICardView.h"
 #import "SFIRouterTableViewActions.h"
 
@@ -31,7 +30,7 @@
     SFIWirelessSetting *setting = self.wirelessSetting;
 
     [cardView addTopBorder:self.backgroundColor];
-    [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactivate:) on:self.enabledDevice];
+    [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactivate:) on:setting.enabled];
     [cardView addLine];
     [cardView addNameLabel:@"SSID" valueTextField:setting.ssid delegate:self tag:0];
     [cardView addShortLine];
@@ -43,7 +42,7 @@
     [cardView addShortLine];
     [cardView addNameLabel:@"Encryption" valueLabel:setting.encryptionType];
     [cardView addShortLine];
-    [cardView addNameLabel:@"Country Region" valueLabel:[NSString stringWithFormat:@"%d", setting.countryRegion]];
+    [cardView addNameLabel:@"Country Region" valueLabel:setting.countryRegion];
     [cardView addShortLine];
 }
 
@@ -57,7 +56,7 @@
 #pragma mark - UITextFieldDelegate methods
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    [self.delegate willBeginEditing];
+    [self.delegate routerTableCellWillBeginEditingValue];
     return YES;
 }
 
@@ -71,7 +70,7 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     [self.delegate onChangeDeviceSSID:self.wirelessSetting newSSID:textField.text];
-    [self.delegate didEndEditing];
+    [self.delegate routerTableCellDidEndEditingValue];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

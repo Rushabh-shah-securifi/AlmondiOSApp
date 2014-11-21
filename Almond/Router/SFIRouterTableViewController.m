@@ -483,9 +483,9 @@
     card.backgroundColor = [[SFIColors blueColor] color];
     [card addTitle:@"Wireless Settings"];
 
+    NSMutableArray *summary = [NSMutableArray array];
     SFIRouterSummary *routerSummary = self.routerSummary;
 
-    NSMutableArray *summary = [NSMutableArray array];
     if (routerSummary) {
         for (SFIWirelessSummary *sum in routerSummary.wirelessSummaries) {
             NSString *enabled = sum.enabled ? @"enabled" : @"disabled";
@@ -497,7 +497,7 @@
     }
     [card addSummary:summary];
 
-    int totalCount = self.wirelessSettings.count;
+    int totalCount = (int) self.wirelessSettings.count;
     if (routerSummary && totalCount > 0) {
         BOOL editing = [self isSectionExpanded:DEF_WIRELESS_SETTINGS_SECTION];
         [card addEditIconTarget:self action:@selector(onEditWirelessSettingsCard:) editing:editing];
@@ -521,11 +521,9 @@
     [cell markReuse];
 
     SFIWirelessSetting *setting = [self tryGetWirelessSettingsForTableRow:row];
-    SFIWirelessSummary *summary = [self.routerSummary summaryFor:setting.ssid];
 
-    cell.cardView.backgroundColor = summary.enabled ? [[SFIColors blueColor] color] : [UIColor lightGrayColor];
+    cell.cardView.backgroundColor = setting.enabled ? [[SFIColors blueColor] color] : [UIColor lightGrayColor];
     cell.wirelessSetting = setting;
-    cell.enabledDevice = summary.enabled;
     cell.delegate = self;
 
     return cell;
@@ -621,14 +619,14 @@
     if (obj != nil) {
         if ([obj isKindOfClass:[SFIConnectedDevice class]]) {
             SFIConnectedDevice *device = obj;
-            cell.blockedDevice = NO;
+            cell.allowedDevice = YES;
             cell.deviceIP = device.deviceIP;
             cell.deviceMAC = device.deviceMAC;
             cell.name = device.name;
         }
         else if ([obj isKindOfClass:[SFIBlockedDevice class]]) {
             SFIBlockedDevice *device = obj;
-            cell.blockedDevice = YES;
+            cell.allowedDevice = NO;
             cell.deviceMAC = device.deviceMAC;
         }
     }
@@ -906,6 +904,7 @@
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.wirelessSettings = ls.deviceList;
+                [self.routerSummary updateWirelessSummaryWithSettings:self.wirelessSettings];
                 [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:DEF_WIRELESS_SETTINGS_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
                 break;
             }
@@ -916,7 +915,7 @@
                 break;
             }
 
-            case SFIGenericRouterCommandType_REBOOT: 
+            case SFIGenericRouterCommandType_REBOOT:
             case SFIGenericRouterCommandType_BLOCKED_CONTENT:
             default:
                 break;
@@ -992,13 +991,13 @@
 //                NSLog(@"Reboot Reply: %d", routerReboot.reboot);
 
                 //todo handle failure case
-                self.HUD.labelText = @"Router is now online.";
+                [self showHUD:@"Router is now online."];
                 [self.HUD hide:YES afterDelay:1];
                 break;
             }
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
-
             }
+
             default:
                 break;
         }
@@ -1030,11 +1029,11 @@
 
 #pragma mark - SFIRouterTableViewActions protocol methods
 
-- (void)willBeginEditing {
+- (void)routerTableCellWillBeginEditingValue {
     self.enableDrawer = NO;
 }
 
-- (void)didEndEditing {
+- (void)routerTableCellDidEndEditingValue {
     self.enableDrawer = YES;
 }
 
@@ -1043,8 +1042,8 @@
         if (self.disposed) {
             return;
         }
-        self.HUD.labelText = @"Router is rebooting.";
-        [self.HUD show:YES];
+
+        [self showHUD:@"Router is rebooting."];
 
         self.isRebooting = TRUE;
         [self sendRebootAlmondCommand];
@@ -1055,27 +1054,15 @@
 }
 
 - (void)onEnableDevice:(SFIWirelessSetting *)setting enabled:(BOOL)isEnabled {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.disposed) {
-            return;
-        }
-        self.HUD.labelText = @"Updating settings...";
-        [self.HUD show:YES];
-
-        [self.HUD hide:YES afterDelay:2];
-    });
+    SFIWirelessSetting *copy = [setting copy];
+    copy.enabled = isEnabled;
+    [self onUpdateWirelessSettings:copy];
 }
 
 - (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString *)ssid {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.disposed) {
-            return;
-        }
-        self.HUD.labelText = @"Updating settings...";
-        [self.HUD show:YES];
-
-        [self.HUD hide:YES afterDelay:2];
-    });
+    SFIWirelessSetting *copy = [setting copy];
+    copy.ssid = ssid;
+    [self onUpdateWirelessSettings:copy];
 }
 
 - (void)onEnableWirelessAccessForDevice:(NSString *)deviceMAC allow:(BOOL)isAllowed {
@@ -1083,9 +1070,35 @@
         if (self.disposed) {
             return;
         }
-        self.HUD.labelText = @"Updating settings...";
-        [self.HUD show:YES];
 
+        [self showHUD:@"Updating settings..."];
+
+        NSMutableSet *blockedMacs = [NSMutableSet set];
+        for (SFIBlockedDevice *device in self.blockedDevices) {
+            [blockedMacs addObject:device.deviceMAC];
+        }
+
+        if (isAllowed) {
+            [blockedMacs removeObject:deviceMAC];
+        }
+        else {
+            [blockedMacs addObject:deviceMAC];
+        }
+
+        [[SecurifiToolkit sharedInstance] asyncSetAlmondWirelessUsersSettings:self.currentMAC blockedDeviceMacs:blockedMacs.allObjects];
+
+        [self.HUD hide:YES afterDelay:2];
+    });
+}
+
+- (void)onUpdateWirelessSettings:(SFIWirelessSetting *)copy {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
+
+        [self showHUD:@"Updating settings..."];
+        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.currentMAC wirelessSettings:copy];
         [self.HUD hide:YES afterDelay:2];
     });
 }

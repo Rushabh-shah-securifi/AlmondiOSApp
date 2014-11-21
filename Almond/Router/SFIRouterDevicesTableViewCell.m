@@ -39,17 +39,17 @@
     [infoCard addLeftBorder:self.backgroundColor];
     //
     // Describe the status of the device
-    if (self.blockedDevice) {
-        // only MAC address is available
-        [infoCard addSummary:@[
-                [NSString stringWithFormat:@"MAC address is %@", self.deviceMAC],
-        ]];
-    }
-    else {
+    if (self.allowedDevice) {
         [infoCard addSummary:@[
                 [NSString stringWithFormat:@"Connected as %@", self.name],
                 [NSString stringWithFormat:@"MAC address is %@", self.deviceMAC],
                 [NSString stringWithFormat:@"IP address is %@", self.deviceIP],
+        ]];
+    }
+    else {
+        // only MAC address is available
+        [infoCard addSummary:@[
+                [NSString stringWithFormat:@"MAC address is %@", self.deviceMAC],
         ]];
     }
 
@@ -57,15 +57,15 @@
 }
 
 - (void)onToggleBlockDevice:(id)sender {
-    [self.delegate onEnableWirelessAccessForDevice:self.deviceMAC allow:!self.blockedDevice];
+    [self.delegate onEnableWirelessAccessForDevice:self.deviceMAC allow:!self.allowedDevice];
 }
 
 - (UIImage *)getCardIcon {
-    if (self.blockedDevice) {
-        return [UIImage imageNamed:@"blocked_user.png"];
+    if (self.allowedDevice) {
+        return [UIImage imageNamed:@"connected_user.png"];
     }
     else {
-        return [UIImage imageNamed:@"connected_user.png"];
+        return [UIImage imageNamed:@"blocked_user.png"];
     }
 }
 

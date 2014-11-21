@@ -14,9 +14,6 @@
 #import "SFIGenericRouterCommand.h"
 #import "SFIBlockedDevice.h"
 #import "SFIBlockedContent.h"
-#import "SFIWirelessSetting.h"
-#import "SFIWirelessSummary.h"
-#import "SFIRouterSummary.h"
 
 @interface SFIParser : NSObject <NSXMLParserDelegate>
 @property(nonatomic, retain) NSMutableString *currentNodeContent;

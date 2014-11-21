@@ -11,7 +11,6 @@
 #import "SNLog.h"
 #import "SFIGenericRouterCommand.h"
 #import "SFIParser.h"
-#import "SFIWirelessUsers.h"
 #import "SFIConstants.h"
 #import "UIFont+Securifi.h"
 

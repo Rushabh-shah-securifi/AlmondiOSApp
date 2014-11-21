@@ -125,6 +125,11 @@
 
 #pragma mark Drawer management
 
+- (void)showHUD:(NSString *)text {
+    self.HUD.labelText = text;
+    [self.HUD show:YES];
+}
+
 - (void)setEnableDrawer:(BOOL)enableDrawer {
     _enableDrawer = enableDrawer;
     self.navigationItem.leftBarButtonItem.enabled = enableDrawer;

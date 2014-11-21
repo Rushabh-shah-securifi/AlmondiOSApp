@@ -278,34 +278,34 @@
     else if (indexPath.row == 3) {
         //Channel
         self.optionType = 3;
-        switch (currentSetting.countryRegion) {
-            case 0:
-                optionList = [countryChannelMap objectForKey:@"0"];
-                break;
-            case 1:
-                optionList = [countryChannelMap objectForKey:@"1"];
-                break;
-            case 2:
-                optionList = [countryChannelMap objectForKey:@"2"];
-                break;
-            case 3:
-                optionList = [countryChannelMap objectForKey:@"3"];
-                break;
-            case 4:
-                optionList = [countryChannelMap objectForKey:@"4"];
-                break;
-            case 5:
-                optionList = [countryChannelMap objectForKey:@"5"];
-                break;
-            case 6:
-                optionList = [countryChannelMap objectForKey:@"6"];
-                break;
-            case 7:
-                optionList = [countryChannelMap objectForKey:@"7"];
-                break;
-            default:
-                optionList = nil;
-        }
+//        switch (currentSetting.countryRegion) {
+//            case 0:
+//                optionList = [countryChannelMap objectForKey:@"0"];
+//                break;
+//            case 1:
+//                optionList = [countryChannelMap objectForKey:@"1"];
+//                break;
+//            case 2:
+//                optionList = [countryChannelMap objectForKey:@"2"];
+//                break;
+//            case 3:
+//                optionList = [countryChannelMap objectForKey:@"3"];
+//                break;
+//            case 4:
+//                optionList = [countryChannelMap objectForKey:@"4"];
+//                break;
+//            case 5:
+//                optionList = [countryChannelMap objectForKey:@"5"];
+//                break;
+//            case 6:
+//                optionList = [countryChannelMap objectForKey:@"6"];
+//                break;
+//            case 7:
+//                optionList = [countryChannelMap objectForKey:@"7"];
+//                break;
+//            default:
+//                optionList = nil;
+//        }
 
         //Display list
         viewController.optionList = optionList;
