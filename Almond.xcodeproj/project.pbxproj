@@ -214,6 +214,10 @@
 		CE91316519C8044B00D94876 /* down_arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CE91316319C8044B00D94876 /* down_arrow@2x.png */; };
 		CE91316719C8530000D94876 /* up_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = CE91316619C8530000D94876 /* up_arrow.png */; };
 		CE91316A19C95AE600D94876 /* SFIPasswordChangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE91316919C95AE600D94876 /* SFIPasswordChangeViewController.m */; };
+		CEA46F0C1A1E29AC00229F2D /* hue_bulb_off.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA46EF41A1E29AC00229F2D /* hue_bulb_off.png */; };
+		CEA46F0D1A1E29AC00229F2D /* hue_bulb_on.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA46EF51A1E29AC00229F2D /* hue_bulb_on.png */; };
+		CEA46F0E1A1E29AC00229F2D /* light_off.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA46EF61A1E29AC00229F2D /* light_off.png */; };
+		CEA46F0F1A1E29AC00229F2D /* light_on.png in Resources */ = {isa = PBXBuildFile; fileRef = CEA46EF71A1E29AC00229F2D /* light_on.png */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -488,6 +492,10 @@
 		CE91316619C8530000D94876 /* up_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up_arrow.png; sourceTree = "<group>"; };
 		CE91316819C95AE600D94876 /* SFIPasswordChangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFIPasswordChangeViewController.h; path = Settings/SFIPasswordChangeViewController.h; sourceTree = "<group>"; };
 		CE91316919C95AE600D94876 /* SFIPasswordChangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFIPasswordChangeViewController.m; path = Settings/SFIPasswordChangeViewController.m; sourceTree = "<group>"; };
+		CEA46EF41A1E29AC00229F2D /* hue_bulb_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hue_bulb_off.png; sourceTree = "<group>"; };
+		CEA46EF51A1E29AC00229F2D /* hue_bulb_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = hue_bulb_on.png; sourceTree = "<group>"; };
+		CEA46EF61A1E29AC00229F2D /* light_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = light_off.png; sourceTree = "<group>"; };
+		CEA46EF71A1E29AC00229F2D /* light_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = light_on.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -699,6 +707,10 @@
 		1CED5F3019AC85AA0023512F /* images */ = {
 			isa = PBXGroup;
 			children = (
+				CEA46EF41A1E29AC00229F2D /* hue_bulb_off.png */,
+				CEA46EF51A1E29AC00229F2D /* hue_bulb_on.png */,
+				CEA46EF61A1E29AC00229F2D /* light_off.png */,
+				CEA46EF71A1E29AC00229F2D /* light_on.png */,
 				CE458D6019EE43F000689251 /* cross_icon.png */,
 				CE458D6119EE43F000689251 /* Mail_icon.png */,
 				CE458D5E19ED06B400689251 /* grey_line.png */,
@@ -1098,9 +1110,11 @@
 				1CED607E19AC85AB0023512F /* icon_round_2.png in Resources */,
 				1CED605919AC85AB0023512F /* connection_status_4@2x.png in Resources */,
 				1CED608219AC85AB0023512F /* icon_scenes.png in Resources */,
+				CEA46F0E1A1E29AC00229F2D /* light_off.png in Resources */,
 				1CED604A19AC85AB0023512F /* connection_status_02.png in Resources */,
 				1CED603419AC85AB0023512F /* addAlmond.png in Resources */,
 				1CED608419AC85AB0023512F /* icon_sensor.png in Resources */,
+				CEA46F0C1A1E29AC00229F2D /* hue_bulb_off.png in Resources */,
 				CE91314C19C6B06500D94876 /* AccountsStoryboard_iPhone.storyboard in Resources */,
 				1CED5F0719AC82FD0023512F /* Images.xcassets in Resources */,
 				1CED609119AC85AB0023512F /* motion_sensor_false.png in Resources */,
@@ -1117,6 +1131,8 @@
 				CE91316519C8044B00D94876 /* down_arrow@2x.png in Resources */,
 				1CED60C919AC85AB0023512F /* sensordata.xml in Resources */,
 				1CED60A419AC85AB0023512F /* Wait_Icon.png in Resources */,
+				CEA46F0F1A1E29AC00229F2D /* light_on.png in Resources */,
+				CEA46F0D1A1E29AC00229F2D /* hue_bulb_on.png in Resources */,
 				1CED605F19AC85AB0023512F /* default_device.png in Resources */,
 				1CED607B19AC85AB0023512F /* icon_log.png in Resources */,
 				1CED607319AC85AB0023512F /* fire_02.png in Resources */,

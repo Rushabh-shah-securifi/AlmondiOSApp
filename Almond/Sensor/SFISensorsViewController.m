@@ -186,6 +186,7 @@
             NSLog(@"Sensors: requesting device values on new connection");
         }
 
+        [toolkit asyncRequestNotificationPreferenceList:mac];
         [self initializeColors:plus];
     }
 
@@ -416,6 +417,9 @@
     BOOL expanded = [self isExpandedCell:device];
     
     NSString *cell_id = [NSString stringWithFormat:@"s_t:%d_h:%ld_e:%d,", currentDeviceType, (unsigned long) height, expanded];
+    
+    //PY 201114- Set device almond mac
+    device.almondMAC = self.almondMac;
 
     SFISensorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
@@ -1041,6 +1045,8 @@
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncRequestDeviceValueList:self.almondMac];
+    //PY 201114 - Get Notification List
+    [toolkit asyncRequestNotificationPreferenceList:self.almondMac];
 
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {

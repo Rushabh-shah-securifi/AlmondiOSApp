@@ -509,7 +509,7 @@
     }
     //TODO: For test - Remove
     NSString *deviceToken = [[NSUserDefaults standardUserDefaults] stringForKey:PUSH_NOTIFICATION_TOKEN];
-    //deviceToken = @"7ff2a7b3707fe43cdf39e25522250e1257ee184c59ca0d901b452040d85fd794";
+    deviceToken = @"7ff2a7b3707fe43cdf39e25522250e1257ee184c59ca0d901b452040d85fd794";
     [[SecurifiToolkit sharedInstance] asyncRequestRegisterForNotification:deviceToken];
 
 }
