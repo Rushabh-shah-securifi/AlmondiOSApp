@@ -344,7 +344,7 @@
         return [self createEmptyCell:tableView];
     }
 
-    return [self createSensorCell:tableView listRow:(int) indexPath.row];
+    return [self createSensorCell:tableView listRow:(NSUInteger) indexPath.row];
 }
 
 #pragma mark - Table View Cell Helpers
@@ -408,7 +408,7 @@
     return cell;
 }
 
-- (UITableViewCell *)createSensorCell:(UITableView *)tableView listRow:(int)indexPathRow {
+- (UITableViewCell *)createSensorCell:(UITableView *)tableView listRow:(NSUInteger)indexPathRow {
     SFIDevice *device = [self tryGetDevice:indexPathRow];
     SFIDeviceValue *deviceValue = [self tryCurrentDeviceValues:device.deviceID];
 
