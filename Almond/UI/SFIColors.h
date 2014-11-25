@@ -11,6 +11,8 @@
 // Returns the standard list of almond colors
 + (NSArray *)colors;
 
++ (SFIColors *)colorForIndex:(NSUInteger)index;
+
 + (SFIColors *)greenColor;
 
 + (SFIColors *)blueColor;

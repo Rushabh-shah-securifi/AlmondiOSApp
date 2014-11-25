@@ -22,6 +22,17 @@
     ];
 }
 
++ (SFIColors *)colorForIndex:(NSUInteger)colorCode {
+    NSArray *colors = [SFIColors colors];
+
+    NSUInteger count = [colors count];
+    if (colorCode >= count) {
+        colorCode = colorCode % count;
+    }
+
+    return colors[colorCode];
+}
+
 + (SFIColors *)blueColor {
     return [[SFIColors alloc] initWithHue:196 saturation:100 brightness:100 colorName:@"blue"];
 }
