@@ -412,7 +412,7 @@ static NSString *simpleTableIdentifier = @"DeviceCell";
     txtCountryRegion.backgroundColor = [UIColor clearColor];
     txtCountryRegion.textColor = [UIColor whiteColor];
     [txtCountryRegion setFont:[UIFont standardUILabelFont]];
-    txtCountryRegion.text = [NSString stringWithFormat:@"%d", currentDevice.countryRegion];
+    txtCountryRegion.text = [NSString stringWithFormat:@"%d", [currentDevice.countryRegion intValue]];
     txtCountryRegion.textAlignment = NSTextAlignmentRight;
     [backgroundLabel addSubview:txtCountryRegion];
 
