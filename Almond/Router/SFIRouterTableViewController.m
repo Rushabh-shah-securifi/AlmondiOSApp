@@ -886,6 +886,14 @@
     DLog(@"Command Type %d", genericRouterCommand.commandType);
 
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
+
+        if (self.disposed) {
+            return;
+        }
+
         switch (genericRouterCommand.commandType) {
             case SFIGenericRouterCommandType_CONNECTED_DEVICES: {
                 SFIDevicesList *ls = genericRouterCommand.command;
