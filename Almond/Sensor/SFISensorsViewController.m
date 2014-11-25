@@ -711,9 +711,8 @@
 #pragma mark - Class Methods
 
 - (void)initializeColors:(SFIAlmondPlus *)almond {
-    NSArray *colors = [SFIColors colors];
     NSUInteger colorCode = (NSUInteger) almond.colorCodeIndex;
-    _almondColor = colors[colorCode];
+    _almondColor = [SFIColors colorForIndex:colorCode];
 }
 
 #pragma mark - Sensor Values
