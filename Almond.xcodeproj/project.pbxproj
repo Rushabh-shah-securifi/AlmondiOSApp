@@ -32,9 +32,6 @@
 		1C7581CA19AD7F190074C601 /* SFIRouterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581C419AD7F190074C601 /* SFIRouterTableViewController.m */; };
 		1C7581D219AD7FB00074C601 /* SFIParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581D119AD7FB00074C601 /* SFIParser.m */; };
 		1C7581D819AD7FDA0074C601 /* SFIRouterReboot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581D719AD7FDA0074C601 /* SFIRouterReboot.m */; };
-		1C7581EE19AD80090074C601 /* SFIWirelessTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581E319AD80090074C601 /* SFIWirelessTableViewController.m */; };
-		1C7581F019AD80090074C601 /* SFIWirelessUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581E719AD80090074C601 /* SFIWirelessUserViewController.m */; };
-		1C7581F419AD81140074C601 /* SFIRouterDevicesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581F319AD81140074C601 /* SFIRouterDevicesListViewController.m */; };
 		1C7581F619AD84AF0074C601 /* libSecurifiToolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C7581F519AD84AF0074C601 /* libSecurifiToolkit.a */; };
 		1C75821019B036C70074C601 /* ScoreboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C75820F19B036C70074C601 /* ScoreboardViewController.m */; };
 		1C75821319B054660074C601 /* SFITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C75821219B054660074C601 /* SFITableViewController.m */; };
@@ -264,12 +261,6 @@
 		1C7581D119AD7FB00074C601 /* SFIParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIParser.m; sourceTree = "<group>"; };
 		1C7581D619AD7FDA0074C601 /* SFIRouterReboot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterReboot.h; sourceTree = "<group>"; };
 		1C7581D719AD7FDA0074C601 /* SFIRouterReboot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterReboot.m; sourceTree = "<group>"; };
-		1C7581E219AD80090074C601 /* SFIWirelessTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWirelessTableViewController.h; sourceTree = "<group>"; };
-		1C7581E319AD80090074C601 /* SFIWirelessTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIWirelessTableViewController.m; sourceTree = "<group>"; };
-		1C7581E619AD80090074C601 /* SFIWirelessUserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWirelessUserViewController.h; sourceTree = "<group>"; };
-		1C7581E719AD80090074C601 /* SFIWirelessUserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIWirelessUserViewController.m; sourceTree = "<group>"; };
-		1C7581F219AD81140074C601 /* SFIRouterDevicesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterDevicesListViewController.h; sourceTree = "<group>"; };
-		1C7581F319AD81140074C601 /* SFIRouterDevicesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterDevicesListViewController.m; sourceTree = "<group>"; };
 		1C7581F519AD84AF0074C601 /* libSecurifiToolkit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSecurifiToolkit.a; path = "../iostoolkit/build/Debug-iphoneos/libSecurifiToolkit.a"; sourceTree = "<group>"; };
 		1C75820E19B036C70074C601 /* ScoreboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardViewController.h; sourceTree = "<group>"; };
 		1C75820F19B036C70074C601 /* ScoreboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardViewController.m; sourceTree = "<group>"; };
@@ -559,8 +550,6 @@
 		1C7581BC19AD7F190074C601 /* Router */ = {
 			isa = PBXGroup;
 			children = (
-				1C7581F219AD81140074C601 /* SFIRouterDevicesListViewController.h */,
-				1C7581F319AD81140074C601 /* SFIRouterDevicesListViewController.m */,
 				1C7581D619AD7FDA0074C601 /* SFIRouterReboot.h */,
 				1C7581D719AD7FDA0074C601 /* SFIRouterReboot.m */,
 				1C7581C319AD7F190074C601 /* SFIRouterTableViewController.h */,
@@ -574,17 +563,6 @@
 				1DF037A2AE0152095459F611 /* SFIRouterTableViewActions.h */,
 			);
 			path = Router;
-			sourceTree = "<group>";
-		};
-		1C7581D919AD80090074C601 /* Wireless */ = {
-			isa = PBXGroup;
-			children = (
-				1C7581E219AD80090074C601 /* SFIWirelessTableViewController.h */,
-				1C7581E319AD80090074C601 /* SFIWirelessTableViewController.m */,
-				1C7581E619AD80090074C601 /* SFIWirelessUserViewController.h */,
-				1C7581E719AD80090074C601 /* SFIWirelessUserViewController.m */,
-			);
-			path = Wireless;
 			sourceTree = "<group>";
 		};
 		1CED5EE819AC82FD0023512F = {
@@ -631,7 +609,6 @@
 				1C0C99101A1B5DD100148010 /* Notifications */,
 				CE458D6419EF98A700689251 /* UICategories */,
 				CE91314A19C02F6300D94876 /* Accounts */,
-				1C7581D919AD80090074C601 /* Wireless */,
 				1C7581BC19AD7F190074C601 /* Router */,
 				1C75818A19AD7BD00074C601 /* Legacy */,
 				1CED5F2419AC85AA0023512F /* AlmondPlusConstants.h */,
@@ -1287,7 +1264,6 @@
 				1CED60C519AC85AB0023512F /* DrawerViewController.m in Sources */,
 				1CED5F0119AC82FD0023512F /* main.m in Sources */,
 				1C4E6FCE1A11B37800276EC4 /* SFIRouterDevicesTableViewCell.m in Sources */,
-				1C7581F419AD81140074C601 /* SFIRouterDevicesListViewController.m in Sources */,
 				CE91316019C7068C00D94876 /* SFIUserProfile.m in Sources */,
 				CE91316A19C95AE600D94876 /* SFIPasswordChangeViewController.m in Sources */,
 				1C7581D219AD7FB00074C601 /* SFIParser.m in Sources */,
@@ -1306,7 +1282,6 @@
 				1CED60C019AC85AB0023512F /* SFISensorDetailView.m in Sources */,
 				1CED60B719AC85AB0023512F /* SFIActivationViewController.m in Sources */,
 				1CED60C119AC85AB0023512F /* SFISensorsViewController.m in Sources */,
-				1C7581EE19AD80090074C601 /* SFIWirelessTableViewController.m in Sources */,
 				1C7581AE19AD7BD00074C601 /* SFIDevicesList.m in Sources */,
 				1C75821319B054660074C601 /* SFITableViewController.m in Sources */,
 				1C7581B019AD7BD00074C601 /* SFIDoorSensorViewController.m in Sources */,
@@ -1322,7 +1297,6 @@
 				1C7581AB19AD7BD00074C601 /* SFIConnectedDevice.m in Sources */,
 				1CED60C319AC85AB0023512F /* SFISignupViewController.m in Sources */,
 				1CED60CC19AC85AB0023512F /* SFIColors.m in Sources */,
-				1C7581F019AD80090074C601 /* SFIWirelessUserViewController.m in Sources */,
 				1CED60D419AC85AB0023512F /* SFISlider.m in Sources */,
 				1DF031F5FE02FF77A500E6AB /* SFICopyLabel.m in Sources */,
 				1CEB0B4A1A09C13C007D31A9 /* SFICardView.m in Sources */,
