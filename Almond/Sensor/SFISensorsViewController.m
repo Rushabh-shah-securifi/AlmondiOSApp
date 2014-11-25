@@ -417,7 +417,8 @@
     BOOL expanded = [self isExpandedCell:device];
     
     NSString *cell_id = [NSString stringWithFormat:@"s_t:%d_h:%ld_e:%d,", currentDeviceType, (unsigned long) height, expanded];
-    
+
+    //todo fix me: this attribute should be removed or managed in the toolkit
     //PY 201114- Set device almond mac
     device.almondMAC = self.almondMac;
 
@@ -1045,7 +1046,6 @@
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncRequestDeviceValueList:self.almondMac];
-    //PY 201114 - Get Notification List
     [toolkit asyncRequestNotificationPreferenceList:self.almondMac];
 
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
