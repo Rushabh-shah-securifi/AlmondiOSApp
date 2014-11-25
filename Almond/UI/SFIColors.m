@@ -10,6 +10,7 @@
 
 @implementation SFIColors
 
+// Returns the standard list of almond colors
 + (NSArray *)colors {
     return @[
             [self blueColor],

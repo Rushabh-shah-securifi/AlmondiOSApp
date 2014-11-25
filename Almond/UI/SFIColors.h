@@ -8,9 +8,6 @@
 
 @interface SFIColors : NSObject <NSCoding>
 
-// Returns the standard list of almond colors
-+ (NSArray *)colors;
-
 + (SFIColors *)colorForIndex:(NSUInteger)index;
 
 + (SFIColors *)greenColor;
