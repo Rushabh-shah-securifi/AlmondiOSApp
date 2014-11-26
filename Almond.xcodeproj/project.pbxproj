@@ -25,10 +25,7 @@
 		1C7581AA19AD7BD00074C601 /* SFIBlockedDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C75819219AD7BD00074C601 /* SFIBlockedDevice.m */; };
 		1C7581AB19AD7BD00074C601 /* SFIConnectedDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C75819419AD7BD00074C601 /* SFIConnectedDevice.m */; };
 		1C7581AE19AD7BD00074C601 /* SFIDevicesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C75819A19AD7BD00074C601 /* SFIDevicesList.m */; };
-		1C7581B019AD7BD00074C601 /* SFIDoorSensorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C75819E19AD7BD00074C601 /* SFIDoorSensorViewController.m */; };
 		1C7581B119AD7BD00074C601 /* SFIGenericRouterCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581A019AD7BD00074C601 /* SFIGenericRouterCommand.m */; };
-		1C7581B219AD7BD00074C601 /* SFIOptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581A219AD7BD00074C601 /* SFIOptionViewController.m */; };
-		1C7581B319AD7BD00074C601 /* SFIScannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581A419AD7BD00074C601 /* SFIScannerViewController.m */; };
 		1C7581CA19AD7F190074C601 /* SFIRouterTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581C419AD7F190074C601 /* SFIRouterTableViewController.m */; };
 		1C7581D219AD7FB00074C601 /* SFIParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581D119AD7FB00074C601 /* SFIParser.m */; };
 		1C7581D819AD7FDA0074C601 /* SFIRouterReboot.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7581D719AD7FDA0074C601 /* SFIRouterReboot.m */; };
@@ -190,7 +187,6 @@
 		1CED60CD19AC85AB0023512F /* SFIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED5FF819AC85AB0023512F /* SFIConstants.m */; };
 		1CED60CE19AC85AB0023512F /* SFIHighlightedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED5FFA19AC85AB0023512F /* SFIHighlightedButton.m */; };
 		1CED60CF19AC85AB0023512F /* SFIMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED5FFC19AC85AB0023512F /* SFIMainViewController.m */; };
-		1CED60D119AC85AB0023512F /* SFIScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600019AC85AB0023512F /* SFIScene.m */; };
 		1CED60D319AC85AB0023512F /* SFISensor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600419AC85AB0023512F /* SFISensor.m */; };
 		1CED60D419AC85AB0023512F /* SFISlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600619AC85AB0023512F /* SFISlider.m */; };
 		1CED60D519AC85AB0023512F /* SNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1CED600919AC85AB0023512F /* SNLog.m */; };
@@ -247,14 +243,8 @@
 		1C75819419AD7BD00074C601 /* SFIConnectedDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIConnectedDevice.m; sourceTree = "<group>"; };
 		1C75819919AD7BD00074C601 /* SFIDevicesList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIDevicesList.h; sourceTree = "<group>"; };
 		1C75819A19AD7BD00074C601 /* SFIDevicesList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIDevicesList.m; sourceTree = "<group>"; };
-		1C75819D19AD7BD00074C601 /* SFIDoorSensorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIDoorSensorViewController.h; sourceTree = "<group>"; };
-		1C75819E19AD7BD00074C601 /* SFIDoorSensorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIDoorSensorViewController.m; sourceTree = "<group>"; };
 		1C75819F19AD7BD00074C601 /* SFIGenericRouterCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIGenericRouterCommand.h; sourceTree = "<group>"; };
 		1C7581A019AD7BD00074C601 /* SFIGenericRouterCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIGenericRouterCommand.m; sourceTree = "<group>"; };
-		1C7581A119AD7BD00074C601 /* SFIOptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIOptionViewController.h; sourceTree = "<group>"; };
-		1C7581A219AD7BD00074C601 /* SFIOptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIOptionViewController.m; sourceTree = "<group>"; };
-		1C7581A319AD7BD00074C601 /* SFIScannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIScannerViewController.h; sourceTree = "<group>"; };
-		1C7581A419AD7BD00074C601 /* SFIScannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIScannerViewController.m; sourceTree = "<group>"; };
 		1C7581C319AD7F190074C601 /* SFIRouterTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterTableViewController.h; sourceTree = "<group>"; };
 		1C7581C419AD7F190074C601 /* SFIRouterTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterTableViewController.m; sourceTree = "<group>"; };
 		1C7581D019AD7FB00074C601 /* SFIParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIParser.h; sourceTree = "<group>"; };
@@ -447,8 +437,6 @@
 		1CED5FFA19AC85AB0023512F /* SFIHighlightedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIHighlightedButton.m; sourceTree = "<group>"; };
 		1CED5FFB19AC85AB0023512F /* SFIMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIMainViewController.h; sourceTree = "<group>"; };
 		1CED5FFC19AC85AB0023512F /* SFIMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIMainViewController.m; sourceTree = "<group>"; };
-		1CED5FFF19AC85AB0023512F /* SFIScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIScene.h; sourceTree = "<group>"; };
-		1CED600019AC85AB0023512F /* SFIScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIScene.m; sourceTree = "<group>"; };
 		1CED600319AC85AB0023512F /* SFISensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensor.h; sourceTree = "<group>"; };
 		1CED600419AC85AB0023512F /* SFISensor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensor.m; sourceTree = "<group>"; };
 		1CED600519AC85AB0023512F /* SFISlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISlider.h; sourceTree = "<group>"; };
@@ -535,14 +523,8 @@
 				1C75819419AD7BD00074C601 /* SFIConnectedDevice.m */,
 				1C75819919AD7BD00074C601 /* SFIDevicesList.h */,
 				1C75819A19AD7BD00074C601 /* SFIDevicesList.m */,
-				1C75819D19AD7BD00074C601 /* SFIDoorSensorViewController.h */,
-				1C75819E19AD7BD00074C601 /* SFIDoorSensorViewController.m */,
 				1C75819F19AD7BD00074C601 /* SFIGenericRouterCommand.h */,
 				1C7581A019AD7BD00074C601 /* SFIGenericRouterCommand.m */,
-				1C7581A119AD7BD00074C601 /* SFIOptionViewController.h */,
-				1C7581A219AD7BD00074C601 /* SFIOptionViewController.m */,
-				1C7581A319AD7BD00074C601 /* SFIScannerViewController.h */,
-				1C7581A419AD7BD00074C601 /* SFIScannerViewController.m */,
 			);
 			path = Legacy;
 			sourceTree = "<group>";
@@ -895,8 +877,6 @@
 				1CED5FFA19AC85AB0023512F /* SFIHighlightedButton.m */,
 				1CED5FFB19AC85AB0023512F /* SFIMainViewController.h */,
 				1CED5FFC19AC85AB0023512F /* SFIMainViewController.m */,
-				1CED5FFF19AC85AB0023512F /* SFIScene.h */,
-				1CED600019AC85AB0023512F /* SFIScene.m */,
 				1CED600319AC85AB0023512F /* SFISensor.h */,
 				1CED600419AC85AB0023512F /* SFISensor.m */,
 				1CED600519AC85AB0023512F /* SFISlider.h */,
@@ -1260,7 +1240,6 @@
 				1C0C99161A1C37D500148010 /* SFINotificationTableViewCell.m in Sources */,
 				1CED60D319AC85AB0023512F /* SFISensor.m in Sources */,
 				1CED60C219AC85AB0023512F /* SFISensorTableViewCell.m in Sources */,
-				1C7581B319AD7BD00074C601 /* SFIScannerViewController.m in Sources */,
 				1CED60C519AC85AB0023512F /* DrawerViewController.m in Sources */,
 				1CED5F0119AC82FD0023512F /* main.m in Sources */,
 				1C4E6FCE1A11B37800276EC4 /* SFIRouterDevicesTableViewCell.m in Sources */,
@@ -1284,16 +1263,13 @@
 				1CED60C119AC85AB0023512F /* SFISensorsViewController.m in Sources */,
 				1C7581AE19AD7BD00074C601 /* SFIDevicesList.m in Sources */,
 				1C75821319B054660074C601 /* SFITableViewController.m in Sources */,
-				1C7581B019AD7BD00074C601 /* SFIDoorSensorViewController.m in Sources */,
 				1C4E6FD11A11B62900276EC4 /* SFIRouterRebootTableViewCell.m in Sources */,
 				1CED60CB19AC85AB0023512F /* SFICloudStatusBarButtonItem.m in Sources */,
 				1CED60CE19AC85AB0023512F /* SFIHighlightedButton.m in Sources */,
 				1C988E371A09FB1E0070C276 /* SFICardTableViewCell.m in Sources */,
-				1CED60D119AC85AB0023512F /* SFIScene.m in Sources */,
 				1C75821019B036C70074C601 /* ScoreboardViewController.m in Sources */,
 				1CED60B919AC85AB0023512F /* SFILogoutAllViewController.m in Sources */,
 				CE458D6719EF98EA00689251 /* UIFont+Securifi.m in Sources */,
-				1C7581B219AD7BD00074C601 /* SFIOptionViewController.m in Sources */,
 				1C7581AB19AD7BD00074C601 /* SFIConnectedDevice.m in Sources */,
 				1CED60C319AC85AB0023512F /* SFISignupViewController.m in Sources */,
 				1CED60CC19AC85AB0023512F /* SFIColors.m in Sources */,

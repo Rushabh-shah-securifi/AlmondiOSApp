@@ -879,43 +879,6 @@
             </objects>
             <point key="canvasLocation" x="-3316" y="1484"/>
         </scene>
-        <!--Affiliation-->
-        <scene sceneID="1q8-aa-tS1">
-            <objects>
-                <viewController storyboardIdentifier="SFIScannerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Nsl-ar-Oew" customClass="SFIScannerViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="b3s-YQ-ozP"/>
-                        <viewControllerLayoutGuide type="bottom" id="myM-zG-fLU"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="4iu-rJ-XDR">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="QR Code: " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a2l-3W-WGb">
-                                <rect key="frame" x="0.0" y="20" width="296" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9Wk-ac-825">
-                                <rect key="frame" x="0.0" y="69" width="320" height="435"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" title="Affiliation" id="5FJ-Bh-jnz"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <connections>
-                        <outlet property="barcode" destination="a2l-3W-WGb" id="up1-u5-XCD"/>
-                        <outlet property="livevideo" destination="9Wk-ac-825" id="YTg-Tj-UtN"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pq9-Vy-LfN" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2936" y="1476"/>
-        </scene>
         <!--Scenes-->
         <scene sceneID="aqp-G0-xTe">
             <objects>
