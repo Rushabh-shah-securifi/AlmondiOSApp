@@ -141,6 +141,11 @@
             selector:@selector(validateResponseCallback:)
             name:VALIDATE_RESPONSE_NOTIFIER
             object:nil];
+    
+    [center addObserver:self
+            selector:@selector(onNotificationPrefDidChange:)
+            name:kSFIDidChangeNotificationList
+            object:nil];
 }
 
 - (void)initializeAlmondData {
@@ -1104,6 +1109,64 @@
         }
     });
 }
+
+
+- (void)onNotificationPrefDidChange:(id)sender {
+    DLog(@"Sensors: did receive notification preference list change");
+    
+    if (!self) {
+        return;
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
+        if (self.isViewControllerDisposed) {
+            return;
+        }
+        [self.HUD hide:YES];
+    });
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    
+    NSString *cloudMAC = [data valueForKey:@"data"];
+    if (![self isSameAsCurrentMAC:cloudMAC]) {
+        DLog(@"Sensors: ignore notification preference list change, c:%@, m:%@", self.almondMac, cloudMAC);
+        // An Almond not currently being viewed was changed
+        return;
+    }
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    
+    NSArray *newNotificationList = [toolkit notificationPrefList:cloudMAC];
+    if (newNotificationList == nil) {
+        DLog(@"Notification Preference list is empty: %@", cloudMAC);
+        newNotificationList = @[];
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
+        if (self.isViewControllerDisposed) {
+            return;
+        }
+        
+        if (![self isSameAsCurrentMAC:cloudMAC]) {
+            return;
+        }
+        
+        [self.refreshControl endRefreshing];
+        [self.tableView reloadData];
+        
+    });
+}
+
 
 #pragma mark - Helpers
 
