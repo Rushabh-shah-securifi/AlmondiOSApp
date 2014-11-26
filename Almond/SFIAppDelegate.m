@@ -18,22 +18,24 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [Crashlytics startWithAPIKey:@"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3"];
 
+    SecurifiConfigurator *config = [SecurifiConfigurator new];
+    [SecurifiToolkit initialize:config];
+
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
 
     [[Analytics sharedInstance] initialize];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-    
-    // Let the device know we want to receive push notifications
 
-    
+    // Let the device know we want to receive push notifications
+    //
     //-- Set Notification
     if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
     {
         // iOS 8 Notifications
         [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
-        
+
         [application registerForRemoteNotifications];
     }
     else
@@ -42,12 +44,11 @@
         [application registerForRemoteNotificationTypes:
          (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
     }
-    
-    NSDictionary *pushDic = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+
+    NSDictionary *pushDic = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (pushDic != nil) {
         DLog(@"Notification");
     }
-
 
     return YES;
 }

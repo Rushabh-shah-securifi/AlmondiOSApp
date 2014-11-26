@@ -505,6 +505,7 @@
     BOOL notificationStatus = [[NSUserDefaults standardUserDefaults] boolForKey:PUSH_NOTIFICATION_STATUS];
     if (!notificationStatus){
         //Register for notification
+        //todo fix me: this method is NOT available in ios 7
         [[UIApplication sharedApplication] registerForRemoteNotifications];
     }
     //TODO: For test - Remove
@@ -532,8 +533,6 @@
         }
         DLog(@"Reason Code %d", obj.reasonCode);
     }
-    
-
 }
 
 
@@ -554,8 +553,6 @@
         [self showToast:@"Sorry! Push Notification was not deregistered."];
         DLog(@"Reason Code %d", obj.reasonCode);
     }
-    
-    
 }
 
 #pragma mark - UIGestureRecognizerDelegate methods

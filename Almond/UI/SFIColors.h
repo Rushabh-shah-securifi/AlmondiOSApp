@@ -8,8 +8,7 @@
 
 @interface SFIColors : NSObject <NSCoding>
 
-// Returns the standard list of almond colors
-+ (NSArray *)colors;
++ (SFIColors *)colorForIndex:(NSUInteger)index;
 
 + (SFIColors *)greenColor;
 
@@ -25,17 +24,12 @@
 
 + (SFIColors *)yellowColor;
 
-@property(nonatomic, readonly) int hue;
-@property(nonatomic, readonly) int saturation;
-@property(nonatomic, readonly) int brightness;
-@property(nonatomic, readonly) NSString *colorName;
-
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName;
 
 // Returns a UIColor whose brightness is computed as an incrementally gradation on the position index.
 // The index is assumed to be a row number in a table view or a similar indexed structure.
 // This method is used for coloring a sequence of table cells with the same color tint that varies by brightness.
-- (UIColor *)makeGradatedColorForPositionIndex:(int)index;
+- (UIColor *)makeGradatedColorForPositionIndex:(NSUInteger)index;
 
 // Convert to a UIColor
 - (UIColor *)color;

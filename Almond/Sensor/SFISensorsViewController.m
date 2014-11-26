@@ -349,7 +349,7 @@
         return [self createEmptyCell:tableView];
     }
 
-    return [self createSensorCell:tableView listRow:(int) indexPath.row];
+    return [self createSensorCell:tableView listRow:(NSUInteger) indexPath.row];
 }
 
 #pragma mark - Table View Cell Helpers
@@ -413,7 +413,7 @@
     return cell;
 }
 
-- (UITableViewCell *)createSensorCell:(UITableView *)tableView listRow:(int)indexPathRow {
+- (UITableViewCell *)createSensorCell:(UITableView *)tableView listRow:(NSUInteger)indexPathRow {
     SFIDevice *device = [self tryGetDevice:indexPathRow];
     SFIDeviceValue *deviceValue = [self tryCurrentDeviceValues:device.deviceID];
 
@@ -422,7 +422,8 @@
     BOOL expanded = [self isExpandedCell:device];
     
     NSString *cell_id = [NSString stringWithFormat:@"s_t:%d_h:%ld_e:%d,", currentDeviceType, (unsigned long) height, expanded];
-    
+
+    //todo fix me: this attribute should be removed or managed in the toolkit
     //PY 201114- Set device almond mac
     device.almondMAC = self.almondMac;
 
@@ -715,9 +716,8 @@
 #pragma mark - Class Methods
 
 - (void)initializeColors:(SFIAlmondPlus *)almond {
-    NSArray *colors = [SFIColors colors];
     NSUInteger colorCode = (NSUInteger) almond.colorCodeIndex;
-    _almondColor = colors[colorCode];
+    _almondColor = [SFIColors colorForIndex:colorCode];
 }
 
 #pragma mark - Sensor Values
@@ -1050,7 +1050,6 @@
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncRequestDeviceValueList:self.almondMac];
-    //PY 201114 - Get Notification List
     [toolkit asyncRequestNotificationPreferenceList:self.almondMac];
 
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);

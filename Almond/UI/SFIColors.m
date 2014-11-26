@@ -8,8 +8,16 @@
 
 #import "SFIColors.h"
 
+@interface SFIColors ()
+@property(nonatomic, readonly) int hue;
+@property(nonatomic, readonly) int saturation;
+@property(nonatomic, readonly) int brightness;
+@property(nonatomic, readonly) NSString *colorName;
+@end
+
 @implementation SFIColors
 
+// Returns the standard list of almond colors
 + (NSArray *)colors {
     return @[
             [self blueColor],
@@ -20,6 +28,17 @@
             [self limeColor],
             [self yellowColor],
     ];
+}
+
++ (SFIColors *)colorForIndex:(NSUInteger)colorCode {
+    NSArray *colors = [SFIColors colors];
+
+    NSUInteger count = [colors count];
+    if (colorCode >= count) {
+        colorCode = colorCode % count;
+    }
+
+    return colors[colorCode];
 }
 
 + (SFIColors *)blueColor {
@@ -62,7 +81,7 @@
     return self;
 }
 
-- (UIColor *)makeGradatedColorForPositionIndex:(int)index {
+- (UIColor *)makeGradatedColorForPositionIndex:(NSUInteger)index {
     int positionIndex = index % 15;
 
     int brightness = 0;

@@ -10,12 +10,9 @@
 #import "AlmondPlusConstants.h"
 #import "SWRevealViewController.h"
 #import "UIFont+Securifi.h"
-#import "SFIColors.h"
-#import "iToast.h"
 
 @interface DrawerViewController ()
 @property(nonatomic, strong, readonly) NSDictionary *dataDictionary;
-@property(nonatomic, strong) NSString *currentMAC;
 @end
 
 @implementation DrawerViewController
@@ -126,13 +123,11 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return (section == 0) ? 65 : 65;
+    return 65;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    CGRect frame = (section == 0) ?
-            CGRectMake(10, 25, tableView.frame.size.width, 18) :
-            CGRectMake(10, 25, tableView.frame.size.width, 18);
+    CGRect frame = CGRectMake(10, 25, tableView.frame.size.width, 18);
 
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.font = [UIFont securifiBoldFontLarge];
@@ -194,15 +189,7 @@
             //Display the corresponding Sensor List
 
             SFIAlmondPlus *currentAlmond = almondList[(NSUInteger) indexPath.row];
-            self.currentMAC = currentAlmond.almondplusMAC;
-
-            NSArray *listAvailableColors = [SFIColors colors];
-
-            int codeIndex = (int) indexPath.row;
-            if (indexPath.row >= [listAvailableColors count]) {
-                codeIndex = codeIndex % [listAvailableColors count];
-            }
-            currentAlmond.colorCodeIndex = codeIndex;
+            currentAlmond.colorCodeIndex = indexPath.row;
 
             [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
 

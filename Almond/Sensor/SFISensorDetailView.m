@@ -493,9 +493,9 @@
 
     
     //Get notification preference for device
-    BOOL isNotification = [self.device isNotificationEnabled:self.device.deviceID currentMAC:self.device.almondMAC];
+    BOOL notificationEnabled = [self.device isNotificationEnabled];
 
-    UISwitch *ctrl = [self makeOnOffSwitch:self action:@selector(onNotificationEnabledSwitch:) on:isNotification];
+    UISwitch *ctrl = [self makeOnOffSwitch:self action:@selector(onNotificationEnabledSwitch:) on:notificationEnabled];
     [self addSubview:ctrl];
 
     [self markYOffsetUsingRect:label.frame addAdditional:15];
