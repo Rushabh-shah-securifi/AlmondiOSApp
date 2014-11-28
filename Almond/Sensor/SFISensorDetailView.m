@@ -336,8 +336,10 @@
 }
 
 - (void)onNotificationEnabledSwitch:(id)sender {
-
-    //TODO: Send Request to turn notification on/off
+    UISwitch *ctrl = (UISwitch *) sender;
+    BOOL switchState = ctrl.isOn?YES:NO;
+    //Send Request to turn notification on/off
+    [self.delegate sensorDetailViewDidChangeNotificationPref:self notificationSettingValue:switchState];
 }
 
 #pragma mark - UITextFieldDelegate methods

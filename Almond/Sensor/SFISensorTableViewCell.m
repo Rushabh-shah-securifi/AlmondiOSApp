@@ -576,6 +576,10 @@
     return [self.delegate tableViewCell:self valueForKey:key];
 }
 
+- (void)sensorDetailViewDidChangeNotificationPref:(SFISensorDetailView*)view notificationSettingValue:(BOOL)value{
+    [self.delegate tableViewCellDidChangeNotificationSetting:self notificationSettingValue:value];
+}
+
 #pragma mark - Device layout
 
 - (void)configureMultiLevelSwitch_2 {

@@ -146,6 +146,11 @@
             selector:@selector(onNotificationPrefDidChange:)
             name:kSFIDidChangeNotificationList
             object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onNotificationPrefResponse:)
+                   name:NOTIFICATION_PREFERENCE_CHANGE_RESPONSE_NOTIFIER
+                 object:nil];
 }
 
 - (void)initializeAlmondData {
@@ -713,6 +718,30 @@
     return [self getDeviceCellValueForKey:key forDevice:cell.device];
 }
 
+- (void)tableViewCellDidChangeNotificationSetting:(SFISensorTableViewCell*)cell notificationSettingValue:(BOOL)value{
+    //Send command to set notification
+    if (self.isViewControllerDisposed) {
+        return;
+    }
+    
+    SFIDevice *device = cell.device;
+    NSArray *deviceValuesList  = [cell.deviceValue knownDevicesValues];
+    
+    //Create list of indexes for device values for that particular device
+    //Notification will be sent for all the devices known values
+    NSMutableArray *notificationPrefDeviceList = [[NSMutableArray alloc]init];
+    for (SFIDeviceKnownValues *currentDeviceValue in deviceValuesList){
+        SFINotificationDevice *notificationDevice = [[SFINotificationDevice alloc]init];
+        notificationDevice.deviceID = device.deviceID;
+        notificationDevice.valueIndex = currentDeviceValue.index;
+        [notificationPrefDeviceList addObject:notificationDevice];
+    }
+    
+    NSString *action = value?@"add":@"delete";
+    
+    [[SecurifiToolkit sharedInstance] asyncRequestNotificationPreferenceChange:self.almondMac deviceList:notificationPrefDeviceList forAction:action];
+}
+
 #pragma mark - Class Methods
 
 - (void)initializeColors:(SFIAlmondPlus *)almond {
@@ -1166,6 +1195,29 @@
     });
 }
 
+//PY 271114 - Notification on/off
+- (void)onNotificationPrefResponse:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    NotificationPreferenceResponse *obj = (NotificationPreferenceResponse *) [data valueForKey:@"data"];
+    
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
+    
+    if (!obj.isSuccessful) {
+        NSLog(@"Reason Code %d", obj.reasonCode);
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            if (self.isViewControllerDisposed) {
+                return;
+            }
+            [self.tableView reloadData];
+        });
+
+    }
+
+    
+}
 
 #pragma mark - Helpers
 

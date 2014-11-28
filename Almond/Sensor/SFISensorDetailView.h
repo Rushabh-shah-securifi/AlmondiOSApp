@@ -29,6 +29,9 @@
 
 - (id)sensorDetailViewCell:(SFISensorDetailView *)view valueForKey:(NSString *)key;
 
+//PY 271114 - To handle push notification on/off
+- (void)sensorDetailViewDidChangeNotificationPref:(SFISensorDetailView*)view notificationSettingValue:(BOOL)value;
+
 @end
 
 
