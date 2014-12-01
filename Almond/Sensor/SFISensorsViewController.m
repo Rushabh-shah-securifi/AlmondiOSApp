@@ -371,7 +371,7 @@
         UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, self.tableView.frame.size.width, 30)];
         lblNoSensor.textAlignment = NSTextAlignmentCenter;
         [lblNoSensor setFont:[UIFont securifiLightFont:20]];
-        lblNoSensor.text = @"You don't have any sensors yet.";
+        lblNoSensor.text = NSLocalizedString(@"sensors.no-sensors.label.You don't have any sensors yet.", @"You don't have any sensors yet.");
         lblNoSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblNoSensor];
 
@@ -384,7 +384,7 @@
         UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 180, self.tableView.frame.size.width, 30)];
         lblAddSensor.textAlignment = NSTextAlignmentCenter;
         [lblAddSensor setFont:[UIFont standardUILabelFont]];
-        lblAddSensor.text = @"Add a sensor from your Almond.";
+        lblAddSensor.text = NSLocalizedString(@"router.no-sensors.label.Add a sensor from your Almond.", @"Add a sensor from your Almond.");
         lblAddSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblAddSensor];
     }
@@ -462,70 +462,69 @@
     return [SFISensorDetailView computeSensorRowHeight:currentSensor tamperedDevice:tampered expandedCell:expanded];
 }
 
-- (UIView *)createActivationNotificationHeader{
+- (UIView *)createActivationNotificationHeader {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(5, 0, self.tableView.frame.size.width, 100)];
     view.backgroundColor = [UIColor whiteColor];
-    
-    UIImageView *imgLine1 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 5, self.tableView.frame.size.width-35, 1)];
+
+    UIImageView *imgLine1 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 5, self.tableView.frame.size.width - 35, 1)];
     imgLine1.image = [UIImage imageNamed:@"grey_line.png"];
 
-    
-    UIImageView *imgCross = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width-20, 12, 10, 10)];
+    UIImageView *imgCross = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 20, 12, 10, 10)];
     imgCross.image = [UIImage imageNamed:@"cross_icon.png"];
 
     [view addSubview:imgCross];
-    
+
     UIButton *btnCloseNotification = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnCloseNotification.frame =  CGRectMake(self.tableView.frame.size.width-40, 12, 50, 30);
+    btnCloseNotification.frame = CGRectMake(self.tableView.frame.size.width - 40, 12, 50, 30);
     btnCloseNotification.backgroundColor = [UIColor clearColor];
     [btnCloseNotification addTarget:self action:@selector(onCloseNotificationClicked:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:btnCloseNotification];
-    
-    UILabel *lblConfirm = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, self.tableView.frame.size.width-15, 20)];
+
+    UILabel *lblConfirm = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, self.tableView.frame.size.width - 15, 20)];
     lblConfirm.font = [UIFont securifiBoldFont:13];
     lblConfirm.textColor = [UIColor colorWithRed:(CGFloat) (119 / 255.0) green:(CGFloat) (119 / 255.0) blue:(CGFloat) (119 / 255.0) alpha:1.0];
     lblConfirm.textAlignment = NSTextAlignmentCenter;
     int minsRemainingForUnactivatedAccount = [[SecurifiToolkit sharedInstance] minsRemainingForUnactivatedAccount];
-    
-    if(minsRemainingForUnactivatedAccount <= 1440){
-        lblConfirm.text = @"Please confirm your account (less than a day left).";
-    }else{
-        int daysRemaining = minsRemainingForUnactivatedAccount/1440;
-        lblConfirm.text =  [NSString stringWithFormat:@"Please confirm your account (%d days left).",daysRemaining];
+
+    if (minsRemainingForUnactivatedAccount <= 1440) {
+        lblConfirm.text = NSLocalizedString(@"sensors.account-confirm.label.Please confirm your account (less than a day left).", @"Please confirm your account (less than a day left).");
     }
-    
-    UILabel *lblInstructions = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, self.tableView.frame.size.width-20, 20)];
+    else {
+        int daysRemaining = minsRemainingForUnactivatedAccount / 1440;
+        lblConfirm.text = [NSString stringWithFormat:NSLocalizedString(@"sensors.account-confirm.label.Please confirm your account (%d days left).", @"Please confirm your account (%d days left)."), daysRemaining];
+    }
+
+    UILabel *lblInstructions = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, self.tableView.frame.size.width - 20, 20)];
     lblInstructions.font = [UIFont securifiBoldFont:13];
     lblInstructions.textColor = [UIColor colorWithRed:(CGFloat) (119 / 255.0) green:(CGFloat) (119 / 255.0) blue:(CGFloat) (119 / 255.0) alpha:1.0];
     lblInstructions.textAlignment = NSTextAlignmentCenter;
-    lblInstructions.text = @"Check activation email for instructions.";
-    
-    
+    lblInstructions.text = NSLocalizedString(@"sensors.account-confirm.label.Check activation email for instructions.", @"Check activation email for instructions.");
+
     UIImageView *imgMail = [[UIImageView alloc] initWithFrame:CGRectMake(80, 65, 22, 16)];
     imgMail.image = [UIImage imageNamed:@"Mail_icon.png"];
     [view addSubview:imgMail];
-    
+
     UIButton *btnResendActivationMail = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnResendActivationMail.frame =  CGRectMake(50, 45, self.tableView.frame.size.width-90, 40);
+    btnResendActivationMail.frame = CGRectMake(50, 45, self.tableView.frame.size.width - 90, 40);
     btnResendActivationMail.backgroundColor = [UIColor clearColor];
     [btnResendActivationMail addTarget:self action:@selector(onResendActivationClicked:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:btnResendActivationMail];
-    
-    UILabel *lblResend = [[UILabel alloc] initWithFrame:CGRectMake(32, 65, self.tableView.frame.size.width-20, 20)];
+
+    UILabel *lblResend = [[UILabel alloc] initWithFrame:CGRectMake(32, 65, self.tableView.frame.size.width - 20, 20)];
     lblResend.font = [UIFont securifiBoldFont:13];
     lblResend.textColor = [UIColor colorWithRed:(CGFloat) (0 / 255.0) green:(CGFloat) (173 / 255.0) blue:(CGFloat) (226 / 255.0) alpha:1.0];
     lblResend.textAlignment = NSTextAlignmentCenter;
-    lblResend.text = @"Resend activation email";
-    
-    UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 85, self.tableView.frame.size.width-35, 1)];
+    lblResend.text = NSLocalizedString(@"sensors.account-confirm.label.Resend activation email", @"Resend activation email");
+
+    UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 85, self.tableView.frame.size.width - 35, 1)];
     imgLine2.image = [UIImage imageNamed:@"grey_line.png"];
-    
-    [view  addSubview:imgLine1];
+
+    [view addSubview:imgLine1];
     [view addSubview:lblConfirm];
     [view addSubview:lblInstructions];
     [view addSubview:lblResend];
-    [view  addSubview:imgLine2];
-    
+    [view addSubview:imgLine2];
+
     return view;
 }
 
@@ -632,7 +631,7 @@
         return;
     }
 
-    [self showToast:@"Saving..."];
+    [self showToast:NSLocalizedString(@"sensors.toast.Saving...", @"Saving...")];
     
     SFIDevice *device = cell.device;
 
@@ -718,27 +717,26 @@
     return [self getDeviceCellValueForKey:key forDevice:cell.device];
 }
 
-- (void)tableViewCellDidChangeNotificationSetting:(SFISensorTableViewCell*)cell notificationSettingValue:(BOOL)value{
+- (void)tableViewCellDidChangeNotificationSetting:(SFISensorTableViewCell *)cell notificationSettingEnabled:(BOOL)enabled {
     //Send command to set notification
     if (self.isViewControllerDisposed) {
         return;
     }
-    
+
     SFIDevice *device = cell.device;
-    NSArray *deviceValuesList  = [cell.deviceValue knownDevicesValues];
-    
+    NSArray *deviceValuesList = [cell.deviceValue knownDevicesValues];
+
     //Create list of indexes for device values for that particular device
     //Notification will be sent for all the devices known values
-    NSMutableArray *notificationPrefDeviceList = [[NSMutableArray alloc]init];
-    for (SFIDeviceKnownValues *currentDeviceValue in deviceValuesList){
-        SFINotificationDevice *notificationDevice = [[SFINotificationDevice alloc]init];
+    NSMutableArray *notificationPrefDeviceList = [[NSMutableArray alloc] init];
+    for (SFIDeviceKnownValues *currentDeviceValue in deviceValuesList) {
+        SFINotificationDevice *notificationDevice = [[SFINotificationDevice alloc] init];
         notificationDevice.deviceID = device.deviceID;
         notificationDevice.valueIndex = currentDeviceValue.index;
         [notificationPrefDeviceList addObject:notificationDevice];
     }
-    
-    NSString *action = value?@"add":@"delete";
-    
+
+    NSString *action = enabled ? kSFINotificationPreferenceChangeActionAdd : kSFINotificationPreferenceChangeActionDelete;
     [[SecurifiToolkit sharedInstance] asyncRequestNotificationPreferenceChange:self.almondMac deviceList:notificationPrefDeviceList forAction:action];
 }
 
@@ -1141,11 +1139,11 @@
 
 - (void)onNotificationPrefDidChange:(id)sender {
     DLog(@"Sensors: did receive notification preference list change");
-    
+
     if (!self) {
         return;
     }
-    
+
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
@@ -1155,28 +1153,28 @@
         }
         [self.HUD hide:YES];
     });
-    
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
         return;
     }
-    
+
     NSString *cloudMAC = [data valueForKey:@"data"];
     if (![self isSameAsCurrentMAC:cloudMAC]) {
         DLog(@"Sensors: ignore notification preference list change, c:%@, m:%@", self.almondMac, cloudMAC);
         // An Almond not currently being viewed was changed
         return;
     }
-    
+
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    
+
     NSArray *newNotificationList = [toolkit notificationPrefList:cloudMAC];
     if (newNotificationList == nil) {
         DLog(@"Notification Preference list is empty: %@", cloudMAC);
-        newNotificationList = @[];
+
     }
-    
+
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
@@ -1184,27 +1182,25 @@
         if (self.isViewControllerDisposed) {
             return;
         }
-        
+
         if (![self isSameAsCurrentMAC:cloudMAC]) {
             return;
         }
-        
+
         [self.refreshControl endRefreshing];
         [self.tableView reloadData];
-        
     });
 }
 
-//PY 271114 - Notification on/off
 - (void)onNotificationPrefResponse:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    
+
     NotificationPreferenceResponse *obj = (NotificationPreferenceResponse *) [data valueForKey:@"data"];
-    
+
     DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
-    
+
     if (!obj.isSuccessful) {
         NSLog(@"Reason Code %d", obj.reasonCode);
         dispatch_async(dispatch_get_main_queue(), ^() {
@@ -1213,10 +1209,7 @@
             }
             [self.tableView reloadData];
         });
-
     }
-
-    
 }
 
 #pragma mark - Helpers
@@ -1431,30 +1424,25 @@
     DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
 
     if (obj.isSuccessful) {
-        [self showToast:@"Reactivation link sent to your registerd email ID."];
+        [self showToast:NSLocalizedString(@"activation.toast.Reactivation link sent to your registerd email ID.", @"Reactivation link sent to your registerd email ID.")];
     }
     else {
-        NSLog(@"Reason Code %d", obj.reasonCode);
         //Reason Code
         NSString *failureReason;
         switch (obj.reasonCode) {
             case 1:
-                failureReason = @"The username was not found";
+                failureReason = NSLocalizedString(@"sensor.activation.The username was not found", @"The username was not found");
                 break;
             case 2:
-                failureReason = @"The account is already validated";
-                break;
-            case 3:
-                failureReason = @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.";
+                failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
                 break;
             case 4:
-                failureReason = @"The email ID is invalid.";
+                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
                 break;
+            case 3:
             case 5:
-                failureReason = @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.";
-                break;
             default:
-                failureReason = @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.";
+                failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! Cannot send reactivation link");
                 break;
         }
 

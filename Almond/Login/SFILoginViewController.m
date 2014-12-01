@@ -32,7 +32,7 @@
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
 
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    _HUD.labelText = @"One moment please...";
+    _HUD.labelText = NSLocalizedString(@"hud.One moment please...", @"One moment please...");
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
 
@@ -273,7 +273,7 @@
         [self sendLoginWithEmailRequest];
     }
     else if (showOops) {
-        [self setOopsMsg:@"Please enter Username and Password"];
+        [self setOopsMsg:NSLocalizedString(@"Please enter Username and Password", @"Please enter Username and Password")];
     }
 }
 
@@ -307,7 +307,7 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self hideHud];
 
-        [self setOopsMsg:@"Sorry! Could not complete the request."];
+        [self setOopsMsg:NSLocalizedString(@"Sorry! Could not complete the request.", @"Sorry! Could not complete the request.")];
         [self markResetLoggingInState];
 
         [self tryEnableLoginButton];
@@ -320,7 +320,7 @@
         [self setStandardLoginMsg];
     }
     else {
-        [self setSorryMsg:@"Unable to establish\nInternet route to cloud service."];
+        [self setSorryMsg:NSLocalizedString(@"Unable to establish Internet route to cloud service.", @"Unable to establish Internet route to cloud service.")];
     }
 
     [self markResetLoggingInState];
@@ -331,7 +331,7 @@
     [self hideHud];
 
     if (self.isLoggingIn) {
-        [self setOopsMsg:@"Sorry! Could not complete the request."];
+        [self setOopsMsg:NSLocalizedString(@"Sorry! Could not complete the request.", @"Sorry! Could not complete the request.")];
         [self markResetLoggingInState];
     }
 
@@ -348,7 +348,7 @@
     // Login failed
     if ([notifier userInfo] == nil) {
         // Should never reach this path. UserInfo should be non-null.
-        [self setOopsMsg:@"Sorry! Login was unsuccessful."];
+        [self setOopsMsg:NSLocalizedString(@"Sorry! Login was unsuccessful.", @"Sorry! Login was unsuccessful.")];
         ELog(@"Login response: failed with nil userInfo");
         return;
     }
@@ -365,25 +365,25 @@
 
     switch (obj.reasonCode) {
         case 1: {
-            [self setOopsMsg:@"The email was not found."];
+            [self setOopsMsg:NSLocalizedString(@"The email was not found.", @"The email was not found.")];
             break;
         }
         case 2: {
-            [self setOopsMsg:@"The password is incorrect."];
+            [self setOopsMsg:NSLocalizedString(@"The password is incorrect.", @"The password is incorrect.")];
             break;
         }
         case 3: {
             //Display Activation Screen
-            [self setHeadline:@"Almost there." subHeadline:@"You need to activate your account." loginButtonEnabled:YES];
+            [self setHeadline:NSLocalizedString(@"Almost there.", @"Almost there.") subHeadline:NSLocalizedString(@"You need to activate your account.", @"You need to activate your account.") loginButtonEnabled:YES];
             [self presentActivationScreen];
             break;
         }
         case 4: {
-            [self setOopsMsg:@"The email or password is incorrect"];
+            [self setOopsMsg:NSLocalizedString(@"The email or password is incorrect", @"The email or password is incorrect")];
             break;
         }
         default: {
-            [self setOopsMsg:@"Sorry! Login was unsuccessful."];
+            [self setOopsMsg:NSLocalizedString(@"Sorry! Login was unsuccessful.", @"Sorry! Login was unsuccessful.")];
         }
     }
 }
@@ -413,26 +413,24 @@
     ResetPasswordResponse *obj = (ResetPasswordResponse *) [data valueForKey:@"data"];
 
     if (obj.isSuccessful) {
-        [self setHeadline:@"Almost there." subHeadline:@"Password reset link has been sent to your account." loginButtonEnabled:NO];
+        [self setHeadline:NSLocalizedString(@"Almost there.", @"Almost there.") subHeadline:NSLocalizedString(@"Password reset link has been sent to your account.", @"Password reset link has been sent to your account.") loginButtonEnabled:NO];
     }
     else {
         switch (obj.reasonCode) {
             case 1:
-                [self setOopsMsg:@"The username was not found"];
+                [self setOopsMsg:NSLocalizedString(@"sensor.activation.The username was not found", @"The username was not found")];
                 break;
             case 2:
                 //Display Activation Screen
-                [self setHeadline:@"Almost there." subHeadline:@"You need to activate your account." loginButtonEnabled:NO];
+                [self setHeadline:NSLocalizedString(@"Almost there.", @"Almost there.") subHeadline:NSLocalizedString(@"You need to activate your account.", @"You need to activate your account.") loginButtonEnabled:NO];
                 [self presentActivationScreen];
                 break;
             case 3:
-                [self setOopsMsg:@"Sorry! Your password cannot be \nreset at the moment. Try again later."];
+            case 5:
+                [self setOopsMsg:NSLocalizedString(@"Sorry! Your password cannot be reset at the moment. Try again later.", @"Sorry! Your password cannot be reset at the moment. Try again later.")];
                 break;
             case 4:
-                [self setOopsMsg:@"The email ID is invalid."];
-                break;
-            case 5:
-                [self setOopsMsg:@"Sorry! Your password cannot be \nreset at the moment. Try again later."];
+                [self setOopsMsg:NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.")];
                 break;
             default:
                 break;
@@ -455,21 +453,21 @@
 
 // Shows the specified error message and enabled the Login Button
 - (void)setOopsMsg:(NSString *)msg {
-    [self setHeadline:@"Oops" subHeadline:msg loginButtonEnabled:YES];
+    [self setHeadline:NSLocalizedString(@"Oops!", @"Oops!") subHeadline:msg loginButtonEnabled:YES];
 }
 
 // Shows the specified error message and enabled the Login Button
 - (void)setSorryMsg:(NSString *)msg {
-    [self setHeadline:@"Sorry!" subHeadline:msg loginButtonEnabled:YES];
+    [self setHeadline:NSLocalizedString(@"Sorry!", @"Sorry!") subHeadline:msg loginButtonEnabled:YES];
 }
 
 // Shows the specified error message and enabled the Login Button
 - (void)setLoginMsg:(NSString *)msg {
-    [self setHeadline:@"Login" subHeadline:msg loginButtonEnabled:YES];
+    [self setHeadline:NSLocalizedString(@"Login", @"Login") subHeadline:msg loginButtonEnabled:YES];
 }
 
 - (void)setStandardLoginMsg {
-    [self setLoginMsg:@"Access your Almonds and\nyour home devices from anywhere."];
+    [self setLoginMsg:NSLocalizedString(@"Access your Almonds and your home devices from anywhere.", @"Access your Almonds and\nyour home devices from anywhere.")];
 }
 
 - (void)setHeadline:(NSString *)headline subHeadline:(NSString*)subHeadline loginButtonEnabled:(BOOL)enabled {

@@ -63,30 +63,28 @@
 
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (obj.isSuccessful) {
-            self.subHeadingLabel.text = @"Reactivation link has been sent to your account.";
+            self.subHeadingLabel.text = NSLocalizedString(@"Reactivation link has been sent to your account.", @"Reactivation link has been sent to your account.");
         }
         else {
             NSString *failureReason;
             switch (obj.reasonCode) {
                 case 1:
-                    failureReason = @"The username was not found";
+                    failureReason = NSLocalizedString(@"sensor.activation.The username was not found", @"The username was not found");
                     break;
                 case 2:
-                    failureReason = @"The account is already validated";
+                    failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
                     break;
                 case 3:
-                    failureReason = @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.";
+                case 5:
+                    failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
                     break;
                 case 4:
-                    failureReason = @"The email ID is invalid.";
-                    break;
-                case 5:
-                    failureReason = @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.";
+                    failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
                     break;
                 default:
                     break;
             }
-            self.headingLabel.text = @"Oops!";
+            self.headingLabel.text = NSLocalizedString(@"Oops!", @"Oops!");
             self.subHeadingLabel.text = failureReason;
         }
     });

@@ -1,0 +1,95 @@
+/****************************************************************************/
+/* Localization file */
+
+
+/* hud. buttons, controls */
+"hud.One moment please..." = "One moment please...";
+"hud.Updating settings..." = "Updating settings...";
+"alert.button.OK" = "OK";
+"Oops!" = "Oops!";
+"Sorry!" = "Sorry!";
+
+/* affiliation */
+
+"Almond Linked" = "Almond Linked";
+"Link Almond" = "Link Almond";"Please wait while your Almond is being linked to cloud." = "Please wait while your Almond is being linked to cloud.";
+"Please try later." = "Please try later.";
+"Please enter a valid code." = "Please enter a valid code.";
+"This Almond is already linked to another user." = "This Almond is already linked to another user.
+Contact us at support@securifi.com";
+"Almond could not be affiliated" = "Almond could not be affiliated.%@";
+"alert.msg.Logout was unsuccessful" = "Sorry. Logout was unsuccessful. Please try again.";
+"alert.title.Logout Unsuccessful" = "Logout Unsuccessful";
+
+/* activation */
+
+"Reactivation link has been sent to your account." = "Reactivation link has been sent to your account.";
+"sensor.activation.The username was not found" = "The username was not found";
+"The account is already validated" = "The account is already validated";
+"Sorry! Cannot send reactivation link" = "Sorry! The reactivation link cannot be
+resent at the moment. Try again later.";
+"The email ID is invalid." = "The email ID is invalid.";
+
+/* sensors */
+
+"Device has been tampered" = "Device has been tampered";
+"sensors.button.Dismiss" = "Dismiss";
+"sensors.label.Status" = "Status";
+
+/* login */
+
+"Please enter Username and Password" = "Please enter Username and Password";
+"Sorry! Could not complete the request." = "Sorry! Could not complete the request.";
+"Unable to establish Internet route to cloud service." = "Unable to establish
+Internet route to cloud service.";
+"Sorry! Login was unsuccessful." = "Sorry! Login was unsuccessful.";
+"The email was not found." = "The email was not found.";
+"The password is incorrect." = "The password is incorrect.";
+"Almost there." = "Almost there.";
+"You need to activate your account." = "You need to activate your account.";
+"The email or password is incorrect" = "The email or password is incorrect";
+"Password reset link has been sent to your account." = "Password reset link has been sent to your account.";
+"Sorry! Your password cannot be reset at the moment. Try again later." = "Sorry! Your password cannot be
+reset at the moment. Try again later.";
+"Login" = "Login";
+"Access your Almonds and your home devices from anywhere." = "Access your Almonds and
+your home devices from anywhere.";
+
+
+/* logout all */
+
+"logoutall.navbar-title.Continue" = "Continue";
+"logoutall.label.Logout from all devices was not successful." = "Logout from all devices was not successful.";
+
+/* router tab */
+
+"router.offline-msg.label.Almond is Offline." = "Almond is Offline.";
+"router.offline-msg.label.Please check the router." = "Please check the router.";
+"router.card-title.Wireless Settings" = "Wireless Settings";
+"router.wireless-status.Enabled" = "enabled";
+"router.wireless-status.Disabled" = "disabled";
+"router.card.Settings are not available." = "Settings are not available.";
+"router.card-title.Devices & Users" = "Devices & Users";
+"router.devices-summary.%d connected, %d blocked" = "%d connected, %d blocked";
+"router.software-version.Current version" = "Current version";
+"router.software-version.Not available" = "Version information is not available.";
+"router.card-title.Router Reboot" = "Router Reboot";
+"router.reboot-msg.Router is rebooting. It will take at least" = "Router is rebooting. It will take at least";
+"router.reboot-msg.2 minutes for the router to boot." = "2 minutes for the router to boot.";
+"router.reboot-msg.Please refresh after sometime." = "Please refresh after sometime.";
+"router.Router status is not available." = "Router status is not available.";
+"router.Last reboot %@ ago" = "Last reboot %@ ago";
+"router.no-almonds.nav-title.Get Started" = "Get Started";
+"router.hud.Router is now online." = "Router is now online.";
+"router.hud.Router is rebooting." = "Router is rebooting.";
+
+"sensors.label.SENSOR SETTINGS" = "SENSOR SETTINGS";
+"sensors.settings-label.Send Notifications" = "Send Notifications";
+"sensors.no-sensors.label.You don't have any sensors yet." = "You don't have any sensors yet.";
+"router.no-sensors.label.Add a sensor from your Almond." = "Add a sensor from your Almond.";
+"sensors.account-confirm.label.Please confirm your account (less than a day left)." = "Please confirm your account (less than a day left).";
+"sensors.account-confirm.label.Please confirm your account (%d days left)." = "Please confirm your account (%d days left).";
+"sensors.account-confirm.label.Check activation email for instructions." = "Check activation email for instructions.";
+"sensors.account-confirm.label.Resend activation email" = "Resend activation email";
+"sensors.toast.Saving..." = "Saving...";
+"activation.toast.Reactivation link sent to your registerd email ID." = "Reactivation link sent to your registerd email ID.";

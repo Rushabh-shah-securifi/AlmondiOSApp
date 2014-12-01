@@ -21,7 +21,7 @@
     };
 
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-    self.navigationItem.title = @"Link Almond";
+    self.navigationItem.title = NSLocalizedString(@"Link Almond", @"Link Almond");
     [[Analytics sharedInstance] markAlmondAffiliation];
 }
 
@@ -146,7 +146,7 @@
 
     [self asyncSendCommand:cloudCommand];
 
-    self.lblEnterMsg.text = @"Please wait while your Almond is being linked to cloud.";
+    self.lblEnterMsg.text = NSLocalizedString(@"Please wait while your Almond is being linked to cloud.", @"Please wait while your Almond is being linked to cloud.");
 }
 
 - (void)onAffiliationUserComplete:(id)sender {
@@ -189,7 +189,7 @@
 
 
         //Change title
-        self.navigationItem.title = @"Almond Linked";
+        self.navigationItem.title = NSLocalizedString(@"Almond Linked", @"Almond Linked");
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(cancelButtonHandler:)];
         self.navigationItem.leftBarButtonItem = nil;
     }
@@ -197,27 +197,27 @@
         //Display content
         self.lblHooray.hidden = FALSE;
         self.lblMessage.hidden = FALSE;
-        self.lblHooray.text = @"Oops!";
+        self.lblHooray.text = NSLocalizedString(@"Oops!", @"Oops!");
 
         //Handle different reason codes
         NSString *failureReason;
         switch (obj.reasonCode) {
             case 1:
-                failureReason = @"Please try later.";
+                failureReason = NSLocalizedString(@"Please try later.", @"Please try later.");
                 break;
             case 2:
             case 3:
-                failureReason = @"Please enter a valid code.";
+                failureReason = NSLocalizedString(@"Please enter a valid code.", @"Please enter a valid code.");
                 break;
             case 4:
-                failureReason = @"This Almond is already linked to another user. \nContact us at support@securifi.com";
+                failureReason = NSLocalizedString(@"This Almond is already linked to another user.", @"This Almond is already linked to another user. \nContact us at support@securifi.com");
                 break;
             case 5:
             case 6:
             case 7:
                 //Logout
                 failureReason = @"Please login again and retry.";
-                self.lblMessage.text = [NSString stringWithFormat:@"Almond could not be affiliated.\n%@", failureReason];;
+                self.lblMessage.text = [NSString stringWithFormat:NSLocalizedString(@"Almond could not be affiliated", @"Almond could not be affiliated.\n%@"), failureReason];;
                 [self logoutUser];
                 break;
 
@@ -225,7 +225,7 @@
                 break;
         }
 
-        NSString *log = [NSString stringWithFormat:@"Almond could not be affiliated.\n%@", failureReason];
+        NSString *log = [NSString stringWithFormat:NSLocalizedString(@"Almond could not be affiliated", @"Almond could not be affiliated.\n%@"), failureReason];
         self.lblMessage.text = log;
     }
 }
@@ -267,11 +267,11 @@
         LogoutResponse *obj = (LogoutResponse *) [data valueForKey:@"data"];
         if (!obj.isSuccessful) {
             NSLog(@"Could not logout - Reason %@", obj.reason);
-            NSString *alertMsg = @"Sorry. Logout was unsuccessful. Please try again.";
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Logout Unsuccessful"
+            NSString *alertMsg = NSLocalizedString(@"alert.msg.Logout was unsuccessful", @"Sorry. Logout was unsuccessful. Please try again.");
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"alert.title.Logout Unsuccessful", @"Logout Unsuccessful")
                                                             message:alertMsg
                                                            delegate:nil
-                                                  cancelButtonTitle:@"OK"
+                                                  cancelButtonTitle:NSLocalizedString(@"alert.button.OK", @"OK")
                                                   otherButtonTitles:nil];
             [alert show];
         }

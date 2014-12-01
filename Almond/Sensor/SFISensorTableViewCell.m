@@ -577,7 +577,7 @@
 }
 
 - (void)sensorDetailViewDidChangeNotificationPref:(SFISensorDetailView*)view notificationSettingValue:(BOOL)value{
-    [self.delegate tableViewCellDidChangeNotificationSetting:self notificationSettingValue:value];
+    [self.delegate tableViewCellDidChangeNotificationSetting:self notificationSettingEnabled:value];
 }
 
 #pragma mark - Device layout

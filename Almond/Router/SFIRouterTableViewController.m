@@ -454,7 +454,7 @@
         UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, width, 50)];
         lblNoSensor.textAlignment = NSTextAlignmentCenter;
         [lblNoSensor setFont:[UIFont securifiLightFont:35]];
-        lblNoSensor.text = @"Almond is Offline.";
+        lblNoSensor.text = NSLocalizedString(@"router.offline-msg.label.Almond is Offline.", @"Almond is Offline.");
         lblNoSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblNoSensor];
 
@@ -467,7 +467,7 @@
         UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 280, width, 40)];
         lblAddSensor.textAlignment = NSTextAlignmentCenter;
         [lblAddSensor setFont:[UIFont securifiBoldFont:20]];
-        lblAddSensor.text = @"Please check the router.";
+        lblAddSensor.text = NSLocalizedString(@"router.offline-msg.label.Please check the router.", @"Please check the router.");
         lblAddSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblAddSensor];
     }
@@ -481,19 +481,19 @@
 
     SFICardView *card = cell.cardView;
     card.backgroundColor = [[SFIColors blueColor] color];
-    [card addTitle:@"Wireless Settings"];
+    [card addTitle:NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings")];
 
     NSMutableArray *summary = [NSMutableArray array];
     SFIRouterSummary *routerSummary = self.routerSummary;
 
     if (routerSummary) {
         for (SFIWirelessSummary *sum in routerSummary.wirelessSummaries) {
-            NSString *enabled = sum.enabled ? @"enabled" : @"disabled";
+            NSString *enabled = sum.enabled ? NSLocalizedString(@"router.wireless-status.Enabled", @"enabled") : NSLocalizedString(@"router.wireless-status.Disabled", @"disabled");
             [summary addObject:[NSString stringWithFormat:@"%@ is %@", sum.ssid, enabled]];
         }
     }
     else {
-        [summary addObject:@"Settings are not available."];
+        [summary addObject:NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")];
     }
     [card addSummary:summary];
 
@@ -576,18 +576,18 @@
 
     SFICardView *card = cell.cardView;
     card.backgroundColor = [[SFIColors greenColor] color];
-    [card addTitle:@"Devices & Users"];
+    [card addTitle:NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users")];
 
     SFIRouterSummary *routerSummary = self.routerSummary;
 
     NSArray *summary;
     if (routerSummary) {
         summary = @[
-                [NSString stringWithFormat:@"%d connected, %d blocked", routerSummary.connectedDeviceCount, routerSummary.blockedMACCount],
+                [NSString stringWithFormat:NSLocalizedString(@"router.devices-summary.%d connected, %d blocked", @"%d connected, %d blocked"), routerSummary.connectedDeviceCount, routerSummary.blockedMACCount],
         ];
     }
     else {
-        summary = @[@"Settings are not available."];
+        summary = @[NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")];
     }
     [card addSummary:summary];
 
@@ -646,10 +646,10 @@
 
     NSArray *summary;
     if (version) {
-        summary = @[@"Current version", version];
+        summary = @[NSLocalizedString(@"router.software-version.Current version", @"Current version"), version];
     }
     else {
-        summary = @[@"Version information is not available."];
+        summary = @[NSLocalizedString(@"router.software-version.Not available", @"Version information is not available.")];
     }
     [card addSummary:summary];
 
@@ -668,21 +668,21 @@
 
     SFICardView *card = cell.cardView;
     card.backgroundColor = [[SFIColors pinkColor] color];
-    [card addTitle:@"Router Reboot"];
+    [card addTitle:NSLocalizedString(@"router.card-title.Router Reboot", @"Router Reboot")];
 
     NSArray *summary;
     if (self.isRebooting) {
         summary = @[
-                @"Router is rebooting. It will take at least",
-                @"2 minutes for the router to boot.",
-                @"Please refresh after sometime."
+                NSLocalizedString(@"router.reboot-msg.Router is rebooting. It will take at least", @"Router is rebooting. It will take at least"),
+                NSLocalizedString(@"router.reboot-msg.2 minutes for the router to boot.", @"2 minutes for the router to boot."),
+                NSLocalizedString(@"router.reboot-msg.Please refresh after sometime.", @"Please refresh after sometime.")
         ];
     }
     else if (self.routerSummary == nil) {
-        summary = @[@"Router status is not available."];
+        summary = @[NSLocalizedString(@"router.Router status is not available.", @"Router status is not available.")];
     }
     else {
-        summary = @[[NSString stringWithFormat:@"Last reboot %@ ago", self.routerSummary.routerUptime]];
+        summary = @[[NSString stringWithFormat:NSLocalizedString(@"router.Last reboot %@ ago", @"Last reboot %@ ago"), self.routerSummary.routerUptime]];
     }
     [card addSummary:summary];
 
@@ -999,7 +999,7 @@
 //                NSLog(@"Reboot Reply: %d", routerReboot.reboot);
 
                 //todo handle failure case
-                [self showHUD:@"Router is now online."];
+                [self showHUD:NSLocalizedString(@"router.hud.Router is now online.", @"Router is now online.")];
                 [self.HUD hide:YES afterDelay:1];
                 break;
             }
@@ -1023,7 +1023,7 @@
 
         if (plus == nil) {
             self.currentMAC = NO_ALMOND;
-            self.navigationItem.title = @"Get Started";
+            self.navigationItem.title = NSLocalizedString(@"router.no-almonds.nav-title.Get Started", @"Get Started");
         }
         else {
             self.currentMAC = plus.almondplusMAC;
@@ -1051,7 +1051,7 @@
             return;
         }
 
-        [self showHUD:@"Router is rebooting."];
+        [self showHUD:NSLocalizedString(@"router.hud.Router is rebooting.", @"Router is rebooting.")];
 
         self.isRebooting = TRUE;
         [self sendRebootAlmondCommand];
@@ -1079,7 +1079,7 @@
             return;
         }
 
-        [self showHUD:@"Updating settings..."];
+        [self showHUD:NSLocalizedString(@"hud.Updating settings...", @"Updating settings...")];
 
         NSMutableSet *blockedMacs = [NSMutableSet set];
         for (SFIBlockedDevice *device in self.blockedDevices) {
@@ -1105,7 +1105,7 @@
             return;
         }
 
-        [self showHUD:@"Updating settings..."];
+        [self showHUD:NSLocalizedString(@"hud.Updating settings...", @"Updating settings...")];
         [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.currentMAC wirelessSettings:copy];
         [self.HUD hide:YES afterDelay:2];
     });

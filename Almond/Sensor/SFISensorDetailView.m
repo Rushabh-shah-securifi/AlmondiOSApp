@@ -19,7 +19,6 @@
 
 #define CELL_STATE_PIN_SELECTION @"PinCodeField"
 
-#define DEVICE_TAMPERED_MESSAGE @"Device has been tampered"
 
 // ===================================================================================
 
@@ -479,7 +478,7 @@
     label.textColor = [UIColor whiteColor];
     label.font = [UIFont securifiBoldFont];
     label.frame = CGRectMake(10, self.baseYCoordinate - 5, 299, 30);
-    label.text = [NSString stringWithFormat:@"SENSOR SETTINGS"];
+    label.text = NSLocalizedString(@"sensors.label.SENSOR SETTINGS", @"SENSOR SETTINGS");
     [self addSubview:label];
     [self markYOffset:25];
 }
@@ -487,7 +486,7 @@
 - (void)addNotificationsControl {
     UILabel *label = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
     label.backgroundColor = self.color;
-    label.text = @"Send Notifications";
+    label.text = NSLocalizedString(@"sensors.settings-label.Send Notifications", @"Send Notifications");
     label.textColor = [UIColor whiteColor];
     label.font = [UIFont securifiBoldFont];
 
@@ -514,7 +513,7 @@
     UILabel *label;
     label = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
     label.backgroundColor = self.color;
-    label.text = DEVICE_TAMPERED_MESSAGE;
+    label.text = NSLocalizedString(@"Device has been tampered", @"Device has been tampered");
     label.textColor = whiteColor;
     label.font = heavy_font;
 
@@ -526,7 +525,7 @@
     button.normalBackgroundColor = normalColor;
     button.highlightedBackgroundColor = highlightColor;
     button.titleLabel.font = heavy_font;
-    NSString *buttonTitle = @"Dismiss";
+    NSString *buttonTitle = NSLocalizedString(@"sensors.button.Dismiss", @"Dismiss");
     [button setTitle:buttonTitle forState:UIControlStateNormal];
     [button setTitleColor:whiteColor forState:UIControlStateNormal];
     [button setTitleColor:normalColor forState:UIControlStateHighlighted];
@@ -600,7 +599,7 @@
     // Status
     UILabel *statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate, 60, 30)];
     statusLabel.textColor = white_color;
-    statusLabel.text = @"Status";
+    statusLabel.text = NSLocalizedString(@"sensors.label.Status", @"Status");
     statusLabel.font = heavy_12;
     [self addSubview:statusLabel];
 

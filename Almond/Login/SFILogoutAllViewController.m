@@ -24,7 +24,7 @@
     };
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancel:)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Continue" style:UIBarButtonItemStylePlain target:self action:@selector(onLogoutAll:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"logoutall.navbar-title.Continue", @"Continue") style:UIBarButtonItemStylePlain target:self action:@selector(onLogoutAll:)];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onLogoutAllResponseCallback:)
@@ -111,7 +111,7 @@
     NSDictionary *data = [notifier userInfo];
 
     if (data == nil) {
-        self.logMessageLabel.text = @"Logout from all devices was not successful.";
+        self.logMessageLabel.text = NSLocalizedString(@"logoutall.label.Logout from all devices was not successful.", @"Logout from all devices was not successful.");
         return;
     }
 
@@ -123,7 +123,7 @@
     }
     else {
         NSLog(@"LogoutAll response no sucess");
-        self.logMessageLabel.text = @"Logout from all devices was not successful.";
+        self.logMessageLabel.text = NSLocalizedString(@"logoutall.label.Logout from all devices was not successful.", @"Logout from all devices was not successful.");
     }
 }
 
