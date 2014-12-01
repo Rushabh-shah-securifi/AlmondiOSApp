@@ -328,7 +328,8 @@
         [self.delegate sensorDetailViewDidChangeSensorValue:self propertyName:propertyName newValue:value];
     }
     else {
-        [self.delegate sensorDetailViewDidRejectSensorValue:self validationToast:@"PassCode must be 5 to 8 digits long"];
+        NSString *msg = NSLocalizedString(@"sensor.toast.doorlock.PassCode must be 5 to 8 digits long", @"PassCode must be 5 to 8 digits long");
+        [self.delegate sensorDetailViewDidRejectSensorValue:self validationToast:msg];
     }
 
     [self.delegate sensorDetailViewDidCompleteMakingChanges:self];
@@ -336,9 +337,7 @@
 
 - (void)onNotificationEnabledSwitch:(id)sender {
     UISwitch *ctrl = (UISwitch *) sender;
-    BOOL switchState = ctrl.isOn?YES:NO;
-    //Send Request to turn notification on/off
-    [self.delegate sensorDetailViewDidChangeNotificationPref:self notificationSettingValue:switchState];
+    [self.delegate sensorDetailViewDidChangeNotificationPref:self notificationSettingEnabled:ctrl.isOn];
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -381,14 +380,14 @@
 #pragma mark - Layout primitives
 
 - (void)addDisplayNameField {
-    UITextField *field = [self addFieldNameValue:@"Name" fieldValue:self.device.deviceName];
+    UITextField *field = [self addFieldNameValue:NSLocalizedString(@"sensor.device-name-label.Name", @"Name") fieldValue:self.device.deviceName];
     [field addTarget:self action:@selector(onSensorNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [field addTarget:self action:@selector(onSensorNameTextFieldFinishedEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
     self.deviceNameField = field;
 }
 
 - (void)addDeviceLocationField {
-    UITextField *field = [self addFieldNameValue:@"Located at" fieldValue:self.device.location];
+    UITextField *field = [self addFieldNameValue:NSLocalizedString(@"sensor.deivice-location-label.Located at", @"Located at") fieldValue:self.device.location];
     [field addTarget:self action:@selector(onSensorLocationTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [field addTarget:self action:@selector(onSensorLocationTextFieldFinishedEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
     self.deviceLocationField = field;
@@ -428,7 +427,7 @@
 }
 
 - (void)addSaveButton {
-    SFIHighlightedButton *button = [self addButton:@"Save"];
+    SFIHighlightedButton *button = [self addButton:NSLocalizedString(@"sensor.deivice-save-settings.button.Save", @"Save")];
     [button addTarget:self action:@selector(onSaveSensorNameLocationChanges:) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -689,7 +688,9 @@
 
 - (void)configureBinarySensor_3 {
     SFIDeviceKnownValues *values = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BATTERY];
-    NSString *batteryStatus = [values choiceForLevelValueZeroValue:@"Battery OK" nonZeroValue:@"Low Battery" nilValue:@"Battery Unknown"];
+    NSString *batteryStatus = [values choiceForLevelValueZeroValue:NSLocalizedString(@"sensor.device-status.label.Battery OK", @"Battery OK")
+                                                      nonZeroValue:NSLocalizedString(@"sensor.device-status.label.Low Battery", @"Low Battery")
+                                                          nilValue:NSLocalizedString(@"sensor.device-status.label.Battery Unknown", @"Battery Unknown")];
 
     UILabel *label = [[UILabel alloc] init];
     label.backgroundColor = [UIColor clearColor];
@@ -710,10 +711,10 @@
         return;
     }
 
-    V8HorizontalPickerView *pickerView = [self addHorizontalPicker:@"Pins" propertyType:SFIDevicePropertyType_USER_CODE selectionPointMiddle:NO];
+    V8HorizontalPickerView *pickerView = [self addHorizontalPicker:NSLocalizedString(@"sensor.doorlock.field-label.Pins", @"Pins") propertyType:SFIDevicePropertyType_USER_CODE selectionPointMiddle:NO];
     [self addShortLine];
 
-    UITextField *field = [self addFieldNameValue:@"Code" fieldValue:@""];
+    UITextField *field = [self addFieldNameValue:NSLocalizedString(@"sensor.doorlock.field-label.Code", @"Code") fieldValue:@""];
     field.tag = SFIDevicePropertyType_USER_CODE;
     field.keyboardType = UIKeyboardTypeNumberPad;
     field.returnKeyType = UIReturnKeyDone;
@@ -722,7 +723,7 @@
             NSForegroundColorAttributeName : [[UIColor whiteColor] colorWithAlphaComponent:0.5],
             NSFontAttributeName : [field.font fontWithSize:10],
     };
-    field.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Code is not specified." attributes:textAttributes];
+    field.attributedPlaceholder = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"sensor.doorlock.pinentry-textfield.placeholder.Code is not specified.", @"Code is not specified.") attributes:textAttributes];
 
     // the text field is tied to the picker selection; so make sure the field is in place and then reset the picker value to ensure
     // the field is initialized.
@@ -732,7 +733,7 @@
     [self addShortLine];
     [self markYOffset:5];
 
-    SFIHighlightedButton *button = [self addButton:@"Save Pin"];
+    SFIHighlightedButton *button = [self addButton:NSLocalizedString(@"sensor.doorlock.button.Save Pin", @"Save Pin")];
     button.tag = SFIDevicePropertyType_USER_CODE;
     [button addTarget:self action:@selector(onSavePinCodeChanges:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -743,8 +744,8 @@
 
 - (void)configureThermostat_7 {
     // Temp selectors
-    [self addHorizontalPicker:@"Heating" propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING selectionPointMiddle:YES];
-    [self addHorizontalPicker:@"Cooling" propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING selectionPointMiddle:YES];
+    [self addHorizontalPicker:NSLocalizedString(@"sensor.thermostat.field-label.Heating", @"Heating") propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING selectionPointMiddle:YES];
+    [self addHorizontalPicker:NSLocalizedString(@"sensor.thermostat.field-label.Cooling", @"Cooling") propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING selectionPointMiddle:YES];
     [self addLine];
     [self markYOffset:5];
 
@@ -757,10 +758,16 @@
     UILabel *modeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate, 100, 30)];
     modeLabel.textColor = white_color;
     modeLabel.font = heavy_12;
-    modeLabel.text = @"Mode";
+    modeLabel.text = NSLocalizedString(@"sensor.thermostat.field-label.Mode", @"Mode");
     [self addSubview:modeLabel];
     //
-    UISegmentedControl *modeSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Auto", @"Heat", @"Cool", @"Off"]];
+    NSArray *segment_items = @[
+            NSLocalizedString(@"sensor.thermostat.segment-control.Auto", @"Auto"),
+            NSLocalizedString(@"sensor.thermostat.segment-control.Heat", @"Heat"),
+            NSLocalizedString(@"sensor.thermostat.segment-control.Cool", @"Cool"),
+            NSLocalizedString(@"sensor.thermostat.segment-control.Off", @"Off"),
+    ];
+    UISegmentedControl *modeSegmentControl = [[UISegmentedControl alloc] initWithItems:segment_items];
     modeSegmentControl.frame = CGRectMake(90.0, self.baseYCoordinate, self.frame.size.width - 100, 25.0);
     modeSegmentControl.tag = self.tag;
     modeSegmentControl.tintColor = white_color;
@@ -786,10 +793,14 @@
     UILabel *fanModeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate, 60, 30)];
     fanModeLabel.textColor = white_color;
     fanModeLabel.font = heavy_12;
-    fanModeLabel.text = @"Fan";
+    fanModeLabel.text = NSLocalizedString(@"sensor.thermostat.field-label.Fan", @"Fan");
     [self addSubview:fanModeLabel];
     //
-    UISegmentedControl *fanModeSegmentControl = [[UISegmentedControl alloc] initWithItems:@[@"Auto Low", @"On Low"]];
+    NSArray *segment_items_2 = @[
+            NSLocalizedString(@"sensor.thermostat.segment-control.Auto Low", @"Auto Low"),
+            NSLocalizedString(@"sensor.thermostat.segment-control.On Low", @"On Low"),
+    ];
+    UISegmentedControl *fanModeSegmentControl = [[UISegmentedControl alloc] initWithItems:segment_items_2];
     fanModeSegmentControl.frame = CGRectMake(90.0, self.baseYCoordinate, self.frame.size.width - 100, 25.0);
     fanModeSegmentControl.tag = self.tag;
     fanModeSegmentControl.tintColor = white_color;
@@ -806,13 +817,13 @@
 
     // Status
     NSString *values = [deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE default:@""];
-    NSString *thermostat_str = [NSString stringWithFormat:@"Thermostat is %@", values];
+    NSString *thermostat_str = [NSString stringWithFormat:NSLocalizedString(@"sensor.thermostat.Thermostat is %@", @"Thermostat is %@"), values];
     //
     values = [deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_FAN_STATE default:@""];
-    NSString *fan_str = [NSString stringWithFormat:@"Fan is %@", values];
+    NSString *fan_str = [NSString stringWithFormat:NSLocalizedString(@"sensor.thermostat.Fan is %@", @"Fan is %@"), values];
     //
     values = [deviceValue valueForProperty:SFIDevicePropertyType_BATTERY default:@""];
-    NSString *battery_str = [NSString stringWithFormat:@"Battery is at %@%%", values];
+    NSString *battery_str = [NSString stringWithFormat:NSLocalizedString(@"sensor.thermostat.Battery is at %@%%", @"Battery is at %@%%"), values];
 
     [self addStatusLabel:@[thermostat_str, fan_str, battery_str]];
     [self markYOffset:55];
@@ -836,9 +847,9 @@
     float voltage = (float) rmsVoltage * acVoltageMultiplier / acVoltageDivisor;
     float current = (float) rmsCurrent * acCurrentMultiplier / acCurrentDivisor;
 
-    NSString *power_str = [NSString stringWithFormat:@"Power is %.3fW", power];
-    NSString *current_str = [NSString stringWithFormat:@"Current is %.3fA", current];
-    NSString *voltage_str = [NSString stringWithFormat:@"Voltage is %.3fV", voltage];
+    NSString *power_str = [NSString stringWithFormat:NSLocalizedString(@"sensor.Power is %.3fW", @"Power is %.3fW"), power];
+    NSString *current_str = [NSString stringWithFormat:NSLocalizedString(@"sensor.Current is %.3fA", @"Current is %.3fA"), current];
+    NSString *voltage_str = [NSString stringWithFormat:NSLocalizedString(@"sensor.Voltage is %.3fV", @"Voltage is %.3fV"), voltage];
 
     [self addStatusLabel:@[power_str, current_str, voltage_str]];
     [self markYOffset:55];
@@ -862,9 +873,9 @@
     float voltage = (float) dcVoltage * dcVoltageMultiplier / dcVoltageDivisor;
     float current = (float) dcCurrent * dcCurrentMultiplier / dcCurrentDivisor;
 
-    NSString *power_str = [NSString stringWithFormat:@"Power is %.3fW", power];
-    NSString *current_str = [NSString stringWithFormat:@"Current is %.3fA", current];
-    NSString *voltage_str = [NSString stringWithFormat:@"Voltage is %.3fV", voltage];
+    NSString *power_str = [NSString stringWithFormat:NSLocalizedString(@"sensor.Power is %.3fW", @"Power is %.3fW"), power];
+    NSString *current_str = [NSString stringWithFormat:NSLocalizedString(@"sensor.Current is %.3fA", @"Current is %.3fA"), current];
+    NSString *voltage_str = [NSString stringWithFormat:NSLocalizedString(@"sensor.Voltage is %.3fV", @"Voltage is %.3fV"), voltage];
 
     [self addStatusLabel:@[power_str, current_str, voltage_str]];
     [self markYOffset:55];
@@ -1081,7 +1092,7 @@
         case SFIDevicePropertyType_USER_CODE: {
             // door lock 5
             NSInteger row = index + 1;
-            return [NSString stringWithFormat:@"Pin %ld", (long) row];
+            return [NSString stringWithFormat:NSLocalizedString(@"sensor.lock.pin-picker.Pin %ld", @"Pin %ld"), (long) row];
         }
 
         default: {

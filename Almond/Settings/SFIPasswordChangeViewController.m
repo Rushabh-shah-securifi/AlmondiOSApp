@@ -87,37 +87,37 @@
     if(![self.confirmPassword.text isEqualToString:self.changedPassword.text]){
         self.passwordStrengthIndicator.progress = 0.1;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = @"Password: Mismatch";
+        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Mismatch", @"Password: Mismatch");
          self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     else if (pwdStrength == PasswordStrengthTypeTooShort) {
         self.passwordStrengthIndicator.progress = 0.2;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = @"Password: Too Short";
+        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Too Short", @"Password: Too Short");
          self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     else if (pwdStrength == PasswordStrengthTypeTooLong) {
         self.passwordStrengthIndicator.progress = 0.2;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = @"Password: Too Long";
+        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Too Long", @"Password: Too Long");
          self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     else if (pwdStrength == PasswordStrengthTypeWeak) {
         self.passwordStrengthIndicator.progress = 0.4;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:255 / 255.0f green:215 / 255.0f blue:0 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = @"Password: Weak";
+        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Weak", @"Password: Weak");
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
     else if (pwdStrength == PasswordStrengthTypeModerate) {
         self.passwordStrengthIndicator.progress = 0.6;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:255 / 255.0f green:140 / 255.0f blue:48 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = @"Password: Medium";
+        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Medium", @"Password: Medium");
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
     else if (pwdStrength == PasswordStrengthTypeStrong) {
         self.passwordStrengthIndicator.progress = 1;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:34 / 255.0f green:139 / 255.0f blue:34 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = @"Password: Strong";
+        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Strong", @"Password: Strong");
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
 }

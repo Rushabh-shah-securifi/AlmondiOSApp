@@ -576,8 +576,8 @@
     return [self.delegate tableViewCell:self valueForKey:key];
 }
 
-- (void)sensorDetailViewDidChangeNotificationPref:(SFISensorDetailView*)view notificationSettingValue:(BOOL)value{
-    [self.delegate tableViewCellDidChangeNotificationSetting:self notificationSettingEnabled:value];
+- (void)sensorDetailViewDidChangeNotificationPref:(SFISensorDetailView *)view notificationSettingEnabled:(BOOL)enabled {
+    [self.delegate tableViewCellDidChangeNotificationSetting:self notificationSettingEnabled:enabled];
 }
 
 #pragma mark - Device layout
@@ -587,8 +587,8 @@
     SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceMutableState];
     NSString *currentLevel = currentLevelKnownValue.value;
 
-    NSString *status = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
-                                                               nonZeroValue:[NSString stringWithFormat:@"Dimmable, %@%%", currentLevel]
+    NSString *status = [currentLevelKnownValue choiceForLevelValueZeroValue:NSLocalizedString(@"sensor.status-label.OFF", @"OFF")
+                                                               nonZeroValue:[NSString stringWithFormat:NSLocalizedString(@"sensor.multilevel-switch.status-label.Dimmable, %@%%", @"Dimmable, %@%%"), currentLevel]
                                                                    nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
 
     NSString *imageName = [currentLevelKnownValue choiceForLevelValueZeroValue:DT2_MULTILEVEL_SWITCH_FALSE
@@ -610,23 +610,26 @@
 
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
     if (!values.hasValue) {
-        status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"Dimmable"
-                                                             nonZeroValue:[NSString stringWithFormat:@"Dimmable, %.0f%%", intLevel]
+        NSString *dimmable_str = NSLocalizedString(@"sensor.level-control.status-label.Dimmable", @"Dimmable");
+        status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:dimmable_str
+                                                             nonZeroValue:[NSString stringWithFormat:@"%@, %.0f%%", dimmable_str, intLevel]
                                                                  nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
 
         image_name = DT4_LEVEL_CONTROL_TRUE;
     }
     else if (values.boolValue == true) {
+        NSString *on_str = NSLocalizedString(@"sensor.status-label.ON", @"ON");
         status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"ON"
-                                                             nonZeroValue:[NSString stringWithFormat:@"ON, %.0f%%", intLevel]
-                                                                 nilValue:@"ON"];
+                                                             nonZeroValue:[NSString stringWithFormat:@"%@, %.0f%%", on_str, intLevel]
+                                                                 nilValue:on_str];
 
         image_name = DT4_LEVEL_CONTROL_TRUE;
     }
     else {
-        status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"OFF"
-                                                             nonZeroValue:[NSString stringWithFormat:@"OFF, %.0f%%", intLevel]
-                                                                 nilValue:@"OFF"];
+        NSString *off_str = NSLocalizedString(@"sensor.status-label.OFF", @"OFF");
+        status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:off_str
+                                                             nonZeroValue:[NSString stringWithFormat:@"%@, %.0f%%", off_str, intLevel]
+                                                                 nilValue:off_str];
 
         image_name = DT4_LEVEL_CONTROL_FALSE;
     }
@@ -670,8 +673,14 @@
 - (void)configureKeyFob_19 {
     SFIDeviceValue *const deviceValue = self.deviceValue;
 
+    NSDictionary *choices = @{
+            @"0" : NSLocalizedString(@"sensor.keyfob.status-label.ALL DISARMED", @"ALL DISARMED"),
+            @"2" : NSLocalizedString(@"sensor.keyfob.status-label.PERIMETER ARMED", @"PERIMETER ARMED"),
+            @"3" : NSLocalizedString(@"sensor.keyfob.status-label.ALL ARMED", @"ALL ARMED")
+    };
+
     NSMutableArray *status = [NSMutableArray array];
-    [status addObject:[deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:@{@"0" : @"ALL DISARMED", @"2" : @"PERIMETER ARMED", @"3" : @"ALL ARMED"} default:DEF_COULD_NOT_UPDATE_SENSOR]];
+    [status addObject:[deviceValue choiceForPropertyValue:SFIDevicePropertyType_ARMMODE choices:choices default:DEF_COULD_NOT_UPDATE_SENSOR]];
     [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 
@@ -690,7 +699,7 @@
     NSString *value = [stateValue value];
 
     NSMutableArray *status = [NSMutableArray array];
-    [status addObject:[NSString stringWithFormat:@"Illuminance %@", value]];
+    [status addObject:[NSString stringWithFormat:NSLocalizedString(@"sensor.lightsensor.status-label.Illuminance %@", @"Illuminance %@"), value]];
     [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 
@@ -711,7 +720,8 @@
     NSMutableArray *status = [NSMutableArray array];
     NSString *humidity = [self.deviceValue valueForProperty:SFIDevicePropertyType_HUMIDITY default:@""];
     if (humidity.length > 0) {
-        [status addObject:[NSString stringWithFormat:@"Humidity %@", humidity]];
+        NSString *label_format = NSLocalizedString(@"sensor.tempsensor.status-label.Humidity %@", @"Humidity %@");
+        [status addObject:[NSString stringWithFormat:label_format, humidity]];
     }
     [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
@@ -729,10 +739,10 @@
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 
     NSMutableArray *status = [NSMutableArray array];
-    [status addObject:[stateValue choiceForLevelValueZeroValue:@"OK" nonZeroValue:@"FLOODED" nilValue:@""]];
+    [status addObject:[stateValue choiceForLevelValueZeroValue:NSLocalizedString(@"sensor.status-label.OK", @"OK") nonZeroValue:NSLocalizedString(@"sensor.moisturesensor.status.FLOODED", @"FLOODED") nilValue:@""]];
     NSString *temp = [self.deviceValue valueForProperty:SFIDevicePropertyType_TEMPERATURE default:@""];
     if (temp.length > 0) {
-        [status addObject:[NSString stringWithFormat:@"Temp %@", temp]];
+        [status addObject:[NSString stringWithFormat:NSLocalizedString(@"sensor.moisturesensor.status.Temp %@", @"Temp %@"), temp]];
     }
     [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
@@ -746,10 +756,10 @@
     }
 
     NSMutableArray *status = [NSMutableArray array];
-    [status addObject:[stateValue choiceForBoolValueTrueValue:@"ON" falseValue:@"OFF" nilValue:@""]];
+    [status addObject:[stateValue choiceForBoolValueTrueValue:NSLocalizedString(@"sensor.status-label.ON", @"ON") falseValue:NSLocalizedString(@"sensor.status-label.OFF", @"OFF") nilValue:@""]];
     NSString *power = [self.deviceValue valueForProperty:SFIDevicePropertyType_POWER default:@""];
     if (power.length > 0) {
-        [status addObject:[NSString stringWithFormat:@"Power %@W", power]];
+        [status addObject:[NSString stringWithFormat:NSLocalizedString(@"sensor.poweswitch.label.Power %@W", @"Power %@W"), power]];
     }
     [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
@@ -853,12 +863,12 @@
 
 - (void)tryAddBatteryStatusMessage:(NSMutableArray *)status {
     if ([self.device isBatteryLow:self.deviceValue]) {
-        [status addObject:@"LOW BATTERY"];
+        [status addObject:NSLocalizedString(@"sensor.device-status.label.LOW BATTERY", @"LOW BATTERY")];
     }
     else {
         NSString *battery = [self.deviceValue valueForProperty:SFIDevicePropertyType_BATTERY default:@""];
         if (battery.length > 0) {
-            [status addObject:[NSString stringWithFormat:@"Battery %@%%", battery]];
+            [status addObject:[NSString stringWithFormat:NSLocalizedString(@"sensor.device-status.label.Battery %", @"Battery %@%%"), battery]];
         }
     }
 }

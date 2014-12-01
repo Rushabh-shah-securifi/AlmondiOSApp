@@ -40,7 +40,7 @@
             NSFontAttributeName : [UIFont standardNavigationTitleFont]
     };
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-    self.navigationItem.title = @"Sign up";
+    self.navigationItem.title = NSLocalizedString(@"signup.navbar-title.Sign up", @"Sign up");
 
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     _HUD.removeFromSuperViewOnHide = NO;
@@ -109,10 +109,10 @@
 }
 
 - (void)showTermsAndConditions {
-    UIBarButtonItem *declineButton = [[UIBarButtonItem alloc] initWithTitle:@"Decline" style:UIBarButtonItemStylePlain target:self action:@selector(onDeclineAction:)];
+    UIBarButtonItem *declineButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"signup.barbutton.Decline", @"Decline") style:UIBarButtonItemStylePlain target:self action:@selector(onDeclineAction:)];
     self.navigationItem.leftBarButtonItem = declineButton;
 
-    UIBarButtonItem *acceptButton = [[UIBarButtonItem alloc] initWithTitle:@"Accept" style:UIBarButtonItemStylePlain target:self action:@selector(onAcceptedTermsAndConditions)];
+    UIBarButtonItem *acceptButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"signuo.barbutton.Accept", @"Accept") style:UIBarButtonItemStylePlain target:self action:@selector(onAcceptedTermsAndConditions)];
     self.navigationItem.rightBarButtonItem = acceptButton;
 
     UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.frame];
@@ -132,7 +132,7 @@
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelAction:)];
     self.navigationItem.leftBarButtonItem = cancelButton;
 
-    UIBarButtonItem *continueButton = [[UIBarButtonItem alloc] initWithTitle:@"Continue" style:UIBarButtonItemStylePlain target:self action:@selector(onContinueAction:)];
+    UIBarButtonItem *continueButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"signup.barbutton.Continue", @"Continue") style:UIBarButtonItemStylePlain target:self action:@selector(onContinueAction:)];
     continueButton.tag = CONTINUE_BUTTON_SIGNUP;
     self.navigationItem.rightBarButtonItem = continueButton;
     [self enableContinueButton:NO];
@@ -179,18 +179,18 @@
 }
 
 - (void)setStandardHeadline {
-    self.headingLabel.text = @"Securifi Cloud Account.";
-    self.subHeadingLabel.text = @"Access your Almonds and\nyour home devices from anywhere.";
+    self.headingLabel.text = NSLocalizedString(@"signup.headline-text.Securifi Cloud Account.", @"Securifi Cloud Account.");
+    self.subHeadingLabel.text = NSLocalizedString(@"signup.headline-text.Access your Almonds", @"Access your Almonds and\nyour home devices from anywhere.");
 }
 
 - (void)setSigningUpHeadline {
-    self.headingLabel.text = @"Signing up.";
-    self.subHeadingLabel.text = @"Please wait one moment...";
+    self.headingLabel.text = NSLocalizedString(@"signup.headline-text.Signing up.", @"Signing up.");
+    self.subHeadingLabel.text = NSLocalizedString(@"signup.subheadline-text.Please wait one moment...", @"Please wait one moment...");
 }
 
 - (void)setAlmostDoneHeadline {
-    self.headingLabel.text = @"Almost done.";
-    self.subHeadingLabel.text = @"An activation link was sent to your email. \n Follow it, then tap Continue to login.";
+    self.headingLabel.text = NSLocalizedString(@"signup.headline-text.Almost done.", @"Almost done.");
+    self.subHeadingLabel.text = NSLocalizedString(@"signup.headline-text.An activation link was sent to your email", @"An activation link was sent to your email. \n Follow it, then tap Continue to login.");
 }
 
 - (void)setFooterForTag:(int)tag {
@@ -206,12 +206,12 @@
 
         case FOOTER_RESEND_ACTIVATION_LINK:
             label = @"";
-            button = @"Resend the activation email";
+            button = NSLocalizedString(@"signup.footerbutton.Resend the activation email", @"Resend the activation email");
             break;
 
         case FOOTER_SIGNUP_DIFF_EMAIL: {
-            label = @"Do you want to create another account?";
-            button = @"Signup using another email";
+            label = NSLocalizedString(@"signup.footerlabel.Do you want to create another account?", @"Do you want to create another account?");
+            button = NSLocalizedString(@"signup.footerbutton.Signup using another email", @"Signup using another email");
             break;
         }
 
@@ -358,38 +358,34 @@
 }
 
 - (BOOL)validateSignupValues {
-    SFICredentialsValidator *validator = [[SFICredentialsValidator alloc]init];
+    SFICredentialsValidator *validator = [[SFICredentialsValidator alloc] init];
     if (self.emailID.text.length == 0) {
-        self.headingLabel.text = @"Oops!";
-        self.subHeadingLabel.text = @"You forgot to enter your email ID.";
+        [self setOopsMessage:NSLocalizedString(@"You forgot to enter your email ID.", @"You forgot to enter your email ID.")];
         return NO;
     }
     else if (![validator validateEmail:self.emailID.text]) {
         //Email Address is invalid.
-        self.headingLabel.text = @"Oops!";
-        self.subHeadingLabel.text = @"You have entered an invalid email ID.";
+        [self setOopsMessage:NSLocalizedString(@"You have entered an invalid email ID.", @"You have entered an invalid email ID.")];
         return NO;
     }
     else if (self.password.text.length == 0) {
         //If password empty
-        self.headingLabel.text = @"Oops!";
-        self.subHeadingLabel.text = @"You forgot to enter your password.";
+        [self setOopsMessage:NSLocalizedString(@"You forgot to enter your password.", @"You forgot to enter your password.")];
         return NO;
     }
     else if (self.password.text.length < PWD_MIN_LENGTH) {
-        self.headingLabel.text = @"Oops!";
-        self.subHeadingLabel.text = [NSString stringWithFormat:@"The password should be %d - %d characters long.", PWD_MIN_LENGTH, PWD_MAX_LENGTH];
+        NSString *format = NSLocalizedString(@"The password should be %d - %d characters long.", @"The password should be %d - %d characters long.");
+        [self setOopsMessage:[NSString stringWithFormat:format, PWD_MIN_LENGTH, PWD_MAX_LENGTH]];
         return NO;
     }
     else if (self.password.text.length > PWD_MAX_LENGTH) {
-        self.headingLabel.text = @"Oops!";
-        self.subHeadingLabel.text = [NSString stringWithFormat:@"The password should be %d - %d characters long.", PWD_MIN_LENGTH, PWD_MAX_LENGTH];
+        NSString *format = NSLocalizedString(@"The password should be %d - %d characters long.", @"The password should be %d - %d characters long.");
+        [self setOopsMessage:[NSString stringWithFormat:format, PWD_MIN_LENGTH, PWD_MAX_LENGTH]];
         return NO;
     }
     else if (![self.password.text isEqualToString:self.confirmPassword.text]) {
         //Match password and confirm password
-        self.headingLabel.text = @"Oops!";
-        self.subHeadingLabel.text = @"There is a password mismatch.";
+        [self setOopsMessage:NSLocalizedString(@"There is a password mismatch.", @"There is a password mismatch.")];
         return NO;
     }
     else {
@@ -448,27 +444,27 @@
     if (pwdStrength == PasswordStrengthTypeTooShort) {
         self.passwordStrengthIndicator.progress = 0.2;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = @"Password: Too Short";
+        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Too Short", @"Password: Too Short");
     }
     else if (pwdStrength == PasswordStrengthTypeTooLong) {
         self.passwordStrengthIndicator.progress = 0.2;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = @"Password: Too Long";
+        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Too Long", @"Password: Too Long");
     }
     else if (pwdStrength == PasswordStrengthTypeWeak) {
         self.passwordStrengthIndicator.progress = 0.4;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:255 / 255.0f green:215 / 255.0f blue:0 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = @"Password: Weak";
+        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Weak", @"Password: Weak");
     }
     else if (pwdStrength == PasswordStrengthTypeModerate) {
         self.passwordStrengthIndicator.progress = 0.6;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:255 / 255.0f green:140 / 255.0f blue:48 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = @"Password: Medium";
+        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Medium", @"Password: Medium");
     }
     else if (pwdStrength == PasswordStrengthTypeStrong) {
         self.passwordStrengthIndicator.progress = 1;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:34 / 255.0f green:139 / 255.0f blue:34 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = @"Password: Strong";
+        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Strong", @"Password: Strong");
     }
 }
 
@@ -505,15 +501,17 @@
         NSString *failureReason;
         switch (obj.reasonCode) {
             case 1:
-                failureReason = @"The email ID is invalid.";
+                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
                 break;
 
-            case 2:
-                failureReason = [NSString stringWithFormat:@"The password should be %d - %d characters long.", PWD_MIN_LENGTH, PWD_MAX_LENGTH];
+            case 2: {
+                NSString *format = NSLocalizedString(@"The password should be %d - %d characters long.", @"The password should be %d - %d characters long.");
+                failureReason = [NSString stringWithFormat:format, PWD_MIN_LENGTH, PWD_MAX_LENGTH];
+            }
                 break;
 
             case 3:
-                failureReason = @"An account already exists with this email.";
+                failureReason = NSLocalizedString(@"An account already exists with this email.", @"An account already exists with this email.");
                 [self setFooterForTag:FOOTER_SIGNUP_DIFF_EMAIL];
                 break;
 
@@ -523,15 +521,14 @@
                 break;
 
             case 5:
-                failureReason = @"The email or password was incorrect.";
+                failureReason = NSLocalizedString(@"The email or password was incorrect.", @"The email or password was incorrect.");
                 break;
 
             default:
-                failureReason = @"Sorry! Signup was unsuccessful.";
+                failureReason = NSLocalizedString(@"Sorry! Signup was unsuccessful.", @"Sorry! Signup was unsuccessful.");
         }
 
-        self.headingLabel.text = @"Oops!";
-        self.subHeadingLabel.text = failureReason;
+        [self setOopsMessage:failureReason];
     }
 }
 
@@ -552,37 +549,35 @@
 
     ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
 
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
 
     if (obj.isSuccessful) {
         [self displayScreenToLogin];
     }
     else {
-        NSLog(@"Reason Code %d", obj.reasonCode);
-        //PY 181013: Reason Code
+        DLog(@"Reason Code %d", obj.reasonCode);
+
         NSString *failureReason;
         switch (obj.reasonCode) {
             case 1:
-                failureReason = @"The username was not found";
+                failureReason = NSLocalizedString(@"The username was not found", @"The username was not found");
                 break;
             case 2:
-                failureReason = @"The account is already validated";
+                failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
                 break;
             case 3:
-                failureReason = @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.";
+            case 5:
+                failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
                 break;
             case 4:
-                failureReason = @"The email ID is invalid.";
-                break;
-            case 5:
-                failureReason = @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.";
+                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
                 break;
             default:
                 break;
         }
-        self.headingLabel.text = @"Oops!";
-        self.subHeadingLabel.text = failureReason;
+        
+        [self setOopsMessage:failureReason];
     }
 }
 
@@ -590,5 +585,9 @@
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
+- (void)setOopsMessage:(NSString*)msg {
+    self.headingLabel.text = NSLocalizedString(@"Oops!", @"Oops!");
+    self.subHeadingLabel.text = msg;
+}
 
 @end

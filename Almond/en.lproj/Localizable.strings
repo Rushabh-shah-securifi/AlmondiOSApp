@@ -30,11 +30,23 @@ Contact us at support@securifi.com";
 resent at the moment. Try again later.";
 "The email ID is invalid." = "The email ID is invalid.";
 
-/* sensors */
+/* change password */
 
-"Device has been tampered" = "Device has been tampered";
-"sensors.button.Dismiss" = "Dismiss";
-"sensors.label.Status" = "Status";
+"password-validation.strength-label.Password: Mismatch" = "Password: Mismatch";
+"password-validation.strength-label.Password: Too Short" = "Password: Too Short";
+"password-validation.strength-label.Password: Too Long" = "Password: Too Long";
+"password-validation.strength-label.Password: Weak" = "Password: Weak";
+"password-validation.strength-label.Password: Medium" = "Password: Medium";
+"password-validation.strength-label.Password: Strong" = "Password: Strong";
+"The password should be %d - %d characters long." = "The password should be %d - %d characters long.";
+"An account already exists with this email." = "An account already exists with this email.";
+"The email or password was incorrect." = "The email or password was incorrect.";
+"Sorry! Signup was unsuccessful." = "Sorry! Signup was unsuccessful.";
+"The username was not found" = "The username was not found";
+"There is a password mismatch." = "There is a password mismatch.";
+"You forgot to enter your password." = "You forgot to enter your password.";
+"You have entered an invalid email ID." = "You have entered an invalid email ID.";
+"You forgot to enter your email ID." = "You forgot to enter your email ID.";
 
 /* login */
 
@@ -83,6 +95,14 @@ your home devices from anywhere.";
 "router.hud.Router is now online." = "Router is now online.";
 "router.hud.Router is rebooting." = "Router is rebooting.";
 
+/* sensors */
+
+"Device has been tampered" = "Device has been tampered";
+"sensors.button.Dismiss" = "Dismiss";
+"sensors.label.Status" = "Status";
+"sensor.status-label.OFF" = "OFF";
+"sensor.status-label.ON" = "ON";
+"sensor.status-label.OK" = "OK";
 "sensors.label.SENSOR SETTINGS" = "SENSOR SETTINGS";
 "sensors.settings-label.Send Notifications" = "Send Notifications";
 "sensors.no-sensors.label.You don't have any sensors yet." = "You don't have any sensors yet.";
@@ -93,3 +113,62 @@ your home devices from anywhere.";
 "sensors.account-confirm.label.Resend activation email" = "Resend activation email";
 "sensors.toast.Saving..." = "Saving...";
 "activation.toast.Reactivation link sent to your registerd email ID." = "Reactivation link sent to your registerd email ID.";
+"sensor.thermostat.field-label.Heating" = "Heating";
+"sensor.thermostat.field-label.Cooling" = "Cooling";
+"sensor.thermostat.field-label.Mode" = "Mode";
+"sensor.thermostat.segment-control.Auto" = "Auto";
+"sensor.thermostat.segment-control.Heat" = "Heat";
+"sensor.thermostat.segment-control.Cool" = "Cool";
+"sensor.thermostat.segment-control.Off" = "Off";
+"sensor.thermostat.field-label.Fan" = "Fan";
+"sensor.thermostat.segment-control.Auto Low" = "Auto Low";
+"sensor.thermostat.segment-control.On Low" = "On Low";
+"sensor.thermostat.Thermostat is %@" = "Thermostat is %@";
+"sensor.thermostat.Fan is %@" = "Fan is %@";
+"sensor.thermostat.Battery is at %@%%" = "Battery is at %@%%";
+"sensor.Power is %.3fW" = "Power is %.3fW";
+"sensor.Current is %.3fA" = "Current is %.3fA";
+"sensor.Voltage is %.3fV" = "Voltage is %.3fV";
+"sensor.lock.pin-picker.Pin %ld" = "Pin %ld";
+"sensor.toast.doorlock.PassCode must be 5 to 8 digits long" = "PassCode must be 5 to 8 digits long";
+"sensor.device-name-label.Name" = "Name";
+"sensor.deivice-location-label.Located at" = "Located at";
+"sensor.deivice-save-settings.button.Save" = "Save";
+"sensor.device-status.label.Battery OK" = "Battery OK";
+"sensor.device-status.label.Battery %" = "Battery %@%%";
+"sensor.device-status.label.Low Battery" = "Low Battery";
+"sensor.device-status.label.LOW BATTERY" = "LOW BATTERY";
+"sensor.device-status.label.Battery Unknown" = "Battery Unknown";
+"sensor.doorlock.field-label.Pins" = "Pins";
+"sensor.doorlock.pinentry-textfield.placeholder.Code is not specified." = "Code is not specified.";
+"sensor.doorlock.button.Save Pin" = "Save Pin";
+"sensor.doorlock.field-label.Code" = "Code";
+"sensor.multilevel-switch.status-label.Dimmable, %@%%" = "Dimmable, %@%%";
+"sensor.level-control.status-label.Dimmable" = "Dimmable";
+"sensor.keyfob.status-label.ALL DISARMED" = "ALL DISARMED";
+"sensor.keyfob.status-label.PERIMETER ARMED" = "PERIMETER ARMED";
+"sensor.keyfob.status-label.ALL ARMED" = "ALL ARMED";
+"sensor.lightsensor.status-label.Illuminance %@" = "Illuminance %@";
+"sensor.tempsensor.status-label.Humidity %@" = "Humidity %@";
+"sensor.moisturesensor.status.FLOODED" = "FLOODED";
+"sensor.poweswitch.label.Power %@W" = "Power %@W";
+"sensor.moisturesensor.status.Temp %@" = "Temp %@";
+
+/* signup */
+
+"signup.navbar-title.Sign up" = "Sign up";
+"signup.barbutton.Decline" = "Decline";
+"signuo.barbutton.Accept" = "Accept";
+"signup.barbutton.Continue" = "Continue";
+"signup.headline-text.Securifi Cloud Account." = "Securifi Cloud Account.";
+"signup.headline-text.Access your Almonds" = "Access your Almonds and
+your home devices from anywhere.";
+"signup.headline-text.Signing up." = "Signing up.";
+"signup.subheadline-text.Please wait one moment..." = "Please wait one moment...";
+"signup.headline-text.Almost done." = "Almost done.";
+"signup.headline-text.An activation link was sent to your email" = "An activation link was sent to your email.
+ Follow it, then tap Continue to login.";
+"signup.footerbutton.Resend the activation email" = "Resend the activation email";
+"signup.footerbutton.Signup using another email" = "Signup using another email";
+"signup.footerlabel.Do you want to create another account?" = "Do you want to create another account?";
+
