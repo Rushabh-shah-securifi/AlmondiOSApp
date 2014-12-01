@@ -47,6 +47,12 @@ resent at the moment. Try again later.";
 "You forgot to enter your password." = "You forgot to enter your password.";
 "You have entered an invalid email ID." = "You have entered an invalid email ID.";
 "You forgot to enter your email ID." = "You forgot to enter your email ID.";
+"password.hud.Changing password..." = "Changing password...";
+"password.label-text.There was some error on cloud. Please try later." = "There was some error on cloud. Please try later.";
+"Sorry! You are not registered with us yet." = "Sorry! You are not registered with us yet.";
+"You need to fill all the fields." = "You need to fill all the fields.";
+"The current password was incorrect." = "The current password was incorrect.";
+"Sorry! Password change was unsuccessful." = "Sorry! Password change was unsuccessful.";
 
 /* login */
 

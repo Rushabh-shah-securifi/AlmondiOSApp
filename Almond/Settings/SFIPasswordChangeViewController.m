@@ -39,7 +39,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(userPasswordChangeResponseCallback:)
                                                  name:CHANGE_PWD_RESPONSE_NOTIFIER
@@ -48,7 +48,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:CHANGE_PWD_RESPONSE_NOTIFIER
                                                   object:nil];
@@ -146,12 +146,12 @@
     }
     else if (textField == self.confirmPassword) {
         [textField resignFirstResponder];
-        
+
         SFICredentialsValidator *validator = [[SFICredentialsValidator alloc]init];
         PasswordStrengthType pwdStrength = [validator validatePassword:self.changedPassword.text];
         [self displayPasswordIndicator:pwdStrength];
     }
-    
+
     return YES;
 }
 
@@ -163,27 +163,27 @@
 - (void)sendUserPasswordChangeRequest {
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Changing password...";
+    _HUD.labelText = NSLocalizedString(@"password.hud.Changing password...", @"Changing password...");
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self.HUD show:YES];
-    
+
     [[SecurifiToolkit sharedInstance] asyncRequestChangeCloudPassword:currentpassword.text changedPwd:changedPassword.text];
 }
 
 - (void)userPasswordChangeResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    
+
     ChangePasswordResponse *obj = (ChangePasswordResponse *) [data valueForKey:@"data"];
-    
+
     NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
-    
+
     [self.HUD hide:YES];
     if (obj.isSuccessful) {
         //Dismiss this view
-         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }
     else {
         NSLog(@"Reason Code %d", obj.reasonCode);
@@ -191,33 +191,35 @@
         NSString *failureReason;
         switch (obj.reasonCode) {
             case 1:
-                failureReason = @"There was some error on cloud. Please try later.";
+                failureReason = NSLocalizedString(@"password.label-text.There was some error on cloud. Please try later.", @"There was some error on cloud. Please try later.");
                 break;
-                
+
             case 2:
-                failureReason = @"Sorry! You are not registered with us yet.";
+                failureReason = NSLocalizedString(@"Sorry! You are not registered with us yet.", @"Sorry! You are not registered with us yet.");
                 break;
-                
+
             case 3:
-                failureReason = @"You need to activate your account.";
+                failureReason = NSLocalizedString(@"You need to activate your account.", @"You need to activate your account.");
                 break;
-                
+
             case 4:
-                failureReason = @"You need to fill all the fields.";
+                failureReason = NSLocalizedString(@"You need to fill all the fields.", @"You need to fill all the fields.");
                 break;
-                
+
             case 5:
-                failureReason = @"The current password was incorrect.";
+                failureReason = NSLocalizedString(@"The current password was incorrect.", @"The current password was incorrect.");
                 break;
-                
-            case 6:
-                failureReason = [NSString stringWithFormat:@"The password should be %d - %d characters long.", PWD_MIN_LENGTH, PWD_MAX_LENGTH];
+
+            case 6: {
+                NSString *format = NSLocalizedString(@"The password should be %d - %d characters long.", @"The password should be %d - %d characters long.");
+                failureReason = [NSString stringWithFormat:format, PWD_MIN_LENGTH, PWD_MAX_LENGTH];
+            }
                 break;
-                
+
             default:
-                failureReason = @"Sorry! Password change was unsuccessful.";
+                failureReason = NSLocalizedString(@"Sorry! Password change was unsuccessful.", @"Sorry! Password change was unsuccessful.");
         }
-        
+
         self.passwordStrengthIndicator.progress = 0.1;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
         self.lblPasswordStrength.text = failureReason;
