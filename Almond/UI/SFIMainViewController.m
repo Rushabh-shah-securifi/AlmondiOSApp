@@ -505,13 +505,25 @@
     BOOL notificationStatus = [[NSUserDefaults standardUserDefaults] boolForKey:PUSH_NOTIFICATION_STATUS];
     if (!notificationStatus){
         //Register for notification
-        //todo fix me: this method is NOT available in ios 7
-        [[UIApplication sharedApplication] registerForRemoteNotifications];
+        // Check to see if this is an iOS 8 device.
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+        {
+            // Register for push in iOS 8.
+            [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+            [[UIApplication sharedApplication] registerForRemoteNotifications];
+        }
+        else
+        {
+            // Register for push in iOS 7 and under.
+            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
+        }
     }
-    //TODO: For test - Remove
     NSString *deviceToken = [[NSUserDefaults standardUserDefaults] stringForKey:PUSH_NOTIFICATION_TOKEN];
+    //TODO: For test - Remove
     deviceToken = @"7ff2a7b3707fe43cdf39e25522250e1257ee184c59ca0d901b452040d85fd794";
-    [[SecurifiToolkit sharedInstance] asyncRequestRegisterForNotification:deviceToken];
+    if(deviceToken!=nil){
+        [[SecurifiToolkit sharedInstance] asyncRequestRegisterForNotification:deviceToken];
+    }
 
 }
 

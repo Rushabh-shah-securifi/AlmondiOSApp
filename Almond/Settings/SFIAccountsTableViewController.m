@@ -83,7 +83,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    self.navigationItem.title = @"Settings";
+    self.navigationItem.title = NSLocalizedString(@"accounts.navbar-title.settings", @"Accounts Settings");
     
     ownedAlmondList = [[NSMutableArray alloc]init];
     sharedAlmondList = [[NSMutableArray alloc]init];
@@ -314,7 +314,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     lblTitle.backgroundColor = [UIColor clearColor];
     lblTitle.textColor = [UIColor whiteColor];
     [lblTitle setFont:[UIFont securifiLightFont:25]];
-    lblTitle.text = @"Account";
+    lblTitle.text =  NSLocalizedString(@"accounts.userprofile.title.account",@"Account");
     lblTitle.textAlignment = NSTextAlignmentCenter;
     [backgroundLabel addSubview:lblTitle];
     
@@ -348,7 +348,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblName.textColor = [UIColor whiteColor];
         [lblName setFont:[UIFont securifiBoldFontLarge]];
         if([userProfile.firstName isEqualToString:@""] && [userProfile.lastName isEqualToString:@""]){
-            lblName.text = @"We don't know your name yet";
+            lblName.text = NSLocalizedString(@"accounts.userprofile.title.placeholder.name",@"We don't know your name yet");
         }else if(userProfile.firstName == NULL){
             lblName.text = @""; //Default;
         }
@@ -376,7 +376,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblEmailTitle.backgroundColor = [UIColor clearColor];
         lblEmailTitle.textColor = [UIColor whiteColor];
         [lblEmailTitle setFont:[UIFont securifiBoldFont:13]];
-        lblEmailTitle.text = @"PRIMARY EMAIL";
+        lblEmailTitle.text = NSLocalizedString(@"accounts.userprofile.label.primaryEmail",@"PRIMARY EMAIL");
         lblEmailTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblEmailTitle];
         
@@ -404,14 +404,14 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblPasswordTitle.backgroundColor = [UIColor clearColor];
         lblPasswordTitle.textColor = [UIColor whiteColor];
         [lblPasswordTitle setFont:[UIFont securifiBoldFont:13]];
-        lblPasswordTitle.text = @"PASSWORD";
+        lblPasswordTitle.text = NSLocalizedString(@"accounts.userprofile.label.password",@"PASSWORD");
         lblPasswordTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblPasswordTitle];
         
         UIButton *btnChangePassword = [UIButton buttonWithType:UIButtonTypeCustom];
         btnChangePassword.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangePassword.backgroundColor = [UIColor clearColor];
-        [btnChangePassword setTitle:@"Change Password" forState:UIControlStateNormal];
+        [btnChangePassword setTitle:NSLocalizedString(@"accounts.userprofile.button.changePassword",@"Change Password") forState:UIControlStateNormal];
         [btnChangePassword.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnChangePassword setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangePassword.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -430,7 +430,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblFNameTitle.backgroundColor = [UIColor clearColor];
         lblFNameTitle.textColor = [UIColor whiteColor];
         [lblFNameTitle setFont:[UIFont securifiBoldFont:13]];
-        lblFNameTitle.text = @"FIRST NAME";
+        lblFNameTitle.text = NSLocalizedString(@"accounts.userprofile.label.firstName",@"FIRST NAME");
         lblFNameTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblFNameTitle];
         
@@ -443,9 +443,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [btnChangeFName addTarget:self action:@selector(onFirstNameClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         if([userProfile.firstName isEqualToString:@""]){
-            [btnChangeFName setTitle:@"Add" forState:UIControlStateNormal];
+            [btnChangeFName setTitle:NSLocalizedString(@"accounts.userprofile.button.add",@"Add") forState:UIControlStateNormal];
         }else{
-            [btnChangeFName setTitle:@"Edit" forState:UIControlStateNormal];
+            [btnChangeFName setTitle:NSLocalizedString(@"accounts.userprofile.button.edit",@"Edit") forState:UIControlStateNormal];
         }
         
         [backgroundLabel addSubview:btnChangeFName];
@@ -453,7 +453,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         baseYCordinate+=20;
         
         tfFirstName = [[UITextField alloc] initWithFrame:CGRectMake(10,  baseYCordinate, self.tableView.frame.size.width - 30, 30)];
-        tfFirstName.placeholder = @"We do not know your first name yet";
+        tfFirstName.placeholder = NSLocalizedString(@"accounts.userprofile.textfield.placeholder.firstName", @"We do not know your first name yet");
         [tfFirstName setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
         if(![userProfile.firstName isEqualToString:@""]){
             tfFirstName.text = userProfile.firstName;
@@ -483,7 +483,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblLNameTitle.backgroundColor = [UIColor clearColor];
         lblLNameTitle.textColor = [UIColor whiteColor];
         [lblLNameTitle setFont:[UIFont securifiBoldFont:13]];
-        lblLNameTitle.text = @"LAST NAME";
+        lblLNameTitle.text = NSLocalizedString(@"accounts.userprofile.label.lastName",@"LAST NAME");
         lblLNameTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblLNameTitle];
         
@@ -496,16 +496,16 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [btnChangeLName addTarget:self action:@selector(onLastNameClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         if([userProfile.lastName isEqualToString:@""]){
-            [btnChangeLName setTitle:@"Add" forState:UIControlStateNormal];
+            [btnChangeLName setTitle:NSLocalizedString(@"accounts.userprofile.button.add",@"Add") forState:UIControlStateNormal];
         }else{
-            [btnChangeLName setTitle:@"Edit" forState:UIControlStateNormal];
+            [btnChangeLName setTitle:NSLocalizedString(@"accounts.userprofile.button.edit",@"Edit") forState:UIControlStateNormal];
         }
         
         [backgroundLabel addSubview:btnChangeLName];
         
         baseYCordinate+=20;
         tfLastName = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width - 30, 30)];
-        tfLastName.placeholder = @"We do not know your last name yet";
+        tfLastName.placeholder = NSLocalizedString(@"accounts.userprofile.textfield.placeholder.lastName",@"We do not know your last name yet");
         [tfLastName setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
         if(![userProfile.lastName isEqualToString:@""]){
             tfLastName.text = userProfile.lastName;
@@ -533,7 +533,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblAddressTitle.backgroundColor = [UIColor clearColor];
         lblAddressTitle.textColor = [UIColor whiteColor];
         [lblAddressTitle setFont:[UIFont securifiBoldFont:13]];
-        lblAddressTitle.text = @"ADDRESS";
+        lblAddressTitle.text = NSLocalizedString(@"accounts.userprofile.label.address",@"ADDRESS");
         lblAddressTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblAddressTitle];
         
@@ -546,16 +546,16 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [btnChangeAddress addTarget:self action:@selector(onAddressChangeClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         if([userProfile.addressLine1 isEqualToString:@""] && [userProfile.addressLine2 isEqualToString:@""] && [userProfile.addressLine3 isEqualToString:@""]){
-            [btnChangeAddress setTitle:@"Add" forState:UIControlStateNormal];
+            [btnChangeAddress setTitle:NSLocalizedString(@"accounts.userprofile.button.add",@"Add") forState:UIControlStateNormal];
         }else{
-            [btnChangeAddress setTitle:@"Edit" forState:UIControlStateNormal];
+            [btnChangeAddress setTitle:NSLocalizedString(@"accounts.userprofile.button.edit",@"Edit") forState:UIControlStateNormal];
         }
         
         [backgroundLabel addSubview:btnChangeAddress];
         
         baseYCordinate+=20;
         tfAddress1 = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width - 30, 30)];
-        tfAddress1.placeholder = @"Address Line 1";
+        tfAddress1.placeholder = NSLocalizedString(@"accounts.userprofile.textfield.placeholder.address1",@"Address Line 1");
         [tfAddress1 setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
         if(![userProfile.addressLine1 isEqualToString:@""]){
             tfAddress1.text = userProfile.addressLine1;
@@ -573,7 +573,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         
         baseYCordinate+=20;
         tfAddress2 = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width - 30, 30)];
-        tfAddress2.placeholder = @"Address Line 2";
+        tfAddress2.placeholder = NSLocalizedString(@"accounts.userprofile.textfield.placeholder.address2",@"Address Line 2");
         [tfAddress2 setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
         if(![userProfile.addressLine2 isEqualToString:@""]){
             tfAddress2.text = userProfile.addressLine2;
@@ -591,7 +591,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         
         baseYCordinate+=20;
         tfAddress3 = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width - 30, 30)];
-        tfAddress3.placeholder = @"Address Line 3";
+        tfAddress3.placeholder = NSLocalizedString(@"accounts.userprofile.textfield.placeholder.address3",@"Address Line 3");
         [tfAddress3 setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
         if(![userProfile.addressLine3 isEqualToString:@""]){
             tfAddress3.text = userProfile.addressLine3;
@@ -619,7 +619,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblCountryTitle.backgroundColor = [UIColor clearColor];
         lblCountryTitle.textColor = [UIColor whiteColor];
         [lblCountryTitle setFont:[UIFont securifiBoldFont:13]];
-        lblCountryTitle.text = @"COUNTRY";
+        lblCountryTitle.text = NSLocalizedString(@"accounts.userprofile.label.country",@"COUNTRY");
         lblCountryTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblCountryTitle];
         
@@ -632,16 +632,16 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [btnChangeCountry addTarget:self action:@selector(onCountryClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         if([userProfile.country isEqualToString:@""]){
-            [btnChangeCountry setTitle:@"Add" forState:UIControlStateNormal];
+            [btnChangeCountry setTitle:NSLocalizedString(@"accounts.userprofile.button.add",@"Add") forState:UIControlStateNormal];
         }else{
-            [btnChangeCountry setTitle:@"Edit" forState:UIControlStateNormal];
+            [btnChangeCountry setTitle:NSLocalizedString(@"accounts.userprofile.button.edit",@"Edit") forState:UIControlStateNormal];
         }
         
         [backgroundLabel addSubview:btnChangeCountry];
         
         baseYCordinate+=20;
         tfCountry = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width - 30, 30)];
-        tfCountry.placeholder = @"In which country do you reside?";
+        tfCountry.placeholder = NSLocalizedString(@"accounts.userprofile.textfield.placeholder.country",@"In which country do you reside?");
         [tfCountry setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
         if(![userProfile.country isEqualToString:@""]){
             tfCountry.text = userProfile.country;
@@ -669,7 +669,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblZipCodeTitle.backgroundColor = [UIColor clearColor];
         lblZipCodeTitle.textColor = [UIColor whiteColor];
         [lblZipCodeTitle setFont:[UIFont securifiBoldFont:13]];
-        lblZipCodeTitle.text = @"ZIP CODE";
+        lblZipCodeTitle.text = NSLocalizedString(@"accounts.userprofile.label.zipCode",@"ZIP CODE");
         lblZipCodeTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblZipCodeTitle];
         
@@ -682,16 +682,16 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [btnChangeZipCode addTarget:self action:@selector(onZipCodeClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         if([userProfile.zipCode isEqualToString:@""]){
-            [btnChangeZipCode setTitle:@"Add" forState:UIControlStateNormal];
+            [btnChangeZipCode setTitle:NSLocalizedString(@"accounts.userprofile.button.add",@"Add") forState:UIControlStateNormal];
         }else{
-            [btnChangeZipCode setTitle:@"Edit" forState:UIControlStateNormal];
+            [btnChangeZipCode setTitle:NSLocalizedString(@"accounts.userprofile.button.edit",@"Edit") forState:UIControlStateNormal];
         }
         
         [backgroundLabel addSubview:btnChangeZipCode];
         
         baseYCordinate+=20;
         tfZipCode = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width - 30, 30)];
-        tfZipCode.placeholder = @"What is your ZIP Code?";
+        tfZipCode.placeholder = NSLocalizedString(@"accounts.userprofile.textfield.placeholder.zipCode",@"What is your ZIP Code?");
         [tfZipCode setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
         if(![userProfile.zipCode isEqualToString:@""]){
             tfZipCode.text = userProfile.zipCode;
@@ -721,7 +721,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         btnDeleteAccount.backgroundColor = [UIColor clearColor];
         [[btnDeleteAccount layer] setBorderWidth:2.0f];
         [[btnDeleteAccount layer] setBorderColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:1.0].CGColor];
-        [btnDeleteAccount setTitle:@"DELETE ACCOUNT" forState:UIControlStateNormal];
+        [btnDeleteAccount setTitle:NSLocalizedString(@"accounts.userprofile.button.deleteAccount",@"DELETE ACCOUNT") forState:UIControlStateNormal];
         [btnDeleteAccount setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:1.0] forState:UIControlStateNormal ];
         [btnDeleteAccount.titleLabel setFont:[UIFont securifiBoldFont:13]];
         btnDeleteAccount.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
@@ -790,7 +790,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblStatus.textColor = [UIColor whiteColor];
         [lblStatus setFont:[UIFont securifiBoldFont:14]];
 
-        lblStatus.text = @"You own this Almond";
+        lblStatus.text = NSLocalizedString(@"accounts.ownedAlmond.label.YouOwnThisAlmond",@"You own this Almond");
         
         lblStatus.textAlignment = NSTextAlignmentCenter;
         [backgroundLabel addSubview:lblStatus];
@@ -801,7 +801,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblShared.textColor = [UIColor whiteColor];
         [lblShared setFont:[UIFont standardUITextFieldFont]];
 
-        lblShared.text = [NSString stringWithFormat:@"Shared with %d other(s)", (int)[currentAlmond.accessEmailIDs count]];
+        lblShared.text = [NSString stringWithFormat:NSLocalizedString(@"accounts.ownedAlmond.label.SharedWithOthers",@"Shared with %d other(s)"), (int)[currentAlmond.accessEmailIDs count]];
         lblShared.textAlignment = NSTextAlignmentCenter;
         [backgroundLabel addSubview:lblShared];
     }else{
@@ -818,14 +818,14 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblAlmondTitle.backgroundColor = [UIColor clearColor];
         lblAlmondTitle.textColor = [UIColor whiteColor];
         [lblAlmondTitle setFont:[UIFont standardUITextFieldFont]];
-        lblAlmondTitle.text = @"DEVICE NAME";
+        lblAlmondTitle.text = NSLocalizedString(@"accounts.ownedAlmond.label.deviceName",@"DEVICE NAME");
         lblAlmondTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblAlmondTitle];
         
         UIButton *btnUnlinkAlmond = [UIButton buttonWithType:UIButtonTypeCustom];
         btnUnlinkAlmond.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnUnlinkAlmond.backgroundColor = [UIColor clearColor];
-        [btnUnlinkAlmond setTitle:@"Unlink" forState:UIControlStateNormal];
+        [btnUnlinkAlmond setTitle:NSLocalizedString(@"accounts.ownedAlmond.button.Unlink",@"Unlink") forState:UIControlStateNormal];
         [btnUnlinkAlmond.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnUnlinkAlmond setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnUnlinkAlmond.tag = indexPathRow - 1;
@@ -836,7 +836,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         baseYCordinate+=25;
         
         tfRenameAlmond = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, 180, 30)];
-        tfRenameAlmond.placeholder = @"Almond Name";
+        tfRenameAlmond.placeholder = NSLocalizedString(@"accounts.ownedAlmond.textfield.placeholder.almondName" ,@"Almond Name");
         [tfRenameAlmond setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
         tfRenameAlmond.text = currentAlmond.almondplusName;
         tfRenameAlmond.textAlignment = NSTextAlignmentLeft;
@@ -854,7 +854,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
         btnChangeAlmondName.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangeAlmondName.backgroundColor = [UIColor clearColor];
-        [btnChangeAlmondName setTitle:@"Rename Almond" forState:UIControlStateNormal];
+        [btnChangeAlmondName setTitle:NSLocalizedString(@"accounts.ownedAlmond.button.RenameAlmond",@"Rename Almond") forState:UIControlStateNormal];
         [btnChangeAlmondName.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnChangeAlmondName setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeAlmondName.tag = indexPathRow - 1;
@@ -874,7 +874,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
             lblEmailTitle.backgroundColor = [UIColor clearColor];
             lblEmailTitle.textColor = [UIColor whiteColor];
             [lblEmailTitle setFont:[UIFont securifiBoldFont:13]];
-            lblEmailTitle.text = @"ACCESS EMAIL";
+            lblEmailTitle.text = NSLocalizedString(@"accounts.ownedAlmond.label.accessEmail",@"ACCESS EMAIL");
             lblEmailTitle.textAlignment = NSTextAlignmentLeft;
             [backgroundLabel addSubview:lblEmailTitle];
             
@@ -895,7 +895,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
                 UIButton *btnEmailRemove = [UIButton buttonWithType:UIButtonTypeCustom];
                 btnEmailRemove.frame = CGRectMake(160, baseYCordinate, 130, 30);
                 btnEmailRemove.backgroundColor = [UIColor clearColor];
-                [btnEmailRemove setTitle:@"Remove" forState:UIControlStateNormal];
+                [btnEmailRemove setTitle:NSLocalizedString(@"accounts.ownedAlmond.button.Remove",@"Remove") forState:UIControlStateNormal];
                 [btnEmailRemove.titleLabel setFont:[UIFont standardUIButtonFont]];
                 btnEmailRemove.tag = index;
                 btnEmailRemove.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
@@ -917,7 +917,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         btnInvite.backgroundColor = [UIColor clearColor];
         [[btnInvite layer] setBorderWidth:2.0f];
         [[btnInvite layer] setBorderColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:1.0].CGColor];
-        [btnInvite setTitle:@"INVITE MORE" forState:UIControlStateNormal];
+        [btnInvite setTitle:NSLocalizedString(@"accounts.ownedAlmond.button.InviteMore",@"INVITE MORE") forState:UIControlStateNormal];
         [btnInvite setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:1.0] forState:UIControlStateNormal ];
         [btnInvite.titleLabel setFont:[UIFont securifiBoldFont:13]];
         btnInvite.tag = indexPathRow - 1;
@@ -987,7 +987,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblStatus.textColor = [UIColor whiteColor];
         [lblStatus setFont:[UIFont securifiBoldFontLarge]];
         
-        lblStatus.text = @"Shared with you by";
+        lblStatus.text = NSLocalizedString(@"accounts.sharedAlmond.label.SharedWithYouBy",@"Shared with you by");
         
         lblStatus.textAlignment = NSTextAlignmentCenter;
         [backgroundLabel addSubview:lblStatus];
@@ -1010,14 +1010,14 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         lblAlmondTitle.backgroundColor = [UIColor clearColor];
         lblAlmondTitle.textColor = [UIColor whiteColor];
         [lblAlmondTitle setFont:[UIFont securifiBoldFont:13]];
-        lblAlmondTitle.text = @"DEVICE NAME";
+        lblAlmondTitle.text = NSLocalizedString(@"accounts.sharedAlmond.label.deviceName",@"DEVICE NAME");
         lblAlmondTitle.textAlignment = NSTextAlignmentLeft;
         [backgroundLabel addSubview:lblAlmondTitle];
         
         UIButton *btnUnlinkAlmond = [UIButton buttonWithType:UIButtonTypeCustom];
         btnUnlinkAlmond.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnUnlinkAlmond.backgroundColor = [UIColor clearColor];
-        [btnUnlinkAlmond setTitle:@"Remove" forState:UIControlStateNormal];
+        [btnUnlinkAlmond setTitle:NSLocalizedString(@"accounts.sharedAlmond.button.Remove",@"Remove") forState:UIControlStateNormal];
         [btnUnlinkAlmond.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnUnlinkAlmond setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnUnlinkAlmond.tag = indexPathRow - 1;
@@ -1028,7 +1028,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         baseYCordinate+=25;
         
         tfRenameAlmond = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, 180, 30)];
-        tfRenameAlmond.placeholder = @"Almond Name";
+        tfRenameAlmond.placeholder = NSLocalizedString(@"accounts.sharedAlmond.textfield.placeholder.almondName",@"Almond Name");
         [tfRenameAlmond setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
         tfRenameAlmond.text = currentAlmond.almondplusName;
         tfRenameAlmond.textAlignment = NSTextAlignmentLeft;
@@ -1046,7 +1046,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
         btnChangeAlmondName.frame = CGRectMake(160, baseYCordinate, 130, 30);
         btnChangeAlmondName.backgroundColor = [UIColor clearColor];
-        [btnChangeAlmondName setTitle:@"Rename Almond" forState:UIControlStateNormal];
+        [btnChangeAlmondName setTitle:NSLocalizedString(@"accounts.sharedAlmond.button.RenameAlmond",@"Rename Almond") forState:UIControlStateNormal];
         [btnChangeAlmondName.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnChangeAlmondName setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeAlmondName.tag = indexPathRow - 1;
@@ -1094,17 +1094,18 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 -(void)onFirstNameClicked:(id)sender{
     DLog(@"onFirstNameClicked");
     UIButton *btn = (UIButton*) sender;
-    if([btn.titleLabel.text isEqualToString:@"Done"]){
+    if([btn.titleLabel.text isEqualToString:NSLocalizedString(@"accounts.userprofile.button.done",@"Done")]){
         //Send first name change request
         DLog(@"first name to send to cloud %@", changedFirstName);
         if(changedFirstName.length!=0){
             userProfile.firstName = changedFirstName;
             [self sendUpdateUserProfileRequest];
         }
-        [btn setTitle:@"Edit" forState:UIControlStateNormal] ;
+        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.edit",@"Edit") forState:UIControlStateNormal] ;
         [tfFirstName resignFirstResponder];
+        tfFirstName.enabled = FALSE;
     }else{
-        [btn setTitle:@"Done" forState:UIControlStateNormal] ;
+        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.done",@"Done") forState:UIControlStateNormal] ;
         tfFirstName.enabled = TRUE;
         [tfFirstName becomeFirstResponder];
     }
@@ -1113,7 +1114,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 -(void)onLastNameClicked:(id)sender{
     DLog(@"onLastNameClicked");
     UIButton *btn = (UIButton*) sender;
-    if([btn.titleLabel.text isEqualToString:@"Done"]){
+    if([btn.titleLabel.text isEqualToString:NSLocalizedString(@"accounts.userprofile.button.done",@"Done")]){
         //Send last name change request
         [tfLastName resignFirstResponder];
         DLog(@"last name to send to cloud %@", changedLastName);
@@ -1121,9 +1122,10 @@ static NSString *simpleTableIdentifier = @"AccountCell";
             userProfile.lastName = changedLastName;
             [self sendUpdateUserProfileRequest];
         }
-        [btn setTitle:@"Edit" forState:UIControlStateNormal] ;
+        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.edit",@"Edit") forState:UIControlStateNormal] ;
+        tfLastName.enabled = FALSE;
     }else{
-        [btn setTitle:@"Done" forState:UIControlStateNormal] ;
+        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.done",@"Done") forState:UIControlStateNormal] ;
         tfLastName.enabled = TRUE;
         [tfLastName becomeFirstResponder];
     }
@@ -1132,7 +1134,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 -(void)onAddressChangeClicked:(id)sender{
     DLog(@"onAddressChangeClicked");
     UIButton *btn = (UIButton*) sender;
-    if([btn.titleLabel.text isEqualToString:@"Done"]){
+    if([btn.titleLabel.text isEqualToString:NSLocalizedString(@"accounts.userprofile.button.done",@"Done")]){
         [tfAddress1 resignFirstResponder];
         //Send address change request
         DLog(@"address to send to cloud %@ %@ %@", changedAddress1, changedAddress2, changedAddress3);
@@ -1152,9 +1154,12 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         if(isChanged){
             [self sendUpdateUserProfileRequest];
         }
-        [btn setTitle:@"Edit" forState:UIControlStateNormal] ;
+        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.edit",@"Edit") forState:UIControlStateNormal] ;
+        tfAddress1.enabled = FALSE;
+        tfAddress2.enabled = FALSE;
+        tfAddress3.enabled = FALSE;
     }else{
-        [btn setTitle:@"Done" forState:UIControlStateNormal] ;
+        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.done",@"Done") forState:UIControlStateNormal] ;
         tfAddress1.enabled = TRUE;
         tfAddress2.enabled = TRUE;
         tfAddress3.enabled = TRUE;
@@ -1165,7 +1170,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 -(void)onCountryClicked:(id)sender{
     DLog(@"onCountryClicked");
     UIButton *btn = (UIButton*) sender;
-    if([btn.titleLabel.text isEqualToString:@"Done"]){
+    if([btn.titleLabel.text isEqualToString:NSLocalizedString(@"accounts.userprofile.button.done",@"Done")]){
          [tfCountry resignFirstResponder];
         //Send country change request
         DLog(@"countryto send to cloud %@", changedCountry);
@@ -1173,9 +1178,10 @@ static NSString *simpleTableIdentifier = @"AccountCell";
             userProfile.country = changedCountry;
             [self sendUpdateUserProfileRequest];
         }
-        [btn setTitle:@"Edit" forState:UIControlStateNormal] ;
+        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.edit",@"Edit") forState:UIControlStateNormal] ;
+        tfCountry.enabled = FALSE;
     }else{
-        [btn setTitle:@"Done" forState:UIControlStateNormal] ;
+        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.done",@"Done") forState:UIControlStateNormal] ;
         tfCountry.enabled = TRUE;
         [tfCountry becomeFirstResponder];
     }
@@ -1184,7 +1190,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 -(void)onZipCodeClicked:(id)sender{
     DLog(@"onZipCodeClicked");
     UIButton *btn = (UIButton*) sender;
-    if([btn.titleLabel.text isEqualToString:@"Done"]){
+    if([btn.titleLabel.text isEqualToString:NSLocalizedString(@"accounts.userprofile.button.done",@"Done")]){
          [tfZipCode resignFirstResponder];
         //Send zipcode change request
         DLog(@"zipcode to send to cloud %@", changedZipcode);
@@ -1192,9 +1198,10 @@ static NSString *simpleTableIdentifier = @"AccountCell";
             userProfile.zipCode = changedZipcode;
             [self sendUpdateUserProfileRequest];
         }
-        [btn setTitle:@"Edit" forState:UIControlStateNormal] ;
+        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.edit",@"Edit") forState:UIControlStateNormal] ;
+        tfZipCode.enabled = FALSE;
     }else{
-        [btn setTitle:@"Done" forState:UIControlStateNormal] ;
+        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.done",@"Done") forState:UIControlStateNormal] ;
         tfZipCode.enabled = TRUE;
         [tfZipCode becomeFirstResponder];
     }
@@ -1203,7 +1210,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 -(void) onDeleteAccountClicked:(id)sender{
     DLog(@"onDeleteAccountClicked");
     //Confirmation Box
-    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Delete Account" message:@"Deleting the account will unlink your Almond(s) and delete user preferences. To confirm account deletion enter your password below." delegate:self cancelButtonTitle:@"Cancel"  otherButtonTitles:@"Delete", nil];
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:NSLocalizedString(@"accounts.alert.onDeleteAccount.title",@"Delete Account") message:NSLocalizedString(@"accounts.alert.onDeleteAccount.message",@"Deleting the account will unlink your Almond(s) and delete user preferences. To confirm account deletion enter your password below.") delegate:self cancelButtonTitle:NSLocalizedString(@"accounts.alert.onDeleteAccount.Cancel",@"Cancel")  otherButtonTitles:NSLocalizedString(@"accounts.alert.onDeleteAccount.delete",@"Delete"), nil];
     alert.alertViewStyle = UIAlertViewStyleSecureTextInput;
     alert.tag = DELETE_ACCOUNT_CONFIRMATION;
     [[alert textFieldAtIndex:0] setDelegate:self];
@@ -1234,9 +1241,10 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     DLog(@"onChangeAlmondNameClicked");
     UIButton *btn = (UIButton*) sender;
     NSUInteger index = (NSUInteger)btn.tag;
-    if([btn.titleLabel.text isEqualToString:@"Done"]){
+    if([btn.titleLabel.text isEqualToString:NSLocalizedString(@"accounts.userprofile.button.done",@"Done")]){
         [tfRenameAlmond resignFirstResponder];
-        [btn setTitle:@"Rename Almond" forState:UIControlStateNormal] ;
+        [btn setTitle:NSLocalizedString(@"accounts.ownedAlmond.button.RenameAlmond",@"Rename Almond") forState:UIControlStateNormal] ;
+        tfRenameAlmond.enabled = FALSE;
 
     SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:index];
     DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
@@ -1245,13 +1253,13 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     if(changedAlmondName.length == 0){
         return;
     }else if (changedAlmondName.length > 32){
-         [[[iToast makeText:@"Almond Name cannot be more than 32 characters."] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+         [[[iToast makeText:NSLocalizedString(@"accounts.itoast.almondNameMax32Characters",@"Almond Name cannot be more than 32 characters.")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
         return;
     }
     nameChangedForAlmond = NAME_CHANGED_OWNED_ALMOND;
     [self sendAlmondNameChangeRequest:currentAlmond.almondplusMAC];
     }else{
-        [btn setTitle:@"Done" forState:UIControlStateNormal];
+        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.done",@"Done") forState:UIControlStateNormal];
         tfRenameAlmond.enabled = TRUE;
         [tfRenameAlmond becomeFirstResponder];
         
@@ -1264,9 +1272,11 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     UIButton *btn = (UIButton*) sender;
     NSUInteger index = (NSUInteger)btn.tag;
     
-    if([btn.titleLabel.text isEqualToString:@"Done"]){
+    if([btn.titleLabel.text isEqualToString:NSLocalizedString(@"accounts.userprofile.button.done",@"Done")]){
         [tfRenameAlmond resignFirstResponder];
-        [btn setTitle:@"Rename Almond" forState:UIControlStateNormal] ;
+        [btn setTitle:NSLocalizedString(@"accounts.sharedAlmond.button.RenameAlmond",@"Rename Almond") forState:UIControlStateNormal] ;
+        tfRenameAlmond.enabled = FALSE;
+        
         SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:index];
         DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
         DLog(@"New Almond Name %@", changedAlmondName);
@@ -1274,14 +1284,14 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         if(changedAlmondName.length == 0){
             return;
         }else if (changedAlmondName.length > 32){
-            [[[iToast makeText:@"Almond Name cannot be more than 32 characters."] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+            [[[iToast makeText:NSLocalizedString(@"accounts.itoast.almondNameMax32Characters",@"Almond Name cannot be more than 32 characters.")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
             return;
         }
         
         nameChangedForAlmond = NAME_CHANGED_SHARED_ALMOND;
         [self sendAlmondNameChangeRequest:currentAlmond.almondplusMAC];
     }else{
-        [btn setTitle:@"Done" forState:UIControlStateNormal];
+        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.done",@"Done") forState:UIControlStateNormal];
         tfRenameAlmond.enabled = TRUE;
         [tfRenameAlmond becomeFirstResponder];
       
@@ -1297,7 +1307,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
     
     //Confirmation Box
-    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Unlink Almond" message:@"To confirm unlinking Almond enter your password below." delegate:self cancelButtonTitle:@"Cancel"  otherButtonTitles:@"Unlink", nil];
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:NSLocalizedString(@"accounts.alert.onUnlinkAlmond.title",@"Unlink Almond") message:NSLocalizedString(@"accounts.alert.onUnlinkAlmond.message",@"To confirm unlinking Almond enter your password below.") delegate:self cancelButtonTitle:NSLocalizedString(@"accounts.alert.onUnlinkAlmond.Cancel",@"Cancel")  otherButtonTitles:NSLocalizedString(@"accounts.alert.onUnlinkAlmond.Unlink",@"Unlink"), nil];
     alert.alertViewStyle = UIAlertViewStyleSecureTextInput;
     alert.tag = UNLINK_ALMOND_CONFIRMATION;
     [[alert textFieldAtIndex:0] setDelegate:self];
@@ -1316,8 +1326,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     currentAlmondMAC = currentAlmond.almondplusMAC;
     
     //Invitation Email Input Box
-    NSString *alertMessage = [NSString stringWithFormat:@"By inviting someone they can access %@",currentAlmond.almondplusName];
-    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Invite By Email" message:alertMessage delegate:self cancelButtonTitle:@"Cancel"  otherButtonTitles:@"Invite", nil];
+    NSString *alertMessage = [NSString stringWithFormat:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.message",@"By inviting someone they can access %@"),currentAlmond.almondplusName];
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.title",@"Invite By Email") message:alertMessage delegate:self cancelButtonTitle:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.Cancel",@"Cancel")  otherButtonTitles:NSLocalizedString(@"accounts.alert.onInviteToShareAlmond.Invite",@"Invite"), nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     alert.tag = USER_INVITE_ALERT;
     [[alert textFieldAtIndex:0] setDelegate:self];
@@ -1412,11 +1422,11 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"Button Index =%ld",(long)buttonIndex);
+    DLog(@"Button Index =%ld",(long)buttonIndex);
     if(alertView.tag == DELETE_ACCOUNT_CONFIRMATION){
         if (buttonIndex == 1) {  //Delete Account
             UITextField *password = [alertView textFieldAtIndex:0];
-            NSLog(@"password: %@", password.text);
+            DLog(@"password: %@", password.text);
             //Send request to delete
             [self sendDeleteAccountRequest:password.text];
         }
@@ -1424,7 +1434,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     else if(alertView.tag == UNLINK_ALMOND_CONFIRMATION){
         if (buttonIndex == 1) {  //Unlink Almond
             UITextField *password = [alertView textFieldAtIndex:0];
-            NSLog(@"password: %@", password.text);
+            DLog(@"password: %@", password.text);
             //Send request to delete
             [self sendUnlinkAlmondRequest:password.text almondMAC:currentAlmondMAC];
         }
@@ -1432,7 +1442,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     else if(alertView.tag == USER_INVITE_ALERT){
         if (buttonIndex == 1) {  //Invite user to share Almond
             UITextField *emailID = [alertView textFieldAtIndex:0];
-            NSLog(@"emailID: %@", emailID.text);
+            DLog(@"emailID: %@", emailID.text);
             changedEmailID = emailID.text;
             //Send request to delete
             [self sendUserInviteRequest:emailID.text almondMAC:currentAlmondMAC];
@@ -1466,7 +1476,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Loading account details...";
+    _HUD.labelText = NSLocalizedString(@"accounts.hud.loadingDetails", @"Loading account details...");
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
@@ -1480,8 +1490,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     UserProfileResponse *obj = (UserProfileResponse *) [data valueForKey:@"data"];
     
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
     
     if (obj.isSuccessful) {
         //Store user profile information
@@ -1505,7 +1515,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         
     }
     else {
-        NSLog(@"Reason Code %d", obj.reasonCode);
+        DLog(@"Reason Code %d", obj.reasonCode);
         [self.HUD hide:YES];
     }
     
@@ -1515,7 +1525,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 - (void)sendDeleteAccountRequest:(NSString*)password {
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Deleting account...";
+    _HUD.labelText = NSLocalizedString(@"accounts.hud.deletingAccount",@"Deleting account...");
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
@@ -1525,48 +1535,49 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [[SecurifiToolkit sharedInstance] asyncRequestDeleteCloudAccount:password];
 }
 
+
 - (void)delAccountResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
     DeleteAccountResponse *obj = (DeleteAccountResponse *) [data valueForKey:@"data"];
     
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
     
     [self.HUD hide:YES];
     if (!obj.isSuccessful) {
-        NSLog(@"Reason Code %d", obj.reasonCode);
+        DLog(@"Reason Code %d", obj.reasonCode);
         //Display appropriate reason
         NSString *failureReason;
         switch (obj.reasonCode) {
             case 1:
-                failureReason = @"There was some error on cloud. Please try later.";
+                failureReason = NSLocalizedString(@"accounts.deleteAccount.failure.reasonCode1", @"There was some error on cloud. Please try later.");
                 break;
                 
             case 2:
-                failureReason = @"Sorry! You are not registered with us yet.";
+                failureReason = NSLocalizedString(@"accounts.deleteAccount.failure.reasonCode2", @"Sorry! You are not registered with us yet.");
                 break;
                 
             case 3:
-                failureReason = @"You need to activate your account.";
+                failureReason = NSLocalizedString(@"accounts.deleteAccount.failure.reasonCode3", @"You need to activate your account.");
                 break;
                 
             case 4:
-                failureReason = @"You need to fill all the fields.";
+                failureReason = NSLocalizedString(@"accounts.deleteAccount.failure.reasonCode4", @"You need to fill all the fields.");
                 break;
                 
             case 5:
-                failureReason = @"The current password was incorrect.";
+                failureReason = NSLocalizedString(@"accounts.deleteAccount.failure.reasonCode5", @"The current password was incorrect.");
                 break;
                 
             case 6:
-                failureReason = @"There was some error on cloud. Please try later.";
+                failureReason = NSLocalizedString(@"accounts.deleteAccount.failure.reasonCode6", @"There was some error on cloud. Please try later.");
                 break;
 
                 
             default:
-                failureReason = @"Sorry! Deletion of account was unsuccessful.";
+                failureReason = NSLocalizedString(@"accounts.deleteAccount.failure.default", @"Sorry! Deletion of account was unsuccessful.");
                 break;
                 
         }
@@ -1595,7 +1606,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Updating account details...";
+    _HUD.labelText = NSLocalizedString(@"accounts.hud.updatingDetails", @"Updating account details...");
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
@@ -1603,38 +1614,38 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [self asyncSendCommand:cloudCommand];
 }
 
-
+//TODO: Localization
 -(void)updateProfileResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
     UpdateUserProfileResponse *obj = (UpdateUserProfileResponse *) [data valueForKey:@"data"];
     
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
     
     [self.HUD hide:YES];
     if (!obj.isSuccessful) {
         
-        NSLog(@"Reason Code %d", obj.reasonCode);
+        DLog(@"Reason Code %d", obj.reasonCode);
         //Display appropriate reason
         NSString *failureReason;
         switch (obj.reasonCode) {
             case 1:
-                failureReason = @"There was some error on cloud. Please try later.";
+                failureReason = NSLocalizedString(@"accounts.updateAccount.failure.reasonCode1", @"There was some error on cloud. Please try later.");
                 break;
                 
             case 2:
-                failureReason = @"You need to fill all the fields.";
+                failureReason = NSLocalizedString(@"accounts.updateAccount.failure.reasonCode2", @"You need to fill all the fields.");
                 break;
                 
             case 3:
-                failureReason = @"Sorry! You are not registered with us yet.";
+                failureReason = NSLocalizedString(@"accounts.updateAccount.failure.reasonCode3", @"Sorry! You are not registered with us yet.");
                 break;
                 
                 
             default:
-                failureReason = @"Sorry! Update was unsuccessful.";
+                failureReason = NSLocalizedString(@"accounts.updateAccount.failure.default", @"Sorry! Update was unsuccessful.");
                 break;
                 
         }
@@ -1666,11 +1677,11 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     AlmondAffiliationDataResponse *obj = (AlmondAffiliationDataResponse *) [data valueForKey:@"data"];
     
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     
     if(obj.isSuccessful){
         //Update almond list
-        NSLog(@"Owned Almond Count %d", obj.almondCount);
+        DLog(@"Owned Almond Count %d", obj.almondCount);
         ownedAlmondList = obj.almondList;
         //For testing purpose
 //
@@ -1684,7 +1695,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         });
         
     }else{
-        NSLog(@"Reason %@", obj.reason);
+        DLog(@"Reason %@", obj.reason);
     }
     //[self.HUD hide:YES];
     
@@ -1696,7 +1707,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 - (void)sendUnlinkAlmondRequest:(NSString*)password almondMAC:(NSString*)almondMAC {
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Unlinking Almond...";
+    _HUD.labelText = NSLocalizedString(@"accounts.hud.unlinkingAlmond", @"Unlinking Almond...");
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
@@ -1710,7 +1721,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     UnlinkAlmondResponse *obj = (UnlinkAlmondResponse *) [data valueForKey:@"data"];
     
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     
     if(obj.isSuccessful){
         //Remove almond locally
@@ -1734,37 +1745,37 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         });
         
     }else{
-        NSLog(@"Reason %@", obj.reason);
+        DLog(@"Reason %@", obj.reason);
         //Display appropriate reason
         NSString *failureReason;
         switch (obj.reasonCode) {
             case 1:
-                failureReason = @"There was some error on cloud. Please try later.";
+                failureReason = NSLocalizedString(@"accounts.unlinkAlmond.failure.reasonCode1", @"There was some error on cloud. Please try later.");
                 break;
                 
             case 2:
-                failureReason = @"Sorry! You are not registered with us yet.";
+                failureReason = NSLocalizedString(@"accounts.unlinkAlmond.failure.reasonCode2",@"Sorry! You are not registered with us yet.");
                 break;
                 
             case 3:
-                failureReason = @"You need to activate your account.";
+                failureReason = NSLocalizedString(@"accounts.unlinkAlmond.failure.reasonCode3",@"You need to activate your account.");
                 break;
                 
             case 4:
-                failureReason = @"You need to fill all the fields.";
+                failureReason = NSLocalizedString(@"accounts.unlinkAlmond.failure.reasonCode4",@"You need to fill all the fields.");
                 break;
                 
             case 5:
-                failureReason = @"The current password was incorrect.";
+                failureReason = NSLocalizedString(@"accounts.unlinkAlmond.failure.reasonCode5",@"The current password was incorrect.");
                 break;
                 
             case 6:
-                failureReason = @"There was some error on cloud. Please try later.";
+                failureReason = NSLocalizedString(@"accounts.unlinkAlmond.failure.reasonCode6",@"There was some error on cloud. Please try later.");
                 break;
                 
                 
             default:
-                failureReason = @"Sorry! Unlinking of Almond was unsuccessful.";
+                failureReason = NSLocalizedString(@"accounts.unlinkAlmond.failure.default", @"Sorry! Unlinking of Almond was unsuccessful.");
                 break;
                 
         }
@@ -1776,7 +1787,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 - (void)sendUserInviteRequest:(NSString*)emailID almondMAC:(NSString*)almondMAC {
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Inviting user to share Almond...";
+    _HUD.labelText = NSLocalizedString(@"accounts.hud.inviteUserToShareAlmond", @"Inviting user to share Almond...");
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
@@ -1789,7 +1800,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     UserInviteResponse *obj = (UserInviteResponse *) [data valueForKey:@"data"];
     
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     
     if(obj.isSuccessful){
         //Add shared user locally
@@ -1815,41 +1826,41 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         });
         
     }else{
-        NSLog(@"Reason %@", obj.reason);
+        DLog(@"Reason %@", obj.reason);
         //Display appropriate reason
         NSString *failureReason;
         switch (obj.reasonCode) {
             case 1:
-                failureReason = @"There was some error on cloud. Please try later.";
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode1", @"There was some error on cloud. Please try later.");
                 break;
                 
             case 2:
-                failureReason = @"This user does not have a Securifi account.";
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode2", @"This user does not have a Securifi account.");
                 break;
                 
             case 3:
-                failureReason = @"The user has not verified the Securifi account yet.";
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode3", @"The user has not verified the Securifi account yet.");
                 break;
                 
             case 4:
-                failureReason = @"You do not own this almond.";
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode4", @"You do not own this almond.");
                 break;
                 
             case 5:
-                failureReason = @"You need to fill all the fields.";
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode5", @"You need to fill all the fields.");
                 break;
                 
             case 6:
-                failureReason = @"You have already shared this almond with the user.";
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode6", @"You have already shared this almond with the user.");
                 break;
                 
             case 7:
-                failureReason = @"You can not add yourself as secondary user.";
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.reasonCode7", @"You can not add yourself as secondary user.");
                 break;
                 
                 
             default:
-                failureReason = @"Sorry! Sharing of Almond was unsuccessful.";
+                failureReason = NSLocalizedString(@"accounts.inviteUserToShareAlmond.failure.default", @"Sorry! Sharing of Almond was unsuccessful.");
                 break;
                 
         }
@@ -1861,7 +1872,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 - (void)sendDelSecondaryUserRequest:(NSString*)emailID almondMAC:(NSString*)almondMAC {
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Remove user from shared list...";
+    _HUD.labelText = NSLocalizedString(@"accounts.hud.removeUserFromSharedList", @"Remove user from shared list...");
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
@@ -1875,7 +1886,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     DeleteSecondaryUserResponse *obj = (DeleteSecondaryUserResponse *) [data valueForKey:@"data"];
     
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     
     if(obj.isSuccessful){
         //Remove access email id locally
@@ -1904,33 +1915,33 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         });
         
     }else{
-        NSLog(@"Reason %@", obj.reason);
+        DLog(@"Reason %@", obj.reason);
         //Display appropriate reason
         NSString *failureReason;
         switch (obj.reasonCode) {
             case 1:
-                failureReason = @"There was some error on cloud. Please try later.";
+                failureReason = NSLocalizedString(@"accounts.deleteSecondaryUser.failure.reasonCode1", @"There was some error on cloud. Please try later.");
                 break;
                 
             case 2:
-                failureReason = @"You need to fill all the fields. This user does not have a Securifi account.";
+                failureReason = NSLocalizedString(@"accounts.deleteSecondaryUser.failure.reasonCode2", @"You need to fill all the fields.");
                 break;
                 
             case 4:
-                failureReason = @"You are not associated with this Almond";
+                failureReason = NSLocalizedString(@"accounts.deleteSecondaryUser.failure.reasonCode4", @"You are not associated with this Almond");
                 break;
                 
             case 5:
-                failureReason = @"Secondary user not found.";
+                failureReason = NSLocalizedString(@"accounts.deleteSecondaryUser.failure.reasonCode5", @"Secondary user not found.");
                 break;
                 
             case 6:
-                failureReason = @"Secondary user is not associated with the given Almond.";
+                failureReason = NSLocalizedString(@"accounts.deleteSecondaryUser.failure.reasonCode6", @"Secondary user is not associated with the given Almond.");
                 break;
                 
                 
             default:
-                failureReason = @"Sorry! Something went wrong. Try later.";
+                failureReason = NSLocalizedString(@"accounts.deleteSecondaryUser.failure.default", @"Sorry! Something went wrong. Try later.");
                 break;
                 
         }
@@ -1942,7 +1953,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 -(void)sendAlmondNameChangeRequest:(NSString*)almondplusMAC{
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Change almond name...";
+    _HUD.labelText = NSLocalizedString(@"accounts.hud.changeAlmondName", @"Change almond name...");
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
@@ -1964,7 +1975,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     if (!self.isAlmondNameChangeSuccessful) {
         [self.HUD hide:YES];
-        [[[iToast makeText:@"Sorry! We were unable to change Almond's name"] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        [[[iToast makeText:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
 }
 
@@ -1975,7 +1986,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     AlmondNameChangeResponse *obj = (AlmondNameChangeResponse *) [data valueForKey:@"data"];
     
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     
     // Timeout the commander timer
     [self.almondNameChangeTimer invalidate];
@@ -2007,7 +2018,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         });
         
     }else{
-        [[[iToast makeText:@"Sorry! We were unable to change Almond's name"] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        [[[iToast makeText:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName",@"Sorry! We were unable to change Almond's name")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
     [self.HUD hide:YES];
 }
@@ -2018,7 +2029,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     MobileCommandResponse *obj = (MobileCommandResponse *) [data valueForKey:@"data"];
     
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     
     // Timeout the commander timer
     [self.almondNameChangeTimer invalidate];
@@ -2026,7 +2037,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     if(!obj.isSuccessful){
         NSString *failureReason = obj.reason;
-        [[[iToast makeText:[NSString stringWithFormat:@"Sorry! We were unable to change Almond's name. %@", failureReason]] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        [[[iToast makeText:[NSString stringWithFormat:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName",@"Sorry! We were unable to change Almond's name. %@"), failureReason]] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
     [self.HUD hide:YES];
 }
@@ -2041,11 +2052,11 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     MeAsSecondaryUserResponse *obj = (MeAsSecondaryUserResponse *) [data valueForKey:@"data"];
     
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     
     if(obj.isSuccessful){
         //Update almond list
-        NSLog(@"Shared Almond Count %d", obj.almondCount);
+        DLog(@"Shared Almond Count %d", obj.almondCount);
         sharedAlmondList = obj.almondList;
         //Display in table
         dispatch_async(dispatch_get_main_queue(), ^() {
@@ -2053,7 +2064,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         });
         
     }else{
-        NSLog(@"Reason %@", obj.reason);
+        DLog(@"Reason %@", obj.reason);
     }
     [self.HUD hide:YES];
 }
@@ -2061,7 +2072,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 - (void)sendDelMeAsSecondaryUserRequest:(NSString*)almondMAC {
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Remove shared almond...";
+    _HUD.labelText = NSLocalizedString(@"accounts.hud.removeSharedAlmond", @"Remove shared almond...");
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
@@ -2074,7 +2085,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     DeleteMeAsSecondaryUserResponse *obj = (DeleteMeAsSecondaryUserResponse *) [data valueForKey:@"data"];
     
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     
     if(obj.isSuccessful){
         //Remove almond locally
@@ -2096,25 +2107,25 @@ static NSString *simpleTableIdentifier = @"AccountCell";
             [self.tableView reloadData];
         });
     }else{
-        NSLog(@"Reason %@", obj.reason);
+        DLog(@"Reason %@", obj.reason);
         //Display appropriate reason
         NSString *failureReason;
         switch (obj.reasonCode) {
             case 1:
-                failureReason = @"There was some error on cloud. Please try later.";
+                failureReason = NSLocalizedString(@"accounts.deleteMeAsSecondaryUser.failure.reasonCode1", @"There was some error on cloud. Please try later.");
                 break;
                 
             case 2:
-                failureReason = @"You need to fill all the fields.";
+                failureReason = NSLocalizedString(@"accounts.deleteMeAsSecondaryUser.failure.reasonCode2", @"You need to fill all the fields.");
                 break;
                 
             case 3:
-                failureReason = @"You are not associated with this Almond..";
+                failureReason = NSLocalizedString(@"accounts.deleteMeAsSecondaryUser.failure.reasonCode3", @"You are not associated with this Almond.");
                 break;
                 
                 
             default:
-                failureReason = @"Sorry! Removing of shared Almond was unsuccessful.";
+                failureReason = NSLocalizedString(@"accounts.deleteMeAsSecondaryUser.failure.default", @"Sorry! Removing of shared Almond was unsuccessful.");
                 break;
                 
         }

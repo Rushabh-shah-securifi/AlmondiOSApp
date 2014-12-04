@@ -178,3 +178,118 @@ your home devices from anywhere.";
 "signup.footerbutton.Signup using another email" = "Signup using another email";
 "signup.footerlabel.Do you want to create another account?" = "Do you want to create another account?";
 
+
+/* Accounts */
+"accounts.navbar-title.settings" = "Settings";
+"accounts.userprofile.title.account" = "Account";
+"accounts.userprofile.label.primaryEmail" = "PRIMARY EMAIL";
+"accounts.userprofile.label.password" = "PASSWORD";
+"accounts.userprofile.label.firstName" = "FIRST NAME";
+"accounts.userprofile.label.lastName" = "LAST NAME";
+"accounts.userprofile.label.address" = "ADDRESS";
+"accounts.userprofile.label.country" = "COUNTRY";
+"accounts.userprofile.label.zipCode" = "ZIP CODE";
+
+"accounts.userprofile.title.placeholder.name" = "We don't know your name yet";
+"accounts.userprofile.textfield.placeholder.firstName" = "We do not know your first name yet";
+"accounts.userprofile.textfield.placeholder.lastName" = "We do not know your last name yet";
+"accounts.userprofile.textfield.placeholder.address1" = "Address Line 1";
+"accounts.userprofile.textfield.placeholder.address2" = "Address Line 2";
+"accounts.userprofile.textfield.placeholder.address3" = "Address Line 3";
+"accounts.userprofile.textfield.placeholder.country" = "In which country do you reside?";
+"accounts.userprofile.textfield.placeholder.zipCode" = "What is your ZIP Code?";
+
+"accounts.userprofile.button.changePassword" = "Change Password";
+"accounts.userprofile.button.edit" = "Edit";
+"accounts.userprofile.button.add" = "Add";
+"accounts.userprofile.button.done" = "Done";
+"accounts.userprofile.button.deleteAccount" = "DELETE ACCOUNT";
+
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "You own this Almond";
+"accounts.ownedAlmond.label.SharedWithOthers" = "Shared with %d other(s)";
+"accounts.ownedAlmond.label.deviceName" = "DEVICE NAME";
+"accounts.ownedAlmond.label.accessEmail" = "ACCESS EMAIL";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "Almond Name";
+"accounts.ownedAlmond.button.Unlink" = "Unlink";
+"accounts.ownedAlmond.button.RenameAlmond" = "Rename Almond";
+"accounts.ownedAlmond.button.Remove" = "Remove";
+"accounts.ownedAlmond.button.InviteMore" = "INVITE MORE";
+
+
+"accounts.sharedAlmond.label.SharedWithYouBy" = "Shared with you by";
+"accounts.sharedAlmond.label.deviceName" = "DEVICE NAME";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = "Almond Name";
+"accounts.sharedAlmond.button.RenameAlmond" = "Rename Almond";
+"accounts.sharedAlmond.button.Remove" = "Remove";
+
+"accounts.alert.onDeleteAccount.title" = "Delete Account";
+"accounts.alert.onDeleteAccount.message" = "Deleting the account will unlink your Almond(s) and delete user preferences. To confirm account deletion enter your password below.";
+"accounts.alert.onDeleteAccount.delete" = "Delete";
+"accounts.alert.onDeleteAccount.Cancel" = "Cancel";
+
+"accounts.alert.onUnlinkAlmond.title" = "Unlink Almond";
+"accounts.alert.onUnlinkAlmond.message" = "To confirm unlinking Almond enter your password below.";
+"accounts.alert.onUnlinkAlmond.Unlink" = "Unlink";
+"accounts.alert.onUnlinkAlmond.Cancel" = "Cancel";
+
+
+"accounts.alert.onInviteToShareAlmond.title" = "Invite By Email";
+"accounts.alert.onInviteToShareAlmond.message" = "By inviting someone they can access %@";
+"accounts.alert.onInviteToShareAlmond.Invite" = "Invite";
+"accounts.alert.onInviteToShareAlmond.Cancel" = "Cancel";
+
+
+"accounts.itoast.almondNameMax32Characters" = "Almond Name cannot be more than 32 characters.";
+"accounts.itoast.unableToChangeAlmondName" = "Sorry! We were unable to change Almond's name";
+
+"accounts.hud.loadingDetails" = "Loading account details...";
+"accounts.hud.deletingAccount" = "Deleting account...";
+"accounts.hud.updatingDetails" = "Updating account details...";
+"accounts.hud.unlinkingAlmond" = "Unlinking Almond...";
+"accounts.hud.inviteUserToShareAlmond" = "Inviting user to share Almond...";
+"accounts.hud.removeUserFromSharedList" = "Remove user from shared list...";
+"accounts.hud.changeAlmondName" = "Change almond name...";
+"accounts.hud.removeSharedAlmond" = "Remove shared almond...";
+
+
+"accounts.deleteAccount.failure.reasonCode1" = "There was some error on cloud. Please try later.";
+"accounts.deleteAccount.failure.reasonCode2" = "Sorry! You are not registered with us yet.";
+"accounts.deleteAccount.failure.reasonCode3" = "You need to activate your account.";
+"accounts.deleteAccount.failure.reasonCode4" = "You need to fill all the fields.";
+"accounts.deleteAccount.failure.reasonCode5" = "The current password was incorrect.";
+"accounts.deleteAccount.failure.reasonCode6" = "There was some error on cloud. Please try later.";
+"accounts.deleteAccount.failure.default" = "Sorry! Deletion of account was unsuccessful.";
+
+"accounts.updateAccount.failure.reasonCode1" = "There was some error on cloud. Please try later.";
+"accounts.updateAccount.failure.reasonCode2" = "You need to fill all the fields.";
+"accounts.updateAccount.failure.reasonCode3" = "Sorry! You are not registered with us yet.";
+"accounts.updateAccount.failure.default" = "Sorry! Update was unsuccessful.";
+
+"accounts.unlinkAlmond.failure.reasonCode1" = "There was some error on cloud. Please try later.";
+"accounts.unlinkAlmond.failure.reasonCode2" = "Sorry! You are not registered with us yet.";
+"accounts.unlinkAlmond.failure.reasonCode3" = "You need to activate your account.";
+"accounts.unlinkAlmond.failure.reasonCode4" = "You need to fill all the fields.";
+"accounts.unlinkAlmond.failure.reasonCode5" = "The current password was incorrect.";
+"accounts.unlinkAlmond.failure.reasonCode6" = "There was some error on cloud. Please try later.";
+"accounts.unlinkAlmond.failure.default" = "Sorry! Unlinking of Almond was unsuccessful.";
+
+"accounts.inviteUserToShareAlmond.failure.reasonCode1" = "There was some error on cloud. Please try later.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "This user does not have a Securifi account.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "The user has not verified the Securifi account yet.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "You do not own this almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode5" = "You need to fill all the fields.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "You have already shared this almond with the user.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode7" = "You can not add yourself as secondary user.";
+"accounts.inviteUserToShareAlmond.failure.default" = "Sorry! Sharing of Almond was unsuccessful.";
+
+"accounts.deleteSecondaryUser.failure.reasonCode1" = "There was some error on cloud. Please try later.";
+"accounts.deleteSecondaryUser.failure.reasonCode2" = "You need to fill all the fields.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "You are not associated with this Almond";
+"accounts.deleteSecondaryUser.failure.reasonCode5" = "Secondary user not found.";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "Secondary user is not associated with the given Almond.";
+"accounts.deleteSecondaryUser.failure.default" = "Sorry! Something went wrong. Try later.";
+
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode1" = "There was some error on cloud. Please try later.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode2" = "You need to fill all the fields.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "You are not associated with this Almond";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "Sorry! Removing of shared Almond was unsuccessful.";
