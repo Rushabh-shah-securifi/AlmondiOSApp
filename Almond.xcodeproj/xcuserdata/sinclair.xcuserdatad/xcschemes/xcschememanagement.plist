@@ -4,6 +4,16 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Almond copy 2.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>15</integer>
+		</dict>
+		<key>Almond copy.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>14</integer>
+		</dict>
 		<key>Almond.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,6 +22,26 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>1C2055271A2EBB8000975495</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1C2056051A2EBBBA00975495</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1C2056201A2EBBBB00975495</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>1CA79D591A2DAE9900AA887E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>1CED5EF019AC82FD0023512F</key>
 		<dict>
 			<key>primary</key>
