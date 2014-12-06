@@ -76,10 +76,10 @@
 		1DF03A36D98A00D4E8B5682B /* UIView+Borders.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0319B1FB51685ABC16993 /* UIView+Borders.m */; };
 		1DF03C1246271DE936211238 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1DF037D458FF6476B3446571 /* Localizable.strings */; };
 		CE458D6719EF98EA00689251 /* UIFont+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = CE458D6619EF98EA00689251 /* UIFont+Securifi.m */; };
-		CE91314C19C6B06500D94876 /* AccountsStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE91314B19C6B06500D94876 /* AccountsStoryboard_iPhone.storyboard */; };
 		CE91314F19C6B14100D94876 /* SFIAccountsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE91314E19C6B14100D94876 /* SFIAccountsTableViewController.m */; };
 		CE91316019C7068C00D94876 /* SFIUserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = CE91315F19C7068C00D94876 /* SFIUserProfile.m */; };
 		CE91316A19C95AE600D94876 /* SFIPasswordChangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE91316919C95AE600D94876 /* SFIPasswordChangeViewController.m */; };
+		CEA349BB1A33348700AFC379 /* AccountsStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA349BD1A33348700AFC379 /* AccountsStoryboard_iPhone.storyboard */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -150,8 +150,6 @@
 		1CED5F2719AC85AA0023512F /* cert.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = cert.der; sourceTree = "<group>"; };
 		1CED5F2819AC85AA0023512F /* certificate.cer */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = certificate.cer; sourceTree = "<group>"; };
 		1CED5F2B19AC85AA0023512F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
-		1CED5F2D19AC85AA0023512F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
-		1CED5F2F19AC85AA0023512F /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		1CED5FCB19AC85AB0023512F /* SFIActivationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIActivationViewController.h; sourceTree = "<group>"; };
 		1CED5FCC19AC85AB0023512F /* SFIActivationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIActivationViewController.m; sourceTree = "<group>"; };
 		1CED5FCD19AC85AB0023512F /* SFILoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFILoginViewController.h; sourceTree = "<group>"; };
@@ -205,13 +203,18 @@
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE458D6519EF98EA00689251 /* UIFont+Securifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIFont+Securifi.h"; path = "UICategories/UIFont+Securifi.h"; sourceTree = "<group>"; };
 		CE458D6619EF98EA00689251 /* UIFont+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIFont+Securifi.m"; path = "UICategories/UIFont+Securifi.m"; sourceTree = "<group>"; };
-		CE91314B19C6B06500D94876 /* AccountsStoryboard_iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = AccountsStoryboard_iPhone.storyboard; path = ../AccountsStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		CE91314D19C6B14100D94876 /* SFIAccountsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFIAccountsTableViewController.h; path = Settings/SFIAccountsTableViewController.h; sourceTree = "<group>"; };
 		CE91314E19C6B14100D94876 /* SFIAccountsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFIAccountsTableViewController.m; path = Settings/SFIAccountsTableViewController.m; sourceTree = "<group>"; };
 		CE91315E19C7068C00D94876 /* SFIUserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFIUserProfile.h; path = Settings/SFIUserProfile.h; sourceTree = "<group>"; };
 		CE91315F19C7068C00D94876 /* SFIUserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFIUserProfile.m; path = Settings/SFIUserProfile.m; sourceTree = "<group>"; };
 		CE91316819C95AE600D94876 /* SFIPasswordChangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFIPasswordChangeViewController.h; path = Settings/SFIPasswordChangeViewController.h; sourceTree = "<group>"; };
 		CE91316919C95AE600D94876 /* SFIPasswordChangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFIPasswordChangeViewController.m; path = Settings/SFIPasswordChangeViewController.m; sourceTree = "<group>"; };
+		CEA349C51A33374100AFC379 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/AccountsStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		CEA349C61A33374100AFC379 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		CEA349C71A33374100AFC379 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		CEA349CA1A33378100AFC379 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
+		CEA349CC1A3337B400AFC379 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainStoryboard_iPad.strings; sourceTree = "<group>"; };
+		CEA349CE1A3337BD00AFC379 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -399,7 +402,7 @@
 		1CED5F2919AC85AA0023512F /* en.lproj */ = {
 			isa = PBXGroup;
 			children = (
-				CE91314B19C6B06500D94876 /* AccountsStoryboard_iPhone.storyboard */,
+				CEA349BD1A33348700AFC379 /* AccountsStoryboard_iPhone.storyboard */,
 				1CED5F2A19AC85AA0023512F /* InfoPlist.strings */,
 				1CED5F2C19AC85AA0023512F /* MainStoryboard_iPad.storyboard */,
 				1CED5F2E19AC85AA0023512F /* MainStoryboard_iPhone.storyboard */,
@@ -645,7 +648,7 @@
 				1CED60C419AC85AB0023512F /* termsofuse.html in Resources */,
 				1CED602A19AC85AB0023512F /* certificate.cer in Resources */,
 				1CED602819AC85AB0023512F /* cert.cer in Resources */,
-				CE91314C19C6B06500D94876 /* AccountsStoryboard_iPhone.storyboard in Resources */,
+				CEA349BB1A33348700AFC379 /* AccountsStoryboard_iPhone.storyboard in Resources */,
 				1CED60C919AC85AB0023512F /* sensordata.xml in Resources */,
 				1CED602919AC85AB0023512F /* cert.der in Resources */,
 				1CED602D19AC85AB0023512F /* MainStoryboard_iPhone.storyboard in Resources */,
@@ -805,7 +808,8 @@
 		1CED5F2C19AC85AA0023512F /* MainStoryboard_iPad.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1CED5F2D19AC85AA0023512F /* en */,
+				CEA349C61A33374100AFC379 /* Base */,
+				CEA349CC1A3337B400AFC379 /* en */,
 			);
 			name = MainStoryboard_iPad.storyboard;
 			sourceTree = "<group>";
@@ -813,7 +817,8 @@
 		1CED5F2E19AC85AA0023512F /* MainStoryboard_iPhone.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				1CED5F2F19AC85AA0023512F /* en */,
+				CEA349C71A33374100AFC379 /* Base */,
+				CEA349CE1A3337BD00AFC379 /* en */,
 			);
 			name = MainStoryboard_iPhone.storyboard;
 			sourceTree = "<group>";
@@ -824,6 +829,16 @@
 				1DF039380EA4E700AEFBFF79 /* en */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		CEA349BD1A33348700AFC379 /* AccountsStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CEA349C51A33374100AFC379 /* Base */,
+				CEA349CA1A33378100AFC379 /* en */,
+			);
+			name = AccountsStoryboard_iPhone.storyboard;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
