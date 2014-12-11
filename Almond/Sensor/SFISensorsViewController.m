@@ -303,7 +303,7 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    //TODO: Check if activated or not
+    //Check if activated or not
     BOOL isAccountActivated = [[SecurifiToolkit sharedInstance] isAccountActivated];
     if(!isAccountActivated && self.isAccountActivatedNotification){
         return [self createActivationNotificationHeader];
@@ -733,6 +733,7 @@
         SFINotificationDevice *notificationDevice = [[SFINotificationDevice alloc] init];
         notificationDevice.deviceID = device.deviceID;
         notificationDevice.valueIndex = currentDeviceValue.index;
+        notificationDevice.notificationMode = device.notificationMode;
         [notificationPrefDeviceList addObject:notificationDevice];
     }
 
@@ -1174,7 +1175,7 @@
         DLog(@"Notification Preference list is empty: %@", cloudMAC);
 
     }
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;

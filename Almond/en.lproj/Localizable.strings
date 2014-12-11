@@ -159,6 +159,10 @@ your home devices from anywhere.";
 "sensor.moisturesensor.status.FLOODED" = "FLOODED";
 "sensor.poweswitch.label.Power %@W" = "Power %@W";
 "sensor.moisturesensor.status.Temp %@" = "Temp %@";
+"sensor.notificaiton.label.notificationMode" = "Notification Mode";
+"sensor.notificaiton.segment.Always" = "Always";
+"sensor.notificaiton.segment.Home" = "Home";
+"sensor.notificaiton.segment.Away" = "Away";
 
 /* signup */
 
