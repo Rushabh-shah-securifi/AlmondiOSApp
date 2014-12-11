@@ -250,14 +250,6 @@
     [self.firstResponderField resignFirstResponder];
 }
 
-- (void)onSensorNameTextFieldFinishedEditing:(id)sender {
-//    [self.deviceLocationField becomeFirstResponder];
-}
-
-- (void)onSensorLocationTextFieldFinishedEditing:(id)sender {
-
-}
-
 - (void)onDismissTamper:(id)sender {
     [self.delegate sensorDetailViewDidPressDismissTamperButton:self];
 }
