@@ -11,4 +11,7 @@
 // Show a "toast" message at the bottom of the screen
 - (void)showToast:(NSString *)msg;
 
+// Shows a standard "Saving..." toast message
+- (void)showSavingToast;
+
 @end

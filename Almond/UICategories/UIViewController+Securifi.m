@@ -20,4 +20,8 @@
     });
 }
 
+- (void)showSavingToast {
+    [self showToast:NSLocalizedString(@"toast.Saving...", @"Saving...")];
+}
+
 @end

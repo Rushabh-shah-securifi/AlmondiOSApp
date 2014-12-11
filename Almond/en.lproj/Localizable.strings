@@ -8,6 +8,7 @@
 "alert.button.OK" = "OK";
 "Oops!" = "Oops!";
 "Sorry!" = "Sorry!";
+"toast.Saving..." = "Saving...";
 
 /* affiliation */
 
@@ -117,7 +118,6 @@ your home devices from anywhere.";
 "sensors.account-confirm.label.Please confirm your account (%d days left)." = "Please confirm your account (%d days left).";
 "sensors.account-confirm.label.Check activation email for instructions." = "Check activation email for instructions.";
 "sensors.account-confirm.label.Resend activation email" = "Resend activation email";
-"sensors.toast.Saving..." = "Saving...";
 "activation.toast.Reactivation link sent to your registerd email ID." = "Reactivation link sent to your registerd email ID.";
 "sensor.thermostat.field-label.Heating" = "Heating";
 "sensor.thermostat.field-label.Cooling" = "Cooling";
