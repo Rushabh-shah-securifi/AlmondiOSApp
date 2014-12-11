@@ -136,17 +136,17 @@
                selector:@selector(onSensorChangeCallback:)
                    name:SENSOR_CHANGE_NOTIFIER
                  object:nil];
-    
+
     [center addObserver:self
-            selector:@selector(validateResponseCallback:)
-            name:VALIDATE_RESPONSE_NOTIFIER
-            object:nil];
-    
+               selector:@selector(validateResponseCallback:)
+                   name:VALIDATE_RESPONSE_NOTIFIER
+                 object:nil];
+
     [center addObserver:self
-            selector:@selector(onNotificationPrefDidChange:)
-            name:kSFIDidChangeNotificationList
-            object:nil];
-    
+               selector:@selector(onNotificationPrefDidChange:)
+                   name:kSFIDidChangeNotificationList
+                 object:nil];
+
     [center addObserver:self
                selector:@selector(onNotificationPrefResponse:)
                    name:NOTIFICATION_PREFERENCE_CHANGE_RESPONSE_NOTIFIER
@@ -614,7 +614,18 @@
     self.enableDrawer = NO;
 }
 
-- (void)tableViewCellWillCancelMakingChanges:(SFISensorTableViewCell *)cell {
+- (void)tableViewCellDidCompleteMakingChanges:(SFISensorTableViewCell *)cell {
+    if (self.isViewControllerDisposed) {
+        return;
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.isUpdatingDeviceSettings = NO;
+        self.enableDrawer = YES;
+    });
+}
+
+- (void)tableViewCellDidCancelMakingChanges:(SFISensorTableViewCell *)cell {
     if (self.isViewControllerDisposed) {
         return;
     }
@@ -631,8 +642,6 @@
         return;
     }
 
-    [self showToast:NSLocalizedString(@"sensors.toast.Saving...", @"Saving...")];
-    
     SFIDevice *device = cell.device;
 
     SensorChangeRequest *cmd = [[SensorChangeRequest alloc] init];
@@ -645,6 +654,7 @@
     cloudCommand.commandType = CommandType_MOBILE_COMMAND;
     cloudCommand.command = cmd;
 
+    [self showUpdatingSettingsHUD];
     [self asyncSendCommand:cloudCommand];
 
     //todo sinclair - push timeout into the SDK and invoke timeout action using a closure??
@@ -670,6 +680,7 @@
     SFIDeviceKnownValues *deviceValues  = [cell.deviceValue knownValuesForProperty:SFIDevicePropertyType_TAMPER];
     [deviceValues setBoolValue:NO];
 
+    [self showSavingToast];
     [self sendMobileCommandForDevice:device deviceValue:deviceValues deviceCell:cell];
 }
 
@@ -686,6 +697,7 @@
     // provisionally update; on mobile cmd response, the actual new values will be set
     cell.deviceValue = [cell.deviceValue setKnownValues:deviceValues forProperty:propertyType];
 
+    [self showSavingToast];
     [self sendMobileCommandForDevice:device deviceValue:deviceValues deviceCell:cell];
 }
 
@@ -702,6 +714,7 @@
     // provisionally update; on mobile cmd response, the actual new values will be set
     cell.deviceValue = [cell.deviceValue setKnownValues:deviceValues forPropertyName:propertyName];
 
+    [self showSavingToast];
     [self sendMobileCommandForDevice:device deviceValue:deviceValues deviceCell:cell];
 }
 
@@ -735,6 +748,8 @@
         notificationDevice.valueIndex = currentDeviceValue.index;
         [notificationPrefDeviceList addObject:notificationDevice];
     }
+
+    [self showSavingToast];
 
     NSString *action = enabled ? kSFINotificationPreferenceChangeActionAdd : kSFINotificationPreferenceChangeActionDelete;
     [[SecurifiToolkit sharedInstance] asyncRequestNotificationPreferenceChange:self.almondMac deviceList:notificationPrefDeviceList forAction:action];

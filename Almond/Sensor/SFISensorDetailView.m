@@ -365,7 +365,7 @@
         [self.delegate sensorDetailViewDidPressSaveButton:self];
     }
     else {
-       // ensures that if editing is ended because the user tapped outside the cell or pressed another button, the editing state is reset
+        // ensures that if editing is ended because the user tapped outside the cell or pressed another button, the editing state is reset
         [textField resignFirstResponder];
         [self.delegate sensorDetailViewDidCompleteMakingChanges:self];
     }
