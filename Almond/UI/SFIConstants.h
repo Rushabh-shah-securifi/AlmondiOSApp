@@ -11,7 +11,7 @@
 @interface SFIConstants : NSObject
 
 #define SENSOR_ROW_HEIGHT       90
-#define EXPANDED_ROW_HEIGHT     235
+#define EXPANDED_ROW_HEIGHT     250
 #define LEFT_LABEL_WIDTH        100
 
 #define DEVICE_UNKNOWN_IMAGE 						    @"00_default_device.png"

@@ -320,7 +320,17 @@
 
 - (void)onNotificationEnabledSwitch:(id)sender {
     UISwitch *ctrl = (UISwitch *) sender;
+    if (self.device.notificationMode == 0){
+        self.device.notificationMode = 1;
+    }
     [self.delegate sensorDetailViewDidChangeNotificationPref:self notificationSettingEnabled:ctrl.isOn];
+}
+
+-(void)onNotificationModeChanged:(id)sender{
+    //Get Notification Mode
+    UISegmentedControl *ctrl = (UISegmentedControl *) sender;
+    self.device.notificationMode = (int)ctrl.selectedSegmentIndex + 1;
+    [self.delegate sensorDetailViewDidChangeNotificationPref:self notificationSettingEnabled:TRUE];
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -483,6 +493,20 @@
 
     UISwitch *ctrl = [self makeOnOffSwitch:self action:@selector(onNotificationEnabledSwitch:) on:notificationEnabled];
     [self addSubview:ctrl];
+    
+    [self markYOffsetUsingRect:label.frame addAdditional:15];
+    
+    UILabel *labelMode = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
+    labelMode.backgroundColor = self.color;
+    labelMode.text = NSLocalizedString(@"sensor.notificaiton.label.notificationMode",  @"Notification Mode");
+    labelMode.textColor = [UIColor whiteColor];
+    labelMode.font = [UIFont securifiBoldFont];
+    
+    [self addSubview:labelMode];
+    
+    //Add notification mode control
+    UISegmentedControl *segmentCtrl = [self makeNotificationModeSegment:self action:@selector(onNotificationModeChanged:) selectedSegment:self.device.notificationMode-1 enabled:notificationEnabled];
+    [self addSubview:segmentCtrl];
 
     [self markYOffsetUsingRect:label.frame addAdditional:15];
 }
@@ -905,7 +929,7 @@
         return SENSOR_ROW_HEIGHT;
     }
 
-    NSUInteger extra = 55;          // accounts for notification on/off control
+    NSUInteger extra = 85;          // accounts for notification on/off control
     extra += isTampered ? 45 : 0;   // accounts for the row presenting the tampered msg and dismiss button
 
     switch (currentSensor.deviceType) {
@@ -1168,6 +1192,28 @@
     [control addTarget:target action:action forControlEvents:UIControlEventValueChanged];
 
     return control;
+}
+
+-(UISegmentedControl*)makeNotificationModeSegment:(id)target action:(SEL)action selectedSegment:(int)modeSegment_index enabled:(BOOL)isEnabled{
+    CGFloat width = CGRectGetWidth(self.frame);
+    NSArray *segment_items = @[
+                            NSLocalizedString(@"sensor.notificaiton.segment.Always",  @"Always"),
+                            NSLocalizedString(@"sensor.notificaiton.segment.Home", @"Home"),
+                            NSLocalizedString(@"sensor.notificaiton.segment.Away", @"Away"),
+                               ];
+    UISegmentedControl *modeSegmentControl = [[UISegmentedControl alloc] initWithItems:segment_items];
+    modeSegmentControl.frame = CGRectMake(width - 150, self.baseYCoordinate, width - 150, 25.0);
+    modeSegmentControl.enabled = isEnabled;
+    [modeSegmentControl addTarget:target action:action forControlEvents:UIControlEventValueChanged];
+    
+    UIFont *const heavy_12 = [UIFont securifiBoldFont];
+    UIColor *const white_color = [UIColor whiteColor];
+    NSDictionary *const attributes = @{NSFontAttributeName : heavy_12};
+    modeSegmentControl.tintColor = white_color;
+    [modeSegmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
+
+    modeSegmentControl.selectedSegmentIndex = (modeSegment_index==-1)?0:modeSegment_index;
+    return modeSegmentControl;
 }
 
 @end
