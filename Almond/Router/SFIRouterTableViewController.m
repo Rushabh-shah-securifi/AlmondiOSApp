@@ -42,7 +42,8 @@
 @property BOOL shownHudOnce;
 @property BOOL disposed;
 
-@property unsigned int mobileInternalIndex;
+@property sfi_id correlationId;
+
 @end
 
 @implementation SFIRouterTableViewController
@@ -184,7 +185,7 @@
 
 - (void)sendRebootAlmondCommand {
     if (![self isNoAlmondLoaded]) {
-        [self sendGenericCommandRequest:REBOOT_COMMAND];
+        self.correlationId = [[SecurifiToolkit sharedInstance] asyncRebootAlmond:self.currentMAC];
     }
 }
 
@@ -817,7 +818,7 @@
     request.applicationID = APPLICATION_ID;
     request.data = data;
 
-    self.mobileInternalIndex = request.correlationId;
+    self.correlationId = request.correlationId;
 
     GenericCommand *cmd = [[GenericCommand alloc] init];
     cmd.commandType = CommandType_GENERIC_COMMAND_REQUEST;
@@ -863,7 +864,7 @@
 
     //todo push all of this parsing and manipulation into the parser or SFIGenericRouterCommand!
 
-    DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
+    DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.correlationId, obj.mobileInternalIndex);
     DLog(@"Response Data: %@", obj.genericData);
     DLog(@"Decoded Data: %@", obj.decodedData);
 
@@ -964,7 +965,7 @@
     NSMutableData *genericData = [[NSMutableData alloc] init];
 
     //Display proper message
-    DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.mobileInternalIndex, obj.mobileInternalIndex);
+    DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.correlationId, obj.mobileInternalIndex);
     DLog(@"Response Data: %@", obj.genericData);
     DLog(@"Decoded Data: %@", obj.decodedData);
 
@@ -995,9 +996,6 @@
             case SFIGenericRouterCommandType_REBOOT: {
                 self.isRebooting = FALSE;
                 [self refreshDataForAlmond];
-
-//                SFIRouterReboot *routerReboot = (SFIRouterReboot *) genericRouterCommand.command;
-//                NSLog(@"Reboot Reply: %d", routerReboot.reboot);
 
                 //todo handle failure case
                 [self showHUD:NSLocalizedString(@"router.hud.Router is now online.", @"Router is now online.")];
