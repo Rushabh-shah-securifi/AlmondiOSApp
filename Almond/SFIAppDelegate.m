@@ -15,10 +15,22 @@
 
 @implementation SFIAppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [Crashlytics startWithAPIKey:@"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3"];
+#pragma mark - Public methods; subclasses override
 
-    SecurifiConfigurator *config = [SecurifiConfigurator new];
+- (SecurifiConfigurator *)toolkitConfigurator {
+    return [SecurifiConfigurator new];
+}
+
+- (NSString *)crashReporterApiKey {
+    return @"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3";
+}
+
+#pragma mark - UIApplicationDelegate methods
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [Crashlytics startWithAPIKey:[self crashReporterApiKey]];
+
+    SecurifiConfigurator *config = [self toolkitConfigurator];
     [SecurifiToolkit initialize:config];
 
     [DDLog addLogger:[DDASLLogger sharedInstance]];
