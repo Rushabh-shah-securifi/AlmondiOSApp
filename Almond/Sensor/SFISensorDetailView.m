@@ -320,16 +320,14 @@
 
 - (void)onNotificationEnabledSwitch:(id)sender {
     UISwitch *ctrl = (UISwitch *) sender;
-    if (self.device.notificationMode == 0){
-        self.device.notificationMode = 1;
-    }
     [self.delegate sensorDetailViewDidChangeNotificationPref:self notificationSettingEnabled:ctrl.isOn];
 }
 
 -(void)onNotificationModeChanged:(id)sender{
     //Get Notification Mode
     UISegmentedControl *ctrl = (UISegmentedControl *) sender;
-    self.device.notificationMode = (int)ctrl.selectedSegmentIndex + 1;
+    NSInteger mode = ctrl.selectedSegmentIndex + 1;
+    self.device.notificationMode = (SFINotificationMode) mode;
     [self.delegate sensorDetailViewDidChangeNotificationPref:self notificationSettingEnabled:TRUE];
 }
 
@@ -369,7 +367,7 @@
     else {
         // ensures that if editing is ended because the user tapped outside the cell or pressed another button, the editing state is reset
         [textField resignFirstResponder];
-        [self.delegate sensorDetailViewDidCompleteMakingChanges:self];
+        [self.delegate sensorDetailViewDidCancelMakingChanges:self];
     }
 
     return NO;
