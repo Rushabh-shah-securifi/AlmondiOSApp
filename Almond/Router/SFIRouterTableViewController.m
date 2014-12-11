@@ -297,9 +297,6 @@
     if (self.isAlmondUnavailable) {
         return 400;
     }
-    if (self.isRebooting) {
-        return 100;
-    }
     if (![self isCloudOnline]) {
         return 400;
     }
@@ -309,10 +306,17 @@
             if (indexPath.row == 0) {
                 return 120;
             }
-            return 200;
+            return 300;
 
         case DEF_DEVICES_AND_USERS_SECTION:
+            if (indexPath.row > 0) {
+                return 85;
+            }
+
         case DEF_ROUTER_REBOOT_SECTION:
+            if (indexPath.row > 0) {
+                return 95;
+            }
         default:
             return 85;
     }
@@ -324,9 +328,6 @@
     }
     if (self.isAlmondUnavailable) {
         return 400;
-    }
-    if (self.isRebooting) {
-        return 100;
     }
     if (![self isCloudOnline]) {
         return 400;
