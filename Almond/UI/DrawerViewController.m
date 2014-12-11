@@ -189,7 +189,7 @@
             //Display the corresponding Sensor List
 
             SFIAlmondPlus *currentAlmond = almondList[(NSUInteger) indexPath.row];
-            currentAlmond.colorCodeIndex = indexPath.row;
+            currentAlmond.colorCodeIndex = (int) indexPath.row;
 
             [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
 
