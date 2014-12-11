@@ -1105,7 +1105,7 @@
             return;
         }
 
-        [self showHUD:NSLocalizedString(@"hud.Updating settings...", @"Updating settings...")];
+        [self showUpdatingSettingsHUD];
         [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.currentMAC wirelessSettings:copy];
         [self.HUD hide:YES afterDelay:2];
     });
