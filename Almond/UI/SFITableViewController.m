@@ -130,6 +130,10 @@
     [self.HUD show:YES];
 }
 
+- (void)showUpdatingSettingsHUD {
+    [self showHUD:NSLocalizedString(@"hud.Updating settings...", @"Updating settings...")];
+}
+
 - (void)setEnableDrawer:(BOOL)enableDrawer {
     _enableDrawer = enableDrawer;
     self.navigationItem.leftBarButtonItem.enabled = enableDrawer;

@@ -22,6 +22,9 @@
 
 - (void)showHUD:(NSString *)text;
 
+// convenience method for showing a standard "updating settings..." message
+- (void)showUpdatingSettingsHUD;
+
 // Enabled by default
 @property(nonatomic) BOOL enableDrawer;
 

@@ -19,7 +19,6 @@
 
 #define CELL_STATE_PIN_SELECTION @"PinCodeField"
 
-
 // ===================================================================================
 
 
@@ -251,22 +250,6 @@
     [self.firstResponderField resignFirstResponder];
 }
 
-- (void)onSensorNameTextFieldDidChange:(id)sender {
-
-}
-
-- (void)onSensorNameTextFieldFinishedEditing:(id)sender {
-
-}
-
-- (void)onSensorLocationTextFieldDidChange:(id)sender {
-
-}
-
-- (void)onSensorLocationTextFieldFinishedEditing:(id)sender {
-
-}
-
 - (void)onDismissTamper:(id)sender {
     [self.delegate sensorDetailViewDidPressDismissTamperButton:self];
 }
@@ -376,14 +359,20 @@
         return NO;
     }
 
-    if (textField.tag == 0 /* 0 == either name or location field; all others are tagged with SFI property type */ ) {
+    if (textField == self.deviceNameField) {
+        [self.deviceLocationField becomeFirstResponder];
+    }
+    else if (textField == self.deviceLocationField) {
+        [textField resignFirstResponder];
         [self.delegate sensorDetailViewDidPressSaveButton:self];
     }
     else {
-       // ensures that if editing is ended because the user tapped outside the cell or pressed another button, the editing state is reset
+        // ensures that if editing is ended because the user tapped outside the cell or pressed another button, the editing state is reset
+        [textField resignFirstResponder];
         [self.delegate sensorDetailViewDidCompleteMakingChanges:self];
     }
-    return YES;
+
+    return NO;
 }
 
 
@@ -391,15 +380,12 @@
 
 - (void)addDisplayNameField {
     UITextField *field = [self addFieldNameValue:NSLocalizedString(@"sensor.device-name-label.Name", @"Name") fieldValue:self.device.deviceName];
-    [field addTarget:self action:@selector(onSensorNameTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    [field addTarget:self action:@selector(onSensorNameTextFieldFinishedEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    field.returnKeyType = UIReturnKeyNext;
     self.deviceNameField = field;
 }
 
 - (void)addDeviceLocationField {
     UITextField *field = [self addFieldNameValue:NSLocalizedString(@"sensor.deivice-location-label.Located at", @"Located at") fieldValue:self.device.location];
-    [field addTarget:self action:@selector(onSensorLocationTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    [field addTarget:self action:@selector(onSensorLocationTextFieldFinishedEditing:) forControlEvents:UIControlEventEditingDidEndOnExit];
     self.deviceLocationField = field;
 }
 

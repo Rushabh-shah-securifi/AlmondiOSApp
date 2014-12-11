@@ -16,7 +16,9 @@
 
 - (void)tableViewCellWillStartMakingChanges:(SFISensorTableViewCell*)cell;
 
-- (void)tableViewCellWillCancelMakingChanges:(SFISensorTableViewCell*)cell;
+- (void)tableViewCellDidCompleteMakingChanges:(SFISensorTableViewCell*)cell;
+
+- (void)tableViewCellDidCancelMakingChanges:(SFISensorTableViewCell*)cell;
 
 - (void)tableViewCellDidSaveChanges:(SFISensorTableViewCell*)cell;
 

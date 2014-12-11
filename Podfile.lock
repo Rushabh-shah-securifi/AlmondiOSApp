@@ -1,17 +1,19 @@
 PODS:
   - ASValueTrackingSlider (0.9.4)
   - CocoaLumberjack (2.0.0-beta):
-    - CocoaLumberjack/CLI
-    - CocoaLumberjack/Core
-    - CocoaLumberjack/Extensions
+    - CocoaLumberjack/CLI (= 2.0.0-beta)
+    - CocoaLumberjack/Core (= 2.0.0-beta)
+    - CocoaLumberjack/Extensions (= 2.0.0-beta)
   - CocoaLumberjack/CLI (2.0.0-beta):
     - CocoaLumberjack/Core
   - CocoaLumberjack/Core (2.0.0-beta)
   - CocoaLumberjack/Extensions (2.0.0-beta):
     - CocoaLumberjack/Core
   - Colours (5.5.0)
-  - CrashlyticsFramework (2.2.4)
-  - GoogleAnalytics-iOS-SDK (3.0.9)
+  - CrashlyticsFramework (2.2.5.2)
+  - GoogleAnalytics-iOS-SDK (3.10):
+    - GoogleAnalytics-iOS-SDK/Core (= 3.10)
+  - GoogleAnalytics-iOS-SDK/Core (3.10)
   - iToast (0.0.1)
   - MBProgressHUD (0.9)
   - SWRevealViewController (2.3.0)
@@ -32,11 +34,11 @@ SPEC CHECKSUMS:
   ASValueTrackingSlider: 74a4bbf70c8cf43d29b701ff4c7659fc5d0afd99
   CocoaLumberjack: aadc76d7bd6c839ca84b38ed50cbf89d7cf8c693
   Colours: 7abeb0fdebe2da3d8bd7305aee0798375f51f5d8
-  CrashlyticsFramework: 0c28a2c07a51b7691e6668b83824b0b0be77f307
-  GoogleAnalytics-iOS-SDK: d9e198b1f955259a72886769be7377cdfcdb2250
+  CrashlyticsFramework: 4e91082f3019bea7e718e1b67b0a3b56729dbc5d
+  GoogleAnalytics-iOS-SDK: f422062075d9ccb1ea8d783fc5ba3829461e9502
   iToast: 4de112d3dd42a3a8bf685572e6cda723c9cbc4f2
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   SWRevealViewController: f6d80638b8e12323e87ac79562345403a799cb77
   V8HorizontalPickerView: 76d45849549fc6b26f497361cbc8f853b407bc13
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.35.0

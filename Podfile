@@ -2,6 +2,8 @@ platform :ios, '7.0'
 
 #inhibit_all_warnings!
 
+link_with 'Almond', 'HomeScreen'
+
 pod 'ASValueTrackingSlider'
 pod 'CocoaLumberjack', '2.0.0-beta'
 pod 'Colours', '~> 5.5'

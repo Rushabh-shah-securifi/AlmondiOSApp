@@ -545,7 +545,11 @@
 }
 
 - (void)sensorDetailViewDidCompleteMakingChanges:(SFISensorDetailView *)view {
-    [self.delegate tableViewCellWillCancelMakingChanges:self];
+    [self.delegate tableViewCellDidCompleteMakingChanges:self];
+}
+
+- (void)sensorDetailViewDidCancelMakingChanges:(SFISensorDetailView *)view {
+    [self.delegate tableViewCellDidCancelMakingChanges:self];
 }
 
 - (void)sensorDetailViewDidPressSaveButton:(SFISensorDetailView *)view {
