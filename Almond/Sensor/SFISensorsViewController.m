@@ -654,16 +654,17 @@
     cloudCommand.commandType = CommandType_MOBILE_COMMAND;
     cloudCommand.command = cmd;
 
-    [self showUpdatingSettingsHUD];
-    [self asyncSendCommand:cloudCommand];
-
-    //todo sinclair - push timeout into the SDK and invoke timeout action using a closure??
-
     self.sensorChangeCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
                                                                      target:self
                                                                    selector:@selector(onSensorChangeCommandTimeout:)
                                                                    userInfo:nil
                                                                     repeats:NO];
+
+    [self showUpdatingSettingsHUD];
+    [self asyncSendCommand:cloudCommand];
+
+    //todo sinclair - push timeout into the SDK and invoke timeout action using a closure??
+
 
     self.isSensorChangeCommandSuccessful = FALSE;
     self.isUpdatingDeviceSettings = NO;
@@ -1103,7 +1104,12 @@
 - (void)onSensorChangeCommandTimeout:(id)sender {
     [self.sensorChangeCommandTimer invalidate];
 
-    if (!self.isSensorChangeCommandSuccessful) {
+    if (self.isSensorChangeCommandSuccessful) {
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.HUD hide:YES];
+        });
+    }
+    else {
         [self resetDeviceListFromSaved];
     }
 }
@@ -1123,7 +1129,15 @@
     DLog(@"%s: Received SensorChangeCallback", __PRETTY_FUNCTION__);
 
     SensorChangeResponse *obj = (SensorChangeResponse *) [data valueForKey:@"data"];
-    if (!obj.isSuccessful) {
+    if (obj.isSuccessful) {
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            if (self.isViewControllerDisposed) {
+                return;
+            }
+            [self.HUD hide:YES];
+        });
+    }
+    else {
         NSLog(@"%s: Could not update data, Revert to old value", __PRETTY_FUNCTION__);
         [self resetDeviceListFromSaved];
     }
