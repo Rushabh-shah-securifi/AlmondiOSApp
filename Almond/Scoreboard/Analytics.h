@@ -25,6 +25,10 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 - (void)markSensor:(SFIDeviceType)deviceType timeToComplete:(NSTimeInterval)resResTime;
 
+- (void)markSensorScreen;
+
+- (void)markRouterScreen;
+
 - (void)markLoginForm;
 
 - (void)markAlmondAffiliation;

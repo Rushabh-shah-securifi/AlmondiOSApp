@@ -74,7 +74,7 @@
 }
 
 - (void)markSensor:(SFIDeviceType)deviceType timeToComplete:(NSTimeInterval)resResTime {
-    double milliseconds = (double) (resResTime * 1000);
+    NSUInteger milliseconds = (NSUInteger) (resResTime * 1000);
     NSNumber *interval = @(milliseconds);
 
     NSString *deviceTypeStr = [SFIDevice nameForType:deviceType];
@@ -88,16 +88,24 @@
     [tracker send:params];
 }
 
+- (void)markSensorScreen {
+    [self trackScreen:@"Sensor"];
+}
+
+- (void)markRouterScreen {
+    [self trackScreen:@"Router"];
+}
+
 - (void)markLoginForm {
-    [self trackScreen:@"login_form"];
+    [self trackScreen:@"Login"];
 }
 
 - (void)markAlmondAffiliation {
-    [self trackScreen:@"router_affiliation"];
+    [self trackScreen:@"Affiliation"];
 }
 
 - (void)markSignUpForm {
-    [self trackScreen:@"signup_form"];
+    [self trackScreen:@"SignUp"];
 }
 
 - (void)markDeclineSignupLicense {

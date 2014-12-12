@@ -17,9 +17,13 @@
 #import "DrawerViewController.h"
 #import "SFIAccountsTableViewController.h"
 #import "UIViewController+Securifi.h"
+#import "Analytics.h"
 //#import "ScoreboardViewController.h"
 
-@interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, SFIAccountDeleteDelegate, UIGestureRecognizerDelegate>
+#define TAB_BAR_SENSORS @"Sensors"
+#define TAB_BAR_ROUTER @"Router"
+
+@interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, SFIAccountDeleteDelegate, UIGestureRecognizerDelegate, UITabBarControllerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSTimer *displayNoCloudTimer;
 @property(nonatomic, readonly) NSTimer *cloudReconnectTimer;
@@ -348,13 +352,13 @@
     //
     UINavigationController *sensorNav = [[UINavigationController alloc] initWithRootViewController:sensorCtrl];
     icon = [UIImage imageNamed:@"icon_sensor.png"];
-    sensorNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Sensors" image:icon selectedImage:icon];
+    sensorNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_SENSORS image:icon selectedImage:icon];
     //
     SFIRouterTableViewController *routerCtrl = [SFIRouterTableViewController new];
     //
     UINavigationController *routerNav = [[UINavigationController alloc] initWithRootViewController:routerCtrl];
     icon = [UIImage imageNamed:@"icon_router.png"];
-    routerNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Router" image:icon selectedImage:icon];
+    routerNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_ROUTER image:icon selectedImage:icon];
     //
 //    ScoreboardViewController *scoreCtrl = [ScoreboardViewController new];
 //    UINavigationController *scoreNav = [[UINavigationController alloc] initWithRootViewController:scoreCtrl];
@@ -366,6 +370,7 @@
     front.tabBar.tintColor = [UIColor blackColor];
 //    front.viewControllers = @[sensorNav, routerNav, scoreNav];
     front.viewControllers = @[sensorNav, routerNav];
+    front.delegate = self;
 
     // The rear one is the drawer selector
     DrawerViewController *rear = [DrawerViewController new];
@@ -571,13 +576,22 @@
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     UIView *view = touch.view;
-
-    if ([view isKindOfClass:[UISlider class]]) {
-        // prevent recognizing touches on the slider
-        return NO;
-    }
-
-    return YES;
+    // prevent recognizing touches on the slider
+    return ![view isKindOfClass:[UISlider class]];
 }
+
+#pragma mark - UITabBarControllerDelegate methods
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)ctrl {
+    NSString *title = ctrl.tabBarItem.title;
+    
+    if ([title isEqualToString:TAB_BAR_SENSORS]) {
+        [[Analytics sharedInstance] markSensorScreen];
+    }
+    else if ([title isEqualToString:TAB_BAR_ROUTER]) {
+        [[Analytics sharedInstance] markRouterScreen];
+    }
+}
+
 
 @end
