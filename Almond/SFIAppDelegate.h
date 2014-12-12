@@ -21,4 +21,7 @@
 // By default, returns the key needed by the Almond app.
 - (NSString *)crashReporterApiKey;
 
+// Returns the tracking ID to be used by the analytics engine; subclasses override to set up for different branded apps
+- (NSString *)analyticsTrackingId;
+
 @end

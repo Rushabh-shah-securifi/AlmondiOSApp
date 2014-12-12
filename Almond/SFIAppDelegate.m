@@ -12,6 +12,8 @@
 #import "Crashlytics.h"
 #import "AlmondPlusConstants.h"
 
+#define DEFAULT_GA_ID @"UA-52832244-2"
+#define DEFAULT_CRASHLYTICS_KEY @"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3"
 
 @implementation SFIAppDelegate
 
@@ -22,7 +24,11 @@
 }
 
 - (NSString *)crashReporterApiKey {
-    return @"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3";
+    return DEFAULT_CRASHLYTICS_KEY;
+}
+
+- (NSString *)analyticsTrackingId {
+    return DEFAULT_GA_ID;
 }
 
 #pragma mark - UIApplicationDelegate methods
@@ -36,7 +42,8 @@
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
 
-    [[Analytics sharedInstance] initialize];
+    NSString *trackingId = [self analyticsTrackingId];
+    [[Analytics sharedInstance] initialize:trackingId];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 

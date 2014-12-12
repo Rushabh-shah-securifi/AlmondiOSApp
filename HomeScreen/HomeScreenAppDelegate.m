@@ -9,6 +9,7 @@
 #import "HomeScreenAppDelegate.h"
 
 #define CLOUD_HOST @"cloud.homescreenrouter.com"
+#define CRASHLYTICS_KEY @"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3"
 
 @implementation HomeScreenAppDelegate
 
@@ -21,8 +22,11 @@
 }
 
 - (NSString *)crashReporterApiKey {
-    return @"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3";
+    return CRASHLYTICS_KEY;
 }
 
+- (NSString *)analyticsTrackingId {
+    return [super analyticsTrackingId];
+}
 
 @end
