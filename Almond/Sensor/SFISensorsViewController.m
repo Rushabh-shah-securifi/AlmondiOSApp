@@ -610,8 +610,10 @@
         return;
     }
 
-    self.isUpdatingDeviceSettings = YES;
-    self.enableDrawer = NO;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.isUpdatingDeviceSettings = YES;
+        self.enableDrawer = NO;
+    });
 }
 
 - (void)tableViewCellDidCompleteMakingChanges:(SFISensorTableViewCell *)cell {

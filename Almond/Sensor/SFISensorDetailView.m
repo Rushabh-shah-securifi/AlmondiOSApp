@@ -323,7 +323,7 @@
     [self.delegate sensorDetailViewDidChangeNotificationPref:self notificationSettingEnabled:ctrl.isOn];
 }
 
--(void)onNotificationModeChanged:(id)sender{
+- (void)onNotificationModeChanged:(id)sender {
     //Get Notification Mode
     UISegmentedControl *ctrl = (UISegmentedControl *) sender;
     NSInteger mode = ctrl.selectedSegmentIndex + 1;
@@ -334,22 +334,22 @@
 #pragma mark - UITextFieldDelegate methods
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    [self.delegate sensorDetailViewWillStartMakingChanges:self];
     return YES;
 }
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
-    [textField selectAll:self];
     self.firstResponderField = textField;
+    [self.delegate sensorDetailViewWillStartMakingChanges:self];
+    [textField selectAll:self];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     if (self.firstResponderField == textField) {
         self.firstResponderField = nil;
-    }
 
-    // ensures that if editing is ended because the user tapped outside the cell, the editing state is reset
-    [self.delegate sensorDetailViewDidCompleteMakingChanges:self];
+        // ensures that if editing is ended because the user tapped outside the cell, the editing state is reset
+        [self.delegate sensorDetailViewDidCompleteMakingChanges:self];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
