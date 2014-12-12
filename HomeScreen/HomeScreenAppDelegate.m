@@ -8,13 +8,15 @@
 
 #import "HomeScreenAppDelegate.h"
 
+#define CLOUD_HOST @"cloud.homescreenrouter.com"
+
 @implementation HomeScreenAppDelegate
 
 #pragma mark - Public methods; subclasses override
 
 - (SecurifiConfigurator *)toolkitConfigurator {
     SecurifiConfigurator *cfg = [SecurifiConfigurator new];
-    cfg.productionCloudHost = @"cloud.homescreenrouter.com";
+    cfg.productionCloudHost = CLOUD_HOST;
     return cfg;
 }
 
