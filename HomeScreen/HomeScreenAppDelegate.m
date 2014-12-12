@@ -13,7 +13,9 @@
 #pragma mark - Public methods; subclasses override
 
 - (SecurifiConfigurator *)toolkitConfigurator {
-    return [SecurifiConfigurator new];
+    SecurifiConfigurator *cfg = [SecurifiConfigurator new];
+    cfg.productionCloudHost = @"cloud.homescreenrouter.com";
+    return cfg;
 }
 
 - (NSString *)crashReporterApiKey {
