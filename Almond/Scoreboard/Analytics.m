@@ -11,7 +11,9 @@
 #import "GAIFields.h"
 #import "GAIDictionaryBuilder.h"
 
-#define GA_ID @"UA-52832244-2"
+@interface Analytics ()
+@property(nonatomic, readonly) NSString *trackingId;
+@end
 
 @implementation Analytics
 
@@ -28,13 +30,15 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)initialize {
+- (void)initialize:(NSString*)trackingId {
     //    [GAI sharedInstance].trackUncaughtExceptions = YES;
     //    [GAI sharedInstance].dispatchInterval = 20;
     //    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
 
+    _trackingId = [trackingId copy];
+    
     // Initialize tracker. Replace with your tracking ID.
-    [[GAI sharedInstance] trackerWithTrackingId:GA_ID];
+    [[GAI sharedInstance] trackerWithTrackingId:trackingId];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCompleteMobileCommandRequest:) name:kSFIDidCompleteMobileCommandRequest object:nil];
 }
@@ -80,7 +84,7 @@
                                                                      label:deviceTypeStr] build];
 
     GAI *gai = [GAI sharedInstance];
-    id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
+    id <GAITracker> tracker = [gai trackerWithTrackingId:self.trackingId];
     [tracker send:params];
 }
 
@@ -107,7 +111,7 @@
                                                                     value:nil] build];
 
     GAI *gai = [GAI sharedInstance];
-    id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
+    id <GAITracker> tracker = [gai trackerWithTrackingId:self.trackingId];
 
     [tracker send:params];
 }
@@ -117,7 +121,7 @@
     NSMutableDictionary *params = [builder build];
     
     GAI *gai = [GAI sharedInstance];
-    id <GAITracker> tracker = [gai trackerWithTrackingId:GA_ID];
+    id <GAITracker> tracker = [gai trackerWithTrackingId:self.trackingId];
 
     [tracker set:kGAIDescription value:name];
     [tracker send:params];
