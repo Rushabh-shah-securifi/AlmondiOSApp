@@ -17,7 +17,7 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 + (instancetype)sharedInstance;
 
-- (void)initialize;
+- (void)initialize:(NSString *)trackingId;
 
 - (void)markMemoryWarning;
 
