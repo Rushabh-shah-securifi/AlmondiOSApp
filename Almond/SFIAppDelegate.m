@@ -47,6 +47,9 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 
+    //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
+    //Push Notification - START
+    /*
     // Let the device know we want to receive push notifications
     //
     //-- Set Notification
@@ -68,13 +71,20 @@
     if (pushDic != nil) {
         DLog(@"Notification");
     }
+    */
+    //Push Notification - END
 
     return YES;
 }
 
+
+//TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
+//Push Notification - START
+/*
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     DDLogError(@"Method Name: Registration Error %@", error);
 }
+
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     DLog(@"Device token is: %@", deviceToken);
@@ -85,9 +95,12 @@
 
 }
 
+
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo{
     NSLog(@"didReceiveRemoteNotification");
 }
+*/
+//Push Notification - END
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

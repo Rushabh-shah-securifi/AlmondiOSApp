@@ -205,13 +205,15 @@
         if (indexPath.row == 0) {
             //Account
             [self presentAccountsView];
-//            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"AccountsStoryboard_iPhone" bundle:nil];
-//            UITableViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AccountNavigationTop"];
-//            [self presentViewController:mainView animated:YES completion:nil];
         }
         else if (indexPath.row == 1) {
+            //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
+            //Push Notification - START
+            /*
             //PY 191114 - Deregister for Push Notification
             [self removePushNotification];
+             */
+            //Push Notification - END
             //Logout Action
             [[SecurifiToolkit sharedInstance] asyncSendLogout];
         }
@@ -354,34 +356,14 @@
 #pragma mark - Push Notification
 -(void)removePushNotification{
     NSString *deviceToken = [[NSUserDefaults standardUserDefaults] stringForKey:PUSH_NOTIFICATION_TOKEN];
-    //TODO: For test - Remove
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:PUSH_NOTIFICATION_STATUS];
     [[UIApplication sharedApplication] unregisterForRemoteNotifications];
+    //TODO: For test - Remove
     //deviceToken = @"7ff2a7b3707fe43cdf39e25522250e1257ee184c59ca0d901b452040d85fd794";
     [[SecurifiToolkit sharedInstance] asyncRequestDeregisterForNotification:deviceToken];
     
 }
 
-//- (void)notificationDeregistrationResponseCallback:(id)sender {
-//    NSNotification *notifier = (NSNotification *) sender;
-//    NSDictionary *data = [notifier userInfo];
-//    
-//    NotificationDeleteRegistrationResponse *obj = (NotificationDeleteRegistrationResponse *) [data valueForKey:@"data"];
-//    
-//    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-//    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
-//    
-//    if (obj.isSuccessful) {
-//        [[[iToast makeText:@"Push Notification was successfully deregistered."] setGravity:iToastGravityBottom] show:iToastTypeWarning];
-//        DLog(@"Reason Code %d", obj.reasonCode);
-//    }
-//    else {
-//        [[[iToast makeText:@"Sorry! Push Notification was not deregistered."] setGravity:iToastGravityBottom] show:iToastTypeWarning];
-//        DLog(@"Reason Code %d", obj.reasonCode);
-//    }
-//    
-//    
-//}
 
 
 

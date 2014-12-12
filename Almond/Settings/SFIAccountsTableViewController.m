@@ -1530,8 +1530,13 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
     
-    
+    //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
+    //Push Notification - START
+    /*
     [self removePushNotification];
+    */
+    //Push Notification - END
+    
     [[SecurifiToolkit sharedInstance] asyncRequestDeleteCloudAccount:password];
 }
 

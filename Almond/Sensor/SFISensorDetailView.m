@@ -127,10 +127,15 @@
     // Add standard offset from top-level
     [self markYOffset:30];
 
+    //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
+    //Push Notification - START
+    /*
     // Add Notifications control
     [self addNotificationsControl];
     [self addLine];
     [self markYOffset:5];
+    */
+    //Push Notification - END
 
     // Try adding tamper switch. Only some devices support it.
     [self tryAddTamper];
@@ -927,7 +932,15 @@
         return SENSOR_ROW_HEIGHT;
     }
 
-    NSUInteger extra = 85;          // accounts for notification on/off control
+    //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
+    //Remove the 'extra' variable initialization from below the commented code
+    //Push Notification - START
+    /*
+    NSUInteger extra = 85;          // accounts for notification on/off control +  notification mode
+     */
+    //Push Notification - END
+    
+    NSUInteger extra = 0;
     extra += isTampered ? 45 : 0;   // accounts for the row presenting the tampered msg and dismiss button
 
     switch (currentSensor.deviceType) {

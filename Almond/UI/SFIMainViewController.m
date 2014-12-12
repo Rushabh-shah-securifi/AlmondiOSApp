@@ -276,8 +276,14 @@
     [defaults setBool:YES forKey:ACCOUNT_ACTIVATION_NOTIFICATION];
     
     if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
+        //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
+        //Push Notification - START
+        /*
         //PY 181114: Register for Push Notification
         [self sendPushNotificationRegistration];
+         */
+        //Push Notification - END
+         
         [self presentMainView];
     }
     else {
@@ -525,7 +531,7 @@
     }
     NSString *deviceToken = [[NSUserDefaults standardUserDefaults] stringForKey:PUSH_NOTIFICATION_TOKEN];
     //TODO: For test - Remove
-    deviceToken = @"7ff2a7b3707fe43cdf39e25522250e1257ee184c59ca0d901b452040d85fd794";
+    //deviceToken = @"7ff2a7b3707fe43cdf39e25522250e1257ee184c59ca0d901b452040d85fd794";
     if(deviceToken!=nil){
         [[SecurifiToolkit sharedInstance] asyncRequestRegisterForNotification:deviceToken];
     }

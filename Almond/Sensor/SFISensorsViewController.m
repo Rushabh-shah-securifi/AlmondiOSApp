@@ -142,6 +142,9 @@
                    name:VALIDATE_RESPONSE_NOTIFIER
                  object:nil];
 
+    //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
+    //Push Notification - START
+    /*
     [center addObserver:self
                selector:@selector(onNotificationPrefDidChange:)
                    name:kSFIDidChangeNotificationList
@@ -151,6 +154,8 @@
                selector:@selector(onNotificationPrefResponse:)
                    name:NOTIFICATION_PREFERENCE_CHANGE_RESPONSE_NOTIFIER
                  object:nil];
+    */
+    //Push Notification - END
 }
 
 - (void)initializeAlmondData {
@@ -196,7 +201,14 @@
             NSLog(@"Sensors: requesting device values on new connection");
         }
 
+        //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
+        //Push Notification - START
+        /*
+        //Get Notification Preference List
         [toolkit asyncRequestNotificationPreferenceList:mac];
+         */
+        //Push Notification - END
+        
         [self initializeColors:plus];
     }
 
