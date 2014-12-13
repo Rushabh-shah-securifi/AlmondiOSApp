@@ -180,8 +180,15 @@
 #pragma mark - Class methods
 
 - (void)displaySplashImage {
+    //Display the image from xcassets file
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    if (screenBounds.size.height == 568) {
+    if (screenBounds.size.height == 736) {
+        // code for 5.5-inch screen
+        self.imgSplash.image = [UIImage imageNamed:@"launch-image-1242x2208"];
+    }else if (screenBounds.size.height == 667) {
+        // code for 4.7-inch screen
+        self.imgSplash.image = [UIImage imageNamed:@"launch-image-750x1334"];
+    }else if (screenBounds.size.height == 568) {
         // code for 4-inch screen
         self.imgSplash.image = [UIImage imageNamed:@"launch-image-640x1136"];
     }
@@ -195,7 +202,13 @@
     if (!self.isCloudOnline) {
         //Set the splash image differently for 3.5 inch and 4 inch screen
         CGRect screenBounds = [[UIScreen mainScreen] bounds];
-        if (screenBounds.size.height == 568) {
+        if (screenBounds.size.height == 736) {
+            // code for 5.5-inch screen
+            self.imgSplash.image = [UIImage imageNamed:@"no_cloud_1242x2208"];
+        }else if (screenBounds.size.height == 667) {
+            // code for 4.7-inch screen
+            self.imgSplash.image = [UIImage imageNamed:@"no_cloud_750x1334"];
+        }else if (screenBounds.size.height == 568) {
             // code for 4-inch screen
             self.imgSplash.image = [UIImage imageNamed:@"no_cloud_640x1136"];
         }
