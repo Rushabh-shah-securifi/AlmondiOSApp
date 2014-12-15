@@ -1,19 +1,7 @@
-
-/* Class = "IBUINavigationItem"; title = "Link Almond"; ObjectID = "005-QM-TOK"; */
-"005-QM-TOK.title" = "Link Almond";
-
-/* Class = "IBUILabel"; text = "Logout from all the devices connected
-to your Almonds."; ObjectID = "0ml-DL-hua"; */
-"0ml-DL-hua.text" = "Logout from all the devices connected
-to your Almonds.";
-
-/* Class = "IBUILabel"; text = "Access your Almonds and
-your home devices from anywhere."; ObjectID = "1mY-kl-NHI"; */
-"1mY-kl-NHI.text" = "Access your Almonds and
-your home devices from anywhere.";
+/*------- START Localization strings common across all apps -------*/
 
 /* Class = "IBUILabel"; text = "By tapping Continue you are indicating that
-you have read and agreed to our"; ObjectID = "2vg-ti-ElJ"; */
+ you have read and agreed to our"; ObjectID = "2vg-ti-ElJ"; */
 "2vg-ti-ElJ.text" = "By tapping Continue you are indicating that
 you have read and agreed to our";
 
@@ -38,8 +26,6 @@ you have read and agreed to our";
 /* Class = "IBUINavigationItem"; title = "Scenes"; ObjectID = "C8w-d3-6Kp"; */
 "C8w-d3-6Kp.title" = "Scenes";
 
-/* Class = "IBUINavigationItem"; title = "Almond List"; ObjectID = "CAD-J8-2aA"; */
-"CAD-J8-2aA.title" = "Almond List";
 
 /* Class = "IBUITextField"; placeholder = "Channel"; ObjectID = "Di9-Mv-GSh"; */
 "Di9-Mv-GSh.placeholder" = "Channel";
@@ -74,21 +60,6 @@ you have read and agreed to our";
 /* Class = "IBUITextField"; placeholder = "Email"; ObjectID = "Mew-Wa-979"; */
 "Mew-Wa-979.placeholder" = "Email";
 
-/* Class = "IBUILabel"; text = "You successfully linked your Almond with \nyour Securifi Cloud Account."; ObjectID = "Nee-HL-Q6h"; */
-"Nee-HL-Q6h.text" = "You successfully linked your Almond with \nyour Securifi Cloud Account.";
-
-/* Class = "IBUINavigationItem"; title = "Almond"; ObjectID = "ObR-J1-LOM"; */
-"ObR-J1-LOM.title" = "Almond";
-
-/* Class = "IBUILabel"; text = "Type the code shown on your\nAlmond's screen."; ObjectID = "PRW-cc-prD"; */
-"PRW-cc-prD.text" = "Type the code shown on your\nAlmond's screen.";
-
-/* Class = "IBUIButton"; normalTitle = "Link Almond"; ObjectID = "PRt-1p-fH7"; */
-"PRt-1p-fH7.normalTitle" = "Link Almond";
-
-/* Class = "IBUILabel"; text = "Securifi Cloud Account."; ObjectID = "Sqj-7H-5pB"; */
-"Sqj-7H-5pB.text" = "Securifi Cloud Account.";
-
 /* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "Ti4-9V-HdY"; */
 "Ti4-9V-HdY.title" = "Back";
 
@@ -98,10 +69,6 @@ you have read and agreed to our";
 /* Class = "IBUILabel"; text = "MAC"; ObjectID = "V1p-1Y-8Lg"; */
 "V1p-1Y-8Lg.text" = "MAC";
 
-/* Class = "IBUILabel"; text = "Access your Almonds and
-your home devices from anywhere."; ObjectID = "Xni-ee-jgc"; */
-"Xni-ee-jgc.text" = "Access your Almonds and
-your home devices from anywhere.";
 
 /* Class = "IBUIButton"; normalTitle = "Terms and Conditions"; ObjectID = "Xtg-A9-Rkn"; */
 "Xtg-A9-Rkn.normalTitle" = "Terms and Conditions";
@@ -109,10 +76,6 @@ your home devices from anywhere.";
 /* Class = "IBUITextField"; placeholder = "Email"; ObjectID = "Y3d-aA-TFm"; */
 "Y3d-aA-TFm.placeholder" = "Email";
 
-/* Class = "IBUILabel"; text = "Access your Almonds and
-your home devices from anywhere."; ObjectID = "Zon-6Z-KzY"; */
-"Zon-6Z-KzY.text" = "Access your Almonds and
-your home devices from anywhere.";
 
 /* Class = "IBUILabel"; text = "Login"; ObjectID = "Zuk-ja-Rsi"; */
 "Zuk-ja-Rsi.text" = "Login";
@@ -126,10 +89,6 @@ your home devices from anywhere.";
 /* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "bhP-Vb-XDN"; */
 "bhP-Vb-XDN.placeholder" = "Password";
 
-/* Class = "IBUILabel"; text = "To link your Almond with Securifi Cloud account, start the wizard on your Almond+.
-The \"Add your Almond to your Securifi Cloud Account\" section will show a code which you may scan by tapping below or type the code, instead."; ObjectID = "de7-TX-jmT"; */
-"de7-TX-jmT.text" = "To link your Almond with Securifi Cloud account, start the wizard on your Almond+.
-The \"Add your Almond to your Securifi Cloud Account\" section will show a code which you may scan by tapping below or type the code, instead.";
 
 /* Class = "IBUIBarButtonItem"; title = "Login"; ObjectID = "fGC-bJ-KoF"; */
 "fGC-bJ-KoF.title" = "Login";
@@ -138,15 +97,12 @@ The \"Add your Almond to your Securifi Cloud Account\" section will show a code 
 "fUd-2s-lh1.placeholder" = "Encryption Type";
 
 /* Class = "IBUILabel"; text = "Follow the activation link
-in the email."; ObjectID = "fgY-FB-Mro"; */
+ in the email."; ObjectID = "fgY-FB-Mro"; */
 "fgY-FB-Mro.text" = "Follow the activation link
 in the email.";
 
 /* Class = "IBUINavigationItem"; title = "Affiliation"; ObjectID = "g9q-Qf-d7D"; */
 "g9q-Qf-d7D.title" = "Affiliation";
-
-/* Class = "IBUILabel"; text = "Almond Name"; ObjectID = "gRI-sr-1ga"; */
-"gRI-sr-1ga.text" = "Almond Name";
 
 /* Class = "IBUILabel"; text = "MAC Value"; ObjectID = "hsp-Do-ff2"; */
 "hsp-Do-ff2.text" = "MAC Value";
@@ -166,8 +122,6 @@ in the email.";
 /* Class = "IBUILabel"; text = "Name"; ObjectID = "mMM-Gk-l4v"; */
 "mMM-Gk-l4v.text" = "Name";
 
-/* Class = "IBUILabel"; text = "Securifi Cloud Account."; ObjectID = "qnX-eN-VhR"; */
-"qnX-eN-VhR.text" = "Securifi Cloud Account.";
 
 /* Class = "IBUINavigationItem"; title = "Device List"; ObjectID = "s5Y-pa-xGH"; */
 "s5Y-pa-xGH.title" = "Device List";
@@ -184,19 +138,82 @@ in the email.";
 /* Class = "IBUITextField"; placeholder = "Email"; ObjectID = "v4I-0f-ocy"; */
 "v4I-0f-ocy.placeholder" = "Email";
 
-/* Class = "IBUILabel"; text = "Tip: Search spam folder or add
-cloud@securifi.com to your contacts."; ObjectID = "vjT-j9-rhq"; */
-"vjT-j9-rhq.text" = "Tip: Search spam folder or add
-cloud@securifi.com to your contacts.";
-
 /* Class = "IBUILabel"; text = "Don't have an account yet?"; ObjectID = "wee-4l-TQb"; */
 "wee-4l-TQb.text" = "Don't have an account yet?";
 
 /* Class = "IBUILabel"; text = "SSID Value"; ObjectID = "xBv-yd-Shs"; */
 "xBv-yd-Shs.text" = "SSID Value";
 
-/* Class = "IBUILabel"; text = "Search for an email from cloud@securifi.com, or"; ObjectID = "xYA-fY-SKl"; */
-"xYA-fY-SKl.text" = "Search for an email from cloud@securifi.com, or";
-
 /* Class = "IBUITextField"; placeholder = "Enter the code"; ObjectID = "zqJ-bb-Way"; */
 "zqJ-bb-Way.placeholder" = "Enter the code";
+
+
+/*------- END Localization strings common across all apps -------*/
+/* ===================================================================================================== */
+
+
+/* Class = "IBUINavigationItem"; title = "Link Almond"; ObjectID = "005-QM-TOK"; */
+"005-QM-TOK.title" = "Link HomeScreen";
+
+/* Class = "IBUILabel"; text = "Logout from all the devices connected
+ to your Almonds."; ObjectID = "0ml-DL-hua"; */
+"0ml-DL-hua.text" = "Logout from all the devices connected
+to your HomeScreens.";
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "1mY-kl-NHI"; */
+"1mY-kl-NHI.text" = "Access your HomeScreens and
+your home devices from anywhere.";
+
+
+/* Class = "IBUINavigationItem"; title = "Almond List"; ObjectID = "CAD-J8-2aA"; */
+"CAD-J8-2aA.title" = "HomeScreen List";
+
+
+/* Class = "IBUILabel"; text = "You successfully linked your Almond with \nyour Securifi Cloud Account."; ObjectID = "Nee-HL-Q6h"; */
+"Nee-HL-Q6h.text" = "You successfully linked your HomeScreen with \nyour HomeScreen Cloud Account.";
+
+/* Class = "IBUINavigationItem"; title = "Almond"; ObjectID = "ObR-J1-LOM"; */
+"ObR-J1-LOM.title" = "HomeScreen";
+
+/* Class = "IBUILabel"; text = "Type the code shown on your\nAlmond's screen."; ObjectID = "PRW-cc-prD"; */
+"PRW-cc-prD.text" = "Type the code shown on your\nHomeScreen's screen.";
+
+/* Class = "IBUIButton"; normalTitle = "Link Almond"; ObjectID = "PRt-1p-fH7"; */
+"PRt-1p-fH7.normalTitle" = "Link HomeScreen";
+
+/* Class = "IBUILabel"; text = "Securifi Cloud Account."; ObjectID = "Sqj-7H-5pB"; */
+"Sqj-7H-5pB.text" = "HomeScreen Cloud Account.";
+
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "Xni-ee-jgc"; */
+"Xni-ee-jgc.text" = "Access your HomeScreens and
+your home devices from anywhere.";
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "Zon-6Z-KzY"; */
+"Zon-6Z-KzY.text" = "Access your HomeScreens and
+your home devices from anywhere.";
+
+
+/* Class = "IBUILabel"; text = "To link your Almond with Securifi Cloud account, start the wizard on your Almond+.
+ The \"Add your Almond to your Securifi Cloud Account\" section will show a code which you may scan by tapping below or type the code, instead."; ObjectID = "de7-TX-jmT"; */
+"de7-TX-jmT.text" = "To link your HomeScreen with HomeScreen Cloud account, start the wizard on your HomeScreen.
+The \"Add your HomeScreen to your HomeScreen Cloud Account\" section will show a code which you may scan by tapping below or type the code, instead.";
+
+
+/* Class = "IBUILabel"; text = "Almond Name"; ObjectID = "gRI-sr-1ga"; */
+"gRI-sr-1ga.text" = "HomeScreen Name";
+
+/* Class = "IBUILabel"; text = "Securifi Cloud Account."; ObjectID = "qnX-eN-VhR"; */
+"qnX-eN-VhR.text" = "HomeScreen Cloud Account.";
+
+/* Class = "IBUILabel"; text = "Tip: Search spam folder or add
+ cloud@securifi.com to your contacts."; ObjectID = "vjT-j9-rhq"; */
+"vjT-j9-rhq.text" = "Tip: Search spam folder or add
+cloud@homescreen.com to your contacts.";
+
+/* Class = "IBUILabel"; text = "Search for an email from cloud@securifi.com, or"; ObjectID = "xYA-fY-SKl"; */
+"xYA-fY-SKl.text" = "Search for an email from cloud@homescreen.com, or";
+

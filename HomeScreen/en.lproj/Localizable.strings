@@ -1,0 +1,321 @@
+/*
+ Common-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+
+/*------- Localization strings common across all apps -------*/
+
+
+/* hud. buttons, controls */
+"hud.One moment please..." = "One moment please...";
+"hud.Updating settings..." = "Updating settings...";
+"alert.button.OK" = "OK";
+"Oops!" = "Oops!";
+"Sorry!" = "Sorry!";
+"toast.Saving..." = "Saving...";
+
+/* affiliation */
+"Please try later." = "Please try later.";
+"Please enter a valid code." = "Please enter a valid code.";
+"alert.msg.Logout was unsuccessful" = "Sorry. Logout was unsuccessful. Please try again.";
+"alert.title.Logout Unsuccessful" = "Logout Unsuccessful";
+
+/* activation */
+
+"Reactivation link has been sent to your account." = "Reactivation link has been sent to your account.";
+"sensor.activation.The username was not found" = "The username was not found";
+"The account is already validated" = "The account is already validated";
+"Sorry! Cannot send reactivation link" = "Sorry! The reactivation link cannot be
+resent at the moment. Try again later.";
+"The email ID is invalid." = "The email ID is invalid.";
+
+/* change password */
+
+"password-validation.strength-label.Password: Mismatch" = "Password: Mismatch";
+"password-validation.strength-label.Password: Too Short" = "Password: Too Short";
+"password-validation.strength-label.Password: Too Long" = "Password: Too Long";
+"password-validation.strength-label.Password: Weak" = "Password: Weak";
+"password-validation.strength-label.Password: Medium" = "Password: Medium";
+"password-validation.strength-label.Password: Strong" = "Password: Strong";
+"The password should be %d - %d characters long." = "The password should be %d - %d characters long.";
+"An account already exists with this email." = "An account already exists with this email.";
+"The email or password was incorrect." = "The email or password was incorrect.";
+"Sorry! Signup was unsuccessful." = "Sorry! Signup was unsuccessful.";
+"The username was not found" = "The username was not found";
+"There is a password mismatch." = "There is a password mismatch.";
+"You forgot to enter your password." = "You forgot to enter your password.";
+"You have entered an invalid email ID." = "You have entered an invalid email ID.";
+"You forgot to enter your email ID." = "You forgot to enter your email ID.";
+"password.hud.Changing password..." = "Changing password...";
+"password.label-text.There was some error on cloud. Please try later." = "There was some error on cloud. Please try later.";
+"Sorry! You are not registered with us yet." = "Sorry! You are not registered with us yet.";
+"You need to fill all the fields." = "You need to fill all the fields.";
+"The current password was incorrect." = "The current password was incorrect.";
+"Sorry! Password change was unsuccessful." = "Sorry! Password change was unsuccessful.";
+
+/* login */
+"Please enter Username and Password" = "Please enter Username and Password";
+"Sorry! Could not complete the request." = "Sorry! Could not complete the request.";
+"Unable to establish Internet route to cloud service." = "Unable to establish
+Internet route to cloud service.";
+"Sorry! Login was unsuccessful." = "Sorry! Login was unsuccessful.";
+"The email was not found." = "The email was not found.";
+"The password is incorrect." = "The password is incorrect.";
+"Almost there." = "Almost there.";
+"You need to activate your account." = "You need to activate your account.";
+"The email or password is incorrect" = "The email or password is incorrect";
+"Password reset link has been sent to your account." = "Password reset link has been sent to your account.";
+"Sorry! Your password cannot be reset at the moment. Try again later." = "Sorry! Your password cannot be
+reset at the moment. Try again later.";
+"Login" = "Login";
+
+/* logout all */
+
+"logoutall.navbar-title.Continue" = "Continue";
+"logoutall.label.Logout from all devices was not successful." = "Logout from all devices was not successful.";
+
+/* router tab */
+"router.offline-msg.label.Please check the router." = "Please check the router.";
+"router.card-title.Wireless Settings" = "Wireless Settings";
+"router.wireless-status.Enabled" = "enabled";
+"router.wireless-status.Disabled" = "disabled";
+"router.card.Settings are not available." = "Settings are not available.";
+"router.card-title.Devices & Users" = "Devices & Users";
+"router.devices-summary.%d connected, %d blocked" = "%d connected, %d blocked";
+"router.software-version.Current version" = "Current version";
+"router.software-version.Not available" = "Version information is not available.";
+"router.card-title.Router Reboot" = "Router Reboot";
+"router.reboot-msg.Router is rebooting. It will take at least" = "Router is rebooting. It will take at least";
+"router.reboot-msg.2 minutes for the router to boot." = "2 minutes for the router to boot.";
+"router.reboot-msg.Please refresh after sometime." = "Please refresh after sometime.";
+"router.Router status is not available." = "Router status is not available.";
+"router.Last reboot %@ ago" = "Last reboot %@ ago";
+"router.no-almonds.nav-title.Get Started" = "Get Started";
+"router.hud.Router is now online." = "Router is now online.";
+"router.hud.Router is rebooting." = "Router is rebooting.";
+
+/* sensors */
+
+"Device has been tampered" = "Device has been tampered";
+"sensors.button.Dismiss" = "Dismiss";
+"sensors.label.Status" = "Status";
+"sensor.status-label.OFF" = "OFF";
+"sensor.status-label.ON" = "ON";
+"sensor.status-label.OK" = "OK";
+"sensors.label.SENSOR SETTINGS" = "SENSOR SETTINGS";
+"sensors.settings-label.Send Notifications" = "Send Notifications";
+"sensors.no-sensors.label.You don't have any sensors yet." = "You don't have any sensors yet.";
+"sensors.account-confirm.label.Please confirm your account (less than a day left)." = "Please confirm your account (less than a day left).";
+"sensors.account-confirm.label.Please confirm your account (%d days left)." = "Please confirm your account (%d days left).";
+"sensors.account-confirm.label.Check activation email for instructions." = "Check activation email for instructions.";
+"sensors.account-confirm.label.Resend activation email" = "Resend activation email";
+"activation.toast.Reactivation link sent to your registerd email ID." = "Reactivation link sent to your registerd email ID.";
+"sensor.thermostat.field-label.Heating" = "Heating";
+"sensor.thermostat.field-label.Cooling" = "Cooling";
+"sensor.thermostat.field-label.Mode" = "Mode";
+"sensor.thermostat.segment-control.Auto" = "Auto";
+"sensor.thermostat.segment-control.Heat" = "Heat";
+"sensor.thermostat.segment-control.Cool" = "Cool";
+"sensor.thermostat.segment-control.Off" = "Off";
+"sensor.thermostat.field-label.Fan" = "Fan";
+"sensor.thermostat.segment-control.Auto Low" = "Auto Low";
+"sensor.thermostat.segment-control.On Low" = "On Low";
+"sensor.thermostat.Thermostat is %@" = "Thermostat is %@";
+"sensor.thermostat.Fan is %@" = "Fan is %@";
+"sensor.thermostat.Battery is at %@%%" = "Battery is at %@%%";
+"sensor.Power is %.3fW" = "Power is %.3fW";
+"sensor.Current is %.3fA" = "Current is %.3fA";
+"sensor.Voltage is %.3fV" = "Voltage is %.3fV";
+"sensor.lock.pin-picker.Pin %ld" = "Pin %ld";
+"sensor.toast.doorlock.PassCode must be 5 to 8 digits long" = "PassCode must be 5 to 8 digits long";
+"sensor.device-name-label.Name" = "Name";
+"sensor.deivice-location-label.Located at" = "Located at";
+"sensor.deivice-save-settings.button.Save" = "Save";
+"sensor.device-status.label.Battery OK" = "Battery OK";
+"sensor.device-status.label.Battery %" = "Battery %@%%";
+"sensor.device-status.label.Low Battery" = "Low Battery";
+"sensor.device-status.label.LOW BATTERY" = "LOW BATTERY";
+"sensor.device-status.label.Battery Unknown" = "Battery Unknown";
+"sensor.doorlock.field-label.Pins" = "Pins";
+"sensor.doorlock.pinentry-textfield.placeholder.Code is not specified." = "Code is not specified.";
+"sensor.doorlock.button.Save Pin" = "Save Pin";
+"sensor.doorlock.field-label.Code" = "Code";
+"sensor.multilevel-switch.status-label.Dimmable, %@%%" = "Dimmable, %@%%";
+"sensor.level-control.status-label.Dimmable" = "Dimmable";
+"sensor.keyfob.status-label.ALL DISARMED" = "ALL DISARMED";
+"sensor.keyfob.status-label.PERIMETER ARMED" = "PERIMETER ARMED";
+"sensor.keyfob.status-label.ALL ARMED" = "ALL ARMED";
+"sensor.lightsensor.status-label.Illuminance %@" = "Illuminance %@";
+"sensor.tempsensor.status-label.Humidity %@" = "Humidity %@";
+"sensor.moisturesensor.status.FLOODED" = "FLOODED";
+"sensor.poweswitch.label.Power %@W" = "Power %@W";
+"sensor.moisturesensor.status.Temp %@" = "Temp %@";
+"sensor.notificaiton.label.notificationMode" = "Notification Mode";
+"sensor.notificaiton.segment.Always" = "Always";
+"sensor.notificaiton.segment.Home" = "Home";
+"sensor.notificaiton.segment.Away" = "Away";
+
+/* signup */
+
+"signup.navbar-title.Sign up" = "Sign up";
+"signup.barbutton.Decline" = "Decline";
+"signuo.barbutton.Accept" = "Accept";
+"signup.barbutton.Continue" = "Continue";
+"signup.headline-text.Signing up." = "Signing up.";
+"signup.subheadline-text.Please wait one moment..." = "Please wait one moment...";
+"signup.headline-text.Almost done." = "Almost done.";
+"signup.headline-text.An activation link was sent to your email" = "An activation link was sent to your email.
+Follow it, then tap Continue to login.";
+"signup.footerbutton.Resend the activation email" = "Resend the activation email";
+"signup.footerbutton.Signup using another email" = "Signup using another email";
+"signup.footerlabel.Do you want to create another account?" = "Do you want to create another account?";
+
+
+/* Accounts */
+"accounts.navbar-title.settings" = "Settings";
+"accounts.userprofile.title.account" = "Account";
+"accounts.userprofile.label.primaryEmail" = "PRIMARY EMAIL";
+"accounts.userprofile.label.password" = "PASSWORD";
+"accounts.userprofile.label.firstName" = "FIRST NAME";
+"accounts.userprofile.label.lastName" = "LAST NAME";
+"accounts.userprofile.label.address" = "ADDRESS";
+"accounts.userprofile.label.country" = "COUNTRY";
+"accounts.userprofile.label.zipCode" = "ZIP CODE";
+
+"accounts.userprofile.title.placeholder.name" = "We don't know your name yet";
+"accounts.userprofile.textfield.placeholder.firstName" = "We do not know your first name yet";
+"accounts.userprofile.textfield.placeholder.lastName" = "We do not know your last name yet";
+"accounts.userprofile.textfield.placeholder.address1" = "Address Line 1";
+"accounts.userprofile.textfield.placeholder.address2" = "Address Line 2";
+"accounts.userprofile.textfield.placeholder.address3" = "Address Line 3";
+"accounts.userprofile.textfield.placeholder.country" = "In which country do you reside?";
+"accounts.userprofile.textfield.placeholder.zipCode" = "What is your ZIP Code?";
+
+"accounts.userprofile.button.changePassword" = "Change Password";
+"accounts.userprofile.button.edit" = "Edit";
+"accounts.userprofile.button.add" = "Add";
+"accounts.userprofile.button.done" = "Done";
+"accounts.userprofile.button.deleteAccount" = "DELETE ACCOUNT";
+"accounts.ownedAlmond.label.SharedWithOthers" = "Shared with %d other(s)";
+"accounts.ownedAlmond.label.deviceName" = "DEVICE NAME";
+"accounts.ownedAlmond.label.accessEmail" = "ACCESS EMAIL";
+"accounts.ownedAlmond.button.Unlink" = "Unlink";
+
+"accounts.ownedAlmond.button.Remove" = "Remove";
+"accounts.ownedAlmond.button.InviteMore" = "INVITE MORE";
+"accounts.sharedAlmond.label.SharedWithYouBy" = "Shared with you by";
+"accounts.sharedAlmond.label.deviceName" = "DEVICE NAME";
+"accounts.sharedAlmond.button.Remove" = "Remove";
+
+"accounts.alert.onDeleteAccount.title" = "Delete Account";
+"accounts.alert.onDeleteAccount.delete" = "Delete";
+"accounts.alert.onDeleteAccount.Cancel" = "Cancel";
+"accounts.alert.onUnlinkAlmond.Unlink" = "Unlink";
+"accounts.alert.onUnlinkAlmond.Cancel" = "Cancel";
+
+"accounts.alert.onInviteToShareAlmond.title" = "Invite By Email";
+"accounts.alert.onInviteToShareAlmond.message" = "By inviting someone they can access %@";
+"accounts.alert.onInviteToShareAlmond.Invite" = "Invite";
+"accounts.alert.onInviteToShareAlmond.Cancel" = "Cancel";
+
+"accounts.hud.loadingDetails" = "Loading account details...";
+"accounts.hud.deletingAccount" = "Deleting account...";
+"accounts.hud.updatingDetails" = "Updating account details...";
+"accounts.hud.removeUserFromSharedList" = "Remove user from shared list...";
+
+"accounts.deleteAccount.failure.reasonCode1" = "There was some error on cloud. Please try later.";
+"accounts.deleteAccount.failure.reasonCode2" = "Sorry! You are not registered with us yet.";
+"accounts.deleteAccount.failure.reasonCode3" = "You need to activate your account.";
+"accounts.deleteAccount.failure.reasonCode4" = "You need to fill all the fields.";
+"accounts.deleteAccount.failure.reasonCode5" = "The current password was incorrect.";
+"accounts.deleteAccount.failure.reasonCode6" = "There was some error on cloud. Please try later.";
+"accounts.deleteAccount.failure.default" = "Sorry! Deletion of account was unsuccessful.";
+
+"accounts.updateAccount.failure.reasonCode1" = "There was some error on cloud. Please try later.";
+"accounts.updateAccount.failure.reasonCode2" = "You need to fill all the fields.";
+"accounts.updateAccount.failure.reasonCode3" = "Sorry! You are not registered with us yet.";
+"accounts.updateAccount.failure.default" = "Sorry! Update was unsuccessful.";
+
+"accounts.unlinkAlmond.failure.reasonCode1" = "There was some error on cloud. Please try later.";
+"accounts.unlinkAlmond.failure.reasonCode2" = "Sorry! You are not registered with us yet.";
+"accounts.unlinkAlmond.failure.reasonCode3" = "You need to activate your account.";
+"accounts.unlinkAlmond.failure.reasonCode4" = "You need to fill all the fields.";
+"accounts.unlinkAlmond.failure.reasonCode5" = "The current password was incorrect.";
+"accounts.unlinkAlmond.failure.reasonCode6" = "There was some error on cloud. Please try later.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode1" = "There was some error on cloud. Please try later.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode5" = "You need to fill all the fields.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode7" = "You can not add yourself as secondary user.";
+"accounts.deleteSecondaryUser.failure.reasonCode1" = "There was some error on cloud. Please try later.";
+"accounts.deleteSecondaryUser.failure.reasonCode2" = "You need to fill all the fields.";
+"accounts.deleteSecondaryUser.failure.reasonCode5" = "Secondary user not found.";
+"accounts.deleteSecondaryUser.failure.default" = "Sorry! Something went wrong. Try later.";
+
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode1" = "There was some error on cloud. Please try later.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode2" = "You need to fill all the fields.";
+
+
+/* ==================================================================== */
+
+/*
+ HomeScreen-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+/*------- Localization strings specific to Almond app -------*/
+
+
+/* affiliation */
+"Almond Linked" = "HomeScreen Linked";
+"Link Almond" = "Link HomeScreen";
+"Please wait while your Almond is being linked to cloud." = "Please wait while your HomeScreen is being linked to cloud.";
+"This Almond is already linked to another user." = "This HomeScreen is already linked to another user.
+Contact us at support@homescreen.com";
+"Almond could not be affiliated" = "HomeScreen could not be affiliated.%@";
+
+/* login */
+"Access your Almonds and your home devices from anywhere." = "Access your HomeScreens and
+your home devices from anywhere.";
+
+/* router tab */
+"router.offline-msg.label.Almond is Offline." = "HomeScreen is Offline.";
+
+/* sensors */
+"router.no-sensors.label.Add a sensor from your Almond." = "Add a sensor from your HomeScreen.";
+
+/* signup */
+"signup.headline-text.Securifi Cloud Account." = "HomeScreen Cloud Account.";
+"signup.headline-text.Access your Almonds" = "Access your HomeScreens and
+your home devices from anywhere.";
+
+/* Accounts */
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "You own this HomeScreen";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "HomeScreen Name";
+"accounts.ownedAlmond.button.RenameAlmond" = "Rename HomeScreen";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = "HomeScreen Name";
+"accounts.sharedAlmond.button.RenameAlmond" = "Rename HomeScreen";
+"accounts.alert.onDeleteAccount.message" = "Deleting the account will unlink your HomeScreen(s) and delete user preferences. To confirm account deletion enter your password below.";
+"accounts.alert.onUnlinkAlmond.title" = "Unlink HomeScreen";
+"accounts.alert.onUnlinkAlmond.message" = "To confirm unlinking HomeScreen enter your password below.";
+"accounts.itoast.almondNameMax32Characters" = "HomeScreen Name cannot be more than 32 characters.";
+"accounts.itoast.unableToChangeAlmondName" = "Sorry! We were unable to change HomeScreen's name";
+"accounts.hud.unlinkingAlmond" = "Unlinking HomeScreen...";
+"accounts.hud.inviteUserToShareAlmond" = "Inviting user to share HomeScreen...";
+"accounts.hud.changeAlmondName" = "Change HomeScreen name...";
+"accounts.hud.removeSharedAlmond" = "Remove shared HomeScreen...";
+"accounts.unlinkAlmond.failure.default" = "Sorry! Unlinking of HomeScreen was unsuccessful.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "This user does not have a HomeScreen account.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "The user has not verified the HomeScreen account yet.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "You do not own this HomeScreen.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "You have already shared this HomeScreen with the user.";
+"accounts.inviteUserToShareAlmond.failure.default" = "Sorry! Sharing of HomeScreen was unsuccessful.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "You are not associated with this HomeScreen";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "Secondary user is not associated with the given HomeScreen.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "You are not associated with this HomeScreen";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "Sorry! Removing of shared HomeScreen was unsuccessful.";
