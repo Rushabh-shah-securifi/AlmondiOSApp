@@ -18,6 +18,6 @@ typedef NS_ENUM(unsigned int, SFIGenericRouterCommandType) {
 };
 
 @interface SFIGenericRouterCommand : NSObject
-@property id command;
-@property SFIGenericRouterCommandType commandType;
+@property(nonatomic) id command;
+@property(nonatomic) SFIGenericRouterCommandType commandType;
 @end
