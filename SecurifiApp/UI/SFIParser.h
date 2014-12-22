@@ -47,6 +47,8 @@
 @property(nonatomic, retain) NSMutableArray *wirelessSummaryArray;
 @property(nonatomic, retain) SFIWirelessSummary *currentWirelessSummary;
 
++ (SFIGenericRouterCommand *)parseRouterResponse:(GenericCommandResponse *)response;
+
 - (NSMutableArray *)loadDataFromXML:(NSString *)xmlFileName;
 
 - (SFIGenericRouterCommand *)loadDataFromString:(NSString *)xmlString;

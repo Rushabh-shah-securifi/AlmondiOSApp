@@ -828,28 +828,24 @@
 }
 
 - (void)onGenericResponseCallback:(id)sender {
-    if (!self) {
-        return;
-    }
-
-    if (self.disposed) {
-        return;
-    }
-
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
         return;
     }
 
-    GenericCommandResponse *obj = (GenericCommandResponse *) [data valueForKey:@"data"];
-
-    BOOL isSuccessful = obj.isSuccessful;
-    if (!isSuccessful) {
-        DLog(@"Reason: %@", obj.reason);
+    GenericCommandResponse *response = (GenericCommandResponse *) [data valueForKey:@"data"];
+    if (!response.isSuccessful) {
+        DLog(@"Unsuccessful response, reason:%@", response.reason);
 
         dispatch_async(dispatch_get_main_queue(), ^() {
+            if (!self) {
+                return;
+            }
             if (self.disposed) {
+                return;
+            }
+            if (![response.almondMAC isEqualToString:self.currentMAC]) {
                 return;
             }
             self.isAlmondUnavailable = YES;
@@ -862,37 +858,17 @@
     }
     self.isAlmondUnavailable = NO;
 
-    //todo push all of this parsing and manipulation into the parser or SFIGenericRouterCommand!
-
-    DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.correlationId, obj.mobileInternalIndex);
-    DLog(@"Response Data: %@", obj.genericData);
-    DLog(@"Decoded Data: %@", obj.decodedData);
-
-    NSData *decoded_data = [obj.decodedData copy];
-    DLog(@"Data: %@", decoded_data);
-
-    NSMutableData *genericData = [[NSMutableData alloc] init];
-    [genericData appendData:decoded_data];
-
-    unsigned int expectedDataLength;
-    unsigned int commandData;
-
-    [genericData getBytes:&expectedDataLength range:NSMakeRange(0, 4)];
-    [genericData getBytes:&commandData range:NSMakeRange(4, 4)];
-
-    //Remove 8 bytes from received command
-    [genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
-
-    NSString *decodedString = [[NSString alloc] initWithData:genericData encoding:NSUTF8StringEncoding];
-    SFIGenericRouterCommand *genericRouterCommand = [[SFIParser alloc] loadDataFromString:decodedString];
-    DLog(@"Command Type %d", genericRouterCommand.commandType);
-
+    SFIGenericRouterCommand *genericRouterCommand = [SFIParser parseRouterResponse:response];
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
         }
 
         if (self.disposed) {
+            return;
+        }
+
+        if (![response.almondMAC isEqualToString:self.currentMAC]) {
             return;
         }
 

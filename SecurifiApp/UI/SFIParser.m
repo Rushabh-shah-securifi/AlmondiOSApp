@@ -20,6 +20,31 @@
 @synthesize currentWirelessSetting, wirelessSettings, wirelessSettingsArray;
 @synthesize routerSummary, currentWirelessSummary, wirelessSummaryArray;
 
++ (SFIGenericRouterCommand *)parseRouterResponse:(GenericCommandResponse *)response {
+    //todo push all of this parsing and manipulation into the parser or SFIGenericRouterCommand!
+
+    DLog(@"Response Data: %@", response.genericData);
+    DLog(@"Decoded Data: %@", response.decodedData);
+
+    NSData *decoded_data = [response.decodedData copy];
+    DLog(@"Data: %@", decoded_data);
+
+    NSMutableData *genericData = [[NSMutableData alloc] init];
+    [genericData appendData:decoded_data];
+
+    unsigned int expectedDataLength;
+    unsigned int commandData;
+
+    [genericData getBytes:&expectedDataLength range:NSMakeRange(0, 4)];
+    [genericData getBytes:&commandData range:NSMakeRange(4, 4)];
+
+    //Remove 8 bytes from received command
+    [genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
+
+    NSString *decodedString = [[NSString alloc] initWithData:genericData encoding:NSUTF8StringEncoding];
+    return [[SFIParser alloc] loadDataFromString:decodedString];
+}
+
 //TODO: Remove - Dummy
 - (NSMutableArray *)loadDataFromXML:(NSString *)xmlFileName {
     NSString *path = [[NSBundle mainBundle] pathForResource:xmlFileName ofType:@"xml"];
