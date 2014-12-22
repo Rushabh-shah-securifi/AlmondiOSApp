@@ -62,7 +62,7 @@
     NSNumber *roundTripTime = info[@"timing"];
     NSTimeInterval resTime = roundTripTime.doubleValue;
 
-    [self markSensor:cmd.deviceType timeToComplete:resTime];
+    [self markSensorClick:cmd.deviceType timeToComplete:resTime];
 }
 
 - (void)markMemoryWarning {
@@ -73,7 +73,7 @@
     [self markEvent:@"router_reboot"];
 }
 
-- (void)markSensor:(SFIDeviceType)deviceType timeToComplete:(NSTimeInterval)resResTime {
+- (void)markSensorClick:(SFIDeviceType)deviceType timeToComplete:(NSTimeInterval)resResTime {
     NSUInteger milliseconds = (NSUInteger) (resResTime * 1000);
     NSNumber *interval = @(milliseconds);
 
