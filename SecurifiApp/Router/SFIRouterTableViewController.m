@@ -128,6 +128,7 @@
     self.isRebooting = FALSE;
     self.enableDrawer = YES;
 
+    // init state
     self.routerSummary = nil;
     self.wirelessSettings = nil;
     self.connectedDevices = nil;
@@ -151,7 +152,7 @@
 
     if (!self.shownHudOnce) {
         self.shownHudOnce = YES;
-        [self showHudOnTimeout];
+        [self showHudWithTimeout];
     }
 
     [self refreshDataForAlmond];
@@ -191,11 +192,10 @@
 
 #pragma mark HUD mgt
 
-- (void)showHudOnTimeout {
+- (void)showHudWithTimeout {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.hudTimer invalidate];
+        [self showLoadingRouterDataHUD];
         self.hudTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(onHudTimeout:) userInfo:nil repeats:NO];
-        [self.HUD show:YES];
     });
 }
 

@@ -232,7 +232,7 @@
 
 - (void)showHudWithTimeout {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.HUD show:YES];
+        [self showLoadingSensorDataHUD];
         [self.HUD hide:YES afterDelay:5];
     });
 }

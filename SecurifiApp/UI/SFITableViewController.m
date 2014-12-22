@@ -51,7 +51,6 @@
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = @"Loading sensor data";
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
 
@@ -128,6 +127,14 @@
 - (void)showHUD:(NSString *)text {
     self.HUD.labelText = text;
     [self.HUD show:YES];
+}
+
+- (void)showLoadingRouterDataHUD {
+    [self showHUD:@"Loading router data"];
+}
+
+- (void)showLoadingSensorDataHUD {
+    [self showHUD:@"Loading sensor data"];
 }
 
 - (void)showUpdatingSettingsHUD {

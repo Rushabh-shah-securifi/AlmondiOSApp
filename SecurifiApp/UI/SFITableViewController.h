@@ -22,6 +22,12 @@
 
 - (void)showHUD:(NSString *)text;
 
+// convenience method for showing a standard "loading router data..." message
+- (void)showLoadingRouterDataHUD;
+
+// convenience method for showing a standard "loading sensor data..." message
+- (void)showLoadingSensorDataHUD;
+
 // convenience method for showing a standard "updating settings..." message
 - (void)showUpdatingSettingsHUD;
 
