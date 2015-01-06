@@ -1058,7 +1058,7 @@
 }
 
 - (void)onAlmondListDidChange:(id)sender {
-    NSLog(@"Sensors: did receive ALmond List change");
+    NSLog(@"Sensors: did receive Almond List change");
 
     if (!self) {
         return;
