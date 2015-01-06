@@ -13,9 +13,6 @@
 #import "AlmondPlusConstants.h"
 
 static NSString *simpleTableIdentifier = @"AccountCell";
-#define CELL_PROFILE        0
-#define CELL_OWNED_ALMOND   1
-#define CELL_SHARED_ALMOND  2
 
 #define FIRST_NAME  0
 #define LAST_NAME   1
@@ -55,27 +52,29 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     return self;
 }
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    
-    NSDictionary *titleAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [UIColor colorWithRed:51.0/255.0 green:51.0/255.0 blue:51.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
-                                     [UIFont standardNavigationTitleFont], NSFontAttributeName, nil];
-    
-    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-}
+//- (void)awakeFromNib
+//{
+//    [super awakeFromNib];
+//
+//    NSDictionary *titleAttributes = @{
+//            NSForegroundColorAttributeName : [UIColor colorWithRed:51.0 / 255.0 green:51.0 / 255.0 blue:51.0 / 255.0 alpha:1.0],
+//            NSFontAttributeName : [UIFont standardNavigationTitleFont]
+//    };
+//
+//    self.navigationController.navigationBar.translucent = NO;
+//    self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
+//}
 
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.titleTextAttributes = @{
-                                                                    NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
-                                                                    NSFontAttributeName : [UIFont standardNavigationTitleFont]
-                                                                    };
+            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+            NSFontAttributeName : [UIFont standardNavigationTitleFont]
+    };
     
     self.tableView.autoresizingMask= UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews= YES;
@@ -223,6 +222,24 @@ static NSString *simpleTableIdentifier = @"AccountCell";
      [self.delegate userAccountDidDone:self];
 }
 
+#pragma mark - Data access
+
+- (SFIAlmondPlus *)ownedAlmondAtIndexPathRow:(NSInteger)row {
+    NSUInteger index = (NSUInteger) (row - 1);
+    if (index >= ownedAlmondList.count) {
+        return nil;
+    }
+    return ownedAlmondList[index];
+}
+
+- (SFIAlmondPlus *)sharedAlmondAtIndexPathRow:(NSInteger)row {
+    NSUInteger index = (NSUInteger) (row - 1);
+    if (index >= sharedAlmondList.count) {
+        return nil;
+    }
+    return sharedAlmondList[index];
+}
+
 #pragma mark - Table view data source
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
@@ -234,7 +251,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }
     else if([ownedAlmondList count] > 0){
         if(indexPath.row > 0 && indexPath.row <= [ownedAlmondList count]){
-            SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:indexPath.row-1];
+            SFIAlmondPlus *currentAlmond = [self ownedAlmondAtIndexPathRow:indexPath.row];
             if(currentAlmond.isExpanded){
                 if([currentAlmond.accessEmailIDs count]>0){
                     return EXPANDED_OWNED_ALMOND_ROW_HEIGHT + 30 + ([currentAlmond.accessEmailIDs count] * 30);
@@ -244,7 +261,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         }
     } else if([sharedAlmondList count] > 0){
          if(indexPath.row > [ownedAlmondList count] && indexPath.row <= ([ownedAlmondList count] +[sharedAlmondList count])){
-             SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:indexPath.row-1];
+             SFIAlmondPlus *currentAlmond = [self sharedAlmondAtIndexPathRow:indexPath.row];
              if(currentAlmond.isExpanded){
                  return EXPANDED_SHARED_ALMOND_ROW_HEIGHT;
              }
@@ -746,10 +763,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     
     UIView *backgroundLabel = [[UIView alloc]init];
     backgroundLabel.userInteractionEnabled = TRUE;
-    
     backgroundLabel.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:168.0/255.0 blue:225.0/255.0 alpha:1.0];
     
-    SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:indexPathRow-1];
+    SFIAlmondPlus *currentAlmond = [self ownedAlmondAtIndexPathRow:indexPathRow];
     
     UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(30, baseYCordinate+7, self.tableView.frame.size.width-90, 30)];
     lblTitle.backgroundColor = [UIColor clearColor];
@@ -766,7 +782,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     btnExpandOwnedRow.frame =  CGRectMake(self.tableView.frame.size.width-80, baseYCordinate+5, 50, 50);
     btnExpandOwnedRow.backgroundColor = [UIColor clearColor];
     [btnExpandOwnedRow addTarget:self action:@selector(onOwnedAlmondClicked:) forControlEvents:UIControlEventTouchUpInside];
-    btnExpandOwnedRow.tag = indexPathRow-1;
+    btnExpandOwnedRow.tag = indexPathRow;
     [backgroundLabel addSubview:btnExpandOwnedRow];
     
     
@@ -828,7 +844,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [btnUnlinkAlmond setTitle:NSLocalizedString(@"accounts.ownedAlmond.button.Unlink",@"Unlink") forState:UIControlStateNormal];
         [btnUnlinkAlmond.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnUnlinkAlmond setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
-        btnUnlinkAlmond.tag = indexPathRow - 1;
+        btnUnlinkAlmond.tag = indexPathRow;
         btnUnlinkAlmond.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnUnlinkAlmond addTarget:self action:@selector(onUnlinkAlmondClicked:) forControlEvents:UIControlEventTouchUpInside];
         [backgroundLabel addSubview:btnUnlinkAlmond];
@@ -842,7 +858,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         tfRenameAlmond.textAlignment = NSTextAlignmentLeft;
         tfRenameAlmond.textColor = [UIColor whiteColor];
         tfRenameAlmond.font = [UIFont standardUITextFieldFont];
-        tfRenameAlmond.tag = indexPathRow - 1;;
+        tfRenameAlmond.tag = indexPathRow;
         [tfRenameAlmond setReturnKeyType:UIReturnKeyDone];
         tfRenameAlmond.delegate = self;
         tfRenameAlmond.enabled = FALSE;
@@ -857,7 +873,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [btnChangeAlmondName setTitle:NSLocalizedString(@"accounts.ownedAlmond.button.RenameAlmond",@"Rename Almond") forState:UIControlStateNormal];
         [btnChangeAlmondName.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnChangeAlmondName setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
-        btnChangeAlmondName.tag = indexPathRow - 1;
+        btnChangeAlmondName.tag = indexPathRow;
         btnChangeAlmondName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangeAlmondName addTarget:self action:@selector(onChangeAlmondNameClicked:) forControlEvents:UIControlEventTouchUpInside];
         [backgroundLabel addSubview:btnChangeAlmondName];
@@ -920,7 +936,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [btnInvite setTitle:NSLocalizedString(@"accounts.ownedAlmond.button.InviteMore",@"INVITE MORE") forState:UIControlStateNormal];
         [btnInvite setTitleColor:[UIColor colorWithHue:0/360.0 saturation:0/100.0 brightness:100/100.0 alpha:1.0] forState:UIControlStateNormal ];
         [btnInvite.titleLabel setFont:[UIFont securifiBoldFont:13]];
-        btnInvite.tag = indexPathRow - 1;
+        btnInvite.tag = indexPathRow;
         btnInvite.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
         [btnInvite addTarget:self action:@selector(onInviteClicked:) forControlEvents:UIControlEventTouchUpInside];
         [backgroundLabel addSubview:btnInvite];
@@ -933,22 +949,21 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 
 -(UITableViewCell*) createSharedAlmondCell: (UITableViewCell*)cell listRow:(int)indexPathRow{
-    
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
-    
-    float baseYCordinate = 0;
+    float baseYCoordinate = 0;
     
     UIView *backgroundLabel = [[UIView alloc]init];
     backgroundLabel.userInteractionEnabled = TRUE;
     
     backgroundLabel.backgroundColor = [UIColor colorWithRed:0.0/255.0 green:203.0/255.0 blue:124.0/255.0 alpha:1.0];
-    
+
+    // Adjust indexing by accounting for "Owned" Almond preceeding the shared
     indexPathRow = indexPathRow - (int)[ownedAlmondList count];
-    SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:indexPathRow-1];
+    SFIAlmondPlus *currentAlmond = [self sharedAlmondAtIndexPathRow:indexPathRow];
     
-    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(30, baseYCordinate+7, self.tableView.frame.size.width-90, 30)];
+    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(30, baseYCoordinate +7, self.tableView.frame.size.width-90, 30)];
     lblTitle.backgroundColor = [UIColor clearColor];
     lblTitle.textColor = [UIColor whiteColor];
     [lblTitle setFont:[UIFont securifiLightFont:25]];
@@ -960,19 +975,19 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [backgroundLabel addSubview:imgArrow];
     
     UIButton *btnExpandOwnedRow = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnExpandOwnedRow.frame =  CGRectMake(self.tableView.frame.size.width-80, baseYCordinate+5, 50, 50);
+    btnExpandOwnedRow.frame =  CGRectMake(self.tableView.frame.size.width-80, baseYCoordinate +5, 50, 50);
     btnExpandOwnedRow.backgroundColor = [UIColor clearColor];
     [btnExpandOwnedRow addTarget:self action:@selector(onSharedAlmondClicked:) forControlEvents:UIControlEventTouchUpInside];
-    btnExpandOwnedRow.tag = indexPathRow-1;
+    btnExpandOwnedRow.tag = indexPathRow;
     [backgroundLabel addSubview:btnExpandOwnedRow];
     
     
-    baseYCordinate = 45;
-    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+    baseYCoordinate = 45;
+    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCoordinate, self.tableView.frame.size.width-35, 1)];
     imgLine.image = [UIImage imageNamed:@"line.png"];
     imgLine.alpha = 0.5;
     [backgroundLabel addSubview:imgLine];
-    baseYCordinate+=5;
+    baseYCoordinate +=5;
     
     if(!currentAlmond.isExpanded){
         
@@ -980,9 +995,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         
         imgArrow.image = [UIImage imageNamed:@"down_arrow.png"];
         
-        baseYCordinate+=5;
+        baseYCoordinate +=5;
         
-        UILabel *lblStatus = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width - 30, 20)];
+        UILabel *lblStatus = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCoordinate, self.tableView.frame.size.width - 30, 20)];
         lblStatus.backgroundColor = [UIColor clearColor];
         lblStatus.textColor = [UIColor whiteColor];
         [lblStatus setFont:[UIFont securifiBoldFontLarge]];
@@ -991,9 +1006,9 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         
         lblStatus.textAlignment = NSTextAlignmentCenter;
         [backgroundLabel addSubview:lblStatus];
-        baseYCordinate+=20;
+        baseYCoordinate +=20;
         
-        UILabel *lblShared = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width  -30, 30)];
+        UILabel *lblShared = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCoordinate, self.tableView.frame.size.width  -30, 30)];
         lblShared.backgroundColor = [UIColor clearColor];
         lblShared.textColor = [UIColor whiteColor];
         [lblShared setFont:[UIFont standardUITextFieldFont]];
@@ -1006,7 +1021,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         imgArrow.image = [UIImage imageNamed:@"up_arrow.png"];
         
         //Almond Name
-        UILabel *lblAlmondTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 120, 30)];
+        UILabel *lblAlmondTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCoordinate, 120, 30)];
         lblAlmondTitle.backgroundColor = [UIColor clearColor];
         lblAlmondTitle.textColor = [UIColor whiteColor];
         [lblAlmondTitle setFont:[UIFont securifiBoldFont:13]];
@@ -1015,26 +1030,26 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [backgroundLabel addSubview:lblAlmondTitle];
         
         UIButton *btnUnlinkAlmond = [UIButton buttonWithType:UIButtonTypeCustom];
-        btnUnlinkAlmond.frame = CGRectMake(160, baseYCordinate, 130, 30);
+        btnUnlinkAlmond.frame = CGRectMake(160, baseYCoordinate, 130, 30);
         btnUnlinkAlmond.backgroundColor = [UIColor clearColor];
         [btnUnlinkAlmond setTitle:NSLocalizedString(@"accounts.sharedAlmond.button.Remove",@"Remove") forState:UIControlStateNormal];
         [btnUnlinkAlmond.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnUnlinkAlmond setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
-        btnUnlinkAlmond.tag = indexPathRow - 1;
+        btnUnlinkAlmond.tag = indexPathRow;
         btnUnlinkAlmond.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnUnlinkAlmond addTarget:self action:@selector(onRemoveSharedAlmondClicked:) forControlEvents:UIControlEventTouchUpInside];
         [backgroundLabel addSubview:btnUnlinkAlmond];
         
-        baseYCordinate+=25;
+        baseYCoordinate +=25;
         
-        tfRenameAlmond = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, 180, 30)];
+        tfRenameAlmond = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCoordinate, 180, 30)];
         tfRenameAlmond.placeholder = NSLocalizedString(@"accounts.sharedAlmond.textfield.placeholder.almondName",@"Almond Name");
         [tfRenameAlmond setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
         tfRenameAlmond.text = currentAlmond.almondplusName;
         tfRenameAlmond.textAlignment = NSTextAlignmentLeft;
         tfRenameAlmond.textColor = [UIColor whiteColor];
         tfRenameAlmond.font = [UIFont standardUITextFieldFont];
-        tfRenameAlmond.tag = indexPathRow - 1;;
+        tfRenameAlmond.tag = indexPathRow;;
         [tfRenameAlmond setReturnKeyType:UIReturnKeyDone];
         tfRenameAlmond.delegate = self;
         tfRenameAlmond.enabled = FALSE;
@@ -1044,18 +1059,18 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         
         
         UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
-        btnChangeAlmondName.frame = CGRectMake(160, baseYCordinate, 130, 30);
+        btnChangeAlmondName.frame = CGRectMake(160, baseYCoordinate, 130, 30);
         btnChangeAlmondName.backgroundColor = [UIColor clearColor];
         [btnChangeAlmondName setTitle:NSLocalizedString(@"accounts.sharedAlmond.button.RenameAlmond",@"Rename Almond") forState:UIControlStateNormal];
         [btnChangeAlmondName.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnChangeAlmondName setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
-        btnChangeAlmondName.tag = indexPathRow - 1;
+        btnChangeAlmondName.tag = indexPathRow;
         btnChangeAlmondName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [btnChangeAlmondName addTarget:self action:@selector(onChangeSharedAlmondNameClicked:) forControlEvents:UIControlEventTouchUpInside];
         [backgroundLabel addSubview:btnChangeAlmondName];
         
-        baseYCordinate+=30;
-        UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width-35, 1)];
+        baseYCoordinate +=30;
+        UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCoordinate, self.tableView.frame.size.width-35, 1)];
         imgLine2.image = [UIImage imageNamed:@"line.png"];
         imgLine2.alpha = 0.2;
         [backgroundLabel addSubview:imgLine2];
@@ -1075,7 +1090,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }
     //Reload only User profile row
     NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:0 inSection:0];
-    NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
+    NSArray* rowsToReload = @[rowToReload];
     [self.tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationFade];
    // [self.tableView reloadData];
     
@@ -1218,94 +1233,106 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
 }
 
--(void)onOwnedAlmondClicked:(id)sender{
+- (void)onOwnedAlmondClicked:(id)sender {
     DLog(@"onOwnedAlmondClicked");
-    UIButton *btn = (UIButton*) sender;
-    NSUInteger index = (NSUInteger)btn.tag;
-    SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:index];
-     DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
-    if(currentAlmond.isExpanded){
+
+    UIButton *btn = (UIButton *) sender;
+    NSUInteger index = (NSUInteger) btn.tag;
+
+    SFIAlmondPlus *currentAlmond = [self ownedAlmondAtIndexPathRow:index];
+    DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
+
+    if (currentAlmond.isExpanded) {
         currentAlmond.isExpanded = FALSE;
-    }else{
+    }
+    else {
         currentAlmond.isExpanded = TRUE;
     }
+
     //Reload only that particular row
-    NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:index+1 inSection:0];
-    NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
-    [self.tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationFade];
-    
-    [self.tableView reloadData];
+    NSIndexPath *rowToReload = [NSIndexPath indexPathForRow:index inSection:0];
+    [self.tableView reloadRowsAtIndexPaths:@[rowToReload] withRowAnimation:UITableViewRowAnimationFade];
+
+//    [self.tableView reloadData];
 }
 
--(void)onChangeAlmondNameClicked:(id)sender {
+- (void)onChangeAlmondNameClicked:(id)sender {
     DLog(@"onChangeAlmondNameClicked");
-    UIButton *btn = (UIButton*) sender;
-    NSUInteger index = (NSUInteger)btn.tag;
-    if([btn.titleLabel.text isEqualToString:NSLocalizedString(@"accounts.userprofile.button.done",@"Done")]){
+
+    UIButton *btn = (UIButton *) sender;
+    NSUInteger index = (NSUInteger) btn.tag;
+
+    if ([btn.titleLabel.text isEqualToString:NSLocalizedString(@"accounts.userprofile.button.done", @"Done")]) {
         [tfRenameAlmond resignFirstResponder];
-        [btn setTitle:NSLocalizedString(@"accounts.ownedAlmond.button.RenameAlmond",@"Rename Almond") forState:UIControlStateNormal] ;
+        [btn setTitle:NSLocalizedString(@"accounts.ownedAlmond.button.RenameAlmond", @"Rename Almond") forState:UIControlStateNormal];
         tfRenameAlmond.enabled = FALSE;
 
-    SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:index];
-    DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
-    DLog(@"New Almond Name %@", changedAlmondName);
-    currentAlmondMAC = currentAlmond.almondplusMAC;
-    if(changedAlmondName.length == 0){
-        return;
-    }else if (changedAlmondName.length > 32){
-         [[[iToast makeText:NSLocalizedString(@"accounts.itoast.almondNameMax32Characters",@"Almond Name cannot be more than 32 characters.")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
-        return;
-    }
-    nameChangedForAlmond = NAME_CHANGED_OWNED_ALMOND;
-    [self sendAlmondNameChangeRequest:currentAlmond.almondplusMAC];
-    }else{
-        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.done",@"Done") forState:UIControlStateNormal];
-        tfRenameAlmond.enabled = TRUE;
-        [tfRenameAlmond becomeFirstResponder];
-        
-    }
-}
-
-
--(void)onChangeSharedAlmondNameClicked:(id)sender {
-    DLog(@"onChangeSharedAlmondNameClicked");
-    UIButton *btn = (UIButton*) sender;
-    NSUInteger index = (NSUInteger)btn.tag;
-    
-    if([btn.titleLabel.text isEqualToString:NSLocalizedString(@"accounts.userprofile.button.done",@"Done")]){
-        [tfRenameAlmond resignFirstResponder];
-        [btn setTitle:NSLocalizedString(@"accounts.sharedAlmond.button.RenameAlmond",@"Rename Almond") forState:UIControlStateNormal] ;
-        tfRenameAlmond.enabled = FALSE;
-        
-        SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:index];
+        SFIAlmondPlus *currentAlmond = [self ownedAlmondAtIndexPathRow:index];
         DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
         DLog(@"New Almond Name %@", changedAlmondName);
+
         currentAlmondMAC = currentAlmond.almondplusMAC;
-        if(changedAlmondName.length == 0){
-            return;
-        }else if (changedAlmondName.length > 32){
-            [[[iToast makeText:NSLocalizedString(@"accounts.itoast.almondNameMax32Characters",@"Almond Name cannot be more than 32 characters.")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        if (changedAlmondName.length == 0) {
             return;
         }
-        
-        nameChangedForAlmond = NAME_CHANGED_SHARED_ALMOND;
+        else if (changedAlmondName.length > 32) {
+            [[[iToast makeText:NSLocalizedString(@"accounts.itoast.almondNameMax32Characters", @"Almond Name cannot be more than 32 characters.")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+            return;
+        }
+        nameChangedForAlmond = NAME_CHANGED_OWNED_ALMOND;
         [self sendAlmondNameChangeRequest:currentAlmond.almondplusMAC];
-    }else{
-        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.done",@"Done") forState:UIControlStateNormal];
+    }
+    else {
+        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.done", @"Done") forState:UIControlStateNormal];
         tfRenameAlmond.enabled = TRUE;
         [tfRenameAlmond becomeFirstResponder];
-      
     }
+}
 
+
+- (void)onChangeSharedAlmondNameClicked:(id)sender {
+    DLog(@"onChangeSharedAlmondNameClicked");
+    UIButton *btn = (UIButton *) sender;
+    NSUInteger index = (NSUInteger) btn.tag;
+
+    if ([btn.titleLabel.text isEqualToString:NSLocalizedString(@"accounts.userprofile.button.done", @"Done")]) {
+        [tfRenameAlmond resignFirstResponder];
+        [btn setTitle:NSLocalizedString(@"accounts.sharedAlmond.button.RenameAlmond", @"Rename Almond") forState:UIControlStateNormal];
+        tfRenameAlmond.enabled = FALSE;
+
+        SFIAlmondPlus *currentAlmond = [self sharedAlmondAtIndexPathRow:index];
+        DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
+        DLog(@"New Almond Name %@", changedAlmondName);
+
+        currentAlmondMAC = currentAlmond.almondplusMAC;
+        if (changedAlmondName.length == 0) {
+            return;
+        }
+        else if (changedAlmondName.length > 32) {
+            [[[iToast makeText:NSLocalizedString(@"accounts.itoast.almondNameMax32Characters", @"Almond Name cannot be more than 32 characters.")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+            return;
+        }
+
+        nameChangedForAlmond = NAME_CHANGED_SHARED_ALMOND;
+        [self sendAlmondNameChangeRequest:currentAlmond.almondplusMAC];
+    }
+    else {
+        [btn setTitle:NSLocalizedString(@"accounts.userprofile.button.done", @"Done") forState:UIControlStateNormal];
+        tfRenameAlmond.enabled = TRUE;
+        [tfRenameAlmond becomeFirstResponder];
+    }
 }
 
 -(void)onUnlinkAlmondClicked:(id)sender{
     DLog(@"onUnlinkAlmondClicked");
     UIButton *btn = (UIButton*) sender;
     NSUInteger index = (NSUInteger)btn.tag;
-    SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:index];
+
+    SFIAlmondPlus *currentAlmond = [self ownedAlmondAtIndexPathRow:index];
     DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
     
+    currentAlmondMAC = currentAlmond.almondplusMAC;
+
     //Confirmation Box
     UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:NSLocalizedString(@"accounts.alert.onUnlinkAlmond.title",@"Unlink Almond") message:NSLocalizedString(@"accounts.alert.onUnlinkAlmond.message",@"To confirm unlinking Almond enter your password below.") delegate:self cancelButtonTitle:NSLocalizedString(@"accounts.alert.onUnlinkAlmond.Cancel",@"Cancel")  otherButtonTitles:NSLocalizedString(@"accounts.alert.onUnlinkAlmond.Unlink",@"Unlink"), nil];
     alert.alertViewStyle = UIAlertViewStyleSecureTextInput;
@@ -1313,16 +1340,16 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     [[alert textFieldAtIndex:0] setDelegate:self];
     [alert show];
     
-    currentAlmondMAC = currentAlmond.almondplusMAC;
-    
 }
 
 -(void)onInviteClicked:(id)sender{
     DLog(@"onInviteClicked");
     UIButton *btn = (UIButton*) sender;
     NSUInteger index = (NSUInteger)btn.tag;
-    SFIAlmondPlus *currentAlmond = [ownedAlmondList objectAtIndex:index];
+
+    SFIAlmondPlus *currentAlmond = [self ownedAlmondAtIndexPathRow:index];
     DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
+
     currentAlmondMAC = currentAlmond.almondplusMAC;
     
     //Invitation Email Input Box
@@ -1332,7 +1359,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     alert.tag = USER_INVITE_ALERT;
     [[alert textFieldAtIndex:0] setDelegate:self];
     [alert show];
-
 }
 
 -(void)onEmailRemoveClicked:(id)sender{
@@ -1341,43 +1367,44 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     NSUInteger index = (NSUInteger)btn.tag;
     
     CGPoint buttonOrigin = btn.frame.origin;
-    CGPoint pointInTableview = [self.tableView convertPoint:buttonOrigin fromView:btn.superview];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:pointInTableview];
+    CGPoint pointInTableView = [self.tableView convertPoint:buttonOrigin fromView:btn.superview];
+
     SFIAlmondPlus *currentAlmond;
+
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:pointInTableView];
     if (indexPath) {
-        currentAlmond = [ownedAlmondList objectAtIndex:indexPath.row - 1];
+        currentAlmond = [self ownedAlmondAtIndexPathRow:indexPath.row];
     }
+
     currentAlmondMAC = currentAlmond.almondplusMAC;
-    changedEmailID = [currentAlmond.accessEmailIDs objectAtIndex:index];
+    changedEmailID = currentAlmond.accessEmailIDs[index];
     DLog(@"Selected Almond Name %@",currentAlmond.almondplusName);
-    DLog(@"Selected Email %@",  [currentAlmond.accessEmailIDs objectAtIndex:index]);
-    [self sendDelSecondaryUserRequest:[currentAlmond.accessEmailIDs objectAtIndex:index] almondMAC:currentAlmond.almondplusMAC];
+    DLog(@"Selected Email %@", currentAlmond.accessEmailIDs[index]);
+    [self sendDelSecondaryUserRequest:currentAlmond.accessEmailIDs[index] almondMAC:currentAlmond.almondplusMAC];
 }
 
--(void)onSharedAlmondClicked:(id)sender{
+- (void)onSharedAlmondClicked:(id)sender {
     DLog(@"onSharedAlmondClicked");
-    UIButton *btn = (UIButton*) sender;
-    NSUInteger index = (NSUInteger)btn.tag;
-    SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:index];
+    UIButton *btn = (UIButton *) sender;
+    NSUInteger index = (NSUInteger) btn.tag;
+
+    SFIAlmondPlus *currentAlmond = [self sharedAlmondAtIndexPathRow:index];
     DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
-    if(currentAlmond.isExpanded){
-        currentAlmond.isExpanded = FALSE;
-    }else{
-        currentAlmond.isExpanded = TRUE;
-    }
-    //Reload only that particular row
+
+    currentAlmond.isExpanded = !currentAlmond.isExpanded;
+
+    // Reload only that particular row
     int indexPathRow = (int) (index + [ownedAlmondList count]);
-    NSIndexPath* rowToReload = [NSIndexPath indexPathForRow:indexPathRow+1 inSection:0];
-    NSArray* rowsToReload = [NSArray arrayWithObjects:rowToReload, nil];
-    [self.tableView reloadRowsAtIndexPaths:rowsToReload withRowAnimation:UITableViewRowAnimationFade];
-    //[self.tableView reloadData];
+    NSIndexPath *rowToReload = [NSIndexPath indexPathForRow:indexPathRow inSection:0];
+    [self.tableView reloadRowsAtIndexPaths:@[rowToReload] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 -(void)onRemoveSharedAlmondClicked:(id)sender{
     DLog(@"onRemoveSharedAlmondClicked");
     UIButton *btn = (UIButton*) sender;
     NSUInteger index = (NSUInteger)btn.tag;
-    SFIAlmondPlus *currentAlmond = [sharedAlmondList objectAtIndex:index];
+
+    SFIAlmondPlus *currentAlmond = [self sharedAlmondAtIndexPathRow:index];
     DLog(@"Selected Almond Name %@", currentAlmond.almondplusName);
     currentAlmondMAC = currentAlmond.almondplusMAC;
     
