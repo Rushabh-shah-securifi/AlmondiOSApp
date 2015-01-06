@@ -56,8 +56,6 @@
     _HUD.dimBackground = YES;
     [self.view addSubview:_HUD];
 
-//    [self scheduleDisplayNoCloudTimer];
-
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
     [center addObserver:self 
@@ -113,7 +111,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
     [self conditionalTryConnectOrLogon:YES];
 }
 
@@ -162,26 +159,9 @@
         self.HUD.labelText = @"Connecting. Please wait!";
         [self.HUD show:YES];
     }
-    else {
-        [self showToast: @"Connecting. Please wait!"];
-    }
 
     [self scheduleReconnectTimer];
     [toolkit initToolkit];
-}
-
-#pragma mark - Orientation Handling
-
-- (BOOL)shouldAutorotate {
-    return NO;
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
-}
-
-- (NSUInteger)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark - Class methods
@@ -345,7 +325,9 @@
     });
 }
 
-#pragma mark - UIView management; mainly, we need to manage logon and logout all, and setting up the main screen on logon.
+#pragma mark - UIView management
+
+// mainly, we need to manage logon and logout all, and setting up the main screen on logon.
 
 - (void)presentLogonScreen {
     DLog(@"%s", __PRETTY_FUNCTION__);
