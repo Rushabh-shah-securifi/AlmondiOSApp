@@ -9,8 +9,7 @@
 #ifndef Securifi_Cloud_Header_h
 #define Securifi_Cloud_Header_h
 
-#define CLOUD_CONNECTION_TIMEOUT    20
-#define CLOUD_CONNECTION_RETRY      5
+#define CLOUD_CONNECTION_RETRY      10
 
 // UI Notifications
 #define UI_ON_PRESENT_LOGOUT_ALL            @"UI_ON_PRESENT_LOGOUT_ALL"

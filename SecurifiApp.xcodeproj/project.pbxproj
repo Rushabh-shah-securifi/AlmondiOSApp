@@ -218,10 +218,6 @@
 		1C7E7D2C1A41A0990026F0BA /* SFISignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISignupViewController.m; sourceTree = "<group>"; };
 		1C7E7D2E1A41A0990026F0BA /* DrawerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawerViewController.h; sourceTree = "<group>"; };
 		1C7E7D2F1A41A0990026F0BA /* DrawerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawerViewController.m; sourceTree = "<group>"; };
-		1C7E7D301A41A0990026F0BA /* scene1sensor.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = scene1sensor.xml; sourceTree = "<group>"; };
-		1C7E7D311A41A0990026F0BA /* scene2sensor.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = scene2sensor.xml; sourceTree = "<group>"; };
-		1C7E7D321A41A0990026F0BA /* scene3sensor.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = scene3sensor.xml; sourceTree = "<group>"; };
-		1C7E7D331A41A0990026F0BA /* sensordata.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = sensordata.xml; sourceTree = "<group>"; };
 		1C7E7D341A41A0990026F0BA /* SFICardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICardTableViewCell.h; sourceTree = "<group>"; };
 		1C7E7D351A41A0990026F0BA /* SFICardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICardTableViewCell.m; sourceTree = "<group>"; };
 		1C7E7D361A41A0990026F0BA /* SFICardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICardView.h; sourceTree = "<group>"; };
@@ -479,10 +475,6 @@
 			children = (
 				1C7E7D2E1A41A0990026F0BA /* DrawerViewController.h */,
 				1C7E7D2F1A41A0990026F0BA /* DrawerViewController.m */,
-				1C7E7D301A41A0990026F0BA /* scene1sensor.xml */,
-				1C7E7D311A41A0990026F0BA /* scene2sensor.xml */,
-				1C7E7D321A41A0990026F0BA /* scene3sensor.xml */,
-				1C7E7D331A41A0990026F0BA /* sensordata.xml */,
 				1C7E7D341A41A0990026F0BA /* SFICardTableViewCell.h */,
 				1C7E7D351A41A0990026F0BA /* SFICardTableViewCell.m */,
 				1C7E7D361A41A0990026F0BA /* SFICardView.h */,

@@ -757,7 +757,7 @@
         self.currentExpandedSection = nil;
         self.currentExpandedCount = 0;
 
-        [tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger) currentExpanded] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self tryReloadSection:(NSUInteger) currentExpanded];
     }
 
     // add rows if needed
@@ -765,17 +765,17 @@
         if (section == DEF_WIRELESS_SETTINGS_SECTION) {
             self.currentExpandedSection = @(DEF_WIRELESS_SETTINGS_SECTION);
             self.currentExpandedCount = self.wirelessSettings.count;
-            [tableView reloadSections:[NSIndexSet indexSetWithIndex:DEF_WIRELESS_SETTINGS_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self tryReloadSection:DEF_WIRELESS_SETTINGS_SECTION];
         }
         else if (section == DEF_DEVICES_AND_USERS_SECTION) {
             self.currentExpandedSection = @(DEF_DEVICES_AND_USERS_SECTION);
             self.currentExpandedCount = self.connectedDevices.count + self.blockedDevices.count;
-            [tableView reloadSections:[NSIndexSet indexSetWithIndex:DEF_DEVICES_AND_USERS_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self tryReloadSection:DEF_DEVICES_AND_USERS_SECTION];
         }
         else if (section == DEF_ROUTER_REBOOT_SECTION) {
             self.currentExpandedSection = @(DEF_ROUTER_REBOOT_SECTION);
             self.currentExpandedCount = 1;
-            [tableView reloadSections:[NSIndexSet indexSetWithIndex:DEF_ROUTER_REBOOT_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self tryReloadSection:DEF_ROUTER_REBOOT_SECTION];
         }
     }
 
@@ -876,14 +876,14 @@
             case SFIGenericRouterCommandType_CONNECTED_DEVICES: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.connectedDevices = ls.deviceList;
-                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:DEF_DEVICES_AND_USERS_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self tryReloadSection:DEF_DEVICES_AND_USERS_SECTION];
                 break;
             }
 
             case SFIGenericRouterCommandType_BLOCKED_MACS: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.blockedDevices = ls.deviceList;
-                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:DEF_DEVICES_AND_USERS_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self tryReloadSection:DEF_DEVICES_AND_USERS_SECTION];
                 break;
             }
 
@@ -891,7 +891,7 @@
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.wirelessSettings = ls.deviceList;
                 [self.routerSummary updateWirelessSummaryWithSettings:self.wirelessSettings];
-                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:DEF_WIRELESS_SETTINGS_SECTION] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self tryReloadSection:DEF_WIRELESS_SETTINGS_SECTION];
                 break;
             }
 
@@ -910,6 +910,17 @@
         [self.HUD hide:YES];
         [self.refreshControl endRefreshing];
     });
+}
+
+// take into account table might be displaying static images and therefore reloading a specific section would not be appropriate
+- (void)tryReloadSection:(NSUInteger)section {
+    UITableView *tableView = self.tableView;
+    if ([tableView numberOfSections] <= 1) {
+        [tableView reloadData];
+    }
+    else {
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
 }
 
 - (void)onGenericNotificationCallback:(id)sender {

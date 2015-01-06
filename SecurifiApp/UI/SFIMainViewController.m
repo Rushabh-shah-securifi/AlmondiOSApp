@@ -25,7 +25,6 @@
 
 @interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, SFIAccountDeleteDelegate, UIGestureRecognizerDelegate, UITabBarControllerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
-@property(nonatomic, readonly) NSTimer *displayNoCloudTimer;
 @property(nonatomic, readonly) NSTimer *cloudReconnectTimer;
 @property BOOL presentingLoginController;
 @end
@@ -57,7 +56,7 @@
     _HUD.dimBackground = YES;
     [self.view addSubview:_HUD];
 
-    [self scheduleDisplayNoCloudTimer];
+//    [self scheduleDisplayNoCloudTimer];
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
@@ -67,12 +66,12 @@
                  object:nil];
 
     [center addObserver:self
-               selector:@selector(networkDownNotifier:)
+               selector:@selector(onNetworkDownNotifier:)
                    name:NETWORK_DOWN_NOTIFIER
                  object:nil];
 
     [center addObserver:self
-               selector:@selector(networkUpNotifier:)
+               selector:@selector(onNetworkUpNotifier:)
                    name:NETWORK_UP_NOTIFIER
                  object:nil];
 
@@ -125,15 +124,17 @@
 }
 
 - (void)conditionalTryConnectOrLogon:(BOOL)onViewAppearing {
-    if ([self isCloudOnline]) {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    if ([toolkit isCloudOnline]) {
         // Already connected. Nothing to do.
+        NSLog(@"Cloud is on-line. returning");
         return;
     }
 
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
     // Try to connect iff we are the top-level presenting view and network is down
     if (self.presentedViewController != nil) {
+        NSLog(@"presented view controller. returning");
         return;
     }
 
@@ -143,6 +144,8 @@
             // only show after first attempt fails
             [self showToast:@"Sorry! Unable to establish Internet route to cloud service."];
         }
+
+        [self scheduleReconnectTimer];
         return;
     }
 
@@ -152,14 +155,18 @@
         return;
     }
 
+    [self displaySplashImage];
+
     // Else try to connect
     if (onViewAppearing) {
         self.HUD.labelText = @"Connecting. Please wait!";
         [self.HUD show:YES];
     }
+    else {
+        [self showToast: @"Connecting. Please wait!"];
+    }
 
-    [self scheduleDisplayNoCloudTimer];
-
+    [self scheduleReconnectTimer];
     [toolkit initToolkit];
 }
 
@@ -180,45 +187,51 @@
 #pragma mark - Class methods
 
 - (void)displaySplashImage {
-    //Display the image from xcassets file
-    CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    if (screenBounds.size.height == 736) {
-        // code for 5.5-inch screen
-        self.imgSplash.image = [UIImage imageNamed:@"launch-image-1242x2208"];
-    }else if (screenBounds.size.height == 667) {
-        // code for 4.7-inch screen
-        self.imgSplash.image = [UIImage imageNamed:@"launch-image-750x1334"];
-    }else if (screenBounds.size.height == 568) {
-        // code for 4-inch screen
-        self.imgSplash.image = [UIImage imageNamed:@"launch-image-640x1136"];
-    }
-    else {
-        // code for 3.5-inch screen
-        self.imgSplash.image = [UIImage imageNamed:@"launch-image-640x960"];
-    }
-}
-
-- (void)displayNoCloudConnectionImage {
-    if (!self.isCloudOnline) {
-        //Set the splash image differently for 3.5 inch and 4 inch screen
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        //Display the image from xcassets file
         CGRect screenBounds = [[UIScreen mainScreen] bounds];
         if (screenBounds.size.height == 736) {
             // code for 5.5-inch screen
-            self.imgSplash.image = [UIImage imageNamed:@"no_cloud_1242x2208"];
-        }else if (screenBounds.size.height == 667) {
+            self.imgSplash.image = [UIImage imageNamed:@"launch-image-1242x2208"];
+        }
+        else if (screenBounds.size.height == 667) {
             // code for 4.7-inch screen
-            self.imgSplash.image = [UIImage imageNamed:@"no_cloud_750x1334"];
-        }else if (screenBounds.size.height == 568) {
+            self.imgSplash.image = [UIImage imageNamed:@"launch-image-750x1334"];
+        }
+        else if (screenBounds.size.height == 568) {
             // code for 4-inch screen
-            self.imgSplash.image = [UIImage imageNamed:@"no_cloud_640x1136"];
+            self.imgSplash.image = [UIImage imageNamed:@"launch-image-640x1136"];
         }
         else {
             // code for 3.5-inch screen
-            self.imgSplash.image = [UIImage imageNamed:@"no_cloud_640x960"];
+            self.imgSplash.image = [UIImage imageNamed:@"launch-image-640x960"];
         }
+    });
+}
 
-        [self showToast:@"Sorry! Could not connect to the cloud service."];
-    }
+- (void)displayNoCloudConnectionImage {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self.isCloudOnline) {
+            //Set the splash image differently for 3.5 inch and 4 inch screen
+            CGRect screenBounds = [[UIScreen mainScreen] bounds];
+            if (screenBounds.size.height == 736) {
+                // code for 5.5-inch screen
+                self.imgSplash.image = [UIImage imageNamed:@"no_cloud_1242x2208"];
+            }else if (screenBounds.size.height == 667) {
+                // code for 4.7-inch screen
+                self.imgSplash.image = [UIImage imageNamed:@"no_cloud_750x1334"];
+            }else if (screenBounds.size.height == 568) {
+                // code for 4-inch screen
+                self.imgSplash.image = [UIImage imageNamed:@"no_cloud_640x1136"];
+            }
+            else {
+                // code for 3.5-inch screen
+                self.imgSplash.image = [UIImage imageNamed:@"no_cloud_640x960"];
+            }
+
+            [self showToast:@"Sorry! Could not connect to the cloud service."];
+        }
+    });
 }
 
 #pragma mark - Reconnection
@@ -227,14 +240,14 @@
     [self conditionalTryConnectOrLogon:NO];
 }
 
-- (void)networkUpNotifier:(id)sender {
+- (void)onNetworkUpNotifier:(id)sender {
     if (self.isCloudOnline) {
         [self.HUD hide:YES];
-        [self invalidateTimers];
+        [self invalidateTimer];
     }
 }
 
-- (void)networkDownNotifier:(id)sender {
+- (void)onNetworkDownNotifier:(id)sender {
     [self conditionalTryConnectOrLogon:NO];
 }
 
@@ -472,23 +485,13 @@
 
 #pragma mark - Timers
 
-- (void)invalidateTimers {
-    [self.displayNoCloudTimer invalidate];
-    _displayNoCloudTimer = nil;
-
+- (void)invalidateTimer {
     [self.cloudReconnectTimer invalidate];
     _cloudReconnectTimer = nil;
 }
 
-- (void)scheduleDisplayNoCloudTimer {
-    _displayNoCloudTimer = [NSTimer scheduledTimerWithTimeInterval:CLOUD_CONNECTION_TIMEOUT
-                                                            target:self
-                                                          selector:@selector(onNoCloudConnectionTimeout)
-                                                          userInfo:nil
-                                                           repeats:NO];
-}
-
 - (void)scheduleReconnectTimer {
+    [self invalidateTimer];
     _cloudReconnectTimer = [NSTimer scheduledTimerWithTimeInterval:CLOUD_CONNECTION_RETRY
                                                             target:self
                                                           selector:@selector(onNoCloudConnectionRetry)
@@ -496,9 +499,7 @@
                                                            repeats:NO];
 }
 
-- (void)onNoCloudConnectionTimeout {
-    _displayNoCloudTimer = nil;
-
+- (void)onNoCloudConnectionRetry {
     [self.HUD hide:YES];
 
     if ([self isCloudOnline]) {
@@ -506,17 +507,6 @@
     }
     else {
         [self displayNoCloudConnectionImage];
-        [self scheduleReconnectTimer];
-    }
-}
-
-- (void)onNoCloudConnectionRetry {
-    _cloudReconnectTimer = nil;
-
-    if ([self isCloudOnline]) {
-        [self displaySplashImage];
-    }
-    else {
         [self conditionalTryConnectOrLogon:NO];
     }
 }
