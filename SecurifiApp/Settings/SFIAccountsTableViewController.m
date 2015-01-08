@@ -34,6 +34,38 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 #define EXPANDED_SHARED_ALMOND_ROW_HEIGHT 120
 
 
+@interface SFIAccountsTableViewController ()
+@property(nonatomic) NSMutableArray *ownedAlmondList;
+@property(nonatomic) NSMutableArray *sharedAlmondList;
+@property(nonatomic) SFIUserProfile *userProfile;
+
+@property(nonatomic) NSString *changedFirstName;
+@property(nonatomic) NSString *changedLastName;
+@property(nonatomic) NSString *changedAddress1;
+@property(nonatomic) NSString *changedAddress2;
+@property(nonatomic) NSString *changedAddress3;
+@property(nonatomic) NSString *changedCountry;
+@property(nonatomic) NSString *changedZipcode;
+@property(nonatomic) NSString *changedAlmondName;
+@property(nonatomic) NSString *currentAlmondMAC;
+@property(nonatomic) NSString *changedEmailID;
+
+@property(nonatomic, readonly) MBProgressHUD *HUD;
+
+@property(nonatomic, readonly) UITextField *tfFirstName;
+@property(nonatomic, readonly) UITextField *tfLastName;
+@property(nonatomic, readonly) UITextField *tfAddress1;
+@property(nonatomic, readonly) UITextField *tfAddress2;
+@property(nonatomic, readonly) UITextField *tfAddress3;
+@property(nonatomic, readonly) UITextField *tfCountry;
+@property(nonatomic, readonly) UITextField *tfZipCode;
+@property(nonatomic, readonly) UITextField *tfRenameAlmond;
+
+@property(nonatomic) int nameChangedForAlmond;
+@property NSTimer *almondNameChangeTimer;
+@property BOOL isAlmondNameChangeSuccessful;
+
+@end
 
 @implementation SFIAccountsTableViewController
 
@@ -43,50 +75,25 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 @synthesize tfAddress1, tfAddress2, tfAddress3, tfCountry, tfZipCode, changedAlmondName;
 @synthesize currentAlmondMAC, changedEmailID, nameChangedForAlmond, tfRenameAlmond;
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
-//- (void)awakeFromNib
-//{
-//    [super awakeFromNib];
-//
-//    NSDictionary *titleAttributes = @{
-//            NSForegroundColorAttributeName : [UIColor colorWithRed:51.0 / 255.0 green:51.0 / 255.0 blue:51.0 / 255.0 alpha:1.0],
-//            NSFontAttributeName : [UIFont standardNavigationTitleFont]
-//    };
-//
-//    self.navigationController.navigationBar.translucent = NO;
-//    self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-//}
-
-
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.titleTextAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
             NSFontAttributeName : [UIFont standardNavigationTitleFont]
     };
-    
-    self.tableView.autoresizingMask= UIViewAutoresizingFlexibleWidth;
-    self.tableView.autoresizesSubviews= YES;
-    
+
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    self.tableView.autoresizesSubviews = YES;
+
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+
     self.navigationItem.title = NSLocalizedString(@"accounts.navbar-title.settings", @"Accounts Settings");
-    
-    ownedAlmondList = [[NSMutableArray alloc]init];
-    sharedAlmondList = [[NSMutableArray alloc]init];
-    
+
+    ownedAlmondList = [[NSMutableArray alloc] init];
+    sharedAlmondList = [[NSMutableArray alloc] init];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
