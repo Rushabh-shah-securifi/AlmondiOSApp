@@ -28,7 +28,6 @@
     if (self) {
         self.title = @"Scoreboard";
         [self loadScoreboard];
-        [SecurifiToolkit sharedInstance].collectEvents = YES;
     }
     return self;
 }

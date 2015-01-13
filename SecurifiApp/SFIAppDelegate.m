@@ -20,7 +20,9 @@
 #pragma mark - Public methods; subclasses override
 
 - (SecurifiConfigurator *)toolkitConfigurator {
-    return [SecurifiConfigurator new];
+    SecurifiConfigurator *config = [SecurifiConfigurator new];
+//    config.enableScoreboard = YES; // uncomment for debug builds
+    return config;
 }
 
 - (NSString *)crashReporterApiKey {
@@ -47,40 +49,27 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 
-    //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
-    //Push Notification - START
-    /*
-    // Let the device know we want to receive push notifications
-    //
-    //-- Set Notification
-    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
-    {
-        // iOS 8 Notifications
-        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
-
-        [application registerForRemoteNotifications];
+    if (config.enableNotifications) {
+        [self enablePushNotifications:application];
     }
-    else
-    {
-        // iOS < 8 Notifications
-        [application registerForRemoteNotificationTypes:
-         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
-    }
-
-    NSDictionary *pushDic = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
-    if (pushDic != nil) {
-        DLog(@"Notification");
-    }
-    */
-    //Push Notification - END
 
     return YES;
 }
 
+- (void)enablePushNotifications:(UIApplication *)application {
+    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
+        // iOS 8 Notifications
+        enum UIUserNotificationType types = UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge;
+        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
+        [application registerForRemoteNotifications];
+    }
+    else {
+        // iOS < 8 Notifications
+        enum UIRemoteNotificationType types = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound;
+        [application registerForRemoteNotificationTypes:types];
+    }
+}
 
-//TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
-//Push Notification - START
-/*
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
     DDLogError(@"Method Name: Registration Error %@", error);
 }
@@ -88,19 +77,14 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     DLog(@"Device token is: %@", deviceToken);
-    //PY 181114: Save in preference
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:deviceToken forKey:PUSH_NOTIFICATION_TOKEN];
     [defaults setBool:YES forKey:PUSH_NOTIFICATION_STATUS];
-
 }
-
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo{
     NSLog(@"didReceiveRemoteNotification");
 }
-*/
-//Push Notification - END
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

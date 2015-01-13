@@ -18,7 +18,7 @@
 #import "SFIAccountsTableViewController.h"
 #import "UIViewController+Securifi.h"
 #import "Analytics.h"
-//#import "ScoreboardViewController.h"
+#import "ScoreboardViewController.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
@@ -374,16 +374,25 @@
     icon = [UIImage imageNamed:@"icon_router.png"];
     routerNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_ROUTER image:icon selectedImage:icon];
     //
-//    ScoreboardViewController *scoreCtrl = [ScoreboardViewController new];
-//    UINavigationController *scoreNav = [[UINavigationController alloc] initWithRootViewController:scoreCtrl];
-//    icon = [UIImage imageNamed:@"878-binoculars.png"];
-//    scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
+    NSArray *tabs;
+
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    if (toolkit.configuration.enableScoreboard) {
+        ScoreboardViewController *scoreCtrl = [ScoreboardViewController new];
+        UINavigationController *scoreNav = [[UINavigationController alloc] initWithRootViewController:scoreCtrl];
+        icon = [UIImage imageNamed:@"878-binoculars.png"];
+        scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
+
+        tabs = @[sensorNav, routerNav, scoreNav];
+    }
+    else {
+        tabs = @[sensorNav, routerNav];
+    }
 
     UITabBarController *front = [UITabBarController new];
     front.tabBar.translucent = NO;
     front.tabBar.tintColor = [UIColor blackColor];
-//    front.viewControllers = @[sensorNav, routerNav, scoreNav];
-    front.viewControllers = @[sensorNav, routerNav];
+    front.viewControllers = tabs;
     front.delegate = self;
 
     // The rear one is the drawer selector
@@ -496,31 +505,37 @@
 
 #pragma mark - Notification Registration
 
+- (void)sendPushNotificationRegistration {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
--(void)sendPushNotificationRegistration{
+    SecurifiConfigurator *config = toolkit.configuration;
+    if (!config.enableNotifications) {
+        return;
+    }
+
     BOOL notificationStatus = [[NSUserDefaults standardUserDefaults] boolForKey:PUSH_NOTIFICATION_STATUS];
-    if (!notificationStatus){
+    if (!notificationStatus) {
         //Register for notification
         // Check to see if this is an iOS 8 device.
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
-        {
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
             // Register for push in iOS 8.
-            [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+            enum UIUserNotificationType types = UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge;
+            [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
             [[UIApplication sharedApplication] registerForRemoteNotifications];
         }
-        else
-        {
+        else {
             // Register for push in iOS 7 and under.
-            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
+            enum UIRemoteNotificationType types = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert;
+            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
         }
     }
+
     NSString *deviceToken = [[NSUserDefaults standardUserDefaults] stringForKey:PUSH_NOTIFICATION_TOKEN];
     //TODO: For test - Remove
     //deviceToken = @"7ff2a7b3707fe43cdf39e25522250e1257ee184c59ca0d901b452040d85fd794";
-    if(deviceToken!=nil){
-        [[SecurifiToolkit sharedInstance] asyncRequestRegisterForNotification:deviceToken];
+    if (deviceToken != nil) {
+        [toolkit asyncRequestRegisterForNotification:deviceToken];
     }
-
 }
 
 - (void)notificationRegistrationResponseCallback:(id)sender {
