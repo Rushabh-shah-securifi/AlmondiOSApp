@@ -137,6 +137,11 @@
                  object:nil];
 
     [center addObserver:self
+               selector:@selector(onNotificationPrefDidChange:)
+                   name:kSFINotificationPreferencesDidChange
+                 object:nil];
+
+    [center addObserver:self
                selector:@selector(onSensorChangeCallback:)
                    name:SENSOR_CHANGE_NOTIFIER
                  object:nil];
@@ -1191,22 +1196,6 @@
 
 
 - (void)onNotificationPrefDidChange:(id)sender {
-    DLog(@"Sensors: did receive notification preference list change");
-
-    if (!self) {
-        return;
-    }
-
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (!self) {
-            return;
-        }
-        if (self.isViewControllerDisposed) {
-            return;
-        }
-        [self.HUD hide:YES];
-    });
-
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
@@ -1214,20 +1203,7 @@
     }
 
     NSString *cloudMAC = [data valueForKey:@"data"];
-    if (![self isSameAsCurrentMAC:cloudMAC]) {
-        DLog(@"Sensors: ignore notification preference list change, c:%@, m:%@", self.almondMac, cloudMAC);
-        // An Almond not currently being viewed was changed
-        return;
-    }
 
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
-    NSArray *newNotificationList = [toolkit notificationPrefList:cloudMAC];
-    if (newNotificationList == nil) {
-        DLog(@"Notification Preference list is empty: %@", cloudMAC);
-
-    }
-    
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
@@ -1243,26 +1219,6 @@
         [self.refreshControl endRefreshing];
         [self.tableView reloadData];
     });
-}
-
-- (void)onNotificationPrefResponse:(id)sender {
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-
-    NotificationPreferenceResponse *obj = (NotificationPreferenceResponse *) [data valueForKey:@"data"];
-
-    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
-
-    if (!obj.isSuccessful) {
-        NSLog(@"Reason Code %d", obj.reasonCode);
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            if (self.isViewControllerDisposed) {
-                return;
-            }
-            [self.tableView reloadData];
-        });
-    }
 }
 
 #pragma mark - Helpers

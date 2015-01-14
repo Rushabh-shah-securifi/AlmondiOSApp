@@ -58,8 +58,8 @@
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-    [center addObserver:self 
-               selector:@selector(onReachabilityDidChange:) 
+    [center addObserver:self
+               selector:@selector(onReachabilityDidChange:)
                    name:kSFIReachabilityChangedNotification 
                  object:nil];
 
@@ -99,13 +99,23 @@
                  object:nil];
     
     [center addObserver:self
-               selector:@selector(notificationRegistrationResponseCallback:)
-                   name:NOTIFICATION_REGISTRATION_NOTIFIER
+               selector:@selector(onDidRegisterForNotifications)
+                   name:kSFIDidRegisterForNotifications
                  object:nil];
     
     [center addObserver:self
-               selector:@selector(notificationDeregistrationResponseCallback:)
-                   name:NOTIFICATION_DEREGISTRATION_NOTIFIER
+               selector:@selector(onDidFailToRegisterForNotifications)
+                   name:kSFIDidFailToRegisterForNotifications
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onDidDeregisterForNotifications)
+                   name:kSFIDidDeregisterForNotifications
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onDidFailToDeregisterForNotifications)
+                   name:kSFIDidFailToDeregisterForNotifications
                  object:nil];
 }
 
@@ -505,6 +515,22 @@
 
 #pragma mark - Notification Registration
 
+- (void)onDidRegisterForNotifications {
+    // do nothing
+}
+
+- (void)onDidFailToRegisterForNotifications {
+    [self showToast:@"Sorry! Push Notification was not registered."];
+}
+
+- (void)onDidDeregisterForNotifications {
+    [self showToast:@"Push Notification was successfully deregistered."];
+}
+
+- (void)onDidFailToDeregisterForNotifications {
+    [self showToast:@"Sorry! Push Notification was not deregistered."];
+}
+
 - (void)sendPushNotificationRegistration {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
@@ -535,46 +561,6 @@
     //deviceToken = @"7ff2a7b3707fe43cdf39e25522250e1257ee184c59ca0d901b452040d85fd794";
     if (deviceToken != nil) {
         [toolkit asyncRequestRegisterForNotification:deviceToken];
-    }
-}
-
-- (void)notificationRegistrationResponseCallback:(id)sender {
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    
-    NotificationRegistrationResponse *obj = (NotificationRegistrationResponse *) [data valueForKey:@"data"];
-    
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
-    
-    if (obj.isSuccessful) {
-        DLog(@"Reason Code %d", obj.reasonCode);
-    }
-    else {
-        if(obj.reasonCode!=3){
-            [self showToast:@"Sorry! Push Notification was not registered."];
-        }
-        DLog(@"Reason Code %d", obj.reasonCode);
-    }
-}
-
-
-- (void)notificationDeregistrationResponseCallback:(id)sender {
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    
-    NotificationDeleteRegistrationResponse *obj = (NotificationDeleteRegistrationResponse *) [data valueForKey:@"data"];
-    
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
-    
-    if (obj.isSuccessful) {
-       // [self showToast:@"Push Notification was successfully deregistered."];
-        DLog(@"Reason Code %d", obj.reasonCode);
-    }
-    else {
-        [self showToast:@"Sorry! Push Notification was not deregistered."];
-        DLog(@"Reason Code %d", obj.reasonCode);
     }
 }
 
