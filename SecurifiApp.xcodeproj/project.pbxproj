@@ -123,7 +123,6 @@
 		1C7E7E781A41A89B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */; };
 		1C9B1D7A1A3EE9EF00097D8F /* HomeScreen-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C9B1D591A3EE9EF00097D8F /* HomeScreen-Images.xcassets */; };
 		1C9B1D7B1A3EE9EF00097D8F /* HomeScreenAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B1D5C1A3EE9EF00097D8F /* HomeScreenAppDelegate.m */; };
-		1C9B1D8F1A3EE9EF00097D8F /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1C9B1D711A3EE9EF00097D8F /* Info.plist */; };
 		1C9B1D901A3EE9EF00097D8F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B1D721A3EE9EF00097D8F /* main.m */; };
 		1C9B1DA11A3EEA1200097D8F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1C9B1D971A3EEA1200097D8F /* InfoPlist.strings */; };
 		1C9B1DA21A3EEA1200097D8F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1C9B1D991A3EEA1200097D8F /* Localizable.strings */; };
@@ -762,7 +761,6 @@
 				1C9B1DA31A3EEA1200097D8F /* MainStoryboard_iPhone.strings in Resources */,
 				1C9B1DA11A3EEA1200097D8F /* InfoPlist.strings in Resources */,
 				1C9B1DA41A3EEA1200097D8F /* termsofuse.html in Resources */,
-				1C9B1D8F1A3EE9EF00097D8F /* Info.plist in Resources */,
 				1C9B1D7A1A3EE9EF00097D8F /* HomeScreen-Images.xcassets in Resources */,
 				1C7E7D701A41A0990026F0BA /* Common-Images.xcassets in Resources */,
 			);
@@ -1167,6 +1165,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\" \"${PROJECT_DIR}/../iostoolkit\"";
 			};
 			name = Debug;
@@ -1190,6 +1189,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\" \"${PROJECT_DIR}/../iostoolkit\"";
 			};
 			name = Release;

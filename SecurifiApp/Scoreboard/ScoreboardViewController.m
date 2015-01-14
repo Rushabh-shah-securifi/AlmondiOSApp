@@ -9,11 +9,15 @@
 #import "ScoreboardViewController.h"
 #import "SFICloudStatusBarButtonItem.h"
 #import "ScoreboardEventViewController.h"
+#import "SFIPreferences.h"
+#import "NSData+Conversion.h"
+#import "UIViewController+Securifi.h"
 
-#define SEC_CLOUD       0
-#define SEC_EVENTS      1
-#define SEC_NETWORK     2
-#define SEC_REQUESTS    3
+#define SEC_CLOUD           0
+#define SEC_NOTIFICATIONS   1
+#define SEC_EVENTS          2
+#define SEC_NETWORK         3
+#define SEC_REQUESTS        4
 
 @interface ScoreboardViewController ()
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
@@ -81,13 +85,15 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case SEC_CLOUD:
             return 2;
+        case SEC_NOTIFICATIONS:
+            return 1;
         case SEC_EVENTS:
             return 1;
         case SEC_NETWORK:
@@ -103,6 +109,8 @@
     switch (section) {
         case SEC_CLOUD:
             return @"Cloud";
+        case SEC_NOTIFICATIONS:
+            return @"Notifications";
         case SEC_EVENTS:
             return @"Events";
         case SEC_NETWORK:
@@ -143,6 +151,18 @@
 
     if (indexPath.section == SEC_CLOUD) {
         return [self tableView:tableView cloudSectionCellForRowAtIndexPath:indexPath];
+    }
+    else if (indexPath.section == SEC_NOTIFICATIONS) {
+        NSString *cell_id = @"notifications";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cell_id];
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            cell.textLabel.text = @"Client Token";
+        }
+        NSString *token = [self pushNotificationClientToken];
+        cell.detailTextLabel.text = (token.length == 0) ? @"Not registered" : token;
+        return cell;
     }
     else if (indexPath.section == SEC_EVENTS) {
         UITableViewCell *cell = [self getFieldCell:tableView];
@@ -230,9 +250,23 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+
     if (indexPath.section == SEC_CLOUD) {
         [self onSwitchServer];
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger) indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    else if (indexPath.section == SEC_NOTIFICATIONS) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+        NSString *token = [self pushNotificationClientToken];
+        if (token == nil) {
+            token = @"";
+        }
+
+        UIPasteboard *pb = [UIPasteboard generalPasteboard];
+        pb.string = token;
+
+        [self showToast:@"Copied token"];
     }
     else if (indexPath.section == SEC_EVENTS) {
         NSArray *events = [self.scoreboard allEvents];
@@ -251,6 +285,10 @@
     [toolkit closeConnection];
     [toolkit initToolkit];
     [self onRefresh];
+}
+
+- (NSString *)pushNotificationClientToken {
+    return [SFIPreferences instance].pushNotificationDeviceToken.hexadecimalString;
 }
 
 @end
