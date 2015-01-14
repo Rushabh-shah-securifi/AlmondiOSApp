@@ -149,10 +149,12 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     Scoreboard *scoreboard = self.scoreboard;
 
-    if (indexPath.section == SEC_CLOUD) {
+    NSInteger const section = indexPath.section;
+
+    if (section == SEC_CLOUD) {
         return [self tableView:tableView cloudSectionCellForRowAtIndexPath:indexPath];
     }
-    else if (indexPath.section == SEC_NOTIFICATIONS) {
+    else if (section == SEC_NOTIFICATIONS) {
         NSString *cell_id = @"notifications";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
         if (cell == nil) {
@@ -164,7 +166,7 @@
         cell.detailTextLabel.text = (token.length == 0) ? @"Not registered" : token;
         return cell;
     }
-    else if (indexPath.section == SEC_EVENTS) {
+    else if (section == SEC_EVENTS) {
         UITableViewCell *cell = [self getFieldCell:tableView];
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         cell.textLabel.text = @"All Events";
@@ -175,7 +177,7 @@
     NSString *field = @"";
     NSString *value = nil;
 
-    if (indexPath.section == SEC_NETWORK) {
+    if (section == SEC_NETWORK) {
         switch (indexPath.row) {
             case 0: {
                 field = @"Established Connections";
@@ -197,7 +199,7 @@
             }
         } // end switch
     }
-    else if (indexPath.section == SEC_REQUESTS) {
+    else if (section == SEC_REQUESTS) {
         switch (indexPath.row) {
             case 0: {
                 field = @"Dynamic Updates";
@@ -250,7 +252,6 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
     if (indexPath.section == SEC_CLOUD) {
         [self onSwitchServer];
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger) indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
