@@ -10,7 +10,6 @@
 #import "SNLog.h"
 #import "Analytics.h"
 #import "Crashlytics.h"
-#import "AlmondPlusConstants.h"
 #import "SFIPreferences.h"
 
 #define DEFAULT_GA_ID @"UA-52832244-2"

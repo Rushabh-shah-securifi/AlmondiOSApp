@@ -384,7 +384,7 @@
     if (toolkit.configuration.enableScoreboard) {
         ScoreboardViewController *scoreCtrl = [ScoreboardViewController new];
         UINavigationController *scoreNav = [[UINavigationController alloc] initWithRootViewController:scoreCtrl];
-        icon = [UIImage imageNamed:@"878-binoculars.png"];
+        icon = [UIImage imageNamed:@"878-binoculars"];
         scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
 
         tabs = @[sensorNav, routerNav, scoreNav];
