@@ -20,6 +20,7 @@
 #import "Analytics.h"
 #import "ScoreboardViewController.h"
 #import "SFIPreferences.h"
+#import "NSData+Conversion.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
@@ -554,7 +555,8 @@
     //TODO: For test - Remove
     //deviceToken = @"7ff2a7b3707fe43cdf39e25522250e1257ee184c59ca0d901b452040d85fd794";
     if (deviceToken != nil) {
-        [toolkit asyncRequestRegisterForNotification:deviceToken];
+        NSString *str = deviceToken.hexadecimalString;
+        [toolkit asyncRequestRegisterForNotification:str];
     }
 }
 
