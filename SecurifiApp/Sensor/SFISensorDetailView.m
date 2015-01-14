@@ -177,10 +177,14 @@
             [self configureThermostat_7];
             break;
         }
-        case SFIDeviceType_SmartACSwitch_22: {
+
+        case SFIDeviceType_SmartACSwitch_22:
+        case SFIDeviceType_SecurifiSmartSwitch_50:
+        {
             [self configureElectricMeasurementSwitch_22];
             break;
         }
+
         case SFIDeviceType_SmartDCSwitch_23: {
             [self configureElectricMeasurementSwitch_23];
             break;
@@ -954,6 +958,7 @@
 
         case SFIDeviceType_SmartACSwitch_22:
         case SFIDeviceType_SmartDCSwitch_23:
+        case SFIDeviceType_SecurifiSmartSwitch_50:
             return 290 + extra;
 
         case SFIDeviceType_UnknownDevice_0:

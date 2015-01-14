@@ -106,7 +106,6 @@
 		1C7E7DD71A41A0990026F0BA /* SNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D551A41A0990026F0BA /* SNLog.m */; };
 		1C7E7DD81A41A0990026F0BA /* SNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D551A41A0990026F0BA /* SNLog.m */; };
 		1C7E7DFA1A41A0B30026F0BA /* Almond-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7DE41A41A0B30026F0BA /* Almond-Images.xcassets */; };
-		1C7E7DFB1A41A0B30026F0BA /* Almond-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7DE51A41A0B30026F0BA /* Almond-Info.plist */; };
 		1C7E7DFD1A41A0B30026F0BA /* cert.der in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7DE91A41A0B30026F0BA /* cert.der */; };
 		1C7E7E061A41A0B30026F0BA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7DF91A41A0B30026F0BA /* main.m */; };
 		1C7E7E161A41A0D70026F0BA /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E081A41A0D70026F0BA /* AccountsStoryboard_iPhone.strings */; };
@@ -767,7 +766,6 @@
 				1C7E7E1C1A41A0D70026F0BA /* termsofuse.html in Resources */,
 				1C7E7E181A41A0D70026F0BA /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				1C7E7E1A1A41A0D70026F0BA /* Localizable.strings in Resources */,
-				1C7E7DFB1A41A0B30026F0BA /* Almond-Info.plist in Resources */,
 				1C7E7E161A41A0D70026F0BA /* AccountsStoryboard_iPhone.strings in Resources */,
 				1C7E7E191A41A0D70026F0BA /* InfoPlist.strings in Resources */,
 				1C7E7E171A41A0D70026F0BA /* Almond-Localizable.strings in Resources */,

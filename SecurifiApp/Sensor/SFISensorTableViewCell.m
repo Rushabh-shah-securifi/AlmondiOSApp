@@ -408,6 +408,11 @@
             break;
         }
 
+        case SFIDeviceType_SecurifiSmartSwitch_50: {
+            [self configureBinaryStateSensor:DT50_SECURIFI_SMART_SWITCH_TRUE imageNameFalse:DT50_SECURIFI_SMART_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            break;
+        }
+
         case SFIDeviceType_UnknownDevice_0:
         case SFIDeviceType_Controller_8:
         case SFIDeviceType_SceneController_9:
