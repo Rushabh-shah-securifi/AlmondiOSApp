@@ -143,6 +143,8 @@
 		1CEE69531A37F64D008D8567 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF619AC82FD0023512F /* CoreGraphics.framework */; };
 		1CEE69541A37F656008D8567 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF819AC82FD0023512F /* UIKit.framework */; };
 		1CEE69551A37F65D008D8567 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF419AC82FD0023512F /* Foundation.framework */; };
+		1DF031661E380BA4D0E0EB07 /* SFIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0364AFED818925B9469F3 /* SFIPreferences.m */; };
+		1DF03AD70C1C051CA6F74073 /* SFIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0364AFED818925B9469F3 /* SFIPreferences.m */; };
 		7CB5434B38D653A029281FD1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -283,6 +285,8 @@
 		1CED5EF619AC82FD0023512F /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1CED5EF819AC82FD0023512F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		1CEE694B1A37F5F6008D8567 /* libSecurifiToolkit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSecurifiToolkit.a; path = "../iostoolkit/build/Debug-iphoneos/libSecurifiToolkit.a"; sourceTree = "<group>"; };
+		1DF0364AFED818925B9469F3 /* SFIPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPreferences.m; sourceTree = "<group>"; };
+		1DF03D99C19042FD3FCADB2D /* SFIPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPreferences.h; sourceTree = "<group>"; };
 		C6A3307CA8D0945BEFE53A18 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -347,6 +351,8 @@
 				1C7E7D2D1A41A0990026F0BA /* UI */,
 				1C7E7D4C1A41A0990026F0BA /* UICategories */,
 				1C7E7D531A41A0990026F0BA /* Util */,
+				1DF0364AFED818925B9469F3 /* SFIPreferences.m */,
+				1DF03D99C19042FD3FCADB2D /* SFIPreferences.h */,
 			);
 			path = SecurifiApp;
 			sourceTree = "<group>";
@@ -922,6 +928,7 @@
 				1C7E7DAC1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,
 				1C7E7D7E1A41A0990026F0BA /* SFIGenericRouterCommand.m in Sources */,
 				1C7E7D961A41A0990026F0BA /* SFIRouterTableViewController.m in Sources */,
+				1DF03AD70C1C051CA6F74073 /* SFIPreferences.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -975,6 +982,7 @@
 				1C7E7D851A41A0990026F0BA /* SFILogoutAllViewController.m in Sources */,
 				1C7E7D8F1A41A0990026F0BA /* SFIRouterReboot.m in Sources */,
 				1C7E7DD71A41A0990026F0BA /* SNLog.m in Sources */,
+				1DF031661E380BA4D0E0EB07 /* SFIPreferences.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

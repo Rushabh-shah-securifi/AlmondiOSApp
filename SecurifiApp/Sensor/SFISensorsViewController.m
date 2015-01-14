@@ -13,6 +13,7 @@
 #import "SFISensorDetailView.h"
 #import "UIFont+Securifi.h"
 #import "UIViewController+Securifi.h"
+#import "SFIPreferences.h"
 
 @interface SFISensorsViewController () <SFISensorTableViewCellDelegate>
 @property(nonatomic, readonly) SFIAlmondPlus *almond;
@@ -88,8 +89,7 @@
     [self initializeNotifications];
     [self initializeAlmondData];
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    self.isAccountActivatedNotification = [defaults boolForKey:ACCOUNT_ACTIVATION_NOTIFICATION];
+    self.isAccountActivatedNotification = [[SFIPreferences instance] isLogonAccountAccountNotificationSet];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -1401,8 +1401,8 @@
 - (void)onCloseNotificationClicked:(id)sender {
     DLog(@"onCloseNotificationClicked");
     self.isAccountActivatedNotification = FALSE;
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:NO forKey:ACCOUNT_ACTIVATION_NOTIFICATION];
+
+    [[SFIPreferences instance] dismissLogonAccountActivationNotification];
     [self.tableView reloadData];
 }
 

@@ -70,8 +70,5 @@
 #define BLOCKED_CONTENT_SUMMARY @"AlmondBlockedContentSummary"
 #define FIRMWARE_VERSION @"FirmwareVersion"
 
-#define ACCOUNT_ACTIVATION_NOTIFICATION @"AccountActivicationNotification"
-#define PUSH_NOTIFICATION_TOKEN @"PushNotificationToken"
-#define PUSH_NOTIFICATION_STATUS @"PushNotificationStatus"
 
 #endif

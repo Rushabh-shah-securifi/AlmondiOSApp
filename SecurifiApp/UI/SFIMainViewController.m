@@ -19,6 +19,7 @@
 #import "UIViewController+Securifi.h"
 #import "Analytics.h"
 #import "ScoreboardViewController.h"
+#import "SFIPreferences.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
@@ -288,18 +289,10 @@
     DLog(@"%s", __PRETTY_FUNCTION__);
 
     //PY 151014: Activation Header Notification to be set true
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:YES forKey:ACCOUNT_ACTIVATION_NOTIFICATION];
-    
+    [[SFIPreferences instance] setLogonAccountNeedsActivationNotification];
+
     if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
-        //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
-        //Push Notification - START
-        /*
-        //PY 181114: Register for Push Notification
-        [self sendPushNotificationRegistration];
-         */
-        //Push Notification - END
-         
+        [self trySendPushNotificationRegistration];
         [self presentMainView];
     }
     else {
@@ -531,7 +524,7 @@
     [self showToast:@"Sorry! Push Notification was not deregistered."];
 }
 
-- (void)sendPushNotificationRegistration {
+- (void)trySendPushNotificationRegistration {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
     SecurifiConfigurator *config = toolkit.configuration;
@@ -539,8 +532,9 @@
         return;
     }
 
-    BOOL notificationStatus = [[NSUserDefaults standardUserDefaults] boolForKey:PUSH_NOTIFICATION_STATUS];
-    if (!notificationStatus) {
+    SFIPreferences *preferences = [SFIPreferences instance];
+
+    if (!preferences.isRegisteredForPushNotification) {
         //Register for notification
         // Check to see if this is an iOS 8 device.
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
@@ -556,7 +550,7 @@
         }
     }
 
-    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] stringForKey:PUSH_NOTIFICATION_TOKEN];
+    NSData *deviceToken = [preferences pushNotificationDeviceToken];
     //TODO: For test - Remove
     //deviceToken = @"7ff2a7b3707fe43cdf39e25522250e1257ee184c59ca0d901b452040d85fd794";
     if (deviceToken != nil) {

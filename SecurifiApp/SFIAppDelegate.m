@@ -11,6 +11,7 @@
 #import "Analytics.h"
 #import "Crashlytics.h"
 #import "AlmondPlusConstants.h"
+#import "SFIPreferences.h"
 
 #define DEFAULT_GA_ID @"UA-52832244-2"
 #define DEFAULT_CRASHLYTICS_KEY @"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3"
@@ -77,9 +78,7 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     DLog(@"Device token is: %@", deviceToken);
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:deviceToken forKey:PUSH_NOTIFICATION_TOKEN];
-    [defaults setBool:YES forKey:PUSH_NOTIFICATION_STATUS];
+    [[SFIPreferences instance] markPushNotificationRegistration:deviceToken];
 }
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo{
