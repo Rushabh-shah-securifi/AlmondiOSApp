@@ -10,6 +10,9 @@
 
 @protocol SFISensorDetailViewDelegate
 
+// called to ask whether notifications are supported in the app
+- (BOOL)sensorDetailViewNotificationsEnabled;
+
 // called when Save button is pressed
 - (void)sensorDetailViewDidPressSaveButton:(SFISensorDetailView*)view;
 
@@ -44,7 +47,7 @@
 @property(nonatomic) SFIDeviceValue *deviceValue;
 @property(nonatomic) UIColor *color;
 
-+ (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor tamperedDevice:(BOOL)isTampered expandedCell:(BOOL)isExpanded;
++ (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor tamperedDevice:(BOOL)isTampered expandedCell:(BOOL)isExpanded notificationEnabled:(BOOL)isNotificationsEnabled;
 
 - (NSString*)deviceName;
 - (NSString*)deviceLocation;

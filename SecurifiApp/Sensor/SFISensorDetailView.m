@@ -121,21 +121,22 @@
     // Set up device state
     self.isDeviceTampered = [self.device isTampered:self.deviceValue];
 
-    NSUInteger rowHeight = [SFISensorDetailView computeSensorRowHeight:self.device tamperedDevice:self.isDeviceTampered expandedCell:YES];
-    self.frame = CGRectMake(10, 86, (LEFT_LABEL_WIDTH) + (self.frame.size.width - LEFT_LABEL_WIDTH - 25) + 1, rowHeight - SENSOR_ROW_HEIGHT);
+    BOOL const notificationsEnabled = [self.delegate sensorDetailViewNotificationsEnabled];
+
+    NSUInteger rowHeight = [SFISensorDetailView computeSensorRowHeight:self.device tamperedDevice:self.isDeviceTampered expandedCell:YES notificationEnabled:notificationsEnabled];
+    CGFloat width = (LEFT_LABEL_WIDTH) + (self.frame.size.width - LEFT_LABEL_WIDTH - 25) + 1;
+    CGFloat height = rowHeight - SENSOR_ROW_HEIGHT;
+    self.frame = CGRectMake(10, 86, width, height);
 
     // Add standard offset from top-level
     [self markYOffset:30];
 
-    //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
-    //Push Notification - START
-    /*
     // Add Notifications control
-    [self addNotificationsControl];
-    [self addLine];
-    [self markYOffset:5];
-    */
-    //Push Notification - END
+    if (notificationsEnabled) {
+        [self addNotificationsControl];
+        [self addLine];
+        [self markYOffset:5];
+    }
 
     // Try adding tamper switch. Only some devices support it.
     [self tryAddTamper];
@@ -927,20 +928,12 @@
 
 #pragma mark - Helpers
 
-+ (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor tamperedDevice:(BOOL)isTampered expandedCell:(BOOL)isExpanded {
++ (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor tamperedDevice:(BOOL)isTampered expandedCell:(BOOL)isExpanded notificationEnabled:(BOOL)isNotificationsEnabled {
     if (!isExpanded) {
         return SENSOR_ROW_HEIGHT;
     }
 
-    //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
-    //Remove the 'extra' variable initialization from below the commented code
-    //Push Notification - START
-    /*
-    NSUInteger extra = 85;          // accounts for notification on/off control +  notification mode
-     */
-    //Push Notification - END
-    
-    NSUInteger extra = 0;
+    NSUInteger extra = isNotificationsEnabled ? 85 : 0;
     extra += isTampered ? 45 : 0;   // accounts for the row presenting the tampered msg and dismiss button
 
     switch (currentSensor.deviceType) {

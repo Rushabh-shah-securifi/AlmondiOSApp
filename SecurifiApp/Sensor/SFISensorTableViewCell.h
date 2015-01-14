@@ -33,7 +33,8 @@
 
 - (id)tableViewCell:(SFISensorTableViewCell *)cell valueForKey:(NSString *)key;
 
-//PY 271114 - To handle push notification on/off
+- (BOOL)tableViewCellNotificationsEnabled;
+
 - (void)tableViewCellDidChangeNotificationSetting:(SFISensorTableViewCell *)cell notificationSettingEnabled:(BOOL)enabled;
 
 @end

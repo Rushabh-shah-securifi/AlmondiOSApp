@@ -540,6 +540,10 @@
 
 #pragma mark - SFISensorDetailViewDelegate methods
 
+- (BOOL)sensorDetailViewNotificationsEnabled {
+    return [self.delegate tableViewCellNotificationsEnabled];
+}
+
 - (void)sensorDetailViewWillStartMakingChanges:(SFISensorDetailView *)view {
     [self.delegate tableViewCellWillStartMakingChanges:self];
 }

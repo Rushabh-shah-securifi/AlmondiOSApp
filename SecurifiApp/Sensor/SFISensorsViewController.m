@@ -41,15 +41,17 @@
 @property(nonatomic, readonly) NSObject *deviceCellStateValues_locker;   // sync locker for mutating the dictionary
 
 // when YES, we defer showing sensor updates; basically, prevents first responder from being relinquished while editing
-@property BOOL isUpdatingDeviceSettings;
+@property(nonatomic) BOOL isUpdatingDeviceSettings;
 
 @property(nonatomic) NSTimer *mobileCommandTimer;
 @property(nonatomic) NSTimer *sensorChangeCommandTimer;
 
 @property(nonatomic) BOOL isSensorChangeCommandSuccessful;
 
-@property BOOL isViewControllerDisposed;
-@property BOOL isAccountActivatedNotification;
+@property(nonatomic) BOOL isViewControllerDisposed;
+@property(nonatomic) BOOL isAccountActivatedNotification;
+
+@property(nonatomic, readonly) BOOL notificationEnabled;
 @end
 
 @implementation SFISensorsViewController
@@ -58,6 +60,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    _notificationEnabled = [SecurifiToolkit sharedInstance].configuration.enableNotifications;
 
     _deviceStatusMessages_locker = [NSObject new];
     [self clearAllDeviceUpdatingState];
@@ -471,7 +475,8 @@
 - (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor deviceValue:(SFIDeviceValue*)deviceValue {
     BOOL expanded = [self isExpandedCell:currentSensor];
     BOOL tampered = [currentSensor isTampered:deviceValue];
-    return [SFISensorDetailView computeSensorRowHeight:currentSensor tamperedDevice:tampered expandedCell:expanded];
+    BOOL notificationsEnabled = self.notificationEnabled;
+    return [SFISensorDetailView computeSensorRowHeight:currentSensor tamperedDevice:tampered expandedCell:expanded notificationEnabled:notificationsEnabled];
 }
 
 - (UIView *)createActivationNotificationHeader {
@@ -743,6 +748,10 @@
 
 - (id)tableViewCell:(SFISensorTableViewCell *)cell valueForKey:(NSString *)key {
     return [self getDeviceCellValueForKey:key forDevice:cell.device];
+}
+
+- (BOOL)tableViewCellNotificationsEnabled {
+    return self.notificationEnabled;
 }
 
 - (void)tableViewCellDidChangeNotificationSetting:(SFISensorTableViewCell *)cell notificationSettingEnabled:(BOOL)enabled {
