@@ -12,6 +12,10 @@
 #import "UIFont+Securifi.h"
 #import "SFIPreferences.h"
 
+#define SEC_ALMOND_LIST     @"AlmondList"
+#define SEC_SETTINGS_LIST   @"Settings"
+#define SEC_VERSION         @"Version"
+
 @interface DrawerViewController ()
 @property(nonatomic, strong, readonly) NSDictionary *dataDictionary;
 @end
@@ -19,16 +23,6 @@
 @implementation DrawerViewController
 
 #pragma mark - View Cycle
-
-//- (id)initWithStyle:(UITableViewStyle)style {
-//    self = [super initWithStyle:UITableViewStylePlain];
-//    if (self) {
-//
-//    }
-//
-//    return self;
-//}
-
 
 - (void)dealloc {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -75,9 +69,15 @@
     NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
     NSArray *settingsList = @[@"Account", @"Logout", @"Logout All"];
 
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSString *shortVersion = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString *buildNumber = [bundle objectForInfoDictionaryKey:(NSString *) kCFBundleVersionKey];
+    NSString *version = [NSString stringWithFormat:@"version %@ (%@)", shortVersion, buildNumber];
+
     _dataDictionary = @{
-            ALMONDLIST : almondList,
-            SETTINGS_LIST : settingsList
+            SEC_ALMOND_LIST : almondList,
+            SEC_SETTINGS_LIST : settingsList,
+            SEC_VERSION : @[version],
     };
 }
 
@@ -91,36 +91,31 @@
     switch (sectionIndex) {
         case 0: {
             NSArray *array = [self getAlmondList];
-            DLog(@"Almond List count %ld", (long) [array count]);
             return [array count] + 1;
         }
         case 1: {
             NSArray *array = [self getSettingsList];
             return [array count];
         }
-        case 2:
-            return 0;
+        case 2: {
+            NSArray *array = [self getVersionList];
+            return [array count];
+        }
         default:
             return 0;
     }
 }
 
 - (NSArray *)getSettingsList {
-    return self.dataDictionary[SETTINGS_LIST];
+    return self.dataDictionary[SEC_SETTINGS_LIST];
 }
 
 - (NSArray *)getAlmondList {
-    return self.dataDictionary[ALMONDLIST];
+    return self.dataDictionary[SEC_ALMOND_LIST];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        return @"LOCATION";
-    }
-    else if (section == 1) {
-        return @"SETTINGS";
-    }
-    return @"";
+- (NSArray *)getVersionList {
+    return self.dataDictionary[SEC_VERSION];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -134,14 +129,19 @@
     label.font = [UIFont securifiBoldFontLarge];
     label.textColor = [UIColor colorWithRed:(CGFloat) (119 / 255.0) green:(CGFloat) (119 / 255.0) blue:(CGFloat) (119 / 255.0) alpha:1.0];
 
-    if (section == 0) {
-        label.text = @"LOCATION";
-    }
-    else if (section == 1) {
-        label.text = @"SETTINGS";
-    }
-    else {
-        label.text = @"";
+    switch (section) {
+        case 0:
+            label.text = @"LOCATION";
+            break;
+        case 1:
+            label.text = @"SETTINGS";
+            break;
+        case 2:
+            label.text = @"INFO";
+            break;
+        default:
+            label.text = @"";
+            break;
     }
 
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 65)];
@@ -168,6 +168,11 @@
                 return [self tableViewCreateAlmondListCell:tableView indexPath:indexPath];
             }
         }
+        case 1:
+            return [self tableViewCreateSettingsCell:tableView indexPath:indexPath];
+
+        case 2:
+            return [self tableViewCreateVersionCell:tableView indexPath:indexPath];
 
         default: {
             return [self tableViewCreateSettingsCell:tableView indexPath:indexPath];
@@ -177,7 +182,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-
         NSArray *almondList = [self getAlmondList];
         if (indexPath.row == [almondList count]) {
             //Add almond - Affiliation process
@@ -235,6 +239,7 @@
     }
 
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:id];
+    cell.backgroundColor = [self cellBackgroundColor];
 
     UIImageView *imgAddDevice = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 24)];
     imgAddDevice.userInteractionEnabled = YES;
@@ -242,15 +247,14 @@
 
     [cell addSubview:imgAddDevice];
 
-    UILabel *lblName = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 30)];
-    lblName.backgroundColor = [UIColor clearColor];
-    lblName.textColor = [UIColor whiteColor];
-    [lblName setFont:[UIFont standardHeadingFont]];
-    lblName.text = @"Add";
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 30)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont standardHeadingFont];
+    label.text = @"Add";
 
-    [cell addSubview:lblName];
+    [cell addSubview:label];
 
-    [cell setBackgroundColor:[UIColor colorWithRed:(CGFloat) (51 / 255.0) green:(CGFloat) (51 / 255.0) blue:(CGFloat) (51 / 255.0) alpha:1.0]];
     return cell;
 }
 
@@ -260,6 +264,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:id];
+        cell.backgroundColor = [self cellBackgroundColor];
 
         UIImageView *imgLocation = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 21.5)];
         imgLocation.userInteractionEnabled = YES;
@@ -273,8 +278,6 @@
         [nameLabel setFont:[UIFont standardHeadingFont]];
         [cell.contentView addSubview:nameLabel];
     }
-
-    cell.backgroundColor = [UIColor colorWithRed:(CGFloat) (51 / 255.0) green:(CGFloat) (51 / 255.0) blue:(CGFloat) (51 / 255.0) alpha:1.0];
 
     for (UIView *view in [cell.contentView subviews]) {
         if (view.tag == 101) {
@@ -297,11 +300,8 @@
     if (cell != nil) {
         return cell;
     }
-
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:id];
-
-    NSArray *array = [self getSettingsList];
-    NSString *cellValue = array[(NSUInteger) indexPath.row];
+    cell.backgroundColor = [self cellBackgroundColor];
 
     UIImageView *imgSettings;
     switch (indexPath.row) {
@@ -328,19 +328,48 @@
 
     [cell addSubview:imgSettings];
 
-    UILabel *lblName = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 30)];
-    lblName.backgroundColor = [UIColor clearColor];
-    lblName.textColor = [UIColor whiteColor];
-    [lblName setFont:[UIFont standardHeadingFont]];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 30)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont standardHeadingFont];
 
-    lblName.text = cellValue;
+    NSArray *array = [self getSettingsList];
+    NSString *cellValue = array[(NSUInteger) indexPath.row];
+    label.text = cellValue;
 
-    [cell addSubview:lblName];
+    [cell addSubview:label];
 
-    [cell setBackgroundColor:[UIColor colorWithRed:(CGFloat) (51 / 255.0) green:(CGFloat) (51 / 255.0) blue:(CGFloat) (51 / 255.0) alpha:1.0]];
     return cell;
 }
 
+- (UITableViewCell *)tableViewCreateVersionCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
+    NSString *id = @"VersionCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
+    if (cell != nil) {
+        return cell;
+    }
+
+    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:id];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.backgroundColor = [self cellBackgroundColor];
+
+    NSArray *array = [self getVersionList];
+    NSString *cellValue = array[(NSUInteger) indexPath.row];
+
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 30)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont standardHeadingFont];
+    label.text = cellValue;
+
+    [cell addSubview:label];
+
+    return cell;
+}
+
+- (UIColor *)cellBackgroundColor {
+    return [UIColor colorWithRed:(CGFloat) (51 / 255.0) green:(CGFloat) (51 / 255.0) blue:(CGFloat) (51 / 255.0) alpha:1.0];
+}
 
 #pragma mark - SFILogoutAllDelegate methods
 
@@ -355,7 +384,8 @@
 }
 
 #pragma mark - Push Notification
--(void)removePushNotification{
+
+- (void)removePushNotification {
     NSData *token = [[SFIPreferences instance] pushNotificationDeviceToken];
 //
 //    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] stringForKey:PUSH_NOTIFICATION_TOKEN];
@@ -366,8 +396,6 @@
 //    [[SecurifiToolkit sharedInstance] asyncRequestDeregisterForNotification:deviceToken];
 //
 }
-
-
 
 
 @end

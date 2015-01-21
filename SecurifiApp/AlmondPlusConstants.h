@@ -22,8 +22,8 @@
 #define LOG_FILE_NAME  @"AlmondPlusLog.log"
 #define SDK_LOG_FILE_NAME  @"AlmondPlusSDKLog.log"
 
-#define ALMONDLIST @"AlmondList"
-#define SETTINGS_LIST @"Settings"
+#define SEC_ALMOND_LIST @"AlmondList"
+#define SEC_SETTINGS_LIST @"Settings"
 
 #define APPLICATION_ID @"1001"
 #define GET_CONNECTED_DEVICE_COMMAND @"<root><AlmondConnectedDevices action=\"get\">1</AlmondConnectedDevices></root>"
