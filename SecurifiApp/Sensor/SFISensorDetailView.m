@@ -937,7 +937,7 @@
         return SENSOR_ROW_HEIGHT;
     }
 
-    NSUInteger extra = isNotificationsEnabled ? 85 : 0;
+    NSUInteger extra = isNotificationsEnabled ? 100 : 0;
     extra += isTampered ? 45 : 0;   // accounts for the row presenting the tampered msg and dismiss button
 
     switch (currentSensor.deviceType) {
