@@ -89,5 +89,5 @@
 #define DT48_HUE_LAMP_FALSE 						    @"48_hue_bulb_off.png"
 
 #define DT50_SECURIFI_SMART_SWITCH_TRUE                 @"50_metering_on.png"
-#define DT50_SECURIFI_SMART_SWITCH_FALSE                @"50_metering_on.png"
+#define DT50_SECURIFI_SMART_SWITCH_FALSE                @"50_metering_off.png"
 @end
