@@ -1060,6 +1060,10 @@
 }
 
 - (void)onEnableWirelessAccessForDevice:(NSString *)deviceMAC allow:(BOOL)isAllowed {
+    if (deviceMAC.length == 0) {
+        return;
+    }
+
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.disposed) {
             return;
