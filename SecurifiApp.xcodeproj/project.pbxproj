@@ -718,7 +718,7 @@
 						DevelopmentTeam = R336EY8885;
 						SystemCapabilities = {
 							com.apple.DataProtection = {
-								enabled = 0;
+								enabled = 1;
 							};
 							com.apple.GameCenter = {
 								enabled = 0;

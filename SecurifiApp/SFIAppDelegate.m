@@ -21,7 +21,8 @@
 
 - (SecurifiConfigurator *)toolkitConfigurator {
     SecurifiConfigurator *config = [SecurifiConfigurator new];
-//    config.enableScoreboard = YES; // uncomment for debug builds
+//    config.enableScoreboard = YES;      // uncomment for debug builds
+//    config.enableNotifications = YES;   // uncomment to activate; off by default
     return config;
 }
 
@@ -59,24 +60,24 @@
 - (void)enablePushNotifications:(UIApplication *)application {
     if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
         // iOS 8 Notifications
-        enum UIUserNotificationType types = UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge;
+        enum UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
         [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
         [application registerForRemoteNotifications];
     }
     else {
         // iOS < 8 Notifications
-        enum UIRemoteNotificationType types = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound;
+        enum UIRemoteNotificationType types = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert ;
         [application registerForRemoteNotificationTypes:types];
     }
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    DDLogError(@"Method Name: Registration Error %@", error);
+    DDLogError(@"Failed to register for push notifications, error:%@", error);
 }
 
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    DLog(@"Device token is: %@", deviceToken);
+    DLog(@"Registered for push notifications, device token: %@", deviceToken);
     [[SFIPreferences instance] markPushNotificationRegistration:deviceToken];
 }
 
