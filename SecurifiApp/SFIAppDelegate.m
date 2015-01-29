@@ -21,8 +21,8 @@
 
 - (SecurifiConfigurator *)toolkitConfigurator {
     SecurifiConfigurator *config = [SecurifiConfigurator new];
-//    config.enableScoreboard = YES;      // uncomment for debug builds
-//    config.enableNotifications = YES;   // uncomment to activate; off by default
+    config.enableScoreboard = YES;      // uncomment for debug builds
+    config.enableNotifications = YES;   // uncomment to activate; off by default
     return config;
 }
 
@@ -81,9 +81,46 @@
     [[SFIPreferences instance] markPushNotificationRegistration:deviceToken];
 }
 
-- (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo{
-    NSLog(@"didReceiveRemoteNotification");
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler {
+    SFINotification *notification = [SFINotification parsePayload:userInfo];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    BOOL matched = false;
+    for (SFIAlmondPlus *almond in toolkit.almondList) {
+        if ([almond.almondplusMAC isEqualToString:notification.almondMAC]) {
+            matched = true;
+            break;
+        }
+    }
+
+    if (!matched) {
+        // drop the notification
+        return;
+    }
+    [toolkit storePushNotification:notification];
+
+    UILocalNotification *localNotice = [UILocalNotification new];
+    localNotice.fireDate = [NSDate date];
+    localNotice.alertBody = notification.message;
+    localNotice.timeZone = [NSTimeZone defaultTimeZone];
+    localNotice.soundName = UILocalNotificationDefaultSoundName;
+
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotice];
 }
+
+//- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+//    NSLog(@"didReceiveRemoteNotification");
+//
+//    UIApplicationState state = [application applicationState];
+//    // user tapped notification while app was in background
+//    if (state == UIApplicationStateInactive || state == UIApplicationStateBackground) {
+//        // go to screen relevant to Notification content
+//    }
+//    else {
+//        // proces
+//        userInfo
+//    }
+//}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
