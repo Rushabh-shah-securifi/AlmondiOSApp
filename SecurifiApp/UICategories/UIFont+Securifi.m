@@ -39,7 +39,7 @@
 }
 
 + (UIFont*)securifiNormalFont{
-    return [UIFont fontWithName:AVENIR_ROMAN size:12];
+    return [UIFont securifiFont:12];
 }
 
 
