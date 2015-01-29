@@ -11,16 +11,29 @@
 
 @implementation SFICloudStatusBarButtonItem
 
+- (instancetype)initWithTarget:(id)target action:(SEL)action {
+    enum SFICloudStatusState initialState = SFICloudStatusStateConnected;
+    UIImage *image = [SFICloudStatusBarButtonItem imageForState:initialState];
+
+    self = [super initWithImage:image style:UIBarButtonItemStylePlain target:target action:action];
+    if (self) {
+        _state = initialState;
+        _imageView = [[UIImageView alloc] initWithImage:image];
+        _imageView.tintColor = [SFICloudStatusBarButtonItem tintForState:initialState];
+    }
+
+    return self;
+}
+
 - (id)initWithStandard {
     enum SFICloudStatusState initialState = SFICloudStatusStateConnected;
-
     UIImage *image = [SFICloudStatusBarButtonItem imageForState:initialState];
-    _imageView = [[UIImageView alloc] initWithImage:image];
-    _imageView.tintColor = [SFICloudStatusBarButtonItem tintForState:initialState];
 
     self = [super initWithCustomView:_imageView];
     if (self) {
         _state = initialState;
+        _imageView = [[UIImageView alloc] initWithImage:image];
+        _imageView.tintColor = [SFICloudStatusBarButtonItem tintForState:initialState];
     }
 
     return self;

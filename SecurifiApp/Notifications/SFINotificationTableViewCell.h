@@ -10,8 +10,6 @@
 
 @interface SFINotificationTableViewCell : UITableViewCell
 
-@property NSDate *notificationTime;
-@property SFIDeviceType deviceType;
-@property NSString *event;
+@property(nonatomic) SFINotification *notification;
 
 @end

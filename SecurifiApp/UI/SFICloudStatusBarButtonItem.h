@@ -18,6 +18,9 @@ typedef NS_ENUM(NSUInteger, SFICloudStatusState) {
 
 @property(nonatomic, readonly) SFICloudStatusState state;
 
+
+- (instancetype)initWithTarget:(id)target action:(SEL)action;
+
 - (id)initWithStandard;
 
 - (void)markState:(SFICloudStatusState)newState;

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1C33E94F19C025DB0014725A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C33E94E19C025DB0014725A /* QuartzCore.framework */; };
+		1C414BCD1A79F0DF00C448A4 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */; };
+		1C414BCE1A79F0E800C448A4 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */; };
 		1C75815419AC86940074C601 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815319AC86940074C601 /* Security.framework */; };
 		1C75815619AC86A10074C601 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815519AC86A10074C601 /* SystemConfiguration.framework */; };
 		1C75815819AC86A80074C601 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815719AC86A80074C601 /* CFNetwork.framework */; };
@@ -154,6 +156,7 @@
 		04DD44299464F3B8199632FD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		1C2056061A2EBBBA00975495 /* HomeScreen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeScreen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C33E94E19C025DB0014725A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		1C75815319AC86940074C601 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1C75815519AC86A10074C601 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		1C75815719AC86A80074C601 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -299,6 +302,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C414BCE1A79F0E800C448A4 /* libsqlite3.dylib in Frameworks */,
 				1CEE69551A37F65D008D8567 /* Foundation.framework in Frameworks */,
 				1CEE69541A37F656008D8567 /* UIKit.framework in Frameworks */,
 				1CEE69531A37F64D008D8567 /* CoreGraphics.framework in Frameworks */,
@@ -317,6 +321,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C414BCD1A79F0DF00C448A4 /* libsqlite3.dylib in Frameworks */,
 				1C33E94F19C025DB0014725A /* QuartzCore.framework in Frameworks */,
 				1C75815C19AC86C20074C601 /* libxml2.dylib in Frameworks */,
 				1C75815A19AC86BB0074C601 /* libz.dylib in Frameworks */,
@@ -633,6 +638,7 @@
 		1CED5EF319AC82FD0023512F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */,
 				1CEE694B1A37F5F6008D8567 /* libSecurifiToolkit.a */,
 				1C75815B19AC86C20074C601 /* libxml2.dylib */,
 				1C75815919AC86BB0074C601 /* libz.dylib */,

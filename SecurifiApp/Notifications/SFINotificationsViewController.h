@@ -8,6 +8,10 @@
 
 #import "SFITableViewController.h"
 
-@interface SFINotificationsViewController : SFITableViewController
+@interface SFINotificationsViewController : UITableViewController
+
+
 
 @end
+
+
