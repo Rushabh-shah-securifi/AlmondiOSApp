@@ -59,8 +59,8 @@
 
 - (void)setDateLabelText:(SFINotification *)notification {
     NSDateFormatter *formatter = [NSDateFormatter new];
-    formatter.dateStyle = NSDateFormatterShortStyle;
-    formatter.timeStyle = NSDateFormatterNoStyle;
+    formatter.dateStyle = NSDateFormatterNoStyle;
+    formatter.timeStyle = NSDateFormatterShortStyle;
 
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:notification.time];
     self.dateLabel.text = [formatter stringFromDate:date];
