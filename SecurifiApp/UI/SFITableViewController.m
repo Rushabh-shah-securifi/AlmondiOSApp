@@ -93,7 +93,7 @@
 
 - (void)onShowNotifications:(id)onShowNotifications {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        SFINotificationsViewController *ctrl = [SFINotificationsViewController new];
+        SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
         UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
         [self presentViewController:nav_ctrl animated:YES completion:nil];
     });
