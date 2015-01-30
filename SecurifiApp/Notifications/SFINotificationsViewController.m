@@ -21,6 +21,8 @@
 
     [self resetBucketsAndNotifications];
 
+    self.title = @"Recent Activities";
+
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
     self.navigationItem.leftBarButtonItem = doneButton;
 
@@ -66,7 +68,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 0;
+    return 30;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -81,6 +83,23 @@
     notification.viewed = YES;
 
     [tableView reloadRowsAtIndexPaths:@[] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    NSDate *bucket = [self tryGetBucket:section];
+
+    if ([bucket isToday]) {
+        return @"Today";
+    }
+
+    NSDate *today = [NSDate today];
+    NSDate *yesterday = [today dateByAddingDays:-1];
+
+    if ([bucket isEqualToDate:yesterday]) {
+        return @"Yesterday";
+    }
+
+    return [bucket formattedDateString];
 }
 
 #pragma mark - Buckets and Notification loading
