@@ -60,6 +60,8 @@
 #pragma mark - View Related
 
 - (void)viewDidLoad {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    self.enableNotificationsView = toolkit.configuration.enableNotifications;
     [super viewDidLoad];
 
     _notificationEnabled = [SecurifiToolkit sharedInstance].configuration.enableNotifications;

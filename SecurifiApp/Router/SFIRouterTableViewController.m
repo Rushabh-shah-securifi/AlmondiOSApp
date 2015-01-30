@@ -49,10 +49,11 @@
 @implementation SFIRouterTableViewController
 
 - (void)viewDidLoad {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    self.enableNotificationsView = toolkit.configuration.enableNotifications;
     [super viewDidLoad];
 
-    //Set title
-    SFIAlmondPlus *plus = [[SecurifiToolkit sharedInstance] currentAlmond];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
     self.currentMAC = plus.almondplusMAC;
 
     self.tableView.separatorColor = [UIColor clearColor];
