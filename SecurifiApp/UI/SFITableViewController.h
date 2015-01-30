@@ -31,6 +31,9 @@
 // convenience method for showing a standard "updating settings..." message
 - (void)showUpdatingSettingsHUD;
 
+// Disabled by default
+@property(nonatomic) BOOL enableNotificationsView;
+
 // Enabled by default
 @property(nonatomic) BOOL enableDrawer;
 
