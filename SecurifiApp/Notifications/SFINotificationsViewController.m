@@ -10,8 +10,8 @@
 #import "SFINotificationTableViewCell.h"
 
 @interface SFINotificationsViewController ()
-// instances of SFINotification
-@property(nonatomic) NSArray *notifications;
+@property(nonatomic) NSArray *buckets; // NSDate instances
+@property(nonatomic) NSMutableDictionary *notifications; // NSDate bucket :: NSArray of notifications
 @end
 
 @implementation SFINotificationsViewController
@@ -19,12 +19,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.notifications = [NSArray array];
+    [self resetBucketsAndNotifications];
 
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
     self.navigationItem.leftBarButtonItem = doneButton;
 
-    self.notifications = [SecurifiToolkit sharedInstance].notifications;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onDidReceiveNotifications) name:kSFINotificationDidStore object:nil];
 }
 
@@ -36,12 +35,16 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - UITableViewDatasource methods
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return self.buckets.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.notifications.count;
+    NSDate *bucket = [self tryGetBucket:section];
+    NSArray *notifications = [self tryGetNotificationListForBucket:bucket];
+    return notifications.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -51,22 +54,12 @@
     if (cell == nil) {
         cell = [[SFINotificationTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
-    
-    SFINotification *notification = [self tryGetNotification:indexPath.row];
+
+    SFINotification *notification = [self notificationForIndexPath:indexPath];
     cell.notification = notification;
 
     return cell;
 }
-
-- (SFINotification *)tryGetNotification:(NSInteger)row {
-    NSUInteger index = (NSUInteger) row;
-    NSArray *array = self.notifications;
-    if (index >= array.count) {
-        return nil;
-    }
-    return array[index];
-}
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 60;
@@ -79,7 +72,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    SFINotification *notification = [self tryGetNotification:indexPath.row];
+    SFINotification *notification = [self notificationForIndexPath:indexPath];
     if (!notification || notification.viewed) {
         return;
     }
@@ -90,19 +83,69 @@
     [tableView reloadRowsAtIndexPaths:@[] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
+#pragma mark - Buckets and Notification loading
+
+- (void)resetBucketsAndNotifications {
+    self.buckets = [[SecurifiToolkit sharedInstance] fetchDateBuckets:30];
+    self.notifications = [NSMutableDictionary dictionary];
+}
+
+- (SFINotification *)notificationForIndexPath:(NSIndexPath *)path {
+    NSDate *bucket = [self tryGetBucket:path.section];
+    return [self tryGetNotificationForBucket:bucket row:path.row];
+}
+
+- (NSDate *)tryGetBucket:(NSInteger)section {
+    NSUInteger index = (NSUInteger) section;
+    NSArray *array = self.buckets;
+    if (index >= array.count) {
+        return nil;
+    }
+    return array[index];
+}
+
+- (SFINotification *)tryGetNotificationForBucket:(NSDate *)bucket row:(NSInteger)row {
+    if (bucket == nil) {
+        return nil;
+    }
+
+    NSArray *notifications = [self tryGetNotificationListForBucket:bucket];
+
+    NSUInteger index = (NSUInteger) row;
+    if (index >= notifications.count) {
+        return nil;
+    }
+
+    return notifications[index];
+}
+
+- (NSArray *)tryGetNotificationListForBucket:(NSDate *)bucket {
+    if (bucket == nil) {
+        return nil;
+    }
+
+    NSMutableDictionary *dict = self.notifications;
+
+    NSArray *notifications = dict[bucket];
+    if (notifications == nil) {
+        notifications = [[SecurifiToolkit sharedInstance] fetchNotificationsForBucket:bucket limit:100];
+        dict[bucket] = notifications;
+    }
+
+    return notifications;
+}
+
 #pragma mark - Notification event handlers
 
 // called when new notifications have been received from the cloud
 - (void)onDidReceiveNotifications {
-    NSArray *notifications = [SecurifiToolkit sharedInstance].notifications;
-
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self && self.isBeingDismissed) {
             return;
         }
 
         // this is brain dead because we may want to make transition more graceful and not even automatic
-        self.notifications = notifications;
+        [self resetBucketsAndNotifications];
         [self.tableView reloadData];
     });
 }
