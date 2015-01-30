@@ -362,7 +362,6 @@
 - (void)presentMainView {
     DLog(@"%s: Presenting main view", __PRETTY_FUNCTION__);
     
-
     // Set up the front view controller based on a Tab Bar controller
     UIImage *icon;
     //
@@ -377,11 +376,12 @@
     UINavigationController *routerNav = [[UINavigationController alloc] initWithRootViewController:routerCtrl];
     icon = [UIImage imageNamed:@"icon_router.png"];
     routerNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_ROUTER image:icon selectedImage:icon];
-    //
-    NSArray *tabs;
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    if (toolkit.configuration.enableScoreboard) {
+    SecurifiConfigurator *configurator = toolkit.configuration;
+
+    NSArray *tabs;
+    if (configurator.enableScoreboard) {
         ScoreboardViewController *scoreCtrl = [ScoreboardViewController new];
         UINavigationController *scoreNav = [[UINavigationController alloc] initWithRootViewController:scoreCtrl];
         icon = [UIImage imageNamed:@"878-binoculars"];
@@ -393,23 +393,15 @@
         tabs = @[sensorNav, routerNav];
     }
 
-    UITabBarController *front = [UITabBarController new];
-    front.tabBar.translucent = NO;
-    front.tabBar.tintColor = [UIColor blackColor];
-    front.viewControllers = tabs;
-    front.delegate = self;
+    UITabBarController *tabCtrl = [UITabBarController new];
+    tabCtrl.tabBar.translucent = NO;
+    tabCtrl.tabBar.tintColor = [UIColor blackColor];
+    tabCtrl.viewControllers = tabs;
+    tabCtrl.delegate = self;
 
-    // The rear one is the drawer selector
-    DrawerViewController *rear = [DrawerViewController new];
+    DrawerViewController *drawer = [DrawerViewController new];
 
-    SWRevealViewController *ctrl;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        ctrl = [[SWRevealViewController alloc] initWithRearViewController:rear frontViewController:front];
-    }
-    else {
-        ctrl = [[SWRevealViewController alloc] initWithRearViewController:rear frontViewController:front];
-    }
-
+    SWRevealViewController *ctrl = [[SWRevealViewController alloc] initWithRearViewController:drawer frontViewController:tabCtrl];
     [self presentViewController:ctrl animated:YES completion:nil];
 
     // Activate gestures in Reveal; must be done after it has been set up
@@ -580,6 +572,5 @@
         [[Analytics sharedInstance] markRouterScreen];
     }
 }
-
 
 @end
