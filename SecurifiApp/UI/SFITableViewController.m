@@ -11,8 +11,10 @@
 #import "SFITableViewController.h"
 #import "SFICloudStatusBarButtonItem.h"
 #import "UIFont+Securifi.h"
+#import "SFINotificationsViewController.h"
 
 @interface SFITableViewController ()
+@property(nonatomic, readonly) SFICloudStatusBarButtonItem *notificationsStatusButton;
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @end
 
@@ -39,13 +41,22 @@
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
 
     SWRevealViewController *revealController = [self revealViewController];
+
     UIBarButtonItem *revealButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"drawer.png"] style:UIBarButtonItemStylePlain target:revealController action:@selector(revealToggle:)];
     self.navigationItem.leftBarButtonItem = revealButton;
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
     self.enableDrawer = _enableDrawer; // in case it was set before view loaded
 
     _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithStandard];
-    self.navigationItem.rightBarButtonItem = _statusBarButton;
+    //
+    if (self.enableNotificationsView) {
+        _notificationsStatusButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onShowNotifications:)];
+        self.navigationItem.rightBarButtonItems = @[self.notificationsStatusButton, self.statusBarButton];
+    }
+    else {
+        self.navigationItem.rightBarButtonItem = _statusBarButton;
+    };
+    //
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
 
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
@@ -79,6 +90,14 @@
 }
 
 #pragma Event handling
+
+- (void)onShowNotifications:(id)onShowNotifications {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        SFINotificationsViewController *ctrl = [SFINotificationsViewController new];
+        UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+        [self presentViewController:nav_ctrl animated:YES completion:nil];
+    });
+}
 
 - (void)onNetworkUpNotifier:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
