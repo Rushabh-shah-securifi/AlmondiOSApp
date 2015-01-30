@@ -13,7 +13,9 @@
 - (void)attachTapHandler {
     [self setUserInteractionEnabled:YES];
 
-    UIGestureRecognizer *touchy = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    UILongPressGestureRecognizer *touchy = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    touchy.minimumPressDuration = 1.0; // 1 second
+
     [self addGestureRecognizer:touchy];
 }
 
