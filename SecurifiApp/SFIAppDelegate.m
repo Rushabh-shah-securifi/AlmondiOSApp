@@ -11,6 +11,7 @@
 #import "Analytics.h"
 #import "Crashlytics.h"
 #import "SFIPreferences.h"
+#import "NSData+Conversion.h"
 
 #define DEFAULT_GA_ID @"UA-52832244-2"
 #define DEFAULT_CRASHLYTICS_KEY @"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3"
@@ -78,7 +79,14 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     DLog(@"Registered for push notifications, device token: %@", deviceToken);
+
     [[SFIPreferences instance] markPushNotificationRegistration:deviceToken];
+
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    if (toolkit.isLoggedIn) {
+        NSString *token_str = deviceToken.hexadecimalString;
+        [toolkit asyncRequestRegisterForNotification:token_str];
+    }
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler {
