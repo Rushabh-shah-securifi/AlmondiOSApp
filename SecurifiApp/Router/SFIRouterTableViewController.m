@@ -456,20 +456,22 @@
 
         UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, width, 50)];
         lblNoSensor.textAlignment = NSTextAlignmentCenter;
-        [lblNoSensor setFont:[UIFont securifiLightFont:35]];
+        lblNoSensor.font = [UIFont securifiLightFont:35];
         lblNoSensor.text = NSLocalizedString(@"router.offline-msg.label.Almond is Offline.", @"Almond is Offline.");
+        lblNoSensor.adjustsFontSizeToFitWidth = YES;
+        lblNoSensor.minimumScaleFactor = 0.50;
         lblNoSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblNoSensor];
 
         UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:CGRectMake(width / 2 - 50, 150, 100, 100)];
         imgRouter.userInteractionEnabled = NO;
-        [imgRouter setImage:[UIImage imageNamed:@"offline_150x150.png"]];
+        imgRouter.image = [UIImage imageNamed:@"offline_150x150.png"];
         imgRouter.contentMode = UIViewContentModeScaleAspectFit;
         [cell addSubview:imgRouter];
 
         UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 280, width, 40)];
         lblAddSensor.textAlignment = NSTextAlignmentCenter;
-        [lblAddSensor setFont:[UIFont securifiBoldFont:20]];
+        lblAddSensor.font = [UIFont securifiBoldFont:20];
         lblAddSensor.text = NSLocalizedString(@"router.offline-msg.label.Please check the router.", @"Please check the router.");
         lblAddSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblAddSensor];
@@ -1025,11 +1027,15 @@
 #pragma mark - SFIRouterTableViewActions protocol methods
 
 - (void)routerTableCellWillBeginEditingValue {
-    self.enableDrawer = NO;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.enableDrawer = NO;
+    });
 }
 
 - (void)routerTableCellDidEndEditingValue {
-    self.enableDrawer = YES;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.enableDrawer = YES;
+    });
 }
 
 - (void)onRebootRouterActionCalled {
