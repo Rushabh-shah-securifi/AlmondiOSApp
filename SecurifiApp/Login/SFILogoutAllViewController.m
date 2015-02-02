@@ -122,8 +122,20 @@
         [self.delegate logoutAllControllerDidLogoutAll:self];
     }
     else {
-        NSLog(@"LogoutAll response no sucess");
-        self.logMessageLabel.text = NSLocalizedString(@"logoutall.label.Logout from all devices was not successful.", @"Logout from all devices was not successful.");
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            NSLog(@"LogoutAll response no sucess");
+            self.logMessageLabel.text = NSLocalizedString(@"logoutall.label.Logout from all devices was not successful.", @"Logout from all devices was not successful.");
+
+            if (obj.reasonCode == LogoutAllResponseResonCode_wrongPassword) {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"logoutall.alertview.title.Error", @"Invalid Email or Password")
+                                                                message:NSLocalizedString(@"logoutall.alertview.msg.The password is invalid.", @"The email address or password is invalid.")
+                                                               delegate:nil
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:NSLocalizedString(@"alert.button.OK", @"OK"), nil];
+
+                [alert show];
+            }
+        });
     }
 }
 

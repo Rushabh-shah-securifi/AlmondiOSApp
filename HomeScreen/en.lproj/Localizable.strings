@@ -77,6 +77,8 @@ reset at the moment. Try again later.";
 
 "logoutall.navbar-title.Continue" = "Continue";
 "logoutall.label.Logout from all devices was not successful." = "Logout from all devices was not successful.";
+"logoutall.alertview.title.Error" = "Invalid Password";
+"logoutall.alertview.msg.The password is invalid." = "The password is invalid.";
 
 /* router tab */
 "router.offline-msg.label.Please check the router." = "Please check the router.";
