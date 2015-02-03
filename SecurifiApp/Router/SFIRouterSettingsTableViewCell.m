@@ -64,18 +64,38 @@
     [textField selectAll:self];
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    return [self validateSSIDNameMaxLen:str];
+}
+
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
-    return YES;
+    NSString *str = textField.text;
+    return [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    [self.delegate onChangeDeviceSSID:self.wirelessSetting newSSID:textField.text];
-    [self.delegate routerTableCellDidEndEditingValue];
+    NSString *str = textField.text;
+    BOOL valid = [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
+    if (valid) {
+        [self.delegate onChangeDeviceSSID:self.wirelessSetting newSSID:textField.text];
+        [self.delegate routerTableCellDidEndEditingValue];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+- (BOOL)validateSSIDNameMinLen:(NSString *)str {
+    // SSID name value must be 1 char or longer
+    return str.length >= 1;
+}
+
+- (BOOL)validateSSIDNameMaxLen:(NSString *)str {
+    // SSID name value must be 180 chars or fewer
+    return str.length <= 180;
 }
 
 @end
