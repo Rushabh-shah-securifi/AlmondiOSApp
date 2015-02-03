@@ -10,6 +10,12 @@
 
 @class UIFont;
 
+typedef NS_ENUM(int, SFICardView_right_offset) {
+    SFICardView_right_offset_normal = 0,
+    SFICardView_right_offset_inset = 1,
+};
+
+
 // A SFICardView provides a container for laying out UI forms according to the standard Securifi style.
 // Subclasses and clients can declare layouts, line by line, row by row, by adding name-values, controls,
 // and icons. Rows are generally demarcated visually by calling addLine and addShortLine, though this is
@@ -21,6 +27,10 @@
 //              add it to the view hierarchy and mark the Y-offset. These methods are useful for laying out multiple
 //              controls in a single "row".
 @interface SFICardView : UIView
+
+// controls width of summary  text labels; default is 'normal' and assumes label has full length of card row,
+// but when summary text is obscured by other controls on the right side, use the _inset mode to prevent overlap.
+@property(nonatomic) SFICardView_right_offset rightOffset;
 
 - (void)markYOffset:(unsigned int)val;
 

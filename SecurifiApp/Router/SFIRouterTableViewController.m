@@ -485,6 +485,7 @@
     SFICardTableViewCell *cell = [self getCardCell:tableView identifier:cell_id];
 
     SFICardView *card = cell.cardView;
+    card.rightOffset = SFICardView_right_offset_inset;
     card.backgroundColor = [[SFIColors blueColor] color];
     [card addTitle:NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings")];
 
