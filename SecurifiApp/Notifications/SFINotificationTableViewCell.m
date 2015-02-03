@@ -12,7 +12,7 @@
 @interface SFINotificationTableViewCell ()
 @property(nonatomic, strong) UILabel *dateLabel;
 @property(nonatomic, strong) UIImageView *iconView;
-@property(nonatomic, strong) UILabel *messageLabel;
+@property(nonatomic, strong) UITextField *messageTextField;
 @end
 
 @implementation SFINotificationTableViewCell
@@ -33,12 +33,12 @@
         self.iconView = [[UIImageView alloc] initWithFrame:rect];
 
         rect = CGRectMake(110 + 50 + 10, 0, 200, 50);
-        self.messageLabel = [[UILabel alloc] initWithFrame:rect];
-        self.messageLabel.numberOfLines = 0;
+        self.messageTextField = [[UITextField alloc] initWithFrame:rect];
+        self.messageTextField.userInteractionEnabled = NO;
 
         [self.contentView addSubview:self.dateLabel];
         [self.contentView addSubview:self.iconView];
-        [self.contentView addSubview:self.messageLabel];
+        [self.contentView addSubview:self.messageTextField];
     }
 
     return self;
@@ -86,7 +86,7 @@
     [container appendAttributedString:nameStr];
     [container appendAttributedString:eventStr];
 
-    self.messageLabel.attributedText = container;
+    self.messageTextField.attributedText = container;
 }
 
 - (void)setIcon:(SFINotification *)notification {
