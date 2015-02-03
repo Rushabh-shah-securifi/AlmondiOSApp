@@ -31,6 +31,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _baseYCoordinate = 10;
+        self.rightOffset = SFICardView_right_offset_normal;
         self.textColor = [UIColor whiteColor];
         self.headlineFont = [UIFont standardHeadingBoldFont];
         self.summaryFont = [UIFont standardUILabelFont];
@@ -136,7 +137,7 @@
     NSUInteger lineCount = msgs.count;
     lineCount = (lineCount == 0) ? 1 : lineCount + 1;
 
-    UILabel *label = [self makeMultiLineLabel:msg font:self.summaryFont alignment:NSTextAlignmentLeft numberOfLines:(int)lineCount];
+    UILabel *label = [self makeMultiLineLabel:msg font:self.summaryFont alignment:NSTextAlignmentLeft numberOfLines:(int)lineCount rightOffset:self.rightOffset];
     [self addSubview:label];
     [self markYOffsetUsingRect:label.frame addAdditional:0];
 
@@ -191,7 +192,7 @@
         return;
     }
 
-    CGFloat width = self.frame.size.width;
+    CGFloat width = CGRectGetWidth(self.frame);
     CGRect frame = CGRectMake(width - 50, 37, 23, 23);
 
     UIImageView *settingsImage = [[UIImageView alloc] initWithFrame:frame];
@@ -273,15 +274,18 @@
 }
 
 - (UILabel *)makeTitleLabel:(NSString *)title {
-    return [self makeMultiLineLabel:title font:self.headlineFont alignment:NSTextAlignmentLeft numberOfLines:1];
+    return [self makeMultiLineLabel:title font:self.headlineFont alignment:NSTextAlignmentLeft numberOfLines:1 rightOffset:SFICardView_right_offset_inset];
 }
 
 - (UILabel *)makeLabel:(NSString *)title font:(UIFont*)textFont alignment:(enum NSTextAlignment)alignment {
-    return [self makeMultiLineLabel:title font:textFont alignment:alignment numberOfLines:1];
+    return [self makeMultiLineLabel:title font:textFont alignment:alignment numberOfLines:1 rightOffset:SFICardView_right_offset_normal];
 }
 
-- (UILabel *)makeMultiLineLabel:(NSString *)title font:(UIFont*)textFont alignment:(enum NSTextAlignment)alignment numberOfLines:(int)lineCount {
-    CGFloat width = self.frame.size.width - 30;
+- (UILabel *)makeMultiLineLabel:(NSString *)title font:(UIFont*)textFont alignment:(enum NSTextAlignment)alignment numberOfLines:(int)lineCount rightOffset:(SFICardView_right_offset)rightOffset {
+    // offsets leaves room for the "edit" icon on the right side of the card or other rules
+    int offset = (rightOffset == SFICardView_right_offset_normal) ? 30 : 75;
+
+    CGFloat width = CGRectGetWidth(self.frame) - offset;
     CGFloat height = textFont.pointSize * lineCount;
     height += textFont.pointSize; // padding
     CGRect frame = CGRectMake(10, self.baseYCoordinate, width, height);
