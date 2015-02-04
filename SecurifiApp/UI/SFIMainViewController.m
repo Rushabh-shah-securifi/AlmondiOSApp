@@ -22,6 +22,7 @@
 #import "SFIPreferences.h"
 #import "NSData+Conversion.h"
 #import "SFIAppDelegate.h"
+#import "UIImage+Securifi.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
@@ -180,42 +181,18 @@
 
 #pragma mark - Class methods
 
-- (NSString *)makeAppAssetNamed:(NSString *)imageName {
-    UIApplication *app = [UIApplication sharedApplication];
-    SFIAppDelegate *del = (SFIAppDelegate *) app.delegate;
-    return [del.assetsPrefixId stringByAppendingString:imageName];
-}
-
 - (void)displaySplashImage {
     dispatch_async(dispatch_get_main_queue(), ^() {
         // Ex: "Almond-splash_image"
-        NSString *name = [self makeAppAssetNamed:@"-splash_image"];
-        self.imgSplash.image = [UIImage imageNamed:name];
+        self.imgSplash.image = [UIImage assetImageNamed:@"splash_image"];
     });
 }
 
 - (void)displayNoCloudConnectionImage {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        if (!self.isCloudOnline) {
-            //Set the splash image differently for 3.5 inch and 4 inch screen
-            CGRect screenBounds = [[UIScreen mainScreen] bounds];
-            if (screenBounds.size.height == 736) {
-                // code for 5.5-inch screen
-                self.imgSplash.image = [UIImage imageNamed:@"no_cloud_1242x2208"];
-            }else if (screenBounds.size.height == 667) {
-                // code for 4.7-inch screen
-                self.imgSplash.image = [UIImage imageNamed:@"no_cloud_750x1334"];
-            }else if (screenBounds.size.height == 568) {
-                // code for 4-inch screen
-                self.imgSplash.image = [UIImage imageNamed:@"no_cloud_640x1136"];
-            }
-            else {
-                // code for 3.5-inch screen
-                self.imgSplash.image = [UIImage imageNamed:@"no_cloud_640x960"];
-            }
-
-            [self showToast:@"Sorry! Could not connect to the cloud service."];
-        }
+        // Ex: "Almond-splash_image"
+        self.imgSplash.image = [UIImage assetImageNamed:@"no_cloud"];
+        [self showToast:@"Sorry! Could not connect to the cloud service."];
     });
 }
 

@@ -21,6 +21,7 @@
 #import "SFIRouterRebootTableViewCell.h"
 #import "SFIRouterTableViewActions.h"
 #import "SFICardViewSummaryCell.h"
+#import "UIImage+Securifi.h"
 
 #define DEF_WIRELESS_SETTINGS_SECTION   0
 #define DEF_DEVICES_AND_USERS_SECTION   1
@@ -430,7 +431,7 @@
 
     UIImageView *imgGettingStarted = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 400)];
     imgGettingStarted.userInteractionEnabled = YES;
-    imgGettingStarted.image = [UIImage imageNamed:@"getting_started.png"];
+    imgGettingStarted.image = [UIImage assetImageNamed:@"getting_started"];
     imgGettingStarted.contentMode = UIViewContentModeScaleAspectFit;
 
     UIButton *btnAddAlmond = [UIButton buttonWithType:UIButtonTypeCustom];

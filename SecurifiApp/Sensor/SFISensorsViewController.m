@@ -14,6 +14,7 @@
 #import "UIFont+Securifi.h"
 #import "UIViewController+Securifi.h"
 #import "SFIPreferences.h"
+#import "UIImage+Securifi.h"
 
 @interface SFISensorsViewController () <SFISensorTableViewCellDelegate>
 @property(nonatomic, readonly) SFIAlmondPlus *almond;
@@ -426,7 +427,7 @@
 
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 400)];
         imageView.userInteractionEnabled = YES;
-        imageView.image = [UIImage imageNamed:@"getting_started.png"];
+        imageView.image = [UIImage assetImageNamed:@"getting_started"];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
 
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
