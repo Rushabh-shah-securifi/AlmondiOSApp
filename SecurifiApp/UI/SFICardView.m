@@ -22,7 +22,7 @@
 @property(nonatomic, weak) CALayer *topBorder;
 @property(nonatomic, weak) CALayer *leftBorder;
 @property(nonatomic, weak) UIImageView *cardIconView;
-@property(nonatomic, weak) UIImageView *settingsIcon;
+@property(nonatomic, weak) UIButton *settingsButton;
 @end
 
 @implementation SFICardView
@@ -188,41 +188,34 @@
 }
 
 - (void)addEditIconTarget:(id)target action:(SEL)action editing:(BOOL)editing {
-    if (self.settingsIcon != nil) {
+    if (self.settingsButton != nil) {
         return;
     }
 
     CGFloat width = CGRectGetWidth(self.frame);
-    CGRect frame = CGRectMake(width - 50, 37, 23, 23);
-
-    NSLog(@"CARD WIDTH : %f", width);
+    CGRect frame = CGRectMake(width - 40, 37, 23, 23);
 
     UIImage *image = [UIImage imageNamed:@"icon_config.png"];
-
-//    UIImageView *settingsImage = [[UIImageView alloc] initWithFrame:frame];
-//    settingsImage.image = image;
-//    settingsImage.userInteractionEnabled = YES;
-//    self.settingsIcon = settingsImage;
-//    [self setEditIconEditing:editing];
-//    [self addSubview:settingsImage];
 
     UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     settingsButton.frame = frame;
     settingsButton.backgroundColor = [UIColor clearColor];
     [settingsButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     [settingsButton setImage:image forState:UIControlStateNormal];
+
+    self.settingsButton = settingsButton;
+    [self setEditIconEditing:editing];
     [self addSubview:settingsButton];
-//    [settingsImage addSubview:settingsButton];
 
     UIButton *settingsButtonCell = [UIButton buttonWithType:UIButtonTypeCustom];
-    settingsButtonCell.frame = CGRectMake(width - 80, 5, 60, 80);
+    settingsButtonCell.frame = CGRectMake(width - 80, 5, 80, 80);
     settingsButtonCell.backgroundColor = [UIColor clearColor];
     [settingsButtonCell addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:settingsButtonCell];
 }
 
 - (void)setEditIconEditing:(BOOL)editing {
-    self.settingsIcon.alpha = (CGFloat) (editing ? 1.0 : 0.5); // change color of image when expanded
+    self.settingsButton.alpha = (CGFloat) (editing ? 1.0 : 0.5); // change color of image when expanded
 }
 
 - (UISwitch*)makeOnOffSwitch:(id)target action:(SEL)action on:(BOOL)isOn {

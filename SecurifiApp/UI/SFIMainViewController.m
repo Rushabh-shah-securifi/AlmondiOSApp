@@ -21,7 +21,6 @@
 #import "ScoreboardViewController.h"
 #import "SFIPreferences.h"
 #import "NSData+Conversion.h"
-#import "SFIAppDelegate.h"
 #import "UIImage+Securifi.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
