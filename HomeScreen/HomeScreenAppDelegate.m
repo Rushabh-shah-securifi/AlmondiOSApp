@@ -10,6 +10,7 @@
 
 #define CLOUD_HOST @"cloud.homescreenrouter.com"
 #define CRASHLYTICS_KEY @"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3"
+#define ASSETS_PREFIX_ID @"HomeScreen"
 
 @implementation HomeScreenAppDelegate
 
@@ -27,6 +28,10 @@
 
 - (NSString *)analyticsTrackingId {
     return [super analyticsTrackingId];
+}
+
+- (NSString *)assetsPrefixId {
+    return ASSETS_PREFIX_ID;
 }
 
 @end

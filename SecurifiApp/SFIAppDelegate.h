@@ -24,4 +24,9 @@
 // Returns the tracking ID to be used by the analytics engine; subclasses override to set up for different branded apps
 - (NSString *)analyticsTrackingId;
 
+// To work around build system problems keeping assets for each app separated, we follow a naming convention by
+// prefixing certain assets, like splash images, that are loaded in code with this prefix id.
+// Example: "Almond" prefix is used to resolve "Almond-splash_image" image assets.
+- (NSString *)assetsPrefixId;
+
 @end

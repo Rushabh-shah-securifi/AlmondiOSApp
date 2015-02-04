@@ -21,6 +21,7 @@
 #import "ScoreboardViewController.h"
 #import "SFIPreferences.h"
 #import "NSData+Conversion.h"
+#import "SFIAppDelegate.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
@@ -52,6 +53,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.view.backgroundColor = [UIColor whiteColor];
     [self displaySplashImage];
 
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -178,26 +180,17 @@
 
 #pragma mark - Class methods
 
+- (NSString *)makeAppAssetNamed:(NSString *)imageName {
+    UIApplication *app = [UIApplication sharedApplication];
+    SFIAppDelegate *del = (SFIAppDelegate *) app.delegate;
+    return [del.assetsPrefixId stringByAppendingString:imageName];
+}
+
 - (void)displaySplashImage {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        //Display the image from xcassets file
-        CGRect screenBounds = [[UIScreen mainScreen] bounds];
-        if (screenBounds.size.height == 736) {
-            // code for 5.5-inch screen
-            self.imgSplash.image = [UIImage imageNamed:@"launch-image-1242x2208"];
-        }
-        else if (screenBounds.size.height == 667) {
-            // code for 4.7-inch screen
-            self.imgSplash.image = [UIImage imageNamed:@"launch-image-750x1334"];
-        }
-        else if (screenBounds.size.height == 568) {
-            // code for 4-inch screen
-            self.imgSplash.image = [UIImage imageNamed:@"launch-image-640x1136"];
-        }
-        else {
-            // code for 3.5-inch screen
-            self.imgSplash.image = [UIImage imageNamed:@"launch-image-640x960"];
-        }
+        // Ex: "Almond-splash_image"
+        NSString *name = [self makeAppAssetNamed:@"-splash_image"];
+        self.imgSplash.image = [UIImage imageNamed:name];
     });
 }
 

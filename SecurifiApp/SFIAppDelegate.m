@@ -15,6 +15,7 @@
 
 #define DEFAULT_GA_ID @"UA-52832244-2"
 #define DEFAULT_CRASHLYTICS_KEY @"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3"
+#define DEFAULT_ASSETS_PREFIX_ID @"Almond"
 
 @implementation SFIAppDelegate
 
@@ -34,6 +35,11 @@
 - (NSString *)analyticsTrackingId {
     return DEFAULT_GA_ID;
 }
+
+- (NSString *)assetsPrefixId {
+    return DEFAULT_ASSETS_PREFIX_ID;
+}
+
 
 #pragma mark - UIApplicationDelegate methods
 
@@ -122,7 +128,7 @@
 
     if (!matched) {
         // drop the notification
-        return;
+//        return;
     }
     [toolkit storePushNotification:notification];
 

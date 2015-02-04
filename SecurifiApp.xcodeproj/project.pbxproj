@@ -767,8 +767,8 @@
 				1C9B1DA31A3EEA1200097D8F /* MainStoryboard_iPhone.strings in Resources */,
 				1C9B1DA11A3EEA1200097D8F /* InfoPlist.strings in Resources */,
 				1C9B1DA41A3EEA1200097D8F /* termsofuse.html in Resources */,
-				1C9B1D7A1A3EE9EF00097D8F /* HomeScreen-Images.xcassets in Resources */,
 				1C7E7D701A41A0990026F0BA /* Common-Images.xcassets in Resources */,
+				1C9B1D7A1A3EE9EF00097D8F /* HomeScreen-Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1153,7 +1153,7 @@
 			baseConfigurationReference = 04DD44299464F3B8199632FD /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "HomeScreen-AppIcon";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "HomeScreen-LaunchImage";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "HomeScreen-launch_image";
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1181,7 +1181,7 @@
 			baseConfigurationReference = C6A3307CA8D0945BEFE53A18 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "HomeScreen-AppIcon";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "HomeScreen-LaunchImage";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "HomeScreen-launch_image";
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1280,7 +1280,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Almond-AppIcon";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-LaunchImage";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-launch_image";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1312,7 +1312,7 @@
 			baseConfigurationReference = C6A3307CA8D0945BEFE53A18 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Almond-AppIcon";
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-LaunchImage";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-launch_image";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
