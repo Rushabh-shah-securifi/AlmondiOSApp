@@ -195,18 +195,24 @@
     CGFloat width = CGRectGetWidth(self.frame);
     CGRect frame = CGRectMake(width - 50, 37, 23, 23);
 
-    UIImageView *settingsImage = [[UIImageView alloc] initWithFrame:frame];
-    settingsImage.image = [UIImage imageNamed:@"icon_config.png"];
-    settingsImage.userInteractionEnabled = YES;
-    self.settingsIcon = settingsImage;
-    [self setEditIconEditing:editing];
-    [self addSubview:settingsImage];
+    NSLog(@"CARD WIDTH : %f", width);
+
+    UIImage *image = [UIImage imageNamed:@"icon_config.png"];
+
+//    UIImageView *settingsImage = [[UIImageView alloc] initWithFrame:frame];
+//    settingsImage.image = image;
+//    settingsImage.userInteractionEnabled = YES;
+//    self.settingsIcon = settingsImage;
+//    [self setEditIconEditing:editing];
+//    [self addSubview:settingsImage];
 
     UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    settingsButton.frame = settingsImage.bounds;
+    settingsButton.frame = frame;
     settingsButton.backgroundColor = [UIColor clearColor];
     [settingsButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    [settingsImage addSubview:settingsButton];
+    [settingsButton setImage:image forState:UIControlStateNormal];
+    [self addSubview:settingsButton];
+//    [settingsImage addSubview:settingsButton];
 
     UIButton *settingsButtonCell = [UIButton buttonWithType:UIButtonTypeCustom];
     settingsButtonCell.frame = CGRectMake(width - 80, 5, 60, 80);

@@ -38,6 +38,8 @@
 }
 
 - (void)markReuse {
+    NSLog(@"CELL WIDTH: %f", self.frame.size.width);
+
     [self.cardView removeFromSuperview];
     self.cardView = [[SFICardView alloc] initWithFrame:self.frame];
 }

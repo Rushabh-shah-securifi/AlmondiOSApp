@@ -20,6 +20,7 @@
 #import "SFIRouterDevicesTableViewCell.h"
 #import "SFIRouterRebootTableViewCell.h"
 #import "SFIRouterTableViewActions.h"
+#import "SFICardViewSummaryCell.h"
 
 #define DEF_WIRELESS_SETTINGS_SECTION   0
 #define DEF_DEVICES_AND_USERS_SECTION   1
@@ -577,37 +578,41 @@
 }
 
 - (UITableViewCell *)createDevicesAndUsersSummaryCell:(UITableView *)tableView {
-    static NSString *cellId = @"DevicesSummary";
-    SFICardTableViewCell *cell = [self getCardCell:tableView identifier:cellId];
+    NSString *const CellIdentifier = @"DevicesSummary";
 
-    SFICardView *card = cell.cardView;
-    card.backgroundColor = [[SFIColors greenColor] color];
-    [card addTitle:NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users")];
+    SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+
+    [cell markReuse];
+    cell.cardView.backgroundColor = [[SFIColors greenColor] color];
+    cell.title = NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users");
 
     SFIRouterSummary *routerSummary = self.routerSummary;
 
-    NSArray *summary;
     if (routerSummary) {
-        summary = @[
+        cell.summaries = @[
                 [NSString stringWithFormat:NSLocalizedString(@"router.devices-summary.%d connected, %d blocked", @"%d connected, %d blocked"), routerSummary.connectedDeviceCount, routerSummary.blockedMACCount],
         ];
     }
     else {
-        summary = @[NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")];
+        cell.summaries = @[NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")];
     }
-    [card addSummary:summary];
 
     int totalCount = routerSummary.connectedDeviceCount + routerSummary.blockedMACCount;
     if (routerSummary && totalCount > 0) {
         BOOL editing = [self isSectionExpanded:DEF_DEVICES_AND_USERS_SECTION];
-        [card addEditIconTarget:self action:@selector(onEditDevicesAndUsersCard:) editing:editing];
+        cell.editTarget = self;
+        cell.editSelector = @selector(onEditDevicesAndUsersCard:);
+        cell.expanded = editing;
     }
 
     return cell;
 }
 
 - (UITableViewCell *)createDevicesAndUsersEditCell:(UITableView *)tableView tableRow:(NSInteger)row {
-    static NSString *cell_id = @"DevicesEdit";
+    NSString *const cell_id = @"DevicesEdit";
 
     SFIRouterDevicesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
@@ -641,23 +646,24 @@
 }
 
 - (UITableViewCell *)createSoftwareVersionCell:(UITableView *)tableView {
-    static NSString *CellIdentifier = @"SoftwareCell";
-    SFICardTableViewCell *cell = [self getCardCell:tableView identifier:CellIdentifier];
+    NSString *const CellIdentifier = @"SoftwareCell";
 
-    SFICardView *card = cell.cardView;
-    card.backgroundColor = [[SFIColors redColor] color];
-    [card addTitle:@"Software"];
+    SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+
+    [cell markReuse];
+    cell.cardView.backgroundColor = [[SFIColors redColor] color];
+    cell.title = @"Software";
 
     NSString *version = self.routerSummary.firmwareVersion;
-
-    NSArray *summary;
     if (version) {
-        summary = @[NSLocalizedString(@"router.software-version.Current version", @"Current version"), version];
+        cell.summaries = @[NSLocalizedString(@"router.software-version.Current version", @"Current version"), version];
     }
     else {
-        summary = @[NSLocalizedString(@"router.software-version.Not available", @"Version information is not available.")];
+        cell.summaries = @[NSLocalizedString(@"router.software-version.Not available", @"Version information is not available.")];
     }
-    [card addSummary:summary];
 
     return cell;
 }
@@ -665,16 +671,14 @@
 - (UITableViewCell *)createAlmondRebootSummaryCell:(UITableView *)tableView {
     static NSString *CellIdentifier = @"RebootSummary";
 
-    SFICardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[SFICardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
 
     [cell markReuse];
-
-    SFICardView *card = cell.cardView;
-    card.backgroundColor = [[SFIColors pinkColor] color];
-    [card addTitle:NSLocalizedString(@"router.card-title.Router Reboot", @"Router Reboot")];
+    cell.cardView.backgroundColor = [[SFIColors pinkColor] color];
+    cell.title = NSLocalizedString(@"router.card-title.Router Reboot", @"Router Reboot");
 
     NSArray *summary;
     if (self.isRebooting) {
@@ -690,10 +694,11 @@
     else {
         summary = @[[NSString stringWithFormat:NSLocalizedString(@"router.Last reboot %@ ago", @"Last reboot %@ ago"), self.routerSummary.routerUptime]];
     }
-    [card addSummary:summary];
+    cell.summaries = summary;
 
-    BOOL editing = [self isSectionExpanded:DEF_ROUTER_REBOOT_SECTION];
-    [card addEditIconTarget:self action:@selector(onEditRouterRebootCard:) editing:editing];
+    cell.expanded = [self isSectionExpanded:DEF_ROUTER_REBOOT_SECTION];
+    cell.editTarget = self;
+    cell.editSelector = @selector(onEditRouterRebootCard:);
 
     return cell;
 }

@@ -17,7 +17,7 @@
 @property(nonatomic) SFICardView *cardView;
 
 // Margin placed along the left and right side of the card; defaults to 10px
-@property(nonatomic)  CGFloat margin;
+@property(nonatomic) CGFloat margin;
 
 // Can be called after layouts to provide a preferred height for the table view cell
 - (CGFloat)computedLayoutHeight;
