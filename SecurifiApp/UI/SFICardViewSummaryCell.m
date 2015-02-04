@@ -16,8 +16,8 @@
     }
 
     // otherwise, estimate one
-    const CGFloat height = self.summaries.count * 30.0f;
-    const CGFloat min_height = 100;
+    const CGFloat height = (self.summaries.count * 30.0f);
+    const CGFloat min_height = 120;
 
     return (height < min_height) ? min_height : height;
 }

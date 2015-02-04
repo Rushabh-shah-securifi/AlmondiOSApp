@@ -21,7 +21,6 @@
     return self;
 }
 
-
 - (void)awakeFromNib {
     // Initialization code
 }
@@ -38,10 +37,13 @@
 }
 
 - (void)markReuse {
-    NSLog(@"CELL WIDTH: %f", self.frame.size.width);
+    SFICardView *oldView = self.cardView;
 
-    [self.cardView removeFromSuperview];
-    self.cardView = [[SFICardView alloc] initWithFrame:self.frame];
+    SFICardView *newView = [[SFICardView alloc] initWithFrame:self.frame];
+    newView.rightOffset = oldView.rightOffset;
+
+    [oldView removeFromSuperview];
+    self.cardView = newView;
 }
 
 - (void)layoutSubviews {

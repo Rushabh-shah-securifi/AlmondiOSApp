@@ -482,13 +482,18 @@
 }
 
 - (UITableViewCell *)createWirelessSummaryCell:(UITableView *)tableView {
-    static NSString *cell_id = @"wireless_summary";
-    SFICardTableViewCell *cell = [self getCardCell:tableView identifier:cell_id];
+    NSString *const CellIdentifier = @"wireless_summary";
 
-    SFICardView *card = cell.cardView;
-    card.rightOffset = SFICardView_right_offset_inset;
-    card.backgroundColor = [[SFIColors blueColor] color];
-    [card addTitle:NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings")];
+    SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+
+    [cell markReuse];
+
+    cell.cardView.rightOffset = SFICardView_right_offset_inset;
+    cell.cardView.backgroundColor = [[SFIColors blueColor] color];
+    cell.title = NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings");
 
     NSMutableArray *summary = [NSMutableArray array];
     SFIRouterSummary *routerSummary = self.routerSummary;
@@ -502,12 +507,14 @@
     else {
         [summary addObject:NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")];
     }
-    [card addSummary:summary];
+    cell.summaries = summary;
 
     int totalCount = (int) self.wirelessSettings.count;
     if (routerSummary && totalCount > 0) {
         BOOL editing = [self isSectionExpanded:DEF_WIRELESS_SETTINGS_SECTION];
-        [card addEditIconTarget:self action:@selector(onEditWirelessSettingsCard:) editing:editing];
+        cell.expanded = editing;
+        cell.editTarget = self;
+        cell.editSelector = @selector(onEditWirelessSettingsCard:);
     }
 
     return cell;
@@ -717,16 +724,6 @@
     SFICardView *card = cell.cardView;
     card.backgroundColor = [[SFIColors pinkColor] color];
 
-    return cell;
-}
-
-- (SFICardTableViewCell *)getCardCell:(UITableView *)tableView identifier:(NSString *)cellId {
-    SFICardTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (cell == nil) {
-        cell = [[SFICardTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-    }
-
-    [cell markReuse];
     return cell;
 }
 
