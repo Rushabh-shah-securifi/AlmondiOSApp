@@ -17,6 +17,7 @@ PODS:
   - iToast (0.0.1)
   - MBProgressHUD (0.9)
   - SWRevealViewController (2.3.0)
+  - UIImage-ResizeMagick (0.0.1)
   - V8HorizontalPickerView (1.0.0)
 
 DEPENDENCIES:
@@ -28,6 +29,7 @@ DEPENDENCIES:
   - iToast (~> 0.0)
   - MBProgressHUD (~> 0.9)
   - SWRevealViewController (~> 2.3)
+  - UIImage-ResizeMagick
   - V8HorizontalPickerView (~> 1.0)
 
 SPEC CHECKSUMS:
@@ -39,6 +41,7 @@ SPEC CHECKSUMS:
   iToast: 4de112d3dd42a3a8bf685572e6cda723c9cbc4f2
   MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
   SWRevealViewController: f6d80638b8e12323e87ac79562345403a799cb77
+  UIImage-ResizeMagick: 6edd4b95aabf4be264bf99147aa27abb319f3c7f
   V8HorizontalPickerView: 76d45849549fc6b26f497361cbc8f853b407bc13
 
 COCOAPODS: 0.35.0

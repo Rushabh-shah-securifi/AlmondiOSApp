@@ -22,6 +22,7 @@
 @interface ScoreboardViewController ()
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @property(nonatomic) Scoreboard *scoreboard;
+@property(nonatomic) NSArray *almonds;
 @property(nonatomic) NSTimer *updateTimer;
 @end
 
@@ -62,7 +63,9 @@
 }
 
 - (void)loadScoreboard {
-    self.scoreboard = [[SecurifiToolkit sharedInstance] scoreboardSnapshot];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    self.scoreboard = [toolkit scoreboardSnapshot];
+    self.almonds = [toolkit almondList];
 }
 
 #pragma mark - Event handlers
@@ -93,7 +96,7 @@
         case SEC_CLOUD:
             return 2;
         case SEC_NOTIFICATIONS:
-            return 1;
+            return self.almonds.count + 1;
         case SEC_EVENTS:
             return 1;
         case SEC_NETWORK:
@@ -155,16 +158,32 @@
         return [self tableView:tableView cloudSectionCellForRowAtIndexPath:indexPath];
     }
     else if (section == SEC_NOTIFICATIONS) {
-        NSString *cell_id = @"notifications";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cell_id];
-            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-            cell.textLabel.text = @"Client Token";
+        if (indexPath.row == 0) {
+            NSString *cell_id = @"notifications";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cell_id];
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                cell.textLabel.text = @"Client Token";
+            }
+            NSString *token = [self pushNotificationClientToken];
+            cell.detailTextLabel.text = (token.length == 0) ? @"Not registered" : token;
+            return cell;
         }
-        NSString *token = [self pushNotificationClientToken];
-        cell.detailTextLabel.text = (token.length == 0) ? @"Not registered" : token;
-        return cell;
+        else {
+            SFIAlmondPlus *almond = [self tryGetAlmond:indexPath];
+
+            NSString *cell_id = @"almond";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cell_id];
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            }
+            cell.textLabel.text = [NSString stringWithFormat:@"Almond: %@", almond.almondplusName];
+            cell.detailTextLabel.text = almond.almondplusMAC;
+
+            return cell;
+        }
     }
     else if (section == SEC_EVENTS) {
         UITableViewCell *cell = [self getFieldCell:tableView];
@@ -229,6 +248,13 @@
     return cell;
 }
 
+- (SFIAlmondPlus *)tryGetAlmond:(NSIndexPath *)indexPath {
+    NSUInteger index = (NSUInteger) (indexPath.row - 1);
+    NSArray *almonds = self.almonds;
+    SFIAlmondPlus *almond = index >= almonds.count ? nil : almonds[index];
+    return almond;
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cloudSectionCellForRowAtIndexPath:(NSIndexPath *)indexPath {
     BOOL useProduction = [SecurifiToolkit sharedInstance].useProductionCloud;
 
@@ -259,15 +285,32 @@
     else if (indexPath.section == SEC_NOTIFICATIONS) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-        NSString *token = [self pushNotificationClientToken];
-        if (token == nil) {
-            token = @"";
+        if (indexPath.row == 0) {
+            NSString *token = [self pushNotificationClientToken];
+            if (token == nil) {
+                token = @"";
+            }
+
+            UIPasteboard *pb = [UIPasteboard generalPasteboard];
+            pb.string = token;
+
+            [self showToast:@"Copied token"];
         }
+        else {
+            NSString *token = nil;
 
-        UIPasteboard *pb = [UIPasteboard generalPasteboard];
-        pb.string = token;
+            SFIAlmondPlus *almond = [self tryGetAlmond:indexPath];
+            if (almond != nil) {
+                token = almond.almondplusMAC;
+            }
 
-        [self showToast:@"Copied token"];
+            if (token != nil) {
+                UIPasteboard *pb = [UIPasteboard generalPasteboard];
+                pb.string = token;
+
+                [self showToast:@"Copied Almond MAC"];
+            }
+        }
     }
     else if (indexPath.section == SEC_EVENTS) {
         NSArray *events = [self.scoreboard allEvents];
