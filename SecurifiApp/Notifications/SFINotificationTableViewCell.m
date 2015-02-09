@@ -11,7 +11,11 @@
 #import "CircleView.h"
 #import "UIImage+ResizeMagick.h"
 
+#define vertical_grayline_width     7.0
+
+
 @interface SFINotificationTableViewCell ()
+@property(nonatomic) BOOL reset;
 @property(nonatomic, strong) UILabel *dateLabel;
 @property(nonatomic, strong) UIImageView *iconView;
 @property(nonatomic, strong) UITextField *messageTextField;
@@ -23,22 +27,37 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
 
+    if (!self.reset) {
+        return;
+    }
+
+    [self clearContentView];
+
     CGFloat cell_width = CGRectGetWidth(self.bounds);
+    CGFloat cell_height = CGRectGetHeight(self.bounds);
     CGFloat date_width = 80;
     CGFloat circle_width = 55;
     CGFloat padding = 10;
 
     CGRect rect;
 
-    rect = CGRectMake(padding, padding, date_width, 30);
+    rect = CGRectMake(padding, 2*padding, date_width, 30);
     self.dateLabel = [[UILabel alloc] initWithFrame:rect];
 
-    CGFloat y = (self.center.y - circle_width) / 2;
+    // Draw a vertical gray line centered on the circle
+    //
+    CGFloat line_width = vertical_grayline_width;
+    CGFloat line_center_x =  (circle_width - line_width) / 2;
+    rect = CGRectMake(date_width + padding + line_center_x, -1, line_width, cell_height);
+    UIImageView *verticalLine = [[UIImageView alloc] initWithFrame:rect];
+    verticalLine.image = [self getVerticalGrayLineImage];
+    //
+    // Then draw the circle on top
+    CGFloat y =  (cell_height - circle_width) / 2; // center in the cell
     rect = CGRectMake(90, y, circle_width, circle_width);
     self.circleView = [[CircleView alloc] initWithFrame:rect];
     //
-    // Vertical cray line
-    //
+    // Then draw the sensor icon on top of the circle
     rect = CGRectMake(0, 0, circle_width, circle_width);
     rect = CGRectInset(rect, 10, 10);
     self.iconView = [[UIImageView alloc] initWithFrame:rect];
@@ -50,6 +69,7 @@
     self.messageTextField.userInteractionEnabled = NO;
 
     [self.contentView addSubview:self.dateLabel];
+    [self.contentView addSubview:verticalLine];
     [self.contentView addSubview:self.circleView];
     [self.contentView addSubview:self.messageTextField];
 
@@ -59,13 +79,26 @@
     [self setMessageLabelText:notification];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-    // Configure the view for the selected state
+- (void)clearContentView {
+    for (UIView *view in self.contentView.subviews) {
+        [view removeFromSuperview];
+    }
 }
 
 - (void)setNotification:(SFINotification *)notification {
     _notification = notification;
+    self.reset = YES;
+}
+
+- (UIImage *)getVerticalGrayLineImage {
+    CGFloat height = CGRectGetHeight(self.bounds);
+    UIImage *image = [UIImage imageNamed:@"notification_gray_line"];
+    return [image resizedImageByMagick:[NSString stringWithFormat:@"%fx%f", vertical_grayline_width, height + 2]];
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    // Configure the view for the selected state
 }
 
 - (void)setDateLabelText:(SFINotification *)notification {
