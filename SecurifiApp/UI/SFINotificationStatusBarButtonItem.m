@@ -45,8 +45,8 @@
 }
 
 - (void)setImageForNotificationCount:(NSUInteger)count {
-    if (count > 99) {
-        self.countLabel.text = @"99+";
+    if (count > 999) {
+        self.countLabel.text = @"999";
     }
     else {
         self.countLabel.text = [NSString stringWithFormat:@"%i", count];
@@ -58,9 +58,9 @@
 }
 
 - (CountLabel *)makeCountLabel {
-    CGRect frame = CGRectMake(21,3,20,20);
+    CGRect frame = CGRectMake(22,1,25,25);
     CountLabel *label = [[CountLabel alloc] initWithFrame:frame];
-    label.cornerRadius = 10.0;
+    label.cornerRadius = 12.5;
     label.textColor = [UIColor whiteColor];
     label.font = [UIFont standardUILabelFont];
     label.textAlignment = NSTextAlignmentCenter;

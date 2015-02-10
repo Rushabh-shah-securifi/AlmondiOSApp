@@ -57,7 +57,7 @@
         [self.notificationsStatusButton markNotificationCount:(NSUInteger) count];
 
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        spacer.width = 20;
+        spacer.width = 25;
 
         self.navigationItem.rightBarButtonItems = @[self.statusBarButton, spacer, self.notificationsStatusButton];
     }
