@@ -45,7 +45,12 @@
 }
 
 - (void)setImageForNotificationCount:(NSUInteger)count {
-    self.countLabel.text = [NSString stringWithFormat:@"%i", count];
+    if (count > 99) {
+        self.countLabel.text = @"99+";
+    }
+    else {
+        self.countLabel.text = [NSString stringWithFormat:@"%i", count];
+    }
     [self.imageView addSubview:self.countLabel];
 
     UIImage *image = [self iconForNotificationCount:count];

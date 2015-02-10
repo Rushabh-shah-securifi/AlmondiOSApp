@@ -53,6 +53,9 @@
     if (self.enableNotificationsView) {
         _notificationsStatusButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(onShowNotifications:)];
 
+        NSInteger count = [[SecurifiToolkit sharedInstance] countUnviewedNotifications];
+        [self.notificationsStatusButton markNotificationCount:(NSUInteger) count];
+
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
         spacer.width = 20;
 
@@ -92,6 +95,14 @@
     [center addObserver:self
                selector:@selector(onReachabilityDidChange:)
                    name:kSFIReachabilityChangedNotification object:nil];
+
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationDidStore object:nil];
+
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationDidMarkViewed object:nil];
 }
 
 #pragma Event handling
@@ -129,6 +140,13 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
         [self.HUD hide:NO]; // make sure it is hidden
+    });
+}
+
+- (void)onNotificationCountChanged:(id)event {
+    NSInteger count = [[SecurifiToolkit sharedInstance] countUnviewedNotifications];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.notificationsStatusButton markNotificationCount:(NSUInteger) count];
     });
 }
 
