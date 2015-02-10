@@ -16,7 +16,7 @@
 @property(nonatomic, strong) UITextField *dateLabel;
 @property(nonatomic, strong) UIView *verticalLine;
 @property(nonatomic, strong) UIImageView *iconView;
-@property(nonatomic, strong) UITextField *messageTextField;
+@property(nonatomic, strong) UITextView *messageTextField;
 @property(nonatomic, strong) CircleView *circleView;
 @end
 
@@ -70,8 +70,8 @@
 
     CGFloat message_x = date_width + padding + circle_width + padding;
     rect = CGRectMake(message_x, 5, cell_width - message_x - padding, circle_width);
-    self.messageTextField = [[UITextField alloc] initWithFrame:rect];
-    self.messageTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    self.messageTextField = [[UITextView alloc] initWithFrame:rect];
+//    self.messageTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     self.messageTextField.userInteractionEnabled = NO;
 
     [self.contentView addSubview:self.dateLabel];
@@ -110,7 +110,6 @@
 
 - (void)setDateLabelText:(SFINotification *)notification {
     NSDateFormatter *formatter = [NSDateFormatter new];
-
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:notification.time];
 
     NSDictionary *attr;

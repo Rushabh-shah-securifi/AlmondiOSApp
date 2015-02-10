@@ -12,9 +12,10 @@
 #import "SFICloudStatusBarButtonItem.h"
 #import "UIFont+Securifi.h"
 #import "SFINotificationsViewController.h"
+#import "SFINotificationStatusBarButtonItem.h"
 
 @interface SFITableViewController ()
-@property(nonatomic, readonly) SFICloudStatusBarButtonItem *notificationsStatusButton;
+@property(nonatomic, readonly) SFINotificationStatusBarButtonItem *notificationsStatusButton;
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @end
 
@@ -50,8 +51,12 @@
     _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithStandard];
     //
     if (self.enableNotificationsView) {
-        _notificationsStatusButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onShowNotifications:)];
-        self.navigationItem.rightBarButtonItems = @[self.notificationsStatusButton, self.statusBarButton];
+        _notificationsStatusButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(onShowNotifications:)];
+
+        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        spacer.width = 20;
+
+        self.navigationItem.rightBarButtonItems = @[self.statusBarButton, spacer, self.notificationsStatusButton];
     }
     else {
         self.navigationItem.rightBarButtonItem = _statusBarButton;

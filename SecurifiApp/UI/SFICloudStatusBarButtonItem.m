@@ -28,11 +28,12 @@
 - (id)initWithStandard {
     enum SFICloudStatusState initialState = SFICloudStatusStateConnected;
     UIImage *image = [SFICloudStatusBarButtonItem imageForState:initialState];
+    UIImageView *view = [[UIImageView alloc] initWithImage:image];
 
-    self = [super initWithCustomView:_imageView];
+    self = [super initWithCustomView:view];
     if (self) {
         _state = initialState;
-        _imageView = [[UIImageView alloc] initWithImage:image];
+        _imageView = view;
         _imageView.tintColor = [SFICloudStatusBarButtonItem tintForState:initialState];
     }
 
