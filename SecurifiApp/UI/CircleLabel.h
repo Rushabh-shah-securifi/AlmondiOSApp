@@ -4,7 +4,7 @@
 //
 #import <UIKit/UIKit.h>
 
-@interface CountLabel : UILabel
+@interface CircleLabel : UILabel
 
 @property(nonatomic) CGFloat cornerRadius;
 @property(nonatomic, retain) UIColor *rectColor;

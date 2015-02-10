@@ -147,7 +147,7 @@
 		1DF030400DB881AFAEF263C4 /* UIImage+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03BE3E401DD252BA24127 /* UIImage+Securifi.m */; };
 		1DF031661E380BA4D0E0EB07 /* SFIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0364AFED818925B9469F3 /* SFIPreferences.m */; };
 		1DF0317AA50784DE447F9449 /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03A704CC540558B993529 /* CircleView.m */; };
-		1DF032B24E580FC6CD86D379 /* CountLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CountLabel.m */; };
+		1DF032B24E580FC6CD86D379 /* CircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CircleLabel.m */; };
 		1DF0351F629E0103520602C3 /* SFICardViewSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0369E72CD4FA9E78D9468 /* SFICardViewSummaryCell.m */; };
 		1DF0369581F25A08C2D53894 /* SFINotificationStatusBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */; };
 		1DF03698BAF3152723335005 /* UIImage+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03BE3E401DD252BA24127 /* UIImage+Securifi.m */; };
@@ -157,7 +157,7 @@
 		1DF03AD70C1C051CA6F74073 /* SFIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0364AFED818925B9469F3 /* SFIPreferences.m */; };
 		1DF03ADB8A23D76AE9B67F13 /* SFINotificationStatusBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */; };
 		1DF03C76A181214483FB8F70 /* SFICardViewSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0369E72CD4FA9E78D9468 /* SFICardViewSummaryCell.m */; };
-		1DF03FBF0030A76DBCA3A828 /* CountLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CountLabel.m */; };
+		1DF03FBF0030A76DBCA3A828 /* CircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CircleLabel.m */; };
 		7CB5434B38D653A029281FD1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -302,12 +302,12 @@
 		1DF0303A96ABFCC918107B70 /* UIImage+Securifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Securifi.h"; sourceTree = "<group>"; };
 		1DF0310139DB0870F7D2C815 /* NSData+Conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Conversion.h"; sourceTree = "<group>"; };
 		1DF031D5539A9634BF7DF8BF /* CircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleView.h; sourceTree = "<group>"; };
-		1DF033B55E920DA89560E84B /* CountLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountLabel.m; sourceTree = "<group>"; };
+		1DF033B55E920DA89560E84B /* CircleLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleLabel.m; sourceTree = "<group>"; };
 		1DF033BFB3D6B1769127310B /* NSData+Conversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Conversion.m"; sourceTree = "<group>"; };
 		1DF0364AFED818925B9469F3 /* SFIPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPreferences.m; sourceTree = "<group>"; };
 		1DF0369E72CD4FA9E78D9468 /* SFICardViewSummaryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICardViewSummaryCell.m; sourceTree = "<group>"; };
 		1DF0372CEAFFEB180E0CAF94 /* SFINotificationStatusBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFINotificationStatusBarButtonItem.h; sourceTree = "<group>"; };
-		1DF039E8AD77F930D3943D79 /* CountLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CountLabel.h; sourceTree = "<group>"; };
+		1DF039E8AD77F930D3943D79 /* CircleLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleLabel.h; sourceTree = "<group>"; };
 		1DF03A704CC540558B993529 /* CircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleView.m; sourceTree = "<group>"; };
 		1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFINotificationStatusBarButtonItem.m; sourceTree = "<group>"; };
 		1DF03BE3E401DD252BA24127 /* UIImage+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Securifi.m"; sourceTree = "<group>"; };
@@ -538,8 +538,8 @@
 				1DF031D5539A9634BF7DF8BF /* CircleView.h */,
 				1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */,
 				1DF0372CEAFFEB180E0CAF94 /* SFINotificationStatusBarButtonItem.h */,
-				1DF033B55E920DA89560E84B /* CountLabel.m */,
-				1DF039E8AD77F930D3943D79 /* CountLabel.h */,
+				1DF033B55E920DA89560E84B /* CircleLabel.m */,
+				1DF039E8AD77F930D3943D79 /* CircleLabel.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -974,7 +974,7 @@
 				1DF030400DB881AFAEF263C4 /* UIImage+Securifi.m in Sources */,
 				1DF0317AA50784DE447F9449 /* CircleView.m in Sources */,
 				1DF0369581F25A08C2D53894 /* SFINotificationStatusBarButtonItem.m in Sources */,
-				1DF03FBF0030A76DBCA3A828 /* CountLabel.m in Sources */,
+				1DF03FBF0030A76DBCA3A828 /* CircleLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1034,7 +1034,7 @@
 				1DF03698BAF3152723335005 /* UIImage+Securifi.m in Sources */,
 				1DF03A50177B8354D886E980 /* CircleView.m in Sources */,
 				1DF03ADB8A23D76AE9B67F13 /* SFINotificationStatusBarButtonItem.m in Sources */,
-				1DF032B24E580FC6CD86D379 /* CountLabel.m in Sources */,
+				1DF032B24E580FC6CD86D379 /* CircleLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

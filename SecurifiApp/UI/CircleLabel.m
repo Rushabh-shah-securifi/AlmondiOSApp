@@ -3,11 +3,11 @@
 // Copyright (c) 2015 Securifi Ltd. All rights reserved.
 //
 
-#import "CountLabel.h"
+#import "CircleLabel.h"
 
 // source: https://gist.github.com/digerata/500793
 
-@implementation CountLabel
+@implementation CircleLabel
 
 - (void)setBackgroundColor:(UIColor *)color {
     self.rectColor = color;
@@ -15,11 +15,17 @@
 }
 
 - (void)drawRect:(CGRect)rect {
-    CGContextRef context = UIGraphicsGetCurrentContext();
     if (self.cornerRadius == 0) {
-        self.cornerRadius = 4;
+        self.cornerRadius = CGRectGetWidth(self.bounds);
     }
+
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextSaveGState(context);
     [self drawRoundedRect:context rect:rect radius:self.cornerRadius color:self.rectColor];
+    CGContextRestoreGState(context);
+    CGColorSpaceRelease(colorSpace);
+
     [super drawRect:rect];
 }
 

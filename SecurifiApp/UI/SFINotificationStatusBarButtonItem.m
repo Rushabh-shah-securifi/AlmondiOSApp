@@ -4,14 +4,14 @@
 //
 
 #import "SFINotificationStatusBarButtonItem.h"
-#import "CountLabel.h"
+#import "CircleLabel.h"
 #import "Colours.h"
 #import "UIFont+Securifi.h"
 
 
 @interface SFINotificationStatusBarButtonItem ()
 @property(nonatomic, readonly) UIButton *imageView;
-@property(nonatomic, readonly) CountLabel *countLabel;
+@property(nonatomic, readonly) CircleLabel *countLabel;
 @end
 
 @implementation SFINotificationStatusBarButtonItem
@@ -57,9 +57,9 @@
     [self.imageView setImage:image forState:UIControlStateNormal];
 }
 
-- (CountLabel *)makeCountLabel {
+- (CircleLabel *)makeCountLabel {
     CGRect frame = CGRectMake(22,1,25,25);
-    CountLabel *label = [[CountLabel alloc] initWithFrame:frame];
+    CircleLabel *label = [[CircleLabel alloc] initWithFrame:frame];
     label.cornerRadius = 12.5;
     label.textColor = [UIColor whiteColor];
     label.font = [UIFont standardUILabelFont];
