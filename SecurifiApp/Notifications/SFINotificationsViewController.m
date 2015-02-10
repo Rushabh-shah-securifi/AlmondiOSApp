@@ -87,7 +87,7 @@
     [[SecurifiToolkit sharedInstance] markNotificationViewed:notification];
     notification.viewed = YES;
 
-    [tableView reloadRowsAtIndexPaths:@[] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
