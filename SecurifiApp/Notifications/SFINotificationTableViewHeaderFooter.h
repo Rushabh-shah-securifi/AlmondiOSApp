@@ -9,6 +9,7 @@ typedef NS_ENUM(int, SFINotificationTableViewHeaderFooterMode) {
     SFINotificationTableViewHeaderFooter_header,
     SFINotificationTableViewHeaderFooter_middle,
     SFINotificationTableViewHeaderFooter_footer,
+    SFINotificationTableViewHeaderFooter_vertical_line,
 };
 
 @interface SFINotificationTableViewHeaderFooter : UIView

@@ -90,7 +90,7 @@
         return 70;
     }
 
-    return 0;
+    return 2; // filler view only draws a vertical line; we have to handle this case because the table view will add footer spacing for all once one is provided
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -116,11 +116,14 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     if (section == (self.buckets.count - 1)) {
-        SFINotificationTableViewHeaderFooter *header = [[SFINotificationTableViewHeaderFooter alloc] initWithFrame:CGRectZero];
-        header.mode = SFINotificationTableViewHeaderFooter_footer;
-        return header;
+        SFINotificationTableViewHeaderFooter *footer = [[SFINotificationTableViewHeaderFooter alloc] initWithFrame:CGRectZero];
+        footer.mode = SFINotificationTableViewHeaderFooter_footer;
+        return footer;
     }
-    return nil;
+
+    SFINotificationTableViewHeaderFooter *footer = [[SFINotificationTableViewHeaderFooter alloc] initWithFrame:CGRectZero];
+    footer.mode = SFINotificationTableViewHeaderFooter_vertical_line;
+    return footer;
 }
 
 //- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
