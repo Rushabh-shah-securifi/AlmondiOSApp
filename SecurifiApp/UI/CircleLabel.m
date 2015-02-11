@@ -9,6 +9,15 @@
 
 @implementation CircleLabel
 
+- (void)setTarget:(id)target touchAction:(SEL)action {
+    UITapGestureRecognizer *tapPress = [[UITapGestureRecognizer alloc] initWithTarget:target action:action];
+    tapPress.numberOfTapsRequired = 1;
+    tapPress.delaysTouchesBegan = YES;
+    tapPress.cancelsTouchesInView = YES;
+
+    [self addGestureRecognizer:tapPress];
+}
+
 - (void)setBackgroundColor:(UIColor *)color {
     self.rectColor = color;
     [super setBackgroundColor:[UIColor clearColor]];

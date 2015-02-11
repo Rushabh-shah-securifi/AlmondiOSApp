@@ -9,4 +9,5 @@
 @property(nonatomic) CGFloat cornerRadius;
 @property(nonatomic, retain) UIColor *rectColor;
 
+- (void)setTarget:(id)target touchAction:(SEL)action;
 @end

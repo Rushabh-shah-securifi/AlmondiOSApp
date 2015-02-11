@@ -8,5 +8,6 @@
 
 @property(nonatomic) UIColor *edgeColor;
 @property(nonatomic) UIColor *fillColor;
+@property(nonatomic) CGFloat borderWidth;
 
 @end

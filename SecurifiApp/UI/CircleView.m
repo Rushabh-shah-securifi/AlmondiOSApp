@@ -14,6 +14,7 @@
         self.backgroundColor = [UIColor clearColor];
         self.edgeColor = [UIColor pastelOrangeColor];
         self.fillColor = self.edgeColor;
+        self.borderWidth = 5.0;
     }
     return self;
 }
@@ -27,8 +28,8 @@
 
 - (void)drawCircle:(CGContextRef)ctx {
     CGSize canvasSize = self.bounds.size;
+    CGFloat border_width = self.borderWidth;
     CGFloat scale = 1.0;
-    CGFloat border_width = 5.0;
 
     CGContextSaveGState(ctx);
 
