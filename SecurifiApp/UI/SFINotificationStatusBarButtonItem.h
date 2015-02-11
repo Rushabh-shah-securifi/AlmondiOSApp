@@ -8,13 +8,10 @@
 
 @interface SFINotificationStatusBarButtonItem : UIBarButtonItem
 
-@property(nonatomic, readonly) NSUInteger notificationCount;
-
 - (instancetype)initWithTarget:(id)target action:(SEL)action;
 
-- (id)initWithStandard;
+- (instancetype)initWithStandard;
 
 - (void)markNotificationCount:(NSUInteger)newCount;
-
 
 @end

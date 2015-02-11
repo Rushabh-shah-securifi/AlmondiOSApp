@@ -10,20 +10,22 @@
 
 
 @interface SFINotificationStatusBarButtonItem ()
-@property(nonatomic, readonly) UIButton *imageView;
+@property(nonatomic, readonly) UIButton *countButton;
 @property(nonatomic, readonly) CircleLabel *countLabel;
 @end
 
 @implementation SFINotificationStatusBarButtonItem
 
-- (id)initWithStandard {
-    UIButton *view = [UIButton buttonWithType:UIButtonTypeCustom];
-    view.frame = CGRectMake(0,0,30,25);
+- (instancetype)initWithStandard {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(0, 0, 30, 25);
 
-    self = [super initWithCustomView:view];
+    self = [super initWithCustomView:button];
     if (self) {
-        _imageView = view;
+        _countButton = button;
         _countLabel = [self makeCountLabel];
+        self.countLabel.alpha = 0;
+        [self.countButton addSubview:self.countLabel];
         [self setImageForNotificationCount:0];
     }
 
@@ -33,7 +35,8 @@
 - (instancetype)initWithTarget:(id)target action:(SEL)action {
     self = [self initWithStandard];
     if (self) {
-        [self.imageView addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+        [self.countButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+        [self.countLabel setTarget:target touchAction:action];
     }
     return self;
 }
@@ -45,31 +48,41 @@
 }
 
 - (void)setImageForNotificationCount:(NSUInteger)count {
-    if (count > 999) {
-        self.countLabel.text = @"999";
+    CircleLabel *label = self.countLabel;
+    if (count == 0) {
+        label.text = nil;
+    }
+    else if (count > 999) {
+        label.text = @"999";
     }
     else {
-        self.countLabel.text = [NSString stringWithFormat:@"%i", count];
+        label.text = [NSString stringWithFormat:@"%i", count];
     }
-    [self.imageView addSubview:self.countLabel];
+
+    label.alpha = (count == 0) ? 0 : 1;
 
     UIImage *image = [self iconForNotificationCount:count];
-    [self.imageView setImage:image forState:UIControlStateNormal];
+    [self.countButton setImage:image forState:UIControlStateNormal];
 }
 
 - (CircleLabel *)makeCountLabel {
-    CGRect frame = CGRectMake(22,1,25,25);
+    CGRect frame = CGRectMake(22, 1, 25, 25);
     CircleLabel *label = [[CircleLabel alloc] initWithFrame:frame];
     label.cornerRadius = 12.5;
     label.textColor = [UIColor whiteColor];
     label.font = [UIFont standardUILabelFont];
     label.textAlignment = NSTextAlignmentCenter;
-    label.backgroundColor = [UIColor pastelOrangeColor];
+    label.backgroundColor = /*orange*/[UIColor colorFromHexString:@"ff8500"];
     return label;
 }
 
-- (UIImage*)iconForNotificationCount:(NSUInteger)count {
-    return [UIImage imageNamed:@"bell_icon_tilted"];
+- (UIImage *)iconForNotificationCount:(NSUInteger)count {
+    if (count == 0) {
+        return [UIImage imageNamed:@"bell_empty"];
+    }
+    else {
+        return [UIImage imageNamed:@"bell_icon_tilted"];
+    }
 }
 
 @end
