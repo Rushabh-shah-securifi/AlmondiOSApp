@@ -37,6 +37,8 @@
     CGFloat circle_width = 60;
     CGFloat padding = 10;
 
+    UIColor *grayColor = [UIColor colorFromHexString:@"dddddd"];
+
     CGRect rect;
 
     rect = CGRectMake(padding, 5, date_width, circle_width);
@@ -46,12 +48,11 @@
 
     // Draw a vertical gray line centered on the circle
     //
-    CGFloat line_width = 6.0;
+    CGFloat line_width = 4.0;
     CGFloat line_center_x =  (circle_width - line_width) / 2;
     rect = CGRectMake(date_width + padding + line_center_x, 0, line_width, cell_height);
     self.verticalLine = [[UIView alloc] initWithFrame:rect];
-    self.verticalLine.backgroundColor = [UIColor warmGrayColor];
-    self.verticalLine.alpha = 0.60;
+    self.verticalLine.backgroundColor = grayColor;
     //
     // Then draw the circle on top
     CGFloat y =  (cell_height - circle_width) / 2; // center in the cell
@@ -86,7 +87,11 @@
 }
 
 - (UIColor *)notificationStatusColor {
-    return self.notification.viewed ? [UIColor pastelBlueColor] : [UIColor pastelOrangeColor];
+    /*
+    FOR ORANGE : RED : 255 : Green :-133  Blue : 0 (ff8500)
+    FOR BLUE : RED : 0 : Green : 164    Blue : 230 (00a4e6)
+     */
+    return self.notification.viewed ? /*blue */[UIColor colorFromHexString:@"00a4e6"] : /*orange*/[UIColor colorFromHexString:@"ff8500"];
 }
 
 - (void)clearContentView {
@@ -136,6 +141,7 @@
     [container appendAttributedString:eventStr];
 
     self.dateLabel.attributedText = container;
+    self.dateLabel.textAlignment = NSTextAlignmentRight;
 }
 
 - (void)setMessageLabelText:(SFINotification *)notification {

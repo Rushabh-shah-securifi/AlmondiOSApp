@@ -8,8 +8,10 @@
 
 #import "SFINotificationsViewController.h"
 #import "SFINotificationTableViewCell.h"
+#import "SFINotificationTableViewHeaderFooter.h"
 
 @interface SFINotificationsViewController ()
+@property(nonatomic) id<SFINotificationStore> store;
 @property(nonatomic) NSArray *buckets; // NSDate instances
 @property(nonatomic) NSMutableDictionary *notifications; // NSDate bucket :: NSArray of notifications
 @end
@@ -90,22 +92,30 @@
     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    NSDate *bucket = [self tryGetBucket:section];
-
-    if ([bucket isToday]) {
-        return @"Today";
-    }
-
-    NSDate *today = [NSDate today];
-    NSDate *yesterday = [today dateByAddingDays:-1];
-
-    if ([bucket isEqualToDate:yesterday]) {
-        return @"Yesterday";
-    }
-
-    return [bucket formattedDateString];
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    CGRect rect = CGRectMake(0, 0, self.tableView.bounds.size.width, 70);
+    SFINotificationTableViewHeaderFooter *header = [[SFINotificationTableViewHeaderFooter alloc] initWithFrame:rect];
+    header.bucketDate = [self tryGetBucket:section];
+    return header;
 }
+
+
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+//    NSDate *bucket = [self tryGetBucket:section];
+//
+//    if ([bucket isToday]) {
+//        return @"Today";
+//    }
+//
+//    NSDate *today = [NSDate today];
+//    NSDate *yesterday = [today dateByAddingDays:-1];
+//
+//    if ([bucket isEqualToDate:yesterday]) {
+//        return @"Yesterday";
+//    }
+//
+//    return [bucket formattedDateString];
+//}
 
 #pragma mark - Buckets and Notification loading
 
