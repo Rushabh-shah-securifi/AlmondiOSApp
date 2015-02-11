@@ -20,7 +20,8 @@
     CGFloat circle_width = 60; // line it up on the circle drawn in the table cells
     CGFloat small_circle_width = 24;
     CGFloat small_circle_border = 5.0;
-    CGFloat padding = 10;
+    CGFloat padding = 5;
+    CGFloat left_padding = 5;
     CGFloat y_padding = 5;
 
     UIColor *grayColor = [UIColor colorFromHexString:@"dddddd"];
@@ -35,7 +36,7 @@
         NSString *str = [self dateLabelString];
         NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:str attributes:attr];
 
-        CGRect rect = CGRectMake(padding, y_padding, date_width + (small_circle_width / 2), circle_width);
+        CGRect rect = CGRectMake(left_padding, y_padding, date_width + (small_circle_width / 2), circle_width);
         UITextField *field = [[UITextField alloc] initWithFrame:rect];
         field.userInteractionEnabled = NO;
         field.attributedText = nameStr; // add text first then adjust alignment
@@ -47,7 +48,7 @@
 
     {
         // Then draw the circle on top
-        CGFloat x_offset = date_width + padding + (circle_width / 2) - (small_circle_width / 2);
+        CGFloat x_offset = left_padding + date_width + padding + (circle_width / 2) - (small_circle_width / 2);
         CGFloat y_offset = (cell_height - small_circle_width) / 2; // center in the cell
         CGRect rect = CGRectMake(x_offset, y_offset, small_circle_width, small_circle_width);
         CircleView *circleView = [[CircleView alloc] initWithFrame:rect];
@@ -58,12 +59,12 @@
         [self addSubview:circleView];
     }
 
-    // Draw a vertical gray line centered on the circle
+    // Draw a vertical gray line centered on the circle and going down to the bottom border
     //
-    {
+    if (self.mode != SFINotificationTableViewHeaderFooter_footer) {
         CGFloat line_width = 4.0;
         CGFloat line_center_x = (circle_width - line_width) / 2;
-        CGFloat x_offset = date_width + padding + line_center_x;
+        CGFloat x_offset = left_padding + date_width + padding + line_center_x;
         CGFloat y_offset = (cell_height - small_circle_width);
         CGRect rect = CGRectMake(x_offset, y_offset - line_width, line_width, cell_height - y_offset + line_width);
         UIView *verticalLine = [[UIView alloc] initWithFrame:rect];
@@ -72,11 +73,25 @@
         [self addSubview:verticalLine];
     }
 
+    // Draw a vertical gray line centered on the circle and going up to the top border
+    if (self.mode == SFINotificationTableViewHeaderFooter_footer) {
+        CGFloat line_width = 4.0;
+        CGFloat line_center_x = (circle_width - line_width) / 2;
+        CGFloat x_offset = left_padding + date_width + padding + line_center_x;
+        CGFloat y_offset = (cell_height - small_circle_width);
+        CGFloat line_height = cell_height - y_offset + line_width;
+        CGRect rect = CGRectMake(x_offset, 0, line_width, line_height);
+        UIView *verticalLine = [[UIView alloc] initWithFrame:rect];
+        verticalLine.backgroundColor = grayColor;
+
+        [self addSubview:verticalLine];
+    }
+    
     // Draw a horizontal gray line centered on the circle and extending to the right edge
     //
     {
         CGFloat line_width = 1.0;
-        CGFloat x_offset = date_width + padding + (circle_width / 2) + (small_circle_width / 2) - small_circle_border;
+        CGFloat x_offset = left_padding + date_width + padding + (circle_width / 2) + (small_circle_width / 2) - small_circle_border;
         CGFloat y_offset = (cell_height - small_circle_width) / 2 + (small_circle_width / 2);
         CGRect rect = CGRectMake(x_offset, y_offset, cell_width - x_offset, line_width);
         UIView *horizontalLine = [[UIView alloc] initWithFrame:rect];
@@ -89,6 +104,10 @@
 }
 
 - (NSString *)dateLabelString {
+    if (self.mode == SFINotificationTableViewHeaderFooter_footer) {
+        return @"The End";
+    }
+
     NSDate *date = self.bucketDate;
 
     if ([date isToday]) {

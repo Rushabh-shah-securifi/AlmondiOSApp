@@ -96,25 +96,33 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler {
-    [self handleRemoteNotification:userInfo];
+    BOOL handled = [self handleRemoteNotification:userInfo];
+    enum UIBackgroundFetchResult result = handled? UIBackgroundFetchResultNewData : UIBackgroundFetchResultNoData;
+    handler(result);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSLog(@"didReceiveRemoteNotification");
 
-//    UIApplicationState state = [application applicationState];
-//    // user tapped notification while app was in background
-//    if (state == UIApplicationStateInactive || state == UIApplicationStateBackground) {
-//        // go to screen relevant to Notification content
-//    }
-//    else {
-//        // proces
-//    }
-
     [self handleRemoteNotification:userInfo];
+    [self handleUserTappedNotification:application];
 }
 
-- (void)handleRemoteNotification:(NSDictionary *)userInfo {
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    [self handleUserTappedNotification:application];
+}
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void (^)())completionHandler {
+    [self handleUserTappedNotification:application];
+}
+
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler {
+    [self handleUserTappedNotification:application];
+}
+
+// returns YES if notification can be handled (matches an almond)
+// else returns NO
+- (BOOL)handleRemoteNotification:(NSDictionary *)userInfo {
     SFINotification *notification = [SFINotification parsePayload:userInfo];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
@@ -128,7 +136,7 @@
 
     if (!matched) {
         // drop the notification
-//        return;
+        return NO;
     }
     [toolkit storePushNotification:notification];
 
@@ -139,6 +147,8 @@
     localNotice.soundName = UILocalNotificationDefaultSoundName;
 
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotice];
+
+    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -172,6 +182,13 @@
 
 - (void)onMemoryWarning:(id)sender {
     [[Analytics sharedInstance] markMemoryWarning];
+}
+
+- (void)handleUserTappedNotification:(UIApplication *)application {
+    if (application.applicationState == UIApplicationStateInactive) {
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center postNotificationName:@"kApplicationDidBecomeActiveOnNotificationTap" object:nil];
+    }
 }
 
 @end

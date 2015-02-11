@@ -5,8 +5,15 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(int, SFINotificationTableViewHeaderFooterMode) {
+    SFINotificationTableViewHeaderFooter_header,
+    SFINotificationTableViewHeaderFooter_middle,
+    SFINotificationTableViewHeaderFooter_footer,
+};
+
 @interface SFINotificationTableViewHeaderFooter : UIView
 
-@property NSDate *bucketDate;
+@property(nonatomic) SFINotificationTableViewHeaderFooterMode mode;
+@property(nonatomic) NSDate *bucketDate;
 
 @end

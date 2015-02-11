@@ -35,13 +35,14 @@
     CGFloat cell_height = CGRectGetHeight(self.bounds);
     CGFloat date_width = 70;
     CGFloat circle_width = 60;
-    CGFloat padding = 10;
+    CGFloat padding = 5;
+    CGFloat left_padding = 5;
 
     UIColor *grayColor = [UIColor colorFromHexString:@"dddddd"];
 
     CGRect rect;
 
-    rect = CGRectMake(padding, 5, date_width, circle_width);
+    rect = CGRectMake(left_padding, 5, date_width, circle_width);
     self.dateLabel = [[UITextField alloc] initWithFrame:rect];
     self.dateLabel.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     self.dateLabel.userInteractionEnabled = NO;
@@ -49,14 +50,14 @@
     // Draw a vertical gray line centered on the circle
     //
     CGFloat line_width = 4.0;
-    CGFloat line_center_x =  (circle_width - line_width) / 2;
-    rect = CGRectMake(date_width + padding + line_center_x, 0, line_width, cell_height);
+    CGFloat line_center_x = (circle_width - line_width) / 2;
+    rect = CGRectMake(left_padding + date_width + padding + line_center_x, 0, line_width, cell_height);
     self.verticalLine = [[UIView alloc] initWithFrame:rect];
     self.verticalLine.backgroundColor = grayColor;
     //
     // Then draw the circle on top
-    CGFloat y =  (cell_height - circle_width) / 2; // center in the cell
-    rect = CGRectMake(date_width + padding, y, circle_width, circle_width);
+    CGFloat y = (cell_height - circle_width) / 2; // center in the cell
+    rect = CGRectMake(left_padding + date_width + padding, y, circle_width, circle_width);
     self.circleView = [[CircleView alloc] initWithFrame:rect];
     UIColor *circleColor = [self notificationStatusColor];
     self.circleView.fillColor = circleColor;
@@ -69,7 +70,7 @@
     self.iconView.tintColor = [UIColor whiteColor];
     [self.circleView addSubview:self.iconView];
 
-    CGFloat message_x = date_width + padding + circle_width + padding;
+    CGFloat message_x = left_padding + date_width + padding + circle_width + padding;
     rect = CGRectMake(message_x, 5, cell_width - message_x - padding, circle_width);
     self.messageTextField = [[UITextView alloc] initWithFrame:rect];
 //    self.messageTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;

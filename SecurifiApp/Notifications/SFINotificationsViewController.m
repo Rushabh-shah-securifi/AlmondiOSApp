@@ -9,6 +9,7 @@
 #import "SFINotificationsViewController.h"
 #import "SFINotificationTableViewCell.h"
 #import "SFINotificationTableViewHeaderFooter.h"
+#import "UIFont+Securifi.h"
 
 @interface SFINotificationsViewController ()
 @property(nonatomic) id<SFINotificationStore> store;
@@ -23,15 +24,21 @@
 
     [self resetBucketsAndNotifications];
 
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.separatorInset = UIEdgeInsetsZero;
-    self.tableView.backgroundColor = [UIColor whiteColor];
-
-    self.title = @"Recent Activities";
+    NSDictionary *titleAttributes = @{
+            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+            NSFontAttributeName : [UIFont standardNavigationTitleFont]
+    };
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
+    self.title = @"Recent Activities"; //todo localize me
 
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
     doneButton.tintColor = [UIColor blackColor];
     self.navigationItem.rightBarButtonItem = doneButton;
+
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorInset = UIEdgeInsetsZero;
+    self.tableView.backgroundColor = [UIColor whiteColor];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onDidReceiveNotifications) name:kSFINotificationDidStore object:nil];
 }
@@ -78,6 +85,14 @@
     return 70;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    if (section == (self.buckets.count - 1)) {
+        return 70;
+    }
+
+    return 0;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
@@ -93,12 +108,20 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    CGRect rect = CGRectMake(0, 0, self.tableView.bounds.size.width, 70);
-    SFINotificationTableViewHeaderFooter *header = [[SFINotificationTableViewHeaderFooter alloc] initWithFrame:rect];
+    SFINotificationTableViewHeaderFooter *header = [[SFINotificationTableViewHeaderFooter alloc] initWithFrame:CGRectZero];
+    header.mode = (section == 0) ? SFINotificationTableViewHeaderFooter_header : SFINotificationTableViewHeaderFooter_middle;
     header.bucketDate = [self tryGetBucket:section];
     return header;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    if (section == (self.buckets.count - 1)) {
+        SFINotificationTableViewHeaderFooter *header = [[SFINotificationTableViewHeaderFooter alloc] initWithFrame:CGRectZero];
+        header.mode = SFINotificationTableViewHeaderFooter_footer;
+        return header;
+    }
+    return nil;
+}
 
 //- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
 //    NSDate *bucket = [self tryGetBucket:section];
