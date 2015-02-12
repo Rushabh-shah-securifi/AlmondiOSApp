@@ -284,7 +284,12 @@
 
 - (void)onSliderDidEndSliding:(id)sender {
     SFISlider *slider = sender;
-    NSString *newValue = [NSString stringWithFormat:@"%d", (int) (slider.value)];
+
+    // convert to 255 scale (multilevel_onoff)
+    float value = slider.value * (255/100); // not for now this is the only slider in the system, so we don't conditionally test for property type and conversion
+    value = roundf(value);
+
+    NSString *newValue = [NSString stringWithFormat:@"%d", (int) value];
 
     [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:slider.propertyType newValue:newValue];
 }
@@ -600,11 +605,6 @@
     [slider setMinimumTrackImage:[UIImage imageNamed:@"seekbar_dark_patch 2.png"] forState:UIControlStateNormal];
     [slider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"] forState:UIControlStateNormal];
 
-    // Initialize the slider value
-    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:propertyType];
-    float sliderValue = [currentDeviceValue floatValue];
-    [slider setValue:sliderValue animated:NO];
-
     return slider;
 }
 
@@ -692,8 +692,13 @@
     [minImage setImage:[UIImage imageNamed:@"dimmer_min.png"]];
     [self addSubview:minImage];
 
+    // get initial value and convert to 0-100 scale
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+    float sliderValue = [currentDeviceValue floatValue] * (100/maxValue);
+
     // Display slider
-    UISlider *slider = [self makeSliderWithMinValue:minValue maxValue:maxValue propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+    UISlider *slider = [self makeSliderWithMinValue:0 maxValue:100 propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+    [slider setValue:sliderValue animated:NO];
     [self addSubview:slider];
 
     UIImageView *maxImage = [[UIImageView alloc] initWithFrame:CGRectMake((self.frame.size.width - 90) + 50, self.baseYCoordinate, 24, 24)];
@@ -908,7 +913,7 @@
     return maxUsers;
 }
 
-- (NSString *)pingCodeValue:(NSInteger)pinIndex {
+- (NSString *)pinCodeValue:(NSInteger)pinIndex {
     NSString *valueName = [self makePinCodeDevicePropertyValueName:pinIndex];
 
     SFIDeviceKnownValues *values = [self.deviceValue knownValuesForPropertyName:valueName];
@@ -925,7 +930,7 @@
 }
 
 - (void)setPinCodeTextField:(NSInteger)index {
-    NSString *value = [self pingCodeValue:index];
+    NSString *value = [self pinCodeValue:index];
     UITextField *field = [self textFieldForTag:SFIDevicePropertyType_USER_CODE];
     field.text = value;
 }
