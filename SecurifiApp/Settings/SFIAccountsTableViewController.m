@@ -777,7 +777,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(30, baseYCordinate+7, self.tableView.frame.size.width-90, 30)];
     lblTitle.backgroundColor = [UIColor clearColor];
     lblTitle.textColor = [UIColor whiteColor];
-    [lblTitle setFont:[UIFont securifiLightFont:25]];
+    lblTitle.font = [UIFont securifiLightFont:25];
+    lblTitle.adjustsFontSizeToFitWidth = YES;
     lblTitle.text = currentAlmond.almondplusName;
     lblTitle.textAlignment = NSTextAlignmentCenter;
     [backgroundLabel addSubview:lblTitle];
@@ -857,8 +858,10 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         [backgroundLabel addSubview:btnUnlinkAlmond];
         
         baseYCordinate+=25;
-        
-        tfRenameAlmond = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, 180, 30)];
+
+        CGFloat rename_button_width = 130;
+        CGFloat rename_textfield_width = CGRectGetWidth(self.tableView.bounds) - 10 - rename_button_width - 30;
+        tfRenameAlmond = [[UITextField alloc] initWithFrame:CGRectMake(10, baseYCordinate, rename_textfield_width - 10, 30)];
         tfRenameAlmond.placeholder = NSLocalizedString(@"accounts.ownedAlmond.textfield.placeholder.almondName" ,@"Almond Name");
         [tfRenameAlmond setValue:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.5] forKeyPath:@"_placeholderLabel.textColor"];
         tfRenameAlmond.text = currentAlmond.almondplusName;
@@ -875,10 +878,10 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         
         
         UIButton *btnChangeAlmondName = [UIButton buttonWithType:UIButtonTypeCustom];
-        btnChangeAlmondName.frame = CGRectMake(160, baseYCordinate, 130, 30);
+        btnChangeAlmondName.frame = CGRectMake(10 + rename_textfield_width, baseYCordinate, rename_button_width, 30);
         btnChangeAlmondName.backgroundColor = [UIColor clearColor];
+        btnChangeAlmondName.titleLabel.font = [UIFont standardUIButtonFont];
         [btnChangeAlmondName setTitle:NSLocalizedString(@"accounts.ownedAlmond.button.RenameAlmond",@"Rename Almond") forState:UIControlStateNormal];
-        [btnChangeAlmondName.titleLabel setFont:[UIFont standardUIButtonFont]];
         [btnChangeAlmondName setTitleColor:[UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.7] forState:UIControlStateNormal];
         btnChangeAlmondName.tag = indexPathRow;
         btnChangeAlmondName.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
