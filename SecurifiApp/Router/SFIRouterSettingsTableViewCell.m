@@ -10,6 +10,8 @@
 #import "SFICardView.h"
 #import "SFIRouterTableViewActions.h"
 
+#define MAX_SSID_LENGTH 32
+
 @interface SFIRouterSettingsTableViewCell () <UITextFieldDelegate>
 @end
 
@@ -95,7 +97,7 @@
 
 - (BOOL)validateSSIDNameMaxLen:(NSString *)str {
     // SSID name value must be 180 chars or fewer
-    return str.length <= 180;
+    return str.length <= MAX_SSID_LENGTH;
 }
 
 @end
