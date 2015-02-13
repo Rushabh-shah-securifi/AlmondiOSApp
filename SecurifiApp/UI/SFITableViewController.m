@@ -103,12 +103,20 @@
     [center addObserver:self
                selector:@selector(onNotificationCountChanged:)
                    name:kSFINotificationDidMarkViewed object:nil];
+
+    [center addObserver:self
+               selector:@selector(onShowNotifications:)
+                   name:@"kApplicationDidBecomeActiveOnNotificationTap" object:nil];
 }
 
 #pragma Event handling
 
 - (void)onShowNotifications:(id)onShowNotifications {
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.presentedViewController != nil) {
+            return;
+        }
+
         SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
         UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
         [self presentViewController:nav_ctrl animated:YES completion:nil];
