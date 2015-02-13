@@ -64,6 +64,12 @@
         case SFICloudStatusStateAlmondOffline:
             name = @"connection_status_04.png";
             break;
+        case SFICloudStatusStateAtHome:
+            name = @"connection_status_05.png";
+            break;
+        case SFICloudStatusStateAway:
+            name = @"connection_status_06.png";
+            break;
         default: 
             return nil;
     }
@@ -78,6 +84,8 @@
         case SFICloudStatusStateDisconnected:
         case SFICloudStatusStateConnecting:
         case SFICloudStatusStateAlmondOffline:
+        case SFICloudStatusStateAtHome:
+        case SFICloudStatusStateAway:
             return [UIColor blackColor];
         default:
             return nil;

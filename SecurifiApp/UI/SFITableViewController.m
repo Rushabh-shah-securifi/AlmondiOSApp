@@ -165,7 +165,12 @@
         [self.statusBarButton markState:SFICloudStatusStateConnecting];
     }
     else if ([toolkit isCloudOnline]) {
-        [self.statusBarButton markState:SFICloudStatusStateConnected];
+        if (self.enableNotificationsView) {
+            [self.statusBarButton markState:SFICloudStatusStateAtHome];
+        }
+        else {
+            [self.statusBarButton markState:SFICloudStatusStateConnected];
+        }
     }
     else {
         [self.statusBarButton markState:SFICloudStatusStateAlmondOffline];

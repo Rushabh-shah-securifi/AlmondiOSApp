@@ -12,6 +12,8 @@ typedef NS_ENUM(NSUInteger, SFICloudStatusState) {
     SFICloudStatusStateConnecting,
     SFICloudStatusStateConnected,
     SFICloudStatusStateAlmondOffline,
+    SFICloudStatusStateAtHome,
+    SFICloudStatusStateAway,
 };
 
 @interface SFICloudStatusBarButtonItem : UIBarButtonItem
