@@ -115,6 +115,11 @@
 }
 
 - (void)setDateLabelText:(SFINotification *)notification {
+    if (notification == nil) {
+        self.dateLabel.attributedText = [[NSAttributedString alloc] initWithString:@""];
+        return;
+    }
+
     NSDateFormatter *formatter = [NSDateFormatter new];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:notification.time];
 
@@ -146,6 +151,11 @@
 }
 
 - (void)setMessageLabelText:(SFINotification *)notification {
+    if (notification == nil) {
+        self.messageTextField.attributedText = [[NSAttributedString alloc] initWithString:@""];
+        return;
+    }
+
     NSDictionary *attr;
 
     attr = @{

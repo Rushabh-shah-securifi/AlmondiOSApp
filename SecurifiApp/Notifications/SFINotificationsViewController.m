@@ -14,7 +14,6 @@
 @interface SFINotificationsViewController ()
 @property(nonatomic) id<SFINotificationStore> store;
 @property(nonatomic) NSArray *buckets; // NSDate instances
-@property(nonatomic) NSMutableDictionary *notifications; // NSDate bucket :: NSArray of notifications
 @end
 
 @implementation SFINotificationsViewController
@@ -22,6 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.store = [[SecurifiToolkit sharedInstance] newNotificationStore];
     [self resetBucketsAndNotifications];
 
     NSDictionary *titleAttributes = @{
@@ -59,8 +59,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSDate *bucket = [self tryGetBucket:section];
-    NSArray *notifications = [self tryGetNotificationListForBucket:bucket];
-    return notifications.count;
+    return [self.store countNotificationsForBucket:bucket];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -126,28 +125,10 @@
     return footer;
 }
 
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-//    NSDate *bucket = [self tryGetBucket:section];
-//
-//    if ([bucket isToday]) {
-//        return @"Today";
-//    }
-//
-//    NSDate *today = [NSDate today];
-//    NSDate *yesterday = [today dateByAddingDays:-1];
-//
-//    if ([bucket isEqualToDate:yesterday]) {
-//        return @"Yesterday";
-//    }
-//
-//    return [bucket formattedDateString];
-//}
-
 #pragma mark - Buckets and Notification loading
 
 - (void)resetBucketsAndNotifications {
-    self.buckets = [[SecurifiToolkit sharedInstance] fetchDateBuckets:30];
-    self.notifications = [NSMutableDictionary dictionary];
+    self.buckets = [self.store fetchDateBuckets:365];
 }
 
 - (SFINotification *)notificationForIndexPath:(NSIndexPath *)path {
@@ -169,30 +150,8 @@
         return nil;
     }
 
-    NSArray *notifications = [self tryGetNotificationListForBucket:bucket];
-
-    NSUInteger index = (NSUInteger) row;
-    if (index >= notifications.count) {
-        return nil;
-    }
-
-    return notifications[index];
-}
-
-- (NSArray *)tryGetNotificationListForBucket:(NSDate *)bucket {
-    if (bucket == nil) {
-        return nil;
-    }
-
-    NSMutableDictionary *dict = self.notifications;
-
-    NSArray *notifications = dict[bucket];
-    if (notifications == nil) {
-        notifications = [[SecurifiToolkit sharedInstance] fetchNotificationsForBucket:bucket limit:100];
-        dict[bucket] = notifications;
-    }
-
-    return notifications;
+    NSUInteger index = (NSUInteger) (row + 0);
+    return [self.store fetchNotificationForBucket:bucket index:index];
 }
 
 #pragma mark - Notification event handlers
