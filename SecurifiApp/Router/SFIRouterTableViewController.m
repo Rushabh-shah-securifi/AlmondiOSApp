@@ -988,12 +988,17 @@
 
         switch (genericRouterCommand.commandType) {
             case SFIGenericRouterCommandType_REBOOT: {
-                self.isRebooting = FALSE;
-                [self refreshDataForAlmond];
+                BOOL wasRebooting = self.isRebooting;
+                self.isRebooting = NO;
 
-                //todo handle failure case
-                [self showHUD:NSLocalizedString(@"router.hud.Router is now online.", @"Router is now online.")];
-                [self.HUD hide:YES afterDelay:1];
+                // protect against the cloud sending the same response more than once
+                if (wasRebooting) {
+                    [self refreshDataForAlmond];
+
+                    //todo handle failure case
+                    [self showHUD:NSLocalizedString(@"router.hud.Router is now online.", @"Router is now online.")];
+                    [self.HUD hide:YES afterDelay:1];
+                }
                 break;
             }
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
