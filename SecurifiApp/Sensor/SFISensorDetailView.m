@@ -179,8 +179,7 @@
         }
 
         case SFIDeviceType_SmartACSwitch_22:
-        case SFIDeviceType_SecurifiSmartSwitch_50:
-        {
+        case SFIDeviceType_SecurifiSmartSwitch_50: {
             [self configureElectricMeasurementSwitch_22];
             break;
         }
@@ -286,7 +285,7 @@
     SFISlider *slider = sender;
 
     // convert to 255 scale (multilevel_onoff)
-    float value = slider.value * (255/100); // not for now this is the only slider in the system, so we don't conditionally test for property type and conversion
+    float value = slider.value * (255 / 100); // not for now this is the only slider in the system, so we don't conditionally test for property type and conversion
     value = roundf(value);
 
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) value];
@@ -333,17 +332,26 @@
     [self.delegate sensorDetailViewDidCompleteMakingChanges:self];
 }
 
-- (void)onNotificationEnabledSwitch:(id)sender {
-    UISwitch *ctrl = (UISwitch *) sender;
-    [self.delegate sensorDetailViewDidChangeNotificationPref:self notificationSettingEnabled:ctrl.isOn];
-}
-
 - (void)onNotificationModeChanged:(id)sender {
-    //Get Notification Mode
     UISegmentedControl *ctrl = (UISegmentedControl *) sender;
-    NSInteger mode = ctrl.selectedSegmentIndex + 1;
-    self.device.notificationMode = (SFINotificationMode) mode;
-    [self.delegate sensorDetailViewDidChangeNotificationPref:self notificationSettingEnabled:TRUE];
+
+    SFINotificationMode mode;
+    switch (ctrl.selectedSegmentIndex) {
+        case 0:
+            mode = SFINotificationMode_always;
+            break;
+        case 1:
+            mode = SFINotificationMode_away;
+            break;
+        case 2:
+            mode = SFINotificationMode_off;
+            break;
+        default:
+            mode = SFINotificationMode_always;
+            break;
+    }
+
+    [self.delegate sensorDetailViewDidChangeNotificationPref:self newMode:mode];
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -492,36 +500,44 @@
 }
 
 - (void)addNotificationsControl {
-    UILabel *label = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
-    label.backgroundColor = self.color;
-    label.text = NSLocalizedString(@"sensors.settings-label.Send Notifications", @"Send Notifications");
-    label.textColor = [UIColor whiteColor];
-    label.font = [UIFont securifiBoldFont];
-
-    [self addSubview:label];
-
-    
-    //Get notification preference for device
-    BOOL notificationEnabled = [self.device isNotificationEnabled];
-
-    UISwitch *ctrl = [self makeOnOffSwitch:self action:@selector(onNotificationEnabledSwitch:) on:notificationEnabled];
-    [self addSubview:ctrl];
-    
-    [self markYOffsetUsingRect:label.frame addAdditional:15];
-    
     UILabel *labelMode = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
     labelMode.backgroundColor = self.color;
-    labelMode.text = NSLocalizedString(@"sensor.notificaiton.label.notificationMode",  @"Notification Mode");
+    labelMode.text = NSLocalizedString(@"sensor.notificaiton.label.notificationMode", @"Notify me");
     labelMode.textColor = [UIColor whiteColor];
     labelMode.font = [UIFont securifiBoldFont];
-    
-    [self addSubview:labelMode];
-    
-    //Add notification mode control
-    UISegmentedControl *segmentCtrl = [self makeNotificationModeSegment:self action:@selector(onNotificationModeChanged:) selectedSegment:self.device.notificationMode-1 enabled:notificationEnabled];
-    [self addSubview:segmentCtrl];
 
-    [self markYOffsetUsingRect:label.frame addAdditional:15];
+    [self addSubview:labelMode];
+
+    //Add notification mode control
+    UISegmentedControl *control = [self makeNotificationModeSegment:self action:@selector(onNotificationModeChanged:)];
+
+    if (self.device.isNotificationEnabled) {
+        int segment_index;
+        switch (self.device.notificationMode) {
+            case SFINotificationMode_off:
+                segment_index = 2;
+                break;
+            case SFINotificationMode_always:
+                segment_index = 0;
+                break;
+            case SFINotificationMode_home:
+                segment_index = 0;
+                break;
+            case SFINotificationMode_away:
+                segment_index = 1;
+                break;
+            default:
+                segment_index = 0;
+        }
+        control.selectedSegmentIndex = segment_index;
+    }
+    else {
+        control.selectedSegmentIndex = 2; // Off
+    }
+
+    [self addSubview:control];
+
+    [self markYOffsetUsingRect:labelMode.frame addAdditional:15];
 }
 
 - (void)addTamperButton {
@@ -633,7 +649,7 @@
     valueLabel.text = [statusMessages componentsJoinedByString:@"\n"];
 }
 
-- (V8HorizontalPickerView*)addHorizontalPicker:(NSString *)labelText propertyType:(SFIDevicePropertyType)propertyType selectionPointMiddle:(BOOL)yesOrLeftSelection {
+- (V8HorizontalPickerView *)addHorizontalPicker:(NSString *)labelText propertyType:(SFIDevicePropertyType)propertyType selectionPointMiddle:(BOOL)yesOrLeftSelection {
     UIFont *const heavy_12 = [UIFont securifiBoldFont];
     UIFont *const heavy_16 = [UIFont standardHeadingBoldFont];
 
@@ -681,7 +697,7 @@
     [self setPickerSelection:picker propertyType:propertyType];
 
     [self markYOffset:control_height + 10];
-    
+
     return picker;
 }
 
@@ -694,7 +710,7 @@
 
     // get initial value and convert to 0-100 scale
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL];
-    float sliderValue = [currentDeviceValue floatValue] * (100/maxValue);
+    float sliderValue = [currentDeviceValue floatValue] * (100 / maxValue);
 
     // Display slider
     UISlider *slider = [self makeSliderWithMinValue:0 maxValue:100 propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
@@ -925,7 +941,7 @@
 
 - (NSString *)makePinCodeDevicePropertyValueName:(NSInteger)pinIndex {
     NSString *valueName = [SFIDeviceKnownValues propertyTypeToName:SFIDevicePropertyType_USER_CODE];
-    valueName = [NSString stringWithFormat:@"%@_%ld", valueName, (long)pinIndex];
+    valueName = [NSString stringWithFormat:@"%@_%ld", valueName, (long) pinIndex];
     return valueName;
 }
 
@@ -942,7 +958,7 @@
         return SENSOR_ROW_HEIGHT;
     }
 
-    NSUInteger extra = isNotificationsEnabled ? 100 : 0;
+    NSUInteger extra = isNotificationsEnabled ? 55 : 0;
     extra += isTampered ? 45 : 0;   // accounts for the row presenting the tampered msg and dismiss button
 
     switch (currentSensor.deviceType) {
@@ -1156,7 +1172,7 @@
             // this picker is not associated with a sensor value; it is used to select a value to be shown.
             // therefore, we need some way to track its state. the sensor table view controller provides such a facility.
             [self.delegate sensorDetailViewCell:self setValue:@(index) forKey:CELL_STATE_PIN_SELECTION];
-            
+
             return;
         }
 
@@ -1197,37 +1213,33 @@
     _baseYCoordinate += CGRectGetHeight(rect) + add;
 }
 
-- (UISwitch*)makeOnOffSwitch:(id)target action:(SEL)action on:(BOOL)isOn {
-    CGFloat width = CGRectGetWidth(self.frame);
-    CGRect frame = CGRectMake(width - 60, self.baseYCoordinate, 60, 23);
+- (UISegmentedControl *)makeNotificationModeSegment:(id)target action:(SEL)action {
+    CGFloat width = CGRectGetWidth(self.bounds);
+    CGFloat control_width = 175;
+    CGFloat padding = 10;
+    CGFloat control_x = width - control_width - padding;
 
-    UISwitch *control = [[UISwitch alloc] initWithFrame:frame];
-    control.on = isOn;
+    NSArray *segment_items = @[
+            NSLocalizedString(@"sensor.notificaiton.segment.Always", @"Always"),
+            NSLocalizedString(@"sensor.notificaiton.segment.Away", @"Away"),
+            NSLocalizedString(@"sensor.notificaiton.segment.Off", @"Off"),
+    ];
+
+    UISegmentedControl *control = [[UISegmentedControl alloc] initWithItems:segment_items];
+    control.frame = CGRectMake(control_x, self.baseYCoordinate, control_width, 25.0);
+    // hack the corners to square them out
+    control.layer.borderColor = [UIColor whiteColor].CGColor;
+    control.layer.borderWidth = 1.0;
+    //
     [control addTarget:target action:action forControlEvents:UIControlEventValueChanged];
 
-    return control;
-}
-
--(UISegmentedControl*)makeNotificationModeSegment:(id)target action:(SEL)action selectedSegment:(int)modeSegment_index enabled:(BOOL)isEnabled{
-    CGFloat width = CGRectGetWidth(self.frame);
-    NSArray *segment_items = @[
-                            NSLocalizedString(@"sensor.notificaiton.segment.Always",  @"Always"),
-                            NSLocalizedString(@"sensor.notificaiton.segment.Home", @"Home"),
-                            NSLocalizedString(@"sensor.notificaiton.segment.Away", @"Away"),
-                               ];
-    UISegmentedControl *modeSegmentControl = [[UISegmentedControl alloc] initWithItems:segment_items];
-    modeSegmentControl.frame = CGRectMake(width - 150, self.baseYCoordinate, width - 150, 25.0);
-    modeSegmentControl.enabled = isEnabled;
-    [modeSegmentControl addTarget:target action:action forControlEvents:UIControlEventValueChanged];
-    
     UIFont *const heavy_12 = [UIFont securifiBoldFont];
     UIColor *const white_color = [UIColor whiteColor];
     NSDictionary *const attributes = @{NSFontAttributeName : heavy_12};
-    modeSegmentControl.tintColor = white_color;
-    [modeSegmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
+    control.tintColor = white_color;
+    [control setTitleTextAttributes:attributes forState:UIControlStateNormal];
 
-    modeSegmentControl.selectedSegmentIndex = (modeSegment_index==-1)?0:modeSegment_index;
-    return modeSegmentControl;
+    return control;
 }
 
 @end

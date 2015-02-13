@@ -34,7 +34,7 @@
 
 - (id)sensorDetailViewCell:(SFISensorDetailView *)view valueForKey:(NSString *)key;
 
-- (void)sensorDetailViewDidChangeNotificationPref:(SFISensorDetailView *)view notificationSettingEnabled:(BOOL)enabled;
+- (void)sensorDetailViewDidChangeNotificationPref:(SFISensorDetailView *)view newMode:(SFINotificationMode)newMode;
 
 @end
 

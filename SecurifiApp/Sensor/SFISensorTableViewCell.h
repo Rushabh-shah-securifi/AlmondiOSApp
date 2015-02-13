@@ -35,7 +35,7 @@
 
 - (BOOL)tableViewCellNotificationsEnabled;
 
-- (void)tableViewCellDidChangeNotificationSetting:(SFISensorTableViewCell *)cell notificationSettingEnabled:(BOOL)enabled;
+- (void)tableViewCellDidChangeNotificationSetting:(SFISensorTableViewCell *)cell newMode:(SFINotificationMode)mode;
 
 @end
 

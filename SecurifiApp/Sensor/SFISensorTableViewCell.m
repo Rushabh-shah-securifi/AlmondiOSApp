@@ -589,8 +589,8 @@
     return [self.delegate tableViewCell:self valueForKey:key];
 }
 
-- (void)sensorDetailViewDidChangeNotificationPref:(SFISensorDetailView *)view notificationSettingEnabled:(BOOL)enabled {
-    [self.delegate tableViewCellDidChangeNotificationSetting:self notificationSettingEnabled:enabled];
+- (void)sensorDetailViewDidChangeNotificationPref:(SFISensorDetailView *)view newMode:(SFINotificationMode)newMode {
+    [self.delegate tableViewCellDidChangeNotificationSetting:self newMode:newMode];
 }
 
 #pragma mark - Device layout

@@ -156,10 +156,10 @@ reset at the moment. Try again later.";
 "sensor.moisturesensor.status.FLOODED" = "FLOODED";
 "sensor.poweswitch.label.Power %@W" = "Power %@W";
 "sensor.moisturesensor.status.Temp %@" = "Temp %@";
-"sensor.notificaiton.label.notificationMode" = "Notification Mode";
+"sensor.notificaiton.label.notificationMode" = "Notify me";
 "sensor.notificaiton.segment.Always" = "Always";
-"sensor.notificaiton.segment.Home" = "Home";
 "sensor.notificaiton.segment.Away" = "Away";
+"sensor.notificaiton.segment.Off" = "Off";
 
 /* signup */
 

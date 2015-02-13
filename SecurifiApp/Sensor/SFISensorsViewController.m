@@ -762,30 +762,35 @@
     return self.notificationEnabled;
 }
 
-- (void)tableViewCellDidChangeNotificationSetting:(SFISensorTableViewCell *)cell notificationSettingEnabled:(BOOL)enabled {
+- (void)tableViewCellDidChangeNotificationSetting:(SFISensorTableViewCell *)cell newMode:(SFINotificationMode)newMode {
     //Send command to set notification
     if (self.isViewControllerDisposed) {
         return;
     }
 
     SFIDevice *device = cell.device;
+    device.notificationMode = newMode;
+
     NSArray *deviceValuesList = [cell.deviceValue knownDevicesValues];
 
-    //Create list of indexes for device values for that particular device
-    //Notification will be sent for all the devices known values
-    NSMutableArray *notificationPrefDeviceList = [[NSMutableArray alloc] init];
+    // Create list of indexes for device values for that particular device.
+    // Notification will be sent for all the devices known values.
+    // One preference setting for all device properties.
+    NSMutableArray *deviceList = [[NSMutableArray alloc] init];
     for (SFIDeviceKnownValues *currentDeviceValue in deviceValuesList) {
         SFINotificationDevice *notificationDevice = [[SFINotificationDevice alloc] init];
         notificationDevice.deviceID = device.deviceID;
-        notificationDevice.valueIndex = currentDeviceValue.index;
         notificationDevice.notificationMode = device.notificationMode;
-        [notificationPrefDeviceList addObject:notificationDevice];
+        notificationDevice.valueIndex = currentDeviceValue.index;
+
+        [deviceList addObject:notificationDevice];
     }
 
     [self showSavingToast];
 
-    NSString *action = enabled ? kSFINotificationPreferenceChangeActionAdd : kSFINotificationPreferenceChangeActionDelete;
-    [[SecurifiToolkit sharedInstance] asyncRequestNotificationPreferenceChange:self.almondMac deviceList:notificationPrefDeviceList forAction:action];
+    // enabling/disabling is process of sending 'add' or 'delete' commands
+    NSString *action = (newMode == SFINotificationMode_off) ? kSFINotificationPreferenceChangeActionDelete : kSFINotificationPreferenceChangeActionAdd;
+    [[SecurifiToolkit sharedInstance] asyncRequestNotificationPreferenceChange:self.almondMac deviceList:deviceList forAction:action];
 }
 
 #pragma mark - Class Methods
