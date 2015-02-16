@@ -30,7 +30,6 @@
 @interface SFIRouterTableViewController () <SFIRouterTableViewActions>
 @property NSTimer *hudTimer;
 
-@property NSString *currentMAC;
 @property(nonatomic, strong) SFIRouterSummary *routerSummary;
 @property(nonatomic, strong) NSArray *wirelessSettings;
 @property(nonatomic, strong) NSArray *connectedDevices;     // SFIConnectedDevice
@@ -56,7 +55,7 @@
     [super viewDidLoad];
 
     SFIAlmondPlus *plus = [toolkit currentAlmond];
-    self.currentMAC = plus.almondplusMAC;
+    [self markAlmondMac:plus.almondplusMAC];
 
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -144,11 +143,11 @@
 
     if (plus == nil) {
         self.navigationItem.title = @"Get Started";
-        self.currentMAC = NO_ALMOND;
+        [self markAlmondMac:NO_ALMOND];
         [self.tableView reloadData];
     }
     else {
-        self.currentMAC = plus.almondplusMAC;
+        [self markAlmondMac:plus.almondplusMAC];
         self.navigationItem.title = plus.almondplusName;
         [self.tableView reloadData];
     }
@@ -178,7 +177,7 @@
 #pragma mark - State
 
 - (BOOL)isNoAlmondLoaded {
-    return [self.currentMAC isEqualToString:NO_ALMOND];
+    return [self.almondMac isEqualToString:NO_ALMOND];
 }
 
 - (BOOL)isCloudOnline {
@@ -189,7 +188,7 @@
 
 - (void)sendRebootAlmondCommand {
     if (![self isNoAlmondLoaded]) {
-        self.correlationId = [[SecurifiToolkit sharedInstance] asyncRebootAlmond:self.currentMAC];
+        self.correlationId = [[SecurifiToolkit sharedInstance] asyncRebootAlmond:self.almondMac];
     }
 }
 
@@ -821,7 +820,7 @@
 
 - (void)sendGenericCommandRequest:(NSString *)data {
     GenericCommandRequest *request = [GenericCommandRequest new];
-    request.almondMAC = self.currentMAC;
+    request.almondMAC = self.almondMac;
     request.applicationID = APPLICATION_ID;
     request.data = data;
 
@@ -852,7 +851,7 @@
             if (self.disposed) {
                 return;
             }
-            if (![response.almondMAC isEqualToString:self.currentMAC]) {
+            if (![response.almondMAC isEqualToString:self.almondMac]) {
                 return;
             }
             self.isAlmondUnavailable = YES;
@@ -875,7 +874,7 @@
             return;
         }
 
-        if (![response.almondMAC isEqualToString:self.currentMAC]) {
+        if (![response.almondMAC isEqualToString:self.almondMac]) {
             return;
         }
 
@@ -1020,11 +1019,11 @@
         SFIAlmondPlus *plus = [toolkit currentAlmond];
 
         if (plus == nil) {
-            self.currentMAC = NO_ALMOND;
+            [self markAlmondMac:NO_ALMOND];
             self.navigationItem.title = NSLocalizedString(@"router.no-almonds.nav-title.Get Started", @"Get Started");
         }
         else {
-            self.currentMAC = plus.almondplusMAC;
+            [self markAlmondMac:plus.almondplusMAC];
             self.navigationItem.title = plus.almondplusName;
             [self refreshDataForAlmond];
         }
@@ -1099,7 +1098,7 @@
             [blockedMacs addObject:deviceMAC];
         }
 
-        [[SecurifiToolkit sharedInstance] asyncSetAlmondWirelessUsersSettings:self.currentMAC blockedDeviceMacs:blockedMacs.allObjects];
+        [[SecurifiToolkit sharedInstance] asyncSetAlmondWirelessUsersSettings:self.almondMac blockedDeviceMacs:blockedMacs.allObjects];
 
         [self.HUD hide:YES afterDelay:2];
     });
@@ -1112,7 +1111,7 @@
         }
 
         [self showUpdatingSettingsHUD];
-        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.currentMAC wirelessSettings:copy];
+        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.almondMac wirelessSettings:copy];
         [self.HUD hide:YES afterDelay:2];
     });
 }

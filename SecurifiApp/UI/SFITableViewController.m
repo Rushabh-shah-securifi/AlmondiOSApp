@@ -13,8 +13,10 @@
 #import "UIFont+Securifi.h"
 #import "SFINotificationsViewController.h"
 #import "SFINotificationStatusBarButtonItem.h"
+#import "UIViewController+Securifi.h"
 
-@interface SFITableViewController ()
+@interface SFITableViewController () <MBProgressHUDDelegate>
+@property(nonatomic, readonly) BOOL isHudHidden;
 @property(nonatomic, readonly) SFINotificationStatusBarButtonItem *notificationsStatusButton;
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @end
@@ -48,7 +50,7 @@
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
     self.enableDrawer = _enableDrawer; // in case it was set before view loaded
 
-    _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithStandard];
+    _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onCloudStatusButtonPressed:)];
     //
     if (self.enableNotificationsView) {
         _notificationsStatusButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(onShowNotifications:)];
@@ -71,6 +73,7 @@
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.dimBackground = YES;
+    _HUD.delegate = self;
     [self.navigationController.view addSubview:_HUD];
 
     [self markCloudStatusIcon];
@@ -105,11 +108,91 @@
                    name:kSFINotificationDidMarkViewed object:nil];
 
     [center addObserver:self
+               selector:@selector(onAlmondModeChangeDidComplete:)
+                   name:kSFIDidCompleteAlmondModeChangeRequest object:nil];
+
+    [center addObserver:self
+               selector:@selector(onAlmondModeDidChange:)
+                   name:kSFIAlmondModeDidChange object:nil];
+
+    [center addObserver:self
                selector:@selector(onShowNotifications:)
                    name:@"kApplicationDidBecomeActiveOnNotificationTap" object:nil];
 }
 
 #pragma Event handling
+
+- (void)onCloudStatusButtonPressed:(id)sender {
+    if (!self.enableNotificationsView) {
+        return;
+    }
+
+    SFICloudStatusBarButtonItem *button = self.statusBarButton;
+    SFICloudStatusState state = button.state;
+
+    enum SFIAlmondNotificationMode newMode;
+    NSString *msg;
+
+    if (state == SFICloudStatusStateAtHome) {
+        newMode = SFIAlmondNotificationMode_away;
+        msg = @"Switching to Away mode";
+    }
+    else if (state == SFICloudStatusStateAway) {
+        newMode = SFIAlmondNotificationMode_home;
+        msg = @"Switching to Home mode";
+    }
+    else {
+        return;
+    }
+
+    // if the hud is already being shown then ignore the button press
+    if (!self.isHudHidden) {
+        return;
+    }
+
+    [self showHUD:msg];
+
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit asyncRequestAlmondModeChange:self.almondMac mode:newMode];
+
+    [button markState:SFICloudStatusStateAtHome];
+}
+
+- (void)onAlmondModeChangeDidComplete:(id)sender {
+    [self.HUD hide:YES];
+}
+
+- (void)onAlmondModeDidChange:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.presentedViewController != nil) {
+            return;
+        }
+
+        NSNotification *notification = sender;
+        NSDictionary *userInfo = notification.userInfo;
+        id<SFIAlmondMode> almondMode = userInfo[@"data"];
+
+        if (![almondMode.almondMAC isEqualToString:self.almondMac]) {
+            return;
+        }
+
+        enum SFICloudStatusState state ;
+        switch (almondMode.mode) {
+            case SFIAlmondNotificationMode_home:
+                state = SFICloudStatusStateAtHome;
+                break;
+            case SFIAlmondNotificationMode_away:
+                state = SFICloudStatusStateAway;
+                break;
+
+            default:
+                // should never happen
+                return;
+        }
+
+        [self.statusBarButton markState:state];
+    });
+}
 
 - (void)onShowNotifications:(id)onShowNotifications {
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -179,7 +262,12 @@
 
 #pragma mark Drawer management
 
+- (void)markAlmondMac:(NSString *)almondMac {
+    _almondMac = [almondMac copy];
+}
+
 - (void)showHUD:(NSString *)text {
+    _isHudHidden = NO;
     self.HUD.labelText = text;
     [self.HUD show:YES];
 }
@@ -199,6 +287,12 @@
 - (void)setEnableDrawer:(BOOL)enableDrawer {
     _enableDrawer = enableDrawer;
     self.navigationItem.leftBarButtonItem.enabled = enableDrawer;
+}
+
+#pragma mark HUD management
+
+- (void)hudWasHidden:(MBProgressHUD *)hud {
+    _isHudHidden = YES;
 }
 
 @end

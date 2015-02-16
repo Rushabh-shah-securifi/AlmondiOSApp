@@ -56,7 +56,7 @@
         label.text = @"999";
     }
     else {
-        label.text = [NSString stringWithFormat:@"%i", count];
+        label.text = [NSString stringWithFormat:@"%lu", (unsigned long) count];
     }
 
     label.alpha = (count == 0) ? 0 : 1;

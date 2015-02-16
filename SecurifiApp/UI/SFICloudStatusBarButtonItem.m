@@ -6,35 +6,25 @@
 #import "SFICloudStatusBarButtonItem.h"
 
 @interface SFICloudStatusBarButtonItem ()
-@property(nonatomic, readonly) UIImageView *imageView;
+@property(nonatomic, readonly) UIButton *button;
 @end
 
 @implementation SFICloudStatusBarButtonItem
 
 - (instancetype)initWithTarget:(id)target action:(SEL)action {
-    enum SFICloudStatusState initialState = SFICloudStatusStateConnected;
-    UIImage *image = [SFICloudStatusBarButtonItem imageForState:initialState];
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(0, 0, 30, 25);
+    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
 
-    self = [super initWithImage:image style:UIBarButtonItemStylePlain target:target action:action];
+    self = [super initWithCustomView:button];
     if (self) {
+        enum SFICloudStatusState initialState = SFICloudStatusStateConnected;
+
         _state = initialState;
-        _imageView = [[UIImageView alloc] initWithImage:image];
-        _imageView.tintColor = [SFICloudStatusBarButtonItem tintForState:initialState];
-    }
-
-    return self;
-}
-
-- (id)initWithStandard {
-    enum SFICloudStatusState initialState = SFICloudStatusStateConnected;
-    UIImage *image = [SFICloudStatusBarButtonItem imageForState:initialState];
-    UIImageView *view = [[UIImageView alloc] initWithImage:image];
-
-    self = [super initWithCustomView:view];
-    if (self) {
+        _button = button;
         _state = initialState;
-        _imageView = view;
-        _imageView.tintColor = [SFICloudStatusBarButtonItem tintForState:initialState];
+
+        [self setStatusImage:initialState];
     }
 
     return self;
@@ -42,10 +32,17 @@
 
 - (void)markState:(SFICloudStatusState)newState {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        self.imageView.image = [SFICloudStatusBarButtonItem imageForState:newState];
-        self.imageView.tintColor = [SFICloudStatusBarButtonItem tintForState:newState];
         _state = newState;
+        [self setStatusImage:newState];
     });
+}
+
+- (void)setStatusImage:(enum SFICloudStatusState)state {
+    UIImage *image = [SFICloudStatusBarButtonItem imageForState:state];
+
+    UIButton *button = self.button;
+    button.tintColor = [SFICloudStatusBarButtonItem tintForState:state];
+    [button setImage:image forState:UIControlStateNormal];
 }
 
 + (UIImage *)imageForState:(SFICloudStatusState)state {
@@ -70,7 +67,7 @@
         case SFICloudStatusStateAway:
             name = @"connection_status_06.png";
             break;
-        default: 
+        default:
             return nil;
     }
 

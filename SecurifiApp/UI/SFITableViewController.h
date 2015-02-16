@@ -20,6 +20,12 @@
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 
+// Current almond mac being displayed
+@property(nonatomic, readonly) NSString *almondMac;
+
+// declares the almond mac being displayed
+- (void)markAlmondMac:(NSString *)almondMac;
+
 - (void)showHUD:(NSString *)text;
 
 // convenience method for showing a standard "loading router data..." message

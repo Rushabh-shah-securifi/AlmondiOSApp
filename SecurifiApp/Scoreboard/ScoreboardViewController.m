@@ -40,7 +40,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithStandard];
+    _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:nil action:nil];
     self.navigationItem.rightBarButtonItem = _statusBarButton;
 
     UIRefreshControl *refresh = [UIRefreshControl new];

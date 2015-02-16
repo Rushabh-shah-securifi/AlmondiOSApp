@@ -18,7 +18,6 @@
 
 @interface SFISensorsViewController () <SFISensorTableViewCellDelegate>
 @property(nonatomic, readonly) SFIAlmondPlus *almond;
-@property(nonatomic, readonly) NSString *almondMac;
 @property(nonatomic, readonly) SFIColors *almondColor;
 
 @property(nonatomic, readonly) NSArray *deviceList;
@@ -184,7 +183,7 @@
     _almond = plus;
 
     NSString *const mac = (plus == nil) ? NO_ALMOND : plus.almondplusMAC;
-    _almondMac = mac;
+    [self markAlmondMac:mac];
 
     self.isUpdatingDeviceSettings = NO;
 
