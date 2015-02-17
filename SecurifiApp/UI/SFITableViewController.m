@@ -13,7 +13,6 @@
 #import "UIFont+Securifi.h"
 #import "SFINotificationsViewController.h"
 #import "SFINotificationStatusBarButtonItem.h"
-#import "UIViewController+Securifi.h"
 
 @interface SFITableViewController () <MBProgressHUDDelegate>
 @property(nonatomic, readonly) BOOL isHudHidden;
@@ -76,8 +75,6 @@
     _HUD.delegate = self;
     [self.navigationController.view addSubview:_HUD];
 
-    [self markCloudStatusIcon];
-
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
     [center addObserver:self
@@ -120,6 +117,13 @@
                    name:@"kApplicationDidBecomeActiveOnNotificationTap" object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    // make sure status icon is up-to-date
+    [self markCloudStatusIcon];
+    [self markNotificationStatusIcon];
+}
+
 #pragma Event handling
 
 - (void)onCloudStatusButtonPressed:(id)sender {
@@ -130,16 +134,16 @@
     SFICloudStatusBarButtonItem *button = self.statusBarButton;
     SFICloudStatusState state = button.state;
 
-    enum SFIAlmondNotificationMode newMode;
+    enum SFIAlmondMode newMode;
     NSString *msg;
 
     if (state == SFICloudStatusStateAtHome) {
-        newMode = SFIAlmondNotificationMode_away;
-        msg = @"Switching to Away mode";
+        newMode = SFIAlmondMode_away;
+        msg = @"Setting Almond to Away Mode";
     }
     else if (state == SFICloudStatusStateAway) {
-        newMode = SFIAlmondNotificationMode_home;
-        msg = @"Switching to Home mode";
+        newMode = SFIAlmondMode_home;
+        msg = @"Setting Almond to Home Mode";
     }
     else {
         return;
@@ -154,12 +158,12 @@
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncRequestAlmondModeChange:self.almondMac mode:newMode];
-
-    [button markState:SFICloudStatusStateAtHome];
 }
 
 - (void)onAlmondModeChangeDidComplete:(id)sender {
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
 }
 
 - (void)onAlmondModeDidChange:(id)sender {
@@ -168,29 +172,7 @@
             return;
         }
 
-        NSNotification *notification = sender;
-        NSDictionary *userInfo = notification.userInfo;
-        id<SFIAlmondMode> almondMode = userInfo[@"data"];
-
-        if (![almondMode.almondMAC isEqualToString:self.almondMac]) {
-            return;
-        }
-
-        enum SFICloudStatusState state ;
-        switch (almondMode.mode) {
-            case SFIAlmondNotificationMode_home:
-                state = SFICloudStatusStateAtHome;
-                break;
-            case SFIAlmondNotificationMode_away:
-                state = SFICloudStatusStateAway;
-                break;
-
-            default:
-                // should never happen
-                return;
-        }
-
-        [self.statusBarButton markState:state];
+        [self markCloudStatusIcon];
     });
 }
 
@@ -223,22 +205,30 @@
 }
 
 - (void)onNetworkConnectingNotifier:(id)notification {
-    [self markCloudStatusIcon];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self markCloudStatusIcon];
+    });
 }
 
 - (void)onReachabilityDidChange:(NSNotification *)notification {
-    [self markCloudStatusIcon];
     dispatch_async(dispatch_get_main_queue(), ^() {
+        [self markCloudStatusIcon];
         [self.tableView reloadData];
         [self.HUD hide:NO]; // make sure it is hidden
     });
 }
 
 - (void)onNotificationCountChanged:(id)event {
-    NSInteger count = [[SecurifiToolkit sharedInstance] countUnviewedNotifications];
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.notificationsStatusButton markNotificationCount:(NSUInteger) count];
+        [self markNotificationStatusIcon];
     });
+}
+
+- (void)markNotificationStatusIcon {
+    if (self.enableNotificationsView) {
+        NSInteger count = [[SecurifiToolkit sharedInstance] countUnviewedNotifications];
+        [self.notificationsStatusButton markNotificationCount:(NSUInteger) count];
+    }
 }
 
 - (void)markCloudStatusIcon {
@@ -249,7 +239,9 @@
     }
     else if ([toolkit isCloudOnline]) {
         if (self.enableNotificationsView) {
-            [self.statusBarButton markState:SFICloudStatusStateAtHome];
+            SFIAlmondMode mode = [toolkit modeForAlmond:self.almondMac];
+            enum SFICloudStatusState state = [self stateForAlmondMode:mode];
+            [self.statusBarButton markState:state];
         }
         else {
             [self.statusBarButton markState:SFICloudStatusStateConnected];
@@ -257,6 +249,18 @@
     }
     else {
         [self.statusBarButton markState:SFICloudStatusStateAlmondOffline];
+    }
+}
+
+- (enum SFICloudStatusState)stateForAlmondMode:(SFIAlmondMode)mode {
+    switch (mode) {
+        case SFIAlmondMode_home:
+            return SFICloudStatusStateAtHome;
+        case SFIAlmondMode_away:
+            return SFICloudStatusStateAway;
+        default:
+            // should never happen
+            return SFICloudStatusStateAtHome;
     }
 }
 
