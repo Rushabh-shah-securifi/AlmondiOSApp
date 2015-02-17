@@ -27,8 +27,8 @@
 
 #define DT1_BINARY_SWITCH_TRUE 							@"01_switch_on.png"
 #define DT1_BINARY_SWITCH_FALSE 						@"01_switch_off.png"
-#define DT2_MULTILEVEL_SWITCH_TRUE 						@"01_switch_on.png"
-#define DT2_MULTILEVEL_SWITCH_FALSE 					@"02_switch_on.png"
+#define DT2_MULTILEVEL_SWITCH_TRUE 						@"02_switch_on.png"
+#define DT2_MULTILEVEL_SWITCH_FALSE 					@"02_switch_off.png"
 #define DT3_BINARY_SENSOR_TRUE 						    @"03_door_open.png"
 #define DT3_BINARY_SENSOR_FALSE 						@"03_door_closed.png"
 #define DT4_LEVEL_CONTROL_TRUE 						    @"04_dimmer.png"
