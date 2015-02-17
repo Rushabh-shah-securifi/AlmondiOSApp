@@ -155,6 +155,7 @@
     }
 
     [self showHUD:msg];
+    [self.HUD hide:YES afterDelay:10]; // in case the request times out
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncRequestAlmondModeChange:self.almondMac mode:newMode];
