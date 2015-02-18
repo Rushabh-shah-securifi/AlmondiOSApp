@@ -1227,10 +1227,6 @@
 
     UISegmentedControl *control = [[UISegmentedControl alloc] initWithItems:segment_items];
     control.frame = CGRectMake(control_x, self.baseYCoordinate, control_width, 25.0);
-    // hack the corners to square them out
-    control.layer.borderColor = [UIColor whiteColor].CGColor;
-    control.layer.borderWidth = 1.0;
-    //
     [control addTarget:target action:action forControlEvents:UIControlEventValueChanged];
 
     UIFont *const heavy_12 = [UIFont securifiBoldFont];
