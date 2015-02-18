@@ -63,14 +63,15 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cell_id = @"not_cell";
+    SFINotification *notification = [self notificationForIndexPath:indexPath];
 
+    NSString *cell_id = notification.viewed ? @"viewed_cell" : @"not_cell";
     SFINotificationTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[SFINotificationTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
 
-    SFINotification *notification = [self notificationForIndexPath:indexPath];
     cell.notification = notification;
 
     return cell;
@@ -93,17 +94,19 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    });
 
     SFINotification *notification = [self notificationForIndexPath:indexPath];
-    if (!notification || notification.viewed) {
-        return;
+    if (notification && !notification.viewed) {
+        [[SecurifiToolkit sharedInstance] markNotificationViewed:notification];
+        notification.viewed = YES;
     }
 
-    [[SecurifiToolkit sharedInstance] markNotificationViewed:notification];
-    notification.viewed = YES;
-
-    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    });
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {

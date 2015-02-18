@@ -44,8 +44,9 @@
     _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:nil action:nil];
     self.navigationItem.rightBarButtonItem = _statusBarButton;
 
-    UIRefreshControl *refresh = [UIRefreshControl new];
     NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
+
+    UIRefreshControl *refresh = [UIRefreshControl new];
     refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refresh Scoreboard" attributes:attributes];
     [refresh addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresh;
@@ -204,7 +205,7 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cell_id];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
-        cell.textLabel.text = [NSString stringWithFormat:@"Almond: %@", almond.almondplusName];
+        cell.textLabel.text = almond.almondplusName;
         cell.detailTextLabel.text = almond.almondplusMAC;
 
         return cell;
