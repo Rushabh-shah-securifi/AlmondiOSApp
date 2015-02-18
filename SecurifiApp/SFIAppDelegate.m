@@ -138,7 +138,9 @@
         // drop the notification
         return NO;
     }
+
     [toolkit storePushNotification:notification];
+    [[SFIPreferences instance] debugMarkPushNotificationReceived];
 
     UILocalNotification *localNotice = [UILocalNotification new];
     localNotice.fireDate = [NSDate date];

@@ -15,9 +15,10 @@
 
 #define SEC_CLOUD           0
 #define SEC_NOTIFICATIONS   1
-#define SEC_EVENTS          2
-#define SEC_NETWORK         3
-#define SEC_REQUESTS        4
+#define SEC_ALMONDS         2
+#define SEC_EVENTS          3
+#define SEC_NETWORK         4
+#define SEC_REQUESTS        5
 
 @interface ScoreboardViewController ()
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
@@ -88,7 +89,7 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 5;
+    return 6;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -96,7 +97,9 @@
         case SEC_CLOUD:
             return 2;
         case SEC_NOTIFICATIONS:
-            return self.almonds.count + 1;
+            return 2;
+        case SEC_ALMONDS:
+            return self.almonds.count;
         case SEC_EVENTS:
             return 1;
         case SEC_NETWORK:
@@ -113,7 +116,9 @@
         case SEC_CLOUD:
             return @"Cloud";
         case SEC_NOTIFICATIONS:
-            return @"Notifications";
+            return @"Push Notifications";
+        case SEC_ALMONDS:
+            return @"Almond MACs";
         case SEC_EVENTS:
             return @"Events";
         case SEC_NETWORK:
@@ -170,24 +175,48 @@
             cell.detailTextLabel.text = (token.length == 0) ? @"Not registered" : token;
             return cell;
         }
-        else {
-            SFIAlmondPlus *almond = [self tryGetAlmond:indexPath];
+        else if (indexPath.row == 1) {
+            SFIPreferences *prefs = [SFIPreferences instance];
+            NSDate *date = prefs.debugPushNotificationReceivedCountStartDate;
+            NSInteger count = prefs.debugPushNotificationReceivedCount;
 
-            NSString *cell_id = @"almond";
+            NSString *dateStr = (date == nil) ? @"–––" : date.formattedDateTimeString;
+            NSString *description = [NSString stringWithFormat:@"Since %@", dateStr];
+            NSString *countStr = [NSString stringWithFormat:@"%li", (long) count];
+
+            NSString *cell_id = @"notifications_recevied";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
             if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cell_id];
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cell_id];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             }
-            cell.textLabel.text = [NSString stringWithFormat:@"Almond: %@", almond.almondplusName];
-            cell.detailTextLabel.text = almond.almondplusMAC;
-
+            cell.textLabel.text = description;
+            cell.detailTextLabel.text = countStr;
             return cell;
         }
     }
+    else if (section == SEC_ALMONDS) {
+        SFIAlmondPlus *almond = [self tryGetAlmond:indexPath];
+
+        NSString *cell_id = @"almond";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cell_id];
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        }
+        cell.textLabel.text = [NSString stringWithFormat:@"Almond: %@", almond.almondplusName];
+        cell.detailTextLabel.text = almond.almondplusMAC;
+
+        return cell;
+    }
     else if (section == SEC_EVENTS) {
-        UITableViewCell *cell = [self getFieldCell:tableView];
-        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+        NSString *cell_id = @"events";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cell_id];
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
         cell.textLabel.text = @"All Events";
         cell.detailTextLabel.text = [scoreboard formattedValue:[scoreboard allEventsCount]];
         return cell;
@@ -249,7 +278,7 @@
 }
 
 - (SFIAlmondPlus *)tryGetAlmond:(NSIndexPath *)indexPath {
-    NSUInteger index = (NSUInteger) (indexPath.row - 1);
+    NSUInteger index = (NSUInteger) indexPath.row;
     NSArray *almonds = self.almonds;
     SFIAlmondPlus *almond = index >= almonds.count ? nil : almonds[index];
     return almond;
@@ -278,13 +307,30 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == SEC_CLOUD) {
-        [self onSwitchServer];
-        [tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger) indexPath.section] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    else if (indexPath.section == SEC_NOTIFICATIONS) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
+    NSInteger section = indexPath.section;
+
+    if (section == SEC_CLOUD) {
+        [self onSwitchServer];
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger) section] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    else if (section == SEC_ALMONDS) {
+        NSString *token = nil;
+
+        SFIAlmondPlus *almond = [self tryGetAlmond:indexPath];
+        if (almond != nil) {
+            token = almond.almondplusMAC;
+        }
+
+        if (token != nil) {
+            UIPasteboard *pb = [UIPasteboard generalPasteboard];
+            pb.string = token;
+
+            [self showToast:@"Copied Almond MAC"];
+        }
+    }
+    else if (section == SEC_NOTIFICATIONS) {
         if (indexPath.row == 0) {
             NSString *token = [self pushNotificationClientToken];
             if (token == nil) {
@@ -296,23 +342,14 @@
 
             [self showToast:@"Copied token"];
         }
-        else {
-            NSString *token = nil;
-
-            SFIAlmondPlus *almond = [self tryGetAlmond:indexPath];
-            if (almond != nil) {
-                token = almond.almondplusMAC;
-            }
-
-            if (token != nil) {
-                UIPasteboard *pb = [UIPasteboard generalPasteboard];
-                pb.string = token;
-
-                [self showToast:@"Copied Almond MAC"];
-            }
+        else if (indexPath.row == 1) {
+            SFIPreferences *prefs = [SFIPreferences instance];
+            [prefs resetDebugPushNotificationReceivedCount];
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self showToast:@"Reset counter"];
         }
     }
-    else if (indexPath.section == SEC_EVENTS) {
+    else if (section == SEC_EVENTS) {
         NSArray *events = [self.scoreboard allEvents];
         events = [[events reverseObjectEnumerator] allObjects];
 
@@ -321,6 +358,16 @@
 
         [self.navigationController pushViewController:ctrl animated:YES];
     }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section == SEC_ALMONDS) {
+        return 70;
+    }
+    if (indexPath.section == SEC_NOTIFICATIONS) {
+        return 70;
+    }
+    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
 - (void)onSwitchServer {

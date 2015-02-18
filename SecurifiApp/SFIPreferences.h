@@ -19,10 +19,16 @@
 
 - (void)markPushNotificationRegistration:(NSData *)deviceToken;
 
-- (void)removePushNotificationRegistration;
-
 - (BOOL)isRegisteredForPushNotification;
 
 - (NSData *)pushNotificationDeviceToken;
+
+- (void)debugMarkPushNotificationReceived;
+
+- (NSInteger)debugPushNotificationReceivedCount;
+
+- (NSDate *)debugPushNotificationReceivedCountStartDate;
+
+- (void)resetDebugPushNotificationReceivedCount;
 
 @end

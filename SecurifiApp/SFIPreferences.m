@@ -8,6 +8,8 @@
 #define ACCOUNT_ACTIVATION_NOTIFICATION @"AccountActivicationNotification"
 #define PUSH_NOTIFICATION_TOKEN @"PushNotificationToken"
 #define PUSH_NOTIFICATION_STATUS @"PushNotificationStatus"
+#define DEBUG_PUSH_NOTIFICATION_COUNT @"DEBUGPushNotificationCount"
+#define DEBUG_PUSH_NOTIFICATION_DATE @"DEBUGPushNotificationDate"
 
 @implementation SFIPreferences
 
@@ -45,10 +47,6 @@
     [defaults setBool:YES forKey:PUSH_NOTIFICATION_STATUS];
 }
 
-- (void)removePushNotificationRegistration {
-
-}
-
 - (BOOL)isRegisteredForPushNotification {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     return [defaults boolForKey:PUSH_NOTIFICATION_STATUS];
@@ -56,6 +54,34 @@
 
 - (NSData *)pushNotificationDeviceToken {
     return [[NSUserDefaults standardUserDefaults] objectForKey:PUSH_NOTIFICATION_TOKEN];
+}
+
+- (void)debugMarkPushNotificationReceived {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSInteger count = [defaults integerForKey:DEBUG_PUSH_NOTIFICATION_COUNT];
+
+    if (count == 0) {
+        NSDate *now = [NSDate date];
+        [defaults setObject:now forKey:DEBUG_PUSH_NOTIFICATION_DATE];
+    }
+
+    [defaults setInteger:(count + 1) forKey:DEBUG_PUSH_NOTIFICATION_COUNT];
+}
+
+- (NSInteger)debugPushNotificationReceivedCount {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults integerForKey:DEBUG_PUSH_NOTIFICATION_COUNT];
+}
+
+- (NSDate *)debugPushNotificationReceivedCountStartDate {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [defaults objectForKey:DEBUG_PUSH_NOTIFICATION_DATE];
+}
+
+- (void)resetDebugPushNotificationReceivedCount {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:nil forKey:DEBUG_PUSH_NOTIFICATION_DATE];
+    [defaults setInteger:0 forKey:DEBUG_PUSH_NOTIFICATION_COUNT];
 }
 
 
