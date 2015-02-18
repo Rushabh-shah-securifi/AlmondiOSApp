@@ -10,6 +10,7 @@
 #import "UIFont+Securifi.h"
 #import "CircleView.h"
 #import "Colours.h"
+#import "SensorSupport.h"
 
 @interface SFINotificationTableViewCell ()
 @property(nonatomic) BOOL reset;
@@ -18,6 +19,7 @@
 @property(nonatomic, strong) UIImageView *iconView;
 @property(nonatomic, strong) UITextView *messageTextField;
 @property(nonatomic, strong) CircleView *circleView;
+@property(nonatomic, strong, readonly) SensorSupport *sensorSupport;
 @end
 
 @implementation SFINotificationTableViewCell
@@ -82,8 +84,11 @@
     [self.contentView addSubview:self.messageTextField];
 
     SFINotification *notification = self.notification;
+    _sensorSupport = [SensorSupport new];
+    [_sensorSupport push:notification.deviceType index:notification.valueType value:notification.value];
+
     [self setDateLabelText:notification];
-    [self setIcon:notification];
+    [self setIcon];
     [self setMessageLabelText:notification];
 }
 
@@ -169,7 +174,8 @@
             NSFontAttributeName : [UIFont securifiNormalFont],
             NSForegroundColorAttributeName : [UIColor lightGrayColor],
     };
-    NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:notification.message attributes:attr];
+    NSString *message = self.sensorSupport.notificationText;
+    NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:message attributes:attr];
 
     NSMutableAttributedString *container = [NSMutableAttributedString new];
     [container appendAttributedString:nameStr];
@@ -178,11 +184,8 @@
     self.messageTextField.attributedText = container;
 }
 
-- (void)setIcon:(SFINotification *)notification {
-    UIImage *image = [UIImage imageNamed:@"test"];
-//    image = [image resizedImageByMagick:@"13x19#"]; // scale and crop to exactly that size, original aspect ratio preserved
-    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-    self.iconView.image = image;
+- (void)setIcon {
+    self.iconView.image = self.sensorSupport.notificationImage;
 }
 
 @end
