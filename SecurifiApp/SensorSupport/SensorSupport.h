@@ -5,9 +5,6 @@
 
 #import <Foundation/Foundation.h>
 
-@class IndexValueSupport;
-
-
 /*
 
 SensorSupport = {
@@ -20,9 +17,10 @@ SensorSupport = {
  */
 @interface SensorSupport : NSObject
 
-- (void)push:(SFIDeviceType)device index:(SFIDevicePropertyType)type value:(NSString*)value;
+- (void)resolve:(SFIDeviceType)device index:(SFIDevicePropertyType)type value:(NSString *)value;
 
-- (UIImage*)notificationImage;
-- (NSString*)notificationText;
+- (UIImage *)notificationImage;
+
+- (NSString *)notificationText;
 
 @end

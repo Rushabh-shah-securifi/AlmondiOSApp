@@ -16,19 +16,19 @@
 
 @implementation SensorSupport
 
-- (void)push:(SFIDeviceType)device index:(SFIDevicePropertyType)type value:(NSString *)value {
+- (void)resolve:(SFIDeviceType)device index:(SFIDevicePropertyType)type value:(NSString *)value {
     self.indexValue = nil;
     self.value = nil;
 
     SensorIndexSupport *index = [SensorIndexSupport new];
-    
-    NSArray *indexes = [index push:device index:type];
+
+    NSArray *indexes = [index resolve:device index:type];
     for (IndexValueSupport *indexValue in indexes) {
         if ([indexValue matchesData:value]) {
             self.indexValue = indexValue;
             self.value = value;
             break;
-        }        
+        }
     }
 }
 
