@@ -12,9 +12,9 @@
 - (BOOL)matchesData:(NSString *)data {
     switch (self.matchType) {
         case MatchType_equals:
-            return [self.data isEqualToString:data];
+            return [self.matchData isEqualToString:data];
         case MatchType_notequals:
-            return ![self.data isEqualToString:data];
+            return ![self.matchData isEqualToString:data];
     }
 
     return NO;

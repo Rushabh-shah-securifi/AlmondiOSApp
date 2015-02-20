@@ -14,12 +14,14 @@ typedef NS_ENUM(int, MatchType) {
 
 @interface IndexValueSupport : NSObject
 
-- (BOOL)matchesData:(NSString*)data;
+// compares the value with this instances matchData to determine whether this instance should be used.
+// matching is based on matchType rule; however, when matchData is nil, then this method always returns YES.
+- (BOOL)matchesData:(NSString*)value;
 
 - (NSString*)formatValue:(NSString*)value;
 
-// match data value
-@property(nonatomic) NSString *data;
+// match data value; when nil, then match always is TRUE---this can be used to simply express a value formatter
+@property(nonatomic) NSString *matchData;
 
 // controls how matchesData compares values with this instance's data.
 // defaults to MatchType_equals
