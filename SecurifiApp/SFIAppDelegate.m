@@ -12,6 +12,7 @@
 #import "Crashlytics.h"
 #import "SFIPreferences.h"
 #import "NSData+Conversion.h"
+#import "SensorSupport.h"
 
 #define DEFAULT_GA_ID @"UA-52832244-2"
 #define DEFAULT_CRASHLYTICS_KEY @"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3"
@@ -44,38 +45,22 @@
 #pragma mark - UIApplicationDelegate methods
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [Crashlytics startWithAPIKey:[self crashReporterApiKey]];
+    [self initializeSystem:application];
 
-    SecurifiConfigurator *config = [self toolkitConfigurator];
-    [SecurifiToolkit initialize:config];
+    NSDictionary *remote = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+    //Accept push notification when app is not open
+    if (remote) {
+        [self handleRemoteNotification:remote];
+        return YES;
+    }
 
-    [DDLog addLogger:[DDASLLogger sharedInstance]];
-    [DDLog addLogger:[DDTTYLogger sharedInstance]];
-
-    NSString *trackingId = [self analyticsTrackingId];
-    [[Analytics sharedInstance] initialize:trackingId];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-
-    if (config.enableNotifications) {
-        [self enablePushNotifications:application];
+    NSDictionary *local = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
+    if (local) {
+        [self handleUserTappedNotification:application];
+        return YES;
     }
 
     return YES;
-}
-
-- (void)enablePushNotifications:(UIApplication *)application {
-    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
-        // iOS 8 Notifications
-        enum UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
-        [application registerForRemoteNotifications];
-    }
-    else {
-        // iOS < 8 Notifications
-        enum UIRemoteNotificationType types = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert ;
-        [application registerForRemoteNotificationTypes:types];
-    }
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
@@ -96,8 +81,12 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler {
+    NSLog(@"didReceiveRemoteNotification:fetchCompletionHandler");
+
+    [self initializeSystem:application];
+
     BOOL handled = [self handleRemoteNotification:userInfo];
-    enum UIBackgroundFetchResult result = handled? UIBackgroundFetchResultNewData : UIBackgroundFetchResultNoData;
+    enum UIBackgroundFetchResult result = handled? UIBackgroundFetchResultNewData : UIBackgroundFetchResultFailed;
     handler(result);
 }
 
@@ -105,7 +94,7 @@
     NSLog(@"didReceiveRemoteNotification");
 
     [self handleRemoteNotification:userInfo];
-    [self handleUserTappedNotification:application];
+//    [self handleUserTappedNotification:application];
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
@@ -118,39 +107,6 @@
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler {
     [self handleUserTappedNotification:application];
-}
-
-// returns YES if notification can be handled (matches an almond)
-// else returns NO
-- (BOOL)handleRemoteNotification:(NSDictionary *)userInfo {
-    SFINotification *notification = [SFINotification parsePayload:userInfo];
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
-    BOOL matched = false;
-    for (SFIAlmondPlus *almond in toolkit.almondList) {
-        if ([almond.almondplusMAC isEqualToString:notification.almondMAC]) {
-            matched = true;
-            break;
-        }
-    }
-
-    if (!matched) {
-        // drop the notification
-        return NO;
-    }
-
-    [toolkit storePushNotification:notification];
-    [[SFIPreferences instance] debugMarkPushNotificationReceived];
-
-    UILocalNotification *localNotice = [UILocalNotification new];
-    localNotice.fireDate = [NSDate date];
-    localNotice.alertBody = notification.message;
-    localNotice.timeZone = [NSTimeZone defaultTimeZone];
-    localNotice.soundName = UILocalNotificationDefaultSoundName;
-
-    [[UIApplication sharedApplication] scheduleLocalNotification:localNotice];
-
-    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -180,6 +136,81 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [[SecurifiToolkit sharedInstance] shutdownToolkit];
+}
+
+#pragma mark Initialization and Notification handling
+
+- (void)initializeSystem:(UIApplication *)application {
+    if ([SecurifiToolkit isInitialized]) {
+        return;
+    }
+
+    [Crashlytics startWithAPIKey:[self crashReporterApiKey]];
+
+    SecurifiConfigurator *config = [self toolkitConfigurator];
+    [SecurifiToolkit initialize:config];
+
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+
+    NSString *trackingId = [self analyticsTrackingId];
+    [[Analytics sharedInstance] initialize:trackingId];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+
+    if (config.enableNotifications) {
+        [self enablePushNotifications:application];
+    }
+}
+
+- (void)enablePushNotifications:(UIApplication *)application {
+    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
+        // iOS 8 Notifications
+        enum UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
+        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
+        [application registerForRemoteNotifications];
+    }
+    else {
+        // iOS < 8 Notifications
+        enum UIRemoteNotificationType types = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert ;
+        [application registerForRemoteNotificationTypes:types];
+    }
+}
+
+// returns YES if notification can be handled (matches an almond)
+// else returns NO
+- (BOOL)handleRemoteNotification:(NSDictionary *)userInfo {
+    SFINotification *notification = [SFINotification parsePayload:userInfo];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    BOOL matched = false;
+    for (SFIAlmondPlus *almond in toolkit.almondList) {
+        if ([almond.almondplusMAC isEqualToString:notification.almondMAC]) {
+            matched = true;
+            break;
+        }
+    }
+
+    if (!matched) {
+        // drop the notification
+        return NO;
+    }
+
+    [toolkit storePushNotification:notification];
+    [[SFIPreferences instance] debugMarkPushNotificationReceived];
+
+    SensorSupport *sensorSupport = [SensorSupport new];
+    [sensorSupport resolve:notification.deviceType index:notification.valueType value:notification.value];
+
+    NSString *msg = [NSString stringWithFormat:@"%@: %@", notification.deviceName, sensorSupport.notificationText];
+
+    UILocalNotification *localNotice = [UILocalNotification new];
+    localNotice.alertBody = msg;
+    localNotice.soundName = UILocalNotificationDefaultSoundName;
+
+    [[UIApplication sharedApplication] presentLocalNotificationNow:localNotice];
+
+    return YES;
 }
 
 - (void)onMemoryWarning:(id)sender {

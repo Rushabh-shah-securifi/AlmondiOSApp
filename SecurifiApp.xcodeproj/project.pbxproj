@@ -791,6 +791,9 @@
 					1CED5EF019AC82FD0023512F = {
 						DevelopmentTeam = R336EY8885;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.DataProtection = {
 								enabled = 1;
 							};
