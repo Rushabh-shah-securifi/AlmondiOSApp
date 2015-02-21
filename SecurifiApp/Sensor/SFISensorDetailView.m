@@ -284,8 +284,13 @@
 - (void)onSliderDidEndSliding:(id)sender {
     SFISlider *slider = sender;
 
+    // note: for now this is the only slider in the system,
+    // so we don't conditionally test for property type and conversion
+    //
     // convert to 255 scale (multilevel_onoff)
-    float value = slider.value * (255 / 100); // not for now this is the only slider in the system, so we don't conditionally test for property type and conversion
+    float slider_value = slider.value;
+    float scale_factor = (255 / slider.maximumValue);
+    float value = slider_value * scale_factor;
     value = roundf(value);
 
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) value];
