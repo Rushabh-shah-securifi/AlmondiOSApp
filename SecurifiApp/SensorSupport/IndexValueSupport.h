@@ -8,17 +8,12 @@
 @class ValueFormatter;
 
 typedef NS_ENUM(int, MatchType) {
-    MatchType_equals    = 0,
-    MatchType_notequals = 1,
+    MatchType_equals        = 0, // matchData is exactly the same as the value
+    MatchType_not_equals    = 1, // matchData is NOT the same as the value
+    MatchType_any           = 2, // matchData is irrelevant; any value matches; used in cases where the index is simply for reporting information
 };
 
 @interface IndexValueSupport : NSObject
-
-// compares the value with this instances matchData to determine whether this instance should be used.
-// matching is based on matchType rule; however, when matchData is nil, then this method always returns YES.
-- (BOOL)matchesData:(NSString*)value;
-
-- (NSString*)formatValue:(NSString*)value;
 
 // match data value; when nil, then match always is TRUE---this can be used to simply express a value formatter
 @property(nonatomic) NSString *matchData;
@@ -37,5 +32,11 @@ typedef NS_ENUM(int, MatchType) {
 // when specified provides a formatter that formats an index's value into a formatted string
 // either this is specified or notificationText, not one or the other
 @property(nonatomic) ValueFormatter *valueFormatter;
+
+// compares the value with this instances matchData to determine whether this instance should be used.
+// matching is based on matchType rule; however, when matchData is nil, then this method always returns YES.
+- (BOOL)matchesData:(NSString*)value;
+
+- (NSString*)formatNotificationText:(NSString*)sensorValue;
 
 @end

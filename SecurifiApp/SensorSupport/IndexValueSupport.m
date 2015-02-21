@@ -9,22 +9,6 @@
 
 @implementation IndexValueSupport
 
-- (BOOL)matchesData:(NSString *)data {
-    switch (self.matchType) {
-        case MatchType_equals:
-            return [self.matchData isEqualToString:data];
-        case MatchType_notequals:
-            return ![self.matchData isEqualToString:data];
-    }
-
-    return NO;
-}
-
-- (NSString *)formatValue:(NSString *)value {
-    return value;
-}
-
-
 - (ValueFormatter *)valueFormatter {
     if (_valueFormatter == nil) {
         _valueFormatter = [ValueFormatter new];
@@ -32,5 +16,30 @@
     return _valueFormatter;
 }
 
+- (BOOL)matchesData:(NSString *)data {
+    switch (self.matchType) {
+        case MatchType_equals:
+            return [self.matchData isEqualToString:data];
+        case MatchType_not_equals:
+            return ![self.matchData isEqualToString:data];
+        case MatchType_any:
+            return YES;
+    }
+
+    return NO;
+}
+
+- (NSString *)formatNotificationText:(NSString *)sensorValue {
+    if (_valueFormatter) {
+        [_valueFormatter formatNotificationValue:sensorValue];
+    }
+
+    NSString *text = self.notificationText;
+    if (text) {
+        return [NSString stringWithFormat:text, sensorValue];
+    }
+
+    return sensorValue;
+}
 
 @end

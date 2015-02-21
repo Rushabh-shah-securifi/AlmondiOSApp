@@ -81,7 +81,7 @@
 
                 IndexValueSupport *s2 = [IndexValueSupport new];
                 s2.matchData = @"0";
-                s2.matchType = MatchType_notequals;
+                s2.matchType = MatchType_not_equals;
                 s2.iconName = @"02_dimmer";
                 s2.notificationText = @"";
                 s2.valueFormatter.action = ValueFormatterAction_formatString;
@@ -125,7 +125,7 @@
 
                 IndexValueSupport *s2 = [IndexValueSupport new];
                 s2.matchData = @"true";
-                s2.matchType = MatchType_notequals;
+                s2.matchType = MatchType_not_equals;
                 s2.iconName = @"03_door_on";
                 s2.notificationText = @"";
 
@@ -187,11 +187,12 @@
             }
             else if (type == SFIDevicePropertyType_SWITCH_MULTILEVEL) {
                 IndexValueSupport *s1 = [IndexValueSupport new];
-                s1.matchData = @"false";
+                s1.matchType = MatchType_any;
                 s1.iconName = @"03_door_off";
                 s1.notificationText = @"";
                 s1.valueFormatter.action = ValueFormatterAction_scale;
-                s1.valueFormatter.scaleFactor = 100;
+                s1.valueFormatter.maxValue = 255;
+                s1.valueFormatter.scaledMaxValue = 100;
                 s1.valueFormatter.notificationPrefix = @"";
                 s1.valueFormatter.suffix = @"%";
 
@@ -987,7 +988,7 @@
 
                 IndexValueSupport *s2 = [IndexValueSupport new];
                 s2.matchData = @"0 lux";
-                s2.matchType = MatchType_notequals;
+                s2.matchType = MatchType_not_equals;
                 s2.iconName = @"25_bulb_on";
                 s2.valueFormatter.action = ValueFormatterAction_formatString;
                 s2.valueFormatter.notificationPrefix = @"";

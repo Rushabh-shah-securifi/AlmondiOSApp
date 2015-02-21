@@ -6,7 +6,10 @@
 #import "ValueFormatter.h"
 
 
-@implementation ValueFormatter {
+@implementation ValueFormatter
 
+- (NSString *)formatNotificationValue:(NSString *)sensorValue {
+    return nil;
 }
+
 @end

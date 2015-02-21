@@ -43,9 +43,9 @@
 
 - (NSString *)notificationText {
     if (self.indexValue == nil) {
-        return @"Unknown value";
+        return @"a value has changed";
     }
-    return [self.indexValue formatValue:self.value];
+    return [self.indexValue formatNotificationText:self.value];
 }
 
 
