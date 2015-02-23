@@ -10,42 +10,42 @@
 
 @interface SensorSupport ()
 @property(nonatomic) SFIDeviceType deviceType;
-@property(nonatomic, strong) IndexValueSupport *indexValue;
-@property(nonatomic, copy) NSString *value;
+@property(nonatomic, strong) IndexValueSupport *valueSupport;
+@property(nonatomic, copy) NSString *sensorValue;
 @end
 
 @implementation SensorSupport
 
 - (void)resolve:(SFIDeviceType)device index:(SFIDevicePropertyType)type value:(NSString *)value {
-    self.indexValue = nil;
-    self.value = nil;
+    self.valueSupport = nil;
+    self.sensorValue = nil;
 
     SensorIndexSupport *index = [SensorIndexSupport new];
 
     NSArray *indexes = [index resolve:device index:type];
     for (IndexValueSupport *indexValue in indexes) {
         if ([indexValue matchesData:value]) {
-            self.indexValue = indexValue;
-            self.value = value;
+            self.valueSupport = indexValue;
+            self.sensorValue = value;
             break;
         }
     }
 }
 
 - (UIImage *)notificationImage {
-    if (self.indexValue == nil) {
+    if (self.valueSupport == nil) {
         return [UIImage imageNamed:@"n_default_device"];
     }
 
-    NSString *name = [@"n_" stringByAppendingString:self.indexValue.iconName];
+    NSString *name = [@"n_" stringByAppendingString:self.valueSupport.iconName];
     return [UIImage imageNamed:name];
 }
 
 - (NSString *)notificationText {
-    if (self.indexValue == nil) {
+    if (self.valueSupport == nil) {
         return @"a value has changed";
     }
-    return [self.indexValue formatNotificationText:self.value];
+    return [self.valueSupport formatNotificationText:self.sensorValue];
 }
 
 
