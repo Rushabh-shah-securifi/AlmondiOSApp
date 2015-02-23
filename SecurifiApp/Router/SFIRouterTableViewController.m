@@ -903,7 +903,8 @@
 
             case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
                 self.routerSummary = (SFIRouterSummary *) genericRouterCommand.command;
-                [self.tableView reloadData];
+                // after receiving summary, wait until detailed settings have been returned
+                // before updating the table.
                 break;
             }
 
