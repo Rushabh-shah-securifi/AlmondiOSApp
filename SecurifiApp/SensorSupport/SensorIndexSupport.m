@@ -122,13 +122,13 @@
             if (type == SFIDevicePropertyType_SENSOR_BINARY) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
-                s1.iconName = @"03_door_off";
+                s1.iconName = @"03_door_closed";
                 s1.notificationText = @" is Closed.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.matchType = MatchType_not_equals;
-                s2.iconName = @"03_door_on";
+                s2.iconName = @"03_door_opened";
                 s2.notificationText = @" is Opened.";
 
                 return @[s1, s2];
@@ -183,7 +183,8 @@
                 s1.notificationText = @" turned Off.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.iconName = @"03_door_on";
+                s2.matchData = @"true";
+                s2.iconName = @"04_dimmer";
                 s2.notificationText = @" turned On.";
 
                 return @[s1, s2];
@@ -191,7 +192,7 @@
             else if (type == SFIDevicePropertyType_SWITCH_MULTILEVEL) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
-                s1.iconName = @"03_door_off";
+                s1.iconName = @"04_dimmer";
                 s1.notificationText = @"";
                 s1.valueFormatter.action = ValueFormatterAction_scale;
                 s1.valueFormatter.maxValue = 255;
@@ -235,12 +236,12 @@
             if (type == SFIDevicePropertyType_LOCK_STATE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"0";
-                s1.iconName = @"05_doorlock_off";
+                s1.iconName = @"05_door_lock_unlocked";
                 s1.notificationText = @" is Unlocked.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"255";
-                s2.iconName = @"05_doorlock_on";
+                s2.iconName = @"05_door_lock_locked";
                 s2.notificationText = @" is Locked.";
 
                 return @[s1, s2];
@@ -441,12 +442,12 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"10_switch_off";
-                s1.valueFormatter.notificationPrefix = @" turned Off.";
+                s1.notificationText = @" turned Off.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.iconName = @"10_switch_on";
-                s2.valueFormatter.notificationPrefix = @" turned On.";
+                s2.notificationText = @" turned On.";
 
                 return @[s1, s2];
             }
@@ -524,12 +525,12 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"12_door_closed";
-                s1.valueFormatter.notificationPrefix = @" is Closed.";
+                s1.notificationText = @" is Closed.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.iconName = @"12_door_opened";
-                s2.valueFormatter.notificationPrefix = @" is Opened.";
+                s2.notificationText = @" is Opened.";
 
                 return @[s1, s2];
             }
@@ -566,12 +567,12 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"13_smoke_no";
-                s1.valueFormatter.notificationPrefix = @"'s Fire is gone.";
+                s1.notificationText = @"'s Fire is gone.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.iconName = @"13_smoke_yes";
-                s2.valueFormatter.notificationPrefix = @" detected Fire.";
+                s2.notificationText = @" detected Fire.";
 
                 return @[s1, s2];
             }
@@ -607,12 +608,12 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"14_water_drop_no";
-                s1.valueFormatter.notificationPrefix = @" stopped leaking.";
+                s1.notificationText = @" stopped leaking.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.iconName = @"14_water_drop_yes";
-                s2.valueFormatter.notificationPrefix = @" detected water.";
+                s2.notificationText = @" detected water.";
 
                 return @[s1, s2];
             }
@@ -648,12 +649,12 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"15_smoke_no";
-                s1.valueFormatter.notificationPrefix = @"'s Gas is gone.";
+                s1.notificationText = @"'s Gas is gone.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.iconName = @"15_smoke_yes";
-                s2.valueFormatter.notificationPrefix = @" detected Gas.";
+                s2.notificationText = @" detected Gas.";
 
                 return @[s1, s2];
             }
@@ -689,12 +690,12 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"16_vibration_off";
-                s1.valueFormatter.notificationPrefix = @" turned Off.";
+                s1.notificationText = @" turned Off.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.iconName = @"16_vibration_no";
-                s2.valueFormatter.notificationPrefix = @" turned On.";
+                s2.notificationText = @" turned On.";
 
                 return @[s1, s2];
             }
@@ -730,12 +731,12 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"17_vibration_off";
-                s1.valueFormatter.notificationPrefix = @"'s vibration stopped.";
+                s1.notificationText = @"'s vibration stopped.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.iconName = @"17_vibration_no";
-                s2.valueFormatter.notificationPrefix = @" detected Vibration.";
+                s2.notificationText = @" detected Vibration.";
 
                 return @[s1, s2];
             }
@@ -771,12 +772,12 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"18_vibration_off";
-                s1.valueFormatter.notificationPrefix = @" turned Off.";
+                s1.notificationText = @" turned Off.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.iconName = @"18_vibration_no";
-                s2.valueFormatter.notificationPrefix = @" turned On.";
+                s2.notificationText = @" turned On.";
 
                 return @[s1, s2];
             }
@@ -818,17 +819,17 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"0";
                 s1.iconName = @"19_key_fob_disarmed";
-                s1.valueFormatter.notificationPrefix = @" is Disarmed.";
+                s1.notificationText = @" is Disarmed.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"2";
                 s2.iconName = @"19_keyfob_perimeter_armed";
-                s2.valueFormatter.notificationPrefix = @" is Perimeter Armed.";
+                s2.notificationText = @" is Perimeter Armed.";
 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchData = @"3";
                 s3.iconName = @"19_key_fob_armed";
-                s3.valueFormatter.notificationPrefix = @" is Armed.";
+                s3.notificationText = @" is Armed.";
 
                 return @[s1, s2, s3];
             }
@@ -866,12 +867,12 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"20_switch_off";
-                s1.valueFormatter.notificationPrefix = @" is turned Off.";
+                s1.notificationText = @" is turned Off.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.iconName = @"20_switch_on";
-                s2.valueFormatter.notificationPrefix = @" is turned On.";
+                s2.notificationText = @" is turned On.";
 
                 return @[s1, s2];
             }
@@ -910,12 +911,12 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"21_alarm_off";
-                s1.valueFormatter.notificationPrefix = @" is Silent.";
+                s1.notificationText = @" is Silent.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.iconName = @"21_alarm_on";
-                s2.valueFormatter.notificationPrefix = @" is Ringing.";
+                s2.notificationText = @" is Ringing.";
 
                 return @[s1, s2];
             }
@@ -953,12 +954,12 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"22_metering_off";
-                s1.valueFormatter.notificationPrefix = @" is turned Off.";
+                s1.notificationText = @" is turned Off.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.iconName = @"22_metering_on";
-                s2.valueFormatter.notificationPrefix = @" is turned On.";
+                s2.notificationText = @" is turned On.";
 
                 return @[s1, s2];
             }
@@ -974,12 +975,12 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"23_metering_off";
-                s1.valueFormatter.notificationPrefix = @" is turned Off.";
+                s1.notificationText = @" is turned Off.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
                 s2.iconName = @"23_metering_on";
-                s2.valueFormatter.notificationPrefix = @" is turned On.";
+                s2.notificationText = @" is turned On.";
 
                 return @[s1, s2];
             }
@@ -1136,7 +1137,7 @@
         };
 
         case SFIDeviceType_SimpleMetering_28: {
-        //todo this type has been reassigned!!
+            //todo this type has been reassigned!!
             /*
                 <Sensor
                     name="ZigbeeDoorLock"
@@ -1420,7 +1421,7 @@
                 s1.matchData = nil;
                 s1.iconName = @"40_water_drop_off";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
-                s1.valueFormatter.notificationText = @" 's temperature changed to ";
+                s1.valueFormatter.notificationText = @"'s temperature changed to ";
 
                 return @[s1];
             }
@@ -1614,7 +1615,7 @@
                 s1.matchType = MatchType_any;
                 s1.iconName = @"45_metering_off";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
-                s1.valueFormatter.notificationPrefix = @" 's power reading changed to ";
+                s1.valueFormatter.notificationPrefix = @"'s power reading changed to ";
 
                 return @[s1];
             }
@@ -1639,13 +1640,13 @@
 
 - (NSArray *)indexesFor:(SFIDeviceType)device {
     NSMutableArray *indexes = [NSMutableArray new];
-    
-    for (unsigned int index=0; index < SFIDevicePropertyType_count; index++) {
+
+    for (unsigned int index = 0; index < SFIDevicePropertyType_count; index++) {
         SFIDevicePropertyType type = (SFIDevicePropertyType) index;
         NSArray *array = [self resolve:device index:type];
         [indexes addObjectsFromArray:array];
     }
-    
+
     return indexes;
 }
 

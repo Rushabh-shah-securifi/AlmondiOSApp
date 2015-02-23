@@ -13,6 +13,7 @@
     self = [super init];
     if (self) {
         _valueType = valueType;
+        _matchType = MatchType_equals;
     }
 
     return self;
@@ -39,13 +40,17 @@
 }
 
 - (NSString *)formatNotificationText:(NSString *)sensorValue {
+    if (sensorValue == nil) {
+        sensorValue = @"";
+    }
+
     if (_valueFormatter) {
         [_valueFormatter formatNotificationValue:sensorValue];
     }
 
-    NSString *format = self.notificationText;
-    if (format) {
-        return [NSString stringWithFormat:format, sensorValue];
+    NSString *text = self.notificationText;
+    if (text) {
+        return text;
     }
 
     return sensorValue;

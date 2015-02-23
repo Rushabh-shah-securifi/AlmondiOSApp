@@ -32,7 +32,7 @@
 
 - (NSString *)formattedString:(NSString *)value {
     if (self.notificationText) {
-        return [self.notificationText stringByAppendingString:value];
+        return [NSString stringWithFormat:@"%@%@.", self.notificationText, value];
     }
 
     NSString *prefix = self.notificationPrefix;
@@ -45,7 +45,7 @@
         suffix = @"";
     }
 
-    return [NSString stringWithFormat:@"%@%@%@", prefix, value, suffix];
+    return [NSString stringWithFormat:@"%@%@%@.", prefix, value, suffix];
 }
 
 @end
