@@ -279,7 +279,7 @@ Follow it, then tap Continue to login.";
 "Please wait while your Almond is being linked to cloud." = "Please wait while your HomeScreen is being linked to cloud.";
 "This Almond is already linked to another user." = "This HomeScreen is already linked to another user.
 Contact us at support@homescreen.com";
-"Almond could not be affiliated" = "HomeScreen could not be affiliated.%@";
+"Almond could not be affiliated" = "HomeScreen could not be affiliated.\n%@";
 
 /* login */
 "Access your Almonds and your home devices from anywhere." = "Access your HomeScreens and

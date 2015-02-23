@@ -278,7 +278,7 @@ Follow it, then tap Continue to login.";
 "Link Almond" = "Link Almond";"Please wait while your Almond is being linked to cloud." = "Please wait while your Almond is being linked to cloud.";
 "This Almond is already linked to another user." = "This Almond is already linked to another user.
 Contact us at support@securifi.com";
-"Almond could not be affiliated" = "Almond could not be affiliated.%@";
+"Almond could not be affiliated" = "Almond could not be affiliated.\n%@";
 
 /* login */
 "Access your Almonds and your home devices from anywhere." = "Access your Almonds and

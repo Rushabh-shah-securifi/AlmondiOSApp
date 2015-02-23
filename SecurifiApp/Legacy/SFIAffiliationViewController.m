@@ -217,6 +217,7 @@
             case 7:
                 //Logout
                 failureReason = @"Please login again and retry.";
+                self.lblMessage.numberOfLines = 0;
                 self.lblMessage.text = [NSString stringWithFormat:NSLocalizedString(@"Almond could not be affiliated", @"Almond could not be affiliated.\n%@"), failureReason];;
                 [self logoutUser];
                 break;
