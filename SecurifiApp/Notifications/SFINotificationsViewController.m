@@ -10,9 +10,10 @@
 #import "SFINotificationTableViewCell.h"
 #import "SFINotificationTableViewHeaderFooter.h"
 #import "UIFont+Securifi.h"
+#import "NotificationsTestStore.h"
 
 @interface SFINotificationsViewController ()
-@property(nonatomic) id<SFINotificationStore> store;
+@property(nonatomic, readonly) id<SFINotificationStore> store;
 @property(nonatomic) NSArray *buckets; // NSDate instances
 @end
 
@@ -21,7 +22,16 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.store = [[SecurifiToolkit sharedInstance] newNotificationStore];
+    if (self.enableTestStore) {
+        NotificationsTestStore *store = [NotificationsTestStore new];
+        store.almondMac = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
+        [store setup];
+        _store = store;
+    }
+    else {
+        _store = [[SecurifiToolkit sharedInstance] newNotificationStore];
+    }
+
     [self resetBucketsAndNotifications];
 
     NSDictionary *titleAttributes = @{

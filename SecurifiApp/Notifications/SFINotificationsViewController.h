@@ -11,7 +11,11 @@
 
 @interface SFINotificationsViewController : UITableViewController
 
-
+// Default is NO.
+// when YES, a test data store is used to generate fake Notifications for all possible
+// device type-index values. USeful for unit testing and visual inspection without needing to post
+// actual notifications from the cloud/APN.
+@property(nonatomic) BOOL enableTestStore;
 
 @end
 
