@@ -9,6 +9,15 @@
 
 @implementation IndexValueSupport
 
+- (instancetype)initWithValueType:(SFIDevicePropertyType)valueType {
+    self = [super init];
+    if (self) {
+        _valueType = valueType;
+    }
+
+    return self;
+}
+
 - (ValueFormatter *)valueFormatter {
     if (_valueFormatter == nil) {
         _valueFormatter = [ValueFormatter new];

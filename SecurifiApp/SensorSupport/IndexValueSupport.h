@@ -15,6 +15,8 @@ typedef NS_ENUM(int, MatchType) {
 
 @interface IndexValueSupport : NSObject
 
+@property(nonatomic, readonly) SFIDevicePropertyType valueType;
+
 // match data value; when nil, then match always is TRUE---this can be used to simply express a value formatter
 @property(nonatomic) NSString *matchData;
 
@@ -32,6 +34,8 @@ typedef NS_ENUM(int, MatchType) {
 // when specified provides a formatter that formats an index's value into a formatted string
 // either this is specified or notificationText, not one or the other
 @property(nonatomic) ValueFormatter *valueFormatter;
+
+- (instancetype)initWithValueType:(SFIDevicePropertyType)valueType;
 
 // compares the value with this instances matchData to determine whether this instance should be used.
 // matching is based on matchType rule; however, when matchData is nil, then this method always returns YES.

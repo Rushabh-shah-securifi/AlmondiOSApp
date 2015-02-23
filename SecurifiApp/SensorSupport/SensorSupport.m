@@ -33,11 +33,18 @@
 }
 
 - (UIImage *)notificationImage {
+    NSString *const defaultIconName = @"n_default_device";
+
     if (self.valueSupport == nil) {
-        return [UIImage imageNamed:@"n_default_device"];
+        return [UIImage imageNamed:defaultIconName];
     }
 
-    NSString *name = [@"n_" stringByAppendingString:self.valueSupport.iconName];
+    NSString *name = self.valueSupport.iconName;
+    if (name.length == 0) {
+        name = defaultIconName;
+    }
+
+    name = [@"n_" stringByAppendingString:name];
     return [UIImage imageNamed:name];
 }
 
@@ -45,7 +52,13 @@
     if (self.valueSupport == nil) {
         return @"a value has changed";
     }
-    return [self.valueSupport formatNotificationText:self.sensorValue];
+
+    NSString *text = [self.valueSupport formatNotificationText:self.sensorValue];
+    if (text == nil) {
+        return @"a value has changed";
+    }
+
+    return text;
 }
 
 

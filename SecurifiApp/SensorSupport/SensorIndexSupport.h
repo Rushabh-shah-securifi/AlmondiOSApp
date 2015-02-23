@@ -10,4 +10,6 @@
 // returns all IndexValueSupport objects
 - (NSArray *)resolve:(SFIDeviceType)device index:(SFIDevicePropertyType)type;
 
+- (NSArray*)indexesFor:(SFIDeviceType)device;
+
 @end
