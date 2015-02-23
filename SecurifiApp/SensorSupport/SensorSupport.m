@@ -50,12 +50,12 @@
 
 - (NSString *)notificationText {
     if (self.valueSupport == nil) {
-        return @"a value has changed";
+        return @" a value has changed";
     }
 
     NSString *text = [self.valueSupport formatNotificationText:self.sensorValue];
     if (text == nil) {
-        return @"a value has changed";
+        return @" a value has changed";
     }
 
     return text;

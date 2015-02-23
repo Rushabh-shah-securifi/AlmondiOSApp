@@ -167,7 +167,7 @@
             NSFontAttributeName : [UIFont securifiBoldFont],
             NSForegroundColorAttributeName : [UIColor blackColor],
     };
-    NSString *deviceName = [notification.deviceName stringByAppendingString:@" "]; // add space before appending notification msg
+    NSString *deviceName = notification.deviceName; //[notification.deviceName stringByAppendingString:@" "]; // add space before appending notification msg
     NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:deviceName attributes:attr];
 
     attr = @{
