@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C23E6D51A9C4581004D2D23 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */; };
+		1C23E6D61A9C4581004D2D23 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */; };
 		1C33E94F19C025DB0014725A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C33E94E19C025DB0014725A /* QuartzCore.framework */; };
 		1C414BCD1A79F0DF00C448A4 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */; };
 		1C414BCE1A79F0E800C448A4 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */; };
@@ -15,8 +17,6 @@
 		1C75815819AC86A80074C601 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815719AC86A80074C601 /* CFNetwork.framework */; };
 		1C75815A19AC86BB0074C601 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815919AC86BB0074C601 /* libz.dylib */; };
 		1C75815C19AC86C20074C601 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815B19AC86C20074C601 /* libxml2.dylib */; };
-		1C7E7D6F1A41A0990026F0BA /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7CE41A41A0990026F0BA /* Common-Images.xcassets */; };
-		1C7E7D701A41A0990026F0BA /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7CE41A41A0990026F0BA /* Common-Images.xcassets */; };
 		1C7E7D711A41A0990026F0BA /* SFIAffiliationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CE71A41A0990026F0BA /* SFIAffiliationViewController.m */; };
 		1C7E7D721A41A0990026F0BA /* SFIAffiliationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CE71A41A0990026F0BA /* SFIAffiliationViewController.m */; };
 		1C7E7D731A41A0990026F0BA /* SFIBlockedContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CE91A41A0990026F0BA /* SFIBlockedContent.m */; };
@@ -177,6 +177,7 @@
 /* Begin PBXFileReference section */
 		04DD44299464F3B8199632FD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		1C2056061A2EBBBA00975495 /* HomeScreen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeScreen.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
 		1C33E94E19C025DB0014725A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		1C75815319AC86940074C601 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -185,7 +186,6 @@
 		1C75815919AC86BB0074C601 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		1C75815B19AC86C20074C601 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlmondPlusConstants.h; sourceTree = "<group>"; };
-		1C7E7CE41A41A0990026F0BA /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
 		1C7E7CE61A41A0990026F0BA /* SFIAffiliationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIAffiliationViewController.h; sourceTree = "<group>"; };
 		1C7E7CE71A41A0990026F0BA /* SFIAffiliationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIAffiliationViewController.m; sourceTree = "<group>"; };
 		1C7E7CE81A41A0990026F0BA /* SFIBlockedContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIBlockedContent.h; sourceTree = "<group>"; };
@@ -386,9 +386,9 @@
 		1C7E7CD71A41A0990026F0BA /* SecurifiApp */ = {
 			isa = PBXGroup;
 			children = (
+				1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */,
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
 				1C7E7E2D1A41A26A0026F0BA /* Base.lproj */,
-				1C7E7CE41A41A0990026F0BA /* Common-Images.xcassets */,
 				1C7E7CE51A41A0990026F0BA /* Legacy */,
 				1C7E7CF61A41A0990026F0BA /* Login */,
 				1C7E7CFD1A41A0990026F0BA /* Notifications */,
@@ -837,6 +837,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C23E6D61A9C4581004D2D23 /* Common-Images.xcassets in Resources */,
 				1C7E7E761A41A8950026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */,
 				1C7E7E771A41A8990026F0BA /* MainStoryboard_iPad.storyboard in Resources */,
 				1C7E7E781A41A89B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */,
@@ -844,7 +845,6 @@
 				1C9B1DA31A3EEA1200097D8F /* MainStoryboard_iPhone.strings in Resources */,
 				1C9B1DA11A3EEA1200097D8F /* InfoPlist.strings in Resources */,
 				1C9B1DA41A3EEA1200097D8F /* termsofuse.html in Resources */,
-				1C7E7D701A41A0990026F0BA /* Common-Images.xcassets in Resources */,
 				1C9B1D7A1A3EE9EF00097D8F /* HomeScreen-Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -861,8 +861,8 @@
 				1C7E7E1A1A41A0D70026F0BA /* Localizable.strings in Resources */,
 				1C7E7E161A41A0D70026F0BA /* AccountsStoryboard_iPhone.strings in Resources */,
 				1C7E7E191A41A0D70026F0BA /* InfoPlist.strings in Resources */,
+				1C23E6D51A9C4581004D2D23 /* Common-Images.xcassets in Resources */,
 				1C7E7E171A41A0D70026F0BA /* Almond-Localizable.strings in Resources */,
-				1C7E7D6F1A41A0990026F0BA /* Common-Images.xcassets in Resources */,
 				1C7E7DFA1A41A0B30026F0BA /* Almond-Images.xcassets in Resources */,
 				1C7E7E1B1A41A0D70026F0BA /* MainStoryboard_iPhone.strings in Resources */,
 				1C7E7DFD1A41A0B30026F0BA /* cert.der in Resources */,
