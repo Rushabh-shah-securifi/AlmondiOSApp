@@ -1635,7 +1635,48 @@
         };
     }
 
-    return [NSArray array];
+    // Applicable to any device
+    switch (type) {
+        case SFIDevicePropertyType_BATTERY: {
+            IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+            s1.matchType = MatchType_equals;
+            s1.matchData = @"0";
+            s1.iconName = @"battery_ok";
+            s1.notificationText = @"'s Battery is OK.";
+
+            IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+            s2.matchType = MatchType_not_equals;
+            s2.matchData = @"0";
+            s2.iconName = @"battery_low";
+            s2.notificationText = @"'s Battery is Low.";
+
+            return @[s1, s2];
+        };
+
+        case SFIDevicePropertyType_LOW_BATTERY: {
+            IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+            s1.matchType = MatchType_equals;
+            s1.matchData = @"true";
+            s1.iconName = @"battery_low";
+            s1.notificationText = @"'s Battery is Low.";
+
+            return @[s1];
+        };
+
+        case SFIDevicePropertyType_TAMPER: {
+            IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+            s1.matchType = MatchType_equals;
+            s1.matchData = @"true";
+            s1.iconName = @"tamper";
+            s1.notificationText = @" has been Tampered.";
+
+            return @[s1];
+        };
+
+        default: {
+            return [NSArray array];
+        }
+    }
 }
 
 - (NSArray *)indexesFor:(SFIDeviceType)device {
