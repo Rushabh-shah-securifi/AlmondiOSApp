@@ -483,7 +483,8 @@
 }
 
 - (void)onDidFailToDeregisterForNotifications {
-    [self showToast:@"Sorry! Push Notification was not deregistered."];
+    //todo need to fix false negative notifications; disabled for now
+    //[self showToast:@"Sorry! Push Notification was not deregistered."];
 }
 
 - (void)trySendPushNotificationRegistration {
