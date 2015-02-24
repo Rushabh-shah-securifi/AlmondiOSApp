@@ -11,7 +11,8 @@
 - (NSString *)formatNotificationValue:(NSString *)sensorValue {
     switch (self.action) {
         case ValueFormatterAction_scale:
-            return [self scaledValue:sensorValue];
+            sensorValue = [self scaledValue:sensorValue];
+            // pass through
         case ValueFormatterAction_formatString:
             return [self formattedString:sensorValue];
     }
@@ -42,10 +43,13 @@
 
     NSString *suffix = self.suffix;
     if (suffix == nil) {
-        suffix = @"";
+        suffix = @".";
+    }
+    else if (![suffix hasSuffix:@"."]) {
+        suffix = [suffix stringByAppendingString:@"."];
     }
 
-    return [NSString stringWithFormat:@"%@%@%@.", prefix, value, suffix];
+    return [NSString stringWithFormat:@"%@%@%@", prefix, value, suffix];
 }
 
 @end

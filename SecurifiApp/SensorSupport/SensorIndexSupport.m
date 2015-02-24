@@ -192,8 +192,8 @@
             else if (type == SFIDevicePropertyType_SWITCH_MULTILEVEL) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
+                s1.matchData = @"50";
                 s1.iconName = @"04_dimmer";
-                s1.notificationText = @"";
                 s1.valueFormatter.action = ValueFormatterAction_scale;
                 s1.valueFormatter.maxValue = 255;
                 s1.valueFormatter.scaledMaxValue = 100;
@@ -240,7 +240,7 @@
                 s1.notificationText = @" is Unlocked.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchData = @"255";
+                s2.matchData = @"255";
                 s2.iconName = @"05_door_lock_locked";
                 s2.notificationText = @" is Locked.";
 
@@ -283,7 +283,7 @@
                 s1.notificationText = @" is Silent.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchData = @"0";
+                s2.matchData = @"0";
                 s2.iconName = @"06_alarm_on";
                 s2.notificationText = @" is Ringing.";
 
@@ -360,6 +360,8 @@
              */
             if (type == SFIDevicePropertyType_SENSOR_MULTILEVEL) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"70";
                 s1.iconName = @"07_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = @"'s temperature changed to ";
@@ -368,41 +370,58 @@
             }
             if (type == SFIDevicePropertyType_THERMOSTAT_OPERATING_STATE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"Heating";
                 s1.iconName = @"07_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = @" is ";
+                s1.valueFormatter.suffix = @"\u00B0F";
                 return @[s1];
             }
             if (type == SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"70";
                 s1.iconName = @"07_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
-                s1.valueFormatter.notificationPrefix = @" cooling down to ";
+                s1.valueFormatter.notificationPrefix = @" is cooling down to ";
+                s1.valueFormatter.suffix = @"\u00B0F";
                 return @[s1];
             }
             if (type == SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"70";
                 s1.iconName = @"07_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
-                s1.valueFormatter.notificationPrefix = @" heating up to ";
+                s1.valueFormatter.notificationPrefix = @" is heating up to ";
+                s1.valueFormatter.suffix = @"\u00B0F";
                 return @[s1];
             }
             if (type == SFIDevicePropertyType_THERMOSTAT_MODE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.iconName = @"07_icon_fan";
+                s1.matchType = MatchType_any;
+                s1.matchData = @"Auto";
+                s1.iconName = @"07_thermostat_fan";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = @" is set to ";
                 return @[s1];
             }
             if (type == SFIDevicePropertyType_THERMOSTAT_FAN_MODE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.iconName = @"07_icon_fan";
+                s1.matchType = MatchType_any;
+                s1.matchData = @"Auto";
+                s1.iconName = @"07_thermostat_fan";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = @" Fan is set to ";
                 return @[s1];
             }
             if (type == SFIDevicePropertyType_THERMOSTAT_FAN_STATE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.iconName = @"07_icon_fan";
+                s1.matchType = MatchType_any;
+                s1.matchData = @"On";
+                s1.iconName = @"07_thermostat_fan";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = @" Fan is ";
                 return @[s1];
             }
@@ -483,11 +502,12 @@
             if (type == SFIDevicePropertyType_STATE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
-                s1.iconName = @"11_motion_off";
+                s1.iconName = @"11_motion_false";
                 s1.notificationText = @"'s motion stopped.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.iconName = @"11_motion_on";
+                s2.matchData = @"true";
+                s2.iconName = @"11_motion_true";
                 s2.notificationText = @" detected motion.";
 
                 return @[s1, s2];
@@ -689,7 +709,7 @@
             if (type == SFIDevicePropertyType_STATE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
-                s1.iconName = @"16_vibration_off";
+                s1.iconName = @"16_vibration_yes";
                 s1.notificationText = @" turned Off.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
@@ -1115,17 +1135,18 @@
                 </Sensor>
              */
             if (type == SFIDevicePropertyType_TEMPERATURE) {
-                //todo needs work because no icon
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
+                s1.iconName = @"27_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = @"'s temperature changed to ";
+
                 return @[s1];
             }
             if (type == SFIDevicePropertyType_HUMIDITY) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
-                s1.matchData = nil;
+                s1.matchData = @"40";
                 s1.iconName = @"27_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = @"'s humidiy changed to ";
@@ -1177,12 +1198,12 @@
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"1";
-                s2.iconName = @"28_door_lock_on";
+                s2.iconName = @"28_door_lock_locked";
                 s2.notificationText = @" is Locked.";
 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchData = @"2";
-                s3.iconName = @"28_door_lock_off";
+                s3.iconName = @"28_door_lock_unlocked";
                 s3.notificationText = @" is Unlocked.";
 
                 return @[s1, s2, s3];
@@ -1405,11 +1426,13 @@
 
             if (type == SFIDevicePropertyType_BASIC) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_equals;
                 s1.matchData = @"0";
                 s1.iconName = @"40_water_drop_no";
                 s1.notificationText = @" stopped leaking.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchType = MatchType_equals;
                 s2.matchData = @"255";
                 s2.iconName = @"40_water_drop_yes";
                 s2.notificationText = @" detected water.";
@@ -1418,6 +1441,7 @@
             }
             if (type == SFIDevicePropertyType_TEMPERATURE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
                 s1.matchData = nil;
                 s1.iconName = @"40_water_drop_off";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
@@ -1613,6 +1637,7 @@
             if (type == SFIDevicePropertyType_POWER) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
+                s1.matchData = @"40";
                 s1.iconName = @"45_metering_off";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = @"'s power reading changed to ";
@@ -1638,11 +1663,11 @@
     // Applicable to any device
     switch (type) {
         case SFIDevicePropertyType_BATTERY: {
-            IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-            s1.matchType = MatchType_equals;
-            s1.matchData = @"0";
-            s1.iconName = @"battery_ok";
-            s1.notificationText = @"'s Battery is OK.";
+//            IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+//            s1.matchType = MatchType_equals;
+//            s1.matchData = @"0";
+//            s1.iconName = @"battery_ok";
+//            s1.notificationText = @"'s Battery is OK.";
 
             IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
             s2.matchType = MatchType_not_equals;
@@ -1650,7 +1675,7 @@
             s2.iconName = @"battery_low";
             s2.notificationText = @"'s Battery is Low.";
 
-            return @[s1, s2];
+            return @[s2];
         };
 
         case SFIDevicePropertyType_LOW_BATTERY: {

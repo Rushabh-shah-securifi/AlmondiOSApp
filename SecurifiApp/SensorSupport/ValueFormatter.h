@@ -25,7 +25,8 @@ typedef NS_ENUM(unsigned int, ValueFormatterAction) {
 // takes precedent over notificationPrefix and notificationSuffix
 @property(nonatomic) NSString *notificationText;
 
-// when specified, becomes the text that will be prepended to the name of the device "<Your Switch>'s power...."
+// when specified, becomes the text that will be prepended to the name of the device "<Your Switch>'s power...." and
+// appended to the device value <device name> <prefix> <value> <suffix>
 @property(nonatomic) NSString *notificationPrefix;
 
 // when specified the value

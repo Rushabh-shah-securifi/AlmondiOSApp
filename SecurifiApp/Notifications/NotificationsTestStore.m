@@ -85,9 +85,22 @@
     NSMutableArray *notifications = [NSMutableArray new];
 
     for (IndexValueSupport *support in indexes) {
+        NSString *data;
+        switch (support.matchType) {
+            case MatchType_equals:
+                data = support.matchData;
+                break;
+            case MatchType_not_equals:
+                data = [support.matchData stringByAppendingString:@"-"];
+                break;
+            case MatchType_any:
+                data = support.matchData;
+                break;
+        }
+
         SFINotification *obj = [SFINotification new];
         obj.almondMAC = self.almondMac;
-        obj.value = (support.matchType == MatchType_equals) ? support.matchData : [support.matchData stringByAppendingString:@"-"];
+        obj.value = data;
         obj.valueType = support.valueType;
         obj.viewed = NO;
         obj.deviceType = type;

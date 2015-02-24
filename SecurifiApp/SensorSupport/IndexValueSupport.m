@@ -45,7 +45,7 @@
     }
 
     if (_valueFormatter) {
-        [_valueFormatter formatNotificationValue:sensorValue];
+        return [_valueFormatter formatNotificationValue:sensorValue];
     }
 
     NSString *text = self.notificationText;
