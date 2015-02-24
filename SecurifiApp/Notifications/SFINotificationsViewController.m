@@ -42,9 +42,11 @@
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
     self.title = @"Recent Activities"; //todo localize me
 
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
-    doneButton.tintColor = [UIColor blackColor];
-    self.navigationItem.rightBarButtonItem = doneButton;
+    if (!self.enableTestStore) {
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
+        doneButton.tintColor = [UIColor blackColor];
+        self.navigationItem.rightBarButtonItem = doneButton;
+    }
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.separatorInset = UIEdgeInsetsZero;

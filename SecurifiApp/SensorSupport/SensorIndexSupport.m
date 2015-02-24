@@ -730,12 +730,12 @@
             if (type == SFIDevicePropertyType_STATE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
-                s1.iconName = @"17_vibration_off";
+                s1.iconName = @"17_vibration_no";
                 s1.notificationText = @"'s vibration stopped.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
-                s2.iconName = @"17_vibration_no";
+                s2.iconName = @"17_vibration_yes";
                 s2.notificationText = @" detected Vibration.";
 
                 return @[s1, s2];
@@ -771,12 +771,12 @@
             if (type == SFIDevicePropertyType_STATE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
-                s1.iconName = @"18_vibration_off";
+                s1.iconName = @"18_vibration_no";
                 s1.notificationText = @" turned Off.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
-                s2.iconName = @"18_vibration_no";
+                s2.iconName = @"18_vibration_yes";
                 s2.notificationText = @" turned On.";
 
                 return @[s1, s2];
@@ -1406,12 +1406,12 @@
             if (type == SFIDevicePropertyType_BASIC) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"0";
-                s1.iconName = @"40_water_drop_off";
+                s1.iconName = @"40_water_drop_no";
                 s1.notificationText = @" stopped leaking.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"255";
-                s2.iconName = @"40_water_drop_on";
+                s2.iconName = @"40_water_drop_yes";
                 s2.notificationText = @" detected water.";
 
                 return @[s1, s2];
@@ -1461,7 +1461,7 @@
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
-                s1.iconName = @"41_motion_true";
+                s2.iconName = @"41_motion_true";
                 s2.notificationText = @" detected motion.";
 
                 return @[s1, s2];
