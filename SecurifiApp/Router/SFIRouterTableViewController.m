@@ -312,9 +312,7 @@
             return 300;
 
         case DEF_DEVICES_AND_USERS_SECTION:
-            if (indexPath.row > 0) {
-                return 85;
-            }
+            return 85;
 
         case DEF_ROUTER_REBOOT_SECTION:
             if (indexPath.row > 0) {
@@ -482,11 +480,11 @@
 }
 
 - (UITableViewCell *)createWirelessSummaryCell:(UITableView *)tableView {
-    NSString *const CellIdentifier = @"wireless_summary";
+    NSString *const cell_id = @"wireless_summary";
 
-    SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
-        cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
 
     [cell markReuse];
@@ -526,7 +524,7 @@
 }
 
 - (UITableViewCell *)createWirelessSettingCell:(UITableView *)tableView tableRow:(NSInteger)row {
-    static NSString *cell_id = @"wireless_settings";
+    NSString *const cell_id = @"wireless_settings";
 
     SFIRouterSettingsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
@@ -585,11 +583,11 @@
 }
 
 - (UITableViewCell *)createDevicesAndUsersSummaryCell:(UITableView *)tableView {
-    NSString *const CellIdentifier = @"DevicesSummary";
+    NSString *const cell_id = @"device_summary";
 
-    SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
-        cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
 
     [cell markReuse];
@@ -619,7 +617,7 @@
 }
 
 - (UITableViewCell *)createDevicesAndUsersEditCell:(UITableView *)tableView tableRow:(NSInteger)row {
-    NSString *const cell_id = @"DevicesEdit";
+    NSString *const cell_id = @"device_edit";
 
     SFIRouterDevicesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
@@ -653,11 +651,11 @@
 }
 
 - (UITableViewCell *)createSoftwareVersionCell:(UITableView *)tableView {
-    NSString *const CellIdentifier = @"SoftwareCell";
+    NSString *const cell_id = @"software";
 
-    SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
-        cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
 
     [cell markReuse];
@@ -676,11 +674,11 @@
 }
 
 - (UITableViewCell *)createAlmondRebootSummaryCell:(UITableView *)tableView {
-    static NSString *CellIdentifier = @"RebootSummary";
+    NSString *const cell_id = @"reboot_summary";
 
-    SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
-        cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
 
     [cell markReuse];
@@ -711,7 +709,7 @@
 }
 
 - (UITableViewCell *)createAlmondRebootEditCell:(UITableView *)tableView {
-    static NSString *cell_id = @"RebootEdit";
+    NSString *const cell_id = @"reboot_edit";
 
     SFIRouterRebootTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
