@@ -708,17 +708,20 @@
 
 #pragma mark - Sensor layouts
 
-- (void)configureMultiLevelSwitchMinValue:(int)minValue maxValue:(int)maxValue {
+- (void)configureMultiLevelSwitchMinValue:(int)minValue maxValue:(int)sensorMaxValue {
     UIImageView *minImage = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate, 24, 24)];
     [minImage setImage:[UIImage imageNamed:@"dimmer_min.png"]];
     [self addSubview:minImage];
 
     // get initial value and convert to 0-100 scale
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL];
-    float sliderValue = [currentDeviceValue floatValue] * (100 / maxValue);
+    const int slideMaxValue = 100;
+    float ratio = (float)slideMaxValue / (float)sensorMaxValue;
+    float sliderValue = [currentDeviceValue floatValue] * ratio;
+    sliderValue = roundf(sliderValue);
 
     // Display slider
-    UISlider *slider = [self makeSliderWithMinValue:0 maxValue:100 propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+    UISlider *slider = [self makeSliderWithMinValue:0 maxValue:slideMaxValue propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
     [slider setValue:sliderValue animated:NO];
     [self addSubview:slider];
 
