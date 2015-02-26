@@ -880,14 +880,14 @@
             case SFIGenericRouterCommandType_CONNECTED_DEVICES: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.connectedDevices = ls.deviceList;
-                [self tryReloadSection:DEF_DEVICES_AND_USERS_SECTION];
+                [self.tableView reloadData];
                 break;
             }
 
             case SFIGenericRouterCommandType_BLOCKED_MACS: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.blockedDevices = ls.deviceList;
-                [self tryReloadSection:DEF_DEVICES_AND_USERS_SECTION];
+                [self.tableView reloadData];
                 break;
             }
 
@@ -895,7 +895,7 @@
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.wirelessSettings = ls.deviceList;
                 [self.routerSummary updateWirelessSummaryWithSettings:self.wirelessSettings];
-                [self tryReloadSection:DEF_WIRELESS_SETTINGS_SECTION];
+                [self.tableView reloadData];
                 break;
             }
 
