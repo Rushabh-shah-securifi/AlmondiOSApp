@@ -14,7 +14,7 @@
 #import "SFICopyLabel.h"
 
 @interface SFICardView ()
-@property(nonatomic, readonly) float baseYCoordinate;
+@property(nonatomic, readonly) CGFloat baseYCoordinate;
 @property(nonatomic) UIColor *textColor;
 @property(nonatomic) UIFont *headlineFont;
 @property(nonatomic) UIFont *summaryFont;
@@ -46,11 +46,11 @@
 }
 
 - (void)markYOffset:(unsigned int)val {
-    _baseYCoordinate += val;
+    _baseYCoordinate += (CGFloat) val;
 }
 
 - (void)markYOffsetUsingRect:(CGRect)rect addAdditional:(unsigned int)add {
-    _baseYCoordinate += CGRectGetHeight(rect) + add;
+    _baseYCoordinate += CGRectGetHeight(rect) + (CGFloat) add;
 }
 
 - (CGFloat)computedLayoutHeight {
