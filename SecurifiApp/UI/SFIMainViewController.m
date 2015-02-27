@@ -20,8 +20,8 @@
 #import "Analytics.h"
 #import "ScoreboardViewController.h"
 #import "SFIPreferences.h"
-#import "NSData+Conversion.h"
 #import "UIImage+Securifi.h"
+#import "NSObject+SecurifiNotifications.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
@@ -262,7 +262,7 @@
     [[SFIPreferences instance] setLogonAccountNeedsActivationNotification];
 
     if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
-        [self trySendPushNotificationRegistration];
+        [self securifiApplicationTryEnableRemoteNotifications:[UIApplication sharedApplication]];
         [self presentMainView];
     }
     else {
@@ -485,41 +485,6 @@
 - (void)onDidFailToDeregisterForNotifications {
     //todo need to fix false negative notifications; disabled for now
     //[self showToast:@"Sorry! Push Notification was not deregistered."];
-}
-
-- (void)trySendPushNotificationRegistration {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
-    SecurifiConfigurator *config = toolkit.configuration;
-    if (!config.enableNotifications) {
-        return;
-    }
-
-    SFIPreferences *preferences = [SFIPreferences instance];
-
-    if (!preferences.isRegisteredForPushNotification) {
-        //Register for notification
-        // Check to see if this is an iOS 8 device.
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
-            // Register for push in iOS 8.
-            enum UIUserNotificationType types = UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge;
-            [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
-            [[UIApplication sharedApplication] registerForRemoteNotifications];
-        }
-        else {
-            // Register for push in iOS 7 and under.
-            enum UIRemoteNotificationType types = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert;
-            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
-        }
-    }
-
-    NSData *deviceToken = [preferences pushNotificationDeviceToken];
-    //TODO: For test - Remove
-    //deviceToken = @"7ff2a7b3707fe43cdf39e25522250e1257ee184c59ca0d901b452040d85fd794";
-    if (deviceToken != nil) {
-        NSString *str = deviceToken.hexadecimalString;
-        [toolkit asyncRequestRegisterForNotification:str];
-    }
 }
 
 #pragma mark - UIGestureRecognizerDelegate methods
