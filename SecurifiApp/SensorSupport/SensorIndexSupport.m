@@ -1695,7 +1695,13 @@
             s1.iconName = @"tamper";
             s1.notificationText = @" has been Tampered.";
 
-            return @[s1];
+            IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+            s2.matchType = MatchType_equals;
+            s2.matchData = @"false";
+            s2.iconName = @"tamper";
+            s2.notificationText = @" is reset from Tampered.";
+
+            return @[s1, s2];
         };
 
         default: {
