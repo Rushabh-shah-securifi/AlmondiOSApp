@@ -61,10 +61,11 @@
 
 - (void)viewDidLoad {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.enableNotificationsView = toolkit.configuration.enableNotifications;
-    [super viewDidLoad];
+    SecurifiConfigurator *configurator = toolkit.configuration;
 
-    _notificationEnabled = [SecurifiToolkit sharedInstance].configuration.enableNotifications;
+    self.enableNotificationsView = configurator.enableNotifications;
+    _notificationEnabled = configurator.enableNotifications;
+    [super viewDidLoad];
 
     _deviceStatusMessages_locker = [NSObject new];
     [self clearAllDeviceUpdatingState];
@@ -90,7 +91,7 @@
 
     [self initializeNotifications];
     [self initializeAlmondData];
-    
+
     self.isAccountActivatedNotification = [[SFIPreferences instance] isLogonAccountAccountNotificationSet];
 }
 
@@ -153,20 +154,6 @@
                    name:VALIDATE_RESPONSE_NOTIFIER
                  object:nil];
 
-    //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
-    //Push Notification - START
-    /*
-    [center addObserver:self
-               selector:@selector(onNotificationPrefDidChange:)
-                   name:kSFIDidChangeNotificationList
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onNotificationPrefResponse:)
-                   name:NOTIFICATION_PREFERENCE_CHANGE_RESPONSE_NOTIFIER
-                 object:nil];
-    */
-    //Push Notification - END
 }
 
 - (void)initializeAlmondData {
@@ -212,14 +199,8 @@
             NSLog(@"Sensors: requesting device values on new connection");
         }
 
-        //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
-        //Push Notification - START
-        /*
-        //Get Notification Preference List
-        [toolkit asyncRequestNotificationPreferenceList:mac];
-         */
-        //Push Notification - END
-        
+//        [toolkit asyncRequestNotificationPreferenceList:mac];
+
         [self initializeColors:plus];
     }
 
@@ -274,11 +255,11 @@
 
 #pragma mark - Expanded Cell State
 
-- (BOOL)isExpandedCell:(SFIDevice*)device {
+- (BOOL)isExpandedCell:(SFIDevice *)device {
     return [self.expandedDeviceIds containsObject:@(device.deviceID)];
 }
 
-- (void)markExpandedCell:(SFIDevice*)device  {
+- (void)markExpandedCell:(SFIDevice *)device {
     _expandedDeviceIds = [NSSet setWithObject:@(device.deviceID)];
 }
 
@@ -290,7 +271,7 @@
     return [self.expandedDeviceIds count] > 0;
 }
 
-- (void)removeExpandedCellForMissingDevices:(NSArray*)devices {
+- (void)removeExpandedCellForMissingDevices:(NSArray *)devices {
     if (![self hasExpandedCell]) {
         return;
     }
@@ -304,7 +285,7 @@
     _expandedDeviceIds = [NSSet setWithSet:new_ids];
 }
 
--(NSArray*)expandedDevices {
+- (NSArray *)expandedDevices {
     return [self.expandedDeviceIds allObjects];
 }
 
@@ -318,8 +299,8 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     BOOL isAccountActivated = [[SecurifiToolkit sharedInstance] isAccountActivated];
-    if(!isAccountActivated && self.isAccountActivatedNotification){
-        return  85;
+    if (!isAccountActivated && self.isAccountActivatedNotification) {
+        return 85;
     }
     return 0;
 
@@ -328,7 +309,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     //Check if activated or not
     BOOL isAccountActivated = [[SecurifiToolkit sharedInstance] isAccountActivated];
-    if(!isAccountActivated && self.isAccountActivatedNotification){
+    if (!isAccountActivated && self.isAccountActivatedNotification) {
         return [self createActivationNotificationHeader];
     }
     return nil;
@@ -448,7 +429,7 @@
     SFIDeviceType currentDeviceType = device.deviceType;
     NSUInteger height = [self computeSensorRowHeight:device deviceValue:deviceValue];
     BOOL expanded = [self isExpandedCell:device];
-    
+
     NSString *cell_id = [NSString stringWithFormat:@"s_t:%d_h:%ld_e:%d,", currentDeviceType, (unsigned long) height, expanded];
 
     //todo fix me: this attribute should be removed or managed in the toolkit
@@ -479,7 +460,7 @@
     return cell;
 }
 
-- (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor deviceValue:(SFIDeviceValue*)deviceValue {
+- (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor deviceValue:(SFIDeviceValue *)deviceValue {
     BOOL expanded = [self isExpandedCell:currentSensor];
     BOOL tampered = [currentSensor isTampered:deviceValue];
     BOOL notificationsEnabled = self.notificationEnabled;
@@ -704,7 +685,7 @@
 
     SFIDevice *device = cell.device;
 
-    SFIDeviceKnownValues *deviceValues  = [cell.deviceValue knownValuesForProperty:SFIDevicePropertyType_TAMPER];
+    SFIDeviceKnownValues *deviceValues = [cell.deviceValue knownValuesForProperty:SFIDevicePropertyType_TAMPER];
     [deviceValues setBoolValue:NO];
 
     [self showSavingToast];
@@ -718,7 +699,7 @@
 
     SFIDevice *device = cell.device;
 
-    SFIDeviceKnownValues *deviceValues  = [cell.deviceValue knownValuesForProperty:propertyType];
+    SFIDeviceKnownValues *deviceValues = [cell.deviceValue knownValuesForProperty:propertyType];
     deviceValues.value = newValue;
 
     // provisionally update; on mobile cmd response, the actual new values will be set
@@ -735,7 +716,7 @@
 
     SFIDevice *device = cell.device;
 
-    SFIDeviceKnownValues *deviceValues  = [cell.deviceValue knownValuesForPropertyName:propertyName];
+    SFIDeviceKnownValues *deviceValues = [cell.deviceValue knownValuesForPropertyName:propertyName];
     deviceValues.value = newValue;
 
     // provisionally update; on mobile cmd response, the actual new values will be set
@@ -817,6 +798,8 @@
 
 // calls should be coordinated on the main queue
 - (void)setDeviceList:(NSArray *)devices {
+    [self configureNotificationModes:devices];
+
     NSMutableDictionary *table = [NSMutableDictionary dictionary];
 
     int row = 0;
@@ -1031,7 +1014,7 @@
     }
 
     if (newDeviceList.count != newDeviceValueList.count) {
-        ELog(@"Warning: device list and values lists are incongruent, d:%ld, v:%ld", (unsigned long)newDeviceList.count, (unsigned long)newDeviceValueList.count);
+        ELog(@"Warning: device list and values lists are incongruent, d:%ld, v:%ld", (unsigned long) newDeviceList.count, (unsigned long) newDeviceValueList.count);
     }
 
     DLog(@"Changing device value list: %@", newDeviceValueList);
@@ -1223,6 +1206,9 @@
             return;
         }
 
+        // reset the device list state, syncing it with toolkit
+        [self setDeviceList:self.deviceList];
+
         [self.refreshControl endRefreshing];
         [self.tableView reloadData];
     });
@@ -1327,7 +1313,7 @@
 
 #pragma mark - Device updating state and status messages
 
-- (NSString*)deviceLookupKey:(SFIDevice*)device {
+- (NSString *)deviceLookupKey:(SFIDevice *)device {
     return [NSString stringWithFormat:@"d-%d", device.deviceID];
 }
 
@@ -1369,7 +1355,7 @@
     };
 }
 
-- (void)clearDeviceUpdatingState:(SFIDevice*)device {
+- (void)clearDeviceUpdatingState:(SFIDevice *)device {
     if (!device) {
         return;
     }
@@ -1387,18 +1373,18 @@
         [dict removeObjectForKey:device_key];
         _updatingDevices = [NSDictionary dictionaryWithDictionary:dict];
 
-        dict  = [NSMutableDictionary dictionaryWithDictionary:self.deviceStatusMessages];
+        dict = [NSMutableDictionary dictionaryWithDictionary:self.deviceStatusMessages];
         [dict removeObjectForKey:device_key];
         _deviceStatusMessages = [NSDictionary dictionaryWithDictionary:dict];
     };
 }
 
-- (SFIDevice*)tryDeviceForCorrelationId:(sfi_id)c_id {
+- (SFIDevice *)tryDeviceForCorrelationId:(sfi_id)c_id {
     NSNumber *key = @(c_id);
     return self.updatingDevices[key];
 }
 
-- (NSString*)tryDeviceStatusMessage:(SFIDevice*)device {
+- (NSString *)tryDeviceStatusMessage:(SFIDevice *)device {
     NSString *device_key = [self deviceLookupKey:device];
     return self.deviceStatusMessages[device_key];
 }
@@ -1465,5 +1451,32 @@
         [self showToast:failureReason];
     }
 }
+
+#pragma mark - Notification Mode settings
+
+- (void)configureNotificationModes:(NSArray *)devices {
+    //Read from offline data
+    NSArray *notificationList = [[SecurifiToolkit sharedInstance] notificationPrefList:self.almond.almondplusMAC];
+
+    for (SFIDevice *device in devices) {
+        [self configureNotificationMode:device preferences:notificationList];
+    }
+}
+
+- (void)configureNotificationMode:(SFIDevice *)device preferences:(NSArray *)notificationList {
+    sfi_id device_id = device.deviceID;
+
+    //Check if current device ID is in the notification list
+    for (SFINotificationDevice *currentDevice in notificationList) {
+        if (currentDevice.deviceID == device_id) {
+            //Set the notification mode for that notification preference
+            device.notificationMode = currentDevice.notificationMode;
+            return;
+        }
+    }
+
+    device.notificationMode = SFINotificationMode_off;
+}
+
 
 @end

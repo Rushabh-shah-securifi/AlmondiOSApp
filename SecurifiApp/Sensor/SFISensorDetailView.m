@@ -516,29 +516,24 @@
     //Add notification mode control
     UISegmentedControl *control = [self makeNotificationModeSegment:self action:@selector(onNotificationModeChanged:)];
 
-    if (self.device.isNotificationEnabled) {
-        int segment_index;
-        switch (self.device.notificationMode) {
-            case SFINotificationMode_off:
-                segment_index = 2;
-                break;
-            case SFINotificationMode_always:
-                segment_index = 0;
-                break;
-            case SFINotificationMode_home:
-                segment_index = 0;
-                break;
-            case SFINotificationMode_away:
-                segment_index = 1;
-                break;
-            default:
-                segment_index = 0;
-        }
-        control.selectedSegmentIndex = segment_index;
+    int segment_index;
+    switch (self.device.notificationMode) {
+        case SFINotificationMode_off:
+            segment_index = 2;
+            break;
+        case SFINotificationMode_always:
+            segment_index = 0;
+            break;
+        case SFINotificationMode_home:
+            segment_index = 0;
+            break;
+        case SFINotificationMode_away:
+            segment_index = 1;
+            break;
+        default:
+            segment_index = 0;
     }
-    else {
-        control.selectedSegmentIndex = 2; // Off
-    }
+    control.selectedSegmentIndex = segment_index;
 
     [self addSubview:control];
 
