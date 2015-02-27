@@ -10,7 +10,7 @@
 #import "SNLog.h"
 #import "Analytics.h"
 #import "Crashlytics.h"
-#import "NSObject+SecurifiNotifications.h"
+#import "UIApplication+SecurifiNotifications.h"
 
 #define DEFAULT_GA_ID @"UA-52832244-2"
 #define DEFAULT_CRASHLYTICS_KEY @"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3"
@@ -48,13 +48,13 @@
     NSDictionary *remote = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     //Accept push notification when app is not open
     if (remote) {
-        [self securifiApplicationHandleUserDidTapNotification:application];
+        [application securifiApplicationHandleUserDidTapNotification];
         return YES;
     }
 
     NSDictionary *local = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
     if (local) {
-        [self securifiApplicationHandleUserDidTapNotification:application];
+        [application securifiApplicationHandleUserDidTapNotification];
         return YES;
     }
 
@@ -68,7 +68,7 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     DLog(@"Registered for push notifications, device token: %@", deviceToken);
-    [self securifiApplicationDidRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+    [application securifiApplicationDidRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler {
@@ -76,26 +76,26 @@
 
     [self initializeSystem:application];
 
-    BOOL handled = [self securifiApplication:application handleRemoteNotification:userInfo];
+    BOOL handled = [application securifiApplicationHandleRemoteNotification:userInfo];
     enum UIBackgroundFetchResult result = handled? UIBackgroundFetchResultNewData : UIBackgroundFetchResultFailed;
     handler(result);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSLog(@"didReceiveRemoteNotification");
-    [self securifiApplication:application handleRemoteNotification:userInfo];
+    [application securifiApplicationHandleRemoteNotification:userInfo];
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    [self securifiApplicationHandleUserDidTapNotification:application];
+    [application securifiApplicationHandleUserDidTapNotification];
 }
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void (^)())completionHandler {
-    [self securifiApplicationHandleUserDidTapNotification:application];
+    [application securifiApplicationHandleUserDidTapNotification];
 }
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler {
-    [self securifiApplicationHandleUserDidTapNotification:application];
+    [application securifiApplicationHandleUserDidTapNotification];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -147,7 +147,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 
-    [self securifiApplicationTryEnableRemoteNotifications:application];
+    [application securifiApplicationTryEnableRemoteNotifications];
 }
 
 - (void)onMemoryWarning:(id)sender {

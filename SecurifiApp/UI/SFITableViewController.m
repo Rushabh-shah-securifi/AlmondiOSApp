@@ -13,6 +13,7 @@
 #import "UIFont+Securifi.h"
 #import "SFINotificationsViewController.h"
 #import "SFINotificationStatusBarButtonItem.h"
+#import "UIApplication+SecurifiNotifications.h"
 
 @interface SFITableViewController () <MBProgressHUDDelegate>
 @property(nonatomic, readonly) BOOL isHudHidden;
@@ -114,7 +115,7 @@
 
     [center addObserver:self
                selector:@selector(onShowNotifications:)
-                   name:@"kApplicationDidBecomeActiveOnNotificationTap" object:nil];
+                   name:kApplicationDidBecomeActiveOnNotificationTap object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -21,7 +21,7 @@
 #import "ScoreboardViewController.h"
 #import "SFIPreferences.h"
 #import "UIImage+Securifi.h"
-#import "NSObject+SecurifiNotifications.h"
+#import "UIApplication+SecurifiNotifications.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
@@ -262,7 +262,8 @@
     [[SFIPreferences instance] setLogonAccountNeedsActivationNotification];
 
     if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
-        [self securifiApplicationTryEnableRemoteNotifications:[UIApplication sharedApplication]];
+        UIApplication *application = [UIApplication sharedApplication];
+        [application securifiApplicationTryEnableRemoteNotifications];
         [self presentMainView];
     }
     else {

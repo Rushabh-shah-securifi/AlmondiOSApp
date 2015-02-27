@@ -3,15 +3,16 @@
 // Copyright (c) 2015 Securifi Ltd. All rights reserved.
 //
 
-#import "NSObject+SecurifiNotifications.h"
+#import "UIApplication+SecurifiNotifications.h"
 #import "SFIPreferences.h"
 #import "NSData+Conversion.h"
 #import "SensorSupport.h"
 
+static NSString *const kApplicationDidBecomeActiveOnNotificationTap = @"kApplicationDidBecomeActiveOnNotificationTap";
 
-@implementation NSObject (SecurifiNotifications)
+@implementation UIApplication (SecurifiNotifications)
 
-- (void)securifiApplicationTryEnableRemoteNotifications:(UIApplication *)application {
+- (void)securifiApplicationTryEnableRemoteNotifications {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
     SecurifiConfigurator *config = toolkit.configuration;
@@ -22,7 +23,7 @@
     SFIPreferences *preferences = [SFIPreferences instance];
     if (!preferences.isRegisteredForPushNotification) {
         // register with APN and then on callback we register with cloud
-        [self securifiApplicationRegisterForRemoteNotifications:application];
+        [self securifiApplicationRegisterForRemoteNotifications];
         return;
     }
 
@@ -50,7 +51,7 @@
 
 // returns YES if notification can be handled (matches an almond)
 // else returns NO
-- (BOOL)securifiApplication:(UIApplication *)application handleRemoteNotification:(NSDictionary *)userInfo {
+- (BOOL)securifiApplicationHandleRemoteNotification:(NSDictionary *)userInfo {
     SFINotification *notification = [SFINotification parsePayload:userInfo];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
@@ -73,35 +74,35 @@
     SensorSupport *sensorSupport = [SensorSupport new];
     [sensorSupport resolve:notification.deviceType index:notification.valueType value:notification.value];
 
-    NSString *msg = [NSString stringWithFormat:@"%@: %@", notification.deviceName, sensorSupport.notificationText];
+    NSString *msg = [NSString stringWithFormat:@"%@%@", notification.deviceName, sensorSupport.notificationText];
 
     UILocalNotification *localNotice = [UILocalNotification new];
     localNotice.alertBody = msg;
     localNotice.soundName = UILocalNotificationDefaultSoundName;
 
-    [application presentLocalNotificationNow:localNotice];
+    [self presentLocalNotificationNow:localNotice];
 
     return YES;
 }
 
-- (void)securifiApplicationHandleUserDidTapNotification:(UIApplication *)application {
-    if (application.applicationState == UIApplicationStateInactive) {
+- (void)securifiApplicationHandleUserDidTapNotification {
+    if (self.applicationState == UIApplicationStateInactive) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-        [center postNotificationName:@"kApplicationDidBecomeActiveOnNotificationTap" object:nil];
+        [center postNotificationName:kApplicationDidBecomeActiveOnNotificationTap object:nil];
     }
 }
 
-- (void)securifiApplicationRegisterForRemoteNotifications:(UIApplication *)application {
-    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
+- (void)securifiApplicationRegisterForRemoteNotifications {
+    if ([self respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
         // iOS 8 Notifications
         enum UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
-        [application registerForRemoteNotifications];
+        [self registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
+        [self registerForRemoteNotifications];
     }
     else {
         // iOS < 8 Notifications
         enum UIRemoteNotificationType types = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert;
-        [application registerForRemoteNotificationTypes:types];
+        [self registerForRemoteNotificationTypes:types];
     }
 }
 
