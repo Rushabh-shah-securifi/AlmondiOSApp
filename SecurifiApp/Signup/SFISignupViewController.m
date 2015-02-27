@@ -6,9 +6,8 @@
 //  Copyright (c) 2013 Securifi. All rights reserved.
 //
 
+#import <MBProgressHUD/MBProgressHUD.h>
 #import "SFISignupViewController.h"
-#import "SNLog.h"
-#import "MBProgressHUD.h"
 #import "Analytics.h"
 #import "UIFont+Securifi.h"
 
@@ -21,7 +20,6 @@
 #define FOOTER_SIGNUP_DIFF_EMAIL            3
 
 @interface SFISignupViewController () <UITextFieldDelegate>
-
 @property(nonatomic) UIWebView *webview;
 @property(nonatomic) UITextField *activeTextField;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -35,17 +33,18 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = NSLocalizedString(@"password.hud.Changing password...", @"Changing password...");
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+
     NSDictionary *titleAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
             NSFontAttributeName : [UIFont standardNavigationTitleFont]
     };
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
     self.navigationItem.title = NSLocalizedString(@"signup.navbar-title.Sign up", @"Sign up");
-
-    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.dimBackground = YES;
-    [self.view addSubview:_HUD];
 
     self.scrollView.scrollEnabled = NO;
     self.scrollView.scrollsToTop = NO;
@@ -57,8 +56,8 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
 
-    self.emailID.delegate = self;
     self.password.delegate = self;
+    self.emailID.delegate = self;
     self.confirmPassword.delegate = self;
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -118,7 +117,7 @@
     UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.frame];
 
     NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"termsofuse" ofType:@"html"];
-    NSString* htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+    NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
     [webView loadHTMLString:htmlString baseURL:nil];
 
     self.webview = webView;
@@ -137,14 +136,15 @@
     self.navigationItem.rightBarButtonItem = continueButton;
     [self enableContinueButton:NO];
 
-    [UIView animateWithDuration:0.5 animations:^() {
-        self.webview.alpha = 0.0;
-        self.scrollView.alpha = 1.0;
-
-    } completion:^(BOOL finished) {
-        [self.webview removeFromSuperview];
-        self.webview = nil;
-    }];
+    [UIView animateWithDuration:0.5
+                     animations:^() {
+                         self.webview.alpha = 0.0;
+                         self.scrollView.alpha = 1.0;
+                     }
+                     completion:^(BOOL finished) {
+                         [self.webview removeFromSuperview];
+                         self.webview = nil;
+                     }];
 }
 
 - (void)onAcceptedTermsAndConditions {
@@ -215,7 +215,7 @@
             break;
         }
 
-        default:   {
+        default: {
             return;
         }
     }
@@ -330,7 +330,7 @@
     }
     else if (textField == self.confirmPassword) {
         [textField resignFirstResponder];
-        SFICredentialsValidator *validator = [[SFICredentialsValidator alloc]init];
+        SFICredentialsValidator *validator = [[SFICredentialsValidator alloc] init];
         PasswordStrengthType pwdStrength = [validator validatePassword:self.password.text];
         [self displayPasswordIndicator:pwdStrength];
         [self tryEnableContinueButton];
@@ -491,8 +491,8 @@
 
     SignupResponse *obj = (SignupResponse *) [data valueForKey:@"data"];
 
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.Reason);
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.Reason);
 
     if (obj.isSuccessful) {
         [self displayScreenToLogin];
@@ -507,13 +507,14 @@
             case 2: {
                 NSString *format = NSLocalizedString(@"The password should be %d - %d characters long.", @"The password should be %d - %d characters long.");
                 failureReason = [NSString stringWithFormat:format, PWD_MIN_LENGTH, PWD_MAX_LENGTH];
-            }
                 break;
+            }
 
-            case 3:
+            case 3: {
                 failureReason = NSLocalizedString(@"An account already exists with this email.", @"An account already exists with this email.");
                 [self setFooterForTag:FOOTER_SIGNUP_DIFF_EMAIL];
                 break;
+            }
 
             case 4:
                 //Ready for login
@@ -576,7 +577,7 @@
             default:
                 break;
         }
-        
+
         [self setOopsMessage:failureReason];
     }
 }
@@ -585,9 +586,11 @@
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
-- (void)setOopsMessage:(NSString*)msg {
-    self.headingLabel.text = NSLocalizedString(@"Oops!", @"Oops!");
-    self.subHeadingLabel.text = msg;
+- (void)setOopsMessage:(NSString *)msg {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.headingLabel.text = NSLocalizedString(@"Oops!", @"Oops!");
+        self.subHeadingLabel.text = msg;
+    });
 }
 
 @end

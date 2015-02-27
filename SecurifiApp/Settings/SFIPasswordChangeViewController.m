@@ -10,31 +10,24 @@
 #import "MBProgressHUD.h"
 
 @interface SFIPasswordChangeViewController ()
-
 @property(nonatomic) UITextField *activeTextField;
+@property(nonatomic, readonly) MBProgressHUD *HUD;
 @end
 
 
-
 @implementation SFIPasswordChangeViewController
-@synthesize lblPasswordStrength, passwordStrengthIndicator;
-@synthesize changedPassword, confirmPassword, currentpassword;
-@synthesize scrollView, headingLabel;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-     self.navigationItem.rightBarButtonItem.enabled = NO;
+
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = NSLocalizedString(@"password.hud.Changing password...", @"Changing password...");
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+
+    self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -54,29 +47,21 @@
                                                   object:nil];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 #pragma mark - Button Handlers
-- (IBAction)doneButtonHandler:(id)sender{
+
+- (IBAction)doneButtonHandler:(id)sender {
     //Send Password change command
+    [self.HUD show:YES];
+    [self.HUD hide:YES afterDelay:10];
     [self sendUserPasswordChangeRequest];
 }
-- (IBAction)cancelButtonHandler:(id)sender{
+
+- (IBAction)cancelButtonHandler:(id)sender {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -84,23 +69,23 @@
 #pragma mark - Password strength
 
 - (void)displayPasswordIndicator:(PasswordStrengthType)pwdStrength {
-    if(![self.confirmPassword.text isEqualToString:self.changedPassword.text]){
+    if (![self.confirmPassword.text isEqualToString:self.changedPassword.text]) {
         self.passwordStrengthIndicator.progress = 0.1;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
         self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Mismatch", @"Password: Mismatch");
-         self.navigationItem.rightBarButtonItem.enabled = NO;
+        self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     else if (pwdStrength == PasswordStrengthTypeTooShort) {
         self.passwordStrengthIndicator.progress = 0.2;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
         self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Too Short", @"Password: Too Short");
-         self.navigationItem.rightBarButtonItem.enabled = NO;
+        self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     else if (pwdStrength == PasswordStrengthTypeTooLong) {
         self.passwordStrengthIndicator.progress = 0.2;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
         self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Too Long", @"Password: Too Long");
-         self.navigationItem.rightBarButtonItem.enabled = NO;
+        self.navigationItem.rightBarButtonItem.enabled = NO;
     }
     else if (pwdStrength == PasswordStrengthTypeWeak) {
         self.passwordStrengthIndicator.progress = 0.4;
@@ -123,6 +108,7 @@
 }
 
 #pragma mark - UITextFieldDelegate methods
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     self.activeTextField = textField;
 }
@@ -147,7 +133,7 @@
     else if (textField == self.confirmPassword) {
         [textField resignFirstResponder];
 
-        SFICredentialsValidator *validator = [[SFICredentialsValidator alloc]init];
+        SFICredentialsValidator *validator = [[SFICredentialsValidator alloc] init];
         PasswordStrengthType pwdStrength = [validator validatePassword:self.changedPassword.text];
         [self displayPasswordIndicator:pwdStrength];
     }
@@ -160,15 +146,11 @@
 }
 
 #pragma mark - Cloud Command : Sender and Receivers
-- (void)sendUserPasswordChangeRequest {
-    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = NSLocalizedString(@"password.hud.Changing password...", @"Changing password...");
-    _HUD.dimBackground = YES;
-    [self.navigationController.view addSubview:_HUD];
-    [self.HUD show:YES];
 
-    [[SecurifiToolkit sharedInstance] asyncRequestChangeCloudPassword:currentpassword.text changedPwd:changedPassword.text];
+- (void)sendUserPasswordChangeRequest {
+    NSString *oldPwd = self.currentpassword.text;
+    NSString *newPwd = self.changedPassword.text;
+    [[SecurifiToolkit sharedInstance] asyncRequestChangeCloudPassword:oldPwd changedPwd:newPwd];
 }
 
 - (void)userPasswordChangeResponseCallback:(id)sender {
@@ -177,10 +159,13 @@
 
     ChangePasswordResponse *obj = (ChangePasswordResponse *) [data valueForKey:@"data"];
 
-    NSLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    NSLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
 
-    [self.HUD hide:YES];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
+
     if (obj.isSuccessful) {
         //Dismiss this view
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
@@ -220,10 +205,12 @@
                 failureReason = NSLocalizedString(@"Sorry! Password change was unsuccessful.", @"Sorry! Password change was unsuccessful.");
         }
 
-        self.passwordStrengthIndicator.progress = 0.1;
-        self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = failureReason;
-        self.navigationItem.rightBarButtonItem.enabled = NO;
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            self.passwordStrengthIndicator.progress = 0.1;
+            self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
+            self.lblPasswordStrength.text = failureReason;
+            self.navigationItem.rightBarButtonItem.enabled = NO;
+        });
     }
 }
 

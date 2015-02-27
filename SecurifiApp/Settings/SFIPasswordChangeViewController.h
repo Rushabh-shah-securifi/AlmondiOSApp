@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-@class MBProgressHUD;
 @interface SFIPasswordChangeViewController : UIViewController
 
 @property(weak, nonatomic) IBOutlet UILabel *headingLabel;
@@ -19,7 +18,6 @@
 @property(weak, nonatomic) IBOutlet UITextField *changedPassword;
 @property(weak, nonatomic) IBOutlet UITextField *confirmPassword;
 
-@property(nonatomic, readonly) MBProgressHUD *HUD;
 
 - (IBAction)doneButtonHandler:(id)sender;
 - (IBAction)cancelButtonHandler:(id)sender;
