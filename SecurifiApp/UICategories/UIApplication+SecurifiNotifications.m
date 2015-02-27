@@ -8,7 +8,7 @@
 #import "NSData+Conversion.h"
 #import "SensorSupport.h"
 
-static NSString *const kApplicationDidBecomeActiveOnNotificationTap = @"kApplicationDidBecomeActiveOnNotificationTap";
+NSString *const kApplicationDidBecomeActiveOnNotificationTap = @"kApplicationDidBecomeActiveOnNotificationTap";
 
 @implementation UIApplication (SecurifiNotifications)
 
