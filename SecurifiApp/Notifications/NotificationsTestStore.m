@@ -58,6 +58,25 @@
 
 }
 
+- (void)markDeleted:(SFINotification *)notification {
+    NSMutableDictionary *new_d = [NSMutableDictionary dictionary];
+
+    for (NSDate *bucket in self.buckets) {
+        NSMutableArray *new_n = [NSMutableArray array];
+
+        NSArray *notifications = [self notificationsForBucket:bucket];
+        for (SFINotification *n in notifications) {
+            if (n.notificationId != notification.notificationId) {
+                [new_n addObject:n];
+            }
+        }
+
+        new_d[bucket] = new_n;
+    }
+
+    self.notifications = new_d;
+}
+
 - (NSArray *)notificationsForBucket:(NSDate *)bucket {
     NSArray *notifications = self.notifications[bucket];
     return notifications;
@@ -67,6 +86,8 @@
     NSDate *bucket = [NSDate date];
     self.buckets = @[bucket];
 
+    long n_id = 0;
+
     NSMutableArray *notifications = [NSMutableArray new];
     for (unsigned int index = 0; index <= SFIDeviceType_count; index++) {
         SFIDeviceType type = (SFIDeviceType) index;
@@ -74,14 +95,16 @@
         SensorIndexSupport *support = [SensorIndexSupport new];
         NSArray *indexes = [support indexesFor:type];
 
-        NSArray *array = [self makeNotificationsFor:indexes type:type];
+        NSArray *array = [self makeNotificationsFor:indexes type:type notificationId:n_id];
         [notifications addObjectsFromArray:array];
+
+        n_id += array.count;
     }
 
     self.notifications = @{bucket : notifications};
 }
 
-- (NSArray *)makeNotificationsFor:(NSArray *)indexes type:(SFIDeviceType)type {
+- (NSArray *)makeNotificationsFor:(NSArray *)indexes type:(SFIDeviceType)type notificationId:(long)n_id {
     NSMutableArray *notifications = [NSMutableArray new];
 
     for (IndexValueSupport *support in indexes) {
@@ -98,7 +121,10 @@
                 break;
         }
 
+        n_id++;
+
         SFINotification *obj = [SFINotification new];
+        obj.notificationId = n_id;
         obj.almondMAC = self.almondMac;
         obj.value = data;
         obj.valueType = support.valueType;
