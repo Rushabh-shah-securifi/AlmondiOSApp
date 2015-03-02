@@ -476,16 +476,17 @@
 }
 
 - (void)onDidFailToRegisterForNotifications {
+    NSLog(@"Failed to register push notification token with cloud");
     [self showToast:@"Sorry! Push Notification was not registered."];
 }
 
 - (void)onDidDeregisterForNotifications {
-    [self showToast:@"Push Notification was successfully deregistered."];
+//    [self showToast:@"Push Notification was successfully deregistered."];
 }
 
 - (void)onDidFailToDeregisterForNotifications {
-    //todo need to fix false negative notifications; disabled for now
-    //[self showToast:@"Sorry! Push Notification was not deregistered."];
+    NSLog(@"Failed to remove push notification token registration with cloud");
+    [self showToast:@"Sorry! Push Notification was not deregistered."];
 }
 
 #pragma mark - UIGestureRecognizerDelegate methods
