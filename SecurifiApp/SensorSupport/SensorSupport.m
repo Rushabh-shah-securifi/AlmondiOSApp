@@ -7,6 +7,7 @@
 #import "SensorIndexSupport.h"
 #import "IndexValueSupport.h"
 
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
 @interface SensorSupport ()
 @property(nonatomic) SFIDeviceType deviceType;
@@ -36,7 +37,7 @@
     NSString *const defaultIconName = @"n_default_device";
 
     if (self.valueSupport == nil) {
-        return [UIImage imageNamed:defaultIconName];
+        return [self imageNamed:defaultIconName];
     }
 
     NSString *name = self.valueSupport.iconName;
@@ -45,7 +46,7 @@
     }
 
     name = [@"n_" stringByAppendingString:name];
-    return [UIImage imageNamed:name];
+    return [self imageNamed:name];
 }
 
 - (NSString *)notificationText {
@@ -59,6 +60,29 @@
     }
 
     return text;
+}
+
+- (UIImage*)imageNamed:(NSString*)name {
+    UIImage *image = [UIImage imageNamed:name];
+
+    if (![SensorSupport systemVersionAtLeast8]) {
+        // on ios 7.1 the template configuration mode set for each icon in xcode is not honored
+        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    }
+
+    return image;
+}
+
++ (BOOL)systemVersionAtLeast8 {
+    static BOOL _systemVersionChecked = NO;
+    static BOOL _systemVersionAtLeast8;
+
+    if (!_systemVersionChecked) {
+        _systemVersionAtLeast8 = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0");
+        _systemVersionChecked = YES;
+    }
+
+    return _systemVersionAtLeast8;
 }
 
 
