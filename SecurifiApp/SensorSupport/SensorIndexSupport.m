@@ -1650,11 +1650,21 @@
 
         case SFIDeviceType_HueLamp_48:
             break;
-        case SFIDeviceType_SecurifiSmartSwitch_50: {
-            //todo get spec from shridevi
-            /*
 
-             */
+        case SFIDeviceType_SecurifiSmartSwitch_50: {
+            if (type == SFIDevicePropertyType_SWITCH_BINARY) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"false";
+                s1.iconName = @"50_metering_off";
+                s1.notificationText = @" is turned Off.";
+
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"true";
+                s2.iconName = @"50_metering_on";
+                s2.notificationText = @" is turned On.";
+
+                return @[s1, s2];
+            }
 
             break;
         };
