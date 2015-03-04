@@ -62,10 +62,10 @@
             name = @"connection_status_04.png";
             break;
         case SFICloudStatusStateAtHome:
-            name = @"connection_status_05.png";
+            name = @"almond_mode_home";
             break;
         case SFICloudStatusStateAway:
-            name = @"connection_status_06.png";
+            name = @"almond_mode_away";
             break;
         default:
             return nil;
