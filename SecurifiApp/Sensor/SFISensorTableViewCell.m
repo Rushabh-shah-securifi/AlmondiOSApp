@@ -420,7 +420,7 @@
         case SFIDeviceType_RemoteControl_18:
         case SFIDeviceType_Keypad_20:
         case SFIDeviceType_OccupancySensor_24:
-        case SFIDeviceType_SimpleMetering_28:
+        case SFIDeviceType_ZigbeeDoorLock_28:
         case SFIDeviceType_ColorControl_29:
         case SFIDeviceType_PressureSensor_30:
         case SFIDeviceType_FlowSensor_31:

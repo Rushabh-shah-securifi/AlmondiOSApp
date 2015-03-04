@@ -210,7 +210,7 @@
         case SFIDeviceType_LightSensor_25:
         case SFIDeviceType_WindowCovering_26:
         case SFIDeviceType_TemperatureSensor_27:
-        case SFIDeviceType_SimpleMetering_28:
+        case SFIDeviceType_ZigbeeDoorLock_28:
         case SFIDeviceType_ColorControl_29:
         case SFIDeviceType_PressureSensor_30:
         case SFIDeviceType_FlowSensor_31:
@@ -1006,7 +1006,7 @@
         case SFIDeviceType_LightSensor_25:
         case SFIDeviceType_WindowCovering_26:
         case SFIDeviceType_TemperatureSensor_27:
-        case SFIDeviceType_SimpleMetering_28:
+        case SFIDeviceType_ZigbeeDoorLock_28:
         case SFIDeviceType_ColorControl_29:
         case SFIDeviceType_PressureSensor_30:
         case SFIDeviceType_FlowSensor_31:

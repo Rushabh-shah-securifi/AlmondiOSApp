@@ -247,6 +247,16 @@
                 return @[s1, s2];
             }
 
+            if (type == SFIDevicePropertyType_USER_CODE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = nil;
+                s1.iconName = @"05_door_lock_locked";
+                s1.notificationText = @"'s pin code changed.";
+
+                return @[s1];
+            }
+
             break;
         };
 
@@ -1157,8 +1167,7 @@
             break;
         };
 
-        case SFIDeviceType_SimpleMetering_28: {
-            //todo this type has been reassigned!!
+        case SFIDeviceType_ZigbeeDoorLock_28: {
             /*
                 <Sensor
                     name="ZigbeeDoorLock"
@@ -1207,6 +1216,16 @@
                 s3.notificationText = @" is Unlocked.";
 
                 return @[s1, s2, s3];
+            }
+
+            if (type == SFIDevicePropertyType_USER_CODE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = nil;
+                s1.iconName = @"28_door_lock_locked";
+                s1.notificationText = @"'s pin code changed.";
+
+                return @[s1];
             }
 
             break;
