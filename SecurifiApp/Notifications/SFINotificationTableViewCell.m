@@ -79,7 +79,13 @@
     CGFloat message_x = left_padding + date_width + padding + circle_width + padding;
     rect = CGRectMake(message_x, 5, cell_width - message_x - padding, circle_width);
     self.messageTextField = [[UITextView alloc] initWithFrame:rect];
-    self.messageTextField.userInteractionEnabled = NO;
+    // allow copy but not edit/paste
+    self.messageTextField.userInteractionEnabled = YES;
+    self.messageTextField.editable = NO;
+    // remove left margin
+    self.messageTextField.textContainer.lineFragmentPadding = 0;
+    self.messageTextField.textContainerInset = UIEdgeInsetsZero;
+    // vertically center the content
     [self.messageTextField addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
 
     [self.contentView addSubview:self.dateLabel];
