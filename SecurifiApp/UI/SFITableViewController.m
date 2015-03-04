@@ -164,6 +164,7 @@
 
 - (void)onAlmondModeChangeDidComplete:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
+        [self markCloudStatusIcon];
         [self.HUD hide:YES];
     });
 }
@@ -260,6 +261,8 @@
             return SFICloudStatusStateAtHome;
         case SFIAlmondMode_away:
             return SFICloudStatusStateAway;
+
+        case SFIAlmondMode_unknown:
         default:
             // should never happen
             return SFICloudStatusStateAtHome;
