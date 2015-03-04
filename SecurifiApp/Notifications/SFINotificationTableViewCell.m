@@ -24,6 +24,10 @@
 
 @implementation SFINotificationTableViewCell
 
+- (void)dealloc {
+    [self removeTextViewObserver];
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
 
@@ -77,6 +81,7 @@
     self.messageTextField = [[UITextView alloc] initWithFrame:rect];
 //    self.messageTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     self.messageTextField.userInteractionEnabled = NO;
+    [self.messageTextField addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
 
     [self.contentView addSubview:self.dateLabel];
     [self.contentView addSubview:self.verticalLine];
@@ -101,9 +106,15 @@
 }
 
 - (void)clearContentView {
+    [self removeTextViewObserver];
+
     for (UIView *view in self.contentView.subviews) {
         [view removeFromSuperview];
     }
+}
+
+- (void)removeTextViewObserver {
+    [self.messageTextField removeObserver:self forKeyPath:@"contentSize"];
 }
 
 - (void)setNotification:(SFINotification *)notification {
@@ -186,6 +197,21 @@
 
 - (void)setIcon {
     self.iconView.image = self.sensorSupport.notificationImage;
+}
+
+// center the message text inside the view
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    UITextView *textView = object;
+
+    CGFloat boundsHeight = CGRectGetHeight(textView.bounds);
+    CGFloat contentHeight = textView.contentSize.height;
+
+    CGFloat topOffset = (CGFloat) ((boundsHeight - contentHeight * textView.zoomScale) / 2.0);
+    if (topOffset < 0) {
+        topOffset = 0;
+    }
+
+    textView.contentOffset = CGPointMake(0, -topOffset);
 }
 
 @end
