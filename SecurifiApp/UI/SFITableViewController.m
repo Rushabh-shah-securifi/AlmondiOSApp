@@ -273,6 +273,9 @@
 
 - (void)markAlmondMac:(NSString *)almondMac {
     _almondMac = [almondMac copy];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self markCloudStatusIcon];
+    });
 }
 
 - (void)showHUD:(NSString *)text {
