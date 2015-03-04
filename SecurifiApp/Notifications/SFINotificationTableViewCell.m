@@ -79,7 +79,6 @@
     CGFloat message_x = left_padding + date_width + padding + circle_width + padding;
     rect = CGRectMake(message_x, 5, cell_width - message_x - padding, circle_width);
     self.messageTextField = [[UITextView alloc] initWithFrame:rect];
-//    self.messageTextField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     self.messageTextField.userInteractionEnabled = NO;
     [self.messageTextField addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
 
@@ -178,7 +177,7 @@
             NSFontAttributeName : [UIFont securifiBoldFont],
             NSForegroundColorAttributeName : [UIColor blackColor],
     };
-    NSString *deviceName = notification.deviceName; //[notification.deviceName stringByAppendingString:@" "]; // add space before appending notification msg
+    NSString *deviceName = notification.deviceName;
     NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:deviceName attributes:attr];
 
     attr = @{
@@ -200,7 +199,7 @@
 }
 
 // center the message text inside the view
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     UITextView *textView = object;
 
     CGFloat boundsHeight = CGRectGetHeight(textView.bounds);
