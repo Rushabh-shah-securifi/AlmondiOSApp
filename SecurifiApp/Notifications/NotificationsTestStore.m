@@ -32,20 +32,6 @@
     return nil;
 }
 
-- (NSArray *)fetchNotificationsForBucket:(NSDate *)bucket start:(NSUInteger)start limit:(NSUInteger)limit {
-    NSArray *notifications = [self notificationsForBucket:bucket];
-    if (start >= notifications.count) {
-        return @[];
-    }
-
-    if (limit > notifications.count) {
-        limit = notifications.count;
-    }
-
-    NSRange range = NSMakeRange(start, limit);
-    return [notifications subarrayWithRange:range];
-}
-
 - (SFINotification *)fetchNotificationForBucket:(NSDate *)bucket index:(NSUInteger)pos {
     NSArray *notifications = [self notificationsForBucket:bucket];
     if (pos > notifications.count) {
@@ -55,6 +41,10 @@
 }
 
 - (void)markViewed:(SFINotification *)notification {
+
+}
+
+- (void)markAllViewedTo:(SFINotification *)notification {
 
 }
 

@@ -56,6 +56,10 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    // on dismissing the view we mark all that were being shown as "viewed"
+    SFINotification *mostRecent = [self mostRecentNotification];
+    [self.store markAllViewedTo:mostRecent];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -155,6 +159,15 @@
 }
 
 #pragma mark - Buckets and Notification loading
+
+- (SFINotification *)mostRecentNotification {
+    NSDate *bucket = [self tryGetBucket:0];
+    if (bucket == nil) {
+        return nil;
+    }
+
+    return [self tryGetNotificationForBucket:bucket row:0];
+}
 
 - (void)resetBucketsAndNotifications {
     self.buckets = [self.store fetchDateBuckets:365];
