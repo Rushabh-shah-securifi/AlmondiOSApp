@@ -853,7 +853,7 @@
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"2";
-                s2.iconName = @"19_keyfob_perimeter_armed";
+                s2.iconName = @"19_key_fob_armed";
                 s2.notificationText = @" is Perimeter Armed.";
 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
