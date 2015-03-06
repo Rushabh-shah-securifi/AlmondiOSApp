@@ -798,7 +798,7 @@
 
 // calls should be coordinated on the main queue
 - (void)setDeviceList:(NSArray *)devices {
-    [self configureNotificationModes:devices];
+    [self configureNotificationModesForDevices:devices];
 
     NSMutableDictionary *table = [NSMutableDictionary dictionary];
 
@@ -1454,7 +1454,7 @@
 
 #pragma mark - Notification Mode settings
 
-- (void)configureNotificationModes:(NSArray *)devices {
+- (void)configureNotificationModesForDevices:(NSArray *)devices {
     //Read from offline data
     NSArray *notificationList = [[SecurifiToolkit sharedInstance] notificationPrefList:self.almond.almondplusMAC];
 

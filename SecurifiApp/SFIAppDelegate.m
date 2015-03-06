@@ -22,7 +22,7 @@
 
 - (SecurifiConfigurator *)toolkitConfigurator {
     SecurifiConfigurator *config = [SecurifiConfigurator new];
-    config.enableScoreboard = YES;      // uncomment for debug builds
+//    config.enableScoreboard = YES;      // uncomment for debug builds
     config.enableNotifications = YES;   // uncomment to activate; off by default
     return config;
 }
