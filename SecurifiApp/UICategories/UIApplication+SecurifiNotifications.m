@@ -9,6 +9,7 @@
 #import "SensorSupport.h"
 
 NSString *const kApplicationDidBecomeActiveOnNotificationTap = @"kApplicationDidBecomeActiveOnNotificationTap";
+NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifications";
 
 @implementation UIApplication (SecurifiNotifications)
 
@@ -20,10 +21,14 @@ NSString *const kApplicationDidBecomeActiveOnNotificationTap = @"kApplicationDid
         return;
     }
 
+    // update app badge icon and set up event handling to keep the badge updated as user views notifications
+    [self updateSecurifiNotificationsCount];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSecurifiNotificationsCount) name:kApplicationDidViewNotifications object:nil];
+
     SFIPreferences *preferences = [SFIPreferences instance];
     if (!preferences.isRegisteredForPushNotification) {
         // register with APN and then on callback we register with cloud
-        [self securifiApplicationRegisterForRemoteNotifications];
+        [self securifiApplicationRegisterForNotifications];
         return;
     }
 
@@ -76,15 +81,21 @@ NSString *const kApplicationDidBecomeActiveOnNotificationTap = @"kApplicationDid
 
     NSString *msg = [NSString stringWithFormat:@"%@%@", notification.deviceName, sensorSupport.notificationText];
 
-    UILocalNotification *localNotice = [UILocalNotification new];
-    localNotice.alertBody = msg;
-    localNotice.soundName = UILocalNotificationDefaultSoundName;
+    UILocalNotification *notice = [UILocalNotification new];
+    notice.fireDate = [NSDate dateWithTimeIntervalSinceNow:0.5];
+    notice.hasAction = NO;
+    notice.alertBody = msg;
+    notice.alertAction = nil;//@"View";
+    notice.soundName = nil; // remote notification itself will trigger a sound; UILocalNotificationDefaultSoundName;
+    notice.applicationIconBadgeNumber = [toolkit countUnviewedNotifications];
 
-    [self presentLocalNotificationNow:localNotice];
+    [self scheduleLocalNotification:notice];
 
     return YES;
 }
 
+// post a notification when the user taps on a notification outside of the app
+// other parts of the UI can trap this notification and present the Notifications view
 - (void)securifiApplicationHandleUserDidTapNotification {
     if (self.applicationState == UIApplicationStateInactive) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -92,11 +103,13 @@ NSString *const kApplicationDidBecomeActiveOnNotificationTap = @"kApplicationDid
     }
 }
 
-- (void)securifiApplicationRegisterForRemoteNotifications {
+// register for local and remote notifications with iOS
+- (void)securifiApplicationRegisterForNotifications {
     if ([self respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
         // iOS 8 Notifications
         enum UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
-        [self registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:types categories:nil]];
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+        [self registerUserNotificationSettings:settings];
         [self registerForRemoteNotifications];
     }
     else {
@@ -104,7 +117,15 @@ NSString *const kApplicationDidBecomeActiveOnNotificationTap = @"kApplicationDid
         enum UIRemoteNotificationType types = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert;
         [self registerForRemoteNotificationTypes:types];
     }
+
+    [self setApplicationIconBadgeNumber:0];
 }
 
+// set the app's badge icon to the count of 'unviewed' notifications
+- (void)updateSecurifiNotificationsCount {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSInteger count = [toolkit countUnviewedNotifications];
+    [self setApplicationIconBadgeNumber:count];
+}
 
 @end

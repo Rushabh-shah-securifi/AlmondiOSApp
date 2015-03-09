@@ -29,6 +29,8 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 - (void)markRouterScreen;
 
+- (void)markNotificationsScreen;
+
 - (void)markLoginForm;
 
 - (void)markAlmondAffiliation;

@@ -96,6 +96,10 @@
     [self trackScreen:@"Router"];
 }
 
+- (void)markNotificationsScreen {
+    [self trackScreen:@"Notifications"];
+}
+
 - (void)markLoginForm {
     [self trackScreen:@"Login"];
 }

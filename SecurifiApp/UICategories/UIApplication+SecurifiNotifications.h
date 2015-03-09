@@ -8,6 +8,10 @@
 // Notification posted when a user taps on a Notification from the iOS Notification Center
 extern NSString *const kApplicationDidBecomeActiveOnNotificationTap;
 
+// Notification that the UI should post on viewing Notifications. This notification is observed
+// by this app application.
+extern NSString *const kApplicationDidViewNotifications;
+
 // Adds methods for managing registration and handling of push notifications
 @interface UIApplication (SecurifiNotifications)
 

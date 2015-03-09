@@ -11,6 +11,8 @@
 #import "SFINotificationTableViewHeaderFooter.h"
 #import "UIFont+Securifi.h"
 #import "NotificationsTestStore.h"
+#import "UIApplication+SecurifiNotifications.h"
+#import "Analytics.h"
 
 @interface SFINotificationsViewController ()
 @property(nonatomic, readonly) id<SFINotificationStore> store;
@@ -55,12 +57,23 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onDidReceiveNotifications) name:kSFINotificationDidStore object:nil];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [[Analytics sharedInstance] markNotificationsScreen];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     // on dismissing the view we mark all that were being shown as "viewed"
     SFINotification *mostRecent = [self mostRecentNotification];
     [self.store markAllViewedTo:mostRecent];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+
+    // tell the world notifications were viewed
+    [center postNotificationName:kApplicationDidViewNotifications object:nil];
+
+    // stop listening for our own notifications
+    [center removeObserver:self];
 }
 
 - (void)onDone {
