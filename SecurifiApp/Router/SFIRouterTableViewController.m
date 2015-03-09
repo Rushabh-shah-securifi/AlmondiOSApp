@@ -51,7 +51,10 @@
 
 - (void)viewDidLoad {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.enableNotificationsView = toolkit.configuration.enableNotifications;
+    SecurifiConfigurator *configurator = toolkit.configuration;
+    self.enableNotificationsView = configurator.enableNotifications;
+    self.enableRouterWirelessControl = configurator.enableRouterWirelessControl;
+
     [super viewDidLoad];
 
     SFIAlmondPlus *plus = [toolkit currentAlmond];
@@ -536,6 +539,7 @@
 
     cell.cardView.backgroundColor = setting.enabled ? [[SFIColors blueColor] color] : [UIColor lightGrayColor];
     cell.wirelessSetting = setting;
+    cell.enableRouterWirelessControl = self.enableRouterWirelessControl;
     cell.delegate = self;
 
     return cell;
