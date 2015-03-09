@@ -45,6 +45,7 @@
 
 @property sfi_id correlationId;
 
+@property(nonatomic) BOOL enableRouterWirelessControl;
 @end
 
 @implementation SFIRouterTableViewController
