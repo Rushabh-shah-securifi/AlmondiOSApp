@@ -10,18 +10,24 @@
 #import "SFICardView.h"
 #import "SFIRouterTableViewActions.h"
 
+@interface SFIRouterRebootTableViewCell ()
+@property BOOL layoutCalled;
+@end
+
 @implementation SFIRouterRebootTableViewCell
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (void)markReuse {
+    [super markReuse];
+    self.layoutCalled = NO;
 }
-*/
 
 - (void)layoutSubviews {
     [super layoutSubviews];
+
+    if (self.layoutCalled) {
+        return;
+    }
+    self.layoutCalled = YES;
 
     SFICardView *cardView = self.cardView;
 
