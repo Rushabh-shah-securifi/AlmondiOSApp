@@ -78,16 +78,26 @@
 
     CGFloat message_x = left_padding + date_width + padding + circle_width + padding;
     rect = CGRectMake(message_x, 5, cell_width - message_x - padding, circle_width);
-    self.messageTextField = [[UITextView alloc] initWithFrame:rect];
+    //
+    UITextView *textView = [[UITextView alloc] initWithFrame:rect];
+    self.messageTextField = textView;
     // allow copy but not edit/paste
-    self.messageTextField.userInteractionEnabled = YES;
-    self.messageTextField.editable = NO;
+    textView.userInteractionEnabled = YES;
+    textView.editable = NO;
     // remove left margin
-    self.messageTextField.textContainer.lineFragmentPadding = 0;
-    self.messageTextField.textContainerInset = UIEdgeInsetsZero;
+    textView.textContainer.lineFragmentPadding = 0;
+    textView.textContainerInset = UIEdgeInsetsZero;
     // vertically center the content
-    [self.messageTextField addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
-
+    [textView addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
+    // auto resize text to fit view bounds
+    CGFloat fontSize = 25.0;
+    textView.font = [textView.font fontWithSize:fontSize];
+    //
+    while (textView.contentSize.height > textView.frame.size.height && fontSize > 8.0) {
+        fontSize -= 1.0;
+        textView.font = [textView.font fontWithSize:fontSize];
+    }
+    
     [self.contentView addSubview:self.dateLabel];
     [self.contentView addSubview:self.verticalLine];
     [self.contentView addSubview:self.circleView];
