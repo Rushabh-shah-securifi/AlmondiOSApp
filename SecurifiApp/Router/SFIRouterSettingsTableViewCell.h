@@ -14,7 +14,8 @@
 
 @interface SFIRouterSettingsTableViewCell : SFICardTableViewCell
 
-@property (weak) id<SFIRouterTableViewActions> delegate;
-@property (nonatomic) SFIWirelessSetting *wirelessSetting;
+@property(weak) id <SFIRouterTableViewActions> delegate;
+@property(nonatomic) SFIWirelessSetting *wirelessSetting;
+@property(nonatomic) BOOL enableRouterWirelessControl;
 
 @end

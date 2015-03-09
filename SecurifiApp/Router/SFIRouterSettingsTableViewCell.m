@@ -13,26 +13,34 @@
 #define MAX_SSID_LENGTH 32
 
 @interface SFIRouterSettingsTableViewCell () <UITextFieldDelegate>
+@property BOOL layoutCalled;
 @end
 
 @implementation SFIRouterSettingsTableViewCell
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
+- (void)markReuse {
+    [super markReuse];
+    self.layoutCalled = NO;
 }
-*/
 
 - (void)layoutSubviews {
     [super layoutSubviews];
+
+    if (self.layoutCalled) {
+        return;
+    }
+    self.layoutCalled = YES;
 
     SFICardView *cardView = self.cardView;
     SFIWirelessSetting *setting = self.wirelessSetting;
 
     [cardView addTopBorder:self.backgroundColor];
-    [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactivate:) on:setting.enabled];
+    if (self.enableRouterWirelessControl) {
+        [cardView addTitleAndOnOffSwitch:setting.ssid target:self action:@selector(onActivateDeactivate:) on:setting.enabled];
+    }
+    else {
+        [cardView addTitle:setting.ssid];
+    }
     [cardView addLine];
     [cardView addNameLabel:@"SSID" valueTextField:setting.ssid delegate:self tag:0];
     [cardView addShortLine];
