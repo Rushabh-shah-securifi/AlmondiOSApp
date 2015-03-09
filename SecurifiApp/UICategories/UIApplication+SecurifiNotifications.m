@@ -100,6 +100,7 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     if (self.applicationState == UIApplicationStateInactive) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center postNotificationName:kApplicationDidBecomeActiveOnNotificationTap object:nil];
+        [self cancelAllLocalNotifications];
     }
 }
 
