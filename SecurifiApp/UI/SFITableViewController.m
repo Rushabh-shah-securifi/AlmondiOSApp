@@ -264,8 +264,8 @@
 
         case SFIAlmondMode_unknown:
         default:
-            // should never happen
-            return SFICloudStatusStateAtHome;
+            // can happen when the cloud connection comes up but before almond mode has been determined
+            return SFICloudStatusStateConnected;
     }
 }
 
