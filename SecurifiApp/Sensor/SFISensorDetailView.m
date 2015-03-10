@@ -284,16 +284,8 @@
 - (void)onSliderDidEndSliding:(id)sender {
     SFISlider *slider = sender;
 
-    // note: for now this is the only slider in the system,
-    // so we don't conditionally test for property type and conversion
-    //
-    // convert to 255 scale (multilevel_onoff)
-    float slider_value = slider.value;
-    float scale_factor = (255 / slider.maximumValue);
-    float value = slider_value * scale_factor;
-    value = roundf(value);
-
-    NSString *newValue = [NSString stringWithFormat:@"%d", (int) value];
+    float sensorValue = [slider convertToSensorValue];
+    NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
 
     [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:slider.propertyType newValue:newValue];
 }
@@ -591,7 +583,7 @@
     [self markYOffset:5];
 }
 
-- (UISlider *)makeSliderWithMinValue:(float)minVal maxValue:(float)maxValue propertyType:(SFIDevicePropertyType)propertyType {
+- (SFISlider *)makeSliderWithMinValue:(float)minVal maxValue:(float)maxValue propertyType:(SFIDevicePropertyType)propertyType {
     // Set the height high enough to ensure touch events are not missed.
     const CGFloat slider_height = 25.0;
 
@@ -710,14 +702,13 @@
 
     // get initial value and convert to 0-100 scale
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL];
-    const int slideMaxValue = 100;
-    float ratio = (float)slideMaxValue / (float)sensorMaxValue;
-    float sliderValue = [currentDeviceValue floatValue] * ratio;
-    sliderValue = roundf(sliderValue);
+    const float sensorValue = [currentDeviceValue floatValue];
+    const int sliderMaxValue = 100;
 
     // Display slider
-    UISlider *slider = [self makeSliderWithMinValue:0 maxValue:slideMaxValue propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
-    [slider setValue:sliderValue animated:NO];
+    SFISlider *slider = [self makeSliderWithMinValue:minValue maxValue:sliderMaxValue propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+    slider.sensorMaxValue = sensorMaxValue;
+    [slider setConvertedValue:sensorValue];
     [self addSubview:slider];
 
     UIImageView *maxImage = [[UIImageView alloc] initWithFrame:CGRectMake((self.frame.size.width - 90) + 50, self.baseYCoordinate, 24, 24)];

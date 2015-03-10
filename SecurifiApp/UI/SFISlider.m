@@ -23,5 +23,19 @@
     return thumb_rect;
 }
 
+- (void)setConvertedValue:(float)sensorValue {
+    float ratio = self.maximumValue / (float) self.sensorMaxValue;
+    float sliderValue = sensorValue * ratio;
+    sliderValue = roundf(sliderValue);
+    [self setValue:sliderValue animated:NO];
+}
+
+- (float)convertToSensorValue {
+    float slider_value = self.value;
+    float scale_factor = (self.sensorMaxValue / self.maximumValue);
+    float value = slider_value * scale_factor;
+    value = roundf(value);
+    return value;
+}
 
 @end
