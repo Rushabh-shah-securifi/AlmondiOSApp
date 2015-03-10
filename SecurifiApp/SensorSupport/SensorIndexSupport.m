@@ -1021,7 +1021,13 @@
                 return @[s1, s2];
             }
 
-            break;
+            // Add a catch-all:
+            // For now, because the cloud and Almond router are not sophisticated enough, we have to suppress
+            // all notifications except for index 1
+            IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+            s1.notificationIgnoreIndex = YES;
+            s1.matchType = MatchType_any;
+            return @[s1];
         };
 
         case SFIDeviceType_OccupancySensor_24:
