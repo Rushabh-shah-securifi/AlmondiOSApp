@@ -73,11 +73,16 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
         return NO;
     }
 
+    SensorSupport *sensorSupport = [SensorSupport new];
+    [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
+
+    if (sensorSupport.ignoreNotification) {
+        // drop the notification
+        return NO;
+    }
+
     [toolkit storePushNotification:notification];
     [[SFIPreferences instance] debugMarkPushNotificationReceived];
-
-    SensorSupport *sensorSupport = [SensorSupport new];
-    [sensorSupport resolve:notification.deviceType index:notification.valueType value:notification.value];
 
     NSString *msg = [NSString stringWithFormat:@"%@%@", notification.deviceName, sensorSupport.notificationText];
 

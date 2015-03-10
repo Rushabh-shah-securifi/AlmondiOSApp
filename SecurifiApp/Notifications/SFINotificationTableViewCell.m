@@ -105,7 +105,7 @@
 
     SFINotification *notification = self.notification;
     _sensorSupport = [SensorSupport new];
-    [_sensorSupport resolve:notification.deviceType index:notification.valueType value:notification.value];
+    [_sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
 
     [self setDateLabelText:notification];
     [self setIcon];

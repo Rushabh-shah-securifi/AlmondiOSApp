@@ -17,7 +17,7 @@
 
 @implementation SensorSupport
 
-- (void)resolve:(SFIDeviceType)device index:(SFIDevicePropertyType)type value:(NSString *)value {
+- (void)resolveNotification:(SFIDeviceType)device index:(SFIDevicePropertyType)type value:(NSString *)value {
     self.valueSupport = nil;
     self.sensorValue = nil;
 
@@ -31,6 +31,10 @@
             break;
         }
     }
+}
+
+- (BOOL)ignoreNotification {
+    return self.valueSupport.notificationIgnoreIndex;
 }
 
 - (UIImage *)notificationImage {
@@ -62,7 +66,7 @@
     return text;
 }
 
-- (UIImage*)imageNamed:(NSString*)name {
+- (UIImage *)imageNamed:(NSString *)name {
     UIImage *image = [UIImage imageNamed:name];
 
     if (![SensorSupport systemVersionAtLeast8]) {

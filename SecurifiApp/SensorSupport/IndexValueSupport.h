@@ -15,6 +15,10 @@ typedef NS_ENUM(int, MatchType) {
 
 @interface IndexValueSupport : NSObject
 
+// When YES, the index value is ignored for processing Notifications and any such value is silently dropped
+// Defaults to NO
+@property(nonatomic) BOOL notificationIgnoreIndex;
+
 @property(nonatomic, readonly) SFIDevicePropertyType valueType;
 
 // match data value; when nil, then match always is TRUE---this can be used to simply express a value formatter
@@ -39,8 +43,8 @@ typedef NS_ENUM(int, MatchType) {
 
 // compares the value with this instances matchData to determine whether this instance should be used.
 // matching is based on matchType rule; however, when matchData is nil, then this method always returns YES.
-- (BOOL)matchesData:(NSString*)value;
+- (BOOL)matchesData:(NSString *)value;
 
-- (NSString*)formatNotificationText:(NSString*)sensorValue;
+- (NSString *)formatNotificationText:(NSString *)sensorValue;
 
 @end

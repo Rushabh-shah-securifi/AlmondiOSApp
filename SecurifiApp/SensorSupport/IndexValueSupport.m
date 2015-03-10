@@ -12,6 +12,7 @@
 - (instancetype)initWithValueType:(SFIDevicePropertyType)valueType {
     self = [super init];
     if (self) {
+        _notificationIgnoreIndex = NO;
         _valueType = valueType;
         _matchType = MatchType_equals;
     }
