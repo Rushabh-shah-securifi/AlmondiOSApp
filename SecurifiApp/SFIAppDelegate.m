@@ -49,7 +49,7 @@
     NSDictionary *remote = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     //Accept push notification when app is not open
     if (remote) {
-        [application securifiApplicationHandleUserDidTapNotification];
+        [application securifiApplicationHandleRemoteNotification:remote];
         return YES;
     }
 
@@ -78,7 +78,7 @@
     [self initializeSystem:application];
 
     BOOL handled = [application securifiApplicationHandleRemoteNotification:userInfo];
-    enum UIBackgroundFetchResult result = handled? UIBackgroundFetchResultNewData : UIBackgroundFetchResultFailed;
+    enum UIBackgroundFetchResult result = handled? UIBackgroundFetchResultNewData : UIBackgroundFetchResultNoData;
     handler(result);
 }
 
@@ -88,6 +88,7 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    // this is also called immediately after processing the remote notification when the app is also in the foreground.
     [application securifiApplicationHandleUserDidTapNotification];
 }
 

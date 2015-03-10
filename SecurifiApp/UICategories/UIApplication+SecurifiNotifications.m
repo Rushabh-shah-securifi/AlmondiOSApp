@@ -22,8 +22,8 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     }
 
     // update app badge icon and set up event handling to keep the badge updated as user views notifications
-    [self updateSecurifiNotificationsCount];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateSecurifiNotificationsCount) name:kApplicationDidViewNotifications object:nil];
+    [self securifiApplicationUpdateBadgeCount];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSecurifiApplicationDidViewNotifications) name:kApplicationDidViewNotifications object:nil];
 
     SFIPreferences *preferences = [SFIPreferences instance];
     if (!preferences.isRegisteredForPushNotification) {
@@ -87,11 +87,14 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     NSString *msg = [NSString stringWithFormat:@"%@%@", notification.deviceName, sensorSupport.notificationText];
 
     UILocalNotification *notice = [UILocalNotification new];
+    // adding slight delay seems to make posting local notification on receipt of remote one more reliable
     notice.fireDate = [NSDate dateWithTimeIntervalSinceNow:0.5];
     notice.hasAction = NO;
     notice.alertBody = msg;
     notice.alertAction = nil;//@"View";
-    notice.soundName = nil; // remote notification itself will trigger a sound; UILocalNotificationDefaultSoundName;
+    // remote notification itself will trigger a sound; UILocalNotificationDefaultSoundName;
+    // when app is in foreground, the sound will not be heard; to change behavior, set sound conditionally based on applicationState
+    notice.soundName = nil;
     notice.applicationIconBadgeNumber = [toolkit countUnviewedNotifications];
 
     [self scheduleLocalNotification:notice];
@@ -105,7 +108,6 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     if (self.applicationState == UIApplicationStateInactive) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center postNotificationName:kApplicationDidBecomeActiveOnNotificationTap object:nil];
-        [self cancelAllLocalNotifications];
     }
 }
 
@@ -127,8 +129,14 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     [self setApplicationIconBadgeNumber:0];
 }
 
-// set the app's badge icon to the count of 'unviewed' notifications
-- (void)updateSecurifiNotificationsCount {
+// update badge count and clear out notifications
+- (void)onSecurifiApplicationDidViewNotifications {
+    [self securifiApplicationUpdateBadgeCount];
+    [self cancelAllLocalNotifications];
+}
+
+// set the app's badge icon to the count of 'not viewed' notifications
+- (void)securifiApplicationUpdateBadgeCount {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSInteger count = [toolkit countUnviewedNotifications];
     [self setApplicationIconBadgeNumber:count];
