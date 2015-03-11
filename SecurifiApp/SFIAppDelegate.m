@@ -22,7 +22,7 @@
 
 - (SecurifiConfigurator *)toolkitConfigurator {
     SecurifiConfigurator *config = [SecurifiConfigurator new];
-//    config.enableScoreboard = YES;      // uncomment for debug builds
+    config.enableScoreboard = YES;      // uncomment for debug builds
     config.enableNotifications = YES;   // uncomment to activate; off by default
     config.enableRouterWirelessControl = YES;
     return config;
@@ -44,19 +44,12 @@
 #pragma mark - UIApplicationDelegate methods
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    NSLog(@"Application did launch");
     [self initializeSystem:application];
-
-    NSDictionary *remote = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
-    //Accept push notification when app is not open
-    if (remote) {
-        [application securifiApplicationHandleRemoteNotification:remote];
-        return YES;
-    }
 
     NSDictionary *local = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
     if (local) {
         [application securifiApplicationHandleUserDidTapNotification];
-        return YES;
     }
 
     return YES;
