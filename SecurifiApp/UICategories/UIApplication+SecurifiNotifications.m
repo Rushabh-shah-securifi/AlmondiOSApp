@@ -57,6 +57,8 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 // returns YES if notification can be handled (matches an almond)
 // else returns NO
 - (BOOL)securifiApplicationHandleRemoteNotification:(NSDictionary *)userInfo {
+    NSLog(@"notification: %@", userInfo);
+
     SFINotification *notification = [SFINotification parsePayload:userInfo];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
@@ -92,9 +94,28 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     notice.hasAction = NO;
     notice.alertBody = msg;
     notice.alertAction = nil;//@"View";
+
     // remote notification itself will trigger a sound; UILocalNotificationDefaultSoundName;
     // when app is in foreground, the sound will not be heard; to change behavior, set sound conditionally based on applicationState
-    notice.soundName = nil;
+    //
+    // when the app is active, we suppress the sound; when in the background, we add a sound iff one was not specified in
+    // the original remote notification (otherwise, two sounds will be played).
+    NSString *soundName = nil;
+    if (self.applicationState != UIApplicationStateActive) {
+        NSDictionary *apps_dict = userInfo[@"aps"];
+        soundName = apps_dict[@"sound"];
+        if (soundName == nil) {
+            soundName = UILocalNotificationDefaultSoundName;
+        }
+        else {
+            // remote notification already will play sound; n.b. remote notification should NOT specify sound, but
+            // in case it does (like it is now in our beta testing), we handle it correctly by not adding one to the
+            // local notification.
+            soundName = nil;
+        }
+    }
+
+    notice.soundName = soundName;
     notice.applicationIconBadgeNumber = [toolkit countUnviewedNotifications];
 
     [self scheduleLocalNotification:notice];
