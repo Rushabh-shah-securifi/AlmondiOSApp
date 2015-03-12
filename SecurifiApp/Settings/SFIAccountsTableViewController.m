@@ -10,7 +10,6 @@
 #import "MBProgressHUD.h"
 #import "iToast.h"
 #import "UIFont+Securifi.h"
-#import "SFIPreferences.h"
 
 static NSString *simpleTableIdentifier = @"AccountCell";
 
@@ -1501,19 +1500,6 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }
 
 
-}
-
-#pragma mark - Push Notification
-
-- (void)removePushNotification {
-    NSData *token = [[SFIPreferences instance] pushNotificationDeviceToken];
-//
-//    NSString *deviceToken = [[NSUserDefaults standardUserDefaults] stringForKey:PUSH_NOTIFICATION_TOKEN];
-//    //TODO: For test - Remove
-//    [[NSUserDefaults standardUserDefaults] removeObjectForKey:PUSH_NOTIFICATION_STATUS];
-//    [[UIApplication sharedApplication] unregisterForRemoteNotifications];
-//    //deviceToken = @"7ff2a7b3707fe43cdf39e25522250e1257ee184c59ca0d901b452040d85fd794";
-//    [[SecurifiToolkit sharedInstance] asyncRequestDeregisterForNotification:deviceToken];
 }
 
 
