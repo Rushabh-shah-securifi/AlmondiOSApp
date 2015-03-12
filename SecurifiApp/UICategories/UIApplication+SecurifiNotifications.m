@@ -90,7 +90,6 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
     UILocalNotification *notice = [UILocalNotification new];
     // adding slight delay seems to make posting local notification on receipt of remote one more reliable
-    notice.fireDate = [NSDate dateWithTimeIntervalSinceNow:0.5];
     notice.hasAction = NO;
     notice.alertBody = msg;
     notice.alertAction = nil;//@"View";
@@ -118,7 +117,7 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     notice.soundName = soundName;
     notice.applicationIconBadgeNumber = [toolkit countUnviewedNotifications];
 
-    [self scheduleLocalNotification:notice];
+    [self presentLocalNotificationNow:notice];
 
     return YES;
 }
