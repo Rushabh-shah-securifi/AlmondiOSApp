@@ -57,13 +57,15 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 // returns YES if notification can be handled (matches an almond)
 // else returns NO
 - (BOOL)securifiApplicationHandleRemoteNotification:(NSDictionary *)userInfo {
-    NSLog(@"notification: %@", userInfo);
+    DLog(@"notification: %@", userInfo);
 
     SFINotification *notification = [SFINotification parsePayload:userInfo];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
+    NSArray *almonds = toolkit.almondList;
+
     BOOL matched = false;
-    for (SFIAlmondPlus *almond in toolkit.almondList) {
+    for (SFIAlmondPlus *almond in almonds) {
         if ([almond.almondplusMAC isEqualToString:notification.almondMAC]) {
             matched = true;
             break;
@@ -72,6 +74,7 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
     if (!matched) {
         // drop the notification
+        DLog(@"notification: did not match almond:%@, almonds:%@", notification.almondMAC, almonds);
         return NO;
     }
 
@@ -80,6 +83,7 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
     if (sensorSupport.ignoreNotification) {
         // drop the notification
+        DLog(@"notification: ignore notification");
         return NO;
     }
 
@@ -117,6 +121,7 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     notice.soundName = soundName;
     notice.applicationIconBadgeNumber = [toolkit countUnviewedNotifications];
 
+    DLog(@"notification: posting local notification");
     [self presentLocalNotificationNow:notice];
 
     return YES;
