@@ -74,7 +74,7 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
     if (!matched) {
         // drop the notification
-        DLog(@"notification: did not match almond:%@, almonds:%@", notification.almondMAC, almonds);
+        DLog(@"dropping notification: did not match almond:%@, almonds:%@", notification.almondMAC, almonds);
         return NO;
     }
 
@@ -83,12 +83,18 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
     if (sensorSupport.ignoreNotification) {
         // drop the notification
-        DLog(@"notification: ignore notification");
+        DLog(@"dropping notification: ignore notification is true");
         return NO;
     }
 
     [toolkit storePushNotification:notification];
     [[SFIPreferences instance] debugMarkPushNotificationReceived];
+
+    // There is an iOS limit on the number of active local notifications. So, we prune the list of notifications
+    // to ensure there is room for this new one.
+
+    NSArray *notifications = self.scheduledLocalNotifications;
+    NSLog(@"scheduled notifications count: %i", notifications.count);
 
     NSString *msg = [NSString stringWithFormat:@"%@%@", notification.deviceName, sensorSupport.notificationText];
 
@@ -117,11 +123,12 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
             soundName = nil;
         }
     }
-
     notice.soundName = soundName;
-    notice.applicationIconBadgeNumber = [toolkit countUnviewedNotifications];
 
-    DLog(@"notification: posting local notification");
+    NSInteger count = [toolkit countUnviewedNotifications];
+    notice.applicationIconBadgeNumber = count;
+
+    DLog(@"notification: posting local notification, count:%i", count);
     [self presentLocalNotificationNow:notice];
 
     return YES;
