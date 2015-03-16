@@ -230,7 +230,8 @@
 }
 
 - (void)parser:(NSXMLParser *)xmlParser foundCharacters:(NSString *)string {
-    currentNodeContent = (NSMutableString *) [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *cleaned = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    [currentNodeContent appendString:cleaned];
 }
 
 @end
