@@ -13,7 +13,6 @@
 #import "NSData+Conversion.h"
 #import "UIViewController+Securifi.h"
 #import "SFINotificationsViewController.h"
-#import "DebugLogger.h"
 #import "ScoreboardDebugLoggerViewController.h"
 
 #define SEC_CLOUD           0
@@ -204,9 +203,9 @@
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cell_id];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-                cell.accessoryType = UITableViewCellAccessoryNone;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
-            cell.textLabel.text = @"Reset Handler Log";
+            cell.textLabel.text = @"View Handler Log";
             return cell;
         }
         else if (indexPath.row == 3) {
@@ -377,10 +376,6 @@
         else if (indexPath.row == 2) {
             ScoreboardDebugLoggerViewController *ctrl = [ScoreboardDebugLoggerViewController new];
             [self.navigationController pushViewController:ctrl animated:YES];
-//
-//            DebugLogger *logger = [DebugLogger instance];
-//            [logger clear];
-//            [self showToast:@"Reset log file"];
         }
         else if (indexPath.row == 3) {
             SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
