@@ -7,6 +7,7 @@
 #import "SFIPreferences.h"
 #import "NSData+Conversion.h"
 #import "SensorSupport.h"
+#import "DebugLogger.h"
 
 NSString *const kApplicationDidBecomeActiveOnNotificationTap = @"kApplicationDidBecomeActiveOnNotificationTap";
 NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifications";
@@ -62,6 +63,10 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     SFINotification *notification = [SFINotification parsePayload:userInfo];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
+    const BOOL debugLogging = toolkit.configuration.enableNotificationsDebugLogging;
+
+    // Check whether the notification matches an almond attached to the account
+    //
     NSArray *almonds = toolkit.almondList;
 
     BOOL matched = false;
@@ -75,18 +80,31 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     if (!matched) {
         // drop the notification
         DLog(@"dropping notification: did not match almond:%@, almonds:%@", notification.almondMAC, almonds);
+        if (debugLogging) {
+            [self securifiDebugLog:notification action:@"almond-nomatch"];
+        }
         return NO;
     }
 
     SensorSupport *sensorSupport = [SensorSupport new];
     [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
 
+    // Check whether the notification pertains to an index/sensor configured to be ignored
+    //
     if (sensorSupport.ignoreNotification) {
-        // drop the notification
         DLog(@"dropping notification: ignore notification is true");
+        if (debugLogging) {
+            [self securifiDebugLog:notification action:@"ignore-index"];
+        }
         return NO;
     }
 
+    if (debugLogging) {
+        [notification setDebugDeviceName];
+    }
+
+    // By this point, the notification has been vetted. Now store it and then post a local alert
+    //
     [toolkit storePushNotification:notification];
     [[SFIPreferences instance] debugMarkPushNotificationReceived];
 
@@ -131,6 +149,9 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     DLog(@"notification: posting local notification, count:%i", count);
     [self presentLocalNotificationNow:notice];
 
+    if (debugLogging) {
+        [self securifiDebugLog:notification action:@"posted"];
+    }
     return YES;
 }
 
@@ -172,6 +193,12 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSInteger count = [toolkit countUnviewedNotifications];
     [self setApplicationIconBadgeNumber:count];
+}
+
+- (void)securifiDebugLog:(SFINotification *)notification action:(NSString *)action {
+    NSString *msg = [NSString stringWithFormat:@"notification %ld %@", notification.debugCounter, action];
+    DebugLogger *logger = [DebugLogger instance];
+    [logger writeLog:msg];
 }
 
 @end
