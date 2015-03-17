@@ -62,7 +62,6 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
     SFINotification *notification = [SFINotification parsePayload:userInfo];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
     const BOOL debugLogging = toolkit.configuration.enableNotificationsDebugLogging;
 
     // Check whether the notification matches an almond attached to the account
