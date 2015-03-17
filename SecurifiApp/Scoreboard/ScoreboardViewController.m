@@ -14,6 +14,7 @@
 #import "UIViewController+Securifi.h"
 #import "SFINotificationsViewController.h"
 #import "DebugLogger.h"
+#import "ScoreboardDebugLoggerViewController.h"
 
 #define SEC_CLOUD           0
 #define SEC_NOTIFICATIONS   1
@@ -374,9 +375,12 @@
             [self showToast:@"Reset counter"];
         }
         else if (indexPath.row == 2) {
-            DebugLogger *logger = [DebugLogger instance];
-            [logger clear];
-            [self showToast:@"Reset log file"];
+            ScoreboardDebugLoggerViewController *ctrl = [ScoreboardDebugLoggerViewController new];
+            [self.navigationController pushViewController:ctrl animated:YES];
+//
+//            DebugLogger *logger = [DebugLogger instance];
+//            [logger clear];
+//            [self showToast:@"Reset log file"];
         }
         else if (indexPath.row == 3) {
             SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];

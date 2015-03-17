@@ -84,6 +84,25 @@
     }
 }
 
+- (NSString *)logEntries {
+    @synchronized (self.locker) {
+        NSFileHandle *handle = self.fileHandle;
+        if (handle == nil) {
+            return @"No Entries\n";
+        }
+
+        NSString *path = [self loggerFilePath];
+        NSError *error;
+        NSString *string = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
+
+        if (error) {
+            return [NSString stringWithFormat:@"Error reading entries\n%@", error.description];
+        }
+
+        return string;
+    }
+}
+
 - (NSString *)loggerFilePath {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];

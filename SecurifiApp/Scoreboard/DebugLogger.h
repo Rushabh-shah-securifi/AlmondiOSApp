@@ -18,4 +18,7 @@
 
 - (void)writeLog:(NSString *)msg;
 
+// returns the entire log file as a string; be careful!!
+- (NSString*)logEntries;
+
 @end
