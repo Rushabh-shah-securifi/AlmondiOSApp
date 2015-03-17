@@ -168,6 +168,8 @@
 		1DF03A76C404827BA9A6BF8C /* UIApplication+SecurifiNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AB12BF9855556678A13 /* UIApplication+SecurifiNotifications.m */; };
 		1DF03AD70C1C051CA6F74073 /* SFIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0364AFED818925B9469F3 /* SFIPreferences.m */; };
 		1DF03ADB8A23D76AE9B67F13 /* SFINotificationStatusBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */; };
+		1DF03B77AE6B540AFC5851BB /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03C29C7F6403672992843 /* DebugLogger.m */; };
+		1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03C29C7F6403672992843 /* DebugLogger.m */; };
 		1DF03C76A181214483FB8F70 /* SFICardViewSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0369E72CD4FA9E78D9468 /* SFICardViewSummaryCell.m */; };
 		1DF03D1D08D853057CDED2DC /* SFINotificationTableViewHeaderFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF031B6B99795E6267FEAD7 /* SFINotificationTableViewHeaderFooter.m */; };
 		1DF03DC0F53E38D2CB88F6BA /* ValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF037012FF314C8E1F5C0E3 /* ValueFormatter.m */; };
@@ -319,6 +321,7 @@
 		1DF031D5539A9634BF7DF8BF /* CircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleView.h; sourceTree = "<group>"; };
 		1DF033B55E920DA89560E84B /* CircleLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleLabel.m; sourceTree = "<group>"; };
 		1DF033BFB3D6B1769127310B /* NSData+Conversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Conversion.m"; sourceTree = "<group>"; };
+		1DF035449B8995967846754D /* DebugLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugLogger.h; sourceTree = "<group>"; };
 		1DF03620FD353332ACD4D41B /* SensorSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorSupport.h; sourceTree = "<group>"; };
 		1DF0364AFED818925B9469F3 /* SFIPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPreferences.m; sourceTree = "<group>"; };
 		1DF0369E72CD4FA9E78D9468 /* SFICardViewSummaryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICardViewSummaryCell.m; sourceTree = "<group>"; };
@@ -334,6 +337,7 @@
 		1DF03AB12BF9855556678A13 /* UIApplication+SecurifiNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+SecurifiNotifications.m"; sourceTree = "<group>"; };
 		1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFINotificationStatusBarButtonItem.m; sourceTree = "<group>"; };
 		1DF03BE3E401DD252BA24127 /* UIImage+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Securifi.m"; sourceTree = "<group>"; };
+		1DF03C29C7F6403672992843 /* DebugLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugLogger.m; sourceTree = "<group>"; };
 		1DF03C895FD75AA97DDF3AC5 /* IndexValueSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexValueSupport.m; sourceTree = "<group>"; };
 		1DF03CD23CCAD6D4BF0CF82A /* SensorIndexSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorIndexSupport.h; sourceTree = "<group>"; };
 		1DF03D99C19042FD3FCADB2D /* SFIPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPreferences.h; sourceTree = "<group>"; };
@@ -497,6 +501,8 @@
 				1C7E7D171A41A0990026F0BA /* ScoreboardEventViewController.m */,
 				1C7E7D181A41A0990026F0BA /* ScoreboardViewController.h */,
 				1C7E7D191A41A0990026F0BA /* ScoreboardViewController.m */,
+				1DF03C29C7F6403672992843 /* DebugLogger.m */,
+				1DF035449B8995967846754D /* DebugLogger.h */,
 			);
 			path = Scoreboard;
 			sourceTree = "<group>";
@@ -1035,6 +1041,7 @@
 				1DF03A2A9BFA55B20A1D2609 /* SensorIndexSupport.m in Sources */,
 				1DF03733354F6CEF7D979D57 /* NotificationsTestStore.m in Sources */,
 				1DF03A76C404827BA9A6BF8C /* UIApplication+SecurifiNotifications.m in Sources */,
+				1DF03B77AE6B540AFC5851BB /* DebugLogger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1102,6 +1109,7 @@
 				1DF0362BB7839519E771D769 /* SensorIndexSupport.m in Sources */,
 				1DF038B5E6A54CEEAFE1BE7F /* NotificationsTestStore.m in Sources */,
 				1DF037534B2784850C9B047C /* UIApplication+SecurifiNotifications.m in Sources */,
+				1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
