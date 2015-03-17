@@ -13,6 +13,7 @@
 #import "NSData+Conversion.h"
 #import "UIViewController+Securifi.h"
 #import "SFINotificationsViewController.h"
+#import "DebugLogger.h"
 
 #define SEC_CLOUD           0
 #define SEC_NOTIFICATIONS   1
@@ -99,7 +100,7 @@
         case SEC_CLOUD:
             return 2;
         case SEC_NOTIFICATIONS:
-            return 3;
+            return 4;
         case SEC_ALMONDS:
             return self.almonds.count;
         case SEC_EVENTS:
@@ -197,6 +198,17 @@
             return cell;
         }
         else if (indexPath.row == 2) {
+            NSString *cell_id = @"notifications_logctrl";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cell_id];
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
+            cell.textLabel.text = @"Reset Handler Log";
+            return cell;
+        }
+        else if (indexPath.row == 3) {
             NSString *cell_id = @"notifications_viewctrl";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
             if (cell == nil) {
@@ -362,6 +374,11 @@
             [self showToast:@"Reset counter"];
         }
         else if (indexPath.row == 2) {
+            DebugLogger *logger = [DebugLogger instance];
+            [logger clear];
+            [self showToast:@"Reset log file"];
+        }
+        else if (indexPath.row == 3) {
             SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
             ctrl.enableTestStore = YES;
             [self.navigationController pushViewController:ctrl animated:YES];
