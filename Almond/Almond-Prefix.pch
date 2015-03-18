@@ -6,8 +6,8 @@
 
 #import <Availability.h>
 
-#ifndef __IPHONE_5_0
-#warning "This project uses features only available in iOS SDK 5.0 and later."
+#ifndef __IPHONE_7_0
+#warning "This project uses features only available in iOS SDK 7.0 and later."
 #endif
 
 #ifdef __OBJC__
@@ -22,7 +22,7 @@
 #define DLog(args...) DDLogDebug(args)
 
 #if( DEBUG )
-#define LOG_LEVEL_DEF LOG_LEVEL_DEBUG
+#define DDLogLevel DDLogLevelDebug
 #else
-#define LOG_LEVEL_DEF LOG_LEVEL_ERROR
+#define DDLogLevel DDLogLevelError
 #endif
