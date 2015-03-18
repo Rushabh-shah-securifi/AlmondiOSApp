@@ -1,30 +1,32 @@
 PODS:
   - ASValueTrackingSlider (0.9.4)
-  - CocoaLumberjack (2.0.0-beta):
-    - CocoaLumberjack/CLI (= 2.0.0-beta)
-    - CocoaLumberjack/Core (= 2.0.0-beta)
-    - CocoaLumberjack/Extensions (= 2.0.0-beta)
-  - CocoaLumberjack/CLI (2.0.0-beta):
+  - CocoaLumberjack (2.0.0):
+    - CocoaLumberjack/Default (= 2.0.0)
+    - CocoaLumberjack/Extensions (= 2.0.0)
+  - CocoaLumberjack/Core (2.0.0)
+  - CocoaLumberjack/Default (2.0.0):
     - CocoaLumberjack/Core
-  - CocoaLumberjack/Core (2.0.0-beta)
-  - CocoaLumberjack/Extensions (2.0.0-beta):
-    - CocoaLumberjack/Core
-  - Colours (5.5.0)
-  - CrashlyticsFramework (2.2.5.2)
+  - CocoaLumberjack/Extensions (2.0.0):
+    - CocoaLumberjack/Default
+  - Colours (5.6.1)
+  - CrashlyticsFramework (2.2.9)
+  - CrashlyticsLumberjack (2.0.0-rc2):
+    - CocoaLumberjack/Default (>= 2.0.0-rc)
   - GoogleAnalytics-iOS-SDK (3.10):
     - GoogleAnalytics-iOS-SDK/Core (= 3.10)
   - GoogleAnalytics-iOS-SDK/Core (3.10)
   - iToast (0.0.1)
-  - MBProgressHUD (0.9)
+  - MBProgressHUD (0.9.1)
   - SWRevealViewController (2.3.0)
   - UIImage-ResizeMagick (0.0.1)
   - V8HorizontalPickerView (1.0.0)
 
 DEPENDENCIES:
   - ASValueTrackingSlider
-  - CocoaLumberjack (= 2.0.0-beta)
+  - CocoaLumberjack
   - Colours (~> 5.5)
   - CrashlyticsFramework (~> 2.2.1)
+  - CrashlyticsLumberjack (~> 2.0.0-rc2)
   - GoogleAnalytics-iOS-SDK (~> 3.0)
   - iToast (~> 0.0)
   - MBProgressHUD (~> 0.9)
@@ -34,14 +36,15 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   ASValueTrackingSlider: 74a4bbf70c8cf43d29b701ff4c7659fc5d0afd99
-  CocoaLumberjack: aadc76d7bd6c839ca84b38ed50cbf89d7cf8c693
-  Colours: 7abeb0fdebe2da3d8bd7305aee0798375f51f5d8
-  CrashlyticsFramework: 4e91082f3019bea7e718e1b67b0a3b56729dbc5d
+  CocoaLumberjack: fd2b1031c6c4e0f08b5ea928ef677fa0a5de517d
+  Colours: ecbcbb168f7e6190b76b34df1b477c103cb638eb
+  CrashlyticsFramework: 013bae3c30d5b9bfad1aa10008e155e18473984c
+  CrashlyticsLumberjack: d41d1043ceee3312f546242e8bd3ee0ec22e39b1
   GoogleAnalytics-iOS-SDK: f422062075d9ccb1ea8d783fc5ba3829461e9502
   iToast: 4de112d3dd42a3a8bf685572e6cda723c9cbc4f2
-  MBProgressHUD: 2038dbcf3dce73215abed6001657043d53aa79a8
+  MBProgressHUD: f3747dcbd45a9e855a6b0674550651e0b7ed250c
   SWRevealViewController: f6d80638b8e12323e87ac79562345403a799cb77
   UIImage-ResizeMagick: 6edd4b95aabf4be264bf99147aa27abb319f3c7f
   V8HorizontalPickerView: 76d45849549fc6b26f497361cbc8f853b407bc13
 
-COCOAPODS: 0.35.0
+COCOAPODS: 0.36.0
