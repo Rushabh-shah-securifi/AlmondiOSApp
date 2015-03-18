@@ -462,6 +462,21 @@
 
     NSMutableString *bodyText = [NSMutableString string];
 
+    [bodyText appendString:@"\nAPN Registration\n"];
+    [bodyText appendString:@"=========================\n"];
+    NSString *token = [self pushNotificationClientToken];
+    [bodyText appendFormat:@"token : %@\n", token];
+
+    [bodyText appendString:@"\nAlmonds\n"];
+    [bodyText appendString:@"=========================\n"];
+    NSArray *almonds = self.almonds;
+    for (SFIAlmondPlus *almond in almonds) {
+        [bodyText appendFormat:@"%@ : %@\n", almond.almondplusName, almond.almondplusMAC];
+    }
+
+    [bodyText appendString:@"\nLogs and Data\n"];
+    [bodyText appendString:@"=========================\n"];
+
     DebugLogger *debugLogger = [DebugLogger instance];
     NSData *data = [debugLogger logData];
     [ctrl addAttachmentData:data mimeType:@"text/plain" fileName:debugLogger.fileName];
