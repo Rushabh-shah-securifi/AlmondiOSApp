@@ -67,6 +67,10 @@
     self.notifications = new_d;
 }
 
+- (void)deleteAllNotifications {
+    // do nothing
+}
+
 - (NSArray *)notificationsForBucket:(NSDate *)bucket {
     NSArray *notifications = self.notifications[bucket];
     return notifications;

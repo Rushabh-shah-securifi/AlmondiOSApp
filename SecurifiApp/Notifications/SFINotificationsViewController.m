@@ -21,6 +21,15 @@
 
 @implementation SFINotificationsViewController
 
+- (instancetype)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:style];
+    if (self) {
+        self.markAllViewedOnDismiss = YES;
+    }
+
+    return self;
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -44,7 +53,12 @@
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
     self.title = @"Recent Activities"; //todo localize me
 
-    if (!self.enableTestStore) {
+    if (self.enableDeleteAllButton) {
+        UIBarButtonItem *delete = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(onDeleteAll)];
+        self.navigationItem.rightBarButtonItem = delete;
+    }
+
+    if (!self.enableTestStore && !self.enableDeleteAllButton) {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
         doneButton.tintColor = [UIColor blackColor];
         self.navigationItem.rightBarButtonItem = doneButton;
@@ -63,14 +77,16 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    // on dismissing the view we mark all that were being shown as "viewed"
-    SFINotification *mostRecent = [self mostRecentNotification];
-    [self.store markAllViewedTo:mostRecent];
-
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-    // tell the world notifications were viewed
-    [center postNotificationName:kApplicationDidViewNotifications object:nil];
+    if (self.markAllViewedOnDismiss) {
+        // on dismissing the view we mark all that were being shown as "viewed"
+        SFINotification *mostRecent = [self mostRecentNotification];
+        [self.store markAllViewedTo:mostRecent];
+
+        // tell the world notifications were viewed
+        [center postNotificationName:kApplicationDidViewNotifications object:nil];
+    }
 
     // stop listening for our own notifications
     [center removeObserver:self];
@@ -78,6 +94,13 @@
 
 - (void)onDone {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)onDeleteAll {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.store deleteAllNotifications];
+        [self.tableView reloadData];
+    });
 }
 
 #pragma mark - UITableViewDatasource methods

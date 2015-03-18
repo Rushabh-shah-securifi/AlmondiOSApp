@@ -100,7 +100,7 @@
         case SEC_CLOUD:
             return 2;
         case SEC_NOTIFICATIONS:
-            return 4;
+            return 5;
         case SEC_ALMONDS:
             return self.almonds.count;
         case SEC_EVENTS:
@@ -209,7 +209,18 @@
             return cell;
         }
         else if (indexPath.row == 3) {
-            NSString *cell_id = @"notifications_viewctrl";
+            NSString *cell_id = @"notifications_viewactual";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cell_id];
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
+            cell.textLabel.text = @"View Notifications";
+            return cell;
+        }
+        else if (indexPath.row == 4) {
+            NSString *cell_id = @"notifications_viewtests";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cell_id];
@@ -379,7 +390,16 @@
         }
         else if (indexPath.row == 3) {
             SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+            ctrl.enableTestStore = NO;
+            ctrl.enableDeleteAllButton = YES;
+            ctrl.markAllViewedOnDismiss = NO;
+            [self.navigationController pushViewController:ctrl animated:YES];
+        }
+        else if (indexPath.row == 4) {
+            SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
             ctrl.enableTestStore = YES;
+            ctrl.enableDeleteAllButton = NO;
+            ctrl.markAllViewedOnDismiss = NO;
             [self.navigationController pushViewController:ctrl animated:YES];
         }
     }
