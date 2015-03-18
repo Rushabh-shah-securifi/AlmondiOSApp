@@ -174,7 +174,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
-    NSLog(@"%s, Did receive memory warning", __PRETTY_FUNCTION__);
+    ELog(@"%s, Did receive memory warning", __PRETTY_FUNCTION__);
     [super didReceiveMemoryWarning];
 }
 

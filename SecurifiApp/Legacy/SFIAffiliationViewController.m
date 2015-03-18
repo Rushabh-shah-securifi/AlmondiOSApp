@@ -267,7 +267,7 @@
     if (data != nil) {
         LogoutResponse *obj = (LogoutResponse *) [data valueForKey:@"data"];
         if (!obj.isSuccessful) {
-            NSLog(@"Could not logout - Reason %@", obj.reason);
+            ELog(@"Could not logout - Reason %@", obj.reason);
             NSString *alertMsg = NSLocalizedString(@"alert.msg.Logout was unsuccessful", @"Sorry. Logout was unsuccessful. Please try again.");
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"alert.title.Logout Unsuccessful", @"Logout Unsuccessful")
                                                             message:alertMsg

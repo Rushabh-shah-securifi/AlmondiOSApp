@@ -123,7 +123,7 @@
     }
     else {
         dispatch_async(dispatch_get_main_queue(), ^() {
-            NSLog(@"LogoutAll response no sucess");
+            ELog(@"LogoutAll response no sucess");
             self.logMessageLabel.text = NSLocalizedString(@"logoutall.label.Logout from all devices was not successful.", @"Logout from all devices was not successful.");
 
             if (obj.reasonCode == LogoutAllResponseResonCode_wrongPassword) {
