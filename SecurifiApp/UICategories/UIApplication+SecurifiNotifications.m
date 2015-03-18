@@ -102,16 +102,25 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
         [notification setDebugDeviceName];
     }
 
+    // Keep track of total received that we will process
+    [[SFIPreferences instance] debugMarkPushNotificationReceived];
+
     // By this point, the notification has been vetted. Now store it and then post a local alert
     //
-    [toolkit storePushNotification:notification];
-    [[SFIPreferences instance] debugMarkPushNotificationReceived];
+    BOOL stored = [toolkit storePushNotification:notification];
+    if (!stored) {
+        ELog(@"dropping notification: failed to store in database");
+        if (debugLogging) {
+            [self securifiDebugLog:notification action:@"fail-store"];
+        }
+        return NO;
+    }
 
     // There is an iOS limit on the number of active local notifications. So, we prune the list of notifications
     // to ensure there is room for this new one.
 
     NSArray *notifications = self.scheduledLocalNotifications;
-    NSLog(@"scheduled notifications count: %i", notifications.count);
+    DLog(@"scheduled notifications count: %lu", (unsigned long)notifications.count);
 
     NSString *msg = [NSString stringWithFormat:@"%@%@", notification.deviceName, sensorSupport.notificationText];
 
@@ -145,7 +154,7 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     NSInteger count = [toolkit countUnviewedNotifications];
     notice.applicationIconBadgeNumber = count;
 
-    DLog(@"notification: posting local notification, count:%i", count);
+    DLog(@"notification: posting local notification, count:%li", (long)count);
     [self presentLocalNotificationNow:notice];
 
     if (debugLogging) {
@@ -195,9 +204,12 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 }
 
 - (void)securifiDebugLog:(SFINotification *)notification action:(NSString *)action {
-    NSString *msg = [NSString stringWithFormat:@"notification %ld %@", notification.debugCounter, action];
+    NSString *msg = [NSString stringWithFormat:@"apn %@ %ld %@", notification.deviceName, notification.debugCounter, action];
+
     DebugLogger *logger = [DebugLogger instance];
     [logger writeLog:msg];
+
+    DLog(msg);
 }
 
 @end

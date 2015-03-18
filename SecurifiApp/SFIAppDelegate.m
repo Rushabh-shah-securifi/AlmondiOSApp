@@ -7,10 +7,10 @@
 //
 
 #import "SFIAppDelegate.h"
-#import "SNLog.h"
 #import "Analytics.h"
 #import "Crashlytics.h"
 #import "UIApplication+SecurifiNotifications.h"
+#import <CrashlyticsLumberjack/CrashlyticsLogger.h>
 
 #define DEFAULT_GA_ID @"UA-52832244-2"
 #define DEFAULT_CRASHLYTICS_KEY @"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3"
@@ -137,6 +137,16 @@
 
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
+
+    if (config.enableNotificationsDebugLogging) {
+        DDFileLogger *logger = [DDFileLogger new];
+        logger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
+        logger.logFileManager.maximumNumberOfLogFiles = 7;
+
+        NSLog(@"Activating file logger, dir:%@", logger.logFileManager.logsDirectory);
+        [DDLog addLogger:logger];
+    }
 
     NSString *trackingId = [self analyticsTrackingId];
     [[Analytics sharedInstance] initialize:trackingId];
