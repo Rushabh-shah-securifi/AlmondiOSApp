@@ -103,10 +103,27 @@
     }
 }
 
+- (NSData *)logData {
+    @synchronized (self.locker) {
+        NSFileHandle *handle = self.fileHandle;
+        if (handle == nil) {
+            return [NSData data];
+        }
+
+        NSString *path = [self loggerFilePath];
+        return [NSData dataWithContentsOfFile:path];
+    }
+}
+
+- (NSString *)fileName {
+    return @"debuglog.log";
+}
+
 - (NSString *)loggerFilePath {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
-    return [NSString stringWithFormat:@"%@/debuglog.log", documentsDirectory];
+    NSString *fileName = [self fileName];
+    return [documentsDirectory stringByAppendingPathComponent:fileName];
 }
 
 - (NSString *)makeLogStarted {

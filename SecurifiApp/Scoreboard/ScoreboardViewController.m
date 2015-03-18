@@ -14,6 +14,11 @@
 #import "UIViewController+Securifi.h"
 #import "SFINotificationsViewController.h"
 #import "ScoreboardDebugLoggerViewController.h"
+#import "DebugLogger.h"
+#import <MBProgressHUD/MBProgressHUD.h>
+
+@import MessageUI;
+
 
 #define SEC_CLOUD           0
 #define SEC_NOTIFICATIONS   1
@@ -21,12 +26,12 @@
 #define SEC_EVENTS          3
 #define SEC_NETWORK         4
 #define SEC_REQUESTS        5
+#define SEC_LOGS            6
 
-@interface ScoreboardViewController ()
+@interface ScoreboardViewController () <MFMailComposeViewControllerDelegate>
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @property(nonatomic) Scoreboard *scoreboard;
 @property(nonatomic) NSArray *almonds;
-@property(nonatomic) NSTimer *updateTimer;
 @end
 
 @implementation ScoreboardViewController
@@ -54,18 +59,6 @@
     self.refreshControl = refresh;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-
-    [self.updateTimer invalidate];
-    self.updateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(onUpdateFooterView) userInfo:nil repeats:YES];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [self.updateTimer invalidate];
-}
-
 - (void)loadScoreboard {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.scoreboard = [toolkit scoreboardSnapshot];
@@ -82,17 +75,10 @@
     });
 }
 
-- (void)onUpdateFooterView {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        NSIndexSet *footer_section = [NSIndexSet indexSetWithIndex:SEC_REQUESTS];
-        [self.tableView reloadSections:footer_section withRowAnimation:UITableViewRowAnimationNone];
-    });
-}
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 6;
+    return 7;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -109,6 +95,8 @@
             return 3;
         case SEC_REQUESTS:
             return 3;
+        case SEC_LOGS:
+            return 1;
         default:
             return 0;
     }
@@ -128,6 +116,8 @@
             return @"Network";
         case SEC_REQUESTS:
             return @"Commands & Updates";
+        case SEC_LOGS:
+            return @"Logs & Data";
         default:
             return nil;
     }
@@ -135,7 +125,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     // whatever is the last section, we place a title
-    if (section != SEC_REQUESTS) {
+    if (section != SEC_LOGS) {
         return nil;
     }
 
@@ -305,6 +295,17 @@
             }
         } // end switch
     }
+    else if (section == SEC_LOGS) {
+        NSString *cell_id = @"send_logs";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+        cell.textLabel.text = @"Email Logs & Data";
+        return cell;
+    }
 
     UITableViewCell *cell = [self getFieldCell:tableView];
     cell.textLabel.text = field;
@@ -412,6 +413,22 @@
 
         [self.navigationController pushViewController:ctrl animated:YES];
     }
+    else if (section == SEC_LOGS) {
+        if (![MFMailComposeViewController canSendMail]) {
+            [self showToast:@"Sending Mail is not supported on this device"];
+            return;
+        }
+
+        [self showHUD:@"Preparing..."];
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+            MFMailComposeViewController *ctrl = [self prepareMailComposer];
+            dispatch_async(dispatch_get_main_queue(), ^() {
+                [self.HUD hide:YES];
+                [self presentViewController:ctrl animated:YES completion:nil];
+            });
+        });
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -435,5 +452,62 @@
 - (NSString *)pushNotificationClientToken {
     return [SFIPreferences instance].pushNotificationDeviceToken.hexadecimalString;
 }
+
+#pragma mark - Mail composer and MFMailComposeViewControllerDelegate methods
+
+- (MFMailComposeViewController *)prepareMailComposer {
+    MFMailComposeViewController *ctrl = [MFMailComposeViewController new];
+    ctrl.mailComposeDelegate = self;
+    ctrl.subject = [NSString stringWithFormat:@"[%@] Data and logs", [[UIDevice currentDevice] name]];
+
+    NSMutableString *bodyText = [NSMutableString string];
+
+    DebugLogger *debugLogger = [DebugLogger instance];
+    NSData *data = [debugLogger logData];
+    [ctrl addAttachmentData:data mimeType:@"text/plain" fileName:debugLogger.fileName];
+    [bodyText appendFormat:@"%@\n", debugLogger.fileName];
+
+    for (id logger in [DDLog allLoggers]) {
+        if ([logger isKindOfClass:DDFileLogger.class]) {
+            DDFileLogger *fileLogger = logger;
+            NSArray *fileInfos = fileLogger.logFileManager.sortedLogFileInfos;
+            for (DDLogFileInfo *fileInfo in fileInfos) {
+                NSString *logFilePath = fileInfo.filePath;
+                NSString *logFileName = fileInfo.fileName;
+
+                NSData *logData = [NSData dataWithContentsOfFile:logFilePath];
+                [ctrl addAttachmentData:logData mimeType:@"text/plain" fileName:logFileName];
+                [bodyText appendFormat:@"%@\n", logFileName];
+            }
+        }
+    }
+
+    NSString *databaseCopyFilePath = [NSTemporaryDirectory() stringByAppendingPathComponent:[[NSUUID UUID] UUIDString]];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    BOOL success = [toolkit copyNotificationStoreTo:databaseCopyFilePath];
+    if (success) {
+        NSData *logData = [NSData dataWithContentsOfFile:databaseCopyFilePath];
+        NSString *filename = @"toolkit_store.db";
+        [ctrl addAttachmentData:logData mimeType:@"application/x-sqlite3" fileName:filename];
+        [bodyText appendFormat:@"%@\n", filename];
+    }
+
+    [ctrl setMessageBody:bodyText isHTML:NO];
+    return ctrl;
+}
+
+- (void)mailComposeController:(MFMailComposeViewController *)ctrl didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    [ctrl dismissViewControllerAnimated:YES completion:^() {
+        if (result == MFMailComposeResultFailed) {
+            if (error) {
+                [self showToast:[NSString stringWithFormat:@"Failed to send mail: %@", error.description]];
+            }
+            else {
+                [self showToast:@"Failed to send mail"];
+            }
+        }
+    }];
+}
+
 
 @end

@@ -123,6 +123,8 @@
 		1C7E7E761A41A8950026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E2E1A41A26A0026F0BA /* AccountsStoryboard_iPhone.storyboard */; };
 		1C7E7E771A41A8990026F0BA /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E341A41A26A0026F0BA /* MainStoryboard_iPad.storyboard */; };
 		1C7E7E781A41A89B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */; };
+		1C996C781AB94E2800CB2C23 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C996C771AB94E2800CB2C23 /* MessageUI.framework */; };
+		1C996C791AB94E3200CB2C23 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C996C771AB94E2800CB2C23 /* MessageUI.framework */; };
 		1C9B1D7A1A3EE9EF00097D8F /* HomeScreen-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C9B1D591A3EE9EF00097D8F /* HomeScreen-Images.xcassets */; };
 		1C9B1D7B1A3EE9EF00097D8F /* HomeScreenAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B1D5C1A3EE9EF00097D8F /* HomeScreenAppDelegate.m */; };
 		1C9B1D901A3EE9EF00097D8F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C9B1D721A3EE9EF00097D8F /* main.m */; };
@@ -300,6 +302,7 @@
 		1C7E7E331A41A26A0026F0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = "Common-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
 		1C7E7E351A41A26A0026F0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		1C7E7E371A41A26A0026F0BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		1C996C771AB94E2800CB2C23 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		1C9B1D591A3EE9EF00097D8F /* HomeScreen-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "HomeScreen-Images.xcassets"; sourceTree = "<group>"; };
 		1C9B1D5A1A3EE9EF00097D8F /* HomeScreen-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "HomeScreen-Prefix.pch"; sourceTree = "<group>"; };
 		1C9B1D5B1A3EE9EF00097D8F /* HomeScreenAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeScreenAppDelegate.h; sourceTree = "<group>"; };
@@ -358,6 +361,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C996C791AB94E3200CB2C23 /* MessageUI.framework in Frameworks */,
 				1C414BCE1A79F0E800C448A4 /* libsqlite3.dylib in Frameworks */,
 				1CEE69551A37F65D008D8567 /* Foundation.framework in Frameworks */,
 				1CEE69541A37F656008D8567 /* UIKit.framework in Frameworks */,
@@ -377,6 +381,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C996C781AB94E2800CB2C23 /* MessageUI.framework in Frameworks */,
 				1C414BCD1A79F0DF00C448A4 /* libsqlite3.dylib in Frameworks */,
 				1C33E94F19C025DB0014725A /* QuartzCore.framework in Frameworks */,
 				1C75815C19AC86C20074C601 /* libxml2.dylib in Frameworks */,
@@ -715,6 +720,7 @@
 		1CED5EF319AC82FD0023512F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1C996C771AB94E2800CB2C23 /* MessageUI.framework */,
 				1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */,
 				1CEE694B1A37F5F6008D8567 /* libSecurifiToolkit.a */,
 				1C75815B19AC86C20074C601 /* libxml2.dylib */,

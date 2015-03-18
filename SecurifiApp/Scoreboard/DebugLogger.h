@@ -19,6 +19,11 @@
 - (void)writeLog:(NSString *)msg;
 
 // returns the entire log file as a string; be careful!!
-- (NSString*)logEntries;
+- (NSString *)logEntries;
+
+- (NSData *)logData;
+
+// name of the log file; does not contain path info
+- (NSString *)fileName;
 
 @end
