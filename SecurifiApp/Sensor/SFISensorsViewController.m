@@ -185,18 +185,18 @@
         [self setDeviceValues:[toolkit deviceValuesList:mac]];
 
         if (self.deviceList.count == 0) {
-            NSLog(@"Sensors: requesting device list on empty list");
+            DLog(@"Sensors: requesting device list on empty list");
             [self showHudWithTimeout];
             [toolkit asyncRequestDeviceList:mac];
         }
         else if (self.deviceValueTable.count == 0) {
-            NSLog(@"Sensors: requesting device values on empty list");
+            DLog(@"Sensors: requesting device values on empty list");
             [self showHudWithTimeout];
             [toolkit tryRequestDeviceValueList:mac];
         }
         else if ([toolkit tryRequestDeviceValueList:mac]) {
             [self showHudWithTimeout];
-            NSLog(@"Sensors: requesting device values on new connection");
+            DLog(@"Sensors: requesting device values on new connection");
         }
 
 //        [toolkit asyncRequestNotificationPreferenceList:mac];
@@ -216,7 +216,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
-    NSLog(@"%s, Did receive memory warning", __PRETTY_FUNCTION__);
+    ELog(@"%s, Did receive memory warning", __PRETTY_FUNCTION__);
     [super didReceiveMemoryWarning];
 }
 

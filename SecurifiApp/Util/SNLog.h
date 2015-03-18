@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 
 // Re-define NSLog to use SNLog instead
-#define NSLog(format, ...) [SNLog Log:format, ##__VA_ARGS__]
+//#define NSLog(format, ...) [SNLog Log:format, ##__VA_ARGS__]
 
 
 /*!

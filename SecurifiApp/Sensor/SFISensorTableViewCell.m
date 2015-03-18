@@ -799,7 +799,7 @@
     float saturation = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SATURATION] floatValue];
     float brightness = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BRIGHTNESS] floatValue];
     
-    NSLog(@"%f %f %f", hue, saturation, brightness);
+    DLog(@"sensor color HSB: %f %f %f", hue, saturation, brightness);
     
     //TODO: Set color
     

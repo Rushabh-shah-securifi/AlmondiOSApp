@@ -171,7 +171,7 @@
         [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }
     else {
-        NSLog(@"Reason Code %d", obj.reasonCode);
+        ELog(@"Failed to change password, reason:%d", obj.reasonCode);
         //Display appropriate reason
         NSString *failureReason;
         switch (obj.reasonCode) {

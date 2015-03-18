@@ -476,7 +476,7 @@
 }
 
 - (void)onDidFailToRegisterForNotifications {
-    NSLog(@"Failed to register push notification token with cloud");
+    ELog(@"Failed to register push notification token with cloud");
     [self showToast:@"Sorry! Push Notification was not registered."];
 }
 
@@ -485,7 +485,7 @@
 }
 
 - (void)onDidFailToDeregisterForNotifications {
-    NSLog(@"Failed to remove push notification token registration with cloud");
+    ELog(@"Failed to remove push notification token registration with cloud");
     [self showToast:@"Sorry! Push Notification was not deregistered."];
 }
 
