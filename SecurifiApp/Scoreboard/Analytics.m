@@ -55,7 +55,7 @@
 
     MobileCommandRequest *cmd = info[@"command"];
     if (!cmd) {
-        NSLog(@"Analytics: unable to process kSFIDidCompleteMobileCommandRequest: command payload was nil");
+        ELog(@"Analytics: unable to process kSFIDidCompleteMobileCommandRequest: command payload was nil");
         return;
     }
 
