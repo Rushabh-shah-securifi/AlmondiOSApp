@@ -477,7 +477,7 @@
     [bodyText appendString:@"\nLogs and Data\n"];
     [bodyText appendString:@"=========================\n"];
 
-    DebugLogger *debugLogger = [DebugLogger instance];
+    DebugLogger *debugLogger = [DebugLogger sharedInstance];
     NSData *data = [debugLogger logData];
     [ctrl addAttachmentData:data mimeType:@"text/plain" fileName:debugLogger.fileName];
     [bodyText appendFormat:@"%@\n", debugLogger.fileName];

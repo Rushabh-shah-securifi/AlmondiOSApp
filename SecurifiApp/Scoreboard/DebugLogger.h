@@ -8,7 +8,7 @@
 
 @interface DebugLogger : NSObject
 
-+ (DebugLogger *)instance;
++ (DebugLogger *)sharedInstance;
 
 - (void)open;
 
@@ -16,7 +16,7 @@
 
 - (void)clear;
 
-- (void)writeLog:(NSString *)msg;
+- (void)logNotification:(SFINotification *)notification action:(NSString *)action;
 
 // returns the entire log file as a string; be careful!!
 - (NSString *)logEntries;

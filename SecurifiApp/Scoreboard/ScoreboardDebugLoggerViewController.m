@@ -32,12 +32,12 @@
 }
 
 - (void)loadLogEntries {
-    DebugLogger *logger = [DebugLogger instance];
+    DebugLogger *logger = [DebugLogger sharedInstance];
     self.textView.text = logger.logEntries;
 }
 
 - (void)onDeleteLog {
-    DebugLogger *logger = [DebugLogger instance];
+    DebugLogger *logger = [DebugLogger sharedInstance];
     [logger clear];
     [self loadLogEntries];
 }

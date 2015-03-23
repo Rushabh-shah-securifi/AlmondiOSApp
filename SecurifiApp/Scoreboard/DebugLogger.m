@@ -13,15 +13,14 @@
 
 @implementation DebugLogger
 
-+ (DebugLogger *)instance {
++ (DebugLogger *)sharedInstance {
+    static dispatch_once_t once_predicate;
     static DebugLogger *_instance = nil;
 
-    @synchronized (self) {
-        if (_instance == nil) {
-            _instance = [[self alloc] init];
-            [_instance open];
-        }
-    }
+    dispatch_once(&once_predicate, ^{
+        _instance = [[self alloc] init];
+        [_instance open];
+    });
 
     return _instance;
 }
@@ -67,6 +66,15 @@
         NSString *logStarted = [self makeLogStarted];
         [handle writeData:[logStarted dataUsingEncoding:NSUTF8StringEncoding]];
     }
+}
+
+- (void)logNotification:(SFINotification *)notification action:(NSString *)action {
+    // The time property is basically a counter and is more or less unique across notifications.
+    // In the absence of a debugCounter, it is useful. It also allows us to see out of order delivery.
+    NSString *msg = [NSString stringWithFormat:@"apn %f %@ %ld %@", notification.time, notification.deviceName, notification.debugCounter, action];
+    [self writeLog:msg];
+
+    DLog(msg);
 }
 
 - (void)writeLog:(NSString *)msg {

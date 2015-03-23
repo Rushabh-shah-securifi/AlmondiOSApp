@@ -203,12 +203,8 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 }
 
 - (void)securifiDebugLog:(SFINotification *)notification action:(NSString *)action {
-    NSString *msg = [NSString stringWithFormat:@"apn %@ %ld %@", notification.deviceName, notification.debugCounter, action];
-
-    DebugLogger *logger = [DebugLogger instance];
-    [logger writeLog:msg];
-
-    DLog(msg);
+    DebugLogger *logger = [DebugLogger sharedInstance];
+    [logger logNotification:notification action:action];
 }
 
 @end
