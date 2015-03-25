@@ -816,7 +816,7 @@
 				TargetAttributes = {
 					1C2056051A2EBBBA00975495 = {
 						CreatedOnToolsVersion = 6.1.1;
-						DevelopmentTeam = R336EY8885;
+						DevelopmentTeam = C7LGXV6KUU;
 					};
 					1CED5EF019AC82FD0023512F = {
 						DevelopmentTeam = R336EY8885;
@@ -1285,6 +1285,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "HomeScreen-launch_image";
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "HomeScreen/HomeScreen-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1300,6 +1301,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\" \"${PROJECT_DIR}/../iostoolkit\"";
 			};
@@ -1313,6 +1315,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "HomeScreen-launch_image";
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "HomeScreen/HomeScreen-Prefix.pch";
 				INFOPLIST_FILE = HomeScreen/Info.plist;
@@ -1324,6 +1327,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\" \"${PROJECT_DIR}/../iostoolkit\"";
 			};
