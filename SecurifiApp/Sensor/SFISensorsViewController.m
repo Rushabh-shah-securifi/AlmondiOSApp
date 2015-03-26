@@ -6,7 +6,6 @@
 #import "SFISensorsViewController.h"
 #import "AlmondPlusConstants.h"
 #import "SFIConstants.h"
-#import "SNLog.h"
 #import "SFIColors.h"
 #import "MBProgressHUD.h"
 #import "SFISensorTableViewCell.h"
