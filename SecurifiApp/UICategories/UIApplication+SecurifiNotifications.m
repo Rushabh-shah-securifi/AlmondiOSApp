@@ -60,6 +60,40 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 - (BOOL)securifiApplicationHandleRemoteNotification:(NSDictionary *)userInfo {
     DLog(@"notification: %@", userInfo);
 
+    // First, go retrieve new ones
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit tryRefreshNotifications];
+
+    // Next, turn it into a local notification that will show up in the iOS notification center
+    NSDictionary *apps_dict = userInfo[@"aps"];
+
+    UILocalNotification *notice = [UILocalNotification new];
+    notice.alertBody = apps_dict[@"alert"];
+
+    NSString *soundName = apps_dict[@"sound"];
+    if (soundName == nil) {
+        soundName = UILocalNotificationDefaultSoundName;
+    }
+    notice.soundName = soundName;
+
+    NSNumber *badge = apps_dict[@"badge"];
+    NSInteger count = 0;
+    if (badge) {
+        count = badge.integerValue;
+    }
+    self.applicationIconBadgeNumber = count;
+
+    DLog(@"notification: posting local notification, count:%li", (long)count);
+    [self presentLocalNotificationNow:notice];
+
+    return YES;
+}
+
+// returns YES if notification can be handled (matches an almond)
+// else returns NO
+- (BOOL)_securifiApplicationHandleRemoteNotification:(NSDictionary *)userInfo {
+    DLog(@"notification: %@", userInfo);
+
     SFINotification *notification = [SFINotification parsePayload:userInfo];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     const BOOL debugLogging = toolkit.configuration.enableNotificationsDebugLogging;

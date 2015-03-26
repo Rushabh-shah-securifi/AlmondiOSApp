@@ -22,8 +22,10 @@
 
 - (SecurifiConfigurator *)toolkitConfigurator {
     SecurifiConfigurator *config = [SecurifiConfigurator new];
-//    config.enableScoreboard = YES;                  // uncomment for debug builds
-//    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
+    config.enableScoreboard = YES;                  // uncomment for debug builds
+    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
+    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
+
     config.enableNotifications = YES;               // uncomment to activate; off by default
     config.enableRouterWirelessControl = YES;       // YES by default
     return config;
@@ -48,6 +50,13 @@
     NSLog(@"Application did launch");
     [self initializeSystem:application];
 
+    NSDictionary *remote = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+    if (remote) {
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        [toolkit tryRefreshNotifications];
+        [application securifiApplicationHandleUserDidTapNotification];
+    }
+
     NSDictionary *local = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
     if (local) {
         [application securifiApplicationHandleUserDidTapNotification];
@@ -66,6 +75,7 @@
     [application securifiApplicationDidRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
 }
 
+/*
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult result))handler {
     NSLog(@"didReceiveRemoteNotification:fetchCompletionHandler");
 
@@ -75,6 +85,7 @@
     enum UIBackgroundFetchResult result = handled? UIBackgroundFetchResultNewData : UIBackgroundFetchResultNoData;
     handler(result);
 }
+*/
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     NSLog(@"didReceiveRemoteNotification");
@@ -109,13 +120,18 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    BOOL online = [[SecurifiToolkit sharedInstance] isCloudOnline];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
-    NSLog(@"Application becomes active: online=%@", online ? @"YES" : @"NO");
+    BOOL online = [toolkit isCloudOnline];
+    NSLog(@"Application becomes active: cloud online=%@", online ? @"YES" : @"NO");
 
-    if (!online) {
-        [[SecurifiToolkit sharedInstance] initToolkit];
+    if (online) {
+        [toolkit tryFetchNotificationCount];
     }
+    else {
+        [toolkit initToolkit];
+    }
+
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -134,6 +150,7 @@
 
     SecurifiConfigurator *config = [self toolkitConfigurator];
     [SecurifiToolkit initialize:config];
+    [SecurifiToolkit sharedInstance].useProductionCloud = NO;
 
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
