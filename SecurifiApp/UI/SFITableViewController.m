@@ -95,27 +95,38 @@
 
     [center addObserver:self
                selector:@selector(onReachabilityDidChange:)
-                   name:kSFIReachabilityChangedNotification object:nil];
+                   name:kSFIReachabilityChangedNotification
+                 object:nil];
 
     [center addObserver:self
                selector:@selector(onNotificationCountChanged:)
-                   name:kSFINotificationDidStore object:nil];
+                   name:kSFINotificationDidStore
+                 object:nil];
 
     [center addObserver:self
                selector:@selector(onNotificationCountChanged:)
-                   name:kSFINotificationDidMarkViewed object:nil];
+                   name:kSFINotificationBadgeCountDidChange
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationDidMarkViewed
+                 object:nil];
 
     [center addObserver:self
                selector:@selector(onAlmondModeChangeDidComplete:)
-                   name:kSFIDidCompleteAlmondModeChangeRequest object:nil];
+                   name:kSFIDidCompleteAlmondModeChangeRequest
+                 object:nil];
 
     [center addObserver:self
                selector:@selector(onAlmondModeDidChange:)
-                   name:kSFIAlmondModeDidChange object:nil];
+                   name:kSFIAlmondModeDidChange
+                 object:nil];
 
     [center addObserver:self
                selector:@selector(onShowNotifications:)
-                   name:kApplicationDidBecomeActiveOnNotificationTap object:nil];
+                   name:kApplicationDidBecomeActiveOnNotificationTap
+                 object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
