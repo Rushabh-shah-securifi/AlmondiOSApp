@@ -22,11 +22,10 @@
 
 - (SecurifiConfigurator *)toolkitConfigurator {
     SecurifiConfigurator *config = [SecurifiConfigurator new];
-    config.enableScoreboard = YES;                  // uncomment for debug builds
-    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
-    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
+//    config.enableScoreboard = YES;                  // uncomment for debug builds
+//    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
 
-    config.enableNotifications = YES;               // uncomment to activate; off by default
+    config.enableNotifications = NO;                // uncomment to activate; off by default
     config.enableRouterWirelessControl = YES;       // YES by default
     return config;
 }
@@ -150,7 +149,7 @@
 
     SecurifiConfigurator *config = [self toolkitConfigurator];
     [SecurifiToolkit initialize:config];
-    [SecurifiToolkit sharedInstance].useProductionCloud = NO;
+//    [SecurifiToolkit sharedInstance].useProductionCloud = NO;
 
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
