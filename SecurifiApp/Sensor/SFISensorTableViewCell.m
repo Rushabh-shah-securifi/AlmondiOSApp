@@ -322,7 +322,7 @@
         }
 
         case SFIDeviceType_StandardWarningDevice_21: {
-            [self configureBinaryStateSensor:DT21_STANDARD_WARNING_DEVICE_TRUE imageNameFalse:DT21_STANDARD_WARNING_DEVICE_FALSE statusTrue:@"RINGING" statusFalse:@"OFF"];
+            [self configureBinaryStateSensor:DT21_STANDARD_WARNING_DEVICE_FALSE imageNameFalse:DT21_STANDARD_WARNING_DEVICE_TRUE statusNonZeroValue:@"RINGING" statusZeroValue:@"OFF"];
             break;
         }
 
@@ -349,6 +349,11 @@
         case SFIDeviceType_TemperatureSensor_27: {
             [self showDeviceValueLabels:YES];
             [self configureTempSensor_27];
+            break;
+        }
+
+        case SFIDeviceType_ZigbeeDoorLock_28: {
+            [self configureBinaryStateSensor:DT5_DOOR_LOCK_TRUE imageNameFalse:DT5_DOOR_LOCK_FALSE statusNonZeroValue:@"UNLOCKED" statusZeroValue:@"LOCKED"];
             break;
         }
 
@@ -421,7 +426,6 @@
         case SFIDeviceType_RemoteControl_18:
         case SFIDeviceType_Keypad_20:
         case SFIDeviceType_OccupancySensor_24:
-        case SFIDeviceType_ZigbeeDoorLock_28:
         case SFIDeviceType_ColorControl_29:
         case SFIDeviceType_PressureSensor_30:
         case SFIDeviceType_FlowSensor_31:
