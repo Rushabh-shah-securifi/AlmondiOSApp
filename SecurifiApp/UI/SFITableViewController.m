@@ -240,8 +240,14 @@
 
 - (void)markNotificationStatusIcon {
     if (self.enableNotificationsView) {
-        NSInteger count = [[SecurifiToolkit sharedInstance] countUnviewedNotifications];
-        [self.notificationsStatusButton markNotificationCount:(NSUInteger) count];
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        NSInteger badgeCount = [toolkit notificationsBadgeCount];
+        NSInteger count = [toolkit countUnviewedNotifications];
+        NSInteger marker = count;
+        if (count == 0 && badgeCount > 0) {
+            marker = badgeCount;
+        }
+        [self.notificationsStatusButton markNotificationCount:(NSUInteger) marker];
     }
 }
 
