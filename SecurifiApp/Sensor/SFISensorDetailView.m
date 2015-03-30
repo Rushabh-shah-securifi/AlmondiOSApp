@@ -373,12 +373,12 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if (textField != self.deviceNameField) {
+    if (textField != self.deviceNameField && textField != self.deviceLocationField) {
         return YES;
     }
 
     NSString *new_str = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    return new_str.length <= 32; // limit on sensor names is 32 chars
+    return new_str.length <= 32; // limit on sensor names and location is 32 chars
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
