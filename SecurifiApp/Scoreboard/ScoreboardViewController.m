@@ -15,6 +15,7 @@
 #import "SFINotificationsViewController.h"
 #import "ScoreboardDebugLoggerViewController.h"
 #import "DebugLogger.h"
+#import "ScoreboardTextEditorViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 @import MessageUI;
@@ -28,7 +29,7 @@
 #define SEC_REQUESTS        5
 #define SEC_LOGS            6
 
-@interface ScoreboardViewController () <MFMailComposeViewControllerDelegate>
+@interface ScoreboardViewController () <MFMailComposeViewControllerDelegate, ScoreboardTextEditorViewControllerProtocol>
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @property(nonatomic) Scoreboard *scoreboard;
 @property(nonatomic) NSArray *almonds;
@@ -84,7 +85,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (section) {
         case SEC_CLOUD:
-            return 2;
+            return 3;
         case SEC_NOTIFICATIONS:
             return 5;
         case SEC_ALMONDS:
@@ -322,7 +323,10 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cloudSectionCellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    BOOL useProduction = [SecurifiToolkit sharedInstance].useProductionCloud;
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    SecurifiConfigurator *config = toolkit.configuration;
+    BOOL useProduction = toolkit.useProductionCloud;
 
     NSString *id = @"cloud";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
@@ -331,13 +335,19 @@
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
 
-    if (indexPath.row == 0) {
+    NSInteger row = indexPath.row;
+    if (row == 0) {
         cell.textLabel.text = @"Production";
         cell.accessoryType = useProduction ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
-    else {
+    else if (row == 1) {
         cell.textLabel.text = @"Development";
         cell.accessoryType = useProduction ? UITableViewCellAccessoryNone : UITableViewCellAccessoryCheckmark;
+    }
+    else {
+        cell.textLabel.text = config.developmentCloudHost;
+        cell.textLabel.adjustsFontSizeToFitWidth = YES;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
 
     return cell;
@@ -347,10 +357,19 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
 
     if (section == SEC_CLOUD) {
-        [self onSwitchServer];
-        [tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger) section] withRowAnimation:UITableViewRowAnimationAutomatic];
+        if (row == 0 || row == 1) {
+            [self onSwitchServer];
+            [tableView reloadSections:[NSIndexSet indexSetWithIndex:(NSUInteger) section] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        else {
+            ScoreboardTextEditorViewController *ctrl = [ScoreboardTextEditorViewController new];
+            ctrl.delegate = self;
+            ctrl.text = [SecurifiToolkit sharedInstance].configuration.developmentCloudHost;
+            [self.navigationController pushViewController:ctrl animated:YES];
+        }
     }
     else if (section == SEC_ALMONDS) {
         NSString *token = nil;
@@ -368,7 +387,7 @@
         }
     }
     else if (section == SEC_NOTIFICATIONS) {
-        if (indexPath.row == 0) {
+        if (row == 0) {
             NSString *token = [self pushNotificationClientToken];
             if (token == nil) {
                 token = @"";
@@ -379,24 +398,24 @@
 
             [self showToast:@"Copied token"];
         }
-        else if (indexPath.row == 1) {
+        else if (row == 1) {
             SFIPreferences *prefs = [SFIPreferences instance];
             [prefs resetDebugPushNotificationReceivedCount];
             [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             [self showToast:@"Reset counter"];
         }
-        else if (indexPath.row == 2) {
+        else if (row == 2) {
             ScoreboardDebugLoggerViewController *ctrl = [ScoreboardDebugLoggerViewController new];
             [self.navigationController pushViewController:ctrl animated:YES];
         }
-        else if (indexPath.row == 3) {
+        else if (row == 3) {
             SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
             ctrl.enableTestStore = NO;
             ctrl.enableDeleteAllButton = YES;
             ctrl.markAllViewedOnDismiss = NO;
             [self.navigationController pushViewController:ctrl animated:YES];
         }
-        else if (indexPath.row == 4) {
+        else if (row == 4) {
             SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
             ctrl.enableTestStore = YES;
             ctrl.enableDeleteAllButton = NO;
@@ -522,6 +541,26 @@
             }
         }
     }];
+}
+
+#pragma mark - ScoreboardTextEditorViewControllerProtocol methods
+
+- (void)scoreboardTextEditorDidChangeText:(NSString *)newText {
+    newText = [newText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (newText.length == 0) {
+        return;
+    }
+
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    SecurifiConfigurator *config = toolkit.configuration;
+    config.developmentCloudHost = newText;
+
+    [toolkit debugUpdateConfiguration:config];
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+    });
 }
 
 
