@@ -34,6 +34,12 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
     RouterViewState_cloud_connected = 4,
 };
 
+typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
+    RouterViewReloadPolicy_always = 1,
+    RouterViewReloadPolicy_never = 2,
+    RouterViewReloadPolicy_on_state_change = 3,
+};
+
 @interface SFIRouterTableViewController () <SFIRouterTableViewActions>
 @property NSTimer *hudTimer;
 @property RouterViewState routerViewState;
@@ -63,7 +69,7 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
     if (self) {
         // need to set initial state before the table view state is set up to ensure the correct view/layout is rendered.
         // the table's initial set up is done even prior to calling viewDidLoad
-        [self checkRouterViewState:NO];
+        [self checkRouterViewState:RouterViewReloadPolicy_never];
     }
 
     return self;
@@ -178,7 +184,7 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
         [self showHudWithTimeout];
     }
 
-    [self checkRouterViewState:YES];
+    [self checkRouterViewState:RouterViewReloadPolicy_on_state_change];
 
     [self refreshDataForAlmond];
 }
@@ -200,7 +206,7 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
 #pragma mark - State
 
 // determines the presentation state and optionally reloads the view
-- (void)checkRouterViewState:(BOOL)reloadOnChange {
+- (void)checkRouterViewState:(RouterViewReloadPolicy)reloadTablePolicy {
     dispatch_async(dispatch_get_main_queue(), ^() {
         RouterViewState state;
         if ([self isNoAlmondLoaded]) {
@@ -219,8 +225,18 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
         RouterViewState oldState = self.routerViewState;
         self.routerViewState = state;
 
-        if (reloadOnChange && oldState != state) {
-            [self.tableView reloadData];
+        switch (reloadTablePolicy) {
+            case RouterViewReloadPolicy_always:
+                [self.tableView reloadData];
+                break;
+            case RouterViewReloadPolicy_never:
+                // do nothing
+                break;
+            case RouterViewReloadPolicy_on_state_change:
+                if (oldState != state) {
+                    [self.tableView reloadData];
+                }
+                break;
         }
     });
 }
@@ -267,7 +283,7 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
         if (self.disposed) {
             return;
         }
-        [self checkRouterViewState:YES];
+        [self checkRouterViewState:RouterViewReloadPolicy_on_state_change];
     });
 }
 
@@ -879,7 +895,7 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
             }
 
             self.isAlmondUnavailable = [response.reason.lowercaseString isEqualToString:@"almond is offline"];
-            [self checkRouterViewState:YES];
+            [self checkRouterViewState:RouterViewReloadPolicy_on_state_change];
             [self.HUD hide:YES];
             [self.refreshControl endRefreshing];
         });
@@ -906,14 +922,14 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
             case SFIGenericRouterCommandType_CONNECTED_DEVICES: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.connectedDevices = ls.deviceList;
-                [self checkRouterViewState:YES];
+                [self checkRouterViewState:RouterViewReloadPolicy_always];
                 break;
             }
 
             case SFIGenericRouterCommandType_BLOCKED_MACS: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.blockedDevices = ls.deviceList;
-                [self checkRouterViewState:YES];
+                [self checkRouterViewState:RouterViewReloadPolicy_always];
                 break;
             }
 
@@ -921,7 +937,7 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.wirelessSettings = ls.deviceList;
                 [self.routerSummary updateWirelessSummaryWithSettings:self.wirelessSettings];
-                [self checkRouterViewState:YES];
+                [self checkRouterViewState:RouterViewReloadPolicy_always];
                 break;
             }
 
@@ -971,7 +987,7 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
             }
 
             self.isAlmondUnavailable = YES;
-            [self checkRouterViewState:YES];
+            [self checkRouterViewState:RouterViewReloadPolicy_on_state_change];
         });
 
         return;
