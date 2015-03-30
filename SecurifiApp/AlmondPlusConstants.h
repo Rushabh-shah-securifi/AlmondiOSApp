@@ -25,8 +25,6 @@
 #define SEC_ALMOND_LIST @"AlmondList"
 #define SEC_SETTINGS_LIST @"Settings"
 
-#define APPLICATION_ID @"1001"
-#define GET_CONNECTED_DEVICE_COMMAND @"<root><AlmondConnectedDevices action=\"get\">1</AlmondConnectedDevices></root>"
 #define REBOOT @"Reboot"
 #define COUNT @"count"
 #define CONNECTED_DEVICES @"AlmondConnectedDevices"
@@ -37,7 +35,6 @@
 #define NO_ALMOND @"NO ALMOND"
 
 //PY 121113
-#define GET_BLOCKED_DEVICE_COMMAND @"<root><AlmondBlockedMACs action=\"get\">1</AlmondBlockedMACs></root>"
 #define BLOCKED_MACS @"AlmondBlockedMACs"
 #define BLOCKED_MAC @"BlockedMAC"
 
@@ -45,7 +42,6 @@
 #define BLOCKED_CONTENT @"AlmondBlockedContent"
 #define BLOCKED_TEXT @"BlockedText"
 
-#define GET_WIRELESS_SETTINGS_COMMAND @"<root><AlmondWirelessSettings action=\"get\">1</AlmondWirelessSettings></root>"
 #define WIRELESS_SETTINGS @"AlmondWirelessSettings"
 #define WIRELESS_SETTING @"WirelessSetting"
 #define SSID @"SSID"
@@ -59,7 +55,6 @@
 #define ACTION @"action"
 
 //PY 271113 - Router Summary
-#define GET_WIRELESS_SUMMARY_COMMAND @"<root><AlmondRouterSummary action=\"get\">1</AlmondRouterSummary></root>"
 
 #define ROUTER_SUMMARY @"AlmondRouterSummary"
 #define ENABLED @"enabled"

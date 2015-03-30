@@ -236,9 +236,10 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
 #pragma mark - Commands
 
 - (void)sendRebootAlmondCommand {
-    if (![self isNoAlmondLoaded]) {
-        self.correlationId = [[SecurifiToolkit sharedInstance] asyncRebootAlmond:self.almondMac];
+    if (self.routerViewState == RouterViewState_no_almond) {
+        return;
     }
+    self.correlationId = [[SecurifiToolkit sharedInstance] asyncRebootAlmond:self.almondMac];
 }
 
 #pragma mark HUD mgt
@@ -281,7 +282,7 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
 }
 
 - (void)onRefreshRouter:(id)sender {
-    if ([self isNoAlmondLoaded]) {
+    if (self.routerViewState == RouterViewState_no_almond) {
         return;
     }
 
@@ -828,21 +829,17 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
 #pragma mark - Class Methods
 
 - (void)refreshDataForAlmond {
-    if ([self isNoAlmondLoaded]) {
+    if (self.routerViewState == RouterViewState_no_almond) {
         return;
     }
-
-    [self sendGenericCommandRequest:GET_WIRELESS_SUMMARY_COMMAND];
-    [self sendGenericCommandRequest:GET_WIRELESS_SETTINGS_COMMAND];
-    [self sendGenericCommandRequest:GET_CONNECTED_DEVICE_COMMAND];
-    [self sendGenericCommandRequest:GET_BLOCKED_DEVICE_COMMAND];
+    [[SecurifiToolkit sharedInstance] asyncAlmondStatusAndSettings:self.almondMac];
 }
 
 - (void)onAddAlmondAction:(id)sender {
     if (self.disposed) {
         return;
     }
-    if ([self isNoAlmondLoaded]) {
+    if (self.routerViewState == RouterViewState_no_almond) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
         UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AffiliationNavigationTop"];
         [self presentViewController:mainView animated:YES completion:nil];
@@ -854,21 +851,6 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
 }
 
 #pragma mark - Cloud command senders and handlers
-
-- (void)sendGenericCommandRequest:(NSString *)data {
-    GenericCommandRequest *request = [GenericCommandRequest new];
-    request.almondMAC = self.almondMac;
-    request.applicationID = APPLICATION_ID;
-    request.data = data;
-
-    self.correlationId = request.correlationId;
-
-    GenericCommand *cmd = [[GenericCommand alloc] init];
-    cmd.commandType = CommandType_GENERIC_COMMAND_REQUEST;
-    cmd.command = request;
-
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cmd];
-}
 
 - (void)onGenericResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
