@@ -870,11 +870,16 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
             if (self.disposed) {
                 return;
             }
-            if (![response.almondMAC isEqualToString:self.almondMac]) {
+
+            NSString *responseAlmondMac = response.almondMAC;
+            if (responseAlmondMac.length > 0 && ![responseAlmondMac isEqualToString:self.almondMac]) {
+                // response almond mac value is likely to be null, but when specified we make sure it matches
+                // the current almond being shown.
                 return;
             }
-            self.isAlmondUnavailable = YES;
-            [self.tableView reloadData];
+
+            self.isAlmondUnavailable = [response.reason.lowercaseString isEqualToString:@"almond is offline"];
+            [self checkRouterViewState:YES];
             [self.HUD hide:YES];
             [self.refreshControl endRefreshing];
         });
@@ -901,14 +906,14 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
             case SFIGenericRouterCommandType_CONNECTED_DEVICES: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.connectedDevices = ls.deviceList;
-                [self.tableView reloadData];
+                [self checkRouterViewState:YES];
                 break;
             }
 
             case SFIGenericRouterCommandType_BLOCKED_MACS: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.blockedDevices = ls.deviceList;
-                [self.tableView reloadData];
+                [self checkRouterViewState:YES];
                 break;
             }
 
@@ -916,7 +921,7 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.wirelessSettings = ls.deviceList;
                 [self.routerSummary updateWirelessSummaryWithSettings:self.wirelessSettings];
-                [self.tableView reloadData];
+                [self checkRouterViewState:YES];
                 break;
             }
 
@@ -966,7 +971,7 @@ typedef NS_ENUM(unsigned int, RouterViewState) {
             }
 
             self.isAlmondUnavailable = YES;
-            [self.tableView reloadData];
+            [self checkRouterViewState:YES];
         });
 
         return;
