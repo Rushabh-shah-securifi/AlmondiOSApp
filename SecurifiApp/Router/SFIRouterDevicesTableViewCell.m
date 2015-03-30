@@ -30,6 +30,10 @@
     self.layoutCalled = YES;
 
     SFICardView *cardView = self.cardView;
+    if (cardView.isFrozen) {
+        return;
+    }
+
     [cardView addTopBorder:self.backgroundColor];
 
     // Place visual indicator of "blocked" or "connected" status
@@ -60,6 +64,8 @@
     }
 
     [cardView addSubview:infoCard];
+
+    [cardView freezeLayout];
 }
 
 - (void)onToggleBlockDevice:(id)sender {

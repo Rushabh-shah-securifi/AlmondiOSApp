@@ -28,11 +28,15 @@ typedef NS_ENUM(int, SFICardView_right_offset) {
 //              controls in a single "row".
 @interface SFICardView : UIView
 
+@property(nonatomic, readonly, getter=isFrozen) BOOL frozen;
+
 // controls width of summary  text labels; default is 'normal' and assumes label has full length of card row,
 // but when summary text is obscured by other controls on the right side, use the _inset mode to prevent overlap.
 @property(nonatomic) SFICardView_right_offset rightOffset;
 
 - (void)markYOffset:(unsigned int)val;
+
+- (void)freezeLayout;
 
 - (void)useSmallSummaryFont;
 
@@ -53,7 +57,7 @@ typedef NS_ENUM(int, SFICardView_right_offset) {
 
 // Displays an icon in the standard left corner of the card.
 // Call this method again to update the image.
-- (void)setCardIcon:(UIImage*)image;
+- (void)setCardIcon:(UIImage *)image;
 
 // Displays an icon and clear button in the standard left corner of the card and fired an event when the button is invoked.
 // To update the image, use the method setCardIcon:
@@ -65,9 +69,9 @@ typedef NS_ENUM(int, SFICardView_right_offset) {
 // Draws a left-aligned header with given title
 - (UILabel *)addTitle:(NSString *)title;
 
-- (void)addTitleAndOnOffSwitch:(NSString*)title target:(id)target action:(SEL)action on:(BOOL)isSwitchOn;
+- (void)addTitleAndOnOffSwitch:(NSString *)title target:(id)target action:(SEL)action on:(BOOL)isSwitchOn;
 
-- (void)addTitleAndButton:(NSString*)title target:(id)target action:(SEL)action buttonTitle:(NSString*)buttonTitle;
+- (void)addTitleAndButton:(NSString *)title target:(id)target action:(SEL)action buttonTitle:(NSString *)buttonTitle;
 
 // Draws a summary message. Usually added after calling addTitle and addHeader to create the standard
 // card header view.

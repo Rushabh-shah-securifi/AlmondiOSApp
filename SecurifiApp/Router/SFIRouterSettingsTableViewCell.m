@@ -32,6 +32,10 @@
     self.layoutCalled = YES;
 
     SFICardView *cardView = self.cardView;
+    if (cardView.isFrozen) {
+        return;
+    }
+
     SFIWirelessSetting *setting = self.wirelessSetting;
 
     [cardView addTopBorder:self.backgroundColor];
@@ -54,6 +58,8 @@
     [cardView addShortLine];
     [cardView addNameLabel:@"Country Region" valueLabel:setting.countryRegion];
     [cardView addShortLine];
+
+    [cardView freezeLayout];
 }
 
 #pragma mark - UISwitch actions

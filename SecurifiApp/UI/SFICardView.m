@@ -41,6 +41,10 @@
     return self;
 }
 
+- (void)freezeLayout {
+    _frozen = YES;
+}
+
 - (void)useSmallSummaryFont {
     self.summaryFont = [[UIFont standardUILabelFont] fontWithSize:10];
 }

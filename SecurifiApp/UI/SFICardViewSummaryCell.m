@@ -26,12 +26,18 @@
     [super layoutSubviews];
 
     SFICardView *card = self.cardView;
+    if (card.isFrozen) {
+        return;
+    }
+
     [card addTitle:self.title];
     [card addSummary:self.summaries];
 
     if (self.editTarget && self.editSelector) {
         [card addEditIconTarget:self.editTarget action:self.editSelector editing:self.expanded];
     }
+
+    [card freezeLayout];
 }
 
 @end

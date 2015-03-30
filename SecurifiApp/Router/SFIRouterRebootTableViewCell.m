@@ -30,6 +30,9 @@
     self.layoutCalled = YES;
 
     SFICardView *cardView = self.cardView;
+    if (cardView.isFrozen) {
+        return;
+    }
 
     [cardView addTopBorder:self.backgroundColor];
     [cardView addTitleAndButton:@"Reboot the router?" target:self action:@selector(onRebootAction:) buttonTitle:@"Yes"];
@@ -37,6 +40,8 @@
             @"It will take at least 2 minutes for the router",
             @"to reboot. Please refresh after sometime."
     ]];
+
+    [cardView freezeLayout];
 }
 
 - (void)onRebootAction:(id)sender {
