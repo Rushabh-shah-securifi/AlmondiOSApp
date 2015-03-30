@@ -22,6 +22,8 @@
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 
+@property(nonatomic, readonly) BOOL isHudHidden;
+
 // Current almond mac being displayed
 @property(nonatomic, readonly) NSString *almondMac;
 

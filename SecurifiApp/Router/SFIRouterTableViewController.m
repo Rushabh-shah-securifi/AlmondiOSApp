@@ -208,37 +208,42 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 // determines the presentation state and optionally reloads the view
 - (void)checkRouterViewState:(RouterViewReloadPolicy)reloadTablePolicy {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        RouterViewState state;
-        if ([self isNoAlmondLoaded]) {
-            state = RouterViewState_no_almond;
-        }
-        else if (self.isAlmondUnavailable) {
-            state = RouterViewState_almond_unavailable;
-        }
-        else if (![self isCloudOnline]) {
-            state = RouterViewState_cloud_offline;
-        }
-        else {
-            state = RouterViewState_cloud_connected;
-        }
-
-        RouterViewState oldState = self.routerViewState;
-        self.routerViewState = state;
-
-        switch (reloadTablePolicy) {
-            case RouterViewReloadPolicy_always:
-                [self.tableView reloadData];
-                break;
-            case RouterViewReloadPolicy_never:
-                // do nothing
-                break;
-            case RouterViewReloadPolicy_on_state_change:
-                if (oldState != state) {
-                    [self.tableView reloadData];
-                }
-                break;
-        }
+        [self syncCheckRouterViewState:reloadTablePolicy];
     });
+}
+
+// determines the presentation state and optionally reloads the view
+- (void)syncCheckRouterViewState:(RouterViewReloadPolicy)reloadTablePolicy {
+    RouterViewState state;
+    if ([self isNoAlmondLoaded]) {
+        state = RouterViewState_no_almond;
+    }
+    else if (self.isAlmondUnavailable) {
+        state = RouterViewState_almond_unavailable;
+    }
+    else if (![self isCloudOnline]) {
+        state = RouterViewState_cloud_offline;
+    }
+    else {
+        state = RouterViewState_cloud_connected;
+    }
+
+    RouterViewState oldState = self.routerViewState;
+    self.routerViewState = state;
+
+    switch (reloadTablePolicy) {
+        case RouterViewReloadPolicy_always:
+            [self.tableView reloadData];
+            break;
+        case RouterViewReloadPolicy_never:
+            // do nothing
+            break;
+        case RouterViewReloadPolicy_on_state_change:
+            if (oldState != state) {
+                [self.tableView reloadData];
+            }
+            break;
+    }
 }
 
 - (BOOL)isNoAlmondLoaded {
@@ -283,7 +288,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
         if (self.disposed) {
             return;
         }
-        [self checkRouterViewState:RouterViewReloadPolicy_on_state_change];
+        [self syncCheckRouterViewState:RouterViewReloadPolicy_on_state_change];
     });
 }
 
@@ -786,60 +791,94 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    UIView *view = [UIView new];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
     view.backgroundColor = [UIColor clearColor];
     return view;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return section == DEF_ROUTER_REBOOT_SECTION ? 20 : 0;
+    switch (self.routerViewState) {
+        case RouterViewState_cloud_connected: {
+            if (section == DEF_ROUTER_REBOOT_SECTION) {
+                return 20;
+            }
+            // pass through
+        }
+
+        case RouterViewState_no_almond:
+        case RouterViewState_almond_unavailable:
+        case RouterViewState_cloud_offline:
+        default:
+            return 0;
+    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    if (section != DEF_ROUTER_REBOOT_SECTION) {
-        return nil;
-    }
+    switch (self.routerViewState) {
+        case RouterViewState_cloud_connected: {
+            if (section == DEF_ROUTER_REBOOT_SECTION) {
+                UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
+                view.backgroundColor = [UIColor clearColor];
+                return view;
+            }
+            // pass through
+        }
 
-    UIView *view = [UIView new];
-    view.backgroundColor = [UIColor clearColor];
-    return view;
+        case RouterViewState_no_almond:
+        case RouterViewState_almond_unavailable:
+        case RouterViewState_cloud_offline:
+        default:
+            return nil;
+    }
 }
 
 - (void)onExpandCloseSection:(UITableView *)tableView section:(NSInteger)section {
-    [tableView beginUpdates];
-
-    NSInteger currentExpanded = -1;
-
-    // remove rows if needed
-    if (self.currentExpandedSection) {
-        currentExpanded = self.currentExpandedSection.unsignedIntegerValue;
-
-        self.currentExpandedSection = nil;
-        self.currentExpandedCount = 0;
-
-        [self tryReloadSection:(NSUInteger) currentExpanded];
-    }
-
-    // add rows if needed
-    if (currentExpanded != section) {
-        if (section == DEF_WIRELESS_SETTINGS_SECTION) {
-            self.currentExpandedSection = @(DEF_WIRELESS_SETTINGS_SECTION);
-            self.currentExpandedCount = self.wirelessSettings.count;
-            [self tryReloadSection:DEF_WIRELESS_SETTINGS_SECTION];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self.isHudHidden) {
+            // do not update while HUD is showing
+            return;
         }
-        else if (section == DEF_DEVICES_AND_USERS_SECTION) {
-            self.currentExpandedSection = @(DEF_DEVICES_AND_USERS_SECTION);
-            self.currentExpandedCount = self.connectedDevices.count + self.blockedDevices.count;
-            [self tryReloadSection:DEF_DEVICES_AND_USERS_SECTION];
-        }
-        else if (section == DEF_ROUTER_REBOOT_SECTION) {
-            self.currentExpandedSection = @(DEF_ROUTER_REBOOT_SECTION);
-            self.currentExpandedCount = 1;
-            [self tryReloadSection:DEF_ROUTER_REBOOT_SECTION];
-        }
-    }
 
-    [tableView endUpdates];
+        [tableView beginUpdates];
+
+        NSInteger currentExpanded = -1;
+
+        // remove rows if needed
+        if (self.currentExpandedSection) {
+            currentExpanded = self.currentExpandedSection.unsignedIntegerValue;
+
+            self.currentExpandedSection = nil;
+            self.currentExpandedCount = 0;
+
+            [self tryReloadSection:(NSUInteger) currentExpanded];
+        }
+
+        // add rows if needed
+        if (currentExpanded != section) {
+            if (section == DEF_WIRELESS_SETTINGS_SECTION) {
+                self.currentExpandedSection = @(DEF_WIRELESS_SETTINGS_SECTION);
+                self.currentExpandedCount = self.wirelessSettings.count;
+                [self tryReloadSection:DEF_WIRELESS_SETTINGS_SECTION];
+            }
+            else if (section == DEF_DEVICES_AND_USERS_SECTION) {
+                self.currentExpandedSection = @(DEF_DEVICES_AND_USERS_SECTION);
+                self.currentExpandedCount = self.connectedDevices.count + self.blockedDevices.count;
+                [self tryReloadSection:DEF_DEVICES_AND_USERS_SECTION];
+            }
+            else if (section == DEF_ROUTER_REBOOT_SECTION) {
+                self.currentExpandedSection = @(DEF_ROUTER_REBOOT_SECTION);
+                self.currentExpandedCount = 1;
+                [self tryReloadSection:DEF_ROUTER_REBOOT_SECTION];
+            }
+        }
+
+        [tableView endUpdates];
+
+        // reload the table:
+        // this is a work around for a rendering/animation problem that will cause the section headers
+        // to be left behind, causing too much space around the tile below the one being closed.
+        [tableView reloadData];
+    });
 }
 
 #pragma mark - Class Methods
@@ -895,7 +934,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
             }
 
             self.isAlmondUnavailable = [response.reason.lowercaseString isEqualToString:@"almond is offline"];
-            [self checkRouterViewState:RouterViewReloadPolicy_on_state_change];
+            [self syncCheckRouterViewState:RouterViewReloadPolicy_on_state_change];
             [self.HUD hide:YES];
             [self.refreshControl endRefreshing];
         });
@@ -922,14 +961,14 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
             case SFIGenericRouterCommandType_CONNECTED_DEVICES: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.connectedDevices = ls.deviceList;
-                [self checkRouterViewState:RouterViewReloadPolicy_always];
+                [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
                 break;
             }
 
             case SFIGenericRouterCommandType_BLOCKED_MACS: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.blockedDevices = ls.deviceList;
-                [self checkRouterViewState:RouterViewReloadPolicy_always];
+                [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
                 break;
             }
 
@@ -937,7 +976,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 self.wirelessSettings = ls.deviceList;
                 [self.routerSummary updateWirelessSummaryWithSettings:self.wirelessSettings];
-                [self checkRouterViewState:RouterViewReloadPolicy_always];
+                [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
                 break;
             }
 
@@ -987,7 +1026,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
             }
 
             self.isAlmondUnavailable = YES;
-            [self checkRouterViewState:RouterViewReloadPolicy_on_state_change];
+            [self syncCheckRouterViewState:RouterViewReloadPolicy_on_state_change];
         });
 
         return;
@@ -1045,6 +1084,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
             }
 
             default:
+                [self.HUD hide:YES afterDelay:1];
                 break;
         }
     });

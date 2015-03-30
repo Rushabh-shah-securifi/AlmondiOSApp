@@ -16,7 +16,6 @@
 #import "UIApplication+SecurifiNotifications.h"
 
 @interface SFITableViewController () <MBProgressHUDDelegate>
-@property(nonatomic, readonly) BOOL isHudHidden;
 @property(nonatomic, readonly) SFINotificationStatusBarButtonItem *notificationsStatusButton;
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @end
