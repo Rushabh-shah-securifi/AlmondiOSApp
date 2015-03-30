@@ -372,6 +372,15 @@
     }
 }
 
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField != self.deviceNameField) {
+        return YES;
+    }
+
+    NSString *new_str = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    return new_str.length <= 32; // limit on sensor names is 32 chars
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if (textField.text.length == 0) {
         return NO;
