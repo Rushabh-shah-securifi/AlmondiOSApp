@@ -27,8 +27,16 @@
 #define DEF_DEVICES_AND_USERS_SECTION   1
 #define DEF_ROUTER_REBOOT_SECTION       3
 
+typedef NS_ENUM(unsigned int, RouterViewState) {
+    RouterViewState_no_almond = 1,
+    RouterViewState_almond_unavailable = 2,
+    RouterViewState_cloud_offline = 3,
+    RouterViewState_cloud_connected = 4,
+};
+
 @interface SFIRouterTableViewController () <SFIRouterTableViewActions>
 @property NSTimer *hudTimer;
+@property RouterViewState routerViewState;
 
 @property(nonatomic, strong) SFIRouterSummary *routerSummary;
 @property(nonatomic, strong) NSArray *wirelessSettings;
@@ -49,6 +57,17 @@
 @end
 
 @implementation SFIRouterTableViewController
+
+- (instancetype)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:style];
+    if (self) {
+        // need to set initial state before the table view state is set up to ensure the correct view/layout is rendered.
+        // the table's initial set up is done even prior to calling viewDidLoad
+        [self checkRouterViewState:NO];
+    }
+
+    return self;
+}
 
 - (void)viewDidLoad {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -148,18 +167,18 @@
     if (plus == nil) {
         self.navigationItem.title = @"Get Started";
         [self markAlmondMac:NO_ALMOND];
-        [self.tableView reloadData];
     }
     else {
         [self markAlmondMac:plus.almondplusMAC];
         self.navigationItem.title = plus.almondplusName;
-        [self.tableView reloadData];
     }
 
     if (!self.shownHudOnce) {
         self.shownHudOnce = YES;
         [self showHudWithTimeout];
     }
+
+    [self checkRouterViewState:YES];
 
     [self refreshDataForAlmond];
 }
@@ -179,6 +198,32 @@
 }
 
 #pragma mark - State
+
+// determines the presentation state and optionally reloads the view
+- (void)checkRouterViewState:(BOOL)reloadOnChange {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        RouterViewState state;
+        if ([self isNoAlmondLoaded]) {
+            state = RouterViewState_no_almond;
+        }
+        else if (self.isAlmondUnavailable) {
+            state = RouterViewState_almond_unavailable;
+        }
+        else if (![self isCloudOnline]) {
+            state = RouterViewState_cloud_offline;
+        }
+        else {
+            state = RouterViewState_cloud_connected;
+        }
+
+        RouterViewState oldState = self.routerViewState;
+        self.routerViewState = state;
+
+        if (reloadOnChange && oldState != state) {
+            [self.tableView reloadData];
+        }
+    });
+}
 
 - (BOOL)isNoAlmondLoaded {
     return [self.almondMac isEqualToString:NO_ALMOND];
@@ -221,7 +266,7 @@
         if (self.disposed) {
             return;
         }
-        [self.tableView reloadData];
+        [self checkRouterViewState:YES];
     });
 }
 
@@ -263,25 +308,25 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if ([self isNoAlmondLoaded]) {
-        return 1;
+    switch (self.routerViewState) {
+        case RouterViewState_no_almond:
+            return 1;
+        case RouterViewState_almond_unavailable:
+            return 1;
+        case RouterViewState_cloud_offline:
+            return 1;
+        case RouterViewState_cloud_connected:
+        default:
+            return 4;
     }
-    if (self.isAlmondUnavailable) {
-        return 1;
-    }
-    if (![self isCloudOnline]) {
-        return 1;
-    }
-    return 4;
-}
-
-- (BOOL)isExpandedSection:(NSInteger)section {
-    NSNumber *expandedSection = self.currentExpandedSection;
-    return expandedSection && (expandedSection.integerValue == section);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (![self isExpandedSection:section]) {
+    if (self.routerViewState != RouterViewState_cloud_connected) {
+        return 1;
+    }
+
+    if (![self isSectionExpanded:section]) {
         return 1;
     }
 
@@ -298,13 +343,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self isNoAlmondLoaded]) {
-        return 400;
-    }
-    if (self.isAlmondUnavailable) {
-        return 400;
-    }
-    if (![self isCloudOnline]) {
+    if (self.routerViewState != RouterViewState_cloud_connected) {
         return 400;
     }
 
@@ -328,13 +367,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath; {
-    if ([self isNoAlmondLoaded]) {
-        return 400;
-    }
-    if (self.isAlmondUnavailable) {
-        return 400;
-    }
-    if (![self isCloudOnline]) {
+    if (self.routerViewState != RouterViewState_cloud_connected) {
         return 400;
     }
 
@@ -363,53 +396,54 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self isNoAlmondLoaded]) {
-        tableView.scrollEnabled = NO;
-        return [self createNoAlmondCell:tableView];
-    }
+    switch (self.routerViewState) {
+        case RouterViewState_no_almond: {
+            tableView.scrollEnabled = NO;
+            return [self createNoAlmondCell:tableView];
+        }
+        case RouterViewState_almond_unavailable: {
+            tableView.scrollEnabled = NO;
+            return [self createAlmondNoConnectCell:tableView];
+        }
+        case RouterViewState_cloud_offline: {
+            tableView.scrollEnabled = NO;
+            return [self createAlmondNoConnectCell:tableView];
+        }
+        case RouterViewState_cloud_connected:
+        default: {
+            tableView.scrollEnabled = YES;
+            switch (indexPath.section) {
+                case DEF_WIRELESS_SETTINGS_SECTION:
+                    switch (indexPath.row) {
+                        case 0:
+                            return [self createWirelessSummaryCell:tableView];
+                        default:
+                            return [self createWirelessSettingCell:tableView tableRow:indexPath.row];
+                    }
 
-    if (self.isAlmondUnavailable) {
-        tableView.scrollEnabled = NO;
-        return [self createAlmondNoConnectCell:tableView];
-    }
+                case DEF_DEVICES_AND_USERS_SECTION:
+                    switch (indexPath.row) {
+                        case 0:
+                            return [self createDevicesAndUsersSummaryCell:tableView];
+                        default:
+                            return [self createDevicesAndUsersEditCell:tableView tableRow:indexPath.row];
+                    }
 
-    if (![self isCloudOnline]) {
-        tableView.scrollEnabled = NO;
-        return [self createAlmondNoConnectCell:tableView];
-    }
+                case 2:
+                    return [self createSoftwareVersionCell:tableView];
 
-    tableView.scrollEnabled = YES;
+                case DEF_ROUTER_REBOOT_SECTION:
+                    switch (indexPath.row) {
+                        case 0:
+                            return [self createAlmondRebootSummaryCell:tableView];
+                        default:
+                            return [self createAlmondRebootEditCell:tableView];
+                    }
 
-    switch (indexPath.section) {
-        case DEF_WIRELESS_SETTINGS_SECTION:
-            switch (indexPath.row) {
-                case 0:
-                    return [self createWirelessSummaryCell:tableView];
                 default:
-                    return [self createWirelessSettingCell:tableView tableRow:indexPath.row];
-            }
-
-        case DEF_DEVICES_AND_USERS_SECTION:
-            switch (indexPath.row) {
-                case 0:
-                    return [self createDevicesAndUsersSummaryCell:tableView];
-                default:
-                    return [self createDevicesAndUsersEditCell:tableView tableRow:indexPath.row];
-            }
-
-        case 2:
-            return [self createSoftwareVersionCell:tableView];
-
-        case DEF_ROUTER_REBOOT_SECTION:
-            switch (indexPath.row) {
-                case 0:
                     return [self createAlmondRebootSummaryCell:tableView];
-                default:
-                    return [self createAlmondRebootEditCell:tableView];
             }
-
-        default:
-            return [self createAlmondRebootSummaryCell:tableView];
+        };
     }
 }
 
