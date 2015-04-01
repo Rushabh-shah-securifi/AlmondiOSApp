@@ -120,6 +120,7 @@
     [settingsButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
 
     [self addSubview:settingsButton];
+    [self addManagedControl:settingsButton];
 }
 
 - (UILabel*)addHeader:(NSString *)title {
