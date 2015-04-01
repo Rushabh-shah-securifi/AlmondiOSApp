@@ -26,7 +26,7 @@
     [super layoutSubviews];
 
     SFICardView *card = self.cardView;
-    if (card.isFrozen) {
+    if (card.layoutFrozen) {
         return;
     }
 

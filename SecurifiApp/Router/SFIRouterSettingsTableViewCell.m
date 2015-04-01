@@ -32,7 +32,7 @@
     self.layoutCalled = YES;
 
     SFICardView *cardView = self.cardView;
-    if (cardView.isFrozen) {
+    if (cardView.layoutFrozen) {
         return;
     }
 
@@ -73,6 +73,7 @@
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     [self.delegate routerTableCellWillBeginEditingValue];
+    self.cardView.enableActionButtons = NO;
     return YES;
 }
 
@@ -94,8 +95,10 @@
     NSString *str = textField.text;
     BOOL valid = [self validateSSIDNameMinLen:str] && [self validateSSIDNameMaxLen:str];
     if (valid) {
+        [textField resignFirstResponder];
         [self.delegate onChangeDeviceSSID:self.wirelessSetting newSSID:textField.text];
         [self.delegate routerTableCellDidEndEditingValue];
+        self.cardView.enableActionButtons = YES;
     }
 }
 

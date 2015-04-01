@@ -30,7 +30,7 @@
     self.layoutCalled = YES;
 
     SFICardView *cardView = self.cardView;
-    if (cardView.isFrozen) {
+    if (cardView.layoutFrozen) {
         return;
     }
 

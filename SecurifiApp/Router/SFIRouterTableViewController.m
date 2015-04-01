@@ -51,6 +51,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 
 @property NSNumber *currentExpandedSection; // nil == none expanded
 @property NSUInteger currentExpandedCount; // number of rows in expanded section
+@property BOOL allowCellExpandControl;
 
 @property BOOL isRebooting;
 @property BOOL isAlmondUnavailable;
@@ -89,12 +90,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-    // Pull down to refresh device values
-    UIRefreshControl *refresh = [UIRefreshControl new];
-    NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
-    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refresh router data" attributes:attributes];
-    [refresh addTarget:self action:@selector(onRefreshRouter:) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = refresh;
+    [self addRefreshControl];
 
     [self initializeNotifications];
 }
@@ -166,6 +162,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     self.blockedDevices = nil;
     self.currentExpandedSection = nil;
     self.currentExpandedCount = 0;
+    self.allowCellExpandControl = YES;
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
@@ -302,6 +299,29 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     });
 }
 
+- (void)onEditWirelessSettingsCard:(id)sender {
+    [self onExpandCloseSection:self.tableView section:DEF_WIRELESS_SETTINGS_SECTION];
+}
+
+- (void)onEditDevicesAndUsersCard:(id)sender {
+    [self onExpandCloseSection:self.tableView section:DEF_DEVICES_AND_USERS_SECTION];
+}
+
+- (void)onEditRouterRebootCard:(id)sender {
+    [self onExpandCloseSection:self.tableView section:DEF_ROUTER_REBOOT_SECTION];
+}
+
+#pragma mark - Refresh control methods
+
+// Pull down to refresh device values
+- (void)addRefreshControl {
+    UIRefreshControl *refresh = [UIRefreshControl new];
+    NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refresh router data" attributes:attributes];
+    [refresh addTarget:self action:@selector(onRefreshRouter:) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refresh;
+}
+
 - (void)onRefreshRouter:(id)sender {
     if (self.routerViewState == RouterViewState_no_almond) {
         return;
@@ -313,18 +333,6 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
         [self.refreshControl endRefreshing];
     });
-}
-
-- (void)onEditWirelessSettingsCard:(id)sender {
-    [self onExpandCloseSection:self.tableView section:DEF_WIRELESS_SETTINGS_SECTION];
-}
-
-- (void)onEditDevicesAndUsersCard:(id)sender {
-    [self onExpandCloseSection:self.tableView section:DEF_DEVICES_AND_USERS_SECTION];
-}
-
-- (void)onEditRouterRebootCard:(id)sender {
-    [self onExpandCloseSection:self.tableView section:DEF_ROUTER_REBOOT_SECTION];
 }
 
 #pragma mark - Table view data source
@@ -838,6 +846,10 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
             // do not update while HUD is showing
             return;
         }
+        if (!self.allowCellExpandControl) {
+            // do not update while a cell is being edited
+            return;
+        }
 
         [tableView beginUpdates];
 
@@ -1115,15 +1127,24 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 
 #pragma mark - SFIRouterTableViewActions protocol methods
 
+// coordinate changes in a cell with the overall state of the control to ensure we do not crash.
+// specifically, we do not want to expand/collapse a section while a text field is the first responder.
 - (void)routerTableCellWillBeginEditingValue {
     dispatch_async(dispatch_get_main_queue(), ^() {
+        self.allowCellExpandControl = NO;
         self.enableDrawer = NO;
+        [self.refreshControl endRefreshing];
+        self.refreshControl = nil;
     });
 }
 
 - (void)routerTableCellDidEndEditingValue {
     dispatch_async(dispatch_get_main_queue(), ^() {
+        self.allowCellExpandControl = YES;
         self.enableDrawer = YES;
+        if (self.refreshControl == nil) {
+            [self addRefreshControl];
+        }
     });
 }
 
