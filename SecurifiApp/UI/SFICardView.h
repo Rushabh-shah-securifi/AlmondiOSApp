@@ -28,7 +28,12 @@ typedef NS_ENUM(int, SFICardView_right_offset) {
 //              controls in a single "row".
 @interface SFICardView : UIView
 
-@property(nonatomic, readonly, getter=isFrozen) BOOL frozen;
+@property(nonatomic, readonly, getter=isLayoutFrozen) BOOL layoutFrozen;
+
+// Used to disable card icon actions and edit icon actions.
+// For example, while a text field is being edited, other controls can be disabled.
+// Defaults to YES for enabled
+@property(nonatomic, readwrite) BOOL enableActionButtons;
 
 // controls width of summary  text labels; default is 'normal' and assumes label has full length of card row,
 // but when summary text is obscured by other controls on the right side, use the _inset mode to prevent overlap.

@@ -23,6 +23,7 @@
 @property(nonatomic, weak) CALayer *leftBorder;
 @property(nonatomic, weak) UIImageView *cardIconView;
 @property(nonatomic, weak) UIButton *settingsButton;
+@property(nonatomic) NSHashTable *enabledDisableControls;
 @end
 
 @implementation SFICardView
@@ -36,13 +37,20 @@
         self.headlineFont = [UIFont standardHeadingBoldFont];
         self.summaryFont = [UIFont standardUILabelFont];
         self.bodyFont = [UIFont standardUITextFieldFont];
+        _enableActionButtons = YES;
+        _enabledDisableControls = [NSHashTable hashTableWithOptions:NSPointerFunctionsWeakMemory];
     }
 
     return self;
 }
 
 - (void)freezeLayout {
-    _frozen = YES;
+    _layoutFrozen = YES;
+}
+
+- (void)setEnableActionButtons:(BOOL)enabled {
+    _enableActionButtons = enabled;
+    [self enableManagedControl:enabled];
 }
 
 - (void)useSmallSummaryFont {
@@ -210,12 +218,14 @@
     self.settingsButton = settingsButton;
     [self setEditIconEditing:editing];
     [self addSubview:settingsButton];
+    [self addManagedControl:settingsButton];
 
     UIButton *settingsButtonCell = [UIButton buttonWithType:UIButtonTypeCustom];
     settingsButtonCell.frame = CGRectMake(width - 80, 5, 80, 80);
     settingsButtonCell.backgroundColor = [UIColor clearColor];
     [settingsButtonCell addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:settingsButtonCell];
+    [self addManagedControl:settingsButtonCell];
 }
 
 - (void)setEditIconEditing:(BOOL)editing {
@@ -262,6 +272,7 @@
 
     UISwitch *ctrl = [self makeOnOffSwitch:target action:action on:isSwitchOn];
     [self addSubview:ctrl];
+    [self addManagedControl:ctrl];
 
     [self markYOffsetUsingRect:label.frame addAdditional:15];
 }
@@ -272,6 +283,7 @@
 
     UIButton *button = [self makeButton:target action:action buttonTitle:buttonTitle];
     [self addSubview:button];
+    [self addManagedControl:button];
 
     [self markYOffsetUsingRect:button.frame addAdditional:0];
 }
@@ -306,6 +318,18 @@
 
 - (CGRect)makeFieldValueRect:(int)leftOffset {
     return CGRectMake(leftOffset - 10, self.baseYCoordinate, self.frame.size.width - leftOffset - 10, 30);
+}
+
+#pragma mark - Manged controls (enable and disable)
+
+- (void)addManagedControl:(UIView*) view {
+    [self.enabledDisableControls addObject:view];
+}
+
+- (void)enableManagedControl:(BOOL)enabled {
+    for (UIControl *control in self.enabledDisableControls) {
+        control.enabled = enabled;
+    }
 }
 
 /*
