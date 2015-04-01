@@ -211,14 +211,6 @@
             [self presentAccountsView];
         }
         else if (indexPath.row == 1) {
-            //TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
-            //Push Notification - START
-            /*
-            //PY 191114 - Deregister for Push Notification
-            [self removePushNotification];
-             */
-            //Push Notification - END
-            //Logout Action
             [[SecurifiToolkit sharedInstance] asyncSendLogout];
         }
         else if (indexPath.row == 2) {
