@@ -945,7 +945,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
                 return;
             }
 
-            self.isAlmondUnavailable = [response.reason.lowercaseString isEqualToString:@"almond is offline"];
+            self.isAlmondUnavailable = [response.reason.lowercaseString hasSuffix:@" is offline"]; // almond is offline, homescreen is offline
             [self syncCheckRouterViewState:RouterViewReloadPolicy_on_state_change];
             [self.HUD hide:YES];
             [self.refreshControl endRefreshing];
