@@ -49,8 +49,6 @@
 @property(nonatomic) BOOL isSensorChangeCommandSuccessful;
 
 @property(nonatomic) BOOL isViewControllerDisposed;
-@property(nonatomic) BOOL isAccountActivatedNotification;
-
 @property(nonatomic, readonly) BOOL notificationEnabled;
 @end
 
@@ -90,8 +88,6 @@
 
     [self initializeNotifications];
     [self initializeAlmondData];
-
-    self.isAccountActivatedNotification = [[SFIPreferences instance] isLogonAccountAccountNotificationSet];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -297,8 +293,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    BOOL isAccountActivated = [[SecurifiToolkit sharedInstance] isAccountActivated];
-    if (!isAccountActivated && self.isAccountActivatedNotification) {
+    if ([self showNeedsActivationHeader]) {
         return 85;
     }
     return 0;
@@ -306,12 +301,21 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    //Check if activated or not
-    BOOL isAccountActivated = [[SecurifiToolkit sharedInstance] isAccountActivated];
-    if (!isAccountActivated && self.isAccountActivatedNotification) {
+    if ([self showNeedsActivationHeader]) {
         return [self createActivationNotificationHeader];
     }
     return nil;
+}
+
+- (BOOL)showNeedsActivationHeader {
+    BOOL isAccountActivated = [[SecurifiToolkit sharedInstance] isAccountActivated];
+    if (!isAccountActivated) {
+        BOOL notificationSet = [[SFIPreferences instance] isLogonAccountAccountNotificationSet];
+        if (notificationSet) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -1392,8 +1396,6 @@
 
 - (void)onCloseNotificationClicked:(id)sender {
     DLog(@"onCloseNotificationClicked");
-    self.isAccountActivatedNotification = FALSE;
-
     [[SFIPreferences instance] dismissLogonAccountActivationNotification];
     [self.tableView reloadData];
 }
