@@ -160,6 +160,7 @@ reset at the moment. Try again later.";
 "sensor.notificaiton.segment.Always" = "Always";
 "sensor.notificaiton.segment.Away" = "Away";
 "sensor.notificaiton.segment.Off" = "Off";
+"sensors.label.Color" = "Color";
 
 /* signup */
 
@@ -321,4 +322,3 @@ your home devices from anywhere.";
 "accounts.deleteSecondaryUser.failure.reasonCode6" = "Secondary user is not associated with the given Almond.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "You are not associated with this Almond";
 "accounts.deleteMeAsSecondaryUser.failure.default" = "Sorry! Removing of shared Almond was unsuccessful.";
-

@@ -25,4 +25,7 @@
 // Converts the current slider value to the scale used by the sensor
 - (float)convertToSensorValue;
 
+// Returns a string indicating the current slider value
+- (NSString *)sliderFormattedValue;
+
 @end

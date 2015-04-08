@@ -11,6 +11,7 @@
 #import "Colours.h"
 #import "SFICopyLabel.h"
 #import "UIFont+Securifi.h"
+#import "ILHuePickerView.h"
 
 
 #define TEMP_PICKER_ELEMENT_WIDTH 40
@@ -76,7 +77,7 @@
 
 // ===================================================================================
 
-@interface SFISensorDetailView () <UITextFieldDelegate, V8HorizontalPickerViewDelegate, V8HorizontalPickerViewDataSource>
+@interface SFISensorDetailView () <UITextFieldDelegate, V8HorizontalPickerViewDelegate, V8HorizontalPickerViewDataSource, ILHuePickerViewDelegate>
 @property(nonatomic, readonly) float baseYCoordinate;
 @property(nonatomic) BOOL layoutCalled;
 @property(nonatomic) UITextField *deviceNameField;
@@ -106,6 +107,10 @@
 
 - (void)markYOffset:(int)val {
     _baseYCoordinate += val;
+}
+
+- (void)markYOffsetUsingRect:(CGRect)rect addAdditional:(unsigned int)add {
+    _baseYCoordinate += CGRectGetHeight(rect) + add;
 }
 
 - (void)layoutSubviews {
@@ -189,6 +194,11 @@
             break;
         }
 
+        case SFIDeviceType_HueLamp_48: {
+            [self configureHueLamp_48];
+            break;
+        };
+
         case SFIDeviceType_UnknownDevice_0:
         case SFIDeviceType_BinarySwitch_1:
         case SFIDeviceType_Alarm_6:
@@ -226,6 +236,7 @@
         case SFIDeviceType_Siren_42:
         case SFIDeviceType_MultiSwitch_43:
         case SFIDeviceType_UnknownOnOffModule_44:
+        case SFIDeviceType_BinaryPowerSwitch_45:
         default: {
             // nothing to do
             break;
@@ -593,12 +604,20 @@
 }
 
 - (SFISlider *)makeSliderWithMinValue:(float)minVal maxValue:(float)maxValue propertyType:(SFIDevicePropertyType)propertyType {
+    const CGFloat slider_x_offset = 40.0;
+    const CGFloat slider_right_padding = 90;
+    return [self makeSlider:minVal maxValue:maxValue propertyType:propertyType sliderLeftInset:slider_x_offset sliderRightInset:slider_right_padding];
+}
+
+- (SFISlider *)makeSlider:(float)minVal maxValue:(float)maxValue propertyType:(SFIDevicePropertyType)propertyType sliderLeftInset:(CGFloat)sliderLeftInset sliderRightInset:(CGFloat)sliderRightInset {
     // Set the height high enough to ensure touch events are not missed.
     const CGFloat slider_height = 25.0;
 
     //Display slider
-    CGRect frame = CGRectMake(40.0, self.baseYCoordinate, (self.frame.size.width - 90), slider_height);
-    SFISlider *slider = [[SFISlider alloc] initWithFrame:frame];
+    CGFloat slider_width = CGRectGetWidth(self.bounds) - sliderRightInset;
+    CGRect slider_frame = CGRectMake(sliderLeftInset, self.baseYCoordinate, slider_width, slider_height);
+
+    SFISlider *slider = [[SFISlider alloc] initWithFrame:slider_frame];
     slider.tag = self.tag;
     slider.propertyType = propertyType;
     slider.minimumValue = minVal;
@@ -924,6 +943,98 @@
     [self addLine];
 }
 
+/*
+SWITCH MULTILEVEL	5	Decimal		0-255	Yes
+SATURATION	        4	Decimal		0-255	Yes
+HUE	                3	Decimal		0-65535	Yes
+ */
+- (void)configureHueLamp_48 {
+    // block 
+    // places name - value label pairs
+    void (^place_label)(NSString *, NSString *) = ^(NSString *nameLabel_text, NSString *valueLabel_text) {
+        UIFont *const heavy_12 = [UIFont securifiBoldFont];
+        UIColor *const white_color = [UIColor whiteColor];
+        UIColor *const clear_color = [UIColor clearColor];
+
+        // Place Name label
+        CGRect nameLabel_frame = CGRectMake(10.0, self.baseYCoordinate, 60, 30);
+        UILabel *nameLabel = [[UILabel alloc] initWithFrame:nameLabel_frame];
+        nameLabel.textColor = [UIColor whiteColor];
+        nameLabel.text = nameLabel_text;
+        nameLabel.font = heavy_12;
+        nameLabel.textAlignment = NSTextAlignmentLeft;
+        [self addSubview:nameLabel];
+        //
+        // Value label
+        CGRect valueLabel_frame = CGRectMake(CGRectGetWidth(self.bounds), self.baseYCoordinate, 100, 30);
+        valueLabel_frame = CGRectOffset(valueLabel_frame, -110, 0);
+        //
+        SFICopyLabel *valueLabel = [[SFICopyLabel alloc] initWithFrame:valueLabel_frame];
+        valueLabel.userInteractionEnabled = YES; // allow user to copy value
+        valueLabel.textColor = white_color;
+        valueLabel.text = valueLabel_text;
+        valueLabel.backgroundColor = clear_color;
+        valueLabel.font = heavy_12;
+        valueLabel.textAlignment = NSTextAlignmentRight;
+        valueLabel.numberOfLines = 1;
+        [self addSubview:valueLabel];
+
+        [self markYOffsetUsingRect:nameLabel_frame addAdditional:5];
+    };
+
+    SFIDeviceValue *deviceValue = self.deviceValue;
+
+    float hue = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
+    float saturation = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SATURATION] floatValue];
+    float multilevel = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] intValue];
+    DLog(@"sensor color HSB: %f %f %f", hue, saturation, multilevel);
+
+    int picker_height = 100;
+    CGRect picker_frame = CGRectMake(0, self.baseYCoordinate, CGRectGetWidth(self.bounds), picker_height);
+
+    // Display hue picker
+    ILHuePickerView *huePicker = [[ILHuePickerView alloc] initWithFrame:picker_frame];
+    huePicker.hue = [self convertToHuePickerValue:hue];
+    huePicker.tag = SFIDevicePropertyType_COLOR_HUE;
+    huePicker.delegate = self;
+    [self addSubview:huePicker];
+    [self markYOffsetUsingRect:picker_frame addAdditional:0];
+    
+    place_label(NSLocalizedString(@"sensors.label.Color", @"Color"), [[huePicker.color hexString] uppercaseString]);
+
+//    [self addShortLine];
+//    [self markYOffset:5];
+
+    const CGFloat slider_x_offset = 10.0;
+    const CGFloat slider_right_padding = 20.0;
+
+    // Display slider
+    // brightness
+    SFISlider *brightness_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL sliderLeftInset:slider_x_offset sliderRightInset:slider_right_padding];
+    brightness_slider.sensorMaxValue = 255;
+    brightness_slider.convertedValue = multilevel;
+    [self addSubview:brightness_slider];
+    [self markYOffset:20];
+
+    place_label(@"Brightness", brightness_slider.sliderFormattedValue);
+
+//    [self addShortLine];
+//    [self markYOffset:5];
+
+    // saturation
+    SFISlider *saturation_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SATURATION sliderLeftInset:slider_x_offset sliderRightInset:slider_right_padding];
+    saturation_slider.sensorMaxValue = 255;
+    saturation_slider.convertedValue = saturation;
+    [self addSubview:saturation_slider];
+    [self markYOffset:20];
+
+    place_label(@"Saturation", saturation_slider.sliderFormattedValue);
+
+    [self markYOffset:10];
+    [self addLine];
+    [self markYOffset:5];
+}
+
 #pragma mark - Door Lock Pin Code helpers
 
 - (int)maximumPinCodes {
@@ -985,6 +1096,9 @@
         case SFIDeviceType_SecurifiSmartSwitch_50:
             return 290 + extra;
 
+        case SFIDeviceType_HueLamp_48:
+            return 510 + extra;
+
         case SFIDeviceType_UnknownDevice_0:
         case SFIDeviceType_BinarySwitch_1:
         case SFIDeviceType_Alarm_6:
@@ -1022,12 +1136,13 @@
         case SFIDeviceType_Siren_42:
         case SFIDeviceType_MultiSwitch_43:
         case SFIDeviceType_UnknownOnOffModule_44:
+        case SFIDeviceType_BinaryPowerSwitch_45:
         default:
             return EXPANDED_ROW_HEIGHT + extra;
     }
 }
 
-#pragma mark - Picker methods
+#pragma mark - V8HorizontalPickerView methods
 
 - (void)setPickerSelection:(V8HorizontalPickerView *)picker propertyType:(SFIDevicePropertyType)propertyType {
     // Initialize the slider value
@@ -1210,11 +1325,24 @@
     return nil;
 }
 
-#pragma mark - Borrowed from SFICardView until we unify...
+#pragma mark - ILHuePickerViewDelegate methods
 
-- (void)markYOffsetUsingRect:(CGRect)rect addAdditional:(unsigned int)add {
-    _baseYCoordinate += CGRectGetHeight(rect) + add;
+- (void)huePicked:(float)hue picker:(ILHuePickerView *)picker {
+    hue = [self convertHuePickerValueToSensorValue:hue];
+    SFIDevicePropertyType propertyType = (SFIDevicePropertyType) picker.tag;
+    NSString *newValue = [NSString stringWithFormat:@"%i", (int) hue];
+    [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:propertyType newValue:newValue];
 }
+
+- (float)convertToHuePickerValue:(float)sensorValue {
+    return sensorValue / 65535;
+}
+
+- (float)convertHuePickerValueToSensorValue:(float)pickerValue {
+    return pickerValue * 65535;
+}
+
+#pragma mark - Borrowed from SFICardView until we unify...
 
 - (UISegmentedControl *)makeNotificationModeSegment:(id)target action:(SEL)action {
     CGFloat width = CGRectGetWidth(self.bounds);

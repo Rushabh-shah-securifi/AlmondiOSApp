@@ -38,4 +38,9 @@
     return value;
 }
 
+- (NSString *)sliderFormattedValue {
+    return [self.numberFormatter stringFromNumber:@(self.value)];
+}
+
+
 @end
