@@ -138,6 +138,7 @@
 
     // Add Notifications control
     if (notificationsEnabled) {
+        [self markYOffset:5];
         [self addNotificationsControl];
         [self addLine];
         [self markYOffset:5];
@@ -549,7 +550,7 @@
 
     [self addSubview:control];
 
-    [self markYOffsetUsingRect:labelMode.frame addAdditional:15];
+    [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
 }
 
 - (void)addTamperButton {
@@ -588,7 +589,7 @@
 }
 
 - (void)addLine {
-    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, self.baseYCoordinate, self.frame.size.width - 15, 1)];
+    UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, self.baseYCoordinate, self.frame.size.width - 10, 1)];
     imgLine.image = [UIImage imageNamed:@"line.png"];
     imgLine.alpha = 0.6;
     [self addSubview:imgLine];
@@ -1006,11 +1007,11 @@ HUE	                3	Decimal		0-65535	Yes
 //    [self markYOffset:5];
 
     const CGFloat slider_x_offset = 10.0;
-    const CGFloat slider_right_padding = 20.0;
+    const CGFloat slider_right_inset = 20.0;
 
     // Display slider
     // brightness
-    SFISlider *brightness_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL sliderLeftInset:slider_x_offset sliderRightInset:slider_right_padding];
+    SFISlider *brightness_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];
     brightness_slider.sensorMaxValue = 255;
     brightness_slider.convertedValue = multilevel;
     [self addSubview:brightness_slider];
@@ -1022,7 +1023,7 @@ HUE	                3	Decimal		0-65535	Yes
 //    [self markYOffset:5];
 
     // saturation
-    SFISlider *saturation_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SATURATION sliderLeftInset:slider_x_offset sliderRightInset:slider_right_padding];
+    SFISlider *saturation_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SATURATION sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];
     saturation_slider.sensorMaxValue = 255;
     saturation_slider.convertedValue = saturation;
     [self addSubview:saturation_slider];
@@ -1032,7 +1033,7 @@ HUE	                3	Decimal		0-65535	Yes
 
     [self markYOffset:10];
     [self addLine];
-    [self markYOffset:5];
+    [self markYOffset:10];
 }
 
 #pragma mark - Door Lock Pin Code helpers
@@ -1094,10 +1095,10 @@ HUE	                3	Decimal		0-65535	Yes
         case SFIDeviceType_SmartACSwitch_22:
         case SFIDeviceType_SmartDCSwitch_23:
         case SFIDeviceType_SecurifiSmartSwitch_50:
-            return 290 + extra;
+            return 295 + extra;
 
         case SFIDeviceType_HueLamp_48:
-            return 510 + extra;
+            return 505 + extra;
 
         case SFIDeviceType_UnknownDevice_0:
         case SFIDeviceType_BinarySwitch_1:
