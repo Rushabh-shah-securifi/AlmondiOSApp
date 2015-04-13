@@ -605,8 +605,10 @@
 }
 
 - (void)sensorDetailViewDidChangeSensorIconTintValue:(SFISensorDetailView *)view tint:(UIColor *)newColor {
-    DLog(@"Setting tint color: %@", newColor);
-    self.deviceImageViewSecondary.tintColor = newColor;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        DLog(@"Setting tint color: %@", newColor);
+        self.deviceImageViewSecondary.tintColor = newColor;
+    });
 }
 
 #pragma mark - Device layout
@@ -813,6 +815,10 @@
     float hue = [[value knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
     float saturation = [[value knownValuesForProperty:SFIDevicePropertyType_SATURATION] floatValue];
     float brightness = [[value knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] intValue];
+
+    hue = hue / 65535;
+    saturation = saturation / 255;
+    brightness = brightness / 255;
 
     UIColor *color = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
 

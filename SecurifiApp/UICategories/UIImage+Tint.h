@@ -13,4 +13,9 @@
 - (UIImage *)tintedImageWithColor:(UIColor *)tintColor;
 
 - (UIImage *)imageTintedWithColor:(UIColor *)color;
+
+- (UIImage *)replaceColorWith:(UIColor *)color;
+
+- (UIImage *)imageByReplacingColor:(uint)color withColor:(uint)newColor;
+
 @end

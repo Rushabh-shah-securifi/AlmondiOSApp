@@ -22,10 +22,11 @@
 
 - (SecurifiConfigurator *)toolkitConfigurator {
     SecurifiConfigurator *config = [SecurifiConfigurator new];
-//    config.enableScoreboard = YES;                  // uncomment for debug builds
-//    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
-
-    config.enableNotifications = NO;                // uncomment to activate; off by default
+    config.enableScoreboard = YES;                  // uncomment for debug builds
+    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
+    config.enableCertificateChainValidation = NO;   // uncomment for testing only; on by default
+//
+    config.enableNotifications = YES;               // uncomment to activate; NO by default
     config.enableRouterWirelessControl = YES;       // YES by default
     return config;
 }
