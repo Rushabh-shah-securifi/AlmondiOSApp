@@ -36,6 +36,8 @@
 
 - (void)sensorDetailViewDidChangeNotificationPref:(SFISensorDetailView *)view newMode:(SFINotificationMode)newMode;
 
+- (void)sensorDetailViewDidChangeSensorIconTintValue:(SFISensorDetailView *)view tint:(UIColor*)newColor;
+
 @end
 
 

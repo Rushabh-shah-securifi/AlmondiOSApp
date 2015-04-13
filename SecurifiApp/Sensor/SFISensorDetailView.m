@@ -289,7 +289,9 @@
     CGFloat value = slider.minimumValue + delta;
     [slider setValue:value animated:YES];
 
-    NSString *newValue = [NSString stringWithFormat:@"%d", (int) value];
+    float sensorValue = [slider convertToSensorValue];
+    NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
+
     [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:slider.propertyType newValue:newValue];
 }
 
@@ -1014,6 +1016,7 @@ HUE	                3	Decimal		0-65535	Yes
     SFISlider *brightness_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];
     brightness_slider.sensorMaxValue = 255;
     brightness_slider.convertedValue = multilevel;
+    [brightness_slider addTarget:self action:@selector(onBrightnessDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
     [self addSubview:brightness_slider];
     [self markYOffset:20];
 
@@ -1026,6 +1029,7 @@ HUE	                3	Decimal		0-65535	Yes
     SFISlider *saturation_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SATURATION sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];
     saturation_slider.sensorMaxValue = 255;
     saturation_slider.convertedValue = saturation;
+    [brightness_slider addTarget:self action:@selector(onSaturationDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
     [self addSubview:saturation_slider];
     [self markYOffset:20];
 
@@ -1329,10 +1333,75 @@ HUE	                3	Decimal		0-65535	Yes
 #pragma mark - ILHuePickerViewDelegate methods
 
 - (void)huePicked:(float)hue picker:(ILHuePickerView *)picker {
+    float saturation = [self currentSliderValueForProperty:SFIDevicePropertyType_SATURATION];
+    float brightness = [self currentSliderValueForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+
+    UIColor *color = [self makeColor:hue saturation:saturation brightness:brightness];
+    [self.delegate sensorDetailViewDidChangeSensorIconTintValue:self tint:color];
+
     hue = [self convertHuePickerValueToSensorValue:hue];
     SFIDevicePropertyType propertyType = (SFIDevicePropertyType) picker.tag;
     NSString *newValue = [NSString stringWithFormat:@"%i", (int) hue];
-    [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:propertyType newValue:newValue];
+//    [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:propertyType newValue:newValue];
+}
+
+- (UIColor *)makeColor:(float)hue saturation:(float)saturation brightness:(float)brightness {
+//    hue = hue / 65535;
+    saturation = saturation / 255;
+    brightness = brightness / 255;
+
+    UIColor *color = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
+    return color;
+}
+
+
+#pragma mark - Hue Lamp helpers
+
+- (void)onSaturationDidChange:(id)control {
+    SFISlider *slider = control;
+
+    float hue = [self currentHueValueForProperty:SFIDevicePropertyType_COLOR_HUE];
+    float saturation = [slider convertToSensorValue];
+    float brightness = [self currentSliderValueForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+
+    UIColor *color = [self makeColor:hue saturation:saturation brightness:brightness];
+    [self.delegate sensorDetailViewDidChangeSensorIconTintValue:self tint:color];
+}
+
+- (void)onBrightnessDidChange:(id)control {
+    SFISlider *slider = control;
+
+    float hue = [self currentHueValueForProperty:SFIDevicePropertyType_COLOR_HUE];
+    float saturation = [self currentSliderValueForProperty:SFIDevicePropertyType_SATURATION];
+    float brightness = [slider convertToSensorValue];
+
+    UIColor *color = [self makeColor:hue saturation:saturation brightness:brightness];
+    [self.delegate sensorDetailViewDidChangeSensorIconTintValue:self tint:color];
+}
+
+- (float)currentSliderValueForProperty:(SFIDevicePropertyType)propertyType {
+    for (UIView *view in self.subviews) {
+        if ([view isKindOfClass:[SFISlider class]]) {
+            SFISlider *slider = (SFISlider *) view;
+            if (slider.propertyType == propertyType) {
+                float sensorValue = [slider convertToSensorValue];
+                return sensorValue;
+            }
+        }
+    }
+
+    return 0;
+}
+
+- (float)currentHueValueForProperty:(SFIDevicePropertyType)propertyType {
+    for (UIView *view in self.subviews) {
+        if (view.tag == propertyType) {
+            ILHuePickerView *picker = (ILHuePickerView *) view;
+            return picker.hue;
+        }
+    }
+
+    return 0;
 }
 
 - (float)convertToHuePickerValue:(float)sensorValue {

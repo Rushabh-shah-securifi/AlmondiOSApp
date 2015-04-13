@@ -13,6 +13,7 @@
 
 @interface SFISensorTableViewCell () <SFISensorDetailViewDelegate>
 @property(nonatomic) UIImageView *deviceImageView;
+@property(nonatomic) UIImageView *deviceImageViewSecondary;
 @property(nonatomic) UILabel *deviceStatusLabel;
 @property(nonatomic) UILabel *deviceValueLabel;
 @property(nonatomic, readonly) UILabel *deviceNameLabel;
@@ -225,14 +226,21 @@
         [self.contentView addSubview:self.degreeLabel];
     }
 
-    self.deviceImageView = [[UIImageView alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH / 3, 12, 53, 70)];
-    self.deviceImageView.frame = CGRectMake((CGFloat) (LEFT_LABEL_WIDTH / 3.5), 12, 53, 70);
+    // Set up the sensor icon views
+    // There are two views composted on top of each other.
+    // The main icon view is on the bottom, and a secondary view is available for
+    // overlaying a second icon on top.
+    CGRect imageView_frame = CGRectMake(LEFT_LABEL_WIDTH / 3, 12, 53, 70);
+    //
+    self.deviceImageView = [[UIImageView alloc] initWithFrame:imageView_frame];
     self.deviceImageView.userInteractionEnabled = YES;
-
+    //
     [self.deviceImageView addSubview:deviceImageButton];
     deviceImageButton.frame = self.deviceImageView.bounds;
-
     [self.contentView addSubview:self.deviceImageView];
+    //
+    self.deviceImageViewSecondary = [[UIImageView alloc] initWithFrame:imageView_frame];
+    [self.contentView addSubview:self.deviceImageViewSecondary];
 }
 
 - (void)layoutDeviceInfo {
@@ -407,10 +415,8 @@
             break;
         }
 
-            //PY 051114 - Phillips Hue
         case SFIDeviceType_HueLamp_48: {
-            [self configureBinaryStateSensor:DT48_HUE_LAMP_TRUE imageNameFalse:DT48_HUE_LAMP_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
-//            [self configureHueLamp_48:DT48_HUE_LAMP_TRUE imageNameFalse:DT48_HUE_LAMP_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            [self configureHueLamp_48:DT48_HUE_LAMP_TRUE imageNameFalse:DT48_HUE_LAMP_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
             break;
         }
 
@@ -596,6 +602,11 @@
 
 - (void)sensorDetailViewDidChangeNotificationPref:(SFISensorDetailView *)view newMode:(SFINotificationMode)newMode {
     [self.delegate tableViewCellDidChangeNotificationSetting:self newMode:newMode];
+}
+
+- (void)sensorDetailViewDidChangeSensorIconTintValue:(SFISensorDetailView *)view tint:(UIColor *)newColor {
+    DLog(@"Setting tint color: %@", newColor);
+    self.deviceImageViewSecondary.tintColor = newColor;
 }
 
 #pragma mark - Device layout
@@ -788,35 +799,28 @@
 }
 
 
-//PY 051114 - Add Philips Hue
 - (void)configureHueLamp_48:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
-    SFIDeviceKnownValues *stateValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_BINARY];
-    if (!stateValue) {
-        [self configureUnknownDevice];
+    [self configureBinaryStateSensor:imageNameTrue imageNameFalse:imageNameFalse statusTrue:statusTrue statusFalse:statusFalse];
+    self.deviceImageView.tintColor = [UIColor whiteColor];
+
+    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
+    if (!values) {
+        self.deviceImageViewSecondary.image = nil;
         return;
     }
-    
-    NSString *imageForNoValue = [self imageNameForNoValue];
-    NSString *imageName = [stateValue choiceForBoolValueTrueValue:DT48_HUE_LAMP_TRUE falseValue:DT48_HUE_LAMP_FALSE nilValue:imageForNoValue];
-    // imgBulb.image = [[UIImage imageNamed:@"philips_hue_bulb.png"]  imageTintedWithColor:colorPicked];
-    
-    float hue = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
-    float saturation = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SATURATION] floatValue];
-    float brightness = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BRIGHTNESS] floatValue];
-    
-    DLog(@"sensor color HSB: %f %f %f", hue, saturation, brightness);
-    
-    //TODO: Set color
-    
-//    //UIColor *currentColor = [UIColor colorWithHue:(hue/182.0)/360.0 saturation:(saturation/255.0)/100.0 brightness:(brightness/255.0)/100.0 alpha:1];
-//    //self.deviceImageView.image = [[UIImage imageNamed:imageName] imageTintedWithColor:[UIColor redColor]];
-//    //self.deviceImageView.image = [self.deviceImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//    // [self.deviceImageView setTintColor:[UIColor redColor]];
-//    self.deviceImageView.image = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//    self.deviceImageView.tintColor = [UIColor colorWithRed:0.98 green:0.47 blue:0 alpha:1];
-    
-    NSString *status = [stateValue choiceForBoolValueTrueValue:statusTrue falseValue:statusFalse nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
-    [self configureSensorImageName:imageName statusMesssage:status];
+
+    SFIDeviceValue *value = self.deviceValue;
+    float hue = [[value knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
+    float saturation = [[value knownValuesForProperty:SFIDevicePropertyType_SATURATION] floatValue];
+    float brightness = [[value knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] intValue];
+
+    UIColor *color = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
+
+    BOOL turned_on = values.boolValue;
+    UIImage *image = turned_on ? [UIImage imageNamed:@"48_hue_on_center"] : [UIImage imageNamed:@"48_hue_off_center"];
+
+    self.deviceImageViewSecondary.image = image;
+    self.deviceImageViewSecondary.tintColor = color;
 }
 
 - (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
@@ -865,6 +869,7 @@
 - (void)setUpdatingSensorStatus {
     [self showDeviceValueLabels:NO];
     self.deviceImageView.image = [UIImage imageNamed:DEVICE_UPDATING_IMAGE];
+    self.deviceImageViewSecondary.image = nil;
     self.deviceStatusLabel.text = self.updatingStatusMessage;
 }
 
