@@ -998,7 +998,7 @@ HUE	                3	Decimal		0-65535	Yes
 
     // Display hue picker
     SFIHuePickerView *huePicker = [[SFIHuePickerView alloc] initWithFrame:picker_frame];
-    [huePicker setConvertedValue:hue];
+    huePicker.convertedValue = hue;
     huePicker.propertyType = SFIDevicePropertyType_COLOR_HUE;
     huePicker.delegate = self;
     [self addSubview:huePicker];
