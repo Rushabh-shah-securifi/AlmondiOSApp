@@ -17,6 +17,7 @@
 
 // Specifies the maximum permitted value by the sensor (e.g. "255")
 // This value is converted to the slider's maxValue
+@property(nonatomic) int sensorMinValue;
 @property(nonatomic) int sensorMaxValue;
 
 // Converts the sensors value to the scale used by this slider

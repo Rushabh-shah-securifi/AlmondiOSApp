@@ -196,6 +196,11 @@
             break;
         }
 
+        case SFIDeviceType_ColorDimmableLight_32: {
+            [self configureColorDimmableLight_32];
+            break;
+        };
+
         case SFIDeviceType_HueLamp_48: {
             [self configureHueLamp_48];
             break;
@@ -226,7 +231,6 @@
         case SFIDeviceType_ColorControl_29:
         case SFIDeviceType_PressureSensor_30:
         case SFIDeviceType_FlowSensor_31:
-        case SFIDeviceType_ColorDimmableLight_32:
         case SFIDeviceType_HAPump_33:
         case SFIDeviceType_Shade_34:
         case SFIDeviceType_SmokeDetector_36:
@@ -948,101 +952,186 @@
 }
 
 /*
-SWITCH MULTILEVEL	5	Decimal		0-255	Yes
-SATURATION	        4	Decimal		0-255	Yes
-HUE	                3	Decimal		0-65535	Yes
+ColorDimmableLight device has 5 index
+1 - SWITCH MULTILEVEL	= level range - (0-255)
+2 - SWITCH BINARY	= on/off - (true/false)
+3 - HUE	= hue value - (0-254)
+4 - SATURATION	= sat value - (0-254)
+5 - COLOR_TEMPERATURE	= temp value - (1000-9000)
  */
-- (void)configureHueLamp_48 {
-    // block 
-    // places name - value label pairs
-    void (^place_label)(NSString *, NSString *) = ^(NSString *nameLabel_text, NSString *valueLabel_text) {
-        UIFont *const heavy_12 = [UIFont securifiBoldFont];
-        UIColor *const white_color = [UIColor whiteColor];
-        UIColor *const clear_color = [UIColor clearColor];
-
-        // Place Name label
-        CGRect nameLabel_frame = CGRectMake(10.0, self.baseYCoordinate, 60, 30);
-        UILabel *nameLabel = [[UILabel alloc] initWithFrame:nameLabel_frame];
-        nameLabel.textColor = [UIColor whiteColor];
-        nameLabel.text = nameLabel_text;
-        nameLabel.font = heavy_12;
-        nameLabel.textAlignment = NSTextAlignmentLeft;
-        [self addSubview:nameLabel];
-        //
-        // Value label
-        CGRect valueLabel_frame = CGRectMake(CGRectGetWidth(self.bounds), self.baseYCoordinate, 100, 30);
-        valueLabel_frame = CGRectOffset(valueLabel_frame, -110, 0);
-        //
-        SFICopyLabel *valueLabel = [[SFICopyLabel alloc] initWithFrame:valueLabel_frame];
-        valueLabel.userInteractionEnabled = YES; // allow user to copy value
-        valueLabel.textColor = white_color;
-        valueLabel.text = valueLabel_text;
-        valueLabel.backgroundColor = clear_color;
-        valueLabel.font = heavy_12;
-        valueLabel.textAlignment = NSTextAlignmentRight;
-        valueLabel.numberOfLines = 1;
-        [self addSubview:valueLabel];
-
-        [self markYOffsetUsingRect:nameLabel_frame addAdditional:5];
-    };
-
+- (void)configureColorDimmableLight_32 {
     SFIDeviceValue *deviceValue = self.deviceValue;
 
-    float hue = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
-    float saturation = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SATURATION] floatValue];
-    float multilevel = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] intValue];
-    DLog(@"sensor color HSB: %f %f %f", hue, saturation, multilevel);
+    const float hue = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_HUE] floatValue];
+    const float saturation = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_SATURATION] floatValue];
+    const float multilevel = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] intValue];
+    const float colorTemp = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_TEMPERATURE] intValue];
+    DLog(@"sensor color HSB: %f %f %f TEMP:%f", hue, saturation, multilevel, colorTemp);
 
     int picker_height = 100;
     CGRect picker_frame = CGRectMake(0, self.baseYCoordinate, CGRectGetWidth(self.bounds), picker_height);
 
     // Display hue picker
-    SFIHuePickerView *huePicker = [[SFIHuePickerView alloc] initWithFrame:picker_frame];
-    huePicker.convertedValue = hue;
-    huePicker.propertyType = SFIDevicePropertyType_COLOR_HUE;
-    huePicker.delegate = self;
-    [self addSubview:huePicker];
-    [self markYOffsetUsingRect:picker_frame addAdditional:0];
+    {
+        SFIHuePickerView *huePicker = [[SFIHuePickerView alloc] initWithFrame:picker_frame];
+        huePicker.convertedValue = hue;
+        huePicker.sensorMaxValue = 254;
+        huePicker.propertyType = SFIDevicePropertyType_CURRENT_HUE;
+        huePicker.delegate = self;
+        [self addSubview:huePicker];
+        [self markYOffsetUsingRect:picker_frame addAdditional:0];
 
-    place_label(NSLocalizedString(@"sensors.label.Color", @"Color"), [[huePicker.color hexString] uppercaseString]);
-
-//    [self addShortLine];
-//    [self markYOffset:5];
+        [self placeNameLabel:NSLocalizedString(@"sensors.label.Color", @"Color") valueLabel:[[huePicker.color hexString] uppercaseString]];
+    }
 
     const CGFloat slider_x_offset = 10.0;
     const CGFloat slider_right_inset = 20.0;
 
     // Display slider
     // brightness
-    SFISlider *brightness_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];
-    brightness_slider.continuous = YES;
-    brightness_slider.sensorMaxValue = 255;
-    brightness_slider.convertedValue = multilevel;
-    [brightness_slider addTarget:self action:@selector(onColorPropertyIsChanging:) forControlEvents:UIControlEventValueChanged];
-    [brightness_slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-    [self addSubview:brightness_slider];
-    [self markYOffset:20];
+    {
+        SFISlider *brightness_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];
+        brightness_slider.continuous = YES;
+        brightness_slider.sensorMaxValue = 255;
+        brightness_slider.convertedValue = multilevel;
+        [brightness_slider addTarget:self action:@selector(onColorPropertyIsChanging:) forControlEvents:UIControlEventValueChanged];
+        [brightness_slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+        [self addSubview:brightness_slider];
+        [self markYOffset:20];
 
-    place_label(@"Brightness", brightness_slider.sliderFormattedValue);
-
-//    [self addShortLine];
-//    [self markYOffset:5];
+        [self placeNameLabel:@"Brightness" valueLabel:brightness_slider.sliderFormattedValue];
+    }
 
     // saturation
-    SFISlider *saturation_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SATURATION sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];
-    saturation_slider.continuous = YES;
-    saturation_slider.sensorMaxValue = 255;
-    saturation_slider.convertedValue = saturation;
-    [saturation_slider addTarget:self action:@selector(onColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
-    [saturation_slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-    [self addSubview:saturation_slider];
-    [self markYOffset:20];
+    {
+        SFISlider *saturation_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_CURRENT_SATURATION sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];
+        saturation_slider.continuous = YES;
+        saturation_slider.sensorMaxValue = 254;
+        saturation_slider.convertedValue = saturation;
+        [saturation_slider addTarget:self action:@selector(onColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
+        [saturation_slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+        [self addSubview:saturation_slider];
+        [self markYOffset:20];
 
-    place_label(@"Saturation", saturation_slider.sliderFormattedValue);
+        [self placeNameLabel:@"Saturation" valueLabel:saturation_slider.sliderFormattedValue];
+    }
+
+    // Color Temperature
+    {
+        SFISlider *temp_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_COLOR_TEMPERATURE sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];
+        temp_slider.continuous = YES;
+        temp_slider.minimumValue = 1000;    // Kelvin
+        temp_slider.maximumValue = 9000;
+        temp_slider.sensorMinValue = 1000;
+        temp_slider.sensorMaxValue = 9000;
+        temp_slider.convertedValue = colorTemp;
+        [temp_slider addTarget:self action:@selector(onColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
+        [temp_slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+        [self addSubview:temp_slider];
+        [self markYOffset:20];
+
+        [self placeNameLabel:@"Color Temperature" valueLabel:temp_slider.sliderFormattedValue];
+    }
 
     [self markYOffset:10];
     [self addLine];
     [self markYOffset:10];
+}
+
+/*
+SWITCH MULTILEVEL	5	Decimal		0-255	Yes
+SATURATION	        4	Decimal		0-255	Yes
+HUE	                3	Decimal		0-65535	Yes
+ */
+- (void)configureHueLamp_48 {
+    SFIDeviceValue *deviceValue = self.deviceValue;
+
+    const float hue = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
+    const float saturation = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SATURATION] floatValue];
+    const float multilevel = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] intValue];
+    DLog(@"sensor color HSB: %f %f %f", hue, saturation, multilevel);
+
+    int picker_height = 100;
+    CGRect picker_frame = CGRectMake(0, self.baseYCoordinate, CGRectGetWidth(self.bounds), picker_height);
+
+    // Display hue picker
+    {
+        SFIHuePickerView *huePicker = [[SFIHuePickerView alloc] initWithFrame:picker_frame];
+        huePicker.convertedValue = hue;
+        huePicker.propertyType = SFIDevicePropertyType_COLOR_HUE;
+        huePicker.delegate = self;
+        [self addSubview:huePicker];
+        [self markYOffsetUsingRect:picker_frame addAdditional:0];
+
+        [self placeNameLabel:NSLocalizedString(@"sensors.label.Color", @"Color") valueLabel:[[huePicker.color hexString] uppercaseString]];
+    }
+
+    const CGFloat slider_x_offset = 10.0;
+    const CGFloat slider_right_inset = 20.0;
+
+    // Display slider
+    // brightness
+    {
+        SFISlider *brightness_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];
+        brightness_slider.continuous = YES;
+        brightness_slider.sensorMaxValue = 255;
+        brightness_slider.convertedValue = multilevel;
+        [brightness_slider addTarget:self action:@selector(onColorPropertyIsChanging:) forControlEvents:UIControlEventValueChanged];
+        [brightness_slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+        [self addSubview:brightness_slider];
+        [self markYOffset:20];
+
+        [self placeNameLabel:@"Brightness" valueLabel:brightness_slider.sliderFormattedValue];
+    }
+
+    // saturation
+    {
+        SFISlider *saturation_slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SATURATION sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];
+        saturation_slider.continuous = YES;
+        saturation_slider.sensorMaxValue = 255;
+        saturation_slider.convertedValue = saturation;
+        [saturation_slider addTarget:self action:@selector(onColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
+        [saturation_slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+        [self addSubview:saturation_slider];
+        [self markYOffset:20];
+
+        [self placeNameLabel:@"Saturation" valueLabel:saturation_slider.sliderFormattedValue];
+    }
+
+    [self markYOffset:10];
+    [self addLine];
+    [self markYOffset:10];
+}
+
+- (void)placeNameLabel:(NSString*)nameLabel_text valueLabel:(NSString *)valueLabel_text {
+    UIFont *const heavy_12 = [UIFont securifiBoldFont];
+    UIColor *const white_color = [UIColor whiteColor];
+    UIColor *const clear_color = [UIColor clearColor];
+
+    // Place Name label
+    CGRect nameLabel_frame = CGRectMake(10.0, self.baseYCoordinate, 60, 30);
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:nameLabel_frame];
+    nameLabel.textColor = [UIColor whiteColor];
+    nameLabel.text = nameLabel_text;
+    nameLabel.font = heavy_12;
+    nameLabel.textAlignment = NSTextAlignmentLeft;
+    [self addSubview:nameLabel];
+    //
+    // Value label
+    CGRect valueLabel_frame = CGRectMake(CGRectGetWidth(self.bounds), self.baseYCoordinate, 100, 30);
+    valueLabel_frame = CGRectOffset(valueLabel_frame, -110, 0);
+    //
+    SFICopyLabel *valueLabel = [[SFICopyLabel alloc] initWithFrame:valueLabel_frame];
+    valueLabel.userInteractionEnabled = YES; // allow user to copy value
+    valueLabel.textColor = white_color;
+    valueLabel.text = valueLabel_text;
+    valueLabel.backgroundColor = clear_color;
+    valueLabel.font = heavy_12;
+    valueLabel.textAlignment = NSTextAlignmentRight;
+    valueLabel.numberOfLines = 1;
+    [self addSubview:valueLabel];
+
+    [self markYOffsetUsingRect:nameLabel_frame addAdditional:5];
 }
 
 #pragma mark - Door Lock Pin Code helpers
@@ -1106,6 +1195,9 @@ HUE	                3	Decimal		0-65535	Yes
         case SFIDeviceType_SecurifiSmartSwitch_50:
             return 295 + extra;
 
+        case SFIDeviceType_ColorDimmableLight_32:
+            return 535 + extra;
+
         case SFIDeviceType_HueLamp_48:
             return 505 + extra;
 
@@ -1134,7 +1226,6 @@ HUE	                3	Decimal		0-65535	Yes
         case SFIDeviceType_ColorControl_29:
         case SFIDeviceType_PressureSensor_30:
         case SFIDeviceType_FlowSensor_31:
-        case SFIDeviceType_ColorDimmableLight_32:
         case SFIDeviceType_HAPump_33:
         case SFIDeviceType_Shade_34:
         case SFIDeviceType_SmokeDetector_36:
