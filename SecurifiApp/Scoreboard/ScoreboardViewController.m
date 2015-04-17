@@ -413,6 +413,7 @@
             ctrl.enableTestStore = NO;
             ctrl.enableDeleteAllButton = YES;
             ctrl.markAllViewedOnDismiss = NO;
+            ctrl.enableDebugMode = YES;
             [self.navigationController pushViewController:ctrl animated:YES];
         }
         else if (row == 4) {
@@ -420,6 +421,7 @@
             ctrl.enableTestStore = YES;
             ctrl.enableDeleteAllButton = NO;
             ctrl.markAllViewedOnDismiss = NO;
+            ctrl.enableDebugMode = YES;
             [self.navigationController pushViewController:ctrl animated:YES];
         }
     }

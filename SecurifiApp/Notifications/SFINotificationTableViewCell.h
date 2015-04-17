@@ -12,4 +12,9 @@
 
 @property(nonatomic) SFINotification *notification;
 
+@property(nonatomic) BOOL enableDebugMode;
+
+// for logging
+@property NSUInteger debugCellIndexNumber;
+
 @end

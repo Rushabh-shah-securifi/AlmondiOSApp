@@ -122,9 +122,11 @@
     if (cell == nil) {
         cell = [[SFINotificationTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.enableDebugMode = self.enableDebugMode;
     }
 
     cell.notification = notification;
+    cell.debugCellIndexNumber = (NSUInteger) indexPath.row;
 
     return cell;
 }

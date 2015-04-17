@@ -20,6 +20,7 @@
 @property(nonatomic, strong) UITextView *messageTextField;
 @property(nonatomic, strong) CircleView *circleView;
 @property(nonatomic, strong, readonly) SensorSupport *sensorSupport;
+@property(nonatomic) BOOL debugMessageShowing;
 @end
 
 @implementation SFINotificationTableViewCell
@@ -89,6 +90,14 @@
     textView.textContainerInset = UIEdgeInsetsZero;
     // vertically center the content
     [textView addObserver:self forKeyPath:@"contentSize" options:(NSKeyValueObservingOptionNew) context:NULL];
+    //
+    if (self.enableDebugMode) {
+        // tapping on label will change text to show Notification external ID
+        UITapGestureRecognizer *recoginizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDebugMessageTap)];
+        recoginizer.numberOfTapsRequired = 1;
+        [textView addGestureRecognizer:recoginizer];
+    }
+    //
     // auto resize text to fit view bounds
     CGFloat fontSize = 25.0;
     textView.font = [textView.font fontWithSize:fontSize];
@@ -193,14 +202,29 @@
             NSFontAttributeName : [UIFont securifiBoldFont],
             NSForegroundColorAttributeName : [UIColor blackColor],
     };
+
     NSString *deviceName = notification.deviceName;
+    
+    // debug logging
+    if (self.enableDebugMode) {
+        deviceName = [NSString stringWithFormat:@"(%ld) %@", (long) self.debugCellIndexNumber, deviceName];
+    }
+    
     NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:deviceName attributes:attr];
 
     attr = @{
             NSFontAttributeName : [UIFont securifiNormalFont],
             NSForegroundColorAttributeName : [UIColor lightGrayColor],
     };
+
     NSString *message = self.sensorSupport.notificationText;
+    if (self.debugMessageShowing) {
+        message = notification.externalId;
+    }
+    if (message == nil) {
+        message = @"";
+    }
+
     NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:message attributes:attr];
 
     NSMutableAttributedString *container = [NSMutableAttributedString new];
@@ -227,6 +251,14 @@
     }
 
     textView.contentOffset = CGPointMake(0, -topOffset);
+}
+
+- (void)onDebugMessageTap {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        BOOL showing = self.debugMessageShowing;
+        self.debugMessageShowing = !showing;
+        [self setMessageLabelText:self.notification];
+    });
 }
 
 @end

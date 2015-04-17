@@ -23,6 +23,9 @@
 // Default NO
 @property(nonatomic) BOOL enableDeleteAllButton;
 
+// Default NO
+@property(nonatomic) BOOL enableDebugMode;
+
 @end
 
 
