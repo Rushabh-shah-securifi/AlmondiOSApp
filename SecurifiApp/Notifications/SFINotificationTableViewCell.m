@@ -221,8 +221,11 @@
 
     NSString *message = self.sensorSupport.notificationText;
     if (self.debugMessageShowing) {
-        message = notification.externalId;
+        NSString *indexName = [SFIDeviceKnownValues propertyTypeToName:notification.valueType];
+        message = [NSString stringWithFormat:@" device_id:%d, device_type:%d, index:%d, index_type:%@, index_value:%@",
+                                             notification.deviceId, notification.deviceType, notification.valueIndex, notification.value, indexName];
     }
+
     if (message == nil) {
         message = @"";
     }
