@@ -196,10 +196,12 @@
         return;
     }
 
+    UIFont *bold_font = [UIFont securifiBoldFont];
+
     NSDictionary *attr;
 
     attr = @{
-            NSFontAttributeName : [UIFont securifiBoldFont],
+            NSFontAttributeName : bold_font,
             NSForegroundColorAttributeName : [UIColor blackColor],
     };
 
@@ -213,7 +215,7 @@
     NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:deviceName attributes:attr];
 
     attr = @{
-            NSFontAttributeName : [UIFont securifiNormalFont],
+            NSFontAttributeName : bold_font,
             NSForegroundColorAttributeName : [UIColor lightGrayColor],
     };
 
