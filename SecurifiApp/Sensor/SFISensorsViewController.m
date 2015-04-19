@@ -752,28 +752,15 @@
     }
 
     SFIDevice *device = cell.device;
-    device.notificationMode = newMode;
+    SFIDeviceValue *deviceValue = cell.deviceValue;
+    NSArray *notificationDeviceSettings = [device updateNotificationMode:newMode deviceValue:deviceValue];
 
-    NSArray *deviceValuesList = [cell.deviceValue knownDevicesValues];
-
-    // Create list of indexes for device values for that particular device.
-    // Notification will be sent for all the devices known values.
-    // One preference setting for all device properties.
-    NSMutableArray *deviceList = [[NSMutableArray alloc] init];
-    for (SFIDeviceKnownValues *currentDeviceValue in deviceValuesList) {
-        SFINotificationDevice *notificationDevice = [[SFINotificationDevice alloc] init];
-        notificationDevice.deviceID = device.deviceID;
-        notificationDevice.notificationMode = device.notificationMode;
-        notificationDevice.valueIndex = currentDeviceValue.index;
-
-        [deviceList addObject:notificationDevice];
-    }
+    NSString *almondMAC = self.almondMac;
+    NSString *action = (newMode == SFINotificationMode_off) ? kSFINotificationPreferenceChangeActionDelete : kSFINotificationPreferenceChangeActionAdd;
 
     [self showSavingToast];
 
-    // enabling/disabling is process of sending 'add' or 'delete' commands
-    NSString *action = (newMode == SFINotificationMode_off) ? kSFINotificationPreferenceChangeActionDelete : kSFINotificationPreferenceChangeActionAdd;
-    [[SecurifiToolkit sharedInstance] asyncRequestNotificationPreferenceChange:self.almondMac deviceList:deviceList forAction:action];
+    [[SecurifiToolkit sharedInstance] asyncRequestNotificationPreferenceChange:almondMAC deviceList:notificationDeviceSettings forAction:action];
 }
 
 #pragma mark - Class Methods
