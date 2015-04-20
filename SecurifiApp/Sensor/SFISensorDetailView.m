@@ -964,8 +964,8 @@ ColorDimmableLight device has 5 index
 
     const float hue = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_HUE] floatValue];
     const float saturation = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_SATURATION] floatValue];
-    const float multilevel = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] intValue];
-    const float colorTemp = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_TEMPERATURE] intValue];
+    const float multilevel = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] floatValue];
+    const float colorTemp = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_TEMPERATURE] floatValue];
     DLog(@"sensor color HSB: %f %f %f TEMP:%f", hue, saturation, multilevel, colorTemp);
 
     int picker_height = 100;
@@ -1025,6 +1025,15 @@ ColorDimmableLight device has 5 index
         temp_slider.sensorMinValue = 1000;
         temp_slider.sensorMaxValue = 9000;
         temp_slider.convertedValue = colorTemp;
+
+        NSNumberFormatter *formatter = [NSNumberFormatter new];
+        formatter.numberStyle = NSNumberFormatterDecimalStyle;
+        formatter.roundingMode = NSNumberFormatterRoundHalfUp;
+        formatter.maximumFractionDigits = 2;
+        formatter.minimumFractionDigits = 2;
+        formatter.positiveFormat = @"@@@@ K";
+        temp_slider.numberFormatter = formatter;
+
         [temp_slider addTarget:self action:@selector(onColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
         [temp_slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
         [self addSubview:temp_slider];
@@ -1048,7 +1057,7 @@ HUE	                3	Decimal		0-65535	Yes
 
     const float hue = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
     const float saturation = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SATURATION] floatValue];
-    const float multilevel = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] intValue];
+    const float multilevel = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] floatValue];
     DLog(@"sensor color HSB: %f %f %f", hue, saturation, multilevel);
 
     int picker_height = 100;
@@ -1109,7 +1118,7 @@ HUE	                3	Decimal		0-65535	Yes
     UIColor *const clear_color = [UIColor clearColor];
 
     // Place Name label
-    CGRect nameLabel_frame = CGRectMake(10.0, self.baseYCoordinate, 60, 30);
+    CGRect nameLabel_frame = CGRectMake(10.0, self.baseYCoordinate, 150, 30);
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:nameLabel_frame];
     nameLabel.textColor = [UIColor whiteColor];
     nameLabel.text = nameLabel_text;
@@ -1196,7 +1205,7 @@ HUE	                3	Decimal		0-65535	Yes
             return 295 + extra;
 
         case SFIDeviceType_ColorDimmableLight_32:
-            return 535 + extra;
+            return 560 + extra;
 
         case SFIDeviceType_HueLamp_48:
             return 505 + extra;

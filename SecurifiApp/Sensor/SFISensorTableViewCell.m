@@ -365,6 +365,11 @@
             break;
         }
 
+        case SFIDeviceType_ColorDimmableLight_32: {
+            [self configureColorDimmableLight_32:DT48_HUE_LAMP_TRUE imageNameFalse:DT48_HUE_LAMP_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            break;
+        }
+
         case SFIDeviceType_Shade_34: {
             [self configureBinaryStateSensor:DT34_SHADE_TRUE imageNameFalse:DT34_SHADE_FALSE statusTrue:@"OPEN" statusFalse:@"CLOSED"];
             break;
@@ -435,7 +440,6 @@
         case SFIDeviceType_ColorControl_29:
         case SFIDeviceType_PressureSensor_30:
         case SFIDeviceType_FlowSensor_31:
-        case SFIDeviceType_ColorDimmableLight_32:
         case SFIDeviceType_HAPump_33:
         case SFIDeviceType_MultiSwitch_43:
         default: {
@@ -801,6 +805,36 @@
 }
 
 
+- (void)configureColorDimmableLight_32:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
+    [self configureBinaryStateSensor:imageNameTrue imageNameFalse:imageNameFalse statusTrue:statusTrue statusFalse:statusFalse];
+    self.deviceImageView.tintColor = [UIColor whiteColor];
+
+    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
+    if (!values) {
+        self.deviceImageViewSecondary.image = nil;
+        return;
+    }
+
+    SFIDeviceValue *deviceValue = self.deviceValue;
+    float hue = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_HUE] floatValue];
+    float saturation = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_SATURATION] floatValue];
+    float brightness = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] floatValue];
+    float kelvin = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_TEMPERATURE] floatValue];
+
+    hue = hue / 65535;
+    saturation = saturation / 255;
+    brightness = brightness / 255;
+
+    UIColor *color = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
+
+    BOOL turned_on = values.boolValue;
+    UIImage *image = turned_on ? [UIImage imageNamed:@"48_hue_on_center"] : [UIImage imageNamed:@"48_hue_off_center"];
+
+    self.deviceImageViewSecondary.image = image;
+    self.deviceImageViewSecondary.tintColor = color;
+}
+
+
 - (void)configureHueLamp_48:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
     [self configureBinaryStateSensor:imageNameTrue imageNameFalse:imageNameFalse statusTrue:statusTrue statusFalse:statusFalse];
     self.deviceImageView.tintColor = [UIColor whiteColor];
@@ -814,7 +848,7 @@
     SFIDeviceValue *value = self.deviceValue;
     float hue = [[value knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
     float saturation = [[value knownValuesForProperty:SFIDevicePropertyType_SATURATION] floatValue];
-    float brightness = [[value knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] intValue];
+    float brightness = [[value knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] floatValue];
 
     hue = hue / 65535;
     saturation = saturation / 255;
