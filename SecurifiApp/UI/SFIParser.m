@@ -75,7 +75,7 @@
     else if ([elementName isEqualToString:CONNECTED_DEVICES]) {
         connectedDevices = [[SFIDevicesList alloc] init];
         genericCommandResponse.commandType = SFIGenericRouterCommandType_CONNECTED_DEVICES;
-        [connectedDevices setDeviceCount:[[attributeDict valueForKey:COUNT] unsignedIntValue]];
+        connectedDevices.deviceCount = (unsigned int) [[attributeDict valueForKey:COUNT] intValue];
         self.connectedDevicesArray = [[NSMutableArray alloc] init];
     }
     else if ([elementName isEqualToString:CONNECTED_DEVICE]) {
@@ -84,7 +84,7 @@
     else if ([elementName isEqualToString:BLOCKED_MACS]) {
         blockedDevices = [[SFIDevicesList alloc] init];
         genericCommandResponse.commandType = SFIGenericRouterCommandType_BLOCKED_MACS;
-        [blockedDevices setDeviceCount:[[attributeDict valueForKey:COUNT] unsignedIntValue]];
+        blockedDevices.deviceCount = (unsigned int) [[attributeDict valueForKey:COUNT] intValue];
         self.blockedDevicesArray = [[NSMutableArray alloc] init];
     }
     else if ([elementName isEqualToString:BLOCKED_MAC]) {
@@ -93,7 +93,7 @@
     else if ([elementName isEqualToString:BLOCKED_CONTENT]) {
         blockedContent = [[SFIDevicesList alloc] init];
         genericCommandResponse.commandType = SFIGenericRouterCommandType_BLOCKED_CONTENT;
-        [blockedDevices setDeviceCount:[[attributeDict valueForKey:COUNT] unsignedIntValue]];
+        blockedDevices.deviceCount = (unsigned int) [[attributeDict valueForKey:COUNT] intValue];
         self.blockedContentArray = [[NSMutableArray alloc] init];
     }
     else if ([elementName isEqualToString:BLOCKED_TEXT]) {
@@ -102,7 +102,7 @@
     else if ([elementName isEqualToString:WIRELESS_SETTINGS]) {
         wirelessSettings = [[SFIDevicesList alloc] init];
         genericCommandResponse.commandType = SFIGenericRouterCommandType_WIRELESS_SETTINGS;
-        [wirelessSettings setDeviceCount:[[attributeDict valueForKey:COUNT] unsignedIntValue]];
+        wirelessSettings.deviceCount = (unsigned int) [[attributeDict valueForKey:COUNT] intValue];
         self.wirelessSettingsArray = [[NSMutableArray alloc] init];
     }
     else if ([elementName isEqualToString:WIRELESS_SETTING]) {
@@ -122,17 +122,17 @@
         genericCommandResponse.commandType = SFIGenericRouterCommandType_WIRELESS_SUMMARY;
     }
     else if ([elementName isEqualToString:WIRELESS_SETTINGS_SUMMARY]) {
-        [routerSummary setWirelessSettingsCount:[[attributeDict valueForKey:COUNT] intValue]];
+        routerSummary.wirelessSettingsCount = [[attributeDict valueForKey:COUNT] intValue];
         self.wirelessSummaryArray = [[NSMutableArray alloc] init];
     }
     else if ([elementName isEqualToString:CONNECTED_DEVICES_SUMMARY]) {
-        [routerSummary setConnectedDeviceCount:[[attributeDict valueForKey:COUNT] intValue]];
+        routerSummary.connectedDeviceCount = [[attributeDict valueForKey:COUNT] intValue];
     }
     else if ([elementName isEqualToString:BLOCKED_MAC_SUMMARY]) {
-        [routerSummary setBlockedMACCount:[[attributeDict valueForKey:COUNT] intValue]];
+        routerSummary.blockedMACCount = [[attributeDict valueForKey:COUNT] intValue];
     }
     else if ([elementName isEqualToString:BLOCKED_CONTENT_SUMMARY]) {
-        [routerSummary setBlockedContentCount:[[attributeDict valueForKey:COUNT] intValue]];
+        routerSummary.blockedContentCount = [[attributeDict valueForKey:COUNT] intValue];
     }
 }
 
