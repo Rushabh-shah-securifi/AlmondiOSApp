@@ -169,10 +169,12 @@
 		1DF03733354F6CEF7D979D57 /* NotificationsTestStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0385D1BECF622A4B92311 /* NotificationsTestStore.m */; };
 		1DF037534B2784850C9B047C /* UIApplication+SecurifiNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AB12BF9855556678A13 /* UIApplication+SecurifiNotifications.m */; };
 		1DF0383EBD135988AEA6DF73 /* ValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF037012FF314C8E1F5C0E3 /* ValueFormatter.m */; };
+		1DF0385A73D7AE7E9208F510 /* UIColor+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF031C08CFCEF46B5E698F7 /* UIColor+Securifi.m */; };
 		1DF038A445EB0F3A6476DC32 /* SFIHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0327E1106225F6EB46DF8 /* SFIHuePickerView.m */; };
 		1DF038B5E6A54CEEAFE1BE7F /* NotificationsTestStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0385D1BECF622A4B92311 /* NotificationsTestStore.m */; };
 		1DF038B871CAC9B7F0FCA043 /* ILSaturationBrightnessPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */; };
 		1DF0390452B5D28DECBE4F68 /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033BFB3D6B1769127310B /* NSData+Conversion.m */; };
+		1DF03A194CCC7A1DE3C2A4DC /* UIColor+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF031C08CFCEF46B5E698F7 /* UIColor+Securifi.m */; };
 		1DF03A1D3210B9478AF1DAC3 /* IndexValueSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03C895FD75AA97DDF3AC5 /* IndexValueSupport.m */; };
 		1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03016CB88EB25EF5CE27E /* ScoreboardDebugLoggerViewController.m */; };
 		1DF03A2A9BFA55B20A1D2609 /* SensorIndexSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */; };
@@ -340,6 +342,7 @@
 		1DF0310139DB0870F7D2C815 /* NSData+Conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Conversion.h"; sourceTree = "<group>"; };
 		1DF0317CFEFED25A120B5900 /* ScoreboardTextEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardTextEditorViewController.h; sourceTree = "<group>"; };
 		1DF031B6B99795E6267FEAD7 /* SFINotificationTableViewHeaderFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFINotificationTableViewHeaderFooter.m; sourceTree = "<group>"; };
+		1DF031C08CFCEF46B5E698F7 /* UIColor+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Securifi.m"; sourceTree = "<group>"; };
 		1DF031D5539A9634BF7DF8BF /* CircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleView.h; sourceTree = "<group>"; };
 		1DF03260DA70CA70CF0E61EF /* ILHuePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILHuePickerView.m; sourceTree = "<group>"; };
 		1DF0327E1106225F6EB46DF8 /* SFIHuePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIHuePickerView.m; sourceTree = "<group>"; };
@@ -353,6 +356,7 @@
 		1DF03620FD353332ACD4D41B /* SensorSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorSupport.h; sourceTree = "<group>"; };
 		1DF0364AFED818925B9469F3 /* SFIPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPreferences.m; sourceTree = "<group>"; };
 		1DF0369E72CD4FA9E78D9468 /* SFICardViewSummaryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICardViewSummaryCell.m; sourceTree = "<group>"; };
+		1DF036C48B59B9CEAA7B4AAD /* UIColor+Securifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Securifi.h"; sourceTree = "<group>"; };
 		1DF037012FF314C8E1F5C0E3 /* ValueFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ValueFormatter.m; sourceTree = "<group>"; };
 		1DF0371FEA037ED979DF2BAF /* ILHuePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILHuePickerView.h; sourceTree = "<group>"; };
 		1DF0372CEAFFEB180E0CAF94 /* SFINotificationStatusBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFINotificationStatusBarButtonItem.h; sourceTree = "<group>"; };
@@ -644,6 +648,8 @@
 				1DF03AB12BF9855556678A13 /* UIApplication+SecurifiNotifications.m */,
 				1DF0332C0801A1AC751F47D4 /* UIColor+GetHSB.h */,
 				1DF03D4E0D2E7D5FC29DBF23 /* UIColor+GetHSB.m */,
+				1DF031C08CFCEF46B5E698F7 /* UIColor+Securifi.m */,
+				1DF036C48B59B9CEAA7B4AAD /* UIColor+Securifi.h */,
 			);
 			path = UICategories;
 			sourceTree = "<group>";
@@ -1127,6 +1133,7 @@
 				1DF03D2E7F166ECAEAD5B033 /* ILColorPickerView.m in Sources */,
 				1DF038B871CAC9B7F0FCA043 /* ILSaturationBrightnessPickerView.m in Sources */,
 				1DF038A445EB0F3A6476DC32 /* SFIHuePickerView.m in Sources */,
+				1DF0385A73D7AE7E9208F510 /* UIColor+Securifi.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1203,6 +1210,7 @@
 				1DF035687F592CCCFB831F48 /* ILColorPickerView.m in Sources */,
 				1DF0304B3CD98B217E85940D /* ILSaturationBrightnessPickerView.m in Sources */,
 				1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */,
+				1DF03A194CCC7A1DE3C2A4DC /* UIColor+Securifi.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
