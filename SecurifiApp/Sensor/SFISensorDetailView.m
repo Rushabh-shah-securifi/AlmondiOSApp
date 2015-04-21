@@ -13,6 +13,7 @@
 #import "UIFont+Securifi.h"
 #import "ILHuePickerView.h"
 #import "SFIHuePickerView.h"
+#import "UIColor+Securifi.h"
 
 
 #define TEMP_PICKER_ELEMENT_WIDTH 40
@@ -550,8 +551,9 @@
         case SFINotificationMode_away:
             segment_index = 1;
             break;
+        case SFINotificationMode_unknown:
         default:
-            segment_index = 0;
+            segment_index = UISegmentedControlNoSegment; // do not select anything when preference is not known
     }
     control.selectedSegmentIndex = segment_index;
 
@@ -994,7 +996,7 @@ ColorDimmableLight device has 5 index
         brightness_slider.continuous = YES;
         brightness_slider.sensorMaxValue = 255;
         brightness_slider.convertedValue = multilevel;
-        [brightness_slider addTarget:self action:@selector(onColorPropertyIsChanging:) forControlEvents:UIControlEventValueChanged];
+        [brightness_slider addTarget:self action:@selector(onColorDimmableLampColorPropertyIsChanging:) forControlEvents:UIControlEventValueChanged];
         [brightness_slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
         [self addSubview:brightness_slider];
         [self markYOffset:20];
@@ -1008,7 +1010,7 @@ ColorDimmableLight device has 5 index
         saturation_slider.continuous = YES;
         saturation_slider.sensorMaxValue = 254;
         saturation_slider.convertedValue = saturation;
-        [saturation_slider addTarget:self action:@selector(onColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
+        [saturation_slider addTarget:self action:@selector(onColorDimmableLampColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
         [saturation_slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
         [self addSubview:saturation_slider];
         [self markYOffset:20];
@@ -1029,12 +1031,12 @@ ColorDimmableLight device has 5 index
         NSNumberFormatter *formatter = [NSNumberFormatter new];
         formatter.numberStyle = NSNumberFormatterDecimalStyle;
         formatter.roundingMode = NSNumberFormatterRoundHalfUp;
-        formatter.maximumFractionDigits = 2;
-        formatter.minimumFractionDigits = 2;
+        formatter.maximumFractionDigits = 0;
+        formatter.minimumFractionDigits = 0;
         formatter.positiveFormat = @"@@@@ K";
         temp_slider.numberFormatter = formatter;
 
-        [temp_slider addTarget:self action:@selector(onColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
+        [temp_slider addTarget:self action:@selector(onColorDimmableLampColorTemperaturePropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
         [temp_slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
         [self addSubview:temp_slider];
         [self markYOffset:20];
@@ -1085,7 +1087,7 @@ HUE	                3	Decimal		0-65535	Yes
         brightness_slider.continuous = YES;
         brightness_slider.sensorMaxValue = 255;
         brightness_slider.convertedValue = multilevel;
-        [brightness_slider addTarget:self action:@selector(onColorPropertyIsChanging:) forControlEvents:UIControlEventValueChanged];
+        [brightness_slider addTarget:self action:@selector(onHueLampColorPropertyIsChanging:) forControlEvents:UIControlEventValueChanged];
         [brightness_slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
         [self addSubview:brightness_slider];
         [self markYOffset:20];
@@ -1099,7 +1101,7 @@ HUE	                3	Decimal		0-65535	Yes
         saturation_slider.continuous = YES;
         saturation_slider.sensorMaxValue = 255;
         saturation_slider.convertedValue = saturation;
-        [saturation_slider addTarget:self action:@selector(onColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
+        [saturation_slider addTarget:self action:@selector(onHueLampColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
         [saturation_slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
         [self addSubview:saturation_slider];
         [self markYOffset:20];
@@ -1448,14 +1450,31 @@ HUE	                3	Decimal		0-65535	Yes
     [self processColorPropertyValueChange:hue_picker.propertyType newValue:sensor_value];
 }
 
-#pragma mark - Hue Lamp helpers
+#pragma mark - Color/Hue Lamp helpers
 
-- (void)onColorPropertyIsChanging:(id)control {
+- (void)onHueLampColorPropertyIsChanging:(id)control {
     SFISlider *slider_brightness = [self sliderForDevicePropertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
     SFISlider *slider_saturation = [self sliderForDevicePropertyType:SFIDevicePropertyType_SATURATION];
     SFIHuePickerView *hue_picker = [self huePickerForDevicePropertyType:SFIDevicePropertyType_COLOR_HUE];
 
     [self processColorTintChange:slider_brightness saturationSlider:slider_saturation huePicker:hue_picker];
+}
+
+- (void)onColorDimmableLampColorPropertyIsChanging:(id)control {
+    SFISlider *slider_brightness = [self sliderForDevicePropertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+    SFISlider *slider_saturation = [self sliderForDevicePropertyType:SFIDevicePropertyType_CURRENT_SATURATION];
+    SFIHuePickerView *hue_picker = [self huePickerForDevicePropertyType:SFIDevicePropertyType_CURRENT_HUE];
+
+    [self processColorTintChange:slider_brightness saturationSlider:slider_saturation huePicker:hue_picker];
+}
+
+- (void)onColorDimmableLampColorTemperaturePropertyIsChanging:(id)control {
+    SFISlider *slider_temp = [self sliderForDevicePropertyType:SFIDevicePropertyType_COLOR_TEMPERATURE];
+
+    float kelvin = slider_temp.convertToSensorValue;
+    UIColor *color = [UIColor colorWithKelvin:kelvin];
+
+    [self.delegate sensorDetailViewDidChangeSensorIconTintValue:self tint:color];
 }
 
 - (void)onColorPropertyDidChange:(id)control {
