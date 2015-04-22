@@ -12,6 +12,12 @@
 #import "Colours.h"
 #import "SensorSupport.h"
 
+typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
+    SFINotificationTableViewCellDebugMode_normal,
+    SFINotificationTableViewCellDebugMode_details,
+    SFINotificationTableViewCellDebugMode_external_id,
+};
+
 @interface SFINotificationTableViewCell ()
 @property(nonatomic) BOOL reset;
 @property(nonatomic, strong) UITextField *dateLabel;
@@ -20,7 +26,7 @@
 @property(nonatomic, strong) UITextView *messageTextField;
 @property(nonatomic, strong) CircleView *circleView;
 @property(nonatomic, strong, readonly) SensorSupport *sensorSupport;
-@property(nonatomic) BOOL debugMessageShowing;
+@property(nonatomic) SFINotificationTableViewCellDebugMode debugMessageMode;
 @end
 
 @implementation SFINotificationTableViewCell
@@ -93,9 +99,9 @@
     //
     if (self.enableDebugMode) {
         // tapping on label will change text to show Notification external ID
-        UITapGestureRecognizer *recoginizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDebugMessageTap)];
-        recoginizer.numberOfTapsRequired = 1;
-        [textView addGestureRecognizer:recoginizer];
+        UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onDebugMessageTap)];
+        recognizer.numberOfTapsRequired = 1;
+        [textView addGestureRecognizer:recognizer];
     }
     //
     // auto resize text to fit view bounds
@@ -219,13 +225,24 @@
             NSForegroundColorAttributeName : [UIColor lightGrayColor],
     };
 
-    NSString *message = self.sensorSupport.notificationText;
-    if (self.debugMessageShowing) {
-        NSString *indexName = [SFIDeviceKnownValues propertyTypeToName:notification.valueType];
-        message = [NSString stringWithFormat:@" device_type:%d, device_id:%d, index:%d, index_value:%@, index_type:%@",
-                                             notification.deviceType, notification.deviceId, notification.valueIndex, notification.value, indexName];
-    }
+    NSString *message;
+    switch (self.debugMessageMode) {
+        case SFINotificationTableViewCellDebugMode_normal: {
+            message = self.sensorSupport.notificationText;
+            break;
+        }
+        case SFINotificationTableViewCellDebugMode_details: {
+            NSString *indexName = [SFIDeviceKnownValues propertyTypeToName:notification.valueType];
+            message = [NSString stringWithFormat:@" device_type:%d, device_id:%d, index:%d, index_value:%@, index_type:%@",
+                                                 notification.deviceType, notification.deviceId, notification.valueIndex, notification.value, indexName];
 
+            break;
+        };
+        case SFINotificationTableViewCellDebugMode_external_id: {
+            message = [NSString stringWithFormat:@" cloud_id:%@", notification.externalId];
+            break;
+        };
+    }
     if (message == nil) {
         message = @"";
     }
@@ -260,8 +277,8 @@
 
 - (void)onDebugMessageTap {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        BOOL showing = self.debugMessageShowing;
-        self.debugMessageShowing = !showing;
+        SFINotificationTableViewCellDebugMode nextMode = (self.debugMessageMode + 1) % 3;
+        self.debugMessageMode = nextMode;
         [self setMessageLabelText:self.notification];
     });
 }
