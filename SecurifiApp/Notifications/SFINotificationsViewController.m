@@ -15,10 +15,19 @@
 #import "Analytics.h"
 
 @interface SFINotificationsViewController ()
-@property(nonatomic, readonly) id<SFINotificationStore> store;
+@property(nonatomic, readonly) id <SFINotificationStore> store;
 @property(nonatomic) NSArray *buckets; // NSDate instances
+@property(nonatomic) NSDictionary *bucketCounts; // NSDate :: NSNumber
+@property(atomic) BOOL lockedToStoreUpdates;
+@property(atomic) BOOL needsToRefreshBucketsAndStore;
 @end
 
+/*
+
+Note that the controller listens for changed to the notification store and will reload itself when they arrive.
+This poses a problem handling concurrent updates while the table is in the middle of animations or deleting a row.
+Therefore, a locking procedure is implemented effectively blocking out table reloads during these operations.
+ */
 @implementation SFINotificationsViewController
 
 - (instancetype)initWithStyle:(UITableViewStyle)style {
@@ -111,7 +120,15 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSDate *bucket = [self tryGetBucket:section];
-    return [self.store countNotificationsForBucket:bucket];
+
+    if (self.lockedToStoreUpdates) {
+        NSInteger count = [self tryGetNotificationCount:bucket];
+        return (count == -1) ? 0 : count;
+    }
+
+    NSUInteger actualCount = [self.store countNotificationsForBucket:bucket];
+    [self storeNotificationCount:actualCount bucket:bucket];
+    return actualCount;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -158,8 +175,22 @@
         notification.viewed = YES;
     }
 
+    // Sequence the row reload operation inside an animation transaction that can provide a completion handler
+    // that will unlock the table
     dispatch_async(dispatch_get_main_queue(), ^() {
+        [self willUpdateTableCell];
+
+        [CATransaction begin];
+        [tableView beginUpdates];
+
+        [CATransaction setCompletionBlock:^{
+            [self didCompleteUpdateTableCell];
+        }];
+
         [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+        [tableView endUpdates];
+        [CATransaction commit];
     });
 }
 
@@ -193,7 +224,61 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     SFINotification *notification = [self notificationForIndexPath:indexPath];
     [self.store markDeleted:notification];
-    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        NSLog(@"start commitEditingStyle");
+
+        // lock out updates to the notification store from being reflected here;
+        // we can't have row counts change while the deletion is in progress
+        [CATransaction begin];
+        [tableView beginUpdates];
+
+        NSDate *bucket = [self tryGetBucket:indexPath.section];
+        NSInteger actualCount = [self tryGetNotificationCount:bucket];
+
+        [CATransaction setCompletionBlock:^{
+            NSLog(@"CATransaction completion block");
+            // when the animation has completed (and the row is deleted)
+            // unlock the table, allowing for changes to the notification store to be reflected
+            [self didCompleteUpdateTableCell];
+        }];
+
+        // delete the row
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+
+        // decrement count reflecting row deletion
+        actualCount--;
+        if (actualCount < 0) {
+            actualCount = 0;
+        }
+        [self storeNotificationCount:(NSUInteger) actualCount bucket:bucket];
+
+        [tableView endUpdates];
+        [CATransaction commit];
+
+        NSLog(@"done commitEditingStyle");
+    });
+}
+
+- (void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+    [super tableView:tableView willBeginEditingRowAtIndexPath:indexPath];
+
+    NSLog(@"willBeginEditingRowAtIndexPath");
+    [self willUpdateTableCell];
+
+    // Preps in case commitEditingStyle is called to delete a row.
+    // This ensures the current row count is stored in the cache.
+    // The value is then updated at the end of deletion transaction in commitEditingStyle method.
+    NSInteger count = [tableView numberOfRowsInSection:indexPath.section];
+    NSDate *bucket = [self tryGetBucket:indexPath.section];
+    [self storeNotificationCount:(NSUInteger) count bucket:bucket];
+}
+
+- (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+    [super tableView:tableView didEndEditingRowAtIndexPath:indexPath];
+
+    NSLog(@"didEndEditingRowAtIndexPath");
+    [self didCompleteUpdateTableCell];
 }
 
 #pragma mark - Buckets and Notification loading
@@ -207,8 +292,16 @@
     return [self tryGetNotificationForBucket:bucket row:0];
 }
 
-- (void)resetBucketsAndNotifications {
+- (BOOL)resetBucketsAndNotifications {
+    if (self.isUpdatingTableCell) {
+        [self markNeedsResetBucketsAndNotifications];
+        return NO;
+    }
+
     self.buckets = [self.store fetchDateBuckets:365];
+    self.bucketCounts = @{}; // important to clear cache on resetting buckets
+
+    return YES;
 }
 
 - (SFINotification *)notificationForIndexPath:(NSIndexPath *)path {
@@ -223,6 +316,28 @@
         return nil;
     }
     return array[index];
+}
+
+// check cache for bucket count.
+// returns -1 if no value in cache
+- (NSInteger)tryGetNotificationCount:(NSDate *)bucket {
+    NSDictionary *counts = self.bucketCounts;
+    if (!counts) {
+        return -1;
+    }
+
+    NSNumber *num = counts[bucket];
+    if (!num) {
+        return -1;
+    }
+
+    return num.integerValue;
+}
+
+- (void)storeNotificationCount:(NSUInteger)count bucket:(NSDate *)bucket {
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:self.bucketCounts];
+    dict[bucket] = @(count);
+    self.bucketCounts = dict;
 }
 
 - (SFINotification *)tryGetNotificationForBucket:(NSDate *)bucket row:(NSInteger)row {
@@ -243,10 +358,46 @@
             return;
         }
 
-        // this is brain dead because we may want to make transition more graceful and not even automatic
-        [self resetBucketsAndNotifications];
-        [self.tableView reloadData];
+        // the table might be locked against updates, and in that case this call returns NO.
+        // the call to reset the table, however, is noted and will be handled later
+        // when the table is unlocked
+        BOOL needsReload = [self resetBucketsAndNotifications];
+        if (needsReload) {
+            [self.tableView reloadData];
+        }
     });
+}
+
+#pragma mark - Internal locking and state management
+
+// YES when the table is locked against changes to the notification store
+- (BOOL)isUpdatingTableCell {
+    return self.lockedToStoreUpdates;
+}
+
+// Indicates that the notification has changed while the table was locked
+- (void)markNeedsResetBucketsAndNotifications {
+    self.needsToRefreshBucketsAndStore = YES;
+}
+
+// Called prior to performing an operation that requires a consistent view of the table structure
+- (void)willUpdateTableCell {
+    self.lockedToStoreUpdates = YES;
+}
+
+// Called after performing an operation; reloads the notification store and reloads table if needed.
+- (void)didCompleteUpdateTableCell {
+    self.lockedToStoreUpdates = NO;
+
+    // if updates arrived while the table was updating, we handle them now
+    if (self.needsToRefreshBucketsAndStore) {
+        self.needsToRefreshBucketsAndStore = NO;
+
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self resetBucketsAndNotifications];
+            [self.tableView reloadData];
+        });
+    }
 }
 
 @end
