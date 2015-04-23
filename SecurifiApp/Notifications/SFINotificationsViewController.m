@@ -122,12 +122,12 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     NSDate *bucket = [self tryGetBucket:section];
 
     if (self.lockedToStoreUpdates) {
-        NSInteger count = [self tryGetNotificationCount:bucket];
+        NSInteger count = [self tryGetCachedNotificationCount:bucket];
         return (count == -1) ? 0 : count;
     }
 
     NSUInteger actualCount = [self.store countNotificationsForBucket:bucket];
-    [self storeNotificationCount:actualCount bucket:bucket];
+    [self cacheNotificationCount:actualCount bucket:bucket];
     return actualCount;
 }
 
@@ -226,7 +226,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     [self.store markDeleted:notification];
 
     dispatch_async(dispatch_get_main_queue(), ^() {
-        NSLog(@"start commitEditingStyle");
+        DLog(@"start commitEditingStyle");
 
         // lock out updates to the notification store from being reflected here;
         // we can't have row counts change while the deletion is in progress
@@ -234,10 +234,10 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
         [tableView beginUpdates];
 
         NSDate *bucket = [self tryGetBucket:indexPath.section];
-        NSInteger actualCount = [self tryGetNotificationCount:bucket];
+        NSInteger cachedCount = [self tryGetCachedNotificationCount:bucket];
 
         [CATransaction setCompletionBlock:^{
-            NSLog(@"CATransaction completion block");
+            DLog(@"CATransaction completion block");
             // when the animation has completed (and the row is deleted)
             // unlock the table, allowing for changes to the notification store to be reflected
             [self didCompleteUpdateTableCell];
@@ -247,37 +247,39 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 
         // decrement count reflecting row deletion
-        actualCount--;
-        if (actualCount < 0) {
-            actualCount = 0;
+        cachedCount--;
+        if (cachedCount < 0) {
+            cachedCount = 0;
         }
-        [self storeNotificationCount:(NSUInteger) actualCount bucket:bucket];
+        [self cacheNotificationCount:(NSUInteger) cachedCount bucket:bucket];
 
         [tableView endUpdates];
         [CATransaction commit];
 
-        NSLog(@"done commitEditingStyle");
+        DLog(@"done commitEditingStyle");
     });
 }
 
 - (void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath {
     [super tableView:tableView willBeginEditingRowAtIndexPath:indexPath];
 
-    NSLog(@"willBeginEditingRowAtIndexPath");
+    DLog(@"willBeginEditingRowAtIndexPath");
     [self willUpdateTableCell];
 
-    // Preps in case commitEditingStyle is called to delete a row.
-    // This ensures the current row count is stored in the cache.
-    // The value is then updated at the end of deletion transaction in commitEditingStyle method.
-    NSInteger count = [tableView numberOfRowsInSection:indexPath.section];
-    NSDate *bucket = [self tryGetBucket:indexPath.section];
-    [self storeNotificationCount:(NSUInteger) count bucket:bucket];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        // Preps in case commitEditingStyle is called to delete a row.
+        // This ensures the current row count is stored in the cache and used by iOS when processing the "deleteRows" directive.
+        // The value is then updated at the end of deletion transaction in commitEditingStyle method.
+        NSInteger count = [tableView numberOfRowsInSection:indexPath.section];
+        NSDate *bucket = [self tryGetBucket:indexPath.section];
+        [self cacheNotificationCount:(NSUInteger) count bucket:bucket];
+    });
 }
 
 - (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath {
     [super tableView:tableView didEndEditingRowAtIndexPath:indexPath];
 
-    NSLog(@"didEndEditingRowAtIndexPath");
+    DLog(@"didEndEditingRowAtIndexPath");
     [self didCompleteUpdateTableCell];
 }
 
@@ -320,7 +322,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 
 // check cache for bucket count.
 // returns -1 if no value in cache
-- (NSInteger)tryGetNotificationCount:(NSDate *)bucket {
+- (NSInteger)tryGetCachedNotificationCount:(NSDate *)bucket {
     NSDictionary *counts = self.bucketCounts;
     if (!counts) {
         return -1;
@@ -334,7 +336,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     return num.integerValue;
 }
 
-- (void)storeNotificationCount:(NSUInteger)count bucket:(NSDate *)bucket {
+- (void)cacheNotificationCount:(NSUInteger)count bucket:(NSDate *)bucket {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:self.bucketCounts];
     dict[bucket] = @(count);
     self.bucketCounts = dict;

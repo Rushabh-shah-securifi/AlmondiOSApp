@@ -64,6 +64,7 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit tryRefreshNotifications];
 
+/*
     // Next, turn it into a local notification that will show up in the iOS notification center
     NSDictionary *apps_dict = userInfo[@"aps"];
 
@@ -85,6 +86,7 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
     DLog(@"notification: posting local notification, count:%li", (long)count);
     [self presentLocalNotificationNow:notice];
+*/
 
     return YES;
 }

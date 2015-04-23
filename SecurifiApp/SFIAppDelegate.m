@@ -150,7 +150,7 @@
 
     SecurifiConfigurator *config = [self toolkitConfigurator];
     [SecurifiToolkit initialize:config];
-//    [SecurifiToolkit sharedInstance].useProductionCloud = NO;
+    [SecurifiToolkit sharedInstance].useProductionCloud = NO;
 
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
