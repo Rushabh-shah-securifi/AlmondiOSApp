@@ -57,12 +57,6 @@
 		1C7E7D9C1A41A0990026F0BA /* ScoreboardEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D171A41A0990026F0BA /* ScoreboardEventViewController.m */; };
 		1C7E7D9D1A41A0990026F0BA /* ScoreboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D191A41A0990026F0BA /* ScoreboardViewController.m */; };
 		1C7E7D9E1A41A0990026F0BA /* ScoreboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D191A41A0990026F0BA /* ScoreboardViewController.m */; };
-		1C7E7D9F1A41A0990026F0BA /* SFISensorDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D1C1A41A0990026F0BA /* SFISensorDetailView.m */; };
-		1C7E7DA01A41A0990026F0BA /* SFISensorDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D1C1A41A0990026F0BA /* SFISensorDetailView.m */; };
-		1C7E7DA11A41A0990026F0BA /* SFISensorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D1E1A41A0990026F0BA /* SFISensorsViewController.m */; };
-		1C7E7DA21A41A0990026F0BA /* SFISensorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D1E1A41A0990026F0BA /* SFISensorsViewController.m */; };
-		1C7E7DA31A41A0990026F0BA /* SFISensorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D201A41A0990026F0BA /* SFISensorTableViewCell.m */; };
-		1C7E7DA41A41A0990026F0BA /* SFISensorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D201A41A0990026F0BA /* SFISensorTableViewCell.m */; };
 		1C7E7DA51A41A0990026F0BA /* SFIAccountsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D231A41A0990026F0BA /* SFIAccountsTableViewController.m */; };
 		1C7E7DA61A41A0990026F0BA /* SFIAccountsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D231A41A0990026F0BA /* SFIAccountsTableViewController.m */; };
 		1C7E7DA71A41A0990026F0BA /* SFIPasswordChangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D251A41A0990026F0BA /* SFIPasswordChangeViewController.m */; };
@@ -153,6 +147,8 @@
 		1DF0318D09F8B1DBAF74C090 /* SFINotificationTableViewHeaderFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF031B6B99795E6267FEAD7 /* SFINotificationTableViewHeaderFooter.m */; };
 		1DF0319D664AF1667E394E51 /* ILHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03260DA70CA70CF0E61EF /* ILHuePickerView.m */; };
 		1DF031DB440397B975511290 /* UIColor+GetHSB.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03D4E0D2E7D5FC29DBF23 /* UIColor+GetHSB.m */; };
+		1DF03226BF3736722C0E7F17 /* SFISensorDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03086AADF35699E6F9054 /* SFISensorDetailView.m */; };
+		1DF03247826CA943EDEE8741 /* SFISensorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF036AA13CCDD88050E8C2C /* SFISensorTableViewCell.m */; };
 		1DF032B24E580FC6CD86D379 /* CircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CircleLabel.m */; };
 		1DF03341BDCB67EE35C82CE5 /* ILView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AA35AC0879D6B794169 /* ILView.m */; };
 		1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03D4E0D2E7D5FC29DBF23 /* UIColor+GetHSB.m */; };
@@ -174,20 +170,24 @@
 		1DF038B5E6A54CEEAFE1BE7F /* NotificationsTestStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0385D1BECF622A4B92311 /* NotificationsTestStore.m */; };
 		1DF038B871CAC9B7F0FCA043 /* ILSaturationBrightnessPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */; };
 		1DF0390452B5D28DECBE4F68 /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033BFB3D6B1769127310B /* NSData+Conversion.m */; };
+		1DF039D3E2A4A6FB292A99C3 /* SFISensorDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03086AADF35699E6F9054 /* SFISensorDetailView.m */; };
 		1DF03A194CCC7A1DE3C2A4DC /* UIColor+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF031C08CFCEF46B5E698F7 /* UIColor+Securifi.m */; };
 		1DF03A1D3210B9478AF1DAC3 /* IndexValueSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03C895FD75AA97DDF3AC5 /* IndexValueSupport.m */; };
 		1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03016CB88EB25EF5CE27E /* ScoreboardDebugLoggerViewController.m */; };
 		1DF03A2A9BFA55B20A1D2609 /* SensorIndexSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */; };
 		1DF03A50177B8354D886E980 /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03A704CC540558B993529 /* CircleView.m */; };
+		1DF03A5E4E35A0F781390B53 /* SFISensorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF036AA13CCDD88050E8C2C /* SFISensorTableViewCell.m */; };
 		1DF03A76C404827BA9A6BF8C /* UIApplication+SecurifiNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AB12BF9855556678A13 /* UIApplication+SecurifiNotifications.m */; };
 		1DF03AD70C1C051CA6F74073 /* SFIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0364AFED818925B9469F3 /* SFIPreferences.m */; };
 		1DF03ADB8A23D76AE9B67F13 /* SFINotificationStatusBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */; };
+		1DF03B73C95D8A41C9409EF3 /* SFISensorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0372FDF6A6B6E6843DF80 /* SFISensorsViewController.m */; };
 		1DF03B77AE6B540AFC5851BB /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03C29C7F6403672992843 /* DebugLogger.m */; };
 		1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03ED87E1BC2184C9EEF53 /* ScoreboardTextEditorViewController.m */; };
 		1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03C29C7F6403672992843 /* DebugLogger.m */; };
 		1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0327E1106225F6EB46DF8 /* SFIHuePickerView.m */; };
 		1DF03C76A181214483FB8F70 /* SFICardViewSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0369E72CD4FA9E78D9468 /* SFICardViewSummaryCell.m */; };
 		1DF03CC89074191AC5F942CA /* ScoreboardDebugLoggerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03016CB88EB25EF5CE27E /* ScoreboardDebugLoggerViewController.m */; };
+		1DF03D19D4E35617E92B8DDD /* SFISensorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0372FDF6A6B6E6843DF80 /* SFISensorsViewController.m */; };
 		1DF03D1D08D853057CDED2DC /* SFINotificationTableViewHeaderFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF031B6B99795E6267FEAD7 /* SFINotificationTableViewHeaderFooter.m */; };
 		1DF03D2E7F166ECAEAD5B033 /* ILColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0331D17DC580313941C89 /* ILColorPickerView.m */; };
 		1DF03D9DDF778A6558F68504 /* ILHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03260DA70CA70CF0E61EF /* ILHuePickerView.m */; };
@@ -251,12 +251,6 @@
 		1C7E7D171A41A0990026F0BA /* ScoreboardEventViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardEventViewController.m; sourceTree = "<group>"; };
 		1C7E7D181A41A0990026F0BA /* ScoreboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardViewController.h; sourceTree = "<group>"; };
 		1C7E7D191A41A0990026F0BA /* ScoreboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardViewController.m; sourceTree = "<group>"; };
-		1C7E7D1B1A41A0990026F0BA /* SFISensorDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorDetailView.h; sourceTree = "<group>"; };
-		1C7E7D1C1A41A0990026F0BA /* SFISensorDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorDetailView.m; sourceTree = "<group>"; };
-		1C7E7D1D1A41A0990026F0BA /* SFISensorsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorsViewController.h; sourceTree = "<group>"; };
-		1C7E7D1E1A41A0990026F0BA /* SFISensorsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorsViewController.m; sourceTree = "<group>"; };
-		1C7E7D1F1A41A0990026F0BA /* SFISensorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorTableViewCell.h; sourceTree = "<group>"; };
-		1C7E7D201A41A0990026F0BA /* SFISensorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorTableViewCell.m; sourceTree = "<group>"; };
 		1C7E7D221A41A0990026F0BA /* SFIAccountsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIAccountsTableViewController.h; sourceTree = "<group>"; };
 		1C7E7D231A41A0990026F0BA /* SFIAccountsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIAccountsTableViewController.m; sourceTree = "<group>"; };
 		1C7E7D241A41A0990026F0BA /* SFIPasswordChangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPasswordChangeViewController.h; sourceTree = "<group>"; };
@@ -338,12 +332,15 @@
 		1CEE694B1A37F5F6008D8567 /* libSecurifiToolkit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSecurifiToolkit.a; path = "../iostoolkit/build/Debug-iphoneos/libSecurifiToolkit.a"; sourceTree = "<group>"; };
 		1DF03016CB88EB25EF5CE27E /* ScoreboardDebugLoggerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardDebugLoggerViewController.m; sourceTree = "<group>"; };
 		1DF0303A96ABFCC918107B70 /* UIImage+Securifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Securifi.h"; sourceTree = "<group>"; };
+		1DF0307CC4B43723DE5590C1 /* SFISensorDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorDetailView.h; sourceTree = "<group>"; };
+		1DF03086AADF35699E6F9054 /* SFISensorDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorDetailView.m; sourceTree = "<group>"; };
 		1DF030F104782902146AFA76 /* ScoreboardDebugLoggerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardDebugLoggerViewController.h; sourceTree = "<group>"; };
 		1DF0310139DB0870F7D2C815 /* NSData+Conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Conversion.h"; sourceTree = "<group>"; };
 		1DF0317CFEFED25A120B5900 /* ScoreboardTextEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardTextEditorViewController.h; sourceTree = "<group>"; };
 		1DF031B6B99795E6267FEAD7 /* SFINotificationTableViewHeaderFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFINotificationTableViewHeaderFooter.m; sourceTree = "<group>"; };
 		1DF031C08CFCEF46B5E698F7 /* UIColor+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Securifi.m"; sourceTree = "<group>"; };
 		1DF031D5539A9634BF7DF8BF /* CircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleView.h; sourceTree = "<group>"; };
+		1DF03216A3593D3DE89148E0 /* SFISensorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorTableViewCell.h; sourceTree = "<group>"; };
 		1DF03260DA70CA70CF0E61EF /* ILHuePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILHuePickerView.m; sourceTree = "<group>"; };
 		1DF0327E1106225F6EB46DF8 /* SFIHuePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIHuePickerView.m; sourceTree = "<group>"; };
 		1DF0331D17DC580313941C89 /* ILColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILColorPickerView.m; sourceTree = "<group>"; };
@@ -355,11 +352,14 @@
 		1DF035D824CA3CF3C06B170D /* ILColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILColorPickerView.h; sourceTree = "<group>"; };
 		1DF03620FD353332ACD4D41B /* SensorSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorSupport.h; sourceTree = "<group>"; };
 		1DF0364AFED818925B9469F3 /* SFIPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPreferences.m; sourceTree = "<group>"; };
+		1DF03670117CF6BB9C85C418 /* SFISensorsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorsViewController.h; sourceTree = "<group>"; };
 		1DF0369E72CD4FA9E78D9468 /* SFICardViewSummaryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICardViewSummaryCell.m; sourceTree = "<group>"; };
+		1DF036AA13CCDD88050E8C2C /* SFISensorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorTableViewCell.m; sourceTree = "<group>"; };
 		1DF036C48B59B9CEAA7B4AAD /* UIColor+Securifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Securifi.h"; sourceTree = "<group>"; };
 		1DF037012FF314C8E1F5C0E3 /* ValueFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ValueFormatter.m; sourceTree = "<group>"; };
 		1DF0371FEA037ED979DF2BAF /* ILHuePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILHuePickerView.h; sourceTree = "<group>"; };
 		1DF0372CEAFFEB180E0CAF94 /* SFINotificationStatusBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFINotificationStatusBarButtonItem.h; sourceTree = "<group>"; };
+		1DF0372FDF6A6B6E6843DF80 /* SFISensorsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorsViewController.m; sourceTree = "<group>"; };
 		1DF0373705FBEEE2BE853D29 /* NotificationsTestStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsTestStore.h; sourceTree = "<group>"; };
 		1DF0383EDE76423FDF937F9E /* ILView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILView.h; sourceTree = "<group>"; };
 		1DF03845038413D52AF4100D /* SensorSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorSupport.m; sourceTree = "<group>"; };
@@ -444,7 +444,6 @@
 				1C7E7D021A41A0990026F0BA /* NSString+ASBase64 */,
 				1C7E7D051A41A0990026F0BA /* Router */,
 				1C7E7D131A41A0990026F0BA /* Scoreboard */,
-				1C7E7D1A1A41A0990026F0BA /* Sensor */,
 				1C7E7D211A41A0990026F0BA /* Settings */,
 				1C7E7D281A41A0990026F0BA /* SFIAppDelegate.h */,
 				1C7E7D291A41A0990026F0BA /* SFIAppDelegate.m */,
@@ -456,6 +455,7 @@
 				1DF03D99C19042FD3FCADB2D /* SFIPreferences.h */,
 				1DF03CBFD9DEB75D228D8A0D /* SensorSupport */,
 				1DF03F2CAC78C2DF995C9887 /* ILColorPicker */,
+				1DF0319F5A1CE93323EA5C61 /* Sensor */,
 			);
 			path = SecurifiApp;
 			sourceTree = "<group>";
@@ -551,19 +551,6 @@
 				1DF0317CFEFED25A120B5900 /* ScoreboardTextEditorViewController.h */,
 			);
 			path = Scoreboard;
-			sourceTree = "<group>";
-		};
-		1C7E7D1A1A41A0990026F0BA /* Sensor */ = {
-			isa = PBXGroup;
-			children = (
-				1C7E7D1B1A41A0990026F0BA /* SFISensorDetailView.h */,
-				1C7E7D1C1A41A0990026F0BA /* SFISensorDetailView.m */,
-				1C7E7D1D1A41A0990026F0BA /* SFISensorsViewController.h */,
-				1C7E7D1E1A41A0990026F0BA /* SFISensorsViewController.m */,
-				1C7E7D1F1A41A0990026F0BA /* SFISensorTableViewCell.h */,
-				1C7E7D201A41A0990026F0BA /* SFISensorTableViewCell.m */,
-			);
-			path = Sensor;
 			sourceTree = "<group>";
 		};
 		1C7E7D211A41A0990026F0BA /* Settings */ = {
@@ -776,6 +763,19 @@
 				C7BE6C0BC2A24D858015ECCD /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1DF0319F5A1CE93323EA5C61 /* Sensor */ = {
+			isa = PBXGroup;
+			children = (
+				1DF0307CC4B43723DE5590C1 /* SFISensorDetailView.h */,
+				1DF03086AADF35699E6F9054 /* SFISensorDetailView.m */,
+				1DF03670117CF6BB9C85C418 /* SFISensorsViewController.h */,
+				1DF0372FDF6A6B6E6843DF80 /* SFISensorsViewController.m */,
+				1DF03216A3593D3DE89148E0 /* SFISensorTableViewCell.h */,
+				1DF036AA13CCDD88050E8C2C /* SFISensorTableViewCell.m */,
+			);
+			path = Sensor;
 			sourceTree = "<group>";
 		};
 		1DF03CBFD9DEB75D228D8A0D /* SensorSupport */ = {
@@ -1066,7 +1066,6 @@
 				1C7E7DD61A41A0990026F0BA /* UIViewController+Securifi.m in Sources */,
 				1C7E7DC81A41A0990026F0BA /* SFIMainViewController.m in Sources */,
 				1C7E7D8C1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
-				1C7E7DA41A41A0990026F0BA /* SFISensorTableViewCell.m in Sources */,
 				1C7E7DBE1A41A0990026F0BA /* SFICloudStatusBarButtonItem.m in Sources */,
 				1C7E7D861A41A0990026F0BA /* SFILogoutAllViewController.m in Sources */,
 				1C9B1D901A3EE9EF00097D8F /* main.m in Sources */,
@@ -1094,12 +1093,10 @@
 				1C7E7D741A41A0990026F0BA /* SFIBlockedContent.m in Sources */,
 				1C7E7D901A41A0990026F0BA /* SFIRouterReboot.m in Sources */,
 				1C7E7D721A41A0990026F0BA /* SFIAffiliationViewController.m in Sources */,
-				1C7E7DA21A41A0990026F0BA /* SFISensorsViewController.m in Sources */,
 				1C7E7DCE1A41A0990026F0BA /* SFISlider.m in Sources */,
 				1C9B1D7B1A3EE9EF00097D8F /* HomeScreenAppDelegate.m in Sources */,
 				1C7E7DD41A41A0990026F0BA /* UIView+Borders.m in Sources */,
 				1C7E7DBA1A41A0990026F0BA /* SFICardTableViewCell.m in Sources */,
-				1C7E7DA01A41A0990026F0BA /* SFISensorDetailView.m in Sources */,
 				1C7E7DD01A41A0990026F0BA /* SFITableViewController.m in Sources */,
 				1C7E7DCC1A41A0990026F0BA /* SFISensor.m in Sources */,
 				1C7E7D7A1A41A0990026F0BA /* SFIDevicesList.m in Sources */,
@@ -1134,6 +1131,9 @@
 				1DF038B871CAC9B7F0FCA043 /* ILSaturationBrightnessPickerView.m in Sources */,
 				1DF038A445EB0F3A6476DC32 /* SFIHuePickerView.m in Sources */,
 				1DF0385A73D7AE7E9208F510 /* UIColor+Securifi.m in Sources */,
+				1DF03226BF3736722C0E7F17 /* SFISensorDetailView.m in Sources */,
+				1DF03D19D4E35617E92B8DDD /* SFISensorsViewController.m in Sources */,
+				1DF03A5E4E35A0F781390B53 /* SFISensorTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1159,15 +1159,12 @@
 				1C7E7DCD1A41A0990026F0BA /* SFISlider.m in Sources */,
 				1C7E7D911A41A0990026F0BA /* SFIRouterRebootTableViewCell.m in Sources */,
 				1C7E7DCB1A41A0990026F0BA /* SFISensor.m in Sources */,
-				1C7E7DA11A41A0990026F0BA /* SFISensorsViewController.m in Sources */,
 				1C7E7DBB1A41A0990026F0BA /* SFICardView.m in Sources */,
 				1C7E7DD31A41A0990026F0BA /* UIView+Borders.m in Sources */,
 				1C7E7D8D1A41A0990026F0BA /* SFIRouterDevicesTableViewCell.m in Sources */,
 				1C7E7DBD1A41A0990026F0BA /* SFICloudStatusBarButtonItem.m in Sources */,
-				1C7E7DA31A41A0990026F0BA /* SFISensorTableViewCell.m in Sources */,
 				1C7E7D9B1A41A0990026F0BA /* ScoreboardEventViewController.m in Sources */,
 				1C7E7D931A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
-				1C7E7D9F1A41A0990026F0BA /* SFISensorDetailView.m in Sources */,
 				1C7E7D9D1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
 				1C7E7DA51A41A0990026F0BA /* SFIAccountsTableViewController.m in Sources */,
 				1C7E7DC31A41A0990026F0BA /* SFICopyLabel.m in Sources */,
@@ -1211,6 +1208,9 @@
 				1DF0304B3CD98B217E85940D /* ILSaturationBrightnessPickerView.m in Sources */,
 				1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */,
 				1DF03A194CCC7A1DE3C2A4DC /* UIColor+Securifi.m in Sources */,
+				1DF039D3E2A4A6FB292A99C3 /* SFISensorDetailView.m in Sources */,
+				1DF03B73C95D8A41C9409EF3 /* SFISensorsViewController.m in Sources */,
+				1DF03247826CA943EDEE8741 /* SFISensorTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
