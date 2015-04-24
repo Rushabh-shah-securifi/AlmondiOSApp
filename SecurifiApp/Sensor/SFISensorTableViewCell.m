@@ -819,11 +819,16 @@
     float hue = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_HUE] floatValue];
     float saturation = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_SATURATION] floatValue];
     float brightness = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] floatValue];
-    float kelvin = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_TEMPERATURE] floatValue];
+//    float kelvin = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_TEMPERATURE] floatValue];
 
     hue = hue / 65535;
     saturation = saturation / 255;
     brightness = brightness / 255;
+
+    // put a floor underneath the brightness to prevent it from showing up as black
+    if (brightness < 0.50) {
+        brightness = 0.50;
+    }
 
     UIColor *color = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
 
@@ -853,6 +858,11 @@
     hue = hue / 65535;
     saturation = saturation / 255;
     brightness = brightness / 255;
+
+    // put a floor underneath the brightness to prevent it from showing up as black
+    if (brightness < 0.50) {
+        brightness = 0.50;
+    }
 
     UIColor *color = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
 

@@ -1488,6 +1488,11 @@ HUE	                3	Decimal		0-65535	Yes
     float saturation = [slider_saturation convertToSensorValue] / slider_saturation.sensorMaxValue;
     float brightness = [slider_brightness convertToSensorValue] / slider_brightness.sensorMaxValue;
 
+    // put a floor underneath the brightness to prevent it from showing up as black
+    if (brightness < 0.50) {
+        brightness = 0.50;
+    }
+
     UIColor *color = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
     [self.delegate sensorDetailViewDidChangeSensorIconTintValue:self tint:color];
 }
