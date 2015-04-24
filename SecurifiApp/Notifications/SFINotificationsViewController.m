@@ -19,6 +19,7 @@
 @property(nonatomic) NSArray *buckets; // NSDate instances
 @property(nonatomic) NSDictionary *bucketCounts; // NSDate :: NSNumber
 @property(atomic) BOOL lockedToStoreUpdates;
+@property(atomic) BOOL deletingRow;
 @property(atomic) BOOL needsToRefreshBucketsAndStore;
 @end
 
@@ -222,6 +223,8 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    self.deletingRow = YES;
+
     SFINotification *notification = [self notificationForIndexPath:indexPath];
     [self.store markDeleted:notification];
 
@@ -240,6 +243,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
             DLog(@"CATransaction completion block");
             // when the animation has completed (and the row is deleted)
             // unlock the table, allowing for changes to the notification store to be reflected
+            self.deletingRow = NO;
             [self didCompleteUpdateTableCell];
         }];
 
@@ -279,8 +283,10 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 - (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath {
     [super tableView:tableView didEndEditingRowAtIndexPath:indexPath];
 
-    DLog(@"didEndEditingRowAtIndexPath");
-    [self didCompleteUpdateTableCell];
+    if (!self.deletingRow) {
+        DLog(@"didEndEditingRowAtIndexPath");
+        [self didCompleteUpdateTableCell];
+    }
 }
 
 #pragma mark - Buckets and Notification loading
