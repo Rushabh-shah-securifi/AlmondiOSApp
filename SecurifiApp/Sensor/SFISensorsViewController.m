@@ -1102,7 +1102,6 @@
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncRequestDeviceValueList:self.almondMac];
-    [toolkit asyncRequestNotificationPreferenceList:self.almondMac];
 
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
@@ -1463,6 +1462,7 @@
         }
     }
 
+    // missing preference means none has been set and is equivalent to 'off'
     device.notificationMode = SFINotificationMode_off;
 }
 
