@@ -279,7 +279,7 @@
         }
 
         case SFIDeviceType_Alarm_6: {
-            [self configureBinaryStateSensor:DT6_ALARM_TRUE imageNameFalse:DT6_ALARM_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            [self configureBinaryStateSensor:DT6_ALARM_TRUE imageNameFalse:DT6_ALARM_FALSE statusNonZeroValue:@"ON" statusZeroValue:@"OFF"];
             break;
         }
 
@@ -892,7 +892,7 @@
     }
 
     NSString *noImage = [self imageNameForNoValue];
-    NSString *imageName = [values choiceForLevelValueZeroValue:imageNameFalse nonZeroValue:imageNameTrue nilValue:noImage];
+    NSString *imageName = [values choiceForLevelValueZeroValue:imageNameTrue nonZeroValue:imageNameFalse nilValue:noImage];
 
     NSString *status = [values choiceForLevelValueZeroValue:statusTrue nonZeroValue:statusFalse nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
     [self configureSensorImageName:imageName statusMesssage:status];
