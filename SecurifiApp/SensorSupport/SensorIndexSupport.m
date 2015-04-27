@@ -1250,6 +1250,51 @@
         case SFIDeviceType_FlowSensor_31:
             break;
         case SFIDeviceType_ColorDimmableLight_32:
+            if (type == SFIDevicePropertyType_SWITCH_BINARY) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"false";
+                s1.iconName = @"48_hue_bulb_off";
+                s1.notificationText = @" is switched Off.";
+
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"true";
+                s2.iconName = @"48_hue_bulb_on";
+                s2.notificationText = @" is switched On.";
+
+                return @[s1, s2];
+            }
+            if (type == SFIDevicePropertyType_CURRENT_HUE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = @"48_hue_bulb_on";
+                s1.notificationText = @" hue color changed.";
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_CURRENT_SATURATION) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = @"48_hue_bulb_on";
+                s1.notificationText = @" saturation changed.";
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_SWITCH_MULTILEVEL) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = @"48_hue_bulb_on";
+                s1.notificationText = @" brightness changed.";
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_COLOR_TEMPERATURE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = @"48_hue_bulb_on";
+                s1.notificationText = @"'s color temperature changed to .";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = @"'s color temperature changed to ";
+                s1.valueFormatter.suffix = @"Kelvin";
+                return @[s1];
+            }
+
             break;
         case SFIDeviceType_HAPump_33:
             break;
@@ -1680,6 +1725,41 @@
         };
 
         case SFIDeviceType_HueLamp_48:
+            if (type == SFIDevicePropertyType_SWITCH_BINARY) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"false";
+                s1.iconName = @"48_hue_bulb_off";
+                s1.notificationText = @" is switched Off.";
+
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"true";
+                s2.iconName = @"48_hue_bulb_on";
+                s2.notificationText = @" is switched On.";
+
+                return @[s1, s2];
+            }
+            if (type == SFIDevicePropertyType_COLOR_HUE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = @"48_hue_bulb_on";
+                s1.notificationText = @" hue color changed.";
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_SATURATION) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = @"48_hue_bulb_on";
+                s1.notificationText = @" saturation changed.";
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_SWITCH_MULTILEVEL) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = @"48_hue_bulb_on";
+                s1.notificationText = @" brightness changed.";
+                return @[s1];
+            }
+
             break;
 
         case SFIDeviceType_SecurifiSmartSwitch_50: {
