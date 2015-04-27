@@ -1132,7 +1132,7 @@ HUE	                3	Decimal		0-65535	Yes
     CGRect valueLabel_frame = CGRectMake(CGRectGetWidth(self.bounds), self.baseYCoordinate, 100, 30);
     valueLabel_frame = CGRectOffset(valueLabel_frame, -110, 0);
     //
-    SFICopyLabel *valueLabel = [[SFICopyLabel alloc] initWithFrame:valueLabel_frame];
+    UILabel *valueLabel = [[UILabel alloc] initWithFrame:valueLabel_frame];
     valueLabel.userInteractionEnabled = YES; // allow user to copy value
     valueLabel.textColor = white_color;
     valueLabel.text = valueLabel_text;
