@@ -807,7 +807,6 @@
 
 - (void)configureColorDimmableLight_32:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
     [self configureBinaryStateSensor:imageNameTrue imageNameFalse:imageNameFalse statusTrue:statusTrue statusFalse:statusFalse];
-    self.deviceImageView.tintColor = [UIColor whiteColor];
 
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
     if (!values) {
@@ -816,33 +815,19 @@
     }
 
     SFIDeviceValue *deviceValue = self.deviceValue;
+
+    BOOL turned_on = values.boolValue;
     float hue = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_HUE] floatValue];
     float saturation = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_SATURATION] floatValue];
     float brightness = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] floatValue];
 //    float kelvin = [[deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_TEMPERATURE] floatValue];
 
-    hue = hue / 65535;
-    saturation = saturation / 255;
-    brightness = brightness / 255;
-
-    // put a floor underneath the brightness to prevent it from showing up as black
-    if (brightness < 0.50) {
-        brightness = 0.50;
-    }
-
-    UIColor *color = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
-
-    BOOL turned_on = values.boolValue;
-    UIImage *image = turned_on ? [UIImage imageNamed:@"48_hue_on_center"] : [UIImage imageNamed:@"48_hue_off_center"];
-
-    self.deviceImageViewSecondary.image = image;
-    self.deviceImageViewSecondary.tintColor = color;
+    [self configureLampIcon:turned_on hue:hue saturation:saturation brightness:brightness];
 }
 
 
 - (void)configureHueLamp_48:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
     [self configureBinaryStateSensor:imageNameTrue imageNameFalse:imageNameFalse statusTrue:statusTrue statusFalse:statusFalse];
-    self.deviceImageView.tintColor = [UIColor whiteColor];
 
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
     if (!values) {
@@ -851,10 +836,17 @@
     }
 
     SFIDeviceValue *value = self.deviceValue;
+
+    BOOL turned_on = values.boolValue;
     float hue = [[value knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
     float saturation = [[value knownValuesForProperty:SFIDevicePropertyType_SATURATION] floatValue];
     float brightness = [[value knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] floatValue];
 
+    [self configureLampIcon:turned_on hue:hue saturation:saturation brightness:brightness];
+}
+
+// draws a hue lamp icon and tinted inset representing the currently configured color
+- (void)configureLampIcon:(BOOL)turned_on hue:(float)hue saturation:(float)saturation brightness:(float)brightness {
     hue = hue / 65535;
     saturation = saturation / 255;
     brightness = brightness / 255;
@@ -866,8 +858,13 @@
 
     UIColor *color = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
 
-    BOOL turned_on = values.boolValue;
     UIImage *image = turned_on ? [UIImage imageNamed:@"48_hue_on_center"] : [UIImage imageNamed:@"48_hue_off_center"];
+    // work around problem on some older iOS machines causing icon template settings in assets catalog to be ignored
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+    // work around problem on some older iOS machines causing icon template settings in assets catalog to be ignored
+    self.deviceImageView.image = [self.deviceImageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    self.deviceImageView.tintColor = [UIColor whiteColor];
 
     self.deviceImageViewSecondary.image = image;
     self.deviceImageViewSecondary.tintColor = color;
