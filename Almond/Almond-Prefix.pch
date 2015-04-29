@@ -21,8 +21,8 @@
 #define NSLog(args...) DDLogInfo(args)
 #define DLog(args...) DDLogDebug(args)
 
-#if( DEBUG )
-#define DDLogLevel DDLogLevelDebug
+#ifdef DEBUG
+static const DDLogLevel ddLogLevel = DDLogLevelVerbose;
 #else
-#define DDLogLevel DDLogLevelError
+static const DDLogLevel ddLogLevel = DDLogLevelWarning;
 #endif
