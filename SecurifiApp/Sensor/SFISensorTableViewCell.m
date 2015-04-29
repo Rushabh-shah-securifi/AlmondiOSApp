@@ -892,9 +892,9 @@
     }
 
     NSString *noImage = [self imageNameForNoValue];
-    NSString *imageName = [values choiceForLevelValueZeroValue:imageNameTrue nonZeroValue:imageNameFalse nilValue:noImage];
+    NSString *imageName = [values choiceForLevelValueZeroValue:imageNameFalse nonZeroValue:imageNameTrue nilValue:noImage];
 
-    NSString *status = [values choiceForLevelValueZeroValue:statusTrue nonZeroValue:statusFalse nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
+    NSString *status = [values choiceForLevelValueZeroValue:statusFalse nonZeroValue:statusTrue  nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
     [self configureSensorImageName:imageName statusMesssage:status];
 }
 

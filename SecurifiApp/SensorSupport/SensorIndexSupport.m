@@ -288,12 +288,12 @@
              */
             if (type == SFIDevicePropertyType_BASIC) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchData = @"255";
+                s1.matchData = @"0";
                 s1.iconName = @"06_alarm_off";
                 s1.notificationText = @" is Silent.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.matchData = @"0";
+                s2.matchData = @"255";
                 s2.iconName = @"06_alarm_on";
                 s2.notificationText = @" is Ringing.";
 
