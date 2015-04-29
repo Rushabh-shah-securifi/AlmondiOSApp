@@ -193,6 +193,8 @@
 		1DF03D9DDF778A6558F68504 /* ILHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03260DA70CA70CF0E61EF /* ILHuePickerView.m */; };
 		1DF03DC0F53E38D2CB88F6BA /* ValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF037012FF314C8E1F5C0E3 /* ValueFormatter.m */; };
 		1DF03E729C9FCFBA559D4BDC /* ILView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AA35AC0879D6B794169 /* ILView.m */; };
+		1DF03E7BD810C403E825F6F6 /* SFISignupTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B731F8D6EE05E49F6C /* SFISignupTest.m */; };
+		1DF03ED4CF0AB68A1BE70915 /* SFISignupTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B731F8D6EE05E49F6C /* SFISignupTest.m */; };
 		1DF03FBF0030A76DBCA3A828 /* CircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CircleLabel.m */; };
 		7CB5434B38D653A029281FD1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
@@ -346,6 +348,7 @@
 		1DF0331D17DC580313941C89 /* ILColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILColorPickerView.m; sourceTree = "<group>"; };
 		1DF0332C0801A1AC751F47D4 /* UIColor+GetHSB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+GetHSB.h"; sourceTree = "<group>"; };
 		1DF033B55E920DA89560E84B /* CircleLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleLabel.m; sourceTree = "<group>"; };
+		1DF033B731F8D6EE05E49F6C /* SFISignupTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISignupTest.m; sourceTree = "<group>"; };
 		1DF033BFB3D6B1769127310B /* NSData+Conversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Conversion.m"; sourceTree = "<group>"; };
 		1DF0347F6CE56318C9DB59C5 /* ILSaturationBrightnessPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSaturationBrightnessPickerView.h; sourceTree = "<group>"; };
 		1DF035449B8995967846754D /* DebugLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugLogger.h; sourceTree = "<group>"; };
@@ -366,6 +369,7 @@
 		1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSaturationBrightnessPickerView.m; sourceTree = "<group>"; };
 		1DF0385D1BECF622A4B92311 /* NotificationsTestStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTestStore.m; sourceTree = "<group>"; };
 		1DF0395BA425DCA3D278FFDB /* SFINotificationTableViewHeaderFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFINotificationTableViewHeaderFooter.h; sourceTree = "<group>"; };
+		1DF039BB5E65DB85D9A4324F /* SFISignupTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISignupTest.h; sourceTree = "<group>"; };
 		1DF039E8AD77F930D3943D79 /* CircleLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleLabel.h; sourceTree = "<group>"; };
 		1DF03A704CC540558B993529 /* CircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleView.m; sourceTree = "<group>"; };
 		1DF03A98342E420E03800492 /* UIApplication+SecurifiNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+SecurifiNotifications.h"; sourceTree = "<group>"; };
@@ -571,6 +575,8 @@
 			children = (
 				1C7E7D2B1A41A0990026F0BA /* SFISignupViewController.h */,
 				1C7E7D2C1A41A0990026F0BA /* SFISignupViewController.m */,
+				1DF033B731F8D6EE05E49F6C /* SFISignupTest.m */,
+				1DF039BB5E65DB85D9A4324F /* SFISignupTest.h */,
 			);
 			path = Signup;
 			sourceTree = "<group>";
@@ -1134,6 +1140,7 @@
 				1DF03226BF3736722C0E7F17 /* SFISensorDetailView.m in Sources */,
 				1DF03D19D4E35617E92B8DDD /* SFISensorsViewController.m in Sources */,
 				1DF03A5E4E35A0F781390B53 /* SFISensorTableViewCell.m in Sources */,
+				1DF03ED4CF0AB68A1BE70915 /* SFISignupTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1211,6 +1218,7 @@
 				1DF039D3E2A4A6FB292A99C3 /* SFISensorDetailView.m in Sources */,
 				1DF03B73C95D8A41C9409EF3 /* SFISensorsViewController.m in Sources */,
 				1DF03247826CA943EDEE8741 /* SFISensorTableViewCell.m in Sources */,
+				1DF03E7BD810C403E825F6F6 /* SFISignupTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
