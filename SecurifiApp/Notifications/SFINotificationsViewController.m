@@ -94,6 +94,11 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
         SFINotification *mostRecent = [self mostRecentNotification];
         [self.store markAllViewedTo:mostRecent];
 
+        // Tell the cloud add notifications were viewed
+        // Note: there is a race condition that does not account for concurrent changes to this app's data store
+        // while this operation is being called. This is due to an underspecified protocol between cloud and app.
+        [[SecurifiToolkit sharedInstance] tryClearNotificationCount];
+
         // tell the world notifications were viewed
         [center postNotificationName:kApplicationDidViewNotifications object:nil];
     }
