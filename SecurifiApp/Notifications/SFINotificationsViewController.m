@@ -172,7 +172,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 
     SFINotification *notification = [self notificationForIndexPath:indexPath];
     if (notification && !notification.viewed) {
-        [[SecurifiToolkit sharedInstance] markNotificationViewed:notification];
+        [self.store markViewed:notification];
         notification.viewed = YES;
     }
 
