@@ -22,12 +22,12 @@
 
 - (SecurifiConfigurator *)toolkitConfigurator {
     SecurifiConfigurator *config = [SecurifiConfigurator new];
-    config.enableScoreboard = YES;                  // uncomment for debug builds
-    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
-    config.enableCertificateChainValidation = NO;   // uncomment for testing only; on by default
+//    config.enableScoreboard = YES;                  // uncomment for debug builds
+//    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
+//    config.enableCertificateChainValidation = NO;   // uncomment for testing only; on by default
 //
     config.enableNotifications = YES;               // uncomment to activate; NO by default
-    config.enableRouterWirelessControl = YES;       // YES by default
+//    config.enableRouterWirelessControl = YES;       // YES by default
     return config;
 }
 
@@ -126,7 +126,12 @@
     NSLog(@"Application becomes active: cloud online=%@", online ? @"YES" : @"NO");
 
     if (online) {
-        [toolkit tryFetchNotificationCount];
+        // Use the badge count set by APN
+        NSInteger badgeNumber = application.applicationIconBadgeNumber;
+        [toolkit setNotificationsBadgeCount:badgeNumber];
+
+        // and then fetch new notifications, if any
+        [toolkit tryRefreshNotifications];
     }
     else {
         [toolkit initToolkit];
@@ -150,8 +155,14 @@
 
     SecurifiConfigurator *config = [self toolkitConfigurator];
     [SecurifiToolkit initialize:config];
-    [SecurifiToolkit sharedInstance].useProductionCloud = NO;
+//    [SecurifiToolkit sharedInstance].useProductionCloud = NO; // uncomment for testing; to force dev cloud by default
 
+#ifdef DEBUG
+    NSLog(@"DEBUG compile mode set");
+#else
+    NSLog(@"RELEASE compile mode set");
+#endif
+    
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
     [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
