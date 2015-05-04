@@ -24,7 +24,10 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
     // update app badge icon and set up event handling to keep the badge updated as user views notifications
     [self securifiApplicationUpdateBadgeCount];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSecurifiApplicationDidViewNotifications) name:kApplicationDidViewNotifications object:nil];
+    //
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(onSecurifiApplicationDidViewNotifications) name:kApplicationDidViewNotifications object:nil];
+    [center addObserver:self selector:@selector(onSecurifiApplicationNotificationCountChanged:) name:kSFINotificationBadgeCountDidChange object:nil];
 
     SFIPreferences *preferences = [SFIPreferences instance];
     if (!preferences.isRegisteredForPushNotification) {
@@ -222,20 +225,24 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
         [self registerForRemoteNotificationTypes:types];
     }
 
-    [self setApplicationIconBadgeNumber:0];
+    self.applicationIconBadgeNumber = 0;
 }
 
 // update badge count and clear out notifications
 - (void)onSecurifiApplicationDidViewNotifications {
     [self securifiApplicationUpdateBadgeCount];
-    [self cancelAllLocalNotifications];
+//    [self cancelAllLocalNotifications];
+}
+
+- (void)onSecurifiApplicationNotificationCountChanged:(id)notification {
+    [self securifiApplicationUpdateBadgeCount];
 }
 
 // set the app's badge icon to the count of 'not viewed' notifications
 - (void)securifiApplicationUpdateBadgeCount {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSInteger count = [toolkit countUnviewedNotifications];
-    [self setApplicationIconBadgeNumber:count];
+    self.applicationIconBadgeNumber = count;
 }
 
 - (void)securifiDebugLog:(SFINotification *)notification action:(NSString *)action {
