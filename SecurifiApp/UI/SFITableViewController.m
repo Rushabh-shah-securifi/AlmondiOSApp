@@ -243,12 +243,7 @@
     if (self.enableNotificationsView) {
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         NSInteger badgeCount = [toolkit notificationsBadgeCount];
-        NSInteger count = [toolkit countUnviewedNotifications];
-        NSInteger marker = count;
-        if (count == 0 && badgeCount > 0) {
-            marker = badgeCount;
-        }
-        [self.notificationsStatusButton markNotificationCount:(NSUInteger) marker];
+        [self.notificationsStatusButton markNotificationCount:(NSUInteger) badgeCount];
     }
 }
 
