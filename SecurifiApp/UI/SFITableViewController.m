@@ -15,7 +15,7 @@
 #import "SFINotificationStatusBarButtonItem.h"
 #import "UIApplication+SecurifiNotifications.h"
 
-@interface SFITableViewController () <MBProgressHUDDelegate>
+@interface SFITableViewController () <MBProgressHUDDelegate, SWRevealViewControllerDelegate, UIGestureRecognizerDelegate>
 @property(nonatomic, readonly) SFINotificationStatusBarButtonItem *notificationsStatusButton;
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @end
@@ -133,6 +133,11 @@
     // make sure status icon is up-to-date
     [self markCloudStatusIcon];
     [self markNotificationStatusIcon];
+
+    // install self as delegate so this controller can enable/disable drawer
+    SWRevealViewController *ctrl = [self revealViewController];
+    ctrl.delegate = self;
+    ctrl.panGestureRecognizer.delegate = self;
 }
 
 #pragma Event handling
@@ -318,6 +323,24 @@
 
 - (void)hudWasHidden:(MBProgressHUD *)hud {
     _isHudHidden = YES;
+}
+
+#pragma mark - SWRevealViewControllerDelegate methods
+
+- (BOOL)revealControllerPanGestureShouldBegin:(SWRevealViewController *)revealController {
+    return self.enableDrawer;
+}
+
+- (BOOL)revealControllerTapGestureShouldBegin:(SWRevealViewController *)revealController {
+    return self.enableDrawer;
+}
+
+#pragma mark - UIGestureRecognizerDelegate methods
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    UIView *view = touch.view;
+    // prevent recognizing touches on the slider
+    return self.enableDrawer && ![view isKindOfClass:[UISlider class]];
 }
 
 @end

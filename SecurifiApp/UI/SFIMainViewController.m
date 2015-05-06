@@ -26,7 +26,7 @@
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
 
-@interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, SFIAccountDeleteDelegate, UIGestureRecognizerDelegate, UITabBarControllerDelegate>
+@interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, SFIAccountDeleteDelegate, UITabBarControllerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSTimer *cloudReconnectTimer;
 @property BOOL presentingLoginController;
@@ -377,8 +377,6 @@
     // Activate gestures in Reveal; must be done after it has been set up
     [ctrl panGestureRecognizer];
     [ctrl tapGestureRecognizer];
-
-    ctrl.panGestureRecognizer.delegate = self;
 }
 
 - (void)presentLogoutAllView {
@@ -487,14 +485,6 @@
 - (void)onDidFailToDeregisterForNotifications {
     ELog(@"Failed to remove push notification token registration with cloud");
     [self showToast:@"Sorry! Push Notification was not deregistered."];
-}
-
-#pragma mark - UIGestureRecognizerDelegate methods
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    UIView *view = touch.view;
-    // prevent recognizing touches on the slider
-    return ![view isKindOfClass:[UISlider class]];
 }
 
 #pragma mark - UITabBarControllerDelegate methods
