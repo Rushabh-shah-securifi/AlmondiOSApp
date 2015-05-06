@@ -966,7 +966,7 @@
 
     NSString *const degrees_symbol = @"\u00B0";
 
-    NSString *humid_str = [NSString stringWithFormat:@"Humidity %@%", humidity];
+    NSString *humid_str = [NSString stringWithFormat:@"Humidity %@%%", humidity];
     NSString *temp_str = [NSString stringWithFormat:@"Temperature %@%@", temperature, degrees_symbol];
 
     [self addStatusLabel:@[humid_str, temp_str]];
