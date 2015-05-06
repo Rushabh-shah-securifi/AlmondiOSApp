@@ -228,6 +228,8 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Lock out updates to the notification store from being reflected here;
+    // we can't have row counts change while the deletion is in progress
     self.deletingRow = YES;
 
     SFINotification *notification = [self notificationForIndexPath:indexPath];
@@ -236,8 +238,6 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     dispatch_async(dispatch_get_main_queue(), ^() {
         DLog(@"start commitEditingStyle");
 
-        // lock out updates to the notification store from being reflected here;
-        // we can't have row counts change while the deletion is in progress
         [CATransaction begin];
         [tableView beginUpdates];
 
