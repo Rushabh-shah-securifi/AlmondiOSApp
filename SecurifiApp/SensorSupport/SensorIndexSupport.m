@@ -1030,8 +1030,43 @@
             return @[s1];
         };
 
-        case SFIDeviceType_OccupancySensor_24:
+        case SFIDeviceType_OccupancySensor_24: {
+            if (type == SFIDevicePropertyType_OCCUPANCY) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"false";
+                s1.iconName = @"41_motion_false";
+                s1.notificationText = @": no presence";
+
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"true";
+                s2.iconName = @"41_motion_true";
+                s2.notificationText = @": presence detected.";
+
+                return @[s1, s2];
+            }
+            if (type == SFIDevicePropertyType_TEMPERATURE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"50";
+                s1.iconName = @"27_thermostat";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = @"'s temperature changed to ";
+
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_HUMIDITY) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"48";
+                s1.iconName = @"27_thermostat";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = @"'s humidiy changed to ";
+
+                return @[s1];
+            }
+
             break;
+        };
 
         case SFIDeviceType_LightSensor_25: {
             /*
@@ -1158,7 +1193,7 @@
              */
             if (type == SFIDevicePropertyType_TEMPERATURE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchData = @"false";
+                s1.matchType = MatchType_any;
                 s1.iconName = @"27_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = @"'s temperature changed to ";

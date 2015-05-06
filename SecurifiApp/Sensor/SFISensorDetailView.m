@@ -197,6 +197,11 @@
             break;
         }
 
+        case SFIDeviceType_OccupancySensor_24: {
+            [self configureOccupancySensor_24];
+            break;
+        };
+
         case SFIDeviceType_ColorDimmableLight_32: {
             [self configureColorDimmableLight_32];
             break;
@@ -224,7 +229,6 @@
         case SFIDeviceType_KeyFob_19:
         case SFIDeviceType_Keypad_20:
         case SFIDeviceType_StandardWarningDevice_21:
-        case SFIDeviceType_OccupancySensor_24:
         case SFIDeviceType_LightSensor_25:
         case SFIDeviceType_WindowCovering_26:
         case SFIDeviceType_TemperatureSensor_27:
@@ -953,6 +957,23 @@
     [self addLine];
 }
 
+- (void)configureOccupancySensor_24 {
+    SFIDeviceValue *const deviceValue = self.deviceValue;
+
+    // Status label
+    NSString *humidity = [deviceValue valueForProperty:SFIDevicePropertyType_HUMIDITY default:@"-"];
+    NSString *temperature = [deviceValue valueForProperty:SFIDevicePropertyType_TEMPERATURE default:@"-"];
+
+    NSString *const degrees_symbol = @"\u00B0";
+
+    NSString *humid_str = [NSString stringWithFormat:@"Humidity %@%", humidity];
+    NSString *temp_str = [NSString stringWithFormat:@"Temperature %@%@", temperature, degrees_symbol];
+
+    [self addStatusLabel:@[humid_str, temp_str]];
+    [self markYOffset:40];
+    [self addLine];
+}
+
 /*
 ColorDimmableLight device has 5 index
 1 - SWITCH MULTILEVEL	= level range - (0-255)
@@ -1206,6 +1227,9 @@ HUE	                3	Decimal		0-65535	Yes
         case SFIDeviceType_SecurifiSmartSwitch_50:
             return 295 + extra;
 
+        case SFIDeviceType_OccupancySensor_24:
+            return 280 + extra;
+
         case SFIDeviceType_ColorDimmableLight_32:
             return 560 + extra;
 
@@ -1229,7 +1253,6 @@ HUE	                3	Decimal		0-65535	Yes
         case SFIDeviceType_KeyFob_19:
         case SFIDeviceType_Keypad_20:
         case SFIDeviceType_StandardWarningDevice_21:
-        case SFIDeviceType_OccupancySensor_24:
         case SFIDeviceType_LightSensor_25:
         case SFIDeviceType_WindowCovering_26:
         case SFIDeviceType_TemperatureSensor_27:

@@ -344,6 +344,11 @@
             break;
         }
 
+        case SFIDeviceType_OccupancySensor_24: {
+            [self configureBinaryStateSensor:DT11_MOTION_SENSOR_TRUE imageNameFalse:DT11_MOTION_SENSOR_FALSE statusTrue:@"PRESENCE DETECTED" statusFalse:@"NO PRESENCE"];
+            break;
+        };
+
         case SFIDeviceType_LightSensor_25: {
             [self configureLightSensor_25];
             break;
@@ -436,7 +441,6 @@
         case SFIDeviceType_PersonalEmergencyDevice_16:
         case SFIDeviceType_RemoteControl_18:
         case SFIDeviceType_Keypad_20:
-        case SFIDeviceType_OccupancySensor_24:
         case SFIDeviceType_ColorControl_29:
         case SFIDeviceType_PressureSensor_30:
         case SFIDeviceType_FlowSensor_31:
