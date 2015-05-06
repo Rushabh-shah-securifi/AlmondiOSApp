@@ -75,13 +75,6 @@
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-    // Pull down to refresh device values
-    UIRefreshControl *refresh = [UIRefreshControl new];
-    NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
-    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force sensor data refresh" attributes:attributes];
-    [refresh addTarget:self action:@selector(onRefreshSensorData:) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = refresh;
-
     // Ensure values have at least an empty list
     self.deviceList = @[];
     [self setDeviceValues:@[]];
@@ -198,6 +191,8 @@
 
         [self initializeColors:plus];
     }
+
+    [self tryInstallRefreshControl];
 
     self.enableDrawer = YES;
 }
@@ -952,6 +947,8 @@
                 [self setDeviceValues:newDeviceValueList];
             }
             [self.tableView reloadData];
+
+            [self tryInstallRefreshControl];
         }
 
         [self.HUD hide:YES afterDelay:1.5];
@@ -1253,6 +1250,22 @@
 
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+}
+
+// controls installation and removal of refresh control
+- (void)tryInstallRefreshControl {
+    if (self.isDeviceListEmpty) {
+        // Disable refresh when no devices to refresh
+        self.refreshControl = nil;
+    }
+    else {
+        // Pull down to refresh device values
+        UIRefreshControl *refresh = [UIRefreshControl new];
+        NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
+        refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force sensor data refresh" attributes:attributes];
+        [refresh addTarget:self action:@selector(onRefreshSensorData:) forControlEvents:UIControlEventValueChanged];
+        self.refreshControl = refresh;
+    }
 }
 
 #pragma mark - Device table view cell state values
