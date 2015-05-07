@@ -1314,7 +1314,7 @@
                     hue = hue / 65535;
 
                     UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
-                    return color.hexString;
+                    return [color.hexString uppercaseString];
                 };
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = @" hue color changed to ";
@@ -1812,7 +1812,7 @@
 //                    };
 //                    NSAttributedString *a = [[NSAttributedString alloc] initWithString:@"\u25a1" attributes:attr];
 
-                    return color.hexString;
+                    return [color.hexString uppercaseString];
                 };
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = @" hue color changed to ";
