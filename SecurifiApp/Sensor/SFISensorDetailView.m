@@ -966,11 +966,11 @@
 
     NSString *const degrees_symbol = @"\u00B0";
 
-    NSString *humid_str = [NSString stringWithFormat:@"Humidity %@%%", humidity];
-    NSString *temp_str = [NSString stringWithFormat:@"Temperature %@%@", temperature, degrees_symbol];
+    NSString *temp_str = [NSString stringWithFormat:@"Temperature is %@%@", temperature, degrees_symbol];
+    NSString *humid_str = [NSString stringWithFormat:@"Humidity is %@%%", humidity];
 
-    [self addStatusLabel:@[humid_str, temp_str]];
-    [self markYOffset:40];
+    [self addStatusLabel:@[temp_str, humid_str]];
+    [self markYOffset:55];
     [self addLine];
 }
 
@@ -1228,7 +1228,7 @@ HUE	                3	Decimal		0-65535	Yes
             return 295 + extra;
 
         case SFIDeviceType_OccupancySensor_24:
-            return 280 + extra;
+            return 295 + extra;
 
         case SFIDeviceType_ColorDimmableLight_32:
             return 560 + extra;
