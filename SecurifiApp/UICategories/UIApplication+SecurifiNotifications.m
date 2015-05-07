@@ -6,7 +6,6 @@
 #import "UIApplication+SecurifiNotifications.h"
 #import "SFIPreferences.h"
 #import "NSData+Conversion.h"
-#import "SensorSupport.h"
 #import "DebugLogger.h"
 
 NSString *const kApplicationDidBecomeActiveOnNotificationTap = @"kApplicationDidBecomeActiveOnNotificationTap";
@@ -65,139 +64,23 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
     // First, go retrieve new ones
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    NSDictionary *apps_dict = userInfo[@"aps"];
+    if (apps_dict) {
+        NSNumber *badge = apps_dict[@"badge"];
+        if (badge) {
+            [toolkit setNotificationsBadgeCount:badge.integerValue];
+        }
+    }
+
     [toolkit tryRefreshNotifications];
 
-/*
-    // Next, turn it into a local notification that will show up in the iOS notification center
-    NSDictionary *apps_dict = userInfo[@"aps"];
-
-    UILocalNotification *notice = [UILocalNotification new];
-    notice.alertBody = apps_dict[@"alert"];
-
-    NSString *soundName = apps_dict[@"sound"];
-    if (soundName == nil) {
-        soundName = UILocalNotificationDefaultSoundName;
-    }
-    notice.soundName = soundName;
-
-    NSNumber *badge = apps_dict[@"badge"];
-    NSInteger count = 0;
-    if (badge) {
-        count = badge.integerValue;
-    }
-    self.applicationIconBadgeNumber = count;
-
-    DLog(@"notification: posting local notification, count:%li", (long)count);
-    [self presentLocalNotificationNow:notice];
-*/
-
-    return YES;
-}
-
-// returns YES if notification can be handled (matches an almond)
-// else returns NO
-- (BOOL)_securifiApplicationHandleRemoteNotification:(NSDictionary *)userInfo {
-    DLog(@"notification: %@", userInfo);
-
-    SFINotification *notification = [SFINotification parsePayload:userInfo];
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     const BOOL debugLogging = toolkit.configuration.enableNotificationsDebugLogging;
-
-    // Check whether the notification matches an almond attached to the account
-    //
-    NSArray *almonds = toolkit.almondList;
-
-    BOOL matched = false;
-    for (SFIAlmondPlus *almond in almonds) {
-        if ([almond.almondplusMAC isEqualToString:notification.almondMAC]) {
-            matched = true;
-            break;
-        }
-    }
-
-    if (!matched) {
-        // drop the notification
-        DLog(@"dropping notification: did not match almond:%@, almonds:%@", notification.almondMAC, almonds);
-        if (debugLogging) {
-            [self securifiDebugLog:notification action:@"almond-nomatch"];
-        }
-        return NO;
-    }
-
-    SensorSupport *sensorSupport = [SensorSupport new];
-    [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
-
-    // Check whether the notification pertains to an index/sensor configured to be ignored
-    //
-    if (sensorSupport.ignoreNotification) {
-        DLog(@"dropping notification: ignore notification is true");
-        if (debugLogging) {
-            [self securifiDebugLog:notification action:@"ignore-index"];
-        }
-        return NO;
-    }
-
     if (debugLogging) {
-        [notification setDebugDeviceName];
+        SFINotification *notification = [SFINotification parsePayload:userInfo];
+        [self securifiDebugLog:notification action:@"apn"];
     }
 
-    // Keep track of total received that we will process
-    [[SFIPreferences instance] debugMarkPushNotificationReceived];
-
-    // By this point, the notification has been vetted. Now store it and then post a local alert
-    //
-    BOOL stored = [toolkit storePushNotification:notification];
-    if (!stored) {
-        ELog(@"dropping notification: failed to store in database");
-        if (debugLogging) {
-            [self securifiDebugLog:notification action:@"fail-store"];
-        }
-        return NO;
-    }
-
-    // There is an iOS limit on the number of active local notifications. So, we prune the list of notifications
-    // to ensure there is room for this new one.
-
-    NSArray *notifications = self.scheduledLocalNotifications;
-    DLog(@"scheduled notifications count: %lu", (unsigned long)notifications.count);
-
-    NSString *msg = [NSString stringWithFormat:@"%@%@", notification.deviceName, sensorSupport.notificationText];
-
-    UILocalNotification *notice = [UILocalNotification new];
-    notice.hasAction = NO;
-    notice.alertBody = msg;
-    notice.alertAction = nil;//@"View";
-
-    // remote notification itself will trigger a sound; UILocalNotificationDefaultSoundName;
-    // when app is in foreground, the sound will not be heard; to change behavior, set sound conditionally based on applicationState
-    //
-    // when the app is active, we suppress the sound; when in the background, we add a sound iff one was not specified in
-    // the original remote notification (otherwise, two sounds will be played).
-    NSString *soundName = nil;
-    if (self.applicationState != UIApplicationStateActive) {
-        NSDictionary *apps_dict = userInfo[@"aps"];
-        soundName = apps_dict[@"sound"];
-        if (soundName == nil) {
-            soundName = UILocalNotificationDefaultSoundName;
-        }
-        else {
-            // remote notification already will play sound; n.b. remote notification should NOT specify sound, but
-            // in case it does (like it is now in our beta testing), we handle it correctly by not adding one to the
-            // local notification.
-            soundName = nil;
-        }
-    }
-    notice.soundName = soundName;
-
-    NSInteger count = [toolkit countUnviewedNotifications];
-    notice.applicationIconBadgeNumber = count;
-
-    DLog(@"notification: posting local notification, count:%li", (long)count);
-    [self presentLocalNotificationNow:notice];
-
-    if (debugLogging) {
-        [self securifiDebugLog:notification action:@"posted"];
-    }
     return YES;
 }
 
@@ -231,7 +114,6 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 // update badge count and clear out notifications
 - (void)onSecurifiApplicationDidViewNotifications {
     [self securifiApplicationUpdateBadgeCount];
-//    [self cancelAllLocalNotifications];
 }
 
 - (void)onSecurifiApplicationNotificationCountChanged:(id)notification {
