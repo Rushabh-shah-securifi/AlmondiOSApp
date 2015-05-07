@@ -3,6 +3,7 @@
 // Copyright (c) 2015 Securifi Ltd. All rights reserved.
 //
 
+#import <Colours/Colours.h>
 #import "SensorIndexSupport.h"
 #import "IndexValueSupport.h"
 #import "ValueFormatter.h"
@@ -1302,21 +1303,39 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.iconName = @"48_hue_bulb_on";
-                s1.notificationText = @" hue color changed.";
+                s1.valueTransformer = ^NSString *(NSString *value) {
+                    if (!value) {
+                        return @"";
+                    }
+
+                    float hue = [value floatValue];
+                    hue = hue / 65535;
+
+                    UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
+                    return color.hexString;
+                };
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = @" hue color changed to ";
                 return @[s1];
             }
             if (type == SFIDevicePropertyType_CURRENT_SATURATION) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.iconName = @"48_hue_bulb_on";
-                s1.notificationText = @" saturation changed.";
+                s1.valueFormatter.maxValue = 254;
+                s1.valueFormatter.scaledMaxValue = 100;
+                s1.valueFormatter.notificationPrefix = @" saturation changed to ";
+                s1.valueFormatter.suffix = @"%";
                 return @[s1];
             }
             if (type == SFIDevicePropertyType_SWITCH_MULTILEVEL) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.iconName = @"48_hue_bulb_on";
-                s1.notificationText = @" brightness changed.";
+                s1.valueFormatter.maxValue = 255;
+                s1.valueFormatter.scaledMaxValue = 100;
+                s1.valueFormatter.notificationPrefix = @" brightness changed to ";
+                s1.valueFormatter.suffix = @"%";
                 return @[s1];
             }
             if (type == SFIDevicePropertyType_COLOR_TEMPERATURE) {
@@ -1777,21 +1796,44 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.iconName = @"48_hue_bulb_on";
-                s1.notificationText = @" hue color changed.";
+                s1.valueTransformer = ^NSString *(NSString *value) {
+                    if (!value) {
+                        return @"";
+                    }
+
+                    float hue = [value floatValue];
+                    hue = hue / 65535;
+
+                    UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
+//                    NSDictionary *attr = @{
+//                            NSBackgroundColorAttributeName : color,
+//                    };
+//                    NSAttributedString *a = [[NSAttributedString alloc] initWithString:@"\u25a1" attributes:attr];
+
+                    return color.hexString;
+                };
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = @" hue color changed to ";
                 return @[s1];
             }
             if (type == SFIDevicePropertyType_SATURATION) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.iconName = @"48_hue_bulb_on";
-                s1.notificationText = @" saturation changed.";
+                s1.valueFormatter.maxValue = 255;
+                s1.valueFormatter.scaledMaxValue = 100;
+                s1.valueFormatter.notificationPrefix = @" saturation changed to ";
+                s1.valueFormatter.suffix = @"%";
                 return @[s1];
             }
             if (type == SFIDevicePropertyType_SWITCH_MULTILEVEL) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.iconName = @"48_hue_bulb_on";
-                s1.notificationText = @" brightness changed.";
+                s1.valueFormatter.maxValue = 255;
+                s1.valueFormatter.scaledMaxValue = 100;
+                s1.valueFormatter.notificationPrefix = @" brightness changed to ";
+                s1.valueFormatter.suffix = @"%";
                 return @[s1];
             }
 

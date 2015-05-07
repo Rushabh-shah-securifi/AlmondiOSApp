@@ -8,10 +8,14 @@
 @class ValueFormatter;
 
 typedef NS_ENUM(int, MatchType) {
-    MatchType_equals        = 0, // matchData is exactly the same as the value
-    MatchType_not_equals    = 1, // matchData is NOT the same as the value
-    MatchType_any           = 2, // matchData is irrelevant; any value matches; used in cases where the index is simply for reporting information
+    MatchType_equals = 0, // matchData is exactly the same as the value
+    MatchType_not_equals = 1, // matchData is NOT the same as the value
+    MatchType_any = 2, // matchData is irrelevant; any value matches; used in cases where the index is simply for reporting information
 };
+
+// Defined a function whose input is the actual index value and the output is a transformed representation meant for
+// formatting and display
+typedef NSString *(^IndexValueTransformer)(NSString *);
 
 @interface IndexValueSupport : NSObject
 
@@ -34,6 +38,10 @@ typedef NS_ENUM(int, MatchType) {
 // the text that will be used when this value is triggered
 // either this is specified or a ValueFormatter, not one or the other
 @property(nonatomic) NSString *notificationText;
+
+// when specified, the transformation function is called with the supplied index value to convert it into a representation
+// suitable for subsequent formatting and presentation
+@property(copy) IndexValueTransformer valueTransformer;
 
 // when specified provides a formatter that formats an index's value into a formatted string
 // either this is specified or notificationText, not one or the other

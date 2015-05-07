@@ -45,6 +45,10 @@
         sensorValue = @"";
     }
 
+    if (_valueTransformer) {
+        sensorValue = _valueTransformer(sensorValue);
+    }
+
     if (_valueFormatter) {
         return [_valueFormatter formatNotificationValue:sensorValue];
     }
