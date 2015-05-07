@@ -14,6 +14,7 @@
 #import "SFINotificationsViewController.h"
 #import "SFINotificationStatusBarButtonItem.h"
 #import "UIApplication+SecurifiNotifications.h"
+#import "SFIHuePickerView.h"
 
 @interface SFITableViewController () <MBProgressHUDDelegate, SWRevealViewControllerDelegate, UIGestureRecognizerDelegate>
 @property(nonatomic, readonly) SFINotificationStatusBarButtonItem *notificationsStatusButton;
@@ -340,7 +341,7 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
     UIView *view = touch.view;
     // prevent recognizing touches on the slider
-    return self.enableDrawer && ![view isKindOfClass:[UISlider class]];
+    return self.enableDrawer && ![view isKindOfClass:[UISlider class]] && ![view isKindOfClass:[SFIHuePickerView class]];
 }
 
 @end
