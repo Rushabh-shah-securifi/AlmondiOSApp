@@ -1036,7 +1036,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"41_motion_false";
-                s1.notificationText = @": no presence";
+                s1.notificationText = @": no presence detected.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
@@ -1052,6 +1052,7 @@
                 s1.iconName = @"27_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = @"'s temperature changed to ";
+                s1.valueFormatter.suffix = @"\u00B0";
 
                 return @[s1];
             }
@@ -1062,6 +1063,7 @@
                 s1.iconName = @"27_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = @"'s humidiy changed to ";
+                s1.valueFormatter.suffix = @"%";
 
                 return @[s1];
             }
