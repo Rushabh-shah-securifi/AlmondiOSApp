@@ -156,6 +156,7 @@
 		1DF0347975CABF8F74C4905D /* IndexValueSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03C895FD75AA97DDF3AC5 /* IndexValueSupport.m */; };
 		1DF034DCCD17E1C36BA3BF00 /* SensorSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03845038413D52AF4100D /* SensorSupport.m */; };
 		1DF0351F629E0103520602C3 /* SFICardViewSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0369E72CD4FA9E78D9468 /* SFICardViewSummaryCell.m */; };
+		1DF035317380AA5E0BD86161 /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F453DC0B72C7436B9E8 /* MessageView.m */; };
 		1DF035687F592CCCFB831F48 /* ILColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0331D17DC580313941C89 /* ILColorPickerView.m */; };
 		1DF0362BB7839519E771D769 /* SensorIndexSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */; };
 		1DF0364AEDD2A4A73832CE5D /* SensorSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03845038413D52AF4100D /* SensorSupport.m */; };
@@ -376,6 +377,7 @@
 		1DF03C29C7F6403672992843 /* DebugLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugLogger.m; sourceTree = "<group>"; };
 		1DF03C895FD75AA97DDF3AC5 /* IndexValueSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexValueSupport.m; sourceTree = "<group>"; };
 		1DF03CD23CCAD6D4BF0CF82A /* SensorIndexSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorIndexSupport.h; sourceTree = "<group>"; };
+		1DF03CFE840766B75CCB941E /* MessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageView.h; sourceTree = "<group>"; };
 		1DF03D4E0D2E7D5FC29DBF23 /* UIColor+GetHSB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GetHSB.m"; sourceTree = "<group>"; };
 		1DF03D82243614C8FB540F0A /* SFIHuePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIHuePickerView.h; sourceTree = "<group>"; };
 		1DF03D99C19042FD3FCADB2D /* SFIPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPreferences.h; sourceTree = "<group>"; };
@@ -383,6 +385,7 @@
 		1DF03E6111D265CB01F83190 /* ValueFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValueFormatter.h; sourceTree = "<group>"; };
 		1DF03ED87E1BC2184C9EEF53 /* ScoreboardTextEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardTextEditorViewController.m; sourceTree = "<group>"; };
 		1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorIndexSupport.m; sourceTree = "<group>"; };
+		1DF03F453DC0B72C7436B9E8 /* MessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageView.m; sourceTree = "<group>"; };
 		1DF03F524BE952202AA5335B /* IndexValueSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexValueSupport.h; sourceTree = "<group>"; };
 		C6A3307CA8D0945BEFE53A18 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -614,6 +617,8 @@
 				1DF039E8AD77F930D3943D79 /* CircleLabel.h */,
 				1DF0327E1106225F6EB46DF8 /* SFIHuePickerView.m */,
 				1DF03D82243614C8FB540F0A /* SFIHuePickerView.h */,
+				1DF03F453DC0B72C7436B9E8 /* MessageView.m */,
+				1DF03CFE840766B75CCB941E /* MessageView.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1211,6 +1216,7 @@
 				1DF039D3E2A4A6FB292A99C3 /* SFISensorDetailView.m in Sources */,
 				1DF03B73C95D8A41C9409EF3 /* SFISensorsViewController.m in Sources */,
 				1DF03247826CA943EDEE8741 /* SFISensorTableViewCell.m in Sources */,
+				1DF035317380AA5E0BD86161 /* MessageView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
