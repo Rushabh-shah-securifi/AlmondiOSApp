@@ -202,7 +202,7 @@
         }
 
         SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        ctrl.enableDebugMode = YES;
+//        ctrl.enableDebugMode = YES; // can uncomment for development/test
 
         UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
         [self presentViewController:nav_ctrl animated:YES completion:nil];

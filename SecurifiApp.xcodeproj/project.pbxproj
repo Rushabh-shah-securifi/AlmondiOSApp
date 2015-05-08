@@ -140,6 +140,7 @@
 		1CEE69531A37F64D008D8567 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF619AC82FD0023512F /* CoreGraphics.framework */; };
 		1CEE69541A37F656008D8567 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF819AC82FD0023512F /* UIKit.framework */; };
 		1CEE69551A37F65D008D8567 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF419AC82FD0023512F /* Foundation.framework */; };
+		1CF15BE31AFCF72D004BED16 /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F453DC0B72C7436B9E8 /* MessageView.m */; };
 		1DF030400DB881AFAEF263C4 /* UIImage+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03BE3E401DD252BA24127 /* UIImage+Securifi.m */; };
 		1DF0304B3CD98B217E85940D /* ILSaturationBrightnessPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */; };
 		1DF031661E380BA4D0E0EB07 /* SFIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0364AFED818925B9469F3 /* SFIPreferences.m */; };
@@ -1068,6 +1069,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1CF15BE31AFCF72D004BED16 /* MessageView.m in Sources */,
 				1C7E7DD61A41A0990026F0BA /* UIViewController+Securifi.m in Sources */,
 				1C7E7DC81A41A0990026F0BA /* SFIMainViewController.m in Sources */,
 				1C7E7D8C1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,

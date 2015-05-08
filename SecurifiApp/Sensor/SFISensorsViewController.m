@@ -993,7 +993,7 @@
         ELog(@"Warning: device list and values lists are incongruent, d:%ld, v:%ld", (unsigned long) newDeviceList.count, (unsigned long) newDeviceValueList.count);
     }
 
-    DLog(@"Changing device value list: %@", newDeviceValueList);
+//    DLog(@"Changing device value list: %@", newDeviceValueList);
 
     // Restore isExpanded state and clear 'updating' state
     NSArray *oldDeviceList = self.deviceList;

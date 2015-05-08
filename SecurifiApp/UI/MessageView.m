@@ -43,7 +43,7 @@
 
     rect = CGRectMake(0,0, width, 100);
     rect = CGRectInset(rect, 25, 0);
-    rect = CGRectOffset(rect, 0, 50);
+    rect = CGRectOffset(rect, 0, 25);
 
     UILabel *headline_label = [[UILabel alloc] initWithFrame:rect];
     headline_label.numberOfLines = 0;
@@ -53,7 +53,7 @@
     headline_label.font = [UIFont securifiLightFont:30];
     [self addSubview:headline_label];
 
-    rect = CGRectOffset(rect, 0, 100);
+    rect = CGRectOffset(rect, 0, 75);
 
     UILabel *message_label = [[UILabel alloc] initWithFrame:rect];
     message_label.numberOfLines = 0;
@@ -64,7 +64,7 @@
     [self addSubview:message_label];
 
     rect = CGRectMake(0, CGRectGetMaxY(rect), width, 120);
-    rect = CGRectOffset(rect, 0, 50);
+    rect = CGRectOffset(rect, 0, 20);
     rect = CGRectInset(rect, (width - 179) / 2, 0);
 
     UIImage *image = [UIImage imageNamed:@"router_1"];

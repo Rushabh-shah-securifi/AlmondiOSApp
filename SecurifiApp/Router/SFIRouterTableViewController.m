@@ -225,8 +225,6 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
         state = RouterViewState_cloud_connected;
     }
 
-    state = RouterViewState_no_almond;
-
     RouterViewState oldState = self.routerViewState;
     self.routerViewState = state;
 

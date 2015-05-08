@@ -276,7 +276,7 @@ Follow it, then tap Continue to login.";
 
 /* affiliation */
 "router.linkalmond-msg.label.Let's link an Almond." = "Let's link a\nHomeScreen.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Start the wizard on your Almond, then tap the symbol below.";
+"router.linkalmond-msg.label.Start the wizard on your Almond." = "Run the HomeScreen Account app on your router, and then enter the code displayed.";
 
 "Almond Linked" = "HomeScreen Linked";
 "Link Almond" = "Link HomeScreen";
