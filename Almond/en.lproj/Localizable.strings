@@ -275,6 +275,9 @@ Follow it, then tap Continue to login.";
 
 
 /* affiliation */
+"router.linkalmond-msg.label.Let's link an Almond." = "Let's link \n an Almond.";
+"router.linkalmond-msg.label.Start the wizard on your Almond." = "Start the wizard on your Almond, then tap the symbol below.";
+
 "Almond Linked" = "Almond Linked";
 "Link Almond" = "Link Almond";
 "Please wait while your Almond is being linked to cloud." = "Please wait while your Almond is being linked to cloud.";

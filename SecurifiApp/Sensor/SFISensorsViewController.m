@@ -14,8 +14,9 @@
 #import "UIViewController+Securifi.h"
 #import "SFIPreferences.h"
 #import "UIImage+Securifi.h"
+#import "MessageView.h"
 
-@interface SFISensorsViewController () <SFISensorTableViewCellDelegate>
+@interface SFISensorsViewController () <SFISensorTableViewCellDelegate, MessageViewDelegate>
 @property(nonatomic, readonly) SFIAlmondPlus *almond;
 @property(nonatomic, readonly) SFIColors *almondColor;
 
@@ -349,13 +350,16 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([self isNoAlmondMAC]) {
+        tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
     }
 
     if ([self isDeviceListEmpty]) {
+        tableView.scrollEnabled = NO;
         return [self createEmptyCell:tableView];
     }
 
+    tableView.scrollEnabled = YES;
     return [self createSensorCell:tableView listRow:(NSUInteger) indexPath.row];
 }
 
@@ -403,18 +407,11 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:no_almond_cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 400)];
-        imageView.userInteractionEnabled = YES;
-        imageView.image = [UIImage assetImageNamed:@"getting_started"];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        MessageView *view = [MessageView linkRouterMessage];
+        view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, 400);
+        view.delegate = self;
 
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = imageView.bounds;
-        button.backgroundColor = [UIColor clearColor];
-        [button addTarget:self action:@selector(onAddAlmondClicked:) forControlEvents:UIControlEventTouchUpInside];
-
-        [imageView addSubview:button];
-        [cell addSubview:imageView];
+        [cell addSubview:view];
     }
 
     return cell;
@@ -536,14 +533,6 @@
     NSIndexPath *path = [NSIndexPath indexPathForRow:cellRow inSection:0];
 
     [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
-}
-
-#pragma mark - Add Almond actions
-
-- (void)onAddAlmondClicked:(id)sender {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AffiliationNavigationTop"];
-    [self presentViewController:mainView animated:YES completion:nil];
 }
 
 #pragma mark - SFISensorTableViewCellDelegate methods
@@ -1479,5 +1468,12 @@
     device.notificationMode = SFINotificationMode_off;
 }
 
+#pragma mark - MessageViewDelegate methods
+
+- (void)messageViewDidPressButton:(MessageView *)msgView {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AffiliationNavigationTop"];
+    [self presentViewController:mainView animated:YES completion:nil];
+}
 
 @end

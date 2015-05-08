@@ -177,7 +177,7 @@ your home devices from anywhere.";
 "ObR-J1-LOM.title" = "HomeScreen";
 
 /* Class = "IBUILabel"; text = "Type the code shown on your\nAlmond's screen."; ObjectID = "PRW-cc-prD"; */
-"PRW-cc-prD.text" = "Type the code shown on your\nHomeScreen's screen.";
+"PRW-cc-prD.text" = "Run the HomeScreen\nAccount app on your router and\nenter the code displayed.";
 
 /* Class = "IBUIButton"; normalTitle = "Link Almond"; ObjectID = "PRt-1p-fH7"; */
 "PRt-1p-fH7.normalTitle" = "Link HomeScreen";

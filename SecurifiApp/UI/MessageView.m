@@ -13,6 +13,13 @@
 
 @implementation MessageView
 
++ (instancetype)linkRouterMessage {
+    MessageView *view = [[MessageView alloc] initWithFrame:CGRectZero];
+    view.headline = NSLocalizedString(@"router.linkalmond-msg.label.Let's link an Almond.", "Let's link \n an Almond.");
+    view.message = NSLocalizedString(@"router.linkalmond-msg.label.Start the wizard on your Almond.", "Start the wizard on your Almond, then tap the symbol below.");
+    return view;
+}
+
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
@@ -56,7 +63,9 @@
     message_label.font = [UIFont securifiBoldFontLarge];
     [self addSubview:message_label];
 
-    rect = CGRectOffset(rect, 0, 150);
+    rect = CGRectMake(0, CGRectGetMaxY(rect), width, 120);
+    rect = CGRectOffset(rect, 0, 50);
+    rect = CGRectInset(rect, (width - 179) / 2, 0);
 
     UIImage *image = [UIImage imageNamed:@"router_1"];
 

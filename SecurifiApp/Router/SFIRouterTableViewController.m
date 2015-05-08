@@ -21,7 +21,7 @@
 #import "SFIRouterRebootTableViewCell.h"
 #import "SFIRouterTableViewActions.h"
 #import "SFICardViewSummaryCell.h"
-#import "UIImage+Securifi.h"
+#import "MessageView.h"
 
 #define DEF_WIRELESS_SETTINGS_SECTION   0
 #define DEF_DEVICES_AND_USERS_SECTION   1
@@ -40,7 +40,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     RouterViewReloadPolicy_on_state_change = 3,
 };
 
-@interface SFIRouterTableViewController () <SFIRouterTableViewActions>
+@interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate>
 @property NSTimer *hudTimer;
 @property RouterViewState routerViewState;
 
@@ -224,6 +224,8 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     else {
         state = RouterViewState_cloud_connected;
     }
+
+    state = RouterViewState_no_almond;
 
     RouterViewState oldState = self.routerViewState;
     self.routerViewState = state;
@@ -478,34 +480,19 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 }
 
 - (UITableViewCell *)createNoAlmondCell:(UITableView *)tableView {
-    static NSString *id = @"NoAlmondCell";
+    NSString *const cell_id = @"NoAlmondCell";
 
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:id];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
+        MessageView *view = [MessageView linkRouterMessage];
+        view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, 400);
+        view.delegate = self;
+
+        [cell addSubview:view];
     }
-
-    //PY 070114
-    //START: HACK FOR MEMORY LEAKS
-    for (UIView *currentView in cell.contentView.subviews) {
-        [currentView removeFromSuperview];
-    }
-    [cell removeFromSuperview];
-    //END: HACK FOR MEMORY LEAKS
-
-    UIImageView *imgGettingStarted = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 400)];
-    imgGettingStarted.userInteractionEnabled = YES;
-    imgGettingStarted.image = [UIImage assetImageNamed:@"getting_started"];
-    imgGettingStarted.contentMode = UIViewContentModeScaleAspectFit;
-
-    UIButton *btnAddAlmond = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnAddAlmond.frame = imgGettingStarted.bounds;
-    btnAddAlmond.backgroundColor = [UIColor clearColor];
-    [btnAddAlmond addTarget:self action:@selector(onAddAlmondAction:) forControlEvents:UIControlEventTouchUpInside];
-
-    [imgGettingStarted addSubview:btnAddAlmond];
-    [cell addSubview:imgGettingStarted];
 
     return cell;
 }
@@ -902,21 +889,6 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     [[SecurifiToolkit sharedInstance] asyncAlmondStatusAndSettings:self.almondMac];
 }
 
-- (void)onAddAlmondAction:(id)sender {
-    if (self.disposed) {
-        return;
-    }
-    if (self.routerViewState == RouterViewState_no_almond) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-        UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AffiliationNavigationTop"];
-        [self presentViewController:mainView animated:YES completion:nil];
-    }
-    else {
-        //Get wireless settings
-        [self refreshDataForAlmond];
-    }
-}
-
 #pragma mark - Cloud command senders and handlers
 
 - (void)onGenericResponseCallback:(id)sender {
@@ -1217,5 +1189,23 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
         [self.HUD hide:YES afterDelay:2];
     });
 }
+
+#pragma mark - MessageViewDelegate methods
+
+- (void)messageViewDidPressButton:(MessageView *)msgView {
+    if (self.disposed) {
+        return;
+    }
+    if (self.routerViewState == RouterViewState_no_almond) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+        UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AffiliationNavigationTop"];
+        [self presentViewController:mainView animated:YES completion:nil];
+    }
+    else {
+        //Get wireless settings
+        [self refreshDataForAlmond];
+    }
+}
+
 
 @end

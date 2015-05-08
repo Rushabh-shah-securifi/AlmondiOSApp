@@ -17,6 +17,9 @@
 // Provides a full-screen view for displaying a message and optional action button.
 @interface MessageView : UIView
 
+// Initializes: "no almonds attached. link one by ..."
++ (instancetype)linkRouterMessage;
+
 @property(weak) id <MessageViewDelegate> delegate;
 @property(copy) NSString *headline;
 @property(copy) NSString *message;
