@@ -1052,7 +1052,7 @@
                 s1.iconName = @"27_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = @"'s temperature changed to ";
-                s1.valueFormatter.suffix = @"\u00B0";
+                s1.valueFormatter.suffix = @"\u00B0 Farenheit";
 
                 return @[s1];
             }
