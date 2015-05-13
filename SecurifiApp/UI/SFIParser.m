@@ -23,11 +23,11 @@
 + (SFIGenericRouterCommand *)parseRouterResponse:(GenericCommandResponse *)response {
     //todo push all of this parsing and manipulation into the parser or SFIGenericRouterCommand!
 
-    DLog(@"Response Data: %@", response.genericData);
-    DLog(@"Decoded Data: %@", response.decodedData);
+//    DLog(@"Response Data: %@", response.genericData);
+//    DLog(@"Decoded Data: %@", response.decodedData);
 
     NSData *decoded_data = [response.decodedData copy];
-    DLog(@"Data: %@", decoded_data);
+//    DLog(@"Data: %@", decoded_data);
 
     NSMutableData *genericData = [[NSMutableData alloc] init];
     [genericData appendData:decoded_data];
