@@ -58,8 +58,6 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 @property BOOL shownHudOnce;
 @property BOOL disposed;
 
-@property sfi_id correlationId;
-
 @property(nonatomic) BOOL enableRouterWirelessControl;
 @end
 
@@ -257,7 +255,8 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     if (self.routerViewState == RouterViewState_no_almond) {
         return;
     }
-    self.correlationId = [[SecurifiToolkit sharedInstance] asyncRebootAlmond:self.almondMac];
+
+    [[SecurifiToolkit sharedInstance] asyncRebootAlmond:self.almondMac];
 }
 
 #pragma mark HUD mgt
