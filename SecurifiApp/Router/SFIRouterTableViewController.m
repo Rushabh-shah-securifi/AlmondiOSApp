@@ -1020,9 +1020,9 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     NSMutableData *genericData = [[NSMutableData alloc] init];
 
     //Display proper message
-    DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.correlationId, obj.mobileInternalIndex);
-    DLog(@"Response Data: %@", obj.genericData);
-    DLog(@"Decoded Data: %@", obj.decodedData);
+//    DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.correlationId, obj.mobileInternalIndex);
+//    DLog(@"Response Data: %@", obj.genericData);
+//    DLog(@"Decoded Data: %@", obj.decodedData);
 
     NSData *data_decoded = [obj.decodedData mutableCopy];
     DLog(@"Data: %@", data_decoded);
