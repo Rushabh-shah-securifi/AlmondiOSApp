@@ -88,6 +88,8 @@ reset at the moment. Try again later.";
 "router.card.Settings are not available." = "Settings are not available.";
 "router.card-title.Devices & Users" = "Devices & Users";
 "router.devices-summary.%d connected, %d blocked" = "%d connected, %d blocked";
+"router.software-version.header.Software Update Available" = "Software Update Available";
+"router.software-version.header.instructions" = "Please tap \"Settings\" on your Almond";
 "router.software-version.Update Available" = "Update Available";
 "router.software-version.Current version" = "Current version";
 "router.software-version.Not available" = "Version information is not available.";

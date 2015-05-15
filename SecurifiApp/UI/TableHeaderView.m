@@ -90,8 +90,8 @@
 
 + (instancetype)newAlmondVersionMessage {
     TableHeaderView *view = [TableHeaderView new];
-    view.headline = @"Software Update Available";
-    view.message = @"Please tap \"Settings\" on your Almond";
+    view.headline = NSLocalizedString(@"router.software-version.header.Software Update Available", @"Software Update Available");
+    view.message = NSLocalizedString(@"router.software-version.header.instructions", @"Please tap \"Settings\" on your Almond");
     return view;
 }
 
