@@ -19,10 +19,10 @@
 #import "SFIRouterSettingsTableViewCell.h"
 #import "SFIRouterDevicesTableViewCell.h"
 #import "SFIRouterRebootTableViewCell.h"
+#import "SFIRouterSendLogsTableViewCell.h"
 #import "SFIRouterTableViewActions.h"
 #import "SFICardViewSummaryCell.h"
 #import "MessageView.h"
-#import "AlmondVersionChecker.h"
 #import "TableHeaderView.h"
 
 #define DEF_WIRELESS_SETTINGS_SECTION   0
@@ -46,7 +46,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 
 @interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate>
 @property SFIAlmondPlus *currentAlmond;
-@property BOOL newAlmondFirwareVersionAvailable;
+@property BOOL newAlmondFirmwareVersionAvailable;
 
 @property NSTimer *hudTimer;
 @property RouterViewState routerViewState;
@@ -154,6 +154,16 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
                selector:@selector(onAlmondListDidChange:)
                    name:kSFIDidUpdateAlmondList
                  object:nil];
+
+    [center addObserver:self
+               selector:@selector(keyboardWillShow:)
+                   name:UIKeyboardWillShowNotification
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(keyboardWillHide:)
+                   name:UIKeyboardWillHideNotification
+                 object:nil];
 }
 
 - (void)initializeAlmondData {
@@ -189,7 +199,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     }
 
     // Reset New Version checking state and view
-    self.newAlmondFirwareVersionAvailable = NO;
+    self.newAlmondFirmwareVersionAvailable = NO;
     self.tableView.tableHeaderView = nil;
 
     [self checkRouterViewState:RouterViewReloadPolicy_on_state_change];
@@ -323,6 +333,10 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     [self onExpandCloseSection:self.tableView section:DEF_ROUTER_REBOOT_SECTION];
 }
 
+- (void)onEditSendLogsCard:(id)sender {
+    [self onExpandCloseSection:self.tableView section:DEF_ROUTER_SEND_LOGS_SECTION];
+}
+
 #pragma mark - Refresh control methods
 
 // Pull down to refresh device values
@@ -359,7 +373,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
             return 1;
         case RouterViewState_cloud_connected:
         default:
-            return 4;
+            return 5;
     }
 }
 
@@ -378,6 +392,8 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
         case DEF_DEVICES_AND_USERS_SECTION:
             return 1 + self.currentExpandedCount;
         case DEF_ROUTER_REBOOT_SECTION:
+            return 1 + self.currentExpandedCount;
+        case DEF_ROUTER_SEND_LOGS_SECTION:
             return 1 + self.currentExpandedCount;
         default:
             return 1;
@@ -403,6 +419,10 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
             if (indexPath.row > 0) {
                 return 95;
             }
+        case DEF_ROUTER_SEND_LOGS_SECTION:
+            if (indexPath.row > 0) {
+                return 95;
+            }
         default:
             return 85;
     }
@@ -425,6 +445,11 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
             }
 
         case DEF_ROUTER_REBOOT_SECTION:
+            if (indexPath.row > 0) {
+                return 95;
+            }
+
+        case DEF_ROUTER_SEND_LOGS_SECTION:
             if (indexPath.row > 0) {
                 return 95;
             }
@@ -480,6 +505,14 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
                             return [self createAlmondRebootSummaryCell:tableView];
                         default:
                             return [self createAlmondRebootEditCell:tableView];
+                    }
+
+                case DEF_ROUTER_SEND_LOGS_SECTION:
+                    switch (indexPath.row) {
+                        case 0:
+                            return [self createAlmondSendLogsSummaryCell:tableView];
+                        default:
+                            return [self createAlmondSendLogsEditCell:tableView];
                     }
 
                 default:
@@ -726,14 +759,14 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     [cell markReuse];
     cell.cardView.backgroundColor = [[SFIColors redColor] color];
 
-    const BOOL newVersionAvailable = self.newAlmondFirwareVersionAvailable;
+    const BOOL newVersionAvailable = self.newAlmondFirmwareVersionAvailable;
 
     cell.title = newVersionAvailable ? @"Software Version *" : @"Software Version";
 
     NSString *version = self.routerSummary.firmwareVersion;
     if (version) {
         NSString *currentVersion_label = NSLocalizedString(@"router.software-version.Current version", @"Current version");
-        
+
         if (newVersionAvailable) {
             NSString *updateAvailable_label = NSLocalizedString(@"router.software-version.Update Available", @"Update Available");
             cell.summaries = @[updateAvailable_label, currentVersion_label, version];
@@ -801,6 +834,45 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     return cell;
 }
 
+- (UITableViewCell *)createAlmondSendLogsSummaryCell:(UITableView *)tableView {
+    NSString *const cell_id = @"sendlogs_summary";
+
+    SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+    if (cell == nil) {
+        cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
+    }
+
+    [cell markReuse];
+    cell.cardView.backgroundColor = [[SFIColors yellowColor] color];
+    cell.title = NSLocalizedString(@"router.card-title.Send Logs", @"Send Logs");
+
+    NSArray *summary = @[[NSString stringWithFormat:NSLocalizedString(@"router.Sends %@'s logs to our server", @"Sends %@'s logs to our server"), self.currentAlmond.almondplusName]];
+    cell.summaries = summary;
+
+    cell.expanded = [self isSectionExpanded:DEF_ROUTER_SEND_LOGS_SECTION];
+    cell.editTarget = self;
+    cell.editSelector = @selector(onEditSendLogsCard:);
+
+    return cell;
+}
+
+- (UITableViewCell *)createAlmondSendLogsEditCell:(UITableView *)tableView {
+    NSString *const cell_id = @"sendlogs_edit";
+
+    SFIRouterSendLogsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+    if (cell == nil) {
+        cell = [[SFIRouterSendLogsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
+    }
+
+    cell.delegate = self;
+    [cell markReuse];
+
+    SFICardView *card = cell.cardView;
+    card.backgroundColor = [[SFIColors yellowColor] color];
+
+    return cell;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 10;
 }
@@ -814,7 +886,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     switch (self.routerViewState) {
         case RouterViewState_cloud_connected: {
-            if (section == DEF_ROUTER_REBOOT_SECTION) {
+            if (section == [tableView numberOfSections] - 1) { // last section gets padding from a footer
                 return 20;
             }
             // pass through
@@ -831,7 +903,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     switch (self.routerViewState) {
         case RouterViewState_cloud_connected: {
-            if (section == DEF_ROUTER_REBOOT_SECTION) {
+            if (section == [tableView numberOfSections] - 1) { // last section gets padding from a footer
                 UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
                 view.backgroundColor = [UIColor clearColor];
                 return view;
@@ -888,6 +960,11 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
                 self.currentExpandedSection = @(DEF_ROUTER_REBOOT_SECTION);
                 self.currentExpandedCount = 1;
                 [self tryReloadSection:DEF_ROUTER_REBOOT_SECTION];
+            }
+            else if (section == DEF_ROUTER_SEND_LOGS_SECTION) {
+                self.currentExpandedSection = @(DEF_ROUTER_SEND_LOGS_SECTION);
+                self.currentExpandedCount = 1;
+                [self tryReloadSection:DEF_ROUTER_SEND_LOGS_SECTION];
             }
         }
 
@@ -1157,6 +1234,10 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     });
 }
 
+- (void)onSendLogsActionCalled:(NSString *)problemDescription {
+
+}
+
 - (void)onEnableDevice:(SFIWirelessSetting *)setting enabled:(BOOL)isEnabled {
     SFIWirelessSetting *copy = [setting copy];
     copy.enabled = isEnabled;
@@ -1268,7 +1349,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
             self.tableView.tableHeaderView = view;
         }];
 
-        self.newAlmondFirwareVersionAvailable = YES;
+        self.newAlmondFirmwareVersionAvailable = YES;
         [self tryReloadSection:DEF_ROUTER_VERSION_SECTION];
     });
 }
@@ -1281,6 +1362,34 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
             self.tableView.tableHeaderView = nil;
         }];
     });
+}
+
+#pragma mark - Keyboard events
+
+// resize table offsets so text fields and other controls are not obscured by the keyboard
+- (void)keyboardWillShow:(NSNotification *)notification {
+    id userInfo = notification.userInfo[UIKeyboardFrameBeginUserInfoKey];
+    CGSize keyboardSize = [userInfo CGRectValue].size;
+
+    UIEdgeInsets contentInsets;
+    if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
+        contentInsets = UIEdgeInsetsMake(0.0, 0.0, (keyboardSize.height), 0.0);
+    }
+    else {
+        contentInsets = UIEdgeInsetsMake(0.0, 0.0, (keyboardSize.width), 0.0);
+    }
+
+    self.tableView.contentInset = contentInsets;
+    self.tableView.scrollIndicatorInsets = contentInsets;
+}
+
+// restore original table offsets
+- (void)keyboardWillHide:(NSNotification *)notification {
+    NSNumber *rate = notification.userInfo[UIKeyboardAnimationDurationUserInfoKey];
+    [UIView animateWithDuration:rate.floatValue animations:^{
+        self.tableView.contentInset = UIEdgeInsetsZero;
+        self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    }];
 }
 
 @end

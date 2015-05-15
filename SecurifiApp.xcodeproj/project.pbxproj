@@ -169,6 +169,7 @@
 		1DF037534B2784850C9B047C /* UIApplication+SecurifiNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AB12BF9855556678A13 /* UIApplication+SecurifiNotifications.m */; };
 		1DF0383EBD135988AEA6DF73 /* ValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF037012FF314C8E1F5C0E3 /* ValueFormatter.m */; };
 		1DF0385A73D7AE7E9208F510 /* UIColor+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF031C08CFCEF46B5E698F7 /* UIColor+Securifi.m */; };
+		1DF038979554DAC51D42A7C8 /* SFIRouterSendLogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039D08131F3EA14BFDD9F /* SFIRouterSendLogsTableViewCell.m */; };
 		1DF038A445EB0F3A6476DC32 /* SFIHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0327E1106225F6EB46DF8 /* SFIHuePickerView.m */; };
 		1DF038B5E6A54CEEAFE1BE7F /* NotificationsTestStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0385D1BECF622A4B92311 /* NotificationsTestStore.m */; };
 		1DF038B871CAC9B7F0FCA043 /* ILSaturationBrightnessPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */; };
@@ -197,6 +198,7 @@
 		1DF03D9DDF778A6558F68504 /* ILHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03260DA70CA70CF0E61EF /* ILHuePickerView.m */; };
 		1DF03DC0F53E38D2CB88F6BA /* ValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF037012FF314C8E1F5C0E3 /* ValueFormatter.m */; };
 		1DF03E729C9FCFBA559D4BDC /* ILView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AA35AC0879D6B794169 /* ILView.m */; };
+		1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039D08131F3EA14BFDD9F /* SFIRouterSendLogsTableViewCell.m */; };
 		1DF03FBF0030A76DBCA3A828 /* CircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CircleLabel.m */; };
 		7CB5434B38D653A029281FD1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
@@ -371,12 +373,14 @@
 		1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSaturationBrightnessPickerView.m; sourceTree = "<group>"; };
 		1DF0385D1BECF622A4B92311 /* NotificationsTestStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTestStore.m; sourceTree = "<group>"; };
 		1DF0395BA425DCA3D278FFDB /* SFINotificationTableViewHeaderFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFINotificationTableViewHeaderFooter.h; sourceTree = "<group>"; };
+		1DF039D08131F3EA14BFDD9F /* SFIRouterSendLogsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterSendLogsTableViewCell.m; sourceTree = "<group>"; };
 		1DF039E8AD77F930D3943D79 /* CircleLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleLabel.h; sourceTree = "<group>"; };
 		1DF03A704CC540558B993529 /* CircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleView.m; sourceTree = "<group>"; };
 		1DF03A98342E420E03800492 /* UIApplication+SecurifiNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+SecurifiNotifications.h"; sourceTree = "<group>"; };
 		1DF03AA35AC0879D6B794169 /* ILView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILView.m; sourceTree = "<group>"; };
 		1DF03AB12BF9855556678A13 /* UIApplication+SecurifiNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+SecurifiNotifications.m"; sourceTree = "<group>"; };
 		1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFINotificationStatusBarButtonItem.m; sourceTree = "<group>"; };
+		1DF03BB31530783920FAF4C4 /* SFIRouterSendLogsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterSendLogsTableViewCell.h; sourceTree = "<group>"; };
 		1DF03BE3E401DD252BA24127 /* UIImage+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Securifi.m"; sourceTree = "<group>"; };
 		1DF03C29C7F6403672992843 /* DebugLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugLogger.m; sourceTree = "<group>"; };
 		1DF03C895FD75AA97DDF3AC5 /* IndexValueSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexValueSupport.m; sourceTree = "<group>"; };
@@ -538,6 +542,8 @@
 				1C7E7D0E1A41A0990026F0BA /* SFIRouterTableViewActions.h */,
 				1C7E7D0F1A41A0990026F0BA /* SFIRouterTableViewController.h */,
 				1C7E7D101A41A0990026F0BA /* SFIRouterTableViewController.m */,
+				1DF039D08131F3EA14BFDD9F /* SFIRouterSendLogsTableViewCell.m */,
+				1DF03BB31530783920FAF4C4 /* SFIRouterSendLogsTableViewCell.h */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -1148,6 +1154,7 @@
 				1DF03D19D4E35617E92B8DDD /* SFISensorsViewController.m in Sources */,
 				1DF03A5E4E35A0F781390B53 /* SFISensorTableViewCell.m in Sources */,
 				1DF03BDF11E412D1A07CE913 /* TableHeaderView.m in Sources */,
+				1DF038979554DAC51D42A7C8 /* SFIRouterSendLogsTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1227,6 +1234,7 @@
 				1DF03247826CA943EDEE8741 /* SFISensorTableViewCell.m in Sources */,
 				1DF035317380AA5E0BD86161 /* MessageView.m in Sources */,
 				1DF0358BE9EBF2A3821D948D /* TableHeaderView.m in Sources */,
+				1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

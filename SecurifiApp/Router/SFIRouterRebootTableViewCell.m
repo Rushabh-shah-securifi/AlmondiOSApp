@@ -35,7 +35,7 @@
     }
 
     [cardView addTopBorder:self.backgroundColor];
-    [cardView addTitleAndButton:@"Reboot the router?" target:self action:@selector(onRebootAction:) buttonTitle:@"Yes"];
+    [cardView addTitleAndButton:@"Reboot the router?" target:self action:@selector(onSendAction:) buttonTitle:@"Yes"];
     [cardView addSummary:@[
             @"It will take at least 2 minutes for the router",
             @"to reboot. Please refresh after sometime."

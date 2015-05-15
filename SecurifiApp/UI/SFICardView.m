@@ -171,13 +171,33 @@
     [self markYOffsetUsingRect:label.frame addAdditional:5];
 }
 
+- (void)addTextField:(NSString *)placeHolder delegate:(id <UITextFieldDelegate>)delegate tag:(NSInteger)tag target:(id)target action:(SEL)action buttonTitle:(NSString *)buttonTitle {
+    CGFloat right_offset = [self standardRightOffset:SFICardView_right_offset_inset];
+    CGFloat left_offset = 10;
+    CGFloat width = CGRectGetWidth(self.frame) - right_offset - left_offset;
+    CGRect frame = CGRectMake(left_offset, self.baseYCoordinate, width, 30);
+
+    UITextField *field = [self makeTextField:nil frame:frame];
+    field.delegate = delegate;
+    field.tag = tag;
+    field.textAlignment = NSTextAlignmentLeft;
+    field.placeholder = placeHolder;
+    [self addSubview:field];
+
+    UIButton *button = [self makeButton:target action:action buttonTitle:buttonTitle];
+    [self addSubview:button];
+    [self addManagedControl:button];
+
+    [self markYOffsetUsingRect:button.frame addAdditional:0];
+}
+
 - (void)addNameLabel:(NSString*)name valueTextField:(NSString *)value delegate:(id<UITextFieldDelegate>)delegate tag:(NSInteger)tag {
     UIFont *font = self.bodyFont;
 
     UILabel *label = [self makeLabel:name font:font alignment:NSTextAlignmentLeft];
     [self addSubview:label];
 
-    UITextField *field = [self makeTextField:value];
+    UITextField *field = [self makeTextField:value frame:[self makeFieldValueRect:120]];
     field.delegate = delegate;
     field.tag = tag;
     [self addSubview:field];
@@ -185,10 +205,10 @@
     [self markYOffsetUsingRect:field.frame addAdditional:5];
 }
 
-- (UITextField *)makeTextField:(NSString *)text  {
+- (UITextField *)makeTextField:(NSString *)text frame:(CGRect)frame {
     UIColor *color = [self.backgroundColor blackOrWhiteContrastingColor];
 
-    UITextField *field = [[UITextField alloc] initWithFrame:[self makeFieldValueRect:120]];
+    UITextField *field = [[UITextField alloc] initWithFrame:frame];
     field.text = text;
     field.textAlignment = NSTextAlignmentRight;
     field.textColor = color;
@@ -299,7 +319,7 @@
 
 - (UILabel *)makeMultiLineLabel:(NSString *)title font:(UIFont*)textFont alignment:(enum NSTextAlignment)alignment numberOfLines:(int)lineCount rightOffset:(SFICardView_right_offset)rightOffset {
     // offsets leaves room for the "edit" icon on the right side of the card or other rules
-    int offset = (rightOffset == SFICardView_right_offset_normal) ? 30 : 75;
+    CGFloat offset = [self standardRightOffset:rightOffset];
 
     CGFloat width = CGRectGetWidth(self.frame) - offset;
     CGFloat height = textFont.pointSize * lineCount;
@@ -331,6 +351,11 @@
     for (UIControl *control in self.enabledDisableControls) {
         control.enabled = enabled;
     }
+}
+
+- (CGFloat)standardRightOffset:(SFICardView_right_offset)rightOffset {
+    CGFloat offset = (rightOffset == SFICardView_right_offset_normal) ? 30 : 75;
+    return offset;
 }
 
 /*

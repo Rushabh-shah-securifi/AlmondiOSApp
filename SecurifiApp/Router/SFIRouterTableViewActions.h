@@ -12,6 +12,8 @@
 
 - (void)onRebootRouterActionCalled;
 
+- (void)onSendLogsActionCalled:(NSString*)problemDescription;
+
 - (void)onEnableDevice:(SFIWirelessSetting *)setting enabled:(BOOL)isEnabled;
 
 - (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString*)ssid;

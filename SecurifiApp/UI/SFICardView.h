@@ -85,6 +85,8 @@ typedef NS_ENUM(int, SFICardView_right_offset) {
 // Standard method for laying out a row of info. The name label is left justified, and the value label is right justified.
 - (void)addNameLabel:(NSString *)name valueLabel:(NSString *)value;
 
+- (void)addTextField:(NSString *)placeHolder delegate:(id <UITextFieldDelegate>)delegate tag:(NSInteger)tag target:(id)target action:(SEL)action buttonTitle:(NSString *)buttonTitle;
+
 - (void)addNameLabel:(NSString *)name valueTextField:(NSString *)value delegate:(id <UITextFieldDelegate>)delegate tag:(NSInteger)tag;
 
 // For cards or UI elements that can be "edited" or otherwise "expanded", this draws a standard "edit" icon
