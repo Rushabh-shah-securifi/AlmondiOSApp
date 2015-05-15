@@ -88,6 +88,7 @@ reset at the moment. Try again later.";
 "router.card.Settings are not available." = "Settings are not available.";
 "router.card-title.Devices & Users" = "Devices & Users";
 "router.devices-summary.%d connected, %d blocked" = "%d connected, %d blocked";
+"router.software-version.Update Available" = "Update Available";
 "router.software-version.Current version" = "Current version";
 "router.software-version.Not available" = "Version information is not available.";
 "router.card-title.Router Reboot" = "Router Reboot";
@@ -325,3 +326,4 @@ your home devices from anywhere.";
 "accounts.deleteSecondaryUser.failure.reasonCode6" = "Secondary user is not associated with the given Almond.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "You are not associated with this Almond";
 "accounts.deleteMeAsSecondaryUser.failure.default" = "Sorry! Removing of shared Almond was unsuccessful.";
+

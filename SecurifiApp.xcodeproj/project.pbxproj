@@ -159,6 +159,7 @@
 		1DF0351F629E0103520602C3 /* SFICardViewSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0369E72CD4FA9E78D9468 /* SFICardViewSummaryCell.m */; };
 		1DF035317380AA5E0BD86161 /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F453DC0B72C7436B9E8 /* MessageView.m */; };
 		1DF035687F592CCCFB831F48 /* ILColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0331D17DC580313941C89 /* ILColorPickerView.m */; };
+		1DF0358BE9EBF2A3821D948D /* TableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0306EC5BE52D6364936BE /* TableHeaderView.m */; };
 		1DF0362BB7839519E771D769 /* SensorIndexSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */; };
 		1DF0364AEDD2A4A73832CE5D /* SensorSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03845038413D52AF4100D /* SensorSupport.m */; };
 		1DF0369581F25A08C2D53894 /* SFINotificationStatusBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */; };
@@ -184,6 +185,7 @@
 		1DF03ADB8A23D76AE9B67F13 /* SFINotificationStatusBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */; };
 		1DF03B73C95D8A41C9409EF3 /* SFISensorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0372FDF6A6B6E6843DF80 /* SFISensorsViewController.m */; };
 		1DF03B77AE6B540AFC5851BB /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03C29C7F6403672992843 /* DebugLogger.m */; };
+		1DF03BDF11E412D1A07CE913 /* TableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0306EC5BE52D6364936BE /* TableHeaderView.m */; };
 		1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03ED87E1BC2184C9EEF53 /* ScoreboardTextEditorViewController.m */; };
 		1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03C29C7F6403672992843 /* DebugLogger.m */; };
 		1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0327E1106225F6EB46DF8 /* SFIHuePickerView.m */; };
@@ -334,6 +336,7 @@
 		1CEE694B1A37F5F6008D8567 /* libSecurifiToolkit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSecurifiToolkit.a; path = "../iostoolkit/build/Debug-iphoneos/libSecurifiToolkit.a"; sourceTree = "<group>"; };
 		1DF03016CB88EB25EF5CE27E /* ScoreboardDebugLoggerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardDebugLoggerViewController.m; sourceTree = "<group>"; };
 		1DF0303A96ABFCC918107B70 /* UIImage+Securifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Securifi.h"; sourceTree = "<group>"; };
+		1DF0306EC5BE52D6364936BE /* TableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableHeaderView.m; sourceTree = "<group>"; };
 		1DF0307CC4B43723DE5590C1 /* SFISensorDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorDetailView.h; sourceTree = "<group>"; };
 		1DF03086AADF35699E6F9054 /* SFISensorDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorDetailView.m; sourceTree = "<group>"; };
 		1DF030F104782902146AFA76 /* ScoreboardDebugLoggerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardDebugLoggerViewController.h; sourceTree = "<group>"; };
@@ -383,6 +386,7 @@
 		1DF03D82243614C8FB540F0A /* SFIHuePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIHuePickerView.h; sourceTree = "<group>"; };
 		1DF03D99C19042FD3FCADB2D /* SFIPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPreferences.h; sourceTree = "<group>"; };
 		1DF03DEFBCB5A76FEE5F91A9 /* SFICardViewSummaryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICardViewSummaryCell.h; sourceTree = "<group>"; };
+		1DF03E356EAA623CDDD27D0C /* TableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableHeaderView.h; sourceTree = "<group>"; };
 		1DF03E6111D265CB01F83190 /* ValueFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValueFormatter.h; sourceTree = "<group>"; };
 		1DF03ED87E1BC2184C9EEF53 /* ScoreboardTextEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardTextEditorViewController.m; sourceTree = "<group>"; };
 		1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorIndexSupport.m; sourceTree = "<group>"; };
@@ -620,6 +624,8 @@
 				1DF03D82243614C8FB540F0A /* SFIHuePickerView.h */,
 				1DF03F453DC0B72C7436B9E8 /* MessageView.m */,
 				1DF03CFE840766B75CCB941E /* MessageView.h */,
+				1DF0306EC5BE52D6364936BE /* TableHeaderView.m */,
+				1DF03E356EAA623CDDD27D0C /* TableHeaderView.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1141,6 +1147,7 @@
 				1DF03226BF3736722C0E7F17 /* SFISensorDetailView.m in Sources */,
 				1DF03D19D4E35617E92B8DDD /* SFISensorsViewController.m in Sources */,
 				1DF03A5E4E35A0F781390B53 /* SFISensorTableViewCell.m in Sources */,
+				1DF03BDF11E412D1A07CE913 /* TableHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1219,6 +1226,7 @@
 				1DF03B73C95D8A41C9409EF3 /* SFISensorsViewController.m in Sources */,
 				1DF03247826CA943EDEE8741 /* SFISensorTableViewCell.m in Sources */,
 				1DF035317380AA5E0BD86161 /* MessageView.m in Sources */,
+				1DF0358BE9EBF2A3821D948D /* TableHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

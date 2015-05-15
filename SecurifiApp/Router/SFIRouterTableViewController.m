@@ -22,10 +22,14 @@
 #import "SFIRouterTableViewActions.h"
 #import "SFICardViewSummaryCell.h"
 #import "MessageView.h"
+#import "AlmondVersionChecker.h"
+#import "TableHeaderView.h"
 
 #define DEF_WIRELESS_SETTINGS_SECTION   0
 #define DEF_DEVICES_AND_USERS_SECTION   1
+#define DEF_ROUTER_VERSION_SECTION      2
 #define DEF_ROUTER_REBOOT_SECTION       3
+#define DEF_ROUTER_SEND_LOGS_SECTION    4
 
 typedef NS_ENUM(unsigned int, RouterViewState) {
     RouterViewState_no_almond = 1,
@@ -40,7 +44,10 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     RouterViewReloadPolicy_on_state_change = 3,
 };
 
-@interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate>
+@interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate>
+@property SFIAlmondPlus *currentAlmond;
+@property BOOL newAlmondFirwareVersionAvailable;
+
 @property NSTimer *hudTimer;
 @property RouterViewState routerViewState;
 
@@ -165,6 +172,8 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
 
+    self.currentAlmond = plus;
+
     if (plus == nil) {
         self.navigationItem.title = @"Get Started";
         [self markAlmondMac:NO_ALMOND];
@@ -178,6 +187,10 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
         self.shownHudOnce = YES;
         [self showHudWithTimeout];
     }
+
+    // Reset New Version checking state and view
+    self.newAlmondFirwareVersionAvailable = NO;
+    self.tableView.tableHeaderView = nil;
 
     [self checkRouterViewState:RouterViewReloadPolicy_on_state_change];
 
@@ -458,7 +471,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
                             return [self createDevicesAndUsersEditCell:tableView tableRow:indexPath.row];
                     }
 
-                case 2:
+                case DEF_ROUTER_VERSION_SECTION:
                     return [self createSoftwareVersionCell:tableView];
 
                 case DEF_ROUTER_REBOOT_SECTION:
@@ -710,14 +723,24 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     if (cell == nil) {
         cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
-
     [cell markReuse];
     cell.cardView.backgroundColor = [[SFIColors redColor] color];
-    cell.title = @"Software";
+
+    const BOOL newVersionAvailable = self.newAlmondFirwareVersionAvailable;
+
+    cell.title = newVersionAvailable ? @"Software Version *" : @"Software Version";
 
     NSString *version = self.routerSummary.firmwareVersion;
     if (version) {
-        cell.summaries = @[NSLocalizedString(@"router.software-version.Current version", @"Current version"), version];
+        NSString *currentVersion_label = NSLocalizedString(@"router.software-version.Current version", @"Current version");
+        
+        if (newVersionAvailable) {
+            NSString *updateAvailable_label = NSLocalizedString(@"router.software-version.Update Available", @"Update Available");
+            cell.summaries = @[updateAvailable_label, currentVersion_label, version];
+        }
+        else {
+            cell.summaries = @[currentVersion_label, version];
+        }
     }
     else {
         cell.summaries = @[NSLocalizedString(@"router.software-version.Not available", @"Version information is not available.")];
@@ -963,6 +986,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 
             case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
                 self.routerSummary = (SFIRouterSummary *) genericRouterCommand.command;
+                [self tryCheckAlmondVersion];
                 // after receiving summary, wait until detailed settings have been returned
                 // before updating the table.
                 break;
@@ -1204,5 +1228,59 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     }
 }
 
+#pragma mark - AlmondVersionChecker methods
+
+- (void)tryCheckAlmondVersion {
+    SFIAlmondPlus *almond = self.currentAlmond;
+    if (!almond) {
+        return;
+    }
+
+    SFIRouterSummary *summary = self.routerSummary;
+    if (!summary) {
+        return;
+    }
+
+    AlmondVersionChecker *checker = [AlmondVersionChecker new];
+    checker.delegate = self;
+
+    [checker asyncCheckLatestVersion:almond currentVersion:summary.firmwareVersion];
+}
+
+- (void)versionCheckerDidFindNewerVersion:(SFIAlmondPlus *)checkedAlmond currentVersion:(NSString *)currentVersion latestVersion:(NSString *)latestAlmondVersion {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        SFIAlmondPlus *currentAlmond = self.currentAlmond;
+        if (!currentAlmond || !checkedAlmond) {
+            // bad data!
+            return;
+        }
+
+        if (![checkedAlmond isEqualAlmondPlus:currentAlmond]) {
+            return;
+        }
+
+        TableHeaderView *view = [TableHeaderView newAlmondVersionMessage];
+        view.frame = CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), 100);
+        view.backgroundColor = [UIColor whiteColor];
+        view.delegate = self;
+
+        [UIView animateWithDuration:0.50 animations:^() {
+            self.tableView.tableHeaderView = view;
+        }];
+
+        self.newAlmondFirwareVersionAvailable = YES;
+        [self tryReloadSection:DEF_ROUTER_VERSION_SECTION];
+    });
+}
+
+#pragma mark - TableHeaderViewDelegate methods
+
+- (void)tableHeaderViewDidTapButton:(TableHeaderView *)view {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [UIView animateWithDuration:0.75 animations:^() {
+            self.tableView.tableHeaderView = nil;
+        }];
+    });
+}
 
 @end
