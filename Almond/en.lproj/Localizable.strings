@@ -102,6 +102,8 @@ reset at the moment. Try again later.";
 "router.no-almonds.nav-title.Get Started" = "Get Started";
 "router.hud.Router is now online." = "Router is now online.";
 "router.hud.Router is rebooting." = "Router is rebooting.";
+"router.card-title.Send Logs" = "Send Logs";
+"router.Sends %@'s logs to our server" = "Sends %@'s logs to our server";
 
 /* sensors */
 

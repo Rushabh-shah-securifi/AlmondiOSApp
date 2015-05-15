@@ -21,6 +21,7 @@
     SecurifiConfigurator *cfg = [SecurifiConfigurator new];
     cfg.productionCloudHost = CLOUD_HOST;
     cfg.enableRouterWirelessControl = NO; // disabled until the cloud and app have more robust support for changing SSID
+    cfg.enableNotifications = YES;
     return cfg;
 }
 

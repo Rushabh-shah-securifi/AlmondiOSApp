@@ -102,6 +102,7 @@ reset at the moment. Try again later.";
 "router.no-almonds.nav-title.Get Started" = "Get Started";
 "router.hud.Router is now online." = "Router is now online.";
 "router.hud.Router is rebooting." = "Router is rebooting.";
+"router.card-title.Send Logs" = "Send Logs";
 
 /* sensors */
 
@@ -161,8 +162,8 @@ reset at the moment. Try again later.";
 "sensor.moisturesensor.status.Temp %@" = "Temp %@";
 "sensor.notificaiton.label.notificationMode" = "Notify me";
 "sensor.notificaiton.segment.Always" = "Always";
-"sensor.notificaiton.segment.Home" = "Home";
 "sensor.notificaiton.segment.Away" = "Away";
+"sensor.notificaiton.segment.Off" = "Off";
 "sensors.label.Color" = "Color";
 
 /* signup */
