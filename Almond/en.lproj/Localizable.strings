@@ -104,6 +104,7 @@ reset at the moment. Try again later.";
 "router.hud.Router is rebooting." = "Router is rebooting.";
 "router.card-title.Send Logs" = "Send Logs";
 "router.Sends %@'s logs to our server" = "Sends %@'s logs to our server";
+"router.hud.Sending Logs." = "Instructing router to send logs";
 
 /* sensors */
 

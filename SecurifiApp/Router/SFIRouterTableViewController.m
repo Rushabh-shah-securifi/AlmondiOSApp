@@ -47,6 +47,8 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 @interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate>
 @property SFIAlmondPlus *currentAlmond;
 @property BOOL newAlmondFirmwareVersionAvailable;
+@property BOOL almondSupportsSendLogs;
+@property enum SFIRouterTableViewActionsMode sendLogsEditCellMode; // set during command response callback and reset when almond is changed and view is refreshed
 
 @property NSTimer *hudTimer;
 @property RouterViewState routerViewState;
@@ -200,7 +202,9 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 
     // Reset New Version checking state and view
     self.newAlmondFirmwareVersionAvailable = NO;
+    self.almondSupportsSendLogs = NO;
     self.tableView.tableHeaderView = nil;
+    self.sendLogsEditCellMode = SFIRouterTableViewActionsMode_unknown;
 
     [self checkRouterViewState:RouterViewReloadPolicy_on_state_change];
 
@@ -282,6 +286,14 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     [[SecurifiToolkit sharedInstance] asyncRebootAlmond:self.almondMac];
 }
 
+- (void)sendSendLogsCommand:(NSString*)description {
+    if (self.routerViewState == RouterViewState_no_almond) {
+        return;
+    }
+
+    [[SecurifiToolkit sharedInstance] asyncSendAlmondLogs:self.almondMac problemDescription:description];
+}
+
 #pragma mark HUD mgt
 
 - (void)showHudWithTimeout {
@@ -353,6 +365,8 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
         return;
     }
 
+    // reset table view state when Refresh is called (and when current Almond is changed)
+    self.sendLogsEditCellMode = SFIRouterTableViewActionsMode_unknown;
     [self refreshDataForAlmond];
 
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
@@ -841,11 +855,15 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     if (cell == nil) {
         cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
-
     [cell markReuse];
-    cell.cardView.backgroundColor = [[SFIColors yellowColor] color];
-    cell.title = NSLocalizedString(@"router.card-title.Send Logs", @"Send Logs");
 
+    cell.cardView.backgroundColor = [[SFIColors yellowColor] color];
+
+    cell.title = NSLocalizedString(@"router.card-title.Send Logs", @"Send Logs");
+    if (!self.almondSupportsSendLogs) {
+        cell.title = [NSString stringWithFormat:@"%@ *", cell.title];
+    }
+    
     NSArray *summary = @[[NSString stringWithFormat:NSLocalizedString(@"router.Sends %@'s logs to our server", @"Sends %@'s logs to our server"), self.currentAlmond.almondplusName]];
     cell.summaries = summary;
 
@@ -862,16 +880,36 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     SFIRouterSendLogsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[SFIRouterSendLogsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
+        cell.delegate = self;
     }
-
-    cell.delegate = self;
     [cell markReuse];
+
+    if (!self.almondSupportsSendLogs) {
+        cell.mode = SFIRouterTableViewActionsMode_firmwareNotSupported;
+    }
+    else {
+        cell.mode = self.sendLogsEditCellMode;
+    }
 
     SFICardView *card = cell.cardView;
     card.backgroundColor = [[SFIColors yellowColor] color];
 
     return cell;
 }
+
+- (void)tryReloadSendLogsEditTile:(enum SFIRouterTableViewActionsMode)mode {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (![self isSectionExpanded:DEF_ROUTER_SEND_LOGS_SECTION]) {
+            return;
+        }
+
+        self.sendLogsEditCellMode = mode;
+        
+        NSIndexPath *editRow = [NSIndexPath indexPathForItem:1 inSection:DEF_ROUTER_SEND_LOGS_SECTION];
+        [self.tableView reloadRowsAtIndexPaths:@[editRow] withRowAnimation:UITableViewRowAnimationFade];
+    });
+}
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 10;
@@ -1069,6 +1107,12 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
                 break;
             }
 
+            case SFIGenericRouterCommandType_SEND_LOGS_RESPONSE: {
+                enum SFIRouterTableViewActionsMode mode = genericRouterCommand.commandSuccess ? SFIRouterTableViewActionsMode_commandSuccess : SFIRouterTableViewActionsMode_commandError;
+                [self tryReloadSendLogsEditTile:mode];
+                break;
+            };
+
             case SFIGenericRouterCommandType_REBOOT:
             case SFIGenericRouterCommandType_BLOCKED_CONTENT:
             default:
@@ -1235,7 +1279,18 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 }
 
 - (void)onSendLogsActionCalled:(NSString *)problemDescription {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
 
+        [self showHUD:NSLocalizedString(@"router.hud.Sending Logs.", @"Instructing router to send logs.")];
+
+        [self sendSendLogsCommand:problemDescription];
+        [self onExpandCloseSection:self.tableView section:DEF_ROUTER_SEND_LOGS_SECTION];
+
+        [[Analytics sharedInstance] markSendRouterLogs];
+    });
 }
 
 - (void)onEnableDevice:(SFIWirelessSetting *)setting enabled:(BOOL)isEnabled {
@@ -1322,13 +1377,22 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
         return;
     }
 
+    NSString *currentVersion = summary.firmwareVersion;
+
+    self.almondSupportsSendLogs = [almond supportsSendLogs:currentVersion];
+    [self tryReloadSection:DEF_ROUTER_SEND_LOGS_SECTION];
+
     AlmondVersionChecker *checker = [AlmondVersionChecker new];
     checker.delegate = self;
 
-    [checker asyncCheckLatestVersion:almond currentVersion:summary.firmwareVersion];
+    [checker asyncCheckLatestVersion:almond currentVersion:currentVersion];
 }
 
-- (void)versionCheckerDidFindNewerVersion:(SFIAlmondPlus *)checkedAlmond currentVersion:(NSString *)currentVersion latestVersion:(NSString *)latestAlmondVersion {
+- (void)versionCheckerDidQueryVersion:(SFIAlmondPlus *)checkedAlmond result:(enum AlmondVersionCheckerResult)result currentVersion:(NSString *)currentVersion latestVersion:(NSString *)latestAlmondVersion {
+    if (result != AlmondVersionCheckerResult_currentOlderThanLatest) {
+        return;
+    }
+
     dispatch_async(dispatch_get_main_queue(), ^() {
         SFIAlmondPlus *currentAlmond = self.currentAlmond;
         if (!currentAlmond || !checkedAlmond) {
@@ -1365,6 +1429,8 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 }
 
 #pragma mark - Keyboard events
+
+//todo we might want to move this into the super class so that the Sensors tab has same behavior
 
 // resize table offsets so text fields and other controls are not obscured by the keyboard
 - (void)keyboardWillShow:(NSNotification *)notification {

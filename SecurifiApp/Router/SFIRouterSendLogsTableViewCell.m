@@ -10,9 +10,12 @@
 
 @interface SFIRouterSendLogsTableViewCell () <UITextFieldDelegate>
 @property(nonatomic) BOOL layoutCalled;
+@property(nonatomic) NSString *problemDescription;
 @end
 
 @implementation SFIRouterSendLogsTableViewCell
+
+#pragma mark - Layout
 
 - (void)markReuse {
     [super markReuse];
@@ -33,13 +36,47 @@
     }
 
     [cardView addTopBorder:self.backgroundColor];
-    [cardView addTextField:@"Describe your problem here" delegate:self tag:0 target:self action:@selector(onSendAction:) buttonTitle:@"Send"];
+
+    switch (self.mode) {
+        case SFIRouterTableViewActionsMode_unknown:
+        case SFIRouterTableViewActionsMode_enterReason: {
+            [cardView markYOffset:20];
+            [cardView addTextFieldPlaceHolder:@"Describe your problem here" placeHolderColor:[UIColor whiteColor] delegate:self tag:0 target:self action:@selector(onSendAction:) buttonTitle:@"Send"];
+            break;
+        };
+
+        case SFIRouterTableViewActionsMode_commandSuccess: {
+            [cardView markYOffset:20];
+            [cardView addSummary:@[@"Thanks for sending logs"]];
+            break;
+
+        };
+        case SFIRouterTableViewActionsMode_commandError: {
+            [cardView markYOffset:20];
+            [cardView addSummary:@[@"There was an error sending logs"]];
+            break;
+        };
+        case SFIRouterTableViewActionsMode_firmwareNotSupported: {
+            [cardView markYOffset:20];
+            [cardView addSummary:@[@"Please update your router's firmware", @"in order to activate this functionality"]];
+            break;
+        };
+    }
 
     [cardView freezeLayout];
 }
 
+#pragma mark - Action callbacks
+
 - (void)onSendAction:(id)sender {
-    [self.delegate onSendLogsActionCalled:nil];
+    [self.delegate onSendLogsActionCalled:self.problemDescription];
+}
+
+#pragma mark - UITextFieldDelegate methods
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    self.problemDescription = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    return YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
