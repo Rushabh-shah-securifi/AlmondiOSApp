@@ -44,10 +44,16 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     RouterViewReloadPolicy_on_state_change = 3,
 };
 
+typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
+    AlmondSupportsSendLogs_unknwown = 0,
+    AlmondSupportsSendLogs_yes,
+    AlmondSupportsSendLogs_no,
+};
+
 @interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate>
 @property SFIAlmondPlus *currentAlmond;
 @property BOOL newAlmondFirmwareVersionAvailable;
-@property BOOL almondSupportsSendLogs;
+@property enum AlmondSupportsSendLogs almondSupportsSendLogs;
 @property enum SFIRouterTableViewActionsMode sendLogsEditCellMode; // set during command response callback and reset when almond is changed and view is refreshed
 
 @property NSTimer *hudTimer;
@@ -202,7 +208,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 
     // Reset New Version checking state and view
     self.newAlmondFirmwareVersionAvailable = NO;
-    self.almondSupportsSendLogs = NO;
+    self.almondSupportsSendLogs = AlmondSupportsSendLogs_unknwown;
     self.tableView.tableHeaderView = nil;
     self.sendLogsEditCellMode = SFIRouterTableViewActionsMode_unknown;
 
@@ -860,7 +866,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     cell.cardView.backgroundColor = [[SFIColors yellowColor] color];
 
     cell.title = NSLocalizedString(@"router.card-title.Send Logs", @"Send Logs");
-    if (!self.almondSupportsSendLogs) {
+    if (self.almondSupportsSendLogs == AlmondSupportsSendLogs_no) {
         cell.title = [NSString stringWithFormat:@"%@ *", cell.title];
     }
     
@@ -884,7 +890,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     }
     [cell markReuse];
 
-    if (!self.almondSupportsSendLogs) {
+    if (self.almondSupportsSendLogs == AlmondSupportsSendLogs_no) {
         cell.mode = SFIRouterTableViewActionsMode_firmwareNotSupported;
     }
     else {
@@ -1379,7 +1385,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 
     NSString *currentVersion = summary.firmwareVersion;
 
-    self.almondSupportsSendLogs = [almond supportsSendLogs:currentVersion];
+    self.almondSupportsSendLogs = [almond supportsSendLogs:currentVersion] ? AlmondSupportsSendLogs_yes : AlmondSupportsSendLogs_no;
     [self tryReloadSection:DEF_ROUTER_SEND_LOGS_SECTION];
 
     AlmondVersionChecker *checker = [AlmondVersionChecker new];
