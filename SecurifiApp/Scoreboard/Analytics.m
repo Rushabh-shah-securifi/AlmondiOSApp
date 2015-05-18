@@ -73,6 +73,10 @@
     [self markEvent:@"router_reboot"];
 }
 
+- (void)markSendRouterLogs {
+    [self markEvent:@"router_send_logs"];
+}
+
 - (void)markSensorClick:(SFIDeviceType)deviceType timeToComplete:(NSTimeInterval)resResTime {
     NSUInteger milliseconds = (NSUInteger) (resResTime * 1000);
     NSNumber *interval = @(milliseconds);
