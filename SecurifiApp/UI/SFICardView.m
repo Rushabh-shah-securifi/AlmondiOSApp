@@ -171,7 +171,7 @@
     [self markYOffsetUsingRect:label.frame addAdditional:5];
 }
 
-- (void)addTextField:(NSString *)placeHolder delegate:(id <UITextFieldDelegate>)delegate tag:(NSInteger)tag target:(id)target action:(SEL)action buttonTitle:(NSString *)buttonTitle {
+- (void)addTextFieldPlaceHolder:(NSString *)placeHolder placeHolderColor:(UIColor *)placeHolderColor delegate:(id <UITextFieldDelegate>)delegate tag:(NSInteger)tag target:(id)target action:(SEL)action buttonTitle:(NSString *)buttonTitle {
     CGFloat right_offset = [self standardRightOffset:SFICardView_right_offset_inset];
     CGFloat left_offset = 10;
     CGFloat width = CGRectGetWidth(self.frame) - right_offset - left_offset;
@@ -181,7 +181,14 @@
     field.delegate = delegate;
     field.tag = tag;
     field.textAlignment = NSTextAlignmentLeft;
-    field.placeholder = placeHolder;
+
+    if (!placeHolder || !placeHolderColor) {
+        field.placeholder = placeHolder;
+    }
+    else {
+        field.attributedPlaceholder = [[NSAttributedString alloc] initWithString:placeHolder attributes:@{ NSForegroundColorAttributeName : placeHolderColor}];
+    }
+
     [self addSubview:field];
 
     UIButton *button = [self makeButton:target action:action buttonTitle:buttonTitle];
@@ -280,7 +287,7 @@
     [button setTitle:buttonTitle forState:UIControlStateNormal];
     [button setTitleColor:whiteColor forState:UIControlStateNormal];
     [button setTitleColor:normalColor forState:UIControlStateHighlighted];
-    [button addTarget:target action:action forControlEvents:UIControlEventTouchDown];
+    [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     button.layer.borderWidth = 1.0f;
     button.layer.borderColor = whiteColor.CGColor;
 
