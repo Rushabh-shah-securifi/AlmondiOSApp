@@ -15,9 +15,14 @@ typedef NS_ENUM(unsigned int, SFIGenericRouterCommandType) {
     SFIGenericRouterCommandType_BLOCKED_CONTENT         = 5,
     SFIGenericRouterCommandType_WIRELESS_SETTINGS       = 7,
     SFIGenericRouterCommandType_WIRELESS_SUMMARY        = 9,
+    SFIGenericRouterCommandType_SEND_LOGS_RESPONSE      = 10,
 };
 
 @interface SFIGenericRouterCommand : NSObject
 @property(nonatomic) id command;
 @property(nonatomic) SFIGenericRouterCommandType commandType;
+
+@property(nonatomic) BOOL commandSuccess;
+@property(nonatomic) NSString *responseMessage;
+
 @end

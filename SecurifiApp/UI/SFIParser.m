@@ -9,6 +9,11 @@
 #import "SFIParser.h"
 #import "AlmondPlusConstants.h"
 
+#define ROUTER_SEND_LOGS_RESPONSE   @"SendLogsResponse"
+#define ROUTER_SEND_LOGS_SUCCESS    @"success"
+#define ROUTER_SEND_LOGS_REASON     @"Reason"
+
+
 @implementation SFIParser
 
 @synthesize currentNodeContent, currentSensor, parser, sensors;
@@ -42,7 +47,9 @@
     [genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
 
     NSString *decodedString = [[NSString alloc] initWithData:genericData encoding:NSUTF8StringEncoding];
-    return [[SFIParser alloc] loadDataFromString:decodedString];
+
+    SFIParser *sfiParser = [SFIParser new];
+    return [sfiParser loadDataFromString:decodedString];
 }
 
 //TODO: Remove - Dummy
@@ -133,6 +140,10 @@
     }
     else if ([elementName isEqualToString:BLOCKED_CONTENT_SUMMARY]) {
         routerSummary.blockedContentCount = [[attributeDict valueForKey:COUNT] intValue];
+    }
+    else if ([elementName isEqualToString:ROUTER_SEND_LOGS_RESPONSE]) {
+        genericCommandResponse.commandType = SFIGenericRouterCommandType_SEND_LOGS_RESPONSE;
+        genericCommandResponse.commandSuccess = [[attributeDict valueForKey:ROUTER_SEND_LOGS_SUCCESS] isEqualToString:@"true"];
     }
 }
 
@@ -226,6 +237,9 @@
     }
     else if ([elementName isEqualToString:ROUTER_SUMMARY]) {
         genericCommandResponse.command = routerSummary;
+    }
+    else if ([elementName isEqualToString:ROUTER_SEND_LOGS_REASON]) {
+        genericCommandResponse.responseMessage = currentNodeContent;
     }
 }
 
