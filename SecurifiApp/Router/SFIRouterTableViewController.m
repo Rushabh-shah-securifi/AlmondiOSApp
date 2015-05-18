@@ -45,7 +45,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 };
 
 typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
-    AlmondSupportsSendLogs_unknwown = 0,
+    AlmondSupportsSendLogs_unknown = 0,
     AlmondSupportsSendLogs_yes,
     AlmondSupportsSendLogs_no,
 };
@@ -208,7 +208,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
     // Reset New Version checking state and view
     self.newAlmondFirmwareVersionAvailable = NO;
-    self.almondSupportsSendLogs = AlmondSupportsSendLogs_unknwown;
+    self.almondSupportsSendLogs = AlmondSupportsSendLogs_unknown;
     self.tableView.tableHeaderView = nil;
     self.sendLogsEditCellMode = SFIRouterTableViewActionsMode_unknown;
 
