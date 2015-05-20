@@ -57,7 +57,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 @property enum SFIRouterTableViewActionsMode sendLogsEditCellMode; // set during command response callback and reset when almond is changed and view is refreshed
 
 @property NSTimer *hudTimer;
-@property RouterViewState routerViewState;
+@property enum RouterViewState routerViewState;
 
 @property(nonatomic, strong) SFIRouterSummary *routerSummary;
 @property(nonatomic, strong) NSArray *wirelessSettings;
