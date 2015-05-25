@@ -11,13 +11,6 @@
 @interface SFIConstants : NSObject
 
 #define SENSOR_ROW_HEIGHT       90
-//TODO: PY121214 - Uncomment later when Push Notification is implemented on cloud
-//Remove below initialization
-//Push Notification - START
-/*
- #define EXPANDED_ROW_HEIGHT     250
- */
-//Push Notification - END
 #define EXPANDED_ROW_HEIGHT     235
 #define LEFT_LABEL_WIDTH        100
 
@@ -33,8 +26,8 @@
 #define DT3_BINARY_SENSOR_FALSE 						@"03_door_closed.png"
 #define DT4_LEVEL_CONTROL_TRUE 						    @"04_dimmer.png"
 #define DT4_LEVEL_CONTROL_FALSE 						@"04_switch_off.png"
-#define DT5_DOOR_LOCK_TRUE 						        @"05_door_lock_locked.png"
-#define DT5_DOOR_LOCK_FALSE 						    @"05_door_lock_unlocked.png"
+#define DT5_DOOR_LOCK_LOCKED                            @"05_door_lock_locked.png"
+#define DT5_DOOR_LOCK_UNLOCKED                          @"05_door_lock_unlocked.png"
 #define DT6_ALARM_TRUE 						            @"06_alarm_on.png"
 #define DT6_ALARM_FALSE 						        @"06_alarm_off.png"
 

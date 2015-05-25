@@ -274,12 +274,12 @@
         }
 
         case SFIDeviceType_DoorLock_5: {
-            [self configureBinaryStateSensor:DT5_DOOR_LOCK_TRUE imageNameFalse:DT5_DOOR_LOCK_FALSE statusNonZeroValue:@"UNLOCKED" statusZeroValue:@"LOCKED"];
+            [self configureBinaryStateSensorImageNameZeroValue:DT5_DOOR_LOCK_UNLOCKED imageNameNonZeroValue:DT5_DOOR_LOCK_LOCKED statusZeroValue:@"UNLOCKED" statusNonZeroValue:@"LOCKED"];
             break;
         }
 
         case SFIDeviceType_Alarm_6: {
-            [self configureBinaryStateSensor:DT6_ALARM_TRUE imageNameFalse:DT6_ALARM_FALSE statusNonZeroValue:@"ON" statusZeroValue:@"OFF"];
+            [self configureBinaryStateSensorImageNameZeroValue:DT6_ALARM_TRUE imageNameNonZeroValue:DT6_ALARM_FALSE statusZeroValue:@"ON" statusNonZeroValue:@"OFF"];
             break;
         }
 
@@ -330,7 +330,7 @@
         }
 
         case SFIDeviceType_StandardWarningDevice_21: {
-            [self configureBinaryStateSensor:DT21_STANDARD_WARNING_DEVICE_FALSE imageNameFalse:DT21_STANDARD_WARNING_DEVICE_TRUE statusNonZeroValue:@"RINGING" statusZeroValue:@"OFF"];
+            [self configureBinaryStateSensorImageNameZeroValue:DT21_STANDARD_WARNING_DEVICE_TRUE imageNameNonZeroValue:DT21_STANDARD_WARNING_DEVICE_FALSE statusZeroValue:@"OFF" statusNonZeroValue:@"RINGING"];
             break;
         }
 
@@ -366,7 +366,7 @@
         }
 
         case SFIDeviceType_ZigbeeDoorLock_28: {
-            [self configureBinaryStateSensor:DT5_DOOR_LOCK_TRUE imageNameFalse:DT5_DOOR_LOCK_FALSE statusNonZeroValue:@"UNLOCKED" statusZeroValue:@"LOCKED"];
+            [self configureBinaryStateSensorImageNameZeroValue:DT5_DOOR_LOCK_UNLOCKED imageNameNonZeroValue:DT5_DOOR_LOCK_LOCKED statusZeroValue:@"LOCKED" statusNonZeroValue:@"UNLOCKED"];
             break;
         }
 
@@ -381,12 +381,12 @@
         }
 
         case SFIDeviceType_SmokeDetector_36: {
-            [self configureBinaryStateSensor:DT36_SMOKE_DETECTOR_TRUE imageNameFalse:DT36_SMOKE_DETECTOR_FALSE statusNonZeroValue:@"OK" statusZeroValue:@"SMOKE DETECTED!"];
+            [self configureBinaryStateSensorImageNameZeroValue:DT36_SMOKE_DETECTOR_FALSE imageNameNonZeroValue:DT36_SMOKE_DETECTOR_TRUE statusZeroValue:@"OK" statusNonZeroValue:@"SMOKE DETECTED!"];
             break;
         }
 
         case SFIDeviceType_FloodSensor_37: {
-            [self configureBinaryStateSensor:DT37_FLOOD_TRUE imageNameFalse:DT37_FLOOD_FALSE statusNonZeroValue:@"OK" statusZeroValue:@"FLOODED"];
+            [self configureBinaryStateSensorImageNameZeroValue:DT37_FLOOD_FALSE imageNameNonZeroValue:DT37_FLOOD_TRUE statusZeroValue:@"OK" statusNonZeroValue:@"FLOODED"];
             break;
         }
 
@@ -582,6 +582,10 @@
 
 - (void)sensorDetailViewDidPressSaveButton:(SFISensorDetailView *)view {
     [self.delegate tableViewCellDidSaveChanges:self];
+}
+
+- (void)sensorDetailViewDidPressShowLogsButton:(SFISensorDetailView *)view {
+    [self.delegate tableViewCellDidPressShowLogs:self];
 }
 
 - (void)sensorDetailViewDidPressDismissTamperButton:(SFISensorDetailView *)view {
@@ -888,7 +892,7 @@
     [self configureSensorImageName:imageName statusMesssage:status];
 }
 
-- (void)configureBinaryStateSensor:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusNonZeroValue:(NSString *)statusTrue statusZeroValue:(NSString *)statusFalse {
+- (void)configureBinaryStateSensorImageNameZeroValue:(NSString *)imageNameZeroValue imageNameNonZeroValue:(NSString *)imageNameNonZeroValue statusZeroValue:(NSString *)statusZeroValue statusNonZeroValue:(NSString *)statusNonZeroValue {
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
     if (!values) {
         [self configureUnknownDevice];
@@ -896,9 +900,9 @@
     }
 
     NSString *noImage = [self imageNameForNoValue];
-    NSString *imageName = [values choiceForLevelValueZeroValue:imageNameFalse nonZeroValue:imageNameTrue nilValue:noImage];
+    NSString *imageName = [values choiceForLevelValueZeroValue:imageNameZeroValue nonZeroValue:imageNameNonZeroValue nilValue:noImage];
 
-    NSString *status = [values choiceForLevelValueZeroValue:statusFalse nonZeroValue:statusTrue  nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
+    NSString *status = [values choiceForLevelValueZeroValue:statusZeroValue nonZeroValue:statusNonZeroValue nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
     [self configureSensorImageName:imageName statusMesssage:status];
 }
 
