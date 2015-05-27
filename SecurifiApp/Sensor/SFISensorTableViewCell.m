@@ -279,7 +279,7 @@
         }
 
         case SFIDeviceType_Alarm_6: {
-            [self configureBinaryStateSensorImageNameZeroValue:DT6_ALARM_TRUE imageNameNonZeroValue:DT6_ALARM_FALSE statusZeroValue:@"ON" statusNonZeroValue:@"OFF"];
+            [self configureBinaryStateSensorImageNameZeroValue:DT6_ALARM_FALSE imageNameNonZeroValue:DT6_ALARM_TRUE statusZeroValue:@"OFF" statusNonZeroValue:@"ON"];
             break;
         }
 
