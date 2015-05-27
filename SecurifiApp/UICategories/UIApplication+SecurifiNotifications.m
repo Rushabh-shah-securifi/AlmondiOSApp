@@ -77,7 +77,7 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
     const BOOL debugLogging = toolkit.configuration.enableNotificationsDebugLogging;
     if (debugLogging) {
-        SFINotification *notification = [SFINotification parsePayload:userInfo];
+        SFINotification *notification = [SFINotification parseNotificationPayload:userInfo];
         [self securifiDebugLog:notification action:@"apn"];
     }
 
