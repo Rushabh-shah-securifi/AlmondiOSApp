@@ -8,7 +8,7 @@
 
 @interface NotificationsTestStore : NSObject <SFINotificationStore>
 
-@property NSString *almondMac; // MAC to be used for creating Notifications
+@property (nonatomic, copy) NSString *almondMac; // MAC to be used for creating Notifications
 
 - (void)setup;
 

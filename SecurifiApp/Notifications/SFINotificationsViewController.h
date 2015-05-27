@@ -11,6 +11,9 @@
 
 @interface SFINotificationsViewController : UITableViewController
 
+// Required
+@property(nonatomic, copy) NSString *almondMac;
+
 // Default is NO.
 // when YES, a test data store is used to generate fake Notifications for all possible
 // device type-index values. Useful for unit testing and visual inspection without needing to post
@@ -25,6 +28,9 @@
 
 // Default NO
 @property(nonatomic) BOOL enableDebugMode;
+
+// When specified, only notifications for the specified device and Almond are shown
+@property(nonatomic) sfi_id deviceID;
 
 @end
 

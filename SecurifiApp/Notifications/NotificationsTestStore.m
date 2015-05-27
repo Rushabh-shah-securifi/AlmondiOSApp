@@ -28,8 +28,8 @@
     return self.buckets;
 }
 
-- (NSArray *)fetchNotifications:(NSUInteger)limit {
-    return nil;
+- (void)ensureFetchNotifications {
+    // no op
 }
 
 - (SFINotification *)fetchNotificationForBucket:(NSDate *)bucket index:(NSUInteger)pos {
@@ -41,11 +41,11 @@
 }
 
 - (void)markViewed:(SFINotification *)notification {
-
+    // no op
 }
 
 - (void)markAllViewedTo:(SFINotification *)notification {
-
+    // no op
 }
 
 - (void)markDeleted:(SFINotification *)notification {

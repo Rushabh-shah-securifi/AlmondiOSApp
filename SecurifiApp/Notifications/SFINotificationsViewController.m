@@ -43,15 +43,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    if (self.enableTestStore) {
-        NotificationsTestStore *store = [NotificationsTestStore new];
-        store.almondMac = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
-        [store setup];
-        _store = store;
-    }
-    else {
-        _store = [[SecurifiToolkit sharedInstance] newNotificationStore];
-    }
+    _store = [self pickNotificationStore];
 
     [self resetBucketsAndNotifications];
 
@@ -79,6 +71,35 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     self.tableView.backgroundColor = [UIColor whiteColor];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onDidReceiveNotifications) name:kSFINotificationDidStore object:nil];
+}
+
+// Depending on how this controller is configured, a different storage is returned
+- (NotificationsTestStore *)pickNotificationStore {
+    if (self.enableTestStore) {
+        // "Test" storage for the Debug tab; for visual functional testing of the Notifications UI
+        NotificationsTestStore *store = [NotificationsTestStore new];
+
+        NSString *almondMac;
+        if (self.almondMac) {
+            almondMac = self.almondMac;
+        }
+        else {
+            almondMac = [[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC;
+        }
+
+        store.almondMac = almondMac;
+        [store setup];
+
+        return store;
+    }
+    else if (self.almondMac) {
+        // Ephemeral "log" storage for the specified device
+        return [[SecurifiToolkit sharedInstance] newDeviceLogStore:self.almondMac deviceId:self.deviceID];
+    }
+    else {
+        // normal Notifications/Activity Viewer storage
+        return [[SecurifiToolkit sharedInstance] newNotificationStore];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -294,6 +315,22 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     }
 }
 
+// when at bottom of table, let's try to load more records
+- (void)scrollViewDidScroll:(UIScrollView *)scroll {
+    // UITableView only moves in one direction, y axis
+    CGPoint point = scroll.contentOffset;
+
+    CGFloat currentOffset = point.y;
+    CGFloat maximumOffset = scroll.contentSize.height - scroll.frame.size.height;
+
+    // Change 10.0 to adjust the distance from bottom
+    if (maximumOffset - currentOffset <= 50.0) {
+        NSIndexPath *path = [self.tableView indexPathForRowAtPoint:point];
+        NSDate *bucket = [self tryGetBucket:path.section];
+        [self.store ensureFetchNotifications];
+    }
+}
+
 #pragma mark - Buckets and Notification loading
 
 - (SFINotification *)mostRecentNotification {
@@ -320,6 +357,13 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 - (SFINotification *)notificationForIndexPath:(NSIndexPath *)path {
     NSDate *bucket = [self tryGetBucket:path.section];
     return [self tryGetNotificationForBucket:bucket row:path.row];
+}
+
+- (BOOL)isLastBucket:(NSInteger)section  {
+    NSUInteger index = (NSUInteger) section;
+    NSArray *array = self.buckets;
+    NSUInteger count = array.count - 1;
+    return index == count;
 }
 
 - (NSDate *)tryGetBucket:(NSInteger)section {
