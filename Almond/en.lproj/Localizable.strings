@@ -141,6 +141,8 @@ reset at the moment. Try again later.";
 "sensor.lock.pin-picker.Pin %ld" = "Pin %ld";
 "sensor.toast.doorlock.PassCode must be 5 to 8 digits long" = "PassCode must be 5 to 8 digits long";
 "sensor.device-name-label.Name" = "Name";
+"sensor.deivice-duration-label.Ring Duration" = "Ring Duration";
+"sensor.deivice-duration-placeholder.number of seconds" = "number of seconds";
 "sensor.deivice-location-label.Located at" = "Located at";
 "sensor.deivice-save-settings.button.Save" = "Save";
 "sensor.device-status.label.Battery OK" = "Battery OK";

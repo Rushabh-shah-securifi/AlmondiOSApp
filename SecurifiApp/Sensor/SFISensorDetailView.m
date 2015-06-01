@@ -186,6 +186,11 @@
             break;
         }
 
+        case SFIDeviceType_StandardWarningDevice_21: {
+            [self configureStandardWarningDevice_21];
+            break;
+        };
+
         case SFIDeviceType_SmartACSwitch_22:
         case SFIDeviceType_SecurifiSmartSwitch_50: {
             [self configureElectricMeasurementSwitch_22];
@@ -228,7 +233,6 @@
         case SFIDeviceType_RemoteControl_18:
         case SFIDeviceType_KeyFob_19:
         case SFIDeviceType_Keypad_20:
-        case SFIDeviceType_StandardWarningDevice_21:
         case SFIDeviceType_LightSensor_25:
         case SFIDeviceType_WindowCovering_26:
         case SFIDeviceType_TemperatureSensor_27:
@@ -278,6 +282,11 @@
 // Save button tapped
 - (void)onSaveSensorNameLocationChanges:(id)sender {
     [self.delegate sensorDetailViewDidPressSaveButton:self];
+    [self.firstResponderField resignFirstResponder];
+}
+
+- (void)onShowSensorLogs:(id)sender {
+    [self.delegate sensorDetailViewDidPressShowLogsButton:self];
     [self.firstResponderField resignFirstResponder];
 }
 
@@ -479,7 +488,8 @@
 }
 
 - (SFIHighlightedButton *)addButton:(NSString *)buttonName {
-    UIFont *heavy_font = [UIFont securifiBoldFontLarge];
+    UIFont *heavy_font = [self standardButtonFont];
+
     CGSize stringBoundingBox = [buttonName sizeWithAttributes:@{NSFontAttributeName : heavy_font}];
 
     int button_width = (int) (stringBoundingBox.width + 20);
@@ -490,6 +500,17 @@
     int right_margin = 10;
     CGRect frame = CGRectMake(self.frame.size.width - button_width - right_margin, self.baseYCoordinate, button_width, 30);
 
+    SFIHighlightedButton *button = [self addButton:buttonName frame:frame];
+    button.titleLabel.font = heavy_font;
+
+    return button;
+}
+
+- (UIFont *)standardButtonFont {
+    return [UIFont securifiBoldFontLarge];
+}
+
+- (SFIHighlightedButton *)addButton:(NSString *)buttonName frame:(CGRect)frame {
     UIColor *whiteColor = [UIColor whiteColor];
     UIColor *normalColor = self.color;
     UIColor *highlightColor = whiteColor;
@@ -498,7 +519,6 @@
     button.tag = self.tag;
     button.normalBackgroundColor = normalColor;
     button.highlightedBackgroundColor = highlightColor;
-    button.titleLabel.font = heavy_font;
     [button setTitle:buttonName forState:UIControlStateNormal];
     [button setTitleColor:whiteColor forState:UIControlStateNormal];
     [button setTitleColor:normalColor forState:UIControlStateHighlighted];
@@ -562,6 +582,10 @@
     control.selectedSegmentIndex = segment_index;
 
     [self addSubview:control];
+    [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
+
+    SFIHighlightedButton *button = [self addButton:@"View Logs"];
+    [button addTarget:self action:@selector(onShowSensorLogs:) forControlEvents:UIControlEventTouchUpInside];
 
     [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
 }
@@ -887,7 +911,7 @@
     //
     [self addSubview:fanModeSegmentControl];
 
-    [self markYOffset:35];
+    [self markYOffset:45];
     [self addLine];
 
     // Status
@@ -903,6 +927,67 @@
     [self addStatusLabel:@[thermostat_str, fan_str, battery_str]];
     [self markYOffset:55];
     [self addLine];
+}
+
+- (void)configureStandardWarningDevice_21 {
+    UITextField *field = [self addFieldNameValue:NSLocalizedString(@"sensor.deivice-duration-label.Ring Duration", @"Ring Duration") fieldValue:@"1"];
+    field.keyboardType = UIKeyboardTypeNumberPad;
+    field.delegate = self;
+    field.clearButtonMode = UITextFieldViewModeAlways;
+    field.rightViewMode = UITextFieldViewModeAlways;
+    //
+    CGRect frame = CGRectMake(0, 0, 90, 30);
+    UILabel *rightView = [[UILabel alloc] initWithFrame:frame];
+    rightView.text = @"seconds";
+    rightView.font = [field.font fontWithSize:field.font.pointSize - 3];
+    rightView.textColor = [UIColor whiteColor];
+    rightView.textAlignment = NSTextAlignmentRight;
+    [rightView sizeToFit];
+    rightView.frame = CGRectInset(rightView.frame, (CGFloat) -2.5, 0);
+    //
+    field.rightView = rightView;
+
+    [self markYOffset:5];
+
+    SFIHighlightedButton *startAlarm_button = [self addButton:@"Set Duration"];
+    [startAlarm_button addTarget:self action:@selector(onStartAlarm_21) forControlEvents:UIControlEventTouchUpInside];
+
+    [self markYOffset:40];
+    [self addShortLine];
+    [self markYOffset:5];
+
+    // Compute frames for two side-by-side buttons. Size across width of cell, with standard padding
+    CGFloat width = CGRectGetWidth(self.frame);
+    CGRect full_width_rect = CGRectMake(0, self.baseYCoordinate, width, 30);
+
+    CGRect on_rect;
+    CGRect off_rect;
+    CGRectDivide(full_width_rect, &on_rect, &off_rect, width / 2, CGRectMinXEdge);
+
+    CGFloat button_padding = 10;
+    on_rect = CGRectInset(on_rect, button_padding, 0);
+    off_rect = CGRectInset(off_rect, button_padding, 0);
+
+    UIFont *font = [self standardButtonFont];
+
+    SFIHighlightedButton *turnOn_button = [self addButton:@"Turn On" frame:on_rect];
+    turnOn_button.titleLabel.font = font;
+    [turnOn_button addTarget:self action:@selector(onStartAlarm_21) forControlEvents:UIControlEventTouchUpInside];
+
+    SFIHighlightedButton *turnOff_button = [self addButton:@"Turn Off" frame:off_rect];
+    turnOff_button.titleLabel.font = font;
+    [turnOff_button addTarget:self action:@selector(onStopAlarm_21) forControlEvents:UIControlEventTouchUpInside];
+
+    [self markYOffset:40];
+    [self addLine];
+}
+
+- (void)onStopAlarm_21 {
+
+}
+
+- (void)onStartAlarm_21 {
+    // do nothing for now
 }
 
 - (void)configureElectricMeasurementSwitch_22 {
@@ -1203,7 +1288,7 @@ HUE	                3	Decimal		0-65535	Yes
         return SENSOR_ROW_HEIGHT;
     }
 
-    NSUInteger extra = isNotificationsEnabled ? 55 : 0;
+    NSUInteger extra = isNotificationsEnabled ? 95 : 0;
     extra += isTampered ? 45 : 0;   // accounts for the row presenting the tampered msg and dismiss button
 
     switch (currentSensor.deviceType) {
@@ -1221,6 +1306,10 @@ HUE	                3	Decimal		0-65535	Yes
 
         case SFIDeviceType_Thermostat_7:
             return 490 + extra;
+
+        case SFIDeviceType_StandardWarningDevice_21: {
+            return 410 + extra;
+        };
 
         case SFIDeviceType_SmartACSwitch_22:
         case SFIDeviceType_SmartDCSwitch_23:
@@ -1252,7 +1341,6 @@ HUE	                3	Decimal		0-65535	Yes
         case SFIDeviceType_RemoteControl_18:
         case SFIDeviceType_KeyFob_19:
         case SFIDeviceType_Keypad_20:
-        case SFIDeviceType_StandardWarningDevice_21:
         case SFIDeviceType_LightSensor_25:
         case SFIDeviceType_WindowCovering_26:
         case SFIDeviceType_TemperatureSensor_27:
@@ -1339,6 +1427,20 @@ HUE	                3	Decimal		0-65535	Yes
             return 60;
         }
 
+        //todo temporary as part of device 21 impl
+        case SFIDevicePropertyType_UNKNOWN: {
+            NSInteger row = index + 1;
+            if (row < 1000) {
+                return 30;
+            }
+            else if (row < 10000) {
+                return 50;
+            }
+            else {
+                return 70;
+            }
+        };
+
         default: {
             return 0;
         }
@@ -1364,6 +1466,11 @@ HUE	                3	Decimal		0-65535	Yes
             return maxUsers;
         }
 
+            //todo temporary as part of device 21 impl
+        case SFIDevicePropertyType_UNKNOWN: {
+            return 65535;
+        };
+
         default: {
             return 0;
         }
@@ -1387,6 +1494,12 @@ HUE	                3	Decimal		0-65535	Yes
             NSInteger row = index + 1;
             return [NSString stringWithFormat:NSLocalizedString(@"sensor.lock.pin-picker.Pin %ld", @"Pin %ld"), (long) row];
         }
+
+            //todo temporary as part of device 21 impl
+        case SFIDevicePropertyType_UNKNOWN: {
+            NSInteger row = index + 1;
+            return [NSString stringWithFormat:@"%ld", (long) row];
+        };
 
         default: {
             return @"";

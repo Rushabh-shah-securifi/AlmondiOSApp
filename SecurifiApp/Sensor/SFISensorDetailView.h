@@ -16,6 +16,8 @@
 // called when Save button is pressed
 - (void)sensorDetailViewDidPressSaveButton:(SFISensorDetailView*)view;
 
+- (void)sensorDetailViewDidPressShowLogsButton:(SFISensorDetailView*)view;
+
 - (void)sensorDetailViewWillStartMakingChanges:(SFISensorDetailView*)view;
 
 - (void)sensorDetailViewDidCompleteMakingChanges:(SFISensorDetailView*)view;

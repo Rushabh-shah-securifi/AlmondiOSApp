@@ -13,8 +13,8 @@
 #import "UIFont+Securifi.h"
 #import "UIViewController+Securifi.h"
 #import "SFIPreferences.h"
-#import "UIImage+Securifi.h"
 #import "MessageView.h"
+#import "SFINotificationsViewController.h"
 
 @interface SFISensorsViewController () <SFISensorTableViewCellDelegate, MessageViewDelegate>
 @property(nonatomic, readonly) SFIAlmondPlus *almond;
@@ -663,6 +663,23 @@
     self.isSensorChangeCommandSuccessful = FALSE;
     self.isUpdatingDeviceSettings = NO;
     self.enableDrawer = YES;
+}
+
+- (void)tableViewCellDidPressShowLogs:(SFISensorTableViewCell *)cell {
+    if (self.isViewControllerDisposed) {
+        return;
+    }
+
+    SFIDevice *device = cell.device;
+
+    SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+//        ctrl.enableDebugMode = YES; // can uncomment for development/test
+    ctrl.markAllViewedOnDismiss = NO;
+    ctrl.deviceID = device.deviceID;
+    ctrl.almondMac = self.almondMac;
+
+    UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    [self presentViewController:nav_ctrl animated:YES completion:nil];
 }
 
 - (void)tableViewCellDidDismissTamper:(SFISensorTableViewCell *)cell {
