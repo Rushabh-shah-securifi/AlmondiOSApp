@@ -24,6 +24,7 @@
 #import "SFICardViewSummaryCell.h"
 #import "MessageView.h"
 #import "TableHeaderView.h"
+#import "SFIRouterVersionTableViewCell.h"
 
 #define DEF_WIRELESS_SETTINGS_SECTION   0
 #define DEF_DEVICES_AND_USERS_SECTION   1
@@ -770,7 +771,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 - (UITableViewCell *)createSoftwareVersionCell:(UITableView *)tableView {
-    NSString *const cell_id = @"software";
+    NSString *const cell_id = @"software_summary";
 
     SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
@@ -798,6 +799,22 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     else {
         cell.summaries = @[NSLocalizedString(@"router.software-version.Not available", @"Version information is not available.")];
     }
+
+    return cell;
+}
+
+- (UITableViewCell *)createSoftwareVersionEditCell:(UITableView *)tableView {
+    NSString *const cell_id = @"software_edit";
+
+    SFIRouterVersionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+    if (cell == nil) {
+        cell = [[SFIRouterVersionTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
+    }
+    [cell markReuse];
+
+    cell.cardView.backgroundColor = [[SFIColors redColor] color];
+    cell.newAlmondFirmwareVersionAvailable = self.newAlmondFirmwareVersionAvailable;
+    cell.firmwareVersion = self.routerSummary.firmwareVersion;
 
     return cell;
 }
