@@ -272,8 +272,11 @@
 }
 
 - (UIButton*)makeButton:(id)target action:(SEL)action buttonTitle:(NSString *)buttonTitle {
-    CGFloat width = CGRectGetWidth(self.frame);
-    CGRect frame = CGRectMake(width - 70, self.baseYCoordinate, 60, 30);
+    const CGFloat width = CGRectGetWidth(self.frame);
+    const CGFloat button_width = 60;
+    const CGFloat right_padding = 10;
+
+    CGRect frame = CGRectMake(width - (button_width + right_padding), self.baseYCoordinate, button_width, 30);
 
     UIFont *heavy_font = [UIFont securifiBoldFont];
     UIColor *whiteColor = [UIColor whiteColor];
@@ -290,6 +293,24 @@
     [button addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     button.layer.borderWidth = 1.0f;
     button.layer.borderColor = whiteColor.CGColor;
+
+    // size the button to fit the text and add padding to the button
+    [button sizeToFit];
+    frame = CGRectInset(button.frame, -right_padding, 0);
+
+    // then ensure right border is flush right with specified padding
+    CGFloat max_x = CGRectGetMaxX(frame);
+    if (max_x >= width) {
+        frame = CGRectOffset(frame, -(max_x - width + right_padding), 0);
+    }
+    else if ((width - max_x) < right_padding) {
+        frame = CGRectOffset(frame, -(right_padding - width - max_x), 0);
+    }
+    else if ((width - max_x) > right_padding) {
+        frame = CGRectOffset(frame, (width - max_x - right_padding), 0);
+    }
+
+    button.frame = frame;
 
     return button;
 }

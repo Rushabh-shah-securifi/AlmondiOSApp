@@ -9,7 +9,7 @@
 @interface SFICardViewSummaryCell : SFICardTableViewCell
 
 // card title
-@property(nonatomic) NSString *title;
+@property(nonatomic, copy) NSString *title;
 
 // summary messages to be shown
 @property(nonatomic) NSArray *summaries;
