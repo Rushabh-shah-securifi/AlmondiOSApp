@@ -54,6 +54,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 @interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate>
 @property SFIAlmondPlus *currentAlmond;
 @property BOOL newAlmondFirmwareVersionAvailable;
+@property NSString *latestAlmondVersionAvailable;
 @property enum AlmondSupportsSendLogs almondSupportsSendLogs;
 @property enum SFIRouterTableViewActionsMode sendLogsEditCellMode; // set during command response callback and reset when almond is changed and view is refreshed
 
@@ -290,7 +291,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         return;
     }
 
-    [[SecurifiToolkit sharedInstance] asyncUpdateAlmondFirmware:self.almondMac];
+    [[SecurifiToolkit sharedInstance] asyncUpdateAlmondFirmware:self.almondMac firmwareVersion:self.latestAlmondVersionAvailable];
 }
 
 - (void)sendRebootAlmondCommand {
@@ -1173,6 +1174,27 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                 break;
             };
 
+            case SFIGenericRouterCommandType_UPDATE_FIRMWARE_RESPONSE: {
+                if (!genericRouterCommand.commandSuccess) {
+                    [self.HUD hide:YES afterDelay:1];
+                    break;
+                }
+
+                unsigned int percentage = genericRouterCommand.completionPercentage;
+
+                if (percentage > 0) {
+                    NSString *msg = NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.");
+                    msg = [msg stringByAppendingFormat:@" (%i%%)", percentage];
+                    [self showHUD:msg];
+                }
+
+                if (percentage == 100) {
+                    [self.HUD hide:YES afterDelay:1];
+                }
+
+                break;
+            };
+
             case SFIGenericRouterCommandType_REBOOT:
             case SFIGenericRouterCommandType_BLOCKED_CONTENT:
             default:
@@ -1243,15 +1265,15 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
 
     NSString *decodedString = [[NSString alloc] initWithData:genericData encoding:NSUTF8StringEncoding];
-    SFIGenericRouterCommand *genericRouterCommand = [[SFIParser alloc] loadDataFromString:decodedString];
-    DLog(@"Command Type %d", genericRouterCommand.commandType);
+    SFIGenericRouterCommand *command = [[SFIParser alloc] loadDataFromString:decodedString];
+    DLog(@"Command Type %d", command.commandType);
 
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.disposed) {
             return;
         }
 
-        switch (genericRouterCommand.commandType) {
+        switch (command.commandType) {
             case SFIGenericRouterCommandType_REBOOT: {
                 BOOL wasRebooting = self.isRebooting;
                 self.isRebooting = NO;
@@ -1262,11 +1284,15 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
                     //todo handle failure case
                     [self showHUD:NSLocalizedString(@"router.hud.Router is now online.", @"Router is now online.")];
-                    [self.HUD hide:YES afterDelay:1];
                 }
+
+                [self.HUD hide:YES afterDelay:1];
                 break;
             }
+
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
+                [self.HUD hide:YES afterDelay:1];
+                break;
             }
 
             default:
@@ -1464,9 +1490,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 - (void)versionCheckerDidQueryVersion:(SFIAlmondPlus *)checkedAlmond result:(enum AlmondVersionCheckerResult)result currentVersion:(NSString *)currentVersion latestVersion:(NSString *)latestAlmondVersion {
-    if (result != AlmondVersionCheckerResult_currentOlderThanLatest) {
-        return;
-    }
+    BOOL newVersionAvailable = (result == AlmondVersionCheckerResult_currentOlderThanLatest);
 
     dispatch_async(dispatch_get_main_queue(), ^() {
         SFIAlmondPlus *currentAlmond = self.currentAlmond;
@@ -1479,17 +1503,21 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             return;
         }
 
-        TableHeaderView *view = [TableHeaderView newAlmondVersionMessage];
-        view.frame = CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), 100);
-        view.backgroundColor = [UIColor whiteColor];
-        view.delegate = self;
+        self.newAlmondFirmwareVersionAvailable = newVersionAvailable;
+        self.latestAlmondVersionAvailable = latestAlmondVersion;
 
-        [UIView animateWithDuration:0.50 animations:^() {
-            self.tableView.tableHeaderView = view;
-        }];
+        if (newVersionAvailable) {
+            TableHeaderView *view = [TableHeaderView newAlmondVersionMessage];
+            view.frame = CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), 100);
+            view.backgroundColor = [UIColor whiteColor];
+            view.delegate = self;
 
-        self.newAlmondFirmwareVersionAvailable = YES;
-        [self tryReloadSection:DEF_ROUTER_VERSION_SECTION];
+            [UIView animateWithDuration:0.50 animations:^() {
+                self.tableView.tableHeaderView = view;
+            }];
+
+            [self tryReloadSection:DEF_ROUTER_VERSION_SECTION];
+        }
     });
 }
 

@@ -65,5 +65,4 @@
 #define BLOCKED_CONTENT_SUMMARY @"AlmondBlockedContentSummary"
 #define FIRMWARE_VERSION @"FirmwareVersion"
 
-
 #endif

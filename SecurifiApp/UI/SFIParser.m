@@ -13,6 +13,11 @@
 #define ROUTER_SEND_LOGS_SUCCESS    @"success"
 #define ROUTER_SEND_LOGS_REASON     @"Reason"
 
+// software update
+#define ROUTER_SOFTWARE_UPDATE @"FirmwareUpdateResponse"
+#define ROUTER_SOFTWARE_UPDATE_SUCCESS @"success"
+#define ROUTER_SOFTWARE_UPDATE_PERCENTAGE @"Percentage"
+
 
 @implementation SFIParser
 
@@ -145,11 +150,13 @@
         genericCommandResponse.commandType = SFIGenericRouterCommandType_SEND_LOGS_RESPONSE;
         genericCommandResponse.commandSuccess = [[attributeDict valueForKey:ROUTER_SEND_LOGS_SUCCESS] isEqualToString:@"true"];
     }
+    else if ([elementName isEqualToString:ROUTER_SOFTWARE_UPDATE]) {
+        genericCommandResponse.commandType = SFIGenericRouterCommandType_UPDATE_FIRMWARE_RESPONSE;
+        genericCommandResponse.commandSuccess = [[attributeDict valueForKey:ROUTER_SOFTWARE_UPDATE_SUCCESS] isEqualToString:@"true"];
+    }
 }
 
 - (void)parser:(NSXMLParser *)xmlParser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName {
-    DLog(@"End Element: %@", elementName);
-
     if ([elementName isEqualToString:REBOOT]) {
         [routerReboot setReboot:(unsigned int) [currentNodeContent intValue]];
         genericCommandResponse.command = routerReboot;
@@ -240,6 +247,18 @@
     }
     else if ([elementName isEqualToString:ROUTER_SEND_LOGS_REASON]) {
         genericCommandResponse.responseMessage = currentNodeContent;
+    }
+    else if (genericCommandResponse.commandType == SFIGenericRouterCommandType_UPDATE_FIRMWARE_RESPONSE) {
+        if ([elementName isEqualToString:ROUTER_SOFTWARE_UPDATE_PERCENTAGE]) {
+            NSMutableString *value = currentNodeContent;
+            @try {
+                int num = value.intValue;
+                self.genericCommandResponse.completionPercentage = (unsigned int) num;
+            }
+            @catch (NSException *ex) {
+                NSLog(@"Failed to parse the completion percentage: %@, ex:%@", value, ex.description);
+            }
+        }
     }
 }
 
