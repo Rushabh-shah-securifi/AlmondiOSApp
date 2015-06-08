@@ -21,6 +21,8 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 - (void)markMemoryWarning;
 
+- (void)markRouterUpdateFirmware;
+
 - (void)markRouterReboot;
 
 - (void)markSendRouterLogs;

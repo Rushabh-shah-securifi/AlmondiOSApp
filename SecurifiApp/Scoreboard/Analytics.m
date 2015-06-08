@@ -69,6 +69,10 @@
     [self markEvent:@"app_mem_warn"];
 }
 
+- (void)markRouterUpdateFirmware {
+    [self markEvent:@"router_update_firmware"];
+}
+
 - (void)markRouterReboot {
     [self markEvent:@"router_reboot"];
 }
