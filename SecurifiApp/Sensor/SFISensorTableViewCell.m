@@ -366,7 +366,7 @@
         }
 
         case SFIDeviceType_ZigbeeDoorLock_28: {
-            [self configureBinaryStateSensorImageNameZeroValue:DT5_DOOR_LOCK_UNLOCKED imageNameNonZeroValue:DT5_DOOR_LOCK_LOCKED statusZeroValue:@"LOCKED" statusNonZeroValue:@"UNLOCKED"];
+            [self configureZigbeeDoorLock_28];
             break;
         }
 
@@ -768,6 +768,37 @@
     }
     [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
+}
+
+- (void)configureZigbeeDoorLock_28 {
+    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
+    if (!values) {
+        [self configureUnknownDevice];
+        return;
+    }
+
+    NSString *imageName;
+    NSString *status;
+
+    switch (values.intValue) {
+        case 0: // SFIDeviceType_ZigbeeDoorLock_28_LOCKED
+            imageName = DT5_DOOR_LOCK_UNLOCKED;
+            status = @"UNLOCKED";
+            break;
+        case 1: // SFIDeviceType_ZigbeeDoorLock_28_LOCKED
+            imageName = DT5_DOOR_LOCK_LOCKED;
+            status = @"LOCKED";
+            break;
+        case 2: // SFIDeviceType_ZigbeeDoorLock_28_UNLOCKED
+            imageName = DT5_DOOR_LOCK_UNLOCKED;
+            status = @"UNLOCKED";
+            break;
+        default:
+            imageName = [self imageNameForNoValue];
+            status = DEF_COULD_NOT_UPDATE_SENSOR;
+    }
+
+    [self configureSensorImageName:imageName statusMesssage:status];
 }
 
 - (void)configureMoistureSensor_40 {

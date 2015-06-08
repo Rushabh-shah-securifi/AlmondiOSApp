@@ -674,6 +674,7 @@
 
     SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
 //        ctrl.enableDebugMode = YES; // can uncomment for development/test
+    ctrl.enableDeleteNotification = NO;
     ctrl.markAllViewedOnDismiss = NO;
     ctrl.deviceID = device.deviceID;
     ctrl.almondMac = self.almondMac;
