@@ -285,6 +285,14 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
 #pragma mark - Commands
 
+- (void)sendUpdateAlmondFirmwareCommand {
+    if (self.routerViewState == RouterViewState_no_almond) {
+        return;
+    }
+
+    [[SecurifiToolkit sharedInstance] asyncUpdateAlmondFirmware:self.almondMac];
+}
+
 - (void)sendRebootAlmondCommand {
     if (self.routerViewState == RouterViewState_no_almond) {
         return;
@@ -352,6 +360,10 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [self onExpandCloseSection:self.tableView section:DEF_ROUTER_REBOOT_SECTION];
 }
 
+- (void)onEditRouterSoftwareCard:(id)sender {
+    [self onExpandCloseSection:self.tableView section:DEF_ROUTER_VERSION_SECTION];
+}
+
 - (void)onEditSendLogsCard:(id)sender {
     [self onExpandCloseSection:self.tableView section:DEF_ROUTER_SEND_LOGS_SECTION];
 }
@@ -412,6 +424,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             return 1 + self.currentExpandedCount;
         case DEF_DEVICES_AND_USERS_SECTION:
             return 1 + self.currentExpandedCount;
+        case DEF_ROUTER_VERSION_SECTION:
+            return 1 + self.currentExpandedCount;
         case DEF_ROUTER_REBOOT_SECTION:
             return 1 + self.currentExpandedCount;
         case DEF_ROUTER_SEND_LOGS_SECTION:
@@ -463,6 +477,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         case DEF_DEVICES_AND_USERS_SECTION:
             if (indexPath.row > 0) {
                 return 85;
+            }
+
+        case DEF_ROUTER_VERSION_SECTION:
+            if (indexPath.row > 0) {
+                return 95;
             }
 
         case DEF_ROUTER_REBOOT_SECTION:
@@ -518,7 +537,12 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                     }
 
                 case DEF_ROUTER_VERSION_SECTION:
-                    return [self createSoftwareVersionCell:tableView];
+                    switch (indexPath.row) {
+                        case 0:
+                            return [self createSoftwareVersionCell:tableView];
+                        default:
+                            return [self createSoftwareVersionEditCell:tableView];
+                    }
 
                 case DEF_ROUTER_REBOOT_SECTION:
                     switch (indexPath.row) {
@@ -780,7 +804,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [cell markReuse];
     cell.cardView.backgroundColor = [[SFIColors redColor] color];
 
-    const BOOL newVersionAvailable = self.newAlmondFirmwareVersionAvailable;
+    const BOOL newVersionAvailable = YES;//self.newAlmondFirmwareVersionAvailable;
 
     cell.title = newVersionAvailable ? @"Software Version *" : @"Software Version";
 
@@ -800,6 +824,15 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         cell.summaries = @[NSLocalizedString(@"router.software-version.Not available", @"Version information is not available.")];
     }
 
+    if (newVersionAvailable) {
+        cell.editTarget = self;
+        cell.editSelector = @selector(onEditRouterSoftwareCard:);
+    }
+    else {
+        cell.editTarget = nil;
+        cell.editSelector = nil;
+    }
+
     return cell;
 }
 
@@ -809,12 +842,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     SFIRouterVersionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[SFIRouterVersionTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
+        cell.delegate = self;
     }
     [cell markReuse];
 
     cell.cardView.backgroundColor = [[SFIColors redColor] color];
-    cell.newAlmondFirmwareVersionAvailable = self.newAlmondFirmwareVersionAvailable;
-    cell.firmwareVersion = self.routerSummary.firmwareVersion;
 
     return cell;
 }
@@ -1016,6 +1048,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                 self.currentExpandedSection = @(DEF_DEVICES_AND_USERS_SECTION);
                 self.currentExpandedCount = self.connectedDevices.count + self.blockedDevices.count;
                 [self tryReloadSection:DEF_DEVICES_AND_USERS_SECTION];
+            }
+            else if (section == DEF_ROUTER_VERSION_SECTION) {
+                self.currentExpandedSection = @(DEF_ROUTER_VERSION_SECTION);
+                self.currentExpandedCount = 1;
+                [self tryReloadSection:DEF_ROUTER_VERSION_SECTION];
             }
             else if (section == DEF_ROUTER_REBOOT_SECTION) {
                 self.currentExpandedSection = @(DEF_ROUTER_REBOOT_SECTION);
@@ -1298,6 +1335,21 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         [self onExpandCloseSection:self.tableView section:DEF_ROUTER_REBOOT_SECTION];
 
         [[Analytics sharedInstance] markRouterReboot];
+    });
+}
+
+- (void)onUpdateRouterFirmwareActionCalled {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
+
+        [self showHUD:NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.")];
+
+        [self sendUpdateAlmondFirmwareCommand];
+        [self onExpandCloseSection:self.tableView section:DEF_ROUTER_VERSION_SECTION];
+
+        [[Analytics sharedInstance] markRouterUpdateFirmware];
     });
 }
 

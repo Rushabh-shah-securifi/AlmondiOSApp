@@ -12,6 +12,8 @@
 
 - (void)onRebootRouterActionCalled;
 
+- (void)onUpdateRouterFirmwareActionCalled;
+
 - (void)onSendLogsActionCalled:(NSString*)problemDescription;
 
 - (void)onEnableDevice:(SFIWirelessSetting *)setting enabled:(BOOL)isEnabled;

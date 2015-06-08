@@ -8,11 +8,8 @@
 
 @protocol SFIRouterTableViewActions;
 
-@interface SFIRouterVersionTableViewCell : SFICardViewSummaryCell
+@interface SFIRouterVersionTableViewCell : SFICardTableViewCell
 
 @property(nonatomic, weak) id <SFIRouterTableViewActions> delegate;
-
-@property(nonatomic, copy) NSString *firmwareVersion;
-@property(nonatomic) BOOL newAlmondFirmwareVersionAvailable;
 
 @end
