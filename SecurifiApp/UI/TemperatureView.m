@@ -13,6 +13,7 @@
 @property(nonatomic) UILabel *deviceValueLabel;
 @property(nonatomic) UILabel *decimalValueLabel;
 @property(nonatomic) UILabel *degreeLabel;
+@property(nonatomic) UILabel *descriptionLabel;
 @end
 
 @implementation TemperatureView
@@ -43,18 +44,52 @@
 
     // For Degree
     [self.degreeLabel removeFromSuperview];
-    self.degreeLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 20, 25, 20, 20)];
+    self.degreeLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 20, 25, 40, 30)];
     self.degreeLabel.backgroundColor = clear_color;
     self.degreeLabel.textColor = white_color;
-    self.degreeLabel.textAlignment = NSTextAlignmentCenter;
+    self.degreeLabel.textAlignment = NSTextAlignmentLeft;
     self.degreeLabel.font = [UIFont standardHeadingBoldFont];
-    self.degreeLabel.text = DEF_DEGREES_SYMBOL; // degree sign
 
     [self addSubview:self.deviceValueLabel];
     [self addSubview:self.decimalValueLabel];
     [self addSubview:self.degreeLabel];
 
     [self setTemperatureValue:self.temperature];
+
+    if (self.label) {
+        [self.descriptionLabel removeFromSuperview];
+        self.descriptionLabel = [[UILabel alloc] initWithFrame:self.frame];
+        self.descriptionLabel.backgroundColor = clear_color;
+        self.descriptionLabel.textColor = white_color;
+        self.descriptionLabel.textAlignment = NSTextAlignmentCenter;
+        self.descriptionLabel.font = [UIFont standardUILabelFont];
+        self.descriptionLabel.text = self.label;
+        //
+        [self.descriptionLabel sizeToFit];
+        self.descriptionLabel.frame = [self pinToButton:self.descriptionLabel.frame];
+
+        [self addSubview:self.descriptionLabel];
+    }
+}
+
+- (NSString *)degreeLabelText {
+    if (self.unitsSymbol) {
+        return [NSString stringWithFormat:@"%@%@", DEF_DEGREES_SYMBOL, self.unitsSymbol];
+    }
+    else {
+        return DEF_DEGREES_SYMBOL;
+    }
+}
+
+- (CGRect)pinToButton:(CGRect)frame {
+    CGFloat super_height = CGRectGetHeight(self.frame);
+    CGFloat cell_y = CGRectGetMaxY(frame);
+    CGFloat cell_height = CGRectGetHeight(frame);
+    CGFloat y_offset = super_height - cell_height - cell_y;
+
+    CGFloat super_width = CGRectGetWidth(self.frame);
+
+    return CGRectMake(10, y_offset, super_width, cell_height);
 }
 
 - (void)setTemperatureValue:(NSString *)value {
@@ -101,7 +136,7 @@
         self.degreeLabel.text = degreesValue;
     }
     else {
-        self.degreeLabel.text = DEF_DEGREES_SYMBOL;
+        self.degreeLabel.text = [self degreeLabelText];
     }
 
     NSUInteger integerValue_length = [integerValue length];

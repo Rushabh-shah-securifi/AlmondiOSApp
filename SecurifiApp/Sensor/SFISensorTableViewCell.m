@@ -444,8 +444,11 @@
     [self configureSensorImageName:DEVICE_UNKNOWN_IMAGE statusMesssage:nil];
 }
 
-- (void)configureTemperatureView:(NSString *)temperatureValue {
-    self.deviceTemperatureView.temperature = temperatureValue;
+- (void)configureTemperatureView:(NSString *)temperatureValue description:(NSString *)description unitsSymbol:(NSString *)unitsSymbol {
+    TemperatureView *view = self.deviceTemperatureView;
+    view.temperature = temperatureValue;
+    view.unitsSymbol = unitsSymbol;
+    view.label = description;
 }
 
 #pragma mark - Changed values
@@ -629,7 +632,7 @@
 
     // Calculate values
     NSString *value = [deviceValue valueForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
-    [self configureTemperatureView:value];
+    [self configureTemperatureView:value description:nil unitsSymbol:nil];
 }
 
 - (void)configureKeyFob_19 {
@@ -677,7 +680,7 @@
 
 - (void)configureTempSensor_27 {
     NSString *temp = [self.deviceValue valueForProperty:SFIDevicePropertyType_TEMPERATURE default:@""];
-    [self configureTemperatureView:temp];
+    [self configureTemperatureView:temp description:nil unitsSymbol:nil];
 
     NSMutableArray *status = [NSMutableArray array];
     NSString *humidity = [self.deviceValue valueForProperty:SFIDevicePropertyType_HUMIDITY default:@""];
@@ -779,7 +782,7 @@
         setPoint = [setPoint stringByAppendingString:degrees_symbol];
     }
 
-    NSString *state = [NSString stringWithFormat:@"Set to %@%@", setPoint, tempUnits];
+    NSString *state = [NSString stringWithFormat:@"SET POINT %@%@", setPoint, tempUnits];
 
     NSMutableArray *status = [NSMutableArray array];
     [status addObject:state];
@@ -787,7 +790,7 @@
     [self setDeviceStatusMessages:status];
 
     // Calculate values
-    [self configureTemperatureView:temperature];
+    [self configureTemperatureView:temperature description:@"Temperature" unitsSymbol:tempUnits];
 }
 
 - (void)configureColorDimmableLight_32:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
