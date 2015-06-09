@@ -1780,6 +1780,29 @@
             break;
         };
 
+        case SFIDeviceType_SetPointThermostat_46: {
+            if (type == SFIDevicePropertyType_THERMOSTAT_SETPOINT) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = @"27_thermostat";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = @"'s temperature set point changed to ";
+
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_TEMPERATURE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = @"27_thermostat";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = @"'s temperature changed to ";
+
+                return @[s1];
+            }
+
+            break;
+        };
+
         case SFIDeviceType_HueLamp_48:
             if (type == SFIDevicePropertyType_SWITCH_BINARY) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
