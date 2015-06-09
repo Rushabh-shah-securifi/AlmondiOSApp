@@ -805,7 +805,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [cell markReuse];
     cell.cardView.backgroundColor = [[SFIColors redColor] color];
 
-    const BOOL newVersionAvailable = YES;//self.newAlmondFirmwareVersionAvailable;
+    const BOOL newVersionAvailable = self.newAlmondFirmwareVersionAvailable;
 
     cell.title = newVersionAvailable ? @"Software Version *" : @"Software Version";
 
@@ -861,7 +861,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     }
 
     [cell markReuse];
-    cell.cardView.backgroundColor = [[SFIColors pinkColor] color];
+
     cell.title = NSLocalizedString(@"router.card-title.Router Reboot", @"Router Reboot");
 
     NSArray *summary;
@@ -883,6 +883,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     cell.expanded = [self isSectionExpanded:DEF_ROUTER_REBOOT_SECTION];
     cell.editTarget = self;
     cell.editSelector = @selector(onEditRouterRebootCard:);
+
+    SFICardView *card = cell.cardView;
+    card.backgroundColor = [[SFIColors pinkColor] color];
 
     return cell;
 }
