@@ -7,6 +7,7 @@
 
 @class SFIColors;
 @class SFISensorTableViewCell;
+@class TemperatureView;
 
 @protocol SFISensorTableViewCellDelegate
 

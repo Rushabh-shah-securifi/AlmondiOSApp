@@ -207,6 +207,11 @@
             break;
         };
 
+        case SFIDeviceType_SetPointThermostat_46: {
+            [self configureSetPointThermostat_46];
+            break;
+        };
+
         case SFIDeviceType_ColorDimmableLight_32: {
             [self configureColorDimmableLight_32];
             break;
@@ -1059,6 +1064,12 @@
     [self addLine];
 }
 
+- (void)configureSetPointThermostat_46 {
+    [self addHorizontalPicker:NSLocalizedString(@"sensor.thermostat.field-label.Set Point", @"Set Point") propertyType:SFIDevicePropertyType_THERMOSTAT_SETPOINT selectionPointMiddle:YES];
+    [self addLine];
+    [self markYOffset:5];
+}
+
 /*
 ColorDimmableLight device has 5 index
 1 - SWITCH MULTILEVEL	= level range - (0-255)
@@ -1319,6 +1330,9 @@ HUE	                3	Decimal		0-65535	Yes
         case SFIDeviceType_OccupancySensor_24:
             return 295 + extra;
 
+        case SFIDeviceType_SetPointThermostat_46:
+            return 295 + extra;
+
         case SFIDeviceType_ColorDimmableLight_32:
             return 560 + extra;
 
@@ -1376,6 +1390,7 @@ HUE	                3	Decimal		0-65535	Yes
 // converts the known value into an picker view element index
 - (NSInteger)getPickerViewSelectedIndex:(SFIDevicePropertyType)propertyType {
     switch (propertyType) {
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT:
         case SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING:
         case SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING: {
             // thermostat
@@ -1416,6 +1431,7 @@ HUE	                3	Decimal		0-65535	Yes
     SFIDevicePropertyType propertyType = (SFIDevicePropertyType) picker.tag;
 
     switch (propertyType) {
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT:
         case SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING:
         case SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING: {
             // thermostat
@@ -1451,6 +1467,7 @@ HUE	                3	Decimal		0-65535	Yes
     SFIDevicePropertyType propertyType = (SFIDevicePropertyType) picker.tag;
 
     switch (propertyType) {
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT:
         case SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING:
         case SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING: {
             // thermostat
@@ -1482,6 +1499,7 @@ HUE	                3	Decimal		0-65535	Yes
     SFIDevicePropertyType propertyType = (SFIDevicePropertyType) picker.tag;
 
     switch (propertyType) {
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT:
         case SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING:
         case SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING: {
             // thermostat
@@ -1511,6 +1529,7 @@ HUE	                3	Decimal		0-65535	Yes
     SFIDevicePropertyType propertyType = (SFIDevicePropertyType) picker.tag;
 
     switch (propertyType) {
+        case SFIDevicePropertyType_THERMOSTAT_SETPOINT:
         case SFIDevicePropertyType_THERMOSTAT_SETPOINT_HEATING:
         case SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING: {
             // thermostat

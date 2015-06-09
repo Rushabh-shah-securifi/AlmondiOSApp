@@ -144,6 +144,7 @@
 		1DF030400DB881AFAEF263C4 /* UIImage+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03BE3E401DD252BA24127 /* UIImage+Securifi.m */; };
 		1DF0304B3CD98B217E85940D /* ILSaturationBrightnessPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */; };
 		1DF030E39A245683EABC61AE /* SFIRouterVersionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039C1E7F34EC59EC5AF78 /* SFIRouterVersionTableViewCell.m */; };
+		1DF031024A2F8810074C455A /* TemperatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF038EE4B26640DB5168126 /* TemperatureView.m */; };
 		1DF031661E380BA4D0E0EB07 /* SFIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0364AFED818925B9469F3 /* SFIPreferences.m */; };
 		1DF0317AA50784DE447F9449 /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03A704CC540558B993529 /* CircleView.m */; };
 		1DF0318D09F8B1DBAF74C090 /* SFINotificationTableViewHeaderFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF031B6B99795E6267FEAD7 /* SFINotificationTableViewHeaderFooter.m */; };
@@ -163,6 +164,7 @@
 		1DF0358BE9EBF2A3821D948D /* TableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0306EC5BE52D6364936BE /* TableHeaderView.m */; };
 		1DF0362BB7839519E771D769 /* SensorIndexSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */; };
 		1DF0364AEDD2A4A73832CE5D /* SensorSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03845038413D52AF4100D /* SensorSupport.m */; };
+		1DF03678B3BE5D42EBE3DC2B /* TemperatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF038EE4B26640DB5168126 /* TemperatureView.m */; };
 		1DF0369581F25A08C2D53894 /* SFINotificationStatusBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */; };
 		1DF03698BAF3152723335005 /* UIImage+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03BE3E401DD252BA24127 /* UIImage+Securifi.m */; };
 		1DF036E2B7339D81255297B9 /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033BFB3D6B1769127310B /* NSData+Conversion.m */; };
@@ -374,6 +376,7 @@
 		1DF03845038413D52AF4100D /* SensorSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorSupport.m; sourceTree = "<group>"; };
 		1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSaturationBrightnessPickerView.m; sourceTree = "<group>"; };
 		1DF0385D1BECF622A4B92311 /* NotificationsTestStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTestStore.m; sourceTree = "<group>"; };
+		1DF038EE4B26640DB5168126 /* TemperatureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemperatureView.m; sourceTree = "<group>"; };
 		1DF0395BA425DCA3D278FFDB /* SFINotificationTableViewHeaderFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFINotificationTableViewHeaderFooter.h; sourceTree = "<group>"; };
 		1DF039C1E7F34EC59EC5AF78 /* SFIRouterVersionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterVersionTableViewCell.m; sourceTree = "<group>"; };
 		1DF039D08131F3EA14BFDD9F /* SFIRouterSendLogsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterSendLogsTableViewCell.m; sourceTree = "<group>"; };
@@ -385,6 +388,7 @@
 		1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFINotificationStatusBarButtonItem.m; sourceTree = "<group>"; };
 		1DF03BB31530783920FAF4C4 /* SFIRouterSendLogsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterSendLogsTableViewCell.h; sourceTree = "<group>"; };
 		1DF03BE3E401DD252BA24127 /* UIImage+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Securifi.m"; sourceTree = "<group>"; };
+		1DF03BFFD8B11303DBD84977 /* TemperatureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemperatureView.h; sourceTree = "<group>"; };
 		1DF03C29C7F6403672992843 /* DebugLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugLogger.m; sourceTree = "<group>"; };
 		1DF03C895FD75AA97DDF3AC5 /* IndexValueSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexValueSupport.m; sourceTree = "<group>"; };
 		1DF03CD23CCAD6D4BF0CF82A /* SensorIndexSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorIndexSupport.h; sourceTree = "<group>"; };
@@ -638,6 +642,8 @@
 				1DF03CFE840766B75CCB941E /* MessageView.h */,
 				1DF0306EC5BE52D6364936BE /* TableHeaderView.m */,
 				1DF03E356EAA623CDDD27D0C /* TableHeaderView.h */,
+				1DF038EE4B26640DB5168126 /* TemperatureView.m */,
+				1DF03BFFD8B11303DBD84977 /* TemperatureView.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1162,6 +1168,7 @@
 				1DF03BDF11E412D1A07CE913 /* TableHeaderView.m in Sources */,
 				1DF038979554DAC51D42A7C8 /* SFIRouterSendLogsTableViewCell.m in Sources */,
 				1DF03DD5059A3900235BD95B /* SFIRouterVersionTableViewCell.m in Sources */,
+				1DF03678B3BE5D42EBE3DC2B /* TemperatureView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1243,6 +1250,7 @@
 				1DF0358BE9EBF2A3821D948D /* TableHeaderView.m in Sources */,
 				1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */,
 				1DF030E39A245683EABC61AE /* SFIRouterVersionTableViewCell.m in Sources */,
+				1DF031024A2F8810074C455A /* TemperatureView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

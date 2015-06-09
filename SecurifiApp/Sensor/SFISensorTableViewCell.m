@@ -7,6 +7,7 @@
 #import "SFIConstants.h"
 #import "SFISensorDetailView.h"
 #import "UIFont+Securifi.h"
+#import "TemperatureView.h"
 
 
 #define DEF_COULD_NOT_UPDATE_SENSOR @"Could not update sensor\ndata."
@@ -15,14 +16,12 @@
 @property(nonatomic) UIImageView *deviceImageView;
 @property(nonatomic) UIImageView *deviceImageViewSecondary;
 @property(nonatomic) UILabel *deviceStatusLabel;
-@property(nonatomic) UILabel *deviceValueLabel;
 @property(nonatomic, readonly) UILabel *deviceNameLabel;
 
-@property(nonatomic) SFISensorDetailView *detailView;
-
 // For thermostat
-@property(nonatomic) UILabel *decimalValueLabel;
-@property(nonatomic) UILabel *degreeLabel;
+@property(nonatomic) TemperatureView *deviceTemperatureView;
+
+@property(nonatomic) SFISensorDetailView *detailView;
 
 @property(nonatomic) BOOL dirty;
 @property(nonatomic) BOOL updatingState;
@@ -114,9 +113,7 @@
     }
     self.deviceImageView = nil;
     self.deviceStatusLabel = nil;
-    self.deviceValueLabel = nil;
-    self.decimalValueLabel = nil;
-    self.decimalValueLabel = nil;
+    self.deviceTemperatureView = nil;
 }
 
 - (void)layoutTileFrame {
@@ -188,42 +185,15 @@
 
 - (void)layoutDeviceImageCell {
     UIColor *clear_color = [UIColor clearColor];
-    UIColor *white_color = [UIColor whiteColor];
 
     UIButton *deviceImageButton = [UIButton buttonWithType:UIButtonTypeCustom];
     deviceImageButton.tag = self.tag;
     deviceImageButton.backgroundColor = clear_color;
     [deviceImageButton addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
 
-    if (self.device.deviceType == SFIDeviceType_Thermostat_7 || self.device.deviceType == SFIDeviceType_TemperatureSensor_27) {
-        // In case of thermostat show value instead of image
-        // For Integer Value
-        self.deviceValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH / 5, 12, 60, 70)];
-        self.deviceValueLabel.backgroundColor = clear_color;
-        self.deviceValueLabel.textColor = white_color;
-        self.deviceValueLabel.textAlignment = NSTextAlignmentCenter;
-        self.deviceValueLabel.font = [UIFont securifiBoldFont:45];
-        [self.deviceValueLabel addSubview:deviceImageButton];
-
-        // For Decimal Value
-        self.decimalValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 20, 40, 20, 30)];
-        self.decimalValueLabel.backgroundColor = clear_color;
-        self.decimalValueLabel.textColor = white_color;
-        self.decimalValueLabel.textAlignment = NSTextAlignmentCenter;
-        self.decimalValueLabel.adjustsFontSizeToFitWidth = YES;
-        self.decimalValueLabel.font = [UIFont securifiBoldFont:18];
-
-        // For Degree
-        self.degreeLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 20, 25, 20, 20)];
-        self.degreeLabel.backgroundColor = clear_color;
-        self.degreeLabel.textColor = white_color;
-        self.degreeLabel.textAlignment = NSTextAlignmentCenter;
-        self.degreeLabel.font = [UIFont standardHeadingBoldFont];
-        self.degreeLabel.text = @"\u00B0"; // degree sign
-
-        [self.contentView addSubview:self.deviceValueLabel];
-        [self.contentView addSubview:self.decimalValueLabel];
-        [self.contentView addSubview:self.degreeLabel];
+    if ([self needsTemperatureView]) {
+        self.deviceTemperatureView = [[TemperatureView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        [self.contentView addSubview:self.deviceTemperatureView];
     }
 
     // Set up the sensor icon views
@@ -241,6 +211,19 @@
     //
     self.deviceImageViewSecondary = [[UIImageView alloc] initWithFrame:imageView_frame];
     [self.contentView addSubview:self.deviceImageViewSecondary];
+}
+
+// Controls whether a TemperatureView is needed in the far left cell space.
+// Update this list as needed
+- (BOOL)needsTemperatureView {
+    switch (self.device.deviceType) {
+        case SFIDeviceType_Thermostat_7:
+        case SFIDeviceType_TemperatureSensor_27:
+        case SFIDeviceType_SetPointThermostat_46:
+            return YES;
+        default:
+            return NO;
+    }
 }
 
 - (void)layoutDeviceInfo {
@@ -284,7 +267,7 @@
         }
 
         case SFIDeviceType_Thermostat_7: {
-            [self showDeviceValueLabels:YES];
+            [self showDeviceTemperatureView:YES];
             [self configureThermostat_7];
             break;
         }
@@ -360,7 +343,7 @@
         }
 
         case SFIDeviceType_TemperatureSensor_27: {
-            [self showDeviceValueLabels:YES];
+            [self showDeviceTemperatureView:YES];
             [self configureTempSensor_27];
             break;
         }
@@ -425,6 +408,11 @@
             break;
         }
 
+        case SFIDeviceType_SetPointThermostat_46: {
+            [self configureSetPointThermostat_46];
+            break;
+        }
+
         case SFIDeviceType_HueLamp_48: {
             [self configureHueLamp_48:DT48_HUE_LAMP_TRUE imageNameFalse:DT48_HUE_LAMP_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
             break;
@@ -449,84 +437,15 @@
         default: {
             [self configureUnknownDevice];
         }
-    } // for each device
+    }; // for each device
 }
 
 - (void)configureUnknownDevice {
-//    [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"TRUE" statusFalse:@"FALSE"];
     [self configureSensorImageName:DEVICE_UNKNOWN_IMAGE statusMesssage:nil];
 }
 
-- (void)setTemperatureValue:(NSString *)value {
-    NSArray *tempValues = [value componentsSeparatedByString:@"."];
-    switch ([tempValues count]) {
-        case 0: {
-            [self setTemperatureIntegerValue:nil decimalValue:nil degreesValue:nil];
-            break;
-        }
-        case 1: {
-            [self setTemperatureIntegerValue:tempValues[0] decimalValue:nil degreesValue:nil];
-            break;
-        }
-        default: {
-            NSString *decimal = tempValues[1];
-            NSString *degrees = nil;
-
-            // check for embedded degrees marker
-            NSRange range = [decimal rangeOfString:@"\u00B0"];
-            if (range.length > 0) {
-                degrees = [decimal substringFromIndex:range.location];
-                decimal = [decimal substringToIndex:range.location];
-            }
-
-            [self setTemperatureIntegerValue:tempValues[0] decimalValue:decimal degreesValue:degrees];
-            break;
-        }
-    }
-}
-
-- (void)setTemperatureIntegerValue:(NSString *)integerValue decimalValue:(NSString *)decimalValue degreesValue:(NSString *)degreesValue {
-    UIFont *heavy_14 = [UIFont securifiBoldFontLarge];
-
-    self.deviceValueLabel.text = integerValue;
-
-    if (decimalValue.length > 0) {
-        self.decimalValueLabel.text = [NSString stringWithFormat:@".%@", decimalValue];
-    }
-    else {
-        self.decimalValueLabel.text = nil;
-    }
-
-    if (degreesValue.length > 0) {
-        self.degreeLabel.text = degreesValue;
-    }
-    else {
-        self.degreeLabel.text = @"\u00B0";
-    }
-
-    NSUInteger integerValue_length = [integerValue length];
-    if (integerValue_length == 1) {
-        self.decimalValueLabel.frame = CGRectMake((self.frame.size.width / 4) - 25, 40, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 25, 20, 20);
-    }
-    else if (integerValue_length == 3) {
-        self.deviceValueLabel.font = [heavy_14 fontWithSize:30];
-        self.decimalValueLabel.font = heavy_14;
-        self.degreeLabel.font = heavy_14;
-
-        self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 38, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 30, 20, 20);
-    }
-    else if (integerValue_length == 4) {
-        UIFont *heavy_10 = [heavy_14 fontWithSize:10];
-
-        self.deviceValueLabel.font = [heavy_14 fontWithSize:22];
-        self.decimalValueLabel.font = heavy_10;
-        self.degreeLabel.font = heavy_10;
-
-        self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 35, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 30, 20, 20);
-    }
+- (void)configureTemperatureView:(NSString *)temperatureValue {
+    self.deviceTemperatureView.temperature = temperatureValue;
 }
 
 #pragma mark - Changed values
@@ -710,7 +629,7 @@
 
     // Calculate values
     NSString *value = [deviceValue valueForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
-    [self setTemperatureValue:value];
+    [self configureTemperatureView:value];
 }
 
 - (void)configureKeyFob_19 {
@@ -758,7 +677,7 @@
 
 - (void)configureTempSensor_27 {
     NSString *temp = [self.deviceValue valueForProperty:SFIDevicePropertyType_TEMPERATURE default:@""];
-    [self setTemperatureValue:temp];
+    [self configureTemperatureView:temp];
 
     NSMutableArray *status = [NSMutableArray array];
     NSString *humidity = [self.deviceValue valueForProperty:SFIDevicePropertyType_HUMIDITY default:@""];
@@ -779,6 +698,8 @@
 
     NSString *imageName;
     NSString *status;
+
+    //todo this indicates insufficient abstraction; we should be able to push this logic direction into SFIDeviceKnownValues and SFIDevice
 
     switch (values.intValue) {
         case 0: // SFIDeviceType_ZigbeeDoorLock_28_LOCKED
@@ -843,6 +764,31 @@
     self.deviceImageView.image = [UIImage imageNamed:imageName];
 }
 
+- (void)configureSetPointThermostat_46 {
+    SFIDeviceValue *const deviceValue = self.deviceValue;
+
+    // Status label
+    NSString *setPoint = [deviceValue valueForProperty:SFIDevicePropertyType_THERMOSTAT_SETPOINT default:@"-"];
+    NSString *tempUnits = [deviceValue valueForProperty:SFIDevicePropertyType_UNITS default:@""];
+    NSString *temperature = [deviceValue valueForProperty:SFIDevicePropertyType_TEMPERATURE default:@""];
+
+    NSString *const degrees_symbol = @"\u00B0";
+
+    if ([setPoint rangeOfString:degrees_symbol].length == 0) {
+        // no degrees so add one
+        setPoint = [setPoint stringByAppendingString:degrees_symbol];
+    }
+
+    NSString *state = [NSString stringWithFormat:@"Set to %@%@", setPoint, tempUnits];
+
+    NSMutableArray *status = [NSMutableArray array];
+    [status addObject:state];
+    [self tryAddBatteryStatusMessage:status];
+    [self setDeviceStatusMessages:status];
+
+    // Calculate values
+    [self configureTemperatureView:temperature];
+}
 
 - (void)configureColorDimmableLight_32:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
     [self configureBinaryStateSensor:imageNameTrue imageNameFalse:imageNameFalse statusTrue:statusTrue statusFalse:statusFalse];
@@ -953,16 +899,14 @@
 }
 
 - (void)setUpdatingSensorStatus {
-    [self showDeviceValueLabels:NO];
+    [self showDeviceTemperatureView:NO];
     self.deviceImageView.image = [UIImage imageNamed:DEVICE_UPDATING_IMAGE];
     self.deviceImageViewSecondary.image = nil;
     self.deviceStatusLabel.text = self.updatingStatusMessage;
 }
 
-- (void)showDeviceValueLabels:(BOOL)show {
-    self.deviceValueLabel.hidden = !show;
-    self.decimalValueLabel.hidden = !show;
-    self.degreeLabel.hidden = !show;
+- (void)showDeviceTemperatureView:(BOOL)show {
+    self.deviceTemperatureView.hidden = !show;
 }
 
 - (void)setDeviceStatusMessages:(NSArray *)statusMsgs {

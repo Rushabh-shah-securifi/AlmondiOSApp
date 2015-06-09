@@ -123,6 +123,7 @@ reset at the moment. Try again later.";
 "sensors.account-confirm.label.Check activation email for instructions." = "Check activation email for instructions.";
 "sensors.account-confirm.label.Resend activation email" = "Resend activation email";
 "activation.toast.Reactivation link sent to your registerd email ID." = "Reactivation link sent to your registerd email ID.";
+"sensor.thermostat.field-label.Set Point" = "Set Point";
 "sensor.thermostat.field-label.Heating" = "Heating";
 "sensor.thermostat.field-label.Cooling" = "Cooling";
 "sensor.thermostat.field-label.Mode" = "Mode";
