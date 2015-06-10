@@ -11,6 +11,9 @@ typedef NS_ENUM(unsigned int, SFITextFieldMode) {
 
 @interface SFITextField : UITextField
 
+// Useful for tagging to associate the value with the underlying property type
+@property(nonatomic) SFIDevicePropertyType propertyType;
+
 // optional
 // defaults to SFITextFieldMode_normal
 @property(nonatomic) SFITextFieldMode mode;

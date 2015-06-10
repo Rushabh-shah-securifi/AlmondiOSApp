@@ -145,6 +145,7 @@
 		1DF0304B3CD98B217E85940D /* ILSaturationBrightnessPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */; };
 		1DF030E39A245683EABC61AE /* SFIRouterVersionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039C1E7F34EC59EC5AF78 /* SFIRouterVersionTableViewCell.m */; };
 		1DF031024A2F8810074C455A /* TemperatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF038EE4B26640DB5168126 /* TemperatureView.m */; };
+		1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0308DE6327F106EDC2AA2 /* SFITextField.m */; };
 		1DF031661E380BA4D0E0EB07 /* SFIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0364AFED818925B9469F3 /* SFIPreferences.m */; };
 		1DF0317AA50784DE447F9449 /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03A704CC540558B993529 /* CircleView.m */; };
 		1DF0318D09F8B1DBAF74C090 /* SFINotificationTableViewHeaderFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF031B6B99795E6267FEAD7 /* SFINotificationTableViewHeaderFooter.m */; };
@@ -152,6 +153,7 @@
 		1DF031DB440397B975511290 /* UIColor+GetHSB.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03D4E0D2E7D5FC29DBF23 /* UIColor+GetHSB.m */; };
 		1DF03226BF3736722C0E7F17 /* SFISensorDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03086AADF35699E6F9054 /* SFISensorDetailView.m */; };
 		1DF03247826CA943EDEE8741 /* SFISensorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF036AA13CCDD88050E8C2C /* SFISensorTableViewCell.m */; };
+		1DF03271B3B360C48DF81716 /* SFITextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0308DE6327F106EDC2AA2 /* SFITextField.m */; };
 		1DF032B24E580FC6CD86D379 /* CircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CircleLabel.m */; };
 		1DF03341BDCB67EE35C82CE5 /* ILView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AA35AC0879D6B794169 /* ILView.m */; };
 		1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03D4E0D2E7D5FC29DBF23 /* UIColor+GetHSB.m */; };
@@ -345,6 +347,7 @@
 		1DF0306EC5BE52D6364936BE /* TableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableHeaderView.m; sourceTree = "<group>"; };
 		1DF0307CC4B43723DE5590C1 /* SFISensorDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorDetailView.h; sourceTree = "<group>"; };
 		1DF03086AADF35699E6F9054 /* SFISensorDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorDetailView.m; sourceTree = "<group>"; };
+		1DF0308DE6327F106EDC2AA2 /* SFITextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFITextField.m; sourceTree = "<group>"; };
 		1DF030F104782902146AFA76 /* ScoreboardDebugLoggerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardDebugLoggerViewController.h; sourceTree = "<group>"; };
 		1DF0310139DB0870F7D2C815 /* NSData+Conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Conversion.h"; sourceTree = "<group>"; };
 		1DF0317CFEFED25A120B5900 /* ScoreboardTextEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardTextEditorViewController.h; sourceTree = "<group>"; };
@@ -376,6 +379,7 @@
 		1DF03845038413D52AF4100D /* SensorSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorSupport.m; sourceTree = "<group>"; };
 		1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSaturationBrightnessPickerView.m; sourceTree = "<group>"; };
 		1DF0385D1BECF622A4B92311 /* NotificationsTestStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTestStore.m; sourceTree = "<group>"; };
+		1DF038CDB37B0F1FAAD5A99D /* SFITextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFITextField.h; sourceTree = "<group>"; };
 		1DF038EE4B26640DB5168126 /* TemperatureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemperatureView.m; sourceTree = "<group>"; };
 		1DF0395BA425DCA3D278FFDB /* SFINotificationTableViewHeaderFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFINotificationTableViewHeaderFooter.h; sourceTree = "<group>"; };
 		1DF039C1E7F34EC59EC5AF78 /* SFIRouterVersionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterVersionTableViewCell.m; sourceTree = "<group>"; };
@@ -644,6 +648,8 @@
 				1DF03E356EAA623CDDD27D0C /* TableHeaderView.h */,
 				1DF038EE4B26640DB5168126 /* TemperatureView.m */,
 				1DF03BFFD8B11303DBD84977 /* TemperatureView.h */,
+				1DF0308DE6327F106EDC2AA2 /* SFITextField.m */,
+				1DF038CDB37B0F1FAAD5A99D /* SFITextField.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1169,6 +1175,7 @@
 				1DF038979554DAC51D42A7C8 /* SFIRouterSendLogsTableViewCell.m in Sources */,
 				1DF03DD5059A3900235BD95B /* SFIRouterVersionTableViewCell.m in Sources */,
 				1DF03678B3BE5D42EBE3DC2B /* TemperatureView.m in Sources */,
+				1DF03271B3B360C48DF81716 /* SFITextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1251,6 +1258,7 @@
 				1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */,
 				1DF030E39A245683EABC61AE /* SFIRouterVersionTableViewCell.m in Sources */,
 				1DF031024A2F8810074C455A /* TemperatureView.m in Sources */,
+				1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
