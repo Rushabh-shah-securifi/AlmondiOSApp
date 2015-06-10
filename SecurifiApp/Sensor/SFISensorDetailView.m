@@ -936,9 +936,14 @@
 }
 
 - (void)configureStandardWarningDevice_21 {
-    SFITextField *field = [self addFieldNameValue:NSLocalizedString(@"sensor.deivice-duration-label.Ring Duration", @"Ring Duration") fieldValue:@"1"];
+    SFIDeviceKnownValues *values = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_ALARM_STATE];
+    NSString *alarmDuration = values.hasValue ? values.value : @"1";
+
+    SFITextField *field = [self addFieldNameValue:NSLocalizedString(@"sensor.deivice-duration-label.Ring Duration", @"Ring Duration") fieldValue:alarmDuration];
     field.clearButtonMode = UITextFieldViewModeAlways;
+    //
     field.rightViewMode = UITextFieldViewModeAlways;
+    field.propertyType = SFIDevicePropertyType_ALARM_STATE;
     //
     field.mode = SFITextFieldMode_numbersInRange;
     field.minNumber = 1;
@@ -984,11 +989,18 @@
 }
 
 - (void)onStopAlarm_21 {
-
+    [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:SFIDevicePropertyType_ALARM_STATE newValue:@"0"];
 }
 
 - (void)onStartAlarm_21 {
     // do nothing for now
+
+    SFITextField *field = [self textFieldForDevicePropertyType:SFIDevicePropertyType_ALARM_STATE];
+    if (!field) {
+        return;
+    }
+
+    [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:SFIDevicePropertyType_ALARM_STATE newValue:field.text];
 }
 
 - (void)configureElectricMeasurementSwitch_22 {
@@ -1653,6 +1665,8 @@ HUE	                3	Decimal		0-65535	Yes
     [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:propertyType newValue:newValue];
 }
 
+#pragma mark - Helpers for finding views
+
 - (SFISlider *)sliderForDevicePropertyType:(SFIDevicePropertyType)propertyType {
     for (UIView *view in self.subviews) {
         if ([view isKindOfClass:[SFISlider class]]) {
@@ -1672,6 +1686,19 @@ HUE	                3	Decimal		0-65535	Yes
             SFIHuePickerView *picker = (SFIHuePickerView *) view;
             if (picker.propertyType == propertyType) {
                 return picker;
+            }
+        }
+    }
+
+    return nil;
+}
+
+- (SFITextField *)textFieldForDevicePropertyType:(SFIDevicePropertyType)propertyType {
+    for (UIView *view in self.subviews) {
+        if ([view isKindOfClass:[SFITextField class]]) {
+            SFITextField *field = (SFITextField *) view;
+            if (field.propertyType == propertyType) {
+                return field;
             }
         }
     }
