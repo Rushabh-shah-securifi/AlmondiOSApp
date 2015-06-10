@@ -5,15 +5,16 @@
 
 #import "TemperatureView.h"
 #import "UIFont+Securifi.h"
+#import "SFIConstants.h"
 
 #define LEFT_LABEL_WIDTH        100
 #define DEF_DEGREES_SYMBOL      @"\u00B0"
 
 @interface TemperatureView ()
-@property(nonatomic) UILabel *deviceValueLabel;
-@property(nonatomic) UILabel *decimalValueLabel;
-@property(nonatomic) UILabel *degreeLabel;
-@property(nonatomic) UILabel *descriptionLabel;
+@property(nonatomic, weak) UILabel *deviceValueLabel;
+@property(nonatomic, weak) UILabel *decimalValueLabel;
+@property(nonatomic, weak) UILabel *degreeLabel;
+@property(nonatomic, weak) UILabel *descriptionLabel;
 @end
 
 @implementation TemperatureView
@@ -21,54 +22,88 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
 
+    // For Integer Value
+    [self layoutDeviceValueLabel];
+
+    // For Decimal Value
+    [self layoutDecimalValueLabel];
+
+    // For Degree
+    [self layoutDegreeLabel];
+
+    [self layoutDescriptionLabel];
+
+    [self setTemperatureValue:self.temperature];
+}
+
+- (void)layoutDeviceValueLabel {
+    [self.deviceValueLabel removeFromSuperview];
+
     UIColor *clear_color = [UIColor clearColor];
     UIColor *white_color = [UIColor whiteColor];
 
-    // In case of thermostat show value instead of image
-    // For Integer Value
-    [self.deviceValueLabel removeFromSuperview];
-    self.deviceValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH / 5, 12, 60, 70)];
-    self.deviceValueLabel.backgroundColor = clear_color;
-    self.deviceValueLabel.textColor = white_color;
-    self.deviceValueLabel.textAlignment = NSTextAlignmentCenter;
-    self.deviceValueLabel.font = [UIFont securifiBoldFont:45];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH / 5, 12, 60, 70)];
+    label.backgroundColor = clear_color;
+    label.textColor = white_color;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.font = [UIFont securifiBoldFont:45];
 
-    // For Decimal Value
+    [self addSubview:label];
+    self.deviceValueLabel = label;
+}
+
+- (void)layoutDecimalValueLabel {
     [self.decimalValueLabel removeFromSuperview];
-    self.decimalValueLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 20, 40, 20, 30)];
-    self.decimalValueLabel.backgroundColor = clear_color;
-    self.decimalValueLabel.textColor = white_color;
-    self.decimalValueLabel.textAlignment = NSTextAlignmentCenter;
-    self.decimalValueLabel.adjustsFontSizeToFitWidth = YES;
-    self.decimalValueLabel.font = [UIFont securifiBoldFont:18];
 
-    // For Degree
+    UIColor *clear_color = [UIColor clearColor];
+    UIColor *white_color = [UIColor whiteColor];
+
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 20, 40, 20, 30)];
+    label.backgroundColor = clear_color;
+    label.textColor = white_color;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.adjustsFontSizeToFitWidth = YES;
+    label.font = [UIFont securifiBoldFont:18];
+
+    [self addSubview:label];
+    self.decimalValueLabel = label;
+}
+
+- (void)layoutDegreeLabel {
     [self.degreeLabel removeFromSuperview];
-    self.degreeLabel = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 20, 25, 40, 30)];
-    self.degreeLabel.backgroundColor = clear_color;
-    self.degreeLabel.textColor = white_color;
-    self.degreeLabel.textAlignment = NSTextAlignmentLeft;
-    self.degreeLabel.font = [UIFont standardHeadingBoldFont];
 
-    [self addSubview:self.deviceValueLabel];
-    [self addSubview:self.decimalValueLabel];
-    [self addSubview:self.degreeLabel];
+    UIColor *clear_color = [UIColor clearColor];
+    UIColor *white_color = [UIColor whiteColor];
 
-    [self setTemperatureValue:self.temperature];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 20, 25, 40, 30)];
+    label.backgroundColor = clear_color;
+    label.textColor = white_color;
+    label.textAlignment = NSTextAlignmentLeft;
+    label.font = [UIFont standardHeadingBoldFont];
 
+    [self addSubview:label];
+    self.degreeLabel = label;
+}
+
+- (void)layoutDescriptionLabel {
     if (self.label) {
         [self.descriptionLabel removeFromSuperview];
-        self.descriptionLabel = [[UILabel alloc] initWithFrame:self.frame];
-        self.descriptionLabel.backgroundColor = clear_color;
-        self.descriptionLabel.textColor = white_color;
-        self.descriptionLabel.textAlignment = NSTextAlignmentCenter;
-        self.descriptionLabel.font = [UIFont standardUILabelFont];
-        self.descriptionLabel.text = self.label;
-        //
-        [self.descriptionLabel sizeToFit];
-        self.descriptionLabel.frame = [self pinToButton:self.descriptionLabel.frame];
 
-        [self addSubview:self.descriptionLabel];
+        UIColor *clear_color = [UIColor clearColor];
+        UIColor *white_color = [UIColor whiteColor];
+
+        UILabel *label = [[UILabel alloc] initWithFrame:self.frame];
+        label.backgroundColor = clear_color;
+        label.textColor = white_color;
+        label.textAlignment = NSTextAlignmentCenter;
+        label.font = [UIFont standardUILabelFont];
+        label.text = self.label;
+        //
+        [label sizeToFit];
+        label.frame = [self pinToButton:label.frame];
+
+        [self addSubview:label];
+        self.descriptionLabel = label;
     }
 }
 
