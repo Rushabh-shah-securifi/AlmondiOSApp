@@ -5,19 +5,31 @@
 
 #import "TemperatureView.h"
 #import "UIFont+Securifi.h"
-#import "SFIConstants.h"
 
-#define LEFT_LABEL_WIDTH        100
 #define DEF_DEGREES_SYMBOL      @"\u00B0"
 
 @interface TemperatureView ()
-@property(nonatomic, weak) UILabel *deviceValueLabel;
-@property(nonatomic, weak) UILabel *decimalValueLabel;
+@property(nonatomic, weak) UILabel *temperatureLabel;
+@property(nonatomic, weak) UILabel *decimalLabel;
 @property(nonatomic, weak) UILabel *degreeLabel;
 @property(nonatomic, weak) UILabel *descriptionLabel;
 @end
 
 @implementation TemperatureView
+
+- (UIColor *)labelBackgroundColor {
+    if (!_labelBackgroundColor) {
+        return [UIColor clearColor];
+    }
+    return _labelBackgroundColor;
+}
+
+- (UIColor *)labelTextColor {
+    if (!_labelTextColor) {
+        return [UIColor whiteColor];
+    }
+    return _labelTextColor;
+}
 
 - (void)layoutSubviews {
     [super layoutSubviews];
@@ -37,47 +49,38 @@
 }
 
 - (void)layoutDeviceValueLabel {
-    [self.deviceValueLabel removeFromSuperview];
+    [self.temperatureLabel removeFromSuperview];
 
-    UIColor *clear_color = [UIColor clearColor];
-    UIColor *white_color = [UIColor whiteColor];
-
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH / 5, 12, 60, 70)];
-    label.backgroundColor = clear_color;
-    label.textColor = white_color;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) / 5, 12, 60, 70)];
+    label.backgroundColor = self.labelBackgroundColor;
+    label.textColor = self.labelTextColor;
     label.textAlignment = NSTextAlignmentCenter;
     label.font = [UIFont securifiBoldFont:45];
 
     [self addSubview:label];
-    self.deviceValueLabel = label;
+    self.temperatureLabel = label;
 }
 
 - (void)layoutDecimalValueLabel {
-    [self.decimalValueLabel removeFromSuperview];
+    [self.decimalLabel removeFromSuperview];
 
-    UIColor *clear_color = [UIColor clearColor];
-    UIColor *white_color = [UIColor whiteColor];
-
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 20, 40, 20, 30)];
-    label.backgroundColor = clear_color;
-    label.textColor = white_color;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) - 20, 40, 20, 30)];
+    label.backgroundColor = self.labelBackgroundColor;
+    label.textColor = self.labelTextColor;
     label.textAlignment = NSTextAlignmentCenter;
     label.adjustsFontSizeToFitWidth = YES;
     label.font = [UIFont securifiBoldFont:18];
 
     [self addSubview:label];
-    self.decimalValueLabel = label;
+    self.decimalLabel = label;
 }
 
 - (void)layoutDegreeLabel {
     [self.degreeLabel removeFromSuperview];
 
-    UIColor *clear_color = [UIColor clearColor];
-    UIColor *white_color = [UIColor whiteColor];
-
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(LEFT_LABEL_WIDTH - 20, 25, 40, 30)];
-    label.backgroundColor = clear_color;
-    label.textColor = white_color;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.frame) - 20, 25, 40, 30)];
+    label.backgroundColor = self.labelBackgroundColor;
+    label.textColor = self.labelTextColor;
     label.textAlignment = NSTextAlignmentLeft;
     label.font = [UIFont standardHeadingBoldFont];
 
@@ -89,12 +92,9 @@
     if (self.label) {
         [self.descriptionLabel removeFromSuperview];
 
-        UIColor *clear_color = [UIColor clearColor];
-        UIColor *white_color = [UIColor whiteColor];
-
         UILabel *label = [[UILabel alloc] initWithFrame:self.frame];
-        label.backgroundColor = clear_color;
-        label.textColor = white_color;
+        label.backgroundColor = self.labelBackgroundColor;
+        label.textColor = self.labelTextColor;
         label.textAlignment = NSTextAlignmentCenter;
         label.font = [UIFont standardUILabelFont];
         label.text = self.label;
@@ -158,44 +158,46 @@
 - (void)setTemperatureIntegerValue:(NSString *)integerValue decimalValue:(NSString *)decimalValue degreesValue:(NSString *)degreesValue {
     UIFont *heavy_14 = [UIFont securifiBoldFontLarge];
 
-    self.deviceValueLabel.text = integerValue;
+    self.temperatureLabel.text = integerValue;
 
     if (decimalValue.length > 0) {
-        self.decimalValueLabel.text = [NSString stringWithFormat:@".%@", decimalValue];
+        self.decimalLabel.text = [NSString stringWithFormat:@".%@", decimalValue];
     }
     else {
-        self.decimalValueLabel.text = nil;
+        self.decimalLabel.text = nil;
     }
 
     if (degreesValue.length > 0) {
         self.degreeLabel.text = degreesValue;
     }
     else {
-        self.degreeLabel.text = [self degreeLabelText];
+        self.degreeLabel.text = self.degreeLabelText;
     }
 
-    NSUInteger integerValue_length = [integerValue length];
+    const CGFloat cell_width = CGRectGetWidth(self.frame);
+
+    NSUInteger integerValue_length = integerValue.length;
     if (integerValue_length == 1) {
-        self.decimalValueLabel.frame = CGRectMake((self.frame.size.width / 4) - 25, 40, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 25, 25, 20, 20);
+        self.decimalLabel.frame = CGRectMake((cell_width / 4) - 25, 40, 20, 30);
+        self.degreeLabel.frame = CGRectMake(cell_width - 25, 25, 20, 20);
     }
     else if (integerValue_length == 3) {
-        self.deviceValueLabel.font = [heavy_14 fontWithSize:30];
-        self.decimalValueLabel.font = heavy_14;
+        self.temperatureLabel.font = [heavy_14 fontWithSize:30];
+        self.decimalLabel.font = heavy_14;
         self.degreeLabel.font = heavy_14;
 
-        self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 38, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 10, 30, 20, 20);
+        self.decimalLabel.frame = CGRectMake(cell_width - 10, 38, 20, 30);
+        self.degreeLabel.frame = CGRectMake(cell_width - 10, 30, 20, 20);
     }
     else if (integerValue_length == 4) {
         UIFont *heavy_10 = [heavy_14 fontWithSize:10];
 
-        self.deviceValueLabel.font = [heavy_14 fontWithSize:22];
-        self.decimalValueLabel.font = heavy_10;
+        self.temperatureLabel.font = [heavy_14 fontWithSize:22];
+        self.decimalLabel.font = heavy_10;
         self.degreeLabel.font = heavy_10;
 
-        self.decimalValueLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 35, 20, 30);
-        self.degreeLabel.frame = CGRectMake(LEFT_LABEL_WIDTH - 12, 30, 20, 20);
+        self.decimalLabel.frame = CGRectMake(cell_width - 12, 35, 20, 30);
+        self.degreeLabel.frame = CGRectMake(cell_width - 12, 30, 20, 20);
     }
 }
 

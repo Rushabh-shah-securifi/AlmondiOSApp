@@ -23,4 +23,12 @@
 // e.g. "Temperature" or "Set Point"
 @property(nonatomic, copy) NSString *label;
 
+// Optional
+// defaults to clear color
+@property(nonatomic, strong) UIColor *labelBackgroundColor;
+
+// Optional
+// defaults to white color
+@property(nonatomic, strong) UIColor *labelTextColor;
+
 @end

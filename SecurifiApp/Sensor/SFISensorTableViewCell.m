@@ -192,7 +192,7 @@
     [deviceImageButton addTarget:self action:@selector(onDeviceClicked:) forControlEvents:UIControlEventTouchUpInside];
 
     if ([self needsTemperatureView]) {
-        self.deviceTemperatureView = [[TemperatureView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+        self.deviceTemperatureView = [[TemperatureView alloc] initWithFrame:CGRectMake(0, 0, LEFT_LABEL_WIDTH, 100)];
         [self.contentView addSubview:self.deviceTemperatureView];
     }
 
