@@ -14,6 +14,7 @@
 #import "ILHuePickerView.h"
 #import "SFIHuePickerView.h"
 #import "UIColor+Securifi.h"
+#import "SFITextField.h"
 
 
 #define TEMP_PICKER_ELEMENT_WIDTH 40
@@ -454,12 +455,12 @@
     self.deviceLocationField = field;
 }
 
-- (UITextField *)addFieldNameValue:(NSString *)fieldName fieldValue:(NSString *)fieldValue {
+- (SFITextField *)addFieldNameValue:(NSString *)fieldName fieldValue:(NSString *)fieldValue {
     [self addFieldNameLabel:fieldName];
 
     UIFont *heavy_font = [UIFont securifiBoldFont];
 
-    UITextField *field = [[UITextField alloc] initWithFrame:[self makeFieldValueRect:120]];
+    SFITextField *field = [[SFITextField alloc] initWithFrame:[self makeFieldValueRect:120]];
     field.tag = self.tag;
     field.text = fieldValue;
     field.textAlignment = NSTextAlignmentRight;
@@ -935,11 +936,13 @@
 }
 
 - (void)configureStandardWarningDevice_21 {
-    UITextField *field = [self addFieldNameValue:NSLocalizedString(@"sensor.deivice-duration-label.Ring Duration", @"Ring Duration") fieldValue:@"1"];
-    field.keyboardType = UIKeyboardTypeNumberPad;
-    field.delegate = self;
+    SFITextField *field = [self addFieldNameValue:NSLocalizedString(@"sensor.deivice-duration-label.Ring Duration", @"Ring Duration") fieldValue:@"1"];
     field.clearButtonMode = UITextFieldViewModeAlways;
     field.rightViewMode = UITextFieldViewModeAlways;
+    //
+    field.mode = SFITextFieldMode_numbersInRange;
+    field.minNumber = 1;
+    field.maxNumber = 65535;
     //
     CGRect frame = CGRectMake(0, 0, 90, 30);
     UILabel *rightView = [[UILabel alloc] initWithFrame:frame];
@@ -952,14 +955,7 @@
     //
     field.rightView = rightView;
 
-    [self markYOffset:5];
-
-    SFIHighlightedButton *startAlarm_button = [self addButton:@"Set Duration"];
-    [startAlarm_button addTarget:self action:@selector(onStartAlarm_21) forControlEvents:UIControlEventTouchUpInside];
-
-    [self markYOffset:40];
-    [self addShortLine];
-    [self markYOffset:5];
+    [self markYOffset:10];
 
     // Compute frames for two side-by-side buttons. Size across width of cell, with standard padding
     CGFloat width = CGRectGetWidth(self.frame);
@@ -967,7 +963,7 @@
 
     CGRect on_rect;
     CGRect off_rect;
-    CGRectDivide(full_width_rect, &on_rect, &off_rect, width / 2, CGRectMinXEdge);
+    CGRectDivide(full_width_rect, &off_rect, &on_rect, width / 2, CGRectMinXEdge);
 
     CGFloat button_padding = 10;
     on_rect = CGRectInset(on_rect, button_padding, 0);
@@ -975,15 +971,15 @@
 
     UIFont *font = [self standardButtonFont];
 
-    SFIHighlightedButton *turnOn_button = [self addButton:@"Turn On" frame:on_rect];
-    turnOn_button.titleLabel.font = font;
-    [turnOn_button addTarget:self action:@selector(onStartAlarm_21) forControlEvents:UIControlEventTouchUpInside];
-
     SFIHighlightedButton *turnOff_button = [self addButton:@"Turn Off" frame:off_rect];
     turnOff_button.titleLabel.font = font;
     [turnOff_button addTarget:self action:@selector(onStopAlarm_21) forControlEvents:UIControlEventTouchUpInside];
 
-    [self markYOffset:40];
+    SFIHighlightedButton *turnOn_button = [self addButton:@"Turn On" frame:on_rect];
+    turnOn_button.titleLabel.font = font;
+    [turnOn_button addTarget:self action:@selector(onStartAlarm_21) forControlEvents:UIControlEventTouchUpInside];
+
+    [self markYOffset:45];
     [self addLine];
 }
 
@@ -1316,10 +1312,10 @@ HUE	                3	Decimal		0-65535	Yes
             return 380 + extra;
 
         case SFIDeviceType_Thermostat_7:
-            return 490 + extra;
+            return 500 + extra;
 
         case SFIDeviceType_StandardWarningDevice_21: {
-            return 410 + extra;
+            return 320 + extra;
         };
 
         case SFIDeviceType_SmartACSwitch_22:
