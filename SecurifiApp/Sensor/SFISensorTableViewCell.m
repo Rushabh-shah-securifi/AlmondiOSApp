@@ -316,7 +316,11 @@
             // for this device, we don't actually know what the state is; when the alarm value is > 0, it simply means the alarm will ring for the specified number of seconds
             // but we don't know if it is ringing right now. Therefore, we always show this message.
             NSString *msg = @"State data unknown.\nUse manual controls.";
-            [self configureBinaryStateSensorImageNameZeroValue:DT21_STANDARD_WARNING_DEVICE_TRUE imageNameNonZeroValue:DT21_STANDARD_WARNING_DEVICE_FALSE statusZeroValue:@"OFF" statusNonZeroValue:msg];
+
+            // also, the same icon is shown for all states
+            NSString *no_alarm_icon = DT21_STANDARD_WARNING_DEVICE_FALSE;
+
+            [self configureBinaryStateSensorImageNameZeroValue:no_alarm_icon imageNameNonZeroValue:no_alarm_icon statusZeroValue:@"OFF" statusNonZeroValue:msg];
             break;
         }
 

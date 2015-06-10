@@ -1491,11 +1491,6 @@ HUE	                3	Decimal		0-65535	Yes
             return maxUsers;
         }
 
-            //todo temporary as part of device 21 impl
-        case SFIDevicePropertyType_UNKNOWN: {
-            return 65535;
-        };
-
         default: {
             return 0;
         }
@@ -1520,12 +1515,6 @@ HUE	                3	Decimal		0-65535	Yes
             NSInteger row = index + 1;
             return [NSString stringWithFormat:NSLocalizedString(@"sensor.lock.pin-picker.Pin %ld", @"Pin %ld"), (long) row];
         }
-
-            //todo temporary as part of device 21 impl
-        case SFIDevicePropertyType_UNKNOWN: {
-            NSInteger row = index + 1;
-            return [NSString stringWithFormat:@"%ld", (long) row];
-        };
 
         default: {
             return @"";
@@ -1573,31 +1562,6 @@ HUE	                3	Decimal		0-65535	Yes
             return;
         }
     }
-}
-
-- (UITextField *)textFieldForTag:(NSInteger)tag {
-    for (UIView *view in self.subviews) {
-        if (view.tag == tag) {
-            if ([view isKindOfClass:[UITextField class]]) {
-                UITextField *field = (UITextField *) view;
-                return field;
-            }
-        }
-    }
-    return nil;
-}
-
-- (V8HorizontalPickerView *)pickerViewForTag:(NSInteger)tag {
-    for (UIView *view in self.subviews) {
-        if (view.tag == tag) {
-            if ([view isKindOfClass:[V8HorizontalPickerView class]]) {
-                V8HorizontalPickerView *picker = (V8HorizontalPickerView *) view;
-                return picker;
-            }
-        }
-    }
-
-    return nil;
 }
 
 #pragma mark - ILHuePickerViewDelegate methods
@@ -1666,6 +1630,31 @@ HUE	                3	Decimal		0-65535	Yes
 }
 
 #pragma mark - Helpers for finding views
+
+- (V8HorizontalPickerView *)pickerViewForTag:(NSInteger)tag {
+    for (UIView *view in self.subviews) {
+        if (view.tag == tag) {
+            if ([view isKindOfClass:[V8HorizontalPickerView class]]) {
+                V8HorizontalPickerView *picker = (V8HorizontalPickerView *) view;
+                return picker;
+            }
+        }
+    }
+
+    return nil;
+}
+
+- (UITextField *)textFieldForTag:(NSInteger)tag {
+    for (UIView *view in self.subviews) {
+        if (view.tag == tag) {
+            if ([view isKindOfClass:[UITextField class]]) {
+                UITextField *field = (UITextField *) view;
+                return field;
+            }
+        }
+    }
+    return nil;
+}
 
 - (SFISlider *)sliderForDevicePropertyType:(SFIDevicePropertyType)propertyType {
     for (UIView *view in self.subviews) {
