@@ -165,15 +165,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                    name:kSFIDidUpdateAlmondList
                  object:nil];
 
-    [center addObserver:self
-               selector:@selector(keyboardWillShow:)
-                   name:UIKeyboardWillShowNotification
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(keyboardWillHide:)
-                   name:UIKeyboardWillHideNotification
-                 object:nil];
 }
 
 - (void)initializeAlmondData {
@@ -1532,36 +1523,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             self.tableView.tableHeaderView = nil;
         }];
     });
-}
-
-#pragma mark - Keyboard events
-
-//todo we might want to move this into the super class so that the Sensors tab has same behavior
-
-// resize table offsets so text fields and other controls are not obscured by the keyboard
-- (void)keyboardWillShow:(NSNotification *)notification {
-    id userInfo = notification.userInfo[UIKeyboardFrameBeginUserInfoKey];
-    CGSize keyboardSize = [userInfo CGRectValue].size;
-
-    UIEdgeInsets contentInsets;
-    if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
-        contentInsets = UIEdgeInsetsMake(0.0, 0.0, (keyboardSize.height), 0.0);
-    }
-    else {
-        contentInsets = UIEdgeInsetsMake(0.0, 0.0, (keyboardSize.width), 0.0);
-    }
-
-    self.tableView.contentInset = contentInsets;
-    self.tableView.scrollIndicatorInsets = contentInsets;
-}
-
-// restore original table offsets
-- (void)keyboardWillHide:(NSNotification *)notification {
-    NSNumber *rate = notification.userInfo[UIKeyboardAnimationDurationUserInfoKey];
-    [UIView animateWithDuration:rate.floatValue animations:^{
-        self.tableView.contentInset = UIEdgeInsetsZero;
-        self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
-    }];
 }
 
 @end

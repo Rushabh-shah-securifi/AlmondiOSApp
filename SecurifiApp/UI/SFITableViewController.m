@@ -127,6 +127,17 @@
                selector:@selector(onShowNotifications:)
                    name:kApplicationDidBecomeActiveOnNotificationTap
                  object:nil];
+
+    [center addObserver:self
+               selector:@selector(keyboardWillShow:)
+                   name:UIKeyboardWillShowNotification
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(keyboardWillHide:)
+                   name:UIKeyboardWillHideNotification
+                 object:nil];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -342,6 +353,34 @@
     UIView *view = touch.view;
     // prevent recognizing touches on the slider
     return self.enableDrawer && ![view isKindOfClass:[UISlider class]] && ![view isKindOfClass:[SFIHuePickerView class]];
+}
+
+#pragma mark - Keyboard events
+
+// resize table offsets so text fields and other controls are not obscured by the keyboard
+- (void)keyboardWillShow:(NSNotification *)notification {
+    id userInfo = notification.userInfo[UIKeyboardFrameBeginUserInfoKey];
+    CGSize keyboardSize = [userInfo CGRectValue].size;
+
+    UIEdgeInsets contentInsets;
+    if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
+        contentInsets = UIEdgeInsetsMake(0.0, 0.0, (keyboardSize.height), 0.0);
+    }
+    else {
+        contentInsets = UIEdgeInsetsMake(0.0, 0.0, (keyboardSize.width), 0.0);
+    }
+
+    self.tableView.contentInset = contentInsets;
+    self.tableView.scrollIndicatorInsets = contentInsets;
+}
+
+// restore original table offsets
+- (void)keyboardWillHide:(NSNotification *)notification {
+    NSNumber *rate = notification.userInfo[UIKeyboardAnimationDurationUserInfoKey];
+    [UIView animateWithDuration:rate.floatValue animations:^{
+        self.tableView.contentInset = UIEdgeInsetsZero;
+        self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
+    }];
 }
 
 @end
