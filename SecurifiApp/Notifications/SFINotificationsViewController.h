@@ -23,6 +23,10 @@
 // Default YES
 @property(nonatomic) BOOL markAllViewedOnDismiss;
 
+// Controls whether individual records can be deleted
+// Default to YES
+@property(nonatomic) BOOL enableDeleteNotification;
+
 // Default NO
 @property(nonatomic) BOOL enableDeleteAllButton;
 

@@ -34,6 +34,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
     if (self) {
+        self.enableDeleteNotification = YES;
         self.markAllViewedOnDismiss = YES;
     }
 
@@ -57,14 +58,13 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 
     if (self.enableDeleteAllButton) {
         UIBarButtonItem *delete = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(onDeleteAll)];
-        self.navigationItem.rightBarButtonItem = delete;
+        delete.tintColor = [UIColor blackColor];
+        self.navigationItem.leftBarButtonItem = delete;
     }
 
-    if (!self.enableTestStore && !self.enableDeleteAllButton) {
-        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
-        doneButton.tintColor = [UIColor blackColor];
-        self.navigationItem.rightBarButtonItem = doneButton;
-    }
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
+    doneButton.tintColor = [UIColor blackColor];
+    self.navigationItem.rightBarButtonItem = doneButton;
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.separatorInset = UIEdgeInsetsZero;
@@ -245,7 +245,10 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return UITableViewCellEditingStyleDelete;
+    if (self.enableDeleteNotification) {
+        return UITableViewCellEditingStyleDelete;
+    }
+    return UITableViewCellEditingStyleNone;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -325,8 +328,6 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 
     // Change 10.0 to adjust the distance from bottom
     if (maximumOffset - currentOffset <= 50.0) {
-        NSIndexPath *path = [self.tableView indexPathForRowAtPoint:point];
-        NSDate *bucket = [self tryGetBucket:path.section];
         [self.store ensureFetchNotifications];
     }
 }
