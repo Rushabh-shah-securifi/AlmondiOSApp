@@ -25,6 +25,7 @@
 #import "MessageView.h"
 #import "TableHeaderView.h"
 #import "SFIRouterVersionTableViewCell.h"
+#import "UIViewController+Securifi.h"
 
 #define DEF_WIRELESS_SETTINGS_SECTION   0
 #define DEF_DEVICES_AND_USERS_SECTION   1
@@ -1170,7 +1171,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
             case SFIGenericRouterCommandType_UPDATE_FIRMWARE_RESPONSE: {
                 if (!genericRouterCommand.commandSuccess) {
-                    [self.HUD hide:YES afterDelay:1];
                     break;
                 }
 
@@ -1179,11 +1179,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                 if (percentage > 0) {
                     NSString *msg = NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.");
                     msg = [msg stringByAppendingFormat:@" (%i%%)", percentage];
-                    [self showHUD:msg];
-                }
-
-                if (percentage == 100) {
-                    [self.HUD hide:YES afterDelay:1];
+                    [self showToast:msg];
                 }
 
                 break;
