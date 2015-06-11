@@ -940,14 +940,17 @@
 
             if (type == SFIDevicePropertyType_ALARM_STATE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchData = @"false";
+                s1.matchData = @"0";
                 s1.iconName = @"21_alarm_off";
-                s1.notificationText = @" is Silent.";
+                s1.notificationText = @" is turned off.";
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.matchData = @"true";
+                s2.matchData = @"0";
+                s2.matchType = MatchType_not_equals;
                 s2.iconName = @"21_alarm_on";
-                s2.notificationText = @" is Ringing.";
+                s2.valueFormatter.action = ValueFormatterAction_formatString;
+                s2.valueFormatter.notificationPrefix = @" is turned on for ";
+                s2.valueFormatter.suffix = @" seconds";
 
                 return @[s1, s2];
             }
