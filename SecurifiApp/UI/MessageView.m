@@ -28,7 +28,6 @@
     return self;
 }
 
-
 - (void)layoutSubviews {
     if (self.didLayoutSubviews) {
         return;
@@ -41,9 +40,8 @@
 
     CGRect rect;
 
-    rect = CGRectMake(0,0, width, 100);
+    rect = CGRectMake(0, 0, width, 100);
     rect = CGRectInset(rect, 25, 0);
-    rect = CGRectOffset(rect, 0, 25);
 
     UILabel *headline_label = [[UILabel alloc] initWithFrame:rect];
     headline_label.numberOfLines = 0;
@@ -63,15 +61,19 @@
     message_label.font = [UIFont securifiBoldFontLarge];
     [self addSubview:message_label];
 
-    rect = CGRectMake(0, CGRectGetMaxY(rect), width, 120);
-    rect = CGRectOffset(rect, 0, 20);
-    rect = CGRectInset(rect, (width - 179) / 2, 0);
+    UIImage *routerImage = [UIImage imageNamed:@"router-icon"];
 
-    UIImage *image = [UIImage imageNamed:@"router_1"];
+    CGAffineTransform scale = CGAffineTransformMakeScale(0.5, 0.5);
+    const CGSize routerImageSize = CGSizeApplyAffineTransform(routerImage.size, scale);
+    const CGFloat image_width = routerImageSize.width;
+    const CGFloat image_height = routerImageSize.height;
+
+    rect = CGRectMake((width - image_width) / 2, CGRectGetMaxY(rect), image_width, image_height);
+    rect = CGRectOffset(rect, 0, 10);
 
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = rect;
-    [button setImage:image forState:UIControlStateNormal];
+    [button setImage:routerImage forState:UIControlStateNormal];
     [button addTarget:self action:@selector(onButtonTouch) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button];
 }

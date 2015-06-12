@@ -15,6 +15,7 @@
 #import "SFIPreferences.h"
 #import "MessageView.h"
 #import "SFINotificationsViewController.h"
+#import "UIImage+Securifi.h"
 
 @interface SFISensorsViewController () <SFISensorTableViewCellDelegate, MessageViewDelegate>
 @property(nonatomic, readonly) SFIAlmondPlus *almond;
@@ -374,20 +375,30 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:empty_cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-        UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, self.tableView.frame.size.width, 30)];
+        const CGFloat table_width = CGRectGetWidth(self.tableView.frame);
+
+        UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, table_width, 30)];
         lblNoSensor.textAlignment = NSTextAlignmentCenter;
         [lblNoSensor setFont:[UIFont securifiLightFont:20]];
         lblNoSensor.text = NSLocalizedString(@"sensors.no-sensors.label.You don't have any sensors yet.", @"You don't have any sensors yet.");
         lblNoSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblNoSensor];
 
-        UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width / 2 - 50, 95, 86, 60)];
+        UIImage *routerImage = [UIImage routerImage];
+
+        CGAffineTransform scale = CGAffineTransformMakeScale(0.5, 0.5);
+        const CGSize routerImageSize = CGSizeApplyAffineTransform(routerImage.size, scale);
+        const CGFloat image_width = routerImageSize.width;
+        const CGFloat image_height = routerImageSize.height;
+        CGRect imageViewFrame = CGRectMake((table_width - image_width) / 2, 95, image_width, image_height);
+
+        UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:imageViewFrame];
         imgRouter.userInteractionEnabled = NO;
-        [imgRouter setImage:[UIImage imageNamed:@"router_1.png"]];
+        imgRouter.image = routerImage;
         imgRouter.contentMode = UIViewContentModeScaleAspectFit;
         [cell addSubview:imgRouter];
 
-        UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 180, self.tableView.frame.size.width, 30)];
+        UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 95 + image_height + 20, table_width, 30)];
         lblAddSensor.textAlignment = NSTextAlignmentCenter;
         [lblAddSensor setFont:[UIFont standardUILabelFont]];
         lblAddSensor.text = NSLocalizedString(@"router.no-sensors.label.Add a sensor from your Almond.", @"Add a sensor from your Almond.");

@@ -17,4 +17,8 @@
     return [UIImage imageNamed:image];
 }
 
++ (UIImage *)routerImage {
+    return [UIImage imageNamed:@"router-icon"];
+}
+
 @end

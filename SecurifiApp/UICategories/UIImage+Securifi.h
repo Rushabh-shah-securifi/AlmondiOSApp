@@ -9,4 +9,6 @@
 
 + (UIImage *)assetImageNamed:(NSString *)imageName;
 
++ (UIImage *)routerImage;
+
 @end
