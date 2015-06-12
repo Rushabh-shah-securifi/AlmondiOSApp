@@ -422,7 +422,9 @@
             ctrl.enableDeleteAllButton = NO;
             ctrl.markAllViewedOnDismiss = NO;
             ctrl.enableDebugMode = YES;
-            [self.navigationController pushViewController:ctrl animated:YES];
+
+            UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+            [self presentViewController:nav_ctrl animated:YES completion:nil];
         }
     }
     else if (section == SEC_EVENTS) {
