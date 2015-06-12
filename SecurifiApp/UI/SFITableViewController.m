@@ -35,6 +35,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    SecurifiConfigurator *configurator = toolkit.configuration;
+    _enableNotificationsView = configurator.enableNotifications;
+    _enableNotificationsHomeAwayMode = configurator.enableNotificationsHomeAwayMode;
+
     NSDictionary *titleAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
             NSFontAttributeName : [UIFont standardNavigationTitleFont]
@@ -55,7 +61,7 @@
     if (self.enableNotificationsView) {
         _notificationsStatusButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(onShowNotifications:)];
 
-        NSInteger count = [[SecurifiToolkit sharedInstance] countUnviewedNotifications];
+        NSInteger count = [toolkit countUnviewedNotifications];
         [self.notificationsStatusButton markNotificationCount:(NSUInteger) count];
 
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
@@ -137,7 +143,6 @@
                selector:@selector(keyboardWillHide:)
                    name:UIKeyboardWillHideNotification
                  object:nil];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -271,7 +276,7 @@
         [self.statusBarButton markState:SFICloudStatusStateConnecting];
     }
     else if ([toolkit isCloudOnline]) {
-        if (self.enableNotificationsView) {
+        if (self.enableNotificationsHomeAwayMode) {
             SFIAlmondMode mode = [toolkit modeForAlmond:self.almondMac];
             enum SFICloudStatusState state = [self stateForAlmondMode:mode];
             [self.statusBarButton markState:state];

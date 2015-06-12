@@ -95,7 +95,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 - (void)viewDidLoad {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SecurifiConfigurator *configurator = toolkit.configuration;
-    self.enableNotificationsView = configurator.enableNotifications;
     self.enableRouterWirelessControl = configurator.enableRouterWirelessControl;
 
     [super viewDidLoad];

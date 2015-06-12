@@ -43,7 +43,8 @@
 
 // Disabled by default; when YES, a status button indicating the number of open Notifications is shown, allowing
 // the user to tap to present the Notification Viewer.
-@property(nonatomic) BOOL enableNotificationsView;
+@property(nonatomic, readonly) BOOL enableNotificationsView;
+@property(nonatomic, readonly) BOOL enableNotificationsHomeAwayMode;
 
 // Enabled by default; when NO, the Reveal button is disabled. Useful when the UI needs to be locked during updates.
 @property(nonatomic) BOOL enableDrawer;

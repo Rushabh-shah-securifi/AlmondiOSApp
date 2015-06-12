@@ -27,6 +27,7 @@
 //    config.enableCertificateChainValidation = NO;   // uncomment for testing only; on by default
 //
     config.enableNotifications = YES;               // uncomment to activate; NO by default
+    config.enableNotificationsHomeAwayMode = YES;
 //    config.enableRouterWirelessControl = YES;       // YES by default
     return config;
 }

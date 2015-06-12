@@ -51,7 +51,6 @@
 @property(nonatomic) BOOL isSensorChangeCommandSuccessful;
 
 @property(nonatomic) BOOL isViewControllerDisposed;
-@property(nonatomic, readonly) BOOL notificationEnabled;
 @end
 
 @implementation SFISensorsViewController
@@ -59,11 +58,6 @@
 #pragma mark - View Related
 
 - (void)viewDidLoad {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SecurifiConfigurator *configurator = toolkit.configuration;
-
-    self.enableNotificationsView = configurator.enableNotifications;
-    _notificationEnabled = configurator.enableNotifications;
     [super viewDidLoad];
 
     _deviceStatusMessages_locker = [NSObject new];
@@ -469,7 +463,7 @@
 - (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor deviceValue:(SFIDeviceValue *)deviceValue {
     BOOL expanded = [self isExpandedCell:currentSensor];
     BOOL tampered = [currentSensor isTampered:deviceValue];
-    BOOL notificationsEnabled = self.notificationEnabled;
+    BOOL notificationsEnabled = self.enableNotificationsView;
     return [SFISensorDetailView computeSensorRowHeight:currentSensor tamperedDevice:tampered expandedCell:expanded notificationEnabled:notificationsEnabled];
 }
 
@@ -755,7 +749,7 @@
 }
 
 - (BOOL)tableViewCellNotificationsEnabled {
-    return self.notificationEnabled;
+    return self.enableNotificationsView;
 }
 
 - (void)tableViewCellDidChangeNotificationSetting:(SFISensorTableViewCell *)cell newMode:(SFINotificationMode)newMode {
