@@ -12,6 +12,7 @@
 		1C33E94F19C025DB0014725A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C33E94E19C025DB0014725A /* QuartzCore.framework */; };
 		1C414BCD1A79F0DF00C448A4 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */; };
 		1C414BCE1A79F0E800C448A4 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */; };
+		1C4383051B2FFAC700F6AB7A /* libSystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4383041B2FFAC700F6AB7A /* libSystem.dylib */; };
 		1C75815419AC86940074C601 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815319AC86940074C601 /* Security.framework */; };
 		1C75815619AC86A10074C601 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815519AC86A10074C601 /* SystemConfiguration.framework */; };
 		1C75815819AC86A80074C601 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815719AC86A80074C601 /* CFNetwork.framework */; };
@@ -155,6 +156,7 @@
 		1DF03247826CA943EDEE8741 /* SFISensorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF036AA13CCDD88050E8C2C /* SFISensorTableViewCell.m */; };
 		1DF03271B3B360C48DF81716 /* SFITextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0308DE6327F106EDC2AA2 /* SFITextField.m */; };
 		1DF032B24E580FC6CD86D379 /* CircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CircleLabel.m */; };
+		1DF0333217E77760651C98F7 /* ScoreboardNetworkSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03CB107BF402C2EFA6DC9 /* ScoreboardNetworkSettingsViewController.m */; };
 		1DF03341BDCB67EE35C82CE5 /* ILView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AA35AC0879D6B794169 /* ILView.m */; };
 		1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03D4E0D2E7D5FC29DBF23 /* UIColor+GetHSB.m */; };
 		1DF033F4DF8C6A502EB12289 /* ScoreboardTextEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03ED87E1BC2184C9EEF53 /* ScoreboardTextEditorViewController.m */; };
@@ -216,6 +218,7 @@
 		1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
 		1C33E94E19C025DB0014725A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		1C4383041B2FFAC700F6AB7A /* libSystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.dylib; path = usr/lib/libSystem.dylib; sourceTree = SDKROOT; };
 		1C75815319AC86940074C601 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1C75815519AC86A10074C601 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		1C75815719AC86A80074C601 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -361,6 +364,7 @@
 		1DF0332C0801A1AC751F47D4 /* UIColor+GetHSB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+GetHSB.h"; sourceTree = "<group>"; };
 		1DF033B55E920DA89560E84B /* CircleLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleLabel.m; sourceTree = "<group>"; };
 		1DF033BFB3D6B1769127310B /* NSData+Conversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Conversion.m"; sourceTree = "<group>"; };
+		1DF0344D549D727163A1EE39 /* ScoreboardNetworkSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardNetworkSettingsViewController.h; sourceTree = "<group>"; };
 		1DF0347F6CE56318C9DB59C5 /* ILSaturationBrightnessPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSaturationBrightnessPickerView.h; sourceTree = "<group>"; };
 		1DF035449B8995967846754D /* DebugLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugLogger.h; sourceTree = "<group>"; };
 		1DF035D824CA3CF3C06B170D /* ILColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILColorPickerView.h; sourceTree = "<group>"; };
@@ -395,6 +399,7 @@
 		1DF03BFFD8B11303DBD84977 /* TemperatureView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemperatureView.h; sourceTree = "<group>"; };
 		1DF03C29C7F6403672992843 /* DebugLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DebugLogger.m; sourceTree = "<group>"; };
 		1DF03C895FD75AA97DDF3AC5 /* IndexValueSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexValueSupport.m; sourceTree = "<group>"; };
+		1DF03CB107BF402C2EFA6DC9 /* ScoreboardNetworkSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardNetworkSettingsViewController.m; sourceTree = "<group>"; };
 		1DF03CD23CCAD6D4BF0CF82A /* SensorIndexSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorIndexSupport.h; sourceTree = "<group>"; };
 		1DF03CFE840766B75CCB941E /* MessageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageView.h; sourceTree = "<group>"; };
 		1DF03D4E0D2E7D5FC29DBF23 /* UIColor+GetHSB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+GetHSB.m"; sourceTree = "<group>"; };
@@ -417,6 +422,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C4383051B2FFAC700F6AB7A /* libSystem.dylib in Frameworks */,
 				1C996C791AB94E3200CB2C23 /* MessageUI.framework in Frameworks */,
 				1C414BCE1A79F0E800C448A4 /* libsqlite3.dylib in Frameworks */,
 				1CEE69551A37F65D008D8567 /* Foundation.framework in Frameworks */,
@@ -577,6 +583,8 @@
 				1DF030F104782902146AFA76 /* ScoreboardDebugLoggerViewController.h */,
 				1DF03ED87E1BC2184C9EEF53 /* ScoreboardTextEditorViewController.m */,
 				1DF0317CFEFED25A120B5900 /* ScoreboardTextEditorViewController.h */,
+				1DF03CB107BF402C2EFA6DC9 /* ScoreboardNetworkSettingsViewController.m */,
+				1DF0344D549D727163A1EE39 /* ScoreboardNetworkSettingsViewController.h */,
 			);
 			path = Scoreboard;
 			sourceTree = "<group>";
@@ -784,6 +792,7 @@
 		1CED5EF319AC82FD0023512F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1C4383041B2FFAC700F6AB7A /* libSystem.dylib */,
 				1C996C771AB94E2800CB2C23 /* MessageUI.framework */,
 				1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */,
 				1CEE694B1A37F5F6008D8567 /* libSecurifiToolkit.a */,
@@ -1259,6 +1268,7 @@
 				1DF030E39A245683EABC61AE /* SFIRouterVersionTableViewCell.m in Sources */,
 				1DF031024A2F8810074C455A /* TemperatureView.m in Sources */,
 				1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */,
+				1DF0333217E77760651C98F7 /* ScoreboardNetworkSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1568,7 +1578,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iostoolkit\"/** \"${PROJECT_DIR}/../iosapp\"/**";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iostoolkit\"/** \"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iosapp/Pods\"/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1597,7 +1607,7 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iostoolkit\"/** \"${PROJECT_DIR}/../iosapp\"/**";
+				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iostoolkit\"/** \"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iosapp/Pods\"/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

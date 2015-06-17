@@ -16,6 +16,7 @@
 #import "ScoreboardDebugLoggerViewController.h"
 #import "DebugLogger.h"
 #import "ScoreboardTextEditorViewController.h"
+#import "ScoreboardNetworkSettingsViewController.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 
 @import MessageUI;
@@ -47,9 +48,8 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-
     _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:nil action:nil];
+    [super viewDidLoad];
     self.navigationItem.rightBarButtonItem = _statusBarButton;
 
     NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
@@ -216,7 +216,7 @@
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cell_id];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
             }
             cell.textLabel.text = @"Unit Test UI";
             return cell;
@@ -230,6 +230,7 @@
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cell_id];
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+            cell.accessoryType = UITableViewCellAccessoryDetailButton;
         }
         cell.textLabel.text = almond.almondplusName;
         cell.detailTextLabel.text = almond.almondplusMAC;
@@ -463,6 +464,18 @@
     }
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.section != SEC_ALMONDS) {
+        return;
+    }
+
+    ScoreboardNetworkSettingsViewController *ctrl = [[ScoreboardNetworkSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    ctrl.almond = [self tryGetAlmond:indexPath];
+
+    [self.navigationController pushViewController:ctrl animated:YES];
+}
+
 
 - (void)onSwitchServer {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
