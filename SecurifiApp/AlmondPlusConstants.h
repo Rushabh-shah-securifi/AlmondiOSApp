@@ -15,10 +15,10 @@
 #define UI_ON_PRESENT_LOGOUT_ALL            @"UI_ON_PRESENT_LOGOUT_ALL"
 #define UI_ON_PRESENT_ACCOUNTS              @"UI_ON_PRESENT_ACCOUNTS"
 
-#define ALMONDLIST_FILENAME @"almondlist"
+#define ALMOND_LIST_FILENAME @"almondlist"
 #define HASH_FILENAME @"hashlist"
-#define DEVICELIST_FILENAME  @"devicelist"
-#define DEVICEVALUE_FILENAME @"devicevalue"
+#define DEVICE_LIST_FILENAME  @"devicelist"
+#define DEVICE_VALUE_FILENAME @"devicevalue"
 #define LOG_FILE_NAME  @"AlmondPlusLog.log"
 #define SDK_LOG_FILE_NAME  @"AlmondPlusSDKLog.log"
 
