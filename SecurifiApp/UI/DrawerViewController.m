@@ -66,6 +66,10 @@
 
 - (void)resetAlmondList {
     NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
+    if (!almondList) {
+        almondList = @[];
+    }
+
     NSArray *settingsList = @[@"Account", @"Logout", @"Logout All"];
 
     NSBundle *bundle = [NSBundle mainBundle];
