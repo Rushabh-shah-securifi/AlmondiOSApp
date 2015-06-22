@@ -9,7 +9,6 @@
 #import "SFIRouterTableViewController.h"
 #import "SFIColors.h"
 #import "AlmondPlusConstants.h"
-#import "SFIGenericRouterCommand.h"
 #import "SFIParser.h"
 #import "MBProgressHUD.h"
 #import "Analytics.h"
@@ -131,40 +130,17 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-    [center addObserver:self
-               selector:@selector(onNetworkChange:)
-                   name:NETWORK_DOWN_NOTIFIER
-                 object:nil];
+    [center addObserver:self selector:@selector(onNetworkChange:) name:NETWORK_DOWN_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onNetworkChange:) name:NETWORK_UP_NOTIFIER object:nil];
 
-    [center addObserver:self
-               selector:@selector(onNetworkChange:)
-                   name:NETWORK_UP_NOTIFIER
-                 object:nil];
+    [center addObserver:self selector:@selector(onNetworkChange:) name:kSFIReachabilityChangedNotification object:nil];
+    [center addObserver:self selector:@selector(onCurrentAlmondChanged:) name:kSFIDidChangeCurrentAlmond object:nil];
+    [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidUpdateAlmondList object:nil];
 
-    [center addObserver:self
-               selector:@selector(onNetworkChange:)
-                   name:kSFIReachabilityChangedNotification object:nil];
+    [center addObserver:self selector:@selector(onGenericResponseCallback:) name:GENERIC_COMMAND_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onGenericNotificationCallback:) name:GENERIC_COMMAND_CLOUD_NOTIFIER object:nil];
 
-    [center addObserver:self
-               selector:@selector(onGenericResponseCallback:)
-                   name:GENERIC_COMMAND_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onGenericNotificationCallback:)
-                   name:GENERIC_COMMAND_CLOUD_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onCurrentAlmondChanged:)
-                   name:kSFIDidChangeCurrentAlmond
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onAlmondListDidChange:)
-                   name:kSFIDidUpdateAlmondList
-                 object:nil];
-
+    [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:ALMOND_COMMAND_RESPONSE_NOTIFIER object:nil];
 }
 
 - (void)initializeAlmondData {
@@ -817,8 +793,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     }
 
     if (newVersionAvailable) {
-        cell.editTarget = self;
-        cell.editSelector = @selector(onEditRouterSoftwareCard:);
+        // 18 June 2015 - sinclair - disabled temporarily so we can push out build to TestFlight; currently, remote firmware install is not supported in production cloud
+//        cell.editTarget = self;
+//        cell.editSelector = @selector(onEditRouterSoftwareCard:);
+        cell.editTarget = nil;
+        cell.editSelector = nil;
     }
     else {
         cell.editTarget = nil;
@@ -1090,7 +1069,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
     GenericCommandResponse *response = (GenericCommandResponse *) [data valueForKey:@"data"];
     if (!response.isSuccessful) {
-        DLog(@"Unsuccessful response, reason:%@", response.reason);
+        DLog(@"Unsuccessful response, almond:%@, reason:%@", response.almondMAC, response.reason);
 
         dispatch_async(dispatch_get_main_queue(), ^() {
             if (!self) {
@@ -1118,6 +1097,23 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     self.isAlmondUnavailable = NO;
 
     SFIGenericRouterCommand *genericRouterCommand = [SFIParser parseRouterResponse:response];
+    genericRouterCommand.almondMAC = response.almondMAC;
+
+    [self processRouterCommandResponse:genericRouterCommand];
+}
+
+- (void)onAlmondRouterCommandResponse:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+
+    SFIGenericRouterCommand *response = (SFIGenericRouterCommand *) [data valueForKey:@"data"];
+    [self processRouterCommandResponse:response];
+}
+
+- (void)processRouterCommandResponse:(SFIGenericRouterCommand *)genericRouterCommand {
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
@@ -1127,7 +1123,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             return;
         }
 
-        if (![response.almondMAC isEqualToString:self.almondMac]) {
+        if (![genericRouterCommand.almondMAC isEqualToString:self.almondMac]) {
             return;
         }
 
