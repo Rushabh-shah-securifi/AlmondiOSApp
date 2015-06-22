@@ -9,10 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "SFISensor.h"
 #import "SFIRouterReboot.h"
-#import "SFIConnectedDevice.h"
-#import "SFIDevicesList.h"
-#import "SFIGenericRouterCommand.h"
-#import "SFIBlockedDevice.h"
 #import "SFIBlockedContent.h"
 
 @interface SFIParser : NSObject <NSXMLParserDelegate>

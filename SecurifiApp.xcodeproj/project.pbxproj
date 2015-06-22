@@ -22,14 +22,6 @@
 		1C7E7D721A41A0990026F0BA /* SFIAffiliationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CE71A41A0990026F0BA /* SFIAffiliationViewController.m */; };
 		1C7E7D731A41A0990026F0BA /* SFIBlockedContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CE91A41A0990026F0BA /* SFIBlockedContent.m */; };
 		1C7E7D741A41A0990026F0BA /* SFIBlockedContent.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CE91A41A0990026F0BA /* SFIBlockedContent.m */; };
-		1C7E7D751A41A0990026F0BA /* SFIBlockedDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CEB1A41A0990026F0BA /* SFIBlockedDevice.m */; };
-		1C7E7D761A41A0990026F0BA /* SFIBlockedDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CEB1A41A0990026F0BA /* SFIBlockedDevice.m */; };
-		1C7E7D771A41A0990026F0BA /* SFIConnectedDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CED1A41A0990026F0BA /* SFIConnectedDevice.m */; };
-		1C7E7D781A41A0990026F0BA /* SFIConnectedDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CED1A41A0990026F0BA /* SFIConnectedDevice.m */; };
-		1C7E7D791A41A0990026F0BA /* SFIDevicesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CEF1A41A0990026F0BA /* SFIDevicesList.m */; };
-		1C7E7D7A1A41A0990026F0BA /* SFIDevicesList.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CEF1A41A0990026F0BA /* SFIDevicesList.m */; };
-		1C7E7D7D1A41A0990026F0BA /* SFIGenericRouterCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CF31A41A0990026F0BA /* SFIGenericRouterCommand.m */; };
-		1C7E7D7E1A41A0990026F0BA /* SFIGenericRouterCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CF31A41A0990026F0BA /* SFIGenericRouterCommand.m */; };
 		1C7E7D811A41A0990026F0BA /* SFIActivationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CF81A41A0990026F0BA /* SFIActivationViewController.m */; };
 		1C7E7D821A41A0990026F0BA /* SFIActivationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CF81A41A0990026F0BA /* SFIActivationViewController.m */; };
 		1C7E7D831A41A0990026F0BA /* SFILoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7CFA1A41A0990026F0BA /* SFILoginViewController.m */; };
@@ -229,14 +221,6 @@
 		1C7E7CE71A41A0990026F0BA /* SFIAffiliationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIAffiliationViewController.m; sourceTree = "<group>"; };
 		1C7E7CE81A41A0990026F0BA /* SFIBlockedContent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIBlockedContent.h; sourceTree = "<group>"; };
 		1C7E7CE91A41A0990026F0BA /* SFIBlockedContent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIBlockedContent.m; sourceTree = "<group>"; };
-		1C7E7CEA1A41A0990026F0BA /* SFIBlockedDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIBlockedDevice.h; sourceTree = "<group>"; };
-		1C7E7CEB1A41A0990026F0BA /* SFIBlockedDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIBlockedDevice.m; sourceTree = "<group>"; };
-		1C7E7CEC1A41A0990026F0BA /* SFIConnectedDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIConnectedDevice.h; sourceTree = "<group>"; };
-		1C7E7CED1A41A0990026F0BA /* SFIConnectedDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIConnectedDevice.m; sourceTree = "<group>"; };
-		1C7E7CEE1A41A0990026F0BA /* SFIDevicesList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIDevicesList.h; sourceTree = "<group>"; };
-		1C7E7CEF1A41A0990026F0BA /* SFIDevicesList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIDevicesList.m; sourceTree = "<group>"; };
-		1C7E7CF21A41A0990026F0BA /* SFIGenericRouterCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIGenericRouterCommand.h; sourceTree = "<group>"; };
-		1C7E7CF31A41A0990026F0BA /* SFIGenericRouterCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIGenericRouterCommand.m; sourceTree = "<group>"; };
 		1C7E7CF71A41A0990026F0BA /* SFIActivationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIActivationViewController.h; sourceTree = "<group>"; };
 		1C7E7CF81A41A0990026F0BA /* SFIActivationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIActivationViewController.m; sourceTree = "<group>"; };
 		1C7E7CF91A41A0990026F0BA /* SFILoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFILoginViewController.h; sourceTree = "<group>"; };
@@ -497,14 +481,6 @@
 				1C7E7CE71A41A0990026F0BA /* SFIAffiliationViewController.m */,
 				1C7E7CE81A41A0990026F0BA /* SFIBlockedContent.h */,
 				1C7E7CE91A41A0990026F0BA /* SFIBlockedContent.m */,
-				1C7E7CEA1A41A0990026F0BA /* SFIBlockedDevice.h */,
-				1C7E7CEB1A41A0990026F0BA /* SFIBlockedDevice.m */,
-				1C7E7CEC1A41A0990026F0BA /* SFIConnectedDevice.h */,
-				1C7E7CED1A41A0990026F0BA /* SFIConnectedDevice.m */,
-				1C7E7CEE1A41A0990026F0BA /* SFIDevicesList.h */,
-				1C7E7CEF1A41A0990026F0BA /* SFIDevicesList.m */,
-				1C7E7CF21A41A0990026F0BA /* SFIGenericRouterCommand.h */,
-				1C7E7CF31A41A0990026F0BA /* SFIGenericRouterCommand.m */,
 			);
 			path = Legacy;
 			sourceTree = "<group>";
@@ -1124,8 +1100,6 @@
 				1C7E7D9E1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
 				1C7E7DCA1A41A0990026F0BA /* SFIParser.m in Sources */,
 				1C7E7DD21A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
-				1C7E7D781A41A0990026F0BA /* SFIConnectedDevice.m in Sources */,
-				1C7E7D761A41A0990026F0BA /* SFIBlockedDevice.m in Sources */,
 				1C7E7D941A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
 				1C7E7D9C1A41A0990026F0BA /* ScoreboardEventViewController.m in Sources */,
 				1C7E7D8A1A41A0990026F0BA /* SFINotificationTableViewCell.m in Sources */,
@@ -1145,13 +1119,11 @@
 				1C7E7DBA1A41A0990026F0BA /* SFICardTableViewCell.m in Sources */,
 				1C7E7DD01A41A0990026F0BA /* SFITableViewController.m in Sources */,
 				1C7E7DCC1A41A0990026F0BA /* SFISensor.m in Sources */,
-				1C7E7D7A1A41A0990026F0BA /* SFIDevicesList.m in Sources */,
 				1C7E7D821A41A0990026F0BA /* SFIActivationViewController.m in Sources */,
 				1C7E7DAA1A41A0990026F0BA /* SFIUserProfile.m in Sources */,
 				1C7E7DA81A41A0990026F0BA /* SFIPasswordChangeViewController.m in Sources */,
 				1C7E7DC41A41A0990026F0BA /* SFICopyLabel.m in Sources */,
 				1C7E7DAC1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,
-				1C7E7D7E1A41A0990026F0BA /* SFIGenericRouterCommand.m in Sources */,
 				1C7E7D961A41A0990026F0BA /* SFIRouterTableViewController.m in Sources */,
 				1DF03AD70C1C051CA6F74073 /* SFIPreferences.m in Sources */,
 				1DF036E2B7339D81255297B9 /* NSData+Conversion.m in Sources */,
@@ -1192,7 +1164,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C7E7D771A41A0990026F0BA /* SFIConnectedDevice.m in Sources */,
 				1C7E7DAB1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,
 				1C7E7D8B1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
 				1C7E7DCF1A41A0990026F0BA /* SFITableViewController.m in Sources */,
@@ -1205,7 +1176,6 @@
 				1C7E7DC51A41A0990026F0BA /* SFIHighlightedButton.m in Sources */,
 				1C7E7D831A41A0990026F0BA /* SFILoginViewController.m in Sources */,
 				1C7E7DC71A41A0990026F0BA /* SFIMainViewController.m in Sources */,
-				1C7E7D791A41A0990026F0BA /* SFIDevicesList.m in Sources */,
 				1C7E7DA71A41A0990026F0BA /* SFIPasswordChangeViewController.m in Sources */,
 				1C7E7DCD1A41A0990026F0BA /* SFISlider.m in Sources */,
 				1C7E7D911A41A0990026F0BA /* SFIRouterRebootTableViewCell.m in Sources */,
@@ -1227,10 +1197,8 @@
 				1C7E7DC91A41A0990026F0BA /* SFIParser.m in Sources */,
 				1C7E7DA91A41A0990026F0BA /* SFIUserProfile.m in Sources */,
 				1C7E7D811A41A0990026F0BA /* SFIActivationViewController.m in Sources */,
-				1C7E7D751A41A0990026F0BA /* SFIBlockedDevice.m in Sources */,
 				1C7E7DD51A41A0990026F0BA /* UIViewController+Securifi.m in Sources */,
 				1C7E7DB91A41A0990026F0BA /* SFICardTableViewCell.m in Sources */,
-				1C7E7D7D1A41A0990026F0BA /* SFIGenericRouterCommand.m in Sources */,
 				1C7E7D711A41A0990026F0BA /* SFIAffiliationViewController.m in Sources */,
 				1C7E7D851A41A0990026F0BA /* SFILogoutAllViewController.m in Sources */,
 				1C7E7D8F1A41A0990026F0BA /* SFIRouterReboot.m in Sources */,
