@@ -641,18 +641,6 @@
         return;
     }
 
-    SFIDevice *device = cell.device;
-
-    SensorChangeRequest *cmd = [[SensorChangeRequest alloc] init];
-    cmd.almondMAC = self.almondMac;
-    cmd.deviceID = [NSString stringWithFormat:@"%d", device.deviceID];
-    cmd.changedName = cell.deviceName;
-    cmd.changedLocation = cell.deviceLocation;
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_MOBILE_COMMAND;
-    cloudCommand.command = cmd;
-
     self.sensorChangeCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
                                                                      target:self
                                                                    selector:@selector(onSensorChangeCommandTimeout:)
@@ -660,10 +648,9 @@
                                                                     repeats:NO];
 
     [self showUpdatingSettingsHUD];
-    [self asyncSendCommand:cloudCommand];
 
-    //todo sinclair - push timeout into the SDK and invoke timeout action using a closure??
-
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit asyncChangeAlmond:self.almond device:cell.device name:cell.deviceName location:cell.deviceLocation];
 
     self.isSensorChangeCommandSuccessful = FALSE;
     self.isUpdatingDeviceSettings = NO;
