@@ -7,7 +7,6 @@
 //
 
 #import "SFILoginViewController.h"
-#import "SNLog.h"
 #import "MBProgressHUD.h"
 #import "Analytics.h"
 #import "SFIActivationViewController.h"

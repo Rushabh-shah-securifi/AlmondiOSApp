@@ -7,7 +7,6 @@
 //
 
 #import "SFILogoutAllViewController.h"
-#import "SNLog.h"
 #import "UIFont+Securifi.h"
 
 @interface SFILogoutAllViewController () <UITextFieldDelegate>
