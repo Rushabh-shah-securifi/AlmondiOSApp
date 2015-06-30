@@ -92,8 +92,6 @@
 		1C7E7DD41A41A0990026F0BA /* UIView+Borders.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D501A41A0990026F0BA /* UIView+Borders.m */; };
 		1C7E7DD51A41A0990026F0BA /* UIViewController+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D521A41A0990026F0BA /* UIViewController+Securifi.m */; };
 		1C7E7DD61A41A0990026F0BA /* UIViewController+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D521A41A0990026F0BA /* UIViewController+Securifi.m */; };
-		1C7E7DD71A41A0990026F0BA /* SNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D551A41A0990026F0BA /* SNLog.m */; };
-		1C7E7DD81A41A0990026F0BA /* SNLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7D551A41A0990026F0BA /* SNLog.m */; };
 		1C7E7DFA1A41A0B30026F0BA /* Almond-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7DE41A41A0B30026F0BA /* Almond-Images.xcassets */; };
 		1C7E7DFD1A41A0B30026F0BA /* cert.der in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7DE91A41A0B30026F0BA /* cert.der */; };
 		1C7E7E061A41A0B30026F0BA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7DF91A41A0B30026F0BA /* main.m */; };
@@ -292,8 +290,6 @@
 		1C7E7D501A41A0990026F0BA /* UIView+Borders.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Borders.m"; sourceTree = "<group>"; };
 		1C7E7D511A41A0990026F0BA /* UIViewController+Securifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Securifi.h"; sourceTree = "<group>"; };
 		1C7E7D521A41A0990026F0BA /* UIViewController+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Securifi.m"; sourceTree = "<group>"; };
-		1C7E7D541A41A0990026F0BA /* SNLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SNLog.h; sourceTree = "<group>"; };
-		1C7E7D551A41A0990026F0BA /* SNLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SNLog.m; sourceTree = "<group>"; };
 		1C7E7DE41A41A0B30026F0BA /* Almond-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Almond-Images.xcassets"; sourceTree = "<group>"; };
 		1C7E7DE51A41A0B30026F0BA /* Almond-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Almond-Info.plist"; sourceTree = "<group>"; };
 		1C7E7DE61A41A0B30026F0BA /* Almond-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Almond-Prefix.pch"; sourceTree = "<group>"; };
@@ -464,7 +460,6 @@
 				1C7E7D2A1A41A0990026F0BA /* Signup */,
 				1C7E7D2D1A41A0990026F0BA /* UI */,
 				1C7E7D4C1A41A0990026F0BA /* UICategories */,
-				1C7E7D531A41A0990026F0BA /* Util */,
 				1DF0364AFED818925B9469F3 /* SFIPreferences.m */,
 				1DF03D99C19042FD3FCADB2D /* SFIPreferences.h */,
 				1DF03CBFD9DEB75D228D8A0D /* SensorSupport */,
@@ -659,15 +654,6 @@
 				1DF036C48B59B9CEAA7B4AAD /* UIColor+Securifi.h */,
 			);
 			path = UICategories;
-			sourceTree = "<group>";
-		};
-		1C7E7D531A41A0990026F0BA /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				1C7E7D541A41A0990026F0BA /* SNLog.h */,
-				1C7E7D551A41A0990026F0BA /* SNLog.m */,
-			);
-			path = Util;
 			sourceTree = "<group>";
 		};
 		1C7E7DE31A41A0B30026F0BA /* Almond */ = {
@@ -1109,7 +1095,6 @@
 				1C7E7DC01A41A0990026F0BA /* SFIColors.m in Sources */,
 				1C7E7DB01A41A0990026F0BA /* DrawerViewController.m in Sources */,
 				1C7E7DC21A41A0990026F0BA /* SFIConstants.m in Sources */,
-				1C7E7DD81A41A0990026F0BA /* SNLog.m in Sources */,
 				1C7E7D741A41A0990026F0BA /* SFIBlockedContent.m in Sources */,
 				1C7E7D901A41A0990026F0BA /* SFIRouterReboot.m in Sources */,
 				1C7E7D721A41A0990026F0BA /* SFIAffiliationViewController.m in Sources */,
@@ -1202,7 +1187,6 @@
 				1C7E7D711A41A0990026F0BA /* SFIAffiliationViewController.m in Sources */,
 				1C7E7D851A41A0990026F0BA /* SFILogoutAllViewController.m in Sources */,
 				1C7E7D8F1A41A0990026F0BA /* SFIRouterReboot.m in Sources */,
-				1C7E7DD71A41A0990026F0BA /* SNLog.m in Sources */,
 				1DF031661E380BA4D0E0EB07 /* SFIPreferences.m in Sources */,
 				1DF0390452B5D28DECBE4F68 /* NSData+Conversion.m in Sources */,
 				1DF0351F629E0103520602C3 /* SFICardViewSummaryCell.m in Sources */,
