@@ -1,5 +1,5 @@
 PODS:
-  - ASValueTrackingSlider (0.9.4)
+  - ASValueTrackingSlider (0.10.1)
   - CocoaLumberjack (2.0.0):
     - CocoaLumberjack/Default (= 2.0.0)
     - CocoaLumberjack/Extensions (= 2.0.0)
@@ -8,15 +8,17 @@ PODS:
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.0.0):
     - CocoaLumberjack/Default
-  - Colours (5.6.1)
-  - CrashlyticsFramework (2.2.9)
-  - CrashlyticsLumberjack (2.0.0-rc2):
-    - CocoaLumberjack/Default (>= 2.0.0-rc)
-  - GoogleAnalytics-iOS-SDK (3.10):
-    - GoogleAnalytics-iOS-SDK/Core (= 3.10)
-  - GoogleAnalytics-iOS-SDK/Core (3.10)
+  - Colours (5.6.2)
+  - CrashlyticsFramework (2.2.10)
+  - CrashlyticsLumberjack (2.0.1-beta):
+    - CocoaLumberjack/Default (~> 2.0.0)
+    - CrashlyticsLumberjack/Framework (= 2.0.1-beta)
+  - GoogleAnalytics-iOS-SDK (3.12):
+    - GoogleAnalytics-iOS-SDK/Core (= 3.12)
+  - GoogleAnalytics-iOS-SDK/Core (3.12)
   - iToast (0.0.1)
   - MBProgressHUD (0.9.1)
+  - PureLayout (2.0.6)
   - SWRevealViewController (2.3.0)
   - UIImage-ResizeMagick (0.0.1)
   - V8HorizontalPickerView (1.0.0)
@@ -30,21 +32,23 @@ DEPENDENCIES:
   - GoogleAnalytics-iOS-SDK (~> 3.0)
   - iToast (~> 0.0)
   - MBProgressHUD (~> 0.9)
+  - PureLayout
   - SWRevealViewController (~> 2.3)
   - UIImage-ResizeMagick
   - V8HorizontalPickerView (~> 1.0)
 
 SPEC CHECKSUMS:
-  ASValueTrackingSlider: 74a4bbf70c8cf43d29b701ff4c7659fc5d0afd99
-  CocoaLumberjack: fd2b1031c6c4e0f08b5ea928ef677fa0a5de517d
-  Colours: ecbcbb168f7e6190b76b34df1b477c103cb638eb
-  CrashlyticsFramework: 013bae3c30d5b9bfad1aa10008e155e18473984c
-  CrashlyticsLumberjack: d41d1043ceee3312f546242e8bd3ee0ec22e39b1
-  GoogleAnalytics-iOS-SDK: f422062075d9ccb1ea8d783fc5ba3829461e9502
-  iToast: 4de112d3dd42a3a8bf685572e6cda723c9cbc4f2
-  MBProgressHUD: f3747dcbd45a9e855a6b0674550651e0b7ed250c
-  SWRevealViewController: f6d80638b8e12323e87ac79562345403a799cb77
-  UIImage-ResizeMagick: 6edd4b95aabf4be264bf99147aa27abb319f3c7f
-  V8HorizontalPickerView: 76d45849549fc6b26f497361cbc8f853b407bc13
+  ASValueTrackingSlider: 00fe601d9b5b2efeac515c1673afbf452f8e78ba
+  CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
+  Colours: 0afd4c3429656880fd4cff350ca3bf0ab86ca348
+  CrashlyticsFramework: 2f7c515a2d74c8636bf47e761621f2f68193747e
+  CrashlyticsLumberjack: 26034b4b6d8b0bf547ea9ba201ff53c6cd50f971
+  GoogleAnalytics-iOS-SDK: 13241762fa4aea845eb75bef6c0da3427a26e7b3
+  iToast: df147188215cc3293bd4366822833f2862fec451
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
+  SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
+  UIImage-ResizeMagick: f08c2d14d1e8a5f0b402185408785540562f2fe7
+  V8HorizontalPickerView: 6451e226ea7939c3499cefbbc0dcab85c941c28c
 
-COCOAPODS: 0.36.0
+COCOAPODS: 0.37.2

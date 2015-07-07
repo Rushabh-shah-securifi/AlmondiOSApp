@@ -12,6 +12,7 @@ pod 'Colours', '~> 5.5'
 pod 'GoogleAnalytics-iOS-SDK', '~> 3.0'
 pod 'iToast', '~> 0.0'
 pod 'MBProgressHUD', '~> 0.9'
+pod 'PureLayout'
 pod 'SWRevealViewController', '~> 2.3'
 pod "UIImage-ResizeMagick"
 pod 'V8HorizontalPickerView', '~> 1.0'
