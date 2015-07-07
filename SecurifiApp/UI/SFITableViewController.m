@@ -15,10 +15,13 @@
 #import "SFINotificationStatusBarButtonItem.h"
 #import "UIApplication+SecurifiNotifications.h"
 #import "SFIHuePickerView.h"
+#import "AlertView.h"
 
-@interface SFITableViewController () <MBProgressHUDDelegate, SWRevealViewControllerDelegate, UIGestureRecognizerDelegate>
+@interface SFITableViewController () <MBProgressHUDDelegate, SWRevealViewControllerDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate>
 @property(nonatomic, readonly) SFINotificationStatusBarButtonItem *notificationsStatusButton;
-@property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
+@property(nonatomic, readonly) SFICloudStatusBarButtonItem *connectionStatusBarButton;
+@property(nonatomic, readonly) SFICloudStatusBarButtonItem *almondModeBarButton;
+@property(nonatomic) UIView *tableScrim;
 @end
 
 @implementation SFITableViewController
@@ -56,7 +59,7 @@
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
     self.enableDrawer = _enableDrawer; // in case it was set before view loaded
 
-    _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onCloudStatusButtonPressed:)];
+    _connectionStatusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:configurator.enableLocalNetworking];
     //
     if (self.enableNotificationsView) {
         _notificationsStatusButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(onShowNotifications:)];
@@ -67,10 +70,12 @@
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
         spacer.width = 25;
 
-        self.navigationItem.rightBarButtonItems = @[self.statusBarButton, spacer, self.notificationsStatusButton];
+        _almondModeBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onAlmondModeButtonPressed:) enableLocalNetworking:configurator.enableLocalNetworking];
+
+        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, self.almondModeBarButton, spacer, self.notificationsStatusButton];
     }
     else {
-        self.navigationItem.rightBarButtonItem = _statusBarButton;
+        self.navigationItem.rightBarButtonItem = _connectionStatusBarButton;
     };
     //
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
@@ -159,12 +164,85 @@
 
 #pragma Event handling
 
-- (void)onCloudStatusButtonPressed:(id)sender {
+- (void)onConnectionStatusButtonPressed:(id)sender {
+    AlertView *alert = [AlertView new];
+    alert.delegate = self;
+    alert.backgroundColor = [UIColor whiteColor];
+    alert.alpha = 0.95;
+
+    CGRect rect = self.navigationController.navigationBar.frame;
+    CGRect frame = CGRectMake(0, rect.size.height + 20, rect.size.width, 220);
+    alert.frame = frame;
+
+    SFICloudStatusState statusState = self.connectionStatusBarButton.state;
+    switch (statusState) {
+        case SFICloudStatusStateConnecting: {
+            // ignore this
+            return;
+        };
+
+        case SFICloudStatusStateConnected: {
+            alert.message = @"Connected to your Almond via cloud.";
+            alert.options = @[
+                    @"Switch to Local Connection"
+            ];
+            break;
+        };
+
+        case SFICloudStatusStateDisconnected:
+        case SFICloudStatusStateAlmondOffline: {
+            alert.message = @"Cloud connection to your Almond failed. Tap retry or switch to local connection.";
+            alert.options = @[
+                    @"Retry Cloud Connection",
+                    @"Switch to Local Connection"
+            ];
+            break;
+        };
+
+        case SFICloudStatusStateAway:
+        case SFICloudStatusStateAtHome:
+            // should not be possible state for this button
+            return;
+
+        case SFICloudStatusStateConnectionError: {
+            alert.message = @"Can't connect to your Almond. Please select a connection method.";
+            alert.options = @[
+                    @"Cloud Connection",
+                    @"Local Connection"
+            ];
+            break;
+        };
+        case SFICloudStatusStateLocalConnection: {
+            alert.message = @"Connected to your Almond locally.";
+            alert.options = @[
+                    @"Switch to Cloud Connection"
+            ];
+            break;
+        };
+
+        case SFICloudStatusStateLocalConnectionOffline: {
+            alert.message = @"Local connection to your Almond failed. Tap retry or switch to cloud connection.";
+            alert.options = @[
+                    @"Retry Local Connection",
+                    @"Switch to Cloud Connection"
+            ];
+            break;
+        };
+
+        default:
+            return;
+    }
+
+    [self onLockTable];
+    [self.navigationController.view addSubview:alert];
+}
+
+- (void)onAlmondModeButtonPressed:(id)sender {
     if (!self.enableNotificationsView) {
         return;
     }
 
-    SFICloudStatusBarButtonItem *button = self.statusBarButton;
+    SFICloudStatusBarButtonItem *button = self.almondModeBarButton;
     SFICloudStatusState state = button.state;
 
     enum SFIAlmondMode newMode;
@@ -270,23 +348,38 @@
 }
 
 - (void)markCloudStatusIcon {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSString *const almondMac = self.almondMac;
 
-    if ([toolkit isCloudConnecting]) {
-        [self.statusBarButton markState:SFICloudStatusStateConnecting];
-    }
-    else if ([toolkit isCloudOnline]) {
-        if (self.enableNotificationsHomeAwayMode) {
-            SFIAlmondMode mode = [toolkit modeForAlmond:self.almondMac];
-            enum SFICloudStatusState state = [self stateForAlmondMode:mode];
-            [self.statusBarButton markState:state];
-        }
-        else {
-            [self.statusBarButton markState:SFICloudStatusStateConnected];
-        }
-    }
-    else {
-        [self.statusBarButton markState:SFICloudStatusStateAlmondOffline];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    enum SFIAlmondConnectionMode connectionMode = [toolkit connectionModeForAlmond:almondMac];
+    enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:almondMac];
+
+    switch (status) {
+        case SFIAlmondConnectionStatus_disconnected: {
+            enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateDisconnected : SFICloudStatusStateLocalConnectionOffline;
+            [self.connectionStatusBarButton markState:state];
+
+            if (self.enableNotificationsHomeAwayMode) {
+                [self.almondModeBarButton markState:SFICloudStatusStateAlmondOffline];
+            }
+            break;
+        };
+        case SFIAlmondConnectionStatus_connecting:
+            [self.connectionStatusBarButton markState:SFICloudStatusStateConnecting];
+            break;
+        case SFIAlmondConnectionStatus_connected: {
+            enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateConnected : SFICloudStatusStateLocalConnection;
+            [self.connectionStatusBarButton markState:state];
+
+            if (self.enableNotificationsHomeAwayMode) {
+                SFIAlmondMode mode = [toolkit modeForAlmond:almondMac];
+                state = [self stateForAlmondMode:mode];
+                [self.almondModeBarButton markState:state];
+            }
+            break;
+        };
+        case SFIAlmondConnectionStatus_error:
+            break;
     }
 }
 
@@ -386,6 +479,65 @@
         self.tableView.contentInset = UIEdgeInsetsZero;
         self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
     }];
+}
+
+#pragma mark - AlertViewDelegate methods
+
+- (void)alertView:(AlertView *)view didSelectOption:(NSInteger)index {
+    [view removeFromSuperview];
+    [self onUnlockTable];
+}
+
+- (void)alertViewDidCancel:(AlertView *)view {
+    [view removeFromSuperview];
+    [self onUnlockTable];
+}
+
+#pragma mark - Scrim and Table locking management
+
+- (void)onLockTable {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.tabBarController.delegate = self; // stop user from switching tabs while table is locked
+        self.tableView.scrollEnabled = NO;
+        self.enableDrawer = NO;
+        self.notificationsStatusButton.enabled = NO;
+        self.almondModeBarButton.enabled = NO;
+        self.connectionStatusBarButton.enabled = NO;
+        [self installScrimView];
+    });
+}
+
+- (void)onUnlockTable {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.tabBarController.delegate = nil; // uninstall delegate so tabs can be selected
+        self.tableView.scrollEnabled = YES;
+        self.enableDrawer = YES;
+        self.notificationsStatusButton.enabled = YES;
+        self.almondModeBarButton.enabled = YES;
+        self.connectionStatusBarButton.enabled = YES;
+        [self removeScrimView];
+    });
+}
+
+- (void)installScrimView {
+    if (!self.tableScrim) {
+        UIView *scrim = [[UIView alloc] initWithFrame:self.tableView.frame];
+        scrim.backgroundColor = [UIColor clearColor];
+        self.tableScrim = scrim;
+        [self.tableView addSubview:self.tableScrim];
+    }
+}
+
+- (void)removeScrimView {
+    [self.tableScrim removeFromSuperview];
+    self.tableScrim = nil;
+}
+
+#pragma mark - UITabBarControllerDelegate methods
+
+- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
+    // installed when table is locked: prevent user from switching tabs when Alert view is showing
+    return NO;
 }
 
 @end
