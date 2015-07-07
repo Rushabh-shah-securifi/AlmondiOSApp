@@ -35,11 +35,12 @@
     UIColor *buttonTextColor = [UIColor infoBlueColor];
     UIColor *buttonPressedColor = [buttonTextColor complementaryColor];
 
-    for (AlertViewAction *option in self.actions) {
+    for (AlertViewAction *action in self.actions) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.enabled = action.enabled;
         button.titleLabel.textAlignment = NSTextAlignmentCenter;
         button.titleLabel.font = [UIFont standardHeadingBoldFont];
-        [button setTitle:option.title forState:UIControlStateNormal];
+        [button setTitle:action.title forState:UIControlStateNormal];
         [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
         [button setTitleColor:buttonPressedColor forState:UIControlStateHighlighted];
         [button addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
