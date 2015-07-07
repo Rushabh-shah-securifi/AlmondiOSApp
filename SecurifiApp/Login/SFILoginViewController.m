@@ -315,7 +315,7 @@
 
 - (void)onReachabilityDidChange:(id)sender {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    if ([toolkit isReachable]) {
+    if ([toolkit isCloudReachable]) {
         [self setStandardLoginMsg];
     }
     else {

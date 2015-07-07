@@ -149,7 +149,7 @@
         return;
     }
 
-    if (![toolkit isReachable]) {
+    if (![toolkit isCloudReachable]) {
         // No network route to cloud. Nothing to do.
         if (!onViewAppearing) {
             // only show after first attempt fails
@@ -248,7 +248,7 @@
 - (void)onLogoutAllResponse:(id)sender {
     DLog(@"%s", __PRETTY_FUNCTION__);
 
-    if (![[SecurifiToolkit sharedInstance] isLoggedIn]) {
+    if (![[SecurifiToolkit sharedInstance] isCloudLoggedIn]) {
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self presentLogonScreen];
         });
@@ -261,7 +261,7 @@
     //PY 151014: Activation Header Notification to be set true
     [[SFIPreferences instance] setLogonAccountNeedsActivationNotification];
 
-    if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
+    if ([[SecurifiToolkit sharedInstance] isCloudLoggedIn]) {
         UIApplication *application = [UIApplication sharedApplication];
         [application securifiApplicationTryEnableRemoteNotifications];
         [self presentMainView];
@@ -408,7 +408,7 @@
 - (void)logoutAllControllerDidCancel:(SFILogoutAllViewController *)ctrl {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
-            if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
+            if ([[SecurifiToolkit sharedInstance] isCloudLoggedIn]) {
                 [self presentMainView];
             }
             else {
@@ -428,7 +428,7 @@
 - (void)userAccountDidDone:(SFIAccountsTableViewController *)ctrl{
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
-            if ([[SecurifiToolkit sharedInstance] isLoggedIn]) {
+            if ([[SecurifiToolkit sharedInstance] isCloudLoggedIn]) {
                 [self presentMainView];
             }
             else {

@@ -37,7 +37,7 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
 
     // register the token with the cloud, if needed. this process will fail fast and silently
     // if the token is already registered
-    if (toolkit.isLoggedIn) {
+    if (toolkit.isCloudLoggedIn) {
         NSData *deviceToken = [preferences pushNotificationDeviceToken];
         if (deviceToken != nil) {
             NSString *str = deviceToken.hexadecimalString;
@@ -51,7 +51,7 @@ NSString *const kApplicationDidViewNotifications = @"kApplicationDidViewNotifica
     [[SFIPreferences instance] markPushNotificationRegistration:deviceToken];
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    if (toolkit.isLoggedIn) {
+    if (toolkit.isCloudLoggedIn) {
         NSString *token_str = deviceToken.hexadecimalString;
         [toolkit asyncRequestRegisterForNotification:token_str];
     }
