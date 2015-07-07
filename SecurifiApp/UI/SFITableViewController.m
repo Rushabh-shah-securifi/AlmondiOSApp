@@ -68,17 +68,17 @@
         [self.notificationsStatusButton markNotificationCount:(NSUInteger) count];
 
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        spacer.width = 25;
+        spacer.width = 5;
 
+        // make the button but do not install; will be installed after connection state is determined
         _almondModeBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onAlmondModeButtonPressed:) enableLocalNetworking:configurator.enableLocalNetworking];
 
-        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, self.almondModeBarButton, spacer, self.notificationsStatusButton];
+        self.navigationItem.rightBarButtonItems = @[spacer, self.notificationsStatusButton, self.connectionStatusBarButton];
     }
     else {
         self.navigationItem.rightBarButtonItem = _connectionStatusBarButton;
+        self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
     };
-    //
-    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
 
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -358,10 +358,7 @@
         case SFIAlmondConnectionStatus_disconnected: {
             enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateDisconnected : SFICloudStatusStateLocalConnectionOffline;
             [self.connectionStatusBarButton markState:state];
-
-            if (self.enableNotificationsHomeAwayMode) {
-                [self.almondModeBarButton markState:SFICloudStatusStateAlmondOffline];
-            }
+            [self hideAlmondModeButton]; // when disconnected, can't show mode
             break;
         };
         case SFIAlmondConnectionStatus_connecting:
@@ -375,6 +372,8 @@
                 SFIAlmondMode mode = [toolkit modeForAlmond:almondMac];
                 state = [self stateForAlmondMode:mode];
                 [self.almondModeBarButton markState:state];
+
+                [self showAlmondModeButton];
             }
             break;
         };
@@ -395,6 +394,30 @@
             // can happen when the cloud connection comes up but before almond mode has been determined
             return SFICloudStatusStateConnected;
     }
+}
+
+- (void)hideAlmondModeButton {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self.enableNotificationsHomeAwayMode) {
+            return;
+        }
+
+        NSArray *items = self.navigationItem.rightBarButtonItems;
+        if (items.count != 4) {
+            return;
+        }
+        self.navigationItem.rightBarButtonItems = [items subarrayWithRange:NSMakeRange(0, 3)];
+    });
+}
+
+- (void)showAlmondModeButton {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        NSArray *items = self.navigationItem.rightBarButtonItems;
+        if (items.count == 4) {
+            return;
+        }
+        self.navigationItem.rightBarButtonItems = [items arrayByAddingObject:self.almondModeBarButton];
+    });
 }
 
 #pragma mark Drawer management
