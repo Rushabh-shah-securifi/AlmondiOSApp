@@ -6,10 +6,11 @@
 #import <UIKit/UIKit.h>
 
 @class AlertView;
+@class AlertViewAction;
 
 @protocol AlertViewDelegate
 
-- (void)alertView:(AlertView *)view didSelectOption:(NSInteger)index;
+- (void)alertView:(AlertView *)view didSelectAction:(AlertViewAction*)action;
 
 - (void)alertViewDidCancel:(AlertView *)view;
 
@@ -21,6 +22,6 @@
 @property(nonatomic, weak) id <AlertViewDelegate> delegate;
 
 @property(nonatomic, copy) NSString *message;
-@property(nonatomic, copy) NSArray *options;
+@property(nonatomic, copy) NSArray *actions; // AlertViewActions
 
 @end

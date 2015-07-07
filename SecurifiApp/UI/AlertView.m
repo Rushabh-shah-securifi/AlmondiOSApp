@@ -5,6 +5,7 @@
 
 #import "AlertView.h"
 #import "UIFont+Securifi.h"
+#import "AlertViewAction.h"
 #import <PureLayout/PureLayout.h>
 #import <Colours/Colours.h>
 
@@ -34,14 +35,14 @@
     UIColor *buttonTextColor = [UIColor infoBlueColor];
     UIColor *buttonPressedColor = [buttonTextColor complementaryColor];
 
-    for (NSString *option in self.options) {
+    for (AlertViewAction *option in self.actions) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.titleLabel.textAlignment = NSTextAlignmentCenter;
         button.titleLabel.font = [UIFont standardHeadingBoldFont];
-        [button setTitle:option forState:UIControlStateNormal];
+        [button setTitle:option.title forState:UIControlStateNormal];
         [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
         [button setTitleColor:buttonPressedColor forState:UIControlStateHighlighted];
-        [button addTarget:self action:@selector(onOptionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [button addTarget:self action:@selector(onActionButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
 
         [self addSubview:button];
     }
@@ -92,17 +93,15 @@
 }
 
 
-- (void)onOptionButtonPressed:(id)sender {
+- (void)onActionButtonPressed:(id)sender {
     UIButton *button = sender;
     NSString *title = button.currentTitle;
 
-    NSInteger index = 0;
-    for (NSString *option in self.options) {
-        if ([option isEqualToString:title]) {
-            [self.delegate alertView:self didSelectOption:index];
-            break;
+    for (AlertViewAction *action in self.actions) {
+        if ([action.title isEqualToString:title]) {
+            [self.delegate alertView:self didSelectAction:action];
+            return;
         }
-        index++;
     }
 }
 
