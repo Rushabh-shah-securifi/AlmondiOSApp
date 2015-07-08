@@ -17,7 +17,6 @@
 #import "SFIHuePickerView.h"
 #import "AlertView.h"
 #import "AlertViewAction.h"
-#import "SFIAlmondLocalNetworkSettings.h"
 
 @interface SFITableViewController () <MBProgressHUDDelegate, SWRevealViewControllerDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate>
 @property(nonatomic, readonly) SFINotificationStatusBarButtonItem *notificationsStatusButton;
@@ -184,8 +183,16 @@
     SFICloudStatusState statusState = self.connectionStatusBarButton.state;
     switch (statusState) {
         case SFICloudStatusStateConnecting: {
-            // ignore this
-            return;
+            alert.message = @"In process of connecting. Change connection method.";
+            alert.actions = @[
+                    [AlertViewAction actionWithTitle:@"Cloud Connection" handler:^(AlertViewAction *action) {
+                        [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
+                    }],
+                    [AlertViewAction actionWithTitle:@"Local Connection" handler:^(AlertViewAction *action) {
+                        [self configureNetworkSettings:SFIAlmondConnectionMode_local];
+                    }]
+            ];
+            break;
         };
 
         case SFICloudStatusStateConnected: {
@@ -386,12 +393,14 @@
         case SFIAlmondConnectionStatus_disconnected: {
             enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateDisconnected : SFICloudStatusStateLocalConnectionOffline;
             [self.connectionStatusBarButton markState:state];
-            [self hideAlmondModeButton]; // when disconnected, can't show mode
+            [self hideAlmondModeButton]; // when disconnected, not relevant to show mode or allow it to be changed
             break;
         };
-        case SFIAlmondConnectionStatus_connecting:
+        case SFIAlmondConnectionStatus_connecting: {
             [self.connectionStatusBarButton markState:SFICloudStatusStateConnecting];
+            [self hideAlmondModeButton]; // when connecting, true almond state is unknown
             break;
+        };
         case SFIAlmondConnectionStatus_connected: {
             enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateConnected : SFICloudStatusStateLocalConnection;
             [self.connectionStatusBarButton markState:state];
@@ -405,8 +414,10 @@
             }
             break;
         };
-        case SFIAlmondConnectionStatus_error:
+        case SFIAlmondConnectionStatus_error: {
+            [self hideAlmondModeButton]; // when connection error, true almond state is unknown
             break;
+        };
     }
 }
 
