@@ -7,7 +7,6 @@
 //
 
 #import "ScoreboardViewController.h"
-#import "SFICloudStatusBarButtonItem.h"
 #import "ScoreboardEventViewController.h"
 #import "SFIPreferences.h"
 #import "NSData+Conversion.h"
@@ -31,7 +30,6 @@
 #define SEC_LOGS            6
 
 @interface ScoreboardViewController () <MFMailComposeViewControllerDelegate, ScoreboardTextEditorViewControllerProtocol>
-@property(nonatomic, readonly) SFICloudStatusBarButtonItem *statusBarButton;
 @property(nonatomic) Scoreboard *scoreboard;
 @property(nonatomic) NSArray *almonds;
 @end
@@ -48,9 +46,7 @@
 }
 
 - (void)viewDidLoad {
-    _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:nil action:nil];
     [super viewDidLoad];
-    self.navigationItem.rightBarButtonItem = _statusBarButton;
 
     NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
 
