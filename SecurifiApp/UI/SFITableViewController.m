@@ -178,11 +178,9 @@
 #pragma Event handling
 
 - (void)onConnectionStatusButtonPressed:(id)sender {
-    
     AlertView *alert = [AlertView new];
     alert.delegate = self;
     alert.backgroundColor = [UIColor whiteColor];
-    alert.alpha = 0.95;
 
     CGRect rect = self.navigationController.navigationBar.frame;
     CGRect frame = CGRectMake(0, rect.size.height + 20, rect.size.width, 220);
@@ -272,7 +270,18 @@
     }
 
     [self onLockTable];
+
+    alert.alpha = 0.0;
     [self.navigationController.view addSubview:alert];
+
+    [UIView animateWithDuration:0.2
+                          delay:0.0
+                        options:UIViewAnimationOptionLayoutSubviews
+                     animations:^{
+                         alert.alpha = 0.95;
+                     }
+                     completion:nil
+    ];
 }
 
 - (void)configureNetworkSettings:(enum SFIAlmondConnectionMode)mode {
