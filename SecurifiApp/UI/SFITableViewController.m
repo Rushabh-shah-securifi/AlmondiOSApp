@@ -44,6 +44,7 @@
     SecurifiConfigurator *configurator = toolkit.configuration;
     _enableNotificationsView = configurator.enableNotifications;
     _enableNotificationsHomeAwayMode = configurator.enableNotificationsHomeAwayMode;
+    const BOOL enableLocalNetworking = configurator.enableLocalNetworking;
 
     NSDictionary *titleAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
@@ -60,7 +61,13 @@
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
     self.enableDrawer = _enableDrawer; // in case it was set before view loaded
 
-    _connectionStatusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:configurator.enableLocalNetworking];
+    if (enableLocalNetworking) {
+        _connectionStatusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES];
+    }
+    else {
+        _connectionStatusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:nil action:nil enableLocalNetworking:NO];
+    }
+
     //
     if (self.enableNotificationsView) {
         _notificationsStatusButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(onShowNotifications:)];
@@ -74,7 +81,7 @@
         self.navigationItem.rightBarButtonItems = @[spacer, self.notificationsStatusButton, self.connectionStatusBarButton];
 
         // make the button but do not install; will be installed after connection state is determined
-        _almondModeBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onAlmondModeButtonPressed:) enableLocalNetworking:configurator.enableLocalNetworking];
+        _almondModeBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onAlmondModeButtonPressed:) enableLocalNetworking:enableLocalNetworking];
     }
     else {
         self.navigationItem.rightBarButtonItem = _connectionStatusBarButton;
@@ -171,6 +178,7 @@
 #pragma Event handling
 
 - (void)onConnectionStatusButtonPressed:(id)sender {
+    
     AlertView *alert = [AlertView new];
     alert.delegate = self;
     alert.backgroundColor = [UIColor whiteColor];
