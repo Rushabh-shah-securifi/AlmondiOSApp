@@ -71,10 +71,10 @@
         UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
         spacer.width = 5;
 
+        self.navigationItem.rightBarButtonItems = @[spacer, self.notificationsStatusButton, self.connectionStatusBarButton];
+
         // make the button but do not install; will be installed after connection state is determined
         _almondModeBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onAlmondModeButtonPressed:) enableLocalNetworking:configurator.enableLocalNetworking];
-
-        self.navigationItem.rightBarButtonItems = @[spacer, self.notificationsStatusButton, self.connectionStatusBarButton];
     }
     else {
         self.navigationItem.rightBarButtonItem = _connectionStatusBarButton;
@@ -405,7 +405,7 @@
             enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateConnected : SFICloudStatusStateLocalConnection;
             [self.connectionStatusBarButton markState:state];
 
-            if (self.enableNotificationsHomeAwayMode) {
+            if (self.enableNotificationsHomeAwayMode && almondMac) {
                 SFIAlmondMode mode = [toolkit modeForAlmond:almondMac];
                 state = [self stateForAlmondMode:mode];
                 [self.almondModeBarButton markState:state];
