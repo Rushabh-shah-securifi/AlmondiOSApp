@@ -44,24 +44,28 @@
     BOOL localNetworking = self.enableLocalNetworking;
 
     UIImage *image = [self imageForState:state localNetworkingMode:localNetworking];
+    UIColor *color = [self tintForState:state localNetworkMode:localNetworking];
 
     UIButton *button = self.button;
-    button.tintColor = [self tintForState:state localNetworkMode:localNetworking];
+    button.tintColor = color;
     [button setImage:image forState:UIControlStateNormal];
 }
 
 - (UIImage *)imageForState:(SFICloudStatusState)state localNetworkingMode:(BOOL)localNetworkingMode {
+    enum UIImageRenderingMode mode = UIImageRenderingModeAlwaysTemplate;
     NSString *name;
 
     switch (state) {
         case SFICloudStatusStateDisconnected:
             name = localNetworkingMode ? @"connection_cloud_error" : @"connection_status_01";
+            if (localNetworkingMode) mode = UIImageRenderingModeAlwaysOriginal;
             break;
         case SFICloudStatusStateConnecting:
             name = @"connection_status_02";
             break;
         case SFICloudStatusStateConnected:
             name = localNetworkingMode ? @"connection_cloud_success" : @"connection_status_03";
+            if (localNetworkingMode) mode = UIImageRenderingModeAlwaysOriginal;
             break;
         case SFICloudStatusStateAlmondOffline:
             name = @"connection_status_04";
@@ -74,19 +78,22 @@
             break;
         case SFICloudStatusStateConnectionError:
             name = @"connection_error_icon";
+            if (localNetworkingMode) mode = UIImageRenderingModeAlwaysOriginal;
             break;
         case SFICloudStatusStateLocalConnection:
             name = @"connection_local_success";
+            mode = UIImageRenderingModeAlwaysOriginal;
             break;
         case SFICloudStatusStateLocalConnectionOffline:
             name = @"connection_local_error";
+            mode = UIImageRenderingModeAlwaysOriginal;
             break;
         default:
             return nil;
     }
 
     UIImage *image = [UIImage imageNamed:name];
-    return [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    return [image imageWithRenderingMode:mode];
 }
 
 - (UIColor *)tintForState:(SFICloudStatusState)state localNetworkMode:(BOOL)localNetworkMode {
