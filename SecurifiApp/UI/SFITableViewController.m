@@ -82,6 +82,7 @@
 
         // make the button but do not install; will be installed after connection state is determined
         _almondModeBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onAlmondModeButtonPressed:) enableLocalNetworking:enableLocalNetworking];
+        [_almondModeBarButton markState:SFICloudStatusStateAlmondOffline];
     }
     else {
         self.navigationItem.rightBarButtonItem = _connectionStatusBarButton;
@@ -276,7 +277,7 @@
 
     [UIView animateWithDuration:0.2
                           delay:0.0
-                        options:UIViewAnimationOptionLayoutSubviews
+                        options:UIViewAnimationOptionCurveEaseIn
                      animations:^{
                          alert.alpha = 0.95;
                      }
@@ -422,12 +423,17 @@
             enum SFICloudStatusState state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateConnected : SFICloudStatusStateLocalConnection;
             [self.connectionStatusBarButton markState:state];
 
-            if (self.enableNotificationsHomeAwayMode && almondMac) {
+            if (self.enableNotificationsHomeAwayMode) {
                 SFIAlmondMode mode = [toolkit modeForAlmond:almondMac];
-                state = [self stateForAlmondMode:mode];
-                [self.almondModeBarButton markState:state];
 
-                [self showAlmondModeButton];
+                if (mode == SFIAlmondMode_unknown) {
+                    [self hideAlmondModeButton]; // don't show button unless one is known
+                }
+                else {
+                    state = [self stateForAlmondMode:mode];
+                    [self.almondModeBarButton markState:state];
+                    [self showAlmondModeButton];
+                }
             }
             break;
         };
