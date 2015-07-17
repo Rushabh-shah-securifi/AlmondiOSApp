@@ -25,12 +25,15 @@
 #import "TableHeaderView.h"
 #import "SFIRouterVersionTableViewCell.h"
 #import "UIViewController+Securifi.h"
+#import "SFIAlmondLocalNetworkSettings.h"
+#import "RouterNetworkSettingsEditor.h"
 
-#define DEF_WIRELESS_SETTINGS_SECTION   0
-#define DEF_DEVICES_AND_USERS_SECTION   1
-#define DEF_ROUTER_VERSION_SECTION      2
-#define DEF_ROUTER_REBOOT_SECTION       3
-#define DEF_ROUTER_SEND_LOGS_SECTION    4
+#define DEF_NETWORKING_SECTION          0
+#define DEF_WIRELESS_SETTINGS_SECTION   1
+#define DEF_DEVICES_AND_USERS_SECTION   2
+#define DEF_ROUTER_VERSION_SECTION      3
+#define DEF_ROUTER_REBOOT_SECTION       4
+#define DEF_ROUTER_SEND_LOGS_SECTION    5
 
 typedef NS_ENUM(unsigned int, RouterViewState) {
     RouterViewState_no_almond = 1,
@@ -51,7 +54,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     AlmondSupportsSendLogs_no,
 };
 
-@interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate>
+@interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate, RouterNetworkSettingsEditorDelegate>
 @property SFIAlmondPlus *currentAlmond;
 @property BOOL newAlmondFirmwareVersionAvailable;
 @property NSString *latestAlmondVersionAvailable;
@@ -76,6 +79,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 @property BOOL disposed;
 
 @property(nonatomic) BOOL enableRouterWirelessControl;
+@property(nonatomic) BOOL enableNetworkingControl;
 @end
 
 @implementation SFIRouterTableViewController
@@ -95,6 +99,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SecurifiConfigurator *configurator = toolkit.configuration;
     self.enableRouterWirelessControl = configurator.enableRouterWirelessControl;
+    self.enableNetworkingControl = configurator.enableLocalNetworking;
 
     [super viewDidLoad];
 
@@ -316,6 +321,19 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     });
 }
 
+- (void)onEditNetworkSettings:(id)sender {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:self.almondMac];
+
+    RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+    editor.delegate = self;
+    editor.settings = settings;
+
+    UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
+
+    [self presentViewController:ctrl animated:YES completion:nil];
+}
+
 - (void)onEditWirelessSettingsCard:(id)sender {
     [self onExpandCloseSection:self.tableView section:DEF_WIRELESS_SETTINGS_SECTION];
 }
@@ -374,7 +392,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             return 1;
         case RouterViewState_cloud_connected:
         default:
-            return 5;
+            return 6;
     }
 }
 
@@ -388,6 +406,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     }
 
     switch (section) {
+        case DEF_NETWORKING_SECTION:
+            return self.enableNetworkingControl ? 1 : 0;
         case DEF_WIRELESS_SETTINGS_SECTION:
             return 1 + self.currentExpandedCount;
         case DEF_DEVICES_AND_USERS_SECTION:
@@ -409,6 +429,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     }
 
     switch (indexPath.section) {
+        case DEF_NETWORKING_SECTION:
+            return self.enableNetworkingControl ? 120 : 0;
+
         case DEF_WIRELESS_SETTINGS_SECTION:
             if (indexPath.row == 0) {
                 return 120;
@@ -437,6 +460,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     }
 
     switch (indexPath.section) {
+        case DEF_NETWORKING_SECTION:
+            return self.enableNetworkingControl ? 120 : 0;
+
         case DEF_WIRELESS_SETTINGS_SECTION:
             if (indexPath.row > 0) {
                 return 300;
@@ -488,6 +514,14 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         default: {
             tableView.scrollEnabled = YES;
             switch (indexPath.section) {
+                case DEF_NETWORKING_SECTION:
+                    if (self.enableNetworkingControl) {
+                        return [self createNetworkSummaryCell:tableView];
+                    }
+                    else {
+                        return [self createEmptyCell:tableView];
+                    }
+
                 case DEF_WIRELESS_SETTINGS_SECTION:
                     switch (indexPath.row) {
                         case 0:
@@ -533,6 +567,14 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             }
         };
     }
+}
+
+- (UITableViewCell *)createEmptyCell:(const UITableView *)tableView {
+    UITableViewCell *empty = [tableView dequeueReusableCellWithIdentifier:@"empty"];
+    if (!empty) {
+        empty = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"empty"];
+    }
+    return empty;
 }
 
 - (UITableViewCell *)createNoAlmondCell:(UITableView *)tableView {
@@ -585,6 +627,52 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         lblAddSensor.text = NSLocalizedString(@"router.offline-msg.label.Please check the router.", @"Please check the router.");
         lblAddSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblAddSensor];
+    }
+
+    return cell;
+}
+
+- (UITableViewCell *)createNetworkSummaryCell:(UITableView *)tableView {
+    NSString *const cell_id = @"network_summary";
+
+    SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+    if (cell == nil) {
+        cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
+    }
+
+    [cell markReuse];
+
+    cell.cardView.rightOffset = SFICardView_right_offset_inset;
+    cell.cardView.backgroundColor = [[SFIColors greenColor] color];
+    cell.title = NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link");
+
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:self.almondMac];
+
+    if (settings) {
+        NSString *ssid2 = @"";
+        NSString *ssid5 = @"";
+        NSString *host = settings.host;
+        NSString *admin = @"";
+
+        cell.summaries = @[
+                [NSString stringWithFormat:@"SSID 2.5Ghz is %@", ssid2],
+                [NSString stringWithFormat:@"SSID 5Ghz is %@", ssid5],
+                [NSString stringWithFormat:@"IP Address is %@", host],
+                [NSString stringWithFormat:@"Admin Login is %@", admin],
+        ];
+
+        cell.editTarget = self;
+        cell.editSelector = @selector(onEditNetworkSettings:);
+
+//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//        cell.tintColor = [UIColor whiteColor];
+    }
+    else {
+        cell.summaries = @[
+                NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")
+        ];
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
     return cell;
@@ -1514,6 +1602,18 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             self.tableView.tableHeaderView = nil;
         }];
     });
+}
+
+#pragma mark - RouterNetworkSettingsEditorDelegate methods
+
+- (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit setLocalNetworkSettings:newSettings];
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

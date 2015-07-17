@@ -181,12 +181,14 @@
 		1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03016CB88EB25EF5CE27E /* ScoreboardDebugLoggerViewController.m */; };
 		1DF03A2A9BFA55B20A1D2609 /* SensorIndexSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */; };
 		1DF03A50177B8354D886E980 /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03A704CC540558B993529 /* CircleView.m */; };
+		1DF03A511BCC303474712681 /* RouterNetworkSettingsEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03EE61C9DF4D7E058616E /* RouterNetworkSettingsEditor.m */; };
 		1DF03A5E4E35A0F781390B53 /* SFISensorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF036AA13CCDD88050E8C2C /* SFISensorTableViewCell.m */; };
 		1DF03A76C404827BA9A6BF8C /* UIApplication+SecurifiNotifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AB12BF9855556678A13 /* UIApplication+SecurifiNotifications.m */; };
 		1DF03AD70C1C051CA6F74073 /* SFIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0364AFED818925B9469F3 /* SFIPreferences.m */; };
 		1DF03ADB8A23D76AE9B67F13 /* SFINotificationStatusBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */; };
 		1DF03B73C95D8A41C9409EF3 /* SFISensorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0372FDF6A6B6E6843DF80 /* SFISensorsViewController.m */; };
 		1DF03B77AE6B540AFC5851BB /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03C29C7F6403672992843 /* DebugLogger.m */; };
+		1DF03B8FE78FA07C67A943CC /* RouterNetworkSettingsEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03EE61C9DF4D7E058616E /* RouterNetworkSettingsEditor.m */; };
 		1DF03BDF11E412D1A07CE913 /* TableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0306EC5BE52D6364936BE /* TableHeaderView.m */; };
 		1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03ED87E1BC2184C9EEF53 /* ScoreboardTextEditorViewController.m */; };
 		1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03C29C7F6403672992843 /* DebugLogger.m */; };
@@ -365,6 +367,7 @@
 		1DF0372CEAFFEB180E0CAF94 /* SFINotificationStatusBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFINotificationStatusBarButtonItem.h; sourceTree = "<group>"; };
 		1DF0372FDF6A6B6E6843DF80 /* SFISensorsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorsViewController.m; sourceTree = "<group>"; };
 		1DF0373705FBEEE2BE853D29 /* NotificationsTestStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsTestStore.h; sourceTree = "<group>"; };
+		1DF037B05ECBBC13711EC00A /* RouterNetworkSettingsEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouterNetworkSettingsEditor.h; sourceTree = "<group>"; };
 		1DF0383EDE76423FDF937F9E /* ILView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILView.h; sourceTree = "<group>"; };
 		1DF03845038413D52AF4100D /* SensorSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorSupport.m; sourceTree = "<group>"; };
 		1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSaturationBrightnessPickerView.m; sourceTree = "<group>"; };
@@ -398,6 +401,7 @@
 		1DF03E356EAA623CDDD27D0C /* TableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableHeaderView.h; sourceTree = "<group>"; };
 		1DF03E6111D265CB01F83190 /* ValueFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValueFormatter.h; sourceTree = "<group>"; };
 		1DF03ED87E1BC2184C9EEF53 /* ScoreboardTextEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardTextEditorViewController.m; sourceTree = "<group>"; };
+		1DF03EE61C9DF4D7E058616E /* RouterNetworkSettingsEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouterNetworkSettingsEditor.m; sourceTree = "<group>"; };
 		1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorIndexSupport.m; sourceTree = "<group>"; };
 		1DF03F453DC0B72C7436B9E8 /* MessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageView.m; sourceTree = "<group>"; };
 		1DF03F524BE952202AA5335B /* IndexValueSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexValueSupport.h; sourceTree = "<group>"; };
@@ -543,6 +547,8 @@
 				1DF03BB31530783920FAF4C4 /* SFIRouterSendLogsTableViewCell.h */,
 				1DF039C1E7F34EC59EC5AF78 /* SFIRouterVersionTableViewCell.m */,
 				1DF03E21703AEF8F828E5563 /* SFIRouterVersionTableViewCell.h */,
+				1DF03EE61C9DF4D7E058616E /* RouterNetworkSettingsEditor.m */,
+				1DF037B05ECBBC13711EC00A /* RouterNetworkSettingsEditor.h */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -1156,6 +1162,7 @@
 				1DF03271B3B360C48DF81716 /* SFITextField.m in Sources */,
 				1DF034F099411CA60571A787 /* AlertView.m in Sources */,
 				1DF0322DC3176FDED2CFA324 /* AlertViewAction.m in Sources */,
+				1DF03A511BCC303474712681 /* RouterNetworkSettingsEditor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1237,6 +1244,7 @@
 				1DF0333217E77760651C98F7 /* ScoreboardNetworkSettingsViewController.m in Sources */,
 				1DF037452A64D0EE163B8173 /* AlertView.m in Sources */,
 				1DF0394349F84E2FCC5E25F9 /* AlertViewAction.m in Sources */,
+				1DF03B8FE78FA07C67A943CC /* RouterNetworkSettingsEditor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
