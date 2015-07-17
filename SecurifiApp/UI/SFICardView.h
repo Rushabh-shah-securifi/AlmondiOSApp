@@ -37,7 +37,7 @@ typedef NS_ENUM(int, SFICardView_right_offset) {
 
 // controls width of summary  text labels; default is 'normal' and assumes label has full length of card row,
 // but when summary text is obscured by other controls on the right side, use the _inset mode to prevent overlap.
-@property(nonatomic) SFICardView_right_offset rightOffset;
+@property(nonatomic) enum SFICardView_right_offset rightOffset;
 
 - (void)markYOffset:(unsigned int)val;
 
