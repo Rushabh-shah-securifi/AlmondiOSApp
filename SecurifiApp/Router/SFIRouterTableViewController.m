@@ -139,6 +139,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [center addObserver:self selector:@selector(onNetworkChange:) name:NETWORK_UP_NOTIFIER object:nil];
 
     [center addObserver:self selector:@selector(onNetworkChange:) name:kSFIReachabilityChangedNotification object:nil];
+    [center addObserver:self selector:@selector(onConnectionModeDidChange:) name:kSFIDidChangeAlmondConnectionMode object:nil];
+
     [center addObserver:self selector:@selector(onCurrentAlmondChanged:) name:kSFIDidChangeCurrentAlmond object:nil];
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidUpdateAlmondList object:nil];
 
@@ -274,7 +276,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [[SecurifiToolkit sharedInstance] asyncRebootAlmond:self.almondMac];
 }
 
-- (void)sendSendLogsCommand:(NSString*)description {
+- (void)sendSendLogsCommand:(NSString *)description {
     if (self.routerViewState == RouterViewState_no_almond) {
         return;
     }
@@ -311,6 +313,15 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     });
 }
 
+- (void)onConnectionModeDidChange:(id)notice {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.disposed) {
+            return;
+        }
+        [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
+    });
+}
+
 - (void)onCurrentAlmondChanged:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.shownHudOnce = NO;
@@ -324,6 +335,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 - (void)onEditNetworkSettings:(id)sender {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:self.almondMac];
+
+    if (!settings) {
+        settings = [SFIAlmondLocalNetworkSettings new];
+        settings.almondplusMAC = self.almondMac;
+    }
 
     RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
     editor.delegate = self;
@@ -644,35 +660,55 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
     cell.cardView.rightOffset = SFICardView_right_offset_inset;
     cell.cardView.backgroundColor = [[SFIColors greenColor] color];
-    cell.title = NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link");
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:self.almondMac];
 
-    if (settings) {
-        NSString *ssid2 = @"";
-        NSString *ssid5 = @"";
-        NSString *host = settings.host;
-        NSString *admin = @"";
+    NSString *almondMac = self.almondMac;
 
-        cell.summaries = @[
-                [NSString stringWithFormat:@"SSID 2.5Ghz is %@", ssid2],
-                [NSString stringWithFormat:@"SSID 5Ghz is %@", ssid5],
-                [NSString stringWithFormat:@"IP Address is %@", host],
-                [NSString stringWithFormat:@"Admin Login is %@", admin],
-        ];
+    enum SFIAlmondConnectionMode mode = [toolkit connectionModeForAlmond:almondMac];
+    switch (mode) {
+        case SFIAlmondConnectionMode_cloud: {
+            cell.title = NSLocalizedString(@"router.card-title.Cloud Almond Link", @"Cloud Almond Link");
+            cell.summaries = @[
+                    NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")
+            ];
 
-        cell.editTarget = self;
-        cell.editSelector = @selector(onEditNetworkSettings:);
+            cell.editTarget = nil;
+            cell.editSelector = nil;
 
-//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//        cell.tintColor = [UIColor whiteColor];
-    }
-    else {
-        cell.summaries = @[
-                NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")
-        ];
-        cell.accessoryType = UITableViewCellAccessoryNone;
+            break;
+        }
+        case SFIAlmondConnectionMode_local: {
+            cell.title = NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link");
+
+            SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:almondMac];
+            if (settings) {
+                NSString *ssid2 = settings.ssid2 ? settings.ssid2 : @"";
+                NSString *ssid5 = settings.ssid5 ? settings.ssid5 : @"";
+                NSString *host = settings.host ? settings.host : @"";
+                NSString *admin = settings.login ? settings.login : @"";
+
+                cell.summaries = @[
+                        [NSString stringWithFormat:@"SSID 2.5Ghz : %@", ssid2],
+                        [NSString stringWithFormat:@"SSID 5Ghz : %@", ssid5],
+                        [NSString stringWithFormat:@"IP Address : %@", host],
+                        [NSString stringWithFormat:@"Admin Login : %@", admin],
+                ];
+
+                cell.editTarget = self;
+                cell.editSelector = @selector(onEditNetworkSettings:);
+            }
+            else {
+                cell.summaries = @[
+                        NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")
+                ];
+
+                cell.editTarget = nil;
+                cell.editSelector = nil;
+            }
+
+            break;
+        }
     }
 
     return cell;
@@ -980,7 +1016,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (self.almondSupportsSendLogs == AlmondSupportsSendLogs_no) {
         cell.title = [NSString stringWithFormat:@"%@ *", cell.title];
     }
-    
+
     NSArray *summary = @[[NSString stringWithFormat:NSLocalizedString(@"router.Sends %@'s logs to our server", @"Sends %@'s logs to our server"), self.currentAlmond.almondplusName]];
     cell.summaries = summary;
 
@@ -1021,7 +1057,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         }
 
         self.sendLogsEditCellMode = mode;
-        
+
         NSIndexPath *editRow = [NSIndexPath indexPathForItem:1 inSection:DEF_ROUTER_SEND_LOGS_SECTION];
         [self.tableView reloadRowsAtIndexPaths:@[editRow] withRowAnimation:UITableViewRowAnimationFade];
     });
@@ -1613,6 +1649,16 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 - (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {
+    NSString *almondMac = editor.settings.almondplusMAC;
+
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit removeLocalNetworkSettingsForAlmond:almondMac];
+
+    [self.tableView reloadData];
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 

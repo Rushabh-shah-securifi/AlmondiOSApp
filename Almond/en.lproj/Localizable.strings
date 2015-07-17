@@ -82,6 +82,7 @@ reset at the moment. Try again later.";
 
 /* router tab */
 "router.offline-msg.label.Please check the router." = "Please check the router.";
+"router.card-title.Cloud Almond Link" = "Cloud Almond Link";
 "router.card-title.Local Almond Link" = "Local Almond Link";
 "router.card-title.Wireless Settings" = "Wireless Settings";
 "router.wireless-status.Enabled" = "enabled";

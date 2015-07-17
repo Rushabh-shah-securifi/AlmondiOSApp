@@ -8,6 +8,7 @@
 @protocol RouterNetworkSettingsEditorDelegate
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings;
 - (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor;
+- (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor;
 @end
 
 
