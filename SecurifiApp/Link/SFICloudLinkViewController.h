@@ -10,6 +10,8 @@
 
 @interface SFICloudLinkViewController : UITableViewController
 
++ (UIViewController*)cloudLinkController;
+
 // Enables ability for user to link directly to Almond via Local Link
 // Defaults to NO; user will be forced to link via Cloud
 @property(nonatomic) BOOL enableLocalAlmondLink;

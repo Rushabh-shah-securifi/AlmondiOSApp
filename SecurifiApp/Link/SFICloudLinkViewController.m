@@ -7,24 +7,33 @@
 //
 
 #import <Colours/Colours.h>
+#import <MBProgressHUD/MBProgressHUD.h>
 #import "SFICloudLinkViewController.h"
 #import "UIFont+Securifi.h"
 #import "Analytics.h"
+#import "RouterNetworkSettingsEditor.h"
 
 typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
     SFICloudLinkViewControllerMode_promptForLinkCode,
-    SFICloudLinkViewControllerMode_tryingToLink,
     SFICloudLinkViewControllerMode_successLink,
     SFICloudLinkViewControllerMode_errorLink,
 };
 
-@interface SFICloudLinkViewController () <UITextFieldDelegate>
+@interface SFICloudLinkViewController () <UITextFieldDelegate, RouterNetworkSettingsEditorDelegate>
 @property(nonatomic) NSString *linkCode;
 @property(nonatomic) enum SFICloudLinkViewControllerMode mode;
 @property(nonatomic) AffiliationUserComplete *affiliationDetails;
+@property(nonatomic, readonly) MBProgressHUD *HUD;
 @end
 
 @implementation SFICloudLinkViewController
+
++ (UIViewController *)cloudLinkController {
+    SFICloudLinkViewController *ctrl = [SFICloudLinkViewController new];
+    ctrl.enableLocalAlmondLink = [SecurifiToolkit sharedInstance].configuration.enableLocalNetworking;
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    return nav;
+}
 
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -37,6 +46,8 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    self.enableLocalAlmondLink = YES;
 
     self.mode = SFICloudLinkViewControllerMode_promptForLinkCode;
 
@@ -52,11 +63,13 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
     self.tableView.bounces = NO;
 
     UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelLink)];
-    UIBarButtonItem *link = [[UIBarButtonItem alloc] initWithTitle:@"Link" style:UIBarButtonItemStylePlain target:self action:@selector(onLink)];
-    link.enabled = NO;
-
     self.navigationItem.leftBarButtonItem = cancel;
-    self.navigationItem.rightBarButtonItem = link;
+
+    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
 
     [[Analytics sharedInstance] markAlmondAffiliation];
 }
@@ -81,9 +94,8 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
         return;
     }
 
-    self.mode = SFICloudLinkViewControllerMode_tryingToLink;
-    self.navigationItem.rightBarButtonItem.enabled = NO;
-    [self.tableView reloadData];
+    NSString *msg = NSLocalizedString(@"Please wait while your Almond is being linked to cloud.", @"Please wait while your Almond is being linked to cloud.");
+    [self showHud:msg];
 
     [self sendAffiliationRequest:code];
 }
@@ -93,11 +105,29 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 }
 
 - (void)onLocalLink {
+    RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+    editor.delegate = self;
 
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:editor];
+    [self presentViewController:nav animated:YES completion:nil];
 }
 
 - (void)onDone {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - HUD
+
+- (void)showHud:(NSString*)msg {
+    self.HUD.minShowTime = 2;
+    self.HUD.labelText = @"Linking to Cloud";
+    self.HUD.detailsLabelText = msg;
+    [self.HUD show:YES];
+    [self.HUD hide:YES afterDelay:10];
+}
+
+- (void)hideHud {
+    [self.HUD hide:YES afterDelay:1];
 }
 
 #pragma mark - Table view data source
@@ -106,7 +136,6 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
     switch (self.mode) {
         case SFICloudLinkViewControllerMode_promptForLinkCode:
             return 2;
-        case SFICloudLinkViewControllerMode_tryingToLink:
         case SFICloudLinkViewControllerMode_successLink:
             return 1;
         case SFICloudLinkViewControllerMode_errorLink:
@@ -128,11 +157,9 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
                 default:
                     return 0;
             }
-        case SFICloudLinkViewControllerMode_tryingToLink:
-            return 1;
 
         case SFICloudLinkViewControllerMode_successLink:
-            return 3;
+            return 2 + self.affiliationDetails.ssidCount;
 
         default:
             return 0;
@@ -140,18 +167,13 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section != 0) {
+        return nil;
+    }
+
     switch (self.mode) {
         case SFICloudLinkViewControllerMode_promptForLinkCode: {
-            if (section != 0) {
-                return nil;
-            }
-
             return @"Type the Code shown on your Almond's screen if you are already running the Touchscreen Wizard. Alternatively you can attain the Code from the Touchscreen Almond Account App.\n\n";
-        }
-
-        case SFICloudLinkViewControllerMode_tryingToLink: {
-            NSString *str = NSLocalizedString(@"Please wait while your Almond is being linked to cloud.", @"Please wait while your Almond is being linked to cloud.");
-            return [str stringByAppendingString:@"\n\n"]; // add some padding to the bottom
         }
 
         case SFICloudLinkViewControllerMode_successLink:
@@ -172,48 +194,44 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 
     switch (self.mode) {
         case SFICloudLinkViewControllerMode_promptForLinkCode:
-        case SFICloudLinkViewControllerMode_tryingToLink:
         case SFICloudLinkViewControllerMode_errorLink:
             if (indexPath.section == 0) {
                 return [self makeInputFieldCell:tableView id:@"code_field" fieldValue:self.linkCode];
             }
             else {
                 if (row == 0) {
-                    return [self makeButtonCell:tableView id:@"link_almond" buttonTag:1 buttonTitle:@"Link Almond" action:@selector(onLink) solidBackground:YES];
+                    return [self makeButtonCell:tableView id:@"link_almond" buttonTitle:@"Link Almond" action:@selector(onLink) solidBackground:YES];
                 }
 
                 // only called when enableLocalAlmondLink is YES
-                return [self makeButtonCell:tableView id:@"local_link" buttonTag:1 buttonTitle:@"Add Almond Locally" action:@selector(onLocalLink) solidBackground:NO];
+                return [self makeButtonCell:tableView id:@"local_link" buttonTitle:@"Add Almond Locally" action:@selector(onLocalLink) solidBackground:NO];
             }
 
         case SFICloudLinkViewControllerMode_successLink: {
             AffiliationUserComplete *details = self.affiliationDetails;
 
             if (row == 0) {
-                return [self makeNameValueCell:tableView id:@"almond_name" fieldTag:1 fieldLabel:@"" fieldValue:details.almondplusName secureField:NO];
+                return [self makeNameValueCell:tableView id:@"almond_name" fieldTag:1 fieldLabel:@"Name" fieldValue:details.almondplusName];
             }
             else if (row == 1) {
-                return [self makeNameValueCell:tableView id:@"almond_mac" fieldTag:1 fieldLabel:@"MAC" fieldValue:details.formattedAlmondPlusMac secureField:NO];
+                return [self makeNameValueCell:tableView id:@"almond_mac" fieldTag:1 fieldLabel:@"MAC Address" fieldValue:details.formattedAlmondPlusMac];
             }
-            else if (row == 2) {
-                // trim and array each sid on its own line
-                NSMutableArray *ssids = [NSMutableArray arrayWithArray:[details.wifiSSID componentsSeparatedByString:@","]];
-                for (uint index = 0; index < ssids.count; index++) {
-                    NSString *sid = ssids[index];
-                    ssids[index] = [sid stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];;
-                }
-                NSString *value = [ssids componentsJoinedByString:@"\n"];
-                return [self makeNameValueCell:tableView id:@"almond_mac" fieldTag:1 fieldLabel:@"SSID" fieldValue:value secureField:NO];
-            }
+            else {
+                NSUInteger ssid_index = (NSUInteger) (row - 2);
+                NSString *label = (ssid_index == 0) ? @"WIFI SSID" : @"";
 
-            break;
+                NSArray *names = details.ssidNames;
+                NSString *value = names[ssid_index];
+
+                return [self makeNameValueCell:tableView id:@"almond_ssid" fieldTag:1 fieldLabel:label fieldValue:value];
+            }
         }
     }
 
     return nil;
 }
 
-- (UITableViewCell *)makeNameValueCell:(UITableView *)tableView id:(NSString *)cell_id fieldTag:(int)fieldTag fieldLabel:(NSString *)fieldLabel fieldValue:(NSString *)fieldValue secureField:(BOOL)secureField {
+- (UITableViewCell *)makeNameValueCell:(UITableView *)tableView id:(NSString *)cell_id fieldTag:(int)fieldTag fieldLabel:(NSString *)fieldLabel fieldValue:(NSString *)fieldValue {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cell_id];
@@ -221,86 +239,78 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
 
-    CGFloat width = CGRectGetWidth(tableView.frame) / 2;
-    CGFloat right_padding = 15;
-    CGRect frame = CGRectMake(width, 0, width - right_padding, 40);
-
     UIFont *font = [UIFont standardUITextFieldFont];
-
-    UITextField *field = [[UITextField alloc] initWithFrame:frame];
-    field.tag = fieldTag;
-    field.delegate = self;
-    field.text = fieldValue;
-    field.font = font;
-    field.textAlignment = NSTextAlignmentRight;
-    field.secureTextEntry = secureField;
 
     cell.textLabel.text = fieldLabel;
     cell.textLabel.font = font;
 
-    [cell.contentView addSubview:field];
+    cell.detailTextLabel.text = fieldValue;
+    cell.detailTextLabel.font = font;
+
     return cell;
 }
 
 - (UITableViewCell *)makeInputFieldCell:(UITableView *)tableView id:(NSString *)cell_id fieldValue:(NSString *)fieldValue {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
+
+        CGFloat width = CGRectGetWidth(tableView.frame);
+        CGFloat right_padding = 0;
+        CGRect frame = CGRectMake(0, 0, width - right_padding, 40);
+
+        UIFont *font = [[UIFont standardUITextFieldFont] fontWithSize:25];
+
+        UITextField *field = [[UITextField alloc] initWithFrame:frame];
+        field.delegate = self;
+        field.placeholder = @"Enter code";
+        field.font = font;
+        field.text = fieldValue;
+        field.textAlignment = NSTextAlignmentCenter;
+
+        [cell.contentView addSubview:field];
     }
 
-    CGFloat width = CGRectGetWidth(tableView.frame);
-    CGFloat right_padding = 0;
-    CGRect frame = CGRectMake(0, 0, width - right_padding, 40);
-
-    UIFont *font = [[UIFont standardUITextFieldFont] fontWithSize:25];
-
-    UITextField *field = [[UITextField alloc] initWithFrame:frame];
-    field.delegate = self;
-    field.placeholder = @"Enter code";
-    field.font = font;
-    field.text = fieldValue;
-    field.textAlignment = NSTextAlignmentCenter;
-
-    [cell.contentView addSubview:field];
     return cell;
 }
 
-- (UITableViewCell *)makeButtonCell:(UITableView *)tableView id:(NSString *)cell_id buttonTag:(int)tag buttonTitle:(NSString *)title action:(SEL)action solidBackground:(BOOL)solidBackground {
+- (UITableViewCell *)makeButtonCell:(UITableView *)tableView id:(NSString *)cell_id buttonTitle:(NSString *)title action:(SEL)action solidBackground:(BOOL)solidBackground {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.backgroundColor = [UIColor clearColor];
+
+        CGFloat width = CGRectGetWidth(tableView.frame) / 2;
+        CGRect frame = CGRectMake(width / 2, 0, width, 40);
+
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.frame = frame;
+        [button setTitle:title forState:UIControlStateNormal];
+
+        UIColor *color = [UIColor infoBlueColor];
+
+        if (solidBackground) {
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button setTitleColor:[color complementaryColor] forState:UIControlStateHighlighted];
+            button.backgroundColor = color;
+        }
+        else {
+            [button setTitleColor:color forState:UIControlStateNormal];
+            [button setTitleColor:[color complementaryColor] forState:UIControlStateHighlighted];
+            button.backgroundColor = [UIColor clearColor];
+        }
+
+        [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+
+        [cell.contentView addSubview:button];
     }
 
-    CGFloat width = CGRectGetWidth(tableView.frame) / 2;
-    CGRect frame = CGRectMake(width / 2, 0, width, 40);
-
-
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = frame;
-    button.tag = tag;
-    [button setTitle:title forState:UIControlStateNormal];
-
-    UIColor *color = [UIColor infoBlueColor];
-
-    if (solidBackground) {
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [button setTitleColor:[color complementaryColor] forState:UIControlStateHighlighted];
-        button.backgroundColor = color;
-    }
-    else {
-        [button setTitleColor:color forState:UIControlStateNormal];
-        [button setTitleColor:[color complementaryColor] forState:UIControlStateHighlighted];
-        button.backgroundColor = [UIColor clearColor];
-    }
-
-    [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
-
-    [cell.contentView addSubview:button];
     return cell;
 }
 
@@ -318,15 +328,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
         self.linkCode = str;
     }
 
-    [self tryEnableLinkButton:self.linkCode];
     return not_too_long;
-}
-
-- (void)tryEnableLinkButton:(NSString *)str {
-    NSUInteger length = str.length;
-    BOOL not_too_long = length <= AFFILIATION_CODE_CHAR_COUNT;
-    BOOL in_range = (length > 0 && not_too_long);
-    self.navigationItem.rightBarButtonItem.enabled = in_range;
 }
 
 #pragma mark - Command Responses
@@ -362,6 +364,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
         }
 
         [self.tableView reloadData];
+        [self hideHud];
     });
 }
 
@@ -402,5 +405,20 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
+#pragma mark - RouterNetworkSettingsEditorDelegate methods
+
+- (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    [[SecurifiToolkit sharedInstance] setLocalNetworkSettings:newSettings];
+}
+
+- (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:^() {
+        [self onDone];
+    }];
+}
 
 @end
