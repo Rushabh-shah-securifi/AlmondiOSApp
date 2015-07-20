@@ -13,6 +13,7 @@
 
 typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
     SFICloudLinkViewControllerMode_promptForLinkCode,
+    SFICloudLinkViewControllerMode_tryingToLink,
     SFICloudLinkViewControllerMode_successLink,
     SFICloudLinkViewControllerMode_errorLink,
 };
@@ -20,10 +21,19 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 @interface SFICloudLinkViewController () <UITextFieldDelegate>
 @property(nonatomic) NSString *linkCode;
 @property(nonatomic) enum SFICloudLinkViewControllerMode mode;
-@property(nonatomic) AffiliationUserComplete *affilitationDetails;
+@property(nonatomic) AffiliationUserComplete *affiliationDetails;
 @end
 
 @implementation SFICloudLinkViewController
+
+- (instancetype)initWithStyle:(UITableViewStyle)style {
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+        self.title = @"Cloud Link";
+    }
+
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -38,6 +48,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
     self.navigationItem.title = NSLocalizedString(@"Link Almond", @"Cloud Link");
 
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.bounces = NO;
 
     UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelLink)];
@@ -63,14 +74,22 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 #pragma mark - Action methods
 
 - (void)onLink {
-    BOOL empty = (self.linkCode.length == 0);
+    NSString *code = self.linkCode;
+
+    BOOL empty = (code.length == 0);
     if (empty) {
         return;
     }
+
+    self.mode = SFICloudLinkViewControllerMode_tryingToLink;
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    [self.tableView reloadData];
+
+    [self sendAffiliationRequest:code];
 }
 
 - (void)onCancelLink {
-
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)onLocalLink {
@@ -78,7 +97,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 }
 
 - (void)onDone {
-
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -87,6 +106,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
     switch (self.mode) {
         case SFICloudLinkViewControllerMode_promptForLinkCode:
             return 2;
+        case SFICloudLinkViewControllerMode_tryingToLink:
         case SFICloudLinkViewControllerMode_successLink:
             return 1;
         case SFICloudLinkViewControllerMode_errorLink:
@@ -108,6 +128,9 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
                 default:
                     return 0;
             }
+        case SFICloudLinkViewControllerMode_tryingToLink:
+            return 1;
+
         case SFICloudLinkViewControllerMode_successLink:
             return 3;
 
@@ -123,14 +146,21 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
                 return nil;
             }
 
-            return @"Type the Code shown on your Almond's screen, if you are already running the Touchscreen Wizard. Alternatively you can attain the Code from the Touchscreen Almond Account App.";
+            return @"Type the Code shown on your Almond's screen if you are already running the Touchscreen Wizard. Alternatively you can attain the Code from the Touchscreen Almond Account App.\n\n";
+        }
+
+        case SFICloudLinkViewControllerMode_tryingToLink: {
+            NSString *str = NSLocalizedString(@"Please wait while your Almond is being linked to cloud.", @"Please wait while your Almond is being linked to cloud.");
+            return [str stringByAppendingString:@"\n\n"]; // add some padding to the bottom
         }
 
         case SFICloudLinkViewControllerMode_successLink:
             return nil;
 
-        case SFICloudLinkViewControllerMode_errorLink:
-            return [self reasonCodeMessage:self.affilitationDetails.reasonCode];
+        case SFICloudLinkViewControllerMode_errorLink: {
+            NSString *str = [self reasonCodeMessage:self.affiliationDetails.reasonCode];
+            return [str stringByAppendingString:@"\n\n"]; // add some padding to the bottom
+        }
 
         default:
             return nil;
@@ -142,20 +172,22 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 
     switch (self.mode) {
         case SFICloudLinkViewControllerMode_promptForLinkCode:
+        case SFICloudLinkViewControllerMode_tryingToLink:
         case SFICloudLinkViewControllerMode_errorLink:
             if (indexPath.section == 0) {
-                return [self makeInputFieldCell:tableView id:@"code_field"];
+                return [self makeInputFieldCell:tableView id:@"code_field" fieldValue:self.linkCode];
             }
             else {
                 if (row == 0) {
                     return [self makeButtonCell:tableView id:@"link_almond" buttonTag:1 buttonTitle:@"Link Almond" action:@selector(onLink) solidBackground:YES];
                 }
 
+                // only called when enableLocalAlmondLink is YES
                 return [self makeButtonCell:tableView id:@"local_link" buttonTag:1 buttonTitle:@"Add Almond Locally" action:@selector(onLocalLink) solidBackground:NO];
             }
 
         case SFICloudLinkViewControllerMode_successLink: {
-            AffiliationUserComplete *details = self.affilitationDetails;
+            AffiliationUserComplete *details = self.affiliationDetails;
 
             if (row == 0) {
                 return [self makeNameValueCell:tableView id:@"almond_name" fieldTag:1 fieldLabel:@"" fieldValue:details.almondplusName secureField:NO];
@@ -210,7 +242,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
     return cell;
 }
 
-- (UITableViewCell *)makeInputFieldCell:(UITableView *)tableView id:(NSString *)cell_id {
+- (UITableViewCell *)makeInputFieldCell:(UITableView *)tableView id:(NSString *)cell_id fieldValue:(NSString *)fieldValue {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cell_id];
@@ -220,15 +252,16 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 
     CGFloat width = CGRectGetWidth(tableView.frame);
     CGFloat right_padding = 0;
-    CGRect frame = CGRectMake(width, 0, width - right_padding, 40);
+    CGRect frame = CGRectMake(0, 0, width - right_padding, 40);
 
-    UIFont *font = [UIFont standardUITextFieldFont];
+    UIFont *font = [[UIFont standardUITextFieldFont] fontWithSize:25];
 
     UITextField *field = [[UITextField alloc] initWithFrame:frame];
     field.delegate = self;
     field.placeholder = @"Enter code";
     field.font = font;
-    field.textAlignment = NSTextAlignmentLeft;
+    field.text = fieldValue;
+    field.textAlignment = NSTextAlignmentCenter;
 
     [cell.contentView addSubview:field];
     return cell;
@@ -240,6 +273,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.backgroundColor = [UIColor clearColor];
     }
 
     CGFloat width = CGRectGetWidth(tableView.frame) / 2;
@@ -276,24 +310,23 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
     NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
     str = [str stringByTrimmingCharactersInSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet]];
 
-    BOOL valid = [self validateLinkCode:str];
-    if (valid) {
+    NSUInteger length = str.length;
+    BOOL not_too_long = length <= AFFILIATION_CODE_CHAR_COUNT;
+    BOOL in_range = (length > 0 && not_too_long);
+
+    if (in_range) {
         self.linkCode = str;
     }
 
-    [self tryEnableLinkButton];
-    return valid;
+    [self tryEnableLinkButton:self.linkCode];
+    return not_too_long;
 }
 
-- (void)tryEnableLinkButton {
-    BOOL valid = [self validateLinkCode:self.linkCode];
-    self.navigationItem.rightBarButtonItem.enabled = valid;
-}
-
-- (BOOL)validateLinkCode:(NSString *)linkCode {
-    NSUInteger length = linkCode.length;
-    BOOL in_range = (length > 0 && length <= AFFILIATION_CODE_CHAR_COUNT);
-    return in_range;
+- (void)tryEnableLinkButton:(NSString *)str {
+    NSUInteger length = str.length;
+    BOOL not_too_long = length <= AFFILIATION_CODE_CHAR_COUNT;
+    BOOL in_range = (length > 0 && not_too_long);
+    self.navigationItem.rightBarButtonItem.enabled = in_range;
 }
 
 #pragma mark - Command Responses
@@ -304,7 +337,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
         NSDictionary *data = [notifier userInfo];
 
         AffiliationUserComplete *obj = (AffiliationUserComplete *) [data valueForKey:@"data"];
-        self.affilitationDetails = obj;
+        self.affiliationDetails = obj;
 
         if (obj.isSuccessful) {
             self.navigationItem.title = NSLocalizedString(@"Almond Linked", @"Almond Linked");
@@ -357,5 +390,17 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 - (void)logoutUser {
     [[SecurifiToolkit sharedInstance] asyncSendLogout];
 }
+
+- (void)sendAffiliationRequest:(NSString *)linkCode {
+    AffiliationUserRequest *affiliationCommand = [[AffiliationUserRequest alloc] init];
+    affiliationCommand.Code = linkCode;
+
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = CommandType_AFFILIATION_CODE_REQUEST;
+    cloudCommand.command = affiliationCommand;
+
+    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+}
+
 
 @end
