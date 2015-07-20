@@ -13,6 +13,8 @@
 		1C414BCD1A79F0DF00C448A4 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */; };
 		1C414BCE1A79F0E800C448A4 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */; };
 		1C4383051B2FFAC700F6AB7A /* libSystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4383041B2FFAC700F6AB7A /* libSystem.dylib */; };
+		1C709A091B5A3157007D397C /* SFICloudLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C709A081B5A3157007D397C /* SFICloudLinkViewController.m */; };
+		1C709A0A1B5A3157007D397C /* SFICloudLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C709A081B5A3157007D397C /* SFICloudLinkViewController.m */; };
 		1C75815419AC86940074C601 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815319AC86940074C601 /* Security.framework */; };
 		1C75815619AC86A10074C601 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815519AC86A10074C601 /* SystemConfiguration.framework */; };
 		1C75815819AC86A80074C601 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815719AC86A80074C601 /* CFNetwork.framework */; };
@@ -215,6 +217,8 @@
 		1C33E94E19C025DB0014725A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		1C4383041B2FFAC700F6AB7A /* libSystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.dylib; path = usr/lib/libSystem.dylib; sourceTree = SDKROOT; };
+		1C709A071B5A3157007D397C /* SFICloudLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICloudLinkViewController.h; sourceTree = "<group>"; };
+		1C709A081B5A3157007D397C /* SFICloudLinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFICloudLinkViewController.m; sourceTree = "<group>"; };
 		1C75815319AC86940074C601 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		1C75815519AC86A10074C601 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		1C75815719AC86A80074C601 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -454,13 +458,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1C709A061B5A3157007D397C /* Link */ = {
+			isa = PBXGroup;
+			children = (
+				1C709A071B5A3157007D397C /* SFICloudLinkViewController.h */,
+				1C709A081B5A3157007D397C /* SFICloudLinkViewController.m */,
+			);
+			path = Link;
+			sourceTree = "<group>";
+		};
 		1C7E7CD71A41A0990026F0BA /* SecurifiApp */ = {
 			isa = PBXGroup;
 			children = (
 				1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */,
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
 				1C7E7E2D1A41A26A0026F0BA /* Base.lproj */,
+				1DF03F2CAC78C2DF995C9887 /* ILColorPicker */,
 				1C7E7CE51A41A0990026F0BA /* Legacy */,
+				1C709A061B5A3157007D397C /* Link */,
 				1C7E7CF61A41A0990026F0BA /* Login */,
 				1C7E7CFD1A41A0990026F0BA /* Notifications */,
 				1C7E7D021A41A0990026F0BA /* NSString+ASBase64 */,
@@ -469,14 +484,13 @@
 				1C7E7D211A41A0990026F0BA /* Settings */,
 				1C7E7D281A41A0990026F0BA /* SFIAppDelegate.h */,
 				1C7E7D291A41A0990026F0BA /* SFIAppDelegate.m */,
+				1DF0319F5A1CE93323EA5C61 /* Sensor */,
+				1DF03CBFD9DEB75D228D8A0D /* SensorSupport */,
 				1C7E7D2A1A41A0990026F0BA /* Signup */,
 				1C7E7D2D1A41A0990026F0BA /* UI */,
 				1C7E7D4C1A41A0990026F0BA /* UICategories */,
 				1DF0364AFED818925B9469F3 /* SFIPreferences.m */,
 				1DF03D99C19042FD3FCADB2D /* SFIPreferences.h */,
-				1DF03CBFD9DEB75D228D8A0D /* SensorSupport */,
-				1DF03F2CAC78C2DF995C9887 /* ILColorPicker */,
-				1DF0319F5A1CE93323EA5C61 /* Sensor */,
 			);
 			path = SecurifiApp;
 			sourceTree = "<group>";
@@ -1151,6 +1165,7 @@
 				1DF03D2E7F166ECAEAD5B033 /* ILColorPickerView.m in Sources */,
 				1DF038B871CAC9B7F0FCA043 /* ILSaturationBrightnessPickerView.m in Sources */,
 				1DF038A445EB0F3A6476DC32 /* SFIHuePickerView.m in Sources */,
+				1C709A0A1B5A3157007D397C /* SFICloudLinkViewController.m in Sources */,
 				1DF0385A73D7AE7E9208F510 /* UIColor+Securifi.m in Sources */,
 				1DF03226BF3736722C0E7F17 /* SFISensorDetailView.m in Sources */,
 				1DF03D19D4E35617E92B8DDD /* SFISensorsViewController.m in Sources */,
@@ -1233,6 +1248,7 @@
 				1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */,
 				1DF03A194CCC7A1DE3C2A4DC /* UIColor+Securifi.m in Sources */,
 				1DF039D3E2A4A6FB292A99C3 /* SFISensorDetailView.m in Sources */,
+				1C709A091B5A3157007D397C /* SFICloudLinkViewController.m in Sources */,
 				1DF03B73C95D8A41C9409EF3 /* SFISensorsViewController.m in Sources */,
 				1DF03247826CA943EDEE8741 /* SFISensorTableViewCell.m in Sources */,
 				1DF035317380AA5E0BD86161 /* MessageView.m in Sources */,

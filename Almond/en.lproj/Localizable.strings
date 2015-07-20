@@ -291,7 +291,7 @@ Follow it, then tap Continue to login.";
 "router.linkalmond-msg.label.Start the wizard on your Almond." = "Start the wizard on your Almond, then tap the symbol below.";
 
 "Almond Linked" = "Almond Linked";
-"Link Almond" = "Link Almond";
+"Link Almond" = "Cloud Link";
 "Please wait while your Almond is being linked to cloud." = "Please wait while your Almond is being linked to cloud.";
 "This Almond is already linked to another user." = "This Almond is already linked to another user.
 Contact us at support@securifi.com";
