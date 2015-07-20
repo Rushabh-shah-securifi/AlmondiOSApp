@@ -292,6 +292,7 @@ Follow it, then tap Continue to login.";
 
 "Almond Linked" = "HomeScreen Linked";
 "Link Almond" = "Link HomeScreen";
+"Local Link Almond" = "Local Link";
 "Please wait while your Almond is being linked to cloud." = "Please wait while your HomeScreen is being linked to cloud.";
 "This Almond is already linked to another user." = "This HomeScreen is already linked to another user.
 Contact us at support@homescreen.com";
