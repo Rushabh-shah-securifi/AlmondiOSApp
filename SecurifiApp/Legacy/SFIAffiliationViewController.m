@@ -52,15 +52,15 @@
                                                  name:AFFILIATION_COMPLETE_NOTIFIER
                                                object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onAlmondListResponse:)
-                                                 name:ALMOND_LIST_NOTIFIER
-                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(onAlmondListResponse:)
+//                                                 name:ALMOND_LIST_NOTIFIER
+//                                               object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(onLogoutResponse:)
-                                                 name:kSFIDidLogoutNotification
-                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(onLogoutResponse:)
+//                                                 name:kSFIDidLogoutNotification
+//                                               object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -70,13 +70,13 @@
                                                     name:ALMOND_LIST_NOTIFIER
                                                   object:nil];
 
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:AFFILIATION_COMPLETE_NOTIFIER
-                                                  object:nil];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:kSFIDidLogoutNotification
-                                                  object:nil];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self
+//                                                    name:AFFILIATION_COMPLETE_NOTIFIER
+//                                                  object:nil];
+//
+//    [[NSNotificationCenter defaultCenter] removeObserver:self
+//                                                    name:kSFIDidLogoutNotification
+//                                                  object:nil];
 }
 
 #pragma mark - Keyboard Methods
@@ -231,53 +231,53 @@
     }
 }
 
-- (void)loadAlmondList {
-    AlmondListRequest *almondListCommand = [[AlmondListRequest alloc] init];
+//- (void)loadAlmondList {
+//    AlmondListRequest *almondListCommand = [[AlmondListRequest alloc] init];
+//
+//    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+//    cloudCommand.commandType = CommandType_ALMOND_LIST;
+//    cloudCommand.command = almondListCommand;
+//
+//    [self asyncSendCommand:cloudCommand];
+//}
 
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_ALMOND_LIST;
-    cloudCommand.command = almondListCommand;
+//- (void)onAlmondListResponse:(id)sender {
+////    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+////    NSNotification *notifier = (NSNotification *) sender;
+////    NSDictionary *data = [notifier userInfo];
+////
+////    if (data != nil) {
+////        [SNLog Log:@"%s: Received Almond List response", __PRETTY_FUNCTION__];
+////
+////        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
+////
+////        [SNLog Log:@"%s: List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
+////        //Write Almond List offline
+////        [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
+////    }
+//
+//    //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+//    // [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+//}
 
-    [self asyncSendCommand:cloudCommand];
-}
-
-- (void)onAlmondListResponse:(id)sender {
-//    [SNLog Log:@"In Method Name: %s", __PRETTY_FUNCTION__];
+//- (void)onLogoutResponse:(id)sender {
 //    NSNotification *notifier = (NSNotification *) sender;
 //    NSDictionary *data = [notifier userInfo];
 //
 //    if (data != nil) {
-//        [SNLog Log:@"%s: Received Almond List response", __PRETTY_FUNCTION__];
-//
-//        AlmondListResponse *obj = (AlmondListResponse *) [data valueForKey:@"data"];
-//
-//        [SNLog Log:@"%s: List size : %d", __PRETTY_FUNCTION__, [obj.almondPlusMACList count]];
-//        //Write Almond List offline
-//        [SFIOfflineDataManager writeAlmondList:obj.almondPlusMACList];
+//        LogoutResponse *obj = (LogoutResponse *) [data valueForKey:@"data"];
+//        if (!obj.isSuccessful) {
+//            ELog(@"Could not logout - Reason %@", obj.reason);
+//            NSString *alertMsg = NSLocalizedString(@"alert.msg.Logout was unsuccessful", @"Sorry. Logout was unsuccessful. Please try again.");
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"alert.title.Logout Unsuccessful", @"Logout Unsuccessful")
+//                                                            message:alertMsg
+//                                                           delegate:nil
+//                                                  cancelButtonTitle:NSLocalizedString(@"alert.button.OK", @"OK")
+//                                                  otherButtonTitles:nil];
+//            [alert show];
+//        }
 //    }
-
-    //[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-    // [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)onLogoutResponse:(id)sender {
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-
-    if (data != nil) {
-        LogoutResponse *obj = (LogoutResponse *) [data valueForKey:@"data"];
-        if (!obj.isSuccessful) {
-            ELog(@"Could not logout - Reason %@", obj.reason);
-            NSString *alertMsg = NSLocalizedString(@"alert.msg.Logout was unsuccessful", @"Sorry. Logout was unsuccessful. Please try again.");
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"alert.title.Logout Unsuccessful", @"Logout Unsuccessful")
-                                                            message:alertMsg
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"alert.button.OK", @"OK")
-                                                  otherButtonTitles:nil];
-            [alert show];
-        }
-    }
-}
+//}
 
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
