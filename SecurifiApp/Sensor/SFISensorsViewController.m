@@ -16,6 +16,7 @@
 #import "MessageView.h"
 #import "SFINotificationsViewController.h"
 #import "UIImage+Securifi.h"
+#import "SFICloudLinkViewController.h"
 
 @interface SFISensorsViewController () <SFISensorTableViewCellDelegate, MessageViewDelegate>
 @property(nonatomic, readonly) SFIAlmondPlus *almond;
@@ -1481,9 +1482,8 @@
 #pragma mark - MessageViewDelegate methods
 
 - (void)messageViewDidPressButton:(MessageView *)msgView {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AffiliationNavigationTop"];
-    [self presentViewController:mainView animated:YES completion:nil];
+    UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
+    [self presentViewController:ctrl animated:YES completion:nil];
 }
 
 @end

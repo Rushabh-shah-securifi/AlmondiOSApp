@@ -10,6 +10,7 @@
 #import "AlmondPlusConstants.h"
 #import "SWRevealViewController.h"
 #import "UIFont+Securifi.h"
+#import "SFICloudLinkViewController.h"
 
 #define SEC_ALMOND_LIST     @"AlmondList"
 #define SEC_SETTINGS_LIST   @"Settings"
@@ -189,9 +190,9 @@
         if (indexPath.row == [almondList count]) {
             //Add almond - Affiliation process
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-            UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AffiliationNavigationTop"];
-            [self presentViewController:mainView animated:YES completion:nil];
+
+            UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
+            [self presentViewController:ctrl animated:YES completion:nil];
         }
         else {
             //Display the corresponding Sensor List
