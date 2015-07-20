@@ -27,6 +27,7 @@
 #import "UIViewController+Securifi.h"
 #import "SFIAlmondLocalNetworkSettings.h"
 #import "RouterNetworkSettingsEditor.h"
+#import "SFICloudLinkViewController.h"
 
 #define DEF_NETWORKING_SECTION          0
 #define DEF_WIRELESS_SETTINGS_SECTION   1
@@ -1564,9 +1565,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         return;
     }
     if (self.routerViewState == RouterViewState_no_almond) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-        UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"AffiliationNavigationTop"];
-        [self presentViewController:mainView animated:YES completion:nil];
+        UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
+        [self presentViewController:ctrl animated:YES completion:nil];
     }
     else {
         //Get wireless settings

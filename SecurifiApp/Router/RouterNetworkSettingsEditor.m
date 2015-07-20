@@ -40,6 +40,14 @@ typedef NS_ENUM(unsigned int, TABLE_ROW) {
     self.tableView.bounces = NO;
     self.working = self.settings.copy;
 
+    NSDictionary *titleAttributes = @{
+            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+            NSFontAttributeName : [UIFont standardNavigationTitleFont]
+    };
+
+    self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
+    self.navigationItem.title = NSLocalizedString(@"Local Link Almond", @"Local Link");
+
     UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelEdits)];
     UIBarButtonItem *save = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSaveEdits)];
     save.enabled = NO;
