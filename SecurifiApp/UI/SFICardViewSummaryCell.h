@@ -11,7 +11,7 @@
 // card title
 @property(nonatomic, copy) NSString *title;
 
-// summary messages to be shown
+// summary messages to be shown; NSString instances
 @property(nonatomic) NSArray *summaries;
 
 // for setting an "edit" button; when editTarget and editSelector are not nil, then a button is shown
