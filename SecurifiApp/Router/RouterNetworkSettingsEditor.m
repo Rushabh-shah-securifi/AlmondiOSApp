@@ -41,7 +41,7 @@ typedef NS_ENUM(unsigned int, TABLE_ROW) {
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.bounces = NO;
-    self.workingSettings = self.settings.copy;
+    self.workingSettings = self.settings ? self.settings.copy : [SFIAlmondLocalNetworkSettings new];
 
     NSDictionary *titleAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
