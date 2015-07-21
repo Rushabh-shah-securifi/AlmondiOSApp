@@ -63,7 +63,11 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
     self.tableView.bounces = NO;
 
     UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelLink)];
+    UIBarButtonItem *link = [[UIBarButtonItem alloc] initWithTitle:@"Link" style:UIBarButtonItemStylePlain target:self action:@selector(onLink)];
+    link.enabled = NO;
+
     self.navigationItem.leftBarButtonItem = cancel;
+    self.navigationItem.rightBarButtonItem = link;
 
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -106,6 +110,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 
 - (void)onLocalLink {
     RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+    editor.mode = RouterNetworkSettingsEditorMode_link;
     editor.delegate = self;
 
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:editor];
@@ -114,6 +119,12 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 
 - (void)onDone {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)tryEnableLinkButton:(NSUInteger)codeLength {
+    BOOL not_too_long = codeLength <= AFFILIATION_CODE_CHAR_COUNT;
+    BOOL in_range = (codeLength > 0 && not_too_long);
+    self.navigationItem.rightBarButtonItem.enabled = in_range;
 }
 
 #pragma mark - HUD
@@ -299,6 +310,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [button setTitleColor:[color complementaryColor] forState:UIControlStateHighlighted];
             button.backgroundColor = color;
+            button.enabled = NO; // a bit of a kludge; treat the button as a Label
         }
         else {
             [button setTitleColor:color forState:UIControlStateNormal];
@@ -320,14 +332,14 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
     NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
     str = [str stringByTrimmingCharactersInSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet]];
 
-    NSUInteger length = str.length;
-    BOOL not_too_long = length <= AFFILIATION_CODE_CHAR_COUNT;
-    BOOL in_range = (length > 0 && not_too_long);
+    BOOL not_too_long = str.length <= AFFILIATION_CODE_CHAR_COUNT;
 
-    if (in_range) {
+    if (not_too_long) {
         self.linkCode = str;
     }
 
+    [self tryEnableLinkButton:self.linkCode.length];
+    
     return not_too_long;
 }
 
