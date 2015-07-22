@@ -49,8 +49,11 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
     self.state = RouterNetworkSettingsEditorState_promptForLinkCode;
 
+    // keep the table view from being placed underneath the nav bar
+    self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+    self.tableView.contentOffset = CGPointMake(0, -20);
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.bounces = NO;
     self.workingSettings = self.settings ? self.settings.copy : [SFIAlmondLocalNetworkSettings new];
 
     NSDictionary *titleAttributes = @{
@@ -261,6 +264,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = frame;
+        button.titleLabel.adjustsFontSizeToFitWidth = YES;
         [button setTitle:title forState:UIControlStateNormal];
 
         UIColor *color = [UIColor infoBlueColor];

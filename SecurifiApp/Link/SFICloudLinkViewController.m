@@ -47,8 +47,6 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.enableLocalAlmondLink = YES;
-
     self.mode = SFICloudLinkViewControllerState_promptForLinkCode;
 
     NSDictionary *titleAttributes = @{
@@ -59,8 +57,11 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
     self.navigationItem.title = NSLocalizedString(@"Link Almond", @"Cloud Link");
 
+    // keep the table view from being placed underneath the nav bar
+    self.tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
+    self.tableView.contentOffset = CGPointMake(0, -20);
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.bounces = NO;
 
     UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelLink)];
     UIBarButtonItem *link = [[UIBarButtonItem alloc] initWithTitle:@"Link" style:UIBarButtonItemStylePlain target:self action:@selector(onLink)];
@@ -302,6 +303,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = frame;
+        button.titleLabel.adjustsFontSizeToFitWidth = YES;
         [button setTitle:title forState:UIControlStateNormal];
 
         UIColor *color = [UIColor infoBlueColor];
