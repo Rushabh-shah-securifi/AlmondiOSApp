@@ -18,7 +18,15 @@ typedef NS_ENUM(unsigned int, TABLE_ROW) {
     TABLE_ROW_count
 };
 
+typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
+    RouterNetworkSettingsEditorState_promptForLinkCode,
+    RouterNetworkSettingsEditorState_successOnLink,
+    RouterNetworkSettingsEditorState_errorOnLink,
+};
+
 @interface RouterNetworkSettingsEditor () <UITextFieldDelegate>
+@property(nonatomic) enum RouterNetworkSettingsEditorState state;
+@property(nonatomic, strong) NSString *linkErrorSuccessMessage;
 @property(nonatomic, strong) SFIAlmondLocalNetworkSettings *workingSettings;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @end
@@ -39,6 +47,8 @@ typedef NS_ENUM(unsigned int, TABLE_ROW) {
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.state = RouterNetworkSettingsEditorState_promptForLinkCode;
+
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.bounces = NO;
     self.workingSettings = self.settings ? self.settings.copy : [SFIAlmondLocalNetworkSettings new];
@@ -51,14 +61,7 @@ typedef NS_ENUM(unsigned int, TABLE_ROW) {
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
     self.navigationItem.title = NSLocalizedString(@"Local Link Almond", @"Local Link");
 
-    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelEdits)];
-    UIBarButtonItem *save = (self.mode == RouterNetworkSettingsEditorMode_link) ?
-            [[UIBarButtonItem alloc] initWithTitle:@"Link" style:UIBarButtonItemStylePlain target:self action:@selector(onLink)] :
-            [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSaveEdits)];
-    save.enabled = NO;
-
-    self.navigationItem.leftBarButtonItem = cancel;
-    self.navigationItem.rightBarButtonItem = save;
+    [self buttonsForLinkState];
 
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -69,13 +72,58 @@ typedef NS_ENUM(unsigned int, TABLE_ROW) {
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+}
 
+#pragma mark - State management
+
+- (void)markSuccessOnLink {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.linkErrorSuccessMessage = @"The Almond was successfully linked.";
+        self.state = RouterNetworkSettingsEditorState_successOnLink;
+
+        // make sure the right nav buttons are placed and enabled
+        [self buttonsForDoneState];
+
+        [self.tableView reloadData];
+    });
+}
+
+- (void)markErrorOnLink:(NSString *)msg {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.linkErrorSuccessMessage = msg;
+        self.state = RouterNetworkSettingsEditorState_errorOnLink;
+
+        // make sure the right nav buttons are placed and enabled
+        [self buttonsForLinkState];
+        [self tryEnableSaveButton];
+
+        [self.tableView reloadData];
+    });
+}
+
+- (void)buttonsForLinkState {
+    UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelEdits)];
+    UIBarButtonItem *save = (self.mode == RouterNetworkSettingsEditorMode_link) ?
+            [[UIBarButtonItem alloc] initWithTitle:@"Link" style:UIBarButtonItemStylePlain target:self action:@selector(onLink)] :
+            [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSaveEdits)];
+    save.enabled = NO;
+
+    self.navigationItem.leftBarButtonItem = cancel;
+    self.navigationItem.rightBarButtonItem = save;
+}
+
+- (void)buttonsForDoneState {
+    UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDoneEdits)];
+
+    self.navigationItem.leftBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItem = done;
 }
 
 #pragma mark - UITableViewDelegate and UITableViewDataSource methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    // after successfully linking/saving then do not show buttons or other stuff
+    return (self.state == RouterNetworkSettingsEditorState_successOnLink) ? 1 : 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -239,10 +287,23 @@ typedef NS_ENUM(unsigned int, TABLE_ROW) {
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (section == 0) {
-        return @"Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n"; // newline adds bottom padding
+    if (section != 0) {
+        return nil;
     }
-    return nil;
+
+    switch (self.state) {
+        case RouterNetworkSettingsEditorState_promptForLinkCode:
+            return @"Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n"; // newline adds bottom padding
+
+        case RouterNetworkSettingsEditorState_successOnLink:
+        case RouterNetworkSettingsEditorState_errorOnLink: {
+            NSString *msg = self.linkErrorSuccessMessage;
+            return msg ? [msg stringByAppendingString:@"\n"] : nil;
+        }
+
+        default:
+            return nil;
+    }
 }
 
 #pragma mark - Action handlers
@@ -253,16 +314,45 @@ typedef NS_ENUM(unsigned int, TABLE_ROW) {
 
     SFIAlmondLocalNetworkSettings *settings = self.workingSettings.copy;
     [self.HUD showAnimated:YES whileExecutingBlock:^() {
-        BOOL good = [settings testConnection];
+        // Test the connection (and interrogate the remote Almond for info about itself; the almond Mac and name
+        // will be reflected in the settings after the test
+        enum TestConnectionResult result = [settings testConnection];
 
-        if (good) {
-            [self.delegate networkSettingsEditorDidChangeSettings:self settings:settings];
+        switch (result) {
+            case TestConnectionResult_success: {
+                SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+                SFIAlmondLocalNetworkSettings *old_settings = [toolkit localNetworkSettingsForAlmond:settings.almondplusMAC];
+                if (old_settings) {
+                    // in "Link Mode" we believe this is Almond is unknown to the app/system. In this case, it turns
+                    // out we already know about it (settings already on file). So, we refuse to "link" (overwrite
+                    // the settings).
+                    [self markErrorOnLink:@"This Almond is already linked."];
+                    return;
+                }
+
+                // store the new/updated settings and update UI state; inform the delegate
+                [toolkit setLocalNetworkSettings:settings];
+                [self markSuccessOnLink];
+                [self.delegate networkSettingsEditorDidLinkAlmond:self settings:settings];
+
+                break;
+            }
+
+            case TestConnectionResult_unknownError:
+            case TestConnectionResult_unknown:
+            case TestConnectionResult_macMismatch: {
+                // should not be possible to get mac-mismatch error right now because this is only relevant when
+                // editing settings on an unlinked Almond.
+                [self markErrorOnLink:@"An error occurred trying to link with the Almond. Please try again."];
+                break;
+            }
         }
     }];
 }
 
 - (void)onSaveEdits {
-    [self.delegate networkSettingsEditorDidChangeSettings:self settings:self.workingSettings];
+    [self.delegate networkSettingsEditorDidChangeSettings:self settings:self.workingSettings.copy];
 }
 
 - (void)onCancelEdits {
@@ -270,6 +360,10 @@ typedef NS_ENUM(unsigned int, TABLE_ROW) {
 }
 
 - (void)onUnlinkAlmond {
+    [self.delegate networkSettingsEditorDidUnlinkAlmond:self];
+}
+
+- (void)onDoneEdits {
     [self.delegate networkSettingsEditorDidUnlinkAlmond:self];
 }
 

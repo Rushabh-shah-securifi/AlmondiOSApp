@@ -4,6 +4,7 @@
 //
 
 @class RouterNetworkSettingsEditor;
+@class SFIAlmondPlus;
 
 typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorMode) {
     RouterNetworkSettingsEditorMode_editor, // for when almond is already linked
@@ -11,11 +12,15 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorMode) {
 };
 
 @protocol RouterNetworkSettingsEditorDelegate
+
+- (void)networkSettingsEditorDidLinkAlmond:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings;
+
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings;
 
 - (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor;
 
 - (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor;
+
 @end
 
 @interface RouterNetworkSettingsEditor : UITableViewController

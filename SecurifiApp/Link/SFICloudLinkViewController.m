@@ -13,15 +13,15 @@
 #import "Analytics.h"
 #import "RouterNetworkSettingsEditor.h"
 
-typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
-    SFICloudLinkViewControllerMode_promptForLinkCode,
-    SFICloudLinkViewControllerMode_successLink,
-    SFICloudLinkViewControllerMode_errorLink,
+typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
+    SFICloudLinkViewControllerState_promptForLinkCode,
+    SFICloudLinkViewControllerState_successLink,
+    SFICloudLinkViewControllerState_errorLink,
 };
 
 @interface SFICloudLinkViewController () <UITextFieldDelegate, RouterNetworkSettingsEditorDelegate>
 @property(nonatomic) NSString *linkCode;
-@property(nonatomic) enum SFICloudLinkViewControllerMode mode;
+@property(nonatomic) enum SFICloudLinkViewControllerState mode;
 @property(nonatomic) AffiliationUserComplete *affiliationDetails;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @end
@@ -49,7 +49,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 
     self.enableLocalAlmondLink = YES;
 
-    self.mode = SFICloudLinkViewControllerMode_promptForLinkCode;
+    self.mode = SFICloudLinkViewControllerState_promptForLinkCode;
 
     NSDictionary *titleAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
@@ -145,11 +145,11 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     switch (self.mode) {
-        case SFICloudLinkViewControllerMode_promptForLinkCode:
+        case SFICloudLinkViewControllerState_promptForLinkCode:
             return 2;
-        case SFICloudLinkViewControllerMode_successLink:
+        case SFICloudLinkViewControllerState_successLink:
             return 1;
-        case SFICloudLinkViewControllerMode_errorLink:
+        case SFICloudLinkViewControllerState_errorLink:
             return 2;
         default:
             return 0;
@@ -158,8 +158,8 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (self.mode) {
-        case SFICloudLinkViewControllerMode_errorLink:
-        case SFICloudLinkViewControllerMode_promptForLinkCode:
+        case SFICloudLinkViewControllerState_errorLink:
+        case SFICloudLinkViewControllerState_promptForLinkCode:
             switch (section) {
                 case 0:
                     return 1;
@@ -169,7 +169,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
                     return 0;
             }
 
-        case SFICloudLinkViewControllerMode_successLink:
+        case SFICloudLinkViewControllerState_successLink:
             return 2 + self.affiliationDetails.ssidCount;
 
         default:
@@ -183,14 +183,14 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
     }
 
     switch (self.mode) {
-        case SFICloudLinkViewControllerMode_promptForLinkCode: {
+        case SFICloudLinkViewControllerState_promptForLinkCode: {
             return @"Type the Code shown on your Almond's screen if you are already running the Touchscreen Wizard. Alternatively you can attain the Code from the Touchscreen Almond Account App.\n\n";
         }
 
-        case SFICloudLinkViewControllerMode_successLink:
+        case SFICloudLinkViewControllerState_successLink:
             return nil;
 
-        case SFICloudLinkViewControllerMode_errorLink: {
+        case SFICloudLinkViewControllerState_errorLink: {
             NSString *str = [self reasonCodeMessage:self.affiliationDetails.reasonCode];
             return [str stringByAppendingString:@"\n\n"]; // add some padding to the bottom
         }
@@ -204,8 +204,8 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
     NSInteger row = indexPath.row;
 
     switch (self.mode) {
-        case SFICloudLinkViewControllerMode_promptForLinkCode:
-        case SFICloudLinkViewControllerMode_errorLink:
+        case SFICloudLinkViewControllerState_promptForLinkCode:
+        case SFICloudLinkViewControllerState_errorLink:
             if (indexPath.section == 0) {
                 return [self makeInputFieldCell:tableView id:@"code_field" fieldValue:self.linkCode];
             }
@@ -218,7 +218,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
                 return [self makeButtonCell:tableView id:@"local_link" buttonTitle:@"Add Almond Locally" action:@selector(onLocalLink) solidBackground:NO];
             }
 
-        case SFICloudLinkViewControllerMode_successLink: {
+        case SFICloudLinkViewControllerState_successLink: {
             AffiliationUserComplete *details = self.affiliationDetails;
 
             if (row == 0) {
@@ -358,7 +358,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
             self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
             self.navigationItem.leftBarButtonItem = nil;
 
-            self.mode = SFICloudLinkViewControllerMode_successLink;
+            self.mode = SFICloudLinkViewControllerState_successLink;
         }
         else {
             switch (obj.reasonCode) {
@@ -372,7 +372,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
                     break;
             }
 
-            self.mode = SFICloudLinkViewControllerMode_errorLink;
+            self.mode = SFICloudLinkViewControllerState_errorLink;
         }
 
         [self.tableView reloadData];
@@ -418,6 +418,10 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerMode) {
 }
 
 #pragma mark - RouterNetworkSettingsEditorDelegate methods
+
+- (void)networkSettingsEditorDidLinkAlmond:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+
+}
 
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
     [[SecurifiToolkit sharedInstance] setLocalNetworkSettings:newSettings];
