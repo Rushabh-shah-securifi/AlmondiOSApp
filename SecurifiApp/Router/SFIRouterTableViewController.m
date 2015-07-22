@@ -1642,6 +1642,10 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
 #pragma mark - RouterNetworkSettingsEditorDelegate methods
 
+- (void)networkSettingsEditorDidLinkAlmond:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+
+}
+
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit setLocalNetworkSettings:newSettings];
