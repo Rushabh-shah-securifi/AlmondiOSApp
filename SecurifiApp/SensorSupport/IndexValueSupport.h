@@ -21,6 +21,7 @@ typedef NS_ENUM(int, MatchType) {
 
 @property(nonatomic, readonly) SFIDevicePropertyType valueType;
 
+
 // match data value; when nil, then match always is TRUE---this can be used to simply express a value formatter
 @property(nonatomic) NSString *matchData;
 

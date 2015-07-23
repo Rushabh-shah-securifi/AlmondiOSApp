@@ -13,4 +13,13 @@
 @property (nonatomic, retain) NSString* name;
 @property (nonatomic, retain) NSString* deviceIP;
 @property (nonatomic, retain) NSString* deviceMAC;
+@property (nonatomic, retain) NSString* deviceConnection;
+@property (nonatomic, retain) NSString* deviceID;
+@property (nonatomic, retain) NSString* deviceType;
+@property (nonatomic, retain) NSString* deviceLastActiveTime;
+@property (nonatomic, assign) BOOL deviceUseAsPresence;
+@property (nonatomic, assign) BOOL isActive;
+
+-(NSString*)iconName;
+
 @end

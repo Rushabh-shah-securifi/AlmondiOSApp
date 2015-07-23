@@ -24,7 +24,7 @@
     SecurifiConfigurator *config = [SecurifiConfigurator new];
 //    config.enableScoreboard = YES;                  // uncomment for debug builds
 //    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
-//    config.enableCertificateChainValidation = NO;   // uncomment for testing only; on by default
+    config.enableCertificateChainValidation = NO;   //TESTmd01 uncomment for testing only; on by default
 //
     config.enableNotifications = YES;               // uncomment to activate; NO by default
 //    config.enableRouterWirelessControl = YES;       // YES by default
@@ -155,7 +155,7 @@
 
     SecurifiConfigurator *config = [self toolkitConfigurator];
     [SecurifiToolkit initialize:config];
-//    [SecurifiToolkit sharedInstance].useProductionCloud = NO; // uncomment for testing; to force dev cloud by default
+    [SecurifiToolkit sharedInstance].useProductionCloud = NO; //TESTMD01 uncomment for testing; to force dev cloud by default
 
 #ifdef DEBUG
     NSLog(@"DEBUG compile mode set");

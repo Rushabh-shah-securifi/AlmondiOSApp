@@ -195,6 +195,47 @@
 		1DF03E729C9FCFBA559D4BDC /* ILView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AA35AC0879D6B794169 /* ILView.m */; };
 		1DF03FBF0030A76DBCA3A828 /* CircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CircleLabel.m */; };
 		7CB5434B38D653A029281FD1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
+		841F8B591B30B71D00B9890C /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 843016961B162A4700CC783A /* Scenes_Iphone.storyboard */; };
+		843016981B162A4700CC783A /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 843016961B162A4700CC783A /* Scenes_Iphone.storyboard */; };
+		8431A3601B14656300FBF277 /* AvenirLTStd-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8431A3541B14656300FBF277 /* AvenirLTStd-Black.otf */; };
+		8431A3611B14656300FBF277 /* AvenirLTStd-BlackOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8431A3551B14656300FBF277 /* AvenirLTStd-BlackOblique.otf */; };
+		8431A3621B14656300FBF277 /* AvenirLTStd-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8431A3561B14656300FBF277 /* AvenirLTStd-Book.otf */; };
+		8431A3631B14656300FBF277 /* AvenirLTStd-BookOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8431A3571B14656300FBF277 /* AvenirLTStd-BookOblique.otf */; };
+		8431A3641B14656300FBF277 /* AvenirLTStd-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8431A3581B14656300FBF277 /* AvenirLTStd-Heavy.otf */; };
+		8431A3651B14656300FBF277 /* AvenirLTStd-HeavyOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8431A3591B14656300FBF277 /* AvenirLTStd-HeavyOblique.otf */; };
+		8431A3661B14656300FBF277 /* AvenirLTStd-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8431A35A1B14656300FBF277 /* AvenirLTStd-Light.otf */; };
+		8431A3671B14656300FBF277 /* AvenirLTStd-LightOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8431A35B1B14656300FBF277 /* AvenirLTStd-LightOblique.otf */; };
+		8431A3681B14656300FBF277 /* AvenirLTStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8431A35C1B14656300FBF277 /* AvenirLTStd-Medium.otf */; };
+		8431A3691B14656300FBF277 /* AvenirLTStd-MediumOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8431A35D1B14656300FBF277 /* AvenirLTStd-MediumOblique.otf */; };
+		8431A36A1B14656300FBF277 /* AvenirLTStd-Oblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8431A35E1B14656300FBF277 /* AvenirLTStd-Oblique.otf */; };
+		8431A36B1B14656300FBF277 /* AvenirLTStd-Roman.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8431A35F1B14656300FBF277 /* AvenirLTStd-Roman.otf */; };
+		8462E9021B28579000E915F3 /* SFIDimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8462E9011B28579000E915F3 /* SFIDimmerButton.m */; };
+		8464B7741B51183E00053B15 /* SFIWiFiDeviceDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8464B7731B51183E00053B15 /* SFIWiFiDeviceDetailViewController.m */; };
+		8475D3851B3167D0007C89BC /* SFIDeviceIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 849594C71B26F1C900FAFF6D /* SFIDeviceIndex.m */; };
+		8475D3871B3167F4007C89BC /* MDJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B431FF1B25A00800A34E92 /* MDJSON.m */; };
+		8475D3881B3167F4007C89BC /* SFIAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B432031B25A00800A34E92 /* SFIAddSceneViewController.m */; };
+		8475D3891B3167F4007C89BC /* SFIScenesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B432051B25A00800A34E92 /* SFIScenesTableViewCell.m */; };
+		8475D38A1B3167F4007C89BC /* SFIScenesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B432071B25A00800A34E92 /* SFIScenesViewController.m */; };
+		8475D38B1B3167F4007C89BC /* SFISwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 849594CA1B2707A200FAFF6D /* SFISwitchButton.m */; };
+		8475D38C1B3167F4007C89BC /* SFIDimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8462E9011B28579000E915F3 /* SFIDimmerButton.m */; };
+		8478858B1B5D3B0E000E1A6F /* NPColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8478858A1B5D3B0E000E1A6F /* NPColorPickerView.m */; };
+		8478858E1B5D3BC5000E1A6F /* NPConicGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 8478858D1B5D3BC5000E1A6F /* NPConicGradient.m */; };
+		847885911B5D3BF5000E1A6F /* RGB-HSL.m in Sources */ = {isa = PBXBuildFile; fileRef = 847885901B5D3BF5000E1A6F /* RGB-HSL.m */; };
+		847885941B5D3C09000E1A6F /* NPPickerIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 847885931B5D3C09000E1A6F /* NPPickerIndicator.m */; };
+		8479938D1B5E4A4E00CB3C4C /* SFIWiFiClientsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8479938C1B5E4A4E00CB3C4C /* SFIWiFiClientsListViewController.m */; };
+		847993901B5E4B7700CB3C4C /* SFIWiFiClientListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8479938F1B5E4B7700CB3C4C /* SFIWiFiClientListCell.m */; };
+		848C4C421B53D36400C4DE41 /* SFIWiFiDeviceProprtyEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 848C4C411B53D36400C4DE41 /* SFIWiFiDeviceProprtyEditViewController.m */; };
+		849594C81B26F1C900FAFF6D /* SFIDeviceIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 849594C71B26F1C900FAFF6D /* SFIDeviceIndex.m */; };
+		849594CB1B2707A200FAFF6D /* SFISwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 849594CA1B2707A200FAFF6D /* SFISwitchButton.m */; };
+		8496BC0F1B56664700574EFF /* SFIWiFiDeviceTypeSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8496BC0E1B56664700574EFF /* SFIWiFiDeviceTypeSelectionCell.m */; };
+		84B432091B25A00800A34E92 /* MDJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B431FF1B25A00800A34E92 /* MDJSON.m */; };
+		84B4320A1B25A00800A34E92 /* SFIAddSceneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B432011B25A00800A34E92 /* SFIAddSceneTableViewCell.m */; };
+		84B4320B1B25A00800A34E92 /* SFIAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B432031B25A00800A34E92 /* SFIAddSceneViewController.m */; };
+		84B4320C1B25A00800A34E92 /* SFIScenesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B432051B25A00800A34E92 /* SFIScenesTableViewCell.m */; };
+		84B4320D1B25A00800A34E92 /* SFIScenesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B432071B25A00800A34E92 /* SFIScenesViewController.m */; };
+		84FD463B1B5FA09500188F0B /* SKSTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FD46361B5FA09500188F0B /* SKSTableView.m */; };
+		84FD463C1B5FA09500188F0B /* SKSTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FD46381B5FA09500188F0B /* SKSTableViewCell.m */; };
+		84FD463D1B5FA09500188F0B /* SKSTableViewCellIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 84FD463A1B5FA09500188F0B /* SKSTableViewCellIndicator.m */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -384,6 +425,59 @@
 		1DF03ED87E1BC2184C9EEF53 /* ScoreboardTextEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScoreboardTextEditorViewController.m; sourceTree = "<group>"; };
 		1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorIndexSupport.m; sourceTree = "<group>"; };
 		1DF03F524BE952202AA5335B /* IndexValueSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexValueSupport.h; sourceTree = "<group>"; };
+		843016971B162A4700CC783A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Scenes_Iphone.storyboard; sourceTree = "<group>"; };
+		8431A3541B14656300FBF277 /* AvenirLTStd-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Black.otf"; sourceTree = "<group>"; };
+		8431A3551B14656300FBF277 /* AvenirLTStd-BlackOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-BlackOblique.otf"; sourceTree = "<group>"; };
+		8431A3561B14656300FBF277 /* AvenirLTStd-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Book.otf"; sourceTree = "<group>"; };
+		8431A3571B14656300FBF277 /* AvenirLTStd-BookOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-BookOblique.otf"; sourceTree = "<group>"; };
+		8431A3581B14656300FBF277 /* AvenirLTStd-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Heavy.otf"; sourceTree = "<group>"; };
+		8431A3591B14656300FBF277 /* AvenirLTStd-HeavyOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-HeavyOblique.otf"; sourceTree = "<group>"; };
+		8431A35A1B14656300FBF277 /* AvenirLTStd-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Light.otf"; sourceTree = "<group>"; };
+		8431A35B1B14656300FBF277 /* AvenirLTStd-LightOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-LightOblique.otf"; sourceTree = "<group>"; };
+		8431A35C1B14656300FBF277 /* AvenirLTStd-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Medium.otf"; sourceTree = "<group>"; };
+		8431A35D1B14656300FBF277 /* AvenirLTStd-MediumOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-MediumOblique.otf"; sourceTree = "<group>"; };
+		8431A35E1B14656300FBF277 /* AvenirLTStd-Oblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Oblique.otf"; sourceTree = "<group>"; };
+		8431A35F1B14656300FBF277 /* AvenirLTStd-Roman.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Roman.otf"; sourceTree = "<group>"; };
+		8462E9001B28579000E915F3 /* SFIDimmerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIDimmerButton.h; sourceTree = "<group>"; };
+		8462E9011B28579000E915F3 /* SFIDimmerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIDimmerButton.m; sourceTree = "<group>"; };
+		8464B7721B51183E00053B15 /* SFIWiFiDeviceDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWiFiDeviceDetailViewController.h; sourceTree = "<group>"; };
+		8464B7731B51183E00053B15 /* SFIWiFiDeviceDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIWiFiDeviceDetailViewController.m; sourceTree = "<group>"; };
+		847885891B5D3B0E000E1A6F /* NPColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NPColorPickerView.h; sourceTree = "<group>"; };
+		8478858A1B5D3B0E000E1A6F /* NPColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NPColorPickerView.m; sourceTree = "<group>"; };
+		8478858C1B5D3BC5000E1A6F /* NPConicGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NPConicGradient.h; sourceTree = "<group>"; };
+		8478858D1B5D3BC5000E1A6F /* NPConicGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NPConicGradient.m; sourceTree = "<group>"; };
+		8478858F1B5D3BF5000E1A6F /* RGB-HSL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RGB-HSL.h"; sourceTree = "<group>"; };
+		847885901B5D3BF5000E1A6F /* RGB-HSL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RGB-HSL.m"; sourceTree = "<group>"; };
+		847885921B5D3C09000E1A6F /* NPPickerIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NPPickerIndicator.h; sourceTree = "<group>"; };
+		847885931B5D3C09000E1A6F /* NPPickerIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NPPickerIndicator.m; sourceTree = "<group>"; };
+		8479938B1B5E4A4E00CB3C4C /* SFIWiFiClientsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWiFiClientsListViewController.h; sourceTree = "<group>"; };
+		8479938C1B5E4A4E00CB3C4C /* SFIWiFiClientsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIWiFiClientsListViewController.m; sourceTree = "<group>"; };
+		8479938E1B5E4B7700CB3C4C /* SFIWiFiClientListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWiFiClientListCell.h; sourceTree = "<group>"; };
+		8479938F1B5E4B7700CB3C4C /* SFIWiFiClientListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIWiFiClientListCell.m; sourceTree = "<group>"; };
+		848C4C401B53D36400C4DE41 /* SFIWiFiDeviceProprtyEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWiFiDeviceProprtyEditViewController.h; sourceTree = "<group>"; };
+		848C4C411B53D36400C4DE41 /* SFIWiFiDeviceProprtyEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIWiFiDeviceProprtyEditViewController.m; sourceTree = "<group>"; };
+		849594C61B26F1C900FAFF6D /* SFIDeviceIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIDeviceIndex.h; sourceTree = "<group>"; };
+		849594C71B26F1C900FAFF6D /* SFIDeviceIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIDeviceIndex.m; sourceTree = "<group>"; };
+		849594C91B2707A200FAFF6D /* SFISwitchButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISwitchButton.h; sourceTree = "<group>"; };
+		849594CA1B2707A200FAFF6D /* SFISwitchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISwitchButton.m; sourceTree = "<group>"; };
+		8496BC0D1B56664700574EFF /* SFIWiFiDeviceTypeSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWiFiDeviceTypeSelectionCell.h; sourceTree = "<group>"; };
+		8496BC0E1B56664700574EFF /* SFIWiFiDeviceTypeSelectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIWiFiDeviceTypeSelectionCell.m; sourceTree = "<group>"; };
+		84B431FE1B25A00800A34E92 /* MDJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MDJSON.h; sourceTree = "<group>"; };
+		84B431FF1B25A00800A34E92 /* MDJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MDJSON.m; sourceTree = "<group>"; };
+		84B432001B25A00800A34E92 /* SFIAddSceneTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIAddSceneTableViewCell.h; sourceTree = "<group>"; };
+		84B432011B25A00800A34E92 /* SFIAddSceneTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIAddSceneTableViewCell.m; sourceTree = "<group>"; };
+		84B432021B25A00800A34E92 /* SFIAddSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIAddSceneViewController.h; sourceTree = "<group>"; };
+		84B432031B25A00800A34E92 /* SFIAddSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIAddSceneViewController.m; sourceTree = "<group>"; };
+		84B432041B25A00800A34E92 /* SFIScenesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIScenesTableViewCell.h; sourceTree = "<group>"; };
+		84B432051B25A00800A34E92 /* SFIScenesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIScenesTableViewCell.m; sourceTree = "<group>"; };
+		84B432061B25A00800A34E92 /* SFIScenesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIScenesViewController.h; sourceTree = "<group>"; };
+		84B432071B25A00800A34E92 /* SFIScenesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIScenesViewController.m; sourceTree = "<group>"; };
+		84FD46351B5FA09500188F0B /* SKSTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableView.h; sourceTree = "<group>"; };
+		84FD46361B5FA09500188F0B /* SKSTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSTableView.m; sourceTree = "<group>"; };
+		84FD46371B5FA09500188F0B /* SKSTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableViewCell.h; sourceTree = "<group>"; };
+		84FD46381B5FA09500188F0B /* SKSTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSTableViewCell.m; sourceTree = "<group>"; };
+		84FD46391B5FA09500188F0B /* SKSTableViewCellIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableViewCellIndicator.h; sourceTree = "<group>"; };
+		84FD463A1B5FA09500188F0B /* SKSTableViewCellIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSTableViewCellIndicator.m; sourceTree = "<group>"; };
 		C6A3307CA8D0945BEFE53A18 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -443,6 +537,7 @@
 				1C7E7CFD1A41A0990026F0BA /* Notifications */,
 				1C7E7D021A41A0990026F0BA /* NSString+ASBase64 */,
 				1C7E7D051A41A0990026F0BA /* Router */,
+				8464B7711B51180700053B15 /* WiFi */,
 				1C7E7D131A41A0990026F0BA /* Scoreboard */,
 				1C7E7D211A41A0990026F0BA /* Settings */,
 				1C7E7D281A41A0990026F0BA /* SFIAppDelegate.h */,
@@ -455,6 +550,7 @@
 				1DF03D99C19042FD3FCADB2D /* SFIPreferences.h */,
 				1DF03CBFD9DEB75D228D8A0D /* SensorSupport */,
 				1DF03F2CAC78C2DF995C9887 /* ILColorPicker */,
+				84B431FB1B25A00800A34E92 /* Scene */,
 				1DF0319F5A1CE93323EA5C61 /* Sensor */,
 			);
 			path = SecurifiApp;
@@ -688,11 +784,13 @@
 		1C7E7E2D1A41A26A0026F0BA /* Base.lproj */ = {
 			isa = PBXGroup;
 			children = (
+				8431A3531B14656300FBF277 /* Fonts */,
 				1C7E7E2E1A41A26A0026F0BA /* AccountsStoryboard_iPhone.storyboard */,
 				1C7E7E301A41A26A0026F0BA /* Common-Localizable.strings */,
 				1C7E7E321A41A26A0026F0BA /* Common-MainStoryboard_iPhone.strings */,
 				1C7E7E341A41A26A0026F0BA /* MainStoryboard_iPad.storyboard */,
 				1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */,
+				843016961B162A4700CC783A /* Scenes_Iphone.storyboard */,
 			);
 			path = Base.lproj;
 			sourceTree = "<group>";
@@ -789,6 +887,8 @@
 				1DF03C895FD75AA97DDF3AC5 /* IndexValueSupport.m */,
 				1DF03CD23CCAD6D4BF0CF82A /* SensorIndexSupport.h */,
 				1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */,
+				849594C61B26F1C900FAFF6D /* SFIDeviceIndex.h */,
+				849594C71B26F1C900FAFF6D /* SFIDeviceIndex.m */,
 			);
 			path = SensorSupport;
 			sourceTree = "<group>";
@@ -806,6 +906,85 @@
 				1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */,
 			);
 			path = ILColorPicker;
+			sourceTree = "<group>";
+		};
+		8431A3531B14656300FBF277 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				8431A3541B14656300FBF277 /* AvenirLTStd-Black.otf */,
+				8431A3551B14656300FBF277 /* AvenirLTStd-BlackOblique.otf */,
+				8431A3561B14656300FBF277 /* AvenirLTStd-Book.otf */,
+				8431A3571B14656300FBF277 /* AvenirLTStd-BookOblique.otf */,
+				8431A3581B14656300FBF277 /* AvenirLTStd-Heavy.otf */,
+				8431A3591B14656300FBF277 /* AvenirLTStd-HeavyOblique.otf */,
+				8431A35A1B14656300FBF277 /* AvenirLTStd-Light.otf */,
+				8431A35B1B14656300FBF277 /* AvenirLTStd-LightOblique.otf */,
+				8431A35C1B14656300FBF277 /* AvenirLTStd-Medium.otf */,
+				8431A35D1B14656300FBF277 /* AvenirLTStd-MediumOblique.otf */,
+				8431A35E1B14656300FBF277 /* AvenirLTStd-Oblique.otf */,
+				8431A35F1B14656300FBF277 /* AvenirLTStd-Roman.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		8464B7711B51180700053B15 /* WiFi */ = {
+			isa = PBXGroup;
+			children = (
+				84FD46341B5FA09500188F0B /* SKSTableView */,
+				8464B7721B51183E00053B15 /* SFIWiFiDeviceDetailViewController.h */,
+				8464B7731B51183E00053B15 /* SFIWiFiDeviceDetailViewController.m */,
+				848C4C401B53D36400C4DE41 /* SFIWiFiDeviceProprtyEditViewController.h */,
+				848C4C411B53D36400C4DE41 /* SFIWiFiDeviceProprtyEditViewController.m */,
+				8496BC0D1B56664700574EFF /* SFIWiFiDeviceTypeSelectionCell.h */,
+				8496BC0E1B56664700574EFF /* SFIWiFiDeviceTypeSelectionCell.m */,
+				8479938B1B5E4A4E00CB3C4C /* SFIWiFiClientsListViewController.h */,
+				8479938C1B5E4A4E00CB3C4C /* SFIWiFiClientsListViewController.m */,
+				8479938E1B5E4B7700CB3C4C /* SFIWiFiClientListCell.h */,
+				8479938F1B5E4B7700CB3C4C /* SFIWiFiClientListCell.m */,
+			);
+			path = WiFi;
+			sourceTree = "<group>";
+		};
+		84B431FB1B25A00800A34E92 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				84B431FE1B25A00800A34E92 /* MDJSON.h */,
+				84B431FF1B25A00800A34E92 /* MDJSON.m */,
+				84B432001B25A00800A34E92 /* SFIAddSceneTableViewCell.h */,
+				84B432011B25A00800A34E92 /* SFIAddSceneTableViewCell.m */,
+				84B432021B25A00800A34E92 /* SFIAddSceneViewController.h */,
+				84B432031B25A00800A34E92 /* SFIAddSceneViewController.m */,
+				84B432041B25A00800A34E92 /* SFIScenesTableViewCell.h */,
+				84B432051B25A00800A34E92 /* SFIScenesTableViewCell.m */,
+				84B432061B25A00800A34E92 /* SFIScenesViewController.h */,
+				84B432071B25A00800A34E92 /* SFIScenesViewController.m */,
+				849594C91B2707A200FAFF6D /* SFISwitchButton.h */,
+				849594CA1B2707A200FAFF6D /* SFISwitchButton.m */,
+				8462E9001B28579000E915F3 /* SFIDimmerButton.h */,
+				8462E9011B28579000E915F3 /* SFIDimmerButton.m */,
+				847885891B5D3B0E000E1A6F /* NPColorPickerView.h */,
+				8478858A1B5D3B0E000E1A6F /* NPColorPickerView.m */,
+				8478858C1B5D3BC5000E1A6F /* NPConicGradient.h */,
+				8478858D1B5D3BC5000E1A6F /* NPConicGradient.m */,
+				847885921B5D3C09000E1A6F /* NPPickerIndicator.h */,
+				847885931B5D3C09000E1A6F /* NPPickerIndicator.m */,
+				8478858F1B5D3BF5000E1A6F /* RGB-HSL.h */,
+				847885901B5D3BF5000E1A6F /* RGB-HSL.m */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		84FD46341B5FA09500188F0B /* SKSTableView */ = {
+			isa = PBXGroup;
+			children = (
+				84FD46351B5FA09500188F0B /* SKSTableView.h */,
+				84FD46361B5FA09500188F0B /* SKSTableView.m */,
+				84FD46371B5FA09500188F0B /* SKSTableViewCell.h */,
+				84FD46381B5FA09500188F0B /* SKSTableViewCell.m */,
+				84FD46391B5FA09500188F0B /* SKSTableViewCellIndicator.h */,
+				84FD463A1B5FA09500188F0B /* SKSTableViewCellIndicator.m */,
+			);
+			path = SKSTableView;
 			sourceTree = "<group>";
 		};
 		D80BDC9A1350F01973273EA6 /* Pods */ = {
@@ -876,7 +1055,7 @@
 						DevelopmentTeam = C7LGXV6KUU;
 					};
 					1CED5EF019AC82FD0023512F = {
-						DevelopmentTeam = R336EY8885;
+						DevelopmentTeam = N7NDANCZ5Q;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -926,6 +1105,7 @@
 				1C9B1DA31A3EEA1200097D8F /* MainStoryboard_iPhone.strings in Resources */,
 				1C9B1DA11A3EEA1200097D8F /* InfoPlist.strings in Resources */,
 				1C9B1DA41A3EEA1200097D8F /* termsofuse.html in Resources */,
+				841F8B591B30B71D00B9890C /* Scenes_Iphone.storyboard in Resources */,
 				1C9B1D7A1A3EE9EF00097D8F /* HomeScreen-Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -934,18 +1114,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8431A3691B14656300FBF277 /* AvenirLTStd-MediumOblique.otf in Resources */,
 				1C7E7E711A41A73B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */,
 				1C7E7E721A41A73E0026F0BA /* MainStoryboard_iPad.storyboard in Resources */,
+				8431A3631B14656300FBF277 /* AvenirLTStd-BookOblique.otf in Resources */,
 				1C7E7E751A41A7470026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */,
+				8431A3651B14656300FBF277 /* AvenirLTStd-HeavyOblique.otf in Resources */,
+				8431A3621B14656300FBF277 /* AvenirLTStd-Book.otf in Resources */,
 				1C7E7E1C1A41A0D70026F0BA /* termsofuse.html in Resources */,
+				8431A3641B14656300FBF277 /* AvenirLTStd-Heavy.otf in Resources */,
+				8431A3671B14656300FBF277 /* AvenirLTStd-LightOblique.otf in Resources */,
 				1C7E7E181A41A0D70026F0BA /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				1C7E7E1A1A41A0D70026F0BA /* Localizable.strings in Resources */,
 				1C7E7E161A41A0D70026F0BA /* AccountsStoryboard_iPhone.strings in Resources */,
+				8431A36B1B14656300FBF277 /* AvenirLTStd-Roman.otf in Resources */,
 				1C7E7E191A41A0D70026F0BA /* InfoPlist.strings in Resources */,
+				8431A3611B14656300FBF277 /* AvenirLTStd-BlackOblique.otf in Resources */,
 				1C23E6D51A9C4581004D2D23 /* Common-Images.xcassets in Resources */,
+				8431A3681B14656300FBF277 /* AvenirLTStd-Medium.otf in Resources */,
 				1C7E7E171A41A0D70026F0BA /* Almond-Localizable.strings in Resources */,
+				8431A3601B14656300FBF277 /* AvenirLTStd-Black.otf in Resources */,
 				1C7E7DFA1A41A0B30026F0BA /* Almond-Images.xcassets in Resources */,
+				8431A36A1B14656300FBF277 /* AvenirLTStd-Oblique.otf in Resources */,
+				8431A3661B14656300FBF277 /* AvenirLTStd-Light.otf in Resources */,
 				1C7E7E1B1A41A0D70026F0BA /* MainStoryboard_iPhone.strings in Resources */,
+				843016981B162A4700CC783A /* Scenes_Iphone.storyboard in Resources */,
 				1C7E7DFD1A41A0B30026F0BA /* cert.der in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1063,8 +1256,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8475D3871B3167F4007C89BC /* MDJSON.m in Sources */,
 				1C7E7DD61A41A0990026F0BA /* UIViewController+Securifi.m in Sources */,
 				1C7E7DC81A41A0990026F0BA /* SFIMainViewController.m in Sources */,
+				8475D3881B3167F4007C89BC /* SFIAddSceneViewController.m in Sources */,
 				1C7E7D8C1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
 				1C7E7DBE1A41A0990026F0BA /* SFICloudStatusBarButtonItem.m in Sources */,
 				1C7E7D861A41A0990026F0BA /* SFILogoutAllViewController.m in Sources */,
@@ -1093,11 +1288,13 @@
 				1C7E7D741A41A0990026F0BA /* SFIBlockedContent.m in Sources */,
 				1C7E7D901A41A0990026F0BA /* SFIRouterReboot.m in Sources */,
 				1C7E7D721A41A0990026F0BA /* SFIAffiliationViewController.m in Sources */,
+				8475D38B1B3167F4007C89BC /* SFISwitchButton.m in Sources */,
 				1C7E7DCE1A41A0990026F0BA /* SFISlider.m in Sources */,
 				1C9B1D7B1A3EE9EF00097D8F /* HomeScreenAppDelegate.m in Sources */,
 				1C7E7DD41A41A0990026F0BA /* UIView+Borders.m in Sources */,
 				1C7E7DBA1A41A0990026F0BA /* SFICardTableViewCell.m in Sources */,
 				1C7E7DD01A41A0990026F0BA /* SFITableViewController.m in Sources */,
+				8475D3891B3167F4007C89BC /* SFIScenesTableViewCell.m in Sources */,
 				1C7E7DCC1A41A0990026F0BA /* SFISensor.m in Sources */,
 				1C7E7D7A1A41A0990026F0BA /* SFIDevicesList.m in Sources */,
 				1C7E7D821A41A0990026F0BA /* SFIActivationViewController.m in Sources */,
@@ -1117,6 +1314,7 @@
 				1DF03D1D08D853057CDED2DC /* SFINotificationTableViewHeaderFooter.m in Sources */,
 				1DF0364AEDD2A4A73832CE5D /* SensorSupport.m in Sources */,
 				1DF03DC0F53E38D2CB88F6BA /* ValueFormatter.m in Sources */,
+				8475D38C1B3167F4007C89BC /* SFIDimmerButton.m in Sources */,
 				1DF0347975CABF8F74C4905D /* IndexValueSupport.m in Sources */,
 				1DF03A2A9BFA55B20A1D2609 /* SensorIndexSupport.m in Sources */,
 				1DF03733354F6CEF7D979D57 /* NotificationsTestStore.m in Sources */,
@@ -1124,9 +1322,11 @@
 				1DF03B77AE6B540AFC5851BB /* DebugLogger.m in Sources */,
 				1DF03CC89074191AC5F942CA /* ScoreboardDebugLoggerViewController.m in Sources */,
 				1DF033F4DF8C6A502EB12289 /* ScoreboardTextEditorViewController.m in Sources */,
+				8475D3851B3167D0007C89BC /* SFIDeviceIndex.m in Sources */,
 				1DF031DB440397B975511290 /* UIColor+GetHSB.m in Sources */,
 				1DF03E729C9FCFBA559D4BDC /* ILView.m in Sources */,
 				1DF0319D664AF1667E394E51 /* ILHuePickerView.m in Sources */,
+				8475D38A1B3167F4007C89BC /* SFIScenesViewController.m in Sources */,
 				1DF03D2E7F166ECAEAD5B033 /* ILColorPickerView.m in Sources */,
 				1DF038B871CAC9B7F0FCA043 /* ILSaturationBrightnessPickerView.m in Sources */,
 				1DF038A445EB0F3A6476DC32 /* SFIHuePickerView.m in Sources */,
@@ -1146,6 +1346,7 @@
 				1C7E7D8B1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
 				1C7E7DCF1A41A0990026F0BA /* SFITableViewController.m in Sources */,
 				1C7E7DD11A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
+				8479938D1B5E4A4E00CB3C4C /* SFIWiFiClientsListViewController.m in Sources */,
 				1C7E7DC11A41A0990026F0BA /* SFIConstants.m in Sources */,
 				1C7E7DBF1A41A0990026F0BA /* SFIColors.m in Sources */,
 				1C7E7D891A41A0990026F0BA /* SFINotificationTableViewCell.m in Sources */,
@@ -1153,7 +1354,9 @@
 				1C7E7D871A41A0990026F0BA /* SFINotificationsViewController.m in Sources */,
 				1C7E7DC51A41A0990026F0BA /* SFIHighlightedButton.m in Sources */,
 				1C7E7D831A41A0990026F0BA /* SFILoginViewController.m in Sources */,
+				8464B7741B51183E00053B15 /* SFIWiFiDeviceDetailViewController.m in Sources */,
 				1C7E7DC71A41A0990026F0BA /* SFIMainViewController.m in Sources */,
+				8478858B1B5D3B0E000E1A6F /* NPColorPickerView.m in Sources */,
 				1C7E7D791A41A0990026F0BA /* SFIDevicesList.m in Sources */,
 				1C7E7DA71A41A0990026F0BA /* SFIPasswordChangeViewController.m in Sources */,
 				1C7E7DCD1A41A0990026F0BA /* SFISlider.m in Sources */,
@@ -1165,16 +1368,24 @@
 				1C7E7DBD1A41A0990026F0BA /* SFICloudStatusBarButtonItem.m in Sources */,
 				1C7E7D9B1A41A0990026F0BA /* ScoreboardEventViewController.m in Sources */,
 				1C7E7D931A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
+				84B4320B1B25A00800A34E92 /* SFIAddSceneViewController.m in Sources */,
 				1C7E7D9D1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
 				1C7E7DA51A41A0990026F0BA /* SFIAccountsTableViewController.m in Sources */,
 				1C7E7DC31A41A0990026F0BA /* SFICopyLabel.m in Sources */,
+				847885941B5D3C09000E1A6F /* NPPickerIndicator.m in Sources */,
+				848C4C421B53D36400C4DE41 /* SFIWiFiDeviceProprtyEditViewController.m in Sources */,
 				1C7E7D951A41A0990026F0BA /* SFIRouterTableViewController.m in Sources */,
+				8478858E1B5D3BC5000E1A6F /* NPConicGradient.m in Sources */,
 				1C7E7D731A41A0990026F0BA /* SFIBlockedContent.m in Sources */,
+				84B4320D1B25A00800A34E92 /* SFIScenesViewController.m in Sources */,
 				1C7E7E061A41A0B30026F0BA /* main.m in Sources */,
+				847993901B5E4B7700CB3C4C /* SFIWiFiClientListCell.m in Sources */,
+				849594CB1B2707A200FAFF6D /* SFISwitchButton.m in Sources */,
 				1C7E7D991A41A0990026F0BA /* Analytics.m in Sources */,
 				1C7E7DAD1A41A0990026F0BA /* SFISignupViewController.m in Sources */,
 				1C7E7DC91A41A0990026F0BA /* SFIParser.m in Sources */,
 				1C7E7DA91A41A0990026F0BA /* SFIUserProfile.m in Sources */,
+				84B4320A1B25A00800A34E92 /* SFIAddSceneTableViewCell.m in Sources */,
 				1C7E7D811A41A0990026F0BA /* SFIActivationViewController.m in Sources */,
 				1C7E7D751A41A0990026F0BA /* SFIBlockedDevice.m in Sources */,
 				1C7E7DD51A41A0990026F0BA /* UIViewController+Securifi.m in Sources */,
@@ -1185,6 +1396,7 @@
 				1C7E7D8F1A41A0990026F0BA /* SFIRouterReboot.m in Sources */,
 				1C7E7DD71A41A0990026F0BA /* SNLog.m in Sources */,
 				1DF031661E380BA4D0E0EB07 /* SFIPreferences.m in Sources */,
+				8462E9021B28579000E915F3 /* SFIDimmerButton.m in Sources */,
 				1DF0390452B5D28DECBE4F68 /* NSData+Conversion.m in Sources */,
 				1DF0351F629E0103520602C3 /* SFICardViewSummaryCell.m in Sources */,
 				1DF03698BAF3152723335005 /* UIImage+Securifi.m in Sources */,
@@ -1193,9 +1405,15 @@
 				1DF032B24E580FC6CD86D379 /* CircleLabel.m in Sources */,
 				1DF0318D09F8B1DBAF74C090 /* SFINotificationTableViewHeaderFooter.m in Sources */,
 				1DF034DCCD17E1C36BA3BF00 /* SensorSupport.m in Sources */,
+				8496BC0F1B56664700574EFF /* SFIWiFiDeviceTypeSelectionCell.m in Sources */,
 				1DF0383EBD135988AEA6DF73 /* ValueFormatter.m in Sources */,
+				847885911B5D3BF5000E1A6F /* RGB-HSL.m in Sources */,
+				84FD463C1B5FA09500188F0B /* SKSTableViewCell.m in Sources */,
 				1DF03A1D3210B9478AF1DAC3 /* IndexValueSupport.m in Sources */,
+				84B432091B25A00800A34E92 /* MDJSON.m in Sources */,
+				84FD463B1B5FA09500188F0B /* SKSTableView.m in Sources */,
 				1DF0362BB7839519E771D769 /* SensorIndexSupport.m in Sources */,
+				84B4320C1B25A00800A34E92 /* SFIScenesTableViewCell.m in Sources */,
 				1DF038B5E6A54CEEAFE1BE7F /* NotificationsTestStore.m in Sources */,
 				1DF037534B2784850C9B047C /* UIApplication+SecurifiNotifications.m in Sources */,
 				1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */,
@@ -1203,12 +1421,14 @@
 				1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */,
 				1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */,
 				1DF03341BDCB67EE35C82CE5 /* ILView.m in Sources */,
+				849594C81B26F1C900FAFF6D /* SFIDeviceIndex.m in Sources */,
 				1DF03D9DDF778A6558F68504 /* ILHuePickerView.m in Sources */,
 				1DF035687F592CCCFB831F48 /* ILColorPickerView.m in Sources */,
 				1DF0304B3CD98B217E85940D /* ILSaturationBrightnessPickerView.m in Sources */,
 				1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */,
 				1DF03A194CCC7A1DE3C2A4DC /* UIColor+Securifi.m in Sources */,
 				1DF039D3E2A4A6FB292A99C3 /* SFISensorDetailView.m in Sources */,
+				84FD463D1B5FA09500188F0B /* SKSTableViewCellIndicator.m in Sources */,
 				1DF03B73C95D8A41C9409EF3 /* SFISensorsViewController.m in Sources */,
 				1DF03247826CA943EDEE8741 /* SFISensorTableViewCell.m in Sources */,
 			);
@@ -1361,6 +1581,14 @@
 			name = termsofuse.html;
 			sourceTree = "<group>";
 		};
+		843016961B162A4700CC783A /* Scenes_Iphone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				843016971B162A4700CC783A /* Base */,
+			);
+			name = Scenes_Iphone.storyboard;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -1455,6 +1683,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "f251a31e-3f4d-4228-8101-ffa25010b5ff";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1476,8 +1705,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tigran Aslanyan (N7NDANCZ5Q)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tigran Aslanyan (N7NDANCZ5Q)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1488,6 +1717,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PROVISIONING_PROFILE = "f251a31e-3f4d-4228-8101-ffa25010b5ff";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1515,10 +1745,10 @@
 					"\"${PROJECT_DIR}/../iostoolkit\"",
 				);
 				INFOPLIST_FILE = "Almond/Almond-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "f251a31e-3f4d-4228-8101-ffa25010b5ff";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iostoolkit\"/**";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1530,8 +1760,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Almond-AppIcon";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-launch_image";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Tigran Aslanyan (N7NDANCZ5Q)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tigran Aslanyan (N7NDANCZ5Q)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PODS_ROOT)/CrashlyticsFramework\"",
@@ -1544,10 +1774,10 @@
 					"\"${PROJECT_DIR}/../iostoolkit\"",
 				);
 				INFOPLIST_FILE = "Almond/Almond-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "f251a31e-3f4d-4228-8101-ffa25010b5ff";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iostoolkit\"/**";
 				WRAPPER_EXTENSION = app;
 			};

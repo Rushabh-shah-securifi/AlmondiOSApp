@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="a0o-Pk-ADn">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="a0o-Pk-ADn">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -40,7 +40,7 @@
                                 <rect key="frame" x="20" y="0.0" width="287" height="170"/>
                                 <string key="text">To link your Almond with Securifi Cloud account, start the wizard on your Almond+. The "Add your Almond to your Securifi Cloud Account" section will show a code which you may scan by tapping below or type the code, instead.</string>
                                 <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="15"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -832,14 +832,14 @@
                                             <rect key="frame" x="15" y="3" width="34" height="22"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HJE-BA-YKX">
                                             <rect key="frame" x="15" y="25" width="43" height="15"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -882,31 +882,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qqe-c4-YuL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3316" y="1484"/>
-        </scene>
-        <!--Scenes-->
-        <scene sceneID="aqp-G0-xTe">
-            <objects>
-                <viewController id="tZf-bb-osZ" customClass="SFISceneViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="WME-VG-Tjm">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="tZf-bb-osZ" id="yB1-QB-veb"/>
-                            <outlet property="delegate" destination="tZf-bb-osZ" id="05V-wR-G5f"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Scenes" id="C8w-d3-6Kp">
-                        <barButtonItem key="leftBarButtonItem" image="drawer.png" id="DVr-NL-Etc">
-                            <connections>
-                                <action selector="revealMenu:" destination="tZf-bb-osZ" id="g1o-9m-Vvn"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="s2r-QF-M8f" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3245" y="-128"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="qgd-qj-mZq">
@@ -1080,7 +1055,6 @@ your Securifi Cloud Account.</string>
     <resources>
         <image name="Line_icon.png" width="600" height="1"/>
         <image name="blue_down_bar.png" width="640" height="184"/>
-        <image name="drawer.png" width="23" height="18"/>
         <image name="icon_round_1.png" width="88" height="88"/>
         <image name="icon_round_2.png" width="88" height="88"/>
         <image name="icon_round_3.png" width="88" height="88"/>

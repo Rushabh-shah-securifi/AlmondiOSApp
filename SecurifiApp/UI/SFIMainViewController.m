@@ -16,6 +16,7 @@
 #import "SFISensorsViewController.h"
 #import "DrawerViewController.h"
 #import "SFIAccountsTableViewController.h"
+#import "SFIScenesViewController.h"//md01
 #import "UIViewController+Securifi.h"
 #import "Analytics.h"
 #import "ScoreboardViewController.h"
@@ -25,6 +26,7 @@
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
+#define TAB_BAR_SCENES @"Scenes"//md01
 
 @interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, SFIAccountDeleteDelegate, UIGestureRecognizerDelegate, UITabBarControllerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -347,6 +349,15 @@
     icon = [UIImage imageNamed:@"icon_router.png"];
     routerNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_ROUTER image:icon selectedImage:icon];
 
+    //md01 added new tab
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
+    SFIScenesViewController *scenesCtrl = [storyboard instantiateViewControllerWithIdentifier:@"SFIScenesViewController"];
+//    SFIScenesViewController *scenesCtrl = [SFIScenesViewController new];
+    UINavigationController *scenesNav = [[UINavigationController alloc] initWithRootViewController:scenesCtrl];
+    icon = [UIImage imageNamed:@"icon_scenes.png"];
+    scenesNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_SCENES image:icon selectedImage:icon];
+    //md01 --
+
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SecurifiConfigurator *configurator = toolkit.configuration;
 
@@ -357,10 +368,10 @@
         icon = [UIImage imageNamed:@"878-binoculars"];
         scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
 
-        tabs = @[sensorNav, routerNav, scoreNav];
+        tabs = @[sensorNav, scenesNav, routerNav, scoreNav];
     }
     else {
-        tabs = @[sensorNav, routerNav];
+        tabs = @[sensorNav, scenesNav, routerNav];
     }
 
     UITabBarController *tabCtrl = [UITabBarController new];
