@@ -13,6 +13,8 @@
 #import "Analytics.h"
 #import "RouterNetworkSettingsEditor.h"
 
+#define AFFILIATION_CODE_MAX_LENGTH 6
+
 typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
     SFICloudLinkViewControllerState_promptForLinkCode,
     SFICloudLinkViewControllerState_successLink,
@@ -21,7 +23,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 
 @interface SFICloudLinkViewController () <UITextFieldDelegate, RouterNetworkSettingsEditorDelegate>
 @property(nonatomic) NSString *linkCode;
-@property(nonatomic) enum SFICloudLinkViewControllerState mode;
+@property(nonatomic) enum SFICloudLinkViewControllerState state;
 @property(nonatomic) AffiliationUserComplete *affiliationDetails;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @end
@@ -31,8 +33,8 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 + (UIViewController *)cloudLinkController {
     SFICloudLinkViewController *ctrl = [SFICloudLinkViewController new];
     ctrl.enableLocalAlmondLink = [SecurifiToolkit sharedInstance].configuration.enableLocalNetworking;
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
-    return nav;
+
+    return [[UINavigationController alloc] initWithRootViewController:ctrl];
 }
 
 - (instancetype)initWithStyle:(UITableViewStyle)style {
@@ -47,7 +49,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.mode = SFICloudLinkViewControllerState_promptForLinkCode;
+    self.state = SFICloudLinkViewControllerState_promptForLinkCode;
 
     NSDictionary *titleAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
@@ -123,14 +125,14 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 }
 
 - (void)tryEnableLinkButton:(NSUInteger)codeLength {
-    BOOL not_too_long = codeLength <= AFFILIATION_CODE_CHAR_COUNT;
+    BOOL not_too_long = codeLength <= AFFILIATION_CODE_MAX_LENGTH;
     BOOL in_range = (codeLength > 0 && not_too_long);
     self.navigationItem.rightBarButtonItem.enabled = in_range;
 }
 
 #pragma mark - HUD
 
-- (void)showHud:(NSString*)msg {
+- (void)showHud:(NSString *)msg {
     self.HUD.minShowTime = 2;
     self.HUD.labelText = @"Linking to Cloud";
     self.HUD.detailsLabelText = msg;
@@ -145,7 +147,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    switch (self.mode) {
+    switch (self.state) {
         case SFICloudLinkViewControllerState_promptForLinkCode:
             return 2;
         case SFICloudLinkViewControllerState_successLink:
@@ -158,7 +160,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    switch (self.mode) {
+    switch (self.state) {
         case SFICloudLinkViewControllerState_errorLink:
         case SFICloudLinkViewControllerState_promptForLinkCode:
             switch (section) {
@@ -183,7 +185,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
         return nil;
     }
 
-    switch (self.mode) {
+    switch (self.state) {
         case SFICloudLinkViewControllerState_promptForLinkCode: {
             return @"Type the Code shown on your Almond's screen if you are already running the Touchscreen Wizard. Alternatively you can attain the Code from the Touchscreen Almond Account App.\n\n";
         }
@@ -204,7 +206,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSInteger row = indexPath.row;
 
-    switch (self.mode) {
+    switch (self.state) {
         case SFICloudLinkViewControllerState_promptForLinkCode:
         case SFICloudLinkViewControllerState_errorLink:
             if (indexPath.section == 0) {
@@ -245,10 +247,12 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 
 - (UITableViewCell *)makeNameValueCell:(UITableView *)tableView id:(NSString *)cell_id fieldTag:(int)fieldTag fieldLabel:(NSString *)fieldLabel fieldValue:(NSString *)fieldValue {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.tag = fieldTag;
     }
 
     UIFont *font = [UIFont standardUITextFieldFont];
@@ -334,14 +338,14 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
     NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
     str = [str stringByTrimmingCharactersInSet:[[NSCharacterSet alphanumericCharacterSet] invertedSet]];
 
-    BOOL not_too_long = str.length <= AFFILIATION_CODE_CHAR_COUNT;
+    BOOL not_too_long = str.length <= AFFILIATION_CODE_MAX_LENGTH;
 
     if (not_too_long) {
         self.linkCode = str;
     }
 
     [self tryEnableLinkButton:self.linkCode.length];
-    
+
     return not_too_long;
 }
 
@@ -360,21 +364,10 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
             self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
             self.navigationItem.leftBarButtonItem = nil;
 
-            self.mode = SFICloudLinkViewControllerState_successLink;
+            self.state = SFICloudLinkViewControllerState_successLink;
         }
         else {
-            switch (obj.reasonCode) {
-                case AffiliationUserCompleteFailureCode_loginAgain:
-                case AffiliationUserCompleteFailureCode_loginAgain2:
-                case AffiliationUserCompleteFailureCode_loginAgain3:
-                    [self logoutUser];
-                    break;
-
-                default:
-                    break;
-            }
-
-            self.mode = SFICloudLinkViewControllerState_errorLink;
+            self.state = SFICloudLinkViewControllerState_errorLink;
         }
 
         [self.tableView reloadData];
@@ -404,19 +397,8 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
     }
 }
 
-- (void)logoutUser {
-    [[SecurifiToolkit sharedInstance] asyncSendLogout];
-}
-
 - (void)sendAffiliationRequest:(NSString *)linkCode {
-    AffiliationUserRequest *affiliationCommand = [[AffiliationUserRequest alloc] init];
-    affiliationCommand.Code = linkCode;
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_AFFILIATION_CODE_REQUEST;
-    cloudCommand.command = affiliationCommand;
-
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendAlmondAffiliationRequest:linkCode];
 }
 
 #pragma mark - RouterNetworkSettingsEditorDelegate methods
