@@ -14,6 +14,7 @@
 #import "RouterNetworkSettingsEditor.h"
 
 #define AFFILIATION_CODE_MAX_LENGTH 6
+#define BUTTON_LINK_TAG 1
 
 typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
     SFICloudLinkViewControllerState_promptForLinkCode,
@@ -66,11 +67,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
     UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelLink)];
-    UIBarButtonItem *link = [[UIBarButtonItem alloc] initWithTitle:@"Link" style:UIBarButtonItemStylePlain target:self action:@selector(onLink)];
-    link.enabled = NO;
-
     self.navigationItem.leftBarButtonItem = cancel;
-    self.navigationItem.rightBarButtonItem = link;
 
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -125,9 +122,20 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 }
 
 - (void)tryEnableLinkButton:(NSUInteger)codeLength {
+    if (self.state == SFICloudLinkViewControllerState_successLink) {
+        return;
+    }
+
     BOOL not_too_long = codeLength <= AFFILIATION_CODE_MAX_LENGTH;
     BOOL in_range = (codeLength > 0 && not_too_long);
-    self.navigationItem.rightBarButtonItem.enabled = in_range;
+
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:1]];
+    for (UIView *view in cell.contentView.subviews) {
+        if (view.tag == BUTTON_LINK_TAG) {
+            UIButton *button = (UIButton *) view;
+            button.enabled = in_range;
+        }
+    };
 }
 
 #pragma mark - HUD
@@ -187,7 +195,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 
     switch (self.state) {
         case SFICloudLinkViewControllerState_promptForLinkCode: {
-            return @"Type the Code shown on your Almond's screen if you are already running the Touchscreen Wizard. Alternatively you can attain the Code from the Touchscreen Almond Account App.\n\n";
+            return @"Run the Almond Account app and enter the code displayed.";
         }
 
         case SFICloudLinkViewControllerState_successLink:
@@ -214,11 +222,11 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
             }
             else {
                 if (row == 0) {
-                    return [self makeButtonCell:tableView id:@"link_almond" buttonTitle:@"Link Almond" action:@selector(onLink) solidBackground:YES];
+                    return [self makeButtonCell:tableView id:@"link_almond" buttonTitle:@"Link Almond" buttonTag:BUTTON_LINK_TAG action:@selector(onLink) solidBackground:YES];
                 }
 
                 // only called when enableLocalAlmondLink is YES
-                return [self makeButtonCell:tableView id:@"local_link" buttonTitle:@"Add Almond Locally" action:@selector(onLocalLink) solidBackground:NO];
+                return [self makeButtonCell:tableView id:@"local_link" buttonTitle:@"Add Almond Locally" buttonTag:0 action:@selector(onLocalLink) solidBackground:NO];
             }
 
         case SFICloudLinkViewControllerState_successLink: {
@@ -293,7 +301,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
     return cell;
 }
 
-- (UITableViewCell *)makeButtonCell:(UITableView *)tableView id:(NSString *)cell_id buttonTitle:(NSString *)title action:(SEL)action solidBackground:(BOOL)solidBackground {
+- (UITableViewCell *)makeButtonCell:(UITableView *)tableView id:(NSString *)cell_id buttonTitle:(NSString *)title buttonTag:(NSInteger)buttonTag action:(SEL)action solidBackground:(BOOL)solidBackground {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
 
     if (cell == nil) {
@@ -306,6 +314,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
         CGRect frame = CGRectMake(width / 2, 0, width, 40);
 
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.tag = buttonTag;
         button.frame = frame;
         button.titleLabel.adjustsFontSizeToFitWidth = YES;
         [button setTitle:title forState:UIControlStateNormal];
@@ -316,7 +325,6 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [button setTitleColor:[color complementaryColor] forState:UIControlStateHighlighted];
             button.backgroundColor = color;
-            button.enabled = NO; // a bit of a kludge; treat the button as a Label
         }
         else {
             [button setTitleColor:color forState:UIControlStateNormal];
