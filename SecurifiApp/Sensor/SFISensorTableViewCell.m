@@ -386,7 +386,7 @@
         }
 
         case SFIDeviceType_DoorSensor_39: {
-            [self configureBinaryStateSensor:DT39_DOOR_SENSOR_TRUE imageNameFalse:DT39_DOOR_SENSOR_FALSE statusTrue:@"OPEN" statusFalse:@"CLOSED"];
+            [self configureBinaryStateSensor:DT39_DOOR_SENSOR_OPEN imageNameFalse:DT39_DOOR_SENSOR_CLOSED statusTrue:@"OPEN" statusFalse:@"CLOSED"];
             break;
         }
 
@@ -430,6 +430,11 @@
             break;
         }
 
+        case SFIDeviceType_GarageDoorOpener_53: {
+            [self configureGarageDoorOpener_53];
+            break;
+        }
+
         case SFIDeviceType_UnknownDevice_0:
         case SFIDeviceType_Controller_8:
         case SFIDeviceType_SceneController_9:
@@ -441,11 +446,14 @@
         case SFIDeviceType_FlowSensor_31:
         case SFIDeviceType_HAPump_33:
         case SFIDeviceType_MultiSwitch_43:
+        case SFIDeviceType_51:
+        case SFIDeviceType_RollerShutter_52:
         default: {
             [self configureUnknownDevice];
         }
     }; // for each device
 }
+
 
 - (void)configureUnknownDevice {
     [self configureSensorImageName:DEVICE_UNKNOWN_IMAGE statusMesssage:nil];
@@ -838,6 +846,55 @@
     float brightness = [[value knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL] floatValue];
 
     [self configureLampIcon:turned_on hue:hue saturation:saturation brightness:brightness];
+}
+
+- (void)configureGarageDoorOpener_53 {
+/*
+0	we can set 0 (to close) and 255(to open) only	Closed
+252		closing
+253		Stopped
+254		Opening
+255		Open
+ */
+
+    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
+    if (!values) {
+        [self configureUnknownDevice];
+        return;
+    }
+
+    NSString *imageName;
+    NSString *status;
+
+    //todo this indicates insufficient abstraction; we should be able to push this logic direction into SFIDeviceKnownValues and SFIDevice
+
+    switch (values.intValue) {
+        case 0:
+            imageName = DT53_GARAGE_SENSOR_CLOSED;
+            status = @"CLOSED";
+            break;
+        case 252:
+            imageName = DT53_GARAGE_SENSOR_OPEN;
+            status = @"CLOSING";
+            break;
+        case 253:
+            imageName = DT53_GARAGE_SENSOR_OPEN;
+            status = @"STOPPED";
+            break;
+        case 254:
+            imageName = DT53_GARAGE_SENSOR_OPEN;
+            status = @"OPENING";
+            break;
+        case 255:
+            imageName = DT53_GARAGE_SENSOR_OPEN;
+            status = @"OPEN";
+            break;
+        default:
+            imageName = [self imageNameForNoValue];
+            status = DEF_COULD_NOT_UPDATE_SENSOR;
+    }
+
+    [self configureSensorImageName:imageName statusMesssage:status];
 }
 
 // draws a hue lamp icon and tinted inset representing the currently configured color

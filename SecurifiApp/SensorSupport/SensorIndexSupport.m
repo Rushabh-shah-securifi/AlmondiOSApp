@@ -7,6 +7,7 @@
 #import "SensorIndexSupport.h"
 #import "IndexValueSupport.h"
 #import "ValueFormatter.h"
+#import "SFIConstants.h"
 
 
 @implementation SensorIndexSupport
@@ -1890,6 +1891,55 @@
             s1.matchType = MatchType_any;
             return @[s1];
         };
+
+        case SFIDeviceType_GarageDoorOpener_53: {
+/*
+    0	we can set 0 (to close) and 255(to open) only	Closed
+    252		closing
+    253		Stopped
+    254		Opening
+    255		Open
+ */
+            if (type == SFIDevicePropertyType_BARRIER_OPERATOR) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"0";
+                s1.iconName = DT53_GARAGE_SENSOR_CLOSED;
+                s1.notificationText = @" is Closed.";
+
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"252";
+                s2.iconName = DT53_GARAGE_SENSOR_OPEN;
+                s2.notificationText = @" is Closing.";
+
+                IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
+                s3.matchData = @"253";
+                s3.iconName = DT53_GARAGE_SENSOR_OPEN;
+                s3.notificationText = @" is Stopped.";
+
+                IndexValueSupport *s4 = [[IndexValueSupport alloc] initWithValueType:type];
+                s4.matchData = @"254";
+                s4.iconName = DT53_GARAGE_SENSOR_OPEN;
+                s4.notificationText = @" is Opening.";
+
+                IndexValueSupport *s5 = [[IndexValueSupport alloc] initWithValueType:type];
+                s5.matchData = @"255";
+                s5.iconName = DT53_GARAGE_SENSOR_OPEN;
+                s5.notificationText = @" is Open.";
+
+                return @[s1, s2, s3, s4, s5];
+            }
+
+            if (type == SFIDevicePropertyType_USER_CODE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = nil;
+                s1.iconName = @"28_door_lock_locked";
+                s1.notificationText = @"'s pin code changed.";
+
+                return @[s1];
+            }
+
+        }
     }
 
     // Applicable to any device

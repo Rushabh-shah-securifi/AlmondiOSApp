@@ -67,8 +67,8 @@
 #define DT37_FLOOD_FALSE 						        @"37_water_drop_no.png"
 #define DT38_SHOCK_TRUE 						        @"38_vibration_yes.png"
 #define DT38_SHOCK_FALSE 						        @"38_vibration_no.png"
-#define DT39_DOOR_SENSOR_TRUE 						    @"39_door_open.png"
-#define DT39_DOOR_SENSOR_FALSE 						    @"39_door_closed.png"
+#define DT39_DOOR_SENSOR_OPEN                           @"39_door_open.png"
+#define DT39_DOOR_SENSOR_CLOSED                         @"39_door_closed.png"
 
 #define DT40_MOISTURE_TRUE 						        @"40_water_drop_no.png"
 #define DT40_MOISTURE_FALSE 						    @"40_water_drop_yes.png"
@@ -83,4 +83,7 @@
 
 #define DT50_SECURIFI_SMART_SWITCH_TRUE                 @"50_metering_on.png"
 #define DT50_SECURIFI_SMART_SWITCH_FALSE                @"50_metering_off.png"
+
+#define DT53_GARAGE_SENSOR_OPEN                         @"39_door_open.png"
+#define DT53_GARAGE_SENSOR_CLOSED                       @"39_door_closed.png"
 @end
