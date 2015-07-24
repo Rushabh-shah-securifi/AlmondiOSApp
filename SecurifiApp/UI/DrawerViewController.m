@@ -66,12 +66,13 @@
 }
 
 - (void)resetAlmondList {
-    NSArray *almondList = [[SecurifiToolkit sharedInstance] almondList];
-    if (!almondList) {
-        almondList = @[];
-    }
+    NSArray *almondList = [self buildAlmondList];
 
-    NSArray *settingsList = @[@"Account", @"Logout", @"Logout All"];
+    NSArray *settingsList = @[
+            @"Account",
+            @"Logout",
+            @"Logout All"
+    ];
 
     NSBundle *bundle = [NSBundle mainBundle];
     NSString *shortVersion = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
@@ -83,6 +84,22 @@
             SEC_SETTINGS_LIST : settingsList,
             SEC_VERSION : @[version],
     };
+}
+
+- (NSArray *)buildAlmondList {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    NSArray *almondList = [toolkit almondList];
+    if (!almondList) {
+        almondList = @[];
+    }
+
+    NSArray *local = [toolkit localLinkedAlmondList];
+    if (local) {
+        almondList = [almondList arrayByAddingObjectsFromArray:local];
+    }
+
+    return almondList;
 }
 
 #pragma mark - Table Methods
