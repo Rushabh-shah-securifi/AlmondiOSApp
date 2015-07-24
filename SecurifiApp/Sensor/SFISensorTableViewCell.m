@@ -484,7 +484,7 @@
     NSString *name = self.device.deviceName;
 
     if ([label.text isEqualToString:name]) {
-        label.text = [SFIDevice nameForType:self.device.deviceType];
+        label.text = securifi_nameToDeviceType(self.device.deviceType);
     }
     else {
         label.text = name;

@@ -98,7 +98,7 @@
     self.notifications = @{bucket : notifications};
 }
 
-- (NSArray *)makeNotificationsFor:(NSArray *)indexes type:(SFIDeviceType)type notificationId:(long)n_id {
+- (NSArray *)makeNotificationsFor:(NSArray *)indexes type:(SFIDeviceType)deviceType notificationId:(long)n_id {
     NSMutableArray *notifications = [NSMutableArray new];
 
     for (IndexValueSupport *support in indexes) {
@@ -123,9 +123,9 @@
         obj.value = data;
         obj.valueType = support.valueType;
         obj.viewed = NO;
-        obj.deviceType = type;
+        obj.deviceType = deviceType;
         obj.deviceId = 1;
-        obj.deviceName = [SFIDevice nameForType:type];
+        obj.deviceName = securifi_nameToDeviceType(deviceType);
 
         [notifications addObject:obj];
     }
