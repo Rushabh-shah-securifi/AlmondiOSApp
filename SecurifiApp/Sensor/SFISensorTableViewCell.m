@@ -874,15 +874,15 @@
             status = @"CLOSED";
             break;
         case 252:
-            imageName = DT53_GARAGE_SENSOR_OPEN;
+            imageName = DT53_GARAGE_SENSOR_DOWN;
             status = @"CLOSING";
             break;
         case 253:
-            imageName = DT53_GARAGE_SENSOR_OPEN;
+            imageName = DT53_GARAGE_SENSOR_STOPPED;
             status = @"STOPPED";
             break;
         case 254:
-            imageName = DT53_GARAGE_SENSOR_OPEN;
+            imageName = DT53_GARAGE_SENSOR_UP;
             status = @"OPENING";
             break;
         case 255:

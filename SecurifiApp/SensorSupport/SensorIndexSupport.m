@@ -1908,17 +1908,17 @@
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"252";
-                s2.iconName = DT53_GARAGE_SENSOR_OPEN;
+                s2.iconName = DT53_GARAGE_SENSOR_DOWN;
                 s2.notificationText = @" is Closing.";
 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchData = @"253";
-                s3.iconName = DT53_GARAGE_SENSOR_OPEN;
+                s3.iconName = DT53_GARAGE_SENSOR_STOPPED;
                 s3.notificationText = @" is Stopped.";
 
                 IndexValueSupport *s4 = [[IndexValueSupport alloc] initWithValueType:type];
                 s4.matchData = @"254";
-                s4.iconName = DT53_GARAGE_SENSOR_OPEN;
+                s4.iconName = DT53_GARAGE_SENSOR_UP;
                 s4.notificationText = @" is Opening.";
 
                 IndexValueSupport *s5 = [[IndexValueSupport alloc] initWithValueType:type];
@@ -1928,17 +1928,8 @@
 
                 return @[s1, s2, s3, s4, s5];
             }
-
-            if (type == SFIDevicePropertyType_USER_CODE) {
-                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchType = MatchType_any;
-                s1.matchData = nil;
-                s1.iconName = @"28_door_lock_locked";
-                s1.notificationText = @"'s pin code changed.";
-
-                return @[s1];
-            }
-
+            
+            break;
         }
     }
 

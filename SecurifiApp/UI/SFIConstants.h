@@ -84,6 +84,9 @@
 #define DT50_SECURIFI_SMART_SWITCH_TRUE                 @"50_metering_on.png"
 #define DT50_SECURIFI_SMART_SWITCH_FALSE                @"50_metering_off.png"
 
-#define DT53_GARAGE_SENSOR_OPEN                         @"39_door_open.png"
-#define DT53_GARAGE_SENSOR_CLOSED                       @"39_door_closed.png"
+#define DT53_GARAGE_SENSOR_CLOSED                       @"53_garage_door_closed"
+#define DT53_GARAGE_SENSOR_DOWN                         @"53_garage_door_down"
+#define DT53_GARAGE_SENSOR_OPEN                         @"53_garage_door_open"
+#define DT53_GARAGE_SENSOR_STOPPED                      @"53_garage_door_stopped"
+#define DT53_GARAGE_SENSOR_UP                           @"53_garage_door_up"
 @end

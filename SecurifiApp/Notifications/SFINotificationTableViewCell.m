@@ -258,6 +258,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
 
 - (void)setIcon {
     self.iconView.image = self.sensorSupport.notificationImage;
+    self.iconView.tintColor = [UIColor whiteColor];
 }
 
 // center the message text inside the view
