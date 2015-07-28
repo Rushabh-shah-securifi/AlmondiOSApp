@@ -28,6 +28,7 @@
 #import "SFIAlmondLocalNetworkSettings.h"
 #import "RouterNetworkSettingsEditor.h"
 #import "SFICloudLinkViewController.h"
+#import "UIColor+Securifi.h"
 
 #define DEF_NETWORKING_SECTION          0
 #define DEF_WIRELESS_SETTINGS_SECTION   1
@@ -660,7 +661,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [cell markReuse];
 
     cell.cardView.rightOffset = SFICardView_right_offset_inset;
-    cell.cardView.backgroundColor = [[SFIColors greenColor] color];
+    cell.cardView.backgroundColor = [UIColor securifiRouterTileGreenColor];
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
@@ -726,7 +727,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [cell markReuse];
 
     cell.cardView.rightOffset = SFICardView_right_offset_inset;
-    cell.cardView.backgroundColor = [[SFIColors blueColor] color];
+    cell.cardView.backgroundColor = [UIColor securifiRouterTileSlateColor];
     cell.title = NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings");
 
     NSMutableArray *summary = [NSMutableArray array];
@@ -828,7 +829,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     }
 
     [cell markReuse];
-    cell.cardView.backgroundColor = [[SFIColors greenColor] color];
+    cell.cardView.backgroundColor = [UIColor securifiRouterTileBlueColor];
     cell.title = NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users");
 
     SFIRouterSummary *routerSummary = self.routerSummary;
@@ -865,7 +866,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [cell markReuse];
 
     SFICardView *card = cell.cardView;
-    card.backgroundColor = [[SFIColors greenColor] color];
+    cell.cardView.backgroundColor = [UIColor securifiRouterTileBlueColor];
 
     // This is ugly but required unless we collapse SFIConnectedDevice and SFIBlockedDevice
     id obj = [self tryGetDevicesForTableRow:row];
@@ -895,7 +896,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
     [cell markReuse];
-    cell.cardView.backgroundColor = [[SFIColors redColor] color];
+    cell.cardView.backgroundColor = [UIColor securifiRouterTileYellowColor];
 
     const BOOL newVersionAvailable = self.newAlmondFirmwareVersionAvailable;
 
@@ -918,11 +919,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     }
 
     if (newVersionAvailable) {
-        // 18 June 2015 - sinclair - disabled temporarily so we can push out build to TestFlight; currently, remote firmware install is not supported in production cloud
-//        cell.editTarget = self;
-//        cell.editSelector = @selector(onEditRouterSoftwareCard:);
-        cell.editTarget = nil;
-        cell.editSelector = nil;
+        cell.editTarget = self;
+        cell.editSelector = @selector(onEditRouterSoftwareCard:);
     }
     else {
         cell.editTarget = nil;
@@ -942,7 +940,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     }
     [cell markReuse];
 
-    cell.cardView.backgroundColor = [[SFIColors redColor] color];
+    cell.cardView.backgroundColor = [UIColor securifiRouterTileRedColor];
 
     return cell;
 }
@@ -980,7 +978,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     cell.editSelector = @selector(onEditRouterRebootCard:);
 
     SFICardView *card = cell.cardView;
-    card.backgroundColor = [[SFIColors pinkColor] color];
+    card.backgroundColor = [UIColor securifiRouterTileRedColor];
 
     return cell;
 }
@@ -997,7 +995,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [cell markReuse];
 
     SFICardView *card = cell.cardView;
-    card.backgroundColor = [[SFIColors pinkColor] color];
+    card.backgroundColor = [UIColor securifiRouterTileRedColor];
 
     return cell;
 }

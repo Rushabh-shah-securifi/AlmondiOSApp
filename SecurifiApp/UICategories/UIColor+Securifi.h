@@ -10,4 +10,14 @@
 
 + (UIColor *)colorWithKelvin:(CGFloat)kelvin;
 
++ (UIColor *)securifiRouterTileSlateColor;
+
++ (UIColor *)securifiRouterTileGreenColor;
+
++ (UIColor *)securifiRouterTileBlueColor;
+
++ (UIColor *)securifiRouterTileYellowColor;
+
++ (UIColor *)securifiRouterTileRedColor;
+
 @end

@@ -3,6 +3,7 @@
 // Copyright (c) 2015 Securifi Ltd. All rights reserved.
 //
 
+#import <Colours/Colours.h>
 #import "UIColor+Securifi.h"
 
 
@@ -61,5 +62,26 @@ static CGFloat cgfmax(CGFloat a, CGFloat b) {
 
     return [UIColor colorWithRed:red / 255.0f green:green / 255.0f blue:blue / 255.0f alpha:1.0f];
 }
+
++ (UIColor *)securifiRouterTileSlateColor {
+    return [UIColor colorFromHexString:@"607d8b"];
+}
+
++ (UIColor *)securifiRouterTileGreenColor {
+    return [UIColor colorFromHexString:@"4caf50"];
+}
+
++ (UIColor *)securifiRouterTileBlueColor {
+    return [UIColor colorFromHexString:@"2196f3"];
+}
+
++ (UIColor *)securifiRouterTileYellowColor {
+    return [UIColor colorFromHexString:@"ff9800"];
+}
+
++ (UIColor *)securifiRouterTileRedColor {
+    return [UIColor colorFromHexString:@"f44336"];
+}
+
 
 @end
