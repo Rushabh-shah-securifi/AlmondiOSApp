@@ -26,7 +26,6 @@
 #import "SFIRouterVersionTableViewCell.h"
 #import "UIViewController+Securifi.h"
 #import "SFIAlmondLocalNetworkSettings.h"
-#import "RouterNetworkSettingsEditor.h"
 #import "SFICloudLinkViewController.h"
 #import "UIColor+Securifi.h"
 
@@ -56,7 +55,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     AlmondSupportsSendLogs_no,
 };
 
-@interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate, RouterNetworkSettingsEditorDelegate>
+@interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate>
 @property SFIAlmondPlus *currentAlmond;
 @property BOOL newAlmondFirmwareVersionAvailable;
 @property NSString *latestAlmondVersionAvailable;
@@ -335,21 +334,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 - (void)onEditNetworkSettings:(id)sender {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:self.almondMac];
-
-    if (!settings) {
-        settings = [SFIAlmondLocalNetworkSettings new];
-        settings.almondplusMAC = self.almondMac;
-    }
-
-    RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
-    editor.delegate = self;
-    editor.settings = settings;
-
-    UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
-
-    [self presentViewController:ctrl animated:YES completion:nil];
+    [self presentLocalNetworkSettingsEditor];
 }
 
 - (void)onEditWirelessSettingsCard:(id)sender {
@@ -866,7 +851,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [cell markReuse];
 
     SFICardView *card = cell.cardView;
-    cell.cardView.backgroundColor = [UIColor securifiRouterTileBlueColor];
+    card.backgroundColor = [UIColor securifiRouterTileBlueColor];
 
     // This is ugly but required unless we collapse SFIConnectedDevice and SFIBlockedDevice
     id obj = [self tryGetDevicesForTableRow:row];
@@ -1636,32 +1621,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             self.tableView.tableHeaderView = nil;
         }];
     });
-}
-
-#pragma mark - RouterNetworkSettingsEditorDelegate methods
-
-- (void)networkSettingsEditorDidLinkAlmond:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
-
-}
-
-- (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [toolkit setLocalNetworkSettings:newSettings];
-    [editor dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
-    [editor dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {
-    NSString *almondMac = editor.settings.almondplusMAC;
-
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [toolkit removeLocalNetworkSettingsForAlmond:almondMac];
-
-    [self.tableView reloadData];
-    [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

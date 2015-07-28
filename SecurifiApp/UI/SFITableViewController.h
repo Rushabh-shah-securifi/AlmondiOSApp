@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RouterNetworkSettingsEditor.h"
 
 @class MBProgressHUD;
 
@@ -15,10 +16,14 @@
 // It also places a Notification status button and manages its state.
 // A 'reveal' button is attached to the left corner for toggling the Reveal View controller.
 // A HUD is attached to the navigation controller, and subclasses should use it.
+//
 // The controller is configured with the standard tint color and attribute style, and subclasses may find them by
 // interrogating the navigation bar's button items and title attributes.
 // Subclasses must call markAlmondMac any time the almond being managed is changed.
-@interface SFITableViewController : UITableViewController
+//
+// The controller also knows how to present a Local Network Settings editor and manage the callbacks from it.
+// Subclasses may invoked this editor by calling presentLocalNetworkSettingsEditor.
+@interface SFITableViewController : UITableViewController <RouterNetworkSettingsEditorDelegate>
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 
@@ -48,5 +53,7 @@
 
 // Enabled by default; when NO, the Reveal button is disabled. Useful when the UI needs to be locked during updates.
 @property(nonatomic) BOOL enableDrawer;
+
+- (void)presentLocalNetworkSettingsEditor;
 
 @end
