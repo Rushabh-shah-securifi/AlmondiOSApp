@@ -519,6 +519,11 @@
     else if ([title isEqualToString:TAB_BAR_ROUTER]) {
         [[Analytics sharedInstance] markRouterScreen];
     }
+    
+  //md01
+    [[NSNotificationCenter defaultCenter]
+     postNotificationName:@"TAB_BAR_CHANGED"
+     object:self userInfo:@{@"title":title}];
 }
 
 @end

@@ -138,7 +138,7 @@ static UIImage *_image = nil;
 
 
 - (void)createClientCell:(SFIConnectedDevice*)connectedDevice{
-    lblMAC.text = connectedDevice.deviceMAC;
+    lblMAC.text = connectedDevice.name;
     if (connectedDevice.isActive) {
         lblStatus.text = @"CONNECTED";
     }else{

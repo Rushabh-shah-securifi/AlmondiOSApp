@@ -99,7 +99,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self initializeAlmondData];
+//    [self initializeAlmondData]; //TEST md01
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -155,12 +155,6 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
                selector:@selector(onWiFiClientsListResponseCallback:)
                    name:NOTIFICATION_WIFI_CLIENTS_LIST_RESPONSE
                  object:nil];//md01
-    
-    
-    [center addObserver:self
-               selector:@selector(onDynamicClientUpdate:)
-                   name:NOTIFICATION_DYNAMIC_CLIENT_UPDATE_REQUEST_NOTIFIER
-                 object:nil];
 }
 
 - (void)initializeAlmondData {
@@ -319,7 +313,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 //    [self onExpandCloseSection:self.tableView section:DEF_DEVICES_AND_USERS_SECTION];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
     SFIWiFiClientsListViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiClientsListViewController"];
-    viewController.connectedDevices = self.connectedDevices;
+    viewController.connectedDevices = [self.connectedDevices mutableCopy];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -690,7 +684,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
         cell.summaries = @[NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")];
     }
     
-    int totalCount = routerSummary.connectedDeviceCount + routerSummary.blockedMACCount;
+    NSInteger totalCount = self.connectedDevices.count;//routerSummary.connectedDeviceCount + routerSummary.blockedMACCount;
     if (routerSummary && totalCount > 0) {
         BOOL editing = [self isSectionExpanded:DEF_DEVICES_AND_USERS_SECTION];
         cell.editTarget = self;
@@ -934,39 +928,6 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 }
 
 #pragma mark - Cloud command senders and handlers
-- (void)onDynamicClientUpdate:(id)sender {
-    
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data == nil) {
-        return;
-    }
-    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    
-    NSLog(@"%@",mainDict);
-    if ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"ClientUpdate"]) {
-        NSArray * updatedClients = [mainDict valueForKey:@"Clients"];
-        for (NSDictionary *dict in updatedClients) {
-            for (SFIConnectedDevice * device in self.connectedDevices) {
-                if ([device.deviceID isEqualToString:[dict valueForKey:@"ID"]]) {
-                    device.deviceID = [dict valueForKey:@"ID"];
-                    device.name = [dict valueForKey:@"Name"];
-                    device.deviceMAC = [dict valueForKey:@"MAC"];
-                    device.deviceIP = [dict valueForKey:@"LastKnownIP"];
-                    device.deviceConnection = [dict valueForKey:@"Connection"];
-                    device.name = [dict valueForKey:@"Name"];
-                    device.deviceLastActiveTime = [dict valueForKey:@"LastActiveTime"];
-                    device.deviceType = [dict valueForKey:@"Type"];
-                    device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
-                    device.isActive = [[dict valueForKey:@"Active"] boolValue];
-                    break;
-                }
-            }
-        }
-        [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
-    }
-}
-
 - (void)onWiFiClientsListResponseCallback:(id)sender {
     
     NSNotification *notifier = (NSNotification *) sender;

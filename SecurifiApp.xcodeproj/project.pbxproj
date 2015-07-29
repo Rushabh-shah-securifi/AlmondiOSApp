@@ -210,7 +210,6 @@
 		8431A36A1B14656300FBF277 /* AvenirLTStd-Oblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8431A35E1B14656300FBF277 /* AvenirLTStd-Oblique.otf */; };
 		8431A36B1B14656300FBF277 /* AvenirLTStd-Roman.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8431A35F1B14656300FBF277 /* AvenirLTStd-Roman.otf */; };
 		8462E9021B28579000E915F3 /* SFIDimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8462E9011B28579000E915F3 /* SFIDimmerButton.m */; };
-		8464B7741B51183E00053B15 /* SFIWiFiDeviceDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8464B7731B51183E00053B15 /* SFIWiFiDeviceDetailViewController.m */; };
 		8475D3851B3167D0007C89BC /* SFIDeviceIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 849594C71B26F1C900FAFF6D /* SFIDeviceIndex.m */; };
 		8475D3871B3167F4007C89BC /* MDJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B431FF1B25A00800A34E92 /* MDJSON.m */; };
 		8475D3881B3167F4007C89BC /* SFIAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B432031B25A00800A34E92 /* SFIAddSceneViewController.m */; };
@@ -440,8 +439,6 @@
 		8431A35F1B14656300FBF277 /* AvenirLTStd-Roman.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Roman.otf"; sourceTree = "<group>"; };
 		8462E9001B28579000E915F3 /* SFIDimmerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIDimmerButton.h; sourceTree = "<group>"; };
 		8462E9011B28579000E915F3 /* SFIDimmerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIDimmerButton.m; sourceTree = "<group>"; };
-		8464B7721B51183E00053B15 /* SFIWiFiDeviceDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWiFiDeviceDetailViewController.h; sourceTree = "<group>"; };
-		8464B7731B51183E00053B15 /* SFIWiFiDeviceDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIWiFiDeviceDetailViewController.m; sourceTree = "<group>"; };
 		847885891B5D3B0E000E1A6F /* NPColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NPColorPickerView.h; sourceTree = "<group>"; };
 		8478858A1B5D3B0E000E1A6F /* NPColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NPColorPickerView.m; sourceTree = "<group>"; };
 		8478858C1B5D3BC5000E1A6F /* NPConicGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NPConicGradient.h; sourceTree = "<group>"; };
@@ -931,8 +928,6 @@
 			isa = PBXGroup;
 			children = (
 				84FD46341B5FA09500188F0B /* SKSTableView */,
-				8464B7721B51183E00053B15 /* SFIWiFiDeviceDetailViewController.h */,
-				8464B7731B51183E00053B15 /* SFIWiFiDeviceDetailViewController.m */,
 				848C4C401B53D36400C4DE41 /* SFIWiFiDeviceProprtyEditViewController.h */,
 				848C4C411B53D36400C4DE41 /* SFIWiFiDeviceProprtyEditViewController.m */,
 				8496BC0D1B56664700574EFF /* SFIWiFiDeviceTypeSelectionCell.h */,
@@ -1354,7 +1349,6 @@
 				1C7E7D871A41A0990026F0BA /* SFINotificationsViewController.m in Sources */,
 				1C7E7DC51A41A0990026F0BA /* SFIHighlightedButton.m in Sources */,
 				1C7E7D831A41A0990026F0BA /* SFILoginViewController.m in Sources */,
-				8464B7741B51183E00053B15 /* SFIWiFiDeviceDetailViewController.m in Sources */,
 				1C7E7DC71A41A0990026F0BA /* SFIMainViewController.m in Sources */,
 				8478858B1B5D3B0E000E1A6F /* NPColorPickerView.m in Sources */,
 				1C7E7D791A41A0990026F0BA /* SFIDevicesList.m in Sources */,
@@ -1664,8 +1658,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1683,7 +1677,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "f251a31e-3f4d-4228-8101-ffa25010b5ff";
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1731,7 +1725,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Almond-AppIcon";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-launch_image";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1748,7 +1742,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f251a31e-3f4d-4228-8101-ffa25010b5ff";
+				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iostoolkit\"/**";
 				WRAPPER_EXTENSION = app;
 			};

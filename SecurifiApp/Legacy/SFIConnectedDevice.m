@@ -31,7 +31,7 @@
     if ([[self.deviceType lowercaseString] isEqualToString:@"tablet"]) {
         return @"icon_iphone";
     }
-    if ([[self.deviceType lowercaseString] isEqualToString:@"android stick"]) {
+    if ([[self.deviceType lowercaseString] isEqualToString:@"android_stick"]) {
         return @"icon_android_stick";
     }
     if ([[self.deviceType lowercaseString] isEqualToString:@"chromecast"]) {
@@ -67,4 +67,36 @@
     }
     return @"";
 }
+
+- (NSString*)getNotificationTypeByName:(NSString*)name{
+    if ([[name lowercaseString] isEqualToString:@"always"]) {
+        return @"1";
+    }
+    if ([[name lowercaseString] isEqualToString:@"never"]) {
+        return @"0";
+    }
+    if ([[name lowercaseString] isEqualToString:@"when i'm away"]) {
+        return @"3";
+    }
+    return @"0";
+}
+
+- (NSString*)getNotificationNameByType:(NSString*)type{
+    switch ([type integerValue]) {
+        case 0:
+            return @"Never";
+            break;
+        case 1:
+            return @"Always";
+            break;
+        case 3:
+            return @"When I'm away";
+            break;
+            
+        default:
+            break;
+    }
+    return @"";
+}
+
 @end

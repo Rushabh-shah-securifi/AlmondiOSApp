@@ -13,10 +13,13 @@
 #import "MDJSON.h"
 #import "SKSTableView.h"
 #import "SKSTableViewCell.h"
+#import "KeyChainWrapper.h"
 
 #define AVENIR_HEAVY @"Avenir-Heavy"
 #define AVENIR_ROMAN @"Avenir-Roman"
 #define AVENIR_LIGHT @"Avenir-Light"
+#define SEC_SERVICE_NAME    @"securifiy.login_service"
+#define SEC_EMAIL           @"com.securifi.email"
 
 @interface SFIWiFiClientsListViewController ()<SFIWiFiDeviceProprtyEditViewDelegate,SKSTableViewDelegate>{
     NSInteger randomMobileInternalIndex;
@@ -24,6 +27,8 @@
     SFIConnectedDevice * currentDevice;
     NSIndexPath * currentIndexPath;
     NSArray * propertyNames;
+    NSString *userID;
+    NSMutableArray * clientsPreferences;
 }
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -35,14 +40,26 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    userID = [KeyChainWrapper retrieveEntryForUser:SEC_EMAIL forService:SEC_SERVICE_NAME];
+    //    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"iconNotification"] style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonTap:)];
+    //    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     // Do any additional setup after loading the view.
     currentIndexPath = nil;
     randomMobileInternalIndex = arc4random() % 10000;
     tblDevices.SKSTableViewDelegate = self;
     tblDevices.shouldExpandOnlyOneCell = YES;
-    propertyNames = @[@"Name",@"Type",@"MAC Address",@"Last Known IP",@"Connection",@"Use as Presence Sensor",@"Remove"];
+    propertyNames = @[@"Name",@"Type",@"MAC Address",@"Last Known IP",@"Connection",@"Use as Presence Sensor",@"Notify me",@"Remove"];
     [self initializeNotifications];
+    [self getClientsPreferences];
 }
+//-(IBAction)rightButtonTap:(id)sender{
+//
+//            if (((SKSTableViewCell*)[tblDevices cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]]).expanded) {
+//                [tblDevices collapseCurrentlyExpandedIndexPaths];
+//            }
+//                [self.connectedDevices removeObjectAtIndex:3];
+//            [tblDevices deleteSections:[NSIndexSet indexSetWithIndex:3]  withRowAnimation:UITableViewRowAnimationNone];
+//}
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -51,12 +68,47 @@
 
 - (void)initializeNotifications{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    
+    /*
+     1551- Wifi Client Remove All
+     */
     [center addObserver:self
                selector:@selector(gotCommandResponse:)
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
                  object:nil];
+    [center addObserver:self
+               selector:@selector(onDynamicClientAdd:)
+                   name:NOTIFICATION_DYNAMIC_CLIENT_ADD_REQUEST_NOTIFIER
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onDynamicClientUpdate:)
+                   name:NOTIFICATION_DYNAMIC_CLIENT_UPDATE_REQUEST_NOTIFIER
+                 object:nil];
     
+    [center addObserver:self
+               selector:@selector(onDynamicClientUpdate:)
+                   name:NOTIFICATION_DYNAMIC_CLIENT_JOIN_REQUEST_NOTIFIER
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onDynamicClientUpdate:)
+                   name:NOTIFICATION_DYNAMIC_CLIENT_LEFT_REQUEST_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onDynamicClientRemove:)
+                   name:NOTIFICATION_DYNAMIC_CLIENT_REMOVE_REQUEST_NOTIFIER
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onGetClientsPreferences:)
+                   name:NOTIFICATION_WIFI_CLIENT_GET_PREFERENCE_REQUEST_NOTIFIER
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onDynamicClientPreferenceUpdate:)
+                   name:NOTIFICATION_WIFI_CLIENT_PREFERENCE_DYNAMIC_UPDATE_NOTIFIER
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onTabBarDidChange:)
+                   name:@"TAB_BAR_CHANGED"
+                 object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -81,12 +133,15 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;// [propertyNames count];
+    return 1;
 }
 
 - (NSInteger)tableView:(SKSTableView *)tableView numberOfSubRowsAtIndexPath:(NSIndexPath *)indexPath
 {
-    return propertyNames.count;//[self.contents[indexPath.section][indexPath.row] count] - 1;
+    if (((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence) {
+        return propertyNames.count;//will show notify me row
+    }
+    return propertyNames.count-1;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -124,6 +179,10 @@
     float removeRowCellHeight = 90.0f;
     static NSString *MyIdentifier = @"deviceProperty";
     SFIConnectedDevice * connectedDevice = self.connectedDevices[indexPath.section];
+    NSInteger removeRowIndex = propertyNames.count-1;
+    if (!connectedDevice.deviceUseAsPresence) {
+        removeRowIndex = propertyNames.count-2;
+    }
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
     
@@ -140,7 +199,7 @@
     UIView * bgView = [[UIView alloc] init];
     UIFont *font = [UIFont fontWithName:AVENIR_ROMAN size:17];
     
-    if (subRowIndex!=6) {
+    if (subRowIndex!=removeRowIndex) {
         bgView.frame = CGRectMake(0, 0, tblDevices.frame.size.width, propertyRowCellHeight);
     }else{
         bgView.frame = CGRectMake(0, 0, tblDevices.frame.size.width, removeRowCellHeight-10);
@@ -149,7 +208,7 @@
     bgView.tag = 66;
     [cell addSubview:bgView];
     
-    if (subRowIndex!=6) {
+    if (subRowIndex!=removeRowIndex) {
         bgView.frame = CGRectMake(0, 0, tblDevices.frame.size.width, propertyRowCellHeight);
         
         
@@ -255,17 +314,28 @@
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
-        case 6://Remove button
+        case 6://Notify me
         {
-            UIButton * btnRemove = [[UIButton alloc] init];
-            btnRemove.frame = CGRectMake(tblDevices.frame.size.width / 2 - 70, 23, 140, 44);
-            btnRemove.backgroundColor = [UIColor whiteColor];
-            [btnRemove setTitle:NSLocalizedString(@"wifi.button.deleteClient", @"Remove") forState:UIControlStateNormal];
-            [btnRemove setTitleColor:[UIColor colorWithRed:74/255.0f green:175/255.0f blue:79/255.0f alpha:1] forState:UIControlStateNormal];
-            [btnRemove.titleLabel setFont:[UIFont fontWithName:AVENIR_ROMAN size:17]];
-            [btnRemove addTarget:self action:@selector(btnRemoveTap:) forControlEvents:UIControlEventTouchUpInside];
-            [cell addSubview:btnRemove];
-            cell.accessoryType = UITableViewCellAccessoryNone;
+            if (!connectedDevice.deviceUseAsPresence) {
+                cell = [self createRemoveButtonCell:cell];
+            }else{
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 220, 0, 180, propertyRowCellHeight)];
+                label.backgroundColor = [UIColor clearColor];
+                label.textColor = [UIColor whiteColor];
+                label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
+                label.text = [connectedDevice getNotificationNameByType:[self getNotificationTypeForDevice:connectedDevice.deviceID]];
+                label.numberOfLines = 1;
+                label.textAlignment = NSTextAlignmentRight;
+                label.tag = 66;
+                [cell addSubview:label];
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
+            break;
+        }
+            
+        case 7://Remove button
+        {
+            cell = [self createRemoveButtonCell:cell];
             break;
         }
         default:
@@ -277,9 +347,27 @@
     return cell;
 }
 
+- (UITableViewCell*)createRemoveButtonCell:(UITableViewCell*)cell{
+    UIButton * btnRemove = [[UIButton alloc] init];
+    btnRemove.frame = CGRectMake(tblDevices.frame.size.width / 2 - 70, 23, 140, 44);
+    btnRemove.backgroundColor = [UIColor whiteColor];
+    [btnRemove setTitle:NSLocalizedString(@"wifi.button.deleteClient", @"Remove") forState:UIControlStateNormal];
+    [btnRemove setTitleColor:[UIColor colorWithRed:74/255.0f green:175/255.0f blue:79/255.0f alpha:1] forState:UIControlStateNormal];
+    [btnRemove.titleLabel setFont:[UIFont fontWithName:AVENIR_ROMAN size:17]];
+    [btnRemove addTarget:self action:@selector(btnRemoveTap:) forControlEvents:UIControlEventTouchUpInside];
+    [cell addSubview:btnRemove];
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    return cell;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForSubRowAtIndexPath:(NSIndexPath *)indexPath{
+    SFIConnectedDevice * connectedDevice = self.connectedDevices[indexPath.section];
+    NSInteger removeRowIndex = propertyNames.count;
+    if (!connectedDevice.deviceUseAsPresence) {
+        removeRowIndex = propertyNames.count-1;
+    }
     
-    if (indexPath.subRow==7) {
+    if (indexPath.subRow==removeRowIndex) {
         return 90.0f;
     }
     return 44.0f;
@@ -287,7 +375,7 @@
 
 - (BOOL)tableView:(SKSTableView *)tableView shouldExpandSubRowsOfCellAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath == currentIndexPath) {
-         return YES;
+        return YES;
     }
     return NO;
 }
@@ -340,6 +428,18 @@
             viewController.connectedDevice = self.connectedDevices[indexPath.section];
             [self.navigationController pushViewController:viewController animated:YES];
             break;
+        }
+        case 6://Notify me
+        {
+            if (((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence) {
+                SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
+                viewController.userID = userID;
+                viewController.selectedNotificationType = [self getNotificationTypeForDevice:((SFIConnectedDevice*) self.connectedDevices[indexPath.section]).deviceID];
+                viewController.delegate = self;
+                viewController.editFieldIndex = 6;
+                viewController.connectedDevice = self.connectedDevices[indexPath.section];
+                [self.navigationController pushViewController:viewController animated:YES];
+            }
             break;
         }
         default:
@@ -409,13 +509,14 @@
 }
 
 #pragma mark
+
+#pragma mark - Cloud command senders and handlers
 - (void)gotCommandResponse:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
     NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
     
-    NSLog(@"%@",mainDict);
     if (randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
         return;
     }
@@ -437,6 +538,207 @@
     }
 }
 
+- (void)onDynamicClientUpdate:(id)sender {
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    
+    if (([[mainDict valueForKey:@"CommandType"] isEqualToString:@"ClientUpdate"] || [[mainDict valueForKey:@"CommandType"] isEqualToString:@"ClientJoined"] || [[mainDict valueForKey:@"CommandType"] isEqualToString:@"ClientLeft"]) && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
+        NSArray * updatedClients = [mainDict valueForKey:@"Clients"];
+        for (NSDictionary *dict in updatedClients) {
+            int index = 0;
+            for (SFIConnectedDevice * device in self.connectedDevices) {
+                
+                if ([device.deviceID isEqualToString:[dict valueForKey:@"ID"]]) {
+                    device.deviceID = [dict valueForKey:@"ID"];
+                    device.name = [dict valueForKey:@"Name"];
+                    device.deviceMAC = [dict valueForKey:@"MAC"];
+                    device.deviceIP = [dict valueForKey:@"LastKnownIP"];
+                    device.deviceConnection = [dict valueForKey:@"Connection"];
+                    device.name = [dict valueForKey:@"Name"];
+                    device.deviceLastActiveTime = [dict valueForKey:@"LastActiveTime"];
+                    device.deviceType = [dict valueForKey:@"Type"];
+                    device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
+                    device.isActive = [[dict valueForKey:@"Active"] boolValue];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^() {
+                        [tblDevices reloadSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
+                    });
+                    break;
+                }
+                index++;
+            }
+        }
+    }
+}
+
+- (void)onDynamicClientAdd:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    if ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"AddClient"] && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
+        NSArray * dArray = [mainDict valueForKey:@"Clients"];
+        for (NSDictionary * dict in dArray) {
+            SFIConnectedDevice * device = [SFIConnectedDevice new];
+            device.deviceID = [dict valueForKey:@"ID"];
+            device.name = [dict valueForKey:@"Name"];
+            device.deviceMAC = [dict valueForKey:@"MAC"];
+            device.deviceIP = [dict valueForKey:@"LastKnownIP"];
+            device.deviceConnection = [dict valueForKey:@"Connection"];
+            device.name = [dict valueForKey:@"Name"];
+            device.deviceLastActiveTime = [dict valueForKey:@"LastActiveTime"];
+            device.deviceType = [dict valueForKey:@"Type"];
+            device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
+            device.isActive = [[dict valueForKey:@"Active"] boolValue];
+            [self.connectedDevices addObject:device];
+            [tblDevices insertSections:[NSIndexSet indexSetWithIndex:self.connectedDevices.count-1] withRowAnimation:UITableViewRowAnimationNone];
+        }
+        
+    }
+}
+
+- (void)onDynamicClientRemove:(id)sender {
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    
+    if ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"RemoveClient"] && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
+        NSArray * updatedClients = [mainDict valueForKey:@"Clients"];
+        for (NSDictionary *dict in updatedClients) {
+            int index = 0;
+            for (SFIConnectedDevice * device in self.connectedDevices) {
+                if ([device.deviceID isEqualToString:[dict valueForKey:@"ID"]]) {
+                    
+                    if (((SKSTableViewCell*)[tblDevices cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]]).expanded) {
+                        [tblDevices collapseCurrentlyExpandedIndexPaths];
+                    }
+                    [self.connectedDevices removeObject:device];
+                    [tblDevices deleteSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
+                    break;
+                }
+                index++;
+            }
+        }
+    }
+}
+
+- (void)onGetClientsPreferences:(id)sender {
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    
+    if ([[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
+        clientsPreferences = [[mainDict valueForKey:@"ClientPreferences"] mutableCopy];
+    }
+}
+
+- (void)onDynamicClientPreferenceUpdate:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    
+    if ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"UpdatePreference"] && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC] && [[mainDict valueForKey:@"UserID"] isEqualToString:userID]) {
+        
+        [self updatePreferenceInfo:@{@"ClientID":[mainDict valueForKey:@"ClientID"],@"NotificationType":[mainDict valueForKey:@"NotificationType"]}];
+    }
+}
+
+- (void)updatePreferenceInfo:(NSDictionary *)preferenceInfo{
+    
+    BOOL found = NO;
+    for (int i=0; i<clientsPreferences.count; i++) {
+        NSDictionary * dict = clientsPreferences[i];
+        if ([[dict valueForKey:@"ClientID"] intValue] ==[[preferenceInfo valueForKey:@"ClientID"] intValue]) {
+            [clientsPreferences replaceObjectAtIndex:i withObject:preferenceInfo];
+            found = YES;
+            break;
+        }
+    }
+    if (!found) {
+        [clientsPreferences addObject:preferenceInfo];
+    }
+    int index = 0;
+    
+    for (SFIConnectedDevice * device in self.connectedDevices) {
+        if ([device.deviceID intValue]==[[preferenceInfo valueForKey:@"ClientID"] intValue]) {
+            dispatch_async(dispatch_get_main_queue(), ^() {
+                [tblDevices reloadSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
+            });
+            
+            break;
+        }
+        index++;
+    }
+}
+
+#pragma mark
+- (void)getClientsPreferences{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    
+    NSMutableDictionary *commandInfo = [NSMutableDictionary new];
+    
+    [commandInfo setValue:@"GetClientPreferences" forKey:@"CommandType"];
+    [commandInfo setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
+    [commandInfo setValue:userID forKey:@"UserID"];
+    
+    
+    
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    cloudCommand.commandType = CommandType_WIFI_CLIENT_GET_PREFERENCE_REQUEST;
+    cloudCommand.command = [commandInfo JSONString];
+    
+    [self asyncSendCommand:cloudCommand];
+    
+}
+
+- (NSString*)getNotificationTypeForDevice:(NSString*)clientID{
+    for (NSDictionary * dict in clientsPreferences) {
+        if ([[dict valueForKey:@"ClientID"] intValue]==[clientID intValue]) {
+            return [dict valueForKey:@"NotificationType"];
+        }
+    }
+    
+    return @"";
+}
+
+- (void)onTabBarDidChange:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (![[data valueForKey:@"title"] isEqualToString:@"Router"]) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    
+}
+
 #pragma mark - HUD mgt
 
 - (void)showHudWithTimeout {
@@ -450,6 +752,8 @@
 }
 #pragma mark Edit View delegates
 - (void)updateDeviceInfo:(SFIConnectedDevice *)deviceInfo{
-    [tblDevices refreshDataWithScrollingToIndexPath:currentIndexPath];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [tblDevices refreshDataWithScrollingToIndexPath:currentIndexPath];
+    });
 }
 @end

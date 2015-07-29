@@ -21,5 +21,6 @@
 @property (nonatomic, assign) BOOL isActive;
 
 -(NSString*)iconName;
-
+- (NSString*)getNotificationTypeByName:(NSString*)name;
+- (NSString*)getNotificationNameByType:(NSString*)type;
 @end

@@ -31,6 +31,7 @@
     
     NSMutableArray * deviceTypes;
     NSMutableArray * connectionTypes;
+    NSMutableArray * notifyTypes;
     NSInteger randomMobileInternalIndex;
     NSString * selectedDeviceType;
     NSString * selectedConnectionType;
@@ -51,8 +52,9 @@
     
     deviceTypes = [NSMutableArray new];
     connectionTypes = [NSMutableArray new];
+    notifyTypes = [NSMutableArray new];
     
-    NSArray *tnames = @[@"Tablet",@"PC",@"Laptop",@"Smartphone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"Printer",@"Router_switch",@"Nest",@"Hub",@"Chromecast",@"appleTV",@"Android Stick",@"Other"];
+    NSArray *tnames = @[@"Tablet",@"PC",@"Laptop",@"Smartphone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"Printer",@"Router_switch",@"Nest",@"Hub",@"Chromecast",@"appleTV",@"android_stick",@"Other"];
     
     for (NSString * name in tnames) {
         NSMutableDictionary * dict = [NSMutableDictionary new];
@@ -74,9 +76,22 @@
             [dict setValue:@1 forKey:@"selected"];
         }
         
+        
         [connectionTypes addObject:dict];
     }
     
+    NSArray *nnames = @[@"Always",@"When I'm away",@"Never"];
+    //    1=Always, 3= when I'm Away, 0=Never
+    
+    for (NSString * name in nnames) {
+        NSMutableDictionary * dict = [NSMutableDictionary new];
+        [dict setValue:name forKey:@"name"];
+        [dict setValue:@0 forKey:@"selected"];
+        if ([[[self.connectedDevice getNotificationNameByType:self.selectedNotificationType] lowercaseString] isEqualToString:[name lowercaseString]]) {
+            [dict setValue:@1 forKey:@"selected"];
+        }
+        [notifyTypes addObject:dict];
+    }
     
     lblDeviceName.text = self.connectedDevice.name;
     if (self.connectedDevice.isActive) {
@@ -155,6 +170,19 @@
             currentView = viewUsePresence;
             break;
         }
+        case 6://notify me
+        {
+            viewTypeSelection.hidden = NO;
+            CGRect fr = viewTypeSelection.frame;
+            fr.origin.x = viewHeader.frame.origin.x;
+            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
+            viewTypeSelection.frame = fr;
+            [tblTypes reloadData];
+            viewHeader.backgroundColor = [UIColor colorWithRed:1.0 green:160/255.0f blue:0 alpha:1];
+            viewTypeSelection.backgroundColor = [UIColor colorWithRed:1.0 green:160/255.0f blue:0 alpha:1];
+            currentView = viewTypeSelection;
+            break;
+        }
         default:
             break;
     }
@@ -184,6 +212,11 @@
                selector:@selector(onWiFiClientsUpdateResponseCallback:)
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
                  object:nil];//md01
+    
+    [center addObserver:self
+               selector:@selector(onClientPreferenceUpdateResponse:)
+                   name:NOTIFICATION_WIFI_CLIENT_UPDATE_PREFERENCE_REQUEST_NOTIFIER
+                 object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -209,21 +242,33 @@
     if ([txtName isFirstResponder]) {
         [txtName resignFirstResponder];
     }
+    
+    
+    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     randomMobileInternalIndex = arc4random() % 10000;
     NSMutableDictionary * updateClientInfo = [NSMutableDictionary new];
-    [updateClientInfo setValue:@"UpdateClient" forKey:@"CommandType"];
+    
+    if (self.editFieldIndex==6) {
+        [updateClientInfo setValue:@"UpdatePreference" forKey:@"CommandType"];
+        [updateClientInfo setValue:self.connectedDevice.deviceID forKey:@"ClientID"];
+        [updateClientInfo setValue:self.selectedNotificationType forKey:@"NotificationType"];
+        [updateClientInfo setValue:self.userID forKey:@"UserID"];
+        cloudCommand.commandType = CommandType_WIFI_CLIENT_UPDATE_PREFERENCE_REQUEST;
+        
+    }else{
+        [updateClientInfo setValue:@"UpdateClient" forKey:@"CommandType"];
+        NSArray * clients = @[@{@"ID":self.connectedDevice.deviceID,@"Name":txtName.text,@"Connection":selectedConnectionType,@"MAC":self.connectedDevice.deviceMAC,@"Type":[selectedDeviceType lowercaseString],@"LastKnownIP":self.connectedDevice.deviceIP,@"Active":self.connectedDevice.isActive?@"true":@"false",@"UseAsPresence":btnUsePresence.selected?@"true":@"false"}];
+        
+        [updateClientInfo setValue:clients forKey:@"Clients"];
+        cloudCommand.commandType = CommandType_UPDATE_REQUEST;
+    }
     [updateClientInfo setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
     [updateClientInfo setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
     
     
-    NSArray * clients = @[@{@"ID":self.connectedDevice.deviceID,@"Name":txtName.text,@"Connection":selectedConnectionType,@"MAC":self.connectedDevice.deviceMAC,@"Type":[selectedDeviceType lowercaseString],@"LastKnownIP":self.connectedDevice.deviceIP,@"Active":self.connectedDevice.isActive?@"true":@"false",@"UseAsPresence":btnUsePresence.selected?@"true":@"false"}];
-    
-    [updateClientInfo setValue:clients forKey:@"Clients"];
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_UPDATE_REQUEST;
     cloudCommand.command = [updateClientInfo JSONString];
     
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
@@ -253,10 +298,21 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (self.editFieldIndex==4) {
-        return connectionTypes.count;
+    switch (self.editFieldIndex) {
+        case 1:
+            return deviceTypes.count;
+            break;
+        case 4:
+            return connectionTypes.count;
+            break;
+        case 6:
+            return notifyTypes.count;
+            break;
+            
+        default:
+            break;
     }
-    return deviceTypes.count;
+    return 0;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -265,17 +321,28 @@
     SFIWiFiDeviceTypeSelectionCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SFIWiFiDeviceTypeSelectionCell"];
     
     cell.delegate = self;
-    if (self.editFieldIndex==4) {
-        [cell createPropertyCell:connectionTypes[indexPath.row]];
-        cell.textLabel.text = [connectionTypes[indexPath.row] valueForKey:@"name"];
-    }else{
-        [cell createPropertyCell:deviceTypes[indexPath.row]];
-        cell.textLabel.text = [deviceTypes[indexPath.row] valueForKey:@"name"];
+    switch (self.editFieldIndex) {
+        case 1:
+            [cell createPropertyCell:deviceTypes[indexPath.row]];
+            cell.textLabel.text = [deviceTypes[indexPath.row] valueForKey:@"name"];
+            break;
+        case 4:
+            [cell createPropertyCell:connectionTypes[indexPath.row]];
+            cell.textLabel.text = [connectionTypes[indexPath.row] valueForKey:@"name"];            break;
+        case 6:
+            [cell createPropertyCell:notifyTypes[indexPath.row]];
+            cell.textLabel.text = [notifyTypes[indexPath.row] valueForKey:@"name"];
+            break;
+            
+        default:
+            break;
     }
     
+    cell.backgroundColor = [UIColor clearColor];
     cell.textLabel.font = [UIFont fontWithName:@"Avenir-Roman" size:17];
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.backgroundColor = [UIColor clearColor];
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
@@ -302,23 +369,38 @@
 
 #pragma mark tableview cell delegates
 - (IBAction)btnSelectTypeTapped:(SFIWiFiDeviceTypeSelectionCell *)cell Info:(NSDictionary *)cellInfo {
-    if (self.editFieldIndex==4) {
-        for (NSMutableDictionary * dict in connectionTypes) {
-            [dict setValue:@0 forKey:@"selected"];
-        }
-        [cellInfo setValue:@1 forKey:@"selected"];
-        [tblTypes reloadData];
-        selectedConnectionType = [cellInfo valueForKey:@"name"];
-        
-    }else{
-        for (NSMutableDictionary * dict in deviceTypes) {
-            [dict setValue:@0 forKey:@"selected"];
-        }
-        [cellInfo setValue:@1 forKey:@"selected"];
-        [tblTypes reloadData];
-        selectedDeviceType = [cellInfo valueForKey:@"name"];
-        
+    switch (self.editFieldIndex) {
+        case 1:
+            for (NSMutableDictionary * dict in deviceTypes) {
+                [dict setValue:@0 forKey:@"selected"];
+            }
+            [cellInfo setValue:@1 forKey:@"selected"];
+            [tblTypes reloadData];
+            selectedDeviceType = [cellInfo valueForKey:@"name"];
+            
+            break;
+        case 4:
+            for (NSMutableDictionary * dict in connectionTypes) {
+                [dict setValue:@0 forKey:@"selected"];
+            }
+            [cellInfo setValue:@1 forKey:@"selected"];
+            [tblTypes reloadData];
+            selectedConnectionType = [cellInfo valueForKey:@"name"];
+            break;
+        case 6:
+            for (NSMutableDictionary * dict in notifyTypes) {
+                [dict setValue:@0 forKey:@"selected"];
+            }
+            [cellInfo setValue:@1 forKey:@"selected"];
+            [tblTypes reloadData];
+            self.selectedNotificationType = [self.connectedDevice getNotificationTypeByName:[cellInfo valueForKey:@"name"]];
+            break;
+            
+        default:
+            break;
     }
+    
+    
 }
 
 #pragma mark - HUD mgt
@@ -355,6 +437,36 @@
         self.connectedDevice.name = txtName.text;
         self.connectedDevice.deviceConnection = selectedConnectionType;
         [self.delegate updateDeviceInfo:self.connectedDevice];
+
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            if (!self) {
+                return;
+            }
+            
+            
+            [self.HUD hide:YES];
+            [self.navigationController popViewControllerAnimated:YES];
+        });
+        
+        return;
+    }
+}
+
+- (void)onClientPreferenceUpdateResponse:(id)sender {
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    
+    NSLog(@"%@",mainDict);
+    
+    if ([[mainDict valueForKey:@"MobileInternalIndex"] integerValue]!=randomMobileInternalIndex) {
+        return;
+    }
+    if ([[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
         dispatch_async(dispatch_get_main_queue(), ^() {
             if (!self) {
                 return;

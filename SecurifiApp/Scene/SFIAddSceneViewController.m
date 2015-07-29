@@ -749,7 +749,7 @@
             currentHeight+=290;
             break;
         case SFIDeviceType_HueLamp_48:
-            currentHeight+=648;
+            currentHeight+=328;
             break;
         default:
             for (SFIDeviceIndex *indexValue in deviceIndexes) {

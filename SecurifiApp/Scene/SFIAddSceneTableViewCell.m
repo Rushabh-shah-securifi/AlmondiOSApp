@@ -166,9 +166,6 @@
         [self layoutThermostat_7];
         return;
     }
-    //    if (self.device.deviceType == SFIDeviceType_HueLamp_48) {
-    //        int a=1;
-    //    }
     
     
     float curr_y = self.lblName.frame.size.height + self.lblName.frame.origin.y;
@@ -276,18 +273,18 @@
             }
             case SFIDevicePropertyType_COLOR_HUE:
             {
-                
+                /*
                 [hueColorPickerView setBackgroundColor: [UIColor whiteColor]];
                 hueColorPickerView.hidden = NO;
                 const float hue = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
                 
                 int picker_height = 320;
                 CGRect picker_frame = CGRectMake((CGRectGetWidth(self.bounds)-picker_height)/2,curr_y,picker_height , picker_height);
-
+                
                 hueColorPickerView.tag = [[dict valueForKey:@"indexID"] integerValue];
                 hueColorPickerView.frame = picker_frame;
                 hueColorPickerView.delegate = self;
-
+                
                 curr_y+=320;
                 
                 NSArray *existingValues = [self.cellInfo valueForKey:@"existingValues"];
@@ -296,45 +293,44 @@
                     for (NSDictionary *dict in existingValues) {
                         if ([[dict valueForKey:@"Index"] integerValue] == huePicker.tag) {
                             const float sensorValue = [[dict valueForKey:@"Value"] floatValue];
-//                            [hueColorPickerView setConvertedValue:sensorValue];
+                            //                            [hueColorPickerView setConvertedValue:sensorValue];
                         }
                     }
                 }
                 break;
-                /*
-                huePicker.hidden = NO;
-                const float hue = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
-                
-                int picker_height = 100;
-                CGRect picker_frame = CGRectMake(0,curr_y, CGRectGetWidth(self.bounds), picker_height);
-                
-                // Display hue picker
-                //                {
-                //                    SFIHuePickerView *huePicker = [[SFIHuePickerView alloc] initWithFrame:picker_frame];
-                huePicker.tag = [[dict valueForKey:@"indexID"] integerValue];
-                huePicker.frame = picker_frame;
-                huePicker.convertedValue = hue;
-                huePicker.propertyType = SFIDevicePropertyType_COLOR_HUE;
-                huePicker.delegate = self;
-                //                    [self addSubview:huePicker];
-                //                    [self markYOffsetUsingRect:picker_frame addAdditional:0];
-                //
-                //                    [self placeNameLabel:NSLocalizedString(@"sensors.label.Color", @"Color") valueLabel:[[huePicker.color hexString] uppercaseString]];
-                //                }
-                curr_y+=100;
-                
-                NSArray *existingValues = [self.cellInfo valueForKey:@"existingValues"];
-                if (existingValues.count>0) {
-                    
-                    for (NSDictionary *dict in existingValues) {
-                        if ([[dict valueForKey:@"Index"] integerValue] == huePicker.tag) {
-                            const float sensorValue = [[dict valueForKey:@"Value"] floatValue];
-                            [huePicker setConvertedValue:sensorValue];
-                        }
-                    }
-                }
-                break;
-                 */
+               */
+                 huePicker.hidden = NO;
+                 const float hue = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
+                 
+                 int picker_height = 100;
+                 CGRect picker_frame = CGRectMake(0,curr_y, CGRectGetWidth(self.bounds), picker_height);
+                 
+                 // Display hue picker
+                 //                {
+                 //                    SFIHuePickerView *huePicker = [[SFIHuePickerView alloc] initWithFrame:picker_frame];
+                 huePicker.tag = [[dict valueForKey:@"indexID"] integerValue];
+                 huePicker.frame = picker_frame;
+                 huePicker.convertedValue = hue;
+                 huePicker.propertyType = SFIDevicePropertyType_COLOR_HUE;
+                 huePicker.delegate = self;
+                 //                    [self addSubview:huePicker];
+                 //                    [self markYOffsetUsingRect:picker_frame addAdditional:0];
+                 //
+                 //                    [self placeNameLabel:NSLocalizedString(@"sensors.label.Color", @"Color") valueLabel:[[huePicker.color hexString] uppercaseString]];
+                 //                }
+                 curr_y+=100;
+                 
+                 NSArray *existingValues = [self.cellInfo valueForKey:@"existingValues"];
+                 if (existingValues.count>0) {
+                 
+                 for (NSDictionary *dict in existingValues) {
+                 if ([[dict valueForKey:@"Index"] integerValue] == huePicker.tag) {
+                 const float sensorValue = [[dict valueForKey:@"Value"] floatValue];
+                 [huePicker setConvertedValue:sensorValue];
+                 }
+                 }
+                 }
+                 break;
             }
             case SFIDevicePropertyType_SATURATION:
             {
@@ -977,7 +973,12 @@
     }];
     
     [currentDimmerButton setNewValue:pickerValuesArray[row]];
-    [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)currentDimmerButton.tag Value:pickerValuesArray[row]];
+    if (self.device.deviceType == SFIDeviceType_MultiLevelOnOff_4) {
+        int v = [pickerValuesArray[row] intValue]*255/100;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)currentDimmerButton.tag Value:[NSString stringWithFormat:@"%d",v]];
+    }else{
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)currentDimmerButton.tag Value:pickerValuesArray[row]];
+    }
     currentDimmerButton.selected = YES;
 }
 
