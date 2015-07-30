@@ -256,3 +256,11 @@ Follow it, then tap Continue to login.";
 
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode1" = "There was some error on cloud. Please try later.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode2" = "You need to fill all the fields.";
+
+"scenes.hud.loadingScenes"   = "Loading scenes...";
+"scenes.hud.activatingScene" = "Activating scene...";
+"scenes.hud.creatingScene"   = "Creating scene...";
+"scenes.hud.deletingScene"   = "Deleting Scene...";
+"wifi.hud.UpdatingWifiClient" = "Updating Wifi Client...";
+"wifi.hud.removeClient"       = "Deleting wifi client...";
+"wifi.button.deleteClient"    = "Remove";
