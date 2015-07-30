@@ -28,6 +28,7 @@
 #import "SFIAlmondLocalNetworkSettings.h"
 #import "SFICloudLinkViewController.h"
 #import "UIColor+Securifi.h"
+#import "SFIWiFiClientsListViewController.h"
 
 #define DEF_NETWORKING_SECTION          0
 #define DEF_WIRELESS_SETTINGS_SECTION   1
@@ -149,6 +150,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [center addObserver:self selector:@selector(onGenericNotificationCallback:) name:GENERIC_COMMAND_CLOUD_NOTIFIER object:nil];
 
     [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:ALMOND_COMMAND_RESPONSE_NOTIFIER object:nil];
+
+	[center addObserver:self selector:@selector(onWiFiClientsListResponseCallback:) name:NOTIFICATION_WIFI_CLIENTS_LIST_RESPONSE object:nil];//md01
 }
 
 - (void)initializeAlmondData {
@@ -342,7 +345,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 - (void)onEditDevicesAndUsersCard:(id)sender {
-    [self onExpandCloseSection:self.tableView section:DEF_DEVICES_AND_USERS_SECTION];
+//    [self onExpandCloseSection:self.tableView section:DEF_DEVICES_AND_USERS_SECTION];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
+    SFIWiFiClientsListViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiClientsListViewController"];
+    viewController.connectedDevices = [self.connectedDevices mutableCopy];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (void)onEditRouterRebootCard:(id)sender {
@@ -1167,6 +1174,83 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 #pragma mark - Cloud command senders and handlers
+
+- (void)onWiFiClientsListResponseCallback:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    NSDictionary *mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+
+    NSLog(@"%@", mainDict);
+
+
+    if (![[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            if (!self) {
+                return;
+            }
+            if (self.disposed) {
+                return;
+            }
+
+            //            NSString *responseAlmondMac = response.almondMAC;
+            //            if (responseAlmondMac.length > 0 && ![responseAlmondMac isEqualToString:self.almondMac]) {
+            //                // response almond mac value is likely to be null, but when specified we make sure it matches
+            //                // the current almond being shown.
+            //                return;
+            //            }
+            //
+            //            self.isAlmondUnavailable = [response.reason.lowercaseString hasSuffix:@" is offline"]; // almond is offline, homescreen is offline
+            [self syncCheckRouterViewState:RouterViewReloadPolicy_on_state_change];
+            [self.HUD hide:YES];
+            [self.refreshControl endRefreshing];
+        });
+
+        return;
+    }
+    self.isAlmondUnavailable = NO;
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
+
+        if (self.disposed) {
+            return;
+        }
+
+        if ([[mainDict valueForKey:@"Clients"] isKindOfClass:[NSArray class]]) {
+            NSArray *dDictArray = [mainDict valueForKey:@"Clients"];
+            NSMutableArray *dArray = [NSMutableArray new];
+            for (NSDictionary *dict in dDictArray) {
+                SFIConnectedDevice *device = [SFIConnectedDevice new];
+                device.deviceID = [dict valueForKey:@"ID"];
+                device.name = [dict valueForKey:@"Name"];
+                device.deviceMAC = [dict valueForKey:@"MAC"];
+                device.deviceIP = [dict valueForKey:@"LastKnownIP"];
+                device.deviceConnection = [dict valueForKey:@"Connection"];
+                device.name = [dict valueForKey:@"Name"];
+                device.deviceLastActiveTime = [dict valueForKey:@"LastActiveTime"];
+                device.deviceType = [dict valueForKey:@"Type"];
+                device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
+                device.isActive = [[dict valueForKey:@"Active"] boolValue];
+
+                [dArray addObject:device];
+            }
+
+            self.connectedDevices = dArray;
+            [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
+        }
+
+
+        [self.HUD hide:YES];
+        [self.refreshControl endRefreshing];
+    });
+}
+
+
 
 - (void)onGenericResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;

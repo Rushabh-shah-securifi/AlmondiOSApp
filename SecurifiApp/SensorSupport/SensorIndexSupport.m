@@ -8,6 +8,7 @@
 #import "IndexValueSupport.h"
 #import "ValueFormatter.h"
 #import "SFIConstants.h"
+#import "SFIDeviceIndex.h"
 
 
 @implementation SensorIndexSupport
@@ -53,7 +54,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_MultiLevelSwitch_2: {
             /*
@@ -95,7 +96,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_BinarySensor_3: {
             /*
@@ -137,7 +138,7 @@
             }
 
             break;
-        };
+        }
         case SFIDeviceType_MultiLevelOnOff_4: {
             /*
                 <Sensor
@@ -206,7 +207,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_DoorLock_5: {
             /*
@@ -260,7 +261,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_Alarm_6: {
             /*
@@ -303,7 +304,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_Thermostat_7: {
             /*
@@ -439,7 +440,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_Controller_8:
             break;
@@ -484,7 +485,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_MotionSensor_11: {
             /*
@@ -526,7 +527,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_ContactSwitch_12: {
             /*
@@ -568,7 +569,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_FireSensor_13: {
             /*
@@ -610,7 +611,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_WaterSensor_14: {
             /*
@@ -651,7 +652,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_GasSensor_15: {
             /*
@@ -692,7 +693,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_PersonalEmergencyDevice_16: {
             /*
@@ -733,7 +734,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_VibrationOrMovementSensor_17: {
             /*
@@ -774,7 +775,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_RemoteControl_18: {
             /*
@@ -815,7 +816,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_KeyFob_19: {
             /*
@@ -867,7 +868,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_Keypad_20: {
             //todo this device id is reassigned!
@@ -910,7 +911,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_StandardWarningDevice_21: {
             /*
@@ -957,7 +958,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_SmartACSwitch_22: {
             /*
@@ -1006,7 +1007,7 @@
             s1.notificationIgnoreIndex = YES;
             s1.matchType = MatchType_any;
             return @[s1];
-        };
+        }
 
         case SFIDeviceType_SmartDCSwitch_23: {
             /*
@@ -1033,7 +1034,7 @@
             s1.notificationIgnoreIndex = YES;
             s1.matchType = MatchType_any;
             return @[s1];
-        };
+        }
 
         case SFIDeviceType_OccupancySensor_24: {
             if (type == SFIDevicePropertyType_OCCUPANCY) {
@@ -1073,7 +1074,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_LightSensor_25: {
             /*
@@ -1124,7 +1125,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_WindowCovering_26: {
             /*
@@ -1165,7 +1166,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_TemperatureSensor_27: {
             /*
@@ -1219,7 +1220,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_ZigbeeDoorLock_28: {
             /*
@@ -1283,7 +1284,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_ColorControl_29:
             break;
@@ -1400,7 +1401,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_FloodSensor_37: {
             /*
@@ -1442,7 +1443,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_ShockSensor_38: {
             /*
@@ -1483,7 +1484,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_DoorSensor_39: {
             /*
@@ -1522,7 +1523,7 @@
 
                 return @[s1, s2];
             }
-        };
+        }
             break;
         case SFIDeviceType_MoistureSensor_40: {
             /*
@@ -1587,7 +1588,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_MovementSensor_41: {
             /*
@@ -1628,7 +1629,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_Siren_42: {
             /*
@@ -1671,7 +1672,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_MultiSwitch_43:
             break;
@@ -1717,7 +1718,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_BinaryPowerSwitch_45: {
             /*
@@ -1782,7 +1783,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_SetPointThermostat_46: {
             if (type == SFIDevicePropertyType_THERMOSTAT_SETPOINT) {
@@ -1805,7 +1806,7 @@
             }
 
             break;
-        };
+        }
 
         case SFIDeviceType_HueLamp_48:
             if (type == SFIDevicePropertyType_SWITCH_BINARY) {
@@ -1836,7 +1837,7 @@
                     UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
 //                    NSDictionary *attr = @{
 //                            NSBackgroundColorAttributeName : color,
-//                    };
+//                    }
 //                    NSAttributedString *a = [[NSAttributedString alloc] initWithString:@"\u25a1" attributes:attr];
 
                     return [color.hexString uppercaseString];
@@ -1890,7 +1891,7 @@
             s1.notificationIgnoreIndex = YES;
             s1.matchType = MatchType_any;
             return @[s1];
-        };
+        }
 
         case SFIDeviceType_GarageDoorOpener_53: {
 /*
@@ -1928,7 +1929,7 @@
 
                 return @[s1, s2, s3, s4, s5];
             }
-            
+
             break;
         }
     }
@@ -1949,7 +1950,7 @@
             s2.notificationText = @"'s Battery is Low.";
 
             return @[s2];
-        };
+        }
 
         case SFIDevicePropertyType_LOW_BATTERY: {
             IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
@@ -1959,7 +1960,7 @@
             s1.notificationText = @"'s Battery is Low.";
 
             return @[s1];
-        };
+        }
 
         case SFIDevicePropertyType_TAMPER: {
             IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
@@ -1975,7 +1976,7 @@
             s2.notificationText = @" is reset from Tampered.";
 
             return @[s1, s2];
-        };
+        }
 
         default: {
             return [NSArray array];
@@ -1993,6 +1994,145 @@
     }
 
     return indexes;
+}
+
+- (NSArray *)getIndexesFor:(SFIDeviceType)device {
+    switch (device) {
+
+        case SFIDeviceType_BinarySwitch_1: {
+
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexID = 1;
+            return @[deviceIndex1];
+        }
+
+        case SFIDeviceType_MultiLevelSwitch_2: {
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+            deviceIndex1.indexID = 1;
+            return @[deviceIndex1];
+        }
+
+        case SFIDeviceType_BinarySensor_3: {
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SENSOR_BINARY];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SENSOR_BINARY];
+            deviceIndex1.indexID = 1;
+            return @[deviceIndex1];
+        }
+        case SFIDeviceType_MultiLevelOnOff_4: {
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexID = 2;
+
+            SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+            deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+            deviceIndex2.indexID = 1;
+
+            return @[deviceIndex1, deviceIndex2];
+        }
+
+        case SFIDeviceType_DoorLock_5: {
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_LOCK_STATE];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_LOCK_STATE];
+            deviceIndex1.indexID = 1;
+            //            SFIDeviceIndex * deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_USER_CODE];
+            //            deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_USER_CODE];
+
+            return @[deviceIndex1];//,deviceIndex2
+        }
+
+        case SFIDeviceType_Alarm_6: {
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_BASIC];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_BASIC];
+            deviceIndex1.indexID = 1;
+            return @[deviceIndex1];
+        }
+
+        case SFIDeviceType_StandardWarningDevice_21: {
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_ALARM_STATE];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_ALARM_STATE];
+            deviceIndex1.indexID = 1;
+            return @[deviceIndex1];
+        }
+
+        case SFIDeviceType_SmartACSwitch_22: {
+
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexID = 1;
+            return @[deviceIndex1];
+        }
+
+        case SFIDeviceType_ZigbeeDoorLock_28: {
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_LOCK_STATE];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_LOCK_STATE];
+            deviceIndex1.indexID = 1;
+
+//            SFIDeviceIndex * deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_USER_CODE];
+//            deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_USER_CODE];
+//             deviceIndex1.indexID = 2;
+//            
+            return @[deviceIndex1];
+        }
+        case SFIDeviceType_Siren_42: {
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SENSOR_BINARY];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SENSOR_BINARY];
+            deviceIndex1.indexID = 1;
+            return @[deviceIndex1];
+        }
+
+        case SFIDeviceType_UnknownOnOffModule_44: {
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY];
+            return @[deviceIndex1];
+        }
+
+        case SFIDeviceType_BinaryPowerSwitch_45: {
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexID = 1;
+
+            SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_POWER];
+            deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_POWER];
+            deviceIndex2.indexID = 2;
+
+            return @[deviceIndex1, deviceIndex2];
+        }
+
+        case SFIDeviceType_HueLamp_48: {
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexID = 2;
+
+            SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_COLOR_HUE];
+            deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_COLOR_HUE];
+            deviceIndex1.indexID = 3;
+
+            SFIDeviceIndex *deviceIndex3 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SATURATION];
+            deviceIndex3.indexValues = [self resolve:device index:SFIDevicePropertyType_SATURATION];
+            deviceIndex1.indexID = 4;
+
+            SFIDeviceIndex *deviceIndex4 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+            deviceIndex4.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+            deviceIndex1.indexID = 5;
+
+            return @[deviceIndex1, deviceIndex2, deviceIndex3, deviceIndex4];
+        }
+        case SFIDeviceType_SecurifiSmartSwitch_50: {
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexID = 1;
+            return @[deviceIndex1];
+        }
+
+        default: {
+            NSLog(@"Something wrong");
+            return [NSArray array];
+        }
+    }
+
+
 }
 
 

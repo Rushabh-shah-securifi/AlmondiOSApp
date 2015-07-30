@@ -272,6 +272,13 @@ Follow it, then tap Continue to login.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode1" = "There was some error on cloud. Please try later.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode2" = "You need to fill all the fields.";
 
+"scenes.hud.loadingScenes" = "Loading scenes...";
+"scenes.hud.deletingScene" = "Deleting Scene...";
+"scenes.hud.activatingScene" = "Activating scene...";
+"scenes.hud.creatingScene"   = "Creating scene...";
+"wifi.hud.UpdatingWifiClient" = "Updating Wifi Client...";
+"wifi.hud.removeClient"       = "Deleting wifi client...";
+"wifi.button.deleteClient"    = "Remove";
 
 /* ==================================================================== */
 
@@ -338,3 +345,5 @@ your home devices from anywhere.";
 "accounts.deleteSecondaryUser.failure.reasonCode6" = "Secondary user is not associated with the given HomeScreen.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "You are not associated with this HomeScreen";
 "accounts.deleteMeAsSecondaryUser.failure.default" = "Sorry! Removing of shared HomeScreen was unsuccessful.";
+
+

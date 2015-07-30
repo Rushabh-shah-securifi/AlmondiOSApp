@@ -11,5 +11,5 @@
 - (NSArray *)resolve:(SFIDeviceType)device index:(SFIDevicePropertyType)type;
 
 - (NSArray*)indexesFor:(SFIDeviceType)device;
-
+- (NSArray *)getIndexesFor:(SFIDeviceType)device;
 @end
