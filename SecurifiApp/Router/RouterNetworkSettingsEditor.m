@@ -273,8 +273,6 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [button setTitleColor:[color complementaryColor] forState:UIControlStateHighlighted];
             button.backgroundColor = color;
-            button.enabled = NO; // a bit of a kludge; treat the button as a Label
-
         }
         else {
             [button setTitleColor:color forState:UIControlStateNormal];
