@@ -9,6 +9,7 @@
 #import "SFIScenesViewController.h"
 #import "SFIAddSceneViewController.h"
 #import "SFIScenesTableViewCell.h"
+#import <SWRevealViewController/SWRevealViewController.h>
 #import "MBProgressHUD.h"
 #import "SFIParser.h"
 #import "MDJSON.h"
@@ -35,6 +36,11 @@
     //    [self createLeftButton];
     
     self.title = @"Scenes";
+    SWRevealViewController *revealController = [self revealViewController];
+    UIBarButtonItem *revealButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"drawer.png"] style:UIBarButtonItemStylePlain target:revealController action:@selector(revealToggle:)];
+    self.navigationItem.leftBarButtonItem = revealButton;
+    self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
+    
     self.navigationController.navigationBar.translucent = NO;
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"iconNotification"] style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonTap:)];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;

@@ -275,6 +275,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+   
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     SKSTableViewCell *cell = (SKSTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
@@ -283,6 +284,7 @@ CGFloat const kDefaultCellHeight = 44.0f;
     {
         if (cell.isExpandable)
         {
+             return;//to work only from icon...
             cell.expanded = !cell.isExpanded;
         
             NSIndexPath *_indexPath = indexPath;
@@ -346,6 +348,79 @@ CGFloat const kDefaultCellHeight = 44.0f;
         }
     }
 }
+
+
+- (void)expandCell:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    SKSTableViewCell *cell = (SKSTableViewCell *)[tableView cellForRowAtIndexPath:indexPath];
+    
+    if ([cell respondsToSelector:@selector(isExpandable)])
+    {
+        if (cell.isExpandable)
+        {
+            cell.expanded = !cell.isExpanded;
+            
+            NSIndexPath *_indexPath = indexPath;
+            NSIndexPath *correspondingIndexPath = [self correspondingIndexPathForRowAtIndexPath:indexPath];
+            if (cell.isExpanded && _shouldExpandOnlyOneCell)
+            {
+                _indexPath = correspondingIndexPath;
+                [self collapseCurrentlyExpandedIndexPaths];
+            }
+            
+            if (_indexPath)
+            {
+                NSInteger numberOfSubRows = [self numberOfSubRowsAtIndexPath:correspondingIndexPath];
+                
+                NSMutableArray *expandedIndexPaths = [NSMutableArray array];
+                NSInteger row = _indexPath.row;
+                NSInteger section = _indexPath.section;
+                
+                for (NSInteger index = 1; index <= numberOfSubRows; index++)
+                {
+                    NSIndexPath *expIndexPath = [NSIndexPath indexPathForRow:row+index inSection:section];
+                    [expandedIndexPaths addObject:expIndexPath];
+                }
+                
+                if (cell.isExpanded)
+                {
+                    [self setExpanded:YES forCellAtIndexPath:correspondingIndexPath];
+                    [self insertRowsAtIndexPaths:expandedIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+                }
+                else
+                {
+                    [self setExpanded:NO forCellAtIndexPath:correspondingIndexPath];
+                    [self deleteRowsAtIndexPaths:expandedIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+                }
+                
+                [cell accessoryViewAnimation];
+            }
+        }
+        
+        if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)])
+        {
+            NSIndexPath *correspondingIndexPath = [self correspondingIndexPathForRowAtIndexPath:indexPath];
+            
+            if (correspondingIndexPath.subRow == 0)
+            {
+                [_SKSTableViewDelegate tableView:tableView didSelectRowAtIndexPath:correspondingIndexPath];
+            }
+            else
+            {
+                [_SKSTableViewDelegate tableView:self didSelectSubRowAtIndexPath:correspondingIndexPath];
+            }
+        }
+    }
+    else
+    {
+        if ([_SKSTableViewDelegate respondsToSelector:@selector(tableView:didSelectSubRowAtIndexPath:)])
+        {
+            NSIndexPath *correspondingIndexPath = [self correspondingIndexPathForRowAtIndexPath:indexPath];
+            
+            [_SKSTableViewDelegate tableView:self didSelectSubRowAtIndexPath:correspondingIndexPath];
+        }
+    }
+}
+
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {

@@ -27,6 +27,7 @@
     NSString * sceneName;
     UITextField * activeTextField;
     NSInteger randomMobileInternalIndex;
+    CGRect originalTableViewFrame;
 }
 
 @property(nonatomic, readonly) SFIAlmondPlus *almond;
@@ -77,6 +78,7 @@
         sceneName = [self.sceneInfo valueForKey:@"SceneName"];
         self.title = sceneName;
     }
+    originalTableViewFrame = self.tableView.frame;
     [super viewWillAppear:animated];
 }
 
@@ -157,13 +159,13 @@
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
                  object:nil];
     [center addObserver:self
-               selector:@selector(onKeyboardWillShow:)
-                   name:UIKeyboardWillShowNotification
+               selector:@selector(onKeyboardDidShow:)
+                   name:UIKeyboardDidShowNotification
                  object:nil];
     
     [center addObserver:self
-               selector:@selector(onKeyboardWillHide:)
-                   name:UIKeyboardWillHideNotification
+               selector:@selector(onKeyboardDidHide:)
+                   name:UIKeyboardDidHideNotification
                  object:nil];
     
     
@@ -347,7 +349,7 @@
     if (devices.count==0) {
         return;
     }
-     
+    
     NSMutableDictionary *table = [NSMutableDictionary dictionary];
     NSMutableArray * actuators = [NSMutableArray array];;
     [cellsInfoArray removeAllObjects];
@@ -443,7 +445,7 @@
                 [indexDict setValue:@"%" forKey:@"dimPrefix"];
                 [indexDict setValue:@"false" forKey:@"offValue"];
                 [indexDict setValue:@"true" forKey:@"onValue"];
-
+                
                 [indexDict setValue:@2 forKey:@"onIndex"];
                 [indexDict setValue:@2 forKey:@"offIndex"];
                 [indexDict setValue:@1 forKey:@"dimIndex"];
@@ -564,9 +566,7 @@
         [cellDict setValue:arr forKey:@"deviceIndexes"];
         [cellDict setValue:device forKey:@"device"];
         
-        NSArray *existingValues  = [sceneEntryList filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"DeviceID == %@",[NSString stringWithFormat:@"%u",device.deviceID]]];
-        
-        [cellDict setValue:existingValues forKey:@"existingValues"];
+        [cellDict setValue:[self getExistingValues:(NSInteger)device.deviceID] forKey:@"existingValues"];
         [cellsInfoArray addObject:cellDict];
         
         [actuators addObject:device];
@@ -634,7 +634,7 @@
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.labelText = NSLocalizedString(@"scenes.hud.creatingScene", @"Creating Scene...");
-
+    
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
@@ -739,7 +739,6 @@
     SensorIndexSupport *index = [SensorIndexSupport new];
     NSArray * deviceIndexes = [index getIndexesFor:device.deviceType];
     
-    
     float currentHeight = 30;
     switch (device.deviceType){
         case SFIDeviceType_MultiLevelOnOff_4:
@@ -749,8 +748,26 @@
             currentHeight+=290;
             break;
         case SFIDeviceType_HueLamp_48:
-            currentHeight+=328;
+        {
+            
+            NSArray *existingValues  = [self getExistingValues:(NSInteger)device.deviceID];
+            BOOL hueOn = NO;
+            for (NSDictionary * dict in existingValues) {
+                if ([[dict valueForKey:@"Index"] integerValue]==2) {
+                    if ([[dict valueForKey:@"Value"] isEqualToString:@"true"]) {
+                        hueOn = YES;
+                    }
+                    break;
+                }
+            }
+            if (hueOn) {
+                currentHeight+=414;
+            }else{
+                currentHeight+=114;
+            }
+            
             break;
+        }
         default:
             for (SFIDeviceIndex *indexValue in deviceIndexes) {
                 switch (indexValue.valueType) {
@@ -893,21 +910,11 @@
     cell.isSceneProperiesCell = NO;
     cell.tag = indexPathRow;
     cell.device = device;
-    //    cell.cellColor = [self.almondColor makeGradatedColorForPositionIndex:indexPathRow];
     cell.delegate = self;
     cell.cellInfo = cellsInfoArray[indexPathRow];
-    //    cell.expandedView = expanded;
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.deviceValue = deviceValue;
-    
-    //    NSString *status = [self tryDeviceStatusMessage:device];
-    //    if (status) {
-    //        [cell markStatusMessage:status];
-    //        [cell markWillReuseCell:YES];
-    //    }
-    //    else {
-    //        [cell markWillReuseCell:NO];
-    //    }
     
     return cell;
 }
@@ -953,6 +960,8 @@
 
 - (void)tableViewCellValueDidChange:(SFIAddSceneTableViewCell*)cell CellInfo:(NSDictionary*)cellInfo Index:(int)index Value:(NSString*)value{
     
+    
+    
     BOOL found = NO;
     NSMutableDictionary *edit_entryDict = [NSMutableDictionary new];
     
@@ -976,12 +985,53 @@
         }
     }
     ///
-    //need to change value in main sceneInfo
-    NSArray *existingValues  = [sceneEntryList filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"DeviceID == %@",[cellInfo valueForKey:@"DeviceID"]]];
     
+    
+    
+    
+    
+    
+    
+    //need to change value in main sceneInfo
+    NSMutableArray *existingValues  = [[self getExistingValues:[[cellInfo valueForKey:@"DeviceID"] integerValue]] mutableCopy];
     [cellInfo setValue:existingValues forKey:@"existingValues"];
     
-    //    [self.sceneInfo setValue:sceneEntryList forKey:@"SceneEntryList"];
+    SFIDevice * device = [cellInfo valueForKey:@"device"];
+    if (device.deviceType == SFIDeviceType_HueLamp_48) {
+        
+        BOOL hueOn = NO;
+        for (NSDictionary * dict in existingValues) {
+            if ([[dict valueForKey:@"Index"] integerValue]==2) {
+                if ([[dict valueForKey:@"Value"] isEqualToString:@"true"]) {
+                    hueOn = YES;
+                }
+                break;
+            }
+        }
+        if (!hueOn) {
+            for (NSDictionary * dict in existingValues) {
+                if ([[dict valueForKey:@"Index"] integerValue]!=2) {
+                    
+                    for (NSMutableDictionary *entryDict in sceneEntryList) {
+                        if ([[entryDict valueForKey:@"DeviceID"] intValue]==[[dict valueForKey:@"DeviceID"] intValue] && [[entryDict valueForKey:@"Index"] intValue]==[[dict valueForKey:@"Index"] intValue]) {
+                            [sceneEntryList removeObject:entryDict];                            break;
+                        }
+                    }
+//                    [existingValues removeObject:dict];
+                }
+            }
+        }
+        [cellInfo setValue:existingValues forKey:@"existingValues"];
+        NSIndexPath * indexpath = [self.tableView indexPathForCell:cell];
+        if (indexpath) {
+            [self.tableView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
+
+        }
+    }
+    
+    
+    
+    
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     [cellsInfoArray[indexPath.row] setValue:existingValues forKey:@"existingValues"];
 }
@@ -1036,7 +1086,10 @@
 
 #pragma mark - Keyboard handler
 
-- (void)onKeyboardWillShow:(id)notification {
+- (void)onKeyboardDidShow:(id)notification {
+    if (originalTableViewFrame.size.height!= self.tableView.frame.size.height) {
+        return;
+    }
     NSDictionary *info = [notification userInfo];
     CGSize kbSize = [info[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     CGRect fr = self.tableView.frame;
@@ -1048,7 +1101,7 @@
     
 }
 
-- (void)onKeyboardWillHide:(id)notification {
+- (void)onKeyboardDidHide:(id)notification {
     NSDictionary *info = [notification userInfo];
     CGSize kbSize = [info[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     CGRect fr = self.tableView.frame;
@@ -1056,6 +1109,17 @@
     [UIView animateWithDuration:0.3 animations:^{
         self.tableView.frame = fr;
     }completion:^(BOOL finished) {
-    }];}
+    }];
+}
+
+- (NSArray*)getExistingValues:(NSInteger)deviceID{
+    NSMutableArray *eArray = [NSMutableArray new];
+    for (NSDictionary *dict in sceneEntryList) {
+        if ([[dict valueForKey:@"DeviceID"] integerValue] == deviceID) {
+            [eArray addObject:dict];
+        }
+    }
+    return eArray;
+}
 
 @end

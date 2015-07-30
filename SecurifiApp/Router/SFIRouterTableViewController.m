@@ -95,11 +95,12 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     [self addRefreshControl];
     
     [self initializeNotifications];
+        self.connectedDevices = nil;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-//    [self initializeAlmondData]; //TEST md01
+    [self initializeAlmondData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -164,7 +165,6 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
     // init state
     self.routerSummary = nil;
     self.wirelessSettings = nil;
-    self.connectedDevices = nil;
     self.blockedDevices = nil;
     self.currentExpandedSection = nil;
     self.currentExpandedCount = 0;
@@ -929,7 +929,7 @@ typedef NS_ENUM(unsigned int, RouterViewReloadPolicy) {
 
 #pragma mark - Cloud command senders and handlers
 - (void)onWiFiClientsListResponseCallback:(id)sender {
-    
+    self.connectedDevices = nil;
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
