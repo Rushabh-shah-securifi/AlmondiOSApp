@@ -125,7 +125,7 @@
         obj.viewed = NO;
         obj.deviceType = deviceType;
         obj.deviceId = 1;
-        obj.deviceName = securifi_nameToDeviceType(deviceType);
+        obj.deviceName = securifi_name_to_device_type(deviceType);
 
         [notifications addObject:obj];
     }

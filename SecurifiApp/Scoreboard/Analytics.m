@@ -85,7 +85,7 @@
     NSUInteger milliseconds = (NSUInteger) (resResTime * 1000);
     NSNumber *interval = @(milliseconds);
 
-    NSString *deviceTypeStr = securifi_nameToDeviceType(deviceType);
+    NSString *deviceTypeStr = securifi_name_to_device_type(deviceType);
     NSDictionary *params = [[GAIDictionaryBuilder createTimingWithCategory:@"sensor_click"
                                                                   interval:interval
                                                                       name:@"device"
