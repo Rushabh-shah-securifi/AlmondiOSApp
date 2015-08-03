@@ -9,7 +9,6 @@
 #import "HomeScreenAppDelegate.h"
 
 #define CLOUD_HOST @"cloud.homescreenrouter.com"
-#define CRASHLYTICS_KEY @"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3"
 #define ASSETS_PREFIX_ID @"HomeScreen"
 #define HOMESCREEN_GA_ID @"UA-54926195-4"
 
@@ -24,10 +23,6 @@
     cfg.enableNotifications = YES;
     cfg.enableNotificationsHomeAwayMode = NO;
     return cfg;
-}
-
-- (NSString *)crashReporterApiKey {
-    return CRASHLYTICS_KEY;
 }
 
 - (NSString *)analyticsTrackingId {
