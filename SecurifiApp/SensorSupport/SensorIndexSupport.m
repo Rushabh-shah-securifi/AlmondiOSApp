@@ -1957,6 +1957,7 @@
         case SFIDeviceType_UnknownOnOffModule_44: {
             SFIDeviceIndex * deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_BINARY];
             deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexID = 1;
             return @[deviceIndex1];
             
             break;

@@ -761,7 +761,7 @@
                 }
             }
             if (hueOn) {
-                currentHeight+=414;
+                currentHeight+=464;
             }else{
                 currentHeight+=114;
             }
@@ -996,6 +996,8 @@
     NSMutableArray *existingValues  = [[self getExistingValues:[[cellInfo valueForKey:@"DeviceID"] integerValue]] mutableCopy];
     [cellInfo setValue:existingValues forKey:@"existingValues"];
     
+    
+    //if device o HueLamp_48, and it has been toned off, we need to clear up values for all other indexes
     SFIDevice * device = [cellInfo valueForKey:@"device"];
     if (device.deviceType == SFIDeviceType_HueLamp_48) {
         
@@ -1017,15 +1019,19 @@
                             [sceneEntryList removeObject:entryDict];                            break;
                         }
                     }
-//                    [existingValues removeObject:dict];
                 }
             }
+            
+          existingValues  = [[self getExistingValues:[[cellInfo valueForKey:@"DeviceID"] integerValue]] mutableCopy];
+            
         }
         [cellInfo setValue:existingValues forKey:@"existingValues"];
+        
+        
         NSIndexPath * indexpath = [self.tableView indexPathForCell:cell];
         if (indexpath) {
             [self.tableView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
-
+            
         }
     }
     

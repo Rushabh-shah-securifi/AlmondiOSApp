@@ -38,6 +38,7 @@
     //
     IBOutlet UIView *viewPropertiesCell;
     IBOutlet UIView *viewSlider;
+    IBOutlet UIView *huePickerView;
     IBOutlet SFIHuePickerView *huePicker;
     //
     IBOutlet SFISwitchButton *btnBinarySwitchOn;
@@ -63,6 +64,12 @@
     IBOutlet SFISwitchButton *btnStandardWarningDeviceOn;
     
     IBOutlet UIView *sliderViewBrightness;
+    
+    IBOutlet UIButton *btnHueEnable;
+    IBOutlet UIButton *btnSaturationEnable;
+    IBOutlet UIButton *btnBrightnessEnable;
+    SFISlider * hueSaturationSlider;
+    SFISlider * brightnessSlider;
 }
 
 @property(nonatomic) UIImageView *deviceImageView;
@@ -84,7 +91,6 @@
 @end
 
 @implementation SFIAddSceneTableViewCell
-
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
@@ -108,7 +114,7 @@
     viewStandardWarningDevice_21.hidden = YES;
     viewDim.hidden = YES;
     viewSwitchOnOff.hidden = YES;
-    huePicker.hidden = YES;
+    huePickerView.hidden = YES;
     viewSlider.hidden = YES;
     sliderViewBrightness.hidden = YES;
     
@@ -264,142 +270,7 @@
                 
                 break;
             }
-            case SFIDevicePropertyType_COLOR_HUE:
-            {
-                /*
-                 [hueColorPickerView setBackgroundColor: [UIColor whiteColor]];
-                 hueColorPickerView.hidden = NO;
-                 const float hue = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
-                 
-                 int picker_height = 320;
-                 CGRect picker_frame = CGRectMake((CGRectGetWidth(self.bounds)-picker_height)/2,curr_y,picker_height , picker_height);
-                 
-                 hueColorPickerView.tag = [[dict valueForKey:@"indexID"] integerValue];
-                 hueColorPickerView.frame = picker_frame;
-                 hueColorPickerView.delegate = self;
-                 
-                 curr_y+=320;
-                 
-                 NSArray *existingValues = [self.cellInfo valueForKey:@"existingValues"];
-                 if (existingValues.count>0) {
-                 
-                 for (NSDictionary *dict in existingValues) {
-                 if ([[dict valueForKey:@"Index"] integerValue] == huePicker.tag) {
-                 const float sensorValue = [[dict valueForKey:@"Value"] floatValue];
-                 //                            [hueColorPickerView setConvertedValue:sensorValue];
-                 }
-                 }
-                 }
-                 break;
-                 */
-                huePicker.hidden = NO;
-                const float hue = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
                 
-                int picker_height = 100;
-                CGRect picker_frame = CGRectMake(0,curr_y, CGRectGetWidth(self.bounds), picker_height);
-                
-                // Display hue picker
-                //                {
-                //                    SFIHuePickerView *huePicker = [[SFIHuePickerView alloc] initWithFrame:picker_frame];
-                huePicker.tag = [[dict valueForKey:@"indexID"] integerValue];
-                huePicker.frame = picker_frame;
-                huePicker.convertedValue = hue;
-                huePicker.propertyType = SFIDevicePropertyType_COLOR_HUE;
-                huePicker.delegate = self;
-                //                    [self addSubview:huePicker];
-                //                    [self markYOffsetUsingRect:picker_frame addAdditional:0];
-                //
-                //                    [self placeNameLabel:NSLocalizedString(@"sensors.label.Color", @"Color") valueLabel:[[huePicker.color hexString] uppercaseString]];
-                //                }
-                curr_y+=100;
-                
-                NSArray *existingValues = [self.cellInfo valueForKey:@"existingValues"];
-                if (existingValues.count>0) {
-                    
-                    for (NSDictionary *dict in existingValues) {
-                        if ([[dict valueForKey:@"Index"] integerValue] == huePicker.tag) {
-                            const float sensorValue = [[dict valueForKey:@"Value"] floatValue];
-                            [huePicker setConvertedValue:sensorValue];
-                        }
-                    }
-                }
-                break;
-            }
-            case SFIDevicePropertyType_SATURATION:
-            {
-                viewSlider.hidden = NO;
-                CGRect fr = viewSlider.frame;
-                fr.origin.y = curr_y;
-                fr.origin.x = (self.frame.size.width - fr.size.width)/2;
-                viewSlider.frame = fr;
-                curr_y+=viewSlider.frame.size.height;
-                
-                baseYCoordinate = 37;
-                const float saturation = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SATURATION] floatValue];
-                const CGFloat slider_x_offset = 10.0;
-                const CGFloat slider_right_inset = 20.0;
-                
-                SFISlider *slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SATURATION sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];// SFISlider *saturation_slider
-                slider.continuous = YES;
-                slider.sensorMaxValue = 255;
-                slider.convertedValue = saturation;
-                [slider addTarget:self action:@selector(onHueLampColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
-                [slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-                slider.tag =[[dict valueForKey:@"indexID"] integerValue];
-                [viewSlider addSubview:slider];
-                //                [self markYOffset:20];
-                
-                //                [self placeNameLabel:@"Saturation" valueLabel:saturation_slider.sliderFormattedValue];
-                NSArray *existingValues = [self.cellInfo valueForKey:@"existingValues"];
-                if (existingValues.count>0) {
-                    
-                    for (NSDictionary *dict in existingValues) {
-                        if ([[dict valueForKey:@"Index"] integerValue] == slider.tag) {
-                            const float sensorValue = [[dict valueForKey:@"Value"] floatValue];
-                            [slider setConvertedValue:sensorValue];
-                        }
-                    }
-                }
-                break;
-            }
-            case SFIDevicePropertyType_BRIGHTNESS:
-            {
-                sliderViewBrightness.hidden = NO;
-                CGRect fr = viewSlider.frame;
-                fr.origin.y = curr_y;
-                fr.origin.x = (self.frame.size.width - fr.size.width)/2;
-                sliderViewBrightness.frame = fr;
-                curr_y+=sliderViewBrightness.frame.size.height;
-                
-                baseYCoordinate = 37;
-                const float saturation = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BRIGHTNESS] floatValue];
-                const CGFloat slider_x_offset = 10.0;
-                const CGFloat slider_right_inset = 20.0;
-                
-                SFISlider *slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_BRIGHTNESS sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];// SFISlider *saturation_slider
-                slider.continuous = YES;
-                slider.sensorMaxValue = 255;
-                slider.convertedValue = saturation;
-                [slider addTarget:self action:@selector(onHueLampColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
-                [slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-                slider.tag =[[dict valueForKey:@"indexID"] integerValue];
-                [sliderViewBrightness addSubview:slider];
-                //                [self markYOffset:20];
-                
-                //                [self placeNameLabel:@"Saturation" valueLabel:saturation_slider.sliderFormattedValue];
-                
-                NSArray *existingValues = [self.cellInfo valueForKey:@"existingValues"];
-                if (existingValues.count>0) {
-                    
-                    for (NSDictionary *dict in existingValues) {
-                        if ([[dict valueForKey:@"Index"] integerValue] == slider.tag) {
-                            const float sensorValue = [[dict valueForKey:@"Value"] floatValue];
-                            [slider setConvertedValue:sensorValue];
-                        }
-                    }
-                }
-                break;
-            }
             default:
                 break;
         }
@@ -618,12 +489,23 @@
 }
 
 - (void)onSliderTapped:(id)sender {
+    
     UIGestureRecognizer *recognizer = sender;
     
     SFISlider *slider = (SFISlider *) recognizer.view;
     if (slider.highlighted) {
         return;
     } // tap on thumb, let slider deal with it
+    
+    
+    if ([slider isEqual:hueSaturationSlider] && !btnSaturationEnable.selected) {
+        return;
+    }
+    
+    if ([slider isEqual:brightnessSlider] && !btnBrightnessEnable.selected) {
+        return;
+    }
+    
     
     CGPoint pt = [recognizer locationInView:slider];
     CGFloat percentage = pt.x / slider.bounds.size.width;
@@ -1086,12 +968,12 @@
             }
         }
         if ([[dict valueForKey:@"Index"] integerValue]==4) {
-            [btnTermostatDimCool setupValues:[dict valueForKey:@"Value"] Title:@"COOLING TEMP." Prefix:@"°F"];
-            btnTermostatDimCool.selected = YES;
+            [btnTermostatDimHeat setupValues:[dict valueForKey:@"Value"] Title:@"COOLING TEMP." Prefix:@"°F"];
+            btnTermostatDimHeat.selected = YES;
         }
         if ([[dict valueForKey:@"Index"] integerValue]==5) {
-            [btnTermostatDimHeat setupValues:[dict valueForKey:@"Value"] Title:@"HEATING TEMP." Prefix:@"°F"];
-            btnTermostatDimHeat.selected = YES;
+            [btnTermostatDimCool setupValues:[dict valueForKey:@"Value"] Title:@"HEATING TEMP." Prefix:@"°F"];
+            btnTermostatDimCool.selected = YES;
         }
     }
 }
@@ -1174,22 +1056,33 @@
 
 - (IBAction)btnTermostatDimCoolTap:(id)sender{
     currentDimmerButton = sender;
-    pickerValuesArray = [NSMutableArray new];
-    for (int i=35; i<96; i++) {
-        [pickerValuesArray addObject:[NSString stringWithFormat:@"%d",i]];
+    
+    if (!btnTermostatDimCool.selected) {
+        pickerValuesArray = [NSMutableArray new];
+        for (int i=35; i<96; i++) {
+            [pickerValuesArray addObject:[NSString stringWithFormat:@"%d",i]];
+        }
+        [self setupPicker];
+    }else{
+        [currentDimmerButton setNewValue:@"35"];
+        btnTermostatDimCool.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)currentDimmerButton.tag Value:@"remove_from_entry_list"];
     }
-    [self setupPicker];
 }
 
 - (IBAction)btnTermostatDimHeatTap:(id)sender{
     currentDimmerButton = sender;
-    pickerValuesArray = [NSMutableArray new];
-    for (int i=35; i<96; i++) {
-        [pickerValuesArray addObject:[NSString stringWithFormat:@"%d",i]];
+    if (!btnTermostatDimHeat.selected) {
+        pickerValuesArray = [NSMutableArray new];
+        for (int i=35; i<96; i++) {
+            [pickerValuesArray addObject:[NSString stringWithFormat:@"%d",i]];
+        }
+        [self setupPicker];
+    }else{
+        [currentDimmerButton setNewValue:@"35"];
+        btnTermostatDimHeat.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)currentDimmerButton.tag Value:@"remove_from_entry_list"];
     }
-    
-    
-    [self setupPicker];
 }
 #pragma mark Standard Warning Device 21
 - (void)layoutStandardWarningDevice_21{
@@ -1240,6 +1133,34 @@
 }
 
 #pragma mark Hue 48
+- (IBAction)btnBrightnessEnableTap:(id)sender {
+    btnBrightnessEnable.selected = !btnBrightnessEnable.selected;
+    if (!btnBrightnessEnable.selected) {
+        brightnessSlider.allowToSlide  = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)brightnessSlider.tag Value:@"remove_from_entry_list"];
+    }else{
+        brightnessSlider.allowToSlide  = YES;
+    }
+}
+
+- (IBAction)btnSaturationEnableTap:(id)sender {
+    btnSaturationEnable.selected = !btnSaturationEnable.selected;
+    if (!btnSaturationEnable.selected) {
+        hueSaturationSlider.allowToSlide  = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)hueSaturationSlider.tag Value:@"remove_from_entry_list"];
+    }else{
+        hueSaturationSlider.allowToSlide  = YES;
+    }
+}
+- (IBAction)btnHueEnableTap:(id)sender {
+    btnHueEnable.selected = !btnHueEnable.selected;
+    if (!btnHueEnable.selected) {
+        huePicker.allowSelection  = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)huePicker.tag Value:@"remove_from_entry_list"];
+    }else{
+        huePicker.allowSelection  = YES;
+    }
+}
 - (void)layoutHueLamp_48{
     
     float curr_y = self.lblName.frame.size.height + self.lblName.frame.origin.y;
@@ -1291,11 +1212,16 @@
                 if (!hueOn) {
                     break;
                 }
-                huePicker.hidden = NO;
+                huePickerView.hidden = NO;
+                CGRect fr = huePickerView.frame;
+                fr.origin.y = curr_y;
+                fr.origin.x = (self.frame.size.width - fr.size.width)/2;
+                huePickerView.frame = fr;
+                curr_y+=huePickerView.frame.size.height;
+                
                 const float hue = [[self.deviceValue knownValuesForProperty:SFIDevicePropertyType_COLOR_HUE] floatValue];
                 
-                int picker_height = 100;
-                CGRect picker_frame = CGRectMake(0,curr_y, CGRectGetWidth(self.bounds), picker_height);
+                CGRect picker_frame = CGRectMake(0,50, CGRectGetWidth(self.bounds), 100);
                 
                 // Display hue picker
                 //                {
@@ -1305,20 +1231,17 @@
                 huePicker.convertedValue = hue;
                 huePicker.propertyType = SFIDevicePropertyType_COLOR_HUE;
                 huePicker.delegate = self;
-                //                    [self addSubview:huePicker];
-                //                    [self markYOffsetUsingRect:picker_frame addAdditional:0];
-                //
-                //                    [self placeNameLabel:NSLocalizedString(@"sensors.label.Color", @"Color") valueLabel:[[huePicker.color hexString] uppercaseString]];
-                //                }
-                curr_y+=100;
-                
+                btnHueEnable.selected = NO;
+                huePicker.allowSelection  = NO;
                 NSArray *existingValues = [self.cellInfo valueForKey:@"existingValues"];
                 if (existingValues.count>0) {
-                    
                     for (NSDictionary *dict in existingValues) {
                         if ([[dict valueForKey:@"Index"] integerValue] == huePicker.tag) {
                             const float sensorValue = [[dict valueForKey:@"Value"] floatValue];
                             [huePicker setConvertedValue:sensorValue];
+                            btnHueEnable.selected = YES;
+                            huePicker.allowSelection  = YES;
+                            
                         }
                     }
                 }
@@ -1341,24 +1264,29 @@
                 const CGFloat slider_x_offset = 10.0;
                 const CGFloat slider_right_inset = 20.0;
                 
-                SFISlider *slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SATURATION sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];// SFISlider *saturation_slider
-                slider.continuous = YES;
-                slider.sensorMaxValue = 255;
-                slider.convertedValue = saturation;
-                [slider addTarget:self action:@selector(onHueLampColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
-                [slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-                slider.tag =[[dict valueForKey:@"indexID"] integerValue];
-                [viewSlider addSubview:slider];
+                hueSaturationSlider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_SATURATION sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];// SFISlider *saturation_slider
+                
+                hueSaturationSlider.continuous = YES;
+                hueSaturationSlider.sensorMaxValue = 255;
+                hueSaturationSlider.convertedValue = saturation;
+                [hueSaturationSlider addTarget:self action:@selector(onHueLampColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
+                [hueSaturationSlider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+                hueSaturationSlider.tag =[[dict valueForKey:@"indexID"] integerValue];
+                [viewSlider addSubview:hueSaturationSlider];
                 //                [self markYOffset:20];
                 
                 //                [self placeNameLabel:@"Saturation" valueLabel:saturation_slider.sliderFormattedValue];
+                btnSaturationEnable.selected = NO;
+                hueSaturationSlider.allowToSlide = NO;
                 NSArray *existingValues = [self.cellInfo valueForKey:@"existingValues"];
                 if (existingValues.count>0) {
                     
                     for (NSDictionary *dict in existingValues) {
-                        if ([[dict valueForKey:@"Index"] integerValue] == slider.tag) {
+                        if ([[dict valueForKey:@"Index"] integerValue] == hueSaturationSlider.tag) {
                             const float sensorValue = [[dict valueForKey:@"Value"] floatValue];
-                            [slider setConvertedValue:sensorValue];
+                            [hueSaturationSlider setConvertedValue:sensorValue];
+                            btnSaturationEnable.selected = YES;
+                            hueSaturationSlider.allowToSlide = YES;
                         }
                     }
                 }
@@ -1381,25 +1309,28 @@
                 const CGFloat slider_x_offset = 10.0;
                 const CGFloat slider_right_inset = 20.0;
                 
-                SFISlider *slider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_BRIGHTNESS sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];// SFISlider *saturation_slider
-                slider.continuous = YES;
-                slider.sensorMaxValue = 255;
-                slider.convertedValue = saturation;
-                [slider addTarget:self action:@selector(onHueLampColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
-                [slider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-                slider.tag =[[dict valueForKey:@"indexID"] integerValue];
-                [sliderViewBrightness addSubview:slider];
+                brightnessSlider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_BRIGHTNESS sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset];// SFISlider *saturation_slider
+                brightnessSlider.continuous = YES;
+                brightnessSlider.sensorMaxValue = 255;
+                brightnessSlider.convertedValue = saturation;
+                [brightnessSlider addTarget:self action:@selector(onHueLampColorPropertyIsChanging:) forControlEvents:(UIControlEventValueChanged)];
+                [brightnessSlider addTarget:self action:@selector(onColorPropertyDidChange:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
+                brightnessSlider.tag =[[dict valueForKey:@"indexID"] integerValue];
+                [sliderViewBrightness addSubview:brightnessSlider];
                 //                [self markYOffset:20];
                 
                 //                [self placeNameLabel:@"Saturation" valueLabel:saturation_slider.sliderFormattedValue];
-                
+                btnBrightnessEnable.selected = NO;
+                brightnessSlider.allowToSlide = NO;
                 NSArray *existingValues = [self.cellInfo valueForKey:@"existingValues"];
                 if (existingValues.count>0) {
                     
                     for (NSDictionary *dict in existingValues) {
-                        if ([[dict valueForKey:@"Index"] integerValue] == slider.tag) {
+                        if ([[dict valueForKey:@"Index"] integerValue] == brightnessSlider.tag) {
                             const float sensorValue = [[dict valueForKey:@"Value"] floatValue];
-                            [slider setConvertedValue:sensorValue];
+                            [brightnessSlider setConvertedValue:sensorValue];
+                            btnBrightnessEnable.selected = YES;
+                            brightnessSlider.allowToSlide = YES;
                         }
                     }
                 }
