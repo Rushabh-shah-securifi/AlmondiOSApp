@@ -109,51 +109,14 @@
 
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    
-    //    [center addObserver:self
-    //               selector:@selector(onMobileCommandResponseCallback:)
-    //                   name:MOBILE_COMMAND_NOTIFIER
-    //                 object:nil];
-    //
-    //    [center addObserver:self
-    //               selector:@selector(onCurrentAlmondChanged:)
-    //                   name:kSFIDidChangeCurrentAlmond
-    //                 object:nil];
-    
     [center addObserver:self
                selector:@selector(onDeviceListDidChange:)
                    name:kSFIDidChangeDeviceList
                  object:nil];
-    
-    //    [center addObserver:self
-    //               selector:@selector(onDeviceValueListDidChange:)
-    //                   name:kSFIDidChangeDeviceValueList
-    //                 object:nil];
-    //
     [center addObserver:self
                selector:@selector(onAlmondListDidChange:)
                    name:kSFIDidUpdateAlmondList
                  object:nil];
-    //
-    //    [center addObserver:self
-    //               selector:@selector(onAlmondNameDidChange:)
-    //                   name:kSFIDidChangeAlmondName
-    //                 object:nil];
-    //
-    //    [center addObserver:self
-    //               selector:@selector(onNotificationPrefDidChange:)
-    //                   name:kSFINotificationPreferencesDidChange
-    //                 object:nil];
-    //
-    //    [center addObserver:self
-    //               selector:@selector(onSensorChangeCallback:)
-    //                   name:SENSOR_CHANGE_NOTIFIER
-    //                 object:nil];
-    //
-    //    [center addObserver:self
-    //               selector:@selector(validateResponseCallback:)
-    //                   name:VALIDATE_RESPONSE_NOTIFIER
-    //                 object:nil];
     [center addObserver:self
                selector:@selector(gotResponseFor1064:)
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
@@ -201,15 +164,7 @@
     
     NSArray *newDeviceValueList = [toolkit deviceValuesList:cloudMAC];
     
-    // Restore isExpanded state and clear 'updating' state
-    NSArray *oldDeviceList = self.deviceList;
-    for (SFIDevice *newDevice in newDeviceList) {
-        for (SFIDevice *oldDevice in oldDeviceList) {
-            if (newDevice.deviceID == oldDevice.deviceID) {
-                //                [self clearDeviceUpdatingState:oldDevice];
-            }
-        }
-    }
+    
     
     // Push changes to the UI
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -217,7 +172,7 @@
             return;
         }
         if ([self isSameAsCurrentMAC:cloudMAC]) {
-            self.deviceList = newDeviceList;
+            self.deviceList = newDeviceList;///ste
             if (newDeviceValueList) {
                 [self setDeviceValues:newDeviceValueList];
             }
@@ -295,8 +250,6 @@
         self.navigationItem.title = plus.almondplusName;
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         self.deviceList = [toolkit deviceList:_almond.almondplusMAC];
-        //        self.deviceList = [toolkit deviceList:mac];
-        //        [self setDeviceValues:[toolkit deviceValuesList:mac]];
         
         if (self.deviceList.count == 0) {
             DLog(@"Sensors: requesting device list on empty list");
@@ -353,7 +306,7 @@
     NSMutableDictionary *table = [NSMutableDictionary dictionary];
     NSMutableArray * actuators = [NSMutableArray array];;
     [cellsInfoArray removeAllObjects];
-    int row = 0;
+    
     
     
     if (self.sceneInfo) {
@@ -368,15 +321,44 @@
         }
     }
     
+      //add zero device for Home/Awway buttons
+    SFIDevice * zeroDevice = [[SFIDevice alloc] init];
+    zeroDevice.deviceID = 0;
+    zeroDevice.deviceType = SFIDeviceType_BinarySwitch_0;
+    zeroDevice.almondMAC = self.almondMac;
+    zeroDevice.deviceName = @"";
+    
+    NSNumber *key = @(0);
+    NSMutableDictionary *cellDict = [NSMutableDictionary new];
+    [cellDict setValue:@(0) forKey:@"DeviceID"];
+    
+    NSMutableArray * arr = [NSMutableArray new];
+    
+    NSMutableDictionary * indexDict = [NSMutableDictionary new];
+    
+    [indexDict setValue:[NSNumber numberWithInt:SFIDevicePropertyType_SWITCH_BINARY] forKey:@"valueType"];
+    [indexDict setValue:@1 forKey:@"indexID"];
+    [indexDict setValue:@"home_icon" forKey:@"onImage"];
+    [indexDict setValue:@"HOME" forKey:@"onTitle"];
+    [indexDict setValue:@"away_icon" forKey:@"offImage"];
+    [indexDict setValue:@"AWAY" forKey:@"offTitle"];
+    [indexDict setValue:@"away" forKey:@"offValue"];
+    [indexDict setValue:@"home" forKey:@"onValue"];
+
+    [arr addObject:indexDict];
+    [cellDict setValue:arr forKey:@"deviceIndexes"];
+    [cellDict setValue:zeroDevice forKey:@"device"];
+    
+    [cellDict setValue:[self getExistingValues:0] forKey:@"existingValues"];
+    [cellsInfoArray addObject:cellDict];
+    
+    [actuators addObject:zeroDevice];
+    table[key] = @(0);
+    
+    int row = 1;
     for (SFIDevice *device in devices) {
         NSNumber *key = @(device.deviceID);
         
-        
-        //        SFIDeviceValue *value = [self tryCurrentDeviceValues:device.deviceID];
-        //        SFIDeviceKnownValues *deviceValues = [device switchBinaryState:value];
-        //        if (!deviceValues) {
-        //            continue;
-        //        }
         if (![device isActuator]) {
             continue;
         }
@@ -398,7 +380,6 @@
                 
                 [indexDict setValue:[NSNumber numberWithInt:SFIDevicePropertyType_SWITCH_BINARY] forKey:@"valueType"];
                 [indexDict setValue:@2 forKey:@"indexID"];
-                [indexDict setValue:@0 forKey:@"OnOffValue"];
                 [indexDict setValue:@"imgLightOff" forKey:@"offImage"];
                 [indexDict setValue:@"OFF" forKey:@"offTitle"];
                 [indexDict setValue:@"imgLightOn" forKey:@"onImage"];
@@ -436,11 +417,10 @@
                 
                 
                 [indexDict setValue:@0 forKey:@"Value"];
-                [indexDict setValue:@0 forKey:@"OnOffValue"];
-                [indexDict setValue:@"imgLightOff" forKey:@"offImage"];
-                [indexDict setValue:@"OFF" forKey:@"offTitle"];
-                [indexDict setValue:@"imgLightOn" forKey:@"onImage"];
-                [indexDict setValue:@"ON" forKey:@"onTitle"];
+                [indexDict setValue:@"imgLightOff" forKey:@"onImage"];
+                [indexDict setValue:@"OFF" forKey:@"onTitle"];
+                [indexDict setValue:@"imgLightOn" forKey:@"offImage"];
+                [indexDict setValue:@"ON" forKey:@"offTitle"];
                 [indexDict setValue:@"DIM" forKey:@"dimTitle"];
                 [indexDict setValue:@"%" forKey:@"dimPrefix"];
                 [indexDict setValue:@"false" forKey:@"offValue"];
@@ -535,7 +515,6 @@
                         case SFIDevicePropertyType_SWITCH_MULTILEVEL:
                         {
                             
-                            [indexDict setValue:@0 forKey:@"OnOffValue"];
                             [indexDict setValue:@"imgLightOff" forKey:@"offImage"];
                             [indexDict setValue:@"OFF" forKey:@"offTitle"];
                             [indexDict setValue:@"imgLightOn" forKey:@"onImage"];
@@ -744,6 +723,9 @@
         case SFIDeviceType_MultiLevelOnOff_4:
             currentHeight+=98;
             break;
+        case SFIDeviceType_BinarySwitch_0:
+            currentHeight+=114;//home/away
+            break;
         case SFIDeviceType_Thermostat_7:
             currentHeight+=290;
             break;
@@ -799,7 +781,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.deviceList.count+1;
+    return cellsInfoArray.count+1;
 }
 
 
@@ -811,7 +793,7 @@
     if ([self isDeviceListEmpty]) {
         return [self createEmptyCell:tableView];
     }
-    if (indexPath.row==self.deviceList.count) {
+    if (indexPath.row==cellsInfoArray.count) {
         return [self createSceneProperiesCell:tableView listRow:(NSUInteger) indexPath.row];
     }
     return [self createSensorCell:tableView listRow:(NSUInteger) indexPath.row];
@@ -885,12 +867,6 @@
         imageView.image = [UIImage assetImageNamed:@"getting_started"];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         
-        //        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        //        button.frame = imageView.bounds;
-        //        button.backgroundColor = [UIColor clearColor];
-        //        [button addTarget:self action:@selector(onAddAlmondClicked:) forControlEvents:UIControlEventTouchUpInside];
-        //
-        //        [imageView addSubview:button];
         [cell addSubview:imageView];
     }
     
@@ -1022,7 +998,7 @@
                 }
             }
             
-          existingValues  = [[self getExistingValues:[[cellInfo valueForKey:@"DeviceID"] integerValue]] mutableCopy];
+            existingValues  = [[self getExistingValues:[[cellInfo valueForKey:@"DeviceID"] integerValue]] mutableCopy];
             
         }
         [cellInfo setValue:existingValues forKey:@"existingValues"];

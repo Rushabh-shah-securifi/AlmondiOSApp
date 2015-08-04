@@ -193,13 +193,24 @@
                 [btnBinarySwitchOff setupValues:[UIImage imageNamed:[dict valueForKey:@"offImage"]] Title:[dict valueForKey:@"offTitle"]];
                 [btnBinarySwitchOn setupValues:[UIImage imageNamed:[dict valueForKey:@"onImage"]] Title:[dict valueForKey:@"onTitle"]];
                 NSArray *existingValues = [self.cellInfo valueForKey:@"existingValues"];
+                
                 if (existingValues.count>0) {
-                    if ([[existingValues[0] valueForKey:@"Value"] boolValue]) {
-                        btnBinarySwitchOn.selected = YES;
-                        btnBinarySwitchOff.selected = NO;
+                    if ([[existingValues[0] valueForKey:@"DeviceID"] integerValue]==0) {
+                        if ([[existingValues[0] valueForKey:@"Value"] isEqualToString:@"home"]) {
+                            btnBinarySwitchOn.selected = YES;
+                            btnBinarySwitchOff.selected = NO;
+                        }else{
+                            btnBinarySwitchOn.selected = NO;
+                            btnBinarySwitchOff.selected = YES;
+                        }
                     }else{
-                        btnBinarySwitchOn.selected = NO;
-                        btnBinarySwitchOff.selected = YES;
+                        if ([[existingValues[0] valueForKey:@"Value"] boolValue]) {
+                            btnBinarySwitchOn.selected = YES;
+                            btnBinarySwitchOff.selected = NO;
+                        }else{
+                            btnBinarySwitchOn.selected = NO;
+                            btnBinarySwitchOff.selected = YES;
+                        }
                     }
                 }
                 break;
@@ -626,6 +637,8 @@
                 break;
             case SFIDeviceType_ZigbeeDoorLock_28:
                 value = @"1";
+            case SFIDeviceType_BinarySwitch_0:
+                value = @"home";
                 break;
             default:
                 break;
@@ -649,6 +662,9 @@
                 break;
             case SFIDeviceType_ZigbeeDoorLock_28:
                 value = @"2";
+                break;
+            case SFIDeviceType_BinarySwitch_0:
+                value = @"away";
                 break;
             default:
                 break;
@@ -1140,6 +1156,8 @@
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)brightnessSlider.tag Value:@"remove_from_entry_list"];
     }else{
         brightnessSlider.allowToSlide  = YES;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)brightnessSlider.tag Value:@"0"];
+        
     }
 }
 
@@ -1150,6 +1168,7 @@
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)hueSaturationSlider.tag Value:@"remove_from_entry_list"];
     }else{
         hueSaturationSlider.allowToSlide  = YES;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)hueSaturationSlider.tag Value:@"0"];
     }
 }
 - (IBAction)btnHueEnableTap:(id)sender {
@@ -1159,6 +1178,12 @@
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)huePicker.tag Value:@"remove_from_entry_list"];
     }else{
         huePicker.allowSelection  = YES;
+        int sensor_value = [huePicker convertToSensorValue];
+        
+        [self processColorPropertyValueChange:huePicker.propertyType newValue:sensor_value];
+        
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)huePicker.tag Value:[NSString stringWithFormat:@"%d",sensor_value]];
+        
     }
 }
 - (void)layoutHueLamp_48{

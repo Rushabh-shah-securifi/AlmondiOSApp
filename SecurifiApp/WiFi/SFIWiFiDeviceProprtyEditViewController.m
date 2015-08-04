@@ -178,8 +178,8 @@
             fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
             viewTypeSelection.frame = fr;
             [tblTypes reloadData];
-            viewHeader.backgroundColor = [UIColor colorWithRed:1.0 green:160/255.0f blue:0 alpha:1];
-            viewTypeSelection.backgroundColor = [UIColor colorWithRed:1.0 green:160/255.0f blue:0 alpha:1];
+//            viewHeader.backgroundColor = [UIColor colorWithRed:1.0 green:160/255.0f blue:0 alpha:1];
+//            viewTypeSelection.backgroundColor = [UIColor colorWithRed:1.0 green:160/255.0f blue:0 alpha:1];
             currentView = viewTypeSelection;
             break;
         }

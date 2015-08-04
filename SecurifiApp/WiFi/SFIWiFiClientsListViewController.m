@@ -476,7 +476,7 @@
     currentIndexPath = indexPath;
     currentDevice = self.connectedDevices[indexPath.section];
     [tblDevices expandCell:tblDevices didSelectRowAtIndexPath:indexPath];
-//    [self tableView:tblDevices didSelectRowAtIndexPath:indexPath];
+    //    [self tableView:tblDevices didSelectRowAtIndexPath:indexPath];
 }
 
 #pragma mark Detail View Delegates
@@ -577,7 +577,8 @@
                     device.isActive = [[dict valueForKey:@"Active"] boolValue];
                     
                     dispatch_async(dispatch_get_main_queue(), ^() {
-                        [tblDevices reloadSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
+                        [tblDevices refreshData];
+                        //                        [tblDevices reloadSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
                     });
                     break;
                 }
@@ -611,10 +612,10 @@
             device.isActive = [[dict valueForKey:@"Active"] boolValue];
             [self.connectedDevices addObject:device];
             dispatch_async(dispatch_get_main_queue(), ^() {
-                 [tblDevices refreshData];
-//                [tblDevices insertSections:[NSIndexSet indexSetWithIndex:self.connectedDevices.count-1] withRowAnimation:UITableViewRowAnimationNone];
+                [tblDevices refreshData];
+                //                [tblDevices insertSections:[NSIndexSet indexSetWithIndex:self.connectedDevices.count-1] withRowAnimation:UITableViewRowAnimationNone];
             });
-           
+            
         }
         
     }
@@ -676,8 +677,10 @@
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
+    // && [[mainDict valueForKey:@"UserID"] isEqualToString:userID]
+    NSString *aMac = [mainDict valueForKey:@"AlmondMAC"];
     
-    if ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"UpdatePreference"] && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC] && [[mainDict valueForKey:@"UserID"] isEqualToString:userID]) {
+    if (([[mainDict valueForKey:@"CommandType"] isEqualToString:@"UpdatePreference"] || [[mainDict valueForKey:@"commandtype"] isEqualToString:@"UpdatePreference"]) && [aMac isEqualToString:plus.almondplusMAC]) {//TEST
         
         [self updatePreferenceInfo:@{@"ClientID":[mainDict valueForKey:@"ClientID"],@"NotificationType":[mainDict valueForKey:@"NotificationType"]}];
     }
@@ -702,7 +705,8 @@
     for (SFIConnectedDevice * device in self.connectedDevices) {
         if ([device.deviceID intValue]==[[preferenceInfo valueForKey:@"ClientID"] intValue]) {
             dispatch_async(dispatch_get_main_queue(), ^() {
-                [tblDevices reloadSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
+                [tblDevices refreshData];
+                //                [tblDevices reloadSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
             });
             
             break;
