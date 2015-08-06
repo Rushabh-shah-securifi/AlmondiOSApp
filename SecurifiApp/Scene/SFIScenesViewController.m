@@ -49,11 +49,16 @@
     self.navigationItem.leftBarButtonItem.tintColor = [UIColor blackColor];
     
     self.navigationController.navigationBar.translucent = NO;
-    
-    _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onCloudStatusButtonPressed:)];
-    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SecurifiConfigurator *configurator = toolkit.configuration;
+
+     if (configurator.enableNotifications) {
+         _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onCloudStatusButtonPressed:) enableLocalNetworking:YES];
+    }
+    else {
+        _statusBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:nil action:nil enableLocalNetworking:NO];
+    }
+    
     
     if (configurator.enableNotifications) {
         _notificationsStatusButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(onShowNotifications:)];

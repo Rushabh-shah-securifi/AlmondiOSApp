@@ -39,7 +39,7 @@ SPEC CHECKSUMS:
   ASValueTrackingSlider: 00fe601d9b5b2efeac515c1673afbf452f8e78ba
   CocoaLumberjack: 019d1361244274a6138c788c6cb80baabc13fb8f
   Colours: 0afd4c3429656880fd4cff350ca3bf0ab86ca348
-  Crashlytics: ef9a58a4e806b316a1748c06432f6f847ba09ac6
+  Crashlytics: 93e2f86363d53c002c6366a9d87e41f2eaee87c3
   Fabric: a9eabe53915e9f1db55a84dd2838737928675878
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   iToast: df147188215cc3293bd4366822833f2862fec451
@@ -49,4 +49,4 @@ SPEC CHECKSUMS:
   UIImage-ResizeMagick: f08c2d14d1e8a5f0b402185408785540562f2fe7
   V8HorizontalPickerView: 6451e226ea7939c3499cefbbc0dcab85c941c28c
 
-COCOAPODS: 0.38.2
+COCOAPODS: 0.36.0

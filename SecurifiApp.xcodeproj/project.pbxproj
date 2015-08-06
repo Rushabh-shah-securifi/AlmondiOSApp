@@ -13,11 +13,8 @@
 		1C2F60601B69E65B001CCA34 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C2F605D1B69E64F001CCA34 /* Scenes_Iphone.storyboard */; };
 		1C2F60881B69E69D001CCA34 /* CGColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60631B69E69D001CCA34 /* CGColor+Additions.m */; };
 		1C2F60891B69E69D001CCA34 /* CGColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60631B69E69D001CCA34 /* CGColor+Additions.m */; };
-		1C2F608A1B69E69D001CCA34 /* NPColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60651B69E69D001CCA34 /* NPColorPickerView.m */; };
 		1C2F608B1B69E69D001CCA34 /* NPColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60651B69E69D001CCA34 /* NPColorPickerView.m */; };
-		1C2F608C1B69E69D001CCA34 /* NPConicGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60671B69E69D001CCA34 /* NPConicGradient.m */; };
 		1C2F608D1B69E69D001CCA34 /* NPConicGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60671B69E69D001CCA34 /* NPConicGradient.m */; };
-		1C2F608E1B69E69D001CCA34 /* NPPickerIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60691B69E69D001CCA34 /* NPPickerIndicator.m */; };
 		1C2F608F1B69E69D001CCA34 /* NPPickerIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60691B69E69D001CCA34 /* NPPickerIndicator.m */; };
 		1C2F60921B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */; };
 		1C2F60931B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */; };
@@ -46,18 +43,6 @@
 		1C2F60AA1B69E69D001CCA34 /* SKSTableViewCellIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60871B69E69D001CCA34 /* SKSTableViewCellIndicator.m */; };
 		1C2F60AB1B69E69D001CCA34 /* SKSTableViewCellIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60871B69E69D001CCA34 /* SKSTableViewCellIndicator.m */; };
 		1C33E94F19C025DB0014725A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C33E94E19C025DB0014725A /* QuartzCore.framework */; };
-		1C3F95131B6A189400C0406B /* AvenirLTStd-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1C3F95071B6A189400C0406B /* AvenirLTStd-Black.otf */; };
-		1C3F95141B6A189400C0406B /* AvenirLTStd-BlackOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1C3F95081B6A189400C0406B /* AvenirLTStd-BlackOblique.otf */; };
-		1C3F95151B6A189400C0406B /* AvenirLTStd-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1C3F95091B6A189400C0406B /* AvenirLTStd-Book.otf */; };
-		1C3F95161B6A189400C0406B /* AvenirLTStd-BookOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1C3F950A1B6A189400C0406B /* AvenirLTStd-BookOblique.otf */; };
-		1C3F95171B6A189400C0406B /* AvenirLTStd-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1C3F950B1B6A189400C0406B /* AvenirLTStd-Heavy.otf */; };
-		1C3F95181B6A189400C0406B /* AvenirLTStd-HeavyOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1C3F950C1B6A189400C0406B /* AvenirLTStd-HeavyOblique.otf */; };
-		1C3F95191B6A189400C0406B /* AvenirLTStd-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1C3F950D1B6A189400C0406B /* AvenirLTStd-Light.otf */; };
-		1C3F951A1B6A189400C0406B /* AvenirLTStd-LightOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1C3F950E1B6A189400C0406B /* AvenirLTStd-LightOblique.otf */; };
-		1C3F951B1B6A189400C0406B /* AvenirLTStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1C3F950F1B6A189400C0406B /* AvenirLTStd-Medium.otf */; };
-		1C3F951C1B6A189400C0406B /* AvenirLTStd-MediumOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1C3F95101B6A189400C0406B /* AvenirLTStd-MediumOblique.otf */; };
-		1C3F951D1B6A189400C0406B /* AvenirLTStd-Oblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1C3F95111B6A189400C0406B /* AvenirLTStd-Oblique.otf */; };
-		1C3F951E1B6A189400C0406B /* AvenirLTStd-Roman.otf in Resources */ = {isa = PBXBuildFile; fileRef = 1C3F95121B6A189400C0406B /* AvenirLTStd-Roman.otf */; };
 		1C414BCD1A79F0DF00C448A4 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */; };
 		1C414BCE1A79F0E800C448A4 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */; };
 		1C4383051B2FFAC700F6AB7A /* libSystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4383041B2FFAC700F6AB7A /* libSystem.dylib */; };
@@ -181,14 +166,12 @@
 		1CEE69551A37F65D008D8567 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF419AC82FD0023512F /* Foundation.framework */; };
 		1CF15BE31AFCF72D004BED16 /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F453DC0B72C7436B9E8 /* MessageView.m */; };
 		1DF030400DB881AFAEF263C4 /* UIImage+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03BE3E401DD252BA24127 /* UIImage+Securifi.m */; };
-		1DF0304B3CD98B217E85940D /* ILSaturationBrightnessPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */; };
 		1DF030E39A245683EABC61AE /* SFIRouterVersionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039C1E7F34EC59EC5AF78 /* SFIRouterVersionTableViewCell.m */; };
 		1DF031024A2F8810074C455A /* TemperatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF038EE4B26640DB5168126 /* TemperatureView.m */; };
 		1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0308DE6327F106EDC2AA2 /* SFITextField.m */; };
 		1DF031661E380BA4D0E0EB07 /* SFIPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0364AFED818925B9469F3 /* SFIPreferences.m */; };
 		1DF0317AA50784DE447F9449 /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03A704CC540558B993529 /* CircleView.m */; };
 		1DF0318D09F8B1DBAF74C090 /* SFINotificationTableViewHeaderFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF031B6B99795E6267FEAD7 /* SFINotificationTableViewHeaderFooter.m */; };
-		1DF0319D664AF1667E394E51 /* ILHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03260DA70CA70CF0E61EF /* ILHuePickerView.m */; };
 		1DF031DB440397B975511290 /* UIColor+GetHSB.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03D4E0D2E7D5FC29DBF23 /* UIColor+GetHSB.m */; };
 		1DF03226BF3736722C0E7F17 /* SFISensorDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03086AADF35699E6F9054 /* SFISensorDetailView.m */; };
 		1DF0322DC3176FDED2CFA324 /* AlertViewAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033553D675EBD64644DB2 /* AlertViewAction.m */; };
@@ -196,7 +179,6 @@
 		1DF03271B3B360C48DF81716 /* SFITextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0308DE6327F106EDC2AA2 /* SFITextField.m */; };
 		1DF032B24E580FC6CD86D379 /* CircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CircleLabel.m */; };
 		1DF0333217E77760651C98F7 /* ScoreboardNetworkSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03CB107BF402C2EFA6DC9 /* ScoreboardNetworkSettingsViewController.m */; };
-		1DF03341BDCB67EE35C82CE5 /* ILView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AA35AC0879D6B794169 /* ILView.m */; };
 		1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03D4E0D2E7D5FC29DBF23 /* UIColor+GetHSB.m */; };
 		1DF0338430771644DAE94F36 /* SFIDeviceIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039EF47F24492C42B3E91 /* SFIDeviceIndex.m */; };
 		1DF033F4DF8C6A502EB12289 /* ScoreboardTextEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03ED87E1BC2184C9EEF53 /* ScoreboardTextEditorViewController.m */; };
@@ -205,7 +187,6 @@
 		1DF034F099411CA60571A787 /* AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033CB5E3E061CABD94663 /* AlertView.m */; };
 		1DF0351F629E0103520602C3 /* SFICardViewSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0369E72CD4FA9E78D9468 /* SFICardViewSummaryCell.m */; };
 		1DF035317380AA5E0BD86161 /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F453DC0B72C7436B9E8 /* MessageView.m */; };
-		1DF035687F592CCCFB831F48 /* ILColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0331D17DC580313941C89 /* ILColorPickerView.m */; };
 		1DF0358BE9EBF2A3821D948D /* TableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0306EC5BE52D6364936BE /* TableHeaderView.m */; };
 		1DF0362BB7839519E771D769 /* SensorIndexSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */; };
 		1DF0364AEDD2A4A73832CE5D /* SensorSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03845038413D52AF4100D /* SensorSupport.m */; };
@@ -222,7 +203,6 @@
 		1DF038979554DAC51D42A7C8 /* SFIRouterSendLogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039D08131F3EA14BFDD9F /* SFIRouterSendLogsTableViewCell.m */; };
 		1DF038A445EB0F3A6476DC32 /* SFIHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0327E1106225F6EB46DF8 /* SFIHuePickerView.m */; };
 		1DF038B5E6A54CEEAFE1BE7F /* NotificationsTestStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0385D1BECF622A4B92311 /* NotificationsTestStore.m */; };
-		1DF038B871CAC9B7F0FCA043 /* ILSaturationBrightnessPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */; };
 		1DF0390452B5D28DECBE4F68 /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033BFB3D6B1769127310B /* NSData+Conversion.m */; };
 		1DF0394349F84E2FCC5E25F9 /* AlertViewAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033553D675EBD64644DB2 /* AlertViewAction.m */; };
 		1DF039D3E2A4A6FB292A99C3 /* SFISensorDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03086AADF35699E6F9054 /* SFISensorDetailView.m */; };
@@ -247,14 +227,27 @@
 		1DF03CC89074191AC5F942CA /* ScoreboardDebugLoggerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03016CB88EB25EF5CE27E /* ScoreboardDebugLoggerViewController.m */; };
 		1DF03D19D4E35617E92B8DDD /* SFISensorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0372FDF6A6B6E6843DF80 /* SFISensorsViewController.m */; };
 		1DF03D1D08D853057CDED2DC /* SFINotificationTableViewHeaderFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF031B6B99795E6267FEAD7 /* SFINotificationTableViewHeaderFooter.m */; };
-		1DF03D2E7F166ECAEAD5B033 /* ILColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0331D17DC580313941C89 /* ILColorPickerView.m */; };
-		1DF03D9DDF778A6558F68504 /* ILHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03260DA70CA70CF0E61EF /* ILHuePickerView.m */; };
 		1DF03DC0F53E38D2CB88F6BA /* ValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF037012FF314C8E1F5C0E3 /* ValueFormatter.m */; };
 		1DF03DD5059A3900235BD95B /* SFIRouterVersionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039C1E7F34EC59EC5AF78 /* SFIRouterVersionTableViewCell.m */; };
-		1DF03E729C9FCFBA559D4BDC /* ILView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AA35AC0879D6B794169 /* ILView.m */; };
 		1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039D08131F3EA14BFDD9F /* SFIRouterSendLogsTableViewCell.m */; };
 		1DF03FBF0030A76DBCA3A828 /* CircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CircleLabel.m */; };
 		7CB5434B38D653A029281FD1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
+		846414C91B736B36008AB07F /* ILHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846414C11B736B36008AB07F /* ILHuePickerView.m */; };
+		846414CA1B736B36008AB07F /* ILColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846414C31B736B36008AB07F /* ILColorPickerView.m */; };
+		846414CB1B736B36008AB07F /* ILSaturationBrightnessPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846414C61B736B36008AB07F /* ILSaturationBrightnessPickerView.m */; };
+		846414CC1B736B36008AB07F /* ILView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846414C81B736B36008AB07F /* ILView.m */; };
+		846414DB1B736B80008AB07F /* AvenirLTStd-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414CF1B736B80008AB07F /* AvenirLTStd-Black.otf */; };
+		846414DC1B736B80008AB07F /* AvenirLTStd-BlackOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414D01B736B80008AB07F /* AvenirLTStd-BlackOblique.otf */; };
+		846414DD1B736B80008AB07F /* AvenirLTStd-Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414D11B736B80008AB07F /* AvenirLTStd-Book.otf */; };
+		846414DE1B736B80008AB07F /* AvenirLTStd-BookOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414D21B736B80008AB07F /* AvenirLTStd-BookOblique.otf */; };
+		846414DF1B736B80008AB07F /* AvenirLTStd-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414D31B736B80008AB07F /* AvenirLTStd-Heavy.otf */; };
+		846414E01B736B80008AB07F /* AvenirLTStd-HeavyOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414D41B736B80008AB07F /* AvenirLTStd-HeavyOblique.otf */; };
+		846414E11B736B80008AB07F /* AvenirLTStd-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414D51B736B80008AB07F /* AvenirLTStd-Light.otf */; };
+		846414E21B736B80008AB07F /* AvenirLTStd-LightOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414D61B736B80008AB07F /* AvenirLTStd-LightOblique.otf */; };
+		846414E31B736B80008AB07F /* AvenirLTStd-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414D71B736B80008AB07F /* AvenirLTStd-Medium.otf */; };
+		846414E41B736B80008AB07F /* AvenirLTStd-MediumOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414D81B736B80008AB07F /* AvenirLTStd-MediumOblique.otf */; };
+		846414E51B736B80008AB07F /* AvenirLTStd-Oblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414D91B736B80008AB07F /* AvenirLTStd-Oblique.otf */; };
+		846414E61B736B80008AB07F /* AvenirLTStd-Roman.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414DA1B736B80008AB07F /* AvenirLTStd-Roman.otf */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -298,18 +291,6 @@
 		1C2F60861B69E69D001CCA34 /* SKSTableViewCellIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SKSTableViewCellIndicator.h; sourceTree = "<group>"; };
 		1C2F60871B69E69D001CCA34 /* SKSTableViewCellIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SKSTableViewCellIndicator.m; sourceTree = "<group>"; };
 		1C33E94E19C025DB0014725A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		1C3F95071B6A189400C0406B /* AvenirLTStd-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Black.otf"; sourceTree = "<group>"; };
-		1C3F95081B6A189400C0406B /* AvenirLTStd-BlackOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-BlackOblique.otf"; sourceTree = "<group>"; };
-		1C3F95091B6A189400C0406B /* AvenirLTStd-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Book.otf"; sourceTree = "<group>"; };
-		1C3F950A1B6A189400C0406B /* AvenirLTStd-BookOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-BookOblique.otf"; sourceTree = "<group>"; };
-		1C3F950B1B6A189400C0406B /* AvenirLTStd-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Heavy.otf"; sourceTree = "<group>"; };
-		1C3F950C1B6A189400C0406B /* AvenirLTStd-HeavyOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-HeavyOblique.otf"; sourceTree = "<group>"; };
-		1C3F950D1B6A189400C0406B /* AvenirLTStd-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Light.otf"; sourceTree = "<group>"; };
-		1C3F950E1B6A189400C0406B /* AvenirLTStd-LightOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-LightOblique.otf"; sourceTree = "<group>"; };
-		1C3F950F1B6A189400C0406B /* AvenirLTStd-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Medium.otf"; sourceTree = "<group>"; };
-		1C3F95101B6A189400C0406B /* AvenirLTStd-MediumOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-MediumOblique.otf"; sourceTree = "<group>"; };
-		1C3F95111B6A189400C0406B /* AvenirLTStd-Oblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Oblique.otf"; sourceTree = "<group>"; };
-		1C3F95121B6A189400C0406B /* AvenirLTStd-Roman.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Roman.otf"; sourceTree = "<group>"; };
 		1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		1C4383041B2FFAC700F6AB7A /* libSystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.dylib; path = usr/lib/libSystem.dylib; sourceTree = SDKROOT; };
 		1C709A071B5A3157007D397C /* SFICloudLinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFICloudLinkViewController.h; sourceTree = "<group>"; };
@@ -442,18 +423,14 @@
 		1DF031D5539A9634BF7DF8BF /* CircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleView.h; sourceTree = "<group>"; };
 		1DF03216A3593D3DE89148E0 /* SFISensorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorTableViewCell.h; sourceTree = "<group>"; };
 		1DF0324593B3458764B0FB6F /* SFIDeviceIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIDeviceIndex.h; sourceTree = "<group>"; };
-		1DF03260DA70CA70CF0E61EF /* ILHuePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILHuePickerView.m; sourceTree = "<group>"; };
 		1DF0327E1106225F6EB46DF8 /* SFIHuePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIHuePickerView.m; sourceTree = "<group>"; };
-		1DF0331D17DC580313941C89 /* ILColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILColorPickerView.m; sourceTree = "<group>"; };
 		1DF0332C0801A1AC751F47D4 /* UIColor+GetHSB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+GetHSB.h"; sourceTree = "<group>"; };
 		1DF033553D675EBD64644DB2 /* AlertViewAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertViewAction.m; sourceTree = "<group>"; };
 		1DF033B55E920DA89560E84B /* CircleLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleLabel.m; sourceTree = "<group>"; };
 		1DF033BFB3D6B1769127310B /* NSData+Conversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Conversion.m"; sourceTree = "<group>"; };
 		1DF033CB5E3E061CABD94663 /* AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertView.m; sourceTree = "<group>"; };
 		1DF0344D549D727163A1EE39 /* ScoreboardNetworkSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardNetworkSettingsViewController.h; sourceTree = "<group>"; };
-		1DF0347F6CE56318C9DB59C5 /* ILSaturationBrightnessPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSaturationBrightnessPickerView.h; sourceTree = "<group>"; };
 		1DF035449B8995967846754D /* DebugLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugLogger.h; sourceTree = "<group>"; };
-		1DF035D824CA3CF3C06B170D /* ILColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILColorPickerView.h; sourceTree = "<group>"; };
 		1DF03620FD353332ACD4D41B /* SensorSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorSupport.h; sourceTree = "<group>"; };
 		1DF0364AFED818925B9469F3 /* SFIPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPreferences.m; sourceTree = "<group>"; };
 		1DF03670117CF6BB9C85C418 /* SFISensorsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorsViewController.h; sourceTree = "<group>"; };
@@ -461,14 +438,11 @@
 		1DF036AA13CCDD88050E8C2C /* SFISensorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorTableViewCell.m; sourceTree = "<group>"; };
 		1DF036C48B59B9CEAA7B4AAD /* UIColor+Securifi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Securifi.h"; sourceTree = "<group>"; };
 		1DF037012FF314C8E1F5C0E3 /* ValueFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ValueFormatter.m; sourceTree = "<group>"; };
-		1DF0371FEA037ED979DF2BAF /* ILHuePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILHuePickerView.h; sourceTree = "<group>"; };
 		1DF0372CEAFFEB180E0CAF94 /* SFINotificationStatusBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFINotificationStatusBarButtonItem.h; sourceTree = "<group>"; };
 		1DF0372FDF6A6B6E6843DF80 /* SFISensorsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorsViewController.m; sourceTree = "<group>"; };
 		1DF0373705FBEEE2BE853D29 /* NotificationsTestStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationsTestStore.h; sourceTree = "<group>"; };
 		1DF037B05ECBBC13711EC00A /* RouterNetworkSettingsEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouterNetworkSettingsEditor.h; sourceTree = "<group>"; };
-		1DF0383EDE76423FDF937F9E /* ILView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILView.h; sourceTree = "<group>"; };
 		1DF03845038413D52AF4100D /* SensorSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorSupport.m; sourceTree = "<group>"; };
-		1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSaturationBrightnessPickerView.m; sourceTree = "<group>"; };
 		1DF0385D1BECF622A4B92311 /* NotificationsTestStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationsTestStore.m; sourceTree = "<group>"; };
 		1DF038CDB37B0F1FAAD5A99D /* SFITextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFITextField.h; sourceTree = "<group>"; };
 		1DF038EE4B26640DB5168126 /* TemperatureView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemperatureView.m; sourceTree = "<group>"; };
@@ -481,7 +455,6 @@
 		1DF03A45DC0F0C5965348B84 /* AlertViewAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertViewAction.h; sourceTree = "<group>"; };
 		1DF03A704CC540558B993529 /* CircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleView.m; sourceTree = "<group>"; };
 		1DF03A98342E420E03800492 /* UIApplication+SecurifiNotifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIApplication+SecurifiNotifications.h"; sourceTree = "<group>"; };
-		1DF03AA35AC0879D6B794169 /* ILView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILView.m; sourceTree = "<group>"; };
 		1DF03AB12BF9855556678A13 /* UIApplication+SecurifiNotifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIApplication+SecurifiNotifications.m"; sourceTree = "<group>"; };
 		1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFINotificationStatusBarButtonItem.m; sourceTree = "<group>"; };
 		1DF03BB31530783920FAF4C4 /* SFIRouterSendLogsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterSendLogsTableViewCell.h; sourceTree = "<group>"; };
@@ -504,6 +477,26 @@
 		1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorIndexSupport.m; sourceTree = "<group>"; };
 		1DF03F453DC0B72C7436B9E8 /* MessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageView.m; sourceTree = "<group>"; };
 		1DF03F524BE952202AA5335B /* IndexValueSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexValueSupport.h; sourceTree = "<group>"; };
+		846414C11B736B36008AB07F /* ILHuePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILHuePickerView.m; sourceTree = "<group>"; };
+		846414C21B736B36008AB07F /* ILHuePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILHuePickerView.h; sourceTree = "<group>"; };
+		846414C31B736B36008AB07F /* ILColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILColorPickerView.m; sourceTree = "<group>"; };
+		846414C41B736B36008AB07F /* ILColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILColorPickerView.h; sourceTree = "<group>"; };
+		846414C51B736B36008AB07F /* ILSaturationBrightnessPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILSaturationBrightnessPickerView.h; sourceTree = "<group>"; };
+		846414C61B736B36008AB07F /* ILSaturationBrightnessPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILSaturationBrightnessPickerView.m; sourceTree = "<group>"; };
+		846414C71B736B36008AB07F /* ILView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILView.h; sourceTree = "<group>"; };
+		846414C81B736B36008AB07F /* ILView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILView.m; sourceTree = "<group>"; };
+		846414CF1B736B80008AB07F /* AvenirLTStd-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Black.otf"; sourceTree = "<group>"; };
+		846414D01B736B80008AB07F /* AvenirLTStd-BlackOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-BlackOblique.otf"; sourceTree = "<group>"; };
+		846414D11B736B80008AB07F /* AvenirLTStd-Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Book.otf"; sourceTree = "<group>"; };
+		846414D21B736B80008AB07F /* AvenirLTStd-BookOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-BookOblique.otf"; sourceTree = "<group>"; };
+		846414D31B736B80008AB07F /* AvenirLTStd-Heavy.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Heavy.otf"; sourceTree = "<group>"; };
+		846414D41B736B80008AB07F /* AvenirLTStd-HeavyOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-HeavyOblique.otf"; sourceTree = "<group>"; };
+		846414D51B736B80008AB07F /* AvenirLTStd-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Light.otf"; sourceTree = "<group>"; };
+		846414D61B736B80008AB07F /* AvenirLTStd-LightOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-LightOblique.otf"; sourceTree = "<group>"; };
+		846414D71B736B80008AB07F /* AvenirLTStd-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Medium.otf"; sourceTree = "<group>"; };
+		846414D81B736B80008AB07F /* AvenirLTStd-MediumOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-MediumOblique.otf"; sourceTree = "<group>"; };
+		846414D91B736B80008AB07F /* AvenirLTStd-Oblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Oblique.otf"; sourceTree = "<group>"; };
+		846414DA1B736B80008AB07F /* AvenirLTStd-Roman.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Roman.otf"; sourceTree = "<group>"; };
 		C6A3307CA8D0945BEFE53A18 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -609,26 +602,6 @@
 			path = SKSTableView;
 			sourceTree = "<group>";
 		};
-		1C3F95061B6A189400C0406B /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				1C3F95071B6A189400C0406B /* AvenirLTStd-Black.otf */,
-				1C3F95081B6A189400C0406B /* AvenirLTStd-BlackOblique.otf */,
-				1C3F95091B6A189400C0406B /* AvenirLTStd-Book.otf */,
-				1C3F950A1B6A189400C0406B /* AvenirLTStd-BookOblique.otf */,
-				1C3F950B1B6A189400C0406B /* AvenirLTStd-Heavy.otf */,
-				1C3F950C1B6A189400C0406B /* AvenirLTStd-HeavyOblique.otf */,
-				1C3F950D1B6A189400C0406B /* AvenirLTStd-Light.otf */,
-				1C3F950E1B6A189400C0406B /* AvenirLTStd-LightOblique.otf */,
-				1C3F950F1B6A189400C0406B /* AvenirLTStd-Medium.otf */,
-				1C3F95101B6A189400C0406B /* AvenirLTStd-MediumOblique.otf */,
-				1C3F95111B6A189400C0406B /* AvenirLTStd-Oblique.otf */,
-				1C3F95121B6A189400C0406B /* AvenirLTStd-Roman.otf */,
-			);
-			name = Fonts;
-			path = ../../../feature_scenes/iosapp/SecurifiApp/Base.lproj/Fonts;
-			sourceTree = "<group>";
-		};
 		1C709A061B5A3157007D397C /* Link */ = {
 			isa = PBXGroup;
 			children = (
@@ -644,7 +617,6 @@
 				1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */,
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
 				1C7E7E2D1A41A26A0026F0BA /* Base.lproj */,
-				1DF03F2CAC78C2DF995C9887 /* ILColorPicker */,
 				1C7E7CE51A41A0990026F0BA /* Legacy */,
 				1C709A061B5A3157007D397C /* Link */,
 				1C7E7CF61A41A0990026F0BA /* Login */,
@@ -897,7 +869,7 @@
 		1C7E7E2D1A41A26A0026F0BA /* Base.lproj */ = {
 			isa = PBXGroup;
 			children = (
-				1C3F95061B6A189400C0406B /* Fonts */,
+				846414CE1B736B7F008AB07F /* Fonts */,
 				1C7E7E2E1A41A26A0026F0BA /* AccountsStoryboard_iPhone.storyboard */,
 				1C7E7E301A41A26A0026F0BA /* Common-Localizable.strings */,
 				1C7E7E321A41A26A0026F0BA /* Common-MainStoryboard_iPhone.strings */,
@@ -993,6 +965,7 @@
 		1DF03CBFD9DEB75D228D8A0D /* SensorSupport */ = {
 			isa = PBXGroup;
 			children = (
+				846414CD1B736B44008AB07F /* ILHuePickerView */,
 				1DF03620FD353332ACD4D41B /* SensorSupport.h */,
 				1DF03845038413D52AF4100D /* SensorSupport.m */,
 				1DF03E6111D265CB01F83190 /* ValueFormatter.h */,
@@ -1007,19 +980,38 @@
 			path = SensorSupport;
 			sourceTree = "<group>";
 		};
-		1DF03F2CAC78C2DF995C9887 /* ILColorPicker */ = {
+		846414CD1B736B44008AB07F /* ILHuePickerView */ = {
 			isa = PBXGroup;
 			children = (
-				1DF0383EDE76423FDF937F9E /* ILView.h */,
-				1DF03AA35AC0879D6B794169 /* ILView.m */,
-				1DF0371FEA037ED979DF2BAF /* ILHuePickerView.h */,
-				1DF03260DA70CA70CF0E61EF /* ILHuePickerView.m */,
-				1DF035D824CA3CF3C06B170D /* ILColorPickerView.h */,
-				1DF0331D17DC580313941C89 /* ILColorPickerView.m */,
-				1DF0347F6CE56318C9DB59C5 /* ILSaturationBrightnessPickerView.h */,
-				1DF03852A861A890FBCCEB53 /* ILSaturationBrightnessPickerView.m */,
+				846414C11B736B36008AB07F /* ILHuePickerView.m */,
+				846414C21B736B36008AB07F /* ILHuePickerView.h */,
+				846414C31B736B36008AB07F /* ILColorPickerView.m */,
+				846414C41B736B36008AB07F /* ILColorPickerView.h */,
+				846414C51B736B36008AB07F /* ILSaturationBrightnessPickerView.h */,
+				846414C61B736B36008AB07F /* ILSaturationBrightnessPickerView.m */,
+				846414C71B736B36008AB07F /* ILView.h */,
+				846414C81B736B36008AB07F /* ILView.m */,
 			);
-			path = ILColorPicker;
+			name = ILHuePickerView;
+			sourceTree = "<group>";
+		};
+		846414CE1B736B7F008AB07F /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				846414CF1B736B80008AB07F /* AvenirLTStd-Black.otf */,
+				846414D01B736B80008AB07F /* AvenirLTStd-BlackOblique.otf */,
+				846414D11B736B80008AB07F /* AvenirLTStd-Book.otf */,
+				846414D21B736B80008AB07F /* AvenirLTStd-BookOblique.otf */,
+				846414D31B736B80008AB07F /* AvenirLTStd-Heavy.otf */,
+				846414D41B736B80008AB07F /* AvenirLTStd-HeavyOblique.otf */,
+				846414D51B736B80008AB07F /* AvenirLTStd-Light.otf */,
+				846414D61B736B80008AB07F /* AvenirLTStd-LightOblique.otf */,
+				846414D71B736B80008AB07F /* AvenirLTStd-Medium.otf */,
+				846414D81B736B80008AB07F /* AvenirLTStd-MediumOblique.otf */,
+				846414D91B736B80008AB07F /* AvenirLTStd-Oblique.otf */,
+				846414DA1B736B80008AB07F /* AvenirLTStd-Roman.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 		D80BDC9A1350F01973273EA6 /* Pods */ = {
@@ -1150,21 +1142,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				1C7E7E711A41A73B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */,
-				1C3F951D1B6A189400C0406B /* AvenirLTStd-Oblique.otf in Resources */,
-				1C3F95191B6A189400C0406B /* AvenirLTStd-Light.otf in Resources */,
+				846414E51B736B80008AB07F /* AvenirLTStd-Oblique.otf in Resources */,
+				846414E11B736B80008AB07F /* AvenirLTStd-Light.otf in Resources */,
 				1C7E7E721A41A73E0026F0BA /* MainStoryboard_iPad.storyboard in Resources */,
-				1C3F951C1B6A189400C0406B /* AvenirLTStd-MediumOblique.otf in Resources */,
-				1C3F95181B6A189400C0406B /* AvenirLTStd-HeavyOblique.otf in Resources */,
-				1C3F95151B6A189400C0406B /* AvenirLTStd-Book.otf in Resources */,
-				1C3F951A1B6A189400C0406B /* AvenirLTStd-LightOblique.otf in Resources */,
+				846414E41B736B80008AB07F /* AvenirLTStd-MediumOblique.otf in Resources */,
+				846414E01B736B80008AB07F /* AvenirLTStd-HeavyOblique.otf in Resources */,
+				846414DD1B736B80008AB07F /* AvenirLTStd-Book.otf in Resources */,
+				846414E21B736B80008AB07F /* AvenirLTStd-LightOblique.otf in Resources */,
 				1C7E7E751A41A7470026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */,
 				1C7E7E1C1A41A0D70026F0BA /* termsofuse.html in Resources */,
-				1C3F951B1B6A189400C0406B /* AvenirLTStd-Medium.otf in Resources */,
+				846414E31B736B80008AB07F /* AvenirLTStd-Medium.otf in Resources */,
 				1C7E7E181A41A0D70026F0BA /* Almond-MainStoryboard_iPhone.strings in Resources */,
-				1C3F95171B6A189400C0406B /* AvenirLTStd-Heavy.otf in Resources */,
+				846414DF1B736B80008AB07F /* AvenirLTStd-Heavy.otf in Resources */,
 				1C7E7E1A1A41A0D70026F0BA /* Localizable.strings in Resources */,
-				1C3F951E1B6A189400C0406B /* AvenirLTStd-Roman.otf in Resources */,
-				1C3F95161B6A189400C0406B /* AvenirLTStd-BookOblique.otf in Resources */,
+				846414E61B736B80008AB07F /* AvenirLTStd-Roman.otf in Resources */,
+				846414DE1B736B80008AB07F /* AvenirLTStd-BookOblique.otf in Resources */,
 				1C2F605F1B69E64F001CCA34 /* Scenes_Iphone.storyboard in Resources */,
 				1C7E7E161A41A0D70026F0BA /* AccountsStoryboard_iPhone.strings in Resources */,
 				1C7E7E191A41A0D70026F0BA /* InfoPlist.strings in Resources */,
@@ -1172,8 +1164,8 @@
 				1C7E7E171A41A0D70026F0BA /* Almond-Localizable.strings in Resources */,
 				1C7E7DFA1A41A0B30026F0BA /* Almond-Images.xcassets in Resources */,
 				1C7E7E1B1A41A0D70026F0BA /* MainStoryboard_iPhone.strings in Resources */,
-				1C3F95131B6A189400C0406B /* AvenirLTStd-Black.otf in Resources */,
-				1C3F95141B6A189400C0406B /* AvenirLTStd-BlackOblique.otf in Resources */,
+				846414DB1B736B80008AB07F /* AvenirLTStd-Black.otf in Resources */,
+				846414DC1B736B80008AB07F /* AvenirLTStd-BlackOblique.otf in Resources */,
 				1C7E7DFD1A41A0B30026F0BA /* cert.der in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1357,12 +1349,8 @@
 				1DF033F4DF8C6A502EB12289 /* ScoreboardTextEditorViewController.m in Sources */,
 				1C2F60A31B69E69D001CCA34 /* SFIWiFiDeviceProprtyEditViewController.m in Sources */,
 				1DF031DB440397B975511290 /* UIColor+GetHSB.m in Sources */,
-				1DF03E729C9FCFBA559D4BDC /* ILView.m in Sources */,
 				1C2F609B1B69E69D001CCA34 /* SFIScenesViewController.m in Sources */,
-				1DF0319D664AF1667E394E51 /* ILHuePickerView.m in Sources */,
 				1C2F60951B69E69D001CCA34 /* SFIAddSceneViewController.m in Sources */,
-				1DF03D2E7F166ECAEAD5B033 /* ILColorPickerView.m in Sources */,
-				1DF038B871CAC9B7F0FCA043 /* ILSaturationBrightnessPickerView.m in Sources */,
 				1DF038A445EB0F3A6476DC32 /* SFIHuePickerView.m in Sources */,
 				1C2F60A11B69E69D001CCA34 /* SFIWiFiClientsListViewController.m in Sources */,
 				1C2F60A71B69E69D001CCA34 /* SKSTableView.m in Sources */,
@@ -1403,13 +1391,13 @@
 				1C7E7D891A41A0990026F0BA /* SFINotificationTableViewCell.m in Sources */,
 				1C7E7DAF1A41A0990026F0BA /* DrawerViewController.m in Sources */,
 				1C7E7D871A41A0990026F0BA /* SFINotificationsViewController.m in Sources */,
+				846414CB1B736B36008AB07F /* ILSaturationBrightnessPickerView.m in Sources */,
 				1C7E7DC51A41A0990026F0BA /* SFIHighlightedButton.m in Sources */,
 				1C7E7D831A41A0990026F0BA /* SFILoginViewController.m in Sources */,
 				1C7E7DC71A41A0990026F0BA /* SFIMainViewController.m in Sources */,
 				1C7E7DA71A41A0990026F0BA /* SFIPasswordChangeViewController.m in Sources */,
 				1C2F60881B69E69D001CCA34 /* CGColor+Additions.m in Sources */,
 				1C7E7DCD1A41A0990026F0BA /* SFISlider.m in Sources */,
-				1C2F608A1B69E69D001CCA34 /* NPColorPickerView.m in Sources */,
 				1C7E7D911A41A0990026F0BA /* SFIRouterRebootTableViewCell.m in Sources */,
 				1C7E7DCB1A41A0990026F0BA /* SFISensor.m in Sources */,
 				1C7E7DBB1A41A0990026F0BA /* SFICardView.m in Sources */,
@@ -1420,10 +1408,12 @@
 				1C7E7D931A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
 				1C7E7D9D1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
 				1C7E7DA51A41A0990026F0BA /* SFIAccountsTableViewController.m in Sources */,
+				846414CC1B736B36008AB07F /* ILView.m in Sources */,
 				1C7E7DC31A41A0990026F0BA /* SFICopyLabel.m in Sources */,
 				1C7E7D951A41A0990026F0BA /* SFIRouterTableViewController.m in Sources */,
 				1C7E7D731A41A0990026F0BA /* SFIBlockedContent.m in Sources */,
 				1C7E7E061A41A0B30026F0BA /* main.m in Sources */,
+				846414C91B736B36008AB07F /* ILHuePickerView.m in Sources */,
 				1C7E7D991A41A0990026F0BA /* Analytics.m in Sources */,
 				1C7E7DAD1A41A0990026F0BA /* SFISignupViewController.m in Sources */,
 				1C7E7DC91A41A0990026F0BA /* SFIParser.m in Sources */,
@@ -1434,6 +1424,7 @@
 				1C7E7DB91A41A0990026F0BA /* SFICardTableViewCell.m in Sources */,
 				1C7E7D851A41A0990026F0BA /* SFILogoutAllViewController.m in Sources */,
 				1C7E7D8F1A41A0990026F0BA /* SFIRouterReboot.m in Sources */,
+				846414CA1B736B36008AB07F /* ILColorPickerView.m in Sources */,
 				1DF031661E380BA4D0E0EB07 /* SFIPreferences.m in Sources */,
 				1DF0390452B5D28DECBE4F68 /* NSData+Conversion.m in Sources */,
 				1DF0351F629E0103520602C3 /* SFICardViewSummaryCell.m in Sources */,
@@ -1454,12 +1445,8 @@
 				1C2F609C1B69E69D001CCA34 /* SFISwitchButton.m in Sources */,
 				1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */,
 				1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */,
-				1DF03341BDCB67EE35C82CE5 /* ILView.m in Sources */,
 				1C2F60A21B69E69D001CCA34 /* SFIWiFiDeviceProprtyEditViewController.m in Sources */,
-				1DF03D9DDF778A6558F68504 /* ILHuePickerView.m in Sources */,
-				1DF035687F592CCCFB831F48 /* ILColorPickerView.m in Sources */,
 				1C2F609A1B69E69D001CCA34 /* SFIScenesViewController.m in Sources */,
-				1DF0304B3CD98B217E85940D /* ILSaturationBrightnessPickerView.m in Sources */,
 				1C2F60941B69E69D001CCA34 /* SFIAddSceneViewController.m in Sources */,
 				1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */,
 				1DF03A194CCC7A1DE3C2A4DC /* UIColor+Securifi.m in Sources */,
@@ -1477,8 +1464,6 @@
 				1DF031024A2F8810074C455A /* TemperatureView.m in Sources */,
 				1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */,
 				1DF0333217E77760651C98F7 /* ScoreboardNetworkSettingsViewController.m in Sources */,
-				1C2F608E1B69E69D001CCA34 /* NPPickerIndicator.m in Sources */,
-				1C2F608C1B69E69D001CCA34 /* NPConicGradient.m in Sources */,
 				1C2F60A41B69E69D001CCA34 /* SFIWiFiDeviceTypeSelectionCell.m in Sources */,
 				1DF037452A64D0EE163B8173 /* AlertView.m in Sources */,
 				1DF0394349F84E2FCC5E25F9 /* AlertViewAction.m in Sources */,
