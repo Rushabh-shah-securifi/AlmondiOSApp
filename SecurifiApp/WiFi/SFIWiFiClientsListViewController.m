@@ -21,7 +21,7 @@
 #define SEC_SERVICE_NAME    @"securifiy.login_service"
 #define SEC_EMAIL           @"com.securifi.email"
 
-@interface SFIWiFiClientsListViewController ()<SFIWiFiDeviceProprtyEditViewDelegate,SKSTableViewDelegate>{
+@interface SFIWiFiClientsListViewController ()<SFIWiFiDeviceProprtyEditViewDelegate,SKSTableViewDelegate,SFIWiFiClientListCellDelegate>{
     NSInteger randomMobileInternalIndex;
     IBOutlet SKSTableView *tblDevices;
     SFIConnectedDevice * currentDevice;
@@ -159,7 +159,7 @@
     
     if (!cell)
         cell = [[SFIWiFiClientListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    
+    cell.delegate = self;
     [cell createClientCell:self.connectedDevices[indexPath.section]];
     //    if ((indexPath.section == 0 && (indexPath.row == 1 || indexPath.row == 0)) || (indexPath.section == 1 && (indexPath.row == 0 || indexPath.row == 2)))
     cell.expandable = YES;
@@ -465,10 +465,18 @@
 }
 
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    currentIndexPath = indexPath;
+//    currentDevice = self.connectedDevices[indexPath.section];
+//    return;
+//}
+#pragma mark Cell Delegates
+- (void)btnSettingTapped:(SFIWiFiClientListCell *)cell Info:(SFIConnectedDevice *)connectedDevice{
+    NSIndexPath * indexPath = [tblDevices indexPathForCell:cell];
     currentIndexPath = indexPath;
     currentDevice = self.connectedDevices[indexPath.section];
-    return;
+    [tblDevices expandCell:tblDevices didSelectRowAtIndexPath:indexPath];
+    //    [self tableView:tblDevices didSelectRowAtIndexPath:indexPath];
 }
 
 #pragma mark Detail View Delegates
@@ -569,7 +577,8 @@
                     device.isActive = [[dict valueForKey:@"Active"] boolValue];
                     
                     dispatch_async(dispatch_get_main_queue(), ^() {
-                        [tblDevices reloadSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
+                        [tblDevices refreshData];
+                        //                        [tblDevices reloadSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
                     });
                     break;
                 }
@@ -602,7 +611,11 @@
             device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
             device.isActive = [[dict valueForKey:@"Active"] boolValue];
             [self.connectedDevices addObject:device];
-            [tblDevices insertSections:[NSIndexSet indexSetWithIndex:self.connectedDevices.count-1] withRowAnimation:UITableViewRowAnimationNone];
+            dispatch_async(dispatch_get_main_queue(), ^() {
+                [tblDevices refreshData];
+                //                [tblDevices insertSections:[NSIndexSet indexSetWithIndex:self.connectedDevices.count-1] withRowAnimation:UITableViewRowAnimationNone];
+            });
+            
         }
         
     }
@@ -664,8 +677,10 @@
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
+    // && [[mainDict valueForKey:@"UserID"] isEqualToString:userID]
+    NSString *aMac = [mainDict valueForKey:@"AlmondMAC"];
     
-    if ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"UpdatePreference"] && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC] && [[mainDict valueForKey:@"UserID"] isEqualToString:userID]) {
+    if (([[mainDict valueForKey:@"CommandType"] isEqualToString:@"UpdatePreference"] || [[mainDict valueForKey:@"commandtype"] isEqualToString:@"UpdatePreference"]) && [aMac isEqualToString:plus.almondplusMAC]) {//TEST
         
         [self updatePreferenceInfo:@{@"ClientID":[mainDict valueForKey:@"ClientID"],@"NotificationType":[mainDict valueForKey:@"NotificationType"]}];
     }
@@ -690,7 +705,8 @@
     for (SFIConnectedDevice * device in self.connectedDevices) {
         if ([device.deviceID intValue]==[[preferenceInfo valueForKey:@"ClientID"] intValue]) {
             dispatch_async(dispatch_get_main_queue(), ^() {
-                [tblDevices reloadSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
+                [tblDevices refreshData];
+                //                [tblDevices reloadSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
             });
             
             break;

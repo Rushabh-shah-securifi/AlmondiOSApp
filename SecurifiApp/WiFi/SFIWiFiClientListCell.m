@@ -136,6 +136,7 @@ static UIImage *_image = nil;
 
 
 - (void)createClientCell:(SFIConnectedDevice*)connectedDevice{
+    self.connectedDevice = connectedDevice;
     lblMAC.text = connectedDevice.name;
     if (connectedDevice.isActive) {
         lblStatus.text = @"CONNECTED";
@@ -151,5 +152,8 @@ static UIImage *_image = nil;
     imgIcon.frame = fr;
 }
 
+- (IBAction)btnSettingTap:(id)sender {
+    [self.delegate btnSettingTapped:self Info:self.connectedDevice];
+}
 
 @end

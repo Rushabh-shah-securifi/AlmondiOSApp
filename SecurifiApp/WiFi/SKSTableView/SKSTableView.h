@@ -131,6 +131,7 @@
  */
 - (void)refreshData;
 
+- (void)expandCell:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 /**
  * Relaod data and scroll to the given index path while collapsing already expanded index paths.
  *

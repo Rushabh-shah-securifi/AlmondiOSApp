@@ -40,6 +40,7 @@ typedef enum {
 
 @property (assign, nonatomic) IBOutlet id<ILHuePickerViewDelegate> delegate;
 @property (assign, nonatomic) float hue;
+@property (assign, nonatomic) BOOL allowSelection;
 @property (assign, nonatomic) UIColor *color;
 @property (assign, nonatomic) ILHuePickerViewOrientation pickerOrientation;
 

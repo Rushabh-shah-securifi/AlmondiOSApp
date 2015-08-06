@@ -18,34 +18,6 @@
 
 - (void)deleteSceneDidTapped:(SFIAddSceneTableViewCell*)cell;
 
-
-//- (void)tableViewCellDidClickDevice:(SFIAddSceneTableViewCell*)cell;
-//
-//- (void)tableViewCellDidPressSettings:(SFIAddSceneTableViewCell*)cell;
-//
-//- (void)tableViewCellWillStartMakingChanges:(SFIAddSceneTableViewCell*)cell;
-//
-//- (void)tableViewCellDidCompleteMakingChanges:(SFIAddSceneTableViewCell*)cell;
-//
-//- (void)tableViewCellDidCancelMakingChanges:(SFIAddSceneTableViewCell*)cell;
-//
-//- (void)tableViewCellDidSaveChanges:(SFIAddSceneTableViewCell*)cell;
-//
-//- (void)tableViewCellDidDismissTamper:(SFIAddSceneTableViewCell*)cell;
-//
-//- (void)tableViewCellDidChangeValue:(SFIAddSceneTableViewCell*)cell propertyType:(SFIDevicePropertyType)propertyType newValue:(NSString*)newValue;
-//- (void)tableViewCellDidChangeValue:(SFIAddSceneTableViewCell*)cell propertyName:(NSString*)propertyName newValue:(NSString*)newValue;
-//
-//- (void)tableViewCellDidDidFailValidation:(SFIAddSceneTableViewCell *)cell validationToast:(NSString *)toastMsg;
-//
-//- (void)tableViewCell:(SFIAddSceneTableViewCell *)cell setValue:(id)value forKey:(NSString *)key;
-//
-//- (id)tableViewCell:(SFIAddSceneTableViewCell *)cell valueForKey:(NSString *)key;
-//
-//- (BOOL)tableViewCellNotificationsEnabled;
-//
-//- (void)tableViewCellDidChangeNotificationSetting:(SFIAddSceneTableViewCell *)cell newMode:(SFINotificationMode)mode;
-//
 @end
 
 

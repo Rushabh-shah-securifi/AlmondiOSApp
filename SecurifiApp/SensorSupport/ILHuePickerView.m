@@ -105,6 +105,9 @@
 #pragma mark - Touches
 
 - (void)handleTouches:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.allowSelection) {
+        return;
+    }
     CGPoint pos = [[touches anyObject] locationInView:self];
 
     ILHuePickerViewOrientation orientation = self.pickerOrientation;
@@ -127,14 +130,23 @@
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.allowSelection) {
+        return;
+    }
     [self handleTouches:touches withEvent:event];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.allowSelection) {
+        return;
+    }
     [self handleTouches:touches withEvent:event];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+    if (!self.allowSelection) {
+        return;
+    }
     [self handleTouches:touches withEvent:event];
 }
 

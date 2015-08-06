@@ -119,6 +119,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+
     [self initializeAlmondData:RouterViewReloadPolicy_on_state_change];
 }
 
@@ -162,7 +163,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     // init state
     self.routerSummary = nil;
     self.wirelessSettings = nil;
-    self.connectedDevices = nil;
     self.blockedDevices = nil;
     self.currentExpandedSection = nil;
     self.currentExpandedCount = 0;
@@ -1237,6 +1237,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 #pragma mark - Cloud command senders and handlers
 
 - (void)onWiFiClientsListResponseCallback:(id)sender {
+    self.connectedDevices = nil;
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {

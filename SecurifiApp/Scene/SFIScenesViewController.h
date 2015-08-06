@@ -11,4 +11,6 @@
 @interface SFIScenesViewController : UIViewController
 
 - (IBAction)btnAddNewSceneTap:(id)sender;
+@property(nonatomic, readonly) BOOL isHudHidden;
+
 @end
