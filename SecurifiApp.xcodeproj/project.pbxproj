@@ -1194,7 +1194,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "${SRCROOT}/Pods/CrashlyticsFramework/Crashlytics.framework/run d68e94e89ffba7d497c7d8a49f2a58f45877e7c3 9116d9e76370d5154529ca44d4de0ae6db6d84c634a4267a7abcd023299faf18";
+			shellScript = "\"${PODS_ROOT}/Fabric/Fabric.framework/run\" d68e94e89ffba7d497c7d8a49f2a58f45877e7c3 9116d9e76370d5154529ca44d4de0ae6db6d84c634a4267a7abcd023299faf18";
 		};
 		1CFD664F1ACE307900C937FE /* Increment Version Number */ = {
 			isa = PBXShellScriptBuildPhase;

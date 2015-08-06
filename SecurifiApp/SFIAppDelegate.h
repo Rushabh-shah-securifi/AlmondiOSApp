@@ -17,10 +17,6 @@
 // By default, returns the configurator needed by the Almond app.
 - (SecurifiConfigurator *)toolkitConfigurator;
 
-// Returns the API key used for configuring the crash reporter; subclasses override to set up for different branded apps
-// By default, returns the key needed by the Almond app.
-- (NSString *)crashReporterApiKey;
-
 // Returns the tracking ID to be used by the analytics engine; subclasses override to set up for different branded apps
 - (NSString *)analyticsTrackingId;
 

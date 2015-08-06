@@ -349,29 +349,35 @@
     icon = [UIImage imageNamed:@"icon_router"];
     routerNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_ROUTER image:icon selectedImage:icon];
 
-    //md01 added new tab
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
-    SFIScenesViewController *scenesCtrl = [storyboard instantiateViewControllerWithIdentifier:@"SFIScenesViewController"];
-//    SFIScenesViewController *scenesCtrl = [SFIScenesViewController new];
-    UINavigationController *scenesNav = [[UINavigationController alloc] initWithRootViewController:scenesCtrl];
-    icon = [UIImage imageNamed:@"icon_scenes"];
-    scenesNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_SCENES image:icon selectedImage:icon];
-    //md01 --
-
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SecurifiConfigurator *configurator = toolkit.configuration;
 
-    NSArray *tabs;
+    // Build up tab bar
+    //
+    NSArray *tabs = @[sensorNav];
+    //
+    if (configurator.enableScenes) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
+
+        SFIScenesViewController *scenesCtrl = [storyboard instantiateViewControllerWithIdentifier:@"SFIScenesViewController"];
+
+        UINavigationController *scenesNav = [[UINavigationController alloc] initWithRootViewController:scenesCtrl];
+        icon = [UIImage imageNamed:@"icon_scenes"];
+        scenesNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_SCENES image:icon selectedImage:icon];
+
+        tabs = [tabs arrayByAddingObject:scenesNav];
+    }
+    //
+    tabs = [tabs arrayByAddingObject:routerNav];
+    //
     if (configurator.enableScoreboard) {
         ScoreboardViewController *scoreCtrl = [ScoreboardViewController new];
+
         UINavigationController *scoreNav = [[UINavigationController alloc] initWithRootViewController:scoreCtrl];
         icon = [UIImage imageNamed:@"878-binoculars"];
         scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
 
-        tabs = @[sensorNav, scenesNav, routerNav, scoreNav];
-    }
-    else {
-        tabs = @[sensorNav, scenesNav, routerNav];
+        tabs = [tabs arrayByAddingObject:scoreNav];
     }
 
     UITabBarController *tabCtrl = [UITabBarController new];

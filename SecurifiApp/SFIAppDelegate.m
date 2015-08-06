@@ -8,12 +8,11 @@
 
 #import "SFIAppDelegate.h"
 #import "Analytics.h"
+#import "Fabric.h"
 #import "Crashlytics.h"
 #import "UIApplication+SecurifiNotifications.h"
-#import <CrashlyticsLumberjack/CrashlyticsLogger.h>
 
 #define DEFAULT_GA_ID @"UA-52832244-2"
-#define DEFAULT_CRASHLYTICS_KEY @"d68e94e89ffba7d497c7d8a49f2a58f45877e7c3"
 #define DEFAULT_ASSETS_PREFIX_ID @"Almond"
 
 @implementation SFIAppDelegate
@@ -30,11 +29,8 @@
     config.enableNotificationsHomeAwayMode = YES;
 //    config.enableRouterWirelessControl = YES;       // YES by default
     config.enableLocalNetworking = YES;
+    config.enableScenes = YES;
     return config;
-}
-
-- (NSString *)crashReporterApiKey {
-    return DEFAULT_CRASHLYTICS_KEY;
 }
 
 - (NSString *)analyticsTrackingId {
@@ -153,7 +149,7 @@
         return;
     }
 
-    [Crashlytics startWithAPIKey:[self crashReporterApiKey]];
+    [Fabric with:@[CrashlyticsKit]];
 
     SecurifiConfigurator *config = [self toolkitConfigurator];
     [SecurifiToolkit initialize:config];
@@ -167,7 +163,7 @@
     
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
-    [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
+//    [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
 
     if (config.enableNotificationsDebugLogging) {
         DDFileLogger *logger = [DDFileLogger new];
