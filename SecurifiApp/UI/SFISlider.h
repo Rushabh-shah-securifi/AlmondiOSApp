@@ -19,6 +19,7 @@
 // This value is converted to the slider's maxValue
 @property(nonatomic) int sensorMinValue;
 @property(nonatomic) int sensorMaxValue;
+@property(nonatomic) BOOL allowToSlide; //md01 TEST
 
 // Converts the sensors value to the scale used by this slider
 - (void)setConvertedValue:(float)sensorValue;

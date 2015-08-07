@@ -43,4 +43,14 @@
 }
 
 
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    //md01
+    if (!self.allowToSlide) {
+        [super cancelTrackingWithEvent:event];
+        return NO;
+    }
+    return [super beginTrackingWithTouch:touch withEvent:event];
+}
+
 @end
