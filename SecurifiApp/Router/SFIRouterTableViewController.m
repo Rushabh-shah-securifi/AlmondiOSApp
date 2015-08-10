@@ -66,8 +66,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 @property enum RouterViewState routerViewState;
 
 @property(nonatomic, strong) SFIRouterSummary *routerSummary;
-@property(nonatomic, strong) NSArray *connectedDevices;     // SFIConnectedDevice
-@property(nonatomic, strong) NSArray *blockedDevices;       // SFIBlockedDevice
 
 @property NSNumber *currentExpandedSection; // nil == none expanded
 @property NSUInteger currentExpandedCount; // number of rows in expanded section
@@ -157,7 +155,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
     // init state
     self.routerSummary = nil;
-    self.blockedDevices = nil;
     self.currentExpandedSection = nil;
     self.currentExpandedCount = 0;
     self.allowCellExpandControl = YES;
@@ -269,10 +266,12 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [[SecurifiToolkit sharedInstance] asyncAlmondSummaryInfoRequest:self.almondMac];
 }
 
-- (void)sendRouterDetailsRequest {
+- (void)sendRouterSettingsRequest:(enum SecurifiToolkitAlmondRouterRequest)requestType {
     if (self.routerViewState == RouterViewState_no_almond) {
         return;
     }
+
+    [self showLoadingRouterDataHUD];
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSString *mac = self.almondMac;
@@ -281,7 +280,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         NSLog(@"Router: sendRouterDetailsRequest, mac is null");
     }
 
-    [toolkit asyncAlmondStatusAndSettingsRequest:mac request:SecurifiToolkitAlmondRouterRequest_wifi_clients];
+    [toolkit asyncAlmondStatusAndSettingsRequest:mac request:requestType];
 }
 
 - (void)sendUpdateAlmondFirmwareCommand {
@@ -362,28 +361,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 - (void)onEditWirelessSettingsCard:(id)sender {
-    if (self.routerViewState == RouterViewState_no_almond) {
-        return;
-    }
-
-    [self showLoadingRouterDataHUD];
-
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    NSString *mac = self.almondMac;
-
-    if (!mac) {
-        NSLog(@"Router: sendRouterDetailsRequest, mac is null");
-    }
-
-    [toolkit asyncAlmondStatusAndSettingsRequest:mac request:SecurifiToolkitAlmondRouterRequest_settings];
+    [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_settings];
 }
 
 - (void)onEditDevicesAndUsersCard:(id)sender {
-//    [self onExpandCloseSection:self.tableView section:DEF_DEVICES_AND_USERS_SECTION];
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
-    SFIWiFiClientsListViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiClientsListViewController"];
-    viewController.connectedDevices = [self.connectedDevices mutableCopy];
-    [self.navigationController pushViewController:viewController animated:YES];
+    [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
 }
 
 - (void)onEditRouterRebootCard:(id)sender {
@@ -1079,12 +1061,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
         // add rows if needed
         if (currentExpandedSection != section) {
-            if (section == DEF_DEVICES_AND_USERS_SECTION) {
-                self.currentExpandedSection = @(DEF_DEVICES_AND_USERS_SECTION);
-                self.currentExpandedCount = self.connectedDevices.count + self.blockedDevices.count;
-                [self tryReloadSection:DEF_DEVICES_AND_USERS_SECTION];
-            }
-            else if (section == DEF_ROUTER_VERSION_SECTION) {
+            if (section == DEF_ROUTER_VERSION_SECTION) {
                 self.currentExpandedSection = @(DEF_ROUTER_VERSION_SECTION);
                 self.currentExpandedCount = 1;
                 [self tryReloadSection:DEF_ROUTER_VERSION_SECTION];
@@ -1113,8 +1090,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 #pragma mark - Cloud command senders and handlers
 
 - (void)onWiFiClientsListResponseCallback:(id)sender {
-    self.connectedDevices = nil;
-
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
@@ -1160,29 +1135,32 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             return;
         }
 
-        if ([[mainDict valueForKey:@"Clients"] isKindOfClass:[NSArray class]]) {
-            NSArray *dDictArray = [mainDict valueForKey:@"Clients"];
-            NSMutableArray *dArray = [NSMutableArray new];
-            for (NSDictionary *dict in dDictArray) {
-                SFIConnectedDevice *device = [SFIConnectedDevice new];
-                device.deviceID = [dict valueForKey:@"ID"];
-                device.name = [dict valueForKey:@"Name"];
-                device.deviceMAC = [dict valueForKey:@"MAC"];
-                device.deviceIP = [dict valueForKey:@"LastKnownIP"];
-                device.deviceConnection = [dict valueForKey:@"Connection"];
-                device.name = [dict valueForKey:@"Name"];
-                device.deviceLastActiveTime = [dict valueForKey:@"LastActiveTime"];
-                device.deviceType = [dict valueForKey:@"Type"];
-                device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
-                device.isActive = [[dict valueForKey:@"Active"] boolValue];
+        if (self.navigationController.topViewController == self) {
+            if ([[mainDict valueForKey:@"Clients"] isKindOfClass:[NSArray class]]) {
+                NSArray *dDictArray = [mainDict valueForKey:@"Clients"];
+                NSMutableArray *dArray = [NSMutableArray new];
+                for (NSDictionary *dict in dDictArray) {
+                    SFIConnectedDevice *device = [SFIConnectedDevice new];
+                    device.deviceID = [dict valueForKey:@"ID"];
+                    device.name = [dict valueForKey:@"Name"];
+                    device.deviceMAC = [dict valueForKey:@"MAC"];
+                    device.deviceIP = [dict valueForKey:@"LastKnownIP"];
+                    device.deviceConnection = [dict valueForKey:@"Connection"];
+                    device.name = [dict valueForKey:@"Name"];
+                    device.deviceLastActiveTime = [dict valueForKey:@"LastActiveTime"];
+                    device.deviceType = [dict valueForKey:@"Type"];
+                    device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
+                    device.isActive = [[dict valueForKey:@"Active"] boolValue];
 
-                [dArray addObject:device];
+                    [dArray addObject:device];
+                }
+
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
+                SFIWiFiClientsListViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiClientsListViewController"];
+                viewController.connectedDevices = dArray;
+                [self.navigationController pushViewController:viewController animated:YES];
             }
-
-            self.connectedDevices = dArray;
-            [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
         }
-
 
         [self.HUD hide:YES];
         [self.refreshControl endRefreshing];
@@ -1258,20 +1236,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         }
 
         switch (genericRouterCommand.commandType) {
-            case SFIGenericRouterCommandType_CONNECTED_DEVICES: {
-                SFIDevicesList *ls = genericRouterCommand.command;
-                self.connectedDevices = ls.deviceList;
-                [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
-                break;
-            }
-
-            case SFIGenericRouterCommandType_BLOCKED_MACS: {
-                SFIDevicesList *ls = genericRouterCommand.command;
-                self.blockedDevices = ls.deviceList;
-                [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
-                break;
-            }
-
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 NSArray *settings = ls.deviceList;
@@ -1285,6 +1249,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                     [self.navigationController pushViewController:ctrl animated:YES];
                 }
                 else if (self.routerSummary) {
+                    // called when this view controller is not the top one.
                     // keep the summary information up to date as settings are changed in the settings controller
                     [self.routerSummary updateWirelessSummaryWithSettings:settings];
                     [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
@@ -1304,7 +1269,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
                 [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
 
-                [self sendRouterDetailsRequest];
                 // after receiving summary, wait until detailed settings have been returned
                 // before updating the table.
                 break;
@@ -1546,33 +1510,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 - (void)onEnableWirelessAccessForDevice:(NSString *)deviceMAC allow:(BOOL)isAllowed {
-    if (deviceMAC.length == 0) {
-        return;
-    }
 
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.disposed) {
-            return;
-        }
-
-        [self showHUD:NSLocalizedString(@"hud.Updating settings...", @"Updating settings...")];
-
-        NSMutableSet *blockedMacs = [NSMutableSet set];
-        for (SFIBlockedDevice *device in self.blockedDevices) {
-            [blockedMacs addObject:device.deviceMAC];
-        }
-
-        if (isAllowed) {
-            [blockedMacs removeObject:deviceMAC];
-        }
-        else {
-            [blockedMacs addObject:deviceMAC];
-        }
-
-        [[SecurifiToolkit sharedInstance] asyncSetAlmondWirelessUsersSettings:self.almondMac blockedDeviceMacs:blockedMacs.allObjects];
-
-        [self.HUD hide:YES afterDelay:2];
-    });
 }
 
 #pragma mark - MessageViewDelegate methods
