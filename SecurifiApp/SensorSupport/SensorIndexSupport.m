@@ -1257,19 +1257,19 @@
             if (type == SFIDevicePropertyType_LOCK_STATE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"0";
-                s1.iconName = @"28_door_lock_locked";
+                s1.iconName = @"05_door_lock_unlocked";//md01 was @"28_door_lock_locked";
                 s1.notificationText = @" is not fully Locked.";
-
+                
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"1";
-                s2.iconName = @"28_door_lock_locked";
+                s2.iconName = @"05_door_lock_locked";//md01 was @"28_door_lock_locked";
                 s2.notificationText = @" is Locked.";
-
+                
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchData = @"2";
-                s3.iconName = @"28_door_lock_unlocked";
+                s3.iconName = @"05_door_lock_unlocked";//md01 was @"28_door_lock_unlocked";
                 s3.notificationText = @" is Unlocked.";
-
+                
                 return @[s1, s2, s3];
             }
 

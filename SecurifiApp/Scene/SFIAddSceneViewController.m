@@ -431,8 +431,7 @@
                 [indexDict setValue:@1 forKey:@"dimIndex"];
                 
                 
-                [arr addObject:indexDict];
-            }
+                [arr addObject:indexDict];            }
                 break;
             default:
             {

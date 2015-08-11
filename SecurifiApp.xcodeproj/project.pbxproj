@@ -13,9 +13,6 @@
 		1C2F60601B69E65B001CCA34 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C2F605D1B69E64F001CCA34 /* Scenes_Iphone.storyboard */; };
 		1C2F60881B69E69D001CCA34 /* CGColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60631B69E69D001CCA34 /* CGColor+Additions.m */; };
 		1C2F60891B69E69D001CCA34 /* CGColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60631B69E69D001CCA34 /* CGColor+Additions.m */; };
-		1C2F608B1B69E69D001CCA34 /* NPColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60651B69E69D001CCA34 /* NPColorPickerView.m */; };
-		1C2F608D1B69E69D001CCA34 /* NPConicGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60671B69E69D001CCA34 /* NPConicGradient.m */; };
-		1C2F608F1B69E69D001CCA34 /* NPPickerIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60691B69E69D001CCA34 /* NPPickerIndicator.m */; };
 		1C2F60921B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */; };
 		1C2F60931B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */; };
 		1C2F60941B69E69D001CCA34 /* SFIAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F606F1B69E69D001CCA34 /* SFIAddSceneViewController.m */; };
@@ -24,8 +21,6 @@
 		1C2F60971B69E69D001CCA34 /* SFIDimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60711B69E69D001CCA34 /* SFIDimmerButton.m */; };
 		1C2F60981B69E69D001CCA34 /* SFIScenesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60731B69E69D001CCA34 /* SFIScenesTableViewCell.m */; };
 		1C2F60991B69E69D001CCA34 /* SFIScenesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60731B69E69D001CCA34 /* SFIScenesTableViewCell.m */; };
-		1C2F609A1B69E69D001CCA34 /* SFIScenesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60751B69E69D001CCA34 /* SFIScenesViewController.m */; };
-		1C2F609B1B69E69D001CCA34 /* SFIScenesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60751B69E69D001CCA34 /* SFIScenesViewController.m */; };
 		1C2F609C1B69E69D001CCA34 /* SFISwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60771B69E69D001CCA34 /* SFISwitchButton.m */; };
 		1C2F609D1B69E69D001CCA34 /* SFISwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60771B69E69D001CCA34 /* SFISwitchButton.m */; };
 		1C2F609E1B69E69D001CCA34 /* SFIWiFiClientListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F607A1B69E69D001CCA34 /* SFIWiFiClientListCell.m */; };
@@ -232,6 +227,7 @@
 		1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039D08131F3EA14BFDD9F /* SFIRouterSendLogsTableViewCell.m */; };
 		1DF03FBF0030A76DBCA3A828 /* CircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CircleLabel.m */; };
 		7CB5434B38D653A029281FD1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
+		8443277C1B763AD700BF2355 /* SFIScenesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8443277B1B763AD700BF2355 /* SFIScenesTableViewController.m */; };
 		846414C91B736B36008AB07F /* ILHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846414C11B736B36008AB07F /* ILHuePickerView.m */; };
 		846414CA1B736B36008AB07F /* ILColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846414C31B736B36008AB07F /* ILColorPickerView.m */; };
 		846414CB1B736B36008AB07F /* ILSaturationBrightnessPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846414C61B736B36008AB07F /* ILSaturationBrightnessPickerView.m */; };
@@ -258,12 +254,6 @@
 		1C2F605E1B69E64F001CCA34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Scenes_Iphone.storyboard; sourceTree = "<group>"; };
 		1C2F60621B69E69D001CCA34 /* CGColor+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGColor+Additions.h"; sourceTree = "<group>"; };
 		1C2F60631B69E69D001CCA34 /* CGColor+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGColor+Additions.m"; sourceTree = "<group>"; };
-		1C2F60641B69E69D001CCA34 /* NPColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NPColorPickerView.h; sourceTree = "<group>"; };
-		1C2F60651B69E69D001CCA34 /* NPColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NPColorPickerView.m; sourceTree = "<group>"; };
-		1C2F60661B69E69D001CCA34 /* NPConicGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NPConicGradient.h; sourceTree = "<group>"; };
-		1C2F60671B69E69D001CCA34 /* NPConicGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NPConicGradient.m; sourceTree = "<group>"; };
-		1C2F60681B69E69D001CCA34 /* NPPickerIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NPPickerIndicator.h; sourceTree = "<group>"; };
-		1C2F60691B69E69D001CCA34 /* NPPickerIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NPPickerIndicator.m; sourceTree = "<group>"; };
 		1C2F606C1B69E69D001CCA34 /* SFIAddSceneTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIAddSceneTableViewCell.h; sourceTree = "<group>"; };
 		1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIAddSceneTableViewCell.m; sourceTree = "<group>"; };
 		1C2F606E1B69E69D001CCA34 /* SFIAddSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIAddSceneViewController.h; sourceTree = "<group>"; };
@@ -272,8 +262,6 @@
 		1C2F60711B69E69D001CCA34 /* SFIDimmerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIDimmerButton.m; sourceTree = "<group>"; };
 		1C2F60721B69E69D001CCA34 /* SFIScenesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIScenesTableViewCell.h; sourceTree = "<group>"; };
 		1C2F60731B69E69D001CCA34 /* SFIScenesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIScenesTableViewCell.m; sourceTree = "<group>"; };
-		1C2F60741B69E69D001CCA34 /* SFIScenesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIScenesViewController.h; sourceTree = "<group>"; };
-		1C2F60751B69E69D001CCA34 /* SFIScenesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIScenesViewController.m; sourceTree = "<group>"; };
 		1C2F60761B69E69D001CCA34 /* SFISwitchButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISwitchButton.h; sourceTree = "<group>"; };
 		1C2F60771B69E69D001CCA34 /* SFISwitchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISwitchButton.m; sourceTree = "<group>"; };
 		1C2F60791B69E69D001CCA34 /* SFIWiFiClientListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWiFiClientListCell.h; sourceTree = "<group>"; };
@@ -477,6 +465,8 @@
 		1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorIndexSupport.m; sourceTree = "<group>"; };
 		1DF03F453DC0B72C7436B9E8 /* MessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageView.m; sourceTree = "<group>"; };
 		1DF03F524BE952202AA5335B /* IndexValueSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexValueSupport.h; sourceTree = "<group>"; };
+		8443277A1B763AD700BF2355 /* SFIScenesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIScenesTableViewController.h; sourceTree = "<group>"; };
+		8443277B1B763AD700BF2355 /* SFIScenesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIScenesTableViewController.m; sourceTree = "<group>"; };
 		846414C11B736B36008AB07F /* ILHuePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILHuePickerView.m; sourceTree = "<group>"; };
 		846414C21B736B36008AB07F /* ILHuePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILHuePickerView.h; sourceTree = "<group>"; };
 		846414C31B736B36008AB07F /* ILColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILColorPickerView.m; sourceTree = "<group>"; };
@@ -551,12 +541,6 @@
 			children = (
 				1C2F60621B69E69D001CCA34 /* CGColor+Additions.h */,
 				1C2F60631B69E69D001CCA34 /* CGColor+Additions.m */,
-				1C2F60641B69E69D001CCA34 /* NPColorPickerView.h */,
-				1C2F60651B69E69D001CCA34 /* NPColorPickerView.m */,
-				1C2F60661B69E69D001CCA34 /* NPConicGradient.h */,
-				1C2F60671B69E69D001CCA34 /* NPConicGradient.m */,
-				1C2F60681B69E69D001CCA34 /* NPPickerIndicator.h */,
-				1C2F60691B69E69D001CCA34 /* NPPickerIndicator.m */,
 				1C2F606C1B69E69D001CCA34 /* SFIAddSceneTableViewCell.h */,
 				1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */,
 				1C2F606E1B69E69D001CCA34 /* SFIAddSceneViewController.h */,
@@ -565,10 +549,10 @@
 				1C2F60711B69E69D001CCA34 /* SFIDimmerButton.m */,
 				1C2F60721B69E69D001CCA34 /* SFIScenesTableViewCell.h */,
 				1C2F60731B69E69D001CCA34 /* SFIScenesTableViewCell.m */,
-				1C2F60741B69E69D001CCA34 /* SFIScenesViewController.h */,
-				1C2F60751B69E69D001CCA34 /* SFIScenesViewController.m */,
 				1C2F60761B69E69D001CCA34 /* SFISwitchButton.h */,
 				1C2F60771B69E69D001CCA34 /* SFISwitchButton.m */,
+				8443277A1B763AD700BF2355 /* SFIScenesTableViewController.h */,
+				8443277B1B763AD700BF2355 /* SFIScenesTableViewController.m */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -1301,7 +1285,6 @@
 				1C7E7D9A1A41A0990026F0BA /* Analytics.m in Sources */,
 				1C2F60891B69E69D001CCA34 /* CGColor+Additions.m in Sources */,
 				1C7E7D9E1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
-				1C2F608B1B69E69D001CCA34 /* NPColorPickerView.m in Sources */,
 				1C7E7DCA1A41A0990026F0BA /* SFIParser.m in Sources */,
 				1C7E7DD21A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				1C7E7D941A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
@@ -1349,7 +1332,6 @@
 				1DF033F4DF8C6A502EB12289 /* ScoreboardTextEditorViewController.m in Sources */,
 				1C2F60A31B69E69D001CCA34 /* SFIWiFiDeviceProprtyEditViewController.m in Sources */,
 				1DF031DB440397B975511290 /* UIColor+GetHSB.m in Sources */,
-				1C2F609B1B69E69D001CCA34 /* SFIScenesViewController.m in Sources */,
 				1C2F60951B69E69D001CCA34 /* SFIAddSceneViewController.m in Sources */,
 				1DF038A445EB0F3A6476DC32 /* SFIHuePickerView.m in Sources */,
 				1C2F60A11B69E69D001CCA34 /* SFIWiFiClientsListViewController.m in Sources */,
@@ -1365,8 +1347,6 @@
 				1DF03DD5059A3900235BD95B /* SFIRouterVersionTableViewCell.m in Sources */,
 				1DF03678B3BE5D42EBE3DC2B /* TemperatureView.m in Sources */,
 				1DF03271B3B360C48DF81716 /* SFITextField.m in Sources */,
-				1C2F608F1B69E69D001CCA34 /* NPPickerIndicator.m in Sources */,
-				1C2F608D1B69E69D001CCA34 /* NPConicGradient.m in Sources */,
 				1C2F60A51B69E69D001CCA34 /* SFIWiFiDeviceTypeSelectionCell.m in Sources */,
 				1DF034F099411CA60571A787 /* AlertView.m in Sources */,
 				1DF0322DC3176FDED2CFA324 /* AlertViewAction.m in Sources */,
@@ -1387,6 +1367,7 @@
 				1C7E7DC11A41A0990026F0BA /* SFIConstants.m in Sources */,
 				1C7E7DBF1A41A0990026F0BA /* SFIColors.m in Sources */,
 				1C2F60921B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */,
+				8443277C1B763AD700BF2355 /* SFIScenesTableViewController.m in Sources */,
 				1C2F60961B69E69D001CCA34 /* SFIDimmerButton.m in Sources */,
 				1C7E7D891A41A0990026F0BA /* SFINotificationTableViewCell.m in Sources */,
 				1C7E7DAF1A41A0990026F0BA /* DrawerViewController.m in Sources */,
@@ -1446,7 +1427,6 @@
 				1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */,
 				1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */,
 				1C2F60A21B69E69D001CCA34 /* SFIWiFiDeviceProprtyEditViewController.m in Sources */,
-				1C2F609A1B69E69D001CCA34 /* SFIScenesViewController.m in Sources */,
 				1C2F60941B69E69D001CCA34 /* SFIAddSceneViewController.m in Sources */,
 				1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */,
 				1DF03A194CCC7A1DE3C2A4DC /* UIColor+Securifi.m in Sources */,
@@ -1743,8 +1723,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tigran Aslanyan (N7NDANCZ5Q)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tigran Aslanyan (N7NDANCZ5Q)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Securifi, Inc (R336EY8885)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Securifi, Inc (R336EY8885)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1755,7 +1735,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PROVISIONING_PROFILE = "f251a31e-3f4d-4228-8101-ffa25010b5ff";
+				PROVISIONING_PROFILE = "cfae966b-8bd7-40be-bede-c6bc6da33269";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1798,8 +1778,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Almond-AppIcon";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-launch_image";
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tigran Aslanyan (N7NDANCZ5Q)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tigran Aslanyan (N7NDANCZ5Q)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Securifi, Inc (R336EY8885)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Securifi, Inc (R336EY8885)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PODS_ROOT)/CrashlyticsFramework\"",
@@ -1815,7 +1795,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f251a31e-3f4d-4228-8101-ffa25010b5ff";
+				PROVISIONING_PROFILE = "cfae966b-8bd7-40be-bede-c6bc6da33269";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iostoolkit\"/** \"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iosapp/Pods\"/**";
 				WRAPPER_EXTENSION = app;
 			};
