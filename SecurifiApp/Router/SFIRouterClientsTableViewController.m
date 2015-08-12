@@ -7,14 +7,14 @@
 //
 
 #import "SFIRouterClientsTableViewController.h"
-#import "SFIColors.h"
 #import "SFIParser.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "SFICardView.h"
 #import "SFICardTableViewCell.h"
-#import "SFIRouterSettingsTableViewCell.h"
 #import "SFIRouterTableViewActions.h"
 #import "TableHeaderView.h"
+#import "SFIRouterDevicesTableViewCell.h"
+#import "UIColor+Securifi.h"
 
 @interface SFIRouterClientsTableViewController () <SFIRouterTableViewActions, TableHeaderViewDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -77,47 +77,53 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.wirelessSettings.count;
+    return self.connectedClients.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 300;
+    return 85;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath; {
-    return 300;
+    return 85;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *const cell_id = @"wireless_settings";
+    NSString *const cell_id = @"device_edit";
 
-    SFIRouterSettingsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
+    SFIRouterDevicesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
-        cell = [[SFIRouterSettingsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
+        cell = [[SFIRouterDevicesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
+
+    cell.delegate = self;
     [cell markReuse];
 
-    SFIWirelessSetting *setting = [self tryGetWirelessSettingsForTableRow:indexPath.row];
+    SFICardView *card = cell.cardView;
+    card.backgroundColor = [UIColor securifiRouterTileBlueColor];
 
-    cell.cardView.backgroundColor = setting.enabled ? [[SFIColors blueColor] color] : [UIColor lightGrayColor];
-    cell.wirelessSetting = setting;
-    cell.enableRouterWirelessControl = self.enableRouterWirelessControl;
-    cell.delegate = self;
+    SFIConnectedDevice *device = [self tryGetRecord:indexPath.row];
+    if (device) {
+        cell.allowedDevice = YES;
+        cell.deviceIP = device.deviceIP;
+        cell.deviceMAC = device.deviceMAC;
+        cell.name = device.name;
+    }
 
     return cell;
 }
 
-- (SFIWirelessSetting *)tryGetWirelessSettingsForTableRow:(NSInteger)row {
-    NSArray *settings = self.wirelessSettings;
+- (SFIConnectedDevice *)tryGetRecord:(NSInteger)row {
+    NSArray *clients = self.connectedClients;
 
     if (row < 0) {
         return nil;
     }
-    if (row >= settings.count) {
+    if (row >= clients.count) {
         return nil;
     }
 
-    return settings[(NSUInteger) row];
+    return clients[(NSUInteger) row];
 }
 
 
@@ -207,7 +213,7 @@
         switch (genericRouterCommand.commandType) {
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
                 SFIDevicesList *ls = genericRouterCommand.command;
-                self.wirelessSettings = ls.deviceList;
+                self.connectedClients = ls.deviceList;
 
                 // settings was null, reload in case they are late arriving and the view is waiting for them
                 [self.tableView reloadData];
@@ -266,9 +272,9 @@
         }
 
         switch (command.commandType) {
-            case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
+            case SFIGenericRouterCommandType_CONNECTED_DEVICES: {
                 SFIDevicesList *ls = command.command;
-                self.wirelessSettings = ls.deviceList;
+                self.connectedClients = ls.deviceList;
 
                 [self.HUD hide:YES afterDelay:1];
 

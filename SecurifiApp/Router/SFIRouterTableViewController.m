@@ -28,6 +28,7 @@
 #import "UIColor+Securifi.h"
 #import "SFIWiFiClientsListViewController.h"
 #import "SFIRouterSettingsTableViewController.h"
+#import "SFIRouterClientsTableViewController.h"
 
 #define DEF_NETWORKING_SECTION          0
 #define DEF_WIRELESS_SETTINGS_SECTION   1
@@ -66,8 +67,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 @property enum RouterViewState routerViewState;
 
 @property(nonatomic, strong) SFIRouterSummary *routerSummary;
-@property(nonatomic, strong) NSArray *connectedDevices;     // SFIConnectedDevice
-@property(nonatomic, strong) NSArray *blockedDevices;       // SFIBlockedDevice
 
 @property NSNumber *currentExpandedSection; // nil == none expanded
 @property NSUInteger currentExpandedCount; // number of rows in expanded section
@@ -158,8 +157,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
     // init state
     self.routerSummary = nil;
-    self.connectedDevices = nil;
-    self.blockedDevices = nil;
 
     self.currentExpandedSection = nil;
     self.currentExpandedCount = 0;
@@ -200,11 +197,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     return NO;
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    //DLog(@"Rotation %d", fromInterfaceOrientation);
-    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -375,7 +367,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
     }
     else {
-        [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
+        [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_connected_device];
     }
 }
 
@@ -795,6 +787,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     }
 
     [cell markReuse];
+
     cell.cardView.backgroundColor = [UIColor securifiRouterTileBlueColor];
     cell.title = NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users");
     cell.summaries = @[
@@ -803,12 +796,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                                        routerSummary.blockedMACCount],
     ];
 
-     NSInteger totalCount = self.connectedDevices.count;//routerSummary.connectedDeviceCount + routerSummary.blockedMACCount;
+    NSInteger totalCount = routerSummary.connectedDeviceCount + routerSummary.blockedMACCount;
     if (totalCount > 0) {
-        BOOL editing = [self isSectionExpanded:DEF_DEVICES_AND_USERS_SECTION];
         cell.editTarget = self;
         cell.editSelector = @selector(onEditDevicesAndUsersCard:);
-        cell.expanded = editing;
+        cell.expanded = NO;
     }
 
     return cell;
@@ -1224,16 +1216,22 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
         switch (genericRouterCommand.commandType) {
             case SFIGenericRouterCommandType_CONNECTED_DEVICES: {
-                SFIDevicesList *ls = genericRouterCommand.command;
-                self.connectedDevices = ls.deviceList;
+                if (self.navigationController.topViewController == self) {
+                    SFIDevicesList *ls = genericRouterCommand.command;
+
+                    SFIRouterClientsTableViewController *ctrl = [SFIRouterClientsTableViewController new];
+                    ctrl.connectedClients = ls.deviceList;
+                    ctrl.almondMac = self.almondMac;
+
+                    [self.navigationController pushViewController:ctrl animated:YES];
+                }
+
                 [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
                 break;
             }
 
             case SFIGenericRouterCommandType_BLOCKED_MACS: {
-                SFIDevicesList *ls = genericRouterCommand.command;
-                self.blockedDevices = ls.deviceList;
-                [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
+                // not handled
                 break;
             }
 
