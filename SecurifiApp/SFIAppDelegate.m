@@ -30,6 +30,7 @@
 //    config.enableRouterWirelessControl = YES;       // YES by default
     config.enableLocalNetworking = YES;
     config.enableScenes = YES;
+    config.enableWifiClients = YES;
     return config;
 }
 

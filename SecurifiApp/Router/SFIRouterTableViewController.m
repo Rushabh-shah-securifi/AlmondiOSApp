@@ -100,6 +100,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     SecurifiConfigurator *configurator = toolkit.configuration;
     self.enableRouterWirelessControl = configurator.enableRouterWirelessControl;
     self.enableNetworkingControl = configurator.enableLocalNetworking;
+    self.enableNewWifiClientsControl = configurator.enableWifiClients;
 
     [super viewDidLoad];
 
