@@ -1,12 +1,12 @@
 //
-//  SFIRouterSettingsTableViewController.m
+//  SFIRouterClientsTableViewController.m
 //  Securifi Cloud
 //
-//  Created by Matthew Sinclair-Day on 2015/08/09
+//  Created by Matthew Sinclair-Day on 2015/08/12
 //  Copyright (c) 2015 Securifi. All rights reserved.
 //
 
-#import "SFIRouterSettingsTableViewController.h"
+#import "SFIRouterClientsTableViewController.h"
 #import "SFIColors.h"
 #import "SFIParser.h"
 #import <MBProgressHUD/MBProgressHUD.h>
@@ -16,13 +16,13 @@
 #import "SFIRouterTableViewActions.h"
 #import "TableHeaderView.h"
 
-@interface SFIRouterSettingsTableViewController () <SFIRouterTableViewActions, TableHeaderViewDelegate>
+@interface SFIRouterClientsTableViewController () <SFIRouterTableViewActions, TableHeaderViewDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic) BOOL disposed;
 
 @end
 
-@implementation SFIRouterSettingsTableViewController
+@implementation SFIRouterClientsTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

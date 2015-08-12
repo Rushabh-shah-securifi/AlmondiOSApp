@@ -78,6 +78,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
 @property(nonatomic) BOOL enableRouterWirelessControl;
 @property(nonatomic) BOOL enableNetworkingControl;
+@property(nonatomic) BOOL enableNewWifiClientsControl;
 @end
 
 @implementation SFIRouterTableViewController
@@ -365,7 +366,12 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 - (void)onEditDevicesAndUsersCard:(id)sender {
-    [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
+    if (self.enableNewWifiClientsControl) {
+        [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
+    }
+    else {
+        [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
+    }
 }
 
 - (void)onEditRouterRebootCard:(id)sender {
@@ -437,7 +443,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         case DEF_WIRELESS_SETTINGS_SECTION:
             return 1;
         case DEF_DEVICES_AND_USERS_SECTION:
-            return 1;
+            return 1 + self.currentExpandedCount;
         case DEF_ROUTER_VERSION_SECTION:
             return 1 + self.currentExpandedCount;
         case DEF_ROUTER_REBOOT_SECTION:
@@ -1240,6 +1246,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 NSArray *settings = ls.deviceList;
 
+                if (self.routerSummary) {
+                    // keep the summary information up to date as settings are changed in the settings controller
+                    [self.routerSummary updateWirelessSummaryWithSettings:settings];
+                }
+
                 if (self.navigationController.topViewController == self) {
                     SFIRouterSettingsTableViewController *ctrl = [SFIRouterSettingsTableViewController new];
                     ctrl.wirelessSettings = settings;
@@ -1248,12 +1259,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
                     [self.navigationController pushViewController:ctrl animated:YES];
                 }
-                else if (self.routerSummary) {
-                    // called when this view controller is not the top one.
-                    // keep the summary information up to date as settings are changed in the settings controller
-                    [self.routerSummary updateWirelessSummaryWithSettings:settings];
-                    [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
-                }
+
+                // even when in background, ensure summary view is updated to latest & greatest info
+                [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
 
                 break;
             }
