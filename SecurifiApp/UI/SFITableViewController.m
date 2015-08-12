@@ -166,7 +166,8 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+    [super viewWillAppear:animated];
+
     // make sure status icon is up-to-date
     [self markCloudStatusIcon];
     [self markNotificationStatusIcon];
@@ -175,6 +176,15 @@
     SWRevealViewController *ctrl = [self revealViewController];
     ctrl.delegate = self;
     ctrl.panGestureRecognizer.delegate = self;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+
+    if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
+        // make sure HUD is released from nav controller
+        [self.HUD removeFromSuperview];
+    }
 }
 
 #pragma Event handling
