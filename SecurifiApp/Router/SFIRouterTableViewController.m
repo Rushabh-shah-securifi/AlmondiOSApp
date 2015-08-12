@@ -803,6 +803,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         cell.editSelector = @selector(onEditDevicesAndUsersCard:);
         cell.expanded = NO;
     }
+    else {
+        cell.editTarget = nil;
+        cell.editSelector = nil;
+        cell.expanded = NO;
+    }
 
     return cell;
 }
