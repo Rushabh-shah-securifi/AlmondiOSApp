@@ -13,9 +13,6 @@
 		1C2F60601B69E65B001CCA34 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C2F605D1B69E64F001CCA34 /* Scenes_Iphone.storyboard */; };
 		1C2F60881B69E69D001CCA34 /* CGColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60631B69E69D001CCA34 /* CGColor+Additions.m */; };
 		1C2F60891B69E69D001CCA34 /* CGColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60631B69E69D001CCA34 /* CGColor+Additions.m */; };
-		1C2F608B1B69E69D001CCA34 /* NPColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60651B69E69D001CCA34 /* NPColorPickerView.m */; };
-		1C2F608D1B69E69D001CCA34 /* NPConicGradient.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60671B69E69D001CCA34 /* NPConicGradient.m */; };
-		1C2F608F1B69E69D001CCA34 /* NPPickerIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60691B69E69D001CCA34 /* NPPickerIndicator.m */; };
 		1C2F60921B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */; };
 		1C2F60931B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */; };
 		1C2F60941B69E69D001CCA34 /* SFIAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F606F1B69E69D001CCA34 /* SFIAddSceneViewController.m */; };
@@ -24,8 +21,6 @@
 		1C2F60971B69E69D001CCA34 /* SFIDimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60711B69E69D001CCA34 /* SFIDimmerButton.m */; };
 		1C2F60981B69E69D001CCA34 /* SFIScenesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60731B69E69D001CCA34 /* SFIScenesTableViewCell.m */; };
 		1C2F60991B69E69D001CCA34 /* SFIScenesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60731B69E69D001CCA34 /* SFIScenesTableViewCell.m */; };
-		1C2F609A1B69E69D001CCA34 /* SFIScenesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60751B69E69D001CCA34 /* SFIScenesViewController.m */; };
-		1C2F609B1B69E69D001CCA34 /* SFIScenesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60751B69E69D001CCA34 /* SFIScenesViewController.m */; };
 		1C2F609C1B69E69D001CCA34 /* SFISwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60771B69E69D001CCA34 /* SFISwitchButton.m */; };
 		1C2F609D1B69E69D001CCA34 /* SFISwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60771B69E69D001CCA34 /* SFISwitchButton.m */; };
 		1C2F609E1B69E69D001CCA34 /* SFIWiFiClientListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F607A1B69E69D001CCA34 /* SFIWiFiClientListCell.m */; };
@@ -188,15 +183,12 @@
 		1DF0351F629E0103520602C3 /* SFICardViewSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0369E72CD4FA9E78D9468 /* SFICardViewSummaryCell.m */; };
 		1DF035317380AA5E0BD86161 /* MessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F453DC0B72C7436B9E8 /* MessageView.m */; };
 		1DF0358BE9EBF2A3821D948D /* TableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0306EC5BE52D6364936BE /* TableHeaderView.m */; };
-		1DF035D461D47F73BC23511B /* SFIRouterSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF034B6B41FFB11197C065D /* SFIRouterSettingsTableViewController.m */; };
 		1DF0362BB7839519E771D769 /* SensorIndexSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */; };
 		1DF0364AEDD2A4A73832CE5D /* SensorSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03845038413D52AF4100D /* SensorSupport.m */; };
 		1DF03678B3BE5D42EBE3DC2B /* TemperatureView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF038EE4B26640DB5168126 /* TemperatureView.m */; };
 		1DF0369581F25A08C2D53894 /* SFINotificationStatusBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03AC36EC4CDC119CDAF93 /* SFINotificationStatusBarButtonItem.m */; };
 		1DF03698BAF3152723335005 /* UIImage+Securifi.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03BE3E401DD252BA24127 /* UIImage+Securifi.m */; };
 		1DF036E2B7339D81255297B9 /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033BFB3D6B1769127310B /* NSData+Conversion.m */; };
-		1DF036F8CABE1FA93286AF76 /* SFIRouterClientsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF032D473F0B6B0795E68C1 /* SFIRouterClientsTableViewController.m */; };
-		1DF03725B0D9BAA640327BE2 /* SFIRouterSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF034B6B41FFB11197C065D /* SFIRouterSettingsTableViewController.m */; };
 		1DF0372FD63ED4053F07FFAD /* SFIDeviceIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039EF47F24492C42B3E91 /* SFIDeviceIndex.m */; };
 		1DF03733354F6CEF7D979D57 /* NotificationsTestStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0385D1BECF622A4B92311 /* NotificationsTestStore.m */; };
 		1DF037452A64D0EE163B8173 /* AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033CB5E3E061CABD94663 /* AlertView.m */; };
@@ -232,10 +224,10 @@
 		1DF03D1D08D853057CDED2DC /* SFINotificationTableViewHeaderFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF031B6B99795E6267FEAD7 /* SFINotificationTableViewHeaderFooter.m */; };
 		1DF03DC0F53E38D2CB88F6BA /* ValueFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF037012FF314C8E1F5C0E3 /* ValueFormatter.m */; };
 		1DF03DD5059A3900235BD95B /* SFIRouterVersionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039C1E7F34EC59EC5AF78 /* SFIRouterVersionTableViewCell.m */; };
-		1DF03DE8FBD5D4428947E3D9 /* SFIRouterClientsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF032D473F0B6B0795E68C1 /* SFIRouterClientsTableViewController.m */; };
 		1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039D08131F3EA14BFDD9F /* SFIRouterSendLogsTableViewCell.m */; };
 		1DF03FBF0030A76DBCA3A828 /* CircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CircleLabel.m */; };
 		7CB5434B38D653A029281FD1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
+		8443277C1B763AD700BF2355 /* SFIScenesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8443277B1B763AD700BF2355 /* SFIScenesTableViewController.m */; };
 		846414C91B736B36008AB07F /* ILHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846414C11B736B36008AB07F /* ILHuePickerView.m */; };
 		846414CA1B736B36008AB07F /* ILColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846414C31B736B36008AB07F /* ILColorPickerView.m */; };
 		846414CB1B736B36008AB07F /* ILSaturationBrightnessPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846414C61B736B36008AB07F /* ILSaturationBrightnessPickerView.m */; };
@@ -262,12 +254,6 @@
 		1C2F605E1B69E64F001CCA34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Scenes_Iphone.storyboard; sourceTree = "<group>"; };
 		1C2F60621B69E69D001CCA34 /* CGColor+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGColor+Additions.h"; sourceTree = "<group>"; };
 		1C2F60631B69E69D001CCA34 /* CGColor+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGColor+Additions.m"; sourceTree = "<group>"; };
-		1C2F60641B69E69D001CCA34 /* NPColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NPColorPickerView.h; sourceTree = "<group>"; };
-		1C2F60651B69E69D001CCA34 /* NPColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NPColorPickerView.m; sourceTree = "<group>"; };
-		1C2F60661B69E69D001CCA34 /* NPConicGradient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NPConicGradient.h; sourceTree = "<group>"; };
-		1C2F60671B69E69D001CCA34 /* NPConicGradient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NPConicGradient.m; sourceTree = "<group>"; };
-		1C2F60681B69E69D001CCA34 /* NPPickerIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NPPickerIndicator.h; sourceTree = "<group>"; };
-		1C2F60691B69E69D001CCA34 /* NPPickerIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NPPickerIndicator.m; sourceTree = "<group>"; };
 		1C2F606C1B69E69D001CCA34 /* SFIAddSceneTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIAddSceneTableViewCell.h; sourceTree = "<group>"; };
 		1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIAddSceneTableViewCell.m; sourceTree = "<group>"; };
 		1C2F606E1B69E69D001CCA34 /* SFIAddSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIAddSceneViewController.h; sourceTree = "<group>"; };
@@ -276,8 +262,6 @@
 		1C2F60711B69E69D001CCA34 /* SFIDimmerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIDimmerButton.m; sourceTree = "<group>"; };
 		1C2F60721B69E69D001CCA34 /* SFIScenesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIScenesTableViewCell.h; sourceTree = "<group>"; };
 		1C2F60731B69E69D001CCA34 /* SFIScenesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIScenesTableViewCell.m; sourceTree = "<group>"; };
-		1C2F60741B69E69D001CCA34 /* SFIScenesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIScenesViewController.h; sourceTree = "<group>"; };
-		1C2F60751B69E69D001CCA34 /* SFIScenesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIScenesViewController.m; sourceTree = "<group>"; };
 		1C2F60761B69E69D001CCA34 /* SFISwitchButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISwitchButton.h; sourceTree = "<group>"; };
 		1C2F60771B69E69D001CCA34 /* SFISwitchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISwitchButton.m; sourceTree = "<group>"; };
 		1C2F60791B69E69D001CCA34 /* SFIWiFiClientListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWiFiClientListCell.h; sourceTree = "<group>"; };
@@ -421,7 +405,6 @@
 		1DF0308DE6327F106EDC2AA2 /* SFITextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFITextField.m; sourceTree = "<group>"; };
 		1DF030F104782902146AFA76 /* ScoreboardDebugLoggerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardDebugLoggerViewController.h; sourceTree = "<group>"; };
 		1DF0310139DB0870F7D2C815 /* NSData+Conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Conversion.h"; sourceTree = "<group>"; };
-		1DF03128C1CDC2D59079DAEB /* SFIRouterSettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterSettingsTableViewController.h; sourceTree = "<group>"; };
 		1DF0317CFEFED25A120B5900 /* ScoreboardTextEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardTextEditorViewController.h; sourceTree = "<group>"; };
 		1DF031B6B99795E6267FEAD7 /* SFINotificationTableViewHeaderFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFINotificationTableViewHeaderFooter.m; sourceTree = "<group>"; };
 		1DF031C08CFCEF46B5E698F7 /* UIColor+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Securifi.m"; sourceTree = "<group>"; };
@@ -429,15 +412,12 @@
 		1DF03216A3593D3DE89148E0 /* SFISensorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorTableViewCell.h; sourceTree = "<group>"; };
 		1DF0324593B3458764B0FB6F /* SFIDeviceIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIDeviceIndex.h; sourceTree = "<group>"; };
 		1DF0327E1106225F6EB46DF8 /* SFIHuePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIHuePickerView.m; sourceTree = "<group>"; };
-		1DF032D473F0B6B0795E68C1 /* SFIRouterClientsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterClientsTableViewController.m; sourceTree = "<group>"; };
 		1DF0332C0801A1AC751F47D4 /* UIColor+GetHSB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+GetHSB.h"; sourceTree = "<group>"; };
 		1DF033553D675EBD64644DB2 /* AlertViewAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertViewAction.m; sourceTree = "<group>"; };
-		1DF0335EDC0BA22DE962AEDF /* SFIRouterClientsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIRouterClientsTableViewController.h; sourceTree = "<group>"; };
 		1DF033B55E920DA89560E84B /* CircleLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleLabel.m; sourceTree = "<group>"; };
 		1DF033BFB3D6B1769127310B /* NSData+Conversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Conversion.m"; sourceTree = "<group>"; };
 		1DF033CB5E3E061CABD94663 /* AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertView.m; sourceTree = "<group>"; };
 		1DF0344D549D727163A1EE39 /* ScoreboardNetworkSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardNetworkSettingsViewController.h; sourceTree = "<group>"; };
-		1DF034B6B41FFB11197C065D /* SFIRouterSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterSettingsTableViewController.m; sourceTree = "<group>"; };
 		1DF035449B8995967846754D /* DebugLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DebugLogger.h; sourceTree = "<group>"; };
 		1DF03620FD353332ACD4D41B /* SensorSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorSupport.h; sourceTree = "<group>"; };
 		1DF0364AFED818925B9469F3 /* SFIPreferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPreferences.m; sourceTree = "<group>"; };
@@ -485,6 +465,8 @@
 		1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorIndexSupport.m; sourceTree = "<group>"; };
 		1DF03F453DC0B72C7436B9E8 /* MessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageView.m; sourceTree = "<group>"; };
 		1DF03F524BE952202AA5335B /* IndexValueSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexValueSupport.h; sourceTree = "<group>"; };
+		8443277A1B763AD700BF2355 /* SFIScenesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIScenesTableViewController.h; sourceTree = "<group>"; };
+		8443277B1B763AD700BF2355 /* SFIScenesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIScenesTableViewController.m; sourceTree = "<group>"; };
 		846414C11B736B36008AB07F /* ILHuePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILHuePickerView.m; sourceTree = "<group>"; };
 		846414C21B736B36008AB07F /* ILHuePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILHuePickerView.h; sourceTree = "<group>"; };
 		846414C31B736B36008AB07F /* ILColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILColorPickerView.m; sourceTree = "<group>"; };
@@ -559,12 +541,6 @@
 			children = (
 				1C2F60621B69E69D001CCA34 /* CGColor+Additions.h */,
 				1C2F60631B69E69D001CCA34 /* CGColor+Additions.m */,
-				1C2F60641B69E69D001CCA34 /* NPColorPickerView.h */,
-				1C2F60651B69E69D001CCA34 /* NPColorPickerView.m */,
-				1C2F60661B69E69D001CCA34 /* NPConicGradient.h */,
-				1C2F60671B69E69D001CCA34 /* NPConicGradient.m */,
-				1C2F60681B69E69D001CCA34 /* NPPickerIndicator.h */,
-				1C2F60691B69E69D001CCA34 /* NPPickerIndicator.m */,
 				1C2F606C1B69E69D001CCA34 /* SFIAddSceneTableViewCell.h */,
 				1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */,
 				1C2F606E1B69E69D001CCA34 /* SFIAddSceneViewController.h */,
@@ -573,10 +549,10 @@
 				1C2F60711B69E69D001CCA34 /* SFIDimmerButton.m */,
 				1C2F60721B69E69D001CCA34 /* SFIScenesTableViewCell.h */,
 				1C2F60731B69E69D001CCA34 /* SFIScenesTableViewCell.m */,
-				1C2F60741B69E69D001CCA34 /* SFIScenesViewController.h */,
-				1C2F60751B69E69D001CCA34 /* SFIScenesViewController.m */,
 				1C2F60761B69E69D001CCA34 /* SFISwitchButton.h */,
 				1C2F60771B69E69D001CCA34 /* SFISwitchButton.m */,
+				8443277A1B763AD700BF2355 /* SFIScenesTableViewController.h */,
+				8443277B1B763AD700BF2355 /* SFIScenesTableViewController.m */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -714,10 +690,6 @@
 				1DF03E21703AEF8F828E5563 /* SFIRouterVersionTableViewCell.h */,
 				1DF03EE61C9DF4D7E058616E /* RouterNetworkSettingsEditor.m */,
 				1DF037B05ECBBC13711EC00A /* RouterNetworkSettingsEditor.h */,
-				1DF034B6B41FFB11197C065D /* SFIRouterSettingsTableViewController.m */,
-				1DF03128C1CDC2D59079DAEB /* SFIRouterSettingsTableViewController.h */,
-				1DF0335EDC0BA22DE962AEDF /* SFIRouterClientsTableViewController.h */,
-				1DF032D473F0B6B0795E68C1 /* SFIRouterClientsTableViewController.m */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -1094,7 +1066,7 @@
 						DevelopmentTeam = C7LGXV6KUU;
 					};
 					1CED5EF019AC82FD0023512F = {
-						DevelopmentTeam = R336EY8885;
+						DevelopmentTeam = N7NDANCZ5Q;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1313,7 +1285,6 @@
 				1C7E7D9A1A41A0990026F0BA /* Analytics.m in Sources */,
 				1C2F60891B69E69D001CCA34 /* CGColor+Additions.m in Sources */,
 				1C7E7D9E1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
-				1C2F608B1B69E69D001CCA34 /* NPColorPickerView.m in Sources */,
 				1C7E7DCA1A41A0990026F0BA /* SFIParser.m in Sources */,
 				1C7E7DD21A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				1C7E7D941A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
@@ -1361,7 +1332,6 @@
 				1DF033F4DF8C6A502EB12289 /* ScoreboardTextEditorViewController.m in Sources */,
 				1C2F60A31B69E69D001CCA34 /* SFIWiFiDeviceProprtyEditViewController.m in Sources */,
 				1DF031DB440397B975511290 /* UIColor+GetHSB.m in Sources */,
-				1C2F609B1B69E69D001CCA34 /* SFIScenesViewController.m in Sources */,
 				1C2F60951B69E69D001CCA34 /* SFIAddSceneViewController.m in Sources */,
 				1DF038A445EB0F3A6476DC32 /* SFIHuePickerView.m in Sources */,
 				1C2F60A11B69E69D001CCA34 /* SFIWiFiClientsListViewController.m in Sources */,
@@ -1377,15 +1347,11 @@
 				1DF03DD5059A3900235BD95B /* SFIRouterVersionTableViewCell.m in Sources */,
 				1DF03678B3BE5D42EBE3DC2B /* TemperatureView.m in Sources */,
 				1DF03271B3B360C48DF81716 /* SFITextField.m in Sources */,
-				1C2F608F1B69E69D001CCA34 /* NPPickerIndicator.m in Sources */,
-				1C2F608D1B69E69D001CCA34 /* NPConicGradient.m in Sources */,
 				1C2F60A51B69E69D001CCA34 /* SFIWiFiDeviceTypeSelectionCell.m in Sources */,
 				1DF034F099411CA60571A787 /* AlertView.m in Sources */,
 				1DF0322DC3176FDED2CFA324 /* AlertViewAction.m in Sources */,
 				1DF03A511BCC303474712681 /* RouterNetworkSettingsEditor.m in Sources */,
 				1DF0338430771644DAE94F36 /* SFIDeviceIndex.m in Sources */,
-				1DF03725B0D9BAA640327BE2 /* SFIRouterSettingsTableViewController.m in Sources */,
-				1DF036F8CABE1FA93286AF76 /* SFIRouterClientsTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1401,6 +1367,7 @@
 				1C7E7DC11A41A0990026F0BA /* SFIConstants.m in Sources */,
 				1C7E7DBF1A41A0990026F0BA /* SFIColors.m in Sources */,
 				1C2F60921B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */,
+				8443277C1B763AD700BF2355 /* SFIScenesTableViewController.m in Sources */,
 				1C2F60961B69E69D001CCA34 /* SFIDimmerButton.m in Sources */,
 				1C7E7D891A41A0990026F0BA /* SFINotificationTableViewCell.m in Sources */,
 				1C7E7DAF1A41A0990026F0BA /* DrawerViewController.m in Sources */,
@@ -1460,7 +1427,6 @@
 				1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */,
 				1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */,
 				1C2F60A21B69E69D001CCA34 /* SFIWiFiDeviceProprtyEditViewController.m in Sources */,
-				1C2F609A1B69E69D001CCA34 /* SFIScenesViewController.m in Sources */,
 				1C2F60941B69E69D001CCA34 /* SFIAddSceneViewController.m in Sources */,
 				1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */,
 				1DF03A194CCC7A1DE3C2A4DC /* UIColor+Securifi.m in Sources */,
@@ -1483,8 +1449,6 @@
 				1DF0394349F84E2FCC5E25F9 /* AlertViewAction.m in Sources */,
 				1DF03B8FE78FA07C67A943CC /* RouterNetworkSettingsEditor.m in Sources */,
 				1DF0372FD63ED4053F07FFAD /* SFIDeviceIndex.m in Sources */,
-				1DF035D461D47F73BC23511B /* SFIRouterSettingsTableViewController.m in Sources */,
-				1DF03DE8FBD5D4428947E3D9 /* SFIRouterClientsTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1759,8 +1723,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tigran Aslanyan (N7NDANCZ5Q)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tigran Aslanyan (N7NDANCZ5Q)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Securifi, Inc (R336EY8885)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Securifi, Inc (R336EY8885)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1771,7 +1735,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				PROVISIONING_PROFILE = "f251a31e-3f4d-4228-8101-ffa25010b5ff";
+				PROVISIONING_PROFILE = "cfae966b-8bd7-40be-bede-c6bc6da33269";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -1814,8 +1778,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Almond-AppIcon";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-launch_image";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tigran Aslanyan (N7NDANCZ5Q)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Securifi, Inc (R336EY8885)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Securifi, Inc (R336EY8885)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(PODS_ROOT)/CrashlyticsFramework\"",
@@ -1831,7 +1795,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f251a31e-3f4d-4228-8101-ffa25010b5ff";
+				PROVISIONING_PROFILE = "cfae966b-8bd7-40be-bede-c6bc6da33269";
 				USER_HEADER_SEARCH_PATHS = "\"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iostoolkit\"/** \"${PROJECT_DIR}/../iosapp\"/** \"${PROJECT_DIR}/../iosapp/Pods\"/**";
 				WRAPPER_EXTENSION = app;
 			};

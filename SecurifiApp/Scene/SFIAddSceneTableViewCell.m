@@ -637,6 +637,7 @@
                 break;
             case SFIDeviceType_ZigbeeDoorLock_28:
                 value = @"1";
+                break;
             case SFIDeviceType_BinarySwitch_0:
                 value = @"home";
                 break;
@@ -684,17 +685,17 @@
         btnDimOn.selected = YES;
         btnDimOff.selected = NO;
         
-        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
-            [btnDim setNewValue:btnDimOn.dimOnValue];
-            btnDim.selected = YES;
-        }
+//        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
+//            [btnDim setNewValue:btnDimOn.dimOnValue];
+//            btnDim.selected = YES;
+//        }
         
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnDimOn.tag Value:btnDimOn.dimOnValue];
     }else{
         btnDimOn.selected = NO;
-        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
-            [btnDim setNewValue:btnDimOff.dimOffValue];
-        }
+//        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
+//            [btnDim setNewValue:btnDimOff.dimOffValue];
+//        }
         
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnDimOn.tag Value:@"remove_from_entry_list"];
     }
@@ -704,10 +705,10 @@
         btnDimOn.selected = NO;
         btnDimOff.selected = YES;
         
-        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
-            [btnDim setNewValue:btnDimOff.dimOffValue];
-            btnDim.selected = NO;
-        }
+//        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
+//            [btnDim setNewValue:btnDimOff.dimOffValue];
+//            btnDim.selected = NO;
+//        }
         
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnDimOff.tag Value:btnDimOff.dimOffValue];
     }else{
@@ -943,10 +944,12 @@
     [btnTermostatFanOff setupValues:[UIImage imageNamed:@"imgFanOff"] Title:@"FAN OFF"];
     
     [btnTermostatDimCool setupValues:@"35" Title:@"COOLING TEMP." Prefix:@"°F"];
+    btnTermostatDimCool.selected = NO;
     btnTermostatDimCool.tag = 5;
     
     
     [btnTermostatDimHeat setupValues:@"35" Title:@"HEATING TEMP." Prefix:@"°F"];
+    btnTermostatDimHeat.selected = NO;
     btnTermostatDimHeat.tag = 4;
     
     btnAuto.tag = 2;

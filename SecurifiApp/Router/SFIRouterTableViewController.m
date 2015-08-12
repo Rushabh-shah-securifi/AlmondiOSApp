@@ -798,7 +798,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                                        routerSummary.blockedMACCount],
     ];
 
-    int totalCount = routerSummary.connectedDeviceCount + routerSummary.blockedMACCount;
+     NSInteger totalCount = self.connectedDevices.count;//routerSummary.connectedDeviceCount + routerSummary.blockedMACCount;
     if (totalCount > 0) {
         BOOL editing = [self isSectionExpanded:DEF_DEVICES_AND_USERS_SECTION];
         cell.editTarget = self;
@@ -1106,30 +1106,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     NSLog(@"onWiFiClientsListResponseCallback: %@", mainDict);
 
 
-    if (![[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            if (!self) {
-                return;
-            }
-            if (self.disposed) {
-                return;
-            }
-
-            //            NSString *responseAlmondMac = response.almondMAC;
-            //            if (responseAlmondMac.length > 0 && ![responseAlmondMac isEqualToString:self.almondMac]) {
-            //                // response almond mac value is likely to be null, but when specified we make sure it matches
-            //                // the current almond being shown.
-            //                return;
-            //            }
-            //
-            //            self.isAlmondUnavailable = [response.reason.lowercaseString hasSuffix:@" is offline"]; // almond is offline, homescreen is offline
-            [self syncCheckRouterViewState:RouterViewReloadPolicy_on_state_change];
-            [self.HUD hide:YES];
-            [self.refreshControl endRefreshing];
-        });
-
-        return;
-    }
     self.isAlmondUnavailable = NO;
 
     dispatch_async(dispatch_get_main_queue(), ^() {

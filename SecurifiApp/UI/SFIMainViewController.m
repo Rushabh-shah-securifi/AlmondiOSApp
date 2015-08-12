@@ -16,7 +16,7 @@
 #import "SFISensorsViewController.h"
 #import "DrawerViewController.h"
 #import "SFIAccountsTableViewController.h"
-#import "SFIScenesViewController.h"//md01
+#import "SFIScenesTableViewController.h"//md01
 #import "UIViewController+Securifi.h"
 #import "Analytics.h"
 #import "ScoreboardViewController.h"
@@ -359,7 +359,7 @@
     if (configurator.enableScenes) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
 
-        SFIScenesViewController *scenesCtrl = [storyboard instantiateViewControllerWithIdentifier:@"SFIScenesViewController"];
+        SFIScenesTableViewController *scenesCtrl = [storyboard instantiateViewControllerWithIdentifier:@"SFIScenesTableViewController"];
 
         UINavigationController *scenesNav = [[UINavigationController alloc] initWithRootViewController:scenesCtrl];
         icon = [UIImage imageNamed:@"icon_scenes"];
