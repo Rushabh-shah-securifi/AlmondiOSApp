@@ -194,19 +194,6 @@
     self.enableDrawer = YES;
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    return NO;
-}
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    [self asyncReloadTable];
-}
-
-- (void)didReceiveMemoryWarning {
-    ELog(@"%s, Did receive memory warning", __PRETTY_FUNCTION__);
-    [super didReceiveMemoryWarning];
-}
-
 #pragma mark - HUD and Toast mgt
 
 - (void)showHudWithTimeout {

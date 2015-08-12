@@ -187,6 +187,22 @@
     }
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    return NO;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+    });
+}
+
+- (void)didReceiveMemoryWarning {
+    ELog(@"%s, Did receive memory warning", __PRETTY_FUNCTION__);
+    [super didReceiveMemoryWarning];
+}
+
 #pragma Event handling
 
 - (void)onConnectionStatusButtonPressed:(id)sender {
