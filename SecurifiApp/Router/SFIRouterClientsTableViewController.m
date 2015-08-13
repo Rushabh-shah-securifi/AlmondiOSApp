@@ -15,6 +15,7 @@
 #import "TableHeaderView.h"
 #import "SFIRouterDevicesTableViewCell.h"
 #import "UIColor+Securifi.h"
+#import "UIFont+Securifi.h"
 
 @interface SFIRouterClientsTableViewController () <SFIRouterTableViewActions, TableHeaderViewDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -36,7 +37,22 @@
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
 
+    NSDictionary *titleAttributes = @{
+            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+            NSFontAttributeName : [UIFont standardNavigationTitleFont]
+    };
+
+    self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
+    self.navigationItem.title = self.title;
+
+    UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
+    self.navigationItem.rightBarButtonItem = done;
+
     [self initializeNotifications];
+}
+
+- (void)onDone {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

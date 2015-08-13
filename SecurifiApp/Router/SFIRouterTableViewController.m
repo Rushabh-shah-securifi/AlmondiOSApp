@@ -1226,10 +1226,12 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                     SFIDevicesList *ls = genericRouterCommand.command;
 
                     SFIRouterClientsTableViewController *ctrl = [SFIRouterClientsTableViewController new];
+                    ctrl.title = self.navigationItem.title;
                     ctrl.connectedClients = ls.deviceList;
                     ctrl.almondMac = self.almondMac;
 
-                    [self.navigationController pushViewController:ctrl animated:YES];
+                    UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+                    [self presentViewController:nctrl animated:YES completion:nil];
                 }
 
                 [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
@@ -1252,11 +1254,13 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
                 if (self.navigationController.topViewController == self) {
                     SFIRouterSettingsTableViewController *ctrl = [SFIRouterSettingsTableViewController new];
+                    ctrl.title = self.navigationItem.title;
                     ctrl.wirelessSettings = settings;
                     ctrl.almondMac = self.almondMac;
                     ctrl.enableRouterWirelessControl = self.enableRouterWirelessControl;
 
-                    [self.navigationController pushViewController:ctrl animated:YES];
+                    UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+                    [self presentViewController:nctrl animated:YES completion:nil];
                 }
 
                 // even when in background, ensure summary view is updated to latest & greatest info
