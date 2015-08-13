@@ -11,8 +11,6 @@
 		1C23E6D61A9C4581004D2D23 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */; };
 		1C2F605F1B69E64F001CCA34 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C2F605D1B69E64F001CCA34 /* Scenes_Iphone.storyboard */; };
 		1C2F60601B69E65B001CCA34 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C2F605D1B69E64F001CCA34 /* Scenes_Iphone.storyboard */; };
-		1C2F60881B69E69D001CCA34 /* CGColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60631B69E69D001CCA34 /* CGColor+Additions.m */; };
-		1C2F60891B69E69D001CCA34 /* CGColor+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60631B69E69D001CCA34 /* CGColor+Additions.m */; };
 		1C2F60921B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */; };
 		1C2F60931B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */; };
 		1C2F60941B69E69D001CCA34 /* SFIAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F606F1B69E69D001CCA34 /* SFIAddSceneViewController.m */; };
@@ -256,8 +254,6 @@
 		1C2056061A2EBBBA00975495 /* HomeScreen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeScreen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
 		1C2F605E1B69E64F001CCA34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Scenes_Iphone.storyboard; sourceTree = "<group>"; };
-		1C2F60621B69E69D001CCA34 /* CGColor+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CGColor+Additions.h"; sourceTree = "<group>"; };
-		1C2F60631B69E69D001CCA34 /* CGColor+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CGColor+Additions.m"; sourceTree = "<group>"; };
 		1C2F606C1B69E69D001CCA34 /* SFIAddSceneTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIAddSceneTableViewCell.h; sourceTree = "<group>"; };
 		1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIAddSceneTableViewCell.m; sourceTree = "<group>"; };
 		1C2F606E1B69E69D001CCA34 /* SFIAddSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIAddSceneViewController.h; sourceTree = "<group>"; };
@@ -547,8 +543,6 @@
 		1C2F60611B69E69D001CCA34 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				1C2F60621B69E69D001CCA34 /* CGColor+Additions.h */,
-				1C2F60631B69E69D001CCA34 /* CGColor+Additions.m */,
 				1C2F606C1B69E69D001CCA34 /* SFIAddSceneTableViewCell.h */,
 				1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */,
 				1C2F606E1B69E69D001CCA34 /* SFIAddSceneViewController.h */,
@@ -1295,7 +1289,6 @@
 				1C7E7DBC1A41A0990026F0BA /* SFICardView.m in Sources */,
 				1C7E7D881A41A0990026F0BA /* SFINotificationsViewController.m in Sources */,
 				1C7E7D9A1A41A0990026F0BA /* Analytics.m in Sources */,
-				1C2F60891B69E69D001CCA34 /* CGColor+Additions.m in Sources */,
 				1C7E7D9E1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
 				1C7E7DCA1A41A0990026F0BA /* SFIParser.m in Sources */,
 				1C7E7DD21A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
@@ -1391,7 +1384,6 @@
 				1C7E7D831A41A0990026F0BA /* SFILoginViewController.m in Sources */,
 				1C7E7DC71A41A0990026F0BA /* SFIMainViewController.m in Sources */,
 				1C7E7DA71A41A0990026F0BA /* SFIPasswordChangeViewController.m in Sources */,
-				1C2F60881B69E69D001CCA34 /* CGColor+Additions.m in Sources */,
 				1C7E7DCD1A41A0990026F0BA /* SFISlider.m in Sources */,
 				1C7E7D911A41A0990026F0BA /* SFIRouterRebootTableViewCell.m in Sources */,
 				1C7E7DCB1A41A0990026F0BA /* SFISensor.m in Sources */,
@@ -1698,7 +1690,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1765,7 +1757,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "Almond-AppIcon";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Almond-launch_image";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

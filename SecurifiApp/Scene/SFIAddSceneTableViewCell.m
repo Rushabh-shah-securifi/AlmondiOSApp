@@ -34,13 +34,31 @@
     IBOutlet SFISwitchButton *btnTermostatFanOn;
     IBOutlet SFISwitchButton *btnTermostatFanOff;
     
+    //
+    IBOutlet UIView *viewNest57;
+    IBOutlet SFISwitchButton *btnNestAuto;
+    IBOutlet SFISwitchButton *btnNestHeat;
+    IBOutlet SFISwitchButton *btnNestCool;
+    IBOutlet SFISwitchButton *btnNestOff;
+    
+    IBOutlet SFIDimmerButton *btnNestTermostatDimCool;
+    IBOutlet SFIDimmerButton *btnNestTermostatDimHeat;
+    IBOutlet SFISwitchButton *btnNestTermostatFanOn;
+    IBOutlet SFISwitchButton *btnNestTermostatFanOff;
+    
+    IBOutlet SFISwitchButton *btnNestHome;
+    IBOutlet SFISwitchButton *btnNestAway;
+    
+    
+    //
+    
+    
     SFIDimmerButton * currentDimmerButton;
     //
     IBOutlet UIView *viewPropertiesCell;
     IBOutlet UIView *viewSlider;
     IBOutlet UIView *huePickerView;
     IBOutlet SFIHuePickerView *huePicker;
-    //
     IBOutlet SFISwitchButton *btnBinarySwitchOn;
     IBOutlet SFISwitchButton *btnBinarySwitchOff;
     //
@@ -114,6 +132,7 @@
     viewStandardWarningDevice_21.hidden = YES;
     viewDim.hidden = YES;
     viewSwitchOnOff.hidden = YES;
+    viewNest57.hidden = YES;
     huePickerView.hidden = YES;
     viewSlider.hidden = YES;
     sliderViewBrightness.hidden = YES;
@@ -163,6 +182,10 @@
     }
     if (self.device.deviceType == SFIDeviceType_HueLamp_48) {
         [self layoutHueLamp_48];
+        return;
+    }
+    if (self.device.deviceType == SFIDeviceType_NestThermostat_57) {
+        [self layoutNest_57];
         return;
     }
     
@@ -685,17 +708,17 @@
         btnDimOn.selected = YES;
         btnDimOff.selected = NO;
         
-//        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
-//            [btnDim setNewValue:btnDimOn.dimOnValue];
-//            btnDim.selected = YES;
-//        }
+        //        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
+        //            [btnDim setNewValue:btnDimOn.dimOnValue];
+        //            btnDim.selected = YES;
+        //        }
         
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnDimOn.tag Value:btnDimOn.dimOnValue];
     }else{
         btnDimOn.selected = NO;
-//        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
-//            [btnDim setNewValue:btnDimOff.dimOffValue];
-//        }
+        //        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
+        //            [btnDim setNewValue:btnDimOff.dimOffValue];
+        //        }
         
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnDimOn.tag Value:@"remove_from_entry_list"];
     }
@@ -705,10 +728,10 @@
         btnDimOn.selected = NO;
         btnDimOff.selected = YES;
         
-//        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
-//            [btnDim setNewValue:btnDimOff.dimOffValue];
-//            btnDim.selected = NO;
-//        }
+        //        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
+        //            [btnDim setNewValue:btnDimOff.dimOffValue];
+        //            btnDim.selected = NO;
+        //        }
         
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnDimOff.tag Value:btnDimOff.dimOffValue];
     }else{
@@ -986,12 +1009,12 @@
                 btnTermostatFanOn.selected = YES;
             }
         }
-        if ([[dict valueForKey:@"Index"] integerValue]==4) {
-            [btnTermostatDimHeat setupValues:[dict valueForKey:@"Value"] Title:@"COOLING TEMP." Prefix:@"°F"];
+        if ([[dict valueForKey:@"Index"] integerValue]==btnTermostatDimHeat.tag) {
+            [btnTermostatDimHeat setupValues:[dict valueForKey:@"Value"] Title:@"HEATING TEMP." Prefix:@"°F"];
             btnTermostatDimHeat.selected = YES;
         }
-        if ([[dict valueForKey:@"Index"] integerValue]==5) {
-            [btnTermostatDimCool setupValues:[dict valueForKey:@"Value"] Title:@"HEATING TEMP." Prefix:@"°F"];
+        if ([[dict valueForKey:@"Index"] integerValue]==btnTermostatDimCool.tag) {
+            [btnTermostatDimCool setupValues:[dict valueForKey:@"Value"] Title:@"COOLING TEMP." Prefix:@"°F"];
             btnTermostatDimCool.selected = YES;
         }
     }
@@ -1076,30 +1099,42 @@
 - (IBAction)btnTermostatDimCoolTap:(id)sender{
     currentDimmerButton = sender;
     
-    if (!btnTermostatDimCool.selected) {
+    if (!currentDimmerButton.selected) {
         pickerValuesArray = [NSMutableArray new];
-        for (int i=35; i<96; i++) {
-            [pickerValuesArray addObject:[NSString stringWithFormat:@"%d",i]];
+        if (self.device.deviceType==SFIDeviceType_NestThermostat_57) {
+            for (int i=50; i<91; i++) {
+                [pickerValuesArray addObject:[NSString stringWithFormat:@"%d",i]];
+            }
+        }else{
+            for (int i=35; i<96; i++) {
+                [pickerValuesArray addObject:[NSString stringWithFormat:@"%d",i]];
+            }
         }
         [self setupPicker];
     }else{
         [currentDimmerButton setNewValue:@"35"];
-        btnTermostatDimCool.selected = NO;
+        currentDimmerButton.selected = NO;
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)currentDimmerButton.tag Value:@"remove_from_entry_list"];
     }
 }
 
 - (IBAction)btnTermostatDimHeatTap:(id)sender{
     currentDimmerButton = sender;
-    if (!btnTermostatDimHeat.selected) {
+    if (!currentDimmerButton.selected) {
         pickerValuesArray = [NSMutableArray new];
-        for (int i=35; i<96; i++) {
-            [pickerValuesArray addObject:[NSString stringWithFormat:@"%d",i]];
+        if (self.device.deviceType==SFIDeviceType_NestThermostat_57) {
+            for (int i=50; i<91; i++) {
+                [pickerValuesArray addObject:[NSString stringWithFormat:@"%d",i]];
+            }
+        }else{
+            for (int i=35; i<96; i++) {
+                [pickerValuesArray addObject:[NSString stringWithFormat:@"%d",i]];
+            }
         }
         [self setupPicker];
     }else{
         [currentDimmerButton setNewValue:@"35"];
-        btnTermostatDimHeat.selected = NO;
+        currentDimmerButton.selected = NO;
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)currentDimmerButton.tag Value:@"remove_from_entry_list"];
     }
 }
@@ -1459,4 +1494,340 @@
     }
 }
 
+#pragma mark Nest Thermostat
+- (void)layoutNest_57{
+    
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_COOL];
+    BOOL canCool = [currentDeviceValue boolValue];
+    currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_HEAT];
+    BOOL canHeat = [currentDeviceValue boolValue];
+    currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HAS_FAN];
+    BOOL hasFan = [currentDeviceValue boolValue];
+    
+    viewNest57.hidden = NO;
+    CGRect fr = viewNest57.frame;
+    fr.origin.y = 30;
+    fr.origin.x = (self.frame.size.width - fr.size.width)/2;
+    viewNest57.frame = fr;
+    
+    [btnNestAuto setupValues:[UIImage imageNamed:@"imgAuto"] Title:@"AUTO"];
+    [btnNestHeat setupValues:[UIImage imageNamed:@"imgHeat"] Title:@"HEAT"];
+    [btnNestCool setupValues:[UIImage imageNamed:@"imgCool"] Title:@"COOL"];
+    [btnNestOff setupValues:[UIImage imageNamed:@"imgOff"] Title:@"OFF"];
+    
+    [btnNestTermostatFanOn setupValues:[UIImage imageNamed:@"imgFanOn"] Title:@"FAN ON"];
+    [btnNestTermostatFanOff setupValues:[UIImage imageNamed:@"imgFanOff"] Title:@"FAN OFF"];
+    
+    [btnNestHome setupValues:[UIImage imageNamed:@"home_icon"] Title:@"HOME"];
+    [btnNestAway setupValues:[UIImage imageNamed:@"away_icon"] Title:@"AWAY"];
+    btnNestHome.tag = 8;
+    btnNestAway.tag = 8;
+    btnNestHome.selected = NO;
+    btnNestAway.selected = NO;
+    
+    [btnNestTermostatDimCool setupValues:@"50" Title:@"COOLING TEMP." Prefix:@"°F"];
+    btnNestTermostatDimCool.selected = NO;
+    btnNestTermostatDimCool.tag = 5;
+    
+    
+    [btnNestTermostatDimHeat setupValues:@"50" Title:@"HEATING TEMP." Prefix:@"°F"];
+    btnNestTermostatDimHeat.selected = NO;
+    btnNestTermostatDimHeat.tag = 6;
+    
+    btnNestAuto.tag = 2;
+    btnNestHeat.tag = 2;
+    btnNestCool.tag = 2;
+    btnNestOff.tag = 2;
+    
+    
+    btnNestAuto.selected = NO;
+    btnNestHeat.selected = NO;
+    btnNestCool.selected = NO;
+    btnNestOff.selected = NO;
+    
+    btnNestAuto.hidden = NO;
+    btnNestHeat.hidden = NO;
+    btnNestCool.hidden = NO;
+    btnNestOff.hidden = NO;
+    btnNestTermostatDimCool.hidden = NO;
+    btnNestTermostatDimHeat.hidden = NO;
+    btnNestTermostatFanOn.hidden = NO;
+    btnNestTermostatFanOff.hidden = NO;
+    
+        if (canHeat && canCool) {
+    
+        } else if (canHeat) {
+            btnNestTermostatDimCool.hidden = YES;
+            btnNestCool.hidden = YES;
+            btnNestAuto.hidden = YES;
+        } else if (canCool) {
+            btnNestTermostatDimHeat.hidden = YES;
+            btnNestHeat.hidden = YES;
+            btnNestAuto.hidden = YES;
+        } else if (!canCool && !canHeat) {
+            btnNestTermostatDimCool.hidden = YES;
+            btnNestTermostatDimHeat.hidden = YES;
+            btnNestCool.hidden = YES;
+            btnNestAuto.hidden = YES;
+            btnNestHeat.hidden = YES;
+        }
+        if (!hasFan) {
+            btnNestTermostatFanOff.hidden = YES;
+            btnNestTermostatFanOn.hidden = YES;
+        }
+    
+    
+    NSArray * existingValues = [self.cellInfo valueForKey:@"existingValues"];
+    
+    NSString *ahco = @"";
+    for (NSDictionary * dict in existingValues) {
+        if ([[dict valueForKey:@"Index"] integerValue]==2) {
+            ahco = [dict valueForKey:@"Value"];
+            break;
+        }
+    }
+    if ([ahco isEqualToString:@"heat-cool"] || [ahco isEqualToString:@""]) {
+        btnNestTermostatDimCool.tag = 5;
+        btnNestTermostatDimHeat.tag = 6;
+        btnNestTermostatDimCool.hidden = NO;
+        btnNestTermostatDimHeat.hidden = NO;
+        
+        CGRect fr = btnNestTermostatDimCool.frame;
+        fr.origin.x = self.frame.size.width/2-btnNestTermostatDimCool.frame.size.width-5;
+        btnNestTermostatDimCool.frame = fr;
+        
+        fr = btnNestTermostatDimHeat.frame;
+        fr.origin.x =self.frame.size.width/2+5;
+        btnNestTermostatDimHeat.frame = fr;
+    }
+    if ([ahco isEqualToString:@"heat"]) {
+        btnNestTermostatDimHeat.tag = 3;
+        btnNestTermostatDimCool.hidden = YES;
+        btnNestTermostatDimHeat.hidden = NO;
+        CGRect fr = btnNestTermostatDimHeat.frame;
+        fr.origin.x =(self.frame.size.width-btnNestTermostatDimHeat.frame.size.width)/2;
+        btnNestTermostatDimHeat.frame = fr;
+        
+    }
+    if ([ahco isEqualToString:@"cool"]) {
+        btnNestTermostatDimCool.tag = 3;
+        btnNestTermostatDimHeat.hidden = YES;
+        btnNestTermostatDimCool.hidden = NO;
+        CGRect fr = btnNestTermostatDimCool.frame;
+        fr.origin.x =(self.frame.size.width-btnNestTermostatDimCool.frame.size.width)/2;
+        btnNestTermostatDimCool.frame = fr;
+    }
+    
+    
+    
+    BOOL dimsHidden = NO;
+    if ((!canCool && !canHeat) || [ahco isEqualToString:@"off"]) {
+        btnNestTermostatDimHeat.hidden = YES;
+        btnNestTermostatDimCool.hidden = YES;
+        dimsHidden = YES;
+    }
+    float ahcoWidth = -8;
+    if (!btnNestAuto.hidden) {
+        ahcoWidth+=btnNestCool.frame.size.width+8;
+    }
+    if (!btnNestHeat.hidden) {
+        ahcoWidth+=btnNestCool.frame.size.width+8;
+    }
+    if (!btnNestCool.hidden) {
+        ahcoWidth+=btnNestCool.frame.size.width+8;
+    }
+    if (!btnNestOff.hidden) {
+        ahcoWidth+=btnNestCool.frame.size.width+8;
+    }
+    
+    fr = btnNestHome.frame;
+    fr.origin.y = dimsHidden?0:(btnNestTermostatDimCool.frame.origin.y+btnNestTermostatDimCool.frame.size.height)+8;
+    btnNestHome.frame = fr;
+    
+    fr = btnNestAway.frame;
+    fr.origin.y = dimsHidden?0:(btnNestTermostatDimCool.frame.origin.y+btnNestTermostatDimCool.frame.size.height)+8;
+    btnNestAway.frame = fr;
+
+    BOOL homeAwayHidden = NO;
+    
+    fr = btnNestAuto.frame;
+    fr.origin.y = homeAwayHidden?0:(btnNestHome.frame.origin.y+btnNestHome.frame.size.height)+8;
+    fr.origin.x = (self.frame.size.width-ahcoWidth)/2;
+    btnNestAuto.frame = fr;
+    
+    fr = btnNestHeat.frame;
+    fr.origin.y = homeAwayHidden?0:(btnNestHome.frame.origin.y+btnNestHome.frame.size.height)+8;
+    fr.origin.x = (btnNestAuto.hidden?0:btnNestAuto.frame.size.width+8)+(self.frame.size.width-ahcoWidth)/2;
+    btnNestHeat.frame = fr;
+    
+    fr = btnNestCool.frame;
+    fr.origin.y = homeAwayHidden?0:(btnNestHome.frame.origin.y+btnNestHome.frame.size.height)+8;
+    fr.origin.x = (btnNestAuto.hidden?0:btnNestAuto.frame.size.width+8)+(btnNestHeat.hidden?0:btnNestHeat.frame.size.width+8)+(self.frame.size.width-ahcoWidth)/2;
+    btnNestCool.frame = fr;
+    
+    fr = btnNestOff.frame;
+    fr.origin.y = homeAwayHidden?0:(btnNestHome.frame.origin.y+btnNestHome.frame.size.height)+8;
+     fr.origin.x = (btnNestAuto.hidden?0:btnNestAuto.frame.size.width+8)+(btnNestHeat.hidden?0:btnNestHeat.frame.size.width+8)+(btnNestCool.hidden?0:btnNestCool.frame.size.width+8)+(self.frame.size.width-ahcoWidth)/2;
+    btnNestOff.frame = fr;
+    
+    BOOL ahcoHidden = NO;
+    
+    
+    fr = btnNestTermostatFanOff.frame;
+    fr.origin.y = ahcoHidden?0:(btnNestOff.frame.origin.y+btnNestOff.frame.size.height)+8;
+    btnNestTermostatFanOff.frame = fr;
+    
+    fr = btnNestTermostatFanOn.frame;
+    fr.origin.y = ahcoHidden?0:(btnNestOff.frame.origin.y+btnNestOff.frame.size.height)+8;
+    btnNestTermostatFanOn.frame = fr;
+    
+   
+    
+    
+    for (NSDictionary * dict in existingValues) {
+        if ([[dict valueForKey:@"Index"] integerValue]==2) {
+            if ([[dict valueForKey:@"Value"] isEqualToString:@"heat"]) {
+                btnNestTermostatDimCool.hidden = YES;
+                CGRect fr = btnNestTermostatDimHeat.frame;
+                fr.origin.x =(self.frame.size.width-btnNestTermostatDimHeat.frame.size.width)/2;
+                btnNestTermostatDimHeat.frame = fr;
+                
+                btnNestHeat.selected = YES;
+            }
+            if ([[dict valueForKey:@"Value"] isEqualToString:@"heat-cool"]) {
+                btnNestAuto.selected = YES;
+            }
+            if ([[dict valueForKey:@"Value"] isEqualToString:@"cool"]) {
+                btnNestTermostatDimHeat.hidden = YES;
+                CGRect fr = btnNestTermostatDimCool.frame;
+                fr.origin.x =(self.frame.size.width-btnNestTermostatDimCool.frame.size.width)/2;
+                btnNestTermostatDimCool.frame = fr;
+                
+                btnNestCool.selected = YES;
+            }
+            if ([[dict valueForKey:@"Value"] isEqualToString:@"off"]) {
+                btnNestOff.selected = YES;
+            }
+        }
+        if ([[dict valueForKey:@"Index"] integerValue]==9) {
+            if ([[dict valueForKey:@"Value"] isEqualToString:@"true"]) {
+                btnNestTermostatFanOn.selected = YES;
+            }else{
+                btnNestTermostatFanOff.selected = YES;
+            }
+        }
+        if ([[dict valueForKey:@"Index"] integerValue]==btnNestTermostatDimHeat.tag) {
+            [btnNestTermostatDimHeat setupValues:[dict valueForKey:@"Value"] Title:@"HEATING TEMP." Prefix:@"°F"];
+            btnNestTermostatDimHeat.selected = YES;
+        }
+        if ([[dict valueForKey:@"Index"] integerValue]==btnNestTermostatDimCool.tag) {
+            [btnNestTermostatDimCool setupValues:[dict valueForKey:@"Value"] Title:@"COOLING TEMP." Prefix:@"°F"];
+            btnNestTermostatDimCool.selected = YES;
+        }
+        if ([[dict valueForKey:@"Index"] integerValue]==8) {
+            if ([[dict valueForKey:@"Value"] isEqualToString:@"home"]) {
+                btnNestHome.selected = YES;
+            }else{
+                btnNestAway.selected = YES;
+            }
+        }
+    }
+}
+
+- (IBAction)btnNestAutoTap:(id)sender {
+    if (!btnNestAuto.selected) {
+        btnNestAuto.selected = YES;
+        btnNestHeat.selected = NO;
+        btnNestCool.selected = NO;
+        btnOff.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnNestAuto.tag Value:@"heat-cool"];
+    }else{
+        btnNestAuto.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnNestAuto.tag Value:@"remove_from_entry_list"];
+    }
+}
+
+- (IBAction)btnNestHeatTap:(id)sender {
+    if (!btnNestHeat.selected) {
+        btnNestAuto.selected = NO;
+        btnNestHeat.selected = YES;
+        btnNestCool.selected = NO;
+        btnNestOff.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnNestAuto.tag Value:@"heat"];
+    }else{
+        btnNestHeat.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnNestHeat.tag Value:@"remove_from_entry_list"];
+    }
+    
+}
+
+- (IBAction)btnNestCoolTap:(id)sender {
+    if (!btnNestCool.selected) {
+        btnNestAuto.selected = NO;
+        btnNestHeat.selected = NO;
+        btnNestCool.selected = YES;
+        btnNestOff.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnNestAuto.tag Value:@"cool"];
+    }else{
+        btnNestCool.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnNestCool.tag Value:@"remove_from_entry_list"];
+    }
+}
+
+- (IBAction)btnNestOffTap:(id)sender {
+    if (!btnNestOff.selected) {
+        btnNestAuto.selected = NO;
+        btnNestHeat.selected = NO;
+        btnNestCool.selected = NO;
+        btnNestOff.selected = YES;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnNestAuto.tag Value:@"off"];
+    }else{
+        btnNestOff.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnNestOff.tag Value:@"remove_from_entry_list"];
+    }
+}
+
+- (IBAction)btnNestFanOnTap:(id)sender {
+    if (!btnNestTermostatFanOn.selected ) {
+        btnNestTermostatFanOn.selected = YES;
+        btnNestTermostatFanOff.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:9 Value:@"true"];
+    }else{
+        btnNestTermostatFanOn.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:9 Value:@"remove_from_entry_list"];
+    }
+}
+
+- (IBAction)btnNestFanOffTap:(id)sender {
+    if (!btnNestTermostatFanOff.selected ) {
+        btnNestTermostatFanOn.selected = NO;
+        btnNestTermostatFanOff.selected = YES;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:9 Value:@"false"];
+    }else{
+        btnNestTermostatFanOff.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)9 Value:@"remove_from_entry_list"];
+    }
+}
+
+- (IBAction)btnNestHomeTap:(id)sender {
+    if (!btnNestHome.selected ) {
+        btnNestHome.selected = YES;
+        btnNestAway.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:8 Value:@"home"];
+    }else{
+        btnNestHome.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:8 Value:@"remove_from_entry_list"];
+    }
+}
+
+- (IBAction)btnNestAwayTap:(id)sender {
+    if (!btnNestAway.selected ) {
+        btnNestHome.selected = NO;
+        btnNestAway.selected = YES;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:8 Value:@"away"];
+    }else{
+        btnNestAway.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)8 Value:@"remove_from_entry_list"];
+    }
+}
 @end

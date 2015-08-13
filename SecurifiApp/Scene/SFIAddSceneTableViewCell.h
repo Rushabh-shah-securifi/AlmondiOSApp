@@ -12,8 +12,6 @@
 
 - (void)tableViewCellValueDidChange:(SFIAddSceneTableViewCell*)cell CellInfo:(NSDictionary*)cellInfo Index:(int)index Value:(NSString*)value;
 
-- (void)btnDimDidTap:(SFIAddSceneTableViewCell*)cell CellInfo:(NSDictionary*)cellInfo Index:(int)index Value:(NSString*)value PickerValueArray:(NSArray*)pickerValueArray;
-
 - (void)sceneNameDidChange:(SFIAddSceneTableViewCell*)cell SceneName:(NSString*)name ActiveField:(UITextField*)textField;
 
 - (void)deleteSceneDidTapped:(SFIAddSceneTableViewCell*)cell;
