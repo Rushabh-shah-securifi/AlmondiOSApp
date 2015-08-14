@@ -12,6 +12,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.autoAdjustTrackColor = NO;
+        self.allowToSlide = YES;
     }
 
     return self;

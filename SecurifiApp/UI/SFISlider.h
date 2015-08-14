@@ -19,7 +19,9 @@
 // This value is converted to the slider's maxValue
 @property(nonatomic) int sensorMinValue;
 @property(nonatomic) int sensorMaxValue;
-@property(nonatomic) BOOL allowToSlide; //md01 TEST
+
+// Controls whether the slider will respond to touch events and slide with the finger; default is YES
+@property(nonatomic) BOOL allowToSlide;
 
 // Converts the sensors value to the scale used by this slider
 - (void)setConvertedValue:(float)sensorValue;

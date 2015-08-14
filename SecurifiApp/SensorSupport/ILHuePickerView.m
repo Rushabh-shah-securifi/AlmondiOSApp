@@ -13,6 +13,15 @@
 
 #pragma mark - Setup
 
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.allowSelection = YES;
+    }
+
+    return self;
+}
+
 - (void)setup {
     [super setup];
 
