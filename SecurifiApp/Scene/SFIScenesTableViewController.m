@@ -23,6 +23,8 @@
 #import "SFICloudLinkViewController.h"
 #import "MDJSON.h"
 
+#define AVENIR_ROMAN @"Avenir-Roman"
+
 @interface SFIScenesTableViewController ()<UITableViewDataSource,UITableViewDelegate,SFIScenesTableViewCellDelegate,MBProgressHUDDelegate,MessageViewDelegate> {
     
     IBOutlet UIButton *btnAdd;
@@ -49,17 +51,16 @@
     [self initializeNotifications];
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    self.currentAlmond = [toolkit currentAlmond];
     
-    self.currentAlmond = plus;
     
-    if (plus == nil) {
+    if (self.currentAlmond == nil) {
         self.navigationItem.title = @"Get Started";
         [self markAlmondMac:NO_ALMOND];
     }
     else {
-        [self markAlmondMac:plus.almondplusMAC];
-        self.navigationItem.title = plus.almondplusName;
+        [self markAlmondMac:self.currentAlmond.almondplusMAC];
+        self.navigationItem.title = self.currentAlmond.almondplusName;
     }
 }
 
@@ -268,7 +269,7 @@
         
         UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, table_width-20, 130)];
         lblNoSensor.textAlignment = NSTextAlignmentCenter;
-        [lblNoSensor setFont:[UIFont securifiLightFont:20]];
+        [lblNoSensor setFont:[UIFont fontWithName:AVENIR_ROMAN size:15]];
         lblNoSensor.numberOfLines = 10;
         lblNoSensor.text = NSLocalizedString(@"scenes.no-scenes.label.A scene is a group of sensors and a desired state for these sensors.", @"A scene is a group of sensors and a desired state for these sensors.");
         lblNoSensor.textColor = [UIColor grayColor];
@@ -377,11 +378,20 @@
     if (scenesArray) {
         [scenesArray removeAllObjects];
     }
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    self.currentAlmond = [toolkit currentAlmond];
     
+    
+    if (self.currentAlmond == nil) {
+        self.navigationItem.title = @"Get Started";
+        [self markAlmondMac:NO_ALMOND];
+    }
+    else {
+        [self markAlmondMac:self.currentAlmond.almondplusMAC];
+        self.navigationItem.title = self.currentAlmond.almondplusName;
+    }
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self sendGetAllScenesRequest];
-        //        [self initializeAlmondData];
-        //        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     });
 }
 

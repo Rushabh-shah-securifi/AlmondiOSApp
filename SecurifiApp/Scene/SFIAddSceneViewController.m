@@ -131,8 +131,12 @@
                    name:UIKeyboardDidHideNotification
                  object:nil];
     
-    
+    [center addObserver:self
+               selector:@selector(onDeviceValueListDidChange:)
+                   name:kSFIDidChangeDeviceValueList
+                 object:nil];
 }
+
 - (void)onDeviceListDidChange:(id)sender {
     NSLog(@"Sensors: did receive device list change");
     if (!self) {
@@ -180,6 +184,91 @@
         }
         
         [self.HUD hide:YES afterDelay:1.5];
+    });
+}
+
+- (void)onDeviceValueListDidChange:(id)sender {
+    DLog(@"Sensors: did receive device values list change");
+    
+    if (!self) {
+        return;
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
+        if (self.isViewControllerDisposed) {
+            return;
+        }
+        [self.HUD hide:YES];
+    });
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    
+    NSString *cloudMAC = [data valueForKey:@"data"];
+    if (![self isSameAsCurrentMAC:cloudMAC]) {
+        DLog(@"Sensors: ignore device values list change, c:%@, m:%@", self.almondMac, cloudMAC);
+        // An Almond not currently being viewed was changed
+        return;
+    }
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    
+    NSArray *newDeviceList = [toolkit deviceList:cloudMAC];
+    if (newDeviceList == nil) {
+        DLog(@"Device list is empty: %@", cloudMAC);
+        newDeviceList = @[];
+        //        [self clearAllDeviceUpdatingState];
+    }
+    //    [self removeExpandedCellForMissingDevices:newDeviceList];
+    
+    NSArray *newDeviceValueList = [toolkit deviceValuesList:cloudMAC];
+    if (newDeviceValueList == nil) {
+        newDeviceValueList = @[];
+    }
+    
+    if (newDeviceList.count != newDeviceValueList.count) {
+        ELog(@"Warning: device list and values lists are incongruent, d:%ld, v:%ld", (unsigned long) newDeviceList.count, (unsigned long) newDeviceValueList.count);
+    }
+    
+    //    DLog(@"Changing device value list: %@", newDeviceValueList);
+    
+    // Restore isExpanded state and clear 'updating' state
+    NSArray *oldDeviceList = self.deviceList;
+    for (SFIDevice *newDevice in newDeviceList) {
+        for (SFIDevice *oldDevice in oldDeviceList) {
+            if (newDevice.deviceID == oldDevice.deviceID) {
+                //                [self clearDeviceUpdatingState:oldDevice];
+            }
+        }
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
+        if (self.isViewControllerDisposed) {
+            return;
+        }
+        
+        if (![self isSameAsCurrentMAC:cloudMAC]) {
+            return;
+        }
+        
+        //        [self.refreshControl endRefreshing];
+        
+        [self setDeviceList:newDeviceList];
+        [self setDeviceValues:newDeviceValueList];
+        
+        // defer showing changes when a sensor is being edited (name, location, etc.)
+        //        if (!self.isUpdatingDeviceSettings) {
+        //            [self.tableView reloadData];
+        //        }
     });
 }
 
@@ -249,6 +338,7 @@
         
         self.navigationItem.title = plus.almondplusName;
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        [self setDeviceValues:[toolkit deviceValuesList:mac]];
         self.deviceList = [toolkit deviceList:_almond.almondplusMAC];
         
         if (self.deviceList.count == 0) {
@@ -273,6 +363,7 @@
     }
     
     //    self.enableDrawer = YES;
+    
 }
 
 - (BOOL)isSameAsCurrentMAC:(NSString *)aMac {
@@ -321,7 +412,7 @@
         }
     }
     
-      //add zero device for Home/Awway buttons
+    //add zero device for Home/Awway buttons
     SFIDevice * zeroDevice = [[SFIDevice alloc] init];
     zeroDevice.deviceID = 0;
     zeroDevice.deviceType = SFIDeviceType_BinarySwitch_0;
@@ -344,7 +435,7 @@
     [indexDict setValue:@"AWAY" forKey:@"offTitle"];
     [indexDict setValue:@"away" forKey:@"offValue"];
     [indexDict setValue:@"home" forKey:@"onValue"];
-
+    
     [arr addObject:indexDict];
     [cellDict setValue:arr forKey:@"deviceIndexes"];
     [cellDict setValue:zeroDevice forKey:@"device"];
@@ -366,7 +457,6 @@
         NSMutableDictionary *cellDict = [NSMutableDictionary new];
         [cellDict setValue:[NSNumber numberWithInt:device.deviceID] forKey:@"DeviceID"];
         
-        
         SensorIndexSupport *index = [SensorIndexSupport new];
         NSArray * deviceIndexes = [index getIndexesFor:device.deviceType];
         
@@ -374,6 +464,23 @@
         NSMutableArray * arr = [NSMutableArray new];
         
         switch (device.deviceType) {
+            case SFIDeviceType_NestThermostat_57:
+            {
+                NSMutableDictionary * indexDict = [NSMutableDictionary new];
+                
+                [indexDict setValue:[NSNumber numberWithInt:SFIDevicePropertyType_SWITCH_BINARY] forKey:@"valueType"];
+                [indexDict setValue:@1 forKey:@"indexID"];
+                [indexDict setValue:@"home_icon" forKey:@"onImage"];
+                [indexDict setValue:@"HOME" forKey:@"onTitle"];
+                [indexDict setValue:@"away_icon" forKey:@"offImage"];
+                [indexDict setValue:@"AWAY" forKey:@"offTitle"];
+                [indexDict setValue:@"away" forKey:@"offValue"];
+                [indexDict setValue:@"home" forKey:@"onValue"];
+                
+                [arr addObject:indexDict];
+                
+            }
+                break;
             case SFIDeviceType_HueLamp_48:
             {
                 NSMutableDictionary * indexDict = [NSMutableDictionary new];
@@ -725,6 +832,38 @@
         case SFIDeviceType_BinarySwitch_0:
             currentHeight+=114;//home/away
             break;
+        case SFIDeviceType_NestThermostat_57:{
+            NSArray *existingValues  = [self getExistingValues:(NSInteger)device.deviceID];
+            NSString *ahco = @"";
+            for (NSDictionary * dict in existingValues) {
+                if ([[dict valueForKey:@"Index"] integerValue]==2) {
+                    ahco = [dict valueForKey:@"Value"];
+                    break;
+                }
+            }
+            SFIDevice *device = [self tryGetDevice:indexPath.row];
+            SFIDeviceValue *deviceValue = [self tryCurrentDeviceValues:device.deviceID];
+            SFIDeviceKnownValues *currentDeviceValue = [deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_COOL];
+            BOOL canCool = [currentDeviceValue boolValue];
+            currentDeviceValue = [deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_HEAT];
+            BOOL canHeat = [currentDeviceValue boolValue];
+            currentDeviceValue = [deviceValue knownValuesForProperty:SFIDevicePropertyType_HAS_FAN];
+            
+            BOOL hasFan = [currentDeviceValue boolValue];
+            
+            
+            
+            if ([ahco isEqualToString:@"off"] || (!canHeat && !canCool)) {
+                currentHeight+=280;
+            }else{
+                currentHeight+=380;
+            }
+            
+            if (!hasFan) {
+                currentHeight-=100;
+            }
+            break;
+        }
         case SFIDeviceType_Thermostat_7:
             currentHeight+=290;
             break;
@@ -1010,6 +1149,53 @@
         }
     }
     
+    if (device.deviceType == SFIDeviceType_NestThermostat_57) {
+        
+        //        NSString *ahco = @"";
+        //        for (NSDictionary * dict in existingValues) {
+        //            if ([[dict valueForKey:@"Index"] integerValue]==2) {
+        //                ahco = [dict valueForKey:@"Value"];
+        //                break;
+        //            }
+        //        }
+        //
+        //        if ([ahco isEqualToString:@"heat"]) {
+        //            for (NSDictionary * dict in existingValues) {
+        //                if ([[dict valueForKey:@"Index"] integerValue]==5) {
+        //
+        //                    for (NSMutableDictionary *entryDict in sceneEntryList) {
+        //                        if ([[entryDict valueForKey:@"DeviceID"] intValue]==[[dict valueForKey:@"DeviceID"] intValue] && [[entryDict valueForKey:@"Index"] intValue]==[[dict valueForKey:@"Index"] intValue]) {
+        //                            [sceneEntryList removeObject:entryDict];                            break;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        if ([ahco isEqualToString:@"cool"]) {
+        //            for (NSDictionary * dict in existingValues) {
+        //                if ([[dict valueForKey:@"Index"] integerValue]==6) {
+        //
+        //                    for (NSMutableDictionary *entryDict in sceneEntryList) {
+        //                        if ([[entryDict valueForKey:@"DeviceID"] intValue]==[[dict valueForKey:@"DeviceID"] intValue] && [[entryDict valueForKey:@"Index"] intValue]==[[dict valueForKey:@"Index"] intValue]) {
+        //                            [sceneEntryList removeObject:entryDict];                            break;
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //
+        //
+        //
+        //        }
+        existingValues  = [[self getExistingValues:[[cellInfo valueForKey:@"DeviceID"] integerValue]] mutableCopy];
+        [cellInfo setValue:existingValues forKey:@"existingValues"];
+        
+        
+        NSIndexPath * indexpath = [self.tableView indexPathForCell:cell];
+        if (indexpath) {
+            [self.tableView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
+            
+        }
+    }
     
     
     

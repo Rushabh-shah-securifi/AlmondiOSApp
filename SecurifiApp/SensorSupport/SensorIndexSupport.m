@@ -2128,7 +2128,7 @@
         }
 
         default: {
-            NSLog(@"Something wrong");
+//            NSLog(@"Something wrong");
             return [NSArray array];
         }
     }
