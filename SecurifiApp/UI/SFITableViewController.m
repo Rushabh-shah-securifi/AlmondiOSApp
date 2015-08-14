@@ -24,6 +24,9 @@
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *connectionStatusBarButton;
 @property(nonatomic, readonly) SFICloudStatusBarButtonItem *almondModeBarButton;
 @property(nonatomic) UIView *tableScrim;
+// Saved when the keyboard shows and restored when keyboard hides
+@property(nonatomic) UIEdgeInsets originalContentInsets;
+@property(nonatomic) UIEdgeInsets originalScrollIndicatorInsets;
 @end
 
 @implementation SFITableViewController
@@ -32,6 +35,8 @@
     self = [super initWithStyle:style];
     if (self) {
         _enableDrawer = YES;
+        self.originalContentInsets = UIEdgeInsetsZero;
+        self.originalScrollIndicatorInsets = UIEdgeInsetsZero;
     }
 
     return self;
@@ -625,28 +630,40 @@
 
 // resize table offsets so text fields and other controls are not obscured by the keyboard
 - (void)keyboardWillShow:(NSNotification *)notification {
-    id userInfo = notification.userInfo[UIKeyboardFrameBeginUserInfoKey];
-    CGSize keyboardSize = [userInfo CGRectValue].size;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        // once we have copied insets, do not overwrite
+        if (UIEdgeInsetsEqualToEdgeInsets(self.originalContentInsets, UIEdgeInsetsZero)) {
+            self.originalContentInsets = self.tableView.contentInset;
+        }
+        if (UIEdgeInsetsEqualToEdgeInsets(self.originalScrollIndicatorInsets, UIEdgeInsetsZero)) {
+            self.originalScrollIndicatorInsets = self.tableView.scrollIndicatorInsets;
+        }
 
-    UIEdgeInsets contentInsets;
-    if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
-        contentInsets = UIEdgeInsetsMake(0.0, 0.0, (keyboardSize.height), 0.0);
-    }
-    else {
-        contentInsets = UIEdgeInsetsMake(0.0, 0.0, (keyboardSize.width), 0.0);
-    }
+        id userInfo = notification.userInfo[UIKeyboardFrameBeginUserInfoKey];
+        CGSize keyboardSize = [userInfo CGRectValue].size;
 
-    self.tableView.contentInset = contentInsets;
-    self.tableView.scrollIndicatorInsets = contentInsets;
+        UIEdgeInsets contentInsets;
+        if (UIInterfaceOrientationIsPortrait([[UIApplication sharedApplication] statusBarOrientation])) {
+            contentInsets = UIEdgeInsetsMake(0.0, 0.0, (keyboardSize.height), 0.0);
+        }
+        else {
+            contentInsets = UIEdgeInsetsMake(0.0, 0.0, (keyboardSize.width), 0.0);
+        }
+
+        self.tableView.contentInset = contentInsets;
+        self.tableView.scrollIndicatorInsets = contentInsets;
+    });
 }
 
 // restore original table offsets
 - (void)keyboardWillHide:(NSNotification *)notification {
-    NSNumber *rate = notification.userInfo[UIKeyboardAnimationDurationUserInfoKey];
-    [UIView animateWithDuration:rate.floatValue animations:^{
-        self.tableView.contentInset = UIEdgeInsetsZero;
-        self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        NSNumber *rate = notification.userInfo[UIKeyboardAnimationDurationUserInfoKey];
+        [UIView animateWithDuration:rate.floatValue animations:^{
+            self.tableView.contentInset = self.originalContentInsets;
+            self.tableView.scrollIndicatorInsets = self.originalScrollIndicatorInsets;
+        }];
+    });
 }
 
 #pragma mark - AlertViewDelegate methods
