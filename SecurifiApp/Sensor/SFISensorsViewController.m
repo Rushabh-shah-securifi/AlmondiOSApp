@@ -265,12 +265,6 @@
 
 #pragma mark - Table View
 
-- (void)asyncReloadTable {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-    });
-}
-
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if ([self showNeedsActivationHeader]) {
         return 85;
@@ -571,15 +565,15 @@
         }
     }
 
-    BOOL expanded = [self isExpandedCell:sensor];
-    if (expanded) {
-        [self clearExpandedCell];
-    }
-    else {
-        [self markExpandedCell:sensor];
-    }
-
     dispatch_async(dispatch_get_main_queue(), ^() {
+        BOOL expanded = [self isExpandedCell:sensor];
+        if (expanded) {
+            [self clearExpandedCell];
+        }
+        else {
+            [self markExpandedCell:sensor];
+        }
+
         if (clicked_row >= self.deviceList.count) {
             // Just in case something gets changed out from underneath
             [self.tableView reloadData];
@@ -591,33 +585,31 @@
 }
 
 - (void)tableViewCellWillStartMakingChanges:(SFISensorTableViewCell *)cell {
-    if (self.isViewControllerDisposed) {
-        return;
-    }
-
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.isViewControllerDisposed) {
+            return;
+        }
         self.isUpdatingDeviceSettings = YES;
         self.enableDrawer = NO;
     });
 }
 
 - (void)tableViewCellDidCompleteMakingChanges:(SFISensorTableViewCell *)cell {
-    if (self.isViewControllerDisposed) {
-        return;
-    }
-
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.isViewControllerDisposed) {
+            return;
+        }
         self.isUpdatingDeviceSettings = NO;
         self.enableDrawer = YES;
     });
 }
 
 - (void)tableViewCellDidCancelMakingChanges:(SFISensorTableViewCell *)cell {
-    if (self.isViewControllerDisposed) {
-        return;
-    }
-
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.isViewControllerDisposed) {
+            return;
+        }
+
         self.isUpdatingDeviceSettings = NO;
         self.enableDrawer = YES;
         [self.tableView reloadData];
@@ -625,10 +617,6 @@
 }
 
 - (void)tableViewCellDidSaveChanges:(SFISensorTableViewCell *)cell {
-    if (self.isViewControllerDisposed) {
-        return;
-    }
-
     self.sensorChangeCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
                                                                      target:self
                                                                    selector:@selector(onSensorChangeCommandTimeout:)
@@ -640,9 +628,15 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncChangeAlmond:self.almond device:cell.device name:cell.deviceName location:cell.deviceLocation];
 
-    self.isSensorChangeCommandSuccessful = FALSE;
-    self.isUpdatingDeviceSettings = NO;
-    self.enableDrawer = YES;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.isViewControllerDisposed) {
+            return;
+        }
+
+        self.isSensorChangeCommandSuccessful = FALSE;
+        self.isUpdatingDeviceSettings = NO;
+        self.enableDrawer = YES;
+    });
 }
 
 - (void)tableViewCellDidPressShowLogs:(SFISensorTableViewCell *)cell {
