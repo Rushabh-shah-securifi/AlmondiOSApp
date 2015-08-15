@@ -1553,28 +1553,31 @@
     btnNestTermostatDimHeat.hidden = NO;
     btnNestTermostatFanOn.hidden = NO;
     btnNestTermostatFanOff.hidden = NO;
+    btnNestTermostatDimCool.tag = 3;
+    btnNestTermostatDimHeat.tag = 3;
     
-        if (canHeat && canCool) {
-    
-        } else if (canHeat) {
-            btnNestTermostatDimCool.hidden = YES;
-            btnNestCool.hidden = YES;
-            btnNestAuto.hidden = YES;
-        } else if (canCool) {
-            btnNestTermostatDimHeat.hidden = YES;
-            btnNestHeat.hidden = YES;
-            btnNestAuto.hidden = YES;
-        } else if (!canCool && !canHeat) {
-            btnNestTermostatDimCool.hidden = YES;
-            btnNestTermostatDimHeat.hidden = YES;
-            btnNestCool.hidden = YES;
-            btnNestAuto.hidden = YES;
-            btnNestHeat.hidden = YES;
-        }
-        if (!hasFan) {
-            btnNestTermostatFanOff.hidden = YES;
-            btnNestTermostatFanOn.hidden = YES;
-        }
+    if (canHeat && canCool) {
+        btnNestTermostatDimCool.tag = 5;
+        btnNestTermostatDimHeat.tag = 6;
+    } else if (canHeat) {
+        btnNestTermostatDimCool.hidden = YES;
+        btnNestCool.hidden = YES;
+        btnNestAuto.hidden = YES;
+    } else if (canCool) {
+        btnNestTermostatDimHeat.hidden = YES;
+        btnNestHeat.hidden = YES;
+        btnNestAuto.hidden = YES;
+    } else if (!canCool && !canHeat) {
+        btnNestTermostatDimCool.hidden = YES;
+        btnNestTermostatDimHeat.hidden = YES;
+        btnNestCool.hidden = YES;
+        btnNestAuto.hidden = YES;
+        btnNestHeat.hidden = YES;
+    }
+    if (!hasFan) {
+        btnNestTermostatFanOff.hidden = YES;
+        btnNestTermostatFanOn.hidden = YES;
+    }
     
     
     NSArray * existingValues = [self.cellInfo valueForKey:@"existingValues"];
@@ -1586,9 +1589,7 @@
             break;
         }
     }
-    if ([ahco isEqualToString:@"heat-cool"] || [ahco isEqualToString:@""]) {
-        btnNestTermostatDimCool.tag = 5;
-        btnNestTermostatDimHeat.tag = 6;
+    if ([ahco isEqualToString:@"heat-cool"]) {
         btnNestTermostatDimCool.hidden = NO;
         btnNestTermostatDimHeat.hidden = NO;
         
@@ -1601,21 +1602,12 @@
         btnNestTermostatDimHeat.frame = fr;
     }
     if ([ahco isEqualToString:@"heat"]) {
-        btnNestTermostatDimHeat.tag = 3;
         btnNestTermostatDimCool.hidden = YES;
         btnNestTermostatDimHeat.hidden = NO;
-        CGRect fr = btnNestTermostatDimHeat.frame;
-        fr.origin.x =(self.frame.size.width-btnNestTermostatDimHeat.frame.size.width)/2;
-        btnNestTermostatDimHeat.frame = fr;
-        
     }
     if ([ahco isEqualToString:@"cool"]) {
-        btnNestTermostatDimCool.tag = 3;
         btnNestTermostatDimHeat.hidden = YES;
         btnNestTermostatDimCool.hidden = NO;
-        CGRect fr = btnNestTermostatDimCool.frame;
-        fr.origin.x =(self.frame.size.width-btnNestTermostatDimCool.frame.size.width)/2;
-        btnNestTermostatDimCool.frame = fr;
     }
     
     
@@ -1647,7 +1639,7 @@
     fr = btnNestAway.frame;
     fr.origin.y = dimsHidden?0:(btnNestTermostatDimCool.frame.origin.y+btnNestTermostatDimCool.frame.size.height)+8;
     btnNestAway.frame = fr;
-
+    
     BOOL homeAwayHidden = NO;
     
     fr = btnNestAuto.frame;
@@ -1667,7 +1659,7 @@
     
     fr = btnNestOff.frame;
     fr.origin.y = homeAwayHidden?0:(btnNestHome.frame.origin.y+btnNestHome.frame.size.height)+8;
-     fr.origin.x = (btnNestAuto.hidden?0:btnNestAuto.frame.size.width+8)+(btnNestHeat.hidden?0:btnNestHeat.frame.size.width+8)+(btnNestCool.hidden?0:btnNestCool.frame.size.width+8)+(self.frame.size.width-ahcoWidth)/2;
+    fr.origin.x = (btnNestAuto.hidden?0:btnNestAuto.frame.size.width+8)+(btnNestHeat.hidden?0:btnNestHeat.frame.size.width+8)+(btnNestCool.hidden?0:btnNestCool.frame.size.width+8)+(self.frame.size.width-ahcoWidth)/2;
     btnNestOff.frame = fr;
     
     BOOL ahcoHidden = NO;
@@ -1681,7 +1673,7 @@
     fr.origin.y = ahcoHidden?0:(btnNestOff.frame.origin.y+btnNestOff.frame.size.height)+8;
     btnNestTermostatFanOn.frame = fr;
     
-   
+    
     
     
     for (NSDictionary * dict in existingValues) {
@@ -1731,6 +1723,26 @@
                 btnNestAway.selected = YES;
             }
         }
+    }
+    if (btnNestTermostatDimCool.hidden && !btnNestTermostatDimHeat.hidden) {
+        CGRect fr = btnNestTermostatDimHeat.frame;
+        fr.origin.x =(self.frame.size.width-btnNestTermostatDimHeat.frame.size.width)/2;
+        btnNestTermostatDimHeat.frame = fr;
+        
+    }
+    if (!btnNestTermostatDimCool.hidden && btnNestTermostatDimHeat.hidden) {
+        CGRect fr = btnNestTermostatDimCool.frame;
+        fr.origin.x =(self.frame.size.width-btnNestTermostatDimCool.frame.size.width)/2;
+        btnNestTermostatDimCool.frame = fr;
+    }
+    if (!btnNestTermostatDimCool.hidden && !btnNestTermostatDimHeat.hidden) {
+        CGRect fr = btnNestTermostatDimHeat.frame;
+        fr.origin.x =self.frame.size.width/2+8;
+        btnNestTermostatDimHeat.frame = fr;
+   
+        fr = btnNestTermostatDimCool.frame;
+        fr.origin.x =self.frame.size.width/2-btnNestTermostatDimCool.frame.size.width-8;
+        btnNestTermostatDimCool.frame = fr;
     }
 }
 

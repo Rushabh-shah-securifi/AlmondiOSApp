@@ -29,8 +29,8 @@
     config.enableNotificationsHomeAwayMode = YES;
 //    config.enableRouterWirelessControl = YES;       // YES by default
     config.enableLocalNetworking = NO;
-    config.enableScenes = NO;
-    config.enableWifiClients = NO;
+    config.enableScenes = YES;
+    config.enableWifiClients = YES;
     return config;
 }
 

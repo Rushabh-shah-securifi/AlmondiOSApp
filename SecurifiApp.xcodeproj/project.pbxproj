@@ -229,6 +229,7 @@
 		1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039D08131F3EA14BFDD9F /* SFIRouterSendLogsTableViewCell.m */; };
 		1DF03FBF0030A76DBCA3A828 /* CircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CircleLabel.m */; };
 		7CB5434B38D653A029281FD1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
+		8427D0111B7DDDE300E754DE /* SFISensorDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8427D0101B7DDDE300E754DE /* SFISensorDetailViewController.m */; };
 		8443277C1B763AD700BF2355 /* SFIScenesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8443277B1B763AD700BF2355 /* SFIScenesTableViewController.m */; };
 		846414C91B736B36008AB07F /* ILHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846414C11B736B36008AB07F /* ILHuePickerView.m */; };
 		846414CA1B736B36008AB07F /* ILColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 846414C31B736B36008AB07F /* ILColorPickerView.m */; };
@@ -246,6 +247,8 @@
 		846414E41B736B80008AB07F /* AvenirLTStd-MediumOblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414D81B736B80008AB07F /* AvenirLTStd-MediumOblique.otf */; };
 		846414E51B736B80008AB07F /* AvenirLTStd-Oblique.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414D91B736B80008AB07F /* AvenirLTStd-Oblique.otf */; };
 		846414E61B736B80008AB07F /* AvenirLTStd-Roman.otf in Resources */ = {isa = PBXBuildFile; fileRef = 846414DA1B736B80008AB07F /* AvenirLTStd-Roman.otf */; };
+		84B9A2681B7F315100E44682 /* SFIHorizontalValueSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B9A2671B7F315100E44682 /* SFIHorizontalValueSelectorView.m */; };
+		84D8160F1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D8160E1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -469,6 +472,8 @@
 		1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorIndexSupport.m; sourceTree = "<group>"; };
 		1DF03F453DC0B72C7436B9E8 /* MessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageView.m; sourceTree = "<group>"; };
 		1DF03F524BE952202AA5335B /* IndexValueSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexValueSupport.h; sourceTree = "<group>"; };
+		8427D00F1B7DDDE300E754DE /* SFISensorDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorDetailViewController.h; sourceTree = "<group>"; };
+		8427D0101B7DDDE300E754DE /* SFISensorDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorDetailViewController.m; sourceTree = "<group>"; };
 		8443277A1B763AD700BF2355 /* SFIScenesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIScenesTableViewController.h; sourceTree = "<group>"; };
 		8443277B1B763AD700BF2355 /* SFIScenesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIScenesTableViewController.m; sourceTree = "<group>"; };
 		846414C11B736B36008AB07F /* ILHuePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILHuePickerView.m; sourceTree = "<group>"; };
@@ -491,6 +496,10 @@
 		846414D81B736B80008AB07F /* AvenirLTStd-MediumOblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-MediumOblique.otf"; sourceTree = "<group>"; };
 		846414D91B736B80008AB07F /* AvenirLTStd-Oblique.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Oblique.otf"; sourceTree = "<group>"; };
 		846414DA1B736B80008AB07F /* AvenirLTStd-Roman.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "AvenirLTStd-Roman.otf"; sourceTree = "<group>"; };
+		84B9A2661B7F315100E44682 /* SFIHorizontalValueSelectorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIHorizontalValueSelectorView.h; sourceTree = "<group>"; };
+		84B9A2671B7F315100E44682 /* SFIHorizontalValueSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIHorizontalValueSelectorView.m; sourceTree = "<group>"; };
+		84D8160D1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIDeviceProprtyEditViewController.h; sourceTree = "<group>"; };
+		84D8160E1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIDeviceProprtyEditViewController.m; sourceTree = "<group>"; };
 		C6A3307CA8D0945BEFE53A18 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -948,6 +957,12 @@
 				1DF0372FDF6A6B6E6843DF80 /* SFISensorsViewController.m */,
 				1DF03216A3593D3DE89148E0 /* SFISensorTableViewCell.h */,
 				1DF036AA13CCDD88050E8C2C /* SFISensorTableViewCell.m */,
+				8427D00F1B7DDDE300E754DE /* SFISensorDetailViewController.h */,
+				8427D0101B7DDDE300E754DE /* SFISensorDetailViewController.m */,
+				84D8160D1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.h */,
+				84D8160E1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m */,
+				84B9A2661B7F315100E44682 /* SFIHorizontalValueSelectorView.h */,
+				84B9A2671B7F315100E44682 /* SFIHorizontalValueSelectorView.m */,
 			);
 			path = Sensor;
 			sourceTree = "<group>";
@@ -1405,6 +1420,7 @@
 				1C7E7DAD1A41A0990026F0BA /* SFISignupViewController.m in Sources */,
 				1C7E7DC91A41A0990026F0BA /* SFIParser.m in Sources */,
 				1C7E7DA91A41A0990026F0BA /* SFIUserProfile.m in Sources */,
+				84D8160F1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m in Sources */,
 				1C7E7D811A41A0990026F0BA /* SFIActivationViewController.m in Sources */,
 				1C7E7DD51A41A0990026F0BA /* UIViewController+Securifi.m in Sources */,
 				1C2F609E1B69E69D001CCA34 /* SFIWiFiClientListCell.m in Sources */,
@@ -1437,6 +1453,7 @@
 				1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */,
 				1DF03A194CCC7A1DE3C2A4DC /* UIColor+Securifi.m in Sources */,
 				1DF039D3E2A4A6FB292A99C3 /* SFISensorDetailView.m in Sources */,
+				84B9A2681B7F315100E44682 /* SFIHorizontalValueSelectorView.m in Sources */,
 				1C2F60A01B69E69D001CCA34 /* SFIWiFiClientsListViewController.m in Sources */,
 				1C2F60A61B69E69D001CCA34 /* SKSTableView.m in Sources */,
 				1C709A091B5A3157007D397C /* SFICloudLinkViewController.m in Sources */,
@@ -1446,6 +1463,7 @@
 				1DF0358BE9EBF2A3821D948D /* TableHeaderView.m in Sources */,
 				1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */,
 				1C2F60A81B69E69D001CCA34 /* SKSTableViewCell.m in Sources */,
+				8427D0111B7DDDE300E754DE /* SFISensorDetailViewController.m in Sources */,
 				1DF030E39A245683EABC61AE /* SFIRouterVersionTableViewCell.m in Sources */,
 				1DF031024A2F8810074C455A /* TemperatureView.m in Sources */,
 				1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */,

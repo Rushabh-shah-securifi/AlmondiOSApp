@@ -17,6 +17,7 @@
 #import "SFINotificationsViewController.h"
 #import "UIImage+Securifi.h"
 #import "SFICloudLinkViewController.h"
+#import "SFISensorDetailViewController.h"//md01
 
 @interface SFISensorsViewController () <SFISensorTableViewCellDelegate, MessageViewDelegate>
 @property(nonatomic, readonly) SFIAlmondPlus *almond;
@@ -26,7 +27,7 @@
 @property(nonatomic, readonly) NSDictionary *deviceIndexTable; // device ID :: table cell row
 @property(nonatomic, readonly) NSDictionary *deviceValueTable;
 
-// tracks requests sent to update a device; cleared on receipt of the 
+// tracks requests sent to update a device; cleared on receipt of the
 // devices whose cells are "expanded" to show settings
 @property(nonatomic, readonly) NSSet *expandedDeviceIds;
 
@@ -60,32 +61,32 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     _deviceStatusMessages_locker = [NSObject new];
     [self clearAllDeviceUpdatingState];
-
+    
     _deviceCellStateValues_locker = [NSObject new];
     [self clearAllDeviceCellStateValues];
-
+    
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.tableView.autoresizesSubviews = YES;
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
+    
     // Ensure values have at least an empty list
     self.deviceList = @[];
     [self setDeviceValues:@[]];
-
+    
     [self initializeNotifications];
     [self initializeAlmondData];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-
+    
     if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
         self.isViewControllerDisposed = YES;
-
+        
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
     }
@@ -93,72 +94,72 @@
 
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-
+    
     [center addObserver:self
                selector:@selector(onMobileCommandResponseCallback:)
                    name:MOBILE_COMMAND_NOTIFIER
                  object:nil];
-
+    
     [center addObserver:self
                selector:@selector(onCurrentAlmondChanged:)
                    name:kSFIDidChangeCurrentAlmond
                  object:nil];
-
+    
     [center addObserver:self
                selector:@selector(onDeviceListDidChange:)
                    name:kSFIDidChangeDeviceList
                  object:nil];
-
+    
     [center addObserver:self
                selector:@selector(onDeviceValueListDidChange:)
                    name:kSFIDidChangeDeviceValueList
                  object:nil];
-
+    
     [center addObserver:self
                selector:@selector(onAlmondListDidChange:)
                    name:kSFIDidUpdateAlmondList
                  object:nil];
-
+    
     [center addObserver:self
                selector:@selector(onAlmondNameDidChange:)
                    name:kSFIDidChangeAlmondName
                  object:nil];
-
+    
     [center addObserver:self
                selector:@selector(onNotificationPrefDidChange:)
                    name:kSFINotificationPreferencesDidChange
                  object:nil];
-
+    
     [center addObserver:self
                selector:@selector(onSensorChangeCallback:)
                    name:SENSOR_CHANGE_NOTIFIER
                  object:nil];
-
+    
     [center addObserver:self
                selector:@selector(validateResponseCallback:)
                    name:VALIDATE_RESPONSE_NOTIFIER
                  object:nil];
-
+    
 }
 
 - (void)initializeAlmondData {
     // 2014-11-08 sinclair added due to late reports from QA noticing keyboard can be still up over layed over sensors.
     // I think this is caused by bug in new Accounts code that has been fixed, but am adding this anyway
     [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
-
+    
     [self clearAllDeviceUpdatingState];
     [self clearAllDeviceCellStateValues];
-
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
+    
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     _almond = plus;
-
+    
     NSString *const mac = (plus == nil) ? NO_ALMOND : plus.almondplusMAC;
     [self markAlmondMac:mac];
-
+    
     self.isUpdatingDeviceSettings = NO;
-
+    
     if ([self isNoAlmondMAC]) {
         self.navigationItem.title = @"Get Started";
         self.deviceList = @[];
@@ -168,7 +169,7 @@
         self.navigationItem.title = plus.almondplusName;
         self.deviceList = [toolkit deviceList:mac];
         [self setDeviceValues:[toolkit deviceValuesList:mac]];
-
+        
         if (self.deviceList.count == 0) {
             DLog(@"Sensors: requesting device list on empty list");
             [self showHudWithTimeout];
@@ -183,14 +184,14 @@
             [self showHudWithTimeout];
             DLog(@"Sensors: requesting device values on new connection");
         }
-
-//        [toolkit asyncRequestNotificationPreferenceList:mac];
-
+        
+        //        [toolkit asyncRequestNotificationPreferenceList:mac];
+        
         [self initializeColors:plus];
     }
-
+    
     [self tryInstallRefreshControl];
-
+    
     self.enableDrawer = YES;
 }
 
@@ -218,12 +219,12 @@
     if (aMac == nil) {
         return NO;
     }
-
+    
     NSString *current = self.almondMac;
     if (current == nil) {
         return NO;
     }
-
+    
     return [current isEqualToString:aMac];
 }
 
@@ -249,12 +250,12 @@
     if (![self hasExpandedCell]) {
         return;
     }
-
+    
     NSMutableSet *new_ids = [NSMutableSet set];
     for (SFIDevice *device in devices) {
         [new_ids addObject:@(device.deviceID)];
     }
-
+    
     [new_ids intersectSet:self.expandedDeviceIds];
     _expandedDeviceIds = [NSSet setWithSet:new_ids];
 }
@@ -270,7 +271,7 @@
         return 85;
     }
     return 0;
-
+    
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
@@ -299,11 +300,11 @@
     if ([self isNoAlmondMAC]) {
         return 1;
     }
-
+    
     if ([self isDeviceListEmpty]) {
         return 1;
     }
-
+    
     return [self.deviceList count]; //No add symbol for sensors + 1;
 }
 
@@ -311,15 +312,15 @@
     if ([self isNoAlmondMAC]) {
         return 400;
     }
-
+    
     if ([self isDeviceListEmpty]) {
         return 400;
     }
-
+    
     if (indexPath.row == [self.deviceList count]) {
         return SENSOR_ROW_HEIGHT;
     }
-
+    
     SFIDevice *device = [self tryGetDevice:indexPath.row];
     SFIDeviceValue *deviceValue = [self tryCurrentDeviceValues:device.deviceID];
     return (CGFloat) [self computeSensorRowHeight:device deviceValue:deviceValue];
@@ -330,12 +331,12 @@
         tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
     }
-
+    
     if ([self isDeviceListEmpty]) {
         tableView.scrollEnabled = NO;
         return [self createEmptyCell:tableView];
     }
-
+    
     tableView.scrollEnabled = YES;
     return [self createSensorCell:tableView listRow:(NSUInteger) indexPath.row];
 }
@@ -344,36 +345,36 @@
 
 - (UITableViewCell *)createEmptyCell:(UITableView *)tableView {
     static NSString *empty_cell_id = @"EmptyCell";
-
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:empty_cell_id];
-
+    
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:empty_cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+        
         const CGFloat table_width = CGRectGetWidth(self.tableView.frame);
-
+        
         UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 40, table_width, 30)];
         lblNoSensor.textAlignment = NSTextAlignmentCenter;
         [lblNoSensor setFont:[UIFont securifiLightFont:20]];
         lblNoSensor.text = NSLocalizedString(@"sensors.no-sensors.label.You don't have any sensors yet.", @"You don't have any sensors yet.");
         lblNoSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblNoSensor];
-
+        
         UIImage *routerImage = [UIImage routerImage];
-
+        
         CGAffineTransform scale = CGAffineTransformMakeScale(0.5, 0.5);
         const CGSize routerImageSize = CGSizeApplyAffineTransform(routerImage.size, scale);
         const CGFloat image_width = routerImageSize.width;
         const CGFloat image_height = routerImageSize.height;
         CGRect imageViewFrame = CGRectMake((table_width - image_width) / 2, 95, image_width, image_height);
-
+        
         UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:imageViewFrame];
         imgRouter.userInteractionEnabled = NO;
         imgRouter.image = routerImage;
         imgRouter.contentMode = UIViewContentModeScaleAspectFit;
         [cell addSubview:imgRouter];
-
+        
         UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 95 + image_height + 20, table_width, 30)];
         lblAddSensor.textAlignment = NSTextAlignmentCenter;
         [lblAddSensor setFont:[UIFont standardUILabelFont]];
@@ -381,43 +382,43 @@
         lblAddSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblAddSensor];
     }
-
+    
     return cell;
 }
 
 - (UITableViewCell *)createNoAlmondCell:(UITableView *)tableView {
     static NSString *no_almond_cell_id = @"NoAlmondCell";
-
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:no_almond_cell_id];
-
+    
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:no_almond_cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+        
         MessageView *view = [MessageView linkRouterMessage];
         view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, 400);
         view.delegate = self;
-
+        
         [cell addSubview:view];
     }
-
+    
     return cell;
 }
 
 - (UITableViewCell *)createSensorCell:(UITableView *)tableView listRow:(NSUInteger)indexPathRow {
     SFIDevice *device = [self tryGetDevice:indexPathRow];
     SFIDeviceValue *deviceValue = [self tryCurrentDeviceValues:device.deviceID];
-
+    
     SFIDeviceType currentDeviceType = device.deviceType;
     NSUInteger height = [self computeSensorRowHeight:device deviceValue:deviceValue];
     BOOL expanded = [self isExpandedCell:device];
-
+    
     NSString *cell_id = [NSString stringWithFormat:@"s_t:%d_h:%ld_e:%d,", currentDeviceType, (unsigned long) height, expanded];
-
+    
     //todo fix me: this attribute should be removed or managed in the toolkit
     //PY 201114- Set device almond mac
     device.almondMAC = self.almondMac;
-
+    
     SFISensorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[SFISensorTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
@@ -427,9 +428,9 @@
     cell.cellColor = [self.almondColor makeGradatedColorForPositionIndex:indexPathRow];
     cell.delegate = self;
     cell.expandedView = expanded;
-
+    
     cell.deviceValue = deviceValue;
-
+    
     NSString *status = [self tryDeviceStatusMessage:device];
     if (status) {
         [cell markStatusMessage:status];
@@ -438,7 +439,7 @@
     else {
         [cell markWillReuseCell:NO];
     }
-
+    
     return cell;
 }
 
@@ -452,27 +453,27 @@
 - (UIView *)createActivationNotificationHeader {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(5, 0, self.tableView.frame.size.width, 100)];
     view.backgroundColor = [UIColor whiteColor];
-
+    
     UIImageView *imgLine1 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 5, self.tableView.frame.size.width - 35, 1)];
     imgLine1.image = [UIImage imageNamed:@"grey_line.png"];
-
+    
     UIImageView *imgCross = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 20, 12, 10, 10)];
     imgCross.image = [UIImage imageNamed:@"cross_icon.png"];
-
+    
     [view addSubview:imgCross];
-
+    
     UIButton *btnCloseNotification = [UIButton buttonWithType:UIButtonTypeCustom];
     btnCloseNotification.frame = CGRectMake(self.tableView.frame.size.width - 40, 12, 50, 30);
     btnCloseNotification.backgroundColor = [UIColor clearColor];
     [btnCloseNotification addTarget:self action:@selector(onCloseNotificationClicked:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:btnCloseNotification];
-
+    
     UILabel *lblConfirm = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, self.tableView.frame.size.width - 15, 20)];
     lblConfirm.font = [UIFont securifiBoldFont:13];
     lblConfirm.textColor = [UIColor colorWithRed:(CGFloat) (119 / 255.0) green:(CGFloat) (119 / 255.0) blue:(CGFloat) (119 / 255.0) alpha:1.0];
     lblConfirm.textAlignment = NSTextAlignmentCenter;
     int minsRemainingForUnactivatedAccount = [[SecurifiToolkit sharedInstance] minsRemainingForUnactivatedAccount];
-
+    
     if (minsRemainingForUnactivatedAccount <= 1440) {
         lblConfirm.text = NSLocalizedString(@"sensors.account-confirm.label.Please confirm your account (less than a day left).", @"Please confirm your account (less than a day left).");
     }
@@ -480,45 +481,45 @@
         int daysRemaining = minsRemainingForUnactivatedAccount / 1440;
         lblConfirm.text = [NSString stringWithFormat:NSLocalizedString(@"sensors.account-confirm.label.Please confirm your account (%d days left).", @"Please confirm your account (%d days left)."), daysRemaining];
     }
-
+    
     UILabel *lblInstructions = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, self.tableView.frame.size.width - 20, 20)];
     lblInstructions.font = [UIFont securifiBoldFont:13];
     lblInstructions.textColor = [UIColor colorWithRed:(CGFloat) (119 / 255.0) green:(CGFloat) (119 / 255.0) blue:(CGFloat) (119 / 255.0) alpha:1.0];
     lblInstructions.textAlignment = NSTextAlignmentCenter;
     lblInstructions.text = NSLocalizedString(@"sensors.account-confirm.label.Check activation email for instructions.", @"Check activation email for instructions.");
-
+    
     UIImageView *imgMail = [[UIImageView alloc] initWithFrame:CGRectMake(80, 65, 22, 16)];
     imgMail.image = [UIImage imageNamed:@"Mail_icon.png"];
     [view addSubview:imgMail];
-
+    
     UIButton *btnResendActivationMail = [UIButton buttonWithType:UIButtonTypeCustom];
     btnResendActivationMail.frame = CGRectMake(50, 45, self.tableView.frame.size.width - 90, 40);
     btnResendActivationMail.backgroundColor = [UIColor clearColor];
     [btnResendActivationMail addTarget:self action:@selector(onResendActivationClicked:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:btnResendActivationMail];
-
+    
     UILabel *lblResend = [[UILabel alloc] initWithFrame:CGRectMake(32, 65, self.tableView.frame.size.width - 20, 20)];
     lblResend.font = [UIFont securifiBoldFont:13];
     lblResend.textColor = [UIColor colorWithRed:(CGFloat) (0 / 255.0) green:(CGFloat) (173 / 255.0) blue:(CGFloat) (226 / 255.0) alpha:1.0];
     lblResend.textAlignment = NSTextAlignmentCenter;
     lblResend.text = NSLocalizedString(@"sensors.account-confirm.label.Resend activation email", @"Resend activation email");
-
+    
     UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 85, self.tableView.frame.size.width - 35, 1)];
     imgLine2.image = [UIImage imageNamed:@"grey_line.png"];
-
+    
     [view addSubview:imgLine1];
     [view addSubview:lblConfirm];
     [view addSubview:lblInstructions];
     [view addSubview:lblResend];
     [view addSubview:imgLine2];
-
+    
     return view;
 }
 
 - (void)reloadDeviceTableCellForDevice:(SFIDevice *)device {
     NSUInteger cellRow = (NSUInteger) [self deviceCellRow:device.deviceID];
     NSIndexPath *path = [NSIndexPath indexPathForRow:cellRow inSection:0];
-
+    
     [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
 }
 
@@ -528,19 +529,19 @@
     if (self.isViewControllerDisposed) {
         return;
     }
-
+    
     SFIDevice *device = cell.device;
     if (![device isBinaryStateSwitchable]) {
         return;
     }
-
+    
     SFIDeviceValue *value = [self tryCurrentDeviceValues:device.deviceID];
-
+    
     SFIDeviceKnownValues *deviceValues = [device switchBinaryState:value];
     if (!deviceValues) {
         return;
     }
-
+    
     // Send update to the cloud
     [self sendMobileCommandForDevice:device deviceValue:deviceValues deviceCell:cell];
 }
@@ -549,14 +550,36 @@
     if (self.isViewControllerDisposed) {
         return;
     }
-
+    
     SFIDevice *sensor = cell.device;
     const int clicked_row = (int) [self deviceCellRow:sensor.deviceID];
-
+    
+    switch (sensor.deviceType) {
+        case SFIDeviceType_NestThermostat_57:
+        case SFIDeviceType_NestSmokeDetector_58:
+        {
+            
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
+            SFISensorDetailViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SFISensorDetailViewController"];
+            viewController.device = sensor;
+            viewController.cellColor = [self.almondColor makeGradatedColorForPositionIndex:clicked_row];
+//            viewController..delegate = self;
+            viewController.deviceValue = [self tryCurrentDeviceValues:sensor.deviceID];
+            
+            [self.navigationController pushViewController:viewController animated:YES];
+            return;
+        }
+            break;
+            
+        default:
+            break;
+    }
+    
+    
     // Toggle expansion
     NSMutableArray *paths = [NSMutableArray array];
     [paths addObject:[NSIndexPath indexPathForRow:clicked_row inSection:0]];
-
+    
     for (NSNumber *deviceId in self.expandedDevices) {
         int device_id = [deviceId intValue];
         if (device_id != sensor.deviceID) {
@@ -564,7 +587,7 @@
             [paths addObject:[NSIndexPath indexPathForRow:row inSection:0]];
         }
     }
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         BOOL expanded = [self isExpandedCell:sensor];
         if (expanded) {
@@ -573,7 +596,7 @@
         else {
             [self markExpandedCell:sensor];
         }
-
+        
         if (clicked_row >= self.deviceList.count) {
             // Just in case something gets changed out from underneath
             [self.tableView reloadData];
@@ -609,7 +632,7 @@
         if (self.isViewControllerDisposed) {
             return;
         }
-
+        
         self.isUpdatingDeviceSettings = NO;
         self.enableDrawer = YES;
         [self.tableView reloadData];
@@ -622,17 +645,17 @@
                                                                    selector:@selector(onSensorChangeCommandTimeout:)
                                                                    userInfo:nil
                                                                     repeats:NO];
-
+    
     [self showUpdatingSettingsHUD];
-
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncChangeAlmond:self.almond device:cell.device name:cell.deviceName location:cell.deviceLocation];
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.isViewControllerDisposed) {
             return;
         }
-
+        
         self.isSensorChangeCommandSuccessful = FALSE;
         self.isUpdatingDeviceSettings = NO;
         self.enableDrawer = YES;
@@ -643,16 +666,16 @@
     if (self.isViewControllerDisposed) {
         return;
     }
-
+    
     SFIDevice *device = cell.device;
-
+    
     SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-//        ctrl.enableDebugMode = YES; // can uncomment for development/test
+    //        ctrl.enableDebugMode = YES; // can uncomment for development/test
     ctrl.enableDeleteNotification = NO;
     ctrl.markAllViewedOnDismiss = NO;
     ctrl.deviceID = device.deviceID;
     ctrl.almondMac = self.almondMac;
-
+    
     UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
     [self presentViewController:nav_ctrl animated:YES completion:nil];
 }
@@ -661,12 +684,12 @@
     if (self.isViewControllerDisposed) {
         return;
     }
-
+    
     SFIDevice *device = cell.device;
-
+    
     SFIDeviceKnownValues *deviceValues = [cell.deviceValue knownValuesForProperty:SFIDevicePropertyType_TAMPER];
     [deviceValues setBoolValue:NO];
-
+    
     [self showSavingToast];
     [self sendMobileCommandForDevice:device deviceValue:deviceValues deviceCell:cell];
 }
@@ -675,15 +698,15 @@
     if (self.isViewControllerDisposed) {
         return;
     }
-
+    
     SFIDevice *device = cell.device;
-
+    
     SFIDeviceKnownValues *deviceValues = [cell.deviceValue knownValuesForProperty:propertyType];
     deviceValues.value = newValue;
-
+    
     // provisionally update; on mobile cmd response, the actual new values will be set
     cell.deviceValue = [cell.deviceValue setKnownValues:deviceValues forProperty:propertyType];
-
+    
     [self showSavingToast];
     [self sendMobileCommandForDevice:device deviceValue:deviceValues deviceCell:cell];
 }
@@ -692,15 +715,15 @@
     if (self.isViewControllerDisposed) {
         return;
     }
-
+    
     SFIDevice *device = cell.device;
-
+    
     SFIDeviceKnownValues *deviceValues = [cell.deviceValue knownValuesForPropertyName:propertyName];
     deviceValues.value = newValue;
-
+    
     // provisionally update; on mobile cmd response, the actual new values will be set
     cell.deviceValue = [cell.deviceValue setKnownValues:deviceValues forPropertyName:propertyName];
-
+    
     [self showSavingToast];
     [self sendMobileCommandForDevice:device deviceValue:deviceValues deviceCell:cell];
 }
@@ -726,16 +749,16 @@
     if (self.isViewControllerDisposed) {
         return;
     }
-
+    
     SFIDevice *device = cell.device;
     SFIDeviceValue *deviceValue = cell.deviceValue;
     NSArray *notificationDeviceSettings = [device updateNotificationMode:newMode deviceValue:deviceValue];
-
+    
     NSString *almondMAC = self.almondMac;
     NSString *action = (newMode == SFINotificationMode_off) ? kSFINotificationPreferenceChangeActionDelete : kSFINotificationPreferenceChangeActionAdd;
-
+    
     [self showSavingToast];
-
+    
     [[SecurifiToolkit sharedInstance] asyncRequestNotificationPreferenceChange:almondMAC deviceList:notificationDeviceSettings forAction:action];
 }
 
@@ -754,7 +777,7 @@
 
 - (SFIDevice *)tryGetDevice:(NSInteger)index {
     NSUInteger uIndex = (NSUInteger) index;
-
+    
     NSArray *list = self.deviceList;
     if (uIndex < list.count) {
         return list[uIndex];
@@ -765,16 +788,16 @@
 // calls should be coordinated on the main queue
 - (void)setDeviceList:(NSArray *)devices {
     [self configureNotificationModesForDevices:devices];
-
+    
     NSMutableDictionary *table = [NSMutableDictionary dictionary];
-
+    
     int row = 0;
     for (SFIDevice *device in devices) {
         NSNumber *key = @(device.deviceID);
         table[key] = @(row);
         row++;
     }
-
+    
     _deviceList = devices;
     _deviceIndexTable = [NSDictionary dictionaryWithDictionary:table];
 }
@@ -801,20 +824,20 @@
     if (self.isViewControllerDisposed) {
         return;
     }
-
+    
     [self.mobileCommandTimer invalidate];
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.isViewControllerDisposed) {
             return;
         }
-
+        
         //Cancel the mobile event - Revert back
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         [self setDeviceValues:[toolkit deviceValuesList:self.almondMac]];
         [self.tableView reloadData];
         [self.HUD hide:YES];
-
+        
         [self clearAllDeviceUpdatingState];
     });
 }
@@ -827,33 +850,33 @@
         if (self.isViewControllerDisposed) {
             return;
         }
-
+        
         if ([self isNoAlmondMAC]) {
             return;
         }
-
+        
         if (self.isViewLoaded) {
             [self.HUD hide:YES];
         }
-
+        
         // Timeout the commander timer
         [self.mobileCommandTimer invalidate];
-
+        
         NSNotification *notifier = (NSNotification *) sender;
         NSDictionary *data = [notifier userInfo];
         if (data == nil) {
             return;
         }
-
+        
         MobileCommandResponse *res = data[@"data"];
         sfi_id c_id = res.mobileInternalIndex;
-
+        
         SFIDevice *device = [self tryDeviceForCorrelationId:c_id];
         if (!device) {
             // give up: c_id is no longer valid
             return;
         }
-
+        
         if (res.isSuccessful) {
             // command succeeded; clear "status" state; new device values should be transmitted
             // via different callback and handled there.
@@ -870,7 +893,7 @@
                 [self clearDeviceUpdatingState:device];
                 [self showToast:@"Unable to update sensor"];
             }
-
+            
             [self reloadDeviceTableCellForDevice:device];
         }
     });
@@ -884,29 +907,29 @@
     if (self.isViewControllerDisposed) {
         return;
     }
-
+    
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
         return;
     }
-
+    
     NSString *cloudMAC = [data valueForKey:@"data"];
     if (![self isSameAsCurrentMAC:cloudMAC]) {
         // An Almond not currently being views was changed
         return;
     }
-
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
+    
     NSArray *newDeviceList = [toolkit deviceList:cloudMAC];
     if (newDeviceList == nil) {
         newDeviceList = @[];
     }
     [self removeExpandedCellForMissingDevices:newDeviceList];
-
+    
     NSArray *newDeviceValueList = [toolkit deviceValuesList:cloudMAC];
-
+    
     // Restore isExpanded state and clear 'updating' state
     NSArray *oldDeviceList = self.deviceList;
     for (SFIDevice *newDevice in newDeviceList) {
@@ -916,7 +939,7 @@
             }
         }
     }
-
+    
     // Push changes to the UI
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.isViewControllerDisposed) {
@@ -928,21 +951,21 @@
                 [self setDeviceValues:newDeviceValueList];
             }
             [self.tableView reloadData];
-
+            
             [self tryInstallRefreshControl];
         }
-
+        
         [self.HUD hide:YES afterDelay:1.5];
     });
 }
 
 - (void)onDeviceValueListDidChange:(id)sender {
     DLog(@"Sensors: did receive device values list change");
-
+    
     if (!self) {
         return;
     }
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
@@ -952,22 +975,22 @@
         }
         [self.HUD hide:YES];
     });
-
+    
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
         return;
     }
-
+    
     NSString *cloudMAC = [data valueForKey:@"data"];
     if (![self isSameAsCurrentMAC:cloudMAC]) {
         DLog(@"Sensors: ignore device values list change, c:%@, m:%@", self.almondMac, cloudMAC);
         // An Almond not currently being viewed was changed
         return;
     }
-
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
+    
     NSArray *newDeviceList = [toolkit deviceList:cloudMAC];
     if (newDeviceList == nil) {
         DLog(@"Device list is empty: %@", cloudMAC);
@@ -975,18 +998,18 @@
         [self clearAllDeviceUpdatingState];
     }
     [self removeExpandedCellForMissingDevices:newDeviceList];
-
+    
     NSArray *newDeviceValueList = [toolkit deviceValuesList:cloudMAC];
     if (newDeviceValueList == nil) {
         newDeviceValueList = @[];
     }
-
+    
     if (newDeviceList.count != newDeviceValueList.count) {
         ELog(@"Warning: device list and values lists are incongruent, d:%ld, v:%ld", (unsigned long) newDeviceList.count, (unsigned long) newDeviceValueList.count);
     }
-
-//    DLog(@"Changing device value list: %@", newDeviceValueList);
-
+    
+    //    DLog(@"Changing device value list: %@", newDeviceValueList);
+    
     // Restore isExpanded state and clear 'updating' state
     NSArray *oldDeviceList = self.deviceList;
     for (SFIDevice *newDevice in newDeviceList) {
@@ -996,7 +1019,7 @@
             }
         }
     }
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
@@ -1004,16 +1027,16 @@
         if (self.isViewControllerDisposed) {
             return;
         }
-
+        
         if (![self isSameAsCurrentMAC:cloudMAC]) {
             return;
         }
-
+        
         [self.refreshControl endRefreshing];
-
+        
         [self setDeviceList:newDeviceList];
         [self setDeviceValues:newDeviceValueList];
-
+        
         // defer showing changes when a sensor is being edited (name, location, etc.)
         if (!self.isUpdatingDeviceSettings) {
             [self.tableView reloadData];
@@ -1031,23 +1054,23 @@
 
 - (void)onAlmondListDidChange:(id)sender {
     NSLog(@"Sensors: did receive Almond List change");
-
+    
     if (!self) {
         return;
     }
-
+    
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-
+    
     SFIAlmondPlus *plus = [data valueForKey:@"data"];
-
+    
     if (plus != nil && [self isSameAsCurrentMAC:plus.almondplusMAC]) {
         // No reason to alert user
         return;
     }
-
+    
     // If plus is nil, then there are no almonds attached, and the UI needs to deal with it.
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
@@ -1058,12 +1081,12 @@
         if (self.isViewControllerDisposed) {
             return;
         }
-
+        
         [self.HUD show:YES];
-
+        
         [self initializeAlmondData];
         [self.tableView reloadData];
-
+        
         [self.HUD hide:YES afterDelay:1.5];
     });
 }
@@ -1075,12 +1098,12 @@
     if ([self isNoAlmondMAC]) {
         return;
     }
-
+    
     [self clearAllDeviceUpdatingState];
-
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncRequestDeviceValueList:self.almondMac];
-
+    
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
         [self.refreshControl endRefreshing];
@@ -1089,7 +1112,7 @@
 
 - (void)onSensorChangeCommandTimeout:(id)sender {
     [self.sensorChangeCommandTimer invalidate];
-
+    
     if (self.isSensorChangeCommandSuccessful) {
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.HUD hide:YES];
@@ -1104,16 +1127,16 @@
     if (!self) {
         return;
     }
-
+    
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
         return;
     }
-
+    
     self.isSensorChangeCommandSuccessful = TRUE;
     DLog(@"%s: Received SensorChangeCallback", __PRETTY_FUNCTION__);
-
+    
     SensorChangeResponse *obj = (SensorChangeResponse *) [data valueForKey:@"data"];
     if (obj.isSuccessful) {
         dispatch_async(dispatch_get_main_queue(), ^() {
@@ -1135,7 +1158,7 @@
     if (data == nil) {
         return;
     }
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
@@ -1143,7 +1166,7 @@
         if (self.isViewControllerDisposed) {
             return;
         }
-
+        
         SFIAlmondPlus *obj = (SFIAlmondPlus *) [data valueForKey:@"data"];
         if ([self isSameAsCurrentMAC:obj.almondplusMAC]) {
             self.navigationItem.title = obj.almondplusName;
@@ -1158,9 +1181,9 @@
     if (data == nil) {
         return;
     }
-
+    
     NSString *cloudMAC = [data valueForKey:@"data"];
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
@@ -1168,14 +1191,14 @@
         if (self.isViewControllerDisposed) {
             return;
         }
-
+        
         if (![self isSameAsCurrentMAC:cloudMAC]) {
             return;
         }
-
+        
         // reset the device list state, syncing it with toolkit
         [self setDeviceList:self.deviceList];
-
+        
         [self.refreshControl endRefreshing];
         [self.tableView reloadData];
     });
@@ -1190,20 +1213,20 @@
     if (deviceValues == nil) {
         return;
     }
-
+    
     // Tell the cell to show 'updating' type message to user
     [cell showUpdatingMessage];
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         //todo decide what to do about this
         [self.mobileCommandTimer invalidate];
-
+        
         self.mobileCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
                                                                    target:self
                                                                  selector:@selector(onSendMobileCommandTimeout:)
                                                                  userInfo:nil
                                                                   repeats:NO];
-
+        
         // dispatch request and keep track of its correlation ID so we can process the response
         //todo for future: note potential race condition: if we do not process command response on main queue it's possible response is processed before we have completed marking updating state.
         sfi_id c_id = [[SecurifiToolkit sharedInstance] asyncChangeAlmond:self.almond device:device value:deviceValues];
@@ -1216,9 +1239,9 @@
     if (list == nil) {
         list = @[];
     }
-
+    
     [self clearAllDeviceUpdatingState];
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.isViewControllerDisposed) {
             return;
@@ -1264,11 +1287,11 @@
     if (device == nil) {
         return;
     }
-
+    
     @synchronized (self.deviceCellStateValues_locker) {
         NSNumber *device_key = @(device.deviceID);
         NSMutableDictionary *all = (NSMutableDictionary *) self.deviceCellStateValues;
-
+        
         NSMutableDictionary *dict = all[device_key];
         if (dict == nil) {
             dict = [NSMutableDictionary dictionary];
@@ -1285,7 +1308,7 @@
     if (device == nil) {
         return nil;
     }
-
+    
     @synchronized (self.deviceCellStateValues_locker) {
         NSNumber *device_key = @(device.deviceID);
         NSMutableDictionary *all = (NSMutableDictionary *) self.deviceCellStateValues;
@@ -1306,20 +1329,20 @@
     if (device == nil) {
         return;
     }
-
+    
     @synchronized (self.deviceStatusMessages_locker) {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:self.updatingDevices];
-
+        
         NSNumber *key = @(c_id);
         NSString *device_key = [self deviceLookupKey:device];
-
+        
         // correlation id to device
         dict[key] = device;
         // create reverse lookup
         dict[device_key] = key;
-
+        
         _updatingDevices = [NSDictionary dictionaryWithDictionary:dict];
-
+        
         dict = [NSMutableDictionary dictionaryWithDictionary:self.deviceStatusMessages];
         if (optionalStatusMessage) {
             dict[device_key] = optionalStatusMessage;
@@ -1342,20 +1365,20 @@
     if (!device) {
         return;
     }
-
+    
     @synchronized (self.deviceStatusMessages_locker) {
         NSNumber *cid_key = self.updatingDevices[device];
         NSString *device_key = [self deviceLookupKey:device];
-
+        
         NSMutableDictionary *dict;
-
+        
         dict = [NSMutableDictionary dictionaryWithDictionary:self.updatingDevices];
         if (cid_key) {
             [dict removeObjectForKey:cid_key];
         }
         [dict removeObjectForKey:device_key];
         _updatingDevices = [NSDictionary dictionaryWithDictionary:dict];
-
+        
         dict = [NSMutableDictionary dictionaryWithDictionary:self.deviceStatusMessages];
         [dict removeObjectForKey:device_key];
         _deviceStatusMessages = [NSDictionary dictionaryWithDictionary:dict];
@@ -1389,23 +1412,23 @@
 - (void)sendReactivationRequest {
     ValidateAccountRequest *validateCommand = [[ValidateAccountRequest alloc] init];
     validateCommand.email = [[SecurifiToolkit sharedInstance] loginEmail];
-
+    
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_VALIDATE_REQUEST;
     cloudCommand.command = validateCommand;
-
+    
     [self asyncSendCommand:cloudCommand];
 }
 
 - (void)validateResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-
+    
     ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
-
+    
     DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
     DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
-
+    
     if (obj.isSuccessful) {
         [self showToast:NSLocalizedString(@"activation.toast.Reactivation link sent to your registerd email ID.", @"Reactivation link sent to your registerd email ID.")];
     }
@@ -1428,7 +1451,7 @@
                 failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! Cannot send reactivation link");
                 break;
         }
-
+        
         [self showToast:failureReason];
     }
 }
@@ -1438,7 +1461,7 @@
 - (void)configureNotificationModesForDevices:(NSArray *)devices {
     //Read from offline data
     NSArray *notificationList = [[SecurifiToolkit sharedInstance] notificationPrefList:self.almond.almondplusMAC];
-
+    
     for (SFIDevice *device in devices) {
         [self configureNotificationMode:device preferences:notificationList];
     }
@@ -1446,7 +1469,7 @@
 
 - (void)configureNotificationMode:(SFIDevice *)device preferences:(NSArray *)notificationList {
     sfi_id device_id = device.deviceID;
-
+    
     //Check if current device ID is in the notification list
     for (SFINotificationDevice *currentDevice in notificationList) {
         if (currentDevice.deviceID == device_id) {
@@ -1455,7 +1478,7 @@
             return;
         }
     }
-
+    
     // missing preference means none has been set and is equivalent to 'off'
     device.notificationMode = SFINotificationMode_off;
 }
