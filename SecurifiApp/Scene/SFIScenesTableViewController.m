@@ -502,7 +502,9 @@
 #pragma mark HUD management
 
 - (void)hudWasHidden:(MBProgressHUD *)hud {
-    [self addAddSceneButton];
+    if ([self isKindOfClass:[SFIScenesTableViewController class]]) {
+        [self addAddSceneButton];
+    }
 }
 
 @end

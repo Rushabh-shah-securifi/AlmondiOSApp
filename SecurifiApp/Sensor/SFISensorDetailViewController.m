@@ -327,7 +327,7 @@ typedef NS_ENUM(NSInteger, Properties) {
     label.textColor = [UIColor whiteColor];
     label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
-    label.text = currentDeviceValue.value;
+    label.text = [currentDeviceValue.value capitalizedString];
     label.numberOfLines = 1;
     label.tag = 66;
     label.textAlignment = NSTextAlignmentRight;
@@ -341,7 +341,12 @@ typedef NS_ENUM(NSInteger, Properties) {
     label.textColor = [UIColor whiteColor];
     label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CO_ALARM_STATE];
-    label.text = currentDeviceValue.value;
+    label.text = [currentDeviceValue.value capitalizedString];
+    if ([currentDeviceValue.value isEqualToString:@"true"]) {
+        label.text = @"Warning";
+    }else if ([currentDeviceValue.value isEqualToString:@"false"]){
+        label.text = @"Emergency";
+    }
     label.numberOfLines = 1;
     label.tag = 66;
     label.textAlignment = NSTextAlignmentRight;
@@ -355,7 +360,12 @@ typedef NS_ENUM(NSInteger, Properties) {
     label.textColor = [UIColor whiteColor];
     label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SMOKE_ALARM_STATE];
-    label.text = currentDeviceValue.value;
+    label.text = [currentDeviceValue.value capitalizedString];
+    if ([currentDeviceValue.value isEqualToString:@"true"]) {
+        label.text = @"Warning";
+    }else if ([currentDeviceValue.value isEqualToString:@"false"]){
+        label.text = @"Emergency";
+    }
     label.numberOfLines = 1;
     label.tag = 66;
     label.textAlignment = NSTextAlignmentRight;
@@ -381,7 +391,12 @@ typedef NS_ENUM(NSInteger, Properties) {
     label.textColor = [UIColor whiteColor];
     label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE];
-    label.text = currentDeviceValue.value;
+
+    if ([currentDeviceValue.value boolValue]) {
+        label.text = @"On";
+    }else{
+        label.text = @"Off";
+    }
     label.numberOfLines = 1;
     label.tag = 66;
     label.textAlignment = NSTextAlignmentRight;
@@ -395,7 +410,7 @@ typedef NS_ENUM(NSInteger, Properties) {
     label.textColor = [UIColor whiteColor];
     label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
-    label.text = currentDeviceValue.value;
+    label.text = [currentDeviceValue.value capitalizedString];
     label.numberOfLines = 1;
     label.tag = 66;
     label.textAlignment = NSTextAlignmentRight;
@@ -430,14 +445,14 @@ typedef NS_ENUM(NSInteger, Properties) {
     currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
     NSString *mode = [currentDeviceValue.value lowercaseString];
     NSString * prefix = @"F";
-    
+
     if (![[SecurifiToolkit sharedInstance] isCurrentTemperatureFormatFahrenheit]) {
         prefix = @"C";
     }
     
     if ([mode isEqualToString:@"cool"]) {
         label.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:lowValue];
-    }else if ([mode isEqualToString:@"cool"]){
+    }else if ([mode isEqualToString:@"heat"]){
         label.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:highValue];
     }else{
         label.text = [NSString stringWithFormat:@"%d - %d° %@",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:lowValue],[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:highValue],prefix];
