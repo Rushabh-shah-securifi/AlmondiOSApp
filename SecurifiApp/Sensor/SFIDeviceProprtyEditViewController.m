@@ -5,18 +5,30 @@
 //  Created by Tigran Aslanyan on 13.07.15.
 //  Copyright (c) 2015 Securifi Ltd. All rights reserved.
 //
+typedef NS_ENUM(NSInteger, Properties) {
+    nameIndexPathRow,
+    locationIndexPathRow,
+    humidityIndexPathRow,
+    awayModeIndexPathRow,
+    coLevelIndexPathRow,
+    smokeLevelIndexPathRow,
+    modeIndexPathRow,
+    targetRangeIndexPathRow,
+    fanIndexPathRow,
+    notifyMeIndexPathRow,
+    deviceHistoryIndexPathRow,
+};
 
 #import "SFIDeviceProprtyEditViewController.h"
 #import "SFIWiFiDeviceTypeSelectionCell.h"
 #import "SFIHorizontalValueSelectorView.h"
+#import "UIViewController+Securifi.h"
 #import "MBProgressHUD.h"
 
 @interface SFIDeviceProprtyEditViewController ()<SFIWiFiDeviceTypeSelectionCellDelegate,SFIHorizontalValueSelectorViewDataSource,SFIHorizontalValueSelectorViewDelegate>{
     
     IBOutlet UIView *viewTypeSelection;
     
-    IBOutlet UITextField *txtName;
-    IBOutlet UIView *viewEditName;
     IBOutlet UIButton *btnBack;
     IBOutlet UIButton *btnSave;
     
@@ -35,9 +47,20 @@
     IBOutlet SFIHorizontalValueSelectorView *coolingTempSelector;
     IBOutlet SFIHorizontalValueSelectorView *heatingTempSelector;
     IBOutlet UIButton *btnShowCelsius;
+    sfi_id dc_id;
+    IBOutlet UILabel *lblCooling;
+    IBOutlet UILabel *lblHeating;
+    IBOutlet UILabel *lblShow;
+    IBOutlet UILabel *lblCelsius;
+    IBOutlet UILabel *lblFahrenheit;
+    IBOutlet UIButton *btnFahrenheit;
+    
+    NSInteger currentCoolTemp;
+    NSInteger currentHeatTemp;
 }
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
+@property(nonatomic) NSTimer *mobileCommandTimer;
 
 @end
 
@@ -56,22 +79,11 @@
         fr.origin.x = 0;
         fr.origin.y = 0;
         lblThemperatureMain.frame = fr;
-        
+        lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:36.0f];
         lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
         lblThemperatureMain.textColor = [UIColor whiteColor];
-        
-        SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
-        NSString * curTemp = currentDeviceValue.value;
-        
-        NSString *strTopTitleLabelText = [curTemp stringByAppendingString:@"°"];
-        
-        NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
-        
-        [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:36.0f]} range:NSMakeRange(0,curTemp.length)];
-        [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:27.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(curTemp.length,@"°".length)];
-        
-        [lblThemperatureMain setAttributedText:strTemp];
     }
+    
     if (self.device.deviceType==SFIDeviceType_NestSmokeDetector_58) {
         lblThemperatureMain.hidden = YES;
         
@@ -85,12 +97,12 @@
     }
     
     viewTypeSelection.hidden = YES;
-    viewEditName.hidden = YES;
     viewThemperature.hidden = YES;
     
     propertyTypes = [NSMutableArray new];
+    
     switch (self.editFieldIndex) {
-        case 1:
+        case notifyMeIndexPathRow:
         {
             NSArray *notifyMe_items = @[
                                         NSLocalizedString(@"sensor.notificaiton.segment.Always", @"Always"),
@@ -100,13 +112,13 @@
             
             switch (self.device.notificationMode) {
                 case SFINotificationMode_always:
-                    self.selectedNotificationType =notifyMe_items[0];
+                    selectedPropertyValue =notifyMe_items[0];
                     break;
                 case SFINotificationMode_away:
-                    self.selectedNotificationType =notifyMe_items[1];
+                    selectedPropertyValue =notifyMe_items[1];
                     break;
                 case SFINotificationMode_off:
-                    self.selectedNotificationType =notifyMe_items[2];
+                    selectedPropertyValue =notifyMe_items[2];
                     break;
                 default:
                     break;
@@ -118,7 +130,7 @@
                 NSMutableDictionary * dict = [NSMutableDictionary new];
                 [dict setValue:notifyMe_items[ind] forKey:@"name"];
                 [dict setValue:@0 forKey:@"selected"];
-                if ([[self.selectedNotificationType lowercaseString] isEqualToString:[name lowercaseString]]) {
+                if ([[selectedPropertyValue lowercaseString] isEqualToString:[name lowercaseString]]) {
                     [dict setValue:@1 forKey:@"selected"];
                 }
                 [propertyTypes addObject:dict];
@@ -126,16 +138,25 @@
             }
             break;
         }
-        case 2:
+        case fanIndexPathRow:
         {
             SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE];
             
             NSArray *cnames = @[@"On",@"Off"];
+            
+            
+            if ([currentDeviceValue.value isEqualToString:@"true"]) {
+                selectedPropertyValue = @"On";
+            }else if ([currentDeviceValue.value isEqualToString:@"false"]){
+                selectedPropertyValue = @"Off";
+            }else{
+                selectedPropertyValue = @"";
+            }
             for (NSString * name in cnames) {
                 NSMutableDictionary * dict = [NSMutableDictionary new];
                 [dict setValue:name forKey:@"name"];
                 [dict setValue:@0 forKey:@"selected"];
-                if ([[currentDeviceValue.value lowercaseString] isEqualToString:[name lowercaseString]]) {
+                if ([selectedPropertyValue isEqualToString:name]) {
                     [dict setValue:@1 forKey:@"selected"];
                 }
                 
@@ -143,7 +164,7 @@
             }
             break;
         }
-        case 3:
+        case awayModeIndexPathRow:
         {
             SFIDeviceKnownValues *currentDeviceValue1 = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
             NSArray *nnames = @[@"Home",@"Away"];
@@ -161,15 +182,31 @@
             
             break;
         }
-        case 4:
+        case modeIndexPathRow:
         {
-            SFIDeviceKnownValues *currentDeviceValue2 = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
+            
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
+            selectedPropertyValue = currentDeviceValue.value;
             NSArray *mnames = @[@"Off",@"Cool",@"Heat",@"Heat-Cool"];
+            
+            currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_COOL];
+            BOOL canCool = [currentDeviceValue boolValue];
+            currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_HEAT];
+            BOOL canHeat = [currentDeviceValue boolValue];
+            
+            if (!canCool) {
+                mnames = @[@"Off",@"Heat"];
+            }
+            if (!canHeat) {
+                mnames = @[@"Off",@"Cool"];
+            }
+            
+            
             for (NSString * name in mnames) {
                 NSMutableDictionary * dict = [NSMutableDictionary new];
                 [dict setValue:name forKey:@"name"];
                 [dict setValue:@0 forKey:@"selected"];
-                if ([[currentDeviceValue2.value lowercaseString] isEqualToString:[name lowercaseString]]) {
+                if ([[selectedPropertyValue lowercaseString] isEqualToString:[name lowercaseString]]) {
                     [dict setValue:@1 forKey:@"selected"];
                 }
                 [propertyTypes addObject:dict];
@@ -177,9 +214,13 @@
             
             break;
         }
-        case 5:
+        case targetRangeIndexPathRow:
         {
-            
+            SFIDeviceKnownValues *currentDeviceValue1 = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_RANGE_LOW];
+            currentCoolTemp = [currentDeviceValue1 intValue];
+            SFIDeviceKnownValues *currentDeviceValue2 = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_RANGE_HIGH];
+            currentCoolTemp = [currentDeviceValue2 intValue];
+            break;
         }
         default:
             break;
@@ -194,12 +235,10 @@
     
     UIView *currentView;
     switch (self.editFieldIndex) {
-        case 2:
-            
-            
-        case 1:
-        case 3:
-        case 4:
+        case awayModeIndexPathRow:
+        case modeIndexPathRow:
+        case fanIndexPathRow:
+        case notifyMeIndexPathRow:
         {
             viewTypeSelection.hidden = NO;
             CGRect fr = viewTypeSelection.frame;
@@ -211,7 +250,7 @@
             currentView = viewTypeSelection;
             break;
         }
-        case 5:
+        case targetRangeIndexPathRow:
         {
             viewThemperature.hidden = NO;
             CGRect fr = viewTypeSelection.frame;
@@ -222,16 +261,17 @@
             currentView = viewThemperature;
             
             
+            
             coolingTempSelector.dataSource = self;
             coolingTempSelector.delegate = self;
             coolingTempSelector.shouldBeTransparent = YES;
             coolingTempSelector.horizontalScrolling = YES;
+            coolingTempSelector.debugEnabled = NO;
             
             heatingTempSelector.dataSource = self;
             heatingTempSelector.delegate = self;
             heatingTempSelector.shouldBeTransparent = YES;
             heatingTempSelector.horizontalScrolling = YES;
-            coolingTempSelector.debugEnabled = NO;
             heatingTempSelector.debugEnabled = NO;
             //            [[self selectorHorizontal] setDecelerates:NO];
             
@@ -240,10 +280,47 @@
             btnShowCelsius.backgroundColor = [UIColor clearColor];
             btnShowCelsius.layer.cornerRadius = btnShowCelsius.frame.size.width/2;
             
-            if (btnShowCelsius.selected) {
-                btnShowCelsius.backgroundColor = [UIColor whiteColor];
-            }else{
-                btnShowCelsius.backgroundColor = [UIColor clearColor];
+            btnFahrenheit.layer.borderColor = [[UIColor whiteColor] CGColor];
+            btnFahrenheit.layer.borderWidth = 2.0f;
+            btnFahrenheit.backgroundColor = [UIColor clearColor];
+            btnFahrenheit.layer.cornerRadius = btnShowCelsius.frame.size.width/2;
+            [self configureTemperatureFormatButtons];
+            
+            
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
+            
+            if([[currentDeviceValue.value lowercaseString] isEqualToString:@"cool"]){
+                heatingTempSelector.hidden = YES;
+                lblHeating.hidden = YES;
+                fr = lblShow.frame;
+                fr.origin.y =lblHeating.frame.origin.y;
+                lblShow.frame = fr;
+                
+                fr = lblCelsius.frame;
+                fr.origin.y =lblHeating.frame.origin.y+30;
+                lblCelsius.frame = fr;
+                
+                fr = btnShowCelsius.frame;
+                fr.origin.y =lblHeating.frame.origin.y+30;
+                btnShowCelsius.frame = fr;
+            }
+            if([[currentDeviceValue.value lowercaseString] isEqualToString:@"heat"]){
+                fr = lblShow.frame;
+                fr.origin.y =lblHeating.frame.origin.y;
+                lblShow.frame = fr;
+                
+                fr = lblCelsius.frame;
+                fr.origin.y =lblHeating.frame.origin.y+30;
+                lblCelsius.frame = fr;
+                
+                fr = btnShowCelsius.frame;
+                fr.origin.y =lblHeating.frame.origin.y+30;
+                btnShowCelsius.frame = fr;
+                
+                coolingTempSelector.hidden = YES;
+                lblCooling.hidden = YES;
+                heatingTempSelector.frame = coolingTempSelector.frame;
+                lblHeating.frame = lblCooling.frame;
             }
         }
         default:
@@ -265,9 +342,6 @@
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    if ([txtName isFirstResponder]) {
-        [txtName resignFirstResponder];
-    }
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self];
@@ -276,16 +350,21 @@
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
-               selector:@selector(onWiFiClientsUpdateResponseCallback:)
-                   name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
-                 object:nil];//md01
-    
+               selector:@selector(onMobileCommandResponseCallback:)
+                   name:MOBILE_COMMAND_NOTIFIER
+                 object:nil];
     [center addObserver:self
-               selector:@selector(onClientPreferenceUpdateResponse:)
-                   name:NOTIFICATION_WIFI_CLIENT_UPDATE_PREFERENCE_REQUEST_NOTIFIER
+               selector:@selector(onNotificationPrefDidChange:)
+                   name:kSFINotificationPreferencesDidChange
                  object:nil];
 }
 
+//- (void)updateThemperatureDataOnUI{
+//    if ([SecurifiToolkit sharedInstance] isFahrenheit) {
+//        currentCoolTemp = [currentDeviceValue1 intValue];
+//        currentCoolTemp = [currentDeviceValue2 intValue];
+//    }
+//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -297,51 +376,76 @@
 }
 
 - (IBAction)btnSaveTap:(id)sender {
-    if ([txtName isFirstResponder]) {
-        [txtName resignFirstResponder];
-    }
-    
-    
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    randomMobileInternalIndex = arc4random() % 10000;
-    NSMutableDictionary * updateClientInfo = [NSMutableDictionary new];
-    
-    //    if (self.editFieldIndex==6) {
-    //        [updateClientInfo setValue:@"UpdatePreference" forKey:@"CommandType"];
-    //        [updateClientInfo setValue:self.connectedDevice.deviceID forKey:@"ClientID"];
-    //        [updateClientInfo setValue:self.selectedNotificationType forKey:@"NotificationType"];
-    //        [updateClientInfo setValue:self.userID forKey:@"UserID"];
-    //        cloudCommand.commandType = CommandType_WIFI_CLIENT_UPDATE_PREFERENCE_REQUEST;
-    //
-    //    }else{
-    //        [updateClientInfo setValue:@"UpdateClient" forKey:@"CommandType"];
-    //        NSArray * clients = @[@{@"ID":self.connectedDevice.deviceID,@"Name":txtName.text,@"Connection":selectedConnectionType,@"MAC":self.connectedDevice.deviceMAC,@"Type":[selectedDeviceType lowercaseString],@"LastKnownIP":self.connectedDevice.deviceIP,@"Active":self.connectedDevice.isActive?@"true":@"false",@"UseAsPresence":btnUsePresence.selected?@"true":@"false"}];
-    //
-    //        [updateClientInfo setValue:clients forKey:@"Clients"];
-    //        cloudCommand.commandType = CommandType_UPDATE_REQUEST;
-    //    }
-    //    [updateClientInfo setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
-    //    [updateClientInfo setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
-    
-    
-    cloudCommand.command = [updateClientInfo JSONString];
-    
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    _HUD.labelText = NSLocalizedString(@"wifi.hud.UpdatingWifiClient", @"Updating Wifi Client...");
+    _HUD.labelText = NSLocalizedString(@"sensor.hud.UpdatingSensordata", @"Updating Sensor Data...");
     
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
     
-    [self asyncSendCommand:cloudCommand];
+    
+    
+    SFIDevicePropertyType propertyType;
+    SFIDeviceKnownValues *deviceValues;
+    switch (self.editFieldIndex) {
+        case notifyMeIndexPathRow:
+        {
+            SFINotificationMode mode = SFINotificationMode_always;
+            if ([selectedPropertyValue isEqualToString:@"Always"]) {
+                mode = SFINotificationMode_always;
+            }
+            if ([selectedPropertyValue isEqualToString:@"Away"]) {
+                mode = SFINotificationMode_away;
+            }
+            if ([selectedPropertyValue isEqualToString:@"Off"]) {
+                mode = SFINotificationMode_off;
+            }
+            [self sensorDidChangeNotificationSetting:mode];
+            break;
+        }
+        case fanIndexPathRow:
+            propertyType = SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            if ([selectedPropertyValue isEqualToString:@"On"]) {
+                deviceValues.value = @"true";
+            }else if ([selectedPropertyValue isEqualToString:@"Off"]){
+                deviceValues.value = @"false";
+            }else{
+                deviceValues.value = @"";
+            }
+            
+            break;
+        case awayModeIndexPathRow:
+            propertyType = SFIDevicePropertyType_AWAY_MODE;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            deviceValues.value = [selectedPropertyValue lowercaseString];
+            break;
+        case modeIndexPathRow:
+            propertyType = SFIDevicePropertyType_NEST_THERMOSTAT_MODE;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            deviceValues.value = [selectedPropertyValue lowercaseString];
+            break;
+        case targetRangeIndexPathRow:
+            
+            break;
+        default:
+            break;
+    }
+    
+    
+    
+    // provisionally update; on mobile cmd response, the actual new values will be set
+    self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+    
+    //    [self showSavingToast];
+    [self sendMobileCommandForDevice:self.device deviceValue:deviceValues];
+    
+    
+    
+    //    [self asyncSendCommand:cloudCommand];
 }
-
-
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -357,10 +461,10 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (self.editFieldIndex) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
+        case awayModeIndexPathRow:
+        case fanIndexPathRow:
+        case modeIndexPathRow:
+        case notifyMeIndexPathRow:
             return propertyTypes.count;
             break;
             
@@ -377,10 +481,10 @@
     
     cell.delegate = self;
     switch (self.editFieldIndex) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
+        case awayModeIndexPathRow:
+        case fanIndexPathRow:
+        case modeIndexPathRow:
+        case notifyMeIndexPathRow:
             [cell createPropertyCell:propertyTypes[indexPath.row]];
             cell.textLabel.text = [propertyTypes[indexPath.row] valueForKey:@"name"];
             break;
@@ -422,10 +526,10 @@
 #pragma mark tableview cell delegates
 - (IBAction)btnSelectTypeTapped:(SFIWiFiDeviceTypeSelectionCell *)cell Info:(NSDictionary *)cellInfo {
     switch (self.editFieldIndex) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
+        case awayModeIndexPathRow:
+        case fanIndexPathRow:
+        case modeIndexPathRow:
+        case notifyMeIndexPathRow:
             for (NSMutableDictionary * dict in propertyTypes) {
                 [dict setValue:@0 forKey:@"selected"];
             }
@@ -455,74 +559,18 @@
     [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
-#pragma mark - Cloud command senders and handlers
-
-- (void)onWiFiClientsUpdateResponseCallback:(id)sender {
-    
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data == nil) {
-        return;
-    }
-    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    
-    NSLog(@"%@",mainDict);
-    
-    if ([[mainDict valueForKey:@"MobileInternalIndex"] integerValue]!=randomMobileInternalIndex) {
-        return;
-    }
-    if ([[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
-        //        self.connectedDevice.deviceType = selectedDeviceType;
-        //        self.connectedDevice.deviceUseAsPresence = btnUsePresence.selected;
-        //        self.connectedDevice.name = txtName.text;
-        //        self.connectedDevice.deviceConnection = selectedConnectionType;
-        //        [self.delegate updateDeviceInfo:self.connectedDevice];
-        
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            if (!self) {
-                return;
-            }
-            
-            
-            [self.HUD hide:YES];
-            [self.navigationController popViewControllerAnimated:YES];
-        });
-        
-        return;
-    }
-}
-
-- (void)onClientPreferenceUpdateResponse:(id)sender {
-    
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data == nil) {
-        return;
-    }
-    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    
-    NSLog(@"%@",mainDict);
-    
-    if ([[mainDict valueForKey:@"MobileInternalIndex"] integerValue]!=randomMobileInternalIndex) {
-        return;
-    }
-    if ([[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            if (!self) {
-                return;
-            }
-            
-            
-            [self.HUD hide:YES];
-            [self.navigationController popViewControllerAnimated:YES];
-        });
-        
-        return;
-    }
-}
-
+#pragma mark Temperature Selectoios
 #pragma SFIHorizontalValueSelectorView dataSource
 - (NSInteger)numberOfRowsInSelector:(SFIHorizontalValueSelectorView *)valueSelector {
+    
+    if ([valueSelector isEqual:coolingTempSelector]) {
+        //50 - (currentHeatTemp-3)
+        return (currentHeatTemp-3)-50;
+    }
+    if ([valueSelector isEqual:heatingTempSelector]) {
+        return 90-(currentCoolTemp+3);
+    }
+    
     return 13;
 }
 
@@ -578,12 +626,154 @@
 - (void)selector:(SFIHorizontalValueSelectorView *)valueSelector didSelectRowAtIndex:(NSInteger)index {
     NSLog(@"Selected index %ld",(long)index);
 }
+
 - (IBAction)btnShowCelsiusTap:(id)sender {
-    btnShowCelsius.selected = !btnShowCelsius.selected;
-    if (btnShowCelsius.selected) {
-        btnShowCelsius.backgroundColor = [UIColor whiteColor];
-    }else{
+    [[SecurifiToolkit sharedInstance] setCurrentTemperatureFormatFahrenheit:NO];
+    [self configureTemperatureFormatButtons];
+}
+
+- (IBAction)btnShowFahrenheitTap:(id)sender {
+    [[SecurifiToolkit sharedInstance] setCurrentTemperatureFormatFahrenheit:YES];
+    [self configureTemperatureFormatButtons];
+}
+
+- (void)configureTemperatureFormatButtons{
+    if ([[SecurifiToolkit sharedInstance] isCurrentTemperatureFormatFahrenheit]) {
+        btnFahrenheit.backgroundColor = [UIColor whiteColor];
         btnShowCelsius.backgroundColor = [UIColor clearColor];
+        btnFahrenheit.selected = YES;
+        btnShowCelsius.selected = NO;
+    }else{
+        btnFahrenheit.backgroundColor = [UIColor clearColor];
+        btnShowCelsius.backgroundColor = [UIColor whiteColor];
+        btnShowCelsius.selected = YES;
+        btnFahrenheit.selected = NO;
     }
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
+    lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
+}
+#pragma mark - Cloud command senders and handlers
+
+
+
+- (void)sendMobileCommandForDevice:(SFIDevice *)device deviceValue:(SFIDeviceKnownValues *)deviceValues {
+    if (device == nil) {
+        return;
+    }
+    if (deviceValues == nil) {
+        return;
+    }
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    // Tell the cell to show 'updating' type message to user
+    //    [cell showUpdatingMessage];
+    
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        //todo decide what to do about this
+        [self.mobileCommandTimer invalidate];
+        
+        self.mobileCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
+                                                                   target:self
+                                                                 selector:@selector(onSendMobileCommandTimeout:)
+                                                                 userInfo:nil
+                                                                  repeats:NO];
+        
+        // dispatch request and keep track of its correlation ID so we can process the response
+        //todo for future: note potential race condition: if we do not process command response on main queue it's possible response is processed before we have completed marking updating state.
+        dc_id = [[SecurifiToolkit sharedInstance] asyncChangeAlmond:plus device:device value:deviceValues];
+        //        [self markDeviceUpdatingState:device correlationId:c_id statusMessage:nil];
+    });
+}
+
+- (void)onSendMobileCommandTimeout:(id)sender {
+    
+    
+    [self.mobileCommandTimer invalidate];
+    
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        //Cancel the mobile event - Revert back
+        [self.HUD hide:YES];
+    });
+}
+
+- (void)onMobileCommandResponseCallback:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
+        
+        if (self.isViewLoaded) {
+            [self.HUD hide:YES];
+        }
+        
+        // Timeout the commander timer
+        [self.mobileCommandTimer invalidate];
+        
+        NSNotification *notifier = (NSNotification *) sender;
+        NSDictionary *data = [notifier userInfo];
+        if (data == nil) {
+            return;
+        }
+        
+        MobileCommandResponse *res = data[@"data"];
+        sfi_id c_id = res.mobileInternalIndex;
+        
+        if (res.isSuccessful && c_id == dc_id) {
+            // command succeeded; clear "status" state; new device values should be transmitted
+            // via different callback and handled there.
+            [self.delegate updateDeviceInfo:self.device :self.deviceValue];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else {
+            NSString *status = res.reason;
+            if (status.length > 0) {
+                //                [self markDeviceUpdatingState:device correlationId:c_id statusMessage:status];
+                [self showToast:status];
+            }
+            else {
+                // it failed but we did not receive a reason; clear the updating state and pretend nothing happened.
+                [self showToast:@"Unable to update sensor"];
+            }
+            
+            //            [self reloadDeviceTableCellForDevice:device];
+        }
+    });
+}
+
+- (void)onNotificationPrefDidChange:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    if (self.isViewLoaded) {
+        [self.HUD hide:YES];
+    }
+    
+    
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self) {
+            return;
+        }
+        
+        [self.delegate updateDeviceInfo:self.device :self.deviceValue];
+        [self.navigationController popViewControllerAnimated:YES];
+    });
+}
+
+#pragma mark
+
+- (void)sensorDidChangeNotificationSetting:(SFINotificationMode)newMode {
+    //Send command to set notification
+    
+    NSArray *notificationDeviceSettings = [self.device updateNotificationMode:newMode deviceValue:self.deviceValue];
+    
+    
+    NSString *action = (newMode == SFINotificationMode_off) ? kSFINotificationPreferenceChangeActionDelete : kSFINotificationPreferenceChangeActionAdd;
+    
+    //    [self showSavingToast];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    [[SecurifiToolkit sharedInstance] asyncRequestNotificationPreferenceChange:plus.almondplusMAC deviceList:notificationDeviceSettings forAction:action];
 }
 @end

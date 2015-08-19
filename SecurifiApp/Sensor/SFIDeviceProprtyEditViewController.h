@@ -9,15 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @protocol SFIDeviceProprtyEditViewControllerDelegate
-- (void)updateDeviceInfo:(SFIConnectedDevice *)deviceInfo;
+- (void)updateDeviceInfo:(SFIDevice *)device :(SFIDeviceValue*)deviceValue;
 @end
 
 @interface SFIDeviceProprtyEditViewController : UIViewController
 
 @property (weak) id<SFIDeviceProprtyEditViewControllerDelegate> delegate;
-@property(assign)int editFieldIndex;
+@property(assign)NSInteger editFieldIndex;
 @property(strong)SFIDevice *device;
 @property(strong)SFIDeviceValue *deviceValue;
-@property(strong)NSString* selectedNotificationType;
 @property(nonatomic) UIColor *cellColor;
 @end

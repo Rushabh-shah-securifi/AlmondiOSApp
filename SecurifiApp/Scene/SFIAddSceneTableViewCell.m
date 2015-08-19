@@ -1544,6 +1544,8 @@
     btnNestHeat.selected = NO;
     btnNestCool.selected = NO;
     btnNestOff.selected = NO;
+        btnNestTermostatFanOn.selected = NO;
+        btnNestTermostatFanOff.selected = NO;
     
     btnNestAuto.hidden = NO;
     btnNestHeat.hidden = NO;

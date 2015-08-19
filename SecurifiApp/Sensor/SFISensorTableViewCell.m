@@ -918,16 +918,10 @@
     
     UILabel * lblThemperatureMain = [[UILabel alloc] initWithFrame:self.deviceImageView.frame];
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
-    NSString * curTemp = currentDeviceValue.value;
-    
-    NSString *strTopTitleLabelText = [curTemp stringByAppendingString:@"°"];
-    
-    NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
-    
-    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:26.0f]} range:NSMakeRange(0,curTemp.length)];
-    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:17.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(curTemp.length,@"°".length)];
-    
-    [lblThemperatureMain setAttributedText:strTemp];
+    lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:29.0f];
+    lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
+    lblThemperatureMain.textColor = [UIColor whiteColor];
+    lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
     [self.contentView addSubview:lblThemperatureMain];
     NSMutableArray *status = [NSMutableArray array];
     [self tryAddBatteryStatusMessage:status];

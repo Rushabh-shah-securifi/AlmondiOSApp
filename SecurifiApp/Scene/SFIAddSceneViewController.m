@@ -524,10 +524,10 @@
                 
                 
                 [indexDict setValue:@0 forKey:@"Value"];
-                [indexDict setValue:@"imgLightOff" forKey:@"onImage"];
-                [indexDict setValue:@"OFF" forKey:@"onTitle"];
-                [indexDict setValue:@"imgLightOn" forKey:@"offImage"];
-                [indexDict setValue:@"ON" forKey:@"offTitle"];
+                [indexDict setValue:@"imgLightOff" forKey:@"offImage"];
+                [indexDict setValue:@"OFF" forKey:@"offTitle"];
+                [indexDict setValue:@"imgLightOn" forKey:@"onImage"];
+                [indexDict setValue:@"ON" forKey:@"onTitle"];
                 [indexDict setValue:@"DIM" forKey:@"dimTitle"];
                 [indexDict setValue:@"%" forKey:@"dimPrefix"];
                 [indexDict setValue:@"false" forKey:@"offValue"];
@@ -1076,7 +1076,10 @@
 
 - (void)tableViewCellValueDidChange:(SFIAddSceneTableViewCell*)cell CellInfo:(NSDictionary*)cellInfo Index:(int)index Value:(NSString*)value{
     
-    
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    if (!indexPath) {
+        return;
+    }
     
     BOOL found = NO;
     NSMutableDictionary *edit_entryDict = [NSMutableDictionary new];
@@ -1104,10 +1107,6 @@
     
     
     
-    
-    
-    
-    
     //need to change value in main sceneInfo
     NSMutableArray *existingValues  = [[self getExistingValues:[[cellInfo valueForKey:@"DeviceID"] integerValue]] mutableCopy];
     [cellInfo setValue:existingValues forKey:@"existingValues"];
@@ -1132,7 +1131,8 @@
                     
                     for (NSMutableDictionary *entryDict in sceneEntryList) {
                         if ([[entryDict valueForKey:@"DeviceID"] intValue]==[[dict valueForKey:@"DeviceID"] intValue] && [[entryDict valueForKey:@"Index"] intValue]==[[dict valueForKey:@"Index"] intValue]) {
-                            [sceneEntryList removeObject:entryDict];                            break;
+                            [sceneEntryList removeObject:entryDict];
+                            break;
                         }
                     }
                 }
@@ -1144,85 +1144,16 @@
         [cellInfo setValue:existingValues forKey:@"existingValues"];
         
         
-        NSIndexPath * indexpath = [self.tableView indexPathForCell:cell];
-        if (indexpath) {
-            [self.tableView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
-            
-        }
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
     
     if (device.deviceType == SFIDeviceType_NestThermostat_57) {
-        
-        //        NSString *ahco = @"";
-        //        for (NSDictionary * dict in existingValues) {
-        //            if ([[dict valueForKey:@"Index"] integerValue]==2) {
-        //                ahco = [dict valueForKey:@"Value"];
-        //                break;
-        //            }
-        //        }
-        //
-        //        if ([ahco isEqualToString:@"heat"]) {
-        //            for (NSDictionary * dict in existingValues) {
-        //                if ([[dict valueForKey:@"Index"] integerValue]==5) {
-        //
-        //                    for (NSMutableDictionary *entryDict in sceneEntryList) {
-        //                        if ([[entryDict valueForKey:@"DeviceID"] intValue]==[[dict valueForKey:@"DeviceID"] intValue] && [[entryDict valueForKey:@"Index"] intValue]==[[dict valueForKey:@"Index"] intValue]) {
-        //                            [sceneEntryList removeObject:entryDict];                            break;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        if ([ahco isEqualToString:@"cool"]) {
-        //            for (NSDictionary * dict in existingValues) {
-        //                if ([[dict valueForKey:@"Index"] integerValue]==6) {
-        //
-        //                    for (NSMutableDictionary *entryDict in sceneEntryList) {
-        //                        if ([[entryDict valueForKey:@"DeviceID"] intValue]==[[dict valueForKey:@"DeviceID"] intValue] && [[entryDict valueForKey:@"Index"] intValue]==[[dict valueForKey:@"Index"] intValue]) {
-        //                            [sceneEntryList removeObject:entryDict];                            break;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        if ([ahco isEqualToString:@"cool-heat"]) {
-        //            for (NSDictionary * dict in existingValues) {
-        //                if ([[dict valueForKey:@"Index"] integerValue]==3) {
-        //
-        //                    for (NSMutableDictionary *entryDict in sceneEntryList) {
-        //                        if ([[entryDict valueForKey:@"DeviceID"] intValue]==[[dict valueForKey:@"DeviceID"] intValue] && [[entryDict valueForKey:@"Index"] intValue]==[[dict valueForKey:@"Index"] intValue]) {
-        //                            [sceneEntryList removeObject:entryDict];                            break;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        if ([ahco isEqualToString:@"off"]) {
-        //            for (NSDictionary * dict in existingValues) {
-        //                if ([[dict valueForKey:@"Index"] integerValue]==3 || [[dict valueForKey:@"Index"] integerValue]==5 || [[dict valueForKey:@"Index"] integerValue]==6) {
-        //
-        //                    for (NSMutableDictionary *entryDict in sceneEntryList) {
-        //                        if ([[entryDict valueForKey:@"DeviceID"] intValue]==[[dict valueForKey:@"DeviceID"] intValue] && [[entryDict valueForKey:@"Index"] intValue]==[[dict valueForKey:@"Index"] intValue]) {
-        //                            [sceneEntryList removeObject:entryDict];                            break;
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        existingValues  = [[self getExistingValues:[[cellInfo valueForKey:@"DeviceID"] integerValue]] mutableCopy];
-        [cellInfo setValue:existingValues forKey:@"existingValues"];
-        
-        
-        NSIndexPath * indexpath = [self.tableView indexPathForCell:cell];
-        if (indexpath) {
-            [self.tableView reloadRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationNone];
-            
-        }
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
     
     
     
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    
     [cellsInfoArray[indexPath.row] setValue:existingValues forKey:@"existingValues"];
 }
 
