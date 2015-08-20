@@ -57,17 +57,6 @@
     return [sfiParser loadDataFromString:decodedString];
 }
 
-//TODO: Remove - Dummy
-- (NSMutableArray *)loadDataFromXML:(NSString *)xmlFileName {
-    NSString *path = [[NSBundle mainBundle] pathForResource:xmlFileName ofType:@"xml"];
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    NSXMLParser *xmlParser = [[NSXMLParser alloc] initWithData:data];
-    sensors = [[NSMutableArray alloc] init];
-    [xmlParser setDelegate:self];
-    [xmlParser parse];
-    return sensors;
-}
-
 - (SFIGenericRouterCommand *)loadDataFromString:(NSString *)xmlString {
     NSData *data = [xmlString dataUsingEncoding:NSUTF8StringEncoding];
     NSXMLParser *xmlparser = [[NSXMLParser alloc] initWithData:data];
@@ -228,19 +217,29 @@
         }
     }
     else if ([elementName isEqualToString:WIRELESS_SETTINGS]) {
-        [wirelessSettings setDeviceList:self.wirelessSettingsArray];
+        wirelessSettings.deviceList = self.wirelessSettingsArray;
         genericCommandResponse.command = wirelessSettings;
     }
-        //PY 271113 - Router Summary
     else if ([elementName isEqualToString:WIRELESS_SETTINGS_SUMMARY]) {
-        [routerSummary setWirelessSummaries:self.wirelessSummaryArray];
+        routerSummary.wirelessSummaries = self.wirelessSummaryArray;
     }
     else if ([elementName isEqualToString:ROUTER_UPTIME]) {
-        [routerSummary setRouterUptime:currentNodeContent];
+        routerSummary.routerUptime = currentNodeContent;
     }
-        //PY 051114 - Router Firmware Version
+    else if ([elementName isEqualToString:ROUTER_UPTIME_RAW]) {
+        routerSummary.uptime = currentNodeContent;
+    }
     else if ([elementName isEqualToString:FIRMWARE_VERSION]) {
-        [routerSummary setFirmwareVersion:currentNodeContent];
+        routerSummary.firmwareVersion = currentNodeContent;
+    }
+    else if ([elementName isEqualToString:ROUTER_URL]) {
+        routerSummary.url = currentNodeContent;
+    }
+    else if ([elementName isEqualToString:ROUTER_LOGIN]) {
+        routerSummary.login = currentNodeContent;
+    }
+    else if ([elementName isEqualToString:ROUTER_PASSWORD]) {
+        routerSummary.password = currentNodeContent;
     }
     else if ([elementName isEqualToString:ROUTER_SUMMARY]) {
         genericCommandResponse.command = routerSummary;

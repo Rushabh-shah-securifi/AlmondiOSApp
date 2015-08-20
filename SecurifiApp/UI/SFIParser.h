@@ -45,7 +45,5 @@
 
 + (SFIGenericRouterCommand *)parseRouterResponse:(GenericCommandResponse *)response;
 
-- (NSMutableArray *)loadDataFromXML:(NSString *)xmlFileName;
-
 - (SFIGenericRouterCommand *)loadDataFromString:(NSString *)xmlString;
 @end
