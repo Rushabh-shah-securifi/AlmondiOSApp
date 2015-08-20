@@ -267,7 +267,15 @@
         
         const CGFloat table_width = CGRectGetWidth(self.tableView.frame);
         
-        UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, table_width-20, 130)];
+        UILabel *lblNewScene = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, table_width-20, 130)];
+        lblNewScene.textAlignment = NSTextAlignmentCenter;
+        [lblNewScene setFont:[UIFont fontWithName:AVENIR_ROMAN size:18]];
+        lblNewScene.text = @"New Scene";//NSLocalizedString(@"scenes.no-scenes.label.A scene is a group of sensors and a desired state for these sensors.", @"A scene is a group of sensors and a desired state for these sensors.");
+        lblNewScene.textColor = [UIColor grayColor];
+        [cell addSubview:lblNewScene];
+
+        
+        UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, table_width-20, 130)];
         lblNoSensor.textAlignment = NSTextAlignmentCenter;
         [lblNoSensor setFont:[UIFont fontWithName:AVENIR_ROMAN size:15]];
         lblNoSensor.numberOfLines = 10;
@@ -275,26 +283,6 @@
         lblNoSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblNoSensor];
         
-//        UIImage *routerImage = [UIImage routerImage];
-//        
-//        CGAffineTransform scale = CGAffineTransformMakeScale(0.5, 0.5);
-//        const CGSize routerImageSize = CGSizeApplyAffineTransform(routerImage.size, scale);
-//        const CGFloat image_width = routerImageSize.width;
-//        const CGFloat image_height = routerImageSize.height;
-//        CGRect imageViewFrame = CGRectMake((table_width - image_width) / 2, 95, image_width, image_height);
-//        
-//        UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:imageViewFrame];
-//        imgRouter.userInteractionEnabled = NO;
-//        imgRouter.image = routerImage;
-//        imgRouter.contentMode = UIViewContentModeScaleAspectFit;
-//        [cell addSubview:imgRouter];
-//        
-//        UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 95 + image_height + 20, table_width, 30)];
-//        lblAddSensor.textAlignment = NSTextAlignmentCenter;
-//        [lblAddSensor setFont:[UIFont standardUILabelFont]];
-//        lblAddSensor.text = NSLocalizedString(@"router.no-sensors.label.Add a sensor from your Almond.", @"Add a sensor from your Almond.");
-//        lblAddSensor.textColor = [UIColor grayColor];
-//        [cell addSubview:lblAddSensor];
     }
     
     return cell;
@@ -514,7 +502,9 @@
 #pragma mark HUD management
 
 - (void)hudWasHidden:(MBProgressHUD *)hud {
-    [self addAddSceneButton];
+    if ([self isKindOfClass:[SFIScenesTableViewController class]]) {
+        [self addAddSceneButton];
+    }
 }
 
 @end

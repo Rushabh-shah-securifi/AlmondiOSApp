@@ -159,7 +159,7 @@ reset at the moment. Try again later.";
 "sensor.notificaiton.segment.Always" = "Always";
 "sensor.notificaiton.segment.Home" = "Home";
 "sensor.notificaiton.segment.Away" = "Away";
-
+"sensor.hud.UpdatingSensordata" = "Updating Sensor Data...";
 /* signup */
 
 "signup.navbar-title.Sign up" = "Sign up";
