@@ -673,51 +673,31 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
     NSString *almondMac = self.almondMac;
 
-    enum SFIAlmondConnectionMode mode = [toolkit connectionModeForAlmond:almondMac];
-    switch (mode) {
-        case SFIAlmondConnectionMode_cloud: {
-            cell.title = NSLocalizedString(@"router.card-title.Cloud Almond Link", @"Cloud Almond Link");
-            cell.summaries = @[
-                    NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")
-            ];
+    cell.title = NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link");
 
-            cell.editTarget = nil;
-            cell.editSelector = nil;
+    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:almondMac];
+//    NSString *ssid2 = settings.ssid2 ? settings.ssid2 : @"";
+//    NSString *ssid5 = settings.ssid5 ? settings.ssid5 : @"";
 
-            break;
-        }
-        case SFIAlmondConnectionMode_local: {
-            cell.title = NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link");
-
-            SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:almondMac];
-            if (settings) {
-                NSString *ssid2 = settings.ssid2 ? settings.ssid2 : @"";
-                NSString *ssid5 = settings.ssid5 ? settings.ssid5 : @"";
-                NSString *host = settings.host ? settings.host : @"";
-                NSString *admin = settings.login ? settings.login : @"";
-
-                cell.summaries = @[
-                        [NSString stringWithFormat:@"SSID 2.5Ghz : %@", ssid2],
-                        [NSString stringWithFormat:@"SSID 5Ghz : %@", ssid5],
-                        [NSString stringWithFormat:@"IP Address : %@", host],
-                        [NSString stringWithFormat:@"Admin Login : %@", admin],
-                ];
-
-                cell.editTarget = self;
-                cell.editSelector = @selector(onEditNetworkSettings:);
-            }
-            else {
-                cell.summaries = @[
-                        NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")
-                ];
-
-                cell.editTarget = nil;
-                cell.editSelector = nil;
-            }
-
-            break;
-        }
+    NSString *host = self.routerSummary.url;
+    if (!host) {
+        host = @"";
     }
+
+    NSString *login = self.routerSummary.login;
+    if (!login) {
+        login = @"";
+    }
+
+    cell.summaries = @[
+//            [NSString stringWithFormat:@"SSID 2.5Ghz : %@", ssid2],
+//            [NSString stringWithFormat:@"SSID 5Ghz : %@", ssid5],
+            [NSString stringWithFormat:@"IP Address : %@", host],
+            [NSString stringWithFormat:@"Admin Login : %@", login],
+    ];
+
+    cell.editTarget = self;
+    cell.editSelector = @selector(onEditNetworkSettings:);
 
     return cell;
 }
@@ -1279,6 +1259,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                 [self tryCheckAlmondVersion:currentVersion];
                 [self tryCheckSendLogsSupport:currentVersion];
 
+                // after receiving summary, we update the local wireless connection settings with the current login/password
+                [self tryUpdateLocalNetworkSettings:summary];
+
                 [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
 
                 // after receiving summary, wait until detailed settings have been returned
@@ -1317,6 +1300,33 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         [self.HUD hide:YES];
         [self.refreshControl endRefreshing];
     });
+}
+
+- (void)tryUpdateLocalNetworkSettings:(const SFIRouterSummary *)summary {
+    NSString *mac = self.almondMac;
+
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:mac];
+    if (!settings) {
+        settings = [SFIAlmondLocalNetworkSettings new];
+        settings.almondplusMAC = mac;
+    }
+
+    if (summary.login) {
+        settings.login = summary.login;
+    }
+    if (summary.password) {
+        NSString *decrypted = [summary decryptPassword:mac];
+        if (decrypted) {
+            settings.password = decrypted;
+        }
+    }
+    if (summary.url) {
+        settings.host = summary.url;
+    }
+
+    [toolkit setLocalNetworkSettings:settings];
 }
 
 // take into account table might be displaying static images and therefore reloading a specific section would not be appropriate
