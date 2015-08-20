@@ -32,6 +32,9 @@
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSTimer *cloudReconnectTimer;
 @property BOOL presentingLoginController;
+@property(nonatomic, strong) UITabBarController *securifiTabCtrl;
+@property(nonatomic, strong) NSArray *securifiCloudTabs;
+@property(nonatomic, strong) NSArray *securifiLocalTabs;
 @end
 
 @implementation SFIMainViewController
@@ -67,6 +70,16 @@
     [center addObserver:self
                selector:@selector(onReachabilityDidChange:)
                    name:kSFIReachabilityChangedNotification 
+                 object:nil];
+
+    [center addObserver:self 
+               selector:@selector(onAlmondConnectionModeDidChange:) 
+                   name:kSFIDidChangeAlmondConnectionMode 
+                 object:nil];
+
+    [center addObserver:self
+               selector:@selector(onAlmondConnectionModeDidChange:)
+                   name:kSFIDidChangeCurrentAlmond
                  object:nil];
 
     [center addObserver:self
@@ -178,6 +191,22 @@
 
     [self scheduleReconnectTimer];
     [toolkit initToolkit];
+}
+
+- (void)onAlmondConnectionModeDidChange:(NSNotification *)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        SFIAlmondPlus *plus = toolkit.currentAlmond;
+        enum SFIAlmondConnectionMode mode = [toolkit connectionModeForAlmond:plus.almondplusMAC];
+        switch (mode) {
+            case SFIAlmondConnectionMode_cloud:
+                self.securifiTabCtrl.viewControllers = self.securifiCloudTabs;
+                break;
+            case SFIAlmondConnectionMode_local:
+                self.securifiTabCtrl.viewControllers = self.securifiLocalTabs;
+                break;
+        }
+    });
 }
 
 #pragma mark - Class methods
@@ -354,7 +383,8 @@
 
     // Build up tab bar
     //
-    NSArray *tabs = @[sensorNav];
+    NSArray *cloud_tabs = @[sensorNav];
+    NSArray *local_tabs = @[sensorNav];
     //
     if (configurator.enableScenes) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
@@ -365,10 +395,11 @@
         icon = [UIImage imageNamed:@"icon_scenes"];
         scenesNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_SCENES image:icon selectedImage:icon];
 
-        tabs = [tabs arrayByAddingObject:scenesNav];
+        cloud_tabs = [cloud_tabs arrayByAddingObject:scenesNav];
     }
     //
-    tabs = [tabs arrayByAddingObject:routerNav];
+    cloud_tabs = [cloud_tabs arrayByAddingObject:routerNav];
+    local_tabs = [local_tabs arrayByAddingObject:routerNav];
     //
     if (configurator.enableScoreboard) {
         ScoreboardViewController *scoreCtrl = [ScoreboardViewController new];
@@ -377,14 +408,21 @@
         icon = [UIImage imageNamed:@"878-binoculars"];
         scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
 
-        tabs = [tabs arrayByAddingObject:scoreNav];
+        cloud_tabs = [cloud_tabs arrayByAddingObject:scoreNav];
+        local_tabs = [local_tabs arrayByAddingObject:scoreNav];
     }
 
     UITabBarController *tabCtrl = [UITabBarController new];
     tabCtrl.tabBar.translucent = NO;
     tabCtrl.tabBar.tintColor = [UIColor blackColor];
-    tabCtrl.viewControllers = tabs;
     tabCtrl.delegate = self;
+
+    self.securifiTabCtrl = tabCtrl;
+    self.securifiCloudTabs = cloud_tabs;
+    self.securifiLocalTabs = local_tabs;
+
+    // set up the tabs
+    [self onAlmondConnectionModeDidChange:nil];
 
     DrawerViewController *drawer = [DrawerViewController new];
 
