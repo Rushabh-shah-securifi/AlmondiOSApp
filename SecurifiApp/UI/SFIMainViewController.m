@@ -23,6 +23,7 @@
 #import "SFIPreferences.h"
 #import "UIImage+Securifi.h"
 #import "UIApplication+SecurifiNotifications.h"
+#import "SFITabBarController.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
@@ -32,9 +33,6 @@
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) NSTimer *cloudReconnectTimer;
 @property BOOL presentingLoginController;
-@property(nonatomic, strong) UITabBarController *securifiTabCtrl;
-@property(nonatomic, strong) NSArray *securifiCloudTabs;
-@property(nonatomic, strong) NSArray *securifiLocalTabs;
 @end
 
 @implementation SFIMainViewController
@@ -70,16 +68,6 @@
     [center addObserver:self
                selector:@selector(onReachabilityDidChange:)
                    name:kSFIReachabilityChangedNotification 
-                 object:nil];
-
-    [center addObserver:self 
-               selector:@selector(onAlmondConnectionModeDidChange:) 
-                   name:kSFIDidChangeAlmondConnectionMode 
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onAlmondConnectionModeDidChange:)
-                   name:kSFIDidChangeCurrentAlmond
                  object:nil];
 
     [center addObserver:self
@@ -191,22 +179,6 @@
 
     [self scheduleReconnectTimer];
     [toolkit initToolkit];
-}
-
-- (void)onAlmondConnectionModeDidChange:(NSNotification *)sender {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        SFIAlmondPlus *plus = toolkit.currentAlmond;
-        enum SFIAlmondConnectionMode mode = [toolkit connectionModeForAlmond:plus.almondplusMAC];
-        switch (mode) {
-            case SFIAlmondConnectionMode_cloud:
-                self.securifiTabCtrl.viewControllers = self.securifiCloudTabs;
-                break;
-            case SFIAlmondConnectionMode_local:
-                self.securifiTabCtrl.viewControllers = self.securifiLocalTabs;
-                break;
-        }
-    });
 }
 
 #pragma mark - Class methods
@@ -412,17 +384,12 @@
         local_tabs = [local_tabs arrayByAddingObject:scoreNav];
     }
 
-    UITabBarController *tabCtrl = [UITabBarController new];
+    SFITabBarController *tabCtrl = [SFITabBarController new];
     tabCtrl.tabBar.translucent = NO;
     tabCtrl.tabBar.tintColor = [UIColor blackColor];
     tabCtrl.delegate = self;
-
-    self.securifiTabCtrl = tabCtrl;
-    self.securifiCloudTabs = cloud_tabs;
-    self.securifiLocalTabs = local_tabs;
-
-    // set up the tabs
-    [self onAlmondConnectionModeDidChange:nil];
+    tabCtrl.cloudTabs = cloud_tabs;
+    tabCtrl.localTabs = local_tabs;
 
     DrawerViewController *drawer = [DrawerViewController new];
 

@@ -200,6 +200,7 @@
 		1DF038B5E6A54CEEAFE1BE7F /* NotificationsTestStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0385D1BECF622A4B92311 /* NotificationsTestStore.m */; };
 		1DF038DE3C385FEC394F6D20 /* SFIRouterSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF031BA3DEFBBE00371A598 /* SFIRouterSettingsTableViewController.m */; };
 		1DF0390452B5D28DECBE4F68 /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033BFB3D6B1769127310B /* NSData+Conversion.m */; };
+		1DF03908300C35FF0720CB13 /* SFITabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF030A22E535CC9AA88BF93 /* SFITabBarController.m */; };
 		1DF0391AFBAB20EA1FB28F60 /* SFIRouterSettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF031BA3DEFBBE00371A598 /* SFIRouterSettingsTableViewController.m */; };
 		1DF0394349F84E2FCC5E25F9 /* AlertViewAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033553D675EBD64644DB2 /* AlertViewAction.m */; };
 		1DF039D3E2A4A6FB292A99C3 /* SFISensorDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03086AADF35699E6F9054 /* SFISensorDetailView.m */; };
@@ -218,6 +219,7 @@
 		1DF03B8FE78FA07C67A943CC /* RouterNetworkSettingsEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03EE61C9DF4D7E058616E /* RouterNetworkSettingsEditor.m */; };
 		1DF03BDF11E412D1A07CE913 /* TableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0306EC5BE52D6364936BE /* TableHeaderView.m */; };
 		1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03ED87E1BC2184C9EEF53 /* ScoreboardTextEditorViewController.m */; };
+		1DF03C3105B3DC1477346284 /* SFITabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF030A22E535CC9AA88BF93 /* SFITabBarController.m */; };
 		1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF03C29C7F6403672992843 /* DebugLogger.m */; };
 		1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0327E1106225F6EB46DF8 /* SFIHuePickerView.m */; };
 		1DF03C76A181214483FB8F70 /* SFICardViewSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF0369E72CD4FA9E78D9468 /* SFICardViewSummaryCell.m */; };
@@ -406,9 +408,11 @@
 		1DF0307CC4B43723DE5590C1 /* SFISensorDetailView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISensorDetailView.h; sourceTree = "<group>"; };
 		1DF03086AADF35699E6F9054 /* SFISensorDetailView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISensorDetailView.m; sourceTree = "<group>"; };
 		1DF0308DE6327F106EDC2AA2 /* SFITextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFITextField.m; sourceTree = "<group>"; };
+		1DF030A22E535CC9AA88BF93 /* SFITabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFITabBarController.m; sourceTree = "<group>"; };
 		1DF030F104782902146AFA76 /* ScoreboardDebugLoggerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardDebugLoggerViewController.h; sourceTree = "<group>"; };
 		1DF0310139DB0870F7D2C815 /* NSData+Conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Conversion.h"; sourceTree = "<group>"; };
 		1DF0317CFEFED25A120B5900 /* ScoreboardTextEditorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScoreboardTextEditorViewController.h; sourceTree = "<group>"; };
+		1DF031A7883267D0FFC9E42C /* SFITabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFITabBarController.h; sourceTree = "<group>"; };
 		1DF031B6B99795E6267FEAD7 /* SFINotificationTableViewHeaderFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFINotificationTableViewHeaderFooter.m; sourceTree = "<group>"; };
 		1DF031BA3DEFBBE00371A598 /* SFIRouterSettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIRouterSettingsTableViewController.m; sourceTree = "<group>"; };
 		1DF031C08CFCEF46B5E698F7 /* UIColor+Securifi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Securifi.m"; sourceTree = "<group>"; };
@@ -803,6 +807,8 @@
 				1DF039AAB97FFA7BFFA45487 /* AlertView.h */,
 				1DF033553D675EBD64644DB2 /* AlertViewAction.m */,
 				1DF03A45DC0F0C5965348B84 /* AlertViewAction.h */,
+				1DF030A22E535CC9AA88BF93 /* SFITabBarController.m */,
+				1DF031A7883267D0FFC9E42C /* SFITabBarController.h */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1374,6 +1380,7 @@
 				1DF0338430771644DAE94F36 /* SFIDeviceIndex.m in Sources */,
 				1DF03696C8628963DC4F23D6 /* SFIRouterClientsTableViewController.m in Sources */,
 				1DF038DE3C385FEC394F6D20 /* SFIRouterSettingsTableViewController.m in Sources */,
+				1DF03908300C35FF0720CB13 /* SFITabBarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1475,6 +1482,7 @@
 				1DF0372FD63ED4053F07FFAD /* SFIDeviceIndex.m in Sources */,
 				1DF0389E9743D1F55E76AC11 /* SFIRouterClientsTableViewController.m in Sources */,
 				1DF0391AFBAB20EA1FB28F60 /* SFIRouterSettingsTableViewController.m in Sources */,
+				1DF03C3105B3DC1477346284 /* SFITabBarController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
