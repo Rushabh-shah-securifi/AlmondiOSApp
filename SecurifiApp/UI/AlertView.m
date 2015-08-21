@@ -17,8 +17,6 @@
 @implementation AlertView
 
 - (void)layoutSubviews {
-    [super layoutSubviews];
-
     for (UIView *view in self.subviews.copy) {
         [view removeFromSuperview];
     }
@@ -59,6 +57,8 @@
     [self addSubview:button];
 
     [self addConstraints];
+
+    [super layoutSubviews];
 }
 
 - (void)updateConstraints {
@@ -80,8 +80,8 @@
 
     UIView *previousView = nil;
     for (UIView *view in views) {
-        [view autoPinEdgeToSuperviewMargin:ALEdgeLeading];
-        [view autoPinEdgeToSuperviewMargin:ALEdgeTrailing];
+        [view autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:20];
+        [view autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:20];
 
         CGFloat size = (CGFloat) ((view == message_view) ? 100.0 : 40.0);
         [view autoSetDimension:ALDimensionHeight toSize:size];
