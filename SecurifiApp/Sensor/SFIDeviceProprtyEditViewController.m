@@ -73,10 +73,14 @@ typedef NS_ENUM(NSInteger, Properties) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     lblDeviceName.text = self.device.deviceName;
-    lblStatus.text = @"ok";
+   
+
     [self updateTemperatureLabel];
     
     if (self.device.deviceType==SFIDeviceType_NestThermostat_57) {
+        SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HVAC_STATE];
+        lblStatus.text = [currentDeviceValue.value capitalizedString];
+        
         imgIcon.image = nil;
         
         CGRect fr = lblThemperatureMain.frame;
@@ -90,6 +94,25 @@ typedef NS_ENUM(NSInteger, Properties) {
     }
     
     if (self.device.deviceType==SFIDeviceType_NestSmokeDetector_58) {
+        SFIDeviceKnownValues *coValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CO_ALARM_STATE];
+        
+        SFIDeviceKnownValues *smokeValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SMOKE_ALARM_STATE];
+        NSString * coText = @"";
+        NSString * smokeText = @"";
+        coText = [coValue.value capitalizedString];
+        if ([coValue.value isEqualToString:@"true"]) {
+            coText = @"Warning";
+        }else if ([coValue.value isEqualToString:@"false"]){
+            coText = @"Emergency";
+        }
+        
+        smokeText = [smokeValue.value capitalizedString];
+        if ([smokeValue.value isEqualToString:@"true"]) {
+            smokeText = @"Warning";
+        }else if ([smokeValue.value isEqualToString:@"false"]){
+            smokeText = @"Emergency";
+        }
+        lblStatus.text = [NSString stringWithFormat:@"Smoke :%@ , CO :%@",smokeText,coText];
         lblThemperatureMain.hidden = YES;
         
         UIImage* image = [UIImage imageNamed:@"nest_58_icon"];
@@ -228,12 +251,23 @@ typedef NS_ENUM(NSInteger, Properties) {
         case targetRangeIndexPathRow:
         {
             [tblTypes removeFromSuperview];
-            SFIDeviceKnownValues *currentDeviceValue1 = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_RANGE_LOW];
-            currentCoolTemp = [currentDeviceValue1 intValue];
+            
+            
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_RANGE_LOW];
+            currentCoolTemp = [currentDeviceValue intValue];
             currentCoolTemp = [[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:currentCoolTemp];
-            SFIDeviceKnownValues *currentDeviceValue2 = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_RANGE_HIGH];
-            currentHeatTemp = [currentDeviceValue2 intValue];
+            currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_RANGE_HIGH];
+            currentHeatTemp = [currentDeviceValue intValue];
             currentHeatTemp = [[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:currentHeatTemp];
+            currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
+            
+            if(![[currentDeviceValue.value lowercaseString] isEqualToString:@"cool-heat"]){
+                currentDeviceValue= [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_TARGET];
+                int targetValue = [currentDeviceValue intValue];
+                currentCoolTemp = [[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:targetValue];
+                currentHeatTemp = [[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:targetValue];
+            }
+            
             if ([[homeAwayDeviceValue.value lowercaseString] isEqualToString:@"away"]) {
                 btnSave.hidden = YES;
                 btnBack.frame = btnSave.frame;
@@ -479,6 +513,10 @@ typedef NS_ENUM(NSInteger, Properties) {
             NSString * value = @"";
             if (!coolingTempSelector.hidden) {
                 propertyType = SFIDevicePropertyType_THERMOSTAT_RANGE_LOW;
+                if (heatingTempSelector.hidden) {
+                    propertyType = SFIDevicePropertyType_THERMOSTAT_TARGET;
+                }
+                
                 deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
                 if (btnFahrenheit.selected) {
                     value = [NSString stringWithFormat:@"%d",currentCoolTemp];
@@ -491,6 +529,11 @@ typedef NS_ENUM(NSInteger, Properties) {
             
             if (!heatingTempSelector.hidden) {
                 propertyType = SFIDevicePropertyType_THERMOSTAT_RANGE_HIGH;
+                if (coolingTempSelector.hidden) {
+                    propertyType = SFIDevicePropertyType_THERMOSTAT_TARGET;
+                }
+                
+                
                 deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
                 if (btnFahrenheit.selected) {
                     value = [NSString stringWithFormat:@"%d",currentHeatTemp];

@@ -52,7 +52,7 @@
     connectionTypes = [NSMutableArray new];
     notifyTypes = [NSMutableArray new];
     
-    NSArray *tnames = @[@"Tablet",@"PC",@"Laptop",@"Smartphone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"Printer",@"Router_switch",@"Nest",@"Hub",@"Chromecast",@"appleTV",@"android_stick",@"Other"];
+    NSArray *tnames = @[@"Tablet",@"PC",@"Laptop",@"Smartphone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"Printer",@"Router_switch",@"Nest",@"Hub",@"Camera",@"Chromecast",@"appleTV",@"android_stick",@"Other"];
     
     for (NSString * name in tnames) {
         NSMutableDictionary * dict = [NSMutableDictionary new];

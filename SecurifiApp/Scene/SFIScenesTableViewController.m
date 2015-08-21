@@ -273,7 +273,7 @@
         lblNewScene.text = @"New Scene";//NSLocalizedString(@"scenes.no-scenes.label.A scene is a group of sensors and a desired state for these sensors.", @"A scene is a group of sensors and a desired state for these sensors.");
         lblNewScene.textColor = [UIColor grayColor];
         [cell addSubview:lblNewScene];
-
+        
         
         UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, table_width-20, 130)];
         lblNoSensor.textAlignment = NSTextAlignmentCenter;
@@ -392,12 +392,12 @@
         scenesArray = [mainDict valueForKey:@"Scenes"];
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.tableView reloadData];
-            [self.HUD hide:YES];
+            [self hideHude];
         });
         
     }else {
         DLog(@"Reason Code %@", [mainDict valueForKey:@"reasonCode"]);
-        [self.HUD hide:YES];
+        [self hideHude];
     }
 }
 
@@ -479,7 +479,7 @@
     }
     NSLog(@"%@",mainDict);
     
-    [self.HUD hide:YES];
+    [self hideHude];
 }
 
 #pragma mark - State
@@ -499,12 +499,10 @@
     [self presentViewController:ctrl animated:YES completion:nil];
 }
 
-#pragma mark HUD management
-
-- (void)hudWasHidden:(MBProgressHUD *)hud {
+- (void)hideHude{
+    [self.HUD hide:YES];
     if ([self isKindOfClass:[SFIScenesTableViewController class]]) {
         [self addAddSceneButton];
     }
 }
-
 @end
