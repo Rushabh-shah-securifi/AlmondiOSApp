@@ -501,7 +501,7 @@
 
 - (void)hideHude{
     [self.HUD hide:YES];
-    if ([self isKindOfClass:[SFIScenesTableViewController class]]) {
+    if ([[self.navigationController topViewController] isKindOfClass:[SFIScenesTableViewController class]]) {
         [self addAddSceneButton];
     }
 }

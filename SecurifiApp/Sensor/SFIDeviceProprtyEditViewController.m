@@ -57,6 +57,9 @@ typedef NS_ENUM(NSInteger, Properties) {
     
     int currentCoolTemp;
     int currentHeatTemp;
+    BOOL canCool;
+    BOOL canHeat;
+    NSString * thermostatMode;
     
     int maxTempValue;
     int minTempValue;
@@ -224,9 +227,9 @@ typedef NS_ENUM(NSInteger, Properties) {
             NSArray *mnames = @[@"Off",@"Cool",@"Heat",@"Heat-Cool"];
             
             currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_COOL];
-            BOOL canCool = [currentDeviceValue boolValue];
+            canCool = [currentDeviceValue boolValue];
             currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_HEAT];
-            BOOL canHeat = [currentDeviceValue boolValue];
+            canHeat = [currentDeviceValue boolValue];
             
             if (!canCool) {
                 mnames = @[@"Off",@"Heat"];
@@ -261,7 +264,9 @@ typedef NS_ENUM(NSInteger, Properties) {
             currentHeatTemp = [[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:currentHeatTemp];
             currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
             
-            if(![[currentDeviceValue.value lowercaseString] isEqualToString:@"cool-heat"]){
+            thermostatMode = [currentDeviceValue.value lowercaseString];
+            
+            if(![thermostatMode isEqualToString:@"cool-heat"] || !(canCool && canHeat)){
                 currentDeviceValue= [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_TARGET];
                 int targetValue = [currentDeviceValue intValue];
                 currentCoolTemp = [[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:targetValue];
@@ -337,11 +342,8 @@ typedef NS_ENUM(NSInteger, Properties) {
             btnFahrenheit.backgroundColor = [UIColor clearColor];
             btnFahrenheit.layer.cornerRadius = btnShowCelsius.frame.size.width/2;
             [self configureTemperatureFormatButtons];
-            
-            
-            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
-            
-            if([[currentDeviceValue.value lowercaseString] isEqualToString:@"cool"]){
+         
+            if([thermostatMode isEqualToString:@"cool"]){
                 heatingTempSelector.hidden = YES;
                 lblHeating.hidden = YES;
                 fr = lblShow.frame;
@@ -364,7 +366,7 @@ typedef NS_ENUM(NSInteger, Properties) {
                 fr.origin.y =btnShowCelsius.frame.origin.y+40;
                 btnFahrenheit.frame = fr;
             }
-            if([[currentDeviceValue.value lowercaseString] isEqualToString:@"heat"]){
+            if([thermostatMode isEqualToString:@"heat"]){
                 fr = lblShow.frame;
                 fr.origin.y =lblHeating.frame.origin.y;
                 lblShow.frame = fr;
@@ -791,7 +793,10 @@ typedef NS_ENUM(NSInteger, Properties) {
         minTempValue = 10;
         diffTempValue = 2;
     }
-    
+    if(![thermostatMode isEqualToString:@"cool-heat"] || !(canCool && canHeat)){
+        diffTempValue = 0;
+    }
+
     [coolingTempSelector reloadData];
     [heatingTempSelector reloadData];
     [self displayTemperatureValues];

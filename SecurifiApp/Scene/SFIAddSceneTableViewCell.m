@@ -1517,6 +1517,8 @@
     
     [btnNestTermostatFanOn setupValues:[UIImage imageNamed:@"imgFanOn"] Title:@"FAN ON"];
     [btnNestTermostatFanOff setupValues:[UIImage imageNamed:@"imgFanOff"] Title:@"FAN OFF"];
+    btnNestTermostatFanOn.selected = NO;
+    btnNestTermostatFanOff.selected = NO;
     
     [btnNestHome setupValues:[UIImage imageNamed:@"home_icon"] Title:@"HOME"];
     [btnNestAway setupValues:[UIImage imageNamed:@"away_icon"] Title:@"AWAY"];
@@ -1544,8 +1546,8 @@
     btnNestHeat.selected = NO;
     btnNestCool.selected = NO;
     btnNestOff.selected = NO;
-        btnNestTermostatFanOn.selected = NO;
-        btnNestTermostatFanOff.selected = NO;
+    btnNestTermostatFanOn.selected = NO;
+    btnNestTermostatFanOff.selected = NO;
     
     btnNestAuto.hidden = NO;
     btnNestHeat.hidden = NO;
@@ -1741,7 +1743,7 @@
         CGRect fr = btnNestTermostatDimHeat.frame;
         fr.origin.x =self.frame.size.width/2+8;
         btnNestTermostatDimHeat.frame = fr;
-   
+        
         fr = btnNestTermostatDimCool.frame;
         fr.origin.x =self.frame.size.width/2-btnNestTermostatDimCool.frame.size.width-8;
         btnNestTermostatDimCool.frame = fr;
