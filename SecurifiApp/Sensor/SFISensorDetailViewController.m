@@ -45,8 +45,10 @@ typedef NS_ENUM(NSInteger, Properties) {
     NSArray * notifyMe_items;
     UIFont *cellFont;
     IBOutlet UILabel *lblThemperatureMain;
-    
+    BOOL canCool;
+    BOOL canHeat;
 }
+
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 
 @end
@@ -56,8 +58,7 @@ typedef NS_ENUM(NSInteger, Properties) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     lblDeviceName.text = self.device.deviceName;
-    lblStatus.text = @"ok";
-    cellFont = [UIFont fontWithName:AVENIR_ROMAN size:17];
+      cellFont = [UIFont fontWithName:AVENIR_ROMAN size:17];
     
     
     
@@ -83,6 +84,10 @@ typedef NS_ENUM(NSInteger, Properties) {
     
     
     if (self.device.deviceType==SFIDeviceType_NestThermostat_57) {
+        SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HVAC_STATE];
+        lblStatus.text = [currentDeviceValue.value capitalizedString];
+
+        
         imgIcon.image = nil;
         
         CGRect fr = lblThemperatureMain.frame;
@@ -94,7 +99,7 @@ typedef NS_ENUM(NSInteger, Properties) {
         lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
         lblThemperatureMain.textColor = [UIColor whiteColor];
         
-        SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
+        currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
         lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:36.0f];
         lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
         lblThemperatureMain.textColor = [UIColor whiteColor];
@@ -105,8 +110,12 @@ typedef NS_ENUM(NSInteger, Properties) {
         [propertiesArray[coLevelIndexPathRow] setValue:@YES forKey:@"hidden"];
         [propertiesArray[smokeLevelIndexPathRow] setValue:@YES forKey:@"hidden"];
         
+        currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_COOL];
+        canCool = [currentDeviceValue boolValue];
+        currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_HEAT];
+        canHeat = [currentDeviceValue boolValue];
         currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
-        if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"off"]) {
+        if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"off"] || (!canHeat && !canCool)) {
             [propertiesArray[targetRangeIndexPathRow] setValue:@YES forKey:@"hidden"];
         }
         
@@ -117,7 +126,25 @@ typedef NS_ENUM(NSInteger, Properties) {
         }
     }
     if (self.device.deviceType==SFIDeviceType_NestSmokeDetector_58) {
+        SFIDeviceKnownValues *coValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CO_ALARM_STATE];
         
+         SFIDeviceKnownValues *smokeValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SMOKE_ALARM_STATE];
+        NSString * coText = @"";
+                NSString * smokeText = @"";
+        coText = [coValue.value capitalizedString];
+        if ([coValue.value isEqualToString:@"true"]) {
+            coText = @"Warning";
+        }else if ([coValue.value isEqualToString:@"false"]){
+            coText = @"Emergency";
+        }
+       
+        smokeText = [smokeValue.value capitalizedString];
+        if ([smokeValue.value isEqualToString:@"true"]) {
+            smokeText = @"Warning";
+        }else if ([smokeValue.value isEqualToString:@"false"]){
+            smokeText = @"Emergency";
+        }
+        lblStatus.text = [NSString stringWithFormat:@"Smoke :%@ , CO :%@",smokeText,coText];
         
         UIImage* image = [UIImage imageNamed:@"nest_58_icon"];
         imgIcon.image = image;
@@ -187,7 +214,9 @@ typedef NS_ENUM(NSInteger, Properties) {
     
     for (UIView *c in cell.subviews) {
         if ([c isKindOfClass:[UILabel class]] || [c isKindOfClass:[UIButton class]]) {
-            [c removeFromSuperview];
+            if (c.tag==66) {
+                [c removeFromSuperview];
+            }
         }
     }
     
@@ -215,7 +244,9 @@ typedef NS_ENUM(NSInteger, Properties) {
         label.text = [propertiesArray[indexPath.row] valueForKey:@"name"];
         label.numberOfLines = 1;
         [cell addSubview:label];
-        
+        //        cell.textLabel.text = [propertiesArray[indexPath.row] valueForKey:@"name"];
+        //        cell.textLabel.textColor = [UIColor whiteColor];
+        //        cell.textLabel.font = cellFont;
         
         
         switch (indexPath.row) {
@@ -308,7 +339,7 @@ typedef NS_ENUM(NSInteger, Properties) {
 
 #pragma mark Cofigure Cells
 - (void)configureHumidityCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
     label.font = cellFont;
@@ -336,7 +367,7 @@ typedef NS_ENUM(NSInteger, Properties) {
 }
 
 - (void)configureCOLevelCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
     label.font = cellFont;
@@ -355,7 +386,7 @@ typedef NS_ENUM(NSInteger, Properties) {
 }
 
 - (void)configureSmokeLevelCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
     label.font = cellFont;
@@ -373,7 +404,7 @@ typedef NS_ENUM(NSInteger, Properties) {
     cell.accessoryType = UITableViewCellAccessoryNone;
 }
 - (void)configureNameCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
     label.font = cellFont;
@@ -391,7 +422,7 @@ typedef NS_ENUM(NSInteger, Properties) {
     label.textColor = [UIColor whiteColor];
     label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE];
-
+    
     if ([currentDeviceValue.value boolValue]) {
         label.text = @"On";
     }else{
@@ -419,7 +450,7 @@ typedef NS_ENUM(NSInteger, Properties) {
 }
 
 - (void)configureLocationCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
     label.font = cellFont;
@@ -441,19 +472,36 @@ typedef NS_ENUM(NSInteger, Properties) {
     
     currentDeviceValue= [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_RANGE_HIGH];
     int highValue = [currentDeviceValue intValue];
-    
+
+    currentDeviceValue= [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_TARGET];
+    int targetValue = [currentDeviceValue intValue];
+
     currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
     NSString *mode = [currentDeviceValue.value lowercaseString];
     NSString * prefix = @"F";
-
+    
     if (![[SecurifiToolkit sharedInstance] isCurrentTemperatureFormatFahrenheit]) {
         prefix = @"C";
     }
     
-    if ([mode isEqualToString:@"cool"]) {
-        label.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:lowValue];
-    }else if ([mode isEqualToString:@"heat"]){
-        label.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:highValue];
+    if ([mode isEqualToString:@"cool"] || !canHeat) {
+        label.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:targetValue];
+        for (UILabel *c in cell.subviews) {
+            if ([c isKindOfClass:[UILabel class]]) {
+                if (c.tag==66) {
+                    c.text = @"Target Temp";
+                }
+            }
+        }
+    }else if ([mode isEqualToString:@"heat"] || !canCool){
+        label.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:targetValue];
+        for (UILabel *c in cell.subviews) {
+            if ([c isKindOfClass:[UILabel class]]) {
+                if (c.tag==66) {
+                    c.text = @"Target Temp";
+                }
+            }
+        }
     }else{
         label.text = [NSString stringWithFormat:@"%d - %d° %@",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:lowValue],[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:highValue],prefix];
     }

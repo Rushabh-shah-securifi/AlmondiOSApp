@@ -246,7 +246,7 @@
             label.backgroundColor = [UIColor clearColor];
             label.textColor = [UIColor whiteColor];
             label.font = font;
-            label.text = connectedDevice.deviceType;
+            label.text = [connectedDevice.deviceType capitalizedString];
             label.numberOfLines = 1;
             label.textAlignment = NSTextAlignmentRight;
             label.tag = 66;

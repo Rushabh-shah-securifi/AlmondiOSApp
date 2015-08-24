@@ -907,7 +907,26 @@
 - (void)configureNestSmokeDetector_58 {
     self.deviceImageView.image = [UIImage imageNamed:@"nest_58_icon"];
     NSMutableArray *status = [NSMutableArray array];
-    [self tryAddBatteryStatusMessage:status];
+   
+     SFIDeviceKnownValues *coValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CO_ALARM_STATE];
+    SFIDeviceKnownValues *smokeValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SMOKE_ALARM_STATE];
+    NSString * coText = @"";
+    NSString * smokeText = @"";
+    coText = [coValue.value capitalizedString];
+    if ([coValue.value isEqualToString:@"true"]) {
+        coText = @"Warning";
+    }else if ([coValue.value isEqualToString:@"false"]){
+        coText = @"Emergency";
+    }
+    
+    smokeText = [smokeValue.value capitalizedString];
+    if ([smokeValue.value isEqualToString:@"true"]) {
+        smokeText = @"Warning";
+    }else if ([smokeValue.value isEqualToString:@"false"]){
+        smokeText = @"Emergency";
+    }
+    [status addObject:[NSString stringWithFormat:@"Smoke :%@ , CO :%@",smokeText,coText]];
+//    [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
     
 }
@@ -924,7 +943,11 @@
     lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
     [self.contentView addSubview:lblThemperatureMain];
     NSMutableArray *status = [NSMutableArray array];
-    [self tryAddBatteryStatusMessage:status];
+    
+    currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HVAC_STATE];
+    [status addObject:[currentDeviceValue.value capitalizedString]];
+
+//    [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 }
 

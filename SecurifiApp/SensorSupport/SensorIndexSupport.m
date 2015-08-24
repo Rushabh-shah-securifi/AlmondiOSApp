@@ -1929,7 +1929,108 @@
                 
                 return @[s1, s2, s3, s4, s5];
             }
+        case SFIDeviceType_NestThermostat_57: {
+            if (type == SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"true";
+                s1.iconName = @"07_thermostat_fan";
+                s1.notificationText = @"ON";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"false";
+                s2.iconName = @"07_thermostat_fan";
+                s2.notificationText = @"OFF";
+                return @[s1,s2];
+            }
+            if (type == SFIDevicePropertyType_AWAY_MODE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"home";
+                s1.iconName = @"55_away_mode_home";
+                s1.notificationText = @"HOME";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"away";
+                s2.iconName = @"55_away_mode_away";
+                s2.notificationText = @"AWAY";
+                return @[s1,s2];
+            }
+            if (type == SFIDevicePropertyType_THERMOSTAT_TARGET) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"70";
+                s1.iconName = @"07_thermostat";
+                s1.notificationText = @"";
+                s1.valueFormatter.notificationPrefix = @"Temperature";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_RESPONSE_CODE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"70";
+                s1.iconName = @"07_thermostat";
+                s1.notificationText = @"";
+                s1.valueFormatter.notificationPrefix = @"RESPONSE_CODE,";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_THERMOSTAT_RANGE_LOW) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"70";
+                s1.iconName = @"07_thermostat";
+                s1.notificationText = @"Temperature";
+                s1.valueFormatter.notificationPrefix = @"Temperature";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                 return @[s1];
+            }
             
+            if (type == SFIDevicePropertyType_THERMOSTAT_RANGE_HIGH) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"70";
+                s1.iconName = @"07_thermostat";
+                s1.notificationText = @"Temperature";
+                s1.valueFormatter.notificationPrefix = @"Temperature";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                return @[s1];
+            }
+
+            if (type == SFIDevicePropertyType_TEMPERATURE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"70";
+                s1.iconName = @"07_thermostat";
+                s1.notificationText = @"Temperature";
+                 return @[s1];
+            }
+            break;
+        }
+        case SFIDeviceType_NestSmokeDetector_58:{
+            if (type == SFIDevicePropertyType_RESPONSE_CODE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"70";
+                s1.iconName = @"56_nest_58_icon";
+                s1.notificationText = @"";
+                s1.valueFormatter.notificationPrefix = @"RESPONSE_CODE,";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_AWAY_MODE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"home";
+                s1.iconName = @"55_away_mode_home";
+                s1.notificationText = @"HOME";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"away";
+                s2.iconName = @"55_away_mode_away";
+                s2.notificationText = @"AWAY";
+                return @[s1,s2];
+            }
+            break;
+        }
             break;
         }
     }
@@ -1977,7 +2078,6 @@
             
             return @[s1, s2];
         }
-            
         default: {
             return [NSArray array];
         }
