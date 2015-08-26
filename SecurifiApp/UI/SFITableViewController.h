@@ -56,4 +56,6 @@
 
 - (void)presentLocalNetworkSettingsEditor;
 
+- (SFIAlmondConnectionMode)currentConnectionMode;
+
 @end

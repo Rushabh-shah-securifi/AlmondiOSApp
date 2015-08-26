@@ -413,6 +413,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    SFIAlmondConnectionMode mode = self.currentConnectionMode;
+    if (mode == SFIAlmondConnectionMode_local) {
+        return 1;
+    }
+
     switch (self.routerViewState) {
         case RouterViewState_no_almond:
             return 1;
@@ -668,14 +673,12 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
     cell.cardView.rightOffset = SFICardView_right_offset_inset;
     cell.cardView.backgroundColor = [UIColor securifiRouterTileGreenColor];
-
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
-    NSString *almondMac = self.almondMac;
-
     cell.title = NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link");
 
-    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:almondMac];
+//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+//
+//    NSString *almondMac = self.almondMac;
+//    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:almondMac];
 //    NSString *ssid2 = settings.ssid2 ? settings.ssid2 : @"";
 //    NSString *ssid5 = settings.ssid5 ? settings.ssid5 : @"";
 
@@ -777,19 +780,10 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                                        routerSummary.blockedMACCount],
     ];
 
-    NSInteger totalCount = routerSummary.connectedDeviceCount + routerSummary.blockedMACCount;
-//    if (totalCount > 0) {
-        cell.editTarget = self;
-        cell.editSelector = @selector(onEditDevicesAndUsersCard:);
-        cell.expanded = NO;
-//    }
-//    else {
-//        cell.editTarget = nil;
-//        cell.editSelector = nil;
-//        cell.expanded = NO;
-//    }
+    cell.editTarget = self;
+    cell.editSelector = @selector(onEditDevicesAndUsersCard:);
+    cell.expanded = NO;
 
-  //  TESTmd01 - Remarked above part in order to allow to open wifi clients list even if there is not connected or blocked clients, we will review and change this part in future
     return cell;
 }
 
