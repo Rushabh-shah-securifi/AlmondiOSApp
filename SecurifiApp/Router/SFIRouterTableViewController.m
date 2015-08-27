@@ -23,7 +23,6 @@
 #import "TableHeaderView.h"
 #import "SFIRouterVersionTableViewCell.h"
 #import "UIViewController+Securifi.h"
-#import "SFIAlmondLocalNetworkSettings.h"
 #import "SFICloudLinkViewController.h"
 #import "UIColor+Securifi.h"
 #import "SFIWiFiClientsListViewController.h"
@@ -144,12 +143,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [center addObserver:self selector:@selector(onCurrentAlmondChanged:) name:kSFIDidChangeCurrentAlmond object:nil];
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidUpdateAlmondList object:nil];
 
-    [center addObserver:self selector:@selector(onGenericResponseCallback:) name:GENERIC_COMMAND_NOTIFIER object:nil];
-    [center addObserver:self selector:@selector(onGenericNotificationCallback:) name:GENERIC_COMMAND_CLOUD_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:kSFIDidReceiveGenericAlmondRouterResponse object:nil];
 
-    [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:ALMOND_COMMAND_RESPONSE_NOTIFIER object:nil];
-
-    [center addObserver:self selector:@selector(onWiFiClientsListResponseCallback:) name:NOTIFICATION_WIFI_CLIENTS_LIST_RESPONSE object:nil];//md01
+    [center addObserver:self selector:@selector(onWiFiClientsListResponseCallback:) name:NOTIFICATION_WIFI_CLIENTS_LIST_RESPONSE object:nil];
 }
 
 - (void)initializeRouterSummaryAndSettings {
@@ -1179,8 +1175,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         return;
     }
 
-    SFIGenericRouterCommand *response = (SFIGenericRouterCommand *) [data valueForKey:@"data"];
-    [self processRouterCommandResponse:response];
+    SFIGenericRouterCommand *genericRouterCommand = (SFIGenericRouterCommand *) [data valueForKey:@"data"];
+    [self processRouterCommandResponse:genericRouterCommand];
 }
 
 - (void)processRouterCommandResponse:(SFIGenericRouterCommand *)genericRouterCommand {
@@ -1194,6 +1190,15 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         }
 
         if (![genericRouterCommand.almondMAC isEqualToString:self.almondMac]) {
+            return;
+        }
+
+        if (!genericRouterCommand.commandSuccess) {
+            //todo push this string comparison logic into the generic router command
+            self.isAlmondUnavailable = [genericRouterCommand.responseMessage.lowercaseString hasSuffix:@" is offline"]; // almond is offline, homescreen is offline
+            [self syncCheckRouterViewState:RouterViewReloadPolicy_on_state_change];
+            [self.HUD hide:YES];
+            [self.refreshControl endRefreshing];
             return;
         }
 
@@ -1261,9 +1266,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                 [self tryCheckAlmondVersion:currentVersion];
                 [self tryCheckSendLogsSupport:currentVersion];
 
-                // after receiving summary, we update the local wireless connection settings with the current login/password
-                [self tryUpdateLocalNetworkSettings:summary];
-
                 [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
 
                 // after receiving summary, wait until detailed settings have been returned
@@ -1293,7 +1295,21 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                 break;
             };
 
-            case SFIGenericRouterCommandType_REBOOT:
+            case SFIGenericRouterCommandType_REBOOT: {
+                BOOL wasRebooting = self.isRebooting;
+                self.isRebooting = NO;
+
+                // protect against the cloud sending the same response more than once
+                if (wasRebooting) {
+                    [self sendRouterSummaryRequest];
+
+                    //todo handle failure case
+                    [self showHUD:NSLocalizedString(@"router.hud.Router is now online.", @"Router is now online.")];
+                }
+
+                break;
+            }
+
             case SFIGenericRouterCommandType_BLOCKED_CONTENT:
             default:
                 break;
@@ -1302,33 +1318,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         [self.HUD hide:YES];
         [self.refreshControl endRefreshing];
     });
-}
-
-- (void)tryUpdateLocalNetworkSettings:(const SFIRouterSummary *)summary {
-    NSString *mac = self.almondMac;
-
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
-    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:mac];
-    if (!settings) {
-        settings = [SFIAlmondLocalNetworkSettings new];
-        settings.almondplusMAC = mac;
-    }
-
-    if (summary.login) {
-        settings.login = summary.login;
-    }
-    if (summary.password) {
-        NSString *decrypted = [summary decryptPassword:mac];
-        if (decrypted) {
-            settings.password = decrypted;
-        }
-    }
-    if (summary.url) {
-        settings.host = summary.url;
-    }
-
-    [toolkit setLocalNetworkSettings:settings];
 }
 
 // take into account table might be displaying static images and therefore reloading a specific section would not be appropriate
@@ -1375,11 +1364,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     //todo push all of this parsing and manipulation into the parser or SFIGenericRouterCommand!
 
     NSMutableData *genericData = [[NSMutableData alloc] init];
-
-    //Display proper message
-//    DLog(@"Local Mobile Internal Index: %d Cloud Mobile Internal Index: %d", self.correlationId, obj.mobileInternalIndex);
-//    DLog(@"Response Data: %@", obj.genericData);
-//    DLog(@"Decoded Data: %@", obj.decodedData);
 
     NSData *data_decoded = [obj.decodedData mutableCopy];
     DLog(@"Data: %@", data_decoded);
