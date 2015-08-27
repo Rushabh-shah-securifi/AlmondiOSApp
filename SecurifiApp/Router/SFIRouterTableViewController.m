@@ -1095,6 +1095,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             return;
         }
 
+        //todo there is a race condition that has to be handled: current Almond selection may have been changed before this callback is received and processed.
+
         if (self.navigationController.topViewController == self) {
             if ([[mainDict valueForKey:@"Clients"] isKindOfClass:[NSArray class]]) {
                 NSArray *dDictArray = [mainDict valueForKey:@"Clients"];
@@ -1221,6 +1223,12 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 NSArray *settings = ls.deviceList;
+
+                if (self.currentConnectionMode == SFIAlmondConnectionMode_local) {
+                    // protect against race condition: mode changed before this callback was received
+                    // do not show settings UI when the connection mode is local;
+                    break;
+                }
 
                 if (self.routerSummary) {
                     // keep the summary information up to date as settings are changed in the settings controller
