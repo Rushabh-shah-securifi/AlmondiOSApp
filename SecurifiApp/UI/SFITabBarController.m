@@ -11,6 +11,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.view.backgroundColor = [UIColor whiteColor];
+
     // set up the tabs
     [self onAlmondConnectionModeDidChange:nil];
 

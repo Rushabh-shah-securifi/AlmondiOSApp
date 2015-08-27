@@ -21,16 +21,21 @@
 
 - (SecurifiConfigurator *)toolkitConfigurator {
     SecurifiConfigurator *config = [SecurifiConfigurator new];
-//    config.enableScoreboard = YES;                  // uncomment for debug builds
-//    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
-    config.enableCertificateChainValidation = NO;   //TESTmd01 uncomment for testing only; on by default
-//
+
+    // Debug and testing
+    config.enableScoreboard = YES;                  // uncomment for debug builds
+    config.enableNotificationsDebugMode = YES;      // uncomment to activate; off by default
+    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
+    config.enableCertificateChainValidation = NO;   // Uncomment for testing only; on by default
+
+    // Features
     config.enableNotifications = YES;               // uncomment to activate; NO by default
-    config.enableNotificationsHomeAwayMode = YES;
-//    config.enableRouterWirelessControl = YES;       // YES by default
-    config.enableLocalNetworking = YES;
-    config.enableScenes = YES;
-    config.enableWifiClients = YES;
+    config.enableNotificationsHomeAwayMode = YES;   // NO by default
+    config.enableRouterWirelessControl = YES;       // YES by default
+    config.enableLocalNetworking = YES;             // NO by default
+    config.enableScenes = YES;                      // NO by default
+    config.enableWifiClients = YES;                 // NO by default
+
     return config;
 }
 
@@ -44,6 +49,11 @@
 
 
 #pragma mark - UIApplicationDelegate methods
+
+- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    self.window.backgroundColor = [UIColor whiteColor];
+    return YES;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     NSLog(@"Application did launch");

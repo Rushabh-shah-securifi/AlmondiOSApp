@@ -355,6 +355,11 @@
     ];
 }
 
+- (SFIAlmondConnectionMode)currentConnectionMode {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    return [toolkit connectionModeForAlmond:self.almondMac];
+}
+
 - (void)configureNetworkSettings:(enum SFIAlmondConnectionMode)mode {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit setConnectionMode:mode forAlmond:self.almondMac];
@@ -418,8 +423,10 @@
             return;
         }
 
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
         SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-//        ctrl.enableDebugMode = YES; // can uncomment for development/test
+        ctrl.enableDebugMode = toolkit.configuration.enableNotificationsDebugMode;
 
         UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
         [self presentViewController:nav_ctrl animated:YES completion:nil];

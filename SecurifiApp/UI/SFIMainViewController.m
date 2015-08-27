@@ -27,7 +27,7 @@
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
-#define TAB_BAR_SCENES @"Scenes"//md01
+#define TAB_BAR_SCENES @"Scenes"
 
 @interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, SFIAccountDeleteDelegate, UIGestureRecognizerDelegate, UITabBarControllerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -49,8 +49,8 @@
     [center removeObserver:self name:kSFIDidLogoutAllNotification object:nil];
     [center removeObserver:self name:UI_ON_PRESENT_LOGOUT_ALL object:nil];
     [center removeObserver:self name:UI_ON_PRESENT_ACCOUNTS object:nil];
-    [center removeObserver:self name:NOTIFICATION_REGISTRATION_NOTIFIER object:nil];
-    [center removeObserver:self name:NOTIFICATION_DEREGISTRATION_NOTIFIER object:nil];
+    [center removeObserver:self name:kSFIDidFailToRegisterForNotifications object:nil];
+    [center removeObserver:self name:kSFIDidFailToDeregisterForNotifications object:nil];
 }
 
 - (void)viewDidLoad {
@@ -64,66 +64,16 @@
     [self.view addSubview:_HUD];
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-
-    [center addObserver:self
-               selector:@selector(onReachabilityDidChange:)
-                   name:kSFIReachabilityChangedNotification 
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onNetworkDownNotifier:)
-                   name:NETWORK_DOWN_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onNetworkUpNotifier:)
-                   name:NETWORK_UP_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onDidCompleteLogin:)
-                   name:kSFIDidCompleteLoginNotification
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onLogoutResponse:)
-                   name:kSFIDidLogoutNotification
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onLogoutAllResponse:)
-                   name:kSFIDidLogoutAllNotification
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onPresentLogoutAll)
-                   name:UI_ON_PRESENT_LOGOUT_ALL
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(onPresentAccounts)
-                   name:UI_ON_PRESENT_ACCOUNTS
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(onDidRegisterForNotifications)
-                   name:kSFIDidRegisterForNotifications
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(onDidFailToRegisterForNotifications)
-                   name:kSFIDidFailToRegisterForNotifications
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onDidDeregisterForNotifications)
-                   name:kSFIDidDeregisterForNotifications
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onDidFailToDeregisterForNotifications)
-                   name:kSFIDidFailToDeregisterForNotifications
-                 object:nil];
+    [center addObserver:self selector:@selector(onReachabilityDidChange:) name:kSFIReachabilityChangedNotification object:nil];
+    [center addObserver:self selector:@selector(onNetworkDownNotifier:) name:NETWORK_DOWN_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onNetworkUpNotifier:) name:NETWORK_UP_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onDidCompleteLogin:) name:kSFIDidCompleteLoginNotification object:nil];
+    [center addObserver:self selector:@selector(onLogoutResponse:) name:kSFIDidLogoutNotification object:nil];
+    [center addObserver:self selector:@selector(onLogoutAllResponse:) name:kSFIDidLogoutAllNotification object:nil];
+    [center addObserver:self selector:@selector(onPresentLogoutAll) name:UI_ON_PRESENT_LOGOUT_ALL object:nil];
+    [center addObserver:self selector:@selector(onPresentAccounts) name:UI_ON_PRESENT_ACCOUNTS object:nil];
+    [center addObserver:self selector:@selector(onDidFailToRegisterForNotifications) name:kSFIDidFailToRegisterForNotifications object:nil];
+    [center addObserver:self selector:@selector(onDidFailToDeregisterForNotifications) name:kSFIDidFailToDeregisterForNotifications object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -140,7 +90,11 @@
 - (void)conditionalTryConnectOrLogon:(BOOL)onViewAppearing {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
-    if ([toolkit isCloudOnline]) {
+    // for apps not using local connection support: we preserve the old behavior of showing a splash screen until the
+    // cloud connection is established.
+    const BOOL supportsLocalConnections = toolkit.configuration.enableLocalNetworking;
+    
+    if (!supportsLocalConnections && [toolkit isCloudOnline]) {
         // Already connected. Nothing to do.
         NSLog(@"Cloud is on-line. returning");
         return;
@@ -152,7 +106,7 @@
         return;
     }
 
-    if (![toolkit isCloudReachable]) {
+    if (!supportsLocalConnections && ![toolkit isCloudReachable]) {
         // No network route to cloud. Nothing to do.
         if (!onViewAppearing) {
             // only show after first attempt fails
@@ -163,7 +117,7 @@
         return;
     }
 
-    if (![toolkit hasLoginCredentials]) {
+    if (!supportsLocalConnections && ![toolkit hasLoginCredentials]) {
         // If no logon credentials we just put up the screen and then handle connection from there.
         [self presentLogonScreen];
         return;
@@ -177,8 +131,14 @@
         [self.HUD show:YES];
     }
 
-    [self scheduleReconnectTimer];
+    if (!supportsLocalConnections) {
+        [self scheduleReconnectTimer];
+    }
     [toolkit initToolkit];
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self presentMainView];
+    });
 }
 
 #pragma mark - Class methods
@@ -394,6 +354,7 @@
     DrawerViewController *drawer = [DrawerViewController new];
 
     SWRevealViewController *ctrl = [[SWRevealViewController alloc] initWithRearViewController:drawer frontViewController:tabCtrl];
+    ctrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:ctrl animated:YES completion:nil];
 
     // Activate gestures in Reveal; must be done after it has been set up
@@ -493,17 +454,9 @@
 
 #pragma mark - Notification Registration
 
-- (void)onDidRegisterForNotifications {
-    // do nothing
-}
-
 - (void)onDidFailToRegisterForNotifications {
     ELog(@"Failed to register push notification token with cloud");
     [self showToast:@"Sorry! Push Notification was not registered."];
-}
-
-- (void)onDidDeregisterForNotifications {
-//    [self showToast:@"Push Notification was successfully deregistered."];
 }
 
 - (void)onDidFailToDeregisterForNotifications {
@@ -523,18 +476,16 @@
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)ctrl {
     NSString *title = ctrl.tabBarItem.title;
-    
+
     if ([title isEqualToString:TAB_BAR_SENSORS]) {
         [[Analytics sharedInstance] markSensorScreen];
     }
     else if ([title isEqualToString:TAB_BAR_ROUTER]) {
         [[Analytics sharedInstance] markRouterScreen];
     }
-    
-  //md01
-    [[NSNotificationCenter defaultCenter]
-     postNotificationName:@"TAB_BAR_CHANGED"
-     object:self userInfo:@{@"title":title}];
+
+    //md01
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"TAB_BAR_CHANGED" object:self userInfo:@{@"title":title}];
 }
 
 @end

@@ -191,8 +191,15 @@
     }
     
     [self tryInstallRefreshControl];
-    
+
+    [self sendRouterSummaryRequest];
+
     self.enableDrawer = YES;
+}
+
+// a crude mechanism to ensure the app always knows what the router's IP address and password are, for local connection support
+- (void)sendRouterSummaryRequest {
+    [[SecurifiToolkit sharedInstance] asyncAlmondSummaryInfoRequest:self.almondMac];
 }
 
 #pragma mark - HUD and Toast mgt

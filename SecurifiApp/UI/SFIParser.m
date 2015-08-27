@@ -21,7 +21,7 @@
 
 @implementation SFIParser
 
-@synthesize currentNodeContent, currentSensor, parser, sensors;
+@synthesize currentNodeContent, parser, sensors;
 @synthesize currentKnownValue, knownValues;
 @synthesize genericCommandResponse;
 @synthesize connectedDevices, connectedDevicesArray, currentConnectedDevice, routerReboot;

@@ -72,10 +72,11 @@
 
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-
-    [center addObserver:self selector:@selector(onGenericResponseCallback:) name:GENERIC_COMMAND_NOTIFIER object:nil];
-    [center addObserver:self selector:@selector(onGenericNotificationCallback:) name:GENERIC_COMMAND_CLOUD_NOTIFIER object:nil];
-    [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:ALMOND_COMMAND_RESPONSE_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:kSFIDidReceiveGenericAlmondRouterResponse object:nil];
+//
+//    [center addObserver:self selector:@selector(onGenericResponseCallback:) name:GENERIC_COMMAND_NOTIFIER object:nil];
+//    [center addObserver:self selector:@selector(onGenericNotificationCallback:) name:GENERIC_COMMAND_CLOUD_NOTIFIER object:nil];
+//    [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:ALMOND_COMMAND_RESPONSE_NOTIFIER object:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {

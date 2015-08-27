@@ -9,14 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "SFISensor.h"
 #import "SFIRouterReboot.h"
-#import "SFIBlockedContent.h"
 
 @interface SFIParser : NSObject <NSXMLParserDelegate>
 @property(nonatomic, retain) NSMutableString *currentNodeContent;
 @property(nonatomic, retain) NSMutableArray *sensors;
 @property(nonatomic, retain) NSMutableArray *knownValues;
 @property(nonatomic, retain) NSXMLParser *parser;
-@property(nonatomic, retain) SFISensor *currentSensor;
 @property(nonatomic, retain) SFIDeviceKnownValues *currentKnownValue;
 @property(nonatomic, retain) SFIRouterReboot *routerReboot;
 @property(nonatomic, retain) SFIDevicesList *connectedDevices;
