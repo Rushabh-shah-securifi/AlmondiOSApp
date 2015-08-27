@@ -79,11 +79,21 @@
     NSString *buildNumber = [bundle objectForInfoDictionaryKey:(NSString *) kCFBundleVersionKey];
     NSString *version = [NSString stringWithFormat:@"version %@ (%@)", shortVersion, buildNumber];
 
-    _dataDictionary = @{
-            SEC_ALMOND_LIST : almondList,
-            SEC_SETTINGS_LIST : settingsList,
-            SEC_VERSION : @[version],
-    };
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    enum SFIAlmondConnectionMode mode = [toolkit defaultConnectionMode];
+    if (mode == SFIAlmondConnectionMode_cloud) {
+        _dataDictionary = @{
+                SEC_ALMOND_LIST : almondList,
+                SEC_SETTINGS_LIST : settingsList,
+                SEC_VERSION : @[version],
+        };
+    }
+    else {
+        _dataDictionary = @{
+                SEC_ALMOND_LIST : almondList,
+                SEC_VERSION : @[version],
+        };
+    }
 }
 
 - (NSArray *)buildAlmondList {
@@ -109,21 +119,39 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)sectionIndex {
-    switch (sectionIndex) {
-        case 0: {
-            NSArray *array = [self getAlmondList];
-            return [array count] + 1;
+    NSUInteger sectionCount = [self.dataDictionary count];
+
+    if (sectionCount == 2) {
+        switch (sectionIndex) {
+            case 0: {
+                NSArray *array = [self getAlmondList];
+                return [array count] + 1;
+            }
+            case 1: {
+                NSArray *array = [self getVersionList];
+                return [array count];
+            }
+            default:
+                return 0;
         }
-        case 1: {
-            NSArray *array = [self getSettingsList];
-            return [array count];
+    }
+    else {
+        switch (sectionIndex) {
+            case 0: {
+                NSArray *array = [self getAlmondList];
+                return [array count] + 1;
+            }
+            case 1: {
+                NSArray *array = [self getSettingsList];
+                return [array count];
+            }
+            case 2: {
+                NSArray *array = [self getVersionList];
+                return [array count];
+            }
+            default:
+                return 0;
         }
-        case 2: {
-            NSArray *array = [self getVersionList];
-            return [array count];
-        }
-        default:
-            return 0;
     }
 }
 
@@ -150,19 +178,35 @@
     label.font = [UIFont securifiBoldFontLarge];
     label.textColor = [UIColor colorWithRed:(CGFloat) (119 / 255.0) green:(CGFloat) (119 / 255.0) blue:(CGFloat) (119 / 255.0) alpha:1.0];
 
-    switch (section) {
-        case 0:
-            label.text = @"LOCATION";
-            break;
-        case 1:
-            label.text = @"SETTINGS";
-            break;
-        case 2:
-            label.text = @"INFO";
-            break;
-        default:
-            label.text = @"";
-            break;
+    NSUInteger sectionCount = [self.dataDictionary count];
+    if (sectionCount == 2) {
+        switch (section) {
+            case 0:
+                label.text = @"LOCATION";
+                break;
+            case 1:
+                label.text = @"INFO";
+                break;
+            default:
+                label.text = @"";
+                break;
+        }
+    }
+    else {
+        switch (section) {
+            case 0:
+                label.text = @"LOCATION";
+                break;
+            case 1:
+                label.text = @"SETTINGS";
+                break;
+            case 2:
+                label.text = @"INFO";
+                break;
+            default:
+                label.text = @"";
+                break;
+        }
     }
 
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 65)];
@@ -177,6 +221,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSUInteger sectionCount = [self.dataDictionary count];
+
     switch (indexPath.section) {
         case 0: {
             NSArray *array = [self getAlmondList];
@@ -190,7 +236,12 @@
             }
         }
         case 1:
-            return [self tableViewCreateSettingsCell:tableView indexPath:indexPath];
+            if (sectionCount == 2) {
+                return [self tableViewCreateVersionCell:tableView indexPath:indexPath];
+            }
+            else {
+                return [self tableViewCreateSettingsCell:tableView indexPath:indexPath];
+            }
 
         case 2:
             return [self tableViewCreateVersionCell:tableView indexPath:indexPath];
@@ -202,6 +253,8 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSUInteger sectionCount = [self.dataDictionary count];
+
     if (indexPath.section == 0) {
         NSArray *almondList = [self getAlmondList];
         if (indexPath.row == [almondList count]) {
@@ -223,11 +276,10 @@
             [revealController revealToggleAnimated:YES];
         }
     }
-    else if (indexPath.section == 1) {
+    else if (indexPath.section == 1 && sectionCount != 2) {
         //Settings
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-        //PY 150914 - Account Settings
         if (indexPath.row == 0) {
             //Account
             [self presentAccountsView];
