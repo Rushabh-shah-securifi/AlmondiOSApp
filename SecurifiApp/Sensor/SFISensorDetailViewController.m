@@ -161,6 +161,7 @@ typedef NS_ENUM(NSInteger, Properties) {
         [propertiesArray[fanIndexPathRow] setValue:@YES forKey:@"hidden"];
     }
     [tblDeviceProperties reloadData];
+    [self initializeNotifications];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -170,6 +171,19 @@ typedef NS_ENUM(NSInteger, Properties) {
 }
 
 - (void)initializeNotifications {
+     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self
+               selector:@selector(onTabBarDidChange:)
+                   name:@"TAB_BAR_CHANGED"
+                 object:nil];
+}
+
+- (void)onTabBarDidChange:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (![[data valueForKey:@"title"] isEqualToString:@"Router"]) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
     
 }
 

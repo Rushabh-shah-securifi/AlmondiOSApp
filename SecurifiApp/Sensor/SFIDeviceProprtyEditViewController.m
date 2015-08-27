@@ -76,8 +76,8 @@ typedef NS_ENUM(NSInteger, Properties) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     lblDeviceName.text = self.device.deviceName;
-   
-
+    
+    
     [self updateTemperatureLabel];
     
     if (self.device.deviceType==SFIDeviceType_NestThermostat_57) {
@@ -346,7 +346,7 @@ typedef NS_ENUM(NSInteger, Properties) {
             btnFahrenheit.backgroundColor = [UIColor clearColor];
             btnFahrenheit.layer.cornerRadius = btnShowCelsius.frame.size.width/2;
             [self configureTemperatureFormatButtons];
-         
+            
             if([thermostatMode isEqualToString:@"cool"]){
                 heatingTempSelector.hidden = YES;
                 lblHeating.hidden = YES;
@@ -441,7 +441,22 @@ typedef NS_ENUM(NSInteger, Properties) {
                selector:@selector(onNotificationPrefDidChange:)
                    name:kSFINotificationPreferencesDidChange
                  object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onTabBarDidChange:)
+                   name:@"TAB_BAR_CHANGED"
+                 object:nil];
 }
+
+- (void)onTabBarDidChange:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (![[data valueForKey:@"title"] isEqualToString:@"Router"]) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    
+}
+
 
 //- (void)updateThemperatureDataOnUI{
 //    if ([SecurifiToolkit sharedInstance] isFahrenheit) {
@@ -800,7 +815,7 @@ typedef NS_ENUM(NSInteger, Properties) {
     if(![thermostatMode isEqualToString:@"heat-cool"] || !(canCool && canHeat)){
         diffTempValue = 0;
     }
-
+    
     [coolingTempSelector reloadData];
     [heatingTempSelector reloadData];
     [self displayTemperatureValues];
