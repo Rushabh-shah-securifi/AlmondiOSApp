@@ -797,7 +797,7 @@ typedef NS_ENUM(NSInteger, Properties) {
         minTempValue = 10;
         diffTempValue = 2;
     }
-    if(![thermostatMode isEqualToString:@"cool-heat"] || !(canCool && canHeat)){
+    if(![thermostatMode isEqualToString:@"heat-cool"] || !(canCool && canHeat)){
         diffTempValue = 0;
     }
 
