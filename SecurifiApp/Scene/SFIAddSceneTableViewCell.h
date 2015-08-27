@@ -10,7 +10,7 @@
 
 @protocol SFIAddSceneTableViewCellDelegate
 
-- (void)tableViewCellValueDidChange:(SFIAddSceneTableViewCell*)cell CellInfo:(NSDictionary*)cellInfo Index:(int)index Value:(NSString*)value;
+- (void)tableViewCellValueDidChange:(SFIAddSceneTableViewCell*)cell CellInfo:(NSDictionary*)cellInfo Index:(int)index Value:(id)value;
 
 - (void)sceneNameDidChange:(SFIAddSceneTableViewCell*)cell SceneName:(NSString*)name ActiveField:(UITextField*)textField;
 

@@ -707,19 +707,9 @@
         
         btnDimOn.selected = YES;
         btnDimOff.selected = NO;
-        
-        //        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
-        //            [btnDim setNewValue:btnDimOn.dimOnValue];
-        //            btnDim.selected = YES;
-        //        }
-        
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnDimOn.tag Value:btnDimOn.dimOnValue];
     }else{
         btnDimOn.selected = NO;
-        //        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
-        //            [btnDim setNewValue:btnDimOff.dimOffValue];
-        //        }
-        
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnDimOn.tag Value:@"remove_from_entry_list"];
     }
 }
@@ -727,11 +717,6 @@
     if (!btnDimOff.selected) {
         btnDimOn.selected = NO;
         btnDimOff.selected = YES;
-        
-        //        if (self.device.deviceType==SFIDeviceType_MultiLevelSwitch_2) {
-        //            [btnDim setNewValue:btnDimOff.dimOffValue];
-        //            btnDim.selected = NO;
-        //        }
         
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)btnDimOff.tag Value:btnDimOff.dimOffValue];
     }else{
@@ -841,9 +826,10 @@
     [currentDimmerButton setNewValue:pickerValuesArray[row]];
     if (self.device.deviceType == SFIDeviceType_MultiLevelOnOff_4) {
         NSInteger v = lrintf([pickerValuesArray[row] integerValue]*255/100.0f);
-        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)currentDimmerButton.tag Value:[NSString stringWithFormat:@"%ld",(long)v]];
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)currentDimmerButton.tag Value:[NSNumber numberWithInteger:v]];
     }else{
-        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)currentDimmerButton.tag Value:pickerValuesArray[row]];
+        NSInteger v = [pickerValuesArray[row] integerValue];
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)currentDimmerButton.tag Value:[NSNumber numberWithInteger:v]];
     }
     currentDimmerButton.selected = YES;
 }
@@ -1713,11 +1699,11 @@
             }
         }
         if ([[dict valueForKey:@"Index"] integerValue]==btnNestTermostatDimHeat.tag) {
-            [btnNestTermostatDimHeat setupValues:[dict valueForKey:@"Value"] Title:@"HEATING TEMP." Prefix:@"°F"];
+            [btnNestTermostatDimHeat setupValues:[NSString stringWithFormat:@"%ld",(long)[[dict valueForKey:@"Value"] integerValue]] Title:@"HEATING TEMP." Prefix:@"°F"];
             btnNestTermostatDimHeat.selected = YES;
         }
         if ([[dict valueForKey:@"Index"] integerValue]==btnNestTermostatDimCool.tag) {
-            [btnNestTermostatDimCool setupValues:[dict valueForKey:@"Value"] Title:@"COOLING TEMP." Prefix:@"°F"];
+            [btnNestTermostatDimCool setupValues:[NSString stringWithFormat:@"%ld",(long)[[dict valueForKey:@"Value"] integerValue]] Title:@"COOLING TEMP." Prefix:@"°F"];
             btnNestTermostatDimCool.selected = YES;
         }
         if ([[dict valueForKey:@"Index"] integerValue]==8) {

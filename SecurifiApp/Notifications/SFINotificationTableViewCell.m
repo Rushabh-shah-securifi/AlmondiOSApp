@@ -37,29 +37,29 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
 
 - (void)layoutSubviews {
     [super layoutSubviews];
-
+    
     if (!self.reset) {
         return;
     }
-
+    
     [self clearContentView];
-
+    
     CGFloat cell_width = CGRectGetWidth(self.bounds);
     CGFloat cell_height = CGRectGetHeight(self.bounds);
     CGFloat date_width = 70;
     CGFloat circle_width = 60;
     CGFloat padding = 5;
     CGFloat left_padding = 5;
-
+    
     UIColor *grayColor = [UIColor colorFromHexString:@"dddddd"];
-
+    
     CGRect rect;
-
+    
     rect = CGRectMake(left_padding, 5, date_width, circle_width);
     self.dateLabel = [[UITextField alloc] initWithFrame:rect];
     self.dateLabel.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     self.dateLabel.userInteractionEnabled = NO;
-
+    
     // Draw a vertical gray line centered on the circle
     //
     CGFloat line_width = 4.0;
@@ -82,7 +82,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     self.iconView = [[UIImageView alloc] initWithFrame:rect];
     self.iconView.tintColor = [UIColor whiteColor];
     [self.circleView addSubview:self.iconView];
-
+    
     CGFloat message_x = left_padding + date_width + padding + circle_width + padding;
     rect = CGRectMake(message_x, 5, cell_width - message_x - padding, circle_width);
     //
@@ -117,11 +117,11 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     [self.contentView addSubview:self.verticalLine];
     [self.contentView addSubview:self.circleView];
     [self.contentView addSubview:self.messageTextField];
-
+    
     SFINotification *notification = self.notification;
     _sensorSupport = [SensorSupport new];
     [_sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
-
+    
     [self setDateLabelText:notification];
     [self setIcon];
     [self setMessageLabelText:notification];
@@ -129,15 +129,15 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
 
 - (UIColor *)notificationStatusColor {
     /*
-    FOR ORANGE : RED : 255 : Green :-133  Blue : 0 (ff8500)
-    FOR BLUE : RED : 0 : Green : 164    Blue : 230 (00a4e6)
+     FOR ORANGE : RED : 255 : Green :-133  Blue : 0 (ff8500)
+     FOR BLUE : RED : 0 : Green : 164    Blue : 230 (00a4e6)
      */
     return self.notification.viewed ? /*blue */[UIColor colorFromHexString:@"00a4e6"] : /*orange*/[UIColor colorFromHexString:@"ff8500"];
 }
 
 - (void)clearContentView {
     [self removeTextViewObserver];
-
+    
     for (UIView *view in self.contentView.subviews) {
         [view removeFromSuperview];
     }
@@ -165,33 +165,33 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         self.dateLabel.attributedText = [[NSAttributedString alloc] initWithString:@""];
         return;
     }
-
+    
     NSDateFormatter *formatter = [NSDateFormatter new];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:notification.time];
-
+    
     NSDictionary *attr;
     NSString *str;
-
+    
     attr = @{
-            NSFontAttributeName : [UIFont securifiBoldFontLarge],
-            NSForegroundColorAttributeName : [UIColor grayColor],
-    };
+             NSFontAttributeName : [UIFont securifiBoldFontLarge],
+             NSForegroundColorAttributeName : [UIColor grayColor],
+             };
     formatter.dateFormat = @"hh:mm";
     str = [formatter stringFromDate:date];
     NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:str attributes:attr];
-
+    
     attr = @{
-            NSFontAttributeName : [UIFont securifiBoldFontLarge],
-            NSForegroundColorAttributeName : [UIColor lightGrayColor],
-    };
+             NSFontAttributeName : [UIFont securifiBoldFontLarge],
+             NSForegroundColorAttributeName : [UIColor lightGrayColor],
+             };
     formatter.dateFormat = @"a";
     str = [formatter stringFromDate:date];
     NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:str attributes:attr];
-
+    
     NSMutableAttributedString *container = [NSMutableAttributedString new];
     [container appendAttributedString:nameStr];
     [container appendAttributedString:eventStr];
-
+    
     self.dateLabel.attributedText = container;
     self.dateLabel.textAlignment = NSTextAlignmentRight;
 }
@@ -201,41 +201,52 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         self.messageTextField.attributedText = [[NSAttributedString alloc] initWithString:@""];
         return;
     }
-
-    UIFont *bold_font = [UIFont securifiBoldFont];
-
-    NSDictionary *attr;
-
-    attr = @{
-            NSFontAttributeName : bold_font,
-            NSForegroundColorAttributeName : [UIColor blackColor],
-    };
-
-    NSString *deviceName = notification.deviceName;
     
+    UIFont *bold_font = [UIFont securifiBoldFont];
+    
+    NSDictionary *attr;
+    
+    attr = @{
+             NSFontAttributeName : bold_font,
+             NSForegroundColorAttributeName : [UIColor blackColor],
+             };
+    
+    NSString *deviceName = notification.deviceName;
+    //md01<<<
+    if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
+        NSArray * properties = [self.notification.deviceName componentsSeparatedByString:@"|"];
+        deviceName = properties[0];
+    }
+    //md01>>>
     // debug logging
     if (self.enableDebugMode) {
         deviceName = [NSString stringWithFormat:@"(%ld) %@", (long) self.debugCellIndexNumber, deviceName];
     }
     
     NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:deviceName attributes:attr];
-
+    
     attr = @{
-            NSFontAttributeName : bold_font,
-            NSForegroundColorAttributeName : [UIColor lightGrayColor],
-    };
-
+             NSFontAttributeName : bold_font,
+             NSForegroundColorAttributeName : [UIColor lightGrayColor],
+             };
+    
     NSString *message;
     switch (self.debugMessageMode) {
         case SFINotificationTableViewCellDebugMode_normal: {
             message = self.sensorSupport.notificationText;
+            //md01<<<
+            if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
+                NSArray * properties = [self.notification.deviceName componentsSeparatedByString:@"|"];
+                message = properties[3];
+            }
+            //md01>>>
             break;
         }
         case SFINotificationTableViewCellDebugMode_details: {
             NSString *indexName = [SFIDeviceKnownValues propertyTypeToName:notification.valueType];
             message = [NSString stringWithFormat:@" device_type:%d, device_id:%d, index:%d, index_value:%@, index_type:%@",
-                                                 notification.deviceType, notification.deviceId, notification.valueIndex, notification.value, indexName];
-
+                       notification.deviceType, notification.deviceId, notification.valueIndex, notification.value, indexName];
+            
             break;
         };
         case SFINotificationTableViewCellDebugMode_external_id: {
@@ -246,17 +257,27 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     if (message == nil) {
         message = @"";
     }
-
+    
     NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:message attributes:attr];
-
+    
     NSMutableAttributedString *container = [NSMutableAttributedString new];
     [container appendAttributedString:nameStr];
     [container appendAttributedString:eventStr];
-
+    
     self.messageTextField.attributedText = container;
 }
 
 - (void)setIcon {
+    //md01<<<
+    if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
+        NSArray * properties = [self.notification.deviceName componentsSeparatedByString:@"|"];
+        SFIConnectedDevice *device = [SFIConnectedDevice new];
+        device.deviceType = properties[1];
+        
+        self.iconView.image = [UIImage imageNamed:[device iconName]];
+        return;
+    }
+    //md01>>>
     self.iconView.image = self.sensorSupport.notificationImage;
     self.iconView.tintColor = [UIColor whiteColor];
 }
@@ -264,15 +285,15 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
 // center the message text inside the view
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     UITextView *textView = object;
-
+    
     CGFloat boundsHeight = CGRectGetHeight(textView.bounds);
     CGFloat contentHeight = textView.contentSize.height;
-
+    
     CGFloat topOffset = (CGFloat) ((boundsHeight - contentHeight * textView.zoomScale) / 2.0);
     if (topOffset < 0) {
         topOffset = 0;
     }
-
+    
     textView.contentOffset = CGPointMake(0, -topOffset);
 }
 

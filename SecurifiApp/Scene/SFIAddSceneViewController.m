@@ -390,9 +390,9 @@
 }
 
 - (void)setDeviceList:(NSArray *)devices {
-    if (devices.count==0) {
-        return;
-    }
+//    if (devices.count==0) {
+//        return;
+//    }
     
     NSMutableDictionary *table = [NSMutableDictionary dictionary];
     NSMutableArray * actuators = [NSMutableArray array];;
@@ -930,9 +930,9 @@
         return [self createNoAlmondCell:tableView];
     }
     
-    if ([self isDeviceListEmpty]) {
-        return [self createEmptyCell:tableView];
-    }
+//    if ([self isDeviceListEmpty]) {
+//        return [self createEmptyCell:tableView];
+//    }
     if (indexPath.row==cellsInfoArray.count) {
         return [self createSceneProperiesCell:tableView listRow:(NSUInteger) indexPath.row];
     }
@@ -1074,7 +1074,7 @@
     activeTextField = textField;
 }
 
-- (void)tableViewCellValueDidChange:(SFIAddSceneTableViewCell*)cell CellInfo:(NSDictionary*)cellInfo Index:(int)index Value:(NSString*)value{
+- (void)tableViewCellValueDidChange:(SFIAddSceneTableViewCell*)cell CellInfo:(NSDictionary*)cellInfo Index:(int)index Value:(id)value{
     
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     if (!indexPath) {
@@ -1091,9 +1091,14 @@
             break;
         }
     }
-    if ([value isEqualToString:@"remove_from_entry_list"] && found) {
-        [sceneEntryList removeObject:edit_entryDict];
-    }else{
+    BOOL removed = NO;
+    if ([value isKindOfClass:[NSString class]]) {
+        if ([value isEqualToString:@"remove_from_entry_list"] && found) {
+            [sceneEntryList removeObject:edit_entryDict];
+            removed = YES;
+        }
+    }
+    if (!removed) {
         [edit_entryDict setValue:[cellInfo valueForKey:@"DeviceID"] forKey:@"DeviceID"];
         [edit_entryDict setValue:[NSNumber numberWithInt:index] forKey:@"Index"];
         [edit_entryDict setValue:value forKey:@"Value"];
@@ -1150,9 +1155,6 @@
     if (device.deviceType == SFIDeviceType_NestThermostat_57) {
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
-    
-    
-    
     
     [cellsInfoArray[indexPath.row] setValue:existingValues forKey:@"existingValues"];
 }

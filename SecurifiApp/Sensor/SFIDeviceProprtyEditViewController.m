@@ -255,7 +255,6 @@ typedef NS_ENUM(NSInteger, Properties) {
         {
             [tblTypes removeFromSuperview];
             
-            
             SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_RANGE_LOW];
             currentCoolTemp = [currentDeviceValue intValue];
             currentCoolTemp = [[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:currentCoolTemp];
@@ -266,7 +265,12 @@ typedef NS_ENUM(NSInteger, Properties) {
             
             thermostatMode = [currentDeviceValue.value lowercaseString];
             
-            if(![thermostatMode isEqualToString:@"cool-heat"] || !(canCool && canHeat)){
+            currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_COOL];
+            canCool = [currentDeviceValue boolValue];
+            currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_HEAT];
+            canHeat = [currentDeviceValue boolValue];
+            
+            if(![thermostatMode isEqualToString:@"heat-cool"] || !(canCool && canHeat)){
                 currentDeviceValue= [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_TARGET];
                 int targetValue = [currentDeviceValue intValue];
                 currentCoolTemp = [[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:targetValue];
