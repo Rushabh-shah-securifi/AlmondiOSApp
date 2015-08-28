@@ -1054,7 +1054,7 @@
 - (void)tryAddTemperatureStatus:(const NSMutableArray *)status {
     NSString *temp = [self.deviceValue valueForProperty:SFIDevicePropertyType_TEMPERATURE default:@""];
     if (temp.length > 0) {
-        [status addObject:[NSString stringWithFormat:NSLocalizedString(@"sensor.moisturesensor.status.Temp %@", @TEMP %@"), temp]];
+        [status addObject:[NSString stringWithFormat:NSLocalizedString(@"sensor.moisturesensor.status.Temp %@", @"TEMP %@"), temp]];
     }
 }
 
