@@ -7,7 +7,6 @@
 //
 
 #import "SFIRouterClientsTableViewController.h"
-#import "SFIParser.h"
 #import <MBProgressHUD/MBProgressHUD.h>
 #import "SFICardView.h"
 #import "SFICardTableViewCell.h"
@@ -164,44 +163,6 @@
 
 #pragma mark - Cloud command senders and handlers
 
-- (void)onGenericResponseCallback:(id)sender {
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data == nil) {
-        return;
-    }
-
-    GenericCommandResponse *response = (GenericCommandResponse *) [data valueForKey:@"data"];
-    if (!response.isSuccessful) {
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            if (!self) {
-                return;
-            }
-            if (self.disposed) {
-                return;
-            }
-
-            NSString *responseAlmondMac = response.almondMAC;
-            if (responseAlmondMac.length > 0 && ![responseAlmondMac isEqualToString:self.almondMac]) {
-                // response almond mac value is likely to be null, but when specified we make sure it matches
-                // the current almond being shown.
-                return;
-            }
-
-//            self.isAlmondUnavailable = [response.reason.lowercaseString hasSuffix:@" is offline"]; // almond is offline, homescreen is offline
-//            [self syncCheckRouterViewState:RouterViewReloadPolicy_on_state_change];
-            [self.HUD hide:YES];
-        });
-
-        return;
-    }
-
-    SFIGenericRouterCommand *genericRouterCommand = [SFIParser parseRouterResponse:response];
-    genericRouterCommand.almondMAC = response.almondMAC;
-
-    [self processRouterCommandResponse:genericRouterCommand];
-}
-
 - (void)onAlmondRouterCommandResponse:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
@@ -242,69 +203,6 @@
         }
 
         [self.HUD hide:YES];
-    });
-}
-
-- (void)onGenericNotificationCallback:(id)sender {
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data == nil) {
-        return;
-    }
-
-    GenericCommandResponse *obj = (GenericCommandResponse *) [data valueForKey:@"data"];
-    if (!obj.isSuccessful) {
-
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            if (self.disposed) {
-                return;
-            }
-        });
-
-        return;
-    }
-    //todo push all of this parsing and manipulation into the parser or SFIGenericRouterCommand!
-
-    NSMutableData *genericData = [[NSMutableData alloc] init];
-
-    NSData *data_decoded = [obj.decodedData mutableCopy];
-
-    [genericData appendData:data_decoded];
-
-    unsigned int expectedDataLength;
-    unsigned int commandData;
-
-    [genericData getBytes:&expectedDataLength range:NSMakeRange(0, 4)];
-    [genericData getBytes:&commandData range:NSMakeRange(4, 4)];
-
-    //Remove 8 bytes from received command
-    [genericData replaceBytesInRange:NSMakeRange(0, 8) withBytes:NULL length:0];
-
-    NSString *decodedString = [[NSString alloc] initWithData:genericData encoding:NSUTF8StringEncoding];
-    SFIGenericRouterCommand *command = [[SFIParser alloc] loadDataFromString:decodedString];
-
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.disposed) {
-            return;
-        }
-
-        switch (command.commandType) {
-            case SFIGenericRouterCommandType_CONNECTED_DEVICES: {
-                SFIDevicesList *ls = command.command;
-                self.connectedClients = ls.deviceList;
-
-                [self.HUD hide:YES afterDelay:1];
-
-                // settings was null, reload in case they are late arriving and the view is waiting for them
-                [self.tableView reloadData];
-
-                break;
-            }
-
-            default:
-                [self.HUD hide:YES afterDelay:1];
-                break;
-        }
     });
 }
 
