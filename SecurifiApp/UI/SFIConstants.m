@@ -10,12 +10,4 @@
 
 @implementation SFIConstants
 
-+ (void) globalResignFirstResponderRec:(UIView*) view {
-    if ([view respondsToSelector:@selector(resignFirstResponder)]){
-        [view resignFirstResponder];
-    }
-    for (UIView * subview in [view subviews]){
-        [self globalResignFirstResponderRec:subview];
-    }
-}
 @end
