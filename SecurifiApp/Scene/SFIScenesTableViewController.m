@@ -130,11 +130,14 @@
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
-    
+    if (!plus.almondplusMAC) {
+        return;
+    }
     
     
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_GET_ALL_SCENES;
+    
     NSDictionary * testDict =@{@"MobileCommand":@"LIST_SCENE_REQUEST",
                                @"AlmondplusMAC":plus.almondplusMAC};
     
