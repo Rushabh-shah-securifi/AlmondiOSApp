@@ -794,7 +794,7 @@
 - (void)configureBinarySensor_3 {
     SFIDeviceKnownValues *values = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BATTERY];
     NSString *batteryStatus = [values choiceForLevelValueZeroValue:NSLocalizedString(@"sensor.device-status.label.Battery OK", @"Battery OK")
-                                                      nonZeroValue:NSLocalizedString(@"sensor.device-status.label.Low Battery", @"Low Battery")
+                                                      nonZeroValue:NSLocalizedString(@"sensor.device-status.label.LOW BATTERY", @"LOW BATTERY")
                                                           nilValue:NSLocalizedString(@"sensor.device-status.label.Battery Unknown", @"Battery Unknown")];
 
     UILabel *label = [[UILabel alloc] init];

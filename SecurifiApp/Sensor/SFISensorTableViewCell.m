@@ -760,10 +760,7 @@
     
     NSMutableArray *status = [NSMutableArray array];
     [status addObject:[stateValue choiceForLevelValueZeroValue:NSLocalizedString(@"sensor.status-label.OK", @"OK") nonZeroValue:NSLocalizedString(@"sensor.moisturesensor.status.FLOODED", @"FLOODED") nilValue:@""]];
-    NSString *temp = [self.deviceValue valueForProperty:SFIDevicePropertyType_TEMPERATURE default:@""];
-    if (temp.length > 0) {
-        [status addObject:[NSString stringWithFormat:NSLocalizedString(@"sensor.moisturesensor.status.Temp %@", @"Temp %@"), temp]];
-    }
+    [self tryAddTemperatureStatus:status];
     [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 }
@@ -1019,7 +1016,9 @@
     if (message) {
         [status addObject:message];
     }
+    [self tryAddTemperatureStatus:status];
     [self tryAddBatteryStatusMessage:status];
+
     [self setDeviceStatusMessages:status];
 }
 
@@ -1052,6 +1051,13 @@
         if (battery.length > 0) {
             [status addObject:[NSString stringWithFormat:NSLocalizedString(@"sensor.device-status.label.Battery %", @"Battery %@%%"), battery]];
         }
+    }
+}
+
+- (void)tryAddTemperatureStatus:(const NSMutableArray *)status {
+    NSString *temp = [self.deviceValue valueForProperty:SFIDevicePropertyType_TEMPERATURE default:@""];
+    if (temp.length > 0) {
+        [status addObject:[NSString stringWithFormat:NSLocalizedString(@"sensor.moisturesensor.status.Temp %@", @"TEMP %@"), temp]];
     }
 }
 

@@ -1,5 +1,5 @@
 PODS:
-  - ASValueTrackingSlider (0.10.1)
+  - ASValueTrackingSlider (0.11.2)
   - CocoaLumberjack (2.0.1):
     - CocoaLumberjack/Default (= 2.0.1)
     - CocoaLumberjack/Extensions (= 2.0.1)
@@ -9,14 +9,14 @@ PODS:
   - CocoaLumberjack/Extensions (2.0.1):
     - CocoaLumberjack/Default
   - Colours (5.6.2)
-  - Crashlytics (3.1.0)
-  - Fabric (1.2.8):
-    - Fabric/Base (= 1.2.8)
-  - Fabric/Base (1.2.8)
+  - Crashlytics (3.1.1)
+  - Fabric (1.4.0):
+    - Fabric/Base (= 1.4.0)
+  - Fabric/Base (1.4.0)
   - GoogleAnalytics (3.13.0)
   - iToast (0.0.1)
   - MBProgressHUD (0.9.1)
-  - PureLayout (2.0.6)
+  - PureLayout (3.0.1)
   - SWRevealViewController (2.3.0)
   - UIImage-ResizeMagick (0.0.1)
   - V8HorizontalPickerView (1.0.0)
@@ -36,15 +36,15 @@ DEPENDENCIES:
   - V8HorizontalPickerView (~> 1.0)
 
 SPEC CHECKSUMS:
-  ASValueTrackingSlider: 00fe601d9b5b2efeac515c1673afbf452f8e78ba
+  ASValueTrackingSlider: 45c9f78252da60de01d8f2afe869aaf90dd978d9
   CocoaLumberjack: 019d1361244274a6138c788c6cb80baabc13fb8f
   Colours: 0afd4c3429656880fd4cff350ca3bf0ab86ca348
-  Crashlytics: 93e2f86363d53c002c6366a9d87e41f2eaee87c3
-  Fabric: a9eabe53915e9f1db55a84dd2838737928675878
+  Crashlytics: 39ab395565bc03c29cdecd2b9d103ebf30930c10
+  Fabric: 6d1d1c1eaf7ebc76fc3307e2c0259456411baf26
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   iToast: df147188215cc3293bd4366822833f2862fec451
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
-  PureLayout: f25f0bb904d5ccfe6e31da3cb869185259f02e0d
+  PureLayout: f35f5384c9c4e4479df041dbe33ad7577b71ddfb
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   UIImage-ResizeMagick: f08c2d14d1e8a5f0b402185408785540562f2fe7
   V8HorizontalPickerView: 6451e226ea7939c3499cefbbc0dcab85c941c28c

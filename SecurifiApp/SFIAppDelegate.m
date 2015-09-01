@@ -8,7 +8,7 @@
 
 #import "SFIAppDelegate.h"
 #import "Analytics.h"
-#import "Fabric.h"
+#import <Fabric/Fabric.h>
 #import "Crashlytics.h"
 #import "UIApplication+SecurifiNotifications.h"
 
@@ -23,10 +23,10 @@
     SecurifiConfigurator *config = [SecurifiConfigurator new];
 
     // Debug and testing
-    config.enableScoreboard = YES;                  // uncomment for debug builds
-    config.enableNotificationsDebugMode = YES;      // uncomment to activate; off by default
-    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
-    config.enableCertificateChainValidation = NO;   // Uncomment for testing only; on by default
+//    config.enableScoreboard = YES;                  // uncomment for debug builds
+//    config.enableNotificationsDebugMode = YES;      // uncomment to activate; off by default
+//    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
+//    config.enableCertificateChainValidation = NO;   // Uncomment for testing only; on by default
 
     // Features
     config.enableNotifications = YES;               // uncomment to activate; NO by default

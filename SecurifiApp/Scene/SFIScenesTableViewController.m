@@ -15,7 +15,6 @@
 #import "UIApplication+SecurifiNotifications.h"
 #import <SWRevealViewController/SWRevealViewController.h>
 #import "MBProgressHUD.h"
-#import "SFIParser.h"
 #import "AlmondPlusConstants.h"
 #import "UIFont+Securifi.h"
 #import "MessageView.h"
