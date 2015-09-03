@@ -485,6 +485,74 @@ Follow it, then tap Continue to login.";
 "response.alert-Sorry, There was some problem with this request, try later!" = "Sorry, There was some problem with this request, try later!";
 "response.alert-OK" = "OK";
 
+/* Sensor Index Support */
+
+" Fan is " = " Fan is ";
+" Fan is set to " = " Fan is set to ";
+" brightness changed to " = " brightness changed to ";
+" brightness changed to " = " brightness changed to ";
+" detected Fire." = " detected Fire.";
+" detected Gas." = " detected Gas.";
+" detected Smoke." = " detected Smoke.";
+" detected Vibration." = " detected Vibration.";
+" detected Vibration." = " detected Vibration.";
+" detected motion." = " detected motion.";
+" detected motion." = " detected motion.";
+" detected water." = " detected water.";
+" has been Tampered." = " has been Tampered.";
+" hue color changed to " = " hue color changed to ";
+" is " = " is ";
+" is Armed." = " is Armed.";
+" is Closed." = " is Closed.";
+" is Closing." = " is Closing.";
+" is Disarmed." = " is Disarmed.";
+" is Locked." = " is Locked.";
+" is Open." = " is Open.";
+" is Opened." = " is Opened.";
+" is Opening." = " is Opening.";
+" is Perimeter Armed." = " is Perimeter Armed.";
+" is Ringing." = " is Ringing.";
+" is Silent." = " is Silent.";
+" is Stopped." = " is Stopped.";
+" is Unlocked." = " is Unlocked.";
+" is cooling down to " = " is cooling down to ";
+" is dimmed to " = " is dimmed to ";
+" is heating up to " = " is heating up o ";
+" is not fully Locked." = " is not fully Locked.";
+" is reset from Tampered." = " is reset from Tampered.";
+" is set to " = " is set to ";
+" is switched Off." = " is switched Off.";
+" is switched On." = " is switched On.";
+" is turned Off." = " is turned Off.";
+" is turned On." = " is turned On.";
+" is turned on for " = " is turned on for ";
+" saturation changed to " = " saturation changed to ";
+" seconds" = " seconds";
+" stopped leaking." = " stopped leaking.";
+" turned Off." = " turned Off.";
+" turned On." = " turned On.";
+"'s Battery is Low." = "'s Battery is Low.";
+"'s Fire is gone." = "'s Fire is gone.";
+"'s Gas is gone." = "'s Gas is gone.";
+"'s Smoke is gone." = "'s Smoke is gone.";
+"'s color temperature changed to " = "'s color temperature changed to ";
+"'s humidiy changed to " = "'s humidiy changed to ";
+"'s light reading changed to " = "'s light reading changed to ";
+"'s motion stopped." = "'s motion stopped.";
+"'s pin code changed." = "'s pin code changed.";
+"'s power reading changed to " = "'s power reading changed to ";
+"'s temperature changed to " = "'s temperature changed to ";
+"'s temperature set point changed to " = "'s temperature set point changed to ";
+"'s vibration stopped." = "'s vibration stopped.";
+": no presence detected." = ": no presence detected.";
+": presence detected." = ": presence detected.";
+"AWAY" = "AWAY";
+"HOME" = "HOME";
+"OFF" = "OFF";
+"ON" = "ON";
+"Temperature" = "Temperature";
+"\u00B0 Farenheit" = "\u00B0 Farenheit";
+
 
 /* ==================================================================== */
 
