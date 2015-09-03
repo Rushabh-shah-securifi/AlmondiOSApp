@@ -221,6 +221,43 @@ reset at the moment. Try again later.";
 "sensors.label.Color" = "Color";
 "sensor.hud.UpdatingSensordata" = "Updating Sensor Data...";
 
+//r
+"sensor.deivice-showlog.button.viewlogs" = "View Logs";
+"sensor.deivice-warning_rightview.seconds" = "seconds";
+"sensor.deivice.Highlightbutton Turn Off" = "Turn Off";
+"sensor.deivice.Highlightbutton Turn ON" = "Turn ON";
+"Temperature is %@%@" = "Temperature is %@%@";
+"Humidity is %@%%" = "Humidity is %@%%";
+"sensors.label.DimmableLight-Brightness" = "Brightness";
+"sensors.label.DimmableLight-Saturation" = "Saturation";
+"sensors.label.DimmableLight-Color Temperature" = "Color Temperature";
+"sensors.label.HueLamp-Brightness" = "Brightness";
+"sensors.label.HueLamp-Saturation" = "Saturation";
+"sensors.label.HueLamp-Color" = "Color";
+
+//rn
+"smoke-detector-Warning" = "Warning";
+"smoke-detector-Emergency" = "Emergency";
+"smoke-detector Smoke :%@ , CO :%@"="Smoke :%@ , CO :%@";
+
+
+"sensor-detail-Fan cell On" = "On";
+"sensor-detail-Fan cell Off" = "Off";
+"sensor-detail-Target Temp" = "Target Temp";
+
+
+"sensor.notificaiton.fanindexpath.On" = "On";
+"sensor.notificaiton.fanindexpath.Off" = "Off";
+"sensor.awaymode.indexpath Home" = "Home";
+"sensor.mode indexpath Off" = "Off";
+"sensor.mode indexpath Cool" = "Cool";
+"sensor.mode indexpath Heat" = "Heat";
+"sensor.mode indexpath Heat-Cool" = "Heat-Cool";
+
+"device-property-fanindexpah false" = "false";
+"device-property-fanindexpah true" = "true";
+"device property on mobile hud Unable to update sensor"="Unable to update sensor";
+
 /* signup */
 
 "signup.navbar-title.Sign up" = "Sign up";
@@ -320,10 +357,6 @@ Follow it, then tap Continue to login.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode2" = "You need to fill all the fields.";
 
 
-"wifi.hud.UpdatingWifiClient" = "Updating Wifi Client...";
-"wifi.hud.removeClient"       = "Deleting wifi client...";
-"wifi.button.deleteClient"    = "Remove";
-
 /* Notifications */
 
 //m
@@ -354,8 +387,107 @@ Follow it, then tap Continue to login.";
 "scene.alert-msg.Sorry, There was some problem with this request, try later!" = "Sorry, There was some problem with this request, try later!";
 "scene.alert-button.OK" = "OK";
 
+/* Scoreboard */
+//r
+"Scoreboard" = "Scoreboard";
+"Refresh.Scoreboard" = "Refresh Scoreboard";
+"scoreboard.section.Cloud" = "Cloud";
+"scoreboard.section.PushNotifications" = "Push Notifications";
+"scoreboard.section.Events" = "Events";
+"scoreboard.section.Network" = "Network";
+"scoreboard.section.Commands & Updates" = "Commands & Updates";
+"scoreboard.section.Logs & Data" = "Logs & Data";
+"footerInsection.Last refreshed %.0f secs ago @ %@" = "Last refreshed %.0f secs ago @ %@";
+"notifications.Client Token" = "Client Token";
+"notifications.Not registered" = "Not registered";
+"Failed to send mail" = "Failed to send mail";
+"Since %@" = "Since %@";
+"notifications_logctrl.View Handler Log" = "View Handler Log";
+"notifications_viewactual.View Notifications" = "View Notifications";
+"notifications_viewtests.Unit Test UI" = "Unit Test UI";
+"events.All Events" = "All Events";
+"Network.Established Connections" = "Established Connections";
+"Network.Failed Connections" = "Failed Connections";
+"Network.Reachability Changes" = "Reachability Changes";
+"SEC_ReQUEST.Dynamic Updates" = "Dynamic Updates";
+"SEC_ReQUEST.Command Requests" = "Command Requests";
+"SEC_ReQUEST.Command Responses" = "Command Responses";
+"Email Logs & Data" = "Email Logs & Data";
+"cloudSection.row0.Production" = "Production";
+"cloudSection.row1.Development" = "Development";
+"Copied token" = "Copied token";
+"Reset counter" = "Reset counter";
+"Sending Mail is not supported on this device" = "Sending Mail is not supported on this device";
+"Scoreboard.Preparing..." = "Preparing...";
+"Local Network Enabled" = "Local Network Enabled";
+"scoreboard.localnetwork.IP Address" = "IP Address";
+"scoreboard.localnetwork.Port" = "Port";
+"scoreboard.localnetwork.Password" = "Password";
 
+/* Sensor Support */
+//r
+"sensor support- a value has changed" = " a value has changed";
 
+/* Draw View Controller */
+//r
+"Draw viecontroller.label LOCATION" = "LOCATION";
+"Draw viecontroller.label SETTINGS" = "SETTINGS";
+"Draw viecontroller.label INFO" = "INFO";
+
+/* Main View Controller */
+//r
+"Sorry! Unable to establish Internet route to cloud service." = "Sorry! Unable to establish Internet route to cloud service.";
+"mainviewcontroller_Connecting. Please wait!" = "Connecting. Please wait!";
+"mainviewcontroller_Sorry! Could not connect to the cloud service." = "Sorry! Could not connect to the cloud service.";
+"main view controller Sorry! Push Notification was not registered." = "Sorry! Push Notification was not registered.";
+"main view controller Sorry! Push Notification was not deregistered." = "Sorry! Push Notification was not deregistered.";
+
+/* Table View Controller */
+//r
+"In process of connecting. Change connection method." = "In process of connecting. Change connection method.";
+"Cloud Connection" = "Cloud Connection";
+"connection status Local Connection" = "Connection";
+"alert.title-Switch to Local Connection" = "Switch to Local Connection";
+"alert.title-Edit Local Connection Settings" = "Edit Local Connection Settings";
+"Alert view title-Retry Cloud Connection" = "Retry Cloud Connection";
+"Alert view title-Switch to Local Connection" = "Switch to Local Connection";
+"Edit Local Connection Settings" = "Edit Local Connection Settings";
+"Alert view title-Edit Local Connection Settings" = "Edit Local Connection Settings";
+"alert view error_Cloud Connection" = "Cloud Connection";
+"alert view error_Local Connection" = "Local Connection";
+"alertview localconnection_Switch to Cloud Connection" = "Switch to Cloud Connection";
+"alertview Local connection settings are missing." = "Local connection settings are missing.";
+"alertview title Add Local Connection Settings" = "Add Local Connection Settings";
+"alert msg offline Local Retry Local Connection" = "Retry Local Connection";
+"alert title offline Local Switch to Cloud Connection" = "Switch to Cloud Connection";
+"alert title offline Local Edit Local Connection Settings" = "Edit Local Connection Settings";
+"mainviewcontroller hud Loading router data" = "Loading router data";
+"mainviewcontroller hud Loading sensor data" = "Loading sensor data";
+"mainviewcontroller hud hud.Updating settings..." = "Updating settings...";
+"Cancel"="Cancel";
+
+/* Wifi */
+"wifi.hud.UpdatingWifiClient" = "Updating Wifi Client...";
+"wifi.hud.removeClient" = "Deleting wifi client...";
+"wifi.button.deleteClient" = "Remove";
+
+//r
+"CONNECTED" = "CONNECTED";
+"NOT CONNECTED" = "NOT CONNECTED";
+
+"SFIWiFiClientsListViewController-propertyNames-Name" = "Name";
+"SFIWiFiClientsListViewController-propertyNames-Type" = "Type";
+"SFIWiFiClientsListViewController-propertyNames-MAC Address" = "MAC Address";
+"SFIWiFiClientsListViewController-propertyNames-Last Known IP" = "Last Known IP";
+"SFIWiFiClientsListViewController-propertyNames-Connection" = "Connection";
+"SFIWiFiClientsListViewController-propertyNames-Use as Presence Sensor" = "Use as Presence Sensor";
+"SFIWiFiClientsListViewController-propertyNames-Notify me" = "Notify me";
+"SFIWiFiClientsListViewController-propertyNames-Remove" = "Remove";
+"Presence sensor Yes"="Yes";
+"Presence sensor NO" = "NO";
+"response.alert-Oops" = "Oops";
+"response.alert-Sorry, There was some problem with this request, try later!" = "Sorry, There was some problem with this request, try later!";
+"response.alert-OK" = "OK";
 
 /* ==================================================================== */
 
@@ -373,7 +505,6 @@ Follow it, then tap Continue to login.";
 /* affiliation */
 "router.linkalmond-msg.label.Let's link an Almond." = "Let's link \n an Almond.";
 "router.linkalmond-msg.label.Start the wizard on your Almond." = "Start the wizard on your Almond, then tap the symbol below.";
-
 "Almond Linked" = "Almond Linked";
 "Link Almond" = "Cloud Link";
 "Local Link Almond" = "Local Link";
@@ -385,7 +516,6 @@ Contact us at support@securifi.com";
 "Run the Almond Account app and enter the code displayed." = "Run the Almond Account app and enter the code displayed.";
 "cloudlink.button.Link Almond" = "Link Almond";
 "cloudlink.button.Add Almond Locally" = "Add Almond Locally";
-
 
 /* login */
 "Access your Almonds and your home devices from anywhere." = "Access your Almonds and
@@ -434,4 +564,20 @@ your home devices from anywhere.";
 "accounts.deleteSecondaryUser.failure.reasonCode6" = "Secondary user is not associated with the given Almond.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "You are not associated with this Almond";
 "accounts.deleteMeAsSecondaryUser.failure.default" = "Sorry! Removing of shared Almond was unsuccessful.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "Almond MACs";
+"Copied Almond MAC" = "Copied Almond MAC";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "Connected to your Almond via cloud.";
+"alertview -Connected to your Almond via cloud." = "Connected to your Almond via cloud.";
+"Add Local Connection Settings" = "Add Local Connection Settings";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "Cloud connection to your Almond failed. Tap retry or switch to local connection.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = "Local connection to your Almond failed. Tap retry or switch to cloud connection.";
+"hud message-Setting Almond to Away Mode" = "Setting Almond to Away Mode";
+"hud message-Setting Almond to Home Mode" = "Setting Almond to Home Mode";
+"alertview Can't connect to your Almond. Please select a connection method." = "Can't connect to your Almond. Please select a connection method.";
+"alertview localconnection_Connected to your Almond locally." = "Connected to your Almond locally.";
 
