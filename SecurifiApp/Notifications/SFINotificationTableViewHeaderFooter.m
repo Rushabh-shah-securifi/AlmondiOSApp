@@ -110,20 +110,20 @@
 
 - (NSString *)dateLabelString {
     if (self.mode == SFINotificationTableViewHeaderFooter_footer) {
-        return @"The End";
+        NSLocalizedString(@"notifications.headerfooter.mode.The End", @"The End");
     }
 
     NSDate *date = self.bucketDate;
 
     if ([date isToday]) {
-        return @"Today";
+        NSLocalizedString(@"notifications.date.Today", @"Today");
     }
 
     NSDate *today = [NSDate today];
     NSDate *yesterday = [today dateByAddingDays:-1];
 
     if ([self.self.bucketDate isEqualToDate:yesterday]) {
-        return @"Yesterday";
+        return NSLocalizedString(@"notifications.bucketdate.Yesterday", @"Yesterday");
     }
 
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
