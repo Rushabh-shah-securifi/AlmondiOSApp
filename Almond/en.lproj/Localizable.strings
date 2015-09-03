@@ -3,6 +3,7 @@
  Almond
  
  Created by Priya Yerunkar on 13/12/14.
+ Edited by Masood on 2/09/15.
  Copyright (c) 2014 Securifi Ltd. All rights reserved.
  */
 
@@ -18,11 +19,20 @@
 "Sorry!" = "Sorry!";
 "toast.Saving..." = "Saving...";
 
+
 /* affiliation */
 "Please try later." = "Please try later.";
 "Please enter a valid code." = "Please enter a valid code.";
 "alert.msg.Logout was unsuccessful" = "Sorry. Logout was unsuccessful. Please try again.";
 "alert.title.Logout Unsuccessful" = "Logout Unsuccessful";
+//m
+"cloudlink.title.Cloud Link" = "Cloud Link";
+"cloudlink.label.Linking to Cloud" = "Linking to Cloud";
+"cloudlink.label.Name" = "Name";
+"cloudlink.label.MAC Address" = "MAC Address";
+"cloudlink.label.WIFI SSID" = "WIFI SSID";
+"Enter code" = "Enter code";
+
 
 /* activation */
 
@@ -108,6 +118,47 @@ reset at the moment. Try again later.";
 "router.card-title.Send Logs" = "Send Logs";
 "router.Sends %@'s logs to our server" = "Sends %@'s logs to our server";
 "router.hud.Sending Logs." = "Instructing router to send logs";
+//m
+"router.devicestatus.Connected as %@" = "Connected as %@";
+"router.devicesmac.MAC address is %@" = "MAC address is %@";
+"router.deviceIP.IP address is %@" = "IP address is %@";
+"router.reboot.title.Reboot the router?" = "Reboot the router?";
+"It will take at least 2 minutes for the router" = "It will take at least 2 minutes for the router";
+"to reboot. Please refresh after sometime." = "to reboot. Please refresh after sometime.";
+"router.settings.label.SSID" = "SSID";
+"router.settings.label.Channel" = "Channel";
+"router.settings.label.Wireless Mode" = "Wireless Mode";
+"router.settings.label.Security" = "Security";
+"router.settings.label.Encryption" = "Encryption";
+"router.settings.label.Country Region" = "Country Region";
+"router.nav-title.Get Started" = "Get Started";
+"router.refresh-title.Refresh router data" = "Refresh router data";
+"router.summary.SSID 2.5Ghz : %@" = "router.summary.SSID 2.5Ghz : %@";
+"router.summary.SSID 5Ghz : %@" = "router.summary.SSID 5Ghz : %@";
+"router.summary.IP Address : %@" = "router.summary.IP Address : %@";
+"router.summary.Admin Login : %@" = "router.summary.Admin Login : %@";
+"router.software-version.title.Software Version" = "Software Version";
+"router.software-version-new.title.Software Version *" = "Software Version *";
+"router.software-version-new.title.Software Version" = "Software Version";
+"router.offline-msg. is offline" = " is offline";
+"router.log-textfield-placeholder.Describe your problem here" = "Describe your problem here";
+"router.log-send-success.summary.Thanks for sending logs" = "Thanks for sending logs";
+"router.log-firmware-not-supported.Please update your router's firmware" = "Please update your router's firmware";
+"router.log-firmware-not-supported.in order to activate this functionality" = "in order to activate this functionality";
+"router.version-title.Update now?" = "Update now?";
+"router.update-summary.It will take a few minutes to update the software." = "It will take a few minutes to update the software.";
+"router.network-title.Local Link" = "Local Link";
+"router.link-button.Link" = "Link";
+"router.btn-title.Back to Cloud Link" = "Back to Cloud Link";
+"router.label.SSID 2.5GHz" = "SSID 2.5GHz";
+"router.label.SSID 5GHz" = "SSID 5GHz";
+"router.label.IP Address" = "IP Address";
+"router.label.Admin Login" = "Admin Login";
+"router.label.Admin Password" = "Admin Password";
+"router.hud.Establishing Local Link..." = "Establishing Local Link...";
+
+
+
 
 /* sensors */
 
@@ -272,13 +323,43 @@ Follow it, then tap Continue to login.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode1" = "There was some error on cloud. Please try later.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode2" = "You need to fill all the fields.";
 
+"wifi.hud.UpdatingWifiClient" = "Updating Wifi Client...";
+"wifi.hud.removeClient"       = "Deleting wifi client...";
+"wifi.button.deleteClient"    = "Remove";
+
+/* Scenes */
+
 "scenes.hud.loadingScenes" = "Loading scenes...";
 "scenes.hud.deletingScene" = "Deleting Scene...";
 "scenes.hud.activatingScene" = "Activating scene...";
 "scenes.hud.creatingScene"   = "Creating scene...";
-"wifi.hud.UpdatingWifiClient" = "Updating Wifi Client...";
-"wifi.hud.removeClient"       = "Deleting wifi client...";
-"wifi.button.deleteClient"    = "Remove";
+
+//m
+"scene.macro.Could not update sensor\ndata." = "Could not update sensor data.";
+"scene.thermostat-title.COOLING TEMP." = "COOLING TEMP.";
+"scene.thermostat-title.HEATING TEMP." = "HEATING TEMP.";
+"scene.button.Save" = "Save";
+"scene.button.Cancel" = "Cancel";
+"scene.title.Get Started" = "Get Started";
+"scene.msg.You have to select at least 1 value" = "You have to select at least 1 value";
+"scene.cancel-title.OK" = "OK";
+"scene.hud.Loading router data" = "Loading router data";
+"scene.hud.Loading sensor data" = "Loading sensor data";
+"scene.text.Choose one or more Actions" = "Choose one or more Actions";
+"scene.alert-title.Oops" = "Oops";
+"scene.alert-msg.Sorry, There was some problem with this request, try later!" = "Sorry, There was some problem with this request, try later!";
+"scene.alert-button.OK" = "OK";
+
+
+
+
+/* Notifications */
+
+//m
+"notifications.title.Recent Activities" = "Recent Activities";
+"notifications.headerfooter.mode.The End" ="The End";
+"notifications.date.Today" = "Today";
+"notifications.bucketdate.Yesterday" = "Yesterday";
 
 /* ==================================================================== */
 
@@ -287,6 +368,7 @@ Follow it, then tap Continue to login.";
  Almond
  
  Created by Priya Yerunkar on 13/12/14.
+ Edited by Masood on 2/09/15.
  Copyright (c) 2014 Securifi Ltd. All rights reserved.
  */
 
@@ -304,6 +386,10 @@ Follow it, then tap Continue to login.";
 "This Almond is already linked to another user." = "This Almond is already linked to another user.
 Contact us at support@securifi.com";
 "Almond could not be affiliated" = "Almond could not be affiliated.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "Run the Almond Account app and enter the code displayed.";
+"cloudlink.button.Link Almond" = "Link Almond";
+"cloudlink.button.Add Almond Locally" = "Add Almond Locally";
 
 /* login */
 "Access your Almonds and your home devices from anywhere." = "Access your Almonds and
@@ -311,6 +397,15 @@ your home devices from anywhere.";
 
 /* router tab */
 "router.offline-msg.label.Almond is Offline." = "Almond is Offline.";
+
+//m
+"router.msg-link.The Almond was successfully linked." = "The Almond was successfully linked.";
+"router.btn-title.Unlink Almond?" = "Unlink Almond?";
+"router.btn-title.Link Almond Locally" = "Link Almond Locally";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.";
+"router.error-msg.This Almond is already linked." = "This Almond is already linked.";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." = "An error occurred trying to link with the Almond. Please try again.";
+
 
 /* sensors */
 "router.no-sensors.label.Add a sensor from your Almond." = "Add a sensor from your Almond.";
@@ -345,4 +440,8 @@ your home devices from anywhere.";
 "accounts.deleteSecondaryUser.failure.reasonCode6" = "Secondary user is not associated with the given Almond.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "You are not associated with this Almond";
 "accounts.deleteMeAsSecondaryUser.failure.default" = "Sorry! Removing of shared Almond was unsuccessful.";
+
+
+
+
 
