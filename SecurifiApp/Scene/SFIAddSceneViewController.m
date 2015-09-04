@@ -75,7 +75,7 @@
 {
     randomMobileInternalIndex = arc4random() % 10000;
     if (self.sceneInfo) {
-        sceneName = [self.sceneInfo valueForKey:@"SceneName"];
+        sceneName = [self.sceneInfo valueForKey:@"Name"];
         self.title = sceneName;
     }
     originalTableViewFrame = self.tableView.frame;
@@ -390,9 +390,9 @@
 }
 
 - (void)setDeviceList:(NSArray *)devices {
-//    if (devices.count==0) {
-//        return;
-//    }
+    //    if (devices.count==0) {
+    //        return;
+    //    }
     
     NSMutableDictionary *table = [NSMutableDictionary dictionary];
     NSMutableArray * actuators = [NSMutableArray array];;
@@ -696,26 +696,27 @@
     }
     
     NSMutableDictionary *newSceneInfo = [NSMutableDictionary new];
+    NSMutableDictionary *payloadDict = [NSMutableDictionary new];
     if (self.sceneInfo) {
-        [newSceneInfo setValue:@"SetScene" forKey:@"CommandType"];
-        [newSceneInfo setValue:[self.sceneInfo valueForKey:@"SceneID"] forKey:@"SceneID"];
+        [payloadDict setValue:@"UpdateScene" forKey:@"CommandType"];
+        [newSceneInfo setValue:[self.sceneInfo valueForKey:@"ID"] forKey:@"ID"];
         
     }else{
-        [newSceneInfo setValue:@"CreateScene" forKey:@"CommandType"];
+        [payloadDict setValue:@"AddScene" forKey:@"CommandType"];
     }
     
-    [newSceneInfo setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
-    [newSceneInfo setValue:sceneName forKey:@"SceneName"];
-    [newSceneInfo setValue:_almond.almondplusMAC forKey:@"AlmondplusMAC"];
+    [payloadDict setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
+    [newSceneInfo setValue:sceneName forKey:@"Name"];
+    [payloadDict setValue:_almond.almondplusMAC forKey:@"AlmondMAC"];
     [self configuresCeneEntryListForSave];
     [newSceneInfo setValue:sceneEntryList forKey:@"SceneEntryList"];
     
-    
+    [payloadDict setValue:newSceneInfo forKey:@"Scenes"];
     
     
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_UPDATE_REQUEST;
-    cloudCommand.command = [newSceneInfo JSONString];
+    cloudCommand.command = [payloadDict JSONString];
     
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -930,9 +931,9 @@
         return [self createNoAlmondCell:tableView];
     }
     
-//    if ([self isDeviceListEmpty]) {
-//        return [self createEmptyCell:tableView];
-//    }
+    //    if ([self isDeviceListEmpty]) {
+    //        return [self createEmptyCell:tableView];
+    //    }
     if (indexPath.row==cellsInfoArray.count) {
         return [self createSceneProperiesCell:tableView listRow:(NSUInteger) indexPath.row];
     }
@@ -950,7 +951,7 @@
     cell.tag = indexPathRow;
     //    cell.cellColor = [self.almondColor makeGradatedColorForPositionIndex:indexPathRow];
     cell.delegate = self;
-    cell.sceneName = [self.sceneInfo valueForKey:@"SceneName"];
+    cell.sceneName = [self.sceneInfo valueForKey:@"Name"];
     cell.showDeleteButton = NO;
     if (self.sceneInfo) {
         cell.showDeleteButton = YES;
@@ -1046,12 +1047,13 @@
     if (!self.sceneInfo) {
         [self.navigationController popViewControllerAnimated:YES];
     }else{
+        
         NSMutableDictionary *payloadDict = [NSMutableDictionary new];
         
-        [payloadDict setValue:@"DeleteScene" forKey:@"CommandType"];
-        [payloadDict setValue:[self.sceneInfo valueForKey:@"SceneID"] forKey:@"SceneID"];
+        [payloadDict setValue:@"RemoveScene" forKey:@"CommandType"];
+        [payloadDict setValue:@{@"ID":[self.sceneInfo valueForKey:@"ID"]} forKey:@"Scenes"];
         [payloadDict setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
-        [payloadDict setValue:_almond.almondplusMAC forKey:@"AlmondplusMAC"];
+        [payloadDict setValue:_almond.almondplusMAC forKey:@"AlmondMAC"];
         
         GenericCommand *cloudCommand = [[GenericCommand alloc] init];
         cloudCommand.commandType = CommandType_UPDATE_REQUEST;

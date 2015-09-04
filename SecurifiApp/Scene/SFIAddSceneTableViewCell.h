@@ -34,12 +34,12 @@
 @property(nonatomic)NSString *sceneName;
 
 // Makes the cell show a message and icon indicating the sensor is being updated
-- (void)showUpdatingMessage;
+//- (void)showUpdatingMessage;
 
 // Sets a status message that will be shown in lieu of the normal sensor status.
 // Used to indicate, for example, that the sensor is being updated or failed to be updated.
 // Call this method then call markWillReuseCell:YES
-- (void)markStatusMessage:(NSString *)status;
+//- (void)markStatusMessage:(NSString *)status;
 
 // Called by the table view delegate prior to returning it to the controller
 // Resets the view and prepares it for viewing.

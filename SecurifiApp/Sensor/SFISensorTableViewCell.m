@@ -922,7 +922,8 @@
     }else if ([smokeValue.value isEqualToString:@"false"]){
         smokeText = @"Emergency";
     }
-    [status addObject:[NSString stringWithFormat:@"Smoke :%@ , CO :%@",smokeText,coText]];
+    [status addObject:[NSString stringWithFormat:@"Smoke :%@",smokeText]];
+    [status addObject:[NSString stringWithFormat:@"CO :%@",coText]];
     //    [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
     
@@ -938,6 +939,8 @@
     lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
     lblThemperatureMain.textColor = [UIColor whiteColor];
     lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
+    lblThemperatureMain.adjustsFontSizeToFitWidth = YES;
+    [lblThemperatureMain setMinimumScaleFactor:12.0/[UIFont labelFontSize]];
     [self.contentView addSubview:lblThemperatureMain];
     
     
@@ -1018,7 +1021,7 @@
     }
     [self tryAddTemperatureStatus:status];
     [self tryAddBatteryStatusMessage:status];
-
+    
     [self setDeviceStatusMessages:status];
 }
 

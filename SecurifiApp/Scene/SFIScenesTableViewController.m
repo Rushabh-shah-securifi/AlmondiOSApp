@@ -138,7 +138,7 @@
     cloudCommand.commandType = CommandType_GET_ALL_SCENES;
     
     NSDictionary * testDict =@{@"MobileCommand":@"LIST_SCENE_REQUEST",
-                               @"AlmondplusMAC":plus.almondplusMAC};
+                               @"AlmondMAC":plus.almondplusMAC};
     
     NSLog(@"%@",testDict);
     
@@ -317,9 +317,9 @@
     NSMutableDictionary *activateScenePayload = [NSMutableDictionary new];
     
     [activateScenePayload setValue:@"ActivateScene" forKey:@"CommandType"];
-    [activateScenePayload setValue:[cellInfo valueForKey:@"SceneID"] forKey:@"SceneID"];
+    [activateScenePayload setValue:@{@"ID":[cellInfo valueForKey:@"ID"]} forKey:@"Scenes"];
     [activateScenePayload setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
-    [activateScenePayload setValue:plus.almondplusMAC forKey:@"AlmondplusMAC"];
+    [activateScenePayload setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
     
     
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
@@ -388,7 +388,6 @@
 - (void)getAllScenesCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    NSLog(@"%@",[data valueForKey:@"data"]);
     NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
     if ([[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
         scenesArray = [mainDict valueForKey:@"Scenes"];
@@ -408,32 +407,35 @@
     NSDictionary *data = [notifier userInfo];
     
     NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
     
-    
+    if (![[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
+        return;
+    }
     
     
     NSString * commandType = [mainDict valueForKey:@"CommandType"];
     
-    if ([commandType isEqualToString:@"DynamicActivateScene"]) {
+    if ([commandType isEqualToString:@"DynamicSceneActivated"]) {
         //scenes has been activated
         for (NSMutableDictionary *sceneDict in scenesArray) {
-            if ([[sceneDict valueForKey:@"SceneID"] intValue]==[[mainDict valueForKey:@"SceneID"] intValue]) {
-                //                        [sceneDict setValue:[mainDict valueForKey:@"SceneEntryList"] forKey:@"SceneEntryList"];
-                [sceneDict setValue:[mainDict valueForKey:@"IsActive"] forKey:@"IsActive"];
-                
+            if ([[sceneDict valueForKey:@"ID"] intValue]==[[[mainDict valueForKey:@"Scenes" ] valueForKey:@"ID"] intValue]) {
+                [sceneDict setValue:[[mainDict valueForKey:@"Scenes" ] valueForKey:@"Active"]  forKey:@"Active"];
+                break;
             }
         }
         [self.tableView reloadData];
         return;
     }
     
-    if ([commandType isEqualToString:@"DynamicSetScene"]) {
+    if ([commandType isEqualToString:@"DynamicSceneUpdated"]) {
         //scenes parameterers has been updated
         for (NSMutableDictionary *sceneDict in [scenesArray copy]) {
-            if ([[sceneDict valueForKey:@"SceneID"] intValue]==[[mainDict valueForKey:@"SceneID"] intValue]) {
-                [sceneDict setValue:[mainDict valueForKey:@"SceneEntryList"] forKey:@"SceneEntryList"];
-                [sceneDict setValue:[mainDict valueForKey:@"SceneName"] forKey:@"SceneName"];
-                
+            if ([[sceneDict valueForKey:@"ID"] intValue]==[[[mainDict valueForKey:@"Scenes"] valueForKey:@"ID"] intValue]) {
+                [sceneDict setValue:[[mainDict valueForKey:@"Scenes"] valueForKey:@"SceneEntryList"] forKey:@"SceneEntryList"];
+                [sceneDict setValue:[[mainDict valueForKey:@"Scenes"] valueForKey:@"Name"] forKey:@"Name"];
+                break;
             }
         }
         dispatch_async(dispatch_get_main_queue(), ^() {
@@ -442,28 +444,39 @@
         return;
     }
     
-    if ([commandType isEqualToString:@"DynamicCreateScene"]) {
-        NSArray *scenes = [mainDict valueForKey:@"Scenes"];
+    if ([commandType isEqualToString:@"DynamicSceneAdded"]) {
         //scenes has been added
-        for (NSDictionary * dict in scenes) {
-            NSMutableDictionary * sceneDict = [NSMutableDictionary new];
-            [sceneDict setValue:[dict valueForKey:@"SceneEntryList"] forKey:@"SceneEntryList"];
-            [sceneDict setValue:[dict valueForKey:@"SceneName"] forKey:@"SceneName"];
-            [sceneDict setValue:[dict valueForKey:@"SceneID"] forKey:@"SceneID"];
-            [scenesArray addObject:sceneDict];
+        BOOL found = NO;
+        for (NSMutableDictionary *sceneDict in [scenesArray copy]) {
+            if ([[sceneDict valueForKey:@"ID"] intValue]==[[[mainDict valueForKey:@"Scenes"] valueForKey:@"ID"] intValue]) {
+                found = YES;
+                break;
+            }
+        }
+        if (!found) {
+            [scenesArray addObject:[mainDict valueForKey:@"Scenes"]];
+            dispatch_async(dispatch_get_main_queue(), ^() {
+                [self.tableView reloadData];
+            });
+            
+        }
+        return;
+    }
+    if ([commandType isEqualToString:@"DynamicSceneRemoved"]) {
+        for (NSDictionary * sceneDict in [scenesArray copy]) {
+            if ([[[mainDict valueForKey:@"Scenes"] valueForKey:@"ID"] intValue]==[[sceneDict valueForKey:@"ID"] intValue])
+            {
+                [scenesArray removeObject:sceneDict];
+                break;
+            }
         }
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.tableView reloadData];
         });
         return;
     }
-    if ([commandType isEqualToString:@"DynamicDeleteScene"]) {
-        for (NSDictionary * sceneDict in [scenesArray copy]) {
-            if ([[mainDict valueForKey:@"SceneID"] intValue]==[[sceneDict valueForKey:@"SceneID"] intValue])
-            {
-                [scenesArray removeObject:sceneDict];
-            }
-        }
+    if ([commandType isEqualToString:@"DynamicAllScenesRemoved"]) {
+        [scenesArray removeAllObjects];
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.tableView reloadData];
         });

@@ -750,13 +750,14 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
 - (UITableViewCell *)createDevicesAndUsersSummaryCell:(UITableView *)tableView {
     SFIRouterSummary *routerSummary = self.routerSummary;
-    if (!routerSummary) {
-        return [self createEmptyWirelessSummaryCell:tableView
-                                             cellId:@"device_summary_no"
-                                          cellTitle:NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users")
-                                        cellSummary:NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")
-                                          cardColor:[UIColor securifiRouterTileBlueColor]];
-    }
+    //commented to allow to open clients list even if there is no connected or blocked clients
+//    if (!routerSummary) {
+//        return [self createEmptyWirelessSummaryCell:tableView
+//                                             cellId:@"device_summary_no"
+//                                          cellTitle:NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users")
+//                                        cellSummary:NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")
+//                                          cardColor:[UIColor securifiRouterTileBlueColor]];
+//    }
 
     NSString *const cell_id = @"device_summary";
 

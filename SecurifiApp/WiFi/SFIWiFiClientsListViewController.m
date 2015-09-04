@@ -76,7 +76,7 @@
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
                  object:nil];
     [center addObserver:self
-               selector:@selector(onDynamicClientAdd:)
+               selector:@selector(onDynamicClientAdded:)
                    name:NOTIFICATION_DYNAMIC_CLIENT_ADD_REQUEST_NOTIFIER
                  object:nil];
     [center addObserver:self
@@ -558,37 +558,36 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     
-    if (([[mainDict valueForKey:@"CommandType"] isEqualToString:@"ClientUpdate"] || [[mainDict valueForKey:@"CommandType"] isEqualToString:@"ClientJoined"] || [[mainDict valueForKey:@"CommandType"] isEqualToString:@"ClientLeft"]) && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
-        NSArray * updatedClients = [mainDict valueForKey:@"Clients"];
-        for (NSDictionary *dict in updatedClients) {
-            int index = 0;
-            for (SFIConnectedDevice * device in self.connectedDevices) {
+    if (([[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientUpdated"] || [[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientJoined"] || [[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientLeft"]) && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
+        
+        NSDictionary *dict = [mainDict valueForKey:@"Clients"];
+        int index = 0;
+        for (SFIConnectedDevice * device in self.connectedDevices) {
+            
+            if ([device.deviceID isEqualToString:[dict valueForKey:@"ID"]]) {
+                device.deviceID = [dict valueForKey:@"ID"];
+                device.name = [dict valueForKey:@"Name"];
+                device.deviceMAC = [dict valueForKey:@"MAC"];
+                device.deviceIP = [dict valueForKey:@"LastKnownIP"];
+                device.deviceConnection = [dict valueForKey:@"Connection"];
+                device.name = [dict valueForKey:@"Name"];
+                device.deviceLastActiveTime = [dict valueForKey:@"LastActiveTime"];
+                device.deviceType = [dict valueForKey:@"Type"];
+                device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
+                device.isActive = [[dict valueForKey:@"Active"] boolValue];
                 
-                if ([device.deviceID isEqualToString:[dict valueForKey:@"ID"]]) {
-                    device.deviceID = [dict valueForKey:@"ID"];
-                    device.name = [dict valueForKey:@"Name"];
-                    device.deviceMAC = [dict valueForKey:@"MAC"];
-                    device.deviceIP = [dict valueForKey:@"LastKnownIP"];
-                    device.deviceConnection = [dict valueForKey:@"Connection"];
-                    device.name = [dict valueForKey:@"Name"];
-                    device.deviceLastActiveTime = [dict valueForKey:@"LastActiveTime"];
-                    device.deviceType = [dict valueForKey:@"Type"];
-                    device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
-                    device.isActive = [[dict valueForKey:@"Active"] boolValue];
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^() {
-                        [tblDevices refreshData];
-                        //                        [tblDevices reloadSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
-                    });
-                    break;
-                }
-                index++;
+                dispatch_async(dispatch_get_main_queue(), ^() {
+                    [tblDevices refreshData];
+                });
+                break;
             }
+            index++;
+            
         }
     }
 }
 
-- (void)onDynamicClientAdd:(id)sender {
+- (void)onDynamicClientAdded:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
@@ -596,28 +595,24 @@
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
-    if ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"AddClient"] && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
-        NSArray * dArray = [mainDict valueForKey:@"Clients"];
-        for (NSDictionary * dict in dArray) {
-            SFIConnectedDevice * device = [SFIConnectedDevice new];
-            device.deviceID = [dict valueForKey:@"ID"];
-            device.name = [dict valueForKey:@"Name"];
-            device.deviceMAC = [dict valueForKey:@"MAC"];
-            device.deviceIP = [dict valueForKey:@"LastKnownIP"];
-            device.deviceConnection = [dict valueForKey:@"Connection"];
-            device.name = [dict valueForKey:@"Name"];
-            device.deviceLastActiveTime = [dict valueForKey:@"LastActiveTime"];
-            device.deviceType = [dict valueForKey:@"Type"];
-            device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
-            device.isActive = [[dict valueForKey:@"Active"] boolValue];
-            [self.connectedDevices addObject:device];
-            dispatch_async(dispatch_get_main_queue(), ^() {
-                [tblDevices refreshData];
-                //                [tblDevices insertSections:[NSIndexSet indexSetWithIndex:self.connectedDevices.count-1] withRowAnimation:UITableViewRowAnimationNone];
-            });
-            
-        }
+    if ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientAdded"] && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
+        NSDictionary * dict = [mainDict valueForKey:@"Clients"];
+        SFIConnectedDevice * device = [SFIConnectedDevice new];
+        device.deviceID = [dict valueForKey:@"ID"];
+        device.name = [dict valueForKey:@"Name"];
+        device.deviceMAC = [dict valueForKey:@"MAC"];
+        device.deviceIP = [dict valueForKey:@"LastKnownIP"];
+        device.deviceConnection = [dict valueForKey:@"Connection"];
+        device.name = [dict valueForKey:@"Name"];
+        device.deviceLastActiveTime = [dict valueForKey:@"LastActiveTime"];
+        device.deviceType = [dict valueForKey:@"Type"];
+        device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
+        device.isActive = [[dict valueForKey:@"Active"] boolValue];
+        [self.connectedDevices addObject:device];
         
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [tblDevices refreshData];
+        });
     }
 }
 
@@ -628,29 +623,29 @@
     if (data == nil) {
         return;
     }
+    
     NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     
-    if ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"RemoveClient"] && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
-        NSArray * updatedClients = [mainDict valueForKey:@"Clients"];
-        for (NSDictionary *dict in updatedClients) {
-            int index = 0;
-            for (SFIConnectedDevice * device in self.connectedDevices) {
-                if ([device.deviceID isEqualToString:[dict valueForKey:@"ID"]]) {
-                    
-                    if (((SKSTableViewCell*)[tblDevices cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]]).expanded) {
-                        [tblDevices collapseCurrentlyExpandedIndexPaths];
-                    }
-                    [self.connectedDevices removeObject:device];
-                    [tblDevices deleteSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
-                    break;
+    if ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientRemoved"] && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
+        NSDictionary * removedClientDict = [mainDict valueForKey:@"Clients"];
+        int index = 0;
+        for (SFIConnectedDevice * device in self.connectedDevices) {
+            if ([device.deviceID isEqualToString:[removedClientDict valueForKey:@"ID"]]) {
+                
+                if (((SKSTableViewCell*)[tblDevices cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]]).expanded) {
+                    [tblDevices collapseCurrentlyExpandedIndexPaths];
                 }
-                index++;
+                [self.connectedDevices removeObject:device];
+                [tblDevices deleteSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
+                break;
             }
+            index++;
         }
     }
+    
 }
 
 - (void)onGetClientsPreferences:(id)sender {

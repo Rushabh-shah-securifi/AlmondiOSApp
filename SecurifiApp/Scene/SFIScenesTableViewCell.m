@@ -58,8 +58,8 @@
 - (void)createScenesCell:(id)info {
     self.cellInfo = info;
     viewGridIcon.backgroundColor = self.cellColor;
-    lblName.text = info[@"SceneName"];
-    //TEST
+    lblName.text = info[@"Name"];
+
     if ([info[@"SceneEntryList"] isKindOfClass:[NSArray class]]) {
         self.deviceIndexes = info[@"SceneEntryList"];
     }else{
@@ -68,7 +68,7 @@
         NSData * data = [strSceneEntryList dataUsingEncoding:NSUTF8StringEncoding] ;
         self.deviceIndexes = [data objectFromJSONData];
     }
-    if ([[info valueForKey:@"IsActive"] boolValue]) {
+    if ([[info valueForKey:@"Active"] boolValue]) {
         [btnActivate setImage:[UIImage imageNamed:@"iconSceneChekmark"] forState:UIControlStateNormal];
     }else{
         [btnActivate setImage:[UIImage imageNamed:@"iconSceneCircle"] forState:UIControlStateNormal];

@@ -877,10 +877,10 @@
 }
 
 - (void)onColorDimmableLampColorTemperaturePropertyIsChanging:(id)control {
-    SFISlider *slider_temp = [self sliderForDevicePropertyType:SFIDevicePropertyType_COLOR_TEMPERATURE];
-    
-    float kelvin = slider_temp.convertToSensorValue;
-    UIColor *color = [UIColor colorWithKelvin:kelvin];
+//    SFISlider *slider_temp = [self sliderForDevicePropertyType:SFIDevicePropertyType_COLOR_TEMPERATURE];
+//    
+//    float kelvin = slider_temp.convertToSensorValue;
+//    UIColor *color = [UIColor colorWithKelvin:kelvin];
     
     //    [self.delegate sensorDetailViewDidChangeSensorIconTintValue:self tint:color];
 }
@@ -892,8 +892,8 @@
 }
 
 - (void)processColorTintChange:(SFISlider *)slider_brightness saturationSlider:(SFISlider *)slider_saturation huePicker:(SFIHuePickerView *)hue_picker {
-    float hue = [hue_picker hue];
-    float saturation = [slider_saturation convertToSensorValue] / slider_saturation.sensorMaxValue;
+//    float hue = [hue_picker hue];
+//    float saturation = [slider_saturation convertToSensorValue] / slider_saturation.sensorMaxValue;
     float brightness = [slider_brightness convertToSensorValue] / slider_brightness.sensorMaxValue;
     
     // put a floor underneath the brightness to prevent it from showing up as black
@@ -901,7 +901,7 @@
         brightness = 0.50;
     }
     
-    UIColor *color = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
+//    UIColor *color = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
     //    [self.delegate sensorDetailViewDidChangeSensorIconTintValue:self tint:color];
 }
 
