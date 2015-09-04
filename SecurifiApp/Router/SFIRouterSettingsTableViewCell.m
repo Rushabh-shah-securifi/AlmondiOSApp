@@ -46,17 +46,17 @@
         [cardView addTitle:setting.ssid];
     }
     [cardView addLine];
-    [cardView addNameLabel:@"SSID" valueTextField:setting.ssid delegate:self tag:0];
+    [cardView addNameLabel:NSLocalizedString(@"router.settings.label.SSID", @"SSID") valueTextField:setting.ssid delegate:self tag:0];
     [cardView addShortLine];
-    [cardView addNameLabel:@"Channel" valueLabel:[NSString stringWithFormat:@"%d", setting.channel]];
+    [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Channel", @"Channel") valueLabel:[NSString stringWithFormat:@"%d", setting.channel]];
     [cardView addShortLine];
-    [cardView addNameLabel:@"Wireless Mode" valueLabel:setting.wirelessMode];
+    [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Wireless Mode", @"Wireless Mode") valueLabel:setting.wirelessMode];
     [cardView addShortLine];
-    [cardView addNameLabel:@"Security" valueLabel:setting.security];
+    [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Security", @"Security") valueLabel:setting.security];
     [cardView addShortLine];
-    [cardView addNameLabel:@"Encryption" valueLabel:setting.encryptionType];
+    [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Encryption",@"Encryption") valueLabel:setting.encryptionType];
     [cardView addShortLine];
-    [cardView addNameLabel:@"Country Region" valueLabel:setting.countryRegion];
+    [cardView addNameLabel:NSLocalizedString(@"router.settings.label.Country Region", @"Country Region") valueLabel:setting.countryRegion];
     [cardView addShortLine];
 
     [cardView freezeLayout];

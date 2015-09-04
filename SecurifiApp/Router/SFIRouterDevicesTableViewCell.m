@@ -51,15 +51,15 @@
     // Describe the status of the device
     if (self.allowedDevice) {
         [infoCard addSummary:@[
-                [NSString stringWithFormat:@"Connected as %@", self.name],
-                [NSString stringWithFormat:@"MAC address is %@", self.deviceMAC],
-                [NSString stringWithFormat:@"IP address is %@", self.deviceIP],
+                [NSString stringWithFormat:NSLocalizedString(@"router.devicestatus.Connected as %@", @"Connected as"), self.name],
+                [NSString stringWithFormat:NSLocalizedString(@"router.devicesmac.MAC address is %@", @"MAC address is"), self.deviceMAC],
+                [NSString stringWithFormat:NSLocalizedString(@"router.deviceIP.IP address is %@", @"IP address is"), self.deviceIP],
         ]];
     }
     else {
         // only MAC address is available
         [infoCard addSummary:@[
-                [NSString stringWithFormat:@"MAC address is %@", self.deviceMAC],
+                [NSString stringWithFormat:NSLocalizedString(@"router.devicesmac.MAC address is %@", @"MAC address is"), self.deviceMAC],
         ]];
     }
 
