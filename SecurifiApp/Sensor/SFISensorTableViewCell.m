@@ -45,7 +45,7 @@
 
 - (void)showUpdatingMessage {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        self.updatingStatusMessage = @"Updating sensor data.\nPlease wait.";
+        self.updatingStatusMessage =NSLocalizedString(@"tableviewcell-Updating sensor data.\nPlease wait.",@"Updating sensor data.\nPlease wait.");
         [self setUpdatingSensorStatus];
     });
 }
@@ -801,7 +801,7 @@
         setPoint = [setPoint stringByAppendingString:degrees_symbol];
     }
     
-    NSString *state = [NSString stringWithFormat:@"SET POINT %@%@", setPoint, tempUnits];
+    NSString *state = [NSString stringWithFormat:(@"Tharmostat_setpoint-SET POINT %@%@",@"SET POINT %@%@"), setPoint, tempUnits];
     
     NSMutableArray *status = [NSMutableArray array];
     [status addObject:state];
@@ -809,7 +809,7 @@
     [self setDeviceStatusMessages:status];
     
     // Calculate values
-    [self configureTemperatureView:temperature description:@"Temperature" unitsSymbol:tempUnits];
+    [self configureTemperatureView:temperature description:NSLocalizedString(@"Tharmostat_setpoint-temperature",@"Temperature") unitsSymbol:tempUnits];
 }
 
 - (void)configureColorDimmableLight_32:(NSString *)imageNameTrue imageNameFalse:(NSString *)imageNameFalse statusTrue:(NSString *)statusTrue statusFalse:(NSString *)statusFalse {
@@ -911,18 +911,18 @@
     NSString * smokeText = @"";
     coText = [coValue.value capitalizedString];
     if ([coValue.value isEqualToString:@"true"]) {
-        coText = @"Warning";
+        coText = NSLocalizedString(@"smoke-detector-Warning",@"Warning");
     }else if ([coValue.value isEqualToString:@"false"]){
-        coText = @"Emergency";
+        coText = NSLocalizedString(@"smoke-detector-Emergency",@"Emergency");
     }
     
     smokeText = [smokeValue.value capitalizedString];
     if ([smokeValue.value isEqualToString:@"true"]) {
-        smokeText = @"Warning";
+        smokeText = NSLocalizedString(@"smoke-detector-Warning",@"Warning");
     }else if ([smokeValue.value isEqualToString:@"false"]){
-        smokeText = @"Emergency";
+        smokeText = NSLocalizedString(@"smoke-detector-Emergency",@"Emergency");
     }
-    [status addObject:[NSString stringWithFormat:@"Smoke :%@ , CO :%@",smokeText,coText]];
+    [status addObject:[NSString stringWithFormat:NSLocalizedString(@"smoke-detector Smoke :%@ , CO :%@",@"Smoke :%@ , CO :%@"),smokeText,coText]];
     //    [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
     

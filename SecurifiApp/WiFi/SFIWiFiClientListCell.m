@@ -139,9 +139,9 @@ static UIImage *_image = nil;
     self.connectedDevice = connectedDevice;
     lblMAC.text = connectedDevice.name;
     if (connectedDevice.isActive) {
-        lblStatus.text = @"CONNECTED";
+        lblStatus.text = NSLocalizedString(@"CONNECTED",@"CONNECTED");
     }else{
-        lblStatus.text = @"NOT CONNECTED";
+        lblStatus.text = NSLocalizedString(@"NOT CONNECTED",@"NOT CONNECTED");
     }
     UIImage* image = [UIImage imageNamed:[connectedDevice iconName]];
     imgIcon.image = image;
