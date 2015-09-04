@@ -49,7 +49,7 @@
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
     button.titleLabel.font = [UIFont standardHeadingBoldFont];
-    [button setTitle:@"Cancel" forState:UIControlStateNormal];
+    [button setTitle:NSLocalizedString(@"Cancel",@"Cancel") forState:UIControlStateNormal];
     [button setTitleColor:buttonTextColor forState:UIControlStateNormal];
     [button setTitleColor:buttonPressedColor forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(onCancelButtonPressed:) forControlEvents:UIControlEventTouchUpInside];

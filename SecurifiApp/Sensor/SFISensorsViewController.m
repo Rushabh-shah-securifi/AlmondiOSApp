@@ -161,7 +161,7 @@
     self.isUpdatingDeviceSettings = NO;
     
     if ([self isNoAlmondMAC]) {
-        self.navigationItem.title = @"Get Started";
+        self.navigationItem.title = NSLocalizedString(@"Sensorview-almondata-Get Started",@"Get Started");
         self.deviceList = @[];
         [self setDeviceValues:@[]];
     }
@@ -898,7 +898,7 @@
             else {
                 // it failed but we did not receive a reason; clear the updating state and pretend nothing happened.
                 [self clearDeviceUpdatingState:device];
-                [self showToast:@"Unable to update sensor"];
+                [self showToast:NSLocalizedString(@"showtoast Unable to update sensor",@"Unable to update sensor")];
             }
             
             [self reloadDeviceTableCellForDevice:device];
@@ -1273,7 +1273,7 @@
         // Pull down to refresh device values
         UIRefreshControl *refresh = [UIRefreshControl new];
         NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
-        refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force sensor data refresh" attributes:attributes];
+        refresh.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Force sensor data refresh",@"Force sensor data refresh") attributes:attributes];
         [refresh addTarget:self action:@selector(onRefreshSensorData:) forControlEvents:UIControlEventValueChanged];
         self.refreshControl = refresh;
     }
