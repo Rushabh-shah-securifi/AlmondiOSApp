@@ -427,7 +427,7 @@
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
         SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        ctrl.enableDebugMode = toolkit.configuration.enableNotificationsDebugLogging;
+        //        ctrl.enableDebugMode = YES; // can uncomment for development/test
 
         UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
         [self presentViewController:nav_ctrl animated:YES completion:nil];
