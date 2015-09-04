@@ -110,7 +110,7 @@
         // No network route to cloud. Nothing to do.
         if (!onViewAppearing) {
             // only show after first attempt fails
-            [self showToast:@"Sorry! Unable to establish Internet route to cloud service."];
+            [self showToast:NSLocalizedString(@"Sorry! Unable to establish Internet route to cloud service.",@"Sorry! Unable to establish Internet route to cloud service.")];
         }
 
         [self scheduleReconnectTimer];
@@ -127,7 +127,7 @@
 
     // Else try to connect
     if (onViewAppearing) {
-        self.HUD.labelText = @"Connecting. Please wait!";
+        self.HUD.labelText =NSLocalizedString(@"mainviewcontroller_Connecting. Please wait!",@"Connecting. Please wait!");
         [self.HUD show:YES];
     }
 
@@ -154,7 +154,7 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         // Ex: "Almond-splash_image"
         self.imgSplash.image = [UIImage assetImageNamed:@"no_cloud"];
-        [self showToast:@"Sorry! Could not connect to the cloud service."];
+        [self showToast:NSLocalizedString(@"mainviewcontroller_Sorry! Could not connect to the cloud service.","Sorry! Could not connect to the cloud service.")];
     });
 }
 
@@ -338,7 +338,7 @@
 
         UINavigationController *scoreNav = [[UINavigationController alloc] initWithRootViewController:scoreCtrl];
         icon = [UIImage imageNamed:@"878-binoculars"];
-        scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
+        scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:NSLocalizedString(@"mainview-configure-Debug",@"Debug") image:icon selectedImage:icon];
 
         cloud_tabs = [cloud_tabs arrayByAddingObject:scoreNav];
         local_tabs = [local_tabs arrayByAddingObject:scoreNav];
@@ -456,12 +456,12 @@
 
 - (void)onDidFailToRegisterForNotifications {
     ELog(@"Failed to register push notification token with cloud");
-    [self showToast:@"Sorry! Push Notification was not registered."];
+    [self showToast:NSLocalizedString(@"main view controller Sorry! Push Notification was not registered.",@"Sorry! Push Notification was not registered.")];
 }
 
 - (void)onDidFailToDeregisterForNotifications {
     ELog(@"Failed to remove push notification token registration with cloud");
-    [self showToast:@"Sorry! Push Notification was not deregistered."];
+    [self showToast:NSLocalizedString(@"main view controller Sorry! Push Notification was not deregistered.",@"Sorry! Push Notification was not deregistered.")];
 }
 
 #pragma mark - UIGestureRecognizerDelegate methods
