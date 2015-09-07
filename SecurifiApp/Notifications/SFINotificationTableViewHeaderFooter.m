@@ -34,6 +34,9 @@
                 NSForegroundColorAttributeName : [UIColor grayColor],
         };
         NSString *str = [self dateLabelString];
+        if (!str) {
+            str = @"";
+        }
         NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:str attributes:attr];
 
         CGRect rect = CGRectMake(left_padding, y_padding, date_width + (small_circle_width / 2), circle_width);
