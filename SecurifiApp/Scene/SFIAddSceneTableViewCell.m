@@ -453,39 +453,6 @@
     self.deviceImageViewSecondary = [[UIImageView alloc] initWithFrame:imageView_frame];
     [self.contentView addSubview:self.deviceImageViewSecondary];
 }
-//- (void)makeSlider:(float)minVal maxValue:(float)maxValue propertyType:(SFIDevicePropertyType)propertyType sliderLeftInset:(CGFloat)sliderLeftInset sliderRightInset:(CGFloat)sliderRightInset{
-//    // Set the height high enough to ensure touch events are not missed.
-//    const CGFloat slider_height = 100;//25.0;
-//
-//    //Display slider
-//    CGFloat slider_width = CGRectGetWidth(self.bounds) - sliderRightInset;
-//    CGRect slider_frame = CGRectMake(sliderLeftInset, slider.frame.origin.y, slider_width, slider_height);// instead 0
-//
-//    //    SFISlider *slider = [[SFISlider alloc] initWithFrame:slider_frame];
-////    slider.frame = slider_frame;
-//    slider.tag = self.tag;
-//    slider.propertyType = propertyType;
-//    slider.minimumValue = minVal;
-//    slider.maximumValue = maxValue;
-//    slider.popUpViewColor = [UIColor redColor];//[self.color complementaryColor];
-//    slider.textColor = [UIColor redColor];//[slider.popUpViewColor blackOrWhiteContrastingColor];
-//    slider.font = [UIFont securifiBoldFont:22];
-//    [slider addTarget:self action:@selector(onSliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
-//    //
-//    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-//    formatter.numberStyle = NSNumberFormatterPercentStyle;
-//    formatter.multiplier = @(1); // don't multiply numbers by 100
-//    slider.numberFormatter = formatter;
-//    slider.maxFractionDigitsDisplayed = 0;
-//    //
-//    UITapGestureRecognizer *tapSlider = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onSliderTapped:)];
-//    [slider addGestureRecognizer:tapSlider];
-//
-//    [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"] forState:UIControlStateNormal];
-//    [slider setThumbImage:[UIImage imageNamed:@"seekbar_thumb 2.png"] forState:UIControlStateHighlighted];
-//    [slider setMinimumTrackImage:[UIImage imageNamed:@"seekbar_dark_patch 2.png"] forState:UIControlStateNormal];
-//    [slider setMaximumTrackImage:[UIImage imageNamed:@"seekbar_background 2.png"] forState:UIControlStateNormal];
-//}
 
 - (SFISlider *)makeSlider:(float)minVal maxValue:(float)maxValue propertyType:(SFIDevicePropertyType)propertyType sliderLeftInset:(CGFloat)sliderLeftInset sliderRightInset:(CGFloat)sliderRightInset {
     // Set the height high enough to ensure touch events are not missed.

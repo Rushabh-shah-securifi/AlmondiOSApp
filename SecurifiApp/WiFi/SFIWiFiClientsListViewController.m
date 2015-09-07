@@ -495,10 +495,7 @@
     [commandInfo setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
     [commandInfo setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
     
-    
-    NSArray * clients = @[@{@"ID":currentDevice.deviceID,@"MAC":currentDevice.deviceMAC}];
-    
-    [commandInfo setValue:clients forKey:@"Clients"];
+    [commandInfo setValue:@{@"ID":currentDevice.deviceID,@"MAC":currentDevice.deviceMAC} forKey:@"Clients"];
     
     
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];

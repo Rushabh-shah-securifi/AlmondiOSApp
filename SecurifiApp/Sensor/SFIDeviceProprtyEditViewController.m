@@ -350,6 +350,8 @@ typedef NS_ENUM(NSInteger, Properties) {
             if([thermostatMode isEqualToString:@"cool"]){
                 heatingTempSelector.hidden = YES;
                 lblHeating.hidden = YES;
+                lblCooling.text =  NSLocalizedString(@"sensors.cooling.temperature", @"Cooling Temperature");
+                
                 fr = lblShow.frame;
                 fr.origin.y =lblHeating.frame.origin.y;
                 lblShow.frame = fr;
@@ -395,6 +397,8 @@ typedef NS_ENUM(NSInteger, Properties) {
                 lblCooling.hidden = YES;
                 heatingTempSelector.frame = coolingTempSelector.frame;
                 lblHeating.frame = lblCooling.frame;
+                
+                 lblHeating.text =  NSLocalizedString(@"sensors.heating.temperature", @"Heating Temperature");
             }
             
         }
@@ -414,6 +418,7 @@ typedef NS_ENUM(NSInteger, Properties) {
     viewHeader.backgroundColor = self.cellColor;
     viewTypeSelection.backgroundColor = self.cellColor;
     viewThemperature.backgroundColor = self.cellColor;
+    [btnSave setTitleColor:self.cellColor forState:UIControlStateNormal];
 }
 
 - (void)viewDidAppear:(BOOL)animated{

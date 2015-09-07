@@ -58,7 +58,7 @@ typedef NS_ENUM(NSInteger, Properties) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     lblDeviceName.text = self.device.deviceName;
-      cellFont = [UIFont fontWithName:AVENIR_ROMAN size:17];
+    cellFont = [UIFont fontWithName:AVENIR_ROMAN size:17];
     
     
     
@@ -86,7 +86,7 @@ typedef NS_ENUM(NSInteger, Properties) {
     if (self.device.deviceType==SFIDeviceType_NestThermostat_57) {
         SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HVAC_STATE];
         lblStatus.text = [currentDeviceValue.value capitalizedString];
-
+        
         
         imgIcon.image = nil;
         
@@ -128,16 +128,16 @@ typedef NS_ENUM(NSInteger, Properties) {
     if (self.device.deviceType==SFIDeviceType_NestSmokeDetector_58) {
         SFIDeviceKnownValues *coValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CO_ALARM_STATE];
         
-         SFIDeviceKnownValues *smokeValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SMOKE_ALARM_STATE];
+        SFIDeviceKnownValues *smokeValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SMOKE_ALARM_STATE];
         NSString * coText = @"";
-                NSString * smokeText = @"";
+        NSString * smokeText = @"";
         coText = [coValue.value capitalizedString];
         if ([coValue.value isEqualToString:@"true"]) {
             coText = @"Warning";
         }else if ([coValue.value isEqualToString:@"false"]){
             coText = @"Emergency";
         }
-       
+        
         smokeText = [smokeValue.value capitalizedString];
         if ([smokeValue.value isEqualToString:@"true"]) {
             smokeText = @"Warning";
@@ -171,7 +171,7 @@ typedef NS_ENUM(NSInteger, Properties) {
 }
 
 - (void)initializeNotifications {
-     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
                selector:@selector(onTabBarDidChange:)
                    name:@"TAB_BAR_CHANGED"
@@ -446,7 +446,13 @@ typedef NS_ENUM(NSInteger, Properties) {
     label.tag = 66;
     label.textAlignment = NSTextAlignmentRight;
     [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
+    if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"home"]) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }else{
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
 }
 
 - (void)configureModeCell:(UITableViewCell*)cell{
@@ -460,7 +466,13 @@ typedef NS_ENUM(NSInteger, Properties) {
     label.tag = 66;
     label.textAlignment = NSTextAlignmentRight;
     [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
+    if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"home"]) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }else{
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
 }
 
 - (void)configureLocationCell:(UITableViewCell*)cell{
@@ -486,10 +498,10 @@ typedef NS_ENUM(NSInteger, Properties) {
     
     currentDeviceValue= [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_RANGE_HIGH];
     int highValue = [currentDeviceValue intValue];
-
+    
     currentDeviceValue= [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_TARGET];
     int targetValue = [currentDeviceValue intValue];
-
+    
     currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
     NSString *mode = [currentDeviceValue.value lowercaseString];
     NSString * prefix = @"F";
@@ -524,7 +536,12 @@ typedef NS_ENUM(NSInteger, Properties) {
     label.tag = 66;
     label.textAlignment = NSTextAlignmentRight;
     [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
+    if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"home"]) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }else{
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
 
 - (void)configureDeviceHistoryCell:(UITableViewCell*)cell{
@@ -582,6 +599,20 @@ typedef NS_ENUM(NSInteger, Properties) {
 }
 
 - (void)editProperty:(NSInteger)propertyNumber{
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
+    if (![[currentDeviceValue.value lowercaseString] isEqualToString:@"home"]) {
+        switch (propertyNumber) {
+            case modeIndexPathRow:
+            case targetRangeIndexPathRow:
+            case fanIndexPathRow:
+                return;
+                break;
+                
+            default:
+                break;
+        }
+    }
+    
     SFIDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIDeviceProprtyEditViewController"];
     viewController.delegate = self;
     viewController.editFieldIndex = propertyNumber;

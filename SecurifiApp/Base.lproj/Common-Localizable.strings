@@ -160,6 +160,8 @@ reset at the moment. Try again later.";
 "sensor.notificaiton.segment.Home" = "Home";
 "sensor.notificaiton.segment.Away" = "Away";
 "sensor.hud.UpdatingSensordata" = "Updating Sensor Data...";
+"sensors.heating.temperature" = "Heating Temperature";
+"sensors.cooling.temperature" = "Cooling Temperature";
 /* signup */
 
 "signup.navbar-title.Sign up" = "Sign up";

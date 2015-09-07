@@ -175,6 +175,8 @@ reset at the moment. Try again later.";
 "sensor.notificaiton.segment.Off" = "Off";
 "sensors.label.Color" = "Color";
 "sensor.hud.UpdatingSensordata" = "Updating Sensor Data...";
+"sensors.heating.temperature" = "Heating Temperature";
+"sensors.cooling.temperature" = "Cooling Temperature";
 
 /* signup */
 
