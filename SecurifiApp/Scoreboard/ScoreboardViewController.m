@@ -104,17 +104,17 @@
         case SEC_CLOUD:
             return NSLocalizedString(@"scoreboard.section.Cloud", @"Cloud");
         case SEC_NOTIFICATIONS:
-            return (@"scoreboard.section.PushNotifications", @"Push Notifications");
+            return NSLocalizedString(@"scoreboard.section.PushNotifications", @"Push Notifications");
         case SEC_ALMONDS:
-            return (@"scoreboard.section.AlmondMACs", @"Almond MACs");
+            return NSLocalizedString(@"scoreboard.section.AlmondMACs", @"Almond MACs");
         case SEC_EVENTS:
-            return (@"scoreboard.section.Events", @"Almond MACs");
+            return NSLocalizedString(@"scoreboard.section.Events", @"Almond MACs");
         case SEC_NETWORK:
-            return (@"scoreboard.section.Network", @"Network");
+            return NSLocalizedString(@"scoreboard.section.Network", @"Network");
         case SEC_REQUESTS:
-            return (@"scoreboard.section.Commands & Updates", @"Commands & Updates");
+            return NSLocalizedString(@"scoreboard.section.Commands & Updates", @"Commands & Updates");
         case SEC_LOGS:
-            return (@"scoreboard.section.Logs & Data", @"Logs & Data");
+            return NSLocalizedString(@"scoreboard.section.Logs & Data", @"Logs & Data");
         default:
             return nil;
     }

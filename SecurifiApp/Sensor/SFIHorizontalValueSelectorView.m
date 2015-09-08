@@ -88,7 +88,7 @@
     
     
     // Initialization code
-    CGFloat OffsetCreated;
+    CGFloat OffsetCreated = 0.0;
     
     //If this is an horizontal scrolling we have to rotate the table view
     if (self.horizontalScrolling) {
@@ -112,7 +112,7 @@
     }
     
     if (self.horizontalScrolling) {
-        _contentTableView.contentInset = UIEdgeInsetsMake( _selectionRect.origin.x ,  0,_contentTableView.frame.size.height - _selectionRect.origin.x - _selectionRect.size.width - 2*OffsetCreated, 0);
+        _contentTableView.contentInset = UIEdgeInsetsMake( _selectionRect.origin.x ,  0,_contentTableView.frame.size.height - _selectionRect.origin.x - _selectionRect.size.width - 2 * OffsetCreated, 0);
     }
     else {
         _contentTableView.contentInset = UIEdgeInsetsMake( _selectionRect.origin.y, 0, _contentTableView.frame.size.height - _selectionRect.origin.y - _selectionRect.size.height  , 0);

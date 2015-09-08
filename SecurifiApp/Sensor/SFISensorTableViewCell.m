@@ -801,7 +801,7 @@
         setPoint = [setPoint stringByAppendingString:degrees_symbol];
     }
 
-    NSString *state = [NSString stringWithFormat:(@"Tharmostat_setpoint-SET POINT %@%@", @"SET POINT %@%@"), setPoint, tempUnits];
+    NSString *state = [NSString stringWithFormat:NSLocalizedString(@"Tharmostat_setpoint-SET POINT %@%@", @"SET POINT %@%@"), setPoint, tempUnits];
 
     NSMutableArray *status = [NSMutableArray array];
     [status addObject:state];
