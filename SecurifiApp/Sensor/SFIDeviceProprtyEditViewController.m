@@ -104,16 +104,16 @@ typedef NS_ENUM(NSInteger, Properties) {
         NSString * smokeText = @"";
         coText = [coValue.value capitalizedString];
         if ([coValue.value isEqualToString:@"true"]) {
-            coText = @"Warning";
+            coText = NSLocalizedString(@"sensor-property-edit smokedetector Warning",@"Warning");
         }else if ([coValue.value isEqualToString:@"false"]){
-            coText = @"Emergency";
+            coText = NSLocalizedString(@"sensor-property-edit smokedetector Emergency",@"Emergency");
         }
         
         smokeText = [smokeValue.value capitalizedString];
         if ([smokeValue.value isEqualToString:@"true"]) {
-            smokeText = @"Warning";
+            smokeText = NSLocalizedString(@"sensor-property-edit smokedetector Warning",@"Warning");
         }else if ([smokeValue.value isEqualToString:@"false"]){
-            smokeText = @"Emergency";
+            smokeText = NSLocalizedString(@"sensor-property-edit smokedetector Emergency",@"Emergency");
         }
         lblStatus.text = [NSString stringWithFormat:@"Smoke :%@ , CO :%@",smokeText,coText];
         lblThemperatureMain.hidden = YES;
@@ -175,13 +175,14 @@ typedef NS_ENUM(NSInteger, Properties) {
         {
             SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE];
             
-            NSArray *cnames = @[@"On",@"Off"];
+            NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On"),
+                                NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
             
             
             if ([currentDeviceValue.value isEqualToString:@"true"]) {
-                selectedPropertyValue = @"On";
+                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
             }else if ([currentDeviceValue.value isEqualToString:@"false"]){
-                selectedPropertyValue = @"Off";
+                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
             }else{
                 selectedPropertyValue = @"";
             }
@@ -204,7 +205,7 @@ typedef NS_ENUM(NSInteger, Properties) {
         case awayModeIndexPathRow:
         {
             
-            NSArray *nnames = @[@"Home",@"Away"];
+            NSArray *nnames = @[NSLocalizedString(@"sensor.awaymode.indexpath Home", @"Home"),NSLocalizedString(@"sensor.awaymode.indexpath Away", @"Away")];
             
             for (NSString * name in nnames) {
                 NSMutableDictionary * dict = [NSMutableDictionary new];
@@ -224,18 +225,21 @@ typedef NS_ENUM(NSInteger, Properties) {
             
             SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
             selectedPropertyValue = currentDeviceValue.value;
-            NSArray *mnames = @[@"Off",@"Cool",@"Heat",@"Heat-Cool"];
-            
+            NSArray *mnames = @[NSLocalizedString(@"sensor.mode indexpath Off", @"Off"),
+                                NSLocalizedString(@"sensor.mode indexpath Cool", @"Cool"),
+                                NSLocalizedString(@"sensor.mode indexpath Heat", @"Heat"),
+                                NSLocalizedString(@"sensor.mode indexpath Heat-Cool", @"Heat-Cool")];
+                            
             currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_COOL];
             canCool = [currentDeviceValue boolValue];
             currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_HEAT];
             canHeat = [currentDeviceValue boolValue];
             
             if (!canCool) {
-                mnames = @[@"Off",@"Heat"];
+                mnames = @[NSLocalizedString(@"sensor.mode indexpath Off", @"Off"),NSLocalizedString(@"sensor.mode indexpath Heat", @"Heat")];
             }
             if (!canHeat) {
-                mnames = @[@"Off",@"Cool"];
+                mnames = @[NSLocalizedString(@"sensor.mode indexpath Off", @"Off"),NSLocalizedString(@"sensor.mode indexpath Cool", @"Cool")];
             }
             
             
@@ -514,9 +518,9 @@ typedef NS_ENUM(NSInteger, Properties) {
             propertyType = SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
             if ([selectedPropertyValue isEqualToString:@"On"]) {
-                deviceValues.value = @"true";
+                deviceValues.value = NSLocalizedString(@"device-property-fanindexpah true",@"true");
             }else if ([selectedPropertyValue isEqualToString:@"Off"]){
-                deviceValues.value = @"false";
+                deviceValues.value = NSLocalizedString(@"device-property-fanindexpah false",@"false");
             }else{
                 deviceValues.value = @"";
             }
@@ -911,7 +915,7 @@ typedef NS_ENUM(NSInteger, Properties) {
             }
             else {
                 // it failed but we did not receive a reason; clear the updating state and pretend nothing happened.
-                [self showToast:@"Unable to update sensor"];
+                [self showToast:NSLocalizedString(@"device property on mobile hud Unable to update sensor",@"Unable to update sensor")];
             }
             
             //            [self reloadDeviceTableCellForDevice:device];

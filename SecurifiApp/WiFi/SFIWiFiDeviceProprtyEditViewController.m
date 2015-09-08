@@ -93,9 +93,9 @@
     
     lblDeviceName.text = self.connectedDevice.name;
     if (self.connectedDevice.isActive) {
-        lblStatus.text = @"CONNECTED";
+        lblStatus.text = NSLocalizedString(@"CONNECTED",@"CONNECTED");
     }else{
-        lblStatus.text = @"NOT CONNECTED";
+        lblStatus.text = NSLocalizedString(@"NOT CONNECTED",@"NOT CONNECTED");
     }
     UIImage* image = [UIImage imageNamed:[self.connectedDevice iconName]];
     imgIcon.image = image;

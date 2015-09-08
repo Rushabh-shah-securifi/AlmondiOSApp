@@ -16,7 +16,7 @@
 #import "SFISlider.h"
 #import "UIColor+Securifi.h"
 
-#define DEF_COULD_NOT_UPDATE_SENSOR @"Could not update sensor\ndata."
+#define DEF_COULD_NOT_UPDATE_SENSOR NSLocalizedString(@"scene.macro.Could not update sensor\ndata.", @"Could not update sensor data.");
 
 @interface SFIAddSceneTableViewCell () <ILHuePickerViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource>{
     IBOutlet UIView *viewDim;
@@ -919,12 +919,12 @@
     [btnTermostatFanOn setupValues:[UIImage imageNamed:@"imgFanOn"] Title:@"FAN ON"];
     [btnTermostatFanOff setupValues:[UIImage imageNamed:@"imgFanOff"] Title:@"FAN OFF"];
     
-    [btnTermostatDimCool setupValues:@"35" Title:@"COOLING TEMP." Prefix:@"°F"];
+    [btnTermostatDimCool setupValues:@"35" Title:NSLocalizedString(@"scene.thermostat-title.COOLING TEMP.", @"COOLING TEMP.") Prefix:@"°F"];
     btnTermostatDimCool.selected = NO;
     btnTermostatDimCool.tag = 5;
     
     
-    [btnTermostatDimHeat setupValues:@"35" Title:@"HEATING TEMP." Prefix:@"°F"];
+    [btnTermostatDimHeat setupValues:@"35" Title:NSLocalizedString(@"scene.thermostat-title.HEATING TEMP.", @"HEATING TEMP.") Prefix:@"°F"];
     btnTermostatDimHeat.selected = NO;
     btnTermostatDimHeat.tag = 4;
     

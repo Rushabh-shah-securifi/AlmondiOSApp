@@ -54,7 +54,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     };
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-    self.title = @"Recent Activities"; //todo localize me
+    self.title = NSLocalizedString(@"notifications.title.Recent Activities", @"Recent Activities"); //todo localize me
 
     if (self.enableDeleteAllButton) {
         UIBarButtonItem *delete = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(onDeleteAll)];

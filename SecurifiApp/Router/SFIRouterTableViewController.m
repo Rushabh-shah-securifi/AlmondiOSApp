@@ -114,6 +114,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
+    self.disposed = NO;
     [self initializeAlmondData:RouterViewReloadPolicy_on_state_change];
 }
 
@@ -166,7 +167,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     self.currentAlmond = plus;
 
     if (plus == nil) {
-        self.navigationItem.title = @"Get Started";
+        self.navigationItem.title = NSLocalizedString(@"router.nav-title.Get Started", @"Get Started");
         [self markAlmondMac:NO_ALMOND];
     }
     else {
@@ -218,7 +219,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     else if (self.isAlmondUnavailable) {
         state = RouterViewState_almond_unavailable;
     }
-    else if (![self isCloudOnline]) {
+    else if (![self isNetworkOnline]) {
         state = RouterViewState_cloud_offline;
     }
     else {
@@ -247,8 +248,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     return [self.almondMac isEqualToString:NO_ALMOND];
 }
 
-- (BOOL)isCloudOnline {
-    return [[SecurifiToolkit sharedInstance] isCloudOnline];
+- (BOOL)isNetworkOnline {
+    return [[SecurifiToolkit sharedInstance] isNetworkOnline];
 }
 
 #pragma mark - Commands
@@ -336,6 +337,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             return;
         }
         [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
+        [self sendRouterSummaryRequest];
     });
 }
 
@@ -385,7 +387,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 - (void)addRefreshControl {
     UIRefreshControl *refresh = [UIRefreshControl new];
     NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
-    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refresh router data" attributes:attributes];
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"router.refresh-title.Refresh router data", @"Refresh router data") attributes:attributes];
     [refresh addTarget:self action:@selector(onRefreshRouter:) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresh;
 }
@@ -690,8 +692,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     cell.summaries = @[
 //            [NSString stringWithFormat:@"SSID 2.5Ghz : %@", ssid2],
 //            [NSString stringWithFormat:@"SSID 5Ghz : %@", ssid5],
-            [NSString stringWithFormat:@"IP Address : %@", host],
-            [NSString stringWithFormat:@"Admin Login : %@", login],
+            [NSString stringWithFormat:NSLocalizedString(@"router.summary.IP Address : %@", @"IP Address"), host],
+            [NSString stringWithFormat:NSLocalizedString(@"router.summary.Admin Login : %@", @"Admin Login"), login],
     ];
 
     cell.editTarget = self;
@@ -789,7 +791,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (!version) {
         return [self createEmptyWirelessSummaryCell:tableView
                                              cellId:@"software_summary_no"
-                                          cellTitle:@"Software Version"
+                                          cellTitle:NSLocalizedString(@"router.software-version.title.Software Version", @"Software Version")
                                         cellSummary:NSLocalizedString(@"router.software-version.Not available", @"Version information is not available.")
                                           cardColor:[UIColor securifiRouterTileYellowColor]];
     }
@@ -803,7 +805,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     cell.cardView.backgroundColor = [UIColor securifiRouterTileYellowColor];
 
     const BOOL newVersionAvailable = self.newAlmondFirmwareVersionAvailable;
-    cell.title = newVersionAvailable ? @"Software Version *" : @"Software Version";
+    cell.title = newVersionAvailable ? NSLocalizedString(@"router.software-version-new.title.Software Version *", @"Software Version *") : NSLocalizedString(@"router.software-version-new.title.Software Version", @"Software Version");
 
     NSString *currentVersion_label = NSLocalizedString(@"router.software-version.Current version", @"Current version");
 
@@ -1153,7 +1155,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
         if (!genericRouterCommand.commandSuccess) {
             //todo push this string comparison logic into the generic router command
-            self.isAlmondUnavailable = [genericRouterCommand.responseMessage.lowercaseString hasSuffix:@" is offline"]; // almond is offline, homescreen is offline
+            self.isAlmondUnavailable = [genericRouterCommand.responseMessage.lowercaseString hasSuffix:NSLocalizedString(@"router.offline-msg. is offline", @" is offline")]; // almond is offline, homescreen is offline
             [self syncCheckRouterViewState:RouterViewReloadPolicy_on_state_change];
             [self.HUD hide:YES];
             [self.refreshControl endRefreshing];

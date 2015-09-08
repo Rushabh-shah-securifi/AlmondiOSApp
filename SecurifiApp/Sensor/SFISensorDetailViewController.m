@@ -133,16 +133,17 @@ typedef NS_ENUM(NSInteger, Properties) {
         NSString * smokeText = @"";
         coText = [coValue.value capitalizedString];
         if ([coValue.value isEqualToString:@"true"]) {
-            coText = @"Warning";
+            coText = NSLocalizedString(@"smoke-detector-Warning",@"Warning");
         }else if ([coValue.value isEqualToString:@"false"]){
-            coText = @"Emergency";
+            coText =NSLocalizedString(@"smoke-detector-Emergency",@"Emergency");
         }
         
         smokeText = [smokeValue.value capitalizedString];
         if ([smokeValue.value isEqualToString:@"true"]) {
-            smokeText = @"Warning";
+            smokeText =  NSLocalizedString(@"smoke-detector-Warning",@"Warning");
+
         }else if ([smokeValue.value isEqualToString:@"false"]){
-            smokeText = @"Emergency";
+            smokeText = NSLocalizedString(@"smoke-detector-Emergency",@"Emergency");
         }
         lblStatus.text = [NSString stringWithFormat:@"Smoke :%@ , CO :%@",smokeText,coText];
         
@@ -388,9 +389,9 @@ typedef NS_ENUM(NSInteger, Properties) {
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CO_ALARM_STATE];
     label.text = [currentDeviceValue.value capitalizedString];
     if ([currentDeviceValue.value isEqualToString:@"true"]) {
-        label.text = @"Warning";
+        label.text = NSLocalizedString(@"smoke-detector-Warning",@"Warning");
     }else if ([currentDeviceValue.value isEqualToString:@"false"]){
-        label.text = @"Emergency";
+        label.text = NSLocalizedString(@"smoke-detector-Emergency",@"Emergency");
     }
     label.numberOfLines = 1;
     label.tag = 66;
@@ -407,9 +408,9 @@ typedef NS_ENUM(NSInteger, Properties) {
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SMOKE_ALARM_STATE];
     label.text = [currentDeviceValue.value capitalizedString];
     if ([currentDeviceValue.value isEqualToString:@"true"]) {
-        label.text = @"Warning";
+        label.text = NSLocalizedString(@"smoke-detector-Warning",@"Warning");
     }else if ([currentDeviceValue.value isEqualToString:@"false"]){
-        label.text = @"Emergency";
+        label.text = NSLocalizedString(@"smoke-detector-Emergency",@"Emergency");
     }
     label.numberOfLines = 1;
     label.tag = 66;
@@ -438,9 +439,9 @@ typedef NS_ENUM(NSInteger, Properties) {
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE];
     
     if ([currentDeviceValue.value boolValue]) {
-        label.text = @"On";
+        label.text = NSLocalizedString(@"sensor-detail-Fan cell On",@"On");
     }else{
-        label.text = @"Off";
+        label.text = NSLocalizedString(@"sensor-detail-Fan cell Off",@"Off");
     }
     label.numberOfLines = 1;
     label.tag = 66;
@@ -515,7 +516,7 @@ typedef NS_ENUM(NSInteger, Properties) {
         for (UILabel *c in cell.subviews) {
             if ([c isKindOfClass:[UILabel class]]) {
                 if (c.tag==66) {
-                    c.text = @"Target Temp";
+                    c.text = NSLocalizedString(@"sensor-detail-Target Temp",@"Target Temp");
                 }
             }
         }
@@ -524,7 +525,7 @@ typedef NS_ENUM(NSInteger, Properties) {
         for (UILabel *c in cell.subviews) {
             if ([c isKindOfClass:[UILabel class]]) {
                 if (c.tag==66) {
-                    c.text = @"Target Temp";
+                    c.text =  NSLocalizedString(@"sensor-detail- Target Temp",@"Target Temp");
                 }
             }
         }

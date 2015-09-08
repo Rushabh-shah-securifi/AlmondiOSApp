@@ -12,14 +12,10 @@
 #import "SFILoginViewController.h"
 #import "SFILogoutAllViewController.h"
 #import "SWRevealViewController.h"
-#import "SFIRouterTableViewController.h"
-#import "SFISensorsViewController.h"
 #import "DrawerViewController.h"
 #import "SFIAccountsTableViewController.h"
-#import "SFIScenesTableViewController.h"//md01
 #import "UIViewController+Securifi.h"
 #import "Analytics.h"
-#import "ScoreboardViewController.h"
 #import "SFIPreferences.h"
 #import "UIImage+Securifi.h"
 #import "UIApplication+SecurifiNotifications.h"
@@ -93,7 +89,7 @@
     // for apps not using local connection support: we preserve the old behavior of showing a splash screen until the
     // cloud connection is established.
     const BOOL supportsLocalConnections = toolkit.configuration.enableLocalNetworking;
-    
+
     if (!supportsLocalConnections && [toolkit isCloudOnline]) {
         // Already connected. Nothing to do.
         NSLog(@"Cloud is on-line. returning");
@@ -110,7 +106,7 @@
         // No network route to cloud. Nothing to do.
         if (!onViewAppearing) {
             // only show after first attempt fails
-            [self showToast:@"Sorry! Unable to establish Internet route to cloud service."];
+            [self showToast:NSLocalizedString(@"Sorry! Unable to establish Internet route to cloud service.", @"Sorry! Unable to establish Internet route to cloud service.")];
         }
 
         [self scheduleReconnectTimer];
@@ -127,7 +123,7 @@
 
     // Else try to connect
     if (onViewAppearing) {
-        self.HUD.labelText = @"Connecting. Please wait!";
+        self.HUD.labelText = NSLocalizedString(@"mainviewcontroller_Connecting. Please wait!", @"Connecting. Please wait!");
         [self.HUD show:YES];
     }
 
@@ -154,7 +150,7 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         // Ex: "Almond-splash_image"
         self.imgSplash.image = [UIImage assetImageNamed:@"no_cloud"];
-        [self showToast:@"Sorry! Could not connect to the cloud service."];
+        [self showToast:NSLocalizedString(@"mainviewcontroller_Sorry! Could not connect to the cloud service.", "Sorry! Could not connect to the cloud service.")];
     });
 }
 
@@ -294,62 +290,11 @@
 
 - (void)presentMainView {
     DLog(@"%s: Presenting main view", __PRETTY_FUNCTION__);
-    
-    // Set up the front view controller based on a Tab Bar controller
-    UIImage *icon;
-    //
-    SFISensorsViewController *sensorCtrl = [SFISensorsViewController new];
-    //
-    UINavigationController *sensorNav = [[UINavigationController alloc] initWithRootViewController:sensorCtrl];
-    icon = [UIImage imageNamed:@"icon_sensor"];
-    sensorNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_SENSORS image:icon selectedImage:icon];
-    //
-    SFIRouterTableViewController *routerCtrl = [SFIRouterTableViewController new];
-    //
-    UINavigationController *routerNav = [[UINavigationController alloc] initWithRootViewController:routerCtrl];
-    icon = [UIImage imageNamed:@"icon_router"];
-    routerNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_ROUTER image:icon selectedImage:icon];
-
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SecurifiConfigurator *configurator = toolkit.configuration;
-
-    // Build up tab bar
-    //
-    NSArray *cloud_tabs = @[sensorNav];
-    NSArray *local_tabs = @[sensorNav];
-    //
-    if (configurator.enableScenes) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
-
-        SFIScenesTableViewController *scenesCtrl = [storyboard instantiateViewControllerWithIdentifier:@"SFIScenesTableViewController"];
-
-        UINavigationController *scenesNav = [[UINavigationController alloc] initWithRootViewController:scenesCtrl];
-        icon = [UIImage imageNamed:@"icon_scenes"];
-        scenesNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_SCENES image:icon selectedImage:icon];
-
-        cloud_tabs = [cloud_tabs arrayByAddingObject:scenesNav];
-    }
-    //
-    cloud_tabs = [cloud_tabs arrayByAddingObject:routerNav];
-    local_tabs = [local_tabs arrayByAddingObject:routerNav];
-    //
-    if (configurator.enableScoreboard) {
-        ScoreboardViewController *scoreCtrl = [ScoreboardViewController new];
-
-        UINavigationController *scoreNav = [[UINavigationController alloc] initWithRootViewController:scoreCtrl];
-        icon = [UIImage imageNamed:@"878-binoculars"];
-        scoreNav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
-
-        cloud_tabs = [cloud_tabs arrayByAddingObject:scoreNav];
-        local_tabs = [local_tabs arrayByAddingObject:scoreNav];
-    }
 
     SFITabBarController *tabCtrl = [SFITabBarController new];
     tabCtrl.tabBar.translucent = NO;
     tabCtrl.tabBar.tintColor = [UIColor blackColor];
     tabCtrl.delegate = self;
-    tabCtrl.cloudTabs = cloud_tabs;
-    tabCtrl.localTabs = local_tabs;
 
     DrawerViewController *drawer = [DrawerViewController new];
 
@@ -377,7 +322,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"AccountsStoryboard_iPhone" bundle:nil];
     SFIAccountsTableViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SFIAccountsTableViewController"];
     ctrl.delegate = self;
-    
+
     UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
     [self presentViewController:nctrl animated:YES completion:nil];
 }
@@ -410,7 +355,7 @@
     });
 }
 
-- (void)userAccountDidDone:(SFIAccountsTableViewController *)ctrl{
+- (void)userAccountDidDone:(SFIAccountsTableViewController *)ctrl {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
             if ([[SecurifiToolkit sharedInstance] isCloudLoggedIn]) {
@@ -456,12 +401,12 @@
 
 - (void)onDidFailToRegisterForNotifications {
     ELog(@"Failed to register push notification token with cloud");
-    [self showToast:@"Sorry! Push Notification was not registered."];
+    [self showToast:NSLocalizedString(@"main view controller Sorry! Push Notification was not registered.", @"Sorry! Push Notification was not registered.")];
 }
 
 - (void)onDidFailToDeregisterForNotifications {
     ELog(@"Failed to remove push notification token registration with cloud");
-    [self showToast:@"Sorry! Push Notification was not deregistered."];
+    [self showToast:NSLocalizedString(@"main view controller Sorry! Push Notification was not deregistered.", @"Sorry! Push Notification was not deregistered.")];
 }
 
 #pragma mark - UIGestureRecognizerDelegate methods
@@ -485,7 +430,7 @@
     }
 
     //md01
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"TAB_BAR_CHANGED" object:self userInfo:@{@"title":title}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"TAB_BAR_CHANGED" object:self userInfo:@{@"title" : title}];
 }
 
 @end

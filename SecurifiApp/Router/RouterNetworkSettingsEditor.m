@@ -37,7 +37,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = @"Local Link";
+        self.title = NSLocalizedString(@"router.network-title.Local Link", @"Local Link");
     }
 
     return self;
@@ -81,7 +81,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
 - (void)markSuccessOnLink {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        self.linkErrorSuccessMessage = @"The Almond was successfully linked.";
+        self.linkErrorSuccessMessage = NSLocalizedString(@"router.msg-link.The Almond was successfully linked.", @"The Almond was successfully linked.");
         self.state = RouterNetworkSettingsEditorState_successOnLink;
 
         // make sure the right nav buttons are placed and enabled
@@ -107,7 +107,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 - (void)buttonsForLinkState {
     UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelEdits)];
     UIBarButtonItem *save = (self.mode == RouterNetworkSettingsEditorMode_link) ?
-            [[UIBarButtonItem alloc] initWithTitle:@"Link" style:UIBarButtonItemStylePlain target:self action:@selector(onLink)] :
+            [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"router.link-button.Link", @"Link") style:UIBarButtonItemStylePlain target:self action:@selector(onLink)] :
             [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSaveEdits)];
     save.enabled = NO;
 
@@ -146,17 +146,17 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
         switch (self.mode) {
             case RouterNetworkSettingsEditorMode_editor: {
                 NSString *cell_id = @"button_unlink";
-                UITableViewCell *cell = [self makeButtonCell:tableView id:cell_id buttonTag:1 buttonTitle:@"Unlink Almond?"];
+                UITableViewCell *cell = [self makeButtonCell:tableView id:cell_id buttonTag:1 buttonTitle:NSLocalizedString(@"router.btn-title.Unlink Almond?", @"Unlink Almond?")];
                 return cell;
             }
 
             case RouterNetworkSettingsEditorMode_link: {
                 if (indexPath.row == 0) {
-                    return [self makeButtonCell:tableView id:@"link_almond" buttonTitle:@"Link Almond Locally" action:@selector(onSaveEdits) solidBackground:YES];
+                    return [self makeButtonCell:tableView id:@"link_almond" buttonTitle:NSLocalizedString(@"router.btn-title.Link Almond Locally", @"Link Almond Locally") action:@selector(onSaveEdits) solidBackground:YES];
                 }
 
                 // only called when enableLocalAlmondLink is YES
-                return [self makeButtonCell:tableView id:@"cloud_link" buttonTitle:@"Back to Cloud Link" action:@selector(onCancelEdits) solidBackground:NO];
+                return [self makeButtonCell:tableView id:@"cloud_link" buttonTitle:NSLocalizedString(@"router.btn-title.Back to Cloud Link", @"Back to Cloud Link") action:@selector(onCancelEdits) solidBackground:NO];
             }
         }
     }
@@ -165,27 +165,27 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
     switch (row) {
         case TABLE_ROW_SSID_2: {
             NSString *cell_id = @"ssid2";
-            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:@"SSID 2.5GHz" fieldValue:self.workingSettings.ssid2 secureField:NO];
+            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:NSLocalizedString(@"router.label.SSID 2.5GHz", @"SSID 2.5GHz") fieldValue:self.workingSettings.ssid2 secureField:NO];
             return cell;
         }
         case TABLE_ROW_SSID_5: {
             NSString *cell_id = @"ssid5";
-            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:@"SSID 5GHz" fieldValue:self.workingSettings.ssid5 secureField:NO];
+            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:NSLocalizedString(@"router.label.SSID 5GHz", @"SSID 5GHz") fieldValue:self.workingSettings.ssid5 secureField:NO];
             return cell;
         }
         case TABLE_ROW_IP_ADDR: {
             NSString *cell_id = @"host";
-            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:@"IP Address" fieldValue:self.workingSettings.host secureField:NO];
+            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:NSLocalizedString(@"router.label.IP Address", @"IP Address") fieldValue:self.workingSettings.host secureField:NO];
             return cell;
         }
         case TABLE_ROW_ADMIN_LOGIN: {
             NSString *cell_id = @"login";
-            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:@"Admin Login" fieldValue:self.workingSettings.login secureField:NO];
+            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:NSLocalizedString(@"router.label.Admin Login", @"Admin Login") fieldValue:self.workingSettings.login secureField:NO];
             return cell;
         }
         case TABLE_ROW_ADMIN_PWD: {
             NSString *cell_id = @"pwd";
-            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:@"Admin Password" fieldValue:self.workingSettings.password secureField:YES];
+            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:NSLocalizedString(@"router.label.Admin Password", @"Admin Password") fieldValue:self.workingSettings.password secureField:YES];
             return cell;
         }
         default:
@@ -295,7 +295,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
     switch (self.state) {
         case RouterNetworkSettingsEditorState_promptForLinkCode:
-            return @"Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n"; // newline adds bottom padding
+            return NSLocalizedString(@"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n", @"Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely."); // newline adds bottom padding
 
         case RouterNetworkSettingsEditorState_successOnLink:
         case RouterNetworkSettingsEditorState_errorOnLink: {
@@ -311,7 +311,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 #pragma mark - Action handlers
 
 - (void)onLink {
-    self.HUD.labelText = @"Establishing Local Link...";
+    self.HUD.labelText = NSLocalizedString(@"router.hud.Establishing Local Link...", @"Establishing Local Link...");
     self.HUD.minShowTime = 2;
 
     SFIAlmondLocalNetworkSettings *settings = self.workingSettings.copy;
@@ -329,7 +329,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
                     // in "Link Mode" we believe this is Almond is unknown to the app/system. In this case, it turns
                     // out we already know about it (settings already on file). So, we refuse to "link" (overwrite
                     // the settings).
-                    [self markErrorOnLink:@"This Almond is already linked."];
+                    [self markErrorOnLink:NSLocalizedString(@"router.error-msg.This Almond is already linked.", @"This Almond is already linked.")];
                     return;
                 }
 
@@ -346,7 +346,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
             case TestConnectionResult_macMismatch: {
                 // should not be possible to get mac-mismatch error right now because this is only relevant when
                 // editing settings on an unlinked Almond.
-                [self markErrorOnLink:@"An error occurred trying to link with the Almond. Please try again."];
+                [self markErrorOnLink:NSLocalizedString(@"router.error-msg.An error occurred trying to link with the Almond. Please try again.", @"An error occurred trying to link with the Almond. Please try again.")];
                 break;
             }
         }

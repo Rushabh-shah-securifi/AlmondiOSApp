@@ -49,9 +49,9 @@
     self.sceneInfo = [self.originalSceneInfo copy];
     
     self.navigationController.navigationBar.translucent = NO;
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(btnSaveTap:)];
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"scene.button.Save", @"Save") style:UIBarButtonItemStylePlain target:self action:@selector(btnSaveTap:)];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
-    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
+    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"scene.button.Cancel", @"Cancel") style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
     self.navigationItem.leftBarButtonItem = leftBarButtonItem;
     
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName : UIColorFromRGB(0x02a8f3),
@@ -330,7 +330,7 @@
     //    self.isUpdatingDeviceSettings = NO;
     
     if ([self isNoAlmondMAC]) {
-        self.navigationItem.title = @"Get Started";
+        self.navigationItem.title = NSLocalizedString(@"scene.title.Get Started", @"Get Started");
         self.deviceList = @[];
         [self setDeviceValues:@[]];
     }
@@ -691,7 +691,7 @@
     
     
     if (sceneEntryList.count==0) {
-        [self showMessageBox:@"You have to select at least 1 value"];
+        [self showMessageBox:NSLocalizedString(@"scene.msg.You have to select at least 1 value", @"You have to select at least 1 value")];
         return;
     }
     
@@ -748,7 +748,7 @@
 
 - (void)showMessageBox:(NSString *)message {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Scenes" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Scenes" message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"scene.cancel-title.OK", @"OK") otherButtonTitles:nil];
         [alert show];
         alert = nil;
     });
@@ -770,11 +770,11 @@
 }
 
 - (void)showLoadingRouterDataHUD {
-    [self showHUD:@"Loading router data"];
+    [self showHUD:NSLocalizedString(@"scene.hud.Loading router data", @"Loading router data")];
 }
 
 - (void)showLoadingSensorDataHUD {
-    [self showHUD:@"Loading sensor data"];
+    [self showHUD:NSLocalizedString(@"scene.hud.Loading sensor data", @"Loading sensor data")];
 }
 
 - (void)showUpdatingSettingsHUD {
@@ -794,7 +794,7 @@
     lbl.textColor = [UIColor colorFromHexString:@"8f8f8f"];
     lbl.textAlignment = NSTextAlignmentCenter;
     lbl.backgroundColor = [UIColor colorFromHexString:@"EEEEEE"];
-    lbl.text = @"Choose one or more Actions";
+    lbl.text = NSLocalizedString(@"scene.text.Choose one or more Actions", @"Choose one or more Actions");
     return lbl;
 }
 
@@ -1198,8 +1198,8 @@
     [self.HUD hide:YES];
     NSString * success = [mainDict valueForKey:@"Success"];
     if (![success isEqualToString:@"true"]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Sorry, There was some problem with this request, try later!"
-                                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"scene.alert-title.Oops", @"Oops") message:NSLocalizedString(@"scene.alert-msg.Sorry, There was some problem with this request, try later!", @"Sorry, There was some problem with this request, try later!")
+                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
         [alert show];
     }else{
         self.originalSceneInfo = [self.sceneInfo copy];

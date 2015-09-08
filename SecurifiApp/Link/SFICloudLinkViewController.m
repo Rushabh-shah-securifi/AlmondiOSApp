@@ -41,7 +41,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = @"Cloud Link";
+        self.title = NSLocalizedString(@"cloudlink.title.Cloud Link", @"Cloud Link");
     }
 
     return self;
@@ -142,7 +142,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 
 - (void)showHud:(NSString *)msg {
     self.HUD.minShowTime = 2;
-    self.HUD.labelText = @"Linking to Cloud";
+    self.HUD.labelText = NSLocalizedString(@"cloudlink.label.Linking to Cloud", @"Linking to Cloud");
     self.HUD.detailsLabelText = msg;
     [self.HUD show:YES];
     [self.HUD hide:YES afterDelay:10];
@@ -195,7 +195,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 
     switch (self.state) {
         case SFICloudLinkViewControllerState_promptForLinkCode: {
-            return @"Run the Almond Account app and enter the code displayed.";
+            return NSLocalizedString(@"Run the Almond Account app and enter the code displayed.", @"Run the Almond Account app and enter the code displayed.");
         }
 
         case SFICloudLinkViewControllerState_successLink:
@@ -222,25 +222,25 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
             }
             else {
                 if (row == 0) {
-                    return [self makeButtonCell:tableView id:@"link_almond" buttonTitle:@"Link Almond" buttonTag:BUTTON_LINK_TAG action:@selector(onLink) solidBackground:YES];
+                    return [self makeButtonCell:tableView id:@"link_almond" buttonTitle:NSLocalizedString(@"cloudlink.button.Link Almond", "Link Almond") buttonTag:BUTTON_LINK_TAG action:@selector(onLink) solidBackground:YES];
                 }
 
                 // only called when enableLocalAlmondLink is YES
-                return [self makeButtonCell:tableView id:@"local_link" buttonTitle:@"Add Almond Locally" buttonTag:0 action:@selector(onLocalLink) solidBackground:NO];
+                return [self makeButtonCell:tableView id:@"local_link" buttonTitle:NSLocalizedString(@"cloudlink.button.Add Almond Locally", @"Add Almond Locally") buttonTag:0 action:@selector(onLocalLink) solidBackground:NO];
             }
 
         case SFICloudLinkViewControllerState_successLink: {
             AffiliationUserComplete *details = self.affiliationDetails;
 
             if (row == 0) {
-                return [self makeNameValueCell:tableView id:@"almond_name" fieldTag:1 fieldLabel:@"Name" fieldValue:details.almondplusName];
+                return [self makeNameValueCell:tableView id:@"almond_name" fieldTag:1 fieldLabel:NSLocalizedString(@"cloudlink.label.Name", @"Name") fieldValue:details.almondplusName];
             }
             else if (row == 1) {
-                return [self makeNameValueCell:tableView id:@"almond_mac" fieldTag:1 fieldLabel:@"MAC Address" fieldValue:details.formattedAlmondPlusMac];
+                return [self makeNameValueCell:tableView id:@"almond_mac" fieldTag:1 fieldLabel:NSLocalizedString(@"cloudlink.label.MAC Address", @"MAC Address") fieldValue:details.formattedAlmondPlusMac];
             }
             else {
                 NSUInteger ssid_index = (NSUInteger) (row - 2);
-                NSString *label = (ssid_index == 0) ? @"WIFI SSID" : @"";
+                NSString *label = (ssid_index == 0) ? NSLocalizedString(@"cloudlink.label.WIFI SSID", "WIFI SSID") : @"";
 
                 NSArray *names = details.ssidNames;
                 NSString *value = names[ssid_index];
@@ -290,7 +290,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 
         UITextField *field = [[UITextField alloc] initWithFrame:frame];
         field.delegate = self;
-        field.placeholder = @"Enter code";
+        field.placeholder = NSLocalizedString(@"Enter code", @"Enter code");
         field.font = font;
         field.text = fieldValue;
         field.textAlignment = NSTextAlignmentCenter;

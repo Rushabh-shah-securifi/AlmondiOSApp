@@ -303,9 +303,9 @@
             label.textColor = [UIColor whiteColor];
             label.font = font;
             if (connectedDevice.deviceUseAsPresence) {
-                label.text = @"Yes";
+                label.text = NSLocalizedString(@"Presence sensor Yes",@"Yes");
             }else{
-                label.text = @"No";
+                label.text = NSLocalizedString(@"Presence sensor NO",@"NO");
             }
             label.tag = 66;
             label.numberOfLines = 1;
@@ -530,8 +530,8 @@
     NSString * success = [mainDict valueForKey:@"Success"];
     
     if (![success isEqualToString:@"true"]) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Sorry, There was some problem with this request, try later!"
-                                                       delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"response.alert-Oops",@"Oops") message:NSLocalizedString(@"response.alert-Sorry, There was some problem with this request, try later!",@"Sorry, There was some problem with this request, try later!")
+                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"response.alert-OK",@"OK") otherButtonTitles: nil];
         [alert show];
     }else{
         
