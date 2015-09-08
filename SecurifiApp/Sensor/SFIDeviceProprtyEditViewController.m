@@ -80,6 +80,16 @@ typedef NS_ENUM(NSInteger, Properties) {
     
     [self updateTemperatureLabel];
     
+    if (self.device.deviceType==SFIDeviceType_MultiSoundSiren_55) {
+        UIImage* image = [UIImage imageNamed:@"55_multisoundsiren_icon"];
+        imgIcon.image = image;
+        CGRect fr = imgIcon.frame;
+        fr.size = image.size;
+        fr.origin.x = (90-fr.size.width)/2;
+        fr.origin.y = (90-fr.size.height)/2;
+        imgIcon.frame = fr;
+    }
+
     if (self.device.deviceType==SFIDeviceType_NestThermostat_57) {
         SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HVAC_STATE];
         lblStatus.text = [currentDeviceValue.value capitalizedString];

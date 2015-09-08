@@ -164,7 +164,7 @@
 
     SecurifiConfigurator *config = [self toolkitConfigurator];
     [SecurifiToolkit initialize:config];
-    [SecurifiToolkit sharedInstance].useProductionCloud = NO; //TESTMD01 uncomment for testing; to force dev cloud by default
+    [SecurifiToolkit sharedInstance].useProductionCloud = YES; //TESTMD01 uncomment for testing; to force dev cloud by default
 
 #ifdef DEBUG
     NSLog(@"DEBUG compile mode set");

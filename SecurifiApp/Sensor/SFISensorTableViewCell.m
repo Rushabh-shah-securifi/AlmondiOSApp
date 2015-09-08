@@ -442,6 +442,10 @@
             [self configureNestThermostat_57];//md01
             break;
         }
+        case SFIDeviceType_MultiSoundSiren_55: {
+            [self configureMultiSoundSiren_55];//md01
+            break;
+        }
         case SFIDeviceType_UnknownDevice_0:
         case SFIDeviceType_Controller_8:
         case SFIDeviceType_SceneController_9:
@@ -901,6 +905,16 @@
     [self configureSensorImageName:imageName statusMesssage:status];
 }
 
+- (void)configureMultiSoundSiren_55 {
+    self.deviceImageView.image = [UIImage imageNamed:@"55_multisoundsiren_icon"];
+    NSMutableArray *status = [NSMutableArray array];
+    
+    SFIDeviceKnownValues *kValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+    
+    [status addObject:kValue.value];
+    [self setDeviceStatusMessages:status];
+}
+
 - (void)configureNestSmokeDetector_58 {
     self.deviceImageView.image = [UIImage imageNamed:@"nest_58_icon"];
     NSMutableArray *status = [NSMutableArray array];
@@ -922,12 +936,9 @@
     } else if ([smokeValue.value isEqualToString:@"false"]) {
         smokeText = NSLocalizedString(@"smoke-detector-Emergency", @"Emergency");
     }
-<<<<<<< HEAD
+
     [status addObject:[NSString stringWithFormat:@"Smoke :%@",smokeText]];
     [status addObject:[NSString stringWithFormat:@"CO :%@",coText]];
-=======
-    [status addObject:[NSString stringWithFormat:NSLocalizedString(@"smoke-detector Smoke :%@ , CO :%@", @"Smoke :%@ , CO :%@"), smokeText, coText]];
->>>>>>> origin/master
     //    [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 
@@ -942,13 +953,10 @@
     lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:29.0f];
     lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
     lblThemperatureMain.textColor = [UIColor whiteColor];
-<<<<<<< HEAD
     lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
     lblThemperatureMain.adjustsFontSizeToFitWidth = YES;
     [lblThemperatureMain setMinimumScaleFactor:12.0/[UIFont labelFontSize]];
-=======
-    lblThemperatureMain.text = [NSString stringWithFormat:@"%d°", [[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
->>>>>>> origin/master
+
     [self.contentView addSubview:lblThemperatureMain];
 
 

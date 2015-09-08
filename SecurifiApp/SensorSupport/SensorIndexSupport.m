@@ -1664,7 +1664,6 @@
             if (type == SFIDevicePropertyType_SENSOR_BINARY) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
-<<<<<<< HEAD
                 s1.iconName = @"42_alarm_no";
                 s1.notificationText = @" is Silent.";
                 
@@ -1672,17 +1671,6 @@
                 s2.matchData = @"true";
                 s2.iconName = @"42_alarm_yes";
                 s2.notificationText = @" is Ringing.";
-                
-=======
-                s1.iconName = @"42_alarm_off";
-                s1.notificationText = NSLocalizedString(@" is Silent.", @" is Silent.");
-
-                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.matchData = @"true";
-                s2.iconName = @"42_alarm_on";
-                s2.notificationText = NSLocalizedString(@" is Ringing.", @" is Ringing.");
-
->>>>>>> origin/master
                 return @[s1, s2];
             }
 

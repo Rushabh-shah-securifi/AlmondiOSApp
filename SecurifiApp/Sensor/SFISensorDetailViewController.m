@@ -82,7 +82,23 @@ typedef NS_ENUM(NSInteger, Properties) {
         [propertiesArray addObject:dict];
     }
     
-    
+    if (self.device.deviceType==SFIDeviceType_MultiSoundSiren_55) {
+        [propertiesArray[humidityIndexPathRow] setValue:@YES forKey:@"hidden"];
+        [propertiesArray[awayModeIndexPathRow] setValue:@YES forKey:@"hidden"];
+        [propertiesArray[coLevelIndexPathRow] setValue:@YES forKey:@"hidden"];
+        [propertiesArray[smokeLevelIndexPathRow] setValue:@YES forKey:@"hidden"];
+        [propertiesArray[modeIndexPathRow] setValue:@YES forKey:@"hidden"];
+        [propertiesArray[targetRangeIndexPathRow] setValue:@YES forKey:@"hidden"];
+        [propertiesArray[fanIndexPathRow] setValue:@YES forKey:@"hidden"];
+        [propertiesArray[humidityIndexPathRow] setValue:@YES forKey:@"hidden"];
+        UIImage* image = [UIImage imageNamed:@"55_multisoundsiren_icon"];
+        imgIcon.image = image;
+        CGRect fr = imgIcon.frame;
+        fr.size = image.size;
+        fr.origin.x = (90-fr.size.width)/2;
+        fr.origin.y = (90-fr.size.height)/2;
+        imgIcon.frame = fr;
+    }
     if (self.device.deviceType==SFIDeviceType_NestThermostat_57) {
         SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HVAC_STATE];
         lblStatus.text = [currentDeviceValue.value capitalizedString];
@@ -311,6 +327,8 @@ typedef NS_ENUM(NSInteger, Properties) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     switch (indexPath.row) {
+        case nameIndexPathRow:
+        case locationIndexPathRow:
         case awayModeIndexPathRow:
         case modeIndexPathRow:
         case targetRangeIndexPathRow:
