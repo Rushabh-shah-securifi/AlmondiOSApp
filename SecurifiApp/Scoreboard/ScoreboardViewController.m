@@ -39,7 +39,7 @@
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.title = @"Scoreboard";
+        self.title = NSLocalizedString(@"Scoreboard", @"Scoreboard");
         [self loadScoreboard];
     }
     return self;
@@ -51,7 +51,7 @@
     NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
 
     UIRefreshControl *refresh = [UIRefreshControl new];
-    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Refresh Scoreboard" attributes:attributes];
+    refresh.attributedTitle = [[NSAttributedString alloc] initWithString:NSLocalizedString(@"Refresh.Scoreboard", @"Refresh Scoreboard") attributes:attributes];
     [refresh addTarget:self action:@selector(onRefresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refresh;
 }
@@ -102,19 +102,19 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
         case SEC_CLOUD:
-            return @"Cloud";
+            return NSLocalizedString(@"scoreboard.section.Cloud", @"Cloud");
         case SEC_NOTIFICATIONS:
-            return @"Push Notifications";
+            return (@"scoreboard.section.PushNotifications", @"Push Notifications");
         case SEC_ALMONDS:
-            return @"Almond MACs";
+            return (@"scoreboard.section.AlmondMACs", @"Almond MACs");
         case SEC_EVENTS:
-            return @"Events";
+            return (@"scoreboard.section.Events", @"Almond MACs");
         case SEC_NETWORK:
-            return @"Network";
+            return (@"scoreboard.section.Network", @"Network");
         case SEC_REQUESTS:
-            return @"Commands & Updates";
+            return (@"scoreboard.section.Commands & Updates", @"Commands & Updates");
         case SEC_LOGS:
-            return @"Logs & Data";
+            return (@"scoreboard.section.Logs & Data", @"Logs & Data");
         default:
             return nil;
     }
@@ -130,7 +130,7 @@
     NSTimeInterval delta = -1 * [created timeIntervalSinceNow];
     NSString *time = [NSDateFormatter localizedStringFromDate:created dateStyle:NSDateFormatterMediumStyle timeStyle:NSDateFormatterMediumStyle];
 
-    return [NSString stringWithFormat:@"Last refreshed %.0f secs ago @ %@", delta, time];
+    return [NSString stringWithFormat:NSLocalizedString(@"footerInsection.Last refreshed %.0f secs ago @ %@", "Last refreshed %.0f secs ago @ %@"), delta, time];
 }
 
 
@@ -159,10 +159,10 @@
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cell_id];
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-                cell.textLabel.text = @"Client Token";
+                cell.textLabel.text = NSLocalizedString(@"notifications.Client Token", @"Client Token");
             }
             NSString *token = [self pushNotificationClientToken];
-            cell.detailTextLabel.text = (token.length == 0) ? @"Not registered" : token;
+            cell.detailTextLabel.text = (token.length == 0) ? NSLocalizedString(@"notifications.Not registered", @"Not registered") : token;
             return cell;
         }
         else if (indexPath.row == 1) {
@@ -171,7 +171,7 @@
             NSInteger count = prefs.debugPushNotificationReceivedCount;
 
             NSString *dateStr = (date == nil) ? @"–––" : date.formattedDateTimeString;
-            NSString *description = [NSString stringWithFormat:@"Since %@", dateStr];
+            NSString *description = [NSString stringWithFormat:NSLocalizedString(@"Since %@", @"Since"), dateStr];
             NSString *countStr = [NSString stringWithFormat:@"%li", (long) count];
 
             NSString *cell_id = @"notifications_recevied";
@@ -192,7 +192,7 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
-            cell.textLabel.text = @"View Handler Log";
+            cell.textLabel.text = NSLocalizedString(@"notifications_logctrl.View Handler Log", @"View Handler Log");
             return cell;
         }
         else if (indexPath.row == 3) {
@@ -203,7 +203,7 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             }
-            cell.textLabel.text = @"View Notifications";
+            cell.textLabel.text = NSLocalizedString(@"notifications_viewactual.View Notifications", @"View Notifications");
             return cell;
         }
         else if (indexPath.row == 4) {
@@ -214,7 +214,7 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleDefault;
                 cell.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
             }
-            cell.textLabel.text = @"Unit Test UI";
+            cell.textLabel.text = NSLocalizedString(@"notifications_viewtests.Unit Test UI", @"Unit Test UI");
             return cell;
         }
     }
@@ -241,7 +241,7 @@
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-        cell.textLabel.text = @"All Events";
+        cell.textLabel.text = NSLocalizedString(@"events.All Events", @"All Events");
         cell.detailTextLabel.text = [scoreboard formattedValue:[scoreboard allEventsCount]];
         return cell;
     }
@@ -252,17 +252,17 @@
     if (section == SEC_NETWORK) {
         switch (indexPath.row) {
             case 0: {
-                field = @"Established Connections";
+                field = NSLocalizedString(@"Network.Established Connections", @"Established Connections");
                 value = [scoreboard formattedValue:scoreboard.connectionCount];
                 break;
             }
             case 1: {
-                field = @"Failed Connections";
+                field = NSLocalizedString(@"Network.Failed Connections", @"Failed Connections");
                 value = [scoreboard formattedValue:scoreboard.connectionFailedCount];
                 break;
             }
             case 2: {
-                field = @"Reachability Changes";
+                field = NSLocalizedString(@"Network.Reachability Changes", @"Reachability Changes");
                 value = [scoreboard formattedValue:scoreboard.reachabilityChangedCount];
                 break;
             }
@@ -274,17 +274,17 @@
     else if (section == SEC_REQUESTS) {
         switch (indexPath.row) {
             case 0: {
-                field = @"Dynamic Updates";
+                field = NSLocalizedString(@"SEC_ReQUEST.Dynamic Updates", @"Dynamic Updates");
                 value = [scoreboard formattedValue:scoreboard.dynamicUpdateCount];
                 break;
             }
             case 1: {
-                field = @"Command Requests";
+                field = NSLocalizedString(@"SEC_ReQUEST.Command Requests", @"Command Requests");
                 value = [scoreboard formattedValue:scoreboard.commandRequestCount];
                 break;
             }
             case 2: {
-                field = @"Command Responses";
+                field = NSLocalizedString(@"SEC_ReQUEST.Command Responses", @"Command Responses");
                 value = [scoreboard formattedValue:scoreboard.commandResponseCount];
                 break;
             }
@@ -301,7 +301,7 @@
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-        cell.textLabel.text = @"Email Logs & Data";
+        cell.textLabel.text = NSLocalizedString(@"Email Logs & Data", @"Email Logs & Data");
         return cell;
     }
 
@@ -334,11 +334,11 @@
 
     NSInteger row = indexPath.row;
     if (row == 0) {
-        cell.textLabel.text = @"Production";
+        cell.textLabel.text = NSLocalizedString(@"cloudSection.row0.Production", @"Production");
         cell.accessoryType = useProduction ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
     else if (row == 1) {
-        cell.textLabel.text = @"Development";
+        cell.textLabel.text = NSLocalizedString(@"cloudSection.row1.Development", @"Development");
         cell.accessoryType = useProduction ? UITableViewCellAccessoryNone : UITableViewCellAccessoryCheckmark;
     }
     else {
@@ -380,7 +380,7 @@
             UIPasteboard *pb = [UIPasteboard generalPasteboard];
             pb.string = token;
 
-            [self showToast:@"Copied Almond MAC"];
+            [self showToast:NSLocalizedString(@"Copied Almond MAC", @"Copied Almond MAC")];
         }
     }
     else if (section == SEC_NOTIFICATIONS) {
@@ -393,13 +393,13 @@
             UIPasteboard *pb = [UIPasteboard generalPasteboard];
             pb.string = token;
 
-            [self showToast:@"Copied token"];
+            [self showToast:NSLocalizedString(@"Copied token", @"Copied token")];
         }
         else if (row == 1) {
             SFIPreferences *prefs = [SFIPreferences instance];
             [prefs resetDebugPushNotificationReceivedCount];
             [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            [self showToast:@"Reset counter"];
+            [self showToast:NSLocalizedString(@"Reset counter", @"Reset counter")];
         }
         else if (row == 2) {
             ScoreboardDebugLoggerViewController *ctrl = [ScoreboardDebugLoggerViewController new];
@@ -435,11 +435,11 @@
     }
     else if (section == SEC_LOGS) {
         if (![MFMailComposeViewController canSendMail]) {
-            [self showToast:@"Sending Mail is not supported on this device"];
+            [self showToast:NSLocalizedString(@"Sending Mail is not supported on this device", @"Sending Mail is not supported on this device")];
             return;
         }
 
-        [self showHUD:@"Preparing..."];
+        [self showHUD:NSLocalizedString(@"Scoreboard.Preparing...", @"Preparing...")];
 
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
             MFMailComposeViewController *ctrl = [self prepareMailComposer];
@@ -547,10 +547,10 @@
     [ctrl dismissViewControllerAnimated:YES completion:^() {
         if (result == MFMailComposeResultFailed) {
             if (error) {
-                [self showToast:[NSString stringWithFormat:@"Failed to send mail: %@", error.description]];
+                [self showToast:[NSString stringWithFormat:NSLocalizedString(@"Failed to send mail: %@", @"Failed to send mail: %@"), error.description]];
             }
             else {
-                [self showToast:@"Failed to send mail"];
+                [self showToast:NSLocalizedString(@"Failed to send mail", @"Failed to send mail")];
             }
         }
     }];

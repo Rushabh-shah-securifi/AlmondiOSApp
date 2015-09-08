@@ -77,7 +77,7 @@
     NSBundle *bundle = [NSBundle mainBundle];
     NSString *shortVersion = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
     NSString *buildNumber = [bundle objectForInfoDictionaryKey:(NSString *) kCFBundleVersionKey];
-    NSString *version = [NSString stringWithFormat:@"version %@ (%@)", shortVersion, buildNumber];
+    NSString *version = [NSString stringWithFormat:NSLocalizedString(@"read-almond-version %@ (%@)",@"version %@ (%@)"), shortVersion, buildNumber];
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     enum SFIAlmondConnectionMode mode = [toolkit defaultConnectionMode];
@@ -182,10 +182,10 @@
     if (sectionCount == 2) {
         switch (section) {
             case 0:
-                label.text = @"LOCATION";
+                label.text = NSLocalizedString(@"Draw viecontroller.label LOCATION",@"LOCATION");
                 break;
             case 1:
-                label.text = @"INFO";
+                label.text = NSLocalizedString(@"Draw viecontroller.label SETTINGS",@"SETTINGS");
                 break;
             default:
                 label.text = @"";
@@ -195,13 +195,13 @@
     else {
         switch (section) {
             case 0:
-                label.text = @"LOCATION";
+                label.text = NSLocalizedString(@"Draw viecontroller.label LOCATION",@"LOCATION");
                 break;
             case 1:
-                label.text = @"SETTINGS";
+                label.text =  NSLocalizedString(@"Draw viecontroller.label SETTINGS",@"SETTINGS");
                 break;
             case 2:
-                label.text = @"INFO";
+                label.text = NSLocalizedString(@"Draw viecontroller.label INFO",@"INFO");
                 break;
             default:
                 label.text = @"";

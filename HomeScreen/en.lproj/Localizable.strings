@@ -151,6 +151,7 @@ reset at the moment. Try again later.";
 "router.hud.Establishing Local Link..." = "Establishing Local Link...";
 
 /* sensors */
+"Force sensor data refresh" = "Force sensor data refresh";
 "Device has been tampered" = "Device has been tampered";
 "sensors.button.Dismiss" = "Dismiss";
 "sensors.label.Status" = "Status";
@@ -647,7 +648,3 @@ your home devices from anywhere.";
 "hud message-Setting Almond to Home Mode"="Setting HomeScreen to Home Mode";
 "alertview Can't connect to your Almond. Please select a connection method."="Can't connect to your HomeScreen. Please select a connection method.";
 "alertview localconnection_Connected to your Almond locally."="Connected to your HomeScreen locally.";
-
-
-
-

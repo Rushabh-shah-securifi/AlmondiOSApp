@@ -590,7 +590,7 @@
     [self addSubview:control];
     [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
 
-    SFIHighlightedButton *button = [self addButton:@"View Logs"];
+    SFIHighlightedButton *button = [self addButton:NSLocalizedString(@"sensor.deivice-showlog.button.viewlogs", @"View Logs")];
     [button addTarget:self action:@selector(onShowSensorLogs:) forControlEvents:UIControlEventTouchUpInside];
 
     [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
@@ -951,7 +951,7 @@
     //
     CGRect frame = CGRectMake(0, 0, 90, 30);
     UILabel *rightView = [[UILabel alloc] initWithFrame:frame];
-    rightView.text = @"seconds";
+    rightView.text = NSLocalizedString(@"sensor.deivice-warning_rightview.seconds",@"seconds");
     rightView.font = [field.font fontWithSize:field.font.pointSize - 3];
     rightView.textColor = [UIColor whiteColor];
     rightView.textAlignment = NSTextAlignmentRight;
@@ -976,11 +976,11 @@
 
     UIFont *font = [self standardButtonFont];
 
-    SFIHighlightedButton *turnOff_button = [self addButton:@"Turn Off" frame:off_rect];
+    SFIHighlightedButton *turnOff_button = [self addButton:NSLocalizedString(@"sensor.deivice.Highlightbutton Turn Off",@"Turn Off") frame:off_rect];
     turnOff_button.titleLabel.font = font;
     [turnOff_button addTarget:self action:@selector(onStopAlarm_21) forControlEvents:UIControlEventTouchUpInside];
 
-    SFIHighlightedButton *turnOn_button = [self addButton:@"Turn On" frame:on_rect];
+    SFIHighlightedButton *turnOn_button = [self addButton:NSLocalizedString(@"sensor.deivice.Highlightbutton Turn ON",@"Turn ON") frame:on_rect];
     turnOn_button.titleLabel.font = font;
     [turnOn_button addTarget:self action:@selector(onStartAlarm_21) forControlEvents:UIControlEventTouchUpInside];
 
@@ -1064,8 +1064,8 @@
 
     NSString *const degrees_symbol = @"\u00B0";
 
-    NSString *temp_str = [NSString stringWithFormat:@"Temperature is %@%@", temperature, degrees_symbol];
-    NSString *humid_str = [NSString stringWithFormat:@"Humidity is %@%%", humidity];
+    NSString *temp_str = [NSString stringWithFormat:NSLocalizedString(@"Temperature is %@%@",@"Temperature is %@%@"), temperature, degrees_symbol];
+    NSString *humid_str = [NSString stringWithFormat:NSLocalizedString(@"Humidity is %@%%",@"Humidity is %@%%"), humidity];
 
     [self addStatusLabel:@[temp_str, humid_str]];
     [self markYOffset:55];
@@ -1126,7 +1126,7 @@ ColorDimmableLight device has 5 index
         [self addSubview:brightness_slider];
         [self markYOffset:20];
 
-        [self placeNameLabel:@"Brightness" valueLabel:brightness_slider.sliderFormattedValue];
+        [self placeNameLabel:NSLocalizedString(@"sensors.label.DimmableLight-Brightness",@"Brightness") valueLabel:brightness_slider.sliderFormattedValue];
     }
 
     // saturation
@@ -1140,7 +1140,7 @@ ColorDimmableLight device has 5 index
         [self addSubview:saturation_slider];
         [self markYOffset:20];
 
-        [self placeNameLabel:@"Saturation" valueLabel:saturation_slider.sliderFormattedValue];
+        [self placeNameLabel:NSLocalizedString(@"sensors.label.DimmableLight-Saturation",@"Saturation") valueLabel:saturation_slider.sliderFormattedValue];
     }
 
     // Color Temperature
@@ -1166,7 +1166,7 @@ ColorDimmableLight device has 5 index
         [self addSubview:temp_slider];
         [self markYOffset:20];
 
-        [self placeNameLabel:@"Color Temperature" valueLabel:temp_slider.sliderFormattedValue];
+        [self placeNameLabel:NSLocalizedString(@"sensors.label.DimmableLight-Color Temperature",@"Color Temperature")  valueLabel:temp_slider.sliderFormattedValue];
     }
 
     [self markYOffset:10];
@@ -1217,7 +1217,7 @@ HUE	                3	Decimal		0-65535	Yes
         [self addSubview:brightness_slider];
         [self markYOffset:20];
 
-        [self placeNameLabel:@"Brightness" valueLabel:brightness_slider.sliderFormattedValue];
+        [self placeNameLabel:NSLocalizedString(@"sensors.label.HueLamp-Brightness", @"Brightness") valueLabel:brightness_slider.sliderFormattedValue];
     }
 
     // saturation
@@ -1231,7 +1231,7 @@ HUE	                3	Decimal		0-65535	Yes
         [self addSubview:saturation_slider];
         [self markYOffset:20];
 
-        [self placeNameLabel:@"Saturation" valueLabel:saturation_slider.sliderFormattedValue];
+        [self placeNameLabel:NSLocalizedString(@"sensors.label.HueLamp-Saturation", @"Saturation") valueLabel:saturation_slider.sliderFormattedValue];
     }
 
     [self markYOffset:10];
