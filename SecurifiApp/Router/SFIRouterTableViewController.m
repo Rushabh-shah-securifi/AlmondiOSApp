@@ -114,6 +114,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
 
+    self.disposed = NO;
     [self initializeAlmondData:RouterViewReloadPolicy_on_state_change];
 }
 
@@ -218,7 +219,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     else if (self.isAlmondUnavailable) {
         state = RouterViewState_almond_unavailable;
     }
-    else if (![self isCloudOnline]) {
+    else if (![self isNetworkOnline]) {
         state = RouterViewState_cloud_offline;
     }
     else {
@@ -247,8 +248,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     return [self.almondMac isEqualToString:NO_ALMOND];
 }
 
-- (BOOL)isCloudOnline {
-    return [[SecurifiToolkit sharedInstance] isCloudOnline];
+- (BOOL)isNetworkOnline {
+    return [[SecurifiToolkit sharedInstance] isNetworkOnline];
 }
 
 #pragma mark - Commands
@@ -336,6 +337,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             return;
         }
         [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
+        [self sendRouterSummaryRequest];
     });
 }
 
