@@ -23,6 +23,7 @@
 "Please enter a valid code." = "Please enter a valid code.";
 "alert.msg.Logout was unsuccessful" = "Sorry. Logout was unsuccessful. Please try again.";
 "alert.title.Logout Unsuccessful" = "Logout Unsuccessful";
+//m
 "cloudlink.title.Cloud Link" = "Cloud Link";
 "cloudlink.label.Linking to Cloud" = "Linking to Cloud";
 "cloudlink.label.Name" = "Name";
@@ -86,8 +87,8 @@ reset at the moment. Try again later.";
 
 /* router tab */
 "router.offline-msg.label.Please check the router." = "Please check the router.";
-"router.card-title.Cloud Almond Link" = "Cloud HomeScreen Link";
-"router.card-title.Local Almond Link" = "Local HomeScreen Link";
+"router.card-title.Cloud Almond Link" = "Cloud Almond Link";
+"router.card-title.Local Almond Link" = "Local Almond Link";
 "router.card-title.Wireless Settings" = "Wireless Settings";
 "router.wireless-status.Enabled" = "enabled";
 "router.wireless-status.Disabled" = "disabled";
@@ -95,8 +96,8 @@ reset at the moment. Try again later.";
 "router.card-title.Devices & Users" = "Devices & Users";
 "router.devices-summary.%d connected, %d blocked" = "%d connected, %d blocked";
 "router.software-version.header.Software Update Available" = "Software Update Available";
-"router.software-version.header.instructions" = "Please tap \"Settings\" on your HomeScreen";
-"router.software-version.Update Available" = "Update Availabe";
+"router.software-version.header.instructions" = "Please tap \"Settings\" on your Almond";
+"router.software-version.Update Available" = "Update Available";
 "router.software-version.Current version" = "Current version";
 "router.software-version.Not available" = "Version information is not available.";
 "router.card-title.Router Reboot" = "Router Reboot";
@@ -112,6 +113,7 @@ reset at the moment. Try again later.";
 "router.card-title.Send Logs" = "Send Logs";
 "router.Sends %@'s logs to our server" = "Sends %@'s logs to our server";
 "router.hud.Sending Logs." = "Instructing router to send logs";
+
 "router.devicestatus.Connected as %@" = "Connected as %@";
 "router.devicesmac.MAC address is %@" = "MAC address is %@";
 "router.deviceIP.IP address is %@" = "IP address is %@";
@@ -134,6 +136,7 @@ reset at the moment. Try again later.";
 "router.offline-msg. is offline" = " is offline";
 "router.log-textfield-placeholder.Describe your problem here" = "Describe your problem here";
 "router.log-send-success.summary.Thanks for sending logs" = "Thanks for sending logs";
+"router.log-send-error.There was an error sending logs" = "There was an error sending logs";
 "router.log-firmware-not-supported.Please update your router's firmware" = "Please update your router's firmware";
 "router.log-firmware-not-supported.in order to activate this functionality" = "in order to activate this functionality";
 "router.version-title.Update now?" = "Update now?";
@@ -233,16 +236,20 @@ reset at the moment. Try again later.";
 "smoke-detector-Warning" = "Warning";
 "smoke-detector-Emergency" = "Emergency";
 "smoke-detector Smoke :%@ , CO :%@"="Smoke :%@ , CO :%@";
+
 "sensor-detail-Fan cell On" = "On";
 "sensor-detail-Fan cell Off" = "Off";
 "sensor-detail-Target Temp" = "Target Temp";
+
 "sensor.notificaiton.fanindexpath.On" = "On";
 "sensor.notificaiton.fanindexpath.Off" = "Off";
 "sensor.awaymode.indexpath Home" = "Home";
+"sensor.awaymode.indexpath Away" = "Away";
 "sensor.mode indexpath Off" = "Off";
 "sensor.mode indexpath Cool" = "Cool";
 "sensor.mode indexpath Heat" = "Heat";
 "sensor.mode indexpath Heat-Cool" = "Heat-Cool";
+
 "device-property-fanindexpah false" = "false";
 "device-property-fanindexpah true" = "true";
 "device property on mobile hud Unable to update sensor"="Unable to update sensor";
@@ -269,6 +276,7 @@ Follow it, then tap Continue to login.";
 "signup.footerbutton.Resend the activation email" = "Resend the activation email";
 "signup.footerbutton.Signup using another email" = "Signup using another email";
 "signup.footerlabel.Do you want to create another account?" = "Do you want to create another account?";
+
 
 /* Accounts */
 "accounts.navbar-title.settings" = "Settings";
@@ -353,14 +361,12 @@ Follow it, then tap Continue to login.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode2" = "You need to fill all the fields.";
 
 /* Notifications */
-
 "notifications.title.Recent Activities" = "Recent Activities";
 "notifications.headerfooter.mode.The End" ="The End";
 "notifications.date.Today" = "Today";
 "notifications.bucketdate.Yesterday" = "Yesterday";
 
 /* Scenes */
-
 "scenes.hud.loadingScenes" = "Loading scenes...";
 "scenes.hud.deletingScene" = "Deleting Scene...";
 "scenes.hud.activatingScene" = "Activating scene...";
@@ -382,12 +388,10 @@ Follow it, then tap Continue to login.";
 "scene.alert-button.OK" = "OK";
 
 /* Scoreboard */
-
 "Scoreboard" = "Scoreboard";
 "Refresh.Scoreboard" = "Refresh Scoreboard";
 "scoreboard.section.Cloud" = "Cloud";
 "scoreboard.section.PushNotifications" = "Push Notifications";
-
 "scoreboard.section.Events" = "Events";
 "scoreboard.section.Network" = "Network";
 "scoreboard.section.Commands & Updates" = "Commands & Updates";
@@ -414,7 +418,6 @@ Follow it, then tap Continue to login.";
 "Reset counter" = "Reset counter";
 "Sending Mail is not supported on this device" = "Sending Mail is not supported on this device";
 "Scoreboard.Preparing..." = "Preparing...";
-
 "Local Network Enabled" = "Local Network Enabled";
 "scoreboard.localnetwork.IP Address" = "IP Address";
 "scoreboard.localnetwork.Port" = "Port";
@@ -435,12 +438,13 @@ Follow it, then tap Continue to login.";
 "mainviewcontroller_Sorry! Could not connect to the cloud service." = "Sorry! Could not connect to the cloud service.";
 "main view controller Sorry! Push Notification was not registered." = "Sorry! Push Notification was not registered.";
 "main view controller Sorry! Push Notification was not deregistered." = "Sorry! Push Notification was not deregistered.";
+"mainview-configure-Debug" = "Debug";
 
 /* Table View Controller */
 "In process of connecting. Change connection method." = "In process of connecting. Change connection method.";
 "Cloud Connection" = "Cloud Connection";
+"connection status Cloud Connection" = "Cloud Connection";
 "connection status Local Connection" = "Connection";
-
 "alert.title-Switch to Local Connection" = "Switch to Local Connection";
 "alert.title-Edit Local Connection Settings" = "Edit Local Connection Settings";
 "Alert view title-Retry Cloud Connection" = "Retry Cloud Connection";
@@ -449,24 +453,19 @@ Follow it, then tap Continue to login.";
 "Alert view title-Edit Local Connection Settings" = "Edit Local Connection Settings";
 "alert view error_Cloud Connection" = "Cloud Connection";
 "alert view error_Local Connection" = "Local Connection";
-
 "alertview localconnection_Switch to Cloud Connection" = "Switch to Cloud Connection";
 "alertview Local connection settings are missing." = "Local connection settings are missing.";
 "alertview title Add Local Connection Settings" = "Add Local Connection Settings";
-
-
 "alert msg offline Local Retry Local Connection" = "Retry Local Connection";
 "alert title offline Local Switch to Cloud Connection" = "Switch to Cloud Connection";
 "alert title offline Local Edit Local Connection Settings" = "Edit Local Connection Settings";
-
 "mainviewcontroller hud Loading router data" = "Loading router data";
 "mainviewcontroller hud Loading sensor data" = "Loading sensor data";
 "mainviewcontroller hud hud.Updating settings..." = "Updating settings...";
 "Cancel"="Cancel";
-
+"alert title offline Local Retry Local Connection" = "Retry Local Connection";
 
 /* Wifi */
-
 "wifi.hud.UpdatingWifiClient" = "Updating Wifi Client...";
 "wifi.hud.removeClient" = "Deleting wifi client...";
 "wifi.button.deleteClient" = "Remove";
@@ -483,7 +482,6 @@ Follow it, then tap Continue to login.";
 "SFIWiFiClientsListViewController-propertyNames-Remove" = "Remove";
 "Presence sensor Yes"="Yes";
 "Presence sensor NO" = "NO";
-
 "response.alert-Oops" = "Oops";
 "response.alert-Sorry, There was some problem with this request, try later!" = "Sorry, There was some problem with this request, try later!";
 "response.alert-OK" = "OK";
@@ -647,3 +645,5 @@ your home devices from anywhere.";
 "hud message-Setting Almond to Home Mode"="Setting HomeScreen to Home Mode";
 "alertview Can't connect to your Almond. Please select a connection method."="Can't connect to your HomeScreen. Please select a connection method.";
 "alertview localconnection_Connected to your Almond locally."="Connected to your HomeScreen locally.";
+
+
