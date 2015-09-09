@@ -23,7 +23,6 @@
 "Please enter a valid code." = "Please enter a valid code.";
 "alert.msg.Logout was unsuccessful" = "Sorry. Logout was unsuccessful. Please try again.";
 "alert.title.Logout Unsuccessful" = "Logout Unsuccessful";
-//m
 "cloudlink.title.Cloud Link" = "Cloud Link";
 "cloudlink.label.Linking to Cloud" = "Linking to Cloud";
 "cloudlink.label.Name" = "Name";
@@ -113,7 +112,6 @@ reset at the moment. Try again later.";
 "router.card-title.Send Logs" = "Send Logs";
 "router.Sends %@'s logs to our server" = "Sends %@'s logs to our server";
 "router.hud.Sending Logs." = "Instructing router to send logs";
-//m
 "router.devicestatus.Connected as %@" = "Connected as %@";
 "router.devicesmac.MAC address is %@" = "MAC address is %@";
 "router.deviceIP.IP address is %@" = "IP address is %@";
@@ -219,7 +217,6 @@ reset at the moment. Try again later.";
 "sensors.heating.temperature" = "Heating Temperature";
 "sensors.cooling.temperature" = "Cooling Temperature";
 
-//r
 "sensor.deivice-showlog.button.viewlogs" = "View Logs";
 "sensor.deivice-warning_rightview.seconds" = "seconds";
 "sensor.deivice.Highlightbutton Turn Off" = "Turn Off";
@@ -232,7 +229,7 @@ reset at the moment. Try again later.";
 "sensors.label.HueLamp-Brightness" = "Brightness";
 "sensors.label.HueLamp-Saturation" = "Saturation";
 "sensors.label.HueLamp-Color" = "Color";
-//rn
+
 "smoke-detector-Warning" = "Warning";
 "smoke-detector-Emergency" = "Emergency";
 "smoke-detector Smoke :%@ , CO :%@"="Smoke :%@ , CO :%@";
@@ -249,6 +246,15 @@ reset at the moment. Try again later.";
 "device-property-fanindexpah false" = "false";
 "device-property-fanindexpah true" = "true";
 "device property on mobile hud Unable to update sensor"="Unable to update sensor";
+
+"Sensorview-almondata-Get Started" = "Get Started";
+"showtoast Unable to update sensor" = "Unable to update sensor";
+"Force sensor data refresh" = "Force sensor data refresh";
+"tableviewcell-Updating sensor data.\nPlease wait." = "Updating sensor data.\nPlease wait.";
+"Tharmostat_setpoint-SET POINT %@%@" = "SET POINT %@%@";
+"Tharmostat_setpoint-temperature" = "Temperature";
+"sensor-property-edit smokedetector Warning" = "Warning";
+"sensor-property-edit smokedetector Emergency" = "Emergency";
 
 /* signup */
 "signup.navbar-title.Sign up" = "Sign up";
@@ -348,7 +354,6 @@ Follow it, then tap Continue to login.";
 
 /* Notifications */
 
-//m
 "notifications.title.Recent Activities" = "Recent Activities";
 "notifications.headerfooter.mode.The End" ="The End";
 "notifications.date.Today" = "Today";
@@ -360,7 +365,7 @@ Follow it, then tap Continue to login.";
 "scenes.hud.deletingScene" = "Deleting Scene...";
 "scenes.hud.activatingScene" = "Activating scene...";
 "scenes.hud.creatingScene"   = "Creating scene...";
-//m
+
 "scene.macro.Could not update sensor\ndata." = "Could not update sensor data.";
 "scene.thermostat-title.COOLING TEMP." = "COOLING TEMP.";
 "scene.thermostat-title.HEATING TEMP." = "HEATING TEMP.";
@@ -377,7 +382,7 @@ Follow it, then tap Continue to login.";
 "scene.alert-button.OK" = "OK";
 
 /* Scoreboard */
-//r
+
 "Scoreboard" = "Scoreboard";
 "Refresh.Scoreboard" = "Refresh Scoreboard";
 "scoreboard.section.Cloud" = "Cloud";
@@ -416,18 +421,15 @@ Follow it, then tap Continue to login.";
 "scoreboard.localnetwork.Password" = "Password";
 
 /* Sensor Support */
-//r
-
 "sensor support- a value has changed" = " a value has changed";
 
 /* Draw View Controller */
-//r
 "Draw viecontroller.label LOCATION" = "LOCATION";
 "Draw viecontroller.label SETTINGS" = "SETTINGS";
 "Draw viecontroller.label INFO" = "INFO";
+"read-almond-version %@ (%@)" = "version %@ (%@)";
 
 /* Main View Controller */
-//r
 "Sorry! Unable to establish Internet route to cloud service." = "Sorry! Unable to establish Internet route to cloud service.";
 "mainviewcontroller_Connecting. Please wait!" = "Connecting. Please wait!";
 "mainviewcontroller_Sorry! Could not connect to the cloud service." = "Sorry! Could not connect to the cloud service.";
@@ -468,8 +470,6 @@ Follow it, then tap Continue to login.";
 "wifi.hud.UpdatingWifiClient" = "Updating Wifi Client...";
 "wifi.hud.removeClient" = "Deleting wifi client...";
 "wifi.button.deleteClient" = "Remove";
-
-//r
 "CONNECTED" = "CONNECTED";
 "NOT CONNECTED" = "NOT CONNECTED";
 
@@ -489,7 +489,6 @@ Follow it, then tap Continue to login.";
 "response.alert-OK" = "OK";
 
 /* Sensor Index Support */
-
 " Fan is " = " Fan is ";
 " Fan is set to " = " Fan is set to ";
 " brightness changed to " = " brightness changed to ";
@@ -581,7 +580,7 @@ Follow it, then tap Continue to login.";
 "This Almond is already linked to another user." = "This HomeScreen is already linked to another user.
 Contact us at support@homescreen.com";
 "Almond could not be affiliated" = "HomeScreen could not be affiliated.\n%@";
-//m
+
 "Run the Almond Account app and enter the code displayed." = "Run the HomeScreen Account app and enter the code displayed.";
 "cloudlink.button.Link Almond" = "Link HomeScreen";
 "cloudlink.button.Add Almond Locally" = "Add HomeScreen Locally";
@@ -592,7 +591,7 @@ your home devices from anywhere.";
 
 /* router tab */
 "router.offline-msg.label.Almond is Offline." = "HomeScreen is Offline.";
-//m
+
 "router.msg-link.The Almond was successfully linked." = "The HomeScreen was successfully linked.";
 "router.btn-title.Unlink Almond?" = "Unlink HomeScreen?";
 "router.btn-title.Link Almond Locally" = "Link HomeScreen Locally";
@@ -635,12 +634,10 @@ your home devices from anywhere.";
 "accounts.deleteMeAsSecondaryUser.failure.default" = "Sorry! Removing of shared HomeScreen was unsuccessful.";
 
 /*scoreboard*/
-//r
 "scoreboard.section.AlmondMACs"="HomeScreen MACs";
 "Copied Almond MAC" = "Copied HomeScreen MAC";
 
 /*SFItableviewcontroller*/
-//r
 "alert.message-Connected to your Almond via cloud."="Connected to your HomeScreen via cloud.";
 "alertview -Connected to your Almond via cloud."="Connected to your HomeScreen via cloud.";
 "Add Local Connection Settings"="Add Local Connection Settings";
