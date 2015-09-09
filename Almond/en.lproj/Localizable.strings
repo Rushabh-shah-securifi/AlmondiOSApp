@@ -7,6 +7,7 @@
  */
 
 
+
 /*------- Localization strings common across all apps -------*/
 
 
@@ -244,6 +245,7 @@ reset at the moment. Try again later.";
 "sensor.notificaiton.fanindexpath.On" = "On";
 "sensor.notificaiton.fanindexpath.Off" = "Off";
 "sensor.awaymode.indexpath Home" = "Home";
+"sensor.awaymode.indexpath Away" = "Away";
 "sensor.mode indexpath Off" = "Off";
 "sensor.mode indexpath Cool" = "Cool";
 "sensor.mode indexpath Heat" = "Heat";
@@ -366,7 +368,6 @@ Follow it, then tap Continue to login.";
 "notifications.bucketdate.Yesterday" = "Yesterday";
 
 /* Scenes */
-
 "scenes.hud.loadingScenes" = "Loading scenes...";
 "scenes.hud.deletingScene" = "Deleting Scene...";
 "scenes.hud.activatingScene" = "Activating scene...";
@@ -432,17 +433,18 @@ Follow it, then tap Continue to login.";
 "Draw viecontroller.label INFO" = "INFO";
 "read-almond-version %@ (%@)" = "version %@ (%@)";
 
-
 /* Main View Controller */
 "Sorry! Unable to establish Internet route to cloud service." = "Sorry! Unable to establish Internet route to cloud service.";
 "mainviewcontroller_Connecting. Please wait!" = "Connecting. Please wait!";
 "mainviewcontroller_Sorry! Could not connect to the cloud service." = "Sorry! Could not connect to the cloud service.";
 "main view controller Sorry! Push Notification was not registered." = "Sorry! Push Notification was not registered.";
 "main view controller Sorry! Push Notification was not deregistered." = "Sorry! Push Notification was not deregistered.";
+"mainview-configure-Debug" = "Debug";
 
 /* Table View Controller */
 "In process of connecting. Change connection method." = "In process of connecting. Change connection method.";
 "Cloud Connection" = "Cloud Connection";
+"connection status Cloud Connection" = "Cloud Connection";
 "connection status Local Connection" = "Connection";
 "alert.title-Switch to Local Connection" = "Switch to Local Connection";
 "alert.title-Edit Local Connection Settings" = "Edit Local Connection Settings";
@@ -461,7 +463,8 @@ Follow it, then tap Continue to login.";
 "mainviewcontroller hud Loading router data" = "Loading router data";
 "mainviewcontroller hud Loading sensor data" = "Loading sensor data";
 "mainviewcontroller hud hud.Updating settings..." = "Updating settings...";
-"Cancel"="Cancel";
+"Cancel" = "Cancel";
+"alert title offline Local Retry Local Connection" = "Retry Local Connection";
 
 /* Wifi */
 "wifi.hud.UpdatingWifiClient" = "Updating Wifi Client...";
@@ -485,7 +488,6 @@ Follow it, then tap Continue to login.";
 "response.alert-OK" = "OK";
 
 /* Sensor Index Support */
-
 " Fan is " = " Fan is ";
 " Fan is set to " = " Fan is set to ";
 " brightness changed to " = " brightness changed to ";
@@ -629,10 +631,9 @@ your home devices from anywhere.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "You are not associated with this Almond";
 "accounts.deleteMeAsSecondaryUser.failure.default" = "Sorry! Removing of shared Almond was unsuccessful.";
 
-/* scoreboard *///me
+/* scoreboard */
 "scoreboard.section.AlmondMACs" = "Almond MACs";
 "Copied Almond MAC" = "Copied Almond MAC";
-
 
 /* tableviewcontroller */
 "alert.message-Connected to your Almond via cloud." = "Connected to your Almond via cloud.";
@@ -644,5 +645,6 @@ your home devices from anywhere.";
 "hud message-Setting Almond to Home Mode" = "Setting Almond to Home Mode";
 "alertview Can't connect to your Almond. Please select a connection method." = "Can't connect to your Almond. Please select a connection method.";
 "alertview localconnection_Connected to your Almond locally." = "Connected to your Almond locally.";
+
 
 
