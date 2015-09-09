@@ -444,7 +444,7 @@ Follow it, then tap Continue to login.";
 "In process of connecting. Change connection method." = "In process of connecting. Change connection method.";
 "Cloud Connection" = "Cloud Connection";
 "connection status Cloud Connection" = "Cloud Connection";
-"connection status Local Connection" = "Connection";
+"connection status Local Connection" = "Local Connection";
 "alert.title-Switch to Local Connection" = "Switch to Local Connection";
 "alert.title-Edit Local Connection Settings" = "Edit Local Connection Settings";
 "Alert view title-Retry Cloud Connection" = "Retry Cloud Connection";
