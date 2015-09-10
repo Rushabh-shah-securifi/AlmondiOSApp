@@ -25,9 +25,15 @@ typedef NS_ENUM(int, TabBarMode) {
 @property(nonatomic) UIViewController *routerTab;
 @property(nonatomic) UIViewController *scenesTab;
 @property(nonatomic) UIViewController *scoreboardTab;
+@property(nonatomic) BOOL isDismissed;
 @end
 
 @implementation SFITabBarController
+
+- (void)dealloc {
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver:self];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -44,17 +50,24 @@ typedef NS_ENUM(int, TabBarMode) {
     [center addObserver:self selector:@selector(onTryChangeTabs:) name:kSFIDidUpdateAlmondList object:nil];
 }
 
-- (void)dealloc {
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center removeObserver:self];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    
+    if (self.isBeingDismissed || self.isMovingFromParentViewController) {
+        self.isDismissed = YES;
+    }
 }
 
 - (void)onTryChangeTabs:(NSNotification *)sender {
     enum TabBarMode mode = [self pickTabMode];
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.isDismissed) {
+            return;
+        }
         if (self.currentTabs == mode) {
             return;
         }
+
         NSArray *list = [self pickTabList:mode];
         self.currentTabs = mode;
 
