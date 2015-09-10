@@ -593,7 +593,7 @@ your home devices from anywhere.";
 "router.msg-link.The Almond was successfully linked." = "The Almond was successfully linked.";
 "router.btn-title.Unlink Almond?" = "Unlink Almond?";
 "router.btn-title.Link Almond Locally" = "Link Almond Locally";
-"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.";
+"router.title.No Cloud Warning" = "Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.";
 "router.error-msg.This Almond is already linked." = "This Almond is already linked.";
 "router.error-msg.An error occurred trying to link with the Almond. Please try again." = "An error occurred trying to link with the Almond. Please try again.";
 

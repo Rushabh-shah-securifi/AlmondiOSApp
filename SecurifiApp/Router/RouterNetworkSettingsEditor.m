@@ -294,8 +294,10 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
     }
 
     switch (self.state) {
-        case RouterNetworkSettingsEditorState_promptForLinkCode:
-            return NSLocalizedString(@"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n", @"Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely."); // newline adds bottom padding
+        case RouterNetworkSettingsEditorState_promptForLinkCode: {
+            NSString *msg = NSLocalizedString(@"router.title.No Cloud Warning", @"Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.");
+            return [msg stringByAppendingString:@"\n"];  // newline adds bottom padding
+        }
 
         case RouterNetworkSettingsEditorState_successOnLink:
         case RouterNetworkSettingsEditorState_errorOnLink: {
