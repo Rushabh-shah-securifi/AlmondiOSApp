@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C21DAFB1BA16FE100E4A088 /* Login_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C21DAF91BA16FE100E4A088 /* Login_iPhone.storyboard */; };
+		1C21DAFC1BA17A9A00E4A088 /* Login_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C21DAF91BA16FE100E4A088 /* Login_iPhone.storyboard */; };
 		1C23E6D51A9C4581004D2D23 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */; };
 		1C23E6D61A9C4581004D2D23 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */; };
 		1C2F605F1B69E64F001CCA34 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C2F605D1B69E64F001CCA34 /* Scenes_Iphone.storyboard */; };
@@ -251,6 +253,7 @@
 /* Begin PBXFileReference section */
 		04DD44299464F3B8199632FD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		1C2056061A2EBBBA00975495 /* HomeScreen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeScreen.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1C21DAFA1BA16FE100E4A088 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Login_iPhone.storyboard; sourceTree = "<group>"; };
 		1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
 		1C2F605E1B69E64F001CCA34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Scenes_Iphone.storyboard; sourceTree = "<group>"; };
 		1C2F606C1B69E69D001CCA34 /* SFIAddSceneTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIAddSceneTableViewCell.h; sourceTree = "<group>"; };
@@ -852,6 +855,7 @@
 				1C7E7E2E1A41A26A0026F0BA /* AccountsStoryboard_iPhone.storyboard */,
 				1C7E7E301A41A26A0026F0BA /* Common-Localizable.strings */,
 				1C7E7E321A41A26A0026F0BA /* Common-MainStoryboard_iPhone.strings */,
+				1C21DAF91BA16FE100E4A088 /* Login_iPhone.storyboard */,
 				1C7E7E341A41A26A0026F0BA /* MainStoryboard_iPad.storyboard */,
 				1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */,
 				1C2F605D1B69E64F001CCA34 /* Scenes_Iphone.storyboard */,
@@ -1116,6 +1120,7 @@
 				1C9B1DA21A3EEA1200097D8F /* Localizable.strings in Resources */,
 				1C9B1DA31A3EEA1200097D8F /* MainStoryboard_iPhone.strings in Resources */,
 				1C9B1DA11A3EEA1200097D8F /* InfoPlist.strings in Resources */,
+				1C21DAFC1BA17A9A00E4A088 /* Login_iPhone.storyboard in Resources */,
 				1C9B1DA41A3EEA1200097D8F /* termsofuse.html in Resources */,
 				1C2F60601B69E65B001CCA34 /* Scenes_Iphone.storyboard in Resources */,
 				1C9B1D7A1A3EE9EF00097D8F /* HomeScreen-Images.xcassets in Resources */,
@@ -1142,6 +1147,7 @@
 				1C7E7E1A1A41A0D70026F0BA /* Localizable.strings in Resources */,
 				846414E61B736B80008AB07F /* AvenirLTStd-Roman.otf in Resources */,
 				846414DE1B736B80008AB07F /* AvenirLTStd-BookOblique.otf in Resources */,
+				1C21DAFB1BA16FE100E4A088 /* Login_iPhone.storyboard in Resources */,
 				1C2F605F1B69E64F001CCA34 /* Scenes_Iphone.storyboard in Resources */,
 				1C7E7E161A41A0D70026F0BA /* AccountsStoryboard_iPhone.strings in Resources */,
 				1C7E7E191A41A0D70026F0BA /* InfoPlist.strings in Resources */,
@@ -1457,6 +1463,14 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		1C21DAF91BA16FE100E4A088 /* Login_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				1C21DAFA1BA16FE100E4A088 /* Base */,
+			);
+			name = Login_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
 		1C2F605D1B69E64F001CCA34 /* Scenes_Iphone.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (

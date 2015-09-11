@@ -11,8 +11,9 @@
 #import "Analytics.h"
 #import "SFIActivationViewController.h"
 #import "UIFont+Securifi.h"
+#import "RouterNetworkSettingsEditor.h"
 
-@interface SFILoginViewController () <UITextFieldDelegate>
+@interface SFILoginViewController () <UITextFieldDelegate, RouterNetworkSettingsEditorDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic) BOOL lastEditedFieldWasPasswd;
 @property(nonatomic) NSTimer *timeoutTimer;
@@ -30,7 +31,7 @@
     };
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
 
-    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     _HUD.labelText = NSLocalizedString(@"hud.One moment please...", @"One moment please...");
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
@@ -59,36 +60,12 @@
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-    [center addObserver:self
-               selector:@selector(onReachabilityDidChange:)
-                   name:kSFIReachabilityChangedNotification
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onNetworkDown:)
-                   name:NETWORK_DOWN_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onLoginResponse:)
-                   name:kSFIDidCompleteLoginNotification
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(resetPasswordResponseCallback:)
-                   name:RESET_PWD_RESPONSE_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onKeyboardDidShow:)
-                   name:UIKeyboardDidShowNotification
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onKeyboardDidHide:)
-                   name:UIKeyboardDidHideNotification
-                 object:nil];
-
+    [center addObserver:self selector:@selector(onReachabilityDidChange:) name:kSFIReachabilityChangedNotification object:nil];
+    [center addObserver:self selector:@selector(onNetworkDown:) name:NETWORK_DOWN_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onResetPasswordResponse:) name:RESET_PWD_RESPONSE_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onLoginResponse:) name:kSFIDidCompleteLoginNotification object:nil];
+    [center addObserver:self selector:@selector(onKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [center addObserver:self selector:@selector(onKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 
     [[Analytics sharedInstance] markLoginForm];
 }
@@ -104,28 +81,10 @@
     self.emailID.delegate = nil;
     self.password.delegate = nil;
 
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-
-    [center removeObserver:self
-                      name:NETWORK_DOWN_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:kSFIDidCompleteLoginNotification
-                    object:nil];
-
-    [center removeObserver:self
-                      name:RESET_PWD_RESPONSE_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:UIKeyboardDidShowNotification
-                    object:nil];
-
-    [center removeObserver:self
-                      name:UIKeyboardDidHideNotification
-                    object:nil];
-
+    if (self.isBeingDismissed) {
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center removeObserver:self];
+    }
 }
 
 - (void)enableLoginButton:(BOOL)enabled {
@@ -234,11 +193,20 @@
 
 #pragma mark - UI Actions
 
-- (void)onSignupButton:(id)sender {
+- (void)onCreateAccountAction:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
     UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFISignupViewController"];
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:mainView];
     [self presentViewController:navCtrl animated:YES completion:nil];
+}
+
+- (void)onAddLocalAlmond:(id)sender {
+    RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+    editor.delegate = self;
+
+    UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
+
+    [self presentViewController:ctrl animated:YES completion:nil];
 }
 
 - (IBAction)onForgetPasswordAction:(id)sender {
@@ -292,10 +260,10 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.timeoutTimer invalidate];
         self.timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:timeoutSecs
-                                                                   target:self
-                                                                 selector:@selector(onTimeout)
-                                                                 userInfo:nil
-                                                                  repeats:NO];
+                                                             target:self
+                                                           selector:@selector(onTimeout)
+                                                           userInfo:nil
+                                                            repeats:NO];
         [self.HUD show:YES];
     });
 }
@@ -403,7 +371,7 @@
     [self asyncSendCommand:cloudCommand];
 }
 
-- (void)resetPasswordResponseCallback:(id)sender {
+- (void)onResetPasswordResponse:(id)sender {
     [self hideHud];
 
     NSNotification *notifier = (NSNotification *) sender;
@@ -469,12 +437,35 @@
     [self setLoginMsg:NSLocalizedString(@"Access your Almonds and your home devices from anywhere.", @"Access your Almonds and\nyour home devices from anywhere.")];
 }
 
-- (void)setHeadline:(NSString *)headline subHeadline:(NSString*)subHeadline loginButtonEnabled:(BOOL)enabled {
+- (void)setHeadline:(NSString *)headline subHeadline:(NSString *)subHeadline loginButtonEnabled:(BOOL)enabled {
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.headingLabel.text = headline;
         self.subHeadingLabel.text = subHeadline;
         self.loginButton.enabled = enabled;
     });
 }
+
+#pragma mark - RouterNetworkSettingsEditorDelegate methods
+
+- (void)networkSettingsEditorDidLinkAlmond:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    [editor.navigationController dismissViewControllerAnimated:YES completion:^() {
+        [self.delegate loginControllerDidCompleteLogin:self];
+    }];
+}
+
+- (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    [editor.navigationController dismissViewControllerAnimated:YES completion:^() {
+        [self.delegate loginControllerDidCompleteLogin:self];
+    }];
+}
+
+- (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {
+
+}
+
 
 @end

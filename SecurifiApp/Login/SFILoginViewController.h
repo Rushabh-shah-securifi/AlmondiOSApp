@@ -22,14 +22,16 @@
 
 @property(weak, nonatomic) IBOutlet UITextField *emailID;
 @property(weak, nonatomic) IBOutlet UITextField *password;
-@property(strong, nonatomic) IBOutlet UILabel *headingLabel;
-@property(strong, nonatomic) IBOutlet UILabel *subHeadingLabel;
+@property(weak, nonatomic) IBOutlet UILabel *headingLabel;
+@property(weak, nonatomic) IBOutlet UILabel *subHeadingLabel;
 @property(weak, nonatomic) IBOutlet UIButton *forgotPwdButton;
-@property(weak, nonatomic) IBOutlet UIBarButtonItem *loginButton;
+@property(weak, nonatomic) IBOutlet UIButton *loginButton;
 
 - (IBAction)onLoginAction:(id)sender;
 
-- (IBAction)onSignupButton:(id)sender;
+- (IBAction)onCreateAccountAction:(id)sender;
+
+- (IBAction)onAddLocalAlmond:(id)sender;
 
 - (IBAction)onForgetPasswordAction:(id)sender;
 
