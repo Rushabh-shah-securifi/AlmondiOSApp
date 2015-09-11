@@ -19,4 +19,5 @@
 @property(strong)SFIDevice *device;
 @property(strong)SFIDeviceValue *deviceValue;
 @property(nonatomic) UIColor *cellColor;
+@property (strong, nonatomic) IBOutlet UIView *headerView;
 @end

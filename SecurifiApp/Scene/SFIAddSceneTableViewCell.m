@@ -873,7 +873,7 @@
 }
 
 - (void)processColorPropertyValueChange:(SFIDevicePropertyType)propertyType newValue:(float)sensorValue {
-    NSString *newValue = [NSString stringWithFormat:@"%i", (int) sensorValue];
+//    NSString *newValue = [NSString stringWithFormat:@"%i", (int) sensorValue];
     //    [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:propertyType newValue:newValue];
 }
 

@@ -562,7 +562,11 @@
     const int clicked_row = (int) [self deviceCellRow:sensor.deviceID];
 
     switch (sensor.deviceType) {
+        case SFIDeviceType_MultiSensor_49:
+        case SFIDeviceType_RollerShutter_52:
+        case SFIDeviceType_ZWtoACIRExtender_54:
         case SFIDeviceType_MultiSoundSiren_55:
+        case SFIDeviceType_EnergyReader_56:
         case SFIDeviceType_NestThermostat_57:
         case SFIDeviceType_NestSmokeDetector_58: {
 
