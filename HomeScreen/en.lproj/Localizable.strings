@@ -256,6 +256,7 @@ reset at the moment. Try again later.";
 "sensor.notificaiton.fanindexpath.Medium" = "Medium";
 "sensors.high.temperature" = "High Temperature";
 "sensors.low.temperature" = "Low Temperature";
+
 "device-property-fanindexpah false" = "false";
 "device-property-fanindexpah true" = "true";
 "device property on mobile hud Unable to update sensor"="Unable to update sensor";
