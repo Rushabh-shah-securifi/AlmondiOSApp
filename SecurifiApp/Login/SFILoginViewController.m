@@ -100,8 +100,13 @@
 }
 
 - (void)tryEnableLostPwdButton {
+    NSString *emailId = self.emailID.text;
+    [self tryEnableLostPwdButton:emailId];
+}
+
+- (void)tryEnableLostPwdButton:(const NSString *)emailId {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        self.forgotPwdButton.enabled = (self.emailID.text.length > 0);
+        self.forgotPwdButton.enabled = (emailId.length > 0);
     });
 }
 
@@ -142,15 +147,17 @@
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
+
     UITextField *other;
     if (self.emailID == textField) {
         other = self.password;
+        [self tryEnableLostPwdButton:str];
     }
     else {
         other = self.emailID;
     }
 
-    NSString *str = [textField.text stringByReplacingCharactersInRange:range withString:string];
     BOOL enabled = str.length > 0 && other.text.length > 0;
     [self enableLoginButton:enabled];
 
