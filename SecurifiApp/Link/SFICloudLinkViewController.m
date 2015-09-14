@@ -310,8 +310,9 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.backgroundColor = [UIColor clearColor];
 
-        CGFloat width = CGRectGetWidth(tableView.frame) / 2;
-        CGRect frame = CGRectMake(width / 2, 0, width, 40);
+        CGFloat width = CGRectGetWidth(tableView.frame);
+        CGRect frame = CGRectMake(0, 0, width, 40);
+        frame = CGRectInset(frame, 10, 0);
 
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = buttonTag;

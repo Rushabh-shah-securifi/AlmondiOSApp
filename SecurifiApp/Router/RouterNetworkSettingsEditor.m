@@ -106,13 +106,16 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
 - (void)buttonsForLinkState {
     UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelEdits)];
-    UIBarButtonItem *save = (self.mode == RouterNetworkSettingsEditorMode_link) ?
-            [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"router.link-button.Link", @"Link") style:UIBarButtonItemStylePlain target:self action:@selector(onLink)] :
-            [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSaveEdits)];
-    save.enabled = NO;
-
     self.navigationItem.leftBarButtonItem = cancel;
-    self.navigationItem.rightBarButtonItem = save;
+
+    if (self.mode == RouterNetworkSettingsEditorMode_link) {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+    else {
+        UIBarButtonItem *save = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(onSaveEdits)];
+        save.enabled = NO;
+        self.navigationItem.rightBarButtonItem = save;
+    }
 }
 
 - (void)buttonsForDoneState {
@@ -240,6 +243,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
         CGFloat width = CGRectGetWidth(tableView.frame);
         CGRect frame = CGRectMake(0, 0, width, 40);
+        frame = CGRectInset(frame, 10, 0);
 
         UIColor *color = [UIColor redColor];
 
@@ -267,8 +271,9 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.backgroundColor = [UIColor clearColor];
 
-        CGFloat width = CGRectGetWidth(tableView.frame) / 2;
-        CGRect frame = CGRectMake(width / 2, 0, width, 40);
+        CGFloat width = CGRectGetWidth(tableView.frame);
+        CGRect frame = CGRectMake(0, 0, width, 40);
+        frame = CGRectInset(frame, 10, 0);
 
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = frame;
@@ -321,10 +326,14 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 #pragma mark - Action handlers
 
 - (void)onLink {
+    SFIAlmondLocalNetworkSettings *settings = self.workingSettings.copy;
+    if (!settings.hasBasicCompleteSettings) {
+        return;
+    }
+
     self.HUD.labelText = NSLocalizedString(@"router.hud.Establishing Local Link...", @"Establishing Local Link...");
     self.HUD.minShowTime = 2;
 
-    SFIAlmondLocalNetworkSettings *settings = self.workingSettings.copy;
     [self.HUD showAnimated:YES whileExecutingBlock:^() {
         // Test the connection (and interrogate the remote Almond for info about itself; the almond Mac and name
         // will be reflected in the settings after the test
