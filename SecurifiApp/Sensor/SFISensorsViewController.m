@@ -453,7 +453,7 @@
 - (NSUInteger)computeSensorRowHeight:(SFIDevice *)currentSensor deviceValue:(SFIDeviceValue *)deviceValue {
     BOOL expanded = [self isExpandedCell:currentSensor];
     BOOL tampered = [currentSensor isTampered:deviceValue];
-    BOOL notificationsEnabled = self.enableNotificationsView;
+    BOOL notificationsEnabled = [self tableViewCellNotificationsEnabled];
     return [SFISensorDetailView computeSensorRowHeight:currentSensor tamperedDevice:tampered expandedCell:expanded notificationEnabled:notificationsEnabled];
 }
 
@@ -752,7 +752,7 @@
 }
 
 - (BOOL)tableViewCellNotificationsEnabled {
-    return self.enableNotificationsView;
+    return self.enableNotificationsView && self.currentConnectionMode != SFIAlmondConnectionMode_local;
 }
 
 - (void)tableViewCellDidChangeNotificationSetting:(SFISensorTableViewCell *)cell newMode:(SFINotificationMode)newMode {
