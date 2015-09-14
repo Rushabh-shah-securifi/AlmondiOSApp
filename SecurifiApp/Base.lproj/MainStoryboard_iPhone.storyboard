@@ -586,20 +586,47 @@
         <scene sceneID="qgd-qj-mZq">
             <objects>
                 <viewController storyboardIdentifier="SFIMainViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="a0o-Pk-ADn" customClass="SFIMainViewController" sceneMemberID="viewController">
-                    <imageView key="view" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Gk4-Wl-ONd">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dQ7-bp-Wdz"/>
+                        <viewControllerLayoutGuide type="bottom" id="yYV-i3-cIv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="eoE-Ql-rDZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    </imageView>
-                    <navigationItem key="navigationItem" id="R9S-iT-652"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OLB-0L-5PJ">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="imgSplash" destination="Gk4-Wl-ONd" id="iAM-er-tW3"/>
+                        <outlet property="imgSplash" destination="OLB-0L-5PJ" id="RLH-Vh-dds"/>
+                        <outlet property="view" destination="eoE-Ql-rDZ" id="eft-IZ-vDF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="48t-ck-mRf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3644" y="-843"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="ixt-AF-1om">
+            <objects>
+                <viewController id="8a9-Jv-Ohk" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="B69-UG-7b5"/>
+                        <viewControllerLayoutGuide type="bottom" id="KiO-mb-PGg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bVJ-Ap-HYp">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Cex-xH-GSB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
     <resources>

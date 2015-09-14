@@ -174,7 +174,8 @@
                         <outlet property="emailID" destination="Y3d-aA-TFm" id="gg7-ho-Eez"/>
                         <outlet property="forgotPwdButton" destination="slZ-Ce-Cut" id="ofb-Bk-tag"/>
                         <outlet property="headingLabel" destination="Zuk-ja-Rsi" id="dyq-Yn-K4x"/>
-                        <outlet property="loginButton" destination="9ZE-dj-qTz" id="JT1-EZ-b96"/>
+                        <outlet property="localActionButton" destination="UMh-WG-lC3" id="0Ti-zB-wMh"/>
+                        <outlet property="loginButton" destination="9ZE-dj-qTz" id="5wr-xC-YOi"/>
                         <outlet property="password" destination="7Fl-1P-IHp" id="iJj-Ca-feE"/>
                         <outlet property="subHeadingLabel" destination="Zon-6Z-KzY" id="K92-w7-tv6"/>
                         <outlet property="view" destination="5Wo-rI-VjW" id="8Fs-1T-scp"/>

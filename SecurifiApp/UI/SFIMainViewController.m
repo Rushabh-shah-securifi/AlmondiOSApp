@@ -37,16 +37,7 @@
 
 - (void)dealloc {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center removeObserver:self name:kSFIReachabilityChangedNotification object:nil];
-    [center removeObserver:self name:NETWORK_DOWN_NOTIFIER object:nil];
-    [center removeObserver:self name:NETWORK_UP_NOTIFIER object:nil];
-    [center removeObserver:self name:kSFIDidCompleteLoginNotification object:nil];
-    [center removeObserver:self name:kSFIDidLogoutNotification object:nil];
-    [center removeObserver:self name:kSFIDidLogoutAllNotification object:nil];
-    [center removeObserver:self name:UI_ON_PRESENT_LOGOUT_ALL object:nil];
-    [center removeObserver:self name:UI_ON_PRESENT_ACCOUNTS object:nil];
-    [center removeObserver:self name:kSFIDidFailToRegisterForNotifications object:nil];
-    [center removeObserver:self name:kSFIDidFailToDeregisterForNotifications object:nil];
+    [center removeObserver:self];
 }
 
 - (void)viewDidLoad {
@@ -55,9 +46,34 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self displaySplashImage];
 
+//    [self.imgSplash removeFromSuperview];
+//    self.imgSplash = nil;
+//
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     _HUD.dimBackground = YES;
     [self.view addSubview:_HUD];
+
+    SFITabBarController *tabCtrl = [SFITabBarController new];
+    tabCtrl.tabBar.translucent = NO;
+    tabCtrl.tabBar.tintColor = [UIColor blackColor];
+    tabCtrl.delegate = self;
+
+    DrawerViewController *drawer = [DrawerViewController new];
+
+    SWRevealViewController *ctrl = [[SWRevealViewController alloc] initWithRearViewController:drawer frontViewController:tabCtrl];
+    ctrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+
+    [ctrl willMoveToParentViewController:self];
+    [self addChildViewController:ctrl];
+    [self.view addSubview:ctrl.view];
+    [self.view bringSubviewToFront:ctrl.view];
+    [ctrl didMoveToParentViewController:self];
+
+    // Activate gestures in Reveal; must be done after it has been set up
+    [ctrl panGestureRecognizer];
+    [ctrl tapGestureRecognizer];
+
+    ctrl.panGestureRecognizer.delegate = self;
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onReachabilityDidChange:) name:kSFIReachabilityChangedNotification object:nil];
@@ -66,6 +82,7 @@
     [center addObserver:self selector:@selector(onDidCompleteLogin:) name:kSFIDidCompleteLoginNotification object:nil];
     [center addObserver:self selector:@selector(onLogoutResponse:) name:kSFIDidLogoutNotification object:nil];
     [center addObserver:self selector:@selector(onLogoutAllResponse:) name:kSFIDidLogoutAllNotification object:nil];
+    [center addObserver:self selector:@selector(onConnectionModeChange:) name:kSFIDidChangeAlmondConnectionMode object:nil];
     [center addObserver:self selector:@selector(onPresentLogoutAll) name:UI_ON_PRESENT_LOGOUT_ALL object:nil];
     [center addObserver:self selector:@selector(onPresentAccounts) name:UI_ON_PRESENT_ACCOUNTS object:nil];
     [center addObserver:self selector:@selector(onDidFailToRegisterForNotifications) name:kSFIDidFailToRegisterForNotifications object:nil];
@@ -115,7 +132,7 @@
 
     if (!supportsLocalConnections && ![toolkit hasLoginCredentials]) {
         // If no logon credentials we just put up the screen and then handle connection from there.
-        [self presentLogonScreen];
+        [self tryPresentLogonScreen];
         return;
     }
 
@@ -131,18 +148,13 @@
         [self scheduleReconnectTimer];
     }
     [toolkit initToolkit];
-
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self presentMainView];
-    });
 }
 
 #pragma mark - Class methods
 
 - (void)displaySplashImage {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        // Ex: "Almond-splash_image"
-        self.imgSplash.image = [UIImage assetImageNamed:@"splash_image"];
+        self.imgSplash.image = nil;//[UIImage assetImageNamed:@"splash_image"];
     });
 }
 
@@ -177,7 +189,6 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
             self.presentingLoginController = NO;
-            [self presentMainView];
         }];
     });
 }
@@ -188,19 +199,16 @@
     DLog(@"%s", __PRETTY_FUNCTION__);
 
     NSNotification *notifier = (NSNotification *) sender;
-    if ([notifier userInfo] == nil) {
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self presentLogonScreen];
-        });
+    NSDictionary *data = [notifier userInfo];
+
+    if (data == nil) {
+        [self tryPresentLogonScreen];
         return;
     }
 
-    NSDictionary *data = [notifier userInfo];
     LogoutResponse *obj = (LogoutResponse *) [data valueForKey:@"data"];
     if (obj.isSuccessful) {
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self presentLogonScreen];
-        });
+        [self tryPresentLogonScreen];
     }
 }
 
@@ -208,9 +216,7 @@
     DLog(@"%s", __PRETTY_FUNCTION__);
 
     if (![[SecurifiToolkit sharedInstance] isCloudLoggedIn]) {
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self presentLogonScreen];
-        });
+        [self tryPresentLogonScreen];
     }
 }
 
@@ -223,12 +229,17 @@
     if ([[SecurifiToolkit sharedInstance] isCloudLoggedIn]) {
         UIApplication *application = [UIApplication sharedApplication];
         [application securifiApplicationTryEnableRemoteNotifications];
-        [self presentMainView];
     }
     else {
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self presentLogonScreen];
-        });
+        [self tryPresentLogonScreen];
+    }
+}
+
+// when switching to cloud connection, if no credentials stored, then present login panel
+- (void)onConnectionModeChange:(id)sender {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    if (!toolkit.hasLoginCredentials) {
+        [self tryPresentLogonScreen];
     }
 }
 
@@ -262,6 +273,21 @@
 
 // mainly, we need to manage logon and logout all, and setting up the main screen on logon.
 
+- (void)tryPresentLogonScreen {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+
+    const BOOL supportsLocalConnections = toolkit.configuration.enableLocalNetworking;
+    if (supportsLocalConnections) {
+        if (toolkit.defaultConnectionMode == SFIAlmondConnectionMode_local) {
+            return;
+        }
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self presentLogonScreen];
+    });
+}
+
 - (void)presentLogonScreen {
     DLog(@"%s", __PRETTY_FUNCTION__);
 
@@ -272,41 +298,19 @@
     DLog(@"%s: Presenting logon controller", __PRETTY_FUNCTION__);
 
     // Present login screen
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-    SFILoginViewController *loginCtrl = [storyboard instantiateViewControllerWithIdentifier:@"SFILoginViewController"];
-    loginCtrl.delegate = self;
-
-    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:loginCtrl];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login_iPhone" bundle:nil];
+    SFILoginViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SFILoginViewController"];
+    ctrl.delegate = self;
+    ctrl.mode = [SecurifiToolkit sharedInstance].localLinkedAlmondList.count == 0 ? SFILoginViewControllerMode_localLinkOption : SFILoginViewControllerMode_switchToLocalConnection;
 
     if (self.presentedViewController) {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
-            [self presentViewController:navCtrl animated:YES completion:nil];
+            [self presentViewController:ctrl animated:YES completion:nil];
         }];
     }
     else {
-        [self presentViewController:navCtrl animated:YES completion:nil];
+        [self presentViewController:ctrl animated:YES completion:nil];
     }
-}
-
-- (void)presentMainView {
-    DLog(@"%s: Presenting main view", __PRETTY_FUNCTION__);
-
-    SFITabBarController *tabCtrl = [SFITabBarController new];
-    tabCtrl.tabBar.translucent = NO;
-    tabCtrl.tabBar.tintColor = [UIColor blackColor];
-    tabCtrl.delegate = self;
-
-    DrawerViewController *drawer = [DrawerViewController new];
-
-    SWRevealViewController *ctrl = [[SWRevealViewController alloc] initWithRearViewController:drawer frontViewController:tabCtrl];
-    ctrl.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self presentViewController:ctrl animated:YES completion:nil];
-
-    // Activate gestures in Reveal; must be done after it has been set up
-    [ctrl panGestureRecognizer];
-    [ctrl tapGestureRecognizer];
-
-    ctrl.panGestureRecognizer.delegate = self;
 }
 
 - (void)presentLogoutAllView {
@@ -338,11 +342,8 @@
 - (void)logoutAllControllerDidCancel:(SFILogoutAllViewController *)ctrl {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
-            if ([[SecurifiToolkit sharedInstance] isCloudLoggedIn]) {
-                [self presentMainView];
-            }
-            else {
-                [self presentLogonScreen];
+            if (![[SecurifiToolkit sharedInstance] isCloudLoggedIn]) {
+                [self tryPresentLogonScreen];
             }
         }];
     });
@@ -351,18 +352,15 @@
 - (void)userAccountDidDelete:(SFIAccountsTableViewController *)ctrl {
     DLog(@"%s: Presenting login view", __PRETTY_FUNCTION__);
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self presentLogonScreen];
+        [self tryPresentLogonScreen];
     });
 }
 
 - (void)userAccountDidDone:(SFIAccountsTableViewController *)ctrl {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
-            if ([[SecurifiToolkit sharedInstance] isCloudLoggedIn]) {
-                [self presentMainView];
-            }
-            else {
-                [self presentLogonScreen];
+            if (![[SecurifiToolkit sharedInstance] isCloudLoggedIn]) {
+                [self tryPresentLogonScreen];
             }
         }];
     });
@@ -376,12 +374,12 @@
 }
 
 - (void)scheduleReconnectTimer {
-    [self invalidateTimer];
-    _cloudReconnectTimer = [NSTimer scheduledTimerWithTimeInterval:CLOUD_CONNECTION_RETRY
-                                                            target:self
-                                                          selector:@selector(onNoCloudConnectionRetry)
-                                                          userInfo:nil
-                                                           repeats:NO];
+//    [self invalidateTimer];
+//    _cloudReconnectTimer = [NSTimer scheduledTimerWithTimeInterval:CLOUD_CONNECTION_RETRY
+//                                                            target:self
+//                                                          selector:@selector(onNoCloudConnectionRetry)
+//                                                          userInfo:nil
+//                                                           repeats:NO];
 }
 
 - (void)onNoCloudConnectionRetry {

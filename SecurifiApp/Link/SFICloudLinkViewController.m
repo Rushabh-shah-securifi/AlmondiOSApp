@@ -412,15 +412,23 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
 #pragma mark - RouterNetworkSettingsEditorDelegate methods
 
 - (void)networkSettingsEditorDidLinkAlmond:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
-
+    // do nothing; wait for the didComplete callback
 }
 
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
-    [[SecurifiToolkit sharedInstance] setLocalNetworkSettings:newSettings];
+    [editor dismissViewControllerAnimated:YES completion:^() {
+        [self onDone];
+    }];
 }
 
 - (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
     [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidComplete:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:^() {
+        [self onDone];
+    }];
 }
 
 - (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {

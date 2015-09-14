@@ -11,12 +11,13 @@
 #import "SWRevealViewController.h"
 #import "UIFont+Securifi.h"
 #import "SFICloudLinkViewController.h"
+#import "RouterNetworkSettingsEditor.h"
 
 #define SEC_ALMOND_LIST     @"AlmondList"
 #define SEC_SETTINGS_LIST   @"Settings"
 #define SEC_VERSION         @"Version"
 
-@interface DrawerViewController ()
+@interface DrawerViewController () <RouterNetworkSettingsEditorDelegate>
 @property(nonatomic, strong, readonly) NSDictionary *dataDictionary;
 @end
 
@@ -50,6 +51,8 @@
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidUpdateAlmondList object:nil];
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidChangeAlmondName object:nil];
+    [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidLogoutNotification object:nil];
+    [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidLogoutAllNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -80,7 +83,7 @@
     NSString *version = [NSString stringWithFormat:NSLocalizedString(@"read-almond-version %@ (%@)",@"version %@ (%@)"), shortVersion, buildNumber];
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    enum SFIAlmondConnectionMode mode = [toolkit defaultConnectionMode];
+    enum SFIAlmondConnectionMode mode = [toolkit currentConnectionMode];
     if (mode == SFIAlmondConnectionMode_cloud) {
         _dataDictionary = @{
                 SEC_ALMOND_LIST : almondList,
@@ -261,8 +264,22 @@
             //Add almond - Affiliation process
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-            UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
-            [self presentViewController:ctrl animated:YES completion:nil];
+            switch ([[SecurifiToolkit sharedInstance] currentConnectionMode]) {
+                case SFIAlmondConnectionMode_cloud: {
+                    UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
+                    [self presentViewController:ctrl animated:YES completion:nil];
+                    break;
+                }
+                case SFIAlmondConnectionMode_local: {
+                    RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+                    editor.delegate = self;
+                    editor.makeLinkedAlmondCurrentOne = YES;
+
+                    UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
+                    [self presentViewController:ctrl animated:YES completion:nil];
+                    break;
+                }
+            }
         }
         else {
             //Display the corresponding Sensor List
@@ -446,6 +463,28 @@
 - (void)presentAccountsView {
     // Delegate to the main view, which will manage presenting the account controller
     [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:UI_ON_PRESENT_ACCOUNTS object:nil]];
+}
+
+#pragma mark - RouterNetworkSettingsEditorDelegate methods
+
+- (void)networkSettingsEditorDidLinkAlmond:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidComplete:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

@@ -79,6 +79,7 @@ Internet route to cloud service.";
 "Sorry! Your password cannot be reset at the moment. Try again later." = "Sorry! Your password cannot be
 reset at the moment. Try again later.";
 "Login" = "Login";
+"login.local.Switch to Local Connection" = "Switch to Local Connection";
 
 /* logout all */
 "logoutall.navbar-title.Continue" = "Continue";

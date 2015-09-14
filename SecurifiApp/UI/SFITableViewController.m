@@ -8,6 +8,7 @@
 
 #import <MBProgressHUD/MBProgressHUD.h>
 #import <SWRevealViewController/SWRevealViewController.h>
+#import <SecurifiToolkit/SFIAlmondLocalNetworkSettings.h>
 #import "SFITableViewController.h"
 #import "SFICloudStatusBarButtonItem.h"
 #import "UIFont+Securifi.h"
@@ -17,7 +18,6 @@
 #import "SFIHuePickerView.h"
 #import "AlertView.h"
 #import "AlertViewAction.h"
-#import "SFIAlmondLocalNetworkSettings.h"
 
 @interface SFITableViewController () <MBProgressHUDDelegate, SWRevealViewControllerDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate>
 @property(nonatomic, readonly) SFINotificationStatusBarButtonItem *notificationsStatusButton;
@@ -143,7 +143,12 @@
                selector:@selector(onNotificationCountChanged:)
                    name:kSFINotificationDidMarkViewed
                  object:nil];
-    
+
+    [center addObserver:self
+               selector:@selector(onAlmondModeChangeDidComplete:)
+                   name:kSFIDidChangeCurrentAlmond
+                 object:nil];
+
     [center addObserver:self
                selector:@selector(onAlmondModeChangeDidComplete:)
                    name:kSFIDidCompleteAlmondModeChangeRequest
@@ -174,7 +179,7 @@
     [super viewWillAppear:animated];
     
     // make sure status icon is up-to-date
-    [self markCloudStatusIcon];
+    [self markNetworkStatusIcon];
     [self markNotificationStatusIcon];
     
     // install self as delegate so this controller can enable/disable drawer
@@ -403,7 +408,7 @@
 
 - (void)onAlmondModeChangeDidComplete:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markCloudStatusIcon];
+        [self markNetworkStatusIcon];
         [self.HUD hide:YES];
     });
 }
@@ -413,8 +418,8 @@
         if (self.presentedViewController != nil) {
             return;
         }
-        
-        [self markCloudStatusIcon];
+
+        [self markNetworkStatusIcon];
     });
 }
 
@@ -436,7 +441,7 @@
 
 - (void)onNetworkUpNotifier:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markCloudStatusIcon];
+        [self markNetworkStatusIcon];
         [self.tableView reloadData];
         [self.HUD hide:NO]; // make sure it is hidden
     });
@@ -444,7 +449,7 @@
 
 - (void)onNetworkDownNotifier:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markCloudStatusIcon];
+        [self markNetworkStatusIcon];
         [self.tableView reloadData];
         [self.HUD hide:NO]; // make sure it is hidden
     });
@@ -452,13 +457,13 @@
 
 - (void)onNetworkConnectingNotifier:(id)notification {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markCloudStatusIcon];
+        [self markNetworkStatusIcon];
     });
 }
 
 - (void)onReachabilityDidChange:(NSNotification *)notification {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markCloudStatusIcon];
+        [self markNetworkStatusIcon];
         [self.tableView reloadData];
         [self.HUD hide:NO]; // make sure it is hidden
     });
@@ -478,7 +483,7 @@
     }
 }
 
-- (void)markCloudStatusIcon {
+- (void)markNetworkStatusIcon {
     NSString *const almondMac = self.almondMac;
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -565,7 +570,7 @@
 - (void)markAlmondMac:(NSString *)almondMac {
     _almondMac = [almondMac copy];
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self markCloudStatusIcon];
+        [self markNetworkStatusIcon];
     });
 }
 
@@ -593,20 +598,22 @@
 }
 
 - (void)presentLocalNetworkSettingsEditor {
+    NSString *mac = self.almondMac;
+
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:self.almondMac];
+    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:mac];
     
     if (!settings) {
         settings = [SFIAlmondLocalNetworkSettings new];
-        settings.almondplusMAC = self.almondMac;
+        settings.almondplusMAC = mac;
     }
     
     RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
     editor.delegate = self;
     editor.settings = settings;
+    editor.enableUnlinkActionButton = ![toolkit almondExists:mac]; // only allowed to unlink local almonds that are not affiliated with the cloud
     
     UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
-    
     [self presentViewController:ctrl animated:YES completion:nil];
 }
 
@@ -747,6 +754,10 @@
 }
 
 - (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidComplete:(RouterNetworkSettingsEditor *)editor {
     [editor dismissViewControllerAnimated:YES completion:nil];
 }
 

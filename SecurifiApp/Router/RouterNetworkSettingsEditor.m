@@ -5,8 +5,8 @@
 
 #import <Colours/Colours.h>
 #import <MBProgressHUD/MBProgressHUD.h>
+#import <SecurifiToolkit/SFIAlmondLocalNetworkSettings.h>
 #import "RouterNetworkSettingsEditor.h"
-#import "SFIAlmondLocalNetworkSettings.h"
 #import "UIFont+Securifi.h"
 
 typedef NS_ENUM(unsigned int, TABLE_ROW) {
@@ -132,7 +132,15 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (self.mode) {
         case RouterNetworkSettingsEditorMode_editor:
-            return (section == 0) ? TABLE_ROW_count : 1;
+            if (section == 0) {
+                return TABLE_ROW_count;
+            }
+            else if (self.enableUnlinkActionButton) {
+                return 1;
+            }
+            else {
+                return 0;
+            }
 
         case RouterNetworkSettingsEditorMode_link:
             return (section == 0) ? TABLE_ROW_count : 2;
@@ -337,6 +345,15 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
                 // store the new/updated settings and update UI state; inform the delegate
                 [toolkit setLocalNetworkSettings:settings];
+
+                if (self.makeLinkedAlmondCurrentOne) {
+                    SFIAlmondPlus *almond = settings.asLocalLinkAlmondPlus;
+
+                    // switch the connection to Local
+                    [toolkit setConnectionMode:SFIAlmondConnectionMode_local forAlmond:almond.almondplusMAC];
+                    [toolkit setCurrentAlmond:almond];
+                }
+
                 [self markSuccessOnLink];
                 [self.delegate networkSettingsEditorDidLinkAlmond:self settings:settings];
 
@@ -356,7 +373,8 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 }
 
 - (void)onSaveEdits {
-    [self.delegate networkSettingsEditorDidChangeSettings:self settings:self.workingSettings.copy];
+    // validate edits just as if new link were being set up
+    [self onLink];
 }
 
 - (void)onCancelEdits {
@@ -364,11 +382,16 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 }
 
 - (void)onUnlinkAlmond {
+    NSString *almondMac = self.settings.almondplusMAC;
+
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit removeLocalNetworkSettingsForAlmond:almondMac];
+
     [self.delegate networkSettingsEditorDidUnlinkAlmond:self];
 }
 
 - (void)onDoneEdits {
-    [self.delegate networkSettingsEditorDidUnlinkAlmond:self];
+    [self.delegate networkSettingsEditorDidComplete:self];
 }
 
 #pragma mark - UITextFieldDelegate methods

@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Securifi. All rights reserved.
 //
 
+#import <SecurifiToolkit/SFIAlmondLocalNetworkSettings.h>
 #import "SFIRouterTableViewController.h"
 #import "SFIColors.h"
 #import "AlmondPlusConstants.h"
@@ -672,26 +673,31 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     cell.cardView.backgroundColor = [UIColor securifiRouterTileGreenColor];
     cell.title = NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link");
 
-//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+//    SFIRouterSummary *summary = self.routerSummary;
+
+//    if (summary) {
+//        host = summary.url;
+//        if (!host) {
+//            host = @"";
+//        }
 //
-//    NSString *almondMac = self.almondMac;
-//    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:almondMac];
-//    NSString *ssid2 = settings.ssid2 ? settings.ssid2 : @"";
-//    NSString *ssid5 = settings.ssid5 ? settings.ssid5 : @"";
+//        login = summary.login;
+//        if (!login) {
+//            login = @"";
+//        }
+//    }
+//    else {
+//    }
 
-    NSString *host = self.routerSummary.url;
-    if (!host) {
-        host = @"";
-    }
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
-    NSString *login = self.routerSummary.login;
-    if (!login) {
-        login = @"";
-    }
+    NSString *almondMac = self.almondMac;
+    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:almondMac];
+
+    NSString *host = settings.host ? settings.host : @"";
+    NSString *login = settings.login ? settings.login : @"";
 
     cell.summaries = @[
-//            [NSString stringWithFormat:@"SSID 2.5Ghz : %@", ssid2],
-//            [NSString stringWithFormat:@"SSID 5Ghz : %@", ssid5],
             [NSString stringWithFormat:NSLocalizedString(@"router.summary.IP Address : %@", @"IP Address"), host],
             [NSString stringWithFormat:NSLocalizedString(@"router.summary.Admin Login : %@", @"Admin Login"), login],
     ];

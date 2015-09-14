@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Securifi. All rights reserved.
 //
 
+#import <SecurifiToolkit/SFIAlmondLocalNetworkSettings.h>
 #import "SFILoginViewController.h"
 #import "MBProgressHUD.h"
 #import "Analytics.h"
@@ -58,6 +59,11 @@
 
     [self setStandardLoginMsg];
 
+    if (self.mode == SFILoginViewControllerMode_switchToLocalConnection) {
+        NSString *title = NSLocalizedString(@"login.local.Switch to Local Connection", @"login.local.Switch to Local Connection");
+        [self.localActionButton setTitle:title forState:UIControlStateNormal];
+    }
+    
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
     [center addObserver:self selector:@selector(onReachabilityDidChange:) name:kSFIReachabilityChangedNotification object:nil];
@@ -207,13 +213,20 @@
     [self presentViewController:navCtrl animated:YES completion:nil];
 }
 
-- (void)onAddLocalAlmond:(id)sender {
-    RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
-    editor.delegate = self;
+- (IBAction)onAddLocalAlmond:(id)sender {
+    if (self.mode == SFILoginViewControllerMode_localLinkOption) {
+        RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+        editor.delegate = self;
+        editor.makeLinkedAlmondCurrentOne = YES;
 
-    UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
+        UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
 
-    [self presentViewController:ctrl animated:YES completion:nil];
+        [self presentViewController:ctrl animated:YES completion:nil];
+    }
+    else {
+        [[SecurifiToolkit sharedInstance] setConnectionMode:SFIAlmondConnectionMode_local forAlmond:nil];
+        [self.delegate loginControllerDidCompleteLogin:self];
+    }
 }
 
 - (IBAction)onForgetPasswordAction:(id)sender {
@@ -455,9 +468,7 @@
 #pragma mark - RouterNetworkSettingsEditorDelegate methods
 
 - (void)networkSettingsEditorDidLinkAlmond:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
-    [editor.navigationController dismissViewControllerAnimated:YES completion:^() {
-        [self.delegate loginControllerDidCompleteLogin:self];
-    }];
+    [self networkSettingsEditorDidChangeSettings:editor settings:newSettings];
 }
 
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
@@ -468,6 +479,12 @@
 
 - (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
     [editor dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)networkSettingsEditorDidComplete:(RouterNetworkSettingsEditor *)editor {
+    [editor.navigationController dismissViewControllerAnimated:YES completion:^() {
+        [self.delegate loginControllerDidCompleteLogin:self];
+    }];
 }
 
 - (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {
