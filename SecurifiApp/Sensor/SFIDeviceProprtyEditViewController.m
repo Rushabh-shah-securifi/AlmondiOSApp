@@ -5,21 +5,9 @@
 //  Created by Tigran Aslanyan on 13.07.15.
 //  Copyright (c) 2015 Securifi Ltd. All rights reserved.
 //
-typedef NS_ENUM(NSInteger, Properties) {
-    nameIndexPathRow,
-    locationIndexPathRow,
-    humidityIndexPathRow,
-    awayModeIndexPathRow,
-    coLevelIndexPathRow,
-    smokeLevelIndexPathRow,
-    modeIndexPathRow,
-    targetRangeIndexPathRow,
-    fanIndexPathRow,
-    notifyMeIndexPathRow,
-    deviceHistoryIndexPathRow,
-};
 
 #import "SFIDeviceProprtyEditViewController.h"
+#import "SFISensorDetailViewController.h"
 #import "SFIWiFiDeviceTypeSelectionCell.h"
 #import "SFIHorizontalValueSelectorView.h"
 #import "UIViewController+Securifi.h"
@@ -34,16 +22,14 @@ typedef NS_ENUM(NSInteger, Properties) {
     
     
     IBOutlet UIView *viewThemperature;
+    IBOutlet UIView *viewEditCheckboxProperty;
     IBOutlet UIView *viewHeader;
-    IBOutlet UILabel *lblDeviceName;
-    IBOutlet UILabel *lblStatus;
     IBOutlet UITableView *tblTypes;
     
     NSMutableArray * propertyTypes;
     NSInteger randomMobileInternalIndex;
     NSString * selectedPropertyValue;
-    IBOutlet UIImageView *imgIcon;
-    IBOutlet UILabel *lblThemperatureMain;
+    
     IBOutlet SFIHorizontalValueSelectorView *coolingTempSelector;
     IBOutlet SFIHorizontalValueSelectorView *heatingTempSelector;
     IBOutlet UIButton *btnShowCelsius;
@@ -64,6 +50,11 @@ typedef NS_ENUM(NSInteger, Properties) {
     int maxTempValue;
     int minTempValue;
     int diffTempValue;
+    IBOutlet UIButton *btnCheckbox;
+    IBOutlet UILabel *lblCheckbox;
+    IBOutlet UILabel *lblPropertyName;
+    IBOutlet UITextField *txtPropertyValue;
+    IBOutlet UIView *viewEditTextProperty;
 }
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -75,76 +66,48 @@ typedef NS_ENUM(NSInteger, Properties) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    lblDeviceName.text = self.device.deviceName;
-    
     
     [self updateTemperatureLabel];
     
-    if (self.device.deviceType==SFIDeviceType_MultiSoundSiren_55) {
-        UIImage* image = [UIImage imageNamed:@"55_multisoundsiren_icon"];
-        imgIcon.image = image;
-        CGRect fr = imgIcon.frame;
-        fr.size = image.size;
-        fr.origin.x = (90-fr.size.width)/2;
-        fr.origin.y = (90-fr.size.height)/2;
-        imgIcon.frame = fr;
-    }
-
-    if (self.device.deviceType==SFIDeviceType_NestThermostat_57) {
-        SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HVAC_STATE];
-        lblStatus.text = [currentDeviceValue.value capitalizedString];
-        
-        imgIcon.image = nil;
-        
-        CGRect fr = lblThemperatureMain.frame;
-        fr.size = CGSizeMake(90, 90);
-        fr.origin.x = 0;
-        fr.origin.y = 0;
-        lblThemperatureMain.frame = fr;
-        lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:36.0f];
-        lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
-        lblThemperatureMain.textColor = [UIColor whiteColor];
-    }
-    
-    if (self.device.deviceType==SFIDeviceType_NestSmokeDetector_58) {
-        SFIDeviceKnownValues *coValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CO_ALARM_STATE];
-        
-        SFIDeviceKnownValues *smokeValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SMOKE_ALARM_STATE];
-        NSString * coText = @"";
-        NSString * smokeText = @"";
-        coText = [coValue.value capitalizedString];
-        if ([coValue.value isEqualToString:@"true"]) {
-            coText = NSLocalizedString(@"sensor-property-edit smokedetector Warning",@"Warning");
-        }else if ([coValue.value isEqualToString:@"false"]){
-            coText = NSLocalizedString(@"sensor-property-edit smokedetector Emergency",@"Emergency");
-        }
-        
-        smokeText = [smokeValue.value capitalizedString];
-        if ([smokeValue.value isEqualToString:@"true"]) {
-            smokeText = NSLocalizedString(@"sensor-property-edit smokedetector Warning",@"Warning");
-        }else if ([smokeValue.value isEqualToString:@"false"]){
-            smokeText = NSLocalizedString(@"sensor-property-edit smokedetector Emergency",@"Emergency");
-        }
-        lblStatus.text = [NSString stringWithFormat:@"Smoke :%@ , CO :%@",smokeText,coText];
-        lblThemperatureMain.hidden = YES;
-        
-        UIImage* image = [UIImage imageNamed:@"nest_58_icon"];
-        imgIcon.image = image;
-        CGRect fr = imgIcon.frame;
-        fr.size = image.size;
-        fr.origin.x = (90-fr.size.width)/2;
-        fr.origin.y = (90-fr.size.height)/2;
-        imgIcon.frame = fr;
-    }
-    
     viewTypeSelection.hidden = YES;
     viewThemperature.hidden = YES;
-    
+    viewEditTextProperty.hidden = YES;
+    viewEditCheckboxProperty.hidden = YES;
     propertyTypes = [NSMutableArray new];
     
     SFIDeviceKnownValues *homeAwayDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
     
     switch (self.editFieldIndex) {
+        case nameIndexPathRow:
+        {
+            txtPropertyValue.text = self.device.deviceName;
+            lblPropertyName.text = @"Name";
+        }
+            
+            break;
+        case locationIndexPathRow:
+        {
+            lblPropertyName.text = @"Location";
+            txtPropertyValue.text = self.device.location;
+        }
+            break;
+        case irCodeIndexPathRow:
+        {
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_IR_CODE];
+            txtPropertyValue.text = currentDeviceValue.value;
+            lblPropertyName.text = @"Enter IR Code";
+            txtPropertyValue.placeholder = @"Example 444";
+        }
+            break;
+        case stopIndexPathRow:
+        {
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_STOP];
+            btnCheckbox.selected = YES;
+            if ([currentDeviceValue.value isEqualToString:@"false"]) {
+                btnCheckbox.selected = NO;
+            }
+        }
+            break;
         case notifyMeIndexPathRow:
         {
             NSArray *notifyMe_items = @[
@@ -181,6 +144,58 @@ typedef NS_ENUM(NSInteger, Properties) {
             }
             break;
         }
+        case swingIndexPathRow:
+        {
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_SWING];
+            
+            NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On"),
+                                NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
+            
+            selectedPropertyValue = @"";
+            if ([currentDeviceValue intValue] == 1) {
+                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
+            }else if ([currentDeviceValue intValue] == 0){
+                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
+            }
+            
+            for (NSString * name in cnames) {
+                NSMutableDictionary * dict = [NSMutableDictionary new];
+                [dict setValue:name forKey:@"name"];
+                [dict setValue:@0 forKey:@"selected"];
+                if ([selectedPropertyValue isEqualToString:name]) {
+                    [dict setValue:@1 forKey:@"selected"];
+                }
+                
+                [propertyTypes addObject:dict];
+            }
+        }
+            break;
+        case powerIndexPathRow:
+        {
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_POWER];
+            
+            NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On"),
+                                NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
+            
+            selectedPropertyValue = @"";
+            if ([currentDeviceValue intValue] == 1) {
+                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
+            }else if ([currentDeviceValue intValue] == 0){
+                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
+            }
+            
+            for (NSString * name in cnames) {
+                NSMutableDictionary * dict = [NSMutableDictionary new];
+                [dict setValue:name forKey:@"name"];
+                [dict setValue:@0 forKey:@"selected"];
+                if ([selectedPropertyValue isEqualToString:name]) {
+                    [dict setValue:@1 forKey:@"selected"];
+                }
+                
+                [propertyTypes addObject:dict];
+            }
+        }
+            break;
         case fanIndexPathRow:
         {
             SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE];
@@ -188,14 +203,13 @@ typedef NS_ENUM(NSInteger, Properties) {
             NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On"),
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
             
-            
+            selectedPropertyValue = @"";
             if ([currentDeviceValue.value isEqualToString:@"true"]) {
                 selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
             }else if ([currentDeviceValue.value isEqualToString:@"false"]){
                 selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
-            }else{
-                selectedPropertyValue = @"";
             }
+            
             for (NSString * name in cnames) {
                 NSMutableDictionary * dict = [NSMutableDictionary new];
                 [dict setValue:name forKey:@"name"];
@@ -209,6 +223,34 @@ typedef NS_ENUM(NSInteger, Properties) {
             if ([[homeAwayDeviceValue.value lowercaseString] isEqualToString:@"away"]) {
                 btnSave.hidden = YES;
                 btnBack.frame = btnSave.frame;
+            }
+            break;
+        }
+        case acFanIndexPathRow:
+        {
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_FAN_MODE];
+            
+            NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.Auto Low", @"Auto Low"),
+                                NSLocalizedString(@"sensor.notificaiton.fanindexpath.On High", @"On High"),
+                                NSLocalizedString(@"sensor.notificaiton.fanindexpath.On Low", @"On Low"),
+                                NSLocalizedString(@"sensor.notificaiton.fanindexpath.Medium", @"Medium")];
+            
+            selectedPropertyValue = @"";
+            if ([currentDeviceValue.value isEqualToString:@"true"]) {
+                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
+            }else if ([currentDeviceValue.value isEqualToString:@"false"]){
+                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
+            }
+            
+            for (NSString * name in cnames) {
+                NSMutableDictionary * dict = [NSMutableDictionary new];
+                [dict setValue:name forKey:@"name"];
+                [dict setValue:@0 forKey:@"selected"];
+                if ([selectedPropertyValue isEqualToString:name]) {
+                    [dict setValue:@1 forKey:@"selected"];
+                }
+                
+                [propertyTypes addObject:dict];
             }
             break;
         }
@@ -239,7 +281,7 @@ typedef NS_ENUM(NSInteger, Properties) {
                                 NSLocalizedString(@"sensor.mode indexpath Cool", @"Cool"),
                                 NSLocalizedString(@"sensor.mode indexpath Heat", @"Heat"),
                                 NSLocalizedString(@"sensor.mode indexpath Heat-Cool", @"Heat-Cool")];
-                            
+            
             currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_COOL];
             canCool = [currentDeviceValue boolValue];
             currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_HEAT];
@@ -252,6 +294,27 @@ typedef NS_ENUM(NSInteger, Properties) {
                 mnames = @[NSLocalizedString(@"sensor.mode indexpath Off", @"Off"),NSLocalizedString(@"sensor.mode indexpath Cool", @"Cool")];
             }
             
+            
+            for (NSString * name in mnames) {
+                NSMutableDictionary * dict = [NSMutableDictionary new];
+                [dict setValue:name forKey:@"name"];
+                [dict setValue:@0 forKey:@"selected"];
+                if ([[selectedPropertyValue lowercaseString] isEqualToString:[name lowercaseString]]) {
+                    [dict setValue:@1 forKey:@"selected"];
+                }
+                [propertyTypes addObject:dict];
+            }
+            
+            break;
+        }
+        case acModeIndexPathRow:
+        {
+            
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_MODE];
+            selectedPropertyValue = currentDeviceValue.value;
+            NSArray *mnames = @[NSLocalizedString(@"sensor.mode indexpath Off", @"Off"),
+                                NSLocalizedString(@"sensor.mode indexpath Cool", @"Cool"),
+                                NSLocalizedString(@"sensor.mode indexpath Heat", @"Heat")];
             
             for (NSString * name in mnames) {
                 NSMutableDictionary * dict = [NSMutableDictionary new];
@@ -297,6 +360,25 @@ typedef NS_ENUM(NSInteger, Properties) {
             }
             break;
         }
+        case highTemperatureIndexPathRow:
+        {
+            [tblTypes removeFromSuperview];
+            
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_SETPOINT_HEATING];
+            currentCoolTemp = [currentDeviceValue intValue];
+            currentCoolTemp = [[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:currentCoolTemp];
+            break;
+        }
+        case lowTemperatureIndexPathRow:
+        {
+            [tblTypes removeFromSuperview];
+            
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_SETPOINT_COOLING];
+            currentCoolTemp = [currentDeviceValue intValue];
+            currentCoolTemp = [[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:currentCoolTemp];
+            break;
+        }
+            
         default:
             break;
     }
@@ -307,12 +389,39 @@ typedef NS_ENUM(NSInteger, Properties) {
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     randomMobileInternalIndex = arc4random() % 10000;
-    
+    [viewHeader addSubview:self.headerView];
     UIView *currentView;
     switch (self.editFieldIndex) {
+        case nameIndexPathRow:
+        case locationIndexPathRow:
+        case irCodeIndexPathRow:
+        {
+            viewEditTextProperty.hidden = NO;
+            CGRect fr = viewEditTextProperty.frame;
+            fr.origin.x = viewHeader.frame.origin.x;
+            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
+            viewEditTextProperty.frame = fr;
+            currentView = viewEditTextProperty;
+            [txtPropertyValue becomeFirstResponder];
+        }
+            break;
+        case stopIndexPathRow:
+        {
+            viewEditCheckboxProperty.hidden = NO;
+            CGRect fr = viewEditCheckboxProperty.frame;
+            fr.origin.x = viewHeader.frame.origin.x;
+            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
+            viewEditCheckboxProperty.frame = fr;
+            currentView = viewEditCheckboxProperty;
+        }
+            break;
         case awayModeIndexPathRow:
         case modeIndexPathRow:
+        case acModeIndexPathRow:
+        case acFanIndexPathRow:
         case fanIndexPathRow:
+        case swingIndexPathRow:
+        case powerIndexPathRow:
         case notifyMeIndexPathRow:
         {
             viewTypeSelection.hidden = NO;
@@ -335,30 +444,7 @@ typedef NS_ENUM(NSInteger, Properties) {
             
             currentView = viewThemperature;
             
-            
-            
-            coolingTempSelector.dataSource = self;
-            coolingTempSelector.delegate = self;
-            coolingTempSelector.shouldBeTransparent = YES;
-            coolingTempSelector.horizontalScrolling = YES;
-            coolingTempSelector.debugEnabled = NO;
-            
-            heatingTempSelector.dataSource = self;
-            heatingTempSelector.delegate = self;
-            heatingTempSelector.shouldBeTransparent = YES;
-            heatingTempSelector.horizontalScrolling = YES;
-            heatingTempSelector.debugEnabled = NO;
-            //            [[self selectorHorizontal] setDecelerates:NO];
-            
-            btnShowCelsius.layer.borderColor = [[UIColor whiteColor] CGColor];
-            btnShowCelsius.layer.borderWidth = 2.0f;
-            btnShowCelsius.backgroundColor = [UIColor clearColor];
-            btnShowCelsius.layer.cornerRadius = btnShowCelsius.frame.size.width/2;
-            
-            btnFahrenheit.layer.borderColor = [[UIColor whiteColor] CGColor];
-            btnFahrenheit.layer.borderWidth = 2.0f;
-            btnFahrenheit.backgroundColor = [UIColor clearColor];
-            btnFahrenheit.layer.cornerRadius = btnShowCelsius.frame.size.width/2;
+            [self configureTemperatureSelectors];
             [self configureTemperatureFormatButtons];
             
             if([thermostatMode isEqualToString:@"cool"]){
@@ -412,9 +498,53 @@ typedef NS_ENUM(NSInteger, Properties) {
                 heatingTempSelector.frame = coolingTempSelector.frame;
                 lblHeating.frame = lblCooling.frame;
                 
-                 lblHeating.text =  NSLocalizedString(@"sensors.heating.temperature", @"Heating Temperature");
+                lblHeating.text =  NSLocalizedString(@"sensors.heating.temperature", @"Heating Temperature");
+            }
+            break;
+        }
+        case highTemperatureIndexPathRow:
+        case lowTemperatureIndexPathRow:
+        {
+            viewThemperature.hidden = NO;
+            CGRect fr = viewTypeSelection.frame;
+            fr.origin.x = viewHeader.frame.origin.x;
+            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
+            viewThemperature.frame = fr;
+            
+            currentView = viewThemperature;
+            
+            [self configureTemperatureSelectors];
+            [self configureTemperatureFormatButtons];
+            
+            
+            heatingTempSelector.hidden = YES;
+            lblHeating.hidden = YES;
+            if (self.editFieldIndex==highTemperatureIndexPathRow) {
+                lblCooling.text =  NSLocalizedString(@"sensors.high.temperature", @"High Temperature");
+            }else{
+                lblCooling.text =  NSLocalizedString(@"sensors.low.temperature", @"Low Temperature");
             }
             
+            
+            fr = lblShow.frame;
+            fr.origin.y =lblHeating.frame.origin.y;
+            lblShow.frame = fr;
+            
+            fr = lblCelsius.frame;
+            fr.origin.y =lblHeating.frame.origin.y+30;
+            lblCelsius.frame = fr;
+            
+            fr = btnShowCelsius.frame;
+            fr.origin.y =lblHeating.frame.origin.y+30;
+            btnShowCelsius.frame = fr;
+            
+            fr = lblFahrenheit.frame;
+            fr.origin.y =lblCelsius.frame.origin.y+40;
+            lblFahrenheit.frame = fr;
+            
+            fr = btnFahrenheit.frame;
+            fr.origin.y =btnShowCelsius.frame.origin.y+40;
+            btnFahrenheit.frame = fr;
         }
         default:
             break;
@@ -430,15 +560,14 @@ typedef NS_ENUM(NSInteger, Properties) {
     [self initializeNotifications];
     
     viewHeader.backgroundColor = self.cellColor;
-    viewTypeSelection.backgroundColor = self.cellColor;
-    viewThemperature.backgroundColor = self.cellColor;
+    currentView.backgroundColor = self.cellColor;
     [btnSave setTitleColor:self.cellColor forState:UIControlStateNormal];
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     
-    if (self.editFieldIndex==targetRangeIndexPathRow) {
+    if (self.editFieldIndex==targetRangeIndexPathRow || self.editFieldIndex==lowTemperatureIndexPathRow || self.editFieldIndex==highTemperatureIndexPathRow) {
         [self displayTemperatureValues];
     }
 }
@@ -508,6 +637,33 @@ typedef NS_ENUM(NSInteger, Properties) {
     SFIDevicePropertyType propertyType;
     SFIDeviceKnownValues *deviceValues;
     switch (self.editFieldIndex) {
+        case nameIndexPathRow:
+            [self sendMobileCommandForDevice:self.device name:txtPropertyValue.text location:self.device.location];
+            return;
+            break;
+        case locationIndexPathRow:
+            [self sendMobileCommandForDevice:self.device name:self.device.deviceName location:txtPropertyValue.text];
+            return;
+            
+            break;
+        case irCodeIndexPathRow:
+            propertyType = SFIDevicePropertyType_IR_CODE;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            deviceValues.value = txtPropertyValue.text;
+            self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+            break;
+        case stopIndexPathRow:
+        {
+            propertyType = SFIDevicePropertyType_STOP;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            if(btnCheckbox.selected){
+                deviceValues.value = @"true";
+            }else{
+                deviceValues.value = @"false";
+            }
+            self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+        }
+            break;
         case notifyMeIndexPathRow:
         {
             SFINotificationMode mode = SFINotificationMode_always;
@@ -540,6 +696,40 @@ typedef NS_ENUM(NSInteger, Properties) {
             propertyType = SFIDevicePropertyType_AWAY_MODE;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
             deviceValues.value = [selectedPropertyValue lowercaseString];
+            self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+            break;
+        case acModeIndexPathRow:
+            propertyType = SFIDevicePropertyType_AC_MODE;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            deviceValues.value = [selectedPropertyValue lowercaseString];
+            self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+            break;
+        case acFanIndexPathRow:
+            propertyType = SFIDevicePropertyType_AC_FAN_MODE;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            deviceValues.value = selectedPropertyValue;
+            self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+            break;
+        case swingIndexPathRow:
+            propertyType = SFIDevicePropertyType_AC_SWING;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            if ([selectedPropertyValue isEqualToString:@"Off"]) {
+                deviceValues.value = @"0";
+            }else{
+                deviceValues.value = @"1";
+            }
+            
+            self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+            break;
+        case powerIndexPathRow:
+            propertyType = SFIDevicePropertyType_BASIC;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            if ([selectedPropertyValue isEqualToString:@"Off"]) {
+                deviceValues.value = @"0";
+            }else{
+                deviceValues.value = @"255";
+            }
+            
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
             break;
         case modeIndexPathRow:
@@ -585,6 +775,35 @@ typedef NS_ENUM(NSInteger, Properties) {
             }
             break;
         }
+        case lowTemperatureIndexPathRow:
+        {
+            NSString * value = @"";
+            propertyType = SFIDevicePropertyType_AC_SETPOINT_COOLING;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            if (btnFahrenheit.selected) {
+                value = [NSString stringWithFormat:@"%d",currentCoolTemp];
+            }else{
+                value = [NSString stringWithFormat:@"%lu",lroundf(currentCoolTemp*1.8+32)];
+            }
+            deviceValues.value =value;
+            self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+            break;
+        }
+        case highTemperatureIndexPathRow:
+        {
+            NSString * value = @"";
+            propertyType = SFIDevicePropertyType_AC_SETPOINT_HEATING;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            if (btnFahrenheit.selected) {
+                value = [NSString stringWithFormat:@"%d",currentCoolTemp];
+            }else{
+                value = [NSString stringWithFormat:@"%lu",lroundf(currentCoolTemp*1.8+32)];
+            }
+            deviceValues.value =value;
+            self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+            break;
+        }
+            
         default:
             break;
     }
@@ -593,13 +812,7 @@ typedef NS_ENUM(NSInteger, Properties) {
     
     // provisionally update; on mobile cmd response, the actual new values will be set
     
-    
-    //    [self showSavingToast];
     [self sendMobileCommandForDevice:self.device deviceValue:deviceValues];
-    
-    
-    
-    //    [self asyncSendCommand:cloudCommand];
 }
 
 #pragma mark - UITableViewDelegate
@@ -617,8 +830,12 @@ typedef NS_ENUM(NSInteger, Properties) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (self.editFieldIndex) {
         case awayModeIndexPathRow:
+        case acModeIndexPathRow:
+        case acFanIndexPathRow:
         case fanIndexPathRow:
         case modeIndexPathRow:
+        case swingIndexPathRow:
+        case powerIndexPathRow:
         case notifyMeIndexPathRow:
             return propertyTypes.count;
             break;
@@ -639,6 +856,10 @@ typedef NS_ENUM(NSInteger, Properties) {
         case awayModeIndexPathRow:
         case fanIndexPathRow:
         case modeIndexPathRow:
+        case acModeIndexPathRow:
+        case acFanIndexPathRow:
+        case swingIndexPathRow:
+        case powerIndexPathRow:
         case notifyMeIndexPathRow:
             [cell createPropertyCell:propertyTypes[indexPath.row]];
             cell.textLabel.text = [propertyTypes[indexPath.row] valueForKey:@"name"];
@@ -684,6 +905,10 @@ typedef NS_ENUM(NSInteger, Properties) {
         case awayModeIndexPathRow:
         case fanIndexPathRow:
         case modeIndexPathRow:
+        case swingIndexPathRow:
+        case acModeIndexPathRow:
+        case powerIndexPathRow:
+        case acFanIndexPathRow:
         case notifyMeIndexPathRow:
             for (NSMutableDictionary * dict in propertyTypes) {
                 [dict setValue:@0 forKey:@"selected"];
@@ -841,9 +1066,44 @@ typedef NS_ENUM(NSInteger, Properties) {
     [self updateTemperatureLabel];
 }
 
+- (void)configureTemperatureSelectors{
+    coolingTempSelector.dataSource = self;
+    coolingTempSelector.delegate = self;
+    coolingTempSelector.shouldBeTransparent = YES;
+    coolingTempSelector.horizontalScrolling = YES;
+    coolingTempSelector.debugEnabled = NO;
+    
+    heatingTempSelector.dataSource = self;
+    heatingTempSelector.delegate = self;
+    heatingTempSelector.shouldBeTransparent = YES;
+    heatingTempSelector.horizontalScrolling = YES;
+    heatingTempSelector.debugEnabled = NO;
+    
+    btnShowCelsius.layer.borderColor = [[UIColor whiteColor] CGColor];
+    btnShowCelsius.layer.borderWidth = 2.0f;
+    btnShowCelsius.backgroundColor = [UIColor clearColor];
+    btnShowCelsius.layer.cornerRadius = btnShowCelsius.frame.size.width/2;
+    
+    btnFahrenheit.layer.borderColor = [[UIColor whiteColor] CGColor];
+    btnFahrenheit.layer.borderWidth = 2.0f;
+    btnFahrenheit.backgroundColor = [UIColor clearColor];
+    btnFahrenheit.layer.cornerRadius = btnShowCelsius.frame.size.width/2;
+}
+
 - (void)updateTemperatureLabel{
-    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
-    lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
+    SFIDeviceKnownValues *currentDeviceValue;
+    
+    if (self.device.deviceType==SFIDeviceType_ZWtoACIRExtender_54) {
+        currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
+    }else if (self.device.deviceType==SFIDeviceType_NestThermostat_57){
+        currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
+    }
+    
+    for (UILabel *lbl in self.headerView.subviews) {
+        if (lbl.tag==3) {
+            lbl.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
+        }
+    }
 }
 #pragma mark - Cloud command senders and handlers
 
@@ -874,6 +1134,32 @@ typedef NS_ENUM(NSInteger, Properties) {
         // dispatch request and keep track of its correlation ID so we can process the response
         //todo for future: note potential race condition: if we do not process command response on main queue it's possible response is processed before we have completed marking updating state.
         dc_id = [[SecurifiToolkit sharedInstance] asyncChangeAlmond:plus device:device value:deviceValues];
+        //        [self markDeviceUpdatingState:device correlationId:c_id statusMessage:nil];
+    });
+}
+
+- (void)sendMobileCommandForDevice:(SFIDevice *)device name:(NSString*)deviceName location:(NSString*)deviceLocation {
+    if (device == nil) {
+        return;
+    }
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    // Tell the cell to show 'updating' type message to user
+    //    [cell showUpdatingMessage];
+    
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        //todo decide what to do about this
+        [self.mobileCommandTimer invalidate];
+        
+        self.mobileCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
+                                                                   target:self
+                                                                 selector:@selector(onSendMobileCommandTimeout:)
+                                                                 userInfo:nil
+                                                                  repeats:NO];
+        
+        // dispatch request and keep track of its correlation ID so we can process the response
+        //todo for future: note potential race condition: if we do not process command response on main queue it's possible response is processed before we have completed marking updating state.
+        dc_id = [[SecurifiToolkit sharedInstance] asyncChangeAlmond:plus device:device name:deviceName location:deviceLocation];
         //        [self markDeviceUpdatingState:device correlationId:c_id statusMessage:nil];
     });
 }
@@ -986,5 +1272,8 @@ typedef NS_ENUM(NSInteger, Properties) {
         selIndex = selIndex-10;
     }
     [heatingTempSelector selectRowAtIndex:selIndex];
+}
+- (IBAction)btnCheckboxTap:(id)sender {
+    btnCheckbox.selected = !btnCheckbox.selected;
 }
 @end

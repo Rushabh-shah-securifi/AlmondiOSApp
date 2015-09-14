@@ -298,7 +298,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9es-nW-KIT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2841" y="-128"/>
+            <point key="canvasLocation" x="-2852" y="-837"/>
         </scene>
         <!--Logout All View Controller-->
         <scene sceneID="9mG-Tp-k7e">
@@ -555,32 +555,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A4M-oz-e9a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2450" y="-825"/>
-        </scene>
-        <!--Scenes-->
-        <scene sceneID="aqp-G0-xTe">
-            <objects>
-                <viewController id="tZf-bb-osZ" customClass="SFISceneViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="WME-VG-Tjm">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="tZf-bb-osZ" id="yB1-QB-veb"/>
-                            <outlet property="delegate" destination="tZf-bb-osZ" id="05V-wR-G5f"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" title="Scenes" id="C8w-d3-6Kp">
-                        <barButtonItem key="leftBarButtonItem" image="drawer.png" id="DVr-NL-Etc">
-                            <connections>
-                                <action selector="revealMenu:" destination="tZf-bb-osZ" id="g1o-9m-Vvn"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="s2r-QF-M8f" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3245" y="-128"/>
+            <point key="canvasLocation" x="-2456" y="-837"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="qgd-qj-mZq">
@@ -611,27 +586,9 @@
             </objects>
             <point key="canvasLocation" x="-3644" y="-843"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="ixt-AF-1om">
-            <objects>
-                <viewController id="8a9-Jv-Ohk" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="B69-UG-7b5"/>
-                        <viewControllerLayoutGuide type="bottom" id="KiO-mb-PGg"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="bVJ-Ap-HYp">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Cex-xH-GSB" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-        </scene>
     </scenes>
     <resources>
         <image name="Line_icon.png" width="600" height="1"/>
-        <image name="drawer.png" width="23" height="18"/>
         <image name="icon_round_1.png" width="88" height="88"/>
         <image name="icon_round_2.png" width="88" height="88"/>
         <image name="icon_round_3.png" width="88" height="88"/>

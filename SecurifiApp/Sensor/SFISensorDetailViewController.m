@@ -9,19 +9,7 @@
 #define AVENIR_ROMAN @"Avenir-Roman"
 #define AVENIR_LIGHT @"Avenir-Light"
 
-typedef NS_ENUM(NSInteger, Properties) {
-    nameIndexPathRow,
-    locationIndexPathRow,
-    humidityIndexPathRow,
-    awayModeIndexPathRow,
-    coLevelIndexPathRow,
-    smokeLevelIndexPathRow,
-    modeIndexPathRow,
-    targetRangeIndexPathRow,
-    fanIndexPathRow,
-    notifyMeIndexPathRow,
-    deviceHistoryIndexPathRow,
-};
+
 
 #import "SFISensorDetailViewController.h"
 #import "SFIWiFiDeviceTypeSelectionCell.h"
@@ -75,108 +63,15 @@ typedef NS_ENUM(NSInteger, Properties) {
     [super viewWillAppear:animated];
     randomMobileInternalIndex = arc4random() % 10000;
     
-    NSArray *propertyNames = @[@"Name",@"Location",@"Humidity",@"Away Mode",@"CO Level",@"Smoke Level",@"Mode",@"Target Range",@"Fan",@"Notify me",@""];
+    NSArray *propertyNames = @[@"Name",@"Location",@"Stop",@"Battery",@"Temperature",@"AC Mode",@"High Temperature",@"Low Temperature",@"Swing",@"Power",@"IR Code",@"Configuration",@"Humidity",@"Away Mode",@"CO Level",@"Smoke Level",@"Mode",@"Target Range",@"Fan Mode",@"Fan",@"Notify me",@""];
     propertiesArray = [NSMutableArray new];
     for (int i=0; i<propertyNames.count; i++) {
-        NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithDictionary:@{@"name": propertyNames[i],@"hidden":@NO}];
+        NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithDictionary:@{@"name": propertyNames[i],@"hidden":@YES}];
         [propertiesArray addObject:dict];
     }
+    [self configHeaderInfo];
+    [self showPropertyRows];
     
-    if (self.device.deviceType==SFIDeviceType_MultiSoundSiren_55) {
-        [propertiesArray[humidityIndexPathRow] setValue:@YES forKey:@"hidden"];
-        [propertiesArray[awayModeIndexPathRow] setValue:@YES forKey:@"hidden"];
-        [propertiesArray[coLevelIndexPathRow] setValue:@YES forKey:@"hidden"];
-        [propertiesArray[smokeLevelIndexPathRow] setValue:@YES forKey:@"hidden"];
-        [propertiesArray[modeIndexPathRow] setValue:@YES forKey:@"hidden"];
-        [propertiesArray[targetRangeIndexPathRow] setValue:@YES forKey:@"hidden"];
-        [propertiesArray[fanIndexPathRow] setValue:@YES forKey:@"hidden"];
-        [propertiesArray[humidityIndexPathRow] setValue:@YES forKey:@"hidden"];
-        UIImage* image = [UIImage imageNamed:@"55_multisoundsiren_icon"];
-        imgIcon.image = image;
-        CGRect fr = imgIcon.frame;
-        fr.size = image.size;
-        fr.origin.x = (90-fr.size.width)/2;
-        fr.origin.y = (90-fr.size.height)/2;
-        imgIcon.frame = fr;
-    }
-    if (self.device.deviceType==SFIDeviceType_NestThermostat_57) {
-        SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HVAC_STATE];
-        lblStatus.text = [currentDeviceValue.value capitalizedString];
-        
-        
-        imgIcon.image = nil;
-        
-        CGRect fr = lblThemperatureMain.frame;
-        fr.size = CGSizeMake(90, 90);
-        fr.origin.x = 0;
-        fr.origin.y = 0;
-        lblThemperatureMain.frame = fr;
-        
-        lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
-        lblThemperatureMain.textColor = [UIColor whiteColor];
-        
-        currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
-        lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:36.0f];
-        lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
-        lblThemperatureMain.textColor = [UIColor whiteColor];
-        lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
-        
-        //        propertyNames = @[@"Name",@"Location",@"Humidity",@"Away Mode",@"Mode",@"Target Range",@"Fan",@"Notify me",@""];
-        
-        [propertiesArray[coLevelIndexPathRow] setValue:@YES forKey:@"hidden"];
-        [propertiesArray[smokeLevelIndexPathRow] setValue:@YES forKey:@"hidden"];
-        
-        currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_COOL];
-        canCool = [currentDeviceValue boolValue];
-        currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_HEAT];
-        canHeat = [currentDeviceValue boolValue];
-        currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
-        if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"off"] || (!canHeat && !canCool)) {
-            [propertiesArray[targetRangeIndexPathRow] setValue:@YES forKey:@"hidden"];
-        }
-        
-        currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HAS_FAN];
-        BOOL hasFan = [currentDeviceValue boolValue];
-        if (!hasFan) {
-            [propertiesArray[fanIndexPathRow] setValue:@YES forKey:@"hidden"];
-        }
-    }
-    if (self.device.deviceType==SFIDeviceType_NestSmokeDetector_58) {
-        SFIDeviceKnownValues *coValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CO_ALARM_STATE];
-        
-        SFIDeviceKnownValues *smokeValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SMOKE_ALARM_STATE];
-        NSString * coText = @"";
-        NSString * smokeText = @"";
-        coText = [coValue.value capitalizedString];
-        if ([coValue.value isEqualToString:@"true"]) {
-            coText = NSLocalizedString(@"smoke-detector-Warning",@"Warning");
-        }else if ([coValue.value isEqualToString:@"false"]){
-            coText =NSLocalizedString(@"smoke-detector-Emergency",@"Emergency");
-        }
-        
-        smokeText = [smokeValue.value capitalizedString];
-        if ([smokeValue.value isEqualToString:@"true"]) {
-            smokeText =  NSLocalizedString(@"smoke-detector-Warning",@"Warning");
-
-        }else if ([smokeValue.value isEqualToString:@"false"]){
-            smokeText = NSLocalizedString(@"smoke-detector-Emergency",@"Emergency");
-        }
-        lblStatus.text = [NSString stringWithFormat:@"Smoke :%@ , CO :%@",smokeText,coText];
-        
-        UIImage* image = [UIImage imageNamed:@"nest_58_icon"];
-        imgIcon.image = image;
-        CGRect fr = imgIcon.frame;
-        fr.size = image.size;
-        fr.origin.x = (90-fr.size.width)/2;
-        fr.origin.y = (90-fr.size.height)/2;
-        imgIcon.frame = fr;
-        //        propertyNames = @[@"Name",@"Location",@"Away Mode",@"CO Level",@"Smoke Level",@"Notify me",@""];
-        
-        [propertiesArray[humidityIndexPathRow] setValue:@YES forKey:@"hidden"];
-        [propertiesArray[modeIndexPathRow] setValue:@YES forKey:@"hidden"];
-        [propertiesArray[targetRangeIndexPathRow] setValue:@YES forKey:@"hidden"];
-        [propertiesArray[fanIndexPathRow] setValue:@YES forKey:@"hidden"];
-    }
     [tblDeviceProperties reloadData];
     [self initializeNotifications];
 }
@@ -281,6 +176,36 @@ typedef NS_ENUM(NSInteger, Properties) {
         
         
         switch (indexPath.row) {
+            case multiSensorTempIndexPathRow:
+                [self configuremultiSensorTempCell:cell];
+                break;
+            case stopIndexPathRow:
+                [self configureStopCell:cell];
+                break;
+            case batteryIndexPathRow:
+                [self configureBatteryCell:cell];
+                break;
+            case swingIndexPathRow:
+                [self configureSwingCell:cell];
+                break;
+            case powerIndexPathRow:
+                [self configurePowerCell:cell];
+                break;
+            case irCodeIndexPathRow:
+                [self configureIRCodeCell:cell];
+                break;
+            case configIndexPathRow:
+                [self configureConfigCell:cell];
+                break;
+            case highTemperatureIndexPathRow:
+                [self configureHighTempCell:cell];
+                break;
+            case lowTemperatureIndexPathRow:
+                [self configureLowTempCell:cell];
+                break;
+            case acModeIndexPathRow:
+                [self configureACModeCell:cell];
+                break;
             case nameIndexPathRow://Name
                 [self configureNameCell:cell];
                 break;
@@ -304,6 +229,9 @@ typedef NS_ENUM(NSInteger, Properties) {
                 break;
             case fanIndexPathRow:
                 [self configureFanCell:cell];
+                break;
+            case acFanIndexPathRow:
+                [self configureACFanModeCell:cell];
                 break;
             case targetRangeIndexPathRow:
                 [self configureTargetRangeCell:cell];
@@ -329,11 +257,19 @@ typedef NS_ENUM(NSInteger, Properties) {
     switch (indexPath.row) {
         case nameIndexPathRow:
         case locationIndexPathRow:
+        case acModeIndexPathRow:
+        case acFanIndexPathRow:
         case awayModeIndexPathRow:
         case modeIndexPathRow:
         case targetRangeIndexPathRow:
         case fanIndexPathRow:
         case notifyMeIndexPathRow:
+        case swingIndexPathRow:
+        case powerIndexPathRow:
+        case irCodeIndexPathRow:
+        case stopIndexPathRow:
+        case highTemperatureIndexPathRow:
+        case lowTemperatureIndexPathRow:
             [self editProperty:indexPath.row];
             break;
         case deviceHistoryIndexPathRow:
@@ -436,6 +372,49 @@ typedef NS_ENUM(NSInteger, Properties) {
     [cell addSubview:label];
     cell.accessoryType = UITableViewCellAccessoryNone;
 }
+
+- (void)configureBatteryCell:(UITableViewCell*)cell{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = cellFont;
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BATTERY];
+    label.text = currentDeviceValue.value;
+    label.numberOfLines = 1;
+    label.tag = 66;
+    label.textAlignment = NSTextAlignmentRight;
+    [cell addSubview:label];
+    cell.accessoryType = UITableViewCellAccessoryNone;
+}
+
+- (void)configureStopCell:(UITableViewCell*)cell{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = cellFont;
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_STOP];
+    label.text = currentDeviceValue.value;
+    label.numberOfLines = 1;
+    label.tag = 66;
+    label.textAlignment = NSTextAlignmentRight;
+    [cell addSubview:label];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+}
+
+- (void)configuremultiSensorTempCell:(UITableViewCell*)cell{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = cellFont;
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_TEMPERATURE];
+    label.text = currentDeviceValue.value;
+    label.numberOfLines = 1;
+    label.tag = 66;
+    label.textAlignment = NSTextAlignmentRight;
+    [cell addSubview:label];
+    cell.accessoryType = UITableViewCellAccessoryNone;
+}
+
 - (void)configureNameCell:(UITableViewCell*)cell{
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
     label.backgroundColor = [UIColor clearColor];
@@ -472,6 +451,131 @@ typedef NS_ENUM(NSInteger, Properties) {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
+}
+
+- (void)configureACModeCell:(UITableViewCell*)cell{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = cellFont;
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_MODE];
+    label.text = [currentDeviceValue.value capitalizedString];
+    label.numberOfLines = 1;
+    label.tag = 66;
+    label.textAlignment = NSTextAlignmentRight;
+    [cell addSubview:label];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+}
+
+- (void)configureSwingCell:(UITableViewCell*)cell{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = cellFont;
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_SWING];
+    if ([currentDeviceValue intValue]==0) {
+        label.text = @"OFF";
+    }else{
+        label.text = @"ON";
+    }
+    
+    label.numberOfLines = 1;
+    label.tag = 66;
+    label.textAlignment = NSTextAlignmentRight;
+    [cell addSubview:label];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+}
+
+- (void)configurePowerCell:(UITableViewCell*)cell{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = cellFont;
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BASIC];
+    if ([currentDeviceValue intValue]==0) {
+        label.text = @"OFF";
+    }else{
+        label.text = @"ON";
+    }
+    label.numberOfLines = 1;
+    label.tag = 66;
+    label.textAlignment = NSTextAlignmentRight;
+    [cell addSubview:label];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+}
+
+- (void)configureACFanModeCell:(UITableViewCell*)cell{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = cellFont;
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_FAN_MODE];
+    label.text = [currentDeviceValue.value capitalizedString];
+    label.numberOfLines = 1;
+    label.tag = 66;
+    label.textAlignment = NSTextAlignmentRight;
+    [cell addSubview:label];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+}
+
+- (void)configureConfigCell:(UITableViewCell*)cell{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = cellFont;
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CONFIGURATION];
+    label.text = [currentDeviceValue.value capitalizedString];
+    label.numberOfLines = 1;
+    label.tag = 66;
+    label.textAlignment = NSTextAlignmentRight;
+    [cell addSubview:label];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+}
+
+- (void)configureIRCodeCell:(UITableViewCell*)cell{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = cellFont;
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_IR_CODE];
+    label.text = currentDeviceValue.value;
+    label.numberOfLines = 1;
+    label.tag = 66;
+    label.textAlignment = NSTextAlignmentRight;
+    [cell addSubview:label];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+}
+
+- (void)configureHighTempCell:(UITableViewCell*)cell{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = cellFont;
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_SETPOINT_HEATING];
+    
+    int targetValue = [currentDeviceValue intValue];
+    label.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:targetValue];
+    label.numberOfLines = 1;
+    label.tag = 66;
+    label.textAlignment = NSTextAlignmentRight;
+    [cell addSubview:label];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+}
+
+- (void)configureLowTempCell:(UITableViewCell*)cell{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = cellFont;
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_SETPOINT_COOLING];
+    
+    int targetValue = [currentDeviceValue intValue];
+    label.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:targetValue];
+    label.numberOfLines = 1;
+    label.tag = 66;
+    label.textAlignment = NSTextAlignmentRight;
+    [cell addSubview:label];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 - (void)configureModeCell:(UITableViewCell*)cell{
@@ -636,6 +740,8 @@ typedef NS_ENUM(NSInteger, Properties) {
     viewController.delegate = self;
     viewController.editFieldIndex = propertyNumber;
     viewController.device = self.device;
+    NSData *archivedData = [NSKeyedArchiver archivedDataWithRootObject: viewHeader];
+    viewController.headerView =  [NSKeyedUnarchiver unarchiveObjectWithData: archivedData];
     viewController.deviceValue = self.deviceValue;
     viewController.cellColor = self.cellColor;
     [self.navigationController pushViewController:viewController animated:YES];
@@ -643,6 +749,182 @@ typedef NS_ENUM(NSInteger, Properties) {
 
 
 
+- (void)showPropertyRows{
+    switch (self.device.deviceType) {
+        case SFIDeviceType_RollerShutter_52:
+        {
+            [propertiesArray[nameIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[locationIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[notifyMeIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[deviceHistoryIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[stopIndexPathRow] setValue:@NO forKey:@"hidden"];
+        }
+            break;
+        case SFIDeviceType_ZWtoACIRExtender_54:
+        {
+            [propertiesArray[nameIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[locationIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[notifyMeIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[deviceHistoryIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[batteryIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[acFanIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[acModeIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[swingIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[highTemperatureIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[lowTemperatureIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[powerIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[irCodeIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[configIndexPathRow] setValue:@NO forKey:@"hidden"];
+        }
+            break;
+        case SFIDeviceType_MultiSoundSiren_55:
+        {
+            [propertiesArray[nameIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[locationIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[notifyMeIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[deviceHistoryIndexPathRow] setValue:@NO forKey:@"hidden"];
+        }
+            break;
+        case SFIDeviceType_MultiSensor_49:
+        {
+            [propertiesArray[batteryIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[multiSensorTempIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[nameIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[locationIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[notifyMeIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[deviceHistoryIndexPathRow] setValue:@NO forKey:@"hidden"];
+        }
+            break;
+        case SFIDeviceType_EnergyReader_56:
+        {
+            [propertiesArray[batteryIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[nameIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[locationIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[notifyMeIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[deviceHistoryIndexPathRow] setValue:@NO forKey:@"hidden"];
+        }
+            break;
+        case SFIDeviceType_NestThermostat_57:
+        {
+            [propertiesArray[nameIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[locationIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[notifyMeIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[deviceHistoryIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[fanIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[targetRangeIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[humidityIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[modeIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[awayModeIndexPathRow] setValue:@NO forKey:@"hidden"];
+            
+            
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HVAC_STATE];
+            currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_COOL];
+            canCool = [currentDeviceValue boolValue];
+            currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_HEAT];
+            canHeat = [currentDeviceValue boolValue];
+            currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
+            if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"off"] || (!canHeat && !canCool)) {
+                [propertiesArray[targetRangeIndexPathRow] setValue:@YES forKey:@"hidden"];
+            }
+            
+            currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HAS_FAN];
+            BOOL hasFan = [currentDeviceValue boolValue];
+            if (!hasFan) {
+                [propertiesArray[fanIndexPathRow] setValue:@YES forKey:@"hidden"];
+            }
+            
+        }
+            break;
+        case SFIDeviceType_NestSmokeDetector_58:
+        {
+            [propertiesArray[smokeLevelIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[nameIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[locationIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[notifyMeIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[deviceHistoryIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[coLevelIndexPathRow] setValue:@NO forKey:@"hidden"];
+        }
+            break;
+        default:
+            break;
+    }
+}
 
-
+- (void)configHeaderInfo{
+    
+    if (self.device.deviceType==SFIDeviceType_MultiSoundSiren_55) {
+        UIImage* image = [UIImage imageNamed:@"55_multisoundsiren_icon"];
+        imgIcon.image = image;
+        CGRect fr = imgIcon.frame;
+        fr.size = image.size;
+        fr.origin.x = (90-fr.size.width)/2;
+        fr.origin.y = (90-fr.size.height)/2;
+        imgIcon.frame = fr;
+    }
+    if (self.device.deviceType==SFIDeviceType_ZWtoACIRExtender_54) {
+        SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_MODE];
+        lblStatus.text = [currentDeviceValue.value capitalizedString];
+        
+        [self configTemperatureLable];
+        currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
+        lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
+        return;
+    }
+    
+    if (self.device.deviceType==SFIDeviceType_NestThermostat_57) {
+        SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HVAC_STATE];
+        lblStatus.text = [currentDeviceValue.value capitalizedString];
+         [self configTemperatureLable];
+        currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
+        lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
+    }
+    if (self.device.deviceType==SFIDeviceType_NestSmokeDetector_58) {
+        SFIDeviceKnownValues *coValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CO_ALARM_STATE];
+        
+        SFIDeviceKnownValues *smokeValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SMOKE_ALARM_STATE];
+        NSString * coText = @"";
+        NSString * smokeText = @"";
+        coText = [coValue.value capitalizedString];
+        if ([coValue.value isEqualToString:@"true"]) {
+            coText = NSLocalizedString(@"smoke-detector-Warning",@"Warning");
+        }else if ([coValue.value isEqualToString:@"false"]){
+            coText =NSLocalizedString(@"smoke-detector-Emergency",@"Emergency");
+        }
+        
+        smokeText = [smokeValue.value capitalizedString];
+        if ([smokeValue.value isEqualToString:@"true"]) {
+            smokeText =  NSLocalizedString(@"smoke-detector-Warning",@"Warning");
+            
+        }else if ([smokeValue.value isEqualToString:@"false"]){
+            smokeText = NSLocalizedString(@"smoke-detector-Emergency",@"Emergency");
+        }
+        lblStatus.text = [NSString stringWithFormat:@"Smoke :%@ , CO :%@",smokeText,coText];
+        
+        UIImage* image = [UIImage imageNamed:@"nest_58_icon"];
+        imgIcon.image = image;
+        CGRect fr = imgIcon.frame;
+        fr.size = image.size;
+        fr.origin.x = (90-fr.size.width)/2;
+        fr.origin.y = (90-fr.size.height)/2;
+        imgIcon.frame = fr;
+    }
+}
+- (void)configTemperatureLable{
+    
+    imgIcon.image = nil;
+    
+    CGRect fr = lblThemperatureMain.frame;
+    fr.size = CGSizeMake(90, 90);
+    fr.origin.x = 0;
+    fr.origin.y = 0;
+    lblThemperatureMain.frame = fr;
+    lblThemperatureMain.tag = 3;
+    lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
+    lblThemperatureMain.textColor = [UIColor whiteColor];
+    
+    
+    lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:36.0f];
+    lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
+    lblThemperatureMain.textColor = [UIColor whiteColor];
+}
 @end

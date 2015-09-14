@@ -251,6 +251,13 @@ reset at the moment. Try again later.";
 "sensor.mode indexpath Heat" = "Heat";
 "sensor.mode indexpath Heat-Cool" = "Heat-Cool";
 
+"sensor.notificaiton.fanindexpath.Auto Low" = "Auto Low";
+"sensor.notificaiton.fanindexpath.On High" = "On High";
+"sensor.notificaiton.fanindexpath.On Low" = "On Low";
+"sensor.notificaiton.fanindexpath.Medium" = "Medium";
+"sensors.high.temperature" = "High Temperature";
+"sensors.low.temperature" = "Low Temperature";
+
 "device-property-fanindexpah false" = "false";
 "device-property-fanindexpah true" = "true";
 "device property on mobile hud Unable to update sensor"="Unable to update sensor";

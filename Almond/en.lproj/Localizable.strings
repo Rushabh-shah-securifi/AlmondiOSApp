@@ -265,6 +265,14 @@ reset at the moment. Try again later.";
 "sensor-property-edit smokedetector Warning" = "Warning";
 "sensor-property-edit smokedetector Emergency" = "Emergency";
 
+"sensor.notificaiton.fanindexpath.Auto Low" = "Auto Low";
+"sensor.notificaiton.fanindexpath.On High" = "On High";
+"sensor.notificaiton.fanindexpath.On Low" = "On Low";
+"sensor.notificaiton.fanindexpath.Medium" = "Medium";
+"sensors.high.temperature" = "High Temperature";
+"sensors.low.temperature" = "Low Temperature";
+
+
 /* signup */
 "signup.navbar-title.Sign up" = "Sign up";
 "signup.barbutton.Decline" = "Decline";
