@@ -642,6 +642,8 @@ your home devices from anywhere.";
 "Add Local Connection Settings" = "Add Local Connection Settings";
 "Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "Cloud connection to your Almond failed. Tap retry or switch to local connection.";
 "alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = "Local connection to your Almond failed. Tap retry or switch to cloud connection.";
+"alert msg offline Local connection not supported." = "Can't connect to your Almond because local connection settings are missing. Tap edit to add settings.";
+"alert msg offline Cloud connection not supported." = "Your Almond is not affiliated with the cloud. Only local connection to your Almond is supported.";
 "hud message-Setting Almond to Away Mode" = "Setting Almond to Away Mode";
 "hud message-Setting Almond to Home Mode" = "Setting Almond to Home Mode";
 "alertview Can't connect to your Almond. Please select a connection method." = "Can't connect to your Almond. Please select a connection method.";

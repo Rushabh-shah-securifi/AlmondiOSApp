@@ -17,6 +17,8 @@ typedef NS_ENUM(NSUInteger, SFICloudStatusState) {
     SFICloudStatusStateConnectionError,
     SFICloudStatusStateLocalConnection,
     SFICloudStatusStateLocalConnectionOffline,
+    SFICloudStatusStateCloudConnectionNotSupported,
+    SFICloudStatusStateLocalConnectionNotSupported,
 };
 
 @interface SFICloudStatusBarButtonItem : UIBarButtonItem

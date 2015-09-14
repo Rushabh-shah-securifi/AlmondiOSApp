@@ -88,6 +88,14 @@
             name = @"connection_local_error";
             mode = UIImageRenderingModeAlwaysOriginal;
             break;
+        case SFICloudStatusStateCloudConnectionNotSupported:
+            name = @"connection_error_icon";
+            if (localNetworkingMode) mode = UIImageRenderingModeAlwaysOriginal;
+            break;
+        case SFICloudStatusStateLocalConnectionNotSupported:
+            name = @"connection_local_error";
+            mode = UIImageRenderingModeAlwaysOriginal;
+            break;
         default:
             return nil;
     }
@@ -111,6 +119,8 @@
         case SFICloudStatusStateConnectionError:
         case SFICloudStatusStateLocalConnection:
         case SFICloudStatusStateLocalConnectionOffline:
+        case SFICloudStatusStateCloudConnectionNotSupported:
+        case SFICloudStatusStateLocalConnectionNotSupported:
         default:
             return nil;
     }
