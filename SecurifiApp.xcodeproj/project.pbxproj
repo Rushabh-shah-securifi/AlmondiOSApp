@@ -11,6 +11,8 @@
 		1C21DAFC1BA17A9A00E4A088 /* Login_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C21DAF91BA16FE100E4A088 /* Login_iPhone.storyboard */; };
 		1C23E6D51A9C4581004D2D23 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */; };
 		1C23E6D61A9C4581004D2D23 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */; };
+		1C2F15261BA7FB67009DB175 /* SFIMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F15251BA7FB67009DB175 /* SFIMessageViewController.m */; };
+		1C2F15271BA7FB67009DB175 /* SFIMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F15251BA7FB67009DB175 /* SFIMessageViewController.m */; };
 		1C2F605F1B69E64F001CCA34 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C2F605D1B69E64F001CCA34 /* Scenes_Iphone.storyboard */; };
 		1C2F60601B69E65B001CCA34 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C2F605D1B69E64F001CCA34 /* Scenes_Iphone.storyboard */; };
 		1C2F60921B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */; };
@@ -255,6 +257,8 @@
 		1C2056061A2EBBBA00975495 /* HomeScreen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeScreen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C21DAFA1BA16FE100E4A088 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Login_iPhone.storyboard; sourceTree = "<group>"; };
 		1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
+		1C2F15241BA7FB67009DB175 /* SFIMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIMessageViewController.h; sourceTree = "<group>"; };
+		1C2F15251BA7FB67009DB175 /* SFIMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIMessageViewController.m; sourceTree = "<group>"; };
 		1C2F605E1B69E64F001CCA34 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Scenes_Iphone.storyboard; sourceTree = "<group>"; };
 		1C2F606C1B69E69D001CCA34 /* SFIAddSceneTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIAddSceneTableViewCell.h; sourceTree = "<group>"; };
 		1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIAddSceneTableViewCell.m; sourceTree = "<group>"; };
@@ -786,6 +790,8 @@
 				1DF03A45DC0F0C5965348B84 /* AlertViewAction.h */,
 				1DF030A22E535CC9AA88BF93 /* SFITabBarController.m */,
 				1DF031A7883267D0FFC9E42C /* SFITabBarController.h */,
+				1C2F15241BA7FB67009DB175 /* SFIMessageViewController.h */,
+				1C2F15251BA7FB67009DB175 /* SFIMessageViewController.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1282,6 +1288,7 @@
 				1C7E7DBE1A41A0990026F0BA /* SFICloudStatusBarButtonItem.m in Sources */,
 				1C7E7D861A41A0990026F0BA /* SFILogoutAllViewController.m in Sources */,
 				1C2F60931B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */,
+				1C2F15271BA7FB67009DB175 /* SFIMessageViewController.m in Sources */,
 				1C2F60971B69E69D001CCA34 /* SFIDimmerButton.m in Sources */,
 				1C9B1D901A3EE9EF00097D8F /* main.m in Sources */,
 				1C7E7DAE1A41A0990026F0BA /* SFISignupViewController.m in Sources */,
@@ -1418,6 +1425,7 @@
 				1DF032B24E580FC6CD86D379 /* CircleLabel.m in Sources */,
 				1DF0318D09F8B1DBAF74C090 /* SFINotificationTableViewHeaderFooter.m in Sources */,
 				1C2F60981B69E69D001CCA34 /* SFIScenesTableViewCell.m in Sources */,
+				1C2F15261BA7FB67009DB175 /* SFIMessageViewController.m in Sources */,
 				1DF034DCCD17E1C36BA3BF00 /* SensorSupport.m in Sources */,
 				1DF0383EBD135988AEA6DF73 /* ValueFormatter.m in Sources */,
 				1DF03A1D3210B9478AF1DAC3 /* IndexValueSupport.m in Sources */,

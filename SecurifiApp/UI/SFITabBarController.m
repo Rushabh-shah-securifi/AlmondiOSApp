@@ -8,6 +8,8 @@
 #import "SFIRouterTableViewController.h"
 #import "SFIScenesTableViewController.h"
 #import "ScoreboardViewController.h"
+#import "MessageView.h"
+#import "SFIMessageViewController.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
@@ -19,8 +21,9 @@ typedef NS_ENUM(int, TabBarMode) {
     TabBarMode_noAlmond
 };
 
-@interface SFITabBarController ()
+@interface SFITabBarController () <MessageViewDelegate>
 @property(nonatomic) TabBarMode currentTabs;
+@property(nonatomic) UIViewController *messageTab;
 @property(nonatomic) UIViewController *sensorTab;
 @property(nonatomic) UIViewController *routerTab;
 @property(nonatomic) UIViewController *scenesTab;
@@ -52,7 +55,7 @@ typedef NS_ENUM(int, TabBarMode) {
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    
+
     if (self.isBeingDismissed || self.isMovingFromParentViewController) {
         self.isDismissed = YES;
     }
@@ -137,15 +140,15 @@ typedef NS_ENUM(int, TabBarMode) {
 
     if (configurator.enableScenes) {
         return @[
-                [self sensorTab],
-                [self scenesTab],
-                [self routerTab],
+                self.sensorTab,
+                self.scenesTab,
+                self.routerTab,
         ];
     }
     else {
         return @[
-                [self sensorTab],
-                [self routerTab],
+                self.sensorTab,
+                self.routerTab,
         ];
     }
 }
@@ -153,15 +156,15 @@ typedef NS_ENUM(int, TabBarMode) {
 // tabs to be show when an Almond is using local connection
 - (NSArray *)localTabs {
     return @[
-            [self sensorTab],
-            [self routerTab],
+            self.sensorTab,
+            self.routerTab,
     ];
 }
 
 // tabs to be show when no Almonds are affiliated with the account
 - (NSArray *)noAlmondsTab {
     return @[
-            [self sensorTab],
+            self.messageTab
     ];
 }
 
@@ -218,5 +221,22 @@ typedef NS_ENUM(int, TabBarMode) {
     return _sensorTab;
 }
 
+- (UIViewController *)messageTab {
+    if (!_messageTab) {
+        SFIMessageViewController *ctrl = [SFIMessageViewController new];
+
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
+        nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:nil image:nil selectedImage:nil];
+
+        self.messageTab = nav;
+    }
+    return _messageTab;
+}
+
+#pragma mark - MessageViewDelegate methods
+
+- (void)messageViewDidPressButton:(MessageView *)msgView {
+
+}
 
 @end
