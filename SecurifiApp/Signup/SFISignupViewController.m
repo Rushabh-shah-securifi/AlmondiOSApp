@@ -180,7 +180,7 @@
 
 - (void)setStandardHeadline {
     self.headingLabel.text = NSLocalizedString(@"signup.headline-text.Securifi Cloud Account.", @"Securifi Cloud Account.");
-    self.subHeadingLabel.text = NSLocalizedString(@"signup.headline-text.Access your Almonds", @"Access your Almonds and\nyour home devices from anywhere.");
+    self.subHeadingLabel.text = NSLocalizedString(@"signup.headline-text.Monitor and Control",@ "Monitor and Control your home from anywhere.");
 }
 
 - (void)setSigningUpHeadline {

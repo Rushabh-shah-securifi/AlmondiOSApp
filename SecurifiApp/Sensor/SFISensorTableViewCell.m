@@ -454,6 +454,13 @@
             [self configureRollerShutter_52];//md01
             break;
         }
+        case SFIDeviceType_MultiSwitch_43:
+        {
+            [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            //            [self configureMultiSwitch_43];//md01
+            break;
+        }
+            
         case SFIDeviceType_UnknownDevice_0:
         case SFIDeviceType_Controller_8:
         case SFIDeviceType_SceneController_9:
@@ -464,7 +471,6 @@
         case SFIDeviceType_PressureSensor_30:
         case SFIDeviceType_FlowSensor_31:
         case SFIDeviceType_HAPump_33:
-        case SFIDeviceType_MultiSwitch_43:
         case SFIDeviceType_51:
         default: {
             [self configureUnknownDevice];
@@ -949,6 +955,16 @@
     }
     
     [self configureSensorImageName:imageName statusMesssage:status];
+}
+
+- (void)configureMultiSwitch_43 {
+    self.deviceImageView.image = [UIImage imageNamed:@"55_multisoundsiren_icon"];
+    NSMutableArray *status = [NSMutableArray array];
+    
+    SFIDeviceKnownValues *kValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+    
+    [status addObject:kValue.value];
+    [self setDeviceStatusMessages:status];
 }
 
 - (void)configureMultiSoundSiren_55 {

@@ -8,8 +8,11 @@
 typedef NS_ENUM(NSInteger, Properties) {
     nameIndexPathRow,
     locationIndexPathRow,
+    actionsIndexPathRow,
     stopIndexPathRow,
     batteryIndexPathRow,
+    switch1IndexPathRow,
+    switch2IndexPathRow,
     multiSensorTempIndexPathRow,
     acModeIndexPathRow,
     highTemperatureIndexPathRow,

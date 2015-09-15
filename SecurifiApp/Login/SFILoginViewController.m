@@ -454,7 +454,7 @@
 }
 
 - (void)setStandardLoginMsg {
-    [self setLoginMsg:NSLocalizedString(@"Access your Almonds and your home devices from anywhere.", @"Access your Almonds and\nyour home devices from anywhere.")];
+    [self setLoginMsg:NSLocalizedString(@"Monitor and Control your home from anywhere.", @"Monitor and Control\nyour home from anywhere.")];
 }
 
 - (void)setHeadline:(NSString *)headline subHeadline:(NSString *)subHeadline loginButtonEnabled:(BOOL)enabled {

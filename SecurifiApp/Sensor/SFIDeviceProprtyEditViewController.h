@@ -19,5 +19,7 @@
 @property(strong)SFIDevice *device;
 @property(strong)SFIDeviceValue *deviceValue;
 @property(nonatomic) UIColor *cellColor;
-@property (strong, nonatomic) IBOutlet UIView *headerView;
+@property (strong, nonatomic) NSString *imgIconName;
+@property (strong, nonatomic) NSString *status;
+
 @end

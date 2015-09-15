@@ -247,6 +247,7 @@ reset at the moment. Try again later.";
 "sensor.notificaiton.fanindexpath.Off" = "Off";
 "sensor.awaymode.indexpath Home" = "Home";
 "sensor.awaymode.indexpath Away" = "Away";
+"sensor.mode indexpath Auto" = "Auto";
 "sensor.mode indexpath Off" = "Off";
 "sensor.mode indexpath Cool" = "Cool";
 "sensor.mode indexpath Heat" = "Heat";
@@ -254,6 +255,8 @@ reset at the moment. Try again later.";
 
 "device-property-fanindexpah false" = "false";
 "device-property-fanindexpah true" = "true";
+"device-property-fanindexpah up" = "Up";
+"device-property-fanindexpah down" = "Down";
 "device property on mobile hud Unable to update sensor"="Unable to update sensor";
 
 "Sensorview-almondata-Get Started" = "Get Started";
@@ -593,8 +596,7 @@ Contact us at support@securifi.com";
 "cloudlink.button.Add Almond Locally" = "Add Almond Locally";
 
 /* login */
-"Access your Almonds and your home devices from anywhere." = "Access your Almonds and
-your home devices from anywhere.";
+"Monitor and Control your home from anywhere." = "Monitor and Control your home from anywhere.";
 
 /* router tab */
 "router.offline-msg.label.Almond is Offline." = "Almond is Offline.";
@@ -611,8 +613,7 @@ your home devices from anywhere.";
 
 /* signup */
 "signup.headline-text.Securifi Cloud Account." = "Securifi Cloud Account.";
-"signup.headline-text.Access your Almonds" = "Access your Almonds and
-your home devices from anywhere.";
+"signup.headline-text.Monitor and Control" = "Monitor and Control your home from anywhere.";
 
 /* Accounts */
 "accounts.ownedAlmond.label.YouOwnThisAlmond" = "You own this Almond";
