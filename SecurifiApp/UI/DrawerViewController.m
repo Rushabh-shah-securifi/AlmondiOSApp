@@ -53,6 +53,7 @@
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidChangeAlmondName object:nil];
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidLogoutNotification object:nil];
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidLogoutAllNotification object:nil];
+    [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidChangeAlmondConnectionMode object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -69,7 +70,10 @@
 }
 
 - (void)resetAlmondList {
-    NSArray *almondList = [self buildAlmondList];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    enum SFIAlmondConnectionMode mode = [toolkit currentConnectionMode];
+
+    NSArray *almondList = [self buildAlmondList:mode];
 
     NSArray *settingsList = @[
             @"Account",
@@ -82,8 +86,6 @@
     NSString *buildNumber = [bundle objectForInfoDictionaryKey:(NSString *) kCFBundleVersionKey];
     NSString *version = [NSString stringWithFormat:NSLocalizedString(@"read-almond-version %@ (%@)",@"version %@ (%@)"), shortVersion, buildNumber];
 
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    enum SFIAlmondConnectionMode mode = [toolkit currentConnectionMode];
     if (mode == SFIAlmondConnectionMode_cloud) {
         _dataDictionary = @{
                 SEC_ALMOND_LIST : almondList,
@@ -99,20 +101,27 @@
     }
 }
 
-- (NSArray *)buildAlmondList {
+- (NSArray *)buildAlmondList:(enum SFIAlmondConnectionMode)mode {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
-    NSArray *almondList = [toolkit almondList];
-    if (!almondList) {
-        almondList = @[];
+    switch (mode) {
+        case SFIAlmondConnectionMode_cloud: {
+            NSArray *cloud = [toolkit almondList];
+            if (!cloud) {
+                cloud = @[];
+            }
+            return cloud;
+        }
+        case SFIAlmondConnectionMode_local: {
+            NSArray *local = [toolkit localLinkedAlmondList];
+            if (!local) {
+                local = @[];
+            }
+            return local;
+        }
+        default:
+            return @[];
     }
-
-    NSArray *local = [toolkit localLinkedAlmondList];
-    if (local) {
-        almondList = [almondList arrayByAddingObjectsFromArray:local];
-    }
-
-    return almondList;
 }
 
 #pragma mark - Table Methods
@@ -185,10 +194,10 @@
     if (sectionCount == 2) {
         switch (section) {
             case 0:
-                label.text = NSLocalizedString(@"Draw viecontroller.label LOCATION",@"LOCATION");
+                label.text = NSLocalizedString(@"Draw viecontroller.label LOCATION", @"LOCATION");
                 break;
             case 1:
-                label.text = NSLocalizedString(@"Draw viecontroller.label SETTINGS",@"SETTINGS");
+                label.text = NSLocalizedString(@"Draw viecontroller.label SETTINGS", @"SETTINGS");
                 break;
             default:
                 label.text = @"";
@@ -198,13 +207,13 @@
     else {
         switch (section) {
             case 0:
-                label.text = NSLocalizedString(@"Draw viecontroller.label LOCATION",@"LOCATION");
+                label.text = NSLocalizedString(@"Draw viecontroller.label LOCATION", @"LOCATION");
                 break;
             case 1:
-                label.text =  NSLocalizedString(@"Draw viecontroller.label SETTINGS",@"SETTINGS");
+                label.text = NSLocalizedString(@"Draw viecontroller.label SETTINGS", @"SETTINGS");
                 break;
             case 2:
-                label.text = NSLocalizedString(@"Draw viecontroller.label INFO",@"INFO");
+                label.text = NSLocalizedString(@"Draw viecontroller.label INFO", @"INFO");
                 break;
             default:
                 label.text = @"";
@@ -314,7 +323,7 @@
 #pragma mark - Table cell creation
 
 - (UITableViewCell *)tableViewTableViewCreateAddSymbolCell:(UITableView *)tableView {
-    NSString *id = @"AddSymbolCell";
+    NSString * id = @"AddSymbolCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
     if (cell != nil) {
         return cell;
@@ -341,7 +350,7 @@
 }
 
 - (UITableViewCell *)tableViewCreateAlmondListCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
-    NSString *id = @"AlmondListCell";
+    NSString * id = @"AlmondListCell";
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
     if (cell == nil) {
@@ -377,7 +386,7 @@
 
 
 - (UITableViewCell *)tableViewCreateSettingsCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
-    NSString *id = @"SettingsCell";
+    NSString * id = @"SettingsCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
     if (cell != nil) {
         return cell;
@@ -416,7 +425,7 @@
     label.font = [UIFont standardHeadingFont];
 
     NSArray *array = [self getSettingsList];
-    NSString *cellValue = array[(NSUInteger) indexPath.row];
+    NSString * cellValue = array[(NSUInteger) indexPath.row];
     label.text = cellValue;
 
     [cell addSubview:label];
@@ -425,7 +434,7 @@
 }
 
 - (UITableViewCell *)tableViewCreateVersionCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath {
-    NSString *id = @"VersionCell";
+    NSString * id = @"VersionCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:id];
     if (cell != nil) {
         return cell;
@@ -436,7 +445,7 @@
     cell.backgroundColor = [self cellBackgroundColor];
 
     NSArray *array = [self getVersionList];
-    NSString *cellValue = array[(NSUInteger) indexPath.row];
+    NSString * cellValue = array[(NSUInteger) indexPath.row];
 
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 30)];
     label.backgroundColor = [UIColor clearColor];
