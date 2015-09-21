@@ -11,7 +11,7 @@
 	<key>CFBundleIcons~ipad</key>
 	<dict/>
 	<key>CFBundleIdentifier</key>
-	<string>com.cox.homescreen</string>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -26,6 +26,12 @@
 	<string>34</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>AvenirLTStd-Heavy.otf</string>
+		<string>AvenirLTStd-Roman.otf</string>
+		<string>AvenirLTStd-Medium.otf</string>
+	</array>
 	<key>UIMainStoryboardFile</key>
 	<string>MainStoryboard_iPhone</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -55,11 +61,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIAppFonts</key>
-	<array>
-		<string>AvenirLTStd-Heavy.otf</string>
-		<string>AvenirLTStd-Roman.otf</string>
-		<string>AvenirLTStd-Medium.otf</string>
-	</array>	
 </dict>
 </plist>
