@@ -371,10 +371,12 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
             case TestConnectionResult_unknownError:
             case TestConnectionResult_unknown:
-            case TestConnectionResult_macMismatch: {
+            case TestConnectionResult_macMismatch:
+            case TestConnectionResult_macMissing: {
                 // should not be possible to get mac-mismatch error right now because this is only relevant when
                 // editing settings on an unlinked Almond.
-                [self markErrorOnLink:NSLocalizedString(@"router.error-msg.An error occurred trying to link with the Almond. Please try again.", @"An error occurred trying to link with the Almond. Please try again.")];
+                NSString *msg = NSLocalizedString(@"router.error-msg.An error occurred trying to link with the Almond. Please try again.", @"An error occurred trying to link with the Almond. Please try again.");
+                [self markErrorOnLink:[NSString stringWithFormat:@"%@ (r%d)", msg, result]];
                 break;
             }
         }
