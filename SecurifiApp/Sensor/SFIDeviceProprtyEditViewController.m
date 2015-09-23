@@ -217,9 +217,9 @@
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
             
             selectedPropertyValue = @"";
-            if ([currentDeviceValue.value isEqualToString:@"true"]) {
+            if ([currentDeviceValue.value boolValue]) {
                 selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
-            }else if ([currentDeviceValue intValue] == 0){
+            }else{
                 selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
             }
             
@@ -250,9 +250,9 @@
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
             
             selectedPropertyValue = @"";
-            if ([currentDeviceValue.value isEqualToString:@"true"]) {
+            if ([currentDeviceValue.value boolValue]) {
                 selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
-            }else if ([currentDeviceValue intValue] == 0){
+            }else{
                 selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
             }
             
@@ -276,9 +276,9 @@
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
             
             selectedPropertyValue = @"";
-            if ([currentDeviceValue intValue] == 1) {
+            if ([currentDeviceValue intValue] != 0) {
                 selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
-            }else if ([currentDeviceValue intValue] == 0){
+            }else{
                 selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
             }
             
@@ -1279,33 +1279,30 @@
     lblThemperatureMain.text = @"";
     if (self.device.deviceType==SFIDeviceType_ZWtoACIRExtender_54) {
         currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
-        lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
+        lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
         
     }else if (self.device.deviceType==SFIDeviceType_NestThermostat_57){
         currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
-        lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
+        lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
         
     }
-    
-    
 }
 
 
 - (void)configTemperatureLable{
     
     CGRect fr = lblThemperatureMain.frame;
-    fr.size = CGSizeMake(90, 90);
-    fr.origin.x = 0;
-    fr.origin.y = 0;
+    fr.size = CGSizeMake(70, 70);
+    fr.origin.x = 5;
+    fr.origin.y = 5;
     lblThemperatureMain.frame = fr;
     lblThemperatureMain.tag = 3;
     lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
     lblThemperatureMain.textColor = [UIColor whiteColor];
     
     
-    lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:36.0f];
-    lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
-    lblThemperatureMain.textColor = [UIColor whiteColor];
+    lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:36.0f];
+    lblThemperatureMain.adjustsFontSizeToFitWidth = YES;
 }
 
 #pragma mark - Cloud command senders and handlers

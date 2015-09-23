@@ -918,6 +918,8 @@
     [btnOff setupValues:[UIImage imageNamed:@"imgOff"] Title:@"OFF"];
     [btnTermostatFanOn setupValues:[UIImage imageNamed:@"imgFanOn"] Title:@"FAN ON"];
     [btnTermostatFanOff setupValues:[UIImage imageNamed:@"imgFanOff"] Title:@"FAN OFF"];
+    btnTermostatFanOn.selected = NO;
+    btnTermostatFanOff.selected = NO;
     
     [btnTermostatDimCool setupValues:@"35" Title:NSLocalizedString(@"scene.thermostat-title.COOLING TEMP.", @"COOLING TEMP.") Prefix:@"°F"];
     btnTermostatDimCool.selected = NO;

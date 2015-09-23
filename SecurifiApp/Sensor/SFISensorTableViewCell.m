@@ -429,37 +429,45 @@
             [self configureBinaryStateSensor:DT50_SECURIFI_SMART_SWITCH_TRUE imageNameFalse:DT50_SECURIFI_SMART_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
             break;
         }
-            
-        case SFIDeviceType_GarageDoorOpener_53: {
-            [self configureGarageDoorOpener_53];
+        case SFIDeviceType_MultiSwitch_43:
+        {
+            [self configureMultiSwitch_43];//md01
             break;
         }
-        case SFIDeviceType_NestSmokeDetector_58: {
-            [self configureNestSmokeDetector_58];//md01
-            break;
-        }
-        case SFIDeviceType_NestThermostat_57: {
-            [self configureNestThermostat_57];//md01
-            break;
-        }
-        case SFIDeviceType_MultiSoundSiren_55: {
-            [self configureMultiSoundSiren_55];//md01
-            break;
-        }
-        case SFIDeviceType_ZWtoACIRExtender_54: {
-            [self configureZWtoACIRExtender_54];//md01
+        case SFIDeviceType_MultiSensor_49:
+        {
+            [self configureMultiSensor_49];//md01
             break;
         }
         case SFIDeviceType_RollerShutter_52: {
             [self configureRollerShutter_52];//md01
             break;
         }
-        case SFIDeviceType_MultiSwitch_43:
-        {
-            [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
-            //            [self configureMultiSwitch_43];//md01
+        case SFIDeviceType_GarageDoorOpener_53: {
+            [self configureGarageDoorOpener_53];
             break;
         }
+        case SFIDeviceType_ZWtoACIRExtender_54: {
+            [self configureZWtoACIRExtender_54];//md01
+            break;
+        }
+        case SFIDeviceType_MultiSoundSiren_55: {
+            [self configureMultiSoundSiren_55];//md01
+            break;
+        }
+        case SFIDeviceType_EnergyReader_56: {
+            [self configureEnergyReader_56];//md01
+            break;
+        }
+        case SFIDeviceType_NestThermostat_57: {
+            [self configureNestThermostat_57];//md01
+            break;
+        }
+        case SFIDeviceType_NestSmokeDetector_58: {
+            [self configureNestSmokeDetector_58];//md01
+            break;
+        }
+            
             
         case SFIDeviceType_UnknownDevice_0:
         case SFIDeviceType_Controller_8:
@@ -958,12 +966,34 @@
 }
 
 - (void)configureMultiSwitch_43 {
-    self.deviceImageView.image = [UIImage imageNamed:@"55_multisoundsiren_icon"];
+    
+    NSString *imageName = @"43_multi_switch";
+    self.deviceImageView.image = [UIImage imageNamed:imageName];
+    
     NSMutableArray *status = [NSMutableArray array];
+    NSString *sw1 = @"";
+    NSString *sw2 = @"";
+    NSArray *arrValue = [self.deviceValue knownDevicesValues];
+    for (SFIDeviceKnownValues *currentDeviceValue in arrValue) {
+        if (currentDeviceValue.index==1) {
+            if ([currentDeviceValue boolValue]) {
+                sw1 = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
+            }else if ([currentDeviceValue intValue] == 0){
+                sw1 = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
+            }
+        }
+        if (currentDeviceValue.index==2) {
+            if ([currentDeviceValue boolValue]) {
+                sw2 = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
+            }else if ([currentDeviceValue intValue] == 0){
+                sw2 = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
+            }
+        }
+    }
     
-    SFIDeviceKnownValues *kValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL];
-    
-    [status addObject:kValue.value];
+    [status addObject:[NSString stringWithFormat:@"SWITCH1 :%@",sw1]];
+    [status addObject:[NSString stringWithFormat:@"SWITCH2 :%@",sw2]];
+    //    [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
 }
 
@@ -974,6 +1004,22 @@
     SFIDeviceKnownValues *kValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL];
     
     [status addObject:kValue.value];
+    [self setDeviceStatusMessages:status];
+}
+
+- (void)configureMultiSensor_49 {
+    self.deviceImageView.image = [UIImage imageNamed:@"10_motion_true"];
+    NSMutableArray *status = [NSMutableArray array];
+    [self tryAddBatteryStatusMessage:status];
+    
+    [self setDeviceStatusMessages:status];
+}
+
+- (void)configureEnergyReader_56 {
+    self.deviceImageView.image = [UIImage imageNamed:@"56_energy_reader"];
+    NSMutableArray *status = [NSMutableArray array];
+    [self tryAddBatteryStatusMessage:status];
+    
     [self setDeviceStatusMessages:status];
 }
 
@@ -1015,7 +1061,7 @@
     lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:29.0f];
     lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
     lblThemperatureMain.textColor = [UIColor whiteColor];
-    lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
+    lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
     lblThemperatureMain.adjustsFontSizeToFitWidth = YES;
     [lblThemperatureMain setMinimumScaleFactor:12.0/[UIFont labelFontSize]];
     
@@ -1042,7 +1088,7 @@
     lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:29.0f];
     lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
     lblThemperatureMain.textColor = [UIColor whiteColor];
-    lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
+    lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
     lblThemperatureMain.adjustsFontSizeToFitWidth = YES;
     [lblThemperatureMain setMinimumScaleFactor:12.0/[UIFont labelFontSize]];
     
@@ -1054,7 +1100,6 @@
     if (AC_MODE) {
         NSMutableArray *status = [NSMutableArray array];
         [status addObject:[AC_MODE capitalizedString]];
-        //[self tryAddBatteryStatusMessage:status];
         [self setDeviceStatusMessages:status];
     }
 }

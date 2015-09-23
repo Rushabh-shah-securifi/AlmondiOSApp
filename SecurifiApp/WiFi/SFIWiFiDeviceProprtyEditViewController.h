@@ -15,7 +15,7 @@
 @interface SFIWiFiDeviceProprtyEditViewController : UIViewController
 
 @property (weak) id<SFIWiFiDeviceProprtyEditViewDelegate> delegate;
-@property(assign)int editFieldIndex;
+@property(assign)NSInteger editFieldIndex;
 @property(strong)SFIConnectedDevice *connectedDevice;
 @property(strong)NSString* userID;
 @property(strong)NSString* selectedNotificationType;

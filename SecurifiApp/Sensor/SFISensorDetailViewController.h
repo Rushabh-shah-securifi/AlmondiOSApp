@@ -22,6 +22,8 @@ typedef NS_ENUM(NSInteger, Properties) {
     irCodeIndexPathRow,
     configIndexPathRow,
     humidityIndexPathRow,
+    luminanceIndexPathRow,
+    motionIndexPathRow,
     awayModeIndexPathRow,
     coLevelIndexPathRow,
     smokeLevelIndexPathRow,

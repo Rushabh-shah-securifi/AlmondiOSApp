@@ -1117,7 +1117,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                     device.deviceType = [dict valueForKey:@"Type"];
                     device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
                     device.isActive = [[dict valueForKey:@"Active"] boolValue];
-
+                    device.timeout = [[dict valueForKey:@"Wait"] integerValue];
                     [dArray addObject:device];
                 }
 

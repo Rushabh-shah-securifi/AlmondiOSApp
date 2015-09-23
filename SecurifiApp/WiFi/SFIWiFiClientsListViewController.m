@@ -7,10 +7,10 @@
 //
 
 #import "SFIWiFiClientsListViewController.h"
+#import "SFINotificationsViewController.h"
 #import "SFIWiFiClientListCell.h"
 #import "SFIWiFiDeviceProprtyEditViewController.h"
 #import "MBProgressHUD.h"
-#import "MDJSON.h"
 #import "SKSTableView.h"
 #import "SKSTableViewCell.h"
 #import "KeyChainWrapper.h"
@@ -29,6 +29,9 @@
     NSArray * propertyNames;
     NSString *userID;
     NSMutableArray * clientsPreferences;
+    float propertyRowCellHeight;
+    float removeRowCellHeight;
+    UIFont * cellFont;
 }
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -40,26 +43,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    propertyRowCellHeight = 44.0f;
+    removeRowCellHeight = 90.0f;
+    cellFont = [UIFont fontWithName:AVENIR_ROMAN size:17];
     userID = [KeyChainWrapper retrieveEntryForUser:SEC_EMAIL forService:SEC_SERVICE_NAME];
-    //    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"iconNotification"] style:UIBarButtonItemStylePlain target:self action:@selector(rightButtonTap:)];
-    //    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
-    // Do any additional setup after loading the view.
     currentIndexPath = nil;
     randomMobileInternalIndex = arc4random() % 10000;
     tblDevices.SKSTableViewDelegate = self;
     tblDevices.shouldExpandOnlyOneCell = YES;
-    propertyNames = @[@"Name",@"Type",@"MAC Address",@"Last Known IP",@"Connection",@"Use as Presence Sensor",@"Notify me",@"Remove"];
+    propertyNames = @[@"Name",@"Type",@"MAC Address",@"Last Known IP",@"Connection",@"Use as Presence Sensor",@"Notify me",@"Set Inactivity Timeout",@"View Device History",@"Remove"];
     [self initializeNotifications];
     [self getClientsPreferences];
 }
-//-(IBAction)rightButtonTap:(id)sender{
-//
-//            if (((SKSTableViewCell*)[tblDevices cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3]]).expanded) {
-//                [tblDevices collapseCurrentlyExpandedIndexPaths];
-//            }
-//                [self.connectedDevices removeObjectAtIndex:3];
-//            [tblDevices deleteSections:[NSIndexSet indexSetWithIndex:3]  withRowAnimation:UITableViewRowAnimationNone];
-//}
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -138,10 +133,7 @@
 
 - (NSInteger)tableView:(SKSTableView *)tableView numberOfSubRowsAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence) {
-        return propertyNames.count;//will show notify me row
-    }
-    return propertyNames.count-1;
+    return propertyNames.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -161,10 +153,7 @@
         cell = [[SFIWiFiClientListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     cell.delegate = self;
     [cell createClientCell:self.connectedDevices[indexPath.section]];
-    //    if ((indexPath.section == 0 && (indexPath.row == 1 || indexPath.row == 0)) || (indexPath.section == 1 && (indexPath.row == 0 || indexPath.row == 2)))
     cell.expandable = YES;
-    //    else
-    //        cell.expandable = NO;
     
     return cell;
     
@@ -172,66 +161,33 @@
 }
 
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForSubRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    float propertyRowCellHeight = 44.0f;
-    float removeRowCellHeight = 90.0f;
     static NSString *MyIdentifier = @"deviceProperty";
     SFIConnectedDevice * connectedDevice = self.connectedDevices[indexPath.section];
-    NSInteger removeRowIndex = propertyNames.count-1;
-    if (!connectedDevice.deviceUseAsPresence) {
-        removeRowIndex = propertyNames.count-2;
-    }
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
     
-    //    if (cell == nil) {
-    //        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
-    //    }
+    NSInteger subRowIndex = indexPath.subRow-1;
+    
     for (UIView *c in cell.subviews) {
         if ([c isKindOfClass:[UILabel class]] || [c isKindOfClass:[UIButton class]]) {
             [c removeFromSuperview];
         }
     }
-    NSInteger subRowIndex = indexPath.subRow-1;
     
-    UIView * bgView = [[UIView alloc] init];
-    UIFont *font = [UIFont fontWithName:AVENIR_ROMAN size:17];
     
-    if (subRowIndex!=removeRowIndex) {
-        bgView.frame = CGRectMake(0, 0, tblDevices.frame.size.width, propertyRowCellHeight);
-    }else{
-        bgView.frame = CGRectMake(0, 0, tblDevices.frame.size.width, removeRowCellHeight-10);
-    }
-    bgView.backgroundColor = [UIColor colorWithRed:75/255.0f green:174/255.0f blue:79/255.0f alpha:1];
-    bgView.tag = 66;
-    [cell addSubview:bgView];
     
-    if (subRowIndex!=removeRowIndex) {
-        bgView.frame = CGRectMake(0, 0, tblDevices.frame.size.width, propertyRowCellHeight);
-        
-        
-        CGSize textSize = [propertyNames[subRowIndex] sizeWithFont:font constrainedToSize:CGSizeMake(200, 50)];
-        
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, textSize.width + 5, propertyRowCellHeight)];
-        label.backgroundColor = [UIColor clearColor];
-        label.textColor = [UIColor whiteColor];
-        label.font = font;
-        label.tag = 66;
-        label.text = propertyNames[subRowIndex];
-        label.numberOfLines = 1;
-        [cell addSubview:label];
-    }
+    [self addCellLabel:cell IndexPath:indexPath];
     
     
     switch (subRowIndex) {
-        case 0://Name
+        case nameIndexPathRow://Name
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 220, 0, 180, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
             label.textColor = [UIColor whiteColor];
-            label.font = font;
+            label.font = cellFont;
             label.text = connectedDevice.name;
             label.numberOfLines = 1;
             label.tag = 66;
@@ -240,12 +196,12 @@
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
-        case 1://Type
+        case typeIndexPathRow://Type
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 200, 0, 170, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
             label.textColor = [UIColor whiteColor];
-            label.font = font;
+            label.font = cellFont;
             label.text = [connectedDevice.deviceType capitalizedString];
             label.numberOfLines = 1;
             label.textAlignment = NSTextAlignmentRight;
@@ -254,7 +210,7 @@
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
-        case 2://MAC Address
+        case macAddressIndexPathRow://MAC Address
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
@@ -268,7 +224,7 @@
             [cell addSubview:label];
             break;
         }
-        case 3://IP Address
+        case iPAddressIndexPathRow://IP Address
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
@@ -282,7 +238,7 @@
             [cell addSubview:label];
             break;
         }
-        case 4://Connection
+        case connectionIndexPathRow://Connection
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 220, 0, 180, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
@@ -296,12 +252,26 @@
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
-        case 5://Use as presence Sensor
+        case timeoutIndexPathRow:
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 220, 0, 180, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
             label.textColor = [UIColor whiteColor];
-            label.font = font;
+            label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
+            label.text = [NSString stringWithFormat:@"%lu",connectedDevice.timeout];
+            label.numberOfLines = 1;
+            label.textAlignment = NSTextAlignmentRight;
+            label.tag = 66;
+            [cell addSubview:label];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            break;
+        }
+        case usePresenceSensorIndexPathRow://Use as presence Sensor
+        {
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 220, 0, 180, propertyRowCellHeight)];
+            label.backgroundColor = [UIColor clearColor];
+            label.textColor = [UIColor whiteColor];
+            label.font = cellFont;
             if (connectedDevice.deviceUseAsPresence) {
                 label.text = NSLocalizedString(@"Presence sensor Yes",@"Yes");
             }else{
@@ -314,11 +284,9 @@
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
-        case 6://Notify me
+        case notifyMeIndexPathRow://Notify me
         {
-            if (!connectedDevice.deviceUseAsPresence) {
-                cell = [self createRemoveButtonCell:cell];
-            }else{
+            if (((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence){
                 UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 220, 0, 180, propertyRowCellHeight)];
                 label.backgroundColor = [UIColor clearColor];
                 label.textColor = [UIColor whiteColor];
@@ -332,8 +300,7 @@
             }
             break;
         }
-            
-        case 7://Remove button
+        case removeButtonIndexPathRow://Remove button
         {
             cell = [self createRemoveButtonCell:cell];
             break;
@@ -345,6 +312,43 @@
     cell.backgroundColor = [UIColor clearColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
+}
+
+-  (void)addCellLabel:(UITableViewCell*)cell IndexPath:(NSIndexPath *)indexPath{
+    NSInteger subRowIndex = indexPath.subRow-1;
+    if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && (subRowIndex==notifyMeIndexPathRow || subRowIndex==historyIndexPathRow)) {
+        return;
+    }
+    
+    UIView * bgView = [[UIView alloc] init];
+    if (subRowIndex!=removeButtonIndexPathRow) {
+        bgView.frame = CGRectMake(0, 0, tblDevices.frame.size.width, propertyRowCellHeight);
+    }else{
+        bgView.frame = CGRectMake(0, 0, tblDevices.frame.size.width, removeRowCellHeight-10);
+    }
+    bgView.backgroundColor = [UIColor colorWithRed:75/255.0f green:174/255.0f blue:79/255.0f alpha:1];
+    bgView.tag = 66;
+    [cell addSubview:bgView];
+    
+    
+    CGSize textSize = [propertyNames[subRowIndex] sizeWithFont:cellFont constrainedToSize:CGSizeMake(200, 50)];
+    
+    if (subRowIndex!=removeButtonIndexPathRow) {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, textSize.width + 5, propertyRowCellHeight)];
+        label.backgroundColor = [UIColor clearColor];
+        label.textColor = [UIColor whiteColor];
+        label.font = cellFont;
+        label.tag = 66;
+        
+        if (subRowIndex==historyIndexPathRow) {
+            NSDictionary *underlineAttribute = @{NSUnderlineStyleAttributeName: @(NSUnderlineStyleSingle)};
+            label.attributedText = [[NSAttributedString alloc] initWithString:propertyNames[subRowIndex]                                                                  attributes:underlineAttribute];
+        }else{
+            label.text = propertyNames[subRowIndex];
+        }
+        label.numberOfLines = 1;
+        [cell addSubview:label];
+    }
 }
 
 - (UITableViewCell*)createRemoveButtonCell:(UITableViewCell*)cell{
@@ -361,14 +365,13 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForSubRowAtIndexPath:(NSIndexPath *)indexPath{
-    SFIConnectedDevice * connectedDevice = self.connectedDevices[indexPath.section];
-    NSInteger removeRowIndex = propertyNames.count;
-    if (!connectedDevice.deviceUseAsPresence) {
-        removeRowIndex = propertyNames.count-1;
-    }
+    NSInteger subrowIndex = indexPath.subRow-1;
     
-    if (indexPath.subRow==removeRowIndex) {
-        return 90.0f;
+    if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && (subrowIndex==notifyMeIndexPathRow || subrowIndex==historyIndexPathRow)) {
+        return 0;//will hide
+    }
+    if (subrowIndex==removeButtonIndexPathRow) {
+        return removeRowCellHeight;
     }
     return 44.0f;
 }
@@ -384,63 +387,74 @@
 {
     NSInteger subRowIndex = indexPath.subRow-1;
     switch (subRowIndex) {
-        case 0://Name
+        case nameIndexPathRow://Name
         {
             SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
-            viewController.editFieldIndex = 0;
+            viewController.editFieldIndex = subRowIndex;
             viewController.delegate = self;
             viewController.connectedDevice = self.connectedDevices[indexPath.section];
             [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
-        case 1://Type
+        case typeIndexPathRow://Type
         {
             SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
             viewController.delegate = self;
-            viewController.editFieldIndex = 1;
+            viewController.editFieldIndex = subRowIndex;
             viewController.connectedDevice = self.connectedDevices[indexPath.section];
             [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
-        case 2://MAC Address
+        case macAddressIndexPathRow://MAC Address
         {
             
             break;
         }
-        case 3://IP Address
+        case iPAddressIndexPathRow://IP Address
         {
             break;
         }
-        case 4://Connection
+        case connectionIndexPathRow://Connection
         {
             SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
             viewController.delegate = self;
-            viewController.editFieldIndex = 4;
+            viewController.editFieldIndex = subRowIndex;
             viewController.connectedDevice = self.connectedDevices[indexPath.section];
             [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
-        case 5://Use as presence Sensor
+        case usePresenceSensorIndexPathRow://Use as presence Sensor
         {
             SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
             viewController.delegate = self;
-            viewController.editFieldIndex = 5;
+            viewController.editFieldIndex = subRowIndex;
             viewController.connectedDevice = self.connectedDevices[indexPath.section];
             [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
-        case 6://Notify me
+        case timeoutIndexPathRow:
         {
-            if (((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence) {
-                SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
-                viewController.userID = userID;
-                viewController.selectedNotificationType = [self getNotificationTypeForDevice:((SFIConnectedDevice*) self.connectedDevices[indexPath.section]).deviceID];
-                viewController.delegate = self;
-                viewController.editFieldIndex = 6;
-                viewController.connectedDevice = self.connectedDevices[indexPath.section];
-                [self.navigationController pushViewController:viewController animated:YES];
-            }
+            SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
+            viewController.delegate = self;
+            viewController.editFieldIndex = subRowIndex;
+            viewController.connectedDevice = self.connectedDevices[indexPath.section];
+            [self.navigationController pushViewController:viewController animated:YES];
             break;
+        }
+        case notifyMeIndexPathRow://Notify me
+        {
+            SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
+            viewController.userID = userID;
+            viewController.selectedNotificationType = [self getNotificationTypeForDevice:((SFIConnectedDevice*) self.connectedDevices[indexPath.section]).deviceID];
+            viewController.delegate = self;
+            viewController.editFieldIndex = subRowIndex;
+            viewController.connectedDevice = self.connectedDevices[indexPath.section];
+            [self.navigationController pushViewController:viewController animated:YES];
+            break;
+        }
+        case historyIndexPathRow:
+        {
+            [self showSensorLogs:indexPath];
         }
         default:
             break;
@@ -572,7 +586,7 @@
                 device.deviceType = [dict valueForKey:@"Type"];
                 device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
                 device.isActive = [[dict valueForKey:@"Active"] boolValue];
-                
+                device.timeout = [[dict valueForKey:@"Wait"] integerValue];
                 dispatch_async(dispatch_get_main_queue(), ^() {
                     [tblDevices refreshData];
                 });
@@ -605,6 +619,7 @@
         device.deviceType = [dict valueForKey:@"Type"];
         device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
         device.isActive = [[dict valueForKey:@"Active"] boolValue];
+        device.timeout = [[dict valueForKey:@"Wait"] integerValue];
         [self.connectedDevices addObject:device];
         
         dispatch_async(dispatch_get_main_queue(), ^() {
@@ -745,6 +760,20 @@
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
     
+}
+#pragma mark
+- (void)showSensorLogs:(NSIndexPath*)indexPath{
+    SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    ctrl.enableDeleteNotification = NO;
+    ctrl.markAllViewedOnDismiss = NO;
+    SFIConnectedDevice * connectedDevice = self.connectedDevices[indexPath.section];
+    ctrl.deviceID = (unsigned int)[connectedDevice.deviceID integerValue];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    ctrl.almondMac = plus.almondplusMAC;
+    
+    UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    [self presentViewController:nav_ctrl animated:YES completion:nil];
 }
 
 #pragma mark - HUD mgt
