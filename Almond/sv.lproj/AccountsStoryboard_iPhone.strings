@@ -1,0 +1,42 @@
+
+/* Class = "IBUITextField"; placeholder = "New Password"; ObjectID = "3uz-RY-rCm"; */
+"3uz-RY-rCm.placeholder" = "Nytt Lösenord";
+
+/* Class = "IBUIBarButtonItem"; title = "Avbryt"; Objekt-ID = "G96-BW-p5i"; */
+"G96-BW-p5i.title" = "Avbryt";
+
+/* Class = "IBUINavigationItem"; title = "Change Password"; ObjectID = "KWr-AR-IIt"; */
+"KWr-AR-IIt.title" = "Ändra Lösenord";
+
+/* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "LRJ-C2-ya9"; */
+"LRJ-C2-ya9.title" = "Inställningar";
+
+/* Class = "IBUILabel"; text = "To change your account password enter your current password and new password below."; ObjectID = "awl-41-cEs"; */
+"SYL-41-cEs.text" = "Om du vill ändra ditt lösenord ange ditt nuvarande lösenord och det nya lösenord nedan .";
+
+/* Class = "IBUIBarButtonItem"; title = "Done"; ObjectID = "eSk-FD-Kjz"; */
+"eSk-FD-Kjz.title" = "Klar";
+
+/* Class = "IBUITextField"; placeholder = "Confirm Password"; ObjectID = "mbL-nR-glA"; */
+"mbL-nR-glA.placeholder" = "Bekräfta Lösenord";
+
+/* Class = "IBUINavigationItem"; title = "Inställningar"; Objekt-ID = "nGf-bv-KQ9"; */
+"nGf-bv-KQ9.title" = "Inställningar";
+
+/* Class = "IBUIBarButtonItem"; title = "Save"; ObjectID = "rOv-p0-jPn"; */
+"rOv-p0-jPn.title" = "Spara";
+
+/* Class = "IBUITextField"; placeholder = "Current Password"; ObjectID = "sfM-G0-KWE"; */
+"sfM-G0-KWE.placeholder" = "Nuvarande Lösenord";
+
+
+
+
+
+
+
+
+
+
+
+

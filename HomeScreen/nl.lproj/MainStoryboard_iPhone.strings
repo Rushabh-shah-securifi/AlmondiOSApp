@@ -1,0 +1,221 @@
+/*------- START Localization strings common across all apps -------*/
+
+/* Class = "IBUILabel"; text = "By tapping Continue you are indicating that
+ you have read and agreed to our"; ObjectID = "2vg-ti-ElJ"; */
+"2vg-ti-ElJ.text" = "Door op Doorgaan te tikken, geeft u aan dat
+onze hebt gelezen en ermee akkoord gaat";
+
+/* Class = "IBUIButton"; normalTitle = "Forgot your password?"; ObjectID = "5GG-3f-pqZ"; */
+"5GG-3f-pqZ.normalTitle" = "Uw wachtwoord vergeten?";
+
+/* Class = "IBUINavigationItem"; title = "Login"; ObjectID = "5Mu-Sx-mwG"; */
+"5Mu-Sx-mwG.title" = "Aanmelden";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "6rp-Kn-wIv"; */
+"6rp-Kn-wIv.placeholder" = "Wachtwoord";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "7Fl-1P-IHp"; */
+"7Fl-1P-IHp.placeholder" = "Wachtwoord";
+
+/* Class = "IBUIButton"; normalTitle = "Resend link."; ObjectID = "9M6-Iy-zMa"; */
+"9M6-Iy-zMa.normalTitle" = "Link opnieuw verzenden.";
+
+/* Class = "IBUILabel"; text = "SSID"; ObjectID = "9ef-Xm-fQ5"; */
+"9ef-Xm-fQ5.text" = "SSID";
+
+/* Class = "IBUINavigationItem"; title = "Scenes"; ObjectID = "C8w-d3-6Kp"; */
+"C8w-d3-6Kp.title" = "Scènes";
+
+
+/* Class = "IBUITextField"; placeholder = "Channel"; ObjectID = "Di9-Mv-GSh"; */
+"Di9-Mv-GSh.placeholder" = "Kanaal";
+
+/* Class = "IBUITextField"; placeholder = "SSID"; ObjectID = "EVe-Dz-e9b"; */
+"EVe-Dz-e9b.placeholder" = "SSID";
+
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "F7a-QI-kyy"; */
+"F7a-QI-kyy.title" = "Terug";
+
+/* Class = "IBUIButton"; normalTitle = "Login again"; ObjectID = "HFO-nR-icT"; */
+"HFO-nR-icT.normalTitle" = "Opnieuw aanmelden";
+
+/* Class = "IBUILabel"; text = "Subtitle"; ObjectID = "HJE-BA-YKX"; */
+"HJE-BA-YKX.text" = "Ondertitel";
+
+/* Class = "IBUITextField"; placeholder = "Wireless Mode"; ObjectID = "I82-VJ-5TH"; */
+"I82-VJ-5TH.placeholder" = "Draadloze modus";
+
+/* Class = "IBUINavigationItem"; title = "Settings"; ObjectID = "Ixz-jq-Zqv"; */
+"Ixz-jq-Zqv.title" = "Instellingen";
+
+/* Class = "IBUIButton"; normalTitle = "Done"; ObjectID = "JnK-0B-xKR"; */
+"JnK-0B-xKR.normalTitle" = "Gereed";
+
+/* Class = "IBUITextField"; placeholder = "Type QR Code"; ObjectID = "LKl-1e-QMG"; */
+"LKl-1e-QMG.placeholder" = "QR-code typen";
+
+/* Class = "IBUITextField"; placeholder = "Confirm Password"; ObjectID = "M4K-eh-pVC"; */
+"M4K-eh-pVC.placeholder" = "Wachtwoord bevestigen";
+
+/* Class = "IBUITextField"; placeholder = "Email"; ObjectID = "Mew-Wa-979"; */
+"Mew-Wa-979.placeholder" = "E-mail";
+
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "Ti4-9V-HdY"; */
+"Ti4-9V-HdY.title" = "Terug";
+
+/* Class = "IBUIButton"; normalTitle = "Sign Up"; ObjectID = "UMh-WG-lC3"; */
+"UMh-WG-lC3.normalTitle" = "Registreren";
+
+/* Class = "IBUILabel"; text = "MAC"; ObjectID = "V1p-1Y-8Lg"; */
+"V1p-1Y-8Lg.text" = "MAC";
+
+
+/* Class = "IBUIButton"; normalTitle = "Terms and Conditions"; ObjectID = "Xtg-A9-Rkn"; */
+"Xtg-A9-Rkn.normalTitle" = "Algemene voorwaarden";
+
+/* Class = "IBUITextField"; placeholder = "Email"; ObjectID = "Y3d-aA-TFm"; */
+"Y3d-aA-TFm.placeholder" = "E-mail";
+
+
+/* Class = "IBUILabel"; text = "Login"; ObjectID = "Zuk-ja-Rsi"; */
+"Zuk-ja-Rsi.text" = "Aanmelden";
+
+/* Class = "IBUITextField"; placeholder = "Security"; ObjectID = "aA5-x8-4LF"; */
+"aA5-x8-4LF.placeholder" = "Beveiliging";
+
+/* Class = "IBUILabel"; text = "Hooray!"; ObjectID = "bWR-DW-3hj"; */
+"bWR-DW-3hj.text" = "Hoera!";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "bhP-Vb-XDN"; */
+"bhP-Vb-XDN.placeholder" = "Wachtwoord";
+
+
+/* Class = "IBUIBarButtonItem"; title = "Login"; ObjectID = "fGC-bJ-KoF"; */
+"fGC-bJ-KoF.title" = "Aanmelden";
+
+/* Class = "IBUITextField"; placeholder = "Encryption Type"; ObjectID = "fUd-2s-lh1"; */
+"fUd-2s-lh1.placeholder" = "Versleutelingstype";
+
+/* Class = "IBUILabel"; text = "Follow the activation link
+ in the email."; ObjectID = "fgY-FB-Mro"; */
+"fgY-FB-Mro.text" = "Volg de activatielink
+in de e-mail.";
+
+/* Class = "IBUINavigationItem"; title = "Affiliation"; ObjectID = "g9q-Qf-d7D"; */
+"g9q-Qf-d7D.title" = "Affiliatie";
+
+/* Class = "IBUILabel"; text = "MAC Value"; ObjectID = "hsp-Do-ff2"; */
+"hsp-Do-ff2.text" = "MAC-waarde";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "jQ9-55-2JN"; */
+"jQ9-55-2JN.placeholder" = "Wachtwoord";
+
+/* Class = "IBUIBarButtonItem"; title = "Continue"; ObjectID = "jxF-En-8yI"; */
+"jxF-En-8yI.title" = "Doorgaan";
+
+/* Class = "IBUILabel"; text = "Almost there."; ObjectID = "la7-Qa-JAi"; */
+"la7-Qa-JAi.text" = "Bijna klaar.";
+
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "m92-cg-LBE"; */
+"m92-cg-LBE.title" = "Terug";
+
+/* Class = "IBUILabel"; text = "Name"; ObjectID = "mMM-Gk-l4v"; */
+"mMM-Gk-l4v.text" = "Naam";
+
+
+/* Class = "IBUINavigationItem"; title = "Device List"; ObjectID = "s5Y-pa-xGH"; */
+"s5Y-pa-xGH.title" = "Apparaatlijst";
+
+/* Class = "IBUILabel"; text = "You need to activate your account."; ObjectID = "sNA-Q6-fm9"; */
+"sNA-Q6-fm9.text" = "U moet uw account activeren.";
+
+/* Class = "IBUINavigationItem"; title = "Device Information"; ObjectID = "sRL-VK-odq"; */
+"sRL-VK-odq.title" = "Apparaatinformatie";
+
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "tNX-Qm-dH0"; */
+"tNX-Qm-dH0.text" = "Titel";
+
+/* Class = "IBUITextField"; placeholder = "Email"; ObjectID = "v4I-0f-ocy"; */
+"v4I-0f-ocy.placeholder" = "E-mail";
+
+/* Class = "IBUILabel"; text = "Don't have an account yet?"; ObjectID = "wee-4l-TQb"; */
+"wee-4l-TQb.text" = "Hebt u nog geen account?";
+
+/* Class = "IBUILabel"; text = "SSID Value"; ObjectID = "xBv-yd-Shs"; */
+"xBv-yd-Shs.text" = "SSID-waarde";
+
+/* Class = "IBUITextField"; placeholder = "Enter the code"; ObjectID = "zqJ-bb-Way"; */
+"zqJ-bb-Way.placeholder" = "Voer de code in";
+
+
+/*------- END Localization strings common across all apps -------*/
+/* ===================================================================================================== */
+
+
+/* Class = "IBUINavigationItem"; title = "Link Almond"; ObjectID = "005-QM-TOK"; */
+"005-QM-TOK.title" = "Almond koppelen";
+
+/* Class = "IBUILabel"; text = "Logout from all the devices connected
+ to your Almonds."; ObjectID = "0ml-DL-hua"; */
+"0ml-DL-hua.text" = "Afmelden op alle appparaten die zijn verbonden
+met uw Almonds.";
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "1mY-kl-NHI"; */
+"1mY-kl-NHI.text" = "Gebruik uw Almonds en
+thuisapparaten overal.";
+
+
+/* Class = "IBUINavigationItem"; title = "Almond List"; ObjectID = "CAD-J8-2aA"; */
+"CAD-J8-2aA.title" = "Almond-lijst";
+
+
+/* Class = "IBUILabel"; text = "You successfully linked your Almond with \nyour Securifi Cloud Account."; ObjectID = "Nee-HL-Q6h"; */
+"Nee-HL-Q6h.text" = "U hebt uw Almond gekoppeld met \nuwou Securifi Cloud-account.";
+
+/* Class = "IBUINavigationItem"; title = "Almond"; ObjectID = "ObR-J1-LOM"; */
+"ObR-J1-LOM.title" = "Almond";
+
+/* Class = "IBUILabel"; text = "Type the code shown on your\nAlmond's screen."; ObjectID = "PRW-cc-prD"; */
+"PRW-cc-prD.text" = "Typ de weergeven code op het\nscherm van uw Almond.";
+
+/* Class = "IBUIButton"; normalTitle = "Link Almond"; ObjectID = "PRt-1p-fH7"; */
+"PRt-1p-fH7.normalTitle" = "Almond koppelen";
+
+/* Class = "IBUILabel"; text = "Securifi Cloud Account."; ObjectID = "Sqj-7H-5pB"; */
+"Sqj-7H-5pB.text" = "Securifi Cloud-account.";
+
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "Xni-ee-jgc"; */
+"Xni-ee-jgc.text" = "Gebruik uw Almonds en
+thuisapparaten overal.";
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "Zon-6Z-KzY"; */
+"Zon-6Z-KzY.text" = "Gebruik uw Almonds en
+thuisapparaten overal.";
+
+
+/* Class = "IBUILabel"; text = "To link your Almond with Securifi Cloud account, start the wizard on your Almond+.
+ The \"Uw Almond toevoegen aan uw Securifi Cloud-account\" -gedeelte geeft een code weer die u kunt scannen door hieronder te tikken of in plaats deze te typen"; Object-ID = "de7-TX-jmT"; */
+"de7-TX-jmT.text" = "To link your Almond with Securifi Cloud account, start the wizard on your Almond.
+The \"Uw Almond toevoegen aan uw Securifi Cloud-account\" -gedeelte geeft een code weer die u kunt scannen door hieronder te tikken of in plaats deze te typen.";
+
+
+/* Class = "IBUILabel"; text = "Almond Name"; ObjectID = "gRI-sr-1ga"; */
+"gRI-sr-1ga.text" = "Almond-naam";
+
+/* Class = "IBUILabel"; text = "Securifi Cloud Account."; ObjectID = "qnX-eN-VhR"; */
+"qnX-eN-VhR.text" = "Securifi Cloud-account.";
+
+/* Class = "IBUILabel"; text = "Tip: Zoek in de spammap of voeg
+ cloud@securifi.com to your contacts."; ObjectID = "vjT-j9-rhq"; */
+"vjT-j9-rhq.text" = "Tip: Zoek in de spammap of voeg
+cloud@securifi.com toe aan uw contacten.";
+
+/* Class = "IBUILabel"; text = "Search for an email from cloud@securifi.com, or"; ObjectID = "xYA-fY-SKl"; */
+"xYA-fY-SKl.text" = "Zoek een e-mail vanuit cloud@securifi.com, of";
+
+
+

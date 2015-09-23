@@ -1,0 +1,746 @@
+/*
+ Common-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+
+/*------- Localization strings common across all apps -------*/
+
+
+/* hud. buttons, controls */
+"hud.One moment please..." = "Proszę czekać...";
+"hud.Updating settings..." = "Aktualizowanie ustawień...";
+"alert.button.OK" = "OK";
+"Oops!" = "Ups!";
+"Sorry!" = "Przepraszamy!";
+"toast.Saving..." = "Zapisywanie...";
+
+/* affiliation */
+"Please try later." = "Spróbuj później.";
+"Please enter a valid code." = "Wprowadź poprawny kod.";
+"alert.msg.Logout was unsuccessful" = "Przepraszamy. Nie udało się wylogować. Spróbuj ponownie.";
+"alert.title.Logout Unsuccessful" = "Wylogowywanie nie powiodło się";
+//m
+"cloudlink.title.Cloud Link" = "Połączenie z chmurą";
+"cloudlink.label.Linking to Cloud" = "‎Łączenie z chmurą";
+"cloudlink.label.Name" = "Nazwa";
+"cloudlink.label.MAC Address" = "Adres MAC";
+"cloudlink.label.WIFI SSID" = "SSID Wi-Fi";
+"Enter code" = "Wprowadź kod";
+
+
+/* activation */
+
+"Reactivation link has been sent to your account." = "Link reaktywacyjny został przesłany na Twoje konto.";
+"sensor.activation.The username was not found" = "Nie znaleziono użytkownika o tej nazwie";
+"The account is already validated" = "Konto zostało już potwierdzone";
+"Sorry! Cannot send reactivation link" = "Przepraszamy! Link reaktywacyjny nie może
+zostać wysłany w tej chwili. Spróbuj ponownie później.";
+"The email ID is invalid." = "Identyfikator e-mail jest nieprawidłowy.";
+
+/* change password */
+
+"password-validation.strength-label.Password: Mismatch" = "Hasło: nie jest identyczne";
+"password-validation.strength-label.Password: Too Short" = "Hasło: jest zbyt krótkie";
+"password-validation.strength-label.Password: Too Long" = "Hasło: jest zbyt długie";
+"password-validation.strength-label.Password: Weak" = "Hasło: słabe";
+"password-validation.strength-label.Password: Medium" = "Hasło: średnie";
+"password-validation.strength-label.Password: Strong" = "Hasło: silne";
+"The password should be %d - %d characters long." = "Hasło powinno składać się z od %d do %d znaków.";
+"An account already exists with this email." = "Istnieje już konto przypisane do tego adresu e-mail.";
+"The email or password was incorrect." = "E-mail lub hasło są niepoprawne.";
+"Sorry! Signup was unsuccessful." = "Przepraszamy! Rejestracja nie powiodła się.";
+"The username was not found" = "Nie znaleziono użytkownika o tej nazwie";
+"There is a password mismatch." = "Hasła nie są identyczne.";
+"You forgot to enter your password." = "Zapomniałeś(-aś) wpisać hasło.";
+"You have entered an invalid email ID." = "Wprowadzony identyfikator e-mail jest niepoprawny.";
+"You forgot to enter your email ID." = "Zapomniałeś(-aś) wprowadzić identyfikator e-mail.";
+"password.hud.Changing password..." = "Zmienianie hasła...";
+"password.label-text.There was some error on cloud. Please try later." = "Wystąpił błąd chmury. Spróbuj później.";
+"Sorry! You are not registered with us yet." = "Przepraszamy! Jeszcze nie masz u nas konta.";
+"You need to fill all the fields." = "Musisz wypełnić wszystkie pola.";
+"The current password was incorrect." = "Podane aktualne hasło jest nieprawidłowe.";
+"Sorry! Password change was unsuccessful." = "Przepraszamy! Zmiana hasła nie powiodła się.";
+
+/* login */
+"Please enter Username and Password" = "Wprowadź nazwę użytkownika i hasło";
+"Sorry! Could not complete the request." = "Przepraszamy! Nie udało się zrealizować tego żądania.";
+"Unable to establish Internet route to cloud service." = "Nie udało się nawiązać połączenia
+z chmurą.";
+"Sorry! Login was unsuccessful." = "Przepraszamy! Logowanie nie powiodło się.";
+"The email was not found." = "Adres e-mail nie został odnaleziony.";
+"The password is incorrect." = "Hasło jest nieprawidłowe.";
+"Almost there." = "Już prawie gotowe.";
+"You need to activate your account." = "Musisz aktywować Twoje konto.";
+"The email or password is incorrect" = "E-mail lub hasło są nieprawidłowe";
+"Password reset link has been sent to your account." = "Link resetujący hasło został wysłany na Twoje konto.";
+"Sorry! Your password cannot be reset at the moment. Try again later." = "Przepraszamy! Twoje hasło nie może zostać
+zresetowane w tej chwili. Spróbuj ponownie później.";
+"Login" = "Login";
+
+/* logout all */
+
+"logoutall.navbar-title.Continue" = "Kontynuuj";
+"logoutall.label.Logout from all devices was not successful." = "Nie udało się wylogować ze wszystkich urządzeń.";
+"logoutall.alertview.title.Error" = "Nieprawidłowe hasło";
+"logoutall.alertview.msg.The password is invalid." = "Hasło jest nieprawidłowe.";
+
+/* router tab */
+"router.offline-msg.label.Please check the router." = "Sprawdź router.";
+"router.card-title.Cloud Almond Link" = "Połączenie z chmurą Almond";
+"router.card-title.Local Almond Link" = "Połączenie z lokalnym urządzeniem Almond";
+"router.card-title.Wireless Settings" = "Ustawienia sieci bezprzewodowej";
+"router.wireless-status.Enabled" = "włączone";
+"router.wireless-status.Disabled" = "wyłączone";
+"router.card.Settings are not available." = "Ustawienia są niedostępne.";
+"router.card-title.Devices & Users" = "Urządzenia i użytkownicy";
+"router.devices-summary.%d connected, %d blocked" = "%d połączonych, %d zablokowanych";
+"router.software-version.header.Software Update Available" = "Dostępna jest aktualizacja oprogramowania";
+"router.software-version.header.instructions" = "Dotknij \„Ustawienia\“ na Twoim urządzeniu Almond";
+"router.software-version.Update Available" = "Dostępna jest aktualizacja";
+"router.software-version.Current version" = "Aktualna wersja";
+"router.software-version.Not available" = "Informacja o aktualnej wersji nie jest dostępna.";
+"router.card-title.Router Reboot" = "Uruchom ponownie router";
+"router.reboot-msg.Router is rebooting. It will take at least" = "Ponowne uruchamianie routera. Zajmie to co najmniej";
+"router.reboot-msg.2 minutes for the router to boot." = "2 minuty.";
+"router.reboot-msg.Please refresh after sometime." = "Proszę odświeżyć za chwilę.";
+"router.Router status is not available." = "Status routera jest niedostępny.";
+"router.Last reboot %@ ago" = "Ostatnio uruchomiono ponownie %@ temu";
+"router.no-almonds.nav-title.Get Started" = "Zacznij";
+"router.hud.Router is now online." = "Router jest teraz podłączony do sieci.";
+"router.hud.Updating router firmware." = "Aktualizowanie oprogramowania routera.";
+"router.hud.Router is rebooting." = "Ponowne uruchamianie routera.";
+"router.card-title.Send Logs" = "Wyślij logi";
+"router.Sends %@'s logs to our server" = "Przesyła logi %@ do naszego serwera";
+"router.hud.Sending Logs." = "Powiadamianie routera, żeby wysłał logi";
+//m
+"router.devicestatus.Connected as %@" = "Połączono jako %@";
+"router.devicesmac.MAC address is %@" = "Adres MAC to %@";
+"router.devicesmac.MAC address is %@" = "Adres IP to %@";
+"router.reboot.title.Reboot the router?" = "Uruchomić ponownie router?";
+"It will take at least 2 minutes for the router" = "Ponowne uruchomienie routera zajmie co najmniej";
+"to reboot. Please refresh after sometime." = "2 minuty. Proszę odświeżyć za chwilę.";
+"router.settings.label.SSID" = "SSID";
+"router.settings.label.Channel" = "Kanał";
+"router.settings.label.Wireless Mode" = "Tryb bezprzewodowy";
+"router.settings.label.Security" = "Bezpieczeństwo";
+"router.settings.label.Encryption" = "Szyfrowanie";
+"router.settings.label.Country Region" = "Region/Kraj";
+"router.nav-title.Get Started" = "Zacznij";
+"router.refresh-title.Refresh router data" = "Odśwież dane routera";
+"router.summary.IP Address : %@" = "Adres IP: %@";
+"router.summary.Admin Login : %@" = "Login administratora: %@";
+"router.software-version.title.Software Version" = "Wersja oprogramowania";
+"router.software-version-new.title.Software Version *" = "Wersja oprogramowania *";
+"router.software-version-new.title.Software Version" = "Wersja oprogramowania";
+"router.offline-msg. is offline" = " jest w trybie offline";
+"router.log-textfield-placeholder.Describe your problem here" = "Tutaj opisz Twój problem";
+"router.log-send-success.summary.Thanks for sending logs" = "Dziękujemy za przesłanie logów";
+"router.log-firmware-not-supported.Please update your router's firmware" = "Zaktualizuj oprogramowanie routera,";
+"router.log-firmware-not-supported.in order to activate this functionality" = "aby móc skorzystać z tej funkcji";
+"router.version-title.Update now?" = "Zaktualizować teraz?";
+"router.update-summary.It will take a few minutes to update the software." = "Aktualizowanie oprogramowania potrwa kilka minut.";
+"router.network-title.Local Link" = "Połączenie lokalne";
+"router.link-button.Link" = "Połączenie";
+"router.btn-title.Back to Cloud Link" = "Powrót do połączenia z chmurą";
+"router.label.SSID 2.5GHz" = "SSID 2,5 GHz";
+"router.label.SSID 5GHz" = "SSID 5 GHz";
+"router.label.IP Address" = "Adres IP";
+"router.label.Admin Login" = "Login administratora";
+"router.label.Admin Password" = "Hasło administratora";
+"router.hud.Establishing Local Link..." = "Nawiązywanie połączenia lokalnego...";
+
+
+/* sensors */
+
+"Device has been tampered" = "Manipulowano przy urządzeniu";
+"sensors.button.Dismiss" = "Ignoruj";
+"sensors.label.Status" = "Status";
+"sensor.status-label.OFF" = "WY‎ŁĄCZONY";
+"sensor.status-label.ON" = "WŁĄCZONY";
+"sensor.status-label.OK" = "OK";
+"sensors.label.SENSOR SETTINGS" = "USTAWIENIA CZUJNIKA";
+"sensors.settings-label.Send Notifications" = "Wyślij powiadomienia";
+"sensors.no-sensors.label.You don't have any sensors yet." = "Nie masz jeszcze żadnych czujników.";
+"scenes.no-scenes.label.A scene is a group of sensors and a desired state for these sensors." = "Sceneria to grupa czujników i wybrane dla nich ustawienia.";
+"sensors.account-confirm.label.Please confirm your account (less than a day left)." = "Potwierdź swoje konto (pozostał mniej niż jeden dzień).";
+"sensors.account-confirm.label.Please confirm your account (%d days left)." = "Potwierdź swoje konto (pozostało %d dni).";
+"sensors.account-confirm.label.Check activation email for instructions." = "Sprawdź e-mail aktywacyjny, aby uzyskać dalsze instrukcje.";
+"sensors.account-confirm.label.Resend activation email" = "Wyślij ponownie e-mail aktywacyjny";
+"activation.toast.Reactivation link sent to your registerd email ID." = "Link reaktywacyjny został wysłany na Twój zarejestrowany adres e-mail.";
+"sensor.thermostat.field-label.Set Point" = "Ustaw temperaturę";
+"sensor.thermostat.field-label.Heating" = "Ogrzewanie";
+"sensor.thermostat.field-label.Cooling" = "Chłodzenie";
+"sensor.thermostat.field-label.Mode" = "Tryb pracy";
+"sensor.thermostat.segment-control.Auto" = "Automatyczny";
+"sensor.thermostat.segment-control.Heat" = "Ogrzewanie";
+"sensor.thermostat.segment-control.Cool" = "Chłodzenie";
+"sensor.thermostat.segment-control.Off" = "Wyłączony";
+"sensor.thermostat.field-label.Fan" = "Wentylator";
+"sensor.thermostat.segment-control.Auto Low" = "Automatyczny – niskie obroty";
+"sensor.thermostat.segment-control.On Low" = "Niskie obroty";
+"sensor.thermostat.Thermostat is %@" = "Termostat jest %@";
+"sensor.thermostat.Fan is %@" = "Wentylator jest %@";
+"sensor.thermostat.Battery is at %@%%" = "Pozostało %@%% baterii";
+"sensor.Power is %.3fW" = "Pobór mocy wynosi %.3fW";
+"sensor.Current is %.3fA" = "Natężenie wynosi %.3fA";
+"sensor.Voltage is %.3fV" = "Napięcie wynosi %.3fV";
+"sensor.lock.pin-picker.Pin %ld" = "Pin to %ld";
+"sensor.toast.doorlock.PassCode must be 5 to 8 digits long" = "Kod musi składać się z od 5 do 8 cyfr";
+"sensor.device-name-label.Name" = "Nazwa";
+"sensor.deivice-duration-label.Ring Duration" = "Długość czasu dzwonienia";
+"sensor.deivice-duration-placeholder.number of seconds" = "w sekundach";
+"sensor.deivice-location-label.Located at" = "Znajdujący się w";
+"sensor.deivice-save-settings.button.Save" = "Zapisz";
+"sensor.device-status.label.Battery OK" = "BATERIA W PORZĄDKU";
+"sensor.device-status.label.Battery %" = "%@%% BATERII";
+"sensor.device-status.label.Low Battery" = "Bateria bliska rozładowania";
+"sensor.device-status.label.LOW BATTERY" = "BATERIA BLISKA ROZŁADOWANIA";
+"sensor.device-status.label.Battery Unknown" = "Stan baterii nieznany";
+"sensor.doorlock.field-label.Pins" = "Kody pin";
+"sensor.doorlock.pinentry-textfield.placeholder.Code is not specified." = "Nie określono kodu.";
+"sensor.doorlock.button.Save Pin" = "Zapisz Pin";
+"sensor.doorlock.field-label.Code" = "Kod";
+"sensor.multilevel-switch.status-label.Dimmable, %@%%" = "Przyciemnianie, %@%%";
+"sensor.level-control.status-label.Dimmable" = "Przyciemnianie";
+"sensor.keyfob.status-label.ALL DISARMED" = "WSZYSTKIE ROZBROJONE";
+"sensor.keyfob.status-label.PERIMETER ARMED" = "ZABEZPIECZENIA OBWODOWE UZBROJONE";
+"sensor.keyfob.status-label.ALL ARMED" = "WSZYSTKIE UZBROJONE";
+"sensor.lightsensor.status-label.Illuminance %@" = "Oświetlenie %@";
+"sensor.tempsensor.status-label.Humidity %@" = "Wilgotność %@";
+"sensor.moisturesensor.status.FLOODED" = "ZALANIE";
+"sensor.poweswitch.label.Power %@W" = "Pobór mocy %@W";
+"sensor.moisturesensor.status.Temp %@" = "Temperatura %@";
+"sensor.notificaiton.label.notificationMode" = "Powiadom mnie";
+"sensor.notificaiton.segment.Always" = "Zawsze";
+"sensor.notificaiton.segment.Away" = "Poza domem";
+"sensor.notificaiton.segment.Off" = "Wyłącz";
+"sensors.label.Color" = "Kolor";
+"sensor.hud.UpdatingSensordata" = "Aktualizowanie danych czujnika...";
+
+//r
+"sensor.deivice-showlog.button.viewlogs" = "Pokaż logi";
+"sensor.deivice-warning_rightview.seconds" = "sekund";
+"sensor.deivice.Highlightbutton Turn Off" = "Wyłącz";
+"sensor.deivice.Highlightbutton Turn ON" = "Włącz";
+"Temperature is %@%@" = "Temperatura wynosi %@%@";
+"Humidity is %@%%" = "Wilgotność wynosi %@%%";
+"sensors.label.DimmableLight-Brightness" = "Jasność";
+"sensors.label.DimmableLight-Saturation" = "Nasycenie";
+"sensors.label.DimmableLight-Color Temperature" = "Temperatura barwowa";
+"sensors.label.HueLamp-Brightness" = "Jasność";
+"sensors.label.HueLamp-Saturation" = "Nasycenie";
+"sensors.label.HueLamp-Color" = "Kolor";
+
+//rn
+"smoke-detector-Warning" = "Ostrzeżenie";
+"smoke-detector-Emergency" = "Nagła sytuacja";
+"smoke-detector Smoke :%@ , CO :%@"="Dym: %@ , Czad: %@";
+
+
+"sensor-detail-Fan cell On" = "Włączony";
+"sensor-detail-Fan cell Off" = "Wyłączony";
+"sensor-detail-Target Temp" = "Temperatura docelowa";
+
+
+"sensor.notificaiton.fanindexpath.On" = "Włączony";
+"sensor.notificaiton.fanindexpath.Off" = "Wyłączony";
+"sensor.awaymode.indexpath Home" = "Ekran główny";
+"sensor.mode indexpath Off" = "Wyłączony";
+"sensor.mode indexpath Cool" = "Chłodzenie";
+"sensor.mode indexpath Heat" = "Ogrzewanie";
+"sensor.mode indexpath Heat-Cool" = "Ogrzewanie-Chłodzenie";
+
+"device-property-fanindexpah false" = "fałsz";
+"device-property-fanindexpah true" = "prawda";
+"device property on mobile hud Unable to update sensor"="Nie udało się zaktualizować czujnika";
+
+/* signup */
+
+"signup.navbar-title.Sign up" = "Zarejestruj się";
+"signup.barbutton.Decline" = "Nie zgadzam się";
+"signuo.barbutton.Accept" = "Zgadzam się";
+"signup.barbutton.Continue" = "Kontynuuj";
+"signup.headline-text.Signing up." = "Rejestrowanie.";
+"signup.subheadline-text.Please wait one moment..." = "Proszę czekać...";
+"signup.headline-text.Almost done." = "Już prawie gotowe.";
+"signup.headline-text.An activation link was sent to your email" = "Link aktywacyjny został wysłany na Twój adres e-mail.
+Kliknij go, a następnie dotknij Kontynuuj, aby się zalogować.";
+"signup.footerbutton.Resend the activation email" = "Wyślij ponownie e-mail aktywacyjny";
+"signup.footerbutton.Signup using another email" = "Zarejestruj się, korzystając z innego adresu e-mail";
+"signup.footerlabel.Do you want to create another account?" = "Chcesz stworzyć jeszcze jedno konto?";
+
+
+/* Accounts */
+"accounts.navbar-title.settings" = "Ustawienia";
+"accounts.userprofile.title.account" = "Konto";
+"accounts.userprofile.label.primaryEmail" = "E-MAIL GŁÓWNY";
+"accounts.userprofile.label.password" = "HASŁO";
+"accounts.userprofile.label.firstName" = "IMIĘ";
+"accounts.userprofile.label.lastName" = "NAZWISKO";
+"accounts.userprofile.label.address" = "ADRES";
+"accounts.userprofile.label.country" = "KRAJ";
+"accounts.userprofile.label.zipCode" = "KOD POCZTOWY";
+
+"accounts.userprofile.title.placeholder.name" = "Nie wiemy jeszcze, jak się nazywasz";
+"accounts.userprofile.textfield.placeholder.firstName" = "Nie znamy jeszcze Twojego imienia";
+"accounts.userprofile.textfield.placeholder.lastName" = "Nie znamy jeszcze Twojego nazwiska";
+"accounts.userprofile.textfield.placeholder.address1" = "Adres linia 1";
+"accounts.userprofile.textfield.placeholder.address2" = "Adres linia 2";
+"accounts.userprofile.textfield.placeholder.address3" = "Adres linia 3";
+"accounts.userprofile.textfield.placeholder.country" = "W jakim kraju mieszkasz?";
+"accounts.userprofile.textfield.placeholder.zipCode" = "Jaki jest Twój kod pocztowy?";
+
+"accounts.userprofile.button.changePassword" = "Zmień hasło";
+"accounts.userprofile.button.edit" = "Edytuj";
+"accounts.userprofile.button.add" = "Dodaj";
+"accounts.userprofile.button.done" = "Gotowe";
+"accounts.userprofile.button.deleteAccount" = "USUŃ KONTO";
+"accounts.ownedAlmond.label.SharedWithOthers" = "Współdzielone z %d osobą(-ami)";
+"accounts.ownedAlmond.label.deviceName" = "NAZWA URZĄDZENIA";
+"accounts.ownedAlmond.label.accessEmail" = "E-MAIL DOSTĘPOWY";
+"accounts.ownedAlmond.button.Unlink" = "Rozłącz";
+
+"accounts.ownedAlmond.button.Remove" = "Usuń";
+"accounts.ownedAlmond.button.InviteMore" = "ZAPROŚ WIĘCEJ";
+"accounts.sharedAlmond.label.SharedWithYouBy" = "Współdzielone z Tobą przez";
+"accounts.sharedAlmond.label.deviceName" = "NAZWA URZĄDZENIA";
+"accounts.sharedAlmond.button.Remove" = "Usuń";
+
+"accounts.alert.onDeleteAccount.title" = "Usuń konto";
+"accounts.alert.onDeleteAccount.delete" = "Usuń";
+"accounts.alert.onDeleteAccount.Cancel" = "Anuluj";
+"accounts.alert.onUnlinkAlmond.Unlink" = "Rozłącz";
+"accounts.alert.onUnlinkAlmond.Cancel" = "Anuluj";
+
+"accounts.alert.onInviteToShareAlmond.title" = "Zaproś przez e-mail";
+"accounts.alert.onInviteToShareAlmond.message" = "Gdy kogoś zaprosisz, otrzyma on dostęp do %@";
+"accounts.alert.onInviteToShareAlmond.Invite" = "Zaproś";
+"accounts.alert.onInviteToShareAlmond.Cancel" = "Anuluj";
+
+"accounts.hud.loadingDetails" = "Wczytywanie szczegółów konta...";
+"accounts.hud.deletingAccount" = "Usuwanie konta...";
+"accounts.hud.updatingDetails" = "Aktualizowanie szczegółów konta...";
+"accounts.hud.removeUserFromSharedList" = "Usuń użytkownika z listy osób współdzielących urządzenie...";
+
+"accounts.deleteAccount.failure.reasonCode1" = "Wystąpił błąd chmury. Spróbuj później.";
+"accounts.deleteAccount.failure.reasonCode2" = "Przepraszamy! Jeszcze nie masz u nas konta.";
+"accounts.deleteAccount.failure.reasonCode3" = "Musisz aktywować swoje konto.";
+"accounts.deleteAccount.failure.reasonCode4" = "Musisz wypełnić wszystkie pola.";
+"accounts.deleteAccount.failure.reasonCode5" = "Podane aktualne hasło jest niepoprawne.";
+"accounts.deleteAccount.failure.reasonCode6" = "Wystąpił błąd chmury. Spróbuj później.";
+"accounts.deleteAccount.failure.default" = "Przepraszamy! Usuwanie konta nie powiodło się.";
+
+"accounts.updateAccount.failure.reasonCode1" = "Wystąpił błąd chmury. Spróbuj później.";
+"accounts.updateAccount.failure.reasonCode2" = "Musisz wypełnić wszystkie pola.";
+"accounts.updateAccount.failure.reasonCode3" = "Przepraszamy! Jeszcze nie masz u nas konta.";
+"accounts.updateAccount.failure.default" = "Przepraszamy! Aktualizacja nie powiodła się.";
+
+"accounts.unlinkAlmond.failure.reasonCode1" = "Wystąpił błąd chmury. Spróbuj później.";
+"accounts.unlinkAlmond.failure.reasonCode2" = "Przepraszamy! Jeszcze nie masz u nas konta.";
+"accounts.unlinkAlmond.failure.reasonCode3" = "Musisz aktywować Twoje konto.";
+"accounts.unlinkAlmond.failure.reasonCode4" = "Musisz wypełnić wszystkie pola.";
+"accounts.unlinkAlmond.failure.reasonCode5" = "Podane aktualne hasło jest niepoprawne.";
+"accounts.unlinkAlmond.failure.reasonCode6" = "Wystąpił błąd chmury. Spróbuj później.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode1" = "Wystąpił błąd chmury. Spróbuj później.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode5" = "Musisz wypełnić wszystkie pola.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode7" = "Nie możesz dodać siebie jako dodatkowego użytkownika.";
+"accounts.deleteSecondaryUser.failure.reasonCode1" = "Wystąpił błąd chmury. Spróbuj później.";
+"accounts.deleteSecondaryUser.failure.reasonCode2" = "Musisz wypełnić wszystkie pola.";
+"accounts.deleteSecondaryUser.failure.reasonCode5" = "Nie znaleziono użytkownika.";
+"accounts.deleteSecondaryUser.failure.default" = "Przepraszamy! Coś poszło nie tak. Spróbuj później.";
+
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode1" = "Wystąpił błąd chmury. Spróbuj później.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode2" = "Musisz wypełnić wszystkie pola.";
+
+
+/* Notifications */
+
+//m
+"notifications.title.Recent Activities" = "Ostatnia aktywność";
+"notifications.headerfooter.mode.The End" ="Koniec";
+"notifications.date.Today" = "Dzisiaj";
+"notifications.bucketdate.Yesterday" = "Wczoraj";
+
+/* Scenes */
+
+"scenes.hud.loadingScenes" = "Wczytywanie scenerii...";
+"scenes.hud.deletingScene" = "Usuwanie scenerii...";
+"scenes.hud.activatingScene" = "Aktywowanie scenerii...";
+"scenes.hud.creatingScene"   = "Tworzenie scenerii...";
+//m
+"scene.macro.Could not update sensor\ndata." = "Nie udało się zaktualizować danych czujnika.";
+"scene.thermostat-title.COOLING TEMP." = "TEMPERATURA CHŁODZENIA";
+"scene.thermostat-title.HEATING TEMP." = "TEMPERATURA OGRZEWANIA";
+"scene.button.Save" = "Zapisz";
+"scene.button.Cancel" = "Anuluj";
+"scene.title.Get Started" = "Zacznij";
+"scene.msg.You have to select at least 1 value" = "Musisz wybrać co najmniej jedną wartość";
+"scene.cancel-title.OK" = "OK";
+"scene.hud.Loading router data" = "Wczytywanie danych routera";
+"scene.hud.Loading sensor data" = "Wczytywanie danych czujnika";
+"scene.text.Choose one or more Actions" = "Wybierz jedną lub więcej czynności";
+"scene.alert-title.Oops" = "Ups";
+"scene.alert-msg.Sorry, There was some problem with this request, try later!" = "Przepraszamy, wystąpił problem z tym żądaniem, spróbuj później!";
+"scene.alert-button.OK" = "OK";
+
+
+
+/* Scoreboard */
+//r
+"Scoreboard" = "Wskaźniki";
+"Refresh.Scoreboard" = "Odśwież wskaźniki";
+"scoreboard.section.Cloud" = "Chmura";
+"scoreboard.section.PushNotifications" = "Powiadomienia push";
+"scoreboard.section.Events" = "Zdarzenia";
+"scoreboard.section.Network" = "Sieć";
+"scoreboard.section.Commands & Updates" = "Polecenia i aktualizacje";
+"scoreboard.section.Logs & Data" = "Logi i dane";
+"footerInsection.Last refreshed %.0f secs ago @ %@" = "Ostatnio odświeżono %.0f sekund temu @ %@";
+"notifications.Client Token" = "Token użytkownika";
+"notifications.Not registered" = "Niezarejestrowany";
+"Failed to send mail" = "Nie udało się wysłać e-maila";
+"Since %@" = "Od %@";
+"notifications_logctrl.View Handler Log" = "Pokaż logi programu obsługującego";
+"notifications_viewactual.View Notifications" = "Pokaż powiadomienia";
+"notifications_viewtests.Unit Test UI" = "Test interfejsu";
+"events.All Events" = "Wszystkie zdarzenia";
+"Network.Established Connections" = "Nawiązane połączenia";
+"Network.Failed Connections" = "Nieudane połączenia";
+"Network.Reachability Changes" = "Zmiany dostępności";
+"SEC_ReQUEST.Dynamic Updates" = "Dynamiczne aktualizacje";
+"SEC_ReQUEST.Command Requests" = "Żądania poleceń";
+"SEC_ReQUEST.Command Responses" = "Odpowiedzi na polecenia";
+"Email Logs & Data" = "Prześlij logi i dane na e-mail";
+"cloudSection.row0.Production" = "Produkcja";
+"cloudSection.row1.Development" = "Opracowanie";
+"Copied token" = "Skopiowane tokeny";
+"Reset counter" = "Zresetuj licznik";
+"Sending Mail is not supported on this device" = "Wysyłanie e-maili nie jest dostępne z tego urządzenia.";
+"Scoreboard.Preparing..." = "Przygotowywanie...";
+"Local Network Enabled" = "Sieć lokalna jest włączona";
+"scoreboard.localnetwork.IP Address" = "Adres IP";
+"scoreboard.localnetwork.Port" = "Port";
+"scoreboard.localnetwork.Password" = "Hasło";
+
+/* Sensor Support */
+//r
+"sensor support- a value has changed" = " wartość uległa zmianie";
+
+/* Draw View Controller */
+//r
+"Draw viecontroller.label LOCATION" = "LOKALIZACJA";
+"Draw viecontroller.label SETTINGS" = "USTAWIENIA";
+"Draw viecontroller.label INFO" = "INFORMACJE";
+
+/* Main View Controller */
+//r
+"Sorry! Unable to establish Internet route to cloud service." = "Przepraszamy! Nie udało się nawiązać połączenia z chmurą.";
+"mainviewcontroller_Connecting. Please wait!" = "‎Łączenie. Proszę czekać!";
+"mainviewcontroller_Sorry! Could not connect to the cloud service." = "Przepraszamy! Nie udało się nawiązać połączenia z chmurą.";
+"main view controller Sorry! Push Notification was not registered." = "Przepraszamy! Powiadomienie push nie zostało zarejestrowane.";
+"main view controller Sorry! Push Notification was not deregistered." = "Przepraszamy! Powiadomienie push nie zostało wyrejestrowane.";
+
+/* Table View Controller */
+//r
+"In process of connecting. Change connection method." = "Trwa łączenie. Zmień sposób połączenia.";
+"Cloud Connection" = "Połączenie z chmurą";
+"connection status Local Connection" = "Połączenie";
+"alert.title-Switch to Local Connection" = "Przełącz na połączenie lokalne";
+"alert.title-Edit Local Connection Settings" = "Edytuj ustawienia połączenia lokalnego";
+"Alert view title-Retry Cloud Connection" = "Spróbuj ponownie połączyć się z chmurą";
+"Alert view title-Switch to Local Connection" = "Przełącz na połączenie lokalne";
+"Edit Local Connection Settings" = "Edit Local Connection Settings";
+"Alert view title-Edit Local Connection Settings" = "Edytuj ustawienia połączenia lokalnego";
+"alert view error_Cloud Connection" = "Połączenie z chmurą";
+"alert view error_Local Connection" = "Połączenie lokalne";
+"alertview localconnection_Switch to Cloud Connection" = "Przełącz na połączenie z chmurą";
+"alertview Local connection settings are missing." = "Brak ustawień dla połączenia lokalnego.";
+"alertview title Add Local Connection Settings" = "Dodaj ustawienia połączenia lokalnego";
+"alert msg offline Local Retry Local Connection" = "Spróbuj ponownie połączyć się lokalnie";
+"alert title offline Local Switch to Cloud Connection" = "Przełącz na połączenie z chmurą";
+"alert title offline Local Edit Local Connection Settings" = "Edytuj ustawienia połączenia lokalnego";
+"mainviewcontroller hud Loading router data" = "Wczytywanie danych routera";
+"mainviewcontroller hud Loading router data" = "Wczytywanie danych czujnika";
+"mainviewcontroller hud hud.Updating settings..." = "Aktualizowanie ustawień...";
+"Cancel"="Anuluj";
+
+/* Wifi */
+"wifi.hud.UpdatingWifiClient" = "Aktualizowanie użytkownika Wi-Fi...";
+"wifi.hud.removeClient" = "Usuwanie użytkownika Wi-Fi...";
+"wifi.button.deleteClient" = "Usuń";
+
+//r
+"CONNECTED" = "POŁĄCZONY";
+"NOT CONNECTED" = "NIEPOŁĄCZONY";
+
+"SFIWiFiClientsListViewController-propertyNames-Name" = "Nazwa";
+"SFIWiFiClientsListViewController-propertyNames-Type" = "Typ";
+"SFIWiFiClientsListViewController-propertyNames-MAC Address" = "Adres MAC";
+"SFIWiFiClientsListViewController-propertyNames-Last Known IP" = "Ostatni znany adres IP";
+"SFIWiFiClientsListViewController-propertyNames-Connection" = "Połączenie";
+"SFIWiFiClientsListViewController-propertyNames-Use as Presence Sensor" = "Użyj jako czujnika obecności";
+"SFIWiFiClientsListViewController-propertyNames-Notify me" = "Powiadom mnie";
+"SFIWiFiClientsListViewController-propertyNames-Remove" = "Usuń";
+"Presence sensor Yes"="Tak";
+"Presence sensor NO" = "NIE";
+"response.alert-Oops" = "Ups";
+"response.alert-Sorry, There was some problem with this request, try later!" = "Przepraszamy, wystąpił problem z tym żądaniem, spróbuj później!";
+"response.alert-OK" = "OK";
+
+/* Sensor Support */
+
+" Fan is " = " Wentylator jest ";
+" Fan is set to " = " Wentylator jest ustawiony na ";
+" brightness changed to " = " jasność zmieniona na ";
+" brightness changed to " = " jasność zmieniona na ";
+" detected Fire." = " wykrył ogień.";
+" detected Gas." = " wykrył gaz.";
+" detected Smoke." = " wykrył dym.";
+" detected Vibration." = " wykrył wstrząsy.";
+" detected Vibration." = " wykrył wstrząsy.";
+" detected motion." = " wykrył ruch.";
+" detected motion." = " wykrył ruch.";
+" detected water." = " wykrył wodę.";
+" has been Tampered." = " był manipulowany.";
+" hue color changed to " = " kolor Hue zmieniony na ";
+" is " = " jest ";
+" is Armed." = " jest uzbrojony.";
+" is Closed." = " jest zamknięty.";
+" is Closing." = " jest zamykany.";
+" is Disarmed." = " jest rozbrojony.";
+" is Locked." = " jest zamknięty na klucz.";
+" is Open." = " jest otwarty.";
+" is Opened." = " jest otwarty.";
+" is Opening." = " jest otwierany.";
+" is Perimeter Armed." = " ma uzbrojone zabezpieczenia obwodowe.";
+" is Ringing." = " dzwoni.";
+" is Silent." = " jest wyciszony.";
+" is Stopped." = " jest zatrzymany.";
+" is Unlocked." = " nie jest zamknięty na klucz.";
+" is cooling down to " = " ochładza do ";
+" is dimmed to " = " jest przyciemniona do ";
+" is heating up to " = " ogrzewa do ";
+" is not fully Locked." = " nie jest do końca zamknięty.";
+" is reset from Tampered." = " ma zresetowany status (z sabotażu).";
+" is set to " = " jest ustawiony na ";
+" is switched Off." = " jest wyłączony.";
+" is switched On." = " jest włączony.";
+" is turned Off." = " jest wyłączony.";
+" is turned On." = " jest włączony.";
+" is turned on for " = " jest włączony na ";
+" saturation changed to " = " nasycenie zmienione na ";
+"seconds" = " sekund";
+" stopped leaking." = " przestał cieknąć.";
+" turned Off." = " wyłączony.";
+" turned On." = " włączony.";
+"'s Battery is Low." = " ma baterię bliską rozładowania.";
+"'s Fire is gone." = " nie wykrywa już ognia.";
+"'s Gas is gone." = " nie wykrywa już gazu.";
+"'s Smoke is gone." = " nie wykrywa już dymu.";
+"'s color temperature changed to " = ": temperatura barwowa zmieniona na ";
+"'s humidiy changed to " = ": wilgotność zmieniona na ";
+"'s light reading changed to " = ": oświetlenie zmienione na ";
+"'s motion stopped." = " nie wykrywa już ruchu.";
+"'s pin code changed." = " ma zmieniony kod pin.";
+"'s power reading changed to " = ": pobór mocy zmieniony na ";
+"'s temperature changed to " = ": temperatura zmieniona na ";
+"'s temperature set point changed to " = ": temperatura docelowa zmieniona na ";
+"'s vibration stopped." = " nie wykrywa już wstrząsów.";
+": no presence detected." = ": nie wykryto niczyjej obecności.";
+": presence detected." = ": wykryto czyjąś obecność.";
+"AWAY" = "POZA DOMEM";
+"HOME" = "W DOMU";
+"OFF" = "WYŁĄCZONY";
+"ON" = "WŁĄCZONY";
+"Temperature" = "Temperatura";
+"\u00B0 Farenheit" = "\u00B0 stopni Farenheita";
+
+//To be translated
+
+"DIM" = "ściemniać";
+"AUTO" = "automatyczny";
+"HEAT" = "CIEPŁA";
+"COOL" = "CHŁODNY";
+"OFF" = "od";
+"FAN ON" = "fanem na";
+"FAN OFF" = "wentylator wyłączony";
+"HOME" = "DOM";
+"AWAY" = "z dala";
+"COOLING TEMP." = "CHŁODZENIE TEMP.";
+"HEATING TEMP." = "TEMP OGRZEWANIE.";
+"Version" = "Wersja";
+"Settings" = "Ustawienia";
+"AlmondList" = "AlmondLista";
+
+"login.local.Switch to Local Connection" = "Przełącz na połączenie lokalne";
+
+
+"router.log-send-error.There was an error sending logs" = "Wystąpił błąd podczas wysyłania dzienników";//redundant
+"Sensorview-almondata-Get Started" = "Zaczynać";
+"showtoast Unable to update sensor" = "Nie można zaktualizować czujnik";
+"Force sensor data refresh" = "Odświeżanie danych czujnika siły";
+"tableviewcell-Updating sensor data.\nPlease wait." = "Aktualizacja danych z czujników.\nProszę czekać.";
+"Tharmostat_setpoint-SET POINT %@%@" = "ustawiona punkt %@%@";
+"Tharmostat_setpoint-temperature" = "temperatura";
+"sensor-property-edit smokedetector Warning" = "ostrzeżenie";
+"sensor-property-edit smokedetector Emergency" = "nagły wypadek";
+"read-almond-version %@ (%@)" = "wersja %@ (%@)";
+"Cancel" = "Anuluj";
+"alert title offline Local Retry Local Connection" = "Ponów połączenie lokalne";
+"router.software-version.Update Available" = "Dostępna aktualizacja";
+"router.log-send-error.There was an error sending logs" = "Wystąpił błąd podczas wysyłania dzienników";
+"sensor.awaymode.indexpath Away" = "z dala";
+"mainview-configure-Debug" = "Debug";
+"connection status Cloud Connection" = "Połączenie cloud";
+"alert title offline Local Retry Local Connection" = "Ponów połączenie lokalne";
+"connection status Local Connection" = "Połączenie lokalne";
+
+/* UI Accounts */
+"Drawviewcontroller.account" = "konto";
+"Drawviewcontroller.Logout" = "Wyloguj";
+"Drawviewcontroller.Logout All" = "Wyloguj wszystko";
+"Draqviewcontroller.add"="dodać";
+
+//new - sensor table view cell
+
+"sensor.field-macro.PinCodeField" = "pola kodu PIN";
+"sensor.status-label.PRESENCE DETECTED" = "WYKRYTA OBECNOŚĆ";
+"sensor.macro-msg.Could not update sensor\ndata." = "Nie można zaktualizować danych z czujników.";
+"sensor.status-label.OPEN" = "OTWARTE";
+"sensor.status-label.CLOSED" = "ZAMKNIĘTE";
+"sensor.status-label.UNLOCKED" = "ODBLOKOWANY";
+"sensor.status-label.LOCKED" = "ZAMKNIĘTY";
+"sensor.status-label.ACTIVE" = "AKTYWNY";
+"sensor.status-label.INACTIVE" = "NIEAKTYWNY";
+"sensor.status-label.MOTION DETECTED" = "WYKRYCIU RUCHU";
+"sensor.status-label.NO MOTION" = "BRAK RUCHU";
+"sensor.status-label.ALARM: FIRE DETECTED" = "ALARM: WYKRYTY POŻAR";
+"sensor.status-label.OK" = "OK";
+
+"sensor.status-label.FLOODED" = "ZALANE";
+"sensor.status-label.ALARM: GAS DETECTED" = "ALARM: WYKRYCIA GAZU";
+"sensor.status-label.VIBRATION DETECTED" = "WYKRYTE DRGANIA";
+"sensor.status-label.NO VIBRATION" = "BRAK WIBRACJI";
+"sensor.msg-label.State data unknown.\nUse manual controls." = "Dane nieznanym stanie. ręcznego sterowania.";
+"sensor.status-label.PRESENCE DETECTED" = "WYKRYTA OBECNOŚĆ";
+"sensor.status-label.NO PRESENCE" = "NIE OBECNOŚĆ";
+"sensor.status-label.SMOKE DETECTED!" = "WYKRYCIU DYMU!";
+"sensor.status-label.RINGING" = "DZWONIENIE";
+"sensor.status-label.CLOSING" = "ZAMKNIĘCIE";
+"sensor.status-label.STOPPED" = "ZATRZYMANY";
+"sensor.status-label.OPENING" = "OTWARCIE";
+
+
+//Some more
+"sensor.text.%ld SENSORS" = "%ld CZUJNIKI";
+"sensor.text.%ld SENSOR" = "%ld CZUJNIK";
+
+"Device.propertyeditview.controller.Name" = "imię";
+"Device.propertyeditview.controller.Location" = "lokalizacja";
+"Device.propertyeditview.controller.Enter IR Code" = "Wpisz kod IR";
+"Device.propertyeditview.controller.Example 444" = "Przykład 444";
+
+"scenes.new-scene.label.New Scene" = "Nowa scena";
+
+
+/* ==================================================================== */
+
+/*
+ Almond-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+/*------- Localization strings specific to Almond app -------*/
+
+
+/* affiliation */
+"router.linkalmond-msg.label.Let's link an Almond." = "Połączmy urządzenie Almond.";
+"router.linkalmond-msg.label.Start the wizard on your Almond." = "Uruchom kreatora instalacji na Twoim urządzeniu Almond, a następnie dotknij symbolu poniżej.";
+"Almond Linked" = "Almond połączony";
+"Link Almond" = "Połączenie z chmurą";
+"Local Link Almond" = "Połączenie lokalne";
+"Please wait while your Almond is being linked to cloud." = "Proszę czekać, podczas gdy Twoje urządzenie Almond jest łączone z chmurą.";
+"This Almond is already linked to another user." = "To urządzenie Almond jest już przypisane do innego użytkownika.
+Skontaktuj się z nami, pisząc na adres support@securifi.com";
+"Almond could not be affiliated" = "Nie udało się przypisać urządzenia Almond.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "Uruchom aplikację Almond Account i wprowadź podany kod.";
+"cloudlink.button.Link Almond" = "Połącz urządzenie Almond";
+"cloudlink.button.Add Almond Locally" = "Dodaj urządzenie Almond lokalnie";
+
+
+
+/* router tab */
+"router.offline-msg.label.Almond is Offline." = "Almond jest w trybie offline.";
+//m
+"router.msg-link.The Almond was successfully linked." = "Urządzenie Almond zostało połączone pomyślnie.";
+"router.btn-title.Unlink Almond?" = "Rozłączyć urządzenie Almond?";
+"router.btn-title.Link Almond Locally" = "Połącz urządzenie Almond lokalnie";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Miej na uwadze, że bez możliwości kontroli przez chmurę nie będziesz mieć możliwości zdalnej kontroli nad Twoim urządzeniem Almond.";
+"router.error-msg.This Almond is already linked." = "To urządzenie Almond jest już połączone.";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." = "Wystąpił błąd podczas próby połączenia z urządzeniem Almond. Spróbuj ponownie.";
+
+/* sensors */
+"router.no-sensors.label.Add a sensor from your Almond." = "Dodaj czujnik przez Almond.";
+
+/* signup */
+"signup.headline-text.Securifi Cloud Account." = "Konto w chmurze Securifi.";
+"signup.headline-text.Access your Almonds" = "Dostęp do Twojego urządzenia Almond i
+urządzeń domowych gdziekolwiek jesteś.";
+
+/* Accounts */
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "Jesteś właścicielem tego urządzenia Almond";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "Nazwa urządzenia Almond";
+"accounts.ownedAlmond.button.RenameAlmond" = "Zmień nazwę urządzenia Almond";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = "Nazwa urządzenia Almond";
+"accounts.sharedAlmond.button.RenameAlmond" = "Zmień nazwę urządzenia Almond";
+"accounts.alert.onDeleteAccount.message" = "Usunięcie konta spowoduje rozłączenie Twoich urządzeń Almond i usunięcie ustawień użytkownika. Aby potwierdzić usunięcie konta, wpisz poniżej Twoje hasło.";
+"accounts.alert.onUnlinkAlmond.title" = "Rozłącz urządzenie Almond";
+"accounts.alert.onUnlinkAlmond.message" = "Aby potwierdzić rozłączenie Urządzenia Almond, wpisz poniżej Twoje hasło.";
+"accounts.itoast.almondNameMax32Characters" = "Nazwa urządzenia Almond nie może składać się z więcej niż 32 znaków.";
+"accounts.itoast.unableToChangeAlmondName" = "Przepraszamy! Nie udało się zmienić nazwy urządzenia Almond";
+"accounts.hud.unlinkingAlmond" = "Rozłączanie urządzenia Almond...";
+"accounts.hud.inviteUserToShareAlmond" = "Zapraszanie użytkownika do współdzielenia urządzenia Almond...";
+"accounts.hud.changeAlmondName" = "Zmień nazwę urządzenia Almond...";
+"accounts.hud.removeSharedAlmond" = "Usuń współdzielone urządzenie Almond...";
+"accounts.unlinkAlmond.failure.default" = "Przepraszamy! Nie udało się rozłączyć urządzenia Almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "Ten użytkownik nie ma konta Securifi.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "Użytkownik nie zweryfikował jeszcze konta Securifi.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "Nie jesteś właścicielem tego urządzenia Almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "Już współdzielisz urządzenie Almond z tym użytkownikiem.";
+"accounts.inviteUserToShareAlmond.failure.default" = "Przepraszamy! Nie udało się udostępnić urządzenia Almond.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "Nie jesteś powiązany z tym urządzeniem Almond";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "Dodatkowy użytkownik nie jest powiązany z tym urządzeniem Almond.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "Nie jesteś powiązany z tym urządzeniem Almond";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "Przepraszamy! Nie udało się usunąć współdzielonego urządzenia Almond.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "Adresy MAC Almond";
+"Copied Almond MAC" = "Skopiowane adresy MAC Almond";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "Połącz się z Twoim Almond przez chmurę.";
+"alertview -Connected to your Almond via cloud." = "Połączono z Twoim Almond przez chmurę.";
+"Add Local Connection Settings" = "Dodaj ustawienia połączenia lokalnego";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "Połączenie z Twoim Almond przez chmurę nie powiodło się. Spróbuj ponownie lub przełącz na połączenie lokalne.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = "Połączenie lokalne z Twoim Almond nie powiodło się. Spróbuj ponownie lub przełącz na połączenie przez chmurę.";
+"hud message-Setting Almond to Away Mode" = "Przestawianie urządzenia Almond w tryb Poza domem";
+"hud message-Setting Almond to Home Mode" = "Przestawianie urządzenia Almond w tryb W domu";
+"alertview Can't connect to your Almond. Please select a connection method." = "Nie można połączyć się z Twoim urządzeniem Almond. Wybierz rodzaj połączenia.";
+"alertview localconnection_Connected to your Almond locally." = "Połączono z Twoim Almond lokalnie.";
+
+"router.card-title.Local Almond Link" = "Lokalna Almond link";
+"router.software-version.header.instructions" = "Proszę wybierz \"Ustawienia\" na Almond";
+"router.offline-msg.label.Almond is Offline." = "Almond is Offline.";
+
+//To be translated
+/* login */
+"Monitor and Control your home from anywhere." = "Monitorować i kontrolować swój dom z dowolnego miejsca.";

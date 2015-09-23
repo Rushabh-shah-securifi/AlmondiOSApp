@@ -1,0 +1,129 @@
+/*
+ ScenesStoryboard_iPhone.strings
+ SecurifiApp
+ 
+ Created by Masood on 03/09/15.
+ Copyright (c) 2015 Securifi Ltd. All rights reserved.
+ */
+
+/* Class = "IBUIButton"; text = "BLOCK"; ObjectID = "VN7-N7-QGm"; */
+"VN7-N7-QGm.title" = "ЗАБЛОКИРОВАТЬ";
+
+/* Class = "IBUIButton"; text = "REMOVE"; ObjectID = "RPx-f9-Q3y"; */
+"RPx-f9-Q3y.title" = "УДАЛИТЬ";
+
+/* Class = "IBUITextField"; placeholder = "Device Name"; ObjectID = "9QV-YC-3yk"; */
+"9QV-YC-3yk.placeholder" = "Имя Устройства";
+
+/* Class = "IBUILabel"; text = "Use as Presence Sensor"; ObjectID = "5VS-Ii-DVv"; */
+"5VS-Ii-DVv.text" = "Использовать как Датчик Присутствия";
+
+/* Class = "IBUIButton"; text = "   Back"; ObjectID = "I6n-bO-qew"; */
+"I6n-bO-qew.title" = "   Назад";
+
+/* Class = "IBUIButton"; text = "Save"; ObjectID = "UqN-q8-qkX"; */
+"UqN-q8-qkX.title" = "Сохранить";
+
+/* Class = "IBUILabel"; text = "CONNECTED"; ObjectID = "B0M-NR-giG"; */
+"B0M-NR-giG.text" = "СОЕДИНЕНО";
+
+/* Class = "IBUILabel"; text = "Main Thermostat"; ObjectID = "PJz-Pb-UKi"; */
+"PJz-Pb-UKi.text" = "Главный Термостат";
+
+/* Class = "IBUILabel"; text = "Main Thermostat"; ObjectID = "tmk-aP-zmI"; */
+"tmk-aP-zmI.text" = "Главный Термостат";
+
+/* Class = "IBUILabel"; text = "New Scene"; ObjectID = "fTq-GO-xaN"; */
+"fTq-GO-xaN.text" = "Новая Зона Обзора";
+
+/* Class = "IBUILabel"; text = "A scene is a group of sensors and a desired state for these sensors."; ObjectID = "mxM-JH-rOP"; */
+"mxM-JH-rOP.text" = "Зона Обзора – это группа сенсоров и желаемое состояние данных сенсоров.";
+
+/* Class = "IBUITabBarItem"; title = "Scenes"; ObjectID = "qRt-Pz-Rfs"; */
+"qRt-Pz-Rfs.title" = "Зоны Обзора";
+
+/* Class = "IBUILabel"; text = "Hall Lamp"; ObjectID = "0eg-Dz-Wu1"; */
+"0eg-Dz-Wu1.text" = "Светильник в Коридоре";
+
+/* Class = "IBUILabel"; text = "Name this Scene"; ObjectID = "i3B-lM-Pjx"; */
+"i3B-lM-Pjx.text" = "Дать имя данной Зоне Обзора";
+
+/* Class = "IBUIButton"; text = "Delete this Scene?"; ObjectID = "Wnf-Cb-xqC"; */
+"Wnf-Cb-xqC.title" = "Удалить данную Зону Обзора??";
+
+/* Class = "IBUILabel"; text = "Brightness"; ObjectID = "umo-Pz-pWi"; */
+"umo-Pz-pWi.text" = "Яркость";
+
+/* Class = "IBUILabel"; text = "Enabled"; ObjectID = "qhb-IZ-ClC"; */
+"qhb-IZ-ClC.text" = "Активировано";
+
+/* Class = "IBUILabel"; text = "Hue"; ObjectID = "InX-U3-YwC"; */
+"InX-U3-YwC.text" = "Тон";
+
+/* Class = "IBUILabel"; text = "Enabled"; ObjectID = "bnN-vT-5Qb"; */
+"bnN-vT-5Qb.text" = "Активировано";
+
+/* Class = "IBUILabel"; text = "SATURATION"; ObjectID = "CNM-GN-H2I"; */
+"CNM-GN-H2I.text" = "НАСЫЩЕННОСТЬ";
+
+/* Class = "IBUILabel"; text = "Enabled"; ObjectID = "cba-u6-VtR"; */
+"cba-u6-VtR.text" = "Активировано";
+
+/* Class = "IBUITabBarItem"; title = "Scenes"; ObjectID = "1wV-S3-1SM"; */
+"1wV-S3-1SM.title" = "Зоны Обзора";
+
+/* Class = "IBUILabel"; text = "Heating Target Temperature"; ObjectID = "9gM-uJ-gk4"; */
+"9gM-uJ-gk4.text" = "Целевая Температура Нагрева";
+
+/* Class = "IBUILabel"; text = "Show"; ObjectID = "llv-JB-aiq"; */
+"llv-JB-aiq.text" = "Показать";
+
+/* Class = "IBUILabel"; text = "Celsius"; ObjectID = "M8d-eW-7pP"; */
+"M8d-eW-7pP.text" = "Цельсий";
+
+/* Class = "IBUILabel"; text = "Fahrenheit"; ObjectID = "i21-pk-ncq"; */
+"i21-pk-ncq.text" = "Фаренгейт";
+
+/* Class = "IBUILabel"; text = "Cooling Target Temperature"; ObjectID = "i21-pk-ncq"; */
+"i21-pk-ncq.text" = "Целевая Температура Охлаждения";
+
+/* Class = "IBUIButton"; text = "   Back"; ObjectID = "iyJ-Ty-6BZ"; */
+"iyJ-Ty-6BZ.title" = "   Назад";
+
+/* Class = "IBUIButton"; text = "Save"; ObjectID = "itdp-8A-tJu"; */
+"tdp-8A-tJu.title" = "Сохранить";
+
+/* Class = "UILabel"; text = "Hall Lamp"; ObjectID = "0eg-Dz-Wu1"; */
+"0eg-Dz-Wu1.text" = "Зал лампы";
+/* Class = "UITabBarItem"; title = "Scenes"; ObjectID = "1wV-S3-1SM"; */
+"1wV-S3-1SM.title" = "Сцены";
+/* Class = "UILabel"; text = "Matt’s iPad"; ObjectID = "3T6-RK-IdY"; */
+"3T6-RK-IdY.text" = "Ipad Мэтта";
+/* Class = "UILabel"; text = "CONNECTED"; ObjectID = "3pu-Ud-Zmz"; */
+"3pu-Ud-Zmz.text" = "ПОДКЛЮЧЕНИЕ";
+/* Class = "UILabel"; text = "Matt’s iPad"; ObjectID = "DcB-dP-4gB"; */
+"DcB-dP-4gB.text" = "Ipad Мэтта";
+/* Class = "UILabel"; text = "Label"; ObjectID = "GgT-hK-vcf"; */
+"GgT-hK-vcf.text" = "Этикетка";
+/* Class = "UILabel"; text = "Cooling Target Temperature"; ObjectID = "DG7-SK-dZj"; */
+"DG7-SK-dZj.text" = "Заданной температуры охлаждения";
+/* Class = "UILabel"; text = "CONNECTED"; ObjectID = "JW0-Tz-Kzx"; */
+"JW0-Tz-Kzx.text" = "ПОДКЛЮЧЕНИЕ";
+/* Class = "UILabel"; text = "Celsius"; ObjectID = "M8d-eW-7pP"; */
+"M8d-eW-7pP.text" = "Цельсия";
+/* Class = "UILabel"; text = "Idle. LO 74°F. HI 86°F."; ObjectID = "Tho-VK-R3H"; */
+"Tho-VK-R3H.text" = "Холостой. LO 74 ° F. HI 86 ° F.";
+/* Class = "UILabel"; text = "Stop"; ObjectID = "UD3-CH-HWr"; */
+"UD3-CH-HWr.text" = "Стоп";
+/* Class = "UILabel"; text = "Matt’s iPad"; ObjectID = "Ys5-fh-bQ6"; */
+"Ys5-fh-bQ6.text" = "Ipad Мэтта";
+/* Class = "UILabel"; text = "Matt’s iPad"; ObjectID = "arc-jr-cg8"; */
+"arc-jr-cg8.text" = "Ipad Мэтта";
+/* Class = "UILabel"; text = "Main Thermostat"; ObjectID = "bac-A1-Cmc"; */
+"bac-A1-Cmc.text" = "Главная Термостат";
+/* Class = "UITextField"; placeholder = "Name"; ObjectID = "xfq-vN-gjS"; */
+"xfq-vN-gjS.placeholder" = "имя";
+/* Class = "UIViewController"; title = "NewScene"; ObjectID = "ytT-kF-AP3"; */
+"ytT-kF-AP3.title" = "новая сцена";
+
+

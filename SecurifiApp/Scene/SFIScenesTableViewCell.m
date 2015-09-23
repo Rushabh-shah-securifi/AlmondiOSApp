@@ -74,9 +74,9 @@
         [btnActivate setImage:[UIImage imageNamed:@"iconSceneCircle"] forState:UIControlStateNormal];
     }
     if (self.deviceIndexes.count>1) {
-        lblInfo.text = [NSString stringWithFormat:@"%ld SENSORS",(long)self.deviceIndexes.count];
+        lblInfo.text = [NSString stringWithFormat:NSLocalizedString(@"sensor.text.%ld SENSORS", "SENSORS"),(long)self.deviceIndexes.count];
     }else{
-        lblInfo.text = [NSString stringWithFormat:@"%ld SENSOR",(long)self.deviceIndexes.count];
+        lblInfo.text = [NSString stringWithFormat:NSLocalizedString(@"sensor.text.%ld SENSOR", "SENSOR"),(long)self.deviceIndexes.count];
     }
     
 }

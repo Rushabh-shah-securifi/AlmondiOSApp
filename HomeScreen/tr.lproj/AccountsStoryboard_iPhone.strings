@@ -1,0 +1,32 @@
+
+/* Class = "IBUITextField"; placeholder = "New Password"; ObjectID = "3uz-RY-rCm"; */
+"3uz-RY-rCm.placeholder" = "Yeni Parola";
+
+/* Class = "IBUIBarButtonItem"; title = "Cancel"; ObjectID = "G96-BW-p5i"; */
+"G96-BW-p5i.title" = "İptal Et";
+
+/* Class = "IBUINavigationItem"; title = "Change Password"; ObjectID = "KWr-AR-IIt"; */
+"KWr-AR-IIt.title" = "Parolayı Değiştir";
+
+/* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "LRJ-C2-ya9"; */
+"LRJ-C2-ya9.title" = "Ayarlar";
+
+/* Class = "IBUILabel"; text = "To change your account password enter your current password and new password below."; ObjectID = "awl-41-cEs"; */
+"awl-41-cEs.text" = "Hesap parolanızı değiştirmek için mevcut parolanızı ve yeni parolanızı aşağıya girin.";
+
+/* Class = "IBUIBarButtonItem"; title = "Done"; ObjectID = "eSk-FD-Kjz"; */
+"eSk-FD-Kjz.title" = "Bitti";
+
+/* Class = "IBUITextField"; placeholder = "Confirm Password"; ObjectID = "mbL-nR-glA"; */
+"mbL-nR-glA.placeholder" = "Parolayı Doğrula";
+
+/* Class = "IBUINavigationItem"; title = "Settings"; ObjectID = "nGf-bv-KQ9"; */
+"nGf-bv-KQ9.title" = "Ayarlar";
+
+/* Class = "IBUIBarButtonItem"; title = "Save"; ObjectID = "rOv-p0-jPn"; */
+"rOv-p0-jPn.title" = "Kaydet";
+
+/* Class = "IBUITextField"; placeholder = "Current Password"; ObjectID = "sfM-G0-KWE"; */
+"sfM-G0-KWE.placeholder" = "Mevcut Parola";
+
+
