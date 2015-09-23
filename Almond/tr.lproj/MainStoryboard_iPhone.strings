@@ -1,0 +1,222 @@
+/*------- START Localization strings common across all apps -------*/
+
+/* Class = "IBUILabel"; text = "By tapping Continue you are indicating that
+ you have read and agreed to our"; ObjectID = "2vg-ti-ElJ"; */
+"2vg-ti-ElJ.text" = "Devam Et'e dokunarak şunları okumuş
+ve kabul etmiş saılırsınız";
+
+/* Class = "IBUIButton"; normalTitle = "Forgot your password?"; ObjectID = "5GG-3f-pqZ"; */
+"5GG-3f-pqZ.normalTitle" = "Parolanızı mı unuttunuz?";
+
+/* Class = "IBUINavigationItem"; title = "Login"; ObjectID = "5Mu-Sx-mwG"; */
+"5Mu-Sx-mwG.title" = "Oturum Aç";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "6rp-Kn-wIv"; */
+"6rp-Kn-wIv.placeholder" = "Parola";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "7Fl-1P-IHp"; */
+"7Fl-1P-IHp.placeholder" = "Parola";
+
+/* Class = "IBUIButton"; normalTitle = "Resend link."; ObjectID = "9M6-Iy-zMa"; */
+"9M6-Iy-zMa.normalTitle" = "Bağlantıyı tekrar gönder.";
+
+/* Class = "IBUILabel"; text = "SSID"; ObjectID = "9ef-Xm-fQ5"; */
+"9ef-Xm-fQ5.text" = "SSID";
+
+/* Class = "IBUINavigationItem"; title = "Scenes"; ObjectID = "C8w-d3-6Kp"; */
+"C8w-d3-6Kp.title" = "Sahneler";
+
+
+/* Class = "IBUITextField"; placeholder = "Channel"; ObjectID = "Di9-Mv-GSh"; */
+"Di9-Mv-GSh.placeholder" = "Kanal";
+
+/* Class = "IBUITextField"; placeholder = "SSID"; ObjectID = "EVe-Dz-e9b"; */
+"EVe-Dz-e9b.placeholder" = "SSID";
+
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "F7a-QI-kyy"; */
+"F7a-QI-kyy.title" = "Geri";
+
+/* Class = "IBUIButton"; normalTitle = "Login again"; ObjectID = "HFO-nR-icT"; */
+"HFO-nR-icT.normalTitle" = "Tekrar Oturum Aç";
+
+/* Class = "IBUILabel"; text = "Subtitle"; ObjectID = "HJE-BA-YKX"; */
+"HJE-BA-YKX.text" = "Altyazı";
+
+/* Class = "IBUITextField"; placeholder = "Wireless Mode"; ObjectID = "I82-VJ-5TH"; */
+"I82-VJ-5TH.placeholder" = "Kablosuz Mod";
+
+/* Class = "IBUINavigationItem"; title = "Settings"; ObjectID = "Ixz-jq-Zqv"; */
+"Ixz-jq-Zqv.title" = "Ayarlar";
+
+/* Class = "IBUIButton"; normalTitle = "Done"; ObjectID = "JnK-0B-xKR"; */
+"JnK-0B-xKR.normalTitle" = "Bitti";
+
+/* Class = "IBUITextField"; placeholder = "Type QR Code"; ObjectID = "LKl-1e-QMG"; */
+"LKl-1e-QMG.placeholder" = "QR Kodunu Yazın";
+
+/* Class = "IBUITextField"; placeholder = "Confirm Password"; ObjectID = "M4K-eh-pVC"; */
+"M4K-eh-pVC.placeholder" = "Parolayı Doğrulayın";
+
+/* Class = "IBUITextField"; placeholder = "Email"; ObjectID = "Mew-Wa-979"; */
+"Mew-Wa-979.placeholder" = "Eposta";
+
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "Ti4-9V-HdY"; */
+"Ti4-9V-HdY.title" = "Geri";
+
+/* Class = "IBUIButton"; normalTitle = "Sign Up"; ObjectID = "UMh-WG-lC3"; */
+"UMh-WG-lC3.normalTitle" = "Oturum Aç";
+
+/* Class = "IBUILabel"; text = "MAC"; ObjectID = "V1p-1Y-8Lg"; */
+"V1p-1Y-8Lg.text" = "MAC";
+
+
+/* Class = "IBUIButton"; normalTitle = "Terms and Conditions"; ObjectID = "Xtg-A9-Rkn"; */
+"Xtg-A9-Rkn.normalTitle" = "Şartlar ve Koşullar";
+
+/* Class = "IBUITextField"; placeholder = "Email"; ObjectID = "Y3d-aA-TFm"; */
+"Y3d-aA-TFm.placeholder" = "Eposta";
+
+
+/* Class = "IBUILabel"; text = "Login"; ObjectID = "Zuk-ja-Rsi"; */
+"Zuk-ja-Rsi.text" = "Oturum aç";
+
+/* Class = "IBUITextField"; placeholder = "Security"; ObjectID = "aA5-x8-4LF"; */
+"aA5-x8-4LF.placeholder" = "Güvenlik";
+
+/* Class = "IBUILabel"; text = "Hooray!"; ObjectID = "bWR-DW-3hj"; */
+"bWR-DW-3hj.text" = "Oley!";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "bhP-Vb-XDN"; */
+"bhP-Vb-XDN.placeholder" = "Parola";
+
+
+/* Class = "IBUIBarButtonItem"; title = "Login"; ObjectID = "fGC-bJ-KoF"; */
+"fGC-bJ-KoF.title" = "Oturum Aç";
+
+/* Class = "IBUITextField"; placeholder = "Encryption Type"; ObjectID = "fUd-2s-lh1"; */
+"fUd-2s-lh1.placeholder" = "Şifreleme Türü";
+
+/* Class = "IBUILabel"; text = "Follow the activation link
+ in the email."; ObjectID = "fgY-FB-Mro"; */
+"fgY-FB-Mro.text" = "Epostadaki aktivasyon
+bağlantısını izleyin.";
+
+/* Class = "IBUINavigationItem"; title = "Affiliation"; ObjectID = "g9q-Qf-d7D"; */
+"g9q-Qf-d7D.title" = "İlişkilendirme";
+
+/* Class = "IBUILabel"; text = "MAC Value"; ObjectID = "hsp-Do-ff2"; */
+"hsp-Do-ff2.text" = "MAC Değeri";
+
+/* Class = "IBUITextField"; placeholder = "Password"; ObjectID = "jQ9-55-2JN"; */
+"jQ9-55-2JN.placeholder" = "Parola";
+
+/* Class = "IBUIBarButtonItem"; title = "Continue"; ObjectID = "jxF-En-8yI"; */
+"jxF-En-8yI.title" = "Devam Et";
+
+/* Class = "IBUILabel"; text = "Almost there."; ObjectID = "la7-Qa-JAi"; */
+"la7-Qa-JAi.text" = "Neredeyse bitti.";
+
+/* Class = "IBUIBarButtonItem"; title = "Back"; ObjectID = "m92-cg-LBE"; */
+"m92-cg-LBE.title" = "Geri";
+
+/* Class = "IBUILabel"; text = "Name"; ObjectID = "mMM-Gk-l4v"; */
+"mMM-Gk-l4v.text" = "Adı";
+
+
+/* Class = "IBUINavigationItem"; title = "Device List"; ObjectID = "s5Y-pa-xGH"; */
+"s5Y-pa-xGH.title" = "Cihaz Listesi";
+
+/* Class = "IBUILabel"; text = "You need to activate your account."; ObjectID = "sNA-Q6-fm9"; */
+"sNA-Q6-fm9.text" = "Hesabınızı etkinleştirmeniz lazım.";
+
+/* Class = "IBUINavigationItem"; title = "Device Information"; ObjectID = "sRL-VK-odq"; */
+"sRL-VK-odq.title" = "Cihaz Bilgisi";
+
+/* Class = "IBUILabel"; text = "Title"; ObjectID = "tNX-Qm-dH0"; */
+"tNX-Qm-dH0.text" = "Başlık";
+
+/* Class = "IBUITextField"; placeholder = "Email"; ObjectID = "v4I-0f-ocy"; */
+"v4I-0f-ocy.placeholder" = "Eposta";
+
+/* Class = "IBUILabel"; text = "Don't have an account yet?"; ObjectID = "wee-4l-TQb"; */
+"wee-4l-TQb.text" = "Henüz bir hesabınız yok mu?";
+
+/* Class = "IBUILabel"; text = "SSID Value"; ObjectID = "xBv-yd-Shs"; */
+"xBv-yd-Shs.text" = "SSID Değeri";
+
+/* Class = "IBUITextField"; placeholder = "Enter the code"; ObjectID = "zqJ-bb-Way"; */
+"zqJ-bb-Way.placeholder" = "Kodu girin";
+
+
+/*------- END Localization strings common across all apps -------*/
+/* ===================================================================================================== */
+
+
+/* Class = "IBUINavigationItem"; title = "Link Almond"; ObjectID = "005-QM-TOK"; */
+"005-QM-TOK.title" = "Almond'a bağla";
+
+/* Class = "IBUILabel"; text = "Logout from all the devices connected
+ to your Almonds."; ObjectID = "0ml-DL-hua"; */
+"0ml-DL-hua.text" = "Almondlarınıza bağlı tüm cihazlardaki
+oturumunuzu kapatın.";
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "1mY-kl-NHI"; */
+"1mY-kl-NHI.text" = "Almond ve ev cihazlarına
+her yerden ulaşın.";
+
+
+/* Class = "IBUINavigationItem"; title = "Almond List"; ObjectID = "CAD-J8-2aA"; */
+"CAD-J8-2aA.title" = "Almond Listesi";
+
+
+/* Class = "IBUILabel"; text = "You successfully linked your Almond with \nyour Securifi Cloud Account."; ObjectID = "Nee-HL-Q6h"; */
+"Nee-HL-Q6h.text" = "Almond'unuzu başarıyla \nSecurifi Bulut Hesabınıza bağladınız.";
+
+/* Class = "IBUINavigationItem"; title = "Almond"; ObjectID = "ObR-J1-LOM"; */
+"ObR-J1-LOM.title" = "Almond";
+
+/* Class = "IBUILabel"; text = "Type the code shown on your\nAlmond's screen."; ObjectID = "PRW-cc-prD"; */
+"PRW-cc-prD.text" = "Almond'unuzun ekranında görüntülenen\nkodu girin.";
+
+/* Class = "IBUIButton"; normalTitle = "Link Almond"; ObjectID = "PRt-1p-fH7"; */
+"PRt-1p-fH7.normalTitle" = "Almond'a bağlayın";
+
+/* Class = "IBUILabel"; text = "Securifi Cloud Account."; ObjectID = "Sqj-7H-5pB"; */
+"Sqj-7H-5pB.text" = "Securifi Bulut Hesabı.";
+
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "Xni-ee-jgc"; */
+"Xni-ee-jgc.text" = "Almond'larınıza ve ev cihazlarınıza
+her yerden ulaşın.";
+
+/* Class = "IBUILabel"; text = "Access your Almonds and
+ your home devices from anywhere."; ObjectID = "Zon-6Z-KzY"; */
+"Zon-6Z-KzY.text" = "Almond'larınıza ve ev cihazlarınıza
+her yerden ulaşın.";
+
+
+/* Class = "IBUILabel"; text = "To link your Almond with Securifi Cloud account, start the wizard on your Almond+.
+ The \"Almond'unuzu Securifi Bulut Hesabınıza ekleyin\" bölümünde aşağıya dokunarak tarayabileceğiniz veya yazabileceğiniz bir kod gösterecektir."; ObjectID = "de7-TX-jmT"; */
+"de7-TX-jmT.text" = "To link your Almond with Securifi Cloud account, start the wizard on your Almond.
+The \"Almond'unuzu Securifi Bulut Hesabınıza ekleyin\" bölümünde aşağıya dokunarak tarayabileceğiniz veya yazabileceğiniz bir kod gösterecektir.";
+
+
+/* Class = "IBUILabel"; text = "Almond Name"; ObjectID = "gRI-sr-1ga"; */
+"gRI-sr-1ga.text" = "Almond Adı";
+
+/* Class = "IBUILabel"; text = "Securifi Cloud Account."; ObjectID = "qnX-eN-VhR"; */
+"qnX-eN-VhR.text" = "Securifi Bulut Hesabı.";
+
+/* Class = "IBUILabel"; text = "Tip: Search spam folder or add
+ cloud@securifi.com to your contacts."; ObjectID = "vjT-j9-rhq"; */
+"vjT-j9-rhq.text" = "İpucu: Spam dosyasında arama yapın veya
+cloud@securifi.com adresini kişilerinize ekleyin.";
+
+/* Class = "IBUILabel"; text = "Search for an email from cloud@securifi.com, or"; ObjectID = "xYA-fY-SKl"; */
+"xYA-fY-SKl.text" = "cloud@securifi.com adresinden gelen bir eposta arayın veya";
+
+
+
+

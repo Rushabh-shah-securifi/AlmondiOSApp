@@ -76,9 +76,9 @@
     NSArray *almondList = [self buildAlmondList:mode];
 
     NSArray *settingsList = @[
-            @"Account",
-            @"Logout",
-            @"Logout All"
+            NSLocalizedString(@"Drawviewcontroller.account",@"Account"),
+            NSLocalizedString(@"Drawviewcontroller.Logout","uitloggen"),
+            NSLocalizedString(@"Drawviewcontroller.Logout All","logout alle";)
     ];
 
     NSBundle *bundle = [NSBundle mainBundle];
@@ -342,7 +342,7 @@
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
     label.font = [UIFont standardHeadingFont];
-    label.text = @"Add";
+    label.text = NSLocalizedString(@"Draqviewcontroller.add","toevoegen");
 
     [cell addSubview:label];
 

@@ -10,7 +10,7 @@
 #import "TemperatureView.h"
 
 
-#define DEF_COULD_NOT_UPDATE_SENSOR @"Could not update sensor\ndata."
+#define DEF_COULD_NOT_UPDATE_SENSOR NSLocalizedString(@"sensor.macro-msg.Could not update sensor\ndata.", @"Could not update sensor\ndata.")
 
 @interface SFISensorTableViewCell () <SFISensorDetailViewDelegate>
 @property(nonatomic) UIImageView *deviceImageView;
@@ -237,7 +237,7 @@
     
     switch (device.deviceType) {
         case SFIDeviceType_BinarySwitch_1: {
-            [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.ON", @"ON") statusFalse:NSLocalizedString(@"sensor.status-label.OFF", @"OFF")];
             break;
         }
             
@@ -247,7 +247,7 @@
         }
             
         case SFIDeviceType_BinarySensor_3: {
-            [self configureBinaryStateSensor:DT3_BINARY_SENSOR_TRUE imageNameFalse:DT3_BINARY_SENSOR_FALSE statusTrue:@"OPEN" statusFalse:@"CLOSED"];
+            [self configureBinaryStateSensor:DT3_BINARY_SENSOR_TRUE imageNameFalse:DT3_BINARY_SENSOR_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.OPEN", @"OPEN") statusFalse:NSLocalizedString(@"sensor.status-label.CLOSED", @"CLOSED")];
             break;
         }
             
@@ -257,12 +257,12 @@
         }
             
         case SFIDeviceType_DoorLock_5: {
-            [self configureBinaryStateSensorImageNameZeroValue:DT5_DOOR_LOCK_UNLOCKED imageNameNonZeroValue:DT5_DOOR_LOCK_LOCKED statusZeroValue:@"UNLOCKED" statusNonZeroValue:@"LOCKED"];
+            [self configureBinaryStateSensorImageNameZeroValue:DT5_DOOR_LOCK_UNLOCKED imageNameNonZeroValue:DT5_DOOR_LOCK_LOCKED statusZeroValue:NSLocalizedString(@"sensor.status-label.UNLOCKED", @"UNLOCKED") statusNonZeroValue:NSLocalizedString(@"sensor.status-label.LOCKED", @"LOCKED")];
             break;
         }
             
         case SFIDeviceType_Alarm_6: {
-            [self configureBinaryStateSensorImageNameZeroValue:DT6_ALARM_FALSE imageNameNonZeroValue:DT6_ALARM_TRUE statusZeroValue:@"OFF" statusNonZeroValue:@"ON"];
+            [self configureBinaryStateSensorImageNameZeroValue:DT6_ALARM_FALSE imageNameNonZeroValue:DT6_ALARM_TRUE statusZeroValue:NSLocalizedString(@"sensor.status-label.OFF", @"OFF") statusNonZeroValue:NSLocalizedString(@"sensor.status-label.ON", @"ON")];
             break;
         }
             
@@ -273,37 +273,37 @@
         }
             
         case SFIDeviceType_StandardCIE_10: {
-            [self configureBinaryStateSensor:D10_STANDARD_CIE_TRUE imageNameFalse:D10_STANDARD_CIE_FALSE statusTrue:@"ACTIVE" statusFalse:@"INACTIVE"];
+            [self configureBinaryStateSensor:D10_STANDARD_CIE_TRUE imageNameFalse:D10_STANDARD_CIE_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.ACTIVE", @"ACTIVE") statusFalse:NSLocalizedString(@"sensor.status-label.INACTIVE", @"INACTIVE")];
             break;
         }
             
         case SFIDeviceType_MotionSensor_11: {
-            [self configureBinaryStateSensor:DT11_MOTION_SENSOR_TRUE imageNameFalse:DT11_MOTION_SENSOR_FALSE statusTrue:@"MOTION DETECTED" statusFalse:@"NO MOTION"];
+            [self configureBinaryStateSensor:DT11_MOTION_SENSOR_TRUE imageNameFalse:DT11_MOTION_SENSOR_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.MOTION DETECTED", @"MOTION DETECTED") statusFalse:NSLocalizedString(@"sensor.status-label.NO MOTION", @"NO MOTION")];
             break;
         }
             
         case SFIDeviceType_ContactSwitch_12: {
-            [self configureBinaryStateSensor:DT12_CONTACT_SWITCH_TRUE imageNameFalse:DT12_CONTACT_SWITCH_FALSE statusTrue:@"OPEN" statusFalse:@"CLOSED"];
+            [self configureBinaryStateSensor:DT12_CONTACT_SWITCH_TRUE imageNameFalse:DT12_CONTACT_SWITCH_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.OPEN", @"OPEN") statusFalse:NSLocalizedString(@"sensor.status-label.CLOSED", @"CLOSED")];
             break;
         }
             
         case SFIDeviceType_FireSensor_13: {
-            [self configureBinaryStateSensor:DT13_FIRE_SENSOR_TRUE imageNameFalse:DT13_FIRE_SENSOR_FALSE statusTrue:@"ALARM: FIRE DETECTED" statusFalse:@"OK"];
+            [self configureBinaryStateSensor:DT13_FIRE_SENSOR_TRUE imageNameFalse:DT13_FIRE_SENSOR_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.ALARM: FIRE DETECTED", @"ALARM: FIRE DETECTED") statusFalse:NSLocalizedString(@"sensor.status-label.OK", @"OK")];
             break;
         }
             
         case SFIDeviceType_WaterSensor_14: {
-            [self configureBinaryStateSensor:DT14_WATER_SENSOR_TRUE imageNameFalse:DT14_WATER_SENSOR_FALSE statusTrue:@"FLOODED" statusFalse:@"OK"];
+            [self configureBinaryStateSensor:DT14_WATER_SENSOR_TRUE imageNameFalse:DT14_WATER_SENSOR_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.FLOODED", @"FLOODED") statusFalse:NSLocalizedString(@"sensor.status-label.OK", @"OK")];
             break;
         }
             
         case SFIDeviceType_GasSensor_15: {
-            [self configureBinaryStateSensor:DT15_GAS_SENSOR_TRUE imageNameFalse:DT15_GAS_SENSOR_FALSE statusTrue:@"ALARM: GAS DETECTED" statusFalse:@"OK"];
+            [self configureBinaryStateSensor:DT15_GAS_SENSOR_TRUE imageNameFalse:DT15_GAS_SENSOR_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.ALARM: GAS DETECTED", @"ALARM: GAS DETECTED") statusFalse:NSLocalizedString(@"sensor.status-label.OK", @"OK")];
             break;
         }
             
         case SFIDeviceType_VibrationOrMovementSensor_17: {
-            [self configureBinaryStateSensor:DT17_VIBRATION_SENSOR_TRUE imageNameFalse:DT17_VIBRATION_SENSOR_FALSE statusTrue:@"VIBRATION DETECTED" statusFalse:@"NO VIBRATION"];
+            [self configureBinaryStateSensor:DT17_VIBRATION_SENSOR_TRUE imageNameFalse:DT17_VIBRATION_SENSOR_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.VIBRATION DETECTED", @"VIBRATION DETECTED") statusFalse:NSLocalizedString(@"sensor.status-label.NO VIBRATION", @"NO VIBRATION")];
             break;
         }
             
@@ -315,27 +315,27 @@
         case SFIDeviceType_StandardWarningDevice_21: {
             // for this device, we don't actually know what the state is; when the alarm value is > 0, it simply means the alarm will ring for the specified number of seconds
             // but we don't know if it is ringing right now. Therefore, we always show this message.
-            NSString *msg = @"State data unknown.\nUse manual controls.";
+            NSString *msg = NSLocalizedString(@"sensor.msg-label.State data unknown.\nUse manual controls.", @"State data unknown.\nUse manual controls.");
             
             // also, the same icon is shown for all states
             NSString *no_alarm_icon = DT21_STANDARD_WARNING_DEVICE_FALSE;
             
-            [self configureBinaryStateSensorImageNameZeroValue:no_alarm_icon imageNameNonZeroValue:no_alarm_icon statusZeroValue:@"OFF" statusNonZeroValue:msg];
+            [self configureBinaryStateSensorImageNameZeroValue:no_alarm_icon imageNameNonZeroValue:no_alarm_icon statusZeroValue:NSLocalizedString(@"sensor.status-label.OFF", @"OFF") statusNonZeroValue:msg];
             break;
         }
             
         case SFIDeviceType_SmartACSwitch_22: {
-            [self configureBinaryStateSensor:DT22_AC_SWITCH_TRUE imageNameFalse:DT22_AC_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            [self configureBinaryStateSensor:DT22_AC_SWITCH_TRUE imageNameFalse:DT22_AC_SWITCH_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.ON", @"ON") statusFalse:NSLocalizedString(@"sensor.status-label.OFF", @"OFF")];
             break;
         }
             
         case SFIDeviceType_SmartDCSwitch_23: {
-            [self configureBinaryStateSensor:DT23_DC_SWITCH_TRUE imageNameFalse:DT23_DC_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            [self configureBinaryStateSensor:DT23_DC_SWITCH_TRUE imageNameFalse:DT23_DC_SWITCH_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.ON", @"ON") statusFalse:NSLocalizedString(@"sensor.status-label.OFF", @"OFF")];
             break;
         }
             
         case SFIDeviceType_OccupancySensor_24: {
-            [self configureBinaryStateSensor:DT11_MOTION_SENSOR_TRUE imageNameFalse:DT11_MOTION_SENSOR_FALSE statusTrue:@"PRESENCE DETECTED" statusFalse:@"NO PRESENCE"];
+            [self configureBinaryStateSensor:DT11_MOTION_SENSOR_TRUE imageNameFalse:DT11_MOTION_SENSOR_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.PRESENCE DETECTED", @"PRESENCE DETECTED") statusFalse:NSLocalizedString(@"sensor.status-label.NO PRESENCE", @"NO PRESENCE")];
             break;
         };
             
@@ -345,7 +345,7 @@
         }
             
         case SFIDeviceType_WindowCovering_26: {
-            [self configureBinaryStateSensor:DT26_WINDOW_COVERING_TRUE imageNameFalse:DT26_WINDOW_COVERING_FALSE statusTrue:@"OPEN" statusFalse:@"CLOSED"];
+            [self configureBinaryStateSensor:DT26_WINDOW_COVERING_TRUE imageNameFalse:DT26_WINDOW_COVERING_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.OPEN", @"OPEN") statusFalse:NSLocalizedString(@"sensor.status-label.CLOSED", @"CLOSED")];
             break;
         }
             
@@ -361,32 +361,32 @@
         }
             
         case SFIDeviceType_ColorDimmableLight_32: {
-            [self configureColorDimmableLight_32:DT48_HUE_LAMP_TRUE imageNameFalse:DT48_HUE_LAMP_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            [self configureColorDimmableLight_32:DT48_HUE_LAMP_TRUE imageNameFalse:DT48_HUE_LAMP_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.ON", @"ON") statusFalse:NSLocalizedString(@"sensor.status-label.OFF", @"OFF")];
             break;
         }
             
         case SFIDeviceType_Shade_34: {
-            [self configureBinaryStateSensor:DT34_SHADE_TRUE imageNameFalse:DT34_SHADE_FALSE statusTrue:@"OPEN" statusFalse:@"CLOSED"];
+            [self configureBinaryStateSensor:DT34_SHADE_TRUE imageNameFalse:DT34_SHADE_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.OPEN", @"OPEN") statusFalse:NSLocalizedString(@"sensor.status-label.CLOSED", @"CLOSED")];
             break;
         }
             
         case SFIDeviceType_SmokeDetector_36: {
-            [self configureBinaryStateSensorImageNameZeroValue:DT36_SMOKE_DETECTOR_FALSE imageNameNonZeroValue:DT36_SMOKE_DETECTOR_TRUE statusZeroValue:@"OK" statusNonZeroValue:@"SMOKE DETECTED!"];
+            [self configureBinaryStateSensorImageNameZeroValue:DT36_SMOKE_DETECTOR_FALSE imageNameNonZeroValue:DT36_SMOKE_DETECTOR_TRUE statusZeroValue:NSLocalizedString(@"sensor.status-label.OK", @"OK") statusNonZeroValue:NSLocalizedString(@"sensor.status-label.SMOKE DETECTED!", @"SMOKE DETECTED!")];
             break;
         }
             
         case SFIDeviceType_FloodSensor_37: {
-            [self configureBinaryStateSensorImageNameZeroValue:DT37_FLOOD_FALSE imageNameNonZeroValue:DT37_FLOOD_TRUE statusZeroValue:@"OK" statusNonZeroValue:@"FLOODED"];
+            [self configureBinaryStateSensorImageNameZeroValue:DT37_FLOOD_FALSE imageNameNonZeroValue:DT37_FLOOD_TRUE statusZeroValue:NSLocalizedString(@"sensor.status-label.OK", @"OK") statusNonZeroValue:NSLocalizedString(@"sensor.status-label.FLOODED", @"FLOODED")];
             break;
         }
             
         case SFIDeviceType_ShockSensor_38: {
-            [self configureBinaryStateSensor:DT38_SHOCK_TRUE imageNameFalse:DT38_SHOCK_FALSE statusTrue:@"VIBRATION DETECTED" statusFalse:@"NO VIBRATION"];
+            [self configureBinaryStateSensor:DT38_SHOCK_TRUE imageNameFalse:DT38_SHOCK_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.VIBRATION DETECTED", @"VIBRATION DETECTED") statusFalse:NSLocalizedString(@"sensor.status-label.NO VIBRATION", @"NO VIBRATION")];
             break;
         }
             
         case SFIDeviceType_DoorSensor_39: {
-            [self configureBinaryStateSensor:DT39_DOOR_SENSOR_OPEN imageNameFalse:DT39_DOOR_SENSOR_CLOSED statusTrue:@"OPEN" statusFalse:@"CLOSED"];
+            [self configureBinaryStateSensor:DT39_DOOR_SENSOR_OPEN imageNameFalse:DT39_DOOR_SENSOR_CLOSED statusTrue:NSLocalizedString(@"sensor.status-label.OPEN", @"OPEN") statusFalse:NSLocalizedString(@"sensor.status-label.CLOSED", @"CLOSED")];
             break;
         }
             
@@ -396,17 +396,17 @@
         }
             
         case SFIDeviceType_MovementSensor_41: {
-            [self configureBinaryStateSensor:DT41_MOTION_SENSOR_TRUE imageNameFalse:DT41_MOTION_SENSOR_FALSE statusTrue:@"MOTION DETECTED" statusFalse:@"NO MOTION"];
+            [self configureBinaryStateSensor:DT41_MOTION_SENSOR_TRUE imageNameFalse:DT41_MOTION_SENSOR_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.MOTION DETECTED", @"MOTION DETECTED") statusFalse:NSLocalizedString(@"sensor.status-label.NO MOTION", @"NO MOTION")];
             break;
         }
             
         case SFIDeviceType_Siren_42: {
-            [self configureBinaryStateSensor:DT42_ALARM_TRUE imageNameFalse:DT42_ALARM_FALSE statusTrue:@"RINGING" statusFalse:@"OFF"];
+            [self configureBinaryStateSensor:DT42_ALARM_TRUE imageNameFalse:DT42_ALARM_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.RINGING", @"RINGING") statusFalse:NSLocalizedString(@"sensor.status-label.OFF", @"OFF")];
             break;
         }
             
         case SFIDeviceType_UnknownOnOffModule_44: {
-            [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.ON", @"ON") statusFalse:NSLocalizedString(@"sensor.status-label.OFF", @"OFF")];
             break;
         }
             
@@ -421,12 +421,12 @@
         }
             
         case SFIDeviceType_HueLamp_48: {
-            [self configureHueLamp_48:DT48_HUE_LAMP_TRUE imageNameFalse:DT48_HUE_LAMP_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            [self configureHueLamp_48:DT48_HUE_LAMP_TRUE imageNameFalse:DT48_HUE_LAMP_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.ON", @"ON") statusFalse:NSLocalizedString(@"sensor.status-label.OFF", @"OFF")];
             break;
         }
             
         case SFIDeviceType_SecurifiSmartSwitch_50: {
-            [self configureBinaryStateSensor:DT50_SECURIFI_SMART_SWITCH_TRUE imageNameFalse:DT50_SECURIFI_SMART_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            [self configureBinaryStateSensor:DT50_SECURIFI_SMART_SWITCH_TRUE imageNameFalse:DT50_SECURIFI_SMART_SWITCH_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.ON", @"ON") statusFalse:NSLocalizedString(@"sensor.status-label.OFF", @"OFF")];
             break;
         }
             
@@ -456,7 +456,7 @@
         }
         case SFIDeviceType_MultiSwitch_43:
         {
-            [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:@"ON" statusFalse:@"OFF"];
+            [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.ON", @"ON") statusFalse:NSLocalizedString(@"sensor.status-label.OFF", @"OFF")];
             //            [self configureMultiSwitch_43];//md01
             break;
         }
@@ -623,7 +623,7 @@
     }
     else if (values.boolValue == true) {
         NSString *on_str = NSLocalizedString(@"sensor.status-label.ON", @"ON");
-        status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:@"ON"
+        status_str = [currentLevelKnownValue choiceForLevelValueZeroValue:on_str
                                                              nonZeroValue:[NSString stringWithFormat:@"%@, %.0f%%", on_str, intLevel]
                                                                  nilValue:on_str];
         
@@ -746,15 +746,15 @@
     switch (values.intValue) {
         case 0: // SFIDeviceType_ZigbeeDoorLock_28_LOCKED
             imageName = DT5_DOOR_LOCK_UNLOCKED;
-            status = @"UNLOCKED";
+            status = NSLocalizedString(@"sensor.status-label.UNLOCKED", @"UNLOCKED");
             break;
         case 1: // SFIDeviceType_ZigbeeDoorLock_28_LOCKED
             imageName = DT5_DOOR_LOCK_LOCKED;
-            status = @"LOCKED";
+            status = NSLocalizedString(@"sensor.status-label.LOCKED", @"LOCKED");
             break;
         case 2: // SFIDeviceType_ZigbeeDoorLock_28_UNLOCKED
             imageName = DT5_DOOR_LOCK_UNLOCKED;
-            status = @"UNLOCKED";
+            status = NSLocalizedString(@"sensor.status-label.UNLOCKED", @"UNLOCKED");
             break;
         default:
             imageName = [self imageNameForNoValue];
@@ -892,23 +892,23 @@
     switch (values.intValue) {
         case 0:
             imageName = DT53_GARAGE_SENSOR_CLOSED;
-            status = @"CLOSED";
+            status = NSLocalizedString(@"sensor.status-label.CLOSED", @"CLOSED");
             break;
         case 252:
             imageName = DT53_GARAGE_SENSOR_DOWN;
-            status = @"CLOSING";
+            status = NSLocalizedString(@"sensor.status-label.CLOSING", @"CLOSING");
             break;
         case 253:
             imageName = DT53_GARAGE_SENSOR_STOPPED;
-            status = @"STOPPED";
+            status = NSLocalizedString(@"sensor.status-label.STOPPED", @"STOPPED");
             break;
         case 254:
             imageName = DT53_GARAGE_SENSOR_UP;
-            status = @"OPENING";
+            status = NSLocalizedString(@"sensor.status-label.OPENING", @"OPENING");
             break;
         case 255:
             imageName = DT53_GARAGE_SENSOR_OPEN;
-            status = @"OPEN";
+            status = NSLocalizedString(@"sensor.status-label.OPEN", @"OPEN");
             break;
         default:
             imageName = [self imageNameForNoValue];
@@ -931,23 +931,23 @@
     switch (values.intValue) {
         case 0:
             imageName = DT53_GARAGE_SENSOR_CLOSED;
-            status = @"CLOSED";
+            status = NSLocalizedString(@"sensor.status-label.CLOSED", @"CLOSED");
             break;
         case 252:
             imageName = DT53_GARAGE_SENSOR_DOWN;
-            status = @"CLOSING";
+            status = NSLocalizedString(@"sensor.status-label.CLOSING", @"CLOSING");
             break;
         case 253:
             imageName = DT53_GARAGE_SENSOR_STOPPED;
-            status = @"STOPPED";
+            status = NSLocalizedString(@"sensor.status-label.STOPPED", @"STOPPED");
             break;
         case 254:
             imageName = DT53_GARAGE_SENSOR_UP;
-            status = @"OPENING";
+            status = NSLocalizedString(@"sensor.status-label.OPENING", @"OPENING");
             break;
         case 255:
             imageName = DT53_GARAGE_SENSOR_OPEN;
-            status = @"OPEN";
+            status = NSLocalizedString(@"sensor.status-label.OPEN", @"OPEN");
             break;
         default:
             imageName = [self imageNameForNoValue];

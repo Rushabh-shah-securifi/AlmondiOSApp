@@ -21,7 +21,7 @@
 #define TEMP_LOWEST_SETTABLE 35
 #define TEMP_HIGHEST_SETTABLE 95
 
-#define CELL_STATE_PIN_SELECTION @"PinCodeField"
+#define CELL_STATE_PIN_SELECTION NSLocalizedString(@"sensor.field-macro.PinCodeField", @"PinCodeField")
 
 // ===================================================================================
 
