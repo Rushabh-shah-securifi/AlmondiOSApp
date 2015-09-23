@@ -21,8 +21,11 @@
 #define NSLog(args...) DDLogInfo(args)
 #define DLog(args...) DDLogDebug(args)
 
-#if( DEBUG )
-#define DDLogLevel DDLogLevelDebug
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]//MD01
+
+
+#ifdef DEBUG
+static const DDLogLevel ddLogLevel = DDLogLevelVerbose;
 #else
-#define DDLogLevel DDLogLevelError
+static const DDLogLevel ddLogLevel = DDLogLevelWarning;
 #endif
