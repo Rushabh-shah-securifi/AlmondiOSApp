@@ -1,0 +1,742 @@
+/*
+ Common-Localizable.strings
+ Almond+
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+
+/*------- Localization strings common across all apps -------*/
+
+/* hud. buttons, controls */
+"hud.One moment please..." = "Lütfen bir dakika...";
+"hud.Updating settings..." = "Ayarlar güncelleniyor...";
+"alert.button.OK" = "TAMAM";
+"Oops!" = "Oops!";
+"Sorry!" = "Üzgünüm!";
+"toast.Saving..." = "Kaydediliyor...";
+
+/* affiliation */
+"Please try later." = "Lütfen daha sonra deneyin.";
+"Please enter a valid code." = "Lütfen geçerli bir kod girin.";
+"alert.msg.Logout was unsuccessful" = "Üzgünüz. Oturum kapatılamadı. Lütfen tekrar deneyin.";
+"alert.title.Logout Unsuccessful" = "Oturum Kapatma Başarısız";
+//m
+"cloudlink.title.Cloud Link" = "Bulut Bağlantısı";
+"cloudlink.label.Linking to Cloud" = "Buluta Bağlanıyor";
+"cloudlink.label.Name" = "Adı";
+"cloudlink.label.MAC Address" = "MAC Adresi";
+"cloudlink.label.WIFI SSID" = "WIFI SSID";
+"Enter code" = "Kodu girin";
+
+
+/* activation */
+"Reactivation link has been sent to your account." = "Yeniden aktivasyon linki hesabınıza gönderildi.";
+"sensor.activation.The username was not found" = "Kullanıcı adı bulunamadı";
+"The account is already validated" = "Hesap zaten doğrulandı";
+"Sorry! Cannot send reactivation link" = "Üzgünüz! Yeniden aktivasyon linki şu anda
+tekrar gönderilemiyor. Daha sonra tekrar deneyin.";
+"The email ID is invalid." = "Eposta adı geçersiz.";
+
+/* change password */
+"password-validation.strength-label.Password: Mismatch" = "Parola: Eşleşmedi";
+"password-validation.strength-label.Password: Too Short" = "Parola: Çok Kısa";
+"password-validation.strength-label.Password: Too Long" = "Parola: Çok Uzun";
+"password-validation.strength-label.Password: Weak" = "Parola: Zayıf";
+"password-validation.strength-label.Password: Medium" = "Parola: Orta";
+"password-validation.strength-label.Password: Strong" = "Parola: Güçlü";
+"The password should be %d - %d characters long." = "Parola %d - %d Karakter uzunluğunda olmalıdır.";
+"An account already exists with this email." = "Bu eposta ile zaten bir hesap alınmış.";
+"The email or password was incorrect." = "Eposta veya parola yanlış.";
+"Sorry! Signup was unsuccessful." = "Üzgünüz! Kayıt başarılı değildi.";
+"The username was not found" = "Kullanıcı adı bulunamadı";
+"There is a password mismatch." = "Parola eşleşmiyor.";
+"You forgot to enter your password." = "Parolanızı girmeyi unuttunuz.";
+"You have entered an invalid email ID." = "Geçersiz eposta adı girdiniz.";
+"You forgot to enter your email ID." = "Eposta adınızı girmeyi unuttunuz.";
+"password.hud.Changing password..." = "Parola değiştiriliyor...";
+"password.label-text.There was some error on cloud. Lütfen daha sonra deneyin." = "Bulutta hata oluştu. Lütfen daha sonra deneyin.";
+"Sorry! You are not registered with us yet." = "Üzgünüz! Henüz bize kayıt olmadınız.";
+"You need to fill all the fields." = "Tüm alanları doldurmanız gerekiyor.";
+"The current password was incorrect." = "Mevcut parola yanlış.";
+"Sorry! Password change was unsuccessful." = "Üzgünüz! Parola değiştirilemedi.";
+
+/* login */
+"Please enter Username and Password" = "PLütfen Kullanıcı Adını ve Parolasını girin";
+"Sorry! Could not complete the request." = "Üzgünüz! Talebiniz tamamlanamadı.";
+"Unable to establish Internet route to cloud service." = "İnternet bulut hizmetine
+yönlendirilemedi.";
+"Sorry! Login was unsuccessful." = "Üzgünüz! Oturum açılamadı.";
+"The email was not found." = "Eposta bulunamadı.";
+"The password is incorrect." = "Parola yanlış.";
+"Almost there." = "Neredeyse vardık.";
+"You need to activate your account." = "Hesabınızı etkinleştirmeniz lazım.";
+"The email or password is incorrect" = "Eposta veya parola yanlış";
+"Password reset link has been sent to your account." = "Parola sıfırlama linki hesabınıza gönderildi.";
+"Sorry! Your password cannot be reset at the moment. Try again later." = "Üzgünüz! Parolanız şu anda
+sıfırlanamıyor. Daha sonra tekrar deneyin.";
+"Login" = "Oturum Aç";
+
+/* logout all */
+
+"logoutall.navbar-title.Continue" = "Devam Et";
+"logoutall.label.Logout from all devices was not successful." = "Tüm cihazlardaki oturum kapatılamadı.";
+"logoutall.alertview.title.Error" = "Geçersiz Parola";
+"logoutall.alertview.msg.The password is invalid." = "Parola Geçersiz.";
+
+/* router tab */
+"router.offline-msg.label.Please check the router." = "Lütfen modemi kontrol edin.";
+"router.card-title.Cloud Almond Link" = "Bulut Almond Linki";
+"router.card-title.Local Almond Link" = "Yerel Almond Linki";
+"router.card-title.Wireless Settings" = "Kablosuz Ayarları";
+"router.wireless-status.Enabled" = "etkinleştirildi";
+"router.wireless-status.Disabled" = "devredışı kaldı";
+"router.card.Settings are not available." = "Ayarlara ulaşılamıyore.";
+"router.card-title.Devices & Users" = "Cihazlar & Kullanıcılar";
+"router.devices-summary.%d connected, %d blocked" = "%d bağlandı, %d engellendi";
+"router.software-version.header.Software Update Available" = "Yazılım Güncellemesi Var";
+"router.software-version.header.instructions" = "Lütfen Almond'unuzda \"Ayarlar\" obölümüne dokunun";
+"router.software-version.Update Available" = "Güncelleme Var";
+"router.software-version.Current version" = "Güncel sürüm";
+"router.software-version.Not available" = "Sürüm bilgisi mevcut değil.";
+"router.card-title.Router Reboot" = "Modemi Yeniden Başlat";
+"router.reboot-msg.Router is rebooting. It will take at least" = "Modem yeniden başlatılıyor. Modemin yeniden başlatılması";
+"router.reboot-msg.2 minutes for the router to boot." = "en az 2 dakika sürecektir.";
+"router.reboot-msg.Please refresh after sometime." = "Lütfen bir süre sonra yenileyin.";
+"router.Router status is not available." = "Modem durumuna ulaşılamıyor.";
+"router.Last reboot %@ ago" = "Son yeniden başlatma %@ önce";
+"router.no-almonds.nav-title.Get Started" = "Başlayın";
+"router.hud.Router is now online." = "Modem şu anda çevrimiçi.";
+"router.hud.Updating router firmware." = "Modem yazılımı güncelleniyor.";
+"router.hud.Router is rebooting." = "Modem yeniden başlatılıyor.";
+"router.card-title.Send Logs" = "Günlükleri Gönder";
+"router.Sends %@'s logs to our server" = "%@ günlüklerini sunucumuza gönderir";
+"router.hud.Sending Logs." = "Modeme günlükleri gönderme talimatı veriliyor";
+//m
+"router.devicestatus.Connected as %@" = "%@ olarak bağlandı";
+"router.devicesmac.MAC address is %@" = "MAC adresi %@";
+"router.deviceIP.IP address is %@" = "IP adresi %@";
+"router.reboot.title.Reboot the router?" = "Modem yeniden başlatılsın mı?";
+"It will take at least 2 minutes for the router" = "Modemin yeniden başlatılması en az iki dakika";
+"to reboot. Please refresh after sometime." = "sürecek. Lütfen bir süre sonra yenileyin.";
+"router.settings.label.SSID" = "SSID";
+"router.settings.label.Channel" = "Kanal";
+"router.settings.label.Wireless Mode" = "Kablosuz Mod";
+"router.settings.label.Security" = "Güvenlik";
+"router.settings.label.Encryption" = "Şifreleme";
+"router.settings.label.Country Region" = "Ülke Bölge";
+"router.nav-title.Get Started" = "Başlayın";
+"router.refresh-title.Refresh router data" = "Modem verilerini yenile";
+"router.summary.IP Address" = "IP Adresi: %@";
+"router.summary.Admin Login : %@" = "Yönetici Girişi : %@";
+"router.software-version.title.Software Version" = "Yazılım Sürümü";
+"router.software-version-new.title.Software Version *" = "Software Version *";
+"router.software-version-new.title.Software Version" = "Yazılım Sürümü";
+"router.offline-msg. is offline" = " çevrimdışı";
+"router.log-textfield-placeholder.Describe your problem here" = "Sorununuzu burada açıklayın";
+"router.log-send-success.summary.Thanks for sending logs" = "Günlükleri gönderdiğiniz için teşekkür ederiz";
+"router.log-firmware-not-supported.Please update your router's firmware" = "Bu işlevi etkinleştirmek için Lütfen ";
+"router.log-firmware-not-supported.in order to activate this functionality" = "modemin cihaz yazılımını güncelleyin";
+"router.version-title.Update now?" = "Şimdi güncellensin mi?";
+"router.update-summary.It will take a few minutes to update the software." = "Yazılımı güncellemek bir kaç dakika sürecek.";
+"router.network-title.Local Link" = "Yerel Link";
+"router.link-button.Link" = "Link";
+"router.btn-title.Back to Cloud Link" = "Bulut Linkine Geri Dön";
+"router.label.SSID 2.5GHz" = "SSID 2.5GHz";
+"router.label.SSID 5GHz" = "SSID 5GHz";
+"router.label.IP Address" = "IP Adresi";
+"router.label.Admin Login" = "Yönetici Girişi";
+"router.label.Admin Password" = "Yönetici Parolası";
+"router.hud.Establishing Local Link..." = "Yerel Link Kuruluyor...";
+
+
+/* sensors */
+
+"Device has been tampered" = "Cihaz kurcalanmış";
+"sensors.button.Dismiss" = "Yoksay";
+"sensors.label.Status" = "Durum";
+"sensor.status-label.OFF" = "KAPALI";
+"sensor.status-label.ON" = "AÇIK";
+"sensor.status-label.OK" = "TAMAM";
+"sensors.label.SENSOR SETTINGS" = "SENSÖR AYARLARI";
+"sensors.settings-label.Send Notifications" = "Bildirim Gönder";
+"sensors.no-sensors.label.You don't have any sensors yet." = "Henüz hiç sensörünüz yok.";
+"scenes.no-scenes.label.A scene is a group of sensors and a desired state for these sensors." = "Bir sahne bir grup sensör ve bu sensörlerin istenen durumudur.";
+"sensors.account-confirm.label.Please confirm your account (less than a day left)." = "Lütfen hesabınızı doğrulayın. (bir günden az kaldı).";
+"sensors.account-confirm.label.Please confirm your account (%d days left)." = "Lütfen hesabınızı doğrulayın (%d gn kaldı).";
+"sensors.account-confirm.label.Check activation email for instructions." = "Talimatlar için aktivasyon epostasını kontrol edin.";
+"sensors.account-confirm.label.Resend activation email" = "Aktivasyon epostasını tekrar gönderin";
+"activation.toast.Reactivation link sent to your registerd email ID." = "Tekrar aktivason linki kayıt eposta adınıza gönderildi.";
+"sensor.thermostat.field-label.Set Point" = "Ayar Noktası";
+"sensor.thermostat.field-label.Heating" = "Isıtma";
+"sensor.thermostat.field-label.Cooling" = "Soğutma";
+"sensor.thermostat.field-label.Mode" = "Mod";
+"sensor.thermostat.segment-control.Auto" = "Otomatik";
+"sensor.thermostat.segment-control.Heat" = "Isıt";
+"sensor.thermostat.segment-control.Cool" = "Soğut";
+"sensor.thermostat.segment-control.Off" = "Kapalı";
+"sensor.thermostat.field-label.Fan" = "Fan";
+"sensor.thermostat.segment-control.Auto Low" = "Otomatik Düşük";
+"sensor.thermostat.segment-control.On Low" = "Düşükte";
+"sensor.thermostat.Thermostat is %@" = "Termostat %@";
+"sensor.thermostat.Fan is %@" = "Fan %@";
+"sensor.thermostat.Battery is at %@%%" = "Pil düzeyi %@%%";
+"sensor.Power is %.3fW" = "Güç %.3fW";
+"sensor.Current is %.3fA" = "Akım %.3fA";
+"sensor.Voltage is %.3fV" = "Voltaj %.3fV";
+"sensor.lock.pin-picker.Pin %ld" = "Pin %ld";
+"sensor.toast.doorlock.PassCode must be 5 to 8 digits long" = "Şifre 5 il 8 rakam arasında olmalıdır";
+"sensor.device-name-label.Name" = "Adı";
+"sensor.deivice-duration-label.Ring Duration" = "Çalma Süresi";
+"sensor.deivice-duration-placeholder.number of seconds" = "saniye süresi";
+"sensor.deivice-location-label.Located at" = "Konum";
+"sensor.deivice-save-settings.button.Save" = "Kaydet";
+"sensor.device-status.label.Battery OK" = "PİL TAMAM";
+"sensor.device-status.label.Battery %" = "PİL %@%%";
+"sensor.device-status.label.Low Battery" = "Düşük Pil";
+"sensor.device-status.label.LOW BATTERY" = "DÜŞÜK PİL";
+"sensor.device-status.label.Battery Unknown" = "Pil Bilinmiyor";
+"sensor.doorlock.field-label.Pins" = "Pinler";
+"sensor.doorlock.pinentry-textfield.placeholder.Code is not specified." = "Kod belirtilmemiş.";
+"sensor.doorlock.button.Save Pin" = "Pini Kaydet";
+"sensor.doorlock.field-label.Code" = "Kod";
+"sensor.multilevel-switch.status-label.Dimmable, %@%%" = "Kısılabilir, %@%%";
+"sensor.level-control.status-label.Dimmable" = "Kısılabilir";
+"sensor.keyfob.status-label.ALL DISARMED" = "TÜMÜ KAPALI";
+"sensor.keyfob.status-label.PERIMETER ARMED" = "PERİMETRE AÇIK";
+"sensor.keyfob.status-label.ALL ARMED" = "TÜMÜ AÇIK";
+"sensor.lightsensor.status-label.Illuminance %@" = "Illuminance %@";
+"sensor.tempsensor.status-label.Humidity %@" = "Aydınlatma%@";
+"sensor.moisturesensor.status.FLOODED" = "SU BASKINI";
+"sensor.poweswitch.label.Power %@W" = "Güç %@W";
+"sensor.moisturesensor.status.Temp %@" = "Sıc %@";
+"sensor.notificaiton.label.notificationMode" = "Beni Bilgilendir";
+"sensor.notificaiton.segment.Always" = "Her zaman";
+"sensor.notificaiton.segment.Away" = "Uzakta";
+"sensor.notificaiton.segment.Off" = "Kapalı";
+"sensors.label.Color" = "Renk";
+"sensor.hud.UpdatingSensordata" = "Sensör Verileri Güncelleniyor...";
+
+//r
+"sensor.deivice-showlog.button.viewlogs" = "Günlükleri Görüntüle";
+"sensor.deivice-warning_rightview.seconds" = "saniye";
+"sensor.deivice.Highlightbutton Turn Off" = "Kapat";
+"sensor.deivice.Highlightbutton Turn ON" = "Aç";
+"Temperature is %@%@" = "Sıcaklık %@%@";
+"Humidity is %@%%" = "Nem %@%%";
+"sensors.label.DimmableLight-Brightness" = "Parlaklık";
+"sensors.label.DimmableLight-Saturation" = "Doygunluk";
+"sensors.label.DimmableLight-Color Temperature" = "Renk Sıcaklığı";
+"sensors.label.HueLamp-Brightness" = "Parlaklık";
+"sensors.label.HueLamp-Saturation" = "Doygunluk";
+"sensors.label.HueLamp-Color" = "Renk";
+
+//rn
+"smoke-detector-Warning" = "Uyarı";
+"smoke-detector-Emergency" = "Acil Durum";
+"smoke-detector Smoke :%@ , CO :%@"="Duman :%@ , CO :%@";
+
+
+"sensor-detail-Fan cell On" = "Açık";
+"sensor-detail-Fan cell Off" = "Kapalı";
+"sensor-detail-Target Temp" = "Hedef Sıcaklık";
+
+
+"sensor.notificaiton.fanindexpath.On" = "Açık";
+"sensor.notificaiton.fanindexpath.Off" = "Kapalı";
+"sensor.awaymode.indexpath Home" = "Ev";
+"sensor.mode indexpath Off" = "Kapalı";
+"sensor.mode indexpath Cool" = "Soğut";
+"sensor.mode indexpath Heat" = "Isıt";
+"sensor.mode indexpath Heat-Cool" = "Isıt-Soğut";
+
+"device-property-fanindexpah false" = "yanlış";
+"device-property-fanindexpah true" = "doğru";
+"device property on mobile hud Unable to update sensor"="Sensör güncellenemedi";
+
+
+
+
+
+/* signup */
+
+"signup.navbar-title.Sign up" = "Kayıt ol";
+"signup.barbutton.Decline" = "Reddet";
+"signuo.barbutton.Accept" = "Kabul et";
+"signup.barbutton.Continue" = "Devam et";
+"signup.headline-text.Signing up." = "Oturum Açılıyor.";
+"signup.subheadline-text.Please wait one moment..." = "Lütfen bir dakika bekleyin...";
+"signup.headline-text.Almost done." = "Neredeyse bitti.";
+"signup.headline-text.An activation link was sent to your email" = "Epostanıza aktivasyon linki gönderildi.
+Linke tıklayın ve giriş yapmak için Devam Et.";
+"signup.footerbutton.Resend the activation email" = "Aktivasyon epostasını tekrar gönder";
+"signup.footerbutton.Signup using another email" = "Başka bir eposta kullanarak oturum aç";
+"signup.footerlabel.Do you want to create another account?" = "Başka bir hesap oluşturmak ister misiniz?";
+
+
+/* Accounts */
+"accounts.navbar-title.settings" = "Ayarlar";
+"accounts.userprofile.title.account" = "Hesap";
+"accounts.userprofile.label.primaryEmail" = "BİRİNCİL EPOSTA";
+"accounts.userprofile.label.password" = "PAROLA";
+"accounts.userprofile.label.firstName" = "ADI";
+"accounts.userprofile.label.lastName" = "SOYADI";
+"accounts.userprofile.label.address" = "ADRESİ";
+"accounts.userprofile.label.country" = "ÜLKESİ";
+"accounts.userprofile.label.zipCode" = "ZIP KODU";
+
+"accounts.userprofile.title.placeholder.name" = "Henüz adınızı bilmiyoruz";
+"accounts.userprofile.textfield.placeholder.firstName" = "İlk adınızı henüz bilmiyoruz";
+"accounts.userprofile.textfield.placeholder.lastName" = "Soyadınızı henüz bilmiyoruz";
+"accounts.userprofile.textfield.placeholder.address1" = "Adres Satırı 1";
+"accounts.userprofile.textfield.placeholder.address2" = "Adres Satırı 2";
+"accounts.userprofile.textfield.placeholder.address3" = "Adres Satırı 3";
+"accounts.userprofile.textfield.placeholder.country" = "Hangi ülkede yaşıyorsunuz?";
+"accounts.userprofile.textfield.placeholder.zipCode" = "ZIP Kodunuz nedir?";
+
+"accounts.userprofile.button.changePassword" = "Parolayı Değiştir";
+"accounts.userprofile.button.edit" = "Düzenle";
+"accounts.userprofile.button.add" = "Ekle";
+"accounts.userprofile.button.done" = "Bitti";
+"accounts.userprofile.button.deleteAccount" = "HESABI SİL";
+"accounts.ownedAlmond.label.SharedWithOthers" = "%d farklı kişiyle paylaşıldı";
+"accounts.ownedAlmond.label.deviceName" = "CİHAZ ADI";
+"accounts.ownedAlmond.label.accessEmail" = "EPOSTA ERİŞİMİ";
+"accounts.ownedAlmond.button.Unlink" = "Bağlantıyı kes";
+
+"accounts.ownedAlmond.button.Remove" = "Kaldır";
+"accounts.ownedAlmond.button.InviteMore" = "DİĞERLERİNİ DAVET ET";
+"accounts.sharedAlmond.label.SharedWithYouBy" = "Sizinle Paylaşan";
+"accounts.sharedAlmond.label.deviceName" = "CİHAZ ADI";
+"accounts.sharedAlmond.button.Remove" = "Kaldır";
+
+"accounts.alert.onDeleteAccount.title" = "Hesabı Sil";
+"accounts.alert.onDeleteAccount.delete" = "Sil";
+"accounts.alert.onDeleteAccount.Cancel" = "İptal Et";
+"accounts.alert.onUnlinkAlmond.Unlink" = "Bağlantıyı Kaldır";
+"accounts.alert.onUnlinkAlmond.Cancel" = "İptal Et";
+
+"accounts.alert.onInviteToShareAlmond.title" = "Epostayla Davet Et";
+"accounts.alert.onInviteToShareAlmond.message" = "Birini davet ederek %@ elde edebilirler";
+"accounts.alert.onInviteToShareAlmond.Invite" = "Davet et";
+"accounts.alert.onInviteToShareAlmond.Cancel" = "İptal et";
+
+"accounts.hud.loadingDetails" = "Hesap bilgileri yükleniyor...";
+"accounts.hud.deletingAccount" = "Hesap siliniyor...";
+"accounts.hud.updatingDetails" = "Hesap bilgileri güncelleniyor...";
+"accounts.hud.removeUserFromSharedList" = "Kullanıcıyı paylaşımlı listeden kaldır...";
+
+"accounts.deleteAccount.failure.reasonCode1" = "Bulutta hata oluştu. Lütfen daha sonra deneyin.";
+"accounts.deleteAccount.failure.reasonCode2" = "Üzgünüz! Henüz bize kayıt olmadınız.";
+"accounts.deleteAccount.failure.reasonCode3" = "Hesabınızı etkinleştirmeniz lazım.";
+"accounts.deleteAccount.failure.reasonCode4" = "Tüm alanları doldurmanız gerekiyor.";
+"accounts.deleteAccount.failure.reasonCode5" = "Mevcut parola yanlış.";
+"accounts.deleteAccount.failure.reasonCode6" = "Bulutta hata oluştu. Lütfen daha sonra deneyin.";
+"accounts.deleteAccount.failure.default" = "Üzgünüz! Hesap silinemedi.";
+
+"accounts.updateAccount.failure.reasonCode1" = "Bulutta hata oluştu. Lütfen daha sonra deneyin.";
+"accounts.updateAccount.failure.reasonCode2" = "Tüm alanları doldurmanız gerekiyor.";
+"accounts.updateAccount.failure.reasonCode3" = "Üzgünüz! Henüz bize kayıt olmadınız.";
+"accounts.updateAccount.failure.default" = "Üzgünüz! Güncelleme başarılı değildi.";
+
+"accounts.unlinkAlmond.failure.reasonCode1" = "Bulutta hata oluştu. Lütfen daha sonra deneyin.";
+"accounts.unlinkAlmond.failure.reasonCode2" = "Üzgünüz! Henüz bize kayıt olmadınız.";
+"accounts.unlinkAlmond.failure.reasonCode3" = "Hesabınızı etkinleştirmeniz lazım.";
+"accounts.unlinkAlmond.failure.reasonCode4" = "Tüm alanları doldurmanız gerekiyor.";
+"accounts.unlinkAlmond.failure.reasonCode5" = "Mevcut parola yanlış.";
+"accounts.unlinkAlmond.failure.reasonCode6" = "Bulutta hata oluştu. Lütfen daha sonra deneyin.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode1" = "Bulutta hata oluştu. Lütfen daha sonra deneyin.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode5" = "Tüm alanları doldurmanız gerekiyor.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode7" = "Kendinizi ikinci kullanıcı olarak ekleyemezsiniz.";
+"accounts.deleteSecondaryUser.failure.reasonCode1" = "Bulutta hata oluştu. Lütfen daha sonra deneyin.";
+"accounts.deleteSecondaryUser.failure.reasonCode2" = "Tüm alanları doldurmanız gerekiyor.";
+"accounts.deleteSecondaryUser.failure.reasonCode5" = "İkinci kullanıcı bulunamadı.";
+"accounts.deleteSecondaryUser.failure.default" = "Üzgünüz! Bir sorun oluştu. Daha sonra deneyin.";
+
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode1" = "Bulutta hata oluştu. Lütfen daha sonra deneyin.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode2" = "Tüm alanları doldurmanız gerekiyor.";
+
+
+/* Notifications */
+
+//m
+"notifications.title.Recent Activities" = "Son Etkinlikler";
+"notifications.headerfooter.mode.The End" ="Bitti";
+"notifications.date.Today" = "Bugün";
+"notifications.bucketdate.Yesterday" = "Dün";
+
+/* Scenes */
+
+"scenes.hud.loadingScenes" = "Sahneler yükleniyor...";
+"scenes.hud.deletingScene" = "Sahne Siliniyor...";
+"scenes.hud.activatingScene" = "Sahne Etkinleştiriliyor...";
+"scenes.hud.creatingScene"   = "Sahne Oluşturuluyor...";
+//m
+"scene.macro.Could not update sensor\ndata." = "Sensör verileri güncellenemedi.";
+"scene.thermostat-title.COOLING TEMP." = "SOĞUTMA SIC.";
+"scene.thermostat-title.HEATING TEMP." = "ISITMA SIC.";
+"scene.button.Save" = "Kaydet";
+"scene.button.Cancel" = "İptal et";
+"scene.title.Get Started" = "Başlayın";
+"scene.msg.You have to select at least 1 value" = "En az 1 değer seçmelisiniz";
+"scene.cancel-title.OK" = "TAMAM";
+"scene.hud.Loading router data" = "Modem bilgileri yükleniyor";
+"scene.hud.Loading sensor data" = "Sensör bilgileri yükleniyor";
+"scene.text.Choose one or more Actions" = "Bir vya daha fazla Eylem seçin";
+"scene.alert-title.Oops" = "Oops";
+"scene.alert-msg.Sorry, There was some problem with this request, try later!" = "Üzgünüz, bu taleple ilgili bir sorun oluştu, daha sonra tekrar deneyin!";
+"scene.alert-button.OK" = "TAMAM";
+
+
+
+/* Scoreboard */
+//r
+"Scoreboard" = "Puan Tablosu";
+"Refresh.Scoreboard" = "Puan Tablosunu Yenile";
+"scoreboard.section.Cloud" = "Bulut";
+"scoreboard.section.PushNotifications" = "Anlık Bildirimler";
+"scoreboard.section.Events" = "Etkinler";
+"scoreboard.section.Network" = "Ağ";
+"scoreboard.section.Commands & Updates" = "Komutlar ve Güncellemeler";
+"scoreboard.section.Logs & Data" = "Günlükler & Veri";
+"footerInsection.Last refreshed %.0f secs ago @ %@" = "Son yenilenme %.0f saniye önce @ %@";
+"notifications.Client Token" = "İstemci Sembolü";
+"notifications.Not registered" = "Kayıtlı değil";
+"Failed to send mail" = "Posta gönderilemedi";
+"Since %@" = "Başlangıç %@";
+"notifications_logctrl.View Handler Log" = "İşleyici Günlüğünü Görüntüle";
+"notifications_viewactual.View Notifications" = "Bildirimleri Görüntüle";
+"notifications_viewtests.Unit Test UI" = "Birim Testi UI";
+"events.All Events" = "Tüm Etkinlikler";
+"Network.Established Connections" = "Kurulu Bağlantılar";
+"Network.Failed Connections" = "Başarısız Bağlantılar";
+"Network.Reachability Changes" = "Erişilebilirlik Değişiklikleri";
+"SEC_ReQUEST.Dynamic Updates" = "Dinamik Güncellemeler";
+"SEC_ReQUEST.Command Requests" = "Komut Talepleri";
+"SEC_ReQUEST.Command Responses" = "Komut Yanıtları";
+"Email Logs & Data" = "Eposta Günlükleri & Verileri";
+"cloudSection.row0.Production" = "Üretim";
+"cloudSection.row1.Development" = "Geliştirme";
+"Copied token" = "Kopyalanan Sembol";
+"Reset counter" = "Sayacı Sıfırla";
+"Sending Mail is not supported on this device" = "Eposta gönderimi bu cihazda desteklenmiyor";
+"Scoreboard.Preparing..." = "Hazırlanıyor...";
+"Local Network Enabled" = "Yerel Ağ Etkinleştirildi";
+"scoreboard.localnetwork.IP Address" = "IP Adresi";
+"scoreboard.localnetwork.Port" = "Port";
+"scoreboard.localnetwork.Password" = "Parola";
+
+/* Sensor Support */
+//r
+"sensor support- a value has changed" = " Bir değer değiştirildi";
+
+/* Draw View Controller */
+//r
+"Draw viecontroller.label LOCATION" = "KONUM";
+"Draw viecontroller.label SETTINGS" = "AYARLAR";
+"Draw viecontroller.label INFO" = "BİLGİ";
+
+/* Main View Controller */
+//r
+"Sorry! Unable to establish Internet route to cloud service." = "Üzgünüz! Bulut sunucusuna İnternet Yolu oluşturulamadı.";
+"mainviewcontroller_Connecting. Please wait!" = "Bağlanıyor. Lütfen bekleyin!";
+"mainviewcontroller_Sorry! Could not connect to the cloud service." = "Üzgünüz! Bulut hizmetine bağlanamadı.";
+"main view controller Sorry! Push Notification was not registered." = "Üzgünüz! Anlık bildirim kayıtlı değil.";
+"main view controller Sorry! Push Notification was not deregistered." = "Üzgünüz! Anlık Bildirim kaydı silinmedi.";
+
+/* Table View Controller */
+//r
+"In process of connecting. Change connection method." = "Bağlanma işlemi devam ediyor. Bağlantı yöntemini değiştirin.";
+"Cloud Connection" = "Bulut Bağlantısı";
+"connection status Local Connection" = "Bağlantı";
+"alert.title-Switch to Local Connection" = "Yerel Bağlantıya Geç";
+"alert.title-Edit Local Connection Settings" = "Yerel Bağlantı Ayarlarını Düzenle";
+"Alert view title-Retry Cloud Connection" = "Bulut Bağlntısını Yeniden Deneyin";
+"Alert view title-Switch to Local Connection" = "Yerel Bağlantıya Geç";
+"Edit Local Connection Settings" = "Edit Local Connection Settings";
+"Alert view title-Edit Local Connection Settings" = "Yerel Bağlantı Ayarlarını Düzenle";
+"alert view error_Cloud Connection" = "Bulut Bağlantısı";
+"alert view error_Local Connection" = "Yerel Bağlantı";
+"alertview localconnection_Switch to Cloud Connection" = "Bulut Bağlantısına Geçin";
+"alertview Local connection settings are missing." = "Yerel bağlantı ayarları eksik.";
+"alertview title Add Local Connection Settings" = "Yerel Bağlantı Ayarlarını Ekleyin";
+"alert msg offline Local Retry Local Connection" = "Yerel Bağlantıyı Tekrar Deneyin";
+"alert title offline Local Switch to Cloud Connection" = "Bulut Bağlantısına Geç";
+"alert title offline Local Edit Local Connection Settings" = "Yerel Bağlantı Ayarlarını Düzenle";
+"mainviewcontroller hud Loading router data" = "Modem verileri yükleniyor";
+"mainviewcontroller hud Loading sensor data" = "Sensör verileri yükleniyor";
+"mainviewcontroller hud hud.Updating settings..." = "Ayarlar güncelleniyor...";
+"Cancel"="İptal et";
+
+/* Wifi */
+"wifi.hud.UpdatingWifiClient" = "Wifi İstemcisi Güncelleniyor...";
+"wifi.hud.removeClient" = "Wifi istemcisi siliniyor...";
+"wifi.button.deleteClient" = "Kaldır";
+
+//r
+"CONNECTED" = "BAĞLANDI";
+"NOT CONNECTED" = "BAĞLANMADI";
+
+"SFIWiFiClientsListViewController-propertyNames-Name" = "Adı";
+"SFIWiFiClientsListViewController-propertyNames-Type" = "Tip";
+"SFIWiFiClientsListViewController-propertyNames-MAC Address" = "MAC Adresi";
+"SFIWiFiClientsListViewController-propertyNames-Last Known IP" = "Son Bilinen IP";
+"SFIWiFiClientsListViewController-propertyNames-Connection" = "Bağlantı";
+"SFIWiFiClientsListViewController-propertyNames-Use as Presence Sensor" = "Bulunma Sensörü Olarak Kullan";
+"SFIWiFiClientsListViewController-propertyNames-Notify me" = "Bana Bildir";
+"SFIWiFiClientsListViewController-propertyNames-Remove" = "Kaldır";
+"Presence sensor Yes"="Evet";
+"Presence sensor NO" = "HAYIR";
+"response.alert-Oops" = "Oops";
+"response.alert-Sorry, There was some problem with this request, try later!" = "Sorry, There was some problem with this request, try later!";
+"response.alert-OK" = "TAMAM";
+
+/* Sensor Index Support */
+" Fan is " = " Fan ";
+" Fan is set to " = " Fan şuna ayarlı ";
+" brightness changed to " = " parlaklık şuna değiştirildi ";
+" brightness changed to " = " parlaklık şuna değiştirildi ";
+" detected Fire." = " Yangın algılandı.";
+" detected Gas." = " Gaz algılandı.";
+" detected Smoke." = " Duman algılandı.";
+" detected Vibration." = " Titreşim algılandı.";
+" detected Vibration." = " Titreşim algılandı.";
+" detected motion." = " hareket algılandı.";
+" detected motion." = " hareket algılandı.";
+" detected water." = " su algılandı.";
+" has been Tampered." = " kurcalanmış.";
+" hue color changed to " = " ampul rengi değişti ";
+" is " = " şimdi ";
+" is Armed." = " Açık.";
+" is Closed." = " Kapalı.";
+" is Closing." = " Kapanıyor.";
+" is Disarmed." = " Kapandı.";
+" is Locked." = " Kilitli.";
+" is Open." = " Açık.";
+" is Opened." = " Açıldı.";
+" is Opening." = " Açılıyor.";
+" is Perimeter Armed." = " Perimetresi Açıldı.";
+" is Ringing." = " Çalıyor.";
+" is Silent." = " Sessizde.";
+" is Stopped." = " Durduruldu.";
+" is Unlocked." = " Kilidi açıldı.";
+" is cooling down to " = " şu değere soğutuluyor ";
+" is dimmed to " = " şu değere kısılıyor ";
+" is heating up to " = " şu değere ısıtılıyor ";
+" is not fully Locked." = " Tamaen kilitli değil.";
+" is reset from Tampered." = " Kurcalanmıştan sıfırlandı.";
+" is set to " = " şuna ayarlandı ";
+" is switched Off." = " anahtar kapandı.";
+" is switched On." = " anahtar açıldı.";
+" is turned Off." = " kapandı.";
+" is turned On." = " açıldı.";
+" is turned on for " = " şunun için açıldı ";
+" saturation changed to " = " yeni doygunluk değeri ";
+" seconds" = " saniyeler";
+" stopped leaking." = " sızdırmayı durdurdu.";
+" turned Off." = " kapandı.";
+" turned On." = " açıldı.";
+"'s Battery is Low." = "'Pili Zayıf.";
+"'s Fire is gone." = "'Yangını söndü.";
+"'s Gas is gone." = "'Gazı kesildi.";
+"'s Smoke is gone." = "'Dumanı kayboldu.";
+"'s color temperature changed to " = "'renginin sıcaklığı değiştirildi ";
+"'s humidiy changed to " = "' nemi değiştirildi ";
+"'s light reading changed to " = "'ışık değeri değiştirildi ";
+"'s motion stopped." = "'hareketi durdu.";
+"'s pin code changed." = "'pin kodu değişti.";
+"'s power reading changed to " = "'güç okuması şuna değiştirildi ";
+"'s temperature changed to " = "'sıcaklık okuması şuna değiştirildi ";
+"'s temperature set point changed to " = "'sıcaklık ayar noktası şuna değiştirildi ";
+"'s vibration stopped." = "'titreşimi durdu.";
+": no presence detected." = ": bulunma algılanmadı.";
+": presence detected." = ": bulunma algılandı.";
+"AWAY" = "UZAKTA";
+"HOME" = "EVDE";
+"OFF" = "KAPALI";
+"ON" = "AÇIK";
+"Temperature" = "Sıcaklık";
+"\u00B0 Farenheit" = "\u00B0 Farenheit";
+
+//To be translated
+
+"DIM" = "karartmak";
+"AUTO" = "oto";
+"HEAT" = "ISI";
+"COOL" = "GÜZEL";
+"OFF" = "KAPALI";
+"FAN ON" = "FAN ON";
+"FAN OFF" = "FAN KAPALI";
+"HOME" = "ANA SAYFA";
+"AWAY" = "UZAK";
+"COOLING TEMP." = "TEMP SOĞUTMA.";
+"HEATING TEMP." = "ISITMA SICAKLIĞI.";
+"Version" = "Sürüm";
+"Settings" = "Ayarlar";
+"AlmondList" = "AlmondListe";
+
+"login.local.Switch to Local Connection" = "Yerel Bağlantıya Geç";
+
+"router.log-send-error.There was an error sending logs" = "Günlükleri gönderirken bir hata oluştu";
+"Sensorview-almondata-Get Started" = "Başlamak";
+"showtoast Unable to update sensor" = "Sensörü güncellenemiyor";
+"Force sensor data refresh" = "Kuvvet kaptörü veri yenileme";
+"tableviewcell-Updating sensor data.\nPlease wait." = "Sensör verilerinin güncellenmesi .\nLütfen bekleyin.";
+"Tharmostat_setpoint-SET POINT %@%@" = "set sayısı%@%@";
+"Tharmostat_setpoint-temperature" = "sıcaklık";
+"sensor-property-edit smokedetector Warning" = "uyarı";
+"sensor-property-edit smokedetector Emergency" = "Acil";
+"read-almond-version %@ (%@)" = "versiyon%@ (%@)";
+
+"Cancel" = "iptal";
+"alert title offline Local Retry Local Connection" = "Yerel Bağlantı Retry";
+"router.card-title.Local Almond Link" = "yerel Almond bağlantı";
+"router.software-version.Update Available" = "Güncelleme uygun";
+"router.software-version.header.instructions" = "Lütfen dokunun\"Ayarlar\" sizinle ilgiliAlmond";
+"sensor.awaymode.indexpath Away" = "uzakta";
+"mainview-configure-Debug" = "onarım";
+"connection status Cloud Connection" = "Bulut Bağlantısı";
+"connection status Local Connection" = "yerel Bağlantı";
+//---------
+
+
+
+/* UI Accounts */
+"Drawviewcontroller.account" = "hesap";
+"Drawviewcontroller.Logout" = "çıkış Yap";
+"Drawviewcontroller.Logout All" = "tüm çıkış Yap";
+"Draqviewcontroller.add"="eklemek";
+
+//new - sensor table view cell
+"sensor.field-macro.PinCodeField" = "PinCodeField";
+"sensor.status-label.PRESENCE DETECTED" = "PRESENCE DETECTED";
+"sensor.macro-msg.Could not update sensor\ndata." = "Could not update sensor\ndata.";
+"sensor.status-label.OPEN" = "OPEN";
+"sensor.status-label.CLOSED" = "CLOSED";
+"sensor.status-label.UNLOCKED" = "UNLOCKED";
+"sensor.status-label.LOCKED" = "LOCKED";
+"sensor.status-label.ACTIVE" = "ACTIVE";
+"sensor.status-label.INACTIVE" = "INACTIVE";
+"sensor.status-label.MOTION DETECTED" = "MOTION DETECTED";
+"sensor.status-label.NO MOTION" = "NO MOTION";
+"sensor.status-label.ALARM: FIRE DETECTED" = "ALARM: FIRE DETECTED";
+"sensor.status-label.OK" = "OK";
+"sensor.status-label.FLOODED" = "FLOODED";
+"sensor.status-label.ALARM: GAS DETECTED" = "ALARM: GAS DETECTED";
+"sensor.status-label.VIBRATION DETECTED" = "VIBRATION DETECTED";
+"sensor.status-label.NO VIBRATION" = "NO VIBRATION";
+"sensor.msg-label.State data unknown.\nUse manual controls." = "State data unknown.\nUse manual controls.";
+"sensor.status-label.PRESENCE DETECTED" = "PRESENCE DETECTED";
+"sensor.status-label.NO PRESENCE" = "NO PRESENCE";
+"sensor.status-label.SMOKE DETECTED!" = "SMOKE DETECTED!";
+"sensor.status-label.RINGING" = "RINGING";
+"sensor.status-label.CLOSING" = "CLOSING";
+"sensor.status-label.STOPPED" = "STOPPED";
+"sensor.status-label.OPENING" = "OPENING";
+
+//Some more
+"sensor.text.%ld SENSORS" = "%ld SENSÖRLER";
+"sensor.text.%ld SENSOR" = "%ld ALGILAYICI";
+
+"Device.propertyeditview.controller.Name" = "isim";
+"Device.propertyeditview.controller.Location" = "konum";
+"Device.propertyeditview.controller.Enter IR Code" = "IR Kodunu Girin";
+"Device.propertyeditview.controller.Example 444" = "Örnek 444";
+
+"scenes.new-scene.label.New Scene" = "yeni sahne";
+
+/* ==================================================================== */
+
+/*
+ Almond-Localizable.strings
+ Almond+
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+/*------- Localization strings specific to Almond app -------*/
+
+
+/* affiliation */
+"router.linkalmond-msg.label.Let's link an Almond." = "Bir Almond \n bağlayalım.";
+"router.linkalmond-msg.label.Start the wizard on your Almond." = "Almond'unuzda sihirbazı başlatın ve aşağıdaki sembole dokunun.";
+"Almond Linked" = "Almond Bağlandı";
+"Link Almond" = "Bulut Linki";
+"Local Link Almond" = "Yerel Link";
+"Please wait while your Almond is being linked to cloud." = "Lütfen buluta bağlanırken bekleyin.";
+"This Almond is already linked to another user." = "Bu Almond başka bir kullanıcıya bağlıdır.
+Bizimle support@securifi.com adresinden iletişime geçebilirsiniz";
+"Almond could not be affiliated" = "Almond ilişkilendirilemedi.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "Almond Hesabı uygulamasını çalıştırın ve görüntülenen kodu girin.";
+"cloudlink.button.Link Almond" = "Almond'u Bağla";
+"cloudlink.button.Add Almond Locally" = "Almond'u Yerel Olarak Ekle";
+
+
+/* router tab */
+"router.offline-msg.label.Almond is Offline." = "Almond Çevrimdışı.";
+//m
+"router.msg-link.The Almond was successfully linked." = "Almond başarıyla bağlandı.";
+"router.btn-title.Unlink Almond?" = "Almond Bağlantısı Kaldırılsın mı?";
+"router.btn-title.Link Almond Locally" = "Almond'u Yerel Olarak Bağlayın";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Lüten bulut kontrolü olmadan bildirim alamayacağınızı veya Almond'unuzu uzaktan kontrol edemeyeceğinizi dikkate alın.";
+"router.error-msg.This Almond is already linked." = "Bu Almond zaten bağlandı.";
+"router.error-msg.An error occurred trying to link with the Almond. Lütfen tekrar deneyin." = "Almond ile bağlantı kurmaya çalışırken hata oluştu. Lütfen tekrar deneyin.";
+
+/* sensors */
+"router.no-sensors.label.Add a sensor from your Almond." = "Almond'unuzdan bir sensör ekleyin.";
+
+/* signup */
+"signup.headline-text.Securifi Cloud Account." = "Securifi Bulut Hesabı.";
+"signup.headline-text.Access your Almonds" = "Almondlarınıza ve ev cihazlarınıza
+her yerden ulaşabilirsiniz.";
+
+/* Accounts */
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "Bu Almond size ait";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "Almond Adı";
+"accounts.ownedAlmond.button.RenameAlmond" = "Almond'u Yeniden Adlandır";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = "Almond Adı";
+"accounts.sharedAlmond.button.RenameAlmond" = "Almond'u Yeniden Adlandır";
+"accounts.alert.onDeleteAccount.message" = "Hesabı silmek Almond'larınızın bağlantısını kaldıracak ve kullanıcı tercihlerini silecektir. Hesap silme işlemini doğrulamak için aşağıya parolanızı girin.";
+"accounts.alert.onUnlinkAlmond.title" = "Almond Bağlantısını Kesin";
+"accounts.alert.onUnlinkAlmond.message" = "Almond bağlantısını kesmeyi onaylamak için parolanızı aşağıya girin.";
+"accounts.itoast.almondNameMax32Characters" = "Almond Adı 32 karakterden fazla olamaz.";
+"accounts.itoast.unableToChangeAlmondName" = "Üzgünüz! Almond'un adını değiştiremedik";
+"accounts.hud.unlinkingAlmond" = "Almond Bağlantısı Kaldırılıyor...";
+"accounts.hud.inviteUserToShareAlmond" = "Kullanıcı Almond'u paylaşmaya davet ediliyor...";
+"accounts.hud.changeAlmondName" = "Almond adını değiştir...";
+"accounts.hud.removeSharedAlmond" = "Paylaşılan almondu kaldır...";
+"accounts.unlinkAlmond.failure.default" = "Üzgünüz! Almond bağlantısı kaldırılamadı.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "Bu kullanıcının bir Securifi hesabı yok.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "Kullanıcı henüz Securifi hesabını doğrulamadı.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "Bu almond size ait değil.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "Bu almond'u zaten kullanıcı ile paylaştınız.";
+"accounts.inviteUserToShareAlmond.failure.default" = "Üzgünüz! Almond paylaşımı başarısız.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "Bu Almond ile ilişkilendirilmediniz";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "İkincil kullanıcı verili Almond ile ilişkilendirilmedi.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "Bu Almond ile ilişkilendirilmediniz";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "Üzgünüz! Paylaşılan Almond kaldırılamadı.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "Almond MAC'leri";
+"Copied Almond MAC" = "Kopyalanan Almond MAC";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "Almond'unuza bulut üzerinden bağlandınız.";
+"alertview -Connected to your Almond via cloud." = "Almond'unuza bulut üzerinden bağlandınız.";
+"Add Local Connection Settings" = "Yerel Bağlantı Ayarlarını Ekleyin";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "Almond bulut bağlantısı kurulamadı. Yeniden deneye dokunun veya yerel bağlantıya geçin.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = "Almond yerel bağlantısı kurulamadı. Dokunup yeniden deneyin veya bulut bağlantısına geçin.";
+"hud message-Setting Almond to Away Mode" = "Almond Uzakta Moduna Getiriliyor";
+"hud message-Setting Almond to Home Mode" = "Almond Ev Moduna Getiriliyor";
+"alertview Can't connect to your Almond. Please select a connection method." = "Almond'unuza bağlanamıyor. Lütfen bir bağlantı yöntemi seçin.";
+"alertview localconnection_Connected to your Almond locally." = "Almond'unuza yerel olarak bağlandı.";
+
+//To be translated
+/* login */
+"Monitor and Control your home from anywhere." = "Monitör ve her yerden evinize Kontrol.";
+
+
