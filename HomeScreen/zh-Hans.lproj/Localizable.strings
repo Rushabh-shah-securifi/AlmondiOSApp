@@ -1,0 +1,622 @@
+/*
+ Common-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+
+/*------- Localization strings common across all apps -------*/
+
+
+/* hud. buttons, controls */
+
+"hud.One moment please..." ="請稍候";
+"hud.Updating settings..." ="更新設置中";
+"alert.button.OK" =" 行”;//not done/
+"Oops!" =" 哎呀!”;//not done/
+"Sorry!" =" 抱歉";
+"toast.Saving..." ="儲存中…";
+
+
+/* affiliation */
+
+
+"Please try later." =" 請稍候再試";
+"Please enter a valid code." =" 請輸入有效密碼";
+"alert.msg.Logout was unsuccessful" =" 抱歉!登出失敗，請稍候再試。";
+"alert.title.Logout Unsuccessful" =" 登出失敗";
+"cloudlink.title.Cloud Link" =" 雲端連結";
+"cloudlink.label.Linking to Cloud" ="雲端連接中";
+"cloudlink.label.Name" =" 使用者名稱";
+"cloudlink.label.MAC Address" =" MAC位址";
+//“cloudlink.label.WIFI SSID" =" WIFI SSID”;//not done//
+"Enter code" =" 請輸入密碼";
+
+
+/* activation */
+
+
+"Reactivation link has been sent to your account." =" 驗證連結已傳送至您的帳戶";
+"sensor.activation.The username was not found" ="用戶名稱不存在";
+"The account is already validated" ="此帳戶已註冊";
+"The email ID is invalid." ="無效的email ID";
+"password-validation.strength-label.Password: Mismatch" ="密碼:錯誤";
+"password-validation.strength-label.Password: Too Short" ="密碼:設定字元太短";
+"password-validation.strength-label.Password: Too Long" ="密碼:設定字元太長";
+"password-validation.strength-label.Password: Weak" ="密碼:強度薄弱";
+"password-validation.strength-label.Password: Medium" ="密碼:強度適中";
+"password-validation.strength-label.Password: Strong" ="密碼:強度強壯";
+"The password should be %d - %d characters long." ="密碼長度必須為%d - %d個字元。";
+"An account already exists with this email." ="此email已被其他帳戶註冊";
+"The email or password was incorrect." ="Email或密碼不正確";
+"Sorry! Signup was unsuccessful." ="抱歉!登入失敗。";
+"The username was not found" ="此用戶名稱不存在";
+"There is a password mismatch." ="密碼錯誤";
+"You forgot to enter your password." ="未輸入密碼";
+"You have entered an invalid email ID." ="您輸入的email ID不存在";
+"You forgot to enter your email ID." ="未輸入email ID";
+"password.hud.Changing password..." ="密碼變更中…";
+"password.label-text.There was some error on cloud. Please try later." ="雲端服務狀態異常，請稍候再試一次。";
+"Sorry! You are not registered with us yet." ="抱歉!您還沒有完成註冊。";
+"You need to fill all the fields." ="您需要填寫所有空白欄位。";
+"The current password was incorrect.”=“目前的密码不正确”;//not done//
+"Sorry! Password change was unsuccessful." =  "抱歉!密碼變更失敗。”;
+
+
+/* login */
+
+"Please enter Username and Password" ="請輸入使用者名稱及密碼";
+"Sorry! Could not complete the request." ="抱歉!無法完成指示。";
+"Sorry! Login was unsuccessful." ="抱歉!登入失敗。";
+"The email was not found." ="無法搜尋到此email";
+"The password is incorrect." ="密碼錯誤。";
+"Almost there." =“Almost there”;//not done/
+"You need to activate your account." ="您需要完成帳戶驗證。";
+"The email or password is incorrect" ="Email或密碼不正確";
+"Password reset link has been sent to your account." ="密碼重置連結已發送至您的信箱。";
+"Login" ="登入";
+
+
+
+/* logout all */
+
+
+
+"logoutall.navbar-title.Continue" ="繼續";
+"logoutall.label.Logout from all devices was not successful." ="登出所有裝置失敗。";
+"logoutall.alertview.title.Error" ="密碼無效";
+"logoutall.alertview.msg.The password is invalid." ="密碼無效";
+
+
+/* router tab */
+
+
+"router.offline-msg.label.Please check the router." ="請檢察您的無線分享器設置。";
+
+"router.card-title.Wireless Settings" ="無線網路設置";
+"router.wireless-status.Enabled" ="啟用";
+"router.wireless-status.Disabled" ="停用";
+"router.card.Settings are not available." ="設置無法使用";
+"router.card-title.Devices & Users" ="設備 & 使用者";
+"router.devices-summary.%d connected, %d blocked" ="%d 已連接, %d 已中斷";
+"router.software-version.header.Software Update Available" ="有可更新的軟體";
+
+"router.software-version.Update Available" ="有可用的更新";
+"router.software-version.Current version" ="目前版本";
+"router.software-version.Not available" ="版本資訊錯誤";
+"router.card-title.Router Reboot" ="重新啟動";
+"router.reboot-msg.Router is rebooting. It will take at least" ="重新啟動中。這將需要至少";
+"router.reboot-msg.2 minutes for the router to boot." ="2分鐘的重啟時間。";
+"router.reboot-msg.Please refresh after sometime." ="請在一段時間後刷新";
+"router.Router status is not available." ="無線分享器狀態為無法使用";
+"router.Last reboot %@ ago" ="上次重啟%@前";
+"router.no-almonds.nav-title.Get Started" =" 開始";
+"router.hud.Router is now online." ="無線分享器連線中";
+"router.hud.Updating router firmware." ="軟體更新中";
+"router.hud.Router is rebooting." ="重新啟動中";
+"router.card-title.Send Logs" ="傳送紀錄";
+"router.Sends %@'s logs to our server" ="傳送 %@'s 紀錄至我們的伺服器";
+"router.hud.Sending Logs." ="指示發送紀錄";
+//m
+
+
+"router.devicestatus.Connected as %@" ="作为连接 %@“;//not done/
+"router.devicesmac.MAC address is %@" ="MAC位址是 %@";
+"router.deviceIP.IP address is %@" ="IP位址是 %@";
+"router.reboot.title.Reboot the router?" ="重新啟動?";
+"It will take at least 2 minutes for the router" ="这将需要至少2分钟的路由器”;//not done/
+"to reboot. Please refresh after sometime." ="重新啟動中。這將需要至少2分鐘的重啟時間。請在一段時間後刷新。";
+"router.settings.label.SSID" ="SSID”;///
+"router.settings.label.Channel" ="頻道";
+"router.settings.label.Wireless Mode" ="無線模式";
+"router.settings.label.Security" ="安全性";
+"router.settings.label.Encryption" ="加密";
+"router.settings.label.Country Region" ="國家地區";
+"router.nav-title.Get Started" ="開始";
+"router.refresh-title.Refresh router data" ="刷新數據";
+"router.summary.IP Address : %@" ="IP位址";
+"router.summary.Admin Login : %@" ="管理員登入";
+"router.software-version.title.Software Version" ="軟體版本";
+"router.software-version-new.title.Software Version *" ="軟體版本";
+"router.software-version-new.title.Software Version" ="軟體版本";
+"router.offline-msg. is offline" ="離線";
+"router.log-textfield-placeholder.Describe your problem here" ="在此描述您的問題";
+"router.log-send-success.summary.Thanks for sending logs" ="感謝您傳送紀錄";
+"router.log-firmware-not-supported.Please update your router's firmware" ="請更新您無線分享器的軟體";
+"router.log-firmware-not-supported.in order to activate this functionality" ="為了激活此功能";
+"router.version-title.Update now?" ="現在更新?";
+"router.update-summary.It will take a few minutes to update the software." ="更新軟體將花費幾分鐘時間。”;//not done/
+"router.network-title.Local Link" =" 本地連結";
+"router.link-button.Link" =" 連結";
+"router.btn-title.Back to Cloud Link" ="退回至雲端連結";
+"router.label.SSID 2.5GHz" =" SSID 2.5GHz";
+"router.label.SSID 5GHz" =" SSID 5GHz";
+"router.label.IP Address" =" IP位址";
+"router.label.Admin Login" =" 管理員登入";
+"router.label.Admin Password" =" 管理員密碼";
+"router.hud.Establishing Local Link..." ="建立本地連結";
+"Device has been tampered" ="裝置已被竄改";
+"sensors.button.Dismiss" =" 解僱";
+"sensors.label.Status" =" 狀態";
+"sensor.status-label.OFF" ="  關閉";
+"sensor.status-label.ON" =" 開啟";
+"sensor.status-label.OK" =" OK”;//not done/
+
+"sensors.label.SENSOR SETTINGS" =" 感應器設置";
+"sensors.settings-label.Send Notifications" ="發送通知";
+"sensors.no-sensors.label.You don't have any sensors yet." ="您未添加任何感應器。";
+"scenes.no-scenes.label.A scene is a group of sensors and a desired state for these sensors." ="複數以上的感應器以及所希望的環境狀態可組成情景。";
+"sensors.account-confirm.label.Please confirm your account (less than a day left)." ="請確認您的帳戶(less than a day left)";
+"sensors.account-confirm.label.Please confirm your account (%d days left)." ="請確認您的帳戶(%d days left)";
+"sensors.account-confirm.label.Check activation email for instructions." ="檢查認證郵件";
+"sensors.account-confirm.label.Resend activation email" ="重新傳送驗證email";
+"activation.toast.Reactivation link sent to your registerd email ID." ="重新激活連接已寄送至您註冊的email ID。";
+"sensor.thermostat.field-label.Set Point" =" 設定點";
+"sensor.thermostat.field-label.Heating" =" 升溫";
+"sensor.thermostat.field-label.Cooling" =" 降溫";
+"sensor.thermostat.field-label.Mode" =" 模式";
+"sensor.thermostat.segment-control.Auto" =" 自動";
+"sensor.thermostat.segment-control.Heat" =" 熱";
+"sensor.thermostat.segment-control.Cool" =" 冷";
+"sensor.thermostat.segment-control.Off" =" 關閉";
+"sensor.thermostat.field-label.Fan" =" 風速";
+"sensor.thermostat.segment-control.Auto Low" ="自动低”;////
+"sensor.thermostat.segment-control.On Low" ="在 低”;//not done/
+"sensor.thermostat.Thermostat is %@" ="恒温器 是 %@“;//not done/
+"sensor.thermostat.Fan is %@" =" 風速為";
+"sensor.thermostat.Battery is at %@%%" ="电池组 是 在 %@%%”;//not done
+"sensor.Power is %.3fW" ="  電源為%.3fW";
+"sensor.Current is %.3fA" =" 目前是%.3fA";
+"sensor.Voltage is %.3fV" =" 電壓是%.3fV";
+"sensor.lock.pin-picker.Pin %ld" ="引脚 %ld";
+"sensor.toast.doorlock.PassCode must be 5 to 8 digits long" ="密码必须是5-8”;//not done/
+"sensor.device-name-label.Name" =" 名稱";
+"sensor.deivice-duration-label.Ring Duration" =" 震鈴時間";
+"sensor.deivice-duration-placeholder.number of seconds" ="  秒數";
+"sensor.deivice-location-label.Located at" =" 位於";
+"sensor.deivice-save-settings.button.Save" =" 儲存";
+"sensor.device-status.label.Battery OK" =" 電量 OK";
+"sensor.device-status.label.Battery %" =" 電量 %@%%";
+"sensor.device-status.label.Low Battery" =" 低電量";
+"sensor.device-status.label.LOW BATTERY" =" 低電量";
+"sensor.device-status.label.Battery Unknown" =" 電量未知";
+"sensor.doorlock.field-label.Pins" =" 引脚 ";
+"sensor.doorlock.pinentry-textfield.placeholder.Code is not specified." =" 未指定代碼";
+"sensor.doorlock.button.Save Pin" ="Save Pin";
+"sensor.doorlock.field-label.Code" =" 密碼";
+"sensor.multilevel-switch.status-label.Dimmable, %@%%" ="可調光, %@%%";
+"sensor.level-control.status-label.Dimmable" =" 可調光";
+"sensor.keyfob.status-label.ALL DISARMED" =" 解除警戒";
+"sensor.keyfob.status-label.PERIMETER ARMED" =" 居家狀態";
+"sensor.keyfob.status-label.ALL ARMED" =" 警戒";
+"sensor.lightsensor.status-label.Illuminance %@" ="照度%@";
+"sensor.tempsensor.status-label.Humidity %@" =" 濕度%@";
+"sensor.moisturesensor.status.FLOODED" =" 已積水";
+"sensor.poweswitch.label.Power %@W" =" 電源%@W";
+"sensor.moisturesensor.status.Temp %@" =" 溫度%@";
+"sensor.notificaiton.label.notificationMode" =" 通知我";
+"sensor.notificaiton.segment.Always" =" 總是";
+"sensor.notificaiton.segment.Away" ="  經常";
+"sensor.notificaiton.segment.Off" =" 關閉";
+"sensors.label.Color" =" 顏色";
+"sensor.hud.UpdatingSensordata" =" 感應器資訊更新中…";
+"sensor.deivice-showlog.button.viewlogs" =" 檢視紀錄";
+"sensor.deivice-warning_rightview.seconds" ="  秒";
+"sensor.deivice.Highlightbutton Turn Off" =" 關閉";
+"sensor.deivice.Highlightbutton Turn ON" =" 開啟";
+"Temperature is %@%@" =" 溫度為%@%@";
+"Humidity is %@%%" =" 濕度為%@%%";
+"sensors.label.DimmableLight-Brightness" =" 亮度";
+"sensors.label.DimmableLight-Saturation" =" 飽和度";
+"sensors.label.DimmableLight-Color Temperature" ="肤色 体温";
+"sensors.label.HueLamp-Brightness" =" 亮度";
+"sensors.label.HueLamp-Saturation" =" 飽和度";
+"sensors.label.HueLamp-Color" =" 顏色";
+"smoke-detector-Warning" =" 警報";
+"smoke-detector-Emergency" =" 緊急";
+"smoke-detector Smoke :%@ , CO :%@"=" 煙霧 :%@ ,一氧化碳 :%@";
+"sensor-detail-Fan cell On" =" 開啟";
+"sensor-detail-Fan cell Off" =" 關閉";
+"sensor-detail-Target Temp" =" 目標溫度";
+"sensor.notificaiton.fanindexpath.On" =" 開啟";
+"sensor.notificaiton.fanindexpath.Off" =" 關閉";
+"sensor.awaymode.indexpath Home" =" ";
+"sensor.mode indexpath Off" =" 關閉";
+"sensor.mode indexpath Cool" =" 冷";
+"sensor.mode indexpath Heat" =" 熱";
+"sensor.mode indexpath Heat-Cool" =" 熱-冷";
+"device-property-fanindexpah false" =" 假 ";
+"device-property-fanindexpah true" =" 真";
+"device property on mobile hud Unable to update sensor"="  感應器無法更新";
+"signup.navbar-title.Sign up" =" 簽名";
+"signup.barbutton.Decline" =" 下降";
+"signuo.barbutton.Accept" =" 接受";
+"signup.barbutton.Continue" =" 繼續";
+"signup.headline-text.Signing up." =" 簽約";
+"signup.subheadline-text.Please wait one moment..." =" 請稍候…";
+"signup.headline-text.Almost done." ="快完成了。”;//not done////
+"signup.footerbutton.Resend the activation email" ="重新傳送認證連結";
+"signup.footerbutton.Signup using another email" =" 登入使用其他email";
+"signup.footerlabel.Do you want to create another account?" ="您想建立其他帳戶嗎?";
+"accounts.navbar-title.settings" =" 設置";
+"accounts.userprofile.title.account" =" 帳戶";
+"accounts.userprofile.label.primaryEmail" =" ";
+"accounts.userprofile.label.password" =" 密碼";
+"accounts.userprofile.label.firstName" =" 姓";
+"accounts.userprofile.label.lastName" =" 名";
+"accounts.userprofile.label.address" =" 地址";
+"accounts.userprofile.label.country" =" 國家";
+"accounts.userprofile.label.zipCode" =" 郵遞區號";
+"accounts.userprofile.title.placeholder.name" =" 我們還沒不知道您的姓名呢";
+"accounts.userprofile.textfield.placeholder.firstName" =" 我們還不知道您的姓呢";
+"accounts.userprofile.textfield.placeholder.lastName" =" 我們還不知道您的名字呢";
+"accounts.userprofile.textfield.placeholder.address1" ="地址栏 1";
+"accounts.userprofile.textfield.placeholder.address2" ="地址栏 2”;
+"accounts.userprofile.textfield.placeholder.address3" ="地址栏 3”;
+"accounts.userprofile.textfield.placeholder.country" =" 您居住的國家在哪?";
+"accounts.userprofile.textfield.placeholder.zipCode" =" 您的郵遞區號是?";
+"accounts.userprofile.button.changePassword" =" 變更密碼";
+"accounts.userprofile.button.edit" =" 編輯";
+"accounts.userprofile.button.add" =" 添加";
+"accounts.userprofile.button.done" =" 完成";
+"accounts.userprofile.button.deleteAccount" =" 刪除帳戶";
+"accounts.ownedAlmond.label.SharedWithOthers" ="与他人共享 %d ";
+"accounts.ownedAlmond.label.deviceName" =" 裝置名稱";
+"accounts.ownedAlmond.label.accessEmail" =" 認證EMAIL";
+"accounts.ownedAlmond.button.Unlink" ="  未連接";
+"accounts.ownedAlmond.button.Remove" =" 移除";
+"accounts.ownedAlmond.button.InviteMore" =" 邀請更多";
+"accounts.sharedAlmond.label.SharedWithYouBy" ="與您共享";
+"accounts.sharedAlmond.label.deviceName" =" 裝置名稱";
+"accounts.sharedAlmond.button.Remove" =" 移除";
+"accounts.alert.onDeleteAccount.title" ="  刪除帳戶";
+"accounts.alert.onDeleteAccount.delete" =" 刪除";
+"accounts.alert.onDeleteAccount.Cancel" =" 取消";
+"accounts.alert.onUnlinkAlmond.Unlink" =" 未連接";
+"accounts.alert.onUnlinkAlmond.Cancel" =" 取消";
+"accounts.alert.onInviteToShareAlmond.title" =" 邀請信";
+"accounts.alert.onInviteToShareAlmond.message" ="  通過邀請的人才可進行訪問%@";
+"accounts.alert.onInviteToShareAlmond.Invite" =" 邀請";
+"accounts.alert.onInviteToShareAlmond.Cancel" =" 取消";
+"accounts.hud.loadingDetails" =" 讀取帳戶資訊";
+"accounts.hud.deletingAccount" =" 帳戶刪除中…";
+"accounts.hud.updatingDetails" =" 更新帳戶資訊";
+"accounts.hud.removeUserFromSharedList" =" 從共用列表中刪除用戶";
+"accounts.deleteAccount.failure.reasonCode1" =" 雲端服務發生問題，請稍候再試。";
+"accounts.deleteAccount.failure.reasonCode2" ="抱歉!您還沒有完成註冊。";
+"accounts.deleteAccount.failure.reasonCode3" =" 您需要認證您的帳戶。";
+"accounts.deleteAccount.failure.reasonCode4" ="  您需要填寫所有欄位。";
+"accounts.deleteAccount.failure.reasonCode5" ="  目前密碼錯誤";
+"accounts.deleteAccount.failure.reasonCode6" =" 雲端服務發生問題，請稍候再試。";
+"accounts.deleteAccount.failure.default" =" 抱歉!刪除帳戶失敗。";
+"accounts.updateAccount.failure.reasonCode1" =" 雲端服務發生問題，請稍候再試。";
+"accounts.updateAccount.failure.reasonCode2" =" 您需要填寫所有欄位。";
+"accounts.updateAccount.failure.reasonCode3" =" 抱歉!您還沒有完成註冊。";
+"accounts.updateAccount.failure.default" =" 抱歉!更新失敗。";
+"accounts.unlinkAlmond.failure.reasonCode1" ="  雲端服務發生問題，請稍候再試。";
+"accounts.unlinkAlmond.failure.reasonCode2" =" 抱歉!您還沒有完成註冊。";
+"accounts.unlinkAlmond.failure.reasonCode3" =" 您需要認證您的帳戶。";
+"accounts.unlinkAlmond.failure.reasonCode4" =" 您需要填寫所有欄位。";
+"accounts.unlinkAlmond.failure.reasonCode5" =" 目前密碼錯誤。";
+"accounts.unlinkAlmond.failure.reasonCode6" =" 雲端服務發生問題，請稍候再試。";
+"accounts.inviteUserToShareAlmond.failure.reasonCode1" =" 雲端服務發生問題，請稍候再試。";
+"accounts.inviteUserToShareAlmond.failure.reasonCode5" =" 您需要填寫所有欄位。";
+"accounts.inviteUserToShareAlmond.failure.reasonCode7" ="你不能将自己添加为次要用户。”;//not done//
+"accounts.deleteSecondaryUser.failure.reasonCode1" =" 雲端服務發生問題，請稍候再試。";
+"accounts.deleteSecondaryUser.failure.reasonCode2" =" 您需要填寫所有欄位。";
+"accounts.deleteSecondaryUser.failure.reasonCode5" =" 次要用戶未找到";
+"accounts.deleteSecondaryUser.failure.default" ="  抱歉!部份功能發生問題，請稍候再試。";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode1" =" 雲端服務發生問題，請稍候再試。";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode2" =" 您需要填寫所有欄位。";
+"notifications.title.Recent Activities" =" 近期活動";
+"notifications.headerfooter.mode.The End" =" 結束";
+"notifications.date.Today" =" 今天";
+"notifications.bucketdate.Yesterday" =" 昨天";
+"scenes.hud.loadingScenes" =" 讀取情景";
+"scenes.hud.deletingScene" =" 刪除情景";
+"scenes.hud.activatingScene" ="  激活情景";
+"scenes.hud.creatingScene"   =" 創建情景";
+"scene.macro.Could not update sensor\ndata." =" 無法更新感應器資訊";
+"scene.thermostat-title.COOLING TEMP." =" 降溫";
+"scene.thermostat-title.HEATING TEMP." =" 升溫";
+"scene.button.Save" =" 儲存";
+"scene.button.Cancel" =" 取消";
+"scene.title.Get Started" =" 開始";
+"scene.msg.You have to select at least 1 value" =" 您必須至少選擇 1的值";
+"scene.cancel-title.OK" =" OK”;////
+"scene.hud.Loading router data" =" 讀取無線分享器資訊";
+"scene.hud.Loading sensor data" =" 讀取感應去資訊";
+"scene.text.Choose one or more Actions" ="選擇一或多個動作";
+"scene.alert-title.Oops" =" Oops”;//not done////
+"scene.alert-msg.Sorry, There was some problem with this request, try later!" ="抱歉! 部份功能發生問題，請稍候再試。";
+"scene.alert-button.OK" ="OK”;//not done/
+"Scoreboard" =" 記事本";
+"Refresh.Scoreboard" =" 刷新記事本";
+"scoreboard.section.Cloud" =" 雲端服務";
+"scoreboard.section.PushNotifications" =" 推送通知";
+"scoreboard.section.Events" =" 事件";
+"scoreboard.section.Network" =" 網路";
+"scoreboard.section.Commands & Updates" =" 命令 & 更新";
+"scoreboard.section.Logs & Data" ="  紀錄& 資料";
+"footerInsection.Last refreshed %.0f secs ago @ %@" ="最后更新 @.0f 天以前 @ %@";
+"notifications.Client Token" =" 客戶端標誌";
+"notifications.Not registered" =" 未註冊";
+"Failed to send mail" =" 寄送電子郵件失敗";
+"Since %@" ="由于 %@”;
+"notifications_logctrl.View Handler Log" =" 檢視處理程序紀錄";
+"notifications_viewactual.View Notifications" ="檢視通知";
+"notifications_viewtests.Unit Test UI" =" 單元測試UI";
+"events.All Events" =" 所有活動";
+"Network.Established Connections" =" 建立連接";
+"Network.Failed Connections" =" 連接失敗";
+"Network.Reachability Changes" ="  達成性變更";
+"SEC_ReQUEST.Dynamic Updates" =" 動態更新";
+"SEC_ReQUEST.Command Requests" ="  要求指令";
+"SEC_ReQUEST.Command Responses" =" 反應指令";
+"Email Logs & Data" ="  Email 紀錄 & 資訊";
+"cloudSection.row0.Production" =" 產品";
+"cloudSection.row1.Development" ="  發展";
+"Copied token" ="  複製標誌";
+"Reset counter" =" 重置計數器";
+"Sending Mail is not supported on this device" =" 此裝置不支援寄送電子郵件";
+"Scoreboard.Preparing..." =" 準備中…";
+"Local Network Enabled" =" 本地網路啟用";
+"scoreboard.localnetwork.IP Address" =" IP位址";
+"scoreboard.localnetwork.Port" =" 接口";
+"scoreboard.localnetwork.Password" =" 密碼";
+"sensor support- a value has changed" =" 數值變更";
+"Draw viecontroller.label LOCATION" =" 位置";
+"Draw viecontroller.label SETTINGS" =" 設定";
+"Draw viecontroller.label INFO" =" 訊息";
+"Sorry! Unable to establish Internet route to cloud service." ="抱歉!無法建立網路連線至雲端伺服器。";
+"mainviewcontroller_Connecting. Please wait!" =" 連接中，請稍候!";
+"mainviewcontroller_Sorry! Could not connect to the cloud service." ="抱歉!無法連接至雲端服務。";
+"main view controller Sorry! Push Notification was not registered." ="抱歉!推送通知服務未完成註冊。";
+"main view controller Sorry! Push Notification was not deregistered." ="抱歉!推送通知服務未完成註冊。";
+"In process of connecting. Change connection method." ="連接程序進行中，變更連接方式。";
+"Cloud Connection" =" 雲端連接";
+"connection status Local Connection" =" 連接";
+"alert.title-Switch to Local Connection" ="切換至本機連接";
+"alert.title-Edit Local Connection Settings" =" 編輯本地連接";
+"Alert view title-Retry Cloud Connection" ="重試雲端連接";
+"Alert view title-Switch to Local Connection" =" 切換至本機連接";
+"Edit Local Connection Settings" ="編輯本機連接設定";
+"Alert view title-Edit Local Connection Settings" =" 編輯本機連接設定";
+"alert view error_Cloud Connection" =" 雲端連接";
+"alert view error_Local Connection" =" 本機連接";
+"alertview localconnection_Switch to Cloud Connection" =" 切換至雲端連接";
+"alertview Local connection settings are missing." ="  本機設定連接丟失";
+"alertview title Add Local Connection Settings" =" 新增本機連接設定";
+"alert msg offline Local Retry Local Connection" =" 重試本機連接";
+"alert title offline Local Switch to Cloud Connection" =" 切換至雲端連接";
+"alert title offline Local Edit Local Connection Settings" =" 編輯本機連接設定";
+"mainviewcontroller hud Loading router data" ="讀取無線分享器資訊";
+"mainviewcontroller hud Loading sensor data" ="讀取感應器資訊";
+"mainviewcontroller hud hud.Updating settings..." =" 更新設定中…";
+"Cancel"=" 取消";
+"wifi.hud.UpdatingWifiClient" =" Wifi客戶端更新中…";
+"wifi.hud.removeClient" ="Wifi客戶端刪除中…";
+"wifi.button.deleteClient" =" 移除";
+"CONNECTED" =" 已連接";
+"NOT CONNECTED" =" 未連接";
+"SFIWiFiClientsListViewController-propertyNames-Name" =" 名稱";
+"SFIWiFiClientsListViewController-propertyNames-Type" =" 輸入";
+"SFIWiFiClientsListViewController-propertyNames-MAC Address" =" MAC位址";
+"SFIWiFiClientsListViewController-propertyNames-Last Known IP" =" 最近一次的IP";
+"SFIWiFiClientsListViewController-propertyNames-Connection" =" 連接";
+"SFIWiFiClientsListViewController-propertyNames-Use as Presence Sensor" =" 使用完成配對的感應器";
+"SFIWiFiClientsListViewController-propertyNames-Notify me" ="通知我";
+"SFIWiFiClientsListViewController-propertyNames-Remove" =" 移除";
+"Presence sensor Yes"=" 是";
+"Presence sensor NO" =" 否";
+"response.alert-Oops" =" Oops”;//not done//
+"response.alert-Sorry, There was some problem with this request, try later!" ="抱歉!部份功能發生問題，請稍候再試。";
+"response.alert-OK" =" OK”;//not done/
+" Fan is " =" 風速是”;
+" Fan is set to " =" 風速設定為";
+" brightness changed to " =" 亮度變更為";
+" brightness changed to " =" 亮度變更為";
+" detected Fire." =" 火源偵測";
+" detected Gas." =" 瓦斯偵測";
+" detected Smoke." =" 煙霧偵測";
+" detected Vibration." =" 振動偵測";
+" detected Vibration." =" 振動偵測";
+" detected motion." =" 動作偵測";
+" detected motion." =" 動作偵測";
+" detected water." =" 積水偵測";
+" has been Tampered." =" 已被竄改";
+" hue color changed to " =" hue 顏色變更為";
+" is " =" 是";
+" is Armed." =" 警戒";
+" is Closed." =" 已關閉";
+" is Closing." =" 關閉中";
+" is Disarmed." ="  解除警戒";
+" is Locked." =" 已上鎖";
+" is Open." =" 開啟";
+" is Opened." =" 已開啟";
+" is Opening." =" 開啟中";
+" is Perimeter Armed." =" 居家狀態";
+" is Ringing." =" 響鈴中";
+" is Silent." =" 靜音";
+" is Stopped." =" 已停止";
+" is Unlocked." =" 未上鎖";
+" is cooling down to " =" 降溫至";
+" is dimmed to " ="   黯淡";
+" is heating up to " =" 增溫至";
+" is not fully Locked." =" 未完全鎖定";
+" is reset from Tampered." ="  因竄改重置";
+" is set to " =" 設定為";
+" is switched Off." =" 切換至關閉";
+" is switched On." =" 切換至開啟";
+" is turned Off." =" 關閉";
+" is turned On." =" 開啟";
+" is turned on for " ="  開啟";
+" saturation changed to " =" 飽和度變更為";
+" seconds" =" 秒數";
+" stopped leaking." =" 停止洩漏";
+" turned Off." =" 關閉";
+" turned On." =" 開啟";
+"'s Battery is Low." =" 的電量低";
+"'s Fire is gone." =" 的火源消失";
+"'s Gas is gone." =" 的瓦斯消失";
+"'s Smoke is gone." =" 的煙霧消失";
+"'s color temperature changed to " ="的色溫變更為";
+"'s humidiy changed to " =" 的濕度變更為";
+"'s light reading changed to " =" meter’s light reading changed to “;//not done////not converting
+"'s motion stopped." =" 的動作停止";
+"'s pin code changed." =" 的pin code變更為";
+"'s power reading changed to " =" 的電量讀數變更為";
+"'s temperature changed to " =" 的溫度變更為";
+"'s temperature set point changed to " =" 的溫度設定點變更至";
+"'s vibration stopped." =" 的振動停止";
+": no presence detected." ="   無存在性偵測";
+": presence detected." ="  存在性偵測";
+"AWAY" ="  外出";
+"HOME" ="  居家";
+"OFF" =" 關";
+"ON" =" 開";
+"Temperature" =" 溫度";
+"\u00B0 Farenheit" =" \u00B0 華氏溫度";
+
+
+
+//24-9
+
+"View Device History”=“View Device History";
+"Name" = "Name";
+"Location" = "Location";
+"Stop" = "Stop";
+"Battery" = "Battery";
+"Temperature" = "Temperature";
+"AC Mode" = "AC Mode";
+"High Temperature" = "High Temperature";
+"Low Temperature" = "Low Temperature";
+"Swing" = "Swing";
+"Power" = "Power";
+"IR Code" = "IR Code";
+"Configuration" = "Configuration";
+"Humidity" = "Humidity";
+"Away Mode" = "Away Mode";
+"CO Level" = "CO Level";
+"Smoke Level" = "Smoke Level";
+"Mode" = "Mode";
+"Target Range" = "Target Range";
+"Fan Mode" = "Fan Mode";
+"Fan" = "Fan";
+"Notify me" = "Notify me";
+
+
+
+
+///////////////////////////////////////HomeScreen////////////////////////////
+
+"router.linkalmond-msg.label.Let's link an Almond." ="Let's link an Homescreen.";//not done////not converting
+"router.linkalmond-msg.label.Start the wizard on your Almond." ="在您的Homescreen啟動設定精靈，接著點擊下方的符號。";
+"Almond Linked" =" Homescreen已連接";
+"Link Almond" =" 雲端連接";
+"Local Link Almond" =" 本機連接";
+"Please wait while your Almond is being linked to cloud." ="Homescreen正在連接至雲端伺服器，請稍候。";
+"Almond could not be affiliated" ="Homescreen could not be affiliated";//not done////not converting
+"Run the Almond Account app and enter the code displayed." ="點擊Homescreen Account app並輸入顯示的代碼。";
+"cloudlink.button.Link Almond" =" 連接Homescreen";
+"cloudlink.button.Add Almond Locally" =" 新增本機連接";
+"router.offline-msg.label.Almond is Offline." ="Homescreen已離線";
+"router.msg-link.The Almond was successfully linked." ="Homescreen已成功連接。";
+"router.btn-title.Unlink Almond?" =" Homescreen未連接";
+"router.btn-title.Link Almond Locally" ="本機連接Homescreen";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" ="Please note that without cloud control you will not receive notifications nor have the ability to control your Homescreen remotely.";//not done////not converting
+"router.error-msg.This Almond is already linked." ="Homescreen已連接完成。";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." ="連接Homescreen時發生一個錯誤，請稍候再試。";
+"router.no-sensors.label.Add a sensor from your Almond." =" 在您的Homescreen添加感應器。";
+"signup.headline-text.Securifi Cloud Account." =" Securifi雲端帳戶";
+"accounts.ownedAlmond.label.YouOwnThisAlmond" ="您擁有此Homescreen權限。";
+"accounts.ownedAlmond.textfield.placeholder.almondName" ="Homescreen名稱";
+"accounts.ownedAlmond.button.RenameAlmond" ="重新命名Homescreen";
+"accounts.sharedAlmond.textfield.placeholder.almondName" ="Homescreen名稱";
+"accounts.sharedAlmond.button.RenameAlmond" ="重新命名Homescreen";
+"accounts.alert.onDeleteAccount.message" ="Deleting the account will unlink your Homescreen(s) and delete user preferences. To confirm account deletion enter your password below.";//not done////not converting
+
+
+"accounts.alert.onUnlinkAlmond.title" =" Homescreen移除連接";
+"accounts.alert.onUnlinkAlmond.message" ="  確認Homescreen移除連接請在下方輸入您的密碼。";
+"accounts.itoast.almondNameMax32Characters" ="Homescreen名稱不能多於32個字元。";
+"accounts.itoast.unableToChangeAlmondName" =" 抱歉!我們無法變更Homescreen名稱。";
+"accounts.hud.unlinkingAlmond" =" Homescreen移除連接中…";
+"accounts.hud.inviteUserToShareAlmond" =" 邀請使用者共享Homescreen…";
+"accounts.hud.changeAlmondName" =" 變更Homescreen名稱…";
+"accounts.hud.removeSharedAlmond" ="移除共享Homescreen…";
+"accounts.unlinkAlmond.failure.default" ="抱歉!移除Homescreen連接失敗。";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" ="此使用者並沒有Securifi帳戶";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" ="此使用者尚未完成Securifi帳戶驗證。";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" =" 您未擁有此Homescreen權限。";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" ="您已經與用戶共享Homescreen。";
+"accounts.inviteUserToShareAlmond.failure.default" ="抱歉!共享Homescreen失敗。";
+"accounts.deleteSecondaryUser.failure.reasonCode4" =" 您未與此Homescreen聯結";
+"accounts.deleteSecondaryUser.failure.reasonCode6" ="次要用戶未與此Homescreen聯結";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" ="您未與此Homescreen聯結";
+"accounts.deleteMeAsSecondaryUser.failure.default" ="抱歉!共享Homescreen失敗。";
+"scoreboard.section.AlmondMACs" =" Homescreen MACs";
+"Copied Almond MAC" =" 複製Homescreen MAC";
+"alert.message-Connected to your Almond via cloud." =" 透過雲端連接您的Homescreen。";
+"alertview -Connected to your Almond via cloud." =" 透過雲端連接您的Homescreen。";
+"Add Local Connection Settings" ="新增本機連接設定";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." ="雲端連接Homescreen失敗，請點擊重試或切換至本機連接。";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." ="本機連接Homescreen失敗，請點擊重試或切換至雲端連接。";
+"hud message-Setting Almond to Away Mode" =" 設定Homescreen為外出模式";
+"hud message-Setting Almond to Home Mode" =" 設定Homescreen為家居模式";
+"alertview Can't connect to your Almond. Please select a connection method." =" 無法連接至您的Homescreen，請選擇其它連線方式。";
+"alertview localconnection_Connected to your Almond locally." ="本機連接Homescreen";
+
+"router.card-title.Cloud Almond Link" ="Homescreen 雲端連接";
+"router.card-title.Local Almond Link" ="Homescreen主機連接";
+
+"router.software-version.header.instructions" ="請在您的Homescreen螢幕點擊”設定”";
+
+
+//24-9
+
+"View Device History”=“View Device History";
+"Name" = "Name";
+"Location" = "Location";
+"Stop" = "Stop";
+"Battery" = "Battery";
+"Temperature" = "Temperature";
+"AC Mode" = "AC Mode";
+"High Temperature" = "High Temperature";
+"Low Temperature" = "Low Temperature";
+"Swing" = "Swing";
+"Power" = "Power";
+"IR Code" = "IR Code";
+"Configuration" = "Configuration";
+"Humidity" = "Humidity";
+"Away Mode" = "Away Mode";
+"CO Level" = "CO Level";
+"Smoke Level" = "Smoke Level";
+"Mode" = "Mode";
+"Target Range" = "Target Range";
+"Fan Mode" = "Fan Mode";
+"Fan" = "Fan";
+"Notify me" = "Notify me";
+

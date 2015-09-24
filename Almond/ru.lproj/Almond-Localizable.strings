@@ -25,9 +25,6 @@
 "cloudlink.button.Link Almond" = "Подключить Almond";
 "cloudlink.button.Add Almond Locally" = "Локально подключить Almond ";
 
-/* login */
-"Access your Almonds and your home devices from anywhere." = "Получите доступ к Вашим Almond и домашним устройствам из любой точки мира.";
-
 /* router tab */
 "router.offline-msg.label.Almond is Offline." = "Almond не подключен к сети.";
 //m
@@ -86,6 +83,10 @@
 "hud message-Setting Almond to Home Mode" = "Установка Almond в Домашний Режим";
 "alertview Can't connect to your Almond. Please select a connection method." = "Не удаётся подключиться к Вашему Almond. Пожалуйста, выберите способ соединения.";
 "alertview localconnection_Connected to your Almond locally." = "Локально подключён к Вашему Almond.";
+
+//To be translated
+/* login */
+"Monitor and Control your home from anywhere." = "Мониторинг и управление домом из любой.";
 
 
 

@@ -25,9 +25,6 @@
 "cloudlink.button.Link Almond" = "Koppla Almond";
 "cloudlink.button.Add Almond Locally" = "Lägg till Almond Lokalt";
 
-/* login */
-"Access your Almonds and your home devices from anywhere." = "Få tillgång till Almonds och
-dina hemenheter från var som helst.";
 
 /* router tab */
 "router.offline-msg.label.Almond is Offline." = "Almond är Offline.";
@@ -69,12 +66,12 @@ dina hemenheter från var som helst.";
 "accounts.inviteUserToShareAlmond.failure.reasonCode6" = "Du har redan delat denna Almond med användaren.";
 "accounts.inviteUserToShareAlmond.failure.default" = "Tyvärr! Det gick inte att dela Almond.";
 "accounts.deleteSecondaryUser.failure.reasonCode4" = "Du är inte ihopkopplad med denna Almond ";
-"accounts.deleteSecondaryUser.failure.reasonCode6" ="Sekundära användare är inte ihopkopplade med denna Almond.";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "Sekundära användare är inte ihopkopplade med denna Almond.";
 "accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "Du är inte ihopkopplad med denna Almond.";
 "accounts.deleteMeAsSecondaryUser.failure.default" = "Tyvärr! Det gick inte att ta bort delad Almond.";
 
 /* scoreboard *///me
-"scoreboard.section.AlmondMACs" = "Almond MAC:s";
+"scoreboard.section.AlmondMACs" = "Almond MACs";
 "Copied Almond MAC" = "Kopierad Almond MAC";
 
 
@@ -88,3 +85,10 @@ dina hemenheter från var som helst.";
 "hud message-Setting Almond to Home Mode" = "Ställ in Almond till Hem-läge";
 "alertview Can't connect to your Almond. Please select a connection method." = "Kan inte koppla till din Almond. Var god välj ett anslutningsalternativ.";
 "alertview localconnection_Connected to your Almond locally." = "Ansluten till din Almond lokalt.";
+
+
+
+
+//To be translated
+/* login */
+"Monitor and Control your home from anywhere." = "Övervaka och styra ditt hem från var som helst.";

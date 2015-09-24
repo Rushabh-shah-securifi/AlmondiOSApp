@@ -1,0 +1,31 @@
+
+/* Class = "IBUITextField"; placeholder = "New Password"; ObjectID = "3uz-RY-rCm"; */
+"3uz-RY-rCm.placeholder" = "Neues Passwort";
+
+/* Class = "IBUIBarButtonItem"; title = "Cancel"; ObjectID = "G96-BW-p5i"; */
+"G96-BW-p5i.title" = "Abbrechen";
+
+/* Class = "IBUINavigationItem"; title = "ChaPassword"; ObjectID = "KWr-AR-IIt"; */
+"KWr-AR-IIt.title" = "Passwort ändern";
+
+/* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "LRJ-C2-ya9"; */
+"LRJ-C2-ya9.title" = "Einstellungen";
+
+/* Class = "IBUILabel"; text = "To change your account password enter your current password and new password below."; ObjectID = "awl-41-cEs"; */
+"awl-41-cEs.text" = "Bitte geben Sie erst Ihr aktuelles Passwort und dann Ihr neues passwort ein.";
+
+/* Class = "IBUIBarButtonItem"; title = "Done"; ObjectID = "eSk-FD-Kjz"; */
+"eSk-FD-Kjz.title" = "Fertig";
+
+/* Class = "IBUITextField"; placeholder = "Confirm Password"; ObjectID = "mbL-nR-glA"; */
+"mbL-nR-glA.placeholder" = "Passwort bestätigen";
+
+/* Class = "IBUINavigationItem"; title = "Settings"; ObjectID = "nGf-bv-KQ9"; */
+"nGf-bv-KQ9.title" = "Einstellungen";
+
+/* Class = "IBUIBarButtonItem"; title = "Save"; ObjectID = "rOv-p0-jPn"; */
+"rOv-p0-jPn.title" = "Speichern";
+
+/* Class = "IBUITextField"; placeholder = "Current Password"; ObjectID = "sfM-G0-KWE"; */
+"sfM-G0-KWE.placeholder" = "Aktuelles Passwort";
+

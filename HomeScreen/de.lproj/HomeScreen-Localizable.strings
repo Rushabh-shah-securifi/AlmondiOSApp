@@ -1,0 +1,94 @@
+/* 
+  Almond-Localizable.strings
+  Almond
+
+  Created by Priya Yerunkar on 13/12/14.
+  Copyright (c) 2014 Securifi Ltd. All rights reserved.
+*/
+
+/*------- Localization strings specific to Almond app -------*/
+
+
+/* affiliation */
+"router.linkalmond-msg.label.Let's link an Almond." = "Ein HomeScreen \n verbinden.";
+"router.linkalmond-msg.label.Start the wizard on your Almond." = "Starten Sie den Assistenten auf dem LCD und tippen Sie auf das Symbol.";
+"Almond Linked" = "HomeScreen Verlinkt";
+"Link Almond" = "Cloud Link";
+"Local Link Almond" = "Lokaler Link";
+"Please wait while your Almond is being linked to cloud." = "Bitte warten Sie bis Ihr HomeScreen mit der Cloud verlinkt ist.";
+"This Almond is already linked to another user." = "Dieses HomeScreen ist bereits mit einem anderen Nutzer verlinkt.
+Kontaktieren Sie uns unter support@securifi.com";
+"Almond could not be affiliated" = "HomeScreen konnte nicht eingegliedert werden.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "Starten Sie die HomeScreen Konto App auf dem LCD und geben Sie den Code ein.";
+"cloudlink.button.Link Almond" = "HomeScreen verlinken";
+"cloudlink.button.Add Almond Locally" = "HomeScreen lokal hinzufügen";
+
+/* login */
+"Access your Almonds and your home devices from anywhere." = "Steuern Sie er HomeScreen und Geräte von überall.";
+
+/* router tab */
+"router.offline-msg.label.Almond is Offline." = "HomeScreen ist Offline.";
+//m
+"router.msg-link.Almond erfolgreich verlinkt." = "HomeScreen erfolgreich verlinkt.";
+"router.btn-title.Unlink Almond?" = "HomeScreen Verlinkung trennen?";
+"router.btn-title.Link Almond Locally" = "HomeScreen lokal verlinken";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Hinweis! Ohne Cloud können Sie keine Sensoren aus der Ferne steuern oder Benachrichtigungen erhalten.";
+"router.error-msg.This Almond is already linked." = "Dieses HomeScreen ist bereits verlinkt.";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." = "Es ist ein Fehler aufgetreten, bitte versuchen Sie es erneut.";
+
+"router.card-title.Cloud Almond Link" = "Cloud HomeScreen Link";
+"router.card-title.Local Almond Link" = "Lokaler HomeScreen Link";
+"router.software-version.header.instructions" = "Bitte tippen Sie auf\"Einstellungen.\" auf Ihrem HomeScreen";
+
+/* sensors */
+"router.no-sensors.label.Add a sensor from your Almond." = "Fügen Sie einen Sensor zu HomeScreen hinzu.";
+
+/* signup */
+"signup.headline-text.Securifi Cloud Account." = "Securifi Cloud Konto.";
+"signup.headline-text.Access your Almonds" = "Access your HomeScreens and
+your home devices from anywhere.";
+
+/* Accounts */
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "Dieses HomeScreen gehört Ihnen";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "HomeScreen Name";
+"accounts.ownedAlmond.button.RenameAlmond" = "HomeScreen Name ändern";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = "HomeScreen Name";
+"accounts.sharedAlmond.button.RenameAlmond" = " HomeScreen Name ändern ";
+"accounts.alert.onDeleteAccount.message" = "Durch die Löschung des Kontos wird die Verlinkung des HomeScreens getrennt und die Nutzereinstelungen warden gelöscht. Bitte geben Sie Ihr Passwort ein um den Vorgang zu bestätigen.";
+"accounts.alert.onUnlinkAlmond.title" = "HomeScreen Verlinkung trennen";
+"accounts.alert.onUnlinkAlmond.message" = "Bitte bestätigen Sie die Trennung mit Ihrem Passwort.";
+"accounts.itoast.almondNameMax32Characters" = "HomeScreen kann nicht länger als 32 Zeichen sein.";
+"accounts.itoast.unableToChangeAlmondName" = "Sorry! HomeScreen Name konnte nicht geändert werden";
+"accounts.hud.unlinkingAlmond" = "Trenne HomeScreen Verlinkung...";
+"accounts.hud.inviteUserToShareAlmond" = "Nutzer Einladen und HomeScreen teilen...";
+"accounts.hud.changeAlmondName" = "HomeScreen Name ändern...";
+"accounts.hud.removeSharedAlmond" = "Geteilten HomeScreen entfernen...";
+"accounts.unlinkAlmond.failure.default" = "Sorry! HomeScreen Verlinkung trennen fehlgeschlagen.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "Dieser Nutzer hat kein Securifi Konto.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "Der Nutzer hat sein Securifi Konto noch nicht bestätigt.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "Dieses HomeScreen gehört nicht Ihnen.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "Sie haben dieses HomeScreen bereits mit dem Nutzer geteilt";
+"accounts.inviteUserToShareAlmond.failure.default" = "Sorry! HomeScreen teilen fehlgeschlagen.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "Sie nicht mit diesem HomeScreen assoziert. ";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "Zweitnutzer ist nicht mit diesm HomeScreen assoziert.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "Sie sind nicht mit diesem HomeScreen assoziert";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "Sorry! Entfernen des geteilten HomeScreens fehlgeschlagen.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "HomeScreen MACs";
+"Copied Almond MAC" = "KopierteHomeScreen MAC";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "Mit HomeScreen über die Cloud verbunden.";
+"alertview -Connected to your Almond via cloud." = " Steuern Sie er HomeScreen und Geräte von überall.";
+"Add Local Connection Settings" = "Lokale Verbindungseinstell. hinzufügen";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "Cloud Verbindung zu HomeScreen fehlgeschlagen. Tippen sie auf neu laden oder wechseln Sie zur lokalen Verbindung.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = " Lokale Verbindungseinstell. hinzufügen. Cloud Verbindung zu HomeScreen fehlgeschlagen.";
+"hud message-Setting Almond to Away Mode" = "HomeScreen auf Nicht zuhause Modus stellen";
+"hud message-Setting Almond to Home Mode" = " HomeScreen auf zuhause Modus stellen ";
+"alertview Can't connect to your Almond. Please select a connection method." = "Verbindung mit Ihrem HomeScreen kann nicht hergestellt werden. Bitte zu lokaler Verbindung wechseln.";
+"alertview localconnection_Connected to your Almond locally." = "Mit Ihrem HomeScreen lokal verbunden.";
+
+

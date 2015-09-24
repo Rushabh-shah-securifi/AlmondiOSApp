@@ -26,9 +26,6 @@ Contacte con nosotros en support@securifi.com";
 "cloudlink.button.Link Almond" = "Vincular Almond";
 "cloudlink.button.Add Almond Locally" = "Agregar Almond localmente";
 
-/* login */
-"Access your Almonds and your home devices from anywhere." = "Acceda a sus Almond y
-a los dispositivos de su hogar desde cualquier lugar.";
 
 /* router tab */
 "router.offline-msg.label.Almond is Offline." = "El Almond está desconectado.";
@@ -90,3 +87,7 @@ a los dispositivos de su hogar desde cualquier lugar.";
 "alertview Can't connect to your Almond. Please select a connection method." = "No se puede conectar al Almond. Seleccione un método de conexión.";
 "alertview localconnection_Connected to your Almond locally." = "Conectado al Almond localmente.";
 
+//to be translated
+
+/* login */
+"Monitor and Control your home from anywhere." = "Supervisar y controlar su casa desde cualquier lugar.";

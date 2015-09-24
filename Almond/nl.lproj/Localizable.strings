@@ -574,7 +574,7 @@ Volg deze en tik op Doorgaan om aan te melden.";
 "HEATING TEMP." = "verwarmingstemperatuur";
 "Version" = "Versie";
 "Settings" = "Instellingen";
-"AlmondList" = "Almond lijst";
+
 
 //
 "login.local.Switch to Local Connection" = "Naar lokale verbinding overschakelen";
@@ -645,6 +645,31 @@ Volg deze en tik op Doorgaan om aan te melden.";
 "Device.propertyeditview.controller.Example 444" = "voorbeeld 444";
 
 "scenes.new-scene.label.New Scene" = "nieuwe scène";
+
+//24-9
+"View Device History”=“View Device History";
+"Name" = "Name";
+"Location" = "Location";
+"Stop" = "Stop";
+"Battery" = "Battery";
+"Temperature" = "Temperature";
+"AC Mode" = "AC Mode";
+"High Temperature" = "High Temperature";
+"Low Temperature" = "Low Temperature";
+"Swing" = "Swing";
+"Power" = "Power";
+"IR Code" = "IR Code";
+"Configuration" = "Configuration";
+"Humidity" = "Humidity";
+"Away Mode" = "Away Mode";
+"CO Level" = "CO Level";
+"Smoke Level" = "Smoke Level";
+"Mode" = "Mode";
+"Target Range" = "Target Range";
+"Fan Mode" = "Fan Mode";
+"Fan" = "Fan";
+"Notify me" = "Notify me";
+
 
 
 /* ==================================================================== */
@@ -742,3 +767,4 @@ thuisapparaten overal.";
 /* login */
 "Monitor and Control your home from anywhere." = "Bewaken en controleren van uw huis overal.";
 
+"AlmondList" = "Almond lijst";

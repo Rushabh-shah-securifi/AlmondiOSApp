@@ -1,0 +1,33 @@
+
+/* Class = "IBUITextField"; placeholder = "New Password"; ObjectID = "3uz-RY-rCm"; */
+"3uz-RY-rCm.placeholder" = "新パスワードNew Password";
+
+/* Class = "IBUIBarButtonItem"; title = "Cancel"; ObjectID = "G96-BW-p5i"; */
+"G96-BW-p5i.title" = "キャンセルCancel";
+
+/* Class = "IBUINavigationItem"; title = "Change Password"; ObjectID = "KWr-AR-IIt"; */
+"KWr-AR-IIt.title" = "パスワードを変更Change Password";
+
+/* Class = "IBUITableViewController"; title = "Settings"; ObjectID = "LRJ-C2-ya9"; */
+"LRJ-C2-ya9.title" = "設定Settings";
+
+/* Class = "IBUILabel"; text = "アカウントパスワードを変更したい場合、現在のパスワードと、新しいパスワードを入力してください。
+ To change your account password enter your current password and new password below."; ObjectID = "awl-41-cEs"; */
+"awl-41-cEs.text" = "アカウントパスワードを変更したい場合、現在のパスワードと、新しいパスワードを入力してくださいTo change your account password enter your current password and new password below.";
+
+/* Class = "IBUIBarButtonItem"; title = "終了Done"; ObjectID = "eSk-FD-Kjz"; */
+"eSk-FD-Kjz.title" = "終了Done";
+
+/* Class = "IBUITextField"; placeholder = "パスワードを確認Confirm Password"; ObjectID = "mbL-nR-glA"; */
+"mbL-nR-glA.placeholder" = "パスワードを確認";
+
+/* Class = "IBUINavigationItem"; title = "設定"; ObjectID = "nGf-bv-KQ9"; */
+"nGf-bv-KQ9.title" = "設定";
+
+/* Class = "IBUIBarButtonItem"; title = "保存Save"; ObjectID = "rOv-p0-jPn"; */
+"rOv-p0-jPn.title" = "保存Save";
+
+/* Class = "IBUITextField"; placeholder = "今のパスワードCurrent Password"; ObjectID = "sfM-G0-KWE"; */
+"sfM-G0-KWE.placeholder" = "今のパスワードCurrent Password";
+
+
