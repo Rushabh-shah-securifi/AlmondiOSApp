@@ -272,16 +272,15 @@
         UILabel *lblNewScene = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, table_width-20, 130)];
         lblNewScene.textAlignment = NSTextAlignmentCenter;
         [lblNewScene setFont:[UIFont fontWithName:AVENIR_ROMAN size:18]];
-        lblNewScene.text = @"New Scene";//NSLocalizedString(@"scenes.no-scenes.label.A scene is a group of sensors and a desired state for these sensors.", @"A scene is a group of sensors and a desired state for these sensors.");
+        lblNewScene.text = @"New Scene";
         lblNewScene.textColor = [UIColor grayColor];
         [cell addSubview:lblNewScene];
-        
         
         UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, table_width-20, 130)];
         lblNoSensor.textAlignment = NSTextAlignmentCenter;
         [lblNoSensor setFont:[UIFont fontWithName:AVENIR_ROMAN size:15]];
         lblNoSensor.numberOfLines = 10;
-        lblNoSensor.text = NSLocalizedString(@"scenes.no-scenes.label.A scene is a group of sensors and a desired state for these sensors.", @"A scene is a group of sensors and a desired state for these sensors.");
+        lblNoSensor.text = NSLocalizedString(@"scenes.no-scenes.label.Scenes allow you to control multiple devices at the same time. For example you can turn all your lights off with a single click.", @"Scenes allow you to control multiple devices at the same time. For example you can turn all your lights off with a single click.");
         lblNoSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblNoSensor];
         

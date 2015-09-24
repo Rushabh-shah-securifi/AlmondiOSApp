@@ -95,9 +95,9 @@
     
     lblDeviceName.text = self.connectedDevice.name;
     if (self.connectedDevice.isActive) {
-        lblStatus.text = NSLocalizedString(@"CONNECTED",@"CONNECTED");
+        lblStatus.text = NSLocalizedString(@"wifi.Active",@"ACTIVE");
     }else{
-        lblStatus.text = NSLocalizedString(@"NOT CONNECTED",@"NOT CONNECTED");
+        lblStatus.text = NSLocalizedString(@"wifi.Inactive",@"INACTIVE");
     }
     UIImage* image = [UIImage imageNamed:[self.connectedDevice iconName]];
     imgIcon.image = image;
@@ -464,7 +464,7 @@
         self.connectedDevice.deviceType = selectedDeviceType;
         self.connectedDevice.deviceUseAsPresence = btnUsePresence.selected;
         self.connectedDevice.name = clientName;
-        self.connectedDevice.timeout = clientTimeout;
+        self.connectedDevice.timeout = [clientTimeout integerValue];
         self.connectedDevice.deviceConnection = selectedConnectionType;
         [self.delegate updateDeviceInfo:self.connectedDevice];
         

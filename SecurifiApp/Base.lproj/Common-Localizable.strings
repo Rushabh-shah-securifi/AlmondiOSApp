@@ -109,7 +109,7 @@ reset at the moment. Try again later.";
 "sensors.label.SENSOR SETTINGS" = "SENSOR SETTINGS";
 "sensors.settings-label.Send Notifications" = "Send Notifications";
 "sensors.no-sensors.label.You don't have any sensors yet." = "You don't have any sensors yet.";
-"scenes.no-scenes.label.A scene is a group of sensors and a desired state for these sensors." = "A scene is a group of sensors and a desired state for these sensors.";
+"scenes.no-scenes.label.Scenes allow you to control multiple devices at the same time. For example you can turn all your lights off with a single click." = "Scenes allow you to control multiple devices at the same time. For example you can turn all your lights off with a single click.";
 "sensors.account-confirm.label.Please confirm your account (less than a day left)." = "Please confirm your account (less than a day left).";
 "sensors.account-confirm.label.Please confirm your account (%d days left)." = "Please confirm your account (%d days left).";
 "sensors.account-confirm.label.Check activation email for instructions." = "Check activation email for instructions.";
