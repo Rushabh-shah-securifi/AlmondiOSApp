@@ -17,7 +17,6 @@
 #import "UIViewController+Securifi.h"
 #import "Analytics.h"
 #import "SFIPreferences.h"
-#import "UIImage+Securifi.h"
 #import "UIApplication+SecurifiNotifications.h"
 #import "SFITabBarController.h"
 
@@ -27,7 +26,6 @@
 
 @interface SFIMainViewController () <SFILoginViewDelegate, SFILogoutAllDelegate, SFIAccountDeleteDelegate, UIGestureRecognizerDelegate, UITabBarControllerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
-@property(nonatomic, readonly) NSTimer *cloudReconnectTimer;
 @property BOOL presentingLoginController;
 @end
 
@@ -86,6 +84,14 @@
     [center addObserver:self selector:@selector(onPresentAccounts) name:UI_ON_PRESENT_ACCOUNTS object:nil];
     [center addObserver:self selector:@selector(onDidFailToRegisterForNotifications) name:kSFIDidFailToRegisterForNotifications object:nil];
     [center addObserver:self selector:@selector(onDidFailToDeregisterForNotifications) name:kSFIDidFailToDeregisterForNotifications object:nil];
+
+    // At app startup, be sure to show logon when the app is in Cloud connection mode and has no logon credentials
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    if (![toolkit hasLoginCredentials]) {
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self tryPresentLogonScreen];
+        });
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -94,10 +100,6 @@
 }
 
 #pragma mark - Connection Management
-
-- (BOOL)isCloudOnline {
-    return [[SecurifiToolkit sharedInstance] isCloudOnline];
-}
 
 - (void)conditionalTryConnectOrLogon:(BOOL)onViewAppearing {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -125,7 +127,6 @@
             [self showToast:NSLocalizedString(@"Sorry! Unable to establish Internet route to cloud service.", @"Sorry! Unable to establish Internet route to cloud service.")];
         }
 
-        [self scheduleReconnectTimer];
         return;
     }
 
@@ -143,9 +144,6 @@
         [self.HUD show:YES];
     }
 
-    if (!supportsLocalConnections) {
-        [self scheduleReconnectTimer];
-    }
     [toolkit initToolkit];
 }
 
@@ -157,14 +155,6 @@
     });
 }
 
-- (void)displayNoCloudConnectionImage {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        // Ex: "Almond-splash_image"
-        self.imgSplash.image = [UIImage assetImageNamed:@"no_cloud"];
-        [self showToast:NSLocalizedString(@"mainviewcontroller_Sorry! Could not connect to the cloud service.", "Sorry! Could not connect to the cloud service.")];
-    });
-}
-
 #pragma mark - Reconnection
 
 - (void)onReachabilityDidChange:(id)sender {
@@ -172,9 +162,8 @@
 }
 
 - (void)onNetworkUpNotifier:(id)sender {
-    if (self.isCloudOnline) {
+    if ([[SecurifiToolkit sharedInstance] isCloudOnline]) {
         [self.HUD hide:YES];
-        [self invalidateTimer];
     }
 }
 
@@ -294,7 +283,7 @@
 
     // Present login screen
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login_iPhone" bundle:nil];
-    SFILoginViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SFILoginViewController"];
+    SFILoginViewController *ctrl = (SFILoginViewController *) [storyboard instantiateViewControllerWithIdentifier:@"SFILoginViewController"];
     ctrl.delegate = self;
     ctrl.mode = [SecurifiToolkit sharedInstance].localLinkedAlmondList.count == 0 ? SFILoginViewControllerMode_localLinkOption : SFILoginViewControllerMode_switchToLocalConnection;
 
@@ -310,7 +299,7 @@
 
 - (void)presentLogoutAllView {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-    SFILogoutAllViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SFILogoutAllViewController"];
+    SFILogoutAllViewController *ctrl = (SFILogoutAllViewController *) [storyboard instantiateViewControllerWithIdentifier:@"SFILogoutAllViewController"];
     ctrl.delegate = self;
 
     UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
@@ -319,7 +308,7 @@
 
 - (void)presentAccountsView {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"AccountsStoryboard_iPhone" bundle:nil];
-    SFIAccountsTableViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SFIAccountsTableViewController"];
+    SFIAccountsTableViewController *ctrl = (SFIAccountsTableViewController *) [storyboard instantiateViewControllerWithIdentifier:@"SFIAccountsTableViewController"];
     ctrl.delegate = self;
 
     UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
@@ -360,35 +349,6 @@
         }];
     });
 }
-
-#pragma mark - Timers
-
-- (void)invalidateTimer {
-    [self.cloudReconnectTimer invalidate];
-    _cloudReconnectTimer = nil;
-}
-
-- (void)scheduleReconnectTimer {
-//    [self invalidateTimer];
-//    _cloudReconnectTimer = [NSTimer scheduledTimerWithTimeInterval:CLOUD_CONNECTION_RETRY
-//                                                            target:self
-//                                                          selector:@selector(onNoCloudConnectionRetry)
-//                                                          userInfo:nil
-//                                                           repeats:NO];
-}
-
-- (void)onNoCloudConnectionRetry {
-    [self.HUD hide:YES];
-
-    if ([self isCloudOnline]) {
-        [self displaySplashImage];
-    }
-    else {
-        [self displayNoCloudConnectionImage];
-        [self conditionalTryConnectOrLogon:NO];
-    }
-}
-
 
 #pragma mark - Notification Registration
 
