@@ -176,9 +176,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         self.navigationItem.title = plus.almondplusName;
     }
 
-    if (!self.shownHudOnce) {
-        self.shownHudOnce = YES;
-        [self showHudWithTimeout];
+    if (toolkit.defaultConnectionMode == SFIAlmondConnectionMode_cloud) {
+        if (!self.shownHudOnce) {
+            self.shownHudOnce = YES;
+            [self showHudWithTimeout];
+        }
     }
 
     // Reset New Version checking state and view
@@ -220,7 +222,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     else if (self.isAlmondUnavailable) {
         state = RouterViewState_almond_unavailable;
     }
-    else if (![self isNetworkOnline]) {
+    else if (![[SecurifiToolkit sharedInstance] isNetworkOnline]) {
         state = RouterViewState_cloud_offline;
     }
     else {
@@ -247,10 +249,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
 - (BOOL)isNoAlmondLoaded {
     return [self.almondMac isEqualToString:NO_ALMOND];
-}
-
-- (BOOL)isNetworkOnline {
-    return [[SecurifiToolkit sharedInstance] isNetworkOnline];
 }
 
 #pragma mark - Commands
