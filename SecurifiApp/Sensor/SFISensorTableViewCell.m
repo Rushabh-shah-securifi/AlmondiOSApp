@@ -961,14 +961,14 @@
             imageName = [self imageNameForNoValue];
             status = DEF_COULD_NOT_UPDATE_SENSOR;
     }
-    
+    ;
     [self configureSensorImageName:imageName statusMesssage:status];
+    
 }
 
 - (void)configureMultiSwitch_43 {
-    
-    NSString *imageName = @"43_multi_switch";
-    self.deviceImageView.image = [UIImage imageNamed:imageName];
+    self.iconImageName = @"43_multi_switch";
+    self.deviceImageView.image = [UIImage imageNamed:self.iconImageName];
     
     NSMutableArray *status = [NSMutableArray array];
     NSString *sw1 = @"";
@@ -993,38 +993,94 @@
     
     [status addObject:[NSString stringWithFormat:@"SWITCH1 :%@",sw1]];
     [status addObject:[NSString stringWithFormat:@"SWITCH2 :%@",sw2]];
-    //    [self tryAddBatteryStatusMessage:status];
+    
     [self setDeviceStatusMessages:status];
+    self.statusTextArray = status;
 }
 
 - (void)configureMultiSoundSiren_55 {
-    self.deviceImageView.image = [UIImage imageNamed:@"55_multisoundsiren_icon"];
+    self.iconImageName = @"55_multisoundsiren_icon";
+    self.deviceImageView.image = [UIImage imageNamed:self.iconImageName];
+    
     NSMutableArray *status = [NSMutableArray array];
     
     SFIDeviceKnownValues *kValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL];
     
-    [status addObject:kValue.value];
+    NSString * strVal = @"";
+    switch ([kValue intValue]) {
+        case 0:
+            strVal = @"STOP";
+            break;
+        case 1:
+            strVal = @"Emergency";
+            break;
+        case 2:
+            strVal = @"Fire";
+            break;
+        case 3:
+            strVal = @"Ambulance";
+            break;
+        case 4:
+            strVal = @"Police";
+            break;
+        case 5:
+            strVal = @"Door Chime";
+            break;
+        case 6:
+            strVal = @"Beep";
+            break;
+        default:
+            break;
+    }
+    [status addObject:[strVal uppercaseString]];
     [self setDeviceStatusMessages:status];
+    
+    self.statusTextArray = status;
 }
 
 - (void)configureMultiSensor_49 {
-    self.deviceImageView.image = [UIImage imageNamed:@"10_motion_true"];
+    SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
+    if (!values) {
+        [self configureUnknownDevice];
+        return;
+    }
+    
+    NSString *noImage = [self imageNameForNoValue];
+    self.iconImageName = [values choiceForBoolValueTrueValue:DT11_MOTION_SENSOR_TRUE falseValue:DT11_MOTION_SENSOR_FALSE nilValue:noImage];
+    
+    NSString *message = [values choiceForBoolValueTrueValue:@"MOTION DETECTED" falseValue:@"NO MOTION" nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
+    
+    self.deviceImageView.image = [UIImage imageNamed:self.iconImageName];
+    
     NSMutableArray *status = [NSMutableArray array];
-    [self tryAddBatteryStatusMessage:status];
+    if (message) {
+        [status addObject:message];
+    }
+    [self tryAddTemperatureStatus:status];
     
     [self setDeviceStatusMessages:status];
+    
+    self.statusTextArray = status;
 }
 
 - (void)configureEnergyReader_56 {
-    self.deviceImageView.image = [UIImage imageNamed:@"56_energy_reader"];
+    self.iconImageName = @"56_energy_reader";
+    self.deviceImageView.image = [UIImage imageNamed:self.iconImageName];
     NSMutableArray *status = [NSMutableArray array];
-    [self tryAddBatteryStatusMessage:status];
+    
+    SFIDeviceKnownValues *energyValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_ENERGY];
+    SFIDeviceKnownValues *powerValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_POWER];
+    
+    [status addObject:[NSString stringWithFormat:@"POWER :%@",powerValue.value]];
+    [status addObject:[NSString stringWithFormat:@"ENERGY :%@",energyValue.value]];
     
     [self setDeviceStatusMessages:status];
+    self.statusTextArray = status;
 }
 
 - (void)configureNestSmokeDetector_58 {
-    self.deviceImageView.image = [UIImage imageNamed:@"nest_58_icon"];
+    self.iconImageName = @"nest_58_icon";
+    self.deviceImageView.image = [UIImage imageNamed:self.iconImageName];
     NSMutableArray *status = [NSMutableArray array];
     
     SFIDeviceKnownValues *coValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CO_ALARM_STATE];
@@ -1049,21 +1105,21 @@
     [status addObject:[NSString stringWithFormat:@"CO :%@",coText]];
     //    [self tryAddBatteryStatusMessage:status];
     [self setDeviceStatusMessages:status];
-    
+    self.statusTextArray = status;
 }
 
 - (void)configureNestThermostat_57 {
     self.deviceImageView.image = nil;
     self.deviceImageViewSecondary.image = nil;
     
-    UILabel *lblThemperatureMain = [[UILabel alloc] initWithFrame:self.deviceImageView.frame];
+    UILabel *lblThemperatureMain = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, LEFT_LABEL_WIDTH, SENSOR_ROW_HEIGHT - 10)];
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
-    lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:29.0f];
+    lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:35.0f];
     lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
     lblThemperatureMain.textColor = [UIColor whiteColor];
     lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
     lblThemperatureMain.adjustsFontSizeToFitWidth = YES;
-    [lblThemperatureMain setMinimumScaleFactor:12.0/[UIFont labelFontSize]];
+    [lblThemperatureMain setMinimumScaleFactor:0.5f];
     
     [self.contentView addSubview:lblThemperatureMain];
     
@@ -1075,6 +1131,7 @@
         [status addObject:[strHVAC_STATE capitalizedString]];
         //[self tryAddBatteryStatusMessage:status];
         [self setDeviceStatusMessages:status];
+        self.statusTextArray = status;
     }
 }
 
@@ -1083,24 +1140,26 @@
     self.deviceImageView.image = nil;
     self.deviceImageViewSecondary.image = nil;
     
-    UILabel *lblThemperatureMain = [[UILabel alloc] initWithFrame:self.deviceImageView.frame];
+    UILabel *lblThemperatureMain = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, LEFT_LABEL_WIDTH, SENSOR_ROW_HEIGHT - 10)];
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
-    lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:29.0f];
+    lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:35.0f];
     lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
     lblThemperatureMain.textColor = [UIColor whiteColor];
     lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
     lblThemperatureMain.adjustsFontSizeToFitWidth = YES;
-    [lblThemperatureMain setMinimumScaleFactor:12.0/[UIFont labelFontSize]];
+    [lblThemperatureMain setMinimumScaleFactor:0.5f];
     
     [self.contentView addSubview:lblThemperatureMain];
+    
     
     
     currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_MODE];
     NSString *AC_MODE = currentDeviceValue.value;
     if (AC_MODE) {
         NSMutableArray *status = [NSMutableArray array];
-        [status addObject:[AC_MODE capitalizedString]];
+        [status addObject:[AC_MODE uppercaseString]];
         [self setDeviceStatusMessages:status];
+        self.statusTextArray = status;
     }
 }
 
@@ -1169,6 +1228,8 @@
     [self tryAddBatteryStatusMessage:status];
     
     [self setDeviceStatusMessages:status];
+    self.iconImageName = imageName;
+    self.statusTextArray = status;
 }
 
 - (NSString *)imageNameForNoValue {
