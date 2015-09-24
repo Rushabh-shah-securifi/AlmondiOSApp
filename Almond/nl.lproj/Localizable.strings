@@ -1,0 +1,777 @@
+/*
+ Common-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+
+/*------- Localization strings common across all apps -------*/
+
+
+/* hud. buttons, controls */
+"hud.One moment please..." = "Een ogenblik geduld...";
+"hud.Updating settings..." = "Instellingen bijwerken...";
+"alert.button.OK" = "OK";
+"Oops!" = "Oeps!";
+"Sorry!" = "Het spijt ons!";
+"toast.Saving..." = "Opslaan...";
+
+/* affiliation */
+"Please try later." = "Probeer het later opnieuw.";
+"Please enter a valid code." = "Voer een geldige code in.";
+"alert.msg.Logout was unsuccessful" = "Sorry. Het afmelden is mislukt. Probeer het opnieuw.";
+"alert.title.Logout Unsuccessful" = "Afmelden mislukt";
+//m
+"cloudlink.title.Cloud Link" = "Cloud-link";
+"cloudlink.label.Linking to Cloud" = "Koppelen met de cloud";
+"cloudlink.label.Name" = "Naam";
+"cloudlink.label.MAC Address" = "MAC-adres";
+"cloudlink.label.WIFI SSID" = "WIFI-SSID";
+"Enter code" = "Code invoeren";
+
+
+/* activation */
+
+"Reactivation link has been sent to your account." = "De link voor het opnieuw activeren is naar uw account verzonden.";
+"sensor.activation.The username was not found" = "De gebruikersnaam is niet gevonden";
+"The account is already validated" = "De account is al gevalideerd";
+"Sorry! Cannot send reactivation link" = "Het spijt ons! De link voor het opnieuw activeren
+kan op dit moment niet worden verzonden. Probeer het later opnieuw.";
+"The email ID is invalid." = "De email-ID is ongeldig.";
+
+/* change password */
+
+"password-validation.strength-label.Password: Mismatch" = "Wachtwoord: komt niet overeen";
+"password-validation.strength-label.Password: Too Short" = "Wachtwoord: te kort";
+"password-validation.strength-label.Password: Too Long" = "Wachtwoord: te lang";
+"password-validation.strength-label.Password: Weak" = "Wachtwoord: zwak";
+"password-validation.strength-label.Password: Medium" = "Wachtwoord: gemiddeld";
+"password-validation.strength-label.Password: Strong" = "Wachtwoord: sterk";
+"The password should be %d - %d characters long." = "Het wachtwoord moet minstens %d - %d tekens lang zijn.";
+"An account already exists with this email." = "Er bestaat al een account met dit e-mailadres.";
+"The email or password was incorrect." = "Het e-mailadres of wachtwoord is niet juist.";
+"Sorry! Het registreren is mislukt." = "Het spijt ons! Het registreren is mislukt.";
+"The username was not found" = "De gebruikersnaam is niet gevonden";
+"There is a password mismatch." = "Het wachtwoord komt niet overeen.";
+"You forgot to enter your password." = "U bent vergeten om uw wachtwoord in te voeren.";
+"You have entered an invalid email ID." = "U hebt een ongeldig e-mail-ID ingevoerd.";
+"You forgot to enter your email ID." = "U bent vergeten om uw e-mail-ID in te voeren.";
+"password.hud.Changing password..." = "Wachtwoord wijzigen...";
+"password.label-text.There was some error on cloud. Please try later." = "Er is een fout opgetreden op de cloud. Probeer het later opnieuw.";
+"Sorry! You are not registered with us yet." = "Het spijt ons! U bent nog niet bij ons geregistreerd.";
+"You need to fill all the fields." = "U moet alle velden invullen.";
+"The current password was incorrect." = "Het huidige wachtwoord is niet juist.";
+"Sorry! Password change was unsuccessful." = "Het spijt ons! Het wijzigen van het wachtwoord is mislukt.";
+
+/* login */
+"Please enter Username and Password" = "Voer de gebruikersnaam en het wachtwoord in";
+"Sorry! Could not complete the request." = "Het spijt ons! Kan de aanvraag niet voltooien.";
+"Unable to establish Internet route to cloud service." = "Kan de internetroute niet
+niet verbinden met de cloud-service.";
+"Sorry! Login was unsuccessful." = "Het spijt ons! Het aanmelden is mislukt.";
+"The email was not found." = "Het e-mailadres is niet gevonden.";
+"The password is incorrect." = "Het wachtwoord is niet juist.";
+"Almost there." = "Bijna klaar.";
+"You need to activate your account." = "U moet uw account activeren.";
+"The email or password is incorrect" = "Het e-mailadres of wachtwoord is niet correct.";
+"Password reset link has been sent to your account." = "De link voor het opnieuw activeren is naar uw account verzonden.";
+"Sorry! Your password cannot be reset at the moment. Try again later." = "Het spijt ons! Uw wachtwoord kan momenteel
+niet opnieuw worden ingesteld. Probeer het later opnieuw.";
+"Login" = "Aanmelden";
+
+
+/* logout all */
+
+"logoutall.navbar-title.Continue" = "Doorgaan";
+"logoutall.label.Logout from all devices was not successful." = "Het afmelden op alle apparaten is mislukt.";
+"logoutall.alertview.title.Error" = "Ongeldig wachtwoord";
+"logoutall.alertview.msg.The password is invalid." = "Het wachtwoord is ongeldig.";
+
+/* router tab */
+"router.offline-msg.label.Please check the router." = "Controleer de router.";
+"router.card-title.Cloud Almond Link" = "Cloud Almond-link";
+"router.card-title.Cloud Almond Link" = "Lokale Almond-link";
+"router.card-title.Wireless Settings" = "Draadloze instellingen";
+"router.wireless-status.Enabled" = "ingeschakeld";
+"router.wireless-status.Disabled" = "uitgeschakeld";
+"router.card.Settings are not available." = "De instellingen zijn niet beschikbaar.";
+"router.card-title.Devices & Users" = "Apparaten en gebruikers";
+"router.devices-summary.%d connected, %d blocked" = "%d verbonden, %d geblokkeerd";
+"router.software-version.header.Software Update Available" = "Software-update beschikbaar";
+"router.software-version.header.instructions" = "Tik op \"Instellingen\" op uw Almond";
+"router.software-version.Update Available" = "Update beschikbaar";
+"router.software-version.Current version" = "Huidige versie";
+"router.software-version.Not available" = "De versie-informatie is niet beschikbaar.";
+"router.card-title.Router Reboot" = "Router opnieuw opstarten";
+"router.reboot-msg.Router is rebooting. It will take at least" = "De router start opnieuw op. De router heeft minstens";
+"router.reboot-msg.2 minutes for the router to boot." = "2 minuten nodig om opnieuw op te starten.";
+"router.reboot-msg.Please refresh after sometime." = "Vernieuw na enige tijd.";
+"router.Router status is not available." = "De routerstatus is niet beschikbaar.";
+"router.Last reboot %@ ago" = "Laatste heropstart %@ geleden";
+"router.no-almonds.nav-title.Get Started" = "Aan de slag";
+"router.hud.Router is now online." = "De router is nu online.";
+"router.hud.Updating router firmware." = "Routersoftware bijwerken.";
+"router.hud.Router is rebooting." = "De router start opnieuw op.";
+"router.card-title.Send Logs" = "Logbestanden verzenden";
+"router.Sends %@'s logs to our server" = "Verzendt de logbestanden van %@ naar onze server";
+"router.hud.Sending Logs." = "Router instrueren om logbestanden te verzenden";
+//m
+"router.devicestatus.Connected as %@" = "Verbonden als %@";
+"router.devicesmac.MAC address is %@" = "Het MAC-adres is %@";
+"router.deviceIP.IP address is %@" = "Het IP-adres is %@";
+"router.reboot.title.Reboot the router?" = "De router opnieuw opstarten?";
+"It will take at least 2 minutes for the router" = "Het duurt minstens 2 minuten om de router";
+"to reboot. Please refresh after sometime." = "opnieuw op te starten. Vernieuw na enige tijd.";
+"router.settings.label.SSID" = "SSID";
+"router.settings.label.Channel" = "Kanaal";
+"router.settings.label.Wireless Mode" = "Draadloze modus";
+"router.settings.label.Security" = "Beveiliging";
+"router.settings.label.Encryption" = "Versleuteling";
+"router.settings.label.Country Region" = "Land regio";
+"router.nav-title.Get Started" = "Aan de slag";
+"router.refresh-title.Refresh router data" = "Routergegevens verzenden";
+"router.summary.IP Address : %@" = "IP-adres : %@";
+"router.summary.Admin Login : %@" = "Aanmelden als beheerder : %@";
+"router.software-version.title.Software Version" = "Softwareversie";
+"router.software-version-new.title.Software Version *" = "Softwareversie *";
+"router.software-version-new.title.Software Version" = "Softwareversie";
+"router.offline-msg. is offline" = " is offline";
+"router.log-textfield-placeholder.Describe your problem here" = "Beschrijf hier uw probleem";
+"router.log-send-success.summary.Thanks for sending logs" = "Bedankt om logbestanden te verzenden";
+"router.log-firmware-not-supported.Please update your router's firmware" = "Werk de firmware van uw router bij";
+"router.log-firmware-not-supported.in order to activate this functionality" = "om de functionaliteit te activeren";
+"router.version-title.Update now?" = "Nu bijwerken?";
+"router.update-summary.It will take a few minutes to update the software." = "Het duurt enkele minuten om de software bij te werken.";
+"router.network-title.Local Link" = "Lokale link";
+"router.link-button.Link" = "Link";
+"router.btn-title.Back to Cloud Link" = "Terug naar de cloud-link";
+"router.label.SSID 2.5GHz" = "SSID 2.5GHz";
+"router.label.SSID 5GHz" = "SSID 5GHz";
+"router.label.IP Address" = "IP-adres";
+"router.label.Admin Login" = "Aanmelden als beheerder";
+"router.label.Admin Password" = "Beheerderswachtwoord";
+"router.hud.Establishing Local Link..." = "Lokale link verbinden...";
+
+
+/* sensors */
+
+"Device has been tampered" = "Het apparaat is onrechtmatig gewijzigd";
+"sensors.button.Dismiss" = "Negeren";
+"sensors.label.Status" = "Status";
+"sensor.status-label.OFF" = "UIT";
+"sensor.status-label.ON" = "AAN";
+"sensor.status-label.OK" = "OK";
+"sensors.label.SENSOR SETTINGS" = "SENSORINSTELLINGEN";
+"sensors.settings-label.Send Notifications" = "Meldingen verzenden";
+"sensors.no-sensors.label.You don't have any sensors yet." = "U heeft nog geen sensors.";
+"scenes.no-scenes.label.A scene is a group of sensors and a desired state for these sensors." = "Een scène is een sensorgroep en een gewenste status voor deze sensoren.";
+"sensors.account-confirm.label.Please confirm your account (less than a day left)." = "Bevestig uw account (minder dan een dag).";
+"sensors.account-confirm.label.Please confirm your account (%d days left)." = "Bevestig uw account (resterende dagen).";
+"sensors.account-confirm.label.Check activation email for instructions." = "Controleer de activatie-e-mail voor instructies.";
+"sensors.account-confirm.label.Resend activation email" = "Activatie-e-mail opnieuw verzenden";
+"activation.toast.Reactivation link sent to your registerd email ID." = "De link voor het opnieuw activeren is naar uw geregistreerd e-mail-ID verzonden.";
+"sensor.thermostat.field-label.Set Point" = "Instelpunt";
+"sensor.thermostat.field-label.Heating" = "Verwarming";
+"sensor.thermostat.field-label.Cooling" = "Koeling";
+"sensor.thermostat.field-label.Mode" = "Modus";
+"sensor.thermostat.segment-control.Auto" = "Automatisch";
+"sensor.thermostat.segment-control.Heat" = "Verwarmen";
+"sensor.thermostat.segment-control.Cool" = "Koelen";
+"sensor.thermostat.segment-control.Off" = "Uit";
+"sensor.thermostat.field-label.Fan" = "Ventilator";
+"sensor.thermostat.segment-control.Auto Low" = "Automatisch laag";
+"sensor.thermostat.segment-control.On Low" = "Op laag";
+"sensor.thermostat.Thermostat is %@" = "Thermostaat is %@";
+"sensor.thermostat.Fan is %@" = "Ventilator is %@";
+"sensor.thermostat.Battery is at %@%%" = "Accu is op %@%%";
+"sensor.Power is %.3fW" = "Vermogen is %.3fW";
+"sensor.Current is %.3fA" = "Stroom is %.3fA";
+"sensor.Voltage is %.3fV" = "Spannning is is %.3fV";
+"sensor.lock.pin-picker.Pin %ld" = "Pin %ld";
+"sensor.toast.doorlock.PassCode must be 5 to 8 digits long" = "De wachtwoordcode moet tussen 5 en 8 tekens lang zijn ";
+"sensor.device-name-label.Name" = "Naam";
+"sensor.deivice-duration-label.Ring Duration" = "Aantal keer overgaan";
+"sensor.deivice-duration-placeholder.number of seconds" = "aantal seconden";
+"sensor.deivice-location-label.Located at" = "Bevindt zich in";
+"sensor.deivice-save-settings.button.Save" = "Opslaan";
+"sensor.device-status.label.Battery OK" = "ACCU OK";
+"sensor.device-status.label.Battery %" = "ACCU %@%%";
+"sensor.device-status.label.Low Battery" = "Lage accu";
+"sensor.device-status.label.LOW BATTERY" = "LAGE ACCU";
+"sensor.device-status.label.Battery Unknown" = "Accu onbekend";
+"sensor.doorlock.field-label.Pins" = "Pins";
+"sensor.doorlock.pinentry-textfield.placeholder.Code is not specified." = "De code is niet opgegeven.";
+"sensor.doorlock.button.Save Pin" = "Pin opslaan";
+"sensor.doorlock.field-label.Code" = "Code";
+"sensor.multilevel-switch.status-label.Dimmable, %@%%" = "Dimbaar, %@%%";
+"sensor.level-control.status-label.Dimmable" = "Dimbaar";
+"sensor.keyfob.status-label.ALL DISARMED" = "ALLES GEDEACTIVEERD";
+"sensor.keyfob.status-label.PERIMETER ARMED" = "PERIMETER GEACTIVEERD";
+"sensor.keyfob.status-label.ALL ARMED" = "ALLES GEACTIVEERD";
+"sensor.lightsensor.status-label.Illuminance %@" = "Verlichtingssterkte %@";
+"sensor.tempsensor.status-label.Humidity %@" = "Vochtigheid %@";
+"sensor.moisturesensor.status.FLOODED" = "ONDER WATER";
+"sensor.poweswitch.label.Power %@W" = "Vermogen %@W";
+"sensor.moisturesensor.status.Temp %@" = "Temp %@";
+"sensor.notificaiton.label.notificationMode" = "Breng me op de hoogte";
+"sensor.notificaiton.segment.Always" = "Altijd";
+"sensor.notificaiton.segment.Away" = "Afwezig";
+"sensor.notificaiton.segment.Off" = "Uit";
+"sensors.label.Color" = "Kleur";
+"sensor.hud.UpdatingSensordata" = "Sensorgegevens bijwerken...";
+
+//r
+"sensor.deivice-showlog.button.viewlogs" = "Logbestanden weergeven";
+"sensor.deivice-warning_rightview.seconds" = "seconden";
+"sensor.deivice.Highlightbutton Turn Off" = "Uitschakelen";
+"sensor.deivice.Highlightbutton Turn ON" = "Inschakelen";
+"Temperature is %@%@" = "Temperatuur is %@%@";
+"Humidity is %@%%" = "Vochtigheid is %@%%";
+"sensors.label.DimmableLight-Brightness" = "Helderheid";
+"sensors.label.DimmableLight-Saturation" = "Verzadiging";
+"sensors.label.DimmableLight-Color Temperature" = "Kleurtemperatuur";
+"sensors.label.HueLamp-Brightness" = "Helderheid";
+"sensors.label.HueLamp-Saturation" = "Verzadiging";
+"sensors.label.HueLamp-Color" = "Kleur";
+
+//rn
+"smoke-detector-Warning" = "Waarschuwing";
+"smoke-detector-Emergency" = "Noodgeval";
+"smoke-detector Smoke :%@ , CO :%@" = "Rook :%@ , CO :%@";
+
+"sensor-detail-Fan cell On" = "Aan";
+"sensor-detail-Fan cell Off" = "Uit";
+"sensor-detail-Target Temp" = "Doeltemperatuur";
+
+"sensor.notificaiton.fanindexpath.On" = "Aan";
+"sensor.notificaiton.fanindexpath.Off" = "Uit";
+"sensor.awaymode.indexpath Home" = "Start";
+"sensor.mode indexpath Off" = "Uit";
+"sensor.mode indexpath Cool" = "Koelen";
+"sensor.mode indexpath Heat" = "Verwarmen";
+"sensor.mode indexpath Heat-Cool" = "Verwarmen-koelen";
+
+"device-property-fanindexpah false" = "onwaar";
+"device-property-fanindexpah true" = "waar";
+"device property on mobile hud Unable to update sensor" = "Kan de sensor niet bijwerken";
+
+//new - sensor table view cell
+
+
+/* signup */
+
+"signup.navbar-title.Sign up" = "Registreren";
+"signup.barbutton.Decline" = "Weigeren";
+"signuo.barbutton.Accept" = "Accepteren";
+"signup.barbutton.Continue" = "Doorgaan";
+"signup.headline-text.Signing up." = "Registreren.";
+"signup.subheadline-text.Please wait one moment..." = "Een ogenblik geduld...";
+"signup.headline-text.Almost done." = "Bijna klaar.";
+"signup.headline-text.An activation link was sent to your email" = "Er is een activatielink verzonden naar uw e-mail.
+Volg deze en tik op Doorgaan om aan te melden.";
+"signup.footerbutton.Resend the activation email" = "Activatie-e-mail verzenden";
+"signup.footerbutton.Signup using another email" = "Registreren met een andere e-mailadres";
+"signup.footerlabel.Do you want to create another account?" = "Wilt u een andere account maken?";
+
+
+/* Accounts */
+"accounts.navbar-title.settings" = "Instellingen";
+"accounts.userprofile.title.account" = "Account";
+"accounts.userprofile.label.primaryEmail" = "PRIMAIR E-MAILADRES";
+"accounts.userprofile.label.password" = "WACHTWOORD";
+"accounts.userprofile.label.firstName" = "VOORNAAM";
+"accounts.userprofile.label.lastName" = "ACHTERNAAM";
+"accounts.userprofile.label.address" = "ADRES";
+"accounts.userprofile.label.country" = "LAND";
+"accounts.userprofile.label.zipCode" = "POSTCODE";
+
+"accounts.userprofile.title.placeholder.name" = "Wij kennen uw naam nog niet";
+"accounts.userprofile.textfield.placeholder.firstName" = "Wij kennen uw voornaam nog niet";
+"accounts.userprofile.textfield.placeholder.firstName" = "Wij kennen uw achternaam nog niet";
+"accounts.userprofile.textfield.placeholder.address1" = "Adreslijn 1";
+"accounts.userprofile.textfield.placeholder.address2" = "Adreslijn 2";
+"accounts.userprofile.textfield.placeholder.address3" = "Adreslijn 3";
+"accounts.userprofile.textfield.placeholder.country" = "In welk land bent u gevestigd?";
+"accounts.userprofile.textfield.placeholder.zipCode" = "Wat is uw postcode?";
+
+"accounts.userprofile.button.changePassword" = "Wachtwoord wijzigen";
+"accounts.userprofile.button.edit" = "Bewerken";
+"accounts.userprofile.button.add" = "Toevoegen";
+"accounts.userprofile.button.done" = "Gereed";
+"accounts.userprofile.button.deleteAccount" = "ACCOUNT VERWIJDEREN";
+"accounts.ownedAlmond.label.SharedWithOthers" = "Gedeeld met %d andere perso(o)n(en)";
+"accounts.ownedAlmond.label.deviceName" = "APPARAATNAAM";
+"accounts.ownedAlmond.label.accessEmail" = "E-MAIL OPENEN";
+"accounts.ownedAlmond.button.Unlink" = "Ontkoppelen";
+
+"accounts.ownedAlmond.button.Remove" = "Verwijderen";
+"accounts.ownedAlmond.button.InviteMore" = "MEER UITNODIGEN";
+"accounts.sharedAlmond.label.SharedWithYouBy" = "Met u gedeeld door";
+"accounts.sharedAlmond.label.deviceName" = "APPARAATNAAM";
+"accounts.sharedAlmond.button.Remove" = "Verwijderen";
+
+"accounts.alert.onDeleteAccount.title" = "Account verwijderen";
+"accounts.alert.onDeleteAccount.delete" = "Verwijderen";
+"accounts.alert.onDeleteAccount.Cancel" = "Annuleren";
+"accounts.alert.onUnlinkAlmond.Unlink" = "Ontkoppelen";
+"accounts.alert.onUnlinkAlmond.Cancel" = "Annuleren";
+
+"accounts.alert.onInviteToShareAlmond.title" = "Via e-mail uitnodigen";
+"accounts.alert.onInviteToShareAlmond.message" = "Door iemand uit te nodigen, krijgt deze toegang tot %@";
+"accounts.alert.onInviteToShareAlmond.Invite" = "Uitnodigen";
+"accounts.alert.onInviteToShareAlmond.Cancel" = "Annuleren";
+
+"accounts.hud.loadingDetails" = "Accountgegevens laden...";
+"accounts.hud.deletingAccount" = "Account verwijderen...";
+"accounts.hud.updatingDetails" = "Accountgegevens bijwerken...";
+"accounts.hud.removeUserFromSharedList" = "Gebruiker verwijderen uit de gedeelde lijst...";
+
+"accounts.deleteAccount.failure.reasonCode1" = "Er is een fout opgetreden op de cloud. Probeer het later opnieuw.";
+"accounts.deleteAccount.failure.reasonCode2" = "Het spijt ons! U bent nog niet bij ons geregistreerd.";
+"accounts.deleteAccount.failure.reasonCode3" = "U moet uw account activeren.";
+"accounts.deleteAccount.failure.reasonCode4" = "U moet alle velden invullen.";
+"accounts.deleteAccount.failure.reasonCode5" = "Het huidige wachtwoord is niet juist.";
+"accounts.deleteAccount.failure.reasonCode6" = "Er is een fout opgetreden op de cloud. Probeer het later opnieuw.";
+"accounts.deleteAccount.failure.default" = "Het spijt ons! Het verwijderen van de account is mislukt.";
+
+"accounts.updateAccount.failure.reasonCode1" = "Er is een fout opgetreden op de cloud. Probeer het later opnieuw.";
+"accounts.updateAccount.failure.reasonCode2" = "U moet alle velden invullen.";
+"accounts.updateAccount.failure.reasonCode3" = "Het spijt ons! U bent nog niet bij ons geregistreerd.";
+"accounts.updateAccount.failure.default" = "Het spijt ons! Het bijwerken is mislukt.";
+
+"accounts.unlinkAlmond.failure.reasonCode1" = "Er is een fout opgetreden op de cloud. Probeer het later opnieuw.";
+"accounts.unlinkAlmond.failure.reasonCode2" = "Het spijt ons! U bent nog niet bij ons geregistreerd.";
+"accounts.unlinkAlmond.failure.reasonCode3" = "U moet uw account activeren.";
+"accounts.unlinkAlmond.failure.reasonCode4" = "U moet alle velden invullen.";
+"accounts.unlinkAlmond.failure.reasonCode5" = "Het huidige wachtwoord is niet juist.";
+"accounts.unlinkAlmond.failure.reasonCode6" = "Er is een fout opgetreden op de cloud. Probeer het later opnieuw.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode1" = "Er is een fout opgetreden op de cloud. Probeer het later opnieuw.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode5" = "U moet alle velden invullen.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode7" = "U kunt uzelf niet toevoegen als tweede gebruiker.";
+"accounts.deleteSecondaryUser.failure.reasonCode1" = "Er is een fout opgetreden op de cloud. Probeer het later opnieuw.";
+"accounts.deleteSecondaryUser.failure.reasonCode2" = "U moet alle velden invullen.";
+"accounts.deleteSecondaryUser.failure.reasonCode5" = "De secundaire gebruiker is niet gevonden.";
+"accounts.deleteSecondaryUser.failure.default" = "Het spijt ons! Er is iets misgegaan. Probeer het opnieuw.";
+
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode1" = "Er is een fout opgetreden op de cloud. Probeer het later opnieuw.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode2" = "U moet alle velden invullen.";
+
+
+/* Notifications */
+
+//m
+"notifications.title.Recent Activities" = "Recente activiteiten";
+"notifications.headerfooter.mode.The End" ="Klaar";
+"notifications.date.Today" = "Vandaag";
+"notifications.bucketdate.Yesterday" = "Gisteren";
+
+/* Scenes */
+
+"scenes.hud.loadingScenes" = "Scènes laden...";
+"scenes.hud.deletingScene" = "Scène verwijderen...";
+"scenes.hud.activatingScene" = "Scène activeren...";
+"scenes.hud.creatingScene"   = "Scène maken...";
+//m
+"scene.macro.Could not update sensor\ndata." = "Kan sensorgevens niet bijwerken.";
+"scene.thermostat-title.COOLING TEMP." = "KOELTEMPERATUUR.";
+"scene.thermostat-title.HEATING TEMP." = "VERWARMTEMPERATUUR.";
+"scene.button.Save" = "Opslaan";
+"scene.button.Cancel" = "Annuleren";
+"scene.title.Get Started" = "Aan de slag";
+"scene.msg.You have to select at least 1 value" = "U moet minstens 1 waarde selecteren";
+"scene.cancel-title.OK" = "OK";
+"scene.hud.Loading router data" = "Routergegevens laden";
+"scene.hud.Loading sensor data" = "Sensorgegevens laden";
+"scene.text.Choose one or more Actions" = "Kies een of meer acties";
+"scene.alert-title.Oops" = "Oeps";
+"scene.alert-msg.Sorry, There was some problem with this request, try later!" = "Het spijt ons, er is een probleem opgetreden met deze aanvraag. Probeer het later opnieuw!";
+"scene.alert-button.OK" = "OK";
+
+
+/* Scoreboard */
+//r
+"Scoreboard" = "Scorebord";
+"Refresh.Scoreboard" = "Scorebord vernieuwen";
+"scoreboard.section.Cloud" = "Cloud";
+"scoreboard.section.PushNotifications" = "Pushmeldingen";
+"scoreboard.section.Events" = "Gebeurtenissen";
+"scoreboard.section.Network" = "Netwerk";
+"scoreboard.section.Commands & Updates" = "Opdrachten en updates";
+"scoreboard.section.Logs & Data" = "Logbestanden en gegevens";
+"footerInsection.Last refreshed %.0f secs ago @ %@" = "Laatste keer vernieuwd %.0f seconden geleden @ %@";
+"notifications.Client Token" = "Clienttoken";
+"notifications.Not registered" = "Niet geregistreerd";
+"Failed to send mail" = "Kan geen e-mail verzenden";
+"Since %@" = "Sinds %@";
+"notifications_logctrl.View Handler Log" = "Handler-logbestand weergeven";
+"notifications_viewactual.View Notifications" = "Meldingen weergeven";
+"notifications_viewtests.Unit Test UI" = "Eenheidstest UI";
+"events.All Events" = "Alle gebeurtenissen";
+"Network.Established Connections" = "Tot stand gebrachte verbindingen";
+"Network.Failed Connections" = "Mislukte verbindingen";
+"Network.Reachability Changes" = "Bereikbaarheidswijzigingen";
+"SEC_ReQUEST.Dynamic Updates" = "Dynamische updates";
+"SEC_ReQUEST.Command Requests" = "Opdrachtsverzoeken";
+"SEC_ReQUEST.Command Requests" = "Opdrachtantwoorden";
+"Email Logs & Data" = "Logbestanden en gegevens e-mailen";
+"cloudSection.row0.Production" = "Productie";
+"cloudSection.row1.Development" = "Ontwikkeling";
+"Copied token" = "Gekopieerde token";
+"Reset counter" = "Teller herstellen";
+"Sending Mail is not supported on this device" = "Het verzenden van mail wordt niet ondersteund op dit apparaat";
+"Scoreboard.Preparing..." = "Voorbereiden...";
+"Local Network Enabled" = "Lokaal netwerk ingeschakeld";
+"scoreboard.localnetwork.IP Address" = "IP-adres";
+"scoreboard.localnetwork.Port" = "Poort";
+"scoreboard.localnetwork.Password" = "Wachtwoord";
+
+/* Sensor Support */
+//r
+"sensor support- a value has changed" = " een waarde is gewijzigd";
+
+/* Draw View Controller */
+//r
+"Draw viecontroller.label LOCATION" = "LOCATIE";
+"Draw viecontroller.label SETTINGS" = "INSTELLINGEN";
+"Draw viecontroller.label INFO" = "INFORMATIE";
+
+/* Main View Controller */
+//r
+"Sorry! Unable to establish Internet route to cloud service." = "Het spijt ons! Kan de internetrouter niet verbinden met de cloudservice.";
+"mainviewcontroller_Connecting. Please wait!" = "Verbinden. Een ogenblik geduld aub!";
+"mainviewcontroller_Sorry! Could not connect to the cloud service." = "Het spijt ons! Kan geen verbinding maken met de cloudservice.";
+"main view controller Sorry! Push Notification was not registered." = "Het spijt ons! De pushmelding is niet geregistreerd.";
+"main view controller Sorry! Push Notification was not deregistered." = "Het spijt ons! De pushmelding is uit het register verwijderd.";
+
+/* Table View Controller */
+//r
+"In process of connecting. Change connection method." = "Bezig met te verbinden. Verbingingsmethode wijzigen.";
+"Cloud Connection" = "Cloudverbinding";
+"connection status Local Connection" = "Verbinding";
+"alert.title-Switch to Local Connection" = "Naar lokale verbinding overschakelen";
+"alert.title-Edit Local Connection Settings" = "Lokale verbindingsinstellingen wijzigen";
+"Alert view title-Retry Cloud Connection" = "Cloudverbinding opnieuw proberen";
+"Alert view title-Switch to Local Connection" = "Naar lokale verbinding overschakelen";
+"Edit Local Connection Settings" = "Edit Local Connection Settings";
+"Alert view title-Edit Local Connection Settings" = "Lokale verbindingsinstellingen";
+"alert view error_Cloud Connection" = "Cloudverbinding";
+"alert view error_Local Connection" = "Lokale verbinding";
+"alertview localconnection_Switch to Cloud Connection" = "Naar cloudverbinding overschakelen";
+"alertview Local connection settings are missing." = "Lokale verbindingsinstellingen ontbreken.";
+"alertview title Add Local Connection Settings" = "Lokale verbindingsinstellingen toevoegen";
+"alert msg offline Local Retry Local Connection" = "Lokale verbinding opnieuw proberen";
+"alert title offline Local Switch to Cloud Connection" = "Naar cloudverbinding overschakelen";
+"alert title offline Local Edit Local Connection Settings" = "Lokale verbindingsinstellingen bewerken";
+"mainviewcontroller hud Loading router data" = "Routergegevens laden";
+"mainviewcontroller hud Loading sensor data" = "Sensorgegevens laden";
+"mainviewcontroller hud hud.Updating settings..." = "Instellingen bijwerken...";
+"Cancel"="Annuleren";
+
+/* Wifi */
+"wifi.hud.UpdatingWifiClient" = "Wifi-client bijwerken...";
+"wifi.hud.removeClient" = "Wifi client verwijderen...";
+"wifi.button.deleteClient" = "Verwijderen";
+
+//r
+"CONNECTED" = "VERBONDEN";
+"NOT CONNECTED" = "NIET VERBONDEN";
+
+"SFIWiFiClientsListViewController-propertyNames-Name" = "Naam";
+"SFIWiFiClientsListViewController-propertyNames-Type" = "Type";
+"SFIWiFiClientsListViewController-propertyNames-MAC Address" = "MAC-adres";
+"SFIWiFiClientsListViewController-propertyNames-Last Known IP" = "Laatst bekende IP";
+"SFIWiFiClientsListViewController-propertyNames-Connection" = "Verbinding";
+"SFIWiFiClientsListViewController-propertyNames-Use as Presence Sensor" = "Als aanwezigheidssensor gebruiken";
+"SFIWiFiClientsListViewController-propertyNames-Notify me" = "Breng me op de hoogte";
+"SFIWiFiClientsListViewController-propertyNames-Remove" = "Verwijderen";
+"Presence sensor Yes"="Ja";
+"Presence sensor NO" = "NEE";
+"response.alert-Oops" = "Oeps";
+"response.alert-Sorry, There was some problem with this request, try later!" = "Sorry, There was some problem with this request, try later!";
+"response.alert-OK" = "OK";
+
+/* Sensor Index Support */
+" Fan is " = " Ventilator is ";
+" Fan is set to " = " Ventilator is ingesteld op ";
+" brightness changed to " = " helderheid gewijzigd naar ";
+" brightness changed to " = " helderheid gewijzigd naar ";
+" detected Fire." = " vuur gedetecteerd.";
+" detected Gas." = " gas gedetecteerd.";
+" detected Smoke." = " rook gedetecteerd.";
+" detected Vibration." = " trilling gedetecteerd.";
+" detected Vibration." = " trilling gedetecteerd.";
+" detected motion." = " beweging gedetecteerd.";
+" detected motion." = " beweging gedetecteerd.";
+" detected water." = " water gedetecteerd.";
+" has been Tampered." = " is onrechtmatig gewijzigd.";
+" hue color changed to " = " tint gewijzigd naar ";
+" is " = " is ";
+" is Armed." = " is geactiveerd.";
+" is Closed." = " is afgesloten.";
+" is Closing." = " wordt afgesloten.";
+" is Disarmed." = " is gedeactiveerd.";
+" is Locked." = " is gesloten.";
+" is Open." = " is geopend.";
+" is Opened." = " is Open.";
+" is Opening." = " wordt geopend.";
+" is Perimeter Armed." = " is geactiveerde perimeter.";
+" is Ringing." = " gaat over.";
+" is Silent." = " is stil.";
+" is Stopped." = " is gestopt.";
+" is Unlocked." = " is ontgrendeld.";
+" is cooling down to " = " wordt afgekoeld naar ";
+" is dimmed to " = " wordt gedimd naar ";
+" is heating up to " = " wordt verwarmd naar ";
+" is not fully Locked." = " is niet volledig vergrendeld.";
+" is reset from Tampered." = " wordt teruggezet uit Onrechtmatig gewijzigd.";
+" is set to " = " is ingesteld op ";
+" is switched Off." = " is uitgeschakeld.";
+" is switched On." = " is ingeschakeld.";
+" is turned Off." = " is uitgeschakeld.";
+" is turned On." = " is ingeschakeld.";
+" is turned on for " = " is ingeschakeld voor ";
+" saturation changed to " = " verzadiging gewijzigd naar ";
+" seconds" = " seconden";
+" stopped leaking." = " is gestopt met lekken.";
+" turned Off." = " uitgeschakeld.";
+" turned On." = " ingeschakeld.";
+"'s Battery is Low." = "'s accu is laag.";
+"'s Fire is gone." = "'s vuur is verdwenen.";
+"'s Gas is gone." = "'s gas is verdwenen.";
+"'s Smoke is gone." = "'s Rook is verdwenen.";
+"'s color temperature changed to " = "'s kleurtemperatuur is gewijzigd naar ";
+"'s color temperature changed to " = "'s vochtigheid is gewijzigd naar ";
+"'s color temperature changed to " = "'s leesverlichting is gewijzigd naar ";
+"'s motion stopped." = "'s beweging is gestopt.";
+"'s pin code changed." = "'s pincode is gewijzigd.";
+"'s color temperature changed to " = "'s vermogenaflezing is gewijzigd naar ";
+"'s temperature changed to " = "'s temperatuur is gewijzigd naar ";
+"'s temperature set point changed to " = "'s instelpunt van de temperatuur is gewijzigd naar ";
+"'s vibration stopped." = "'s trilling is gestopt.";
+": no presence detected." = ": geen aanwezigheid gedetecteert.";
+": presence detected." = ": aanwezigheid gedecteerd.";
+"AWAY" = "AFWEZIG";
+"HOME" = "START";
+"OFF" = "UIT";
+"ON" = "AAN";
+"Temperature" = "Temperatuur";
+"\u00B0 Farenheit" = "\u00B0 Farenheit";
+
+
+//To be Translated
+"DIM" = "DIM";
+"AUTO" = "AUTO";
+"HEAT" = "HITTE";
+"COOL" = "KOEL";
+"OFF" = "AF";
+"FAN ON" = "ventilator op";
+"FAN OFF" = "ventilator uit";
+"HOME" = "thuis";
+"AWAY" = "EEN MANIER";
+"COOLING TEMP." = "koeltemperatuur";
+"HEATING TEMP." = "verwarmingstemperatuur";
+"Version" = "Versie";
+"Settings" = "Instellingen";
+
+
+//
+"login.local.Switch to Local Connection" = "Naar lokale verbinding overschakelen";
+
+"router.log-send-error.There was an error sending logs" = "Er is een fout opgetreden verzenden logs";//redundant
+"Sensorview-almondata-Get Started" = "Begin";
+"showtoast Unable to update sensor" = "Niet in staat om de sensor te werken";
+"Force sensor data refresh" = "geforceerd sensor vernieuwen van gegevens";
+"tableviewcell-Updating sensor data.\nPlease wait." = "Sensor Gegevens bijwerken. \nWacht alstublieft";
+"Tharmostat_setpoint-SET POINT %@%@" = "SETPUNT %@%@";
+"Tharmostat_setpoint-temperature" = "temperatuur";
+"sensor-property-edit smokedetector Warning" = "waarschuwing";
+"sensor-property-edit smokedetector Emergency" = "noodgeval";
+"read-almond-version %@ (%@)" = "versie %@ (%@)";
+"Cancel" = "Annuleer";
+"alert title offline Local Retry Local Connection" = "Opnieuw Lokale verbinding";
+
+"router.software-version.Update Available" = "Bijwerken beschikbaar";
+
+"router.log-send-error.There was an error sending logs" = "Er is een fout opgetreden verzenden logs";
+"sensor.awaymode.indexpath Away" = "Een manier";
+"mainview-configure-Debug" = "debug";
+"connection status Cloud Connection" = "Cloud aansluiting";
+"alert title offline Local Retry Local Connection" = "Opnieuw Lokale verbinding";
+"connection status Local Connection" = "lokale aansluiting";
+
+//new - dynamic account page
+"Drawviewcontroller.account" = "rekening";
+"Drawviewcontroller.Logout" = "uitloggen";
+"Drawviewcontroller.Logout All" = "logout alle";
+"Draqviewcontroller.add"="toevoegen";
+
+//new - sensor table view cell
+"sensor.field-macro.PinCodeField" = "pincode veld";
+"sensor.status-label.PRESENCE DETECTED" = "AANWEZIGHEID GEDETECTEERD";
+"sensor.macro-msg.Could not update sensor\ndata." = "kon sensorgegevens bijgewerkt.";
+"sensor.status-label.OPEN" = "OPEN";
+"sensor.status-label.CLOSED" = "GESLOTEN";
+"sensor.status-label.UNLOCKED" = "ONTGRENDELD";
+"sensor.status-label.LOCKED" = "AFGESLOTEN";
+"sensor.status-label.ACTIVE" = "ACTIEF";
+"sensor.status-label.INACTIVE" = "INACTIEF";
+"sensor.status-label.MOTION DETECTED" = "BEWEGING GEDETECTEERD";
+"sensor.status-label.NO MOTION" = "GEEN BEWEGING";
+"sensor.status-label.ALARM: FIRE DETECTED" = "ALARM: BRAND ONTDEKT";
+"sensor.status-label.OK" = "OK";
+
+"sensor.status-label.FLOODED" = "OVERSTROOMD";
+"sensor.status-label.ALARM: GAS DETECTED" = "ALARM: GAS GEDETECTEERD";
+"sensor.status-label.VIBRATION DETECTED" = "TRILLINGEN GEDETECTEERD";
+"sensor.status-label.NO VIBRATION" = "GEEN TRILLING";
+"sensor.msg-label.State data unknown.\nUse manual controls." = "state data onbekend. Gebruik handmatige bediening.";
+"sensor.status-label.PRESENCE DETECTED" = "AANWEZIGHEID GEDETECTEERD";
+"sensor.status-label.NO PRESENCE" = "NIET AANWEZIG";
+"sensor.status-label.SMOKE DETECTED!" = "ROOK ONTDEKT!";
+"sensor.status-label.RINGING" = "RINKELEN";
+"sensor.status-label.CLOSING" = "SLUITEND";
+"sensor.status-label.STOPPED" = "GESTOPT";
+"sensor.status-label.OPENING" = "OPENING";
+
+//Some more
+"sensor.text.%ld SENSORS" = "%ld SENSORS";
+"sensor.text.%ld SENSOR" = "%ld SENSOR";
+
+"Device.propertyeditview.controller.Name" = "naam";
+"Device.propertyeditview.controller.Location" = "ligging";
+"Device.propertyeditview.controller.Enter IR Code" = "Voer IR Code";
+"Device.propertyeditview.controller.Example 444" = "voorbeeld 444";
+
+"scenes.new-scene.label.New Scene" = "nieuwe scène";
+
+//24-9
+"View Device History”=“View Device History";
+"Name" = "Name";
+"Location" = "Location";
+"Actions" = "Actions";
+"Stop" = "Stop";
+"Battery" = "Battery";
+"Clamp 1 Power" = "Clamp 1 Power";
+"Clamp 1 Energy" = "Clamp 1 Energy";
+"Clamp 2 Power" = "Clamp 2 Power";
+"Clamp 2 Energy" = "Clamp 2 Energy";
+"Siren" = "Siren";
+"Switch 1" = "Switch 1";
+"Switch 2" = "Switch 2";
+"Temperature" = "Temperature";
+"AC Mode" = "AC Mode";
+"High Temperature" = "High Temperature";
+"Low Temperature" = "Low Temperature";
+"Swing" = "Swing";
+"Power" = "Power";
+"IR Code" = "IR Code";
+"Configuration" = "Configuration";
+"Humidity" = "Humidity";
+"Luminance" = "Luminance";
+"Away Mode" = "Away Mode";
+"CO Level" = "CO Level";
+"Smoke Level" = "Smoke Level";
+"Mode" = "Mode";
+"Target Range" = "Target Range";
+"Fan Mode" = "Fan Mode";
+"Fan" = "Fan";
+"Notify me" = "Notify me";
+
+/* ==================================================================== */
+
+/*
+ Almond-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+/*------- Localization strings specific to Almond app -------*/
+
+
+/* affiliation */
+"router.linkalmond-msg.label.Let's link an Almond." = "Laten we \n een Almond koppelen.";
+"router.linkalmond-msg.label.Start the wizard on your Almond." = "Start de wizard op uw Almond en tik daarna op het onderstaande symbool.";
+"Almond Linked" = "Gekoppelde Almond";
+"Link Almond" = "Cloud-link";
+"Local Link Almond" = "Locale link";
+"Please wait while your Almond is being linked to cloud." = "Wacht even tot uw Almond is gekoppeld aan de cloud.";
+"This Almond is already linked to another user." = "Deze Almond is al gekoppeld aan een andere gebruiker.
+Neem contact met ons op via support@securifi.com";
+"Almond could not be affiliated" = "Almond kan niet worden geafillieerd.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "Open de app Almond Account en voer de weergegeven code in.";
+"cloudlink.button.Link Almond" = "Almond koppelen";
+"cloudlink.button.Add Almond Locally" = "Almond lokaal toevoegen";
+
+/* router tab */
+"router.offline-msg.label.Almond is Offline." = "Almond is offline.";
+//m
+"router.msg-link.The Almond was successfully linked." = "De Almond is gekoppeld.";
+"router.btn-title.Unlink Almond?" = "De Almond ontkoppelen?";
+"router.btn-title.Link Almond Locally" = "Almond lokaal koppelen";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Houd er rekening mee dat zonder cloudbeheer u geen meldingen ontvangt of uw Almond op afstand kunt bedienen.";
+"router.error-msg.This Almond is already linked." = "Deze Almond is al gekoppeld.";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." = "Er is een fout opgetreden tijdens het koppelen met de Almond. Probeer het opnieuw.";
+
+/* sensors */
+"router.no-sensors.label.Add a sensor from your Almond." = "Een sensor toevoegen vanaf uw Almond.";
+
+/* signup */
+"signup.headline-text.Securifi Cloud Account." = "Securifi-cloudaccount.";
+"signup.headline-text.Access your Almonds" = "Gebruik uw Almonds en
+thuisapparaten overal.";
+
+/* Accounts */
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "Deze Almond is de uwe";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "Almond-naam";
+"accounts.ownedAlmond.button.RenameAlmond" = "Naam van Almond wijzigen";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = "Almond-naam";
+"accounts.sharedAlmond.button.RenameAlmond" = "Naam van Almond wijzigen";
+"accounts.alert.onDeleteAccount.message" = "Als u de account verwijdert, word(t)(en) uw Almond(s)ontkoppelt en worden gebruikersvoorkeuren verwijdert. Om de verwijdering van uw account te bevestigen, voert u hieronder uw wachtwoord in.";
+"accounts.alert.onUnlinkAlmond.title" = "Almond ontkoppelen";
+"accounts.alert.onUnlinkAlmond.message" = "Om de Almond te ontkoppelen, voert u hieronder uw wachtwoord in.";
+"accounts.itoast.almondNameMax32Characters" = "De naam van de Almond Name niet langer zijn dan 32 tekens.";
+"accounts.itoast.unableToChangeAlmondName" = "Het spijt ons! Wij kunnen de naam van uw Almond niet wijzigen";
+"accounts.hud.unlinkingAlmond" = "Almond ontkoppelen...";
+"accounts.hud.inviteUserToShareAlmond" = "Gebruiker uitnodigen om de Almond te delen...";
+"accounts.hud.changeAlmondName" = "De naam van de Almond te wijzigen...";
+"accounts.hud.removeSharedAlmond" = "Gedeelde Almond verwijderen...";
+"accounts.unlinkAlmond.failure.default" = "Het spijt ons! Het ontkoppelen van de Almond is mislukt.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "Deze gebruiker heeft geen Securifi-account.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "De gebruiker heeft de Securifi-account nog niet geverifieerd.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "U bent niet de eigenaar van deze Almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "U hebt deze Almond al gedeeld met de gebruiker.";
+"accounts.inviteUserToShareAlmond.failure.default" = "Het spijt ons! Het delen van de Almond is mislukt.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "U bent niet geassocieerd met deze Almond";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "De secundaire gebruiker is niet geassocieerd met de opgegeven Almond.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "U bent niet geassocieerd met deze Almond";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "Het spijt ons! Het verwijderen van de Almond is mislukt.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "Almond MAC's";
+"Copied Almond MAC" = "Gekopieerde Almond MAC";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "Met uw Almond verbonden via cloud.";
+"alertview -Connected to your Almond via cloud." = "Met uw Almond verbonden via cloud.";
+"Add Local Connection Settings" = "Lokale verbindingsinstellingen toevoegen";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "De cloud-verbinding naar uw Almond is mislukt. Tik op opnieuw of schakel over naar een lokale verbinding.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = "De lokale verbinding naar uw Almond is mislukt. Tik op opnieuw of schakel over naar een cloudverbinding.";
+"hud message-Setting Almond to Away Mode" = "De Almond instellen op de Afwezig-modus";
+"hud message-Setting Almond to Home Mode" = "De Almond instellen op de Thuis-modus";
+"alertview Can't connect to your Almond. Please select a connection method." = "De Almond kan niet worden verbonden. Selecteer een verbindingsmethode.";
+"alertview localconnection_Connected to your Almond locally." = "Lokaal met uw Almond verbonden.";
+
+"router.card-title.Local Almond Link" = "Lokale Almond Link";
+"router.software-version.header.instructions" = "Gelieve tik \”Instellingen\” op uw Almond";
+
+//To be Translated
+/* login */
+"Monitor and Control your home from anywhere." = "Bewaken en controleren van uw huis overal.";
+
+"AlmondList" = "Almond lijst";

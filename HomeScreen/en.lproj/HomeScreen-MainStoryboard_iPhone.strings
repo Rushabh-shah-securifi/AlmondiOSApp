@@ -3,12 +3,12 @@
 "005-QM-TOK.title" = "Link HomeScreen";
 
 /* Class = "IBUILabel"; text = "Logout from all the devices connected
-to your Almonds."; ObjectID = "0ml-DL-hua"; */
+ to your Almonds."; ObjectID = "0ml-DL-hua"; */
 "0ml-DL-hua.text" = "Logout from all the devices connected
 to your HomeScreens.";
 
 /* Class = "IBUILabel"; text = "Access your Almonds and
-your home devices from anywhere."; ObjectID = "1mY-kl-NHI"; */
+ your home devices from anywhere."; ObjectID = "1mY-kl-NHI"; */
 "1mY-kl-NHI.text" = "Access your HomeScreens and
 your home devices from anywhere.";
 
@@ -24,7 +24,7 @@ your home devices from anywhere.";
 "ObR-J1-LOM.title" = "HomeScreen";
 
 /* Class = "IBUILabel"; text = "Type the code shown on your\nAlmond's screen."; ObjectID = "PRW-cc-prD"; */
-"PRW-cc-prD.text" = "Type the code shown on your\nHomeScreen's screen.";
+"PRW-cc-prD.text" = "Run the HomeScreen\nAccount app on your router and\nenter the code displayed.";
 
 /* Class = "IBUIButton"; normalTitle = "Link Almond"; ObjectID = "PRt-1p-fH7"; */
 "PRt-1p-fH7.normalTitle" = "Link HomeScreen";
@@ -34,18 +34,18 @@ your home devices from anywhere.";
 
 
 /* Class = "IBUILabel"; text = "Access your Almonds and
-your home devices from anywhere."; ObjectID = "Xni-ee-jgc"; */
+ your home devices from anywhere."; ObjectID = "Xni-ee-jgc"; */
 "Xni-ee-jgc.text" = "Access your HomeScreens and
 your home devices from anywhere.";
 
 /* Class = "IBUILabel"; text = "Access your Almonds and
-your home devices from anywhere."; ObjectID = "Zon-6Z-KzY"; */
+ your home devices from anywhere."; ObjectID = "Zon-6Z-KzY"; */
 "Zon-6Z-KzY.text" = "Access your HomeScreens and
 your home devices from anywhere.";
 
 
 /* Class = "IBUILabel"; text = "To link your Almond with Securifi Cloud account, start the wizard on your Almond+.
-The \"Add your Almond to your Securifi Cloud Account\" section will show a code which you may scan by tapping below or type the code, instead."; ObjectID = "de7-TX-jmT"; */
+ The \"Add your Almond to your Securifi Cloud Account\" section will show a code which you may scan by tapping below or type the code, instead."; ObjectID = "de7-TX-jmT"; */
 "de7-TX-jmT.text" = "To link your HomeScreen with HomeScreen Cloud account, start the wizard on your HomeScreen.
 The \"Add your HomeScreen to your HomeScreen Cloud Account\" section will show a code which you may scan by tapping below or type the code, instead.";
 
@@ -57,7 +57,7 @@ The \"Add your HomeScreen to your HomeScreen Cloud Account\" section will show a
 "qnX-eN-VhR.text" = "HomeScreen Cloud Account.";
 
 /* Class = "IBUILabel"; text = "Tip: Search spam folder or add
-cloud@securifi.com to your contacts."; ObjectID = "vjT-j9-rhq"; */
+ cloud@securifi.com to your contacts."; ObjectID = "vjT-j9-rhq"; */
 "vjT-j9-rhq.text" = "Tip: Search spam folder or add
 cloud@homescreen.com to your contacts.";
 

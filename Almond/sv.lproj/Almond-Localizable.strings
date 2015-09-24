@@ -1,0 +1,94 @@
+/* ==================================================================== */
+
+/*
+ Almond-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+/*------- Localization strings specific to Almond app -------*/
+
+
+/* affiliation */
+"router.linkalmond-msg.label.Let's link an Almond." = "Låt oss koppla\n en Almond.";
+"router.linkalmond-msg.label.Start the wizard on your Almond." = "Starta guiden på din Almond och tryck sedan på symbolen nedan.";
+"Almond Linked" = "Almond Kopplad";
+"Link Almond" = "Molnlänk";
+"Local Link Almond" = "Lokal Länk";
+"Please wait while your Almond is being linked to cloud." = "Var god vänta medan din Almond kopplas till molnet.";
+"This Almond is already linked to another user." = "Denna Almond är redam kopplad till en annan användare. Kontakta oss på support@securifi.com ";
+"Almond could not be affiliated" = "Almond kunde inte anslutas.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "Kör Almond Konto-appen och ange kodes som visas.";
+"cloudlink.button.Link Almond" = "Koppla Almond";
+"cloudlink.button.Add Almond Locally" = "Lägg till Almond Lokalt";
+
+
+/* router tab */
+"router.offline-msg.label.Almond is Offline." = "Almond är Offline.";
+//m
+"router.msg-link.The Almond was successfully linked." = "Almond kopplades.";
+"router.btn-title.Unlink Almond?" = "Koppla från Almond?";
+"router.btn-title.Link Almond Locally" = "Koppla Almond Lokalt";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Var god notera att du utan molnkontroll inte tar emot meddelanden eller har möjlighet att fjärrstyra din Almond.";
+"router.error-msg.This Almond is already linked." = "Denna Almond är redan kopplad.";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." = "Ett fel inträffade vid försök att koppla Almond. Var god försök igen.";
+
+/* sensors */
+"router.no-sensors.label.Add a sensor from your Almond." = "Lägg till en sensor från din Almond.";
+
+/* signup */
+"signup.headline-text.Securifi Cloud Account." = "Securifi Molnkonto.";
+"signup.headline-text.Access your Almonds" = "Få tillgång till din Almond och
+dina hemenheter från var som helst.";
+
+/* Accounts */
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "Du äger denna Almond";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "Almond Namn";
+"accounts.ownedAlmond.button.RenameAlmond" = "Byt namn på Almond";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = "Almond Namn";
+"accounts.sharedAlmond.button.RenameAlmond" = "Byt namn på Almond";
+"accounts.alert.onDeleteAccount.message" = "Om du tar bort kontot  kopplar du från ALmond(s) och raderar användarinställningar. För att bekräfta borttagning av kontot ange ditt lösenord nedan.";
+"accounts.alert.onUnlinkAlmond.title" = "Koppla från Almond";
+"accounts.alert.onUnlinkAlmond.message" = "För att bekräfta koppling av Almond ange ditt lösenord nedan.";
+"accounts.itoast.almondNameMax32Characters" = "Almond namn kan inte vara mer än 32 tecken.";
+"accounts.itoast.unableToChangeAlmondName" = "Tyvärr! Det gick inte att ändra Almonds namn";
+"accounts.hud.unlinkingAlmond" = "Koppla från Almond...";
+"accounts.hud.inviteUserToShareAlmond" = "Att bjuda in användare att dela Almond...";
+"accounts.hud.changeAlmondName" = "Ändra Almond namn ...";
+"accounts.hud.removeSharedAlmond" = "Ta bort delad Almond...";
+"accounts.unlinkAlmond.failure.default" = "Tyvärr! Det gick inte att koppla från Almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "Den här användaren har inte ett Securifi-konto.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "Användaren har inte verifierat Securifi-kontot ännu.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "Du inte ägare av denna Almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "Du har redan delat denna Almond med användaren.";
+"accounts.inviteUserToShareAlmond.failure.default" = "Tyvärr! Det gick inte att dela Almond.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "Du är inte ihopkopplad med denna Almond ";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "Sekundära användare är inte ihopkopplade med denna Almond.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "Du är inte ihopkopplad med denna Almond.";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "Tyvärr! Det gick inte att ta bort delad Almond.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "Almond MACs";
+"Copied Almond MAC" = "Kopierad Almond MAC";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "Ansluten till din Almond via moln.";
+"alertview -Connected to your Almond via cloud." = "Ansluten till din Almond via moln.";
+"Add Local Connection Settings" = "Lägg till inställningar för Lokal Anslutning";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "Molnanslutning till din Almond misslyckades. Tryck försök igen eller ändra till lokal anslutning.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = "Lokal anslutning till din Almond misslyckades. Tryck försök igen eller ändra till lokal anslutning.";
+"hud message-Setting Almond to Away Mode" = "Ställ in till Borta-läge";
+"hud message-Setting Almond to Home Mode" = "Ställ in Almond till Hem-läge";
+"alertview Can't connect to your Almond. Please select a connection method." = "Kan inte koppla till din Almond. Var god välj ett anslutningsalternativ.";
+"alertview localconnection_Connected to your Almond locally." = "Ansluten till din Almond lokalt.";
+
+
+
+
+//To be translated
+/* login */
+"Monitor and Control your home from anywhere." = "Övervaka och styra ditt hem från var som helst.";

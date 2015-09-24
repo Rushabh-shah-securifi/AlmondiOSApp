@@ -1,0 +1,117 @@
+/* ==================================================================== */
+
+/*
+ Almond-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+/*------- Localization strings specific to Almond app -------*/
+
+
+
+/* affiliation */
+"router.linkalmond-msg.label.Let's link an Almond." = " Almond \n をリンクしましょう.";
+"router.linkalmond-msg.label.Start the wizard on your Almond." = "ウイザードスタートし、下の記号をタップしてください。";
+"Almond Linked" = "Almond リンクされました";
+"Link Almond" = "クラウドリンクCloud Link";
+"Local Link Almond" = "ローカルリンクLocal Link";
+"Please wait while your Almond is being linked to cloud." = "お待ちください、Almondはクライドにリンク中です。Please wait while your Almond is being linked to cloud.";
+"This Almond is already linked to another user." = "このAlmondは別のユーザーにリンクされています。サポートにご連絡ください。This Almond is already linked to another user.
+Contact us at support@securifi.com";
+"Almond could not be affiliated" = "Almondにリンクできません。
+Almond could not be affiliated.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "設定ＡＰＰを実行し、コードを入力してください。
+Run the Almond Account app and enter the code displayed.";
+"cloudlink.button.Link Almond" = "リンクAlmondLink Almond";
+"cloudlink.button.Add Almond Locally" = "ローカルでAlmondを追加Add Almond Locally";
+
+/* login */
+"Access your Almonds and your home devices from anywhere." = "どこでもAlmondをリモートでアクセス。Access your Almonds and
+your home devices from anywhere.";
+
+/* router tab */
+"router.offline-msg.label.Almond is Offline." = "Almond はオフラインです.";
+//m
+"router.msg-link.The Almond was successfully linked." = "Almondのリンク成功しました。
+The Almond was successfully linked.";
+"router.btn-title.Unlink Almond?" = "Almondのリンク解除しますか？Unlink Almond?";
+"router.btn-title.Link Almond Locally" = "ローカルでAlmondをリンクする。Link Almond Locally";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "クラウドコントロールがないと、リモートでAlmondのコントロールはできません、それに、通知メッセージも受信できません。Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.";
+"router.error-msg.This Almond is already linked." = "このAlmondはすでに、リンクされました。
+This Almond is already linked.";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." = "リンク中にエラーが発生しました、もう一度してください。
+An error occurred trying to link with the Almond. Please try again.";
+
+/* sensors */
+"router.no-sensors.label.Add a sensor from your Almond." = "Almondにセンサーを追加
+Add a sensor from your Almond.";
+
+/* signup */
+"signup.headline-text.Securifi Cloud Account." = "Ｓｅｃｕｒｉｆｉクラウドアカウント
+Securifi Cloud Account.";
+"signup.headline-text.Access your Almonds" = "どこでもAlmondにアクセス
+Access your Almonds and
+your home devices from anywhere.";
+
+/* Accounts */
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "このAlmondはあなたのです。You own this Almond";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "Almond 名";
+"accounts.ownedAlmond.button.RenameAlmond" = "Almond名変更";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = " Almond 名";
+"accounts.sharedAlmond.button.RenameAlmond" = " Almond名変更";
+"accounts.alert.onDeleteAccount.message" = "アカウントを削除すると、Almondとのリンクが切断され、ユーザーの設定がなくなります。アカウントを削除したい場合、下にパスワードを入力してください。
+";
+"accounts.alert.onUnlinkAlmond.title" = "Almondのリンクを解除するUnlink Almond";
+"accounts.alert.onUnlinkAlmond.message" = "Almondのリンクを解除したい場合、パスワードを入力してください。
+To confirm unlinking Almond enter your password below.";
+"accounts.itoast.almondNameMax32Characters" = "Almond名は３２文字以下まで。
+Almond Name cannot be more than 32 characters.";
+"accounts.itoast.unableToChangeAlmondName" = "ごめんなさい！Almond名の変更できませんでした。
+Sorry! We were unable to change Almond's name";
+"accounts.hud.unlinkingAlmond" = "Almondのリンクを解除中Unlinking Almond...";
+"accounts.hud.inviteUserToShareAlmond" = "ユーザーを招待中
+Inviting user to share Almond...";
+"accounts.hud.changeAlmondName" = "Almond名を変更Change Almond name...";
+"accounts.hud.removeSharedAlmond" = "共有したAlmondを削除するRemove shared Almond...";
+"accounts.unlinkAlmond.failure.default" = "ごめんなさい！Almondのリンク解除はできませんでした。
+Sorry! Unlinking of Almond was unsuccessful.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "このユーザーはＳｅｃｕｒｉｆｉのアカウントを持っていません。
+This user does not have a Securifi account.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "このユーザーはまだアカウントを有効にしていません。
+The user has not verified the Securifi account yet.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "このAlmondはあなたのではありません。
+You do not own this almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "このAlmondはすでにユーザーに共有しました。
+You have already shared this almond with the user.";
+"accounts.inviteUserToShareAlmond.failure.default" = "ごめんなさい！Almondの共有はできませんでした。
+Sorry! Sharing of Almond was unsuccessful.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "お客様はこのAlmondとリンクされていません。
+You are not associated with this Almond";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "セカンダリーユーザーはこのAlmondとリンクされていません。
+Secondary user is not associated with the given Almond.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "お客様はこのAlmondとリンクされていません。";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "共有したAlmondの削除は出来ませんでした。Sorry! Removing of shared Almond was unsuccessful.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "Almond MACs";
+"Copied Almond MAC" = "コピーされた Almond MAC";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "クラウドでAlmondと接続しています。
+Connected to your Almond via cloud.";
+"alertview -Connected to your Almond via cloud." = "クラウドでAlmondと接続しています";
+"Add Local Connection Settings" = "ローカル接続を追加する。Add Local Connection Settings";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "クラウドの接続が出来ませんでした。再実行するかローカルで接続してください。Cloud connection to your Almond failed. Tap retry or switch to local connection.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = "
+ローカルの接続が出来ませんでした。再実行するかクラウドで接続してくださいLocal connection to your Almond failed. Tap retry or switch to cloud connection.";
+"hud message-Setting Almond to Away Mode" = "Almondを留守モードに設定中Setting Almond to Away Mode";
+"hud message-Setting Almond to Home Mode" = "Almondをホームモードに設定中Setting Almond to Home Mode";
+"alertview Can't connect to your Almond. Please select a connection method." = "Almondに接続できません。接続モードを選んでください。
+Can't connect to your Almond. Please select a connection method.";
+"alertview localconnection_Connected to your Almond locally." = "ローカルでAlmondと接続しています。onnected to your Almond locally.";
+

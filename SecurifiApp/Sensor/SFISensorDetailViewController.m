@@ -63,8 +63,37 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     randomMobileInternalIndex = arc4random() % 10000;
-    
-    NSArray *propertyNames = @[@"Name",@"Location",@"Actions",@"Stop",@"Battery",@"Clamp 1 Power",@"Clamp 1 Energy",@"Clamp 2 Power",@"Clamp 2 Energy",@"Siren",@"Switch 1",@"Switch 2",@"Temperature",@"AC Mode",@"High Temperature",@"Low Temperature",@"Swing",@"Power",@"IR Code",@"Configuration",@"Humidity",@"Luminance",@"Away Mode",@"CO Level",@"Smoke Level",@"Mode",@"Target Range",@"Fan Mode",@"Fan",@"Notify me",@""];
+
+    NSArray *propertyNames = @[NSLocalizedString(@"Name",@"Name"),
+                               NSLocalizedString(@"Location","Location"),
+                               NSLocalizedString(@"Actions","Actions"),
+                               NSLocalizedString(@"Stop","Stop"),
+                               NSLocalizedString(@"Battery","Battery"),
+                               NSLocalizedString(@"Clamp 1 Power","Clamp 1 Power"),
+                               NSLocalizedString(@"Clamp 1 Energy","Clamp 1 Energy"),
+                               NSLocalizedString(@"Clamp 2 Power","Clamp 2 Power"),
+                               NSLocalizedString(@"Clamp 2 Energy","Clamp 2 Energy"),
+                               NSLocalizedString(@"Siren","Siren"),
+                               NSLocalizedString(@"Switch 1","Switch 1"),
+                               NSLocalizedString(@"Switch 2","Switch 2"),
+                               NSLocalizedString(@"Temperature","Temperature"),
+                               NSLocalizedString(@"AC Mode","AC Mode"),
+                               NSLocalizedString(@"High Temperature","High Temperature"),
+                               NSLocalizedString(@"Low Temperature","Low Temperature"),
+                               NSLocalizedString(@"Swing","Swing"),
+                               NSLocalizedString(@"Power","Power"),
+                               NSLocalizedString(@"IR Code","IR Code"),
+                               NSLocalizedString(@"Configuration","Configuration"),
+                               NSLocalizedString(@"Humidity","Humidity"),
+                               NSLocalizedString(@"Luminance","Luminance"),
+                               NSLocalizedString(@"Away Mode","Away Mode"),
+                               NSLocalizedString(@"CO Level","CO Level"),
+                               NSLocalizedString(@"Smoke Level","Smoke Level"),
+                               NSLocalizedString(@"Mode","Mode"),
+                               NSLocalizedString(@"Target Range","Target Range"),NSLocalizedString(@"Fan Mode","Fan Mode"),
+                               NSLocalizedString(@"Fan","Fan"),
+                               NSLocalizedString(@"Notify me","Notify me")
+                               ,@""];
     propertiesArray = [NSMutableArray new];
     for (int i=0; i<propertyNames.count; i++) {
         NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithDictionary:@{@"name": propertyNames[i],@"hidden":@YES}];

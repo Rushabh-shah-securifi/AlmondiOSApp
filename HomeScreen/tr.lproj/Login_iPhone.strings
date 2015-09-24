@@ -1,0 +1,29 @@
+/* 
+  Login_iPhone.strings
+  SecurifiApp
+
+  Created by Masood on 18/09/15.
+  Copyright (c) 2015 Securifi Ltd. All rights reserved.
+*/
+
+
+/* Class = "UITextField"; placeholder = "Password"; ObjectID = "7Fl-1P-IHp"; */
+"7Fl-1P-IHp.placeholder" = "Parola";
+/* Class = "UIButton"; normalTitle = "Login"; ObjectID = "9ZE-dj-qTz"; */
+"9ZE-dj-qTz.normalTitle" = "Giriş yap";
+/* Class = "UIButton"; normalTitle = "Create Account"; ObjectID = "APV-X7-KCb"; */
+"APV-X7-KCb.normalTitle" = "Hesap açmak";
+/* Class = "UITextField"; placeholder = "Email Address"; ObjectID = "Y3d-aA-TFm"; */
+"Y3d-aA-TFm.placeholder" = "e-mailadress";
+/* Class = "UILabel"; text = "Access your home devices from anywhere."; ObjectID = "Zon-6Z-KzY"; */
+"Zon-6Z-KzY.text" = "Her yerden ev cihazlarını erişin.";
+/* Class = "UIButton"; normalTitle = "Forgot?"; ObjectID = "slZ-Ce-Cut"; */
+"slZ-Ce-Cut.normalTitle" = "Unuttunuz?";
+
+
+/* Class = "UIButton"; normalTitle = "Add Almond Locally"; ObjectID = "UMh-WG-lC3"; */
+"UMh-WG-lC3.normalTitle" = "Yerel HomeScreen ekle";
+/* Class = "UILabel"; text = "Almond"; ObjectID = "Zuk-ja-Rsi"; */
+"Zuk-ja-Rsi.text" = "HomeScreen";
+/* Class = "UILabel"; text = "Alternatively, you can control your Almond and home devices locally, without a Securifi Cloud Account."; ObjectID = "wee-4l-TQb"; */
+"wee-4l-TQb.text" = "Alternatif olarak, bir Securifi Bulut Hesabı olmadan, yerel olarak HomeScreen ve ev cihazları kontrol edebilirsiniz.";

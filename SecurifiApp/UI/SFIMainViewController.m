@@ -77,7 +77,6 @@
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onReachabilityDidChange:) name:kSFIReachabilityChangedNotification object:nil];
-    [center addObserver:self selector:@selector(onNetworkDownNotifier:) name:NETWORK_DOWN_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onNetworkUpNotifier:) name:NETWORK_UP_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onDidCompleteLogin:) name:kSFIDidCompleteLoginNotification object:nil];
     [center addObserver:self selector:@selector(onLogoutResponse:) name:kSFIDidLogoutNotification object:nil];
@@ -177,10 +176,6 @@
         [self.HUD hide:YES];
         [self invalidateTimer];
     }
-}
-
-- (void)onNetworkDownNotifier:(id)sender {
-    [self conditionalTryConnectOrLogon:NO];
 }
 
 #pragma mark - SFILoginViewController delegate methods

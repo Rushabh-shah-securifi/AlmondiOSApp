@@ -84,13 +84,13 @@
         case nameIndexPathRow:
         {
             txtPropertyValue.text = self.device.deviceName;
-            lblPropertyName.text = @"Name";
+            lblPropertyName.text = NSLocalizedString(@"Device.propertyeditview.controller.Name",@"Name");
         }
             
             break;
         case locationIndexPathRow:
         {
-            lblPropertyName.text = @"Location";
+            lblPropertyName.text = NSLocalizedString(@"Device.propertyeditview.controller.Location",@"Location");
             txtPropertyValue.text = self.device.location;
         }
             break;
@@ -98,8 +98,8 @@
         {
             SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_IR_CODE];
             txtPropertyValue.text = currentDeviceValue.value;
-            lblPropertyName.text = @"Enter IR Code";
-            txtPropertyValue.placeholder = @"Example 444";
+            lblPropertyName.text = NSLocalizedString(@"Device.propertyeditview.controller.Enter IR Code",@"Enter IR Code");
+            txtPropertyValue.placeholder = NSLocalizedString(@"Device.propertyeditview.controller.Example 444",@"Example 444");
         }
             break;
         case configIndexPathRow:

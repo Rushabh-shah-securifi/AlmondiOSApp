@@ -54,7 +54,7 @@
     
     
     if (self.currentAlmond == nil) {
-        self.navigationItem.title = @"Get Started";
+        self.navigationItem.title = NSLocalizedString(@"scene.title.Get Started", @"Get Started");
         [self markAlmondMac:NO_ALMOND];
     }
     else {
@@ -372,7 +372,7 @@
     
     
     if (self.currentAlmond == nil) {
-        self.navigationItem.title = @"Get Started";
+        self.navigationItem.title = NSLocalizedString(@"scene.title.Get Started", @"Get Started");
         [self markAlmondMac:NO_ALMOND];
     }
     else {

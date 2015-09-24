@@ -1,0 +1,770 @@
+/*
+ Common-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+
+/*------- Localization strings common across all apps -------*/
+"HOME" = "ДОМА";
+
+/* hud. buttons, controls */
+"hud.One moment please..." = "Пожалуйста, подождите немного…";
+"hud.Updating settings..." = "Обновление настроек...";
+"alert.button.OK" = "OK";
+"Oops!" = "Упс!";
+"Sorry!" = "Приносим извинения!";
+"toast.Saving..." = "Сохранение...";
+
+/* affiliation */
+"Please try later." = "Пожалуйста, попробуйте позже.";
+"Please enter a valid code." = "Пожалуйста, введите правильный код.";
+"alert.msg.Logout was unsuccessful" = "К сожалению, выход из системы не удался. Пожалуйста, попробуйте позже.";
+"alert.title.Logout Unsuccessful" = "Выход Успешен";
+//m
+"cloudlink.title.Cloud Link" = "Облачное Соединение";
+"cloudlink.label.Linking to Cloud" = "Установление облачного соединения";
+"cloudlink.label.Name" = "Имя";
+"cloudlink.label.MAC Address" = "MAC-адрес";
+"cloudlink.label.WIFI SSID" = "WIFI SSID";
+"Enter code" = "Введите Ваш код";
+
+
+/* activation */
+
+"Reactivation link has been sent to your account." = "Активационная ссылка была отправлена на Ваш аккаунт.";
+"sensor.activation.The username was not found" = "Имя пользователя не найдено";
+"The account is already validated" = "Данный аккаунт уже был активирован.";
+"Sorry! Cannot send reactivation link" = "К сожалению, активационная ссылка не может быть повторно выслана в настоящий момент. Пожалуйста, попробуйте позже.";
+"The email ID is invalid." = "ID электронной почты некорректен.";
+
+/* change password */
+
+"password-validation.strength-label.Password: Mismatch" = "Пароль: Несоответствие";
+"password-validation.strength-label.Password: Too Short" = "Пароль: Слишком короткий";
+"password-validation.strength-label.Password: Too Long" = "Пароль: Слишком длинный";
+"password-validation.strength-label.Password: Weak" = "Пароль: Слишком слабый";
+"password-validation.strength-label.Password: Medium" = "Пароль: Средний";
+"password-validation.strength-label.Password: Strong" = "Пароль: Надёжный";
+"The password should be %d - %d characters long." = "Длина пароля должна составлять %d - %d символов.";
+"An account already exists with this email." = "аккаунт с данным email уже зарегистрировал.";
+"The email or password was incorrect." = "Еmail или пароль неверен.";
+"Sorry! Signup was unsuccessful." = "К сожалению, регистрация не удалась.";
+"The username was not found" = "Имя пользователя не найдено";
+"There is a password mismatch." = "Пароли не совпадают.";
+"You forgot to enter your password." = "Вы забыли ввести пароль";
+"You have entered an invalid email ID." = "Вы ввели неверный ID электронной почты.";
+"You forgot to enter your email ID." = "Вы забыли ввести ID электронной почты.";
+"password.hud.Changing password..." = "Изменение пароля...";
+"password.label-text.There was some error on cloud. Please try later." = "Произошла ошибка в облачном соединении. Пожалуйста, попробуйте позже.";
+"Sorry! You are not registered with us yet." = "Приносим извинения! Вы ещё не зарегистрированы.";
+"You need to fill all the fields." = "Необходимо заполнить все поля.";
+"The current password was incorrect." = "Данный пароль неверен.";
+"Sorry! Password change was unsuccessful." = "К сожалению, смена пароля не удалась.";
+
+/* login */
+"Please enter Username and Password" = "Пожалуйста, введите Имя Пользователя и Пароль";
+"Sorry! Could not complete the request." = "К сожалению, Ваш запрос не был выполнен.";
+"Unable to establish Internet route to cloud service." = "Невозможно установить соединение с облачным сервисом.";
+"Sorry! Login was unsuccessful." = "К сожалению, вход не удался.";
+"The email was not found." = "Еmail не найден.";
+"The password is incorrect." = "Пароль неверен.";
+"Almost there." = "Почти готово.";
+"You need to activate your account." = "Вам необходимо активировать Аккаунт.";
+"The email or password is incorrect" = "Еmail или парод некорректен";
+"Password reset link has been sent to your account." = "Ссылка для восстановления пароля была выслана на Ваш аккаунт.";
+"Sorry! Your password cannot be reset at the moment. Try again later." = "К сожалению, Ваш пароль не может быть восстановлен в настоящее время. Пожалуйста, попробуйте позже.";
+"Login" = "Вход";
+
+/* logout all */
+
+"logoutall.navbar-title.Continue" = "Продолжить";
+"logoutall.label.Logout from all devices was not successful." = "Выход из всех устройств не был успешен.";
+"logoutall.alertview.title.Error" = "Неверный Пароль";
+"logoutall.alertview.msg.The password is invalid." = "Пароль неверен.";
+
+/* router tab */
+"router.offline-msg.label.Please check the router." = "Пожалуйста, проверьте Роутер.";
+"router.card-title.Cloud Almond Link" = "Облачное соединение с Almond ";
+"router.card-title.Local Almond Link" = "Локальное соединение с Almond ";
+"router.card-title.Wireless Settings" = "Беспроводные настройки";
+"router.wireless-status.Enabled" = "активировано";
+"router.wireless-status.Disabled" = "деактивировано";
+"router.card.Settings are not available." = "Настройки недоступны.";
+"router.card-title.Devices & Users" = "Устройства и Пользователи";
+"router.devices-summary.%d connected, %d blocked" = "%d подключено, %d заблокировано";
+"router.software-version.header.Software Update Available" = "Доступно обновление Программного Обеспечения";
+"router.software-version.header.instructions" = "Пожалуйста, нажмите \"Настройки\" на Вашем Almond";
+"router.software-version.Update Available" = "Доступно обновление";
+"router.software-version.Current version" = "Текущая версия";
+"router.software-version.Not available" = "Информация о версии недоступна.";
+"router.card-title.Router Reboot" = "Перезагрузка Роутера";
+"router.reboot-msg.Router is rebooting. It will take at least" = "Роутер перезагружается. Это займёт не менее";
+"router.reboot-msg.2 minutes for the router to boot." = "2 минут для перезагрузки.";
+"router.reboot-msg.Please refresh after sometime." = "Пожалуйста, обновите через некоторое время.";
+"router.Router status is not available." = "Нет данных о статусе Роутера.";
+"router.Last reboot %@ ago" = "Последняя перезагрузка %@ назад";
+"router.no-almonds.nav-title.Get Started" = "Приступить к работе";
+"router.hud.Router is now online." = "Теперь роутер онлайн.";
+"router.hud.Updating router firmware." = "Обновление программного обеспеения роутера.";
+"router.hud.Router is rebooting." = "Роутер перезагружается.";
+"router.card-title.Send Logs" = "Отправить Лог-файлы";
+"router.Sends %@'s logs to our server" = "Отправка %@'s лог-файлов на наш сервер";
+"router.hud.Sending Logs." = "Отдаются инструкции роутеру об отправке лог-файлов";
+//m
+"router.devicestatus.Connected as %@" = "Подключен как %@";
+"router.devicesmac.MAC address is %@" = "MAC-адрес %@";
+"router.deviceIP.IP address is %@" = "IP-адрес %@";
+"router.reboot.title.Reboot the router?" = "Перезагрузить роутер?";
+"It will take at least 2 minutes for the router" = "Потребуется не менее 2 минут для ";
+"to reboot. Please refresh after sometime." = "перезагрузки роутера. Пожалуйста, обновите через некоторое время.";
+"router.settings.label.SSID" = "SSID";
+"router.settings.label.Channel" = "Канал";
+"router.settings.label.Wireless Mode" = "Беспроводной режим";
+"router.settings.label.Security" = "Безопасность";
+"router.settings.label.Encryption" = "Шифрование";
+"router.settings.label.Country Region" = "Страна, Регион";
+"router.nav-title.Get Started" = "Приступить к работе";
+"router.refresh-title.Refresh router data" = "Обновить данные роутера";
+"router.summary.IP Address : %@" = "IР-адрес: %@";
+"router.summary.Admin Login : %@" = "Вход Администратора : %@";
+"router.software-version.title.Software Version" = "Версия Программного Обеспечения";
+"router.software-version-new.title.Software Version *" = "Версия Программного Обеспечения *";
+"router.software-version-new.title.Software Version" = " Версия Программного Обеспечения ";
+"router.offline-msg. is offline" = " офлайн";
+"router.log-textfield-placeholder.Describe your problem here" = "Опишите Вашу проблему здесь";
+"router.log-send-success.summary.Thanks for sending logs" = "Благодарим Вас за отправку лог-файлов";
+"router.log-firmware-not-supported.Please update your router's firmware" = "Пожалуйста, обновите встроенные программы Вашего роутера";
+"router.log-firmware-not-supported.in order to activate this functionality" = "для активации данного функционала.";
+"router.version-title.Update now?" = "Обновить сейчас?";
+"router.update-summary.It will take a few minutes to update the software." = "Обновление программного обеспечения займёт несколько минут.";
+"router.network-title.Local Link" = "Локальная связь";
+"router.link-button.Link" = "Связь";
+"router.btn-title.Back to Cloud Link" = "Вернуться к Облачному Соединению";
+"router.label.SSID 2.5GHz" = "SSID 2.5Гц";
+"router.label.SSID 5GHz" = "SSID 5Гц";
+"router.label.IP Address" = "IP-адрес";
+"router.label.Admin Login" = "Вход Администратора";
+"router.label.Admin Password" = "Пароль Администратора";
+"router.hud.Establishing Local Link..." = "Установление Локального Соединения...";
+
+
+/* sensors */
+
+"Device has been tampered" = "Устройство было повреждено";
+"sensors.button.Dismiss" = "Прекратить";
+"sensors.label.Status" = "Статус";
+"sensor.status-label.OFF" = "ВЫКЛ";
+"sensor.status-label.ON" = "ВКЛ";
+"sensor.status-label.OK" = "OK";
+"sensors.label.SENSOR SETTINGS" = "НАСТРОЙКИ СЕНСОРОВ";
+"sensors.settings-label.Send Notifications" = "Отправить Уведомления";
+"sensors.no-sensors.label.You don't have any sensors yet." = "У Вас пока нет никаких сенсоров.";
+"scenes.no-scenes.label.A scene is a group of sensors and a desired state for these sensors." = "Зона Обзора – это группа сенсоров и их желаемое состояние.";
+"sensors.account-confirm.label.Please confirm your account (less than a day left)." = "Пожалуйста, подтвердите Ваш аккаунт (осталось менее дня).";
+"sensors.account-confirm.label.Please confirm your account (%d days left)." = " Пожалуйста, подтвердите Ваш аккаунт (осталось %d дн.).";
+"sensors.account-confirm.label.Check activation email for instructions." = "Смотрите инструкции в активационном email.";
+"sensors.account-confirm.label.Resend activation email" = "Повторно отправить активационный email";
+"activation.toast.Reactivation link sent to your registerd email ID." = "Активационная ссылка отправлена на Ваш зарегистрированный ID электронной почты.";
+"sensor.thermostat.field-label.Set Point" = "Заданное значение";
+"sensor.thermostat.field-label.Heating" = "Нагрев";
+"sensor.thermostat.field-label.Cooling" = "Охлаждение";
+"sensor.thermostat.field-label.Mode" = "Режим";
+"sensor.thermostat.segment-control.Auto" = "Авто";
+"sensor.thermostat.segment-control.Heat" = "Нагрев";
+"sensor.thermostat.segment-control.Cool" = "Охлаждение";
+"sensor.thermostat.segment-control.Off" = "Выкл.";
+"sensor.thermostat.field-label.Fan" = "Вентиляция";
+"sensor.thermostat.segment-control.Auto Low" = "Авто низкий";
+"sensor.thermostat.segment-control.On Low" = "На мин.";
+"sensor.thermostat.Thermostat is %@" = "Термостат на уровне %@";
+"sensor.thermostat.Fan is %@" = "Вентиляция на уровне %@";
+"sensor.thermostat.Battery is at %@%%" = "Заряд на уровне %@%%";
+"sensor.Power is %.3fW" = "Питание на уровне %.3fW";
+"sensor.Current is %.3fA" = "Текущий уровень %.3fA";
+"sensor.Voltage is %.3fV" = "Напряжение на уровне %.3fV";
+"sensor.lock.pin-picker.Pin %ld" = "Pin-код %ld";
+"sensor.toast.doorlock.PassCode must be 5 to 8 digits long" = "Пароль должен содержать от 5 до 8 цифр";
+"sensor.device-name-label.Name" = "Имя";
+"sensor.deivice-duration-label.Ring Duration" = "Продолжительность сигнала";
+"sensor.deivice-duration-placeholder.number of seconds" = "число секунд";
+"sensor.deivice-location-label.Located at" = "Расположен в";
+"sensor.deivice-save-settings.button.Save" = "Сохранить";
+"sensor.device-status.label.Battery OK" = "Заряд OK";
+"sensor.device-status.label.Battery %" = "ЗАРЯД %@%%";
+"sensor.device-status.label.Low Battery" = "Низкий Заряд";
+"sensor.device-status.label.LOW BATTERY" = "НИЗКИЙ ЗАРЯД";
+"sensor.device-status.label.Battery Unknown" = "Заряд неизвестен";
+"sensor.doorlock.field-label.Pins" = "Pin-коды";
+"sensor.doorlock.pinentry-textfield.placeholder.Code is not specified." = "Код не указан.";
+"sensor.doorlock.button.Save Pin" = "Сохранить Pin-код";
+"sensor.doorlock.field-label.Code" = "Код";
+"sensor.multilevel-switch.status-label.Dimmable, %@%%" = "Регулируемая яркость, %@%%";
+"sensor.level-control.status-label.Dimmable" = "Регулируемая яркость";
+"sensor.keyfob.status-label.ALL DISARMED" = "ПОЛНОСТЬЮ СНЯТО С ОХРАНЫ";
+"sensor.keyfob.status-label.PERIMETER ARMED" = "ПЕРИМЕТР ПОСТАВЛЕН НА ОХРАНУ";
+"sensor.keyfob.status-label.ALL ARMED" = "ПОЛНОСТЬЮ ПОД ОХРАНОЙ";
+"sensor.lightsensor.status-label.Illuminance %@" = "Освещённость %@";
+"sensor.tempsensor.status-label.Humidity %@" = "Влажность %@";
+"sensor.moisturesensor.status.FLOODED" = "ЗАТОПЛЕНО";
+"sensor.poweswitch.label.Power %@W" = "Питание %@W";
+"sensor.moisturesensor.status.Temp %@" = "Температура %@";
+"sensor.notificaiton.label.notificationMode" = "Уведомить меня";
+"sensor.notificaiton.segment.Always" = "Всегда";
+"sensor.notificaiton.segment.Away" = "Когда не дома";
+"sensor.notificaiton.segment.Off" = "Выкл";
+"sensors.label.Color" = "Цвет";
+"sensor.hud.UpdatingSensordata" = "Обновление данных сенсоров...";
+
+//r
+"sensor.deivice-showlog.button.viewlogs" = "Просмотреть лог-файлы";
+"sensor.deivice-warning_rightview.seconds" = "секунды";
+"sensor.deivice.Highlightbutton Turn Off" = "Выключить";
+"sensor.deivice.Highlightbutton Turn ON" = "Включить";
+"Temperature is %@%@" = "Температура составляет %@%@";
+"Humidity is %@%%" = "Влажность составляет %@%%";
+"sensors.label.DimmableLight-Brightness" = "Яркость";
+"sensors.label.DimmableLight-Saturation" = "Насыщенность";
+"sensors.label.DimmableLight-Color Temperature" = "Температура цвета";
+"sensors.label.HueLamp-Brightness" = "Яркость";
+"sensors.label.HueLamp-Saturation" = "Насыщенность";
+"sensors.label.HueLamp-Color" = "Цвет";
+
+//rn
+"smoke-detector-Warning" = "Предупреждение";
+"smoke-detector-Emergency" = "Критическая Ситуация";
+"smoke-detector Smoke :%@ , CO :%@"="Дым :%@ , CO :%@";
+
+
+"sensor-detail-Fan cell On" = "Вкл";
+"sensor-detail-Fan cell Off" = "Выкл";
+"sensor-detail-Target Temp" = "Целевая Температура";
+
+
+"sensor.notificaiton.fanindexpath.On" = "Вкл";
+"sensor.notificaiton.fanindexpath.Off" = "Выкл";
+"sensor.awaymode.indexpath Home" = "Дом";
+"sensor.mode indexpath Off" = "Выкл";
+"sensor.mode indexpath Cool" = "Охлаждение";
+"sensor.mode indexpath Heat" = "Нагрев";
+"sensor.mode indexpath Heat-Cool" = "Нагрев-Охлаждение";
+
+"device-property-fanindexpah false" = "ложь";
+"device-property-fanindexpah true" = "правда";
+"device property on mobile hud Unable to update sensor"="Невозможно обновить сенсоры";
+
+/* signup */
+
+"signup.navbar-title.Sign up" = "Регистрация";
+"signup.barbutton.Decline" = "Отклонить";
+"signuo.barbutton.Accept" = "Принять";
+"signup.barbutton.Continue" = "Продолжить";
+"signup.headline-text.Signing up." = "Идёт регистрация.";
+"signup.subheadline-text.Please wait one moment..." = "Пожалуйста, немного подождите...";
+"signup.headline-text.Almost done." = "Почти готово.";
+"signup.headline-text.An activation link was sent to your email" = "Активационная ссылка отправлена на Ваш email. Проследуйте по ней, затем нажмите Продолжить для входа.";
+"signup.footerbutton.Resend the activation email" = "Повторно отправить активационный email";
+"signup.footerbutton.Signup using another email" = "Зарегистрироваться, используя другой email";
+"signup.footerlabel.Do you want to create another account?" = "Вы хотите создать новый аккаунт?";
+
+
+/* Accounts */
+"accounts.navbar-title.settings" = "Настройки";
+"accounts.userprofile.title.account" = "Аккаунт";
+"accounts.userprofile.label.primaryEmail" = "ОСНОВНОЙ EMAIL";
+"accounts.userprofile.label.password" = "ПАРОЛЬ";
+"accounts.userprofile.label.firstName" = "ИМЯ";
+"accounts.userprofile.label.lastName" = "ФАМИЛИЯ";
+"accounts.userprofile.label.address" = "АДРЕС";
+"accounts.userprofile.label.country" = "СТРАНА";
+"accounts.userprofile.label.zipCode" = "ZIP-КОД";
+
+"accounts.userprofile.title.placeholder.name" = "Мы всё ещё не знаем Вашего имени";
+"accounts.userprofile.textfield.placeholder.firstName" = " Мы всё ещё не знаем Ваше Имя";
+"accounts.userprofile.textfield.placeholder.lastName" = " Мы всё ещё не знаем Вашу Фамилию";
+"accounts.userprofile.textfield.placeholder.address1" = "Адрес, Строка 1";
+"accounts.userprofile.textfield.placeholder.address2" = "Адрес, строка 2";
+"accounts.userprofile.textfield.placeholder.address3" = "Адрес, Строка 3";
+"accounts.userprofile.textfield.placeholder.country" = "В какой стране Вы проживаете?";
+"accounts.userprofile.textfield.placeholder.zipCode" = "Каков Ваш ZIP-код?";
+
+"accounts.userprofile.button.changePassword" = "Изменить пароль";
+"accounts.userprofile.button.edit" = "Изменить";
+"accounts.userprofile.button.add" = "Добавить";
+"accounts.userprofile.button.done" = "Готово";
+"accounts.userprofile.button.deleteAccount" = "УДАЛИТЬ АККАУНТ";
+"accounts.ownedAlmond.label.SharedWithOthers" = " %d уведомлен(ы)";
+"accounts.ownedAlmond.label.deviceName" = "ИМЯ УСТРОЙСТВО";
+"accounts.ownedAlmond.label.accessEmail" = "EMAIL ДОСТУПА";
+"accounts.ownedAlmond.button.Unlink" = "Рассоединить";
+
+"accounts.ownedAlmond.button.Remove" = "Удалить";
+"accounts.ownedAlmond.button.InviteMore" = "ПРИГЛАСИТЬ БОЛЬШЕ";
+"accounts.sharedAlmond.label.SharedWithYouBy" = "Вы уведомлены";
+"accounts.sharedAlmond.label.deviceName" = "ИМЯ УСТРОЙСТВА";
+"accounts.sharedAlmond.button.Remove" = "Удалить";
+
+"accounts.alert.onDeleteAccount.title" = "Удалить Аккаунт";
+"accounts.alert.onDeleteAccount.delete" = "Удалить";
+"accounts.alert.onDeleteAccount.Cancel" = "Отменить";
+"accounts.alert.onUnlinkAlmond.Unlink" = "Рассоединить";
+"accounts.alert.onUnlinkAlmond.Cancel" = "Отмена";
+
+"accounts.alert.onInviteToShareAlmond.title" = "Пригласить по Email";
+"accounts.alert.onInviteToShareAlmond.message" = "Приглашая кого-либо, Вы даёте им доступ к %@";
+"accounts.alert.onInviteToShareAlmond.Invite" = "Пригласить";
+"accounts.alert.onInviteToShareAlmond.Cancel" = "Отмена";
+
+"accounts.hud.loadingDetails" = "Загрузка данных аккаунта...";
+"accounts.hud.deletingAccount" = "Удаление аккаунта...";
+"accounts.hud.updatingDetails" = "Обновление данных аккаунта...";
+"accounts.hud.removeUserFromSharedList" = "Удалить пользователя из общего списка...";
+
+"accounts.deleteAccount.failure.reasonCode1" = "Произошла ошибка в облачном соединении. Пожалуйста, попробуйте позже.";
+"accounts.deleteAccount.failure.reasonCode2" = "К сожалению, Вы пока не зарегистрированы.";
+"accounts.deleteAccount.failure.reasonCode3" = "Вам необходимо активировать Ваш аккаунт.";
+"accounts.deleteAccount.failure.reasonCode4" = "Необходимо заполнить все поля.";
+"accounts.deleteAccount.failure.reasonCode5" = "Текущий пароль неверен.";
+"accounts.deleteAccount.failure.reasonCode6" = " Произошла ошибка в облачном соединении. Пожалуйста, попробуйте позже.";
+"accounts.deleteAccount.failure.default" = "К сожалению, удаление аккаунта не удалось.";
+
+"accounts.updateAccount.failure.reasonCode1" = " Произошла ошибка в облачном соединении. Пожалуйста, попробуйте позже.";
+"accounts.updateAccount.failure.reasonCode2" = "Необходимо заполнить все поля.";
+"accounts.updateAccount.failure.reasonCode3" = "К сожалению, Вы ещё не зарегистрированы.";
+"accounts.updateAccount.failure.default" = "К сожалению, обновление не удалось.";
+
+"accounts.unlinkAlmond.failure.reasonCode1" = " Произошла ошибка в облачном соединении. Пожалуйста, попробуйте позже.";
+"accounts.unlinkAlmond.failure.reasonCode2" = " К сожалению, Вы ещё не зарегистрированы.";
+"accounts.unlinkAlmond.failure.reasonCode3" = "Необходимо активировать Ваш Аккаунт.";
+"accounts.unlinkAlmond.failure.reasonCode4" = "Необходимо заполнить все поля.";
+"accounts.unlinkAlmond.failure.reasonCode5" = "Данный пароль неверен.";
+"accounts.unlinkAlmond.failure.reasonCode6" = " Произошла ошибка в облачном соединении. Пожалуйста, попробуйте позже.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode1" = " Произошла ошибка в облачном соединении. Пожалуйста, попробуйте позже.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode5" = "Необходимо заполнить все поля.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode7" = "Вы не можете добавить себя в качестве вторичного пользователя";
+"accounts.deleteSecondaryUser.failure.reasonCode1" = "Произошла ошибка в облачном соединении. Пожалуйста, попробуйте позже.";
+"accounts.deleteSecondaryUser.failure.reasonCode2" = "Необходимо заполнить все поля.";
+"accounts.deleteSecondaryUser.failure.reasonCode5" = "Вторичные пользователи не найдены.";
+"accounts.deleteSecondaryUser.failure.default" = "К сожалению, что-то пошло не так. Пожалуйста. Попробуйте позже.";
+
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode1" = " Произошла ошибка в облачном соединении. Пожалуйста, попробуйте позже.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode2" = "Необходимо заполнить все поля.";
+
+
+/* Notifications */
+
+//m
+"notifications.title.Recent Activities" = "Недавние действия";
+"notifications.headerfooter.mode.The End" ="Конец";
+"notifications.date.Today" = "Сегодня";
+"notifications.bucketdate.Yesterday" = "Вчера";
+
+/* Scenes */
+
+"scenes.hud.loadingScenes" = "Загрузка Зон Обзора...";
+"scenes.hud.deletingScene" = "Удаление Зоны Обзора...";
+"scenes.hud.activatingScene" = "Активация Зоны Обзора...";
+"scenes.hud.creatingScene"   = "Создание Зоны Обзора...";
+//m
+"scene.macro.Could not update sensor\ndata." = "Не удалось обновить данные сенсоров.";
+"scene.thermostat-title.COOLING TEMP." = "ТЕМПЕРАТУРА ОХЛАЖДЕНИЯ.";
+"scene.thermostat-title.HEATING TEMP." = "ТЕМПЕРАТУРА НАГРЕВА.";
+"scene.button.Save" = "Сохранить";
+"scene.button.Cancel" = "Удалить";
+"scene.title.Get Started" = "Начать Работу";
+"scene.msg.You have to select at least 1 value" = "Необходимо выбрать не менее 1 значения";
+"scene.cancel-title.OK" = "OK";
+"scene.hud.Loading router data" = "Загрузка данных Роутера";
+"scene.hud.Loading sensor data" = "Загрузка данных Сенсоров";
+"scene.text.Choose one or more Actions" = "Выберите одно или несколько Действий";
+"scene.alert-title.Oops" = "Упс";
+"scene.alert-msg.Sorry, There was some problem with this request, try later!" = "К сожалению, возникли проблемы в обработке данного запроса, попробуйте позже!";
+"scene.alert-button.OK" = "OK";
+
+
+/* Scoreboard */
+//r
+"Scoreboard" = "Табло";
+"Refresh.Scoreboard" = "Обновить Табло";
+"scoreboard.section.Cloud" = "Облако";
+"scoreboard.section.PushNotifications" = "Всплывающие уведомления";
+"scoreboard.section.Events" = "События";
+"scoreboard.section.Network" = "Сеть";
+"scoreboard.section.Commands & Updates" = "Управление и Обновления";
+"scoreboard.section.Logs & Data" = "Логи и Данные";
+"footerInsection.Last refreshed %.0f secs ago @ %@" = "Последнее обновление %.0f секунд назад @ %@";
+"notifications.Client Token" = "Токен Клиента";
+"notifications.Not registered" = "Не зарегистрирован";
+"Failed to send mail" = "Не удалось отправить письмо";
+"Since %@" = "С %@";
+"notifications_logctrl.View Handler Log" = "Просмотреть Логи Оператора";
+"notifications_viewactual.View Notifications" = "Просмотреть Уведомления";
+"notifications_viewtests.Unit Test UI" = "Тест UI Секции";
+"events.All Events" = "Все события";
+"Network.Established Connections" = "Установленные соединения";
+"Network.Failed Connections" = "Неудавшиеся соединения";
+"Network.Reachability Changes" = "Изменения доступности";
+"SEC_ReQUEST.Dynamic Updates" = "Динамическое обновление";
+"SEC_ReQUEST.Command Requests" = "Управленческие запросы";
+"SEC_ReQUEST.Command Responses" = "Реакции на запрос";
+"Email Logs & Data" = "Данные и Логи Email";
+"cloudSection.row0.Production" = "Производство";
+"cloudSection.row1.Development" = "Разработка";
+"Copied token" = "Скопированный Токен";
+"Reset counter" = "Обнулить счётчик";
+"Sending Mail is not supported on this device" = "Отправка email не поддерживается данным устройством";
+"Scoreboard.Preparing..." = "Подготовка...";
+"Local Network Enabled" = "Локальная Сеть Активирована";
+"scoreboard.localnetwork.IP Address" = "IP-адрес";
+"scoreboard.localnetwork.Port" = "Порт";
+"scoreboard.localnetwork.Password" = "Пароль";
+
+/* Sensor Support */
+//r
+"sensor support- a value has changed" = " значение было изменено";
+
+/* Draw View Controller */
+//r
+"Draw viecontroller.label LOCATION" = "МЕСТОПОЛОЖЕНИЕ";
+"Draw viecontroller.label SETTINGS" = "НАСТРОЙКИ";
+"Draw viecontroller.label INFO" = "ИНФО";
+
+/* Main View Controller */
+//r
+"Sorry! Unable to establish Internet route to cloud service." = "К сожалению, не удаётся создать Интернет-соединение с облаком!";
+"mainviewcontroller_Connecting. Please wait!" = "Устанавливается соединение. Пожалуйста, подождите!";
+"mainviewcontroller_Sorry! Could not connect to the cloud service." = "К сожалению, не удалось установить соединение с облачным сервисом.";
+"main view controller Sorry! Push Notification was not registered." = "К сожалению, рush-уведомления не были зарегистрированы.";
+"main view controller Sorry! Push Notification was not deregistered." = " К сожалению, рush-уведомления не были зарегистрированы сняты с регистрации.";
+
+/* Table View Controller */
+//r
+"In process of connecting. Change connection method." = "Соединение устанавливается. Измените способ соединения.";
+"Cloud Connection" = "Облачное Соединение";
+"connection status Local Connection" = "Соединение";
+"alert.title-Switch to Local Connection" = "Переключиться на Локальное Соединение";
+"alert.title-Edit Local Connection Settings" = "Редактировать Настройки Локального Соединения";
+"Alert view title-Retry Cloud Connection" = "Повторно установить облачное соединение";
+"Alert view title-Switch to Local Connection" = "Переключиться на Локальное Соединение";
+"Edit Local Connection Settings" = "Edit Local Connection Settings";
+"Alert view title-Edit Local Connection Settings" = "Редактировать Настройки Локального Соединения";
+"alert view error_Cloud Connection" = "Облачное Соединение";
+"alert view error_Local Connection" = "Локальное Соединение";
+"alertview localconnection_Switch to Cloud Connection" = "Переключиться на Облачное Соединение";
+"alertview Local connection settings are missing." = "Не хватает настроек Локального Соединения.";
+"alertview title Add Local Connection Settings" = "Добавить Настройки Локального Соединения";
+"alert msg offline Local Retry Local Connection" = "Повторно установить Локальное Соединение";
+"alert title offline Local Switch to Cloud Connection" = "Переключиться на Облачное Соединение";
+"alert title offline Local Edit Local Connection Settings" = "Редактировать настройки Локального Соединения";
+"mainviewcontroller hud Loading router data" = "Загружаются данные роутера";
+"mainviewcontroller hud Loading sensor data" = "Загружаются данные сенсоров";
+"mainviewcontroller hud hud.Updating settings..." = "Обновление настроек...";
+"Cancel"="Отмена";
+
+/* Wifi */
+"wifi.hud.UpdatingWifiClient" = "Обновление Wifi-клиента...";
+"wifi.hud.removeClient" = "Удаление wifi-клиента...";
+"wifi.button.deleteClient" = "Удалить";
+
+//r
+"CONNECTED" = "ПОДКЛЮЧЕНО";
+"NOT CONNECTED" = "НЕ ПОДКЛЮЧЕНО";
+
+"SFIWiFiClientsListViewController-propertyNames-Name" = "Имя";
+"SFIWiFiClientsListViewController-propertyNames-Type" = "Тип";
+"SFIWiFiClientsListViewController-propertyNames-MAC Address" = "MAC-адрес";
+"SFIWiFiClientsListViewController-propertyNames-Last Known IP" = "Последний известный IP";
+"SFIWiFiClientsListViewController-propertyNames-Connection" = "Соединение";
+"SFIWiFiClientsListViewController-propertyNames-Use as Presence Sensor" = "Использовать как Сенсор Присутствия";
+"SFIWiFiClientsListViewController-propertyNames-Notify me" = "Уведомить меня";
+"SFIWiFiClientsListViewController-propertyNames-Remove" = "Удалить";
+"Presence sensor Yes"="Да";
+"Presence sensor NO" = "НЕТ";
+"response.alert-Oops" = "Упс";
+"response.alert-Sorry, There was some problem with this request, try later!" = "Sorry, There was some problem with this request, try later!";
+"response.alert-OK" = "OK";
+
+/* Sensor Index Support */
+" Fan is " = " Вентиляция ";
+" Fan is set to " = " Вентиляция установлена на ";
+" brightness changed to " = " яркость изменена на ";
+" brightness changed to " = " яркость изменена на ";
+" detected Fire." = " обнаружен Огонь.";
+" detected Gas." = " обнаружен Газ.";
+" detected Smoke." = " обнаружен Дым.";
+" detected Vibration." = " обнаружена Вибрация.";
+" detected Vibration." = " обнаружена Вибрация.";
+" detected motion." = " обнаружено движение.";
+" detected motion." = " обнаружено движение.";
+" detected water." = " обнаружена вода.";
+" has been Tampered." = " был поврежден.";
+" hue color changed to " = " цветовой тон изменён на ";
+" is " = " is ";
+" is Armed." = " под охраной.";
+" is Closed." = " закрыта.";
+" is Closing." = " закрывается.";
+" is Disarmed." = " снято с охраны.";
+" is Locked." = " заперта.";
+" is Open." = " открыта.";
+" is Opened." = " открыта.";
+" is Opening." = " открывается.";
+" is Perimeter Armed." = " под охраной по периметру.";
+" is Ringing." = " звонит.";
+" is Silent." = " беззвучен.";
+" is Stopped." = " остановлен.";
+" is Unlocked." = " не заперт.";
+" is cooling down to " = " охлаждается до ";
+" is dimmed to " = " приглушён до ";
+" is heating up to " = " нагревается до ";
+" is not fully Locked." = " не полностью заперта.";
+" is reset from Tampered." = " восстановлен после повреждения.";
+" is set to " = " установлен на ";
+" is switched Off." = " отключен.";
+" is switched On." = " включен.";
+" is turned Off." = " выключен.";
+" is turned On." = " включен.";
+" is turned on for " = " включен для ";
+" saturation changed to " = " насыщенность изменена на ";
+" seconds" = " секунды";
+" stopped leaking." = " утечка устранена.";
+" turned Off." = " отключен.";
+" turned On." = " включен.";
+"'s Battery is Low." = ": низкий заряд батареи.";
+"'s Fire is gone." = ": Огонь потушен.";
+"'s Gas is gone." = ": Газ элиминирован.";
+"'s Smoke is gone." = ": Дым элиминирован.";
+"'s color temperature changed to " = ": цветовая температура изменена на ";
+"'s humidiy changed to " = ": влажность изменена на ";
+"'s light reading changed to " = ": показатель освещённость изменён на ";
+"'s motion stopped." = ": движение прекратилось.";
+"'s pin code changed." = ": pin-код был изменён.";
+"'s power reading changed to " = ": показатель питания изменился на ";
+"'s temperature changed to " = ": температура изменилась на ";
+"'s temperature set point changed to " = ": заданное значение температуры изменилось на ";
+"'s vibration stopped." = ": вибрация прекратилась.";
+": no presence detected." = ": присутствие не обнаружено.";
+": presence detected." = ": обнаружено присутствие.";
+"AWAY" = "НЕ ДОМА";
+"HOME" = "ДОМА";
+"OFF" = "ВЫКЛ";
+"ON" = "ВКЛ";
+"Temperature" = "Температура";
+"\u00B0 Farenheit" = "\u00B0 Фаренгейт";
+
+// To be translated
+
+"DIM" = "тусклый";
+"AUTO" = "АВТО";
+"HEAT" = "ТЕПЛО";
+"COOL" = "КРУТО";
+"OFF" = "ВЫКЛ";
+"FAN ON" = "Вентилятор на";
+"FAN OFF" = "Выключенном вентиляторе";
+"HOME" = "ГЛАВНАЯ";
+"AWAY" = "ПРОЧЬ";
+"COOLING TEMP." = "ОХЛАЖДЕНИЕ ТЕМП.";
+"HEATING TEMP." = "ОТОПЛЕНИЕ ТЕМП.";
+"Version" = "Версия";
+"Settings" = "Настройки";
+
+
+//
+"login.local.Switch to Local Connection" = "Переключиться на Локальное Соединение";
+
+"router.log-send-error.There was an error sending logs" = "Был ошибка отправки журналов";
+"Sensorview-almondata-Get Started" = "Начать";
+"showtoast Unable to update sensor" = "Не удалось обновить датчик";
+"Force sensor data refresh" = "Датчик силы данных обновление";
+"tableviewcell-Updating sensor data.\nPlease wait." = "Обновление данных датчика.\nпожалуйста, подождите.";
+"Tharmostat_setpoint-SET POINT %@%@" = "УСТАВКИ %@%@";
+"Tharmostat_setpoint-temperature" = "температура";
+"sensor-property-edit smokedetector Warning" = "предупреждение";
+"sensor-property-edit smokedetector Emergency" = "аварийный";
+"read-almond-version %@ (%@)" = "версия %@ (%@)";
+"Cancel" = "отменить";
+"alert title offline Local Retry Local Connection" = "Повторите Локальное подключение"; // wrong?
+
+"router.card-title.Local Almond Link" = "Местное ссылку ALmond";
+"router.software-version.Update Available" = "Доступно обновление";
+"router.software-version.header.instructions" = "Пожалуйста, нажмите \"настройки\" на вашеAlmond";
+"router.log-send-error.There was an error sending logs" = "Был ошибка отправки журналов";
+"sensor.awaymode.indexpath Away" = "далеко";
+"mainview-configure-Debug" = "отлаживать";
+"connection status Cloud Connection" = "Облако Подключение";
+"alert title offline Local Retry Local Connection" = "Повторите Локальное подключение";
+"connection status Local Connection" = "Подключение по локальной сети";
+//--------------
+
+
+/* UI Accounts */
+"Drawviewcontroller.account" = "аккаунт";
+"Drawviewcontroller.Logout" = "Выйти";
+"Drawviewcontroller.Logout All" = "Выход все";
+"Draqviewcontroller.add"="Добавить";
+
+//new - sensor table view cell
+
+"sensor.field-macro.PinCodeField" = "пин-код поля";
+"sensor.status-label.PRESENCE DETECTED" = "НАЛИЧИЕ ОБНАРУЖЕНО";
+"sensor.macro-msg.Could not update sensor\ndata." = "не удалось обновить данные датчика.";
+"sensor.status-label.OPEN" = "ОТКРЫТЫЙ";
+"sensor.status-label.CLOSED" = "ОТКРЫТЫЙ";
+"sensor.status-label.UNLOCKED" = "РАЗБЛОКИРОВАН";
+"sensor.status-label.LOCKED" = "ЗАБЛОКИРОВАН";
+"sensor.status-label.ACTIVE" = "АКТИВНЫЙ";
+"sensor.status-label.INACTIVE" = "НЕАКТИВНЫЙ";
+"sensor.status-label.MOTION DETECTED" = "ОБНАРУЖЕНИИ ДВИЖЕНИЯ";
+"sensor.status-label.NO MOTION" = "НЕТ ДВИЖЕНИЯ";
+"sensor.status-label.ALARM: FIRE DETECTED" = "СИГНАЛИЗАЦИЯ: ОГОНЬ ОБНАРУЖЕНО";
+"sensor.status-label.OK" = "ХОРОШО";
+"sensor.status-label.FLOODED" = "ЗАТОПЛЕНЫ";
+"sensor.status-label.ALARM: GAS DETECTED" = "ТРЕВОГИ: ГАЗ ОБНАРУЖЕН";
+"sensor.status-label.VIBRATION DETECTED" = "ВИБРАЦИИ ОБНАРУЖЕНО";
+"sensor.status-label.NO VIBRATION" = "НЕТ ВИБРАЦИИ";
+"sensor.msg-label.State data unknown.\nUse manual controls." = "государственные данные неизвестны. использовать ручное управление.";
+"sensor.status-label.PRESENCE DETECTED" = "НАЛИЧИЕ ОБНАРУЖЕНО";
+"sensor.status-label.NO PRESENCE" = "НЕТ НАЛИЧИЕ";
+"sensor.status-label.SMOKE DETECTED!" = "ДЫМ ОБНАРУЖЕН!";
+"sensor.status-label.RINGING" = "ЗВОН";
+"sensor.status-label.CLOSING" = "ЗАКРЫТИЕ";
+"sensor.status-label.STOPPED" = "ОСТАНОВИЛСЯ";
+"sensor.status-label.OPENING" = "ОТКРЫТИЕ";
+
+//Some more
+"sensor.text.%ld SENSORS" = "%ld ДАТЧИКОВ";
+"sensor.text.%ld SENSOR" = "%ld ДАТЧИК";
+
+"Device.propertyeditview.controller.Name" = "имя";
+"Device.propertyeditview.controller.Location" = "расположение";
+"Device.propertyeditview.controller.Enter IR Code" = "Введите код ИК";
+"Device.propertyeditview.controller.Example 444" = "Пример 444";
+
+"scenes.new-scene.label.New Scene" = "новая сцена";
+
+//24-9
+"View Device History”=“View Device History";
+"Name" = "Name";
+"Location" = "Location";
+"Actions" = "Actions";
+"Stop" = "Stop";
+"Battery" = "Battery";
+"Clamp 1 Power" = "Clamp 1 Power";
+"Clamp 1 Energy" = "Clamp 1 Energy";
+"Clamp 2 Power" = "Clamp 2 Power";
+"Clamp 2 Energy" = "Clamp 2 Energy";
+"Siren" = "Siren";
+"Switch 1" = "Switch 1";
+"Switch 2" = "Switch 2";
+"Temperature" = "Temperature";
+"AC Mode" = "AC Mode";
+"High Temperature" = "High Temperature";
+"Low Temperature" = "Low Temperature";
+"Swing" = "Swing";
+"Power" = "Power";
+"IR Code" = "IR Code";
+"Configuration" = "Configuration";
+"Humidity" = "Humidity";
+"Luminance" = "Luminance";
+"Away Mode" = "Away Mode";
+"CO Level" = "CO Level";
+"Smoke Level" = "Smoke Level";
+"Mode" = "Mode";
+"Target Range" = "Target Range";
+"Fan Mode" = "Fan Mode";
+"Fan" = "Fan";
+"Notify me" = "Notify me";
+
+
+/* ==================================================================== */
+
+/*
+ Almond-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+/*------- Localization strings specific to Almond app -------*/
+
+
+/* affiliation */
+"router.linkalmond-msg.label.Let's link an Almond." = "Давайте подключим Almond.";
+"router.linkalmond-msg.label.Start the wizard on your Almond." = " Запустите Мастера Установки на Вашем Almond, затем нажмите на символ ниже.";
+"Almond Linked" = "Almond подключен";
+"Link Almond" = "Облачное подключение";
+"Local Link Almond" = "Локальное подключение";
+"Please wait while your Almond is being linked to cloud." = "Пожалуйста, подождите, пока Ваш Almond подключается к облаку.";
+"This Almond is already linked to another user." = "Данный Almond уже подключён к другому пользователю. Свяжитесь с нами по support@securifi.com";
+"Almond could not be affiliated" = "Almond не может быть привязан.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "Запустите приложение Almond Account и введите отображаемый код.";
+"cloudlink.button.Link Almond" = "Подключить Almond";
+"cloudlink.button.Add Almond Locally" = "Локально подключить Almond ";
+
+/* router tab */
+"router.offline-msg.label.Almond is Offline." = "Almond не подключен к сети.";
+//m
+"router.msg-link.The Almond was successfully linked." = "Almond был успешно подключен.";
+"router.btn-title.Unlink Almond?" = "Отключить Almond?";
+"router.btn-title.Link Almond Locally" = "Подключить Almond Локально";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Пожалуйста, обратите внимание, что без облачного контроля Вы перестанете получать уведомления и не сможете дистанционно управлять Вашим Almond.";
+"router.error-msg.This Almond is already linked." = "Этот Almond уже подключен.";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." = "Возникла ошибка при установке подключения с Almond. Пожалуйста, попробуйте позже.";
+
+/* sensors */
+"router.no-sensors.label.Add a sensor from your Almond." = "Добавьте сенсор с Вашего Almond.";
+
+/* signup */
+"signup.headline-text.Securifi Cloud Account." = "Аккаунт Securifi Cloud.";
+"signup.headline-text.Access your Almonds" = "Получите доступ к Вашим Almond и домашним устройствам из любой точки мира.";
+
+/* Accounts */
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "Это Ваш Almond";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "Имя Almond";
+"accounts.ownedAlmond.button.RenameAlmond" = "Переименовать Almond";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = "Имя Almond";
+"accounts.sharedAlmond.button.RenameAlmond" = "Переименовать Almond";
+"accounts.alert.onDeleteAccount.message" = "Удаление данного аккаунта приведёт к отсоединению Вашего Almond и удалит Ваши пользовательские предпочтения. Для подтверждения удаления аккаунта, введите Ваш пароль ниже.";
+"accounts.alert.onUnlinkAlmond.title" = "Отсоединить Almond";
+"accounts.alert.onUnlinkAlmond.message" = "Для подтверждения отсоединения Вашего Almond введите Ваш пароль ниже.";
+"accounts.itoast.almondNameMax32Characters" = "Имя Almond не может содержать более 32 символоб.";
+"accounts.itoast.unableToChangeAlmondName" = "К сожалению, не удалось изменить имя Almond ";
+"accounts.hud.unlinkingAlmond" = "Отсоединение Almond...";
+"accounts.hud.inviteUserToShareAlmond" = "Приглашение пользователя для совместного использования Almond...";
+"accounts.hud.changeAlmondName" = "Изменить имя Аlmond...";
+"accounts.hud.removeSharedAlmond" = "Удалить общий Аlmond...";
+"accounts.unlinkAlmond.failure.default" = "К сожалению, отсоединение Аlmond не удалось.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "У данного пользователя нет аккаунта Securifi.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "Данный  пользователь ещё не подтвердил свой аккаунт Securifi.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "Это не Ваш Аlmond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "Вы уже предоставили данный Аlmond для совместного использования с этим пользователем.";
+"accounts.inviteUserToShareAlmond.failure.default" = "К сожалению, предоставление Almond для совместного использования не удалось.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "Вы не связаны с данным Almond";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "Вторичный пользователь не связан с данным Almond.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "Вы не связаны с данным Almond";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "К сожалению, отключение совместного использования данного Almond не удалось.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "МАС-адреса Almond";
+"Copied Almond MAC" = "Копированные МАС-адреса Almond";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "Подключён к Вашему Almond через облако.";
+"alertview -Connected to your Almond via cloud." = " Подключён к Вашему Almond через облако.";
+"Add Local Connection Settings" = "Добавить настройки локального соединениия";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "Облачное подключение к Вашему Almond не удалось. Попробуйте снова или переключитесь на локальное соединение.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = "Локальное подключение к Вашему Almond не удалось. Попробуйте снова или переключитесь на облачное соединение.";
+"hud message-Setting Almond to Away Mode" = "Установка Almond в Удалённый Режим";
+"hud message-Setting Almond to Home Mode" = "Установка Almond в Домашний Режим";
+"alertview Can't connect to your Almond. Please select a connection method." = "Не удаётся подключиться к Вашему Almond. Пожалуйста, выберите способ соединения.";
+"alertview localconnection_Connected to your Almond locally." = "Локально подключён к Вашему Almond.";
+
+//To be translated
+/* login */
+"Monitor and Control your home from anywhere." = "Мониторинг и управление домом из любой.";
+
+"AlmondList" = "AlmondСПИСОК";

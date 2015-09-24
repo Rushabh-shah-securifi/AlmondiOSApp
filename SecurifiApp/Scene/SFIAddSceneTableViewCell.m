@@ -256,7 +256,7 @@
                 
                 [btnDimOff setupValues:[UIImage imageNamed:[dict valueForKey:@"offImage"]] Title:[dict valueForKey:@"offTitle"]];
                 
-                [btnDim setupValues:@"0" Title:@"DIM" Prefix:[dict valueForKey:@"dimPrefix"]];
+                [btnDim setupValues:@"0" Title:NSLocalizedString(@"DIM",@"DIM") Prefix:[dict valueForKey:@"dimPrefix"]];
                 
                 btnDimOn.tag = [[dict valueForKey:@"onIndex"] integerValue];
                 btnDimOff.tag = [[dict valueForKey:@"offIndex"] integerValue];
@@ -844,10 +844,10 @@
 }
 
 - (void)onColorDimmableLampColorTemperaturePropertyIsChanging:(id)control {
-//    SFISlider *slider_temp = [self sliderForDevicePropertyType:SFIDevicePropertyType_COLOR_TEMPERATURE];
-//    
-//    float kelvin = slider_temp.convertToSensorValue;
-//    UIColor *color = [UIColor colorWithKelvin:kelvin];
+    //    SFISlider *slider_temp = [self sliderForDevicePropertyType:SFIDevicePropertyType_COLOR_TEMPERATURE];
+    //
+    //    float kelvin = slider_temp.convertToSensorValue;
+    //    UIColor *color = [UIColor colorWithKelvin:kelvin];
     
     //    [self.delegate sensorDetailViewDidChangeSensorIconTintValue:self tint:color];
 }
@@ -859,8 +859,8 @@
 }
 
 - (void)processColorTintChange:(SFISlider *)slider_brightness saturationSlider:(SFISlider *)slider_saturation huePicker:(SFIHuePickerView *)hue_picker {
-//    float hue = [hue_picker hue];
-//    float saturation = [slider_saturation convertToSensorValue] / slider_saturation.sensorMaxValue;
+    //    float hue = [hue_picker hue];
+    //    float saturation = [slider_saturation convertToSensorValue] / slider_saturation.sensorMaxValue;
     float brightness = [slider_brightness convertToSensorValue] / slider_brightness.sensorMaxValue;
     
     // put a floor underneath the brightness to prevent it from showing up as black
@@ -868,12 +868,12 @@
         brightness = 0.50;
     }
     
-//    UIColor *color = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
+    //    UIColor *color = [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1];
     //    [self.delegate sensorDetailViewDidChangeSensorIconTintValue:self tint:color];
 }
 
 - (void)processColorPropertyValueChange:(SFIDevicePropertyType)propertyType newValue:(float)sensorValue {
-//    NSString *newValue = [NSString stringWithFormat:@"%i", (int) sensorValue];
+    //    NSString *newValue = [NSString stringWithFormat:@"%i", (int) sensorValue];
     //    [self.delegate sensorDetailViewDidChangeSensorValue:self propertyType:propertyType newValue:newValue];
 }
 
@@ -911,15 +911,12 @@
     fr.origin.y = 30;
     fr.origin.x = (self.frame.size.width - fr.size.width)/2;
     viewAutoHeatCoolOff.frame = fr;
-    
-    [btnAuto setupValues:[UIImage imageNamed:@"imgAuto"] Title:@"AUTO"];
-    [btnHeat setupValues:[UIImage imageNamed:@"imgHeat"] Title:@"HEAT"];
-    [btnCool setupValues:[UIImage imageNamed:@"imgCool"] Title:@"COOL"];
-    [btnOff setupValues:[UIImage imageNamed:@"imgOff"] Title:@"OFF"];
-    [btnTermostatFanOn setupValues:[UIImage imageNamed:@"imgFanOn"] Title:@"FAN ON"];
-    [btnTermostatFanOff setupValues:[UIImage imageNamed:@"imgFanOff"] Title:@"FAN OFF"];
-    btnTermostatFanOn.selected = NO;
-    btnTermostatFanOff.selected = NO;
+    [btnAuto setupValues:[UIImage imageNamed:@"imgAuto"] Title:NSLocalizedString(@"AUTO",@"AUTO")];
+    [btnHeat setupValues:[UIImage imageNamed:@"imgHeat"] Title:NSLocalizedString(@"HEAT",@"HEAT")];
+    [btnCool setupValues:[UIImage imageNamed:@"imgCool"] Title:NSLocalizedString(@"COOL",@"COOL")];
+    [btnOff setupValues:[UIImage imageNamed:@"imgOff"] Title:NSLocalizedString(@"OFF",@"OFF")];
+    [btnTermostatFanOn setupValues:[UIImage imageNamed:@"imgFanOn"] Title:NSLocalizedString(@"FAN ON",@"FAN ON")];
+    [btnTermostatFanOff setupValues:[UIImage imageNamed:@"imgFanOff"] Title:NSLocalizedString(@"FAN OFF",@"FAN OFF")];
     
     [btnTermostatDimCool setupValues:@"35" Title:NSLocalizedString(@"scene.thermostat-title.COOLING TEMP.", @"COOLING TEMP.") Prefix:@"°F"];
     btnTermostatDimCool.selected = NO;
@@ -965,11 +962,11 @@
             }
         }
         if ([[dict valueForKey:@"Index"] integerValue]==btnTermostatDimHeat.tag) {
-            [btnTermostatDimHeat setupValues:[dict valueForKey:@"Value"] Title:@"HEATING TEMP." Prefix:@"°F"];
+            [btnTermostatDimHeat setupValues:[dict valueForKey:@"Value"] Title:NSLocalizedString(@"HEATING TEMP.",@"HEATING TEMP.") Prefix:@"°F"];
             btnTermostatDimHeat.selected = YES;
         }
         if ([[dict valueForKey:@"Index"] integerValue]==btnTermostatDimCool.tag) {
-            [btnTermostatDimCool setupValues:[dict valueForKey:@"Value"] Title:@"COOLING TEMP." Prefix:@"°F"];
+            [btnTermostatDimCool setupValues:[dict valueForKey:@"Value"] Title:NSLocalizedString(@"COOLING TEMP",@"COOLING TEMP") Prefix:@"°F"];
             btnTermostatDimCool.selected = YES;
         }
     }
@@ -1101,8 +1098,8 @@
     fr.origin.x = (self.frame.size.width - fr.size.width)/2;
     viewStandardWarningDevice_21.frame = fr;
     
-    [btnStandardWarningDeviceOn setupValues:[UIImage imageNamed:@"06_alarm_on"] Title:@"Ringing"];
-    [btnStandardWarningDeviceOff setupValues:[UIImage imageNamed:@"06_alarm_off"] Title:@"Silent"];
+    [btnStandardWarningDeviceOn setupValues:[UIImage imageNamed:@"06_alarm_on"] Title:NSLocalizedString(@"Ringing", @"Ringing")];
+    [btnStandardWarningDeviceOff setupValues:[UIImage imageNamed:@"06_alarm_off"] Title:NSLocalizedString(@"Silent", @"Silent")];
     
     btnStandardWarningDeviceOn.selected = NO;
     btnStandardWarningDeviceOff.selected = NO;
@@ -1416,7 +1413,7 @@
     
     [btnDimOff setupValues:[UIImage imageNamed:[dict valueForKey:@"offImage"]] Title:[dict valueForKey:@"offTitle"]];
     
-    [btnDim setupValues:@"0" Title:@"DIM" Prefix:[dict valueForKey:@"dimPrefix"]];
+    [btnDim setupValues:@"0" Title:NSLocalizedString(@"DIM",@"DIM") Prefix:[dict valueForKey:@"dimPrefix"]];
     
     btnDimOn.tag = [[dict valueForKey:@"onIndex"] integerValue];
     btnDimOff.tag = [[dict valueForKey:@"offIndex"] integerValue];
@@ -1465,29 +1462,29 @@
     fr.origin.x = (self.frame.size.width - fr.size.width)/2;
     viewNest57.frame = fr;
     
-    [btnNestAuto setupValues:[UIImage imageNamed:@"imgAuto"] Title:@"AUTO"];
-    [btnNestHeat setupValues:[UIImage imageNamed:@"imgHeat"] Title:@"HEAT"];
-    [btnNestCool setupValues:[UIImage imageNamed:@"imgCool"] Title:@"COOL"];
-    [btnNestOff setupValues:[UIImage imageNamed:@"imgOff"] Title:@"OFF"];
+    [btnNestAuto setupValues:[UIImage imageNamed:@"imgAuto"] Title:NSLocalizedString(@"AUTO",@"AUTO")];
+    [btnNestHeat setupValues:[UIImage imageNamed:@"imgHeat"] Title:NSLocalizedString(@"HEAT",@"HEAT")];
+    [btnNestCool setupValues:[UIImage imageNamed:@"imgCool"] Title:NSLocalizedString(@"COOL",@"COOL")];
+    [btnNestOff setupValues:[UIImage imageNamed:@"imgOff"] Title:NSLocalizedString(@"OFF",@"OFF")];
     
-    [btnNestTermostatFanOn setupValues:[UIImage imageNamed:@"imgFanOn"] Title:@"FAN ON"];
-    [btnNestTermostatFanOff setupValues:[UIImage imageNamed:@"imgFanOff"] Title:@"FAN OFF"];
+    [btnNestTermostatFanOn setupValues:[UIImage imageNamed:@"imgFanOn"] Title:NSLocalizedString(@"FAN ON",@"FAN ON")];
+    [btnNestTermostatFanOff setupValues:[UIImage imageNamed:@"imgFanOff"] Title:NSLocalizedString(@"FAN OFF",@"FAN OFF")];
     btnNestTermostatFanOn.selected = NO;
     btnNestTermostatFanOff.selected = NO;
     
-    [btnNestHome setupValues:[UIImage imageNamed:@"home_icon"] Title:@"HOME"];
-    [btnNestAway setupValues:[UIImage imageNamed:@"away_icon"] Title:@"AWAY"];
+    [btnNestHome setupValues:[UIImage imageNamed:@"home_icon"] Title:NSLocalizedString(@"HOME",@"HOME")];
+    [btnNestAway setupValues:[UIImage imageNamed:@"away_icon"] Title:NSLocalizedString(@"AWAY",@"AWAY")];
     btnNestHome.tag = 8;
     btnNestAway.tag = 8;
     btnNestHome.selected = NO;
     btnNestAway.selected = NO;
     
-    [btnNestTermostatDimCool setupValues:@"50" Title:@"COOLING TEMP." Prefix:@"°F"];
+    [btnNestTermostatDimCool setupValues:@"50" Title:NSLocalizedString(@"COOLING TEMP",@"COOLING TEMP") Prefix:@"°F"];
     btnNestTermostatDimCool.selected = NO;
     btnNestTermostatDimCool.tag = 5;
     
     
-    [btnNestTermostatDimHeat setupValues:@"50" Title:@"HEATING TEMP." Prefix:@"°F"];
+    [btnNestTermostatDimHeat setupValues:@"50" Title:NSLocalizedString(@"HEATING TEMP.",@"HEATING TEMP.") Prefix:@"°F"];
     btnNestTermostatDimHeat.selected = NO;
     btnNestTermostatDimHeat.tag = 6;
     
@@ -1668,11 +1665,11 @@
             }
         }
         if ([[dict valueForKey:@"Index"] integerValue]==btnNestTermostatDimHeat.tag) {
-            [btnNestTermostatDimHeat setupValues:[NSString stringWithFormat:@"%ld",(long)[[dict valueForKey:@"Value"] integerValue]] Title:@"HEATING TEMP." Prefix:@"°F"];
+            [btnNestTermostatDimHeat setupValues:[NSString stringWithFormat:@"%ld",(long)[[dict valueForKey:@"Value"] integerValue]] Title:NSLocalizedString(@"HEATING TEMP.",@"HEATING TEMP.") Prefix:@"°F"];
             btnNestTermostatDimHeat.selected = YES;
         }
         if ([[dict valueForKey:@"Index"] integerValue]==btnNestTermostatDimCool.tag) {
-            [btnNestTermostatDimCool setupValues:[NSString stringWithFormat:@"%ld",(long)[[dict valueForKey:@"Value"] integerValue]] Title:@"COOLING TEMP." Prefix:@"°F"];
+            [btnNestTermostatDimCool setupValues:[NSString stringWithFormat:@"%ld",(long)[[dict valueForKey:@"Value"] integerValue]] Title:NSLocalizedString(@"COOLING TEMP.",@"COOLING TEMP.") Prefix:@"°F"];
             btnNestTermostatDimCool.selected = YES;
         }
         if ([[dict valueForKey:@"Index"] integerValue]==8) {
