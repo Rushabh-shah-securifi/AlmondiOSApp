@@ -10,8 +10,6 @@
 #import "UIFont+Securifi.h"
 
 typedef NS_ENUM(unsigned int, TABLE_ROW) {
-    TABLE_ROW_SSID_2 = 0,
-    TABLE_ROW_SSID_5,
     TABLE_ROW_IP_ADDR,
     TABLE_ROW_ADMIN_LOGIN,
     TABLE_ROW_ADMIN_PWD,
@@ -154,36 +152,27 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 1) {
-        switch (self.mode) {
+        enum RouterNetworkSettingsEditorMode editorMode = self.mode;
+        switch (editorMode) {
             case RouterNetworkSettingsEditorMode_editor: {
                 NSString *cell_id = @"button_unlink";
-                UITableViewCell *cell = [self makeButtonCell:tableView id:cell_id buttonTag:1 buttonTitle:NSLocalizedString(@"router.btn-title.Unlink Almond?", @"Unlink Almond?")];
+                UITableViewCell *cell = [self makeButtonCell:tableView id:cell_id buttonTag:editorMode buttonTitle:NSLocalizedString(@"router.btn-title.Unlink Almond?", @"Unlink Almond?")];
                 return cell;
             }
 
             case RouterNetworkSettingsEditorMode_link: {
                 if (indexPath.row == 0) {
-                    return [self makeButtonCell:tableView id:@"link_almond" buttonTitle:NSLocalizedString(@"router.btn-title.Link Almond Locally", @"Link Almond Locally") action:@selector(onSaveEdits) solidBackground:YES];
+                    return [self makeButtonCell:tableView id:@"link_almond" buttonTag:editorMode buttonTitle:NSLocalizedString(@"router.btn-title.Link Almond Locally", @"Link Almond Locally") action:@selector(onSaveEdits) solidBackground:YES];
                 }
 
                 // only called when enableLocalAlmondLink is YES
-                return [self makeButtonCell:tableView id:@"cloud_link" buttonTitle:NSLocalizedString(@"router.btn-title.Back to Cloud Link", @"Back to Cloud Link") action:@selector(onCancelEdits) solidBackground:NO];
+                return [self makeButtonCell:tableView id:@"cloud_link" buttonTag:editorMode buttonTitle:NSLocalizedString(@"router.btn-title.Back to Cloud Link", @"Back to Cloud Link") action:@selector(onCancelEdits) solidBackground:NO];
             }
         }
     }
 
     enum TABLE_ROW row = (enum TABLE_ROW) indexPath.row;
     switch (row) {
-        case TABLE_ROW_SSID_2: {
-            NSString *cell_id = @"ssid2";
-            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:NSLocalizedString(@"router.label.SSID 2.5GHz", @"SSID 2.5GHz") fieldValue:self.workingSettings.ssid2 secureField:NO];
-            return cell;
-        }
-        case TABLE_ROW_SSID_5: {
-            NSString *cell_id = @"ssid5";
-            UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:NSLocalizedString(@"router.label.SSID 5GHz", @"SSID 5GHz") fieldValue:self.workingSettings.ssid5 secureField:NO];
-            return cell;
-        }
         case TABLE_ROW_IP_ADDR: {
             NSString *cell_id = @"host";
             UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:NSLocalizedString(@"router.label.IP Address", @"IP Address") fieldValue:self.workingSettings.host secureField:NO];
@@ -218,12 +207,13 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
         UIFont *font = [UIFont standardUITextFieldFont];
 
         UITextField *field = [[UITextField alloc] initWithFrame:frame];
-        field.tag = fieldTag;
         field.delegate = self;
         field.text = fieldValue;
         field.font = font;
         field.textAlignment = NSTextAlignmentRight;
         field.secureTextEntry = secureField;
+        field.tag = fieldTag;
+        field.returnKeyType = (fieldTag + 1 == TABLE_ROW_count) ? UIReturnKeyGo : UIReturnKeyNext;
 
         cell.textLabel.text = fieldLabel;
         cell.textLabel.font = font;
@@ -262,7 +252,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
     return cell;
 }
 
-- (UITableViewCell *)makeButtonCell:(UITableView *)tableView id:(NSString *)cell_id buttonTitle:(NSString *)title action:(SEL)action solidBackground:(BOOL)solidBackground {
+- (UITableViewCell *)makeButtonCell:(UITableView *)tableView id:(NSString *)cell_id buttonTag:(int)buttonTag buttonTitle:(NSString *)title action:(SEL)action solidBackground:(BOOL)solidBackground {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
 
     if (cell == nil) {
@@ -270,6 +260,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.backgroundColor = [UIColor clearColor];
+        cell.tag = buttonTag;
 
         CGFloat width = CGRectGetWidth(tableView.frame);
         CGRect frame = CGRectMake(0, 0, width, 40);
@@ -413,14 +404,6 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
     enum TABLE_ROW row = (enum TABLE_ROW) textField.tag;
     switch (row) {
-        case TABLE_ROW_SSID_2:
-            self.workingSettings.ssid2 = str;
-            [self tryEnableSaveButton];
-            break;
-        case TABLE_ROW_SSID_5:
-            self.workingSettings.ssid5 = str;
-            [self tryEnableSaveButton];
-            break;
         case TABLE_ROW_IP_ADDR:
             self.workingSettings.host = str;
             [self tryEnableSaveButton];
@@ -438,6 +421,26 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
     }
 
     return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    NSInteger nextTag = textField.tag + 1;
+
+    // Try to find next responder
+    NSIndexPath *path = [NSIndexPath indexPathForRow:nextTag inSection:0];
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:path];
+    
+    UIResponder *nextResponder = [cell.contentView viewWithTag:nextTag];
+    if (nextResponder) {
+        // Found next responder, so set it.
+        [nextResponder becomeFirstResponder];
+    } 
+    else {
+        // Not found, so remove keyboard.
+        [textField resignFirstResponder];
+    }
+
+    return NO; // We do not want UITextField to insert line-breaks.
 }
 
 - (void)tryEnableSaveButton {
