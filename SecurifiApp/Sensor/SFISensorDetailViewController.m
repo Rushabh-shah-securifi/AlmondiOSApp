@@ -66,8 +66,23 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     randomMobileInternalIndex = arc4random() % 10000;
-    
-    NSArray *propertyNames = @[@"Name",@"Location",@"Actions",@"Stop",@"Battery",@"Switch 1",@"Switch 2",@"Temperature",@"AC Mode",@"High Temperature",@"Low Temperature",@"Swing",@"Power",@"IR Code",@"Configuration",@"Humidity",@"Away Mode",@"CO Level",@"Smoke Level",@"Mode",@"Target Range",@"Fan Mode",@"Fan",@"Notify me",@""];
+    NSArray *propertyNames = @[NSLocalizedString(@"Name",@"Name"),
+                               NSLocalizedString(@"Location","Location"),
+                               NSLocalizedString(@"Stop","Stop"),
+                               NSLocalizedString(@"Battery","Battery"),
+                               NSLocalizedString(@"Temperature","Temperature"),NSLocalizedString(@"AC Mode","AC Mode"),
+                               NSLocalizedString(@"High Temperature","High Temperature"),NSLocalizedString(@"Low Temperature","Low Temperature"),
+                               NSLocalizedString(@"Swing","Swing"),
+                               NSLocalizedString(@"Power","Power"),
+                               NSLocalizedString(@"IR Code","IR Code"),
+                               NSLocalizedString(@"Configuration","Configuration"),NSLocalizedString(@"Humidity","Humidity"),
+                               NSLocalizedString(@"Away Mode","Away Mode"),
+                               NSLocalizedString(@"CO Level","CO Level"),
+                               NSLocalizedString(@"Smoke Level","Smoke Level"),NSLocalizedString(@"Mode","Mode"),
+                               NSLocalizedString(@"Target Range","Target Range"),NSLocalizedString(@"Fan Mode","Fan Mode"),
+                               NSLocalizedString(@"Fan","Fan"),
+                               NSLocalizedString(@"Notify me","Notify me")
+                               ,@""];
     propertiesArray = [NSMutableArray new];
     for (int i=0; i<propertyNames.count; i++) {
         NSMutableDictionary * dict = [NSMutableDictionary dictionaryWithDictionary:@{@"name": propertyNames[i],@"hidden":@YES}];

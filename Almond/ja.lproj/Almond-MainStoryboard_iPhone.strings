@@ -1,0 +1,56 @@
+/*------- END Localization strings common across all apps -------*/
+/* ===================================================================================================== */
+
+
+/* Class = "IBUINavigationItem"; title = "Link Almond"; ObjectID = "005-QM-TOK"; */
+"005-QM-TOK.title" = "ＡｌｍｏｎｄリンクするLink Almond";
+
+/* Class = "IBUILabel"; text = "すべてのデバイスからログアウトするLogout from all the devices connected
+ to your Almonds."; ObjectID = "0ml-DL-hua"; */
+"0ml-DL-hua.text" = "Ａｌｍｏｎｄに接続しているすべてのデバイスからログアウトするLogout from all the devices connected
+to your Almonds.";
+
+/* Class = "IBUILabel"; text = "どこでもＡｌｍｏｎｄにアクセスできる。
+ Access your Almonds and
+ your home devices from anywhere."; ObjectID = "1mY-kl-NHI"; */
+"1mY-kl-NHI.text" = "どこでもＡｌｍｏｎｄにアクセスできる.";
+
+
+/* Class = "IBUINavigationItem"; title = "Almond リスト"; ObjectID = "CAD-J8-2aA"; */
+"CAD-J8-2aA.title" = "Almond リスト";
+
+
+/* Class = "IBUILabel"; text = "You successfully linked your Almond with \nyour Securifi Cloud Account."; ObjectID = "Nee-HL-Q6h"; */
+"Nee-HL-Q6h.text" = "Ａｌｍｏｎｄはお客様のアカウントにリンクしました。
+You successfully linked your Almond with \nyour Securifi Cloud Account.";
+
+/* Class = "IBUINavigationItem"; title = "Almond"; ObjectID = "ObR-J1-LOM"; */
+"ObR-J1-LOM.title" = "Almond";
+
+/* Class = "IBUILabel"; text = "Ａｌｍｏｎｄの画面にあるコードを入力してくださいType the code shown on your\nAlmond's screen."; ObjectID = "PRW-cc-prD"; */
+"PRW-cc-prD.text" = "Ａｌｍｏｎｄの画面にあるコードを入力してください.";
+
+/* Class = "IBUIButton"; normalTitle = " Almondをリンク"; ObjectID = "PRt-1p-fH7"; */
+"PRt-1p-fH7.normalTitle" = " Almondをリンク";
+
+/* Class = "IBUILabel"; text = "Securifi クラウドアカウント."; ObjectID = "Sqj-7H-5pB"; */
+"Sqj-7H-5pB.text" = " Securifi クラウドアカウント.";
+
+
+/* Class = "IBUILabel"; text = "どこでもＡｌｍｏｎｄにアクセスできる"; ObjectID = "Xni-ee-jgc"; */
+"Xni-ee-jgc.text" = "どこでもＡｌｍｏｎｄにアクセスできる.";
+
+/* Class = "IBUILabel"; text = "どこでもＡｌｍｏｎｄにアクセスできる."; ObjectID = "Zon-6Z-KzY"; */
+"Zon-6Z-KzY.text" = "どこでもＡｌｍｏｎｄにアクセスできる.";
+
+
+/* Class = "IBUILabel"; text = "ＡｌｍｏｎｄをＳｅｃｕｒｉｆｉアカウントにリンクしたい時、Ａｌｍｏｎｄ＋のウイザードを開始してください。
+ To link your Almond with Securifi Cloud account, start the wizard on your Almond+.
+ The \"Add your Almond to your Securifi Cloud Account\" section will show a code which you may scan by tapping below or type the code, instead."; ObjectID = "de7-TX-jmT"; */
+"de7-TX-jmT.text" = "ＡｌｍｏｎｄをＳｅｃｕｒｉｆｉアカウントにリンクしたい時、Ａｌｍｏｎｄ＋のウイザードを開始してください。To link your Almond with Securifi Cloud account, start the wizard on your Almond.
+The \"Add your Almond to your Securifi Cloud Account\" section will show a code which you may scan by tapping below or type the code, instead.";
+
+
+/* Class = "IBUILabel"; text = "Almond Name"; ObjectID = "gRI-sr-1ga"; */
+"gRI-sr-1ga.text" = "Almond 名";
+

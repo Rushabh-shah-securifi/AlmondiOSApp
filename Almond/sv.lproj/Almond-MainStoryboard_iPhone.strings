@@ -46,7 +46,7 @@ till din Almond.";
 /* Class = "IBUILabel"; text = "To link your Almond with Securifi Cloud account, start the wizard on your Almond+.
  The " Lägg till din Almond till ditt Securifi molnkonto\ "avsnittet kommer att visa en kod som du kan skanna genom att trycka nedan eller skriva koden." Objekt-ID = "de7-TX-jmT"; */
 "de7-TX-jmT.text" = "To link your Almond with Securifi Cloud account, start the wizard on your Almond.
-The \"Lägg till din Almond till ditt Securifi molnkonto\"avsnittet kommer att visa en kod som du kan skanna genom att trycka nedan eller skriva koden";
+The \"Lägg till din Almond till ditt Securifi molnkonto \"avsnittet kommer att visa en kod som du kan skanna genom att trycka nedan eller skriva koden";
 
 
 /* Class = "IBUILabel"; text = "Almond Name"; ObjectID = "gRI-sr-1ga"; */
@@ -62,4 +62,5 @@ cloud@securifi.com till kontakterna.";
 
 /* Class = "IBUILabel"; text = "Search for an email from cloud@securifi.com, or"; ObjectID = "xYA-fY-SKl"; */
 "xYA-fY-SKl.text" = "Sök efter ett emial från  cloud@securifi.com, eller";
+
 

@@ -316,8 +316,8 @@
 		A58DB3331BB16EAF00717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3261BB16EAF00717C02 /* Scenes_Iphone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3351BB16EAF00717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB32A1BB16EAF00717C02 /* termsofuse.html */; settings = {ASSET_TAGS = (); }; };
 		A58DB3BB1BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3371BB1960900717C02 /* AccountsStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
-		A58DB3BC1BB1960900717C02 /* Almond-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3391BB1960900717C02 /* Almond-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
-		A58DB3BD1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB33B1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB3BC1BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3391BB1960900717C02 /* HomeScreen-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB3BD1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB33B1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3BE1BB1960900717C02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB33D1BB1960900717C02 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3BF1BB1960900717C02 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB33F1BB1960900717C02 /* Localizable.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3C01BB1960900717C02 /* Login_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3411BB1960900717C02 /* Login_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
@@ -325,8 +325,8 @@
 		A58DB3C21BB1960900717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3451BB1960900717C02 /* Scenes_Iphone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3C31BB1960900717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3471BB1960900717C02 /* termsofuse.html */; settings = {ASSET_TAGS = (); }; };
 		A58DB3C41BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB34A1BB1960900717C02 /* AccountsStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
-		A58DB3C51BB1960900717C02 /* Almond-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB34C1BB1960900717C02 /* Almond-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
-		A58DB3C61BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB34E1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB3C51BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB34C1BB1960900717C02 /* HomeScreen-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB3C61BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB34E1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3C71BB1960900717C02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3501BB1960900717C02 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3C81BB1960900717C02 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3521BB1960900717C02 /* Localizable.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3C91BB1960900717C02 /* Login_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3541BB1960900717C02 /* Login_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
@@ -334,8 +334,8 @@
 		A58DB3CB1BB1960900717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3581BB1960900717C02 /* Scenes_Iphone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3CC1BB1960900717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB35A1BB1960900717C02 /* termsofuse.html */; settings = {ASSET_TAGS = (); }; };
 		A58DB3CD1BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB35D1BB1960900717C02 /* AccountsStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
-		A58DB3CE1BB1960900717C02 /* Almond-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB35F1BB1960900717C02 /* Almond-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
-		A58DB3CF1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3611BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB3CE1BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB35F1BB1960900717C02 /* HomeScreen-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB3CF1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3611BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3D01BB1960900717C02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3631BB1960900717C02 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3D11BB1960900717C02 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3651BB1960900717C02 /* Localizable.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3D21BB1960900717C02 /* Login_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3671BB1960900717C02 /* Login_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
@@ -343,8 +343,8 @@
 		A58DB3D41BB1960900717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB36B1BB1960900717C02 /* Scenes_Iphone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3D51BB1960900717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB36D1BB1960900717C02 /* termsofuse.html */; settings = {ASSET_TAGS = (); }; };
 		A58DB3D61BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3701BB1960900717C02 /* AccountsStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
-		A58DB3D71BB1960900717C02 /* Almond-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3721BB1960900717C02 /* Almond-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
-		A58DB3D81BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3741BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB3D71BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3721BB1960900717C02 /* HomeScreen-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB3D81BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3741BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3D91BB1960900717C02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3761BB1960900717C02 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3DA1BB1960900717C02 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3781BB1960900717C02 /* Localizable.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3DB1BB1960900717C02 /* Login_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB37A1BB1960900717C02 /* Login_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
@@ -352,8 +352,8 @@
 		A58DB3DD1BB1960900717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB37E1BB1960900717C02 /* Scenes_Iphone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3DE1BB1960900717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3801BB1960900717C02 /* termsofuse.html */; settings = {ASSET_TAGS = (); }; };
 		A58DB3DF1BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3831BB1960900717C02 /* AccountsStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
-		A58DB3E01BB1960900717C02 /* Almond-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3851BB1960900717C02 /* Almond-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
-		A58DB3E11BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3871BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB3E01BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3851BB1960900717C02 /* HomeScreen-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB3E11BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3871BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3E21BB1960900717C02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3891BB1960900717C02 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3E31BB1960900717C02 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB38B1BB1960900717C02 /* Localizable.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3E41BB1960900717C02 /* Login_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB38D1BB1960900717C02 /* Login_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
@@ -361,8 +361,8 @@
 		A58DB3E61BB1960900717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3911BB1960900717C02 /* Scenes_Iphone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3E71BB1960900717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3931BB1960900717C02 /* termsofuse.html */; settings = {ASSET_TAGS = (); }; };
 		A58DB3E81BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3961BB1960900717C02 /* AccountsStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
-		A58DB3E91BB1960900717C02 /* Almond-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3981BB1960900717C02 /* Almond-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
-		A58DB3EA1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB39A1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB3E91BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3981BB1960900717C02 /* HomeScreen-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB3EA1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB39A1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3EB1BB1960900717C02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB39C1BB1960900717C02 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3EC1BB1960900717C02 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB39E1BB1960900717C02 /* Localizable.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3ED1BB1960900717C02 /* Login_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3A01BB1960900717C02 /* Login_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
@@ -370,8 +370,8 @@
 		A58DB3EF1BB1960900717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3A41BB1960900717C02 /* Scenes_Iphone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3F01BB1960900717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3A61BB1960900717C02 /* termsofuse.html */; settings = {ASSET_TAGS = (); }; };
 		A58DB3F11BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3A91BB1960900717C02 /* AccountsStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
-		A58DB3F21BB1960900717C02 /* Almond-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3AB1BB1960900717C02 /* Almond-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
-		A58DB3F31BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3AD1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB3F21BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3AB1BB1960900717C02 /* HomeScreen-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB3F31BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3AD1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3F41BB1960900717C02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3AF1BB1960900717C02 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3F51BB1960900717C02 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3B11BB1960900717C02 /* Localizable.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB3F61BB1960900717C02 /* Login_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3B31BB1960900717C02 /* Login_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
@@ -382,6 +382,60 @@
 		A58DB3FF1BB1971300717C02 /* Login_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB3FC1BB1971300717C02 /* Login_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB4001BB1971300717C02 /* HomeScreen-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1C9B1D931A3EEA1200097D8F /* HomeScreen-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
 		A58DB4031BB1974500717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4011BB1974500717C02 /* Scenes_Iphone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4171BB2CD7D00717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4051BB2CD7D00717C02 /* AccountsStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4181BB2CD7D00717C02 /* Almond-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4071BB2CD7D00717C02 /* Almond-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4191BB2CD7D00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4091BB2CD7D00717C02 /* Almond-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB41A1BB2CD7D00717C02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB40B1BB2CD7D00717C02 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB41B1BB2CD7D00717C02 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB40D1BB2CD7D00717C02 /* Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB41C1BB2CD7D00717C02 /* Login_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB40F1BB2CD7D00717C02 /* Login_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB41D1BB2CD7D00717C02 /* MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4111BB2CD7D00717C02 /* MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB41E1BB2CD7D00717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4131BB2CD7D00717C02 /* Scenes_Iphone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB41F1BB2CD7D00717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4151BB2CD7D00717C02 /* termsofuse.html */; settings = {ASSET_TAGS = (); }; };
+		A58DB4331BB2DA3F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4211BB2DA3F00717C02 /* AccountsStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4341BB2DA3F00717C02 /* HomeScreen-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4231BB2DA3F00717C02 /* HomeScreen-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4351BB2DA3F00717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4251BB2DA3F00717C02 /* HomeScreen-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4361BB2DA3F00717C02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4271BB2DA3F00717C02 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4371BB2DA3F00717C02 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4291BB2DA3F00717C02 /* Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4381BB2DA3F00717C02 /* Login_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB42B1BB2DA3F00717C02 /* Login_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4391BB2DA3F00717C02 /* MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB42D1BB2DA3F00717C02 /* MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB43A1BB2DA3F00717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB42F1BB2DA3F00717C02 /* Scenes_Iphone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB43B1BB2DA3F00717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4311BB2DA3F00717C02 /* termsofuse.html */; settings = {ASSET_TAGS = (); }; };
+		A58DB44F1BB3CD3F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB43D1BB3CD3F00717C02 /* AccountsStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4501BB3CD3F00717C02 /* Almond-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB43F1BB3CD3F00717C02 /* Almond-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4511BB3CD3F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4411BB3CD3F00717C02 /* Almond-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4521BB3CD3F00717C02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4431BB3CD3F00717C02 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4531BB3CD3F00717C02 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4451BB3CD3F00717C02 /* Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4541BB3CD3F00717C02 /* Login_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4471BB3CD3F00717C02 /* Login_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4551BB3CD3F00717C02 /* MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4491BB3CD3F00717C02 /* MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4561BB3CD3F00717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB44B1BB3CD3F00717C02 /* Scenes_Iphone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4571BB3CD3F00717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB44D1BB3CD3F00717C02 /* termsofuse.html */; settings = {ASSET_TAGS = (); }; };
+		A58DB46B1BB3CD5200717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4591BB3CD5200717C02 /* AccountsStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB46C1BB3CD5200717C02 /* Almond-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB45B1BB3CD5200717C02 /* Almond-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB46D1BB3CD5200717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB45D1BB3CD5200717C02 /* Almond-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB46E1BB3CD5200717C02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB45F1BB3CD5200717C02 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB46F1BB3CD5200717C02 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4611BB3CD5200717C02 /* Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4701BB3CD5200717C02 /* Login_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4631BB3CD5200717C02 /* Login_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4711BB3CD5200717C02 /* MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4651BB3CD5200717C02 /* MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4721BB3CD5200717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4671BB3CD5200717C02 /* Scenes_Iphone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4731BB3CD5200717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4691BB3CD5200717C02 /* termsofuse.html */; settings = {ASSET_TAGS = (); }; };
+		A58DB4871BB3CD6800717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4751BB3CD6800717C02 /* AccountsStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4881BB3CD6800717C02 /* Homescreen-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4771BB3CD6800717C02 /* Homescreen-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4891BB3CD6800717C02 /* Homescreen-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4791BB3CD6800717C02 /* Homescreen-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB48A1BB3CD6800717C02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB47B1BB3CD6800717C02 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB48B1BB3CD6800717C02 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB47D1BB3CD6800717C02 /* Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB48C1BB3CD6800717C02 /* Login_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB47F1BB3CD6800717C02 /* Login_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB48D1BB3CD6800717C02 /* MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4811BB3CD6800717C02 /* MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB48E1BB3CD6800717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4831BB3CD6800717C02 /* Scenes_Iphone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB48F1BB3CD6800717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4851BB3CD6800717C02 /* termsofuse.html */; settings = {ASSET_TAGS = (); }; };
+		A58DB4A31BB3CD7500717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4911BB3CD7500717C02 /* AccountsStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4A41BB3CD7500717C02 /* HomeScreen-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4931BB3CD7500717C02 /* HomeScreen-Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4A51BB3CD7500717C02 /* Homescreen-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4951BB3CD7500717C02 /* Homescreen-MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4A61BB3CD7500717C02 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4971BB3CD7500717C02 /* InfoPlist.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4A71BB3CD7500717C02 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4991BB3CD7500717C02 /* Localizable.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4A81BB3CD7500717C02 /* Login_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49B1BB3CD7500717C02 /* Login_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4A91BB3CD7500717C02 /* MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49D1BB3CD7500717C02 /* MainStoryboard_iPhone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4AA1BB3CD7500717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49F1BB3CD7500717C02 /* Scenes_Iphone.strings */; settings = {ASSET_TAGS = (); }; };
+		A58DB4AB1BB3CD7500717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4A11BB3CD7500717C02 /* termsofuse.html */; settings = {ASSET_TAGS = (); }; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -705,8 +759,8 @@
 		A58DB3271BB16EAF00717C02 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
 		A58DB32B1BB16EAF00717C02 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = termsofuse.html; sourceTree = "<group>"; };
 		A58DB3381BB1960900717C02 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
-		A58DB33A1BB1960900717C02 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = "Almond-Localizable.strings"; sourceTree = "<group>"; };
-		A58DB33C1BB1960900717C02 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = "Almond-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
+		A58DB33A1BB1960900717C02 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = "HomeScreen-Localizable.strings"; sourceTree = "<group>"; };
+		A58DB33C1BB1960900717C02 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = "HomeScreen-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
 		A58DB33E1BB1960900717C02 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = InfoPlist.strings; sourceTree = "<group>"; };
 		A58DB3401BB1960900717C02 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Localizable.strings; sourceTree = "<group>"; };
 		A58DB3421BB1960900717C02 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Login_iPhone.strings; sourceTree = "<group>"; };
@@ -714,8 +768,8 @@
 		A58DB3461BB1960900717C02 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
 		A58DB3481BB1960900717C02 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = es; path = termsofuse.html; sourceTree = "<group>"; };
 		A58DB34B1BB1960900717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
-		A58DB34D1BB1960900717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = "Almond-Localizable.strings"; sourceTree = "<group>"; };
-		A58DB34F1BB1960900717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = "Almond-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
+		A58DB34D1BB1960900717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = "HomeScreen-Localizable.strings"; sourceTree = "<group>"; };
+		A58DB34F1BB1960900717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = "HomeScreen-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
 		A58DB3511BB1960900717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = InfoPlist.strings; sourceTree = "<group>"; };
 		A58DB3531BB1960900717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = Localizable.strings; sourceTree = "<group>"; };
 		A58DB3551BB1960900717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = Login_iPhone.strings; sourceTree = "<group>"; };
@@ -723,8 +777,8 @@
 		A58DB3591BB1960900717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
 		A58DB35B1BB1960900717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = nl; path = termsofuse.html; sourceTree = "<group>"; };
 		A58DB35E1BB1960900717C02 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
-		A58DB3601BB1960900717C02 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = "Almond-Localizable.strings"; sourceTree = "<group>"; };
-		A58DB3621BB1960900717C02 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = "Almond-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
+		A58DB3601BB1960900717C02 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = "HomeScreen-Localizable.strings"; sourceTree = "<group>"; };
+		A58DB3621BB1960900717C02 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = "HomeScreen-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
 		A58DB3641BB1960900717C02 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = InfoPlist.strings; sourceTree = "<group>"; };
 		A58DB3661BB1960900717C02 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = Localizable.strings; sourceTree = "<group>"; };
 		A58DB3681BB1960900717C02 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = Login_iPhone.strings; sourceTree = "<group>"; };
@@ -732,8 +786,8 @@
 		A58DB36C1BB1960900717C02 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
 		A58DB36E1BB1960900717C02 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = pl; path = termsofuse.html; sourceTree = "<group>"; };
 		A58DB3711BB1960900717C02 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
-		A58DB3731BB1960900717C02 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = "Almond-Localizable.strings"; sourceTree = "<group>"; };
-		A58DB3751BB1960900717C02 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = "Almond-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
+		A58DB3731BB1960900717C02 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = "HomeScreen-Localizable.strings"; sourceTree = "<group>"; };
+		A58DB3751BB1960900717C02 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = "HomeScreen-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
 		A58DB3771BB1960900717C02 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = InfoPlist.strings; sourceTree = "<group>"; };
 		A58DB3791BB1960900717C02 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = Localizable.strings; sourceTree = "<group>"; };
 		A58DB37B1BB1960900717C02 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = Login_iPhone.strings; sourceTree = "<group>"; };
@@ -741,8 +795,8 @@
 		A58DB37F1BB1960900717C02 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
 		A58DB3811BB1960900717C02 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = pt; path = termsofuse.html; sourceTree = "<group>"; };
 		A58DB3841BB1960900717C02 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
-		A58DB3861BB1960900717C02 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = "Almond-Localizable.strings"; sourceTree = "<group>"; };
-		A58DB3881BB1960900717C02 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = "Almond-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
+		A58DB3861BB1960900717C02 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = "HomeScreen-Localizable.strings"; sourceTree = "<group>"; };
+		A58DB3881BB1960900717C02 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = "HomeScreen-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
 		A58DB38A1BB1960900717C02 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = InfoPlist.strings; sourceTree = "<group>"; };
 		A58DB38C1BB1960900717C02 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Localizable.strings; sourceTree = "<group>"; };
 		A58DB38E1BB1960900717C02 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Login_iPhone.strings; sourceTree = "<group>"; };
@@ -750,8 +804,8 @@
 		A58DB3921BB1960900717C02 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
 		A58DB3941BB1960900717C02 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = ru; path = termsofuse.html; sourceTree = "<group>"; };
 		A58DB3971BB1960900717C02 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
-		A58DB3991BB1960900717C02 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = "Almond-Localizable.strings"; sourceTree = "<group>"; };
-		A58DB39B1BB1960900717C02 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = "Almond-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
+		A58DB3991BB1960900717C02 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = "HomeScreen-Localizable.strings"; sourceTree = "<group>"; };
+		A58DB39B1BB1960900717C02 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = "HomeScreen-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
 		A58DB39D1BB1960900717C02 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = InfoPlist.strings; sourceTree = "<group>"; };
 		A58DB39F1BB1960900717C02 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = Localizable.strings; sourceTree = "<group>"; };
 		A58DB3A11BB1960900717C02 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = Login_iPhone.strings; sourceTree = "<group>"; };
@@ -759,8 +813,8 @@
 		A58DB3A51BB1960900717C02 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
 		A58DB3A71BB1960900717C02 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = sv; path = termsofuse.html; sourceTree = "<group>"; };
 		A58DB3AA1BB1960900717C02 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
-		A58DB3AC1BB1960900717C02 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = "Almond-Localizable.strings"; sourceTree = "<group>"; };
-		A58DB3AE1BB1960900717C02 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = "Almond-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
+		A58DB3AC1BB1960900717C02 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = "HomeScreen-Localizable.strings"; sourceTree = "<group>"; };
+		A58DB3AE1BB1960900717C02 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = "HomeScreen-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
 		A58DB3B01BB1960900717C02 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = InfoPlist.strings; sourceTree = "<group>"; };
 		A58DB3B21BB1960900717C02 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = Localizable.strings; sourceTree = "<group>"; };
 		A58DB3B41BB1960900717C02 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = Login_iPhone.strings; sourceTree = "<group>"; };
@@ -770,6 +824,60 @@
 		A58DB3FB1BB1971300717C02 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
 		A58DB3FD1BB1971300717C02 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Login_iPhone.strings; sourceTree = "<group>"; };
 		A58DB4021BB1974500717C02 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
+		A58DB4061BB2CD7D00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
+		A58DB4081BB2CD7D00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "Almond-Localizable.strings"; sourceTree = "<group>"; };
+		A58DB40A1BB2CD7D00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "Almond-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
+		A58DB40C1BB2CD7D00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = InfoPlist.strings; sourceTree = "<group>"; };
+		A58DB40E1BB2CD7D00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Localizable.strings; sourceTree = "<group>"; };
+		A58DB4101BB2CD7D00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Login_iPhone.strings; sourceTree = "<group>"; };
+		A58DB4121BB2CD7D00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
+		A58DB4141BB2CD7D00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
+		A58DB4161BB2CD7D00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = de; path = termsofuse.html; sourceTree = "<group>"; };
+		A58DB4221BB2DA3F00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
+		A58DB4241BB2DA3F00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "HomeScreen-Localizable.strings"; sourceTree = "<group>"; };
+		A58DB4261BB2DA3F00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = "HomeScreen-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
+		A58DB4281BB2DA3F00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = InfoPlist.strings; sourceTree = "<group>"; };
+		A58DB42A1BB2DA3F00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Localizable.strings; sourceTree = "<group>"; };
+		A58DB42C1BB2DA3F00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Login_iPhone.strings; sourceTree = "<group>"; };
+		A58DB42E1BB2DA3F00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
+		A58DB4301BB2DA3F00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
+		A58DB4321BB2DA3F00717C02 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = de; path = termsofuse.html; sourceTree = "<group>"; };
+		A58DB43E1BB3CD3F00717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
+		A58DB4401BB3CD3F00717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = "Almond-Localizable.strings"; sourceTree = "<group>"; };
+		A58DB4421BB3CD3F00717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = "Almond-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
+		A58DB4441BB3CD3F00717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = InfoPlist.strings; sourceTree = "<group>"; };
+		A58DB4461BB3CD3F00717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Localizable.strings; sourceTree = "<group>"; };
+		A58DB4481BB3CD3F00717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Login_iPhone.strings; sourceTree = "<group>"; };
+		A58DB44A1BB3CD3F00717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
+		A58DB44C1BB3CD3F00717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
+		A58DB44E1BB3CD3F00717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = ja; path = termsofuse.html; sourceTree = "<group>"; };
+		A58DB45A1BB3CD5200717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
+		A58DB45C1BB3CD5200717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "Almond-Localizable.strings"; sourceTree = "<group>"; };
+		A58DB45E1BB3CD5200717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "Almond-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
+		A58DB4601BB3CD5200717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = InfoPlist.strings; sourceTree = "<group>"; };
+		A58DB4621BB3CD5200717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = Localizable.strings; sourceTree = "<group>"; };
+		A58DB4641BB3CD5200717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = Login_iPhone.strings; sourceTree = "<group>"; };
+		A58DB4661BB3CD5200717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
+		A58DB4681BB3CD5200717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
+		A58DB46A1BB3CD5200717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "zh-Hans"; path = termsofuse.html; sourceTree = "<group>"; };
+		A58DB4761BB3CD6800717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
+		A58DB4781BB3CD6800717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = "Homescreen-Localizable.strings"; sourceTree = "<group>"; };
+		A58DB47A1BB3CD6800717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = "Homescreen-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
+		A58DB47C1BB3CD6800717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = InfoPlist.strings; sourceTree = "<group>"; };
+		A58DB47E1BB3CD6800717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Localizable.strings; sourceTree = "<group>"; };
+		A58DB4801BB3CD6800717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Login_iPhone.strings; sourceTree = "<group>"; };
+		A58DB4821BB3CD6800717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
+		A58DB4841BB3CD6800717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
+		A58DB4861BB3CD6800717C02 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = ja; path = termsofuse.html; sourceTree = "<group>"; };
+		A58DB4921BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
+		A58DB4941BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "HomeScreen-Localizable.strings"; sourceTree = "<group>"; };
+		A58DB4961BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "Homescreen-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
+		A58DB4981BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = InfoPlist.strings; sourceTree = "<group>"; };
+		A58DB49A1BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = Localizable.strings; sourceTree = "<group>"; };
+		A58DB49C1BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = Login_iPhone.strings; sourceTree = "<group>"; };
+		A58DB49E1BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
+		A58DB4A01BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
+		A58DB4A21BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "zh-Hans"; path = termsofuse.html; sourceTree = "<group>"; };
 		C6A3307CA8D0945BEFE53A18 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -1094,6 +1202,9 @@
 		1C7E7DE31A41A0B30026F0BA /* Almond */ = {
 			isa = PBXGroup;
 			children = (
+				A58DB4581BB3CD5200717C02 /* zh-Hans.lproj */,
+				A58DB43C1BB3CD3F00717C02 /* ja.lproj */,
+				A58DB4041BB2CD7D00717C02 /* de.lproj */,
 				A58DB2701BB16B9F00717C02 /* es.lproj */,
 				A58DB2831BB16B9F00717C02 /* pl.lproj */,
 				A58DB2961BB16B9F00717C02 /* pt.lproj */,
@@ -1153,6 +1264,9 @@
 		1C9B1D4C1A3EE9EF00097D8F /* HomeScreen */ = {
 			isa = PBXGroup;
 			children = (
+				A58DB4901BB3CD7500717C02 /* zh-Hans.lproj */,
+				A58DB4741BB3CD6800717C02 /* ja.lproj */,
+				A58DB4201BB2DA3F00717C02 /* de.lproj */,
 				A58DB3361BB1960900717C02 /* es.lproj */,
 				A58DB3491BB1960900717C02 /* nl.lproj */,
 				A58DB35C1BB1960900717C02 /* pl.lproj */,
@@ -1423,8 +1537,8 @@
 			isa = PBXGroup;
 			children = (
 				A58DB3371BB1960900717C02 /* AccountsStoryboard_iPhone.strings */,
-				A58DB3391BB1960900717C02 /* Almond-Localizable.strings */,
-				A58DB33B1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */,
+				A58DB3391BB1960900717C02 /* HomeScreen-Localizable.strings */,
+				A58DB33B1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */,
 				A58DB33D1BB1960900717C02 /* InfoPlist.strings */,
 				A58DB33F1BB1960900717C02 /* Localizable.strings */,
 				A58DB3411BB1960900717C02 /* Login_iPhone.strings */,
@@ -1439,8 +1553,8 @@
 			isa = PBXGroup;
 			children = (
 				A58DB34A1BB1960900717C02 /* AccountsStoryboard_iPhone.strings */,
-				A58DB34C1BB1960900717C02 /* Almond-Localizable.strings */,
-				A58DB34E1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */,
+				A58DB34C1BB1960900717C02 /* HomeScreen-Localizable.strings */,
+				A58DB34E1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */,
 				A58DB3501BB1960900717C02 /* InfoPlist.strings */,
 				A58DB3521BB1960900717C02 /* Localizable.strings */,
 				A58DB3541BB1960900717C02 /* Login_iPhone.strings */,
@@ -1455,8 +1569,8 @@
 			isa = PBXGroup;
 			children = (
 				A58DB35D1BB1960900717C02 /* AccountsStoryboard_iPhone.strings */,
-				A58DB35F1BB1960900717C02 /* Almond-Localizable.strings */,
-				A58DB3611BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */,
+				A58DB35F1BB1960900717C02 /* HomeScreen-Localizable.strings */,
+				A58DB3611BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */,
 				A58DB3631BB1960900717C02 /* InfoPlist.strings */,
 				A58DB3651BB1960900717C02 /* Localizable.strings */,
 				A58DB3671BB1960900717C02 /* Login_iPhone.strings */,
@@ -1471,8 +1585,8 @@
 			isa = PBXGroup;
 			children = (
 				A58DB3701BB1960900717C02 /* AccountsStoryboard_iPhone.strings */,
-				A58DB3721BB1960900717C02 /* Almond-Localizable.strings */,
-				A58DB3741BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */,
+				A58DB3721BB1960900717C02 /* HomeScreen-Localizable.strings */,
+				A58DB3741BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */,
 				A58DB3761BB1960900717C02 /* InfoPlist.strings */,
 				A58DB3781BB1960900717C02 /* Localizable.strings */,
 				A58DB37A1BB1960900717C02 /* Login_iPhone.strings */,
@@ -1487,8 +1601,8 @@
 			isa = PBXGroup;
 			children = (
 				A58DB3831BB1960900717C02 /* AccountsStoryboard_iPhone.strings */,
-				A58DB3851BB1960900717C02 /* Almond-Localizable.strings */,
-				A58DB3871BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */,
+				A58DB3851BB1960900717C02 /* HomeScreen-Localizable.strings */,
+				A58DB3871BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */,
 				A58DB3891BB1960900717C02 /* InfoPlist.strings */,
 				A58DB38B1BB1960900717C02 /* Localizable.strings */,
 				A58DB38D1BB1960900717C02 /* Login_iPhone.strings */,
@@ -1503,8 +1617,8 @@
 			isa = PBXGroup;
 			children = (
 				A58DB3961BB1960900717C02 /* AccountsStoryboard_iPhone.strings */,
-				A58DB3981BB1960900717C02 /* Almond-Localizable.strings */,
-				A58DB39A1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */,
+				A58DB3981BB1960900717C02 /* HomeScreen-Localizable.strings */,
+				A58DB39A1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */,
 				A58DB39C1BB1960900717C02 /* InfoPlist.strings */,
 				A58DB39E1BB1960900717C02 /* Localizable.strings */,
 				A58DB3A01BB1960900717C02 /* Login_iPhone.strings */,
@@ -1519,8 +1633,8 @@
 			isa = PBXGroup;
 			children = (
 				A58DB3A91BB1960900717C02 /* AccountsStoryboard_iPhone.strings */,
-				A58DB3AB1BB1960900717C02 /* Almond-Localizable.strings */,
-				A58DB3AD1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */,
+				A58DB3AB1BB1960900717C02 /* HomeScreen-Localizable.strings */,
+				A58DB3AD1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */,
 				A58DB3AF1BB1960900717C02 /* InfoPlist.strings */,
 				A58DB3B11BB1960900717C02 /* Localizable.strings */,
 				A58DB3B31BB1960900717C02 /* Login_iPhone.strings */,
@@ -1529,6 +1643,102 @@
 				A58DB3B91BB1960900717C02 /* termsofuse.html */,
 			);
 			path = tr.lproj;
+			sourceTree = "<group>";
+		};
+		A58DB4041BB2CD7D00717C02 /* de.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				A58DB4051BB2CD7D00717C02 /* AccountsStoryboard_iPhone.strings */,
+				A58DB4071BB2CD7D00717C02 /* Almond-Localizable.strings */,
+				A58DB4091BB2CD7D00717C02 /* Almond-MainStoryboard_iPhone.strings */,
+				A58DB40B1BB2CD7D00717C02 /* InfoPlist.strings */,
+				A58DB40D1BB2CD7D00717C02 /* Localizable.strings */,
+				A58DB40F1BB2CD7D00717C02 /* Login_iPhone.strings */,
+				A58DB4111BB2CD7D00717C02 /* MainStoryboard_iPhone.strings */,
+				A58DB4131BB2CD7D00717C02 /* Scenes_Iphone.strings */,
+				A58DB4151BB2CD7D00717C02 /* termsofuse.html */,
+			);
+			path = de.lproj;
+			sourceTree = "<group>";
+		};
+		A58DB4201BB2DA3F00717C02 /* de.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				A58DB4211BB2DA3F00717C02 /* AccountsStoryboard_iPhone.strings */,
+				A58DB4231BB2DA3F00717C02 /* HomeScreen-Localizable.strings */,
+				A58DB4251BB2DA3F00717C02 /* HomeScreen-MainStoryboard_iPhone.strings */,
+				A58DB4271BB2DA3F00717C02 /* InfoPlist.strings */,
+				A58DB4291BB2DA3F00717C02 /* Localizable.strings */,
+				A58DB42B1BB2DA3F00717C02 /* Login_iPhone.strings */,
+				A58DB42D1BB2DA3F00717C02 /* MainStoryboard_iPhone.strings */,
+				A58DB42F1BB2DA3F00717C02 /* Scenes_Iphone.strings */,
+				A58DB4311BB2DA3F00717C02 /* termsofuse.html */,
+			);
+			path = de.lproj;
+			sourceTree = "<group>";
+		};
+		A58DB43C1BB3CD3F00717C02 /* ja.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				A58DB43D1BB3CD3F00717C02 /* AccountsStoryboard_iPhone.strings */,
+				A58DB43F1BB3CD3F00717C02 /* Almond-Localizable.strings */,
+				A58DB4411BB3CD3F00717C02 /* Almond-MainStoryboard_iPhone.strings */,
+				A58DB4431BB3CD3F00717C02 /* InfoPlist.strings */,
+				A58DB4451BB3CD3F00717C02 /* Localizable.strings */,
+				A58DB4471BB3CD3F00717C02 /* Login_iPhone.strings */,
+				A58DB4491BB3CD3F00717C02 /* MainStoryboard_iPhone.strings */,
+				A58DB44B1BB3CD3F00717C02 /* Scenes_Iphone.strings */,
+				A58DB44D1BB3CD3F00717C02 /* termsofuse.html */,
+			);
+			path = ja.lproj;
+			sourceTree = "<group>";
+		};
+		A58DB4581BB3CD5200717C02 /* zh-Hans.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				A58DB4591BB3CD5200717C02 /* AccountsStoryboard_iPhone.strings */,
+				A58DB45B1BB3CD5200717C02 /* Almond-Localizable.strings */,
+				A58DB45D1BB3CD5200717C02 /* Almond-MainStoryboard_iPhone.strings */,
+				A58DB45F1BB3CD5200717C02 /* InfoPlist.strings */,
+				A58DB4611BB3CD5200717C02 /* Localizable.strings */,
+				A58DB4631BB3CD5200717C02 /* Login_iPhone.strings */,
+				A58DB4651BB3CD5200717C02 /* MainStoryboard_iPhone.strings */,
+				A58DB4671BB3CD5200717C02 /* Scenes_Iphone.strings */,
+				A58DB4691BB3CD5200717C02 /* termsofuse.html */,
+			);
+			path = "zh-Hans.lproj";
+			sourceTree = "<group>";
+		};
+		A58DB4741BB3CD6800717C02 /* ja.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				A58DB4751BB3CD6800717C02 /* AccountsStoryboard_iPhone.strings */,
+				A58DB4771BB3CD6800717C02 /* Homescreen-Localizable.strings */,
+				A58DB4791BB3CD6800717C02 /* Homescreen-MainStoryboard_iPhone.strings */,
+				A58DB47B1BB3CD6800717C02 /* InfoPlist.strings */,
+				A58DB47D1BB3CD6800717C02 /* Localizable.strings */,
+				A58DB47F1BB3CD6800717C02 /* Login_iPhone.strings */,
+				A58DB4811BB3CD6800717C02 /* MainStoryboard_iPhone.strings */,
+				A58DB4831BB3CD6800717C02 /* Scenes_Iphone.strings */,
+				A58DB4851BB3CD6800717C02 /* termsofuse.html */,
+			);
+			path = ja.lproj;
+			sourceTree = "<group>";
+		};
+		A58DB4901BB3CD7500717C02 /* zh-Hans.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				A58DB4911BB3CD7500717C02 /* AccountsStoryboard_iPhone.strings */,
+				A58DB4931BB3CD7500717C02 /* HomeScreen-Localizable.strings */,
+				A58DB4951BB3CD7500717C02 /* Homescreen-MainStoryboard_iPhone.strings */,
+				A58DB4971BB3CD7500717C02 /* InfoPlist.strings */,
+				A58DB4991BB3CD7500717C02 /* Localizable.strings */,
+				A58DB49B1BB3CD7500717C02 /* Login_iPhone.strings */,
+				A58DB49D1BB3CD7500717C02 /* MainStoryboard_iPhone.strings */,
+				A58DB49F1BB3CD7500717C02 /* Scenes_Iphone.strings */,
+				A58DB4A11BB3CD7500717C02 /* termsofuse.html */,
+			);
+			path = "zh-Hans.lproj";
 			sourceTree = "<group>";
 		};
 		D80BDC9A1350F01973273EA6 /* Pods */ = {
@@ -1631,6 +1841,9 @@
 				ru,
 				sv,
 				tr,
+				de,
+				ja,
+				"zh-Hans",
 			);
 			mainGroup = 1CED5EE819AC82FD0023512F;
 			productRefGroup = 1CED5EF219AC82FD0023512F /* Products */;
@@ -1648,7 +1861,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A58DB3C51BB1960900717C02 /* Almond-Localizable.strings in Resources */,
+				A58DB3C51BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3D91BB1960900717C02 /* InfoPlist.strings in Resources */,
 				A58DB3C71BB1960900717C02 /* InfoPlist.strings in Resources */,
 				A58DB3EE1BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
@@ -1657,74 +1870,101 @@
 				1C23E6D61A9C4581004D2D23 /* Common-Images.xcassets in Resources */,
 				A58DB3F61BB1960900717C02 /* Login_iPhone.strings in Resources */,
 				A58DB3D51BB1960900717C02 /* termsofuse.html in Resources */,
-				A58DB3C61BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
+				A58DB48D1BB3CD6800717C02 /* MainStoryboard_iPhone.strings in Resources */,
+				A58DB43B1BB2DA3F00717C02 /* termsofuse.html in Resources */,
+				A58DB4391BB2DA3F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
+				A58DB3C61BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
+				A58DB48E1BB3CD6800717C02 /* Scenes_Iphone.strings in Resources */,
 				1C7E7E761A41A8950026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */,
 				A58DB3FE1BB1971300717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3DA1BB1960900717C02 /* Localizable.strings in Resources */,
-				A58DB3EA1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
+				A58DB3EA1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3E31BB1960900717C02 /* Localizable.strings in Resources */,
 				A58DB3FF1BB1971300717C02 /* Login_iPhone.strings in Resources */,
 				1C7E7E771A41A8990026F0BA /* MainStoryboard_iPad.storyboard in Resources */,
 				A58DB3C11BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
+				A58DB4A31BB3CD7500717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
+				A58DB4371BB2DA3F00717C02 /* Localizable.strings in Resources */,
 				A58DB3DE1BB1960900717C02 /* termsofuse.html in Resources */,
-				A58DB3F31BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
+				A58DB4351BB2DA3F00717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
+				A58DB3F31BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				1C7E7E781A41A89B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */,
+				A58DB48B1BB3CD6800717C02 /* Localizable.strings in Resources */,
 				A58DB3E71BB1960900717C02 /* termsofuse.html in Resources */,
 				A58DB3CB1BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
+				A58DB43A1BB2DA3F00717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3F71BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
+				A58DB48A1BB3CD6800717C02 /* InfoPlist.strings in Resources */,
 				A58DB3CC1BB1960900717C02 /* termsofuse.html in Resources */,
 				A58DB3ED1BB1960900717C02 /* Login_iPhone.strings in Resources */,
+				A58DB4AB1BB3CD7500717C02 /* termsofuse.html in Resources */,
 				A58DB3F81BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3BE1BB1960900717C02 /* InfoPlist.strings in Resources */,
-				A58DB3BC1BB1960900717C02 /* Almond-Localizable.strings in Resources */,
+				A58DB4361BB2DA3F00717C02 /* InfoPlist.strings in Resources */,
+				A58DB4341BB2DA3F00717C02 /* HomeScreen-Localizable.strings in Resources */,
+				A58DB3BC1BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3C81BB1960900717C02 /* Localizable.strings in Resources */,
 				1C9B1DA21A3EEA1200097D8F /* Localizable.strings in Resources */,
 				A58DB3CA1BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				1C9B1DA31A3EEA1200097D8F /* MainStoryboard_iPhone.strings in Resources */,
-				A58DB3CE1BB1960900717C02 /* Almond-Localizable.strings in Resources */,
+				A58DB3CE1BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3E21BB1960900717C02 /* InfoPlist.strings in Resources */,
 				A58DB3D11BB1960900717C02 /* Localizable.strings in Resources */,
 				1C9B1DA11A3EEA1200097D8F /* InfoPlist.strings in Resources */,
 				A58DB3DB1BB1960900717C02 /* Login_iPhone.strings in Resources */,
 				A58DB3F11BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
-				A58DB3BD1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
+				A58DB3BD1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3EC1BB1960900717C02 /* Localizable.strings in Resources */,
+				A58DB48C1BB3CD6800717C02 /* Login_iPhone.strings in Resources */,
 				A58DB3C31BB1960900717C02 /* termsofuse.html in Resources */,
 				A58DB3D31BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
-				A58DB3CF1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
-				A58DB3E01BB1960900717C02 /* Almond-Localizable.strings in Resources */,
+				A58DB4381BB2DA3F00717C02 /* Login_iPhone.strings in Resources */,
+				A58DB3CF1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
+				A58DB3E01BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
+				A58DB4881BB3CD6800717C02 /* Homescreen-Localizable.strings in Resources */,
+				A58DB4891BB3CD6800717C02 /* Homescreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB4001BB1971300717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3DD1BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3C01BB1960900717C02 /* Login_iPhone.strings in Resources */,
+				A58DB48F1BB3CD6800717C02 /* termsofuse.html in Resources */,
 				A58DB3C91BB1960900717C02 /* Login_iPhone.strings in Resources */,
 				1C21DAFC1BA17A9A00E4A088 /* Login_iPhone.storyboard in Resources */,
-				A58DB3D81BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
+				A58DB3D81BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3F51BB1960900717C02 /* Localizable.strings in Resources */,
-				A58DB3D71BB1960900717C02 /* Almond-Localizable.strings in Resources */,
+				A58DB4A61BB3CD7500717C02 /* InfoPlist.strings in Resources */,
+				A58DB3D71BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3C21BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
+				A58DB4AA1BB3CD7500717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3E51BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB3D21BB1960900717C02 /* Login_iPhone.strings in Resources */,
 				A58DB3F91BB1960900717C02 /* termsofuse.html in Resources */,
 				A58DB3BB1BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3EF1BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3E81BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
+				A58DB4A71BB3CD7500717C02 /* Localizable.strings in Resources */,
 				1C9B1DA41A3EEA1200097D8F /* termsofuse.html in Resources */,
 				A58DB3D41BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3BF1BB1960900717C02 /* Localizable.strings in Resources */,
 				A58DB3F41BB1960900717C02 /* InfoPlist.strings in Resources */,
 				A58DB3EB1BB1960900717C02 /* InfoPlist.strings in Resources */,
-				A58DB3E11BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
+				A58DB3E11BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3DC1BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB3F01BB1960900717C02 /* termsofuse.html in Resources */,
-				A58DB3E91BB1960900717C02 /* Almond-Localizable.strings in Resources */,
+				A58DB4871BB3CD6800717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
+				A58DB3E91BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3CD1BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				1C2F60601B69E65B001CCA34 /* Scenes_Iphone.storyboard in Resources */,
 				A58DB3E41BB1960900717C02 /* Login_iPhone.strings in Resources */,
+				A58DB4A51BB3CD7500717C02 /* Homescreen-MainStoryboard_iPhone.strings in Resources */,
+				A58DB4A91BB3CD7500717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB4031BB1974500717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3DF1BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
+				A58DB4A81BB3CD7500717C02 /* Login_iPhone.strings in Resources */,
 				1C9B1D7A1A3EE9EF00097D8F /* HomeScreen-Images.xcassets in Resources */,
 				A58DB3D01BB1960900717C02 /* InfoPlist.strings in Resources */,
-				A58DB3F21BB1960900717C02 /* Almond-Localizable.strings in Resources */,
+				A58DB4A41BB3CD7500717C02 /* HomeScreen-Localizable.strings in Resources */,
+				A58DB4331BB2DA3F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
+				A58DB3F21BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3C41BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1734,7 +1974,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1C7E7E711A41A73B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */,
+				A58DB41A1BB2CD7D00717C02 /* InfoPlist.strings in Resources */,
 				A58DB2E51BB16B9F00717C02 /* InfoPlist.strings in Resources */,
+				A58DB41D1BB2CD7D00717C02 /* MainStoryboard_iPhone.strings in Resources */,
+				A58DB4511BB3CD3F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2641BB168C400717C02 /* InfoPlist.strings in Resources */,
 				A58DB2FA1BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2F21BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
@@ -1744,18 +1987,24 @@
 				846414E51B736B80008AB07F /* AvenirLTStd-Oblique.otf in Resources */,
 				A58DB3021BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
 				846414E11B736B80008AB07F /* AvenirLTStd-Light.otf in Resources */,
+				A58DB4171BB2CD7D00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				1C7E7E721A41A73E0026F0BA /* MainStoryboard_iPad.storyboard in Resources */,
 				846414E41B736B80008AB07F /* AvenirLTStd-MediumOblique.otf in Resources */,
+				A58DB4531BB3CD3F00717C02 /* Localizable.strings in Resources */,
 				A58DB3061BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3301BB16EAF00717C02 /* Localizable.strings in Resources */,
+				A58DB46B1BB3CD5200717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB32F1BB16EAF00717C02 /* InfoPlist.strings in Resources */,
+				A58DB4731BB3CD5200717C02 /* termsofuse.html in Resources */,
 				A58DB2E61BB16B9F00717C02 /* Localizable.strings in Resources */,
 				A58DB3131BB16B9F00717C02 /* Localizable.strings in Resources */,
 				A58DB3121BB16B9F00717C02 /* InfoPlist.strings in Resources */,
+				A58DB46F1BB3CD5200717C02 /* Localizable.strings in Resources */,
 				A58DB2F61BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2EF1BB16B9F00717C02 /* Localizable.strings in Resources */,
 				846414E01B736B80008AB07F /* AvenirLTStd-HeavyOblique.otf in Resources */,
 				846414DD1B736B80008AB07F /* AvenirLTStd-Book.otf in Resources */,
+				A58DB4711BB3CD5200717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB32C1BB16EAF00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB2EA1BB16B9F00717C02 /* termsofuse.html in Resources */,
 				A58DB2FF1BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
@@ -1778,30 +2027,42 @@
 				A58DB3351BB16EAF00717C02 /* termsofuse.html in Resources */,
 				A58DB3151BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				846414E61B736B80008AB07F /* AvenirLTStd-Roman.otf in Resources */,
+				A58DB41E1BB2CD7D00717C02 /* Scenes_Iphone.strings in Resources */,
+				A58DB41C1BB2CD7D00717C02 /* Login_iPhone.strings in Resources */,
 				A58DB32E1BB16EAF00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2E71BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
 				A58DB2FD1BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3111BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
+				A58DB4541BB3CD3F00717C02 /* Login_iPhone.strings in Resources */,
 				846414DE1B736B80008AB07F /* AvenirLTStd-BookOblique.otf in Resources */,
 				A58DB2F81BB16B9F00717C02 /* Localizable.strings in Resources */,
+				A58DB4191BB2CD7D00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3171BB16B9F00717C02 /* termsofuse.html in Resources */,
 				1C21DAFB1BA16FE100E4A088 /* Login_iPhone.storyboard in Resources */,
 				1C2F605F1B69E64F001CCA34 /* Scenes_Iphone.storyboard in Resources */,
 				A58DB2EC1BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB2E91BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
+				A58DB4721BB3CD5200717C02 /* Scenes_Iphone.strings in Resources */,
+				A58DB4701BB3CD5200717C02 /* Login_iPhone.strings in Resources */,
 				A58DB2611BB168C400717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
+				A58DB46E1BB3CD5200717C02 /* InfoPlist.strings in Resources */,
+				A58DB4521BB3CD3F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB2661BB168C400717C02 /* Login_iPhone.strings in Resources */,
 				A58DB2E41BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3011BB16B9F00717C02 /* Localizable.strings in Resources */,
 				A58DB2E31BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
+				A58DB4571BB3CD3F00717C02 /* termsofuse.html in Resources */,
 				A58DB2621BB168C400717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB2F11BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
+				A58DB41B1BB2CD7D00717C02 /* Localizable.strings in Resources */,
 				A58DB2631BB168C400717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
+				A58DB41F1BB2CD7D00717C02 /* termsofuse.html in Resources */,
 				A58DB3091BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB30E1BB16B9F00717C02 /* termsofuse.html in Resources */,
 				A58DB3051BB16B9F00717C02 /* termsofuse.html in Resources */,
 				1C23E6D51A9C4581004D2D23 /* Common-Images.xcassets in Resources */,
 				A58DB2FB1BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
+				A58DB46D1BB3CD5200717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2F41BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				1C7E7DFA1A41A0B30026F0BA /* Almond-Images.xcassets in Resources */,
 				A58DB30A1BB16B9F00717C02 /* Localizable.strings in Resources */,
@@ -1811,19 +2072,25 @@
 				A58DB2ED1BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2E81BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2FC1BB16B9F00717C02 /* termsofuse.html in Resources */,
+				A58DB46C1BB3CD5200717C02 /* Almond-Localizable.strings in Resources */,
+				A58DB4561BB3CD3F00717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB2F51BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB32D1BB16EAF00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB3101BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
+				A58DB4551BB3CD3F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB30B1BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
 				846414DB1B736B80008AB07F /* AvenirLTStd-Black.otf in Resources */,
 				A58DB2F01BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
+				A58DB44F1BB3CD3F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3081BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2EB1BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3331BB16EAF00717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3161BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
+				A58DB4501BB3CD3F00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB30D1BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
 				846414DC1B736B80008AB07F /* AvenirLTStd-BlackOblique.otf in Resources */,
 				A58DB2FE1BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
+				A58DB4181BB2CD7D00717C02 /* Almond-Localizable.strings in Resources */,
 				1C7E7DFD1A41A0B30026F0BA /* cert.der in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2820,20 +3087,20 @@
 			name = AccountsStoryboard_iPhone.strings;
 			sourceTree = "<group>";
 		};
-		A58DB3391BB1960900717C02 /* Almond-Localizable.strings */ = {
+		A58DB3391BB1960900717C02 /* HomeScreen-Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A58DB33A1BB1960900717C02 /* es */,
 			);
-			name = "Almond-Localizable.strings";
+			name = "HomeScreen-Localizable.strings";
 			sourceTree = "<group>";
 		};
-		A58DB33B1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */ = {
+		A58DB33B1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A58DB33C1BB1960900717C02 /* es */,
 			);
-			name = "Almond-MainStoryboard_iPhone.strings";
+			name = "HomeScreen-MainStoryboard_iPhone.strings";
 			sourceTree = "<group>";
 		};
 		A58DB33D1BB1960900717C02 /* InfoPlist.strings */ = {
@@ -2892,20 +3159,20 @@
 			name = AccountsStoryboard_iPhone.strings;
 			sourceTree = "<group>";
 		};
-		A58DB34C1BB1960900717C02 /* Almond-Localizable.strings */ = {
+		A58DB34C1BB1960900717C02 /* HomeScreen-Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A58DB34D1BB1960900717C02 /* nl */,
 			);
-			name = "Almond-Localizable.strings";
+			name = "HomeScreen-Localizable.strings";
 			sourceTree = "<group>";
 		};
-		A58DB34E1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */ = {
+		A58DB34E1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A58DB34F1BB1960900717C02 /* nl */,
 			);
-			name = "Almond-MainStoryboard_iPhone.strings";
+			name = "HomeScreen-MainStoryboard_iPhone.strings";
 			sourceTree = "<group>";
 		};
 		A58DB3501BB1960900717C02 /* InfoPlist.strings */ = {
@@ -2964,20 +3231,20 @@
 			name = AccountsStoryboard_iPhone.strings;
 			sourceTree = "<group>";
 		};
-		A58DB35F1BB1960900717C02 /* Almond-Localizable.strings */ = {
+		A58DB35F1BB1960900717C02 /* HomeScreen-Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A58DB3601BB1960900717C02 /* pl */,
 			);
-			name = "Almond-Localizable.strings";
+			name = "HomeScreen-Localizable.strings";
 			sourceTree = "<group>";
 		};
-		A58DB3611BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */ = {
+		A58DB3611BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A58DB3621BB1960900717C02 /* pl */,
 			);
-			name = "Almond-MainStoryboard_iPhone.strings";
+			name = "HomeScreen-MainStoryboard_iPhone.strings";
 			sourceTree = "<group>";
 		};
 		A58DB3631BB1960900717C02 /* InfoPlist.strings */ = {
@@ -3036,20 +3303,20 @@
 			name = AccountsStoryboard_iPhone.strings;
 			sourceTree = "<group>";
 		};
-		A58DB3721BB1960900717C02 /* Almond-Localizable.strings */ = {
+		A58DB3721BB1960900717C02 /* HomeScreen-Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A58DB3731BB1960900717C02 /* pt */,
 			);
-			name = "Almond-Localizable.strings";
+			name = "HomeScreen-Localizable.strings";
 			sourceTree = "<group>";
 		};
-		A58DB3741BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */ = {
+		A58DB3741BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A58DB3751BB1960900717C02 /* pt */,
 			);
-			name = "Almond-MainStoryboard_iPhone.strings";
+			name = "HomeScreen-MainStoryboard_iPhone.strings";
 			sourceTree = "<group>";
 		};
 		A58DB3761BB1960900717C02 /* InfoPlist.strings */ = {
@@ -3108,20 +3375,20 @@
 			name = AccountsStoryboard_iPhone.strings;
 			sourceTree = "<group>";
 		};
-		A58DB3851BB1960900717C02 /* Almond-Localizable.strings */ = {
+		A58DB3851BB1960900717C02 /* HomeScreen-Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A58DB3861BB1960900717C02 /* ru */,
 			);
-			name = "Almond-Localizable.strings";
+			name = "HomeScreen-Localizable.strings";
 			sourceTree = "<group>";
 		};
-		A58DB3871BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */ = {
+		A58DB3871BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A58DB3881BB1960900717C02 /* ru */,
 			);
-			name = "Almond-MainStoryboard_iPhone.strings";
+			name = "HomeScreen-MainStoryboard_iPhone.strings";
 			sourceTree = "<group>";
 		};
 		A58DB3891BB1960900717C02 /* InfoPlist.strings */ = {
@@ -3180,20 +3447,20 @@
 			name = AccountsStoryboard_iPhone.strings;
 			sourceTree = "<group>";
 		};
-		A58DB3981BB1960900717C02 /* Almond-Localizable.strings */ = {
+		A58DB3981BB1960900717C02 /* HomeScreen-Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A58DB3991BB1960900717C02 /* sv */,
 			);
-			name = "Almond-Localizable.strings";
+			name = "HomeScreen-Localizable.strings";
 			sourceTree = "<group>";
 		};
-		A58DB39A1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */ = {
+		A58DB39A1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A58DB39B1BB1960900717C02 /* sv */,
 			);
-			name = "Almond-MainStoryboard_iPhone.strings";
+			name = "HomeScreen-MainStoryboard_iPhone.strings";
 			sourceTree = "<group>";
 		};
 		A58DB39C1BB1960900717C02 /* InfoPlist.strings */ = {
@@ -3252,20 +3519,20 @@
 			name = AccountsStoryboard_iPhone.strings;
 			sourceTree = "<group>";
 		};
-		A58DB3AB1BB1960900717C02 /* Almond-Localizable.strings */ = {
+		A58DB3AB1BB1960900717C02 /* HomeScreen-Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A58DB3AC1BB1960900717C02 /* tr */,
 			);
-			name = "Almond-Localizable.strings";
+			name = "HomeScreen-Localizable.strings";
 			sourceTree = "<group>";
 		};
-		A58DB3AD1BB1960900717C02 /* Almond-MainStoryboard_iPhone.strings */ = {
+		A58DB3AD1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				A58DB3AE1BB1960900717C02 /* tr */,
 			);
-			name = "Almond-MainStoryboard_iPhone.strings";
+			name = "HomeScreen-MainStoryboard_iPhone.strings";
 			sourceTree = "<group>";
 		};
 		A58DB3AF1BB1960900717C02 /* InfoPlist.strings */ = {
@@ -3338,6 +3605,438 @@
 				A58DB4021BB1974500717C02 /* en */,
 			);
 			name = Scenes_Iphone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4051BB2CD7D00717C02 /* AccountsStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4061BB2CD7D00717C02 /* de */,
+			);
+			name = AccountsStoryboard_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4071BB2CD7D00717C02 /* Almond-Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4081BB2CD7D00717C02 /* de */,
+			);
+			name = "Almond-Localizable.strings";
+			sourceTree = "<group>";
+		};
+		A58DB4091BB2CD7D00717C02 /* Almond-MainStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB40A1BB2CD7D00717C02 /* de */,
+			);
+			name = "Almond-MainStoryboard_iPhone.strings";
+			sourceTree = "<group>";
+		};
+		A58DB40B1BB2CD7D00717C02 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB40C1BB2CD7D00717C02 /* de */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A58DB40D1BB2CD7D00717C02 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB40E1BB2CD7D00717C02 /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		A58DB40F1BB2CD7D00717C02 /* Login_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4101BB2CD7D00717C02 /* de */,
+			);
+			name = Login_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4111BB2CD7D00717C02 /* MainStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4121BB2CD7D00717C02 /* de */,
+			);
+			name = MainStoryboard_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4131BB2CD7D00717C02 /* Scenes_Iphone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4141BB2CD7D00717C02 /* de */,
+			);
+			name = Scenes_Iphone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4151BB2CD7D00717C02 /* termsofuse.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4161BB2CD7D00717C02 /* de */,
+			);
+			name = termsofuse.html;
+			sourceTree = "<group>";
+		};
+		A58DB4211BB2DA3F00717C02 /* AccountsStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4221BB2DA3F00717C02 /* de */,
+			);
+			name = AccountsStoryboard_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4231BB2DA3F00717C02 /* HomeScreen-Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4241BB2DA3F00717C02 /* de */,
+			);
+			name = "HomeScreen-Localizable.strings";
+			sourceTree = "<group>";
+		};
+		A58DB4251BB2DA3F00717C02 /* HomeScreen-MainStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4261BB2DA3F00717C02 /* de */,
+			);
+			name = "HomeScreen-MainStoryboard_iPhone.strings";
+			sourceTree = "<group>";
+		};
+		A58DB4271BB2DA3F00717C02 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4281BB2DA3F00717C02 /* de */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4291BB2DA3F00717C02 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB42A1BB2DA3F00717C02 /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		A58DB42B1BB2DA3F00717C02 /* Login_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB42C1BB2DA3F00717C02 /* de */,
+			);
+			name = Login_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB42D1BB2DA3F00717C02 /* MainStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB42E1BB2DA3F00717C02 /* de */,
+			);
+			name = MainStoryboard_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB42F1BB2DA3F00717C02 /* Scenes_Iphone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4301BB2DA3F00717C02 /* de */,
+			);
+			name = Scenes_Iphone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4311BB2DA3F00717C02 /* termsofuse.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4321BB2DA3F00717C02 /* de */,
+			);
+			name = termsofuse.html;
+			sourceTree = "<group>";
+		};
+		A58DB43D1BB3CD3F00717C02 /* AccountsStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB43E1BB3CD3F00717C02 /* ja */,
+			);
+			name = AccountsStoryboard_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB43F1BB3CD3F00717C02 /* Almond-Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4401BB3CD3F00717C02 /* ja */,
+			);
+			name = "Almond-Localizable.strings";
+			sourceTree = "<group>";
+		};
+		A58DB4411BB3CD3F00717C02 /* Almond-MainStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4421BB3CD3F00717C02 /* ja */,
+			);
+			name = "Almond-MainStoryboard_iPhone.strings";
+			sourceTree = "<group>";
+		};
+		A58DB4431BB3CD3F00717C02 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4441BB3CD3F00717C02 /* ja */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4451BB3CD3F00717C02 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4461BB3CD3F00717C02 /* ja */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4471BB3CD3F00717C02 /* Login_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4481BB3CD3F00717C02 /* ja */,
+			);
+			name = Login_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4491BB3CD3F00717C02 /* MainStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB44A1BB3CD3F00717C02 /* ja */,
+			);
+			name = MainStoryboard_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB44B1BB3CD3F00717C02 /* Scenes_Iphone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB44C1BB3CD3F00717C02 /* ja */,
+			);
+			name = Scenes_Iphone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB44D1BB3CD3F00717C02 /* termsofuse.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB44E1BB3CD3F00717C02 /* ja */,
+			);
+			name = termsofuse.html;
+			sourceTree = "<group>";
+		};
+		A58DB4591BB3CD5200717C02 /* AccountsStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB45A1BB3CD5200717C02 /* zh-Hans */,
+			);
+			name = AccountsStoryboard_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB45B1BB3CD5200717C02 /* Almond-Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB45C1BB3CD5200717C02 /* zh-Hans */,
+			);
+			name = "Almond-Localizable.strings";
+			sourceTree = "<group>";
+		};
+		A58DB45D1BB3CD5200717C02 /* Almond-MainStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB45E1BB3CD5200717C02 /* zh-Hans */,
+			);
+			name = "Almond-MainStoryboard_iPhone.strings";
+			sourceTree = "<group>";
+		};
+		A58DB45F1BB3CD5200717C02 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4601BB3CD5200717C02 /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4611BB3CD5200717C02 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4621BB3CD5200717C02 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4631BB3CD5200717C02 /* Login_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4641BB3CD5200717C02 /* zh-Hans */,
+			);
+			name = Login_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4651BB3CD5200717C02 /* MainStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4661BB3CD5200717C02 /* zh-Hans */,
+			);
+			name = MainStoryboard_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4671BB3CD5200717C02 /* Scenes_Iphone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4681BB3CD5200717C02 /* zh-Hans */,
+			);
+			name = Scenes_Iphone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4691BB3CD5200717C02 /* termsofuse.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB46A1BB3CD5200717C02 /* zh-Hans */,
+			);
+			name = termsofuse.html;
+			sourceTree = "<group>";
+		};
+		A58DB4751BB3CD6800717C02 /* AccountsStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4761BB3CD6800717C02 /* ja */,
+			);
+			name = AccountsStoryboard_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4771BB3CD6800717C02 /* Homescreen-Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4781BB3CD6800717C02 /* ja */,
+			);
+			name = "Homescreen-Localizable.strings";
+			sourceTree = "<group>";
+		};
+		A58DB4791BB3CD6800717C02 /* Homescreen-MainStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB47A1BB3CD6800717C02 /* ja */,
+			);
+			name = "Homescreen-MainStoryboard_iPhone.strings";
+			sourceTree = "<group>";
+		};
+		A58DB47B1BB3CD6800717C02 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB47C1BB3CD6800717C02 /* ja */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A58DB47D1BB3CD6800717C02 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB47E1BB3CD6800717C02 /* ja */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		A58DB47F1BB3CD6800717C02 /* Login_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4801BB3CD6800717C02 /* ja */,
+			);
+			name = Login_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4811BB3CD6800717C02 /* MainStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4821BB3CD6800717C02 /* ja */,
+			);
+			name = MainStoryboard_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4831BB3CD6800717C02 /* Scenes_Iphone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4841BB3CD6800717C02 /* ja */,
+			);
+			name = Scenes_Iphone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4851BB3CD6800717C02 /* termsofuse.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4861BB3CD6800717C02 /* ja */,
+			);
+			name = termsofuse.html;
+			sourceTree = "<group>";
+		};
+		A58DB4911BB3CD7500717C02 /* AccountsStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4921BB3CD7500717C02 /* zh-Hans */,
+			);
+			name = AccountsStoryboard_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4931BB3CD7500717C02 /* HomeScreen-Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4941BB3CD7500717C02 /* zh-Hans */,
+			);
+			name = "HomeScreen-Localizable.strings";
+			sourceTree = "<group>";
+		};
+		A58DB4951BB3CD7500717C02 /* Homescreen-MainStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4961BB3CD7500717C02 /* zh-Hans */,
+			);
+			name = "Homescreen-MainStoryboard_iPhone.strings";
+			sourceTree = "<group>";
+		};
+		A58DB4971BB3CD7500717C02 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4981BB3CD7500717C02 /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4991BB3CD7500717C02 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB49A1BB3CD7500717C02 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		A58DB49B1BB3CD7500717C02 /* Login_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB49C1BB3CD7500717C02 /* zh-Hans */,
+			);
+			name = Login_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB49D1BB3CD7500717C02 /* MainStoryboard_iPhone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB49E1BB3CD7500717C02 /* zh-Hans */,
+			);
+			name = MainStoryboard_iPhone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB49F1BB3CD7500717C02 /* Scenes_Iphone.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4A01BB3CD7500717C02 /* zh-Hans */,
+			);
+			name = Scenes_Iphone.strings;
+			sourceTree = "<group>";
+		};
+		A58DB4A11BB3CD7500717C02 /* termsofuse.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A58DB4A21BB3CD7500717C02 /* zh-Hans */,
+			);
+			name = termsofuse.html;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
