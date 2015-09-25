@@ -1,0 +1,96 @@
+/* 
+  Almond-Localizable.strings
+  Almond
+
+  Created by Priya Yerunkar on 13/12/14.
+  Copyright (c) 2014 Securifi Ltd. All rights reserved.
+*/
+
+/*------- Localization strings specific to Almond app -------*/
+
+
+/* affiliation */
+"router.linkalmond-msg.label.Let's link an Almond." = "Bir HomeScreen \n bağlayalım.";
+"router.linkalmond-msg.label.Start the wizard on your Almond." = "HomeScreen'unuzda sihirbazı başlatın ve aşağıdaki sembole dokunun.";
+"Almond Linked" = "HomeScreen Bağlandı";
+"Link Almond" = "Bulut Linki";
+"Local Link Almond" = "Yerel Link";
+"Please wait while your Almond is being linked to cloud." = "Lütfen buluta bağlanırken bekleyin.";
+"This Almond is already linked to another user." = "Bu HomeScreen başka bir kullanıcıya bağlıdır.
+Bizimle support@securifi.com adresinden iletişime geçebilirsiniz";
+"Almond could not be affiliated" = "HomeScreen ilişkilendirilemedi.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "HomeScreen Hesabı uygulamasını çalıştırın ve görüntülenen kodu girin.";
+"cloudlink.button.Link Almond" = "HomeScreen'u Bağla";
+"cloudlink.button.Add Almond Locally" = "HomeScreen'u Yerel Olarak Ekle";
+
+
+/* router tab */
+"router.offline-msg.label.Almond is Offline." = "HomeScreen Çevrimdışı.";
+//m
+"router.msg-link.The Almond was successfully linked." = "HomeScreen başarıyla bağlandı.";
+"router.btn-title.Unlink Almond?" = "HomeScreen Bağlantısı Kaldırılsın mı?";
+"router.btn-title.Link Almond Locally" = "HomeScreen'u Yerel Olarak Bağlayın";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Lüten bulut kontrolü olmadan bildirim alamayacağınızı veya HomeScreen'unuzu uzaktan kontrol edemeyeceğinizi dikkate alın.";
+"router.error-msg.This Almond is already linked." = "Bu HomeScreen zaten bağlandı.";
+"router.error-msg.An error occurred trying to link with the Almond. Lütfen tekrar deneyin." = "HomeScreen ile bağlantı kurmaya çalışırken hata oluştu. Lütfen tekrar deneyin.";
+
+"router.card-title.Cloud Almond Link" = "Bulut HomeScreen Linki";
+"router.card-title.Local Almond Link" = "Yerel HomeScreen Linki";
+"router.software-version.header.instructions" = "Lütfen HomeScreen'unuzda \"Ayarlar\" obölümüne dokunun";
+
+/* sensors */
+"router.no-sensors.label.Add a sensor from your Almond." = "HomeScreen'unuzdan bir sensör ekleyin.";
+
+/* signup */
+"signup.headline-text.Securifi Cloud Account." = "Securifi Bulut Hesabı.";
+"signup.headline-text.Access your Almonds" = "HomeScreenlarınıza ve ev cihazlarınıza
+her yerden ulaşabilirsiniz.";
+
+/* Accounts */
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "Bu HomeScreen size ait";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "HomeScreen Adı";
+"accounts.ownedAlmond.button.RenameAlmond" = "HomeScreen'u Yeniden Adlandır";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = "HomeScreen Adı";
+"accounts.sharedAlmond.button.RenameAlmond" = "HomeScreen'u Yeniden Adlandır";
+"accounts.alert.onDeleteAccount.message" = "Hesabı silmek HomeScreen'larınızın bağlantısını kaldıracak ve kullanıcı tercihlerini silecektir. Hesap silme işlemini doğrulamak için aşağıya parolanızı girin.";
+"accounts.alert.onUnlinkAlmond.title" = "HomeScreen Bağlantısını Kesin";
+"accounts.alert.onUnlinkAlmond.message" = "HomeScreen bağlantısını kesmeyi onaylamak için parolanızı aşağıya girin.";
+"accounts.itoast.almondNameMax32Characters" = "HomeScreen Adı 32 karakterden fazla olamaz.";
+"accounts.itoast.unableToChangeAlmondName" = "Üzgünüz! HomeScreen'un adını değiştiremedik";
+"accounts.hud.unlinkingAlmond" = "HomeScreen Bağlantısı Kaldırılıyor...";
+"accounts.hud.inviteUserToShareAlmond" = "Kullanıcı HomeScreen'u paylaşmaya davet ediliyor...";
+"accounts.hud.changeAlmondName" = "HomeScreen adını değiştir...";
+"accounts.hud.removeSharedAlmond" = "Paylaşılan HomeScreenu kaldır...";
+"accounts.unlinkAlmond.failure.default" = "Üzgünüz! HomeScreen bağlantısı kaldırılamadı.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "Bu kullanıcının bir Securifi hesabı yok.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "Kullanıcı henüz Securifi hesabını doğrulamadı.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "Bu HomeScreen size ait değil.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "Bu HomeScreen'u zaten kullanıcı ile paylaştınız.";
+"accounts.inviteUserToShareAlmond.failure.default" = "Üzgünüz! HomeScreen paylaşımı başarısız.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "Bu HomeScreen ile ilişkilendirilmediniz";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "İkincil kullanıcı verili HomeScreen ile ilişkilendirilmedi.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "Bu HomeScreen ile ilişkilendirilmediniz";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "Üzgünüz! Paylaşılan HomeScreen kaldırılamadı.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "HomeScreen MAC'leri";
+"Copied Almond MAC" = "Kopyalanan HomeScreen MAC";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "HomeScreen'unuza bulut üzerinden bağlandınız.";
+"alertview -Connected to your Almond via cloud." = "HomeScreen'unuza bulut üzerinden bağlandınız.";
+"Add Local Connection Settings" = "Yerel Bağlantı Ayarlarını Ekleyin";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "HomeScreen bulut bağlantısı kurulamadı. Yeniden deneye dokunun veya yerel bağlantıya geçin.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = "HomeScreen yerel bağlantısı kurulamadı. Dokunup yeniden deneyin veya bulut bağlantısına geçin.";
+"hud message-Setting Almond to Away Mode" = "HomeScreen Uzakta Moduna Getiriliyor";
+"hud message-Setting Almond to Home Mode" = "HomeScreen Ev Moduna Getiriliyor";
+"alertview Can't connect to your Almond. Please select a connection method." = "HomeScreen'unuza bağlanamıyor. Lütfen bir bağlantı yöntemi seçin.";
+"alertview localconnection_Connected to your Almond locally." = "HomeScreen'unuza yerel olarak bağlandı.";
+
+//To be translated
+/* login */
+"Monitor and Control your home from anywhere." = "Monitör ve her yerden evinize Kontrol.";
+
+"AlmondList" = "HomeScreenListe";

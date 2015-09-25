@@ -166,7 +166,7 @@ do Twojego urządzenia Almond.";
 urządzeń domowych gdziekolwiek jesteś.";
 
 
-Class = "IBUINavigationItem"; title = "Device List"; ObjectID = "s5Y-pa-xGH"; */
+/* Class = "IBUINavigationItem"; title = "Device List"; ObjectID = "s5Y-pa-xGH"; */
 "CAD-J8-2aA.title" = "Lista urządzeń Almond";
 
 

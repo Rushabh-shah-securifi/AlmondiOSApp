@@ -51,7 +51,8 @@
 @property(nonatomic) SFIDeviceValue *deviceValue;
 @property(nonatomic) UIColor *cellColor;
 @property(nonatomic, getter=isExpandedView) BOOL expandedView;
-
+@property(nonatomic) NSString *iconImageName;
+@property(nonatomic) NSArray *statusTextArray;
 // Makes the cell show a message and icon indicating the sensor is being updated
 - (void)showUpdatingMessage;
 

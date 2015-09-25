@@ -10,47 +10,84 @@
 
 
 /* affiliation */
-"Almond Linked" = "Almond Linked";
-"Link Almond" = "Link Almond";"Please wait while your Almond is being linked to cloud." = "Please wait while your Almond is being linked to cloud.";
-"This Almond is already linked to another user." = "This Almond is already linked to another user. 
-Contact us at support@securifi.com";
-"Almond could not be affiliated" = "Almond could not be affiliated.%@";
-
-/* login */
-"Monitor and Control your home from anywhere." = "Monitor and Control your home from anywhere.";
+"router.linkalmond-msg.label.Let's link an Almond." = "Laten we \n een Almond koppelen.";
+"router.linkalmond-msg.label.Start the wizard on your Almond." = "Start de wizard op uw Almond en tik daarna op het onderstaande symbool.";
+"Almond Linked" = "Gekoppelde Almond";
+"Link Almond" = "Cloud-link";
+"Local Link Almond" = "Locale link";
+"Please wait while your Almond is being linked to cloud." = "Wacht even tot uw Almond is gekoppeld aan de cloud.";
+"This Almond is already linked to another user." = "Deze Almond is al gekoppeld aan een andere gebruiker.
+Neem contact met ons op via support@securifi.com";
+"Almond could not be affiliated" = "Almond kan niet worden geafillieerd.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "Open de app Almond Account en voer de weergegeven code in.";
+"cloudlink.button.Link Almond" = "Almond koppelen";
+"cloudlink.button.Add Almond Locally" = "Almond lokaal toevoegen";
 
 /* router tab */
-"router.offline-msg.label.Almond is Offline." = "Almond is Offline.";
+"router.offline-msg.label.Almond is Offline." = "Almond is offline.";
+//m
+"router.msg-link.The Almond was successfully linked." = "De Almond is gekoppeld.";
+"router.btn-title.Unlink Almond?" = "De Almond ontkoppelen?";
+"router.btn-title.Link Almond Locally" = "Almond lokaal koppelen";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "Houd er rekening mee dat zonder cloudbeheer u geen meldingen ontvangt of uw Almond op afstand kunt bedienen.";
+"router.error-msg.This Almond is already linked." = "Deze Almond is al gekoppeld.";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." = "Er is een fout opgetreden tijdens het koppelen met de Almond. Probeer het opnieuw.";
 
 /* sensors */
-"router.no-sensors.label.Add a sensor from your Almond." = "Add a sensor from your Almond.";
+"router.no-sensors.label.Add a sensor from your Almond." = "Een sensor toevoegen vanaf uw Almond.";
 
 /* signup */
-"signup.headline-text.Securifi Cloud Account." = "Securifi Cloud Account.";
-"signup.headline-text.Monitor and Control" = "Monitor and Control your home from anywhere.";
+"signup.headline-text.Securifi Cloud Account." = "Securifi-cloudaccount.";
+"signup.headline-text.Access your Almonds" = "Gebruik uw Almonds en
+thuisapparaten overal.";
 
 /* Accounts */
-"accounts.ownedAlmond.label.YouOwnThisAlmond" = "You own this Almond";
-"accounts.ownedAlmond.textfield.placeholder.almondName" = "Almond Name";
-"accounts.ownedAlmond.button.RenameAlmond" = "Rename Almond";
-"accounts.sharedAlmond.textfield.placeholder.almondName" = "Almond Name";
-"accounts.sharedAlmond.button.RenameAlmond" = "Rename Almond";
-"accounts.alert.onDeleteAccount.message" = "Deleting the account will unlink your Almond(s) and delete user preferences. To confirm account deletion enter your password below.";
-"accounts.alert.onUnlinkAlmond.title" = "Unlink Almond";
-"accounts.alert.onUnlinkAlmond.message" = "To confirm unlinking Almond enter your password below.";
-"accounts.itoast.almondNameMax32Characters" = "Almond Name cannot be more than 32 characters.";
-"accounts.itoast.unableToChangeAlmondName" = "Sorry! We were unable to change Almond's name";
-"accounts.hud.unlinkingAlmond" = "Unlinking Almond...";
-"accounts.hud.inviteUserToShareAlmond" = "Inviting user to share Almond...";
-"accounts.hud.changeAlmondName" = "Change almond name...";
-"accounts.hud.removeSharedAlmond" = "Remove shared almond...";
-"accounts.unlinkAlmond.failure.default" = "Sorry! Unlinking of Almond was unsuccessful.";
-"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "This user does not have a Securifi account.";
-"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "The user has not verified the Securifi account yet.";
-"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "You do not own this almond.";
-"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "You have already shared this almond with the user.";
-"accounts.inviteUserToShareAlmond.failure.default" = "Sorry! Sharing of Almond was unsuccessful.";
-"accounts.deleteSecondaryUser.failure.reasonCode4" = "You are not associated with this Almond";
-"accounts.deleteSecondaryUser.failure.reasonCode6" = "Secondary user is not associated with the given Almond.";
-"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "You are not associated with this Almond";
-"accounts.deleteMeAsSecondaryUser.failure.default" = "Sorry! Removing of shared Almond was unsuccessful.";
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "Deze Almond is de uwe";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "Almond-naam";
+"accounts.ownedAlmond.button.RenameAlmond" = "Naam van Almond wijzigen";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = "Almond-naam";
+"accounts.sharedAlmond.button.RenameAlmond" = "Naam van Almond wijzigen";
+"accounts.alert.onDeleteAccount.message" = "Als u de account verwijdert, word(t)(en) uw Almond(s)ontkoppelt en worden gebruikersvoorkeuren verwijdert. Om de verwijdering van uw account te bevestigen, voert u hieronder uw wachtwoord in.";
+"accounts.alert.onUnlinkAlmond.title" = "Almond ontkoppelen";
+"accounts.alert.onUnlinkAlmond.message" = "Om de Almond te ontkoppelen, voert u hieronder uw wachtwoord in.";
+"accounts.itoast.almondNameMax32Characters" = "De naam van de Almond Name niet langer zijn dan 32 tekens.";
+"accounts.itoast.unableToChangeAlmondName" = "Het spijt ons! Wij kunnen de naam van uw Almond niet wijzigen";
+"accounts.hud.unlinkingAlmond" = "Almond ontkoppelen...";
+"accounts.hud.inviteUserToShareAlmond" = "Gebruiker uitnodigen om de Almond te delen...";
+"accounts.hud.changeAlmondName" = "De naam van de Almond te wijzigen...";
+"accounts.hud.removeSharedAlmond" = "Gedeelde Almond verwijderen...";
+"accounts.unlinkAlmond.failure.default" = "Het spijt ons! Het ontkoppelen van de Almond is mislukt.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "Deze gebruiker heeft geen Securifi-account.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "De gebruiker heeft de Securifi-account nog niet geverifieerd.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "U bent niet de eigenaar van deze Almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "U hebt deze Almond al gedeeld met de gebruiker.";
+"accounts.inviteUserToShareAlmond.failure.default" = "Het spijt ons! Het delen van de Almond is mislukt.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "U bent niet geassocieerd met deze Almond";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "De secundaire gebruiker is niet geassocieerd met de opgegeven Almond.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "U bent niet geassocieerd met deze Almond";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "Het spijt ons! Het verwijderen van de Almond is mislukt.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "Almond MAC's";
+"Copied Almond MAC" = "Gekopieerde Almond MAC";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "Met uw Almond verbonden via cloud.";
+"alertview -Connected to your Almond via cloud." = "Met uw Almond verbonden via cloud.";
+"Add Local Connection Settings" = "Lokale verbindingsinstellingen toevoegen";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "De cloud-verbinding naar uw Almond is mislukt. Tik op opnieuw of schakel over naar een lokale verbinding.";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." = "De lokale verbinding naar uw Almond is mislukt. Tik op opnieuw of schakel over naar een cloudverbinding.";
+"hud message-Setting Almond to Away Mode" = "De Almond instellen op de Afwezig-modus";
+"hud message-Setting Almond to Home Mode" = "De Almond instellen op de Thuis-modus";
+"alertview Can't connect to your Almond. Please select a connection method." = "De Almond kan niet worden verbonden. Selecteer een verbindingsmethode.";
+"alertview localconnection_Connected to your Almond locally." = "Lokaal met uw Almond verbonden.";
+
+"router.card-title.Local Almond Link" = "Lokale Almond Link";
+"router.software-version.header.instructions" = "Gelieve tik \”Instellingen\” op uw Almond";
+
+//To be Translated
+/* login */
+"Monitor and Control your home from anywhere." = "Bewaken en controleren van uw huis overal.";
+

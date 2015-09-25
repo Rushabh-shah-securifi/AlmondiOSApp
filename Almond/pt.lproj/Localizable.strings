@@ -572,7 +572,7 @@ Aceda à ligação e, em seguida, toque em Continuar para iniciar sessão.";
 "HEATING TEMP." = "AQUECIMENTO TEMP.";
 "Version" = "versão";
 "Settings" = "Definições";
-"AlmondList" = "AlmondLista";
+
 
 
 "login.local.Switch to Local Connection" = "Mudar para ligação local";
@@ -642,6 +642,41 @@ Aceda à ligação e, em seguida, toque em Continuar para iniciar sessão.";
 "Device.propertyeditview.controller.Example 444" = "exemplo 444";
 
 "scenes.new-scene.label.New Scene" = "nueva escena";
+
+//24-9
+"View Device History”=“View Device History";
+"Name" = "Name";
+"Location" = "Location";
+"Actions" = "Actions";
+"Stop" = "Stop";
+"Battery" = "Battery";
+"Clamp 1 Power" = "Clamp 1 Power";
+"Clamp 1 Energy" = "Clamp 1 Energy";
+"Clamp 2 Power" = "Clamp 2 Power";
+"Clamp 2 Energy" = "Clamp 2 Energy";
+"Siren" = "Siren";
+"Switch 1" = "Switch 1";
+"Switch 2" = "Switch 2";
+"Temperature" = "Temperature";
+"AC Mode" = "AC Mode";
+"High Temperature" = "High Temperature";
+"Low Temperature" = "Low Temperature";
+"Swing" = "Swing";
+"Power" = "Power";
+"IR Code" = "IR Code";
+"Configuration" = "Configuration";
+"Humidity" = "Humidity";
+"Luminance" = "Luminance";
+"Away Mode" = "Away Mode";
+"CO Level" = "CO Level";
+"Smoke Level" = "Smoke Level";
+"Mode" = "Mode";
+"Target Range" = "Target Range";
+"Fan Mode" = "Fan Mode";
+"Fan" = "Fan";
+"Notify me" = "Notify me";
+
+
 /* ==================================================================== */
 
 /*
@@ -741,3 +776,5 @@ aos seus dispositivos domésticos a partir de qualquer local.";
 //To be translated
 /* login */
 "Monitor and Control your home from anywhere." = "Monitorar e controlar a sua casa de qualquer lugar.";
+
+"AlmondList" = "AlmondLista";

@@ -1,0 +1,118 @@
+/* ==================================================================== */
+
+/*
+ Almond-Localizable.strings
+ Almond
+ 
+ Created by Priya Yerunkar on 13/12/14.
+ Copyright (c) 2014 Securifi Ltd. All rights reserved.
+ */
+
+/*------- Localization strings specific to Almond app -------*/
+
+
+
+/* affiliation */
+"router.linkalmond-msg.label.Let's link an Almond." = " Homescreen \n をリンクしましょう.";
+"router.linkalmond-msg.label.Start the wizard on your Almond." = "ウイザードスタートし、下の記号をタップしてください。";
+"Almond Linked" = "Homescreen リンクされました";
+"Link Almond" = "クラウドリンクCloud Link";
+"Local Link Almond" = "ローカルリンクLocal Link";
+"Please wait while your Almond is being linked to cloud." = "お待ちください、Homescreenはクライドにリンク中です。Please wait while your Homescreen is being linked to cloud.";
+"This Almond is already linked to another user." = "このHomescreenは別のユーザーにリンクされています。サポートにご連絡ください。This Homescreen is already linked to another user.
+Contact us at support@securifi.com";
+"Almond could not be affiliated" = "Homescreenにリンクできません。
+Homescreen could not be affiliated.\n%@";
+//m
+"Run the Almond Account app and enter the code displayed." = "設定ＡＰＰを実行し、コードを入力してください。
+Run the Homescreen Account app and enter the code displayed.";
+"cloudlink.button.Link Almond" = "リンクHomescreenLink Homescreen";
+"cloudlink.button.Add Almond Locally" = "ローカルでHomescreenを追加Add Homescreen Locally";
+
+/* login */
+"Access your Almonds and your home devices from anywhere." = "どこでもHomescreenをリモートでアクセス。Access your Homescreens and
+your home devices from anywhere.";
+
+/* router tab */
+"router.offline-msg.label.Almond is Offline." = "Homescreen はオフラインです.";
+//m
+"router.msg-link.The Almond was successfully linked." = "Homescreenのリンク成功しました。
+The Homescreen was successfully linked.";
+"router.btn-title.Unlink Almond?" = "Homescreenのリンク解除しますか？Unlink Homescreen?";
+"router.btn-title.Link Almond Locally" = "ローカルでHomescreenをリンクする。Link Homescreen Locally";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" = "クラウドコントロールがないと、リモートでHomescreenのコントロールはできません、それに、通知メッセージも受信できません。Please note that without cloud control you will not receive notifications nor have the ability to control your Homescreen remotely.";
+"router.error-msg.This Almond is already linked." = "このHomescreenはすでに、リンクされました。
+This Homescreen is already linked.";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." = "リンク中にエラーが発生しました、もう一度してください。
+An error occurred trying to link with the Homescreen. Please try again.";
+
+/* sensors */
+"router.no-sensors.label.Add a sensor from your Almond." = "Homescreenにセンサーを追加
+Add a sensor from your Homescreen.";
+
+/* signup */
+"signup.headline-text.Securifi Cloud Account." = "Ｓｅｃｕｒｉｆｉクラウドアカウント
+Securifi Cloud Account.";
+"signup.headline-text.Access your Almonds" = "どこでもHomescreenにアクセス
+Access your Homescreens and
+your home devices from anywhere.";
+
+/* Accounts */
+"accounts.ownedAlmond.label.YouOwnThisAlmond" = "このHomescreenはあなたのです。You own this Homescreen";
+"accounts.ownedAlmond.textfield.placeholder.almondName" = "Homescreen 名";
+"accounts.ownedAlmond.button.RenameAlmond" = "Homescreen名変更";
+"accounts.sharedAlmond.textfield.placeholder.almondName" = " Homescreen 名";
+"accounts.sharedAlmond.button.RenameAlmond" = " Homescreen名変更";
+"accounts.alert.onDeleteAccount.message" = "アカウントを削除すると、Almondとのリンクが切断され、ユーザーの設定がなくなります。アカウントを削除したい場合、下にパスワードを入力してください。
+";
+"accounts.alert.onUnlinkAlmond.title" = "Homescreenのリンクを解除するUnlink Homescreen";
+"accounts.alert.onUnlinkAlmond.message" = "Homescreenのリンクを解除したい場合、パスワードを入力してください。
+To confirm unlinking Almond enter your password below.";
+"accounts.itoast.almondNameMax32Characters" = "Homescreen名は３２文字以下まで。
+Homescreen Name cannot be more than 32 characters.";
+"accounts.itoast.unableToChangeAlmondName" = "ごめんなさい！Homescreen名の変更できませんでした。
+Sorry! We were unable to change Homescreen's name";
+"accounts.hud.unlinkingAlmond" = "Homescreenのリンクを解除中Unlinking Homescreen...";
+"accounts.hud.inviteUserToShareAlmond" = "ユーザーを招待中
+Inviting user to share Homescreen...";
+"accounts.hud.changeAlmondName" = "Homescreen名を変更Change Homescreen name...";
+"accounts.hud.removeSharedAlmond" = "共有したHomescreenを削除するRemove shared Homescreen...";
+"accounts.unlinkAlmond.failure.default" = "ごめんなさい！Homescreenのリンク解除はできませんでした。
+Sorry! Unlinking of Almond was unsuccessful.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" = "このユーザーはＳｅｃｕｒｉｆｉのアカウントを持っていません。
+This user does not have a Securifi account.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" = "このユーザーはまだアカウントを有効にしていません。
+The user has not verified the Securifi account yet.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" = "このHomescreenはあなたのではありません。
+You do not own this almond.";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" = "このHomescreenはすでにユーザーに共有しました。
+You have already shared this Homescreen with the user.";
+"accounts.inviteUserToShareAlmond.failure.default" = "ごめんなさい！Homescreenの共有はできませんでした。
+Sorry! Sharing of Homescreen was unsuccessful.";
+"accounts.deleteSecondaryUser.failure.reasonCode4" = "お客様はこのHomescreenとリンクされていません。
+You are not associated with this Homescreen";
+"accounts.deleteSecondaryUser.failure.reasonCode6" = "セカンダリーユーザーはこのHomescreenとリンクされていません。
+Secondary user is not associated with the given Homescreen.";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" = "お客様はこのHomescreenとリンクされていません。";
+"accounts.deleteMeAsSecondaryUser.failure.default" = "共有したHomescreenの削除は出来ませんでした。Sorry! Removing of shared Homescreen was unsuccessful.";
+
+/* scoreboard *///me
+"scoreboard.section.AlmondMACs" = "Homescreen MACs";
+"Copied Almond MAC" = "コピーされた Homescreen MAC";
+
+
+/* tableviewcontroller */
+"alert.message-Connected to your Almond via cloud." = "クラウドでHomescreenと接続しています。
+Connected to your Homescreen via cloud.";
+"alertview -Connected to your Almond via cloud." = "クラウドでHomescreenと接続しています";
+"Add Local Connection Settings" = "ローカル接続を追加する。Add Local Connection Settings";
+
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." = "クラウドの接続が出来ませんでした。再実行するかローカルで接続してください。Cloud connection to your Homescreen failed. Tap retry or switch to local connection.";
+
+"alert msg offline Local connection to your Homescreen failed. Tap retry or switch to cloud connection." = "ローカルの接続が出来ませんでした。再実行するかクラウドで接続してくださいLocal connection to your Almond failed. Tap retry or switch to cloud connection.";
+"hud message-Setting Almond to Away Mode" = "Homescreenを留守モードに設定中Setting Homescreen to Away Mode";
+"hud message-Setting Almond to Home Mode" = "Homescreenをホームモードに設定中Setting Homescreen to Home Mode";
+"alertview Can't connect to your Almond. Please select a connection method." = "Homescreenに接続できません。接続モードを選んでください。
+Can't connect to your Homescreen. Please select a connection method.";
+"alertview localconnection_Connected to your Almond locally." = "ローカルでHomescreenと接続しています。onnected to your Homescreen locally.";
+

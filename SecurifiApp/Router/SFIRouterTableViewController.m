@@ -1115,12 +1115,19 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                     device.deviceType = [dict valueForKey:@"Type"];
                     device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
                     device.isActive = [[dict valueForKey:@"Active"] boolValue];
-
+                    device.timeout = [[dict valueForKey:@"Wait"] integerValue];
                     [dArray addObject:device];
                 }
 
                 UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
                 SFIWiFiClientsListViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiClientsListViewController"];
+                
+                NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"isActive" ascending:NO];
+                NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+                
+                NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, secondDescriptor, nil];
+                
+                dArray = [[dArray sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
                 viewController.connectedDevices = dArray;
                 [self.navigationController pushViewController:viewController animated:YES];
             }

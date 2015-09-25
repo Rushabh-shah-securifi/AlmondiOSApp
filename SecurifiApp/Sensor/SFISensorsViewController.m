@@ -575,7 +575,8 @@
             SFISensorDetailViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SFISensorDetailViewController"];
             viewController.device = sensor;
             viewController.cellColor = [self.almondColor makeGradatedColorForPositionIndex:clicked_row];
-//            viewController..delegate = self;
+            viewController.iconImageName = cell.iconImageName;
+            viewController.statusTextArray = cell.statusTextArray;
             viewController.deviceValue = [self tryCurrentDeviceValues:sensor.deviceID];
 
             [self.navigationController pushViewController:viewController animated:YES];

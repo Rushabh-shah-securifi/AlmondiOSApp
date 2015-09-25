@@ -1,0 +1,63 @@
+
+"router.linkalmond-msg.label.Let's link an Almond." ="Let's link an Almond.";//not done////not converting
+"router.linkalmond-msg.label.Start the wizard on your Almond." ="在您的Almond啟動設定精靈，接著點擊下方的符號。";
+"Almond Linked" =" Almond已連接";
+"Link Almond" =" 雲端連接";
+"Local Link Almond" =" 本機連接";
+"Please wait while your Almond is being linked to cloud." ="Almond正在連接至雲端伺服器，請稍候。";
+"Almond could not be affiliated" ="Almond could not be affiliated";//not done////not converting
+"Run the Almond Account app and enter the code displayed." ="點擊Almond Account app並輸入顯示的代碼。";
+"cloudlink.button.Link Almond" =" 連接Almond";
+"cloudlink.button.Add Almond Locally" =" 新增本機連接";
+"router.offline-msg.label.Almond is Offline." ="Almond已離線";
+"router.msg-link.The Almond was successfully linked." ="Almond已成功連接。";
+"router.btn-title.Unlink Almond?" =" Almond未連接";
+"router.btn-title.Link Almond Locally" ="本機連接Almond";
+"router.title.Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.\n" ="Please note that without cloud control you will not receive notifications nor have the ability to control your Almond remotely.";//not done////not converting
+"router.error-msg.This Almond is already linked." ="Almond已連接完成。";
+"router.error-msg.An error occurred trying to link with the Almond. Please try again." ="連接Almond時發生一個錯誤，請稍候再試。";
+"router.no-sensors.label.Add a sensor from your Almond." =" 在您的Almond添加感應器。";
+"signup.headline-text.Securifi Cloud Account." =" Securifi雲端帳戶";
+"accounts.ownedAlmond.label.YouOwnThisAlmond" ="您擁有此Almond權限。";
+"accounts.ownedAlmond.textfield.placeholder.almondName" ="Almond名稱";
+"accounts.ownedAlmond.button.RenameAlmond" ="重新命名Almond";
+"accounts.sharedAlmond.textfield.placeholder.almondName" ="Almond名稱";
+"accounts.sharedAlmond.button.RenameAlmond" ="重新命名Almond";
+"accounts.alert.onDeleteAccount.message" ="Deleting the account will unlink your Almond(s) and delete user preferences. To confirm account deletion enter your password below.";//not done////not converting
+
+
+"accounts.alert.onUnlinkAlmond.title" =" Almond移除連接";
+"accounts.alert.onUnlinkAlmond.message" ="  確認Almond移除連接請在下方輸入您的密碼。";
+"accounts.itoast.almondNameMax32Characters" ="Almond名稱不能多於32個字元。";
+"accounts.itoast.unableToChangeAlmondName" =" 抱歉!我們無法變更Almond名稱。";
+"accounts.hud.unlinkingAlmond" =" Almond移除連接中…";
+"accounts.hud.inviteUserToShareAlmond" =" 邀請使用者共享Almond…";
+"accounts.hud.changeAlmondName" =" 變更Almond名稱…";
+"accounts.hud.removeSharedAlmond" ="移除共享almond…";
+"accounts.unlinkAlmond.failure.default" ="抱歉!移除Almond連接失敗。";
+"accounts.inviteUserToShareAlmond.failure.reasonCode2" ="此使用者並沒有Securifi帳戶";
+"accounts.inviteUserToShareAlmond.failure.reasonCode3" ="此使用者尚未完成Securifi帳戶驗證。";
+"accounts.inviteUserToShareAlmond.failure.reasonCode4" =" 您未擁有此Almond權限。";
+"accounts.inviteUserToShareAlmond.failure.reasonCode6" ="您已經與用戶共享almond。";
+"accounts.inviteUserToShareAlmond.failure.default" ="抱歉!共享Almond失敗。";
+"accounts.deleteSecondaryUser.failure.reasonCode4" =" 您未與此Almond聯結";
+"accounts.deleteSecondaryUser.failure.reasonCode6" ="次要用戶未與此Almond聯結";
+"accounts.deleteMeAsSecondaryUser.failure.reasonCode3" ="您未與此Almond聯結";
+"accounts.deleteMeAsSecondaryUser.failure.default" ="抱歉!共享Almond失敗。";
+"scoreboard.section.AlmondMACs" =" Almond MACs";
+"Copied Almond MAC" =" 複製Almond MAC";
+"alert.message-Connected to your Almond via cloud." =" 透過雲端連接您的Almond。";
+"alertview -Connected to your Almond via cloud." =" 透過雲端連接您的Almond。";
+"Add Local Connection Settings" ="新增本機連接設定";
+"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection." ="雲端連接Almond失敗，請點擊重試或切換至本機連接。";
+"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection." ="本機連接Almond失敗，請點擊重試或切換至雲端連接。";
+"hud message-Setting Almond to Away Mode" =" 設定Almond為外出模式";
+"hud message-Setting Almond to Home Mode" =" 設定Almond為家居模式";
+"alertview Can't connect to your Almond. Please select a connection method." =" 無法連接至您的Almond，請選擇其它連線方式。";
+"alertview localconnection_Connected to your Almond locally." ="本機連接Almond";
+
+"router.card-title.Cloud Almond Link" ="Almond 雲端連接";
+"router.card-title.Local Almond Link" ="Almond主機連接";
+
+"router.software-version.header.instructions" ="請在您的Almond螢幕點擊”設定”";
+
