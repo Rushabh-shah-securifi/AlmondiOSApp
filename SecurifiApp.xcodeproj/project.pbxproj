@@ -119,10 +119,8 @@
 		1C7E7DFD1A41A0B30026F0BA /* cert.der in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7DE91A41A0B30026F0BA /* cert.der */; };
 		1C7E7E061A41A0B30026F0BA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7DF91A41A0B30026F0BA /* main.m */; };
 		1C7E7E711A41A73B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */; };
-		1C7E7E721A41A73E0026F0BA /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E341A41A26A0026F0BA /* MainStoryboard_iPad.storyboard */; };
 		1C7E7E751A41A7470026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E2E1A41A26A0026F0BA /* AccountsStoryboard_iPhone.storyboard */; };
 		1C7E7E761A41A8950026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E2E1A41A26A0026F0BA /* AccountsStoryboard_iPhone.storyboard */; };
-		1C7E7E771A41A8990026F0BA /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E341A41A26A0026F0BA /* MainStoryboard_iPad.storyboard */; };
 		1C7E7E781A41A89B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */; };
 		1C996C781AB94E2800CB2C23 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C996C771AB94E2800CB2C23 /* MessageUI.framework */; };
 		1C996C791AB94E3200CB2C23 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C996C771AB94E2800CB2C23 /* MessageUI.framework */; };
@@ -1887,7 +1885,6 @@
 				A58DB3EA1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3E31BB1960900717C02 /* Localizable.strings in Resources */,
 				A58DB3FF1BB1971300717C02 /* Login_iPhone.strings in Resources */,
-				1C7E7E771A41A8990026F0BA /* MainStoryboard_iPad.storyboard in Resources */,
 				A58DB3C11BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB4A31BB3CD7500717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB4371BB2DA3F00717C02 /* Localizable.strings in Resources */,
@@ -1994,7 +1991,6 @@
 				A58DB3021BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
 				846414E11B736B80008AB07F /* AvenirLTStd-Light.otf in Resources */,
 				A58DB4171BB2CD7D00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
-				1C7E7E721A41A73E0026F0BA /* MainStoryboard_iPad.storyboard in Resources */,
 				846414E41B736B80008AB07F /* AvenirLTStd-MediumOblique.otf in Resources */,
 				A58DB4531BB3CD3F00717C02 /* Localizable.strings in Resources */,
 				A58DB3061BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
