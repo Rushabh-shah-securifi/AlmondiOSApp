@@ -89,7 +89,7 @@
                 s2.iconName = @"02_dimmer";
                 s2.notificationText = @"";
                 s2.valueFormatter.action = ValueFormatterAction_formatString;
-                s2.valueFormatter.notificationPrefix = NSLocalizedString(@" is dimmed to", @" is dimmed to ");
+                s2.valueFormatter.notificationPrefix = NSLocalizedString(@" is dimmed to ", @" is dimmed to ");
                 s2.valueFormatter.suffix = @"%";
 
                 return @[s1, s2];
@@ -437,6 +437,14 @@
                 s1.iconName = @"07_thermostat_fan";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" Fan is ", @" Fan is ");
+                return @[s1];
+            }
+            if (type == SFIDevicePropertyType_HUMIDITY) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = @"07_thermostat";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = NSLocalizedString(@" humidity is ", @" humidity is ");
                 return @[s1];
             }
 
@@ -951,14 +959,22 @@
                 s1.notificationText = NSLocalizedString(@" is turned Off.", @" is turned Off.");
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.matchData = @"0";
-                s2.matchType = MatchType_not_equals;
+                s2.matchData = @"1";
+                s2.matchType = MatchType_equals;
                 s2.iconName = @"21_alarm_on";
                 s2.valueFormatter.action = ValueFormatterAction_formatString;
                 s2.valueFormatter.notificationPrefix = NSLocalizedString(@" is turned on for ", @" is turned on for ");
-                s2.valueFormatter.suffix = NSLocalizedString(@" seconds", @" seconds");
+                s2.valueFormatter.suffix = NSLocalizedString(@" second", @" second");
 
-                return @[s1, s2];
+                IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
+                s3.matchData = @"1";
+                s3.matchType = MatchType_not_equals;
+                s3.iconName = @"21_alarm_on";
+                s3.valueFormatter.action = ValueFormatterAction_formatString;
+                s3.valueFormatter.notificationPrefix = NSLocalizedString(@" is turned on for ", @" is turned on for ");
+                s3.valueFormatter.suffix = NSLocalizedString(@" seconds", @" seconds");
+
+                return @[s1, s2, s3];
             }
 
             break;
