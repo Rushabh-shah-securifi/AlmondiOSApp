@@ -86,6 +86,7 @@ reset at the moment. Try again later.";
 "router.card.Settings are not available." = "Settings are not available.";
 "router.card-title.Devices & Users" = "Devices & Users";
 "router.devices-summary.%d connected, %d blocked" = "%d connected, %d blocked";
+"router.devices-summary.%d Active, %d Inactive" = "%d ACTIVE, %d INACTIVE";
 "router.software-version.Current version" = "Current version";
 "router.software-version.Not available" = "Version information is not available.";
 "router.card-title.Router Reboot" = "Router Reboot";

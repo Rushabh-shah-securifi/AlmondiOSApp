@@ -766,6 +766,7 @@
     SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     ctrl.enableDeleteNotification = NO;
     ctrl.markAllViewedOnDismiss = NO;
+    ctrl.isForWifiClients = YES;
     SFIConnectedDevice * connectedDevice = self.connectedDevices[indexPath.section];
     ctrl.deviceID = (unsigned int)[connectedDevice.deviceID integerValue];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];

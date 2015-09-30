@@ -514,6 +514,11 @@
     [self configTemperatureLable];
     [self updateTemperatureLabel];
     randomMobileInternalIndex = arc4random() % 10000;
+    viewHeader.backgroundColor = self.cellColor;
+    [btnSave setTitleColor:self.cellColor forState:UIControlStateNormal];
+}
+-(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
     UIView *currentView;
     switch (self.editFieldIndex) {
         case nameIndexPathRow:
@@ -521,11 +526,6 @@
         case irCodeIndexPathRow:
         case configIndexPathRow:
         {
-            viewEditTextProperty.hidden = NO;
-            CGRect fr = viewEditTextProperty.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewEditTextProperty.frame = fr;
             currentView = viewEditTextProperty;
             [txtPropertyValue becomeFirstResponder];
         }
@@ -553,25 +553,16 @@
         case actionsIndexPathRow:
         case sirenSwitchMultilevelIndexPathRow:
         {
-            viewTypeSelection.hidden = NO;
+            currentView = viewTypeSelection;
             CGRect fr = viewTypeSelection.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
             fr.size.height = propertyTypes.count*50+btnSave.frame.size.height+50;
             viewTypeSelection.frame = fr;
             [tblTypes reloadData];
-            currentView = viewTypeSelection;
+            
             break;
         }
         case targetRangeIndexPathRow:
         {
-            viewThemperature.hidden = NO;
-            
-            CGRect fr = viewTypeSelection.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewThemperature.frame = fr;
-            
             currentView = viewThemperature;
             
             [self configureTemperatureSelectors];
@@ -582,7 +573,7 @@
                 lblHeating.hidden = YES;
                 lblCooling.text =  NSLocalizedString(@"sensors.cooling.temperature", @"Cooling Temperature");
                 
-                fr = lblShow.frame;
+                CGRect fr = lblShow.frame;
                 fr.origin.y =lblHeating.frame.origin.y;
                 lblShow.frame = fr;
                 
@@ -603,7 +594,7 @@
                 btnFahrenheit.frame = fr;
             }
             if([thermostatMode isEqualToString:@"heat"]){
-                fr = lblShow.frame;
+                CGRect fr = lblShow.frame;
                 fr.origin.y =lblHeating.frame.origin.y;
                 lblShow.frame = fr;
                 
@@ -635,14 +626,8 @@
         case highTemperatureIndexPathRow:
         case lowTemperatureIndexPathRow:
         {
-            viewThemperature.hidden = NO;
             [self configTemperatureLable];
             [self updateTemperatureLabel];
-            
-            CGRect fr = viewTypeSelection.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewThemperature.frame = fr;
             
             currentView = viewThemperature;
             
@@ -659,7 +644,7 @@
             }
             
             
-            fr = lblShow.frame;
+            CGRect fr = lblShow.frame;
             fr.origin.y =lblHeating.frame.origin.y;
             lblShow.frame = fr;
             
@@ -683,7 +668,13 @@
             break;
     }
     
-    CGRect fr = btnSave.frame;
+    currentView.hidden = NO;
+    CGRect fr = currentView.frame;
+    fr.origin.x = viewHeader.frame.origin.x;
+    fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
+    currentView.frame = fr;
+    
+    fr = btnSave.frame;
     fr.origin.y = currentView.frame.origin.y + currentView.frame.size.height-50;
     btnSave.frame = fr;
     
@@ -694,11 +685,7 @@
     
     viewHeader.backgroundColor = self.cellColor;
     currentView.backgroundColor = self.cellColor;
-    [btnSave setTitleColor:self.cellColor forState:UIControlStateNormal];
-}
-
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
+    
     
     if (self.editFieldIndex==targetRangeIndexPathRow || self.editFieldIndex==lowTemperatureIndexPathRow || self.editFieldIndex==highTemperatureIndexPathRow) {
         [self displayTemperatureValues];
@@ -739,12 +726,6 @@
 }
 
 
-//- (void)updateThemperatureDataOnUI{
-//    if ([SecurifiToolkit sharedInstance] isFahrenheit) {
-//        currentCoolTemp = [currentDeviceValue1 intValue];
-//        currentCoolTemp = [currentDeviceValue2 intValue];
-//    }
-//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -862,7 +843,7 @@
         case sirenSwitchMultilevelIndexPathRow:
             propertyType = SFIDevicePropertyType_SWITCH_MULTILEVEL;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
-           
+            
             if ([selectedPropertyValue isEqualToString:@"STOP"]) {
                 deviceValues.value = @"0";
             }else if ([selectedPropertyValue isEqualToString:@"Emergency"]){
