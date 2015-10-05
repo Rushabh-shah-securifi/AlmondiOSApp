@@ -7,6 +7,7 @@
 //
 
 #import "SFIWiFiDeviceProprtyEditViewController.h"
+#import "SFIWiFiClientsListViewController.h"
 #import "SFIWiFiDeviceTypeSelectionCell.h"
 #import "MBProgressHUD.h"
 
@@ -14,11 +15,12 @@
     
     IBOutlet UIView *viewTypeSelection;
     
-    IBOutlet UITextField *txtName;
+    IBOutlet UITextField *txtProperty;
     IBOutlet UIView *viewEditName;
     IBOutlet UIButton *btnBack;
     IBOutlet UIButton *btnSave;
-    
+    NSString * clientName;
+    NSString * clientTimeout;
     
     IBOutlet UIView *viewUsePresence;
     IBOutlet UIButton *btnUsePresence;
@@ -93,9 +95,9 @@
     
     lblDeviceName.text = self.connectedDevice.name;
     if (self.connectedDevice.isActive) {
-        lblStatus.text = NSLocalizedString(@"CONNECTED",@"CONNECTED");
+        lblStatus.text = NSLocalizedString(@"wifi.Active",@"ACTIVE");
     }else{
-        lblStatus.text = NSLocalizedString(@"NOT CONNECTED",@"NOT CONNECTED");
+        lblStatus.text = NSLocalizedString(@"wifi.Inactive",@"INACTIVE");
     }
     UIImage* image = [UIImage imageNamed:[self.connectedDevice iconName]];
     imgIcon.image = image;
@@ -108,54 +110,50 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self initializeNotifications];
+}
+
+-(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+    
     randomMobileInternalIndex = arc4random() % 10000;
-    txtName.text = self.connectedDevice.name;
     btnUsePresence.selected = self.connectedDevice.deviceUseAsPresence;
     selectedDeviceType = self.connectedDevice.deviceType;
     selectedConnectionType = self.connectedDevice.deviceConnection;
     UIView *currentView;
     switch (self.editFieldIndex) {
-        case 0:
+        case nameIndexPathRow:
         {
-            viewEditName.hidden = NO;
-            CGRect fr = viewEditName.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewEditName.frame = fr;
+            txtProperty.placeholder = @"Device Name";
+            txtProperty.text = self.connectedDevice.name;
+            txtProperty.keyboardType = UIKeyboardTypeDefault;
+            
             currentView = viewEditName;
             break;
         }
-        case 1://Type
+        case timeoutIndexPathRow:
         {
-            viewTypeSelection.hidden = NO;
-            CGRect fr = viewTypeSelection.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewTypeSelection.frame = fr;
+            txtProperty.placeholder = @"Set Inactivity Timeout";
+            txtProperty.text = [NSString stringWithFormat:@"%lu",self.connectedDevice.timeout];
+            txtProperty.keyboardType = UIKeyboardTypeNumberPad;
+            
+            currentView = viewEditName;
+            break;
+        }
+        case typeIndexPathRow://Type
+        {
             [tblTypes reloadData];
             currentView = viewTypeSelection;
             break;
         }
-        case 4://Connection
+        case connectionIndexPathRow://Connection
         {
-            viewTypeSelection.hidden = NO;
-            CGRect fr = viewTypeSelection.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewTypeSelection.frame = fr;
             [tblTypes reloadData];
             currentView = viewTypeSelection;
             break;
         }
-        case 5:
+        case usePresenceSensorIndexPathRow:
         {
-            viewUsePresence.hidden = NO;
-            
-            CGRect fr = viewUsePresence.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewUsePresence.frame = fr;
-            
             btnUsePresence.layer.borderColor = [[UIColor whiteColor] CGColor];
             btnUsePresence.layer.borderWidth = 2.0f;
             btnUsePresence.backgroundColor = [UIColor clearColor];
@@ -168,16 +166,9 @@
             currentView = viewUsePresence;
             break;
         }
-        case 6://notify me
+        case notifyMeIndexPathRow://notify me
         {
-            viewTypeSelection.hidden = NO;
-            CGRect fr = viewTypeSelection.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewTypeSelection.frame = fr;
             [tblTypes reloadData];
-//            viewHeader.backgroundColor = [UIColor colorWithRed:1.0 green:160/255.0f blue:0 alpha:1];
-//            viewTypeSelection.backgroundColor = [UIColor colorWithRed:1.0 green:160/255.0f blue:0 alpha:1];
             currentView = viewTypeSelection;
             break;
         }
@@ -185,19 +176,26 @@
             break;
     }
     
-    CGRect fr = btnSave.frame;
+    currentView.hidden = NO;
+    CGRect fr = currentView.frame;
+    fr.origin.x = viewHeader.frame.origin.x;
+    fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
+    currentView.frame = fr;
+    
+    
+    fr = btnSave.frame;
     fr.origin.y = currentView.frame.origin.y + currentView.frame.size.height-50;
     btnSave.frame = fr;
     
     fr = btnBack.frame;
     fr.origin.y = currentView.frame.origin.y + currentView.frame.size.height-50;
     btnBack.frame = fr;
-    [self initializeNotifications];
 }
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    if ([txtName isFirstResponder]) {
-        [txtName resignFirstResponder];
+    if ([txtProperty isFirstResponder]) {
+        [txtProperty resignFirstResponder];
     }
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -237,8 +235,8 @@
 }
 
 - (IBAction)btnSaveTap:(id)sender {
-    if ([txtName isFirstResponder]) {
-        [txtName resignFirstResponder];
+    if ([txtProperty isFirstResponder]) {
+        [txtProperty resignFirstResponder];
     }
     
     
@@ -249,7 +247,7 @@
     randomMobileInternalIndex = arc4random() % 10000;
     NSMutableDictionary * updateClientInfo = [NSMutableDictionary new];
     
-    if (self.editFieldIndex==6) {
+    if (self.editFieldIndex==notifyMeIndexPathRow) {
         [updateClientInfo setValue:@"UpdatePreference" forKey:@"CommandType"];
         [updateClientInfo setValue:self.connectedDevice.deviceID forKey:@"ClientID"];
         [updateClientInfo setValue:self.selectedNotificationType forKey:@"NotificationType"];
@@ -258,7 +256,21 @@
         
     }else{
         [updateClientInfo setValue:@"UpdateClient" forKey:@"CommandType"];
-        NSDictionary * clients = @{@"ID":self.connectedDevice.deviceID,@"Name":txtName.text,@"Connection":selectedConnectionType,@"MAC":self.connectedDevice.deviceMAC,@"Type":[selectedDeviceType lowercaseString],@"LastKnownIP":self.connectedDevice.deviceIP,@"Active":self.connectedDevice.isActive?@"true":@"false",@"UseAsPresence":btnUsePresence.selected?@"true":@"false"};
+        clientName = self.connectedDevice.name;
+        clientTimeout = [NSString stringWithFormat:@"%lu",self.connectedDevice.timeout];
+        switch (self.editFieldIndex) {
+            case nameIndexPathRow:
+                clientName = txtProperty.text;
+                break;
+            case timeoutIndexPathRow:
+                [self checkForValidTimeoutNumber];
+                clientTimeout = txtProperty.text;
+                break;
+                
+            default:
+                break;
+        }
+        NSDictionary * clients = @{@"ID":self.connectedDevice.deviceID,@"Name":clientName,@"Connection":selectedConnectionType,@"MAC":self.connectedDevice.deviceMAC,@"Type":[selectedDeviceType lowercaseString],@"LastKnownIP":self.connectedDevice.deviceIP,@"Active":self.connectedDevice.isActive?@"true":@"false",@"UseAsPresence":btnUsePresence.selected?@"true":@"false",@"Wait":clientTimeout};
         
         [updateClientInfo setValue:clients forKey:@"Clients"];
         cloudCommand.commandType = CommandType_UPDATE_REQUEST;
@@ -297,13 +309,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch (self.editFieldIndex) {
-        case 1:
+        case typeIndexPathRow:
             return deviceTypes.count;
             break;
-        case 4:
+        case connectionIndexPathRow:
             return connectionTypes.count;
             break;
-        case 6:
+        case notifyMeIndexPathRow:
             return notifyTypes.count;
             break;
             
@@ -320,14 +332,14 @@
     
     cell.delegate = self;
     switch (self.editFieldIndex) {
-        case 1:
+        case typeIndexPathRow:
             [cell createPropertyCell:deviceTypes[indexPath.row]];
             cell.textLabel.text = [deviceTypes[indexPath.row] valueForKey:@"name"];
             break;
-        case 4:
+        case connectionIndexPathRow:
             [cell createPropertyCell:connectionTypes[indexPath.row]];
             cell.textLabel.text = [connectionTypes[indexPath.row] valueForKey:@"name"];            break;
-        case 6:
+        case notifyMeIndexPathRow:
             [cell createPropertyCell:notifyTypes[indexPath.row]];
             cell.textLabel.text = [notifyTypes[indexPath.row] valueForKey:@"name"];
             break;
@@ -368,7 +380,7 @@
 #pragma mark tableview cell delegates
 - (IBAction)btnSelectTypeTapped:(SFIWiFiDeviceTypeSelectionCell *)cell Info:(NSDictionary *)cellInfo {
     switch (self.editFieldIndex) {
-        case 1:
+        case typeIndexPathRow:
             for (NSMutableDictionary * dict in deviceTypes) {
                 [dict setValue:@0 forKey:@"selected"];
             }
@@ -377,7 +389,7 @@
             selectedDeviceType = [cellInfo valueForKey:@"name"];
             
             break;
-        case 4:
+        case connectionIndexPathRow:
             for (NSMutableDictionary * dict in connectionTypes) {
                 [dict setValue:@0 forKey:@"selected"];
             }
@@ -385,7 +397,7 @@
             [tblTypes reloadData];
             selectedConnectionType = [cellInfo valueForKey:@"name"];
             break;
-        case 6:
+        case notifyMeIndexPathRow:
             for (NSMutableDictionary * dict in notifyTypes) {
                 [dict setValue:@0 forKey:@"selected"];
             }
@@ -432,10 +444,11 @@
     if ([[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
         self.connectedDevice.deviceType = selectedDeviceType;
         self.connectedDevice.deviceUseAsPresence = btnUsePresence.selected;
-        self.connectedDevice.name = txtName.text;
+        self.connectedDevice.name = clientName;
+        self.connectedDevice.timeout = [clientTimeout integerValue];
         self.connectedDevice.deviceConnection = selectedConnectionType;
         [self.delegate updateDeviceInfo:self.connectedDevice];
-
+        
         dispatch_async(dispatch_get_main_queue(), ^() {
             if (!self) {
                 return;
@@ -483,5 +496,18 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+- (void)checkForValidTimeoutNumber{
+    if (self.editFieldIndex == timeoutIndexPathRow) {
+        NSInteger t = [txtProperty.text integerValue];
+        if (t<1) {
+            t = 1;
+        }
+        if (t>60) {
+            t = 60;
+        }
+        txtProperty.text = [NSString stringWithFormat:@"%lu",t];
+    }
 }
 @end

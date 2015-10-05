@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C0317251BB28E75002E0405 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C0317241BB28E75002E0405 /* libz.1.dylib */; };
+		1C0317271BB28E8D002E0405 /* libSystem.B.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C0317261BB28E8D002E0405 /* libSystem.B.dylib */; };
+		1C0317281BB28EA1002E0405 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CA80E491BAFA4A9002EB836 /* libsqlite3.dylib */; };
+		1C03172A1BB28EB6002E0405 /* libxml2.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C0317291BB28EB6002E0405 /* libxml2.2.dylib */; };
 		1C21DAFB1BA16FE100E4A088 /* Login_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C21DAF91BA16FE100E4A088 /* Login_iPhone.storyboard */; };
 		1C21DAFC1BA17A9A00E4A088 /* Login_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C21DAF91BA16FE100E4A088 /* Login_iPhone.storyboard */; };
 		1C23E6D51A9C4581004D2D23 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */; };
@@ -40,8 +44,6 @@
 		1C2F60AA1B69E69D001CCA34 /* SKSTableViewCellIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60871B69E69D001CCA34 /* SKSTableViewCellIndicator.m */; };
 		1C2F60AB1B69E69D001CCA34 /* SKSTableViewCellIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60871B69E69D001CCA34 /* SKSTableViewCellIndicator.m */; };
 		1C33E94F19C025DB0014725A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C33E94E19C025DB0014725A /* QuartzCore.framework */; };
-		1C414BCE1A79F0E800C448A4 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C414BCC1A79F0DF00C448A4 /* libsqlite3.dylib */; };
-		1C4383051B2FFAC700F6AB7A /* libSystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C4383041B2FFAC700F6AB7A /* libSystem.dylib */; };
 		1C709A091B5A3157007D397C /* SFICloudLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C709A081B5A3157007D397C /* SFICloudLinkViewController.m */; };
 		1C709A0A1B5A3157007D397C /* SFICloudLinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C709A081B5A3157007D397C /* SFICloudLinkViewController.m */; };
 		1C75815419AC86940074C601 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815319AC86940074C601 /* Security.framework */; };
@@ -117,10 +119,8 @@
 		1C7E7DFD1A41A0B30026F0BA /* cert.der in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7DE91A41A0B30026F0BA /* cert.der */; };
 		1C7E7E061A41A0B30026F0BA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C7E7DF91A41A0B30026F0BA /* main.m */; };
 		1C7E7E711A41A73B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */; };
-		1C7E7E721A41A73E0026F0BA /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E341A41A26A0026F0BA /* MainStoryboard_iPad.storyboard */; };
 		1C7E7E751A41A7470026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E2E1A41A26A0026F0BA /* AccountsStoryboard_iPhone.storyboard */; };
 		1C7E7E761A41A8950026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E2E1A41A26A0026F0BA /* AccountsStoryboard_iPhone.storyboard */; };
-		1C7E7E771A41A8990026F0BA /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E341A41A26A0026F0BA /* MainStoryboard_iPad.storyboard */; };
 		1C7E7E781A41A89B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */; };
 		1C996C781AB94E2800CB2C23 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C996C771AB94E2800CB2C23 /* MessageUI.framework */; };
 		1C996C791AB94E3200CB2C23 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C996C771AB94E2800CB2C23 /* MessageUI.framework */; };
@@ -141,8 +141,6 @@
 		1CED5EF919AC82FD0023512F /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CED5EF819AC82FD0023512F /* UIKit.framework */; };
 		1CEE694C1A37F5F6008D8567 /* libSecurifiToolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CEE694B1A37F5F6008D8567 /* libSecurifiToolkit.a */; };
 		1CEE694D1A37F61A008D8567 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C33E94E19C025DB0014725A /* QuartzCore.framework */; };
-		1CEE694E1A37F625008D8567 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815B19AC86C20074C601 /* libxml2.dylib */; };
-		1CEE694F1A37F62D008D8567 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815919AC86BB0074C601 /* libz.dylib */; };
 		1CEE69501A37F635008D8567 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815719AC86A80074C601 /* CFNetwork.framework */; };
 		1CEE69511A37F63E008D8567 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815519AC86A10074C601 /* SystemConfiguration.framework */; };
 		1CEE69521A37F645008D8567 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C75815319AC86940074C601 /* Security.framework */; };
@@ -441,6 +439,9 @@
 
 /* Begin PBXFileReference section */
 		04DD44299464F3B8199632FD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		1C0317241BB28E75002E0405 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = ../../../../../../usr/lib/libz.1.dylib; sourceTree = "<group>"; };
+		1C0317261BB28E8D002E0405 /* libSystem.B.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.B.dylib; path = ../../../../../../usr/lib/libSystem.B.dylib; sourceTree = "<group>"; };
+		1C0317291BB28EB6002E0405 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = ../../../../../../usr/lib/libxml2.2.dylib; sourceTree = "<group>"; };
 		1C2056061A2EBBBA00975495 /* HomeScreen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HomeScreen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C21DAFA1BA16FE100E4A088 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Login_iPhone.storyboard; sourceTree = "<group>"; };
 		1C23E6D41A9C4581004D2D23 /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
@@ -887,17 +888,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C4383051B2FFAC700F6AB7A /* libSystem.dylib in Frameworks */,
+				1C03172A1BB28EB6002E0405 /* libxml2.2.dylib in Frameworks */,
+				1C0317281BB28EA1002E0405 /* libsqlite3.dylib in Frameworks */,
+				1C0317271BB28E8D002E0405 /* libSystem.B.dylib in Frameworks */,
+				1C0317251BB28E75002E0405 /* libz.1.dylib in Frameworks */,
 				1C996C791AB94E3200CB2C23 /* MessageUI.framework in Frameworks */,
-				1C414BCE1A79F0E800C448A4 /* libsqlite3.dylib in Frameworks */,
 				1CEE69551A37F65D008D8567 /* Foundation.framework in Frameworks */,
 				1CEE69541A37F656008D8567 /* UIKit.framework in Frameworks */,
 				1CEE69531A37F64D008D8567 /* CoreGraphics.framework in Frameworks */,
 				1CEE69521A37F645008D8567 /* Security.framework in Frameworks */,
 				1CEE69511A37F63E008D8567 /* SystemConfiguration.framework in Frameworks */,
 				1CEE69501A37F635008D8567 /* CFNetwork.framework in Frameworks */,
-				1CEE694F1A37F62D008D8567 /* libz.dylib in Frameworks */,
-				1CEE694E1A37F625008D8567 /* libxml2.dylib in Frameworks */,
 				1CEE694D1A37F61A008D8567 /* QuartzCore.framework in Frameworks */,
 				1CEE694C1A37F5F6008D8567 /* libSecurifiToolkit.a in Frameworks */,
 				7CB5434B38D653A029281FD1 /* libPods.a in Frameworks */,
@@ -1325,6 +1326,9 @@
 		1CED5EF319AC82FD0023512F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1C0317291BB28EB6002E0405 /* libxml2.2.dylib */,
+				1C0317261BB28E8D002E0405 /* libSystem.B.dylib */,
+				1C0317241BB28E75002E0405 /* libz.1.dylib */,
 				1CA80E511BAFA74B002EB836 /* libSystem.dylib */,
 				1CA80E4F1BAFA741002EB836 /* libxml2.dylib */,
 				1CA80E4B1BAFA4B1002EB836 /* libz.dylib */,
@@ -1881,7 +1885,6 @@
 				A58DB3EA1BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3E31BB1960900717C02 /* Localizable.strings in Resources */,
 				A58DB3FF1BB1971300717C02 /* Login_iPhone.strings in Resources */,
-				1C7E7E771A41A8990026F0BA /* MainStoryboard_iPad.storyboard in Resources */,
 				A58DB3C11BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB4A31BB3CD7500717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB4371BB2DA3F00717C02 /* Localizable.strings in Resources */,
@@ -1988,7 +1991,6 @@
 				A58DB3021BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
 				846414E11B736B80008AB07F /* AvenirLTStd-Light.otf in Resources */,
 				A58DB4171BB2CD7D00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
-				1C7E7E721A41A73E0026F0BA /* MainStoryboard_iPad.storyboard in Resources */,
 				846414E41B736B80008AB07F /* AvenirLTStd-MediumOblique.otf in Resources */,
 				A58DB4531BB3CD3F00717C02 /* Localizable.strings in Resources */,
 				A58DB3061BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,

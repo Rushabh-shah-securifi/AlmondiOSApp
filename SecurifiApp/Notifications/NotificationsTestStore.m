@@ -28,7 +28,7 @@
     return self.buckets;
 }
 
-- (void)ensureFetchNotifications {
+- (void)ensureFetchNotifications:(BOOL)isForWifiClients {
     // no op
 }
 

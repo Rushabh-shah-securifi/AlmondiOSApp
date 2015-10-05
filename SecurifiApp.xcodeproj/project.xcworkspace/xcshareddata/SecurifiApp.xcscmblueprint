@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "593DB58E5238B14830D4636395C5FB696F46A95F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "6574BD8386D24C4B309F8A028A0C5FB1B846BA87" : 0,
+    "593DB58E5238B14830D4636395C5FB696F46A95F" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "0DF060A4-4037-4D66-80A9-8CC67577F7F9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "6574BD8386D24C4B309F8A028A0C5FB1B846BA87" : "iostoolkit",
+    "593DB58E5238B14830D4636395C5FB696F46A95F" : "iosapp"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "SecurifiApp",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "SecurifiApp.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/sridevi-m\/iosapp.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "593DB58E5238B14830D4636395C5FB696F46A95F"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/sridevi-m\/iostoolkit.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "6574BD8386D24C4B309F8A028A0C5FB1B846BA87"
+    }
+  ]
+}

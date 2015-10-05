@@ -243,9 +243,6 @@
                         [AlertViewAction actionWithTitle:NSLocalizedString(@"alert.title-Switch to Local Connection", @"Switch to Local Connection") handler:^(AlertViewAction *action) {
                             [self configureNetworkSettings:SFIAlmondConnectionMode_local];
                         }],
-                        [AlertViewAction actionWithTitle:NSLocalizedString(@"alert.title-Edit Local Connection Settings", "Edit Local Connection Settings") handler:^(AlertViewAction *action) {
-                            [self presentLocalNetworkSettingsEditor];
-                        }]
                 ];
             }
             else {
@@ -270,9 +267,6 @@
                     [AlertViewAction actionWithTitle:NSLocalizedString(@"Alert view title-Switch to Local Connection", @"Switch to Local Connection") handler:^(AlertViewAction *action) {
                         [self configureNetworkSettings:SFIAlmondConnectionMode_local];
                     }],
-                    [AlertViewAction actionWithTitle:NSLocalizedString(@"Alert view title-Edit Local Connection Settings", @"Edit Local Connection Settings") handler:^(AlertViewAction *action) {
-                        [self presentLocalNetworkSettingsEditor];
-                    }]
             ];
             break;
         };
@@ -326,9 +320,6 @@
                     [AlertViewAction actionWithTitle:NSLocalizedString(@"alert title offline Local Switch to Cloud Connection", @"Switch to Cloud Connection") handler:^(AlertViewAction *action) {
                         [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
                     }],
-                    [AlertViewAction actionWithTitle:NSLocalizedString(@"alert title offline Local Edit Local Connection Settings", "Edit Local Connection Settings") handler:^(AlertViewAction *action) {
-                        [self presentLocalNetworkSettingsEditor];
-                    }],
             ];
             break;
         };
@@ -339,9 +330,6 @@
                     [AlertViewAction actionWithTitle:NSLocalizedString(@"Alert view title-Switch to Local Connection", @"Switch to Local Connection") handler:^(AlertViewAction *action) {
                         [self configureNetworkSettings:SFIAlmondConnectionMode_local];
                     }],
-                    [AlertViewAction actionWithTitle:NSLocalizedString(@"Alert view title-Edit Local Connection Settings", @"Edit Local Connection Settings") handler:^(AlertViewAction *action) {
-                        [self presentLocalNetworkSettingsEditor];
-                    }]
             ];
             break;
         }
@@ -352,9 +340,6 @@
                     [AlertViewAction actionWithTitle:NSLocalizedString(@"alert title offline Local Switch to Cloud Connection", @"Switch to Cloud Connection") handler:^(AlertViewAction *action) {
                         [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
                     }],
-                    [AlertViewAction actionWithTitle:NSLocalizedString(@"Alert view title-Edit Local Connection Settings", @"Edit Local Connection Settings") handler:^(AlertViewAction *action) {
-                        [self presentLocalNetworkSettingsEditor];
-                    }]
             ];
             break;
         }

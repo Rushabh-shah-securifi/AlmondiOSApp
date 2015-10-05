@@ -36,6 +36,9 @@
 // When specified, only notifications for the specified device and Almond are shown
 @property(nonatomic) sfi_id deviceID;
 
+// Default NO
+@property(nonatomic) BOOL isForWifiClients;
+
 @end
 
 

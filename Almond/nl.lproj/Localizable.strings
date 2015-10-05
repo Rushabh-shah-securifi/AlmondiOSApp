@@ -650,8 +650,16 @@ Volg deze en tik op Doorgaan om aan te melden.";
 "View Device History”=“View Device History";
 "Name" = "Name";
 "Location" = "Location";
+"Actions" = "Actions";
 "Stop" = "Stop";
 "Battery" = "Battery";
+"Clamp 1 Power" = "Clamp 1 Power";
+"Clamp 1 Energy" = "Clamp 1 Energy";
+"Clamp 2 Power" = "Clamp 2 Power";
+"Clamp 2 Energy" = "Clamp 2 Energy";
+"Siren" = "Siren";
+"Switch 1" = "Switch 1";
+"Switch 2" = "Switch 2";
 "Temperature" = "Temperature";
 "AC Mode" = "AC Mode";
 "High Temperature" = "High Temperature";
@@ -661,6 +669,7 @@ Volg deze en tik op Doorgaan om aan te melden.";
 "IR Code" = "IR Code";
 "Configuration" = "Configuration";
 "Humidity" = "Humidity";
+"Luminance" = "Luminance";
 "Away Mode" = "Away Mode";
 "CO Level" = "CO Level";
 "Smoke Level" = "Smoke Level";
@@ -669,8 +678,6 @@ Volg deze en tik op Doorgaan om aan te melden.";
 "Fan Mode" = "Fan Mode";
 "Fan" = "Fan";
 "Notify me" = "Notify me";
-
-
 
 /* ==================================================================== */
 

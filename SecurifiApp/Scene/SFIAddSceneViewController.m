@@ -77,6 +77,8 @@
     if (self.sceneInfo) {
         sceneName = [self.sceneInfo valueForKey:@"Name"];
         self.title = sceneName;
+    }else{
+        self.title = NSLocalizedString(@"scene.title.New Scene", @"New Scene");
     }
     originalTableViewFrame = self.tableView.frame;
     [super viewWillAppear:animated];
@@ -789,18 +791,19 @@
 
 #pragma mark UITableView Delegate Methods
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 62)];
+    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, tableView.frame.size.width-20, 100)];
     lbl.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:15.0f];
     lbl.textColor = [UIColor colorFromHexString:@"8f8f8f"];
     lbl.textAlignment = NSTextAlignmentCenter;
     lbl.backgroundColor = [UIColor colorFromHexString:@"EEEEEE"];
-    lbl.text = NSLocalizedString(@"scene.text.Choose one or more Actions", @"Choose one or more Actions");
+    lbl.numberOfLines = 0;
+    lbl.text = NSLocalizedString(@"scene.text.Choose one or more Actions", @"Select all the actions that should be executed as part of this scene. Every gray icon below represents an action.");
     return lbl;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if (self.deviceList.count>0) {
-        return 62;
+        return 100;
     }
     return 0;
 }

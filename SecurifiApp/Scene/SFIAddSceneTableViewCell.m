@@ -911,7 +911,6 @@
     fr.origin.y = 30;
     fr.origin.x = (self.frame.size.width - fr.size.width)/2;
     viewAutoHeatCoolOff.frame = fr;
-    
     [btnAuto setupValues:[UIImage imageNamed:@"imgAuto"] Title:NSLocalizedString(@"AUTO",@"AUTO")];
     [btnHeat setupValues:[UIImage imageNamed:@"imgHeat"] Title:NSLocalizedString(@"HEAT",@"HEAT")];
     [btnCool setupValues:[UIImage imageNamed:@"imgCool"] Title:NSLocalizedString(@"COOL",@"COOL")];

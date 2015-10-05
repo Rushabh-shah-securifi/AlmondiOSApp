@@ -11,6 +11,11 @@ typedef NS_ENUM(NSInteger, Properties) {
     actionsIndexPathRow,
     stopIndexPathRow,
     batteryIndexPathRow,
+    clamp1PowerIndexPathRow,
+    clamp1EnergyIndexPathRow,
+    clamp2PowerIndexPathRow,
+    clamp2EnergyIndexPathRow,
+    sirenSwitchMultilevelIndexPathRow,
     switch1IndexPathRow,
     switch2IndexPathRow,
     multiSensorTempIndexPathRow,
@@ -22,6 +27,7 @@ typedef NS_ENUM(NSInteger, Properties) {
     irCodeIndexPathRow,
     configIndexPathRow,
     humidityIndexPathRow,
+    luminanceIndexPathRow,
     awayModeIndexPathRow,
     coLevelIndexPathRow,
     smokeLevelIndexPathRow,
@@ -40,5 +46,7 @@ typedef NS_ENUM(NSInteger, Properties) {
 @property(nonatomic) SFIDevice *device;
 @property(nonatomic) SFIDeviceValue *deviceValue;
 @property(nonatomic) UIColor *cellColor;
+@property (strong, nonatomic) NSString *iconImageName;
+@property (strong, nonatomic) NSArray *statusTextArray;
 
 @end

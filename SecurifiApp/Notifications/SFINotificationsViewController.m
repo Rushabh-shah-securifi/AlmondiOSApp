@@ -94,7 +94,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     }
     else if (self.almondMac) {
         // Ephemeral "log" storage for the specified device
-        return [[SecurifiToolkit sharedInstance] newDeviceLogStore:self.almondMac deviceId:self.deviceID];
+        return [[SecurifiToolkit sharedInstance] newDeviceLogStore:self.almondMac deviceId:self.deviceID forWifiClients:self.isForWifiClients];
     }
     else {
         // normal Notifications/Activity Viewer storage
@@ -328,7 +328,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 
     // Change 10.0 to adjust the distance from bottom
     if (maximumOffset - currentOffset <= 50.0) {
-        [self.store ensureFetchNotifications];
+        [self.store ensureFetchNotifications:self.isForWifiClients];
     }
 }
 

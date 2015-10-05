@@ -101,6 +101,7 @@
             lblPropertyName.text = NSLocalizedString(@"Device.propertyeditview.controller.Enter IR Code",@"Enter IR Code");
             txtPropertyValue.placeholder = NSLocalizedString(@"Device.propertyeditview.controller.Example 444",@"Example 444");
         }
+            break;
         case configIndexPathRow:
         {
             SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CONFIGURATION];
@@ -140,6 +141,33 @@
             }
         }
             break;
+        case sirenSwitchMultilevelIndexPathRow:
+        {
+            NSArray *items = @[@"STOP",
+                               @"Emergency",
+                               @"Fire",
+                               @"Ambulance",
+                               @"Police",
+                               @"Door Chime",
+                               @"Beep"
+                               ];
+            
+            SFIDeviceKnownValues *kValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+            
+            selectedPropertyValue = items[[kValue intValue]];
+            int ind = 0;
+            for (NSString * name in items) {
+                NSMutableDictionary * dict = [NSMutableDictionary new];
+                [dict setValue:items[ind] forKey:@"name"];
+                [dict setValue:@0 forKey:@"selected"];
+                if ([[selectedPropertyValue lowercaseString] isEqualToString:[name lowercaseString]]) {
+                    [dict setValue:@1 forKey:@"selected"];
+                }
+                [propertyTypes addObject:dict];
+                ind++;
+            }
+            break;
+        }
         case notifyMeIndexPathRow:
         {
             NSArray *notifyMe_items = @[
@@ -217,9 +245,9 @@
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
             
             selectedPropertyValue = @"";
-            if ([currentDeviceValue.value isEqualToString:@"true"]) {
+            if ([currentDeviceValue.value boolValue]) {
                 selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
-            }else if ([currentDeviceValue intValue] == 0){
+            }else{
                 selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
             }
             
@@ -250,9 +278,9 @@
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
             
             selectedPropertyValue = @"";
-            if ([currentDeviceValue.value isEqualToString:@"true"]) {
+            if ([currentDeviceValue.value boolValue]) {
                 selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
-            }else if ([currentDeviceValue intValue] == 0){
+            }else{
                 selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
             }
             
@@ -276,9 +304,9 @@
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
             
             selectedPropertyValue = @"";
-            if ([currentDeviceValue intValue] == 1) {
+            if ([currentDeviceValue intValue] != 0) {
                 selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
-            }else if ([currentDeviceValue intValue] == 0){
+            }else{
                 selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
             }
             
@@ -333,18 +361,13 @@
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.On Low", @"On Low"),
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.Medium", @"Medium")];
             
-            selectedPropertyValue = @"";
-            if ([currentDeviceValue.value isEqualToString:@"true"]) {
-                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
-            }else if ([currentDeviceValue.value isEqualToString:@"false"]){
-                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
-            }
+            selectedPropertyValue = currentDeviceValue.value;
             
             for (NSString * name in cnames) {
                 NSMutableDictionary * dict = [NSMutableDictionary new];
                 [dict setValue:name forKey:@"name"];
                 [dict setValue:@0 forKey:@"selected"];
-                if ([selectedPropertyValue isEqualToString:name]) {
+                if ([[selectedPropertyValue uppercaseString] isEqualToString:[name uppercaseString]]) {
                     [dict setValue:@1 forKey:@"selected"];
                 }
                 
@@ -491,6 +514,11 @@
     [self configTemperatureLable];
     [self updateTemperatureLabel];
     randomMobileInternalIndex = arc4random() % 10000;
+    viewHeader.backgroundColor = self.cellColor;
+    [btnSave setTitleColor:self.cellColor forState:UIControlStateNormal];
+}
+-(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
     UIView *currentView;
     switch (self.editFieldIndex) {
         case nameIndexPathRow:
@@ -498,11 +526,6 @@
         case irCodeIndexPathRow:
         case configIndexPathRow:
         {
-            viewEditTextProperty.hidden = NO;
-            CGRect fr = viewEditTextProperty.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewEditTextProperty.frame = fr;
             currentView = viewEditTextProperty;
             [txtPropertyValue becomeFirstResponder];
         }
@@ -528,26 +551,18 @@
         case switch1IndexPathRow:
         case switch2IndexPathRow:
         case actionsIndexPathRow:
+        case sirenSwitchMultilevelIndexPathRow:
         {
-            viewTypeSelection.hidden = NO;
+            currentView = viewTypeSelection;
             CGRect fr = viewTypeSelection.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
             fr.size.height = propertyTypes.count*50+btnSave.frame.size.height+50;
             viewTypeSelection.frame = fr;
             [tblTypes reloadData];
-            currentView = viewTypeSelection;
+            
             break;
         }
         case targetRangeIndexPathRow:
         {
-            viewThemperature.hidden = NO;
-            
-            CGRect fr = viewTypeSelection.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewThemperature.frame = fr;
-            
             currentView = viewThemperature;
             
             [self configureTemperatureSelectors];
@@ -558,7 +573,7 @@
                 lblHeating.hidden = YES;
                 lblCooling.text =  NSLocalizedString(@"sensors.cooling.temperature", @"Cooling Temperature");
                 
-                fr = lblShow.frame;
+                CGRect fr = lblShow.frame;
                 fr.origin.y =lblHeating.frame.origin.y;
                 lblShow.frame = fr;
                 
@@ -579,7 +594,7 @@
                 btnFahrenheit.frame = fr;
             }
             if([thermostatMode isEqualToString:@"heat"]){
-                fr = lblShow.frame;
+                CGRect fr = lblShow.frame;
                 fr.origin.y =lblHeating.frame.origin.y;
                 lblShow.frame = fr;
                 
@@ -611,14 +626,8 @@
         case highTemperatureIndexPathRow:
         case lowTemperatureIndexPathRow:
         {
-            viewThemperature.hidden = NO;
             [self configTemperatureLable];
             [self updateTemperatureLabel];
-            
-            CGRect fr = viewTypeSelection.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewThemperature.frame = fr;
             
             currentView = viewThemperature;
             
@@ -635,7 +644,7 @@
             }
             
             
-            fr = lblShow.frame;
+            CGRect fr = lblShow.frame;
             fr.origin.y =lblHeating.frame.origin.y;
             lblShow.frame = fr;
             
@@ -659,7 +668,13 @@
             break;
     }
     
-    CGRect fr = btnSave.frame;
+    currentView.hidden = NO;
+    CGRect fr = currentView.frame;
+    fr.origin.x = viewHeader.frame.origin.x;
+    fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
+    currentView.frame = fr;
+    
+    fr = btnSave.frame;
     fr.origin.y = currentView.frame.origin.y + currentView.frame.size.height-50;
     btnSave.frame = fr;
     
@@ -670,11 +685,7 @@
     
     viewHeader.backgroundColor = self.cellColor;
     currentView.backgroundColor = self.cellColor;
-    [btnSave setTitleColor:self.cellColor forState:UIControlStateNormal];
-}
-
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
+    
     
     if (self.editFieldIndex==targetRangeIndexPathRow || self.editFieldIndex==lowTemperatureIndexPathRow || self.editFieldIndex==highTemperatureIndexPathRow) {
         [self displayTemperatureValues];
@@ -715,12 +726,6 @@
 }
 
 
-//- (void)updateThemperatureDataOnUI{
-//    if ([SecurifiToolkit sharedInstance] isFahrenheit) {
-//        currentCoolTemp = [currentDeviceValue1 intValue];
-//        currentCoolTemp = [currentDeviceValue2 intValue];
-//    }
-//}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -835,6 +840,27 @@
             }
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
             break;
+        case sirenSwitchMultilevelIndexPathRow:
+            propertyType = SFIDevicePropertyType_SWITCH_MULTILEVEL;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            
+            if ([selectedPropertyValue isEqualToString:@"STOP"]) {
+                deviceValues.value = @"0";
+            }else if ([selectedPropertyValue isEqualToString:@"Emergency"]){
+                deviceValues.value = @"1";
+            }else if ([selectedPropertyValue isEqualToString:@"Fire"]){
+                deviceValues.value = @"2";
+            }else if ([selectedPropertyValue isEqualToString:@"Ambulance"]){
+                deviceValues.value = @"3";
+            }else if ([selectedPropertyValue isEqualToString:@"Police"]){
+                deviceValues.value = @"4";
+            }else if ([selectedPropertyValue isEqualToString:@"Door Chime"]){
+                deviceValues.value = @"5";
+            }else if ([selectedPropertyValue isEqualToString:@"Beep"]){
+                deviceValues.value = @"6";
+            }
+            self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+            break;
         case swingIndexPathRow:
             propertyType = SFIDevicePropertyType_AC_SWING;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
@@ -895,7 +921,7 @@
         }
             break;
         case powerIndexPathRow:
-            propertyType = SFIDevicePropertyType_BASIC;
+            propertyType = SFIDevicePropertyType_POWER;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
             if ([selectedPropertyValue isEqualToString:@"Off"]) {
                 deviceValues.value = @"0";
@@ -1013,6 +1039,7 @@
         case switch1IndexPathRow:
         case switch2IndexPathRow:
         case actionsIndexPathRow:
+        case sirenSwitchMultilevelIndexPathRow:
             return propertyTypes.count;
             break;
             
@@ -1038,7 +1065,7 @@
         case powerIndexPathRow:
         case switch1IndexPathRow:
         case switch2IndexPathRow:
-            
+        case sirenSwitchMultilevelIndexPathRow:
         case notifyMeIndexPathRow:
         case actionsIndexPathRow:
             [cell createPropertyCell:propertyTypes[indexPath.row]];
@@ -1094,6 +1121,7 @@
         case acFanIndexPathRow:
         case notifyMeIndexPathRow:
         case actionsIndexPathRow:
+        case sirenSwitchMultilevelIndexPathRow:
             for (NSMutableDictionary * dict in propertyTypes) {
                 [dict setValue:@0 forKey:@"selected"];
             }
@@ -1279,33 +1307,30 @@
     lblThemperatureMain.text = @"";
     if (self.device.deviceType==SFIDeviceType_ZWtoACIRExtender_54) {
         currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
-        lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
+        lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
         
     }else if (self.device.deviceType==SFIDeviceType_NestThermostat_57){
         currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
-        lblThemperatureMain.text = [NSString stringWithFormat:@"%d°",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[currentDeviceValue intValue]]];
+        lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
         
     }
-    
-    
 }
 
 
 - (void)configTemperatureLable{
     
     CGRect fr = lblThemperatureMain.frame;
-    fr.size = CGSizeMake(90, 90);
-    fr.origin.x = 0;
-    fr.origin.y = 0;
+    fr.size = CGSizeMake(70, 70);
+    fr.origin.x = 5;
+    fr.origin.y = 5;
     lblThemperatureMain.frame = fr;
     lblThemperatureMain.tag = 3;
     lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
     lblThemperatureMain.textColor = [UIColor whiteColor];
     
     
-    lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:36.0f];
-    lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
-    lblThemperatureMain.textColor = [UIColor whiteColor];
+    lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:36.0f];
+    lblThemperatureMain.adjustsFontSizeToFitWidth = YES;
 }
 
 #pragma mark - Cloud command senders and handlers

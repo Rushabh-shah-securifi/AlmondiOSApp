@@ -571,12 +571,19 @@ Sending Mail is not supported on this device";
 
 
 //24-9
-
 "View Device History”=“View Device History";
 "Name" = "Name";
 "Location" = "Location";
+"Actions" = "Actions";
 "Stop" = "Stop";
 "Battery" = "Battery";
+"Clamp 1 Power" = "Clamp 1 Power";
+"Clamp 1 Energy" = "Clamp 1 Energy";
+"Clamp 2 Power" = "Clamp 2 Power";
+"Clamp 2 Energy" = "Clamp 2 Energy";
+"Siren" = "Siren";
+"Switch 1" = "Switch 1";
+"Switch 2" = "Switch 2";
 "Temperature" = "Temperature";
 "AC Mode" = "AC Mode";
 "High Temperature" = "High Temperature";
@@ -586,6 +593,7 @@ Sending Mail is not supported on this device";
 "IR Code" = "IR Code";
 "Configuration" = "Configuration";
 "Humidity" = "Humidity";
+"Luminance" = "Luminance";
 "Away Mode" = "Away Mode";
 "CO Level" = "CO Level";
 "Smoke Level" = "Smoke Level";
