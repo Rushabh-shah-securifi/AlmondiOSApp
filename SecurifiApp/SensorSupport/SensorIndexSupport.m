@@ -659,6 +659,16 @@
 
                 return @[s1, s2];
             }
+            if (type == SFIDevicePropertyType_TEMPERATURE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.iconName = @"27_thermostat";
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature changed to ", @"'s temperature changed to ");
+                s1.valueFormatter.suffix = NSLocalizedString(@"\u00B0 Farenheit", @"\u00B0 Farenheit");
+
+                return @[s1];
+            }
 
             break;
         }
@@ -1543,8 +1553,8 @@
 
                 return @[s1, s2];
             }
-        }
             break;
+        }
         case SFIDeviceType_MoistureSensor_40: {
             /*
              <Sensor
@@ -1677,7 +1687,7 @@
              </Index>
              </Sensor>
              */
-            if (type == SFIDevicePropertyType_SENSOR_BINARY) {
+            if (type == SFIDevicePropertyType_SWITCH_BINARY) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"42_alarm_no";
@@ -2095,7 +2105,6 @@
             s2.matchData = @"false";
             s2.iconName = @"tamper";
             s2.notificationText = NSLocalizedString(@" is reset from Tampered.", @" is reset from Tampered.");
-
 
             return @[s1, s2];
         }
