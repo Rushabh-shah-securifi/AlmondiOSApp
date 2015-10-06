@@ -161,12 +161,12 @@
     self.isUpdatingDeviceSettings = NO;
 
     if ([self isNoAlmondMAC]) {
-        self.navigationItem.title = NSLocalizedString(@"Sensorview-almondata-Get Started", @"Get Started");
+        [self markTitle:NSLocalizedString(@"Sensorview-almondata-Get Started", @"Get Started")];
         self.deviceList = @[];
         [self setDeviceValues:@[]];
     }
     else {
-        self.navigationItem.title = plus.almondplusName;
+        [self markTitle:plus.almondplusName];
         self.deviceList = [toolkit deviceList:mac];
         [self setDeviceValues:[toolkit deviceValuesList:mac]];
 
