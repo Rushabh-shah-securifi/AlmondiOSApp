@@ -209,6 +209,7 @@
 - (void)onConnectionStatusButtonPressed:(id)sender {
     AlertView *alert = [AlertView new];
     alert.delegate = self;
+    alert.backgroundColor = [UIColor whiteColor];
 
     SFICloudStatusState statusState = self.connectionStatusBarButton.state;
     switch (statusState) {
