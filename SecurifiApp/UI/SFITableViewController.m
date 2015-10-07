@@ -342,7 +342,7 @@
     [self onLockTable];
 
     CGRect rect = self.navigationController.navigationBar.frame;
-    CGFloat height = 220;
+    CGFloat height = 260;
     if (alert.actions.count > 2) {
         height = height + ((alert.actions.count - 2) * 50);
     }
