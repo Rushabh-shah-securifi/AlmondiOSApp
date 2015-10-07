@@ -2138,17 +2138,6 @@
         case SFIDeviceType_51:
             break;
         case SFIDeviceType_RollerShutter_52: {
-            /*
-             * SWITCH MULTILEVEL
-             * UP_DOWN
-             *
-             *
-             * STOP
-
-99		Open
-0		Closed
-             */
-
             if (type == SFIDevicePropertyType_SWITCH_MULTILEVEL) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"0";
@@ -2168,10 +2157,7 @@
             }
 
             if (type == SFIDevicePropertyType_UP_DOWN) {
-/*
- *              * 0 DOWN
-             * 99 Up
- * */                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"0";
                 s1.iconName = DT53_GARAGE_SENSOR_CLOSED;
                 s1.notificationText = NSLocalizedString(@" is turned Off.", @" is turned Off.");
@@ -2343,7 +2329,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"40";
-                s1.iconName = @"45_metering_off";
+                s1.iconName = @"56_energy_reader";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s power reading changed to ", @"'s power reading changed to ");
 
@@ -2354,7 +2340,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"40";
-                s1.iconName = @"45_metering_off";
+                s1.iconName = @"56_energy_reader";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s energy reading is ", @"'s energy reading is ");
 
@@ -2365,7 +2351,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"40";
-                s1.iconName = @"45_metering_off";
+                s1.iconName = @"56_energy_reader";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s Clamp 1 power reading is ", @"'s power reading is ");
 
@@ -2375,7 +2361,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"40";
-                s1.iconName = @"45_metering_off";
+                s1.iconName = @"56_energy_reader";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s Clamp 2 power reading is ", @"'s power reading is ");
 
@@ -2386,7 +2372,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"40";
-                s1.iconName = @"45_metering_off";
+                s1.iconName = @"56_energy_reader";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s Clamp 1 energy reading is ", @"'s energy reading is ");
 
@@ -2396,7 +2382,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"40";
-                s1.iconName = @"45_metering_off";
+                s1.iconName = @"56_energy_reader";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s Clamp 2 energy reading is ", @"'s energy reading is ");
 
