@@ -2137,21 +2137,18 @@
         }
         case SFIDeviceType_51:
             break;
+
         case SFIDeviceType_RollerShutter_52: {
             if (type == SFIDevicePropertyType_SWITCH_MULTILEVEL) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"0";
-                s1.iconName = @"01_switch_off";
-                s1.notificationText = NSLocalizedString(@" is turned Off.", @" is turned Off.");
+                s1.iconName = DT53_GARAGE_SENSOR_OPEN;
+                s1.notificationText = NSLocalizedString(@" is Open.", @" is Open.");
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.matchData = @"0";
-                s2.matchType = MatchType_not_equals;
-                s2.iconName = @"02_dimmer";
-                s2.notificationText = @"";
-                s2.valueFormatter.action = ValueFormatterAction_formatString;
-                s2.valueFormatter.notificationPrefix = NSLocalizedString(@" is dimmed to ", @" is dimmed to ");
-                s2.valueFormatter.suffix = @"%";
+                s2.matchData = @"99";
+                s2.iconName = DT53_GARAGE_SENSOR_CLOSED;
+                s2.notificationText = NSLocalizedString(@" is Closed.", @" is Closed.");
 
                 return @[s1, s2];
             }
@@ -2159,15 +2156,26 @@
             if (type == SFIDevicePropertyType_UP_DOWN) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"0";
-                s1.iconName = DT53_GARAGE_SENSOR_CLOSED;
-                s1.notificationText = NSLocalizedString(@" is turned Off.", @" is turned Off.");
+                s1.iconName = DT53_GARAGE_SENSOR_DOWN;
+                s1.notificationText = NSLocalizedString(@" is Down.", @" is Down.");
 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"99";
                 s2.iconName = DT53_GARAGE_SENSOR_UP;
+                s2.notificationText = NSLocalizedString(@" is Up.", @" is Up.");
 
                 return @[s1, s2];
             }
+
+            if (type == SFIDevicePropertyType_STOP) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"true";
+                s1.iconName = DT53_GARAGE_SENSOR_STOPPED;
+                s1.notificationText = NSLocalizedString(@" is Stopped.", @" is Stopped.");
+
+                return @[s1];
+            }
+
             break;
         }
         case SFIDeviceType_ZWtoACIRExtender_54: {

@@ -661,3 +661,5 @@
 " second" = " second";
 " seconds" = " seconds";
 " humidity is " = " humidity is ";
+" is Up." = " is Up.";
+" is Down." = " is Down.";

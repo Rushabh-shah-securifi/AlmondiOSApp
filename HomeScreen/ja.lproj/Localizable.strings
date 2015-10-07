@@ -747,3 +747,5 @@ Can't connect to your Almond. Please select a connection method.";
 " second" = " second";
 " seconds" = " seconds";
 " humidity is " = " humidity is ";
+" is Up." = " is Up.";
+" is Down." = " is Down.";
