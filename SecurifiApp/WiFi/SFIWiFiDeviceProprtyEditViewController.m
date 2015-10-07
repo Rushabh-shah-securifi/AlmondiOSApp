@@ -110,6 +110,12 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self initializeNotifications];
+}
+
+-(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+    
     randomMobileInternalIndex = arc4random() % 10000;
     btnUsePresence.selected = self.connectedDevice.deviceUseAsPresence;
     selectedDeviceType = self.connectedDevice.deviceType;
@@ -121,11 +127,7 @@
             txtProperty.placeholder = @"Device Name";
             txtProperty.text = self.connectedDevice.name;
             txtProperty.keyboardType = UIKeyboardTypeDefault;
-            viewEditName.hidden = NO;
-            CGRect fr = viewEditName.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewEditName.frame = fr;
+            
             currentView = viewEditName;
             break;
         }
@@ -134,45 +136,24 @@
             txtProperty.placeholder = @"Set Inactivity Timeout";
             txtProperty.text = [NSString stringWithFormat:@"%lu",self.connectedDevice.timeout];
             txtProperty.keyboardType = UIKeyboardTypeNumberPad;
-            viewEditName.hidden = NO;
-            CGRect fr = viewEditName.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewEditName.frame = fr;
+            
             currentView = viewEditName;
             break;
         }
         case typeIndexPathRow://Type
         {
-            viewTypeSelection.hidden = NO;
-            CGRect fr = viewTypeSelection.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewTypeSelection.frame = fr;
             [tblTypes reloadData];
             currentView = viewTypeSelection;
             break;
         }
         case connectionIndexPathRow://Connection
         {
-            viewTypeSelection.hidden = NO;
-            CGRect fr = viewTypeSelection.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewTypeSelection.frame = fr;
             [tblTypes reloadData];
             currentView = viewTypeSelection;
             break;
         }
         case usePresenceSensorIndexPathRow:
         {
-            viewUsePresence.hidden = NO;
-            
-            CGRect fr = viewUsePresence.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewUsePresence.frame = fr;
-            
             btnUsePresence.layer.borderColor = [[UIColor whiteColor] CGColor];
             btnUsePresence.layer.borderWidth = 2.0f;
             btnUsePresence.backgroundColor = [UIColor clearColor];
@@ -187,14 +168,7 @@
         }
         case notifyMeIndexPathRow://notify me
         {
-            viewTypeSelection.hidden = NO;
-            CGRect fr = viewTypeSelection.frame;
-            fr.origin.x = viewHeader.frame.origin.x;
-            fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
-            viewTypeSelection.frame = fr;
             [tblTypes reloadData];
-            //            viewHeader.backgroundColor = [UIColor colorWithRed:1.0 green:160/255.0f blue:0 alpha:1];
-            //            viewTypeSelection.backgroundColor = [UIColor colorWithRed:1.0 green:160/255.0f blue:0 alpha:1];
             currentView = viewTypeSelection;
             break;
         }
@@ -202,15 +176,22 @@
             break;
     }
     
-    CGRect fr = btnSave.frame;
+    currentView.hidden = NO;
+    CGRect fr = currentView.frame;
+    fr.origin.x = viewHeader.frame.origin.x;
+    fr.origin.y = viewHeader.frame.size.height+viewHeader.frame.origin.y;
+    currentView.frame = fr;
+    
+    
+    fr = btnSave.frame;
     fr.origin.y = currentView.frame.origin.y + currentView.frame.size.height-50;
     btnSave.frame = fr;
     
     fr = btnBack.frame;
     fr.origin.y = currentView.frame.origin.y + currentView.frame.size.height-50;
     btnBack.frame = fr;
-    [self initializeNotifications];
 }
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     if ([txtProperty isFirstResponder]) {
@@ -266,7 +247,7 @@
     randomMobileInternalIndex = arc4random() % 10000;
     NSMutableDictionary * updateClientInfo = [NSMutableDictionary new];
     
-    if (self.editFieldIndex==usePresenceSensorIndexPathRow) {
+    if (self.editFieldIndex==notifyMeIndexPathRow) {
         [updateClientInfo setValue:@"UpdatePreference" forKey:@"CommandType"];
         [updateClientInfo setValue:self.connectedDevice.deviceID forKey:@"ClientID"];
         [updateClientInfo setValue:self.selectedNotificationType forKey:@"NotificationType"];

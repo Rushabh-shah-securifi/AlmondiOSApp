@@ -55,7 +55,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     AlmondSupportsSendLogs_no,
 };
 
-@interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate>
+@interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate>{
+    NSMutableArray *wifiClientsArray;
+    int activeClientsCount;
+    int inActiveClientsCount;
+}
 @property SFIAlmondPlus *currentAlmond;
 @property BOOL newAlmondFirmwareVersionAvailable;
 @property NSString *latestAlmondVersionAvailable;
@@ -258,6 +262,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         return;
     }
     [[SecurifiToolkit sharedInstance] asyncAlmondSummaryInfoRequest:self.almondMac];
+    [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
 }
 
 - (void)sendRouterSettingsRequest:(enum SecurifiToolkitAlmondRouterRequest)requestType {
@@ -361,7 +366,21 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
 - (void)onEditDevicesAndUsersCard:(id)sender {
     if (self.enableNewWifiClientsControl) {
-        [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
+//        [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
+        if (wifiClientsArray.count==0) {
+            return;
+        }
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
+        SFIWiFiClientsListViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiClientsListViewController"];
+        
+        NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"isActive" ascending:NO];
+        NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+        
+        NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, secondDescriptor, nil];
+        
+        viewController.connectedDevices = [[wifiClientsArray sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+        [self.navigationController pushViewController:viewController animated:YES];
+
     }
     else {
         [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_connected_device];
@@ -776,11 +795,17 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
     cell.cardView.backgroundColor = [UIColor securifiRouterTileBlueColor];
     cell.title = NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users");
+
     cell.summaries = @[
-            [NSString stringWithFormat:NSLocalizedString(@"router.devices-summary.%d connected, %d blocked", @"%d connected, %d blocked"),
-                                       routerSummary.connectedDeviceCount,
-                                       routerSummary.blockedMACCount],
+            [NSString stringWithFormat:NSLocalizedString(@"router.devices-summary.%d Active, %d Inactive", @"%d ACTIVE, %d INACTIVE"),
+                                       activeClientsCount,
+                                       inActiveClientsCount],
     ];
+//    cell.summaries = @[
+//                       [NSString stringWithFormat:NSLocalizedString(@"router.devices-summary.%d Active, %d Inactive", @"%d ACTIVE, %d INACTIVE"),
+//                        routerSummary.connectedDeviceCount,
+//                        routerSummary.blockedMACCount],
+//                       ];
 
     cell.editTarget = self;
     cell.editSelector = @selector(onEditDevicesAndUsersCard:);
@@ -1098,11 +1123,12 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         }
 
         //todo there is a race condition that has to be handled: current Almond selection may have been changed before this callback is received and processed.
-
+        activeClientsCount = 0;
+        inActiveClientsCount = 0;
         if (self.navigationController.topViewController == self) {
             if ([[mainDict valueForKey:@"Clients"] isKindOfClass:[NSArray class]]) {
                 NSArray *dDictArray = [mainDict valueForKey:@"Clients"];
-                NSMutableArray *dArray = [NSMutableArray new];
+               wifiClientsArray = [NSMutableArray new];
                 for (NSDictionary *dict in dDictArray) {
                     SFIConnectedDevice *device = [SFIConnectedDevice new];
                     device.deviceID = [dict valueForKey:@"ID"];
@@ -1116,24 +1142,19 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                     device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
                     device.isActive = [[dict valueForKey:@"Active"] boolValue];
                     device.timeout = [[dict valueForKey:@"Wait"] integerValue];
-                    [dArray addObject:device];
+                    if (device.isActive) {
+                        activeClientsCount++;
+                    }else{
+                        inActiveClientsCount++;
+                    }
+                    [wifiClientsArray addObject:device];
                 }
 
-                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
-                SFIWiFiClientsListViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiClientsListViewController"];
-                
-                NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"isActive" ascending:NO];
-                NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
-                
-                NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, secondDescriptor, nil];
-                
-                dArray = [[dArray sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
-                viewController.connectedDevices = dArray;
-                [self.navigationController pushViewController:viewController animated:YES];
             }
         }
 
         [self.HUD hide:YES];
+        [self.tableView reloadData];
         [self.refreshControl endRefreshing];
     });
 }
