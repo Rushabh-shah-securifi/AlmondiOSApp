@@ -14,6 +14,7 @@
 #import "SKSTableView.h"
 #import "SKSTableViewCell.h"
 #import "KeyChainWrapper.h"
+#import "Analytics.h"
 
 #define AVENIR_HEAVY @"Avenir-Heavy"
 #define AVENIR_ROMAN @"Avenir-Roman"
@@ -59,6 +60,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
+    [[Analytics sharedInstance] markWifiClientScreen];
 }
 
 - (void)initializeNotifications{

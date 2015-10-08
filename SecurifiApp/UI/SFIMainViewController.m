@@ -46,7 +46,7 @@
 
 //    [self.imgSplash removeFromSuperview];
 //    self.imgSplash = nil;
-//
+
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     _HUD.dimBackground = YES;
     [self.view addSubview:_HUD];
@@ -380,6 +380,9 @@
     }
     else if ([title isEqualToString:TAB_BAR_ROUTER]) {
         [[Analytics sharedInstance] markRouterScreen];
+    }
+    else if([title isEqualToString:TAB_BAR_SCENES]){
+        [[Analytics sharedInstance] markSceneScreen];
     }
 
     //md01

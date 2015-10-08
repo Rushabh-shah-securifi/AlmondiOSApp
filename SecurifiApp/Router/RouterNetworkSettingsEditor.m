@@ -8,6 +8,7 @@
 #import <SecurifiToolkit/SFIAlmondLocalNetworkSettings.h>
 #import "RouterNetworkSettingsEditor.h"
 #import "UIFont+Securifi.h"
+#import "Analytics.h"
 
 typedef NS_ENUM(unsigned int, TABLE_ROW) {
     TABLE_ROW_IP_ADDR,
@@ -69,6 +70,8 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
+    
+    [[Analytics sharedInstance] markLocalScreen];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -87,6 +90,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
         [self.tableView reloadData];
     });
+    
 }
 
 - (void)markErrorOnLink:(NSString *)msg {
@@ -377,6 +381,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 - (void)onSaveEdits {
     // validate edits just as if new link were being set up
     [self onLink];
+    [[Analytics sharedInstance] markEditLocalConnection];
 }
 
 - (void)onCancelEdits {

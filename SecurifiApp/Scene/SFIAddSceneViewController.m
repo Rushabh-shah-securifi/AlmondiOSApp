@@ -16,6 +16,7 @@
 #import "UIImage+Securifi.h"
 #import "SFIDeviceIndex.h"
 #import "Colours.h"
+#import "Analytics.h"
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]//MD01
 
@@ -82,6 +83,8 @@
     }
     originalTableViewFrame = self.tableView.frame;
     [super viewWillAppear:animated];
+    
+    [[Analytics sharedInstance] markNewSceneScreen];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -702,9 +705,11 @@
     if (self.sceneInfo) {
         [payloadDict setValue:@"UpdateScene" forKey:@"CommandType"];
         [newSceneInfo setValue:[self.sceneInfo valueForKey:@"ID"] forKey:@"ID"];
+        [[Analytics sharedInstance] markUpdateScene];
         
     }else{
         [payloadDict setValue:@"AddScene" forKey:@"CommandType"];
+        [[Analytics sharedInstance] markAddScene];
     }
     
     [payloadDict setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
@@ -1075,6 +1080,8 @@
         
         [self asyncSendCommand:cloudCommand];
     }
+    
+    [[Analytics sharedInstance] markDeleteScene];
 }
 
 - (void)sceneNameDidChange:(SFIAddSceneTableViewCell*)cell SceneName:(NSString*)name ActiveField:(UITextField*)textField{

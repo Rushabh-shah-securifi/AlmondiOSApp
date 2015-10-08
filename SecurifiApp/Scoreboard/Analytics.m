@@ -11,6 +11,12 @@
 #import "GAIFields.h"
 #import "GAIDictionaryBuilder.h"
 
+#define SENSOR_ACTION @"Sensor Action"
+#define SCENE_ACTION @"Scene Action"
+#define ROUTER_ACTION @"Router Action"
+#define MEMORY_WARNING @"Warning"
+#define ACTION @"Action"
+
 @interface Analytics ()
 @property(nonatomic, readonly) NSString *trackingId;
 @end
@@ -34,12 +40,12 @@
     //    [GAI sharedInstance].trackUncaughtExceptions = YES;
     //    [GAI sharedInstance].dispatchInterval = 20;
     //    [[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelVerbose];
-
+    
     _trackingId = [trackingId copy];
     
     // Initialize tracker. Replace with your tracking ID.
     [[GAI sharedInstance] trackerWithTrackingId:trackingId];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCompleteMobileCommandRequest:) name:kSFIDidCompleteMobileCommandRequest object:nil];
 }
 
@@ -65,31 +71,87 @@
     [self markSensorClick:cmd.deviceType timeToComplete:resTime];
 }
 
-- (void)markMemoryWarning {
-    [self markEvent:@"app_mem_warn"];
-}
-
-- (void)markRouterUpdateFirmware {
-    [self markEvent:@"router_update_firmware"];
-}
-
-- (void)markRouterReboot {
-    [self markEvent:@"router_reboot"];
-}
-
-- (void)markSendRouterLogs {
-    [self markEvent:@"router_send_logs"];
-}
-
 - (void)markSensorClick:(SFIDeviceType)deviceType timeToComplete:(NSTimeInterval)resResTime {
     NSUInteger milliseconds = (NSUInteger) (resResTime * 1000);
     NSNumber *interval = @(milliseconds);
-
     NSString *deviceTypeStr = securifi_name_to_device_type(deviceType);
-    NSDictionary *params = [[GAIDictionaryBuilder createTimingWithCategory:@"sensor_click"
+    
+    enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
+    NSString *eventCategory = @"Sensor Action";
+    if(mode == SFIAlmondConnectionMode_local){
+        eventCategory = [eventCategory stringByAppendingString:@" - Local"];
+    }
+    NSDictionary *params = [[GAIDictionaryBuilder createTimingWithCategory:eventCategory
                                                                   interval:interval
-                                                                      name:@"device"
+                                                                      name:@"Device"
                                                                      label:deviceTypeStr] build];
+
+    GAI *gai = [GAI sharedInstance];
+    id <GAITracker> tracker = [gai trackerWithTrackingId:self.trackingId];
+    [tracker send:params];
+}
+
+- (void)markMemoryWarning {
+    [self markEvent:@"App Memory Warning" category:MEMORY_WARNING];
+}
+
+- (void)markRouterUpdateFirmware {
+    [self markEvent:@"Router Update Firmware" category:ROUTER_ACTION];
+}
+
+- (void)markRouterReboot {
+    [self markEvent:@"Router Reboot" category:ROUTER_ACTION];
+}
+
+- (void)markSendRouterLogs {
+    [self markEvent:@"Router Send Logs" category:ROUTER_ACTION];
+}
+
+- (void)markDeclineSignupLicense {
+    [self markEvent:@"License Decline" category:ACTION];
+}
+
+- (void)markActivateScene {
+    [self markEvent:@"Activate Scene" category:SCENE_ACTION];
+}
+
+- (void)markAddScene {
+    [self markEvent:@"Add Scene" category:SCENE_ACTION];
+}
+
+- (void)markUpdateScene {
+    [self markEvent:@"Edit Scene" category:SCENE_ACTION];
+}
+
+- (void)markDeleteScene {
+    [self markEvent:@"Remove Scene" category:SCENE_ACTION];
+}
+
+- (void)markSensorLogs {
+    [self markEvent:@"Sensor Logs" category:SENSOR_ACTION];
+}
+
+- (void)markSensorNameLocationChange {
+    [self markEvent:@"Sensor Name/Location Change" category:SENSOR_ACTION];
+}
+
+- (void)markEditLocalConnection {
+    [self markEvent:@"Edit Local Connection" category:ROUTER_ACTION];
+}
+
+- (void)markWifiClientUpdate {
+    [self markEvent:@"Update WifiClient" category:ROUTER_ACTION];
+}
+
+- (void)markEvent:(NSString *)eventName category:(NSString *)eventCategory {
+    enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
+    if(mode == SFIAlmondConnectionMode_local){
+       eventCategory = [eventCategory stringByAppendingString:@" - Local"];
+    }
+    NSDictionary *params = [[GAIDictionaryBuilder createEventWithCategory:eventCategory     // Event category (required)
+                                                                   action:eventName     // Event action (required)
+                                                                    label:@"invoke"     // Event label
+                                                                    value:nil] build];
 
     GAI *gai = [GAI sharedInstance];
     id <GAITracker> tracker = [gai trackerWithTrackingId:self.trackingId];
@@ -105,7 +167,7 @@
 }
 
 - (void)markNotificationsScreen {
-    [self trackScreen:@"Notifications"];
+    [self trackScreen:@"Notification Logs"];
 }
 
 - (void)markLoginForm {
@@ -120,23 +182,41 @@
     [self trackScreen:@"SignUp"];
 }
 
-- (void)markDeclineSignupLicense {
-    [self markEvent:@"license_decline"];
+- (void)markSceneScreen {
+    [self trackScreen:@"Scenes"];
 }
 
-- (void)markEvent:(NSString *)eventName {
-    NSDictionary *params = [[GAIDictionaryBuilder createEventWithCategory:@"action"     // Event category (required)
-                                                                   action:eventName     // Event action (required)
-                                                                    label:@"invoke"     // Event label
-                                                                    value:nil] build];
+- (void)markNewSceneScreen {
+    [self trackScreen:@"Add/Edit Scene"];
+}
 
-    GAI *gai = [GAI sharedInstance];
-    id <GAITracker> tracker = [gai trackerWithTrackingId:self.trackingId];
+- (void)markAccountsScreen {
+    [self trackScreen:@"Accounts"];
+}
 
-    [tracker send:params];
+- (void)markLocalScreen {
+    [self trackScreen:@"Local Link"];
+}
+
+- (void)markWifiClientScreen{
+    [self trackScreen:@"Network Client"];
+}
+
+- (void)markLogoutAllScreen {
+    [self trackScreen:@"LogoutAll"];
+}
+
+- (void)markRouterSettingsScreen {
+    [self trackScreen:@"Router Settings"];
 }
 
 - (void)trackScreen:(NSString *)name {
+    enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
+    
+    if(mode == SFIAlmondConnectionMode_local){
+        name = [name stringByAppendingString:@" - Local"];
+    }
+    NSLog(@"Name: %@", name);
     GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createScreenView];
     NSMutableDictionary *params = [builder build];
     
