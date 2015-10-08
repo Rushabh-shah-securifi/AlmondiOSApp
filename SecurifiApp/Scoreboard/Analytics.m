@@ -75,10 +75,10 @@
     NSUInteger milliseconds = (NSUInteger) (resResTime * 1000);
     NSNumber *interval = @(milliseconds);
     NSString *deviceTypeStr = securifi_name_to_device_type(deviceType);
-    SecurifiToolkit *toolKit = [SecurifiToolkit sharedInstance];
-    int mode = toolKit.currentConnectionMode;
+    
+    enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
     NSString *eventCategory = @"Sensor Action";
-    if(mode){
+    if(mode == SFIAlmondConnectionMode_local){
         eventCategory = [eventCategory stringByAppendingString:@" - Local"];
     }
     NSDictionary *params = [[GAIDictionaryBuilder createTimingWithCategory:eventCategory
@@ -144,9 +144,8 @@
 }
 
 - (void)markEvent:(NSString *)eventName category:(NSString *)eventCategory {
-    SecurifiToolkit *toolKit = [SecurifiToolkit sharedInstance];
-    int mode = toolKit.currentConnectionMode;
-    if(mode){
+    enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
+    if(mode == SFIAlmondConnectionMode_local){
        eventCategory = [eventCategory stringByAppendingString:@" - Local"];
     }
     NSDictionary *params = [[GAIDictionaryBuilder createEventWithCategory:eventCategory     // Event category (required)
@@ -212,9 +211,9 @@
 }
 
 - (void)trackScreen:(NSString *)name {
-    SecurifiToolkit *toolKit = [SecurifiToolkit sharedInstance];
-    int mode = toolKit.currentConnectionMode;
-    if(mode){
+    enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
+    
+    if(mode == SFIAlmondConnectionMode_local){
         name = [name stringByAppendingString:@" - Local"];
     }
     NSLog(@"Name: %@", name);
