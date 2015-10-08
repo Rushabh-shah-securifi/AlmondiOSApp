@@ -155,27 +155,31 @@
 #pragma mark - Modes
 
 - (void)displayScreenToSignup {
-    self.emailID.text = @"";
-    self.password.text = @"";
-    self.confirmPassword.text = @"";
-    self.lblPasswordStrength.text = @"";
-    self.lblPasswordStrength.hidden = NO;
-    self.passwordStrengthIndicator.hidden = NO;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.emailID.text = @"";
+        self.password.text = @"";
+        self.confirmPassword.text = @"";
+        self.lblPasswordStrength.text = @"";
+        self.lblPasswordStrength.hidden = NO;
+        self.passwordStrengthIndicator.hidden = NO;
 
-    [self setStandardHeadline];
-    [self setContinueButtonTag:CONTINUE_BUTTON_SIGNUP];
-    [self setFooterForTag:FOOTER_TERMS_CONDS];
+        [self setStandardHeadline];
+        [self setContinueButtonTag:CONTINUE_BUTTON_SIGNUP];
+        [self setFooterForTag:FOOTER_TERMS_CONDS];
+    });
 }
 
 - (void)displayScreenToLogin {
-    // Do not null out email text field because it is needed for re-sending confirmation email
-    self.lblPasswordStrength.text = @"";
-    self.lblPasswordStrength.hidden = YES;
-    self.passwordStrengthIndicator.hidden = YES;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        // Do not null out email text field because it is needed for re-sending confirmation email
+        self.lblPasswordStrength.text = @"";
+        self.lblPasswordStrength.hidden = YES;
+        self.passwordStrengthIndicator.hidden = YES;
 
-    [self setAlmostDoneHeadline];
-    [self setContinueButtonTag:CONTINUE_BUTTON_LOGIN];
-    [self setFooterForTag:FOOTER_RESEND_ACTIVATION_LINK];
+        [self setAlmostDoneHeadline];
+        [self setContinueButtonTag:CONTINUE_BUTTON_LOGIN];
+        [self setFooterForTag:FOOTER_RESEND_ACTIVATION_LINK];
+    });
 }
 
 - (void)setStandardHeadline {
@@ -474,15 +478,7 @@
 - (void)sendSignupCommand {
     [self setSigningUpHeadline];
 
-    Signup *signupCommand = [[Signup alloc] init];
-    signupCommand.UserID = [NSString stringWithString:self.emailID.text];
-    signupCommand.Password = [NSString stringWithString:self.password.text];
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_SIGNUP_COMMAND;
-    cloudCommand.command = signupCommand;
-
-    [self asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendCloudSignupWithEmail:self.emailID.text password:self.password.text];
 }
 
 - (void)onSignupResponseCallback:(id)sender {
@@ -534,14 +530,7 @@
 }
 
 - (void)sendReactivationRequest {
-    ValidateAccountRequest *validateCommand = [[ValidateAccountRequest alloc] init];
-    validateCommand.email = self.emailID.text;
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_VALIDATE_REQUEST;
-    cloudCommand.command = validateCommand;
-
-    [self asyncSendCommand:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendValidateCloudAccount:self.emailID.text];
 }
 
 - (void)validateResponseCallback:(id)sender {
@@ -580,10 +569,6 @@
 
         [self setOopsMessage:failureReason];
     }
-}
-
-- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
 - (void)setOopsMessage:(NSString *)msg {
