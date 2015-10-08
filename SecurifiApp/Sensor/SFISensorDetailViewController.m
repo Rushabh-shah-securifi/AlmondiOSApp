@@ -63,7 +63,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     randomMobileInternalIndex = arc4random() % 10000;
-
+    
     NSArray *propertyNames = @[NSLocalizedString(@"Name",@"Name"),
                                NSLocalizedString(@"Location","Location"),
                                NSLocalizedString(@"Actions","Actions"),
@@ -616,16 +616,14 @@
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
     label.font = cellFont;
-    NSArray *arrValue = [self.deviceValue knownDevicesValues];
-    for (SFIDeviceKnownValues *currentDeviceValue in arrValue) {
-        if (currentDeviceValue.index==1) {
-            if ([currentDeviceValue boolValue]) {
-                label.text = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
-            }else if ([currentDeviceValue intValue] == 0){
-                label.text = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
-            }
-        }
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_BINARY1];
+    
+    if ([currentDeviceValue boolValue]) {
+        label.text = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
+    }else if ([currentDeviceValue intValue] == 0){
+        label.text = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
     }
+    
     label.numberOfLines = 1;
     label.tag = 66;
     label.textAlignment = NSTextAlignmentRight;
@@ -638,15 +636,12 @@
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
     label.font = cellFont;
-    NSArray *arrValue = [self.deviceValue knownDevicesValues];
-    for (SFIDeviceKnownValues *currentDeviceValue in arrValue) {
-        if (currentDeviceValue.index==2) {
-            if ([currentDeviceValue boolValue]) {
-                label.text = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
-            }else if ([currentDeviceValue intValue] == 0){
-                label.text = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
-            }
-        }
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_BINARY2];
+    
+    if ([currentDeviceValue boolValue]) {
+        label.text = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
+    }else if ([currentDeviceValue intValue] == 0){
+        label.text = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
     }
     
     label.numberOfLines = 1;

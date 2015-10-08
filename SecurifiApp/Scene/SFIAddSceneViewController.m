@@ -728,8 +728,11 @@
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
+     if (self.sceneInfo) {
+    _HUD.labelText = NSLocalizedString(@"scenes.hud.updatingScene", @"Updating Scene...");
+     }else{
     _HUD.labelText = NSLocalizedString(@"scenes.hud.creatingScene", @"Creating Scene...");
-    
+     }
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];

@@ -172,12 +172,12 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     self.currentAlmond = plus;
 
     if (plus == nil) {
-        self.navigationItem.title = NSLocalizedString(@"router.nav-title.Get Started", @"Get Started");
         [self markAlmondMac:NO_ALMOND];
+        [self markTitle:NSLocalizedString(@"router.nav-title.Get Started", @"Get Started")];
     }
     else {
         [self markAlmondMac:plus.almondplusMAC];
-        self.navigationItem.title = plus.almondplusName;
+        [self markTitle:plus.almondplusName];
     }
 
     if (toolkit.defaultConnectionMode == SFIAlmondConnectionMode_cloud) {
@@ -541,11 +541,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         }
         case RouterViewState_almond_unavailable: {
             tableView.scrollEnabled = NO;
-            return [self createAlmondNoConnectCell:tableView];
+            return [self createAlmondOfflineCell:tableView];
         }
         case RouterViewState_cloud_offline: {
             tableView.scrollEnabled = NO;
-            return [self createAlmondNoConnectCell:tableView];
+            return [self createAlmondOfflineCell:tableView];
         }
         case RouterViewState_cloud_connected:
         default: {
@@ -622,7 +622,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     return cell;
 }
 
-- (UITableViewCell *)createAlmondNoConnectCell:(UITableView *)tableView {
+- (UITableViewCell *)createAlmondOfflineCell:(UITableView *)tableView {
     static NSString *cell_id = @"NoAlmondConnect";
 
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];

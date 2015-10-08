@@ -9,10 +9,10 @@ PODS:
   - CocoaLumberjack/Extensions (2.0.1):
     - CocoaLumberjack/Default
   - Colours (5.8.0)
-  - Crashlytics (3.3.1)
-  - Fabric (1.5.1):
-    - Fabric/Base (= 1.5.1)
-  - Fabric/Base (1.5.1)
+  - Crashlytics (3.3.4)
+  - Fabric (1.5.5):
+    - Fabric/Base (= 1.5.5)
+  - Fabric/Base (1.5.5)
   - GoogleAnalytics (3.13.0)
   - iToast (0.0.1)
   - MBProgressHUD (0.9.1)
@@ -39,8 +39,8 @@ SPEC CHECKSUMS:
   ASValueTrackingSlider: 45c9f78252da60de01d8f2afe869aaf90dd978d9
   CocoaLumberjack: 019d1361244274a6138c788c6cb80baabc13fb8f
   Colours: c186cc76afa2ca86f5ca5e68f610f9be17b48337
-  Crashlytics: 0e61bdda9def51f1e99720f804eebe94865442b2
-  Fabric: 03c3b3fe77e11a2bc31421b989a9c7adaa4779a5
+  Crashlytics: 41c082440d2e14da444186fff65e79c0b4b35d4c
+  Fabric: 190bf1a6eb65f7500de1347d027d2e59a7e53db1
   GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
   iToast: df147188215cc3293bd4366822833f2862fec451
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad

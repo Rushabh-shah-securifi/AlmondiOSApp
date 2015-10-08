@@ -35,6 +35,8 @@
 // declares the almond mac being displayed
 - (void)markAlmondMac:(NSString *)almondMac;
 
+- (void)markTitle:(NSString*)title;
+
 - (void)showHUD:(NSString *)text;
 
 // convenience method for showing a standard "loading router data..." message
