@@ -18,6 +18,7 @@
 #import "UIImage+Securifi.h"
 #import "SFICloudLinkViewController.h"
 #import "SFISensorDetailViewController.h"//md01
+#import "Analytics.h"
 
 @interface SFISensorsViewController () <SFISensorTableViewCellDelegate, MessageViewDelegate>
 @property(nonatomic, readonly) SFIAlmondPlus *almond;
@@ -673,6 +674,8 @@
         self.isUpdatingDeviceSettings = NO;
         self.enableDrawer = YES;
     });
+    
+    [[Analytics sharedInstance] markSensorNameLocationChange];
 }
 
 - (void)tableViewCellDidPressShowLogs:(SFISensorTableViewCell *)cell {
@@ -691,6 +694,8 @@
 
     UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
     [self presentViewController:nav_ctrl animated:YES completion:nil];
+    
+    [[Analytics sharedInstance] markSensorLogs];
 }
 
 - (void)tableViewCellDidDismissTamper:(SFISensorTableViewCell *)cell {

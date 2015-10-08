@@ -15,6 +15,7 @@
 #import "SFIRouterTableViewActions.h"
 #import "TableHeaderView.h"
 #import "UIFont+Securifi.h"
+#import "Analytics.h"
 
 @interface SFIRouterSettingsTableViewController () <SFIRouterTableViewActions, TableHeaderViewDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -48,6 +49,8 @@
     self.navigationItem.rightBarButtonItem = done;
 
     [self initializeNotifications];
+    
+    [[Analytics sharedInstance] markRouterSettingsScreen];
 }
 
 - (void)onDone {

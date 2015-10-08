@@ -10,6 +10,7 @@
 #import "MBProgressHUD.h"
 #import "iToast.h"
 #import "UIFont+Securifi.h"
+#import "Analytics.h"
 
 static NSString *simpleTableIdentifier = @"AccountCell";
 
@@ -155,6 +156,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
                  object:nil];
 
     [self sendUserProfileRequest];
+    
+    [[Analytics sharedInstance] markAccountsScreen];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {

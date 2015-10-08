@@ -21,6 +21,7 @@
 #import "UIImage+Securifi.h"
 #import "SFICloudLinkViewController.h"
 #import "MDJSON.h"
+#import "Analytics.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
@@ -335,6 +336,7 @@
     [self showHudWithTimeout];
     [self asyncSendCommand:cloudCommand];
     
+    [[Analytics sharedInstance] markActivateScene];
 }
 
 #pragma mark

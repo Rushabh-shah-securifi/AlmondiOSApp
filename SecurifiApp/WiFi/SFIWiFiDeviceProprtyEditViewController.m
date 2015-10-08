@@ -10,6 +10,7 @@
 #import "SFIWiFiClientsListViewController.h"
 #import "SFIWiFiDeviceTypeSelectionCell.h"
 #import "MBProgressHUD.h"
+#import "Analytics.h"
 
 @interface SFIWiFiDeviceProprtyEditViewController ()<SFIWiFiDeviceTypeSelectionCellDelegate>{
     
@@ -490,6 +491,8 @@
         
         return;
     }
+    
+    [[Analytics sharedInstance] markWifiClientUpdate];
 }
 
 #pragma mark TextField delegates

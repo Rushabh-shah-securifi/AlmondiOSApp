@@ -8,6 +8,7 @@
 
 #import "SFILogoutAllViewController.h"
 #import "UIFont+Securifi.h"
+#import "Analytics.h"
 
 @interface SFILogoutAllViewController () <UITextFieldDelegate>
 @end
@@ -47,6 +48,8 @@
     else {
         [self.password becomeFirstResponder];
     }
+    
+    [[Analytics sharedInstance] markLogoutAllScreen];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
