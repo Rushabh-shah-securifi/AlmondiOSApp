@@ -388,6 +388,7 @@ Follow it, then tap Continue to login.";
 "scenes.hud.deletingScene" = "Deleting Scene...";
 "scenes.hud.activatingScene" = "Activating scene...";
 "scenes.hud.creatingScene"   = "Creating scene...";
+"scenes.hud.updatingScene"   = "Updating scene...";
 
 "scene.macro.Could not update sensor\ndata." = "Could not update sensor data.";
 "scene.thermostat-title.COOLING TEMP." = "COOLING TEMP.";
@@ -514,7 +515,7 @@ Follow it, then tap Continue to login.";
 "SFIWiFiClientsListViewController-propertyNames-Notify me" = "Notify me";
 "SFIWiFiClientsListViewController-propertyNames-Remove" = "Remove";
 "Presence sensor Yes"="Yes";
-"Presence sensor NO" = "NO";
+"Presence sensor NO" = "No";
 "response.alert-Oops" = "Oops";
 "response.alert-Sorry, There was some problem with this request, try later!" = "Sorry, There was some problem with this request, try later!";
 "response.alert-OK" = "OK";

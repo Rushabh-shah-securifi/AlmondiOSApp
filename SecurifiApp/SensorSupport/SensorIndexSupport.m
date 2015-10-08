@@ -1704,6 +1704,30 @@
         }
 
         case SFIDeviceType_MultiSwitch_43:
+            if (type == SFIDevicePropertyType_SWITCH_BINARY1) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"false";
+                s1.iconName = @"01_switch_off";//md01 was @"44_switch_off";
+                s1.notificationText = NSLocalizedString(@" is switched Off.", @" is switched Off.");
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"true";
+                s2.iconName = @"01_switch_on";//md01 was @"44_switch_on";
+                s2.notificationText = NSLocalizedString(@" is switched On.", @" is switched On.");
+                
+                return @[s1, s2];
+            }
+            if (type == SFIDevicePropertyType_SWITCH_BINARY2) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"false";
+                s1.iconName = @"01_switch_off";//md01 was @"44_switch_off";
+                s1.notificationText = NSLocalizedString(@" is switched Off.", @" is switched Off.");
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"true";
+                s2.iconName = @"01_switch_on";//md01 was @"44_switch_on";
+                s2.notificationText = NSLocalizedString(@" is switched On.", @" is switched On.");
+                
+                return @[s1, s2];
+            }
             break;
 
         case SFIDeviceType_UnknownOnOffModule_44: {

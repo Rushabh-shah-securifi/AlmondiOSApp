@@ -232,15 +232,7 @@
             break;
         case switch1IndexPathRow:
         {
-            SFIDeviceKnownValues *currentDeviceValue;
-            NSArray *arrValue = [self.deviceValue knownDevicesValues];
-            for (SFIDeviceKnownValues *tmpValue in arrValue) {
-                if (currentDeviceValue.index==1) {
-                    currentDeviceValue = tmpValue;
-                    break;
-                }
-            }
-            
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_BINARY1];
             NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On"),
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
             
@@ -265,14 +257,7 @@
             break;
         case switch2IndexPathRow:
         {
-            SFIDeviceKnownValues *currentDeviceValue;
-            NSArray *arrValue = [self.deviceValue knownDevicesValues];
-            for (SFIDeviceKnownValues *tmpValue in arrValue) {
-                if (currentDeviceValue.index==2) {
-                    currentDeviceValue = tmpValue;
-                    break;
-                }
-            }
+           SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_BINARY2];
             
             NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On"),
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
@@ -874,49 +859,27 @@
             break;
         case switch1IndexPathRow:
         {
-            SFIDeviceKnownValues *currentDeviceValue;
-            NSArray *arrValue = [self.deviceValue knownDevicesValues];
-            
-            for (SFIDeviceKnownValues *tmpValue in arrValue) {
-                if (currentDeviceValue.index==1) {
-                    currentDeviceValue = tmpValue;
-                    break;
-                }
-            }
+            propertyType = SFIDevicePropertyType_SWITCH_BINARY1;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
             
             if ([selectedPropertyValue isEqualToString:NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On")]) {
-                currentDeviceValue.value = @"true";
+                deviceValues.value = @"true";
             }else{
-                currentDeviceValue.value = @"false";
+                deviceValues.value = @"false";
             }
-            
-            propertyType = SFIDevicePropertyType_SWITCH_BINARY;
-            
-            //TEST
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
         }
             break;
         case switch2IndexPathRow:
         {
-            SFIDeviceKnownValues *currentDeviceValue;
-            NSArray *arrValue = [self.deviceValue knownDevicesValues];
-            
-            for (SFIDeviceKnownValues *tmpValue in arrValue) {
-                if (currentDeviceValue.index==2) {
-                    currentDeviceValue = tmpValue;
-                    break;
-                }
-            }
+            propertyType = SFIDevicePropertyType_SWITCH_BINARY2;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
             
             if ([selectedPropertyValue isEqualToString:NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On")]) {
-                currentDeviceValue.value = @"true";
+                deviceValues.value = @"true";
             }else{
-                currentDeviceValue.value = @"false";
+                deviceValues.value = @"false";
             }
-            
-            propertyType = SFIDevicePropertyType_SWITCH_BINARY;
-            
-            //TEST
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
         }
             break;

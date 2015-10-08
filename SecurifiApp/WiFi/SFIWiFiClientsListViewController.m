@@ -244,7 +244,7 @@
             label.backgroundColor = [UIColor clearColor];
             label.textColor = [UIColor whiteColor];//colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
             label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
-            label.text = connectedDevice.deviceConnection;
+            label.text = [connectedDevice.deviceConnection capitalizedString];
             label.numberOfLines = 1;
             label.textAlignment = NSTextAlignmentRight;
             label.tag = 66;
@@ -275,7 +275,7 @@
             if (connectedDevice.deviceUseAsPresence) {
                 label.text = NSLocalizedString(@"Presence sensor Yes",@"Yes");
             }else{
-                label.text = NSLocalizedString(@"Presence sensor NO",@"NO");
+                label.text = NSLocalizedString(@"Presence sensor NO",@"No");
             }
             label.tag = 66;
             label.numberOfLines = 1;
