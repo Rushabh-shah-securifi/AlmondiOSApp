@@ -916,7 +916,7 @@
             break;
         case 255:
             imageName = DT53_GARAGE_SENSOR_OPEN;
-            status = NSLocalizedString(@"sensor.status-label.OPEN", @"OPEN");
+            status = NSLocalizedString(@"sensor.status-label.OPENING", @"OPENING");
             break;
         default:
             imageName = [self imageNameForNoValue];
@@ -951,7 +951,7 @@
             break;
         case 254:
             imageName = DT53_GARAGE_SENSOR_UP;
-            status = NSLocalizedString(@"sensor.status-label.OPENING", @"OPENING");
+            status = NSLocalizedString(@"sensor.status-label.OPEN", @"OPEN");
             break;
         case 255:
             imageName = DT53_GARAGE_SENSOR_OPEN;
@@ -973,24 +973,22 @@
     NSMutableArray *status = [NSMutableArray array];
     NSString *sw1 = @"";
     NSString *sw2 = @"";
-    NSArray *arrValue = [self.deviceValue knownDevicesValues];
-    for (SFIDeviceKnownValues *currentDeviceValue in arrValue) {
-        if (currentDeviceValue.index==1) {
-            if ([currentDeviceValue boolValue]) {
-                sw1 = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
-            }else if ([currentDeviceValue intValue] == 0){
-                sw1 = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
-            }
-        }
-        if (currentDeviceValue.index==2) {
-            if ([currentDeviceValue boolValue]) {
-                sw2 = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
-            }else if ([currentDeviceValue intValue] == 0){
-                sw2 = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
-            }
-        }
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_BINARY1];
+    
+    if ([currentDeviceValue boolValue]) {
+        sw1 = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
+    }else if ([currentDeviceValue intValue] == 0){
+        sw1 = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
     }
     
+    currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_BINARY2];
+    
+    if ([currentDeviceValue boolValue]) {
+        sw2 = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
+    }else if ([currentDeviceValue intValue] == 0){
+        sw2 = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
+    }
+   
     [status addObject:[NSString stringWithFormat:@"SWITCH1 :%@",sw1]];
     [status addObject:[NSString stringWithFormat:@"SWITCH2 :%@",sw2]];
     

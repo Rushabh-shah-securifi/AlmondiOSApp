@@ -264,6 +264,7 @@ Follow it, then tap Continue to login.";
 "scenes.hud.loadingScenes"   = "Loading scenes...";
 "scenes.hud.activatingScene" = "Activating scene...";
 "scenes.hud.creatingScene"   = "Creating scene...";
+"scenes.hud.updatingScene"   = "Updating scene...";
 "scenes.hud.deletingScene"   = "Deleting Scene...";
 "wifi.hud.UpdatingWifiClient" = "Updating Wifi Client...";
 "wifi.hud.removeClient"       = "Deleting wifi client...";
