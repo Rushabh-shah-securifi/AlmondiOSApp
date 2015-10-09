@@ -1428,14 +1428,8 @@
 }
 
 - (void)sendReactivationRequest {
-    ValidateAccountRequest *validateCommand = [[ValidateAccountRequest alloc] init];
-    validateCommand.email = [[SecurifiToolkit sharedInstance] loginEmail];
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_VALIDATE_REQUEST;
-    cloudCommand.command = validateCommand;
-
-    [self asyncSendCommand:cloudCommand];
+    NSString *email = [[SecurifiToolkit sharedInstance] loginEmail];
+    [[SecurifiToolkit sharedInstance] asyncSendValidateCloudAccount:email];
 }
 
 - (void)validateResponseCallback:(id)sender {

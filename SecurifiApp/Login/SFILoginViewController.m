@@ -138,7 +138,7 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (NSUInteger)supportedInterfaceOrientations {
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
 }
 
@@ -378,17 +378,10 @@
 #pragma mark - Cloud Command : Sender and Receivers
 
 - (void)sendResetPasswordRequest {
-    NSString *email = [[SecurifiToolkit sharedInstance] loginEmail];
-    NSLog(@"Sent reset email, email: %@", email);
+    NSString *email = self.emailID.text;
 
-    ResetPasswordRequest *resetCommand = [[ResetPasswordRequest alloc] init];
-    resetCommand.email = self.emailID.text;
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_RESET_PASSWORD_REQUEST;
-    cloudCommand.command = resetCommand;
-
-    [self asyncSendCommand:cloudCommand];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit asyncRequestResetCloudPassword:email];
 }
 
 - (void)onResetPasswordResponse:(id)sender {
