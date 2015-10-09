@@ -35,7 +35,7 @@
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     _HUD.labelText = NSLocalizedString(@"hud.One moment please...", @"One moment please...");
     _HUD.dimBackground = YES;
-    [self.navigationController.view addSubview:_HUD];
+    [self.view addSubview:_HUD];
 
     //PY 170913 - To stop the view from going below tab bar
     self.edgesForExtendedLayout = UIRectEdgeNone;
