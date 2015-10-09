@@ -90,6 +90,9 @@
     if (self.isBeingDismissed) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
+
+        [self.HUD removeFromSuperview];
+        _HUD = nil;
     }
 }
 

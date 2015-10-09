@@ -180,7 +180,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         [self markTitle:plus.almondplusName];
     }
 
-    if (toolkit.defaultConnectionMode == SFIAlmondConnectionMode_cloud) {
+    if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud) {
         if (!self.shownHudOnce) {
             self.shownHudOnce = YES;
             [self showHudWithTimeout];
@@ -270,7 +270,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         return;
     }
 
-    [self showLoadingRouterDataHUD];
+    if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud) {
+        [self showLoadingRouterDataHUD];
+    }
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSString *mac = self.almondMac;
