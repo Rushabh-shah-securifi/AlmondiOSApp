@@ -74,10 +74,10 @@
             NSString *subHeadline = NSLocalizedString(@"signup.headline-text.An activation link was sent to your email", @"An activation link was sent to your email. \n Follow it, then tap Continue to login.");
             [self setHeadline:headline subHeadline:subHeadline loginButtonEnabled:NO];
 
-            UIButton *button = self.createAccountButton;
-            button.backgroundColor = [UIColor clearColor];
-            [button setTitle:@"Resend Activation Link" forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            self.createAccountButton.hidden = YES;
+
+            self.localActionLabel.text = @"Did not receive any email?";
+            [self.localActionButton setTitle:@"Resend Activation Link" forState:UIControlStateNormal];
 
             break;
         }
@@ -230,19 +230,13 @@
 #pragma mark - UI Actions
 
 - (void)onCreateAccountAction:(id)sender {
-    if (self.mode == SFILoginViewControllerMode_accountCreated) {
-        // in this mode, the button means: resend the activiation link
-        [self sendReactivationRequest];
-    }
-    else {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login_iPhone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login_iPhone" bundle:nil];
 
-        SFISignupViewController *ctrl = (SFISignupViewController *) [storyboard instantiateViewControllerWithIdentifier:@"SFISignupViewController"];
-        ctrl.delegate = self;
+    SFISignupViewController *ctrl = (SFISignupViewController *) [storyboard instantiateViewControllerWithIdentifier:@"SFISignupViewController"];
+    ctrl.delegate = self;
 
-        UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-        [self presentViewController:navCtrl animated:YES completion:nil];
-    }
+    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    [self presentViewController:navCtrl animated:YES completion:nil];
 }
 
 - (IBAction)onAddLocalAlmond:(id)sender {
@@ -258,10 +252,14 @@
             [self presentViewController:ctrl animated:YES completion:nil];
             break;
         }
-        case SFILoginViewControllerMode_switchToLocalConnection:
-        case SFILoginViewControllerMode_accountCreated: {
+        case SFILoginViewControllerMode_switchToLocalConnection: {
             [[SecurifiToolkit sharedInstance] setConnectionMode:SFIAlmondConnectionMode_local forAlmond:nil];
             [self.delegate loginControllerDidCompleteLogin:self];
+            break;
+        }
+        case SFILoginViewControllerMode_accountCreated: {
+            // in this mode, the button means: resend the activiation link
+            [self sendReactivationRequest];
             break;
         }
     }
@@ -457,11 +455,15 @@
 }
 
 - (void)sendReactivationRequest {
+    [self showHudWithTimeout:10];
+
     NSString *email = self.emailID.text;
     [[SecurifiToolkit sharedInstance] asyncSendValidateCloudAccount:email];
 }
 
 - (void)onValidateResponseCallback:(id)sender {
+    [self hideHud];
+
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 

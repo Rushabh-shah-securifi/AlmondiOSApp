@@ -189,6 +189,7 @@
                         <outlet property="forgotPwdButton" destination="slZ-Ce-Cut" id="ofb-Bk-tag"/>
                         <outlet property="headingLabel" destination="Zuk-ja-Rsi" id="dyq-Yn-K4x"/>
                         <outlet property="localActionButton" destination="UMh-WG-lC3" id="0Ti-zB-wMh"/>
+                        <outlet property="localActionLabel" destination="wee-4l-TQb" id="qbY-9O-vsY"/>
                         <outlet property="loginButton" destination="9ZE-dj-qTz" id="5wr-xC-YOi"/>
                         <outlet property="password" destination="7Fl-1P-IHp" id="iJj-Ca-feE"/>
                         <outlet property="subHeadingLabel" destination="Zon-6Z-KzY" id="K92-w7-tv6"/>

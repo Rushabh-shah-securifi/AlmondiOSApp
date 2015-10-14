@@ -33,6 +33,7 @@ typedef NS_ENUM(unsigned int, SFILoginViewControllerMode) {
 @property(nonatomic, weak) IBOutlet UIButton *forgotPwdButton;
 @property(nonatomic, weak) IBOutlet UIButton *loginButton;
 @property(nonatomic, weak) IBOutlet UIButton *createAccountButton;
+@property(nonatomic, weak) IBOutlet UILabel *localActionLabel;
 @property(nonatomic, weak) IBOutlet UIButton *localActionButton;
 @property(nonatomic) enum SFILoginViewControllerMode mode;
 
