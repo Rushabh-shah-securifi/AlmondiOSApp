@@ -13,9 +13,6 @@
 #import "UIColor+Securifi.h"
 
 
-#define CONTINUE_BUTTON_SIGNUP              1
-#define CONTINUE_BUTTON_LOGIN               2
-
 #define FOOTER_TERMS_CONDS                  1
 #define FOOTER_RESEND_ACTIVATION_LINK       2
 #define FOOTER_SIGNUP_DIFF_EMAIL            3
@@ -24,7 +21,6 @@
 @property(nonatomic) UIWebView *webview;
 @property(nonatomic) UITextField *activeTextField;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
-@property BOOL acceptedLicenseTerms;
 @end
 
 @implementation SFISignupViewController
@@ -64,7 +60,7 @@
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onSignupResponseCallback:) name:SIGN_UP_NOTIFIER object:nil];
-    [center addObserver:self selector:@selector(validateResponseCallback:) name:VALIDATE_RESPONSE_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onValidateResponseCallback:) name:VALIDATE_RESPONSE_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [center addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
@@ -109,10 +105,7 @@
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(onCancelAction:)];
     self.navigationItem.leftBarButtonItem = cancelButton;
 
-    UIBarButtonItem *continueButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"signup.barbutton.Continue", @"Continue") style:UIBarButtonItemStylePlain target:self action:@selector(onContinueAction:)];
-    continueButton.tag = CONTINUE_BUTTON_SIGNUP;
-    self.navigationItem.rightBarButtonItem = continueButton;
-    [self enableContinueButton:NO];
+    self.navigationItem.rightBarButtonItem = nil;
 
     [UIView animateWithDuration:0.5
                      animations:^() {
@@ -127,7 +120,6 @@
 }
 
 - (void)onAcceptedTermsAndConditions {
-    self.acceptedLicenseTerms = YES;
     [self showSignupForm];
 }
 
@@ -143,21 +135,14 @@
         self.passwordStrengthIndicator.hidden = NO;
 
         [self setStandardHeadline];
-        [self setContinueButtonTag:CONTINUE_BUTTON_SIGNUP];
         [self setFooterForTag:FOOTER_TERMS_CONDS];
     });
 }
 
 - (void)displayScreenToLogin {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        // Do not null out email text field because it is needed for re-sending confirmation email
-        self.passwordStrength.text = @"";
-        self.passwordStrength.hidden = YES;
-        self.passwordStrengthIndicator.hidden = YES;
-
-        [self setAlmostDoneHeadline];
-        [self setContinueButtonTag:CONTINUE_BUTTON_LOGIN];
-        [self setFooterForTag:FOOTER_RESEND_ACTIVATION_LINK];
+        [self.delegate signupControllerDidComplete:self email:self.emailID.text];
+        [self dismissViewControllerAnimated:YES completion:nil];
     });
 }
 
@@ -171,72 +156,48 @@
     self.subHeadingLabel.text = NSLocalizedString(@"signup.subheadline-text.Please wait one moment...", @"Please wait one moment...");
 }
 
-- (void)setAlmostDoneHeadline {
-    self.headingLabel.text = NSLocalizedString(@"signup.headline-text.Almost done.", @"Almost done.");
-    self.subHeadingLabel.text = NSLocalizedString(@"signup.headline-text.An activation link was sent to your email", @"An activation link was sent to your email. \n Follow it, then tap Continue to login.");
-}
-
 - (void)setFooterForTag:(int)tag {
-    NSString *label;
-    NSString *button;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        NSString *label;
+        NSString *button;
 
-    switch (tag) {
-        case FOOTER_TERMS_CONDS: {
-            label = nil;
-            button = nil;
-            break;
+        switch (tag) {
+            case FOOTER_TERMS_CONDS: {
+                label = nil;
+                button = nil;
+                break;
+            }
+
+            case FOOTER_RESEND_ACTIVATION_LINK:
+                label = @"";
+                button = NSLocalizedString(@"signup.footerbutton.Resend the activation email", @"Resend the activation email");
+                break;
+
+            case FOOTER_SIGNUP_DIFF_EMAIL: {
+                label = NSLocalizedString(@"signup.footerlabel.Do you want to create another account?", @"Do you want to create another account?");
+                button = NSLocalizedString(@"signup.footerbutton.Signup using another email", @"Signup using another email");
+                break;
+            }
+
+            default: {
+                return;
+            }
         }
 
-        case FOOTER_RESEND_ACTIVATION_LINK:
-            label = @"";
-            button = NSLocalizedString(@"signup.footerbutton.Resend the activation email", @"Resend the activation email");
-            break;
+        self.footerLabel.text = label;
+        self.footerButton.tag = tag;
 
-        case FOOTER_SIGNUP_DIFF_EMAIL: {
-            label = NSLocalizedString(@"signup.footerlabel.Do you want to create another account?", @"Do you want to create another account?");
-            button = NSLocalizedString(@"signup.footerbutton.Signup using another email", @"Signup using another email");
-            break;
+        if (button) {
+            [self.footerButton setTitle:button forState:UIControlStateNormal];
+            [self.footerButton setTitle:button forState:UIControlStateHighlighted];
+            [self.footerButton setTitle:button forState:UIControlStateDisabled];
+            [self.footerButton setTitle:button forState:UIControlStateSelected];
+            self.footerButton.hidden = NO;
         }
-
-        default: {
-            return;
+        else {
+            self.footerButton.hidden = YES;
         }
-    }
-
-    self.footerLabel.text = label;
-    self.footerButton.tag = tag;
-
-    if (button) {
-        [self.footerButton setTitle:button forState:UIControlStateNormal];
-        [self.footerButton setTitle:button forState:UIControlStateHighlighted];
-        [self.footerButton setTitle:button forState:UIControlStateDisabled];
-        [self.footerButton setTitle:button forState:UIControlStateSelected];
-        self.footerButton.hidden = NO;
-    }
-    else {
-        self.footerButton.hidden = YES;
-    }
-
-}
-
-- (void)tryEnableContinueButton {
-    BOOL valid = [self validateSignupValues];
-    BOOL enabled = self.acceptedLicenseTerms && valid;
-
-    self.navigationItem.rightBarButtonItem.enabled = enabled;
-}
-
-- (void)enableContinueButton:(BOOL)enabled {
-    enabled = self.acceptedLicenseTerms && enabled;
-    self.navigationItem.rightBarButtonItem.enabled = enabled;
-}
-
-- (void)setContinueButtonTag:(int)tag {
-    self.navigationItem.rightBarButtonItem.tag = tag;
-}
-
-- (int)continueButtonTag {
-    return (int) self.navigationItem.rightBarButtonItem.tag;
+    });
 }
 
 #pragma mark - Orientation Handling
@@ -316,7 +277,6 @@
         SFICredentialsValidator *validator = [[SFICredentialsValidator alloc] init];
         PasswordStrengthType pwdStrength = [validator validatePassword:self.password.text];
         [self displayPasswordIndicator:pwdStrength];
-        [self tryEnableContinueButton];
     }
 
     return YES;
@@ -380,15 +340,8 @@
 - (IBAction)onContinueAction:(id)sender {
     [self dismissKeyboard];
 
-    int tag = [self continueButtonTag];
-
-    if (tag == CONTINUE_BUTTON_LOGIN) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    else if (tag == CONTINUE_BUTTON_SIGNUP) {
-        if ([self validateSignupValues]) {
-            [self sendSignupCommand];
-        }
+    if ([self validateSignupValues]) {
+        [self sendSignupCommand];
     }
 }
 
@@ -466,9 +419,6 @@
 
     SignupResponse *obj = (SignupResponse *) [data valueForKey:@"data"];
 
-    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.Reason);
-
     if (obj.isSuccessful) {
         [self displayScreenToLogin];
     }
@@ -512,7 +462,7 @@
     [[SecurifiToolkit sharedInstance] asyncSendValidateCloudAccount:self.emailID.text];
 }
 
-- (void)validateResponseCallback:(id)sender {
+- (void)onValidateResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
 

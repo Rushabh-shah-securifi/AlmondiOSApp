@@ -184,6 +184,7 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="createAccountButton" destination="APV-X7-KCb" id="dw7-Vr-MTN"/>
                         <outlet property="emailID" destination="Y3d-aA-TFm" id="gg7-ho-Eez"/>
                         <outlet property="forgotPwdButton" destination="slZ-Ce-Cut" id="ofb-Bk-tag"/>
                         <outlet property="headingLabel" destination="Zuk-ja-Rsi" id="dyq-Yn-K4x"/>

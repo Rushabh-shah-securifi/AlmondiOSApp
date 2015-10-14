@@ -24,4 +24,6 @@
 
 + (UIColor*)securifiScreenBlue;
 
++ (UIColor *)securifiScreenGreen;
+
 @end
