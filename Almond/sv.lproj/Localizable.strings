@@ -815,3 +815,4 @@ dina hemenheter från var som helst.";
 " is Down." = " is Down.";
 "router.linkalmond-button.title" = "LINK ALMOND";
 "signup.navbar-title.Terms of Use" = "Terms of Use";
+"router.log-advisory message" = "Along with your message, this will send Almond debug information and logs to our cloud. This information will help us resolve your problem faster. Please note that we do not send any sensitive information like your passwords.";

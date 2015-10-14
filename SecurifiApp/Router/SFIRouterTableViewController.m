@@ -524,7 +524,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
         case DEF_ROUTER_SEND_LOGS_SECTION:
             if (indexPath.row > 0) {
-                return 95;
+                return 180;
             }
 
         default: {
