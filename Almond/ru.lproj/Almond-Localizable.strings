@@ -12,8 +12,8 @@
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Давайте подключим Almond.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = " Запустите Мастера Установки на Вашем Almond, затем нажмите на символ ниже.";
+"router.linkalmond-msg.headline" = "Давайте подключим Almond.";
+"router.linkalmond-msg.message" = " Запустите Мастера Установки на Вашем Almond, затем нажмите на символ ниже.";
 "Almond Linked" = "Almond подключен";
 "Link Almond" = "Облачное подключение";
 "Local Link Almond" = "Локальное подключение";

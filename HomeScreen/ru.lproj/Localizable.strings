@@ -256,7 +256,7 @@
 
 /* signup */
 
-"signup.navbar-title.Sign up" = "Регистрация";
+"signup.navbar-title.Create Account" = "Регистрация";
 "signup.barbutton.Decline" = "Отклонить";
 "signuo.barbutton.Accept" = "Принять";
 "signup.barbutton.Continue" = "Продолжить";
@@ -653,8 +653,8 @@
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Давайте подключим HomeScreen.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = " Запустите Мастера Установки на Вашем HomeScreen, затем нажмите на символ ниже.";
+"router.linkalmond-msg.headline" = "Давайте подключим HomeScreen.";
+"router.linkalmond-msg.message" = " Запустите Мастера Установки на Вашем HomeScreen, затем нажмите на символ ниже.";
 "Almond Linked" = "HomeScreen подключен";
 "Link Almond" = "Облачное подключение";
 "Local Link Almond" = "Локальное подключение";
@@ -761,3 +761,5 @@
 " humidity is " = " humidity is ";
 " is Up." = " is Up.";
 " is Down." = " is Down.";
+"router.linkalmond-button.title" = "Link HomeScreen";
+"signup.navbar-title.Terms of Use" = "Terms of Use";

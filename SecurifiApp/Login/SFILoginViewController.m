@@ -13,6 +13,7 @@
 #import "SFIActivationViewController.h"
 #import "UIFont+Securifi.h"
 #import "RouterNetworkSettingsEditor.h"
+#import "UIColor+Securifi.h"
 
 @interface SFILoginViewController () <UITextFieldDelegate, RouterNetworkSettingsEditorDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -210,7 +211,7 @@
 #pragma mark - UI Actions
 
 - (void)onCreateAccountAction:(id)sender {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login_iPhone" bundle:nil];
     UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFISignupViewController"];
     UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:mainView];
     [self presentViewController:navCtrl animated:YES completion:nil];

@@ -261,7 +261,7 @@ sıfırlanamıyor. Daha sonra tekrar deneyin.";
 
 /* signup */
 
-"signup.navbar-title.Sign up" = "Kayıt ol";
+"signup.navbar-title.Create Account" = "Kayıt ol";
 "signup.barbutton.Decline" = "Reddet";
 "signuo.barbutton.Accept" = "Kabul et";
 "signup.barbutton.Continue" = "Devam et";
@@ -696,8 +696,8 @@ Linke tıklayın ve giriş yapmak için Devam Et.";
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Bir Almond \n bağlayalım.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Almond'unuzda sihirbazı başlatın ve aşağıdaki sembole dokunun.";
+"router.linkalmond-msg.headline" = "Bir Almond \n bağlayalım.";
+"router.linkalmond-msg.message" = "Almond'unuzda sihirbazı başlatın ve aşağıdaki sembole dokunun.";
 "Almond Linked" = "Almond Bağlandı";
 "Link Almond" = "Bulut Linki";
 "Local Link Almond" = "Yerel Link";
@@ -800,3 +800,5 @@ her yerden ulaşabilirsiniz.";
 " humidity is " = " humidity is ";
 " is Up." = " is Up.";
 " is Down." = " is Down.";
+"router.linkalmond-button.title" = "LINK ALMOND";
+"signup.navbar-title.Terms of Use" = "Terms of Use";

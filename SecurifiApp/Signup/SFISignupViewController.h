@@ -19,7 +19,7 @@
 @property(weak, nonatomic) IBOutlet UILabel *footerLabel;
 @property(weak, nonatomic) IBOutlet UIButton *footerButton;
 @property(strong, nonatomic) IBOutlet UIProgressView *passwordStrengthIndicator;
-@property(strong, nonatomic) IBOutlet UILabel *lblPasswordStrength;
+@property(strong, nonatomic) IBOutlet UILabel *passwordStrength;
 
 - (IBAction)onContinueAction:(id)sender;
 

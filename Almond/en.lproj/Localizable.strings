@@ -281,7 +281,7 @@ reset at the moment. Try again later.";
 
 
 /* signup */
-"signup.navbar-title.Sign up" = "Sign up";
+"signup.navbar-title.Create Account" = "Create Account";
 "signup.barbutton.Decline" = "Decline";
 "signuo.barbutton.Accept" = "Accept";
 "signup.barbutton.Continue" = "Continue";
@@ -683,8 +683,9 @@ Follow it, then tap Continue to login.";
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Let's link \n an Almond.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Start the wizard on your Almond, then tap the symbol below.";
+"router.linkalmond-msg.headline" = "Get Started";
+"router.linkalmond-msg.message" = "To get started, Let's link an Almond.";
+"router.linkalmond-button.title" = "LINK ALMOND";
 "Almond Linked" = "Almond Linked";
 "Link Almond" = "Cloud Link";
 "Local Link Almond" = "Local Link";
@@ -787,3 +788,4 @@ Contact us at support@securifi.com";
 "° Farenheit" = "° Farenheit";
 " is Up." = " is Up.";
 " is Down." = " is Down.";
+"signup.navbar-title.Terms of Use" = "Terms of Use";

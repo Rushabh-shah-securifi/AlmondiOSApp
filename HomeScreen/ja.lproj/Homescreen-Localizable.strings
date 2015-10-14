@@ -13,8 +13,8 @@
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = " Homescreen \n をリンクしましょう.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "ウイザードスタートし、下の記号をタップしてください。";
+"router.linkalmond-msg.headline" = " Homescreen \n をリンクしましょう.";
+"router.linkalmond-msg.message" = "ウイザードスタートし、下の記号をタップしてください。";
 "Almond Linked" = "Homescreen リンクされました";
 "Link Almond" = "クラウドリンクCloud Link";
 "Local Link Almond" = "ローカルリンクLocal Link";

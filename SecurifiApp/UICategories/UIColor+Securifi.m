@@ -83,5 +83,13 @@ static CGFloat cgfmax(CGFloat a, CGFloat b) {
     return [UIColor colorFromHexString:@"f44336"];
 }
 
++ (UIColor *)securifiLightBlue {
+    return [UIColor colorFromHexString:@"3296F2"];
+}
+
++ (UIColor *)securifiScreenBlue {
+    return [UIColor colorFromHexString:@"2A83F1"];
+}
+
 
 @end

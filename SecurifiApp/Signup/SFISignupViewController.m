@@ -10,6 +10,7 @@
 #import "SFISignupViewController.h"
 #import "Analytics.h"
 #import "UIFont+Securifi.h"
+#import "UIColor+Securifi.h"
 
 
 #define CONTINUE_BUTTON_SIGNUP              1
@@ -44,42 +45,28 @@
             NSFontAttributeName : [UIFont standardNavigationTitleFont]
     };
     self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
-    self.navigationItem.title = NSLocalizedString(@"signup.navbar-title.Sign up", @"Sign up");
+    self.navigationController.navigationBar.tintColor = [UIColor securifiScreenBlue];
 
     self.scrollView.scrollEnabled = NO;
     self.scrollView.scrollsToTop = NO;
 
-    [self showTermsAndConditions];
     [[Analytics sharedInstance] markSignUpForm];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+
+    [self showTermsAndConditions];
 
     self.password.delegate = self;
     self.emailID.delegate = self;
     self.confirmPassword.delegate = self;
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self
-               selector:@selector(onSignupResponseCallback:)
-                   name:SIGN_UP_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(validateResponseCallback:)
-                   name:VALIDATE_RESPONSE_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(keyboardDidShow:)
-                   name:UIKeyboardDidShowNotification
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(keyboardDidHide:)
-                   name:UIKeyboardDidHideNotification
-                 object:nil];
+    [center addObserver:self selector:@selector(onSignupResponseCallback:) name:SIGN_UP_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(validateResponseCallback:) name:VALIDATE_RESPONSE_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [center addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -90,21 +77,10 @@
     self.confirmPassword.delegate = nil;
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center removeObserver:self
-                      name:SIGN_UP_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:VALIDATE_RESPONSE_NOTIFIER
-                    object:nil];
-
-    [center removeObserver:self
-                      name:UIKeyboardDidShowNotification
-                    object:nil];
-
-    [center removeObserver:self
-                      name:UIKeyboardDidHideNotification
-                    object:nil];
+    [center removeObserver:self name:SIGN_UP_NOTIFIER object:nil];
+    [center removeObserver:self name:VALIDATE_RESPONSE_NOTIFIER object:nil];
+    [center removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [center removeObserver:self name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)showTermsAndConditions {
@@ -113,6 +89,8 @@
 
     UIBarButtonItem *acceptButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"signuo.barbutton.Accept", @"Accept") style:UIBarButtonItemStylePlain target:self action:@selector(onAcceptedTermsAndConditions)];
     self.navigationItem.rightBarButtonItem = acceptButton;
+
+    self.navigationItem.title = NSLocalizedString(@"signup.navbar-title.Terms of Use", @"Terms of Use");
 
     UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.frame];
 
@@ -140,6 +118,7 @@
                      animations:^() {
                          self.webview.alpha = 0.0;
                          self.scrollView.alpha = 1.0;
+                         self.navigationItem.title = NSLocalizedString(@"signup.navbar-title.Create Account", @"Create Account");
                      }
                      completion:^(BOOL finished) {
                          [self.webview removeFromSuperview];
@@ -159,8 +138,8 @@
         self.emailID.text = @"";
         self.password.text = @"";
         self.confirmPassword.text = @"";
-        self.lblPasswordStrength.text = @"";
-        self.lblPasswordStrength.hidden = NO;
+        self.passwordStrength.text = @"";
+        self.passwordStrength.hidden = NO;
         self.passwordStrengthIndicator.hidden = NO;
 
         [self setStandardHeadline];
@@ -172,8 +151,8 @@
 - (void)displayScreenToLogin {
     dispatch_async(dispatch_get_main_queue(), ^() {
         // Do not null out email text field because it is needed for re-sending confirmation email
-        self.lblPasswordStrength.text = @"";
-        self.lblPasswordStrength.hidden = YES;
+        self.passwordStrength.text = @"";
+        self.passwordStrength.hidden = YES;
         self.passwordStrengthIndicator.hidden = YES;
 
         [self setAlmostDoneHeadline];
@@ -277,36 +256,36 @@
 #pragma mark - Keyboard Methods
 
 - (void)keyboardDidShow:(NSNotification *)aNotification {
-    [self enableContinueButton:NO];
-
-    NSDictionary *info = [aNotification userInfo];
-    CGSize kbSize = [info[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-    self.scrollView.contentInset = contentInsets;
-    self.scrollView.scrollIndicatorInsets = contentInsets;
-
-    // If active text field is hidden by keyboard, scroll it so it's visible
-    CGRect fieldRect = self.activeTextField.frame;
-    fieldRect = CGRectOffset(fieldRect, 0, 3 * CGRectGetHeight(fieldRect));
-
-    CGRect aRect = self.view.frame;
-    aRect.size.height -= kbSize.height;
-
-    if (!CGRectContainsPoint(aRect, fieldRect.origin)) {
-        [self.scrollView scrollRectToVisible:fieldRect animated:YES];
-    }
+//    [self enableContinueButton:NO];
+//
+//    NSDictionary *info = [aNotification userInfo];
+//    CGSize kbSize = [info[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+//
+//    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+//    self.scrollView.contentInset = contentInsets;
+//    self.scrollView.scrollIndicatorInsets = contentInsets;
+//
+//    // If active text field is hidden by keyboard, scroll it so it's visible
+//    CGRect fieldRect = self.activeTextField.frame;
+//    fieldRect = CGRectOffset(fieldRect, 0, 3 * CGRectGetHeight(fieldRect));
+//
+//    CGRect aRect = self.view.frame;
+//    aRect.size.height -= kbSize.height;
+//
+//    if (!CGRectContainsPoint(aRect, fieldRect.origin)) {
+//        [self.scrollView scrollRectToVisible:fieldRect animated:YES];
+//    }
 }
 
 - (void)keyboardDidHide:(NSNotification *)aNotification {
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    self.scrollView.contentInset = contentInsets;
-    self.scrollView.scrollIndicatorInsets = contentInsets;
-
-    CGRect rect = self.headingLabel.frame;
-    if (!CGRectContainsPoint(self.view.frame, rect.origin)) {
-        [self.scrollView scrollRectToVisible:rect animated:YES];
-    }
+//    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+//    self.scrollView.contentInset = contentInsets;
+//    self.scrollView.scrollIndicatorInsets = contentInsets;
+//
+//    CGRect rect = self.headingLabel.frame;
+//    if (!CGRectContainsPoint(self.view.frame, rect.origin)) {
+//        [self.scrollView scrollRectToVisible:rect animated:YES];
+//    }
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -448,27 +427,27 @@
     if (pwdStrength == PasswordStrengthTypeTooShort) {
         self.passwordStrengthIndicator.progress = 0.2;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Too Short", @"Password: Too Short");
+        self.passwordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Too Short", @"Password: Too Short");
     }
     else if (pwdStrength == PasswordStrengthTypeTooLong) {
         self.passwordStrengthIndicator.progress = 0.2;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:220 / 255.0f green:20 / 255.0f blue:60 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Too Long", @"Password: Too Long");
+        self.passwordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Too Long", @"Password: Too Long");
     }
     else if (pwdStrength == PasswordStrengthTypeWeak) {
         self.passwordStrengthIndicator.progress = 0.4;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:255 / 255.0f green:215 / 255.0f blue:0 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Weak", @"Password: Weak");
+        self.passwordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Weak", @"Password: Weak");
     }
     else if (pwdStrength == PasswordStrengthTypeModerate) {
         self.passwordStrengthIndicator.progress = 0.6;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:255 / 255.0f green:140 / 255.0f blue:48 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Medium", @"Password: Medium");
+        self.passwordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Medium", @"Password: Medium");
     }
     else if (pwdStrength == PasswordStrengthTypeStrong) {
         self.passwordStrengthIndicator.progress = 1;
         self.passwordStrengthIndicator.progressTintColor = [UIColor colorWithRed:34 / 255.0f green:139 / 255.0f blue:34 / 255.0f alpha:1.0f];
-        self.lblPasswordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Strong", @"Password: Strong");
+        self.passwordStrength.text = NSLocalizedString(@"password-validation.strength-label.Password: Strong", @"Password: Strong");
     }
 }
 
@@ -573,8 +552,8 @@
 
 - (void)setOopsMessage:(NSString *)msg {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        self.headingLabel.text = NSLocalizedString(@"Oops!", @"Oops!");
-        self.subHeadingLabel.text = msg;
+        NSString *oops = NSLocalizedString(@"Oops!", @"Oops!");
+        self.subHeadingLabel.text = [NSString stringWithFormat:@"%@ %@", oops, msg];
     });
 }
 

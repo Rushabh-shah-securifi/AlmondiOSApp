@@ -259,7 +259,7 @@ sua palavra-passe de momento. Tente mais tarde.";
 
 /* signup */
 
-"signup.navbar-title.Sign up" = "Registar-se";
+"signup.navbar-title.Create Account" = "Registar-se";
 "signup.barbutton.Decline" = "Declinar";
 "signuo.barbutton.Accept" = "Aceitar";
 "signup.barbutton.Continue" = "Continuar";
@@ -655,8 +655,8 @@ Aceda à ligação e, em seguida, toque em Continuar para iniciar sessão.";
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Vamos associar uma HomeScreen.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Inicie o assistente de configuração na sua HomeScreen e, em seguida, toque no símbolo abaixo.";
+"router.linkalmond-msg.headline" = "Vamos associar uma HomeScreen.";
+"router.linkalmond-msg.message" = "Inicie o assistente de configuração na sua HomeScreen e, em seguida, toque no símbolo abaixo.";
 "Almond Linked" = "HomeScreen associada";
 "Link Almond" = "Ligação na nuvem";
 "Local Link Almond" = "Ligação local";
@@ -768,3 +768,5 @@ aos seus dispositivos domésticos a partir de qualquer local.";
 " humidity is " = " humidity is ";
 " is Up." = " is Up.";
 " is Down." = " is Down.";
+"router.linkalmond-button.title" = "Link HomeScreen";
+"signup.navbar-title.Terms of Use" = "Terms of Use";

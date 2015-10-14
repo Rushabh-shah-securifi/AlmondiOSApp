@@ -258,7 +258,7 @@ Internet router med molntjänst.";
 
 /* signup */
 
-"signup.navbar-title.Sign up" = "Registrera dig";
+"signup.navbar-title.Create Account" = "Registrera dig";
 "signup.barbutton.Decline" = "Neka";
 "signuo.barbutton.Accept" = "Godkänn";
 "signup.barbutton.Continue" = "Fortsätta";
@@ -700,8 +700,8 @@ Följ den, sedan trycker du på Fortsätt för att logga in.";
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Låt oss koppla\n en Almond.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Starta guiden på din Almond och tryck sedan på symbolen nedan.";
+"router.linkalmond-msg.headline" = "Låt oss koppla\n en Almond.";
+"router.linkalmond-msg.message" = "Starta guiden på din Almond och tryck sedan på symbolen nedan.";
 "Almond Linked" = "Almond Kopplad";
 "Link Almond" = "Molnlänk";
 "Local Link Almond" = "Lokal Länk";
@@ -813,3 +813,5 @@ dina hemenheter från var som helst.";
 " humidity is " = " humidity is ";
 " is Up." = " is Up.";
 " is Down." = " is Down.";
+"router.linkalmond-button.title" = "LINK ALMOND";
+"signup.navbar-title.Terms of Use" = "Terms of Use";
