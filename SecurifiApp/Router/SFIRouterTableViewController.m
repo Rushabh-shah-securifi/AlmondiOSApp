@@ -946,7 +946,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
     cell.cardView.backgroundColor = [[SFIColors yellowColor] color];
 
-    cell.title = NSLocalizedString(@"router.card-title.Send Logs", @"Send Logs");
+    cell.title = NSLocalizedString(@"router.card-title.Send Logs", @"Report a Problem");
     if (self.almondSupportsSendLogs == AlmondSupportsSendLogs_no) {
         cell.title = [NSString stringWithFormat:@"%@ *", cell.title];
     }

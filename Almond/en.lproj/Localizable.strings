@@ -113,7 +113,7 @@ reset at the moment. Try again later.";
 "router.hud.Router is now online." = "Router is now online.";
 "router.hud.Updating router firmware." = "Updating router software.";
 "router.hud.Router is rebooting." = "Router is rebooting.";
-"router.card-title.Send Logs" = "Send Logs";
+"router.card-title.Send Logs" = "Report a Problem";
 "router.Sends %@'s logs to our server" = "Sends %@'s logs to our server";
 "router.hud.Sending Logs." = "Instructing router to send logs";
 
@@ -223,7 +223,7 @@ reset at the moment. Try again later.";
 "sensors.heating.temperature" = "Heating Temperature";
 "sensors.cooling.temperature" = "Cooling Temperature";
 
-"sensor.deivice-showlog.button.viewlogs" = "View Logs";
+"sensor.deivice-showlog.button.viewlogs" = "View Device History";
 "sensor.deivice-warning_rightview.seconds" = "seconds";
 "sensor.deivice.Highlightbutton Turn Off" = "Turn Off";
 "sensor.deivice.Highlightbutton Turn ON" = "Turn ON";
@@ -289,7 +289,7 @@ reset at the moment. Try again later.";
 "signup.subheadline-text.Please wait one moment..." = "Please wait one moment...";
 "signup.headline-text.Almost done." = "Almost done.";
 "signup.headline-text.An activation link was sent to your email" = "An activation link was sent to your email.
-Follow it, then tap Continue to login.";
+Follow it, then login below.";
 "signup.footerbutton.Resend the activation email" = "Resend the activation email";
 "signup.footerbutton.Signup using another email" = "Signup using another email";
 "signup.footerlabel.Do you want to create another account?" = "Do you want to create another account?";
