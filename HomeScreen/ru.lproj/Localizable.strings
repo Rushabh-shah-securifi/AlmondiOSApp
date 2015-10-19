@@ -567,6 +567,8 @@
 "HEATING TEMP." = "ОТОПЛЕНИЕ ТЕМП.";
 "Version" = "Версия";
 "Settings" = "Настройки";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 //
 "login.local.Switch to Local Connection" = "Переключиться на Локальное Соединение";

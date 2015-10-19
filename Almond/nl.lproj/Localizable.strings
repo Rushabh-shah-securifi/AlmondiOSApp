@@ -574,6 +574,8 @@ Volg deze en tik op Doorgaan om aan te melden.";
 "HEATING TEMP." = "verwarmingstemperatuur";
 "Version" = "Versie";
 "Settings" = "Instellingen";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 
 //

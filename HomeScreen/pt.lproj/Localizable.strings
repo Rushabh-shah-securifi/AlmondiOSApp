@@ -571,6 +571,8 @@ Aceda à ligação e, em seguida, toque em Continuar para iniciar sessão.";
 "HEATING TEMP." = "AQUECIMENTO TEMP.";
 "Version" = "versão";
 "Settings" = "Definições";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 
 

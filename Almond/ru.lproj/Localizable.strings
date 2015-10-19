@@ -568,6 +568,8 @@
 "HEATING TEMP." = "ОТОПЛЕНИЕ ТЕМП.";
 "Version" = "Версия";
 "Settings" = "Настройки";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 
 //

@@ -573,6 +573,8 @@ Abra el vínculo y, a continuación, pulse Continuar para iniciar sesión.";
 "HEATING TEMP." = "TEMP CALEFACCIÓN.";
 "Version" = "Versión";
 "Settings" = "Ajustes";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 
 

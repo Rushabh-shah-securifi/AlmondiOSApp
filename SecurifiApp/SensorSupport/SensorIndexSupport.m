@@ -1687,7 +1687,7 @@
              </Index>
              </Sensor>
              */
-            if (type == SFIDevicePropertyType_SWITCH_BINARY) {
+            if (type == SFIDevicePropertyType_SENSOR_BINARY) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName = @"42_alarm_no";
