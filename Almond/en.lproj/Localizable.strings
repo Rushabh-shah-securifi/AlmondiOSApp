@@ -702,7 +702,7 @@ Contact us at support@securifi.com";
 "Monitor and Control your home from anywhere." = "Monitor and Control your home from anywhere.";
 
 /* router tab */
-"router.offline-msg.label.Almond is Offline." = "Almond is Offline.";
+"router.offline-msg.label.Almond is Offline." = "We are unable to reach your Almond at this time. Try again later.";
 
 "router.msg-link.The Almond was successfully linked." = "The Almond was successfully linked.";
 "router.btn-title.Unlink Almond?" = "Unlink Almond?";
