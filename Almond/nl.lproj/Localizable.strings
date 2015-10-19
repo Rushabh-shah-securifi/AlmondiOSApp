@@ -262,7 +262,7 @@ niet opnieuw worden ingesteld. Probeer het later opnieuw.";
 
 /* signup */
 
-"signup.navbar-title.Sign up" = "Registreren";
+"signup.navbar-title.Create Account" = "Registreren";
 "signup.barbutton.Decline" = "Weigeren";
 "signuo.barbutton.Accept" = "Accepteren";
 "signup.barbutton.Continue" = "Doorgaan";
@@ -695,8 +695,8 @@ Volg deze en tik op Doorgaan om aan te melden.";
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Laten we \n een Almond koppelen.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Start de wizard op uw Almond en tik daarna op het onderstaande symbool.";
+"router.linkalmond-msg.headline" = "Laten we \n een Almond koppelen.";
+"router.linkalmond-msg.message" = "Start de wizard op uw Almond en tik daarna op het onderstaande symbool.";
 "Almond Linked" = "Gekoppelde Almond";
 "Link Almond" = "Cloud-link";
 "Local Link Almond" = "Locale link";
@@ -804,3 +804,6 @@ thuisapparaten overal.";
 " humidity is " = " humidity is ";
 " is Up." = " is Up.";
 " is Down." = " is Down.";
+"router.linkalmond-button.title" = "LINK ALMOND";
+"signup.navbar-title.Terms of Use" = "Terms of Use";
+"router.log-advisory message" = "Along with your message, this will send Almond debug information and logs to our cloud. This information will help us resolve your problem faster. Please note that we do not send any sensitive information like your passwords.";

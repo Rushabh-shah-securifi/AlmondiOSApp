@@ -180,7 +180,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         [self markTitle:plus.almondplusName];
     }
 
-    if (toolkit.defaultConnectionMode == SFIAlmondConnectionMode_cloud) {
+    if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud) {
         if (!self.shownHudOnce) {
             self.shownHudOnce = YES;
             [self showHudWithTimeout];
@@ -270,7 +270,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         return;
     }
 
-    [self showLoadingRouterDataHUD];
+    if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud) {
+        [self showLoadingRouterDataHUD];
+    }
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSString *mac = self.almondMac;
@@ -522,7 +524,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
         case DEF_ROUTER_SEND_LOGS_SECTION:
             if (indexPath.row > 0) {
-                return 95;
+                return 180;
             }
 
         default: {
@@ -944,7 +946,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
     cell.cardView.backgroundColor = [[SFIColors yellowColor] color];
 
-    cell.title = NSLocalizedString(@"router.card-title.Send Logs", @"Send Logs");
+    cell.title = NSLocalizedString(@"router.card-title.Send Logs", @"Report a Problem");
     if (self.almondSupportsSendLogs == AlmondSupportsSendLogs_no) {
         cell.title = [NSString stringWithFormat:@"%@ *", cell.title];
     }

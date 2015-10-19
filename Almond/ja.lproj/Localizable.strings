@@ -261,7 +261,7 @@
 
 /* signup */
 
-"signup.navbar-title.Sign up" = "サイナップ";
+"signup.navbar-title.Create Account" = "サイナップ";
 "signup.barbutton.Decline" = "不同意";
 "signuo.barbutton.Accept" = "同意";
 "signup.barbutton.Continue" = "進む";
@@ -706,8 +706,8 @@
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = " Almond \n をリンクしましょう.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "ウイザードスタートし、下の記号をタップしてください。";
+"router.linkalmond-msg.headline" = " Almond \n をリンクしましょう.";
+"router.linkalmond-msg.message" = "ウイザードスタートし、下の記号をタップしてください。";
 "Almond Linked" = "Almond リンクされました";
 "Link Almond" = "クラウドリンクCloud Link";
 "Local Link Almond" = "ローカルリンクLocal Link";
@@ -836,3 +836,7 @@ Can't connect to your Almond. Please select a connection method.";
 " humidity is " = " humidity is ";
 " is Up." = " is Up.";
 " is Down." = " is Down.";
+"Monitor and Control your home from anywhere." = "Monitor and Control your home from anywhere.";
+"router.linkalmond-button.title" = "LINK ALMOND";
+"signup.navbar-title.Terms of Use" = "Terms of Use";
+"router.log-advisory message" = "Along with your message, this will send Almond debug information and logs to our cloud. This information will help us resolve your problem faster. Please note that we do not send any sensitive information like your passwords.";

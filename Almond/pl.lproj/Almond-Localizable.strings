@@ -10,8 +10,8 @@
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Połączmy urządzenie Almond.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Uruchom kreatora instalacji na Twoim urządzeniu Almond, a następnie dotknij symbolu poniżej.";
+"router.linkalmond-msg.headline" = "Połączmy urządzenie Almond.";
+"router.linkalmond-msg.message" = "Uruchom kreatora instalacji na Twoim urządzeniu Almond, a następnie dotknij symbolu poniżej.";
 "Almond Linked" = "Almond połączony";
 "Link Almond" = "Połączenie z chmurą";
 "Local Link Almond" = "Połączenie lokalne";

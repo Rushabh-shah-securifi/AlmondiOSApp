@@ -256,7 +256,7 @@
 
 /* signup */
 
-"signup.navbar-title.Sign up" = "Registrieren";
+"signup.navbar-title.Create Account" = "Registrieren";
 "signup.barbutton.Decline" = "Ablehnen";
 "signuo.barbutton.Accept" = "Akzeptieren";
 "signup.barbutton.Continue" = "Weiter";
@@ -696,8 +696,8 @@ Bitte folgen Sie dem Link zur Anmeldung.";
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Ein Almond \n verbinden.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Starten Sie den Assistenten auf dem LCD und tippen Sie auf das Symbol.";
+"router.linkalmond-msg.headline" = "Ein Almond \n verbinden.";
+"router.linkalmond-msg.message" = "Starten Sie den Assistenten auf dem LCD und tippen Sie auf das Symbol.";
 "Almond Linked" = "Almond Verlinkt";
 "Link Almond" = "Cloud Link";
 "Local Link Almond" = "Lokaler Link";
@@ -803,3 +803,7 @@ your home devices from anywhere.";
 " humidity is " = " humidity is ";
 " is Up." = " is Up.";
 " is Down." = " is Down.";
+"Monitor and Control your home from anywhere." = "Monitor and Control your home from anywhere.";
+"router.linkalmond-button.title" = "LINK ALMOND";
+"signup.navbar-title.Terms of Use" = "Terms of Use";
+"router.log-advisory message" = "Along with your message, this will send Almond debug information and logs to our cloud. This information will help us resolve your problem faster. Please note that we do not send any sensitive information like your passwords.";
