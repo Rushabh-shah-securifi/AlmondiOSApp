@@ -311,14 +311,14 @@
         {
             SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE];
             
-            NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On"),
-                                NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
+            NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.Start", @"Start"),
+                                NSLocalizedString(@"sensor.notificaiton.fanindexpath.Stop", @"Stop")];
             
             selectedPropertyValue = @"";
             if ([currentDeviceValue.value isEqualToString:@"true"]) {
-                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
+                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Start", @"Start");
             }else if ([currentDeviceValue.value isEqualToString:@"false"]){
-                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
+                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Stop", @"Stop");
             }
             
             for (NSString * name in cnames) {
@@ -788,9 +788,9 @@
         case fanIndexPathRow:
             propertyType = SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
-            if ([selectedPropertyValue isEqualToString:@"On"]) {
+            if ([selectedPropertyValue isEqualToString:NSLocalizedString(@"sensor.notificaiton.fanindexpath.Start", @"Start")]) {
                 deviceValues.value = NSLocalizedString(@"device-property-fanindexpah true",@"true");
-            }else if ([selectedPropertyValue isEqualToString:@"Off"]){
+            }else if ([selectedPropertyValue isEqualToString:NSLocalizedString(@"sensor.notificaiton.fanindexpath.Stop", @"Stop")]){
                 deviceValues.value = NSLocalizedString(@"device-property-fanindexpah false",@"false");
             }else{
                 deviceValues.value = @"";
@@ -1297,8 +1297,6 @@
 }
 
 #pragma mark - Cloud command senders and handlers
-
-
 
 - (void)sendMobileCommandForDevice:(SFIDevice *)device deviceValue:(SFIDeviceKnownValues *)deviceValues {
     if (device == nil) {

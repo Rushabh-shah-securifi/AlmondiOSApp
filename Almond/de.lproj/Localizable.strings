@@ -567,6 +567,8 @@ Bitte folgen Sie dem Link zur Anmeldung.";
 "HEATING TEMP."="HEATING TEMP.";
 "Version"="Version";
 "Settings"="Settings";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 
 //

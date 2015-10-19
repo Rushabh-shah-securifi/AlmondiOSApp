@@ -570,6 +570,8 @@ Följ den, sedan trycker du på Fortsätt för att logga in.";
 "HEATING TEMP." = "UPPVÄRMNING TEMP.";
 "Version" = "Version";
 "Settings" = "Inställningar";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 
 

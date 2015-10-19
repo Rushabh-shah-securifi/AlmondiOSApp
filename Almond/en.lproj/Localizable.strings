@@ -240,10 +240,12 @@ reset at the moment. Try again later.";
 "smoke-detector-Emergency" = "Emergency";
 "smoke-detector Smoke :%@ , CO :%@"="Smoke :%@ , CO :%@";
 
-"sensor-detail-Fan cell On" = "On";
-"sensor-detail-Fan cell Off" = "Off";
+"sensor-detail-Fan cell On" = "Start";
+"sensor-detail-Fan cell Off" = "Stop";
 "sensor-detail-Target Temp" = "Target Temp";
 
+"sensor.notificaiton.fanindexpath.Start" = "Start";
+"sensor.notificaiton.fanindexpath.Stop" = "Stop";
 "sensor.notificaiton.fanindexpath.On" = "On";
 "sensor.notificaiton.fanindexpath.Off" = "Off";
 "sensor.awaymode.indexpath Home" = "Home";
@@ -419,6 +421,8 @@ Follow it, then tap Continue to login.";
 "HEATING TEMP."="HEATING TEMP.";
 "Version"="Version";
 "Settings"="Settings";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 
 /* Scoreboard */

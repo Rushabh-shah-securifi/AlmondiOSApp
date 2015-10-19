@@ -417,6 +417,8 @@ Follow it, then tap Continue to login.";
 "HEATING TEMP."="HEATING TEMP.";
 "Version"="Version";
 "Settings"="Settings";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 
 /* Scoreboard */

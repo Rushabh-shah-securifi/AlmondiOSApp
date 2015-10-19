@@ -314,7 +314,17 @@
     
     switch (indexPath.row) {
         case nameIndexPathRow:
+        {
+            if (self.device.deviceType!=SFIDeviceType_NestThermostat_57 && self.device.deviceType!=SFIDeviceType_NestSmokeDetector_58) {
+                [self editProperty:indexPath.row];
+            }
+            break;
+        }
         case locationIndexPathRow:
+            if (self.device.deviceType!=SFIDeviceType_NestThermostat_57 && self.device.deviceType!=SFIDeviceType_NestSmokeDetector_58) {
+                [self editProperty:indexPath.row];
+            }
+            break;
         case acModeIndexPathRow:
         case acFanIndexPathRow:
         case awayModeIndexPathRow:
@@ -675,7 +685,11 @@
     label.tag = 66;
     label.textAlignment = NSTextAlignmentRight;
     [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    if (self.device.deviceType!=SFIDeviceType_NestThermostat_57 && self.device.deviceType!=SFIDeviceType_NestSmokeDetector_58) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }else{
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
 
 - (void)configureFanCell:(UITableViewCell*)cell{
@@ -686,9 +700,9 @@
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE];
     
     if ([currentDeviceValue.value boolValue]) {
-        label.text = NSLocalizedString(@"sensor-detail-Fan cell On",@"On");
+        label.text = NSLocalizedString(@"sensor-detail-Fan cell On",@"Start");
     }else{
-        label.text = NSLocalizedString(@"sensor-detail-Fan cell Off",@"Off");
+        label.text = NSLocalizedString(@"sensor-detail-Fan cell Off",@"Stop");
     }
     label.numberOfLines = 1;
     label.tag = 66;
@@ -869,7 +883,12 @@
     label.tag = 66;
     label.textAlignment = NSTextAlignmentRight;
     [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    if (self.device.deviceType!=SFIDeviceType_NestThermostat_57 && self.device.deviceType!=SFIDeviceType_NestSmokeDetector_58) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }else{
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
 }
 
 - (void)configureTargetRangeCell:(UITableViewCell*)cell{

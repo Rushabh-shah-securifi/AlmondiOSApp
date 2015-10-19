@@ -573,6 +573,8 @@ Kliknij go, a następnie dotknij Kontynuuj, aby się zalogować.";
 "HEATING TEMP." = "TEMP OGRZEWANIE.";
 "Version" = "Wersja";
 "Settings" = "Ustawienia";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 "login.local.Switch to Local Connection" = "Przełącz na połączenie lokalne";
 
