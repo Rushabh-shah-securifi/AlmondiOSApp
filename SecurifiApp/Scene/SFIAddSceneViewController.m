@@ -81,10 +81,14 @@
     }else{
         self.title = NSLocalizedString(@"scene.title.New Scene", @"New Scene");
     }
-    originalTableViewFrame = self.tableView.frame;
     [super viewWillAppear:animated];
     
     [[Analytics sharedInstance] markNewSceneScreen];
+}
+
+-(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+    originalTableViewFrame = self.tableView.frame;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

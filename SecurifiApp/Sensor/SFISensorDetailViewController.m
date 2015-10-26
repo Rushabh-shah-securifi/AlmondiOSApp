@@ -388,10 +388,7 @@
 
 #pragma mark Cofigure Cells
 - (void)configureHumidityCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
+    
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HUMIDITY];
     NSString * val = currentDeviceValue.value;
     if (val.length==0){
@@ -400,120 +397,64 @@
     if (val.length>0 && [val rangeOfString:@"%"].location==NSNotFound) {
         val = [val stringByAppendingString:@"%"];
     }
-    label.text = val;
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    [self addValueLabel:cell Editable:NO Value:val];
 }
 
 - (void)configureLuminanceCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
+    
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_LUMINANCE_PERCENT];
     int luminance = [currentDeviceValue.value intValue];
-    label.text = [NSString stringWithFormat:@"%d lux",luminance];
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    [self addValueLabel:cell Editable:NO Value:[NSString stringWithFormat:@"%d lux",luminance]];
 }
 
 - (void)configureAwayModeCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
-    label.text = [currentDeviceValue.value capitalizedString];
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    [self addValueLabel:cell Editable:YES Value:[currentDeviceValue.value capitalizedString]];
 }
 
 - (void)configureCOLevelCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CO_ALARM_STATE];
-    label.text = [currentDeviceValue.value capitalizedString];
+    NSString *text = [currentDeviceValue.value capitalizedString];
     if ([currentDeviceValue.value isEqualToString:@"true"]) {
-        label.text = NSLocalizedString(@"smoke-detector-Warning",@"Warning");
+        text = NSLocalizedString(@"smoke-detector-Warning",@"Warning");
     }else if ([currentDeviceValue.value isEqualToString:@"false"]){
-        label.text = NSLocalizedString(@"smoke-detector-Emergency",@"Emergency");
+        text = NSLocalizedString(@"smoke-detector-Emergency",@"Emergency");
     }
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    [self addValueLabel:cell Editable:NO Value:text];
 }
 
 - (void)configureSmokeLevelCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
+    
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SMOKE_ALARM_STATE];
-    label.text = [currentDeviceValue.value capitalizedString];
+    NSString *text = [currentDeviceValue.value capitalizedString];
     if ([currentDeviceValue.value isEqualToString:@"true"]) {
-        label.text = NSLocalizedString(@"smoke-detector-Warning",@"Warning");
+        text = NSLocalizedString(@"smoke-detector-Warning",@"Warning");
     }else if ([currentDeviceValue.value isEqualToString:@"false"]){
-        label.text = NSLocalizedString(@"smoke-detector-Emergency",@"Emergency");
+        text = NSLocalizedString(@"smoke-detector-Emergency",@"Emergency");
     }
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    [self addValueLabel:cell Editable:NO Value:text];
 }
 
 - (void)configureBatteryCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
+    
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BATTERY];
     NSString * val = currentDeviceValue.value;
-    label.text = [val stringByAppendingString:@"%"];
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    [self addValueLabel:cell Editable:NO Value:[val stringByAppendingString:@"%"]];
 }
 
 - (void)configureActionsCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
+    
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_UP_DOWN];
     if ([currentDeviceValue intValue]==99) {
-        label.text =   NSLocalizedString(@"device-property-fanindexpah up",@"Up");
+        [self addValueLabel:cell Editable:YES Value:NSLocalizedString(@"device-property-fanindexpah up",@"Up")];
     }else{
-        label.text =   NSLocalizedString(@"device-property-fanindexpah down",@"Down");
+        [self addValueLabel:cell Editable:YES Value:NSLocalizedString(@"device-property-fanindexpah down",@"Down")];
     }
-    
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 - (void)configureSirenSwitchMultilevelCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
+    
     SFIDeviceKnownValues *kValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_MULTILEVEL];
     
     NSString * strVal = @"";
@@ -543,359 +484,175 @@
             break;
     }
     
-    label.text = strVal;
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    [self addValueLabel:cell Editable:YES Value:strVal];
 }
 
 - (void)configureStopCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
+    
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_STOP];
-    label.text = currentDeviceValue.value;
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    [self addValueLabel:cell Editable:YES Value:currentDeviceValue.value];
 }
 
 - (void)configureclamp1EnergyCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CLAMP1_ENERGY];
-    label.text = currentDeviceValue.value;
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    [self addValueLabel:cell Editable:NO Value:currentDeviceValue.value];
 }
 
 - (void)configureclamp2EnergyCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CLAMP2_ENERGY];
-    label.text = currentDeviceValue.value;
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    [self addValueLabel:cell Editable:NO Value:currentDeviceValue.value];
 }
 
 - (void)configureclamp1PowerCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CLAMP1_POWER];
-    label.text = currentDeviceValue.value;
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    [self addValueLabel:cell Editable:NO Value:currentDeviceValue.value];
 }
 
 - (void)configureclamp2PowerCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
+    
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CLAMP2_POWER];
-    label.text = currentDeviceValue.value;
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    [self addValueLabel:cell Editable:NO Value:currentDeviceValue.value];
 }
 
 - (void)configureSwitch1Cell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
+    
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_BINARY1];
     
     if ([currentDeviceValue boolValue]) {
-        label.text = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
+        [self addValueLabel:cell Editable:YES Value:NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On")];
     }else if ([currentDeviceValue intValue] == 0){
-        label.text = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
+        [self addValueLabel:cell Editable:YES Value: NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
     }
-    
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 - (void)configureSwitch2Cell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_BINARY2];
     
     if ([currentDeviceValue boolValue]) {
-        label.text = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
+        [self addValueLabel:cell Editable:YES Value: NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
     }else if ([currentDeviceValue intValue] == 0){
-        label.text = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
+        [self addValueLabel:cell Editable:YES Value: NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
     }
-    
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 - (void)configuremultiSensorTempCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_TEMPERATURE];
-    label.text = currentDeviceValue.value;
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryNone;
+    [self addValueLabel:cell Editable:NO Value:currentDeviceValue.value];
 }
 
 - (void)configureNameCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
-    label.text = self.device.deviceName;
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
     if (self.device.deviceType!=SFIDeviceType_NestThermostat_57 && self.device.deviceType!=SFIDeviceType_NestSmokeDetector_58) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [self addValueLabel:cell Editable:YES Value:self.device.deviceName];
     }else{
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        [self addValueLabel:cell Editable:NO Value:self.device.deviceName];
     }
 }
 
 - (void)configureFanCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
+    SFIDeviceKnownValues *awayModeDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE];
-    
+    NSString *val = @"";
     if ([currentDeviceValue.value boolValue]) {
-        label.text = NSLocalizedString(@"sensor-detail-Fan cell On",@"Start");
+        val = NSLocalizedString(@"sensor-detail-Fan cell On",@"Start");
     }else{
-        label.text = NSLocalizedString(@"sensor-detail-Fan cell Off",@"Stop");
+        val = NSLocalizedString(@"sensor-detail-Fan cell Off",@"Stop");
     }
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
-    if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"home"]) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    if ([[awayModeDeviceValue.value lowercaseString] isEqualToString:@"home"]) {
+        [self addValueLabel:cell Editable:YES Value:val];
     }else{
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        [self addValueLabel:cell Editable:NO Value:val];
     }
-    
 }
 
 - (void)configureACModeCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_MODE];
-    label.text = [currentDeviceValue.value capitalizedString];
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    [self addValueLabel:cell Editable:YES Value:[currentDeviceValue.value capitalizedString]];
 }
 
 - (void)configureSwingCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_SWING];
     if ([currentDeviceValue intValue]==0) {
-        label.text = @"OFF";
+        [self addValueLabel:cell Editable:YES Value:@"OFF"];
     }else{
-        label.text = @"ON";
+        [self addValueLabel:cell Editable:YES Value:@"ON"];
     }
-    
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 - (void)configurePowerCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_POWER];
     if ([currentDeviceValue intValue] != 0) {
-        label.text = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
+        [self addValueLabel:cell Editable:YES Value:NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On")];
     }else{
-        label.text = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
+        [self addValueLabel:cell Editable:YES Value:NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
     }
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 - (void)configureACFanModeCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_FAN_MODE];
-    label.text = [currentDeviceValue.value capitalizedString];
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    [self addValueLabel:cell Editable:YES Value:[currentDeviceValue.value capitalizedString]];
 }
 
 - (void)configureConfigCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CONFIGURATION];
-    label.text = [currentDeviceValue.value capitalizedString];
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    [self addValueLabel:cell Editable:YES Value:[currentDeviceValue.value capitalizedString]];
 }
 
 - (void)configureIRCodeCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_IR_CODE];
-    label.text = currentDeviceValue.value;
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    [self addValueLabel:cell Editable:YES Value:currentDeviceValue.value];
 }
 
 - (void)configureHighTempCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_SETPOINT_HEATING];
     
     int targetValue = [currentDeviceValue intValue];
-    label.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:targetValue];
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
     
     currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_MODE];
     if (![[currentDeviceValue.value uppercaseString] isEqualToString:@"AUTO"]) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [self addValueLabel:cell Editable:YES Value:[[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:targetValue]];
     } else{
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        [self addValueLabel:cell Editable:NO Value:[[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:targetValue]];
     }
 }
 
 - (void)configureLowTempCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
+    
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_SETPOINT_COOLING];
     
     int targetValue = [currentDeviceValue intValue];
-    label.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:targetValue];
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
+    
     currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_MODE];
     if (![[currentDeviceValue.value uppercaseString] isEqualToString:@"AUTO"]) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [self addValueLabel:cell Editable:YES Value:[[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:targetValue]];
     } else{
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        [self addValueLabel:cell Editable:NO Value:[[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:targetValue]];
     }
 }
 
 - (void)configureModeCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
-    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
-    label.text = [currentDeviceValue.value capitalizedString];
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
-    currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
+    
+    SFIDeviceKnownValues *modeValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
     if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"home"]) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [self addValueLabel:cell Editable:YES Value:[modeValue.value capitalizedString]];
     }else{
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        [self addValueLabel:cell Editable:YES Value:[modeValue.value capitalizedString]];
     }
     
 }
 
 - (void)configureLocationCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
-    label.text = self.device.location;
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
     if (self.device.deviceType!=SFIDeviceType_NestThermostat_57 && self.device.deviceType!=SFIDeviceType_NestSmokeDetector_58) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [self addValueLabel:cell Editable:YES Value:self.device.location];
     }else{
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        [self addValueLabel:cell Editable:NO Value:self.device.location];
     }
-    
 }
 
+
 - (void)configureTargetRangeCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
+    
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_THERMOSTAT_RANGE_LOW];
     int lowValue = [currentDeviceValue intValue];
     
@@ -912,9 +669,9 @@
     if (![[SecurifiToolkit sharedInstance] isCurrentTemperatureFormatFahrenheit]) {
         prefix = @"C";
     }
-    
+    NSString * strVal = @"";
     if ([mode isEqualToString:@"cool"] || !canHeat) {
-        label.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:targetValue];
+        strVal = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:targetValue];
         for (UILabel *c in cell.subviews) {
             if ([c isKindOfClass:[UILabel class]]) {
                 if (c.tag==66) {
@@ -923,7 +680,7 @@
             }
         }
     }else if ([mode isEqualToString:@"heat"] || !canCool){
-        label.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:targetValue];
+        strVal = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:targetValue];
         for (UILabel *c in cell.subviews) {
             if ([c isKindOfClass:[UILabel class]]) {
                 if (c.tag==66) {
@@ -932,18 +689,15 @@
             }
         }
     }else{
-        label.text = [NSString stringWithFormat:@"%d - %d° %@",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:lowValue],[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:highValue],prefix];
+        strVal = [NSString stringWithFormat:@"%d - %d° %@",[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:lowValue],[[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:highValue],prefix];
     }
     
-    label.numberOfLines = 1;
-    label.tag = 66;
-    label.textAlignment = NSTextAlignmentRight;
-    [cell addSubview:label];
+    
     currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
     if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"home"]) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [self addValueLabel:cell Editable:YES Value:strVal];
     }else{
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        [self addValueLabel:cell Editable:NO Value:strVal];
     }
 }
 
@@ -965,29 +719,41 @@
 }
 
 - (void)configureNotifyMeCell:(UITableViewCell*)cell{
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
-    label.backgroundColor = [UIColor clearColor];
-    label.textColor = [UIColor whiteColor];
-    label.font = cellFont;
+    NSString *strVal = @"";
     switch (self.device.notificationMode) {
         case SFINotificationMode_always:
-            label.text =notifyMe_items[0];
+            strVal = notifyMe_items[0];
             break;
         case SFINotificationMode_away:
-            label.text =notifyMe_items[1];
+            strVal = notifyMe_items[1];
             break;
         case SFINotificationMode_off:
-            label.text =notifyMe_items[2];
+            strVal = notifyMe_items[2];
             break;
         default:
             break;
     }
     
+    [self addValueLabel:cell Editable:YES Value:strVal];
+}
+
+- (void)addValueLabel:(UITableViewCell*)cell Editable:(BOOL)editable Value:(NSString*)value{
+    UILabel *label;
+    if (editable) {
+        label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 220, 0, 180, 44)];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }else{
+        label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    label.backgroundColor = [UIColor clearColor];
+    label.textColor = [UIColor whiteColor];
+    label.font = cellFont;
+    label.text = value;
     label.numberOfLines = 1;
     label.tag = 66;
     label.textAlignment = NSTextAlignmentRight;
     [cell addSubview:label];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 }
 
 - (void)showSensorLogs{

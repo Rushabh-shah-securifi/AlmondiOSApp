@@ -52,7 +52,7 @@
     randomMobileInternalIndex = arc4random() % 10000;
     tblDevices.SKSTableViewDelegate = self;
     tblDevices.shouldExpandOnlyOneCell = YES;
-    propertyNames = @[@"Name",@"Type",@"MAC Address",@"Last Known IP",@"Connection",@"Use as Presence Sensor",@"Notify me",@"Set Inactivity Timeout",@"View Device History",@"Remove"];
+    propertyNames = @[@"Name",@"Type",@"MAC Address",@"Last Known IP",@"Connection",@"Use as Presence Sensor",@"Notify me",@"Set Inactivity Timeout",@"Last Actived Time", @"View Device History",@"Remove"];
     [self initializeNotifications];
     [self getClientsPreferences];
 }
@@ -268,6 +268,20 @@
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
+        case lastActiveTimeIndexPathRow:
+        {
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
+            label.backgroundColor = [UIColor clearColor];
+            label.textColor = [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
+            label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
+            label.text = connectedDevice.deviceLastActiveTime;
+            label.numberOfLines = 1;
+            label.tag = 66;
+            label.textAlignment = NSTextAlignmentRight;
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            [cell addSubview:label];
+            break;
+        }
         case usePresenceSensorIndexPathRow://Use as presence Sensor
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 220, 0, 180, propertyRowCellHeight)];
@@ -375,6 +389,12 @@
     if (subrowIndex==removeButtonIndexPathRow) {
         return removeRowCellHeight;
     }
+//    if (subrowIndex==lastActiveTimeIndexPathRow) {
+//        if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceLastActiveTime.length==0) {
+//            return 0;
+//        }
+//        return removeRowCellHeight;
+//    }
     return 44.0f;
 }
 
