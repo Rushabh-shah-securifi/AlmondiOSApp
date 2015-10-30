@@ -10,6 +10,7 @@
 #import "SFIWiFiClientsListViewController.h"
 #import "SFIWiFiDeviceTypeSelectionCell.h"
 #import "MBProgressHUD.h"
+#import "Analytics.h"
 
 @interface SFIWiFiDeviceProprtyEditViewController ()<SFIWiFiDeviceTypeSelectionCellDelegate>{
     
@@ -270,7 +271,7 @@
             default:
                 break;
         }
-        NSDictionary * clients = @{@"ID":self.connectedDevice.deviceID,@"Name":clientName,@"Connection":selectedConnectionType,@"MAC":self.connectedDevice.deviceMAC,@"Type":[selectedDeviceType lowercaseString],@"LastKnownIP":self.connectedDevice.deviceIP,@"Active":self.connectedDevice.isActive?@"true":@"false",@"UseAsPresence":btnUsePresence.selected?@"true":@"false",@"Wait":clientTimeout};
+        NSDictionary * clients = @{@"ID":self.connectedDevice.deviceID,@"Name":clientName,@"Connection":[selectedConnectionType lowercaseString],@"MAC":self.connectedDevice.deviceMAC,@"Type":[selectedDeviceType lowercaseString],@"LastKnownIP":self.connectedDevice.deviceIP,@"Active":self.connectedDevice.isActive?@"true":@"false",@"UseAsPresence":btnUsePresence.selected?@"true":@"false",@"Wait":clientTimeout};
         
         [updateClientInfo setValue:clients forKey:@"Clients"];
         cloudCommand.commandType = CommandType_UPDATE_REQUEST;
@@ -490,6 +491,8 @@
         
         return;
     }
+    
+    [[Analytics sharedInstance] markWifiClientUpdate];
 }
 
 #pragma mark TextField delegates

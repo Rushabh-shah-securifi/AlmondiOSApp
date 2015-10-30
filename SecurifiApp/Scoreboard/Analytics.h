@@ -27,11 +27,35 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 - (void)markSendRouterLogs;
 
+- (void)markDeclineSignupLicense;
+
+- (void)markActivateScene;
+
+- (void)markAddScene;
+
+- (void)markUpdateScene;
+
+- (void)markDeleteScene;
+
+- (void)markSensorLogs;
+
+- (void)markSensorNameLocationChange;
+
+- (void)markEditLocalConnection;
+
+- (void)markWifiClientUpdate;
+
 - (void)markSensorClick:(SFIDeviceType)deviceType timeToComplete:(NSTimeInterval)resResTime;
 
 - (void)markSensorScreen;
 
 - (void)markRouterScreen;
+
+- (void)markSceneScreen;
+
+- (void)markNewSceneScreen;
+
+- (void)markAccountsScreen;
 
 - (void)markNotificationsScreen;
 
@@ -41,6 +65,12 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 - (void)markSignUpForm;
 
-- (void)markDeclineSignupLicense;
+- (void)markLocalScreen;
+
+- (void)markWifiClientScreen;
+
+- (void)markLogoutAllScreen;
+
+- (void)markRouterSettingsScreen;
 
 @end

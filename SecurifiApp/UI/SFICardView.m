@@ -157,6 +157,14 @@
     return label;
 }
 
+- (UILabel *)addLongSummary:(NSString*)msg {
+    UILabel *label = [self makeMultiLineLabel:msg font:self.summaryFont alignment:NSTextAlignmentLeft numberOfLines:6 rightOffset:self.rightOffset];
+    [self addSubview:label];
+    [self markYOffsetUsingRect:label.frame addAdditional:0];
+
+    return label;
+}
+
 - (void)addNameLabel:(NSString*)name valueLabel:(NSString *)value {
     UILabel *label;
 

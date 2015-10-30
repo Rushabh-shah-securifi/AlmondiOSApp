@@ -257,7 +257,7 @@
 
 /* signup */
 
-"signup.navbar-title.Sign up" = "Регистрация";
+"signup.navbar-title.Create Account" = "Регистрация";
 "signup.barbutton.Decline" = "Отклонить";
 "signuo.barbutton.Accept" = "Принять";
 "signup.barbutton.Continue" = "Продолжить";
@@ -568,6 +568,8 @@
 "HEATING TEMP." = "ОТОПЛЕНИЕ ТЕМП.";
 "Version" = "Версия";
 "Settings" = "Настройки";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 
 //
@@ -691,8 +693,8 @@
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Давайте подключим Almond.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = " Запустите Мастера Установки на Вашем Almond, затем нажмите на символ ниже.";
+"router.linkalmond-msg.headline" = "Давайте подключим Almond.";
+"router.linkalmond-msg.message" = " Запустите Мастера Установки на Вашем Almond, затем нажмите на символ ниже.";
 "Almond Linked" = "Almond подключен";
 "Link Almond" = "Облачное подключение";
 "Local Link Almond" = "Локальное подключение";
@@ -768,3 +770,30 @@
 "Monitor and Control your home from anywhere." = "Мониторинг и управление домом из любой.";
 
 "AlmondList" = "AlmondСПИСОК";
+
+" Fan Swing is Off" = " Fan Swing is Off";
+" Fan Swing is On" = " Fan Swing is On";
+"'s IR code changed." = "'s IR code changed.";
+"'s configuration changed." = "'s configuration changed.";
+" is Silent" = " is Silent";
+" is set to Emergency" = " is set to Emergency";
+" is set to Fire" = " is set to Fire";
+" is set to Ambulance" = " is set to Ambulance";
+" is set to Police" = " is set to Police";
+" is set to Door Chime" = " is set to Door Chime";
+" is set to Beep" = " is set to Beep";
+"'s energy reading is " = "'s energy reading is ";
+"'s power reading is " = "'s power reading is ";
+"'s Clamp 1 power reading is " = "'s Clamp 1 power reading is ";
+"'s Clamp 2 power reading is " = "'s Clamp 2 power reading is ";
+"'s Clamp 1 energy reading is " = "'s Clamp 1 energy reading is ";
+"'s Clamp 2 energy reading is " = "'s Clamp 2 energy reading is ";
+"'s color temperature changed to ." = "'s color temperature changed to .";
+"° Farenheit" = "° Farenheit";
+" second" = " second";
+" humidity is " = " humidity is ";
+" is Up." = " is Up.";
+" is Down." = " is Down.";
+"router.linkalmond-button.title" = "LINK ALMOND";
+"signup.navbar-title.Terms of Use" = "Terms of Use";
+"router.log-advisory message" = "Along with your message, this will send Almond debug information and logs to our cloud. This information will help us resolve your problem faster. Please note that we do not send any sensitive information like your passwords.";

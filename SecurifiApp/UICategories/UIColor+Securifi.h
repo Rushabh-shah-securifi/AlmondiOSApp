@@ -20,4 +20,10 @@
 
 + (UIColor *)securifiRouterTileRedColor;
 
++ (UIColor *)securifiLightBlue;
+
++ (UIColor*)securifiScreenBlue;
+
++ (UIColor *)securifiScreenGreen;
+
 @end

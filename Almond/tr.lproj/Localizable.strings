@@ -261,7 +261,7 @@ sıfırlanamıyor. Daha sonra tekrar deneyin.";
 
 /* signup */
 
-"signup.navbar-title.Sign up" = "Kayıt ol";
+"signup.navbar-title.Create Account" = "Kayıt ol";
 "signup.barbutton.Decline" = "Reddet";
 "signuo.barbutton.Accept" = "Kabul et";
 "signup.barbutton.Continue" = "Devam et";
@@ -574,6 +574,8 @@ Linke tıklayın ve giriş yapmak için Devam Et.";
 "HEATING TEMP." = "ISITMA SICAKLIĞI.";
 "Version" = "Sürüm";
 "Settings" = "Ayarlar";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 
 "login.local.Switch to Local Connection" = "Yerel Bağlantıya Geç";
@@ -696,8 +698,8 @@ Linke tıklayın ve giriş yapmak için Devam Et.";
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Bir Almond \n bağlayalım.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Almond'unuzda sihirbazı başlatın ve aşağıdaki sembole dokunun.";
+"router.linkalmond-msg.headline" = "Bir Almond \n bağlayalım.";
+"router.linkalmond-msg.message" = "Almond'unuzda sihirbazı başlatın ve aşağıdaki sembole dokunun.";
 "Almond Linked" = "Almond Bağlandı";
 "Link Almond" = "Bulut Linki";
 "Local Link Almond" = "Yerel Link";
@@ -776,3 +778,30 @@ her yerden ulaşabilirsiniz.";
 "Monitor and Control your home from anywhere." = "Monitör ve her yerden evinize Kontrol.";
 
 "AlmondList" = "AlmondListe";
+
+" Fan Swing is Off" = " Fan Swing is Off";
+" Fan Swing is On" = " Fan Swing is On";
+"'s IR code changed." = "'s IR code changed.";
+"'s configuration changed." = "'s configuration changed.";
+" is Silent" = " is Silent";
+" is set to Emergency" = " is set to Emergency";
+" is set to Fire" = " is set to Fire";
+" is set to Ambulance" = " is set to Ambulance";
+" is set to Police" = " is set to Police";
+" is set to Door Chime" = " is set to Door Chime";
+" is set to Beep" = " is set to Beep";
+"'s energy reading is " = "'s energy reading is ";
+"'s power reading is " = "'s power reading is ";
+"'s Clamp 1 power reading is " = "'s Clamp 1 power reading is ";
+"'s Clamp 2 power reading is " = "'s Clamp 2 power reading is ";
+"'s Clamp 1 energy reading is " = "'s Clamp 1 energy reading is ";
+"'s Clamp 2 energy reading is " = "'s Clamp 2 energy reading is ";
+"'s color temperature changed to ." = "'s color temperature changed to .";
+"° Farenheit" = "° Farenheit";
+" second" = " second";
+" humidity is " = " humidity is ";
+" is Up." = " is Up.";
+" is Down." = " is Down.";
+"router.linkalmond-button.title" = "LINK ALMOND";
+"signup.navbar-title.Terms of Use" = "Terms of Use";
+"router.log-advisory message" = "Along with your message, this will send Almond debug information and logs to our cloud. This information will help us resolve your problem faster. Please note that we do not send any sensitive information like your passwords.";

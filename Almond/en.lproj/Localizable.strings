@@ -113,7 +113,7 @@ reset at the moment. Try again later.";
 "router.hud.Router is now online." = "Router is now online.";
 "router.hud.Updating router firmware." = "Updating router software.";
 "router.hud.Router is rebooting." = "Router is rebooting.";
-"router.card-title.Send Logs" = "Send Logs";
+"router.card-title.Send Logs" = "Report a Problem";
 "router.Sends %@'s logs to our server" = "Sends %@'s logs to our server";
 "router.hud.Sending Logs." = "Instructing router to send logs";
 
@@ -223,7 +223,7 @@ reset at the moment. Try again later.";
 "sensors.heating.temperature" = "Heating Temperature";
 "sensors.cooling.temperature" = "Cooling Temperature";
 
-"sensor.deivice-showlog.button.viewlogs" = "View Logs";
+"sensor.deivice-showlog.button.viewlogs" = "View Device History";
 "sensor.deivice-warning_rightview.seconds" = "seconds";
 "sensor.deivice.Highlightbutton Turn Off" = "Turn Off";
 "sensor.deivice.Highlightbutton Turn ON" = "Turn ON";
@@ -240,10 +240,12 @@ reset at the moment. Try again later.";
 "smoke-detector-Emergency" = "Emergency";
 "smoke-detector Smoke :%@ , CO :%@"="Smoke :%@ , CO :%@";
 
-"sensor-detail-Fan cell On" = "On";
-"sensor-detail-Fan cell Off" = "Off";
+"sensor-detail-Fan cell On" = "Start";
+"sensor-detail-Fan cell Off" = "Stop";
 "sensor-detail-Target Temp" = "Target Temp";
 
+"sensor.notificaiton.fanindexpath.Start" = "Start";
+"sensor.notificaiton.fanindexpath.Stop" = "Stop";
 "sensor.notificaiton.fanindexpath.On" = "On";
 "sensor.notificaiton.fanindexpath.Off" = "Off";
 "sensor.awaymode.indexpath Home" = "Home";
@@ -281,7 +283,7 @@ reset at the moment. Try again later.";
 
 
 /* signup */
-"signup.navbar-title.Sign up" = "Sign up";
+"signup.navbar-title.Create Account" = "Create Account";
 "signup.barbutton.Decline" = "Decline";
 "signuo.barbutton.Accept" = "Accept";
 "signup.barbutton.Continue" = "Continue";
@@ -289,7 +291,7 @@ reset at the moment. Try again later.";
 "signup.subheadline-text.Please wait one moment..." = "Please wait one moment...";
 "signup.headline-text.Almost done." = "Almost done.";
 "signup.headline-text.An activation link was sent to your email" = "An activation link was sent to your email.
-Follow it, then tap Continue to login.";
+Follow it, then login below.";
 "signup.footerbutton.Resend the activation email" = "Resend the activation email";
 "signup.footerbutton.Signup using another email" = "Signup using another email";
 "signup.footerlabel.Do you want to create another account?" = "Do you want to create another account?";
@@ -388,6 +390,7 @@ Follow it, then tap Continue to login.";
 "scenes.hud.deletingScene" = "Deleting Scene...";
 "scenes.hud.activatingScene" = "Activating scene...";
 "scenes.hud.creatingScene"   = "Creating scene...";
+"scenes.hud.updatingScene"   = "Updating scene...";
 
 "scene.macro.Could not update sensor\ndata." = "Could not update sensor data.";
 "scene.thermostat-title.COOLING TEMP." = "COOLING TEMP.";
@@ -418,6 +421,8 @@ Follow it, then tap Continue to login.";
 "HEATING TEMP."="HEATING TEMP.";
 "Version"="Version";
 "Settings"="Settings";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 
 /* Scoreboard */
@@ -457,7 +462,7 @@ Follow it, then tap Continue to login.";
 "scoreboard.localnetwork.Password" = "Password";
 
 /* Sensor Support */
-"sensor support- a value has changed" = " a value has changed";
+"sensor support- a value has changed" = "'s state changed";
 
 /* Draw View Controller */
 "Draw viecontroller.label LOCATION" = "LOCATION";
@@ -514,7 +519,7 @@ Follow it, then tap Continue to login.";
 "SFIWiFiClientsListViewController-propertyNames-Notify me" = "Notify me";
 "SFIWiFiClientsListViewController-propertyNames-Remove" = "Remove";
 "Presence sensor Yes"="Yes";
-"Presence sensor NO" = "NO";
+"Presence sensor NO" = "No";
 "response.alert-Oops" = "Oops";
 "response.alert-Sorry, There was some problem with this request, try later!" = "Sorry, There was some problem with this request, try later!";
 "response.alert-OK" = "OK";
@@ -522,8 +527,11 @@ Follow it, then tap Continue to login.";
 /* Sensor Index Support */
 " Fan is " = " Fan is ";
 " Fan is set to " = " Fan is set to ";
-" brightness changed to " = " brightness changed to ";
-" brightness changed to " = " brightness changed to ";
+" Fan Swing is Off" = " Fan Swing is Off";
+" Fan Swing is On" = " Fan Swing is On";
+" humidity is " = " humidity is ";
+" brightness changed to " = " brightness is ";
+" brightness changed to " = " brightness is ";
 " detected Fire." = " detected Fire.";
 " detected Gas." = " detected Gas.";
 " detected Smoke." = " detected Smoke.";
@@ -532,50 +540,51 @@ Follow it, then tap Continue to login.";
 " detected motion." = " detected motion.";
 " detected motion." = " detected motion.";
 " detected water." = " detected water.";
-" has been Tampered." = " has been Tampered.";
-" hue color changed to " = " hue color changed to ";
+" has been Tampered." = " is Tampered.";
+" hue color changed to " = " hue color is ";
 " is " = " is ";
 " is Armed." = " is Armed.";
-" is Closed." = " is Closed.";
+" is Closed." = " Closed.";
 " is Closing." = " is Closing.";
 " is Disarmed." = " is Disarmed.";
 " is Locked." = " is Locked.";
 " is Open." = " is Open.";
-" is Opened." = " is Opened.";
-" is Opening." = " is Opening.";
+" is Opened." = " Opened.";
+" is Opening." = " is Opened.";
 " is Perimeter Armed." = " is Perimeter Armed.";
 " is Ringing." = " is Ringing.";
 " is Silent." = " is Silent.";
 " is Stopped." = " is Stopped.";
 " is Unlocked." = " is Unlocked.";
 " is cooling down to " = " is cooling down to ";
-" is dimmed to " = " is dimmed to ";
-" is heating up to " = " is heating up o ";
+" is dimmed to " = " dimmed to ";
+" is heating up to " = " is heating up to ";
 " is not fully Locked." = " is not fully Locked.";
-" is reset from Tampered." = " is reset from Tampered.";
-" is set to " = " is set to ";
-" is switched Off." = " is switched Off.";
-" is switched On." = " is switched On.";
-" is turned Off." = " is turned Off.";
-" is turned On." = " is turned On.";
-" is turned on for " = " is turned on for ";
-" saturation changed to " = " saturation changed to ";
+" is reset from Tampered." = " is reset.";
+" is set to " = " mode is set to ";
+" is switched Off." = " switched Off.";
+" is switched On." = " switched On.";
+" is turned Off." = " turned Off.";
+" is turned On." = " turned On.";
+" is turned on for " = " turned on for ";
+" saturation changed to " = " saturation is ";
+" second" = " second";
 " seconds" = " seconds";
-" stopped leaking." = " stopped leaking.";
+" stopped leaking." = " leakage stopped.";
 " turned Off." = " turned Off.";
 " turned On." = " turned On.";
 "'s Battery is Low." = "'s Battery is Low.";
-"'s Fire is gone." = "'s Fire is gone.";
+"'s Fire is gone." = " is OK.";
 "'s Gas is gone." = "'s Gas is gone.";
-"'s Smoke is gone." = "'s Smoke is gone.";
+"'s Smoke is gone." = " is OK.";
 "'s color temperature changed to " = "'s color temperature changed to ";
 "'s humidiy changed to " = "'s humidiy changed to ";
 "'s light reading changed to " = "'s light reading changed to ";
 "'s motion stopped." = "'s motion stopped.";
 "'s pin code changed." = "'s pin code changed.";
-"'s power reading changed to " = "'s power reading changed to ";
-"'s temperature changed to " = "'s temperature changed to ";
-"'s temperature set point changed to " = "'s temperature set point changed to ";
+"'s power reading changed to " = "'s power reading is ";
+"'s temperature changed to " = "'s temperature is ";
+"'s temperature set point changed to " = "'s temperature is ";
 "'s vibration stopped." = "'s vibration stopped.";
 ": no presence detected." = ": no presence detected.";
 ": presence detected." = ": presence detected.";
@@ -678,8 +687,9 @@ Follow it, then tap Continue to login.";
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Let's link \n an Almond.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Start the wizard on your Almond, then tap the symbol below.";
+"router.linkalmond-msg.headline" = "Get Started";
+"router.linkalmond-msg.message" = "To get started, Let's link an Almond.";
+"router.linkalmond-button.title" = "LINK ALMOND";
 "Almond Linked" = "Almond Linked";
 "Link Almond" = "Cloud Link";
 "Local Link Almond" = "Local Link";
@@ -696,7 +706,7 @@ Contact us at support@securifi.com";
 "Monitor and Control your home from anywhere." = "Monitor and Control your home from anywhere.";
 
 /* router tab */
-"router.offline-msg.label.Almond is Offline." = "Almond is Offline.";
+"router.offline-msg.label.Almond is Offline." = "We are unable to reach your Almond at this time. Try again later.";
 
 "router.msg-link.The Almond was successfully linked." = "The Almond was successfully linked.";
 "router.btn-title.Unlink Almond?" = "Unlink Almond?";
@@ -762,3 +772,25 @@ Contact us at support@securifi.com";
 
 /* Scenes */
 "AlmondList" = "AlmondList";
+
+"'s IR code changed." = "'s IR code changed.";
+"'s configuration changed." = "'s configuration changed.";
+" is Silent" = " is Silent";
+" is set to Emergency" = " is set to Emergency";
+" is set to Fire" = " is set to Fire";
+" is set to Ambulance" = " is set to Ambulance";
+" is set to Police" = " is set to Police";
+" is set to Door Chime" = " is set to Door Chime";
+" is set to Beep" = " is set to Beep";
+"'s energy reading is " = "'s energy reading is ";
+"'s power reading is " = "'s power reading is ";
+"'s Clamp 1 power reading is " = "'s Clamp 1 power reading is ";
+"'s Clamp 2 power reading is " = "'s Clamp 2 power reading is ";
+"'s Clamp 1 energy reading is " = "'s Clamp 1 energy reading is ";
+"'s Clamp 2 energy reading is " = "'s Clamp 2 energy reading is ";
+"'s color temperature changed to ." = "'s color temperature changed to .";
+"° Farenheit" = "° Farenheit";
+" is Up." = " is Up.";
+" is Down." = " is Down.";
+"signup.navbar-title.Terms of Use" = "Terms of Use";
+"router.log-advisory message" = "Along with your message, this will send Almond debug information and logs to our cloud. This information will help us resolve your problem faster. Please note that we do not send any sensitive information like your passwords.";

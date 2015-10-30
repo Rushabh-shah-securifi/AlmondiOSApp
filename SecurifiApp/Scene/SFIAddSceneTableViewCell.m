@@ -744,11 +744,11 @@
     bg.alpha = 0.3;
     [actionSheet addSubview:bg];
     
-    chPicker.frame = CGRectMake(0, actionSheet.frame.size.height-chPicker.frame.size.height, chPicker.frame.size.width, chPicker.frame.size.height);
+    chPicker.frame = CGRectMake(0, actionSheet.frame.size.height-chPicker.frame.size.height, actionSheet.frame.size.width, chPicker.frame.size.height);
     
     [actionSheet addSubview:chPicker];
     //yourView represent the view that contains UIPickerView and toolbar
-    NSLog(@"%@",NSStringFromCGRect(actionSheet.frame));
+//    NSLog(@"%@",NSStringFromCGRect(actionSheet.frame));
     actionSheet.alpha = 0;
     [self.parentViewController.view addSubview:actionSheet];
     [UIView animateWithDuration:0.3 animations:^{
@@ -778,7 +778,7 @@
 
 // Set the width of the component inside the picker
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
-    return 300;
+    return pickerView.frame.size.width;
 }
 
 // Item picked
@@ -915,8 +915,8 @@
     [btnHeat setupValues:[UIImage imageNamed:@"imgHeat"] Title:NSLocalizedString(@"HEAT",@"HEAT")];
     [btnCool setupValues:[UIImage imageNamed:@"imgCool"] Title:NSLocalizedString(@"COOL",@"COOL")];
     [btnOff setupValues:[UIImage imageNamed:@"imgOff"] Title:NSLocalizedString(@"OFF",@"OFF")];
-    [btnTermostatFanOn setupValues:[UIImage imageNamed:@"imgFanOn"] Title:NSLocalizedString(@"FAN ON",@"FAN ON")];
-    [btnTermostatFanOff setupValues:[UIImage imageNamed:@"imgFanOff"] Title:NSLocalizedString(@"FAN OFF",@"FAN OFF")];
+    [btnTermostatFanOn setupValues:[UIImage imageNamed:@"imgFanOn"] Title:NSLocalizedString(@"termostat.FAN ON",@"START")];
+    [btnTermostatFanOff setupValues:[UIImage imageNamed:@"imgFanOff"] Title:NSLocalizedString(@"termostat.FAN OFF",@"STOP")];
     
     [btnTermostatDimCool setupValues:@"35" Title:NSLocalizedString(@"scene.thermostat-title.COOLING TEMP.", @"COOLING TEMP.") Prefix:@"°F"];
     btnTermostatDimCool.selected = NO;
@@ -1467,8 +1467,8 @@
     [btnNestCool setupValues:[UIImage imageNamed:@"imgCool"] Title:NSLocalizedString(@"COOL",@"COOL")];
     [btnNestOff setupValues:[UIImage imageNamed:@"imgOff"] Title:NSLocalizedString(@"OFF",@"OFF")];
     
-    [btnNestTermostatFanOn setupValues:[UIImage imageNamed:@"imgFanOn"] Title:NSLocalizedString(@"FAN ON",@"FAN ON")];
-    [btnNestTermostatFanOff setupValues:[UIImage imageNamed:@"imgFanOff"] Title:NSLocalizedString(@"FAN OFF",@"FAN OFF")];
+    [btnNestTermostatFanOn setupValues:[UIImage imageNamed:@"imgFanOn"] Title:NSLocalizedString(@"termostat.FAN ON",@"START")];
+    [btnNestTermostatFanOff setupValues:[UIImage imageNamed:@"imgFanOff"] Title:NSLocalizedString(@"termostat.FAN OFF",@"STOP")];
     btnNestTermostatFanOn.selected = NO;
     btnNestTermostatFanOff.selected = NO;
     

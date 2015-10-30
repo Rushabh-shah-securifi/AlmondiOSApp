@@ -16,6 +16,7 @@
 #import "UIImage+Securifi.h"
 #import "SFIDeviceIndex.h"
 #import "Colours.h"
+#import "Analytics.h"
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]//MD01
 
@@ -80,8 +81,14 @@
     }else{
         self.title = NSLocalizedString(@"scene.title.New Scene", @"New Scene");
     }
-    originalTableViewFrame = self.tableView.frame;
     [super viewWillAppear:animated];
+    
+    [[Analytics sharedInstance] markNewSceneScreen];
+}
+
+-(void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+    originalTableViewFrame = self.tableView.frame;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -702,9 +709,11 @@
     if (self.sceneInfo) {
         [payloadDict setValue:@"UpdateScene" forKey:@"CommandType"];
         [newSceneInfo setValue:[self.sceneInfo valueForKey:@"ID"] forKey:@"ID"];
+        [[Analytics sharedInstance] markUpdateScene];
         
     }else{
         [payloadDict setValue:@"AddScene" forKey:@"CommandType"];
+        [[Analytics sharedInstance] markAddScene];
     }
     
     [payloadDict setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
@@ -723,8 +732,11 @@
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
+     if (self.sceneInfo) {
+    _HUD.labelText = NSLocalizedString(@"scenes.hud.updatingScene", @"Updating Scene...");
+     }else{
     _HUD.labelText = NSLocalizedString(@"scenes.hud.creatingScene", @"Creating Scene...");
-    
+     }
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
@@ -1072,6 +1084,8 @@
         
         [self asyncSendCommand:cloudCommand];
     }
+    
+    [[Analytics sharedInstance] markDeleteScene];
 }
 
 - (void)sceneNameDidChange:(SFIAddSceneTableViewCell*)cell SceneName:(NSString*)name ActiveField:(UITextField*)textField{

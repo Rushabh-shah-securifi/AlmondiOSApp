@@ -13,8 +13,10 @@
 #import "SFIActivationViewController.h"
 #import "UIFont+Securifi.h"
 #import "RouterNetworkSettingsEditor.h"
+#import "SFISignupViewController.h"
+#import "UIColor+Securifi.h"
 
-@interface SFILoginViewController () <UITextFieldDelegate, RouterNetworkSettingsEditorDelegate>
+@interface SFILoginViewController () <UITextFieldDelegate, RouterNetworkSettingsEditorDelegate, SFISignupViewControllerDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic) BOOL lastEditedFieldWasPasswd;
 @property(nonatomic) NSTimer *timeoutTimer;
@@ -35,7 +37,7 @@
     _HUD = [[MBProgressHUD alloc] initWithView:self.view];
     _HUD.labelText = NSLocalizedString(@"hud.One moment please...", @"One moment please...");
     _HUD.dimBackground = YES;
-    [self.navigationController.view addSubview:_HUD];
+    [self.view addSubview:_HUD];
 
     //PY 170913 - To stop the view from going below tab bar
     self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -59,16 +61,34 @@
 
     [self setStandardLoginMsg];
 
-    if (self.mode == SFILoginViewControllerMode_switchToLocalConnection) {
-        NSString *title = NSLocalizedString(@"login.local.Switch to Local Connection", @"login.local.Switch to Local Connection");
-        [self.localActionButton setTitle:title forState:UIControlStateNormal];
+    switch (self.mode) {
+        case SFILoginViewControllerMode_localLinkOption:
+            break;
+        case SFILoginViewControllerMode_switchToLocalConnection: {
+            NSString *title = NSLocalizedString(@"login.local.Switch to Local Connection", @"login.local.Switch to Local Connection");
+            [self.localActionButton setTitle:title forState:UIControlStateNormal];
+            break;
+        }
+        case SFILoginViewControllerMode_accountCreated: {
+            NSString *headline = NSLocalizedString(@"signup.headline-text.Almost done.", @"Almost done.");
+            NSString *subHeadline = NSLocalizedString(@"signup.headline-text.An activation link was sent to your email", @"An activation link was sent to your email. \n Follow it, then tap Continue to login.");
+            [self setHeadline:headline subHeadline:subHeadline loginButtonEnabled:NO];
+
+            self.createAccountButton.hidden = YES;
+
+            self.localActionLabel.text = @"Did not receive any email?";
+            [self.localActionButton setTitle:@"Resend Activation Link" forState:UIControlStateNormal];
+
+            break;
+        }
     }
-    
+
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
     [center addObserver:self selector:@selector(onReachabilityDidChange:) name:kSFIReachabilityChangedNotification object:nil];
     [center addObserver:self selector:@selector(onNetworkDown:) name:NETWORK_DOWN_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onResetPasswordResponse:) name:RESET_PWD_RESPONSE_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onValidateResponseCallback:) name:VALIDATE_RESPONSE_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onLoginResponse:) name:kSFIDidCompleteLoginNotification object:nil];
     [center addObserver:self selector:@selector(onKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     [center addObserver:self selector:@selector(onKeyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
@@ -90,6 +110,9 @@
     if (self.isBeingDismissed) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
+
+        [self.HUD removeFromSuperview];
+        _HUD = nil;
     }
 }
 
@@ -138,7 +161,7 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (NSUInteger)supportedInterfaceOrientations {
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
 }
 
@@ -207,25 +230,38 @@
 #pragma mark - UI Actions
 
 - (void)onCreateAccountAction:(id)sender {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-    UIViewController *mainView = [storyboard instantiateViewControllerWithIdentifier:@"SFISignupViewController"];
-    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:mainView];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login_iPhone" bundle:nil];
+
+    SFISignupViewController *ctrl = (SFISignupViewController *) [storyboard instantiateViewControllerWithIdentifier:@"SFISignupViewController"];
+    ctrl.delegate = self;
+
+    UINavigationController *navCtrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
     [self presentViewController:navCtrl animated:YES completion:nil];
 }
 
 - (IBAction)onAddLocalAlmond:(id)sender {
-    if (self.mode == SFILoginViewControllerMode_localLinkOption) {
-        RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
-        editor.delegate = self;
-        editor.makeLinkedAlmondCurrentOne = YES;
+    enum SFILoginViewControllerMode mode = self.mode;
+    switch (mode) {
+        case SFILoginViewControllerMode_localLinkOption: {
+            RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+            editor.delegate = self;
+            editor.makeLinkedAlmondCurrentOne = YES;
 
-        UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
+            UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
 
-        [self presentViewController:ctrl animated:YES completion:nil];
-    }
-    else {
-        [[SecurifiToolkit sharedInstance] setConnectionMode:SFIAlmondConnectionMode_local forAlmond:nil];
-        [self.delegate loginControllerDidCompleteLogin:self];
+            [self presentViewController:ctrl animated:YES completion:nil];
+            break;
+        }
+        case SFILoginViewControllerMode_switchToLocalConnection: {
+            [[SecurifiToolkit sharedInstance] setConnectionMode:SFIAlmondConnectionMode_local forAlmond:nil];
+            [self.delegate loginControllerDidCompleteLogin:self];
+            break;
+        }
+        case SFILoginViewControllerMode_accountCreated: {
+            // in this mode, the button means: resend the activiation link
+            [self sendReactivationRequest];
+            break;
+        }
     }
 }
 
@@ -378,17 +414,10 @@
 #pragma mark - Cloud Command : Sender and Receivers
 
 - (void)sendResetPasswordRequest {
-    NSString *email = [[SecurifiToolkit sharedInstance] loginEmail];
-    NSLog(@"Sent reset email, email: %@", email);
+    NSString *email = self.emailID.text;
 
-    ResetPasswordRequest *resetCommand = [[ResetPasswordRequest alloc] init];
-    resetCommand.email = self.emailID.text;
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_RESET_PASSWORD_REQUEST;
-    cloudCommand.command = resetCommand;
-
-    [self asyncSendCommand:cloudCommand];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit asyncRequestResetCloudPassword:email];
 }
 
 - (void)onResetPasswordResponse:(id)sender {
@@ -425,17 +454,56 @@
     }
 }
 
+- (void)sendReactivationRequest {
+    [self showHudWithTimeout:10];
+
+    NSString *email = self.emailID.text;
+    [[SecurifiToolkit sharedInstance] asyncSendValidateCloudAccount:email];
+}
+
+- (void)onValidateResponseCallback:(id)sender {
+    [self hideHud];
+
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+
+    ValidateAccountResponse *obj = (ValidateAccountResponse *) [data valueForKey:@"data"];
+
+    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    DLog(@"%s: Reason : %@", __PRETTY_FUNCTION__, obj.reason);
+    DLog(@"%s: Reason Code %d", __PRETTY_FUNCTION__, obj.reasonCode);
+
+    if (!obj.isSuccessful) {
+        NSString *failureReason;
+        switch (obj.reasonCode) {
+            case 1:
+                failureReason = NSLocalizedString(@"The username was not found", @"The username was not found");
+                break;
+            case 2:
+                failureReason = NSLocalizedString(@"The account is already validated", @"The account is already validated");
+                break;
+            case 3:
+            case 5:
+                failureReason = NSLocalizedString(@"Sorry! Cannot send reactivation link", @"Sorry! The reactivation link cannot be \nsent at the moment. Try again later.");
+                break;
+            case 4:
+                failureReason = NSLocalizedString(@"The email ID is invalid.", @"The email ID is invalid.");
+                break;
+            default:
+                break;
+        }
+
+        [self setOopsMsg:failureReason];
+    }
+}
+
 - (void)presentActivationScreen {
     dispatch_async(dispatch_get_main_queue(), ^() {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPhone" bundle:nil];
-        SFIActivationViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SFIActivationViewController"];
+        SFIActivationViewController *ctrl = (SFIActivationViewController *) [storyboard instantiateViewControllerWithIdentifier:@"SFIActivationViewController"];
         ctrl.emailID = self.emailID.text;
         [self presentViewController:ctrl animated:YES completion:nil];
     });
-}
-
-- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
 }
 
 // Shows the specified error message and enabled the Login Button
@@ -489,6 +557,18 @@
 
 - (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {
 
+}
+
+#pragma mark - SFISignupViewControllerDelegate methods
+
+- (void)signupControllerDidComplete:(SFISignupViewController *)ctrl email:(NSString *)email {
+    self.emailID.text = email;
+
+    UIColor *color = [UIColor securifiScreenGreen];
+    self.view.backgroundColor = color;
+    [self.loginButton setTitleColor:color forState:UIControlStateNormal];
+
+    self.mode = SFILoginViewControllerMode_accountCreated;
 }
 
 

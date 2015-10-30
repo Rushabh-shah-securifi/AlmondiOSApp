@@ -10,8 +10,8 @@
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Ein HomeScreen \n verbinden.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Starten Sie den Assistenten auf dem LCD und tippen Sie auf das Symbol.";
+"router.linkalmond-msg.headline" = "Ein HomeScreen \n verbinden.";
+"router.linkalmond-msg.message" = "Starten Sie den Assistenten auf dem LCD und tippen Sie auf das Symbol.";
 "Almond Linked" = "HomeScreen Verlinkt";
 "Link Almond" = "Cloud Link";
 "Local Link Almond" = "Lokaler Link";

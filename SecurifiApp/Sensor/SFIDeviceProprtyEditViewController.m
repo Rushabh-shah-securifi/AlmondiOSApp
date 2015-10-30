@@ -232,15 +232,7 @@
             break;
         case switch1IndexPathRow:
         {
-            SFIDeviceKnownValues *currentDeviceValue;
-            NSArray *arrValue = [self.deviceValue knownDevicesValues];
-            for (SFIDeviceKnownValues *tmpValue in arrValue) {
-                if (currentDeviceValue.index==1) {
-                    currentDeviceValue = tmpValue;
-                    break;
-                }
-            }
-            
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_BINARY1];
             NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On"),
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
             
@@ -265,14 +257,7 @@
             break;
         case switch2IndexPathRow:
         {
-            SFIDeviceKnownValues *currentDeviceValue;
-            NSArray *arrValue = [self.deviceValue knownDevicesValues];
-            for (SFIDeviceKnownValues *tmpValue in arrValue) {
-                if (currentDeviceValue.index==2) {
-                    currentDeviceValue = tmpValue;
-                    break;
-                }
-            }
+           SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_BINARY2];
             
             NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On"),
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
@@ -326,14 +311,14 @@
         {
             SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE];
             
-            NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On"),
-                                NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
+            NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.Start", @"Start"),
+                                NSLocalizedString(@"sensor.notificaiton.fanindexpath.Stop", @"Stop")];
             
             selectedPropertyValue = @"";
             if ([currentDeviceValue.value isEqualToString:@"true"]) {
-                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On");
+                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Start", @"Start");
             }else if ([currentDeviceValue.value isEqualToString:@"false"]){
-                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
+                selectedPropertyValue = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Stop", @"Stop");
             }
             
             for (NSString * name in cnames) {
@@ -803,9 +788,9 @@
         case fanIndexPathRow:
             propertyType = SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
-            if ([selectedPropertyValue isEqualToString:@"On"]) {
+            if ([selectedPropertyValue isEqualToString:NSLocalizedString(@"sensor.notificaiton.fanindexpath.Start", @"Start")]) {
                 deviceValues.value = NSLocalizedString(@"device-property-fanindexpah true",@"true");
-            }else if ([selectedPropertyValue isEqualToString:@"Off"]){
+            }else if ([selectedPropertyValue isEqualToString:NSLocalizedString(@"sensor.notificaiton.fanindexpath.Stop", @"Stop")]){
                 deviceValues.value = NSLocalizedString(@"device-property-fanindexpah false",@"false");
             }else{
                 deviceValues.value = @"";
@@ -874,49 +859,27 @@
             break;
         case switch1IndexPathRow:
         {
-            SFIDeviceKnownValues *currentDeviceValue;
-            NSArray *arrValue = [self.deviceValue knownDevicesValues];
-            
-            for (SFIDeviceKnownValues *tmpValue in arrValue) {
-                if (currentDeviceValue.index==1) {
-                    currentDeviceValue = tmpValue;
-                    break;
-                }
-            }
+            propertyType = SFIDevicePropertyType_SWITCH_BINARY1;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
             
             if ([selectedPropertyValue isEqualToString:NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On")]) {
-                currentDeviceValue.value = @"true";
+                deviceValues.value = @"true";
             }else{
-                currentDeviceValue.value = @"false";
+                deviceValues.value = @"false";
             }
-            
-            propertyType = SFIDevicePropertyType_SWITCH_BINARY;
-            
-            //TEST
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
         }
             break;
         case switch2IndexPathRow:
         {
-            SFIDeviceKnownValues *currentDeviceValue;
-            NSArray *arrValue = [self.deviceValue knownDevicesValues];
-            
-            for (SFIDeviceKnownValues *tmpValue in arrValue) {
-                if (currentDeviceValue.index==2) {
-                    currentDeviceValue = tmpValue;
-                    break;
-                }
-            }
+            propertyType = SFIDevicePropertyType_SWITCH_BINARY2;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
             
             if ([selectedPropertyValue isEqualToString:NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On")]) {
-                currentDeviceValue.value = @"true";
+                deviceValues.value = @"true";
             }else{
-                currentDeviceValue.value = @"false";
+                deviceValues.value = @"false";
             }
-            
-            propertyType = SFIDevicePropertyType_SWITCH_BINARY;
-            
-            //TEST
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
         }
             break;
@@ -1334,8 +1297,6 @@
 }
 
 #pragma mark - Cloud command senders and handlers
-
-
 
 - (void)sendMobileCommandForDevice:(SFIDevice *)device deviceValue:(SFIDeviceKnownValues *)deviceValues {
     if (device == nil) {

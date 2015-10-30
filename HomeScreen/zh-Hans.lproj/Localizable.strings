@@ -250,7 +250,7 @@
 "device-property-fanindexpah false" =" 假 ";
 "device-property-fanindexpah true" =" 真";
 "device property on mobile hud Unable to update sensor"="  感應器無法更新";
-"signup.navbar-title.Sign up" =" 簽名";
+"signup.navbar-title.Create Account" =" 簽名";
 "signup.barbutton.Decline" =" 下降";
 "signuo.barbutton.Accept" =" 接受";
 "signup.barbutton.Continue" =" 繼續";
@@ -541,8 +541,8 @@
 
 ///////////////////////////////////////HomeScreen////////////////////////////
 
-"router.linkalmond-msg.label.Let's link an Almond." ="Let's link an Homescreen.";//not done////not converting
-"router.linkalmond-msg.label.Start the wizard on your Almond." ="在您的Homescreen啟動設定精靈，接著點擊下方的符號。";
+"router.linkalmond-msg.headline" ="Let's link an Homescreen.";//not done////not converting
+"router.linkalmond-msg.message" ="在您的Homescreen啟動設定精靈，接著點擊下方的符號。";
 "Almond Linked" =" Homescreen已連接";
 "Link Almond" =" 雲端連接";
 "Local Link Almond" =" 本機連接";
@@ -636,3 +636,34 @@
 "Fan Mode" = "Fan Mode";
 "Fan" = "Fan";
 "Notify me" = "Notify me";
+
+" Fan Swing is Off" = " Fan Swing is Off";
+" Fan Swing is On" = " Fan Swing is On";
+"'s IR code changed." = "'s IR code changed.";
+"'s configuration changed." = "'s configuration changed.";
+" is Silent" = " is Silent";
+" is set to Emergency" = " is set to Emergency";
+" is set to Fire" = " is set to Fire";
+" is set to Ambulance" = " is set to Ambulance";
+" is set to Police" = " is set to Police";
+" is set to Door Chime" = " is set to Door Chime";
+" is set to Beep" = " is set to Beep";
+"'s energy reading is " = "'s energy reading is ";
+"'s power reading is " = "'s power reading is ";
+"'s Clamp 1 power reading is " = "'s Clamp 1 power reading is ";
+"'s Clamp 2 power reading is " = "'s Clamp 2 power reading is ";
+"'s Clamp 1 energy reading is " = "'s Clamp 1 energy reading is ";
+"'s Clamp 2 energy reading is " = "'s Clamp 2 energy reading is ";
+"'s light reading changed to " = "'s light reading changed to ";
+"'s humidiy changed to " = "'s humidiy changed to ";
+"'s color temperature changed to ." = "'s color temperature changed to .";
+"° Farenheit" = "° Farenheit";
+" second" = " second";
+" seconds" = " seconds";
+" humidity is " = " humidity is ";
+" is Up." = " is Up.";
+" is Down." = " is Down.";
+"Monitor and Control your home from anywhere." = "Monitor and Control your home from anywhere.";
+"router.linkalmond-button.title" = "Link HomeScreen";
+"signup.navbar-title.Terms of Use" = "Terms of Use";
+"router.log-advisory message" = "Along with your message, this will send Almond debug information and logs to our cloud. This information will help us resolve your problem faster. Please note that we do not send any sensitive information like your passwords.";

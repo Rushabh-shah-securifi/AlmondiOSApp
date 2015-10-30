@@ -45,14 +45,7 @@
 #pragma mark - Cloud command and handlers
 
 - (void)sendReactivationRequest {
-    ValidateAccountRequest *validateCommand = [[ValidateAccountRequest alloc] init];
-    validateCommand.email = self.emailID;
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_VALIDATE_REQUEST;
-    cloudCommand.command = validateCommand;
-
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+    [[SecurifiToolkit sharedInstance] asyncSendValidateCloudAccount:self.emailID];
 }
 
 - (void)validateResponseCallback:(id)sender {

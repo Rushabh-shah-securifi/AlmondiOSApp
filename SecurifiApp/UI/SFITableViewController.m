@@ -52,13 +52,7 @@
     _enableNotificationsHomeAwayMode = configurator.enableNotificationsHomeAwayMode;
     const BOOL enableLocalNetworking = configurator.enableLocalNetworking;
 
-    NSDictionary *titleAttributes = @{
-            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
-            NSFontAttributeName : [UIFont standardNavigationTitleFont]
-    };
-
     self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.titleTextAttributes = titleAttributes;
 
     SWRevealViewController *revealController = [self revealViewController];
 
@@ -81,14 +75,11 @@
         NSInteger count = [toolkit countUnviewedNotifications];
         [self.notificationsStatusButton markNotificationCount:(NSUInteger) count];
 
-        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-        spacer.width = 5;
-
-        self.navigationItem.rightBarButtonItems = @[spacer, self.notificationsStatusButton, self.connectionStatusBarButton];
-
         // make the button but do not install; will be installed after connection state is determined
         _almondModeBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onAlmondModeButtonPressed:) enableLocalNetworking:enableLocalNetworking];
         [_almondModeBarButton markState:SFICloudStatusStateAlmondOffline];
+
+        [self setBarButtons:NO];
     }
     else {
         self.navigationItem.rightBarButtonItem = _connectionStatusBarButton;
@@ -351,7 +342,7 @@
     [self onLockTable];
 
     CGRect rect = self.navigationController.navigationBar.frame;
-    CGFloat height = 220;
+    CGFloat height = 260;
     if (alert.actions.count > 2) {
         height = height + ((alert.actions.count - 2) * 50);
     }
@@ -366,7 +357,7 @@
                           delay:0.0
                         options:UIViewAnimationOptionCurveEaseIn
                      animations:^{
-                         alert.alpha = 0.95;
+                         alert.alpha = 0.9;
                      }
                      completion:nil
     ];
@@ -558,27 +549,33 @@
     }
 }
 
-- (void)hideAlmondModeButton {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (!self.enableNotificationsHomeAwayMode) {
-            return;
-        }
+- (void)setBarButtons:(BOOL)showAlmondHome {
+    UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    spacer.width = 20;
 
-        NSArray *items = self.navigationItem.rightBarButtonItems;
-        if (items.count != 4) {
-            return;
-        }
-        self.navigationItem.rightBarButtonItems = [items subarrayWithRange:NSMakeRange(0, 3)];
+    if (showAlmondHome) {
+        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.almondModeBarButton, spacer, self.notificationsStatusButton];
+    }
+    else {
+        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.notificationsStatusButton];
+    }
+}
+
+- (void)hideAlmondModeButton {
+    if (!self.enableNotificationsHomeAwayMode) {
+        return;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self setBarButtons:NO];
     });
 }
 
 - (void)showAlmondModeButton {
+    if (!self.enableNotificationsHomeAwayMode) {
+        return;
+    }
     dispatch_async(dispatch_get_main_queue(), ^() {
-        NSArray *items = self.navigationItem.rightBarButtonItems;
-        if (items.count == 4) {
-            return;
-        }
-        self.navigationItem.rightBarButtonItems = [items arrayByAddingObject:self.almondModeBarButton];
+        [self setBarButtons:YES];
     });
 }
 
@@ -589,6 +586,49 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
     });
+}
+
+- (void)markTitle:(NSString *)title {
+    UIView *titleView = [[UIView alloc] initWithFrame:CGRectZero];
+
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    titleLabel.font = [UIFont boldSystemFontOfSize:20.f];
+
+    // Set the width of the views according to the text size
+    CGSize bar_size = self.navigationController.navigationBar.frame.size;
+    CGRect frame;
+
+    frame = titleLabel.frame;
+    frame.size = bar_size;
+    titleLabel.frame = frame;
+
+    frame = titleView.frame;
+    frame.size = bar_size;
+    titleView.frame = frame;
+
+    // Ensure text is on one line, centered and truncates if the bounds are restricted
+    titleLabel.numberOfLines = 1;
+    titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    titleLabel.textAlignment = NSTextAlignmentLeft;
+
+    // Use autoresizing to restrict the bounds to the area that the titleview allows
+    titleView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    titleView.autoresizesSubviews = YES;
+    titleLabel.autoresizingMask = titleView.autoresizingMask;
+
+    // Set the text
+    if (!title) {
+        title = @"";
+    }
+    NSDictionary *attributes = @{
+            NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
+            NSFontAttributeName : [UIFont standardNavigationTitleFont]
+    };
+    NSAttributedString *str = [[NSAttributedString alloc] initWithString:title attributes:attributes];
+    titleLabel.attributedText = str;
+
+    [titleView addSubview:titleLabel];
+    self.navigationItem.titleView = titleView;
 }
 
 - (void)showHUD:(NSString *)text {

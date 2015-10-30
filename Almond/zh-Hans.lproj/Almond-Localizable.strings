@@ -1,6 +1,6 @@
 
-"router.linkalmond-msg.label.Let's link an Almond." ="Let's link an Almond.";//not done////not converting
-"router.linkalmond-msg.label.Start the wizard on your Almond." ="在您的Almond啟動設定精靈，接著點擊下方的符號。";
+"router.linkalmond-msg.headline" ="Let's link an Almond.";//not done////not converting
+"router.linkalmond-msg.message" ="在您的Almond啟動設定精靈，接著點擊下方的符號。";
 "Almond Linked" =" Almond已連接";
 "Link Almond" =" 雲端連接";
 "Local Link Almond" =" 本機連接";
