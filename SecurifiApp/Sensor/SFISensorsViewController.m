@@ -17,7 +17,8 @@
 #import "SFINotificationsViewController.h"
 #import "UIImage+Securifi.h"
 #import "SFICloudLinkViewController.h"
-#import "SFISensorDetailViewController.h"//md01
+#import "SFISensorDetailViewController.h"
+#import "SFISensorDetailEditViewController.h"
 #import "Analytics.h"
 
 @interface SFISensorsViewController () <SFISensorTableViewCellDelegate, MessageViewDelegate>
@@ -564,6 +565,20 @@
 
     switch (sensor.deviceType) {
         case SFIDeviceType_MultiSwitch_43:
+        {
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
+            SFISensorDetailEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SFISensorDetailEditViewController"];
+            viewController.device = sensor;
+            viewController.color = [self.almondColor makeGradatedColorForPositionIndex:clicked_row];
+//            viewController.iconImageName = cell.iconImageName;
+//            viewController.statusTextArray = cell.statusTextArray;
+            viewController.deviceValue = [self tryCurrentDeviceValues:sensor.deviceID];
+            
+            [self.navigationController pushViewController:viewController animated:YES];
+            return;
+    }
+            break;
+    break;
         case SFIDeviceType_MultiSensor_49:
         case SFIDeviceType_RollerShutter_52:
         case SFIDeviceType_ZWtoACIRExtender_54:
@@ -1428,14 +1443,8 @@
 }
 
 - (void)sendReactivationRequest {
-    ValidateAccountRequest *validateCommand = [[ValidateAccountRequest alloc] init];
-    validateCommand.email = [[SecurifiToolkit sharedInstance] loginEmail];
-
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_VALIDATE_REQUEST;
-    cloudCommand.command = validateCommand;
-
-    [self asyncSendCommand:cloudCommand];
+    NSString *email = [[SecurifiToolkit sharedInstance] loginEmail];
+    [[SecurifiToolkit sharedInstance] asyncSendValidateCloudAccount:email];
 }
 
 - (void)validateResponseCallback:(id)sender {

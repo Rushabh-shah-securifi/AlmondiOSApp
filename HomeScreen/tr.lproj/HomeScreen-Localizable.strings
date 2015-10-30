@@ -10,8 +10,8 @@
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Bir HomeScreen \n bağlayalım.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "HomeScreen'unuzda sihirbazı başlatın ve aşağıdaki sembole dokunun.";
+"router.linkalmond-msg.headline" = "Bir HomeScreen \n bağlayalım.";
+"router.linkalmond-msg.message" = "HomeScreen'unuzda sihirbazı başlatın ve aşağıdaki sembole dokunun.";
 "Almond Linked" = "HomeScreen Bağlandı";
 "Link Almond" = "Bulut Linki";
 "Local Link Almond" = "Yerel Link";

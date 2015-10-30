@@ -113,7 +113,7 @@ reset at the moment. Try again later.";
 "router.hud.Router is now online." = "Router is now online.";
 "router.hud.Updating router firmware." = "Updating router software.";
 "router.hud.Router is rebooting." = "Router is rebooting.";
-"router.card-title.Send Logs" = "Send Logs";
+"router.card-title.Send Logs" = "Report a Problem";
 "router.Sends %@'s logs to our server" = "Sends %@'s logs to our server";
 "router.hud.Sending Logs." = "Instructing router to send logs";
 
@@ -223,7 +223,7 @@ reset at the moment. Try again later.";
 "sensors.heating.temperature" = "Heating Temperature";
 "sensors.cooling.temperature" = "Cooling Temperature";
 
-"sensor.deivice-showlog.button.viewlogs" = "View Logs";
+"sensor.deivice-showlog.button.viewlogs" = "View Device History";
 "sensor.deivice-warning_rightview.seconds" = "seconds";
 "sensor.deivice.Highlightbutton Turn Off" = "Turn Off";
 "sensor.deivice.Highlightbutton Turn ON" = "Turn ON";
@@ -240,10 +240,12 @@ reset at the moment. Try again later.";
 "smoke-detector-Emergency" = "Emergency";
 "smoke-detector Smoke :%@ , CO :%@"="Smoke :%@ , CO :%@";
 
-"sensor-detail-Fan cell On" = "On";
-"sensor-detail-Fan cell Off" = "Off";
+"sensor-detail-Fan cell On" = "Start";
+"sensor-detail-Fan cell Off" = "Stop";
 "sensor-detail-Target Temp" = "Target Temp";
 
+"sensor.notificaiton.fanindexpath.Start" = "Start";
+"sensor.notificaiton.fanindexpath.Stop" = "Stop";
 "sensor.notificaiton.fanindexpath.On" = "On";
 "sensor.notificaiton.fanindexpath.Off" = "Off";
 "sensor.awaymode.indexpath Home" = "Home";
@@ -281,7 +283,7 @@ reset at the moment. Try again later.";
 
 
 /* signup */
-"signup.navbar-title.Sign up" = "Sign up";
+"signup.navbar-title.Create Account" = "Create Account";
 "signup.barbutton.Decline" = "Decline";
 "signuo.barbutton.Accept" = "Accept";
 "signup.barbutton.Continue" = "Continue";
@@ -289,7 +291,7 @@ reset at the moment. Try again later.";
 "signup.subheadline-text.Please wait one moment..." = "Please wait one moment...";
 "signup.headline-text.Almost done." = "Almost done.";
 "signup.headline-text.An activation link was sent to your email" = "An activation link was sent to your email.
-Follow it, then tap Continue to login.";
+Follow it, then login below.";
 "signup.footerbutton.Resend the activation email" = "Resend the activation email";
 "signup.footerbutton.Signup using another email" = "Signup using another email";
 "signup.footerlabel.Do you want to create another account?" = "Do you want to create another account?";
@@ -419,6 +421,8 @@ Follow it, then tap Continue to login.";
 "HEATING TEMP."="HEATING TEMP.";
 "Version"="Version";
 "Settings"="Settings";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 
 /* Scoreboard */
@@ -683,8 +687,9 @@ Follow it, then tap Continue to login.";
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Let's link \n an Almond.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Start the wizard on your Almond, then tap the symbol below.";
+"router.linkalmond-msg.headline" = "Get Started";
+"router.linkalmond-msg.message" = "To get started, Let's link an Almond.";
+"router.linkalmond-button.title" = "LINK ALMOND";
 "Almond Linked" = "Almond Linked";
 "Link Almond" = "Cloud Link";
 "Local Link Almond" = "Local Link";
@@ -701,7 +706,7 @@ Contact us at support@securifi.com";
 "Monitor and Control your home from anywhere." = "Monitor and Control your home from anywhere.";
 
 /* router tab */
-"router.offline-msg.label.Almond is Offline." = "Almond is Offline.";
+"router.offline-msg.label.Almond is Offline." = "We are unable to reach your Almond at this time. Try again later.";
 
 "router.msg-link.The Almond was successfully linked." = "The Almond was successfully linked.";
 "router.btn-title.Unlink Almond?" = "Unlink Almond?";
@@ -787,3 +792,5 @@ Contact us at support@securifi.com";
 "° Farenheit" = "° Farenheit";
 " is Up." = " is Up.";
 " is Down." = " is Down.";
+"signup.navbar-title.Terms of Use" = "Terms of Use";
+"router.log-advisory message" = "Along with your message, this will send Almond debug information and logs to our cloud. This information will help us resolve your problem faster. Please note that we do not send any sensitive information like your passwords.";

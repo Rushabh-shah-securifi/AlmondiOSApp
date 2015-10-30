@@ -12,7 +12,8 @@
 
 typedef NS_ENUM(unsigned int, SFILoginViewControllerMode) {
     SFILoginViewControllerMode_localLinkOption = 0,             // show a button allowing local conn info to be provided
-    SFILoginViewControllerMode_switchToLocalConnection          // show a button to change app to 'local conn mode' and dismiss the login process
+    SFILoginViewControllerMode_switchToLocalConnection,          // show a button to change app to 'local conn mode' and dismiss the login process
+    SFILoginViewControllerMode_accountCreated                   // show a button to resend activation link, and change headline to indicate account was created
 };
 
 @protocol SFILoginViewDelegate
@@ -31,7 +32,8 @@ typedef NS_ENUM(unsigned int, SFILoginViewControllerMode) {
 @property(nonatomic, weak) IBOutlet UILabel *subHeadingLabel;
 @property(nonatomic, weak) IBOutlet UIButton *forgotPwdButton;
 @property(nonatomic, weak) IBOutlet UIButton *loginButton;
-
+@property(nonatomic, weak) IBOutlet UIButton *createAccountButton;
+@property(nonatomic, weak) IBOutlet UILabel *localActionLabel;
 @property(nonatomic, weak) IBOutlet UIButton *localActionButton;
 @property(nonatomic) enum SFILoginViewControllerMode mode;
 

@@ -30,8 +30,8 @@
 #import "SFIRouterClientsTableViewController.h"
 
 #define DEF_NETWORKING_SECTION          0
-#define DEF_WIRELESS_SETTINGS_SECTION   1
-#define DEF_DEVICES_AND_USERS_SECTION   2
+#define DEF_DEVICES_AND_USERS_SECTION   1
+#define DEF_WIRELESS_SETTINGS_SECTION   2
 #define DEF_ROUTER_VERSION_SECTION      3
 #define DEF_ROUTER_REBOOT_SECTION       4
 #define DEF_ROUTER_SEND_LOGS_SECTION    5
@@ -180,7 +180,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         [self markTitle:plus.almondplusName];
     }
 
-    if (toolkit.defaultConnectionMode == SFIAlmondConnectionMode_cloud) {
+    if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud) {
         if (!self.shownHudOnce) {
             self.shownHudOnce = YES;
             [self showHudWithTimeout];
@@ -270,7 +270,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         return;
     }
 
-    [self showLoadingRouterDataHUD];
+    if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud) {
+        [self showLoadingRouterDataHUD];
+    }
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSString *mac = self.almondMac;
@@ -430,7 +432,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     SFIAlmondConnectionMode mode = self.currentConnectionMode;
     if (mode == SFIAlmondConnectionMode_local) {
-        return 1;
+        return 2;
     }
 
     switch (self.routerViewState) {
@@ -522,7 +524,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
         case DEF_ROUTER_SEND_LOGS_SECTION:
             if (indexPath.row > 0) {
-                return 95;
+                return 180;
             }
 
         default: {
@@ -633,27 +635,22 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
         CGFloat width = self.tableView.frame.size.width;
 
-        UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 50, width, 50)];
-        lblNoSensor.textAlignment = NSTextAlignmentCenter;
-        lblNoSensor.font = [UIFont securifiLightFont:35];
-        lblNoSensor.text = NSLocalizedString(@"router.offline-msg.label.Almond is Offline.", @"Almond is Offline.");
-        lblNoSensor.adjustsFontSizeToFitWidth = YES;
-        lblNoSensor.minimumScaleFactor = 0.50;
-        lblNoSensor.textColor = [UIColor grayColor];
-        [cell addSubview:lblNoSensor];
-
         UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:CGRectMake(width / 2 - 50, 150, 100, 100)];
         imgRouter.userInteractionEnabled = NO;
         imgRouter.image = [UIImage imageNamed:@"offline_150x150.png"];
         imgRouter.contentMode = UIViewContentModeScaleAspectFit;
         [cell addSubview:imgRouter];
 
-        UILabel *lblAddSensor = [[UILabel alloc] initWithFrame:CGRectMake(0, 280, width, 40)];
-        lblAddSensor.textAlignment = NSTextAlignmentCenter;
-        lblAddSensor.font = [UIFont securifiBoldFont:20];
-        lblAddSensor.text = NSLocalizedString(@"router.offline-msg.label.Please check the router.", @"Please check the router.");
-        lblAddSensor.textColor = [UIColor grayColor];
-        [cell addSubview:lblAddSensor];
+        CGRect frame = CGRectMake(0, 280, width, 100);
+        frame = CGRectInset(frame, 20, 0);
+
+        UILabel *label = [[UILabel alloc] initWithFrame:frame];
+        label.numberOfLines = 0;
+        label.textAlignment = NSTextAlignmentCenter;
+        label.font = [UIFont securifiBoldFont:20];
+        label.text = NSLocalizedString(@"router.offline-msg.label.Almond is Offline.", @"Almond is Offline.");
+        label.textColor = [UIColor grayColor];
+        [cell addSubview:label];
     }
 
     return cell;
@@ -944,7 +941,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
     cell.cardView.backgroundColor = [[SFIColors yellowColor] color];
 
-    cell.title = NSLocalizedString(@"router.card-title.Send Logs", @"Send Logs");
+    cell.title = NSLocalizedString(@"router.card-title.Send Logs", @"Report a Problem");
     if (self.almondSupportsSendLogs == AlmondSupportsSendLogs_no) {
         cell.title = [NSString stringWithFormat:@"%@ *", cell.title];
     }

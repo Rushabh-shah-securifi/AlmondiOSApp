@@ -43,7 +43,6 @@
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
-    self.title = @"Scenes";
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
     // Do any additional setup after loading the view.
     
@@ -52,15 +51,13 @@
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
-    
-    
     if (self.currentAlmond == nil) {
-        self.navigationItem.title = NSLocalizedString(@"scene.title.Get Started", @"Get Started");
+        [self markTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
         [self markAlmondMac:NO_ALMOND];
     }
     else {
         [self markAlmondMac:self.currentAlmond.almondplusMAC];
-        self.navigationItem.title = self.currentAlmond.almondplusName;
+        [self markTitle: self.currentAlmond.almondplusName];
     }
 }
 
@@ -374,12 +371,12 @@
     
     
     if (self.currentAlmond == nil) {
-        self.navigationItem.title = NSLocalizedString(@"scene.title.Get Started", @"Get Started");
+        [self markTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
         [self markAlmondMac:NO_ALMOND];
     }
     else {
         [self markAlmondMac:self.currentAlmond.almondplusMAC];
-        self.navigationItem.title = self.currentAlmond.almondplusName;
+        [self markTitle: self.currentAlmond.almondplusName];
     }
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self sendGetAllScenesRequest];

@@ -15,8 +15,8 @@
 
 + (instancetype)linkRouterMessage {
     MessageView *view = [[MessageView alloc] initWithFrame:CGRectZero];
-    view.headline = NSLocalizedString(@"router.linkalmond-msg.label.Let's link an Almond.", "Let's link \n an Almond.");
-    view.message = NSLocalizedString(@"router.linkalmond-msg.label.Start the wizard on your Almond.", "Start the wizard on your Almond, then tap the symbol below.");
+    view.headline = NSLocalizedString(@"router.linkalmond-msg.headline", "Get Started");
+    view.message = NSLocalizedString(@"router.linkalmond-msg.message", "To get started, Let's link an Almond.");
     return view;
 }
 

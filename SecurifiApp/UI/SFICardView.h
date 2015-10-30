@@ -82,6 +82,9 @@ typedef NS_ENUM(int, SFICardView_right_offset) {
 // card header view.
 - (UILabel *)addSummary:(NSArray *)msgs;
 
+// Draws a text label for displaying a long message up to 6 lines long.
+- (UILabel *)addLongSummary:(NSString *)msg;
+
 // Standard method for laying out a row of info. The name label is left justified, and the value label is right justified.
 - (void)addNameLabel:(NSString *)name valueLabel:(NSString *)value;
 

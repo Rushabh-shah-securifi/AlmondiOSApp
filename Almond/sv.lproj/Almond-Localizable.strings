@@ -12,8 +12,8 @@
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Låt oss koppla\n en Almond.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Starta guiden på din Almond och tryck sedan på symbolen nedan.";
+"router.linkalmond-msg.headline" = "Låt oss koppla\n en Almond.";
+"router.linkalmond-msg.message" = "Starta guiden på din Almond och tryck sedan på symbolen nedan.";
 "Almond Linked" = "Almond Kopplad";
 "Link Almond" = "Molnlänk";
 "Local Link Almond" = "Lokal Länk";

@@ -42,6 +42,11 @@
         case SFIRouterTableViewActionsMode_enterReason: {
             [cardView markYOffset:20];
             [cardView addTextFieldPlaceHolder:NSLocalizedString(@"router.log-textfield-placeholder.Describe your problem here", @"Describe your problem here") placeHolderColor:[UIColor whiteColor] delegate:self tag:0 target:self action:@selector(onSendAction:) buttonTitle:@"Send"];
+            [cardView markYOffset:20];
+
+            NSString *msg = NSLocalizedString(@"router.log-advisory message", @"Along with your message, this will send Almond debug information and logs to our cloud....");
+            [cardView addLongSummary:msg];
+
             break;
         };
 

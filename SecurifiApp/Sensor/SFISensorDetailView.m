@@ -590,7 +590,7 @@
     [self addSubview:control];
     [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
 
-    SFIHighlightedButton *button = [self addButton:NSLocalizedString(@"sensor.deivice-showlog.button.viewlogs", @"View Logs")];
+    SFIHighlightedButton *button = [self addButton:NSLocalizedString(@"sensor.deivice-showlog.button.viewlogs", @"View Device History")];
     [button addTarget:self action:@selector(onShowSensorLogs:) forControlEvents:UIControlEventTouchUpInside];
 
     [self markYOffsetUsingRect:labelMode.frame addAdditional:10];

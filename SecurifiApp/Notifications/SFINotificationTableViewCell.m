@@ -231,6 +231,8 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
              };
     
     NSString *message;
+    
+    NSMutableAttributedString *mutableAttributedString = nil;
     switch (self.debugMessageMode) {
         case SFINotificationTableViewCellDebugMode_normal: {
             message = self.sensorSupport.notificationText;
@@ -238,6 +240,15 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
             if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
                 NSArray * properties = [self.notification.deviceName componentsSeparatedByString:@"|"];
                 message = properties[3];
+                NSRange nameRangeInMessage = [message rangeOfString:deviceName];
+                if (nameRangeInMessage.location != NSNotFound) {
+                    mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:message];
+           
+                    [mutableAttributedString addAttribute:NSFontAttributeName value:bold_font range:nameRangeInMessage];
+                    [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:nameRangeInMessage];
+                    
+                }
+                
             }
             //md01>>>
             break;
@@ -258,13 +269,17 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         message = @"";
     }
     
-    NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:message attributes:attr];
     
-    NSMutableAttributedString *container = [NSMutableAttributedString new];
-    [container appendAttributedString:nameStr];
-    [container appendAttributedString:eventStr];
-    
-    self.messageTextField.attributedText = container;
+    if (!mutableAttributedString) {
+        NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:message attributes:attr];
+        NSMutableAttributedString *container = [NSMutableAttributedString new];
+        [container appendAttributedString:nameStr];
+        [container appendAttributedString:eventStr];
+        
+        self.messageTextField.attributedText = container;
+    }else{
+        self.messageTextField.attributedText = mutableAttributedString;
+    }
 }
 
 - (void)setIcon {

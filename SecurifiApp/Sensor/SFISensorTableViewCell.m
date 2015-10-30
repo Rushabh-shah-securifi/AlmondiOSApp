@@ -967,6 +967,7 @@
 }
 
 - (void)configureMultiSwitch_43 {
+    self.deviceImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.iconImageName = @"43_multi_switch";
     self.deviceImageView.image = [UIImage imageNamed:self.iconImageName];
     
@@ -988,7 +989,7 @@
     }else if ([currentDeviceValue intValue] == 0){
         sw2 = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
     }
-   
+    
     [status addObject:[NSString stringWithFormat:@"SWITCH1 :%@",sw1]];
     [status addObject:[NSString stringWithFormat:@"SWITCH2 :%@",sw2]];
     
@@ -997,6 +998,7 @@
 }
 
 - (void)configureMultiSoundSiren_55 {
+    self.deviceImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.iconImageName = @"55_multisoundsiren_icon";
     self.deviceImageView.image = [UIImage imageNamed:self.iconImageName];
     
@@ -1062,6 +1064,7 @@
 }
 
 - (void)configureEnergyReader_56 {
+    self.deviceImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.iconImageName = @"56_energy_reader";
     self.deviceImageView.image = [UIImage imageNamed:self.iconImageName];
     NSMutableArray *status = [NSMutableArray array];
@@ -1077,6 +1080,7 @@
 }
 
 - (void)configureNestSmokeDetector_58 {
+    self.deviceImageView.contentMode = UIViewContentModeScaleAspectFit;
     self.iconImageName = @"nest_58_icon";
     self.deviceImageView.image = [UIImage imageNamed:self.iconImageName];
     NSMutableArray *status = [NSMutableArray array];

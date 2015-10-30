@@ -259,7 +259,7 @@ zresetowane w tej chwili. Spróbuj ponownie później.";
 
 /* signup */
 
-"signup.navbar-title.Sign up" = "Zarejestruj się";
+"signup.navbar-title.Create Account" = "Zarejestruj się";
 "signup.barbutton.Decline" = "Nie zgadzam się";
 "signuo.barbutton.Accept" = "Zgadzam się";
 "signup.barbutton.Continue" = "Kontynuuj";
@@ -573,6 +573,8 @@ Kliknij go, a następnie dotknij Kontynuuj, aby się zalogować.";
 "HEATING TEMP." = "TEMP OGRZEWANIE.";
 "Version" = "Wersja";
 "Settings" = "Ustawienia";
+"termostat.FAN ON" = "START";
+"termostat.FAN OFF" = "STOP";
 
 "login.local.Switch to Local Connection" = "Przełącz na połączenie lokalne";
 
@@ -659,8 +661,8 @@ Kliknij go, a następnie dotknij Kontynuuj, aby się zalogować.";
 
 
 /* affiliation */
-"router.linkalmond-msg.label.Let's link an Almond." = "Połączmy urządzenie HomeScreen.";
-"router.linkalmond-msg.label.Start the wizard on your Almond." = "Uruchom kreatora instalacji na Twoim urządzeniu HomeScreen, a następnie dotknij symbolu poniżej.";
+"router.linkalmond-msg.headline" = "Połączmy urządzenie HomeScreen.";
+"router.linkalmond-msg.message" = "Uruchom kreatora instalacji na Twoim urządzeniu HomeScreen, a następnie dotknij symbolu poniżej.";
 "Almond Linked" = "HomeScreen połączony";
 "Link Almond" = "Połączenie z chmurą";
 "Local Link Almond" = "Połączenie lokalne";
@@ -772,3 +774,6 @@ urządzeń domowych gdziekolwiek jesteś.";
 " humidity is " = " humidity is ";
 " is Up." = " is Up.";
 " is Down." = " is Down.";
+"router.linkalmond-button.title" = "Link HomeScreen";
+"signup.navbar-title.Terms of Use" = "Terms of Use";
+"router.log-advisory message" = "Along with your message, this will send Almond debug information and logs to our cloud. This information will help us resolve your problem faster. Please note that we do not send any sensitive information like your passwords.";
