@@ -559,15 +559,15 @@
                 lblCooling.text =  NSLocalizedString(@"sensors.cooling.temperature", @"Cooling Temperature");
                 
                 CGRect fr = lblShow.frame;
-                fr.origin.y =lblHeating.frame.origin.y;
+                fr.origin.y =coolingTempSelector.frame.origin.y;
                 lblShow.frame = fr;
                 
                 fr = lblCelsius.frame;
-                fr.origin.y =lblHeating.frame.origin.y+30;
+                fr.origin.y =coolingTempSelector.frame.origin.y+30;
                 lblCelsius.frame = fr;
                 
                 fr = btnShowCelsius.frame;
-                fr.origin.y =lblHeating.frame.origin.y+30;
+                fr.origin.y =coolingTempSelector.frame.origin.y+30;
                 btnShowCelsius.frame = fr;
                 
                 fr = lblFahrenheit.frame;
@@ -579,16 +579,21 @@
                 btnFahrenheit.frame = fr;
             }
             if([thermostatMode isEqualToString:@"heat"]){
+                coolingTempSelector.hidden = YES;
+                lblCooling.hidden = YES;
+                heatingTempSelector.frame = coolingTempSelector.frame;
+                lblHeating.frame = lblCooling.frame;
+                
                 CGRect fr = lblShow.frame;
-                fr.origin.y =lblHeating.frame.origin.y;
+                fr.origin.y =heatingTempSelector.frame.origin.y;
                 lblShow.frame = fr;
                 
                 fr = lblCelsius.frame;
-                fr.origin.y =lblHeating.frame.origin.y+30;
+                fr.origin.y =heatingTempSelector.frame.origin.y+30;
                 lblCelsius.frame = fr;
                 
                 fr = btnShowCelsius.frame;
-                fr.origin.y =lblHeating.frame.origin.y+30;
+                fr.origin.y =heatingTempSelector.frame.origin.y+30;
                 btnShowCelsius.frame = fr;
                 
                 fr = lblFahrenheit.frame;
@@ -599,10 +604,7 @@
                 fr.origin.y =btnShowCelsius.frame.origin.y+40;
                 btnFahrenheit.frame = fr;
                 
-                coolingTempSelector.hidden = YES;
-                lblCooling.hidden = YES;
-                heatingTempSelector.frame = coolingTempSelector.frame;
-                lblHeating.frame = lblCooling.frame;
+               
                 
                 lblHeating.text =  NSLocalizedString(@"sensors.heating.temperature", @"Heating Temperature");
             }
@@ -917,6 +919,10 @@
                 }
                 deviceValues.value =value;
                 self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+               //if we need to save 2 properties (low high temperatues, we need to send one request here, next request will be sent as usual)
+                if (propertyType != SFIDevicePropertyType_THERMOSTAT_TARGET) {
+                    [self sendMobileCommandForDevice:self.device deviceValue:deviceValues];
+                }
             }
             
             if (!heatingTempSelector.hidden) {

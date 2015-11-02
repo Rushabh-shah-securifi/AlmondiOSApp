@@ -15,6 +15,7 @@
 #import "SKSTableViewCell.h"
 #import "KeyChainWrapper.h"
 #import "Analytics.h"
+#import "TimeText.h"
 
 #define AVENIR_HEAVY @"Avenir-Heavy"
 #define AVENIR_ROMAN @"Avenir-Roman"
@@ -52,7 +53,7 @@
     randomMobileInternalIndex = arc4random() % 10000;
     tblDevices.SKSTableViewDelegate = self;
     tblDevices.shouldExpandOnlyOneCell = YES;
-    propertyNames = @[@"Name",@"Type",@"MAC Address",@"Last Known IP",@"Connection",@"Use as Presence Sensor",@"Notify me",@"Set Inactivity Timeout",@"Last Actived Time", @"View Device History",@"Remove"];
+    propertyNames = @[@"Name",@"Type",@"MAC Address",@"Last Known IP",@"Connection",@"Use as Presence Sensor",@"Notify me",@"Set Inactivity Timeout",@"Last Active Time", @"View Device History",@"Remove"];
     [self initializeNotifications];
     [self getClientsPreferences];
 }
@@ -270,16 +271,18 @@
         }
         case lastActiveTimeIndexPathRow:
         {
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
-            label.backgroundColor = [UIColor clearColor];
-            label.textColor = [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
-            label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
-            label.text = connectedDevice.deviceLastActiveTime;
-            label.numberOfLines = 1;
-            label.tag = 66;
-            label.textAlignment = NSTextAlignmentRight;
-            cell.accessoryType = UITableViewCellAccessoryNone;
-            [cell addSubview:label];
+            if (((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive){
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
+                label.backgroundColor = [UIColor clearColor];
+                label.textColor = [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
+                label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
+                label.text = [TimeText getTime:[connectedDevice.deviceLastActiveTime integerValue]];
+                label.numberOfLines = 1;
+                label.tag = 66;
+                label.textAlignment = NSTextAlignmentRight;
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                [cell addSubview:label];
+            }
             break;
         }
         case usePresenceSensorIndexPathRow://Use as presence Sensor
@@ -335,7 +338,9 @@
     if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && (subRowIndex==notifyMeIndexPathRow || subRowIndex==historyIndexPathRow)) {
         return;
     }
-    
+    if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive  && subRowIndex==lastActiveTimeIndexPathRow) {
+        return;
+    }
     UIView * bgView = [[UIView alloc] init];
     if (subRowIndex!=removeButtonIndexPathRow) {
         bgView.frame = CGRectMake(0, 0, tblDevices.frame.size.width, propertyRowCellHeight);
@@ -386,15 +391,13 @@
     if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && (subrowIndex==notifyMeIndexPathRow || subrowIndex==historyIndexPathRow)) {
         return 0;//will hide
     }
+    if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive  && subrowIndex==lastActiveTimeIndexPathRow) {
+        return 0;
+    }
     if (subrowIndex==removeButtonIndexPathRow) {
         return removeRowCellHeight;
     }
-//    if (subrowIndex==lastActiveTimeIndexPathRow) {
-//        if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceLastActiveTime.length==0) {
-//            return 0;
-//        }
-//        return removeRowCellHeight;
-//    }
+    
     return 44.0f;
 }
 
@@ -604,7 +607,7 @@
                 device.deviceIP = [dict valueForKey:@"LastKnownIP"];
                 device.deviceConnection = [dict valueForKey:@"Connection"];
                 device.name = [dict valueForKey:@"Name"];
-                device.deviceLastActiveTime = [dict valueForKey:@"LastActiveTime"];
+                device.deviceLastActiveTime = [dict valueForKey:@"LastActiveEpoch"];
                 device.deviceType = [dict valueForKey:@"Type"];
                 device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
                 device.isActive = [[dict valueForKey:@"Active"] boolValue];
@@ -637,7 +640,7 @@
         device.deviceIP = [dict valueForKey:@"LastKnownIP"];
         device.deviceConnection = [dict valueForKey:@"Connection"];
         device.name = [dict valueForKey:@"Name"];
-        device.deviceLastActiveTime = [dict valueForKey:@"LastActiveTime"];
+        device.deviceLastActiveTime = [dict valueForKey:@"LastActiveEpoch"];
         device.deviceType = [dict valueForKey:@"Type"];
         device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
         device.isActive = [[dict valueForKey:@"Active"] boolValue];
@@ -673,7 +676,9 @@
                     [tblDevices collapseCurrentlyExpandedIndexPaths];
                 }
                 [self.connectedDevices removeObject:device];
-                [tblDevices deleteSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
+                dispatch_async(dispatch_get_main_queue(), ^() {
+                    [tblDevices deleteSections:[NSIndexSet indexSetWithIndex:index]  withRowAnimation:UITableViewRowAnimationNone];
+                });
                 break;
             }
             index++;

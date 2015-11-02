@@ -242,7 +242,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
                 message = properties[3];
                 NSRange nameRangeInMessage = [message rangeOfString:deviceName];
                 if (nameRangeInMessage.location != NSNotFound) {
-                    mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:message];
+                    mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:message attributes:attr];
            
                     [mutableAttributedString addAttribute:NSFontAttributeName value:bold_font range:nameRangeInMessage];
                     [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:nameRangeInMessage];
