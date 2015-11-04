@@ -14,6 +14,7 @@ typedef NS_ENUM(NSInteger, Properties) {
     usePresenceSensorIndexPathRow,
     notifyMeIndexPathRow,
     timeoutIndexPathRow,
+    lastActiveTimeIndexPathRow,
     historyIndexPathRow,
     removeButtonIndexPathRow,
 };

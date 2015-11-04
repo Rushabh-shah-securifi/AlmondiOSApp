@@ -744,11 +744,11 @@
     bg.alpha = 0.3;
     [actionSheet addSubview:bg];
     
-    chPicker.frame = CGRectMake(0, actionSheet.frame.size.height-chPicker.frame.size.height, chPicker.frame.size.width, chPicker.frame.size.height);
+    chPicker.frame = CGRectMake(0, actionSheet.frame.size.height-chPicker.frame.size.height, actionSheet.frame.size.width, chPicker.frame.size.height);
     
     [actionSheet addSubview:chPicker];
     //yourView represent the view that contains UIPickerView and toolbar
-    NSLog(@"%@",NSStringFromCGRect(actionSheet.frame));
+//    NSLog(@"%@",NSStringFromCGRect(actionSheet.frame));
     actionSheet.alpha = 0;
     [self.parentViewController.view addSubview:actionSheet];
     [UIView animateWithDuration:0.3 animations:^{
@@ -778,7 +778,7 @@
 
 // Set the width of the component inside the picker
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
-    return 300;
+    return pickerView.frame.size.width;
 }
 
 // Item picked
@@ -962,11 +962,11 @@
             }
         }
         if ([[dict valueForKey:@"Index"] integerValue]==btnTermostatDimHeat.tag) {
-            [btnTermostatDimHeat setupValues:[dict valueForKey:@"Value"] Title:NSLocalizedString(@"HEATING TEMP.",@"HEATING TEMP.") Prefix:@"°F"];
+            [btnTermostatDimHeat setupValues:[NSString stringWithFormat:@"%@",[dict valueForKey:@"Value"]] Title:NSLocalizedString(@"HEATING TEMP.",@"HEATING TEMP.") Prefix:@"°F"];
             btnTermostatDimHeat.selected = YES;
         }
         if ([[dict valueForKey:@"Index"] integerValue]==btnTermostatDimCool.tag) {
-            [btnTermostatDimCool setupValues:[dict valueForKey:@"Value"] Title:NSLocalizedString(@"COOLING TEMP",@"COOLING TEMP") Prefix:@"°F"];
+            [btnTermostatDimCool setupValues:[NSString stringWithFormat:@"%@",[dict valueForKey:@"Value"]] Title:NSLocalizedString(@"COOLING TEMP",@"COOLING TEMP") Prefix:@"°F"];
             btnTermostatDimCool.selected = YES;
         }
     }

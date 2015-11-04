@@ -371,12 +371,12 @@
     
     
     if (self.currentAlmond == nil) {
-        self.navigationItem.title = NSLocalizedString(@"scene.title.Get Started", @"Get Started");
+        [self markTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
         [self markAlmondMac:NO_ALMOND];
     }
     else {
         [self markAlmondMac:self.currentAlmond.almondplusMAC];
-        self.navigationItem.title = self.currentAlmond.almondplusName;
+        [self markTitle: self.currentAlmond.almondplusName];
     }
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self sendGetAllScenesRequest];

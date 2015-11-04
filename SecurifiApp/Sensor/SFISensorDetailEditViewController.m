@@ -5,6 +5,8 @@
 //  Created by Tigran Aslanyan on 12.10.15.
 //  Copyright © 2015 Securifi Ltd. All rights reserved.
 //
+#define nameTag 1
+#define locationTag 2
 
 #import "SFISensorDetailEditViewController.h"
 #import "UIViewController+Securifi.h"
@@ -15,7 +17,7 @@
 #import "SFIHighlightedButton.h"
 #import "MBProgressHUD.h"
 
-@interface SFISensorDetailEditViewController (){
+@interface SFISensorDetailEditViewController ()<UITextFieldDelegate>{
     
     IBOutlet UIButton *btnBack;
     IBOutlet UIButton *btnSave;
@@ -33,6 +35,8 @@
     UIButton *btnSwitch2On;
     UIButton *btnSwitch2Off;
     SFINotificationMode mode;
+    UITextField * txtName;
+    UITextField * txtLocation;
 }
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -51,6 +55,8 @@
         case SFIDeviceType_MultiSwitch_43:
         {
             [self addNotificationsControl];
+            [self addTextField:nameTag];
+            [self addTextField:locationTag];
             
             UILabel *labelMode = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
             labelMode.backgroundColor = self.color;
@@ -114,7 +120,9 @@
                 [self changeButtonStyle:btnSwitch2On Style:0];
                 [self changeButtonStyle:btnSwitch2Off Style:1];
             }
-            
+            frame = viewEditproperty.frame;
+            frame.size.height = self.baseYCoordinate+btnSave.frame.size.height+30;
+            viewEditproperty.frame = frame;
         }
             break;
             
@@ -182,6 +190,37 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (void)addTextField:(int)fTag{
+    UILabel *labelMode = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
+    labelMode.backgroundColor = self.color;
+    
+    labelMode.textColor = [UIColor whiteColor];
+    labelMode.font = [UIFont securifiBoldFont];
+    [viewEditproperty addSubview:labelMode];
+    [self markYOffsetUsingRect:labelMode.frame addAdditional:5];
+    
+    UITextField * txtField = [[UITextField alloc] initWithFrame:CGRectMake(10, self.baseYCoordinate, self.view.frame.size.width-20, 30)];
+    txtField.delegate = self;
+    txtField.tag = fTag;
+    txtField.backgroundColor = [UIColor whiteColor];
+    [viewEditproperty addSubview:txtField];
+    [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
+    
+    switch (fTag) {
+        case nameTag:
+            labelMode.text = NSLocalizedString(@"Device.propertyeditview.controller.Name",@"Name";);
+            txtField.text = self.device.deviceName;
+            txtName = txtField;
+            break;
+        case locationTag:
+            labelMode.text = NSLocalizedString(@"Device.propertyeditview.controller.Location",@"Location";);
+            txtField.text = self.device.location;
+            txtLocation = txtField;
+            break;
+        default:
+            break;
+    }
+}
 
 - (void)addNotificationsControl {
     UILabel *labelMode = [[UILabel alloc] initWithFrame:[self makeFieldNameLabelRect:225]];
@@ -224,7 +263,9 @@
     [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
 }
 
-#pragma mark - Borrowed from SFICardView until we unify...
+
+
+#pragma mark -
 
 - (UISegmentedControl *)makeNotificationModeSegment:(id)target action:(SEL)action {
     CGFloat width = CGRectGetWidth(viewEditproperty.bounds);
@@ -371,6 +412,8 @@
 
 - (IBAction)btnSaveTap:(id)sender {
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
+    [txtName resignFirstResponder];
+    [txtLocation resignFirstResponder];
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.labelText = NSLocalizedString(@"sensor.hud.UpdatingSensordata", @"Updating Sensor Data...");
@@ -389,6 +432,10 @@
     
     deviceValues = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SWITCH_BINARY2];
     [self sendMobileCommandForDevice:self.device deviceValue:deviceValues];
+    
+    [self sendMobileCommandForDevice:self.device name:txtName.text location:txtLocation.text];
+    
+    
     
 }
 
@@ -562,5 +609,22 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     [[SecurifiToolkit sharedInstance] asyncRequestNotificationPreferenceChange:plus.almondplusMAC deviceList:notificationDeviceSettings forAction:action];
+}
+
+#pragma mark textField Delegates
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    //    switch (textField.tag) {
+    //        case nameTag:
+    //            labelMode.text = NSLocalizedString(@"Device.propertyeditview.controller.Name",@"Name";);
+    //            txtField.text = self.device.deviceName;
+    //            break;
+    //        case locationTag:
+    //            labelMode.text = NSLocalizedString(@"Device.propertyeditview.controller.Location",@"Location";);
+    //            txtField.text = self.device.location;
+    //            break;
+    //        default:
+    //            break;
+    //    }
+    return YES;
 }
 @end

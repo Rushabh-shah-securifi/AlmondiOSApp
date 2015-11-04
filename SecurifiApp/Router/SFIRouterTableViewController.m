@@ -1134,7 +1134,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                     device.deviceIP = [dict valueForKey:@"LastKnownIP"];
                     device.deviceConnection = [dict valueForKey:@"Connection"];
                     device.name = [dict valueForKey:@"Name"];
-                    device.deviceLastActiveTime = [dict valueForKey:@"LastActiveTime"];
+                    device.deviceLastActiveTime = [dict valueForKey:@"LastActiveEpoch"];
                     device.deviceType = [dict valueForKey:@"Type"];
                     device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
                     device.isActive = [[dict valueForKey:@"Active"] boolValue];
