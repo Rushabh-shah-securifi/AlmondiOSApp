@@ -405,7 +405,7 @@ Follow it, then login below.";
 "scene.alert-button.OK" = "OK";
 
 "DIM"="DIM";
-"AUTO"="AUTO";
+"AUTO"="HEAT-COOL";
 "HEAT"="HEAT";
 "COOL"="COOL";
 "OFF"="OFF";
@@ -656,7 +656,7 @@ Follow it, then login below.";
 "Configuration" = "Configuration";
 "Humidity" = "Humidity";
 "Luminance" = "Luminance";
-"Away Mode" = "Away Mode";
+"Away Mode" = "Nest Mode";
 "CO Level" = "CO Level";
 "Smoke Level" = "Smoke Level";
 "Mode" = "Mode";

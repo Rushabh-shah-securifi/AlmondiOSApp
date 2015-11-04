@@ -745,6 +745,7 @@
     }else{
         label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
         cell.accessoryType = UITableViewCellAccessoryNone;
+        label.alpha=0.6;
     }
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
