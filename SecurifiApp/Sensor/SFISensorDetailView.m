@@ -171,7 +171,7 @@
             break;
         }
         case SFIDeviceType_BinarySensor_3: {
-            [self configureBinarySensor_3];
+//            [self configureBinarySensor_3];
             break;
         }
         case SFIDeviceType_MultiLevelOnOff_4: {
@@ -791,23 +791,23 @@
     [self addLine];
 }
 
-- (void)configureBinarySensor_3 {
-    SFIDeviceKnownValues *values = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BATTERY];
-    NSString *batteryStatus = [values choiceForLevelValueZeroValue:NSLocalizedString(@"sensor.device-status.label.Battery OK", @"Battery OK")
-                                                      nonZeroValue:NSLocalizedString(@"sensor.device-status.label.LOW BATTERY", @"LOW BATTERY")
-                                                          nilValue:NSLocalizedString(@"sensor.device-status.label.Battery Unknown", @"Battery Unknown")];
-
-    UILabel *label = [[UILabel alloc] init];
-    label.backgroundColor = [UIColor clearColor];
-    label.text = batteryStatus;
-    label.textColor = [UIColor whiteColor];
-    label.font = [UIFont securifiBoldFont];
-    label.frame = CGRectMake(10, self.baseYCoordinate, 299, 30);
-    [self addSubview:label];
-
-    [self markYOffset:25];;
-    [self addLine];
-}
+//- (void)configureBinarySensor_3 {
+//    SFIDeviceKnownValues *values = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BATTERY];
+//    NSString *batteryStatus = [values choiceForLevelValueZeroValue:NSLocalizedString(@"sensor.device-status.label.Battery OK", @"Battery OK")
+//                                                      nonZeroValue:NSLocalizedString(@"sensor.device-status.label.LOW BATTERY", @"LOW BATTERY")
+//                                                          nilValue:NSLocalizedString(@"sensor.device-status.label.Battery Unknown", @"Battery Unknown")];
+//
+//    UILabel *label = [[UILabel alloc] init];
+//    label.backgroundColor = [UIColor clearColor];
+//    label.text = batteryStatus;
+//    label.textColor = [UIColor whiteColor];
+//    label.font = [UIFont securifiBoldFont];
+//    label.frame = CGRectMake(10, self.baseYCoordinate, 299, 30);
+//    [self addSubview:label];
+//
+//    [self markYOffset:25];;
+//    [self addLine];
+//}
 
 - (void)configureDoorLock_5 {
     int maxUsers = [self maximumPinCodes];
