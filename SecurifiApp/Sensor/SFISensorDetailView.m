@@ -951,7 +951,7 @@
     //
     CGRect frame = CGRectMake(0, 0, 90, 30);
     UILabel *rightView = [[UILabel alloc] initWithFrame:frame];
-    rightView.text = NSLocalizedString(@"sensor.deivice-warning_rightview.seconds",@"seconds");
+    rightView.text = NSLocalizedString(@"sensor.deivice-warning_rightview.seconds",@"secs");
     rightView.font = [field.font fontWithSize:field.font.pointSize - 3];
     rightView.textColor = [UIColor whiteColor];
     rightView.textAlignment = NSTextAlignmentRight;
