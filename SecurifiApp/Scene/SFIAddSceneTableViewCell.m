@@ -962,11 +962,11 @@
             }
         }
         if ([[dict valueForKey:@"Index"] integerValue]==btnTermostatDimHeat.tag) {
-            [btnTermostatDimHeat setupValues:[dict valueForKey:@"Value"] Title:NSLocalizedString(@"HEATING TEMP.",@"HEATING TEMP.") Prefix:@"°F"];
+            [btnTermostatDimHeat setupValues:[NSString stringWithFormat:@"%@",[dict valueForKey:@"Value"]] Title:NSLocalizedString(@"HEATING TEMP.",@"HEATING TEMP.") Prefix:@"°F"];
             btnTermostatDimHeat.selected = YES;
         }
         if ([[dict valueForKey:@"Index"] integerValue]==btnTermostatDimCool.tag) {
-            [btnTermostatDimCool setupValues:[dict valueForKey:@"Value"] Title:NSLocalizedString(@"COOLING TEMP",@"COOLING TEMP") Prefix:@"°F"];
+            [btnTermostatDimCool setupValues:[NSString stringWithFormat:@"%@",[dict valueForKey:@"Value"]] Title:NSLocalizedString(@"COOLING TEMP",@"COOLING TEMP") Prefix:@"°F"];
             btnTermostatDimCool.selected = YES;
         }
     }

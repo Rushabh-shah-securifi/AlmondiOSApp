@@ -64,6 +64,9 @@
 
 - (void)setupValues:(NSString*)text  Title:(NSString*)title Prefix:(NSString*)prefix{
     self.prefix = prefix;
+    if (![text isKindOfClass:[NSString class]]) {
+        text = [NSString stringWithFormat:@"%@", text];
+    }
     NSString *strTopTitleLabelText = [text stringByAppendingString:prefix];
     
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
