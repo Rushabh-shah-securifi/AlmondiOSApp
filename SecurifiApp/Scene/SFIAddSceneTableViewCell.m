@@ -1462,7 +1462,7 @@
     fr.origin.x = (self.frame.size.width - fr.size.width)/2;
     viewNest57.frame = fr;
     
-    [btnNestAuto setupValues:[UIImage imageNamed:@"imgAuto"] Title:NSLocalizedString(@"AUTO",@"AUTO")];
+    [btnNestAuto setupValues:[UIImage imageNamed:@"imgAuto"] Title:NSLocalizedString(@"HEAT-COOL",@"HEAT-COOL")];
     [btnNestHeat setupValues:[UIImage imageNamed:@"imgHeat"] Title:NSLocalizedString(@"HEAT",@"HEAT")];
     [btnNestCool setupValues:[UIImage imageNamed:@"imgCool"] Title:NSLocalizedString(@"COOL",@"COOL")];
     [btnNestOff setupValues:[UIImage imageNamed:@"imgOff"] Title:NSLocalizedString(@"OFF",@"OFF")];

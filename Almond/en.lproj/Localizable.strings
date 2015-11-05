@@ -409,7 +409,8 @@ Follow it, then login below.";
 "scene.alert-button.OK" = "OK";
 
 "DIM"="DIM";
-"AUTO"="HEAT-COOL";
+"HEAT-COOL"="HEAT-COOL";
+"AUTO" = "AUTO";
 "HEAT"="HEAT";
 "COOL"="COOL";
 "OFF"="OFF";
@@ -670,7 +671,6 @@ Follow it, then login below.";
 "Fan Mode" = "Fan Mode";
 "Fan" = "Fan";
 "Notify me" = "Notify me";
-
 
 
 /* ==================================================================== */
