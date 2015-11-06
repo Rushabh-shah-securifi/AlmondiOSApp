@@ -21,7 +21,7 @@
 Contact us at support@homescreen.com";
 "Almond could not be affiliated" = "HomeScreen could not be affiliated.\n%@";
 
-"Run the Almond Account app and enter the code displayed." = "Run the HomeScreen Account app and enter the code displayed.";
+"Run the Almond Account app and enter the code displayed." = "Type the code shown on your HomeScreen if you're already running the Touchscreen Wizard. You can also get code from the Touchscreen HomeScreen App.";
 "cloudlink.button.Link Almond" = "Link HomeScreen";
 "cloudlink.button.Add Almond Locally" = "Add HomeScreen Locally";
 

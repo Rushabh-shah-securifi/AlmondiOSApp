@@ -86,7 +86,7 @@
                                NSLocalizedString(@"Configuration","Configuration"),
                                NSLocalizedString(@"Humidity","Humidity"),
                                NSLocalizedString(@"Luminance","Luminance"),
-                               NSLocalizedString(@"Away Mode","Away Mode"),
+                               NSLocalizedString(@"Away Mode","Nest Mode"),
                                NSLocalizedString(@"CO Level","CO Level"),
                                NSLocalizedString(@"Smoke Level","Smoke Level"),
                                NSLocalizedString(@"Mode","Mode"),
@@ -685,7 +685,7 @@
         for (UILabel *c in cell.subviews) {
             if ([c isKindOfClass:[UILabel class]]) {
                 if (c.tag==66) {
-                    c.text =  NSLocalizedString(@"sensor-detail- Target Temp",@"Target Temp");
+                    c.text =  NSLocalizedString(@"sensor-detail-Target Temp",@"Target Temp");
                 }
             }
         }
@@ -746,6 +746,7 @@
     }else{
         label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
         cell.accessoryType = UITableViewCellAccessoryNone;
+        label.alpha=0.6;
     }
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];
@@ -888,10 +889,13 @@
             currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CAN_HEAT];
             canHeat = [currentDeviceValue boolValue];
             currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
-            if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"off"] || (!canHeat && !canCool)) {
+            if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"off"] ) {
+                [propertiesArray[targetRangeIndexPathRow] setValue:@YES forKey:@"hidden"];
+                [propertiesArray[fanIndexPathRow] setValue:@YES forKey:@"hidden"];
+            }
+            if(!canHeat || !canCool){
                 [propertiesArray[targetRangeIndexPathRow] setValue:@YES forKey:@"hidden"];
             }
-            
             currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HAS_FAN];
             BOOL hasFan = [currentDeviceValue boolValue];
             if (!hasFan) {

@@ -83,7 +83,7 @@
         [view autoPinEdgeToSuperviewEdge:ALEdgeLeading withInset:20];
         [view autoPinEdgeToSuperviewEdge:ALEdgeTrailing withInset:20];
 
-        CGFloat size = (CGFloat) ((view == message_view) ? 100.0 : 50.0);
+        CGFloat size = (CGFloat) ((view == message_view) ? 60.0 : 40.0);
         [view autoSetDimension:ALDimensionHeight toSize:size];
 
         if (previousView) {
