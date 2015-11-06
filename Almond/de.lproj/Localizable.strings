@@ -555,7 +555,7 @@ Bitte folgen Sie dem Link zur Anmeldung.";
 
 // To be translated
 "DIM"="DIM";
-"AUTO"="AUTO";
+"HEAT-COOL"="HEAT-COOL";
 "HEAT"="HEAT";
 "COOL"="COOL";
 "OFF"="OFF";

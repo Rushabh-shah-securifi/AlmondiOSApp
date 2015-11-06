@@ -556,7 +556,7 @@
             if([thermostatMode isEqualToString:@"cool"]){
                 heatingTempSelector.hidden = YES;
                 lblHeating.hidden = YES;
-                lblCooling.text =  NSLocalizedString(@"sensors.cooling.temperature", @"Cooling Temperature");
+                lblCooling.text =  NSLocalizedString(@"sensors.cooling.temperature", @"Low Temperature");
                 
                 CGRect fr = lblShow.frame;
                 fr.origin.y =coolingTempSelector.frame.origin.y;
@@ -603,10 +603,8 @@
                 fr = btnFahrenheit.frame;
                 fr.origin.y =btnShowCelsius.frame.origin.y+40;
                 btnFahrenheit.frame = fr;
-                
-               
-                
-                lblHeating.text =  NSLocalizedString(@"sensors.heating.temperature", @"Heating Temperature");
+              
+                lblHeating.text =  NSLocalizedString(@"sensors.heating.temperature", @"High Temperature");
             }
             break;
         }

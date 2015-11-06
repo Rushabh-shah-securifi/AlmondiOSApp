@@ -203,6 +203,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     }
     
     UIFont *bold_font = [UIFont securifiBoldFont];
+        UIFont *normal_font = [UIFont securifiNormalFont];
     
     NSDictionary *attr;
     
@@ -244,7 +245,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
                 if (nameRangeInMessage.location != NSNotFound) {
                     mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:message attributes:attr];
            
-                    [mutableAttributedString addAttribute:NSFontAttributeName value:bold_font range:nameRangeInMessage];
+                    [mutableAttributedString addAttribute:NSFontAttributeName value:normal_font range:nameRangeInMessage];
                     [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:nameRangeInMessage];
                     
                 }
