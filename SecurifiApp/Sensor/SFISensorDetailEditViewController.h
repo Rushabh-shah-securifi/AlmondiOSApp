@@ -13,5 +13,8 @@
 @property(nonatomic) SFIDevice *device;
 @property(nonatomic) SFIDeviceValue *deviceValue;
 @property(nonatomic) UIColor *color;
+@property (strong, nonatomic) NSString *iconImageName;
+@property (strong, nonatomic) NSArray *statusTextArray;
+
 
 @end

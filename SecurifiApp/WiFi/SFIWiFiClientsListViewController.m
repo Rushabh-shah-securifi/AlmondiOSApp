@@ -271,7 +271,7 @@
         }
         case lastActiveTimeIndexPathRow:
         {
-            if (((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive){
+            if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive){
                 UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
                 label.backgroundColor = [UIColor clearColor];
                 label.textColor = [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
@@ -338,7 +338,7 @@
     if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && (subRowIndex==notifyMeIndexPathRow || subRowIndex==historyIndexPathRow)) {
         return;
     }
-    if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive  && subRowIndex==lastActiveTimeIndexPathRow) {
+    if (((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive  && subRowIndex==lastActiveTimeIndexPathRow) {
         return;
     }
     UIView * bgView = [[UIView alloc] init];
@@ -391,7 +391,7 @@
     if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && (subrowIndex==notifyMeIndexPathRow || subrowIndex==historyIndexPathRow)) {
         return 0;//will hide
     }
-    if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive  && subrowIndex==lastActiveTimeIndexPathRow) {
+    if (((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive  && subrowIndex==lastActiveTimeIndexPathRow) {
         return 0;
     }
     if (subrowIndex==removeButtonIndexPathRow) {

@@ -220,8 +220,8 @@ reset at the moment. Try again later.";
 "sensor.notificaiton.segment.Off" = "Off";
 "sensors.label.Color" = "Color";
 "sensor.hud.UpdatingSensordata" = "Updating Sensor Data...";
-"sensors.heating.temperature" = "Heating Temperature";
-"sensors.cooling.temperature" = "Cooling Temperature";
+"sensors.heating.temperature" = "High Temperature";
+"sensors.cooling.temperature" = "Low Temperature";
 
 "sensor.deivice-showlog.button.viewlogs" = "View Device History";
 "sensor.deivice-warning_rightview.seconds" = "seconds";
@@ -409,7 +409,7 @@ Follow it, then login below.";
 "scene.alert-button.OK" = "OK";
 
 "DIM"="DIM";
-"AUTO"="HEAT-COOL";
+"HEAT-COOL"="HEAT-COOL";
 "HEAT"="HEAT";
 "COOL"="COOL";
 "OFF"="OFF";
@@ -509,6 +509,9 @@ Follow it, then login below.";
 "wifi.button.deleteClient" = "Remove";
 "wifi.Active" = "ACTIVE";
 "wifi.Inactive" = "INACTIVE";
+"wifi.textEdit.Name" = "Name";
+"wifi.textEdit.Minutes" = "Minutes";
+
 
 "SFIWiFiClientsListViewController-propertyNames-Name" = "Name";
 "SFIWiFiClientsListViewController-propertyNames-Type" = "Type";
@@ -670,7 +673,6 @@ Follow it, then login below.";
 "Fan Mode" = "Fan Mode";
 "Fan" = "Fan";
 "Notify me" = "Notify me";
-
 
 
 /* ==================================================================== */

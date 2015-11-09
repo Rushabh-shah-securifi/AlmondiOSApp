@@ -558,7 +558,7 @@ Följ den, sedan trycker du på Fortsätt för att logga in.";
 
 //To be translated
 "DIM" = "DUNKEL";
-"AUTO" = "AUTO";
+"HEAT-COOL"="HEAT-COOL";
 "HEAT" = "hetta";
 "COOL" = "HÄFTIGT";
 "OFF" = "AV";

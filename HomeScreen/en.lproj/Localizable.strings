@@ -219,8 +219,8 @@ reset at the moment. Try again later.";
 "sensor.notificaiton.segment.Off" = "Off";
 "sensors.label.Color" = "Color";
 "sensor.hud.UpdatingSensordata" = "Updating Sensor Data...";
-"sensors.heating.temperature" = "Heating Temperature";
-"sensors.cooling.temperature" = "Cooling Temperature";
+"sensors.heating.temperature" = "High Temperature";
+"sensors.cooling.temperature" = "Low Temperature";
 
 "sensor.deivice-showlog.button.viewlogs" = "View Device History";
 "sensor.deivice-warning_rightview.seconds" = "secs";
@@ -405,7 +405,11 @@ Follow it, then login below.";
 "scene.alert-button.OK" = "OK";
 
 "DIM"="DIM";
+<<<<<<< HEAD
+"HEAT-COOL"="HEAT-COOL";
+=======
 "AUTO"="HEAT-COOL";
+>>>>>>> origin/master
 "HEAT"="HEAT";
 "COOL"="COOL";
 "OFF"="OFF";

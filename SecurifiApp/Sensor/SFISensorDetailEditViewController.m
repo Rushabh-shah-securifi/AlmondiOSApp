@@ -131,6 +131,14 @@
     }
     [self initializeNotifications];
 }
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    lblDeviceName.text = self.device.deviceName;
+    NSString *status = [self.statusTextArray componentsJoinedByString:@"\n"];
+    [self configureSensorImageName:self.iconImageName statusMesssage:status];
+}
+
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     
@@ -258,7 +266,7 @@
     [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
     
     SFIHighlightedButton *button = [self addButton:NSLocalizedString(@"sensor.deivice-showlog.button.viewlogs", @"View Logs")];
-    [button addTarget:self action:@selector(onShowSensorLogs:) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(onShowSensorLogs) forControlEvents:UIControlEventTouchUpInside];
     
     [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
 }
@@ -626,5 +634,26 @@
     //            break;
     //    }
     return YES;
+}
+
+- (void)configureSensorImageName:(NSString *)imageName statusMesssage:(NSString *)message {
+    UIImage* image = [UIImage imageNamed:imageName];
+    imgIcon.image = image;
+    CGRect fr = imgIcon.frame;
+    CGSize imgSize = image.size;
+    if (imgSize.height>=60) {
+        float k = imgSize.height/imgSize.width;
+        imgSize = CGSizeMake(70/k, 70);
+    }
+    if (imgSize.width>=60) {
+        float k = imgSize.width/imgSize.height;
+        imgSize = CGSizeMake(70, 70/k);
+    }
+    
+    fr.size = imgSize;
+    fr.origin.x = (80-fr.size.width)/2;
+    fr.origin.y = (80-fr.size.height)/2;
+    imgIcon.frame = fr;
+    lblStatus.text = message;
 }
 @end
