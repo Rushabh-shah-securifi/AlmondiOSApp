@@ -872,9 +872,9 @@
             
             
             if ([ahco isEqualToString:@"off"] || (!canHeat && !canCool)) {
-                currentHeight+=280;
+                currentHeight+=195;
             }else{
-                currentHeight+=380;
+                currentHeight+=295;
             }
             
             if (!hasFan) {
