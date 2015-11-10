@@ -945,7 +945,7 @@
                 currentDeviceValues.value =value;
                 self.deviceValue = [self.deviceValue setKnownValues:currentDeviceValues forProperty:propertyType];
                //if we need to save 2 properties (low high temperatues, we need to send one request here, next request will be sent as usual)
-                if (propertyType != SFIDevicePropertyType_THERMOSTAT_TARGET && ((oldValue == nil) || ![oldValue isEqualToString:deviceValues.value])) {
+                if (propertyType != SFIDevicePropertyType_THERMOSTAT_TARGET && ((oldValue == nil) || ![oldValue isEqualToString:currentDeviceValues.value])) {
                     [deviceValueArray addObject:currentDeviceValues];
                    
                 }
@@ -966,7 +966,7 @@
                 }
                 currentDeviceValues.value =value;
                 self.deviceValue = [self.deviceValue setKnownValues:currentDeviceValues forProperty:propertyType];
-                if (propertyType != SFIDevicePropertyType_THERMOSTAT_TARGET && ((oldValue == nil) || ![oldValue isEqualToString:deviceValues.value])) {
+                if (propertyType != SFIDevicePropertyType_THERMOSTAT_TARGET && ((oldValue == nil) || ![oldValue isEqualToString:currentDeviceValues.value])) {
                     [deviceValueArray addObject:currentDeviceValues];
                     
                 }
@@ -1319,8 +1319,12 @@
         lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
         
     }else if (self.device.deviceType==SFIDeviceType_NestThermostat_57){
-        currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
-        lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
+        SFIDeviceKnownValues *isOnline = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_ISONLINE];
+        if([isOnline.value isEqualToString:@"true"]){
+            currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
+            lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
+        }
+        
         
     }
 }

@@ -901,6 +901,15 @@
             if (!hasFan) {
                 [propertiesArray[fanIndexPathRow] setValue:@YES forKey:@"hidden"];
             }
+            SFIDeviceKnownValues *isOnline = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_ISONLINE];
+            if([isOnline.value isEqualToString:@"false"]){
+                [propertiesArray[fanIndexPathRow] setValue:@YES forKey:@"hidden"];
+                [propertiesArray[targetRangeIndexPathRow] setValue:@YES forKey:@"hidden"];
+                [propertiesArray[humidityIndexPathRow] setValue:@YES forKey:@"hidden"];
+                [propertiesArray[modeIndexPathRow] setValue:@YES forKey:@"hidden"];
+                [propertiesArray[awayModeIndexPathRow] setValue:@YES forKey:@"hidden"];
+
+            }
             
         }
             break;
@@ -929,9 +938,12 @@
     }
     
     if (self.device.deviceType==SFIDeviceType_NestThermostat_57) {
-        [self configTemperatureLable];
-        SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
-        lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
+        SFIDeviceKnownValues *isOnline = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_ISONLINE];
+        if([isOnline.value isEqualToString:@"true"]){
+            [self configTemperatureLable];
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
+            lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
+        }
     }
     //for all other cases
     
