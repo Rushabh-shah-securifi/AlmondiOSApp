@@ -674,6 +674,13 @@ Follow it, then login below.";
 "Fan" = "Fan";
 "Notify me" = "Notify me";
 
+//m - nov 9
+"idle" = "idle";
+"Using Emergency Heat" = "Using Emergency Heat";
+"'s Fan Started" = "'s Fan Started";
+"'s Fan Stopped" = "'s Fan Stopped";
+"target temperature is" = " target temperature is ";
+"'s mode set to" = "'s mode set to ";
 
 /* ==================================================================== */
 

@@ -376,7 +376,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"70";
-                s1.iconName = @"07_thermostat";
+                s1.iconName = @"27_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature changed to ", @"'s temperature changed to ");
                 s1.valueFormatter.suffix = @"\u00B0F";
@@ -386,7 +386,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"Heating";
-                s1.iconName = @"07_thermostat";
+                s1.iconName = @"27_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is ", @" is ");
                 s1.valueFormatter.suffix = @"\u00B0F";
@@ -396,7 +396,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"70";
-                s1.iconName = @"07_thermostat";
+                s1.iconName = @"27_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is cooling down to ", @" is cooling down to ");
                 s1.valueFormatter.suffix = @"\u00B0F";
@@ -406,7 +406,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"70";
-                s1.iconName = @"07_thermostat";
+                s1.iconName = @"27_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is heating up to ", @" is heating up to ");
                 s1.valueFormatter.suffix = @"\u00B0F";
@@ -442,7 +442,7 @@
             if (type == SFIDevicePropertyType_HUMIDITY) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
-                s1.iconName = @"07_thermostat";
+                s1.iconName = @"27_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" humidity is ", @" humidity is ");
                 return @[s1];
@@ -1988,12 +1988,12 @@
                     IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                     s1.matchData = @"true";
                     s1.iconName = @"07_thermostat_fan";
-                    s1.notificationText = NSLocalizedString(@"ON", @"ON");
+                    s1.notificationText = NSLocalizedString(@"'s Fan Started", @"'s Fan Started");
 
                     IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                     s2.matchData = @"false";
                     s2.iconName = @"07_thermostat_fan";
-                    s2.notificationText = NSLocalizedString(@"OFF", @"OFF");
+                    s2.notificationText = NSLocalizedString(@"'s Fan Stopped", @"'s Fan Stopped");
                     return @[s1, s2];
                 }
                 if (type == SFIDevicePropertyType_AWAY_MODE) {
@@ -2012,29 +2012,142 @@
                     IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                     s1.matchType = MatchType_any;
                     s1.matchData = @"70";
-                    s1.iconName = @"07_thermostat";
+                    s1.iconName = @"27_thermostat";
                     s1.notificationText = @"";
-                    s1.valueFormatter.notificationPrefix = NSLocalizedString(@"Temperature", @"Temperature");
+                    s1.valueFormatter.notificationPrefix = NSLocalizedString(@"target temperature is", @"target temperature is");
                     s1.valueFormatter.action = ValueFormatterAction_formatString;
                     return @[s1];
                 }
                 if (type == SFIDevicePropertyType_RESPONSE_CODE) {
                     IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                    s1.matchType = MatchType_any;
-                    s1.matchData = @"70";
-                    s1.iconName = @"07_thermostat";
-                    s1.notificationText = @"";
-                    s1.valueFormatter.notificationPrefix = @"RESPONSE_CODE,";
-                    s1.valueFormatter.action = ValueFormatterAction_formatString;
-                    return @[s1];
+                    s1.matchType = MatchType_equals;
+                    s1.matchData = @"-1";
+                    s1.iconName = @"tamper";
+                    s1.notificationText = @" Wrong mode selected";
+                    
+                    IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s2.matchType = MatchType_equals;
+                    s2.matchData = @"-2";
+                    s2.iconName = @"tamper";
+                    s2.notificationText = @" Cannot change temperature in Away mode";
+                    
+                    IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s3.matchType = MatchType_equals;
+                    s3.matchData = @"-3";
+                    s3.iconName = @"tamper";
+                    s3.notificationText = @" Device is Offline";
+                    
+                    IndexValueSupport *s4 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s4.matchType = MatchType_equals;
+                    s4.matchData = @"-4";
+                    s4.iconName = @"tamper";
+                    s4.notificationText = @" Cannot set fan in Away mode";
+                    
+                    IndexValueSupport *s5 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s5.matchType = MatchType_equals;
+                    s5.matchData = @"-5";
+                    s5.iconName = @"tamper";
+                    s5.notificationText = @" Low temperature can't be more than high temperature";
+                    
+                    IndexValueSupport *s6 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s6.matchType = MatchType_equals;
+                    s6.matchData = @"-6";
+                    s6.iconName = @"tamper";
+                    s6.notificationText = @" Couldn't change HVAC mode as thermostat lock is enabled";
+                    
+                    IndexValueSupport *s7 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s7.matchType = MatchType_equals;
+                    s7.matchData = @"-7";
+                    s7.iconName = @"tamper";
+                    s7.notificationText = @" Cannot set c and f temperatures simultaneously";
+                    
+                    IndexValueSupport *s8 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s8.matchType = MatchType_equals;
+                    s8.matchData = @"-8";
+                    s8.iconName = @"tamper";
+                    s8.notificationText = @" Cannot set target temperature closer than N degrees C/F";
+                    
+                    IndexValueSupport *s9 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s9.matchType = MatchType_equals;
+                    s9.matchData = @"-9";
+                    s9.iconName = @"tamper";
+                    s9.notificationText = @" Target temperature is lower than the range";
+                    
+                    IndexValueSupport *s10 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s10.matchType = MatchType_equals;
+                    s10.matchData = @"-10";
+                    s10.iconName = @"tamper";
+                    s10.notificationText = @" Target temperature is higher than the range";
+
+                    IndexValueSupport *s11 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s11.matchType = MatchType_equals;
+                    s11.matchData = @"-11";
+                    s11.iconName = @"tamper";
+                    s11.notificationText = @" Couldn't set target temperature, value is lower than lock temp";
+                    
+                    IndexValueSupport *s12 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s12.matchType = MatchType_equals;
+                    s12.matchData = @"-12";
+                    s12.iconName = @"tamper";
+                    s12.notificationText = @" Couldn't set target temperature, value is higher than lock temp";
+                    
+                    IndexValueSupport *s13 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s13.matchType = MatchType_equals;
+                    s13.matchData = @"-13";
+                    s13.iconName = @"tamper";
+                    s13.notificationText = @" Cannot change HVAC mode during energy-saving events";
+                    
+                    IndexValueSupport *s14 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s14.matchType = MatchType_equals;
+                    s14.matchData = @"-14";
+                    s14.iconName = @"tamper";
+                    s14.notificationText = @" Cannot change HVAC mode";
+                    
+                    IndexValueSupport *s15 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s15.matchType = MatchType_equals;
+                    s15.matchData = @"-15";
+                    s15.iconName = @"tamper";
+                    s15.notificationText = @" Invalid HVAC mode";
+                    
+                    IndexValueSupport *s16 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s16.matchType = MatchType_equals;
+                    s16.matchData = @"-16";
+                    s16.iconName = @"tamper";
+                    s16.notificationText = @" Cannot activate fan during smoke/co safety shutoff";
+                    
+                    IndexValueSupport *s17 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s17.matchType = MatchType_equals;
+                    s17.matchData = @"-17";
+                    s17.iconName = @"tamper";
+                    s17.notificationText = @" Fan timer is not set";
+                    
+                    IndexValueSupport *s18 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s18.matchType = MatchType_equals;
+                    s18.matchData = @"-18";
+                    s18.iconName = @"tamper";
+                    s18.notificationText = @" Emergency Heat is On";
+                    
+                    IndexValueSupport *s19 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s19.matchType = MatchType_equals;
+                    s19.matchData = @"503";
+                    s19.iconName = @"tamper";
+                    s19.notificationText = @" Nest service is unavailable";
+                    
+                    IndexValueSupport *s20 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s20.matchType = MatchType_equals;
+                    s20.matchData = @"429";
+                    s20.iconName = @"tamper";
+                    s20.notificationText = @" Too many requests";
+                    
+                    return @[s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20];
                 }
                 if (type == SFIDevicePropertyType_THERMOSTAT_RANGE_LOW) {
                     IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                     s1.matchType = MatchType_any;
                     s1.matchData = @"70";
-                    s1.iconName = @"07_thermostat";
-                    s1.notificationText = NSLocalizedString(@"Temperature", @"Temperature");
-                    s1.valueFormatter.notificationPrefix = NSLocalizedString(@"Temperature", @"Temperature");
+                    s1.iconName = @"27_thermostat";
+                    s1.notificationText = NSLocalizedString(@" is cooling down to ", @" is cooling down to ");
+                    s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is cooling down to ", @" is cooling down to ");
                     s1.valueFormatter.action = ValueFormatterAction_formatString;
                     return @[s1];
                 }
@@ -2043,9 +2156,9 @@
                     IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                     s1.matchType = MatchType_any;
                     s1.matchData = @"70";
-                    s1.iconName = @"07_thermostat";
-                    s1.notificationText = NSLocalizedString(@"Temperature", @"Temperature");
-                    s1.valueFormatter.notificationPrefix = NSLocalizedString(@"Temperature", @"Temperature");
+                    s1.iconName = @"27_thermostat";
+                    s1.notificationText = NSLocalizedString(@" is heating up to ", @" is heating up to ");
+                    s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is heating up to ", @" is heating up to ");
                     s1.valueFormatter.action = ValueFormatterAction_formatString;
                     return @[s1];
                 }
@@ -2054,35 +2167,261 @@
                     IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                     s1.matchType = MatchType_any;
                     s1.matchData = @"70";
-                    s1.iconName = @"07_thermostat";
+                    s1.iconName = @"27_thermostat";
                     s1.notificationText = NSLocalizedString(@"Temperature", @"Temperature");
+                    return @[s1];
+                }
+               
+                if (type == SFIDevicePropertyType_NEST_THERMOSTAT_MODE) {
+                    
+                    IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s1.matchType = MatchType_any;
+                    s1.matchData = @"Heat";
+                    s1.iconName = @"27_thermostat";
+                    s1.valueFormatter.action = ValueFormatterAction_formatString;
+                    s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s mode set to", @"'s mode set to");
+                    
+                    return @[s1];
+                    
+                }
+                
+                if(type == SFIDevicePropertyType_HVAC_STATE){
+                    IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s1.matchType = MatchType_any;
+                    s1.matchData = @"Heating";
+                    s1.iconName = @"27_thermostat";
+                    s1.valueFormatter.action = ValueFormatterAction_formatString;
+                    s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is set to ", @" is set to ");
+                    return @[s1];
+                    
+                }
+                if(type == SFIDevicePropertyType_ISONLINE){
+                    
+                    IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s1.matchType = MatchType_equals;
+                    s1.matchData = @"true";
+                    s1.iconName = @"27_thermostat";
+                    s1.notificationText = @" is offline";
+                    
+                    IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s2.matchType = MatchType_equals;
+                    s2.matchData = @"false";
+                    s2.iconName = @"27_thermostat";
+                    s2.notificationText = @" is now online";
+                    
+                    return @[s1, s2];
+                }
+
+                if (type == SFIDevicePropertyType_HUMIDITY) {
+                    IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s1.matchType = MatchType_any;
+                    s1.matchData = @"40";
+                    s1.iconName = @"27_thermostat";
+                    s1.valueFormatter.action = ValueFormatterAction_formatString;
+                    s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s humidiy changed to ", @"'s humidiy changed to ");
+                    
+                    return @[s1];
+                }
+
+                if (type == SFIDevicePropertyType_IS_USING_EMERGENCY_HEAT) {
+                    IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s1.matchType = MatchType_equals;
+                    s1.matchData = @"true";
+                    s1.iconName = @"27_thermostat";
+                    s1.notificationText = @" is using Emergency Heat";
+                    
                     return @[s1];
                 }
                 break;
             }
+            
             case SFIDeviceType_NestSmokeDetector_58: {
                 if (type == SFIDevicePropertyType_RESPONSE_CODE) {
                     IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                    s1.matchType = MatchType_any;
-                    s1.matchData = @"70";
-                    s1.iconName = @"56_nest_58_icon";
-                    s1.notificationText = @"";
-                    s1.valueFormatter.notificationPrefix = @"RESPONSE_CODE,";
-                    s1.valueFormatter.action = ValueFormatterAction_formatString;
-                    return @[s1];
+                    s1.matchType = MatchType_equals;
+                    s1.matchData = @"-1";
+                    s1.iconName = @"tamper";
+                    s1.notificationText = @" Wrong mode selected";
+                    
+                    IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s2.matchType = MatchType_equals;
+                    s2.matchData = @"-2";
+                    s2.iconName = @"tamper";
+                    s2.notificationText = @" Cannot change temperature in Away mode";
+                    
+                    IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s3.matchType = MatchType_equals;
+                    s3.matchData = @"-3";
+                    s3.iconName = @"tamper";
+                    s3.notificationText = @" Device is Offline";
+                    
+                    IndexValueSupport *s4 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s4.matchType = MatchType_equals;
+                    s4.matchData = @"-4";
+                    s4.iconName = @"tamper";
+                    s4.notificationText = @" Cannot set fan in Away mode";
+                    
+                    IndexValueSupport *s5 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s5.matchType = MatchType_equals;
+                    s5.matchData = @"-5";
+                    s5.iconName = @"tamper";
+                    s5.notificationText = @" Low temperature can't be more than high temperature";
+                    
+                    IndexValueSupport *s6 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s6.matchType = MatchType_equals;
+                    s6.matchData = @"-6";
+                    s6.iconName = @"tamper";
+                    s6.notificationText = @" Couldn't change HVAC mode as thermostat lock is enabled";
+                    
+                    IndexValueSupport *s7 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s7.matchType = MatchType_equals;
+                    s7.matchData = @"-7";
+                    s7.iconName = @"tamper";
+                    s7.notificationText = @" Cannot set c and f temperatures simultaneously";
+                    
+                    IndexValueSupport *s8 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s8.matchType = MatchType_equals;
+                    s8.matchData = @"-8";
+                    s8.iconName = @"tamper";
+                    s8.notificationText = @" Cannot set target temperature closer than N degrees C/F";
+                    
+                    IndexValueSupport *s9 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s9.matchType = MatchType_equals;
+                    s9.matchData = @"-9";
+                    s9.iconName = @"tamper";
+                    s9.notificationText = @" Target temperature is lower than the range";
+                    
+                    IndexValueSupport *s10 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s10.matchType = MatchType_equals;
+                    s10.matchData = @"-10";
+                    s10.iconName = @"tamper";
+                    s10.notificationText = @" Target temperature is higher than the range";
+                    
+                    IndexValueSupport *s11 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s11.matchType = MatchType_equals;
+                    s11.matchData = @"-11";
+                    s11.iconName = @"tamper";
+                    s11.notificationText = @" Couldn't set target temperature, value is lower than lock temp";
+                    
+                    IndexValueSupport *s12 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s12.matchType = MatchType_equals;
+                    s12.matchData = @"-12";
+                    s12.iconName = @"tamper";
+                    s12.notificationText = @" Couldn't set target temperature, value is higher than lock temp";
+                    
+                    IndexValueSupport *s13 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s13.matchType = MatchType_equals;
+                    s13.matchData = @"-13";
+                    s13.iconName = @"tamper";
+                    s13.notificationText = @" Cannot change HVAC mode during energy-saving events";
+                    
+                    IndexValueSupport *s14 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s14.matchType = MatchType_equals;
+                    s14.matchData = @"-14";
+                    s14.iconName = @"tamper";
+                    s14.notificationText = @" Cannot change HVAC mode";
+                    
+                    IndexValueSupport *s15 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s15.matchType = MatchType_equals;
+                    s15.matchData = @"-15";
+                    s15.iconName = @"tamper";
+                    s15.notificationText = @" Invalid HVAC mode";
+                    
+                    IndexValueSupport *s16 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s16.matchType = MatchType_equals;
+                    s16.matchData = @"-16";
+                    s16.iconName = @"tamper";
+                    s16.notificationText = @" Cannot activate fan during smoke/co safety shutoff";
+                    
+                    IndexValueSupport *s17 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s17.matchType = MatchType_equals;
+                    s17.matchData = @"-17";
+                    s17.iconName = @"tamper";
+                    s17.notificationText = @" Fan timer is not set";
+                    
+                    IndexValueSupport *s18 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s18.matchType = MatchType_equals;
+                    s18.matchData = @"-18";
+                    s18.iconName = @"tamper";
+                    s18.notificationText = @" Emergency Heat is On";
+                    
+                    IndexValueSupport *s19 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s19.matchType = MatchType_equals;
+                    s19.matchData = @"503";
+                    s19.iconName = @"tamper";
+                    s19.notificationText = @" Nest service is unavailable";
+                    
+                    IndexValueSupport *s20 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s20.matchType = MatchType_equals;
+                    s20.matchData = @"429";
+                    s20.iconName = @"tamper";
+                    s20.notificationText = @" Too many requests";
+                    
+                    return @[s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17, s18, s19, s20];
                 }
-                if (type == SFIDevicePropertyType_AWAY_MODE) {
+     
+                if (type == SFIDevicePropertyType_CO_ALARM_STATE) {
                     IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                    s1.matchData = @"home";
-                    s1.iconName = @"55_away_mode_home";
-                    s1.notificationText = NSLocalizedString(@"HOME", @"HOME");
+                    s1.matchType = MatchType_equals;
+                    s1.matchData = @"warning";
+                    s1.iconName = @"56_nest_58_icon";
+                    s1.notificationText = @": CO Warning";
 
                     IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                    s2.matchData = @"away";
-                    s2.iconName = @"55_away_mode_away";
-                    s2.notificationText = NSLocalizedString(@"AWAY", @"AWAY");
+                    s2.matchType = MatchType_equals;
+                    s2.matchData = @"emergency";
+                    s2.iconName = @"56_nest_58_icon";
+                    s2.notificationText = @": CO Emergency";
+                    
+                    IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s3.matchType = MatchType_equals;
+                    s3.matchData = @"ok";
+                    s3.iconName = @"56_nest_58_icon";
+                    s3.notificationText = @" CO is not detected";
+                    
+                    
+                    return @[s1, s2, s3];
+                }
+                
+                if(type == SFIDevicePropertyType_SMOKE_ALARM_STATE){
+                    IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s1.matchType = MatchType_equals;
+                    s1.matchData = @"warning";
+                    s1.iconName = @"56_nest_58_icon";
+                    s1.notificationText = @": Smoke Warning";
+                    
+                    IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s2.matchType = MatchType_equals;
+                    s2.matchData = @"emergency";
+                    s2.iconName = @"56_nest_58_icon";
+                    s2.notificationText = @": Smoke Emergency";
+                    
+                    IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s3.matchType = MatchType_equals;
+                    s3.matchData = @"ok";
+                    s3.iconName = @"56_nest_58_icon";
+                    s3.notificationText = @" Smoke is not detected";
+            
+                    return @[s1, s2, s3];
+                }
+ 
+                if(type == SFIDevicePropertyType_ISONLINE){
+                    
+                    IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s1.matchType = MatchType_equals;
+                    s1.matchData = @"true";
+                    s1.iconName = @"56_nest_58_icon";
+                    s1.notificationText = @" is offline";
+                    
+                    IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                    s2.matchType = MatchType_equals;
+                    s2.matchData = @"false";
+                    s2.iconName = @"56_nest_58_icon";
+                    s2.notificationText = @" is now online";
+                    
                     return @[s1, s2];
                 }
+                
                 break;
             }
         }
@@ -2207,7 +2546,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"70";
-                s1.iconName = @"07_thermostat";
+                s1.iconName = @"27_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature changed to ", @"'s temperature changed to ");
                 s1.valueFormatter.suffix = @"\u00B0F";
@@ -2222,7 +2561,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"70";
-                s1.iconName = @"07_thermostat";
+                s1.iconName = @"27_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is heating up to ", @" is heating up to ");
                 s1.valueFormatter.suffix = @"\u00B0F";
@@ -2233,7 +2572,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"70";
-                s1.iconName = @"07_thermostat";
+                s1.iconName = @"27_thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is cooling down to ", @" is cooling down to ");
                 s1.valueFormatter.suffix = @"\u00B0F";

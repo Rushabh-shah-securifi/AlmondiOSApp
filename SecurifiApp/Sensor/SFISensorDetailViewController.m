@@ -635,7 +635,7 @@
     SFIDeviceKnownValues *emergencyHeatValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_IS_USING_EMERGENCY_HEAT];
     
     SFIDeviceKnownValues *modeValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
-    if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"home"] && ![emergencyHeatValue boolValue]) {
+    if (([[currentDeviceValue.value lowercaseString] isEqualToString:@"home"] && ![emergencyHeatValue boolValue]) && (canHeat || canCool)) {
         [self addValueLabel:cell Editable:YES Value:[modeValue.value capitalizedString]];
     }else{
         [self addValueLabel:cell Editable:NO Value:[modeValue.value capitalizedString]];
