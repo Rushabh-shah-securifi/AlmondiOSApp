@@ -632,12 +632,13 @@
 
 - (void)configureModeCell:(UITableViewCell*)cell{
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
+    SFIDeviceKnownValues *emergencyHeatValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_IS_USING_EMERGENCY_HEAT];
     
     SFIDeviceKnownValues *modeValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
-    if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"home"]) {
+    if ([[currentDeviceValue.value lowercaseString] isEqualToString:@"home"] && ![emergencyHeatValue boolValue]) {
         [self addValueLabel:cell Editable:YES Value:[modeValue.value capitalizedString]];
     }else{
-        [self addValueLabel:cell Editable:YES Value:[modeValue.value capitalizedString]];
+        [self addValueLabel:cell Editable:NO Value:[modeValue.value capitalizedString]];
     }
     
 }
@@ -745,6 +746,7 @@
     }else{
         label = [[UILabel alloc] initWithFrame:CGRectMake(tblDeviceProperties.frame.size.width - 190, 0, 180, 44)];
         cell.accessoryType = UITableViewCellAccessoryNone;
+        label.alpha=0.6;
     }
     label.backgroundColor = [UIColor clearColor];
     label.textColor = [UIColor whiteColor];

@@ -46,9 +46,6 @@
     IBOutlet SFISwitchButton *btnNestTermostatFanOn;
     IBOutlet SFISwitchButton *btnNestTermostatFanOff;
     
-    IBOutlet SFISwitchButton *btnNestHome;
-    IBOutlet SFISwitchButton *btnNestAway;
-    
     
     //
     
@@ -911,7 +908,7 @@
     fr.origin.y = 30;
     fr.origin.x = (self.frame.size.width - fr.size.width)/2;
     viewAutoHeatCoolOff.frame = fr;
-    [btnAuto setupValues:[UIImage imageNamed:@"imgAuto"] Title:NSLocalizedString(@"AUTO",@"AUTO")];
+    [btnAuto setupValues:[UIImage imageNamed:@"imgAuto"] Title:NSLocalizedString(@"HEAT-COOL",@"HEAT-COOL")];
     [btnHeat setupValues:[UIImage imageNamed:@"imgHeat"] Title:NSLocalizedString(@"HEAT",@"HEAT")];
     [btnCool setupValues:[UIImage imageNamed:@"imgCool"] Title:NSLocalizedString(@"COOL",@"COOL")];
     [btnOff setupValues:[UIImage imageNamed:@"imgOff"] Title:NSLocalizedString(@"OFF",@"OFF")];
@@ -1462,7 +1459,7 @@
     fr.origin.x = (self.frame.size.width - fr.size.width)/2;
     viewNest57.frame = fr;
     
-    [btnNestAuto setupValues:[UIImage imageNamed:@"imgAuto"] Title:NSLocalizedString(@"AUTO",@"AUTO")];
+    [btnNestAuto setupValues:[UIImage imageNamed:@"imgAuto"] Title:NSLocalizedString(@"HEAT-COOL",@"HEAT-COOL")];
     [btnNestHeat setupValues:[UIImage imageNamed:@"imgHeat"] Title:NSLocalizedString(@"HEAT",@"HEAT")];
     [btnNestCool setupValues:[UIImage imageNamed:@"imgCool"] Title:NSLocalizedString(@"COOL",@"COOL")];
     [btnNestOff setupValues:[UIImage imageNamed:@"imgOff"] Title:NSLocalizedString(@"OFF",@"OFF")];
@@ -1471,13 +1468,6 @@
     [btnNestTermostatFanOff setupValues:[UIImage imageNamed:@"imgFanOff"] Title:NSLocalizedString(@"termostat.FAN OFF",@"STOP")];
     btnNestTermostatFanOn.selected = NO;
     btnNestTermostatFanOff.selected = NO;
-    
-    [btnNestHome setupValues:[UIImage imageNamed:@"home_icon"] Title:NSLocalizedString(@"HOME",@"HOME")];
-    [btnNestAway setupValues:[UIImage imageNamed:@"away_icon"] Title:NSLocalizedString(@"AWAY",@"AWAY")];
-    btnNestHome.tag = 8;
-    btnNestAway.tag = 8;
-    btnNestHome.selected = NO;
-    btnNestAway.selected = NO;
     
     [btnNestTermostatDimCool setupValues:@"50" Title:NSLocalizedString(@"COOLING TEMP",@"COOLING TEMP") Prefix:@"°F"];
     btnNestTermostatDimCool.selected = NO;
@@ -1588,33 +1578,25 @@
         ahcoWidth+=btnNestCool.frame.size.width+8;
     }
     
-    fr = btnNestHome.frame;
-    fr.origin.y = dimsHidden?0:(btnNestTermostatDimCool.frame.origin.y+btnNestTermostatDimCool.frame.size.height)+8;
-    btnNestHome.frame = fr;
-    
-    fr = btnNestAway.frame;
-    fr.origin.y = dimsHidden?0:(btnNestTermostatDimCool.frame.origin.y+btnNestTermostatDimCool.frame.size.height)+8;
-    btnNestAway.frame = fr;
-    
-    BOOL homeAwayHidden = NO;
+
     
     fr = btnNestAuto.frame;
-    fr.origin.y = homeAwayHidden?0:(btnNestHome.frame.origin.y+btnNestHome.frame.size.height)+8;
+    fr.origin.y = dimsHidden?0:(btnNestTermostatDimHeat.frame.origin.y+btnNestTermostatDimHeat.frame.size.height)+8;
     fr.origin.x = (self.frame.size.width-ahcoWidth)/2;
     btnNestAuto.frame = fr;
     
     fr = btnNestHeat.frame;
-    fr.origin.y = homeAwayHidden?0:(btnNestHome.frame.origin.y+btnNestHome.frame.size.height)+8;
+    fr.origin.y = dimsHidden?0:(btnNestTermostatDimHeat.frame.origin.y+btnNestTermostatDimHeat.frame.size.height)+8;
     fr.origin.x = (btnNestAuto.hidden?0:btnNestAuto.frame.size.width+8)+(self.frame.size.width-ahcoWidth)/2;
     btnNestHeat.frame = fr;
     
     fr = btnNestCool.frame;
-    fr.origin.y = homeAwayHidden?0:(btnNestHome.frame.origin.y+btnNestHome.frame.size.height)+8;
+    fr.origin.y = dimsHidden?0:(btnNestTermostatDimHeat.frame.origin.y+btnNestTermostatDimHeat.frame.size.height)+8;
     fr.origin.x = (btnNestAuto.hidden?0:btnNestAuto.frame.size.width+8)+(btnNestHeat.hidden?0:btnNestHeat.frame.size.width+8)+(self.frame.size.width-ahcoWidth)/2;
     btnNestCool.frame = fr;
     
     fr = btnNestOff.frame;
-    fr.origin.y = homeAwayHidden?0:(btnNestHome.frame.origin.y+btnNestHome.frame.size.height)+8;
+    fr.origin.y = dimsHidden?0:(btnNestTermostatDimHeat.frame.origin.y+btnNestTermostatDimHeat.frame.size.height)+8;
     fr.origin.x = (btnNestAuto.hidden?0:btnNestAuto.frame.size.width+8)+(btnNestHeat.hidden?0:btnNestHeat.frame.size.width+8)+(btnNestCool.hidden?0:btnNestCool.frame.size.width+8)+(self.frame.size.width-ahcoWidth)/2;
     btnNestOff.frame = fr;
     
@@ -1671,13 +1653,6 @@
         if ([[dict valueForKey:@"Index"] integerValue]==btnNestTermostatDimCool.tag) {
             [btnNestTermostatDimCool setupValues:[NSString stringWithFormat:@"%ld",(long)[[dict valueForKey:@"Value"] integerValue]] Title:NSLocalizedString(@"COOLING TEMP.",@"COOLING TEMP.") Prefix:@"°F"];
             btnNestTermostatDimCool.selected = YES;
-        }
-        if ([[dict valueForKey:@"Index"] integerValue]==8) {
-            if ([[dict valueForKey:@"Value"] isEqualToString:@"home"]) {
-                btnNestHome.selected = YES;
-            }else{
-                btnNestAway.selected = YES;
-            }
         }
     }
     if (btnNestTermostatDimCool.hidden && !btnNestTermostatDimHeat.hidden) {
@@ -1774,28 +1749,6 @@
     }else{
         btnNestTermostatFanOff.selected = NO;
         [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)9 Value:@"remove_from_entry_list"];
-    }
-}
-
-- (IBAction)btnNestHomeTap:(id)sender {
-    if (!btnNestHome.selected ) {
-        btnNestHome.selected = YES;
-        btnNestAway.selected = NO;
-        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:8 Value:@"home"];
-    }else{
-        btnNestHome.selected = NO;
-        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:8 Value:@"remove_from_entry_list"];
-    }
-}
-
-- (IBAction)btnNestAwayTap:(id)sender {
-    if (!btnNestAway.selected ) {
-        btnNestHome.selected = NO;
-        btnNestAway.selected = YES;
-        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:8 Value:@"away"];
-    }else{
-        btnNestAway.selected = NO;
-        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)8 Value:@"remove_from_entry_list"];
     }
 }
 @end

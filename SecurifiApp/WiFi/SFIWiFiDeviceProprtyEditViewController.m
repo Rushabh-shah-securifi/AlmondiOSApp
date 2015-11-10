@@ -37,6 +37,7 @@
     NSString * selectedDeviceType;
     NSString * selectedConnectionType;
     IBOutlet UIImageView *imgIcon;
+    IBOutlet UILabel *lblTextEditTitle;
 }
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -125,6 +126,7 @@
     switch (self.editFieldIndex) {
         case nameIndexPathRow:
         {
+            lblTextEditTitle.text = NSLocalizedString(@"wifi.textEdit.Name", @"Name");
             txtProperty.placeholder = @"Device Name";
             txtProperty.text = self.connectedDevice.name;
             txtProperty.keyboardType = UIKeyboardTypeDefault;
@@ -134,6 +136,8 @@
         }
         case timeoutIndexPathRow:
         {
+            
+            lblTextEditTitle.text = NSLocalizedString(@"wifi.textEdit.Minutes", @"Minutes");
             txtProperty.placeholder = @"Set Inactivity Timeout";
             txtProperty.text = [NSString stringWithFormat:@"%lu",self.connectedDevice.timeout];
             txtProperty.keyboardType = UIKeyboardTypeNumberPad;

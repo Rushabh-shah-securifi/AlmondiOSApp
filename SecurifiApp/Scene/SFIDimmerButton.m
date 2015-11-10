@@ -81,6 +81,9 @@
 
 
 - (void)setNewValue:(NSString*)text{
+    if (![text isKindOfClass:[NSString class]]) {
+        text = [NSString stringWithFormat:@"%@", text];
+    }
     NSString *strTopTitleLabelText = [text stringByAppendingString:self.prefix];
     
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
