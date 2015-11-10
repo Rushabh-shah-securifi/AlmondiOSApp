@@ -405,11 +405,8 @@ Follow it, then login below.";
 "scene.alert-button.OK" = "OK";
 
 "DIM"="DIM";
-<<<<<<< HEAD
 "HEAT-COOL"="HEAT-COOL";
-=======
-"AUTO"="HEAT-COOL";
->>>>>>> origin/master
+"AUTO"="AUTO";
 "HEAT"="HEAT";
 "COOL"="COOL";
 "OFF"="OFF";

@@ -494,6 +494,7 @@
 // To be translated
 "DIM"="DIM";
 "HEAT-COOL"="HEAT-COOL";
+"AUTO"="AUTO";
 "HEAT"="HEAT";
 "COOL"="COOL";
 "OFF"="OFF";
