@@ -16,6 +16,7 @@
 #import "SFIConstants.h"
 #import "SFIHighlightedButton.h"
 #import "MBProgressHUD.h"
+#import "SFITextField.h"
 
 @interface SFISensorDetailEditViewController ()<UITextFieldDelegate>{
     
@@ -207,27 +208,30 @@
     [viewEditproperty addSubview:labelMode];
     [self markYOffsetUsingRect:labelMode.frame addAdditional:5];
     
-    UITextField * txtField = [[UITextField alloc] initWithFrame:CGRectMake(10, self.baseYCoordinate, self.view.frame.size.width-20, 30)];
+    SFITextField * txtField = [[SFITextField alloc] initWithFrame:CGRectMake(10, self.baseYCoordinate, self.view.frame.size.width-20, 30)];
     txtField.delegate = self;
     txtField.tag = fTag;
     txtField.backgroundColor = [UIColor whiteColor];
-    [viewEditproperty addSubview:txtField];
-    [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
-    
+
     switch (fTag) {
         case nameTag:
             labelMode.text = NSLocalizedString(@"Device.propertyeditview.controller.Name",@"Name";);
             txtField.text = self.device.deviceName;
+            txtField.returnKeyType = UIReturnKeyNext;
             txtName = txtField;
             break;
         case locationTag:
             labelMode.text = NSLocalizedString(@"Device.propertyeditview.controller.Location",@"Location";);
             txtField.text = self.device.location;
+            txtField.returnKeyType = UIReturnKeyDone;
             txtLocation = txtField;
             break;
         default:
             break;
     }
+    
+    [viewEditproperty addSubview:txtField];
+    [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
 }
 
 - (void)addNotificationsControl {
@@ -267,7 +271,8 @@
     
     SFIHighlightedButton *button = [self addButton:NSLocalizedString(@"sensor.deivice-showlog.button.viewlogs", @"View Logs")];
     [button addTarget:self action:@selector(onShowSensorLogs) forControlEvents:UIControlEventTouchUpInside];
-    
+    button.normalBackgroundColor = [UIColor clearColor];
+    button.highlightedBackgroundColor = [UIColor whiteColor];
     [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
 }
 
@@ -621,19 +626,21 @@
 
 #pragma mark textField Delegates
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    //    switch (textField.tag) {
-    //        case nameTag:
-    //            labelMode.text = NSLocalizedString(@"Device.propertyeditview.controller.Name",@"Name";);
-    //            txtField.text = self.device.deviceName;
-    //            break;
-    //        case locationTag:
-    //            labelMode.text = NSLocalizedString(@"Device.propertyeditview.controller.Location",@"Location";);
-    //            txtField.text = self.device.location;
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    return YES;
+    if (textField.text.length == 0) {
+        return NO;
+    }
+    
+    if (textField == txtName) {
+        [txtLocation becomeFirstResponder];
+    }
+    else if (textField == txtLocation) {
+        [textField resignFirstResponder];
+    }
+    else {
+        [textField resignFirstResponder];
+    }
+
+    return NO;
 }
 
 - (void)configureSensorImageName:(NSString *)imageName statusMesssage:(NSString *)message {

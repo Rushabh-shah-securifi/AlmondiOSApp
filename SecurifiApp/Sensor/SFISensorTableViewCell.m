@@ -1123,11 +1123,29 @@
     lblThemperatureMain.adjustsFontSizeToFitWidth = YES;
     [lblThemperatureMain setMinimumScaleFactor:0.5f];
     
-    [self.contentView addSubview:lblThemperatureMain];
+    
     
     
     currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HVAC_STATE];
-    NSString *strHVAC_STATE = currentDeviceValue.value;
+    
+    SFIDeviceKnownValues *isOnlineKnownValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_ISONLINE];
+    NSString *strHVAC_STATE = @"Offline";
+    
+    if((isOnlineKnownValue.value != nil && [isOnlineKnownValue.value caseInsensitiveCompare:@"true"] == NSOrderedSame)){
+        SFIDeviceKnownValues *emergencyHeatKnownValues = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_IS_USING_EMERGENCY_HEAT];
+        strHVAC_STATE = NSLocalizedString(@"Using Emergency Heat", @"Using Emergency Heat");
+        if((emergencyHeatKnownValues.value == nil || [emergencyHeatKnownValues.value caseInsensitiveCompare:@"false"] == NSOrderedSame)){
+            strHVAC_STATE = ((currentDeviceValue.value != nil) && ([currentDeviceValue.value caseInsensitiveCompare:@"off"] == NSOrderedSame)) ? NSLocalizedString(@"idle", @"idle") : currentDeviceValue.value;
+        }
+        [self.contentView addSubview:lblThemperatureMain];
+    }else{
+        self.deviceImageView.contentMode = UIViewContentModeScaleAspectFit;
+        self.iconImageName = @"57_nest_thermostat";
+        self.deviceImageView.image = [UIImage imageNamed:self.iconImageName];
+    }
+    
+    
+    
     if (strHVAC_STATE) {
         NSMutableArray *status = [NSMutableArray array];
         [status addObject:[strHVAC_STATE capitalizedString]];

@@ -25,7 +25,7 @@
 "9QV-YC-3yk.placeholder" = "Device Name";
 
 /* Class = "UILabel"; text = "Heating Target Temperature"; ObjectID = "9gM-uJ-gk4"; */
-"9gM-uJ-gk4.text" = "Heating Target Temperature";
+"9gM-uJ-gk4.text" = "High Temperature";
 
 /* Class = "UILabel"; text = "CONNECTED"; ObjectID = "B0M-NR-giG"; */
 "B0M-NR-giG.text" = "CONNECTED";
@@ -34,7 +34,7 @@
 "CNM-GN-H2I.text" = "Saturation";
 
 /* Class = "UILabel"; text = "Cooling Target Temperature"; ObjectID = "DG7-SK-dZj"; */
-"DG7-SK-dZj.text" = "Cooling Target Temperature";
+"DG7-SK-dZj.text" = "Low Temperature";
 
 /* Class = "UILabel"; text = "Matt’s iPad"; ObjectID = "DcB-dP-4gB"; */
 "DcB-dP-4gB.text" = "Matt’s iPad";

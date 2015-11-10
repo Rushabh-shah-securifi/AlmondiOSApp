@@ -721,26 +721,33 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (IBAction)btnSaveTap:(id)sender {
-    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
+-(void)setHUDParamsAndShow{
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.labelText = NSLocalizedString(@"sensor.hud.UpdatingSensordata", @"Updating Sensor Data...");
     
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
+    
     [self showHudWithTimeout];
-    
-    
-    
+}
+
+- (IBAction)btnSaveTap:(id)sender {
+    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
+    NSString *oldValue = [NSString new];
     SFIDevicePropertyType propertyType;
     SFIDeviceKnownValues *deviceValues;
+    BOOL targetRangeIndex = NO;
+    NSMutableArray *deviceValueArray = [[NSMutableArray alloc] init];
+    
     switch (self.editFieldIndex) {
         case nameIndexPathRow:
+            [self setHUDParamsAndShow];
             [self sendMobileCommandForDevice:self.device name:txtPropertyValue.text location:self.device.location];
             return;
             break;
         case locationIndexPathRow:
+            [self setHUDParamsAndShow];
             [self sendMobileCommandForDevice:self.device name:self.device.deviceName location:txtPropertyValue.text];
             return;
             
@@ -748,12 +755,14 @@
         case irCodeIndexPathRow:
             propertyType = SFIDevicePropertyType_IR_CODE;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             deviceValues.value = txtPropertyValue.text;
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
             break;
         case configIndexPathRow:
             propertyType = SFIDevicePropertyType_CONFIGURATION;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             deviceValues.value = txtPropertyValue.text;
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
             break;
@@ -761,6 +770,7 @@
         {
             propertyType = SFIDevicePropertyType_STOP;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             if(btnCheckbox.selected){
                 deviceValues.value = @"true";
             }else{
@@ -783,11 +793,15 @@
             }
             [self sensorDidChangeNotificationSetting:mode];
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+            [self setHUDParamsAndShow];
+            [self sendMobileCommandForDevice:self.device deviceValue:deviceValues];
+            return;
             break;
         }
         case fanIndexPathRow:
             propertyType = SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             if ([selectedPropertyValue isEqualToString:NSLocalizedString(@"sensor.notificaiton.fanindexpath.Start", @"Start")]) {
                 deviceValues.value = NSLocalizedString(@"device-property-fanindexpah true",@"true");
             }else if ([selectedPropertyValue isEqualToString:NSLocalizedString(@"sensor.notificaiton.fanindexpath.Stop", @"Stop")]){
@@ -800,24 +814,28 @@
         case awayModeIndexPathRow:
             propertyType = SFIDevicePropertyType_AWAY_MODE;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             deviceValues.value = [selectedPropertyValue lowercaseString];
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
             break;
         case acModeIndexPathRow:
             propertyType = SFIDevicePropertyType_AC_MODE;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             deviceValues.value = [selectedPropertyValue lowercaseString];
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
             break;
         case acFanIndexPathRow:
             propertyType = SFIDevicePropertyType_AC_FAN_MODE;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             deviceValues.value = selectedPropertyValue;
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
             break;
         case actionsIndexPathRow:
             propertyType = SFIDevicePropertyType_UP_DOWN;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             if ([selectedPropertyValue isEqualToString:NSLocalizedString(@"device-property-fanindexpah up",@"Up")]) {
                 deviceValues.value = @"99";
             }else{
@@ -828,6 +846,7 @@
         case sirenSwitchMultilevelIndexPathRow:
             propertyType = SFIDevicePropertyType_SWITCH_MULTILEVEL;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             
             if ([selectedPropertyValue isEqualToString:@"STOP"]) {
                 deviceValues.value = @"0";
@@ -849,6 +868,7 @@
         case swingIndexPathRow:
             propertyType = SFIDevicePropertyType_AC_SWING;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             if ([selectedPropertyValue isEqualToString:@"Off"]) {
                 deviceValues.value = @"0";
             }else{
@@ -861,6 +881,7 @@
         {
             propertyType = SFIDevicePropertyType_SWITCH_BINARY1;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             
             if ([selectedPropertyValue isEqualToString:NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On")]) {
                 deviceValues.value = @"true";
@@ -874,6 +895,7 @@
         {
             propertyType = SFIDevicePropertyType_SWITCH_BINARY2;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             
             if ([selectedPropertyValue isEqualToString:NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On")]) {
                 deviceValues.value = @"true";
@@ -886,6 +908,8 @@
         case powerIndexPathRow:
             propertyType = SFIDevicePropertyType_POWER;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
+            
             if ([selectedPropertyValue isEqualToString:@"Off"]) {
                 deviceValues.value = @"0";
             }else{
@@ -897,29 +921,33 @@
         case modeIndexPathRow:
             propertyType = SFIDevicePropertyType_NEST_THERMOSTAT_MODE;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             deviceValues.value = [selectedPropertyValue lowercaseString];
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
             break;
         case targetRangeIndexPathRow:
         {
+            targetRangeIndex = YES;
             NSString * value = @"";
             if (!coolingTempSelector.hidden) {
+                
                 propertyType = SFIDevicePropertyType_THERMOSTAT_RANGE_LOW;
                 if (heatingTempSelector.hidden) {
                     propertyType = SFIDevicePropertyType_THERMOSTAT_TARGET;
                 }
-                
-                deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+                SFIDeviceKnownValues *currentDeviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+                oldValue = currentDeviceValues.value;
                 if (btnFahrenheit.selected) {
                     value = [NSString stringWithFormat:@"%d",currentCoolTemp];
                 }else{
                     value = [NSString stringWithFormat:@"%lu",lroundf(currentCoolTemp*1.8+32)];
                 }
-                deviceValues.value =value;
-                self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+                currentDeviceValues.value =value;
+                self.deviceValue = [self.deviceValue setKnownValues:currentDeviceValues forProperty:propertyType];
                //if we need to save 2 properties (low high temperatues, we need to send one request here, next request will be sent as usual)
-                if (propertyType != SFIDevicePropertyType_THERMOSTAT_TARGET) {
-                    [self sendMobileCommandForDevice:self.device deviceValue:deviceValues];
+                if (propertyType != SFIDevicePropertyType_THERMOSTAT_TARGET && ((oldValue == nil) || ![oldValue isEqualToString:deviceValues.value])) {
+                    [deviceValueArray addObject:currentDeviceValues];
+                   
                 }
             }
             
@@ -928,16 +956,20 @@
                 if (coolingTempSelector.hidden) {
                     propertyType = SFIDevicePropertyType_THERMOSTAT_TARGET;
                 }
-                
-                
-                deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+
+                SFIDeviceKnownValues *currentDeviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+                oldValue = currentDeviceValues.value;
                 if (btnFahrenheit.selected) {
                     value = [NSString stringWithFormat:@"%d",currentHeatTemp];
                 }else{
                     value = [NSString stringWithFormat:@"%lu",lroundf(currentHeatTemp*1.8+32)];
                 }
-                deviceValues.value =value;
-                self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+                currentDeviceValues.value =value;
+                self.deviceValue = [self.deviceValue setKnownValues:currentDeviceValues forProperty:propertyType];
+                if (propertyType != SFIDevicePropertyType_THERMOSTAT_TARGET && ((oldValue == nil) || ![oldValue isEqualToString:deviceValues.value])) {
+                    [deviceValueArray addObject:currentDeviceValues];
+                    
+                }
             }
             break;
         }
@@ -946,6 +978,7 @@
             NSString * value = @"";
             propertyType = SFIDevicePropertyType_AC_SETPOINT_COOLING;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             if (btnFahrenheit.selected) {
                 value = [NSString stringWithFormat:@"%d",currentCoolTemp];
             }else{
@@ -960,6 +993,7 @@
             NSString * value = @"";
             propertyType = SFIDevicePropertyType_AC_SETPOINT_HEATING;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
             if (btnFahrenheit.selected) {
                 value = [NSString stringWithFormat:@"%d",currentCoolTemp];
             }else{
@@ -973,12 +1007,21 @@
         default:
             break;
     }
-    
-    
-    
     // provisionally update; on mobile cmd response, the actual new values will be set
+    if([deviceValueArray count] > 0){
+        [self setHUDParamsAndShow];
+        for(SFIDeviceKnownValues *deviceKnownValue in deviceValueArray){
+            [self sendMobileCommandForDevice:self.device deviceValue:deviceKnownValue];
+        }
+    }
     
-    [self sendMobileCommandForDevice:self.device deviceValue:deviceValues];
+    else if(!targetRangeIndex && ((oldValue == nil) || ![oldValue isEqualToString:deviceValues.value])){
+        [self setHUDParamsAndShow];
+        [self sendMobileCommandForDevice:self.device deviceValue:deviceValues];
+    } else{
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    
 }
 
 #pragma mark - UITableViewDelegate
@@ -1169,7 +1212,6 @@
 
 #pragma SFIHorizontalValueSelectorView delegate
 - (void)selector:(SFIHorizontalValueSelectorView *)valueSelector didSelectRowAtIndex:(NSInteger)index {
-    NSLog(@"Selected index %ld",(long)index);
     if ([valueSelector isEqual:coolingTempSelector]) {
         currentCoolTemp = (int)index+minTempValue;
         if (currentHeatTemp<(currentCoolTemp+diffTempValue) && !heatingTempSelector.hidden) {
@@ -1389,8 +1431,7 @@
         
         MobileCommandResponse *res = data[@"data"];
         sfi_id c_id = res.mobileInternalIndex;
-        
-        if (res.isSuccessful && c_id == dc_id) {
+        if (res.isSuccessful) {
             // command succeeded; clear "status" state; new device values should be transmitted
             // via different callback and handled there.
             [self.delegate updateDeviceInfo:self.device :self.deviceValue];

@@ -201,9 +201,8 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         self.messageTextField.attributedText = [[NSAttributedString alloc] initWithString:@""];
         return;
     }
-    
     UIFont *bold_font = [UIFont securifiBoldFont];
-        UIFont *normal_font = [UIFont securifiNormalFont];
+    UIFont *normal_font = [UIFont securifiNormalFont];
     
     NSDictionary *attr;
     
@@ -211,13 +210,13 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
              NSFontAttributeName : bold_font,
              NSForegroundColorAttributeName : [UIColor blackColor],
              };
-    
-    NSString *deviceName = notification.deviceName;
+        NSString *deviceName = notification.deviceName;
     //md01<<<
     if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
         NSArray * properties = [self.notification.deviceName componentsSeparatedByString:@"|"];
         deviceName = properties[0];
     }
+    
     //md01>>>
     // debug logging
     if (self.enableDebugMode) {
@@ -238,22 +237,26 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         case SFINotificationTableViewCellDebugMode_normal: {
             message = self.sensorSupport.notificationText;
             //md01<<<
+            
             if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
                 NSArray * properties = [self.notification.deviceName componentsSeparatedByString:@"|"];
                 message = properties[3];
+                
                 NSRange nameRangeInMessage = [message rangeOfString:deviceName];
                 if (nameRangeInMessage.location != NSNotFound) {
                     mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:message attributes:attr];
            
-                    [mutableAttributedString addAttribute:NSFontAttributeName value:normal_font range:nameRangeInMessage];
+                    [mutableAttributedString addAttribute:NSFontAttributeName value:bold_font range:nameRangeInMessage];
                     [mutableAttributedString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:nameRangeInMessage];
                     
                 }
                 
             }
             //md01>>>
+           
             break;
         }
+            
         case SFINotificationTableViewCellDebugMode_details: {
             NSString *indexName = [SFIDeviceKnownValues propertyTypeToName:notification.valueType];
             message = [NSString stringWithFormat:@" device_type:%d, device_id:%d, index:%d, index_value:%@, index_type:%@",
@@ -263,6 +266,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         };
         case SFINotificationTableViewCellDebugMode_external_id: {
             message = [NSString stringWithFormat:@" cloud_id:%@", notification.externalId];
+            
             break;
         };
     }
@@ -277,7 +281,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         [container appendAttributedString:nameStr];
         [container appendAttributedString:eventStr];
         
-        self.messageTextField.attributedText = container;
+        self.messageTextField.attributedText = container;    
     }else{
         self.messageTextField.attributedText = mutableAttributedString;
     }
@@ -288,7 +292,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
         NSArray * properties = [self.notification.deviceName componentsSeparatedByString:@"|"];
         SFIConnectedDevice *device = [SFIConnectedDevice new];
-        device.deviceType = properties[1];
+        device.deviceType = @"other";
         
         self.iconView.image = [UIImage imageNamed:[device iconName]];
         return;
