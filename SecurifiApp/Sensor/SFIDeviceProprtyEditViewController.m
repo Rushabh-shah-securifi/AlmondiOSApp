@@ -559,15 +559,15 @@
                 lblCooling.text =  NSLocalizedString(@"sensors.cooling.temperature", @"Low Temperature");
                 
                 CGRect fr = lblShow.frame;
-                fr.origin.y =coolingTempSelector.frame.origin.y;
+                fr.origin.y =coolingTempSelector.frame.origin.y+60;
                 lblShow.frame = fr;
                 
                 fr = lblCelsius.frame;
-                fr.origin.y =coolingTempSelector.frame.origin.y+30;
+                fr.origin.y =lblShow.frame.origin.y+30;
                 lblCelsius.frame = fr;
                 
                 fr = btnShowCelsius.frame;
-                fr.origin.y =coolingTempSelector.frame.origin.y+30;
+                fr.origin.y =lblShow.frame.origin.y+30;
                 btnShowCelsius.frame = fr;
                 
                 fr = lblFahrenheit.frame;
@@ -585,15 +585,15 @@
                 lblHeating.frame = lblCooling.frame;
                 
                 CGRect fr = lblShow.frame;
-                fr.origin.y =heatingTempSelector.frame.origin.y;
+                fr.origin.y =heatingTempSelector.frame.origin.y+60;
                 lblShow.frame = fr;
                 
                 fr = lblCelsius.frame;
-                fr.origin.y =heatingTempSelector.frame.origin.y+30;
+                fr.origin.y =lblShow.frame.origin.y+30;
                 lblCelsius.frame = fr;
                 
                 fr = btnShowCelsius.frame;
-                fr.origin.y =heatingTempSelector.frame.origin.y+30;
+                fr.origin.y =lblShow.frame.origin.y+30;
                 btnShowCelsius.frame = fr;
                 
                 fr = lblFahrenheit.frame;
@@ -945,7 +945,7 @@
                 currentDeviceValues.value =value;
                 self.deviceValue = [self.deviceValue setKnownValues:currentDeviceValues forProperty:propertyType];
                //if we need to save 2 properties (low high temperatues, we need to send one request here, next request will be sent as usual)
-                if (propertyType != SFIDevicePropertyType_THERMOSTAT_TARGET && ((oldValue == nil) || ![oldValue isEqualToString:currentDeviceValues.value])) {
+                if (((oldValue == nil) || ![oldValue isEqualToString:currentDeviceValues.value])) {
                     [deviceValueArray addObject:currentDeviceValues];
                    
                 }
@@ -966,7 +966,7 @@
                 }
                 currentDeviceValues.value =value;
                 self.deviceValue = [self.deviceValue setKnownValues:currentDeviceValues forProperty:propertyType];
-                if (propertyType != SFIDevicePropertyType_THERMOSTAT_TARGET && ((oldValue == nil) || ![oldValue isEqualToString:currentDeviceValues.value])) {
+                if (((oldValue == nil) || ![oldValue isEqualToString:currentDeviceValues.value])) {
                     [deviceValueArray addObject:currentDeviceValues];
                     
                 }
@@ -1358,7 +1358,7 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     // Tell the cell to show 'updating' type message to user
-    //    [cell showUpdatingMessage];
+    //    [cell showUpdatingMessage];		
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         //todo decide what to do about this

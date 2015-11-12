@@ -503,7 +503,7 @@ Follow it, then login below.";
 /* Wifi */
 "wifi.hud.UpdatingWifiClient" = "Updating Wifi Client...";
 "wifi.hud.removeClient" = "Deleting wifi client...";
-"wifi.button.deleteClient" = "Remove";
+"wifi.button.deleteClient" = "Reset";
 "wifi.Active" = "ACTIVE";
 "wifi.Inactive" = "INACTIVE";
 

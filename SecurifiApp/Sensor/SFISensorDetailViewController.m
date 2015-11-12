@@ -771,7 +771,7 @@
 
 - (void)editProperty:(NSInteger)propertyNumber{
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
-    if (![[currentDeviceValue.value lowercaseString] isEqualToString:@"home"]) {
+    if (![[currentDeviceValue.value lowercaseString] isEqualToString:@"home"] ) {
         switch (propertyNumber) {
             case modeIndexPathRow:
             case targetRangeIndexPathRow:
@@ -783,7 +783,13 @@
                 break;
         }
     }
-    
+    SFIDeviceKnownValues *emergencyHeatValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_IS_USING_EMERGENCY_HEAT];
+    if([emergencyHeatValue boolValue] || (!canHeat && !canCool)) {
+        switch (propertyNumber) {
+            case modeIndexPathRow:
+                return;
+        }
+    }
     SFIDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIDeviceProprtyEditViewController"];
     viewController.delegate = self;
     viewController.editFieldIndex = propertyNumber;
@@ -893,11 +899,11 @@
                 [propertiesArray[targetRangeIndexPathRow] setValue:@YES forKey:@"hidden"];
                 [propertiesArray[fanIndexPathRow] setValue:@YES forKey:@"hidden"];
             }
-            if(!canHeat || !canCool){
+            if(!canHeat && !canCool){
                 [propertiesArray[targetRangeIndexPathRow] setValue:@YES forKey:@"hidden"];
             }
             currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HAS_FAN];
-            BOOL hasFan = [currentDeviceValue boolValue];
+            BOOL hasFan = [currentDeviceValue boolValue];           
             if (!hasFan) {
                 [propertiesArray[fanIndexPathRow] setValue:@YES forKey:@"hidden"];
             }
@@ -921,6 +927,13 @@
             [propertiesArray[notifyMeIndexPathRow] setValue:@NO forKey:@"hidden"];
             [propertiesArray[deviceHistoryIndexPathRow] setValue:@NO forKey:@"hidden"];
             [propertiesArray[coLevelIndexPathRow] setValue:@NO forKey:@"hidden"];
+            
+            SFIDeviceKnownValues *isOnline = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_ISONLINE];
+            if([isOnline.value isEqualToString:@"false"]){
+                [propertiesArray[smokeLevelIndexPathRow] setValue:@YES forKey:@"hidden"];
+                [propertiesArray[coLevelIndexPathRow] setValue:@YES forKey:@"hidden"];
+                
+            }
         }
             break;
         default:
@@ -930,11 +943,13 @@
 
 - (void)configHeaderInfo{
     NSString *status = [self.statusTextArray componentsJoinedByString:@"\n"];
+    lblStatus.text = status;
     
     if (self.device.deviceType==SFIDeviceType_ZWtoACIRExtender_54) {
         [self configTemperatureLable];
         SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
         lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
+        return;
     }
     
     if (self.device.deviceType==SFIDeviceType_NestThermostat_57) {
@@ -943,6 +958,7 @@
             [self configTemperatureLable];
             SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
             lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
+            return;
         }
     }
     //for all other cases
@@ -986,6 +1002,6 @@
     fr.origin.x = (80-fr.size.width)/2;
     fr.origin.y = (80-fr.size.height)/2;
     imgIcon.frame = fr;
-    lblStatus.text = message;
+   
 }
 @end

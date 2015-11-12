@@ -220,6 +220,8 @@
         case SFIDeviceType_Thermostat_7:
         case SFIDeviceType_TemperatureSensor_27:
         case SFIDeviceType_SetPointThermostat_46:
+        case SFIDeviceType_NestThermostat_57:
+        case SFIDeviceType_ZWtoACIRExtender_54:
             return YES;
         default:
             return NO;
@@ -990,8 +992,8 @@
         sw2 = NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off");
     }
     
-    [status addObject:[NSString stringWithFormat:@"SWITCH1 :%@",sw1]];
-    [status addObject:[NSString stringWithFormat:@"SWITCH2 :%@",sw2]];
+    [status addObject:[NSString stringWithFormat:@"SWITCH1 :%@",[sw1 uppercaseString]]];
+    [status addObject:[NSString stringWithFormat:@"SWITCH2 :%@",[sw2 uppercaseString]]];
     
     [self setDeviceStatusMessages:status];
     self.statusTextArray = status;
@@ -1085,6 +1087,16 @@
     self.deviceImageView.image = [UIImage imageNamed:self.iconImageName];
     NSMutableArray *status = [NSMutableArray array];
     
+    SFIDeviceKnownValues *isOnlineKnownValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_ISONLINE];
+    if((isOnlineKnownValue.value != nil && [isOnlineKnownValue.value caseInsensitiveCompare:@"false"] == NSOrderedSame)){
+         NSString *offline = @"OFFLINE";
+        [status addObject:[NSString stringWithFormat:@"%@",offline]];
+        self.iconImageName = @"57_nest_thermostat";
+        self.deviceImageView.image = [UIImage imageNamed:self.iconImageName];
+        [self setDeviceStatusMessages:status];
+        self.statusTextArray = status;
+        return;
+    }
     SFIDeviceKnownValues *coValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CO_ALARM_STATE];
     SFIDeviceKnownValues *smokeValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SMOKE_ALARM_STATE];
     NSString *coText = @"";
@@ -1103,30 +1115,16 @@
         smokeText = NSLocalizedString(@"smoke-detector-Emergency", @"Emergency");
     }
     
-    [status addObject:[NSString stringWithFormat:@"Smoke :%@",smokeText]];
-    [status addObject:[NSString stringWithFormat:@"CO :%@",coText]];
-    //    [self tryAddBatteryStatusMessage:status];
+    [status addObject:[NSString stringWithFormat:@"SMOKE :%@",[smokeText uppercaseString]]];
+    [status addObject:[NSString stringWithFormat:@"CO :%@",[coText uppercaseString]]];
+    
     [self setDeviceStatusMessages:status];
     self.statusTextArray = status;
 }
 
 - (void)configureNestThermostat_57 {
-    self.deviceImageView.image = nil;
-    self.deviceImageViewSecondary.image = nil;
     
-    UILabel *lblThemperatureMain = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, LEFT_LABEL_WIDTH, SENSOR_ROW_HEIGHT - 10)];
-    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
-    lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:35.0f];
-    lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
-    lblThemperatureMain.textColor = [UIColor whiteColor];
-    lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
-    lblThemperatureMain.adjustsFontSizeToFitWidth = YES;
-    [lblThemperatureMain setMinimumScaleFactor:0.5f];
-    
-    
-    
-    
-    currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HVAC_STATE];
+     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_HVAC_STATE];
     
     SFIDeviceKnownValues *isOnlineKnownValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_ISONLINE];
     NSString *strHVAC_STATE = @"Offline";
@@ -1137,8 +1135,15 @@
         if((emergencyHeatKnownValues.value == nil || [emergencyHeatKnownValues.value caseInsensitiveCompare:@"false"] == NSOrderedSame)){
             strHVAC_STATE = ((currentDeviceValue.value != nil) && ([currentDeviceValue.value caseInsensitiveCompare:@"off"] == NSOrderedSame)) ? NSLocalizedString(@"idle", @"idle") : currentDeviceValue.value;
         }
-        [self.contentView addSubview:lblThemperatureMain];
+        //[self.contentView addSubview:lblThemperatureMain];
+        NSString *value = [self.deviceValue valueForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
+        BOOL farenheit=[[SecurifiToolkit sharedInstance] isCurrentTemperatureFormatFahrenheit];
+        int temperature = [[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[value intValue]];
+        
+        [self showDeviceTemperatureView:YES];
+        [self configureTemperatureView:[NSString stringWithFormat:@"%d",temperature] description:nil unitsSymbol:farenheit ? @"F":@"C"];
     }else{
+        [self showDeviceTemperatureView:NO];
         self.deviceImageView.contentMode = UIViewContentModeScaleAspectFit;
         self.iconImageName = @"57_nest_thermostat";
         self.deviceImageView.image = [UIImage imageNamed:self.iconImageName];
@@ -1148,7 +1153,7 @@
     
     if (strHVAC_STATE) {
         NSMutableArray *status = [NSMutableArray array];
-        [status addObject:[strHVAC_STATE capitalizedString]];
+        [status addObject:[strHVAC_STATE uppercaseString]];
         //[self tryAddBatteryStatusMessage:status];
         [self setDeviceStatusMessages:status];
         self.statusTextArray = status;
@@ -1157,23 +1162,27 @@
 
 
 - (void)configureZWtoACIRExtender_54 {
-    self.deviceImageView.image = nil;
-    self.deviceImageViewSecondary.image = nil;
+//    self.deviceImageView.image = nil;
+//    self.deviceImageViewSecondary.image = nil;
+//    
+//    UILabel *lblThemperatureMain = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, LEFT_LABEL_WIDTH, SENSOR_ROW_HEIGHT - 10)];
+//    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
+//    lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:35.0f];
+//    lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
+//    lblThemperatureMain.textColor = [UIColor whiteColor];
+//    lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
+//    lblThemperatureMain.adjustsFontSizeToFitWidth = YES;
+//    [lblThemperatureMain setMinimumScaleFactor:0.5f];
+    NSString *value = [self.deviceValue valueForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
+    BOOL farenheit=[[SecurifiToolkit sharedInstance] isCurrentTemperatureFormatFahrenheit];
+    int temperature = [[SecurifiToolkit sharedInstance] convertTemperatureToCurrentFormat:[value intValue]];
     
-    UILabel *lblThemperatureMain = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, LEFT_LABEL_WIDTH, SENSOR_ROW_HEIGHT - 10)];
-    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
-    lblThemperatureMain.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:35.0f];
-    lblThemperatureMain.textAlignment = NSTextAlignmentCenter;
-    lblThemperatureMain.textColor = [UIColor whiteColor];
-    lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
-    lblThemperatureMain.adjustsFontSizeToFitWidth = YES;
-    [lblThemperatureMain setMinimumScaleFactor:0.5f];
-    
-    [self.contentView addSubview:lblThemperatureMain];
+    [self showDeviceTemperatureView:YES];
+    [self configureTemperatureView:[NSString stringWithFormat:@"%d",temperature] description:nil unitsSymbol:farenheit ? @"F":@"C"];
     
     
     
-    currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_MODE];
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_MODE];
     NSString *AC_MODE = currentDeviceValue.value;
     if (AC_MODE) {
         NSMutableArray *status = [NSMutableArray array];
