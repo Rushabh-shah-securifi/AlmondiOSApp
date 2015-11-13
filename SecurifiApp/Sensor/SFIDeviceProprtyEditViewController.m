@@ -283,7 +283,7 @@
             break;
         case powerIndexPathRow:
         {
-            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_POWER];
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BASIC];
             
             NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On"),
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
@@ -352,7 +352,9 @@
                 NSMutableDictionary * dict = [NSMutableDictionary new];
                 [dict setValue:name forKey:@"name"];
                 [dict setValue:@0 forKey:@"selected"];
-                if ([[selectedPropertyValue uppercaseString] isEqualToString:[name uppercaseString]]) {
+                if ([[selectedPropertyValue uppercaseString] isEqualToString:[name uppercaseString]] ||
+                    ([selectedPropertyValue isEqualToString:@"Unknown 5"] &&[name isEqualToString: @"Medium"])) {
+                
                     [dict setValue:@1 forKey:@"selected"];
                 }
                 
@@ -399,6 +401,8 @@
             if (!canHeat) {
                 mnames = @[NSLocalizedString(@"sensor.mode indexpath Off", @"Off"),NSLocalizedString(@"sensor.mode indexpath Cool", @"Cool")];
             }
+            if(!canCool && !canHeat)
+                mnames = @[NSLocalizedString(@"sensor.mode indexpath Off", @"Off")];
             
             
             for (NSString * name in mnames) {
@@ -822,14 +826,14 @@
             propertyType = SFIDevicePropertyType_AC_MODE;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
             oldValue = deviceValues.value;
-            deviceValues.value = [selectedPropertyValue lowercaseString];
+            deviceValues.value = selectedPropertyValue;
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
             break;
         case acFanIndexPathRow:
             propertyType = SFIDevicePropertyType_AC_FAN_MODE;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
             oldValue = deviceValues.value;
-            deviceValues.value = selectedPropertyValue;
+            deviceValues.value = ([selectedPropertyValue length]>0 &&  [selectedPropertyValue isEqualToString: @"Medium"]) ? @"Unknown 5" : selectedPropertyValue ;
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
             break;
         case actionsIndexPathRow:
@@ -906,7 +910,7 @@
         }
             break;
         case powerIndexPathRow:
-            propertyType = SFIDevicePropertyType_POWER;
+            propertyType = SFIDevicePropertyType_BASIC;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
             oldValue = deviceValues.value;
             
@@ -1314,6 +1318,7 @@
 - (void)updateTemperatureLabel{
     SFIDeviceKnownValues *currentDeviceValue;
     lblThemperatureMain.text = @"";
+   
     if (self.device.deviceType==SFIDeviceType_ZWtoACIRExtender_54) {
         currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
         lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];

@@ -573,14 +573,14 @@
 - (void)configureSwingCell:(UITableViewCell*)cell{
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_SWING];
     if ([currentDeviceValue intValue]==0) {
-        [self addValueLabel:cell Editable:YES Value:@"OFF"];
+        [self addValueLabel:cell Editable:YES Value:NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
     }else{
-        [self addValueLabel:cell Editable:YES Value:@"ON"];
+        [self addValueLabel:cell Editable:YES Value:NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On")];
     }
 }
 
 - (void)configurePowerCell:(UITableViewCell*)cell{
-    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_POWER];
+    SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BASIC];
     if ([currentDeviceValue intValue] != 0) {
         [self addValueLabel:cell Editable:YES Value:NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On")];
     }else{
@@ -590,7 +590,8 @@
 
 - (void)configureACFanModeCell:(UITableViewCell*)cell{
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AC_FAN_MODE];
-    [self addValueLabel:cell Editable:YES Value:[currentDeviceValue.value capitalizedString]];
+    NSString *fan= ([currentDeviceValue.value length]>0 &&  [currentDeviceValue.value isEqualToString: @"Unknown 5"]) ? @"Medium" : currentDeviceValue.value ;
+    [self addValueLabel:cell Editable:YES Value:[fan capitalizedString]];
 }
 
 - (void)configureConfigCell:(UITableViewCell*)cell{
@@ -635,7 +636,7 @@
     SFIDeviceKnownValues *emergencyHeatValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_IS_USING_EMERGENCY_HEAT];
     
     SFIDeviceKnownValues *modeValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
-    if (([[currentDeviceValue.value lowercaseString] isEqualToString:@"home"] && ![emergencyHeatValue boolValue]) && (canHeat || canCool)) {
+    if (([[currentDeviceValue.value lowercaseString] isEqualToString:@"home"] && ![emergencyHeatValue boolValue])) {
         [self addValueLabel:cell Editable:YES Value:[modeValue.value capitalizedString]];
     }else{
         [self addValueLabel:cell Editable:NO Value:[modeValue.value capitalizedString]];
@@ -784,7 +785,7 @@
         }
     }
     SFIDeviceKnownValues *emergencyHeatValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_IS_USING_EMERGENCY_HEAT];
-    if([emergencyHeatValue boolValue] || (!canHeat && !canCool)) {
+    if([emergencyHeatValue boolValue]) {
         switch (propertyNumber) {
             case modeIndexPathRow:
                 return;
