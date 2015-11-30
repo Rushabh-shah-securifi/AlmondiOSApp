@@ -522,6 +522,10 @@
 
 // toggles the label to reveal the underlying device type
 - (void)onDeviceNameLabelTapped:(id)sender {
+    if (!self.enableSensorTileDebugInfo) {
+        return;
+    }
+
     UILabel *label = self.deviceNameLabel;
     NSString *name = self.device.deviceName;
     

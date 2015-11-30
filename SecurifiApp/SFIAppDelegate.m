@@ -27,6 +27,7 @@
 //    config.enableNotificationsDebugMode = YES;      // uncomment to activate; off by default
 //    config.enableNotificationsDebugLogging = YES;   // uncomment to activate; off by default
 //    config.enableCertificateChainValidation = NO;   // Uncomment for testing only; on by default
+//    config.enableSensorTileDebugInfo = YES;         // Uncomment for testing only; off by default
 
     // Features
     config.enableNotifications = YES;               // uncomment to activate; NO by default
@@ -35,6 +36,7 @@
     config.enableLocalNetworking = YES;             // NO by default
     config.enableScenes = YES;                      // NO by default
     config.enableWifiClients = YES;                 // NO by default
+//    config.enableAlmondVersionRemoteUpdate = YES;           // NO by default
 
     return config;
 }
