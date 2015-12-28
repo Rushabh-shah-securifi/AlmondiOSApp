@@ -83,6 +83,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 @property(nonatomic) BOOL enableRouterWirelessControl;
 @property(nonatomic) BOOL enableNetworkingControl;
 @property(nonatomic) BOOL enableNewWifiClientsControl;
+@property(nonatomic) BOOL enableAlmondVersionRemoteUpdate;
 @end
 
 @implementation SFIRouterTableViewController
@@ -104,6 +105,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     self.enableRouterWirelessControl = configurator.enableRouterWirelessControl;
     self.enableNetworkingControl = configurator.enableLocalNetworking;
     self.enableNewWifiClientsControl = configurator.enableWifiClients;
+    self.enableAlmondVersionRemoteUpdate = configurator.enableAlmondVersionRemoteUpdate;
 
     [super viewDidLoad];
 
@@ -843,7 +845,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         cell.summaries = @[currentVersion_label, version];
     }
 
-    if (newVersionAvailable) {
+    if (newVersionAvailable && self.enableAlmondVersionRemoteUpdate) {
         cell.editTarget = self;
         cell.editSelector = @selector(onEditRouterSoftwareCard:);
     }

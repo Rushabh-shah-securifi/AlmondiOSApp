@@ -55,6 +55,7 @@
 @property(nonatomic) BOOL isSensorChangeCommandSuccessful;
 
 @property(nonatomic) BOOL isViewControllerDisposed;
+@property(nonatomic) BOOL enableSensorTileDebugInfo;
 @end
 
 @implementation SFISensorsViewController
@@ -81,6 +82,10 @@
 
     [self initializeNotifications];
     [self initializeAlmondData];
+
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SecurifiConfigurator *configurator = toolkit.configuration;
+    self.enableSensorTileDebugInfo = configurator.enableSensorTileDebugInfo;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -437,6 +442,7 @@
     cell.cellColor = [self.almondColor makeGradatedColorForPositionIndex:indexPathRow];
     cell.delegate = self;
     cell.expandedView = expanded;
+    cell.enableSensorTileDebugInfo = self.enableSensorTileDebugInfo;
 
     cell.deviceValue = deviceValue;
 

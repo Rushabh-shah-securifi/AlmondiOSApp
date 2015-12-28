@@ -223,7 +223,8 @@
     }
     
     cell.delegate = self;
-    [cell createScenesCell:scenesArray[indexPath.row]];
+    if(indexPath.row < scenesArray.count)
+        [cell createScenesCell:scenesArray[indexPath.row]];
     return cell;
 }
 

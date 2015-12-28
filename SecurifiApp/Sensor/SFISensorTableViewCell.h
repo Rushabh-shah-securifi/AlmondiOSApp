@@ -53,6 +53,8 @@
 @property(nonatomic, getter=isExpandedView) BOOL expandedView;
 @property(nonatomic) NSString *iconImageName;
 @property(nonatomic) NSArray *statusTextArray;
+@property(nonatomic) BOOL enableSensorTileDebugInfo;
+
 // Makes the cell show a message and icon indicating the sensor is being updated
 - (void)showUpdatingMessage;
 
@@ -68,5 +70,6 @@
 
 - (NSString*)deviceName;
 - (NSString*)deviceLocation;
+
 
 @end

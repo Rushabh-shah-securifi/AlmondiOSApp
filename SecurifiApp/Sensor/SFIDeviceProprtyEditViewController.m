@@ -283,7 +283,7 @@
             break;
         case powerIndexPathRow:
         {
-            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_POWER];
+            SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_BASIC];
             
             NSArray *cnames = @[NSLocalizedString(@"sensor.notificaiton.fanindexpath.On", @"On"),
                                 NSLocalizedString(@"sensor.notificaiton.fanindexpath.Off", @"Off")];
@@ -352,7 +352,9 @@
                 NSMutableDictionary * dict = [NSMutableDictionary new];
                 [dict setValue:name forKey:@"name"];
                 [dict setValue:@0 forKey:@"selected"];
-                if ([[selectedPropertyValue uppercaseString] isEqualToString:[name uppercaseString]]) {
+                if ([[selectedPropertyValue uppercaseString] isEqualToString:[name uppercaseString]] ||
+                    ([selectedPropertyValue isEqualToString:@"Unknown 5"] &&[name isEqualToString: @"Medium"])) {
+                
                     [dict setValue:@1 forKey:@"selected"];
                 }
                 
@@ -399,6 +401,8 @@
             if (!canHeat) {
                 mnames = @[NSLocalizedString(@"sensor.mode indexpath Off", @"Off"),NSLocalizedString(@"sensor.mode indexpath Cool", @"Cool")];
             }
+            if(!canCool && !canHeat)
+                mnames = @[NSLocalizedString(@"sensor.mode indexpath Off", @"Off")];
             
             
             for (NSString * name in mnames) {
@@ -559,15 +563,15 @@
                 lblCooling.text =  NSLocalizedString(@"sensors.cooling.temperature", @"Low Temperature");
                 
                 CGRect fr = lblShow.frame;
-                fr.origin.y =coolingTempSelector.frame.origin.y;
+                fr.origin.y =coolingTempSelector.frame.origin.y+60;
                 lblShow.frame = fr;
                 
                 fr = lblCelsius.frame;
-                fr.origin.y =coolingTempSelector.frame.origin.y+30;
+                fr.origin.y =lblShow.frame.origin.y+30;
                 lblCelsius.frame = fr;
                 
                 fr = btnShowCelsius.frame;
-                fr.origin.y =coolingTempSelector.frame.origin.y+30;
+                fr.origin.y =lblShow.frame.origin.y+30;
                 btnShowCelsius.frame = fr;
                 
                 fr = lblFahrenheit.frame;
@@ -585,15 +589,15 @@
                 lblHeating.frame = lblCooling.frame;
                 
                 CGRect fr = lblShow.frame;
-                fr.origin.y =heatingTempSelector.frame.origin.y;
+                fr.origin.y =heatingTempSelector.frame.origin.y+60;
                 lblShow.frame = fr;
                 
                 fr = lblCelsius.frame;
-                fr.origin.y =heatingTempSelector.frame.origin.y+30;
+                fr.origin.y =lblShow.frame.origin.y+30;
                 lblCelsius.frame = fr;
                 
                 fr = btnShowCelsius.frame;
-                fr.origin.y =heatingTempSelector.frame.origin.y+30;
+                fr.origin.y =lblShow.frame.origin.y+30;
                 btnShowCelsius.frame = fr;
                 
                 fr = lblFahrenheit.frame;
@@ -822,14 +826,14 @@
             propertyType = SFIDevicePropertyType_AC_MODE;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
             oldValue = deviceValues.value;
-            deviceValues.value = [selectedPropertyValue lowercaseString];
+            deviceValues.value = selectedPropertyValue;
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
             break;
         case acFanIndexPathRow:
             propertyType = SFIDevicePropertyType_AC_FAN_MODE;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
             oldValue = deviceValues.value;
-            deviceValues.value = selectedPropertyValue;
+            deviceValues.value = ([selectedPropertyValue length]>0 &&  [selectedPropertyValue isEqualToString: @"Medium"]) ? @"Unknown 5" : selectedPropertyValue ;
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
             break;
         case actionsIndexPathRow:
@@ -906,7 +910,7 @@
         }
             break;
         case powerIndexPathRow:
-            propertyType = SFIDevicePropertyType_POWER;
+            propertyType = SFIDevicePropertyType_BASIC;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
             oldValue = deviceValues.value;
             
@@ -945,7 +949,7 @@
                 currentDeviceValues.value =value;
                 self.deviceValue = [self.deviceValue setKnownValues:currentDeviceValues forProperty:propertyType];
                //if we need to save 2 properties (low high temperatues, we need to send one request here, next request will be sent as usual)
-                if (propertyType != SFIDevicePropertyType_THERMOSTAT_TARGET && ((oldValue == nil) || ![oldValue isEqualToString:deviceValues.value])) {
+                if (((oldValue == nil) || ![oldValue isEqualToString:currentDeviceValues.value])) {
                     [deviceValueArray addObject:currentDeviceValues];
                    
                 }
@@ -966,7 +970,7 @@
                 }
                 currentDeviceValues.value =value;
                 self.deviceValue = [self.deviceValue setKnownValues:currentDeviceValues forProperty:propertyType];
-                if (propertyType != SFIDevicePropertyType_THERMOSTAT_TARGET && ((oldValue == nil) || ![oldValue isEqualToString:deviceValues.value])) {
+                if (((oldValue == nil) || ![oldValue isEqualToString:currentDeviceValues.value])) {
                     [deviceValueArray addObject:currentDeviceValues];
                     
                 }
@@ -1314,13 +1318,18 @@
 - (void)updateTemperatureLabel{
     SFIDeviceKnownValues *currentDeviceValue;
     lblThemperatureMain.text = @"";
+   
     if (self.device.deviceType==SFIDeviceType_ZWtoACIRExtender_54) {
         currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_SENSOR_MULTILEVEL];
         lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
         
     }else if (self.device.deviceType==SFIDeviceType_NestThermostat_57){
-        currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
-        lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
+        SFIDeviceKnownValues *isOnline = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_ISONLINE];
+        if([isOnline.value isEqualToString:@"true"]){
+            currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_CURRENT_TEMPERATURE];
+            lblThemperatureMain.text = [[SecurifiToolkit sharedInstance] getTemperatureWithCurrentFormat:[currentDeviceValue intValue]];
+        }
+        
         
     }
 }
@@ -1354,7 +1363,7 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     // Tell the cell to show 'updating' type message to user
-    //    [cell showUpdatingMessage];
+    //    [cell showUpdatingMessage];		
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         //todo decide what to do about this
