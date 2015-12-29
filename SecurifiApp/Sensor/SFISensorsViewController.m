@@ -204,6 +204,8 @@
     self.enableDrawer = YES;
 }
 
+
+
 // a crude mechanism to ensure the app always knows what the router's IP address and password are, for local connection support
 - (void)sendRouterSummaryRequest {
     [[SecurifiToolkit sharedInstance] asyncAlmondSummaryInfoRequest:self.almondMac];
@@ -557,7 +559,7 @@
         return;
     }
 
-    // Send update to the cloud
+    //Send update to the cloud
     [self sendMobileCommandForDevice:device deviceValue:deviceValues deviceCell:cell];
 }
 
@@ -591,8 +593,9 @@
         case SFIDeviceType_MultiSoundSiren_55:
         case SFIDeviceType_EnergyReader_56:
         case SFIDeviceType_NestThermostat_57:
-        case SFIDeviceType_NestSmokeDetector_58: {
-
+        case SFIDeviceType_NestSmokeDetector_58:
+        case SFIDeviceType_BuiltInSiren_60: {
+            NSLog(@"SFIDeviceType_BuiltInSiren_59");
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
             SFISensorDetailViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SFISensorDetailViewController"];
             viewController.device = sensor;
@@ -849,6 +852,7 @@
 
 // calls should be coordinated on the main queue
 - (void)setDeviceValues:(NSArray *)values {
+    NSLog(@"setDeviceValues: %@", values);
     NSMutableDictionary *table = [NSMutableDictionary dictionary];
     for (SFIDeviceValue *value in values) {
         NSNumber *key = @(value.deviceID);
@@ -949,6 +953,7 @@
 
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
+    NSLog(@"sensors - ondevicelistdidchange: %@", data);
     if (data == nil) {
         return;
     }

@@ -92,7 +92,9 @@
                                NSLocalizedString(@"Mode","Mode"),
                                NSLocalizedString(@"Target Range","Target Range"),NSLocalizedString(@"Fan Mode","Fan Mode"),
                                NSLocalizedString(@"Fan","Fan"),
+                               @"builtInSiren",
                                NSLocalizedString(@"Notify me","Notify me")
+                               
                                ,@""];
     propertiesArray = [NSMutableArray new];
     for (int i=0; i<propertyNames.count; i++) {
@@ -294,12 +296,16 @@
             case targetRangeIndexPathRow:
                 [self configureTargetRangeCell:cell];
                 break;
+            case builtInSirenIndexPathRow:
+                [self configureBuiltInSirenCell:cell];
+                break;
             case notifyMeIndexPathRow:
                 [self configureNotifyMeCell:cell];
                 break;
             case deviceHistoryIndexPathRow:
                 [self configureDeviceHistoryCell:cell];
                 break;
+            
             default:
                 break;
         }
@@ -341,6 +347,7 @@
         case switch2IndexPathRow:
         case switch1IndexPathRow:
         case sirenSwitchMultilevelIndexPathRow:
+        case builtInSirenIndexPathRow:
             [self editProperty:indexPath.row];
             break;
         case deviceHistoryIndexPathRow:
@@ -739,6 +746,28 @@
     [self addValueLabel:cell Editable:YES Value:strVal];
 }
 
+-(void)configureBuiltInSirenCell:(UITableViewCell *)cell{
+    NSLog(@"configureBuiltInSirenCell");
+    SFIDeviceKnownValues *kValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_TONE_SELECTED];
+    
+    NSString * strVal = @"";
+    switch ([kValue intValue]) {
+        case 1:
+            strVal = @"tone 1";
+            break;
+        case 2:
+            strVal = @"tone 2";
+            break;
+        case 3:
+            strVal = @"tone 3";
+            break;
+    default:
+            break;
+    }
+    
+    [self addValueLabel:cell Editable:YES Value:strVal];
+}
+
 - (void)addValueLabel:(UITableViewCell*)cell Editable:(BOOL)editable Value:(NSString*)value{
     UILabel *label;
     if (editable) {
@@ -771,6 +800,7 @@
 }
 
 - (void)editProperty:(NSInteger)propertyNumber{
+    NSLog(@"edit property");
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
     if (![[currentDeviceValue.value lowercaseString] isEqualToString:@"home"] ) {
         switch (propertyNumber) {
@@ -935,6 +965,15 @@
                 [propertiesArray[coLevelIndexPathRow] setValue:@YES forKey:@"hidden"];
                 
             }
+        }
+            break;
+        case SFIDeviceType_BuiltInSiren_60:
+        {
+            [propertiesArray[nameIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[locationIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[notifyMeIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[builtInSirenIndexPathRow] setValue:@NO forKey:@"hidden"];
+            [propertiesArray[deviceHistoryIndexPathRow] setValue:@NO forKey:@"hidden"];
         }
             break;
         default:
