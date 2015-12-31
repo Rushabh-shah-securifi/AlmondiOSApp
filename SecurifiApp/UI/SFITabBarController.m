@@ -157,7 +157,7 @@ typedef NS_ENUM(int, TabBarMode) {
 - (NSArray *)localTabs {
     return @[
             self.sensorTab,
-            self.scenesTab,
+//            self.scenesTab,
             self.routerTab,
     ];
 }
