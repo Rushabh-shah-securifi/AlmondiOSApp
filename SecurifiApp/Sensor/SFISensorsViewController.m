@@ -994,6 +994,7 @@
             if (newDeviceValueList) {
                 [self setDeviceValues:newDeviceValueList];
             }
+            NSLog(@"ondevicelistdidchange - reload data");
             [self.tableView reloadData];
 
             [self tryInstallRefreshControl];
@@ -1092,6 +1093,7 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self clearExpandedCell];
         [self initializeAlmondData];
+       
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     });
 }
