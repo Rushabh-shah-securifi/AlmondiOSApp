@@ -168,6 +168,31 @@
             }
             break;
         }
+        case builtInSirenIndexPathRow:
+        {
+            NSArray *items = @[@"tone 1",
+                               @"tone 2",
+                               @"tone 3"
+                               ];
+            
+            SFIDeviceKnownValues *kValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_TONE_SELECTED];
+            
+            selectedPropertyValue = items[[kValue intValue]-1];
+            int ind = 0;
+            for (NSString * name in items) {
+                NSMutableDictionary * dict = [NSMutableDictionary new];
+                [dict setValue:items[ind] forKey:@"name"];
+                [dict setValue:@0 forKey:@"selected"];
+                NSLog(@"selectedPropertyValue: %@, name: %@", selectedPropertyValue, name);
+                if ([[selectedPropertyValue lowercaseString] isEqualToString:[name lowercaseString]]) {
+                    [dict setValue:@1 forKey:@"selected"];
+                }
+                [propertyTypes addObject:dict];
+                ind++;
+            }
+            break;
+        }
+            
         case notifyMeIndexPathRow:
         {
             NSArray *notifyMe_items = @[
@@ -541,13 +566,12 @@
         case switch2IndexPathRow:
         case actionsIndexPathRow:
         case sirenSwitchMultilevelIndexPathRow:
-        {
+        case builtInSirenIndexPathRow:{
             currentView = viewTypeSelection;
             CGRect fr = viewTypeSelection.frame;
             fr.size.height = propertyTypes.count*50+btnSave.frame.size.height+50;
             viewTypeSelection.frame = fr;
             [tblTypes reloadData];
-            
             break;
         }
         case targetRangeIndexPathRow:
@@ -694,6 +718,12 @@
                selector:@selector(onMobileCommandResponseCallback:)
                    name:MOBILE_COMMAND_NOTIFIER
                  object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onDeviceValueListDidChange:)
+                   name:kSFIDidChangeDeviceValueList
+                 object:nil];
+    
     [center addObserver:self
                selector:@selector(onNotificationPrefDidChange:)
                    name:kSFINotificationPreferencesDidChange
@@ -869,6 +899,20 @@
             }
             self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
             break;
+        case builtInSirenIndexPathRow:
+            propertyType = SFIDevicePropertyType_TONE_SELECTED;
+            deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
+            oldValue = deviceValues.value;
+            
+            if ([selectedPropertyValue isEqualToString:@"tone 1"]) {
+                deviceValues.value = @"1";
+            }else if ([selectedPropertyValue isEqualToString:@"tone 2"]){
+                deviceValues.value = @"2";
+            }else if ([selectedPropertyValue isEqualToString:@"tone 3"]){
+                deviceValues.value = @"3";
+            }
+            self.deviceValue = [self.deviceValue setKnownValues:deviceValues forProperty:propertyType];
+            break;
         case swingIndexPathRow:
             propertyType = SFIDevicePropertyType_AC_SWING;
             deviceValues = [self.deviceValue knownValuesForProperty:propertyType];
@@ -1011,10 +1055,12 @@
         default:
             break;
     }
+    
     // provisionally update; on mobile cmd response, the actual new values will be set
     if([deviceValueArray count] > 0){
         [self setHUDParamsAndShow];
         for(SFIDeviceKnownValues *deviceKnownValue in deviceValueArray){
+            NSLog(@"sendMobileCommandForDevice");
             [self sendMobileCommandForDevice:self.device deviceValue:deviceKnownValue];
         }
     }
@@ -1054,6 +1100,7 @@
         case switch2IndexPathRow:
         case actionsIndexPathRow:
         case sirenSwitchMultilevelIndexPathRow:
+        case builtInSirenIndexPathRow:
             return propertyTypes.count;
             break;
             
@@ -1080,6 +1127,7 @@
         case switch1IndexPathRow:
         case switch2IndexPathRow:
         case sirenSwitchMultilevelIndexPathRow:
+        case builtInSirenIndexPathRow:
         case notifyMeIndexPathRow:
         case actionsIndexPathRow:
             [cell createPropertyCell:propertyTypes[indexPath.row]];
@@ -1136,6 +1184,7 @@
         case notifyMeIndexPathRow:
         case actionsIndexPathRow:
         case sirenSwitchMultilevelIndexPathRow:
+        case builtInSirenIndexPathRow:
             for (NSMutableDictionary * dict in propertyTypes) {
                 [dict setValue:@0 forKey:@"selected"];
             }
@@ -1419,7 +1468,16 @@
     });
 }
 
+-(void)onDeviceValueListDidChange:(id)sender{
+    //to do
+    [self.delegate updateDeviceInfo:self.device :self.deviceValue];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+
+
 - (void)onMobileCommandResponseCallback:(id)sender {
+    NSLog(@"onMobileCommandResponseCallback:");
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
@@ -1434,11 +1492,15 @@
         
         NSNotification *notifier = (NSNotification *) sender;
         NSDictionary *data = [notifier userInfo];
+        NSLog(@"data: %@", data);
         if (data == nil) {
             return;
         }
         
+        
+        
         MobileCommandResponse *res = data[@"data"];
+        NSLog(@"MobileCommandResponse - res: %@", res);
         sfi_id c_id = res.mobileInternalIndex;
         if (res.isSuccessful) {
             // command succeeded; clear "status" state; new device values should be transmitted

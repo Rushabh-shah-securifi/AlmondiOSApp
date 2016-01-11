@@ -46,10 +46,14 @@
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
     // Do any additional setup after loading the view.
     
-    [self sendGetAllScenesRequest];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    if(!local){
+        [self sendGetAllScenesRequest];
+    }
     [self initializeNotifications];
     
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     if (self.currentAlmond == nil) {
         [self markTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
@@ -65,6 +69,15 @@
     [super viewWillAppear:animated];
     self.enableDrawer = YES;
     randomMobileInternalIndex = arc4random() % 10000;
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    if(local){
+        scenesArray = [toolkit.scenesArray copy];
+    }
+    
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
@@ -102,6 +115,7 @@
                selector:@selector(onScenesListChange:)
                    name:NOTIFICATION_DYNAMIC_SET_CREATE_DELETE_ACTIVATE_SCENE_NOTIFIER
                  object:nil];
+    
     [center addObserver:self
                selector:@selector(onCurrentAlmondChanged:)
                    name:kSFIDidChangeCurrentAlmond
@@ -110,6 +124,21 @@
                selector:@selector(gotResponseFor1064:)
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
                  object:nil];
+    
+    
+    [center addObserver:self
+               selector:@selector(updateSceneTableView:)
+                   name:NOTIFICATION_UPDATE_SCENE_TABLEVIEW
+                 object:nil];
+    
+}
+
+-(void)updateSceneTableView:(id)sender{
+    NSLog(@"updateSceneTableView");
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    scenesArray = [toolkit.scenesArray copy];
+    [self.tableView reloadData];
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -123,8 +152,7 @@
 
 
 - (void)sendGetAllScenesRequest {
-    
-    
+    NSLog(@"scenetableview - sendGetAllScenesRequest");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     if (!plus.almondplusMAC) {
@@ -352,9 +380,25 @@
         [self.HUD hide:YES afterDelay:5];
     });
 }
-- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+
+-(BOOL)isLocal{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    return local;
 }
+
+- (void)asyncSendCommand:(GenericCommand *)command {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    if(local){
+        [[SecurifiToolkit sharedInstance] asyncSendToLocal:command almondMac:almond.almondplusMAC];
+    }else{
+        [[SecurifiToolkit sharedInstance] asyncSendToCloud:command];
+    }
+}
+
 #pragma Event handling
 
 - (void)showHUD:(NSString *)text {
@@ -385,28 +429,49 @@
 }
 
 - (void)getAllScenesCallback:(id)sender {
+    NSLog(@"scenetableview - getAllScenesCallback");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    NSDictionary *mainDict;
+    if(local){
+//        mainDict = [data valueForKey:@"data"];
+        return;
+    }else{
+        mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    }// required for switching local<=>cloud
+    
     if ([[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
         scenesArray = [mainDict valueForKey:@"Scenes"];
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.tableView reloadData];
             [self hideHude];
         });
-        
+    
     }else {
         DLog(@"Reason Code %@", [mainDict valueForKey:@"reasonCode"]);
         [self hideHude];
     }
+    NSLog(@"scenes array: %@", scenesArray);
 }
 
 - (void)onScenesListChange:(id)sender {
+    NSLog(@"scenetableview - onScenesListChange - dynamic");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    
-    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    BOOL local = [self isLocal];
+    NSDictionary *mainDict;
+    if(local){
+//        mainDict = [data valueForKey:@"data"];
+        return; //to be combined with the parser
+    }else{
+        mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    }// required for switching local<=>cloud
+    
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     
     if (![[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
@@ -484,11 +549,21 @@
 }
 
 - (void)gotResponseFor1064:(id)sender {
+    NSLog(@"gotResponseFor1064 - activatescene");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
-    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    if (randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    NSDictionary * mainDict;
+    if(local){
+        mainDict = [data valueForKey:@"data"];
+    }else{
+        mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    }
+
+    if (randomMobileInternalIndex != [[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
         return;
     }
     NSLog(@"%@",mainDict);

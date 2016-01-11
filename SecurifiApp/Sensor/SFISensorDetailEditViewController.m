@@ -557,7 +557,7 @@
         if (res.isSuccessful && c_id == dc_id) {
             // command succeeded; clear "status" state; new device values should be transmitted
             // via different callback and handled there.
-            //            [self.delegate updateDeviceInfo:self.device :self.deviceValue];
+//                        [self.delegate updateDeviceInfo:self.device :self.deviceValue];
             [self.navigationController popViewControllerAnimated:YES];
         }
         else {

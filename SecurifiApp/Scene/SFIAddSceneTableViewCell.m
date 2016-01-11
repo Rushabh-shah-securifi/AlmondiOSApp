@@ -23,7 +23,15 @@
     IBOutlet UIView *viewSwitchOnOff;
     
     IBOutlet UIView *viewAutoHeatCoolOff;
-    //
+    
+    //builtinsiren
+    IBOutlet UIView *viewBuiltInSiren;
+    IBOutlet SFISwitchButton *toneOn;
+    IBOutlet SFISwitchButton *toneOff;
+    IBOutlet SFISwitchButton *tone1;
+    IBOutlet SFISwitchButton *tone2;
+    IBOutlet SFISwitchButton *tone3;
+    
     IBOutlet SFISwitchButton *btnAuto;
     IBOutlet SFISwitchButton *btnHeat;
     IBOutlet SFISwitchButton *btnCool;
@@ -186,6 +194,12 @@
         return;
     }
     
+    NSLog(@"self.devicetype: %d", self.device.deviceType);
+    if(self.device.deviceType == SFIDeviceType_BuiltInSiren_60){
+        [self layoutBuiltInSiren_60];
+        return;
+    }
+    
     float curr_y = self.lblName.frame.size.height + self.lblName.frame.origin.y;
     
     NSArray * deviceIndexesArray = [self.cellInfo valueForKey:@"deviceIndexes"];
@@ -199,6 +213,7 @@
             case SFIDevicePropertyType_SENSOR_BINARY:
             case SFIDevicePropertyType_LOCK_STATE:
             {
+                NSLog(@"scene table view cell");
                 btnBinarySwitchOff.tag = [[dict valueForKey:@"indexID"] integerValue];
                 btnBinarySwitchOn.tag = [[dict valueForKey:@"indexID"] integerValue];
                 btnBinarySwitchOff.selected = NO;
@@ -235,6 +250,7 @@
                 }
                 break;
             }
+                
             case SFIDevicePropertyType_SWITCH_MULTILEVEL:
             {
                 viewDim.hidden = NO;
@@ -896,9 +912,122 @@
             }
         }
     }
-    
     return nil;
 }
+
+
+-(void)layoutBuiltInSiren_60{
+    NSLog(@"layoutBuiltInSiren_60");
+    viewBuiltInSiren.hidden = NO;
+    CGRect fr = viewBuiltInSiren.frame;
+    fr.origin.y = 30;
+    fr.origin.x = (self.frame.size.width - fr.size.width)/2;
+    viewBuiltInSiren.frame = fr;
+    
+    [toneOn setupValues:[UIImage imageNamed:DT42_ALARM_TRUE] Title:@"ON"];
+    [toneOff setupValues:[UIImage imageNamed:DT42_ALARM_FALSE] Title:@"OFF"];
+    [tone1 setupValues:[UIImage imageNamed:DT42_ALARM_TRUE] Title:@"TONE 1"];
+    [tone2 setupValues:[UIImage imageNamed:DT42_ALARM_TRUE] Title:@"TONE 2"];
+    [tone3 setupValues:[UIImage imageNamed:DT42_ALARM_TRUE] Title:@"TONE 3"];
+    
+    toneOn.selected = NO;
+    toneOff.selected = NO;
+    tone1.selected = NO;
+    tone2.selected = NO;
+    tone3.selected = NO;
+    
+    toneOn.tag = 1;
+    toneOff.tag = 1;
+    tone1.tag = 2;
+    tone2.tag = 2;
+    tone3.tag = 2;
+    
+    NSArray * existingValues = [self.cellInfo valueForKey:@"existingValues"];
+    NSLog(@"builtinsire existing values: %@", existingValues);
+    for (NSDictionary * dict in existingValues) {
+        if ([[dict valueForKey:@"Index"] integerValue] == 1) {
+            if ([[dict valueForKey:@"Value"] boolValue]) {
+                toneOn.selected = YES;
+            }
+            else if ([[dict valueForKey:@"Value"] intValue] == 0) {
+                toneOff.selected = YES;
+            }
+        }
+        if ([[dict valueForKey:@"Index"] integerValue] == 2) {
+            if ([[dict valueForKey:@"Value"] intValue] ==  1) {
+                tone1.selected = YES;
+            }
+            else if ([[dict valueForKey:@"Value"] intValue] == 2) {
+                tone2.selected = YES;
+            }
+            else if ([[dict valueForKey:@"Value"] intValue] == 3) {
+                tone3.selected = YES;
+            }
+        }
+    }
+}
+
+- (IBAction)onSirenOnButtonTap:(id)sender {
+    if (!toneOn.selected) {
+        toneOn.selected = YES;
+        toneOff.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)toneOn.tag Value:@"true"];
+    }else{
+        toneOn.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)toneOn.tag Value:@"remove_from_entry_list"];
+    }
+}
+
+- (IBAction)onSirenOffButtonTap:(id)sender {
+    if (!toneOff.selected) {
+        toneOn.selected = NO;
+        toneOff.selected = YES;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)toneOff.tag Value:@"false"];
+    }else{
+        toneOff.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)toneOff.tag Value:@"remove_from_entry_list"];
+    }
+}
+- (IBAction)onTone1ButtonTap:(id)sender {
+    NSLog(@"onTone1ButtonTap");
+    if (!tone1.selected) {
+        tone1.selected = YES;
+        tone2.selected = NO;
+        tone3.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)tone1.tag Value:@"1"];
+    }else{
+        tone1.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)tone1.tag Value:@"remove_from_entry_list"];
+    }
+}
+- (IBAction)onTone2ButtonTap:(id)sender {
+    NSLog(@"onTone2ButtonTap");
+    if (!tone2.selected) {
+        tone1.selected = NO;
+        tone2.selected = YES;
+        tone3.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)tone2.tag Value:@"2"];
+    }else{
+        tone2.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)tone2.tag Value:@"remove_from_entry_list"];
+    }
+
+}
+- (IBAction)onTone3ButtonTap:(id)sender {
+    NSLog(@"onTone3ButtonTap");
+    if (!tone3.selected) {
+        tone1.selected = NO;
+        tone2.selected = NO;
+        tone3.selected = YES;
+        
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)tone3.tag Value:@"3"];
+    }else{
+        tone3.selected = NO;
+        [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)tone3.tag Value:@"remove_from_entry_list"];
+    }
+}
+
+
 
 #pragma mark Thermostat 7
 
@@ -1391,6 +1520,8 @@
 }
 
 
+
+
 -(void)layoutDevice_4{
     viewDim.hidden = NO;
     CGRect fr = viewDim.frame;
@@ -1442,6 +1573,8 @@
         }
     }
 }
+
+
 
 #pragma mark Nest Thermostat
 - (void)layoutNest_57{

@@ -151,6 +151,7 @@
     if (!self) {
         return;
     }
+    
     if (self.isViewControllerDisposed) {
         return;
     }
@@ -402,7 +403,7 @@
     //    if (devices.count==0) {
     //        return;
     //    }
-    
+    NSLog(@"devices: %@", devices);
     NSMutableDictionary *table = [NSMutableDictionary dictionary];
     NSMutableArray * actuators = [NSMutableArray array];;
     [cellsInfoArray removeAllObjects];
@@ -411,13 +412,24 @@
     
     if (self.sceneInfo) {
         //TEST
+        [sceneEntryList removeAllObjects];
         if ([self.sceneInfo[@"SceneEntryList"] isKindOfClass:[NSArray class]]) {
-            sceneEntryList = [[NSMutableArray arrayWithArray:self.sceneInfo[@"SceneEntryList"]] mutableCopy];
+            NSLog(@"if array");
+//            sceneEntryList = [[NSMutableArray arrayWithArray:self.sceneInfo[@"SceneEntryList"]] mutableCopy];
+            for(NSDictionary *sceneEntry in self.sceneInfo[@"SceneEntryList"]){
+                NSMutableDictionary *mutableSceneEntry = [sceneEntry mutableCopy];
+                [sceneEntryList addObject:mutableSceneEntry];
+            }
+            NSLog(@"scene entry list: %@", sceneEntryList);
         }else{
             NSString * strSceneEntryList = self.sceneInfo[@"SceneEntryList"];
             strSceneEntryList = [strSceneEntryList stringByReplacingOccurrencesOfString:@"\\" withString:@""];
             NSData * data = [strSceneEntryList dataUsingEncoding:NSUTF8StringEncoding] ;
-            sceneEntryList = [[NSMutableArray arrayWithArray:[data objectFromJSONData]] mutableCopy];
+//            sceneEntryList = [[NSMutableArray arrayWithArray:[data objectFromJSONData]] mutableCopy];
+            for(NSDictionary *sceneEntry in [data objectFromJSONData]){
+                NSMutableDictionary *mutableSceneEntry = [sceneEntry mutableCopy];
+                [sceneEntryList addObject:mutableSceneEntry];
+            }
         }
     }
     
@@ -485,7 +497,6 @@
                 [indexDict setValue:@"AWAY" forKey:@"offTitle"];
                 [indexDict setValue:@"away" forKey:@"offValue"];
                 [indexDict setValue:@"home" forKey:@"onValue"];
-                
                 [arr addObject:indexDict];
                 
             }
@@ -549,15 +560,17 @@
                 
                 [arr addObject:indexDict];            }
                 break;
+           
             default:
             {
+                NSLog(@" device-Name: %@",device.deviceName);
                 for (SFIDeviceIndex *deviceIndex in deviceIndexes) {
                     NSMutableDictionary * indexDict = [NSMutableDictionary new];
                     
                     
                     [indexDict setValue:[NSNumber numberWithInt:deviceIndex.valueType] forKey:@"valueType"];
                     [indexDict setValue:[NSNumber numberWithInt:deviceIndex.indexID] forKey:@"indexID"];
-                    
+                     NSLog(@" device-Index: %@",deviceIndex);
                     switch (deviceIndex.valueType) {
                         case SFIDevicePropertyType_SWITCH_BINARY:
                         {
@@ -609,6 +622,7 @@
                         case SFIDevicePropertyType_SENSOR_BINARY:
                         {
                             @try{
+                                NSLog(@"add scene controller - alarm state");
                                 for (IndexValueSupport * iVal in deviceIndex.indexValues) {
                                     if ([iVal.matchData isEqualToString:@"0"] || [iVal.matchData isEqualToString:@"false"]) {
                                         [indexDict setValue:iVal.iconName forKey:@"offImage"];
@@ -690,7 +704,12 @@
 
 
 - (void)btnSaveTap:(id)sender {
-    
+    NSLog(@"btnSaveTap");
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+   
+
     [activeTextField resignFirstResponder];
     if (sceneName.length == 0) {
         [self showMessageBox:@"Please select Scene Name"];
@@ -703,6 +722,7 @@
         [self showMessageBox:NSLocalizedString(@"scene.msg.You have to select at least 1 value", @"You have to select at least 1 value")];
         return;
     }
+    
     
     NSMutableDictionary *newSceneInfo = [NSMutableDictionary new];
     NSMutableDictionary *payloadDict = [NSMutableDictionary new];
@@ -718,13 +738,16 @@
     
     [payloadDict setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
     [newSceneInfo setValue:sceneName forKey:@"Name"];
-    [payloadDict setValue:_almond.almondplusMAC forKey:@"AlmondMAC"];
+    if(!local){
+        [payloadDict setValue:_almond.almondplusMAC forKey:@"AlmondMAC"];
+    }
+    
     [self configuresCeneEntryListForSave];
     [newSceneInfo setValue:sceneEntryList forKey:@"SceneEntryList"];
     
     [payloadDict setValue:newSceneInfo forKey:@"Scenes"];
     
-    
+    NSLog(@"scene local update payload: %@", payloadDict);
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_UPDATE_REQUEST;
     cloudCommand.command = [payloadDict JSONString];
@@ -752,8 +775,17 @@
         [self.HUD hide:YES afterDelay:5];
     });
 }
-- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+- (void)asyncSendCommand:(GenericCommand *)command {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    if(local){
+        NSLog(@"to local");
+        [[SecurifiToolkit sharedInstance] asyncSendToLocal:command almondMac:almond.almondplusMAC];
+    }else{
+        NSLog(@"to cloud");
+        [[SecurifiToolkit sharedInstance] asyncSendToCloud:command];
+    }
 }
 
 
@@ -906,6 +938,9 @@
             
             break;
         }
+        case SFIDeviceType_BuiltInSiren_60:
+            currentHeight += 195;
+            break;
         default:
             for (SFIDeviceIndex *indexValue in deviceIndexes) {
                 switch (indexValue.valueType) {
@@ -1094,7 +1129,7 @@
 }
 
 - (void)tableViewCellValueDidChange:(SFIAddSceneTableViewCell*)cell CellInfo:(NSDictionary*)cellInfo Index:(int)index Value:(id)value{
-    
+    NSLog(@"scene entry list before: %@\n - cellinfo: %@", sceneEntryList, cellInfo);
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     if (!indexPath) {
         return;
@@ -1129,7 +1164,7 @@
     }
     ///
     
-    
+    NSLog(@"scene entry list after: %@", sceneEntryList);
     
     //need to change value in main sceneInfo
     NSMutableArray *existingValues  = [[self getExistingValues:[[cellInfo valueForKey:@"DeviceID"] integerValue]] mutableCopy];
@@ -1202,10 +1237,20 @@
 }
 #pragma mark
 - (void)gotResponseFor1064:(id)sender {
+    NSLog(@"gotResponseFor1064");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
-    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    NSDictionary * mainDict;
+    if(local){
+        mainDict = [data valueForKey:@"data"];
+    }else{
+        mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    }
+    
     
     NSLog(@"%@",mainDict);
     if (randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {

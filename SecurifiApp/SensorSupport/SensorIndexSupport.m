@@ -2425,6 +2425,7 @@
                 break;
             }
         }
+            
         case SFIDeviceType_BinarySwitch_0: {
 
             break;
@@ -2498,6 +2499,7 @@
 
             break;
         }
+            
         case SFIDeviceType_51:
             break;
 
@@ -2541,6 +2543,7 @@
 
             break;
         }
+            
         case SFIDeviceType_ZWtoACIRExtender_54: {
             if (type == SFIDevicePropertyType_SENSOR_MULTILEVEL) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
@@ -2762,6 +2765,46 @@
 
             break;
         }
+            
+        case SFIDeviceType_BuiltInSiren_60: {
+
+            if (type == SFIDevicePropertyType_ALARM_STATE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"false";
+                s1.iconName =@"42_alarm_no";
+                s1.notificationText = @" is Silent.";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"true";
+                s2.iconName = @"42_alarm_yes";
+                s2.notificationText = @" is Ringing.";
+                return @[s1, s2];
+            }
+            
+            if (type == SFIDevicePropertyType_TONE_SELECTED) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_equals;
+                s1.matchData = @"1";
+                s1.iconName = @"42_alarm_yes";
+                s1.valueFormatter.notificationPrefix = @"tone 1";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchType = MatchType_equals;
+                s2.matchData = @"2";
+                s2.iconName = @"42_alarm_yes";
+                s2.valueFormatter.notificationPrefix = @"tone 2";
+                
+                IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
+                s3.matchType = MatchType_equals;
+                s3.matchData = @"3";
+                s3.iconName = @"42_alarm_yes";
+                s3.valueFormatter.notificationPrefix = @"tone 3";
+                return @[s1, s2, s3];
+            }
+            
+            break;
+
+        }
 
         case SFIDeviceType_WIFIClient:
             break;
@@ -2943,15 +2986,15 @@
 
             SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_COLOR_HUE];
             deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_COLOR_HUE];
-            deviceIndex1.indexID = 3;
+            deviceIndex2.indexID = 3;
 
             SFIDeviceIndex *deviceIndex3 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SATURATION];
             deviceIndex3.indexValues = [self resolve:device index:SFIDevicePropertyType_SATURATION];
-            deviceIndex1.indexID = 4;
+            deviceIndex3.indexID = 4;
 
             SFIDeviceIndex *deviceIndex4 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
             deviceIndex4.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_MULTILEVEL];
-            deviceIndex1.indexID = 5;
+            deviceIndex4.indexID = 5;
 
             return @[deviceIndex1, deviceIndex2, deviceIndex3, deviceIndex4];
         }
@@ -2960,6 +3003,19 @@
             deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY];
             deviceIndex1.indexID = 1;
             return @[deviceIndex1];
+        }
+            
+        case SFIDeviceType_BuiltInSiren_60: {
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_ALARM_STATE];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_ALARM_STATE];
+            deviceIndex1.indexID = 1;
+           
+            
+            SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_TONE_SELECTED];
+            deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_TONE_SELECTED];
+            deviceIndex2.indexID = 2;
+
+             return @[deviceIndex1, deviceIndex2];
         }
 
         default: {
