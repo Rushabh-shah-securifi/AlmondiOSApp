@@ -95,7 +95,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         // the table's initial set up is done even prior to calling viewDidLoad
         [self checkRouterViewState:RouterViewReloadPolicy_never];
     }
-
+    
     return self;
 }
 
@@ -106,62 +106,62 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     self.enableNetworkingControl = configurator.enableLocalNetworking;
     self.enableNewWifiClientsControl = configurator.enableWifiClients;
     self.enableAlmondVersionRemoteUpdate = configurator.enableAlmondVersionRemoteUpdate;
-
+    
     [super viewDidLoad];
-
+    
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-
+    
     [self addRefreshControl];
     [self initializeNotifications];
-
+    
     [self initializeRouterSummaryAndSettings];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    
     self.disposed = NO;
     [self initializeAlmondData:RouterViewReloadPolicy_on_state_change];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-
+    
     if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
         self.disposed = YES;
-
+        
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
-
+        
         [self.hudTimer invalidate];
     }
 }
 
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-
+    
     [center addObserver:self selector:@selector(onNetworkChange:) name:NETWORK_DOWN_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onNetworkChange:) name:NETWORK_UP_NOTIFIER object:nil];
-
+    
     [center addObserver:self selector:@selector(onNetworkChange:) name:kSFIReachabilityChangedNotification object:nil];
     [center addObserver:self selector:@selector(onConnectionModeDidChange:) name:kSFIDidChangeAlmondConnectionMode object:nil];
-
+    
     [center addObserver:self selector:@selector(onCurrentAlmondChanged:) name:kSFIDidChangeCurrentAlmond object:nil];
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidUpdateAlmondList object:nil];
-
+    
     [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:kSFIDidReceiveGenericAlmondRouterResponse object:nil];
-
+    
     [center addObserver:self selector:@selector(onWiFiClientsListResponseCallback:) name:NOTIFICATION_WIFI_CLIENTS_LIST_RESPONSE object:nil];
 }
 
 - (void)initializeRouterSummaryAndSettings {
     self.isRebooting = NO;
     self.enableDrawer = YES;
-
+    
     // init state
     self.routerSummary = nil;
-
+    
     self.currentExpandedSection = nil;
     self.currentExpandedCount = 0;
     self.allowCellExpandControl = YES;
@@ -170,9 +170,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 - (void)initializeAlmondData:(enum RouterViewReloadPolicy)refreshPolicy {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
-
+    
     self.currentAlmond = plus;
-
+    
     if (plus == nil) {
         [self markAlmondMac:NO_ALMOND];
         [self markTitle:NSLocalizedString(@"router.nav-title.Get Started", @"Get Started")];
@@ -181,22 +181,22 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         [self markAlmondMac:plus.almondplusMAC];
         [self markTitle:plus.almondplusName];
     }
-
+    
     if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud) {
         if (!self.shownHudOnce) {
             self.shownHudOnce = YES;
             [self showHudWithTimeout];
         }
     }
-
+    
     // Reset New Version checking state and view
     self.newAlmondFirmwareVersionAvailable = NO;
     self.almondSupportsSendLogs = AlmondSupportsSendLogs_unknown;
     self.tableView.tableHeaderView = nil;
     self.sendLogsEditCellMode = SFIRouterTableViewActionsMode_unknown;
-
+    
     [self checkRouterViewState:refreshPolicy];
-
+    
     // refresh data
     [self sendRouterSummaryRequest];
 }
@@ -234,10 +234,10 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     else {
         state = RouterViewState_cloud_connected;
     }
-
+    
     RouterViewState oldState = self.routerViewState;
     self.routerViewState = state;
-
+    
     switch (reloadTablePolicy) {
         case RouterViewReloadPolicy_always:
             [self.tableView reloadData];
@@ -271,18 +271,18 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (self.routerViewState == RouterViewState_no_almond) {
         return;
     }
-
+    
     if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud) {
         [self showLoadingRouterDataHUD];
     }
-
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSString *mac = self.almondMac;
-
+    
     if (!mac) {
         NSLog(@"Router: sendRouterDetailsRequest, mac is null");
     }
-
+    
     [toolkit asyncAlmondStatusAndSettingsRequest:mac request:requestType];
 }
 
@@ -290,7 +290,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (self.routerViewState == RouterViewState_no_almond) {
         return;
     }
-
+    
     [[SecurifiToolkit sharedInstance] asyncUpdateAlmondFirmware:self.almondMac firmwareVersion:self.latestAlmondVersionAvailable];
 }
 
@@ -298,7 +298,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (self.routerViewState == RouterViewState_no_almond) {
         return;
     }
-
+    
     [[SecurifiToolkit sharedInstance] asyncRebootAlmond:self.almondMac];
 }
 
@@ -306,7 +306,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (self.routerViewState == RouterViewState_no_almond) {
         return;
     }
-
+    
     [[SecurifiToolkit sharedInstance] asyncSendAlmondLogs:self.almondMac problemDescription:description];
 }
 
@@ -322,7 +322,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 - (void)onHudTimeout:(id)sender {
     [self.hudTimer invalidate];
     self.hudTimer = nil;
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
     });
@@ -370,7 +370,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
 - (void)onEditDevicesAndUsersCard:(id)sender {
     if (self.enableNewWifiClientsControl) {
-//        [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
+        //        [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
         if (wifiClientsArray.count==0) {
             return;
         }
@@ -384,7 +384,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         
         viewController.connectedDevices = [[wifiClientsArray sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
         [self.navigationController pushViewController:viewController animated:YES];
-
+        
     }
     else {
         [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_connected_device];
@@ -418,11 +418,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (self.routerViewState == RouterViewState_no_almond) {
         return;
     }
-
+    
     // reset table view state when Refresh is called (and when current Almond is changed)
     self.sendLogsEditCellMode = SFIRouterTableViewActionsMode_unknown;
     [self sendRouterSummaryRequest];
-
+    
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
         [self.refreshControl endRefreshing];
@@ -436,7 +436,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (mode == SFIAlmondConnectionMode_local) {
         return 2;
     }
-
+    
     switch (self.routerViewState) {
         case RouterViewState_no_almond:
             return 1;
@@ -454,11 +454,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (self.routerViewState != RouterViewState_cloud_connected) {
         return 1;
     }
-
+    
     if (![self isSectionExpanded:section]) {
         return 1;
     }
-
+    
     switch (section) {
         case DEF_NETWORKING_SECTION:
             return self.enableNetworkingControl ? 1 : 0;
@@ -481,17 +481,17 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (self.routerViewState != RouterViewState_cloud_connected) {
         return 400;
     }
-
+    
     switch (indexPath.section) {
         case DEF_NETWORKING_SECTION:
             return self.enableNetworkingControl ? 120 : 0;
-
+            
         case DEF_WIRELESS_SETTINGS_SECTION:
             return 120;
-
+            
         case DEF_DEVICES_AND_USERS_SECTION:
             return 85;
-
+            
         case DEF_ROUTER_REBOOT_SECTION:
             if (indexPath.row > 0) {
                 return 95;
@@ -509,32 +509,32 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (self.routerViewState != RouterViewState_cloud_connected) {
         return 400;
     }
-
+    
     switch (indexPath.section) {
         case DEF_NETWORKING_SECTION:
             return self.enableNetworkingControl ? 120 : 0;
-
+            
         case DEF_ROUTER_VERSION_SECTION:
             if (indexPath.row > 0) {
                 return 95;
             }
-
+            
         case DEF_ROUTER_REBOOT_SECTION:
             if (indexPath.row > 0) {
                 return 95;
             }
-
+            
         case DEF_ROUTER_SEND_LOGS_SECTION:
             if (indexPath.row > 0) {
                 return 180;
             }
-
+            
         default: {
             SFICardTableViewCell *cell = (SFICardTableViewCell *) [self tableView:tableView cellForRowAtIndexPath:indexPath];
             return [cell computedLayoutHeight];
         }
     }
-
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -562,13 +562,13 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                     else {
                         return [self createEmptyCell:tableView];
                     }
-
+                    
                 case DEF_WIRELESS_SETTINGS_SECTION:
                     return [self createWirelessSummaryCell:tableView];
-
+                    
                 case DEF_DEVICES_AND_USERS_SECTION:
                     return [self createDevicesAndUsersSummaryCell:tableView];
-
+                    
                 case DEF_ROUTER_VERSION_SECTION:
                     switch (indexPath.row) {
                         case 0:
@@ -576,7 +576,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                         default:
                             return [self createSoftwareVersionEditCell:tableView];
                     }
-
+                    
                 case DEF_ROUTER_REBOOT_SECTION:
                     switch (indexPath.row) {
                         case 0:
@@ -584,7 +584,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                         default:
                             return [self createAlmondRebootEditCell:tableView];
                     }
-
+                    
                 case DEF_ROUTER_SEND_LOGS_SECTION:
                     switch (indexPath.row) {
                         case 0:
@@ -592,7 +592,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                         default:
                             return [self createAlmondSendLogsEditCell:tableView];
                     }
-
+                    
                 default:
                     return [self createAlmondRebootSummaryCell:tableView];
             }
@@ -610,42 +610,42 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 
 - (UITableViewCell *)createNoAlmondCell:(UITableView *)tableView {
     NSString *const cell_id = @"NoAlmondCell";
-
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+        
         MessageView *view = [MessageView linkRouterMessage];
         view.frame = CGRectMake(0, 0, self.tableView.frame.size.width, 400);
         view.delegate = self;
-
+        
         [cell addSubview:view];
     }
-
+    
     return cell;
 }
 
 - (UITableViewCell *)createAlmondOfflineCell:(UITableView *)tableView {
     static NSString *cell_id = @"NoAlmondConnect";
-
+    
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
-
+    
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+        
         CGFloat width = self.tableView.frame.size.width;
-
+        
         UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:CGRectMake(width / 2 - 50, 150, 100, 100)];
         imgRouter.userInteractionEnabled = NO;
         imgRouter.image = [UIImage imageNamed:@"offline_150x150.png"];
         imgRouter.contentMode = UIViewContentModeScaleAspectFit;
         [cell addSubview:imgRouter];
-
+        
         CGRect frame = CGRectMake(0, 280, width, 100);
         frame = CGRectInset(frame, 20, 0);
-
+        
         UILabel *label = [[UILabel alloc] initWithFrame:frame];
         label.numberOfLines = 0;
         label.textAlignment = NSTextAlignmentCenter;
@@ -654,7 +654,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         label.textColor = [UIColor grayColor];
         [cell addSubview:label];
     }
-
+    
     return cell;
 }
 
@@ -663,70 +663,70 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (cell == nil) {
         cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
-
+    
     [cell markReuse];
-
+    
     cell.cardView.rightOffset = SFICardView_right_offset_inset;
     cell.cardView.backgroundColor = cardColor;
     cell.title = cellTitle;
-
+    
     cell.summaries = @[cellSummary];
-
+    
     return cell;
 }
 
 - (UITableViewCell *)createNetworkSummaryCell:(UITableView *)tableView {
     NSString *const cell_id = @"network_summary";
-
+    
     SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
-
+    
     [cell markReuse];
-
+    
     cell.cardView.rightOffset = SFICardView_right_offset_inset;
     cell.cardView.backgroundColor = [UIColor securifiRouterTileGreenColor];
     cell.title = NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link");
-
-//    SFIRouterSummary *summary = self.routerSummary;
-
-//    if (summary) {
-//        host = summary.url;
-//        if (!host) {
-//            host = @"";
-//        }
-//
-//        login = summary.login;
-//        if (!login) {
-//            login = @"";
-//        }
-//    }
-//    else {
-//    }
-
+    
+    //    SFIRouterSummary *summary = self.routerSummary;
+    
+    //    if (summary) {
+    //        host = summary.url;
+    //        if (!host) {
+    //            host = @"";
+    //        }
+    //
+    //        login = summary.login;
+    //        if (!login) {
+    //            login = @"";
+    //        }
+    //    }
+    //    else {
+    //    }
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
+    
     NSString *almondMac = self.almondMac;
     SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:almondMac];
-
+    
     NSString *host = settings.host ? settings.host : @"";
     NSString *login = settings.login ? settings.login : @"";
-
+    
     cell.summaries = @[
-            [NSString stringWithFormat:NSLocalizedString(@"router.summary.IP Address : %@", @"IP Address"), host],
-            [NSString stringWithFormat:NSLocalizedString(@"router.summary.Admin Login : %@", @"Admin Login"), login],
-    ];
-
+                       [NSString stringWithFormat:NSLocalizedString(@"router.summary.IP Address : %@", @"IP Address"), host],
+                       [NSString stringWithFormat:NSLocalizedString(@"router.summary.Admin Login : %@", @"Admin Login"), login],
+                       ];
+    
     cell.editTarget = self;
     cell.editSelector = @selector(onEditNetworkSettings:);
-
+    
     return cell;
 }
 
 - (UITableViewCell *)createWirelessSummaryCell:(UITableView *)tableView {
     SFIRouterSummary *const routerSummary = self.routerSummary;
-
+    
     if (!routerSummary) {
         return [self createEmptyWirelessSummaryCell:tableView
                                              cellId:@"wireless_summary_no"
@@ -734,28 +734,28 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                                         cellSummary:NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")
                                           cardColor:[UIColor securifiRouterTileSlateColor]];
     }
-
+    
     NSString *cell_id = @"wireless_summary";
-
+    
     SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
-
+    
     [cell markReuse];
-
+    
     cell.cardView.rightOffset = SFICardView_right_offset_inset;
     cell.cardView.backgroundColor = [UIColor securifiRouterTileSlateColor];
     cell.title = NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings");
-
+    
     NSMutableArray *summary = [NSMutableArray array];
     for (SFIWirelessSummary *sum in routerSummary.wirelessSummaries) {
         NSString *enabled = sum.enabled ? NSLocalizedString(@"router.wireless-status.Enabled", @"enabled") : NSLocalizedString(@"router.wireless-status.Disabled", @"disabled");
         [summary addObject:[NSString stringWithFormat:@"%@ is %@", sum.ssid, enabled]];
     }
-
+    
     cell.summaries = summary;
-
+    
     int totalCount = (int) routerSummary.wirelessSummaries.count;
     if (totalCount > 0) {
         BOOL editing = [self isSectionExpanded:DEF_WIRELESS_SETTINGS_SECTION];
@@ -763,7 +763,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         cell.editTarget = self;
         cell.editSelector = @selector(onEditWirelessSettingsCard:);
     }
-
+    
     return cell;
 }
 
@@ -775,47 +775,47 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 - (UITableViewCell *)createDevicesAndUsersSummaryCell:(UITableView *)tableView {
     SFIRouterSummary *routerSummary = self.routerSummary;
     //commented to allow to open clients list even if there is no connected or blocked clients
-//    if (!routerSummary) {
-//        return [self createEmptyWirelessSummaryCell:tableView
-//                                             cellId:@"device_summary_no"
-//                                          cellTitle:NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users")
-//                                        cellSummary:NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")
-//                                          cardColor:[UIColor securifiRouterTileBlueColor]];
-//    }
-
+    //    if (!routerSummary) {
+    //        return [self createEmptyWirelessSummaryCell:tableView
+    //                                             cellId:@"device_summary_no"
+    //                                          cellTitle:NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users")
+    //                                        cellSummary:NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")
+    //                                          cardColor:[UIColor securifiRouterTileBlueColor]];
+    //    }
+    
     NSString *const cell_id = @"device_summary";
-
+    
     SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
-
+    
     [cell markReuse];
-
+    
     cell.cardView.backgroundColor = [UIColor securifiRouterTileBlueColor];
     cell.title = NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users");
-
+    
     cell.summaries = @[
-            [NSString stringWithFormat:NSLocalizedString(@"router.devices-summary.%d Active, %d Inactive", @"%d ACTIVE, %d INACTIVE"),
-                                       activeClientsCount,
-                                       inActiveClientsCount],
-    ];
-//    cell.summaries = @[
-//                       [NSString stringWithFormat:NSLocalizedString(@"router.devices-summary.%d Active, %d Inactive", @"%d ACTIVE, %d INACTIVE"),
-//                        routerSummary.connectedDeviceCount,
-//                        routerSummary.blockedMACCount],
-//                       ];
-
+                       [NSString stringWithFormat:NSLocalizedString(@"router.devices-summary.%d Active, %d Inactive", @"%d ACTIVE, %d INACTIVE"),
+                        activeClientsCount,
+                        inActiveClientsCount],
+                       ];
+    //    cell.summaries = @[
+    //                       [NSString stringWithFormat:NSLocalizedString(@"router.devices-summary.%d Active, %d Inactive", @"%d ACTIVE, %d INACTIVE"),
+    //                        routerSummary.connectedDeviceCount,
+    //                        routerSummary.blockedMACCount],
+    //                       ];
+    
     cell.editTarget = self;
     cell.editSelector = @selector(onEditDevicesAndUsersCard:);
     cell.expanded = NO;
-
+    
     return cell;
 }
 
 - (UITableViewCell *)createSoftwareVersionCell:(UITableView *)tableView {
     NSString *version = self.routerSummary.firmwareVersion;
-
+    
     if (!version) {
         return [self createEmptyWirelessSummaryCell:tableView
                                              cellId:@"software_summary_no"
@@ -823,7 +823,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                                         cellSummary:NSLocalizedString(@"router.software-version.Not available", @"Version information is not available.")
                                           cardColor:[UIColor securifiRouterTileYellowColor]];
     }
-
+    
     NSString *const cell_id = @"software_summary";
     SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
@@ -831,12 +831,12 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     }
     [cell markReuse];
     cell.cardView.backgroundColor = [UIColor securifiRouterTileYellowColor];
-
+    
     const BOOL newVersionAvailable = self.newAlmondFirmwareVersionAvailable;
     cell.title = newVersionAvailable ? NSLocalizedString(@"router.software-version-new.title.Software Version *", @"Software Version *") : NSLocalizedString(@"router.software-version-new.title.Software Version", @"Software Version");
-
+    
     NSString *currentVersion_label = NSLocalizedString(@"router.software-version.Current version", @"Current version");
-
+    
     if (newVersionAvailable) {
         NSString *updateAvailable_label = NSLocalizedString(@"router.software-version.Update Available", @"Update Available");
         cell.summaries = @[updateAvailable_label, currentVersion_label, version];
@@ -844,7 +844,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     else {
         cell.summaries = @[currentVersion_label, version];
     }
-
+    
     if (newVersionAvailable && self.enableAlmondVersionRemoteUpdate) {
         cell.editTarget = self;
         cell.editSelector = @selector(onEditRouterSoftwareCard:);
@@ -853,22 +853,22 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         cell.editTarget = nil;
         cell.editSelector = nil;
     }
-
+    
     return cell;
 }
 
 - (UITableViewCell *)createSoftwareVersionEditCell:(UITableView *)tableView {
     NSString *const cell_id = @"software_edit";
-
+    
     SFIRouterVersionTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[SFIRouterVersionTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
         cell.delegate = self;
     }
     [cell markReuse];
-
+    
     cell.cardView.backgroundColor = [UIColor securifiRouterTileRedColor];
-
+    
     return cell;
 }
 
@@ -880,104 +880,104 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                                         cellSummary:NSLocalizedString(@"router.Router status is not available.", @"Router status is not available.")
                                           cardColor:[UIColor securifiRouterTileRedColor]];
     }
-
+    
     NSString *const cell_id = @"reboot_summary";
-
+    
     SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
-
+    
     [cell markReuse];
-
+    
     cell.title = NSLocalizedString(@"router.card-title.Router Reboot", @"Router Reboot");
-
+    
     NSArray *summary;
     if (self.isRebooting) {
         summary = @[
-                NSLocalizedString(@"router.reboot-msg.Router is rebooting. It will take at least", @"Router is rebooting. It will take at least"),
-                NSLocalizedString(@"router.reboot-msg.2 minutes for the router to boot.", @"2 minutes for the router to boot."),
-                NSLocalizedString(@"router.reboot-msg.Please refresh after sometime.", @"Please refresh after sometime.")
-        ];
+                    NSLocalizedString(@"router.reboot-msg.Router is rebooting. It will take at least", @"Router is rebooting. It will take at least"),
+                    NSLocalizedString(@"router.reboot-msg.2 minutes for the router to boot.", @"2 minutes for the router to boot."),
+                    NSLocalizedString(@"router.reboot-msg.Please refresh after sometime.", @"Please refresh after sometime.")
+                    ];
     }
     else {
         summary = @[[NSString stringWithFormat:NSLocalizedString(@"router.Last reboot %@ ago", @"Last reboot %@ ago"), self.routerSummary.routerUptime]];
     }
     cell.summaries = summary;
-
+    
     cell.expanded = [self isSectionExpanded:DEF_ROUTER_REBOOT_SECTION];
     cell.editTarget = self;
     cell.editSelector = @selector(onEditRouterRebootCard:);
-
+    
     SFICardView *card = cell.cardView;
     card.backgroundColor = [UIColor securifiRouterTileRedColor];
-
+    
     return cell;
 }
 
 - (UITableViewCell *)createAlmondRebootEditCell:(UITableView *)tableView {
     NSString *const cell_id = @"reboot_edit";
-
+    
     SFIRouterRebootTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[SFIRouterRebootTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
-
+    
     cell.delegate = self;
     [cell markReuse];
-
+    
     SFICardView *card = cell.cardView;
     card.backgroundColor = [UIColor securifiRouterTileRedColor];
-
+    
     return cell;
 }
 
 - (UITableViewCell *)createAlmondSendLogsSummaryCell:(UITableView *)tableView {
     NSString *const cell_id = @"sendlogs_summary";
-
+    
     SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[SFICardViewSummaryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
     [cell markReuse];
-
+    
     cell.cardView.backgroundColor = [[SFIColors yellowColor] color];
-
+    
     cell.title = NSLocalizedString(@"router.card-title.Send Logs", @"Report a Problem");
     if (self.almondSupportsSendLogs == AlmondSupportsSendLogs_no) {
         cell.title = [NSString stringWithFormat:@"%@ *", cell.title];
     }
-
+    
     NSArray *summary = @[[NSString stringWithFormat:NSLocalizedString(@"router.Sends %@'s logs to our server", @"Sends %@'s logs to our server"), self.currentAlmond.almondplusName]];
     cell.summaries = summary;
-
+    
     cell.expanded = [self isSectionExpanded:DEF_ROUTER_SEND_LOGS_SECTION];
     cell.editTarget = self;
     cell.editSelector = @selector(onEditSendLogsCard:);
-
+    
     return cell;
 }
 
 - (UITableViewCell *)createAlmondSendLogsEditCell:(UITableView *)tableView {
     NSString *const cell_id = @"sendlogs_edit";
-
+    
     SFIRouterSendLogsTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
     if (cell == nil) {
         cell = [[SFIRouterSendLogsTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
         cell.delegate = self;
     }
     [cell markReuse];
-
+    
     if (self.almondSupportsSendLogs == AlmondSupportsSendLogs_no) {
         cell.mode = SFIRouterTableViewActionsMode_firmwareNotSupported;
     }
     else {
         cell.mode = self.sendLogsEditCellMode;
     }
-
+    
     SFICardView *card = cell.cardView;
     card.backgroundColor = [[SFIColors yellowColor] color];
-
+    
     return cell;
 }
 
@@ -986,9 +986,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         if (![self isSectionExpanded:DEF_ROUTER_SEND_LOGS_SECTION]) {
             return;
         }
-
+        
         self.sendLogsEditCellMode = mode;
-
+        
         NSIndexPath *editRow = [NSIndexPath indexPathForItem:1 inSection:DEF_ROUTER_SEND_LOGS_SECTION];
         [self.tableView reloadRowsAtIndexPaths:@[editRow] withRowAnimation:UITableViewRowAnimationFade];
     });
@@ -1013,7 +1013,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             }
             // pass through
         }
-
+            
         case RouterViewState_no_almond:
         case RouterViewState_almond_unavailable:
         case RouterViewState_cloud_offline:
@@ -1032,7 +1032,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             }
             // pass through
         }
-
+            
         case RouterViewState_no_almond:
         case RouterViewState_almond_unavailable:
         case RouterViewState_cloud_offline:
@@ -1051,24 +1051,24 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             // do not update while a cell is being edited
             return;
         }
-
+        
         NSInteger currentExpandedSection = -1;
-
+        
         // remove rows if needed
         NSNumber *section_number = self.currentExpandedSection;
         if (section_number) {
             currentExpandedSection = section_number.integerValue;
-
+            
             self.currentExpandedSection = nil;
             self.currentExpandedCount = 0;
-
+            
             [tableView beginUpdates];
             [self tryReloadSection:(NSUInteger) currentExpandedSection];
             [tableView endUpdates];
         }
-
+        
         [tableView beginUpdates];
-
+        
         // add rows if needed
         if (currentExpandedSection != section) {
             if (section == DEF_ROUTER_VERSION_SECTION) {
@@ -1087,9 +1087,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                 [self tryReloadSection:DEF_ROUTER_SEND_LOGS_SECTION];
             }
         }
-
+        
         [tableView endUpdates];
-
+        
         // reload the table:
         // this is a work around for a rendering/animation problem that will cause the section headers
         // to be left behind, causing too much space around the tile below the one being closed.
@@ -1105,29 +1105,38 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (data == nil) {
         return;
     }
-    NSDictionary *mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-
+    NSLog(@"data: %@", data);
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    NSDictionary *mainDict;
+    if(local){
+        mainDict = [data valueForKey:@"data"];
+    }else{
+        mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    }
     NSLog(@"onWiFiClientsListResponseCallback: %@", mainDict);
-
-
+    
     self.isAlmondUnavailable = NO;
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
         }
-
+        
         if (self.disposed) {
             return;
         }
-
+        
         //todo there is a race condition that has to be handled: current Almond selection may have been changed before this callback is received and processed.
         activeClientsCount = 0;
         inActiveClientsCount = 0;
         if (self.navigationController.topViewController == self) {
             if ([[mainDict valueForKey:@"Clients"] isKindOfClass:[NSArray class]]) {
                 NSArray *dDictArray = [mainDict valueForKey:@"Clients"];
-               wifiClientsArray = [NSMutableArray new];
+                wifiClientsArray = [NSMutableArray new];
                 for (NSDictionary *dict in dDictArray) {
                     SFIConnectedDevice *device = [SFIConnectedDevice new];
                     device.deviceID = [dict valueForKey:@"ID"];
@@ -1148,10 +1157,10 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                     }
                     [wifiClientsArray addObject:device];
                 }
-
+                
             }
         }
-
+        
         [self.HUD hide:YES];
         [self.tableView reloadData];
         [self.refreshControl endRefreshing];
@@ -1165,7 +1174,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (data == nil) {
         return;
     }
-
+    
     SFIGenericRouterCommand *genericRouterCommand = (SFIGenericRouterCommand *) [data valueForKey:@"data"];
     [self processRouterCommandResponse:genericRouterCommand];
 }
@@ -1175,15 +1184,15 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         if (!self) {
             return;
         }
-
+        
         if (self.disposed) {
             return;
         }
-
+        
         if (![genericRouterCommand.almondMAC isEqualToString:self.almondMac]) {
             return;
         }
-
+        
         if (!genericRouterCommand.commandSuccess) {
             //todo push this string comparison logic into the generic router command
             self.isAlmondUnavailable = [genericRouterCommand.responseMessage.lowercaseString hasSuffix:NSLocalizedString(@"router.offline-msg. is offline", @" is offline")]; // almond is offline, homescreen is offline
@@ -1192,120 +1201,120 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             [self.refreshControl endRefreshing];
             return;
         }
-
+        
         switch (genericRouterCommand.commandType) {
             case SFIGenericRouterCommandType_CONNECTED_DEVICES: {
                 if (self.navigationController.topViewController == self) {
                     SFIDevicesList *ls = genericRouterCommand.command;
-
+                    
                     SFIRouterClientsTableViewController *ctrl = [SFIRouterClientsTableViewController new];
                     ctrl.title = self.navigationItem.title;
                     ctrl.connectedClients = ls.deviceList;
                     ctrl.almondMac = self.almondMac;
-
+                    
                     UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
                     [self presentViewController:nctrl animated:YES completion:nil];
                 }
-
+                
                 [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
                 break;
             }
-
+                
             case SFIGenericRouterCommandType_BLOCKED_MACS: {
                 // not handled
                 break;
             }
-
+                
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
                 SFIDevicesList *ls = genericRouterCommand.command;
                 NSArray *settings = ls.deviceList;
-
+                
                 if (self.currentConnectionMode == SFIAlmondConnectionMode_local) {
                     // protect against race condition: mode changed before this callback was received
                     // do not show settings UI when the connection mode is local;
                     break;
                 }
-
+                
                 if (self.routerSummary) {
                     // keep the summary information up to date as settings are changed in the settings controller
                     [self.routerSummary updateWirelessSummaryWithSettings:settings];
                 }
-
+                
                 if (self.navigationController.topViewController == self) {
                     SFIRouterSettingsTableViewController *ctrl = [SFIRouterSettingsTableViewController new];
                     ctrl.title = self.navigationItem.title;
                     ctrl.wirelessSettings = settings;
                     ctrl.almondMac = self.almondMac;
                     ctrl.enableRouterWirelessControl = self.enableRouterWirelessControl;
-
+                    
                     UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
                     [self presentViewController:nctrl animated:YES completion:nil];
                 }
-
+                
                 // even when in background, ensure summary view is updated to latest & greatest info
                 [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
-
+                
                 break;
             }
-
+                
             case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
                 SFIRouterSummary *summary = (SFIRouterSummary *) genericRouterCommand.command;
-
+                
                 self.routerSummary = summary;
-
+                
                 NSString *currentVersion = summary.firmwareVersion;
                 [self tryCheckAlmondVersion:currentVersion];
                 [self tryCheckSendLogsSupport:currentVersion];
-
+                
                 [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
-
+                
                 // after receiving summary, wait until detailed settings have been returned
                 // before updating the table.
                 break;
             }
-
+                
             case SFIGenericRouterCommandType_SEND_LOGS_RESPONSE: {
                 enum SFIRouterTableViewActionsMode mode = genericRouterCommand.commandSuccess ? SFIRouterTableViewActionsMode_commandSuccess : SFIRouterTableViewActionsMode_commandError;
                 [self tryReloadSendLogsEditTile:mode];
                 break;
             };
-
+                
             case SFIGenericRouterCommandType_UPDATE_FIRMWARE_RESPONSE: {
                 if (!genericRouterCommand.commandSuccess) {
                     break;
                 }
-
+                
                 unsigned int percentage = genericRouterCommand.completionPercentage;
-
+                
                 if (percentage > 0) {
                     NSString *msg = NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.");
                     msg = [msg stringByAppendingFormat:@" (%i%%)", percentage];
                     [self showToast:msg];
                 }
-
+                
                 break;
             };
-
+                
             case SFIGenericRouterCommandType_REBOOT: {
                 BOOL wasRebooting = self.isRebooting;
                 self.isRebooting = NO;
-
+                
                 // protect against the cloud sending the same response more than once
                 if (wasRebooting) {
                     [self sendRouterSummaryRequest];
-
+                    
                     //todo handle failure case
                     [self showHUD:NSLocalizedString(@"router.hud.Router is now online.", @"Router is now online.")];
                 }
-
+                
                 break;
             }
-
+                
             case SFIGenericRouterCommandType_BLOCKED_CONTENT:
             default:
                 break;
         }
-
+        
         [self.HUD hide:YES];
         [self.refreshControl endRefreshing];
     });
@@ -1315,11 +1324,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 - (void)tryReloadSection:(NSUInteger)section {
     UITableView *tableView = self.tableView;
     NSInteger numberOfSections = [tableView numberOfSections];
-
+    
     if (numberOfSections == 0) {
         return; // no op
     }
-
+    
     if (numberOfSections <= 1) {
         [tableView reloadData];
     }
@@ -1333,10 +1342,10 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         if (self.disposed) {
             return;
         }
-
+        
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         SFIAlmondPlus *plus = [toolkit currentAlmond];
-
+        
         if (plus == nil) {
             [self markAlmondMac:NO_ALMOND];
             self.navigationItem.title = NSLocalizedString(@"router.no-almonds.nav-title.Get Started", @"Get Started");
@@ -1346,7 +1355,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             self.navigationItem.title = plus.almondplusName;
             [self sendRouterSummaryRequest];
         }
-
+        
         [self.tableView reloadData];
     });
 }
@@ -1379,13 +1388,13 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         if (self.disposed) {
             return;
         }
-
+        
         [self showHUD:NSLocalizedString(@"router.hud.Router is rebooting.", @"Router is rebooting.")];
-
+        
         self.isRebooting = TRUE;
         [self sendRebootAlmondCommand];
         [self onExpandCloseSection:self.tableView section:DEF_ROUTER_REBOOT_SECTION];
-
+        
         [[Analytics sharedInstance] markRouterReboot];
     });
 }
@@ -1395,12 +1404,12 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         if (self.disposed) {
             return;
         }
-
+        
         [self showHUD:NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.")];
-
+        
         [self sendUpdateAlmondFirmwareCommand];
         [self onExpandCloseSection:self.tableView section:DEF_ROUTER_VERSION_SECTION];
-
+        
         [[Analytics sharedInstance] markRouterUpdateFirmware];
     });
 }
@@ -1410,12 +1419,12 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         if (self.disposed) {
             return;
         }
-
+        
         [self showHUD:NSLocalizedString(@"router.hud.Sending Logs.", @"Instructing router to send logs.")];
-
+        
         [self sendSendLogsCommand:problemDescription];
         [self onExpandCloseSection:self.tableView section:DEF_ROUTER_SEND_LOGS_SECTION];
-
+        
         [[Analytics sharedInstance] markSendRouterLogs];
     });
 }
@@ -1429,7 +1438,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 - (void)onEnableWirelessAccessForDevice:(NSString *)deviceMAC allow:(BOOL)isAllowed {
-
+    
 }
 
 #pragma mark - MessageViewDelegate methods
@@ -1455,9 +1464,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (!almond) {
         return;
     }
-
+    
     self.almondSupportsSendLogs = [almond supportsSendLogs:currentVersion] ? AlmondSupportsSendLogs_yes : AlmondSupportsSendLogs_no;
-//    [self tryReloadSection:DEF_ROUTER_SEND_LOGS_SECTION];
+    //    [self tryReloadSection:DEF_ROUTER_SEND_LOGS_SECTION];
 }
 
 - (void)tryCheckAlmondVersion:(NSString *)currentVersion {
@@ -1465,40 +1474,40 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (!almond) {
         return;
     }
-
+    
     AlmondVersionChecker *checker = [AlmondVersionChecker new];
     checker.delegate = self;
-
+    
     [checker asyncCheckLatestVersion:almond currentVersion:currentVersion];
 }
 
 - (void)versionCheckerDidQueryVersion:(SFIAlmondPlus *)checkedAlmond result:(enum AlmondVersionCheckerResult)result currentVersion:(NSString *)currentVersion latestVersion:(NSString *)latestAlmondVersion {
     BOOL newVersionAvailable = (result == AlmondVersionCheckerResult_currentOlderThanLatest);
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         SFIAlmondPlus *currentAlmond = self.currentAlmond;
         if (!currentAlmond || !checkedAlmond) {
             // bad data!
             return;
         }
-
+        
         if (![checkedAlmond isEqualAlmondPlus:currentAlmond]) {
             return;
         }
-
+        
         self.newAlmondFirmwareVersionAvailable = newVersionAvailable;
         self.latestAlmondVersionAvailable = latestAlmondVersion;
-
+        
         if (newVersionAvailable) {
             TableHeaderView *view = [TableHeaderView newAlmondVersionMessage];
             view.frame = CGRectMake(0, 0, CGRectGetWidth(self.tableView.frame), 100);
             view.backgroundColor = [UIColor whiteColor];
             view.delegate = self;
-
+            
             [UIView animateWithDuration:0.50 animations:^() {
                 self.tableView.tableHeaderView = view;
             }];
-
+            
             [self tryReloadSection:DEF_ROUTER_VERSION_SECTION];
         }
     });

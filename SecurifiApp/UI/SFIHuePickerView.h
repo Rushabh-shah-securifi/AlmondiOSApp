@@ -4,7 +4,7 @@
 //
 
 #import "ILHuePickerView.h"
-
+#import "SFIButtonSubProperties.h"
 
 @interface SFIHuePickerView : ILHuePickerView
 
@@ -20,5 +20,8 @@
 
 // Converts the current slider value to the scale used by the sensor
 - (float)convertToSensorValue;
+
+//need to change class name to just sfisubproperties
+@property(nonatomic)SFIButtonSubProperties* subProperties;
 
 @end

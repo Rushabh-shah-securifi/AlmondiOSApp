@@ -10,10 +10,12 @@
 #import "ScoreboardViewController.h"
 #import "MessageView.h"
 #import "SFIMessageViewController.h"
+#import "SavedRulesTableViewController.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
 #define TAB_BAR_SCENES @"Scenes"
+#define TAB_BAR_RULES @"Rules"
 
 typedef NS_ENUM(int, TabBarMode) {
     TabBarMode_cloud = 1,
@@ -27,6 +29,8 @@ typedef NS_ENUM(int, TabBarMode) {
 @property(nonatomic) UIViewController *sensorTab;
 @property(nonatomic) UIViewController *routerTab;
 @property(nonatomic) UIViewController *scenesTab;
+@property(nonatomic) UIViewController *rulesTab;
+
 @property(nonatomic) UIViewController *scoreboardTab;
 @property(nonatomic) BOOL isDismissed;
 @end
@@ -40,14 +44,14 @@ typedef NS_ENUM(int, TabBarMode) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    
     self.view.backgroundColor = [UIColor whiteColor];
-
+    
     // set up the tabs
     [self onTryChangeTabs:nil];
-
+    
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-
+    
     [center addObserver:self selector:@selector(onTryChangeTabs:) name:kSFIDidChangeAlmondConnectionMode object:nil];
     [center addObserver:self selector:@selector(onTryChangeTabs:) name:kSFIDidChangeCurrentAlmond object:nil];
     [center addObserver:self selector:@selector(onTryChangeTabs:) name:kSFIDidUpdateAlmondList object:nil];
@@ -55,7 +59,7 @@ typedef NS_ENUM(int, TabBarMode) {
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-
+    
     if (self.isBeingDismissed || self.isMovingFromParentViewController) {
         self.isDismissed = YES;
     }
@@ -70,13 +74,13 @@ typedef NS_ENUM(int, TabBarMode) {
         if (self.currentTabs == mode) {
             return;
         }
-
+        
         NSArray *list = [self pickTabList:mode];
         self.currentTabs = mode;
-
+        
         UIViewController *selected = self.selectedViewController;
         self.viewControllers = list;
-
+        
         if (selected && [list containsObject:selected]) {
             self.selectedViewController = selected;
         }
@@ -85,18 +89,18 @@ typedef NS_ENUM(int, TabBarMode) {
 
 - (enum TabBarMode)pickTabMode {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
+    
     NSArray *list = [toolkit almondList];
     if (list.count == 0) {
         list = [toolkit localLinkedAlmondList];
     }
-
+    
     if (list.count == 0) {
         return TabBarMode_noAlmond;
     }
-
+    
     SFIAlmondPlus *plus = toolkit.currentAlmond;
-
+    
     enum SFIAlmondConnectionMode mode = [toolkit connectionModeForAlmond:plus.almondplusMAC];
     switch (mode) {
         case SFIAlmondConnectionMode_cloud:
@@ -137,46 +141,49 @@ typedef NS_ENUM(int, TabBarMode) {
 - (NSArray *)cloudTabs {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SecurifiConfigurator *configurator = toolkit.configuration;
-
+    
     if (configurator.enableScenes) {
         return @[
-                self.sensorTab,
-                self.scenesTab,
-                self.routerTab,
-        ];
+                 self.sensorTab,
+                 self.scenesTab,
+                 self.routerTab,
+                 self.rulesTab,
+                 ];
     }
     else {
         return @[
-                self.sensorTab,
-                self.routerTab,
-        ];
+                 self.sensorTab,
+                 self.routerTab,
+                 self.rulesTab,
+                 ];
     }
 }
 
 // tabs to be show when an Almond is using local connection
 - (NSArray *)localTabs {
     return @[
-            self.sensorTab,
-//            self.scenesTab,
-            self.routerTab,
-    ];
+             self.sensorTab,
+             self.scenesTab,
+             self.routerTab,
+             self.rulesTab,
+             ];
 }
 
 // tabs to be show when no Almonds are affiliated with the account
 - (NSArray *)noAlmondsTab {
     return @[
-            self.messageTab
-    ];
+             self.messageTab
+             ];
 }
 
 - (UIViewController *)scoreboardTab {
     if (!_scoreboardTab) {
         ScoreboardViewController *ctrl = [ScoreboardViewController new];
         UIImage *icon = [UIImage imageNamed:@"878-binoculars"];
-
+        
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Debug" image:icon selectedImage:icon];
-
+        
         self.scoreboardTab = nav;
     }
     return _scoreboardTab;
@@ -187,23 +194,37 @@ typedef NS_ENUM(int, TabBarMode) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
         SFIScenesTableViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SFIScenesTableViewController"];
         UIImage *icon = [UIImage imageNamed:@"icon_scenes"];
-
+        
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_SCENES image:icon selectedImage:icon];
-
+        
         self.scenesTab = nav;
     }
     return _scenesTab;
+}
+
+- (UIViewController *)rulesTab {
+    if (!_rulesTab) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        SavedRulesTableViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SavedRulesTableViewController"];
+        UIImage *icon = [UIImage imageNamed:@"rule_tab_icon"];
+        
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
+        nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_RULES image:icon selectedImage:icon];
+        
+        self.rulesTab = nav;
+    }
+    return _rulesTab;
 }
 
 - (UIViewController *)routerTab {
     if (!_routerTab) {
         SFIRouterTableViewController *ctrl = [SFIRouterTableViewController new];
         UIImage *icon = [UIImage imageNamed:@"icon_router"];
-
+        
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_ROUTER image:icon selectedImage:icon];
-
+        
         self.routerTab = nav;
     }
     return _routerTab;
@@ -213,10 +234,10 @@ typedef NS_ENUM(int, TabBarMode) {
     if (!_sensorTab) {
         SFISensorsViewController *ctrl = [SFISensorsViewController new];
         UIImage *icon = [UIImage imageNamed:@"icon_sensor"];
-
+        
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_SENSORS image:icon selectedImage:icon];
-
+        
         self.sensorTab = nav;
     }
     return _sensorTab;
@@ -225,19 +246,20 @@ typedef NS_ENUM(int, TabBarMode) {
 - (UIViewController *)messageTab {
     if (!_messageTab) {
         SFIMessageViewController *ctrl = [SFIMessageViewController new];
-
+        
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:nil image:nil selectedImage:nil];
-
+        
         self.messageTab = nav;
     }
     return _messageTab;
 }
 
+
 #pragma mark - MessageViewDelegate methods
 
 - (void)messageViewDidPressButton:(MessageView *)msgView {
-
+    
 }
 
 @end

@@ -5,7 +5,7 @@
 //
 #import <Foundation/Foundation.h>
 #import "ASValueTrackingSlider.h"
-
+#import "SFIButtonSubProperties.h"
 
 // A slider that has a larger thumb area for tracking touch events and knows how to convert from a sensor's value range
 // to the slider's range. The sensor's value range is expressed through the property sensorMaxValue, and the slider
@@ -31,5 +31,8 @@
 
 // Returns a string indicating the current slider value
 - (NSString *)sliderFormattedValue;
+
+//stores sub-properties deviceid, index, value
+@property(nonatomic) SFIButtonSubProperties* subProperties;
 
 @end
