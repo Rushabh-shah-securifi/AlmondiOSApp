@@ -239,12 +239,11 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+
 - (IBAction)btnSaveTap:(id)sender {
     if ([txtProperty isFirstResponder]) {
         [txtProperty resignFirstResponder];
     }
-    
-    
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -427,7 +426,14 @@
     });
 }
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:plus.almondplusMAC];
+    if(local)
+        [[SecurifiToolkit sharedInstance] asyncSendToLocal:cloudCommand almondMac:plus.almondplusMAC];
+    else{
+        [[SecurifiToolkit sharedInstance]asyncSendToCloud:cloudCommand];
+    }
 }
 
 #pragma mark - Cloud command senders and handlers

@@ -147,14 +147,16 @@
 
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     static NSString *CellIdentifier = @"SFIWiFiClientListCell";
-    
+    NSLog(@"cellForRowAtIndexPath");
     SFIWiFiClientListCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    if (!cell)
+    if (!cell){
         cell = [[SFIWiFiClientListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
     cell.delegate = self;
+    SFIConnectedDevice *device = self.connectedDevices[indexPath.section];
+    NSLog(@"device name: %@", device.name);
     [cell createClientCell:self.connectedDevices[indexPath.section]];
     cell.expandable = YES;
     
@@ -583,23 +585,33 @@
 }
 
 - (void)onDynamicClientUpdate:(id)sender {
-    
+    NSLog(@"onDynamicClientUpdate");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
         return;
     }
-    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     
-    if (([[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientUpdated"] || [[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientJoined"] || [[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientLeft"]) && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
-        
+    BOOL local = [toolkit useLocalNetwork:plus.almondplusMAC];
+    NSDictionary *mainDict;
+    if(local){
+        mainDict = [data valueForKey:@"data"];
+    }else{
+        mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    }
+    NSLog(@"data: %@", data);
+    if (
+        ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientUpdated"]
+         || [[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientJoined"]
+         || [[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientLeft"])
+        && ([[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC] || local)
+        ) {
+        NSLog(@"main dict: %@", mainDict);
         NSDictionary *dict = [mainDict valueForKey:@"Clients"];
         int index = 0;
         for (SFIConnectedDevice * device in self.connectedDevices) {
-            
             if ([device.deviceID isEqualToString:[dict valueForKey:@"ID"]]) {
                 device.deviceID = [dict valueForKey:@"ID"];
                 device.name = [dict valueForKey:@"Name"];
@@ -621,17 +633,26 @@
             
         }
     }
+    
+    [tblDevices refreshData];
 }
 
 - (void)onDynamicClientAdded:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
-    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
-    if ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientAdded"] && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
+    
+    BOOL local = [toolkit useLocalNetwork:plus.almondplusMAC];
+    NSDictionary *mainDict;
+    if(local){
+        mainDict = [data valueForKey:@"data"];
+    }else{
+        mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    }
+    
+    if ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientAdded"] && ([[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC] || local)) {
         NSDictionary * dict = [mainDict valueForKey:@"Clients"];
         SFIConnectedDevice * device = [SFIConnectedDevice new];
         device.deviceID = [dict valueForKey:@"ID"];
@@ -651,6 +672,7 @@
             [tblDevices refreshData];
         });
     }
+    
 }
 
 - (void)onDynamicClientRemove:(id)sender {
@@ -661,17 +683,24 @@
         return;
     }
     
-    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     
-    if ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientRemoved"] && [[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
+    BOOL local = [toolkit useLocalNetwork:plus.almondplusMAC];
+    NSDictionary *mainDict;
+    if(local){
+        mainDict = [data valueForKey:@"data"];
+    }else{
+        mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    }
+    
+    NSLog(@"maindict :%@",mainDict);
+    if ([[mainDict valueForKey:@"CommandType"] isEqualToString:@"DynamicClientRemoved"] && ([[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC] || local)) {
         NSDictionary * removedClientDict = [mainDict valueForKey:@"Clients"];
         int index = 0;
         for (SFIConnectedDevice * device in self.connectedDevices) {
             if ([device.deviceID isEqualToString:[removedClientDict valueForKey:@"ID"]]) {
-                
+                NSLog(@" removing id %@",device.deviceID);
                 if (((SKSTableViewCell*)[tblDevices cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:index]]).expanded) {
                     [tblDevices collapseCurrentlyExpandedIndexPaths];
                 }
@@ -684,7 +713,7 @@
             index++;
         }
     }
-    
+    [tblDevices reloadData];
 }
 
 - (void)onGetClientsPreferences:(id)sender {

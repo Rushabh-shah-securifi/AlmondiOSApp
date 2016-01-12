@@ -23,6 +23,6 @@ typedef NS_ENUM(NSInteger, Properties) {
 
 @interface SFIWiFiClientsListViewController : UIViewController
 
-@property(nonatomic) NSMutableArray *connectedDevices;
+@property(nonatomic, strong) NSMutableArray *connectedDevices;
 
 @end
