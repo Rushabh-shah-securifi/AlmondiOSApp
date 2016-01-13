@@ -26,63 +26,14 @@
 #import "RulesNestThermostat.h"
 #import "V8HorizontalPickerView.h"
 #import "V8HorizontalPickerViewProtocol.h"
+#import "SFIPickerIndicatorView1.h"
 
 
-
-@interface AddTriggers()<UIPickerViewDelegate,UIPickerViewDataSource,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource>
+@interface AddTriggers()<V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource>
 @property (nonatomic,strong)NSMutableDictionary *buttonsSubDict;
 @property (nonatomic,strong)NSMutableDictionary *buttonsDict;
 
 
-@end
-@interface SFIPickerIndicatorView1 : UIView
-@property UIColor *color1;
-@property CAShapeLayer *shapeLayer1;
-@end
-
-@implementation SFIPickerIndicatorView1
-
-- (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.color1 = [UIColor colorFromHexString:@"02a8f3"];
-        self.backgroundColor = [UIColor colorFromHexString:@"02a8f3"];
-    }
-    
-    return self;
-}
-
-- (void)drawRect:(CGRect)rect {
-    [super drawRect:rect];
-    [self initializeControl:self.frame];
-}
-
-- (void)initializeControl:(CGRect)rect {
-    CGColorRef white_ref = self.color1.CGColor;
-    
-    if (self.shapeLayer1) {
-        [self.shapeLayer1 removeFromSuperlayer];
-    }
-    
-    CAShapeLayer *layer = [CAShapeLayer layer];
-    layer.path = [self linePath:rect];
-    layer.fillColor = white_ref;
-    layer.strokeColor = white_ref;
-    layer.lineWidth = self.frame.size.height;
-    
-    self.shapeLayer1 = layer;
-    [self.layer addSublayer:layer];
-}
-
-- (CGPathRef)linePath:(CGRect)rect {
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    [path moveToPoint:CGPointMake(0, 0)];
-    
-    CGPoint point = CGPointMake(rect.size.width, 0);
-    [path addLineToPoint:point];
-    
-    return path.CGPath;
-}
 @end
 
 @implementation AddTriggers
@@ -92,7 +43,6 @@ NSString *newPickerValue;
 SFIRulesSwitchButton *switchButtonClick;
 bool isPresentHozPicker;
 NSMutableArray * pickerValuesArray;
-UIView * actionSheet;
 NSMutableString *selectedDayString;
 NSArray *dayArray;
 
@@ -103,7 +53,6 @@ NSMutableArray *selectedDayTags;
     if(self == [super init]){
         NSLog(@"init method");
         isPresentHozPicker = NO;
-        self.buttonsDict = [NSMutableDictionary new];
         selectedDayString = [NSMutableString new];
         newPickerValue = [NSString new];
         self.selectedButtonsPropertiesArray = [NSMutableArray new];
@@ -286,8 +235,6 @@ NSMutableArray *selectedDayTags;
         NSLog(@"cell view children: %@", cellView.subviews);
     }
     
-    [self.buttonsDict setValue:[self.buttonsSubDict copy] forKey:[NSString stringWithFormat:@"%d",device.deviceID]];
-    //    NSLog(@"createRuleCell - self.buttonsdict: %@", self.buttonsDict);
 }
 
 
@@ -306,7 +253,6 @@ NSMutableArray *selectedDayTags;
         for (IndexValueSupport *iVal in deviceIndex.indexValues) {
             i++;
             indexValCounter++;
-            NSLog(@"deviceid: %d, ival.layouttype: %@", device.deviceID, iVal.layoutType);
             
             if ([iVal.layoutType isEqualToString:@"dimButton"]){
                 NSLog(@"painting dimmer button");
@@ -486,31 +432,35 @@ NSMutableArray *selectedDayTags;
         [picker removeFromSuperview];
     }
     switchButtonClick = (SFIRulesSwitchButton *)sender;
-    NSLog(@"buttons dict: %@", self.buttonsDict);
+    UIView *superView = [sender superview];
     
     if(switchButtonClick.device.deviceType == SFIDeviceType_MultiLevelSwitch_2){
-    [self devicetype2:switchButtonClick];
+        [self devicetype2:switchButtonClick];
+        return;
     }
-    else{
+    
     
     sfi_id buttonId = switchButtonClick.subProperties.deviceId;
     int buttonIndex = switchButtonClick.subProperties.index;
     NSString *buttonMatchdata = switchButtonClick.subProperties.matchData;
     
-    NSDictionary* mainDeviceDict = [self.buttonsDict valueForKey:@(buttonId).stringValue];
-    NSArray* buttonsArray = [mainDeviceDict valueForKey:@(buttonIndex).stringValue];
-    NSLog(@"buttonsArray: %@", buttonsArray);
-    
-    //toggle highlight
-    for (SFIRulesSwitchButton *button in buttonsArray)
-    {
-        if (button.tag == switchButtonClick.tag)
-        {
-            button.selected = !button.selected;
+
+    for(UIView *childView in [superView subviews]){
+        if([childView isKindOfClass:[SFIRulesDimmerButton class]]){
+            continue;
         }else{
-            button.selected = NO;
+            SFIRulesSwitchButton *switchButton = (SFIRulesSwitchButton*)childView;
+            if(buttonIndex == switchButton.subProperties.index){
+                if (switchButton.tag == switchButtonClick.tag)
+                {
+                    switchButton.selected = !switchButton.selected;
+                }else{
+                    switchButton.selected = NO;
+                }
+            }
         }
     }
+    
     //store seleted button in dictionary
     if (switchButtonClick.selected) {
         //remove previous
@@ -544,7 +494,7 @@ NSMutableArray *selectedDayTags;
     //     delegate triggersIndexDict dict
     [self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArray];
     
-    }//outer else
+    //outer else
 }
 
 
@@ -674,24 +624,23 @@ NSMutableArray *selectedDayTags;
         int buttonIndex = switchButtonClick.subProperties.index;
         NSString *buttonMatchdata = switchButtonClick.subProperties.matchData;
         NSLog(@"button index %d ",buttonIndex);
-        for(SFIRulesSwitchButton *button in [self.parentViewController.deviceIndexButtonScrollView subviews]){
-            
-                NSDictionary* mainDeviceDict = [self.buttonsDict valueForKey:@(buttonId).stringValue];
-                NSArray* buttonsArray = [mainDeviceDict valueForKey:@(buttonIndex).stringValue];
-                NSLog(@"buttonsArray: %@", buttonsArray);
-                
-                //toggle highlight
-                for (SFIRulesSwitchButton *button in buttonsArray)
-                {
-                    if (button.tag == switchButtonClick.tag)
+        UIView *superView = [sender superview];
+        for(UIView *childView in [superView subviews]){
+            if([childView isKindOfClass:[SFIRulesDimmerButton class]]){
+                continue;
+            }else{
+                SFIRulesSwitchButton *switchButton = (SFIRulesSwitchButton*)childView;
+                if(buttonIndex == switchButton.subProperties.index){
+                    if (switchButton.tag == switchButtonClick.tag)
                     {
-                        button.selected = !button.selected;
+                        switchButton.selected = !switchButton.selected;
                     }else{
-                        button.selected = NO;
+                        switchButton.selected = NO;
                     }
                 }
-            
+            }
         }
+
         if(switchButtonClick.selected){
             for (SFIRulesDimmerButton *button in [self.parentViewController.deviceIndexButtonScrollView subviews])
             {
@@ -724,9 +673,6 @@ NSMutableArray *selectedDayTags;
         }
    
     }
-    
-    
-    
     
     else if([sender isKindOfClass:[SFIRulesDimmerButton class]]){
          dimmerButtonClick = (SFIRulesDimmerButton *)sender;
@@ -794,86 +740,6 @@ NSMutableArray *selectedDayTags;
     }
      [self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArray];
     }
-
-- (void)setupPicker:(NSString*)dimValue{
-    NSLog(@"picker view called");
-    UIPickerView *chPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, self.parentViewController.view.frame.size.height/2, self.parentViewController.view.frame.size.width, self.parentViewController.view.frame.size.height/2)];
-    chPicker.dataSource = self;
-    chPicker.delegate = self;
-    chPicker.showsSelectionIndicator = YES;
-    chPicker.backgroundColor = [UIColor grayColor];
-    chPicker.backgroundColor = [UIColor whiteColor];
-    [chPicker selectRow:[dimValue integerValue] inComponent:0 animated:NO];
-    
-    actionSheet=[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.parentViewController.view.frame.size.width, self.parentViewController.view.frame.size.height/2)];
-    UIView * bg=[[UIView alloc] initWithFrame:actionSheet.frame];
-    bg.backgroundColor = [UIColor blackColor];
-    bg.alpha = 0.3;
-    [actionSheet addSubview:bg];
-    
-    chPicker.frame = CGRectMake(0, 0, actionSheet.frame.size.width, chPicker.frame.size.height);
-    
-    [actionSheet addSubview:chPicker];
-    //yourView represent the view that contains UIPickerView and toolbar
-    NSLog(@"%@",NSStringFromCGRect(actionSheet.frame));
-    actionSheet.alpha = 0;
-    [self.parentViewController.view addSubview:actionSheet];
-    [UIView animateWithDuration:0.3 animations:^{
-        actionSheet.alpha = 1;
-    }completion:^(BOOL finished) {
-        
-    }];
-}
-
-#pragma mark UIPickerViewDelegate Methods
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    NSLog(@"pickerValuesArray %ld",(unsigned long)pickerValuesArray.count);
-    return pickerValuesArray.count;
-}
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    NSLog(@"title for row");
-    return [pickerValuesArray objectAtIndex:row];
-}
-
-// Set the width of the component inside the picker
-- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
-    NSLog(@"widthForComponent");
-    return 100;
-}
-
-// Item picked
-- (void)pickerView:(UIPickerView *)thePickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    NSLog(@"pickerview:");
-    [UIView animateWithDuration:0.3 animations:^{
-        actionSheet.alpha = 1;
-    }completion:^(BOOL finished) {
-        [actionSheet removeFromSuperview];
-    }];
-    [dimmerButtonClick setNewValue:pickerValuesArray[row]];
-    
-    sfi_id dimId = dimmerButtonClick.subProperties.deviceId;
-    int dimIndex = dimmerButtonClick.subProperties.index;
-    
-    //store in array
-    [self addButtonToArray:dimId index:dimIndex matchData:dimmerButtonClick.dimValue];
-    
-    //delegate triggers dict
-    [self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArray];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    
-    if (actionSheet.tag!=1) {
-        actionSheet = nil;
-        //        [self invite:pickerSelectedIndex];
-    }
-}
 
 #pragma mark time elements
 

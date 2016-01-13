@@ -12,7 +12,6 @@
 #import "SecurifiToolkit/SecurifiTypes.h"
 #import "Colours.h"
 #import "SFIDeviceIndex.h"
-//#import "SensorIndexSupport.h"
 #import "RuleSensorIndexSupport.h"
 #import "IndexValueSupport.h"
 #import "SFIDimmerButton.h"
@@ -32,12 +31,14 @@
 #import "GenericCommand.h"
 #import "SecurifiToolkit/SFIDevice.h"
 #import "SFIRouterClientsTableViewController.h"
+#import "RulePayload.h"
 //for wifi clients
 
 @interface AddRulesViewController()<AddTriggersDelegate, AddActionsDelegate, RuleViewDelegate,UIAlertViewDelegate>{
     sfi_id dc_id;
     NSInteger randomMobileInternalIndex;
 }
+
 
 @property (nonatomic, strong)AddTriggers *addTriggersView;
 @property (nonatomic ,strong)AddActions *addActionsView;
@@ -55,7 +56,6 @@
 @implementation AddRulesViewController
 UITextField *textField;
 - (void)viewDidLoad {
-    NSLog(@"Rules View Did Load");
     [super viewDidLoad];
 
 
@@ -63,10 +63,11 @@ UITextField *textField;
     self.addActionsView = [[AddActions alloc]init];
     
     self.wifiClientsArray = [[NSMutableArray alloc]init];
+    self.deviceArray = [NSMutableArray new];
+    
     //self.ruleNameField.text = self.rule.name;
     [self getWificlientsList];
         if(!self.isInitialized){
-        NSLog(@"isInitialized");
         self.rule = [[Rule alloc]init];//[buttonObj sendActionsForControlEvents: UIControlEventTouchUpInside];
         
     }
@@ -76,19 +77,19 @@ UITextField *textField;
     //getting wificlient list from cloud
     [self initializeNotifications];
     [self setUpNavigationBar];
-    self.deviceArray = [NSMutableArray new];
-    NSLog(@"triggers array: %@, actions array: %@", self.rule.triggers, self.rule.actions);
+    
+   
     [self callRulesView]; //to handle edit
 //    [self.IfButton sendActionsForControlEvents: UIControlEventTouchUpInside];//programatically clicking if
+    
+    [self getTriggerAndActionDeviceList];
     [self getTriggerDeviceListView:YES];
 }
 -(void)viewWillAppear:(BOOL)animated{
     randomMobileInternalIndex = arc4random() % 10000;
-    
-    
-    
     [super viewWillAppear:animated];
 }
+#pragma mark notificationMethods
 
 -(void)initializeNotifications{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -103,6 +104,9 @@ UITextField *textField;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.wifiClientsArray = toolkit.wifiClientParser;
 }
+
+
+
 -(void)onRuleCommandResponse:(id)sender{ //for add, update
     NSLog(@"onRuleCommandResponse - add,update");
     NSNotification *notifier = (NSNotification *) sender;
@@ -139,12 +143,7 @@ UITextField *textField;
     }
     NSDictionary *mainDict = [data valueForKey:@"data"];
     NSLog(@"dynamaic added : %@",mainDict);
-    
-        self.rule.ID = [mainDict valueForKey:@"ruleid"];
-        NSLog(@"dynamaic added with id : %@",self.rule.ID);
-    
-    NSLog(@"dynamaic added with id : %@",self.rule.ID);
-    
+    self.rule.ID = [mainDict valueForKey:@"ruleid"];
     return;
     
 }
@@ -167,36 +166,38 @@ UITextField *textField;
     // Dispose of any resources that can be recreated.
 }
 
--(void) manageViews{
-    //necessary to manage it, when you click on then you need to hide timeview
-    self.TimeSectionView.hidden = YES;
-    self.deviceIndexButtonScrollView.hidden = NO;
-}
+
+#pragma mark buttonclickedMetghods
 
 - (IBAction)ifButtonClicked:(id)sender {
     [self getTriggerDeviceListView:NO];
-//    NSLog(@" if button clicked");
-//    [self.IfButton setTitleColor:[UIColor colorFromHexString:@"02a8f3"] forState:UIControlStateNormal];
-//    [self.IfButton setTitleShadowColor:[UIColor colorFromHexString:@"02a8f3"] forState:UIControlStateNormal];
-//    [self.thenButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    
-//    [self manageViews];
-//    //clear views
-//    [self clearDeviceListScrollView];
-//    [self clearDeviceIndexButtonScrollView];
-//    [self getTriggersDeviceList];
-    
+ 
 }
+- (IBAction)thenButtonClicked:(id)sender {
+    [self changeIFThenColors:NO clickedBtn:self.thenButton otherBtn:self.IfButton];
+    
+    [self manageViews];
+    //clear views
+    [self clearDeviceListScrollView];
+    [self clearDeviceIndexButtonScrollView];
+    
+    [self getActionDeviceList];
+    if(self.rule.triggers.count == 0 && self.rule.time != NULL){
+        self.informationLabel.text = @"First you have to select trigger";
+    }
+    else {
+        self.informationLabel.text = @"Select action for your trigger";
+    }
+}
+
+
 -(void)getTriggerDeviceListView:(BOOL)isFirstTime{
     if(self.rule.triggers.count == 0)
     self.informationLabel.text = @"To get started, please select a trigger";
     else{
         self.informationLabel.text = @"Add another trigger or press THEN to define action";
     }
-    
-    NSLog(@" if button clicked");
     [self changeIFThenColors:YES clickedBtn:self.IfButton otherBtn:self.thenButton];
-    
     [self manageViews];
     //clear viewsFF9500
     [self clearDeviceListScrollView];
@@ -217,8 +218,7 @@ UITextField *textField;
     clickedButton.backgroundColor = selectedColor;
     [clickedButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [otherButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    [self.ifThenTabSeperator.image     imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-//    [self.ifThenTabSeperator setTintColor:imageColor];
+
     self.ifThenTabSeperator.image = [self imageNamed:@"tab-separator" withColor:imageColor];
     otherButton.backgroundColor = [UIColor clearColor];
     self.ifThenTabSeperator.backgroundColor = imageBgColor;
@@ -260,41 +260,25 @@ UITextField *textField;
     return coloredImg;
 }
 
-- (IBAction)thenButtonClicked:(id)sender {
-    [self changeIFThenColors:NO clickedBtn:self.thenButton otherBtn:self.IfButton];
-    
-    [self manageViews];
-    //clear views
-    [self clearDeviceListScrollView];
-    [self clearDeviceIndexButtonScrollView];
-    
-    [self getActionDeviceList];
-    if(self.rule.triggers.count == 0 && self.rule.time != NULL){
-        self.informationLabel.text = @"First you have to select trigger";
-    }
-    else {
-    self.informationLabel.text = @"Select action for your trigger";
-    }
-}
-
--(void)getTriggersDeviceList{
-    DeviceListAndValues *deviceandValue = [[DeviceListAndValues alloc]init];
+-(void)getTriggerAndActionDeviceList{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     NSLog(@" divece list count %@",[toolkit deviceList:plus.almondplusMAC]);
     for(SFIDevice *device in [toolkit deviceList:plus.almondplusMAC]){
         
-        if (device.deviceType != SFIDeviceType_HueLamp_48) {
+        if ((device.deviceType != SFIDeviceType_HueLamp_48) && (device.deviceType != SFIDeviceType_NestSmokeDetector_58)) {
             NSLog(@" hue device ");
             [self.deviceArray addObject:device];
         }
+        if (device.isActuator ) {
+            [self.actuatorDeviceArray addObject:device];
+        }
+
     }
-    
-   // self.deviceArray = [NSMutableArray arrayWithArray:[toolkit deviceList:plus.almondplusMAC]];/*- (NSArray *)deviceList:(NSString *)almondMac;*/
-    
-    NSLog(@" divece list count %ld",(unsigned long)self.deviceArray.count);
-        //NSLog(@" device list  if%@",self.deviceArray);
-    self.deviceValueArray = [deviceandValue addDeviceValues];
+
+}
+//on if button clicked
+-(void)getTriggersDeviceList{
     
     self.addTriggersView = [[AddTriggers alloc]init]; // if rule is new then params are initialied in rule
     self.addTriggersView.parentViewController = self;
@@ -305,16 +289,9 @@ UITextField *textField;
     [self.addTriggersView displayTriggerDeviceList];
     
 }
-
+// on then button clicked
 -(void)getActionDeviceList{
-    [self.actuatorDeviceArray removeAllObjects];
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    for (SFIDevice *device in [toolkit deviceList:plus.almondplusMAC]) {
-        if (device.isActuator ) {
-            [self.actuatorDeviceArray addObject:device];
-        }
-    }
+    
     self.addActionsView = [[AddActions alloc]init];
     self.addActionsView.parentViewController = self;
     self.addActionsView.delegate = self;
@@ -322,7 +299,7 @@ UITextField *textField;
 
     [self.addActionsView displayActionDeviceList];
     
-    //call actions device list
+
 }
 
 
@@ -341,6 +318,12 @@ UITextField *textField;
     for (UIView *v in viewsToRemove) {
         [v removeFromSuperview];
     }
+}
+
+-(void) manageViews{
+    //necessary to manage it, when you click on then you need to hide timeview
+    self.TimeSectionView.hidden = YES;
+    self.deviceIndexButtonScrollView.hidden = NO;
 }
 
 #pragma mark delegate methods
@@ -479,21 +462,6 @@ UITextField *textField;
     self.rule.wifiClients = wifiClients;
     [self callRulesView]; //for removing
 
-    //repaint only if devicelistbutton of corresponding crossbutton is higlighted
-//    UIScrollView *scrollView = self.deviceListScrollView;
-//    for(RulesDeviceNameButton *button in [scrollView subviews]){
-//        if(deviceId == 0 && button.selected){
-//            [self clearDeviceIndexButtonScrollView];
-//            [self.addTriggersView addMode];
-//        }
-//        else if(button.device.deviceID == deviceId && button.selected){
-//            
-//            [self clearDeviceIndexButtonScrollView];
-//            [self.addTriggersView createDeviceIndexesLayout:currentDevice deviceIndexes:deviceIndexes];
-//        }
-//    }
-
-    
     [self clearDeviceIndexButtonScrollView];
     int i =0;
     for(SFIConnectedDevice *connectedClient in self.wifiClientsArray){
@@ -511,149 +479,6 @@ UITextField *textField;
     self.informationLabel.text = @"Add another trigger or press THEN to define action";
 }
 
-#pragma mark - rules payload
--(NSDictionary *)createRulePayload{
-    NSLog(@" rulname.alertview %@",self.rule.name);
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    if (!plus.almondplusMAC) {
-        return nil;
-    }
-    NSMutableDictionary *rulePayload = [[NSMutableDictionary alloc]init];
-
-    
-    [rulePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
-    [rulePayload setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
-    [rulePayload setValue:self.rule.name forKey:@"Name"];
-    if(!self.isInitialized){ //check if its in add state
-        [rulePayload setValue:@"AddRule" forKey:@"CommandType"];
-        NSLog(@" rule add");
-    }
-    else{
-        
-        NSLog(@" rul update");
-        [rulePayload setValue:@"UpdateRule" forKey:@"CommandType"];
-        NSLog(@"rule id edit %@ ",self.rule.ID);
-        [rulePayload setValue:self.rule.ID forKey:@"ID"];
-        [rulePayload setValue:self.rule.ID forKey:@"ID"]; //Get From Rule instance
-        self.isInitialized = NO;//setting it to not to reflect
-        
-    }
-    
-   
-    [rulePayload setValue:[self createTriggerPayload] forKey:@"Triggers"];
-    [rulePayload setValue:[self createActionPayload] forKey:@"Results"];
-    
-    NSLog(@"rule payload : %@ ",rulePayload);
-    return rulePayload;
-    
-}
-
--(NSMutableArray *)createTriggerPayload{
-    NSMutableArray * triggersArray = [[NSMutableArray alloc]init];
-    if(self.rule.time.isPresent){
-        NSDictionary *timeDict = [self createTimeObject];
-        [triggersArray addObject:timeDict];
-    }
-    if(self.rule.wifiClients){
-        for(SFIButtonSubProperties *wiFiClientProperty in self.rule.wifiClients){
-            NSDictionary *wifiProperty = [self createWiFiClientObject:wiFiClientProperty];
-            [triggersArray addObject:wifiProperty];
-        }
-    }
-    for (SFIButtonSubProperties *dimButtonProperty in self.rule.triggers) {
-        NSDictionary *triggerDeviceProperty = [self createTriggerDeviceObject:dimButtonProperty];
-        [triggersArray addObject:triggerDeviceProperty];
-    }
-    return triggersArray;
-}
-
--(NSDictionary *)createTriggerDeviceObject:(SFIButtonSubProperties*)property{
-    if(property.deviceId == 0){
-        NSDictionary *dict = @{
-                               @"Type" : @"EventTrigger",
-                               @"ID" : @(1).stringValue,
-                               @"EventType" : @"AlmondModeUpdated",
-                               @"Value" : property.matchData,
-                               @"Grouping" : @"AND",
-                               @"Validation":@"true",
-                               @"Condition" : @"eq"
-                               };
-        return dict;
-    }
-    NSDictionary *dict = @{
-                           @"Type" : @"DeviceTrigger",
-                           @"ID" : @(property.deviceId).stringValue,
-                           @"Index" : @(property.index).stringValue,
-                           @"Value" : property.matchData,
-                           @"Grouping" : @"AND",
-                           @"Validation":@"",
-                           @"Condition" : @"eq"
-                           };
-    
-    return dict;
-}
--(NSDictionary *)createWiFiClientObject:(SFIButtonSubProperties*)wiFiClientProperty{
-    NSDictionary *dict = @{
-                           @"Type" : @"EventTrigger",
-                           @"ID" : @(wiFiClientProperty.deviceId),
-                           @"EventType" : wiFiClientProperty.eventType,
-                           @"Value" : wiFiClientProperty.matchData,
-                           @"Grouping" : @"AND",
-                           @"Validation":@"",
-                           @"Condition" : @"eq"
-                           };
-    
-    return dict;
-}
-
-
--(NSDictionary*)createTimeObject{
-    NSDictionary *Dict= @{
-                          @"Type" : @"TimeTrigger",
-                          @"Range" : @(self.rule.time.range),
-                          @"Hour" : @(self.rule.time.hours),
-                          @"Minutes" : @(self.rule.time.mins),
-                          @"DayOfMonth" : @"*",
-                          @"DayOfWeek" : self.rule.time.dayOfWeek,
-                          @"MonthOfYear" : @"*",
-                          @"Grouping" : @"AND",
-                          @"Validation": @""
-                          
-                          };
-    return Dict;
-}
--(NSMutableArray *)createActionPayload{
-    NSMutableArray * actionsArray = [[NSMutableArray alloc]init];
-    for (SFIButtonSubProperties *property in self.rule.actions) {
-        NSDictionary *actionsProperty = [self createActionDeviceObject:property];
-        [actionsArray addObject:actionsProperty];
-    }
-    return actionsArray;
-}
-
--(NSDictionary *)createActionDeviceObject:(SFIButtonSubProperties*)dimButtonProperty{
-    if(dimButtonProperty.deviceId == 0){
-        NSDictionary *dict = @{
-                               @"Type":@"EventResult",
-                               @"ID":@(1).stringValue,
-                               @"EventType":@"AlmondModeUpdated",
-                               @"Value":dimButtonProperty.matchData,
-                               @"PreDelay":dimButtonProperty.delay,
-                               @"Validation": @"true"
-                               };
-        return dict;
-    }
-    NSDictionary *dict = @{
-                           @"Type":@"DeviceResult",
-                           @"ID":@(dimButtonProperty.deviceId).stringValue,
-                           @"Index":@(dimButtonProperty.index).stringValue,
-                           @"Value":dimButtonProperty.matchData,
-                           @"PreDelay":dimButtonProperty.delay,
-                           @"Validation": @""
-                           };
-    return dict;
-}
 
 -(void)btnSaveTap:(id)sender{
    
@@ -678,7 +503,10 @@ UITextField *textField;
         NSLog(@"rule name edit %@",self.rule.name);
         NSLog(@"rule name edit %@",textField.text);
     }
-    [alert show];
+    
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [alert show];
+    });
     
      
 }
@@ -701,7 +529,10 @@ UITextField *textField;
     
     
     //create json
-    NSDictionary *payload = [self createRulePayload];
+    RulePayload *rulePayload = [RulePayload new];
+    rulePayload.rule = self.rule;
+    NSDictionary *payload = [rulePayload createRulePayload:randomMobileInternalIndex with:self.isInitialized];
+    
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_UPDATE_REQUEST;
     cloudCommand.command = [payload JSONString];
@@ -723,7 +554,5 @@ UITextField *textField;
     NSLog(@" my almond mac %@ %@",plus.almondplusMAC,plus.almondplusName);
     [[SecurifiToolkit sharedInstance] asyncSendToLocal:cloudCommand almondMac:plus.almondplusMAC];
 }
-
-
 
 @end

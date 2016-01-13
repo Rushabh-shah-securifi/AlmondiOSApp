@@ -458,6 +458,8 @@
 		A58DB4A91BB3CD7500717C02 /* MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49D1BB3CD7500717C02 /* MainStoryboard_iPhone.strings */; };
 		A58DB4AA1BB3CD7500717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49F1BB3CD7500717C02 /* Scenes_Iphone.strings */; };
 		A58DB4AB1BB3CD7500717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4A11BB3CD7500717C02 /* termsofuse.html */; };
+		CE5EDF8B1C461FEE00A2829B /* RulePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8A1C461FEE00A2829B /* RulePayload.m */; settings = {ASSET_TAGS = (); }; };
+		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; settings = {ASSET_TAGS = (); }; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -954,6 +956,10 @@
 		A58DB4A21BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "zh-Hans"; path = termsofuse.html; sourceTree = "<group>"; };
 		C6A3307CA8D0945BEFE53A18 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE5EDF891C461FEE00A2829B /* RulePayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulePayload.h; sourceTree = "<group>"; };
+		CE5EDF8A1C461FEE00A2829B /* RulePayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulePayload.m; sourceTree = "<group>"; };
+		CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPickerIndicatorView1.h; sourceTree = "<group>"; };
+		CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPickerIndicatorView1.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1202,6 +1208,8 @@
 			isa = PBXGroup;
 			children = (
 				1C7E7D2E1A41A0990026F0BA /* DrawerViewController.h */,
+				CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */,
+				CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */,
 				1C7E7D2F1A41A0990026F0BA /* DrawerViewController.m */,
 				1C7E7D341A41A0990026F0BA /* SFICardTableViewCell.h */,
 				1C7E7D351A41A0990026F0BA /* SFICardTableViewCell.m */,
@@ -1511,6 +1519,8 @@
 			children = (
 				A54EB00F1C44FDC900CF2837 /* Support */,
 				A54EAFF41C44FDC300CF2837 /* SavedRulesTableViewController.h */,
+				CE5EDF891C461FEE00A2829B /* RulePayload.h */,
+				CE5EDF8A1C461FEE00A2829B /* RulePayload.m */,
 				A54EAFF51C44FDC300CF2837 /* SavedRulesTableViewController.m */,
 				A54EAFF61C44FDC300CF2837 /* CustomCellTableViewCell.h */,
 				A54EAFF71C44FDC300CF2837 /* CustomCellTableViewCell.m */,
@@ -2474,6 +2484,7 @@
 			files = (
 				A54EB0331C44FDE000CF2837 /* RulesIndexValueSupport.m in Sources */,
 				1C2F60AA1B69E69D001CCA34 /* SKSTableViewCellIndicator.m in Sources */,
+				CE5EDF8B1C461FEE00A2829B /* RulePayload.m in Sources */,
 				1C7E7DAB1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,
 				1C7E7D8B1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
 				A54EB0301C44FDE000CF2837 /* RulesDeviceNameButton.m in Sources */,
@@ -2552,6 +2563,7 @@
 				1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */,
 				1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */,
 				1C2F60A21B69E69D001CCA34 /* SFIWiFiDeviceProprtyEditViewController.m in Sources */,
+				CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */,
 				8467D8021BCBE33D00886D18 /* SFISensorDetailEditViewController.m in Sources */,
 				A54EB0321C44FDE000CF2837 /* SFIRulesActionButton.m in Sources */,
 				1C2F60941B69E69D001CCA34 /* SFIAddSceneViewController.m in Sources */,

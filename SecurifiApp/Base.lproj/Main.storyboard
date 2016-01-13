@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -72,9 +72,6 @@
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tgM-CG-ybH">
                                 <rect key="frame" x="0.0" y="211" width="600" height="354"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="354" id="2ZO-f2-GFn"/>
-                                </constraints>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="42d-k5-EIO" userLabel="Time">
                                 <rect key="frame" x="0.0" y="211" width="600" height="354"/>
@@ -101,8 +98,8 @@
                                             <!--2015-12-08 07:26:09 +0000-->
                                         </date>
                                     </datePicker>
-                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7o0-L6-q3k">
-                                        <rect key="frame" x="292" y="110" width="31" height="22"/>
+                                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="-" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7o0-L6-q3k">
+                                        <rect key="frame" x="200" y="110" width="31" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" identifier="11" id="WdW-mI-vkJ"/>
                                             <constraint firstAttribute="width" constant="31" id="xpH-Dy-865"/>
@@ -111,8 +108,8 @@
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <datePicker hidden="YES" tag="1" contentMode="scaleToFill" placeholderIntrinsicWidth="172" placeholderIntrinsicHeight="98" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="rS0-Yo-uUb">
-                                        <rect key="frame" x="0.0" y="61" width="290" height="110"/>
+                                    <datePicker hidden="YES" tag="1" contentMode="scaleToFill" misplaced="YES" placeholderIntrinsicWidth="172" placeholderIntrinsicHeight="98" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="rS0-Yo-uUb">
+                                        <rect key="frame" x="0.0" y="61" width="198" height="110"/>
                                         <color key="tintColor" red="0.0078431372550000003" green="0.6588235294" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="110" identifier="12" id="Eb7-MZ-psZ"/>
@@ -136,8 +133,8 @@
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <datePicker hidden="YES" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="n4K-96-tPW">
-                                        <rect key="frame" x="326" y="61" width="274" height="110"/>
+                                    <datePicker hidden="YES" tag="2" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="n4K-96-tPW">
+                                        <rect key="frame" x="234" y="61" width="180" height="110"/>
                                         <color key="tintColor" red="0.0078431372550000003" green="0.6588235294" blue="0.95294117649999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="110" identifier="12" id="y2i-wc-hcg"/>
@@ -252,6 +249,7 @@
                             <constraint firstItem="y7R-Pc-djW" firstAttribute="leading" secondItem="Yk0-l5-x7T" secondAttribute="leading" identifier="42" id="jLH-U2-PaG"/>
                             <constraint firstItem="tgM-CG-ybH" firstAttribute="leading" secondItem="Yk0-l5-x7T" secondAttribute="leading" id="kNa-2e-H0U"/>
                             <constraint firstAttribute="trailing" secondItem="z4L-S0-Kau" secondAttribute="trailing" identifier="38" id="m4s-WO-LjW"/>
+                            <constraint firstItem="gNX-x7-Eb1" firstAttribute="top" secondItem="tgM-CG-ybH" secondAttribute="bottom" constant="35" id="mHP-jv-BEu"/>
                             <constraint firstItem="j8U-ds-tM7" firstAttribute="leading" secondItem="Yk0-l5-x7T" secondAttribute="leading" id="mfI-gm-yHD"/>
                             <constraint firstAttribute="trailing" secondItem="izw-2s-VmX" secondAttribute="trailing" identifier="44" id="rjl-Rk-sqH"/>
                             <constraint firstItem="y7R-Pc-djW" firstAttribute="top" secondItem="Tpe-Bk-h8k" secondAttribute="bottom" id="sVR-F1-zIo"/>
@@ -281,7 +279,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hce-zP-OZf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="329" y="40"/>
+            <point key="canvasLocation" x="522" y="45"/>
         </scene>
         <!--Saved Rules Table View Controller-->
         <scene sceneID="1A5-eb-wwc">

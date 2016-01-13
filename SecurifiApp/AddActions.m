@@ -28,58 +28,9 @@
 #import "RulesHue.h"
 #import "V8HorizontalPickerView.h"
 #import "V8HorizontalPickerViewProtocol.h"
+#import "SFIPickerIndicatorView1.h"//from UI Its for picker indicator view
 
-@interface SFIPickerIndicatorView2 : UIView
-@property UIColor *color2;
-@property CAShapeLayer *shapeLayer2;
-@end
-
-@implementation SFIPickerIndicatorView2
-
-- (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.color2 = [UIColor colorFromHexString:@"02a8f3"];
-        self.backgroundColor = [UIColor colorFromHexString:@"02a8f3"];
-    }
-    
-    return self;
-}
-
-- (void)drawRect:(CGRect)rect {
-    [super drawRect:rect];
-    [self initializeControl:self.frame];
-}
-
-- (void)initializeControl:(CGRect)rect {
-    CGColorRef white_ref = self.color2.CGColor;
-    
-    if (self.shapeLayer2) {
-        [self.shapeLayer2 removeFromSuperlayer];
-    }
-    
-    CAShapeLayer *layer = [CAShapeLayer layer];
-    layer.path = [self linePath:rect];
-    layer.fillColor = white_ref;
-    layer.strokeColor = white_ref;
-    layer.lineWidth = self.frame.size.height;
-    
-    self.shapeLayer2 = layer;
-    [self.layer addSublayer:layer];
-}
-
-- (CGPathRef)linePath:(CGRect)rect {
-    UIBezierPath *path = [UIBezierPath bezierPath];
-    [path moveToPoint:CGPointMake(0, 0)];
-    
-    CGPoint point = CGPointMake(rect.size.width, 0);
-    [path addLineToPoint:point];
-    
-    return path.CGPath;
-}
-@end
-
-@interface AddActions()<UIPickerViewDelegate,UIPickerViewDataSource, RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource>
+@interface AddActions()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource>
 @property (nonatomic, strong)RulesHue *rulesHueObject;
 
 @end
@@ -95,7 +46,6 @@ bool isPresentActHozPicker;
 NSString *newPickerValue;
 
 NSMutableArray * pickerValuesArray2;
-UIView * actionSheet;
 
 -(id)init{
     if(self == [super init]){
@@ -111,10 +61,8 @@ UIView * actionSheet;
     
     NSLog(@"displayActionDeviceList");
     //clear view
-    NSArray *viewsToRemove1 = [self.parentViewController.deviceListScrollView subviews];
-    for (UIView *v in viewsToRemove1) {
-        [v removeFromSuperview];
-    }
+
+    
     NSArray *viewsToRemove = [self.parentViewController.deviceIndexButtonScrollView subviews];
     for (UIView *v in viewsToRemove) {
         [v removeFromSuperview];
@@ -143,10 +91,8 @@ UIView * actionSheet;
         [deviceButton setTitle:device.deviceName forState:UIControlStateNormal];
         deviceButton.titleLabel.numberOfLines = 1;
 //        deviceButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        deviceButton.titleLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:3];
+        deviceButton.titleLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:12];
         [deviceButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [deviceButton setTitleShadowColor:[UIColor blueColor] forState:UIControlStateNormal];
-        deviceButton.titleLabel.font = [UIFont systemFontOfSize:12];
         deviceButton.backgroundColor = [UIColor clearColor];
         deviceButton.titleLabel.textAlignment = NSTextAlignmentCenter;
         deviceButton.device = device;
@@ -159,6 +105,7 @@ UIView * actionSheet;
     self.parentViewController.deviceListScrollView.contentSize = CGSizeMake(xVal + 10,self.parentViewController.deviceListScrollView.contentSize.height);
     
 }
+
 #pragma mark click handlers
 -(void)onDeviceButtonClick:(RulesDeviceNameButton *)sender{
     NSLog(@"onDeviceButtonClick: %@",sender.device);
@@ -272,7 +219,6 @@ UIView * actionSheet;
         NSLog(@"cell view children: %@", cellView.subviews);
     }
 }
-
 
 
 - (UIView *)addMyActionButtonwithYScale:(int)yScale withDeviceIndex:(NSArray *)deviceIndexes device:(SFIDevice*)device{
@@ -575,6 +521,7 @@ UIView * actionSheet;
     if(isPresentActHozPicker == YES){
         [pickerAction removeFromSuperview];
     }
+    
     actionIndexSwitchButton = (SFIRulesActionButton *)sender;
     actionIndexSwitchButton.selected = YES ;
    
@@ -671,9 +618,9 @@ UIView * actionSheet;
     [self.parentViewController.deviceIndexButtonScrollView addSubview:pickerAction];
     // width depends on propertyType
     const NSInteger element_width = [self horizontalPickerView:pickerAction widthForElementAtIndex:0];
-    SFIPickerIndicatorView2 *indicatorView = [[SFIPickerIndicatorView2 alloc] initWithFrame:CGRectMake(0, 0, element_width, 2)];
+    SFIPickerIndicatorView1 *indicatorView = [[SFIPickerIndicatorView1 alloc] initWithFrame:CGRectMake(0, 0, element_width, 2)];
     pickerAction.selectionPoint = CGPointMake((pickerAction.frame.size.width) / 2, 0);
-    indicatorView.color2 = [UIColor colorFromHexString:@"FF9500"];
+    indicatorView.color1 = [UIColor colorFromHexString:@"FF9500"];
     pickerAction.selectionIndicatorView = indicatorView;
     
     
@@ -700,103 +647,6 @@ UIView * actionSheet;
     isPresentActHozPicker = YES;
     
     }
-
-
-
-- (void)setupPicker:(SFIDimmerButtonAction*)dimButton{
-    NSLog(@"picker view called");
-    UIPickerView *chPicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, self.parentViewController.view.frame.size.height/2, self.parentViewController.view.frame.size.width, self.parentViewController.view.frame.size.height/2)];
-    chPicker.dataSource = self;
-    chPicker.delegate = self;
-    chPicker.showsSelectionIndicator = YES;
-    chPicker.backgroundColor = [UIColor grayColor];
-    chPicker.backgroundColor = [UIColor whiteColor];
-    [chPicker selectRow:[dimButton.dimValue integerValue] inComponent:0 animated:NO];
-    
-    actionSheet=[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.parentViewController.view.frame.size.width, self.parentViewController.view.frame.size.height/2)];
-    UIView * bg=[[UIView alloc] initWithFrame:actionSheet.frame];
-    bg.backgroundColor = [UIColor blackColor];
-    bg.alpha = 0.3;
-    [actionSheet addSubview:bg];
-    
-    chPicker.frame = CGRectMake(0, 0, actionSheet.frame.size.width, chPicker.frame.size.height);
-    
-    [actionSheet addSubview:chPicker];
-    //yourView represent the view that contains UIPickerView and toolbar
-    NSLog(@"%@",NSStringFromCGRect(actionSheet.frame));
-    actionSheet.alpha = 0;
-    [self.parentViewController.view addSubview:actionSheet];
-    [UIView animateWithDuration:0.3 animations:^{
-        actionSheet.alpha = 1;
-    }completion:^(BOOL finished) {
-        
-    }];
-    
-    
-}
-#pragma mark UIPickerViewDelegate Methods
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return 1;
-}
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    return pickerValuesArray2.count;
-}
-
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    
-    return [pickerValuesArray2 objectAtIndex:row];
-}
-
-// Set the width of the component inside the picker
-- (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
-    return 100;
-}
-
-// Item picked
-- (void)pickerView:(UIPickerView *)thePickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    NSLog(@"pickerview:");
-    [UIView animateWithDuration:0.3 animations:^{
-        actionSheet.alpha = 1;
-    }completion:^(BOOL finished) {
-        [actionSheet removeFromSuperview];
-    }];
-    
-    [actionIndexDimButton setNewValue:pickerValuesArray2[row]];
-    NSLog(@"dimmer button click: %d", actionIndexDimButton.selected);
-    actionIndexDimButton.selected = YES;
-    
-    sfi_id buttonId = actionIndexDimButton.subProperties.deviceId;
-    int buttonIndex = actionIndexDimButton.subProperties.index;
-    
-    //add button to array
-    [self addButtonToArray:buttonId index:buttonIndex matchData:actionIndexDimButton.dimValue];
-    
-    
-    int buttonClickCount = 0;
-    for(SFIButtonSubProperties *dimButtonProperty in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
-        if(dimButtonProperty.deviceId == buttonId && dimButtonProperty.index == buttonIndex){
-            buttonClickCount++;
-        }
-    }
-    
-    [actionIndexDimButton setButtoncounter:buttonClickCount isCountImageHiddn:NO];
-    thePickerView.hidden = YES;
-    //delegate
-    [self.delegate updateActionsButtonsPropertiesArray:self.selectedButtonsPropertiesArray];
-}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    
-    if (actionSheet.tag!=1) {
-        actionSheet = nil;
-        //        [self invite:pickerSelectedIndex];
-    }
-}
-
 
 
 
