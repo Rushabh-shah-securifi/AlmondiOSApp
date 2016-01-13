@@ -2919,9 +2919,9 @@
             deviceIndex1.indexID = 1;
             deviceIndex1.cellId = 1;
             deviceIndex1.isEditableIndex = YES;
+            return @[deviceIndex1];
         }
         case SFIDeviceType_BinarySwitch_1: {
-            
             SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_BINARY];
             deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY];
             deviceIndex1.indexID = 1;
