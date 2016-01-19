@@ -57,27 +57,18 @@
 UITextField *textField;
 - (void)viewDidLoad {
     [super viewDidLoad];
-
-
     self.actuatorDeviceArray = [NSMutableArray new];
     self.addActionsView = [[AddActions alloc]init];
     
     self.wifiClientsArray = [[NSMutableArray alloc]init];
     self.deviceArray = [NSMutableArray new];
-    
     //self.ruleNameField.text = self.rule.name;
     [self getWificlientsList];
-        if(!self.isInitialized){
+    if(!self.isInitialized){
         self.rule = [[Rule alloc]init];//[buttonObj sendActionsForControlEvents: UIControlEventTouchUpInside];
-        
     }
-    
-//    [self wifiClientDummy];
-    //from local connectiion we are not able to get client list
-    //getting wificlient list from cloud
     [self initializeNotifications];
     [self setUpNavigationBar];
-    
    
     [self callRulesView]; //to handle edit
 //    [self.IfButton sendActionsForControlEvents: UIControlEventTouchUpInside];//programatically clicking if
@@ -89,6 +80,7 @@ UITextField *textField;
     randomMobileInternalIndex = arc4random() % 10000;
     [super viewWillAppear:animated];
 }
+
 #pragma mark notificationMethods
 
 -(void)initializeNotifications{
@@ -173,6 +165,7 @@ UITextField *textField;
     [self getTriggerDeviceListView:NO];
  
 }
+
 - (IBAction)thenButtonClicked:(id)sender {
     [self changeIFThenColors:NO clickedBtn:self.thenButton otherBtn:self.IfButton];
     
@@ -265,7 +258,6 @@ UITextField *textField;
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     NSLog(@" divece list count %@",[toolkit deviceList:plus.almondplusMAC]);
     for(SFIDevice *device in [toolkit deviceList:plus.almondplusMAC]){
-        
         if ((device.deviceType != SFIDeviceType_HueLamp_48) && (device.deviceType != SFIDeviceType_NestSmokeDetector_58)) {
             NSLog(@" hue device ");
             [self.deviceArray addObject:device];
@@ -273,36 +265,28 @@ UITextField *textField;
         if (device.isActuator ) {
             [self.actuatorDeviceArray addObject:device];
         }
-
     }
-
 }
+
 //on if button clicked
 -(void)getTriggersDeviceList{
-    
     self.addTriggersView = [[AddTriggers alloc]init]; // if rule is new then params are initialied in rule
     self.addTriggersView.parentViewController = self;
     self.addTriggersView.delegate = self;
     self.addTriggersView.selectedButtonsPropertiesArray = self.rule.triggers;
-    self.addTriggersView.selectedWiFiClientProperty = self.rule.wifiClients;
     self.addTriggersView.ruleTime = self.rule.time;
     [self.addTriggersView displayTriggerDeviceList];
     
 }
+
 // on then button clicked
 -(void)getActionDeviceList{
-    
     self.addActionsView = [[AddActions alloc]init];
     self.addActionsView.parentViewController = self;
     self.addActionsView.delegate = self;
     self.addActionsView.selectedButtonsPropertiesArray = self.rule.actions;
-
     [self.addActionsView displayActionDeviceList];
-    
-
 }
-
-
 
 #pragma mark helper methods
 -(void)clearDeviceListScrollView{
@@ -353,23 +337,7 @@ UITextField *textField;
     if(self.rule.actions == 0){
         self.informationLabel.text = @"Add another trigger or press THEN to define action";
     }
-
-    }
-
-//add wificlient delegate merhod //rushabh
--(void)updateWifiClientsButtonsPropertiesArray:(NSMutableArray*)wifiClientsArray{
-    //self.informationLabel.text = @"To get started, please select a trigger";
-    self.rule.wifiClients = wifiClientsArray;
-    [self callRulesView];
-    
-    if(self.rule.wifiClients > 0){
-        self.informationLabel.text = @"Add another trigger or press THEN to define action";
-    }
-    else if((self.rule.wifiClients == 0) && (self.rule.triggers.count ==0)){
-        self.informationLabel.text = @"Please select a trigger";
-    }
 }
-
 
 // add time-element delegate method //rushabh
 -(void)updateTimeElementsButtonsPropertiesArray:(RulesTimeElement*)ruleTimeElement{//time element is only one object
@@ -385,14 +353,12 @@ UITextField *textField;
 //being called on each click
 -(void) callRulesView{
     NSLog(@"callRulesView");
-    self.rulesView.wifiClientsArray = [[NSMutableArray alloc]init];
     self.rulesView = [[RulesView alloc]init]; //initialized dicts here
     self.rulesView.rule = self.rule;
     
     self.rulesView.delegate = self;
     self.rulesView.toHideCrossButton = NO;
     self.rulesView.parentViewController = self;
-    self.rulesView.wifiClientsArray = self.wifiClientsArray;
     [self.rulesView createTriggersActionsView:self.triggersActionsScrollView];
     
 }
@@ -410,12 +376,12 @@ UITextField *textField;
     RuleSensorIndexSupport *sensorSupport = [RuleSensorIndexSupport new];
     
     NSMutableArray *deviceIndexes = [NSMutableArray arrayWithArray:[sensorSupport getIndexesFor:currentDevice.deviceType]];
-    if ([self.addActionsView istoggle:currentDevice]) {
+    if ([self.addActionsView istoggle:currentDevice.deviceType]) {
         SFIDeviceIndex *temp = [self.addActionsView getToggelDeviceIndex];
         [deviceIndexes addObject : temp];
     }
     [self clearDeviceIndexButtonScrollView];
-    [self.addActionsView createDeviceIndexesLayout:currentDevice deviceIndexes:deviceIndexes];
+    [self.addActionsView createDeviceIndexesLayoutForDeviceId:deviceId deviceType:currentDevice.deviceType deviceIndexes:deviceIndexes];
     if(self.rule.actions.count == 0){
         self.informationLabel.text = @"Add another trigger or press THEN to define action";
     }
@@ -442,14 +408,9 @@ UITextField *textField;
         if([button isKindOfClass:[UIImageView class]]){
             continue;
         }
-        if(deviceId == 0 && button.selected){
+        else if(button.deviceId == deviceId && button.selected){
             [self clearDeviceIndexButtonScrollView];
-            [self.addTriggersView addMode];
-        }
-        else if(button.device.deviceID == deviceId && button.selected){
-            
-            [self clearDeviceIndexButtonScrollView];
-            [self.addTriggersView createDeviceIndexesLayout:currentDevice deviceIndexes:deviceIndexes];
+            [self.addTriggersView createDeviceIndexesLayoutForDeviceId:deviceId deviceType:currentDevice.deviceType deviceName:currentDevice.deviceName deviceIndexes:deviceIndexes];
         }
     }
     if(self.rule.triggers.count == 0){
@@ -458,21 +419,19 @@ UITextField *textField;
     
 }
 
--(void) updateWifiClients:(NSMutableArray *)wifiClients{
-    self.rule.wifiClients = wifiClients;
-    [self callRulesView]; //for removing
-
-    [self clearDeviceIndexButtonScrollView];
-    int i =0;
-    for(SFIConnectedDevice *connectedClient in self.wifiClientsArray){
-        if(connectedClient.deviceUseAsPresence){
-            [self.addTriggersView addWiFiClient:connectedClient withY:ROW_PADDING + (ROW_PADDING+frameSize)*i];
-            i++;
-        }
-    }
-    
-    
-}
+//-(void) updateWifiClients:(NSMutableArray *)wifiClients{
+//    self.rule.wifiClients = wifiClients;
+//    [self callRulesView]; //for removing
+//
+//    [self clearDeviceIndexButtonScrollView];
+//    int i =0;
+//    for(SFIConnectedDevice *connectedClient in self.wifiClientsArray){
+//        if(connectedClient.deviceUseAsPresence){
+//            [self.addTriggersView addWiFiClient:connectedClient withY:ROW_PADDING + (ROW_PADDING+frameSize)*i];
+//            i++;
+//        }
+//    }
+//}
 
 -(void)updateTime:(RulesTimeElement *)time{
     [self callRulesView];

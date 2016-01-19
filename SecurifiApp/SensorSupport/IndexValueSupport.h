@@ -23,6 +23,7 @@ typedef NSString *(^IndexValueTransformer)(NSString *);
 @property(nonatomic) NSString *displayText;
 @property(nonatomic) NSInteger minValue;
 @property(nonatomic) NSInteger maxValue;
+@property(nonatomic) NSString* eventType;
 
 // When YES, the index value is ignored for processing Notifications and any such value is silently dropped
 // Defaults to NO

@@ -53,12 +53,6 @@
         NSDictionary *timeDict = [self createTimeObject];
         [triggersArray addObject:timeDict];
     }
-    if(self.rule.wifiClients){
-        for(SFIButtonSubProperties *wiFiClientProperty in self.rule.wifiClients){
-            NSDictionary *wifiProperty = [self createWiFiClientObject:wiFiClientProperty];
-            [triggersArray addObject:wifiProperty];
-        }
-    }
     for (SFIButtonSubProperties *dimButtonProperty in self.rule.triggers) {
         NSDictionary *triggerDeviceProperty = [self createTriggerDeviceObject:dimButtonProperty];
         [triggersArray addObject:triggerDeviceProperty];
@@ -67,19 +61,34 @@
 }
 
 -(NSDictionary *)createTriggerDeviceObject:(SFIButtonSubProperties*)property{
+    NSDictionary *dict;
     if(property.deviceId == 0){
-        NSDictionary *dict = @{
-                               @"Type" : @"EventTrigger",
-                               @"ID" : @(1).stringValue,
-                               @"EventType" : @"AlmondModeUpdated",
-                               @"Value" : property.matchData,
-                               @"Grouping" : @"AND",
-                               @"Validation":@"true",
-                               @"Condition" : @"eq"
-                               };
-        return dict;
+        if([property.eventType isEqualToString:@"AlmondModeUpdated"]){
+            dict = @{
+                                   @"Type" : @"EventTrigger",
+                                   @"ID" : @(0).stringValue,
+                                   @"EventType" : @"AlmondModeUpdated",
+                                   @"Value" : property.matchData,
+                                   @"Grouping" : @"AND",
+                                   @"Validation":@"true",
+                                   @"Condition" : @"eq"
+                                   };
+            return dict;
+
+        }else{
+            dict = @{
+                     @"Type" : @"EventTrigger",
+                     @"ID" : @(property.index),
+                     @"EventType" : property.eventType,
+                     @"Value" : property.matchData,
+                     @"Grouping" : @"AND",
+                     @"Validation":@"",
+                     @"Condition" : @"eq"
+                     };
+
+        }
     }
-    NSDictionary *dict = @{
+    dict = @{
                            @"Type" : @"DeviceTrigger",
                            @"ID" : @(property.deviceId).stringValue,
                            @"Index" : @(property.index).stringValue,
@@ -94,7 +103,7 @@
 -(NSDictionary *)createWiFiClientObject:(SFIButtonSubProperties*)wiFiClientProperty{
     NSDictionary *dict = @{
                            @"Type" : @"EventTrigger",
-                           @"ID" : @(wiFiClientProperty.deviceId),
+                           @"ID" : @(wiFiClientProperty.index),
                            @"EventType" : wiFiClientProperty.eventType,
                            @"Value" : wiFiClientProperty.matchData,
                            @"Grouping" : @"AND",

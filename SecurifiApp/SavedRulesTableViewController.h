@@ -10,8 +10,6 @@
 #import "AddRulesViewController.h"
 #import "RulesView.h"
 
-
 @interface SavedRulesTableViewController : UITableViewController
-//@property (nonatomic ,strong)NSMutableArray *wifiClientsArray;
 
 @end

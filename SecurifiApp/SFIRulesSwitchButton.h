@@ -17,7 +17,8 @@
 @property(nonatomic)SFIDevicePropertyType valueType;
 @property(nonatomic)int count;
 @property(nonatomic)id generic;
-@property(nonatomic)SFIDevice *device;
+//@property(nonatomic)SFIDevice *device;
+@property(nonatomic)SFIDeviceType deviceType;
 
 - (void)setupValues:(UIImage*)iconImage Title:(NSString*)title;
 - (void)changeStyle;

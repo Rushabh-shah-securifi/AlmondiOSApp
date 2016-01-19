@@ -17,17 +17,13 @@
 @protocol RuleViewDelegate <NSObject>
 -(void)updateActionsArray:(NSMutableArray*)actionButtonPropertiesArray andDeviceIndexesForId:(int)deviceId;
 -(void)updateTriggerArray:(NSMutableArray*)triggerButtonPropertiesArray andDeviceIndexesForId:(int)deviceId;
--(void)updateWifiClients:(NSMutableArray*)wifiClients;
 -(void)updateTime:(RulesTimeElement*) time;
--(NSMutableArray*)getwificlientDelegate;
-
 @end
 
 @interface RulesView : NSObject
 
 @property (nonatomic ,strong)NSMutableArray *deviceArray;
 @property (nonatomic, strong)NSMutableArray *deviceValueArray;
-@property(nonatomic) NSMutableArray* wifiClientsArray;
 
 @property (nonatomic, strong) NSArray *triggersButtonPropertiesArray;
 @property (nonatomic, strong) NSArray *actionButtonPropertiesArray;

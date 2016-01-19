@@ -25,7 +25,6 @@ typedef NS_ENUM(NSInteger, eventType){
 @protocol AddTriggersDelegate
 
 -(void)updateTriggersButtonsPropertiesArray:(NSMutableArray*)triggersButtonPropertiesArray;
--(void)updateWifiClientsButtonsPropertiesArray:(NSMutableArray*)actionButtonPropertiesArray;
 -(void)updateTimeElementsButtonsPropertiesArray:(RulesTimeElement*)ruleTimeElement;
 
 @end
@@ -33,15 +32,11 @@ typedef NS_ENUM(NSInteger, eventType){
 @interface AddTriggers : NSObject
 @property (nonatomic, strong)NSMutableArray *selectedButtonsPropertiesArray;
 @property (nonatomic, strong)RulesTimeElement *ruleTime;
-@property (nonatomic ,strong)NSMutableArray *selectedWiFiClientProperty;
 
 
 @property(nonatomic)AddRulesViewController *parentViewController;
 @property(weak) id<AddTriggersDelegate> delegate;
 
 -(void)displayTriggerDeviceList;
--(void) createDeviceIndexesLayout:(SFIDevice*)device deviceIndexes:(NSArray*)deviceIndexes;
--(void)wifiClientsClicked:(id)sender;
--(void)addWiFiClient:(SFIConnectedDevice*)connectedClient withY:(int)yScale;
--(void)addMode;
+-(void) createDeviceIndexesLayoutForDeviceId:(int)deviceId deviceType:(SFIDeviceType)deviceType deviceName:(NSString*)deviceName deviceIndexes:(NSArray*)deviceIndexes;
 @end

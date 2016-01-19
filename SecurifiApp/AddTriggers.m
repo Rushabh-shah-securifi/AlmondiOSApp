@@ -45,7 +45,6 @@ bool isPresentHozPicker;
 NSMutableArray * pickerValuesArray;
 NSMutableString *selectedDayString;
 NSArray *dayArray;
-
 NSMutableArray *selectedDays;
 NSMutableArray *selectedDayTags;
 
@@ -59,14 +58,11 @@ NSMutableArray *selectedDayTags;
         dayArray = [[NSArray alloc]initWithObjects:@"Su",@"Mo",@"Tu",@"We",@"Th",@"Fr",@"Sa", nil];
         selectedDayTags = [NSMutableArray new];
         selectedDays = [NSMutableArray new];
-        self.selectedWiFiClientProperty = [NSMutableArray new];
     }
     return self;
 }
 
 -(void)createDeviceListButton:(RulesDeviceNameButton*)deviceButton title:(NSString*)title{
-    
-    
     [deviceButton setTitle:title forState:UIControlStateNormal];
     deviceButton.titleLabel.numberOfLines = 1;
      deviceButton.titleLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:3];
@@ -104,13 +100,15 @@ NSMutableArray *selectedDayTags;
     RulesDeviceNameButton *modeButton = [[RulesDeviceNameButton alloc] initWithFrame:CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight)];
     
     [self createDeviceListButton:modeButton title:@"Mode"];
-    [modeButton addTarget:self action:@selector(modeClicked:) forControlEvents:UIControlEventTouchUpInside];
+    modeButton.deviceId = 0;
+    modeButton.deviceType = SFIDeviceType_BinarySwitch_0;
+    modeButton.deviceName = @"Mode";
+    [modeButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.parentViewController.deviceListScrollView addSubview:modeButton];
     xVal += textRect.size.width + 15;
     
     return xVal;
-
 }
 
 -(int) createclientsButtonWithWidth:(double)deviceButtonWidth andHeight:(double)deviceButtonHeight xVal:(int)xVal{
@@ -118,15 +116,15 @@ NSMutableArray *selectedDayTags;
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:13]};
     CGRect textRect;
     textRect.size = [title sizeWithAttributes:attributes];
-
     RulesDeviceNameButton *wifiClientButton = [[RulesDeviceNameButton alloc] initWithFrame:CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight)];
+    wifiClientButton.deviceId = 0;
+    wifiClientButton.deviceType = SFIDeviceType_WIFIClient;
     
     [self createDeviceListButton:wifiClientButton title:@"Clients"];
     [wifiClientButton addTarget:self action:@selector(wifiClientsClicked:) forControlEvents:UIControlEventTouchUpInside];
     [self.parentViewController.deviceListScrollView addSubview:wifiClientButton];
     xVal += textRect.size.width + 15;
     return xVal;
-
 }
 
 -(void)displayTriggerDeviceList{
@@ -141,42 +139,28 @@ NSMutableArray *selectedDayTags;
     double deviceButtonHeight = self.parentViewController.deviceListScrollView.frame.size.height;
    
     //timebutton
-    
     xVal = [self createTimerButtonWithWidth:deviceButtonWidth andHeight:deviceButtonHeight xVal:xVal];;
     
     //wifi cilent button
     xVal = [self createclientsButtonWithWidth:deviceButtonWidth andHeight:deviceButtonHeight xVal:xVal];;
 
     //mode button
-    
     xVal = [self createModeButtonWithWidth:deviceButtonWidth andHeight:deviceButtonHeight xVal:xVal];;
-    
-   
     
     //Rest of the devices
     for(SFIDevice *device in self.parentViewController.deviceArray){
-//        if(device.deviceType == SFIDeviceType_HueLamp_48){
-//            [self.parentViewController.deviceArray removeObject:device];
-//            continue;
-//        }
-//        self.parentViewController.deviceArray removeobjects
-        
         NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:12]};
         CGRect textRect;
-        
-       
-        
         textRect.size = [device.deviceName sizeWithAttributes:attributes];
         if(device.deviceName.length > 18){
             NSString *temp=@"123456789012345678";
             textRect.size = [temp sizeWithAttributes:attributes];
         }
-        
         RulesDeviceNameButton *deviceButton = [[RulesDeviceNameButton alloc] initWithFrame:CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight)];
-        
         [self createDeviceListButton:deviceButton title:device.deviceName];
-        deviceButton.device = device;
-       
+        deviceButton.deviceId = device.deviceID;
+        deviceButton.deviceType = device.deviceType;
+        deviceButton.deviceName = device.deviceName;
         [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [self.parentViewController.deviceListScrollView addSubview:deviceButton];
         
@@ -188,7 +172,7 @@ NSMutableArray *selectedDayTags;
 
 
 //on devicelist button click, calling this method
--(void) createDeviceIndexesLayout:(SFIDevice*)device deviceIndexes:(NSArray*)deviceIndexes{
+-(void) createDeviceIndexesLayoutForDeviceId:(int)deviceId deviceType:(SFIDeviceType)deviceType deviceName:(NSString*)deviceName deviceIndexes:(NSArray*)deviceIndexes{
     int numberOfCells = [self maxCellId:deviceIndexes];
     
     CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
@@ -198,17 +182,17 @@ NSMutableArray *selectedDayTags;
     [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
     
     //nest_thermostat - 57
-    if(device.deviceType == SFIDeviceType_NestThermostat_57){
+    if(deviceType == SFIDeviceType_NestThermostat_57){
         RulesNestThermostat *rulesNestThermostatObject = [[RulesNestThermostat alloc]init];
         SFIDeviceValue *nestThermostatDeviceValue;
         for(int i=0; i < [self.parentViewController.deviceArray count]; i++){
             SFIDevice *nestThermostatDevice = self.parentViewController.deviceArray[i];
-            if(nestThermostatDevice.deviceID == device.deviceID){
+            if(nestThermostatDevice.deviceID == deviceId){
                 nestThermostatDeviceValue = self.parentViewController.deviceValueArray[i];
                 break;
             }
         }
-        deviceIndexes = [rulesNestThermostatObject createNestThermostatDeviceIndexes:deviceIndexes device:device deviceValue:nestThermostatDeviceValue];
+        deviceIndexes = [rulesNestThermostatObject createNestThermostatDeviceIndexes:deviceIndexes deviceValue:nestThermostatDeviceValue];
         numberOfCells = [self maxCellId:deviceIndexes];//recalculating for nest
     }
     
@@ -230,7 +214,7 @@ NSMutableArray *selectedDayTags;
     
     //else for rest of the devices
     for(int i = 0; i < numberOfCells; i++){
-        UIView *cellView = [self addMyButtonwithYScale:ROW_PADDING+(ROW_PADDING+frameSize)*i  withDeviceIndex:[deviceIndexesDict valueForKey:[NSString stringWithFormat:@"%d", i+1]] device:device];
+        UIView *cellView = [self addMyButtonwithYScale:ROW_PADDING+(ROW_PADDING+frameSize)*i  withDeviceIndex:[deviceIndexesDict valueForKey:[NSString stringWithFormat:@"%d", i+1]] deviceId:deviceId deviceType:deviceType deviceName:deviceName];
         //        cellView.backgroundColor = [UIColor redColor];
         NSLog(@"cell view children: %@", cellView.subviews);
     }
@@ -238,7 +222,7 @@ NSMutableArray *selectedDayTags;
 }
 
 
-- (UIView *)addMyButtonwithYScale:(int)yScale withDeviceIndex:(NSArray *)deviceIndexes device:(SFIDevice*)device{
+- (UIView *)addMyButtonwithYScale:(int)yScale withDeviceIndex:(NSArray *)deviceIndexes deviceId:(int)deviceId deviceType:(int)deviceType deviceName:(NSString*)deviceName{
     
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                             yScale,
@@ -261,8 +245,9 @@ NSMutableArray *selectedDayTags;
                 dimbtn.valueType=deviceIndex.valueType;
                 dimbtn.minValue = iVal.minValue; //required for picker view
                 dimbtn.maxValue = iVal.maxValue;
-                dimbtn.subProperties = [self addSubPropertiesFordeviceID:device.deviceID index:deviceIndex.indexID matchData:iVal.matchData];
-                dimbtn.device = device;
+                dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
+//                dimbtn.device = device;
+                dimbtn.deviceType = deviceType;
                 dimbtn.selected=NO;
                 [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
 
@@ -270,7 +255,7 @@ NSMutableArray *selectedDayTags;
                 NSString *matchData = iVal.matchData;
                 BOOL isSelected = NO;
                 for(SFIButtonSubProperties *dimButtonProperty in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
-                    if(dimButtonProperty.deviceId == device.deviceID && dimButtonProperty.index == deviceIndex.indexID){
+                    if(dimButtonProperty.deviceId == deviceId && dimButtonProperty.index == deviceIndex.indexID){
                         matchData = dimButtonProperty.matchData;
                         NSLog(@"dim match data: %@", matchData);
                         isSelected = YES;
@@ -299,18 +284,31 @@ NSMutableArray *selectedDayTags;
                 SFIRulesSwitchButton *btnBinarySwitchOn = [[SFIRulesSwitchButton alloc] initWithFrame:CGRectMake(view.frame.origin.x,view.frame.origin.y, frameSize, frameSize)];
                 btnBinarySwitchOn.tag = indexValCounter;
                 btnBinarySwitchOn.valueType=deviceIndex.valueType;
-                btnBinarySwitchOn.device = device;
-                btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:device.deviceID index:deviceIndex.indexID matchData:iVal.matchData];
+//                btnBinarySwitchOn.device = device;
+                btnBinarySwitchOn.deviceType = deviceType;
+                
                 
                 [btnBinarySwitchOn addTarget:self action:@selector(onButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                 [btnBinarySwitchOn setupValues:[UIImage imageNamed:iVal.iconName] Title:iVal.displayText];
                 
-                //get previous highligh
-                for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
-                    if(switchButtonProperty.deviceId == device.deviceID && switchButtonProperty.index == deviceIndex.indexID && [switchButtonProperty.matchData isEqualToString:iVal.matchData]){
-                        btnBinarySwitchOn.selected = YES;
+                btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:iVal.eventType deviceName:deviceName deviceType:deviceType];
+                
+                if(deviceId == 0){
+                    //get previous highligh
+                    for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
+                        if(switchButtonProperty.index == deviceIndex.indexID && [switchButtonProperty.eventType isEqualToString:iVal.eventType] && [switchButtonProperty.matchData isEqualToString:iVal.matchData]){
+                            NSLog(@"indexid: %d, eventtype: %@", switchButtonProperty.index, switchButtonProperty.eventType);
+                            btnBinarySwitchOn.selected = YES;
+                        }
                     }
-                    //break;
+                }else{
+                    //get previous highligh
+                    for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
+                        if(switchButtonProperty.deviceId == deviceId && switchButtonProperty.index == deviceIndex.indexID && [switchButtonProperty.matchData isEqualToString:iVal.matchData]){
+                            btnBinarySwitchOn.selected = YES;
+                        }
+                        //break;
+                    }
                 }
                 //re-arraninging
                 btnBinarySwitchOn.center = CGPointMake(view.bounds.size.width/2,
@@ -367,7 +365,6 @@ NSMutableArray *selectedDayTags;
     return numberOfCells;
 }
 
-
 - (void) shiftButtonsByWidth:(int)width View:(UIView *)view forIteration:(int)i{
     for (int j = 1; j < i; j++) {
         UIView *childView = [view subviews][j-1];
@@ -377,22 +374,6 @@ NSMutableArray *selectedDayTags;
                                      childView.frame.size.width,
                                      childView.frame.size.height);
     }
-}
-
--(SFIButtonSubProperties*) addSubPropertiesFordeviceID:(sfi_id)deviceID index:(int)index matchData:(NSString*)matchData{
-    SFIButtonSubProperties* subProperties = [[SFIButtonSubProperties alloc] init];
-    subProperties.deviceId = deviceID;
-    subProperties.index = index;
-    subProperties.matchData = matchData;
-    
-    return subProperties;
-}
-
--(void) addButtonToArray:(sfi_id)buttonId index:(int)buttonIndex matchData:(NSString*)buttonMatchData{
-    
-    SFIButtonSubProperties *highlightedButtonProperties = [self addSubPropertiesFordeviceID:buttonId index:buttonIndex matchData:buttonMatchData];
-    [self.selectedButtonsPropertiesArray addObject:highlightedButtonProperties];
-    
 }
 
 -(void)toggleHighlightForDeviceNameButton:(RulesDeviceNameButton *)currentButton{
@@ -414,15 +395,14 @@ NSMutableArray *selectedDayTags;
 }
 
 #pragma mark click handlers
--(void)onDeviceButtonClick:(RulesDeviceNameButton *)sender{
-    NSLog(@"onDeviceButtonClick: %@",sender.device);
+-(void)onDeviceButtonClick:(RulesDeviceNameButton *)device{
     [self resetViews];
     //toggeling
-    [self toggleHighlightForDeviceNameButton:sender];
+    [self toggleHighlightForDeviceNameButton:device];
     
     RuleSensorIndexSupport *Index=[[RuleSensorIndexSupport alloc]init];
-    NSArray *deviceIndexes=[Index getIndexesFor:sender.device.deviceType];//need device type
-    [self createDeviceIndexesLayout:sender.device deviceIndexes:deviceIndexes];
+    NSArray *deviceIndexes=[Index getIndexesFor:device.deviceType];//need device type
+    [self createDeviceIndexesLayoutForDeviceId:device.deviceId deviceType:device.deviceType deviceName:device.deviceName deviceIndexes:deviceIndexes];
     
 }
 
@@ -433,17 +413,9 @@ NSMutableArray *selectedDayTags;
     }
     switchButtonClick = (SFIRulesSwitchButton *)sender;
     UIView *superView = [sender superview];
-    
-    if(switchButtonClick.device.deviceType == SFIDeviceType_MultiLevelSwitch_2){
-        [self devicetype2:switchButtonClick];
-        return;
-    }
-    
-    
+
     sfi_id buttonId = switchButtonClick.subProperties.deviceId;
     int buttonIndex = switchButtonClick.subProperties.index;
-    NSString *buttonMatchdata = switchButtonClick.subProperties.matchData;
-    
 
     for(UIView *childView in [superView subviews]){
         if([childView isKindOfClass:[SFIRulesDimmerButton class]]){
@@ -462,52 +434,31 @@ NSMutableArray *selectedDayTags;
     }
     
     //store seleted button in dictionary
-    if (switchButtonClick.selected) {
-        //remove previous
-        NSMutableArray *toBeDeletedSubProperties = [[NSMutableArray alloc] init];
-        for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
-            if((switchButtonProperty.deviceId == buttonId) && (switchButtonProperty.index == buttonIndex)){
-                [toBeDeletedSubProperties addObject:switchButtonProperty];
-            }
-            //break;
+    NSLog(@"triggers list: %@", self.selectedButtonsPropertiesArray);
+    //remove previous
+    NSMutableArray *toBeDeletedSubProperties = [[NSMutableArray alloc] init];
+    for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
+        if((switchButtonProperty.deviceId == buttonId) && (switchButtonProperty.index == buttonIndex)){
+            [toBeDeletedSubProperties addObject:switchButtonProperty];
         }
-        [self.selectedButtonsPropertiesArray removeObjectsInArray:toBeDeletedSubProperties];
-        //add current
-        [self addButtonToArray:buttonId index:buttonIndex matchData:buttonMatchdata];
+        //break;
     }
-    
-    //remove button on deselection
-    else if (switchButtonClick.selected == NO){//rs
-        SFIButtonSubProperties *toBeDeletedProperty;
-        for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
-            if(switchButtonProperty.deviceId == buttonId && switchButtonProperty.index == buttonIndex && [switchButtonProperty.matchData isEqualToString:buttonMatchdata]){
-                toBeDeletedProperty = switchButtonProperty;
-            }
-            //break;
-        }
-        [self.selectedButtonsPropertiesArray removeObject:toBeDeletedProperty];
-    }
-
+    [self.selectedButtonsPropertiesArray removeObjectsInArray:toBeDeletedSubProperties];
+    NSLog(@"triggers list after: %@", self.selectedButtonsPropertiesArray);
+    if (switchButtonClick.selected)
+        [self.selectedButtonsPropertiesArray addObject:switchButtonClick.subProperties];
     
     
-
     //     delegate triggersIndexDict dict
     [self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArray];
     
-    //outer else
 }
 
 
 -(void)onDimmerButtonClick:(id)sender{
-    
     dimmerButtonClick = (SFIRulesDimmerButton *)sender;
-    
     dimmerButtonClick.selected=!dimmerButtonClick.selected;
-    if(dimmerButtonClick.device.deviceType == SFIDeviceType_MultiLevelSwitch_2){
-        [self devicetype2:dimmerButtonClick];
-    }
-    else{
-        
+
     sfi_id dimId = dimmerButtonClick.subProperties.deviceId;
     int dimIndex = dimmerButtonClick.subProperties.index;
     NSLog(@" dim value %ld ,max value %ld",(long)dimmerButtonClick.minValue,(long)dimmerButtonClick.maxValue);
@@ -539,10 +490,10 @@ NSMutableArray *selectedDayTags;
         }];
             dimmerButtonClick.selected = YES;
             //store in array
-            sfi_id dimId = dimmerButtonClick.subProperties.deviceId;
-            int dimIndex = dimmerButtonClick.subProperties.index;
             [dimmerButtonClick setNewValue:newPickerValue];
-            [self addButtonToArray:dimId index:dimIndex matchData:newPickerValue];
+            
+            dimmerButtonClick.subProperties.matchData = newPickerValue;
+            [self.selectedButtonsPropertiesArray addObject:dimmerButtonClick.subProperties];
             
             //delegate triggers dict
             [self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArray];
@@ -558,10 +509,8 @@ NSMutableArray *selectedDayTags;
         }
         
     }
-    
     //delegate triggers dict
     [self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArray];
-    }//outer else
 }
 
 - (void)horizontalpicker:(SFIRulesDimmerButton*)dimButton{
@@ -615,131 +564,6 @@ NSMutableArray *selectedDayTags;
     isPresentHozPicker = YES;
     
 }
-
--(void)devicetype2:(id)sender{
-    NSLog(@"device type 2");
-    if([sender isKindOfClass:[SFIRulesSwitchButton class]]){
-         switchButtonClick = (SFIRulesSwitchButton *)sender;
-        sfi_id buttonId = switchButtonClick.subProperties.deviceId;
-        int buttonIndex = switchButtonClick.subProperties.index;
-        NSString *buttonMatchdata = switchButtonClick.subProperties.matchData;
-        NSLog(@"button index %d ",buttonIndex);
-        UIView *superView = [sender superview];
-        for(UIView *childView in [superView subviews]){
-            if([childView isKindOfClass:[SFIRulesDimmerButton class]]){
-                continue;
-            }else{
-                SFIRulesSwitchButton *switchButton = (SFIRulesSwitchButton*)childView;
-                if(buttonIndex == switchButton.subProperties.index){
-                    if (switchButton.tag == switchButtonClick.tag)
-                    {
-                        switchButton.selected = !switchButton.selected;
-                    }else{
-                        switchButton.selected = NO;
-                    }
-                }
-            }
-        }
-
-        if(switchButtonClick.selected){
-            for (SFIRulesDimmerButton *button in [self.parentViewController.deviceIndexButtonScrollView subviews])
-            {
-                if([button isKindOfClass:[SFIRulesDimmerButton class]])
-                button.selected = NO;
-            }
-            NSMutableArray *toBeDeletedSubProperties = [[NSMutableArray alloc] init];
-            for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
-                if((switchButtonProperty.deviceId == buttonId) && (switchButtonProperty.index == buttonIndex)){
-                    [toBeDeletedSubProperties addObject:switchButtonProperty];
-                }
-                //break;
-            }
-            [self.selectedButtonsPropertiesArray removeObjectsInArray:toBeDeletedSubProperties];
-            //add current
-            [self addButtonToArray:buttonId index:buttonIndex matchData:buttonMatchdata];
-        
-           }
-        else if (switchButtonClick.selected == NO){//rs
-            SFIButtonSubProperties *toBeDeletedProperty;
-            for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
-                if(switchButtonProperty.deviceId == buttonId && switchButtonProperty.index == buttonIndex && [switchButtonProperty.matchData isEqualToString:buttonMatchdata]){
-                    toBeDeletedProperty = switchButtonProperty;
-                }
-                //break;
-            }
-            [self.selectedButtonsPropertiesArray removeObject:toBeDeletedProperty];
-            
-            
-        }
-   
-    }
-    
-    else if([sender isKindOfClass:[SFIRulesDimmerButton class]]){
-         dimmerButtonClick = (SFIRulesDimmerButton *)sender;
-        sfi_id dimId = dimmerButtonClick.subProperties.deviceId;
-        int dimIndex = dimmerButtonClick.subProperties.index;
-        
-        if(dimmerButtonClick.selected){
-            pickerValuesArray = [NSMutableArray new];
-            for (int i=(int)dimmerButtonClick.minValue; i<=(int)dimmerButtonClick.maxValue; i++) {
-                [pickerValuesArray addObject:[NSString stringWithFormat:@"%d",i]];
-            }
-            for (SFIRulesSwitchButton *button in [self.parentViewController.deviceIndexButtonScrollView subviews])
-            {
-                if([button isKindOfClass:[SFIRulesSwitchButton class]]){
-//                    NSLog(@"button.selected = NO ");
-                    button.selected = NO;
-                NSLog(@"button.selected = NO ");
-            }
-                switchButtonClick.selected = NO;// must be solved
-            //[self setupPicker:dimmerButtonClick.dimValue];
-            [self horizontalpicker:dimmerButtonClick];
-
-            }
-        }
-        else if(dimmerButtonClick.selected == NO){
-//            [dimmerButtonClick setNewValue:dimmerButtonClick.subProperties.matchData]; //set initial value
-            NSLog(@" deselected ");
-            //delete property
-            SFIButtonSubProperties *toBeDeletedProperty;
-            for(SFIButtonSubProperties *dimButtonProperty in self.selectedButtonsPropertiesArray){
-                if(dimButtonProperty.deviceId == dimId && dimButtonProperty.index == dimIndex){
-                    toBeDeletedProperty = dimButtonProperty;
-                    NSLog(@"if- deselected dimindex %d",dimIndex);
-                }
-                //break;
-            }
-            [self.selectedButtonsPropertiesArray removeObject:toBeDeletedProperty];
-            
-            if(isPresentHozPicker == YES){
-                [UIView animateWithDuration:2 animations:^{
-                    [picker removeFromSuperview];
-                }];
-                dimmerButtonClick.selected = YES;
-                //store in array
-                sfi_id dimId = dimmerButtonClick.subProperties.deviceId;
-                int dimIndex = dimmerButtonClick.subProperties.index;
-                [dimmerButtonClick setNewValue:newPickerValue];
-                [self addButtonToArray:dimId index:dimIndex matchData:newPickerValue];
-                
-                //delegate triggers dict
-                [self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArray];
-                isPresentHozPicker = NO;
-                
-                
-            }
-            else if (isPresentHozPicker == NO){
-                [UIView animateWithDuration:2 animations:^{
-                    [picker removeFromSuperview];
-                }];
-                
-            }
-        }
-        
-//         [self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArray];
-    }
-     [self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArray];
-    }
 
 #pragma mark time elements
 
@@ -1068,112 +892,6 @@ NSMutableArray *selectedDayTags;
     
     [self setLableText];
 }
-//mode
-#pragma mark mode method
--(void)modeClicked:sender{
-    [self resetViews];
-    [self toggleHighlightForDeviceNameButton:sender];
-    
-    [self addMode];
-}
-
-
--(void)addMode{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,
-                                                            ROW_PADDING,
-                                                            self.parentViewController.view.frame.size.width,
-                                                            frameSize)];
-    [self.parentViewController.deviceIndexButtonScrollView addSubview:view];
-    SFIRulesSwitchButton *homeButton=[[SFIRulesSwitchButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,view.frame.origin.y, frameSize, frameSize)];
-    homeButton.tag=1;
-    [homeButton addTarget:self action:@selector(onModeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [homeButton setupValues:[UIImage imageNamed:@"home_icon"] Title:@"Home"];//
-    homeButton.subProperties = [self addSubPropertiesFordeviceID:0 index:1 matchData:@"home"];
-    
-    //get previous highligh
-    for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
-        if(switchButtonProperty.deviceId == 0 && switchButtonProperty.index == 1 && [switchButtonProperty.matchData isEqualToString:@"home"]){
-            homeButton.selected = YES;
-        }
-        //break;
-    }
-    
-    homeButton.center = CGPointMake(view.bounds.size.width/2,
-                                       view.bounds.size.height/2);
-    homeButton.frame = CGRectMake(homeButton.frame.origin.x - (frameSize/2)+textHeight/2 ,
-                                     homeButton.frame.origin.y,
-                                     homeButton.frame.size.width,
-                                     homeButton.frame.size.height);
-    
-    [view addSubview:homeButton];
-    
-    SFIRulesSwitchButton *awayButton=[[SFIRulesSwitchButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,view.frame.origin.y, frameSize, frameSize)];
-    awayButton.tag=2;
-    [awayButton addTarget:self action:@selector(onModeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [awayButton setupValues:[UIImage imageNamed:@"away_icon"] Title:@"Away"];//
-    awayButton.subProperties = [self addSubPropertiesFordeviceID:0 index:1 matchData:@"away"];
-    
-    //get previous highligh
-    for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
-        if(switchButtonProperty.deviceId == 0 && switchButtonProperty.index == 1 && [switchButtonProperty.matchData isEqualToString:@"away"]){
-            awayButton.selected = YES;
-        }
-        //break;
-    }
-    awayButton.center = CGPointMake(view.bounds.size.width/2,
-                                        view.bounds.size.height/2);
-    awayButton.frame = CGRectMake(awayButton.frame.origin.x + (frameSize/2)+textHeight/2 ,
-                                      awayButton.frame.origin.y,
-                                      awayButton.frame.size.width,
-                                      awayButton.frame.size.height);
-    [view addSubview:awayButton];
-}
-
--(void)onModeButtonClicked:(id)sender{ // to be redirected to onButtonClick upon changin logic of onButtonClick
-    UIView *parentView = [sender superview];
-    switchButtonClick = sender;
-    
-    sfi_id buttonId = switchButtonClick.subProperties.deviceId;
-    int buttonIndex = switchButtonClick.subProperties.index;
-    NSString *buttonMatchdata = switchButtonClick.subProperties.matchData;
-    NSLog(@" button matchdata %@",buttonMatchdata);
-    for(SFIRulesSwitchButton* button in [parentView subviews]){
-        if(button.tag == switchButtonClick.tag){
-            button.selected = !button.selected;
-        }else{
-            button.selected = NO;
-        }
-    }
-    if(switchButtonClick.selected){
-        //remove previous
-        NSMutableArray *toBeDeletedSubProperties = [[NSMutableArray alloc] init];
-        for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
-            if(switchButtonProperty.deviceId == buttonId){
-                [toBeDeletedSubProperties addObject:switchButtonProperty];
-            }
-            //break;
-        }
-        [self.selectedButtonsPropertiesArray removeObjectsInArray:toBeDeletedSubProperties];
-        //add current
-        [self addButtonToArray:buttonId index:buttonIndex matchData:buttonMatchdata];
-  
-    }
-    
-    else{
-        SFIButtonSubProperties *toBeDeletedProperty;
-        for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
-            if(switchButtonProperty.deviceId == buttonId && switchButtonProperty.index == buttonIndex && [switchButtonProperty.matchData isEqualToString:buttonMatchdata]){
-                toBeDeletedProperty = switchButtonProperty;
-            }
-            //break;
-        }
-        [self.selectedButtonsPropertiesArray removeObject:toBeDeletedProperty];
-
-    }
-    [self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArray];
-}
 
 -(void)resetViews{
     self.parentViewController.TimeSectionView.hidden = YES;
@@ -1186,173 +904,55 @@ NSMutableArray *selectedDayTags;
     }
 }
 
-// wifi client
 #pragma mark wifiClient methods
--(void)wifiClientsClicked:(id)sender{
-    [self resetViews];
-    [self toggleHighlightForDeviceNameButton:sender];
-    
-    int i =0;
-    
-        NSLog(@"wifi clients array: %@", self.parentViewController.wifiClientsArray);
-    for(SFIConnectedDevice *connectedClient in self.parentViewController.wifiClientsArray){
-        if(connectedClient.deviceUseAsPresence){
-            [self addWiFiClient:connectedClient withY:ROW_PADDING + (ROW_PADDING+frameSize)*i];
-            i++;
-        }
-    }
-    CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
-                                       (frameSize + ROW_PADDING )*i + ROW_PADDING);
-    //NSLog(@" scrollableSize %@",scrollableSize);
-    
-    [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
-}
 
--(void)addWiFiClient:(SFIConnectedDevice*)connectedClient withY:(int)yScale{
-    
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,
-                                                            yScale,
-                                                            self.parentViewController.view.frame.size.width,
-                                                            frameSize)];
-    [self.parentViewController.deviceIndexButtonScrollView addSubview:view];
-    
-    UILabel *clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(view.frame.origin.x, -20, view.frame.size.width, 14)];
-    clientNameLabel.text = connectedClient.name;
+-(void)addClientNameLabel:(NSString*)clientName yScale:(int)yScale{
+    UILabel *clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, yScale-20, self.parentViewController.view.frame.size.width, 14)];
+    clientNameLabel.text = clientName;
     clientNameLabel.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:3];
     clientNameLabel.font = [UIFont systemFontOfSize:12];
     clientNameLabel.backgroundColor = [UIColor clearColor];
     clientNameLabel.textAlignment = NSTextAlignmentCenter;
     clientNameLabel.textColor = [UIColor lightGrayColor];
-    [view addSubview:clientNameLabel];
-    //join
-    SFIRulesSwitchButton *clientBtnJoin=[[SFIRulesSwitchButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,view.frame.origin.y, frameSize, frameSize)];
-    clientBtnJoin.tag=1;
-    clientBtnJoin.generic = (SFIConnectedDevice*)connectedClient;
-    [clientBtnJoin addTarget:self action:@selector(onWiFIClientButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [clientBtnJoin setupValues:[UIImage imageNamed:@"device-joining"] Title:@"JOIN"];//
-    clientBtnJoin.subProperties = [self addSubPropertiesFordeviceID:connectedClient.deviceID.intValue index:0 matchData:connectedClient.deviceMAC andEventType:@"ClientJoined"];
-    
-    //get previous highligh - using different button to differtiate buttons
-    for(SFIButtonSubProperties *switchButtonProperty in self.selectedWiFiClientProperty){
-        if(switchButtonProperty.deviceId == connectedClient.deviceID.intValue && [switchButtonProperty.eventType isEqualToString:@"ClientJoined"]){
-            clientBtnJoin.selected = YES;
-        }
-        //break;
-    }
-    clientBtnJoin.center = CGPointMake(view.bounds.size.width/2,
-                                       view.bounds.size.height/2);
-    clientBtnJoin.frame = CGRectMake(clientBtnJoin.frame.origin.x - (frameSize/2)+textHeight/2 ,
-                                     clientBtnJoin.frame.origin.y,
-                                     clientBtnJoin.frame.size.width,
-                                     clientBtnJoin.frame.size.height);
-    
-    
-    [view addSubview:clientBtnJoin];
-    
-    //leave
-    SFIRulesSwitchButton *clientBtnLeave=[[SFIRulesSwitchButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,view.frame.origin.y, frameSize, frameSize)];
-    clientBtnLeave.tag=2;
-    clientBtnLeave.generic = (SFIConnectedDevice*)connectedClient;
-    [clientBtnLeave addTarget:self action:@selector(onWiFIClientButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [clientBtnLeave setupValues:[UIImage imageNamed:@"device-leaving"] Title:@"LEAVE"];//
-    clientBtnLeave.subProperties = [self addSubPropertiesFordeviceID:connectedClient.deviceID.intValue index:0 matchData:connectedClient.name andEventType:@"ClientLeft"];
-    //get previous highligh
-    for(SFIButtonSubProperties *switchButtonProperty in self.selectedWiFiClientProperty){
-        if(switchButtonProperty.deviceId == connectedClient.deviceID.intValue && [switchButtonProperty.eventType isEqualToString:@"ClientLeft"]){
-            clientBtnLeave.selected = YES;
-        }
-        //break;
-    }
-    
-    clientBtnLeave.center = CGPointMake(view.bounds.size.width/2,
-                                        view.bounds.size.height/2);
-    clientBtnLeave.frame = CGRectMake(clientBtnLeave.frame.origin.x + (frameSize/2)+textHeight/2 ,
-                                      clientBtnLeave.frame.origin.y,
-                                      clientBtnLeave.frame.size.width,
-                                      clientBtnLeave.frame.size.height);
-    [view addSubview:clientBtnLeave];
-}
+    [self.parentViewController.deviceIndexButtonScrollView addSubview:clientNameLabel];
 
--(void)onWiFIClientButtonClicked:(SFIRulesSwitchButton*)sender{
-    
-    UIView *parentView = [sender superview];
-    switchButtonClick = sender; //need to change to wifi client button
-//    connectedDevice - you dont need this, that why we are storing subproperties while painting button
-    int deviceId = switchButtonClick.subProperties.deviceId; //clientid
-    int index = switchButtonClick.subProperties.index; //0
-    NSString *MAC = switchButtonClick.subProperties.matchData; //mac
-    
-    //toggle highlight
-    for(id subView in [parentView subviews]){
-        if([subView isKindOfClass:[UILabel class]]){
-            continue;
-        }
-        SFIRulesSwitchButton *button = subView;
-        if(button.tag == switchButtonClick.tag){
-            button.selected = !button.selected;
-        }else{
-            button.selected = NO;
-        }
-    }
-    //store properties
-    if(switchButtonClick.selected){
-        //rushabh
-        //if tag = 1 join ,tag = 2 leave
-        NSString *eventType = [NSString new];
-        if(sender.tag == 1){
-            eventType = @"ClientJoined";
-        }
-        else if(sender.tag == 2){
-            eventType = @"ClientLeft";
-        }
-        //remove previous
-        BOOL isFound = NO;
-        NSMutableArray *toBeDeletedSubProperties = [[NSMutableArray alloc] init];
-        for(SFIButtonSubProperties *switchButtonProperty in self.selectedWiFiClientProperty){
-            if(switchButtonProperty.deviceId == deviceId){ //can deviceid and clientid be same - any ways you are removing from selected wificlientproperty
-                [toBeDeletedSubProperties addObject:switchButtonProperty];
-                isFound = YES;
+}
+-(void)wifiClientsClicked:(RulesDeviceNameButton*)deviceButton{
+    [self resetViews];
+    [self toggleHighlightForDeviceNameButton:deviceButton];
+    int i =0;
+    NSLog(@"wifi clients array: %@", self.parentViewController.wifiClientsArray);
+    for(SFIConnectedDevice *connectedClient in self.parentViewController.wifiClientsArray){
+        if(connectedClient.deviceUseAsPresence){
+            int yScale = ROW_PADDING + (ROW_PADDING+frameSize)*i;
+            [self addClientNameLabel:connectedClient.name yScale:yScale];
+            
+            RuleSensorIndexSupport *Index=[[RuleSensorIndexSupport alloc]init];
+            NSArray *deviceIndexes= [Index getIndexesFor:deviceButton.deviceType];
+            
+            SFIDeviceIndex *deviceIndex = deviceIndexes[0];
+            deviceIndex.indexID = connectedClient.deviceID.intValue;
+            for(IndexValueSupport *iVal in deviceIndex.indexValues){
+                iVal.matchData = connectedClient.deviceMAC;
             }
-            //break;
+            [self addMyButtonwithYScale:yScale withDeviceIndex:deviceIndexes deviceId:0 deviceType:SFIDeviceType_WIFIClient deviceName:connectedClient.name];
+            i++;
         }
-//        if(isFound){
-             [self.selectedWiFiClientProperty removeObjectsInArray:toBeDeletedSubProperties];
-//        }
-       
-        //add current
-        [self storeWiFiClientProperty:deviceId index:index matchData:MAC withEventType:eventType];
-        //rushabh
     }
-    else{
-        //just remove
-        SFIButtonSubProperties *toBeDeletedProperty;
-        for(SFIButtonSubProperties *switchButtonProperty in self.selectedWiFiClientProperty){
-            if(switchButtonProperty.deviceId == deviceId && switchButtonProperty.index == index && [switchButtonProperty.matchData isEqualToString:MAC]){
-                toBeDeletedProperty = switchButtonProperty;
-            }
-            //break;
-        }
-        [self.selectedWiFiClientProperty removeObject:toBeDeletedProperty];
-    }
-    
-    [self.delegate updateWifiClientsButtonsPropertiesArray:self.selectedWiFiClientProperty];//rushabh
+    CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
+                                       (frameSize + ROW_PADDING )*i + ROW_PADDING);
+    [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
 }
 
 //rushabh
--(void)storeWiFiClientProperty:(int)deviceId index:(int)index matchData:(NSString*)MAC withEventType:(NSString *)eventType{
-    SFIButtonSubProperties *highlightedButtonProperties = [self addSubPropertiesFordeviceID:deviceId index:index matchData:MAC andEventType:eventType];//here index 0 constant for wificlient - Mas - index we are setting in properties it self
-    [self.selectedWiFiClientProperty addObject:highlightedButtonProperties];
-}
-//rushabh
-
--(SFIButtonSubProperties*) addSubPropertiesFordeviceID:(sfi_id)deviceID index:(int)index matchData:(NSString*)matchData andEventType:(NSString *)eventType{ //overLoaded
-     SFIButtonSubProperties* subProperties = [[SFIButtonSubProperties alloc] init];
-     subProperties.deviceId = deviceID;
-     subProperties.index = index;
-     subProperties.matchData = matchData;
-     subProperties.eventType = eventType;
- 
+-(SFIButtonSubProperties*) addSubPropertiesFordeviceID:(sfi_id)deviceID index:(int)index matchData:(NSString*)matchData andEventType:(NSString *)eventType deviceName:(NSString*)deviceName deviceType:(SFIDeviceType)deviceType{ //overLoaded
+    SFIButtonSubProperties* subProperties = [[SFIButtonSubProperties alloc] init];
+    subProperties.deviceId = deviceID;
+    subProperties.index = index;
+    subProperties.matchData = matchData;
+    subProperties.eventType = eventType;
+    subProperties.deviceName = deviceName;
+    subProperties.deviceType = deviceType;
      return subProperties;
  }
 

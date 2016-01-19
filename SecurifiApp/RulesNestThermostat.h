@@ -13,6 +13,6 @@
 @interface RulesNestThermostat : NSObject
 
 //altering device indexes as per the incoming conditions
--(NSArray*) createNestThermostatDeviceIndexes:(NSArray*) deviceIndexes device:(SFIDevice*)device deviceValue:(SFIDeviceValue*)deviceValue;
+-(NSArray*) createNestThermostatDeviceIndexes:(NSArray*) deviceIndexes deviceValue:(SFIDeviceValue*)deviceValue;
 
 @end

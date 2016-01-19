@@ -22,16 +22,35 @@
             s1.iconName = @"home_icon";
             s1.displayText=@"Home";
             s1.notificationText = @"";
+            s1.eventType = @"AlmondModeUpdated";
             
             IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
             s2.matchData = @"away";
             s2.iconName = @"away_icon";
             s2.displayText=@"Away";
             s2.notificationText = @"";
-            
+            s2.eventType = @"AlmondModeUpdated";
             return @[s1, s2];
         }
             break;
+        case SFIDeviceType_WIFIClient:{
+            IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+            s1.matchData = @"";
+            s1.iconName = @"device-joining";
+            s1.displayText=@"JOIN";
+            s1.notificationText = @"";
+            s1.eventType = @"ClientJoined";
+            
+            IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+            s2.matchData = @"";
+            s2.iconName = @"device-leaving";
+            s2.displayText=@"LEAVE";
+            s2.notificationText = @"";
+            s2.eventType = @"ClientLeft";
+            
+            return @[s1, s2];
+
+        }
         case SFIDeviceType_UnknownDevice_0:
             break;
             
@@ -2914,6 +2933,14 @@
 - (NSArray *)getIndexesFor:(SFIDeviceType)device {
     switch (device) {
         case SFIDeviceType_BinarySwitch_0:{
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] init];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY];
+            deviceIndex1.indexID = 1;
+            deviceIndex1.cellId = 1;
+            deviceIndex1.isEditableIndex = YES;
+            return @[deviceIndex1];
+        }
+        case SFIDeviceType_WIFIClient:{
             SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] init];
             deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY];
             deviceIndex1.indexID = 1;

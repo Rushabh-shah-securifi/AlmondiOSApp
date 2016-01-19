@@ -12,7 +12,7 @@
 
 @implementation RulesNestThermostat
 
--(NSArray*) createNestThermostatDeviceIndexes:(NSArray*) deviceIndexes device:(SFIDevice*)device deviceValue:(SFIDeviceValue*)deviceValue{
+-(NSArray*) createNestThermostatDeviceIndexes:(NSArray*) deviceIndexes deviceValue:(SFIDeviceValue*)deviceValue{
     NSLog(@"createNestThermostatDeviceIndexes");
     deviceIndexes = [self nestThermostat:deviceValue withDeviceIndexes:deviceIndexes];
     deviceIndexes = [self adjustCellIDs:deviceValue withDeviceIndexes:deviceIndexes];

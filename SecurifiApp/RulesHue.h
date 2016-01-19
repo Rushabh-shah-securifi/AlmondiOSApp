@@ -31,6 +31,6 @@
 @property (nonatomic, strong)NSMutableArray *selectedButtonsPropertiesArray;
 
 
--(void) createHueCellLayout:(SFIDevice*)device deviceIndexes:(NSArray*)deviceIndexes scrollView:(UIScrollView *)scrollView cellCount:(int)numberOfCells indexesDictionary:(NSDictionary*)deviceIndexesDict;
+-(void) createHueCellLayoutWithDeviceId:(int)deviceId deviceType:(int)deviceType deviceIndexes:(NSArray*)deviceIndexes scrollView:(UIScrollView *)scrollView cellCount:(int)numberOfCells indexesDictionary:(NSDictionary*)deviceIndexesDict;
 
 @end

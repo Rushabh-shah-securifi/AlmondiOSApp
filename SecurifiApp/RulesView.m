@@ -35,13 +35,8 @@
 @interface RulesView()<UIPickerViewDelegate,UIPickerViewDataSource>
 @property(nonatomic) NSMutableArray* rulesTriggersIndexValSupport;
 @property(nonatomic) NSMutableArray* rulesActionsIndexValSupport;
-@property(nonatomic) SFIButtonSubProperties *triggerModeProperties;
-@property(nonatomic) SFIButtonSubProperties *actionModeProperties;
-@property(nonatomic) NSMutableArray* wifiClientsSupport;
-@property(nonatomic) NSMutableArray* actionModePropertyArray;
 @property(nonatomic) AddActions* actionsView;
-@property(nonatomic) NSArray *wifi;
-
+@property(nonatomic) NSArray *wifiClients;
 @property(nonatomic) SavedRulesTableViewController *ruleTable;
 @end
 
@@ -62,16 +57,12 @@ UIView * actionSheet;
 -(id)init{
     if(self == [super init]){
         NSLog(@"init method");
-        self.wifi = [NSArray new];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         SFIAlmondPlus *plus = [toolkit currentAlmond];
-        self.deviceArray = [NSMutableArray arrayWithArray:[toolkit deviceList:plus.almondplusMAC]];/*- (NSArray *)deviceList:(NSString *)almondMac;*/
-        //        DeviceListAndValues *deviceandValue = [[DeviceListAndValues alloc]init];
-        //        self.deviceArray =[deviceandValue addDevice];
-        //self.deviceValueArray = [deviceandValue addDeviceValues];
+        self.deviceArray = [NSMutableArray arrayWithArray:[toolkit deviceList:plus.almondplusMAC]];
+        self.wifiClients = [NSMutableArray arrayWithArray:toolkit.wifiClientParser];
         self.actionsView = [AddActions new];
-        self.wifiClientsSupport = [NSMutableArray new];
-        //        actionSheet = nil;
+        //actionSheet = nil;
     }
     return self;
 }
@@ -101,41 +92,117 @@ UIView * actionSheet;
     return rulesValSupport;
 }
 
-//triggers - need to loop as I needed device type
--(void) createTriggersRulesIndexValArray{
+- (NSArray*)getDeviceIndexes:(SFIDeviceType)deviceType{
     RuleSensorIndexSupport *Index=[[RuleSensorIndexSupport alloc]init];
-    int positionId = 0;
-    for (SFIButtonSubProperties *buttonProperties in self.rule.triggers) {
-        for(SFIDevice *myDevice in self.deviceArray){ // using as we require devicetype
-            if(myDevice.deviceID == buttonProperties.deviceId){
-                NSArray *deviceIndexes=[Index getIndexesFor:myDevice.deviceType];
-                for(SFIDeviceIndex *deviceIndex in deviceIndexes){
-                    if (deviceIndex.indexID == buttonProperties.index) {
-                        NSArray *indexValues = deviceIndex.indexValues;
-                        for(IndexValueSupport *iVal in indexValues){
-                            if([iVal.matchData isEqualToString:buttonProperties.matchData]){
-                                [self.rulesTriggersIndexValSupport addObject:[self createRulesIndexValueSupport:iVal.iconName text:iVal.displayText title:myDevice.deviceName layoutType:iVal.layoutType suffix:iVal.valueFormatter.suffix withDeviceID:myDevice.deviceID positionId:positionId]];
-                                break;
-                            }
-                            else if([iVal.layoutType isEqualToString:@"dimButton"] ){ //to do handle device 2
-                                //buttonProperties.matchData has current data
-                                [self.rulesTriggersIndexValSupport addObject:[self createRulesIndexValueSupport:iVal.iconName text:iVal.displayText title:myDevice.deviceName layoutType:iVal.layoutType suffix:iVal.valueFormatter.suffix withDeviceID:myDevice.deviceID positionId:positionId]];
-                                break;
-                            }
-                            else if([iVal.layoutType isEqualToString:@"hue"]){
-                                [self.rulesTriggersIndexValSupport addObject:[self createRulesIndexValueSupport:iVal.iconName text:iVal.displayText title:myDevice.deviceName layoutType:iVal.layoutType suffix:iVal.valueFormatter.suffix withDeviceID:myDevice.deviceID positionId:positionId]];
-                                break;
-                            }
-                        }
-                        //                        break;
-                    }
+    return [Index getIndexesFor:deviceType];
+}
+
+-(void)addModeIndexValuesForProperties:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId{
+    NSArray *deviceIndexes=[self getDeviceIndexes:buttonProperties.deviceType];
+    SFIDeviceIndex *deviceIndex = deviceIndexes[0];
+    NSArray *indexValues = deviceIndex.indexValues;
+    for(IndexValueSupport *iVal in indexValues){
+        if([buttonProperties.matchData isEqualToString:iVal.matchData]){
+            [self.rulesTriggersIndexValSupport addObject:[self createRulesIndexValueSupport:iVal.iconName text:iVal.displayText title:@"Mode" layoutType:@"" suffix:@"" withDeviceID:buttonProperties.deviceId positionId:positionId]];
+        }
+    }
+}
+
+-(void)addWifiClientsIndexValuesForProperties:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSLog(@"button %@ ,%d,%d",buttonProperties.matchData ,buttonProperties.index,buttonProperties.deviceId);
+    for(SFIConnectedDevice *myDevice in toolkit.wifiClientParser){
+        if(myDevice.deviceID.intValue == buttonProperties.index){
+            NSArray *deviceIndexes=[self getDeviceIndexes:buttonProperties.deviceType];
+            SFIDeviceIndex *deviceIndex = deviceIndexes[0];
+            NSArray *indexValues = deviceIndex.indexValues;
+            NSLog(@"device id matched %@",buttonProperties.eventType);
+            for(IndexValueSupport *iVal in indexValues){
+                if([buttonProperties.eventType isEqualToString:iVal.eventType]){
+                    [self.rulesTriggersIndexValSupport addObject:[self createRulesIndexValueSupport:iVal.iconName text:iVal.displayText title:myDevice.name layoutType:@"" suffix:@"" withDeviceID:(myDevice.deviceID).intValue positionId:positionId]];
                 }
             }
-            //            break;
         }
+    }
+}
+
+
+-(void) createTriggersRulesIndexValArray{
+    int positionId = 0;
+    for (SFIButtonSubProperties *buttonProperties in self.rule.triggers) {
+        if(buttonProperties.deviceType == SFIDeviceType_BinarySwitch_0){
+            [self addModeIndexValuesForProperties:buttonProperties positionId:positionId];
+        }
+        else if(buttonProperties.deviceType == SFIDeviceType_WIFIClient){
+            [self addWifiClientsIndexValuesForProperties:buttonProperties positionId:positionId];
+            
+        }else{
+            for(SFIDevice *myDevice in self.deviceArray){ // using as we require devicetype
+                if(myDevice.deviceID == buttonProperties.deviceId){
+                    NSArray *deviceIndexes=[self getDeviceIndexes:myDevice.deviceType];
+                    for(SFIDeviceIndex *deviceIndex in deviceIndexes){
+                        if (deviceIndex.indexID == buttonProperties.index) {
+                            NSArray *indexValues = deviceIndex.indexValues;
+                            for(IndexValueSupport *iVal in indexValues){
+                                if([iVal.matchData isEqualToString:buttonProperties.matchData]){
+                                    [self.rulesTriggersIndexValSupport addObject:[self createRulesIndexValueSupport:iVal.iconName text:iVal.displayText title:myDevice.deviceName layoutType:iVal.layoutType suffix:iVal.valueFormatter.suffix withDeviceID:myDevice.deviceID positionId:positionId]];
+                                    break;
+                                }
+                                else if([iVal.layoutType isEqualToString:@"dimButton"] ){ //to do handle device 2
+                                    //buttonProperties.matchData has current data
+                                    [self.rulesTriggersIndexValSupport addObject:[self createRulesIndexValueSupport:iVal.iconName text:iVal.displayText title:myDevice.deviceName layoutType:iVal.layoutType suffix:iVal.valueFormatter.suffix withDeviceID:myDevice.deviceID positionId:positionId]];
+                                    break;
+                                }
+                                else if([iVal.layoutType isEqualToString:@"hue"]){
+                                    [self.rulesTriggersIndexValSupport addObject:[self createRulesIndexValueSupport:iVal.iconName text:iVal.displayText title:myDevice.deviceName layoutType:iVal.layoutType suffix:iVal.valueFormatter.suffix withDeviceID:myDevice.deviceID positionId:positionId]];
+                                    break;
+                                }
+                            }
+                            //                        break;
+                        }
+                    }
+                }
+                //            break;
+            }
+        }
+        
         positionId++;
     }
 }
+
+
+//-(void) createTriggersRulesIndexValArray{
+//    RuleSensorIndexSupport *Index=[[RuleSensorIndexSupport alloc]init];
+//    int positionId = 0;
+//    for (SFIButtonSubProperties *buttonProperties in self.rule.triggers) {
+//        if (buttonProperties.deviceType == SFIDeviceType_WIFIClient) {
+//            <#statements#>
+//        }
+//        NSArray *deviceIndexes=[Index getIndexesFor:buttonProperties.deviceType];
+//        for(SFIDeviceIndex *deviceIndex in deviceIndexes){
+//            if (deviceIndex.indexID == buttonProperties.index) {
+//                NSArray *indexValues = deviceIndex.indexValues;
+//                for(IndexValueSupport *iVal in indexValues){
+//                    if([iVal.matchData isEqualToString:buttonProperties.matchData]){
+//                        [self.rulesTriggersIndexValSupport addObject:[self createRulesIndexValueSupport:iVal.iconName text:iVal.displayText title:buttonProperties.deviceName layoutType:iVal.layoutType suffix:iVal.valueFormatter.suffix withDeviceID:buttonProperties.deviceId positionId:positionId]];
+//                        break;
+//                    }
+//                    else if([iVal.layoutType isEqualToString:@"dimButton"] ){ //to do handle device 2
+//                        //buttonProperties.matchData has current data
+//                        [self.rulesTriggersIndexValSupport addObject:[self createRulesIndexValueSupport:iVal.iconName text:iVal.displayText title:buttonProperties.deviceName layoutType:iVal.layoutType suffix:iVal.valueFormatter.suffix withDeviceID:buttonProperties.deviceId positionId:positionId]];
+//                        break;
+//                    }
+//                    else if([iVal.layoutType isEqualToString:@"hue"]){
+//                        [self.rulesTriggersIndexValSupport addObject:[self createRulesIndexValueSupport:iVal.iconName text:iVal.displayText title:buttonProperties.deviceName layoutType:iVal.layoutType suffix:iVal.valueFormatter.suffix withDeviceID:buttonProperties.deviceId positionId:positionId]];
+//                        break;
+//                    }
+//
+//                }
+//            }
+//        }
+//        positionId++;
+//    }
+//}
 
 //actions
 -(void) createActionsRulesIndexValArray{
@@ -147,7 +214,7 @@ UIView * actionSheet;
             if(myDevice.deviceID == buttonProperties.deviceId){
                 NSMutableArray *deviceIndexes = [NSMutableArray arrayWithArray:[Index getIndexesFor:myDevice.deviceType]];
                 
-                if ([self.actionsView istoggle:myDevice]) {
+                if ([self.actionsView istoggle:myDevice.deviceType]) {
                     NSLog(@" it is toggle index");
                     SFIDeviceIndex *temp = [self.actionsView getToggelDeviceIndex];
                     [deviceIndexes addObject : temp];
@@ -182,64 +249,6 @@ UIView * actionSheet;
     }
 }
 
--(void)retriveTriggerMode{
-    int positionId = 0;
-    for (SFIButtonSubProperties *buttonProperties in self.rule.triggers) {
-        if(buttonProperties.deviceId == 0){
-            NSLog(@"retriveTriggerMode - position id : %d", positionId);
-            self.triggerModeProperties = [[SFIButtonSubProperties alloc]init];
-            buttonProperties.positionId = positionId;
-            self.triggerModeProperties = buttonProperties;
-        }
-        positionId++;
-    }
-}
-
--(void)retriveActionMode{
-    self.actionModePropertyArray = [[NSMutableArray alloc]init];
-    int positionId=0;
-    for (SFIButtonSubProperties *buttonProperties in self.rule.actions) {
-        if(buttonProperties.deviceId == 0){
-            buttonProperties.positionId = positionId;
-            [self.actionModePropertyArray addObject:buttonProperties];
-        }
-        positionId++;
-    }
-    NSLog(@" actionModePropertyArray.count %ld",self.actionModePropertyArray.count);
-}
-
--(void)retriveWifiClients{
-    [self.wifiClientsSupport removeAllObjects];
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.wifiClientsArray = toolkit.wifiClientParser;
-    NSLog(@"wificlients: %ld, client device array: %@", (unsigned long)self.rule.wifiClients.count, self.wifiClientsArray);
-    int positionId = 0;
-    for (SFIButtonSubProperties *buttonProperties in self.rule.wifiClients) {
-        NSLog(@"button %@ ,%d,%d",buttonProperties.matchData ,buttonProperties.index,buttonProperties.deviceId);
-        for(SFIConnectedDevice *myDevice in toolkit.wifiClientParser){
-            if(myDevice.deviceID.intValue == buttonProperties.deviceId){
-                NSLog(@"device id matched %@",buttonProperties.eventType);
-                if([buttonProperties.eventType isEqualToString:@"ClientJoined"]){
-                    
-                    [self.wifiClientsSupport addObject:[self createRulesIndexValueSupport:@"device-joining" text:@"Join" title:myDevice.name layoutType:@"" suffix:@"" withDeviceID:(myDevice.deviceID).intValue positionId:positionId]];
-                    [self refreshArray];
-                }else if([buttonProperties.eventType isEqualToString:@"ClientLeft"]){
-                    NSLog(@"client left mydevice mac %@ ,device name: %@,",myDevice.deviceMAC,myDevice.name);
-                    [self.wifiClientsSupport addObject:[self createRulesIndexValueSupport:@"device-leaving" text:@"Leave" title:myDevice.name layoutType:@"" suffix:@"" withDeviceID:(myDevice.deviceID).intValue positionId:positionId]];
-                    [self refreshArray];
-                }
-                break;
-            }
-        }
-        positionId++;
-    }
-}
-
--(void)refreshArray{
-    NSArray *cleanedArray = [[NSSet setWithArray:self.wifiClientsSupport] allObjects];
-    self.wifiClientsSupport =[NSMutableArray arrayWithArray:cleanedArray];
-}
-
 
 //incoming point - preprocessing is done here
 - (void)createTriggersActionsView:(UIScrollView*)triggersActionsScrollView{
@@ -249,18 +258,12 @@ UIView * actionSheet;
     for (UIView *v in viewsToRemove) {
         [v removeFromSuperview];
     }
-    //trigger - time
     
-    //trigger - clients
-    [self retriveWifiClients];
-    //trigger - mode
-    [self retriveTriggerMode];
-    [self retriveActionMode];
-    
-    //rules selected items
+    //trigger - devices
     self.rulesTriggersIndexValSupport = [NSMutableArray new];
     [self createTriggersRulesIndexValArray];
-    
+
+    //action - devices
     self.rulesActionsIndexValSupport = [NSMutableArray new];
     [self createActionsRulesIndexValArray];
     
@@ -376,72 +379,6 @@ UIView * actionSheet;
     return xVal;
 }
 
--(int)drawMode:(UIScrollView *)scrollView xPosition:(int)xVal isTrigger:(BOOL)isTrigger{
-    SFITriggersActionsSwitchButton *switchButton = [[SFITriggersActionsSwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, triggerActionBtnWidth, triggerActionBtnHeight)];
-    if([self.triggerModeProperties.matchData isEqualToString:@"home"]){
-        NSLog(@"home mode");
-        [switchButton setupValues:[UIImage imageNamed:@"home_icon"] Title:@"Mode" displayText:@"Home"];
-        [switchButton setButtonCross:self.toHideCrossButton];
-        switchButton.crossButton.subproperty = [self createSubPropertiesFordeviceID:0 positionId:self.triggerModeProperties.positionId];
-    }else{
-        NSLog(@"away mode");
-        [switchButton setupValues:[UIImage imageNamed:@"away_icon"] Title:@"Mode" displayText:@"Away"];
-        [switchButton setButtonCross:self.toHideCrossButton];
-        switchButton.crossButton.subproperty = [self createSubPropertiesFordeviceID:0 positionId:self.triggerModeProperties.positionId];
-    }
-    NSLog(@"mode subproperties: %@", switchButton.crossButton.subproperty);
-    [switchButton changeBGColor:[UIColor colorFromHexString:@"02a8f3"]];
-    [switchButton.crossButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    xVal += triggerActionBtnWidth;
-    [scrollView addSubview:switchButton];
-    self.actionModeProperties = nil;
-    self.triggerModeProperties = nil;
-    return xVal;
-}
-
--(int)drawActionMode:(UIScrollView *)scrollView xPosition:(int)xVal isTrigger:(BOOL)isTrigger{
-    RulesButtonsView *switchButton = [[RulesButtonsView alloc] initWithFrame:CGRectMake(xVal, 5, rulesButtonsViewWidth, rulesButtonsViewHeight)];
-    if([self.triggerModeProperties.matchData isEqualToString:@"home"]){
-        NSLog(@"home mode");
-        [switchButton setupValues:[UIImage imageNamed:@"home_icon"] Title:@"Mode" displayText:@"Home" delay:@"0"];
-        [switchButton->actionbutton setButtonCross:self.toHideCrossButton];
-        (switchButton->actionbutton).crossButton.subproperty = [self createActionsSubPropertiesForDeviceId:0 delay:self.triggerModeProperties.delay positionId:self.triggerModeProperties.positionId];
-        switchButton.subProperties = [self createActionsSubPropertiesForDeviceId:0 delay:self.triggerModeProperties.delay positionId:self.triggerModeProperties.positionId];
-    }else{
-        NSLog(@"away mode");
-        [switchButton setupValues:[UIImage imageNamed:@"away_icon"] Title:@"Mode" displayText:@"Away" delay:@"0"];
-        [(switchButton->actionbutton) setButtonCross:self.toHideCrossButton];
-        (switchButton->actionbutton).crossButton.subproperty = [self createActionsSubPropertiesForDeviceId:0 delay:self.triggerModeProperties.delay positionId:self.triggerModeProperties.positionId];
-        switchButton.subProperties = [self createActionsSubPropertiesForDeviceId:0 delay:self.triggerModeProperties.delay positionId:self.triggerModeProperties.positionId];
-    }
-    
-    [switchButton changeBGColor:[UIColor colorFromHexString:@"FF9500"]];
-    [(switchButton->actionbutton).crossButton addTarget:self action:@selector(onActionCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [switchButton->delayButton addTarget:self action:@selector(onActionDelayButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    xVal += 91;
-    [scrollView addSubview:switchButton];
-    self.actionModeProperties = nil;
-    self.triggerModeProperties = nil;
-    return xVal;
-}
-
--(int)drawClients:(UIScrollView *)scrollView indexValueSupport:(RulesIndexValueSupport*)rVal xCoordinate:(int)xVal{
-    NSLog(@" rVal %d ,%@ ",rVal.deviceID,rVal.matchData);
-    SFITriggersActionsSwitchButton *switchButton = [[SFITriggersActionsSwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, triggerActionBtnWidth, triggerActionBtnHeight)];
-    [switchButton setupValues:[UIImage imageNamed:rVal.iconName] Title:rVal.title displayText:rVal.displayText];
-    NSLog(@" switchbutton %d ,%@,",switchButton.subProperties.deviceId,switchButton.subProperties.matchData);
-    [switchButton setButtonCross:self.toHideCrossButton];
-    switchButton.crossButton.subproperty = [self createSubPropertiesFordeviceID:rVal.deviceID positionId:rVal.positionId];
-    [switchButton.crossButton addTarget:self action:@selector(onClientsCrossButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [switchButton changeBGColor:[UIColor colorFromHexString:@"02a8f3"]];
-    xVal += triggerActionBtnWidth;
-    [scrollView addSubview:switchButton];
-    
-    return xVal;
-}
-
 -(int)drawTime:(UIScrollView *)scrollView xCoordinate:(int)xVal{
     NSLog(@"drawTime");
     
@@ -481,28 +418,7 @@ UIView * actionSheet;
         xVal = [self drawTime:triggersActionsScrollView xCoordinate:xVal];
         isFirst = NO;
     }
-    //trigger - clients
-    for (RulesIndexValueSupport *rVal in self.wifiClientsSupport){
-        if (isFirst){
-            xVal = [self drawClients:triggersActionsScrollView indexValueSupport:rVal xCoordinate:xVal];
-            isFirst = NO;
-            
-        }else{
-            xVal = [self drawAddButton:triggersActionsScrollView xCoordinate:xVal];
-            xVal = [self drawClients:triggersActionsScrollView indexValueSupport:rVal xCoordinate:xVal];
-        }
-    }
-    //trigger - mode
-    if(self.triggerModeProperties != nil){
-        if(isFirst){
-            xVal = [self drawMode:triggersActionsScrollView xPosition:xVal isTrigger:YES];
-            isFirst = NO;
-        }
-        else{
-            xVal = [self drawAddButton:triggersActionsScrollView xCoordinate:xVal];
-            xVal = [self drawMode:triggersActionsScrollView xPosition:xVal isTrigger:YES];
-        }
-    }
+    
     //triggers  device indexes
     for (RulesIndexValueSupport *rVal in self.rulesTriggersIndexValSupport) {
         if (isFirst){
@@ -514,26 +430,9 @@ UIView * actionSheet;
             xVal = [self drawButton:triggersActionsScrollView indexValueSupport:rVal xCoordinate:xVal isTrigger:YES];
         }
     }
-    /********************* actions *****************/
-    //action mode
-    isFirst = YES;
-    if(self.actionModePropertyArray != nil){
-        for(SFIButtonSubProperties *buttonsubproperty in self.actionModePropertyArray){
-            self.triggerModeProperties = buttonsubproperty;
-            if(isFirst){
-                xVal = [self drawArrowButton:triggersActionsScrollView xCoordinate:xVal];
-                xVal = [self drawActionMode:triggersActionsScrollView xPosition:xVal isTrigger:NO];
-                isFirst = NO;
-            }
-            else{
-                xVal = [self drawAddButton:triggersActionsScrollView xCoordinate:xVal];
-                xVal = [self drawActionMode:triggersActionsScrollView xPosition:xVal isTrigger:NO];
-            }
-            
-        }
-        [self.actionModePropertyArray removeAllObjects];
-    }
     
+    /********************* actions *****************/
+    isFirst = YES;
     //actions device indexes
     for (RulesIndexValueSupport *rVal in self.rulesActionsIndexValSupport) {
         if (isFirst){
@@ -564,8 +463,7 @@ UIView * actionSheet;
     return numberOfCells;
 }
 
-
-- (void) shiftButtonsByWidth:(int)width View:(UIView *)view forIteration:(int)i{
+- (void)shiftButtonsByWidth:(int)width View:(UIView *)view forIteration:(int)i{
     for (int j = 1; j < i; j++) {
         UIView *childView = [view subviews][j-1];
         
@@ -601,11 +499,6 @@ UIView * actionSheet;
 -(void)onActionCrossButtonClicked:(CrossButton*)crossButton{
     [self.rule.actions removeObjectAtIndex:crossButton.subproperty.positionId];
     [self.delegate updateActionsArray:self.rule.actions andDeviceIndexesForId:crossButton.subproperty.deviceId];
-}
-
--(void)onClientsCrossButtonClick:(CrossButton*)crossButton{
-    [self.rule.wifiClients removeObjectAtIndex:crossButton.subproperty.positionId];
-    [self.delegate updateWifiClients:self.rule.wifiClients];
 }
 
 -(void)onTimeCrossButtonClick:(CrossButton*)sender{

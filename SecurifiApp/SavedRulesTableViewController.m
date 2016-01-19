@@ -38,11 +38,10 @@
     NSLog(@"savedRuleViewDidLoad");
     self.wiFiClientParser = [[Parser alloc]init];
     self.ruleParser = [[RuleParser alloc]init];
-        [super viewDidLoad];
+    [super viewDidLoad];
     self.rules = [[NSMutableArray alloc]init];
     
     [self getRuleList];
-    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -53,12 +52,12 @@
 }
 
 -(void)requestForRuleList{
-    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     GenericCommand *cmd = [GenericCommand websocketRequestAlmondRules];
     [[SecurifiToolkit sharedInstance] asyncSendToLocal:cmd almondMac:plus.almondplusMAC];
 }
+
 - (void)viewWillAppear:(BOOL)animated{
     NSLog(@"savedRuleviewWillAppear");
 //    [self.rules removeAllObjects];
@@ -68,14 +67,15 @@
     randomMobileInternalIndex = arc4random() % 10000;
      [self initializeNotifications];
     [self addAddRuleButton];
-
 }
+
 -(void)initializeNotifications{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onDynamicRuleUpdateParser:) name:SAVED_TABLEVIEW_DYNAMIC_RULE_UPDATED object:nil];
     [center addObserver:self selector:@selector(onDynamicRuleAdded1:) name:DYNAMIC_RULE_LISTCHANGED object:nil];
     [center addObserver:self selector:@selector(onRuleUpdateCommandResponse:) name:SAVED_TABLEVIEW_RULE_COMMAND object:nil];
 }
+
 - (void)onRuleUpdateCommandResponse:(id)sender{
     NSLog(@"onRuleUpdateCommandResponse");
     NSNotification *notifier = (NSNotification *) sender;
@@ -112,13 +112,6 @@
     [self.rules addObject:mainDict];
     [self.tableView reloadData];
 }
-
-#pragma mark wificlientDelegate
-
-//-(NSMutableArray*)getwificlientDelegate{
-//    return self.wifiClientsArray;
-//}
-
 
 -(void) setUpNavigationBar{
     self.navigationController.navigationBar.translucent = YES;
@@ -193,8 +186,6 @@
         NSLog(@"nil");
         cell = [[CustomCellTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CustomCellTableViewCell"];
     }
-    NSLog(@" rules wifi clients %@",rule.wifiClients);
-//    NSLog(@" rules wificlient array %@",rule.wificlientArray);
     
     cell.delegate = self;
     cell.ruleNameLabel.text = rule.name;
@@ -204,7 +195,6 @@
     rulesviews.delegate = self;
     rulesviews.rule = rule;
     rulesviews.toHideCrossButton = YES;
-    NSLog(@"rules wifi clients at index %ld  %lu",(long)indexPath.row,(unsigned long)rule.wifiClients.count);
     [rulesviews createTriggersActionsView:cell.scrollView];
     // Configure the cell...
     [cell.scrollView setContentOffset:CGPointMake(0,0) animated:YES];
@@ -290,13 +280,11 @@
     Rule *ruleCopy = [[Rule alloc]init];
     ruleCopy.triggers = [originalRule.triggers copy];
     ruleCopy.actions = [originalRule.actions copy];
-    ruleCopy.wifiClients = [originalRule.wifiClients copy];
 //    ruleCopy.time = [originalRule.time copy];
     ruleCopy.isActive = originalRule.isActive;
     ruleCopy.name = [originalRule.name copy];
     ruleCopy.lastActivated = originalRule.lastActivated;
     ruleCopy.ID = [originalRule.ID copy];
-//    ruleCopy.wificlientArray = [originalRule.wificlientArray copy];
     return ruleCopy;
 }
 

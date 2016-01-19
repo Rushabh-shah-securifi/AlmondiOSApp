@@ -10,7 +10,10 @@
 #import "SecurifiToolkit/SFIDevice.h"
 
 @interface RulesDeviceNameButton : UIButton
-@property(nonatomic) SFIDevice *device;
-
+//@property(nonatomic) SFIDevice *device;
+//@property(nonatomic) SFIDeviceType deviceType; //for mode, clients
+@property(nonatomic)int deviceId;
+@property(nonatomic)SFIDeviceType deviceType;
+@property(nonatomic)NSString *deviceName;
 - (void)changeStyle;
 @end

@@ -18,7 +18,8 @@
 @property(nonatomic)SFIDevicePropertyType valueType;
 @property(nonatomic) NSInteger minValue;
 @property(nonatomic) NSInteger maxValue;
-@property(nonatomic) SFIDevice *device;
+//@property(nonatomic) SFIDevice *device;
+@property(nonatomic)SFIDeviceType deviceType;
 
 - (void)setupValues:(NSString*)text  Title:(NSString*)title suffix:(NSString*)prefix;
 - (void)changeStyle;
