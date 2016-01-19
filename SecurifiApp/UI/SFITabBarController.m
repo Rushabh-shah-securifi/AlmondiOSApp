@@ -146,8 +146,9 @@ typedef NS_ENUM(int, TabBarMode) {
         return @[
                  self.sensorTab,
                  self.scenesTab,
-                 self.routerTab,
                  self.rulesTab,
+                 self.routerTab,
+                 
                  ];
     }
     else {
@@ -164,8 +165,9 @@ typedef NS_ENUM(int, TabBarMode) {
     return @[
              self.sensorTab,
              self.scenesTab,
-             self.routerTab,
              self.rulesTab,
+             self.routerTab,
+             
              ];
 }
 

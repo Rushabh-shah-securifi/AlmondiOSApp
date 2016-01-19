@@ -30,6 +30,7 @@ typedef NS_ENUM(unsigned int, ValueFormatterAction) {
 @property(nonatomic) NSString *notificationPrefix;
 
 // when specified the value
+
 @property(nonatomic) NSString *suffix;
 
 - (NSString*)formatNotificationValue:(NSString*)sensorValue;

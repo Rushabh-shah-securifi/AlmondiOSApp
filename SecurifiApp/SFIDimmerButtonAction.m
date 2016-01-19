@@ -58,13 +58,13 @@
 
 - (void)setSelected:(BOOL)selected{
     [super setSelected:selected];
-    [self changeStyle];
+    //[self changeStyle];
 }
 
-- (void)changeStyle{
+- (void)changeStylewithColor:(UIColor*)color{
     if (self.selected) {
-        lblTitle.textColor = [UIColor colorFromHexString:@"FF9500"];
-        bgView.backgroundColor = [UIColor colorFromHexString:@"FF9500"];
+        lblTitle.textColor = color;
+        bgView.backgroundColor = color;
     }else{
         lblTitle.textColor = [UIColor colorFromHexString:@"757575"];
         bgView.backgroundColor = [UIColor colorFromHexString:@"757575"];

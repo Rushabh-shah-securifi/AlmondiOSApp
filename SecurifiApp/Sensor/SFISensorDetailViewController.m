@@ -36,6 +36,7 @@
     IBOutlet UILabel *lblThemperatureMain;
     BOOL canCool;
     BOOL canHeat;
+    BOOL isLocal;//to check local connection
 }
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -48,7 +49,9 @@
     [super viewDidLoad];
     lblDeviceName.text = self.device.deviceName;
     cellFont = [UIFont fontWithName:AVENIR_ROMAN size:17];
-    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    isLocal = [toolkit useLocalNetwork:almond.almondplusMAC];
     
     
     mainBGView.backgroundColor = self.cellColor;
@@ -302,10 +305,14 @@
             case notifyMeIndexPathRow:
                 [self configureNotifyMeCell:cell];
                 break;
-            case deviceHistoryIndexPathRow:
+            case deviceHistoryIndexPathRow:{
+                
+                if(isLocal){
+                    NSLog(@"its cloud connection");
                 [self configureDeviceHistoryCell:cell];
+                }
                 break;
-            
+            }
             default:
                 break;
         }
@@ -351,8 +358,10 @@
             [self editProperty:indexPath.row];
             break;
         case deviceHistoryIndexPathRow:
+           if(isLocal)
             [self showSensorLogs];
             break;
+        
         case lowTemperatureIndexPathRow:
         case highTemperatureIndexPathRow:
         {

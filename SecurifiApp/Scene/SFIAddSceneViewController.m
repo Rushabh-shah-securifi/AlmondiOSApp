@@ -17,6 +17,7 @@
 #import "SFIDeviceIndex.h"
 #import "Colours.h"
 #import "Analytics.h"
+#import "ScenePayload.h"
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]//MD01
 
@@ -118,14 +119,7 @@
 
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self
-               selector:@selector(onDeviceListDidChange:)
-                   name:kSFIDidChangeDeviceList
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onAlmondListDidChange:)
-                   name:kSFIDidUpdateAlmondList
-                 object:nil];
+   
     [center addObserver:self
                selector:@selector(gotResponseFor1064:)
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
@@ -140,186 +134,8 @@
                    name:UIKeyboardDidHideNotification
                  object:nil];
     
-    [center addObserver:self
-               selector:@selector(onDeviceValueListDidChange:)
-                   name:kSFIDidChangeDeviceValueList
-                 object:nil];
-}
+    }
 
-- (void)onDeviceListDidChange:(id)sender {
-    NSLog(@"Sensors: did receive device list change");
-    if (!self) {
-        return;
-    }
-    
-    if (self.isViewControllerDisposed) {
-        return;
-    }
-    
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data == nil) {
-        return;
-    }
-    
-    NSString *cloudMAC = [data valueForKey:@"data"];
-    if (![self isSameAsCurrentMAC:cloudMAC]) {
-        // An Almond not currently being views was changed
-        return;
-    }
-    
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    
-    NSArray *newDeviceList = [toolkit deviceList:cloudMAC];
-    if (newDeviceList == nil) {
-        newDeviceList = @[];
-    }
-    //    [self removeExpandedCellForMissingDevices:newDeviceList];
-    
-    NSArray *newDeviceValueList = [toolkit deviceValuesList:cloudMAC];
-    
-    
-    
-    // Push changes to the UI
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.isViewControllerDisposed) {
-            return;
-        }
-        if ([self isSameAsCurrentMAC:cloudMAC]) {
-            self.deviceList = newDeviceList;///ste
-            if (newDeviceValueList) {
-                [self setDeviceValues:newDeviceValueList];
-            }
-            [self.tableView reloadData];
-        }
-        
-        [self.HUD hide:YES afterDelay:1.5];
-    });
-}
-
-- (void)onDeviceValueListDidChange:(id)sender {
-    DLog(@"Sensors: did receive device values list change");
-    
-    if (!self) {
-        return;
-    }
-    
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (!self) {
-            return;
-        }
-        if (self.isViewControllerDisposed) {
-            return;
-        }
-        [self.HUD hide:YES];
-    });
-    
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data == nil) {
-        return;
-    }
-    
-    NSString *cloudMAC = [data valueForKey:@"data"];
-    if (![self isSameAsCurrentMAC:cloudMAC]) {
-        DLog(@"Sensors: ignore device values list change, c:%@, m:%@", self.almondMac, cloudMAC);
-        // An Almond not currently being viewed was changed
-        return;
-    }
-    
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    
-    NSArray *newDeviceList = [toolkit deviceList:cloudMAC];
-    if (newDeviceList == nil) {
-        DLog(@"Device list is empty: %@", cloudMAC);
-        newDeviceList = @[];
-        //        [self clearAllDeviceUpdatingState];
-    }
-    //    [self removeExpandedCellForMissingDevices:newDeviceList];
-    
-    NSArray *newDeviceValueList = [toolkit deviceValuesList:cloudMAC];
-    if (newDeviceValueList == nil) {
-        newDeviceValueList = @[];
-    }
-    
-    if (newDeviceList.count != newDeviceValueList.count) {
-        ELog(@"Warning: device list and values lists are incongruent, d:%ld, v:%ld", (unsigned long) newDeviceList.count, (unsigned long) newDeviceValueList.count);
-    }
-    
-    //    DLog(@"Changing device value list: %@", newDeviceValueList);
-    
-    // Restore isExpanded state and clear 'updating' state
-    NSArray *oldDeviceList = self.deviceList;
-    for (SFIDevice *newDevice in newDeviceList) {
-        for (SFIDevice *oldDevice in oldDeviceList) {
-            if (newDevice.deviceID == oldDevice.deviceID) {
-                //                [self clearDeviceUpdatingState:oldDevice];
-            }
-        }
-    }
-    
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (!self) {
-            return;
-        }
-        if (self.isViewControllerDisposed) {
-            return;
-        }
-        
-        if (![self isSameAsCurrentMAC:cloudMAC]) {
-            return;
-        }
-        
-        //        [self.refreshControl endRefreshing];
-        
-        [self setDeviceList:newDeviceList];
-        [self setDeviceValues:newDeviceValueList];
-        
-        // defer showing changes when a sensor is being edited (name, location, etc.)
-        //        if (!self.isUpdatingDeviceSettings) {
-        //            [self.tableView reloadData];
-        //        }
-    });
-}
-
-- (void)onAlmondListDidChange:(id)sender {
-    NSLog(@"Sensors: did receive Almond List change");
-    
-    if (!self) {
-        return;
-    }
-    
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    
-    SFIAlmondPlus *plus = [data valueForKey:@"data"];
-    
-    if (plus != nil && [self isSameAsCurrentMAC:plus.almondplusMAC]) {
-        // No reason to alert user
-        return;
-    }
-    
-    // If plus is nil, then there are no almonds attached, and the UI needs to deal with it.
-    
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (!self) {
-            return;
-        }
-        if (!self.isViewLoaded) {
-            return;
-        }
-        if (self.isViewControllerDisposed) {
-            return;
-        }
-        
-        [self.HUD show:YES];
-        
-        [self initializeAlmondData];
-        [self.tableView reloadData];
-        
-        [self.HUD hide:YES afterDelay:1.5];
-    });
-}
 
 
 - (void)initializeAlmondData {
@@ -726,26 +542,10 @@
     
     NSMutableDictionary *newSceneInfo = [NSMutableDictionary new];
     NSMutableDictionary *payloadDict = [NSMutableDictionary new];
-    if (self.sceneInfo) {
-        [payloadDict setValue:@"UpdateScene" forKey:@"CommandType"];
-        [newSceneInfo setValue:[self.sceneInfo valueForKey:@"ID"] forKey:@"ID"];
-        [[Analytics sharedInstance] markUpdateScene];
-        
-    }else{
-        [payloadDict setValue:@"AddScene" forKey:@"CommandType"];
-        [[Analytics sharedInstance] markAddScene];
-    }
-    
-    [payloadDict setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
-    [newSceneInfo setValue:sceneName forKey:@"Name"];
-    if(!local){
-        [payloadDict setValue:_almond.almondplusMAC forKey:@"AlmondMAC"];
-    }
-    
     [self configuresCeneEntryListForSave];
-    [newSceneInfo setValue:sceneEntryList forKey:@"SceneEntryList"];
     
-    [payloadDict setValue:newSceneInfo forKey:@"Scenes"];
+    ScenePayload *scenePayLoad = [ScenePayload new];
+    payloadDict = [scenePayLoad sendScenePayload:self.sceneInfo with:randomMobileInternalIndex with:_almond.almondplusMAC with:sceneEntryList with:sceneName isLocal:local];
     
     NSLog(@"scene local update payload: %@", payloadDict);
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];

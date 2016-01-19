@@ -589,10 +589,12 @@
 
     [self addSubview:control];
     [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
-
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
     SFIHighlightedButton *button = [self addButton:NSLocalizedString(@"sensor.deivice-showlog.button.viewlogs", @"View Device History")];
     [button addTarget:self action:@selector(onShowSensorLogs:) forControlEvents:UIControlEventTouchUpInside];
-
+    
     [self markYOffsetUsingRect:labelMode.frame addAdditional:10];
 }
 

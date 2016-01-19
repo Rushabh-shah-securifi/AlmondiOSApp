@@ -19,9 +19,10 @@
 @property(nonatomic) NSInteger minValue;
 @property(nonatomic) NSInteger maxValue;
 @property(nonatomic) int count;
+@property(nonatomic) SFIDevice *device;
 
 - (void)setupValues:(NSString*)text  Title:(NSString*)title suffix:(NSString*)prefix;
-- (void)changeStyle;
+- (void)changeStylewithColor:(UIColor*)color;
 - (void)setNewValue:(NSString*)text;
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden;
 

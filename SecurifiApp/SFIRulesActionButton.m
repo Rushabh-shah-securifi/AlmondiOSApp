@@ -66,13 +66,13 @@
 
 - (void)setSelected:(BOOL)selected{
     [super setSelected:selected];
-    [self changeStyle];
+   
 }
 
-- (void)changeStyle{
+- (void)changeStylewithColor:(UIColor*)color{
     if (self.selected) {
-        lblTitle.textColor = [UIColor colorFromHexString:@"FF9500"];//FF9500
-        bgView.backgroundColor = [UIColor colorFromHexString:@"FF9500"];
+        lblTitle.textColor = color;//FF9500
+        bgView.backgroundColor = color;
     }else{
         lblTitle.textColor = [UIColor colorFromHexString:@"757575"];
         bgView.backgroundColor = [UIColor colorFromHexString:@"757575"];
@@ -154,6 +154,15 @@
     
     
     
+}
+- (void)changeBGColor:(UIColor*)color{
+    bgView.backgroundColor = color;
+    lblTitle.textColor = color;
+}
+
+- (void)changeImageColor:(UIColor*)color{
+    imgIcon.image = [imgIcon.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+    [imgIcon setTintColor:color];
 }
 
 

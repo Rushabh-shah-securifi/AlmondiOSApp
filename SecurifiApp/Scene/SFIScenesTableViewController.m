@@ -50,7 +50,7 @@
     SFIAlmondPlus *almond = [toolkit currentAlmond];
     BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
     if(!local){
-        [self sendGetAllScenesRequest];
+        [self getAllScenes];
     }
     [self initializeNotifications];
     
@@ -106,15 +106,7 @@
 
 - (void)initializeNotifications{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self
-               selector:@selector(getAllScenesCallback:)
-                   name:NOTIFICATION_GET_ALL_SCENES_NOTIFIER
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(onScenesListChange:)
-                   name:NOTIFICATION_DYNAMIC_SET_CREATE_DELETE_ACTIVATE_SCENE_NOTIFIER
-                 object:nil];
+
     
     [center addObserver:self
                selector:@selector(onCurrentAlmondChanged:)
@@ -136,7 +128,7 @@
 -(void)updateSceneTableView:(id)sender{
     NSLog(@"updateSceneTableView");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    scenesArray = [toolkit.scenesArray copy];
+    scenesArray = [NSMutableArray arrayWithArray:toolkit.scenesArray];
     [self.tableView reloadData];
     
 }
@@ -161,14 +153,7 @@
     
     
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_GET_ALL_SCENES;
-    
-    NSDictionary * testDict =@{@"MobileCommand":@"LIST_SCENE_REQUEST",
-                               @"AlmondMAC":plus.almondplusMAC};
-    
-    NSLog(@"%@",testDict);
-    
-    cloudCommand.command = [testDict JSONString];
+    cloudCommand = [GenericCommand cloudSceneListCommand:plus.almondplusMAC];
     
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     //    self.HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -409,7 +394,9 @@
 #pragma mark Notifications
 - (void)onCurrentAlmondChanged:(id)sender {
     if (scenesArray) {
+        NSLog(@"onCurrentAlmondChanged local %@",scenesArray);
         [scenesArray removeAllObjects];
+        NSLog(@"onCurrentAlmondChanged local %d",scenesArray.count);
     }
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
@@ -424,128 +411,17 @@
         [self markTitle: self.currentAlmond.almondplusName];
     }
     dispatch_async(dispatch_get_main_queue(), ^() {
+        
         [self sendGetAllScenesRequest];
     });
 }
 
-- (void)getAllScenesCallback:(id)sender {
-    NSLog(@"scenetableview - getAllScenesCallback");
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    
+- (void)getAllScenes {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *almond = [toolkit currentAlmond];
-    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
-    NSDictionary *mainDict;
-    if(local){
-//        mainDict = [data valueForKey:@"data"];
-        return;
-    }else{
-        mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    }// required for switching local<=>cloud
-    
-    if ([[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
-        scenesArray = [mainDict valueForKey:@"Scenes"];
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.tableView reloadData];
-            [self hideHude];
-        });
-    
-    }else {
-        DLog(@"Reason Code %@", [mainDict valueForKey:@"reasonCode"]);
-        [self hideHude];
-    }
+    scenesArray = [NSMutableArray arrayWithArray:toolkit.scenesArray];
+    [self.tableView reloadData];
     NSLog(@"scenes array: %@", scenesArray);
-}
-
-- (void)onScenesListChange:(id)sender {
-    NSLog(@"scenetableview - onScenesListChange - dynamic");
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    BOOL local = [self isLocal];
-    NSDictionary *mainDict;
-    if(local){
-//        mainDict = [data valueForKey:@"data"];
-        return; //to be combined with the parser
-    }else{
-        mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    }// required for switching local<=>cloud
-    
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    
-    if (![[mainDict valueForKey:@"AlmondMAC"] isEqualToString:plus.almondplusMAC]) {
-        return;
-    }
-    
-    
-    NSString * commandType = [mainDict valueForKey:@"CommandType"];
-    
-    if ([commandType isEqualToString:@"DynamicSceneActivated"]) {
-        //scenes has been activated
-        for (NSMutableDictionary *sceneDict in scenesArray) {
-            if ([[sceneDict valueForKey:@"ID"] intValue]==[[[mainDict valueForKey:@"Scenes" ] valueForKey:@"ID"] intValue]) {
-                [sceneDict setValue:[[mainDict valueForKey:@"Scenes" ] valueForKey:@"Active"]  forKey:@"Active"];
-                break;
-            }
-        }
-        [self.tableView reloadData];
-        return;
-    }
-    
-    if ([commandType isEqualToString:@"DynamicSceneUpdated"]) {
-        //scenes parameterers has been updated
-        for (NSMutableDictionary *sceneDict in [scenesArray copy]) {
-            if ([[sceneDict valueForKey:@"ID"] intValue]==[[[mainDict valueForKey:@"Scenes"] valueForKey:@"ID"] intValue]) {
-                [sceneDict setValue:[[mainDict valueForKey:@"Scenes"] valueForKey:@"SceneEntryList"] forKey:@"SceneEntryList"];
-                [sceneDict setValue:[[mainDict valueForKey:@"Scenes"] valueForKey:@"Name"] forKey:@"Name"];
-                break;
-            }
-        }
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.tableView reloadData];
-        });
-        return;
-    }
-    
-    if ([commandType isEqualToString:@"DynamicSceneAdded"]) {
-        //scenes has been added
-        BOOL found = NO;
-        for (NSMutableDictionary *sceneDict in [scenesArray copy]) {
-            if ([[sceneDict valueForKey:@"ID"] intValue]==[[[mainDict valueForKey:@"Scenes"] valueForKey:@"ID"] intValue]) {
-                found = YES;
-                break;
-            }
-        }
-        if (!found) {
-            [scenesArray addObject:[mainDict valueForKey:@"Scenes"]];
-            dispatch_async(dispatch_get_main_queue(), ^() {
-                [self.tableView reloadData];
-            });
-            
-        }
-        return;
-    }
-    if ([commandType isEqualToString:@"DynamicSceneRemoved"]) {
-        for (NSDictionary * sceneDict in [scenesArray copy]) {
-            if ([[[mainDict valueForKey:@"Scenes"] valueForKey:@"ID"] intValue]==[[sceneDict valueForKey:@"ID"] intValue])
-            {
-                [scenesArray removeObject:sceneDict];
-                break;
-            }
-        }
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.tableView reloadData];
-        });
-        return;
-    }
-    if ([commandType isEqualToString:@"DynamicAllScenesRemoved"]) {
-        [scenesArray removeAllObjects];
-        dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.tableView reloadData];
-        });
-        return;
-    }
 }
 
 - (void)gotResponseFor1064:(id)sender {

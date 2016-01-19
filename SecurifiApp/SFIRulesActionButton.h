@@ -16,8 +16,11 @@
 @property(nonatomic)SFIButtonSubProperties* subProperties;
 @property(nonatomic)SFIDevicePropertyType valueType;
 @property(nonatomic) unsigned int count;
+@property(nonatomic) SFIDevice *device;
 
 - (void)setupValues:(UIImage*)iconImage Title:(NSString*)title;
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden;
-- (void)changeStyle;
+- (void)changeStylewithColor:(UIColor*)color;
+- (void)changeBGColor:(UIColor*)color;
+- (void)changeImageColor:(UIColor*)color;
 @end
