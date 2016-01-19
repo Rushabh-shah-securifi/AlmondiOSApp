@@ -25,7 +25,7 @@
 @property(nonatomic)id<AddActionsDelegate> delegate;
 
 -(void)displayActionDeviceList;
--(void) createDeviceIndexesLayout:(SFIDevice*)device deviceIndexes:(NSArray*)deviceIndexes;
--(BOOL)istoggle:(SFIDevice*)device;
+-(BOOL)istoggle:(SFIDeviceType)device;
 -(SFIDeviceIndex *)getToggelDeviceIndex;
+-(void) createDeviceIndexesLayoutForDeviceId:(int)deviceId deviceType:(SFIDeviceType)deviceType deviceIndexes:(NSArray*)deviceIndexes;
 @end

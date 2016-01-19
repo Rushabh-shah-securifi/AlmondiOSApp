@@ -44,7 +44,6 @@ V8HorizontalPickerView *pickerAction;
 int buttonClickCount;
 bool isPresentActHozPicker;
 NSString *newPickerValue;
-
 NSMutableArray * pickerValuesArray2;
 
 -(id)init{
@@ -57,12 +56,43 @@ NSMutableArray * pickerValuesArray2;
     }
     return self;
 }
--(void)displayActionDeviceList{
+
+
+
+-(void)createDeviceListButton:(RulesDeviceNameButton*)deviceButton title:(NSString*)title{
+    [deviceButton setTitle:title forState:UIControlStateNormal];
+    deviceButton.titleLabel.numberOfLines = 1;
+    deviceButton.titleLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:3];
+    //    deviceButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    [deviceButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [deviceButton setTitleShadowColor:[UIColor blueColor] forState:UIControlStateNormal];
+    deviceButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    deviceButton.backgroundColor = [UIColor clearColor];
+    deviceButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+}
+
+
+-(int)createModeButtonWithWidth:(double)deviceButtonWidth andHeight:(double)deviceButtonHeight xVal:(int)xVal{
+    NSString *title = @"Mode";
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:13]};
+    CGRect textRect;
+    textRect.size = [title sizeWithAttributes:attributes];
     
+    RulesDeviceNameButton *modeButton = [[RulesDeviceNameButton alloc] initWithFrame:CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight)];
+    
+    [self createDeviceListButton:modeButton title:@"Mode"];
+    modeButton.deviceId = 0;
+    modeButton.deviceType = SFIDeviceType_BinarySwitch_0;
+    
+    [modeButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.parentViewController.deviceListScrollView addSubview:modeButton];
+    xVal += textRect.size.width + 15;
+    return xVal;
+}
+
+-(void)displayActionDeviceList{
     NSLog(@"displayActionDeviceList");
     //clear view
-
-    
     NSArray *viewsToRemove = [self.parentViewController.deviceIndexButtonScrollView subviews];
     for (UIView *v in viewsToRemove) {
         [v removeFromSuperview];
@@ -71,12 +101,11 @@ NSMutableArray * pickerValuesArray2;
     int xVal = 0;
     double deviceButtonWidth = (self.parentViewController.view.frame.size.width)/3;
     double deviceButtonHeight = self.parentViewController.deviceListScrollView.frame.size.height;
-    //mode button
     
+    //mode button
     xVal = [self createModeButtonWithWidth:deviceButtonWidth andHeight:deviceButtonHeight xVal:xVal];
     
     for(SFIDevice *device in self.parentViewController.actuatorDeviceArray){
-        
         NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:12]};
         CGRect textRect;
         textRect.size = [device.deviceName sizeWithAttributes:attributes];
@@ -84,8 +113,6 @@ NSMutableArray * pickerValuesArray2;
             NSString *temp=@"123456789012345678";
             textRect.size = [temp sizeWithAttributes:attributes];
         }
-        
-        
         RulesDeviceNameButton *deviceButton = [[RulesDeviceNameButton alloc] initWithFrame:CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight)];
 
         [deviceButton setTitle:device.deviceName forState:UIControlStateNormal];
@@ -95,7 +122,8 @@ NSMutableArray * pickerValuesArray2;
         [deviceButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         deviceButton.backgroundColor = [UIColor clearColor];
         deviceButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-        deviceButton.device = device;
+        deviceButton.deviceId = device.deviceID;
+        deviceButton.deviceType = device.deviceType;
 
         [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -103,13 +131,10 @@ NSMutableArray * pickerValuesArray2;
         xVal += textRect.size.width + 15;
     }
     self.parentViewController.deviceListScrollView.contentSize = CGSizeMake(xVal + 10,self.parentViewController.deviceListScrollView.contentSize.height);
-    
 }
 
 #pragma mark click handlers
 -(void)onDeviceButtonClick:(RulesDeviceNameButton *)sender{
-    NSLog(@"onDeviceButtonClick: %@",sender.device);
-    
     //clear view
     NSArray *viewsToRemove = [self.parentViewController.deviceIndexButtonScrollView subviews];
     for (UIView *v in viewsToRemove) {
@@ -125,65 +150,33 @@ NSMutableArray * pickerValuesArray2;
     [sender setTitleShadowColor:[UIColor colorFromHexString:@"FF9500"] forState:UIControlStateNormal];
     
     RuleSensorIndexSupport *Index=[[RuleSensorIndexSupport alloc]init];
-    NSMutableArray *deviceIndexes=[NSMutableArray arrayWithArray:[Index getIndexesFor:sender.device.deviceType]];//need
-    if ([self istoggle:sender.device]) {
+    NSMutableArray *deviceIndexes=[NSMutableArray arrayWithArray:[Index getIndexesFor:sender.deviceType]];//need
+    if ([self istoggle:sender.deviceType]) {
         SFIDeviceIndex *temp = [self getToggelDeviceIndex];
         [deviceIndexes addObject : temp];
     }
-    
-    [self createDeviceIndexesLayout:sender.device deviceIndexes:deviceIndexes];
-    
-}
--(int)createModeButtonWithWidth:(double)deviceButtonWidth andHeight:(double)deviceButtonHeight xVal:(int)xVal{
-    NSString *title = @"Mode";
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:13]};
-    CGRect textRect;
-    textRect.size = [title sizeWithAttributes:attributes];
-    
-    RulesDeviceNameButton *modeButton = [[RulesDeviceNameButton alloc] initWithFrame:CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight)];
-
-    [self createDeviceListButton:modeButton title:@"Mode"];
-    [modeButton addTarget:self action:@selector(modeClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.parentViewController.deviceListScrollView addSubview:modeButton];
-    xVal += textRect.size.width + 15;
-    return xVal;
+    [self createDeviceIndexesLayoutForDeviceId:sender.deviceId deviceType:sender.deviceType deviceIndexes:deviceIndexes];
 }
 
--(void)createDeviceListButton:(RulesDeviceNameButton*)deviceButton title:(NSString*)title{
-    
-    [deviceButton setTitle:title forState:UIControlStateNormal];
-    deviceButton.titleLabel.numberOfLines = 1;
-    deviceButton.titleLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:3];
-    //    deviceButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    [deviceButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [deviceButton setTitleShadowColor:[UIColor blueColor] forState:UIControlStateNormal];
-    deviceButton.titleLabel.font = [UIFont systemFontOfSize:12];
-    deviceButton.backgroundColor = [UIColor clearColor];
-    deviceButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-
-
-}
-
--(void) createDeviceIndexesLayout:(SFIDevice*)device deviceIndexes:(NSArray*)deviceIndexes{
+-(void) createDeviceIndexesLayoutForDeviceId:(int)deviceId deviceType:(SFIDeviceType)deviceType deviceIndexes:(NSArray*)deviceIndexes{
     int numberOfCells = [self maxCellId:deviceIndexes];
-    
     CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
                                        (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING);
     
     [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
     
     //nest_thermostat - 57
-    if(device.deviceType == SFIDeviceType_NestThermostat_57){
+    if(deviceType == SFIDeviceType_NestThermostat_57){
         RulesNestThermostat *rulesNestThermostatObject = [[RulesNestThermostat alloc]init];
         SFIDeviceValue *nestThermostatDeviceValue;
         for(int i=0; i < [self.parentViewController.deviceArray count]; i++){
             SFIDevice *nestThermostatDevice = self.parentViewController.deviceArray[i];
-            if(nestThermostatDevice.deviceID == device.deviceID){
+            if(nestThermostatDevice.deviceID == deviceId){
                 nestThermostatDeviceValue = self.parentViewController.deviceValueArray[i];
                 break;
             }
         }
-        deviceIndexes = [rulesNestThermostatObject createNestThermostatDeviceIndexes:deviceIndexes device:device deviceValue:nestThermostatDeviceValue];
+        deviceIndexes = [rulesNestThermostatObject createNestThermostatDeviceIndexes:deviceIndexes deviceValue:nestThermostatDeviceValue];
         numberOfCells = [self maxCellId:deviceIndexes];//recalculating for nest
     }
     
@@ -202,26 +195,24 @@ NSMutableArray * pickerValuesArray2;
     }
     
     //huelamp - 58
-    if(device.deviceType == SFIDeviceType_HueLamp_48){
+    if(deviceType == SFIDeviceType_HueLamp_48){
         self.rulesHueObject = [[RulesHue alloc] init];
         self.rulesHueObject.delegate = self;
         self.rulesHueObject.parentViewController = self.parentViewController;
         self.rulesHueObject.selectedButtonsPropertiesArray = self.selectedButtonsPropertiesArray;
         
-        [self.rulesHueObject createHueCellLayout:device deviceIndexes:deviceIndexes scrollView:self.parentViewController.deviceIndexButtonScrollView cellCount:numberOfCells indexesDictionary:deviceIndexesDict];
+        [self.rulesHueObject createHueCellLayoutWithDeviceId:deviceId deviceType:deviceType deviceIndexes:deviceIndexes scrollView:self.parentViewController.deviceIndexButtonScrollView cellCount:numberOfCells indexesDictionary:deviceIndexesDict];
         return;
     }
     
     //else for rest of the devices
     for(int i = 0; i < numberOfCells; i++){
-        UIView *cellView = [self addMyActionButtonwithYScale:ROW_PADDING+(ROW_PADDING+frameSize)*i  withDeviceIndex:[deviceIndexesDict valueForKey:[NSString stringWithFormat:@"%d", i+1]] device:device];
-        //        cellView.backgroundColor = [UIColor redColor];
-        NSLog(@"cell view children: %@", cellView.subviews);
+        [self addMyButtonwithYScale:ROW_PADDING+(ROW_PADDING+frameSize)*i withDeviceIndex:[deviceIndexesDict valueForKey:[NSString stringWithFormat:@"%d", i+1]] deviceId:deviceId deviceType:deviceType];
     }
 }
 
 
-- (UIView *)addMyActionButtonwithYScale:(int)yScale withDeviceIndex:(NSArray *)deviceIndexes device:(SFIDevice*)device{
+- (UIView *)addMyButtonwithYScale:(int)yScale withDeviceIndex:(NSArray *)deviceIndexes deviceId:(int)deviceId deviceType:(int)deviceType{
     
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                             yScale,
@@ -246,7 +237,7 @@ NSMutableArray * pickerValuesArray2;
                     dimbtn.valueType=deviceIndex.valueType;
                     dimbtn.minValue = iVal.minValue;
                     dimbtn.maxValue = iVal.maxValue;
-                    dimbtn.subProperties = [self addSubPropertiesFordeviceID:device.deviceID index:deviceIndex.indexID matchData:iVal.matchData];
+                    dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData];
                     dimbtn.selected=NO;
                     [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                     
@@ -255,7 +246,7 @@ NSMutableArray * pickerValuesArray2;
                     BOOL isSelected = NO;
                     int buttonClickCount = 0;
                     for(SFIButtonSubProperties *dimButtonProperty in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
-                        if(dimButtonProperty.deviceId == device.deviceID && dimButtonProperty.index == deviceIndex.indexID){
+                        if(dimButtonProperty.deviceId == deviceId && dimButtonProperty.index == deviceIndex.indexID){
                             matchData = dimButtonProperty.matchData;
                             NSLog(@"dim match data: %@", matchData);
                             isSelected = YES;
@@ -281,14 +272,14 @@ NSMutableArray * pickerValuesArray2;
                     SFIRulesActionButton *btnBinarySwitchOn = [[SFIRulesActionButton alloc] initWithFrame:CGRectMake(view.frame.origin.x,view.frame.origin.y, frameSize, frameSize)];
                     btnBinarySwitchOn.tag = indexValCounter;
                     btnBinarySwitchOn.valueType=deviceIndex.valueType;
-                    btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:device.deviceID index:deviceIndex.indexID matchData:iVal.matchData];
+                    btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData];
                     
                     [btnBinarySwitchOn addTarget:self action:@selector(onButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                     [btnBinarySwitchOn setupValues:[UIImage imageNamed:iVal.iconName] Title:iVal.displayText];
                     //set perv. count and highlight
                     int buttonClickCount = 0;
                     for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
-                        if(switchButtonProperty.deviceId == device.deviceID && switchButtonProperty.index == deviceIndex.indexID && [switchButtonProperty.matchData isEqualToString:iVal.matchData]){
+                        if(switchButtonProperty.deviceId == deviceId && switchButtonProperty.index == deviceIndex.indexID && [switchButtonProperty.matchData isEqualToString:iVal.matchData]){
                             btnBinarySwitchOn.selected = YES;
                             buttonClickCount++;
                         }
@@ -365,16 +356,9 @@ NSMutableArray * pickerValuesArray2;
 }
 //mode
 #pragma mark mode method
--(void)modeClicked:sender{
-    [self resetViews];
-    [self toggleHighlightForDeviceNameButton:sender];
-    
-    [self addMode];
-}
 -(void)resetViews{
     self.parentViewController.TimeSectionView.hidden = YES;
     self.parentViewController.deviceIndexButtonScrollView.hidden = NO;
-    
     //clear view
     NSArray *viewsToRemove = [self.parentViewController.deviceIndexButtonScrollView subviews];
     for (UIView *v in viewsToRemove) {
@@ -393,128 +377,9 @@ NSMutableArray * pickerValuesArray2;
     [currentButton setTitleColor:[UIColor colorFromHexString:@"757575"] forState:UIControlStateNormal];
     [currentButton setTitleShadowColor:[UIColor colorFromHexString:@"757575"] forState:UIControlStateNormal];
 }
--(void)addMode{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,
-                                                            ROW_PADDING,
-                                                            self.parentViewController.view.frame.size.width,
-                                                            frameSize)];
-    [self.parentViewController.deviceIndexButtonScrollView addSubview:view];
-    SFIRulesActionButton *homeButton=[[SFIRulesActionButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,view.frame.origin.y, frameSize, frameSize)];
-    homeButton.tag=1;
-    [homeButton addTarget:self action:@selector(onModeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [homeButton setupValues:[UIImage imageNamed:@"home_icon"] Title:@"Home"];//
-    homeButton.subProperties = [self addSubPropertiesFordeviceID:0 index:1 matchData:@"home"];
-    
-    //get previous highligh
-    for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
-        if(switchButtonProperty.deviceId == 0 && switchButtonProperty.index == 1 && [switchButtonProperty.matchData isEqualToString:@"home"]){
-            homeButton.selected = YES;
-        }
-        //break;
-    }
-    
-    homeButton.center = CGPointMake(view.bounds.size.width/2,
-                                    view.bounds.size.height/2);
-    homeButton.frame = CGRectMake(homeButton.frame.origin.x - (frameSize/2)+textHeight/2 ,
-                                  homeButton.frame.origin.y,
-                                  homeButton.frame.size.width,
-                                  homeButton.frame.size.height);
-    
-    [view addSubview:homeButton];
-    
-    SFIRulesActionButton *awayButton=[[SFIRulesActionButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,view.frame.origin.y, frameSize, frameSize)];
-    awayButton.tag=2;
-    [awayButton addTarget:self action:@selector(onModeButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [awayButton setupValues:[UIImage imageNamed:@"away_icon"] Title:@"Away"];//
-    awayButton.subProperties = [self addSubPropertiesFordeviceID:0 index:1 matchData:@"away"];
-    
-    //get previous highligh
-    for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
-        if(switchButtonProperty.deviceId == 0 && switchButtonProperty.index == 1 && [switchButtonProperty.matchData isEqualToString:@"away"]){
-            awayButton.selected = YES;
-        }
-        //break;
-    }
-    awayButton.center = CGPointMake(view.bounds.size.width/2,
-                                    view.bounds.size.height/2);
-    awayButton.frame = CGRectMake(awayButton.frame.origin.x + (frameSize/2)+textHeight/2 ,
-                                  awayButton.frame.origin.y,
-                                  awayButton.frame.size.width,
-                                  awayButton.frame.size.height);
-    [view addSubview:awayButton];
-}
 
--(void)onModeButtonClicked:(id)sender{ // to be redirected to onButtonClick upon changin logic of onButtonClick
-    
-    
-     actionIndexSwitchButton = (SFIRulesActionButton *)sender;
-     actionIndexSwitchButton.selected = YES ;
-     
-     sfi_id buttonId = actionIndexSwitchButton.subProperties.deviceId;
-     int buttonIndex = actionIndexSwitchButton.subProperties.index;
-     NSString *buttonMatchdata = actionIndexSwitchButton.subProperties.matchData;
-    NSLog(@" button matchdata %@",buttonMatchdata);
 
-     //Add button properties to array
-     [self addButtonToArray:buttonId index:buttonIndex matchData:buttonMatchdata];
-     
-     int buttonClickCount = 0;
-     for(SFIButtonSubProperties *dimButtonProperty in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
-     if(dimButtonProperty.deviceId == buttonId && dimButtonProperty.index == buttonIndex && [dimButtonProperty.matchData isEqualToString:buttonMatchdata]){
-     buttonClickCount++;
-     }
-     }
-     [actionIndexSwitchButton setButtoncounter:buttonClickCount isCountImageHiddn:NO];
-     
-     // delegate
-     [self.delegate updateActionsButtonsPropertiesArray:self.selectedButtonsPropertiesArray];
-
-     /*
-    UIView *parentView = [sender superview];
-    switchButtonClick = sender;
-    
-    sfi_id buttonId = switchButtonClick.subProperties.deviceId;
-    int buttonIndex = switchButtonClick.subProperties.index;
-    NSString *buttonMatchdata = switchButtonClick.subProperties.matchData;
-    
-    for(SFIRulesSwitchButton* button in [parentView subviews]){
-        if(button.tag == switchButtonClick.tag){
-            button.selected = !button.selected;
-        }else{
-            button.selected = NO;
-        }
-    }
-    if(switchButtonClick.selected){
-        //remove previous
-        NSMutableArray *toBeDeletedSubProperties = [[NSMutableArray alloc] init];
-        for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
-            if(switchButtonProperty.deviceId == buttonId){
-                [toBeDeletedSubProperties addObject:switchButtonProperty];
-            }
-            //break;
-        }
-        [self.selectedButtonsPropertiesArray removeObjectsInArray:toBeDeletedSubProperties];
-        //add current
-        [self addButtonToArray:buttonId index:buttonIndex matchData:buttonMatchdata];
-        
-    }
-    
-    else{
-        SFIButtonSubProperties *toBeDeletedProperty;
-        for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArray){
-            if(switchButtonProperty.deviceId == buttonId && switchButtonProperty.index == buttonIndex && [switchButtonProperty.matchData isEqualToString:buttonMatchdata]){
-                toBeDeletedProperty = switchButtonProperty;
-            }
-            //break;
-        }
-        [self.selectedButtonsPropertiesArray removeObject:toBeDeletedProperty];
-        
-    }
-    [self.delegate updateActionsButtonsPropertiesArray:self.selectedButtonsPropertiesArray];*/
-}
-
+/*checkpoint*/
 
 - (void)onButtonClick:(id)sender{
     NSLog(@"onButtonClick");
@@ -547,18 +412,11 @@ NSMutableArray * pickerValuesArray2;
 -(void)onDimmerButtonClick:(id)sender{
     actionIndexDimButton = (SFIDimmerButtonAction *)sender;
     if(isPresentActHozPicker == NO){
-   
-    
-    
-    pickerValuesArray2 = [NSMutableArray new];
-    for (int i=(int)actionIndexDimButton.minValue; i<=(int)actionIndexDimButton.maxValue; i++) {
-        [pickerValuesArray2 addObject:[NSString stringWithFormat:@"%d",i]];
-    
-    
-//    [self setupPicker:actionIndexDimButton];
-        
-    
-    }
+        pickerValuesArray2 = [NSMutableArray new];
+        for (int i=(int)actionIndexDimButton.minValue; i<=(int)actionIndexDimButton.maxValue; i++) {
+            [pickerValuesArray2 addObject:[NSString stringWithFormat:@"%d",i]];
+    //    [self setupPicker:actionIndexDimButton];
+        }
         NSLog(@" pickerview add");
         [self horizontalpicker:actionIndexDimButton ];
     }
@@ -589,13 +447,9 @@ NSMutableArray * pickerValuesArray2;
         //delegate
         [self.delegate updateActionsButtonsPropertiesArray:self.selectedButtonsPropertiesArray];
         isPresentActHozPicker = NO;
-        
-
     }
-    
-    
-    
 }
+
 - (void)horizontalpicker:(SFIDimmerButtonAction*)dimButton{
     const int control_height = 30;
     NSLog(@"viedidload");
@@ -622,9 +476,8 @@ NSMutableArray * pickerValuesArray2;
     pickerAction.selectionPoint = CGPointMake((pickerAction.frame.size.width) / 2, 0);
     indicatorView.color1 = [UIColor colorFromHexString:@"FF9500"];
     pickerAction.selectionIndicatorView = indicatorView;
-    
-    
 }
+
 #pragma mark - V8HorizontalPickerView methods
 
 - (NSInteger)horizontalPickerView:(V8HorizontalPickerView *)picker widthForElementAtIndex:(NSInteger)index {
@@ -682,6 +535,7 @@ NSMutableArray * pickerValuesArray2;
     
     return subProperties;
 }
+
 -(SFIDeviceIndex *)getToggelDeviceIndex{
     IndexValueSupport *indexValue =[[IndexValueSupport alloc]init];
     indexValue.displayText = @"Toggle";
@@ -699,8 +553,9 @@ NSMutableArray * pickerValuesArray2;
     return deviceIndex;
 }
 
--(BOOL)istoggle:(SFIDevice*)device{
-    switch (device.deviceType) {
+//to display toggle icon
+-(BOOL)istoggle:(SFIDeviceType)deviceType{
+    switch (deviceType) {
         case SFIDeviceType_BinarySwitch_1:
         case SFIDeviceType_MultiLevelSwitch_2:
         case SFIDeviceType_MultiLevelOnOff_4:
