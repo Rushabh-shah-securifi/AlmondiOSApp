@@ -10,12 +10,6 @@
 #import "AddRulesViewController.h"
 #import "RulesTimeElement.h"
 
-typedef NS_ENUM(NSInteger, timeSegmentType1)
-{
-    AnyTime1 = 0,
-    Precisely1 = 1,
-    Between1 = 2
-};
 
 @protocol AddTriggerAndAddActionDelegate
 
@@ -24,7 +18,8 @@ typedef NS_ENUM(NSInteger, timeSegmentType1)
 -(void)updateTimeElementsButtonsPropertiesArray:(RulesTimeElement*)ruleTimeElement;
 @end
 @interface AddTriggerAndAddAction : NSObject
-@property (nonatomic, strong)NSMutableArray *selectedButtonsPropertiesArray;
+@property (nonatomic, strong)NSMutableArray *selectedButtonsPropertiesArrayTrigger;
+@property (nonatomic, strong)NSMutableArray *selectedButtonsPropertiesArrayAction;
 @property (nonatomic)AddRulesViewController *parentViewController;
 @property (nonatomic)id<AddTriggerAndAddActionDelegate> delegate;
 @property (nonatomic, strong)RulesTimeElement *ruleTime;
@@ -32,5 +27,5 @@ typedef NS_ENUM(NSInteger, timeSegmentType1)
 @property (nonatomic) bool isAction;
 
 
--(void)displayTriggerActionDeviceName:(NSArray *)deviceListArray;
+-(void)addDeviceNameList:(BOOL)isTrigger;
 @end

@@ -15,6 +15,7 @@
         _notificationIgnoreIndex = NO;
         _valueType = valueType;
         _matchType = MatchType_equals;
+        self.eventType=nil;
     }
 
     return self;
@@ -39,6 +40,15 @@
 
     return NO;
 }
+- (NSString *)getDisplayText:(NSString *)value {
+    if([self valueFormatterDoesNotExist])
+        return self.displayText;
+    return [NSString stringWithFormat:@"%@ %@%@", self.displayText, value, self.valueFormatter.suffix];
+}
+- (BOOL)valueFormatterDoesNotExist{
+    return self.valueFormatter.suffix == nil || self.valueFormatter.suffix.length ==0 ;
+}
+
 
 - (NSString *)formatNotificationText:(NSString *)sensorValue {
     if (sensorValue == nil) {

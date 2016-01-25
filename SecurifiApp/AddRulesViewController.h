@@ -28,7 +28,7 @@
 
 @property (weak, nonatomic) IBOutlet UIView *TimeSectionView;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *timeSegmentSelector;/*layer.borderWidth
-          layer.borderUIColor                                                                    */
+                                                                              layer.borderUIColor                                                                    */
 @property (weak, nonatomic) IBOutlet UIDatePicker *timerPikerPrecisely;
 @property (weak, nonatomic) IBOutlet UIDatePicker *timePikerBetween1;
 @property (weak, nonatomic) IBOutlet UIDatePicker *timePikerBetween2;
@@ -36,10 +36,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *lowerInformationLabel;
 @property (weak, nonatomic) IBOutlet UIView *dayView;
 
-@property (nonatomic ,strong)NSMutableArray *deviceArray;
+//@property (nonatomic ,strong)NSMutableArray *deviceArray;
 @property (nonatomic ,strong)NSMutableArray *deviceValueArray;
 
-@property (nonatomic,strong)NSMutableArray *actuatorDeviceArray;
+//@property (nonatomic,strong)NSMutableArray *actuatorDeviceArray;
 @property (copy, nonatomic)Rule *rule;
 
 @property (nonatomic ,strong)NSMutableArray *wifiClientsArray;

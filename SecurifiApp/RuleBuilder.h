@@ -20,7 +20,7 @@
 -(void)updateTime:(RulesTimeElement*) time;
 @end
 
-@interface RulesView : NSObject
+@interface RuleBuilder : NSObject
 
 @property (nonatomic ,strong)NSMutableArray *deviceArray;
 @property (nonatomic, strong)NSMutableArray *deviceValueArray;

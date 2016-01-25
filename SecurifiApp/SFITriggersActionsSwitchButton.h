@@ -21,7 +21,7 @@
 
 - (void)setupValues:(UIImage*)iconImage Title:(NSString*)title displayText:(NSString*)displayText;
 - (void)changeStyle;
-- (void)changeBGColor:(UIColor*)color;
+- (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)clearColor;
 - (void)changeImageColor:(UIColor*)color;
 - (void)setButtonCross:(BOOL)isHidden;
 

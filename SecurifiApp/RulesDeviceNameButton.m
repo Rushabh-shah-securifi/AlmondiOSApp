@@ -7,30 +7,35 @@
 //
 
 #import "RulesDeviceNameButton.h"
-#import "Colours.h"
+#import "SFIColors.h"
 
 @implementation RulesDeviceNameButton
-
--(id) initWithFrame: (CGRect) frame
-{
+-(id)initiliaze:(BOOL)isTrigger andFrame:(CGRect)frame deviceType:(SFIDeviceType)devicetype deviceName:(NSString*)deviceName deviceId:(int)deviceId{
+    self.selected = NO;
+    self.isTrigger = isTrigger;
+    [self deviceProperty:devicetype deviceName:deviceName deviceId:deviceId];
     return [super initWithFrame:frame];
-    //    return self;
 }
+
 
 - (void)setSelected:(BOOL)selected{
-    //NSLog(@" button selected");
     [super setSelected:selected];
-//    [self changeStyle];
+    
+    self.titleLabel.textColor = self.selected?self.isTrigger? [SFIColors ruleBlueColor]: [SFIColors ruleOrangeColor]:[SFIColors ruleGraycolor];
 }
 
-- (void)changeStyle{
-    if (self.selected) {
-        //NSLog(@" button selected");
-        super.backgroundColor = [UIColor colorFromHexString:@"02a8f3"];
-    }else{
-        super.backgroundColor = [UIColor colorFromHexString:@"757575"];
-    }
+-(void)deviceProperty:(SFIDeviceType)devicetype deviceName:(NSString*)deviceName deviceId:(int)deviceId{
+    self.deviceName = deviceName;
+    self.deviceType = devicetype;
+    self.deviceId = deviceId;
+    [super setTitle:deviceName forState:UIControlStateNormal];
+    self.titleLabel.numberOfLines = 1;
+    self.titleLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:12];
+    self.backgroundColor = [UIColor clearColor];
+    self.titleLabel.textAlignment = NSTextAlignmentCenter;
 }
+
+
 
 
 

@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SFITriggersActionsSwitchButton.h"
+//#import "SFITriggersActionsSwitchButton.h"
+#import "SwitchButton.h"
+#import "DimmerButton.h"
 
-@interface RulesButtonsView : UIView{
-    @public SFITriggersActionsSwitchButton *actionbutton;
+@interface PreDelayRuleButton : UIView{
+    @public SwitchButton *actionbutton;
     @public UIButton *delayButton;
 }
 
@@ -18,6 +20,6 @@
 @property(nonatomic)SFIDevicePropertyType valueType; //find out why
 
 - (void)setupValues:(UIImage*)iconImage Title:(NSString*)title displayText:(NSString *)displayText delay:(NSString*)delay;
-- (void)changeBGColor:(UIColor*)color;
+- (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)clearColor;
 - (void)setNewValue:(NSString*)delay;
 @end

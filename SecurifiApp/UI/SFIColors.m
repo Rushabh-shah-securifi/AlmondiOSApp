@@ -7,6 +7,7 @@
 //
 
 #import "SFIColors.h"
+#import "Colours.h"
 
 @interface SFIColors ()
 @property(nonatomic, readonly) int hue;
@@ -67,6 +68,20 @@
 
 + (SFIColors *)yellowColor {
     return [[SFIColors alloc] initWithHue:45 saturation:100 brightness:85 colorName:@"yellow"];
+}
+
++ (UIColor*)ruleBlueColor{
+    return [UIColor colorFromHexString:@"02a8f3"];
+}
++ (UIColor *)ruleOrangeColor{
+    return  [UIColor colorFromHexString:@"FF9500"];
+}
+
++ (UIColor *)ruleGraycolor{
+    return  [UIColor colorFromHexString:@"757575"];
+}
++ (UIColor *)ruleLightGrayColor{
+    return [UIColor colorFromHexString:@"F7F7F7"];
 }
 
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName {

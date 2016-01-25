@@ -7,6 +7,14 @@
 
 
 @implementation ValueFormatter
+//- (instancetype)init
+//{
+//    self = [super init];
+//    if (self) {
+//        <#statements#>
+//    }
+//    return self;
+//}
 
 - (NSString *)formatNotificationValue:(NSString *)sensorValue {
     switch (self.action) {

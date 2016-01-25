@@ -10,7 +10,7 @@
 #import "ScoreboardViewController.h"
 #import "MessageView.h"
 #import "SFIMessageViewController.h"
-#import "SavedRulesTableViewController.h"
+#import "RulesTableViewController.h"
 
 #define TAB_BAR_SENSORS @"Sensors"
 #define TAB_BAR_ROUTER @"Router"
@@ -208,7 +208,7 @@ typedef NS_ENUM(int, TabBarMode) {
 - (UIViewController *)rulesTab {
     if (!_rulesTab) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        SavedRulesTableViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SavedRulesTableViewController"];
+        RulesTableViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SavedRulesTableViewController"];
         UIImage *icon = [UIImage imageNamed:@"rule_tab_icon"];
         
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];

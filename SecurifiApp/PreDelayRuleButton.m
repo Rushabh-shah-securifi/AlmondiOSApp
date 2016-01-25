@@ -6,13 +6,13 @@
 //  Copyright © 2016 Securifi Ltd. All rights reserved.
 //
 
-#import "RulesButtonsView.h"
+#import "PreDelayRuleButton.h"
 
 #import "RulesConstants.h"
 #import "Colours.h"
 #import "SFIColors.h"
 
-@implementation RulesButtonsView{
+@implementation PreDelayRuleButton{
     //delay button
     UILabel *waitText;
     UILabel *noOfSec;
@@ -29,9 +29,11 @@
     return [super initWithFrame:frame];
 }
 
-- (void)changeBGColor:(UIColor*)color{
-    delayButton.backgroundColor = [UIColor colorFromHexString:@"ffcb7f"]; //ffcb7f
-    [actionbutton changeBGColor:color];
+
+- (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)clearColor{
+    UIColor *color= isTrigger?[UIColor colorFromHexString:@"02a8f3"]:[UIColor colorFromHexString:@"FF9500"];
+    color=clearColor?[UIColor clearColor]:color;
+    [actionbutton changeBGColor:isTrigger clearColor:NO];
     lblDisplayText.textColor = color;
     lblDeviceName.textColor = color;
 }
@@ -49,6 +51,7 @@
     
     //delaybutton
     delayButton = [[UIButton alloc] initWithFrame:CGRectMake(0, lblDeviceName.frame.size.height, triggerActionBtnWidth,triggerActionBtnWidth)];
+    delayButton.backgroundColor = [UIColor colorFromHexString:@"FF9500"];
     [self addSubview:delayButton];
     
     waitText = [[UILabel alloc] initWithFrame:CGRectMake(0, 2.5, triggerActionBtnWidth,10)];
@@ -73,9 +76,10 @@
     secText.textColor = [UIColor whiteColor];
     [delayButton addSubview:secText];
     
-    actionbutton = [[SFITriggersActionsSwitchButton alloc] initWithFrame:CGRectMake(46, 0, triggerActionBtnWidth,triggerActionBtnWidth)];
+    actionbutton = [[SwitchButton alloc] initWithFrame:CGRectMake(46, 0, triggerActionBtnWidth,triggerActionBtnWidth)];
     NSLog(@"iconimage: %@", iconImage);
-    [actionbutton setupValues:iconImage Title:@"" displayText:@""];
+    [actionbutton setupValues:iconImage topText:@"" bottomText:@""];
+    
 //    [actionbutton setButtonCross:NO];
     [self addSubview:actionbutton];
     

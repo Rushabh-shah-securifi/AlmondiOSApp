@@ -22,14 +22,14 @@
 #import "RulesConstants.h"
 #import "SFIButtonSubProperties.h"
 #import "RulesDeviceNameButton.h"
-#import "RulesView.h"
+#import "RuleBuilder.h"
 #import "RulesNestThermostat.h"
 #import "V8HorizontalPickerView.h"
 #import "V8HorizontalPickerViewProtocol.h"
 #import "SFIPickerIndicatorView1.h"
 
 
-@interface AddTriggers()<V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource>
+@interface AddTriggers()<V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,RuleViewDelegate>
 @property (nonatomic,strong)NSMutableDictionary *buttonsSubDict;
 @property (nonatomic,strong)NSMutableDictionary *buttonsDict;
 
@@ -65,11 +65,10 @@ NSMutableArray *selectedDayTags;
 -(void)createDeviceListButton:(RulesDeviceNameButton*)deviceButton title:(NSString*)title{
     [deviceButton setTitle:title forState:UIControlStateNormal];
     deviceButton.titleLabel.numberOfLines = 1;
-     deviceButton.titleLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:3];
+     deviceButton.titleLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:12];
 //    deviceButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     [deviceButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [deviceButton setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
-    deviceButton.titleLabel.font = [UIFont systemFontOfSize:12];
     
     deviceButton.backgroundColor = [UIColor clearColor];
     deviceButton.titleLabel.textAlignment = NSTextAlignmentCenter;

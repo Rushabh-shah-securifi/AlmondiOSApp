@@ -12,7 +12,7 @@
 #import "SecurifiToolkit/SFIDeviceKnownValues.h"
 #import "SecurifiToolkit/SFIDeviceValue.h"
 #import "SecurifiToolkit/SecurifiTypes.h"
-#import "SFIRulesActionButton.h"
+#import "SwitchButton.h"
 #import "SFIButtonSubProperties.h"
 #import "SecurifiToolkit/SFIDeviceKnownValues.h"
 #import "SecurifiToolkit/SFIDeviceValue.h"
@@ -81,7 +81,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
             if(deviceIndex.valueType == SFIDevicePropertyType_SWITCH_BINARY){
                 NSLog(@"Hue switch button");
                 
-                SFIRulesActionButton *buttonHue = [[SFIRulesActionButton alloc] initWithFrame:CGRectMake(view.frame.origin.x, 0, frameSize, frameSize)];
+                SwitchButton *buttonHue = [[SwitchButton alloc] initWithFrame:CGRectMake(view.frame.origin.x, 0, frameSize, frameSize)];
 //                buttonHue.backgroundColor = [UIColor blackColor];
                 buttonHue.tag = indexValCounter;
                 buttonHue.valueType = deviceIndex.valueType;

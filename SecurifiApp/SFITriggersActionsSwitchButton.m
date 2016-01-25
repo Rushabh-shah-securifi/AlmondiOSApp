@@ -27,7 +27,9 @@
     //    return self;
 }
 
-- (void)changeBGColor:(UIColor*)color{
+- (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)clearColor{
+    UIColor *color= isTrigger?[UIColor colorFromHexString:@"02a8f3"]:[UIColor colorFromHexString:@"FF9500"];
+    color=clearColor?[UIColor clearColor]:color;
     bgView.backgroundColor = color;
     lblTitle.textColor = color;
     lblDeviceName.textColor = color;

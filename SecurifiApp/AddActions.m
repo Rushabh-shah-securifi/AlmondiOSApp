@@ -21,7 +21,7 @@
 #import "RulesConstants.h"
 #import "SFIButtonSubProperties.h"
 #import "RulesDeviceNameButton.h"
-#import "RulesView.h"
+#import "RuleBuilder.h"
 #import "SFIDimmerButtonAction.h"
 #import "SFIRulesActionButton.h"
 #import "RulesNestThermostat.h"
@@ -30,7 +30,7 @@
 #import "V8HorizontalPickerViewProtocol.h"
 #import "SFIPickerIndicatorView1.h"//from UI Its for picker indicator view
 
-@interface AddActions()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource>
+@interface AddActions()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,RuleViewDelegate>
 @property (nonatomic, strong)RulesHue *rulesHueObject;
 
 @end
@@ -38,7 +38,7 @@
 @implementation AddActions
 
 SFIDimmerButtonAction *actionIndexDimButton;
-SFIRulesActionButton *actionIndexSwitchButton;
+SFIRulesActionButton *indexSwitchButton;
 SFIRulesActionButton *switchButtonClick;
 V8HorizontalPickerView *pickerAction;
 int buttonClickCount;
@@ -387,12 +387,12 @@ NSMutableArray * pickerValuesArray2;
         [pickerAction removeFromSuperview];
     }
     
-    actionIndexSwitchButton = (SFIRulesActionButton *)sender;
-    actionIndexSwitchButton.selected = YES ;
+    indexSwitchButton = (SFIRulesActionButton *)sender;
+    indexSwitchButton.selected = YES ;
    
-    sfi_id buttonId = actionIndexSwitchButton.subProperties.deviceId;
-    int buttonIndex = actionIndexSwitchButton.subProperties.index;
-    NSString *buttonMatchdata = actionIndexSwitchButton.subProperties.matchData;
+    sfi_id buttonId = indexSwitchButton.subProperties.deviceId;
+    int buttonIndex = indexSwitchButton.subProperties.index;
+    NSString *buttonMatchdata = indexSwitchButton.subProperties.matchData;
 
     //Add button properties to array
     [self addButtonToArray:buttonId index:buttonIndex matchData:buttonMatchdata];
@@ -403,7 +403,7 @@ NSMutableArray * pickerValuesArray2;
             buttonClickCount++;
         }
     }
-    [actionIndexSwitchButton setButtoncounter:buttonClickCount isCountImageHiddn:NO];
+    [indexSwitchButton setButtoncounter:buttonClickCount isCountImageHiddn:NO];
     
     // delegate
     [self.delegate updateActionsButtonsPropertiesArray:self.selectedButtonsPropertiesArray];
@@ -411,6 +411,7 @@ NSMutableArray * pickerValuesArray2;
 
 -(void)onDimmerButtonClick:(id)sender{
     actionIndexDimButton = (SFIDimmerButtonAction *)sender;
+    
     if(isPresentActHozPicker == NO){
         pickerValuesArray2 = [NSMutableArray new];
         for (int i=(int)actionIndexDimButton.minValue; i<=(int)actionIndexDimButton.maxValue; i++) {
@@ -433,7 +434,8 @@ NSMutableArray * pickerValuesArray2;
         int buttonIndex = actionIndexDimButton.subProperties.index;
         
         //add button to array
-        [self addButtonToArray:buttonId index:buttonIndex matchData:actionIndexDimButton.dimValue];
+        actionIndexDimButton.subProperties.matchData = actionIndexDimButton.dimValue;
+        [self.selectedButtonsPropertiesArray addObject:indexSwitchButton.subProperties];
         
         
         buttonClickCount = 0;
