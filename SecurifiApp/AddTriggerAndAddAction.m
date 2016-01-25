@@ -90,7 +90,7 @@ NSMutableArray * pickerValuesArray2;
     
     
     [self.parentViewController.deviceListScrollView addSubview:deviceButton];
-    
+    NSLog(@"self.parant %@ %d",deviceButton.deviceName,deviceButton.deviceId);
     return xVal + textRect.size.width +15;
 }
 -(void)TimeEventClicked:(id)sender{
