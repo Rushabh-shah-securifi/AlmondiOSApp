@@ -53,20 +53,28 @@ int xVal = 20;
 
 
 + (void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions showCrossBtn:(BOOL)showCross{
+    
     xVal = 20;
     showCrossBtn = showCross;
     scrollView = scroll;
+    [self clearScrollView];
     NSLog(@" create entries count tri :%ld, ac:%ld ,ScrollView :%@",(unsigned long)triggers.count,(unsigned long)actions.count ,scrollView);
 //    [self drawImage:@"plus_icon" xVal:0];
     [self buildEntryList:triggers isTrigger:YES];
     [self drawImage:@"arrow_icon"];
-    
     [self buildEntryList:actions isTrigger:NO];
     
     if(xVal > scrollView.frame.size.width){
         [scrollView setContentOffset:CGPointMake(xVal-scrollView.frame.size.width + 20, 0) animated:YES];
     }
     scrollView.contentSize = CGSizeMake(xVal + 20, scrollView.frame.size.height);//to do
+}
+
++ (void)clearScrollView{
+    NSArray *viewsToRemove = [scrollView subviews];
+    for (UIView *v in viewsToRemove) {
+        [v removeFromSuperview];
+    }
 }
 
 + (void)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId deviceIndexes:(NSArray *)deviceIndexes isTrigger:(BOOL)isTrigger{
@@ -152,14 +160,14 @@ int xVal = 20;
 + (void)drawButton:(SFIButtonSubProperties*)subProperties isTrigger:(BOOL)isTrigger{
     
     if(isTrigger){
-    SwitchButton *switchButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, triggerActionBtnWidth, triggerActionBtnHeight)];
-
-        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:subProperties.displayText];
+        SwitchButton *switchButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, triggerActionBtnWidth, triggerActionBtnHeight)];
+        switchButton.isTrigger = isTrigger;
+        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:subProperties.displayText inUpperScroll:YES];
         
         ////switchButton.crossButton.subproperty = subProperties;
         
         [switchButton changeBGColor:isTrigger clearColor:NO];
-        
+        //[switchButton changeStylewithColor:isTrigger];
         switchButton.inScroll = YES;
         
         [switchButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -178,12 +186,12 @@ int xVal = 20;
         
         [switchButton->actionbutton setButtonCross:showCrossBtn];
        // (switchButton->actionbutton).crossButton.subproperty = subProperties;
-        
+        switchButton->actionbutton.isTrigger = isTrigger;
         [switchButton changeBGColor:isTrigger clearColor:NO];
         
        
         //[switchButton.crossButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        //[switchButton- addTarget:self action:@selector(onActionDelayClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [switchButton->delayButton addTarget:self action:@selector(onActionDelayClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         xVal += rulesButtonsViewWidth;
         
@@ -201,9 +209,12 @@ int xVal = 20;
     NSLog(@"arrow button");
     SwitchButton *addButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal,5, triggerActionBtnWidth, triggerActionBtnHeight)];//todo
     
-    [addButton setupValues:[UIImage imageNamed:iconName] topText:@"" bottomText:@""];
+    [addButton setupValues:[UIImage imageNamed:iconName] topText:@"" bottomText:@"" inUpperScroll:YES];
     
-    [addButton changeBGColor:YES clearColor:YES];
+    
+//    [addButton changeBGColor:YES clearColor:YES];
+    [addButton changeBGColor:[UIColor clearColor]];
+    ///[addButton changeStylewithColor:YES];
     xVal += triggerActionBtnWidth;
     addButton.inScroll = YES;
     [scrollView addSubview:addButton];

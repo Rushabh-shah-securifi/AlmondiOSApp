@@ -16,6 +16,7 @@
 -(void) updateActionsButtonsPropertiesArray:(NSMutableArray*)actionButtonPropertiesArray;
 -(void) updateTriggersButtonsPropertiesArray:(NSMutableArray*)triggersButtonPropertiesArray;
 -(void)updateTimeElementsButtonsPropertiesArray:(RulesTimeElement*)ruleTimeElement;
+-(void)updateTriggerAndActionDelegatePropertie:(BOOL)isTrigger;
 @end
 @interface AddTriggerAndAddAction : NSObject
 @property (nonatomic, strong)NSMutableArray *selectedButtonsPropertiesArrayTrigger;

@@ -75,7 +75,7 @@
     
     actionbutton = [[SwitchButton alloc] initWithFrame:CGRectMake(46, 0, triggerActionBtnWidth,triggerActionBtnWidth)];
     NSLog(@"iconimage: %@", iconImage);
-    [actionbutton setupValues:iconImage topText:@"" bottomText:@""];
+    [actionbutton setupValues:iconImage topText:@"" bottomText:@"" inUpperScroll:YES];
     
 //    [actionbutton setButtonCross:NO];
     [self addSubview:actionbutton];

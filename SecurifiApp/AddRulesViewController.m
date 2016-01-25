@@ -71,7 +71,7 @@ UITextField *textField;
     [self setUpNavigationBar];
     [self callRulesView]; //to handle edit
 
-    [self getTriggerDeviceListViewForFirstTime];
+    [self ifThenClick:YES infoText:@"To get started, please select a trigger" infoText2:@"Add another trigger or press THEN to define action"];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -154,7 +154,7 @@ UITextField *textField;
 
 #pragma mark buttonclickedMetghods
 - (IBAction)ifButtonClicked:(id)sender {
-    [self getTriggerDeviceListViewForFirstTime];
+   [self ifThenClick:YES infoText:@"To get started, please select a trigger" infoText2:@"Add another trigger or press THEN to define action"];
     
 }
 
@@ -165,32 +165,30 @@ UITextField *textField;
 }
 
 - (IBAction)thenButtonClicked:(id)sender {
-    [self gettriggerActionDeviceList:NO infoText:@"Select Triggers First" infoText2:@"Select action for your trigger"];
+    [self ifThenClick:NO infoText:@"Select Triggers First" infoText2:@"Select action for your trigger"];
 }
--(void)getTriggerDeviceListViewForFirstTime{
-    [self gettriggerActionDeviceList:YES infoText:@"To get started, please select a trigger" infoText2:@"Add another trigger or press THEN to define action"];
-}
--(void)gettriggerActionDeviceList:(BOOL)isTrigger infoText:(NSString*)text1 infoText2:(NSString*)text2{
+
+-(void)ifThenClick:(BOOL)isTrigger infoText:(NSString*)text1 infoText2:(NSString*)text2{
     [self clearAndToggleViews];
     
     if(!isTrigger){
-       [self changeIFThenColors:NO clickedBtn:self.thenButton otherBtn:self.IfButton];
+       [self changeIFThenColors:isTrigger clickedBtn:self.thenButton otherBtn:self.IfButton];
         
-        self.informationLabel.text = (self.rule.triggers.count && self.rule.time != nil)?text1:text2;
+        
     }
     else{
-        [self changeIFThenColors:YES clickedBtn:self.IfButton otherBtn:self.thenButton];
-        self.informationLabel.text = (self.rule.triggers.count)?text1:text2;
+        [self changeIFThenColors:isTrigger clickedBtn:self.IfButton otherBtn:self.thenButton];
+       
         }
-
+    [self updateInfoLabel];
     [self getTriggerActionList:isTrigger];
    
     
     }
 
 - (void)getTriggerActionList:(BOOL)isTrigger{
-    self.triggerAction.parentViewController = self;
     self.triggerAction.delegate = self;
+    self.triggerAction.parentViewController = self;
     self.triggerAction.selectedButtonsPropertiesArrayTrigger = self.rule.triggers;
     self.triggerAction.selectedButtonsPropertiesArrayAction = self.rule.actions;
     //    self.triggerAction.ruleTime = self.rule.time;
@@ -203,7 +201,7 @@ UITextField *textField;
     UIColor *imageBgColor=[UIColor whiteColor];
     UIColor *imageColor=selectedColor;
     if(!ifClick){
-        selectedColor=[SFIColors ruleBlueColor];
+        selectedColor=[SFIColors ruleOrangeColor];
         imageBgColor=selectedColor;
         imageColor=[UIColor whiteColor];
     }
@@ -337,14 +335,11 @@ UITextField *textField;
         
     }
     
-    if(self.rule.triggers.count == 0)
-        self.informationLabel.text = @"To get started, please select a trigger";
-    
 }
 
 -(void)updateTime:(RulesTimeElement *)time{
     [self callRulesView];
-    self.informationLabel.text = @"Add another trigger or press THEN to define action";
+  
 }
 
 -(void)btnSaveTap:(id)sender{

@@ -30,15 +30,14 @@ UILabel *lblDisplayText;
         bgView.backgroundColor = [SFIColors ruleGraycolor];
     }
 }
-- (void)changeBGColor:(UIColor*)color{
-    bgView.backgroundColor = color;
-    lblTitle.textColor = color;
-}
+
 - (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)clearColor{
     UIColor *color= isTrigger?[SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
-    color=clearColor?[UIColor clearColor]:color;
+    color = clearColor?[UIColor clearColor]:color;
     lblDisplayText.textColor = color;
     lblDeviceName.textColor = color;
+    lblTitle.textColor = color;
+    bgView.backgroundColor = color;
 }
 
 @end

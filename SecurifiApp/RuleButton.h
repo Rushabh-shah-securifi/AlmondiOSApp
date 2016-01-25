@@ -14,4 +14,5 @@
 - (void)changeStylewithColor:(BOOL)isTrigger;
 - (void)changeStyle;
 - (void)changeBGColor:(UIColor*)color;
+- (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)clearColor;
 @end

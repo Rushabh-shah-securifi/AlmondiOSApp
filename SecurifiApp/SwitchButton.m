@@ -19,20 +19,14 @@
 //    UILabel *lblMain;
     UILabel *countLable;
     UILabel *lblDeviceName;
-    BOOL isTrigger;
-    
 }
 
--(id) initWithFrame: (CGRect) frame
+-(id) initWithFrame:(CGRect)frame
 {
     frame.size.height = 80;
     frame.size.width = 80;
     return [super initWithFrame:frame];
     //    return self;
-}
--(id) initializ: (CGRect) frame isTrigger:(BOOL)isTrigger
-{
-    return [ self initWithFrame:frame];
 }
 
 - (void)setSelected:(BOOL)selected{
@@ -40,9 +34,9 @@
    
 }
 
-- (void)changeStylewithColor:(BOOL)isTrigger{
-    UIColor *selectedColor= isTrigger? [SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
-    if (!isTrigger || self.selected) {
+- (void)changeStylewithColor:(BOOL)trigger{
+    UIColor *selectedColor= trigger? [SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
+    if (!trigger || self.selected) {
 //        lblTitle.textColor = selectedColor;
         bgView.backgroundColor = selectedColor;
     }else{
@@ -109,7 +103,7 @@
     [self addSubview:lblTitle];
 }
 
-- (void)setupValues:(UIImage*)iconImage topText:(NSString*)topText bottomText:(NSString *)bottomText{//upperScroll
+- (void)setupValues:(UIImage*)iconImage topText:(NSString*)topText bottomText:(NSString *)bottomText inUpperScroll:(BOOL)inUpperScroll{//upperScroll
     
     
     if(topText != nil){
@@ -126,7 +120,8 @@
         [self addImage:iconImage y:bgView.frame.origin.y - 10 widthAndHeight:self.frame.size.width-textHeight - 10];
         [self addBottomText:bottomText x:-5 y:bgView.frame.size.height+textPadding width:self.frame.size.width-textHeight height:textHeight];
     }
-    isTrigger?[self changeBGColor:[SFIColors ruleBlueColor]]:[self changeBGColor:[SFIColors ruleBlueColor]];
+        if(inUpperScroll)
+      self.isTrigger?[self changeBGColor:[SFIColors ruleBlueColor]]:[self changeBGColor:[SFIColors ruleOrangeColor]];
     
 }
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{

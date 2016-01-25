@@ -16,6 +16,6 @@
 @property(nonatomic)NSString *deviceName;
 @property(nonatomic)BOOL isTrigger;
 
--(id)initiliaze:(BOOL)isTrigger andFrame:(CGRect)frame deviceType:(SFIDeviceType)devicetype deviceName:(NSString*)deviceName deviceId:(int)deviceId;
+-(void)deviceProperty:(BOOL)isTrigger deviceType:(SFIDeviceType)devicetype deviceName:(NSString*)deviceName deviceId:(int)deviceId;
 
 @end

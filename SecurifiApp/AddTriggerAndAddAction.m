@@ -80,17 +80,20 @@ NSMutableArray * pickerValuesArray2;
     CGRect textRect = [self adjustDeviceNameWidth:deviceName];
 
     CGRect frame = CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight);
-    RulesDeviceNameButton *deviceButton = [[RulesDeviceNameButton alloc] initiliaze:self.isTrigger andFrame:frame deviceType:deviceType deviceName:deviceName deviceId:deviceID];
+    RulesDeviceNameButton *deviceButton = [[RulesDeviceNameButton alloc]initWithFrame:frame];
+    
+    [deviceButton deviceProperty:self.isTrigger deviceType:deviceType deviceName:deviceName deviceId:deviceID];
 
 
     if([deviceName isEqualToString:@"Time"]){
         [deviceButton addTarget:self action:@selector(TimeEventClicked:) forControlEvents:UIControlEventTouchUpInside];
     }else
     [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    
     [self.parentViewController.deviceListScrollView addSubview:deviceButton];
-    NSLog(@"self.parant %@ %d",deviceButton.deviceName,deviceButton.deviceId);
+
+    NSLog(@" devicename button %@",deviceButton);
+    NSLog(@" device name %@",deviceButton.deviceName);
+    
     return xVal + textRect.size.width +15;
 }
 -(void)TimeEventClicked:(id)sender{
@@ -130,7 +133,6 @@ NSMutableArray * pickerValuesArray2;
    
     xVal = [self addDeviceName:@"Mode" deviceID:0 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
     if(self.isTrigger){//if Trigger Add time
-        
         xVal = [self addDeviceName:@"Time" deviceID:0 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
         xVal = [self addDeviceName:@"Clients" deviceID:0 deviceType:SFIDeviceType_WIFIClient xVal:xVal];
         //same way we can we can do for client in trigger
@@ -185,7 +187,7 @@ NSMutableArray * pickerValuesArray2;
 }
 
 -(void)onDeviceButtonClick:(RulesDeviceNameButton *)sender{
-    
+    NSLog(@" on device name button clicked");
     [self resetViews];
     //toggeling
     [self toggleHighlightForDeviceNameButton:sender];
@@ -352,7 +354,7 @@ NSMutableArray * pickerValuesArray2;
     
     [btnBinarySwitchOn addTarget:self action:@selector(onSwitchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
    
-    [btnBinarySwitchOn setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText];
+    [btnBinarySwitchOn setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText inUpperScroll:NO];
 
     //set perv. count and highlight
     
@@ -522,19 +524,20 @@ NSMutableArray * pickerValuesArray2;
     int buttonIndex = indexSwitchButton.subProperties.index;
     NSString *buttonMatchdata = indexSwitchButton.subProperties.matchData;
     [indexSwitchButton changeStylewithColor:self.isTrigger];
-    if(self.isAction){
+    if(!self.isTrigger){
         indexSwitchButton.selected = YES ;
         
         [self.selectedButtonsPropertiesArrayAction addObject:indexSwitchButton.subProperties];
         [self setActionButtonCount:indexSwitchButton isSlider:NO matchData:buttonMatchdata buttonIndex:buttonIndex buttonId:buttonId];
-        [self.delegate updateActionsButtonsPropertiesArray:self.selectedButtonsPropertiesArrayAction];
+        [self.delegate updateTriggerAndActionDelegatePropertie:!self.isTrigger];
     }else{
         [self toggleTriggerIndex:buttonIndex superView:[sender superview] indexButton:indexSwitchButton];
         [self removeTriggerIndex:buttonIndex buttonId:buttonId];
         NSLog(@"triggers list after: %@", self.selectedButtonsPropertiesArrayTrigger);
         if (indexSwitchButton.selected)
             [self.selectedButtonsPropertiesArrayTrigger addObject:indexSwitchButton.subProperties];
-        [self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArrayTrigger];
+        //[self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArrayTrigger];
+        [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
     }
     
 }

@@ -418,7 +418,6 @@
 
 - (void)getAllScenes {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
     scenesArray = [NSMutableArray arrayWithArray:toolkit.scenesArray];
     [self.tableView reloadData];
     NSLog(@"scenes array: %@", scenesArray);
