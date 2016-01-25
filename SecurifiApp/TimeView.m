@@ -17,7 +17,7 @@
 @implementation TimeView
 int timeSegmentHeight = 30;
 int datePickerHeight = 90;
-int datePickerWidth = 120;
+int datePickerWidth = 150;
 int dateDividerWidth = 20;
 int dayViewHeight = 50;
 int viewSpacing = 20;
@@ -64,6 +64,7 @@ int segmentType;
     switch (segment.selectedSegmentIndex) {
         case 0:{
             [self addAnyTimeInfoLable];
+            self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.frame.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight);
         }
             break;
         case 1:{
@@ -71,6 +72,8 @@ int segmentType;
             [self setTime];
             [self addDayView];
             [self setLableText];
+            self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.frame.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight);
+            self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.bounds.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight);
         }
             break;
         case 2:{
@@ -292,8 +295,8 @@ int segmentType;
 
 -(void)setPreciseAndBetweenInfoLable:(NSString*)text{
     CGRect frame = CGRectMake(0, datePickerHeight + dayViewHeight + viewSpacing * 2, self.segmentDetailView.frame.size.width-40, infoLableHeight);
-//    infoLable.center = CGPointMake(self.segmentDetailView.bounds.size.width/2, infoLable.center.y);
     [self addInfoLabelWithFrame:frame text:text];
+    infoLable.center = CGPointMake(CGRectGetMidX(self.segmentDetailView.bounds), infoLable.center.y);
 }
 
 
@@ -330,8 +333,6 @@ int segmentType;
 }
 
 -(void)initializeSetup{
-//    datePickerWidth = self.parentViewController.deviceIndexButtonScrollView.frame.size.width/2;
-
     UIScrollView *scrollView = self.parentViewController.deviceIndexButtonScrollView;
     self.segmentDetailView = [[UIView alloc]initWithFrame:CGRectMake(0, timeSegmentHeight + segmentDetailTopSpacing, scrollView.frame.size.width, datePickerHeight + dayViewHeight + infoLableHeight + viewSpacing * 2)];
     [scrollView addSubview:self.segmentDetailView];

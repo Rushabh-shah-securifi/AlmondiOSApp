@@ -17,8 +17,7 @@
     UILabel *waitText;
     UILabel *noOfSec;
     UILabel *secText;
-    
-    
+
     UILabel *lblDisplayText;
     UILabel *lblDeviceName;
 }
@@ -34,8 +33,6 @@
     UIColor *color= isTrigger?[UIColor colorFromHexString:@"02a8f3"]:[UIColor colorFromHexString:@"FF9500"];
     color=clearColor?[UIColor clearColor]:color;
     [actionbutton changeBGColor:isTrigger clearColor:NO];
-    lblDisplayText.textColor = color;
-    lblDeviceName.textColor = color;
 }
 
 - (void)setupValues:(UIImage*)iconImage Title:(NSString*)title displayText:(NSString *)displayText delay:(NSString*)delay{
@@ -46,7 +43,7 @@
     [lblDeviceName setFont: [lblDeviceName.font fontWithSize: fontSize]];
     lblDeviceName.numberOfLines=0;
     lblDeviceName.textAlignment = NSTextAlignmentCenter;
-    lblDeviceName.textColor = [UIColor colorFromHexString:@"757575"];
+    lblDeviceName.textColor = [SFIColors ruleButtonTitleColor];
     [self addSubview:lblDeviceName];
     
     //delaybutton
@@ -90,7 +87,7 @@
     [lblDisplayText setFont: [lblDisplayText.font fontWithSize: fontSize]];
     lblDisplayText.numberOfLines=0;
     lblDisplayText.textAlignment = NSTextAlignmentCenter;
-    lblDisplayText.textColor = [UIColor colorFromHexString:@"757575"];
+    lblDisplayText.textColor = [SFIColors ruleGraycolor];
     [self addSubview:lblDisplayText];
 }
 

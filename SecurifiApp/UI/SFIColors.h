@@ -32,6 +32,8 @@
 
 + (UIColor *)ruleLightGrayColor;
 
++ (UIColor *)ruleButtonTitleColor;
+
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName;
 
 // Returns a UIColor whose brightness is computed as an incrementally gradation on the position index.

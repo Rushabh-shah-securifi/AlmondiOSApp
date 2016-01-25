@@ -72,6 +72,7 @@
 
 + (UIColor*)ruleBlueColor{
     return [UIColor colorFromHexString:@"02a8f3"];
+//    return [UIColor colorFromHexString:@"02a8f3"];
 }
 + (UIColor *)ruleOrangeColor{
     return  [UIColor colorFromHexString:@"FF9500"];
@@ -82,6 +83,10 @@
 }
 + (UIColor *)ruleLightGrayColor{
     return [UIColor colorFromHexString:@"F7F7F7"];
+}
+
++ (UIColor *)ruleButtonTitleColor{
+    return [UIColor colorFromHexString:@"212121"];
 }
 
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName {

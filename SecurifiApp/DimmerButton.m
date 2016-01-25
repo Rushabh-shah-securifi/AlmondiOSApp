@@ -27,33 +27,8 @@
  // Drawing code
  }
  */
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    self.backgroundColor = [UIColor clearColor];
-    bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width,self.frame.size.height-17)];
-    lblTitle.textColor = [SFIColors ruleGraycolor];
-    bgView.backgroundColor = [SFIColors ruleGraycolor];
-    [self addSubview:bgView];
-    
-    lblMain = [[UILabel alloc] initWithFrame:bgView.frame];
-    lblMain.textAlignment = NSTextAlignmentCenter;
-    [bgView addSubview:lblMain];
-    
-    
-    
-    lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, bgView.frame.size.height, self.frame.size.width,self.frame.size.height-bgView.frame.size.height)];
-    lblTitle.font = self.titleLabel.font;
-    lblTitle.textColor = self.currentTitleColor;
-    lblTitle.textAlignment = NSTextAlignmentCenter;
-    [self addSubview:lblTitle];
-    bgView.userInteractionEnabled = NO;
-    lblMain.userInteractionEnabled = NO;
-}
-
 -(id) initWithFrame: (CGRect) frame
 {
-    //    frame.size.height = 100;
-    //    frame.size.width = 100;
     return [super initWithFrame:frame];
 }
 
@@ -62,13 +37,11 @@
     //[self changeStyle];
 }
 
-
 - (void)setupValues:(NSString*)text  Title:(NSString*)title suffix:(NSString*)suffix{
     //awakefromnib
     self.dimValue = text;
     self.backgroundColor = [UIColor clearColor];
     bgView = [[UIView alloc] initWithFrame:CGRectMake(0, -5, self.frame.size.width-textHeight,self.frame.size.height-textHeight)];
-    lblTitle.textColor = [SFIColors ruleGraycolor];
     bgView.backgroundColor = [SFIColors ruleGraycolor];
     [self addSubview:bgView];
     
@@ -78,7 +51,6 @@
     
     lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, bgView.frame.size.height+textPadding -5, self.frame.size.width-textHeight,textHeight)];
     [lblTitle setFont: [lblTitle.font fontWithSize: fontSize]];
-    lblTitle.textColor = self.currentTitleColor;
     lblTitle.numberOfLines=0;
     lblTitle.textAlignment = NSTextAlignmentCenter;
     lblTitle.textColor = [SFIColors ruleGraycolor];
@@ -106,12 +78,9 @@
     lblDeviceName.text = title;
     [lblDeviceName setFont: [lblDeviceName.font fontWithSize: fontSize]];
     lblDeviceName.numberOfLines=0;
-    lblDeviceName.textColor = self.currentTitleColor;
     lblDeviceName.textAlignment = NSTextAlignmentCenter;
-    NSLog(@" devicename %@",lblDeviceName.text);
-    lblDeviceName.textColor = [SFIColors ruleGraycolor];
+    lblDeviceName.textColor = [SFIColors ruleButtonTitleColor];
     [self addSubview:lblDeviceName];
-    NSLog(@" lbldevicename %@",title);
     
     //set value
     self.dimValue = text;
@@ -133,7 +102,6 @@
     lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, bgView.frame.origin.y + bgView.frame.size.height + textPadding, self.frame.size.width,textHeight)];
     lblTitle.text = displayText;
     [lblTitle setFont: [lblTitle.font fontWithSize: fontSize]];
-    lblTitle.textColor = self.currentTitleColor;
     lblTitle.numberOfLines=0;
     lblTitle.textAlignment = NSTextAlignmentCenter;
     lblTitle.textColor = [SFIColors ruleGraycolor];
@@ -150,7 +118,6 @@
     [lblMain setAttributedText:strTemp];//24
     lblMain.lineBreakMode = NSLineBreakByWordWrapping;
     lblMain.numberOfLines = 0;
-    
 }
 
 

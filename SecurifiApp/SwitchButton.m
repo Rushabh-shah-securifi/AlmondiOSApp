@@ -16,7 +16,7 @@
     UIView * bgView;
     UIImageView * imgIcon;
     UILabel *lblTitle;
-    UILabel *lblMain;
+//    UILabel *lblMain;
     UILabel *countLable;
     UILabel *lblDeviceName;
     BOOL isTrigger;
@@ -41,12 +41,12 @@
 }
 
 - (void)changeStylewithColor:(BOOL)isTrigger{
-    UIColor *selectedColor= isTrigger?[SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
+    UIColor *selectedColor= isTrigger? [SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
     if (!isTrigger || self.selected) {
-        lblTitle.textColor = selectedColor;
+//        lblTitle.textColor = selectedColor;
         bgView.backgroundColor = selectedColor;
     }else{
-        lblTitle.textColor = [SFIColors ruleGraycolor];
+//        lblTitle.textColor = [SFIColors ruleGraycolor];
         bgView.backgroundColor = [SFIColors ruleGraycolor];
     }
 }
@@ -59,9 +59,8 @@
     lblDeviceName.text = title;
     [lblDeviceName setFont: [lblDeviceName.font fontWithSize: fontSize]];
     lblDeviceName.numberOfLines=0;
-    lblDeviceName.textColor = self.currentTitleColor;
     lblDeviceName.textAlignment = NSTextAlignmentCenter;
-    lblDeviceName.textColor = [UIColor blackColor];
+    lblDeviceName.textColor = [SFIColors ruleButtonTitleColor];
     [self addSubview:lblDeviceName];
 }
 
@@ -106,7 +105,7 @@
     lblTitle.numberOfLines=0;
     lblTitle.textColor = self.currentTitleColor;
     lblTitle.textAlignment = NSTextAlignmentCenter;
-    lblTitle.textColor = [UIColor blackColor];
+    lblTitle.textColor = [SFIColors ruleGraycolor];
     [self addSubview:lblTitle];
 }
 
@@ -152,13 +151,11 @@
     countLable.textAlignment = NSTextAlignmentCenter;
     countLable.hidden = ishidden;
     [self addSubview:countLable];
-    
-    
-    
 }
+
 - (void)changeBGColor:(UIColor*)color{
     bgView.backgroundColor = color;
-    lblTitle.textColor = color;
+//    lblTitle.textColor = color;
 }
 
 - (void)changeImageColor:(UIColor*)color{
