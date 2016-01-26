@@ -14,7 +14,6 @@
 @implementation DimmerButton{
     UIView *bgView;
     UILabel *lblMain;
-    UILabel *lblTitle;
     UILabel *countLable;
     UILabel *lblDeviceName;
 }
@@ -34,30 +33,32 @@
 
 - (void)setSelected:(BOOL)selected{
     [super setSelected:selected];
+    [super changeBGColor:self.isTrigger clearColor:selected showTitle:NO];
     //[self changeStyle];
 }
 
-- (void)setupValues:(NSString*)text  Title:(NSString*)title suffix:(NSString*)suffix{
+- (void)setupValues:(NSString*)text  Title:(NSString*)title suffix:(NSString*)suffix isTrigger:(BOOL)isTrigger{
     //awakefromnib
+    self.isTrigger = isTrigger;
     self.dimValue = text;
     self.backgroundColor = [UIColor clearColor];
-    bgView = [[UIView alloc] initWithFrame:CGRectMake(0, -5, self.frame.size.width-textHeight,self.frame.size.height-textHeight)];
-    bgView.backgroundColor = [SFIColors ruleGraycolor];
-    [self addSubview:bgView];
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, -5, self.frame.size.width-textHeight,self.frame.size.height-textHeight)];
+    self.bgView.backgroundColor = [SFIColors ruleGraycolor];
+    [self addSubview:self.bgView];
     
     lblMain = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, self.frame.size.width-textHeight,self.frame.size.height-textHeight)];
     lblMain.textAlignment = NSTextAlignmentCenter;
-    [bgView addSubview:lblMain];
+    [self.bgView addSubview:lblMain];
     
-    lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, bgView.frame.size.height+textPadding -5, self.frame.size.width-textHeight,textHeight)];
-    [lblTitle setFont: [lblTitle.font fontWithSize: fontSize]];
-    lblTitle.numberOfLines=0;
-    lblTitle.textAlignment = NSTextAlignmentCenter;
-    lblTitle.textColor = [SFIColors ruleGraycolor];
-    lblTitle.textAlignment = NSTextAlignmentCenter;
-    [self addSubview:lblTitle];
+    self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.bgView.frame.size.height+textPadding -5, self.frame.size.width-textHeight,textHeight)];
+    [self.bottomLabel setFont: [self.bottomLabel.font fontWithSize: fontSize]];
+    self.bottomLabel.numberOfLines=0;
+    self.bottomLabel.textAlignment = NSTextAlignmentCenter;
+    self.bottomLabel.textColor = [SFIColors ruleGraycolor];
+    self.bottomLabel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:self.bottomLabel];
     
-    bgView.userInteractionEnabled = NO;
+    self.bgView.userInteractionEnabled = NO;
     lblMain.userInteractionEnabled = NO;
     //awakefromnib
     
@@ -67,46 +68,46 @@
     [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:40.0f]} range:NSMakeRange(0,text.length)];
     [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:24.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,suffix.length)];
     [lblMain setAttributedText:strTemp];
-    lblTitle.text = title;
+    self.bottomLabel.text = title;
 }
 
 
 - (void)setupValues:(NSString*)text  Title:(NSString*)title displayText:(NSString*)displayText suffix:(NSString*)suffix{
     //device name title
     lblDeviceName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width,textHeight)];
-    //    lblTitle.font = self.titleLabel.font;
+    //    self.bottomLabel.font = self.titleLabel.font;
     lblDeviceName.text = title;
     [lblDeviceName setFont: [lblDeviceName.font fontWithSize: fontSize]];
     lblDeviceName.numberOfLines=0;
     lblDeviceName.textAlignment = NSTextAlignmentCenter;
-    lblDeviceName.textColor = [SFIColors ruleButtonTitleColor];
+    lblDeviceName.textColor = [SFIColors darkGrayColor];
     [self addSubview:lblDeviceName];
     
     //set value
     self.dimValue = text;
     self.backgroundColor = [UIColor clearColor];
     
-    //bgview
-    bgView = [[UIView alloc] initWithFrame:CGRectMake(0, lblDeviceName.frame.size.height, triggerActionDimWidth,triggerActionBtnWidth -5)];
-    bgView.backgroundColor = [SFIColors ruleGraycolor];
-    bgView.userInteractionEnabled = NO;
-    [self addSubview:bgView];
+    //self.bgView
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, lblDeviceName.frame.size.height, triggerActionDimWidth,triggerActionBtnWidth -5)];
+    self.bgView.backgroundColor = [SFIColors ruleGraycolor];
+    self.bgView.userInteractionEnabled = NO;
+    [self addSubview:self.bgView];
     
     //lblmain
-    lblMain = [[UILabel alloc] initWithFrame:bgView.frame];
+    lblMain = [[UILabel alloc] initWithFrame:self.bgView.frame];
     lblMain.textAlignment = NSTextAlignmentCenter;
     lblMain.userInteractionEnabled = NO;
     [self addSubview:lblMain];
     
-    //lbltitle
-    lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, bgView.frame.origin.y + bgView.frame.size.height + textPadding, self.frame.size.width,textHeight)];
-    lblTitle.text = displayText;
-    [lblTitle setFont: [lblTitle.font fontWithSize: fontSize]];
-    lblTitle.numberOfLines=0;
-    lblTitle.textAlignment = NSTextAlignmentCenter;
-    lblTitle.textColor = [SFIColors ruleGraycolor];
-    lblTitle.textAlignment = NSTextAlignmentCenter;
-    [self addSubview:lblTitle];
+    //self.bottomLabel
+    self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding, self.frame.size.width,textHeight)];
+    self.bottomLabel.text = displayText;
+    [self.bottomLabel setFont: [self.bottomLabel.font fontWithSize: fontSize]];
+    self.bottomLabel.numberOfLines=0;
+    self.bottomLabel.textAlignment = NSTextAlignmentCenter;
+    self.bottomLabel.textColor = [SFIColors ruleGraycolor];
+    self.bottomLabel.textAlignment = NSTextAlignmentCenter;
+    [self addSubview:self.bottomLabel];
     
     //lblmain adjutments
     self.prefix = suffix;
@@ -136,7 +137,7 @@
 }
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{
     
-    countLable = [[UILabel alloc]initWithFrame:CGRectMake(bgView.frame.origin.x + bgView.frame.size.width -10, -10, 16, 16)];
+    countLable = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x + self.bgView.frame.size.width -10, -10, 16, 16)];
     
     CALayer * l1 = [countLable layer];
     [l1 setMasksToBounds:YES];
@@ -170,7 +171,7 @@
     if(self.crossButton.text != nil){
         self.crossButton.text =nil;
     }
-    self.crossButton = [[UILabel alloc]initWithFrame:CGRectMake(bgView.frame.origin.x  + bgView.frame.size.width - 12, 16, 16, 16)];
+    self.crossButton = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 12, 16, 16, 16)];
     CALayer * l1 = [self.crossButton layer];
     [l1 setMasksToBounds:YES];
     [l1 setCornerRadius:8];

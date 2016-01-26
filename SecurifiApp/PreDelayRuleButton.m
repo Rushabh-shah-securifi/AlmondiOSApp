@@ -29,11 +29,7 @@
 }
 
 
-- (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)clearColor{
-    UIColor *color= isTrigger?[UIColor colorFromHexString:@"02a8f3"]:[UIColor colorFromHexString:@"FF9500"];
-    color=clearColor?[UIColor clearColor]:color;
-    [actionbutton changeBGColor:isTrigger clearColor:NO];
-}
+
 
 - (void)setupValues:(UIImage*)iconImage Title:(NSString*)title displayText:(NSString *)displayText delay:(NSString*)delay{
     //device name title
@@ -43,7 +39,7 @@
     [lblDeviceName setFont: [lblDeviceName.font fontWithSize: fontSize]];
     lblDeviceName.numberOfLines=0;
     lblDeviceName.textAlignment = NSTextAlignmentCenter;
-    lblDeviceName.textColor = [SFIColors ruleButtonTitleColor];
+    lblDeviceName.textColor = [SFIColors darkGrayColor];
     [self addSubview:lblDeviceName];
     
     //delaybutton
@@ -75,7 +71,7 @@
     
     actionbutton = [[SwitchButton alloc] initWithFrame:CGRectMake(46, 0, triggerActionBtnWidth,triggerActionBtnWidth)];
     NSLog(@"iconimage: %@", iconImage);
-    [actionbutton setupValues:iconImage topText:@"" bottomText:@"" inUpperScroll:YES];
+    [actionbutton setupValues:iconImage topText:@"" bottomText:@"" isTrigger:NO];
     
 //    [actionbutton setButtonCross:NO];
     [self addSubview:actionbutton];

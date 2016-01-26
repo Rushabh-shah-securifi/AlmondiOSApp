@@ -22,9 +22,10 @@
 @property(nonatomic)UILabel *crossButton;
 @property bool inScroll;
 @property BOOL isTrigger;
+@property BOOL showTitle;
 
 - (void)changeImageColor:(UIColor*)color;
-- (void)setupValues:(UIImage*)iconImage topText:(NSString*)topText bottomText:(NSString *)bottomText inUpperScroll:(BOOL)inUpperScroll;
+- (void)setupValues:(UIImage*)iconImage topText:(NSString*)topText bottomText:(NSString *)bottomText isTrigger:(BOOL)isTrigger ;
 - (void)setButtonCross:(BOOL)isHidden;
 
 @end

@@ -9,10 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface RuleButton : UIButton
-
+@property (nonatomic)UIView * bgView;
+@property (nonatomic)UILabel * topLabel;
+@property (nonatomic)UILabel *bottomLabel;
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden;
-- (void)changeStylewithColor:(BOOL)isTrigger;
-- (void)changeStyle;
-- (void)changeBGColor:(UIColor*)color;
-- (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)clearColor;
+- (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)clearColor showTitle:(BOOL)showTitle;
 @end

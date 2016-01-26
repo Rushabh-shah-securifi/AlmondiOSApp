@@ -116,7 +116,7 @@ int xVal = 20;
     
     for (SFIButtonSubProperties *buttonProperties in entries) {
         if(buttonProperties.time != nil)
-            [self buildTime:buttonProperties];
+            [self buildTime:buttonProperties isTrigger:isTrigger];
         else{
             [self getDeviceTypeFor:buttonProperties];
             NSLog(@"buttn type %d %@",buttonProperties.deviceType,buttonProperties.deviceName);
@@ -127,7 +127,7 @@ int xVal = 20;
     }
 }
 
-+ (void)buildTime:(SFIButtonSubProperties *)timesubProperties{
++ (void)buildTime:(SFIButtonSubProperties *)timesubProperties isTrigger:(BOOL)isTrigger{
     NSLog(@"drawTime");
     
     DimmerButton *dimbutton=[[DimmerButton alloc]initWithFrame:CGRectMake(xVal, 5, triggerActionDimWidth, triggerActionDimHeight)];
@@ -146,7 +146,6 @@ int xVal = 20;
         [dimbutton setupValues:time Title:@"Time Interval" displayText:@"days" suffix:@""];
     }
 
-    [dimbutton changeBGColor:[SFIColors ruleBlueColor]]; //just to change color, perhaps you have to create method
     xVal += triggerActionDimWidth;
     [scrollView addSubview:dimbutton];
 
@@ -162,12 +161,9 @@ int xVal = 20;
     if(isTrigger){
         SwitchButton *switchButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, triggerActionBtnWidth, triggerActionBtnHeight)];
         switchButton.isTrigger = isTrigger;
-        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:subProperties.displayText inUpperScroll:YES];
+        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:subProperties.displayText isTrigger:isTrigger];
         
-        ////switchButton.crossButton.subproperty = subProperties;
-        
-        [switchButton changeBGColor:isTrigger clearColor:NO];
-        //[switchButton changeStylewithColor:isTrigger];
+
         switchButton.inScroll = YES;
         
         [switchButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -187,7 +183,7 @@ int xVal = 20;
         [switchButton->actionbutton setButtonCross:showCrossBtn];
        // (switchButton->actionbutton).crossButton.subproperty = subProperties;
         switchButton->actionbutton.isTrigger = isTrigger;
-        [switchButton changeBGColor:isTrigger clearColor:NO];
+        //[switchButton changeBGColor:isTrigger clearColor:NO];
         
        
         //[switchButton.crossButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -207,17 +203,11 @@ int xVal = 20;
 
 + (void)drawImage:(NSString *)iconName {
     NSLog(@"arrow button");
-    SwitchButton *addButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal,5, triggerActionBtnWidth, triggerActionBtnHeight)];//todo
-    
-    [addButton setupValues:[UIImage imageNamed:iconName] topText:@"" bottomText:@"" inUpperScroll:YES];
-    
-    
-//    [addButton changeBGColor:YES clearColor:YES];
-    [addButton changeBGColor:[UIColor clearColor]];
-    ///[addButton changeStylewithColor:YES];
+    SwitchButton *imageButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal,5, triggerActionBtnWidth, triggerActionBtnHeight)];//todo
+    [imageButton setupValues:[UIImage imageNamed:iconName] topText:@"" bottomText:@"" isTrigger:YES];
+    //image.image = [UIImage imageNamed:iconName];
     xVal += triggerActionBtnWidth;
-    addButton.inScroll = YES;
-    [scrollView addSubview:addButton];
+    [scrollView addSubview:imageButton];
     
 }
 +(void)getDeviceTypeFor:(SFIButtonSubProperties*)buttonSubProperty{

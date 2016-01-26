@@ -58,12 +58,20 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 
 -(void) createHueCellLayoutWithDeviceId:(int)deviceId deviceType:(int)deviceType deviceIndexes:(NSArray*)deviceIndexes scrollView:(UIScrollView *)scrollView cellCount:(int)numberOfCells indexesDictionary:(NSDictionary*)deviceIndexesDict{
     for(int i = 0; i < numberOfCells; i++){
+       
+        
         [self HueLayout:scrollView withYScale:ROW_PADDING+(ROW_PADDING+frameSize)*i  withDeviceIndex:[deviceIndexesDict valueForKey:[NSString stringWithFormat:@"%d", i+1]] deviceId:deviceId deviceType:deviceType];
+        
     }
 }
-
+/*
+ 
+ */
 
 - (void)HueLayout:(UIScrollView *)scrollView withYScale:(int)yScale withDeviceIndex:(NSArray *)deviceIndexes deviceId:(int)deviceId deviceType:(SFIDeviceType)deviceType{
+    CGSize scrollableSize = CGSizeMake(scrollView.frame.size.width,
+                                       500);
+    [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
     NSLog(@"Hue Layout - yScale: %d", yScale);
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                             yScale,
@@ -91,8 +99,8 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 [buttonHue addTarget:self action:@selector(onHueButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                 
                 
-                [buttonHue setupValues:[UIImage imageNamed:iVal.iconName] topText:buttonHue.subProperties.deviceName bottomText:iVal.displayText inUpperScroll:YES];
-                
+                [buttonHue setupValues:[UIImage imageNamed:iVal.iconName] topText:buttonHue.subProperties.deviceName bottomText:iVal.displayText isTrigger:NO];
+                [buttonHue changeImageColor:[UIColor whiteColor]];
                 //set perv. count and highlight
                 int buttonClickCount = 0;
                 for(SFIButtonSubProperties *hueButtonProperty in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
@@ -328,8 +336,10 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 #pragma mark button click
 -(void) onHueButtonClick:(id)sender{
     NSLog(@"on hue button click");
-    [self.delegate onButtonClick:sender];
+    
+    [self.delegate onSwitchButtonClick:sender];
 }
+
 
 #pragma mark - hueOperation
 - (SFISlider *)makeSlider:(float)minVal maxValue:(float)maxValue propertyType:(SFIDevicePropertyType)propertyType sliderLeftInset:(CGFloat)sliderLeftInset sliderRightInset:(CGFloat)sliderRightInset slider:(SFISlider*) slider {
@@ -465,7 +475,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     [hueColorPickupLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
 //    [huePickerView setConvertedValue:0];
     
-    
+    NSLog(@"");
     [self.delegate updateArray];
 }
 

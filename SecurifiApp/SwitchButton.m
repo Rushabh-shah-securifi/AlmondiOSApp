@@ -13,12 +13,10 @@
 #import <QuartzCore/QuartzCore.h>
 
 @implementation SwitchButton{
-    UIView * bgView;
-    UIImageView * imgIcon;
-    UILabel *lblTitle;
-//    UILabel *lblMain;
+        UIImageView * imgIcon;
+  
     UILabel *countLable;
-    UILabel *lblDeviceName;
+    
 }
 
 -(id) initWithFrame:(CGRect)frame
@@ -30,41 +28,31 @@
 }
 
 - (void)setSelected:(BOOL)selected{
+    
     [super setSelected:selected];
+    [super changeBGColor:self.isTrigger clearColor:selected showTitle:self.showTitle];
    
-}
-
-- (void)changeStylewithColor:(BOOL)trigger{
-    UIColor *selectedColor= trigger? [SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
-    if (!trigger || self.selected) {
-//        lblTitle.textColor = selectedColor;
-        bgView.backgroundColor = selectedColor;
-    }else{
-//        lblTitle.textColor = [SFIColors ruleGraycolor];
-        bgView.backgroundColor = [SFIColors ruleGraycolor];
-    }
 }
 
 - (void)adDeviceName:(NSString *)title
 {
     //device name title
-    lblDeviceName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width,textHeight)];
-    //    lblTitle.font = self.titleLabel.font;
-    lblDeviceName.text = title;
-    [lblDeviceName setFont: [lblDeviceName.font fontWithSize: fontSize]];
-    lblDeviceName.numberOfLines=0;
-    lblDeviceName.textAlignment = NSTextAlignmentCenter;
-    lblDeviceName.textColor = [SFIColors ruleButtonTitleColor];
-    [self addSubview:lblDeviceName];
+    self.topLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width,textHeight)];
+    //    self.bottomLabel.font = self.titleLabel.font;
+    self.topLabel.text = title;
+    [self.topLabel setFont: [self.topLabel.font fontWithSize: fontSize]];
+    self.topLabel.numberOfLines=0;
+    self.topLabel.textAlignment = NSTextAlignmentCenter;
+    self.topLabel.textColor = [SFIColors darkGrayColor];
+    [self addSubview:self.topLabel];
 }
 
 - (void)addBgView:(int)y widthAndHeight:(int)widthAndHeight
 {
     //bgview
-    bgView = [[UIView alloc] initWithFrame:CGRectMake(0, y , widthAndHeight,widthAndHeight)];
-    bgView.backgroundColor = [SFIColors ruleGraycolor];
-    bgView.userInteractionEnabled = NO;
-    [self addSubview:bgView];
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, y , widthAndHeight,widthAndHeight)];
+    self.bgView.userInteractionEnabled = NO;
+    [self addSubview:self.bgView];
 }
 
 
@@ -77,7 +65,7 @@
     float height = iconImage.size.height;
     float width = iconImage.size.width;
     float scale;
-    int heightFactor = bgView.frame.size.height/imageHeightFactor;
+    int heightFactor = self.bgView.frame.size.height/imageHeightFactor;
     scale = height/heightFactor;
     height = heightFactor;
     width /= scale;
@@ -87,42 +75,41 @@
     frame.size.width = width;
     frame.size.height = height;
     imgIcon.frame = frame;
-    imgIcon.center = bgView.center;
+    imgIcon.center = self.bgView.center;
     [self addSubview:imgIcon];
 }
 
 - (void)addBottomText:(NSString *)bottomText x:(int)x y:(int)y width:(int)width height:(int)height{
     //label
-    lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(x, y,width,height)];
-    lblTitle.text = bottomText;
-    [lblTitle setFont: [lblTitle.font fontWithSize: fontSize]];
-    lblTitle.numberOfLines=0;
-    lblTitle.textColor = self.currentTitleColor;
-    lblTitle.textAlignment = NSTextAlignmentCenter;
-    lblTitle.textColor = [SFIColors ruleGraycolor];
-    [self addSubview:lblTitle];
+    self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, y,width,height)];
+    self.bottomLabel.text = bottomText;
+    [self.bottomLabel setFont: [self.bottomLabel.font fontWithSize: fontSize]];
+    self.bottomLabel.numberOfLines=0;
+    self.bottomLabel.textColor = self.currentTitleColor;
+    self.bottomLabel.textAlignment = NSTextAlignmentCenter;
+    self.bottomLabel.textColor = [SFIColors ruleGraycolor];
+    [self addSubview:self.bottomLabel];
 }
 
-- (void)setupValues:(UIImage*)iconImage topText:(NSString*)topText bottomText:(NSString *)bottomText inUpperScroll:(BOOL)inUpperScroll{//upperScroll
-    
-    
+- (void)setupValues:(UIImage*)iconImage topText:(NSString*)topText bottomText:(NSString *)bottomText isTrigger:(BOOL)isTrigger{//upperScroll
+    self.isTrigger = isTrigger;
     if(topText != nil){
+        self.showTitle = YES;
         self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, triggerActionBtnWidth, triggerActionBtnHeight);
         [self adDeviceName:topText];
-        [self addBgView:lblDeviceName.frame.size.height widthAndHeight:triggerActionBtnWidth];
-        [self addImage:iconImage y:bgView.frame.origin.y widthAndHeight:bgView.frame.size.width];
-        [self addBottomText:bottomText x:0 y:bgView.frame.origin.y + bgView.frame.size.height + textPadding width:self.frame.size.width height:textHeight];
-        
-            
+        [self addBgView:self.topLabel.frame.size.height widthAndHeight:triggerActionBtnWidth];
+        [self addImage:iconImage y:self.bgView.frame.origin.y widthAndHeight:self.bgView.frame.size.width];
+        [self addBottomText:bottomText x:0 y:self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding width:self.frame.size.width height:textHeight];
+        if(topText.length >0 || !isTrigger)
+            self.bgView.backgroundColor = self.isTrigger?[SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
+         
     }
     else{
        [self addBgView:0 widthAndHeight:self.frame.size.width-textHeight -10];
-        [self addImage:iconImage y:bgView.frame.origin.y - 10 widthAndHeight:self.frame.size.width-textHeight - 10];
-        [self addBottomText:bottomText x:-5 y:bgView.frame.size.height+textPadding width:self.frame.size.width-textHeight height:textHeight];
+        [self addImage:iconImage y:self.bgView.frame.origin.y - 10 widthAndHeight:self.frame.size.width-textHeight - 10];
+        [self addBottomText:bottomText x:-5 y:self.bgView.frame.size.height+textPadding width:self.frame.size.width-textHeight height:textHeight];
+        self.bgView.backgroundColor = [SFIColors ruleGraycolor];
     }
-        if(inUpperScroll)
-      self.isTrigger?[self changeBGColor:[SFIColors ruleBlueColor]]:[self changeBGColor:[SFIColors ruleOrangeColor]];
-    
 }
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{
     
@@ -130,7 +117,7 @@
         NSLog(@"countlabel is nil");
         countLable.text =nil;
     }
-    countLable = [[UILabel alloc]initWithFrame:CGRectMake(bgView.frame.origin.x + bgView.frame.size.width -9, -3, 16, 16)];
+    countLable = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x + self.bgView.frame.size.width -9, -3, 16, 16)];
     CALayer * l1 = [countLable layer];
     [l1 setMasksToBounds:YES];
     [l1 setCornerRadius:8];
@@ -149,8 +136,8 @@
 }
 
 - (void)changeBGColor:(UIColor*)color{
-    bgView.backgroundColor = color;
-//    lblTitle.textColor = color;
+    self.bgView.backgroundColor = color;
+//    self.bottomLabel.textColor = color;
 }
 
 - (void)changeImageColor:(UIColor*)color{
@@ -161,7 +148,7 @@
     if(self.crossButton.text != nil){
         self.crossButton.text =nil;
     }
-    self.crossButton = [[UILabel alloc]initWithFrame:CGRectMake(bgView.frame.origin.x  + bgView.frame.size.width - 12, 16, 16, 16)];
+    self.crossButton = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 12, 16, 16, 16)];
     CALayer * l1 = [self.crossButton layer];
     [l1 setMasksToBounds:YES];
     [l1 setCornerRadius:8];

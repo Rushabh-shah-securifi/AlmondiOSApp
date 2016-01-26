@@ -286,7 +286,6 @@ NSMutableArray * pickerValuesArray2;
     
     int count = 0;
    // NSString *matchData=nil;
-    UIColor * selectedColor= (self.isTrigger )? [SFIColors ruleBlueColor]: [SFIColors ruleOrangeColor];
     NSMutableArray *list=(self.isTrigger)?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
     for(SFIButtonSubProperties *subProperty in list){ //to do - you can add count property to subproperties and iterate array in reverse
         if(subProperty.deviceId == deviceId && subProperty.index == deviceIndex.indexID && subProperty.matchData == matchData){
@@ -294,8 +293,7 @@ NSMutableArray * pickerValuesArray2;
             ruleButton.selected = YES;
             if(!self.isTrigger)
                 count++;
-            if(!isSlider)
-                [ruleButton changeBGColor:selectedColor];
+            
         }
     }
     
@@ -313,9 +311,6 @@ NSMutableArray * pickerValuesArray2;
     dimbtn.maxValue = iVal.maxValue;
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
     dimbtn.selected=NO;
-    
-    NSString * selectedColor= (self.isTrigger )? @"02a8f3": @"FF9500";
-    [dimbtn changeStylewithColor:self.isTrigger];
     [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
     NSMutableDictionary *result=[self setButtonSelection:dimbtn isSlider:YES deviceIndex:deviceIndex deviceId:deviceId matchData:dimbtn.subProperties.matchData];
@@ -329,7 +324,8 @@ NSMutableArray * pickerValuesArray2;
         matchData=iVal.matchData;
     
     //get previous value
-    [dimbtn setupValues:matchData Title:iVal.displayText suffix:iVal.valueFormatter.suffix];
+    [dimbtn setupValues:matchData Title:iVal.displayText suffix:iVal.valueFormatter.suffix isTrigger:self.isTrigger];
+    
     
     dimbtn.center = CGPointMake(view.bounds.size.width/2,
                                 view.bounds.size.height/2);
@@ -354,7 +350,7 @@ NSMutableArray * pickerValuesArray2;
     
     [btnBinarySwitchOn addTarget:self action:@selector(onSwitchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
    
-    [btnBinarySwitchOn setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText inUpperScroll:NO];
+    [btnBinarySwitchOn setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:self.isTrigger];
 
     //set perv. count and highlight
     
@@ -481,10 +477,9 @@ NSMutableArray * pickerValuesArray2;
                 if (switchButton.tag == indexButton.tag)
                 {
                     switchButton.selected = !switchButton.selected;
-                    [switchButton changeStylewithColor:self.isTrigger];
                 }else{
                     switchButton.selected = NO;
-                    [switchButton changeStylewithColor:self.isTrigger];
+                   
                 }
             }
         }
@@ -493,12 +488,16 @@ NSMutableArray * pickerValuesArray2;
 
 - (void)removeTriggerIndex:(int)buttonIndex buttonId:(sfi_id)buttonId {
     NSMutableArray *toBeDeletedSubProperties = [[NSMutableArray alloc] init];
+    
     for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArrayTrigger){
         if((switchButtonProperty.deviceId == buttonId) && (switchButtonProperty.index == buttonIndex)){
             [toBeDeletedSubProperties addObject:switchButtonProperty];
+            NSLog(@" renoved id : %d ,index:%d",switchButtonProperty.deviceId,switchButtonProperty.index);
         }
     }
+    
     [self.selectedButtonsPropertiesArrayTrigger removeObjectsInArray:toBeDeletedSubProperties];
+    NSLog(@"selected button count %ld",(unsigned long)self.selectedButtonsPropertiesArrayTrigger.count);
 }
 
 - (void)setActionButtonCount:(RuleButton *)indexButton isSlider:(BOOL)isSlider matchData:(NSString *)buttonMatchdata buttonIndex:(int)buttonIndex buttonId:(sfi_id)buttonId {
@@ -523,7 +522,6 @@ NSMutableArray * pickerValuesArray2;
     sfi_id buttonId = indexSwitchButton.subProperties.deviceId;
     int buttonIndex = indexSwitchButton.subProperties.index;
     NSString *buttonMatchdata = indexSwitchButton.subProperties.matchData;
-    [indexSwitchButton changeStylewithColor:self.isTrigger];
     if(!self.isTrigger){
         indexSwitchButton.selected = YES ;
         
@@ -545,7 +543,6 @@ NSMutableArray * pickerValuesArray2;
    DimmerButton* dimmer = (DimmerButton *)sender;
     if(self.isTrigger){
         dimmer.selected=!dimmer.selected;
-        [dimmer changeStylewithColor:self.isTrigger];
     }
     
     
@@ -563,21 +560,22 @@ NSMutableArray * pickerValuesArray2;
     else{
         [dimmer setNewValue:dimmer.subProperties.matchData]; //set initial value
         NSLog(@" deselected ");
-        if(self.isTrigger)
+        if(self.isTrigger){
             [self removeTriggerIndex:dimIndex buttonId:dimId];
+            [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
+        }
         if(isPresentHozPicker == YES){
             dimmer.selected = YES;
             [dimmer setNewValue:newPickerValue];
             dimmer.subProperties.matchData = newPickerValue;
-            [dimmer changeStylewithColor:self.isTrigger];
             if(self.isTrigger){
                  [self.selectedButtonsPropertiesArrayTrigger addObject:dimmer.subProperties];
-                [self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArrayTrigger];
+                [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
             }
             else{
                 [self setActionButtonCount:dimmer isSlider:YES matchData:nil buttonIndex:dimIndex buttonId:dimId];
                 [self.selectedButtonsPropertiesArrayTrigger addObject:[dimmer.subProperties createNew]];
-                [self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArrayAction];
+                [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
             }
             isPresentHozPicker = NO;
             
@@ -684,7 +682,8 @@ NSMutableArray * pickerValuesArray2;
 
 #pragma mark delegate methods - hue
 -(void)updateArray{
-    [self.delegate updateActionsButtonsPropertiesArray:self.selectedButtonsPropertiesArrayAction];
+    //[self.delegate updateActionsButtonsPropertiesArray:self.selectedButtonsPropertiesArrayAction];
+    [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
 }
 
 @end

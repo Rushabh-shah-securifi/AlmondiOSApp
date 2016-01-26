@@ -77,7 +77,6 @@
 + (UIColor *)ruleOrangeColor{
     return  [UIColor colorFromHexString:@"FF9500"];
 }
-
 + (UIColor *)ruleGraycolor{
     return  [UIColor colorFromHexString:@"757575"];
 }
@@ -85,7 +84,7 @@
     return [UIColor colorFromHexString:@"F7F7F7"];
 }
 
-+ (UIColor *)ruleButtonTitleColor{
++ (UIColor *)darkGrayColor{
     return [UIColor colorFromHexString:@"212121"];
 }
 

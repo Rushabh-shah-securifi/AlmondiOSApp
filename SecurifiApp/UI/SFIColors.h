@@ -32,7 +32,7 @@
 
 + (UIColor *)ruleLightGrayColor;
 
-+ (UIColor *)ruleButtonTitleColor;
++ (UIColor *)darkGrayColor;
 
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName;
 

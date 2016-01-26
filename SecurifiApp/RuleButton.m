@@ -12,32 +12,20 @@
 @implementation RuleButton
 
 
-UIView * bgView;
-UIImageView * imgIcon;
-UILabel *lblTitle;
-UILabel *lblMain;
-UILabel *countLable;
-UILabel *lblDeviceName;
-UILabel *lblDisplayText;
 
-- (void)changeStylewithColor:(BOOL)isTrigger{
-    UIColor *selectedColor= isTrigger?[SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
-    if (!isTrigger || self.selected) {
-        lblTitle.textColor = selectedColor;
-        bgView.backgroundColor = selectedColor;
-    }else{
-        lblTitle.textColor = [SFIColors ruleGraycolor];
-        bgView.backgroundColor = [SFIColors ruleGraycolor];
-    }
-}
 
-- (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)clearColor{
+- (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)selected showTitle:(BOOL)showTitle{
     UIColor *color= isTrigger?[SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
-    color = clearColor?[UIColor clearColor]:color;
-    lblDisplayText.textColor = color;
-    lblDeviceName.textColor = color;
-    lblTitle.textColor = color;
-    bgView.backgroundColor = color;
+    color = !selected?[SFIColors ruleGraycolor]:color;
+    
+    UIColor *titleColor=showTitle?[SFIColors darkGrayColor]:color;
+    UIColor *bottomTextColor=  showTitle?[SFIColors ruleGraycolor]:color;
+    
+    NSLog(@"changeBG color RuleButtonView isTrigger %d,showTitle:%d,selected %d",isTrigger,showTitle,selected);
+    self.topLabel.textColor = titleColor;
+    self.bottomLabel.textColor = bottomTextColor;
+    self.bgView.backgroundColor = color;
+    NSLog(@"bgView.back coolor %@:%@ and bgView %@",self.bgView.backgroundColor,color,self.bgView);
 }
 
 @end

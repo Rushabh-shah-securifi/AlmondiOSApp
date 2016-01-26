@@ -19,7 +19,7 @@
 //protocol
 @protocol RulesHueDelegate
 
--(void) onButtonClick:(id)sender;
+-(void) onSwitchButtonClick:(id)sender;
 -(void) updateArray;
 @end
 
