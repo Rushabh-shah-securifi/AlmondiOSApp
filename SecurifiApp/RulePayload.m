@@ -62,43 +62,37 @@
 
 -(NSDictionary *)createTriggerDeviceObject:(SFIButtonSubProperties*)property{
     NSDictionary *dict;
-    if(property.deviceId == 0){
-        if([property.eventType isEqualToString:@"AlmondModeUpdated"]){
-            dict = @{
-                                   @"Type" : @"EventTrigger",
-                                   @"ID" : @(0).stringValue,
-                                   @"EventType" : @"AlmondModeUpdated",
-                                   @"Value" : property.matchData,
-                                   @"Grouping" : @"AND",
-                                   @"Validation":@"true",
-                                   @"Condition" : @"eq"
-                                   };
-            return dict;
-
-        }else{
-            dict = @{
-                     @"Type" : @"EventTrigger",
-                     @"ID" : @(property.index),
-                     @"EventType" : property.eventType,
-                     @"Value" : property.matchData,
-                     @"Grouping" : @"AND",
-                     @"Validation":@"",
-                     @"Condition" : @"eq"
-                     };
-
-        }
-    }
-    dict = @{
-                           @"Type" : @"DeviceTrigger",
-                           @"ID" : @(property.deviceId).stringValue,
-                           @"Index" : @(property.index).stringValue,
-                           @"Value" : property.matchData,
-                           @"Grouping" : @"AND",
-                           @"Validation":@"",
-                           @"Condition" : @"eq"
-                           };
+    if(property.deviceId == 0)
+        return @{
+                 @"Type" : @"EventTrigger",
+                 @"ID" : @(0).stringValue,
+                 @"EventType" : @"AlmondModeUpdated",
+                 @"Value" : property.matchData,
+                 @"Grouping" : @"AND",
+                 @"Validation":@"true",
+                 @"Condition" : @"eq"
+                 };
     
-    return dict;
+    else if(property.eventType!=nil && property.eventType.length>0)
+        return @{
+                 @"Type" : @"EventTrigger",
+                 @"ID" : @(property.deviceId).stringValue,
+                 @"EventType" : property.eventType,
+                 @"Value" : property.matchData,
+                 @"Grouping" : @"AND",
+                 @"Validation":@"",
+                 @"Condition" : @"eq"
+                 };
+    else
+        return @{
+                 @"Type" : @"DeviceTrigger",
+                 @"ID" : @(property.deviceId).stringValue,
+                 @"Index" : @(property.index).stringValue,
+                 @"Value" : property.matchData,
+                 @"Grouping" : @"AND",
+                 @"Validation":@"",
+                 @"Condition" : @"eq"
+                 };
 }
 -(NSDictionary *)createWiFiClientObject:(SFIButtonSubProperties*)wiFiClientProperty{
     NSDictionary *dict = @{

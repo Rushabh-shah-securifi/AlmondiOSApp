@@ -136,7 +136,7 @@
     [lblMain setAttributedText:strTemp];
 }
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{
-    
+    NSLog(@"btncount %d",btnCount);
     countLable = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x + self.bgView.frame.size.width -10, -10, 16, 16)];
     
     CALayer * l1 = [countLable layer];
@@ -151,9 +151,10 @@
     countLable.backgroundColor = [SFIColors ruleOrangeColor];//FF9500
     countLable.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:3];
     countLable.font = [UIFont systemFontOfSize:9];
-    countLable.textColor =[SFIColors ruleOrangeColor];
+    countLable.textColor =[UIColor whiteColor];
     //[countLable setFont:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:4]];
     countLable.text = [NSString stringWithFormat:@"%d",btnCount];
+    NSLog(@" count.text %@",countLable.text);
     countLable.textAlignment = NSTextAlignmentCenter;
     countLable.hidden = ishidden;
     [UIView transitionWithView:countLable duration:1

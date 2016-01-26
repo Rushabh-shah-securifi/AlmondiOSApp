@@ -14,6 +14,10 @@
 
 
 @class AddRulesViewController;
+@protocol SFISubPropertyBuilderDelegate <NSObject>
+-(void)updateTriggerAndActionDelegatePropertie:(BOOL)isTrigger;
+
+@end
 @interface SFISubPropertyBuilder : NSObject
 
 

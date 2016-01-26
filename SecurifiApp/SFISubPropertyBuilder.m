@@ -170,18 +170,18 @@ int xVal = 20;
         
 
         switchButton.inScroll = YES;
-        
+        switchButton.userInteractionEnabled = YES;
         [switchButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         xVal += triggerActionBtnWidth;
-        
+        [switchButton setButtonCross:showCrossBtn]  ;
         [scrollView addSubview:switchButton];
 
     }
     else{
         PreDelayRuleButton *switchButton = [[PreDelayRuleButton alloc] initWithFrame:CGRectMake(xVal, 5, rulesButtonsViewWidth, rulesButtonsViewHeight)];
         
-        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:subProperties.deviceName displayText:subProperties.displayText delay:@(0).stringValue];
+        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:subProperties.deviceName displayText:subProperties.displayText delay:subProperties.delay];
         
          switchButton.subProperties = subProperties;
         
@@ -189,9 +189,9 @@ int xVal = 20;
        // (switchButton->actionbutton).crossButton.subproperty = subProperties;
         switchButton->actionbutton.isTrigger = isTrigger;
         //[switchButton changeBGColor:isTrigger clearColor:NO];
-        
-       
-        //[switchButton.crossButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        (switchButton->actionbutton).subProperties = subProperties;
+        (switchButton->actionbutton).isTrigger = isTrigger;
+        [switchButton->actionbutton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [switchButton->delayButton addTarget:self action:@selector(onActionDelayClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         xVal += rulesButtonsViewWidth;
@@ -200,6 +200,21 @@ int xVal = 20;
 
     }
 }
+
+
++ (void)onTriggerCrossButtonClicked:(SwitchButton*)switchButton{
+    //includes mode
+    if(switchButton.isTrigger){
+    [parentController.rule.triggers removeObjectAtIndex:switchButton.subProperties.positionId];
+    NSLog(@"par.count %d ",parentController.rule.triggers.count);
+    }
+    else{
+        [parentController.rule.actions removeObjectAtIndex:switchButton.subProperties.positionId];
+        NSLog(@"par.count %d ",parentController.rule.triggers.count);
+    }
+    
+}
+
 + (void)onActionDelayClicked:(id)sender{
     
     NSLog(@"onactiondelay clicked");

@@ -55,7 +55,7 @@ NSMutableArray * pickerValuesArray2;
         NSLog(@"init method");
         isPresentHozPicker = NO;
         
-        newPickerValue = [NSString new];
+        newPickerValue = @"50";
         self.selectedButtonsPropertiesArrayAction = [NSMutableArray new];
         isPresentHozPicker = NO;
         newPickerValue = [NSString new];
@@ -80,16 +80,19 @@ NSMutableArray * pickerValuesArray2;
     CGRect textRect = [self adjustDeviceNameWidth:deviceName];
 
     CGRect frame = CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight);
+    
     RulesDeviceNameButton *deviceButton = [[RulesDeviceNameButton alloc]initWithFrame:frame];
     
     
     [deviceButton deviceProperty:self.isTrigger deviceType:deviceType deviceName:deviceName deviceId:deviceID];
-
+   
 
     if([deviceName isEqualToString:@"Time"]){
         [deviceButton addTarget:self action:@selector(TimeEventClicked:) forControlEvents:UIControlEventTouchUpInside];
-    }else
-    [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    }else if([deviceName isEqualToString:@"Clients"])
+        [deviceButton addTarget:self action:@selector(wifiClientsClicked:) forControlEvents:UIControlEventTouchUpInside];
+    else
+        [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.parentViewController.deviceListScrollView addSubview:deviceButton];
 
     NSLog(@" devicename button %@",deviceButton);
@@ -152,22 +155,23 @@ NSMutableArray * pickerValuesArray2;
 -(void)wifiClientsClicked:(RulesDeviceNameButton*)deviceButton{
     [self resetViews];
     [self toggleHighlightForDeviceNameButton:deviceButton];
-    int i =0;
-    NSLog(@"wifi clients array: %@", self.parentViewController.wifiClientsArray);
-    for(SFIConnectedDevice *connectedClient in self.parentViewController.wifiClientsArray){
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        int i =0;
+    NSLog(@"wifi clients array: %@", toolkit.wifiClientParser);
+    for(SFIConnectedDevice *connectedClient in toolkit.wifiClientParser){
         if(connectedClient.deviceUseAsPresence){
             int yScale = ROW_PADDING + (ROW_PADDING+frameSize)*i;
             [self addClientNameLabel:connectedClient.name yScale:yScale];
             
             SensorIndexSupport *Index=[[SensorIndexSupport alloc]init];
-            NSArray *deviceIndexes= [Index getIndexesFor:deviceButton.deviceType];
+            NSArray *deviceIndexes= [Index getIndexesFor:SFIDeviceType_WIFIClient];
             
             SFIDeviceIndex *deviceIndex = deviceIndexes[0];
-            deviceIndex.indexID = connectedClient.deviceID.intValue;
             for(IndexValueSupport *iVal in deviceIndex.indexValues){
                 iVal.matchData = connectedClient.deviceMAC;
             }
-            [self addMyButtonwithYScale:yScale withDeviceIndex:deviceIndexes deviceId:0 deviceType:SFIDeviceType_WIFIClient deviceName:connectedClient.name];
+            [self addMyButtonwithYScale:yScale withDeviceIndex:deviceIndexes deviceId:connectedClient.deviceID.intValue deviceType:SFIDeviceType_WIFIClient deviceName:connectedClient.name];
+            NSLog(@" i:%d client name %@",i,connectedClient.name);
             i++;
         }
     }
@@ -177,6 +181,7 @@ NSMutableArray * pickerValuesArray2;
 }
 
 -(void)addClientNameLabel:(NSString*)clientName yScale:(int)yScale{
+    NSLog(@"ADDCLIENT NAME LABLE %@",clientName);
     UILabel *clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, yScale-20, self.parentViewController.view.frame.size.width, 14)];
     clientNameLabel.text = clientName;
     clientNameLabel.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:12];
@@ -346,6 +351,7 @@ NSMutableArray * pickerValuesArray2;
     SwitchButton *btnBinarySwitchOn = [[SwitchButton alloc] initWithFrame:CGRectMake(view.frame.origin.x,view.frame.origin.y, frameSize, frameSize)];
     btnBinarySwitchOn.tag = i;
     btnBinarySwitchOn.valueType=deviceIndex.valueType;
+    NSLog(@"index :%d device Id:%d,",deviceIndex.indexID,deviceId);
     btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:iVal.eventType deviceName:deviceName deviceType:deviceType];
     
     btnBinarySwitchOn.deviceType = deviceType;
@@ -503,10 +509,13 @@ NSMutableArray * pickerValuesArray2;
 }
 
 - (void)setActionButtonCount:(RuleButton *)indexButton isSlider:(BOOL)isSlider matchData:(NSString *)buttonMatchdata buttonIndex:(int)buttonIndex buttonId:(sfi_id)buttonId {
-    int buttonClickCount = 0;
+    if(self.isTrigger)
+        return;
+    int buttonClickCount = 1;
     for(SFIButtonSubProperties *dimButtonProperty in self.selectedButtonsPropertiesArrayAction){ //to do - you can add count property to subproperties and iterate array in reverse
         if(dimButtonProperty.deviceId == buttonId && dimButtonProperty.index == buttonIndex && (isSlider ||(!isSlider && [dimButtonProperty.matchData isEqualToString:buttonMatchdata]))){
             buttonClickCount++;
+            NSLog(@" button count %d",buttonClickCount);
         }
     }
     [indexButton setButtoncounter:buttonClickCount isCountImageHiddn:NO];
@@ -524,9 +533,9 @@ NSMutableArray * pickerValuesArray2;
     sfi_id buttonId = indexSwitchButton.subProperties.deviceId;
     int buttonIndex = indexSwitchButton.subProperties.index;
     NSString *buttonMatchdata = indexSwitchButton.subProperties.matchData;
+    NSLog(@"onButtonClick id :%d,%d,match data %@",buttonId,buttonIndex,buttonMatchdata);
     if(!self.isTrigger){
         indexSwitchButton.selected = YES ;
-        
         [self.selectedButtonsPropertiesArrayAction addObject:indexSwitchButton.subProperties];
         [self setActionButtonCount:indexSwitchButton isSlider:NO matchData:buttonMatchdata buttonIndex:buttonIndex buttonId:buttonId];
         [self.delegate updateTriggerAndActionDelegatePropertie:!self.isTrigger];
@@ -536,65 +545,86 @@ NSMutableArray * pickerValuesArray2;
         NSLog(@"triggers list after: %@", self.selectedButtonsPropertiesArrayTrigger);
         if (indexSwitchButton.selected)
             [self.selectedButtonsPropertiesArrayTrigger addObject:indexSwitchButton.subProperties];
+        NSLog(@"self.selectedButtonsPropertiesArrayTrigger.count %d ",self.selectedButtonsPropertiesArrayTrigger.count);
         //[self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArrayTrigger];
         [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
     }
     
 }
--(void)onDimmerButtonClick:(id)sender{
-   DimmerButton* dimmer = (DimmerButton *)sender;
-    
 
-   
-    if(self.isTrigger){
-        dimmer.selected=!dimmer.selected;
+-(void)showPicker:(DimmerButton* )dimmer{
+    NSLog(@"SHOW PICKER");
+    [self removePickerFromView];
+    dimmer.pickerVisibility=YES;
+    isPresentHozPicker=YES;
+    pickerValuesArray2 = [NSMutableArray new];
+    for (int i=(int)dimmer.minValue; i<=(int)dimmer.maxValue; i++) {
+        [pickerValuesArray2 addObject:[NSString stringWithFormat:@"%d",i]];
     }
-if(isPresentHozPicker == YES && dimmer.selected){
-    NSLog(@" picker present ");
+    isPresentHozPicker = YES;
+    [self horizontalpicker:dimmer];
+    
+}
+-(void)removePickerFromView{
+    isPresentHozPicker=NO;
     [UIView animateWithDuration:2 animations:^{
         [picker removeFromSuperview];
     }];
 }
+-(void)removePicker:(DimmerButton* )dimmer{
     
-    sfi_id dimId = dimmer.subProperties.deviceId;
-    int dimIndex = dimmer.subProperties.index;
-    NSLog(@" dim value %ld ,max value %ld",(long)dimmer.minValue,(long)dimmer.maxValue);
-    if(dimmer.selected){
-        pickerValuesArray2 = [NSMutableArray new];
-        for (int i=(int)dimmer.minValue; i<=(int)dimmer.maxValue; i++) {
-            [pickerValuesArray2 addObject:[NSString stringWithFormat:@"%d",i]];
-        }
-        //[self setupPicker:dimmerButtonClick.dimValue];
-        [self horizontalpicker:dimmer];
-    }
-    else{
-        [dimmer setNewValue:dimmer.subProperties.matchData]; //set initial value
-        NSLog(@" deselected ");
-        if(self.isTrigger){
-            [self removeTriggerIndex:dimIndex buttonId:dimId];
-            [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
-        }
-        if(isPresentHozPicker == YES){
-            dimmer.selected = YES;
-            [dimmer setNewValue:newPickerValue];
-            dimmer.subProperties.matchData = newPickerValue;
-            if(self.isTrigger){
-                 [self.selectedButtonsPropertiesArrayTrigger addObject:dimmer.subProperties];
-                [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
-            }
+    dimmer.pickerVisibility=NO;
+    [self removePickerFromView];
+    NSLog(@"REMOVE PICKER %@",newPickerValue);
+    //Store Values
+    if(newPickerValue.length==0)
+        newPickerValue=@"0";
+    [dimmer setNewValue:newPickerValue];
+
+    [self setActionButtonCount:dimmer isSlider:YES matchData:newPickerValue buttonIndex:dimmer.subProperties.index buttonId:dimmer.subProperties.deviceId];
+    SFIButtonSubProperties *newProperty=dimmer.subProperties;
+    if(!self.isTrigger){
+        newProperty=[dimmer.subProperties createNew];
+        newProperty.matchData = newPickerValue;
+    }else
+        dimmer.subProperties.matchData = newPickerValue;
+    
+    [self addObject:newProperty];
+    [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
+}
+-(void)addObject:(SFIButtonSubProperties *)subProperty{
+    if(self.isTrigger)
+         [self.selectedButtonsPropertiesArrayTrigger addObject:subProperty];
+    else
+       [self.selectedButtonsPropertiesArrayAction addObject:subProperty];
+}
+
+-(void)onDimmerButtonClick:(id)sender{
+    DimmerButton* dimmer = (DimmerButton *)sender;
+    if(self.isTrigger){
+         NSLog(@"IS TRIGGER PICKER");
+        if(!dimmer.selected){
+            [self showPicker:dimmer];
+            dimmer.selected=YES;
+        }else{
+            if(dimmer.pickerVisibility)
+                [self removePicker:dimmer];
             else{
-                [self setActionButtonCount:dimmer isSlider:YES matchData:nil buttonIndex:dimIndex buttonId:dimId];
-                [self.selectedButtonsPropertiesArrayTrigger addObject:[dimmer.subProperties createNew]];
+                 NSLog(@"IS TRIGGER UNSELECTED");
+                dimmer.selected=NO;
+                [self removeTriggerIndex: dimmer.subProperties.index buttonId:dimmer.subProperties.deviceId];
                 [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
             }
-            isPresentHozPicker = NO;
-            
         }
-        [UIView animateWithDuration:2 animations:^{
-            [picker removeFromSuperview];
-        }];
+    }else{
+        dimmer.selected=YES;
+        if(dimmer.pickerVisibility){
+            [self removePicker:dimmer];
+        }else
+            [self showPicker:dimmer];
+        
     }
-    
+
 }
 #pragma mark horizontalpicker methods
 - (void)horizontalpicker:(DimmerButton*)dimButton{

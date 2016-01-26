@@ -15,6 +15,7 @@
 @interface DimmerButton : RuleButton
 
 @property(nonatomic)NSString* prefix;
+@property(nonatomic)BOOL pickerVisibility;
 @property(nonatomic)NSString* dimValue;
 @property(nonatomic)SFIButtonSubProperties* subProperties;
 @property(nonatomic)SFIDevicePropertyType valueType;
