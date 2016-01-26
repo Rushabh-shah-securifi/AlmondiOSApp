@@ -47,16 +47,21 @@
 
 @implementation SFISubPropertyBuilder
 bool showCrossBtn;
+DelayPicker *delayPicker;
 UIScrollView *scrollView;
+AddRulesViewController *parentController;
 int xVal = 20;
 
 
 
-+ (void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions showCrossBtn:(BOOL)showCross{
++ (void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions showCrossBtn:(BOOL)showCross parentController:(AddRulesViewController*)addRuleController{
     
     xVal = 20;
     showCrossBtn = showCross;
     scrollView = scroll;
+    if (addRuleController != nil) { //to avoid nil from rulestableview
+        parentController = addRuleController;
+    }
     [self clearScrollView];
     NSLog(@" create entries count tri :%ld, ac:%ld ,ScrollView :%@",(unsigned long)triggers.count,(unsigned long)actions.count ,scrollView);
 //    [self drawImage:@"plus_icon" xVal:0];
@@ -178,7 +183,7 @@ int xVal = 20;
         
         [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:subProperties.deviceName displayText:subProperties.displayText delay:@(0).stringValue];
         
-        
+         switchButton.subProperties = subProperties;
         
         [switchButton->actionbutton setButtonCross:showCrossBtn];
        // (switchButton->actionbutton).crossButton.subproperty = subProperties;
@@ -196,9 +201,12 @@ int xVal = 20;
     }
 }
 + (void)onActionDelayClicked:(id)sender{
+    
     NSLog(@"onactiondelay clicked");
-    DelayPicker *daypicker = [DelayPicker new];
-    [daypicker setupPicker:scrollView];
+    UIButton *delayButton = sender;
+    
+    delayPicker = [DelayPicker new];
+    [delayPicker addPickerForButton:delayButton parentController:parentController];
 }
 
 + (void)drawImage:(NSString *)iconName {

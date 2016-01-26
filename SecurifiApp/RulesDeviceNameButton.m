@@ -20,6 +20,7 @@
 
 - (void)setSelected:(BOOL)selected{
     [super setSelected:selected];
+    NSLog(@" selected %d %d",selected,self.isTrigger);
     self.titleLabel.textColor = self.selected?self.isTrigger? [SFIColors ruleBlueColor]: [SFIColors ruleOrangeColor]:[SFIColors ruleGraycolor];
 }
 
@@ -32,10 +33,11 @@
     self.deviceId = deviceId;
     [super setTitle:deviceName forState:UIControlStateNormal];
     self.titleLabel.numberOfLines = 1;
-//    super.titleLabel.textColor = [UIColor blackColor];
+    self.titleLabel.textColor = [UIColor blackColor];
     [super titleColorForState:UIControlStateNormal];
     self.titleLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:12];
     self.titleLabel.text = deviceName;
+    
     super.titleLabel.textAlignment = NSTextAlignmentCenter;
 }
 

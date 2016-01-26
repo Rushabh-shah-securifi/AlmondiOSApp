@@ -82,6 +82,7 @@ NSMutableArray * pickerValuesArray2;
     CGRect frame = CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight);
     RulesDeviceNameButton *deviceButton = [[RulesDeviceNameButton alloc]initWithFrame:frame];
     
+    
     [deviceButton deviceProperty:self.isTrigger deviceType:deviceType deviceName:deviceName deviceId:deviceID];
 
 
@@ -189,6 +190,7 @@ NSMutableArray * pickerValuesArray2;
 -(void)onDeviceButtonClick:(RulesDeviceNameButton *)sender{
     NSLog(@" on device name button clicked");
     [self resetViews];
+    sender.selected = YES;
     //toggeling
     [self toggleHighlightForDeviceNameButton:sender];
     
@@ -541,10 +543,18 @@ NSMutableArray * pickerValuesArray2;
 }
 -(void)onDimmerButtonClick:(id)sender{
    DimmerButton* dimmer = (DimmerButton *)sender;
+    
+
+   
     if(self.isTrigger){
         dimmer.selected=!dimmer.selected;
     }
-    
+if(isPresentHozPicker == YES && dimmer.selected){
+    NSLog(@" picker present ");
+    [UIView animateWithDuration:2 animations:^{
+        [picker removeFromSuperview];
+    }];
+}
     
     sfi_id dimId = dimmer.subProperties.deviceId;
     int dimIndex = dimmer.subProperties.index;
@@ -588,6 +598,7 @@ NSMutableArray * pickerValuesArray2;
 }
 #pragma mark horizontalpicker methods
 - (void)horizontalpicker:(DimmerButton*)dimButton{
+    isPresentHozPicker = YES;
     const int control_height = 30;
     NSLog(@"viedidload");
     // Picker

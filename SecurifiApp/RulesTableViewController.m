@@ -176,7 +176,7 @@
     cell.ruleNameLabel.text = rule.name;
     NSLog(@" rulename label %@",cell.ruleNameLabel.text);
     NSLog(@"cellforrow - self.triggers: %d, self.actions: %d", rule.triggers.count, rule.actions.count);
-    [SFISubPropertyBuilder createEntriesView:cell.scrollView triggers:rule.triggers actions:rule.actions showCrossBtn:YES];
+    [SFISubPropertyBuilder createEntriesView:cell.scrollView triggers:rule.triggers actions:rule.actions showCrossBtn:YES parentController:nil];
     
     // [SFISubPropertyBuilder createEntriesView:cell.scrollView triggers:rule.triggers actions:rule.actions showCrossBtn:YES];
     

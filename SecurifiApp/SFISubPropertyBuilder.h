@@ -13,9 +13,12 @@
 #import "AddRulesViewController.h"
 
 
-
+@class AddRulesViewController;
 @interface SFISubPropertyBuilder : NSObject
 
-+ (void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions showCrossBtn:(BOOL)showCross ;
+
++ (void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions showCrossBtn:(BOOL)showCross parentController:(AddRulesViewController*)addRuleController;
+
+
 
 @end

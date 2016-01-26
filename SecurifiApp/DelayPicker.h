@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AddRulesViewController.h"
+@class AddRulesViewController;
 
 @interface DelayPicker : NSObject
-- (void)setupPicker:(UIScrollView*)scrollView;
-
+-(void)addPickerForButton:(UIButton*)delayButton parentController:(AddRulesViewController*)parentController;
 @end

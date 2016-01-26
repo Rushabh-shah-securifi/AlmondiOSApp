@@ -300,8 +300,7 @@ UITextField *textField;
 
 -(void) callRulesView{
     NSLog(@"callRulesView");
-    [SFISubPropertyBuilder createEntriesView:self.triggersActionsScrollView triggers:self.rule.triggers actions:self.rule.actions showCrossBtn:NO];
-
+    [SFISubPropertyBuilder createEntriesView:self.triggersActionsScrollView triggers:self.rule.triggers actions:self.rule.actions showCrossBtn:NO parentController:self];
     
 }
 
