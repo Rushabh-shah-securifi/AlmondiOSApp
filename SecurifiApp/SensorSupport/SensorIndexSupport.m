@@ -2145,7 +2145,7 @@
                 s1.matchData = @"0";
                 s1.iconName = DT25_LIGHT_SENSOR_TRUE;
                 s1.displayText=@"HUE";
-                s1.layoutType = @"hue";
+                s1.layoutType = @"dimButton";
                 s1.valueTransformer = ^NSString *(NSString *value) {
                     if (!value) {
                         return @"";
@@ -2164,6 +2164,7 @@
                 };
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" hue color changed to ", @" hue color changed to ");
+                s1.valueFormatter.suffix = @" Color";
                 return @[s1];
             }
             if (type == SFIDevicePropertyType_SATURATION) {

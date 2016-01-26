@@ -20,8 +20,13 @@ typedef NS_ENUM(NSInteger, timeSegmentType1)
 
 @class UISegmentedControl;
 
+@protocol TimeViewDelegate
+-(void)AddOrUpdateTime;
+@end
+
 @interface TimeView : NSObject
 @property(nonatomic)AddRulesViewController *parentViewController;
 @property(nonatomic)RulesTimeElement *ruleTime;
+@property(nonatomic,weak)id<TimeViewDelegate> delegate;
 -(void)addTimeView;
 @end

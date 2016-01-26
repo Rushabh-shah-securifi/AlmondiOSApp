@@ -21,6 +21,7 @@
 #import "SecurifiToolkit/SecurifiTypes.h"
 #import "UIFont+Securifi.h"
 #import "RulesConstants.h"
+#import "Colours.h"
 
 //#import "SFITriggersActionsSwitchButton.h"
 //#import "SFITriggersActionsDimmerButton.h"
@@ -136,10 +137,12 @@ int xVal = 20;
     NSLog(@"drawTime");
     
     DimmerButton *dimbutton=[[DimmerButton alloc]initWithFrame:CGRectMake(xVal, 5, triggerActionDimWidth, triggerActionDimHeight)];
+    dimbutton.bgView.backgroundColor =[SFIColors ruleBlueColor];
+
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"hh:mm aa"];
-
-    if(timesubProperties.time.date != nil){
+    int segmentType=timesubProperties.time.segmentType;
+    if(segmentType==1){
                [dimbutton setupValues:[dateFormat stringFromDate:timesubProperties.time.date] Title:@"Time" displayText:@"days" suffix:@""];
 
     }
@@ -192,6 +195,13 @@ int xVal = 20;
         (switchButton->actionbutton).subProperties = subProperties;
         (switchButton->actionbutton).isTrigger = isTrigger;
         [switchButton->actionbutton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        if(subProperties.deviceType == SFIDeviceType_HueLamp_48){
+            if(subProperties.index == 2)
+                [switchButton->actionbutton changeImageColor:[UIColor whiteColor]];
+            else if(subProperties.index == 3)
+                [switchButton->actionbutton changeImageColor:[UIColor colorFromHexString:[self getColorHex:subProperties.matchData]]];
+        }
+
         [switchButton->delayButton addTarget:self action:@selector(onActionDelayClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         xVal += rulesButtonsViewWidth;
@@ -223,6 +233,16 @@ int xVal = 20;
     delayPicker = [DelayPicker new];
     [delayPicker addPickerForButton:delayButton parentController:parentController];
 }
++(NSString *)getColorHex:(NSString*)value {
+    if (!value) {
+        return @"";
+    }
+    float hue = [value floatValue];
+    hue = hue / 65535;
+    UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
+    return [color.hexString uppercaseString];
+};
+
 
 + (void)drawImage:(NSString *)iconName {
     NSLog(@"arrow button");

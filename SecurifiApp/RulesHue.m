@@ -49,26 +49,21 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 
 -(id)init{
     if(self == [super init]){
-         NSLog(@"rules hue init method");
+        NSLog(@"rules hue init method");
         
         
     }
     return self;
 }
 
--(void) createHueCellLayoutWithDeviceId:(int)deviceId deviceType:(int)deviceType deviceIndexes:(NSArray*)deviceIndexes scrollView:(UIScrollView *)scrollView cellCount:(int)numberOfCells indexesDictionary:(NSDictionary*)deviceIndexesDict{
+-(void) createHueCellLayoutWithDeviceId:(int)deviceId deviceType:(int)deviceType deviceIndexes:(NSArray*)deviceIndexes deviceName:(NSString*)deviceName scrollView:(UIScrollView *)scrollView cellCount:(int)numberOfCells indexesDictionary:(NSDictionary*)deviceIndexesDict{
     for(int i = 0; i < numberOfCells; i++){
-       
-        
-        [self HueLayout:scrollView withYScale:ROW_PADDING+(ROW_PADDING+frameSize)*i  withDeviceIndex:[deviceIndexesDict valueForKey:[NSString stringWithFormat:@"%d", i+1]] deviceId:deviceId deviceType:deviceType];
+        [self HueLayout:scrollView withYScale:ROW_PADDING+(ROW_PADDING+frameSize)*i  withDeviceIndex:[deviceIndexesDict valueForKey:[NSString stringWithFormat:@"%d", i+1]] deviceId:deviceId deviceType:deviceType deviceName:deviceName];
         
     }
 }
-/*
- 
- */
 
-- (void)HueLayout:(UIScrollView *)scrollView withYScale:(int)yScale withDeviceIndex:(NSArray *)deviceIndexes deviceId:(int)deviceId deviceType:(SFIDeviceType)deviceType{
+- (void)HueLayout:(UIScrollView *)scrollView withYScale:(int)yScale withDeviceIndex:(NSArray *)deviceIndexes deviceId:(int)deviceId deviceType:(SFIDeviceType)deviceType deviceName:(NSString*)deviceName{
     CGSize scrollableSize = CGSizeMake(scrollView.frame.size.width,
                                        500);
     [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
@@ -78,7 +73,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                                                             scrollView.frame.size.width,
                                                             frameSize)];
     [scrollView addSubview:view];
-
+    
     int i=0;
     for (SFIDeviceIndex *deviceIndex in deviceIndexes) {
         NSMutableArray *btnary=[[NSMutableArray alloc]init];
@@ -90,16 +85,16 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 NSLog(@"Hue switch button");
                 
                 SwitchButton *buttonHue = [[SwitchButton alloc] initWithFrame:CGRectMake(view.frame.origin.x, 0, frameSize, frameSize)];
-//                buttonHue.backgroundColor = [UIColor blackColor];
+                //                buttonHue.backgroundColor = [UIColor blackColor];
                 buttonHue.tag = indexValCounter;
                 buttonHue.valueType = deviceIndex.valueType;
                 
                 //subproperties
-                buttonHue.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData];
+                buttonHue.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
+                buttonHue.deviceType = deviceType;
                 [buttonHue addTarget:self action:@selector(onHueButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                 
-                
-                [buttonHue setupValues:[UIImage imageNamed:iVal.iconName] topText:buttonHue.subProperties.deviceName bottomText:iVal.displayText isTrigger:NO];
+                [buttonHue setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:NO];
                 [buttonHue changeImageColor:[UIColor whiteColor]];
                 //set perv. count and highlight
                 int buttonClickCount = 0;
@@ -109,7 +104,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                         buttonClickCount++;
                     }
                 }
-    
+                
                 buttonHue.center = CGPointMake(view.bounds.size.width/2,
                                                view.bounds.size.height/2);
                 buttonHue.frame=CGRectMake(buttonHue.frame.origin.x + ((i-1) * (frameSize/2))+textHeight/2 ,
@@ -123,7 +118,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 if(buttonClickCount > 0){
                     [buttonHue setButtoncounter:buttonClickCount isCountImageHiddn:NO];
                 }
-
+                
                 [btnary addObject:buttonHue];
                 [view addSubview:buttonHue];
             }
@@ -131,7 +126,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
             else if(deviceIndex.valueType == SFIDevicePropertyType_COLOR_HUE){
                 NSLog(@"hue lamp color hue");
                 NSLog(@"color hue yscale: %d", yScale);
-
+                
                 //subview
                 hueColorPickupLabelView = [[labelAndCheckButtonView alloc]initWithFrame:CGRectMake(view.frame.origin.x, 0, view.frame.size.width, hueSubViewSize)];
                 NSLog(@"hue check button label frame: %@",NSStringFromCGRect(hueColorPickupLabelView.frame));
@@ -144,7 +139,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 huePickerView.allowSelection = YES;
                 huePickerView.delegate = self;
                 huePickerView.propertyType = SFIDevicePropertyType_COLOR_HUE;
-                huePickerView.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData];
+                huePickerView.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
                 
                 //previous values
                 BOOL isSelected = NO;
@@ -161,7 +156,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 if(buttonClickCount > 0){
                     [hueColorPickupLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
                 }
-
+                
                 [btnary addObject:hueColorPickupLabelView];
                 [btnary addObject:huePickerView];
                 
@@ -171,7 +166,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
             
             else if(deviceIndex.valueType == SFIDevicePropertyType_SATURATION){
                 NSLog(@"hue lamp saturation");
-
+                
                 view.frame = CGRectMake(0,
                                         yScale ,
                                         scrollView.frame.size.width,
@@ -199,7 +194,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 saturationSlider.backgroundColor = [UIColor grayColor];
                 
                 //slider view - sub-properties
-                saturationSlider.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData];
+                saturationSlider.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
                 
                 //previous values
                 BOOL isSelected = NO;
@@ -216,7 +211,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 if(buttonClickCount > 0){
                     [saturationSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
                 }
-
+                
                 
                 [btnary addObject:saturationSliderLabelView];
                 [btnary addObject:saturationSlider];
@@ -227,7 +222,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
             }
             
             else if(deviceIndex.valueType == SFIDevicePropertyType_BRIGHTNESS){
-
+                
                 view.frame = CGRectMake(0,
                                         yScale ,
                                         scrollView.frame.size.width,
@@ -254,7 +249,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 brightnessSlider.backgroundColor = [UIColor grayColor];
                 
                 //slider view - sub-properties
-                brightnessSlider.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData];
+                brightnessSlider.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
                 
                 //previous values
                 BOOL isSelected = NO;
@@ -281,21 +276,23 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
             }
             
         } //inner for loop, indexvalues
-
+        
         
     }//outer for loop deviceindexes
     
-
+    
 }
 
 
 #pragma mark helper methods
--(SFIButtonSubProperties*) addSubPropertiesFordeviceID:(sfi_id)deviceID index:(int)index matchData:(NSString*)matchData{
+-(SFIButtonSubProperties*) addSubPropertiesFordeviceID:(sfi_id)deviceID index:(int)index matchData:(NSString*)matchData andEventType:(NSString *)eventType deviceName:(NSString*)deviceName deviceType:(SFIDeviceType)deviceType{ //overLoaded
     SFIButtonSubProperties* subProperties = [[SFIButtonSubProperties alloc] init];
     subProperties.deviceId = deviceID;
     subProperties.index = index;
     subProperties.matchData = matchData;
-    
+    subProperties.eventType = eventType;
+    subProperties.deviceName = deviceName;
+    subProperties.deviceType = deviceType;
     return subProperties;
 }
 
@@ -314,11 +311,10 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 }
 
 //add to property to array
--(void) addToArray:(sfi_id)buttonId index:(int)buttonIndex matchData:(NSString*)buttonMatchData{
+-(void) addToArray:(sfi_id)deviceId index:(int)index matchData:(NSString*)matchData andEventType:(NSString *)eventType deviceName:(NSString*)deviceName deviceType:(SFIDeviceType)deviceType{
+    SFIButtonSubProperties *subProperties = [self addSubPropertiesFordeviceID:deviceId index:index matchData:matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
     
-    SFIButtonSubProperties *highlightedButtonProperties = [self addSubPropertiesFordeviceID:buttonId index:buttonIndex matchData:buttonMatchData];
-    [self.selectedButtonsPropertiesArray addObject:highlightedButtonProperties];
-    
+    [self.selectedButtonsPropertiesArray addObject:subProperties];
 }
 
 //remove previous value
@@ -336,7 +332,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 #pragma mark button click
 -(void) onHueButtonClick:(id)sender{
     NSLog(@"on hue button click");
-    
     [self.delegate onSwitchButtonClick:sender];
 }
 
@@ -392,12 +387,12 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
         saturationSlider.subProperties.matchData = newValue;
     }
     
-
+    
 }
 
 - (void)onSliderDidEndSliding:(id)sender {
     NSLog(@"onSliderDidEndSliding");
-    SFISlider *slider = sender;   
+    SFISlider *slider = sender;
     float sensorValue = [slider convertToSensorValue];
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
     
@@ -406,7 +401,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     }else if(slider.propertyType == SFIDevicePropertyType_SATURATION){
         saturationSlider.subProperties.matchData = newValue;
     }
-
+    
 }
 
 #pragma mark slider clicks
@@ -419,7 +414,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     [brightnessSliderLabelView setSelected:YES];
     
     //storing current value
-    [self addToArray:sliderId index:sliderIndex matchData:brightnessSlider.subProperties.matchData];
+    [self addToArray:sliderId index:sliderIndex matchData:brightnessSlider.subProperties.matchData andEventType:brightnessSlider.subProperties.eventType deviceName:brightnessSlider.subProperties.deviceName deviceType:brightnessSlider.subProperties.deviceType];
     
     int buttonClickCount = 0;
     for(SFIButtonSubProperties *property in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
@@ -428,7 +423,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
         }
     }
     [brightnessSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
-//    [brightnessSlider setConvertedValue:0];
+    //    [brightnessSlider setConvertedValue:0];
     
     [self.delegate updateArray];
 }
@@ -437,11 +432,11 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     NSLog(@"saturation slider clicked");
     sfi_id sliderId = saturationSlider.subProperties.deviceId;
     int sliderIndex = saturationSlider.subProperties.index;
-
+    
     [saturationSliderLabelView setSelected:YES];
     
     //storing current value
-    [self addToArray:sliderId index:sliderIndex matchData:saturationSlider.subProperties.matchData];
+    [self addToArray:sliderId index:sliderIndex matchData:saturationSlider.subProperties.matchData andEventType:brightnessSlider.subProperties.eventType deviceName:brightnessSlider.subProperties.deviceName deviceType:brightnessSlider.subProperties.deviceType];
     
     int buttonClickCount = 0;
     for(SFIButtonSubProperties *property in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
@@ -450,7 +445,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
         }
     }
     [saturationSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
-//    [saturationSlider setConvertedValue:0];
+    //    [saturationSlider setConvertedValue:0];
     
     [self.delegate updateArray];
 }
@@ -460,11 +455,11 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     
     sfi_id pickerId = huePickerView.subProperties.deviceId;
     int pickerIndex = huePickerView.subProperties.index;
-  
+    
     [hueColorPickupLabelView setSelected:YES]; //will change color aswell
     
     //getting current value of hue
-    [self addToArray:pickerId index:pickerIndex matchData:huePickerView.subProperties.matchData];
+    [self addToArray:pickerId index:pickerIndex matchData:huePickerView.subProperties.matchData andEventType:brightnessSlider.subProperties.eventType deviceName:brightnessSlider.subProperties.deviceName deviceType:brightnessSlider.subProperties.deviceType];
     
     int buttonClickCount = 0;
     for(SFIButtonSubProperties *property in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
@@ -473,7 +468,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
         }
     }
     [hueColorPickupLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
-//    [huePickerView setConvertedValue:0];
+    //    [huePickerView setConvertedValue:0];
     
     NSLog(@"");
     [self.delegate updateArray];
@@ -487,14 +482,14 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     
     SFIHuePickerView *hue_picker = (SFIHuePickerView *) picker;
     //    [self processColorTintChange:slider_brightness saturationSlider:slider_saturation huePicker:hue_picker];
-
+    
     int sensor_value = [hue_picker convertToSensorValue];
     huePickerView.subProperties.matchData = @(sensor_value).stringValue ;
     NSLog(@"hue value: %f, converted hue value: %d", hue_picker.hue, sensor_value);
-
+    
     //    [self processColorPropertyValueChange:hue_picker.propertyType newValue:sensor_value];
     //    [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)hue_picker.tag Value:[NSString stringWithFormat:@"%d",sensor_value]];
-
+    
 }
 
 

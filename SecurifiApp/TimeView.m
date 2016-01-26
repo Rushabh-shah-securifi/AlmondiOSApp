@@ -17,7 +17,7 @@
 @implementation TimeView
 int timeSegmentHeight = 30;
 int datePickerHeight = 90;
-int datePickerWidth = 150;
+int datePickerWidth = 140;
 int dateDividerWidth = 20;
 int dayViewHeight = 50;
 int viewSpacing = 20;
@@ -128,7 +128,7 @@ int segmentType;
     self.ruleTime.date = [date dateByAddingTimeInterval:0];
     [self storeTimeParams:date];
     [self setLableText];
-//    [self.delegate updateTimeElementsButtonsPropertiesArray:self.ruleTime];
+    [self.delegate AddOrUpdateTime];
 }
 
 -(void) storeTimeParams:(NSDate *) date{
@@ -168,11 +168,11 @@ int segmentType;
 -(UIView*)createBetweenDateComponentView{
     UIView *datePickerSubView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,(datePickerWidth*2 + dateDividerWidth) , datePickerHeight)];
     
-     DatePickerFrom= [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 0, datePickerWidth, datePickerHeight)];
+    DatePickerFrom= [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 0, datePickerWidth, datePickerHeight)];
     [self setupDatePicker:DatePickerFrom];
     [DatePickerFrom addTarget:self action:@selector(onBetweenDatePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
     
-     DatePickerTo = [[UIDatePicker alloc]initWithFrame:CGRectMake(datePickerWidth +dateDividerWidth, 0, datePickerWidth, datePickerHeight)];
+    DatePickerTo = [[UIDatePicker alloc]initWithFrame:CGRectMake(datePickerWidth +dateDividerWidth, 0, datePickerWidth, datePickerHeight)];
     [self setupDatePicker:DatePickerTo];
     [DatePickerTo addTarget:self action:@selector(onBetweenDatePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
     
@@ -200,7 +200,7 @@ int segmentType;
     self.ruleTime.segmentType = Between2;
     [self storeTimeParams:timeFrom];
     [self setLableText];
-//    [self.delegate updateTimeElementsButtonsPropertiesArray:self.ruleTime];
+    [self.delegate AddOrUpdateTime];
 }
 
 

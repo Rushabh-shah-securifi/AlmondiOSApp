@@ -105,7 +105,9 @@ NSMutableArray * pickerValuesArray2;
     [self resetViews];
     [self toggleHighlightForDeviceNameButton:sender];
     self.timeView = [[TimeView alloc]init];
-    self.timeView.ruleTime = self.ruleTime;
+//    self.timeView.ruleTime = self.ruleTime;
+    self.timeView.delegate = self;
+    self.timeView.ruleTime = [self getRuleTime];
     self.timeView.parentViewController = self.parentViewController;
     
     [self.timeView addTimeView];
@@ -278,7 +280,7 @@ NSMutableArray * pickerValuesArray2;
         self.ruleHueObject.selectedButtonsPropertiesArray = self.selectedButtonsPropertiesArrayAction;
         
         
-        [self.ruleHueObject createHueCellLayoutWithDeviceId:deviceId deviceType:deviceType deviceIndexes:deviceIndexes scrollView:self.parentViewController.deviceIndexButtonScrollView cellCount:numberOfCells indexesDictionary:deviceIndexesDict];
+        [self.ruleHueObject createHueCellLayoutWithDeviceId:deviceId deviceType:deviceType deviceIndexes:deviceIndexes deviceName:deviceName scrollView:self.parentViewController.deviceIndexButtonScrollView cellCount:numberOfCells indexesDictionary:deviceIndexesDict];
         return;
     }
     //else for rest of the devices
@@ -287,6 +289,17 @@ NSMutableArray * pickerValuesArray2;
         //        cellView.backgroundColor = [UIColor redColor];
     }
 
+}
+-(RulesTimeElement *)getRuleTime{
+    for(SFIButtonSubProperties *subProperties in self.selectedButtonsPropertiesArrayTrigger){
+        if(subProperties.time != nil){
+            return subProperties.time;
+        }
+    }
+    SFIButtonSubProperties *subProperties=[SFIButtonSubProperties new];
+    subProperties.time = [[RulesTimeElement alloc]init];
+    [self.selectedButtonsPropertiesArrayTrigger addObject:subProperties];
+    return subProperties.time;
 }
 - (NSMutableDictionary *)setButtonSelection:(RuleButton *)ruleButton isSlider:(BOOL)isSlider deviceIndex:(SFIDeviceIndex *)deviceIndex deviceId:(int)deviceId matchData:(NSString *)matchData{
     NSMutableDictionary *result= [NSMutableDictionary new];
@@ -726,5 +739,8 @@ NSMutableArray * pickerValuesArray2;
     //[self.delegate updateActionsButtonsPropertiesArray:self.selectedButtonsPropertiesArrayAction];
     [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
 }
-
+#pragma mark delegate methods - TimeView
+-(void)AddOrUpdateTime{
+    [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
+}
 @end
