@@ -49,10 +49,6 @@
 
 -(NSMutableArray *)createTriggerPayload{
     NSMutableArray * triggersArray = [[NSMutableArray alloc]init];
-    if(self.rule.time.isPresent){
-        NSDictionary *timeDict = [self createTimeObject];
-        [triggersArray addObject:timeDict];
-    }
     for (SFIButtonSubProperties *dimButtonProperty in self.rule.triggers) {
         NSDictionary *triggerDeviceProperty = [self createTriggerDeviceObject:dimButtonProperty];
         [triggersArray addObject:triggerDeviceProperty];
@@ -61,29 +57,44 @@
 }
 
 -(NSDictionary *)createTriggerDeviceObject:(SFIButtonSubProperties*)property{
-    NSDictionary *dict;
-    if(property.deviceId == 0)
+    if(property.deviceId == 1){
         return @{
                  @"Type" : @"EventTrigger",
-                 @"ID" : @(0).stringValue,
+                 @"ID" : @(1).stringValue,
                  @"EventType" : @"AlmondModeUpdated",
                  @"Value" : property.matchData,
                  @"Grouping" : @"AND",
                  @"Validation":@"true",
                  @"Condition" : @"eq"
                  };
+    }
+    else if(property.deviceId == 0){
+        if([property.eventType isEqualToString:@"ClientJoined"] || [property.eventType isEqualToString:@"ClientLeft"])
+            return @{
+                     @"Type" : @"EventTrigger",
+                     @"ID" : @(property.deviceId).stringValue,
+                     @"EventType" : property.eventType,
+                     @"Value" : property.matchData,
+                     @"Grouping" : @"AND",
+                     @"Validation":@"",
+                     @"Condition" : @"eq"
+                     };
+        else if([property.eventType isEqualToString:@"TimeTrigger"])
+            return @{
+                     @"Type" : @"TimeTrigger",
+                     @"Range" : @(self.rule.time.range),
+                     @"Hour" : @(self.rule.time.hours),
+                     @"Minutes" : @(self.rule.time.mins),
+                     @"DayOfMonth" : @"*",
+                     @"DayOfWeek" : [self getDayOfWeek:self.rule.time.dayOfWeek],
+                     @"MonthOfYear" : @"*",
+                     @"Grouping" : @"AND",
+                     @"Validation": @""
+                     
+                     };
+    }
     
-    else if(property.eventType!=nil && property.eventType.length>0)
-        return @{
-                 @"Type" : @"EventTrigger",
-                 @"ID" : @(property.deviceId).stringValue,
-                 @"EventType" : property.eventType,
-                 @"Value" : property.matchData,
-                 @"Grouping" : @"AND",
-                 @"Validation":@"",
-                 @"Condition" : @"eq"
-                 };
-    else
+    else{
         return @{
                  @"Type" : @"DeviceTrigger",
                  @"ID" : @(property.deviceId).stringValue,
@@ -93,7 +104,24 @@
                  @"Validation":@"",
                  @"Condition" : @"eq"
                  };
+    }
+    
+    return nil;
 }
+
+-(NSString*)getDayOfWeek:(NSArray*)days{
+    NSMutableString *dayOfWeek = [NSMutableString new];
+    int i=0;
+    for(NSString *day in days){
+        if(i == 0){
+            [dayOfWeek appendString:day];
+        }else
+            [dayOfWeek appendString:[NSString stringWithFormat:@",%@", day]];
+        i++;
+    }
+    return [NSString stringWithString:dayOfWeek];
+}
+
 -(NSDictionary *)createWiFiClientObject:(SFIButtonSubProperties*)wiFiClientProperty{
     NSDictionary *dict = @{
                            @"Type" : @"EventTrigger",
@@ -108,22 +136,6 @@
     return dict;
 }
 
-
--(NSDictionary*)createTimeObject{
-    NSDictionary *Dict= @{
-                          @"Type" : @"TimeTrigger",
-                          @"Range" : @(self.rule.time.range),
-                          @"Hour" : @(self.rule.time.hours),
-                          @"Minutes" : @(self.rule.time.mins),
-                          @"DayOfMonth" : @"*",
-                          @"DayOfWeek" : self.rule.time.dayOfWeek,
-                          @"MonthOfYear" : @"*",
-                          @"Grouping" : @"AND",
-                          @"Validation": @""
-                          
-                          };
-    return Dict;
-}
 -(NSMutableArray *)createActionPayload{
     NSMutableArray * actionsArray = [[NSMutableArray alloc]init];
     for (SFIButtonSubProperties *property in self.rule.actions) {
@@ -134,7 +146,7 @@
 }
 
 -(NSDictionary *)createActionDeviceObject:(SFIButtonSubProperties*)dimButtonProperty{
-    if(dimButtonProperty.deviceId == 0){
+    if(dimButtonProperty.deviceId == 1){
         NSDictionary *dict = @{
                                @"Type":@"EventResult",
                                @"ID":@(1).stringValue,

@@ -23,7 +23,7 @@
 @property(nonatomic) NSInteger maxValue;
 @property(nonatomic) int count;
 @property(nonatomic) SFIDevice *device;
-@property(nonatomic)UILabel *crossButton;
+@property(nonatomic)UIImageView *crossButtonImage;
 @property BOOL isTrigger;
 
 - (void)setupValues:(NSString*)text  Title:(NSString*)title suffix:(NSString*)prefix isTrigger:(BOOL)isTrigger;

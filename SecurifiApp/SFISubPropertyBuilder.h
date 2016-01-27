@@ -14,15 +14,15 @@
 
 
 @class AddRulesViewController;
-@protocol SFISubPropertyBuilderDelegate <NSObject>
+
+@protocol SFISubPropertyBuilderDelegate 
 -(void)updateTriggerAndActionDelegatePropertie:(BOOL)isTrigger;
-
+-(void)redrawDeviceIndexView:(sfi_id)deviceId;
 @end
+
 @interface SFISubPropertyBuilder : NSObject
-
-
-+ (void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions showCrossBtn:(BOOL)showCross parentController:(AddRulesViewController*)addRuleController;
-
++(void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions showCrossBtn:(BOOL)showCross parentController:(AddRulesViewController*)addRuleController;
+@property (nonatomic, weak) id<SFISubPropertyBuilderDelegate> delegate;
 
 
 @end

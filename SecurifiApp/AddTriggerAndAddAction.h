@@ -9,15 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "AddRulesViewController.h"
 #import "RulesTimeElement.h"
+#import "RulesDeviceNameButton.h"
 
 
 @protocol AddTriggerAndAddActionDelegate
-
--(void) updateActionsButtonsPropertiesArray:(NSMutableArray*)actionButtonPropertiesArray;
--(void) updateTriggersButtonsPropertiesArray:(NSMutableArray*)triggersButtonPropertiesArray;
--(void)updateTimeElementsButtonsPropertiesArray:(RulesTimeElement*)ruleTimeElement;
 -(void)updateTriggerAndActionDelegatePropertie:(BOOL)isTrigger;
 @end
+
 @interface AddTriggerAndAddAction : NSObject
 @property (nonatomic, strong)NSMutableArray *selectedButtonsPropertiesArrayTrigger;
 @property (nonatomic, strong)NSMutableArray *selectedButtonsPropertiesArrayAction;
@@ -29,4 +27,8 @@
 
 
 -(void)addDeviceNameList:(BOOL)isTrigger;
+-(void)onDeviceButtonClick:(RulesDeviceNameButton *)sender;
+-(void)TimeEventClicked:(id)sender;
+-(void)wifiClientsClicked:(RulesDeviceNameButton*)deviceButton;
+
 @end

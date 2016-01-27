@@ -1128,7 +1128,7 @@
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchData = @"1";
                 s3.matchType = MatchType_not_equals;
-                s3.iconName = @"21_alarm_on";
+                s3.iconName = DT21_STANDARD_WARNING_DEVICE_TRUE;
                 s3.valueFormatter.action = ValueFormatterAction_formatString;
                 s3.valueFormatter.notificationPrefix = NSLocalizedString(@" is turned on for ", @" is turned on for ");
                 s3.valueFormatter.suffix = NSLocalizedString(@" seconds", @" seconds");

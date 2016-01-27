@@ -16,6 +16,7 @@
     UILabel *lblMain;
     UILabel *countLable;
     UILabel *lblDeviceName;
+    UIView *crossButtonBGView;
 }
 
 
@@ -169,29 +170,44 @@
 }
 
 - (void)setButtonCross:(BOOL)isHidden{
-    if(self.crossButton.text != nil){
-        self.crossButton.text =nil;
-    }
-    self.crossButton = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 12, 16, 16, 16)];
-    CALayer * l1 = [self.crossButton layer];
+//    if(self.crossButton.text != nil){
+//        self.crossButton.text =nil;
+//    }
+    crossButtonBGView = [[UIView alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 12, 16, countDiameter, countDiameter)];
+    [self setLayer];
+    [self addImage:[UIImage imageNamed:@"icon_cross_gray"] y:crossButtonBGView.frame.origin.y widthAndHeight:countDiameter];
+    [crossButtonBGView setBackgroundColor:[SFIColors ruleLightGrayColor]];
+    crossButtonBGView.hidden = isHidden;
+    [self addSubview:crossButtonBGView];
+}
+
+-(void)setLayer{
+    CALayer * l1 = [crossButtonBGView layer];
     [l1 setMasksToBounds:YES];
-    [l1 setCornerRadius:8];
-    
-    // You can even add a border
-    
+    [l1 setCornerRadius:countDiameter/2];
     [l1 setBorderColor:[[SFIColors ruleLightGrayColor] CGColor]];//FF3B30
-  
     [l1 setBorderWidth: 1.5];
+}
+
+- (void)addImage:(UIImage *)iconImage y:(int)y widthAndHeight:(int)widthAndHeight {
+    self.crossButtonImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, widthAndHeight, widthAndHeight)];
+    self.crossButtonImage.userInteractionEnabled = NO;
+    //img adjustments
+    float height = iconImage.size.height;
+    float width = iconImage.size.width;
+    float scale;
+    int heightFactor = self.bgView.frame.size.height/crossButtonScale;
+    scale = height/heightFactor;
+    height = heightFactor;
+    width /= scale;
     
-    self.crossButton.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:10];
-    self.crossButton.textColor = [UIColor whiteColor];
-   
-    self.crossButton.text = @"X";
-    self.crossButton.shadowColor = [SFIColors ruleLightGrayColor];
-    self.crossButton.textAlignment = NSTextAlignmentCenter;
-    self.crossButton.hidden = isHidden;
-    [self.crossButton setBackgroundColor:[SFIColors ruleLightGrayColor]];
-    [self addSubview:self.crossButton];
+    self.crossButtonImage.image = iconImage;
+    CGRect frame = self.crossButtonImage.frame;
+    frame.size.width = width;
+    frame.size.height = height;
+    self.crossButtonImage.frame = frame;
+    self.crossButtonImage.center = CGPointMake(crossButtonBGView.bounds.size.width/2, crossButtonBGView.bounds.size.height/2);
+    [crossButtonBGView addSubview:self.crossButtonImage];
 }
 
 @end

@@ -33,9 +33,10 @@
 #import "SFIRouterClientsTableViewController.h"
 #import "RulePayload.h"
 #import "AddTriggerAndAddAction.h"
+#import "SFISubPropertyBuilder.h"
 //for wifi clients
 
-@interface AddRulesViewController()<AddTriggersDelegate, AddActionsDelegate, RuleViewDelegate,UIAlertViewDelegate,AddTriggerAndAddActionDelegate>{
+@interface AddRulesViewController()<AddTriggersDelegate, AddActionsDelegate, RuleViewDelegate,UIAlertViewDelegate,AddTriggerAndAddActionDelegate,SFISubPropertyBuilderDelegate>{
     sfi_id dc_id;
     NSInteger randomMobileInternalIndex;
 }
@@ -323,16 +324,30 @@ UITextField *textField;
     return [NSMutableArray arrayWithArray:[sensorSupport getIndexesFor:deviceType]];
 }
 
--(void)updateTriggerArray:(NSMutableArray*)triggerButtonPropertiesArray andDeviceIndexesForId:(int)deviceId{
-    self.rule.triggers = triggerButtonPropertiesArray;
+-(void)redrawDeviceIndexView:(sfi_id)deviceId {
     [self callRulesView]; //top view
     RulesDeviceNameButton *deviceButton = [self getSelectedButton:deviceId];
     NSLog(@"button id: %d, deviceId: %d", deviceButton.deviceId, deviceId);
     if(deviceButton.deviceId != deviceId)
         return;
-    if(deviceId == -2){//time
-        
+    
+    if(deviceButton.isTrigger){
+        if(deviceId == 0){ //time mode clients
+            if([deviceButton.deviceName isEqualToString:@"Mode"]){
+                [self.triggerAction onDeviceButtonClick:deviceButton];
+            }else if([deviceButton.deviceName isEqualToString:@"Time"]){
+                [self.triggerAction TimeEventClicked:deviceButton];
+            }else if([deviceButton.deviceName isEqualToString:@"Clients"]){
+                [self.triggerAction wifiClientsClicked:deviceButton];
+            }
+        }else{
+            [self.triggerAction onDeviceButtonClick:deviceButton];
+        }
     }
+    else{
+        [self.triggerAction onDeviceButtonClick:deviceButton];
+    }
+    
     
 }
 

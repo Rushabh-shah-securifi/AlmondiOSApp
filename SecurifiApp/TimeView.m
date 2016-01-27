@@ -55,6 +55,9 @@ int segmentType;
     timeSegmentControl.selectedSegmentIndex = self.ruleTime.segmentType;
     timeSegmentControl.center = CGPointMake(CGRectGetMidX(scrollView.bounds), timeSegmentControl.center.y);
     [timeSegmentControl addTarget:self action:@selector(onClickSegmentControl:) forControlEvents: UIControlEventValueChanged];
+    CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
+                                       500);
+    [scrollView setContentSize:scrollableSize];
     [scrollView addSubview:timeSegmentControl];
 }
 

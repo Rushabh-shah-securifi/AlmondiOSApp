@@ -64,10 +64,10 @@ int xVal = 20;
         parentController = addRuleController;
     }
     [self clearScrollView];
-    NSLog(@" create entries count tri :%ld, ac:%ld ,ScrollView :%@",(unsigned long)triggers.count,(unsigned long)actions.count ,scrollView);
 //    [self drawImage:@"plus_icon" xVal:0];
     [self buildEntryList:triggers isTrigger:YES];
-    [self drawImage:@"arrow_icon"];
+    if(triggers.count > 0)
+        [self drawImage:@"arrow_icon"];
     [self buildEntryList:actions isTrigger:NO];
     
     if(xVal > scrollView.frame.size.width){
@@ -119,10 +119,9 @@ int xVal = 20;
 }
 + (void)buildEntryList:(NSArray *)entries isTrigger:(BOOL)isTrigger{
     int positionId = 0;
-    
     for (SFIButtonSubProperties *buttonProperties in entries) {
         if(buttonProperties.time != nil)
-            [self buildTime:buttonProperties isTrigger:isTrigger];
+            [self buildTime:buttonProperties isTrigger:isTrigger positionId:positionId];
         else{
             [self getDeviceTypeFor:buttonProperties];
             NSLog(@"buttn type %d %@",buttonProperties.deviceType,buttonProperties.deviceName);
@@ -133,11 +132,14 @@ int xVal = 20;
     }
 }
 
-+ (void)buildTime:(SFIButtonSubProperties *)timesubProperties isTrigger:(BOOL)isTrigger{
++ (void)buildTime:(SFIButtonSubProperties *)timesubProperties isTrigger:(BOOL)isTrigger positionId:(int)positionId{
     NSLog(@"drawTime");
-    
+    if(positionId > 0)
+        [self drawImage:@"plus_icon"];
     DimmerButton *dimbutton=[[DimmerButton alloc]initWithFrame:CGRectMake(xVal, 5, triggerActionDimWidth, triggerActionDimHeight)];
-    dimbutton.bgView.backgroundColor =[SFIColors ruleBlueColor];
+    NSLog(@"position Id :%d",positionId);
+    
+    
 
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"hh:mm aa"];
@@ -153,7 +155,10 @@ int xVal = 20;
         NSLog(@"time interval: %@", time);
         [dimbutton setupValues:time Title:@"Time Interval" displayText:@"days" suffix:@""];
     }
-
+    dimbutton.subProperties.positionId = positionId;
+    [dimbutton setButtonCross:showCrossBtn];
+    [dimbutton addTarget:self action:@selector(onDimmerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    dimbutton.bgView.backgroundColor =[SFIColors ruleBlueColor];
     xVal += triggerActionDimWidth;
     [scrollView addSubview:dimbutton];
 
@@ -217,11 +222,20 @@ int xVal = 20;
     if(switchButton.isTrigger){
     [parentController.rule.triggers removeObjectAtIndex:switchButton.subProperties.positionId];
     NSLog(@"par.count %d ",parentController.rule.triggers.count);
+        
     }
     else{
         [parentController.rule.actions removeObjectAtIndex:switchButton.subProperties.positionId];
         NSLog(@"par.count %d ",parentController.rule.triggers.count);
     }
+    [parentController redrawDeviceIndexView:switchButton.subProperties.deviceId];
+}
+
+
++ (void)onDimmerCrossButtonClicked:(DimmerButton*)dimmerButton{
+    NSLog(@"dimbutton posId %d",dimmerButton.subProperties.positionId);
+    [parentController.rule.triggers removeObjectAtIndex:dimmerButton.subProperties.positionId];
+    [parentController redrawDeviceIndexView:dimmerButton.subProperties.deviceId];
     
 }
 
@@ -256,25 +270,20 @@ int xVal = 20;
 +(void)getDeviceTypeFor:(SFIButtonSubProperties*)buttonSubProperty{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
-    
     NSLog(@" eventType :- %@ index :%d device id -: %d",buttonSubProperty.eventType,buttonSubProperty.index,buttonSubProperty.deviceId);
 
     if((buttonSubProperty.deviceId  == 1) && [buttonSubProperty.eventType isEqualToString:@"AlmondModeUpdated"]){
         buttonSubProperty.deviceType= SFIDeviceType_BinarySwitch_0;
         buttonSubProperty.deviceName = @"Mode";
     }else if(buttonSubProperty.index == 0 && buttonSubProperty.eventType !=nil){
-        
         for(SFIConnectedDevice *connectedClient in toolkit.wifiClientParser){
-            
             if(buttonSubProperty.deviceId == connectedClient.deviceID.intValue){
                 buttonSubProperty.deviceType = SFIDeviceType_WIFIClient;
                 buttonSubProperty.deviceName = connectedClient.name;
                 break;
             }
         }
-        
     }else{
-        
         for(SFIDevice *device in [toolkit deviceList:plus.almondplusMAC]){
             if(buttonSubProperty.deviceId == device.deviceID){
                 buttonSubProperty.deviceType = device.deviceType;
@@ -285,37 +294,4 @@ int xVal = 20;
     }
     NSLog(@" id :%d,name :%@ ",buttonSubProperty.deviceId,buttonSubProperty.deviceName);
 }
-
-//-(void)onActionDelayButtonClicked:(id)sender{
-//    NSLog(@"onActionDelayButtonClicked: %@", sender);
-//    UIButton *delayButton = sender;
-//    delayButton.selected = !delayButton.selected;
-//    rulesButtonViewClick = (RulesButtonsView*)[sender superview];
-//    delaySecs = [rulesButtonViewClick.subProperties.delay intValue];
-//    //    [self removeDelayView]; //check always in beginning
-//    if(delayButton.selected){
-//        pickerMinsRange = [[NSMutableArray alloc]init];
-//        pickerSecsRange = [[NSMutableArray alloc]init];
-//        for (int i = 0; i <= 4; i++) {
-//            [pickerMinsRange addObject:[NSString stringWithFormat:@"%d",i]];
-//        }
-//        for (int i = 0; i <= 59; i++) {
-//            [pickerSecsRange addObject:[NSString stringWithFormat:@"%d",i]];
-//        }
-//        [self setupPicker];
-//    } else{
-//        [self removeDelayView];
-//        delayButton.backgroundColor = [UIColor colorFromHexString:@"FF9500"];
-//        [delayButton setBackgroundColor:[UIColor colorFromHexString:@"FF9500"]];
-//        SFIButtonSubProperties *buttonProperties = [self.rule.actions objectAtIndex:rulesButtonViewClick.subProperties.positionId];
-//        buttonProperties.delay = [NSString stringWithFormat:@"%d", [self getDelay]];
-//        delayButton.backgroundColor = [UIColor colorFromHexString:@"FF9500"];
-//        NSLog(@"no of secs delay: %d", [self getDelay]);
-//        //        [rulesButtonViewClick setNewValue:[NSString stringWithFormat:@"%d", [self getDelay]]];
-//        [self.delegate updateActionsArray:self.rule.actions andDeviceIndexesForId:rulesButtonViewClick.subProperties.deviceId];
-//    }
-//}
-
-
-
 @end

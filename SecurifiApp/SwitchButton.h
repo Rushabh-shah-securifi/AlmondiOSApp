@@ -23,6 +23,7 @@
 @property bool inScroll;
 @property BOOL isTrigger;
 @property BOOL showTitle;
+@property(nonatomic)UIImageView *crossButtonImage;
 
 - (void)changeImageColor:(UIColor*)color;
 - (void)setupValues:(UIImage*)iconImage topText:(NSString*)topText bottomText:(NSString *)bottomText isTrigger:(BOOL)isTrigger ;

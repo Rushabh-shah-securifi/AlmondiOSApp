@@ -78,15 +78,10 @@ NSMutableArray * pickerValuesArray2;
 - (int)addDeviceName:(NSString *)deviceName deviceID:(int)deviceID deviceType:(unsigned int)deviceType  xVal:(int)xVal {
     double deviceButtonHeight = self.parentViewController.deviceListScrollView.frame.size.height;
     CGRect textRect = [self adjustDeviceNameWidth:deviceName];
-
     CGRect frame = CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight);
-    
     RulesDeviceNameButton *deviceButton = [[RulesDeviceNameButton alloc]initWithFrame:frame];
-    
-    
     [deviceButton deviceProperty:self.isTrigger deviceType:deviceType deviceName:deviceName deviceId:deviceID];
-   
-
+    
     if([deviceName isEqualToString:@"Time"]){
         [deviceButton addTarget:self action:@selector(TimeEventClicked:) forControlEvents:UIControlEventTouchUpInside];
     }else if([deviceName isEqualToString:@"Clients"])
@@ -137,7 +132,7 @@ NSMutableArray * pickerValuesArray2;
     }
     int xVal = 15;
    
-    xVal = [self addDeviceName:@"Mode" deviceID:0 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
+    xVal = [self addDeviceName:@"Mode" deviceID:1 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
     if(self.isTrigger){//if Trigger Add time
         xVal = [self addDeviceName:@"Time" deviceID:0 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
         xVal = [self addDeviceName:@"Clients" deviceID:0 deviceType:SFIDeviceType_WIFIClient xVal:xVal];
@@ -298,6 +293,7 @@ NSMutableArray * pickerValuesArray2;
     }
     SFIButtonSubProperties *subProperties=[SFIButtonSubProperties new];
     subProperties.time = [[RulesTimeElement alloc]init];
+    subProperties.eventType = @"TimeTrigger";
     [self.selectedButtonsPropertiesArrayTrigger addObject:subProperties];
     return subProperties.time;
 }
@@ -368,7 +364,6 @@ NSMutableArray * pickerValuesArray2;
     btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:iVal.eventType deviceName:deviceName deviceType:deviceType];
     
     btnBinarySwitchOn.deviceType = deviceType;
-    
     [btnBinarySwitchOn addTarget:self action:@selector(onSwitchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
    
     [btnBinarySwitchOn setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:self.isTrigger];
@@ -524,7 +519,7 @@ NSMutableArray * pickerValuesArray2;
 - (void)setActionButtonCount:(RuleButton *)indexButton isSlider:(BOOL)isSlider matchData:(NSString *)buttonMatchdata buttonIndex:(int)buttonIndex buttonId:(sfi_id)buttonId {
     if(self.isTrigger)
         return;
-    int buttonClickCount = 1;
+    int buttonClickCount = 0;
     for(SFIButtonSubProperties *dimButtonProperty in self.selectedButtonsPropertiesArrayAction){ //to do - you can add count property to subproperties and iterate array in reverse
         if(dimButtonProperty.deviceId == buttonId && dimButtonProperty.index == buttonIndex && (isSlider ||(!isSlider && [dimButtonProperty.matchData isEqualToString:buttonMatchdata]))){
             buttonClickCount++;

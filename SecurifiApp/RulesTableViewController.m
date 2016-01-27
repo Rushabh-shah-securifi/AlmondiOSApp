@@ -188,7 +188,6 @@
 //    [rulesviews createTriggersActionsView:cell.scrollView];
     // Configure the cell...
     [cell.scrollView setContentOffset:CGPointMake(0,0) animated:YES];
-    
     return cell;
 }
 
