@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+static const float ITEM_SPACING = 2.0;
+
 @protocol SFIWiFiDeviceProprtyEditViewDelegate
 - (void)updateDeviceInfo:(SFIConnectedDevice *)deviceInfo;
 @end
 
 @interface SFIWiFiDeviceProprtyEditViewController : UIViewController
-
 @property (weak) id<SFIWiFiDeviceProprtyEditViewDelegate> delegate;
 @property(assign)NSInteger editFieldIndex;
 @property(strong)SFIConnectedDevice *connectedDevice;

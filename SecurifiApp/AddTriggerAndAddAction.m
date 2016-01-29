@@ -18,9 +18,6 @@
 #import "RulesHue.h"
 #import "IndexValueSupport.h"
 #import "SFIButtonSubProperties.h"
-
-#import "RuleBuilder.h"
-
 #import "RulesNestThermostat.h"
 #import "RulesHue.h"
 #import "V8HorizontalPickerView.h"

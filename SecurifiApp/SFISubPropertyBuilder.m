@@ -7,7 +7,6 @@
 //
 
 #import "SFISubPropertyBuilder.h"
-#import "RuleBuilder.h"
 #import "RulesConstants.h"
 #import "SensorIndexSupport.h"
 #import "SecurifiToolkit/SFIDevice.h"
@@ -31,7 +30,6 @@
 #import "PreDelayRuleButton.h"
 
 #import "SFIColors.h"
-#import "RulesIndexValueSupport.h"
 //#import "AddActions.h"
 #import "AddRulesViewController.h"
 #import "SecurifiToolkit/Parser.h"

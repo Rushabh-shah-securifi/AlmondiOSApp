@@ -8,7 +8,6 @@
 
 #import "RulesTableViewController.h"
 #import "CustomCellTableViewCell.h"
-#import "RuleBuilder.h"
 #import "SecurifiToolkit/Rule.h"
 #import "SecurifiToolkit/GenericCommand.h"
 #import "SFIButtonSubProperties.h"
@@ -19,7 +18,7 @@
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
-@interface RulesTableViewController ()<AddRulesViewControllerDelegate, CustomCellTableViewCellDelegate,RuleViewDelegate>{
+@interface RulesTableViewController ()<AddRulesViewControllerDelegate, CustomCellTableViewCellDelegate>{
     NSInteger randomMobileInternalIndex;
 }
 
@@ -178,14 +177,6 @@
     NSLog(@"cellforrow - self.triggers: %d, self.actions: %d", rule.triggers.count, rule.actions.count);
     [SFISubPropertyBuilder createEntriesView:cell.scrollView triggers:rule.triggers actions:rule.actions showCrossBtn:YES parentController:nil];
     
-    // [SFISubPropertyBuilder createEntriesView:cell.scrollView triggers:rule.triggers actions:rule.actions showCrossBtn:YES];
-    
-//    RuleBuilder *rulesviews = [[RuleBuilder alloc]init];
-//    rulesviews.delegate = self;
-//    rulesviews.rule = rule;
-//    rulesviews.toHideCrossButton = YES;
-    
-//    [rulesviews createTriggersActionsView:cell.scrollView];
     // Configure the cell...
     [cell.scrollView setContentOffset:CGPointMake(0,0) animated:YES];
     return cell;

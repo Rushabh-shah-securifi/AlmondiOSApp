@@ -45,6 +45,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"SFIWiFiClientsListViewController ");
     propertyRowCellHeight = 44.0f;
     removeRowCellHeight = 90.0f;
     cellFont = [UIFont fontWithName:AVENIR_ROMAN size:17];
@@ -53,7 +54,7 @@
     randomMobileInternalIndex = arc4random() % 10000;
     tblDevices.SKSTableViewDelegate = self;
     tblDevices.shouldExpandOnlyOneCell = YES;
-    propertyNames = @[@"Name",@"Type",@"MAC Address",@"Last Known IP",@"Connection",@"Use as Presence Sensor",@"Notify me",@"Set Inactivity Timeout",@"Last Active Time", @"View Device History",@"Remove"];
+    propertyNames = @[@"Name",@"Type",@"MAC Address",@"Last Known IP",@"Connection",@"Allow On Network",@"Use as Presence Sensor",@"Notify me",@"Set Inactivity Timeout", @"Last Active Time", @"View Device History",@"Remove"];
     [self initializeNotifications];
     [self getClientsPreferences];
 }
@@ -141,11 +142,8 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
     return 90.0f;
 }
-
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"SFIWiFiClientListCell";
@@ -162,8 +160,6 @@
     cell.expandable = YES;
     
     return cell;
-    
-    
 }
 
 
@@ -181,12 +177,8 @@
             [c removeFromSuperview];
         }
     }
-    
-    
-    
     [self addCellLabel:cell IndexPath:indexPath];
-    
-    
+    NSLog(@"subrowindex: %ld", subRowIndex);
     switch (subRowIndex) {
         case nameIndexPathRow://Name
         {
@@ -258,6 +250,27 @@
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
+        case allowOnNetworkIndexPathRow:{ //Allow On Network
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 220, 0, 180, propertyRowCellHeight)];
+            label.backgroundColor = [UIColor clearColor];
+            label.textColor = [UIColor whiteColor];
+            label.font = cellFont;
+            if (connectedDevice.deviceAllowedType == DeviceAllowed_Always) {
+                label.text = @"Always";
+            }else if(connectedDevice.deviceAllowedType == DeviceAllowed_Blocked){
+                label.text = @"Blocked";
+            }else{
+                label.text = @"OnSchedule";
+            }
+            label.tag = 66;
+            label.numberOfLines = 1;
+            label.textAlignment = NSTextAlignmentRight;
+            [cell addSubview:label];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            break;
+            
+        }
+            
         case timeoutIndexPathRow:
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 220, 0, 180, propertyRowCellHeight)];
@@ -322,6 +335,7 @@
             }
             break;
         }
+            
         case removeButtonIndexPathRow://Remove button
         {
             cell = [self createRemoveButtonCell:cell];
@@ -451,6 +465,15 @@
             [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
+        case allowOnNetworkIndexPathRow://Allow On Network
+        {
+            SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
+            viewController.delegate = self;
+            viewController.editFieldIndex = subRowIndex;
+            viewController.connectedDevice = self.connectedDevices[indexPath.section];
+            [self.navigationController pushViewController:viewController animated:YES];
+            break;
+        }
         case usePresenceSensorIndexPathRow://Use as presence Sensor
         {
             SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
@@ -469,6 +492,7 @@
             [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
+            
         case notifyMeIndexPathRow://Notify me
         {
             SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
@@ -480,6 +504,7 @@
             [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
+            
         case historyIndexPathRow:
         {
             [self showSensorLogs:indexPath];
@@ -505,7 +530,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     return 0.0000001;
 }
-
 
 //- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 //    currentIndexPath = indexPath;
@@ -559,10 +583,17 @@
 
 #pragma mark - Cloud command senders and handlers
 - (void)gotCommandResponse:(id)sender {
+    NSLog(@"list view - gotCommandResponse");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    
-    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    NSDictionary * mainDict;
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    if(local)
+        mainDict = [data valueForKey:@"data"];
+    else
+        mainDict = [[data valueForKey:@"data"] objectFromJSONData];
     
     if (randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
         return;
@@ -576,7 +607,6 @@
                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"response.alert-OK",@"OK") otherButtonTitles: nil];
         [alert show];
     }else{
-        
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.connectedDevices removeObject:currentDevice];
             //            [tblDevices reloadData];
@@ -593,11 +623,11 @@
         [tblDevices refreshData];
         //
     });
-
+    
 }
 
 - (void)onDynamicClientAdded:(id)sender {
-   NSLog(@"dynamic Added table view");
+    NSLog(@"dynamic Added table view");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     self.connectedDevices = toolkit.wifiClientParser;
@@ -608,7 +638,7 @@
 }
 
 - (void)onDynamicClientRemove:(id)sender {
- 
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     self.connectedDevices = toolkit.wifiClientParser;

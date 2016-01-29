@@ -1109,7 +1109,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *almond = [toolkit currentAlmond];
-    
     BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
     NSDictionary *mainDict;
     if(local){
@@ -1150,6 +1149,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                     device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
                     device.isActive = [[dict valueForKey:@"Active"] boolValue];
                     device.timeout = [[dict valueForKey:@"Wait"] integerValue];
+                    device.deviceAllowedType = [[dict valueForKey:@"Block"] intValue];
+                    device.deviceSchedule = [dict valueForKey:@"Schedule"];
                     if (device.isActive) {
                         activeClientsCount++;
                     }else{

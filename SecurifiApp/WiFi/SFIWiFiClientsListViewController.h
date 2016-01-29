@@ -11,6 +11,7 @@ typedef NS_ENUM(NSInteger, Properties) {
     macAddressIndexPathRow,
     iPAddressIndexPathRow,
     connectionIndexPathRow,
+    allowOnNetworkIndexPathRow,
     usePresenceSensorIndexPathRow,
     notifyMeIndexPathRow,
     timeoutIndexPathRow,

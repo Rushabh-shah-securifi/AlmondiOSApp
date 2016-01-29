@@ -19,9 +19,6 @@
 #import "RulesConstants.h"
 #import "SFIButtonSubProperties.h"
 #import "RulesDeviceNameButton.h"
-#import "RuleBuilder.h"
-#import "AddTriggers.h"
-#import "AddActions.h"
 #import "GenericCommand.h"
 #import "SFIColors.h"
 #import "RulesTableViewController.h"
@@ -36,14 +33,13 @@
 #import "SFISubPropertyBuilder.h"
 //for wifi clients
 
-@interface AddRulesViewController()<AddTriggersDelegate, AddActionsDelegate, RuleViewDelegate,UIAlertViewDelegate,AddTriggerAndAddActionDelegate,SFISubPropertyBuilderDelegate>{
+@interface AddRulesViewController()<UIAlertViewDelegate,AddTriggerAndAddActionDelegate,SFISubPropertyBuilderDelegate>{
     sfi_id dc_id;
     NSInteger randomMobileInternalIndex;
 }
 
 //@property (nonatomic, strong)AddTriggers *addTriggersView;
 //@property (nonatomic ,strong)AddActions *addActionsView;
-@property (nonatomic, strong)RuleBuilder *rulesView;
 @property (weak, nonatomic) IBOutlet UIButton *IfButton;
 @property (weak, nonatomic) IBOutlet UIButton *thenButton;
 @property (weak, nonatomic) SFIWiFiClientsListViewController *wifiClientsList;//response
