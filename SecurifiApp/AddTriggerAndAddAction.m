@@ -27,6 +27,7 @@
 #import "V8HorizontalPickerViewProtocol.h"
 #import "SFIPickerIndicatorView1.h"
 #import "ValueFormatter.h"
+#import "SFISubPropertyBuilder.h"
 
 #import "RuleButton.h"
 #import "DimmerButton.h"
@@ -81,6 +82,7 @@ NSMutableArray * pickerValuesArray2;
     CGRect frame = CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight);
     RulesDeviceNameButton *deviceButton = [[RulesDeviceNameButton alloc]initWithFrame:frame];
     [deviceButton deviceProperty:self.isTrigger deviceType:deviceType deviceName:deviceName deviceId:deviceID];
+    
     
     if([deviceName isEqualToString:@"Time"]){
         [deviceButton addTarget:self action:@selector(TimeEventClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -304,7 +306,8 @@ NSMutableArray * pickerValuesArray2;
    // NSString *matchData=nil;
     NSMutableArray *list=(self.isTrigger)?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
     for(SFIButtonSubProperties *subProperty in list){ //to do - you can add count property to subproperties and iterate array in reverse
-        if(subProperty.deviceId == deviceId && subProperty.index == deviceIndex.indexID && subProperty.matchData == matchData){
+        if(subProperty.deviceId == deviceId && subProperty.index == deviceIndex.indexID && subProperty.matchData == matchData ){
+            NSLog(@"subproperty Match data %@ == %@",matchData,subProperty.matchData);
             matchData = subProperty.matchData;
             ruleButton.selected = YES;
             if(!self.isTrigger)
@@ -326,21 +329,14 @@ NSMutableArray * pickerValuesArray2;
     dimbtn.minValue = iVal.minValue;
     dimbtn.maxValue = iVal.maxValue;
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
-    dimbtn.selected=NO;
+    
     [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    NSMutableDictionary *result=[self setButtonSelection:dimbtn isSlider:YES deviceIndex:deviceIndex deviceId:deviceId matchData:dimbtn.subProperties.matchData];
-    
-    int buttonClickCount;
-    if(self.isAction){
-        buttonClickCount =[[result valueForKey:@"count"] integerValue];
-    }
-    NSString *matchData = [result valueForKey:@"matchData"];
-    if(matchData==nil)
-        matchData=iVal.matchData;
+    //NSMutableDictionary *result=[self setButtonSelection:dimbtn isSlider:YES deviceIndex:deviceIndex deviceId:deviceId matchData:dimbtn.subProperties.matchData];
+    dimbtn.selected=[self setActionButtonCount:dimbtn isSlider:YES matchData:iVal.matchData buttonIndex:deviceIndex.indexID buttonId:deviceId];
     
     //get previous value
-    [dimbtn setupValues:matchData Title:iVal.displayText suffix:iVal.valueFormatter.suffix isTrigger:self.isTrigger];
+    [dimbtn setupValues:iVal.matchData Title:iVal.displayText suffix:iVal.valueFormatter.suffix isTrigger:self.isTrigger];
     
     
     dimbtn.center = CGPointMake(view.bounds.size.width/2,
@@ -348,10 +344,7 @@ NSMutableArray * pickerValuesArray2;
     dimbtn.frame=CGRectMake(dimbtn.frame.origin.x + ((i-1) * (dimFrameWidth/2))+textHeight/2, dimbtn.frame.origin.y, dimbtn.frame.size.width, dimbtn.frame.size.height);
     [self shiftButtonsByWidth:dimFrameWidth View:view forIteration:i];
     
-    if(buttonClickCount > 0 && self
-       .isAction){
-        [dimbtn setButtoncounter:buttonClickCount isCountImageHiddn:NO];
-    }
+    
     //dispatch_async(dispatch_get_main_queue(), ^{
     [view addSubview:dimbtn];
 }
@@ -360,7 +353,7 @@ NSMutableArray * pickerValuesArray2;
     SwitchButton *btnBinarySwitchOn = [[SwitchButton alloc] initWithFrame:CGRectMake(view.frame.origin.x,view.frame.origin.y, frameSize, frameSize)];
     btnBinarySwitchOn.tag = i;
     btnBinarySwitchOn.valueType=deviceIndex.valueType;
-    NSLog(@"index :%d device Id:%d,",deviceIndex.indexID,deviceId);
+    NSLog(@"index :%d device Id:%d type:%d,",deviceIndex.indexID,deviceId,deviceType);
     btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:iVal.eventType deviceName:deviceName deviceType:deviceType];
     
     btnBinarySwitchOn.deviceType = deviceType;
@@ -370,8 +363,8 @@ NSMutableArray * pickerValuesArray2;
 
     //set perv. count and highlight
     
-    NSMutableDictionary *result=[self setButtonSelection:btnBinarySwitchOn isSlider:NO deviceIndex:deviceIndex deviceId:deviceId matchData:btnBinarySwitchOn.subProperties.matchData];
-    int buttonClickCount =[[result valueForKey:@"count"] integerValue];
+    btnBinarySwitchOn.selected=[self setActionButtonCount:btnBinarySwitchOn isSlider:NO matchData:iVal.matchData buttonIndex:deviceIndex.indexID buttonId:deviceId];
+
     btnBinarySwitchOn.center = CGPointMake(view.bounds.size.width/2,
                                            view.bounds.size.height/2);
     btnBinarySwitchOn.frame = CGRectMake(btnBinarySwitchOn.frame.origin.x + ((i-1) * (frameSize/2))+textHeight/2 ,
@@ -401,10 +394,6 @@ NSMutableArray * pickerValuesArray2;
                                      childView.frame.size.width,
                                      childView.frame.size.height);
     }
-    if(buttonClickCount > 0 && self.isAction){
-        [btnBinarySwitchOn setButtoncounter:buttonClickCount isCountImageHiddn:NO];
-    }
-    
     //dispatch_async(dispatch_get_main_queue(), ^{
     [view addSubview:btnBinarySwitchOn];
 }
@@ -516,17 +505,25 @@ NSMutableArray * pickerValuesArray2;
     NSLog(@"selected button count %ld",(unsigned long)self.selectedButtonsPropertiesArrayTrigger.count);
 }
 
-- (void)setActionButtonCount:(RuleButton *)indexButton isSlider:(BOOL)isSlider matchData:(NSString *)buttonMatchdata buttonIndex:(int)buttonIndex buttonId:(sfi_id)buttonId {
-    if(self.isTrigger)
-        return;
+- (BOOL)setActionButtonCount:(RuleButton *)indexButton isSlider:(BOOL)isSlider matchData:(NSString *)buttonMatchdata buttonIndex:(int)buttonIndex buttonId:(sfi_id)buttonId {
     int buttonClickCount = 0;
-    for(SFIButtonSubProperties *dimButtonProperty in self.selectedButtonsPropertiesArrayAction){ //to do - you can add count property to subproperties and iterate array in reverse
-        if(dimButtonProperty.deviceId == buttonId && dimButtonProperty.index == buttonIndex && (isSlider ||(!isSlider && [dimButtonProperty.matchData isEqualToString:buttonMatchdata]))){
+    BOOL selected=NO;
+    NSMutableArray *list=self.isTrigger?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
+    for(SFIButtonSubProperties *dimButtonProperty in list){
+        if(dimButtonProperty.deviceId==indexButton.subProperties.deviceId && dimButtonProperty.index==indexButton.subProperties.index && [SFISubPropertyBuilder compareEntry:isSlider matchData:indexButton.subProperties.matchData eventType:indexButton.subProperties.eventType buttonProperties:dimButtonProperty]){
             buttonClickCount++;
-            NSLog(@" button count %d",buttonClickCount);
+            NSLog(@"INSIDE COMPARE ENTRY %d",buttonClickCount);
+            selected=YES;
         }
+//        [SFISubPropertyBuilder compareEntry:iVal buttonProperties:indexButton.subProperties];
+//        if(dimButtonProperty.deviceId == buttonId && dimButtonProperty.index == buttonIndex && (isSlider ||(!isSlider && [dimButtonProperty.matchData isEqualToString:buttonMatchdata]))){
+//            buttonClickCount++;
+//            NSLog(@" button count %d",buttonClickCount);
+//        }
     }
-    [indexButton setButtoncounter:buttonClickCount isCountImageHiddn:NO];
+    if(selected &&!self.isTrigger)
+     [indexButton setButtoncounter:buttonClickCount isCountImageHiddn:NO];
+    return selected;
 }
 
 -(void)onSwitchButtonClick:(id)sender{
@@ -545,7 +542,6 @@ NSMutableArray * pickerValuesArray2;
     if(!self.isTrigger){
         indexSwitchButton.selected = YES ;
         [self.selectedButtonsPropertiesArrayAction addObject:indexSwitchButton.subProperties];
-        [self setActionButtonCount:indexSwitchButton isSlider:NO matchData:buttonMatchdata buttonIndex:buttonIndex buttonId:buttonId];
         [self.delegate updateTriggerAndActionDelegatePropertie:!self.isTrigger];
     }else{
         [self toggleTriggerIndex:buttonIndex superView:[sender superview] indexButton:indexSwitchButton];
@@ -557,6 +553,7 @@ NSMutableArray * pickerValuesArray2;
         //[self.delegate updateTriggersButtonsPropertiesArray:self.selectedButtonsPropertiesArrayTrigger];
         [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
     }
+    [self setActionButtonCount:indexSwitchButton isSlider:NO matchData:buttonMatchdata buttonIndex:buttonIndex buttonId:buttonId];
     
 }
 
@@ -632,7 +629,6 @@ NSMutableArray * pickerValuesArray2;
             [self showPicker:dimmer];
         
     }
-
 }
 #pragma mark horizontalpicker methods
 - (void)horizontalpicker:(DimmerButton*)dimButton{

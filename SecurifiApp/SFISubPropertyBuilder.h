@@ -11,6 +11,8 @@
 #import "SecurifiToolkit/Rule.h"
 #import "RulesTimeElement.h"
 #import "AddRulesViewController.h"
+#import "IndexValueSupport.h"
+#import "SFIButtonSubProperties.h"
 
 
 @class AddRulesViewController;
@@ -21,8 +23,8 @@
 @end
 
 @interface SFISubPropertyBuilder : NSObject
-+(void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions showCrossBtn:(BOOL)showCross parentController:(AddRulesViewController*)addRuleController;
 @property (nonatomic, weak) id<SFISubPropertyBuilderDelegate> delegate;
++(void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions showCrossBtn:(BOOL)showCross parentController:(AddRulesViewController*)addRuleController;
 
-
++ (BOOL) compareEntry:(BOOL)isSlider matchData:(NSString *)matchData eventType:(NSString *)eventType buttonProperties:(SFIButtonSubProperties *)buttonProperties;
 @end

@@ -14,7 +14,6 @@
 
 @interface SwitchButton : RuleButton
 
-@property(nonatomic)SFIButtonSubProperties* subProperties;
 @property(nonatomic)SFIDevicePropertyType valueType;
 @property(nonatomic) unsigned int count;
 @property(nonatomic) SFIDevice *device;

@@ -51,14 +51,17 @@
     NSMutableArray * triggersArray = [[NSMutableArray alloc]init];
     for (SFIButtonSubProperties *dimButtonProperty in self.rule.triggers) {
         NSDictionary *triggerDeviceProperty = [self createTriggerDeviceObject:dimButtonProperty];
+        NSLog(@"triggerDeviceProperty %@",triggerDeviceProperty);
         [triggersArray addObject:triggerDeviceProperty];
     }
     return triggersArray;
 }
 
 -(NSDictionary *)createTriggerDeviceObject:(SFIButtonSubProperties*)property{
+    NSDictionary *dict;
+    NSLog(@" property device ID %d %@",property.deviceId,property.eventType);
     if(property.deviceId == 1){
-        return @{
+         dict =@{
                  @"Type" : @"EventTrigger",
                  @"ID" : @(1).stringValue,
                  @"EventType" : @"AlmondModeUpdated",
@@ -67,20 +70,25 @@
                  @"Validation":@"true",
                  @"Condition" : @"eq"
                  };
+        NSLog(@"dict -5 %@",dict);
+        return dict;
     }
-    else if(property.deviceId == 0){
-        if([property.eventType isEqualToString:@"ClientJoined"] || [property.eventType isEqualToString:@"ClientLeft"])
-            return @{
-                     @"Type" : @"EventTrigger",
-                     @"ID" : @(property.deviceId).stringValue,
-                     @"EventType" : property.eventType,
-                     @"Value" : property.matchData,
-                     @"Grouping" : @"AND",
-                     @"Validation":@"",
-                     @"Condition" : @"eq"
-                     };
-        else if([property.eventType isEqualToString:@"TimeTrigger"])
-            return @{
+   else if([property.eventType isEqualToString:@"ClientJoined"] || [property.eventType isEqualToString:@"ClientLeft"]){
+        dict = @{
+                 @"Type" : @"EventTrigger",
+                 @"ID" : @(property.deviceId).stringValue,
+                 @"EventType" : property.eventType,
+                 @"Value" : property.matchData,
+                 @"Grouping" : @"AND",
+                 @"Validation":@"",
+                 @"Condition" : @"eq"
+                 };
+        NSLog(@"dict -4 %@",dict);
+        return dict;
+    }
+
+    else if(property.deviceId == 0 &&[property.eventType isEqualToString:@"TimeTrigger"]){
+            dict = @{
                      @"Type" : @"TimeTrigger",
                      @"Range" : @(self.rule.time.range),
                      @"Hour" : @(self.rule.time.hours),
@@ -92,10 +100,12 @@
                      @"Validation": @""
                      
                      };
+            NSLog(@"dict -3 %@",dict);
+            return dict;
     }
     
     else{
-        return @{
+        dict = @{
                  @"Type" : @"DeviceTrigger",
                  @"ID" : @(property.deviceId).stringValue,
                  @"Index" : @(property.index).stringValue,
@@ -104,9 +114,12 @@
                  @"Validation":@"",
                  @"Condition" : @"eq"
                  };
+        NSLog(@"dict -2 %@",dict);
+        return dict;
     }
+    NSLog(@"dict -1 %@",dict);
     
-    return nil;
+    return dict;
 }
 
 -(NSString*)getDayOfWeek:(NSArray*)days{

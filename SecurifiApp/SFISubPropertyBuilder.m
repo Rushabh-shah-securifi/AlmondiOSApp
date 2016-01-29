@@ -64,11 +64,13 @@ int xVal = 20;
         parentController = addRuleController;
     }
     [self clearScrollView];
-//    [self drawImage:@"plus_icon" xVal:0];
-    [self buildEntryList:triggers isTrigger:YES];
-    if(triggers.count > 0)
+
+    if(triggers.count > 0){
+        [self buildEntryList:triggers isTrigger:YES];
         [self drawImage:@"arrow_icon"];
-    [self buildEntryList:actions isTrigger:NO];
+    }
+    if(actions.count>0)
+        [self buildEntryList:actions isTrigger:NO];
     
     if(xVal > scrollView.frame.size.width){
         [scrollView setContentOffset:CGPointMake(xVal-scrollView.frame.size.width + 20, 0) animated:YES];
@@ -83,14 +85,14 @@ int xVal = 20;
     }
 }
 
-+ (void)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId deviceIndexes:(NSArray *)deviceIndexes isTrigger:(BOOL)isTrigger{
++ (BOOL)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId deviceIndexes:(NSArray *)deviceIndexes isTrigger:(BOOL)isTrigger{
     NSLog(@" buttonproperty matchdata %@",buttonProperties.matchData);
     for(SFIDeviceIndex *deviceIndex in deviceIndexes){
         NSLog(@" buttonproperty deviceIndex %d buttonProperties.index %d",deviceIndex.indexID,buttonProperties.index );
         if (deviceIndex.indexID == buttonProperties.index) {
             NSArray *indexValues = deviceIndex.indexValues;
             for(IndexValueSupport *iVal in indexValues){
-                if([self compareEntry:iVal buttonProperties:buttonProperties]){
+                if([self compareEntry:!iVal.valueFormatterDoesNotExist matchData:iVal.matchData eventType:iVal.eventType buttonProperties:buttonProperties]){
                     NSLog(@" ival.iconname %@",iVal.iconName);
                     buttonProperties.positionId=positionId;
                     buttonProperties.iconName=iVal.iconName;
@@ -100,35 +102,38 @@ int xVal = 20;
                         [self drawImage: @"plus_icon" ];
                     [self drawButton: buttonProperties isTrigger:isTrigger];
                     
-                    break;
+                    return true;
                 }
-                
             }
-            break;
+            return false;
         }
-        
     }
+    return false;
 }
-+ (BOOL) compareEntry:(IndexValueSupport *)iVal buttonProperties:(SFIButtonSubProperties *)buttonProperties{
-    NSLog(@" matchdata :%@ , eventType :%@, ival.match data: %@ ,ival,.eventType %@",buttonProperties.matchData,buttonProperties.eventType ,iVal.matchData,iVal.eventType);
-    bool compareValue= !iVal.valueFormatterDoesNotExist || [iVal.matchData isEqualToString:buttonProperties.matchData];
-    bool compareEvents=[iVal.eventType isEqualToString:buttonProperties.eventType];
+
++ (BOOL) compareEntry:(BOOL)isSlider matchData:(NSString *)matchData eventType:(NSString *)eventType buttonProperties:(SFIButtonSubProperties *)buttonProperties{
+    NSLog(@" matchdata :%@ , eventType :%@, ival.match data: %@ ,ival,.eventType %@  , isSlider %d",buttonProperties.matchData,buttonProperties.eventType ,matchData,eventType,isSlider);
+    bool compareValue= isSlider || [matchData isEqualToString:buttonProperties.matchData];
+    bool compareEvents=[eventType isEqualToString:buttonProperties.eventType];
     bool isWifiClient=![buttonProperties.eventType isEqualToString:@"AlmondModeUpdated"];
     return (buttonProperties.eventType==nil && compareValue) ||(compareValue &&
-                                               compareEvents) || (isWifiClient && compareEvents) ;
+                                                                compareEvents) || (isWifiClient && compareEvents) ;
 }
 + (void)buildEntryList:(NSArray *)entries isTrigger:(BOOL)isTrigger{
     int positionId = 0;
     for (SFIButtonSubProperties *buttonProperties in entries) {
-        if(buttonProperties.time != nil)
+        if(buttonProperties.time != nil){
             [self buildTime:buttonProperties isTrigger:isTrigger positionId:positionId];
-        else{
-            [self getDeviceTypeFor:buttonProperties];
+            positionId++;
+        }else{
             NSLog(@"buttn type %d %@",buttonProperties.deviceType,buttonProperties.deviceName);
             NSArray *deviceIndexes=[self getDeviceIndexes:buttonProperties.deviceType];
-            [self buildEntry:buttonProperties positionId:positionId deviceIndexes:deviceIndexes isTrigger:isTrigger];
+            if(deviceIndexes==nil || deviceIndexes.count<=0)
+                continue;
+            if([self buildEntry:buttonProperties positionId:positionId deviceIndexes:deviceIndexes isTrigger:isTrigger])
+                positionId++;
         }
-        positionId++;
+        
     }
 }
 
@@ -136,7 +141,7 @@ int xVal = 20;
     NSLog(@"drawTime");
     if(positionId > 0)
         [self drawImage:@"plus_icon"];
-    DimmerButton *dimbutton=[[DimmerButton alloc]initWithFrame:CGRectMake(xVal, 5, triggerActionDimWidth, triggerActionDimHeight)];
+    DimmerButton *dimbutton=[[DimmerButton alloc]initWithFrame:CGRectMake(xVal, 5, triggerActionDimWidth, triggerActionDimHeight + 10)];
     NSLog(@"position Id :%d",positionId);
     
     
@@ -266,32 +271,5 @@ int xVal = 20;
     xVal += triggerActionBtnWidth;
     [scrollView addSubview:imageButton];
     
-}
-+(void)getDeviceTypeFor:(SFIButtonSubProperties*)buttonSubProperty{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    NSLog(@" eventType :- %@ index :%d device id -: %d",buttonSubProperty.eventType,buttonSubProperty.index,buttonSubProperty.deviceId);
-
-    if((buttonSubProperty.deviceId  == 1) && [buttonSubProperty.eventType isEqualToString:@"AlmondModeUpdated"]){
-        buttonSubProperty.deviceType= SFIDeviceType_BinarySwitch_0;
-        buttonSubProperty.deviceName = @"Mode";
-    }else if(buttonSubProperty.index == 0 && buttonSubProperty.eventType !=nil){
-        for(SFIConnectedDevice *connectedClient in toolkit.wifiClientParser){
-            if(buttonSubProperty.deviceId == connectedClient.deviceID.intValue){
-                buttonSubProperty.deviceType = SFIDeviceType_WIFIClient;
-                buttonSubProperty.deviceName = connectedClient.name;
-                break;
-            }
-        }
-    }else{
-        for(SFIDevice *device in [toolkit deviceList:plus.almondplusMAC]){
-            if(buttonSubProperty.deviceId == device.deviceID){
-                buttonSubProperty.deviceType = device.deviceType;
-                buttonSubProperty.deviceName = device.deviceName;
-            break;
-            }
-        }
-    }
-    NSLog(@" id :%d,name :%@ ",buttonSubProperty.deviceId,buttonSubProperty.deviceName);
 }
 @end

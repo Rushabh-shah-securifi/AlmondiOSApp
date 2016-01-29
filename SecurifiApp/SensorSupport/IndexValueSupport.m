@@ -46,7 +46,7 @@
     return [NSString stringWithFormat:@"%@ %@%@", self.displayText, value, self.valueFormatter.suffix];
 }
 - (BOOL)valueFormatterDoesNotExist{
-    return self.valueFormatter.suffix == nil || self.valueFormatter.suffix.length ==0 ;
+    return  (_valueFormatter == nil);
 }
 
 

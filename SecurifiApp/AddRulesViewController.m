@@ -399,8 +399,8 @@ UITextField *textField;
     NSLog(@"btn save tap");
     //delegate to tableViewController
     [self.delegate updateRule:self.rule atIndexPath:self.indexPathRow];
-    NSLog(@" rules total%@",self.rule);
-    
+    NSLog(@" rules total trigger %ld",(unsigned long)self.rule.triggers);
+    NSLog(@" rules total actions %ld",(unsigned long)self.rule.triggers);
     RulePayload *rulePayload = [RulePayload new];
     rulePayload.rule = self.rule;
     NSDictionary *payload = [rulePayload createRulePayload:randomMobileInternalIndex with:self.isInitialized];

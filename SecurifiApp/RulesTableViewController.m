@@ -252,22 +252,7 @@
 }
 
 #pragma mark custom cell Delegate methods
-- (void)editRule:(CustomCellTableViewCell *)cell{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    //    AddRulesViewController *addRuleController = [[AddRulesViewController alloc]init];
-    NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
-    AddRulesViewController *addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
-    addRuleController.delegate = self;
-    Rule *rule = self.rules[indexPath.row];
-    
-    NSLog(@" edit rule rul ID %@",rule.ID);
-    addRuleController.rule = rule;
-    addRuleController.isInitialized = YES;
-    //need to create textfield param as well.
-    addRuleController.indexPathRow = (int)indexPath.row; //current index path
-    
-    [self.navigationController pushViewController:addRuleController animated:YES];
-}
+
 
 - (void)deleteRule:(CustomCellTableViewCell *)cell{
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
@@ -347,17 +332,44 @@
                            };
     return dict;
 }
-
+- (void)editRule:(CustomCellTableViewCell *)cell{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //    AddRulesViewController *addRuleController = [[AddRulesViewController alloc]init];
+    NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
+    AddRulesViewController *addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
+    addRuleController.delegate = self;
+    Rule *rule = self.rules[indexPath.row];
+    
+    NSLog(@" edit rule rul ID %@",rule.ID);
+    addRuleController.rule = rule;
+    addRuleController.isInitialized = YES;
+    //need to create textfield param as well.
+    addRuleController.indexPathRow = (int)indexPath.row; //current index path
+    
+    [self.navigationController pushViewController:addRuleController animated:YES];
+}
 - (void)activateRule:(CustomCellTableViewCell *)cell{
     if(cell.activeDeactiveSwitch.selected){
-        NSLog(@"activateRule");
+        NSLog(@" deactivateRule");
+
         [cell.activeDeactiveSwitch setOn:YES animated:YES];
     }else{
+        NSLog(@"activateRule");
+
+        //send activate command
+        
         [cell.activeDeactiveSwitch setOn:NO animated:YES];
-        //change bg color to gray
     }
 }
-
+/*
+ {
+ "CommandType":"ValidateRule",
+ "AlmondMAC":"25110100101010",
+ "ID":""1",
+ "Value":"1",
+ "MobileInternalIndex":"111"
+ }
+ */
 #pragma mark asyncRequest methods
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
