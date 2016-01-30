@@ -62,6 +62,6 @@ typedef NSString *(^IndexValueTransformer)(NSString *);
 
 - (NSString *)formatNotificationText:(NSString *)sensorValue;
 - (NSString *)getDisplayText:(NSString *)value;
-- (BOOL)valueFormatterDoesNotExist;
+
 
 @end

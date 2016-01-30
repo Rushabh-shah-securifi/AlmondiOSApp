@@ -60,7 +60,7 @@
 -(NSDictionary *)createTriggerDeviceObject:(SFIButtonSubProperties*)property{
     NSDictionary *dict;
     NSLog(@" property device ID %d %@",property.deviceId,property.eventType);
-    if(property.deviceId == 1){
+    if(property.deviceId == 1 && property.eventType!=nil && [property.eventType isEqualToString:@"AlmondModeUpdated"]){
          dict =@{
                  @"Type" : @"EventTrigger",
                  @"ID" : @(1).stringValue,
@@ -159,7 +159,7 @@
 }
 
 -(NSDictionary *)createActionDeviceObject:(SFIButtonSubProperties*)dimButtonProperty{
-    if(dimButtonProperty.deviceId == 1){
+    if(dimButtonProperty.deviceId == 1 && dimButtonProperty.eventType!=nil && [dimButtonProperty.eventType isEqualToString:@"AlmondModeUpdated"] ){
         NSDictionary *dict = @{
                                @"Type":@"EventResult",
                                @"ID":@(1).stringValue,

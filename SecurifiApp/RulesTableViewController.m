@@ -249,12 +249,14 @@
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     
     NSDictionary *payload = [self getDeleteRulePayload:indexPath.row];
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_UPDATE_REQUEST;
-    cloudCommand.command = [payload JSONString];
-    [self asyncSendCommand:cloudCommand];
-    [self removeRuleAtIndexPathRow:indexPath.row];
-    [self.tableView reloadData];
+    if(payload!=nil){
+        GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+        cloudCommand.commandType = CommandType_UPDATE_REQUEST;
+        cloudCommand.command = [payload JSONString];
+        [self asyncSendCommand:cloudCommand];
+        [self removeRuleAtIndexPathRow:indexPath.row];
+        [self.tableView reloadData];
+    }
 }
 
 -(void)onRuleCommandResponse:(id)sender{ //for delete//need to be work
@@ -307,6 +309,8 @@
     }
     NSMutableDictionary *rulePayload = [[NSMutableDictionary alloc]init];
     Rule *currentRule = self.rules[row];
+    if(currentRule.ID==nil)
+        return nil;
     
     [rulePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
     [rulePayload setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
@@ -329,8 +333,8 @@
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     AddRulesViewController *addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
     addRuleController.delegate = self;
-    Rule *rule = self.rules[indexPath.row];
-    
+    Rule *rule = [self.rules[indexPath.row] createNew];
+   
     NSLog(@" edit rule rul ID %@",rule.ID);
     addRuleController.rule = rule;
     addRuleController.isInitialized = YES;

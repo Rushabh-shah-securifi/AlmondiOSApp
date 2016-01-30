@@ -393,7 +393,7 @@
 
 #pragma mark Notifications
 - (void)onCurrentAlmondChanged:(id)sender {
-    if (scenesArray) {
+    if (scenesArray && scenesArray.count>0) {
         NSLog(@"onCurrentAlmondChanged local %@",scenesArray);
         [scenesArray removeAllObjects];
         NSLog(@"onCurrentAlmondChanged local %d",scenesArray.count);

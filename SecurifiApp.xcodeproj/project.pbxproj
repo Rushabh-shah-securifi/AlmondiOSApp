@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1896B1DC1C5CA48B00C68501 /* SFIDimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60711B69E69D001CCA34 /* SFIDimmerButton.m */; };
 		1C0317251BB28E75002E0405 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C0317241BB28E75002E0405 /* libz.1.dylib */; };
 		1C0317271BB28E8D002E0405 /* libSystem.B.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C0317261BB28E8D002E0405 /* libSystem.B.dylib */; };
 		1C0317281BB28EA1002E0405 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CA80E491BAFA4A9002EB836 /* libsqlite3.dylib */; };
@@ -2488,6 +2489,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1896B1DC1C5CA48B00C68501 /* SFIDimmerButton.m in Sources */,
 				1C2F60AA1B69E69D001CCA34 /* SKSTableViewCellIndicator.m in Sources */,
 				CE5EDF8B1C461FEE00A2829B /* RulePayload.m in Sources */,
 				1C7E7DAB1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,

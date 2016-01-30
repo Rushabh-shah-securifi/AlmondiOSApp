@@ -64,10 +64,12 @@ int segmentType;
 -(void)onClickSegmentControl:(UISegmentedControl *)segment{
     [self clearSegmentDetailView];
     segmentType = (int)segment.selectedSegmentIndex;
-    switch (segment.selectedSegmentIndex) {
+    self.ruleTime.segmentType=segmentType;
+    switch (segmentType) {
         case 0:{
             [self addAnyTimeInfoLable];
             self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.frame.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight);
+            [self.delegate AddOrUpdateTime];
         }
             break;
         case 1:{
@@ -77,6 +79,7 @@ int segmentType;
             [self setLableText];
             self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.frame.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight);
             self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.bounds.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight);
+            [self.delegate AddOrUpdateTime];
         }
             break;
         case 2:{
@@ -84,6 +87,7 @@ int segmentType;
             [self setTimeRange];
             [self addDayView];
             [self setLableText];
+            [self.delegate AddOrUpdateTime];
         }
             break;
         default:
@@ -194,7 +198,7 @@ int segmentType;
 - (void)onBetweenDatePickerValueChanged:(id)sender{
     NSDate *timeFrom = DatePickerFrom.date;
     NSDate *timeto = DatePickerTo.date;
-    
+    NSLog(@"timeto: %ld", timeto);
     NSTimeInterval secondsBetween = [timeto timeIntervalSinceDate:timeFrom];
     self.ruleTime.dateFrom = [timeFrom dateByAddingTimeInterval:0];
     self.ruleTime.dateTo = [timeto dateByAddingTimeInterval:0];

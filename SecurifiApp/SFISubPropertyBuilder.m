@@ -15,6 +15,7 @@
 #import "IndexValueSupport.h"
 #import "SFIButtonSubProperties.h"
 #import "ValueFormatter.h"
+#import "SecurifiToolkit.h"
 
 #import "DeviceListAndValues.h"
 #import "SecurifiToolkit/SecurifiTypes.h"
@@ -22,15 +23,12 @@
 #import "RulesConstants.h"
 #import "Colours.h"
 
-//#import "SFITriggersActionsSwitchButton.h"
-//#import "SFITriggersActionsDimmerButton.h"
 #import "SwitchButton.h"
 #import "DimmerButton.h"
 
 #import "PreDelayRuleButton.h"
 
 #import "SFIColors.h"
-//#import "AddActions.h"
 #import "AddRulesViewController.h"
 #import "SecurifiToolkit/Parser.h"
 
@@ -49,11 +47,16 @@ bool showCrossBtn;
 DelayPicker *delayPicker;
 UIScrollView *scrollView;
 AddRulesViewController *parentController;
+NSArray *deviceArray;
+SecurifiToolkit *toolkit;
+
 int xVal = 20;
 
-
-
 + (void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions showCrossBtn:(BOOL)showCross parentController:(AddRulesViewController*)addRuleController{
+    
+    toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    deviceArray=[toolkit deviceList:plus.almondplusMAC];
     
     xVal = 20;
     showCrossBtn = showCross;
@@ -90,7 +93,8 @@ int xVal = 20;
         if (deviceIndex.indexID == buttonProperties.index) {
             NSArray *indexValues = deviceIndex.indexValues;
             for(IndexValueSupport *iVal in indexValues){
-                if([self compareEntry:!iVal.valueFormatterDoesNotExist matchData:iVal.matchData eventType:iVal.eventType buttonProperties:buttonProperties]){
+                BOOL isDimButton=iVal.layoutType!=nil && [iVal.layoutType isEqualToString:@"dimButton"];
+                if([self compareEntry:isDimButton matchData:iVal.matchData eventType:iVal.eventType buttonProperties:buttonProperties]){
                     NSLog(@" ival.iconname %@",iVal.iconName);
                     buttonProperties.positionId=positionId;
                     buttonProperties.iconName=iVal.iconName;
@@ -120,12 +124,12 @@ int xVal = 20;
 + (void)buildEntryList:(NSArray *)entries isTrigger:(BOOL)isTrigger{
     int positionId = 0;
     for (SFIButtonSubProperties *buttonProperties in entries) {
-        if(buttonProperties.time != nil){
+        if(buttonProperties.time != nil && buttonProperties.time.segmentType!=0){
             [self buildTime:buttonProperties isTrigger:isTrigger positionId:positionId];
             positionId++;
         }else{
             NSLog(@"buttn type %d %@",buttonProperties.deviceType,buttonProperties.deviceName);
-            NSArray *deviceIndexes=[self getDeviceIndexes:buttonProperties.deviceType];
+            NSArray *deviceIndexes=[self getDeviceIndexes:buttonProperties];
             if(deviceIndexes==nil || deviceIndexes.count<=0)
                 continue;
             if([self buildEntry:buttonProperties positionId:positionId deviceIndexes:deviceIndexes isTrigger:isTrigger])
@@ -167,9 +171,10 @@ int xVal = 20;
 
 }
 
-+ (NSArray*)getDeviceIndexes:(SFIDeviceType)deviceType{
++ (NSArray*)getDeviceIndexes:(SFIButtonSubProperties *)properties{
+    [self getDeviceTypeFor:properties];
     SensorIndexSupport *Index=[[SensorIndexSupport alloc]init];
-    return [Index getIndexesFor:deviceType];
+    return [Index getIndexesFor:properties.deviceType];
 }
 
 + (void)drawButton:(SFIButtonSubProperties*)subProperties isTrigger:(BOOL)isTrigger{
@@ -259,7 +264,30 @@ int xVal = 20;
     UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
     return [color.hexString uppercaseString];
 };
-
++(void)getDeviceTypeFor:(SFIButtonSubProperties*)buttonSubProperty{
+    
+    NSLog(@" eventType :- %@ index :%d device id -: %d",buttonSubProperty.eventType,buttonSubProperty.index,buttonSubProperty.deviceId);
+    buttonSubProperty.deviceType = SFIDeviceType_UnknownDevice_0;
+    if((buttonSubProperty.deviceId  == 1) && [buttonSubProperty.eventType isEqualToString:@"AlmondModeUpdated"]){
+        buttonSubProperty.deviceType= SFIDeviceType_BinarySwitch_0;
+        buttonSubProperty.deviceName = @"Mode";
+    }else if(buttonSubProperty.index == 0 && buttonSubProperty.eventType !=nil && toolkit.wifiClientParser!=nil){
+        for(SFIConnectedDevice *connectedClient in toolkit.wifiClientParser){
+            if(buttonSubProperty.deviceId == connectedClient.deviceID.intValue){
+                buttonSubProperty.deviceType = SFIDeviceType_WIFIClient;
+                buttonSubProperty.deviceName = connectedClient.name;
+            }
+        }
+    }else{
+        for(SFIDevice *device in deviceArray){
+            if(buttonSubProperty.deviceId == device.deviceID){
+                buttonSubProperty.deviceType = device.deviceType;
+                buttonSubProperty.deviceName = device.deviceName;
+            }
+        }
+    }
+    NSLog(@" id :%d,name :%@ ",buttonSubProperty.deviceId,buttonSubProperty.deviceName);
+}
 
 + (void)drawImage:(NSString *)iconName {
     NSLog(@"arrow button");

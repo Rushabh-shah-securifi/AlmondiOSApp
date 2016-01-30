@@ -41,13 +41,11 @@
     return NO;
 }
 - (NSString *)getDisplayText:(NSString *)value {
-    if([self valueFormatterDoesNotExist])
-        return self.displayText;
-    return [NSString stringWithFormat:@"%@ %@%@", self.displayText, value, self.valueFormatter.suffix];
+    if(self.layoutType!=nil && [self.layoutType isEqualToString:@"dimButton"])
+        return [NSString stringWithFormat:@"%@ %@%@", self.displayText, value, self.valueFormatter.suffix];
+    return self.displayText;
 }
-- (BOOL)valueFormatterDoesNotExist{
-    return  (_valueFormatter == nil);
-}
+
 
 
 - (NSString *)formatNotificationText:(NSString *)sensorValue {
