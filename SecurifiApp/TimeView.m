@@ -16,7 +16,7 @@
 
 @implementation TimeView
 int timeSegmentHeight = 30;
-int datePickerHeight = 90;
+int datePickerHeight = 162; //date picker height does not go below 162
 int datePickerWidth = 140;
 int dateDividerWidth = 20;
 int dayViewHeight = 50;
@@ -28,6 +28,7 @@ UILabel *infoLable;
 UIDatePicker* DatePickerFrom;
 UIDatePicker* DatePickerTo;
 UIDatePicker* preciselyDatePicker;
+UISegmentedControl *timeSegmentControl;
 int segmentType;
 
 -(id)init{
@@ -39,17 +40,15 @@ int segmentType;
 }
 
 -(void)addTimeView{
+    [self initializeSegmentDetailView];
     [self addTimeSegment];
-    [self initializeSetup];
-    [self addAnyTimeInfoLable];
+    [self onClickSegmentControl:timeSegmentControl];
 }
 
--(void)setDatePickerWidthAndHeight{
-}
 -(void)addTimeSegment{
     UIScrollView *scrollView = self.parentViewController.deviceIndexButtonScrollView;
     NSArray *segmentItems = [NSArray arrayWithObjects:@"ANYTIME", @"PRECISELY AT", @"BETWEEN", nil];
-    UISegmentedControl *timeSegmentControl = [[UISegmentedControl alloc]initWithItems:segmentItems];
+    timeSegmentControl = [[UISegmentedControl alloc]initWithItems:segmentItems];
     
     timeSegmentControl.frame = CGRectMake(0, 20, scrollView.frame.size.width-40, timeSegmentHeight);
     timeSegmentControl.selectedSegmentIndex = self.ruleTime.segmentType;
@@ -68,7 +67,6 @@ int segmentType;
     switch (segmentType) {
         case 0:{
             [self addAnyTimeInfoLable];
-            self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.frame.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight);
             [self.delegate AddOrUpdateTime];
         }
             break;
@@ -77,8 +75,6 @@ int segmentType;
             [self setTime];
             [self addDayView];
             [self setLableText];
-            self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.frame.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight);
-            self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.bounds.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight);
             [self.delegate AddOrUpdateTime];
         }
             break;
@@ -93,6 +89,8 @@ int segmentType;
         default:
             break;
     }
+    if(segmentType == 1 || segmentType == 2)
+        self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.frame.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight + 70);
 }
 
 -(void)addAnyTimeInfoLable{
@@ -102,6 +100,7 @@ int segmentType;
 
 -(void)addInfoLabelWithFrame:(CGRect)frame text:(NSString*)text{
     infoLable.frame = frame;
+//    infoLable.backgroundColor = [UIColor darkGrayColor];
     [self setupInfoLable:infoLable text:text];
     [self.segmentDetailView addSubview:infoLable];
 }
@@ -119,10 +118,20 @@ int segmentType;
 -(void)addPreciselyDatePicker{
     NSLog(@"addPreciselyDatePicker");
     preciselyDatePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 0, datePickerWidth, datePickerHeight)];
+    [self setFrame:preciselyDatePicker];
+        NSLog(@"precisely datepicker width, height: (%f, %f)", preciselyDatePicker.frame.size.width, preciselyDatePicker.frame.size.height);
+//    preciselyDatePicker.backgroundColor = [UIColor yellowColor];
     [self setupDatePicker:preciselyDatePicker];
     preciselyDatePicker.center = CGPointMake(CGRectGetMidX(self.segmentDetailView.bounds), preciselyDatePicker.center.y);
     [preciselyDatePicker addTarget:self action:@selector(onPreciselyDatePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.segmentDetailView addSubview:preciselyDatePicker];
+}
+
+-(void)setFrame:(UIDatePicker*)datePicker{
+    CGRect frame = datePicker.frame;
+    frame.size.width = datePickerWidth;
+    frame.size.height = datePickerHeight;
+    [datePicker setFrame: frame];
 }
 
 -(void)setupDatePicker:(UIDatePicker*)datePicker{
@@ -147,23 +156,7 @@ int segmentType;
     self.ruleTime.dayOfWeek =  self.ruleTime.dayOfWeek; //@([comp weekday]-1).stringValue; // 0 - 6
     self.ruleTime.monthOfYear = @([comp month]).stringValue; // 1 - 12
     self.ruleTime.isPresent = YES;
-    
     NSLog(@"dayofweeek: %@ - hours: %ld - mins: %ld", self.ruleTime.dayOfWeek, (long)self.ruleTime.hours, (long)self.ruleTime.mins);
-}
-
-//use it while sending
--(NSString*)getDayNumbersString{
-    NSMutableArray *earlierSelection = self.ruleTime.dayOfWeek;
-    NSMutableString *days = [NSMutableString new];
-    int i = 0;
-    for (NSString* tag in earlierSelection) {
-        if(i == 0)
-            [days appendString:tag];
-        else
-            [days appendString:[NSString stringWithFormat:@",%@", tag]];
-    }
-    i++;
-    return [NSString stringWithString:days];
 }
 
 -(void)addBetweenDatePicker{
@@ -176,10 +169,12 @@ int segmentType;
     UIView *datePickerSubView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,(datePickerWidth*2 + dateDividerWidth) , datePickerHeight)];
     
     DatePickerFrom= [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 0, datePickerWidth, datePickerHeight)];
+    [self setFrame:DatePickerFrom];
     [self setupDatePicker:DatePickerFrom];
     [DatePickerFrom addTarget:self action:@selector(onBetweenDatePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
     
     DatePickerTo = [[UIDatePicker alloc]initWithFrame:CGRectMake(datePickerWidth +dateDividerWidth, 0, datePickerWidth, datePickerHeight)];
+    [self setFrame:DatePickerTo];
     [self setupDatePicker:DatePickerTo];
     [DatePickerTo addTarget:self action:@selector(onBetweenDatePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
     
@@ -198,7 +193,7 @@ int segmentType;
 - (void)onBetweenDatePickerValueChanged:(id)sender{
     NSDate *timeFrom = DatePickerFrom.date;
     NSDate *timeto = DatePickerTo.date;
-    NSLog(@"timeto: %ld", timeto);
+    NSLog(@"timeto: %@", timeto);
     NSTimeInterval secondsBetween = [timeto timeIntervalSinceDate:timeFrom];
     self.ruleTime.dateFrom = [timeFrom dateByAddingTimeInterval:0];
     self.ruleTime.dateTo = [timeto dateByAddingTimeInterval:0];
@@ -213,12 +208,13 @@ int segmentType;
 
 -(void)addDayView{
     int xVal = 4;
-    UIView *dayView = [[UIView alloc]initWithFrame:CGRectMake(0, datePickerHeight + viewSpacing, self.segmentDetailView.frame.size.width, dayViewHeight)];
+    UIView *dayView = [[UIView alloc]initWithFrame:CGRectMake(0, datePickerHeight, self.segmentDetailView.frame.size.width, dayViewHeight)];
     double dayButtonWidth = self.segmentDetailView.frame.size.width/8.5;
     int tag = 0;
     NSArray* dayArray = [[NSArray alloc]initWithObjects:@"Su",@"Mo",@"Tu",@"We",@"Th",@"Fr",@"Sa", nil];
     for(NSString* day in dayArray){
         RulesDeviceNameButton *dayButton = [[RulesDeviceNameButton alloc] initWithFrame:CGRectMake(xVal, 0, dayButtonWidth, dayButtonWidth)];
+        dayButton.center = CGPointMake(dayButton.center.x, dayView.bounds.size.height/2);
         [self setDayButtonProperties:dayButton withRadius:dayButtonWidth];
         [dayButton setTitle:day forState:UIControlStateNormal];
         dayButton.tag = tag;
@@ -229,6 +225,7 @@ int segmentType;
         tag++;
     }
     dayView.center = CGPointMake(CGRectGetMidX(self.segmentDetailView.bounds), dayView.center.y);
+//    dayView.backgroundColor = [UIColor orangeColor];
     [self.segmentDetailView addSubview:dayView];
 }
 
@@ -301,7 +298,7 @@ int segmentType;
 }
 
 -(void)setPreciseAndBetweenInfoLable:(NSString*)text{
-    CGRect frame = CGRectMake(0, datePickerHeight + dayViewHeight + viewSpacing * 2, self.segmentDetailView.frame.size.width-40, infoLableHeight);
+    CGRect frame = CGRectMake(0, datePickerHeight + dayViewHeight, self.segmentDetailView.frame.size.width-40, infoLableHeight);
     [self addInfoLabelWithFrame:frame text:text];
     infoLable.center = CGPointMake(CGRectGetMidX(self.segmentDetailView.bounds), infoLable.center.y);
 }
@@ -339,9 +336,12 @@ int segmentType;
     }
 }
 
--(void)initializeSetup{
+-(void)initializeSegmentDetailView{
     UIScrollView *scrollView = self.parentViewController.deviceIndexButtonScrollView;
-    self.segmentDetailView = [[UIView alloc]initWithFrame:CGRectMake(0, timeSegmentHeight + segmentDetailTopSpacing, scrollView.frame.size.width, datePickerHeight + dayViewHeight + infoLableHeight + viewSpacing * 2)];
+    self.segmentDetailView = [[UIView alloc]initWithFrame:CGRectMake(0,
+                                                                     timeSegmentHeight + segmentDetailTopSpacing,
+                                                                     scrollView.frame.size.width,
+                                                                     datePickerHeight + dayViewHeight + infoLableHeight + viewSpacing * 2)];
     [scrollView addSubview:self.segmentDetailView];
 }
 
