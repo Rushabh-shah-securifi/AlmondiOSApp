@@ -225,7 +225,7 @@ NSMutableArray * pickerValuesArray2;
     int numberOfCells = [self maxCellId:deviceIndexes];
     
     CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
-                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING);
+                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING + 50); // 50 temp fix
     
     [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
     
