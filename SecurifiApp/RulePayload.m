@@ -49,19 +49,23 @@
 
 -(NSMutableArray *)createTriggerPayload{
     NSMutableArray * triggersArray = [[NSMutableArray alloc]init];
+    NSLog(@" property device ID %lu ",(unsigned long)self.rule.triggers.count);
     for (SFIButtonSubProperties *dimButtonProperty in self.rule.triggers) {
         NSDictionary *triggerDeviceProperty = [self createTriggerDeviceObject:dimButtonProperty];
-        NSLog(@"triggerDeviceProperty %@",triggerDeviceProperty);
-        [triggersArray addObject:triggerDeviceProperty];
+        NSLog(@" property device IDddfdfdffd %@",triggerDeviceProperty);
+        if(triggerDeviceProperty!=nil)
+         [triggersArray addObject:triggerDeviceProperty];
     }
     return triggersArray;
 }
 
 -(NSDictionary *)createTriggerDeviceObject:(SFIButtonSubProperties*)property{
-    NSDictionary *dict;
-    NSLog(@" property device ID %d %@",property.deviceId,property.eventType);
-    if(property.deviceId == 1 && property.eventType!=nil && [property.eventType isEqualToString:@"AlmondModeUpdated"]){
-         dict =@{
+    property.eventType=property.eventType==nil?@"":property.eventType;
+    NSLog(@" property device 5 %@",property.eventType);
+    NSLog(@" property device 5 %@",property.matchData);
+
+    if([property.eventType isEqualToString:@"AlmondModeUpdated"])
+         return @{
                  @"Type" : @"EventTrigger",
                  @"ID" : @(1).stringValue,
                  @"EventType" : @"AlmondModeUpdated",
@@ -70,11 +74,10 @@
                  @"Validation":@"true",
                  @"Condition" : @"eq"
                  };
-        NSLog(@"dict -5 %@",dict);
-        return dict;
-    }
-   else if([property.eventType isEqualToString:@"ClientJoined"] || [property.eventType isEqualToString:@"ClientLeft"]){
-        dict = @{
+       
+    
+   else if([property.eventType isEqualToString:@"ClientJoined"] || [property.eventType isEqualToString:@"ClientLeft"])
+        return @{
                  @"Type" : @"EventTrigger",
                  @"ID" : @(property.deviceId).stringValue,
                  @"EventType" : property.eventType,
@@ -83,29 +86,30 @@
                  @"Validation":@"",
                  @"Condition" : @"eq"
                  };
-        NSLog(@"dict -4 %@",dict);
-        return dict;
-    }
+       
+    
 
-    else if(property.deviceId == 0 &&[property.eventType isEqualToString:@"TimeTrigger"]){
-            dict = @{
+    else if([property.eventType isEqualToString:@"TimeTrigger"]){
+        if(property.time.segmentType==0)
+            return nil;
+        else
+            return @{
                      @"Type" : @"TimeTrigger",
-                     @"Range" : @(self.rule.time.range),
-                     @"Hour" : @(self.rule.time.hours),
-                     @"Minutes" : @(self.rule.time.mins),
+                     @"Range" : @(property.time.range),
+                     @"Hour" : @(property.time.hours),
+                     @"Minutes" : @(property.time.mins),
                      @"DayOfMonth" : @"*",
-                     @"DayOfWeek" : [self getDayOfWeek:self.rule.time.dayOfWeek],
+                     @"DayOfWeek" : [self getDayOfWeek:property.time.dayOfWeek],
                      @"MonthOfYear" : @"*",
                      @"Grouping" : @"AND",
                      @"Validation": @""
                      
                      };
-            NSLog(@"dict -3 %@",dict);
-            return dict;
+        
     }
     
-    else{
-        dict = @{
+    else
+        return @{
                  @"Type" : @"DeviceTrigger",
                  @"ID" : @(property.deviceId).stringValue,
                  @"Index" : @(property.index).stringValue,
@@ -114,12 +118,7 @@
                  @"Validation":@"",
                  @"Condition" : @"eq"
                  };
-        NSLog(@"dict -2 %@",dict);
-        return dict;
-    }
-    NSLog(@"dict -1 %@",dict);
     
-    return dict;
 }
 
 -(NSString*)getDayOfWeek:(NSArray*)days{

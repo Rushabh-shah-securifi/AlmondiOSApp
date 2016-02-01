@@ -86,23 +86,32 @@ int xVal = 20;
     }
 }
 
++ (void)setIconAndText:(int)positionId buttonProperties:(SFIButtonSubProperties *)buttonProperties icon:(NSString *)icon text:(NSString*)text isTrigger:(BOOL)isTrigger {
+    buttonProperties.positionId=positionId;
+    buttonProperties.iconName=icon;
+    buttonProperties.displayText=text;
+    
+    if (positionId > 0)
+        [self drawImage: @"plus_icon" ];
+    [self drawButton: buttonProperties isTrigger:isTrigger];
+}
+
 + (BOOL)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId deviceIndexes:(NSArray *)deviceIndexes isTrigger:(BOOL)isTrigger{
     NSLog(@" buttonproperty matchdata %@",buttonProperties.matchData);
     for(SFIDeviceIndex *deviceIndex in deviceIndexes){
         NSLog(@" buttonproperty deviceIndex %d buttonProperties.index %d",deviceIndex.indexID,buttonProperties.index );
         if (deviceIndex.indexID == buttonProperties.index) {
+            if([buttonProperties.matchData isEqualToString:@"toggle"])
+            {
+                [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"toggle_icon.png" text:@"Toggle" isTrigger:isTrigger];
+                return true;
+            }
             NSArray *indexValues = deviceIndex.indexValues;
             for(IndexValueSupport *iVal in indexValues){
                 BOOL isDimButton=iVal.layoutType!=nil && [iVal.layoutType isEqualToString:@"dimButton"];
                 if([self compareEntry:isDimButton matchData:iVal.matchData eventType:iVal.eventType buttonProperties:buttonProperties]){
                     NSLog(@" ival.iconname %@",iVal.iconName);
-                    buttonProperties.positionId=positionId;
-                    buttonProperties.iconName=iVal.iconName;
-                    buttonProperties.displayText=[iVal getDisplayText:buttonProperties.matchData];
-                    
-                    if (positionId > 0)
-                        [self drawImage: @"plus_icon" ];
-                    [self drawButton: buttonProperties isTrigger:isTrigger];
+                    [self setIconAndText:positionId buttonProperties:buttonProperties icon:iVal.iconName text:[iVal getDisplayText:buttonProperties.matchData] isTrigger:isTrigger];
                     
                     return true;
                 }
@@ -152,12 +161,10 @@ int xVal = 20;
     [dateFormat setDateFormat:@"hh:mm aa"];
     int segmentType=timesubProperties.time.segmentType;
     if(segmentType==1){
-               [dimbutton setupValues:[dateFormat stringFromDate:timesubProperties.time.date] Title:@"Time" displayText:@"days" suffix:@""];
+               [dimbutton setupValues:[dateFormat stringFromDate:timesubProperties.time.dateFrom] Title:@"Time" displayText:@"days" suffix:@""];
 
     }
     else{
-        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-        [dateFormat setDateFormat:@"hh:mm aa"];
         NSString *time = [NSString stringWithFormat:@"%@\n%@", [dateFormat stringFromDate:timesubProperties.time.dateFrom], [dateFormat stringFromDate:timesubProperties.time.dateTo]];
         NSLog(@"time interval: %@", time);
         [dimbutton setupValues:time Title:@"Time Interval" displayText:@"days" suffix:@""];

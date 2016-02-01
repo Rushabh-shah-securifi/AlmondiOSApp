@@ -140,8 +140,8 @@ int segmentType;
 - (void)onPreciselyDatePickerValueChanged:(id)sender{
     NSDate *date = preciselyDatePicker.date;
     self.ruleTime.segmentType = Precisely1;
-    self.ruleTime.date = [date dateByAddingTimeInterval:0];
     [self storeTimeParams:date];
+    self.ruleTime.dateFrom = [date dateByAddingTimeInterval:0];
     [self setLableText];
     [self.delegate AddOrUpdateTime];
 }

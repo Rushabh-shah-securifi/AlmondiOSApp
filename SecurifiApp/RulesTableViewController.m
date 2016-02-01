@@ -230,18 +230,6 @@ CGPoint tablePoint;
 }
 
 
-#pragma mark addrulesviewcontroller delegate methods
-- (void)updateRule:(Rule*)rule atIndexPath:(int)indexPathRow{
-    if (indexPathRow < (int)[self.rules count]){
-        [self.rules replaceObjectAtIndex:indexPathRow withObject:rule];
-    }
-    else{
-        [self.rules addObject:rule];
-    }
-    [self.tableView reloadData];
-    self.tableView.contentOffset = tablePoint;
-}
-
 #pragma mark custom cell Delegate methods
 
 
@@ -254,8 +242,6 @@ CGPoint tablePoint;
         cloudCommand.commandType = CommandType_UPDATE_REQUEST;
         cloudCommand.command = [payload JSONString];
         [self asyncSendCommand:cloudCommand];
-        [self removeRuleAtIndexPathRow:indexPath.row];
-        [self.tableView reloadData];
     }
 }
 

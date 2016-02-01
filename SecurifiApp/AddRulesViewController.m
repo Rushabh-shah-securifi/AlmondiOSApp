@@ -394,7 +394,7 @@ UITextField *textField;
 -(void)sendRuleCommand{
     NSLog(@"btn save tap");
     //delegate to tableViewController
-    [self.delegate updateRule:self.rule atIndexPath:self.indexPathRow];
+
     NSLog(@" rules total trigger %ld",(unsigned long)self.rule.triggers);
     NSLog(@" rules total actions %ld",(unsigned long)self.rule.triggers);
     RulePayload *rulePayload = [RulePayload new];

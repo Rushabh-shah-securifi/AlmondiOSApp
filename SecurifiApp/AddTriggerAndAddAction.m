@@ -288,8 +288,9 @@ NSMutableArray * pickerValuesArray2;
     }
 }
 -(RulesTimeElement *)getRuleTime{
+    NSLog(@"HOW MANY TIMES");
     for(SFIButtonSubProperties *subProperties in self.selectedButtonsPropertiesArrayTrigger){
-        if(subProperties.time != nil){
+        if([subProperties.eventType isEqualToString:@"TimeTrigger"]){
             return subProperties.time;
         }
     }
