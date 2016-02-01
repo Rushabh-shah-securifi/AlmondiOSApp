@@ -41,7 +41,7 @@
     self.topLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width,textHeight)];
     //    self.bottomLabel.font = self.titleLabel.font;
     self.topLabel.text = title;
-    [self.topLabel setFont: [self.topLabel.font fontWithSize: fontSize]];
+    self.topLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:10];
     self.topLabel.numberOfLines=0;
     self.topLabel.textAlignment = NSTextAlignmentCenter;
     self.topLabel.textColor = [SFIColors darkGrayColor];
@@ -82,7 +82,7 @@
     //label
     self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(x, y,width,height)];
     self.bottomLabel.text = bottomText;
-    [self.bottomLabel setFont: [self.bottomLabel.font fontWithSize: fontSize]];
+    self.bottomLabel.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:fontSize];
     self.bottomLabel.numberOfLines=0;
     self.bottomLabel.textColor = self.currentTitleColor;
     self.bottomLabel.textAlignment = NSTextAlignmentCenter;

@@ -44,6 +44,8 @@ V8HorizontalPickerView *picker;
 
 //SFIRul *switchButtonClick;
 bool isPresentHozPicker;
+int minValue;
+int maxValue;
 NSString *newPickerValue;
 int buttonClickCount;
 NSMutableArray * pickerValuesArray2;
@@ -535,6 +537,8 @@ NSMutableArray * pickerValuesArray2;
 -(void)showPicker:(DimmerButton* )dimmer{
     [self removePickerFromView];
     dimmer.pickerVisibility=YES;
+    minValue=dimmer.minValue;
+    maxValue=dimmer.maxValue;
     isPresentHozPicker=YES;
     pickerValuesArray2 = [NSMutableArray new];
     for (int i=(int)dimmer.minValue; i<=(int)dimmer.maxValue; i++) {
@@ -656,6 +660,8 @@ NSMutableArray * pickerValuesArray2;
 }
 
 - (NSString *)horizontalPickerView:(V8HorizontalPickerView *)picker titleForElementAtIndex:(NSInteger)index {
+    index = index + minValue;
+    //return [NSString stringWithFormat:@"%ld\u00B0", (long) index];
     return @(index).stringValue;
 }
 

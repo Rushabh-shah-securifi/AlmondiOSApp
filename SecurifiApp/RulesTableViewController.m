@@ -52,6 +52,16 @@ CGPoint tablePoint;
     
     [self getRuleList];
     [self addAddRuleButton];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    self.currentAlmond = [toolkit currentAlmond];
+    if (self.currentAlmond == nil) {
+        [self markTitle: NSLocalizedString(@"rules.title.Get Started", @"Get Started")];
+        [self markAlmondMac:NO_ALMOND];
+    }
+    else {
+        [self markAlmondMac:self.currentAlmond.almondplusMAC];
+        [self markTitle: self.currentAlmond.almondplusName];
+    }
     randomMobileInternalIndex = arc4random() % 10000;
 }
 
@@ -73,23 +83,22 @@ CGPoint tablePoint;
     // Dispose of any resources that can be recreated.
 }
 
--(void) setUpNavigationBar{
-    self.navigationController.navigationBar.translucent = YES;
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"DeleteALL" style:UIBarButtonItemStylePlain target:self action:@selector(onDeleteALL)];
-    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
-    //UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
-    //self.navigationItem.leftBarButtonItem = leftBarButtonItem;
-    
-    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName : UIColorFromRGB(0x02a8f3),NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Roman" size:17.5f]} forState:UIControlStateNormal];
-    self.navigationItem.title = @"Rules Builder";
-}
-
-
 -(void)initializeNotifications{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onRuleUpdateCommandResponse:) name:SAVED_TABLEVIEW_RULE_COMMAND object:nil];
+    [center addObserver:self
+               selector:@selector(onCurrentAlmondChanged:)
+                   name:kSFIDidChangeCurrentAlmond
+                 object:nil];
 }
 
+- (void)onCurrentAlmondChanged:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self getRuleList];
+        
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    });
+}
 -(void)initializeTableViewAttributes{
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -271,17 +280,6 @@ CGPoint tablePoint;
         //self.originalSceneInfo = [self.sceneInfo copy];
         //to do copy rules array and reload here
     }
-}
-
--(void)onDeleteALL{
-    NSDictionary *payload = [self getdeleteAllPayload];
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand.commandType = CommandType_RULE_COMMAND_DELETEALL;
-    cloudCommand.command = [payload JSONString];
-    [self asyncSendCommand:cloudCommand];
-    [self.rules removeAllObjects];
-    [self.tableView reloadData];
-    
 }
 
 -(NSDictionary *)getdeleteAllPayload{

@@ -439,7 +439,6 @@
                 s1.matchData = @"Heating";
                 s1.displayText=@"";
                 s1.iconName = @"n_07_thermostat";
-                s1.layoutType=@"dimButton";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is ", @" is ");
@@ -453,7 +452,7 @@
                 s1.displayText=@"COOL";
                 s1.iconName = @"n_07_thermostat";
                 s1.layoutType=@"dimButton";
-                s1.displayText = @"COOLING\nTEMP.";
+                s1.displayText = @"COOL-";
                 s1.minValue = 35;
                 s1.maxValue = 95;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
@@ -467,7 +466,7 @@
                 s1.matchData = @"70";
                 s1.layoutType=@"dimButton";
                 s1.iconName = @"n_07_thermostat";
-                s1.displayText = @"HEATING\nTEMP.";
+                s1.displayText = @"HEAT-";
                 s1.minValue = 35;
                 s1.maxValue = 95;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
@@ -1243,7 +1242,7 @@
                 s1.layoutType=@"dimButton";
                 s1.iconName = @"n_07_thermostat";
                 s1.displayText=@"TEMPERATURE";
-                s1.minValue = 14;
+                s1.minValue = 0;
                 s1.maxValue = 122;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature changed to ", @"'s temperature changed to ");
@@ -2098,8 +2097,8 @@
                 s1.displayText = @"SET THERMOSTAT";
                 s1.layoutType = @"dimButton";
                 s1.iconName = @"target_temperature";
-                s1.minValue = 0;
-                s1.maxValue = 9999;
+                s1.minValue = 40;
+                s1.maxValue = 104;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature set point changed to ", @"'s temperature set point changed to ");
                 s1.valueFormatter.suffix = @"\u00B0F";
@@ -2112,8 +2111,8 @@
                 s1.displayText=@"TEMPERATURE";
                 s1.iconName = @"n_07_thermostat";
                 s1.layoutType=@"dimButton";
-                s1.minValue = 0;
-                s1.maxValue = 100;
+                s1.minValue = 32;
+                s1.maxValue = 122;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature changed to ", @"'s temperature changed to ");
                 s1.valueFormatter.suffix = NSLocalizedString(@"\u00B0F", @"\u00B0F");
@@ -2266,7 +2265,7 @@
                 s1.layoutType=@"dimButton";
                 s1.iconName = @"n_07_thermostat";
                 s1.minValue = 0;
-                s1.maxValue = 100;
+                s1.maxValue = 104;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature changed to ", @"'s temperature changed to ");
                 s1.valueFormatter.suffix = NSLocalizedString(@"\u00B0F", @"\u00B0F");
@@ -2417,6 +2416,8 @@
                 s1.displayText=@"TEMPERATURE";
                 s1.matchData = @"70";
                 s1.iconName = @"27_thermostat";
+                s1.minValue=32;
+                s1.maxValue=104;
                 s1.layoutType=@"dimButton";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature changed to ", @"'s temperature changed to ");
