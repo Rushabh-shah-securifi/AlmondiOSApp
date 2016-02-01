@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -206,22 +206,11 @@
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kIZ-nt-yDQ">
-                                            <rect key="frame" x="564" y="5" width="19" height="21"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="21" identifier="rtvid-2" id="D0G-ts-2hE"/>
-                                                <constraint firstAttribute="width" constant="19" identifier="rtvid-3" id="VOF-e6-UAm"/>
-                                            </constraints>
-                                            <state key="normal" image="delete"/>
-                                            <connections>
-                                                <action selector="onDeleteButtonClick:" destination="jnu-CP-wWH" eventType="touchUpInside" id="K6U-nf-Qj0"/>
-                                            </connections>
-                                        </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKn-kv-oIc">
-                                            <rect key="frame" x="537" y="5" width="19" height="21"/>
+                                            <rect key="frame" x="501" y="3" width="25" height="25"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="19" identifier="rtvid-4" id="WL4-aH-pUe"/>
-                                                <constraint firstAttribute="height" constant="21" identifier="rtvid-5" id="rtr-dR-LZS"/>
+                                                <constraint firstAttribute="width" constant="25" identifier="rtvid-4" id="WL4-aH-pUe"/>
+                                                <constraint firstAttribute="height" constant="25" identifier="rtvid-5" id="rtr-dR-LZS"/>
                                             </constraints>
                                             <state key="normal" image="edit"/>
                                             <connections>
@@ -236,7 +225,7 @@
                                             </constraints>
                                         </view>
                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="IeF-d6-F28">
-                                            <rect key="frame" x="480" y="0.0" width="51" height="31"/>
+                                            <rect key="frame" x="429" y="0.0" width="51" height="31"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="31" identifier="rtvid-8" id="FLO-KM-gcr"/>
                                                 <constraint firstAttribute="width" constant="49" identifier="rtvid-9" id="K24-CB-GPi"/>
@@ -251,22 +240,33 @@
                                                 <constraint firstAttribute="height" constant="112" identifier="rtvid-10" id="boX-Uo-anz"/>
                                             </constraints>
                                         </scrollView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kIZ-nt-yDQ">
+                                            <rect key="frame" x="553" y="3" width="25" height="25"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="25" identifier="rtvid-2" id="D0G-ts-2hE"/>
+                                                <constraint firstAttribute="width" constant="25" identifier="rtvid-3" id="VOF-e6-UAm"/>
+                                            </constraints>
+                                            <state key="normal" image="delete"/>
+                                            <connections>
+                                                <action selector="onDeleteButtonClick:" destination="jnu-CP-wWH" eventType="touchUpInside" id="K6U-nf-Qj0"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="aje-gw-sXH" secondAttribute="trailing" identifier="rtvid-16" id="A8y-Cb-1BT"/>
-                                        <constraint firstItem="aje-gw-sXH" firstAttribute="top" secondItem="FKn-kv-oIc" secondAttribute="bottom" constant="115" identifier="rtvid-17" id="Dxq-zc-4ZQ"/>
+                                        <constraint firstItem="aje-gw-sXH" firstAttribute="top" secondItem="FKn-kv-oIc" secondAttribute="bottom" constant="113" identifier="rtvid-17" id="Dxq-zc-4ZQ"/>
                                         <constraint firstItem="IeF-d6-F28" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" identifier="rtvid-19" id="HVy-pb-IWm"/>
                                         <constraint firstItem="eVB-up-CZ8" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" constant="13" identifier="rtvid-11" id="IMp-9e-mlV"/>
-                                        <constraint firstAttribute="trailing" secondItem="kIZ-nt-yDQ" secondAttribute="trailing" constant="17" identifier="rtvid-22" id="Obq-E4-6qx"/>
-                                        <constraint firstItem="FKn-kv-oIc" firstAttribute="leading" secondItem="IeF-d6-F28" secondAttribute="trailing" constant="8" identifier="rtvid-20" id="Vhy-Tw-8Vg"/>
+                                        <constraint firstAttribute="trailing" secondItem="kIZ-nt-yDQ" secondAttribute="trailing" constant="22" identifier="rtvid-22" id="Obq-E4-6qx"/>
+                                        <constraint firstItem="FKn-kv-oIc" firstAttribute="leading" secondItem="IeF-d6-F28" secondAttribute="trailing" constant="23" identifier="rtvid-20" id="Vhy-Tw-8Vg"/>
                                         <constraint firstItem="md5-Cg-HTy" firstAttribute="top" secondItem="IeF-d6-F28" secondAttribute="bottom" constant="-3" identifier="rtvid-13" id="X8z-Fn-CLy"/>
                                         <constraint firstAttribute="trailing" secondItem="md5-Cg-HTy" secondAttribute="trailing" identifier="rtvid-14" id="hqf-iK-Qg3"/>
                                         <constraint firstItem="md5-Cg-HTy" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" identifier="rtvid-15" id="kGB-JU-l2M"/>
-                                        <constraint firstItem="FKn-kv-oIc" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="5" identifier="rtvid-21" id="m9E-KA-Sig"/>
+                                        <constraint firstItem="FKn-kv-oIc" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="3" identifier="rtvid-21" id="m9E-KA-Sig"/>
                                         <constraint firstItem="aje-gw-sXH" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" identifier="rtvid-18" id="nGf-M5-jAu"/>
-                                        <constraint firstItem="kIZ-nt-yDQ" firstAttribute="leading" secondItem="FKn-kv-oIc" secondAttribute="trailing" constant="8" identifier="rtvid-23" id="nvU-Ui-Hfw"/>
+                                        <constraint firstItem="kIZ-nt-yDQ" firstAttribute="leading" secondItem="FKn-kv-oIc" secondAttribute="trailing" constant="27" identifier="rtvid-23" id="nvU-Ui-Hfw"/>
                                         <constraint firstItem="eVB-up-CZ8" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="5" identifier="rtvid-12" id="rCy-RD-Udg"/>
-                                        <constraint firstItem="kIZ-nt-yDQ" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="5" identifier="rtvid-24" id="yEC-Fr-nLJ"/>
+                                        <constraint firstItem="kIZ-nt-yDQ" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="3" identifier="rtvid-24" id="yEC-Fr-nLJ"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -287,7 +287,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fvM-lD-gwq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="454" y="-19"/>
+            <point key="canvasLocation" x="422" y="-19"/>
         </scene>
     </scenes>
     <resources>

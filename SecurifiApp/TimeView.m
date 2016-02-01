@@ -67,7 +67,7 @@ int segmentType;
     switch (segmentType) {
         case 0:{
             [self addAnyTimeInfoLable];
-            [self.delegate AddOrUpdateTime];
+            
         }
             break;
         case 1:{
@@ -75,7 +75,6 @@ int segmentType;
             [self setTime];
             [self addDayView];
             [self setLableText];
-            [self.delegate AddOrUpdateTime];
         }
             break;
         case 2:{
@@ -83,12 +82,12 @@ int segmentType;
             [self setTimeRange];
             [self addDayView];
             [self setLableText];
-            [self.delegate AddOrUpdateTime];
         }
             break;
         default:
             break;
     }
+    [self.delegate AddOrUpdateTime];
     if(segmentType == 1 || segmentType == 2)
         self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.frame.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight + 70);
 }
@@ -305,7 +304,7 @@ int segmentType;
 
 
 -(void)setTime{ //on edit or revisit
-    NSLog(@"setTime");
+    NSLog(@"setTime %d",self.ruleTime.hours);
     NSDate *date = [NSDate date];
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
     NSDateComponents *components = [gregorian components: NSUIntegerMax fromDate: date];
@@ -326,7 +325,7 @@ int segmentType;
     NSDate *timeFrom = [gregorian dateFromComponents: components];
     DatePickerFrom.date = timeFrom;
     
-    NSDate *timeTo = [timeFrom dateByAddingTimeInterval:((self.ruleTime.range+1)*60)];
+    NSDate *timeTo = [timeFrom dateByAddingTimeInterval:((self.ruleTime.range)*60)];
     DatePickerTo.date = timeTo;
 }
 

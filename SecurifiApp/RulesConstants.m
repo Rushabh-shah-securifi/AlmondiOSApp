@@ -15,7 +15,7 @@ const int frameSize = 70;
 const int dimFrameHeight = 70;
 const int dimFrameWidth = 140;
 const int textPadding = 2;
-const int fontSize = 7;
+const int fontSize = 9;
 float const imageHeightFactor = 1.6;
 
 const int hueSubViewSize = 20;
@@ -28,5 +28,5 @@ const int countDiameter = 16;
 const int TOPSCROLLPADDING = 5;
 const int rulesButtonsViewWidth = 91;
 const int rulesButtonsViewHeight = 90;
-const int crossButtonScale = 3.5;
+const int crossButtonScale = 4.5;
 @end

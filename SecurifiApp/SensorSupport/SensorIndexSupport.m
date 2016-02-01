@@ -1124,8 +1124,10 @@
                 s2.maxValue = 65535;
                 s2.valueFormatter.action = ValueFormatterAction_formatString;
                 s2.valueFormatter.notificationPrefix = NSLocalizedString(@" is turned on for ", @" is turned on for ");
-                s2.valueFormatter.suffix = NSLocalizedString(@" seconds", @" seconds");
+               // s2.valueFormatter.suffix = NSLocalizedString(@" seconds", @" seconds");
+                s2.valueFormatter.suffix = @"sec";
                 
+
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchData = @"1";
                 s3.matchType = MatchType_not_equals;
@@ -1134,7 +1136,7 @@
                 s3.valueFormatter.notificationPrefix = NSLocalizedString(@" is turned on for ", @" is turned on for ");
                 s3.valueFormatter.suffix = NSLocalizedString(@" seconds", @" seconds");
                 
-                return @[s1, s2, s3];
+                return @[s2, s1, s3];
             }
             
             break;
@@ -1245,7 +1247,7 @@
                 s1.maxValue = 122;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature changed to ", @"'s temperature changed to ");
-                s1.valueFormatter.suffix = NSLocalizedString(@"\u00B0 Farenheit", @"\u00B0 Farenheit");
+                s1.valueFormatter.suffix = NSLocalizedString(@"\u00B0F", @"\u00B0F");
                 
                 return @[s1];
             }
@@ -1711,7 +1713,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
                 s1.iconName =DT38_SHOCK_TRUE;
-                s1.displayText=@"NO VIBRATION";
+                s1.displayText=@"OK";
                 s1.notificationText = NSLocalizedString(@"'s vibration stopped.", @"'s vibration stopped.");
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
@@ -3464,7 +3466,12 @@
             deviceIndex1.cellId =1;
             deviceIndex1.isEditableIndex = YES;
             
-            return @[deviceIndex1];
+            SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_BATTERY];
+            deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_BATTERY];
+            deviceIndex2.indexID = 3;
+            deviceIndex2.cellId =2;
+            
+            return @[deviceIndex1,deviceIndex2];
         }
             
         case SFIDeviceType_Alarm_6: {
@@ -3669,12 +3676,12 @@
             SFIDeviceIndex *deviceIndex2=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_LOW_BATTERY];
             deviceIndex2.indexValues=[self resolve:device index:SFIDevicePropertyType_LOW_BATTERY];
             deviceIndex2.indexID=2;
-            deviceIndex2.cellId =1;
+            deviceIndex2.cellId =2;
             
             SFIDeviceIndex *deviceIndex3=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_TAMPER];
             deviceIndex3.indexValues=[self resolve:device index:SFIDevicePropertyType_TAMPER];
             deviceIndex3.indexID=3;
-            deviceIndex3.cellId=1;
+            deviceIndex3.cellId=2;
             
             return @[deviceIndex1,deviceIndex2,deviceIndex3];
             
@@ -3866,7 +3873,12 @@
             deviceIndex1.indexValues=[self resolve:device index:SFIDevicePropertyType_SENSOR_BINARY];
             deviceIndex1.indexID=1;
             deviceIndex1.cellId = 1;
-            return @[deviceIndex1];
+            
+            SFIDeviceIndex *deviceIndex2=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_BATTERY];
+            deviceIndex2.indexValues=[self resolve:device index:SFIDevicePropertyType_BATTERY];
+            deviceIndex2.indexID=2;
+            deviceIndex2.cellId = 1;
+            return @[deviceIndex1,deviceIndex2];
         }
             
         case SFIDeviceType_MoistureSensor_40: {
@@ -3950,6 +3962,7 @@
             deviceIndex1.indexValues=[self resolve:device index:SFIDevicePropertyType_THERMOSTAT_SETPOINT];
             deviceIndex1.indexID=1;
             deviceIndex1.cellId = 2;
+            deviceIndex1.isEditableIndex = YES;
             
             SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_BATTERY];
             deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_BATTERY];
@@ -4042,14 +4055,14 @@
             deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_UP_DOWN];
             deviceIndex2.indexID = 2;
             deviceIndex2.cellId = 1;
-            deviceIndex1.isEditableIndex=YES;
+            deviceIndex2.isEditableIndex=YES;
             
             
             SFIDeviceIndex *deviceIndex3 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_STOP];
             deviceIndex3.indexValues = [self resolve:device index:SFIDevicePropertyType_STOP];
             deviceIndex3.indexID = 3;
             deviceIndex3.cellId = 1;
-            
+            deviceIndex3.isEditableIndex=YES;
             
             return @[deviceIndex1, deviceIndex2, deviceIndex3];
         }
@@ -4067,11 +4080,13 @@
             deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY1];
             deviceIndex1.indexID = 1;
             deviceIndex1.cellId = 1;
+            deviceIndex1.isEditableIndex=YES;
             
             SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_BINARY2];
             deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY2];
             deviceIndex2.indexID = 2;
             deviceIndex2.cellId = 2;
+            deviceIndex2.isEditableIndex=YES;
             
             return @[deviceIndex1,deviceIndex2];
         }
@@ -4087,20 +4102,20 @@
             deviceIndex2.indexValues=[self resolve:device index:SFIDevicePropertyType_AC_SETPOINT_HEATING];
             deviceIndex2.indexID=3;
             deviceIndex2.cellId = 2;
-             deviceIndex1.isEditableIndex=YES;
+             deviceIndex2.isEditableIndex=YES;
             
             
             SFIDeviceIndex *deviceIndex3=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_AC_SETPOINT_COOLING];
             deviceIndex3.indexValues=[self resolve:device index:SFIDevicePropertyType_AC_SETPOINT_COOLING];
             deviceIndex3.indexID=4;
             deviceIndex3.cellId = 2;
-             deviceIndex1.isEditableIndex=YES;
+             deviceIndex3.isEditableIndex=YES;
             
             SFIDeviceIndex *deviceIndex4=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_AC_FAN_MODE];
             deviceIndex4.indexValues=[self resolve:device index:SFIDevicePropertyType_AC_FAN_MODE];
             deviceIndex4.indexID=5;
             deviceIndex4.cellId = 4;
-             deviceIndex1.isEditableIndex=YES;
+             deviceIndex4.isEditableIndex=YES;
             
             SFIDeviceIndex *deviceIndex5 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_BATTERY];
             deviceIndex5.indexValues = [self resolve:device index:SFIDevicePropertyType_BATTERY];
@@ -4121,13 +4136,13 @@
             deviceIndex7.indexValues = [self resolve:device index:SFIDevicePropertyType_AC_SWING];
             deviceIndex7.indexID = 8;
             deviceIndex7.cellId = 5;
-            deviceIndex1.isEditableIndex=YES;
+            deviceIndex7.isEditableIndex=YES;
             
             SFIDeviceIndex *deviceIndex8 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_BASIC];
             deviceIndex8.indexValues = [self resolve:device index:SFIDevicePropertyType_BASIC];
             deviceIndex8.indexID = 9;
             deviceIndex8.cellId = 5;
-            deviceIndex1.isEditableIndex=YES;
+            deviceIndex8.isEditableIndex=YES;
             
             return @[deviceIndex1, deviceIndex2, deviceIndex3, deviceIndex4, deviceIndex5, deviceIndex7, deviceIndex8,deviceIndex9];
         }
@@ -4137,6 +4152,7 @@
             deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_MULTILEVEL];
             deviceIndex1.indexID = 1;
             deviceIndex1.cellId = 1;
+            deviceIndex1.isEditableIndex = 1;
             
             return @[deviceIndex1];
         }

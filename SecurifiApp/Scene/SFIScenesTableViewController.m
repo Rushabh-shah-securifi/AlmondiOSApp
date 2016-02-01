@@ -393,11 +393,9 @@
 
 #pragma mark Notifications
 - (void)onCurrentAlmondChanged:(id)sender {
-    if (scenesArray && scenesArray.count>0) {
-        NSLog(@"onCurrentAlmondChanged local %@",scenesArray);
+    if (scenesArray!=nil && scenesArray.count>0)
         [scenesArray removeAllObjects];
-        NSLog(@"onCurrentAlmondChanged local %d",scenesArray.count);
-    }
+
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     

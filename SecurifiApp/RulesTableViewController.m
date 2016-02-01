@@ -29,34 +29,27 @@
 @end
 
 @implementation RulesTableViewController
-
+CGPoint tablePoint;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     
+    NSLog(@"viewDidLoad rules count is %@",toolkit.ruleList);
+    [self initializeNotifications];
     [self initializeTableViewAttributes];
-
-    self.rules = [[NSMutableArray alloc]init];
+    tablePoint = self.tableView.contentOffset;
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.leftBarButtonItem = self.editButtonItem;
     
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.currentAlmond = [toolkit currentAlmond];
-    if (self.currentAlmond == nil) {
-        [self markTitle: NSLocalizedString(@"rules.title.Get Started", @"Get Started")];
-        [self markAlmondMac:NO_ALMOND];
-    }
-    else {
-        [self markAlmondMac:self.currentAlmond.almondplusMAC];
-        [self markTitle: self.currentAlmond.almondplusName];
-    }
-}
+   }
 
 -(void)viewWillAppear:(BOOL)animated{
     //    [self.rules removeAllObjects];
     [super viewWillAppear:animated];
+    
     [self getRuleList];
     [self addAddRuleButton];
     randomMobileInternalIndex = arc4random() % 10000;
@@ -103,17 +96,12 @@
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
 }
 
--(void)requestForRuleList{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    GenericCommand *cmd = [GenericCommand websocketRequestAlmondRules];
-    [[SecurifiToolkit sharedInstance] asyncSendToLocal:cmd almondMac:plus.almondplusMAC];
-}
-
 - (void)onRuleUpdateCommandResponse:(id)sender{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.rules =[NSMutableArray arrayWithArray:toolkit.ruleList];
+    NSLog(@"onRuleUpdateCommandResponse Rule is %@",self.rules);
     [self.tableView reloadData];
+    self.tableView.contentOffset = tablePoint;
 }
 
 - (void)removeAddSceneButton{
@@ -123,7 +111,9 @@
 -(void)getRuleList{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.rules = toolkit.ruleList;
+    
     [self.tableView reloadData];
+    self.tableView.contentOffset = tablePoint;
 }
 
 - (void)addAddRuleButton{
@@ -240,6 +230,7 @@
         [self.rules addObject:rule];
     }
     [self.tableView reloadData];
+    self.tableView.contentOffset = tablePoint;
 }
 
 #pragma mark custom cell Delegate methods
