@@ -720,8 +720,6 @@
 		A54EAFF71C44FDC300CF2837 /* CustomCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellTableViewCell.m; sourceTree = "<group>"; };
 		A54EAFF81C44FDC300CF2837 /* AddRulesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRulesViewController.h; sourceTree = "<group>"; };
 		A54EAFF91C44FDC300CF2837 /* AddRulesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRulesViewController.m; sourceTree = "<group>"; };
-		A54EAFFE1C44FDC300CF2837 /* RuleBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleBuilder.h; sourceTree = "<group>"; };
-		A54EAFFF1C44FDC300CF2837 /* RuleBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleBuilder.m; sourceTree = "<group>"; };
 		A54EB0001C44FDC300CF2837 /* DeviceListAndValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceListAndValues.h; sourceTree = "<group>"; };
 		A54EB0011C44FDC300CF2837 /* DeviceListAndValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceListAndValues.m; sourceTree = "<group>"; };
 		A54EB0021C44FDC300CF2837 /* RulesNestThermostat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesNestThermostat.h; sourceTree = "<group>"; };
@@ -1533,8 +1531,6 @@
 				A54EAFF71C44FDC300CF2837 /* CustomCellTableViewCell.m */,
 				A54EAFF81C44FDC300CF2837 /* AddRulesViewController.h */,
 				A54EAFF91C44FDC300CF2837 /* AddRulesViewController.m */,
-				A54EAFFE1C44FDC300CF2837 /* RuleBuilder.h */,
-				A54EAFFF1C44FDC300CF2837 /* RuleBuilder.m */,
 				A54EB0001C44FDC300CF2837 /* DeviceListAndValues.h */,
 				A54EB0011C44FDC300CF2837 /* DeviceListAndValues.m */,
 				A54EB0021C44FDC300CF2837 /* RulesNestThermostat.h */,

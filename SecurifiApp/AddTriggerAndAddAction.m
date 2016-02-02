@@ -330,6 +330,13 @@ NSMutableArray * pickerValuesArray2;
     dimbtn.maxValue = iVal.maxValue;
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
     
+    
+    
+    
+    dimbtn.center = CGPointMake(view.bounds.size.width/2,
+                                view.bounds.size.height/2);
+    dimbtn.frame=CGRectMake(dimbtn.frame.origin.x + ((i-1) * (dimFrameWidth/2))+textHeight/2, dimbtn.frame.origin.y, dimbtn.frame.size.width, dimbtn.frame.size.height);
+    [self shiftButtonsByWidth:dimFrameWidth View:view forIteration:i];
     [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
     //NSMutableDictionary *result=[self setButtonSelection:dimbtn isSlider:YES deviceIndex:deviceIndex deviceId:deviceId matchData:dimbtn.subProperties.matchData];
@@ -337,13 +344,6 @@ NSMutableArray * pickerValuesArray2;
     
     //get previous value
     [dimbtn setupValues:iVal.matchData Title:iVal.displayText suffix:iVal.valueFormatter.suffix isTrigger:self.isTrigger];
-    
-    
-    dimbtn.center = CGPointMake(view.bounds.size.width/2,
-                                view.bounds.size.height/2);
-    dimbtn.frame=CGRectMake(dimbtn.frame.origin.x + ((i-1) * (dimFrameWidth/2))+textHeight/2, dimbtn.frame.origin.y, dimbtn.frame.size.width, dimbtn.frame.size.height);
-    [self shiftButtonsByWidth:dimFrameWidth View:view forIteration:i];
-    
     
     //dispatch_async(dispatch_get_main_queue(), ^{
     [view addSubview:dimbtn];
@@ -496,7 +496,7 @@ NSMutableArray * pickerValuesArray2;
 }
 
 - (BOOL)setActionButtonCount:(RuleButton *)indexButton isSlider:(BOOL)isSlider matchData:(NSString *)buttonMatchdata buttonIndex:(int)buttonIndex buttonId:(sfi_id)buttonId {
-    int buttonClickCount = 0;
+    int buttonClickCount = 1;
     BOOL selected=NO;
     NSMutableArray *list=self.isTrigger?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
     for(SFIButtonSubProperties *dimButtonProperty in list){

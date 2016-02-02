@@ -284,6 +284,7 @@
                             <outlet property="delegate" destination="fcV-g0-xh0" id="kaQ-mI-eXS"/>
                         </connections>
                     </tableView>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fvM-lD-gwq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

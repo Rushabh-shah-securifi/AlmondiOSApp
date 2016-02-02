@@ -173,7 +173,7 @@ CGPoint tablePoint;
     cell.delegate = self;
     cell.ruleNameLabel.text = rule.name;
     NSLog(@" rulename label %@",cell.ruleNameLabel.text);
-    NSLog(@"cellforrow - self.triggers: %d, self.actions: %d", rule.triggers.count, rule.actions.count);
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [SFISubPropertyBuilder createEntriesView:cell.scrollView triggers:rule.triggers actions:rule.actions showCrossBtn:YES parentController:nil];
     
     // Configure the cell...

@@ -161,13 +161,13 @@ int xVal = 20;
     [dateFormat setDateFormat:@"hh:mm aa"];
     int segmentType=timesubProperties.time.segmentType;
     if(segmentType==1){
-               [dimbutton setupValues:[dateFormat stringFromDate:timesubProperties.time.dateFrom] Title:@"Time" displayText:@"days" suffix:@""];
+               [dimbutton setupValues:[dateFormat stringFromDate:timesubProperties.time.dateFrom] Title:@"Time" displayText:[NSString stringWithFormat:@"Days %@",[self getDays:timesubProperties.time.dayOfWeek]] suffix:@""];
 
     }
     else{
         NSString *time = [NSString stringWithFormat:@"%@\n%@", [dateFormat stringFromDate:timesubProperties.time.dateFrom], [dateFormat stringFromDate:timesubProperties.time.dateTo]];
         NSLog(@"time interval: %@", time);
-        [dimbutton setupValues:time Title:@"Time Interval" displayText:@"days" suffix:@""];
+        [dimbutton setupValues:time Title:@"Time Interval" displayText:[NSString stringWithFormat:@"Days %@",[self getDays:timesubProperties.time.dayOfWeek]] suffix:@""];
     }
     dimbutton.subProperties.positionId = positionId;
     [dimbutton setButtonCross:showCrossBtn];
@@ -305,4 +305,30 @@ int xVal = 20;
     [scrollView addSubview:imageButton];
     
 }
++(NSString*)getDays:(NSArray*)earlierSelection{
+    NSMutableDictionary *dayDict = [self setDayDict];
+    //Loop through earlierSelection
+    NSMutableString *days = [NSMutableString new];
+    int i=0;
+    for(NSString *dayVal in earlierSelection){
+        if(i == 0)
+            [days appendString:[dayDict valueForKey:dayVal]];
+        else
+            [days appendString:[NSString stringWithFormat:@",%@", [dayDict valueForKey:dayVal]]];
+        i++;
+    }
+    return [NSString stringWithString:days];
+}
++(NSMutableDictionary*)setDayDict{
+    NSMutableDictionary *dayDict = [NSMutableDictionary new];
+    [dayDict setValue:@"Sun" forKey:@(0).stringValue];
+    [dayDict setValue:@"Mon" forKey:@(1).stringValue];
+    [dayDict setValue:@"Tue" forKey:@(2).stringValue];
+    [dayDict setValue:@"Wed" forKey:@(3).stringValue];
+    [dayDict setValue:@"Thu" forKey:@(4).stringValue];
+    [dayDict setValue:@"Fri" forKey:@(5).stringValue];
+    [dayDict setValue:@"Sat" forKey:@(6).stringValue];
+    return dayDict;
+}
+
 @end

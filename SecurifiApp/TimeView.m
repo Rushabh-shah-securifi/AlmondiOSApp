@@ -8,6 +8,8 @@
 
 #import "TimeView.h"
 #import "RulesDeviceNameButton.h"
+#import "SFIColors.h"
+#import "SFISubPropertyBuilder.h"
 
 @interface TimeView()
 @property UIView *segmentDetailView;
@@ -33,7 +35,6 @@ int segmentType;
 
 -(id)init{
     if(self == [super init]){
-        self.dayDict = [self setDayDict];
         infoLable = [[UILabel alloc]init];
     }
     return self;
@@ -52,6 +53,7 @@ int segmentType;
     
     timeSegmentControl.frame = CGRectMake(0, 20, scrollView.frame.size.width-40, timeSegmentHeight);
     timeSegmentControl.selectedSegmentIndex = self.ruleTime.segmentType;
+    timeSegmentControl.tintColor = [SFIColors ruleBlueColor];
     timeSegmentControl.center = CGPointMake(CGRectGetMidX(scrollView.bounds), timeSegmentControl.center.y);
     [timeSegmentControl addTarget:self action:@selector(onClickSegmentControl:) forControlEvents: UIControlEventValueChanged];
     CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
@@ -122,6 +124,7 @@ int segmentType;
 //    preciselyDatePicker.backgroundColor = [UIColor yellowColor];
     [self setupDatePicker:preciselyDatePicker];
     preciselyDatePicker.center = CGPointMake(CGRectGetMidX(self.segmentDetailView.bounds), preciselyDatePicker.center.y);
+    
     [preciselyDatePicker addTarget:self action:@selector(onPreciselyDatePickerValueChanged:) forControlEvents:UIControlEventValueChanged];
     [self.segmentDetailView addSubview:preciselyDatePicker];
 }
@@ -212,7 +215,7 @@ int segmentType;
     int tag = 0;
     NSArray* dayArray = [[NSArray alloc]initWithObjects:@"Su",@"Mo",@"Tu",@"We",@"Th",@"Fr",@"Sa", nil];
     for(NSString* day in dayArray){
-        RulesDeviceNameButton *dayButton = [[RulesDeviceNameButton alloc] initWithFrame:CGRectMake(xVal, 0, dayButtonWidth, dayButtonWidth)];
+        UIButton *dayButton = [[UIButton alloc] initWithFrame:CGRectMake(xVal, 0, dayButtonWidth, dayButtonWidth)];
         dayButton.center = CGPointMake(dayButton.center.x, dayView.bounds.size.height/2);
         [self setDayButtonProperties:dayButton withRadius:dayButtonWidth];
         [dayButton setTitle:day forState:UIControlStateNormal];
@@ -220,6 +223,7 @@ int segmentType;
         [self setPreviousHighlight:dayButton];
         [dayButton addTarget:self action:@selector(onDayBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         [dayView addSubview:dayButton];
+        dayButton.selected = NO;
         xVal += dayButtonWidth + 8;
         tag++;
     }
@@ -228,7 +232,7 @@ int segmentType;
     [self.segmentDetailView addSubview:dayView];
 }
 
--(void) setDayButtonProperties:(RulesDeviceNameButton*)dayButton withRadius:(double)dayButtonWidth{
+-(void) setDayButtonProperties:(UIButton*)dayButton withRadius:(double)dayButtonWidth{
     CALayer * l1 = [dayButton layer];
     [l1 setMasksToBounds:YES];
     [l1 setCornerRadius:dayButtonWidth/2];
@@ -238,20 +242,21 @@ int segmentType;
     dayButton.titleLabel.textAlignment  = NSTextAlignmentCenter;
 }
 
--(void)setPreviousHighlight:(RulesDeviceNameButton*)dayButton{
+-(void)setPreviousHighlight:(UIButton*)dayButton{
     NSMutableArray *earlierSelection = self.ruleTime.dayOfWeek;
     for (NSString* tag in earlierSelection) {
         if ([tag isEqualToString:@(dayButton.tag).stringValue]) {
             dayButton.selected = YES;
+            dayButton.backgroundColor = [SFIColors ruleBlueColor];
             
         }
     }
 }
 
--(void)onDayBtnClicked:(RulesDeviceNameButton*)dayButton{
+-(void)onDayBtnClicked:(UIButton*)dayButton{
     NSMutableArray *earlierSelection = self.ruleTime.dayOfWeek;
     dayButton.selected = !dayButton.selected;
-    
+    dayButton.backgroundColor = dayButton.selected?[SFIColors ruleBlueColor]:[SFIColors ruleGraycolor];
     NSLog(@"ruletimebefore: %@", self.ruleTime.dayOfWeek);
     if(dayButton.selected){
         [earlierSelection addObject:@(dayButton.tag).stringValue];
@@ -260,6 +265,7 @@ int segmentType;
         [earlierSelection removeObject:@(dayButton.tag).stringValue];
     }
     NSLog(@"ruletimeafter: %@", self.ruleTime.dayOfWeek);
+    [self.delegate AddOrUpdateTime];
     [self setLableText];
 }
 
@@ -267,7 +273,7 @@ int segmentType;
 -(void)setLableText{
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"hh:mm aa"];
-    NSString *days = [self getDays];
+    NSString *days = [SFISubPropertyBuilder getDays:self.ruleTime.dayOfWeek];
     if(segmentType == Precisely1){
         NSDate *date =preciselyDatePicker.date;
         NSString *time = [dateFormat stringFromDate:date];
@@ -342,18 +348,6 @@ int segmentType;
                                                                      scrollView.frame.size.width,
                                                                      datePickerHeight + dayViewHeight + infoLableHeight + viewSpacing * 2)];
     [scrollView addSubview:self.segmentDetailView];
-}
-
--(NSMutableDictionary*)setDayDict{
-    NSMutableDictionary *dayDict = [NSMutableDictionary new];
-    [dayDict setValue:@"Sun" forKey:@(0).stringValue];
-    [dayDict setValue:@"Mon" forKey:@(1).stringValue];
-    [dayDict setValue:@"Tue" forKey:@(2).stringValue];
-    [dayDict setValue:@"Wed" forKey:@(3).stringValue];
-    [dayDict setValue:@"Thu" forKey:@(4).stringValue];
-    [dayDict setValue:@"Fri" forKey:@(5).stringValue];
-    [dayDict setValue:@"Sat" forKey:@(6).stringValue];
-    return dayDict;
 }
 
 
