@@ -302,13 +302,17 @@ UITextField *textField;
 }
 
 #pragma mark rules view delegate
--(RulesDeviceNameButton*)getSelectedButton:(int)deviceId{
+-(RulesDeviceNameButton*)getSelectedButton:(int)deviceId eventType:(NSString*)eventType{
     UIScrollView *scrollView = self.deviceListScrollView;
     for(RulesDeviceNameButton *button in [scrollView subviews]){
         if([button isKindOfClass:[UIImageView class]]){ //to handle mysterious error
             continue;
         }
         else if(button.deviceId == deviceId && button.selected){
+            return button;
+        }
+        else if ([eventType isEqualToString:@"ClientLeft"] || [eventType isEqualToString:@"ClientJoined"]){
+            button.deviceName = @"Clients";
             return button;
         }
     }
@@ -320,12 +324,21 @@ UITextField *textField;
     return [NSMutableArray arrayWithArray:[sensorSupport getIndexesFor:deviceType]];
 }
 
--(void)redrawDeviceIndexView:(sfi_id)deviceId {
+-(void)redrawDeviceIndexView:(sfi_id)deviceId clientEvent:(NSString*)eventType{
     [self callRulesView]; //top view
-    RulesDeviceNameButton *deviceButton = [self getSelectedButton:deviceId];
+    
+    RulesDeviceNameButton *deviceButton = [self getSelectedButton:deviceId eventType:eventType];
+    NSLog(@" device button name %@",deviceButton.deviceName);
+    if([deviceButton.deviceName isEqualToString:@"Clients"]){//for client redraw
+        NSLog(@"redraw client list");
+        [self.triggerAction wifiClientsClicked:deviceButton];
+        return;
+    }
+
     NSLog(@"button id: %d, deviceId: %d", deviceButton.deviceId, deviceId);
     if(deviceButton.deviceId != deviceId)
         return;
+    NSLog(@"device .device name %@",deviceButton.deviceName);
     
     if(deviceButton.isTrigger){
         if(deviceId == 0){ //time mode clients
@@ -333,8 +346,6 @@ UITextField *textField;
                 [self.triggerAction onDeviceButtonClick:deviceButton];
             }else if([deviceButton.deviceName isEqualToString:@"Time"]){
                 [self.triggerAction TimeEventClicked:deviceButton];
-            }else if([deviceButton.deviceName isEqualToString:@"Clients"]){
-                [self.triggerAction wifiClientsClicked:deviceButton];
             }
         }else{
             [self.triggerAction onDeviceButtonClick:deviceButton];

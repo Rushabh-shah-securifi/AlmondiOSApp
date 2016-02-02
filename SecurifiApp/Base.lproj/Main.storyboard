@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -207,9 +207,9 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKn-kv-oIc">
-                                            <rect key="frame" x="501" y="3" width="25" height="25"/>
+                                            <rect key="frame" x="481" y="3" width="45" height="25"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="25" identifier="rtvid-4" id="WL4-aH-pUe"/>
+                                                <constraint firstAttribute="width" constant="45" identifier="rtvid-4" id="WL4-aH-pUe"/>
                                                 <constraint firstAttribute="height" constant="25" identifier="rtvid-5" id="rtr-dR-LZS"/>
                                             </constraints>
                                             <state key="normal" image="edit"/>
@@ -240,11 +240,12 @@
                                                 <constraint firstAttribute="height" constant="112" identifier="rtvid-10" id="boX-Uo-anz"/>
                                             </constraints>
                                         </scrollView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kIZ-nt-yDQ">
-                                            <rect key="frame" x="553" y="3" width="25" height="25"/>
+                                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kIZ-nt-yDQ">
+                                            <rect key="frame" x="527" y="0.0" width="60" height="28"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="25" identifier="rtvid-2" id="D0G-ts-2hE"/>
-                                                <constraint firstAttribute="width" constant="25" identifier="rtvid-3" id="VOF-e6-UAm"/>
+                                                <constraint firstAttribute="height" constant="28" identifier="rtvid-2" id="D0G-ts-2hE"/>
+                                                <constraint firstAttribute="width" constant="60" identifier="rtvid-3" id="VOF-e6-UAm"/>
                                             </constraints>
                                             <state key="normal" image="delete"/>
                                             <connections>
@@ -257,16 +258,16 @@
                                         <constraint firstItem="aje-gw-sXH" firstAttribute="top" secondItem="FKn-kv-oIc" secondAttribute="bottom" constant="113" identifier="rtvid-17" id="Dxq-zc-4ZQ"/>
                                         <constraint firstItem="IeF-d6-F28" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" identifier="rtvid-19" id="HVy-pb-IWm"/>
                                         <constraint firstItem="eVB-up-CZ8" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" constant="13" identifier="rtvid-11" id="IMp-9e-mlV"/>
-                                        <constraint firstAttribute="trailing" secondItem="kIZ-nt-yDQ" secondAttribute="trailing" constant="22" identifier="rtvid-22" id="Obq-E4-6qx"/>
-                                        <constraint firstItem="FKn-kv-oIc" firstAttribute="leading" secondItem="IeF-d6-F28" secondAttribute="trailing" constant="23" identifier="rtvid-20" id="Vhy-Tw-8Vg"/>
+                                        <constraint firstAttribute="trailing" secondItem="kIZ-nt-yDQ" secondAttribute="trailing" constant="13" identifier="rtvid-22" id="Obq-E4-6qx"/>
+                                        <constraint firstItem="FKn-kv-oIc" firstAttribute="leading" secondItem="IeF-d6-F28" secondAttribute="trailing" constant="3" identifier="rtvid-20" id="Vhy-Tw-8Vg"/>
                                         <constraint firstItem="md5-Cg-HTy" firstAttribute="top" secondItem="IeF-d6-F28" secondAttribute="bottom" constant="-3" identifier="rtvid-13" id="X8z-Fn-CLy"/>
                                         <constraint firstAttribute="trailing" secondItem="md5-Cg-HTy" secondAttribute="trailing" identifier="rtvid-14" id="hqf-iK-Qg3"/>
                                         <constraint firstItem="md5-Cg-HTy" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" identifier="rtvid-15" id="kGB-JU-l2M"/>
                                         <constraint firstItem="FKn-kv-oIc" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="3" identifier="rtvid-21" id="m9E-KA-Sig"/>
                                         <constraint firstItem="aje-gw-sXH" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" identifier="rtvid-18" id="nGf-M5-jAu"/>
-                                        <constraint firstItem="kIZ-nt-yDQ" firstAttribute="leading" secondItem="FKn-kv-oIc" secondAttribute="trailing" constant="27" identifier="rtvid-23" id="nvU-Ui-Hfw"/>
+                                        <constraint firstItem="kIZ-nt-yDQ" firstAttribute="leading" secondItem="FKn-kv-oIc" secondAttribute="trailing" constant="1" identifier="rtvid-23" id="nvU-Ui-Hfw"/>
                                         <constraint firstItem="eVB-up-CZ8" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="5" identifier="rtvid-12" id="rCy-RD-Udg"/>
-                                        <constraint firstItem="kIZ-nt-yDQ" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="3" identifier="rtvid-24" id="yEC-Fr-nLJ"/>
+                                        <constraint firstItem="kIZ-nt-yDQ" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" identifier="rtvid-24" id="yEC-Fr-nLJ"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>

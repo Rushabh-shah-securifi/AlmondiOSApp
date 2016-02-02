@@ -20,6 +20,9 @@
 - (void)awakeFromNib {
     // Initialization code
     self.activeDeactiveSwitch.transform = CGAffineTransformMakeScale(0.75, 0.75);
+    self.DeleteButton.imageEdgeInsets = UIEdgeInsetsMake(5,13,5,13);
+    self.editButton.imageEdgeInsets = UIEdgeInsetsMake(3,13,3,10);
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

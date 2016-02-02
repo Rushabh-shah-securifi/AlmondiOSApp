@@ -322,6 +322,7 @@ NSMutableArray * pickerValuesArray2;
 }
 
 - (void)buildDimButton:(SFIDeviceIndex *)deviceIndex iVal:(IndexValueSupport *)iVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view {
+    NSLog(@"subView in view count %ld ",(unsigned long)[view subviews].count);
     DimmerButton *dimbtn=[[DimmerButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,view.frame.origin.y , dimFrameWidth, dimFrameHeight)];
     dimbtn.tag=i;
     
@@ -330,20 +331,22 @@ NSMutableArray * pickerValuesArray2;
     dimbtn.maxValue = iVal.maxValue;
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
     
+    [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
+    //NSMutableDictionary *result=[self setButtonSelection:dimbtn isSlider:YES deviceIndex:deviceIndex deviceId:deviceId matchData:dimbtn.subProperties.matchData];
+    NSLog(@"dimBtn selected %d",dimbtn.selected);
+    
+    //get previous value
+    [dimbtn setupValues:iVal.matchData Title:iVal.displayText suffix:iVal.valueFormatter.suffix isTrigger:self.isTrigger];
     
     
     dimbtn.center = CGPointMake(view.bounds.size.width/2,
                                 view.bounds.size.height/2);
     dimbtn.frame=CGRectMake(dimbtn.frame.origin.x + ((i-1) * (dimFrameWidth/2))+textHeight/2, dimbtn.frame.origin.y, dimbtn.frame.size.width, dimbtn.frame.size.height);
     [self shiftButtonsByWidth:dimFrameWidth View:view forIteration:i];
-    [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    //NSMutableDictionary *result=[self setButtonSelection:dimbtn isSlider:YES deviceIndex:deviceIndex deviceId:deviceId matchData:dimbtn.subProperties.matchData];
     dimbtn.selected=[self setActionButtonCount:dimbtn isSlider:YES matchData:iVal.matchData buttonIndex:deviceIndex.indexID buttonId:deviceId];
     
-    //get previous value
-    [dimbtn setupValues:iVal.matchData Title:iVal.displayText suffix:iVal.valueFormatter.suffix isTrigger:self.isTrigger];
+    
     
     //dispatch_async(dispatch_get_main_queue(), ^{
     [view addSubview:dimbtn];
@@ -496,17 +499,23 @@ NSMutableArray * pickerValuesArray2;
 }
 
 - (BOOL)setActionButtonCount:(RuleButton *)indexButton isSlider:(BOOL)isSlider matchData:(NSString *)buttonMatchdata buttonIndex:(int)buttonIndex buttonId:(sfi_id)buttonId {
-    int buttonClickCount = 1;
+    int buttonClickCount = 0;
     BOOL selected=NO;
     NSMutableArray *list=self.isTrigger?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
     for(SFIButtonSubProperties *dimButtonProperty in list){
         if(dimButtonProperty.deviceId==indexButton.subProperties.deviceId && dimButtonProperty.index==indexButton.subProperties.index && [SFISubPropertyBuilder compareEntry:isSlider matchData:indexButton.subProperties.matchData eventType:indexButton.subProperties.eventType buttonProperties:dimButtonProperty]){
             buttonClickCount++;
+            NSLog(@"INSIDE COMPARE ENTRY %d",buttonClickCount);
             selected=YES;
         }
+        //        [SFISubPropertyBuilder compareEntry:iVal buttonProperties:indexButton.subProperties];
+        //        if(dimButtonProperty.deviceId == buttonId && dimButtonProperty.index == buttonIndex && (isSlider ||(!isSlider && [dimButtonProperty.matchData isEqualToString:buttonMatchdata]))){
+        //            buttonClickCount++;
+        //            NSLog(@" button count %d",buttonClickCount);
+        //        }
     }
     if(selected &&!self.isTrigger)
-     [indexButton setButtoncounter:buttonClickCount isCountImageHiddn:NO];
+        [indexButton setButtoncounter:buttonClickCount isCountImageHiddn:NO];
     return selected;
 }
 
@@ -564,7 +573,6 @@ NSMutableArray * pickerValuesArray2;
         newPickerValue=@"0";
     [dimmer setNewValue:newPickerValue];
 
-    [self setActionButtonCount:dimmer isSlider:YES matchData:newPickerValue buttonIndex:dimmer.subProperties.index buttonId:dimmer.subProperties.deviceId];
     SFIButtonSubProperties *newProperty=dimmer.subProperties;
     if(!self.isTrigger){
         newProperty=[dimmer.subProperties createNew];
@@ -574,6 +582,7 @@ NSMutableArray * pickerValuesArray2;
     
     [self addObject:newProperty];
     [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
+    [self setActionButtonCount:dimmer isSlider:YES matchData:newPickerValue buttonIndex:dimmer.subProperties.index buttonId:dimmer.subProperties.deviceId];
 }
 -(void)addObject:(SFIButtonSubProperties *)subProperty{
     if(self.isTrigger)

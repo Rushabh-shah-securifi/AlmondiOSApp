@@ -49,7 +49,6 @@ UIScrollView *scrollView;
 AddRulesViewController *parentController;
 NSArray *deviceArray;
 SecurifiToolkit *toolkit;
-
 int xVal = 20;
 
 + (void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions showCrossBtn:(BOOL)showCross parentController:(AddRulesViewController*)addRuleController{
@@ -90,6 +89,7 @@ int xVal = 20;
     buttonProperties.positionId=positionId;
     buttonProperties.iconName=icon;
     buttonProperties.displayText=text;
+    NSLog(@"buttonPositionID %d",buttonProperties.positionId);
     
     if (positionId > 0)
         [self drawImage: @"plus_icon" ];
@@ -135,12 +135,15 @@ int xVal = 20;
     for (SFIButtonSubProperties *buttonProperties in entries) {
         if(buttonProperties.time != nil && buttonProperties.time.segmentType!=0){
             [self buildTime:buttonProperties isTrigger:isTrigger positionId:positionId];
+            NSLog(@"positionId :- %d",positionId);
             positionId++;
+            
         }else{
             NSLog(@"buttn type %d %@",buttonProperties.deviceType,buttonProperties.deviceName);
             NSArray *deviceIndexes=[self getDeviceIndexes:buttonProperties];
             if(deviceIndexes==nil || deviceIndexes.count<=0)
                 continue;
+            NSLog(@"potionID trigger :%d",positionId);
             if([self buildEntry:buttonProperties positionId:positionId deviceIndexes:deviceIndexes isTrigger:isTrigger])
                 positionId++;
         }
@@ -169,8 +172,11 @@ int xVal = 20;
         NSLog(@"time interval: %@", time);
         [dimbutton setupValues:time Title:@"Time Interval" displayText:[NSString stringWithFormat:@"Days %@",[self getDays:timesubProperties.time.dayOfWeek]] suffix:@""];
     }
+    dimbutton.subProperties = timesubProperties;
     dimbutton.subProperties.positionId = positionId;
+    NSLog(@"dimbutton.subProperties.positionId  %d :%d",dimbutton.subProperties.positionId,positionId);
     [dimbutton setButtonCross:showCrossBtn];
+
     [dimbutton addTarget:self action:@selector(onDimmerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     dimbutton.bgView.backgroundColor =[SFIColors ruleBlueColor];
     xVal += triggerActionDimWidth;
@@ -191,9 +197,10 @@ int xVal = 20;
         switchButton.isTrigger = isTrigger;
         [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:subProperties.displayText isTrigger:isTrigger];
         
-
+        switchButton.subProperties = subProperties;
         switchButton.inScroll = YES;
         switchButton.userInteractionEnabled = YES;
+    
         [switchButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         xVal += triggerActionBtnWidth;
@@ -235,22 +242,21 @@ int xVal = 20;
 + (void)onTriggerCrossButtonClicked:(SwitchButton*)switchButton{
     //includes mode
     if(switchButton.isTrigger){
-    [parentController.rule.triggers removeObjectAtIndex:switchButton.subProperties.positionId];
-    NSLog(@"par.count %d ",parentController.rule.triggers.count);
-        
+        [parentController.rule.triggers removeObjectAtIndex:switchButton.subProperties.positionId];
+        NSLog(@"par.count %d :%@ :%@:%d:,eventType:%@",switchButton.subProperties.positionId,switchButton.subProperties.matchData,switchButton.subProperties.deviceName,switchButton.deviceType,switchButton.subProperties.eventType);
     }
     else{
         [parentController.rule.actions removeObjectAtIndex:switchButton.subProperties.positionId];
         NSLog(@"par.count %d ",parentController.rule.triggers.count);
     }
-    [parentController redrawDeviceIndexView:switchButton.subProperties.deviceId];
+    [parentController redrawDeviceIndexView:switchButton.subProperties.deviceId clientEvent:switchButton.subProperties.eventType];
 }
 
 
 + (void)onDimmerCrossButtonClicked:(DimmerButton*)dimmerButton{
     NSLog(@"dimbutton posId %d",dimmerButton.subProperties.positionId);
     [parentController.rule.triggers removeObjectAtIndex:dimmerButton.subProperties.positionId];
-    [parentController redrawDeviceIndexView:dimmerButton.subProperties.deviceId];
+    [parentController redrawDeviceIndexView:dimmerButton.subProperties.deviceId clientEvent:@""];
     
 }
 

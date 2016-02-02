@@ -50,5 +50,5 @@
 @property (nonatomic)BOOL isInitialized;
 @property (nonatomic)int indexPathRow;
 @property (nonatomic) id<AddRulesViewControllerDelegate> delegate;
--(void)redrawDeviceIndexView:(sfi_id)deviceId;
+-(void)redrawDeviceIndexView:(sfi_id)deviceId clientEvent:(NSString*)eventType;
 @end
