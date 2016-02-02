@@ -56,9 +56,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 };
 
 @interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate>{
-    NSMutableArray *wifiClientsArray;
-    int activeClientsCount;
-    int inActiveClientsCount;
+
 }
 @property SFIAlmondPlus *currentAlmond;
 @property BOOL newAlmondFirmwareVersionAvailable;
@@ -151,8 +149,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidUpdateAlmondList object:nil];
     
     [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:kSFIDidReceiveGenericAlmondRouterResponse object:nil];
-    
-    [center addObserver:self selector:@selector(onWiFiClientsListResponseCallback:) name:NOTIFICATION_WIFI_CLIENTS_LIST_RESPONSE object:nil];
 }
 
 - (void)initializeRouterSummaryAndSettings {
@@ -371,6 +367,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 - (void)onEditDevicesAndUsersCard:(id)sender {
     if (self.enableNewWifiClientsControl) {
         //        [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        NSMutableArray *wifiClientsArray = toolkit.wifiClientParser;
         if (wifiClientsArray.count==0) {
             return;
         }
@@ -782,7 +780,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     //                                        cellSummary:NSLocalizedString(@"router.card.Settings are not available.", @"Settings are not available.")
     //                                          cardColor:[UIColor securifiRouterTileBlueColor]];
     //    }
-    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSString *const cell_id = @"device_summary";
     
     SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
@@ -795,6 +793,15 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     cell.cardView.backgroundColor = [UIColor securifiRouterTileBlueColor];
     cell.title = NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users");
     
+    int activeClientsCount = 0;
+    int inActiveClientsCount = 0;
+    for(SFIConnectedDevice *client in toolkit.wifiClientParser){
+        if (client.isActive) {
+                            activeClientsCount++;
+        }else{
+                            inActiveClientsCount++;
+        }
+    }
     cell.summaries = @[
                        [NSString stringWithFormat:NSLocalizedString(@"router.devices-summary.%d Active, %d Inactive", @"%d ACTIVE, %d INACTIVE"),
                         activeClientsCount,
@@ -1098,77 +1105,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 #pragma mark - Cloud command senders and handlers
-
-- (void)onWiFiClientsListResponseCallback:(id)sender {
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data == nil) {
-        return;
-    }
-    NSLog(@"data: %@", data);
-    
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
-    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
-    NSDictionary *mainDict;
-    if(local){
-        mainDict = [data valueForKey:@"data"];
-    }else{
-        mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    }
-    NSLog(@"onWiFiClientsListResponseCallback: %@", mainDict);
-    
-    self.isAlmondUnavailable = NO;
-    
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (!self) {
-            return;
-        }
-        
-        if (self.disposed) {
-            return;
-        }
-        
-        //todo there is a race condition that has to be handled: current Almond selection may have been changed before this callback is received and processed.
-        activeClientsCount = 0;
-        inActiveClientsCount = 0;
-        if (self.navigationController.topViewController == self) {
-            if ([[mainDict valueForKey:@"Clients"] isKindOfClass:[NSArray class]]) {
-                NSArray *dDictArray = [mainDict valueForKey:@"Clients"];
-                wifiClientsArray = [NSMutableArray new];
-                for (NSDictionary *dict in dDictArray) {
-                    SFIConnectedDevice *device = [SFIConnectedDevice new];
-                    device.deviceID = [dict valueForKey:@"ID"];
-                    device.name = [dict valueForKey:@"Name"];
-                    device.deviceMAC = [dict valueForKey:@"MAC"];
-                    device.deviceIP = [dict valueForKey:@"LastKnownIP"];
-                    device.deviceConnection = [dict valueForKey:@"Connection"];
-                    device.name = [dict valueForKey:@"Name"];
-                    device.deviceLastActiveTime = [dict valueForKey:@"LastActiveEpoch"];
-                    device.deviceType = [dict valueForKey:@"Type"];
-                    device.deviceUseAsPresence = [[dict valueForKey:@"UseAsPresence"] boolValue];
-                    device.isActive = [[dict valueForKey:@"Active"] boolValue];
-                    device.timeout = [[dict valueForKey:@"Wait"] integerValue];
-                    device.deviceAllowedType = [[dict valueForKey:@"Block"] intValue];
-                    device.deviceSchedule = [dict valueForKey:@"Schedule"];
-                    if (device.isActive) {
-                        activeClientsCount++;
-                    }else{
-                        inActiveClientsCount++;
-                    }
-                    [wifiClientsArray addObject:device];
-                }
-                
-            }
-        }
-        
-        [self.HUD hide:YES];
-        [self.tableView reloadData];
-        [self.refreshControl endRefreshing];
-    });
-}
-
-
 - (void)onAlmondRouterCommandResponse:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];

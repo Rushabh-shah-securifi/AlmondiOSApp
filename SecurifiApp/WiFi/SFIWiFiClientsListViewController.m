@@ -75,26 +75,8 @@
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
                  object:nil];
     [center addObserver:self
-               selector:@selector(onDynamicClientAdded:)
-                   name:NOTIFICATION_UPDATE_WIFICLIENT_TABLEVIEW
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onDynamicClientUpdate:)
-                   name:NOTIFICATION_UPDATE_WIFICLIENT_TABLEVIEW
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(onDynamicClientUpdate:)
-                   name:NOTIFICATION_UPDATE_WIFICLIENT_TABLEVIEW
-                 object:nil];
-    [center addObserver:self
-               selector:@selector(onDynamicClientUpdate:)
-                   name:NOTIFICATION_UPDATE_WIFICLIENT_TABLEVIEW
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(onDynamicClientRemove:)
-                   name:NOTIFICATION_UPDATE_WIFICLIENT_TABLEVIEW
+               selector:@selector(onDynamicClientList_Add_Update_Remove:)
+                   name:NOTIFICATION_DYNAMIC_CLIENTLIST_ADD_UPDATE_REMOVE_NOTIFIER
                  object:nil];
     [center addObserver:self
                selector:@selector(onGetClientsPreferences:)
@@ -615,36 +597,12 @@
     }
 }
 
-- (void)onDynamicClientUpdate:(id)sender {
-    NSLog(@"onDynamicClientUpdate table view");
+//
+-(void)onDynamicClientList_Add_Update_Remove:(id)sender{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.connectedDevices = toolkit.wifiClientParser;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [tblDevices refreshData];
-        //
-    });
-    
-}
-
-- (void)onDynamicClientAdded:(id)sender {
-    NSLog(@"dynamic Added table view");
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    self.connectedDevices = toolkit.wifiClientParser;
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [tblDevices refreshData];
-        //
-    });
-}
-
-- (void)onDynamicClientRemove:(id)sender {
-    
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    self.connectedDevices = toolkit.wifiClientParser;
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [tblDevices refreshData];
-        //
     });
 }
 
