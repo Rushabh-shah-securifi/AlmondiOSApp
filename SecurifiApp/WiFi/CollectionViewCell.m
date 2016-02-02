@@ -11,33 +11,25 @@
 
 @implementation CollectionViewCell
 
-- (void)awakeFromNib {
-    NSLog(@"awakeFromNib");
-    [self changeBackgroundColor:[UIColor whiteColor]];
-//    [self setSelectedColor:[SFIColors lightGreenColor]];
-}
+//-(void)awakeFromNib{
+//    self.backgroundColor = [UIColor whiteColor];
+//}
 
--(void)changeBackgroundColor:(UIColor*)color{
-    NSLog(@"changeBackgroundColor");
-    UIView *bgView = [[UIView alloc]initWithFrame:self.bounds];
-    self.backgroundView = bgView;
-    self.backgroundView.backgroundColor = color;
-}
+//-(void)changeBackgroundColor:(UIColor*)color{
+    //    NSLog(@"changeBackgroundColor");
+    //    UIView *bgView = [[UIView alloc]initWithFrame:self.bounds];
+    //    self.backgroundView = bgView;
+    //    self.backgroundView.backgroundColor = color;
+//}
 
--(void)setSelectedColor:(UIColor*)color{
-    NSLog(@"setSelectedColor");
-    UIView *selectedView = [[UIView alloc]initWithFrame:self.bounds];
-    self.selectedBackgroundView = selectedView;
-    self.selectedBackgroundView.backgroundColor = color;
-}
 
 -(void)setSelected:(BOOL)selected{
     NSLog(@"set selected: %d", selected);
     [super setSelected:selected];
     if(selected)
-        [self changeBackgroundColor:[SFIColors lightGreenColor]];
+        self.backgroundColor = [SFIColors lightGreenColor];
     else
-        [self changeBackgroundColor:[UIColor whiteColor]];
+        self.backgroundColor = [UIColor whiteColor];
 }
 
 -(void)addDayTimeLable:(NSIndexPath *)indexPath{
@@ -48,7 +40,6 @@
         [self setTextLableProperties];
     }
     else if(indexPath.row == 0 || indexPath.row == 8){
-//        self.dayTimeLable.text = [NSString stringWithFormat:@"%ld-%ld",indexPath.section-1, (long)indexPath.section];
         self.dayTimeLable.text = @(indexPath.section - 1).stringValue;
         [self setTextLableProperties];
     }
@@ -56,15 +47,16 @@
 
 -(void)setTextLableProperties{
     self.userInteractionEnabled = NO;
-    [self changeBackgroundColor:[UIColor clearColor]];
+    self.backgroundColor = [UIColor clearColor];
 }
 
 -(void)setBlockedVal:(NSString*)blockedVal{
-    if([blockedVal isEqualToString:@"1"])
-//        [self setSelectedColor:[SFIColors lightGreenColor]];
-//    [self changeBackgroundColor:[SFIColors lightGreenColor]];
-//    [self setSelected:YES];
-        [self setSelected:YES];
+    if([blockedVal isEqualToString:@"1"]){
+        self.selected = YES;
+//        [self setSelected:YES];
+//        self.userInteractionEnabled = YES;
+    }
+    
 }
 
 @end

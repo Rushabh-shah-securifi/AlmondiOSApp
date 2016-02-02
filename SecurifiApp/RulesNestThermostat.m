@@ -25,11 +25,11 @@
     NSMutableArray *newIndexValues = [[NSMutableArray alloc] init];
     SFIDevicePropertyType type = deviceIndex.valueType;
     // for only heat true
-    if(type == SFIDevicePropertyType_THERMOSTAT_MODE){
+    if(type == SFIDevicePropertyType_NEST_THERMOSTAT_MODE){
         for(IndexValueSupport *indexValue in deviceIndex.indexValues){
-            if ([indexValue.matchData isEqualToString:@"Heat"]) {
+            if ([indexValue.matchData caseInsensitiveCompare:@"heat"] == NSOrderedSame) {
                 [newIndexValues addObject:indexValue];
-            }else if([indexValue.matchData isEqualToString:@"Off"]){
+            }else if([indexValue.matchData caseInsensitiveCompare:@"off"] == NSOrderedSame){
                 [newIndexValues addObject:indexValue];
             }
         }
@@ -38,10 +38,10 @@
     
     else if(type == SFIDevicePropertyType_HVAC_STATE){
         for(IndexValueSupport *indexValue in deviceIndex.indexValues){
-            if ([indexValue.matchData isEqualToString:@"Heating"]) {
+            if ([indexValue.matchData caseInsensitiveCompare:@"heating"] == NSOrderedSame) {
                 [newIndexValues addObject:indexValue];
             }
-            else if([indexValue.matchData isEqualToString:@"Off"]){
+            else if([indexValue.matchData caseInsensitiveCompare:@"off"] == NSOrderedSame){
                 [newIndexValues addObject:indexValue];
             }
         }
@@ -55,11 +55,11 @@
     NSMutableArray *newIndexValues = [[NSMutableArray alloc] init];
     SFIDevicePropertyType type = deviceIndex.valueType;
     // for only heat true
-    if(type == SFIDevicePropertyType_THERMOSTAT_MODE){
+    if(type == SFIDevicePropertyType_NEST_THERMOSTAT_MODE){
         for(IndexValueSupport *indexValue in deviceIndex.indexValues){
-            if ([indexValue.matchData isEqualToString:@"Cool"]) {
+            if ([indexValue.matchData caseInsensitiveCompare:@"cool"] == NSOrderedSame) {
                 [newIndexValues addObject:indexValue];
-            }else if([indexValue.matchData isEqualToString:@"Off"]){
+            }else if([indexValue.matchData caseInsensitiveCompare:@"off"] == NSOrderedSame){
                 [newIndexValues addObject:indexValue];
             }
         }
@@ -68,10 +68,10 @@
     
     else if(type == SFIDevicePropertyType_HVAC_STATE){
         for(IndexValueSupport *indexValue in deviceIndex.indexValues){
-            if ([indexValue.matchData isEqualToString:@"Cooling"]) {
+            if ([indexValue.matchData caseInsensitiveCompare:@"cooling"] == NSOrderedSame) {
                 [newIndexValues addObject:indexValue];
             }
-            else if([indexValue.matchData isEqualToString:@"Off"]){
+            else if([indexValue.matchData caseInsensitiveCompare:@"off"] == NSOrderedSame){
                 [newIndexValues addObject:indexValue];
             }
         }
@@ -99,7 +99,7 @@
         /*****    faster   *****/
         NSLog(@"start for loop");
         if(canCool == NO && canHeat == NO){
-            if(deviceIndex.valueType == SFIDevicePropertyType_THERMOSTAT_MODE)
+            if(deviceIndex.valueType == SFIDevicePropertyType_NEST_THERMOSTAT_MODE)
                 continue;
             else if(deviceIndex.valueType == SFIDevicePropertyType_THERMOSTAT_TARGET)
                 continue;
@@ -111,7 +111,7 @@
                 continue;
         }
         else if(canCool == NO && canHeat == YES){
-            if(deviceIndex.valueType == SFIDevicePropertyType_THERMOSTAT_MODE){
+            if(deviceIndex.valueType == SFIDevicePropertyType_NEST_THERMOSTAT_MODE){
                 //create new device index
                 deviceIndex = [self indexValuesForHasHeatWithDeviceIndex:deviceIndex];
             }
@@ -125,7 +125,7 @@
             }
         }
         else if(canCool == YES && canHeat == NO){
-            if(deviceIndex.valueType == SFIDevicePropertyType_THERMOSTAT_MODE){
+            if(deviceIndex.valueType == SFIDevicePropertyType_NEST_THERMOSTAT_MODE){
                 //create new device index
                 deviceIndex = [self indexValuesForHasCoolWithDeviceIndex:deviceIndex];
             }
@@ -161,18 +161,19 @@
     NSLog(@"can cool: %d\ncan heat: %d\nhasfan: %d", canCool, canHeat, hasFan);
     
     
-    for(__strong SFIDeviceIndex *deviceIndex in newDeviceIndexes){ //strong because, deviceIndex will just be a pointer otherwise
+    for(SFIDeviceIndex *deviceIndex in newDeviceIndexes){ //strong because, deviceIndex will just be a pointer otherwise
         SFIDevicePropertyType type = deviceIndex.valueType;
         /*****    faster   *****/
         NSLog(@"start for loop");
         if(canCool == NO && canHeat == NO){
+            NSLog(@"canCool == NO && canHeat == NO");
             if(type == SFIDevicePropertyType_HUMIDITY){
                 deviceIndex.cellId = 1;
             }
             else if(type == SFIDevicePropertyType_CURRENT_TEMPERATURE){
                 deviceIndex.cellId = 1;
             }
-            else if(type == SFIDevicePropertyType_AWAY_MODE){
+            else if(type == SFIDevicePropertyType_ISONLINE){
                 deviceIndex.cellId = 2;
             }
             else if(type == SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE){
@@ -180,19 +181,21 @@
             }
         }
         else if((canCool == YES && canHeat == NO) || (canCool == NO && canHeat == YES)){
+            NSLog(@"canCool == YES && canHeat == NO) || (canCool == NO && canHeat == YES");
+            NSLog(@"before - deviceindex: %d cellid: %d", deviceIndex.indexID, deviceIndex.cellId);
             if(type == SFIDevicePropertyType_THERMOSTAT_TARGET){
-                deviceIndex.cellId = 1;
+                deviceIndex.cellId = 2;
             }
             else if(type == SFIDevicePropertyType_HUMIDITY){
                 deviceIndex.cellId = 1;
             }
             else if(type == SFIDevicePropertyType_CURRENT_TEMPERATURE){
-                deviceIndex.cellId = 2;
+                deviceIndex.cellId = 1;
             }
-            else if(type == SFIDevicePropertyType_THERMOSTAT_MODE){
+            else if(type == SFIDevicePropertyType_NEST_THERMOSTAT_MODE){
                 deviceIndex.cellId = 3;
             }
-            else if(type == SFIDevicePropertyType_AWAY_MODE){
+            else if(type == SFIDevicePropertyType_ISONLINE){
                 deviceIndex.cellId = 3;
             }
             else if(type == SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE){
@@ -201,11 +204,13 @@
             else if(type == SFIDevicePropertyType_HVAC_STATE){
                 deviceIndex.cellId = 4;
             }
+            NSLog(@"after - deviceindex: %d cellid: %d", deviceIndex.indexID, deviceIndex.cellId);
         }
         //        else if(canCool == NO && canHeat == YES){
         //
         //        }
         if(hasFan == NO){
+            NSLog(@"hasFan == NO");
             if(deviceIndex.valueType == SFIDevicePropertyType_HUMIDITY){
                 deviceIndex.cellId = 1;
             }

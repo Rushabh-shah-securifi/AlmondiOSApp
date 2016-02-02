@@ -22,16 +22,17 @@ const int pickerRangeWidth = 100;
 const int pickerRangeHeight = 108; //here are only three valid heights for UIPickerView (162.0, 180.0 and 216.0).
 const int pickerSpacing = 5;
 
-const int pickerRowHeight = 35;
+const int pickerRowHeight = 50;
 const int pickerRowWidth = 30;
-const int rowFontSize = 12;
+const int rowFontSize = 16;
+const int lableFontSize = 12;
 
 NSMutableArray * pickerMinsRange;
 NSMutableArray *pickerSecsRange;
 UIView * actionSheet;
 
 PreDelayRuleButton *ruleButton;
-
+bool isDelayViewPresent = NO;
 int delaySecs;
 int secs;
 int mins;
@@ -39,8 +40,14 @@ int mins;
 -(void)addPickerForButton:(UIButton*)delayButton parentController:(AddRulesViewController*)parentController{
     delayButton.selected = !delayButton.selected;
     ruleButton = (PreDelayRuleButton *)[delayButton superview];
-    delaySecs = [ruleButton.subProperties.delay intValue];
+    
     if(delayButton.selected){
+        if(isDelayViewPresent){
+            [self removeDelayView];
+        }
+        delaySecs = [ruleButton.subProperties.delay intValue];
+        NSLog(@"delay secs: %d", delaySecs);
+        isDelayViewPresent = YES;
         pickerMinsRange = [[NSMutableArray alloc]init];
         pickerSecsRange = [[NSMutableArray alloc]init];
         for (int i = 0; i <= 4; i++) {
@@ -52,6 +59,7 @@ int mins;
         [self setupPicker:parentController];
     }else{
         [self removeDelayView];
+        isDelayViewPresent = NO;
         delayButton.backgroundColor = [UIColor colorFromHexString:@"FF9500"];
         [delayButton setBackgroundColor:[UIColor colorFromHexString:@"FF9500"]];
         ruleButton.subProperties.delay = [NSString stringWithFormat:@"%d", [self getDelay]];
@@ -68,6 +76,7 @@ int mins;
 //    pickerRange.backgroundColor = [UIColor orangeColor];
     mins = (int)[self getMinsRow];
     secs = (int)[self getSecsRow];
+    NSLog(@"mins: %d, secs: %d", mins, secs);
     [pickerRange selectRow:[self getMinsRow] inComponent:0 animated:YES];
     [pickerRange selectRow:[self getSecsRow] inComponent:1 animated:YES];
     
@@ -79,11 +88,11 @@ int mins;
     UILabel *minsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, subView.frame.size.height/2 - lableHeight/2, lableWidth,lableHeight)];
     minsLabel.textAlignment = NSTextAlignmentCenter;
     minsLabel.text = @"Mins";
-    minsLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:rowFontSize];
+    minsLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:lableFontSize];
     
     UILabel *secsLabel = [[UILabel alloc] initWithFrame:CGRectMake(lableWidth + pickerRangeWidth + 2*pickerSpacing, subView.frame.size.height/2 - lableHeight/2, lableWidth,lableHeight)];
     secsLabel.text = @"Secs";
-    secsLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:rowFontSize];
+    secsLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:lableFontSize];
     secsLabel.textAlignment = NSTextAlignmentCenter;
     
     [subView addSubview:minsLabel];
@@ -112,20 +121,11 @@ int mins;
 
 
 -(void)removeDelayView{
-    //    if(actionSheet != nil){ //todo
     NSLog(@"removeDelayView");
     for(UIView *view in [actionSheet subviews]){
         [view removeFromSuperview];
     }
     [actionSheet removeFromSuperview];
-    
-//    [UIView animateWithDuration:0.3 animations:^{
-//        actionSheet.alpha = 1;
-//    }completion:^(BOOL finished) {
-//        [actionSheet removeFromSuperview];
-        //            actionSheet = nil;
-//    }];
-    //    }
 }
 
 -(UIPickerView*)createPickerView:(CGRect)frame{
@@ -182,16 +182,6 @@ int mins;
     return 0;
 }
 
-//- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-//    NSLog(@"title for row");
-//    if(component == 0){
-//        return [pickerMinsRange objectAtIndex:row];
-//    }else{
-//        return [pickerSecsRange objectAtIndex:row];
-//    }
-//    return @"";
-//}
-
 // Set the width of the component inside the picker
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
     NSLog(@"widthForComponent");
@@ -212,15 +202,16 @@ int mins;
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
 {
     NSLog(@"viewforrow");
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, pickerRowWidth, pickerRowHeight)];
+    UILabel *lable = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, pickerRowWidth, pickerRowHeight)];
     if(component == 0){
-        label.text = [pickerMinsRange objectAtIndex:row];
+        lable.text = [pickerMinsRange objectAtIndex:row];
     }else{
-        label.text = [pickerSecsRange objectAtIndex:row];
+        lable.text = [pickerSecsRange objectAtIndex:row];
     }
-    label.textAlignment = NSTextAlignmentCenter;
-    label.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:rowFontSize];
-    return label;
+    lable.textAlignment = NSTextAlignmentCenter;
+    lable.backgroundColor = [UIColor yellowColor];
+    lable.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:rowFontSize];
+    return lable;
 }
 
 //- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {

@@ -2747,7 +2747,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"heat";
-                s1.displayText=@"HEAT";
+                s1.displayText=@"HEAT MODE";
                 s1.iconName = @"imgHeat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s mode set to", @"'s mode set to");
@@ -2755,7 +2755,7 @@
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchType = MatchType_any;
                 s2.matchData = @"cool";
-                s2.displayText = @"COOL";
+                s2.displayText = @"COOL MODE";
                 s2.iconName = @"imgCool";
                 s2.valueFormatter.action = ValueFormatterAction_formatString;
                 s2.valueFormatter.notificationPrefix = NSLocalizedString(@"'s mode set to", @"'s mode set to");
@@ -2764,7 +2764,7 @@
                 s3.matchType = MatchType_any;
                 s3.matchData = @"heat-cool";
                 s3.iconName = @"imgAuto";
-                s3.displayText = @"HEAT COOL";
+                s3.displayText = @"HEAT COOL MODE";
                 s3.valueFormatter.action = ValueFormatterAction_formatString;
                 s3.valueFormatter.notificationPrefix = NSLocalizedString(@"'s mode set to", @"'s mode set to");
                 
@@ -2772,7 +2772,7 @@
                 s4.matchType = MatchType_any;
                 s4.matchData = @"off";
                 s4.iconName = @"imgOff";
-                s4.displayText = @"OFF";
+                s4.displayText = @"OFF MODE";
                 s4.valueFormatter.action = ValueFormatterAction_formatString;
                 s4.valueFormatter.notificationPrefix = NSLocalizedString(@"'s mode set to", @"'s mode set to");
                 
@@ -2785,7 +2785,7 @@
                 s1.matchData = @"70";
                 s1.layoutType = @"dimButton";
                 s1.iconName = @"target_temperature";
-                s1.displayText = @"THERMOSTAT\nTARGET";
+                s1.displayText = @"THERMOSTAT TARGET";
                 s1.minValue = 50;
                 s1.maxValue = 90;
                 s1.notificationText = @"";
@@ -4197,7 +4197,7 @@
             
             return @[deviceIndex1, deviceIndex2, deviceIndex3, deviceIndex4, deviceIndex5, deviceIndex6, deviceIndex7];
         }
-            
+        
         case SFIDeviceType_NestThermostat_57:{
             
             SFIDeviceIndex *deviceIndex1=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_NEST_THERMOSTAT_MODE];
@@ -4209,7 +4209,7 @@
             SFIDeviceIndex *deviceIndex2=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_THERMOSTAT_TARGET];
             deviceIndex2.indexValues=[self resolve:device index:SFIDevicePropertyType_THERMOSTAT_TARGET];
             deviceIndex2.indexID=3;
-            deviceIndex2.cellId = 1;
+            deviceIndex2.cellId = 3;
             deviceIndex2.isEditableIndex = YES;
             
             SFIDeviceIndex *deviceIndex3=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_HUMIDITY];
@@ -4243,28 +4243,13 @@
             SFIDeviceIndex *deviceIndex10=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_CURRENT_TEMPERATURE];
             deviceIndex10.indexValues=[self resolve:device index:SFIDevicePropertyType_CURRENT_TEMPERATURE];
             deviceIndex10.indexID=10;
-            deviceIndex10.cellId = 3;
-            
-            //            SFIDeviceIndex *deviceIndex12=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_CAN_COOL];
-            //            deviceIndex12.indexValues=[self resolve:device index:SFIDevicePropertyType_CAN_COOL];
-            //            deviceIndex12.indexID=12;
-            //            deviceIndex12.cellId = 4;
-            //
-            //            SFIDeviceIndex *deviceIndex13=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_CAN_HEAT];
-            //            deviceIndex13.indexValues=[self resolve:device index:SFIDevicePropertyType_CAN_HEAT];
-            //            deviceIndex13.indexID=13;
-            //            deviceIndex13.cellId = 4;
-            //
-            //            SFIDeviceIndex *deviceIndex15=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_HAS_FAN];
-            //            deviceIndex15.indexValues=[self resolve:device index:SFIDevicePropertyType_HAS_FAN];
-            //            deviceIndex15.indexID=15;
-            //            deviceIndex15.cellId = 4;
+            deviceIndex10.cellId = 1;
             
             SFIDeviceIndex *deviceIndex16=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_HVAC_STATE];
             deviceIndex16.indexValues=[self resolve:device index:SFIDevicePropertyType_HVAC_STATE];
             deviceIndex16.indexID=16;
             deviceIndex16.cellId = 6;
-            NSLog(@"SFIDeviceType_NestThermostat_57 of newDeviceIndexes is %lu",@[deviceIndex1, deviceIndex2, deviceIndex3, deviceIndex4, deviceIndex5, deviceIndex7, deviceIndex8, deviceIndex10, deviceIndex16].count);
+            
             return @[deviceIndex1, deviceIndex2, deviceIndex3, deviceIndex4, deviceIndex5, deviceIndex7, deviceIndex8, deviceIndex10, deviceIndex16];
         }
         case SFIDeviceType_BuiltInSiren_60: {
