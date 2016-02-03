@@ -52,7 +52,7 @@ SecurifiToolkit *toolkit;
 int xVal = 20;
 
 + (void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions showCrossBtn:(BOOL)showCross parentController:(AddRulesViewController*)addRuleController{
-    
+    delayPicker = [DelayPicker new];
     toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     deviceArray=[toolkit deviceList:plus.almondplusMAC];
@@ -261,11 +261,8 @@ int xVal = 20;
 }
 
 + (void)onActionDelayClicked:(id)sender{
-    
     NSLog(@"onactiondelay clicked");
     UIButton *delayButton = sender;
-    
-    delayPicker = [DelayPicker new];
     [delayPicker addPickerForButton:delayButton parentController:parentController];
 }
 +(NSString *)getColorHex:(NSString*)value {
