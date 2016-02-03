@@ -45,6 +45,7 @@ int mins;
         if(isDelayViewPresent){
             [self removeDelayView];
         }
+        delayButton.backgroundColor = [SFIColors ruleLightOrangeColor];
         delaySecs = [ruleButton.subProperties.delay intValue];
         NSLog(@"delay secs: %d", delaySecs);
         isDelayViewPresent = YES;
@@ -59,6 +60,7 @@ int mins;
         [self setupPicker:parentController];
     }else{
         [self removeDelayView];
+        delayButton.backgroundColor = [SFIColors ruleOrangeColor];
         isDelayViewPresent = NO;
         delayButton.backgroundColor = [UIColor colorFromHexString:@"FF9500"];
         [delayButton setBackgroundColor:[UIColor colorFromHexString:@"FF9500"]];
@@ -209,7 +211,7 @@ int mins;
         lable.text = [pickerSecsRange objectAtIndex:row];
     }
     lable.textAlignment = NSTextAlignmentCenter;
-    lable.backgroundColor = [UIColor yellowColor];
+    lable.backgroundColor = [UIColor clearColor];
     lable.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:rowFontSize];
     return lable;
 }

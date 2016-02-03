@@ -531,7 +531,7 @@ NSMutableArray * pickerValuesArray2;
     NSString *buttonMatchdata = indexSwitchButton.subProperties.matchData;
     if(!self.isTrigger){
         indexSwitchButton.selected = YES ;
-        [self.selectedButtonsPropertiesArrayAction addObject:indexSwitchButton.subProperties];
+        [self.selectedButtonsPropertiesArrayAction addObject:[indexSwitchButton.subProperties createNew]];
         [self.delegate updateTriggerAndActionDelegatePropertie:!self.isTrigger];
     }else{
         [self toggleTriggerIndex:buttonIndex superView:[sender superview] indexButton:indexSwitchButton];

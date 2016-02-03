@@ -90,6 +90,9 @@
 + (UIColor *)lightGreenColor{
     return [UIColor colorFromHexString:@"a5d7a7"];
 }
++ (UIColor *)ruleLightOrangeColor{
+    return [UIColor colorFromHexString:@"ffcb7f"];
+}
 
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName {
     self = [super init];
