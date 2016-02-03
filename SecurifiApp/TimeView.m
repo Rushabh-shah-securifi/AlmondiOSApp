@@ -56,9 +56,6 @@ int segmentType;
     timeSegmentControl.tintColor = [SFIColors ruleBlueColor];
     timeSegmentControl.center = CGPointMake(CGRectGetMidX(scrollView.bounds), timeSegmentControl.center.y);
     [timeSegmentControl addTarget:self action:@selector(onClickSegmentControl:) forControlEvents: UIControlEventValueChanged];
-    CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
-                                       500);
-    [scrollView setContentSize:scrollableSize];
     [scrollView addSubview:timeSegmentControl];
 }
 
@@ -91,7 +88,7 @@ int segmentType;
     }
     [self.delegate AddOrUpdateTime];
     if(segmentType == 1 || segmentType == 2)
-        self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.frame.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight + 70);
+        self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.frame.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight);
 }
 
 -(void)addAnyTimeInfoLable{
@@ -161,6 +158,7 @@ int segmentType;
     self.ruleTime.isPresent = YES;
     NSLog(@"dayofweeek: %@ - hours: %ld - mins: %ld", self.ruleTime.dayOfWeek, (long)self.ruleTime.hours, (long)self.ruleTime.mins);
 }
+
 
 -(void)addBetweenDatePicker{
     UIView *betweenDatePickerView = [self createBetweenDateComponentView];
@@ -235,8 +233,9 @@ int segmentType;
 
 -(void)addDayView{
     int xVal = 4;
-    UIView *dayView = [[UIView alloc]initWithFrame:CGRectMake(0, datePickerHeight, self.segmentDetailView.frame.size.width, dayViewHeight)];
-    double dayButtonWidth = self.segmentDetailView.frame.size.width/8.5;
+    int spacing = 8;
+    double dayButtonWidth = 30;
+    UIView *dayView = [[UIView alloc]initWithFrame:CGRectMake(0, datePickerHeight, (dayButtonWidth+spacing)*7, dayViewHeight)];
     int tag = 0;
     NSArray* dayArray = [[NSArray alloc]initWithObjects:@"Su",@"Mo",@"Tu",@"We",@"Th",@"Fr",@"Sa", nil];
     for(NSString* day in dayArray){
@@ -249,7 +248,7 @@ int segmentType;
         [dayButton addTarget:self action:@selector(onDayBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         [dayView addSubview:dayButton];
         dayButton.selected = NO;
-        xVal += dayButtonWidth + 8;
+        xVal += dayButtonWidth + spacing;
         tag++;
     }
     dayView.center = CGPointMake(CGRectGetMidX(self.segmentDetailView.bounds), dayView.center.y);

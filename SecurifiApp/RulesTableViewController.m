@@ -121,6 +121,7 @@ CGPoint tablePoint;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.rules = toolkit.ruleList;
     
+    
     [self.tableView reloadData];
     self.tableView.contentOffset = tablePoint;
 }
@@ -321,17 +322,23 @@ CGPoint tablePoint;
     [self.navigationController pushViewController:addRuleController animated:YES];
 }
 - (void)activateRule:(CustomCellTableViewCell *)cell{
-    if(cell.activeDeactiveSwitch.selected){
-        NSLog(@" deactivateRule");
-
-        [cell.activeDeactiveSwitch setOn:YES animated:YES];
-    }else{
-        NSLog(@"activateRule");
-
-        //send activate command
-        
-        [cell.activeDeactiveSwitch setOn:NO animated:YES];
-    }
+    NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
+    NSDictionary *payload;
+        if(cell.activeDeactiveSwitch.selected){
+            NSLog(@" deactivateRule");
+            payload = [self getactivateRulePayload:indexPath.row activate:@"0"];
+            [cell.activeDeactiveSwitch setOn:YES animated:YES];
+        }else{
+            NSLog(@"activateRule");
+            payload = [self getactivateRulePayload:indexPath.row activate:@"1"];
+            [cell.activeDeactiveSwitch setOn:NO animated:YES];
+        }
+        if(payload!=nil){
+            GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+            cloudCommand.commandType = CommandType_UPDATE_REQUEST;
+            cloudCommand.command = [payload JSONString];
+            [self asyncSendCommand:cloudCommand];
+        }
 }
 /*
  {
@@ -342,6 +349,27 @@ CGPoint tablePoint;
  "MobileInternalIndex":"111"
  }
  */
+-(NSDictionary *)getactivateRulePayload:(NSInteger)row activate:(NSString*)value{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    if (!plus.almondplusMAC) {
+        return nil;
+    }
+    NSMutableDictionary *rulePayload = [[NSMutableDictionary alloc]init];
+    Rule *currentRule = self.rules[row];
+    if(currentRule==nil ||currentRule.ID==nil)
+        return nil;
+    
+    [rulePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
+    [rulePayload setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
+    [rulePayload setValue:@"ValidateRule" forKey:@"CommandType"];
+    [rulePayload setValue:value forKey:@"Value"];
+    [rulePayload setValue:[self getRuleID:currentRule.ID] forKey:@"ID"]; //Get From Rule instance
+    
+    return rulePayload;
+    
+}
+
 #pragma mark asyncRequest methods
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];

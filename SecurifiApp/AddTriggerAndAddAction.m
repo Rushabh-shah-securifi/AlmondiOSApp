@@ -223,12 +223,7 @@ NSMutableArray * pickerValuesArray2;
 //on devicelist button click, calling this method
 -(void) createDeviceIndexesLayoutForDeviceId:(int)deviceId deviceType:(SFIDeviceType)deviceType deviceName:(NSString*)deviceName deviceIndexes:(NSArray*)deviceIndexes{
     int numberOfCells = [self maxCellId:deviceIndexes];
-    
-    CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
-                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING + 65); // 50 temp fix
-    
-    [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
-    
+
     if(deviceType == SFIDeviceType_NestThermostat_57){
         RulesNestThermostat *rulesNestThermostatObject = [[RulesNestThermostat alloc]init];
         
@@ -273,6 +268,10 @@ NSMutableArray * pickerValuesArray2;
             j++;
         }
     }
+    CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
+                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING + 65); // 50 temp fix
+    
+    [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
 }
 -(void)addArrayToDictionary:(NSMutableDictionary *)deviceIndexesDict deviceIndex:(SFIDeviceIndex *)deviceIndex{
     if(self.isTrigger ||(!self.isTrigger && deviceIndex.isEditableIndex)){

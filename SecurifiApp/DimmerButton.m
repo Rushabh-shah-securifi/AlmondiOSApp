@@ -173,7 +173,7 @@
 //    if(self.crossButton.text != nil){
 //        self.crossButton.text =nil;
 //    }
-    crossButtonBGView = [[UIView alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 12, 16, countDiameter, countDiameter)];
+    crossButtonBGView = [[UIView alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 8, 12, countDiameter, countDiameter)];
     [self setLayer];
     [self addImage:[UIImage imageNamed:@"icon_cross_gray"] y:crossButtonBGView.frame.origin.y widthAndHeight:countDiameter];
     [crossButtonBGView setBackgroundColor:[SFIColors ruleLightGrayColor]];

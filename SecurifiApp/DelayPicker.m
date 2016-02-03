@@ -46,6 +46,8 @@ int mins;
             [self removeDelayView];
         }
         delayButton.backgroundColor = [SFIColors ruleLightOrangeColor];
+        (ruleButton->actionbutton).userInteractionEnabled = NO;
+        parentController.deviceIndexButtonScrollView.userInteractionEnabled = NO;
         delaySecs = [ruleButton.subProperties.delay intValue];
         NSLog(@"delay secs: %d", delaySecs);
         isDelayViewPresent = YES;
@@ -61,6 +63,8 @@ int mins;
     }else{
         [self removeDelayView];
         delayButton.backgroundColor = [SFIColors ruleOrangeColor];
+        (ruleButton->actionbutton).userInteractionEnabled = YES;
+        parentController.deviceIndexButtonScrollView.userInteractionEnabled = YES;
         isDelayViewPresent = NO;
         delayButton.backgroundColor = [UIColor colorFromHexString:@"FF9500"];
         [delayButton setBackgroundColor:[UIColor colorFromHexString:@"FF9500"]];

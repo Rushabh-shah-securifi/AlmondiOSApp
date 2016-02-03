@@ -67,10 +67,7 @@
                                 </constraints>
                             </view>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tgM-CG-ybH">
-                                <rect key="frame" x="0.0" y="211" width="600" height="354"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="354" id="kF9-NI-OYW"/>
-                                </constraints>
+                                <rect key="frame" x="0.0" y="211" width="600" height="389"/>
                             </scrollView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NsQ-vL-hKI">
                                 <rect key="frame" x="0.0" y="176" width="600" height="34"/>
@@ -144,6 +141,7 @@
                             <constraint firstItem="z4L-S0-Kau" firstAttribute="top" secondItem="Dn6-LF-leG" secondAttribute="bottom" identifier="40" id="SqB-1R-DkA"/>
                             <constraint firstItem="j8U-ds-tM7" firstAttribute="top" secondItem="NsQ-vL-hKI" secondAttribute="bottom" id="WmN-gb-5wz"/>
                             <constraint firstAttribute="trailingMargin" secondItem="7YL-1J-K4t" secondAttribute="trailing" constant="-20" id="aVr-BC-UqH"/>
+                            <constraint firstItem="gNX-x7-Eb1" firstAttribute="top" secondItem="tgM-CG-ybH" secondAttribute="bottom" id="dHS-3M-vuk"/>
                             <constraint firstAttribute="trailing" secondItem="y7R-Pc-djW" secondAttribute="trailing" identifier="41" id="efS-9a-6Vh"/>
                             <constraint firstItem="y7R-Pc-djW" firstAttribute="top" secondItem="z4L-S0-Kau" secondAttribute="bottom" constant="1" identifier="43" id="epc-wm-sLp"/>
                             <constraint firstItem="lbi-WN-E4V" firstAttribute="leading" secondItem="Yk0-l5-x7T" secondAttribute="leading" id="fTh-cV-0Je"/>

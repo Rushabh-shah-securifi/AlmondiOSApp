@@ -28,5 +28,5 @@ const int countDiameter = 16;
 const int TOPSCROLLPADDING = 5;
 const int rulesButtonsViewWidth = 91;
 const int rulesButtonsViewHeight = 90;
-const int crossButtonScale = 4.5;
+const int crossButtonScale = 5.5;
 @end

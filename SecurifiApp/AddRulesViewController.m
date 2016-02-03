@@ -31,6 +31,7 @@
 #import "RulePayload.h"
 #import "AddTriggerAndAddAction.h"
 #import "SFISubPropertyBuilder.h"
+#import "MBProgressHUD.h"
 //for wifi clients
 
 @interface AddRulesViewController()<UIAlertViewDelegate,AddTriggerAndAddActionDelegate,SFISubPropertyBuilderDelegate>{
@@ -46,7 +47,7 @@
 @property (weak, nonatomic) SFIRouterClientsTableViewController *routerClientstableView;//request
 @property (weak, nonatomic) IBOutlet UIImageView *ifThenTabSeperator;
 @property (nonatomic,strong)AddTriggerAndAddAction *triggerAction;
-
+@property(nonatomic, readonly) MBProgressHUD *HUD;
 @end
 
 @implementation AddRulesViewController
@@ -115,6 +116,7 @@ UITextField *textField;
         //        self.originalSceneInfo = [self.sceneInfo copy];
         //to do copy rules array
         //        if(self.rule.ID != NULL){
+         [self.HUD hide:YES];
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.navigationController popViewControllerAnimated:YES];
         });
@@ -410,6 +412,17 @@ UITextField *textField;
     NSLog(@" rules total actions %ld",(unsigned long)self.rule.triggers);
     RulePayload *rulePayload = [RulePayload new];
     rulePayload.rule = self.rule;
+    
+    //HUd methods.....
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = @"Saving Rule...";
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+    [self showHudWithTimeout];
+    
+    ///
+    
     NSDictionary *payload = [rulePayload createRulePayload:randomMobileInternalIndex with:self.isInitialized];
     
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
@@ -417,6 +430,12 @@ UITextField *textField;
     cloudCommand.command = [payload JSONString];
     [self asyncSendCommand:cloudCommand];
     NSLog(@"rules payload %@",[payload JSONString]);
+}
+- (void)showHudWithTimeout {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD show:YES];
+        [self.HUD hide:YES afterDelay:5];
+    });
 }
 
 -(void)btnCancelTap:(id)sender{
