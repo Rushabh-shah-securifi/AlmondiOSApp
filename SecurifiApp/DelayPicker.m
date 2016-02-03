@@ -24,8 +24,8 @@ const int pickerSpacing = 5;
 
 const int pickerRowHeight = 50;
 const int pickerRowWidth = 30;
-const int rowFontSize = 16;
-const int lableFontSize = 12;
+const int rowFontSize = 19;
+const int lableFontSize = 15;
 
 NSMutableArray * pickerMinsRange;
 NSMutableArray *pickerSecsRange;

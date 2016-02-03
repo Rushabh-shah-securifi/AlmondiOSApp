@@ -426,7 +426,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"70";
-                s1.iconName = @"27_thermostat";
+                s1.iconName = @"target_temperature";
                 s1.displayText = @"TEMPERATURE";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature changed to ", @"'s temperature changed to ");
@@ -773,7 +773,7 @@
             if (type == SFIDevicePropertyType_TEMPERATURE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
-                s1.iconName = @"27_thermostat";
+                s1.iconName = @"target_temperature";
                 s1.displayText=@"TEMPERATURE";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature changed to ", @"'s temperature changed to ");
@@ -2415,7 +2415,7 @@
                 s1.matchType = MatchType_any;
                 s1.displayText=@"TEMPERATURE";
                 s1.matchData = @"70";
-                s1.iconName = @"27_thermostat";
+                s1.iconName = @"target_temperature";
                 s1.minValue=32;
                 s1.maxValue=104;
                 s1.layoutType=@"dimButton";
@@ -2908,7 +2908,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"70";
-                s1.iconName = @"27_thermostat";
+                s1.iconName = @"target_temperature";
                 s1.notificationText = NSLocalizedString(@"Temperature", @"Temperature");
                 return @[s1];
             }
@@ -2964,7 +2964,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_equals;
                 s1.matchData = @"true";
-                s1.iconName = @"27_thermostat";
+                s1.iconName = @"target_temperature";
                 s1.notificationText = @" is using Emergency Heat";
                 
                 return @[s1];
