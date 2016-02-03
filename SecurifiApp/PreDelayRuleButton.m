@@ -36,7 +36,7 @@
     lblDeviceName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width,textHeight)];
     //    lblTitle.font = self.titleLabel.font;
     lblDeviceName.text = title;
-    [lblDeviceName setFont: [lblDeviceName.font fontWithSize: fontSize]];
+    lblDeviceName.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:10];
     lblDeviceName.numberOfLines=0;
     lblDeviceName.textAlignment = NSTextAlignmentCenter;
     lblDeviceName.textColor = [SFIColors darkGrayColor];
@@ -76,11 +76,12 @@
 //    [actionbutton setButtonCross:NO];
     [self addSubview:actionbutton];
     
+    
     //displaytext
     lblDisplayText = [[UILabel alloc] initWithFrame:CGRectMake(0, triggerActionBtnWidth + textHeight, self.frame.size.width,textHeight)];
     //    lblTitle.font = self.titleLabel.font;
     lblDisplayText.text = displayText;
-    [lblDisplayText setFont: [lblDisplayText.font fontWithSize: fontSize]];
+     lblDisplayText.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:fontSize];
     lblDisplayText.numberOfLines=0;
     lblDisplayText.textAlignment = NSTextAlignmentCenter;
     lblDisplayText.textColor = [SFIColors ruleGraycolor];

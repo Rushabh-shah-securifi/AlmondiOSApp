@@ -225,7 +225,7 @@ NSMutableArray * pickerValuesArray2;
     int numberOfCells = [self maxCellId:deviceIndexes];
     
     CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
-                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING + 50); // 50 temp fix
+                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING + 65); // 50 temp fix
     
     [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
     
@@ -441,7 +441,7 @@ NSMutableArray * pickerValuesArray2;
 }
 -(SFIDeviceIndex *)getToggelDeviceIndex{
     IndexValueSupport *indexValue =[[IndexValueSupport alloc]init];
-    indexValue.displayText = @"Toggle";
+    indexValue.displayText = @"TOGGLE";
     indexValue.iconName = @"toggle_icon.png";
     indexValue.matchData = @"toggle";
     NSArray *indexvaluearray = [[NSArray alloc]initWithObjects:indexValue, nil];
@@ -686,7 +686,6 @@ NSMutableArray * pickerValuesArray2;
         case SFIDeviceType_MultiLevelSwitch_2:
         case SFIDeviceType_MultiLevelOnOff_4:
         case SFIDeviceType_DoorLock_5:
-        case SFIDeviceType_StandardWarningDevice_21:
         case SFIDeviceType_SmartACSwitch_22:
         case SFIDeviceType_ZigbeeDoorLock_28:
         case SFIDeviceType_Siren_42:
@@ -694,6 +693,7 @@ NSMutableArray * pickerValuesArray2;
         case SFIDeviceType_BinaryPowerSwitch_45:
         case SFIDeviceType_HueLamp_48:
         case SFIDeviceType_SecurifiSmartSwitch_50:
+        case SFIDeviceType_MultiSwitch_43:
         {
             return  YES;
         }

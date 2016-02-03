@@ -52,7 +52,7 @@
     [self.bgView addSubview:lblMain];
     
     self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.bgView.frame.size.height+textPadding -5, self.frame.size.width-textHeight,textHeight)];
-    [self.bottomLabel setFont: [self.bottomLabel.font fontWithSize: fontSize]];
+    self.bottomLabel.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:fontSize];
     self.bottomLabel.numberOfLines=0;
     self.bottomLabel.textAlignment = NSTextAlignmentCenter;
     self.bottomLabel.textColor = [SFIColors ruleGraycolor];
@@ -78,7 +78,7 @@
     lblDeviceName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width,textHeight)];
     //    self.bottomLabel.font = self.titleLabel.font;
     lblDeviceName.text = title;
-    [lblDeviceName setFont: [lblDeviceName.font fontWithSize: fontSize]];
+    lblDeviceName.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:10];
     lblDeviceName.numberOfLines=0;
     lblDeviceName.textAlignment = NSTextAlignmentCenter;
     lblDeviceName.textColor = [SFIColors darkGrayColor];
