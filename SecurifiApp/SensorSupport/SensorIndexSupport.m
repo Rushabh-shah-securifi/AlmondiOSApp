@@ -2217,10 +2217,10 @@
             if (type == SFIDevicePropertyType_ILLUMINANCE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_equals;
-                s1.matchData = @"0 lux";
+                s1.matchData = @"lux";
                 s1.layoutType=@"dimButton";
                 s1.iconName = DT25_LIGHT_SENSOR_TRUE;
-                s1.displayText=@"0";
+                s1.displayText=@"";
                 s1.minValue = 0;
                 s1.maxValue = 100;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
@@ -2228,7 +2228,7 @@
                 s1.valueFormatter.suffix = @"%";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.matchData = @"0 lux";
+                s2.matchData = @"lux";
                 s1.layoutType=@"dimButton";
                 s2.matchType = MatchType_not_equals;
                 s2.iconName = @"25_bulb_on";
@@ -3879,7 +3879,7 @@
             deviceIndex2.indexValues=[self resolve:device index:SFIDevicePropertyType_BATTERY];
             deviceIndex2.indexID=2;
             deviceIndex2.cellId = 1;
-            return @[deviceIndex1,deviceIndex2];
+            return @[deviceIndex2,deviceIndex1];
         }
             
         case SFIDeviceType_MoistureSensor_40: {
@@ -4016,22 +4016,22 @@
             SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_BATTERY];
             deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_BATTERY];
             deviceIndex2.indexID = 2;
-            deviceIndex2.cellId = 1;
+            deviceIndex2.cellId = 4;
             
             SFIDeviceIndex *deviceIndex3=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_ILLUMINANCE];
             deviceIndex3.indexValues=[self resolve:device index:SFIDevicePropertyType_ILLUMINANCE];
             deviceIndex3.indexID=3;
-            deviceIndex3.cellId = 1;
+            deviceIndex3.cellId = 2;
             
             SFIDeviceIndex *deviceIndex4=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_TEMPERATURE];
             deviceIndex4.indexValues=[self resolve:device index:SFIDevicePropertyType_TEMPERATURE];
             deviceIndex4.indexID=4;
-            deviceIndex4.cellId = 2;
+            deviceIndex4.cellId = 1;
             
             SFIDeviceIndex *deviceIndex5=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_HUMIDITY];
             deviceIndex5.indexValues=[self resolve:device index:SFIDevicePropertyType_HUMIDITY];
             deviceIndex5.indexID=5;
-            deviceIndex5.cellId =2;
+            deviceIndex5.cellId =1;
             
             return @[deviceIndex1, deviceIndex2, deviceIndex3, deviceIndex4, deviceIndex5];
         }
