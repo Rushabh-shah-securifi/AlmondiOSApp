@@ -235,6 +235,8 @@ CGPoint tablePoint;
 
 - (void)deleteRule:(CustomCellTableViewCell *)cell{
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
+    if(self.rules==nil || self.rules.count==0 || self.rules.count<=indexPath.row)
+        return;
     
     NSDictionary *payload = [self getDeleteRulePayload:indexPath.row];
     if(payload!=nil){
@@ -284,7 +286,7 @@ CGPoint tablePoint;
     }
     NSMutableDictionary *rulePayload = [[NSMutableDictionary alloc]init];
     Rule *currentRule = self.rules[row];
-    if(currentRule.ID==nil)
+    if(currentRule==nil ||currentRule.ID==nil)
         return nil;
     
     [rulePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];

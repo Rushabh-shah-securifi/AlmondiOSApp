@@ -145,6 +145,7 @@ int segmentType;
     self.ruleTime.segmentType = Precisely1;
     [self storeTimeParams:date];
     self.ruleTime.dateFrom = [date dateByAddingTimeInterval:0];
+    self.ruleTime.range=0;
     [self setLableText];
     [self.delegate AddOrUpdateTime];
 }
@@ -196,17 +197,41 @@ int segmentType;
     NSDate *timeFrom = DatePickerFrom.date;
     NSDate *timeto = DatePickerTo.date;
     NSLog(@"timeto: %@", timeto);
-    NSTimeInterval secondsBetween = [timeto timeIntervalSinceDate:timeFrom];
+
     self.ruleTime.dateFrom = [timeFrom dateByAddingTimeInterval:0];
     self.ruleTime.dateTo = [timeto dateByAddingTimeInterval:0];
-    self.ruleTime.range = secondsBetween/60;
+    
+    self.ruleTime.range=[self caluculateRange:timeFrom toDate:timeto];
     NSLog(@"range: %ld", (long)self.ruleTime.range);
     self.ruleTime.segmentType = Between2;
     [self storeTimeParams:timeFrom];
     [self setLableText];
     [self.delegate AddOrUpdateTime];
+    
 }
 
+
+-(int)caluculateRange:(NSDate *)fromDate toDate:(NSDate *)toDate{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:fromDate];
+    NSInteger startHr = [components hour];
+    NSInteger startMins = [components minute];
+    
+    components = [calendar components:(NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:toDate];
+    NSInteger endHr = [components hour];
+    NSInteger endMin = [components minute];
+    
+    startMins = startHr*60 + startMins;
+    endMin = endHr*60+ endMin;
+    if(endMin == startMins){
+        return 0;
+    }else if(endMin < startMins){
+         return ((1440 - startMins) + endMin);
+    }else{
+        return endMin - startMins;
+    }
+
+}
 
 -(void)addDayView{
     int xVal = 4;
