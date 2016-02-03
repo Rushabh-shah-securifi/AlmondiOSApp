@@ -11,6 +11,4 @@
 @interface CollectionViewCell : UICollectionViewCell
 @property (strong, nonatomic) IBOutlet UILabel *dayTimeLable;
 -(void)addDayTimeLable:(NSIndexPath *)indexPath;
--(void)setBlockedVal:(NSString*)blockedVal;
--(void)changeBackgroundColor:(UIColor*)color;
 @end

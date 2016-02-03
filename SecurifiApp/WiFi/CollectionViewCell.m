@@ -11,20 +11,7 @@
 
 @implementation CollectionViewCell
 
-//-(void)awakeFromNib{
-//    self.backgroundColor = [UIColor whiteColor];
-//}
-
-//-(void)changeBackgroundColor:(UIColor*)color{
-    //    NSLog(@"changeBackgroundColor");
-    //    UIView *bgView = [[UIView alloc]initWithFrame:self.bounds];
-    //    self.backgroundView = bgView;
-    //    self.backgroundView.backgroundColor = color;
-//}
-
-
 -(void)setSelected:(BOOL)selected{
-    NSLog(@"set selected: %d", selected);
     [super setSelected:selected];
     if(selected)
         self.backgroundColor = [SFIColors lightGreenColor];
@@ -33,7 +20,6 @@
 }
 
 -(void)addDayTimeLable:(NSIndexPath *)indexPath{
-    NSLog(@"cell - indexpath: %@", indexPath);
     NSArray *Days = @[@"", @"Su", @"Mo", @"Tue", @"Wed", @"Thu", @"Fri", @"Sat", @""];
     if(indexPath.section == 0 || indexPath.section == 25){
         self.dayTimeLable.text = [Days objectAtIndex:indexPath.row];
@@ -50,13 +36,5 @@
     self.backgroundColor = [UIColor clearColor];
 }
 
--(void)setBlockedVal:(NSString*)blockedVal{
-    if([blockedVal isEqualToString:@"1"]){
-        self.selected = YES;
-//        [self setSelected:YES];
-//        self.userInteractionEnabled = YES;
-    }
-    
-}
 
 @end

@@ -66,12 +66,14 @@
     viewUsePresence.hidden = YES;
     viewCollection.hidden = YES;
     
+    collectionViewAllowOnNetwork.allowsMultipleSelection = YES;
+    
     deviceTypes = [NSMutableArray new];
     connectionTypes = [NSMutableArray new];
     notifyTypes = [NSMutableArray new];
     [self initializeblockedDaysArray];
     
-    collectionViewAllowOnNetwork.allowsMultipleSelection = YES;
+    
     
     NSArray *tnames = @[@"Tablet",@"PC",@"Laptop",@"Smartphone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"Printer",@"Router_switch",@"Nest",@"Hub",@"Camera",@"Chromecast",@"appleTV",@"android_stick",@"Other"];
     
@@ -304,7 +306,6 @@
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     randomMobileInternalIndex = arc4random() % 10000;
     NSMutableDictionary * updateClientInfo = [NSMutableDictionary new];
-    
     [self convertDaysDictToHex];
     
     
@@ -353,19 +354,6 @@
     [self asyncSendCommand:cloudCommand];
 }
 
--(BOOL)checkIfStringPresent:(NSString*)str {
-    BOOL isPresent = NO;
-    for(int i = 0; i <=6; i++){
-        NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:i];
-        for(int j = 23; j >= 0; j--){
-            if(![[blockedHours valueForKey:@(j).stringValue] isEqualToString:str]){
-                isPresent = YES;
-                break;
-            }
-        }
-    }
-    return isPresent;
-}
 
 -(void)setBlockedType{
     BOOL isZeroPresent = NO;
@@ -380,6 +368,20 @@
     }else{
         blockedType = @(DeviceAllowed_Blocked).stringValue;
     }
+}
+
+-(BOOL)checkIfStringPresent:(NSString*)str {
+    BOOL isPresent = NO;
+    for(int i = 0; i <=6; i++){
+        NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:i];
+        for(int j = 23; j >= 0; j--){
+            if(![[blockedHours valueForKey:@(j).stringValue] isEqualToString:str]){
+                isPresent = YES;
+                break;
+            }
+        }
+    }
+    return isPresent;
 }
 
 -(void)convertDaysDictToHex{
@@ -657,7 +659,6 @@
 }
 
 -(NSInteger) collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    NSLog(@"numberOfItemsInSection");
     return  9;
 }
 
@@ -680,20 +681,17 @@
 
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    NSLog(@"minimumInteritemSpacingForSectionAtIndex");
     return ITEM_SPACING;
 }
 
 -(UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"cellForItemAtIndexPath: %@", indexPath);
     CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"collectionViewCell" forIndexPath:indexPath];
-    
     if(indexPath.row != 0 && indexPath.row != 8 && indexPath.section != 0 && indexPath.section != 25){
         NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:indexPath.row-1];
         NSString *blockedVal = [blockedHours valueForKey:@(indexPath.section-1).stringValue];
-//        [cell setBlockedVal:(NSString*)blockedVal];
         if([blockedVal isEqualToString:@"1"]){
             cell.selected = YES;
+            [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         }
     }
     [cell addDayTimeLable:indexPath];
@@ -701,27 +699,21 @@
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"didSelectItemAtIndexPath: %@ ", indexPath);
     NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:indexPath.row-1];
     [blockedHours setValue:@"1" forKey:@(indexPath.section-1).stringValue];
-    CollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    cell.selected = YES;
 }
     
 -(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"didDeselectItemAtIndexPath %@", indexPath);
     NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:indexPath.row-1];
     [blockedHours setValue:@"0" forKey:@(indexPath.section-1).stringValue];
-    CollectionViewCell *cell = [collectionView cellForItemAtIndexPath:indexPath];
-    cell.selected = NO;
 }
 
--(void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"didHighlightItemAtIndexPath: %@", indexPath);
-}
--(void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"didUnhighlightItemAtIndexPath %@", indexPath);
-}
+//-(void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath{
+//    NSLog(@"didHighlightItemAtIndexPath: %@", indexPath);
+//}
+//-(void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath{
+//    NSLog(@"didUnhighlightItemAtIndexPath %@", indexPath);
+//}
 
 -(BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(nonnull SEL)action forItemAtIndexPath:(nonnull NSIndexPath *)indexPath withSender:(nullable id)sender{
     return NO;
