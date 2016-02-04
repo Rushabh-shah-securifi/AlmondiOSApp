@@ -141,7 +141,7 @@ NSMutableArray * pickerValuesArray2;
         xVal = [self addDeviceName:device.deviceName deviceID:device.deviceID deviceType:device.deviceType xVal:xVal];
     }
     self.parentViewController.deviceListScrollView.contentSize = CGSizeMake(xVal +10,self.parentViewController.deviceListScrollView.contentSize.height);
-    
+    [self.parentViewController.deviceIndexButtonScrollView flashScrollIndicators];
 }
 
 
@@ -170,6 +170,8 @@ NSMutableArray * pickerValuesArray2;
     CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
                                        (frameSize + ROW_PADDING )*i + ROW_PADDING);
     [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
+    [self.parentViewController.deviceIndexButtonScrollView flashScrollIndicators];
+    self.parentViewController.deviceIndexButtonScrollView.showsVerticalScrollIndicator = YES;
 }
 
 -(void)addClientNameLabel:(NSString*)clientName yScale:(int)yScale{
@@ -205,7 +207,9 @@ NSMutableArray * pickerValuesArray2;
     //clear view
     NSArray *viewsToRemove = [self.parentViewController.deviceIndexButtonScrollView subviews];
     for (UIView *v in viewsToRemove) {
-        [v removeFromSuperview];
+        if (![v isKindOfClass:[UIImageView class]]) { //to avoid removing scroll indicators
+            [v removeFromSuperview];
+        }
     }
 }
 -(void)toggleHighlightForDeviceNameButton:(RulesDeviceNameButton *)currentButton{
@@ -269,9 +273,11 @@ NSMutableArray * pickerValuesArray2;
         }
     }
     CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
-                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING + 65); // 50 temp fix
+                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING);
     
     [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
+    [self.parentViewController.deviceIndexButtonScrollView flashScrollIndicators];
+    self.parentViewController.deviceIndexButtonScrollView.showsVerticalScrollIndicator = YES;
 }
 -(void)addArrayToDictionary:(NSMutableDictionary *)deviceIndexesDict deviceIndex:(SFIDeviceIndex *)deviceIndex{
     if(self.isTrigger ||(!self.isTrigger && deviceIndex.isEditableIndex)){
@@ -344,13 +350,22 @@ NSMutableArray * pickerValuesArray2;
     dimbtn.frame=CGRectMake(dimbtn.frame.origin.x + ((i-1) * (dimFrameWidth/2))+textHeight/2, dimbtn.frame.origin.y, dimbtn.frame.size.width, dimbtn.frame.size.height);
     [self shiftButtonsByWidth:dimFrameWidth View:view forIteration:i];
     dimbtn.selected=[self setActionButtonCount:dimbtn isSlider:YES matchData:iVal.matchData buttonIndex:deviceIndex.indexID buttonId:deviceId];
-    
-    
-    
-    
+    if(dimbtn.selected)
+        [dimbtn setNewValue:[self setUpNewValueForSelectedButton:dimbtn.subProperties]];
     
     //dispatch_async(dispatch_get_main_queue(), ^{
     [view addSubview:dimbtn];
+}
+-(NSString*)setUpNewValueForSelectedButton:(SFIButtonSubProperties *)dimmButtonSubProperty{
+    NSMutableArray *list=self.isTrigger?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
+    NSString *newValue = @"";
+    for(SFIButtonSubProperties *buttonSubProperty in list){
+        if(buttonSubProperty.deviceId == dimmButtonSubProperty.deviceId && buttonSubProperty.index == dimmButtonSubProperty.index){
+            newValue = buttonSubProperty.matchData;
+            return newValue;
+        }
+    }
+    return newValue;
 }
 
 - (void)buildSwitchButton:(SFIDeviceIndex *)deviceIndex deviceType:(int)deviceType deviceName:(NSString *)deviceName iVal:(IndexValueSupport *)iVal deviceId:(int)deviceId i:(int)i view:(UIView *)view {
