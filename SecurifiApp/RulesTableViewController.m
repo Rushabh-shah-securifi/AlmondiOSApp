@@ -40,12 +40,7 @@ CGPoint tablePoint;
     [self initializeNotifications];
     [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
-    self.HUD.removeFromSuperViewOnHide = NO;
-    self.HUD.labelText = @"Loading Rules...";
-    self.HUD.dimBackground = YES;
-    self.HUD.delegate = self;
-    [self.navigationController.view addSubview:self.HUD];
-    [self showHudWithTimeout];
+    
 
     
     // Uncomment the following line to preserve selection between presentations.
@@ -134,7 +129,6 @@ CGPoint tablePoint;
     
     
     [self.tableView reloadData];
-    [self.HUD hide:YES];
     self.tableView.contentOffset = tablePoint;
 }
 
@@ -352,12 +346,12 @@ CGPoint tablePoint;
     rulePayload.rule = rule;
     NSDictionary *payload;
         if(cell.activeDeactiveSwitch.selected){
-            NSLog(@" deactivateRule");
-            payload = [rulePayload createRulePayload:randomMobileInternalIndex with:YES valid:@"0"];
-            [cell.activeDeactiveSwitch setOn:YES animated:YES];
-        }else{
             NSLog(@"activateRule");
             payload = [rulePayload createRulePayload:randomMobileInternalIndex with:YES valid:@"1"];
+            [cell.activeDeactiveSwitch setOn:YES animated:YES];
+        }else{
+            NSLog(@"deactivateRule");
+            payload = [rulePayload createRulePayload:randomMobileInternalIndex with:YES valid:@"0"];
             [cell.activeDeactiveSwitch setOn:NO animated:YES];
         }
         if(payload!=nil){

@@ -44,6 +44,7 @@
 
 @implementation SFISubPropertyBuilder
 bool showCrossBtn;
+bool disableUserInteraction;
 DelayPicker *delayPicker;
 UIScrollView *scrollView;
 AddRulesViewController *parentController;
@@ -59,6 +60,7 @@ int xVal = 20;
     
     xVal = 20;
     showCrossBtn = showCross;
+    disableUserInteraction = !showCross;//for disable userInteraction in ruletableView
     scrollView = scroll;
     if (addRuleController != nil) { //to avoid nil from rulestableview
         parentController = addRuleController;
@@ -177,6 +179,7 @@ int xVal = 20;
     dimbutton.subProperties.positionId = positionId;
     NSLog(@"dimbutton.subProperties.positionId  %d :%d",dimbutton.subProperties.positionId,positionId);
     [dimbutton setButtonCross:showCrossBtn];
+    dimbutton.userInteractionEnabled = disableUserInteraction;
 
     [dimbutton addTarget:self action:@selector(onDimmerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     dimbutton.bgView.backgroundColor =[SFIColors ruleBlueColor];
@@ -205,7 +208,8 @@ int xVal = 20;
         [switchButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         xVal += triggerActionBtnWidth;
-        [switchButton setButtonCross:showCrossBtn]  ;
+        [switchButton setButtonCross:showCrossBtn];
+        switchButton.userInteractionEnabled = disableUserInteraction;
         [scrollView addSubview:switchButton];
 
     }
@@ -217,6 +221,7 @@ int xVal = 20;
          switchButton.subProperties = subProperties;
         
         [switchButton->actionbutton setButtonCross:showCrossBtn];
+        (switchButton->actionbutton).userInteractionEnabled = disableUserInteraction;
        // (switchButton->actionbutton).crossButton.subproperty = subProperties;
         switchButton->actionbutton.isTrigger = isTrigger;
         //[switchButton changeBGColor:isTrigger clearColor:NO];
@@ -231,7 +236,7 @@ int xVal = 20;
         }
 
         [switchButton->delayButton addTarget:self action:@selector(onActionDelayClicked:) forControlEvents:UIControlEventTouchUpInside];
-        
+        (switchButton->delayButton).userInteractionEnabled = disableUserInteraction;
         xVal += rulesButtonsViewWidth;
         
         [scrollView addSubview:switchButton];
