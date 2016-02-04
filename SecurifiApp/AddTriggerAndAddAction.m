@@ -198,8 +198,47 @@ NSMutableArray * pickerValuesArray2;
         SFIDeviceIndex *temp = [self getToggelDeviceIndex];
         [deviceIndexes addObject : temp];
     }
+    //to handle over flow in small devices
+    if([self getDeviceIndexHavingExcessVals:deviceIndexes] != nil){
+        [deviceIndexes addObject:[self newDeviceIndex:[self getDeviceIndexHavingExcessVals:deviceIndexes]]];
+    }
     [self createDeviceIndexesLayoutForDeviceId:sender.deviceId deviceType:sender.deviceType deviceName:sender.deviceName deviceIndexes:deviceIndexes];
 }
+
+-(SFIDeviceIndex*)getDeviceIndexHavingExcessVals:(NSArray*)deviceIndexes{
+    for(SFIDeviceIndex *deviceIndex in deviceIndexes){
+        NSArray *indexVals = deviceIndex.indexValues;
+        if(indexVals.count > 4){
+            return deviceIndex;
+        }
+    }
+    return nil;
+}
+-(SFIDeviceIndex *)newDeviceIndex:(SFIDeviceIndex*)deviceIndex{
+    //device index has more than 4 Values -> split = 4 + remaining
+    NSArray *deviceIndexVals = deviceIndex.indexValues;
+    NSInteger indexValCount = [deviceIndexVals count];
+    NSMutableArray *NewDeviceIndexVal = [[NSMutableArray alloc]init];
+    NSMutableArray *firstFourIndexVals = [[NSMutableArray alloc]init];
+    for(int i = 0; i < indexValCount; i++){
+        if (i<4) {
+            [firstFourIndexVals addObject:[deviceIndexVals objectAtIndex:i]];
+        }else{
+            [NewDeviceIndexVal addObject:[deviceIndexVals objectAtIndex:i]];
+        }
+    }
+
+    //remove indexvalues from device index
+    deviceIndex.indexValues = firstFourIndexVals;
+    SFIDeviceIndex *newDeviceIndex=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_BARRIER_OPERATOR];
+    newDeviceIndex.indexValues = NewDeviceIndexVal;
+    newDeviceIndex.indexID = deviceIndex.indexID;
+    newDeviceIndex.cellId = 2;
+    newDeviceIndex.isEditableIndex=deviceIndex.isEditableIndex;
+    return newDeviceIndex;
+}
+
+
 -(void)resetViews{
     self.parentViewController.TimeSectionView.hidden = YES;
     self.parentViewController.deviceIndexButtonScrollView.hidden = NO;
@@ -227,7 +266,7 @@ NSMutableArray * pickerValuesArray2;
 //on devicelist button click, calling this method
 -(void) createDeviceIndexesLayoutForDeviceId:(int)deviceId deviceType:(SFIDeviceType)deviceType deviceName:(NSString*)deviceName deviceIndexes:(NSArray*)deviceIndexes{
     int numberOfCells = [self maxCellId:deviceIndexes];
-
+    
     if(deviceType == SFIDeviceType_NestThermostat_57){
         RulesNestThermostat *rulesNestThermostatObject = [[RulesNestThermostat alloc]init];
         
@@ -250,8 +289,7 @@ NSMutableArray * pickerValuesArray2;
     for(SFIDeviceIndex *deviceIndex in deviceIndexes){
         [self addArrayToDictionary:deviceIndexesDict deviceIndex:deviceIndex];
     }
-    
-    
+  
     //huelamp - 58
     if(deviceType == SFIDeviceType_HueLamp_48){
         self.ruleHueObject = [[RulesHue alloc] init];

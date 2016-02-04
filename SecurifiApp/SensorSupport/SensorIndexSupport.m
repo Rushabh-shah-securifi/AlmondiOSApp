@@ -4065,7 +4065,7 @@
             SFIDeviceIndex *deviceIndex3 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_STOP];
             deviceIndex3.indexValues = [self resolve:device index:SFIDevicePropertyType_STOP];
             deviceIndex3.indexID = 3;
-            deviceIndex3.cellId = 1;
+            deviceIndex3.cellId = 2;
             deviceIndex3.isEditableIndex=YES;
             
             return @[deviceIndex1, deviceIndex2, deviceIndex3];
