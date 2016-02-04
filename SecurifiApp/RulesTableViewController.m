@@ -15,17 +15,19 @@
 //#import "SFITriggersActionsSwitchButton.h"
 #import "AlmondPlusConstants.h"
 #import "SFISubPropertyBuilder.h"
+#import "MBProgressHUD.h"
+#import "RulePayload.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
-@interface RulesTableViewController ()<AddRulesViewControllerDelegate, CustomCellTableViewCellDelegate>{
+@interface RulesTableViewController ()<AddRulesViewControllerDelegate, CustomCellTableViewCellDelegate,MBProgressHUDDelegate>{
     NSInteger randomMobileInternalIndex;
 }
 
 @property (nonatomic, strong)NSMutableArray *rules;
 @property SFIAlmondPlus *currentAlmond;
 @property UIButton *buttonAdd;
-
+@property(nonatomic, readonly) MBProgressHUD *HUD;
 @end
 
 @implementation RulesTableViewController
@@ -38,6 +40,14 @@ CGPoint tablePoint;
     [self initializeNotifications];
     [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
+    self.HUD.removeFromSuperViewOnHide = NO;
+    self.HUD.labelText = @"Loading Rules...";
+    self.HUD.dimBackground = YES;
+    self.HUD.delegate = self;
+    [self.navigationController.view addSubview:self.HUD];
+    [self showHudWithTimeout];
+
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -106,6 +116,7 @@ CGPoint tablePoint;
 }
 
 - (void)onRuleUpdateCommandResponse:(id)sender{
+    [self.HUD hide:YES];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.rules =[NSMutableArray arrayWithArray:toolkit.ruleList];
     NSLog(@"onRuleUpdateCommandResponse Rule is %@",self.rules);
@@ -123,6 +134,7 @@ CGPoint tablePoint;
     
     
     [self.tableView reloadData];
+    [self.HUD hide:YES];
     self.tableView.contentOffset = tablePoint;
 }
 
@@ -137,6 +149,12 @@ CGPoint tablePoint;
     [self.navigationController.view addSubview:self.buttonAdd];
 }
 
+- (void)showHudWithTimeout {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD show:YES];
+        [self.HUD hide:YES afterDelay:5];
+    });
+}
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -184,6 +202,7 @@ CGPoint tablePoint;
 
 #pragma mark button taps
 - (void)btnAddNewRuleTap:(id)sender {
+    [self.HUD hide:YES];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     AddRulesViewController * addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
     addRuleController.delegate = self;
@@ -238,7 +257,12 @@ CGPoint tablePoint;
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     if(self.rules==nil || self.rules.count==0 || self.rules.count<=indexPath.row)
         return;
-    
+    self.HUD.removeFromSuperViewOnHide = NO;
+    self.HUD.labelText = [NSString stringWithFormat:@"Deleting rule %@...",cell.ruleNameLabel.text];
+    self.HUD.dimBackground = YES;
+    self.HUD.delegate = self;
+    [self.navigationController.view addSubview:self.HUD];
+    [self showHudWithTimeout];
     NSDictionary *payload = [self getDeleteRulePayload:indexPath.row];
     if(payload!=nil){
         GenericCommand *cloudCommand = [[GenericCommand alloc] init];
@@ -323,14 +347,17 @@ CGPoint tablePoint;
 }
 - (void)activateRule:(CustomCellTableViewCell *)cell{
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
+    Rule *rule = self.rules[indexPath.row];
+    RulePayload *rulePayload = [RulePayload new];
+    rulePayload.rule = rule;
     NSDictionary *payload;
         if(cell.activeDeactiveSwitch.selected){
             NSLog(@" deactivateRule");
-            payload = [self getactivateRulePayload:indexPath.row activate:@"0"];
+            payload = [rulePayload createRulePayload:randomMobileInternalIndex with:YES valid:@"0"];
             [cell.activeDeactiveSwitch setOn:YES animated:YES];
         }else{
             NSLog(@"activateRule");
-            payload = [self getactivateRulePayload:indexPath.row activate:@"1"];
+            payload = [rulePayload createRulePayload:randomMobileInternalIndex with:YES valid:@"1"];
             [cell.activeDeactiveSwitch setOn:NO animated:YES];
         }
         if(payload!=nil){
@@ -338,38 +365,39 @@ CGPoint tablePoint;
             cloudCommand.commandType = CommandType_UPDATE_REQUEST;
             cloudCommand.command = [payload JSONString];
             [self asyncSendCommand:cloudCommand];
+            NSLog(@"activate rule %@",cloudCommand.command);
         }
 }
-/*
- {
- "CommandType":"ValidateRule",
- "AlmondMAC":"25110100101010",
- "ID":""1",
- "Value":"1",
- "MobileInternalIndex":"111"
- }
- */
--(NSDictionary *)getactivateRulePayload:(NSInteger)row activate:(NSString*)value{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    if (!plus.almondplusMAC) {
-        return nil;
-    }
-    NSMutableDictionary *rulePayload = [[NSMutableDictionary alloc]init];
-    Rule *currentRule = self.rules[row];
-    if(currentRule==nil ||currentRule.ID==nil)
-        return nil;
-    
-    [rulePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
-    [rulePayload setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
-    [rulePayload setValue:@"ValidateRule" forKey:@"CommandType"];
-    [rulePayload setValue:value forKey:@"Value"];
-    [rulePayload setValue:[self getRuleID:currentRule.ID] forKey:@"ID"]; //Get From Rule instance
-    
-    return rulePayload;
-    
-}
-
+///*
+// {
+// "CommandType":"ValidateRule",
+// "AlmondMAC":"25110100101010",
+// "ID":""1",
+// "Value":"1",
+// "MobileInternalIndex":"111"
+// }
+// */
+//-(NSDictionary *)getactivateRulePayload:(NSInteger)row activate:(NSString*)value{
+//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+//    SFIAlmondPlus *plus = [toolkit currentAlmond];
+//    if (!plus.almondplusMAC) {
+//        return nil;
+//    }
+//    NSMutableDictionary *rulePayload = [[NSMutableDictionary alloc]init];
+//    Rule *currentRule = self.rules[row];
+//    if(currentRule==nil ||currentRule.ID==nil)
+//        return nil;
+//    
+//    [rulePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
+//    [rulePayload setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
+//    [rulePayload setValue:@"ValidateRule" forKey:@"CommandType"];
+//    [rulePayload setValue:value forKey:@"Value"];
+//    [rulePayload setValue:[self getRuleID:currentRule.ID] forKey:@"ID"]; //Get From Rule instance
+//    
+//    return rulePayload;
+//    
+//}
+//
 #pragma mark asyncRequest methods
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];

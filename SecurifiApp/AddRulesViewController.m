@@ -423,7 +423,7 @@ UITextField *textField;
     
     ///
     
-    NSDictionary *payload = [rulePayload createRulePayload:randomMobileInternalIndex with:self.isInitialized];
+    NSDictionary *payload = [rulePayload createRulePayload:randomMobileInternalIndex with:self.isInitialized valid:@"1"];
     
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_UPDATE_REQUEST;

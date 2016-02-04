@@ -164,6 +164,7 @@ int xVal = 20;
     [dateFormat setDateFormat:@"hh:mm aa"];
     int segmentType=timesubProperties.time.segmentType;
     if(segmentType==1){
+        NSLog(@"timesubProperties.time.dayOfWeek %@,%lu",timesubProperties.time.dayOfWeek,(unsigned long)timesubProperties.time.dayOfWeek.count);
                [dimbutton setupValues:[dateFormat stringFromDate:timesubProperties.time.dateFrom] Title:@"Time" displayText:[NSString stringWithFormat:@"Days %@",[self getDays:timesubProperties.time.dayOfWeek]] suffix:@""];
 
     }

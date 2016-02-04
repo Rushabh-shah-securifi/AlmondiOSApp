@@ -12,5 +12,5 @@
 
 @interface RulePayload : NSObject
 @property (nonatomic,strong)Rule *rule;
-- (NSDictionary*)createRulePayload:(NSInteger)randomMobileInternalIndex with:(BOOL)isInitilized;
+- (NSDictionary*)createRulePayload:(NSInteger)randomMobileInternalIndex with:(BOOL)isInitilized valid:(NSString*)valid;
 @end
