@@ -10,5 +10,6 @@
 
 @interface CollectionViewCell : UICollectionViewCell
 @property (strong, nonatomic) IBOutlet UILabel *dayTimeLable;
--(void)addDayTimeLable:(NSIndexPath *)indexPath;
+-(void)addDayTimeLable:(NSIndexPath *)indexPath isSelected:(NSString*)selected;
+-(void)handleCornerCells;
 @end

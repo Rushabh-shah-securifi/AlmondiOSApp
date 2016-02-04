@@ -13,7 +13,7 @@
 #import "Analytics.h"
 #import "CollectionViewCell.h"
 #import "SFIColors.h"
-
+//masood checkpoint
 @interface SFIWiFiDeviceProprtyEditViewController ()<SFIWiFiDeviceTypeSelectionCellDelegate,UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>{
     
     IBOutlet UIView *viewTypeSelection;
@@ -21,6 +21,7 @@
     IBOutlet UIView *viewCollection;
     IBOutlet UICollectionView *collectionViewAllowOnNetwork;
     IBOutlet UIScrollView *collectionViewScroll;
+    IBOutlet UISegmentedControl *AllowedSegment;
     
     IBOutlet UITextField *txtProperty;
     IBOutlet UIView *viewEditName;
@@ -65,16 +66,11 @@
     viewEditName.hidden = YES;
     viewUsePresence.hidden = YES;
     viewCollection.hidden = YES;
-    
-    collectionViewAllowOnNetwork.allowsMultipleSelection = YES;
-    
+
     deviceTypes = [NSMutableArray new];
     connectionTypes = [NSMutableArray new];
     notifyTypes = [NSMutableArray new];
-    [self initializeblockedDaysArray];
-    
-    
-    
+    hexBlockedDays = [NSMutableString new];
     NSArray *tnames = @[@"Tablet",@"PC",@"Laptop",@"Smartphone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"Printer",@"Router_switch",@"Nest",@"Hub",@"Camera",@"Chromecast",@"appleTV",@"android_stick",@"Other"];
     
     for (NSString * name in tnames) {
@@ -129,38 +125,6 @@
     imgIcon.frame = fr;
 }
 
--(void)initializeblockedDaysArray{
-    blockedDaysArray = [NSMutableArray new];
-    for(int i = 0; i <= 6; i++){
-        NSMutableDictionary *blockedHours = [NSMutableDictionary new];
-        for(int j = 0; j <= 23; j++){
-            [blockedHours setValue:@"0" forKey:@(j).stringValue];
-        }
-        [blockedDaysArray addObject:blockedHours];
-    }
-    
-    NSArray *strings = [self.connectedDevice.deviceSchedule componentsSeparatedByString:@","];
-    int dictCount = 0;
-    for(NSString *hex in strings){
-        NSUInteger hexAsInt;
-        NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:dictCount];
-        [[NSScanner scannerWithString:hex] scanHexInt:&hexAsInt];
-        NSString *binary = [NSString stringWithFormat:@"%@", [self toBinary:hexAsInt]];
-        int len = (int)binary.length;
-        for (NSInteger charIdx=len-1; charIdx>=0; charIdx--)
-            [blockedHours setValue:[NSString stringWithFormat:@"%c", [binary characterAtIndex:charIdx]] forKey:@(len-1-charIdx).stringValue];
-        dictCount++;
-    }
-}
-
-
--(NSString *)toBinary:(NSUInteger)input
-{
-    if (input == 1 || input == 0)
-        return [NSString stringWithFormat:@"%lu", (unsigned long)input];
-    return [NSString stringWithFormat:@"%@%lu", [self toBinary:input / 2], input % 2];
-}
-
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self initializeNotifications];
@@ -208,10 +172,15 @@
             currentView = viewTypeSelection;
             break;
         }
+            
         case allowOnNetworkIndexPathRow:{
+            collectionViewAllowOnNetwork.allowsMultipleSelection = YES;
+            [self initializeblockedDaysArray]; // map hex to binary
+            [self setUpAllowOnNetworkSegment];
             currentView = viewCollection;
             break;
         }
+            
         case usePresenceSensorIndexPathRow:
         {
             btnUsePresence.layer.borderColor = [[UIColor whiteColor] CGColor];
@@ -306,9 +275,10 @@
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     randomMobileInternalIndex = arc4random() % 10000;
     NSMutableDictionary * updateClientInfo = [NSMutableDictionary new];
-    [self convertDaysDictToHex];
-    
-    
+    if([blockedType isEqualToString:@"2"]){
+        [self convertDaysDictToHex];
+    }
+
     if (self.editFieldIndex==notifyMeIndexPathRow) {
         [updateClientInfo setValue:@"UpdatePreference" forKey:@"CommandType"];
         [updateClientInfo setValue:self.connectedDevice.deviceID forKey:@"ClientID"];
@@ -354,42 +324,12 @@
     [self asyncSendCommand:cloudCommand];
 }
 
-
--(void)setBlockedType{
-    BOOL isZeroPresent = NO;
-    BOOL isOnePresent = NO;
-    isOnePresent = [self checkIfStringPresent:@"0"];
-    isZeroPresent = [self checkIfStringPresent:@"1"];
-    
-    if(isZeroPresent && isOnePresent){
-        blockedType = @(DeviceAllowed_OnSchedule).stringValue;
-    }else if(isZeroPresent && !isOnePresent){
-        blockedType = @(DeviceAllowed_Always).stringValue;
-    }else{
-        blockedType = @(DeviceAllowed_Blocked).stringValue;
-    }
-}
-
--(BOOL)checkIfStringPresent:(NSString*)str {
-    BOOL isPresent = NO;
-    for(int i = 0; i <=6; i++){
-        NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:i];
-        for(int j = 23; j >= 0; j--){
-            if(![[blockedHours valueForKey:@(j).stringValue] isEqualToString:str]){
-                isPresent = YES;
-                break;
-            }
-        }
-    }
-    return isPresent;
-}
-
 -(void)convertDaysDictToHex{
-    hexBlockedDays = [NSMutableString new];
-    for(int i = 0; i <= 6; i++){
+    hexBlockedDays = [@"" mutableCopy];
+    for(int i = 1; i <= 7; i++){
         NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:i];
         NSMutableString *boolStr = [NSMutableString new];
-        for(int j = 23; j >= 0; j--){
+        for(int j = 24; j >= 1; j--){
             [boolStr appendString:[blockedHours valueForKey:@(j).stringValue]];
         }
         
@@ -397,12 +337,11 @@
         while(6-[hexStr length]){
             [hexStr insertString:@"0" atIndex:0];
         }
-        if(i == 0)
+        if(i == 1)
             [hexBlockedDays appendString:hexStr];
         else
             [hexBlockedDays appendString:[NSString stringWithFormat:@",%@", hexStr]];
     }
-    [self setBlockedType];
     NSLog(@"final hex str: %@", hexBlockedDays);
 }
 
@@ -424,6 +363,82 @@
     NSLog(@"Result: %@", resultStr);
     return [resultStr mutableCopy];
 }
+
+#pragma mark - segment
+- (IBAction)onAllowedOnNetworkSegmentClicked:(id)sender { //always
+    UISegmentedControl *segment = sender;
+    if (segment.selectedSegmentIndex == 0) {
+        collectionViewScroll.hidden = YES;
+        blockedType = @(0).stringValue;
+        hexBlockedDays = [@"000000,000000,000000,000000,000000,00000,00000" mutableCopy];
+    }else if(segment.selectedSegmentIndex == 1){ //onSchedule
+        collectionViewScroll.hidden = NO;
+        blockedType = @(2).stringValue;
+    }else{//blocked/never
+        collectionViewScroll.hidden = YES;
+        blockedType = @(1).stringValue;
+        hexBlockedDays = [@"ffffff,ffffff,ffffff,ffffff,ffffff,ffffff,ffffff" mutableCopy];
+    }
+}
+
+-(void)setUpAllowOnNetworkSegment{
+    if(self.connectedDevice.deviceAllowedType == 0){
+        collectionViewScroll.hidden = YES;
+        AllowedSegment.selectedSegmentIndex = 0; //Always
+        blockedType = @"0";
+        hexBlockedDays = [@"000000,000000,000000,000000,000000,00000,00000" mutableCopy];
+    }else if(self.connectedDevice.deviceAllowedType == 1){
+        collectionViewScroll.hidden = YES;
+        AllowedSegment.selectedSegmentIndex = 2; //Blocked
+        hexBlockedDays = [@"ffffff,ffffff,ffffff,ffffff,ffffff,ffffff,ffffff" mutableCopy];
+        blockedType = @"1";
+    }else{
+        collectionViewScroll.hidden = NO;
+        AllowedSegment.selectedSegmentIndex = 1; //OnSchedule
+        blockedType = @"2";
+    }
+}
+
+
+-(void)initializeblockedDaysArray{
+    NSLog(@"initializeblockedDaysArray");
+    blockedDaysArray = [NSMutableArray new];
+    
+    for(int i = 0; i <= 8; i++){
+        NSMutableDictionary *blockedHours = [NSMutableDictionary new];
+        for(int j = 0; j <= 25; j++){
+            [blockedHours setValue:@"0" forKey:@(j).stringValue];
+        }
+        [blockedDaysArray addObject:blockedHours];
+    }
+    
+    NSArray *strings = [self.connectedDevice.deviceSchedule componentsSeparatedByString:@","];
+    if([strings count] > 7){
+        return;
+    }
+    NSLog(@"strings: %@", strings);
+    int dictCount = 1;
+    for(NSString *hex in strings){
+        NSUInteger hexAsInt;
+        NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:dictCount];
+        [[NSScanner scannerWithString:hex] scanHexInt:&hexAsInt];
+        NSString *binary = [NSString stringWithFormat:@"%@", [self toBinary:hexAsInt]];
+        NSLog(@"binary: %@", binary);
+        int len = (int)binary.length;
+        for (NSInteger charIdx=len-1; charIdx>=0; charIdx--)
+            [blockedHours setValue:[NSString stringWithFormat:@"%c", [binary characterAtIndex:charIdx]] forKey:@(len-charIdx).stringValue];
+        dictCount++;
+//        NSLog(@"blocked hours: %@", blockedHours);
+    }
+}
+
+-(NSString *)toBinary:(NSUInteger)input
+{
+    if (input == 1 || input == 0)
+        return [NSString stringWithFormat:@"%lu", (unsigned long)input];
+    return [NSString stringWithFormat:@"%@%lu", [self toBinary:input / 2], input % 2];
+}
+
 
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -685,39 +700,65 @@
 }
 
 -(UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
     CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"collectionViewCell" forIndexPath:indexPath];
-    if(indexPath.row != 0 && indexPath.row != 8 && indexPath.section != 0 && indexPath.section != 25){
-        NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:indexPath.row-1];
-        NSString *blockedVal = [blockedHours valueForKey:@(indexPath.section-1).stringValue];
-        if([blockedVal isEqualToString:@"1"]){
-            cell.selected = YES;
-            [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
-        }
+    if((row==0 && section==0) || (row==8 && section==0) || (row==0 && section==25) || (row==8 && section==25)){//corners
+        [cell handleCornerCells];
+        return cell;
     }
-    [cell addDayTimeLable:indexPath];
+    
+    NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:row];
+    NSString *blockedVal = [blockedHours valueForKey:@(section).stringValue];
+    if([blockedVal isEqualToString:@"1"]){
+        cell.selected = YES;
+        [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
+        [cell addDayTimeLable:indexPath isSelected:@"1"];
+    }else{
+        [cell addDayTimeLable:indexPath isSelected:@"0"];
+    }
     return cell;
 }
 
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:indexPath.row-1];
-    [blockedHours setValue:@"1" forKey:@(indexPath.section-1).stringValue];
-}
+-(void)selectionOfHoursForRow:(NSInteger)row andSection:(NSInteger)section collectionView:(UICollectionView *)collectionView selected:(NSString*)selected{
+    if((row==0 && section==0) || (row==8 && section==0) || (row==0 && section==25) || (row==8 && section==25))//corners
+        return;
     
--(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:indexPath.row-1];
-    [blockedHours setValue:@"0" forKey:@(indexPath.section-1).stringValue];
+    NSMutableDictionary *blockedHours;
+    blockedHours = [blockedDaysArray objectAtIndex:row];
+    [blockedHours setValue:selected forKey:@(section).stringValue];
+    
+    if((section == 0 || section == 25) && (row >= 1 && row <= 7)){ //days click
+        blockedHours = [blockedDaysArray objectAtIndex:row];
+        for(int j = 0; j <= 25; j++){
+            [blockedHours setValue:selected forKey:@(j).stringValue];
+        }
+        [collectionView reloadData];
+    }
+    else if((row == 0 || row == 8) && (section >= 1 && section <= 24)){ //hours click
+        for(NSMutableDictionary *dict in blockedDaysArray){
+            [dict setValue:selected forKey:@(section).stringValue];
+        }
+        [collectionView reloadData];
+    }
 }
 
-//-(void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath{
-//    NSLog(@"didHighlightItemAtIndexPath: %@", indexPath);
-//}
-//-(void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath{
-//    NSLog(@"didUnhighlightItemAtIndexPath %@", indexPath);
-//}
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"didSelectItemAtIndexPath");
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    [self selectionOfHoursForRow:row andSection:section collectionView:collectionView selected:@"1"];
+}
+
+-(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"didDeselectItemAtIndexPath");
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    [self selectionOfHoursForRow:row andSection:section collectionView:collectionView selected:@"0"];
+}
 
 -(BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(nonnull SEL)action forItemAtIndexPath:(nonnull NSIndexPath *)indexPath withSender:(nullable id)sender{
     return NO;
 }
-
 
 @end
