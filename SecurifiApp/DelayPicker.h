@@ -11,5 +11,7 @@
 @class AddRulesViewController;
 
 @interface DelayPicker : NSObject
+@property(nonatomic) bool isPresentDelayPicker;
+-(void)removeDelayView;
 -(void)addPickerForButton:(UIButton*)delayButton parentController:(AddRulesViewController*)parentController;
 @end

@@ -32,7 +32,6 @@ NSMutableArray *pickerSecsRange;
 UIView * actionSheet;
 
 PreDelayRuleButton *ruleButton;
-bool isDelayViewPresent = NO;
 int delaySecs;
 int secs;
 int mins;
@@ -42,15 +41,17 @@ int mins;
     ruleButton = (PreDelayRuleButton *)[delayButton superview];
     
     if(delayButton.selected){
-        if(isDelayViewPresent){
+        if(self.isPresentDelayPicker){
             [self removeDelayView];
+            
         }
         delayButton.backgroundColor = [SFIColors ruleLightOrangeColor];
         (ruleButton->actionbutton).userInteractionEnabled = NO;
         parentController.deviceIndexButtonScrollView.userInteractionEnabled = NO;
+       
         delaySecs = [ruleButton.subProperties.delay intValue];
         NSLog(@"delay secs: %d", delaySecs);
-        isDelayViewPresent = YES;
+        
         pickerMinsRange = [[NSMutableArray alloc]init];
         pickerSecsRange = [[NSMutableArray alloc]init];
         for (int i = 0; i <= 4; i++) {
@@ -60,16 +61,16 @@ int mins;
             [pickerSecsRange addObject:[NSString stringWithFormat:@"%d",i]];
         }
         [self setupPicker:parentController];
+        self.isPresentDelayPicker = YES;
     }else{
         [self removeDelayView];
         delayButton.backgroundColor = [SFIColors ruleOrangeColor];
-        (ruleButton->actionbutton).userInteractionEnabled = YES;
         parentController.deviceIndexButtonScrollView.userInteractionEnabled = YES;
-        isDelayViewPresent = NO;
+        (ruleButton->actionbutton).userInteractionEnabled = YES;
         delayButton.backgroundColor = [UIColor colorFromHexString:@"FF9500"];
         [delayButton setBackgroundColor:[UIColor colorFromHexString:@"FF9500"]];
         ruleButton.subProperties.delay = [NSString stringWithFormat:@"%d", [self getDelay]];
-        //        [self.delegate updateActionsArray:self.rule.actions andDeviceIndexesForId:rulesButtonViewClick.subProperties.deviceId];
+       
     }
 }
 
@@ -132,6 +133,7 @@ int mins;
         [view removeFromSuperview];
     }
     [actionSheet removeFromSuperview];
+    self.isPresentDelayPicker = NO;
 }
 
 -(UIPickerView*)createPickerView:(CGRect)frame{

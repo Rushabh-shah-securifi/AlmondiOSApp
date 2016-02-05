@@ -367,30 +367,45 @@ UITextField *textField;
 
 -(void)btnSaveTap:(id)sender{
     textField = [[UITextField alloc]init];
+    NSLog(@"rule trigr count %lu",(unsigned long)self.rule.triggers.count);
+    NSLog(@"rule action count %lu",(unsigned long)self.rule.actions.count);
+
     if(self.isInitialized){
         textField.text = self.rule.name;
-        NSLog(@"rule name edit %@",self.rule.name);
-        NSLog(@"rule name edit %@",textField.text);
+        NSLog(@"rule trigr count %lu",(unsigned long)self.rule.triggers.count);
+        NSLog(@"rule action count %lu",(unsigned long)self.rule.actions.count);
     }
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Rule Name"
-                                                    message:@""
-                                                   delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Save", nil];
-    [alert setDelegate:self];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-    textField = [alert textFieldAtIndex:0];
-    textField.frame = CGRectMake(alert.frame.origin.x, 25.0, alert.frame.size.width, 15.0);
-    [textField setBackgroundColor:[UIColor whiteColor]];
-    if(self.isInitialized){
-        textField.text = self.rule.name;
-        NSLog(@"rule name edit %@",self.rule.name);
-        NSLog(@"rule name edit %@",textField.text);
+    if(self.rule.triggers.count > 0 && self.rule.actions.count > 0){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Rule Name"
+                                                        message:@""
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Save", nil];
+        [alert setDelegate:self];
+        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+        textField = [alert textFieldAtIndex:0];
+        textField.frame = CGRectMake(alert.frame.origin.x, 25.0, alert.frame.size.width, 15.0);
+        [textField setBackgroundColor:[UIColor whiteColor]];
+        if(self.isInitialized){
+            textField.text = self.rule.name;
+            NSLog(@"rule name edit %@",self.rule.name);
+            NSLog(@"rule name edit %@",textField.text);
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [alert show];
+        });
+        
     }
-    
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [alert show];
-    });
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"to save rule 1 tigger and 1 action required"
+                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [alert show];
+        });
+
+    }
 }
 
 #pragma mark alert view delegeate method

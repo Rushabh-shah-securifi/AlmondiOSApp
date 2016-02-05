@@ -247,19 +247,27 @@ int xVal = 20;
 
 + (void)onTriggerCrossButtonClicked:(SwitchButton*)switchButton{
     //includes mode
+    if(delayPicker.isPresentDelayPicker){
+        [delayPicker removeDelayView];
+        parentController.deviceIndexButtonScrollView.userInteractionEnabled = YES;
+    }
     if(switchButton.isTrigger){
         [parentController.rule.triggers removeObjectAtIndex:switchButton.subProperties.positionId];
         NSLog(@"par.count %d :%@ :%@:%d:,eventType:%@",switchButton.subProperties.positionId,switchButton.subProperties.matchData,switchButton.subProperties.deviceName,switchButton.deviceType,switchButton.subProperties.eventType);
     }
     else{
         [parentController.rule.actions removeObjectAtIndex:switchButton.subProperties.positionId];
-        NSLog(@"par.count %d ",parentController.rule.triggers.count);
+        NSLog(@"par.count %lu ",(unsigned long)parentController.rule.triggers.count);
     }
     [parentController redrawDeviceIndexView:switchButton.subProperties.deviceId clientEvent:switchButton.subProperties.eventType];
 }
 
 
 + (void)onDimmerCrossButtonClicked:(DimmerButton*)dimmerButton{
+    if(delayPicker.isPresentDelayPicker){
+        [delayPicker removeDelayView];
+        parentController.deviceIndexButtonScrollView.userInteractionEnabled = YES;
+    }
     NSLog(@"dimbutton posId %d",dimmerButton.subProperties.positionId);
     [parentController.rule.triggers removeObjectAtIndex:dimmerButton.subProperties.positionId];
     [parentController redrawDeviceIndexView:dimmerButton.subProperties.deviceId clientEvent:@""];
@@ -280,6 +288,7 @@ int xVal = 20;
     UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
     return [color.hexString uppercaseString];
 };
+
 +(void)getDeviceTypeFor:(SFIButtonSubProperties*)buttonSubProperty{
     
     NSLog(@" eventType :- %@ index :%d device id -: %d",buttonSubProperty.eventType,buttonSubProperty.index,buttonSubProperty.deviceId);
