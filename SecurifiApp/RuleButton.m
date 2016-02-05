@@ -11,9 +11,6 @@
 
 @implementation RuleButton
 
-
-
-
 - (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)selected showTitle:(BOOL)showTitle{
     UIColor *color= isTrigger?[SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
     color = !selected?[SFIColors ruleGraycolor]:color;
@@ -25,6 +22,7 @@
     self.topLabel.textColor = titleColor;
     self.bottomLabel.textColor = bottomTextColor;
     self.bgView.backgroundColor = color;
+    self.textField.backgroundColor = color;
     NSLog(@"bgView.back coolor %@:%@ and bgView %@",self.bgView.backgroundColor,color,self.bgView);
 }
 

@@ -43,7 +43,7 @@
     self.isTrigger = isTrigger;
     self.dimValue = text;
     self.backgroundColor = [UIColor clearColor];
-    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, -5, self.frame.size.width-textHeight,self.frame.size.height-textHeight)];
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight,self.frame.size.height-textHeight)];
     self.bgView.backgroundColor = [SFIColors ruleGraycolor];
     [self addSubview:self.bgView];
     
@@ -51,7 +51,7 @@
     lblMain.textAlignment = NSTextAlignmentCenter;
     [self.bgView addSubview:lblMain];
     
-    self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.bgView.frame.size.height+textPadding -5, self.frame.size.width-textHeight,textHeight)];
+    self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.bgView.frame.size.height+textPadding, self.frame.size.width-textHeight,textHeight)];
     self.bottomLabel.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:fontSize];
     self.bottomLabel.numberOfLines=0;
     self.bottomLabel.textAlignment = NSTextAlignmentCenter;
@@ -208,6 +208,36 @@
     self.crossButtonImage.frame = frame;
     self.crossButtonImage.center = CGPointMake(crossButtonBGView.bounds.size.width/2, crossButtonBGView.bounds.size.height/2);
     [crossButtonBGView addSubview:self.crossButtonImage];
+}
+-(void)setUpTextField:(NSString*)textFieldText displayText:(NSString*)displayText{
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight,self.frame.size.height -textHeight)];
+    self.bgView.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.bgView];
+    self.textField = [[RuleTextField alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-60,textHeight)];
+    CALayer *bottomBorder = [CALayer layer];
+    bottomBorder.frame = CGRectMake(0.0f, self.textField.frame.size.height - 1, self.textField.frame.size.width, 1.0f);
+    bottomBorder.backgroundColor = [UIColor whiteColor].CGColor;
+    [self.textField.layer addSublayer:bottomBorder];
+    
+    self.textField.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2);
+    self.textField.subProperties = self.subProperties;
+    self.textField.keyboardType = UIKeyboardTypeNumberPad;
+    self.textField.text = textFieldText;
+    self.textField.textAlignment = NSTextAlignmentCenter;
+    self.textField.textColor = [UIColor whiteColor];
+    self.textField.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:15];
+    self.textField.backgroundColor = [UIColor greenColor];
+    [self.bgView addSubview:self.textField];
+    
+    self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding, self.frame.size.width,textHeight)];
+    self.bottomLabel.text = displayText;
+    [self.bottomLabel setFont: [self.bottomLabel.font fontWithSize: fontSize]];
+    self.bottomLabel.numberOfLines=0;
+    self.bottomLabel.textAlignment = NSTextAlignmentCenter;
+    self.bottomLabel.textColor = [SFIColors ruleGraycolor];
+    self.bottomLabel.textAlignment = NSTextAlignmentCenter;
+    
+    [self addSubview:self.bottomLabel];
 }
 
 @end

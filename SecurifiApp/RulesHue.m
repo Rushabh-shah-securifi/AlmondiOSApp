@@ -83,8 +83,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
             indexValCounter++;
             if(deviceIndex.valueType == SFIDevicePropertyType_SWITCH_BINARY){
                 NSLog(@"Hue switch button");
-                
-                SwitchButton *buttonHue = [[SwitchButton alloc] initWithFrame:CGRectMake(view.frame.origin.x, 0, frameSize, frameSize)];
+                SwitchButton *buttonHue = [[SwitchButton alloc] initWithFrame:CGRectMake(view.frame.origin.x, 0, indexButtonFrameSize, indexButtonFrameSize)];
                 //                buttonHue.backgroundColor = [UIColor blackColor];
                 buttonHue.tag = indexValCounter;
                 buttonHue.valueType = deviceIndex.valueType;

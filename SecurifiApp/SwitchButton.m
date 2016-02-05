@@ -17,13 +17,10 @@
         UIView *crossButtonBGView;
   
     UILabel *countLable;
-    
 }
 
 -(id) initWithFrame:(CGRect)frame
 {
-    frame.size.height = 80;
-    frame.size.width = 80;
     return [super initWithFrame:frame];
     //    return self;
 }

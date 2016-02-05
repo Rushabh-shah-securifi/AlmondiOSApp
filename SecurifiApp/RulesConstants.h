@@ -28,4 +28,5 @@ extern int const TOPSCROLLPADDING;
 extern int const rulesButtonsViewWidth;
 extern int const rulesButtonsViewHeight;
 extern int const crossButtonScale;
+extern int const indexButtonFrameSize;
 @end

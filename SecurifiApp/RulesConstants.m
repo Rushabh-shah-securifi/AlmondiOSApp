@@ -12,6 +12,7 @@
 
 const int textHeight = 20;
 const int frameSize = 70;
+const int indexButtonFrameSize = 80;
 const int dimFrameHeight = 70;
 const int dimFrameWidth = 140;
 const int textPadding = 2;

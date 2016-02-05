@@ -597,8 +597,8 @@
     }
 }
 
-//
 -(void)onDynamicClientList_Add_Update_Remove:(id)sender{
+    NSLog(@"onDynamicClientList_Add_Update_Remove");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.connectedDevices = toolkit.wifiClientParser;
     dispatch_async(dispatch_get_main_queue(), ^() {

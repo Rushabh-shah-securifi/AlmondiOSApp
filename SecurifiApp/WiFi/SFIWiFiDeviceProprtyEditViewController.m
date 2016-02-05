@@ -61,7 +61,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"SFIWiFiDeviceProprtyEditViewController ");
     viewTypeSelection.hidden = YES;
     viewEditName.hidden = YES;
     viewUsePresence.hidden = YES;
@@ -71,6 +70,7 @@
     connectionTypes = [NSMutableArray new];
     notifyTypes = [NSMutableArray new];
     hexBlockedDays = [NSMutableString new];
+    
     NSArray *tnames = @[@"Tablet",@"PC",@"Laptop",@"Smartphone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"Printer",@"Router_switch",@"Nest",@"Hub",@"Camera",@"Chromecast",@"appleTV",@"android_stick",@"Other"];
     
     for (NSString * name in tnames) {
@@ -137,6 +137,9 @@
     btnUsePresence.selected = self.connectedDevice.deviceUseAsPresence;
     selectedDeviceType = self.connectedDevice.deviceType;
     selectedConnectionType = self.connectedDevice.deviceConnection;
+    blockedType = @(self.connectedDevice.deviceAllowedType).stringValue;
+    hexBlockedDays = [self.connectedDevice.deviceSchedule mutableCopy];
+    
     UIView *currentView;
     switch (self.editFieldIndex) {
         case nameIndexPathRow:
@@ -275,9 +278,6 @@
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     randomMobileInternalIndex = arc4random() % 10000;
     NSMutableDictionary * updateClientInfo = [NSMutableDictionary new];
-    if([blockedType isEqualToString:@"2"]){
-        [self convertDaysDictToHex];
-    }
 
     if (self.editFieldIndex==notifyMeIndexPathRow) {
         [updateClientInfo setValue:@"UpdatePreference" forKey:@"CommandType"];
@@ -290,6 +290,7 @@
         [updateClientInfo setValue:@"UpdateClient" forKey:@"CommandType"];
         clientName = self.connectedDevice.name;
         clientTimeout = [NSString stringWithFormat:@"%lu",self.connectedDevice.timeout];
+       
         switch (self.editFieldIndex) {
             case nameIndexPathRow:
                 clientName = txtProperty.text;
@@ -298,7 +299,11 @@
                 [self checkForValidTimeoutNumber];
                 clientTimeout = txtProperty.text;
                 break;
-                
+            case allowOnNetworkIndexPathRow:
+                if(blockedType != nil && [blockedType isEqualToString:@"2"]){
+                    [self convertDaysDictToHex];
+                }
+                break;
             default:
                 break;
         }
@@ -342,7 +347,7 @@
         else
             [hexBlockedDays appendString:[NSString stringWithFormat:@",%@", hexStr]];
     }
-    NSLog(@"final hex str: %@", hexBlockedDays);
+    NSLog(@"sending: final hex str: %@", hexBlockedDays);
 }
 
 -(NSMutableString*)boolStringToHex:(NSString*)str{
@@ -360,7 +365,6 @@
         curVal <<= 1;
     }
     NSString *resultStr = [NSString stringWithFormat: @"%lx", (unsigned long)result];
-    NSLog(@"Result: %@", resultStr);
     return [resultStr mutableCopy];
 }
 
@@ -401,7 +405,6 @@
 
 
 -(void)initializeblockedDaysArray{
-    NSLog(@"initializeblockedDaysArray");
     blockedDaysArray = [NSMutableArray new];
     
     for(int i = 0; i <= 8; i++){
@@ -416,19 +419,16 @@
     if([strings count] > 7){
         return;
     }
-    NSLog(@"strings: %@", strings);
     int dictCount = 1;
     for(NSString *hex in strings){
         NSUInteger hexAsInt;
         NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:dictCount];
         [[NSScanner scannerWithString:hex] scanHexInt:&hexAsInt];
         NSString *binary = [NSString stringWithFormat:@"%@", [self toBinary:hexAsInt]];
-        NSLog(@"binary: %@", binary);
         int len = (int)binary.length;
         for (NSInteger charIdx=len-1; charIdx>=0; charIdx--)
             [blockedHours setValue:[NSString stringWithFormat:@"%c", [binary characterAtIndex:charIdx]] forKey:@(len-charIdx).stringValue];
         dictCount++;
-//        NSLog(@"blocked hours: %@", blockedHours);
     }
 }
 
@@ -547,9 +547,7 @@
             
         default:
             break;
-    }
-    
-    
+    }  
 }
 
 #pragma mark - HUD mgt
@@ -575,7 +573,6 @@
 #pragma mark - Cloud command senders and handlers
 
 - (void)onWiFiClientsUpdateResponseCallback:(id)sender {
-    NSLog(@"wifi detail view - onWiFiClientsUpdateResponseCallback");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
@@ -591,44 +588,32 @@
         mainDict = [[data valueForKey:@"data"] objectFromJSONData];
     }
     
-    NSLog(@"%@",mainDict);
-    
     if ([[mainDict valueForKey:@"MobileInternalIndex"] integerValue]!=randomMobileInternalIndex) {
         return;
     }
-    if ([[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
-        self.connectedDevice.deviceType = selectedDeviceType;
-        self.connectedDevice.deviceUseAsPresence = btnUsePresence.selected;
-        self.connectedDevice.name = clientName;
-        self.connectedDevice.timeout = [clientTimeout integerValue];
-        self.connectedDevice.deviceConnection = selectedConnectionType;
-        self.connectedDevice.deviceAllowedType = blockedType.intValue;
-        self.connectedDevice.deviceSchedule = hexBlockedDays;
-        [self.delegate updateDeviceInfo:self.connectedDevice];
-        
+    
+    [self.HUD hide:YES];
+    if (![[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"There was some problem with this request, try later!" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
+        [alert show];
+        return;
+    }else{
         dispatch_async(dispatch_get_main_queue(), ^() {
             if (!self) {
                 return;
             }
-            [self.HUD hide:YES];
             [self.navigationController popViewControllerAnimated:YES];
         });
-        
-        return;
     }
 }
 
 - (void)onClientPreferenceUpdateResponse:(id)sender {
-    
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
         return;
     }
     NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    
-    NSLog(@"%@",mainDict);
-    
     if ([[mainDict valueForKey:@"MobileInternalIndex"] integerValue]!=randomMobileInternalIndex) {
         return;
     }
@@ -637,8 +622,6 @@
             if (!self) {
                 return;
             }
-            
-            
             [self.HUD hide:YES];
             [self.navigationController popViewControllerAnimated:YES];
         });
@@ -744,14 +727,12 @@
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"didSelectItemAtIndexPath");
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     [self selectionOfHoursForRow:row andSection:section collectionView:collectionView selected:@"1"];
 }
 
 -(void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"didDeselectItemAtIndexPath");
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     [self selectionOfHoursForRow:row andSection:section collectionView:collectionView selected:@"0"];
