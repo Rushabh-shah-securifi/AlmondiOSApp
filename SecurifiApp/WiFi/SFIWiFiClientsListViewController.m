@@ -132,7 +132,6 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"SFIWiFiClientListCell";
-    NSLog(@"cellForRowAtIndexPath");
     SFIWiFiClientListCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (!cell){
@@ -145,6 +144,13 @@
     cell.expandable = YES;
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(SFIWiFiClientListCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"willDisplayCell");
+    SFIConnectedDevice *device = self.connectedDevices[indexPath.section];
+    if(!device.isActive)
+        cell.backgroundColor = [SFIColors darkGrayColor];
 }
 
 
@@ -342,19 +348,20 @@
         }
         case notifyMeIndexPathRow://Notify me
         {
-            float lableX = !local? tblDevices.frame.size.width - 220: tblDevices.frame.size.width - 215;
-            float lableWidth = !local? 180: 200;
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(lableX, 0, lableWidth, propertyRowCellHeight)];
-            label.backgroundColor = [UIColor clearColor];
-            label.textColor = !local?[UIColor whiteColor]: [SFIColors disableColor];;
-            label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
-            label.text = [connectedDevice getNotificationNameByType:[self getNotificationTypeForDevice:connectedDevice.deviceID]];
-            label.numberOfLines = 1;
-            label.textAlignment = NSTextAlignmentRight;
-            label.tag = 66;
-            [cell addSubview:label];
-            cell.accessoryType = !local? UITableViewCellAccessoryDisclosureIndicator: UITableViewCellAccessoryNone;
-            
+            if(!local){
+                float lableX = !local? tblDevices.frame.size.width - 220: tblDevices.frame.size.width - 215;
+                float lableWidth = !local? 180: 200;
+                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(lableX, 0, lableWidth, propertyRowCellHeight)];
+                label.backgroundColor = [UIColor clearColor];
+                label.textColor = !local?[UIColor whiteColor]: [SFIColors disableColor];;
+                label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
+                label.text = [connectedDevice getNotificationNameByType:[self getNotificationTypeForDevice:connectedDevice.deviceID]];
+                label.numberOfLines = 1;
+                label.textAlignment = NSTextAlignmentRight;
+                label.tag = 66;
+                [cell addSubview:label];
+                cell.accessoryType = !local? UITableViewCellAccessoryDisclosureIndicator: UITableViewCellAccessoryNone;
+            }
             break;
         }
             
@@ -374,6 +381,9 @@
 
 -  (void)addCellLabel:(UITableViewCell*)cell IndexPath:(NSIndexPath *)indexPath{
     NSInteger subRowIndex = indexPath.subRow-1;
+    if(local && subRowIndex==notifyMeIndexPathRow)
+        return;
+    
     if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && subRowIndex==historyIndexPathRow) {
         return;
     }
@@ -426,6 +436,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForSubRowAtIndexPath:(NSIndexPath *)indexPath{
     NSInteger subrowIndex = indexPath.subRow-1;
+    
+    if(local && subrowIndex==notifyMeIndexPathRow)
+        return 0;
     
     if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && subrowIndex==historyIndexPathRow) {
         return 0;//will hide
@@ -528,16 +541,15 @@
             
         case notifyMeIndexPathRow://Notify me
         {
-            if(local)
-                break;
-            
-            SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
-            viewController.userID = userID;
-            viewController.selectedNotificationType = [self getNotificationTypeForDevice:((SFIConnectedDevice*) self.connectedDevices[indexPath.section]).deviceID];
-            viewController.delegate = self;
-            viewController.editFieldIndex = subRowIndex;
-            viewController.connectedDevice = self.connectedDevices[indexPath.section];
-            [self.navigationController pushViewController:viewController animated:YES];
+            if(!local){
+                SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
+                viewController.userID = userID;
+                viewController.selectedNotificationType = [self getNotificationTypeForDevice:((SFIConnectedDevice*) self.connectedDevices[indexPath.section]).deviceID];
+                viewController.delegate = self;
+                viewController.editFieldIndex = subRowIndex;
+                viewController.connectedDevice = self.connectedDevices[indexPath.section];
+                [self.navigationController pushViewController:viewController animated:YES];
+            }
             break;
         }
             
