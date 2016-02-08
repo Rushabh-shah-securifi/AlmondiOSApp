@@ -167,13 +167,13 @@ int xVal = 20;
     int segmentType=timesubProperties.time.segmentType;
     if(segmentType==1){
         NSLog(@"timesubProperties.time.dayOfWeek %@,%lu",timesubProperties.time.dayOfWeek,(unsigned long)timesubProperties.time.dayOfWeek.count);
-               [dimbutton setupValues:[dateFormat stringFromDate:timesubProperties.time.dateFrom] Title:@"Time" displayText:[NSString stringWithFormat:@"Days %@",[self getDays:timesubProperties.time.dayOfWeek]] suffix:@""];
+               [dimbutton setupValues:[dateFormat stringFromDate:timesubProperties.time.dateFrom] Title:@"Time" displayText:[self getDays:timesubProperties.time.dayOfWeek] suffix:@""];
 
     }
     else{
         NSString *time = [NSString stringWithFormat:@"%@\n%@", [dateFormat stringFromDate:timesubProperties.time.dateFrom], [dateFormat stringFromDate:timesubProperties.time.dateTo]];
         NSLog(@"time interval: %@", time);
-        [dimbutton setupValues:time Title:@"Time Interval" displayText:[NSString stringWithFormat:@"Days %@",[self getDays:timesubProperties.time.dayOfWeek]] suffix:@""];
+        [dimbutton setupValues:time Title:@"Time Interval" displayText:[self getDays:timesubProperties.time.dayOfWeek] suffix:@""];
     }
     dimbutton.subProperties = timesubProperties;
     dimbutton.subProperties.positionId = positionId;
@@ -324,15 +324,15 @@ int xVal = 20;
     
 }
 +(NSString*)getDays:(NSArray*)earlierSelection{
+    if(earlierSelection==nil || earlierSelection.count==0)
+        return @"EveryDay";
     NSMutableDictionary *dayDict = [self setDayDict];
     //Loop through earlierSelection
     NSMutableString *days = [NSMutableString new];
     int i=0;
     for(NSString *dayVal in earlierSelection){
-        if(i == 0)
-            [days appendString:[dayDict valueForKey:dayVal]];
-        else
-            [days appendString:[NSString stringWithFormat:@",%@", [dayDict valueForKey:dayVal]]];
+        NSString *value=[dayDict valueForKey:dayVal];
+        [days appendString:(i==0)?value:[NSString stringWithFormat:@",%@", value]];
         i++;
     }
     return [NSString stringWithString:days];

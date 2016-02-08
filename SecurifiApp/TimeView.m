@@ -244,10 +244,10 @@ int segmentType;
         [self setDayButtonProperties:dayButton withRadius:dayButtonWidth];
         [dayButton setTitle:day forState:UIControlStateNormal];
         dayButton.tag = tag;
-        [self setPreviousHighlight:dayButton];
         [dayButton addTarget:self action:@selector(onDayBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         [dayView addSubview:dayButton];
         dayButton.selected = NO;
+        [self setPreviousHighlight:dayButton];
         xVal += dayButtonWidth + spacing;
         tag++;
     }
