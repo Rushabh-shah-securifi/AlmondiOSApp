@@ -16,6 +16,7 @@
 #import "KeyChainWrapper.h"
 #import "Analytics.h"
 #import "TimeText.h"
+#import "SFIColors.h"
 
 #define AVENIR_HEAVY @"Avenir-Heavy"
 #define AVENIR_ROMAN @"Avenir-Roman"
@@ -34,6 +35,7 @@
     float propertyRowCellHeight;
     float removeRowCellHeight;
     UIFont * cellFont;
+    BOOL local;
 }
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -54,7 +56,8 @@
     randomMobileInternalIndex = arc4random() % 10000;
     tblDevices.SKSTableViewDelegate = self;
     tblDevices.shouldExpandOnlyOneCell = YES;
-    propertyNames = @[@"Name",@"Type",@"MAC Address",@"Last Known IP",@"Connection",@"Allow On Network",@"Use as Presence Sensor",@"Notify me",@"Set Inactivity Timeout", @"Last Active Time", @"View Device History",@"Remove"];
+    local = [self getLocalConnection];
+    propertyNames = @[@"Name",@"Type",@"Manufacturer",@"MAC Address",@"Last Known IP",@"Signal Strength",@"Connection",@"Allow On Network",@"Use as Presence Sensor",@"Notify me",@"Set Inactivity Timeout", @"Last Active Time", @"View Device History",@"Remove"];
     [self initializeNotifications];
     [self getClientsPreferences];
 }
@@ -145,15 +148,19 @@
 }
 
 
+- (BOOL)getLocalConnection{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    return [toolkit useLocalNetwork:almond.almondplusMAC];
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForSubRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *MyIdentifier = @"deviceProperty";
     SFIConnectedDevice * connectedDevice = self.connectedDevices[indexPath.section];
-    
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
-    
     NSInteger subRowIndex = indexPath.subRow-1;
-    
+ 
     for (UIView *c in cell.subviews) {
         if ([c isKindOfClass:[UILabel class]] || [c isKindOfClass:[UIButton class]]) {
             [c removeFromSuperview];
@@ -190,6 +197,21 @@
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
+        case manufacturerIndexPathRow:
+        {
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
+            label.backgroundColor = [UIColor clearColor];
+            label.textColor = [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
+            label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
+            label.text = [connectedDevice.manufacturer length] == 0? @"NaN": connectedDevice.manufacturer;
+            label.numberOfLines = 1;
+            label.tag = 66;
+            label.textAlignment = NSTextAlignmentRight;
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            [cell addSubview:label];
+            break;
+
+        }
         case macAddressIndexPathRow://MAC Address
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
@@ -204,6 +226,7 @@
             [cell addSubview:label];
             break;
         }
+        
         case iPAddressIndexPathRow://IP Address
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
@@ -217,6 +240,21 @@
             cell.accessoryType = UITableViewCellAccessoryNone;
             [cell addSubview:label];
             break;
+        }
+        case rssiIndexPathRow:
+        {
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
+            label.backgroundColor = [UIColor clearColor];
+            label.textColor = [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
+            label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
+            label.text = [connectedDevice.rssi length] == 0? @"NaN": [NSString stringWithFormat:@"%@ dBm", connectedDevice.rssi];
+            label.numberOfLines = 1;
+            label.tag = 66;
+            label.textAlignment = NSTextAlignmentRight;
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            [cell addSubview:label];
+            break;
+
         }
         case connectionIndexPathRow://Connection
         {
@@ -233,9 +271,11 @@
             break;
         }
         case allowOnNetworkIndexPathRow:{ //Allow On Network
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 220, 0, 180, propertyRowCellHeight)];
+            float lableX = local? tblDevices.frame.size.width - 220: tblDevices.frame.size.width - 215;
+            float lableWidth = local? 180: 200;
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(lableX, 0, lableWidth, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
-            label.textColor = [UIColor whiteColor];
+            label.textColor = local?[UIColor whiteColor]: [SFIColors disableColor];
             label.font = cellFont;
             if (connectedDevice.deviceAllowedType == DeviceAllowed_Always) {
                 label.text = @"Always";
@@ -248,9 +288,8 @@
             label.numberOfLines = 1;
             label.textAlignment = NSTextAlignmentRight;
             [cell addSubview:label];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.accessoryType = local? UITableViewCellAccessoryDisclosureIndicator: UITableViewCellAccessoryNone;
             break;
-            
         }
             
         case timeoutIndexPathRow:
@@ -303,18 +342,19 @@
         }
         case notifyMeIndexPathRow://Notify me
         {
-            if (((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence){
-                UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 220, 0, 180, propertyRowCellHeight)];
-                label.backgroundColor = [UIColor clearColor];
-                label.textColor = [UIColor whiteColor];
-                label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
-                label.text = [connectedDevice getNotificationNameByType:[self getNotificationTypeForDevice:connectedDevice.deviceID]];
-                label.numberOfLines = 1;
-                label.textAlignment = NSTextAlignmentRight;
-                label.tag = 66;
-                [cell addSubview:label];
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            }
+            float lableX = !local? tblDevices.frame.size.width - 220: tblDevices.frame.size.width - 215;
+            float lableWidth = !local? 180: 200;
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(lableX, 0, lableWidth, propertyRowCellHeight)];
+            label.backgroundColor = [UIColor clearColor];
+            label.textColor = !local?[UIColor whiteColor]: [SFIColors disableColor];;
+            label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
+            label.text = [connectedDevice getNotificationNameByType:[self getNotificationTypeForDevice:connectedDevice.deviceID]];
+            label.numberOfLines = 1;
+            label.textAlignment = NSTextAlignmentRight;
+            label.tag = 66;
+            [cell addSubview:label];
+            cell.accessoryType = !local? UITableViewCellAccessoryDisclosureIndicator: UITableViewCellAccessoryNone;
+            
             break;
         }
             
@@ -334,7 +374,7 @@
 
 -  (void)addCellLabel:(UITableViewCell*)cell IndexPath:(NSIndexPath *)indexPath{
     NSInteger subRowIndex = indexPath.subRow-1;
-    if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && (subRowIndex==notifyMeIndexPathRow || subRowIndex==historyIndexPathRow)) {
+    if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && subRowIndex==historyIndexPathRow) {
         return;
     }
     if (((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive  && subRowIndex==lastActiveTimeIndexPathRow) {
@@ -387,7 +427,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForSubRowAtIndexPath:(NSIndexPath *)indexPath{
     NSInteger subrowIndex = indexPath.subRow-1;
     
-    if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && (subrowIndex==notifyMeIndexPathRow || subrowIndex==historyIndexPathRow)) {
+    if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && subrowIndex==historyIndexPathRow) {
         return 0;//will hide
     }
     if (((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive  && subrowIndex==lastActiveTimeIndexPathRow) {
@@ -409,6 +449,7 @@
 
 - (void)tableView:(SKSTableView *)tableView didSelectSubRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     NSInteger subRowIndex = indexPath.subRow-1;
     switch (subRowIndex) {
         case nameIndexPathRow://Name
@@ -429,12 +470,19 @@
             [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
+        case manufacturerIndexPathRow://Manufacturer Address
+        {
+            break;
+        }
         case macAddressIndexPathRow://MAC Address
         {
-            
             break;
         }
         case iPAddressIndexPathRow://IP Address
+        {
+            break;
+        }
+        case rssiIndexPathRow://Signal Strength Address
         {
             break;
         }
@@ -449,6 +497,9 @@
         }
         case allowOnNetworkIndexPathRow://Allow On Network
         {
+            if(!local){
+                break;
+            }
             SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
             viewController.delegate = self;
             viewController.editFieldIndex = subRowIndex;
@@ -477,6 +528,9 @@
             
         case notifyMeIndexPathRow://Notify me
         {
+            if(local)
+                break;
+            
             SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
             viewController.userID = userID;
             viewController.selectedNotificationType = [self getNotificationTypeForDevice:((SFIConnectedDevice*) self.connectedDevices[indexPath.section]).deviceID];
@@ -561,17 +615,13 @@
     
 }
 
-#pragma mark
-
 #pragma mark - Cloud command senders and handlers
 - (void)gotCommandResponse:(id)sender {
     NSLog(@"list view - gotCommandResponse");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     NSDictionary * mainDict;
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
-    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+
     if(local)
         mainDict = [data valueForKey:@"data"];
     else
@@ -590,7 +640,7 @@
         [alert show];
     }else{
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.connectedDevices removeObject:currentDevice];
+//            [self.connectedDevices removeObject:currentDevice];
             //            [tblDevices reloadData];
             [tblDevices refreshData];
         });
@@ -599,11 +649,21 @@
 
 -(void)onDynamicClientList_Add_Update_Remove:(id)sender{
     NSLog(@"onDynamicClientList_Add_Update_Remove");
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.connectedDevices = toolkit.wifiClientParser;
+    
+    self.connectedDevices = [self getSortedDevices];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [tblDevices refreshData];
     });
+}
+
+-(NSMutableArray*)getSortedDevices{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"isActive" ascending:NO];
+    NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES];
+    
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, secondDescriptor, nil];
+    
+    return [[toolkit.wifiClientParser sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
 }
 
 - (void)onGetClientsPreferences:(id)sender {

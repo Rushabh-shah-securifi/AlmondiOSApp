@@ -8,8 +8,10 @@
 typedef NS_ENUM(NSInteger, Properties) {
     nameIndexPathRow,
     typeIndexPathRow,
+    manufacturerIndexPathRow,
     macAddressIndexPathRow,
     iPAddressIndexPathRow,
+    rssiIndexPathRow,
     connectionIndexPathRow,
     allowOnNetworkIndexPathRow,
     usePresenceSensorIndexPathRow,
