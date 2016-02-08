@@ -47,11 +47,6 @@
     // Do any additional setup after loading the view.
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
-    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
-    if(!local){
-        [self getAllScenes];
-    }
     [self initializeNotifications];
     
     self.currentAlmond = [toolkit currentAlmond];
@@ -69,18 +64,7 @@
     [super viewWillAppear:animated];
     self.enableDrawer = YES;
     randomMobileInternalIndex = arc4random() % 10000;
-    
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
-    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
-    if(local){
-        scenesArray = [toolkit.scenesArray copy];
-    }
-    
-    
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-    });
+    [self getAllScenes];
     [self addAddSceneButton];
 }
 
@@ -125,14 +109,6 @@
     
 }
 
--(void)updateSceneTableView:(id)sender{
-    NSLog(@"updateSceneTableView");
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    scenesArray = [NSMutableArray arrayWithArray:toolkit.scenesArray];
-    [self.tableView reloadData];
-    
-}
-
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
@@ -140,7 +116,10 @@
         [center removeObserver:self];
     }
 }
-
+-(void)updateSceneTableView:(id)sender{
+    [self getAllScenes];
+    
+}
 
 
 - (void)sendGetAllScenesRequest {

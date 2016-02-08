@@ -112,7 +112,7 @@ NSMutableArray * pickerValuesArray2;
     for(SFIDevice *device in [toolkit deviceList:plus.almondplusMAC]){
         if(self.isTrigger && (device.deviceType != SFIDeviceType_HueLamp_48) && (device.deviceType != SFIDeviceType_NestSmokeDetector_58))
             [deviceArray addObject:device];
-        else if (device.isActuator && !self.isTrigger )
+        else if (device.isRuleActuator && !self.isTrigger )
             [deviceArray addObject:device];
         
     }

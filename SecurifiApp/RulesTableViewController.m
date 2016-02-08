@@ -344,23 +344,16 @@ CGPoint tablePoint;
     Rule *rule = self.rules[indexPath.row];
     RulePayload *rulePayload = [RulePayload new];
     rulePayload.rule = rule;
-    NSDictionary *payload;
-        if(cell.activeDeactiveSwitch.selected){
-            NSLog(@"activateRule");
-            payload = [rulePayload createRulePayload:randomMobileInternalIndex with:YES valid:@"1"];
-            [cell.activeDeactiveSwitch setOn:YES animated:YES];
-        }else{
-            NSLog(@"deactivateRule");
-            payload = [rulePayload createRulePayload:randomMobileInternalIndex with:YES valid:@"0"];
-            [cell.activeDeactiveSwitch setOn:NO animated:YES];
-        }
-        if(payload!=nil){
-            GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-            cloudCommand.commandType = CommandType_UPDATE_REQUEST;
-            cloudCommand.command = [payload JSONString];
-            [self asyncSendCommand:cloudCommand];
-            NSLog(@"activate rule %@",cloudCommand.command);
-        }
+    NSDictionary *payload = [rulePayload validateRule:randomMobileInternalIndex valid:cell.activeDeactiveSwitch.selected?@"true":@"false"];
+    [cell.activeDeactiveSwitch setOn:cell.activeDeactiveSwitch.selected animated:cell.activeDeactiveSwitch.selected];
+    
+    if(payload!=nil){
+        GenericCommand *cloudCommand = [[GenericCommand alloc] init];
+        cloudCommand.commandType = CommandType_VALIDATE_REQUEST;
+        cloudCommand.command = [payload JSONString];
+        [self asyncSendCommand:cloudCommand];
+        NSLog(@"activate rule %@",cloudCommand.command);
+    }
 }
 ///*
 // {

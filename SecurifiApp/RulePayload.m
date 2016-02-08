@@ -10,6 +10,29 @@
 #import "SFIButtonSubProperties.h"
 
 @implementation RulePayload
+
+/**{"ID":4,"Value":"false","MobileInternalIndex":1271920418,"CommandType":"ValidateRule"}**/
+
+- (NSDictionary*)validateRule:(NSInteger)randomMobileInternalIndex valid:(NSString *)valid{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    if (!plus.almondplusMAC) {
+        return nil;
+    }
+    NSMutableDictionary *rulePayload = [[NSMutableDictionary alloc]init];
+    
+    [rulePayload setValue:self.rule.ID forKey:@"ID"];
+    [rulePayload setValue:valid forKey:@"Value"];
+    [rulePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
+    [rulePayload setValue:@"ValidateRule" forKey:@"CommandType"];
+
+    
+    NSLog(@"rule payload : %@ ",rulePayload);
+    return rulePayload;
+    
+}
+
+
 - (NSDictionary*)createRulePayload:(NSInteger)randomMobileInternalIndex with:(BOOL)isInitilized valid:(NSString *)valid{
     NSLog(@" rulname.alertview %@",self.rule.name);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
