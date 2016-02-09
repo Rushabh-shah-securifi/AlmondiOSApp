@@ -54,7 +54,7 @@ CGPoint tablePoint;
 -(void)viewWillAppear:(BOOL)animated{
     //    [self.rules removeAllObjects];
     [super viewWillAppear:animated];
-    
+    self.enableDrawer = YES;
     [self getRuleList];
     [self addAddRuleButton];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];

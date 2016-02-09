@@ -1723,13 +1723,13 @@
             if (type == SFIDevicePropertyType_SENSOR_BINARY) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"false";
-                s1.iconName =DT38_SHOCK_TRUE;
+                s1.iconName =DT38_SHOCK_FALSE;
                 s1.displayText=@"NO\nVIBRATION";
                 s1.notificationText = NSLocalizedString(@"'s vibration stopped.", @"'s vibration stopped.");
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
-                s2.iconName = DT38_SHOCK_FALSE;
+                s2.iconName = DT38_SHOCK_TRUE;
                 s2.displayText=@"VIBRATION";
                 s2.notificationText = NSLocalizedString(@" detected Vibration.", @" detected Vibration.");
                 

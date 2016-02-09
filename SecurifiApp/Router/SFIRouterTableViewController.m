@@ -121,6 +121,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     
     self.disposed = NO;
     [self initializeAlmondData:RouterViewReloadPolicy_on_state_change];
+    if(self.currentConnectionMode == SFIAlmondConnectionMode_local)
+        [self.tableView reloadData];
+        
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -268,18 +271,13 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         return;
     }
     
-    if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud) {
+    if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud && self.almondMac) {
         [self showLoadingRouterDataHUD];
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        [toolkit asyncAlmondStatusAndSettingsRequest:self.almondMac request:requestType];
     }
     
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    NSString *mac = self.almondMac;
     
-    if (!mac) {
-        NSLog(@"Router: sendRouterDetailsRequest, mac is null");
-    }
-    
-    [toolkit asyncAlmondStatusAndSettingsRequest:mac request:requestType];
 }
 
 - (void)sendUpdateAlmondFirmwareCommand {
