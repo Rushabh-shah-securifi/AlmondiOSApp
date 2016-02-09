@@ -93,7 +93,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 buttonHue.deviceType = deviceType;
                 [buttonHue addTarget:self action:@selector(onHueButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                 
-                [buttonHue setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:NO];
+                [buttonHue setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:NO isDimButton:NO insideText:iVal.displayText];
                 [buttonHue changeImageColor:[UIColor whiteColor]];
                 //set perv. count and highlight
                 int buttonClickCount = 0;

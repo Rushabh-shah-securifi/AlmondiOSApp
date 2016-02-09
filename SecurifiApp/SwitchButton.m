@@ -14,6 +14,7 @@
 
 @implementation SwitchButton{
         UIImageView * imgIcon;
+    UILabel *lblMain;
         UIView *crossButtonBGView;
   
     UILabel *countLable;
@@ -87,15 +88,20 @@
     [self addSubview:self.bottomLabel];
 }
 
-- (void)setupValues:(UIImage*)iconImage topText:(NSString*)topText bottomText:(NSString *)bottomText isTrigger:(BOOL)isTrigger{//upperScroll
+- (void)setupValues:(UIImage*)iconImage topText:(NSString*)topText bottomText:(NSString *)bottomText isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimButton insideText:(NSString *)insideText{//upperScroll
     self.isTrigger = isTrigger;
     if(topText != nil){
         self.showTitle = YES;
         self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, triggerActionBtnWidth, triggerActionBtnHeight);
         [self adDeviceName:topText];
         [self addBgView:self.topLabel.frame.size.height widthAndHeight:triggerActionBtnWidth];
+        if(isDimButton)
+            [self mainLabel:@"" text:insideText];
+        else
         [self addImage:iconImage y:self.bgView.frame.origin.y widthAndHeight:self.bgView.frame.size.width];
+        if(isTrigger)
         [self addBottomText:bottomText x:0 y:self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding width:self.frame.size.width height:textHeight];
+        
         if(topText.length >0 || !isTrigger)
             self.bgView.backgroundColor = self.isTrigger?[SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
          
@@ -179,6 +185,20 @@
     [crossButtonBGView addSubview:self.crossButtonImage];
 }
 
+- (void)mainLabel:(NSString *)suffix text:(NSString *)text {
+    NSString *strTopTitleLabelText = [text stringByAppendingString:suffix];
+    NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:15.0f]} range:NSMakeRange(0,text.length)]; //40
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:10.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,suffix.length)];
+    //lblmain
+    lblMain = [[UILabel alloc] initWithFrame:self.bgView.frame];
+    lblMain.textAlignment = NSTextAlignmentCenter;
+    lblMain.userInteractionEnabled = NO;
+    [lblMain setAttributedText:strTemp];//24
+    lblMain.lineBreakMode = NSLineBreakByWordWrapping;
+    lblMain.numberOfLines = 0;
+    [self addSubview:lblMain];
+}
 
 @end
 

@@ -19,7 +19,8 @@
 @property(nonatomic)SFIButtonSubProperties* subProperties;
 @property(nonatomic)SFIDevicePropertyType valueType; //find out why
 
-- (void)setupValues:(UIImage*)iconImage Title:(NSString*)title displayText:(NSString *)displayText delay:(NSString*)delay;
+- (void)setupValues:(UIImage*)iconImage Title:(NSString*)title displayText:(NSString *)displayText delay:(NSString*)delay isDimmer:(BOOL)isDimButton bottomText:(NSString *)bottomText;
 - (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)clearColor;
 - (void)setNewValue:(NSString*)delay;
+- (void)setupValues:(NSString*)text  Title:(NSString*)title displayText:(NSString*)displayText suffix:(NSString*)suffix;
 @end

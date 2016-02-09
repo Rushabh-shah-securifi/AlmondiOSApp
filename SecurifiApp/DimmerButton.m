@@ -138,7 +138,7 @@
 }
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{
     NSLog(@"btncount %d",btnCount);
-    countLable = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x + self.bgView.frame.size.width -10, -10, 16, 16)];
+    countLable = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x + self.bgView.frame.size.width -10, -8, 16, 16)];
     
     CALayer * l1 = [countLable layer];
     [l1 setMasksToBounds:YES];
@@ -221,7 +221,7 @@
     
     self.textField.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2);
     self.textField.subProperties = self.subProperties;
-    self.textField.keyboardType = UIKeyboardTypeNumberPad;
+    self.textField.keyboardType = UIKeyboardTypeDefault;
     self.textField.text = textFieldText;
     self.textField.textAlignment = NSTextAlignmentCenter;
     self.textField.textColor = [UIColor whiteColor];

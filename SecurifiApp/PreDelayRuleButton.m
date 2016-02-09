@@ -31,7 +31,7 @@
 
 
 
-- (void)setupValues:(UIImage*)iconImage Title:(NSString*)title displayText:(NSString *)displayText delay:(NSString*)delay{
+- (void)setupValues:(UIImage*)iconImage Title:(NSString*)title displayText:(NSString *)displayText delay:(NSString*)delay isDimmer:(BOOL)isDimButton bottomText:(NSString *)bottomText{
     //device name title
     lblDeviceName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width,textHeight)];
     //    lblTitle.font = self.titleLabel.font;
@@ -71,16 +71,15 @@
     
     actionbutton = [[SwitchButton alloc] initWithFrame:CGRectMake(46, 0, triggerActionBtnWidth,triggerActionBtnWidth)];
     NSLog(@"iconimage: %@", iconImage);
-    [actionbutton setupValues:iconImage topText:@"" bottomText:@"" isTrigger:NO];
     
-//    [actionbutton setButtonCross:NO];
+    [actionbutton setupValues:iconImage topText:@"" bottomText:bottomText isTrigger:NO isDimButton:isDimButton insideText:displayText];
     [self addSubview:actionbutton];
     
     
     //displaytext
     lblDisplayText = [[UILabel alloc] initWithFrame:CGRectMake(0, triggerActionBtnWidth + textHeight, self.frame.size.width,textHeight)];
     //    lblTitle.font = self.titleLabel.font;
-    lblDisplayText.text = displayText;
+    lblDisplayText.text = bottomText;
      lblDisplayText.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:fontSize];
     lblDisplayText.numberOfLines=0;
     lblDisplayText.textAlignment = NSTextAlignmentCenter;
@@ -91,6 +90,7 @@
 - (void)setNewValue:(NSString*)delay{
     noOfSec.text = delay;
 }
+
 
 
 

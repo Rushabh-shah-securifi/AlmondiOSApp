@@ -15,6 +15,15 @@
 
 - (NSArray *)resolve:(SFIDeviceType)device index:(SFIDevicePropertyType)type {
     switch (device) {
+        case SFIDeviceType_REBOOT_ALMOND:{
+            IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+            s1.matchData = @"reboot";
+            s1.iconName = DT1_BINARY_SWITCH_FALSE;
+            s1.displayText=@"reboot Almond";
+            s1.notificationText = @"";
+            s1.eventType = @"AlmondModeUpdated";
+            return @[s1];
+        }
         case SFIDeviceType_BinarySwitch_0:{
             IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
             s1.matchData = @"home";
@@ -1113,11 +1122,12 @@
                 s1.displayText=@"SILENT";
                 s1.iconName = DT21_STANDARD_WARNING_DEVICE_FALSE;
                 s1.notificationText = NSLocalizedString(@" is turned Off.", @" is turned Off.");
+                s1.layoutType = nil;
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"1";
                 s2.matchType = MatchType_equals;
-                s2.layoutType=@"dimButton";
+                s2.layoutType=@"textButton";
                 s2.iconName = DT21_STANDARD_WARNING_DEVICE_TRUE;
                 s2.displayText=@"ALARM";
                 s2.minValue = 0;
@@ -1136,7 +1146,7 @@
                 s3.valueFormatter.action = ValueFormatterAction_formatString;
                 s3.valueFormatter.notificationPrefix = NSLocalizedString(@" is turned on for ", @" is turned on for ");
                 s3.valueFormatter.suffix = NSLocalizedString(@" seconds", @" seconds");
-                
+                s3.layoutType = nil;
                 return @[s2, s1, s3];
             }
             
@@ -4269,9 +4279,16 @@
             
             return @[deviceIndex1, deviceIndex2];
         }
+          
             
-            
-            
+        case SFIDeviceType_REBOOT_ALMOND: {
+            SFIDeviceIndex *deviceIndex1 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_REBOOT];
+            deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_REBOOT];
+            deviceIndex1.indexID = 1;
+            deviceIndex1.cellId = 1;
+            deviceIndex1.isEditableIndex = YES;
+            return @[deviceIndex1];
+        }
         default: {
             //            NSLog(@"Something wrong");
             return [NSArray array];
