@@ -181,7 +181,19 @@
 }
 
 -(NSDictionary *)createActionDeviceObject:(SFIButtonSubProperties*)dimButtonProperty{
-    if(dimButtonProperty.deviceId == 1 && dimButtonProperty.eventType!=nil && [dimButtonProperty.eventType isEqualToString:@"AlmondModeUpdated"] ){
+    if(dimButtonProperty.type!=nil && [dimButtonProperty.type isEqualToString:@"NetworkResult"]){
+        NSDictionary *dict = @{
+                               @"Type":@"NetworkResult",
+                               @"ID":@(1).stringValue,
+                               @"Index":@(1).stringValue,
+                               @"Value":@"reboot",
+                               @"PreDelay":dimButtonProperty.delay,
+                               @"Validation": @"true"
+                               };
+        return dict;
+        
+    }
+    else if(dimButtonProperty.eventType!=nil && [dimButtonProperty.eventType isEqualToString:@"AlmondModeUpdated"] ){
         NSDictionary *dict = @{
                                @"Type":@"EventResult",
                                @"ID":@(1).stringValue,

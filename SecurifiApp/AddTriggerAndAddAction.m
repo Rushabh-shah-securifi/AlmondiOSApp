@@ -49,6 +49,7 @@ int maxValue;
 NSString *newPickerValue;
 int buttonClickCount;
 NSMutableArray * pickerValuesArray2;
+DimmerButton *dimerButton;
 
 -(id)init{
     if(self == [super init]){
@@ -85,19 +86,21 @@ NSMutableArray * pickerValuesArray2;
     
     if([deviceName isEqualToString:@"Time"]){
         [deviceButton addTarget:self action:@selector(TimeEventClicked:) forControlEvents:UIControlEventTouchUpInside];
-    }else if([deviceName isEqualToString:@"Clients"])
-        [deviceButton addTarget:self action:@selector(wifiClientsClicked:) forControlEvents:UIControlEventTouchUpInside];
+    }else if([deviceName isEqualToString:@"Clients"]){
+        [deviceButton addTarget:self action:@selector(wifiClientsClicked:) forControlEvents:UIControlEventTouchUpInside];}
+    else if([deviceName isEqualToString:@"rebot almond"]){
+        [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];}
     else
         [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.parentViewController.deviceListScrollView addSubview:deviceButton];
-
+    
     return xVal + textRect.size.width +15;
 }
 -(void)TimeEventClicked:(id)sender{
     [self resetViews];
     [self toggleHighlightForDeviceNameButton:sender];
     self.timeView = [[TimeView alloc]init];
-//    self.timeView.ruleTime = self.ruleTime;
+    //    self.timeView.ruleTime = self.ruleTime;
     self.timeView.delegate = self;
     self.timeView.ruleTime = [self getRuleTime];
     self.timeView.parentViewController = self.parentViewController;
@@ -117,33 +120,36 @@ NSMutableArray * pickerValuesArray2;
         
     }
     return deviceArray;
- 
+    
 }
 
 -(void)addDeviceNameList:(BOOL)isTrigger{
     self.isTrigger = isTrigger;
     //clear view
-         NSArray *viewsToRemove = [self.parentViewController.deviceListScrollView subviews];
+    NSArray *viewsToRemove = [self.parentViewController.deviceListScrollView subviews];
     for (UIView *v in viewsToRemove) {
         [v removeFromSuperview];
     }
     int xVal = 15;
-   
+    
     xVal = [self addDeviceName:@"Mode" deviceID:1 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
     if(self.isTrigger){//if Trigger Add time
         xVal = [self addDeviceName:@"Time" deviceID:0 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
         xVal = [self addDeviceName:@"Clients" deviceID:0 deviceType:SFIDeviceType_WIFIClient xVal:xVal];
         //same way we can we can do for client in trigger
     }
+    
     //for rest of the devices
     
     for(SFIDevice *device in [self getTriggerAndActionDeviceList]){
         xVal = [self addDeviceName:device.deviceName deviceID:device.deviceID deviceType:device.deviceType xVal:xVal];
     }
+    if(!self.isTrigger){//add almond Reboot
+        xVal = [self addDeviceName:@"reboot Almond" deviceID:1 deviceType:SFIDeviceType_REBOOT_ALMOND xVal:xVal];
+    }
     self.parentViewController.deviceListScrollView.contentSize = CGSizeMake(xVal +10,self.parentViewController.deviceListScrollView.contentSize.height);
     [self.parentViewController.deviceIndexButtonScrollView flashScrollIndicators];
 }
-
 
 
 -(void)wifiClientsClicked:(RulesDeviceNameButton*)deviceButton{
@@ -186,6 +192,7 @@ NSMutableArray * pickerValuesArray2;
 }
 
 -(void)onDeviceButtonClick:(RulesDeviceNameButton *)sender{
+    NSLog(@" reboot almond command");
     [self resetViews];
     sender.selected = YES;
     //toggeling
@@ -198,6 +205,7 @@ NSMutableArray * pickerValuesArray2;
         SFIDeviceIndex *temp = [self getToggelDeviceIndex];
         [deviceIndexes addObject : temp];
     }
+    NSLog(@" device type %d",sender.deviceType);
     [self createDeviceIndexesLayoutForDeviceId:sender.deviceId deviceType:sender.deviceType deviceName:sender.deviceName deviceIndexes:deviceIndexes];
 }
 
@@ -224,7 +232,7 @@ NSMutableArray * pickerValuesArray2;
     }
     currentButton.selected = YES;
     
-    }
+}
 
 //on devicelist button click, calling this method
 -(void) createDeviceIndexesLayoutForDeviceId:(int)deviceId deviceType:(SFIDeviceType)deviceType deviceName:(NSString*)deviceName deviceIndexes:(NSArray*)deviceIndexes{
@@ -250,9 +258,10 @@ NSMutableArray * pickerValuesArray2;
     //dict - array of indexes for cellid
     NSMutableDictionary *deviceIndexesDict = [NSMutableDictionary new];
     for(SFIDeviceIndex *deviceIndex in deviceIndexes){
+        NSLog(@" arr.count %ld",deviceIndexes.count);
         [self addArrayToDictionary:deviceIndexesDict deviceIndex:deviceIndex];
     }
-  
+    NSLog(@"deviceIndexesDict %@ ",deviceIndexesDict);
     //huelamp - 58
     if(deviceType == SFIDeviceType_HueLamp_48){
         self.ruleHueObject = [[RulesHue alloc] init];
@@ -269,6 +278,7 @@ NSMutableArray * pickerValuesArray2;
     for(int i = 0; i < numberOfCells; i++){
         NSArray *array = [deviceIndexesDict valueForKey:[NSString stringWithFormat:@"%d",i+1]];
         if(array!=nil && array.count>0){
+            
             [self addMyButtonwithYScale:ROW_PADDING+(ROW_PADDING+frameSize)*j withDeviceIndex:array deviceId:deviceId deviceType:deviceType deviceName:deviceName];
             j++;
         }
@@ -310,7 +320,7 @@ NSMutableArray * pickerValuesArray2;
     NSMutableDictionary *result= [NSMutableDictionary new];
     
     int count = 0;
-   // NSString *matchData=nil;
+    // NSString *matchData=nil;
     NSMutableArray *list=(self.isTrigger)?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
     for(SFIButtonSubProperties *subProperty in list){ //to do - you can add count property to subproperties and iterate array in reverse
         if(subProperty.deviceId == deviceId && subProperty.index == deviceIndex.indexID && subProperty.matchData == matchData ){
@@ -328,12 +338,13 @@ NSMutableArray * pickerValuesArray2;
 }
 
 - (void)textFieldDidEndEditing:(RuleTextField *)textField{
-    textField.selected = YES;
+    NSLog(@" text field enddditing return %@ ",textField.text);
     newPickerValue = textField.text;
     textField.subProperties.matchData = textField.text;
     [self addObject:textField.subProperties];
     [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
-    //    [self setActionButtonCount:dimmer isSlider:YES];
+    [self setActionButtonCount:dimerButton isSlider:YES];
+    dimerButton.selected = YES;
     
 }
 - (BOOL)textFieldShouldEndEditing:(RuleTextField *)textField{
@@ -354,44 +365,28 @@ NSMutableArray * pickerValuesArray2;
 }
 
 - (void)buildDimButton:(SFIDeviceIndex *)deviceIndex iVal:(IndexValueSupport *)iVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view {
-    if(deviceType == SFIDeviceType_StandardWarningDevice_21){
-        DimmerButton *dimbtn=[[DimmerButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,0 , dimFrameWidth, dimFrameHeight)];
-        dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
-        [dimbtn addTarget:self action:@selector(onStdWarnDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [dimbtn setUpTextField:@"0" displayText:@"Enter 0-65535 Sec"];
-        dimbtn.textField.delegate = self;
-        dimbtn.center = CGPointMake(view.bounds.size.width/2,
-                                    dimbtn.center.y);
-        dimbtn.frame=CGRectMake(dimbtn.frame.origin.x + ((i-1) * (dimFrameWidth/2))+textHeight/2, dimbtn.frame.origin.y, dimbtn.frame.size.width, dimbtn.frame.size.height);
-        [self shiftButtonsByWidth:dimFrameWidth View:view forIteration:i];
-        dimbtn.selected=[self setActionButtonCount:dimbtn isSlider:YES];
-        [view addSubview:dimbtn];
-        
-    }
-    else{
-        NSLog(@"subView in view count %ld ",(unsigned long)[view subviews].count);
-        DimmerButton *dimbtn=[[DimmerButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,0 , dimFrameWidth, dimFrameHeight)];
-        dimbtn.tag=i;
-        dimbtn.valueType=deviceIndex.valueType;
-        dimbtn.minValue = iVal.minValue;
-        dimbtn.maxValue = iVal.maxValue;
-        dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
-        
-        [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [dimbtn setupValues:iVal.matchData Title:iVal.displayText suffix:iVal.valueFormatter.suffix isTrigger:self.isTrigger];
-        //NSMutableDictionary *result=[self setButtonSelection:dimbtn isSlider:YES deviceIndex:deviceIndex deviceId:deviceId matchData:dimbtn.subProperties.matchData];
-        NSLog(@"dimBtn selected %d",dimbtn.selected);
-        dimbtn.center = CGPointMake(view.bounds.size.width/2,
-                                    dimbtn.center.y);
-        dimbtn.frame=CGRectMake(dimbtn.frame.origin.x + ((i-1) * (dimFrameWidth/2))+textHeight/2, dimbtn.frame.origin.y, dimbtn.frame.size.width, dimbtn.frame.size.height);
-        [self shiftButtonsByWidth:dimFrameWidth View:view forIteration:i];
-        dimbtn.selected=[self setActionButtonCount:dimbtn isSlider:YES];
-        if(dimbtn.selected)
-            [dimbtn setNewValue:[self setUpNewValueForSelectedButton:dimbtn.subProperties]];
-        
-        //dispatch_async(dispatch_get_main_queue(), ^{
-        [view addSubview:dimbtn];
-    }
+    NSLog(@"subView in view count %ld ",(unsigned long)[view subviews].count);
+    DimmerButton *dimbtn=[[DimmerButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,0 , dimFrameWidth, dimFrameHeight)];
+    dimbtn.tag=i;
+    dimbtn.valueType=deviceIndex.valueType;
+    dimbtn.minValue = iVal.minValue;
+    dimbtn.maxValue = iVal.maxValue;
+    dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
+    
+    [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [dimbtn setupValues:iVal.matchData Title:iVal.displayText suffix:iVal.valueFormatter.suffix isTrigger:self.isTrigger];
+    //NSMutableDictionary *result=[self setButtonSelection:dimbtn isSlider:YES deviceIndex:deviceIndex deviceId:deviceId matchData:dimbtn.subProperties.matchData];
+    NSLog(@"dimBtn selected %d",dimbtn.selected);
+    dimbtn.center = CGPointMake(view.bounds.size.width/2,
+                                dimbtn.center.y);
+    dimbtn.frame=CGRectMake(dimbtn.frame.origin.x + ((i-1) * (dimFrameWidth/2))+textHeight/2, dimbtn.frame.origin.y, dimbtn.frame.size.width, dimbtn.frame.size.height);
+    [self shiftButtonsByWidth:dimFrameWidth View:view forIteration:i];
+    dimbtn.selected=[self setActionButtonCount:dimbtn isSlider:YES];
+    if(dimbtn.selected)
+        [dimbtn setNewValue:[self setUpNewValueForSelectedButton:dimbtn.subProperties]];
+    
+    //dispatch_async(dispatch_get_main_queue(), ^{
+    [view addSubview:dimbtn];
     
 }
 -(NSString*)setUpNewValueForSelectedButton:(SFIButtonSubProperties *)dimmButtonSubProperty{
@@ -406,6 +401,23 @@ NSMutableArray * pickerValuesArray2;
     return newValue;
 }
 
+- (void)buildTextButton:(SFIDeviceIndex *)deviceIndex iVal:(IndexValueSupport *)iVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
+    DimmerButton *dimbtn=[[DimmerButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,0 , dimFrameWidth, dimFrameHeight)];
+    dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
+    [dimbtn addTarget:self action:@selector(onStdWarnDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [dimbtn setUpTextField:@"0" displayText:@"Enter 0-65535 Sec"];
+    dimbtn.textField.delegate = self;
+    
+    dimbtn.center = CGPointMake(view.bounds.size.width/2,
+                                dimbtn.center.y);
+    dimbtn.frame=CGRectMake(dimbtn.frame.origin.x + ((i-1) * (dimFrameWidth/2))+textHeight/2, dimbtn.frame.origin.y, dimbtn.frame.size.width, dimbtn.frame.size.height);
+    [self shiftButtonsByWidth:dimFrameWidth View:view forIteration:i];
+    dimbtn.selected=[self setActionButtonCount:dimbtn isSlider:YES];
+    dimerButton = dimbtn;
+    [view addSubview:dimbtn];
+    
+}
+
 - (void)buildSwitchButton:(SFIDeviceIndex *)deviceIndex deviceType:(int)deviceType deviceName:(NSString *)deviceName iVal:(IndexValueSupport *)iVal deviceId:(int)deviceId i:(int)i view:(UIView *)view buttonY:(float)buttonY{
     
     SwitchButton *btnBinarySwitchOn = [[SwitchButton alloc] initWithFrame:CGRectMake(0,buttonY, indexButtonFrameSize, indexButtonFrameSize)];
@@ -414,17 +426,21 @@ NSMutableArray * pickerValuesArray2;
     btnBinarySwitchOn.valueType=deviceIndex.valueType;
     btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:iVal.eventType deviceName:deviceName deviceType:deviceType];
     btnBinarySwitchOn.deviceType = deviceType;
+    
+    if(deviceType == SFIDeviceType_REBOOT_ALMOND)
+        btnBinarySwitchOn.subProperties.type = @"NetworkResult";
+    NSLog(@"  eventType :- btnBinarySwitchOn.subProperties.type %d %@",deviceType,btnBinarySwitchOn.subProperties.type);
     [btnBinarySwitchOn addTarget:self action:@selector(onSwitchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-   
-    [btnBinarySwitchOn setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:self.isTrigger];
-
+    
+    [btnBinarySwitchOn setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:self.isTrigger isDimButton:NO insideText:iVal.displayText];
+    
     //set perv. count and highlight
     
     btnBinarySwitchOn.selected=[self setActionButtonCount:btnBinarySwitchOn isSlider:NO];
-
+    
     btnBinarySwitchOn.center = CGPointMake(view.bounds.size.width/2,
                                            btnBinarySwitchOn.center.y);
-
+    
     btnBinarySwitchOn.frame = [self getNewFrameForPosition:i button:btnBinarySwitchOn];
     
     int btnWidth = frameSize;
@@ -448,7 +464,7 @@ NSMutableArray * pickerValuesArray2;
                                      childView.frame.origin.y,
                                      childView.frame.size.width,
                                      childView.frame.size.height);
-    }    
+    }
 }
 
 -(CGRect)getNewFrameForPosition:(int)i button:(SwitchButton*)btnBinarySwitchOn{
@@ -472,7 +488,10 @@ NSMutableArray * pickerValuesArray2;
     for (SFIDeviceIndex *deviceIndex in deviceIndexes) {
         for (IndexValueSupport *iVal in deviceIndex.indexValues) {
             i++;
-            if ([iVal.layoutType isEqualToString:@"dimButton"])
+            if  ([iVal.layoutType isEqualToString:@"textButton"]){
+                [self buildTextButton:deviceIndex iVal:iVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
+            }
+            else if ([iVal.layoutType isEqualToString:@"dimButton"])
                 [self buildDimButton:deviceIndex iVal:iVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             else{
                 if(i >= 5){
@@ -531,6 +550,7 @@ NSMutableArray * pickerValuesArray2;
     subProperties.eventType = eventType;
     subProperties.deviceName = deviceName;
     subProperties.deviceType = deviceType;
+    
     return subProperties;
 }
 
@@ -546,7 +566,7 @@ NSMutableArray * pickerValuesArray2;
                     switchButton.selected = !switchButton.selected;
                 }else{
                     switchButton.selected = NO;
-                   
+                    
                 }
             }
         }
@@ -596,6 +616,7 @@ NSMutableArray * pickerValuesArray2;
     sfi_id buttonId = indexSwitchButton.subProperties.deviceId;
     int buttonIndex = indexSwitchButton.subProperties.index;
     NSString *buttonMatchdata = indexSwitchButton.subProperties.matchData;
+    NSLog(@"  eventType :- btnBinarySwitchOn.subProperties.type %d %@",indexSwitchButton.deviceType,indexSwitchButton.subProperties.type);
     if(!self.isTrigger){
         indexSwitchButton.selected = YES ;
         [self.selectedButtonsPropertiesArrayAction addObject:[indexSwitchButton.subProperties createNew]];
@@ -639,7 +660,7 @@ NSMutableArray * pickerValuesArray2;
     if(newPickerValue.length==0)
         newPickerValue=@"0";
     [dimmer setNewValue:newPickerValue];
-
+    
     SFIButtonSubProperties *newProperty=dimmer.subProperties;
     if(!self.isTrigger){
         newProperty=[dimmer.subProperties createNew];
@@ -653,9 +674,9 @@ NSMutableArray * pickerValuesArray2;
 }
 -(void)addObject:(SFIButtonSubProperties *)subProperty{
     if(self.isTrigger)
-         [self.selectedButtonsPropertiesArrayTrigger addObject:subProperty];
+        [self.selectedButtonsPropertiesArrayTrigger addObject:subProperty];
     else
-       [self.selectedButtonsPropertiesArrayAction addObject:subProperty];
+        [self.selectedButtonsPropertiesArrayAction addObject:subProperty];
 }
 
 -(void)onDimmerButtonClick:(id)sender{
@@ -695,8 +716,8 @@ NSMutableArray * pickerValuesArray2;
     picker.backgroundColor = [UIColor whiteColor];
     
     if(self.isTrigger){
-    picker.layer.borderColor = [SFIColors ruleBlueColor].CGColor;
-    picker.selectedTextColor = [SFIColors ruleBlueColor];
+        picker.layer.borderColor = [SFIColors ruleBlueColor].CGColor;
+        picker.selectedTextColor = [SFIColors ruleBlueColor];
     }
     else{
         picker.layer.borderColor = [SFIColors ruleOrangeColor].CGColor;
@@ -710,17 +731,17 @@ NSMutableArray * pickerValuesArray2;
     picker.dataSource = self;
     //  [picker scrollToElement:dimButton.dimValue.intValue animated:YES];
     dispatch_async(dispatch_get_main_queue(), ^{
-    [self.parentViewController.deviceIndexButtonScrollView addSubview:picker];
+        [self.parentViewController.deviceIndexButtonScrollView addSubview:picker];
     });
     // width depends on propertyType
     const NSInteger element_width = [self horizontalPickerView:picker widthForElementAtIndex:0];
     SFIPickerIndicatorView1 *indicatorView = [[SFIPickerIndicatorView1 alloc] initWithFrame:CGRectMake(0, 0, element_width, 2)];
     picker.selectionPoint = CGPointMake((picker.frame.size.width) / 2, 0);
     if(self.isTrigger){
-    indicatorView.color1 = [SFIColors ruleBlueColor];
+        indicatorView.color1 = [SFIColors ruleBlueColor];
     }
     else{
-    indicatorView.color1 = [SFIColors ruleOrangeColor];
+        indicatorView.color1 = [SFIColors ruleOrangeColor];
     }
     picker.selectionIndicatorView = indicatorView;
     

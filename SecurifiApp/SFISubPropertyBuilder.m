@@ -66,7 +66,7 @@ int xVal = 20;
         parentController = addRuleController;
     }
     [self clearScrollView];
-
+    
     if(triggers.count > 0){
         [self buildEntryList:triggers isTrigger:YES];
         [self drawImage:@"arrow_icon"];
@@ -87,15 +87,16 @@ int xVal = 20;
     }
 }
 
-+ (void)setIconAndText:(int)positionId buttonProperties:(SFIButtonSubProperties *)buttonProperties icon:(NSString *)icon text:(NSString*)text isTrigger:(BOOL)isTrigger {
++ (void)setIconAndText:(int)positionId buttonProperties:(SFIButtonSubProperties *)buttonProperties icon:(NSString *)icon text:(NSString*)text isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString*)bottomText{
     buttonProperties.positionId=positionId;
     buttonProperties.iconName=icon;
     buttonProperties.displayText=text;
-    NSLog(@"buttonPositionID %d",buttonProperties.positionId);
+    NSLog(@"buttonPositionID %@ %d",buttonProperties.matchData,buttonProperties.positionId);
+    
     
     if (positionId > 0)
         [self drawImage: @"plus_icon" ];
-    [self drawButton: buttonProperties isTrigger:isTrigger];
+    [self drawButton: buttonProperties isTrigger:isTrigger isDimButton:isDimmbutton bottomText:bottomText];
 }
 
 + (BOOL)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId deviceIndexes:(NSArray *)deviceIndexes isTrigger:(BOOL)isTrigger{
@@ -105,15 +106,23 @@ int xVal = 20;
         if (deviceIndex.indexID == buttonProperties.index) {
             if([buttonProperties.matchData isEqualToString:@"toggle"])
             {
-                [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"toggle_icon.png" text:@"Toggle" isTrigger:isTrigger];
+                [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"toggle_icon.png" text:@"Toggle" isTrigger:isTrigger isDimButton:NO bottomText:@""];
                 return true;
             }
             NSArray *indexValues = deviceIndex.indexValues;
             for(IndexValueSupport *iVal in indexValues){
-                BOOL isDimButton=iVal.layoutType!=nil && [iVal.layoutType isEqualToString:@"dimButton"];
+                BOOL isDimButton=iVal.layoutType!=nil && ([iVal.layoutType isEqualToString:@"dimButton"] || [iVal.layoutType isEqualToString:@"textButton"]);
+                NSLog(@" isDimbutton %d",isDimButton);
                 if([self compareEntry:isDimButton matchData:iVal.matchData eventType:iVal.eventType buttonProperties:buttonProperties]){
                     NSLog(@" ival.iconname %@",iVal.iconName);
-                    [self setIconAndText:positionId buttonProperties:buttonProperties icon:iVal.iconName text:[iVal getDisplayText:buttonProperties.matchData] isTrigger:isTrigger];
+                    NSString *bottomText;
+                    
+                    if(isDimButton)
+                        bottomText = [NSString stringWithFormat:@"%@ %@",buttonProperties.matchData,iVal.valueFormatter.suffix];
+                    else
+                        bottomText = [iVal getDisplayText:buttonProperties.matchData];
+                    NSLog(@" ival display text ::%@",iVal.displayText);
+                    [self setIconAndText:positionId buttonProperties:buttonProperties icon:iVal.iconName text:bottomText isTrigger:isTrigger isDimButton:isDimButton bottomText:iVal.displayText];
                     
                     return true;
                 }
@@ -129,6 +138,7 @@ int xVal = 20;
     bool compareValue= isSlider || [matchData isEqualToString:buttonProperties.matchData];
     bool compareEvents=[eventType isEqualToString:buttonProperties.eventType];
     bool isWifiClient=![buttonProperties.eventType isEqualToString:@"AlmondModeUpdated"];
+    NSLog(@" button subproperties match data %@",buttonProperties.matchData);
     return (buttonProperties.eventType==nil && compareValue) ||(compareValue &&
                                                                 compareEvents) || (isWifiClient && compareEvents) ;
 }
@@ -161,14 +171,14 @@ int xVal = 20;
     NSLog(@"position Id :%d",positionId);
     
     
-
+    
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"hh:mm aa"];
     int segmentType=timesubProperties.time.segmentType;
     if(segmentType==1){
         NSLog(@"timesubProperties.time.dayOfWeek %@,%lu",timesubProperties.time.dayOfWeek,(unsigned long)timesubProperties.time.dayOfWeek.count);
-               [dimbutton setupValues:[dateFormat stringFromDate:timesubProperties.time.dateFrom] Title:@"Time" displayText:[self getDays:timesubProperties.time.dayOfWeek] suffix:@""];
-
+        [dimbutton setupValues:[dateFormat stringFromDate:timesubProperties.time.dateFrom] Title:@"Time" displayText:[self getDays:timesubProperties.time.dayOfWeek] suffix:@""];
+        
     }
     else{
         NSString *time = [NSString stringWithFormat:@"%@\n%@", [dateFormat stringFromDate:timesubProperties.time.dateFrom], [dateFormat stringFromDate:timesubProperties.time.dateTo]];
@@ -180,12 +190,12 @@ int xVal = 20;
     NSLog(@"dimbutton.subProperties.positionId  %d :%d",dimbutton.subProperties.positionId,positionId);
     [dimbutton setButtonCross:showCrossBtn];
     dimbutton.userInteractionEnabled = disableUserInteraction;
-
+    
     [dimbutton addTarget:self action:@selector(onDimmerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     dimbutton.bgView.backgroundColor =[SFIColors ruleBlueColor];
     xVal += triggerActionDimWidth;
     [scrollView addSubview:dimbutton];
-
+    
 }
 
 + (NSArray*)getDeviceIndexes:(SFIButtonSubProperties *)properties{
@@ -194,35 +204,35 @@ int xVal = 20;
     return [Index getIndexesFor:properties.deviceType];
 }
 
-+ (void)drawButton:(SFIButtonSubProperties*)subProperties isTrigger:(BOOL)isTrigger{
-    
++ (void)drawButton:(SFIButtonSubProperties*)subProperties isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString *)bottomText{
     if(isTrigger){
         SwitchButton *switchButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, triggerActionBtnWidth, triggerActionBtnHeight)];
         switchButton.isTrigger = isTrigger;
-        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:subProperties.displayText isTrigger:isTrigger];
-        
+        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:bottomText isTrigger:isTrigger isDimButton:isDimmbutton insideText:subProperties.displayText];
         switchButton.subProperties = subProperties;
         switchButton.inScroll = YES;
         switchButton.userInteractionEnabled = YES;
-    
+        
         [switchButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         
         xVal += triggerActionBtnWidth;
         [switchButton setButtonCross:showCrossBtn];
         switchButton.userInteractionEnabled = disableUserInteraction;
         [scrollView addSubview:switchButton];
-
+        
     }
     else{
         PreDelayRuleButton *switchButton = [[PreDelayRuleButton alloc] initWithFrame:CGRectMake(xVal, 5, rulesButtonsViewWidth, rulesButtonsViewHeight)];
+        if(subProperties.deviceType == SFIDeviceType_HueLamp_48)
+            isDimmbutton = NO;//for we are putting images of hueLamp
         
-        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:subProperties.deviceName displayText:subProperties.displayText delay:subProperties.delay];
+        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:subProperties.deviceName displayText:subProperties.displayText delay:subProperties.delay isDimmer:isDimmbutton bottomText:bottomText];
         
-         switchButton.subProperties = subProperties;
+        switchButton.subProperties = subProperties;
         
         [switchButton->actionbutton setButtonCross:showCrossBtn];
         (switchButton->actionbutton).userInteractionEnabled = disableUserInteraction;
-       // (switchButton->actionbutton).crossButton.subproperty = subProperties;
+        // (switchButton->actionbutton).crossButton.subproperty = subProperties;
         switchButton->actionbutton.isTrigger = isTrigger;
         //[switchButton changeBGColor:isTrigger clearColor:NO];
         (switchButton->actionbutton).subProperties = subProperties;
@@ -234,13 +244,13 @@ int xVal = 20;
             else if(subProperties.index == 3)
                 [switchButton->actionbutton changeImageColor:[UIColor colorFromHexString:[self getColorHex:subProperties.matchData]]];
         }
-
+        
         [switchButton->delayButton addTarget:self action:@selector(onActionDelayClicked:) forControlEvents:UIControlEventTouchUpInside];
         (switchButton->delayButton).userInteractionEnabled = disableUserInteraction;
         xVal += rulesButtonsViewWidth;
         
         [scrollView addSubview:switchButton];
-
+        
     }
 }
 
@@ -291,9 +301,13 @@ int xVal = 20;
 
 +(void)getDeviceTypeFor:(SFIButtonSubProperties*)buttonSubProperty{
     
-    NSLog(@" eventType :- %@ index :%d device id -: %d",buttonSubProperty.eventType,buttonSubProperty.index,buttonSubProperty.deviceId);
+    NSLog(@" eventType :- %@ index :%d device id --: %d %@",buttonSubProperty.eventType,buttonSubProperty.index,buttonSubProperty.deviceId,buttonSubProperty.type);
     buttonSubProperty.deviceType = SFIDeviceType_UnknownDevice_0;
-    if((buttonSubProperty.deviceId  == 1) && [buttonSubProperty.eventType isEqualToString:@"AlmondModeUpdated"]){
+    if([buttonSubProperty.type isEqualToString:@"NetworkResult"]){
+        buttonSubProperty.deviceType = SFIDeviceType_REBOOT_ALMOND;
+        buttonSubProperty.index = 1;//as there is no index from cloud
+    }
+    else if([buttonSubProperty.eventType isEqualToString:@"AlmondModeUpdated"]){
         buttonSubProperty.deviceType= SFIDeviceType_BinarySwitch_0;
         buttonSubProperty.deviceName = @"Mode";
     }else if(buttonSubProperty.index == 0 && buttonSubProperty.eventType !=nil && toolkit.wifiClientParser!=nil){
@@ -316,8 +330,9 @@ int xVal = 20;
 
 + (void)drawImage:(NSString *)iconName {
     NSLog(@"arrow button");
+    
     SwitchButton *imageButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal,5, triggerActionBtnWidth, triggerActionBtnHeight)];//todo
-    [imageButton setupValues:[UIImage imageNamed:iconName] topText:@"" bottomText:@"" isTrigger:YES];
+    [imageButton setupValues:[UIImage imageNamed:iconName] topText:@"" bottomText:@"" isTrigger:YES isDimButton:NO insideText:@""];
     //image.image = [UIImage imageNamed:iconName];
     xVal += triggerActionBtnWidth;
     [scrollView addSubview:imageButton];
@@ -325,7 +340,7 @@ int xVal = 20;
 }
 +(NSString*)getDays:(NSArray*)earlierSelection{
     if(earlierSelection==nil || earlierSelection.count==0)
-        return @"EveryDay";
+            return @"EveryDay";
     NSMutableDictionary *dayDict = [self setDayDict];
     //Loop through earlierSelection
     NSMutableString *days = [NSMutableString new];
