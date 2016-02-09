@@ -94,7 +94,7 @@
     return [UIColor colorFromHexString:@"ffcb7f"];
 }
 
-+ (UIColor *)disableColor{
++ (UIColor *)disableGreenColor{
     return [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
 }
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName {

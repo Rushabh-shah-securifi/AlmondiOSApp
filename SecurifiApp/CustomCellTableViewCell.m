@@ -25,11 +25,6 @@
     
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-    
-    // Configure the view for the selected state
-}
 - (IBAction)onEditButtonClick:(id)sender {
     NSLog(@"onEditButtonClick");
     [self.delegate editRule:self];
@@ -45,8 +40,6 @@
 - (IBAction)onActivateButtonTap:(id)sender {
     NSLog(@"onActivateButtonTap");
     self.activeDeactiveSwitch.selected = !self.activeDeactiveSwitch.selected;
-    
-    
     [self.delegate activateRule:self];
 }
 

@@ -8,11 +8,14 @@
 
 #import "SFIWiFiClientListCell.h"
 #import "SKSTableViewCellIndicator.h"
+#import "SFIColors.h"
+#import "UIColor+Securifi.h"
 
 #define kIndicatorViewTag -1
 
 @interface SFIWiFiClientListCell() {
 
+    IBOutlet UIView *cellBGView;
     IBOutlet UILabel *lblMAC;
     IBOutlet UILabel *lblStatus;
     IBOutlet UIImageView *imgIcon;
@@ -140,8 +143,10 @@ static UIImage *_image = nil;
     lblMAC.text = connectedDevice.name;
     if (connectedDevice.isActive) {
         lblStatus.text = NSLocalizedString(@"wifi.Active",@"ACTIVE");
+        cellBGView.backgroundColor = [UIColor securifiRouterTileGreenColor];
     }else{
         lblStatus.text = NSLocalizedString(@"wifi.Inactive",@"INACTIVE");
+        cellBGView.backgroundColor = [UIColor lightGrayColor];
     }
     UIImage* image = [UIImage imageNamed:[connectedDevice iconName]];
     imgIcon.image = image;

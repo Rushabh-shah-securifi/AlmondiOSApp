@@ -17,6 +17,7 @@
 #import "Analytics.h"
 #import "TimeText.h"
 #import "SFIColors.h"
+#import "UIColor+Securifi.h"
 
 #define AVENIR_HEAVY @"Avenir-Heavy"
 #define AVENIR_ROMAN @"Avenir-Roman"
@@ -133,32 +134,15 @@
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"SFIWiFiClientListCell";
     SFIWiFiClientListCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
     if (!cell){
         cell = [[SFIWiFiClientListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     cell.delegate = self;
-    SFIConnectedDevice *device = self.connectedDevices[indexPath.section];
-    NSLog(@"device name: %@", device.name);
     [cell createClientCell:self.connectedDevices[indexPath.section]];
     cell.expandable = YES;
-    
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(SFIWiFiClientListCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"willDisplayCell");
-    SFIConnectedDevice *device = self.connectedDevices[indexPath.section];
-    if(!device.isActive)
-        cell.backgroundColor = [SFIColors darkGrayColor];
-}
-
-
-- (BOOL)getLocalConnection{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
-    return [toolkit useLocalNetwork:almond.almondplusMAC];
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForSubRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -172,7 +156,7 @@
             [c removeFromSuperview];
         }
     }
-    [self addCellLabel:cell IndexPath:indexPath];
+    [self addCellLabel:cell IndexPath:indexPath connectDevice:connectedDevice];
     NSLog(@"subrowindex: %ld", subRowIndex);
     switch (subRowIndex) {
         case nameIndexPathRow://Name
@@ -207,7 +191,8 @@
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
-            label.textColor = [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
+            label.textColor = [UIColor whiteColor];
+            label.alpha = 0.5;
             label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
             label.text = [connectedDevice.manufacturer length] == 0? @"NaN": connectedDevice.manufacturer;
             label.numberOfLines = 1;
@@ -222,7 +207,8 @@
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
-            label.textColor = [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
+            label.textColor = [UIColor whiteColor];
+            label.alpha = 0.5;
             label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
             label.text = connectedDevice.deviceMAC;
             label.numberOfLines = 1;
@@ -237,7 +223,8 @@
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
-            label.textColor = [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
+            label.textColor = [UIColor whiteColor];
+            label.alpha = 0.5;
             label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
             label.text = connectedDevice.deviceIP;
             label.numberOfLines = 1;
@@ -251,7 +238,8 @@
         {
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
-            label.textColor = [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
+            label.textColor = [UIColor whiteColor];
+            label.alpha = 0.5;
             label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
             label.text = [connectedDevice.rssi length] == 0? @"NaN": [NSString stringWithFormat:@"%@ dBm", connectedDevice.rssi];
             label.numberOfLines = 1;
@@ -281,15 +269,21 @@
             float lableWidth = local? 180: 200;
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(lableX, 0, lableWidth, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
-            label.textColor = local?[UIColor whiteColor]: [SFIColors disableColor];
+            label.textColor = [UIColor whiteColor];
+            label.alpha = local?1: 0.5;
             label.font = cellFont;
-            if (connectedDevice.deviceAllowedType == DeviceAllowed_Always) {
-                label.text = @"Always";
-            }else if(connectedDevice.deviceAllowedType == DeviceAllowed_Blocked){
-                label.text = @"Blocked";
+            if(local){
+                if (connectedDevice.deviceAllowedType == DeviceAllowed_Always) {
+                    label.text = @"Always";
+                }else if(connectedDevice.deviceAllowedType == DeviceAllowed_Blocked){
+                    label.text = @"Blocked";
+                }else{
+                    label.text = @"OnSchedule";
+                }
             }else{
-                label.text = @"OnSchedule";
+                label.text = @"NaN";
             }
+            
             label.tag = 66;
             label.numberOfLines = 1;
             label.textAlignment = NSTextAlignmentRight;
@@ -317,7 +311,8 @@
             if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive){
                 UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
                 label.backgroundColor = [UIColor clearColor];
-                label.textColor = [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
+                label.textColor = [UIColor whiteColor];
+                label.alpha = 0.5;
                 label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
                 label.text = [TimeText getTime:[connectedDevice.deviceLastActiveTime integerValue]];
                 label.numberOfLines = 1;
@@ -353,7 +348,7 @@
                 float lableWidth = !local? 180: 200;
                 UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(lableX, 0, lableWidth, propertyRowCellHeight)];
                 label.backgroundColor = [UIColor clearColor];
-                label.textColor = !local?[UIColor whiteColor]: [SFIColors disableColor];;
+                label.textColor = !local?[UIColor whiteColor]: [SFIColors disableGreenColor];;
                 label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
                 label.text = [connectedDevice getNotificationNameByType:[self getNotificationTypeForDevice:connectedDevice.deviceID]];
                 label.numberOfLines = 1;
@@ -367,7 +362,7 @@
             
         case removeButtonIndexPathRow://Remove button
         {
-            cell = [self createRemoveButtonCell:cell];
+            cell = [self createRemoveButtonCell:cell isClientActive:connectedDevice.isActive];
             break;
         }
         default:
@@ -379,9 +374,16 @@
     return cell;
 }
 
--  (void)addCellLabel:(UITableViewCell*)cell IndexPath:(NSIndexPath *)indexPath{
+
+- (BOOL)getLocalConnection{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    return [toolkit useLocalNetwork:almond.almondplusMAC];
+}
+
+-  (void)addCellLabel:(UITableViewCell*)cell IndexPath:(NSIndexPath *)indexPath connectDevice:(SFIConnectedDevice*)connectedDevice{
     NSInteger subRowIndex = indexPath.subRow-1;
-    if(local && subRowIndex==notifyMeIndexPathRow)
+    if(local && (subRowIndex==notifyMeIndexPathRow || subRowIndex == historyIndexPathRow))
         return;
     
     if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && subRowIndex==historyIndexPathRow) {
@@ -396,7 +398,11 @@
     }else{
         bgView.frame = CGRectMake(0, 0, tblDevices.frame.size.width, removeRowCellHeight-10);
     }
-    bgView.backgroundColor = [UIColor colorWithRed:75/255.0f green:174/255.0f blue:79/255.0f alpha:1];
+    if(connectedDevice.isActive)
+        bgView.backgroundColor = [UIColor colorWithRed:75/255.0f green:174/255.0f blue:79/255.0f alpha:1];
+    else
+        bgView.backgroundColor = [UIColor lightGrayColor];
+    
     bgView.tag = 66;
     [cell addSubview:bgView];
     
@@ -421,12 +427,12 @@
     }
 }
 
-- (UITableViewCell*)createRemoveButtonCell:(UITableViewCell*)cell{
+- (UITableViewCell*)createRemoveButtonCell:(UITableViewCell*)cell isClientActive:(BOOL)isActive{
     UIButton * btnRemove = [[UIButton alloc] init];
     btnRemove.frame = CGRectMake(tblDevices.frame.size.width / 2 - 70, 23, 140, 44);
     btnRemove.backgroundColor = [UIColor whiteColor];
-    [btnRemove setTitle:NSLocalizedString(@"wifi.button.deleteClient", @"Remove") forState:UIControlStateNormal];
-    [btnRemove setTitleColor:[UIColor colorWithRed:74/255.0f green:175/255.0f blue:79/255.0f alpha:1] forState:UIControlStateNormal];
+    [btnRemove setTitle:@"Remove" forState:UIControlStateNormal];
+    [btnRemove setTitleColor:isActive?[UIColor securifiRouterTileGreenColor]: [UIColor lightGrayColor] forState:UIControlStateNormal];
     [btnRemove.titleLabel setFont:[UIFont fontWithName:AVENIR_ROMAN size:17]];
     [btnRemove addTarget:self action:@selector(btnRemoveTap:) forControlEvents:UIControlEventTouchUpInside];
     [cell addSubview:btnRemove];
@@ -437,7 +443,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForSubRowAtIndexPath:(NSIndexPath *)indexPath{
     NSInteger subrowIndex = indexPath.subRow-1;
     
-    if(local && subrowIndex==notifyMeIndexPathRow)
+    if(local && (subrowIndex==notifyMeIndexPathRow || subrowIndex == historyIndexPathRow))
         return 0;
     
     if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && subrowIndex==historyIndexPathRow) {
@@ -555,7 +561,8 @@
             
         case historyIndexPathRow:
         {
-            [self showSensorLogs:indexPath];
+            if(!local)
+                [self showSensorLogs:indexPath];
         }
         default:
             break;
@@ -803,8 +810,14 @@
         [self.HUD hide:YES afterDelay:5];
     });
 }
-- (void)asyncSendCommand:(GenericCommand *)cloudCommand {
-    [[SecurifiToolkit sharedInstance] asyncSendToCloud:cloudCommand];
+- (void)asyncSendCommand:(GenericCommand *)command {
+    SFIAlmondPlus *almond = [[SecurifiToolkit sharedInstance] currentAlmond];
+    if(local){
+        [[SecurifiToolkit sharedInstance] asyncSendToLocal:command almondMac:almond.almondplusMAC];
+    }else{
+        [[SecurifiToolkit sharedInstance] asyncSendToCloud:command];
+    }
+    
 }
 #pragma mark Edit View delegates
 - (void)updateDeviceInfo:(SFIConnectedDevice *)deviceInfo{

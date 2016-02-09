@@ -38,7 +38,7 @@
 
 + (UIColor *)ruleLightOrangeColor;
 
-+ (UIColor *)disableColor;
++ (UIColor *)disableGreenColor;
 
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName;
 

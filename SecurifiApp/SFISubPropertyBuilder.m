@@ -43,7 +43,8 @@
 
 
 @implementation SFISubPropertyBuilder
-bool showCrossBtn;
+bool isCrossHidden;
+BOOL isActive;
 bool disableUserInteraction;
 DelayPicker *delayPicker;
 UIScrollView *scrollView;
@@ -52,15 +53,16 @@ NSArray *deviceArray;
 SecurifiToolkit *toolkit;
 int xVal = 20;
 
-+ (void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions showCrossBtn:(BOOL)showCross parentController:(AddRulesViewController*)addRuleController{
++ (void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions isCrossButtonHidden:(BOOL)isHidden parentController:(AddRulesViewController*)addRuleController isRuleActive:(BOOL)isRuleActive{
     delayPicker = [DelayPicker new];
     toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     deviceArray=[toolkit deviceList:plus.almondplusMAC];
     
     xVal = 20;
-    showCrossBtn = showCross;
-    disableUserInteraction = !showCross;//for disable userInteraction in ruletableView
+    isCrossHidden = isHidden;
+    isActive = isRuleActive;
+    disableUserInteraction = !isHidden;//for disable userInteraction in ruletableView
     scrollView = scroll;
     if (addRuleController != nil) { //to avoid nil from rulestableview
         parentController = addRuleController;
@@ -188,11 +190,11 @@ int xVal = 20;
     dimbutton.subProperties = timesubProperties;
     dimbutton.subProperties.positionId = positionId;
     NSLog(@"dimbutton.subProperties.positionId  %d :%d",dimbutton.subProperties.positionId,positionId);
-    [dimbutton setButtonCross:showCrossBtn];
+    [dimbutton setButtonCross:isCrossHidden];
     dimbutton.userInteractionEnabled = disableUserInteraction;
     
     [dimbutton addTarget:self action:@selector(onDimmerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    dimbutton.bgView.backgroundColor =[SFIColors ruleBlueColor];
+    dimbutton.bgView.backgroundColor =(!isActive && isCrossHidden)?[SFIColors ruleGraycolor]:[SFIColors ruleBlueColor];
     xVal += triggerActionDimWidth;
     [scrollView addSubview:dimbutton];
     
@@ -214,9 +216,10 @@ int xVal = 20;
         switchButton.userInteractionEnabled = YES;
         
         [switchButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        
+        if(!isActive && isCrossHidden)
+            switchButton.bgView.backgroundColor = [SFIColors ruleGraycolor];
         xVal += triggerActionBtnWidth;
-        [switchButton setButtonCross:showCrossBtn];
+        [switchButton setButtonCross:isCrossHidden];
         switchButton.userInteractionEnabled = disableUserInteraction;
         [scrollView addSubview:switchButton];
         
@@ -227,10 +230,13 @@ int xVal = 20;
             isDimmbutton = NO;//for we are putting images of hueLamp
         
         [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:subProperties.deviceName displayText:subProperties.displayText delay:subProperties.delay isDimmer:isDimmbutton bottomText:bottomText];
-        
+        if(!isActive && isCrossHidden){
+            switchButton->actionbutton.bgView.backgroundColor = [SFIColors ruleGraycolor];
+            switchButton->delayButton.backgroundColor = [SFIColors ruleGraycolor];
+        }
         switchButton.subProperties = subProperties;
         
-        [switchButton->actionbutton setButtonCross:showCrossBtn];
+        [switchButton->actionbutton setButtonCross:isCrossHidden];
         (switchButton->actionbutton).userInteractionEnabled = disableUserInteraction;
         // (switchButton->actionbutton).crossButton.subproperty = subProperties;
         switchButton->actionbutton.isTrigger = isTrigger;
@@ -340,7 +346,7 @@ int xVal = 20;
 }
 +(NSString*)getDays:(NSArray*)earlierSelection{
     if(earlierSelection==nil || earlierSelection.count==0)
-            return @"EveryDay";
+        return @"EveryDay";
     NSMutableDictionary *dayDict = [self setDayDict];
     //Loop through earlierSelection
     NSMutableString *days = [NSMutableString new];

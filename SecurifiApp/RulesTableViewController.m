@@ -12,7 +12,6 @@
 #import "SecurifiToolkit/GenericCommand.h"
 #import "SFIButtonSubProperties.h"
 #import "SecurifiToolkit/Parser.h"
-//#import "SFITriggersActionsSwitchButton.h"
 #import "AlmondPlusConstants.h"
 #import "SFISubPropertyBuilder.h"
 #import "MBProgressHUD.h"
@@ -41,7 +40,7 @@ CGPoint tablePoint;
     [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
     
-
+    
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -49,7 +48,7 @@ CGPoint tablePoint;
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.leftBarButtonItem = self.editButtonItem;
     
-   }
+}
 
 -(void)viewWillAppear:(BOOL)animated{
     //    [self.rules removeAllObjects];
@@ -185,9 +184,11 @@ CGPoint tablePoint;
     
     cell.delegate = self;
     cell.ruleNameLabel.text = rule.name;
+    [cell.activeDeactiveSwitch setSelected:rule.isActive];
+    [cell.activeDeactiveSwitch setOn:rule.isActive animated:YES];
     NSLog(@" rulename label %@",cell.ruleNameLabel.text);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [SFISubPropertyBuilder createEntriesView:cell.scrollView triggers:rule.triggers actions:rule.actions showCrossBtn:YES parentController:nil];
+    [SFISubPropertyBuilder createEntriesView:cell.scrollView triggers:rule.triggers actions:rule.actions isCrossButtonHidden:YES parentController:nil isRuleActive:rule.isActive];
     
     // Configure the cell...
     [cell.scrollView setContentOffset:CGPointMake(0,0) animated:YES];
@@ -251,11 +252,8 @@ CGPoint tablePoint;
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     if(self.rules==nil || self.rules.count==0 || self.rules.count<=indexPath.row)
         return;
-    self.HUD.removeFromSuperViewOnHide = NO;
+    [self setUpHUD];
     self.HUD.labelText = [NSString stringWithFormat:@"Deleting rule %@...",cell.ruleNameLabel.text];
-    self.HUD.dimBackground = YES;
-    self.HUD.delegate = self;
-    [self.navigationController.view addSubview:self.HUD];
     [self showHudWithTimeout];
     NSDictionary *payload = [self getDeleteRulePayload:indexPath.row];
     if(payload!=nil){
@@ -277,7 +275,7 @@ CGPoint tablePoint;
     if (randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
         return;
     }
-
+    
     NSString * success = [mainDict valueForKey:@"Success"];
     if (![success isEqualToString:@"true"]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"scene.alert-title.Oops", @"Oops") message:NSLocalizedString(@"scene.alert-msg.Sorry, There was some problem with this request, try later!", @"Sorry, There was some problem with this request, try later!")
@@ -330,7 +328,7 @@ CGPoint tablePoint;
     AddRulesViewController *addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
     addRuleController.delegate = self;
     Rule *rule = [self.rules[indexPath.row] createNew];
-   
+    
     NSLog(@" edit rule rul ID %@",rule.ID);
     addRuleController.rule = rule;
     addRuleController.isInitialized = YES;
@@ -340,12 +338,14 @@ CGPoint tablePoint;
     [self.navigationController pushViewController:addRuleController animated:YES];
 }
 - (void)activateRule:(CustomCellTableViewCell *)cell{
+    [self setUpHUD];
+    self.HUD.labelText = cell.activeDeactiveSwitch.selected? [NSString stringWithFormat:@"Activating rule %@...",cell.ruleNameLabel.text]: [NSString stringWithFormat:@"Deactivating rule %@...",cell.ruleNameLabel.text];
+    [self showHudWithTimeout];
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     Rule *rule = self.rules[indexPath.row];
     RulePayload *rulePayload = [RulePayload new];
     rulePayload.rule = rule;
     NSDictionary *payload = [rulePayload validateRule:randomMobileInternalIndex valid:cell.activeDeactiveSwitch.selected?@"true":@"false"];
-    [cell.activeDeactiveSwitch setOn:cell.activeDeactiveSwitch.selected animated:cell.activeDeactiveSwitch.selected];
     
     if(payload!=nil){
         GenericCommand *cloudCommand = [[GenericCommand alloc] init];
@@ -355,6 +355,14 @@ CGPoint tablePoint;
         NSLog(@"activate rule %@",cloudCommand.command);
     }
 }
+
+-(void)setUpHUD{
+    self.HUD.removeFromSuperViewOnHide = NO;
+    self.HUD.dimBackground = YES;
+    self.HUD.delegate = self;
+    [self.navigationController.view addSubview:self.HUD];
+}
+
 ///*
 // {
 // "CommandType":"ValidateRule",
@@ -374,15 +382,15 @@ CGPoint tablePoint;
 //    Rule *currentRule = self.rules[row];
 //    if(currentRule==nil ||currentRule.ID==nil)
 //        return nil;
-//    
+//
 //    [rulePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
 //    [rulePayload setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
 //    [rulePayload setValue:@"ValidateRule" forKey:@"CommandType"];
 //    [rulePayload setValue:value forKey:@"Value"];
 //    [rulePayload setValue:[self getRuleID:currentRule.ID] forKey:@"ID"]; //Get From Rule instance
-//    
+//
 //    return rulePayload;
-//    
+//
 //}
 //
 #pragma mark asyncRequest methods

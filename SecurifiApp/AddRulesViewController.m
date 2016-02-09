@@ -54,11 +54,11 @@
 UITextField *textField;
 - (void)viewDidLoad {
     [super viewDidLoad];
-   // self.actuatorDeviceArray = [NSMutableArray new];
+    // self.actuatorDeviceArray = [NSMutableArray new];
     //    self.addActionsView = [[AddActions alloc]init];
     
     self.wifiClientsArray = [[NSMutableArray alloc]init];
-   // self.deviceArray = [NSMutableArray new];
+    // self.deviceArray = [NSMutableArray new];
     self.triggerAction = [[AddTriggerAndAddAction alloc]init];
     
     [self getWificlientsList];
@@ -68,7 +68,7 @@ UITextField *textField;
     [self initializeNotifications];
     [self setUpNavigationBar];
     [self callRulesView]; //to handle edit
-
+    
     [self ifThenClick:YES infoText:@"To get started, please select a trigger" infoText2:@"Add another trigger or press THEN to define action"];
 }
 
@@ -116,7 +116,7 @@ UITextField *textField;
         //        self.originalSceneInfo = [self.sceneInfo copy];
         //to do copy rules array
         //        if(self.rule.ID != NULL){
-         [self.HUD hide:YES];
+        [self.HUD hide:YES];
         dispatch_async(dispatch_get_main_queue(), ^() {
             [self.navigationController popViewControllerAnimated:YES];
         });
@@ -153,7 +153,7 @@ UITextField *textField;
 
 #pragma mark buttonclickedMetghods
 - (IBAction)ifButtonClicked:(id)sender {
-   [self ifThenClick:YES infoText:@"To get started, please select a trigger" infoText2:@"Add another trigger or press THEN to define action"];
+    [self ifThenClick:YES infoText:@"To get started, please select a trigger" infoText2:@"Add another trigger or press THEN to define action"];
     
 }
 
@@ -171,19 +171,19 @@ UITextField *textField;
     [self clearAndToggleViews];
     
     if(!isTrigger){
-       [self changeIFThenColors:isTrigger clickedBtn:self.thenButton otherBtn:self.IfButton];
+        [self changeIFThenColors:isTrigger clickedBtn:self.thenButton otherBtn:self.IfButton];
         
         
     }
     else{
         [self changeIFThenColors:isTrigger clickedBtn:self.IfButton otherBtn:self.thenButton];
-       
-        }
+        
+    }
     [self updateInfoLabel];
     [self getTriggerActionList:isTrigger];
-   
     
-    }
+    
+}
 
 - (void)getTriggerActionList:(BOOL)isTrigger{
     self.triggerAction.delegate = self;
@@ -280,7 +280,7 @@ UITextField *textField;
 -(void)updateTriggerAndActionDelegatePropertie:(BOOL)isTrigger{
     [self updateInfoLabel];
     [self callRulesView];
-
+    
 }
 -(void)updateInfoLabel{
     if(self.rule.triggers.count == 0){
@@ -299,7 +299,7 @@ UITextField *textField;
 
 -(void) callRulesView{
     NSLog(@"callRulesView");
-    [SFISubPropertyBuilder createEntriesView:self.triggersActionsScrollView triggers:self.rule.triggers actions:self.rule.actions showCrossBtn:NO parentController:self];
+    [SFISubPropertyBuilder createEntriesView:self.triggersActionsScrollView triggers:self.rule.triggers actions:self.rule.actions isCrossButtonHidden:NO parentController:self isRuleActive:YES];
     
 }
 
@@ -336,7 +336,7 @@ UITextField *textField;
         [self.triggerAction wifiClientsClicked:deviceButton];
         return;
     }
-
+    
     NSLog(@"button id: %d, deviceId: %d", deviceButton.deviceId, deviceId);
     if(deviceButton.deviceId != deviceId)
         return;
@@ -362,14 +362,14 @@ UITextField *textField;
 
 -(void)updateTime:(RulesTimeElement *)time{
     [self callRulesView];
-  
+    
 }
 
 -(void)btnSaveTap:(id)sender{
     textField = [[UITextField alloc]init];
     NSLog(@"rule trigr count %lu",(unsigned long)self.rule.triggers.count);
     NSLog(@"rule action count %lu",(unsigned long)self.rule.actions.count);
-
+    
     if(self.isInitialized){
         textField.text = self.rule.name;
         NSLog(@"rule trigr count %lu",(unsigned long)self.rule.triggers.count);
@@ -404,7 +404,7 @@ UITextField *textField;
         dispatch_async(dispatch_get_main_queue(), ^() {
             [alert show];
         });
-
+        
     }
 }
 
@@ -422,7 +422,7 @@ UITextField *textField;
 -(void)sendRuleCommand{
     NSLog(@"btn save tap");
     //delegate to tableViewController
-
+    
     NSLog(@" rules total trigger %ld",(unsigned long)self.rule.triggers);
     NSLog(@" rules total actions %ld",(unsigned long)self.rule.triggers);
     RulePayload *rulePayload = [RulePayload new];
