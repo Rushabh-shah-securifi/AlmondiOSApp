@@ -94,6 +94,13 @@
     return [UIColor colorFromHexString:@"ffcb7f"];
 }
 
++ (UIColor *)clientInActiveGrayColor{
+    return [UIColor lightGrayColor];
+}
++ (UIColor *)clientBlockedGrayColor{
+    return [UIColor colorFromHexString:@"757575"];
+}
+
 + (UIColor *)disableGreenColor{
     return [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
 }

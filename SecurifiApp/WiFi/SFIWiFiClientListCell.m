@@ -141,12 +141,17 @@ static UIImage *_image = nil;
 - (void)createClientCell:(SFIConnectedDevice*)connectedDevice{
     self.connectedDevice = connectedDevice;
     lblMAC.text = connectedDevice.name;
-    if (connectedDevice.isActive) {
-        lblStatus.text = NSLocalizedString(@"wifi.Active",@"ACTIVE");
-        cellBGView.backgroundColor = [UIColor securifiRouterTileGreenColor];
+    if(connectedDevice.deviceAllowedType == DeviceAllowed_Blocked){
+        lblStatus.text = @"Blocked";
+        cellBGView.backgroundColor = [SFIColors ruleGraycolor];
     }else{
-        lblStatus.text = NSLocalizedString(@"wifi.Inactive",@"INACTIVE");
-        cellBGView.backgroundColor = [UIColor lightGrayColor];
+        if (connectedDevice.isActive) {
+            lblStatus.text = NSLocalizedString(@"wifi.Active",@"ACTIVE");
+            cellBGView.backgroundColor = [UIColor securifiRouterTileGreenColor];
+        }else{
+            lblStatus.text = NSLocalizedString(@"wifi.Inactive",@"INACTIVE");
+            cellBGView.backgroundColor = [UIColor lightGrayColor];
+        }
     }
     UIImage* image = [UIImage imageNamed:[connectedDevice iconName]];
     imgIcon.image = image;

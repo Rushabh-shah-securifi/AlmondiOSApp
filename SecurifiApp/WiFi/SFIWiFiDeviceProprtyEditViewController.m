@@ -13,6 +13,8 @@
 #import "Analytics.h"
 #import "CollectionViewCell.h"
 #import "SFIColors.h"
+#import "UIColor+Securifi.h"
+
 //masood checkpoint
 @interface SFIWiFiDeviceProprtyEditViewController ()<SFIWiFiDeviceTypeSelectionCellDelegate,UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>{
     
@@ -71,7 +73,7 @@
     notifyTypes = [NSMutableArray new];
     hexBlockedDays = [NSMutableString new];
     
-    NSArray *tnames = @[@"Tablet",@"PC",@"Laptop",@"Smartphone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"Printer",@"Router_switch",@"Nest",@"Hub",@"Camera",@"Chromecast",@"appleTV",@"android_stick",@"Other"];
+    NSArray *tnames = @[@"Tablet",@"PC",@"Laptop",@"Smartphone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"Printer",@"Router_switch",@"Nest",@"Hub",@"Camera",@"Chromecast",@"appleTV",@"android_stick",@"amazon_echo",@"amazon_dash",@"Other"];
     
     for (NSString * name in tnames) {
         NSMutableDictionary * dict = [NSMutableDictionary new];
@@ -80,7 +82,6 @@
         if ([[self.connectedDevice.deviceType lowercaseString] isEqualToString:[name lowercaseString]]) {
             [dict setValue:@1 forKey:@"selected"];
         }
-        
         [deviceTypes addObject:dict];
     }
     
@@ -111,11 +112,16 @@
     }
     
     lblDeviceName.text = self.connectedDevice.name;
-    if (self.connectedDevice.isActive) {
-        lblStatus.text = NSLocalizedString(@"wifi.Active",@"ACTIVE");
+    if(self.connectedDevice.deviceAllowedType == DeviceAllowed_Blocked){
+        lblStatus.text = @"BLOCKED";
     }else{
-        lblStatus.text = NSLocalizedString(@"wifi.Inactive",@"INACTIVE");
+        if (self.connectedDevice.isActive) {
+            lblStatus.text = NSLocalizedString(@"wifi.Active",@"ACTIVE");
+        }else{
+            lblStatus.text = NSLocalizedString(@"wifi.Inactive",@"INACTIVE");
+        }
     }
+    
     UIImage* image = [UIImage imageNamed:[self.connectedDevice iconName]];
     imgIcon.image = image;
     CGRect fr = imgIcon.frame;
@@ -347,7 +353,6 @@
         else
             [hexBlockedDays appendString:[NSString stringWithFormat:@",%@", hexStr]];
     }
-    NSLog(@"sending: final hex str: %@", hexBlockedDays);
 }
 
 -(NSMutableString*)boolStringToHex:(NSString*)str{
@@ -374,14 +379,20 @@
     if (segment.selectedSegmentIndex == 0) {
         collectionViewScroll.hidden = YES;
         blockedType = @(0).stringValue;
+        viewCollection.backgroundColor = [UIColor securifiRouterTileGreenColor];
+        viewHeader.backgroundColor = [UIColor securifiRouterTileGreenColor];
         hexBlockedDays = [@"000000,000000,000000,000000,000000,00000,00000" mutableCopy];
     }else if(segment.selectedSegmentIndex == 1){ //onSchedule
         collectionViewScroll.hidden = NO;
         blockedType = @(2).stringValue;
+        viewCollection.backgroundColor = [UIColor securifiRouterTileGreenColor];
+        viewHeader.backgroundColor = [UIColor securifiRouterTileGreenColor];
     }else{//blocked/never
         collectionViewScroll.hidden = YES;
         blockedType = @(1).stringValue;
         hexBlockedDays = [@"ffffff,ffffff,ffffff,ffffff,ffffff,ffffff,ffffff" mutableCopy];
+        viewCollection.backgroundColor = [SFIColors clientBlockedGrayColor];
+        viewHeader.backgroundColor = [SFIColors clientBlockedGrayColor];
     }
 }
 
@@ -391,15 +402,21 @@
         AllowedSegment.selectedSegmentIndex = 0; //Always
         blockedType = @"0";
         hexBlockedDays = [@"000000,000000,000000,000000,000000,00000,00000" mutableCopy];
+        viewCollection.backgroundColor = [UIColor securifiRouterTileGreenColor];
+        viewHeader.backgroundColor = [UIColor securifiRouterTileGreenColor];
     }else if(self.connectedDevice.deviceAllowedType == 1){
         collectionViewScroll.hidden = YES;
         AllowedSegment.selectedSegmentIndex = 2; //Blocked
         hexBlockedDays = [@"ffffff,ffffff,ffffff,ffffff,ffffff,ffffff,ffffff" mutableCopy];
         blockedType = @"1";
+        viewCollection.backgroundColor = [SFIColors clientBlockedGrayColor];
+        viewHeader.backgroundColor = [SFIColors clientBlockedGrayColor];
     }else{
         collectionViewScroll.hidden = NO;
         AllowedSegment.selectedSegmentIndex = 1; //OnSchedule
         blockedType = @"2";
+        viewCollection.backgroundColor = [UIColor securifiRouterTileGreenColor];
+        viewHeader.backgroundColor = [UIColor securifiRouterTileGreenColor];
     }
 }
 
@@ -480,7 +497,8 @@
             break;
         case connectionIndexPathRow:
             [cell createPropertyCell:connectionTypes[indexPath.row]];
-            cell.textLabel.text = [connectionTypes[indexPath.row] valueForKey:@"name"];            break;
+            cell.textLabel.text = [connectionTypes[indexPath.row] valueForKey:@"name"];
+            break;
         case notifyMeIndexPathRow:
             [cell createPropertyCell:notifyTypes[indexPath.row]];
             cell.textLabel.text = [notifyTypes[indexPath.row] valueForKey:@"name"];
@@ -664,7 +682,7 @@
 {
     //You may want to create a divider to scale the size by the way..
     float itemSize = collectionViewAllowOnNetwork.bounds.size.width/10;
-    collectionViewScroll.contentSize = CGSizeMake(collectionViewScroll.frame.size.width, 26*itemSize + 26 * ITEM_SPACING + 10);
+    collectionViewScroll.contentSize = CGSizeMake(collectionViewScroll.frame.size.width, 26*itemSize + 26 * ITEM_SPACING + 100);
     return CGSizeMake(itemSize, itemSize);
 }
 
@@ -690,7 +708,6 @@
         [cell handleCornerCells];
         return cell;
     }
-    
     NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:row];
     NSString *blockedVal = [blockedHours valueForKey:@(section).stringValue];
     if([blockedVal isEqualToString:@"1"]){

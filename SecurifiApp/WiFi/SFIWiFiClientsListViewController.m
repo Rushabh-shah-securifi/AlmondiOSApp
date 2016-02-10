@@ -252,16 +252,17 @@
         }
         case connectionIndexPathRow://Connection
         {
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 220, 0, 180, propertyRowCellHeight)];
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
             label.textColor = [UIColor whiteColor];//colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
+            label.alpha = 0.5;
             label.font = [UIFont fontWithName:AVENIR_ROMAN size:15];
             label.text = [connectedDevice.deviceConnection capitalizedString];
             label.numberOfLines = 1;
-            label.textAlignment = NSTextAlignmentRight;
             label.tag = 66;
+            label.textAlignment = NSTextAlignmentRight;
+            cell.accessoryType = UITableViewCellAccessoryNone;
             [cell addSubview:label];
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
         case allowOnNetworkIndexPathRow:{ //Allow On Network
@@ -362,7 +363,7 @@
             
         case removeButtonIndexPathRow://Remove button
         {
-            cell = [self createRemoveButtonCell:cell isClientActive:connectedDevice.isActive];
+            cell = [self createRemoveButtonCell:cell isClientActive:connectedDevice.isActive allowedType:connectedDevice.deviceAllowedType];
             break;
         }
         default:
@@ -398,10 +399,15 @@
     }else{
         bgView.frame = CGRectMake(0, 0, tblDevices.frame.size.width, removeRowCellHeight-10);
     }
-    if(connectedDevice.isActive)
-        bgView.backgroundColor = [UIColor colorWithRed:75/255.0f green:174/255.0f blue:79/255.0f alpha:1];
-    else
-        bgView.backgroundColor = [UIColor lightGrayColor];
+    if(connectedDevice.deviceAllowedType == DeviceAllowed_Blocked){
+        bgView.backgroundColor = [SFIColors clientBlockedGrayColor];
+    }else{
+        if(connectedDevice.isActive)
+            bgView.backgroundColor = [UIColor colorWithRed:75/255.0f green:174/255.0f blue:79/255.0f alpha:1];
+        else
+            bgView.backgroundColor = [SFIColors clientInActiveGrayColor];
+    }
+    
     
     bgView.tag = 66;
     [cell addSubview:bgView];
@@ -427,12 +433,17 @@
     }
 }
 
-- (UITableViewCell*)createRemoveButtonCell:(UITableViewCell*)cell isClientActive:(BOOL)isActive{
+- (UITableViewCell*)createRemoveButtonCell:(UITableViewCell*)cell isClientActive:(BOOL)isActive allowedType:(int)allowedType{
     UIButton * btnRemove = [[UIButton alloc] init];
     btnRemove.frame = CGRectMake(tblDevices.frame.size.width / 2 - 70, 23, 140, 44);
     btnRemove.backgroundColor = [UIColor whiteColor];
     [btnRemove setTitle:@"Remove" forState:UIControlStateNormal];
-    [btnRemove setTitleColor:isActive?[UIColor securifiRouterTileGreenColor]: [UIColor lightGrayColor] forState:UIControlStateNormal];
+    if(allowedType == DeviceAllowed_Blocked){
+        [btnRemove setTitleColor:[SFIColors clientBlockedGrayColor] forState:UIControlStateNormal];
+    }else{
+        [btnRemove setTitleColor:isActive?[UIColor securifiRouterTileGreenColor]: [SFIColors clientInActiveGrayColor] forState:UIControlStateNormal];
+    }
+    
     [btnRemove.titleLabel setFont:[UIFont fontWithName:AVENIR_ROMAN size:17]];
     [btnRemove addTarget:self action:@selector(btnRemoveTap:) forControlEvents:UIControlEventTouchUpInside];
     [cell addSubview:btnRemove];
@@ -507,11 +518,6 @@
         }
         case connectionIndexPathRow://Connection
         {
-            SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
-            viewController.delegate = self;
-            viewController.editFieldIndex = subRowIndex;
-            viewController.connectedDevice = self.connectedDevices[indexPath.section];
-            [self.navigationController pushViewController:viewController animated:YES];
             break;
         }
         case allowOnNetworkIndexPathRow://Allow On Network

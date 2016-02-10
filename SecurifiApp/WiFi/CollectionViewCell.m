@@ -12,7 +12,6 @@
 @implementation CollectionViewCell
 
 -(void)setSelected:(BOOL)selected{
-    NSLog(@"setSelected: %d", selected);
     [super setSelected:selected];
     self.dayTimeLable.text = @"";
     if(selected)
