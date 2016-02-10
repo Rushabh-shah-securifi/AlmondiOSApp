@@ -2832,7 +2832,7 @@
                 s1.iconName = @"n_07_thermostat";
                 s1.displayText = @"RANGE LOW";
                 s1.minValue = 50;
-                s1.maxValue = 90;
+                s1.maxValue = 87;
                 s1.notificationText = NSLocalizedString(@" is cooling down to ", @" is cooling down to ");
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is cooling down to ", @" is cooling down to ");
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
@@ -2847,7 +2847,7 @@
                 s1.layoutType = @"dimButton";
                 s1.iconName = @"n_07_thermostat";
                 s1.displayText = @"RANGE HIGH";
-                s1.minValue = 50;
+                s1.minValue = 53;
                 s1.maxValue = 90;
                 s1.notificationText = NSLocalizedString(@" is heating up to ", @" is heating up to ");
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is heating up to ", @" is heating up to ");

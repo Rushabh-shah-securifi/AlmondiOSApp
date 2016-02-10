@@ -226,7 +226,7 @@ int xVal = 20;
     }
     else{
         PreDelayRuleButton *switchButton = [[PreDelayRuleButton alloc] initWithFrame:CGRectMake(xVal, 5, rulesButtonsViewWidth, rulesButtonsViewHeight)];
-        if(subProperties.deviceType == SFIDeviceType_HueLamp_48)
+        if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
             isDimmbutton = NO;//for we are putting images of hueLamp
         
         [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:subProperties.deviceName displayText:subProperties.displayText delay:subProperties.delay isDimmer:isDimmbutton bottomText:bottomText];

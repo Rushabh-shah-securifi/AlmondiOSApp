@@ -113,7 +113,7 @@ DimmerButton *dimerButton;
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     NSMutableArray *deviceArray = [NSMutableArray new];
     for(SFIDevice *device in [toolkit deviceList:plus.almondplusMAC]){
-        if(self.isTrigger && (device.deviceType != SFIDeviceType_HueLamp_48) && (device.deviceType != SFIDeviceType_NestSmokeDetector_58))
+        if(self.isTrigger && (device.deviceType != SFIDeviceType_HueLamp_48) && (device.deviceType != SFIDeviceType_NestSmokeDetector_58) && (device.deviceType != SFIDeviceType_StandardWarningDevice_21))
             [deviceArray addObject:device];
         else if (device.isRuleActuator && !self.isTrigger )
             [deviceArray addObject:device];
@@ -382,9 +382,11 @@ DimmerButton *dimerButton;
     dimbtn.frame=CGRectMake(dimbtn.frame.origin.x + ((i-1) * (dimFrameWidth/2))+textHeight/2, dimbtn.frame.origin.y, dimbtn.frame.size.width, dimbtn.frame.size.height);
     [self shiftButtonsByWidth:dimFrameWidth View:view forIteration:i];
     dimbtn.selected=[self setActionButtonCount:dimbtn isSlider:YES];
-    if(dimbtn.selected)
-        [dimbtn setNewValue:[self setUpNewValueForSelectedButton:dimbtn.subProperties]];
-    
+    if(dimbtn.selected){
+        NSString *prevValue = [self setUpNewValueForSelectedButton:dimbtn.subProperties];
+        [dimbtn setNewValue:prevValue];
+//        dimbtn.subProperties.matchData = prevValue;
+    }
     //dispatch_async(dispatch_get_main_queue(), ^{
     [view addSubview:dimbtn];
     
@@ -498,6 +500,10 @@ DimmerButton *dimerButton;
                     view.frame = CGRectMake(0, yScale, self.parentViewController.view.frame.size.width, indexButtonFrameSize * 2);
                     [self buildSwitchButton:deviceIndex deviceType:deviceType deviceName:deviceName iVal:iVal deviceId:deviceId i:i view:view buttonY:indexButtonFrameSize];
                 }else{
+                    if(deviceType == SFIDeviceType_MultiLevelSwitch_2)
+                        continue;
+                    if(!self.isTrigger && deviceType == SFIDeviceType_GarageDoorOpener_53 && !([iVal.matchData isEqualToString:@"0"] || [iVal.matchData isEqualToString:@"255"]))
+                        continue;
                     [self buildSwitchButton:deviceIndex deviceType:deviceType deviceName:deviceName iVal:iVal deviceId:deviceId i:i view:view buttonY:0];
                 }
                 
@@ -635,8 +641,8 @@ DimmerButton *dimerButton;
 -(void)showPicker:(DimmerButton* )dimmer{
     [self removePickerFromView];
     dimmer.pickerVisibility=YES;
-    minValue=dimmer.minValue;
-    maxValue=dimmer.maxValue;
+    minValue=(int)dimmer.minValue;
+    maxValue=(int)dimmer.maxValue;
     isPresentHozPicker=YES;
     pickerValuesArray2 = [NSMutableArray new];
     for (int i=(int)dimmer.minValue; i<=(int)dimmer.maxValue; i++) {
@@ -646,6 +652,50 @@ DimmerButton *dimerButton;
     [self horizontalpicker:dimmer];
     
 }
+
+-(void)changeMinMaxValuesOfNestRangeLowHighForIndex:(int)index value:(int)value dimSuperView:(UIView*)superView{
+    NSLog(@"changeMinMaxValuesOfNestRangeLowHighForIndex :%d %d",index,value);
+    NSArray *deviceIndexButtons = [superView subviews];
+    if(index == 5){
+        for (UIView *v in deviceIndexButtons) {
+            if ([v isKindOfClass:[DimmerButton class]]) { //to avoid removing scroll indicators
+                DimmerButton *dim = (DimmerButton*)v;
+                if(dim.subProperties.index == 6){
+                    if(dim.subProperties.matchData.intValue - value < 3){
+                        [dim setNewValue:@(value+3).stringValue];
+//                        dim.subProperties.matchData = @(value+3).stringValue;
+                        [self updateMatchData:dim.subProperties newValue:@(value+3).stringValue];
+                    }
+                }
+            }
+        }
+
+    }else if(index == 6){
+        for (UIView *v in deviceIndexButtons) {
+            if ([v isKindOfClass:[DimmerButton class]]) { //to avoid removing scroll indicators
+                DimmerButton *dim = (DimmerButton*)v;
+                if(dim.subProperties.index == 5){
+                    if(value - dim.subProperties.matchData.intValue < 3){
+                        [dim setNewValue:@(value-3).stringValue];
+//                        dim.subProperties.matchData = @(value-3).stringValue;
+                        [self updateMatchData:dim.subProperties newValue:@(value-3).stringValue];
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+-(void)updateMatchData:(SFIButtonSubProperties *)dimmButtonSubProperty newValue:(NSString*)newValue{
+    NSMutableArray *list=self.isTrigger?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
+    for(SFIButtonSubProperties *buttonSubProperty in list){
+        if(buttonSubProperty.deviceId == dimmButtonSubProperty.deviceId && buttonSubProperty.index == dimmButtonSubProperty.index){
+            buttonSubProperty.matchData = newValue;
+        }
+    }
+}
+
 -(void)removePickerFromView{
     isPresentHozPicker=NO;
     [UIView animateWithDuration:2 animations:^{
@@ -658,7 +708,7 @@ DimmerButton *dimerButton;
     [self removePickerFromView];
     //Store Values
     if(newPickerValue.length==0)
-        newPickerValue=@"0";
+        newPickerValue=@(dimmer.minValue).stringValue;
     [dimmer setNewValue:newPickerValue];
     
     SFIButtonSubProperties *newProperty=dimmer.subProperties;
@@ -668,6 +718,9 @@ DimmerButton *dimerButton;
     }else
         dimmer.subProperties.matchData = newPickerValue;
     
+    if(dimmer.subProperties.deviceType == SFIDeviceType_NestThermostat_57 && self.isTrigger){
+        [self changeMinMaxValuesOfNestRangeLowHighForIndex:dimmer.subProperties.index value:dimmer.subProperties.matchData.intValue dimSuperView:[dimmer superview]];
+    }
     [self addObject:newProperty];
     [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
     [self setActionButtonCount:dimmer isSlider:YES];
@@ -686,13 +739,15 @@ DimmerButton *dimerButton;
             [self showPicker:dimmer];
             dimmer.selected=YES;
         }else{
-            if(dimmer.pickerVisibility)
+            if(dimmer.pickerVisibility){
                 [self removePicker:dimmer];
+            }
             else{
                 dimmer.selected=NO;
                 [self removeTriggerIndex: dimmer.subProperties.index buttonId:dimmer.subProperties.deviceId];
                 [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
             }
+            
         }
     }else{
         dimmer.selected=YES;
