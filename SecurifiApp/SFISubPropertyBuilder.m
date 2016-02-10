@@ -108,7 +108,7 @@ int xVal = 20;
         if (deviceIndex.indexID == buttonProperties.index) {
             if([buttonProperties.matchData isEqualToString:@"toggle"])
             {
-                [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"toggle_icon.png" text:@"Toggle" isTrigger:isTrigger isDimButton:NO bottomText:@""];
+                [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"toggle_icon.png" text:@"Toggle" isTrigger:isTrigger isDimButton:NO bottomText:@"TOGGLE"];
                 return true;
             }
             NSArray *indexValues = deviceIndex.indexValues;
@@ -119,8 +119,12 @@ int xVal = 20;
                     NSLog(@" ival.iconname %@",iVal.iconName);
                     NSString *bottomText;
                     
-                    if(isDimButton)
-                        bottomText = [NSString stringWithFormat:@"%@ %@",buttonProperties.matchData,iVal.valueFormatter.suffix];
+                    if(isDimButton){
+                        bottomText = [NSString stringWithFormat:@"%@%@",buttonProperties.matchData,iVal.valueFormatter.suffix];
+                            if(buttonProperties.deviceType == SFIDeviceType_HueLamp_48){
+                                bottomText = [NSString stringWithFormat:@"%@%@",@(buttonProperties.matchData.intValue * 100/255).stringValue,iVal.valueFormatter.suffix];
+                            }
+                        }
                     else
                         bottomText = [iVal getDisplayText:buttonProperties.matchData];
                     NSLog(@" ival display text ::%@",iVal.displayText);
@@ -157,7 +161,7 @@ int xVal = 20;
             NSArray *deviceIndexes=[self getDeviceIndexes:buttonProperties];
             if(deviceIndexes==nil || deviceIndexes.count<=0)
                 continue;
-            NSLog(@"potionID trigger :%d",positionId);
+            NSLog(@"potionID trigger :%@",buttonProperties.deviceName);
             if([self buildEntry:buttonProperties positionId:positionId deviceIndexes:deviceIndexes isTrigger:isTrigger])
                 positionId++;
         }
@@ -226,9 +230,11 @@ int xVal = 20;
     }
     else{
         PreDelayRuleButton *switchButton = [[PreDelayRuleButton alloc] initWithFrame:CGRectMake(xVal, 5, rulesButtonsViewWidth, rulesButtonsViewHeight)];
+        
         if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
             isDimmbutton = NO;//for we are putting images of hueLamp
-        
+        if([subProperties.type isEqualToString:@"NetworkResult"])
+            subProperties.deviceName = @"Almond Control";
         [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:subProperties.deviceName displayText:subProperties.displayText delay:subProperties.delay isDimmer:isDimmbutton bottomText:bottomText];
         if(!isActive && isCrossHidden){
             switchButton->actionbutton.bgView.backgroundColor = [SFIColors ruleGraycolor];

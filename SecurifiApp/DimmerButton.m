@@ -89,7 +89,7 @@
     self.backgroundColor = [UIColor clearColor];
     
     //self.bgView
-    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, lblDeviceName.frame.size.height, triggerActionDimWidth,triggerActionBtnWidth -5)];
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, lblDeviceName.frame.size.height, triggerActionDimWidth,triggerActionBtnWidth )];
     self.bgView.backgroundColor = [SFIColors ruleGraycolor];
     self.bgView.userInteractionEnabled = NO;
     [self addSubview:self.bgView];

@@ -429,8 +429,9 @@ DimmerButton *dimerButton;
     btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:iVal.eventType deviceName:deviceName deviceType:deviceType];
     btnBinarySwitchOn.deviceType = deviceType;
     
-    if(deviceType == SFIDeviceType_REBOOT_ALMOND)
+    if(deviceType == SFIDeviceType_REBOOT_ALMOND){
         btnBinarySwitchOn.subProperties.type = @"NetworkResult";
+    }
     NSLog(@"  eventType :- btnBinarySwitchOn.subProperties.type %d %@",deviceType,btnBinarySwitchOn.subProperties.type);
     [btnBinarySwitchOn addTarget:self action:@selector(onSwitchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -480,7 +481,7 @@ DimmerButton *dimerButton;
 }
 
 - (UIView *)addMyButtonwithYScale:(int)yScale withDeviceIndex:(NSArray *)deviceIndexes deviceId:(int)deviceId deviceType:(int)deviceType deviceName:(NSString*)deviceName{
-    
+    NSLog(@"device name %@",deviceName);
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                             yScale,
                                                             self.parentViewController.view.frame.size.width,
