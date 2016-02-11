@@ -76,7 +76,7 @@
     
     
     //displaytext
-    lblDisplayText = [[UILabel alloc] initWithFrame:CGRectMake(0, triggerActionBtnWidth + textHeight, self.frame.size.width,textHeight)];
+    lblDisplayText = [[UILabel alloc] initWithFrame:CGRectMake(0, triggerActionBtnWidth + textHeight + textPadding, self.frame.size.width,textHeight)];
     //    lblTitle.font = self.titleLabel.font;
     lblDisplayText.text = bottomText;
      lblDisplayText.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:fontSize];
