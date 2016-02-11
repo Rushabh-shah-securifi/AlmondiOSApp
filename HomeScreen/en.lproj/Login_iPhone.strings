@@ -37,4 +37,4 @@
 "Zuk-ja-Rsi.text" = "HomeScreen";
 
 /* Class = "UILabel"; text = "Alternatively, you can control your Almond and home devices locally, without a Securifi Cloud Account."; ObjectID = "wee-4l-TQb"; */
-"wee-4l-TQb.text" = "Alternatively, you can control your HomeScreen and home devices locally, without a Securifi Cloud Account.";
+"wee-4l-TQb.text" = "Alternatively, you can control your HomeScreen and home devices locally, without a Securifi Almond Account.";

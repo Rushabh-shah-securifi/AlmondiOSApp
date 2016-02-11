@@ -12,7 +12,7 @@
 #import "SFIMessageViewController.h"
 #import "RulesTableViewController.h"
 
-#define TAB_BAR_SENSORS @"Sensors"
+#define TAB_BAR_DEVICES @"Devices"
 #define TAB_BAR_ROUTER @"Router"
 #define TAB_BAR_SCENES @"Scenes"
 #define TAB_BAR_RULES @"Rules"
@@ -238,7 +238,7 @@ typedef NS_ENUM(int, TabBarMode) {
         UIImage *icon = [UIImage imageNamed:@"icon_sensor"];
         
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
-        nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_SENSORS image:icon selectedImage:icon];
+        nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_DEVICES image:icon selectedImage:icon];
         
         self.sensorTab = nav;
     }

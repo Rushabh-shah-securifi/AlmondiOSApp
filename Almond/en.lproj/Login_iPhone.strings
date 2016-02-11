@@ -12,7 +12,7 @@
 "9ZE-dj-qTz.normalTitle" = "Login";
 
 /* Class = "UIButton"; normalTitle = "Create Account"; ObjectID = "APV-X7-KCb"; */
-"APV-X7-KCb.normalTitle" = "Create Account";
+"APV-X7-KCb.normalTitle" = "Create Almond Account";
 
 /* Class = "UIButton"; normalTitle = "Add Almond Locally"; ObjectID = "UMh-WG-lC3"; */
 "UMh-WG-lC3.normalTitle" = "Add Almond Locally";
@@ -30,4 +30,4 @@
 "slZ-Ce-Cut.normalTitle" = "Forgot?";
 
 /* Class = "UILabel"; text = "Alternatively, you can control your Almond and home devices locally, without a Securifi Cloud Account."; ObjectID = "wee-4l-TQb"; */
-"wee-4l-TQb.text" = "Alternatively, you can control your Almond and home devices locally, without a Securifi Cloud Account.";
+"wee-4l-TQb.text" = "Alternatively, you can control your Almond and home devices locally, without a Securifi Almond Account.";

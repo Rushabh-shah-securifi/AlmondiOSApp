@@ -280,7 +280,7 @@ reset at the moment. Try again later.";
 
 
 /* signup */
-"signup.navbar-title.Create Account" = "Create Account";
+"signup.navbar-title.Create Account" = "Create Almond Account";
 "signup.barbutton.Decline" = "Decline";
 "signuo.barbutton.Accept" = "Accept";
 "signup.barbutton.Continue" = "Continue";

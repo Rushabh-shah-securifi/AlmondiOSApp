@@ -87,8 +87,10 @@
     self.navigationItem.rightBarButtonItem = acceptButton;
 
     self.navigationItem.title = NSLocalizedString(@"signup.navbar-title.Terms of Use", @"Terms of Use");
-
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:self.view.frame];
+    CGRect frame = self.view.frame;
+    frame.origin.y = self.navigationController.navigationBar.frame.size.height + self.navigationController.navigationBar.frame.origin.y;
+    
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:frame];
 
     NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"termsofuse" ofType:@"html"];
     NSString *htmlString = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
@@ -111,7 +113,7 @@
                      animations:^() {
                          self.webview.alpha = 0.0;
                          self.scrollView.alpha = 1.0;
-                         self.navigationItem.title = NSLocalizedString(@"signup.navbar-title.Create Account", @"Create Account");
+                         self.navigationItem.title = NSLocalizedString(@"signup.navbar-title.Create Account", @"Create Almond Account");
                      }
                      completion:^(BOOL finished) {
                          [self.webview removeFromSuperview];
