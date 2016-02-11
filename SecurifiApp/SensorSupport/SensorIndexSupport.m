@@ -3506,7 +3506,7 @@
             
             SFIDeviceIndex *deviceIndex3=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING];
             deviceIndex3.indexValues=[self resolve:device index:SFIDevicePropertyType_THERMOSTAT_SETPOINT_COOLING];
-            deviceIndex3.indexID=3;
+            deviceIndex3.indexID=5;
             deviceIndex3.cellId = 1;
             deviceIndex3.isEditableIndex = YES;
             
@@ -3524,7 +3524,7 @@
             
             SFIDeviceIndex *deviceIndex7=[[SFIDeviceIndex alloc]initWithValueType:SFIDevicePropertyType_THERMOSTAT_FAN_MODE];
             deviceIndex7.indexValues=[self resolve:device index:SFIDevicePropertyType_THERMOSTAT_FAN_MODE];
-            deviceIndex7.indexID=7;
+            deviceIndex7.indexID=6;
             deviceIndex7.cellId = 3;
             deviceIndex7.isEditableIndex = YES;
             
