@@ -100,6 +100,13 @@
 + (UIColor *)clientBlockedGrayColor{
     return [UIColor colorFromHexString:@"757575"];
 }
++ (UIColor *)clientGreenColor{
+    return [UIColor colorFromHexString:@"4caf50"];
+}
+
++ (UIColor *)gridBlockColor{
+    return [UIColor colorFromHexString:@"dadadc"];
+}
 
 + (UIColor *)disableGreenColor{
     return [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];

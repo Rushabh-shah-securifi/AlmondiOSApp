@@ -403,7 +403,7 @@
         bgView.backgroundColor = [SFIColors clientBlockedGrayColor];
     }else{
         if(connectedDevice.isActive)
-            bgView.backgroundColor = [UIColor colorWithRed:75/255.0f green:174/255.0f blue:79/255.0f alpha:1];
+            bgView.backgroundColor = [SFIColors clientGreenColor];
         else
             bgView.backgroundColor = [SFIColors clientInActiveGrayColor];
     }
@@ -441,7 +441,7 @@
     if(allowedType == DeviceAllowed_Blocked){
         [btnRemove setTitleColor:[SFIColors clientBlockedGrayColor] forState:UIControlStateNormal];
     }else{
-        [btnRemove setTitleColor:isActive?[UIColor securifiRouterTileGreenColor]: [SFIColors clientInActiveGrayColor] forState:UIControlStateNormal];
+        [btnRemove setTitleColor:isActive?[SFIColors clientGreenColor]: [SFIColors clientInActiveGrayColor] forState:UIControlStateNormal];
     }
     
     [btnRemove.titleLabel setFont:[UIFont fontWithName:AVENIR_ROMAN size:17]];

@@ -54,6 +54,7 @@
     IBOutlet UILabel *lblTextEditTitle;
 }
 
+
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic)UICollectionView *collectionView;
 
@@ -215,6 +216,8 @@
             break;
     }
     
+    [self checkConditionAndChangeColorForView:currentView];
+    
     currentView.hidden = NO;
     CGRect fr = currentView.frame;
     fr.origin.x = viewHeader.frame.origin.x;
@@ -229,6 +232,13 @@
     fr = btnBack.frame;
     fr.origin.y = currentView.frame.origin.y + currentView.frame.size.height-50;
     btnBack.frame = fr;
+}
+
+-(void)changeViewColor:(UIColor*)color ForView:(UIView*)currentView{
+    currentView.backgroundColor = color;
+    viewHeader.backgroundColor = color;
+    collectionViewScroll.backgroundColor = color;
+    collectionViewAllowOnNetwork.backgroundColor = color;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -258,6 +268,8 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
 
 
 - (IBAction)btnUsePresenceTap:(id)sender {
@@ -379,20 +391,14 @@
     if (segment.selectedSegmentIndex == 0) {
         collectionViewScroll.hidden = YES;
         blockedType = @(0).stringValue;
-        viewCollection.backgroundColor = [UIColor securifiRouterTileGreenColor];
-        viewHeader.backgroundColor = [UIColor securifiRouterTileGreenColor];
         hexBlockedDays = [@"000000,000000,000000,000000,000000,00000,00000" mutableCopy];
     }else if(segment.selectedSegmentIndex == 1){ //onSchedule
         collectionViewScroll.hidden = NO;
         blockedType = @(2).stringValue;
-        viewCollection.backgroundColor = [UIColor securifiRouterTileGreenColor];
-        viewHeader.backgroundColor = [UIColor securifiRouterTileGreenColor];
     }else{//blocked/never
         collectionViewScroll.hidden = YES;
         blockedType = @(1).stringValue;
         hexBlockedDays = [@"ffffff,ffffff,ffffff,ffffff,ffffff,ffffff,ffffff" mutableCopy];
-        viewCollection.backgroundColor = [SFIColors clientBlockedGrayColor];
-        viewHeader.backgroundColor = [SFIColors clientBlockedGrayColor];
     }
 }
 
@@ -402,24 +408,36 @@
         AllowedSegment.selectedSegmentIndex = 0; //Always
         blockedType = @"0";
         hexBlockedDays = [@"000000,000000,000000,000000,000000,00000,00000" mutableCopy];
-        viewCollection.backgroundColor = [UIColor securifiRouterTileGreenColor];
-        viewHeader.backgroundColor = [UIColor securifiRouterTileGreenColor];
+        [self checkConditionAndChangeColorForView:viewCollection];
     }else if(self.connectedDevice.deviceAllowedType == 1){
         collectionViewScroll.hidden = YES;
         AllowedSegment.selectedSegmentIndex = 2; //Blocked
         hexBlockedDays = [@"ffffff,ffffff,ffffff,ffffff,ffffff,ffffff,ffffff" mutableCopy];
         blockedType = @"1";
-        viewCollection.backgroundColor = [SFIColors clientBlockedGrayColor];
-        viewHeader.backgroundColor = [SFIColors clientBlockedGrayColor];
+        [self checkConditionAndChangeColorForView:viewCollection];
     }else{
         collectionViewScroll.hidden = NO;
         AllowedSegment.selectedSegmentIndex = 1; //OnSchedule
         blockedType = @"2";
-        viewCollection.backgroundColor = [UIColor securifiRouterTileGreenColor];
-        viewHeader.backgroundColor = [UIColor securifiRouterTileGreenColor];
+        [self checkConditionAndChangeColorForView:viewCollection];
     }
 }
 
+-(void)checkConditionAndChangeColorForView:(UIView*)collectionView{
+    if(self.connectedDevice.deviceAllowedType == DeviceAllowed_Blocked){
+        [self changeViewColor:[SFIColors clientBlockedGrayColor] ForView:collectionView];
+        [btnSave setTitleColor:[SFIColors clientBlockedGrayColor] forState:UIControlStateNormal];
+    }else{
+        if(self.connectedDevice.isActive){
+            [self changeViewColor:[SFIColors clientGreenColor] ForView:collectionView];
+            [btnSave setTitleColor:[SFIColors clientGreenColor] forState:UIControlStateNormal];
+        }else{
+            [self changeViewColor:[SFIColors clientInActiveGrayColor] ForView:collectionView];
+            [btnSave setTitleColor:[SFIColors clientInActiveGrayColor] forState:UIControlStateNormal];
+        }
+    }
+
+}
 
 -(void)initializeblockedDaysArray{
     blockedDaysArray = [NSMutableArray new];
@@ -682,7 +700,7 @@
 {
     //You may want to create a divider to scale the size by the way..
     float itemSize = collectionViewAllowOnNetwork.bounds.size.width/10;
-    collectionViewScroll.contentSize = CGSizeMake(collectionViewScroll.frame.size.width, 26*itemSize + 26 * ITEM_SPACING + 100);
+    collectionViewScroll.contentSize = CGSizeMake(collectionViewScroll.frame.size.width, 26*itemSize + 26*ITEM_SPACING + 120);
     return CGSizeMake(itemSize, itemSize);
 }
 
@@ -701,6 +719,7 @@
 }
 
 -(UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"cellForItemAtIndexPath");
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"collectionViewCell" forIndexPath:indexPath];
@@ -710,6 +729,8 @@
     }
     NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:row];
     NSString *blockedVal = [blockedHours valueForKey:@(section).stringValue];
+    cell.dayTimeLable.text = @"";
+    cell.userInteractionEnabled = YES;
     if([blockedVal isEqualToString:@"1"]){
         cell.selected = YES;
         [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
@@ -718,6 +739,9 @@
         [cell addDayTimeLable:indexPath isSelected:@"0"];
     }
     return cell;
+}
+-(void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"didEndDisplayingCell");
 }
 
 -(void)selectionOfHoursForRow:(NSInteger)row andSection:(NSInteger)section collectionView:(UICollectionView *)collectionView selected:(NSString*)selected{

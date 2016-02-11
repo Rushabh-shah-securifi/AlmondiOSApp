@@ -13,9 +13,8 @@
 
 -(void)setSelected:(BOOL)selected{
     [super setSelected:selected];
-    self.dayTimeLable.text = @"";
     if(selected)
-        self.backgroundColor = [SFIColors lightGreenColor];
+        self.backgroundColor = [SFIColors gridBlockColor];
     else
         self.backgroundColor = [UIColor whiteColor];
 }
@@ -23,6 +22,7 @@
 -(void)addDayTimeLable:(NSIndexPath *)indexPath isSelected:(NSString*)selected{
     NSArray *Days = @[@"", @"Su", @"Mo", @"Tue", @"Wed", @"Thu", @"Fri", @"Sat", @""];
     if(indexPath.section == 0 || indexPath.section == 25){ //days
+        NSLog(@"Days");
         self.dayTimeLable.text = [Days objectAtIndex:indexPath.row];
         [self setDayTimeBackGroundColor:selected];
     }
@@ -34,7 +34,7 @@
 
 -(void)setDayTimeBackGroundColor:(NSString*)selected{
     if([selected isEqualToString:@"1"]){
-        self.backgroundColor = [SFIColors lightGreenColor];
+        self.backgroundColor = [SFIColors gridBlockColor];
     }else{
         self.backgroundColor = [UIColor clearColor];
     }
@@ -42,6 +42,7 @@
 -(void)handleCornerCells{
     self.backgroundColor = [UIColor clearColor];
     self.dayTimeLable.text = @"";
+    self.userInteractionEnabled = NO;
 }
 
 @end
