@@ -333,7 +333,7 @@ DimmerButton *dimerButton;
 - (void)textFieldDidEndEditing:(RuleTextField *)textField{
     newPickerValue = textField.text;
     textField.subProperties.matchData = textField.text;
-    [self addObject:textField.subProperties];
+    [self addObject:[textField.subProperties createNew]];
     [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
     [self setActionButtonCount:dimerButton isSlider:YES];
     dimerButton.selected = YES;
@@ -351,6 +351,10 @@ DimmerButton *dimerButton;
     dimmer.selected = YES;
     [dimmer.textField resignFirstResponder];
     [self setActionButtonCount:dimmer isSlider:YES];
+}
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    textField.placeholder = textField.text;
+    textField.text = @"";
 }
 
 - (void)buildDimButton:(SFIDeviceIndex *)deviceIndex iVal:(IndexValueSupport *)iVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view {
@@ -378,7 +382,7 @@ DimmerButton *dimerButton;
     DimmerButton *dimbtn=[[DimmerButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,0 , dimFrameWidth, dimFrameHeight)];
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
     [dimbtn addTarget:self action:@selector(onStdWarnDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [dimbtn setUpTextField:@"0" displayText:@"Enter 0-65535 Sec"];
+    [dimbtn setUpTextField:@"0" displayText:@"Enter 0-65535 Sec" suffix:iVal.valueFormatter.suffix];
     dimbtn.textField.delegate = self;
     
     dimbtn.center = CGPointMake(view.bounds.size.width/2,

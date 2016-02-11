@@ -30,7 +30,7 @@
 
 - (void)setupValues:(NSString*)text  Title:(NSString*)title displayText:(NSString*)displayText suffix:(NSString*)prefix;
 - (void)setButtonCross:(BOOL)isHidden;
-- (void)setUpTextField:(NSString*)textFieldText displayText:(NSString*)displayText;
+- (void)setUpTextField:(NSString*)textFieldText displayText:(NSString*)displayText suffix:(NSString *)suffix;
 - (NSString *)scaledValue:(NSString*)text;
 @end
 

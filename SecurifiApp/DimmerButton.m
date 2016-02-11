@@ -128,6 +128,7 @@
 
 - (void)setNewValue:(NSString*)text{
     self.dimValue = text;
+    NSLog(@" text prefix %@ ,%@",self.prefix,text);
     NSString *strTopTitleLabelText = [text stringByAppendingString:self.prefix];
     
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
@@ -208,10 +209,11 @@
     self.crossButtonImage.center = CGPointMake(crossButtonBGView.bounds.size.width/2, crossButtonBGView.bounds.size.height/2);
     [crossButtonBGView addSubview:self.crossButtonImage];
 }
--(void)setUpTextField:(NSString*)textFieldText displayText:(NSString*)displayText{
+-(void)setUpTextField:(NSString*)textFieldText displayText:(NSString*)displayText suffix:(NSString *)suffix{
     self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight,self.frame.size.height -textHeight)];
     self.bgView.backgroundColor = [UIColor clearColor];
     [self addSubview:self.bgView];
+    self.prefix = suffix;
     self.textField = [[RuleTextField alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-60,textHeight)];
     CALayer *bottomBorder = [CALayer layer];
     bottomBorder.frame = CGRectMake(0.0f, self.textField.frame.size.height - 1, self.textField.frame.size.width, 1.0f);
