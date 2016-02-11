@@ -113,7 +113,8 @@ int xVal = 20;
                     NSString *bottomText;
                     
                     if(isDimButton){
-                        bottomText = [NSString stringWithFormat:@"%@%@",buttonProperties.matchData,iVal.valueFormatter.suffix];
+                        buttonProperties.displayedData=[iVal.valueFormatter scaledValue:buttonProperties.matchData];
+                        bottomText = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,iVal.valueFormatter.suffix];
                             if(buttonProperties.deviceType == SFIDeviceType_HueLamp_48){
                                 bottomText = [NSString stringWithFormat:@"%@%@",@(buttonProperties.matchData.intValue * 100/255).stringValue,iVal.valueFormatter.suffix];
                             }

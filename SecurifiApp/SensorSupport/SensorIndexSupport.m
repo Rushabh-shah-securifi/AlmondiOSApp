@@ -2908,8 +2908,8 @@
                 s1.displayText=@"TEMP ";
                 s1.layoutType=@"dimButton";
                 s1.iconName = @"n_07_thermostat";
-                s1.minValue = 0;
-                s1.maxValue = 135;
+                s1.minValue = -4;
+                s1.maxValue = 140;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature changed to ", @"'s temperature changed to ");
                 s1.valueFormatter.suffix = NSLocalizedString(@"\u00B0F", @"\u00B0F");

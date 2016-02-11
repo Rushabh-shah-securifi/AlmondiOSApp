@@ -121,7 +121,9 @@
     lblMain.numberOfLines = 0;
 }
 
-
+- (NSString *)scaledValue:(NSString*)text{
+    return [NSString stringWithFormat:@"%d", (int) ([text intValue]/self.factor)];
+}
 
 
 - (void)setNewValue:(NSString*)text{

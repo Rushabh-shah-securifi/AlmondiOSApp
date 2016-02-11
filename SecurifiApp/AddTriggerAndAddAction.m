@@ -359,6 +359,7 @@ DimmerButton *dimerButton;
     dimbtn.valueType=deviceIndex.valueType;
     dimbtn.minValue = iVal.minValue;
     dimbtn.maxValue = iVal.maxValue;
+    dimbtn.factor=iVal.valueFormatter.factor;
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
     
     [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -369,25 +370,8 @@ DimmerButton *dimerButton;
     dimbtn.frame=CGRectMake(dimbtn.frame.origin.x + ((i-1) * (dimFrameWidth/2))+textHeight/2, dimbtn.frame.origin.y, dimbtn.frame.size.width, dimbtn.frame.size.height);
     [self shiftButtonsByWidth:dimFrameWidth View:view forIteration:i];
     dimbtn.selected=[self setActionButtonCount:dimbtn isSlider:YES];
-    if(dimbtn.selected){
-        NSString *prevValue = [self setUpNewValueForSelectedButton:dimbtn.subProperties];
-        [dimbtn setNewValue:prevValue];
-//        dimbtn.subProperties.matchData = prevValue;
-    }
-    //dispatch_async(dispatch_get_main_queue(), ^{
     [view addSubview:dimbtn];
     
-}
--(NSString*)setUpNewValueForSelectedButton:(SFIButtonSubProperties *)dimmButtonSubProperty{
-    NSMutableArray *list=self.isTrigger?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
-    NSString *newValue = @"";
-    for(SFIButtonSubProperties *buttonSubProperty in list){
-        if(buttonSubProperty.deviceId == dimmButtonSubProperty.deviceId && buttonSubProperty.index == dimmButtonSubProperty.index){
-            newValue = buttonSubProperty.matchData;
-            return newValue;
-        }
-    }
-    return newValue;
 }
 
 - (void)buildTextButton:(SFIDeviceIndex *)deviceIndex iVal:(IndexValueSupport *)iVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
@@ -585,11 +569,9 @@ DimmerButton *dimerButton;
         if(dimButtonProperty.deviceId==indexButton.subProperties.deviceId && dimButtonProperty.index==indexButton.subProperties.index && [SFISubPropertyBuilder compareEntry:isSlider matchData:indexButton.subProperties.matchData eventType:indexButton.subProperties.eventType buttonProperties:dimButtonProperty]){
             buttonClickCount++;
             selected=YES;
+            [indexButton setNewValue:dimButtonProperty.displayedData];
         }
-        //        [SFISubPropertyBuilder compareEntry:iVal buttonProperties:indexButton.subProperties];
-        //        if(dimButtonProperty.deviceId == buttonId && dimButtonProperty.index == buttonIndex && (isSlider ||(!isSlider && [dimButtonProperty.matchData isEqualToString:buttonMatchdata]))){
-        //            buttonClickCount++;
-        //        }
+        
     }
     if(selected &&!self.isTrigger)
         [indexButton setButtoncounter:buttonClickCount isCountImageHiddn:NO];
@@ -691,14 +673,16 @@ DimmerButton *dimerButton;
     //Store Values
     if(newPickerValue.length==0)
         newPickerValue=@(dimmer.minValue).stringValue;
-    [dimmer setNewValue:newPickerValue];
     
     SFIButtonSubProperties *newProperty=dimmer.subProperties;
     if(!self.isTrigger){
         newProperty=[dimmer.subProperties createNew];
-        newProperty.matchData = newPickerValue;
-    }else
-        dimmer.subProperties.matchData = newPickerValue;
+        newProperty.matchData = [dimmer scaledValue:newPickerValue];
+        newProperty.displayedData=newPickerValue;
+    }else{
+        dimmer.subProperties.matchData = [dimmer scaledValue:newPickerValue];
+        dimmer.subProperties.displayedData = newPickerValue;
+    }
     
     if(dimmer.subProperties.deviceType == SFIDeviceType_NestThermostat_57 && self.isTrigger){
         [self changeMinMaxValuesOfNestRangeLowHighForIndex:dimmer.subProperties.index value:dimmer.subProperties.matchData.intValue dimSuperView:[dimmer superview]];

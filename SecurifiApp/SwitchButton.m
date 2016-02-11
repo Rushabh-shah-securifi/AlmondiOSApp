@@ -162,7 +162,9 @@
     [l1 setBorderColor:[[SFIColors ruleLightGrayColor] CGColor]];//FF3B30
     [l1 setBorderWidth: 1.5];
 }
-
+- (void)setNewValue:(NSString*)text{
+    
+}
 -(void)addImage1:(UIImage *)iconImage y:(int)y widthAndHeight:(int)widthAndHeight {
     self.crossButtonImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, widthAndHeight, widthAndHeight)];
     self.crossButtonImage.userInteractionEnabled = NO;
