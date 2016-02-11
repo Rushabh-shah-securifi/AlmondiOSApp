@@ -112,7 +112,6 @@
     
     //lblmain adjutments
     self.prefix = suffix;
-    NSLog(@"text: %@, suffix: %@", text, suffix);
     NSString *strTopTitleLabelText = [text stringByAppendingString:suffix];
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
     [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:20.0f]} range:NSMakeRange(0,text.length)]; //40
@@ -137,7 +136,6 @@
     [lblMain setAttributedText:strTemp];
 }
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{
-    NSLog(@"btncount %d",btnCount);
     countLable = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x + self.bgView.frame.size.width -10, -8, 16, 16)];
     
     CALayer * l1 = [countLable layer];
@@ -155,7 +153,6 @@
     countLable.textColor =[UIColor whiteColor];
     //[countLable setFont:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:4]];
     countLable.text = [NSString stringWithFormat:@"%d",btnCount];
-    NSLog(@" count.text %@",countLable.text);
     countLable.textAlignment = NSTextAlignmentCenter;
     countLable.hidden = ishidden;
     [UIView transitionWithView:countLable duration:1

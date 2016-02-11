@@ -449,8 +449,6 @@
 		A58DB4AA1BB3CD7500717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49F1BB3CD7500717C02 /* Scenes_Iphone.strings */; };
 		A58DB4AB1BB3CD7500717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4A11BB3CD7500717C02 /* termsofuse.html */; };
 		A59133C91C64DFC0009FE159 /* RuleTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = A59133C81C64DFC0009FE159 /* RuleTextField.m */; };
-		CE1E91341C4FBDE300208B44 /* Time.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1E91331C4FBDE300208B44 /* Time.m */; };
-		CE1E91351C4FBDE300208B44 /* Time.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1E91331C4FBDE300208B44 /* Time.m */; };
 		CE1E91381C4FC24000208B44 /* RulesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1E91371C4FC24000208B44 /* RulesTableViewController.m */; };
 		CE1E91391C4FC24000208B44 /* RulesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1E91371C4FC24000208B44 /* RulesTableViewController.m */; };
 		CE478C6E1C4D0BFE00247CC7 /* AddTriggerAndAddAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CE478C6D1C4D0BFE00247CC7 /* AddTriggerAndAddAction.m */; };
@@ -942,8 +940,6 @@
 		C6A3307CA8D0945BEFE53A18 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE1E912E1C4FB77100208B44 /* RuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleButton.h; sourceTree = "<group>"; };
-		CE1E91321C4FBDE300208B44 /* Time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Time.h; sourceTree = "<group>"; };
-		CE1E91331C4FBDE300208B44 /* Time.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Time.m; sourceTree = "<group>"; };
 		CE1E91361C4FC24000208B44 /* RulesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesTableViewController.h; sourceTree = "<group>"; };
 		CE1E91371C4FC24000208B44 /* RulesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesTableViewController.m; sourceTree = "<group>"; };
 		CE478C6C1C4D0BFE00247CC7 /* AddTriggerAndAddAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTriggerAndAddAction.h; sourceTree = "<group>"; };
@@ -1540,8 +1536,6 @@
 				A54EB0051C44FDC300CF2837 /* RulesHue.m */,
 				CE1E912E1C4FB77100208B44 /* RuleButton.h */,
 				CEF1354D1C509667009E4558 /* RuleButton.m */,
-				CE1E91321C4FBDE300208B44 /* Time.h */,
-				CE1E91331C4FBDE300208B44 /* Time.m */,
 				CEF1357B1C510969009E4558 /* SFISubPropertyBuilder.h */,
 				CEF1357C1C510969009E4558 /* SFISubPropertyBuilder.m */,
 				CEF1357E1C525990009E4558 /* DelayPicker.h */,
@@ -2399,7 +2393,6 @@
 				1C7E7DBE1A41A0990026F0BA /* SFICloudStatusBarButtonItem.m in Sources */,
 				1C7E7D861A41A0990026F0BA /* SFILogoutAllViewController.m in Sources */,
 				1C2F60931B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */,
-				CE1E91351C4FBDE300208B44 /* Time.m in Sources */,
 				1C2F15271BA7FB67009DB175 /* SFIMessageViewController.m in Sources */,
 				1C2F60971B69E69D001CCA34 /* SFIDimmerButton.m in Sources */,
 				1C9B1D901A3EE9EF00097D8F /* main.m in Sources */,
@@ -2579,7 +2572,6 @@
 				84B9A2681B7F315100E44682 /* SFIHorizontalValueSelectorView.m in Sources */,
 				842651AD1BE0C86C001F79C1 /* TimeText.m in Sources */,
 				1C2F60A01B69E69D001CCA34 /* SFIWiFiClientsListViewController.m in Sources */,
-				CE1E91341C4FBDE300208B44 /* Time.m in Sources */,
 				1C2F60A61B69E69D001CCA34 /* SKSTableView.m in Sources */,
 				1C709A091B5A3157007D397C /* SFICloudLinkViewController.m in Sources */,
 				1DF03B73C95D8A41C9409EF3 /* SFISensorsViewController.m in Sources */,

@@ -23,7 +23,6 @@ const int hueButtonSize = 20;
 }
 
 - (void)setSelected:(BOOL)selected{
-    NSLog(@"selected");
     [self.selectButton setSelected:selected];
     [self changeColor];
 }
@@ -58,7 +57,6 @@ const int hueButtonSize = 20;
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{
     //assuming 20 cross 20 box
     if(self.countLable.text != nil){
-        NSLog(@"countlabel is nil");
         self.countLable.text = nil;
     }
     self.countLable = [[UILabel alloc]initWithFrame:CGRectMake(self.frame.size.width - (countDiameter + 2), 2, countDiameter, countDiameter)];

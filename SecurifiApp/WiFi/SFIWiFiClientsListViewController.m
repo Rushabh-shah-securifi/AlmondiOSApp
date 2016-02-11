@@ -48,7 +48,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSLog(@"SFIWiFiClientsListViewController ");
     propertyRowCellHeight = 44.0f;
     removeRowCellHeight = 90.0f;
     cellFont = [UIFont fontWithName:AVENIR_ROMAN size:17];
@@ -157,7 +156,6 @@
         }
     }
     [self addCellLabel:cell IndexPath:indexPath connectDevice:connectedDevice];
-    NSLog(@"subrowindex: %ld", subRowIndex);
     switch (subRowIndex) {
         case nameIndexPathRow://Name
         {
@@ -642,7 +640,6 @@
 
 #pragma mark - Cloud command senders and handlers
 - (void)gotCommandResponse:(id)sender {
-    NSLog(@"list view - gotCommandResponse");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     NSDictionary * mainDict;
@@ -672,9 +669,7 @@
     }
 }
 
--(void)onDynamicClientList_Add_Update_Remove:(id)sender{
-    NSLog(@"onDynamicClientList_Add_Update_Remove");
-    
+-(void)onDynamicClientList_Add_Update_Remove:(id)sender{    
     self.connectedDevices = [self getSortedDevices];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [tblDevices refreshData];

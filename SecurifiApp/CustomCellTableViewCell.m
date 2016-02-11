@@ -26,19 +26,16 @@
 }
 
 - (IBAction)onEditButtonClick:(id)sender {
-    NSLog(@"onEditButtonClick");
     [self.delegate editRule:self];
 }
 
 
 - (IBAction)onDeleteButtonClick:(id)sender{
-    NSLog(@"onDeleteButtonClick");
     [self.delegate deleteRule:self];
     
 }
 
 - (IBAction)onActivateButtonTap:(id)sender {
-    NSLog(@"onActivateButtonTap");
     self.activeDeactiveSwitch.selected = !self.activeDeactiveSwitch.selected;
     [self.delegate activateRule:self];
 }

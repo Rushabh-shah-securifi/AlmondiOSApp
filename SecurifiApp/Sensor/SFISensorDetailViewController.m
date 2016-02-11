@@ -308,7 +308,6 @@
             case deviceHistoryIndexPathRow:{
                 
                 if(isLocal){
-                    NSLog(@"its cloud connection");
                 [self configureDeviceHistoryCell:cell];
                 }
                 break;
@@ -756,7 +755,6 @@
 }
 
 -(void)configureBuiltInSirenCell:(UITableViewCell *)cell{
-    NSLog(@"configureBuiltInSirenCell");
     SFIDeviceKnownValues *kValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_TONE_SELECTED];
     
     NSString * strVal = @"";
@@ -809,7 +807,6 @@
 }
 
 - (void)editProperty:(NSInteger)propertyNumber{
-    NSLog(@"edit property");
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_AWAY_MODE];
     if (![[currentDeviceValue.value lowercaseString] isEqualToString:@"home"] ) {
         switch (propertyNumber) {

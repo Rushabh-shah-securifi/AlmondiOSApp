@@ -194,7 +194,6 @@
         return;
     }
     
-    NSLog(@"self.devicetype: %d", self.device.deviceType);
     if(self.device.deviceType == SFIDeviceType_BuiltInSiren_60){
         [self layoutBuiltInSiren_60];
         return;
@@ -213,7 +212,6 @@
             case SFIDevicePropertyType_SENSOR_BINARY:
             case SFIDevicePropertyType_LOCK_STATE:
             {
-                NSLog(@"scene table view cell");
                 btnBinarySwitchOff.tag = [[dict valueForKey:@"indexID"] integerValue];
                 btnBinarySwitchOn.tag = [[dict valueForKey:@"indexID"] integerValue];
                 btnBinarySwitchOff.selected = NO;
@@ -917,7 +915,6 @@
 
 
 -(void)layoutBuiltInSiren_60{
-    NSLog(@"layoutBuiltInSiren_60");
     viewBuiltInSiren.hidden = NO;
     CGRect fr = viewBuiltInSiren.frame;
     fr.origin.y = 30;
@@ -943,7 +940,6 @@
     tone3.tag = 2;
     
     NSArray * existingValues = [self.cellInfo valueForKey:@"existingValues"];
-    NSLog(@"builtinsire existing values: %@", existingValues);
     for (NSDictionary * dict in existingValues) {
         if ([[dict valueForKey:@"Index"] integerValue] == 1) {
             if ([[dict valueForKey:@"Value"] boolValue]) {
@@ -989,7 +985,6 @@
     }
 }
 - (IBAction)onTone1ButtonTap:(id)sender {
-    NSLog(@"onTone1ButtonTap");
     if (!tone1.selected) {
         tone1.selected = YES;
         tone2.selected = NO;
@@ -1001,7 +996,6 @@
     }
 }
 - (IBAction)onTone2ButtonTap:(id)sender {
-    NSLog(@"onTone2ButtonTap");
     if (!tone2.selected) {
         tone1.selected = NO;
         tone2.selected = YES;
@@ -1014,7 +1008,6 @@
 
 }
 - (IBAction)onTone3ButtonTap:(id)sender {
-    NSLog(@"onTone3ButtonTap");
     if (!tone3.selected) {
         tone1.selected = NO;
         tone2.selected = NO;

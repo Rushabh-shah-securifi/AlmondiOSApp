@@ -22,7 +22,6 @@
 -(void)addDayTimeLable:(NSIndexPath *)indexPath isSelected:(NSString*)selected{
     NSArray *Days = @[@"", @"Su", @"Mo", @"Tue", @"Wed", @"Thu", @"Fri", @"Sat", @""];
     if(indexPath.section == 0 || indexPath.section == 25){ //days
-        NSLog(@"Days");
         self.dayTimeLable.text = [Days objectAtIndex:indexPath.row];
         [self setDayTimeBackGroundColor:selected];
     }

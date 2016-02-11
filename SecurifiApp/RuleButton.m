@@ -18,12 +18,10 @@
     UIColor *titleColor=showTitle?[SFIColors darkGrayColor]:color;
     UIColor *bottomTextColor=  showTitle?[SFIColors ruleGraycolor]:color;
     
-    NSLog(@"changeBG color RuleButtonView isTrigger %d,showTitle:%d,selected %d",isTrigger,showTitle,selected);
     self.topLabel.textColor = titleColor;
     self.bottomLabel.textColor = bottomTextColor;
     self.bgView.backgroundColor = color;
     self.textField.backgroundColor = color;
-    NSLog(@"bgView.back coolor %@:%@ and bgView %@",self.bgView.backgroundColor,color,self.bgView);
 }
 
 @end

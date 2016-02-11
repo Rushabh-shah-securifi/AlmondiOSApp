@@ -70,7 +70,6 @@
     [delayButton addSubview:secText];
     
     actionbutton = [[SwitchButton alloc] initWithFrame:CGRectMake(46, 0, triggerActionBtnWidth,triggerActionBtnWidth)];
-    NSLog(@"iconimage: %@", iconImage);
     
     [actionbutton setupValues:iconImage topText:@"" bottomText:bottomText isTrigger:NO isDimButton:isDimButton insideText:displayText];
     [self addSubview:actionbutton];

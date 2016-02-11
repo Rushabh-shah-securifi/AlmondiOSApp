@@ -50,7 +50,6 @@ int mins;
         parentController.deviceIndexButtonScrollView.userInteractionEnabled = NO;
        
         delaySecs = [ruleButton.subProperties.delay intValue];
-        NSLog(@"delay secs: %d", delaySecs);
         
         pickerMinsRange = [[NSMutableArray alloc]init];
         pickerSecsRange = [[NSMutableArray alloc]init];
@@ -75,7 +74,6 @@ int mins;
 }
 
 - (void)setupPicker:(AddRulesViewController*)parentController {
-    NSLog(@"picker view called");
     int scrollViewY = parentController.triggersActionsScrollView.frame.origin.y + parentController.triggersActionsScrollView.bounds.size.height;
     
     UIPickerView *pickerRange = [self createPickerView:CGRectMake(lableWidth + pickerSpacing, 0, pickerRangeWidth, pickerRangeHeight*2)];
@@ -83,7 +81,6 @@ int mins;
 //    pickerRange.backgroundColor = [UIColor orangeColor];
     mins = (int)[self getMinsRow];
     secs = (int)[self getSecsRow];
-    NSLog(@"mins: %d, secs: %d", mins, secs);
     [pickerRange selectRow:[self getMinsRow] inComponent:0 animated:YES];
     [pickerRange selectRow:[self getSecsRow] inComponent:1 animated:YES];
     
@@ -110,7 +107,6 @@ int mins;
     [actionSheet addSubview:subView];
     subView.center = CGPointMake(actionSheet.bounds.size.width/2,
                                  actionSheet.bounds.size.height/2);
-    NSLog(@"pickerrange height after : %f", pickerRange.frame.size.height);
     [parentController.view addSubview:actionSheet];
 }
 
@@ -128,7 +124,6 @@ int mins;
 
 
 -(void)removeDelayView{
-    NSLog(@"removeDelayView");
     for(UIView *view in [actionSheet subviews]){
         [view removeFromSuperview];
     }
@@ -181,7 +176,6 @@ int mins;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
-    NSLog(@"numberOfRowsInComponent");
     if(component == 0){
         return pickerMinsRange.count;
     }else{
@@ -192,13 +186,11 @@ int mins;
 
 // Set the width of the component inside the picker
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
-    NSLog(@"widthForComponent");
     return pickerRowWidth;
 }
 
 // Item picked
 - (void)pickerView:(UIPickerView *)thePickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    NSLog(@"didSelectRow");
     if(component == 0){
         mins = [[pickerMinsRange objectAtIndex:row] intValue];
     }else{

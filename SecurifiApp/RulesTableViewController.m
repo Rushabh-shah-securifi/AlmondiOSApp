@@ -34,8 +34,6 @@ CGPoint tablePoint;
 - (void)viewDidLoad {
     [super viewDidLoad];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    
-    NSLog(@"viewDidLoad rules count is %@",toolkit.ruleList);
     [self initializeNotifications];
     [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
@@ -113,7 +111,6 @@ CGPoint tablePoint;
     [self.HUD hide:YES];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.rules =[NSMutableArray arrayWithArray:toolkit.ruleList];
-    NSLog(@"onRuleUpdateCommandResponse Rule is %@",self.rules);
     [self.tableView reloadData];
     self.tableView.contentOffset = tablePoint;
 }
@@ -168,9 +165,7 @@ CGPoint tablePoint;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"cellForRowAtIndexPath");
     if([self isRuleArrayEmpty]){
-        NSLog(@"rulearrayempty");
         return [self createEmptyCell:tableView];
     }
     static NSString *CellIdentifier;
@@ -178,7 +173,6 @@ CGPoint tablePoint;
     Rule *rule = self.rules[indexPath.row];
     CustomCellTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CustomCellTableViewCell"];
     if(cell==nil){//check out if this will ever get executed
-        NSLog(@"nil");
         cell = [[CustomCellTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CustomCellTableViewCell"];
     }
     
@@ -186,7 +180,6 @@ CGPoint tablePoint;
     cell.ruleNameLabel.text = rule.name;
     [cell.activeDeactiveSwitch setSelected:rule.isActive];
     [cell.activeDeactiveSwitch setOn:rule.isActive animated:YES];
-    NSLog(@" rulename label %@",cell.ruleNameLabel.text);
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     [SFISubPropertyBuilder createEntriesView:cell.scrollView triggers:rule.triggers actions:rule.actions isCrossButtonHidden:YES parentController:nil isRuleActive:rule.isActive];
     
@@ -265,13 +258,9 @@ CGPoint tablePoint;
 }
 
 -(void)onRuleCommandResponse:(id)sender{ //for delete//need to be work
-    NSLog(@"onRuleCommandResponse - delete");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    
     NSDictionary * mainDict = [data valueForKey:@"data"];
-    
-    NSLog(@"%@",mainDict);
     if (randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
         return;
     }
@@ -291,7 +280,6 @@ CGPoint tablePoint;
     NSMutableDictionary *rulePayload = [[NSMutableDictionary alloc]init];
     [rulePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
     [rulePayload setValue:@"RemoveAllRules" forKey:@"CommandType"];
-    NSLog(@"rule payload : %@ ",rulePayload);
     return rulePayload;
 }
 
@@ -328,8 +316,6 @@ CGPoint tablePoint;
     AddRulesViewController *addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
     addRuleController.delegate = self;
     Rule *rule = [self.rules[indexPath.row] createNew];
-    
-    NSLog(@" edit rule rul ID %@",rule.ID);
     addRuleController.rule = rule;
     addRuleController.isInitialized = YES;
     //need to create textfield param as well.
@@ -352,7 +338,6 @@ CGPoint tablePoint;
         cloudCommand.commandType = CommandType_VALIDATE_REQUEST;
         cloudCommand.command = [payload JSONString];
         [self asyncSendCommand:cloudCommand];
-        NSLog(@"activate rule %@",cloudCommand.command);
     }
 }
 

@@ -408,18 +408,15 @@
         AllowedSegment.selectedSegmentIndex = 0; //Always
         blockedType = @"0";
         hexBlockedDays = [@"000000,000000,000000,000000,000000,00000,00000" mutableCopy];
-        [self checkConditionAndChangeColorForView:viewCollection];
     }else if(self.connectedDevice.deviceAllowedType == 1){
         collectionViewScroll.hidden = YES;
         AllowedSegment.selectedSegmentIndex = 2; //Blocked
         hexBlockedDays = [@"ffffff,ffffff,ffffff,ffffff,ffffff,ffffff,ffffff" mutableCopy];
         blockedType = @"1";
-        [self checkConditionAndChangeColorForView:viewCollection];
     }else{
         collectionViewScroll.hidden = NO;
         AllowedSegment.selectedSegmentIndex = 1; //OnSchedule
         blockedType = @"2";
-        [self checkConditionAndChangeColorForView:viewCollection];
     }
 }
 
@@ -719,7 +716,6 @@
 }
 
 -(UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"cellForItemAtIndexPath");
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"collectionViewCell" forIndexPath:indexPath];
@@ -741,7 +737,6 @@
     return cell;
 }
 -(void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"didEndDisplayingCell");
 }
 
 -(void)selectionOfHoursForRow:(NSInteger)row andSection:(NSInteger)section collectionView:(UICollectionView *)collectionView selected:(NSString*)selected{

@@ -116,7 +116,6 @@
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{
     
     if(countLable.text != nil){
-        NSLog(@"countlabel is nil");
         countLable.text =nil;
     }
     countLable = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x + self.bgView.frame.size.width -9, -3, 16, 16)];

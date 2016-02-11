@@ -47,8 +47,6 @@
 
 
 -(NSMutableArray*)addDevice{
-    NSLog(@"add device");
-
     SFIDevice *deviceswitch_1=[[SFIDevice alloc]init];
     deviceswitch_1 =[self storeDeviceData:1234 deviceType:SFIDeviceType_BinarySwitch_1 deviceID:1 OZWNode:@"OZWNode" zigBeeEUI64:@"zigBeeEUI64" zigBeeShortID:@"32" associationTimestamp:@"21" deviceTechnology:1  notificationMode:1  almondMAC:@"251176217041064"  allowNotification:@"yes" location:@"home" valueCount:1 deviceFunction:@"switch" deviceTypeName:@"Binary Switch" friendlyDeviceType:@"zeewave" deviceName:@"Switch Binary" ];
     
@@ -266,7 +264,6 @@
     return devicevalue;
 }
 -(NSMutableArray*)addDeviceValues{
-    NSLog(@"addDeviceValues");
     //switch binary 1
     SFIDeviceKnownValues *switchbinary1=[[SFIDeviceKnownValues alloc]init];
     switchbinary1 = [self createKnownValuesWithIndex:1 PropertyType_:SFIDevicePropertyType_SWITCH_BINARY valuetype_:@"STATE" valuename_:@"SWITCH BINARY" value_:@"true"];

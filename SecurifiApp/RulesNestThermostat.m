@@ -13,7 +13,6 @@
 @implementation RulesNestThermostat
 
 -(NSArray*) createNestThermostatDeviceIndexes:(NSArray*) deviceIndexes deviceValue:(SFIDeviceValue*)deviceValue{
-    NSLog(@"createNestThermostatDeviceIndexes");
     deviceIndexes = [self nestThermostat:deviceValue withDeviceIndexes:deviceIndexes];
     deviceIndexes = [self adjustCellIDs:deviceValue withDeviceIndexes:deviceIndexes];
     return deviceIndexes;
@@ -90,14 +89,12 @@
     BOOL canHeat = [currentDeviceValue boolValue];
     currentDeviceValue = [deviceValue knownValuesForProperty:SFIDevicePropertyType_HAS_FAN];
     BOOL hasFan = [currentDeviceValue boolValue];
-    NSLog(@"can cool: %d\ncan heat: %d\nhasfan: %d", canCool, canHeat, hasFan);
     //    NSArray *deviceIndexes;
     //temp
     NSMutableArray *newDeviceIndexes = [[NSMutableArray alloc] init];
     for(__strong SFIDeviceIndex *deviceIndex in deviceIndexes){ //strong because, deviceIndex will just be a pointer otherwise
         
         /*****    faster   *****/
-        NSLog(@"start for loop");
         if(canCool == NO && canHeat == NO){
             if(deviceIndex.valueType == SFIDevicePropertyType_NEST_THERMOSTAT_MODE)
                 continue;
@@ -140,7 +137,6 @@
         }
         if(hasFan == NO){
             if(deviceIndex.valueType == SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE){
-                NSLog(@"has no fan");
                 continue;
             }
         }
@@ -158,15 +154,11 @@
     BOOL canHeat = [currentDeviceValue boolValue];
     currentDeviceValue = [deviceValue knownValuesForProperty:SFIDevicePropertyType_HAS_FAN];
     BOOL hasFan = [currentDeviceValue boolValue];
-    NSLog(@"can cool: %d\ncan heat: %d\nhasfan: %d", canCool, canHeat, hasFan);
-    
     
     for(SFIDeviceIndex *deviceIndex in newDeviceIndexes){ //strong because, deviceIndex will just be a pointer otherwise
         SFIDevicePropertyType type = deviceIndex.valueType;
         /*****    faster   *****/
-        NSLog(@"start for loop");
         if(canCool == NO && canHeat == NO){
-            NSLog(@"canCool == NO && canHeat == NO");
             if(type == SFIDevicePropertyType_HUMIDITY){
                 deviceIndex.cellId = 1;
             }
@@ -181,8 +173,6 @@
             }
         }
         else if((canCool == YES && canHeat == NO) || (canCool == NO && canHeat == YES)){
-            NSLog(@"canCool == YES && canHeat == NO) || (canCool == NO && canHeat == YES");
-            NSLog(@"before - deviceindex: %d cellid: %d", deviceIndex.indexID, deviceIndex.cellId);
             if(type == SFIDevicePropertyType_THERMOSTAT_TARGET){
                 deviceIndex.cellId = 2;
             }
@@ -204,13 +194,11 @@
             else if(type == SFIDevicePropertyType_HVAC_STATE){
                 deviceIndex.cellId = 4;
             }
-            NSLog(@"after - deviceindex: %d cellid: %d", deviceIndex.indexID, deviceIndex.cellId);
         }
         //        else if(canCool == NO && canHeat == YES){
         //
         //        }
         if(hasFan == NO){
-            NSLog(@"hasFan == NO");
             if(deviceIndex.valueType == SFIDevicePropertyType_HUMIDITY){
                 deviceIndex.cellId = 1;
             }

@@ -20,7 +20,6 @@
 
 - (void)setSelected:(BOOL)selected{
     [super setSelected:selected];
-    NSLog(@" selected %d %d",selected,self.isTrigger);
     UIColor *color=selected?self.isTrigger? [SFIColors ruleBlueColor]: [SFIColors ruleOrangeColor]:[UIColor blackColor];
     [self setTitleColor:color forState:UIControlStateNormal];
 }

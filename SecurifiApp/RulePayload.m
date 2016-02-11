@@ -25,8 +25,7 @@
     [rulePayload setValue:valid forKey:@"Value"];
     [rulePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
     [rulePayload setValue:@"ValidateRule" forKey:@"CommandType"];
-
-    
+ 
     NSLog(@"rule payload : %@ ",rulePayload);
     return rulePayload;
     
@@ -34,7 +33,6 @@
 
 
 - (NSDictionary*)createRulePayload:(NSInteger)randomMobileInternalIndex with:(BOOL)isInitilized valid:(NSString *)valid{
-    NSLog(@" rulname.alertview %@",self.rule.name);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     if (!plus.almondplusMAC) {
@@ -48,11 +46,8 @@
     [rulePayload setValue:self.rule.name forKey:@"Name"];
     if(!isInitilized){ //check if its in add state
         [rulePayload setValue:@"AddRule" forKey:@"CommandType"];
-        NSLog(@" rule add");
     }
     else{
-        
-        NSLog(@" rul update");
         [rulePayload setValue:@"UpdateRule" forKey:@"CommandType"];
         NSLog(@"rule id edit %@ ",self.rule.ID);
         [rulePayload setValue:self.rule.ID forKey:@"ID"];
@@ -72,10 +67,8 @@
 
 -(NSMutableArray *)createTriggerPayload{
     NSMutableArray * triggersArray = [[NSMutableArray alloc]init];
-    NSLog(@" property device ID %lu ",(unsigned long)self.rule.triggers.count);
     for (SFIButtonSubProperties *dimButtonProperty in self.rule.triggers) {
         NSDictionary *triggerDeviceProperty = [self createTriggerDeviceObject:dimButtonProperty];
-        NSLog(@" property device IDddfdfdffd %@",triggerDeviceProperty);
         if(triggerDeviceProperty!=nil)
          [triggersArray addObject:triggerDeviceProperty];
     }
@@ -84,8 +77,6 @@
 
 -(NSDictionary *)createTriggerDeviceObject:(SFIButtonSubProperties*)property{
     property.eventType=property.eventType==nil?@"":property.eventType;
-    NSLog(@" property device 5 %@",property.eventType);
-    NSLog(@" property device 5 %@",property.matchData);
 
     if([property.eventType isEqualToString:@"AlmondModeUpdated"])
          return @{

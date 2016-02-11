@@ -236,7 +236,6 @@
     }
     
     SFIDevice *const device = self.device;
-    NSLog(@"devicetype: %d", self.device.deviceType);
     switch (device.deviceType) {
         case SFIDeviceType_BinarySwitch_1: {
             [self configureBinaryStateSensor:DT1_BINARY_SWITCH_TRUE imageNameFalse:DT1_BINARY_SWITCH_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.ON", @"ON") statusFalse:NSLocalizedString(@"sensor.status-label.OFF", @"OFF")];
@@ -493,7 +492,6 @@
 }
 
 - (void)configureBuiltInSiren_60{
-    NSLog(@"configureBuiltInSiren_59");
     
     SFIDeviceKnownValues *values = [self tryGetCurrentKnownValuesForDeviceState];
     if (!values) {
@@ -511,9 +509,7 @@
     NSMutableArray *status = [NSMutableArray array];
     NSString *sirenState = @"";
     NSString *strVal = @"";
-    NSLog(@"device value: %@", self.deviceValue);
     SFIDeviceKnownValues *currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_ALARM_STATE];
-    NSLog(@"device known value - alarm: %@", currentDeviceValue.value);
     
     if ([currentDeviceValue boolValue]) {
         sirenState = @"ON";
@@ -522,7 +518,6 @@
     }
     
     currentDeviceValue = [self.deviceValue knownValuesForProperty:SFIDevicePropertyType_TONE_SELECTED];
-    NSLog(@"currnedevice: %@, device known value - tone selected : %@", currentDeviceValue, currentDeviceValue.value);
     switch ([currentDeviceValue intValue]) {
         case 1:
             strVal = @"tone 1";
@@ -539,7 +534,6 @@
     
     [status addObject:[NSString stringWithFormat:@"%@",[sirenState uppercaseString]]];
     [status addObject:[NSString stringWithFormat:@"%@",[strVal uppercaseString]]];
-    NSLog(@"status: %@", status);
     [self setDeviceStatusMessages:status];
     self.statusTextArray = status;
 }
@@ -674,7 +668,6 @@
 }
 
 - (void)configureLevelControl_4 {
-    NSLog(@"configureLevelControl_4");
     //Get Percentage
     SFIDeviceKnownValues *currentLevelKnownValue = [self tryGetCurrentKnownValuesForDeviceMutableState];
     float intLevel = [currentLevelKnownValue floatValue];
@@ -691,7 +684,6 @@
                                                                  nilValue:DEF_COULD_NOT_UPDATE_SENSOR];
         
         image_name = DT4_LEVEL_CONTROL_TRUE;
-        NSLog(@"status str: %@, image_name: %@", status_str, image_name);
     }
   
     else if (values.boolValue == true) {
@@ -710,7 +702,6 @@
         
         image_name = DT4_LEVEL_CONTROL_FALSE;
     }
-    NSLog(@"status str: %@, image_name: %@", status_str, image_name);
     [self setDeviceStatusMessage:status_str];
     self.deviceImageView.image = [UIImage imageNamed:image_name];
 }

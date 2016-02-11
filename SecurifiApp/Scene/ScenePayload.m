@@ -37,7 +37,6 @@
     
     [payloadDict setValue:newSceneInfo forKey:@"Scenes"];
     
-    NSLog(@"scene local update payload: %@", payloadDict);
     return payloadDict;
 }
 

@@ -595,7 +595,6 @@
         case SFIDeviceType_NestThermostat_57:
         case SFIDeviceType_NestSmokeDetector_58:
         case SFIDeviceType_BuiltInSiren_60: {
-            NSLog(@"SFIDeviceType_BuiltInSiren_59");
             UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Scenes_Iphone" bundle:nil];
             SFISensorDetailViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SFISensorDetailViewController"];
             viewController.device = sensor;
@@ -852,7 +851,6 @@
 
 // calls should be coordinated on the main queue
 - (void)setDeviceValues:(NSArray *)values {
-    NSLog(@"setDeviceValues: %@", values);
     NSMutableDictionary *table = [NSMutableDictionary dictionary];
     for (SFIDeviceValue *value in values) {
         NSNumber *key = @(value.deviceID);
@@ -943,7 +941,6 @@
 }
 
 - (void)onDeviceListDidChange:(id)sender {
-    NSLog(@"Sensors: did receive device list change");
     if (!self) {
         return;
     }
@@ -953,7 +950,6 @@
 
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    NSLog(@"sensors - ondevicelistdidchange: %@", data);
     if (data == nil) {
         return;
     }
@@ -994,7 +990,6 @@
             if (newDeviceValueList) {
                 [self setDeviceValues:newDeviceValueList];
             }
-            NSLog(@"ondevicelistdidchange - reload data");
             [self.tableView reloadData];
 
             [self tryInstallRefreshControl];
@@ -1099,7 +1094,6 @@
 }
 
 - (void)onAlmondListDidChange:(id)sender {
-    NSLog(@"Sensors: did receive Almond List change");
 
     if (!self) {
         return;

@@ -49,9 +49,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 
 -(id)init{
     if(self == [super init]){
-        NSLog(@"rules hue init method");
-        
-        
     }
     return self;
 }
@@ -67,7 +64,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     CGSize scrollableSize = CGSizeMake(scrollView.frame.size.width,
                                        500);
     [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
-    NSLog(@"Hue Layout - yScale: %d", yScale);
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                             yScale,
                                                             scrollView.frame.size.width,
@@ -82,7 +78,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
             i++;
             indexValCounter++;
             if(deviceIndex.valueType == SFIDevicePropertyType_SWITCH_BINARY){
-                NSLog(@"Hue switch button");
                 SwitchButton *buttonHue = [[SwitchButton alloc] initWithFrame:CGRectMake(view.frame.origin.x, 0, indexButtonFrameSize, indexButtonFrameSize)];
                 //                buttonHue.backgroundColor = [UIColor blackColor];
                 buttonHue.tag = indexValCounter;
@@ -123,12 +118,8 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
             }
             
             else if(deviceIndex.valueType == SFIDevicePropertyType_COLOR_HUE){
-                NSLog(@"hue lamp color hue");
-                NSLog(@"color hue yscale: %d", yScale);
-                
                 //subview
                 hueColorPickupLabelView = [[labelAndCheckButtonView alloc]initWithFrame:CGRectMake(view.frame.origin.x, 0, view.frame.size.width, hueSubViewSize)];
-                NSLog(@"hue check button label frame: %@",NSStringFromCGRect(hueColorPickupLabelView.frame));
                 [hueColorPickupLabelView setUpValues:@"  Hue" withSelectButtonTitle:@"Select"];
                 [hueColorPickupLabelView.selectButton addTarget:self action:@selector(onHueColorPickerSelectButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                 //picker view
@@ -164,8 +155,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
             }
             
             else if(deviceIndex.valueType == SFIDevicePropertyType_SATURATION){
-                NSLog(@"hue lamp saturation");
-                
                 view.frame = CGRectMake(0,
                                         yScale ,
                                         scrollView.frame.size.width,
@@ -296,10 +285,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 }
 
 - (void) shiftButtonsByWidth:(int)width View:(UIView *)view forIteration:(int)i{
-    NSLog(@"shiftButtonsByWidth");
-    NSLog(@"subview count: %lu, i: %d", (unsigned long)[[view subviews] count], i);
     for (int j = 1; j < i; j++) {
-        NSLog(@"j: %d", j);
         UIView *childView = [view subviews][j-1];
         
         childView.frame = CGRectMake(childView.frame.origin.x -  (width/2),
@@ -330,7 +316,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 
 #pragma mark button click
 -(void) onHueButtonClick:(id)sender{
-    NSLog(@"on hue button click");
     [self.delegate onSwitchButtonClick:sender];
 }
 
@@ -364,7 +349,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 }
 
 - (void)onSliderTapped:(id)sender {
-    NSLog(@"onSliderTapped");
     UIGestureRecognizer *recognizer = sender;
     SFISlider *slider = (SFISlider *) recognizer.view;
     if (slider.highlighted) {
@@ -379,7 +363,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     
     float sensorValue = [slider convertToSensorValue];
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
-    NSLog(@"onslidertapped - newvalue: %@", newValue);
     if(slider.propertyType == SFIDevicePropertyType_BRIGHTNESS){
         brightnessSlider.subProperties.matchData = newValue;
     }else if(slider.propertyType == SFIDevicePropertyType_SATURATION){
@@ -390,7 +373,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 }
 
 - (void)onSliderDidEndSliding:(id)sender {
-    NSLog(@"onSliderDidEndSliding");
     SFISlider *slider = sender;
     float sensorValue = [slider convertToSensorValue];
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
@@ -405,8 +387,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 
 #pragma mark slider clicks
 -(void)onBrightnessCheckButtonClick:(UIButton*)sender{ //This is enable button
-    NSLog(@"brightness slider button clicked");
-    
     sfi_id sliderId = brightnessSlider.subProperties.deviceId;
     int sliderIndex = brightnessSlider.subProperties.index;
     
@@ -428,7 +408,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 }
 
 -(void)onSaturationCheckButtonClick:(UIButton*)sender{ //button check/uncheck
-    NSLog(@"saturation slider clicked");
     sfi_id sliderId = saturationSlider.subProperties.deviceId;
     int sliderIndex = saturationSlider.subProperties.index;
     
@@ -450,8 +429,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 }
 
 -(void)onHueColorPickerSelectButtonClick:(UIButton*)sender{//button click
-    NSLog(@"hue color button clicked");
-    
     sfi_id pickerId = huePickerView.subProperties.deviceId;
     int pickerIndex = huePickerView.subProperties.index;
     
@@ -469,7 +446,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     [hueColorPickupLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
     //    [huePickerView setConvertedValue:0];
     
-    NSLog(@"");
     [self.delegate updateArray];
 }
 
@@ -484,8 +460,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     
     int sensor_value = [hue_picker convertToSensorValue];
     huePickerView.subProperties.matchData = @(sensor_value).stringValue ;
-    NSLog(@"hue value: %f, converted hue value: %d", hue_picker.hue, sensor_value);
-    
     //    [self processColorPropertyValueChange:hue_picker.propertyType newValue:sensor_value];
     //    [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)hue_picker.tag Value:[NSString stringWithFormat:@"%d",sensor_value]];
     

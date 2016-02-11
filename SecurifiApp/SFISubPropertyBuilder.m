@@ -93,18 +93,13 @@ int xVal = 20;
     buttonProperties.positionId=positionId;
     buttonProperties.iconName=icon;
     buttonProperties.displayText=text;
-    NSLog(@"buttonPositionID %@ %d",buttonProperties.matchData,buttonProperties.positionId);
-    
-    
     if (positionId > 0)
         [self drawImage: @"plus_icon" ];
     [self drawButton: buttonProperties isTrigger:isTrigger isDimButton:isDimmbutton bottomText:bottomText];
 }
 
 + (BOOL)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId deviceIndexes:(NSArray *)deviceIndexes isTrigger:(BOOL)isTrigger{
-    NSLog(@" buttonproperty matchdata %@",buttonProperties.matchData);
     for(SFIDeviceIndex *deviceIndex in deviceIndexes){
-        NSLog(@" buttonproperty deviceIndex %d buttonProperties.index %d",deviceIndex.indexID,buttonProperties.index );
         if (deviceIndex.indexID == buttonProperties.index) {
             if([buttonProperties.matchData isEqualToString:@"toggle"])
             {
@@ -114,9 +109,7 @@ int xVal = 20;
             NSArray *indexValues = deviceIndex.indexValues;
             for(IndexValueSupport *iVal in indexValues){
                 BOOL isDimButton=iVal.layoutType!=nil && ([iVal.layoutType isEqualToString:@"dimButton"] || [iVal.layoutType isEqualToString:@"textButton"]);
-                NSLog(@" isDimbutton %d",isDimButton);
                 if([self compareEntry:isDimButton matchData:iVal.matchData eventType:iVal.eventType buttonProperties:buttonProperties]){
-                    NSLog(@" ival.iconname %@",iVal.iconName);
                     NSString *bottomText;
                     
                     if(isDimButton){
@@ -127,7 +120,6 @@ int xVal = 20;
                         }
                     else
                         bottomText = [iVal getDisplayText:buttonProperties.matchData];
-                    NSLog(@" ival display text ::%@",iVal.displayText);
                     [self setIconAndText:positionId buttonProperties:buttonProperties icon:iVal.iconName text:bottomText isTrigger:isTrigger isDimButton:isDimButton bottomText:iVal.displayText];
                     
                     return true;
@@ -140,11 +132,9 @@ int xVal = 20;
 }
 
 + (BOOL) compareEntry:(BOOL)isSlider matchData:(NSString *)matchData eventType:(NSString *)eventType buttonProperties:(SFIButtonSubProperties *)buttonProperties{
-    NSLog(@" matchdata :%@ , eventType :%@, ival.match data: %@ ,ival,.eventType %@  , isSlider %d",buttonProperties.matchData,buttonProperties.eventType ,matchData,eventType,isSlider);
     bool compareValue= isSlider || [matchData isEqualToString:buttonProperties.matchData];
     bool compareEvents=[eventType isEqualToString:buttonProperties.eventType];
     bool isWifiClient=![buttonProperties.eventType isEqualToString:@"AlmondModeUpdated"];
-    NSLog(@" button subproperties match data %@",buttonProperties.matchData);
     return (buttonProperties.eventType==nil && compareValue) ||(compareValue &&
                                                                 compareEvents) || (isWifiClient && compareEvents) ;
 }
@@ -153,15 +143,12 @@ int xVal = 20;
     for (SFIButtonSubProperties *buttonProperties in entries) {
         if(buttonProperties.time != nil && buttonProperties.time.segmentType!=0){
             [self buildTime:buttonProperties isTrigger:isTrigger positionId:positionId];
-            NSLog(@"positionId :- %d",positionId);
             positionId++;
             
         }else{
-            NSLog(@"buttn type %d %@",buttonProperties.deviceType,buttonProperties.deviceName);
             NSArray *deviceIndexes=[self getDeviceIndexes:buttonProperties];
             if(deviceIndexes==nil || deviceIndexes.count<=0)
                 continue;
-            NSLog(@"potionID trigger :%@",buttonProperties.deviceName);
             if([self buildEntry:buttonProperties positionId:positionId deviceIndexes:deviceIndexes isTrigger:isTrigger])
                 positionId++;
         }
@@ -170,30 +157,22 @@ int xVal = 20;
 }
 
 + (void)buildTime:(SFIButtonSubProperties *)timesubProperties isTrigger:(BOOL)isTrigger positionId:(int)positionId{
-    NSLog(@"drawTime");
     if(positionId > 0)
         [self drawImage:@"plus_icon"];
     DimmerButton *dimbutton=[[DimmerButton alloc]initWithFrame:CGRectMake(xVal, 5, triggerActionDimWidth, triggerActionDimHeight + 10)];
-    NSLog(@"position Id :%d",positionId);
-    
-    
-    
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"hh:mm aa"];
     int segmentType=timesubProperties.time.segmentType;
     if(segmentType==1){
-        NSLog(@"timesubProperties.time.dayOfWeek %@,%lu",timesubProperties.time.dayOfWeek,(unsigned long)timesubProperties.time.dayOfWeek.count);
         [dimbutton setupValues:[dateFormat stringFromDate:timesubProperties.time.dateFrom] Title:@"Time" displayText:[self getDays:timesubProperties.time.dayOfWeek] suffix:@""];
         
     }
     else{
         NSString *time = [NSString stringWithFormat:@"%@\n%@", [dateFormat stringFromDate:timesubProperties.time.dateFrom], [dateFormat stringFromDate:timesubProperties.time.dateTo]];
-        NSLog(@"time interval: %@", time);
         [dimbutton setupValues:time Title:@"Time Interval" displayText:[self getDays:timesubProperties.time.dayOfWeek] suffix:@""];
     }
     dimbutton.subProperties = timesubProperties;
     dimbutton.subProperties.positionId = positionId;
-    NSLog(@"dimbutton.subProperties.positionId  %d :%d",dimbutton.subProperties.positionId,positionId);
     [dimbutton setButtonCross:isCrossHidden];
     dimbutton.userInteractionEnabled = disableUserInteraction;
     
@@ -275,11 +254,9 @@ int xVal = 20;
     }
     if(switchButton.isTrigger){
         [parentController.rule.triggers removeObjectAtIndex:switchButton.subProperties.positionId];
-        NSLog(@"par.count %d :%@ :%@:%d:,eventType:%@",switchButton.subProperties.positionId,switchButton.subProperties.matchData,switchButton.subProperties.deviceName,switchButton.deviceType,switchButton.subProperties.eventType);
     }
     else{
         [parentController.rule.actions removeObjectAtIndex:switchButton.subProperties.positionId];
-        NSLog(@"par.count %lu ",(unsigned long)parentController.rule.triggers.count);
     }
     [parentController redrawDeviceIndexView:switchButton.subProperties.deviceId clientEvent:switchButton.subProperties.eventType];
 }
@@ -290,14 +267,12 @@ int xVal = 20;
         [delayPicker removeDelayView];
         parentController.deviceIndexButtonScrollView.userInteractionEnabled = YES;
     }
-    NSLog(@"dimbutton posId %d",dimmerButton.subProperties.positionId);
     [parentController.rule.triggers removeObjectAtIndex:dimmerButton.subProperties.positionId];
     [parentController redrawDeviceIndexView:dimmerButton.subProperties.deviceId clientEvent:@""];
     
 }
 
 + (void)onActionDelayClicked:(id)sender{
-    NSLog(@"onactiondelay clicked");
     UIButton *delayButton = sender;
     [delayPicker addPickerForButton:delayButton parentController:parentController];
 }
@@ -312,8 +287,6 @@ int xVal = 20;
 };
 
 +(void)getDeviceTypeFor:(SFIButtonSubProperties*)buttonSubProperty{
-    
-    NSLog(@" eventType :- %@ index :%d device id --: %d %@",buttonSubProperty.eventType,buttonSubProperty.index,buttonSubProperty.deviceId,buttonSubProperty.type);
     buttonSubProperty.deviceType = SFIDeviceType_UnknownDevice_0;
     if([buttonSubProperty.type isEqualToString:@"NetworkResult"]){
         buttonSubProperty.deviceType = SFIDeviceType_REBOOT_ALMOND;
@@ -337,12 +310,9 @@ int xVal = 20;
             }
         }
     }
-    NSLog(@" id :%d,name :%@ ",buttonSubProperty.deviceId,buttonSubProperty.deviceName);
 }
 
 + (void)drawImage:(NSString *)iconName {
-    NSLog(@"arrow button");
-    
     SwitchButton *imageButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal,5, triggerActionBtnWidth, triggerActionBtnHeight)];//todo
     [imageButton setupValues:[UIImage imageNamed:iconName] topText:@"" bottomText:@"" isTrigger:YES isDimButton:NO insideText:@""];
     //image.image = [UIImage imageNamed:iconName];

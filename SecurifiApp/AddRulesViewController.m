@@ -96,13 +96,9 @@ UITextField *textField;
 }
 
 -(void)onRuleCommandResponse:(id)sender{ //for add, update
-    NSLog(@"onRuleCommandResponse - add,update");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-    
     NSDictionary * mainDict = [data valueForKey:@"data"];
-    
-    NSLog(@"%@",mainDict);
     if (randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
         return;
     }
@@ -131,7 +127,6 @@ UITextField *textField;
         return;
     }
     NSDictionary *mainDict = [data valueForKey:@"data"];
-    NSLog(@"dynamaic added : %@",mainDict);
     self.rule.ID = [mainDict valueForKey:@"ruleid"];
     return;
     
@@ -298,7 +293,6 @@ UITextField *textField;
 }
 
 -(void) callRulesView{
-    NSLog(@"callRulesView");
     [SFISubPropertyBuilder createEntriesView:self.triggersActionsScrollView triggers:self.rule.triggers actions:self.rule.actions isCrossButtonHidden:NO parentController:self isRuleActive:YES];
     
 }
@@ -330,17 +324,13 @@ UITextField *textField;
     [self callRulesView]; //top view
     
     RulesDeviceNameButton *deviceButton = [self getSelectedButton:deviceId eventType:eventType];
-    NSLog(@" device button name %@",deviceButton.deviceName);
     if([deviceButton.deviceName isEqualToString:@"Clients"]){//for client redraw
-        NSLog(@"redraw client list");
         [self.triggerAction wifiClientsClicked:deviceButton];
         return;
     }
     
-    NSLog(@"button id: %d, deviceId: %d", deviceButton.deviceId, deviceId);
     if(deviceButton.deviceId != deviceId)
         return;
-    NSLog(@"device .device name %@",deviceButton.deviceName);
     
     if(deviceButton.isTrigger){
         if(deviceId == 0){ //time mode clients
@@ -367,13 +357,8 @@ UITextField *textField;
 
 -(void)btnSaveTap:(id)sender{
     textField = [[UITextField alloc]init];
-    NSLog(@"rule trigr count %lu",(unsigned long)self.rule.triggers.count);
-    NSLog(@"rule action count %lu",(unsigned long)self.rule.actions.count);
-    
     if(self.isInitialized){
         textField.text = self.rule.name;
-        NSLog(@"rule trigr count %lu",(unsigned long)self.rule.triggers.count);
-        NSLog(@"rule action count %lu",(unsigned long)self.rule.actions.count);
     }
     if(self.rule.triggers.count > 0 && self.rule.actions.count > 0){
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Rule Name"
@@ -388,8 +373,6 @@ UITextField *textField;
         [textField setBackgroundColor:[UIColor whiteColor]];
         if(self.isInitialized){
             textField.text = self.rule.name;
-            NSLog(@"rule name edit %@",self.rule.name);
-            NSLog(@"rule name edit %@",textField.text);
         }
         
         dispatch_async(dispatch_get_main_queue(), ^() {
@@ -414,17 +397,11 @@ UITextField *textField;
         //cancel clicked ...do your action
     }else{
         self.rule.name = textField.text;
-        NSLog(@" rule name %@",self.rule.name);
         [self sendRuleCommand];
     }
 }
 
 -(void)sendRuleCommand{
-    NSLog(@"btn save tap");
-    //delegate to tableViewController
-    
-    NSLog(@" rules total trigger %ld",(unsigned long)self.rule.triggers);
-    NSLog(@" rules total actions %ld",(unsigned long)self.rule.triggers);
     RulePayload *rulePayload = [RulePayload new];
     rulePayload.rule = self.rule;
     
@@ -454,7 +431,6 @@ UITextField *textField;
 }
 
 -(void)btnCancelTap:(id)sender{
-    NSLog(@"btn cancel tap");
     self.rule = nil;
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -462,7 +438,6 @@ UITextField *textField;
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
-    NSLog(@" my almond mac %@ %@",plus.almondplusMAC,plus.almondplusName);
     [[SecurifiToolkit sharedInstance] asyncSendToLocal:cloudCommand almondMac:plus.almondplusMAC];
 }
 

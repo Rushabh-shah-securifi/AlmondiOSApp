@@ -114,10 +114,8 @@ int segmentType;
 
 
 -(void)addPreciselyDatePicker{
-    NSLog(@"addPreciselyDatePicker");
     preciselyDatePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 0, datePickerWidth, datePickerHeight)];
     [self setFrame:preciselyDatePicker];
-        NSLog(@"precisely datepicker width, height: (%f, %f)", preciselyDatePicker.frame.size.width, preciselyDatePicker.frame.size.height);
 //    preciselyDatePicker.backgroundColor = [UIColor yellowColor];
     [self setupDatePicker:preciselyDatePicker];
     preciselyDatePicker.center = CGPointMake(CGRectGetMidX(self.segmentDetailView.bounds), preciselyDatePicker.center.y);
@@ -156,7 +154,6 @@ int segmentType;
     self.ruleTime.dayOfWeek =  self.ruleTime.dayOfWeek; //@([comp weekday]-1).stringValue; // 0 - 6
     self.ruleTime.monthOfYear = @([comp month]).stringValue; // 1 - 12
     self.ruleTime.isPresent = YES;
-    NSLog(@"dayofweeek: %@ - hours: %ld - mins: %ld", self.ruleTime.dayOfWeek, (long)self.ruleTime.hours, (long)self.ruleTime.mins);
 }
 
 
@@ -194,13 +191,11 @@ int segmentType;
 - (void)onBetweenDatePickerValueChanged:(id)sender{
     NSDate *timeFrom = DatePickerFrom.date;
     NSDate *timeto = DatePickerTo.date;
-    NSLog(@"timeto: %@", timeto);
 
     self.ruleTime.dateFrom = [timeFrom dateByAddingTimeInterval:0];
     self.ruleTime.dateTo = [timeto dateByAddingTimeInterval:0];
     
     self.ruleTime.range=[self caluculateRange:timeFrom toDate:timeto];
-    NSLog(@"range: %ld", (long)self.ruleTime.range);
     self.ruleTime.segmentType = Between2;
     [self storeTimeParams:timeFrom];
     [self setLableText];
@@ -281,14 +276,12 @@ int segmentType;
     NSMutableArray *earlierSelection = self.ruleTime.dayOfWeek;
     dayButton.selected = !dayButton.selected;
     dayButton.backgroundColor = dayButton.selected?[SFIColors ruleBlueColor]:[SFIColors ruleGraycolor];
-    NSLog(@"ruletimebefore: %@", self.ruleTime.dayOfWeek);
     if(dayButton.selected){
         [earlierSelection addObject:@(dayButton.tag).stringValue];
     }
     else{
         [earlierSelection removeObject:@(dayButton.tag).stringValue];
     }
-    NSLog(@"ruletimeafter: %@", self.ruleTime.dayOfWeek);
     [self.delegate AddOrUpdateTime];
     [self setLableText];
 }
@@ -334,7 +327,6 @@ int segmentType;
 
 
 -(void)setTime{ //on edit or revisit
-    NSLog(@"setTime %d",self.ruleTime.hours);
     NSDate *date = [NSDate date];
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
     NSDateComponents *components = [gregorian components: NSUIntegerMax fromDate: date];
