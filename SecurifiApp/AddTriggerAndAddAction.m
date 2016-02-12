@@ -552,12 +552,11 @@ DimmerButton *dimerButton;
         }
     }
 }
-
-- (void)removeTriggerIndex:(int)buttonIndex buttonId:(sfi_id)buttonId {
+- (void)removeTriggerIndex:(int)buttonIndex buttonId:(sfi_id)buttonId deviceType:(unsigned int)deviceType {
     NSMutableArray *toBeDeletedSubProperties = [[NSMutableArray alloc] init];
     
     for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArrayTrigger){
-        if((switchButtonProperty.deviceId == buttonId) && (switchButtonProperty.index == buttonIndex)){
+        if(((switchButtonProperty.deviceType == deviceType) && switchButtonProperty.deviceId == buttonId) && (switchButtonProperty.index == buttonIndex)){
             [toBeDeletedSubProperties addObject:switchButtonProperty];
         }
     }
@@ -598,7 +597,7 @@ DimmerButton *dimerButton;
         [self.delegate updateTriggerAndActionDelegatePropertie:!self.isTrigger];
     }else{
         [self toggleTriggerIndex:buttonIndex superView:[sender superview] indexButton:indexSwitchButton];
-        [self removeTriggerIndex:buttonIndex buttonId:buttonId];
+        [self removeTriggerIndex:buttonIndex buttonId:buttonId deviceType:indexSwitchButton.subProperties.deviceType];
         if (indexSwitchButton.selected)
             [self.selectedButtonsPropertiesArrayTrigger addObject:indexSwitchButton.subProperties];
         [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
@@ -714,7 +713,7 @@ DimmerButton *dimerButton;
             }
             else{
                 dimmer.selected=NO;
-                [self removeTriggerIndex: dimmer.subProperties.index buttonId:dimmer.subProperties.deviceId];
+                [self removeTriggerIndex: dimmer.subProperties.index buttonId:dimmer.subProperties.deviceId deviceType:dimmer.subProperties.deviceType];
                 [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
             }
             

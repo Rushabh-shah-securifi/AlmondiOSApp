@@ -299,6 +299,7 @@ UITextField *textField;
 
 #pragma mark rules view delegate
 -(RulesDeviceNameButton*)getSelectedButton:(int)deviceId eventType:(NSString*)eventType{
+   
     UIScrollView *scrollView = self.deviceListScrollView;
     for(RulesDeviceNameButton *button in [scrollView subviews]){
         if([button isKindOfClass:[UIImageView class]]){ //to handle mysterious error
@@ -307,8 +308,7 @@ UITextField *textField;
         else if(button.deviceId == deviceId && button.selected){
             return button;
         }
-        else if ([eventType isEqualToString:@"ClientLeft"] || [eventType isEqualToString:@"ClientJoined"]){
-            button.deviceName = @"Clients";
+        else if (button.deviceType == SFIDeviceType_WIFIClient && button.selected){
             return button;
         }
     }
@@ -324,7 +324,7 @@ UITextField *textField;
     [self callRulesView]; //top view
     
     RulesDeviceNameButton *deviceButton = [self getSelectedButton:deviceId eventType:eventType];
-    if([deviceButton.deviceName isEqualToString:@"Clients"]){//for client redraw
+    if(deviceButton.deviceType == SFIDeviceType_WIFIClient && deviceButton.isTrigger){// wifi clients
         [self.triggerAction wifiClientsClicked:deviceButton];
         return;
     }
