@@ -19,7 +19,7 @@
             IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
             s1.matchData = @"reboot";
             s1.iconName = DT1_BINARY_SWITCH_FALSE;
-            s1.displayText=@"reboot Almond";
+            s1.displayText=@"REBOOT ALMOND";
             s1.notificationText = @"";
             s1.eventType = @"AlmondModeUpdated";
             return @[s1];
@@ -45,14 +45,14 @@
             IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
             s1.matchData = @"";
             s1.iconName = @"device-joining";
-            s1.displayText=@"JOIN";
+            s1.displayText=@"ACTIVE";
             s1.notificationText = @"";
             s1.eventType = @"ClientJoined";
             
             IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
             s2.matchData = @"";
             s2.iconName = @"device-leaving";
-            s2.displayText=@"LEAVE";
+            s2.displayText=@"INACTIVE";
             s2.notificationText = @"";
             s2.eventType = @"ClientLeft";
             
