@@ -57,7 +57,7 @@ CGPoint tablePoint;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     if (self.currentAlmond == nil) {
-        [self markTitle: NSLocalizedString(@"rules.title.Get Started", @"Get Started")];
+        [self markTitle: @"Get Started"];
         [self markAlmondMac:NO_ALMOND];
     }
     else {

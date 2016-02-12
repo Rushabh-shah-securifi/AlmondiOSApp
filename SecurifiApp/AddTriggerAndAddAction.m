@@ -143,7 +143,7 @@ DimmerButton *dimerButton;
         xVal = [self addDeviceName:device.deviceName deviceID:device.deviceID deviceType:device.deviceType xVal:xVal];
     }
     if(!self.isTrigger){//add almond Reboot
-        xVal = [self addDeviceName:@"reboot Almond" deviceID:1 deviceType:SFIDeviceType_REBOOT_ALMOND xVal:xVal];
+        xVal = [self addDeviceName:@"REBOOT ALMOND" deviceID:1 deviceType:SFIDeviceType_REBOOT_ALMOND xVal:xVal];
     }
     self.parentViewController.deviceListScrollView.contentSize = CGSizeMake(xVal +10,self.parentViewController.deviceListScrollView.contentSize.height);
     [self.parentViewController.deviceIndexButtonScrollView flashScrollIndicators];
