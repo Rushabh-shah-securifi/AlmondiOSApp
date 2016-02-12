@@ -3438,6 +3438,7 @@
             deviceIndex1.indexID = 1;
             deviceIndex1.cellId = 1;
             deviceIndex1.isEditableIndex = YES;
+            deviceIndex1.isToggle=YES;
             return @[deviceIndex1];
         }
             
@@ -3462,6 +3463,7 @@
             deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY];
             deviceIndex1.indexID = 2;
             deviceIndex1.cellId =1;
+            deviceIndex1.isToggle=YES;
             deviceIndex1.isEditableIndex =YES;
             
             SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
@@ -3478,6 +3480,7 @@
             deviceIndex1.indexValues = [self resolve:device index:SFIDevicePropertyType_LOCK_STATE];
             deviceIndex1.indexID = 1;
             deviceIndex1.cellId =1;
+            deviceIndex1.isToggle=YES;
             deviceIndex1.isEditableIndex = YES;
             
             SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_BATTERY];
@@ -3708,6 +3711,7 @@
             deviceIndex1.indexID = 1;
             deviceIndex1.cellId = 1;
             deviceIndex1.isEditableIndex = YES;
+            deviceIndex1.isToggle=YES;
             return @[deviceIndex1];
         }
             
@@ -3787,6 +3791,7 @@
             deviceIndex1.indexID = 1;
             deviceIndex1.cellId =1;
             deviceIndex1.isEditableIndex = YES;
+            deviceIndex1.isToggle=YES;
             
             return @[deviceIndex1];
         }
@@ -3937,6 +3942,7 @@
             deviceIndex1.indexID = 1;
             deviceIndex1.cellId = 1;
             deviceIndex1.isEditableIndex = YES;
+            deviceIndex1.isToggle=YES;
             
             SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_BATTERY];
             deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_BATTERY];
@@ -3953,6 +3959,7 @@
             deviceIndex1.indexID = 1;
             deviceIndex1.cellId = 1;
             deviceIndex1.isEditableIndex = YES;
+            deviceIndex1.isToggle=YES;
             return @[deviceIndex1];
         }
             
@@ -3962,6 +3969,7 @@
             deviceIndex1.indexID = 1;
             deviceIndex1.cellId = 1;
             deviceIndex1.isEditableIndex = YES;
+            deviceIndex1.isToggle=YES;
             
             SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_POWER];
             deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_POWER];
@@ -3997,6 +4005,7 @@
             deviceIndex1.indexID = 2;
             deviceIndex1.cellId = 1;
             deviceIndex1.isEditableIndex = YES;
+            deviceIndex1.isToggle=YES;
             
             SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_COLOR_HUE];
             deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_COLOR_HUE];
@@ -4055,6 +4064,7 @@
             deviceIndex1.indexID = 1;
             deviceIndex1.cellId = 1;
             deviceIndex1.isEditableIndex = YES;
+            deviceIndex1.isToggle=YES;
             return @[deviceIndex1];
         }
             
@@ -4095,12 +4105,14 @@
             deviceIndex1.indexID = 1;
             deviceIndex1.cellId = 1;
             deviceIndex1.isEditableIndex=YES;
+            deviceIndex1.isToggle=YES;
             
             SFIDeviceIndex *deviceIndex2 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_BINARY2];
             deviceIndex2.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_BINARY2];
             deviceIndex2.indexID = 2;
             deviceIndex2.cellId = 2;
             deviceIndex2.isEditableIndex=YES;
+            deviceIndex2.isToggle=YES;
             
             return @[deviceIndex1,deviceIndex2];
         }

@@ -270,9 +270,6 @@ CGPoint tablePoint;
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"scene.alert-title.Oops", @"Oops") message:NSLocalizedString(@"scene.alert-msg.Sorry, There was some problem with this request, try later!", @"Sorry, There was some problem with this request, try later!")
                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
         [alert show];
-    }else{
-        //self.originalSceneInfo = [self.sceneInfo copy];
-        //to do copy rules array and reload here
     }
 }
 

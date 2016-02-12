@@ -18,4 +18,5 @@
 @property(nonatomic) NSArray *indexValues;
 @property(nonatomic) int indexID;
 @property(nonatomic) BOOL isEditableIndex;
+@property(nonatomic) BOOL isToggle;
 @end

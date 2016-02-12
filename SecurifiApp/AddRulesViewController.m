@@ -86,8 +86,8 @@ UITextField *textField;
 -(void)initializeNotifications{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     //add, update, remove etc.
-    [center addObserver:self selector:@selector(onDynamicRuleAdded:) name:DYNAMIC_RULE_LISTCHANGED object:nil];
     [center addObserver:self selector:@selector(onRuleCommandResponse:) name:RULE_COMMAND_RESPONSE_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onRuleCommandResponse:) name:MOBILE_COMMAND_NOTIFIER object:nil];
 }
 
 -(void)getWificlientsList{

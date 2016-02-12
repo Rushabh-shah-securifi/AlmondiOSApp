@@ -199,8 +199,8 @@ DimmerButton *dimerButton;
     NSMutableArray *deviceIndexes=[NSMutableArray arrayWithArray:[Index getIndexesFor:sender.deviceType]];//need
     
     if (!self.isTrigger &&[self istoggle:sender.deviceType]) {
-        SFIDeviceIndex *temp = [self getToggelDeviceIndex];
-        [deviceIndexes addObject : temp];
+        NSArray *toggleIndexes = [self getToggelDeviceIndex:deviceIndexes];
+        [deviceIndexes addObjectsFromArray: toggleIndexes];
     }
     [self createDeviceIndexesLayoutForDeviceId:sender.deviceId deviceType:sender.deviceType deviceName:sender.deviceName deviceIndexes:deviceIndexes];
 }
@@ -505,21 +505,25 @@ DimmerButton *dimerButton;
     }
     return numberOfCells;
 }
--(SFIDeviceIndex *)getToggelDeviceIndex{
+-(NSMutableArray *)getToggelDeviceIndex:(NSArray *)deviceIndexes{
     IndexValueSupport *indexValue =[[IndexValueSupport alloc]init];
     indexValue.displayText = @"TOGGLE";
     indexValue.iconName = @"toggle_icon.png";
     indexValue.matchData = @"toggle";
     NSArray *indexvaluearray = [[NSArray alloc]initWithObjects:indexValue, nil];
+    NSMutableArray *toggleIndexes = [[NSMutableArray alloc]init];
     
-    
-    SFIDeviceIndex *deviceIndex = [[SFIDeviceIndex alloc]init];
-    deviceIndex.cellId = 1;
-    deviceIndex.indexID = 1;
-    //    deviceIndex.valueType = SFIDevicePropertyType_SWITCH_BINARY;
-    deviceIndex.indexValues = indexvaluearray;
-    deviceIndex.isEditableIndex = YES;
-    return deviceIndex;
+    for(SFIDeviceIndex *index in deviceIndexes){
+        if(index.isToggle){
+            SFIDeviceIndex *deviceIndex= [SFIDeviceIndex new];
+            deviceIndex.cellId = index.cellId;
+            deviceIndex.indexID = index.indexID;
+            deviceIndex.indexValues = indexvaluearray;
+            deviceIndex.isEditableIndex = YES;
+            [toggleIndexes addObject:deviceIndex];
+        }
+    }
+    return toggleIndexes;
 }
 
 -(SFIButtonSubProperties*) addSubPropertiesFordeviceID:(sfi_id)deviceID index:(int)index matchData:(NSString*)matchData andEventType:(NSString *)eventType deviceName:(NSString*)deviceName deviceType:(SFIDeviceType)deviceType{ //overLoaded
@@ -670,7 +674,6 @@ DimmerButton *dimerButton;
     }];
 }
 -(void)removePicker:(DimmerButton* )dimmer{
-    
     dimmer.pickerVisibility=NO;
     [self removePickerFromView];
     //Store Values

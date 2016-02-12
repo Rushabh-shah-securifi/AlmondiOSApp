@@ -128,7 +128,7 @@
 
 - (void)setNewValue:(NSString*)text{
     self.dimValue = text;
-    NSLog(@" text prefix %@ ,%@",self.prefix,text);
+    self.prefix= (self.prefix ==nil || self.prefix.length==0) ?@"":self.prefix;
     NSString *strTopTitleLabelText = [text stringByAppendingString:self.prefix];
     
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
