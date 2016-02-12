@@ -16,6 +16,7 @@
 #import "SFISubPropertyBuilder.h"
 #import "MBProgressHUD.h"
 #import "RulePayload.h"
+#import "Colours.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
@@ -37,9 +38,7 @@ CGPoint tablePoint;
     [self initializeNotifications];
     [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
-    
-    
-    
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -187,6 +186,25 @@ CGPoint tablePoint;
     [cell.scrollView setContentOffset:CGPointMake(0,0) animated:YES];
     return cell;
 }
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, tableView.frame.size.width-20, 25)];
+    lbl.alpha = 0.95;
+    lbl.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:15.0f];
+    lbl.textColor = [UIColor colorFromHexString:@"8f8f8f"];
+    lbl.textAlignment = NSTextAlignmentCenter;
+    lbl.backgroundColor = [UIColor colorFromHexString:@"EEEEEE"];
+    lbl.numberOfLines = 0;
+//    lbl.text = @"Triggers -> Actions";
+    return lbl;
+    
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 25;
+}
+
 
 #pragma mark button taps
 - (void)btnAddNewRuleTap:(id)sender {

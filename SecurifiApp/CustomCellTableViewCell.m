@@ -19,10 +19,24 @@
 
 - (void)awakeFromNib {
     // Initialization code
-    self.activeDeactiveSwitch.transform = CGAffineTransformMakeScale(0.75, 0.75);
-    self.DeleteButton.imageEdgeInsets = UIEdgeInsetsMake(0,13,0,13);
-    self.editButton.imageEdgeInsets = UIEdgeInsetsMake(0,13,0,10);
+    self.activeDeactiveSwitch.transform = CGAffineTransformMakeScale(0.75, 0.75);   
+}
+
+-(void)setSwitchFrame{
+//    (a)Scale and then translate?
+//    Something like :
     
+//    CGAffineTransform t = CGAffineTransformMakeScale(2, 2);
+//    t = CGAffineTransformTranslate(t, width/2, height/2);
+//    self.transform = t;
+////    (b)Set the anchor point (which is probably what you want really)
+//    
+//    [self layer].anchorPoint = CGPointMake(0.0f, 0.0f);
+//    self.transform = CGAffineTransformMakeScale(2, 2);
+////    (c)Set the center again to make sure it's in the same place?
+//    CGPoint center = self.center;
+//    self.transform = CGAffineTransformMakeScale(2, 2);
+//    self.center = center;
 }
 
 - (IBAction)onEditButtonClick:(id)sender {
