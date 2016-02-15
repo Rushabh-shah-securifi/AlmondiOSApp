@@ -191,9 +191,8 @@ CGPoint tablePoint;
     UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, tableView.frame.size.width-20, 25)];
     lbl.alpha = 0.95;
     lbl.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:15.0f];
-    lbl.textColor = [UIColor colorFromHexString:@"8f8f8f"];
     lbl.textAlignment = NSTextAlignmentCenter;
-    lbl.backgroundColor = [UIColor colorFromHexString:@"EEEEEE"];
+    lbl.backgroundColor = [UIColor whiteColor];
     lbl.numberOfLines = 0;
 //    lbl.text = @"Triggers -> Actions";
     return lbl;
@@ -202,7 +201,7 @@ CGPoint tablePoint;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 25;
+    return 12;
 }
 
 

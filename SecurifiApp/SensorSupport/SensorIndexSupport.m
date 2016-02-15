@@ -136,7 +136,7 @@
                 s2.displayText=@"DIM";
                 s2.layoutType=@"dimButton";
                 s2.minValue = 0;
-                s2.maxValue = 255;
+                s2.maxValue = 100;
                 s2.notificationText = @"";
                 s2.valueFormatter.action = ValueFormatterAction_formatString;
                 s2.valueFormatter.notificationPrefix = NSLocalizedString(@" is dimmed to", @" is dimmed to ");
