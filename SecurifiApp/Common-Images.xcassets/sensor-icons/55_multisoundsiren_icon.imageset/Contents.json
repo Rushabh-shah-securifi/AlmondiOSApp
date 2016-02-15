@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "rule_tab_icon.png",
+      "filename" : "55_multisoundsiren_icon.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "rule_tab_icon@2x.png",
+      "filename" : "55_multisoundsiren_icon@2x-1.png",
       "scale" : "2x"
     },
     {

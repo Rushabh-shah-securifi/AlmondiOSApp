@@ -209,7 +209,7 @@ typedef NS_ENUM(int, TabBarMode) {
     if (!_rulesTab) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         RulesTableViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"RulesTableViewController"];
-        UIImage *icon = [UIImage imageNamed:@"rule_tab_icon"];
+        UIImage *icon = [UIImage imageNamed:@"icon_rules"];
         
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_RULES image:icon selectedImage:icon];

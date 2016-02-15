@@ -229,7 +229,7 @@ int segmentType;
 -(void)addDayView{
     int xVal = 4;
     int spacing = 8;
-    double dayButtonWidth = 30;
+    double dayButtonWidth = 35;
     UIView *dayView = [[UIView alloc]initWithFrame:CGRectMake(0, datePickerHeight, (dayButtonWidth+spacing)*7, dayViewHeight)];
     int tag = 0;
     NSArray* dayArray = [[NSArray alloc]initWithObjects:@"Su",@"Mo",@"Tu",@"We",@"Th",@"Fr",@"Sa", nil];
@@ -238,6 +238,7 @@ int segmentType;
         dayButton.center = CGPointMake(dayButton.center.x, dayView.bounds.size.height/2);
         [self setDayButtonProperties:dayButton withRadius:dayButtonWidth];
         [dayButton setTitle:day forState:UIControlStateNormal];
+        dayButton.titleLabel.font = [UIFont systemFontOfSize:12];
         dayButton.tag = tag;
         [dayButton addTarget:self action:@selector(onDayBtnClicked:) forControlEvents:UIControlEventTouchUpInside];
         [dayView addSubview:dayButton];

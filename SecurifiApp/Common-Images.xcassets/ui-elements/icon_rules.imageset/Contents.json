@@ -2,13 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "55_multisoundsiren_icon.png"
+      "filename" : "icon_rules.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "55_multisoundsiren_icon@2x-1.png"
+      "filename" : "icon_ruels@2x.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
