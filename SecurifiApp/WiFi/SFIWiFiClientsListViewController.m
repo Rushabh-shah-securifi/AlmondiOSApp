@@ -136,6 +136,8 @@
     if (!cell){
         cell = [[SFIWiFiClientListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    if(self.connectedDevices.count <=indexPath.section)
+        return cell;
     cell.delegate = self;
     [cell createClientCell:self.connectedDevices[indexPath.section]];
     cell.expandable = YES;

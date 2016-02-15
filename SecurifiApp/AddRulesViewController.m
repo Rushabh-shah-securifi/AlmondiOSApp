@@ -301,9 +301,7 @@ UILabel *topLabel;
     else if (self.rule.actions.count > 0){
         self.informationLabel.text = @"Add another action or press SAVE to finalize the rule";
     }
-    if(self.rule.actions.count > 0 && self.rule.triggers.count == 0){
-        self.informationLabel.text = @"First ,select trigger";
-    }
+    
 }
 
 -(void) callRulesView{

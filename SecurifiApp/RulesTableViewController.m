@@ -349,7 +349,7 @@ CGPoint tablePoint;
     
     if(payload!=nil){
         GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-        cloudCommand.commandType = CommandType_VALIDATE_REQUEST;
+        cloudCommand.commandType = CommandType_UPDATE_REQUEST;
         cloudCommand.command = [payload JSONString];
         [self asyncSendCommand:cloudCommand];
     }
