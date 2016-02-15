@@ -140,7 +140,7 @@ UITextField *textField;
     
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName : UIColorFromRGB(0x02a8f3),
                                                                                                        NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Roman" size:17.5f]} forState:UIControlStateNormal];
-    self.title = @"Rules Builder";
+    self.title = self.isInitialized? [NSString stringWithFormat:@"Edit Rule - %@", self.rule.name]: @"New Rule";
 }
 
 
