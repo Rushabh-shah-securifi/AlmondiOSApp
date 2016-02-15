@@ -7,7 +7,7 @@
 //
 
 #import "CustomCellTableViewCell.h"
-@interface CustomCellTableViewCell()
+@interface CustomCellTableViewCell ()<UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView *myView; //lable-buttons-view
 @property (weak, nonatomic) IBOutlet UIView *containView; //scrollview + lable-buttons-view
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
@@ -45,8 +45,24 @@
 
 
 - (IBAction)onDeleteButtonClick:(id)sender{
-    [self.delegate deleteRule:self];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Do you want to delete rule?"
+                                                    message:@""
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Delete", nil];
+    [alert setDelegate:self];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [alert show];
+    });
     
+    
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == [alertView cancelButtonIndex]){
+        //cancel clicked ...do your action
+    }else{
+        [self.delegate deleteRule:self];
+    }
 }
 
 - (IBAction)onActivateButtonTap:(id)sender {
