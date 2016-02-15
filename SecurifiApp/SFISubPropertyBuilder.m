@@ -52,6 +52,7 @@ AddRulesViewController *parentController;
 NSArray *deviceArray;
 SecurifiToolkit *toolkit;
 int xVal = 20;
+UILabel *topLabel;
 
 + (void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions isCrossButtonHidden:(BOOL)isHidden parentController:(AddRulesViewController*)addRuleController isRuleActive:(BOOL)isRuleActive{
     delayPicker = [DelayPicker new];
@@ -68,18 +69,43 @@ int xVal = 20;
         parentController = addRuleController;
     }
     
+    [self clearTopScrollView];
+    if(triggers.count == 0 && actions.count == 0)
+        [self addTopLabel];
+    
     if(triggers.count > 0){
         [self buildEntryList:triggers isTrigger:YES];
         [self drawImage:@"arrow_icon"];
     }
-    if(actions.count>0)
+    if(actions.count>0){
         [self buildEntryList:actions isTrigger:NO];
-    
+    }
+
     if(xVal > scrollView.frame.size.width){
         [scrollView setContentOffset:CGPointMake(xVal-scrollView.frame.size.width + 20, 0) animated:YES];
     }
     scrollView.contentSize = CGSizeMake(xVal + 20, scrollView.frame.size.height);//to do
 }
+
++ (void)clearTopScrollView{
+    NSLog(@"clearTopScrollView");
+    NSArray *viewsToRemove = [scrollView subviews];
+    for (UIView *v in viewsToRemove) {
+        if (![v isKindOfClass:[UIImageView class]])
+            [v removeFromSuperview];
+    }
+}
+
++(void)addTopLabel{
+    topLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 20)];
+    topLabel.text = @"Your rule will appear here.";
+    topLabel.textAlignment = NSTextAlignmentCenter;
+    topLabel.font = [UIFont systemFontOfSize:15];
+    topLabel.textColor = [UIColor lightGrayColor];
+    topLabel.center = CGPointMake(parentController.view.bounds.size.width/2, parentController.triggersActionsScrollView.bounds.size.height/2);
+    [parentController.triggersActionsScrollView addSubview:topLabel];
+}
+
 
 + (void)setIconAndText:(int)positionId buttonProperties:(SFIButtonSubProperties *)buttonProperties icon:(NSString *)icon text:(NSString*)text isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString*)bottomText{
     buttonProperties.positionId=positionId;

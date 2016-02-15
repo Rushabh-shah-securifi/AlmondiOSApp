@@ -52,7 +52,7 @@
 
 @implementation AddRulesViewController
 UITextField *textField;
-UILabel *topLabel;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -80,15 +80,7 @@ UILabel *topLabel;
     // Dispose of any resources that can be recreated.
 }
 
--(void)addTopLabel{
-    topLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 20)];
-    topLabel.text = @"Your rule will appear here.";
-    topLabel.textAlignment = NSTextAlignmentCenter;
-    topLabel.font = [UIFont systemFontOfSize:15];
-    topLabel.textColor = [UIColor lightGrayColor];
-    topLabel.center = CGPointMake(self.view.bounds.size.width/2, self.triggersActionsScrollView.bounds.size.height/2);
-    [self.triggersActionsScrollView addSubview:topLabel];
-}
+
 #pragma mark notificationMethods
 -(void)initializeNotifications{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -270,15 +262,6 @@ UILabel *topLabel;
     }
 }
 
-- (void)clearTopScrollView{
-    NSArray *viewsToRemove = [self.triggersActionsScrollView subviews];
-    for (UIView *v in viewsToRemove) {
-        if (![v isKindOfClass:[UIImageView class]])
-            [v removeFromSuperview];
-    }
-}
-
-
 #pragma mark delegate methods
 //update from add triggers.m
 -(void)updateTriggerAndActionDelegatePropertie:(BOOL)isTrigger{
@@ -300,10 +283,6 @@ UILabel *topLabel;
 }
 
 -(void) callRulesView{
-    [self clearTopScrollView];
-    if(self.rule.triggers.count == 0 && self.rule.actions.count == 0){
-        [self addTopLabel];
-    }
     [SFISubPropertyBuilder createEntriesView:self.triggersActionsScrollView triggers:self.rule.triggers actions:self.rule.actions isCrossButtonHidden:NO parentController:self isRuleActive:YES];
 }
 
