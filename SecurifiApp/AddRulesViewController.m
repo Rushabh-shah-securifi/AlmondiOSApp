@@ -52,18 +52,16 @@
 
 @implementation AddRulesViewController
 UITextField *textField;
+UILabel *topLabel;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // self.actuatorDeviceArray = [NSMutableArray new];
-    //    self.addActionsView = [[AddActions alloc]init];
-    
     self.wifiClientsArray = [[NSMutableArray alloc]init];
-    // self.deviceArray = [NSMutableArray new];
     self.triggerAction = [[AddTriggerAndAddAction alloc]init];
     
     [self getWificlientsList];
     if(!self.isInitialized){
-        self.rule = [[Rule alloc]init];//[buttonObj sendActionsForControlEvents: UIControlEventTouchUpInside];
+        self.rule = [[Rule alloc]init];
     }
     [self initializeNotifications];
     [self setUpNavigationBar];
@@ -82,6 +80,15 @@ UITextField *textField;
     // Dispose of any resources that can be recreated.
 }
 
+-(void)addTopLabel{
+    topLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 20)];
+    topLabel.text = @"Your rule will appear here.";
+    topLabel.textAlignment = NSTextAlignmentCenter;
+    topLabel.font = [UIFont systemFontOfSize:15];
+    topLabel.textColor = [UIColor lightGrayColor];
+    topLabel.center = CGPointMake(self.view.bounds.size.width/2, self.triggersActionsScrollView.bounds.size.height/2);
+    [self.triggersActionsScrollView addSubview:topLabel];
+}
 #pragma mark notificationMethods
 -(void)initializeNotifications{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -262,6 +269,13 @@ UITextField *textField;
     }
 }
 
+- (void)clearTopScrollView{
+    NSArray *viewsToRemove = [self.triggersActionsScrollView subviews];
+    for (UIView *v in viewsToRemove) {
+        [v removeFromSuperview];
+    }
+}
+
 -(void) toggleViews{
     //necessary to manage it, when you click on then you need to hide timeview
     self.TimeSectionView.hidden = YES;
@@ -293,8 +307,11 @@ UITextField *textField;
 }
 
 -(void) callRulesView{
+    [self clearTopScrollView];
+    if(self.rule.triggers.count == 0 && self.rule.actions.count == 0){
+        [self addTopLabel];
+    }
     [SFISubPropertyBuilder createEntriesView:self.triggersActionsScrollView triggers:self.rule.triggers actions:self.rule.actions isCrossButtonHidden:NO parentController:self isRuleActive:YES];
-    
 }
 
 #pragma mark rules view delegate

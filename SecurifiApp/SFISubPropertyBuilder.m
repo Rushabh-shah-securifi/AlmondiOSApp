@@ -67,7 +67,6 @@ int xVal = 20;
     if (addRuleController != nil) { //to avoid nil from rulestableview
         parentController = addRuleController;
     }
-    [self clearScrollView];
     
     if(triggers.count > 0){
         [self buildEntryList:triggers isTrigger:YES];
@@ -80,13 +79,6 @@ int xVal = 20;
         [scrollView setContentOffset:CGPointMake(xVal-scrollView.frame.size.width + 20, 0) animated:YES];
     }
     scrollView.contentSize = CGSizeMake(xVal + 20, scrollView.frame.size.height);//to do
-}
-
-+ (void)clearScrollView{
-    NSArray *viewsToRemove = [scrollView subviews];
-    for (UIView *v in viewsToRemove) {
-        [v removeFromSuperview];
-    }
 }
 
 + (void)setIconAndText:(int)positionId buttonProperties:(SFIButtonSubProperties *)buttonProperties icon:(NSString *)icon text:(NSString*)text isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString*)bottomText{
