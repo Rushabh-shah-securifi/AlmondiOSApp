@@ -107,11 +107,14 @@ CGPoint tablePoint;
 }
 
 - (void)onRuleUpdateCommandResponse:(id)sender{
-    [self.HUD hide:YES];
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.rules =[NSMutableArray arrayWithArray:toolkit.ruleList];
-    [self.tableView reloadData];
-    self.tableView.contentOffset = tablePoint;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        self.rules =[NSMutableArray arrayWithArray:toolkit.ruleList];
+        [self.tableView reloadData];
+        self.tableView.contentOffset = tablePoint;
+    });
+    
 }
 
 - (void)removeAddSceneButton{
