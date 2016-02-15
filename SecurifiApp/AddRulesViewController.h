@@ -20,23 +20,10 @@
 
 
 @interface AddRulesViewController : UIViewController
-@property (weak, nonatomic) IBOutlet UIView *containView;
 @property (weak, nonatomic) IBOutlet UIScrollView *deviceListScrollView;
 @property (weak, nonatomic) IBOutlet UIScrollView *deviceIndexButtonScrollView;
 @property (weak, nonatomic) IBOutlet UIScrollView *triggersActionsScrollView;
 @property (weak, nonatomic) IBOutlet UILabel *informationLabel;
-@property (weak, nonatomic) IBOutlet UITextField *ruleNameField;
-
-@property (weak, nonatomic) IBOutlet UIView *TimeSectionView;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *timeSegmentSelector;/*layer.borderWidth
-                                                                              layer.borderUIColor                                                                    */
-@property (weak, nonatomic) IBOutlet UIDatePicker *timerPikerPrecisely;
-@property (weak, nonatomic) IBOutlet UIDatePicker *timePikerBetween1;
-@property (weak, nonatomic) IBOutlet UIDatePicker *timePikerBetween2;
-@property (weak, nonatomic) IBOutlet UILabel *andLabel;
-@property (weak, nonatomic) IBOutlet UILabel *lowerInformationLabel;
-@property (weak, nonatomic) IBOutlet UIView *dayView;
-
 
 //@property (nonatomic ,strong)NSMutableArray *deviceArray;
 @property (nonatomic ,strong)NSMutableArray *deviceValueArray;

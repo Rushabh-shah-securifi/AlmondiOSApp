@@ -126,7 +126,8 @@ DimmerButton *dimerButton;
     //clear view
     NSArray *viewsToRemove = [self.parentViewController.deviceListScrollView subviews];
     for (UIView *v in viewsToRemove) {
-        [v removeFromSuperview];
+        if (![v isKindOfClass:[UIImageView class]])
+            [v removeFromSuperview];
     }
     int xVal = 15;
     
@@ -207,7 +208,6 @@ DimmerButton *dimerButton;
 
 
 -(void)resetViews{
-    self.parentViewController.TimeSectionView.hidden = YES;
     self.parentViewController.deviceIndexButtonScrollView.hidden = NO;
     
     //clear view
@@ -218,6 +218,7 @@ DimmerButton *dimerButton;
         }
     }
 }
+
 -(void)toggleHighlightForDeviceNameButton:(RulesDeviceNameButton *)currentButton{
     UIScrollView *scrollView = self.parentViewController.deviceListScrollView;
     for(RulesDeviceNameButton *button in [scrollView subviews]){

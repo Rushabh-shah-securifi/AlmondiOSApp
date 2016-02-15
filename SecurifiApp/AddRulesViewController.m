@@ -160,7 +160,6 @@ UILabel *topLabel;
 }
 
 -(void)clearAndToggleViews{
-    [self toggleViews];
     [self clearDeviceListScrollView];
     [self clearDeviceIndexButtonScrollView];
 }
@@ -257,7 +256,8 @@ UILabel *topLabel;
 -(void)clearDeviceListScrollView{
     NSArray *viewsToRemove = [self.deviceListScrollView subviews];
     for (UIView *v in viewsToRemove) {
-        [v removeFromSuperview];
+        if (![v isKindOfClass:[UIImageView class]])
+            [v removeFromSuperview];
     }
     
 }
@@ -265,23 +265,18 @@ UILabel *topLabel;
 -(void)clearDeviceIndexButtonScrollView{
     NSArray *viewsToRemove = [self.deviceIndexButtonScrollView subviews];
     for (UIView *v in viewsToRemove) {
-        [v removeFromSuperview];
+        if (![v isKindOfClass:[UIImageView class]])
+            [v removeFromSuperview];
     }
 }
 
 - (void)clearTopScrollView{
     NSArray *viewsToRemove = [self.triggersActionsScrollView subviews];
     for (UIView *v in viewsToRemove) {
-        [v removeFromSuperview];
+        if (![v isKindOfClass:[UIImageView class]])
+            [v removeFromSuperview];
     }
 }
-
--(void) toggleViews{
-    //necessary to manage it, when you click on then you need to hide timeview
-    self.TimeSectionView.hidden = YES;
-    self.deviceIndexButtonScrollView.hidden = NO;
-}
-
 
 
 #pragma mark delegate methods
