@@ -188,27 +188,26 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="123" selectionStyle="default" indentationWidth="10" reuseIdentifier="CustomCellTableViewCell" rowHeight="142" id="jnu-CP-wWH" customClass="CustomCellTableViewCell">
-                                <rect key="frame" x="0.0" y="35" width="600" height="142"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="123" selectionStyle="default" indentationWidth="10" reuseIdentifier="CustomCellTableViewCell" rowHeight="155" id="jnu-CP-wWH" customClass="CustomCellTableViewCell">
+                                <rect key="frame" x="0.0" y="35" width="600" height="155"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jnu-CP-wWH" id="hc4-tj-pNj">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="141"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="154"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MyRule" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eVB-up-CZ8">
-                                            <rect key="frame" x="13" y="5" width="173" height="21"/>
+                                            <rect key="frame" x="13" y="1" width="173" height="21"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="173" identifier="rtvid-1" id="ZTN-PD-jKx"/>
+                                                <constraint firstAttribute="width" constant="173" id="QuO-uw-ovg"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aje-gw-sXH">
-                                            <rect key="frame" x="0.0" y="141" width="600" height="1"/>
-                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <rect key="frame" x="0.0" y="144" width="600" height="10"/>
+                                            <color key="backgroundColor" red="0.85490196080000003" green="0.85490196080000003" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="1" identifier="rtvid-6" id="KkD-eE-F0n"/>
+                                                <constraint firstAttribute="height" constant="10" id="I5H-MN-CIa"/>
                                             </constraints>
                                         </view>
                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="IeF-d6-F28">
@@ -222,16 +221,16 @@
                                             </connections>
                                         </switch>
                                         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="md5-Cg-HTy">
-                                            <rect key="frame" x="0.0" y="28" width="600" height="112"/>
+                                            <rect key="frame" x="0.0" y="35" width="600" height="109"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="112" identifier="rtvid-10" id="boX-Uo-anz"/>
+                                                <constraint firstAttribute="height" constant="109" id="6CA-N7-d7H"/>
                                             </constraints>
                                         </scrollView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FKn-kv-oIc">
-                                            <rect key="frame" x="491" y="1" width="52" height="26"/>
+                                            <rect key="frame" x="491" y="1" width="52" height="28"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="52" identifier="rtvid-4" id="WL4-aH-pUe"/>
-                                                <constraint firstAttribute="height" constant="26" identifier="rtvid-5" id="rtr-dR-LZS"/>
+                                                <constraint firstAttribute="height" constant="28" identifier="rtvid-5" id="rtr-dR-LZS"/>
                                             </constraints>
                                             <state key="normal" image="edit"/>
                                             <connections>
@@ -239,10 +238,10 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kIZ-nt-yDQ">
-                                            <rect key="frame" x="540" y="1" width="60" height="26"/>
+                                            <rect key="frame" x="540" y="1" width="60" height="28"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="26" identifier="rtvid-2" id="D0G-ts-2hE"/>
+                                                <constraint firstAttribute="height" constant="28" identifier="rtvid-2" id="D0G-ts-2hE"/>
                                                 <constraint firstAttribute="width" constant="60" identifier="rtvid-3" id="VOF-e6-UAm"/>
                                             </constraints>
                                             <state key="normal" image="delete"/>
@@ -252,20 +251,20 @@
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="aje-gw-sXH" secondAttribute="trailing" identifier="rtvid-16" id="A8y-Cb-1BT"/>
-                                        <constraint firstItem="aje-gw-sXH" firstAttribute="top" secondItem="FKn-kv-oIc" secondAttribute="bottom" constant="114" identifier="rtvid-17" id="Dxq-zc-4ZQ"/>
+                                        <constraint firstAttribute="trailing" secondItem="aje-gw-sXH" secondAttribute="trailing" id="0F0-jU-4Jk"/>
                                         <constraint firstItem="IeF-d6-F28" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" identifier="rtvid-19" id="HVy-pb-IWm"/>
-                                        <constraint firstItem="eVB-up-CZ8" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" constant="13" identifier="rtvid-11" id="IMp-9e-mlV"/>
+                                        <constraint firstItem="aje-gw-sXH" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" id="J0r-i5-NX7"/>
                                         <constraint firstAttribute="trailing" secondItem="kIZ-nt-yDQ" secondAttribute="trailing" identifier="rtvid-22" id="Obq-E4-6qx"/>
+                                        <constraint firstItem="md5-Cg-HTy" firstAttribute="top" secondItem="IeF-d6-F28" secondAttribute="bottom" constant="4" id="OpI-eA-N2G"/>
+                                        <constraint firstItem="md5-Cg-HTy" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" id="PVV-07-LVc"/>
                                         <constraint firstItem="FKn-kv-oIc" firstAttribute="leading" secondItem="IeF-d6-F28" secondAttribute="trailing" constant="13" identifier="rtvid-20" id="Vhy-Tw-8Vg"/>
-                                        <constraint firstItem="md5-Cg-HTy" firstAttribute="top" secondItem="IeF-d6-F28" secondAttribute="bottom" constant="-3" identifier="rtvid-13" id="X8z-Fn-CLy"/>
-                                        <constraint firstAttribute="trailing" secondItem="md5-Cg-HTy" secondAttribute="trailing" identifier="rtvid-14" id="hqf-iK-Qg3"/>
-                                        <constraint firstItem="md5-Cg-HTy" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" identifier="rtvid-15" id="kGB-JU-l2M"/>
+                                        <constraint firstItem="eVB-up-CZ8" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="1" id="Zzx-Jk-Qx6"/>
+                                        <constraint firstItem="eVB-up-CZ8" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" constant="13" id="eXc-sY-3cR"/>
                                         <constraint firstItem="FKn-kv-oIc" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="1" identifier="rtvid-21" id="m9E-KA-Sig"/>
-                                        <constraint firstItem="aje-gw-sXH" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" identifier="rtvid-18" id="nGf-M5-jAu"/>
                                         <constraint firstItem="kIZ-nt-yDQ" firstAttribute="leading" secondItem="FKn-kv-oIc" secondAttribute="trailing" constant="-3" identifier="rtvid-23" id="nvU-Ui-Hfw"/>
-                                        <constraint firstItem="eVB-up-CZ8" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="5" identifier="rtvid-12" id="rCy-RD-Udg"/>
+                                        <constraint firstAttribute="trailing" secondItem="md5-Cg-HTy" secondAttribute="trailing" id="s5j-rs-p6c"/>
                                         <constraint firstItem="kIZ-nt-yDQ" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="1" identifier="rtvid-24" id="yEC-Fr-nLJ"/>
+                                        <constraint firstItem="aje-gw-sXH" firstAttribute="top" secondItem="md5-Cg-HTy" secondAttribute="bottom" id="ybl-Ym-Gwx"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
