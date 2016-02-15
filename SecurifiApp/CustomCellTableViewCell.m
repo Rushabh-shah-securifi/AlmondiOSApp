@@ -45,7 +45,7 @@
 
 
 - (IBAction)onDeleteButtonClick:(id)sender{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Do you want to delete rule?"
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Are you sure, you want to delete rule - %@?",self.ruleNameLabel.text]
                                                     message:@""
                                                    delegate:self
                                           cancelButtonTitle:@"Cancel"
