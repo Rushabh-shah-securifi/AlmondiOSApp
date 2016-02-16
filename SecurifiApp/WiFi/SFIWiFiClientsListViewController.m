@@ -437,7 +437,7 @@
     UIButton * btnRemove = [[UIButton alloc] init];
     btnRemove.frame = CGRectMake(tblDevices.frame.size.width / 2 - 70, 23, 140, 44);
     btnRemove.backgroundColor = [UIColor whiteColor];
-    [btnRemove setTitle:@"Remove" forState:UIControlStateNormal];
+    [btnRemove setTitle:@"Reset" forState:UIControlStateNormal];
     if(allowedType == DeviceAllowed_Blocked){
         [btnRemove setTitleColor:[SFIColors clientBlockedGrayColor] forState:UIControlStateNormal];
     }else{
