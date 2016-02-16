@@ -342,7 +342,7 @@ CGPoint tablePoint;
 }
 - (void)activateRule:(CustomCellTableViewCell *)cell{
     [self setUpHUD];
-    self.HUD.labelText = cell.activeDeactiveSwitch.selected? [NSString stringWithFormat:@"Activating rule %@...",cell.ruleNameLabel.text]: [NSString stringWithFormat:@"Deactivating rule %@...",cell.ruleNameLabel.text];
+    self.HUD.labelText = cell.activeDeactiveSwitch.selected? [NSString stringWithFormat:@"Activating rule - %@...",cell.ruleNameLabel.text]: [NSString stringWithFormat:@"Deactivating rule - %@...",cell.ruleNameLabel.text];
     [self showHudWithTimeout];
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     Rule *rule = self.rules[indexPath.row];
