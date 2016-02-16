@@ -97,8 +97,14 @@ UITextField *textField;
 -(void)onRuleCommandResponse:(id)sender{ //for add, update
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
+    
     NSDictionary * mainDict = [data valueForKey:@"data"];
-    if (randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
+    SecurifiToolkit *toolkit=[SecurifiToolkit sharedInstance];
+    BOOL local = [toolkit useLocalNetwork:[toolkit currentAlmond].almondplusMAC];
+    
+    if(!local)
+        mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    if ([mainDict valueForKey:@"MobileInternalIndex"]==nil || randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue] ) {
         return;
     }
     
