@@ -52,7 +52,9 @@ CGPoint tablePoint;
     [super viewWillAppear:animated];
     self.enableDrawer = YES;
     [self getRuleList];
-    [self addAddRuleButton];
+    if([self isLocal]){
+        [self addAddRuleButton];
+    }
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     if (self.currentAlmond == nil) {
@@ -64,6 +66,14 @@ CGPoint tablePoint;
         [self markTitle: self.currentAlmond.almondplusName];
     }
     randomMobileInternalIndex = arc4random() % 10000;
+}
+-(BOOL)isLocal{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    self.currentAlmond = [toolkit currentAlmond];
+    BOOL local=[toolkit useLocalNetwork:self.currentAlmond.almondplusMAC];
+    if([super currentConnectionMode] == SFIAlmondConnectionMode_cloud)
+        local = NO;
+    return local;
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -118,6 +128,7 @@ CGPoint tablePoint;
 }
 
 - (void)removeAddSceneButton{
+    if(self.buttonAdd)
     [self.buttonAdd removeFromSuperview];
 }
 
@@ -167,7 +178,7 @@ CGPoint tablePoint;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if([self isRuleArrayEmpty]){
+    if([self isRuleArrayEmpty] || ![self isLocal]){
         return [self createEmptyCell:tableView];
     }
     static NSString *CellIdentifier;
@@ -227,10 +238,10 @@ CGPoint tablePoint;
 - (UITableViewCell *)createEmptyCell:(UITableView *)tableView {
     static NSString *empty_cell_id = @"EmptyCell";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:empty_cell_id];
+   // UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:empty_cell_id];
     
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:empty_cell_id];
+    //if (cell == nil || ![self isLocal]) {
+        UITableViewCell *cell  = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:empty_cell_id];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         const CGFloat table_width = CGRectGetWidth(self.tableView.frame);
@@ -238,7 +249,7 @@ CGPoint tablePoint;
         UILabel *lblNewScene = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, table_width-20, 130)];
         lblNewScene.textAlignment = NSTextAlignmentCenter;
         [lblNewScene setFont:[UIFont fontWithName:AVENIR_ROMAN size:18]];
-        lblNewScene.text = @"New Rule";
+        lblNewScene.text = ![self isLocal]?@"":@"New Rule";
         lblNewScene.textColor = [UIColor grayColor];
         [cell addSubview:lblNewScene];
         
@@ -246,10 +257,15 @@ CGPoint tablePoint;
         lblNoSensor.textAlignment = NSTextAlignmentCenter;
         [lblNoSensor setFont:[UIFont fontWithName:AVENIR_ROMAN size:15]];
         lblNoSensor.numberOfLines = 10;
-        lblNoSensor.text = @"Tap on add button to create your rule";
+        lblNoSensor.text = ![self isLocal]?@"At this time, you can view, create and edit rules only in Local Connection":@"Tap on add button to create your rule";
         lblNoSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblNoSensor];
+    //}
+    if(![self isLocal]){
+        [self removeAddSceneButton];
     }
+    else
+        [self addAddRuleButton];
     return cell;
 }
 
