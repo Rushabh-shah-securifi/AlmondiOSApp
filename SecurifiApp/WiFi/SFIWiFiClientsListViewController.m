@@ -266,30 +266,27 @@
             break;
         }
         case allowOnNetworkIndexPathRow:{ //Allow On Network
-            float lableX = local? tblDevices.frame.size.width - 220: tblDevices.frame.size.width - 215;
-            float lableWidth = local? 180: 200;
+            float lableX = tblDevices.frame.size.width - 220;
+            float lableWidth = 180;
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(lableX, 0, lableWidth, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
             label.textColor = [UIColor whiteColor];
-            label.alpha = local?1: 0.5;
+            label.alpha = 1;
             label.font = cellFont;
-            if(local){
-                if (connectedDevice.deviceAllowedType == DeviceAllowed_Always) {
-                    label.text = @"Always";
-                }else if(connectedDevice.deviceAllowedType == DeviceAllowed_Blocked){
-                    label.text = @"Blocked";
-                }else{
-                    label.text = @"OnSchedule";
-                }
+            
+            if (connectedDevice.deviceAllowedType == DeviceAllowed_Always) {
+                label.text = @"Always";
+            }else if(connectedDevice.deviceAllowedType == DeviceAllowed_Blocked){
+                label.text = @"Blocked";
             }else{
-                label.text = @"NaN";
+                label.text = @"OnSchedule";
             }
             
             label.tag = 66;
             label.numberOfLines = 1;
             label.textAlignment = NSTextAlignmentRight;
             [cell addSubview:label];
-            cell.accessoryType = local? UITableViewCellAccessoryDisclosureIndicator: UITableViewCellAccessoryNone;
+            cell.accessoryType =  UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
             
@@ -522,9 +519,7 @@
         }
         case allowOnNetworkIndexPathRow://Allow On Network
         {
-            if(!local){
-                break;
-            }
+            
             SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
             viewController.delegate = self;
             viewController.editFieldIndex = subRowIndex;
