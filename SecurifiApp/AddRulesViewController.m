@@ -43,8 +43,6 @@
 //@property (nonatomic ,strong)AddActions *addActionsView;
 @property (weak, nonatomic) IBOutlet UIButton *IfButton;
 @property (weak, nonatomic) IBOutlet UIButton *thenButton;
-@property (weak, nonatomic) SFIWiFiClientsListViewController *wifiClientsList;//response
-@property (weak, nonatomic) SFIRouterClientsTableViewController *routerClientstableView;//request
 @property (weak, nonatomic) IBOutlet UIImageView *ifThenTabSeperator;
 @property (nonatomic,strong)AddTriggerAndAddAction *triggerAction;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -52,7 +50,7 @@
 
 @implementation AddRulesViewController
 UITextField *textField;
-
+SFISubPropertyBuilder *subPropertyBuilder;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -186,7 +184,10 @@ UITextField *textField;
 
 - (void)getTriggerActionList:(BOOL)isTrigger{
     self.triggerAction.delegate = self;
-    self.triggerAction.parentViewController = self;
+    self.triggerAction.deviceListScrollView = self.deviceListScrollView;
+    self.triggerAction.deviceIndexButtonScrollView = self.deviceIndexButtonScrollView;
+    self.triggerAction.parentView = self.view;
+    
     self.triggerAction.selectedButtonsPropertiesArrayTrigger = self.rule.triggers;
     self.triggerAction.selectedButtonsPropertiesArrayAction = self.rule.actions;
     //    self.triggerAction.ruleTime = self.rule.time;
@@ -289,7 +290,9 @@ UITextField *textField;
 }
 
 -(void) callRulesView{
-    [SFISubPropertyBuilder createEntriesView:self.triggersActionsScrollView triggers:self.rule.triggers actions:self.rule.actions isCrossButtonHidden:NO parentController:self isRuleActive:YES];
+    subPropertyBuilder = [SFISubPropertyBuilder new];
+    subPropertyBuilder.delegate = self;
+    [subPropertyBuilder createEntryForView:self.triggersActionsScrollView indexScrollView:self.deviceIndexButtonScrollView parentView:self.view triggers:self.rule.triggers actions:self.rule.actions isCrossButtonHidden:NO isRuleActive:YES];
 }
 
 #pragma mark rules view delegate

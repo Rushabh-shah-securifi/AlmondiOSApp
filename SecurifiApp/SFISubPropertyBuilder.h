@@ -14,19 +14,17 @@
 #import "IndexValueSupport.h"
 #import "SFIButtonSubProperties.h"
 
-
 @class AddRulesViewController;
 
-@protocol SFISubPropertyBuilderDelegate 
--(void)updateTriggerAndActionDelegatePropertie:(BOOL)isTrigger;
--(void)redrawDeviceIndexView:(sfi_id)deviceId;
+@protocol SFISubPropertyBuilderDelegate
+-(void)redrawDeviceIndexView:(sfi_id)deviceId clientEvent:(NSString*)eventType;
 @end
 
 @interface SFISubPropertyBuilder : NSObject
-@property (nonatomic, weak) id<SFISubPropertyBuilderDelegate> delegate;
 @property (nonatomic) bool isDelayPickerPresent;
-+(void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions isCrossButtonHidden:(BOOL)isHidden parentController:(AddRulesViewController*)addRuleController isRuleActive:(BOOL)isRuleActive;
+@property (nonatomic, weak) id<SFISubPropertyBuilderDelegate> delegate;
 
-+ (BOOL) compareEntry:(BOOL)isSlider matchData:(NSString *)matchData eventType:(NSString *)eventType buttonProperties:(SFIButtonSubProperties *)buttonProperties;
-+(NSString*)getDays:(NSArray*)earlierSelection;
+-(void)createEntryForView:(UIScrollView *)topScrollView indexScrollView:(UIScrollView*)indexScrollView parentView:(UIView*)view triggers:(NSArray *)triggersList actions:(NSArray *)actionsList isCrossButtonHidden:(BOOL)isHidden isRuleActive:(BOOL)isRuleActive;
+
+
 @end

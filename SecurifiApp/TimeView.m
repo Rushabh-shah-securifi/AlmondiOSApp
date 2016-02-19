@@ -9,7 +9,7 @@
 #import "TimeView.h"
 #import "RulesDeviceNameButton.h"
 #import "SFIColors.h"
-#import "SFISubPropertyBuilder.h"
+#import "CommonMethods.h"
 
 @interface TimeView()
 @property UIView *segmentDetailView;
@@ -47,7 +47,7 @@ int segmentType;
 }
 
 -(void)addTimeSegment{
-    UIScrollView *scrollView = self.parentViewController.deviceIndexButtonScrollView;
+    UIScrollView *scrollView = self.deviceIndexButtonScrollView;
     NSArray *segmentItems = [NSArray arrayWithObjects:@"ANYTIME", @"PRECISELY AT", @"BETWEEN", nil];
     timeSegmentControl = [[UISegmentedControl alloc]initWithItems:segmentItems];
     
@@ -88,7 +88,7 @@ int segmentType;
     }
     [self.delegate AddOrUpdateTime];
     if(segmentType == 1 || segmentType == 2)
-        self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.frame.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight);
+        self.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.frame.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight);
 }
 
 -(void)addAnyTimeInfoLable{
@@ -219,9 +219,9 @@ int segmentType;
     if(endMin == startMins){
         return 0;
     }else if(endMin < startMins){
-         return ((1440 - startMins) + endMin);
+         return (int)((1440 - startMins) + endMin);
     }else{
-        return endMin - startMins;
+        return (int)(endMin - startMins);
     }
 
 }
@@ -291,7 +291,7 @@ int segmentType;
 -(void)setLableText{
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"hh:mm aa"];
-    NSString *days = [SFISubPropertyBuilder getDays:self.ruleTime.dayOfWeek];
+    NSString *days = [CommonMethods getDays:self.ruleTime.dayOfWeek];
     if(segmentType == Precisely1){
         NSDate *date =preciselyDatePicker.date;
         NSString *time = [dateFormat stringFromDate:date];
@@ -359,7 +359,7 @@ int segmentType;
 }
 
 -(void)initializeSegmentDetailView{
-    UIScrollView *scrollView = self.parentViewController.deviceIndexButtonScrollView;
+    UIScrollView *scrollView = self.deviceIndexButtonScrollView;
     self.segmentDetailView = [[UIView alloc]initWithFrame:CGRectMake(0,
                                                                      timeSegmentHeight + segmentDetailTopSpacing,
                                                                      scrollView.frame.size.width,

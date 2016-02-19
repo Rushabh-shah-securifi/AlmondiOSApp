@@ -36,7 +36,7 @@ int delaySecs;
 int secs;
 int mins;
 
--(void)addPickerForButton:(UIButton*)delayButton parentController:(AddRulesViewController*)parentController{
+-(void)addPickerForButton:(UIButton*)delayButton{
     delayButton.selected = !delayButton.selected;
     ruleButton = (PreDelayRuleButton *)[delayButton superview];
     
@@ -47,7 +47,7 @@ int mins;
         }
         delayButton.backgroundColor = [SFIColors ruleLightOrangeColor];
         (ruleButton->actionbutton).userInteractionEnabled = NO;
-        parentController.deviceIndexButtonScrollView.userInteractionEnabled = NO;
+        self.deviceIndexButtonScrollView.userInteractionEnabled = NO;
        
         delaySecs = [ruleButton.subProperties.delay intValue];
         
@@ -59,12 +59,12 @@ int mins;
         for (int i = 0; i <= 59; i++) {
             [pickerSecsRange addObject:[NSString stringWithFormat:@"%d",i]];
         }
-        [self setupPicker:parentController];
+        [self setupPicker];
         self.isPresentDelayPicker = YES;
     }else{
         [self removeDelayView];
         delayButton.backgroundColor = [SFIColors ruleOrangeColor];
-        parentController.deviceIndexButtonScrollView.userInteractionEnabled = YES;
+        self.deviceIndexButtonScrollView.userInteractionEnabled = YES;
         (ruleButton->actionbutton).userInteractionEnabled = YES;
         delayButton.backgroundColor = [UIColor colorFromHexString:@"FF9500"];
         [delayButton setBackgroundColor:[UIColor colorFromHexString:@"FF9500"]];
@@ -73,8 +73,8 @@ int mins;
     }
 }
 
-- (void)setupPicker:(AddRulesViewController*)parentController {
-    int scrollViewY = parentController.triggersActionsScrollView.frame.origin.y + parentController.triggersActionsScrollView.bounds.size.height;
+- (void)setupPicker {
+    int scrollViewY = self.triggersActionsScrollView.frame.origin.y + self.triggersActionsScrollView.bounds.size.height;
     
     UIPickerView *pickerRange = [self createPickerView:CGRectMake(lableWidth + pickerSpacing, 0, pickerRangeWidth, pickerRangeHeight*2)];
     [self transformPickerView:pickerRange];
@@ -84,7 +84,7 @@ int mins;
     [pickerRange selectRow:[self getMinsRow] inComponent:0 animated:YES];
     [pickerRange selectRow:[self getSecsRow] inComponent:1 animated:YES];
     
-    actionSheet = [[UIView alloc] initWithFrame:CGRectMake(0, scrollViewY, parentController.view.frame.size.width, pickerRangeHeight)];
+    actionSheet = [[UIView alloc] initWithFrame:CGRectMake(0, scrollViewY, self.parentView.frame.size.width, pickerRangeHeight)];
     actionSheet.backgroundColor = [UIColor whiteColor];
     
     UIView *subView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 2*lableWidth + pickerRangeWidth + 2*pickerSpacing, pickerRangeHeight)];
@@ -107,7 +107,7 @@ int mins;
     [actionSheet addSubview:subView];
     subView.center = CGPointMake(actionSheet.bounds.size.width/2,
                                  actionSheet.bounds.size.height/2);
-    [parentController.view addSubview:actionSheet];
+    [self.parentView addSubview:actionSheet];
 }
 
 -(void)transformPickerView:(UIPickerView *)pickerview{

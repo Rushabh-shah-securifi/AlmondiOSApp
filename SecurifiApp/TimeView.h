@@ -25,8 +25,8 @@ typedef NS_ENUM(NSInteger, timeSegmentType1)
 @end
 
 @interface TimeView : NSObject
-@property(nonatomic)AddRulesViewController *parentViewController;
 @property(nonatomic)RulesTimeElement *ruleTime;
 @property(nonatomic,weak)id<TimeViewDelegate> delegate;
+@property (strong, nonatomic) UIScrollView *deviceIndexButtonScrollView;
 -(void)addTimeView;
 @end

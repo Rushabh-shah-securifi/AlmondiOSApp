@@ -63,7 +63,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 - (void)HueLayout:(UIScrollView *)scrollView withYScale:(int)yScale withDeviceIndex:(NSArray *)deviceIndexes deviceId:(int)deviceId deviceType:(SFIDeviceType)deviceType deviceName:(NSString*)deviceName{
     CGSize scrollableSize = CGSizeMake(scrollView.frame.size.width,
                                        500);
-    [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
+    [scrollView setContentSize:scrollableSize];
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                             yScale,
                                                             scrollView.frame.size.width,

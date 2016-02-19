@@ -7,11 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AddRulesViewController.h"
-@class AddRulesViewController;
 
 @interface DelayPicker : NSObject
 @property(nonatomic) bool isPresentDelayPicker;
+@property (strong, nonatomic) UIScrollView *deviceIndexButtonScrollView;
+@property (strong, nonatomic) UIScrollView *triggersActionsScrollView;
+@property (strong, nonatomic) UIView *parentView;
+
 -(void)removeDelayView;
--(void)addPickerForButton:(UIButton*)delayButton parentController:(AddRulesViewController*)parentController;
+-(void)addPickerForButton:(UIButton*)delayButton;
 @end

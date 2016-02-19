@@ -22,6 +22,7 @@
 #import "SFICloudLinkViewController.h"
 #import "MDJSON.h"
 #import "Analytics.h"
+#import "NewAddSceneViewController.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
@@ -225,9 +226,9 @@
         return;
     }
     
-    SFIAddSceneViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIAddSceneViewController"];
-    viewController.originalSceneInfo = [scenesArray[indexPath.row] mutableCopy];
-    viewController.index = (int)indexPath.row;
+    NewAddSceneViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewAddSceneViewController"];
+//    viewController.originalSceneInfo = [scenesArray[indexPath.row] mutableCopy];
+//    viewController.index = (int)indexPath.row;
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
@@ -332,7 +333,7 @@
 #pragma mark
 
 - (IBAction)btnAddNewSceneTap:(id)sender {
-    SFIAddSceneViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIAddSceneViewController"];
+    NewAddSceneViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewAddSceneViewController"];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

@@ -25,8 +25,6 @@
 
 //interface
 @interface RulesHue : NSObject
-
-@property(nonatomic)AddRulesViewController *parentViewController;
 @property(weak)id<RulesHueDelegate> delegate;
 @property (nonatomic, strong)NSMutableArray *selectedButtonsPropertiesArray;
 

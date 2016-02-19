@@ -38,7 +38,6 @@ CGPoint tablePoint;
     [self initializeNotifications];
     [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
-
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -194,7 +193,9 @@ CGPoint tablePoint;
     [cell.activeDeactiveSwitch setSelected:rule.isActive];
     [cell.activeDeactiveSwitch setOn:rule.isActive animated:YES];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [SFISubPropertyBuilder createEntriesView:cell.scrollView triggers:rule.triggers actions:rule.actions isCrossButtonHidden:YES parentController:nil isRuleActive:rule.isActive];
+
+    SFISubPropertyBuilder *subPropertyBuilder = [SFISubPropertyBuilder new];
+    [subPropertyBuilder createEntryForView:cell.scrollView indexScrollView:nil parentView:nil triggers:rule.triggers actions:rule.actions isCrossButtonHidden:YES isRuleActive:rule.isActive];
     
     // Configure the cell...
     [cell.scrollView setContentOffset:CGPointMake(0,0) animated:YES];

@@ -32,8 +32,9 @@
 #import "RulesDeviceNameButton.h"
 #import "TimeView.h"
 #import "RuleTextField.h"
+#import "CommonMethods.h"
 
-@interface AddTriggerAndAddAction ()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,UITextFieldDelegate>
+@interface AddTriggerAndAddAction ()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,UITextFieldDelegate,TimeViewDelegate>
 @property (nonatomic)RulesHue *ruleHueObject;
 @property TimeView *timeView;
 @end
@@ -75,7 +76,7 @@ DimmerButton *dimerButton;
 }
 
 - (int)addDeviceName:(NSString *)deviceName deviceID:(int)deviceID deviceType:(unsigned int)deviceType  xVal:(int)xVal {
-    double deviceButtonHeight = self.parentViewController.deviceListScrollView.frame.size.height;
+    double deviceButtonHeight = self.deviceListScrollView.frame.size.height;
     CGRect textRect = [self adjustDeviceNameWidth:deviceName];
     CGRect frame = CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight);
     RulesDeviceNameButton *deviceButton = [[RulesDeviceNameButton alloc]initWithFrame:frame];
@@ -90,7 +91,7 @@ DimmerButton *dimerButton;
         [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];}
     else
         [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.parentViewController.deviceListScrollView addSubview:deviceButton];
+    [self.deviceListScrollView addSubview:deviceButton];
     
     return xVal + textRect.size.width +15;
 }
@@ -101,7 +102,7 @@ DimmerButton *dimerButton;
     //    self.timeView.ruleTime = self.ruleTime;
     self.timeView.delegate = self;
     self.timeView.ruleTime = [self getRuleTime];
-    self.timeView.parentViewController = self.parentViewController;
+    self.timeView.deviceIndexButtonScrollView = self.deviceIndexButtonScrollView;
     
     [self.timeView addTimeView];
     
@@ -124,7 +125,7 @@ DimmerButton *dimerButton;
 -(void)addDeviceNameList:(BOOL)isTrigger{
     self.isTrigger = isTrigger;
     //clear view
-    NSArray *viewsToRemove = [self.parentViewController.deviceListScrollView subviews];
+    NSArray *viewsToRemove = [self.deviceListScrollView subviews];
     for (UIView *v in viewsToRemove) {
         if (![v isKindOfClass:[UIImageView class]])
             [v removeFromSuperview];
@@ -146,8 +147,8 @@ DimmerButton *dimerButton;
     if(!self.isTrigger){//add almond Reboot
         xVal = [self addDeviceName:@"Reboot Almond" deviceID:1 deviceType:SFIDeviceType_REBOOT_ALMOND xVal:xVal];
     }
-    self.parentViewController.deviceListScrollView.contentSize = CGSizeMake(xVal +10,self.parentViewController.deviceListScrollView.contentSize.height);
-    [self.parentViewController.deviceIndexButtonScrollView flashScrollIndicators];
+    self.deviceListScrollView.contentSize = CGSizeMake(xVal +10,self.deviceListScrollView.contentSize.height);
+    [self.deviceIndexButtonScrollView flashScrollIndicators];
 }
 
 
@@ -172,21 +173,21 @@ DimmerButton *dimerButton;
             i++;
         }
     }
-    CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
+    CGSize scrollableSize = CGSizeMake(self.deviceIndexButtonScrollView.frame.size.width,
                                        (frameSize + ROW_PADDING )*i + ROW_PADDING);
-    [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
-    [self.parentViewController.deviceIndexButtonScrollView flashScrollIndicators];
-    self.parentViewController.deviceIndexButtonScrollView.showsVerticalScrollIndicator = YES;
+    [self.deviceIndexButtonScrollView setContentSize:scrollableSize];
+    [self.deviceIndexButtonScrollView flashScrollIndicators];
+    self.deviceIndexButtonScrollView.showsVerticalScrollIndicator = YES;
 }
 
 -(void)addClientNameLabel:(NSString*)clientName yScale:(int)yScale{
-    UILabel *clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, yScale-20, self.parentViewController.view.frame.size.width, 14)];
+    UILabel *clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, yScale-20, self.parentView.frame.size.width, 14)];
     clientNameLabel.text = clientName;
     clientNameLabel.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:12];
     clientNameLabel.backgroundColor = [UIColor clearColor];
     clientNameLabel.textAlignment = NSTextAlignmentCenter;
     clientNameLabel.textColor = [UIColor lightGrayColor];
-    [self.parentViewController.deviceIndexButtonScrollView addSubview:clientNameLabel];
+    [self.deviceIndexButtonScrollView addSubview:clientNameLabel];
     
 }
 
@@ -208,10 +209,10 @@ DimmerButton *dimerButton;
 
 
 -(void)resetViews{
-    self.parentViewController.deviceIndexButtonScrollView.hidden = NO;
+    self.deviceIndexButtonScrollView.hidden = NO;
     
     //clear view
-    NSArray *viewsToRemove = [self.parentViewController.deviceIndexButtonScrollView subviews];
+    NSArray *viewsToRemove = [self.deviceIndexButtonScrollView subviews];
     for (UIView *v in viewsToRemove) {
         if (![v isKindOfClass:[UIImageView class]]) { //to avoid removing scroll indicators
             [v removeFromSuperview];
@@ -220,7 +221,7 @@ DimmerButton *dimerButton;
 }
 
 -(void)toggleHighlightForDeviceNameButton:(RulesDeviceNameButton *)currentButton{
-    UIScrollView *scrollView = self.parentViewController.deviceListScrollView;
+    UIScrollView *scrollView = self.deviceListScrollView;
     for(RulesDeviceNameButton *button in [scrollView subviews]){
         if([button isKindOfClass:[UIImageView class]]){
             continue;
@@ -261,11 +262,8 @@ DimmerButton *dimerButton;
     if(deviceType == SFIDeviceType_HueLamp_48){
         self.ruleHueObject = [[RulesHue alloc] init];
         self.ruleHueObject.delegate = self;
-        self.ruleHueObject.parentViewController = self.parentViewController;
         self.ruleHueObject.selectedButtonsPropertiesArray = self.selectedButtonsPropertiesArrayAction;
-        
-        
-        [self.ruleHueObject createHueCellLayoutWithDeviceId:deviceId deviceType:deviceType deviceIndexes:deviceIndexes deviceName:deviceName scrollView:self.parentViewController.deviceIndexButtonScrollView cellCount:numberOfCells indexesDictionary:deviceIndexesDict];
+        [self.ruleHueObject createHueCellLayoutWithDeviceId:deviceId deviceType:deviceType deviceIndexes:deviceIndexes deviceName:deviceName scrollView:self.deviceIndexButtonScrollView cellCount:numberOfCells indexesDictionary:deviceIndexesDict];
         return;
     }
     //else for rest of the devices
@@ -278,12 +276,12 @@ DimmerButton *dimerButton;
             j++;
         }
     }
-    CGSize scrollableSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width,
+    CGSize scrollableSize = CGSizeMake(self.deviceIndexButtonScrollView.frame.size.width,
                                        (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING);
     
-    [self.parentViewController.deviceIndexButtonScrollView setContentSize:scrollableSize];
-    [self.parentViewController.deviceIndexButtonScrollView flashScrollIndicators];
-    self.parentViewController.deviceIndexButtonScrollView.showsVerticalScrollIndicator = YES;
+    [self.deviceIndexButtonScrollView setContentSize:scrollableSize];
+    [self.deviceIndexButtonScrollView flashScrollIndicators];
+    self.deviceIndexButtonScrollView.showsVerticalScrollIndicator = YES;
 }
 -(void)addArrayToDictionary:(NSMutableDictionary *)deviceIndexesDict deviceIndex:(SFIDeviceIndex *)deviceIndex{
     if(self.isTrigger ||(!self.isTrigger && deviceIndex.isEditableIndex)){
@@ -458,9 +456,9 @@ DimmerButton *dimerButton;
 - (UIView *)addMyButtonwithYScale:(int)yScale withDeviceIndex:(NSArray *)deviceIndexes deviceId:(int)deviceId deviceType:(int)deviceType deviceName:(NSString*)deviceName{
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                             yScale,
-                                                            self.parentViewController.view.frame.size.width,
+                                                            self.parentView.frame.size.width,
                                                             indexButtonFrameSize)];
-    [self.parentViewController.deviceIndexButtonScrollView addSubview:view];
+    [self.deviceIndexButtonScrollView addSubview:view];
     int i=0;
     for (SFIDeviceIndex *deviceIndex in deviceIndexes) {
         for (IndexValueSupport *iVal in deviceIndex.indexValues) {
@@ -472,7 +470,7 @@ DimmerButton *dimerButton;
                 [self buildDimButton:deviceIndex iVal:iVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             else{
                 if(i >= 5){
-                    view.frame = CGRectMake(0, yScale, self.parentViewController.view.frame.size.width, indexButtonFrameSize * 2);
+                    view.frame = CGRectMake(0, yScale, self.parentView.frame.size.width, indexButtonFrameSize * 2);
                     [self buildSwitchButton:deviceIndex deviceType:deviceType deviceName:deviceName iVal:iVal deviceId:deviceId i:i view:view buttonY:indexButtonFrameSize];
                 }else{
                     if(deviceType == SFIDeviceType_MultiLevelSwitch_2)
@@ -574,7 +572,7 @@ DimmerButton *dimerButton;
     BOOL selected=NO;
     NSMutableArray *list=self.isTrigger?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
     for(SFIButtonSubProperties *dimButtonProperty in list){
-        if(dimButtonProperty.deviceId==indexButton.subProperties.deviceId && dimButtonProperty.index==indexButton.subProperties.index && [SFISubPropertyBuilder compareEntry:isSlider matchData:indexButton.subProperties.matchData eventType:indexButton.subProperties.eventType buttonProperties:dimButtonProperty]){
+        if(dimButtonProperty.deviceId==indexButton.subProperties.deviceId && dimButtonProperty.index==indexButton.subProperties.index && [CommonMethods compareEntry:isSlider matchData:indexButton.subProperties.matchData eventType:indexButton.subProperties.eventType buttonProperties:dimButtonProperty]){
             buttonClickCount++;
             selected=YES;
             [indexButton setNewValue:dimButtonProperty.displayedData];
@@ -595,7 +593,6 @@ DimmerButton *dimerButton;
     
     sfi_id buttonId = indexSwitchButton.subProperties.deviceId;
     int buttonIndex = indexSwitchButton.subProperties.index;
-    NSString *buttonMatchdata = indexSwitchButton.subProperties.matchData;
     if(!self.isTrigger){
         indexSwitchButton.selected = YES ;
         [self.selectedButtonsPropertiesArrayAction addObject:[indexSwitchButton.subProperties createNew]];
@@ -738,7 +735,7 @@ DimmerButton *dimerButton;
     // Picker
     picker = [[V8HorizontalPickerView alloc] initWithFrame:CGRectZero];
     picker.tag = 1; // we stored the type of property in the tag info; will use in delegate methods and callbacks
-    picker.frame = CGRectMake(self.parentViewController.deviceIndexButtonScrollView.frame.origin.x + 10,  dimButton.frame.origin.y + dimButton.frame.size.height +25, self.parentViewController.view.frame.size.width -20 , control_height);
+    picker.frame = CGRectMake(self.deviceIndexButtonScrollView.frame.origin.x + 10,  dimButton.frame.origin.y + dimButton.frame.size.height +25, self.parentView.frame.size.width -20 , control_height);
     picker.layer.cornerRadius = 4;
     picker.layer.borderWidth = 1.5;
     picker.backgroundColor = [UIColor whiteColor];
@@ -759,7 +756,7 @@ DimmerButton *dimerButton;
     picker.dataSource = self;
     //  [picker scrollToElement:dimButton.dimValue.intValue animated:YES];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.parentViewController.deviceIndexButtonScrollView addSubview:picker];
+        [self.deviceIndexButtonScrollView addSubview:picker];
     });
     // width depends on propertyType
     const NSInteger element_width = [self horizontalPickerView:picker widthForElementAtIndex:0];
