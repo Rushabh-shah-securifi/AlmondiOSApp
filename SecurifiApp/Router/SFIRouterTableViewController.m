@@ -635,7 +635,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         
         UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:CGRectMake(width / 2 - 50, 150, 100, 100)];
         imgRouter.userInteractionEnabled = NO;
-        imgRouter.image = [UIImage imageNamed:@"offline_150x150.png"];
+        imgRouter.image = [UIImage imageNamed:@"offline_150x150"];
         imgRouter.contentMode = UIViewContentModeScaleAspectFit;
         [cell addSubview:imgRouter];
         

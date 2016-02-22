@@ -472,10 +472,10 @@
     view.backgroundColor = [UIColor whiteColor];
 
     UIImageView *imgLine1 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 5, self.tableView.frame.size.width - 35, 1)];
-    imgLine1.image = [UIImage imageNamed:@"grey_line.png"];
+    imgLine1.image = [UIImage imageNamed:@"grey_line"];
 
     UIImageView *imgCross = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 20, 12, 10, 10)];
-    imgCross.image = [UIImage imageNamed:@"cross_icon.png"];
+    imgCross.image = [UIImage imageNamed:@"cross_icon"];
 
     [view addSubview:imgCross];
 
@@ -857,6 +857,7 @@
         table[key] = value;
     }
     _deviceValueTable = [NSDictionary dictionaryWithDictionary:table];
+    NSLog(@"_deviceValueTable  %@ ",_deviceValueTable);
 }
 
 #pragma mark - Cloud callbacks and timeouts

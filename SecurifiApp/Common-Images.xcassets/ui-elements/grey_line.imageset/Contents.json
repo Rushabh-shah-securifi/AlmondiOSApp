@@ -2,16 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "grey_line.png"
+      "filename" : "grey_line.pdf"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "grey_line.png",
+      "unassigned" : true,
+      "scale" : "1x"
     }
   ],
   "info" : {

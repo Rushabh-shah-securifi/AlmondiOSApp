@@ -334,7 +334,7 @@
 
     UIImageView *imgAddDevice = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 24)];
     imgAddDevice.userInteractionEnabled = YES;
-    imgAddDevice.image = [UIImage imageNamed:@"addAlmond.png"];
+    imgAddDevice.image = [UIImage imageNamed:@"addAlmond"];
 
     [cell addSubview:imgAddDevice];
 
@@ -359,7 +359,7 @@
 
         UIImageView *imgLocation = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 21.5)];
         imgLocation.userInteractionEnabled = YES;
-        imgLocation.image = [UIImage imageNamed:@"almondHome.png"];
+        imgLocation.image = [UIImage imageNamed:@"almondHome"];
         [cell.contentView addSubview:imgLocation];
 
         UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 180, 30)];
@@ -398,19 +398,19 @@
     switch (indexPath.row) {
         case 0:
             imgSettings = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 24)];
-            imgSettings.image = [UIImage imageNamed:@"account.png"];
+            imgSettings.image = [UIImage imageNamed:@"account"];
             break;
         case 1:
             imgSettings = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24.5, 19)];
-            imgSettings.image = [UIImage imageNamed:@"logout.png"];
+            imgSettings.image = [UIImage imageNamed:@"logout"];
             break;
         case 2:
             imgSettings = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 25, 17.5)];
-            imgSettings.image = [UIImage imageNamed:@"logout.png"];
+            imgSettings.image = [UIImage imageNamed:@"logout"];
             break;
         case 3:
             imgSettings = [[UIImageView alloc] initWithFrame:CGRectMake(25, 10, 24, 24)];
-            imgSettings.image = [UIImage imageNamed:@"account.png"];
+            imgSettings.image = [UIImage imageNamed:@"account"];
             break;
         default:
             break;

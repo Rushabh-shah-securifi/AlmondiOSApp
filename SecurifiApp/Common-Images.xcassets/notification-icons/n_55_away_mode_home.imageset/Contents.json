@@ -2,8 +2,8 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "n_55_away_mode_home.png"
+      "filename" : "n_55_away_mode_home.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",

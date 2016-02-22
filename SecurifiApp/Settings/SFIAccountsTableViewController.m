@@ -353,7 +353,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
     baseYCordinate = 45;
     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.image = [UIImage imageNamed:@"line"];
     imgLine.alpha = 0.5;
     [backgroundLabel addSubview:imgLine];
     baseYCordinate += 5;
@@ -362,7 +362,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, 110);
 
-        imgArrow.image = [UIImage imageNamed:@"down_arrow.png"];
+        imgArrow.image = [UIImage imageNamed:@"down_arrow"];
 
         baseYCordinate += 5;
 
@@ -394,7 +394,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     else {
         //Expanded View
         backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, EXPANDED_PROFILE_ROW_HEIGHT - 10);
-        imgArrow.image = [UIImage imageNamed:@"up_arrow.png"];
+        imgArrow.image = [UIImage imageNamed:@"up_arrow"];
 
         //PRIMARY EMAIL
         UILabel *lblEmailTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, self.tableView.frame.size.width - 30, 30)];
@@ -418,7 +418,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         baseYCordinate += 30;
 
         UIImageView *imgLine1 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine1.image = [UIImage imageNamed:@"line.png"];
+        imgLine1.image = [UIImage imageNamed:@"line"];
         imgLine1.alpha = 0.2;
         [backgroundLabel addSubview:imgLine1];
 
@@ -445,7 +445,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         baseYCordinate += 30;
         UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine2.image = [UIImage imageNamed:@"line.png"];
+        imgLine2.image = [UIImage imageNamed:@"line"];
         imgLine2.alpha = 0.2;
         [backgroundLabel addSubview:imgLine2];
 
@@ -499,7 +499,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
         baseYCordinate += 30;
 
         UIImageView *imgLine3 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine3.image = [UIImage imageNamed:@"line.png"];
+        imgLine3.image = [UIImage imageNamed:@"line"];
         imgLine3.alpha = 0.2;
         [backgroundLabel addSubview:imgLine3];
 
@@ -550,7 +550,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         baseYCordinate += 30;
         UIImageView *imgLine4 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine4.image = [UIImage imageNamed:@"line.png"];
+        imgLine4.image = [UIImage imageNamed:@"line"];
         imgLine4.alpha = 0.2;
         [backgroundLabel addSubview:imgLine4];
 
@@ -637,7 +637,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         baseYCordinate += 30;
         UIImageView *imgLine5 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine5.image = [UIImage imageNamed:@"line.png"];
+        imgLine5.image = [UIImage imageNamed:@"line"];
         imgLine5.alpha = 0.2;
         [backgroundLabel addSubview:imgLine5];
 
@@ -688,7 +688,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         baseYCordinate += 30;
         UIImageView *imgLine6 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine6.image = [UIImage imageNamed:@"line.png"];
+        imgLine6.image = [UIImage imageNamed:@"line"];
         imgLine6.alpha = 0.2;
         [backgroundLabel addSubview:imgLine6];
 
@@ -739,7 +739,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         baseYCordinate += 30;
         UIImageView *imgLine7 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine7.image = [UIImage imageNamed:@"line.png"];
+        imgLine7.image = [UIImage imageNamed:@"line"];
         imgLine7.alpha = 0.2;
         [backgroundLabel addSubview:imgLine7];
 
@@ -802,7 +802,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
     baseYCordinate = 45;
     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.image = [UIImage imageNamed:@"line"];
     imgLine.alpha = 0.5;
     [backgroundLabel addSubview:imgLine];
     baseYCordinate += 5;
@@ -811,7 +811,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, 110);
 
-        imgArrow.image = [UIImage imageNamed:@"down_arrow.png"];
+        imgArrow.image = [UIImage imageNamed:@"down_arrow"];
 
         baseYCordinate += 5;
 
@@ -842,7 +842,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
             expandedLabelSize = expandedLabelSize + 30 + ([currentAlmond.accessEmailIDs count] * 25);
         }
         backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, expandedLabelSize - 10);
-        imgArrow.image = [UIImage imageNamed:@"up_arrow.png"];
+        imgArrow.image = [UIImage imageNamed:@"up_arrow"];
 
         //Almond Name
         UILabel *lblAlmondTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCordinate, 120, 30)];
@@ -897,7 +897,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         baseYCordinate += 30;
         UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine2.image = [UIImage imageNamed:@"line.png"];
+        imgLine2.image = [UIImage imageNamed:@"line"];
         imgLine2.alpha = 0.2;
         [backgroundLabel addSubview:imgLine2];
 
@@ -938,7 +938,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
             baseYCordinate += 30;
             UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCordinate, self.tableView.frame.size.width - 35, 1)];
-            imgLine.image = [UIImage imageNamed:@"line.png"];
+            imgLine.image = [UIImage imageNamed:@"line"];
             imgLine.alpha = 0.2;
             [backgroundLabel addSubview:imgLine];
         }
@@ -1001,7 +1001,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
     baseYCoordinate = 45;
     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCoordinate, self.tableView.frame.size.width - 35, 1)];
-    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.image = [UIImage imageNamed:@"line"];
     imgLine.alpha = 0.5;
     [backgroundLabel addSubview:imgLine];
     baseYCoordinate += 5;
@@ -1010,7 +1010,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, 110);
 
-        imgArrow.image = [UIImage imageNamed:@"down_arrow.png"];
+        imgArrow.image = [UIImage imageNamed:@"down_arrow"];
 
         baseYCoordinate += 5;
 
@@ -1036,7 +1036,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     else {
         //Expanded View
         backgroundLabel.frame = CGRectMake(10, 5, self.tableView.frame.size.width - 20, EXPANDED_SHARED_ALMOND_ROW_HEIGHT - 10);
-        imgArrow.image = [UIImage imageNamed:@"up_arrow.png"];
+        imgArrow.image = [UIImage imageNamed:@"up_arrow"];
 
         //Almond Name
         UILabel *lblAlmondTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, baseYCoordinate, 120, 30)];
@@ -1091,7 +1091,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
         baseYCoordinate += 30;
         UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, baseYCoordinate, self.tableView.frame.size.width - 35, 1)];
-        imgLine2.image = [UIImage imageNamed:@"line.png"];
+        imgLine2.image = [UIImage imageNamed:@"line"];
         imgLine2.alpha = 0.2;
         [backgroundLabel addSubview:imgLine2];
     }

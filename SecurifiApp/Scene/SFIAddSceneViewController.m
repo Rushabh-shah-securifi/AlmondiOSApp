@@ -820,7 +820,7 @@
         
         UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width / 2 - 50, 95, 86, 60)];
         imgRouter.userInteractionEnabled = NO;
-        [imgRouter setImage:[UIImage imageNamed:@"router_1.png"]];
+        [imgRouter setImage:[UIImage imageNamed:@"router_1"]];
         imgRouter.contentMode = UIViewContentModeScaleAspectFit;
         [cell addSubview:imgRouter];
         

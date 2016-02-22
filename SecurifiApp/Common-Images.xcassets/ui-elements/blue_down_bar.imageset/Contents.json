@@ -2,16 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "blue_down_bar.png"
+      "filename" : "blue_down_bar.pdf"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "blue_down_bar.png",
+      "unassigned" : true,
+      "scale" : "1x"
     }
   ],
   "info" : {

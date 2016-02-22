@@ -2,7 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "router-icon.pdf"
+      "filename" : "router-icon-1.pdf"
+    },
+    {
+      "idiom" : "universal",
+      "filename" : "router-icon.pdf",
+      "unassigned" : true
     }
   ],
   "info" : {

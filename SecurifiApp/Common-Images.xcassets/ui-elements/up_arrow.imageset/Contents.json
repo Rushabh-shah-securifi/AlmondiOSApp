@@ -2,16 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "up_arrow.png"
+      "filename" : "up_arrow.pdf"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x"
+      "filename" : "up_arrow.png",
+      "unassigned" : true,
+      "scale" : "1x"
     }
   ],
   "info" : {

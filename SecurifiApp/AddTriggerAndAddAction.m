@@ -507,7 +507,7 @@ DimmerButton *dimerButton;
 -(NSMutableArray *)getToggelDeviceIndex:(NSArray *)deviceIndexes{
     IndexValueSupport *indexValue =[[IndexValueSupport alloc]init];
     indexValue.displayText = @"TOGGLE";
-    indexValue.iconName = @"toggle_icon.png";
+    indexValue.iconName = @"toggle_icon";
     indexValue.matchData = @"toggle";
     NSArray *indexvaluearray = [[NSArray alloc]initWithObjects:indexValue, nil];
     NSMutableArray *toggleIndexes = [[NSMutableArray alloc]init];

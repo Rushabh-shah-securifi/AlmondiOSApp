@@ -388,7 +388,7 @@
     //todo seems like the button could take place of image view
     
     UIImageView *settingsImage = [[UIImageView alloc] initWithFrame:CGRectMake(cell_frame.size.width - 50, 37, 23, 23)];
-    settingsImage.image = [UIImage imageNamed:@"icon_config.png"];
+    settingsImage.image = [UIImage imageNamed:@"icon_config"];
     settingsImage.alpha = (CGFloat) (self.isExpandedView ? 1.0 : 0.5); // change color of image when expanded
     settingsImage.userInteractionEnabled = YES;
     [self.contentView addSubview:settingsImage];

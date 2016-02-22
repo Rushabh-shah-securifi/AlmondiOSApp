@@ -74,10 +74,10 @@
 
 - (UIImage *)getCardIcon {
     if (self.allowedDevice) {
-        return [UIImage imageNamed:@"connected_user.png"];
+        return [UIImage imageNamed:@"connected_user"];
     }
     else {
-        return [UIImage imageNamed:@"blocked_user.png"];
+        return [UIImage imageNamed:@"blocked_user"];
     }
 }
 

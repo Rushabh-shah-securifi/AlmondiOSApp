@@ -635,7 +635,7 @@
 
 - (void)addLine {
     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, self.baseYCoordinate, self.frame.size.width - 10, 1)];
-    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.image = [UIImage imageNamed:@"line"];
     imgLine.alpha = 0.6;
     [self addSubview:imgLine];
     [self markYOffset:5];
@@ -643,7 +643,7 @@
 
 - (void)addShortLine {
     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(10, self.baseYCoordinate, self.frame.size.width - 20, 1)];
-    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.image = [UIImage imageNamed:@"line"];
     imgLine.alpha = 0.3;
     [self addSubview:imgLine];
     [self markYOffset:5];
@@ -771,7 +771,7 @@
 
 - (void)configureMultiLevelSwitchMinValue:(int)minValue maxValue:(int)sensorMaxValue {
     UIImageView *minImage = [[UIImageView alloc] initWithFrame:CGRectMake(10.0, self.baseYCoordinate, 24, 24)];
-    [minImage setImage:[UIImage imageNamed:@"dimmer_min.png"]];
+    [minImage setImage:[UIImage imageNamed:@"dimmer_min"]];
     [self addSubview:minImage];
 
     // get initial value and convert to 0-100 scale
@@ -786,7 +786,7 @@
     [self addSubview:slider];
 
     UIImageView *maxImage = [[UIImageView alloc] initWithFrame:CGRectMake((self.frame.size.width - 90) + 50, self.baseYCoordinate, 24, 24)];
-    [maxImage setImage:[UIImage imageNamed:@"dimmer_max.png"]];
+    [maxImage setImage:[UIImage imageNamed:@"dimmer_max"]];
     [self addSubview:maxImage];
 
     [self markYOffset:35];

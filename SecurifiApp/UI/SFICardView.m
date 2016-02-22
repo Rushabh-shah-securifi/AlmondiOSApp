@@ -85,7 +85,7 @@
 
 - (void)addLine {
     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(5, self.baseYCoordinate, self.frame.size.width - 15, 1)];
-    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.image = [UIImage imageNamed:@"line"];
     imgLine.alpha = 0.6;
     [self addSubview:imgLine];
     [self markYOffset:5];
@@ -93,7 +93,7 @@
 
 - (void)addShortLine {
     UIImageView *imgLine = [[UIImageView alloc] initWithFrame:CGRectMake(10, self.baseYCoordinate, self.frame.size.width - 20, 1)];
-    imgLine.image = [UIImage imageNamed:@"line.png"];
+    imgLine.image = [UIImage imageNamed:@"line"];
     imgLine.alpha = 0.3;
     [self addSubview:imgLine];
     [self markYOffset:5];
@@ -243,7 +243,7 @@
     CGFloat width = CGRectGetWidth(self.frame);
     CGRect frame = CGRectMake(width - 40, 37, 23, 23);
 
-    UIImage *image = [UIImage imageNamed:@"icon_config.png"];
+    UIImage *image = [UIImage imageNamed:@"icon_config"];
 
     UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     settingsButton.frame = frame;

@@ -2,18 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "iconGreenCheckmark.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "iconGreenCheckmark@2x.png"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "iconGreenCheckmark@3x.png"
+      "filename" : "iconGreenCheckmark.pdf"
     }
   ],
   "info" : {

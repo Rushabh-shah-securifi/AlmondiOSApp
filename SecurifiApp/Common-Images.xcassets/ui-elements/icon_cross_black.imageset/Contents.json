@@ -2,16 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "icon_cross_black.pdf"
+    },
+    {
+      "idiom" : "universal",
       "filename" : "icon_cross_black.png",
+      "unassigned" : true,
       "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x"
     }
   ],
   "info" : {
