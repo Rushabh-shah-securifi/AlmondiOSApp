@@ -20,6 +20,7 @@
     [super viewDidLoad];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentDeviceList = [NSMutableArray arrayWithArray:[toolkit deviceList:[toolkit currentAlmond].almondplusMAC]];
+    [self setDeviceValues:[toolkit deviceValuesList:[toolkit currentAlmond].almondplusMAC]];
    // [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"reuseIdentifier"];
 
     // Uncomment the following line to preserve selection between presentations.
@@ -41,7 +42,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.currentDeviceList.count;
+    return 1;
 }
 
 
@@ -52,15 +53,15 @@
         cell = [[SensorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuseIdentifier"];
         //cell = [[SFISensorTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
+    SFIDevice *device = [self.currentDeviceList objectAtIndex:indexPath.row];
     NSLog(@"cell frame %f,%f,%f,%f",cell.frame.origin.x,cell.frame.origin.y,cell.frame.size.height,cell.frame.size.width);
     // Configure the cell...
-    cell.device = [self.currentDeviceList objectAtIndex:indexPath.row];
-    [cell cellInfo];
+    cell.device = device;
+    cell.deviceValue = [self tryCurrentDeviceValues:device.deviceID];
+    //[cell cellInfo];
     NSLog(@" cell.device name %@",cell.device.deviceName);
     return cell;
 }
-
-
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@" heightForRowAtIndexPath ");
@@ -73,7 +74,14 @@
         table[key] = value;
     }
     _deviceValueTable = [NSDictionary dictionaryWithDictionary:table];
+    NSLog(@"_deviceValueTable  %@ ",_deviceValueTable);
 }
+- (SFIDeviceValue *)tryCurrentDeviceValues:(int)deviceId {
+    return self.deviceValueTable[@(deviceId)];
+}
+
+
+
 /*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];

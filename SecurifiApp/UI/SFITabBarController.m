@@ -238,10 +238,10 @@ typedef NS_ENUM(int, TabBarMode) {
 - (UIViewController *)sensorTab {
     
     if (!_sensorTab) {
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
-//        SensorTable *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SensorTable"];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
+        SensorTable *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SensorTable"];
         UIImage *icon = [UIImage imageNamed:@"icon_sensor"];
-        SFISensorsViewController *ctrl = [SFISensorsViewController new];
+//        SFISensorsViewController *ctrl = [SFISensorsViewController new];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
 
         //UIImage *icon = [UIImage imageNamed:@"icon_sensor"];

@@ -17,5 +17,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *deviceNameLable;
 @property (weak, nonatomic) IBOutlet UILabel *deviceStatusLabel;
 @property (nonatomic,strong) SFIDevice *device;
+@property (nonatomic,strong) SFIDeviceValue *deviceValue;
 -(void)cellInfo;
 @end
