@@ -187,6 +187,7 @@ SFISubPropertyBuilder *subPropertyBuilder;
     self.triggerAction.deviceListScrollView = self.deviceListScrollView;
     self.triggerAction.deviceIndexButtonScrollView = self.deviceIndexButtonScrollView;
     self.triggerAction.parentView = self.view;
+    self.triggerAction.isScene = NO;
     
     self.triggerAction.selectedButtonsPropertiesArrayTrigger = self.rule.triggers;
     self.triggerAction.selectedButtonsPropertiesArrayAction = self.rule.actions;

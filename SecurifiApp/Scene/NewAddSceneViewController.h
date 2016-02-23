@@ -17,8 +17,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *informationLabel;
 
 @property (copy, nonatomic)Rule *scene;
-@property (nonatomic ,strong)NSMutableArray *wifiClientsArray;
-@property (nonatomic, strong)NSMutableArray *actionsArray;
 @property (nonatomic)BOOL isInitialized;
+@property (nonatomic)int indexPathRow;
 
 @end

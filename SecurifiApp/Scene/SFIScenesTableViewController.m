@@ -23,7 +23,7 @@
 #import "MDJSON.h"
 #import "Analytics.h"
 #import "NewAddSceneViewController.h"
-
+#import "SFIButtonSubProperties.h"
 #define AVENIR_ROMAN @"Avenir-Roman"
 
 @interface SFIScenesTableViewController ()<UITableViewDataSource,UITableViewDelegate,SFIScenesTableViewCellDelegate,MBProgressHUDDelegate,MessageViewDelegate> {
@@ -225,11 +225,37 @@
     if ([self isNoAlmondMAC] || [self isSceneListEmpty]) {
         return;
     }
-    
-    NewAddSceneViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewAddSceneViewController"];
-//    viewController.originalSceneInfo = [scenesArray[indexPath.row] mutableCopy];
-//    viewController.index = (int)indexPath.row;
-    [self.navigationController pushViewController:viewController animated:YES];
+
+    NewAddSceneViewController *newAddSceneViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewAddSceneViewController"];
+    newAddSceneViewController.isInitialized = YES;
+    newAddSceneViewController.scene = [self getScene:scenesArray[indexPath.row]];
+    newAddSceneViewController.indexPathRow = (int)indexPath.row;
+    [self.navigationController pushViewController:newAddSceneViewController animated:YES];
+}
+
+-(Rule *)getScene:(NSDictionary*)dict{
+    Rule *scene = [[Rule alloc]init];
+    scene.ID = [dict valueForKey:@"ID"];
+    scene.name = [dict valueForKey:@"Name"]==nil?@"":[dict valueForKey:@"Name"];
+    scene.isActive = [[dict valueForKey:@"Active"] boolValue];
+    scene.triggers= [NSMutableArray new];
+    [self getEntriesList:[dict valueForKey:@"SceneEntryList"] list:scene.triggers];
+    return scene;
+}
+
+-(void)getEntriesList:(NSArray*)sceneEntryList list:(NSMutableArray *)triggers{
+    for(NSDictionary *triggersDict in sceneEntryList){
+        SFIButtonSubProperties* subProperties = [[SFIButtonSubProperties alloc] init];
+        subProperties.deviceId = [[triggersDict valueForKey:@"DeviceID"] intValue];
+        subProperties.index = [[triggersDict valueForKey:@"Index"] intValue];
+        subProperties.matchData = [triggersDict valueForKey:@"Value"];
+
+//        subProperties.eventType = subProperties.deviceId==0? @"AlmondModeUpdated": @"DeviceTrigger";
+//        subProperties.type = subProperties.deviceId==0?@"EventTrigger":@"DeviceTrigger";
+//        subProperties.delay=[triggersDict valueForKey:@"PreDelay"];
+//        [self addTime:triggersDict timeProperty:subProperties];
+        [triggers addObject:subProperties];
+    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {

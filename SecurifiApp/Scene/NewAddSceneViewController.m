@@ -28,31 +28,35 @@
 #import "AddTriggerAndAddAction.h"
 #import "SFISubPropertyBuilder.h"
 #import "MBProgressHUD.h"
+#import "ScenePayload.h"
 
-@interface NewAddSceneViewController()<AddTriggerAndAddActionDelegate,SFISubPropertyBuilderDelegate>{
+@interface NewAddSceneViewController()<AddTriggerAndAddActionDelegate,SFISubPropertyBuilderDelegate,UIAlertViewDelegate>{
     NSInteger randomMobileInternalIndex;
 }
 @property (nonatomic,strong)AddTriggerAndAddAction *triggerAction;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
+@property UIButton *buttonDelete;
 @end
 
 
 @implementation NewAddSceneViewController
+UITextField *textField;
 SFISubPropertyBuilder *subPropertyBuilder;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-//    self.wifiClientsArray = [[NSMutableArray alloc]init];
     self.triggerAction = [[AddTriggerAndAddAction alloc]init];
     
-    [self getWificlientsList];
     if(!self.isInitialized){
         self.scene = [[Rule alloc]init];
     }
-//    [self initializeNotifications];
+    [self initializeNotifications];
     [self setUpNavigationBar];
-//    [self callRulesView];
-    [self getActionsDeviceList:NO];
+    
+    [self updateInfoLabel];
+    [self addSceneToTopView];
+    
+    [self getTriggersDeviceList:YES];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -60,9 +64,14 @@ SFISubPropertyBuilder *subPropertyBuilder;
     [super viewWillAppear:animated];
 }
 
--(void)getWificlientsList{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.wifiClientsArray = toolkit.wifiClientParser;
+- (void)initializeNotifications {
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    
+    [center addObserver:self
+               selector:@selector(gotResponseFor1064:)
+                   name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
+                 object:nil];
+    
 }
 
 -(void) setUpNavigationBar{
@@ -78,13 +87,14 @@ SFISubPropertyBuilder *subPropertyBuilder;
 }
 
 
-- (void)getActionsDeviceList:(BOOL)isTrigger{
+- (void)getTriggersDeviceList:(BOOL)isTrigger{
     self.triggerAction.delegate = self;
     self.triggerAction.deviceListScrollView = self.deviceListScrollView;
     self.triggerAction.deviceIndexButtonScrollView = self.deviceIndexButtonScrollView;
     self.triggerAction.parentView = self.view;
+    self.triggerAction.isScene = YES;
     
-    self.triggerAction.selectedButtonsPropertiesArrayAction = self.scene.actions;
+    self.triggerAction.selectedButtonsPropertiesArrayTrigger = self.scene.triggers;
     [self.triggerAction addDeviceNameList:isTrigger];
 }
 
@@ -96,11 +106,44 @@ SFISubPropertyBuilder *subPropertyBuilder;
 
 #pragma mark button clicks
 -(void)btnSaveTap:(id)sender{
-    
+    textField = [[UITextField alloc]init];
+    if(self.isInitialized){
+        textField.text = self.scene.name;
+    }
+    if(self.scene.triggers.count > 0){
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Scene Name"
+                                                        message:@""
+                                                       delegate:self
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:@"Save", nil];
+        [alert setDelegate:self];
+        alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+        textField = [alert textFieldAtIndex:0];
+        textField.frame = CGRectMake(alert.frame.origin.x, 25.0, alert.frame.size.width, 15.0);
+        [textField setBackgroundColor:[UIColor whiteColor]];
+        if(self.isInitialized){
+            textField.text = self.scene.name;
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [alert show];
+        });
+        
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"You cannot save Scene without selecting actions"
+                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [alert show];
+        });
+        
+    }
 }
 
 -(void)btnCancelTap:(id)sender{
-    
+    self.scene = nil;
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark helper methods
@@ -122,20 +165,108 @@ SFISubPropertyBuilder *subPropertyBuilder;
 }
 
 -(void)updateInfoLabel{
-    if(self.scene.actions.count == 0){
+    if(self.scene.triggers.count == 0){
         self.informationLabel.text = @"To get started, please select an Action";
     }
-    else if (self.scene.actions.count > 0){
+    else if (self.scene.triggers.count > 0){
         self.informationLabel.text = @"Add another action or press SAVE to finalize the Scene";
     }
     
+}
+
+- (void)addAddRuleButton{
+    if (!self.buttonDelete) {
+        self.buttonDelete = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.buttonDelete.frame = CGRectMake((self.navigationController.view.frame.size.width - 65)/2, self.navigationController.view.frame.size.height-130, 65, 65);
+        [self.buttonDelete setImage:[UIImage imageNamed:@"btnAdd"] forState:UIControlStateNormal];
+        self.buttonDelete.backgroundColor = [UIColor clearColor];
+        [self.buttonDelete addTarget:self action:@selector(btnAddNewRuleTap:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    [self.navigationController.view addSubview:self.buttonDelete];
+}
+
+#pragma mark command response
+- (void)gotResponseFor1064:(id)sender {
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    NSDictionary * mainDict;
+    if(local){
+        mainDict = [data valueForKey:@"data"];
+    }else{
+        mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    }
+    
+    if (randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
+        return;
+    }
+    
+    [self.HUD hide:YES];
+    NSString * success = [mainDict valueForKey:@"Success"];
+    if (![success isEqualToString:@"true"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"scene.alert-title.Oops", @"Oops") message:NSLocalizedString(@"scene.alert-msg.Sorry, There was some problem with this request, try later!", @"Sorry, There was some problem with this request, try later!")
+                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
+        [alert show];
+    }else{
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.navigationController popViewControllerAnimated:YES];
+        });
+    }
+}
+
+#pragma mark alert view delegeate method
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == [alertView cancelButtonIndex]){
+        //cancel clicked ...do your action
+    }else{
+        self.scene.name = textField.text;
+        [self sendRuleCommand];
+    }
+}
+
+-(void)sendRuleCommand{
+    //HUd methods.....
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = @"Saving Scene...";
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+    [self showHudWithTimeout];
+    
+    NSDictionary* payloadDict = [ScenePayload getScenePayload:self.scene mobileInternalIndex:(int)randomMobileInternalIndex isEdit:self.isInitialized];
+    GenericCommand *command = [[GenericCommand alloc] init];
+    command.commandType = CommandType_UPDATE_REQUEST;
+    command.command = [payloadDict JSONString];
+
+    [self asyncSendCommand:command];
+    NSLog(@"new scenes payload %@",[payloadDict JSONString]);
+}
+
+- (void)asyncSendCommand:(GenericCommand *)command {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    if(local){
+        [[SecurifiToolkit sharedInstance] asyncSendToLocal:command almondMac:almond.almondplusMAC];
+    }else{
+        [[SecurifiToolkit sharedInstance] asyncSendToCloud:command];
+    }
+}
+
+- (void)showHudWithTimeout {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD show:YES];
+        [self.HUD hide:YES afterDelay:5];
+    });
 }
 
 #pragma mark delegate methods
 -(void)updateTriggerAndActionDelegatePropertie:(BOOL)isTrigger{
     [self updateInfoLabel];
     [self addSceneToTopView];
-    
 }
 
 -(RulesDeviceNameButton*)getSelectedButton:(int)deviceId eventType:(NSString*)eventType{
@@ -155,6 +286,7 @@ SFISubPropertyBuilder *subPropertyBuilder;
 
 
 -(void)redrawDeviceIndexView:(sfi_id)deviceId clientEvent:(NSString*)eventType{
+    NSLog(@"redrawDeviceIndexView");
     [self addSceneToTopView]; //top view
     
     RulesDeviceNameButton *deviceButton = [self getSelectedButton:deviceId eventType:eventType];

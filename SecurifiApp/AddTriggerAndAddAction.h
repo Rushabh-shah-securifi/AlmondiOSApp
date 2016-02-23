@@ -28,6 +28,7 @@
 @property (nonatomic, strong)RulesTimeElement *ruleTime;
 @property (nonatomic) bool isTrigger;
 @property (nonatomic) bool isAction;
+@property (nonatomic) BOOL isScene;
 
 
 -(void)addDeviceNameList:(BOOL)isTrigger;
