@@ -11,36 +11,6 @@
 #import "SFIButtonSubProperties.h"
 
 @implementation ScenePayload
-- (NSMutableDictionary *)sendScenePayload:(NSDictionary*)sceneDict with:(NSInteger)randomMobileInternalIndex with:(NSString*)almondMac with:(NSMutableArray *)sceneEntry with:(NSString *)sceneName isLocal:(BOOL)local{
-    
-    
-    NSMutableDictionary *newSceneInfo = [NSMutableDictionary new];
-    NSMutableDictionary *payloadDict = [NSMutableDictionary new];
-    
-    if (sceneDict) {
-        [payloadDict setValue:@"UpdateScene" forKey:@"CommandType"];
-        [newSceneInfo setValue:[sceneDict valueForKey:@"ID"] forKey:@"ID"];
-        [[Analytics sharedInstance] markUpdateScene];
-        
-    }else{
-        [payloadDict setValue:@"AddScene" forKey:@"CommandType"];
-        [[Analytics sharedInstance] markAddScene];
-    }
-    
-    [payloadDict setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
-    [newSceneInfo setValue:sceneName forKey:@"Name"];
-    if(!local){
-        [payloadDict setValue:almondMac forKey:@"AlmondMAC"];
-    }
-    
-    //[self configuresCeneEntryListForSave];
-    [newSceneInfo setValue:sceneEntry forKey:@"SceneEntryList"];
-    
-    [payloadDict setValue:newSceneInfo forKey:@"Scenes"];
-    
-    return payloadDict;
-}
-
 +(NSDictionary*)getScenePayload:(Rule*)scene mobileInternalIndex:(int)mii isEdit:(BOOL)isEdit{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
@@ -84,6 +54,18 @@
              @"Index" : @(subProperty.index).stringValue,
              @"Value" : subProperty.matchData
              };
+}
+
++ (NSMutableDictionary*)getDeleteScenePayload:(Rule*)scene mobileInternalIndex:(int)mii {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+        
+    NSMutableDictionary *payloadDict = [NSMutableDictionary new];
+    [payloadDict setValue:@"RemoveScene" forKey:@"CommandType"];
+    [payloadDict setValue:@{@"ID":scene.ID} forKey:@"Scenes"];
+    [payloadDict setValue:@(mii) forKey:@"MobileInternalIndex"];
+    [payloadDict setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
+    return payloadDict;
 }
 
 @end

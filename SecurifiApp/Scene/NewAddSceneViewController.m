@@ -30,6 +30,9 @@
 #import "MBProgressHUD.h"
 #import "ScenePayload.h"
 
+#define kAlertViewSave 1
+#define kAlertViewDelete 2
+
 @interface NewAddSceneViewController()<AddTriggerAndAddActionDelegate,SFISubPropertyBuilderDelegate,UIAlertViewDelegate>{
     NSInteger randomMobileInternalIndex;
 }
@@ -46,16 +49,18 @@ SFISubPropertyBuilder *subPropertyBuilder;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.triggerAction = [[AddTriggerAndAddAction alloc]init];
+    self.automaticallyAdjustsScrollViewInsets = NO;
     
     if(!self.isInitialized){
         self.scene = [[Rule alloc]init];
+    }else{
+        [self addDeleteSceneButton];
     }
     [self initializeNotifications];
     [self setUpNavigationBar];
     
     [self updateInfoLabel];
     [self addSceneToTopView];
-    
     [self getTriggersDeviceList:YES];
 }
 
@@ -72,6 +77,11 @@ SFISubPropertyBuilder *subPropertyBuilder;
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
                  object:nil];
     
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self removeDeleteSceneButton];
 }
 
 -(void) setUpNavigationBar{
@@ -117,6 +127,7 @@ SFISubPropertyBuilder *subPropertyBuilder;
                                               cancelButtonTitle:@"Cancel"
                                               otherButtonTitles:@"Save", nil];
         [alert setDelegate:self];
+        alert.tag = kAlertViewSave;
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
         textField = [alert textFieldAtIndex:0];
         textField.frame = CGRectMake(alert.frame.origin.x, 25.0, alert.frame.size.width, 15.0);
@@ -146,6 +157,21 @@ SFISubPropertyBuilder *subPropertyBuilder;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+- (void)btnDeleteSceneTap:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Are you sure, you want to delete this Scene"]
+                                                    message:@""
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"Delete", nil];
+    [alert setDelegate:self];
+    alert.tag = kAlertViewDelete;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [alert show];
+    });
+}
+
+
+
 #pragma mark helper methods
 -(void)clearDeviceListScrollView{
     NSArray *viewsToRemove = [self.deviceListScrollView subviews];
@@ -153,7 +179,6 @@ SFISubPropertyBuilder *subPropertyBuilder;
         if (![v isKindOfClass:[UIImageView class]])
             [v removeFromSuperview];
     }
-    
 }
 
 -(void)clearDeviceIndexButtonScrollView{
@@ -174,15 +199,20 @@ SFISubPropertyBuilder *subPropertyBuilder;
     
 }
 
-- (void)addAddRuleButton{
+- (void)addDeleteSceneButton{
     if (!self.buttonDelete) {
         self.buttonDelete = [UIButton buttonWithType:UIButtonTypeCustom];
         self.buttonDelete.frame = CGRectMake((self.navigationController.view.frame.size.width - 65)/2, self.navigationController.view.frame.size.height-130, 65, 65);
-        [self.buttonDelete setImage:[UIImage imageNamed:@"btnAdd"] forState:UIControlStateNormal];
+        [self.buttonDelete setImage:[UIImage imageNamed:@"btnDel"] forState:UIControlStateNormal];
         self.buttonDelete.backgroundColor = [UIColor clearColor];
-        [self.buttonDelete addTarget:self action:@selector(btnAddNewRuleTap:) forControlEvents:UIControlEventTouchUpInside];
+        [self.buttonDelete addTarget:self action:@selector(btnDeleteSceneTap:) forControlEvents:UIControlEventTouchUpInside];
     }
     [self.navigationController.view addSubview:self.buttonDelete];
+}
+
+- (void)removeDeleteSceneButton{
+    if(self.buttonDelete)
+        [self.buttonDelete removeFromSuperview];
 }
 
 #pragma mark command response
@@ -222,12 +252,16 @@ SFISubPropertyBuilder *subPropertyBuilder;
     if (buttonIndex == [alertView cancelButtonIndex]){
         //cancel clicked ...do your action
     }else{
-        self.scene.name = textField.text;
-        [self sendRuleCommand];
+        if(alertView.tag == kAlertViewSave){
+            self.scene.name = textField.text;
+            [self sendAddSceneCommand];
+        }else if(alertView.tag == kAlertViewDelete){
+            [self sendDeleteSceneCommand];
+        }
     }
 }
 
--(void)sendRuleCommand{
+-(void)sendAddSceneCommand{
     //HUd methods.....
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
@@ -243,6 +277,23 @@ SFISubPropertyBuilder *subPropertyBuilder;
 
     [self asyncSendCommand:command];
     NSLog(@"new scenes payload %@",[payloadDict JSONString]);
+}
+
+-(void)sendDeleteSceneCommand{
+    NSMutableDictionary *payloadDict = [ScenePayload getDeleteScenePayload:self.scene mobileInternalIndex:(int)randomMobileInternalIndex];
+    NSLog(@"delete payload: %@", payloadDict);
+    GenericCommand *command = [[GenericCommand alloc] init];
+    command.commandType = CommandType_UPDATE_REQUEST;
+    command.command = [payloadDict JSONString];
+    
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.labelText = NSLocalizedString(@"scenes.hud.deletingScene", @"Deleting Scene...");
+    _HUD.dimBackground = YES;
+    [self.navigationController.view addSubview:_HUD];
+    [self showHudWithTimeout];
+    
+    [self asyncSendCommand:command];
 }
 
 - (void)asyncSendCommand:(GenericCommand *)command {

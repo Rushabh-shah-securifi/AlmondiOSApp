@@ -539,7 +539,7 @@
     [self configuresCeneEntryListForSave];
     
     ScenePayload *scenePayLoad = [ScenePayload new];
-    payloadDict = [scenePayLoad sendScenePayload:self.sceneInfo with:randomMobileInternalIndex with:_almond.almondplusMAC with:sceneEntryList with:sceneName isLocal:local];
+//    payloadDict = [scenePayLoad sendScenePayload:self.sceneInfo with:randomMobileInternalIndex with:_almond.almondplusMAC with:sceneEntryList with:sceneName isLocal:local];
     
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_UPDATE_REQUEST;
