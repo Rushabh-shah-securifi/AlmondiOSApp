@@ -87,8 +87,6 @@ DimmerButton *dimerButton;
         [deviceButton addTarget:self action:@selector(TimeEventClicked:) forControlEvents:UIControlEventTouchUpInside];
     }else if([deviceName isEqualToString:@"Clients"]){
         [deviceButton addTarget:self action:@selector(wifiClientsClicked:) forControlEvents:UIControlEventTouchUpInside];}
-    else if([deviceName isEqualToString:@"rebot almond"]){
-        [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];}
     else
         [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.deviceListScrollView addSubview:deviceButton];
@@ -112,14 +110,12 @@ DimmerButton *dimerButton;
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     NSMutableArray *deviceArray = [NSMutableArray new];
     for(SFIDevice *device in [toolkit deviceList:plus.almondplusMAC]){
-        if(self.isTrigger && (device.deviceType != SFIDeviceType_HueLamp_48) && (device.deviceType != SFIDeviceType_NestSmokeDetector_58) && (device.deviceType != SFIDeviceType_StandardWarningDevice_21))
+        if(self.isTrigger && !self.isScene && (device.deviceType != SFIDeviceType_HueLamp_48) && (device.deviceType != SFIDeviceType_NestSmokeDetector_58) && (device.deviceType != SFIDeviceType_StandardWarningDevice_21) )
             [deviceArray addObject:device];
-        else if (device.isRuleActuator && !self.isTrigger )
+        else if (device.isRuleActuator && (!self.isTrigger || self.isScene))
             [deviceArray addObject:device];
-        
     }
     return deviceArray;
-    
 }
 
 -(void)addDeviceNameList:(BOOL)isTrigger{
@@ -133,18 +129,17 @@ DimmerButton *dimerButton;
     int xVal = 15;
     
     xVal = [self addDeviceName:@"Mode" deviceID:1 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
-    if(self.isTrigger){//if Trigger Add time
+    if(self.isTrigger && !self.isScene){//if Trigger Add time
         xVal = [self addDeviceName:@"Time" deviceID:0 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
         xVal = [self addDeviceName:@"Clients" deviceID:0 deviceType:SFIDeviceType_WIFIClient xVal:xVal];
         //same way we can we can do for client in trigger
     }
     
     //for rest of the devices
-    
     for(SFIDevice *device in [self getTriggerAndActionDeviceList]){
         xVal = [self addDeviceName:device.deviceName deviceID:device.deviceID deviceType:device.deviceType xVal:xVal];
     }
-    if(!self.isTrigger){//add almond Reboot
+    if(!self.isTrigger || self.isScene){//add almond Reboot
         xVal = [self addDeviceName:@"Reboot Almond" deviceID:1 deviceType:SFIDeviceType_REBOOT_ALMOND xVal:xVal];
     }
     self.deviceListScrollView.contentSize = CGSizeMake(xVal +10,self.deviceListScrollView.contentSize.height);
@@ -605,7 +600,6 @@ DimmerButton *dimerButton;
         [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
     }
     [self setActionButtonCount:indexSwitchButton isSlider:NO];
-    
 }
 
 -(void)showPicker:(DimmerButton* )dimmer{
@@ -632,13 +626,13 @@ DimmerButton *dimerButton;
                 if(dim.subProperties.index == 6){
                     if(dim.subProperties.matchData.intValue - value < 3){
                         [dim setNewValue:@(value+3).stringValue];
-//                        dim.subProperties.matchData = @(value+3).stringValue;
+                        //                        dim.subProperties.matchData = @(value+3).stringValue;
                         [self updateMatchData:dim.subProperties newValue:@(value+3).stringValue];
                     }
                 }
             }
         }
-
+        
     }else if(index == 6){
         for (UIView *v in deviceIndexButtons) {
             if ([v isKindOfClass:[DimmerButton class]]) { //to avoid removing scroll indicators
@@ -646,13 +640,13 @@ DimmerButton *dimerButton;
                 if(dim.subProperties.index == 5){
                     if(value - dim.subProperties.matchData.intValue < 3){
                         [dim setNewValue:@(value-3).stringValue];
-//                        dim.subProperties.matchData = @(value-3).stringValue;
+                        //                        dim.subProperties.matchData = @(value-3).stringValue;
                         [self updateMatchData:dim.subProperties newValue:@(value-3).stringValue];
                     }
                 }
             }
         }
-
+        
     }
 }
 
