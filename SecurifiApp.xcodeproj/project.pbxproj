@@ -468,6 +468,12 @@
 		CEF1354E1C509667009E4558 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1354D1C509667009E4558 /* RuleButton.m */; };
 		CEF1357D1C510969009E4558 /* SFISubPropertyBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1357C1C510969009E4558 /* SFISubPropertyBuilder.m */; };
 		CEF135801C525990009E4558 /* DelayPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1357F1C525990009E4558 /* DelayPicker.m */; };
+		CEF158491C7D868100E7B2E2 /* NameLocNotView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158481C7D868000E7B2E2 /* NameLocNotView.m */; settings = {ASSET_TAGS = (); }; };
+		CEF1584C1C7DBD2A00E7B2E2 /* HorzSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1584B1C7DBD2A00E7B2E2 /* HorzSlider.m */; settings = {ASSET_TAGS = (); }; };
+		CEF1584F1C7DC8B100E7B2E2 /* SensorButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1584E1C7DC8B100E7B2E2 /* SensorButtonView.m */; settings = {ASSET_TAGS = (); }; };
+		CEF158521C7DCFD900E7B2E2 /* HueColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158511C7DCFD900E7B2E2 /* HueColorPicker.m */; settings = {ASSET_TAGS = (); }; };
+		CEF158551C7DD5B400E7B2E2 /* HueSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158541C7DD5B400E7B2E2 /* HueSliderView.m */; settings = {ASSET_TAGS = (); }; };
+		CEF1585B1C7DDD0700E7B2E2 /* SensorTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1585A1C7DDD0700E7B2E2 /* SensorTextView.m */; settings = {ASSET_TAGS = (); }; };
 		CEF51A981C5365E9008510B9 /* TimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF51A971C5365E9008510B9 /* TimeView.m */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -977,6 +983,18 @@
 		CEF1357C1C510969009E4558 /* SFISubPropertyBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISubPropertyBuilder.m; sourceTree = "<group>"; };
 		CEF1357E1C525990009E4558 /* DelayPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelayPicker.h; sourceTree = "<group>"; };
 		CEF1357F1C525990009E4558 /* DelayPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelayPicker.m; sourceTree = "<group>"; };
+		CEF158471C7D868000E7B2E2 /* NameLocNotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NameLocNotView.h; sourceTree = "<group>"; };
+		CEF158481C7D868000E7B2E2 /* NameLocNotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NameLocNotView.m; sourceTree = "<group>"; };
+		CEF1584A1C7DBD2A00E7B2E2 /* HorzSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HorzSlider.h; sourceTree = "<group>"; };
+		CEF1584B1C7DBD2A00E7B2E2 /* HorzSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HorzSlider.m; sourceTree = "<group>"; };
+		CEF1584D1C7DC8B100E7B2E2 /* SensorButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorButtonView.h; sourceTree = "<group>"; };
+		CEF1584E1C7DC8B100E7B2E2 /* SensorButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorButtonView.m; sourceTree = "<group>"; };
+		CEF158501C7DCFD900E7B2E2 /* HueColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HueColorPicker.h; sourceTree = "<group>"; };
+		CEF158511C7DCFD900E7B2E2 /* HueColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HueColorPicker.m; sourceTree = "<group>"; };
+		CEF158531C7DD5B400E7B2E2 /* HueSliderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HueSliderView.h; sourceTree = "<group>"; };
+		CEF158541C7DD5B400E7B2E2 /* HueSliderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HueSliderView.m; sourceTree = "<group>"; };
+		CEF158591C7DDD0700E7B2E2 /* SensorTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorTextView.h; sourceTree = "<group>"; };
+		CEF1585A1C7DDD0700E7B2E2 /* SensorTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorTextView.m; sourceTree = "<group>"; };
 		CEF51A961C5365E9008510B9 /* TimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeView.h; sourceTree = "<group>"; };
 		CEF51A971C5365E9008510B9 /* TimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1489,6 +1507,18 @@
 				CE5E60DE1C7B37CB00622798 /* SensorTable.m */,
 				CE53CDCB1C7C6FB8001DE893 /* SensorEditViewController.h */,
 				CE53CDCC1C7C6FB8001DE893 /* SensorEditViewController.m */,
+				CEF158471C7D868000E7B2E2 /* NameLocNotView.h */,
+				CEF1584A1C7DBD2A00E7B2E2 /* HorzSlider.h */,
+				CEF1584B1C7DBD2A00E7B2E2 /* HorzSlider.m */,
+				CEF158481C7D868000E7B2E2 /* NameLocNotView.m */,
+				CEF1584D1C7DC8B100E7B2E2 /* SensorButtonView.h */,
+				CEF1584E1C7DC8B100E7B2E2 /* SensorButtonView.m */,
+				CEF158501C7DCFD900E7B2E2 /* HueColorPicker.h */,
+				CEF158511C7DCFD900E7B2E2 /* HueColorPicker.m */,
+				CEF158531C7DD5B400E7B2E2 /* HueSliderView.h */,
+				CEF158541C7DD5B400E7B2E2 /* HueSliderView.m */,
+				CEF158591C7DDD0700E7B2E2 /* SensorTextView.h */,
+				CEF1585A1C7DDD0700E7B2E2 /* SensorTextView.m */,
 			);
 			path = Sensor;
 			sourceTree = "<group>";
@@ -2526,17 +2556,20 @@
 				1C7E7DCF1A41A0990026F0BA /* SFITableViewController.m in Sources */,
 				1C7E7DD11A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				1C7E7DC11A41A0990026F0BA /* SFIConstants.m in Sources */,
+				CEF158491C7D868100E7B2E2 /* NameLocNotView.m in Sources */,
 				CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */,
 				1C7E7DBF1A41A0990026F0BA /* SFIColors.m in Sources */,
 				1C2F60921B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */,
 				8443277C1B763AD700BF2355 /* SFIScenesTableViewController.m in Sources */,
 				1C7E7D891A41A0990026F0BA /* SFINotificationTableViewCell.m in Sources */,
+				CEF158521C7DCFD900E7B2E2 /* HueColorPicker.m in Sources */,
 				1C7E7DAF1A41A0990026F0BA /* DrawerViewController.m in Sources */,
 				CEF51A981C5365E9008510B9 /* TimeView.m in Sources */,
 				1C7E7D871A41A0990026F0BA /* SFINotificationsViewController.m in Sources */,
 				846414CB1B736B36008AB07F /* ILSaturationBrightnessPickerView.m in Sources */,
 				1C7E7DC51A41A0990026F0BA /* SFIHighlightedButton.m in Sources */,
 				1C7E7D831A41A0990026F0BA /* SFILoginViewController.m in Sources */,
+				CEF1584F1C7DC8B100E7B2E2 /* SensorButtonView.m in Sources */,
 				1C7E7DC71A41A0990026F0BA /* SFIMainViewController.m in Sources */,
 				1C7E7DA71A41A0990026F0BA /* SFIPasswordChangeViewController.m in Sources */,
 				1C7E7DCD1A41A0990026F0BA /* SFISlider.m in Sources */,
@@ -2587,6 +2620,7 @@
 				1C2F60981B69E69D001CCA34 /* SFIScenesTableViewCell.m in Sources */,
 				CE1E91381C4FC24000208B44 /* RulesTableViewController.m in Sources */,
 				1C2F15261BA7FB67009DB175 /* SFIMessageViewController.m in Sources */,
+				CEF158551C7DD5B400E7B2E2 /* HueSliderView.m in Sources */,
 				A54EB02A1C44FDE000CF2837 /* labelAndCheckButtonView.m in Sources */,
 				CE478C6E1C4D0BFE00247CC7 /* AddTriggerAndAddAction.m in Sources */,
 				1DF034DCCD17E1C36BA3BF00 /* SensorSupport.m in Sources */,
@@ -2601,6 +2635,7 @@
 				1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */,
 				1C2F609C1B69E69D001CCA34 /* SFISwitchButton.m in Sources */,
 				1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */,
+				CEF1584C1C7DBD2A00E7B2E2 /* HorzSlider.m in Sources */,
 				1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */,
 				1C2F60A21B69E69D001CCA34 /* SFIWiFiDeviceProprtyEditViewController.m in Sources */,
 				CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */,
@@ -2622,6 +2657,7 @@
 				1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */,
 				1C2F60A81B69E69D001CCA34 /* SKSTableViewCell.m in Sources */,
 				8427D0111B7DDDE300E754DE /* SFISensorDetailViewController.m in Sources */,
+				CEF1585B1C7DDD0700E7B2E2 /* SensorTextView.m in Sources */,
 				A584C8401C5B8344006E02DB /* CollectionViewCell.m in Sources */,
 				1DF030E39A245683EABC61AE /* SFIRouterVersionTableViewCell.m in Sources */,
 				1DF031024A2F8810074C455A /* TemperatureView.m in Sources */,

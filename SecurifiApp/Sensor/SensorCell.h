@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Device.h"
 
+@protocol SensorCellDelegate//onSettingButtonClicked:device genericIndex:genericIndexArray
+-(void)onSettingButtonClicked:(Device*)device genericIndex:(NSArray*)genericIndexArray;
+@end
 @interface SensorCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIView *View;
 
@@ -18,5 +22,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *deviceStatusLabel;
 @property (nonatomic,strong) SFIDevice *device;
 @property (nonatomic,strong) SFIDeviceValue *deviceValue;
+@property (nonatomic)id<SensorCellDelegate> delegate;
 -(void)cellInfo;
 @end

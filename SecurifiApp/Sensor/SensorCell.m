@@ -113,10 +113,29 @@
     return deviceInfo;
 }
 - (IBAction)onSettingClicked:(id)sender {
+    NSLog(@" setting");
+    Device *device=[Device new];
+    device.name=@"Test1";
+    device.ID=1;
+    device.type=1;
+    device.location=@"location";
+    DeviceKnownValues *value1= [DeviceKnownValues new];
+    value1.index=1;
+    value1.genericIndex=1;
+    value1.value=@"true";
     
-     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
-    SensorEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SensorEditViewController"];
-    //[self.navigationController pushViewController:viewController animated:YES];
+    device.knownValues=[NSMutableArray new];
+    [device.knownValues addObject:value1];
+    
+    DeviceKnownValues *value2= [DeviceKnownValues new];
+    value1.index=2;
+    value1.genericIndex=2;
+    value1.value=@"off";
+    [device.knownValues addObject:value2];
+    
+    NSArray *genericIndexArray = [[NSArray alloc]initWithObjects:@"1",@"2",nil];
+    
+    [self.delegate onSettingButtonClicked:device genericIndex:genericIndexArray];
 
 }
 -(NSArray*)deviceInfo{

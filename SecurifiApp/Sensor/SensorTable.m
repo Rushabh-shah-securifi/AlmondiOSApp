@@ -8,8 +8,9 @@
 
 #import "SensorTable.h"
 #import "SensorCell.h"
+#import "SensorEditViewController.h"
 
-@interface SensorTable ()<UITableViewDataSource,UITableViewDelegate>
+@interface SensorTable ()<UITableViewDataSource,UITableViewDelegate,SensorCellDelegate>
 @property (nonatomic,strong)NSMutableArray *currentDeviceList;
 @property (nonatomic,strong)NSDictionary *deviceValueTable;
 @end
@@ -56,6 +57,7 @@
     SFIDevice *device = [self.currentDeviceList objectAtIndex:indexPath.row];
     NSLog(@"cell frame %f,%f,%f,%f",cell.frame.origin.x,cell.frame.origin.y,cell.frame.size.height,cell.frame.size.width);
     // Configure the cell...
+    cell.delegate  = self;
     cell.device = device;
     cell.deviceValue = [self tryCurrentDeviceValues:device.deviceID];
     //[cell cellInfo];
@@ -79,7 +81,15 @@
 - (SFIDeviceValue *)tryCurrentDeviceValues:(int)deviceId {
     return self.deviceValueTable[@(deviceId)];
 }
+-(void)onSettingButtonClicked:(Device*)device genericIndex:(NSArray*)genericIndexArray{
+    NSLog(@"onSettingButtonClicked");
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
+    SensorEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SensorEditViewController"];
+    viewController.device = device;
+    viewController.genericIndexs = genericIndexArray;
+    [self.navigationController pushViewController:viewController animated:YES];
 
+}
 
 
 /*

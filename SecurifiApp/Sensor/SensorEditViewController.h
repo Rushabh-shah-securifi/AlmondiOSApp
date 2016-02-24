@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Device.h"
 
 @interface SensorEditViewController : UIViewController
+@property (nonatomic,strong)NSArray *genericIndexs;
+@property (nonatomic,strong)Device *device;
 
 @end
