@@ -349,6 +349,7 @@ CGPoint tablePoint;
     AddRulesViewController *addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
     addRuleController.delegate = self;
     Rule *rule = [self.rules[indexPath.row] createNew];
+    [self removeInvalidActionsOrTriggers:rule];
     addRuleController.rule = rule;
     addRuleController.isInitialized = YES;
     //need to create textfield param as well.
@@ -356,6 +357,34 @@ CGPoint tablePoint;
     
     [self.navigationController pushViewController:addRuleController animated:YES];
 }
+
+-(void)removeInvalidActionsOrTriggers:(Rule *)rule{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    NSArray *devices =[toolkit deviceValuesList:plus.almondplusMAC];
+    
+    [self removeInvalidEntries:rule.triggers devices:devices ];
+    [self removeInvalidEntries:rule.actions devices:devices ];
+}
+
+-(BOOL)findDevice:(int *)deviceId devices:(NSArray *)devices{
+    for(SFIDeviceValue *deviceValue in devices){
+        if(deviceValue.deviceID == deviceId)
+            return YES;
+    }
+    return NO;
+}
+
+-(void)removeInvalidEntries:(NSMutableArray *)entries devices:(NSArray *)devices{
+    NSMutableArray *invalidEntries=[NSMutableArray new];
+    for(SFIButtonSubProperties *properties in entries){
+        if([properties.type containsString:@"Device"] && ![self findDevice:properties.deviceId devices:devices])
+            [invalidEntries addObject:properties];
+    }
+    if(invalidEntries.count>0)
+        [entries removeObjectsInArray:invalidEntries ];
+}
+
 - (void)activateRule:(CustomCellTableViewCell *)cell{
     [self setUpHUD];
     self.HUD.labelText = cell.activeDeactiveSwitch.selected? [NSString stringWithFormat:@"Activating rule - %@...",cell.ruleNameLabel.text]: [NSString stringWithFormat:@"Deactivating rule - %@...",cell.ruleNameLabel.text];
