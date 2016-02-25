@@ -20,11 +20,13 @@
     //    return self;
 }
 -(void)drawHueColorPicker{
+    
     SFIHuePickerView *huePickerView = [[SFIHuePickerView alloc]initWithFrame:self.frame];
     huePickerView.convertedValue = 0;
     huePickerView.allowSelection = YES;
     huePickerView.delegate = self;
     huePickerView.propertyType = SFIDevicePropertyType_COLOR_HUE;
+    [huePickerView setConvertedValue:50000];
     [self addSubview:huePickerView];
     
     
@@ -34,6 +36,10 @@
     //    SFISlider *slider_brightness = [self sliderForDevicePropertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
     
     SFIHuePickerView *hue_picker = (SFIHuePickerView *) picker;
+     NSString *sensor_value = @([hue_picker convertToSensorValue]).stringValue;
+    NSLog(@"sensor_value %@ ",sensor_value);
+    [self.delegate updateHueColorPicker:sensor_value];
+    
     //    [self processColorTintChange:slider_brightness saturationSlider:slider_saturation huePicker:hue_picker];
     
   

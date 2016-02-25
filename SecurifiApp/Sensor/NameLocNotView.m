@@ -10,6 +10,7 @@
 #import "UIFont+Securifi.h"
 #import "Device.h"
 #import "SFIColors.h"
+#import "SensorButtonView.h"
 
 @implementation NameLocNotView
 -(id) initWithFrame:(CGRect)frame
@@ -38,58 +39,17 @@
     
 
 }
--(void)notiFicationField:(NSString*)labelText andDevice:(Device*)device{
-    NSArray *array = @[@"Always",@"When I'm away,",@"never"];
+-(void)notiFicationField:(NSString*)labelText andDevice:(Device*)device color:(UIColor *)color{
+    NSArray *array = @[@"Always",@"When I'm away",@"never"];
     UILabel *Name = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 15)];
     Name.text = labelText;
     Name.font = [UIFont securifiBoldFont];
     Name.textColor = [UIColor whiteColor];
     [self addSubview:Name];
-    int xPos = 0;
-    for(int i = 0; i<array.count;i++){
-        CGRect textRect = [self adjustDeviceNameWidth:[array objectAtIndex:i]];
-        CGRect frame = CGRectMake(xPos, 20, textRect.size.width + 5, 30);
-        UIButton *button = [[UIButton alloc ]initWithFrame:frame];
-        [button setTitle:[array objectAtIndex:i] forState:UIControlStateNormal];
-        button.backgroundColor = [SFIColors clientGreenColor];
-        button.titleLabel.font = [UIFont securifiBoldFont];
-        button.tag = i;
-        button.opaque = YES;
-        button.alpha = 0.8;
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(onNotifyButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [self addSubview:button];
-        xPos = xPos + button.frame.size.width;
-
-    }
- 
+    SensorButtonView *sensorbuttons = [[SensorButtonView alloc]init];
+    [sensorbuttons drawButton:array selectedValue:5];
+    [self addSubview:sensorbuttons];
     
 }
 
--(CGRect)adjustDeviceNameWidth:(NSString*)deviceName{
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:12]};
-    CGRect textRect;
-    
-    textRect.size = [deviceName sizeWithAttributes:attributes];
-    if(deviceName.length > 18){
-        NSString *temp=@"123456789012345678";
-        textRect.size = [temp sizeWithAttributes:attributes];
-    }
-    return textRect;
-}
--(void)onNotifyButtonClicked:(UIButton *)sender{
-    for(UIButton *button in [[sender superview] subviews]){
-        if([button isKindOfClass:[UILabel class]])
-            continue;
-        if( button.tag == sender.tag){
-            button.alpha = 1.0;
-            button.selected = YES;
-        }
-        else{
-            button.alpha = 0.3;
-            button.selected = NO;
-        }
-    }
-   //values delegate to super view class
-}
 @end

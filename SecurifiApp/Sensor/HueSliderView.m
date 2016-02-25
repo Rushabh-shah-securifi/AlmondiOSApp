@@ -26,10 +26,19 @@
 }
 */
 -(void)drawSlider{
-    SFISlider *brightnessSlider = [[SFISlider alloc]initWithFrame:self.frame];
+    UIImageView *brightnessDim = [[UIImageView alloc]initWithFrame:CGRectMake(0, 3, self.frame.size.height, self.frame.size.height -3)];//dimmer_min
+    brightnessDim.image = [UIImage imageNamed:@"dimmer_min"];
+    
+    [self addSubview:brightnessDim];
+    UIImageView *brightnessFull = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width - self.frame.size.height +3, 3, self.frame.size.height -5, self.frame.size.height -5)];
+    brightnessFull.image = [UIImage imageNamed:@"brightness-icon"];
+    [self addSubview:brightnessFull];
+    SFISlider *brightnessSlider = [[SFISlider alloc]initWithFrame:CGRectMake(self.frame.size.height +3, 0, self.frame.size.width - (2*self.frame.size.height +3), self.frame.size.height)];
     const CGFloat slider_x_offset = 10.0;
     const CGFloat slider_right_inset = 20.0;
-    brightnessSlider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_BRIGHTNESS sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset slider:brightnessSlider];
+    float min = [[self.componentArray firstObject] floatValue];
+    float max = [[self.componentArray lastObject] floatValue];
+    brightnessSlider = [self makeSlider:min maxValue:max propertyType:SFIDevicePropertyType_BRIGHTNESS sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset slider:brightnessSlider];
     
     brightnessSlider.continuous = YES;
     brightnessSlider.allowToSlide = YES;
@@ -42,7 +51,7 @@
     slider.propertyType = propertyType;
     slider.minimumValue = minVal;
     slider.maximumValue = maxValue;
-    slider.popUpViewColor = [SFIColors clientGreenColor];//[self.color complementaryColor];
+    slider.popUpViewColor = self.color;//[self.color complementaryColor];
     slider.textColor = [UIColor whiteColor];//[slider.popUpViewColor blackOrWhiteContrastingColor];
     slider.font = [UIFont securifiBoldFont:12];
     [slider addTarget:self action:@selector(onSliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
@@ -70,6 +79,8 @@
     
     float sensorValue = [slider convertToSensorValue];
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
+    NSLog(@"new values %@",newValue);
+    [self.delegate updateSliderValue:newValue];
     
 }
 - (void)onSliderTapped:(id)sender {
@@ -89,7 +100,8 @@
     
     float sensorValue = [slider convertToSensorValue];
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
-    //[self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)slider.tag Value:newValue];
+    NSLog(@"new values %@",newValue);
+    [self.delegate updateSliderValue:newValue];
 }
 
 

@@ -7,12 +7,15 @@
 //
 
 #import <V8HorizontalPickerView/V8HorizontalPickerView.h>
+#import "Device.h"
 @protocol HorzSliderDelegate
 -(void)updatePickerValue:(NSString *)newValue;
 @end
 @interface HorzSlider : UIView
 @property (nonatomic)NSMutableArray *componentArray;
+@property (nonatomic)Device *device;
 @property (nonatomic)id<HorzSliderDelegate> delegate;
 @property (nonatomic)UIColor *color;
+
 -(void)drawSlider;
 @end

@@ -19,7 +19,7 @@
 #import "HueSliderView.h"
 #import "SensorTextView.h"
 
-@interface SensorEditViewController ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate>
+@interface SensorEditViewController ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate,SensorButtonViewDelegate,SensorTextViewDelegate,HorzSliderDelegate,HueColorPickerDelegate,HorzSliderDelegate,HueSliderViewDelegate>
 @property(nonatomic,strong)NSMutableArray *genericIndexArray;//can be removed
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
 
@@ -65,7 +65,7 @@
                            @"ReadOnly": @"false",
                            @"Placement": @"Header",
                            @"SecondaryPlacement": @"NaN",
-                           @"Layout": @"HueSlider",
+                           @"Layout": @"Button",
                            @"Min": @"10",
                            @"Max": @"20",
                            @"Range": @"NaN",
@@ -84,11 +84,11 @@
                             @"IndexTypeEnum": @"11",
                             @"IndexBehaviour": @"Actuator",
                             @"DataType": @"Bool",
-                            @"ReadOnly": @"true",
+                            @"ReadOnly": @"false",
                             @"Placement": @"Detail",
                             @"SecondaryPlacement": @"NaN",
-                            @"Layout": @"textInput",
-                            @"Min": @"0",
+                            @"Layout": @"Hue",
+                            @"Min": @"1",
                             @"Max": @"100",
                             @"Range": @"NaN",
                             @"Unit": @"NaN",
@@ -142,6 +142,8 @@
             if([[dict valueForKey:@"Layout"] isEqualToString:@"Slider"]){
                 HorzSlider *horzView = [[HorzSlider alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
                 horzView.componentArray = [NSMutableArray new];
+                horzView.device = self.device;
+                horzView.delegate = self;
                 for (NSInteger i=[[dict valueForKey:@"Min"] integerValue]; i<=[[dict valueForKey:@"Max"] integerValue]; i++) {
                     [horzView.componentArray addObject:[NSString stringWithFormat:@"%ld",i]];}
                     horzView.color = [SFIColors clientGreenColor];
@@ -149,17 +151,28 @@
                 [view addSubview:horzView];
                 }
             else if ([[dict valueForKey:@"Layout"] isEqualToString:@"Button"]){
-                SensorButtonView *buttonView = [[SensorButtonView alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
+                SensorButtonView *buttonView = [[SensorButtonView alloc]initWithFrame:CGRectMake(0,5,view.frame.size.width -10,30)];
+                buttonView.deviceValueDict = [dict valueForKey:@"Values"];
+                buttonView.device = self.device;
+                buttonView.color = [SFIColors clientGreenColor];
                 [buttonView drawButton:[dict valueForKey:@"Values"] color:[SFIColors clientGreenColor]];
                 [view addSubview:buttonView];
             }
             else if ([[dict valueForKey:@"Layout"] isEqualToString:@"Hue"]){
                 HueColorPicker *HueView = [[HueColorPicker alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
+                HueView.device = self.device;// we should match index
+                HueView.delegate = self;
+                HueView.color = [SFIColors clientGreenColor];
                 [HueView drawHueColorPicker];
                 [view addSubview:HueView];
             }
             else if ([[dict valueForKey:@"Layout"] isEqualToString:@"HueSlider"]){
                 HueSliderView *HuesliderView = [[HueSliderView alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
+                HuesliderView.componentArray = [NSMutableArray new];
+                for (NSInteger i=[[dict valueForKey:@"Min"] integerValue]; i<=[[dict valueForKey:@"Max"] integerValue]; i++) {
+                    [HuesliderView.componentArray addObject:[NSString stringWithFormat:@"%ld",i]];}
+                HuesliderView.color = [SFIColors clientGreenColor];
+                HuesliderView.delegate = self;
                 [HuesliderView drawSlider];
                 [view addSubview:HuesliderView];
             }
@@ -178,7 +191,7 @@
         NameLocNotView *nameAndLocView = [[NameLocNotView alloc]initWithFrame:CGRectMake(10, yPos, self.indexesScroll.frame.size.width -10, 60)];
         
         if([label isEqualToString:@"Notify me"])
-            [nameAndLocView notiFicationField:label andDevice:self.device];
+            [nameAndLocView notiFicationField:label andDevice:self.device color:[SFIColors clientGreenColor]];
         else
         [nameAndLocView drawNameAndLoc:self.device.name labelText:label];
         
@@ -186,74 +199,25 @@
         [self.indexesScroll addSubview:nameAndLocView];
         
     }
-    
 }
--(void)drawNameLocTemplateAt:(int)yPos{
-   UIView *view = [[UIView alloc]initWithFrame:CGRectMake(10 , yPos, self.indexesScroll.frame.size.width -10, 60)];
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 15)];
-    label.text = @"NAME";
-    label.font = [UIFont securifiBoldFont];
-    label.textColor = [UIColor whiteColor];
-    [view addSubview:label];
-    
-    UITextField *deviceNameField = [[UITextField alloc]initWithFrame:CGRectMake(0,20,view.frame.size.width -10,30)];
-    deviceNameField.text = self.device.name;
-    deviceNameField.textColor = [UIColor whiteColor];
-    deviceNameField.font = [UIFont securifiLightFont];
-    [view addSubview:deviceNameField];
-    
-    
-    //CGRectMake(0,20,view.frame.size.width -10,30)
-
-}
--(void)drawButton:(NSDictionary *)valuedict view:(UIView *)view{
-    NSArray *allkeys = [valuedict allKeys];
-    int xPos = 0;
-    for(int i =0;i < allkeys.count ;i++){
-        NSDictionary *dict = [valuedict valueForKey:[allkeys objectAtIndex:i]];
-        CGRect textRect = [self adjustDeviceNameWidth:[dict valueForKey:@"Label"]];
-        CGRect frame = CGRectMake(xPos, 20, textRect.size.width + 5, 30);
-        UIButton *button = [[UIButton alloc ]initWithFrame:frame];
-        [button setTitle:[dict valueForKey:@"Label"] forState:UIControlStateNormal];
-        button.backgroundColor = [SFIColors clientGreenColor];
-        button.titleLabel.font = [UIFont securifiBoldFont];
-        button.tag = i;
-        button.alpha = 0.3;
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(onButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [view addSubview:button];
-        xPos = xPos + button.frame.size.width;
-    }
-    
-    
+- (IBAction)onSeettingButtonClicked:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
--(void)onButtonClicked:(UIButton*)senderButton{
-    for(UIButton *button in [[senderButton superview] subviews]){
-        if([button isKindOfClass:[UILabel class]])
-            continue;
-        if( button.tag == senderButton.tag){
-            button.alpha = 1.0;
-            button.selected = YES;
-        }
-        else{
-            button.alpha = 0.3;
-            button.selected = NO;
-        }
-    }
-    
-    
+#pragma mark delegate callback methods
+-(void)updateNewValue:(NSString *)newValue{
+    NSLog(@"updateNewValue");
 }
--(CGRect)adjustDeviceNameWidth:(NSString*)deviceName{
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:12]};
-    CGRect textRect;
-    
-    textRect.size = [deviceName sizeWithAttributes:attributes];
-    if(deviceName.length > 18){
-        NSString *temp=@"123456789012345678";
-        textRect.size = [temp sizeWithAttributes:attributes];
-    }
-    return textRect;
+-(void)updateSliderValue:(NSString*)newvalue{
+    NSLog(@"updateSliderValue");
 }
-
+-(void)updateHueColorPicker:(NSString *)newValue{
+    NSLog(@"updateHueColorPicker");
+}
+-(void)updateButtonStatus{
+    NSLog(@"updateButtonStatus");
+}
+-(void)updatePickerValue:(NSString *)newValue{
+    NSLog(@"updatePickerValue");
+}
 @end

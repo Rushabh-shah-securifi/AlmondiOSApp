@@ -33,11 +33,11 @@
                                             <rect key="frame" x="8" y="4" width="304" height="64"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dx3-YZ-kh4">
-                                                    <rect key="frame" x="0.0" y="0.0" width="61" height="64"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="61" height="65"/>
                                                     <color key="backgroundColor" red="0.29411764709999999" green="0.68235294120000001" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yP1-b9-nnV">
-                                                    <rect key="frame" x="251" y="0.0" width="53" height="64"/>
+                                                    <rect key="frame" x="251" y="0.0" width="53" height="63"/>
                                                     <color key="backgroundColor" red="0.29411764709999999" green="0.68235294120000001" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <connections>
                                                         <action selector="onSettingClicked:" destination="RzF-nw-IDW" eventType="touchUpInside" id="EMN-l8-eku"/>
@@ -113,6 +113,19 @@
                                         <rect key="frame" x="0.0" y="0.0" width="61" height="64"/>
                                         <color key="backgroundColor" red="0.29411764709999999" green="0.68235294120000001" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y6e-8X-FF2">
+                                        <rect key="frame" x="243" y="0.0" width="61" height="64"/>
+                                        <color key="backgroundColor" red="0.29411764709999999" green="0.68235294120000001" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="onSeettingButtonClicked:" destination="Bf7-e1-zTD" eventType="touchUpInside" id="zMo-NY-yJv"/>
+                                        </connections>
+                                    </button>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_config" translatesAutoresizingMaskIntoConstraints="NO" id="RR3-gE-wBZ">
+                                        <rect key="frame" x="272" y="22" width="17" height="23"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="05_door_lock_locked" translatesAutoresizingMaskIntoConstraints="NO" id="BgC-vP-50V">
+                                        <rect key="frame" x="12" y="8" width="36" height="48"/>
+                                    </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Device" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ncy-jY-Qiy">
                                         <rect key="frame" x="69" y="5" width="185" height="29"/>
                                         <color key="backgroundColor" red="0.29411764709999999" green="0.68235294120000001" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -131,9 +144,6 @@
                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="05_door_lock_locked" translatesAutoresizingMaskIntoConstraints="NO" id="BgC-vP-50V">
-                                        <rect key="frame" x="12" y="8" width="36" height="48"/>
-                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" red="0.29411764709999999" green="0.68235294120000001" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>

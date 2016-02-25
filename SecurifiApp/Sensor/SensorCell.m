@@ -130,7 +130,7 @@
     DeviceKnownValues *value2= [DeviceKnownValues new];
     value1.index=2;
     value1.genericIndex=2;
-    value1.value=@"off";
+    value1.value=@"false";
     [device.knownValues addObject:value2];
     
     NSArray *genericIndexArray = [[NSArray alloc]initWithObjects:@"1",@"2",nil];
@@ -157,7 +157,7 @@
                                    };
     NSDictionary *deviceIndex2 = @{
                                    @"IndexName": @"SWITCH BINARY",
-                                   @"Values" : @{@"on" :@{
+                                   @"Values" : @{@"true" :@{
                                                          @"ToggleValue":      @"false",
                                                          @"Icon": @"switchon",
                                                          @"Label": @"ON"

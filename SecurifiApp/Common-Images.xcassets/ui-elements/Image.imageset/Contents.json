@@ -2,7 +2,9 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "dimmer_max.pdf"
+      "filename" : "dimmer_min.png",
+      "unassigned" : true,
+      "scale" : "1x"
     }
   ],
   "info" : {

@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@protocol HueSliderViewDelegate
+-(void)updateSliderValue:(NSString*)newvalue;
+@end
 @interface HueSliderView : UIView
+@property (nonatomic)NSMutableArray *componentArray;
+@property (nonatomic)UIColor *color;
+@property(nonatomic)id<HueSliderViewDelegate> delegate;
 -(void)drawSlider;
+
 @end

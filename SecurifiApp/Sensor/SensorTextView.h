@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@protocol SensorTextViewDelegate
+-(void)updateNewValue:(NSString *)newValue;
+@end
 @interface SensorTextView : UIView
+@property (nonatomic)UIColor *color;
+@property (nonatomic)id<SensorTextViewDelegate> delegate;
 -(void)drawTextField:(NSString*)name;
+
 @end

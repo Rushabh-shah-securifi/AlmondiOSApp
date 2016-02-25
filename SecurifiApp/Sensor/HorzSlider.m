@@ -28,17 +28,18 @@
 //    horzPicker.layer.borderWidth = 1.5;
     horzPicker.backgroundColor = [UIColor whiteColor];
 //    horzPicker.layer.borderColor = [SFIColors clientGreenColor].CGColor;
-    horzPicker.selectedTextColor = [SFIColors clientGreenColor];
+    horzPicker.selectedTextColor = self.color;
     horzPicker.elementFont = [UIFont systemFontOfSize:11];
     horzPicker.elementFont = [UIFont fontWithName:@"AvenirLTStd-Roman" size:11];
-    horzPicker.textColor = [SFIColors clientGreenColor];
+    horzPicker.textColor = self.color;
     horzPicker.indicatorPosition = V8HorizontalPickerIndicatorBottom;
     horzPicker.delegate = self;
     horzPicker.dataSource = self;
+    [horzPicker scrollToElement:49 animated:YES];// here value will be device knownVaklue.value
     const NSInteger element_width = [self horizontalPickerView:horzPicker widthForElementAtIndex:0];
     SFIPickerIndicatorView1 *indicatorView = [[SFIPickerIndicatorView1 alloc] initWithFrame:CGRectMake(0, 0, element_width, 2)];
     horzPicker.selectionPoint = CGPointMake((horzPicker.frame.size.width) / 2, 0);
-    indicatorView.color1 = [SFIColors clientGreenColor];
+    indicatorView.color1 = self.color;
     horzPicker.selectionIndicatorView = indicatorView;
     [self addSubview:horzPicker];
     

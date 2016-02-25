@@ -13,5 +13,5 @@
 @property (nonatomic)UITextField *deviceNameField;
 
 -(void)drawNameAndLoc:(NSString *)deviceName labelText:(NSString*)labelText;
--(void)notiFicationField:(NSString*)labelText andDevice:(Device*)device;
+-(void)notiFicationField:(NSString*)labelText andDevice:(Device*)device color:(UIColor*)color;
 @end
