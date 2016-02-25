@@ -29,8 +29,9 @@
 @property (nonatomic) bool isTrigger;
 @property (nonatomic) bool isAction;
 @property (nonatomic) BOOL isScene;
+@property RulesDeviceNameButton *currentClickedButton;
 
-
+-(id)initWithParentView:(UIView*)parentView deviceIndexScrollView:(UIScrollView*)deviceIndexScrollView deviceListScrollView:(UIScrollView*)deviceListScrollView triggers:(NSMutableArray*)triggers actions:(NSMutableArray*)actions isScene:(BOOL)isScene;
 -(void)addDeviceNameList:(BOOL)isTrigger;
 -(void)onDeviceButtonClick:(RulesDeviceNameButton *)sender;
 -(void)TimeEventClicked:(id)sender;

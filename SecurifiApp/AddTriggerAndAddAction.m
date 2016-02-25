@@ -52,17 +52,23 @@ int buttonClickCount;
 NSMutableArray * pickerValuesArray2;
 DimmerButton *dimerButton;
 
--(id)init{
+-(id)initWithParentView:(UIView*)parentView deviceIndexScrollView:(UIScrollView*)deviceIndexScrollView deviceListScrollView:(UIScrollView*)deviceListScrollView triggers:(NSMutableArray*)triggers actions:(NSMutableArray*)actions isScene:(BOOL)isScene{
     if(self == [super init]){
         isPresentHozPicker = NO;
         newPickerValue = @"50";
-        self.selectedButtonsPropertiesArrayAction = [NSMutableArray new];
         isPresentHozPicker = NO;
         newPickerValue = [NSString new];
-        self.selectedButtonsPropertiesArrayTrigger = [NSMutableArray new];
+        
+        self.parentView = parentView;
+        self.deviceIndexButtonScrollView = deviceIndexScrollView;
+        self.deviceListScrollView = deviceListScrollView;
+        self.selectedButtonsPropertiesArrayTrigger = triggers;
+        self.selectedButtonsPropertiesArrayAction = actions;
+        self.isScene = isScene;
     }
     return self;
 }
+
 -(CGRect)adjustDeviceNameWidth:(NSString*)deviceName{
     NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:12]};
     CGRect textRect;
@@ -188,6 +194,7 @@ DimmerButton *dimerButton;
 
 -(void)onDeviceButtonClick:(RulesDeviceNameButton *)sender{
     [self resetViews];
+    self.currentClickedButton = sender;
     sender.selected = YES;
     //toggeling
     [self toggleHighlightForDeviceNameButton:sender];
@@ -817,7 +824,6 @@ DimmerButton *dimerButton;
 
 #pragma mark delegate methods - hue
 -(void)updateArray{
-    //[self.delegate updateActionsButtonsPropertiesArray:self.selectedButtonsPropertiesArrayAction];
     [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
 }
 #pragma mark delegate methods - TimeView

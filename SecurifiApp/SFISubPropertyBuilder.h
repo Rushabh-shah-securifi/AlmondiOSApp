@@ -13,18 +13,14 @@
 #import "AddRulesViewController.h"
 #import "IndexValueSupport.h"
 #import "SFIButtonSubProperties.h"
+#import "AddRuleSceneClass.h"
 
 @class AddRulesViewController;
 
-@protocol SFISubPropertyBuilderDelegate
--(void)redrawDeviceIndexView:(sfi_id)deviceId clientEvent:(NSString*)eventType;
-@end
-
 @interface SFISubPropertyBuilder : NSObject
 @property (nonatomic) bool isDelayPickerPresent;
-@property (nonatomic, weak) id<SFISubPropertyBuilderDelegate> delegate;
 
--(void)createEntryForView:(UIScrollView *)topScrollView indexScrollView:(UIScrollView*)indexScrollView parentView:(UIView*)view triggers:(NSArray *)triggersList actions:(NSArray *)actionsList isCrossButtonHidden:(BOOL)isHidden isRuleActive:(BOOL)isRuleActive;
++ (void)createEntryForView:(UIScrollView *)topScrollView indexScrollView:(UIScrollView*)indexScrollView parentView:(UIView*)view parentClass:(AddRuleSceneClass*)parentClass triggers:(NSMutableArray *)triggersList actions:(NSMutableArray *)actionsList isCrossButtonHidden:(BOOL)isHidden isRuleActive:(BOOL)isRuleActive;
 
 
 @end

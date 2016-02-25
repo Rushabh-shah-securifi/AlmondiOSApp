@@ -32,39 +32,35 @@
 #import "AddTriggerAndAddAction.h"
 #import "SFISubPropertyBuilder.h"
 #import "MBProgressHUD.h"
-//for wifi clients
+#import "AddRuleSceneClass.h"
 
-@interface AddRulesViewController()<UIAlertViewDelegate,AddTriggerAndAddActionDelegate,SFISubPropertyBuilderDelegate>{
+@interface AddRulesViewController()<UIAlertViewDelegate>{
     sfi_id dc_id;
     NSInteger randomMobileInternalIndex;
 }
 
-//@property (nonatomic, strong)AddTriggers *addTriggersView;
-//@property (nonatomic ,strong)AddActions *addActionsView;
 @property (weak, nonatomic) IBOutlet UIButton *IfButton;
 @property (weak, nonatomic) IBOutlet UIButton *thenButton;
 @property (weak, nonatomic) IBOutlet UIImageView *ifThenTabSeperator;
-@property (nonatomic,strong)AddTriggerAndAddAction *triggerAction;
+@property (nonatomic,strong)AddRuleSceneClass *addRuleScene;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @end
 
 @implementation AddRulesViewController
 UITextField *textField;
-SFISubPropertyBuilder *subPropertyBuilder;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.wifiClientsArray = [[NSMutableArray alloc]init];
-    self.triggerAction = [[AddTriggerAndAddAction alloc]init];
-    
     [self getWificlientsList];
     if(!self.isInitialized){
         self.rule = [[Rule alloc]init];
     }
     [self initializeNotifications];
     [self setUpNavigationBar];
-    [self callRulesView]; //to handle edit
     
+    self.addRuleScene = [[AddRuleSceneClass alloc]initWithParentView:self.view deviceIndexScrollView:self.deviceIndexButtonScrollView deviceListScrollView:self.deviceListScrollView topScrollView:self.triggersActionsScrollView informationLabel:self.informationLabel triggers:self.rule.triggers actions:self.rule.actions isScene:NO];
+    [self.addRuleScene buildTriggersAndActions];
     [self ifThenClick:YES infoText:@"To get started, please select a trigger" infoText2:@"Add another trigger or press THEN to define action"];
 }
 
@@ -166,35 +162,16 @@ SFISubPropertyBuilder *subPropertyBuilder;
 
 -(void)ifThenClick:(BOOL)isTrigger infoText:(NSString*)text1 infoText2:(NSString*)text2{
     [self clearAndToggleViews];
-    
     if(!isTrigger){
         [self changeIFThenColors:isTrigger clickedBtn:self.thenButton otherBtn:self.IfButton];
-        
-        
     }
     else{
         [self changeIFThenColors:isTrigger clickedBtn:self.IfButton otherBtn:self.thenButton];
-        
     }
-    [self updateInfoLabel];
-    [self getTriggerActionList:isTrigger];
-    
-    
-}
+    [self.addRuleScene updateInfoLabel];
+    [self.addRuleScene getTriggersDeviceList:isTrigger];
 
-- (void)getTriggerActionList:(BOOL)isTrigger{
-    self.triggerAction.delegate = self;
-    self.triggerAction.deviceListScrollView = self.deviceListScrollView;
-    self.triggerAction.deviceIndexButtonScrollView = self.deviceIndexButtonScrollView;
-    self.triggerAction.parentView = self.view;
-    self.triggerAction.isScene = NO;
-    
-    self.triggerAction.selectedButtonsPropertiesArrayTrigger = self.rule.triggers;
-    self.triggerAction.selectedButtonsPropertiesArrayAction = self.rule.actions;
-    //    self.triggerAction.ruleTime = self.rule.time;
-    [self.triggerAction addDeviceNameList:isTrigger];
 }
-
 
 -(void) changeIFThenColors:(BOOL)ifClick clickedBtn:(UIButton *)clickedButton otherBtn:(UIButton *)otherButton{
     UIColor *selectedColor=[SFIColors ruleBlueColor];
@@ -270,89 +247,6 @@ SFISubPropertyBuilder *subPropertyBuilder;
     }
 }
 
-#pragma mark delegate methods
-//update from add triggers.m
--(void)updateTriggerAndActionDelegatePropertie:(BOOL)isTrigger{
-    [self updateInfoLabel];
-    [self callRulesView];
-    
-}
--(void)updateInfoLabel{
-    if(self.rule.triggers.count == 0){
-        self.informationLabel.text = @"To get started, please select a trigger";
-    }
-    else if (self.rule.triggers.count >0){
-        self.informationLabel.text = @"Add another trigger or press THEN to define action";
-    }
-    else if (self.rule.actions.count > 0){
-        self.informationLabel.text = @"Add another action or press SAVE to finalize the rule";
-    }
-    
-}
-
--(void) callRulesView{
-    subPropertyBuilder = [SFISubPropertyBuilder new];
-    subPropertyBuilder.delegate = self;
-    [subPropertyBuilder createEntryForView:self.triggersActionsScrollView indexScrollView:self.deviceIndexButtonScrollView parentView:self.view triggers:self.rule.triggers actions:self.rule.actions isCrossButtonHidden:NO isRuleActive:YES];
-}
-
-#pragma mark rules view delegate
--(RulesDeviceNameButton*)getSelectedButton:(int)deviceId eventType:(NSString*)eventType{
-   
-    UIScrollView *scrollView = self.deviceListScrollView;
-    for(RulesDeviceNameButton *button in [scrollView subviews]){
-        if([button isKindOfClass:[UIImageView class]]){ //to handle mysterious error
-            continue;
-        }
-        else if(button.deviceId == deviceId && button.selected){
-            return button;
-        }
-        else if (button.deviceType == SFIDeviceType_WIFIClient && button.selected){
-            return button;
-        }
-    }
-    return nil;
-}
-
--(NSMutableArray*)getDeviceIndexes:(SFIDeviceType)deviceType{
-    SensorIndexSupport *sensorSupport = [SensorIndexSupport new];
-    return [NSMutableArray arrayWithArray:[sensorSupport getIndexesFor:deviceType]];
-}
-
--(void)redrawDeviceIndexView:(sfi_id)deviceId clientEvent:(NSString*)eventType{
-    [self callRulesView]; //top view
-    
-    RulesDeviceNameButton *deviceButton = [self getSelectedButton:deviceId eventType:eventType];
-    if(deviceButton.deviceType == SFIDeviceType_WIFIClient && deviceButton.isTrigger){// wifi clients
-        [self.triggerAction wifiClientsClicked:deviceButton];
-        return;
-    }
-    
-    if(deviceButton.deviceId != deviceId)
-        return;
-    
-    if(deviceButton.isTrigger){
-        if(deviceId == 0){ //time mode clients
-            if([deviceButton.deviceName isEqualToString:@"Mode"]){
-                [self.triggerAction onDeviceButtonClick:deviceButton];
-            }else if([deviceButton.deviceName isEqualToString:@"Time"]){
-                [self.triggerAction TimeEventClicked:deviceButton];
-            }
-        }else{
-            [self.triggerAction onDeviceButtonClick:deviceButton];
-        }
-    }
-    else{
-        [self.triggerAction onDeviceButtonClick:deviceButton];
-    }
-    
-    
-}
-
--(void)updateTime:(RulesTimeElement *)time{
-    [self callRulesView];
-    
-}
 
 -(void)btnSaveTap:(id)sender{
     textField = [[UITextField alloc]init];

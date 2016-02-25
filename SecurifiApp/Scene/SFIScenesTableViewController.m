@@ -229,7 +229,6 @@
     NewAddSceneViewController *newAddSceneViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewAddSceneViewController"];
     newAddSceneViewController.isInitialized = YES;
     newAddSceneViewController.scene = [self getScene:scenesArray[indexPath.row]];
-    newAddSceneViewController.indexPathRow = (int)indexPath.row;
     [self.navigationController pushViewController:newAddSceneViewController animated:YES];
 }
 
@@ -360,6 +359,7 @@
 
 - (IBAction)btnAddNewSceneTap:(id)sender {
     NewAddSceneViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewAddSceneViewController"];
+    viewController.scene = [[Rule alloc]init];
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

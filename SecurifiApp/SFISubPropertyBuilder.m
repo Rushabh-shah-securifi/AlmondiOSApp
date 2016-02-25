@@ -12,7 +12,6 @@
 #import "SecurifiToolkit/SFIDevice.h"
 #import "DeviceListAndValues.h"
 #import "SFIDeviceIndex.h"
-#import "IndexValueSupport.h"
 #import "SFIButtonSubProperties.h"
 #import "ValueFormatter.h"
 #import "SecurifiToolkit.h"
@@ -37,6 +36,7 @@
 #import "DelayPicker.h"
 #import "CommonMethods.h"
 
+
 @interface SFISubPropertyBuilder()
 
 @end
@@ -55,11 +55,12 @@ NSMutableArray *actions;
 UIView *parentView;
 UIScrollView *deviceIndexButtonScrollView;
 UIScrollView *triggersActionsScrollView;
+AddRuleSceneClass *addRuleScene;
 
 int xVal = 20;
 UILabel *topLabel;
 
-- (void)createEntryForView:(UIScrollView *)topScrollView indexScrollView:(UIScrollView*)indexScrollView parentView:(UIView*)view triggers:(NSMutableArray *)triggersList actions:(NSMutableArray *)actionsList isCrossButtonHidden:(BOOL)isHidden isRuleActive:(BOOL)isRuleActive{
++ (void)createEntryForView:(UIScrollView *)topScrollView indexScrollView:(UIScrollView*)indexScrollView parentView:(UIView*)view parentClass:(AddRuleSceneClass*)parentClass triggers:(NSMutableArray *)triggersList actions:(NSMutableArray *)actionsList isCrossButtonHidden:(BOOL)isHidden isRuleActive:(BOOL)isRuleActive{
     delayPicker = [DelayPicker new];
     toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
@@ -75,6 +76,7 @@ UILabel *topLabel;
         actions = actionsList;
         deviceIndexButtonScrollView = indexScrollView;
         parentView = view;
+        addRuleScene = parentClass;
     }
     
     [self clearTopScrollView];
@@ -95,7 +97,7 @@ UILabel *topLabel;
     topScrollView.contentSize = CGSizeMake(xVal + 20, topScrollView.frame.size.height);//to do
 }
 
-- (void)clearTopScrollView{
++ (void)clearTopScrollView{
     NSLog(@"clearTopScrollView");
     NSArray *viewsToRemove = [triggersActionsScrollView subviews];
     for (UIView *v in viewsToRemove) {
@@ -104,7 +106,7 @@ UILabel *topLabel;
     }
 }
 
--(void)addTopLabel{
++ (void)addTopLabel{
     topLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 20)];
     topLabel.text = @"Your rule will appear here.";
     topLabel.textAlignment = NSTextAlignmentCenter;
@@ -115,7 +117,7 @@ UILabel *topLabel;
 }
 
 
-- (void)setIconAndText:(int)positionId buttonProperties:(SFIButtonSubProperties *)buttonProperties icon:(NSString *)icon text:(NSString*)text isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString*)bottomText{
++ (void)setIconAndText:(int)positionId buttonProperties:(SFIButtonSubProperties *)buttonProperties icon:(NSString *)icon text:(NSString*)text isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString*)bottomText{
     buttonProperties.positionId=positionId;
     buttonProperties.iconName=icon;
     buttonProperties.displayText=text;
@@ -124,7 +126,7 @@ UILabel *topLabel;
     [self drawButton: buttonProperties isTrigger:isTrigger isDimButton:isDimmbutton bottomText:bottomText];
 }
 
-- (BOOL)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId deviceIndexes:(NSArray *)deviceIndexes isTrigger:(BOOL)isTrigger{
++ (BOOL)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId deviceIndexes:(NSArray *)deviceIndexes isTrigger:(BOOL)isTrigger{
     for(SFIDeviceIndex *deviceIndex in deviceIndexes){
         if (deviceIndex.indexID == buttonProperties.index) {
             if([buttonProperties.matchData isEqualToString:@"toggle"])
@@ -158,7 +160,7 @@ UILabel *topLabel;
     return false;
 }
 
-- (void)buildEntryList:(NSArray *)entries isTrigger:(BOOL)isTrigger{
++ (void)buildEntryList:(NSArray *)entries isTrigger:(BOOL)isTrigger{
     int positionId = 0;
     for (SFIButtonSubProperties *buttonProperties in entries) {
         if(buttonProperties.time != nil && buttonProperties.time.segmentType!=0){
@@ -176,7 +178,7 @@ UILabel *topLabel;
     }
 }
 
-- (void)buildTime:(SFIButtonSubProperties *)timesubProperties isTrigger:(BOOL)isTrigger positionId:(int)positionId{
++ (void)buildTime:(SFIButtonSubProperties *)timesubProperties isTrigger:(BOOL)isTrigger positionId:(int)positionId{
     if(positionId > 0)
         [self drawImage:@"plus_icon"];
     DimmerButton *dimbutton=[[DimmerButton alloc]initWithFrame:CGRectMake(xVal, 5, triggerActionDimWidth, triggerActionDimHeight + 10)];
@@ -203,13 +205,13 @@ UILabel *topLabel;
     
 }
 
-- (NSArray*)getDeviceIndexes:(SFIButtonSubProperties *)properties{
++ (NSArray*)getDeviceIndexes:(SFIButtonSubProperties *)properties{
     [self getDeviceTypeFor:properties];
     SensorIndexSupport *Index=[[SensorIndexSupport alloc]init];
     return [Index getIndexesFor:properties.deviceType];
 }
 
-- (void)drawButton:(SFIButtonSubProperties*)subProperties isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString *)bottomText{
++ (void)drawButton:(SFIButtonSubProperties*)subProperties isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString *)bottomText{
     if(isTrigger){
         SwitchButton *switchButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, triggerActionBtnWidth, triggerActionBtnHeight)];
         switchButton.isTrigger = isTrigger;
@@ -266,7 +268,7 @@ UILabel *topLabel;
 }
 
 
-- (void)onTriggerCrossButtonClicked:(SwitchButton*)switchButton{
++ (void)onTriggerCrossButtonClicked:(SwitchButton*)switchButton{
     //includes mode
     if(delayPicker.isPresentDelayPicker){
         [delayPicker removeDelayView];
@@ -278,21 +280,21 @@ UILabel *topLabel;
     else{
         [actions removeObjectAtIndex:switchButton.subProperties.positionId];
     }
-    [self.delegate redrawDeviceIndexView:switchButton.subProperties.deviceId clientEvent:switchButton.subProperties.eventType];
+    [addRuleScene redrawDeviceIndexView:switchButton.subProperties.deviceId clientEvent:switchButton.subProperties.eventType];
 }
 
 
-- (void)onDimmerCrossButtonClicked:(DimmerButton*)dimmerButton{
++ (void)onDimmerCrossButtonClicked:(DimmerButton*)dimmerButton{
     if(delayPicker.isPresentDelayPicker){
         [delayPicker removeDelayView];
         deviceIndexButtonScrollView.userInteractionEnabled = YES;
     }
     [triggers removeObjectAtIndex:dimmerButton.subProperties.positionId];
-    [self.delegate redrawDeviceIndexView:dimmerButton.subProperties.deviceId clientEvent:@""];
+    [addRuleScene redrawDeviceIndexView:dimmerButton.subProperties.deviceId clientEvent:@""];
     
 }
 
-- (void)onActionDelayClicked:(id)sender{
++ (void)onActionDelayClicked:(id)sender{
     UIButton *delayButton = sender;
     delayPicker.triggersActionsScrollView = triggersActionsScrollView;
     delayPicker.deviceIndexButtonScrollView = deviceIndexButtonScrollView;
@@ -300,7 +302,7 @@ UILabel *topLabel;
     [delayPicker addPickerForButton:delayButton];
 }
 
--(NSString *)getColorHex:(NSString*)value {
++ (NSString *)getColorHex:(NSString*)value {
     if (!value) {
         return @"";
     }
@@ -310,7 +312,7 @@ UILabel *topLabel;
     return [color.hexString uppercaseString];
 };
 
--(void)getDeviceTypeFor:(SFIButtonSubProperties*)buttonSubProperty{
++ (void)getDeviceTypeFor:(SFIButtonSubProperties*)buttonSubProperty{
     buttonSubProperty.deviceType = SFIDeviceType_UnknownDevice_0;
     if([buttonSubProperty.type isEqualToString:@"NetworkResult"]){
         buttonSubProperty.deviceType = SFIDeviceType_REBOOT_ALMOND;
@@ -336,7 +338,7 @@ UILabel *topLabel;
     }
 }
 
-- (void)drawImage:(NSString *)iconName {
++ (void)drawImage:(NSString *)iconName {
     SwitchButton *imageButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal,5, triggerActionBtnWidth, triggerActionBtnHeight)];//todo
     [imageButton setupValues:[UIImage imageNamed:iconName] topText:@"" bottomText:@"" isTrigger:YES isDimButton:NO insideText:@""];
     //image.image = [UIImage imageNamed:iconName];

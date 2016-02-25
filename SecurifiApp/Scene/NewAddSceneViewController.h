@@ -18,6 +18,4 @@
 
 @property (copy, nonatomic)Rule *scene;
 @property (nonatomic)BOOL isInitialized;
-@property (nonatomic)int indexPathRow;
-
 @end

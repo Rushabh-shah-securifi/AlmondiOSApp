@@ -20,7 +20,7 @@
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
-@interface RulesTableViewController ()<AddRulesViewControllerDelegate, CustomCellTableViewCellDelegate,MBProgressHUDDelegate>{
+@interface RulesTableViewController ()<CustomCellTableViewCellDelegate,MBProgressHUDDelegate>{
     NSInteger randomMobileInternalIndex;
 }
 
@@ -34,7 +34,6 @@
 CGPoint tablePoint;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [self initializeNotifications];
     [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
@@ -194,8 +193,7 @@ CGPoint tablePoint;
     [cell.activeDeactiveSwitch setOn:rule.isActive animated:YES];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-    SFISubPropertyBuilder *subPropertyBuilder = [SFISubPropertyBuilder new];
-    [subPropertyBuilder createEntryForView:cell.scrollView indexScrollView:nil parentView:nil triggers:rule.triggers actions:rule.actions isCrossButtonHidden:YES isRuleActive:rule.isActive];
+    [SFISubPropertyBuilder createEntryForView:cell.scrollView indexScrollView:nil parentView:nil parentClass:nil triggers:rule.triggers actions:rule.actions isCrossButtonHidden:YES isRuleActive:rule.isActive];
     
     // Configure the cell...
     [cell.scrollView setContentOffset:CGPointMake(0,0) animated:YES];
@@ -225,8 +223,7 @@ CGPoint tablePoint;
     [self.HUD hide:YES];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     AddRulesViewController * addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
-    addRuleController.delegate = self;
-    addRuleController.indexPathRow = (int)[self.rules count]; //index path, when you are creating a new entry
+    addRuleController.rule = [[Rule alloc]init];
     [self.navigationController pushViewController:addRuleController animated:YES];
 }
 
@@ -345,16 +342,11 @@ CGPoint tablePoint;
 }
 - (void)editRule:(CustomCellTableViewCell *)cell{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    //    AddRulesViewController *addRuleController = [[AddRulesViewController alloc]init];
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     AddRulesViewController *addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
-    addRuleController.delegate = self;
     Rule *rule = [self.rules[indexPath.row] createNew];
     addRuleController.rule = rule;
     addRuleController.isInitialized = YES;
-    //need to create textfield param as well.
-    addRuleController.indexPathRow = (int)indexPath.row; //current index path
-    
     [self.navigationController pushViewController:addRuleController animated:YES];
 }
 - (void)activateRule:(CustomCellTableViewCell *)cell{

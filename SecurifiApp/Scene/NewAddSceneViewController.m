@@ -29,28 +29,24 @@
 #import "SFISubPropertyBuilder.h"
 #import "MBProgressHUD.h"
 #import "ScenePayload.h"
+#import "AddRuleSceneClass.h"
 
 #define kAlertViewSave 1
 #define kAlertViewDelete 2
 
-@interface NewAddSceneViewController()<AddTriggerAndAddActionDelegate,SFISubPropertyBuilderDelegate,UIAlertViewDelegate>{
+@interface NewAddSceneViewController()<UIAlertViewDelegate>{
     NSInteger randomMobileInternalIndex;
 }
-@property (nonatomic,strong)AddTriggerAndAddAction *triggerAction;
+@property (nonatomic,strong)AddRuleSceneClass *addRuleScene;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property UIButton *buttonDelete;
 @end
 
-
 @implementation NewAddSceneViewController
 UITextField *textField;
-SFISubPropertyBuilder *subPropertyBuilder;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.triggerAction = [[AddTriggerAndAddAction alloc]init];
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    
     if(!self.isInitialized){
         self.scene = [[Rule alloc]init];
     }else{
@@ -59,9 +55,11 @@ SFISubPropertyBuilder *subPropertyBuilder;
     [self initializeNotifications];
     [self setUpNavigationBar];
     
-    [self updateInfoLabel];
-    [self addSceneToTopView];
-    [self getTriggersDeviceList:YES];
+    self.addRuleScene = [[AddRuleSceneClass alloc]initWithParentView:self.view deviceIndexScrollView:self.deviceIndexButtonScrollView deviceListScrollView:self.deviceListScrollView topScrollView:self.triggersActionsScrollView informationLabel:self.informationLabel triggers:self.scene.triggers actions:self.scene.actions isScene:YES];
+    [self.addRuleScene updateInfoLabel];
+    [self.addRuleScene buildTriggersAndActions];
+    [self.addRuleScene getTriggersDeviceList:YES];
+    self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -94,24 +92,6 @@ SFISubPropertyBuilder *subPropertyBuilder;
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName : UIColorFromRGB(0x02a8f3),
                                                                                                        NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Roman" size:17.5f]} forState:UIControlStateNormal];
     self.title = self.isInitialized? [NSString stringWithFormat:@"Edit Scene - %@", self.scene.name]: @"New Scene";
-}
-
-
-- (void)getTriggersDeviceList:(BOOL)isTrigger{
-    self.triggerAction.delegate = self;
-    self.triggerAction.deviceListScrollView = self.deviceListScrollView;
-    self.triggerAction.deviceIndexButtonScrollView = self.deviceIndexButtonScrollView;
-    self.triggerAction.parentView = self.view;
-    self.triggerAction.isScene = YES;
-    
-    self.triggerAction.selectedButtonsPropertiesArrayTrigger = self.scene.triggers;
-    [self.triggerAction addDeviceNameList:isTrigger];
-}
-
--(void) addSceneToTopView{
-    subPropertyBuilder = [SFISubPropertyBuilder new];
-    subPropertyBuilder.delegate = self;
-    [subPropertyBuilder createEntryForView:self.triggersActionsScrollView indexScrollView:self.deviceIndexButtonScrollView parentView:self.view triggers:self.scene.triggers actions:self.scene.actions isCrossButtonHidden:NO isRuleActive:YES];
 }
 
 #pragma mark button clicks
@@ -158,7 +138,7 @@ SFISubPropertyBuilder *subPropertyBuilder;
 }
 
 - (void)btnDeleteSceneTap:(id)sender {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Are you sure, you want to delete this Scene"]
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Are you sure, you want to delete this Scene?"]
                                                     message:@""
                                                    delegate:self
                                           cancelButtonTitle:@"Cancel"
@@ -170,35 +150,7 @@ SFISubPropertyBuilder *subPropertyBuilder;
     });
 }
 
-
-
 #pragma mark helper methods
--(void)clearDeviceListScrollView{
-    NSArray *viewsToRemove = [self.deviceListScrollView subviews];
-    for (UIView *v in viewsToRemove) {
-        if (![v isKindOfClass:[UIImageView class]])
-            [v removeFromSuperview];
-    }
-}
-
--(void)clearDeviceIndexButtonScrollView{
-    NSArray *viewsToRemove = [self.deviceIndexButtonScrollView subviews];
-    for (UIView *v in viewsToRemove) {
-        if (![v isKindOfClass:[UIImageView class]])
-            [v removeFromSuperview];
-    }
-}
-
--(void)updateInfoLabel{
-    if(self.scene.triggers.count == 0){
-        self.informationLabel.text = @"To get started, please select an Action";
-    }
-    else if (self.scene.triggers.count > 0){
-        self.informationLabel.text = @"Add another action or press SAVE to finalize the Scene";
-    }
-    
-}
-
 - (void)addDeleteSceneButton{
     if (!self.buttonDelete) {
         self.buttonDelete = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -217,6 +169,7 @@ SFISubPropertyBuilder *subPropertyBuilder;
 
 #pragma mark command response
 - (void)gotResponseFor1064:(id)sender {
+    NSLog(@"gotResponseFor1064 - addscene");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
@@ -314,58 +267,7 @@ SFISubPropertyBuilder *subPropertyBuilder;
     });
 }
 
-#pragma mark delegate methods
--(void)updateTriggerAndActionDelegatePropertie:(BOOL)isTrigger{
-    [self updateInfoLabel];
-    [self addSceneToTopView];
-}
 
--(RulesDeviceNameButton*)getSelectedButton:(int)deviceId eventType:(NSString*)eventType{
-    
-    UIScrollView *scrollView = self.deviceListScrollView;
-    for(RulesDeviceNameButton *button in [scrollView subviews]){
-        if([button isKindOfClass:[UIImageView class]]){ //to handle mysterious error
-            continue;
-        }
-        else if(button.deviceId == deviceId && button.selected){
-            return button;
-        }
-        
-    }
-    return nil;
-}
-
-
--(void)redrawDeviceIndexView:(sfi_id)deviceId clientEvent:(NSString*)eventType{
-    NSLog(@"redrawDeviceIndexView");
-    [self addSceneToTopView]; //top view
-    
-    RulesDeviceNameButton *deviceButton = [self getSelectedButton:deviceId eventType:eventType];
-    if(deviceButton.deviceType == SFIDeviceType_WIFIClient && deviceButton.isTrigger){// wifi clients
-        [self.triggerAction wifiClientsClicked:deviceButton];
-        return;
-    }
-    
-    if(deviceButton.deviceId != deviceId)
-        return;
-    
-    if(deviceButton.isTrigger){
-        if(deviceId == 0){ //time mode clients
-            if([deviceButton.deviceName isEqualToString:@"Mode"]){
-                [self.triggerAction onDeviceButtonClick:deviceButton];
-            }else if([deviceButton.deviceName isEqualToString:@"Time"]){
-                [self.triggerAction TimeEventClicked:deviceButton];
-            }
-        }else{
-            [self.triggerAction onDeviceButtonClick:deviceButton];
-        }
-    }
-    else{
-        [self.triggerAction onDeviceButtonClick:deviceButton];
-    }
-    
-    
-}
 
 
 @end

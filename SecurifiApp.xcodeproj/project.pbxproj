@@ -451,16 +451,18 @@
 		A58DB4AA1BB3CD7500717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49F1BB3CD7500717C02 /* Scenes_Iphone.strings */; };
 		A58DB4AB1BB3CD7500717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4A11BB3CD7500717C02 /* termsofuse.html */; };
 		A59133C91C64DFC0009FE159 /* RuleTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = A59133C81C64DFC0009FE159 /* RuleTextField.m */; };
+		A5C7AE461C7ED654007E630D /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C7AE451C7ED654007E630D /* AddRuleSceneClass.m */; };
+		A5C7AE471C7ED654007E630D /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C7AE451C7ED654007E630D /* AddRuleSceneClass.m */; };
 		A5E8041C1C75B0A4005A8DB3 /* GenericIndexData.json in Resources */ = {isa = PBXBuildFile; fileRef = A5E8041B1C75B0A4005A8DB3 /* GenericIndexData.json */; };
 		A5F03F6C1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		A5F03F6D1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		CE1E91381C4FC24000208B44 /* RulesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1E91371C4FC24000208B44 /* RulesTableViewController.m */; };
 		CE1E91391C4FC24000208B44 /* RulesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1E91371C4FC24000208B44 /* RulesTableViewController.m */; };
 		CE478C6E1C4D0BFE00247CC7 /* AddTriggerAndAddAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CE478C6D1C4D0BFE00247CC7 /* AddTriggerAndAddAction.m */; };
-		CE53CDCD1C7C6FB8001DE893 /* SensorEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE53CDCC1C7C6FB8001DE893 /* SensorEditViewController.m */; settings = {ASSET_TAGS = (); }; };
-		CE5E60DA1C7B36CA00622798 /* SensorStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE5E60D81C7B36CA00622798 /* SensorStoryBoard.storyboard */; settings = {ASSET_TAGS = (); }; };
-		CE5E60DF1C7B37CB00622798 /* SensorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5E60DC1C7B37CB00622798 /* SensorCell.m */; settings = {ASSET_TAGS = (); }; };
-		CE5E60E01C7B37CB00622798 /* SensorTable.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5E60DE1C7B37CB00622798 /* SensorTable.m */; settings = {ASSET_TAGS = (); }; };
+		CE53CDCD1C7C6FB8001DE893 /* SensorEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE53CDCC1C7C6FB8001DE893 /* SensorEditViewController.m */; };
+		CE5E60DA1C7B36CA00622798 /* SensorStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE5E60D81C7B36CA00622798 /* SensorStoryBoard.storyboard */; };
+		CE5E60DF1C7B37CB00622798 /* SensorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5E60DC1C7B37CB00622798 /* SensorCell.m */; };
+		CE5E60E01C7B37CB00622798 /* SensorTable.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5E60DE1C7B37CB00622798 /* SensorTable.m */; };
 		CE5EDF8B1C461FEE00A2829B /* RulePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8A1C461FEE00A2829B /* RulePayload.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
 		CEEB098D1C56039400F3E62E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEEB098B1C56039400F3E62E /* Main.storyboard */; };
@@ -468,12 +470,12 @@
 		CEF1354E1C509667009E4558 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1354D1C509667009E4558 /* RuleButton.m */; };
 		CEF1357D1C510969009E4558 /* SFISubPropertyBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1357C1C510969009E4558 /* SFISubPropertyBuilder.m */; };
 		CEF135801C525990009E4558 /* DelayPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1357F1C525990009E4558 /* DelayPicker.m */; };
-		CEF158491C7D868100E7B2E2 /* NameLocNotView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158481C7D868000E7B2E2 /* NameLocNotView.m */; settings = {ASSET_TAGS = (); }; };
-		CEF1584C1C7DBD2A00E7B2E2 /* HorzSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1584B1C7DBD2A00E7B2E2 /* HorzSlider.m */; settings = {ASSET_TAGS = (); }; };
-		CEF1584F1C7DC8B100E7B2E2 /* SensorButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1584E1C7DC8B100E7B2E2 /* SensorButtonView.m */; settings = {ASSET_TAGS = (); }; };
-		CEF158521C7DCFD900E7B2E2 /* HueColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158511C7DCFD900E7B2E2 /* HueColorPicker.m */; settings = {ASSET_TAGS = (); }; };
-		CEF158551C7DD5B400E7B2E2 /* HueSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158541C7DD5B400E7B2E2 /* HueSliderView.m */; settings = {ASSET_TAGS = (); }; };
-		CEF1585B1C7DDD0700E7B2E2 /* SensorTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1585A1C7DDD0700E7B2E2 /* SensorTextView.m */; settings = {ASSET_TAGS = (); }; };
+		CEF158491C7D868100E7B2E2 /* NameLocNotView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158481C7D868000E7B2E2 /* NameLocNotView.m */; };
+		CEF1584C1C7DBD2A00E7B2E2 /* HorzSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1584B1C7DBD2A00E7B2E2 /* HorzSlider.m */; };
+		CEF1584F1C7DC8B100E7B2E2 /* SensorButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1584E1C7DC8B100E7B2E2 /* SensorButtonView.m */; };
+		CEF158521C7DCFD900E7B2E2 /* HueColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158511C7DCFD900E7B2E2 /* HueColorPicker.m */; };
+		CEF158551C7DD5B400E7B2E2 /* HueSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158541C7DD5B400E7B2E2 /* HueSliderView.m */; };
+		CEF1585B1C7DDD0700E7B2E2 /* SensorTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1585A1C7DDD0700E7B2E2 /* SensorTextView.m */; };
 		CEF51A981C5365E9008510B9 /* TimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF51A971C5365E9008510B9 /* TimeView.m */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
@@ -954,6 +956,8 @@
 		A58DB4A21BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "zh-Hans"; path = termsofuse.html; sourceTree = "<group>"; };
 		A59133C71C64DFC0009FE159 /* RuleTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleTextField.h; sourceTree = "<group>"; };
 		A59133C81C64DFC0009FE159 /* RuleTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleTextField.m; sourceTree = "<group>"; };
+		A5C7AE441C7ED654007E630D /* AddRuleSceneClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRuleSceneClass.h; sourceTree = "<group>"; };
+		A5C7AE451C7ED654007E630D /* AddRuleSceneClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRuleSceneClass.m; sourceTree = "<group>"; };
 		A5E8041B1C75B0A4005A8DB3 /* GenericIndexData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GenericIndexData.json; sourceTree = "<group>"; };
 		A5F03F6A1C76E412006CB309 /* NewAddSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewAddSceneViewController.h; sourceTree = "<group>"; };
 		A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewAddSceneViewController.m; sourceTree = "<group>"; };
@@ -1603,6 +1607,8 @@
 				CEF1357F1C525990009E4558 /* DelayPicker.m */,
 				CEF51A961C5365E9008510B9 /* TimeView.h */,
 				CEF51A971C5365E9008510B9 /* TimeView.m */,
+				A5C7AE441C7ED654007E630D /* AddRuleSceneClass.h */,
+				A5C7AE451C7ED654007E630D /* AddRuleSceneClass.m */,
 			);
 			name = Rules;
 			sourceTree = "<group>";
@@ -2531,6 +2537,7 @@
 				1DF03678B3BE5D42EBE3DC2B /* TemperatureView.m in Sources */,
 				A5F03F6D1C76E412006CB309 /* NewAddSceneViewController.m in Sources */,
 				1DF03271B3B360C48DF81716 /* SFITextField.m in Sources */,
+				A5C7AE471C7ED654007E630D /* AddRuleSceneClass.m in Sources */,
 				1C2F60A51B69E69D001CCA34 /* SFIWiFiDeviceTypeSelectionCell.m in Sources */,
 				1DF034F099411CA60571A787 /* AlertView.m in Sources */,
 				1DF0322DC3176FDED2CFA324 /* AlertViewAction.m in Sources */,
@@ -2557,6 +2564,7 @@
 				1C7E7DD11A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				1C7E7DC11A41A0990026F0BA /* SFIConstants.m in Sources */,
 				CEF158491C7D868100E7B2E2 /* NameLocNotView.m in Sources */,
+				A5C7AE461C7ED654007E630D /* AddRuleSceneClass.m in Sources */,
 				CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */,
 				1C7E7DBF1A41A0990026F0BA /* SFIColors.m in Sources */,
 				1C2F60921B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */,
