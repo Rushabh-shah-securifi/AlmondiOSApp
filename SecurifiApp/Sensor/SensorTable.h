@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "SFITableViewController.h"
+#import "SKSTableView.h"
 
 @interface SensorTable : SFITableViewController
+@property (strong, nonatomic) IBOutlet SKSTableView *tblView;
 
 @end

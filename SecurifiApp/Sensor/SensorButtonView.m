@@ -39,17 +39,18 @@
 
 -(void)drawButton:(NSArray*)array selectedValue:(int)selectedValue{
     
-    int xPos = 0;
+    int xPos = -10;
     for(int i = 0; i<array.count;i++){
         CGRect textRect = [self adjustDeviceNameWidth:[array objectAtIndex:i]];
-        CGRect frame = CGRectMake(xPos, 20, textRect.size.width + 5, 30);
+        CGRect frame = CGRectMake(xPos + 10, 0, textRect.size.width + 10, self.frame.size.height);
         UIButton *button = [[UIButton alloc ]initWithFrame:frame];
         [button setTitle:[array objectAtIndex:i] forState:UIControlStateNormal];
         
-        button.backgroundColor = [self darkerColorForColor:[SFIColors clientGreenColor]];
+        button.backgroundColor = [self darkerColorForColor:[SFIColors ruleBlueColor]];
         button.titleLabel.font = [UIFont securifiBoldFont];
         button.tag = i;
         button.opaque = YES;
+        button.userInteractionEnabled = YES;
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         if(selectedValue == button.tag){
              button.backgroundColor = [UIColor whiteColor];
@@ -59,7 +60,7 @@
         [button addTarget:self action:@selector(onButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         NSLog(@" button tags %ld",(long)button.tag);
         [self addSubview:button];
-        xPos = xPos + button.frame.size.width +2 ;
+        xPos = xPos + button.frame.size.width ;
         
     }
     
@@ -78,19 +79,19 @@
     return textRect;
 }
 -(void)onButtonClicked:(UIButton *)sender{
-    NSLog(@"onNotifyButtonClicked ");
+    NSLog(@"onButtonClicked ");
     for(UIButton *button in [[sender superview] subviews]){
         if([button isKindOfClass:[UILabel class]])
             continue;
         if( button.tag == sender.tag){
             button.selected = YES;
-            [button setTitleColor:[SFIColors clientGreenColor] forState:UIControlStateNormal];
+            [button setTitleColor:[SFIColors ruleBlueColor] forState:UIControlStateNormal];
             [button setBackgroundColor:[UIColor whiteColor]];
         }
         else{
             button.selected = NO;
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [button setBackgroundColor:[self darkerColorForColor:[SFIColors clientGreenColor]]];
+            [button setBackgroundColor:[self darkerColorForColor:[SFIColors ruleBlueColor]]];
         }
     }
     //values delegate to super view class
@@ -110,9 +111,9 @@
 {
     CGFloat r, g, b, a;
     if ([c getRed:&r green:&g blue:&b alpha:&a])
-        return [UIColor colorWithRed:MAX(r - 0.3, 0.0)
-                               green:MAX(g - 0.3, 0.0)
-                                blue:MAX(b - 0.3, 0.0)
+        return [UIColor colorWithRed:MAX(r - 0.2, 0.0)
+                               green:MAX(g - 0.2, 0.0)
+                                blue:MAX(b - 0.2, 0.0)
                                alpha:a];
     return nil;
 }
@@ -157,13 +158,13 @@
  continue;
  if( button.tag == sender.tag){
  button.selected = YES;
- [button setTitleColor:[SFIColors clientGreenColor] forState:UIControlStateNormal];
+ [button setTitleColor:[SFIColors ruleBlueColor] forState:UIControlStateNormal];
  [button setBackgroundColor:[UIColor whiteColor]];
  }
  else{
  button.selected = NO;
  [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
- [button setBackgroundColor:[self darkerColorForColor:[SFIColors clientGreenColor]]];
+ [button setBackgroundColor:[self darkerColorForColor:[SFIColors ruleBlueColor]]];
  }
  }
  //values delegate to super view class

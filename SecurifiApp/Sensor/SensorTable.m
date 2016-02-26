@@ -9,10 +9,13 @@
 #import "SensorTable.h"
 #import "SensorCell.h"
 #import "SensorEditViewController.h"
+#import "SFIWiFiClientListCell.h"
+#import "UIFont+Securifi.h"
 
-@interface SensorTable ()<UITableViewDataSource,UITableViewDelegate,SensorCellDelegate>
+@interface SensorTable ()<UITableViewDataSource,UITableViewDelegate,SensorCellDelegate,SFIWiFiClientListCellDelegate>
 @property (nonatomic,strong)NSMutableArray *currentDeviceList;
 @property (nonatomic,strong)NSDictionary *deviceValueTable;
+@property(nonatomic, strong) NSMutableArray *connectedDevices;
 @end
 
 @implementation SensorTable
@@ -22,6 +25,7 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentDeviceList = [NSMutableArray arrayWithArray:[toolkit deviceList:[toolkit currentAlmond].almondplusMAC]];
     [self setDeviceValues:[toolkit deviceValuesList:[toolkit currentAlmond].almondplusMAC]];
+    self.connectedDevices = toolkit.wifiClientParser;
    // [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"reuseIdentifier"];
 
     // Uncomment the following line to preserve selection between presentations.
@@ -39,35 +43,78 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    if(section == 0)
+        return 3;
+    else
+    return 4;
 }
-
-
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    if(section == 0)
+        return [NSString stringWithFormat:@"Sensors (%d)",1];
+    else
+        return [NSString stringWithFormat:@"Network devices (%d)",1];
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    return 30;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    static NSString *header = @"customHeader";
+    
+    UITableViewHeaderFooterView *vHeader;
+    
+    vHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:header];
+    
+    if (!vHeader) {
+        vHeader = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:header];
+    }
+    vHeader.textLabel.font = [UIFont securifiFont:16];
+    vHeader.textLabel.textColor = [UIColor lightGrayColor];
+    vHeader.textLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    
+    return vHeader;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"cellForRowAtIndexPath");
+    if(indexPath.section == 0){
     SensorCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
     if (cell == nil) {
         cell = [[SensorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuseIdentifier"];
         //cell = [[SFISensorTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
-    SFIDevice *device = [self.currentDeviceList objectAtIndex:indexPath.row];
+    SFIDevice *device = [[SFIDevice alloc]init];
     NSLog(@"cell frame %f,%f,%f,%f",cell.frame.origin.x,cell.frame.origin.y,cell.frame.size.height,cell.frame.size.width);
     // Configure the cell...
     cell.delegate  = self;
-    cell.device = device;
+   cell.device = device;
     cell.deviceValue = [self tryCurrentDeviceValues:device.deviceID];
     //[cell cellInfo];
     NSLog(@" cell.device name %@",cell.device.deviceName);
     return cell;
+    }
+    else
+    {
+    static NSString *CellIdentifier = @"wifi";
+    SFIWiFiClientListCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell){
+        cell = [[SFIWiFiClientListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+    }
+    if(self.connectedDevices.count <=indexPath.section)
+        return cell;
+    cell.delegate = self;
+    [cell createClientCell:self.connectedDevices[indexPath.section]];
+    cell.expandable = YES;
+    return cell;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@" heightForRowAtIndexPath ");
-    return 90;
+    return 63;
 }
 - (void)setDeviceValues:(NSArray *)values {
     NSMutableDictionary *table = [NSMutableDictionary dictionary];
@@ -90,60 +137,18 @@
     [self.navigationController pushViewController:viewController animated:YES];
 
 }
-
-
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
+-(void)settingTapped:(SFIWiFiClientListCell*)cell Info:(SFIConnectedDevice*)connectedDevice{
+    NSLog(@"btnSettingTap");
+    NSIndexPath * indexPath = [self.tblView indexPathForCell:cell];
+    //    currentIndexPath = indexPath;
+    //    currentDevice = self.connectedDevices[indexPath.section];
+    [self.tblView expandCell:self.tblView didSelectRowAtIndexPath:indexPath];
 }
-*/
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (void)btnSettingTapped:(SFIWiFiClientListCell *)cell Info:(SFIConnectedDevice *)connectedDevice{
+    NSIndexPath * indexPath = [self.tblView indexPathForCell:cell];
+//    currentIndexPath = indexPath;
+//    currentDevice = self.connectedDevices[indexPath.section];
+    [self.tblView expandCell:self.tblView didSelectRowAtIndexPath:indexPath];
+//        [self tableView:tblDevices didSelectRowAtIndexPath:indexPath];
 }
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 @end

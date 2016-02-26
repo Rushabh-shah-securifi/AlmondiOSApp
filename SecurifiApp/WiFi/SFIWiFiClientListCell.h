@@ -12,6 +12,8 @@
 
 @protocol SFIWiFiClientListCellDelegate
 - (void)btnSettingTapped:(SFIWiFiClientListCell*)cell Info:(SFIConnectedDevice*)connectedDevice;
+@optional
+-(void)settingTapped:(SFIWiFiClientListCell*)cell Info:(SFIConnectedDevice*)connectedDevice;
 @end
 
 @interface SFIWiFiClientListCell : UITableViewCell

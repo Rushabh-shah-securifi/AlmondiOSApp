@@ -466,6 +466,7 @@
 		CE5EDF8B1C461FEE00A2829B /* RulePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8A1C461FEE00A2829B /* RulePayload.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
 		CEEB098D1C56039400F3E62E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEEB098B1C56039400F3E62E /* Main.storyboard */; };
+		CEEC7FAF1C80726300E8A46B /* ClientEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC7FAE1C80726300E8A46B /* ClientEditViewController.m */; settings = {ASSET_TAGS = (); }; };
 		CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEF425C1C47E0E300E36C9B /* ScenePayload.m */; };
 		CEF1354E1C509667009E4558 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1354D1C509667009E4558 /* RuleButton.m */; };
 		CEF1357D1C510969009E4558 /* SFISubPropertyBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1357C1C510969009E4558 /* SFISubPropertyBuilder.m */; };
@@ -499,8 +500,8 @@
 		1C2F60731B69E69D001CCA34 /* SFIScenesTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIScenesTableViewCell.m; sourceTree = "<group>"; };
 		1C2F60761B69E69D001CCA34 /* SFISwitchButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISwitchButton.h; sourceTree = "<group>"; };
 		1C2F60771B69E69D001CCA34 /* SFISwitchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISwitchButton.m; sourceTree = "<group>"; };
-		1C2F60791B69E69D001CCA34 /* SFIWiFiClientListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWiFiClientListCell.h; sourceTree = "<group>"; };
-		1C2F607A1B69E69D001CCA34 /* SFIWiFiClientListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIWiFiClientListCell.m; sourceTree = "<group>"; };
+		1C2F60791B69E69D001CCA34 /* SFIWiFiClientListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SFIWiFiClientListCell.h; path = ../WiFi/SFIWiFiClientListCell.h; sourceTree = "<group>"; };
+		1C2F607A1B69E69D001CCA34 /* SFIWiFiClientListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SFIWiFiClientListCell.m; path = ../WiFi/SFIWiFiClientListCell.m; sourceTree = "<group>"; };
 		1C2F607B1B69E69D001CCA34 /* SFIWiFiClientsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWiFiClientsListViewController.h; sourceTree = "<group>"; };
 		1C2F607C1B69E69D001CCA34 /* SFIWiFiClientsListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIWiFiClientsListViewController.m; sourceTree = "<group>"; };
 		1C2F607D1B69E69D001CCA34 /* SFIWiFiDeviceProprtyEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWiFiDeviceProprtyEditViewController.h; sourceTree = "<group>"; };
@@ -980,6 +981,8 @@
 		CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPickerIndicatorView1.h; sourceTree = "<group>"; };
 		CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPickerIndicatorView1.m; sourceTree = "<group>"; };
 		CEEB098C1C56039400F3E62E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
+		CEEC7FAD1C80726300E8A46B /* ClientEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientEditViewController.h; sourceTree = "<group>"; };
+		CEEC7FAE1C80726300E8A46B /* ClientEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientEditViewController.m; sourceTree = "<group>"; };
 		CEEF425B1C47E0E300E36C9B /* ScenePayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenePayload.h; sourceTree = "<group>"; };
 		CEEF425C1C47E0E300E36C9B /* ScenePayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScenePayload.m; sourceTree = "<group>"; };
 		CEF1354D1C509667009E4558 /* RuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleButton.m; sourceTree = "<group>"; };
@@ -1077,8 +1080,6 @@
 			children = (
 				842651AB1BE0C865001F79C1 /* TimeText.h */,
 				842651AC1BE0C86C001F79C1 /* TimeText.m */,
-				1C2F60791B69E69D001CCA34 /* SFIWiFiClientListCell.h */,
-				1C2F607A1B69E69D001CCA34 /* SFIWiFiClientListCell.m */,
 				1C2F607B1B69E69D001CCA34 /* SFIWiFiClientsListViewController.h */,
 				1C2F607C1B69E69D001CCA34 /* SFIWiFiClientsListViewController.m */,
 				1C2F607D1B69E69D001CCA34 /* SFIWiFiDeviceProprtyEditViewController.h */,
@@ -1523,6 +1524,10 @@
 				CEF158541C7DD5B400E7B2E2 /* HueSliderView.m */,
 				CEF158591C7DDD0700E7B2E2 /* SensorTextView.h */,
 				CEF1585A1C7DDD0700E7B2E2 /* SensorTextView.m */,
+				1C2F60791B69E69D001CCA34 /* SFIWiFiClientListCell.h */,
+				1C2F607A1B69E69D001CCA34 /* SFIWiFiClientListCell.m */,
+				CEEC7FAD1C80726300E8A46B /* ClientEditViewController.h */,
+				CEEC7FAE1C80726300E8A46B /* ClientEditViewController.m */,
 			);
 			path = Sensor;
 			sourceTree = "<group>";
@@ -2674,6 +2679,7 @@
 				1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */,
 				1DF0333217E77760651C98F7 /* ScoreboardNetworkSettingsViewController.m in Sources */,
 				1C2F60A41B69E69D001CCA34 /* SFIWiFiDeviceTypeSelectionCell.m in Sources */,
+				CEEC7FAF1C80726300E8A46B /* ClientEditViewController.m in Sources */,
 				CE5E60DF1C7B37CB00622798 /* SensorCell.m in Sources */,
 				1DF037452A64D0EE163B8173 /* AlertView.m in Sources */,
 				1DF0394349F84E2FCC5E25F9 /* AlertViewAction.m in Sources */,

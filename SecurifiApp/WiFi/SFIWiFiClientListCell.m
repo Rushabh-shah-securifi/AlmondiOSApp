@@ -139,6 +139,7 @@ static UIImage *_image = nil;
 
 
 - (void)createClientCell:(SFIConnectedDevice*)connectedDevice{
+    NSLog(@"createClientCell ");
     self.connectedDevice = connectedDevice;
     lblMAC.text = connectedDevice.name;
     if(connectedDevice.deviceAllowedType == DeviceAllowed_Blocked){
@@ -163,7 +164,9 @@ static UIImage *_image = nil;
 }
 
 - (IBAction)btnSettingTap:(id)sender {
-    [self.delegate btnSettingTapped:self Info:self.connectedDevice];
+    NSLog(@"btnSettingTap ");
+    [self.delegate settingTapped:self Info:self.connectedDevice];
+//    [self.delegate btnSettingTapped:self Info:self.connectedDevice];
 }
 
 @end

@@ -42,7 +42,7 @@
 }
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
     NSLog(@"textFieldDidBeginEditing");
-    UIImageView *textCheckMarkView = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width - self.frame.size.height , 7, self.frame.size.height -7, self.frame.size.height -7)];
+    UIImageView *textCheckMarkView = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width - self.frame.size.height , 10, self.frame.size.height -10, self.frame.size.height -10)];
     textCheckMarkView.image = [UIImage imageNamed:@"iconSceneChekmark"];
     [self addSubview:textCheckMarkView];
 }
