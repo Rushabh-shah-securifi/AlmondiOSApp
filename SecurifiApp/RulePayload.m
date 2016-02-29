@@ -26,7 +26,6 @@
     [rulePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
     [rulePayload setValue:@"ValidateRule" forKey:@"CommandType"];
  
-    NSLog(@"rule payload : %@ ",rulePayload);
     return rulePayload;
     
 }
@@ -49,18 +48,21 @@
     }
     else{
         [rulePayload setValue:@"UpdateRule" forKey:@"CommandType"];
-        NSLog(@"rule id edit %@ ",self.rule.ID);
         [rulePayload setValue:self.rule.ID forKey:@"ID"];
         [rulePayload setValue:self.rule.ID forKey:@"ID"]; //Get From Rule instance
         isInitilized = NO;//setting it to not to reflect
         
     }
     
+    NSArray *devices =[toolkit deviceValuesList:plus.almondplusMAC];
+    
+    [self removeInvalidEntries:self.rule.triggers devices:devices clients:toolkit.wifiClientParser];
+    [self removeInvalidEntries:self.rule.actions devices:devices clients:toolkit.wifiClientParser];
     
     [rulePayload setValue:[self createTriggerPayload] forKey:@"Triggers"];
     [rulePayload setValue:[self createActionPayload] forKey:@"Results"];
     
-    NSLog(@"rule payload : %@ ",rulePayload);
+
     return rulePayload;
     
 }
@@ -74,7 +76,44 @@
     }
     return triggersArray;
 }
+-(BOOL)findDevice:(int *)deviceId devices:(NSArray *)devices{
+    for(SFIDeviceValue *deviceValue in devices){
+        if(deviceValue.deviceID == deviceId)
+            return YES;
+    }
+    return NO;
+}
 
+-(BOOL)findClient:(NSString *)mac devices:(NSArray *)clients{
+    for(SFIConnectedDevice *client in clients){
+        if([mac isEqualToString:client.deviceMAC])
+            return YES;
+    }
+    return NO;
+}
+
+-(void)removeInvalidEntries:(NSMutableArray *)entries devices:(NSArray *)devices clients:(NSArray *)clients{
+    NSMutableArray *invalidEntries=[NSMutableArray new];
+    for(SFIButtonSubProperties *properties in entries){
+        properties.eventType=properties.eventType==nil?@"":properties.eventType;
+        properties.type=properties.type==nil?@"":properties.type;
+        
+        if([properties.eventType isEqualToString:@"TimeTrigger"]
+           ||[properties.eventType isEqualToString:@"AlmondModeUpdated"]
+           ||[properties.type isEqualToString:@"NetworkResult"])
+            continue;
+        
+        else if([properties.eventType isEqualToString:@"ClientJoined"] || [properties.eventType isEqualToString:@"ClientLeft"]){
+            
+            if(![self findClient:properties.matchData devices:clients])
+                [invalidEntries addObject:properties];
+        }
+        else if( ![self findDevice:properties.deviceId devices:devices])
+            [invalidEntries addObject:properties];
+    }
+    if(invalidEntries.count>0)
+        [entries removeObjectsInArray:invalidEntries ];
+}
 -(NSDictionary *)createTriggerDeviceObject:(SFIButtonSubProperties*)property{
     property.eventType=property.eventType==nil?@"":property.eventType;
 

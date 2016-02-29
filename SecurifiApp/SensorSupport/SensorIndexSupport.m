@@ -132,7 +132,7 @@
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"0";
                 s2.matchType = MatchType_not_equals;
-                s2.iconName = @"multilevel_switch_on";
+                s2.iconName = DT4_LEVEL_CONTROL_TRUE;
                 s2.displayText=@"DIM";
                 s2.layoutType=@"dimButton";
                 s2.minValue = 0;
@@ -144,7 +144,7 @@
                 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchData = @"100";
-                s3.iconName = DT2_MULTILEVEL_SWITCH_TRUE;
+                s3.iconName = DT4_LEVEL_CONTROL_TRUE;
                 s3.displayText = @"ON";
                 s3.notificationText = NSLocalizedString(@" is turned On.", @" is turned On.");
                 
@@ -260,7 +260,7 @@
                 s1.matchData = @"50";
                 s1.valueFormatter.action = ValueFormatterAction_scale;
                 s1.layoutType=@"dimButton";
-                s1.iconName = @"multilevel_switch_on";
+                s1.iconName = DT4_LEVEL_CONTROL_TRUE;
                 s1.displayText=@"DIM";
                 s1.minValue = 0;
                 s1.maxValue = 100;

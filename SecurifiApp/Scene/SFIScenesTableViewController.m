@@ -69,10 +69,6 @@
     [self addAddSceneButton];
 }
 
-- (void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
-    [self removeAddSceneButton];
-}
 
 - (void)addAddSceneButton{
     if (!btnAdd) {
@@ -110,8 +106,9 @@
     
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self removeAddSceneButton];
     if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];

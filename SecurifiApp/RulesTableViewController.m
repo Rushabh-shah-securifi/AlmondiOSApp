@@ -74,17 +74,13 @@ CGPoint tablePoint;
     return local;
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self removeAddSceneButton];
     if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
     }
-}
-
-- (void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
-    [self removeAddSceneButton];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -345,10 +341,12 @@ CGPoint tablePoint;
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     AddRulesViewController *addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
     Rule *rule = [self.rules[indexPath.row] createNew];
+
     addRuleController.rule = rule;
     addRuleController.isInitialized = YES;
     [self.navigationController pushViewController:addRuleController animated:YES];
 }
+
 - (void)activateRule:(CustomCellTableViewCell *)cell{
     [self setUpHUD];
     self.HUD.labelText = cell.activeDeactiveSwitch.selected? [NSString stringWithFormat:@"Activating rule - %@...",cell.ruleNameLabel.text]: [NSString stringWithFormat:@"Deactivating rule - %@...",cell.ruleNameLabel.text];

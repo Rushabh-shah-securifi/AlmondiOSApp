@@ -36,7 +36,7 @@
     float propertyRowCellHeight;
     float removeRowCellHeight;
     UIFont * cellFont;
-    BOOL local;
+   
 }
 
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -56,7 +56,6 @@
     randomMobileInternalIndex = arc4random() % 10000;
     tblDevices.SKSTableViewDelegate = self;
     tblDevices.shouldExpandOnlyOneCell = YES;
-    local = [self getLocalConnection];
     propertyNames = @[@"Name",@"Type",@"Manufacturer",@"MAC Address",@"Last Known IP",@"Signal Strength",@"Connection",@"Allow On Network",@"Use as Presence Sensor",@"Notify me",@"Set Inactivity Timeout", @"Last Active Time", @"View Device History",@"Remove"];
     [self initializeNotifications];
     [self getClientsPreferences];
@@ -96,8 +95,8 @@
     
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
@@ -266,30 +265,27 @@
             break;
         }
         case allowOnNetworkIndexPathRow:{ //Allow On Network
-            float lableX = local? tblDevices.frame.size.width - 220: tblDevices.frame.size.width - 215;
-            float lableWidth = local? 180: 200;
+            float lableX = tblDevices.frame.size.width - 220;
+            float lableWidth = 180;
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(lableX, 0, lableWidth, propertyRowCellHeight)];
             label.backgroundColor = [UIColor clearColor];
             label.textColor = [UIColor whiteColor];
-            label.alpha = local?1: 0.5;
+            label.alpha = 1;
             label.font = cellFont;
-            if(local){
-                if (connectedDevice.deviceAllowedType == DeviceAllowed_Always) {
-                    label.text = @"Always";
-                }else if(connectedDevice.deviceAllowedType == DeviceAllowed_Blocked){
-                    label.text = @"Blocked";
-                }else{
-                    label.text = @"OnSchedule";
-                }
+            
+            if (connectedDevice.deviceAllowedType == DeviceAllowed_Always) {
+                label.text = @"Always";
+            }else if(connectedDevice.deviceAllowedType == DeviceAllowed_Blocked){
+                label.text = @"Blocked";
             }else{
-                label.text = @"NaN";
+                label.text = @"OnSchedule";
             }
             
             label.tag = 66;
             label.numberOfLines = 1;
             label.textAlignment = NSTextAlignmentRight;
             [cell addSubview:label];
-            cell.accessoryType = local? UITableViewCellAccessoryDisclosureIndicator: UITableViewCellAccessoryNone;
+            cell.accessoryType =  UITableViewCellAccessoryDisclosureIndicator;
             break;
         }
             
@@ -344,6 +340,7 @@
         }
         case notifyMeIndexPathRow://Notify me
         {
+            BOOL local =[self getLocalConnection];
             if(!local){
                 float lableX = !local? tblDevices.frame.size.width - 220: tblDevices.frame.size.width - 215;
                 float lableWidth = !local? 180: 200;
@@ -384,6 +381,7 @@
 
 -  (void)addCellLabel:(UITableViewCell*)cell IndexPath:(NSIndexPath *)indexPath connectDevice:(SFIConnectedDevice*)connectedDevice{
     NSInteger subRowIndex = indexPath.subRow-1;
+    BOOL local=[self getLocalConnection];
     if(local && (subRowIndex==notifyMeIndexPathRow || subRowIndex == historyIndexPathRow))
         return;
     
@@ -453,7 +451,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForSubRowAtIndexPath:(NSIndexPath *)indexPath{
     NSInteger subrowIndex = indexPath.subRow-1;
-    
+    BOOL local=[self getLocalConnection];
     if(local && (subrowIndex==notifyMeIndexPathRow || subrowIndex == historyIndexPathRow))
         return 0;
     
@@ -481,6 +479,7 @@
 {
     
     NSInteger subRowIndex = indexPath.subRow-1;
+    BOOL local=[self getLocalConnection];
     switch (subRowIndex) {
         case nameIndexPathRow://Name
         {
@@ -522,9 +521,7 @@
         }
         case allowOnNetworkIndexPathRow://Allow On Network
         {
-            if(!local){
-                break;
-            }
+            
             SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
             viewController.delegate = self;
             viewController.editFieldIndex = subRowIndex;
@@ -645,13 +642,15 @@
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     NSDictionary * mainDict;
-
+    BOOL local=[self getLocalConnection];
+    if(data==nil || [data valueForKey:@"data"]==nil)
+        return;
     if(local)
         mainDict = [data valueForKey:@"data"];
     else
         mainDict = [[data valueForKey:@"data"] objectFromJSONData];
     
-    if (randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
+    if (mainDict==nil || [mainDict valueForKey:@"MobileInternalIndex"]==nil || randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
         return;
     }
     
@@ -815,7 +814,7 @@
 }
 - (void)asyncSendCommand:(GenericCommand *)command {
     SFIAlmondPlus *almond = [[SecurifiToolkit sharedInstance] currentAlmond];
-    if(local){
+    if([self getLocalConnection]){
         [[SecurifiToolkit sharedInstance] asyncSendToLocal:command almondMac:almond.almondplusMAC];
     }else{
         [[SecurifiToolkit sharedInstance] asyncSendToCloud:command];
