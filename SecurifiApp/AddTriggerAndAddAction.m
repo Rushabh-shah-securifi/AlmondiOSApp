@@ -39,6 +39,7 @@
 @end
 
 @implementation AddTriggerAndAddAction
+static const int deviceNameFont = 15;
 
 V8HorizontalPickerView *picker;
 
@@ -63,7 +64,7 @@ DimmerButton *dimerButton;
     return self;
 }
 -(CGRect)adjustDeviceNameWidth:(NSString*)deviceName{
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:12]};
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:deviceNameFont]};
     CGRect textRect;
     
     textRect.size = [deviceName sizeWithAttributes:attributes];

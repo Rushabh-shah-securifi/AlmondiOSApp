@@ -32,7 +32,7 @@
     self.deviceId = deviceId;
     [self setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [self setTitle:deviceName forState:UIControlStateNormal];
-    self.titleLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:13];
+    self.titleLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:15];
     self.titleLabel.numberOfLines = 1;
     super.titleLabel.textAlignment = NSTextAlignmentCenter;
 }

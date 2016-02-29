@@ -170,7 +170,7 @@ CGPoint tablePoint;
     if([self isRuleArrayEmpty]){
         return 400;
     }
-    return 154; //height of the cell from story board
+    return 146; //height of the cell from story board
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

@@ -36,10 +36,10 @@
     lblDeviceName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width,textHeight)];
     //    lblTitle.font = self.titleLabel.font;
     lblDeviceName.text = title;
-    lblDeviceName.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:10];
+    lblDeviceName.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:topFontSize];
     lblDeviceName.numberOfLines=0;
     lblDeviceName.textAlignment = NSTextAlignmentCenter;
-    lblDeviceName.textColor = [SFIColors darkGrayColor];
+    lblDeviceName.textColor = [UIColor blackColor];
     [self addSubview:lblDeviceName];
     
     //delaybutton

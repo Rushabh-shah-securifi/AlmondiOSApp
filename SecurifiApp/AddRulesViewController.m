@@ -52,7 +52,7 @@
 
 @implementation AddRulesViewController
 UITextField *textField;
-
+const int infoLableSize = 13;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -293,6 +293,8 @@ UITextField *textField;
     else if (self.rule.actions.count > 0){
         self.informationLabel.text = @"Add another action or press SAVE to finalize the rule";
     }
+    [self.informationLabel setFont:[UIFont systemFontOfSize:infoLableSize]];
+
     
 }
 

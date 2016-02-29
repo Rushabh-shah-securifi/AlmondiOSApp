@@ -16,6 +16,7 @@ extern int const dimFrameHeight;
 extern int const dimFrameWidth;
 extern int const textPadding;
 extern int const fontSize;
+extern int const topFontSize;
 extern float const imageHeightFactor;
 extern int const hueSubViewSize;
 extern int const ROW_PADDING;

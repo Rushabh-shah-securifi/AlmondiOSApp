@@ -16,7 +16,8 @@ const int indexButtonFrameSize = 80;
 const int dimFrameHeight = 70;
 const int dimFrameWidth = 140;
 const int textPadding = 2;
-const int fontSize = 9;
+const int fontSize = 11;
+const int topFontSize = 12;
 float const imageHeightFactor = 1.6;
 
 const int hueSubViewSize = 20;

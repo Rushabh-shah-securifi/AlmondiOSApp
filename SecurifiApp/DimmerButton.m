@@ -78,10 +78,10 @@
     lblDeviceName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width,textHeight)];
     //    self.bottomLabel.font = self.titleLabel.font;
     lblDeviceName.text = title;
-    lblDeviceName.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:10];
+    lblDeviceName.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:topFontSize];
     lblDeviceName.numberOfLines=0;
     lblDeviceName.textAlignment = NSTextAlignmentCenter;
-    lblDeviceName.textColor = [SFIColors darkGrayColor];
+    lblDeviceName.textColor = [UIColor blackColor];
     [self addSubview:lblDeviceName];
     
     //set value
@@ -103,13 +103,12 @@
     //self.bottomLabel
     self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding, self.frame.size.width,textHeight)];
     self.bottomLabel.text = displayText;
-    [self.bottomLabel setFont: [self.bottomLabel.font fontWithSize: fontSize]];
+    self.bottomLabel.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:fontSize];
     self.bottomLabel.numberOfLines=0;
-    self.bottomLabel.textAlignment = NSTextAlignmentCenter;
     self.bottomLabel.textColor = [SFIColors ruleGraycolor];
     self.bottomLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:self.bottomLabel];
-    
+
     //lblmain adjutments
     self.prefix = suffix;
     NSString *strTopTitleLabelText = [text stringByAppendingString:suffix];

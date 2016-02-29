@@ -39,10 +39,10 @@
     self.topLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width,textHeight)];
     //    self.bottomLabel.font = self.titleLabel.font;
     self.topLabel.text = title;
-    self.topLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:10];
+    self.topLabel.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:topFontSize];
     self.topLabel.numberOfLines=0;
     self.topLabel.textAlignment = NSTextAlignmentCenter;
-    self.topLabel.textColor = [SFIColors darkGrayColor];
+    self.topLabel.textColor = [UIColor blackColor];
     [self addSubview:self.topLabel];
 }
 
@@ -82,7 +82,6 @@
     self.bottomLabel.text = bottomText;
     self.bottomLabel.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:fontSize];
     self.bottomLabel.numberOfLines=0;
-    self.bottomLabel.textColor = self.currentTitleColor;
     self.bottomLabel.textAlignment = NSTextAlignmentCenter;
     self.bottomLabel.textColor = [SFIColors ruleGraycolor];
     [self addSubview:self.bottomLabel];
@@ -98,9 +97,9 @@
         if(isDimButton)
             [self mainLabel:@"" text:insideText];
         else
-        [self addImage:iconImage y:self.bgView.frame.origin.y widthAndHeight:self.bgView.frame.size.width];
+            [self addImage:iconImage y:self.bgView.frame.origin.y widthAndHeight:self.bgView.frame.size.width];
         if(isTrigger)
-        [self addBottomText:bottomText x:0 y:self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding width:self.frame.size.width height:textHeight];
+            [self addBottomText:bottomText x:0 y:self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding width:self.frame.size.width height:textHeight];
         
         if(topText.length >0 || !isTrigger)
             self.bgView.backgroundColor = self.isTrigger?[SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
@@ -146,7 +145,7 @@
     [imgIcon setTintColor:color];
 }
 - (void)setButtonCross:(BOOL)isHidden{
-    crossButtonBGView = [[UIView alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 8, 12, countDiameter, countDiameter)];
+    crossButtonBGView = [[UIView alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 8, 10, countDiameter, countDiameter)];
     [self setLayer];
     [self addImage1:[UIImage imageNamed:@"icon_cross_gray"] y:crossButtonBGView.frame.origin.y widthAndHeight:countDiameter];
     crossButtonBGView.hidden = isHidden;
