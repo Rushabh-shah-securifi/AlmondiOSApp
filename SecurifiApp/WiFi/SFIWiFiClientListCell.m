@@ -28,6 +28,7 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
+    NSLog(@"SFIWiFiClientListCell awakeFromNib ");
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     // Initialization code
 }
@@ -165,8 +166,32 @@ static UIImage *_image = nil;
 
 - (IBAction)btnSettingTap:(id)sender {
     NSLog(@"btnSettingTap ");
-    [self.delegate settingTapped:self Info:self.connectedDevice];
-//    [self.delegate btnSettingTapped:self Info:self.connectedDevice];
+    NSDictionary *connectedDevice =  @{@"Name" : @"smartDevice",
+                                       @"Type" : @"Tablate",
+                                       @"Manufacture" : @"freedom",
+                                       @"MAC Address" : @"10.21.45.53.58",
+                                       @"Last Known IP" : @"10.21.1.100",
+                                       @"Signal Strength" : @"-33 dBm",
+                                       @"Connection" : @"wireLess",
+                                       @"Allow On network" : @"Always",
+                                       @"use as pesence sensor" : @"true",
+                                       @"inActiveTimeOut" : @"32"
+                                       };
+    
+     NSArray *IndexArray = [[NSArray alloc]initWithObjects:@"1",@"2",nil];
+    self.connectedDevice = [[SFIConnectedDevice alloc]init];
+    self.connectedDevice.name = @"smartPhone";
+    self.connectedDevice.deviceID = @"12";
+    self.connectedDevice.deviceIP = @"10.21.21.100";
+    self.connectedDevice.deviceType = @"SmartPhone";
+    self.connectedDevice.timeout = 24;
+    self.connectedDevice.deviceLastActiveTime = @"25";
+    self.connectedDevice.manufacturer = @"freedom";
+    self.connectedDevice.isActive = YES;
+    self.connectedDevice.deviceUseAsPresence = YES;
+//    [self.delegate btnSettingTapped:connectedDevice index:IndexArray];
+    [self.delegate btnSettingTapped:self Info:self.connectedDevice];
+
 }
 
 @end

@@ -11,6 +11,7 @@
 #import "SensorEditViewController.h"
 #import "SFIWiFiClientListCell.h"
 #import "UIFont+Securifi.h"
+#import "ClientEditViewController.h"
 
 @interface SensorTable ()<UITableViewDataSource,UITableViewDelegate,SensorCellDelegate,SFIWiFiClientListCellDelegate>
 @property (nonatomic,strong)NSMutableArray *currentDeviceList;
@@ -103,10 +104,11 @@
     if (!cell){
         cell = [[SFIWiFiClientListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    if(self.connectedDevices.count <=indexPath.section)
-        return cell;
+//    if(self.connectedDevices.count <=indexPath.section)
+//        return cell;
     cell.delegate = self;
-    [cell createClientCell:self.connectedDevices[indexPath.section]];
+//    [cell createClientCell:self.connectedDevices[indexPath.section]];
+//    [cell drawIndexes];
     cell.expandable = YES;
     return cell;
     }
@@ -114,7 +116,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     NSLog(@" heightForRowAtIndexPath ");
-    return 63;
+    return 65;
 }
 - (void)setDeviceValues:(NSArray *)values {
     NSMutableDictionary *table = [NSMutableDictionary dictionary];
@@ -137,18 +139,15 @@
     [self.navigationController pushViewController:viewController animated:YES];
 
 }
--(void)settingTapped:(SFIWiFiClientListCell*)cell Info:(SFIConnectedDevice*)connectedDevice{
-    NSLog(@"btnSettingTap");
-    NSIndexPath * indexPath = [self.tblView indexPathForCell:cell];
-    //    currentIndexPath = indexPath;
-    //    currentDevice = self.connectedDevices[indexPath.section];
-    [self.tblView expandCell:self.tblView didSelectRowAtIndexPath:indexPath];
-}
-- (void)btnSettingTapped:(SFIWiFiClientListCell *)cell Info:(SFIConnectedDevice *)connectedDevice{
-    NSIndexPath * indexPath = [self.tblView indexPathForCell:cell];
-//    currentIndexPath = indexPath;
-//    currentDevice = self.connectedDevices[indexPath.section];
-    [self.tblView expandCell:self.tblView didSelectRowAtIndexPath:indexPath];
-//        [self tableView:tblDevices didSelectRowAtIndexPath:indexPath];
+
+- (void)btnSettingTapped:(NSDictionary *)connectedDevice index:(NSArray*)indexArray{
+    NSLog(@"onSettingButtonClicked");
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
+    ClientEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ClientEditViewController"];
+    viewController.connectedDevice = connectedDevice;
+    viewController.indexArray = indexArray;
+    [self.navigationController pushViewController:viewController animated:YES];
+
+
 }
 @end

@@ -9,5 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface ClientEditViewController : UIViewController
+@property(nonatomic)NSDictionary *connectedDevice;
+@property(nonatomic)NSMutableArray *indexArray;
+@property(nonatomic)NSDictionary *clientProperties;
 
 @end

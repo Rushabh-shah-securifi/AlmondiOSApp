@@ -11,8 +11,9 @@
 @class SFIWiFiClientListCell;
 
 @protocol SFIWiFiClientListCellDelegate
-- (void)btnSettingTapped:(SFIWiFiClientListCell*)cell Info:(SFIConnectedDevice*)connectedDevice;
+- (void)btnSettingTapped:(NSDictionary *)connectedDevice index:(NSArray*)indexArray;
 @optional
+- (void)btnSettingTapped:(SFIWiFiClientListCell *)cell Info:(SFIConnectedDevice *)connectedDevice;
 -(void)settingTapped:(SFIWiFiClientListCell*)cell Info:(SFIConnectedDevice*)connectedDevice;
 @end
 
@@ -29,5 +30,6 @@
 - (void)accessoryViewAnimation;
 
 - (void)createClientCell:(SFIConnectedDevice*)connectedDevice;
+- (void)drawIndexes;
 
 @end
