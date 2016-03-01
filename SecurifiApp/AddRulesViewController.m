@@ -443,7 +443,12 @@ const int infoLableSize = 13;
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
-    [[SecurifiToolkit sharedInstance] asyncSendToLocal:cloudCommand almondMac:plus.almondplusMAC];
+    BOOL local=[toolkit useLocalNetwork:plus.almondplusMAC];
+    if(local){
+        [toolkit asyncSendToLocal:cloudCommand almondMac:plus.almondplusMAC];
+    }else{
+        [toolkit asyncSendToCloud:cloudCommand];
+    }
 }
 
 

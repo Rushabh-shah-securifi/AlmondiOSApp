@@ -52,9 +52,9 @@ CGPoint tablePoint;
     [super viewWillAppear:animated];
     self.enableDrawer = YES;
     [self getRuleList];
-    if([self isLocal]){
+   // if([self isLocal]){
         [self addAddRuleButton];
-    }
+    //}
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     if (self.currentAlmond == nil) {
@@ -174,7 +174,8 @@ CGPoint tablePoint;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if([self isRuleArrayEmpty] || ![self isLocal]){
+    //if([self isRuleArrayEmpty] || ![self isLocal]){
+    if([self isRuleArrayEmpty] ){
         return [self createEmptyCell:tableView];
     }
     static NSString *CellIdentifier;
@@ -257,10 +258,10 @@ CGPoint tablePoint;
         lblNoSensor.textColor = [UIColor grayColor];
         [cell addSubview:lblNoSensor];
     //}
-    if(![self isLocal]){
-        [self removeAddSceneButton];
-    }
-    else
+   // if(![self isLocal]){
+        //[self removeAddSceneButton];
+    //}
+    //else
         [self addAddRuleButton];
     return cell;
 }
@@ -411,9 +412,15 @@ CGPoint tablePoint;
 //
 #pragma mark asyncRequest methods
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
+    NSLog(@"aysncSendCommand %@",cloudCommand);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    [[SecurifiToolkit sharedInstance] asyncSendToLocal:cloudCommand almondMac:plus.almondplusMAC];
+    SFIAlmondPlus *almond = [[SecurifiToolkit sharedInstance] currentAlmond];
+    if([self isLocal]){
+        [toolkit asyncSendToLocal:cloudCommand almondMac:almond.almondplusMAC];
+    }else{
+        [toolkit asyncSendToCloud:cloudCommand];
+    }
 }
+
 
 @end
