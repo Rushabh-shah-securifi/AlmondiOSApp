@@ -18,6 +18,7 @@
 #import "Colours.h"
 #import "Analytics.h"
 #import "ScenePayload.h"
+#import "SceneNameViewController.h"
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]//MD01
 
@@ -41,6 +42,7 @@
 @property(nonatomic, readonly) BOOL isHudHidden;
 @property(nonatomic) BOOL isViewControllerDisposed;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property(nonatomic) UIButton *buttonSceneName;
 
 @end
 
@@ -71,6 +73,7 @@
     // Do any additional setup after loading the view.
     [self initializeNotifications];
     [self initializeAlmondData];
+    [self addAddSceneButton];
 }
 #pragma mark
 - (void)viewWillAppear:(BOOL)animated
@@ -997,6 +1000,24 @@
     }
     
     [cellsInfoArray[indexPath.row] setValue:existingValues forKey:@"existingValues"];
+}
+
+- (void)addAddSceneButton{
+    if (!_buttonSceneName) {
+        _buttonSceneName = [UIButton buttonWithType:UIButtonTypeCustom];
+        _buttonSceneName.frame = CGRectMake((self.navigationController.view.frame.size.width - 65)/2, self.navigationController.view.frame.size.height-130, 65, 65);
+        [_buttonSceneName setImage:[UIImage imageNamed:@"btnAdd"] forState:UIControlStateNormal];
+        _buttonSceneName.backgroundColor = [UIColor clearColor];
+        [_buttonSceneName addTarget:self action:@selector(btnAddNewSceneTap:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    [self.navigationController.view addSubview:_buttonSceneName];
+}
+
+#pragma mark - add tap
+
+- (void)btnAddNewSceneTap:(id)sender {
+    SceneNameViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SceneNameViewController"];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 

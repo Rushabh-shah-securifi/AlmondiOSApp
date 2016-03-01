@@ -1,0 +1,1 @@
+light scene,main scene,door scene,home scene,hall scene,awake scene,bedroom light,car scene,hallway,gate,garage scene,light bulb,bulb sensor,bulb scene,bedroom hue,hue lamp,hue dimmable,dimmable light,peanut,binary switch scene

@@ -240,6 +240,7 @@
 		8467D8021BCBE33D00886D18 /* SFISensorDetailEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8467D8011BCBE33C00886D18 /* SFISensorDetailEditViewController.m */; };
 		84B9A2681B7F315100E44682 /* SFIHorizontalValueSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B9A2671B7F315100E44682 /* SFIHorizontalValueSelectorView.m */; };
 		84D8160F1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D8160E1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m */; };
+		A5472C6F1C8481D700C8E521 /* SceneNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5472C6E1C8481D700C8E521 /* SceneNameViewController.m */; };
 		A54EB0071C44FDC300CF2837 /* CustomCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EAFF71C44FDC300CF2837 /* CustomCellTableViewCell.m */; };
 		A54EB0081C44FDC300CF2837 /* AddRulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EAFF91C44FDC300CF2837 /* AddRulesViewController.m */; };
 		A54EB00C1C44FDC300CF2837 /* DeviceListAndValues.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EB0011C44FDC300CF2837 /* DeviceListAndValues.m */; };
@@ -255,6 +256,8 @@
 		A54EB0351C45004B00CF2837 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A54EB0341C45004B00CF2837 /* Common-Images.xcassets */; };
 		A54EB0411C4506F900CF2837 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A54EB03F1C4506F900CF2837 /* Scenes_Iphone.storyboard */; };
 		A584C8401C5B8344006E02DB /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A584C83F1C5B8344006E02DB /* CollectionViewCell.m */; };
+		A58B1C7E1C856BC7005E72B8 /* scene_names.txt in Resources */ = {isa = PBXBuildFile; fileRef = A58B1C7D1C856BC7005E72B8 /* scene_names.txt */; };
+		A58B1C7F1C856BC7005E72B8 /* scene_names.txt in Resources */ = {isa = PBXBuildFile; fileRef = A58B1C7D1C856BC7005E72B8 /* scene_names.txt */; };
 		A58DB2611BB168C400717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB24F1BB168C400717C02 /* AccountsStoryboard_iPhone.strings */; };
 		A58DB2621BB168C400717C02 /* Almond-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB2511BB168C400717C02 /* Almond-Localizable.strings */; };
 		A58DB2631BB168C400717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB2531BB168C400717C02 /* Almond-MainStoryboard_iPhone.strings */; };
@@ -715,6 +718,8 @@
 		84B9A2671B7F315100E44682 /* SFIHorizontalValueSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIHorizontalValueSelectorView.m; sourceTree = "<group>"; };
 		84D8160D1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIDeviceProprtyEditViewController.h; sourceTree = "<group>"; };
 		84D8160E1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIDeviceProprtyEditViewController.m; sourceTree = "<group>"; };
+		A5472C6D1C8481D700C8E521 /* SceneNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneNameViewController.h; sourceTree = "<group>"; };
+		A5472C6E1C8481D700C8E521 /* SceneNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneNameViewController.m; sourceTree = "<group>"; };
 		A54EAFF61C44FDC300CF2837 /* CustomCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellTableViewCell.h; sourceTree = "<group>"; };
 		A54EAFF71C44FDC300CF2837 /* CustomCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellTableViewCell.m; sourceTree = "<group>"; };
 		A54EAFF81C44FDC300CF2837 /* AddRulesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRulesViewController.h; sourceTree = "<group>"; };
@@ -743,6 +748,7 @@
 		A54EB0401C4506F900CF2837 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Scenes_Iphone.storyboard; sourceTree = "<group>"; };
 		A584C83E1C5B8344006E02DB /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		A584C83F1C5B8344006E02DB /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
+		A58B1C7D1C856BC7005E72B8 /* scene_names.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scene_names.txt; sourceTree = "<group>"; };
 		A58DB2501BB168C400717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
 		A58DB2521BB168C400717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = "Almond-Localizable.strings"; sourceTree = "<group>"; };
 		A58DB2541BB168C400717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = "Almond-MainStoryboard_iPhone.strings"; sourceTree = "<group>"; };
@@ -1009,9 +1015,9 @@
 		1C2F60611B69E69D001CCA34 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				1C2F606C1B69E69D001CCA34 /* SFIAddSceneTableViewCell.h */,
 				CEEF425B1C47E0E300E36C9B /* ScenePayload.h */,
 				CEEF425C1C47E0E300E36C9B /* ScenePayload.m */,
+				1C2F606C1B69E69D001CCA34 /* SFIAddSceneTableViewCell.h */,
 				1C2F606D1B69E69D001CCA34 /* SFIAddSceneTableViewCell.m */,
 				1C2F606E1B69E69D001CCA34 /* SFIAddSceneViewController.h */,
 				1C2F606F1B69E69D001CCA34 /* SFIAddSceneViewController.m */,
@@ -1023,6 +1029,8 @@
 				1C2F60771B69E69D001CCA34 /* SFISwitchButton.m */,
 				8443277A1B763AD700BF2355 /* SFIScenesTableViewController.h */,
 				8443277B1B763AD700BF2355 /* SFIScenesTableViewController.m */,
+				A5472C6D1C8481D700C8E521 /* SceneNameViewController.h */,
+				A5472C6E1C8481D700C8E521 /* SceneNameViewController.m */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -1072,6 +1080,7 @@
 		1C7E7CD71A41A0990026F0BA /* SecurifiApp */ = {
 			isa = PBXGroup;
 			children = (
+				A58B1C7D1C856BC7005E72B8 /* scene_names.txt */,
 				A54EB0341C45004B00CF2837 /* Common-Images.xcassets */,
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
 				A54EAFF31C44FDAF00CF2837 /* Rules */,
@@ -2045,6 +2054,7 @@
 				A58DB48A1BB3CD6800717C02 /* InfoPlist.strings in Resources */,
 				A58DB3CC1BB1960900717C02 /* termsofuse.html in Resources */,
 				A58DB3ED1BB1960900717C02 /* Login_iPhone.strings in Resources */,
+				A58B1C7F1C856BC7005E72B8 /* scene_names.txt in Resources */,
 				A58DB4AB1BB3CD7500717C02 /* termsofuse.html in Resources */,
 				A58DB3F81BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3BE1BB1960900717C02 /* InfoPlist.strings in Resources */,
@@ -2214,6 +2224,7 @@
 				CEEB098D1C56039400F3E62E /* Main.storyboard in Resources */,
 				A58DB30A1BB16B9F00717C02 /* Localizable.strings in Resources */,
 				A58DB3001BB16B9F00717C02 /* InfoPlist.strings in Resources */,
+				A58B1C7E1C856BC7005E72B8 /* scene_names.txt in Resources */,
 				A58DB2F71BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB30C1BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2ED1BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
@@ -2511,6 +2522,7 @@
 				1C7E7DBD1A41A0990026F0BA /* SFICloudStatusBarButtonItem.m in Sources */,
 				1C7E7D9B1A41A0990026F0BA /* ScoreboardEventViewController.m in Sources */,
 				1C7E7D931A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
+				A5472C6F1C8481D700C8E521 /* SceneNameViewController.m in Sources */,
 				1C7E7D9D1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
 				1C7E7DA51A41A0990026F0BA /* SFIAccountsTableViewController.m in Sources */,
 				846414CC1B736B36008AB07F /* ILView.m in Sources */,
