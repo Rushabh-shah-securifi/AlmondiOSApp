@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface SceneNameViewController : UIViewController
-
+@property (strong) NSMutableDictionary *scenePayload;
+@property BOOL isNewScene;
 @end
