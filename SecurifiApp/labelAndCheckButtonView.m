@@ -9,6 +9,7 @@
 #import "labelAndCheckButtonView.h"
 #import "RulesConstants.h"
 #import "Colours.h"
+#import "SFIColors.h"
 
 @implementation labelAndCheckButtonView
 
@@ -28,14 +29,17 @@ const int hueButtonSize = 20;
 }
 -(void)changeColor{
     if (self.selectButton.selected) {
-        self.selectButton.backgroundColor = [UIColor colorFromHexString:@"FF9500"];
+        if(self.isScene)
+            self.selectButton.backgroundColor = [SFIColors ruleBlueColor];
+        else
+            self.selectButton.backgroundColor = [SFIColors ruleOrangeColor];
     }else{
         self.selectButton.backgroundColor = [UIColor clearColor];
     }
     
 }
 -(void)setUpValues:(NSString*)propertyName withSelectButtonTitle:(NSString*)title{
-
+    
     //propertyName
     self.propertyNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, hueLabelWidth, hueSubViewSize)];
     self.propertyNameLabel.text = propertyName;
@@ -49,7 +53,7 @@ const int hueButtonSize = 20;
     [self.selectButton setTitleShadowColor:[UIColor blackColor] forState:UIControlStateNormal];
     self.selectButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     self.selectButton.titleLabel.font = [UIFont systemFontOfSize:11];
-
+    
     [self addSubview:self.propertyNameLabel];
     [self addSubview:self.selectButton];
 }
@@ -79,10 +83,10 @@ const int hueButtonSize = 20;
     
     //select Button
     self.selectButton.frame = CGRectMake(self.frame.size.width - (hueButtonLabelSize + countDiameter + 4), 0, hueButtonLabelSize, hueSubViewSize);
-
+    
     [self addSubview:self.propertyNameLabel];
     [self addSubview:self.selectButton];
-   
+    
 }
 
 @end

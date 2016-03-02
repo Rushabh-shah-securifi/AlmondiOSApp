@@ -13,6 +13,7 @@
 #import "AddRulesViewController.h"
 #import "IndexValueSupport.h"
 #import "SFIButtonSubProperties.h"
+#import "AddRuleSceneClass.h"
 
 
 @class AddRulesViewController;
@@ -25,7 +26,8 @@
 @interface SFISubPropertyBuilder : NSObject
 @property (nonatomic, weak) id<SFISubPropertyBuilderDelegate> delegate;
 @property (nonatomic) bool isDelayPickerPresent;
-+(void)createEntriesView:(UIScrollView *)scroll triggers:(NSArray *)triggers actions:(NSArray *)actions isCrossButtonHidden:(BOOL)isHidden parentController:(AddRulesViewController*)addRuleController isRuleActive:(BOOL)isRuleActive;
++ (void)createEntryForView:(UIScrollView *)topScrollView indexScrollView:(UIScrollView*)indexScrollView parentView:(UIView*)view parentClass:(AddRuleSceneClass*)parentClass triggers:(NSMutableArray *)triggersList actions:(NSMutableArray *)actionsList isCrossButtonHidden:(BOOL)isHidden isRuleActive:(BOOL)isRuleActive isScene:(BOOL)isSceneFlag;
+
 
 + (BOOL) compareEntry:(BOOL)isSlider matchData:(NSString *)matchData eventType:(NSString *)eventType buttonProperties:(SFIButtonSubProperties *)buttonProperties;
 +(NSString*)getDays:(NSArray*)earlierSelection;

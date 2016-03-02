@@ -9,7 +9,7 @@
 #import "TimeView.h"
 #import "RulesDeviceNameButton.h"
 #import "SFIColors.h"
-#import "SFISubPropertyBuilder.h"
+#import "CommonMethods.h"
 
 @interface TimeView()
 @property UIView *segmentDetailView;
@@ -47,7 +47,7 @@ int segmentType;
 }
 
 -(void)addTimeSegment{
-    UIScrollView *scrollView = self.parentViewController.deviceIndexButtonScrollView;
+    UIScrollView *scrollView = self.deviceIndexButtonScrollView;
     NSArray *segmentItems = [NSArray arrayWithObjects:@"ANYTIME", @"PRECISELY AT", @"BETWEEN", nil];
     timeSegmentControl = [[UISegmentedControl alloc]initWithItems:segmentItems];
     
@@ -88,7 +88,7 @@ int segmentType;
     }
     [self.delegate AddOrUpdateTime];
     if(segmentType == 1 || segmentType == 2)
-        self.parentViewController.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.parentViewController.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.frame.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight);
+        self.deviceIndexButtonScrollView.contentSize = CGSizeMake(self.deviceIndexButtonScrollView.frame.size.width, self.segmentDetailView.frame.size.height + 2*segmentDetailTopSpacing + timeSegmentHeight);
 }
 
 -(void)addAnyTimeInfoLable{
@@ -98,7 +98,7 @@ int segmentType;
 
 -(void)addInfoLabelWithFrame:(CGRect)frame text:(NSString*)text{
     infoLable.frame = frame;
-//    infoLable.backgroundColor = [UIColor darkGrayColor];
+    //    infoLable.backgroundColor = [UIColor darkGrayColor];
     [self setupInfoLable:infoLable text:text];
     [self.segmentDetailView addSubview:infoLable];
 }
@@ -116,7 +116,7 @@ int segmentType;
 -(void)addPreciselyDatePicker{
     preciselyDatePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 0, datePickerWidth, datePickerHeight)];
     [self setFrame:preciselyDatePicker];
-//    preciselyDatePicker.backgroundColor = [UIColor yellowColor];
+    //    preciselyDatePicker.backgroundColor = [UIColor yellowColor];
     [self setupDatePicker:preciselyDatePicker];
     preciselyDatePicker.center = CGPointMake(CGRectGetMidX(self.segmentDetailView.bounds), preciselyDatePicker.center.y);
     
@@ -191,7 +191,7 @@ int segmentType;
 - (void)onBetweenDatePickerValueChanged:(id)sender{
     NSDate *timeFrom = DatePickerFrom.date;
     NSDate *timeto = DatePickerTo.date;
-
+    
     self.ruleTime.dateFrom = [timeFrom dateByAddingTimeInterval:0];
     self.ruleTime.dateTo = [timeto dateByAddingTimeInterval:0];
     
@@ -219,11 +219,11 @@ int segmentType;
     if(endMin == startMins){
         return 0;
     }else if(endMin < startMins){
-         return ((1440 - startMins) + endMin);
+        return (int)((1440 - startMins) + endMin);
     }else{
-        return endMin - startMins;
+        return (int)(endMin - startMins);
     }
-
+    
 }
 
 -(void)addDayView{
@@ -248,7 +248,7 @@ int segmentType;
         tag++;
     }
     dayView.center = CGPointMake(CGRectGetMidX(self.segmentDetailView.bounds), dayView.center.y);
-//    dayView.backgroundColor = [UIColor orangeColor];
+    //    dayView.backgroundColor = [UIColor orangeColor];
     [self.segmentDetailView addSubview:dayView];
 }
 
@@ -291,7 +291,7 @@ int segmentType;
 -(void)setLableText{
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"hh:mm aa"];
-    NSString *days = [SFISubPropertyBuilder getDays:self.ruleTime.dayOfWeek];
+    NSString *days = [CommonMethods getDays:self.ruleTime.dayOfWeek];
     if(segmentType == Precisely1){
         NSDate *date =preciselyDatePicker.date;
         NSString *time = [dateFormat stringFromDate:date];
@@ -359,7 +359,7 @@ int segmentType;
 }
 
 -(void)initializeSegmentDetailView{
-    UIScrollView *scrollView = self.parentViewController.deviceIndexButtonScrollView;
+    UIScrollView *scrollView = self.deviceIndexButtonScrollView;
     self.segmentDetailView = [[UIView alloc]initWithFrame:CGRectMake(0,
                                                                      timeSegmentHeight + segmentDetailTopSpacing,
                                                                      scrollView.frame.size.width,

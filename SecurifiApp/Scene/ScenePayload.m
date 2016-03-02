@@ -1,4 +1,4 @@
-//
+/
 //  ScenePayload.m
 //  SecurifiApp
 //
@@ -8,38 +8,71 @@
 
 #import "ScenePayload.h"
 #import "Analytics.h"
+#import "SFIButtonSubProperties.h"
 
 @implementation ScenePayload
-- (NSMutableDictionary *)sendScenePayload:(NSDictionary*)sceneDict with:(NSInteger)randomMobileInternalIndex with:(NSString*)almondMac with:(NSMutableArray *)sceneEntry with:(NSString *)sceneName isLocal:(BOOL)local{
-    
++(NSDictionary*)getScenePayload:(Rule*)scene mobileInternalIndex:(int)mii isEdit:(BOOL)isEdit{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
     
     NSMutableDictionary *newSceneInfo = [NSMutableDictionary new];
     NSMutableDictionary *payloadDict = [NSMutableDictionary new];
     
-    if (sceneDict) {
+    if (isEdit) {
         [payloadDict setValue:@"UpdateScene" forKey:@"CommandType"];
-        [newSceneInfo setValue:[sceneDict valueForKey:@"ID"] forKey:@"ID"];
+        [newSceneInfo setValue:scene.ID forKey:@"ID"];
         [[Analytics sharedInstance] markUpdateScene];
         
     }else{
         [payloadDict setValue:@"AddScene" forKey:@"CommandType"];
         [[Analytics sharedInstance] markAddScene];
     }
+    [payloadDict setValue:@(mii) forKey:@"MobileInternalIndex"];
+    [newSceneInfo setValue:scene.name forKey:@"Name"];
+    [payloadDict setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
     
-    [payloadDict setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
-    [newSceneInfo setValue:sceneName forKey:@"Name"];
-    if(!local){
-        [payloadDict setValue:almondMac forKey:@"AlmondMAC"];
-    }
-    
-    //[self configuresCeneEntryListForSave];
-    [newSceneInfo setValue:sceneEntry forKey:@"SceneEntryList"];
-    
+    [newSceneInfo setValue:[self createSceneEntriesPayload:scene.triggers] forKey:@"SceneEntryList"];
     [payloadDict setValue:newSceneInfo forKey:@"Scenes"];
     
     return payloadDict;
 }
 
++(NSMutableArray *)createSceneEntriesPayload:(NSArray*)sceneEntries{
+    NSMutableArray * triggersArray = [[NSMutableArray alloc]init];
+    for (SFIButtonSubProperties *subProperty in sceneEntries) {
+        if(subProperty.deviceId == 1 && subProperty.index == 0 && ([subProperty.matchData isEqualToString:@"home"] || [subProperty.matchData isEqualToString:@"away"])){
+            [self changeModeProperties:subProperty];
+        }
+        NSDictionary *sceneEntry = [self createSceneEntry:subProperty];
+        if(sceneEntry!=nil)
+            [triggersArray addObject:sceneEntry];
+    }
+    return triggersArray;
+}
 
++(void)changeModeProperties:(SFIButtonSubProperties*)modeProperty{
+    modeProperty.deviceId = 0;
+    modeProperty.index = 1;
+}
+
++(NSDictionary*)createSceneEntry:(SFIButtonSubProperties*)subProperty{
+    return @{
+             @"DeviceID" : @(subProperty.deviceId).stringValue,
+             @"Index" : @(subProperty.index).stringValue,
+             @"Value" : subProperty.matchData
+             };
+}
+
++ (NSMutableDictionary*)getDeleteScenePayload:(Rule*)scene mobileInternalIndex:(int)mii {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    
+    NSMutableDictionary *payloadDict = [NSMutableDictionary new];
+    [payloadDict setValue:@"RemoveScene" forKey:@"CommandType"];
+    [payloadDict setValue:@{@"ID":scene.ID} forKey:@"Scenes"];
+    [payloadDict setValue:@(mii) forKey:@"MobileInternalIndex"];
+    [payloadDict setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
+    return payloadDict;
+}
 
 @end
