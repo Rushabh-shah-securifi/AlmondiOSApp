@@ -189,8 +189,8 @@ static UIImage *_image = nil;
     self.connectedDevice.manufacturer = @"freedom";
     self.connectedDevice.isActive = YES;
     self.connectedDevice.deviceUseAsPresence = YES;
-//    [self.delegate btnSettingTapped:connectedDevice index:IndexArray];
-    [self.delegate btnSettingTapped:self Info:self.connectedDevice];
+    [self.delegate btnSettingTapped:connectedDevice index:IndexArray];
+//    [self.delegate btnSettingTapped:self Info:self.connectedDevice];
 
 }
 

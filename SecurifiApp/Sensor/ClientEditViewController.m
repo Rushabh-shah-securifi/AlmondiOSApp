@@ -9,10 +9,18 @@
 #import "ClientEditViewController.h"
 #import "UIFont+Securifi.h"
 #import "SFIColors.h"
+#import "SKSTableView.h"
+#import "SKSTableViewCell.h"
+#import "SKSTableViewCellIndicator.h"
+#import "ClientPropertiesCell.h"
 
 
-@interface ClientEditViewController ()
+@interface ClientEditViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewClientFields;
+
+@property (weak, nonatomic) IBOutlet UITableView *clientPropertiesTable;
+@property (nonatomic)NSMutableArray *orderedArray ;
+@property (nonatomic)NSDictionary *clientDeviceDict;
 
 @end
 
@@ -22,7 +30,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self dummyNetWorkDeviceList];
-    [self drawClientField];
+//    [self drawClientField];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -30,47 +38,165 @@
     // Dispose of any resources that can be recreated.
 }
 -(void)dummyNetWorkDeviceList{
-    NSDictionary *dict1 = @{@"Name" : @"unknown",
-                            @"Type" : @{@"Tablate" : @"false",
-                                        @"PC" : @"false",
-                                        @"smartPhone" : @"true",
-                                        @"iPhone" : @"false",
-                                        @"iPad" : @"false",
-                                        @"iPod" : @"false",
-                                        @"MAC" : @"false",
-                                        @"TV" : @"false",
-                                        @"printer" : @"false",
-                                        @"Router_switch" : @"false",
-                                        @"Nest" : @"false",
-                                        @"Hub" : @"false",
-                                        @"Camara" : @"false",
-                                        @"ChromeCast" : @"false",
-                                        @"android_stick" : @"false",
-                                        @"amazone_exho" : @"false",
-                                        @"amazone-dash" : @"false ",
-                                        @"Other" : @"false"
+    NSArray *type = @[@"PC",@"smartPhone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"printer",@"Router_switch",@"Nest",@"Hub",@"Camara",@"ChromeCast",@"android_stick",@"amazone_exho",@"amazone-dash",@"Other"];
+    NSDictionary *dict1 = @{@"1" : @{   @"indexName" : @"Name",
+                                        @"DisplayName" : @"Name",
+                                        @"Value" : @"FromDevice",
+                                        @"isEditable" : @"true"
                                         },
-                            @"Manufacture" : @"freedom",
-                            @"MAC Address" : @"10.21.45.53.58",
-                            @"Last Known IP" : @"10.21.1.100",
-                            @"Signal Strength" : @"-33 dBm",
-                            @"Connection" : @"wireLess",
-                            @"Allow On network" : @{
-                                                    @"always" : @"true",
-                                                    @"Schedule" : @"false",
-                                                    @"Never" : @"false"
-                                                    },
-                            @"use as pesence sensor" : @"true",
-                            @"inActiveTimeOut" : @"32"
+                            @"2" : @{   @"indexName" : @"Type",
+                                        @"DisplayName" : @"Type",
+                                        @"Value" : type,
+                                        @"isEditable" : @"true"
+                                        },
+                            
+                            @"3" :@{    @"indexName" : @"Manufacture",
+                                        @"DisplayName" : @"Manufacture",
+                                        @"Value" : @"FromDevice",
+                                        @"isEditable" : @"false"
+                                              },
+                            
+                            @"4" : @{@"indexName" : @"MAC",
+                                     @"DisplayName" : @"MAC Address",
+                                               @"Value" : @"FromDevice",
+                                               @"isEditable" : @"false"
+                                               },
+                            @"5" : @{@"indexName" : @"LastKnownIP",
+                                     @"DisplayName" : @"Last Known IP",
+                                     @"Value" : @"FromDevice",
+                                     @"isEditable" : @"false"
+                                                 },
+                            @"6" : @{@"indexName" : @"Strength",
+                                     @"DisplayName" : @"Signal Strength",
+                                     @"Value" : @"FromDevice",
+                                     @"isEditable" : @"false"
+                                                   },
+                            @"7" : @{@"indexName" : @"Connection",
+                                     @"DisplayName" : @"Connection",
+                                     @"Value" : @"FromDevice",
+                                     @"isEditable" : @"false"
+                                              },
+                            @"8" :@{@"indexName" : @"Allow",
+                                    @"DisplayName" : @"Allow On network",
+                                    @"Value" : @{
+                                                           @"always" : @"true",
+                                                           @"Schedule" : @"false",
+                                                           @"Never" : @"false"
+                                                           },
+                                    @"isEditable" : @"true"
+                                                   },
+                            @"9" : @{@"indexName" : @"pesenceSensor",
+                                      @"DisplayName" : @"Use as pesence sensor",
+                                      @"Value" : @{     @"YES" : @"true",
+                                                        @"NO" : @"false"
+                                                      },
+                                    @"isEditable" : @"false"
+                                                         },
+                            @"10" : @{@"indexName" : @"inActiveTimeOut",
+                                      @"DisplayName" : @"InActiveTimeOut",
+                                                   @"Value" : @"43",
+                                                   @"isEditable" : @"true"
+                                                   },
                             };
+    self.clientDeviceDict = @{
+                              @"Name" : @"android02#",
+                              @"Type" : @"TV",
+                               @"Manufacture" : @"freedom",
+                              @"MAC" : @"10.21.45.53.58",
+                              @"LastKnownIP" : @"10.21.1.100",
+                               @"Strength" : @"-33 dBm",
+                               @"Connection" : @"wireLess",
+                               @"Allow" : @"YES",
+                              @"pesenceSensor" : @"YES",
+                              @"inActiveTimeOut" : @"32",
+                              @"ID" : @"13"
+
+                              
+                              };
     self.clientProperties = dict1;
-    
+    self.orderedArray = [NSMutableArray arrayWithArray:[[self.clientProperties allKeys] sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        if ([obj1 intValue]==[obj2 intValue])
+            return NSOrderedSame;
+        
+        else if ([obj1 intValue]<[obj2 intValue])
+            return NSOrderedAscending;
+        else
+            return NSOrderedDescending;
+        
+    }]];
+    NSLog(@"self.orderedArray %@ ",self.orderedArray);
     
 }
--(void)drawClientField{
-     int yPos = 10;
-        self.scrollViewClientFields.backgroundColor = [SFIColors clientGreenColor];
-     NSArray *ordering = [self.connectedDevice allKeys];
+
+-(CGRect)adjustDeviceNameWidth:(NSString*)deviceName{
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont securifiFont:16]};
+    CGRect textRect;
+    
+    textRect.size = [deviceName sizeWithAttributes:attributes];
+    if(deviceName.length > 18){
+        NSString *temp=@"123456789012345678";
+        textRect.size = [temp sizeWithAttributes:attributes];
+    }
+    return textRect;
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.orderedArray.count;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"cellForRowAtIndexPath");
+   
+        ClientPropertiesCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SKSTableViewCell" forIndexPath:indexPath];
+        if (cell == nil) {
+            cell = [[ClientPropertiesCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SKSTableViewCell"];
+            //cell = [[SFISensorTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
+        }
+    cell.displayLabel.text = [[self.clientProperties valueForKey:[self.orderedArray objectAtIndex:indexPath.row]]valueForKey:@"DisplayName"];
+    cell.vsluesLabel.alpha = 0.5;
+    if([[[self.clientProperties valueForKey:[self.orderedArray objectAtIndex:indexPath.row]]valueForKey:@"isEditable"] isEqualToString:@"true"]){
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.vsluesLabel.alpha = 1;
+    }
+    cell.indexName =[[self.clientProperties valueForKey:[self.orderedArray objectAtIndex:indexPath.row]]valueForKey:@"indexName"];
+    //values
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    cell.vsluesLabel.text = [self.clientDeviceDict valueForKey:[[self.clientProperties valueForKey:[self.orderedArray objectAtIndex:indexPath.row]]valueForKey:@"indexName"]];
+        return cell;
+    
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@" heightForRowAtIndexPath ");
+    return 50;
+}
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
+    //[self performSegueWithIdentifier:@"modaltodetails" sender:[self.eventsTable cellForRowAtIndexPath:indexPath]];
+}
+
+- (void)checkButtonTapped:(id)sender event:(id)event{
+    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
+    NSSet *touches = [event allTouches];
+    UITouch *touch = [touches anyObject];
+    CGPoint currentTouchPosition = [touch locationInView:self.clientPropertiesTable];
+    NSIndexPath *indexPath = [self.clientPropertiesTable indexPathForRowAtPoint: currentTouchPosition];
+    if (indexPath != nil){
+        [self tableView: self.clientPropertiesTable accessoryButtonTappedForRowWithIndexPath: indexPath];
+    }
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
+    ClientPropertiesCell *cell = (ClientPropertiesCell*)[tableView cellForRowAtIndexPath:indexPath];
+    NSLog(@" cell.display label %@",cell.indexName);
+    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
+    
+}
+/*-(void)drawClientField{
+    int yPos = 10;
+    self.scrollViewClientFields.backgroundColor = [SFIColors clientGreenColor];
+    NSArray *ordering = [self.connectedDevice allKeys];
     NSMutableArray *index = [[NSMutableArray alloc] init];
     NSEnumerator *sectEnum = [ordering objectEnumerator];
     id sKey;
@@ -79,7 +205,7 @@
             [index addObject:sKey];
         }
     }
-
+    
     for(NSString *keys in index){
         UIView *view = [[UIView alloc]initWithFrame:CGRectMake(10 , yPos, self.scrollViewClientFields.frame.size.width -10, 40)];
         view.backgroundColor = [UIColor clearColor];
@@ -106,16 +232,5 @@
         
     }
     
-}
--(CGRect)adjustDeviceNameWidth:(NSString*)deviceName{
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont securifiFont:16]};
-    CGRect textRect;
-    
-    textRect.size = [deviceName sizeWithAttributes:attributes];
-    if(deviceName.length > 18){
-        NSString *temp=@"123456789012345678";
-        textRect.size = [temp sizeWithAttributes:attributes];
-    }
-    return textRect;
-}
+}*/
 @end
