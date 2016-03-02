@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1872BD901C875B6D00958185 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 1872BD8F1C875B6D00958185 /* AddRuleSceneClass.m */; };
+		1872BD921C875C0000958185 /* CommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 1872BD911C875C0000958185 /* CommonMethods.m */; };
 		1896B1DC1C5CA48B00C68501 /* SFIDimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C2F60711B69E69D001CCA34 /* SFIDimmerButton.m */; };
 		1C0317251BB28E75002E0405 /* libz.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C0317241BB28E75002E0405 /* libz.1.dylib */; };
 		1C0317271BB28E8D002E0405 /* libSystem.B.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C0317261BB28E8D002E0405 /* libSystem.B.dylib */; };
@@ -468,6 +470,8 @@
 
 /* Begin PBXFileReference section */
 		04DD44299464F3B8199632FD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		1872BD8F1C875B6D00958185 /* AddRuleSceneClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AddRuleSceneClass.m; path = SecurifiApp/AddRuleSceneClass.m; sourceTree = "<group>"; };
+		1872BD911C875C0000958185 /* CommonMethods.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CommonMethods.m; path = SecurifiApp/Scene/CommonMethods.m; sourceTree = "<group>"; };
 		1C0317241BB28E75002E0405 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = ../../../../../../usr/lib/libz.1.dylib; sourceTree = "<group>"; };
 		1C0317261BB28E8D002E0405 /* libSystem.B.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.B.dylib; path = ../../../../../../usr/lib/libSystem.B.dylib; sourceTree = "<group>"; };
 		1C0317291BB28EB6002E0405 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = ../../../../../../usr/lib/libxml2.2.dylib; sourceTree = "<group>"; };
@@ -1401,6 +1405,8 @@
 		1CED5EE819AC82FD0023512F = {
 			isa = PBXGroup;
 			children = (
+				1872BD911C875C0000958185 /* CommonMethods.m */,
+				1872BD8F1C875B6D00958185 /* AddRuleSceneClass.m */,
 				1C7E7CD71A41A0990026F0BA /* SecurifiApp */,
 				1C7E7DE31A41A0B30026F0BA /* Almond */,
 				1C9B1D4C1A3EE9EF00097D8F /* HomeScreen */,
@@ -2490,6 +2496,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1872BD921C875C0000958185 /* CommonMethods.m in Sources */,
+				1872BD901C875B6D00958185 /* AddRuleSceneClass.m in Sources */,
 				1896B1DC1C5CA48B00C68501 /* SFIDimmerButton.m in Sources */,
 				1C2F60AA1B69E69D001CCA34 /* SKSTableViewCellIndicator.m in Sources */,
 				CE5EDF8B1C461FEE00A2829B /* RulePayload.m in Sources */,
