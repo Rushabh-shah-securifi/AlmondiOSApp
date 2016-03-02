@@ -20,7 +20,7 @@
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
-@interface RulesTableViewController ()<AddRulesViewControllerDelegate, CustomCellTableViewCellDelegate,MBProgressHUDDelegate>{
+@interface RulesTableViewController ()<CustomCellTableViewCellDelegate,MBProgressHUDDelegate>{
     NSInteger randomMobileInternalIndex;
 }
 
@@ -34,11 +34,9 @@
 CGPoint tablePoint;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [self initializeNotifications];
     [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
-
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -52,9 +50,9 @@ CGPoint tablePoint;
     [super viewWillAppear:animated];
     self.enableDrawer = YES;
     [self getRuleList];
-   // if([self isLocal]){
+    if([self isLocal]){
         [self addAddRuleButton];
-    //}
+    }
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     if (self.currentAlmond == nil) {
@@ -125,7 +123,7 @@ CGPoint tablePoint;
 
 - (void)removeAddSceneButton{
     if(self.buttonAdd)
-    [self.buttonAdd removeFromSuperview];
+        [self.buttonAdd removeFromSuperview];
 }
 
 -(void)getRuleList{
@@ -174,8 +172,7 @@ CGPoint tablePoint;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    //if([self isRuleArrayEmpty] || ![self isLocal]){
-    if([self isRuleArrayEmpty] ){
+    if([self isRuleArrayEmpty] || ![self isLocal]){
         return [self createEmptyCell:tableView];
     }
     static NSString *CellIdentifier;
@@ -191,8 +188,8 @@ CGPoint tablePoint;
     [cell.activeDeactiveSwitch setSelected:rule.isActive];
     [cell.activeDeactiveSwitch setOn:rule.isActive animated:YES];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     [SFISubPropertyBuilder createEntryForView:cell.scrollView indexScrollView:nil parentView:nil parentClass:nil triggers:rule.triggers actions:rule.actions isCrossButtonHidden:YES isRuleActive:rule.isActive isScene:NO];
-
     
     // Configure the cell...
     [cell.scrollView setContentOffset:CGPointMake(0,0) animated:YES];
@@ -206,7 +203,7 @@ CGPoint tablePoint;
     lbl.textAlignment = NSTextAlignmentCenter;
     lbl.backgroundColor = [UIColor whiteColor];
     lbl.numberOfLines = 0;
-//    lbl.text = @"Triggers -> Actions";
+    //    lbl.text = @"Triggers -> Actions";
     return lbl;
     
     return nil;
@@ -222,8 +219,7 @@ CGPoint tablePoint;
     [self.HUD hide:YES];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     AddRulesViewController * addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
-    addRuleController.delegate = self;
-    addRuleController.indexPathRow = (int)[self.rules count]; //index path, when you are creating a new entry
+    addRuleController.rule = [[Rule alloc]init];
     [self.navigationController pushViewController:addRuleController animated:YES];
 }
 
@@ -236,33 +232,33 @@ CGPoint tablePoint;
 - (UITableViewCell *)createEmptyCell:(UITableView *)tableView {
     static NSString *empty_cell_id = @"EmptyCell";
     
-   // UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:empty_cell_id];
+    // UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:empty_cell_id];
     
     //if (cell == nil || ![self isLocal]) {
-        UITableViewCell *cell  = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:empty_cell_id];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        const CGFloat table_width = CGRectGetWidth(self.tableView.frame);
-        
-        UILabel *lblNewScene = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, table_width-20, 130)];
-        lblNewScene.textAlignment = NSTextAlignmentCenter;
-        [lblNewScene setFont:[UIFont fontWithName:AVENIR_ROMAN size:18]];
-        lblNewScene.text = ![self isLocal]?@"":@"New Rule";
-        lblNewScene.textColor = [UIColor grayColor];
-        [cell addSubview:lblNewScene];
-        
-        UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, table_width-20, 130)];
-        lblNoSensor.textAlignment = NSTextAlignmentCenter;
-        [lblNoSensor setFont:[UIFont fontWithName:AVENIR_ROMAN size:15]];
-        lblNoSensor.numberOfLines = 10;
-        lblNoSensor.text = ![self isLocal]?@"At this time, you can view, create and edit rules only in Local Connection":@"Tap on add button to create your rule";
-        lblNoSensor.textColor = [UIColor grayColor];
-        [cell addSubview:lblNoSensor];
+    UITableViewCell *cell  = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:empty_cell_id];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    const CGFloat table_width = CGRectGetWidth(self.tableView.frame);
+    
+    UILabel *lblNewScene = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, table_width-20, 130)];
+    lblNewScene.textAlignment = NSTextAlignmentCenter;
+    [lblNewScene setFont:[UIFont fontWithName:AVENIR_ROMAN size:18]];
+    lblNewScene.text = ![self isLocal]?@"":@"New Rule";
+    lblNewScene.textColor = [UIColor grayColor];
+    [cell addSubview:lblNewScene];
+    
+    UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, table_width-20, 130)];
+    lblNoSensor.textAlignment = NSTextAlignmentCenter;
+    [lblNoSensor setFont:[UIFont fontWithName:AVENIR_ROMAN size:15]];
+    lblNoSensor.numberOfLines = 10;
+    lblNoSensor.text = ![self isLocal]?@"At this time, you can view, create and edit rules only in Local Connection":@"Tap on add button to create your rule";
+    lblNoSensor.textColor = [UIColor grayColor];
+    [cell addSubview:lblNoSensor];
     //}
-   // if(![self isLocal]){
-        //[self removeAddSceneButton];
-    //}
-    //else
+    if(![self isLocal]){
+        [self removeAddSceneButton];
+    }
+    else
         [self addAddRuleButton];
     return cell;
 }
@@ -342,17 +338,12 @@ CGPoint tablePoint;
 }
 - (void)editRule:(CustomCellTableViewCell *)cell{
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    //    AddRulesViewController *addRuleController = [[AddRulesViewController alloc]init];
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     AddRulesViewController *addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
-    addRuleController.delegate = self;
     Rule *rule = [self.rules[indexPath.row] createNew];
-
+    
     addRuleController.rule = rule;
     addRuleController.isInitialized = YES;
-    //need to create textfield param as well.
-    addRuleController.indexPathRow = (int)indexPath.row; //current index path
-    
     [self.navigationController pushViewController:addRuleController animated:YES];
 }
 
@@ -413,7 +404,6 @@ CGPoint tablePoint;
 //
 #pragma mark asyncRequest methods
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
-    NSLog(@"aysncSendCommand %@",cloudCommand);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *almond = [[SecurifiToolkit sharedInstance] currentAlmond];
     if([self isLocal]){
@@ -422,6 +412,5 @@ CGPoint tablePoint;
         [toolkit asyncSendToCloud:cloudCommand];
     }
 }
-
 
 @end
