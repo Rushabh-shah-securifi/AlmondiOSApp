@@ -26,9 +26,11 @@
 //interface
 @interface RulesHue : NSObject
 @property(weak)id<RulesHueDelegate> delegate;
-@property (nonatomic, strong)NSMutableArray *selectedButtonsPropertiesArray;
+@property BOOL isScene;
+@property (nonatomic, strong)NSMutableArray *triggers;
+@property (nonatomic, strong)NSMutableArray *actions;
 
-
+-(id)initWithPropertiesTrigger:(NSMutableArray*)triggers action:(NSMutableArray*)actions isScene:(BOOL)isScene;
 -(void) createHueCellLayoutWithDeviceId:(int)deviceId deviceType:(int)deviceType deviceIndexes:(NSArray*)deviceIndexes deviceName:(NSString*)deviceName scrollView:(UIScrollView *)scrollView cellCount:(int)numberOfCells indexesDictionary:(NSDictionary*)deviceIndexesDict;
 
 @end

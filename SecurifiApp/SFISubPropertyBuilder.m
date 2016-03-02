@@ -46,6 +46,7 @@
 bool isCrossHidden;
 BOOL isActive;
 bool disableUserInteraction;
+bool isScene;
 DelayPicker *delayPicker;
 NSArray *deviceArray;
 SecurifiToolkit *toolkit;
@@ -60,7 +61,7 @@ AddRuleSceneClass *addRuleScene;
 int xVal = 20;
 UILabel *topLabel;
 
-+ (void)createEntryForView:(UIScrollView *)topScrollView indexScrollView:(UIScrollView*)indexScrollView parentView:(UIView*)view parentClass:(AddRuleSceneClass*)parentClass triggers:(NSMutableArray *)triggersList actions:(NSMutableArray *)actionsList isCrossButtonHidden:(BOOL)isHidden isRuleActive:(BOOL)isRuleActive{
++ (void)createEntryForView:(UIScrollView *)topScrollView indexScrollView:(UIScrollView*)indexScrollView parentView:(UIView*)view parentClass:(AddRuleSceneClass*)parentClass triggers:(NSMutableArray *)triggersList actions:(NSMutableArray *)actionsList isCrossButtonHidden:(BOOL)isHidden isRuleActive:(BOOL)isRuleActive isScene:(BOOL)isSceneFlag{
     delayPicker = [DelayPicker new];
     toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
@@ -69,6 +70,7 @@ UILabel *topLabel;
     xVal = 20;
     isCrossHidden = isHidden;
     isActive = isRuleActive;
+    isScene = isSceneFlag;
     disableUserInteraction = !isHidden;//for disable userInteraction in ruletableView
     triggersActionsScrollView = topScrollView;
     if (!isCrossHidden) {
@@ -85,7 +87,9 @@ UILabel *topLabel;
     
     if(triggersList.count > 0){
         [self buildEntryList:triggersList isTrigger:YES];
-        [self drawImage:@"arrow_icon"];
+        if (!isScene) {
+            [self drawImage:@"arrow_icon"];
+        }
     }
     if(actionsList.count>0){
         [self buildEntryList:actionsList isTrigger:NO];
@@ -108,7 +112,7 @@ UILabel *topLabel;
 
 + (void)addTopLabel{
     topLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 200, 20)];
-    topLabel.text = @"Your rule will appear here.";
+    topLabel.text = [NSString stringWithFormat:@"Your %@ will appear here.", isScene? @"Scene": @"Rule"];
     topLabel.textAlignment = NSTextAlignmentCenter;
     topLabel.font = [UIFont systemFontOfSize:15];
     topLabel.textColor = [UIColor lightGrayColor];

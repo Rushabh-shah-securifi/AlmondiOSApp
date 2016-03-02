@@ -47,8 +47,11 @@ labelAndCheckButtonView *saturationSliderLabelView;
 labelAndCheckButtonView *brightnessSliderLabelView ;
 
 
--(id)init{
+-(id)initWithPropertiesTrigger:(NSMutableArray*)triggers action:(NSMutableArray*)actions isScene:(BOOL)isScene{
     if(self == [super init]){
+        self.triggers = triggers;
+        self.actions = actions;
+        self.isScene = isScene;
     }
     return self;
 }
@@ -88,11 +91,13 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 buttonHue.deviceType = deviceType;
                 [buttonHue addTarget:self action:@selector(onHueButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                 
-                [buttonHue setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:NO isDimButton:NO insideText:iVal.displayText];
+                [buttonHue setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:self.isScene isDimButton:NO insideText:iVal.displayText];
                 [buttonHue changeImageColor:[UIColor whiteColor]];
+                
                 //set perv. count and highlight
                 int buttonClickCount = 0;
-                for(SFIButtonSubProperties *hueButtonProperty in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
+                NSMutableArray *subProperties = self.isScene? self.triggers: self.actions;
+                for(SFIButtonSubProperties *hueButtonProperty in subProperties){ //to do - you can add count property to subproperties and iterate array in reverse
                     if(hueButtonProperty.deviceId == deviceId && hueButtonProperty.index == deviceIndex.indexID && [hueButtonProperty.matchData isEqualToString:iVal.matchData]){
                         buttonHue.selected = YES;
                         buttonClickCount++;
@@ -109,7 +114,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 [self shiftButtonsByWidth:frameSize View:view forIteration:i];
                 
                 //previous count
-                if(buttonClickCount > 0){
+                if(buttonClickCount > 0 && !self.isScene){
                     [buttonHue setButtoncounter:buttonClickCount isCountImageHiddn:NO];
                 }
                 
@@ -120,6 +125,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
             else if(deviceIndex.valueType == SFIDevicePropertyType_COLOR_HUE){
                 //subview
                 hueColorPickupLabelView = [[labelAndCheckButtonView alloc]initWithFrame:CGRectMake(view.frame.origin.x, 0, view.frame.size.width, hueSubViewSize)];
+                hueColorPickupLabelView.isScene = self.isScene;
                 [hueColorPickupLabelView setUpValues:@"  Hue" withSelectButtonTitle:@"Select"];
                 [hueColorPickupLabelView.selectButton addTarget:self action:@selector(onHueColorPickerSelectButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                 //picker view
@@ -134,16 +140,21 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 //previous values
                 BOOL isSelected = NO;
                 int buttonClickCount = 0;
-                for(SFIButtonSubProperties *hueButtonProperty in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
-                    if(hueButtonProperty.deviceId == deviceId && hueButtonProperty.index == deviceIndex.indexID){
+                float preValue = 0;
+                NSMutableArray *subProperties = self.isScene? self.triggers: self.actions;
+                for(SFIButtonSubProperties *hueProperty in subProperties){ //to do - you can add count property to subproperties and iterate array in reverse
+                    if(hueProperty.deviceId == deviceId && hueProperty.index == deviceIndex.indexID){
                         isSelected = YES;
+                        preValue = hueProperty.matchData.floatValue;
                         buttonClickCount++;
                     }
                 }
                 //previous values
                 [hueColorPickupLabelView setSelected:isSelected];
                 //previous count
-                if(buttonClickCount > 0){
+                if(self.isScene){
+                    [huePickerView setConvertedValue:preValue];
+                }else if(buttonClickCount > 0){
                     [hueColorPickupLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
                 }
                 
@@ -162,7 +173,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 
                 //subview
                 saturationSliderLabelView = [[labelAndCheckButtonView alloc]initWithFrame:CGRectMake(view.frame.origin.x, 0, view.frame.size.width, hueSubViewSize)];
-                //                    saturationSliderLabelView.backgroundColor = [UIColor whiteColor];
+                saturationSliderLabelView.isScene = self.isScene;
                 [saturationSliderLabelView setUpValues:@"  Saturation" withSelectButtonTitle:@"Select"];
                 [saturationSliderLabelView.selectButton addTarget:self action:@selector(onSaturationCheckButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                 
@@ -187,19 +198,23 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 //previous values
                 BOOL isSelected = NO;
                 int buttonClickCount = 0;
-                for(SFIButtonSubProperties *saturationProperty in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
+                float preValue = 0;
+                NSMutableArray *subProperties = self.isScene? self.triggers: self.actions;
+                for(SFIButtonSubProperties *saturationProperty in subProperties){ //to do - you can add count property to subproperties and iterate array in reverse
                     if(saturationProperty.deviceId == deviceId && saturationProperty.index == deviceIndex.indexID){
                         isSelected = YES;
+                        preValue = saturationProperty.matchData.floatValue;
                         buttonClickCount++;
                     }
                 }
                 //previous values
                 [saturationSliderLabelView setSelected:isSelected];
                 //previous count
-                if(buttonClickCount > 0){
+                if(self.isScene){
+                    [saturationSlider setConvertedValue:preValue];
+                }else if(buttonClickCount > 0){
                     [saturationSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
                 }
-                
                 
                 [btnary addObject:saturationSliderLabelView];
                 [btnary addObject:saturationSlider];
@@ -218,8 +233,8 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 
                 //hue sub view
                 brightnessSliderLabelView = [[labelAndCheckButtonView alloc]initWithFrame:CGRectMake(view.frame.origin.x, 0, view.frame.size.width, hueSubViewSize)];
+                brightnessSliderLabelView.isScene = self.isScene;
                 [brightnessSliderLabelView setUpValues:@"  Brightness" withSelectButtonTitle:@"Select"];
-                //                brightnessSliderLabelView.backgroundColor = [UIColor whiteColor];
                 [brightnessSliderLabelView.selectButton addTarget:self action:@selector(onBrightnessCheckButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                 
                 //slider view
@@ -242,17 +257,22 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 //previous values
                 BOOL isSelected = NO;
                 int buttonClickCount = 0;
-                for(SFIButtonSubProperties *brightnessProperty in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
+                float preValue = 0;
+                NSMutableArray *subProperties = self.isScene? self.triggers: self.actions;
+                for(SFIButtonSubProperties *brightnessProperty in subProperties){ //to do - you can add count property to subproperties and iterate array in reverse
                     if(brightnessProperty.deviceId == deviceId && brightnessProperty.index == deviceIndex.indexID){
                         isSelected = YES;
+                        preValue = brightnessProperty.matchData.floatValue;
                         buttonClickCount++;
                     }
                 }
                 //previous values
                 [brightnessSliderLabelView setSelected:isSelected];
-                //previous count
-                if(buttonClickCount > 0){
-                    [brightnessSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
+                //previous count/value
+                if(self.isScene){
+                    [brightnessSlider setConvertedValue:preValue];
+                }else if(buttonClickCount > 0){
+                     [brightnessSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
                 }
                 
                 
@@ -271,6 +291,24 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     
 }
 
+-(void)setPreviousHighlightForID:(sfi_id)deviceId index:(int)indexId{
+    //previous values
+    BOOL isSelected = NO;
+    int buttonClickCount = 0;
+    NSMutableArray *subProperties = self.isScene? self.triggers: self.actions;
+    for(SFIButtonSubProperties *brightnessProperty in subProperties){ //to do - you can add count property to subproperties and iterate array in reverse
+        if(brightnessProperty.deviceId == deviceId && brightnessProperty.index == indexId){
+            isSelected = YES;
+            buttonClickCount++;
+        }
+    }
+    //previous values
+    [brightnessSliderLabelView setSelected:isSelected];
+    //previous count
+    if(buttonClickCount > 0 && !self.isScene){
+        [brightnessSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
+    }
+}
 
 #pragma mark helper methods
 -(SFIButtonSubProperties*) addSubPropertiesFordeviceID:(sfi_id)deviceID index:(int)index matchData:(NSString*)matchData andEventType:(NSString *)eventType deviceName:(NSString*)deviceName deviceType:(SFIDeviceType)deviceType{ //overLoaded
@@ -299,18 +337,20 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 -(void) addToArray:(sfi_id)deviceId index:(int)index matchData:(NSString*)matchData andEventType:(NSString *)eventType deviceName:(NSString*)deviceName deviceType:(SFIDeviceType)deviceType{
     SFIButtonSubProperties *subProperties = [self addSubPropertiesFordeviceID:deviceId index:index matchData:matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
     
-    [self.selectedButtonsPropertiesArray addObject:subProperties];
+    [self.actions addObject:subProperties];
 }
 
 //remove previous value
--(void) deleteFromArray:(sfi_id)buttonId index:(int)buttonIndex{
+-(void) deleteFromTriggersArrayForID:(sfi_id)buttonId index:(int)buttonIndex{
     SFIButtonSubProperties *toBeDeletedProperty;
-    for(SFIButtonSubProperties *buttonProperties in self.selectedButtonsPropertiesArray){
+    for(SFIButtonSubProperties *buttonProperties in self.triggers){
         if(buttonProperties.deviceId == buttonId && buttonProperties.index == buttonIndex){
             toBeDeletedProperty = buttonProperties;
+            break;
         }
     }
-    [self.selectedButtonsPropertiesArray removeObject:toBeDeletedProperty];
+    if(toBeDeletedProperty)
+        [self.triggers removeObject:toBeDeletedProperty];
     
 }
 
@@ -389,20 +429,29 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 -(void)onBrightnessCheckButtonClick:(UIButton*)sender{ //This is enable button
     sfi_id sliderId = brightnessSlider.subProperties.deviceId;
     int sliderIndex = brightnessSlider.subProperties.index;
-    
-    [brightnessSliderLabelView setSelected:YES];
-    
-    //storing current value
-    [self addToArray:sliderId index:sliderIndex matchData:brightnessSlider.subProperties.matchData andEventType:brightnessSlider.subProperties.eventType deviceName:brightnessSlider.subProperties.deviceName deviceType:brightnessSlider.subProperties.deviceType];
-    
-    int buttonClickCount = 0;
-    for(SFIButtonSubProperties *property in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
-        if(property.deviceId == sliderId && property.index == sliderIndex){
-            buttonClickCount++;
+    if(self.isScene){
+        [brightnessSliderLabelView setSelected:!sender.selected];
+        [self deleteFromTriggersArrayForID:sliderId index:sliderIndex];
+        if(sender.selected)
+            [self.triggers addObject:brightnessSlider.subProperties];
+        else
+            [brightnessSlider setConvertedValue:0];
+    }else{
+        [brightnessSliderLabelView setSelected:YES];
+        
+        //storing current value
+        [self addToArray:sliderId index:sliderIndex matchData:brightnessSlider.subProperties.matchData andEventType:brightnessSlider.subProperties.eventType deviceName:brightnessSlider.subProperties.deviceName deviceType:brightnessSlider.subProperties.deviceType];
+        
+        int buttonClickCount = 0;
+        for(SFIButtonSubProperties *property in self.actions){ //to do - you can add count property to subproperties and iterate array in reverse
+            if(property.deviceId == sliderId && property.index == sliderIndex){
+                buttonClickCount++;
+            }
         }
+        [brightnessSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
+        //    [brightnessSlider setConvertedValue:0];
     }
-    [brightnessSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
-    //    [brightnessSlider setConvertedValue:0];
+    
     
     [self.delegate updateArray];
 }
@@ -410,43 +459,65 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 -(void)onSaturationCheckButtonClick:(UIButton*)sender{ //button check/uncheck
     sfi_id sliderId = saturationSlider.subProperties.deviceId;
     int sliderIndex = saturationSlider.subProperties.index;
-    
-    [saturationSliderLabelView setSelected:YES];
-    
-    //storing current value
-    [self addToArray:sliderId index:sliderIndex matchData:saturationSlider.subProperties.matchData andEventType:brightnessSlider.subProperties.eventType deviceName:brightnessSlider.subProperties.deviceName deviceType:brightnessSlider.subProperties.deviceType];
-    
-    int buttonClickCount = 0;
-    for(SFIButtonSubProperties *property in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
-        if(property.deviceId == sliderId && property.index == sliderIndex){
-            buttonClickCount++;
+    if(self.isScene){
+        [saturationSliderLabelView setSelected:!sender.selected];
+        [self deleteFromTriggersArrayForID:sliderId index:sliderIndex];
+        if(sender.selected)
+            [self.triggers addObject:saturationSlider.subProperties];
+        else
+            [saturationSlider setConvertedValue:0];
+    }else{
+        [saturationSliderLabelView setSelected:YES];
+        
+        //storing current value
+        [self addToArray:sliderId index:sliderIndex matchData:saturationSlider.subProperties.matchData andEventType:saturationSlider.subProperties.eventType deviceName:saturationSlider.subProperties.deviceName deviceType:saturationSlider.subProperties.deviceType];
+        
+        int buttonClickCount = 0;
+        for(SFIButtonSubProperties *property in self.actions){ //to do - you can add count property to subproperties and iterate array in reverse
+            if(property.deviceId == sliderId && property.index == sliderIndex){
+                buttonClickCount++;
+            }
         }
+        [saturationSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
+        //    [saturationSlider setConvertedValue:0];
     }
-    [saturationSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
-    //    [saturationSlider setConvertedValue:0];
+    
     
     [self.delegate updateArray];
 }
 
+//[self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:iVal.eventType deviceName:deviceName deviceType:deviceType];
+
 -(void)onHueColorPickerSelectButtonClick:(UIButton*)sender{//button click
+    NSLog(@"onHueColorPickerSelectButtonClick");
     sfi_id pickerId = huePickerView.subProperties.deviceId;
     int pickerIndex = huePickerView.subProperties.index;
-    
-    [hueColorPickupLabelView setSelected:YES]; //will change color aswell
-    
-    //getting current value of hue
-    [self addToArray:pickerId index:pickerIndex matchData:huePickerView.subProperties.matchData andEventType:brightnessSlider.subProperties.eventType deviceName:brightnessSlider.subProperties.deviceName deviceType:brightnessSlider.subProperties.deviceType];
-    
-    int buttonClickCount = 0;
-    for(SFIButtonSubProperties *property in self.selectedButtonsPropertiesArray){ //to do - you can add count property to subproperties and iterate array in reverse
-        if(property.deviceId == pickerId && property.index == pickerIndex){
-            buttonClickCount++;
+    if(self.isScene){
+        [hueColorPickupLabelView setSelected:!sender.selected];
+        [self deleteFromTriggersArrayForID:pickerId index:pickerIndex];
+        if(sender.selected)
+            [self.triggers addObject:huePickerView.subProperties];
+        else
+            [huePickerView setConvertedValue:0];
+    }else{
+        [hueColorPickupLabelView setSelected:YES]; //will change color aswell
+        //getting current value of hue
+        [self addToArray:pickerId index:pickerIndex matchData:huePickerView.subProperties.matchData andEventType:brightnessSlider.subProperties.eventType deviceName:brightnessSlider.subProperties.deviceName deviceType:brightnessSlider.subProperties.deviceType];
+        
+        int buttonClickCount = 0;
+        for(SFIButtonSubProperties *property in self.actions){ //to do - you can add count property to subproperties and iterate array in reverse
+            if(property.deviceId == pickerId && property.index == pickerIndex){
+                buttonClickCount++;
+            }
         }
+        [hueColorPickupLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
     }
-    [hueColorPickupLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
-    //    [huePickerView setConvertedValue:0];
     
+    //    [huePickerView setConvertedValue:0];
     [self.delegate updateArray];
+    
+    
+
 }
 
 

@@ -9,6 +9,7 @@
 #import "labelAndCheckButtonView.h"
 #import "RulesConstants.h"
 #import "Colours.h"
+#import "SFIColors.h"
 
 @implementation labelAndCheckButtonView
 
@@ -28,7 +29,10 @@ const int hueButtonSize = 20;
 }
 -(void)changeColor{
     if (self.selectButton.selected) {
-        self.selectButton.backgroundColor = [UIColor colorFromHexString:@"FF9500"];
+        if(self.isScene)
+            self.selectButton.backgroundColor = [SFIColors ruleBlueColor];
+        else
+            self.selectButton.backgroundColor = [SFIColors ruleOrangeColor];
     }else{
         self.selectButton.backgroundColor = [UIColor clearColor];
     }

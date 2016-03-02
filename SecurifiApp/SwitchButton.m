@@ -27,7 +27,7 @@
 }
 
 - (void)setSelected:(BOOL)selected{
-    
+    NSLog(@"switchbutton: %d", self.isTrigger);
     [super setSelected:selected];
     [super changeBGColor:self.isTrigger clearColor:selected showTitle:self.showTitle];
    

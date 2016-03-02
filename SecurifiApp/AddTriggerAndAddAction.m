@@ -118,8 +118,11 @@ DimmerButton *dimerButton;
     for(SFIDevice *device in [toolkit deviceList:plus.almondplusMAC]){
         if(self.isTrigger && !self.isScene && (device.deviceType != SFIDeviceType_HueLamp_48) && (device.deviceType != SFIDeviceType_NestSmokeDetector_58) && (device.deviceType != SFIDeviceType_StandardWarningDevice_21) )
             [deviceArray addObject:device];
-        else if (device.isRuleActuator && (!self.isTrigger || self.isScene))
+        else if (device.isRuleActuator && (!self.isTrigger || self.isScene)){
+            if(self.isScene && SFIDeviceType_StandardWarningDevice_21 == device.deviceType)
+                continue;
             [deviceArray addObject:device];
+        }
     }
     return deviceArray;
 }
@@ -145,7 +148,7 @@ DimmerButton *dimerButton;
     for(SFIDevice *device in [self getTriggerAndActionDeviceList]){
         xVal = [self addDeviceName:device.deviceName deviceID:device.deviceID deviceType:device.deviceType xVal:xVal];
     }
-    if(!self.isTrigger || self.isScene){//add almond Reboot
+    if(!self.isTrigger){//add almond Reboot
         xVal = [self addDeviceName:@"Reboot Almond" deviceID:1 deviceType:SFIDeviceType_REBOOT_ALMOND xVal:xVal];
     }
     self.deviceListScrollView.contentSize = CGSizeMake(xVal +10,self.deviceListScrollView.contentSize.height);
@@ -262,9 +265,8 @@ DimmerButton *dimerButton;
     }
     //huelamp - 58
     if(deviceType == SFIDeviceType_HueLamp_48){
-        self.ruleHueObject = [[RulesHue alloc] init];
+        self.ruleHueObject = [[RulesHue alloc] initWithPropertiesTrigger:self.selectedButtonsPropertiesArrayTrigger action:self.selectedButtonsPropertiesArrayAction isScene:self.isScene];
         self.ruleHueObject.delegate = self;
-        self.ruleHueObject.selectedButtonsPropertiesArray = self.selectedButtonsPropertiesArrayAction;
         [self.ruleHueObject createHueCellLayoutWithDeviceId:deviceId deviceType:deviceType deviceIndexes:deviceIndexes deviceName:deviceName scrollView:self.deviceIndexButtonScrollView cellCount:numberOfCells indexesDictionary:deviceIndexesDict];
         return;
     }
@@ -286,7 +288,8 @@ DimmerButton *dimerButton;
     self.deviceIndexButtonScrollView.showsVerticalScrollIndicator = YES;
 }
 -(void)addArrayToDictionary:(NSMutableDictionary *)deviceIndexesDict deviceIndex:(SFIDeviceIndex *)deviceIndex{
-    if(self.isTrigger ||(!self.isTrigger && deviceIndex.isEditableIndex)){
+    
+    if((self.isTrigger && !self.isScene) ||((!self.isTrigger || self.isScene) && deviceIndex.isEditableIndex) ){
         NSMutableArray *augArray = [deviceIndexesDict valueForKey:[NSString stringWithFormat:@"%d",deviceIndex.cellId]];
         if(augArray != nil){
             [augArray addObject:deviceIndex];
@@ -475,13 +478,12 @@ DimmerButton *dimerButton;
                     view.frame = CGRectMake(0, yScale, self.parentView.frame.size.width, indexButtonFrameSize * 2);
                     [self buildSwitchButton:deviceIndex deviceType:deviceType deviceName:deviceName iVal:iVal deviceId:deviceId i:i view:view buttonY:indexButtonFrameSize];
                 }else{
-                    if(deviceType == SFIDeviceType_MultiLevelSwitch_2)
+                    if(deviceType == SFIDeviceType_MultiLevelSwitch_2) //device 2, displaying only dimbutton
                         continue;
-                    if(!self.isTrigger && deviceType == SFIDeviceType_GarageDoorOpener_53 && !([iVal.matchData isEqualToString:@"0"] || [iVal.matchData isEqualToString:@"255"]))
+                    if((!self.isTrigger||self.isScene) && deviceType == SFIDeviceType_GarageDoorOpener_53 && !([iVal.matchData isEqualToString:@"0"] || [iVal.matchData isEqualToString:@"255"]))
                         continue;
                     [self buildSwitchButton:deviceIndex deviceType:deviceType deviceName:deviceName iVal:iVal deviceId:deviceId i:i view:view buttonY:0];
                 }
-                
             }
         }
     }
@@ -587,6 +589,7 @@ DimmerButton *dimerButton;
 }
 
 -(void)onSwitchButtonClick:(id)sender{
+    NSLog(@"onSwitchButtonClick");
     if(isPresentHozPicker == YES){
         [picker removeFromSuperview];
     }
@@ -600,6 +603,7 @@ DimmerButton *dimerButton;
         [self.selectedButtonsPropertiesArrayAction addObject:[indexSwitchButton.subProperties createNew]];
         [self.delegate updateTriggerAndActionDelegatePropertie:!self.isTrigger];
     }else{
+        NSLog(@"onSwitchButtonClick - istrigger");
         [self toggleTriggerIndex:buttonIndex superView:[sender superview] indexButton:indexSwitchButton];
         [self removeTriggerIndex:buttonIndex buttonId:buttonId deviceType:indexSwitchButton.subProperties.deviceType];
         if (indexSwitchButton.selected)

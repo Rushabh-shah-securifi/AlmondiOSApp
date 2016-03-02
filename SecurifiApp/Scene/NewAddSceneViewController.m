@@ -49,8 +49,6 @@ UITextField *textField;
     [super viewDidLoad];
     if(!self.isInitialized){
         self.scene = [[Rule alloc]init];
-    }else{
-        [self addDeleteSceneButton];
     }
     [self initializeNotifications];
     [self setUpNavigationBar];
@@ -63,8 +61,11 @@ UITextField *textField;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    randomMobileInternalIndex = arc4random() % 10000;
     [super viewWillAppear:animated];
+    randomMobileInternalIndex = arc4random() % 10000;
+    if(self.isInitialized){
+        [self addDeleteSceneButton];
+    }
 }
 
 - (void)initializeNotifications {
@@ -154,8 +155,8 @@ UITextField *textField;
 - (void)addDeleteSceneButton{
     if (!self.buttonDelete) {
         self.buttonDelete = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.buttonDelete.frame = CGRectMake((self.navigationController.view.frame.size.width - 65)/2, self.navigationController.view.frame.size.height-130, 65, 65);
-        [self.buttonDelete setImage:[UIImage imageNamed:@"btnDel"] forState:UIControlStateNormal];
+        self.buttonDelete.frame = CGRectMake(self.navigationController.view.frame.size.width - 50 - 10, self.navigationController.view.frame.size.height-110, 50, 50);
+        [self.buttonDelete setImage:[UIImage imageNamed: @"btnDel"] forState:UIControlStateNormal];
         self.buttonDelete.backgroundColor = [UIColor clearColor];
         [self.buttonDelete addTarget:self action:@selector(btnDeleteSceneTap:) forControlEvents:UIControlEventTouchUpInside];
     }

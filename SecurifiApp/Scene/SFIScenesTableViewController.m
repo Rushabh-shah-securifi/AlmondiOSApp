@@ -245,8 +245,8 @@
         subProperties.deviceId = [[triggersDict valueForKey:@"DeviceID"] intValue];
         subProperties.index = [[triggersDict valueForKey:@"Index"] intValue];
         subProperties.matchData = [triggersDict valueForKey:@"Value"];
-
-//        subProperties.eventType = subProperties.deviceId==0? @"AlmondModeUpdated": @"DeviceTrigger";
+        
+        subProperties.eventType = [triggersDict valueForKey:@"EventType"];
 //        subProperties.type = subProperties.deviceId==0?@"EventTrigger":@"DeviceTrigger";
 //        subProperties.delay=[triggersDict valueForKey:@"PreDelay"];
 //        [self addTime:triggersDict timeProperty:subProperties];
@@ -259,7 +259,6 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    
     return nil;
 }
 

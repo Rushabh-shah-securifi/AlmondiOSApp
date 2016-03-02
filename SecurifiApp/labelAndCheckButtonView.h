@@ -17,6 +17,7 @@ extern int const hueLableFontSize;
 @property (nonatomic )UILabel *propertyNameLabel;
 @property (nonatomic)UIButton *selectButton;
 @property (nonatomic)UILabel *countLable;
+@property (nonatomic)BOOL isScene;
 
 - (void)setUpValues:(NSString*)propertyName withSelectButtonTitle:(NSString*)checkButtonText;
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden;
