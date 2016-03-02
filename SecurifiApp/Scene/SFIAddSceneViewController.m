@@ -533,7 +533,7 @@
     }
     
     if(![self isSceneNameCompatibleWithAlexa]){
-        [self showMessageForAlexaCompatibleSceneName:@"Hey! Would you like to have Scene name compatible with Alexa's Voice Control ?"];
+        [self showMessageForAlexaCompatibleSceneName:[NSString stringWithFormat:@"The scene name %@ isn't compatible with Amazon Echo Voice Control. Would you like to make it compatible?", sceneName]];
         return;
     }
     
