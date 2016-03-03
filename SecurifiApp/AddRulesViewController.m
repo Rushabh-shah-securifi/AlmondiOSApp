@@ -302,6 +302,12 @@ UITextField *textField;
     }
 }
 
+- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
+{
+    return ([[[alertView textFieldAtIndex:0] text] length]>0)?YES:NO;
+    
+}
+
 -(void)sendRuleCommand{
     RulePayload *rulePayload = [RulePayload new];
     rulePayload.rule = self.rule;
