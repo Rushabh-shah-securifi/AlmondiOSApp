@@ -220,6 +220,10 @@ UILabel *topLabel;
     if(isTrigger){
         SwitchButton *switchButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, entryBtnWidth, entryBtnHeight)];
         switchButton.isTrigger = isTrigger;
+        
+        if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
+            isDimmbutton = NO;//for we are putting images of hueLamp
+        
         [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:bottomText isTrigger:isTrigger isDimButton:isDimmbutton insideText:subProperties.displayText];
         switchButton.subProperties = subProperties;
         switchButton.inScroll = YES;
@@ -231,6 +235,14 @@ UILabel *topLabel;
         xVal += entryBtnWidth+entryPadding;
         [switchButton setButtonCross:isCrossHidden];
         switchButton.userInteractionEnabled = disableUserInteraction;
+        
+        if(subProperties.deviceType == SFIDeviceType_HueLamp_48){
+            if(subProperties.index == 2)
+                [switchButton changeImageColor:[UIColor whiteColor]];
+            else if(subProperties.index == 3)
+                [switchButton changeImageColor:[UIColor colorFromHexString:[self getColorHex:subProperties.matchData]]];
+        }
+        
         [triggersActionsScrollView addSubview:switchButton];
         
     }
@@ -257,6 +269,7 @@ UILabel *topLabel;
         (switchButton->actionbutton).subProperties = subProperties;
         (switchButton->actionbutton).isTrigger = isTrigger;
         [switchButton->actionbutton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        //NSLog(@"HUE HERE");
         if(subProperties.deviceType == SFIDeviceType_HueLamp_48){
             if(subProperties.index == 2)
                 [switchButton->actionbutton changeImageColor:[UIColor whiteColor]];
