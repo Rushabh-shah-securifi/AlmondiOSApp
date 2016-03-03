@@ -230,6 +230,7 @@ UILabel *topLabel;
         xVal += triggerActionBtnWidth;
         [switchButton setButtonCross:isCrossHidden];
         switchButton.userInteractionEnabled = disableUserInteraction;
+        switchButton.crossButtonImage.userInteractionEnabled = NO;
         [triggersActionsScrollView addSubview:switchButton];
         
     }
@@ -248,6 +249,7 @@ UILabel *topLabel;
         switchButton.subProperties = subProperties;
         
         [switchButton->actionbutton setButtonCross:isCrossHidden];
+        switchButton->actionbutton.crossButtonImage.userInteractionEnabled = NO;
         (switchButton->actionbutton).userInteractionEnabled = disableUserInteraction;
         // (switchButton->actionbutton).crossButton.subproperty = subProperties;
         switchButton->actionbutton.isTrigger = isTrigger;

@@ -166,7 +166,7 @@ static const int sceneNameFont = 13;
 }
 
 - (BOOL)isSceneNameCompatibleWithAlexa{
-    NSString *lowerCaseSceneName = _sceneNameField.text;
+    NSString *lowerCaseSceneName = _sceneNameField.text.lowercaseString;
     BOOL isCompatible = NO;
     for(NSString *name in _nameList){
         if([name.lowercaseString isEqualToString:lowerCaseSceneName]){

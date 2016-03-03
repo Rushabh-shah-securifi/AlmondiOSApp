@@ -29,11 +29,12 @@
 #import "MBProgressHUD.h"
 #import "ScenePayload.h"
 #import "AddRuleSceneClass.h"
+#import "SceneNameViewController.h"
 
 #define kAlertViewSave 1
 #define kAlertViewDelete 2
 
-@interface NewAddSceneViewController()<UIAlertViewDelegate>{
+@interface NewAddSceneViewController()<UIAlertViewDelegate,UITextFieldDelegate>{
     NSInteger randomMobileInternalIndex;
 }
 @property (nonatomic,strong)AddRuleSceneClass *addRuleScene;
@@ -43,6 +44,7 @@
 
 @implementation NewAddSceneViewController
 UITextField *textField;
+UIAlertView *alert;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -56,6 +58,7 @@ UITextField *textField;
     [self.addRuleScene updateInfoLabel];
     [self.addRuleScene buildTriggersAndActions];
     [self.addRuleScene getTriggersDeviceList:YES];
+    textField.delegate = self;
     self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
@@ -74,7 +77,8 @@ UITextField *textField;
                selector:@selector(gotResponseFor1064:)
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
                  object:nil];
-    
+//    [center addObserver:self selector:@selector(hide) name:@"UIApplicationWillResignActiveNotification" object:nil];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -101,11 +105,11 @@ UITextField *textField;
         textField.text = self.scene.name;
     }
     if(self.scene.triggers.count > 0){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Scene Name"
-                                                        message:@""
+        alert = [[UIAlertView alloc] initWithTitle:@"Scene Name"
+                                                        message:@"Would you like to have a scene name compatible with Amazon Echo voice control? If Yes, press Next, else enter Scene name below and press Save."
                                                        delegate:self
-                                              cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Save", nil];
+                                              cancelButtonTitle:@"Save"
+                                              otherButtonTitles:@"Next",nil];
         [alert setDelegate:self];
         alert.tag = kAlertViewSave;
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
@@ -123,7 +127,7 @@ UITextField *textField;
     }
     else
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"You cannot save Scene without selecting actions"
+        alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"You cannot save Scene without selecting actions"
                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
         dispatch_async(dispatch_get_main_queue(), ^() {
             [alert show];
@@ -137,8 +141,9 @@ UITextField *textField;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+
 - (void)btnDeleteSceneTap:(id)sender {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Are you sure, you want to delete this Scene?"]
+    alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Are you sure, you want to delete this Scene?"]
                                                     message:@""
                                                    delegate:self
                                           cancelButtonTitle:@"Cancel"
@@ -202,12 +207,18 @@ UITextField *textField;
 
 #pragma mark alert view delegeate method
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSLog(@"button index: %ld", buttonIndex);
     if (buttonIndex == [alertView cancelButtonIndex]){
-        //cancel clicked ...do your action
-    }else{
         if(alertView.tag == kAlertViewSave){
             self.scene.name = textField.text;
             [self sendAddSceneCommand];
+        }
+    }else{
+        if(alertView.tag == kAlertViewSave){
+                SceneNameViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SceneNameViewController"];
+                viewController.scenePayload = [ScenePayload getScenePayload:self.scene mobileInternalIndex:(int)randomMobileInternalIndex isEdit:self.isInitialized];
+                viewController.isNewScene = self.isInitialized ? NO: YES;
+                [self.navigationController pushViewController:viewController animated:YES];
         }else if(alertView.tag == kAlertViewDelete){
             [self sendDeleteSceneCommand];
         }
@@ -267,7 +278,15 @@ UITextField *textField;
     });
 }
 
-
-
-
+//-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+//    NSLog(@"textFieldShouldReturn");
+////    [textField resignFirstResponder];
+//    [self hide];
+//    return  YES;
+//}
+//
+//-(void)hide{
+//    NSLog(@"hide");
+//    [alert dismissWithClickedButtonIndex:0 animated:YES];
+//}
 @end
