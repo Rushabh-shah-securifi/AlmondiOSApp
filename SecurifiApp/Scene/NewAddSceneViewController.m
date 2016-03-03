@@ -223,8 +223,9 @@ UIAlertView *alert;
 
 - (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
 {
-    return ([[[alertView textFieldAtIndex:0] text] length]>0)?YES:NO;
-    
+    if(alertView.tag == kAlertViewSave)
+        return ([[[alertView textFieldAtIndex:0] text] length]>0)?YES:NO;
+    return YES;
 }
 
 -(void)sendAddSceneCommand{

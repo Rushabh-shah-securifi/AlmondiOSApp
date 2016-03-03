@@ -46,7 +46,7 @@
         if(self.triggers.count == 0){
             self.informationLabel.text = @"To get started, please select an action";
         }else if(self.triggers.count >0){
-            self.informationLabel.text = @"Add another action or press SAVE to finalize the Scene";
+            self.informationLabel.text = @"Add another action or press Save to finalize the Scene";
         }
     }else{
         if(self.triggers.count == 0){
@@ -56,7 +56,7 @@
             self.informationLabel.text = @"Add another trigger or press THEN to define action";
         }
         else if (self.actions.count > 0){
-            self.informationLabel.text = @"Add another trigger/action or press SAVE to finalize the Rule";
+            self.informationLabel.text = @"Add another trigger/action or press Save to finalize the Rule";
         }
     }
 }

@@ -230,7 +230,6 @@ UILabel *topLabel;
         xVal += triggerActionBtnWidth;
         [switchButton setButtonCross:isCrossHidden];
         switchButton.userInteractionEnabled = disableUserInteraction;
-        switchButton.crossButtonImage.userInteractionEnabled = NO;
         [triggersActionsScrollView addSubview:switchButton];
         
     }
@@ -249,8 +248,8 @@ UILabel *topLabel;
         switchButton.subProperties = subProperties;
         
         [switchButton->actionbutton setButtonCross:isCrossHidden];
-        switchButton->actionbutton.crossButtonImage.userInteractionEnabled = NO;
         (switchButton->actionbutton).userInteractionEnabled = disableUserInteraction;
+        switchButton->actionbutton.crossButtonImage.userInteractionEnabled = NO;
         // (switchButton->actionbutton).crossButton.subproperty = subProperties;
         switchButton->actionbutton.isTrigger = isTrigger;
         //[switchButton changeBGColor:isTrigger clearColor:NO];
@@ -265,7 +264,6 @@ UILabel *topLabel;
         }
         
         [switchButton->delayButton addTarget:self action:@selector(onActionDelayClicked:) forControlEvents:UIControlEventTouchUpInside];
-        (switchButton->delayButton).userInteractionEnabled = disableUserInteraction;
         xVal += rulesButtonsViewWidth;
         
         [triggersActionsScrollView addSubview:switchButton];
