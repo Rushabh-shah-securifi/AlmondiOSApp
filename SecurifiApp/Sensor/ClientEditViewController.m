@@ -13,6 +13,7 @@
 #import "SKSTableViewCell.h"
 #import "SKSTableViewCellIndicator.h"
 #import "ClientPropertiesCell.h"
+#import "ClientEditPropertiesViewController.h"
 
 
 @interface ClientEditViewController ()<UITableViewDelegate,UITableViewDataSource>
@@ -90,7 +91,7 @@
                                       @"Value" : @{     @"YES" : @"true",
                                                         @"NO" : @"false"
                                                       },
-                                    @"isEditable" : @"false"
+                                    @"isEditable" : @"true"
                                                          },
                             @"10" : @{@"indexName" : @"inActiveTimeOut",
                                       @"DisplayName" : @"InActiveTimeOut",
@@ -156,9 +157,11 @@
         }
     cell.displayLabel.text = [[self.clientProperties valueForKey:[self.orderedArray objectAtIndex:indexPath.row]]valueForKey:@"DisplayName"];
     cell.vsluesLabel.alpha = 0.5;
+    cell.userInteractionEnabled = NO;
     if([[[self.clientProperties valueForKey:[self.orderedArray objectAtIndex:indexPath.row]]valueForKey:@"isEditable"] isEqualToString:@"true"]){
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.vsluesLabel.alpha = 1;
+        cell.userInteractionEnabled = YES;
     }
     cell.indexName =[[self.clientProperties valueForKey:[self.orderedArray objectAtIndex:indexPath.row]]valueForKey:@"indexName"];
     //values
@@ -191,8 +194,18 @@
     ClientPropertiesCell *cell = (ClientPropertiesCell*)[tableView cellForRowAtIndexPath:indexPath];
     NSLog(@" cell.display label %@",cell.indexName);
     NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
+    ClientEditPropertiesViewController *ctrl = [self.storyboard instantiateViewControllerWithIdentifier:@"ClientEditPropertiesViewController"];
+    ctrl.indexName = cell.indexName;
+    [self.navigationController pushViewController:ctrl animated:YES];
     
 }
+
+/*
+ NewAddSceneViewController *newAddSceneViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewAddSceneViewController"];
+ newAddSceneViewController.isInitialized = YES;
+ newAddSceneViewController.scene = [self getScene:scenesArray[indexPath.row]];
+ [self.navigationController pushViewController:newAddSceneViewController animated:YES];
+ */
 /*-(void)drawClientField{
     int yPos = 10;
     self.scrollViewClientFields.backgroundColor = [SFIColors clientGreenColor];

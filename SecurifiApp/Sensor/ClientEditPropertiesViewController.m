@@ -9,10 +9,13 @@
 #import "ClientEditPropertiesViewController.h"
 #import "SensorButtonView.h"
 #import "SensorTextView.h"
+#import "SFIColors.h"
 
 
 @interface ClientEditPropertiesViewController ()
 @property (weak, nonatomic) IBOutlet UIView *clientInfoView;
+@property (weak, nonatomic) IBOutlet UIView *indexView;
+@property (weak, nonatomic) IBOutlet UILabel *indexLabel;
 
 @end
 
@@ -30,7 +33,8 @@
 }
 -(void)drawViews{
     if([self.indexName isEqualToString:@"Name"]){
-        
+        self.indexLabel.text = self.indexName;
+        [self textFieldView:@"android 02#"];
     }
     else if ([self.indexName isEqualToString:@"Type"]){
         
@@ -40,22 +44,32 @@
         
     }
     else if ([self.indexName isEqualToString:@"pesenceSensor"]){
-        
+        self.indexLabel.text = self.indexName;
+        [self buttonView];
     }
     else if ([self.indexName isEqualToString:@"inActiveTimeOut"]){
-        [self textFieldView];
+        self.indexLabel.text = self.indexName;
+        [self textFieldView:@"2"];
     }
     else if ([self.indexName isEqualToString:@"Other"]){
         
     }
 
 }
--(void)textFieldView{
-    
+-(void)textFieldView:(NSString *)name{
+    NSLog(@"self.indexName %@ ",self.indexName);
+    SensorTextView *textView = [[SensorTextView alloc]initWithFrame:CGRectMake(4,20,self.indexView.frame.size.width - 8,40)];
+    textView.color = [UIColor clearColor];
+    [textView drawTextField:name];
+    [self.indexView addSubview:textView];
+
 }
 
 -(void)buttonView{
-    
+    SensorButtonView *presenceSensor = [[SensorButtonView alloc]initWithFrame:CGRectMake(5,40,self.indexView.frame.size.width - 8,30 )];
+    presenceSensor.color = [SFIColors clientGreenColor];
+    [presenceSensor drawButton:@[@"YES",@"NO"] selectedValue:0];
+    [self.indexView addSubview:presenceSensor];
 }
 
 @end

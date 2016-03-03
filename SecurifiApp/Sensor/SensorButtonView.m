@@ -42,11 +42,11 @@
     int xPos = -10;
     for(int i = 0; i<array.count;i++){
         CGRect textRect = [self adjustDeviceNameWidth:[array objectAtIndex:i]];
-        CGRect frame = CGRectMake(xPos + 10, 0, textRect.size.width + 10, self.frame.size.height);
+        CGRect frame = CGRectMake(xPos + 10, 0, textRect.size.width + 15, self.frame.size.height);
         UIButton *button = [[UIButton alloc ]initWithFrame:frame];
         [button setTitle:[array objectAtIndex:i] forState:UIControlStateNormal];
         
-        button.backgroundColor = [self darkerColorForColor:[SFIColors ruleBlueColor]];
+        button.backgroundColor = [self darkerColorForColor:self.color];
         button.titleLabel.font = [UIFont securifiBoldFont];
         button.tag = i;
         button.opaque = YES;
@@ -85,13 +85,13 @@
             continue;
         if( button.tag == sender.tag){
             button.selected = YES;
-            [button setTitleColor:[SFIColors ruleBlueColor] forState:UIControlStateNormal];
+            [button setTitleColor:self.color forState:UIControlStateNormal];
             [button setBackgroundColor:[UIColor whiteColor]];
         }
         else{
             button.selected = NO;
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            [button setBackgroundColor:[self darkerColorForColor:[SFIColors ruleBlueColor]]];
+            [button setBackgroundColor:[self darkerColorForColor:self.color]];
         }
     }
     //values delegate to super view class

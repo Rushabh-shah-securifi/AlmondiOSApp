@@ -18,12 +18,16 @@
     //    return self;
 }
 -(void)drawTextField:(NSString*)name{
-   UITextField *deviceNameField = [[UITextField alloc]initWithFrame:self.frame];
+   UITextField *deviceNameField = [[UITextField alloc]initWithFrame:CGRectMake(self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height - 5)];
     deviceNameField.text = name;
     deviceNameField.delegate = self;
     deviceNameField.backgroundColor = self.color;
     deviceNameField.textColor = [UIColor whiteColor];
     deviceNameField.font = [UIFont securifiLightFont];
+    [deviceNameField becomeFirstResponder];
+    UIView *OnelineView = [[UIView alloc]initWithFrame:CGRectMake(deviceNameField.frame.origin.x, deviceNameField.frame.size.width - 1, self.frame.size.width, 1)];
+    OnelineView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:OnelineView];
     [self addSubview:deviceNameField];
 
 }
@@ -42,7 +46,7 @@
 }
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
     NSLog(@"textFieldDidBeginEditing");
-    UIImageView *textCheckMarkView = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width - self.frame.size.height , 10, self.frame.size.height -10, self.frame.size.height -10)];
+    UIImageView *textCheckMarkView = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width - self.frame.size.height , self.frame.origin.y + 10, self.frame.size.height -20, self.frame.size.height -20)];
     textCheckMarkView.image = [UIImage imageNamed:@"iconSceneChekmark"];
     [self addSubview:textCheckMarkView];
 }
