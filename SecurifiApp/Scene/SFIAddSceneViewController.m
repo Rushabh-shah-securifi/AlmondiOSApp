@@ -1,4 +1,4 @@
-//
+
 //  SFIAddSceneViewController.m
 //  Scenes
 //
@@ -53,7 +53,7 @@
     
     self.navigationController.navigationBar.translucent = NO;
     [self setUpNavigationBar];
-
+    
     // Ensure values have at least an empty list
     cellsInfoArray = [NSMutableArray new];
     sceneEntryList = [NSMutableArray new];
@@ -121,7 +121,7 @@
 
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-   
+    
     [center addObserver:self
                selector:@selector(gotResponseFor1064:)
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
@@ -136,7 +136,7 @@
                    name:UIKeyboardDidHideNotification
                  object:nil];
     
-    }
+}
 
 
 
@@ -231,7 +231,7 @@
         //TEST
         [sceneEntryList removeAllObjects];
         if ([self.sceneInfo[@"SceneEntryList"] isKindOfClass:[NSArray class]]) {
-//            sceneEntryList = [[NSMutableArray arrayWithArray:self.sceneInfo[@"SceneEntryList"]] mutableCopy];
+            //            sceneEntryList = [[NSMutableArray arrayWithArray:self.sceneInfo[@"SceneEntryList"]] mutableCopy];
             for(NSDictionary *sceneEntry in self.sceneInfo[@"SceneEntryList"]){
                 NSMutableDictionary *mutableSceneEntry = [sceneEntry mutableCopy];
                 [sceneEntryList addObject:mutableSceneEntry];
@@ -240,7 +240,7 @@
             NSString * strSceneEntryList = self.sceneInfo[@"SceneEntryList"];
             strSceneEntryList = [strSceneEntryList stringByReplacingOccurrencesOfString:@"\\" withString:@""];
             NSData * data = [strSceneEntryList dataUsingEncoding:NSUTF8StringEncoding] ;
-//            sceneEntryList = [[NSMutableArray arrayWithArray:[data objectFromJSONData]] mutableCopy];
+            //            sceneEntryList = [[NSMutableArray arrayWithArray:[data objectFromJSONData]] mutableCopy];
             for(NSDictionary *sceneEntry in [data objectFromJSONData]){
                 NSMutableDictionary *mutableSceneEntry = [sceneEntry mutableCopy];
                 [sceneEntryList addObject:mutableSceneEntry];
@@ -375,7 +375,7 @@
                 
                 [arr addObject:indexDict];            }
                 break;
-           
+                
             default:
             {
                 NSLog(@" device-Name: %@",device.deviceName);
@@ -521,12 +521,12 @@
     return [toolkit useLocalNetwork:almond.almondplusMAC];
 }
 - (void)btnSaveTap:(id)sender {
-//    [activeTextField resignFirstResponder];
+    //    [activeTextField resignFirstResponder];
     if (sceneName.length == 0) {
         [self showMessageBox:@"Please select Scene Name"];
         return;
     }
-
+    
     if (sceneEntryList.count==0) {
         [self showMessageBox:NSLocalizedString(@"scene.msg.You have to select at least 1 value", @"You have to select at least 1 value")];
         return;
@@ -546,7 +546,7 @@
     [self configuresCeneEntryListForSave];
     
     ScenePayload *scenePayLoad = [ScenePayload new];
-   // payloadDict = [scenePayLoad sendScenePayload:self.sceneInfo with:randomMobileInternalIndex with:_almond.almondplusMAC with:sceneEntryList with:sceneName isLocal:local];
+    // payloadDict = [scenePayLoad sendScenePayload:self.sceneInfo with:randomMobileInternalIndex with:_almond.almondplusMAC with:sceneEntryList with:sceneName isLocal:local];
     
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_UPDATE_REQUEST;
@@ -592,13 +592,13 @@
 - (void)showMessageBox:(NSString *)message {
     dispatch_async(dispatch_get_main_queue(), ^{
         UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Scenes"
-                                           message:message
-                                          delegate:nil
-                                 cancelButtonTitle:NSLocalizedString(@"scene.cancel-title.OK", @"OK")
-                                 otherButtonTitles:nil];
-         [alert show];
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"scene.cancel-title.OK", @"OK")
+                                              otherButtonTitles:nil];
+        [alert show];
         alert = nil;
-            
+        
     });
 }
 
@@ -615,7 +615,7 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [alert show];
     });
-
+    
 }
 
 #pragma mark alert view delegeate method
@@ -634,7 +634,7 @@
         ScenePayload *scenePayLoad = [ScenePayload new];
         BOOL local = [self isLocalConnection];
         //viewController.scenePayload = [scenePayLoad sendScenePayload:self.sceneInfo with:randomMobileInternalIndex with:_almond.almondplusMAC with:sceneEntryList with:sceneName isLocal:local];
-        viewController.isNewScene = self.sceneInfo ? NO: YES;
+        //        viewController.isInitialized = self.sceneInfo ? NO: YES;
         [self.navigationController pushViewController:viewController animated:YES];
     }
 }
@@ -1099,7 +1099,7 @@
     }else{
         mainDict = [[data valueForKey:@"data"] objectFromJSONData];
     }
-
+    
     if (randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
         return;
     }

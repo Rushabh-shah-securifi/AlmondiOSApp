@@ -34,7 +34,7 @@
 #define kAlertViewSave 1
 #define kAlertViewDelete 2
 
-@interface NewAddSceneViewController()<UIAlertViewDelegate,UITextFieldDelegate>{
+@interface NewAddSceneViewController()<UITextFieldDelegate, UIAlertViewDelegate>{
     NSInteger randomMobileInternalIndex;
 }
 @property (nonatomic,strong)AddRuleSceneClass *addRuleScene;
@@ -58,7 +58,6 @@ UIAlertView *alert;
     [self.addRuleScene updateInfoLabel];
     [self.addRuleScene buildTriggersAndActions];
     [self.addRuleScene getTriggersDeviceList:YES];
-    textField.delegate = self;
     self.automaticallyAdjustsScrollViewInsets = NO;
 }
 
@@ -102,22 +101,18 @@ UIAlertView *alert;
 
 #pragma mark button clicks
 -(void)btnSaveTap:(id)sender{
-    textField = [[UITextField alloc]init];
-    if(self.isInitialized){
-        textField.text = self.scene.name;
-    }
     if(self.scene.triggers.count > 0){
         alert = [[UIAlertView alloc] initWithTitle:@"Scene Name"
-                                                        message:@"Would you like to have a scene name compatible with Amazon Echo voice control? If Yes, press Next, else enter Scene name below and press Save."
-                                                       delegate:self
-                                              cancelButtonTitle:@"Next"
-                                              otherButtonTitles:@"Save",nil];
+                                           message:@"Would you like to have a scene name compatible with Amazon Echo voice control? If Yes, press Next, else enter Scene name below and press Save."
+                                          delegate:self
+                                 cancelButtonTitle:@"Next"
+                                 otherButtonTitles:@"Save",nil];
         [alert setDelegate:self];
         alert.tag = kAlertViewSave;
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
         textField = [alert textFieldAtIndex:0];
-        textField.frame = CGRectMake(alert.frame.origin.x, 25.0, alert.frame.size.width, 15.0);
-        [textField setBackgroundColor:[UIColor whiteColor]];
+        [alert textFieldAtIndex:0].delegate = self;
+        
         if(self.isInitialized){
             textField.text = self.scene.name;
         }
@@ -130,13 +125,14 @@ UIAlertView *alert;
     else
     {
         alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"You cannot save Scene without selecting actions"
-                                                       delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
+                                          delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
         dispatch_async(dispatch_get_main_queue(), ^() {
             [alert show];
         });
         
     }
 }
+
 
 -(void)btnCancelTap:(id)sender{
     self.scene = nil;
@@ -146,10 +142,10 @@ UIAlertView *alert;
 
 - (void)btnDeleteSceneTap:(id)sender {
     alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Are you sure, you want to delete this Scene?"]
-                                                    message:@""
-                                                   delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Delete", nil];
+                                       message:@""
+                                      delegate:self
+                             cancelButtonTitle:@"Cancel"
+                             otherButtonTitles:@"Delete", nil];
     [alert setDelegate:self];
     alert.tag = kAlertViewDelete;
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -206,13 +202,13 @@ UIAlertView *alert;
     }
 }
 
-#pragma mark alert view delegeate method
+#pragma mark alert view delegate method
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == [alertView cancelButtonIndex]){
         if(alertView.tag == kAlertViewSave){
             SceneNameViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SceneNameViewController"];
-            viewController.scenePayload = [ScenePayload getScenePayload:self.scene mobileInternalIndex:(int)randomMobileInternalIndex isEdit:self.isInitialized];
-            viewController.isNewScene = self.isInitialized ? NO: YES;
+            viewController.scene = self.scene;
+            viewController.isInitialized = self.isInitialized;
             [self.navigationController pushViewController:viewController animated:YES];
         }
     }else{
@@ -239,8 +235,12 @@ UIAlertView *alert;
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
-{
+-(BOOL) textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView{//other button  -> save
     if(alertView.tag == kAlertViewSave)
         return ([[[alertView textFieldAtIndex:0] text] length]>0)?YES:NO;
     return YES;
@@ -254,14 +254,31 @@ UIAlertView *alert;
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
-    
-    NSDictionary* payloadDict = [ScenePayload getScenePayload:self.scene mobileInternalIndex:(int)randomMobileInternalIndex isEdit:self.isInitialized];
+    BOOL isCompatible = [self isSceneNameCompatibleWithAlexa];
+    NSDictionary* payloadDict = [ScenePayload getScenePayload:self.scene mobileInternalIndex:(int)randomMobileInternalIndex isEdit:self.isInitialized isSceneNameCompatibleWithAlexa:isCompatible];
     GenericCommand *command = [[GenericCommand alloc] init];
     command.commandType = CommandType_UPDATE_REQUEST;
     command.command = [payloadDict JSONString];
     
     [self asyncSendCommand:command];
 }
+
+- (BOOL)isSceneNameCompatibleWithAlexa{
+    NSArray *sceneNameList;
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"scene_names" ofType:@"txt"];
+    NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    sceneNameList = [content componentsSeparatedByString:@","];
+    NSString *lowerCaseSceneName = self.scene.name.lowercaseString;
+    BOOL isCompatible = NO;
+    for(NSString *name in sceneNameList){
+        if([name.lowercaseString isEqualToString:lowerCaseSceneName]){
+            isCompatible = YES;
+            break;
+        }
+    }
+    return isCompatible;
+}
+
 
 -(void)sendDeleteSceneCommand{
     NSMutableDictionary *payloadDict = [ScenePayload getDeleteScenePayload:self.scene mobileInternalIndex:(int)randomMobileInternalIndex];
@@ -297,4 +314,5 @@ UIAlertView *alert;
         [self.HUD hide:YES afterDelay:5];
     });
 }
+
 @end

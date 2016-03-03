@@ -1,4 +1,4 @@
-//
+
 //  SceneNameViewController.h
 //  SecurifiApp
 //
@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "Rule.h"
 @interface SceneNameViewController : UIViewController
-@property (strong) NSMutableDictionary *scenePayload;
-@property BOOL isNewScene;
+@property (strong) Rule *scene;
+@property BOOL isInitialized;
 @end

@@ -1,4 +1,4 @@
-//
+
 //  SceneNameViewController.m
 //  SecurifiApp
 //
@@ -9,6 +9,7 @@
 #import "SceneNameViewController.h"
 #import "UIFont+Securifi.h"
 #import "MBProgressHUD.h"
+#import "ScenePayload.h"
 
 @interface SceneNameViewController ()<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 @property (strong, nonatomic) IBOutlet UITableView *suggestionTable;
@@ -28,21 +29,20 @@ static const int sceneNameFont = 15;
     [self initializeNotifications];
     _filteredList = [NSMutableArray new];
     _commonSceneNames = @[@"Good Morning",
-                                  @"Bedroom Lights Off",
-                                  @"All Lights On",
-                                  @"Going away",
-                                  @"Coming Home",
-                                  @"lights on garage open",
-                                  @"backyard lights on",
-                                  @"cooling the house",
-                                  @"Basement lights off",
-                                  @"Decorations On"];
+                          @"Bedroom Lights Off",
+                          @"All Lights On",
+                          @"Going away",
+                          @"Coming Home",
+                          @"lights on garage open",
+                          @"backyard lights on",
+                          @"cooling the house",
+                          @"Basement lights off",
+                          @"Decorations On"];
     [self readSceneNameFileContents];
     [self.sceneNameField addTarget:self
-                  action:@selector(editingChanged:)
-        forControlEvents:UIControlEventEditingChanged];
+                            action:@selector(editingChanged:)
+                  forControlEvents:UIControlEventEditingChanged];
     self.sceneNameField.delegate = self;
-    [self.sceneNameField becomeFirstResponder];
     self.suggestionTable.tableFooterView = [UIView new]; //to hide extra line seperators
 }
 
@@ -108,7 +108,6 @@ static const int sceneNameFont = 15;
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuseIdentifier"];
     }
-    
     cell.textLabel.font = [UIFont securifiFont:sceneNameFont];
     if (self.filteredList.count > 0 || _sceneNameField.text.length != 0) {
         cell.textLabel.text = [self.filteredList objectAtIndex:indexPath.row];
@@ -143,15 +142,17 @@ static const int sceneNameFont = 15;
         [self showMessageBox:@"Please select one of the names from the provided list to have compatibility with Alexa"];
         return;
     }
-    [self setAlexaCompatibleSceneName];
+    self.scene.name = _sceneNameField.text;
+    BOOL isCompatible = [self isSceneNameCompatibleWithAlexa];
+    NSDictionary* payloadDict = [ScenePayload getScenePayload:self.scene mobileInternalIndex:(int)randomMobileInternalIndex isEdit:self.isInitialized isSceneNameCompatibleWithAlexa:isCompatible];
     GenericCommand *command = [[GenericCommand alloc] init];
     command.commandType = CommandType_UPDATE_REQUEST;
-    command.command = [self.scenePayload JSONString];
+    command.command = [payloadDict JSONString];
     
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-    if (_isNewScene) {
+    if (!self.isInitialized) {
         _HUD.labelText = NSLocalizedString(@"scenes.hud.creatingScene", @"Creating Scene...");
     }else{
         _HUD.labelText = NSLocalizedString(@"scenes.hud.updatingScene", @"Updating Scene...");
@@ -179,10 +180,10 @@ static const int sceneNameFont = 15;
     return isCompatible;
 }
 
--(void)setAlexaCompatibleSceneName{
-    [self.scenePayload[@"Scenes"] setValue:self.sceneNameField.text forKey:@"Name"];
-    [self.scenePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
-}
+//-(void)setAlexaCompatibleSceneName{
+//    [self.scenePayload[@"Scenes"] setValue:self.sceneNameField.text forKey:@"Name"];
+//    [self.scenePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
+//}
 
 #pragma mark text field delegates
 

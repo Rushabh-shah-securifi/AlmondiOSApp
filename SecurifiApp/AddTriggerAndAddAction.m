@@ -255,6 +255,9 @@ DimmerButton *dimerButton;
             }
         }
         deviceIndexes = [rulesNestThermostatObject createNestThermostatDeviceIndexes:deviceIndexes deviceValue:nestThermostatDeviceValue];
+        if(self.isScene){
+            deviceIndexes = [rulesNestThermostatObject filterIndexesBasedOnModeForIndexes:deviceIndexes propertyList:self.selectedButtonsPropertiesArrayTrigger deviceId:deviceId];
+        }
         numberOfCells = [self maxCellId:deviceIndexes];//recalculating for nest
     }
     
@@ -608,10 +611,17 @@ DimmerButton *dimerButton;
         [self removeTriggerIndex:buttonIndex buttonId:buttonId deviceType:indexSwitchButton.subProperties.deviceType];
         if (indexSwitchButton.selected)
             [self.selectedButtonsPropertiesArrayTrigger addObject:indexSwitchButton.subProperties];
-        [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
+        
+        if(self.isScene && indexSwitchButton.subProperties.deviceType == SFIDeviceType_NestThermostat_57 && indexSwitchButton.subProperties.index == 2){
+            //RulesNestThermostat *nest=[RulesNestThermostat new];
+            [RulesNestThermostat removeTemperatureIndexes:indexSwitchButton.subProperties.deviceId mode:indexSwitchButton.subProperties.matchData entries:self.selectedButtonsPropertiesArrayTrigger];
+            [self.delegate redrawDeviceIndexView:indexSwitchButton.subProperties.deviceId clientEvent:@""];
+        }else
+            [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
     }
     [self setActionButtonCount:indexSwitchButton isSlider:NO];
 }
+
 
 -(void)showPicker:(DimmerButton* )dimmer{
     [self removePickerFromView];
