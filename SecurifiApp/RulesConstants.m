@@ -10,9 +10,9 @@
 
 @implementation RulesConstants
 
-const int textHeight = 20;
+const int textHeight = 25;
 const int frameSize = 70;
-const int indexButtonFrameSize = 85;
+const int indexButtonFrameSize = 90;
 const int dimFrameHeight = 75;
 const int dimFrameWidth = 140;
 const int textPadding = 2;
@@ -22,10 +22,6 @@ float const imageHeightFactor = 1.6;
 
 const int hueSubViewSize = 20;
 const int ROW_PADDING = 25;
-//const int triggerActionBtnHeight = 90;
-//const int triggerActionBtnWidth = 45;
-//const int triggerActionDimHeight = 100;
-//const int triggerActionDimWidth = 120;
 
 const int entryBtnWidth = 52;
 const int entryBtnHeight = 90;

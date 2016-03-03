@@ -75,6 +75,18 @@ UITextField *textField;
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
     }
+}
+
+- (void)onTabBarDidChange:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (![[data valueForKey:@"title"] isEqualToString:@"Scenes"]) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    
+}
+
+- (IBAction)btnBackTap:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -90,6 +102,10 @@ UITextField *textField;
     //add, update, remove etc.
     [center addObserver:self selector:@selector(onRuleCommandResponse:) name:RULE_COMMAND_RESPONSE_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onRuleCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
+    [center addObserver:self
+               selector:@selector(onTabBarDidChange:)
+                   name:@"TAB_BAR_CHANGED"
+                 object:nil];
 }
 
 -(void)getWificlientsList{

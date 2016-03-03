@@ -132,7 +132,7 @@
     if(countLable.text != nil){
         countLable.text =nil;
     }
-    countLable = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x + self.bgView.frame.size.width -9, -3, 16, 16)];
+    countLable = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x + self.bgView.frame.size.width -9, -6, 16, 16)];
     CALayer * l1 = [countLable layer];
     [l1 setMasksToBounds:YES];
     [l1 setCornerRadius:8];
@@ -160,7 +160,7 @@
     [imgIcon setTintColor:color];
 }
 - (void)setButtonCross:(BOOL)isHidden{
-    crossButtonBGView = [[UIView alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 10, 13, countDiameter, countDiameter)];
+    crossButtonBGView = [[UIView alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 12, 16, countDiameter, countDiameter)];
     crossButtonBGView.userInteractionEnabled = NO;
     [self setLayer];
     [self addImage1:[UIImage imageNamed:@"icon_cross_gray"] y:crossButtonBGView.frame.origin.y widthAndHeight:countDiameter];

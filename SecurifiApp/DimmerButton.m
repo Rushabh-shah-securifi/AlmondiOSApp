@@ -138,7 +138,7 @@
     [lblMain setAttributedText:strTemp];
 }
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{
-    countLable = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x + self.bgView.frame.size.width -10, -8, 16, 16)];
+    countLable = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x + self.bgView.frame.size.width -9, -6, 16, 16)];
     
     CALayer * l1 = [countLable layer];
     [l1 setMasksToBounds:YES];

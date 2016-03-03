@@ -77,6 +77,10 @@ UIAlertView *alert;
                selector:@selector(gotResponseFor1064:)
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
                  object:nil];
+    [center addObserver:self
+               selector:@selector(onTabBarDidChange:)
+                   name:@"TAB_BAR_CHANGED"
+                 object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -219,6 +223,20 @@ UIAlertView *alert;
             [self sendDeleteSceneCommand];
         }
     }
+}
+
+- (void)onTabBarDidChange:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (![[data valueForKey:@"title"] isEqualToString:@"Scenes"]) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    
+}
+
+
+- (IBAction)btnBackTap:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
