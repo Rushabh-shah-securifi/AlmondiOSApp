@@ -1,4 +1,3 @@
-/
 //  ScenePayload.m
 //  SecurifiApp
 //

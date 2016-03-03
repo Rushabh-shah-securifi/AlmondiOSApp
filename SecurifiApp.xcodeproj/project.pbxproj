@@ -257,6 +257,8 @@
 		A54EB0321C44FDE000CF2837 /* SwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EB0251C44FDE000CF2837 /* SwitchButton.m */; };
 		A54EB0351C45004B00CF2837 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A54EB0341C45004B00CF2837 /* Common-Images.xcassets */; };
 		A54EB0411C4506F900CF2837 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A54EB03F1C4506F900CF2837 /* Scenes_Iphone.storyboard */; };
+		A567D02E1C880BBE000B074D /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A567D02D1C880BBE000B074D /* NewAddSceneViewController.m */; };
+		A567D02F1C880BBE000B074D /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A567D02D1C880BBE000B074D /* NewAddSceneViewController.m */; };
 		A584C8401C5B8344006E02DB /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A584C83F1C5B8344006E02DB /* CollectionViewCell.m */; };
 		A58B1C7E1C856BC7005E72B8 /* scene_names.txt in Resources */ = {isa = PBXBuildFile; fileRef = A58B1C7D1C856BC7005E72B8 /* scene_names.txt */; };
 		A58B1C7F1C856BC7005E72B8 /* scene_names.txt in Resources */ = {isa = PBXBuildFile; fileRef = A58B1C7D1C856BC7005E72B8 /* scene_names.txt */; };
@@ -470,8 +472,8 @@
 
 /* Begin PBXFileReference section */
 		04DD44299464F3B8199632FD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		1872BD8F1C875B6D00958185 /* AddRuleSceneClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AddRuleSceneClass.m; path = SecurifiApp/AddRuleSceneClass.m; sourceTree = "<group>"; };
-		1872BD911C875C0000958185 /* CommonMethods.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = CommonMethods.m; path = SecurifiApp/Scene/CommonMethods.m; sourceTree = "<group>"; };
+		1872BD8F1C875B6D00958185 /* AddRuleSceneClass.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddRuleSceneClass.m; sourceTree = "<group>"; };
+		1872BD911C875C0000958185 /* CommonMethods.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommonMethods.m; sourceTree = "<group>"; };
 		1C0317241BB28E75002E0405 /* libz.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.dylib; path = ../../../../../../usr/lib/libz.1.dylib; sourceTree = "<group>"; };
 		1C0317261BB28E8D002E0405 /* libSystem.B.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.B.dylib; path = ../../../../../../usr/lib/libSystem.B.dylib; sourceTree = "<group>"; };
 		1C0317291BB28EB6002E0405 /* libxml2.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.2.dylib; path = ../../../../../../usr/lib/libxml2.2.dylib; sourceTree = "<group>"; };
@@ -750,6 +752,10 @@
 		A54EB0251C44FDE000CF2837 /* SwitchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchButton.m; sourceTree = "<group>"; };
 		A54EB0341C45004B00CF2837 /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
 		A54EB0401C4506F900CF2837 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Scenes_Iphone.storyboard; sourceTree = "<group>"; };
+		A567D02A1C880B1D000B074D /* CommonMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonMethods.h; sourceTree = "<group>"; };
+		A567D02B1C880B5D000B074D /* AddRuleSceneClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRuleSceneClass.h; sourceTree = "<group>"; };
+		A567D02C1C880BBE000B074D /* NewAddSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewAddSceneViewController.h; sourceTree = "<group>"; };
+		A567D02D1C880BBE000B074D /* NewAddSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewAddSceneViewController.m; sourceTree = "<group>"; };
 		A584C83E1C5B8344006E02DB /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		A584C83F1C5B8344006E02DB /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		A58B1C7D1C856BC7005E72B8 /* scene_names.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scene_names.txt; sourceTree = "<group>"; };
@@ -1035,6 +1041,10 @@
 				8443277B1B763AD700BF2355 /* SFIScenesTableViewController.m */,
 				A5472C6D1C8481D700C8E521 /* SceneNameViewController.h */,
 				A5472C6E1C8481D700C8E521 /* SceneNameViewController.m */,
+				1872BD911C875C0000958185 /* CommonMethods.m */,
+				A567D02A1C880B1D000B074D /* CommonMethods.h */,
+				A567D02C1C880BBE000B074D /* NewAddSceneViewController.h */,
+				A567D02D1C880BBE000B074D /* NewAddSceneViewController.m */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -1405,8 +1415,6 @@
 		1CED5EE819AC82FD0023512F = {
 			isa = PBXGroup;
 			children = (
-				1872BD911C875C0000958185 /* CommonMethods.m */,
-				1872BD8F1C875B6D00958185 /* AddRuleSceneClass.m */,
 				1C7E7CD71A41A0990026F0BA /* SecurifiApp */,
 				1C7E7DE31A41A0B30026F0BA /* Almond */,
 				1C9B1D4C1A3EE9EF00097D8F /* HomeScreen */,
@@ -1557,6 +1565,8 @@
 				CEF1357F1C525990009E4558 /* DelayPicker.m */,
 				CEF51A961C5365E9008510B9 /* TimeView.h */,
 				CEF51A971C5365E9008510B9 /* TimeView.m */,
+				1872BD8F1C875B6D00958185 /* AddRuleSceneClass.m */,
+				A567D02B1C880B5D000B074D /* AddRuleSceneClass.h */,
 			);
 			name = Rules;
 			sourceTree = "<group>";
@@ -2480,6 +2490,7 @@
 				1DF038979554DAC51D42A7C8 /* SFIRouterSendLogsTableViewCell.m in Sources */,
 				1DF03DD5059A3900235BD95B /* SFIRouterVersionTableViewCell.m in Sources */,
 				1DF03678B3BE5D42EBE3DC2B /* TemperatureView.m in Sources */,
+				A567D02F1C880BBE000B074D /* NewAddSceneViewController.m in Sources */,
 				1DF03271B3B360C48DF81716 /* SFITextField.m in Sources */,
 				1C2F60A51B69E69D001CCA34 /* SFIWiFiDeviceTypeSelectionCell.m in Sources */,
 				1DF034F099411CA60571A787 /* AlertView.m in Sources */,
@@ -2548,6 +2559,7 @@
 				1C7E7DD51A41A0990026F0BA /* UIViewController+Securifi.m in Sources */,
 				A54EB0291C44FDE000CF2837 /* CrossButton.m in Sources */,
 				1C2F609E1B69E69D001CCA34 /* SFIWiFiClientListCell.m in Sources */,
+				A567D02E1C880BBE000B074D /* NewAddSceneViewController.m in Sources */,
 				1C7E7DB91A41A0990026F0BA /* SFICardTableViewCell.m in Sources */,
 				A54EB0281C44FDE000CF2837 /* PreDelayRuleButton.m in Sources */,
 				1C7E7D851A41A0990026F0BA /* SFILogoutAllViewController.m in Sources */,
