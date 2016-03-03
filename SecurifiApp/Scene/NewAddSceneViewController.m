@@ -206,16 +206,15 @@ UIAlertView *alert;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == [alertView cancelButtonIndex]){
         if(alertView.tag == kAlertViewSave){
-            self.scene.name = textField.text;
-            [self sendAddSceneCommand];
-
+            SceneNameViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SceneNameViewController"];
+            viewController.scenePayload = [ScenePayload getScenePayload:self.scene mobileInternalIndex:(int)randomMobileInternalIndex isEdit:self.isInitialized];
+            viewController.isNewScene = self.isInitialized ? NO: YES;
+            [self.navigationController pushViewController:viewController animated:YES];
         }
     }else{
         if(alertView.tag == kAlertViewSave){
-                SceneNameViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SceneNameViewController"];
-                viewController.scenePayload = [ScenePayload getScenePayload:self.scene mobileInternalIndex:(int)randomMobileInternalIndex isEdit:self.isInitialized];
-                viewController.isNewScene = self.isInitialized ? NO: YES;
-                [self.navigationController pushViewController:viewController animated:YES];
+            self.scene.name = textField.text;
+            [self sendAddSceneCommand];
         }else if(alertView.tag == kAlertViewDelete){
             [self sendDeleteSceneCommand];
         }

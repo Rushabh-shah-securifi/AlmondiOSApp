@@ -195,14 +195,6 @@
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="146"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MyRule" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eVB-up-CZ8">
-                                            <rect key="frame" x="13" y="1" width="173" height="21"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="173" id="QuO-uw-ovg"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aje-gw-sXH">
                                             <rect key="frame" x="0.0" y="144" width="600" height="2"/>
                                             <color key="backgroundColor" red="0.85490196080000003" green="0.85490196080000003" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -249,6 +241,14 @@
                                                 <action selector="onDeleteButtonClick:" destination="jnu-CP-wWH" eventType="touchUpInside" id="K6U-nf-Qj0"/>
                                             </connections>
                                         </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MyRule" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eVB-up-CZ8">
+                                            <rect key="frame" x="13" y="8" width="173" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="173" id="QuO-uw-ovg"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="aje-gw-sXH" secondAttribute="trailing" id="0F0-jU-4Jk"/>
@@ -258,7 +258,7 @@
                                         <constraint firstItem="md5-Cg-HTy" firstAttribute="top" secondItem="IeF-d6-F28" secondAttribute="bottom" constant="4" id="OpI-eA-N2G"/>
                                         <constraint firstItem="md5-Cg-HTy" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" id="PVV-07-LVc"/>
                                         <constraint firstItem="FKn-kv-oIc" firstAttribute="leading" secondItem="IeF-d6-F28" secondAttribute="trailing" constant="13" identifier="rtvid-20" id="Vhy-Tw-8Vg"/>
-                                        <constraint firstItem="eVB-up-CZ8" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="1" id="Zzx-Jk-Qx6"/>
+                                        <constraint firstItem="eVB-up-CZ8" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="8" id="Zzx-Jk-Qx6"/>
                                         <constraint firstItem="eVB-up-CZ8" firstAttribute="leading" secondItem="hc4-tj-pNj" secondAttribute="leading" constant="13" id="eXc-sY-3cR"/>
                                         <constraint firstItem="FKn-kv-oIc" firstAttribute="top" secondItem="hc4-tj-pNj" secondAttribute="top" constant="1" identifier="rtvid-21" id="m9E-KA-Sig"/>
                                         <constraint firstItem="kIZ-nt-yDQ" firstAttribute="leading" secondItem="FKn-kv-oIc" secondAttribute="trailing" constant="-3" identifier="rtvid-23" id="nvU-Ui-Hfw"/>
