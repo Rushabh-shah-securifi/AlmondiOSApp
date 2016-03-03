@@ -77,8 +77,6 @@ UIAlertView *alert;
                selector:@selector(gotResponseFor1064:)
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
                  object:nil];
-//    [center addObserver:self selector:@selector(hide) name:@"UIApplicationWillResignActiveNotification" object:nil];
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -95,7 +93,7 @@ UIAlertView *alert;
     
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName : UIColorFromRGB(0x02a8f3),
                                                                                                        NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Roman" size:17.5f]} forState:UIControlStateNormal];
-    self.title = self.isInitialized? [NSString stringWithFormat:@"Edit Scene - %@", self.scene.name]: @"New Scene";
+    self.title = self.isInitialized? [NSString stringWithFormat:@"%@", self.scene.name]: @"New Scene";
 }
 
 #pragma mark button clicks
@@ -108,8 +106,8 @@ UIAlertView *alert;
         alert = [[UIAlertView alloc] initWithTitle:@"Scene Name"
                                                         message:@"Would you like to have a scene name compatible with Amazon Echo voice control? If Yes, press Next, else enter Scene name below and press Save."
                                                        delegate:self
-                                              cancelButtonTitle:@"Save"
-                                              otherButtonTitles:@"Next",nil];
+                                              cancelButtonTitle:@"Next"
+                                              otherButtonTitles:@"Save",nil];
         [alert setDelegate:self];
         alert.tag = kAlertViewSave;
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
@@ -174,7 +172,6 @@ UIAlertView *alert;
 
 #pragma mark command response
 - (void)gotResponseFor1064:(id)sender {
-    NSLog(@"gotResponseFor1064 - addscene");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
@@ -207,11 +204,11 @@ UIAlertView *alert;
 
 #pragma mark alert view delegeate method
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    NSLog(@"button index: %ld", buttonIndex);
     if (buttonIndex == [alertView cancelButtonIndex]){
         if(alertView.tag == kAlertViewSave){
             self.scene.name = textField.text;
             [self sendAddSceneCommand];
+
         }
     }else{
         if(alertView.tag == kAlertViewSave){
@@ -223,6 +220,12 @@ UIAlertView *alert;
             [self sendDeleteSceneCommand];
         }
     }
+}
+
+- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
+{
+    return ([[[alertView textFieldAtIndex:0] text] length]>0)?YES:NO;
+    
 }
 
 -(void)sendAddSceneCommand{
@@ -240,7 +243,6 @@ UIAlertView *alert;
     command.command = [payloadDict JSONString];
     
     [self asyncSendCommand:command];
-    NSLog(@"new scenes payload %@",[payloadDict JSONString]);
 }
 
 -(void)sendDeleteSceneCommand{
@@ -277,16 +279,4 @@ UIAlertView *alert;
         [self.HUD hide:YES afterDelay:5];
     });
 }
-
-//-(BOOL)textFieldShouldReturn:(UITextField *)textField{
-//    NSLog(@"textFieldShouldReturn");
-////    [textField resignFirstResponder];
-//    [self hide];
-//    return  YES;
-//}
-//
-//-(void)hide{
-//    NSLog(@"hide");
-//    [alert dismissWithClickedButtonIndex:0 animated:YES];
-//}
 @end

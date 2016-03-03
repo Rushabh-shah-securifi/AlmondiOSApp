@@ -148,7 +148,7 @@ UITextField *textField;
     
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName : UIColorFromRGB(0x02a8f3),
                                                                                                        NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Roman" size:17.5f]} forState:UIControlStateNormal];
-    self.title = self.isInitialized? [NSString stringWithFormat:@"Edit Rule - %@", self.rule.name]: @"New Rule";
+    self.title = self.isInitialized? [NSString stringWithFormat:@"%@", self.rule.name]: @"New Rule";
 }
 
 

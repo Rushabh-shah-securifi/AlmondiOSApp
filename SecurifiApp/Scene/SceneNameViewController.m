@@ -229,7 +229,6 @@ static const int sceneNameFont = 13;
 
 #pragma mark commands
 -(void)sceneMobileCommandResponse:(id)sender{
-    NSLog(@"sceneMobileCommandResponse");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
