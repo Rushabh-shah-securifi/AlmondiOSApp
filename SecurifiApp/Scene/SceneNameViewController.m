@@ -21,7 +21,7 @@
 
 @implementation SceneNameViewController
 int randomMobileInternalIndex;
-static const int sceneNameFont = 13;
+static const int sceneNameFont = 15;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUpNavigationBar];
@@ -42,6 +42,7 @@ static const int sceneNameFont = 13;
                   action:@selector(editingChanged:)
         forControlEvents:UIControlEventEditingChanged];
     self.sceneNameField.delegate = self;
+    [self.sceneNameField becomeFirstResponder];
     self.suggestionTable.tableFooterView = [UIView new]; //to hide extra line seperators
 }
 
@@ -107,6 +108,7 @@ static const int sceneNameFont = 13;
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuseIdentifier"];
     }
+    
     cell.textLabel.font = [UIFont securifiFont:sceneNameFont];
     if (self.filteredList.count > 0 || _sceneNameField.text.length != 0) {
         cell.textLabel.text = [self.filteredList objectAtIndex:indexPath.row];
@@ -118,7 +120,7 @@ static const int sceneNameFont = 13;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 30;
+    return 35;
 }
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if(_filteredList.count > 0)

@@ -29,6 +29,7 @@
 - (void)changeImageColor:(UIColor*)color;
 - (void)setupValues:(UIImage*)iconImage topText:(NSString*)topText bottomText:(NSString *)bottomText isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimButton insideText:(NSString *)insideText;
 - (void)setButtonCross:(BOOL)isHidden;
-//- (void)setupValues:(NSString*)text  Title:(NSString*)title displayText:(NSString*)displayText suffix:(NSString*)suffix isTrigger:(BOOL)isTrigger;
+
+- (void)setImage:(UIImage*)iconImage;
 
 @end

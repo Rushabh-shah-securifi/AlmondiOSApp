@@ -754,7 +754,7 @@ DimmerButton *dimerButton;
         picker.selectedTextColor = [SFIColors ruleOrangeColor];
     }
     picker.elementFont = [UIFont systemFontOfSize:11];
-    picker.elementFont = [UIFont fontWithName:@"AvenirLTStd-Roman" size:11];
+    picker.elementFont = [UIFont fontWithName:@"AvenirLTStd-Roman" size:13];
     picker.textColor = [UIColor blackColor];
     picker.indicatorPosition = V8HorizontalPickerIndicatorBottom;
     picker.delegate = self;

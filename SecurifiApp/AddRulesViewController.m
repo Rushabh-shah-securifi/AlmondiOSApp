@@ -75,6 +75,7 @@ UITextField *textField;
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
     }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)didReceiveMemoryWarning {

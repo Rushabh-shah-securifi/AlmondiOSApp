@@ -185,7 +185,7 @@ UILabel *topLabel;
 + (void)buildTime:(SFIButtonSubProperties *)timesubProperties isTrigger:(BOOL)isTrigger positionId:(int)positionId{
     if(positionId > 0)
         [self drawImage:@"plus_icon"];
-    DimmerButton *dimbutton=[[DimmerButton alloc]initWithFrame:CGRectMake(xVal, 5, triggerActionDimWidth, triggerActionDimHeight + 10)];
+    DimmerButton *dimbutton=[[DimmerButton alloc]initWithFrame:CGRectMake(xVal, 5, dimFrameWidth, dimFrameHeight)];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"hh:mm aa"];
     int segmentType=timesubProperties.time.segmentType;
@@ -204,7 +204,8 @@ UILabel *topLabel;
     
     [dimbutton addTarget:self action:@selector(onDimmerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     dimbutton.bgView.backgroundColor =(!isActive && isCrossHidden)?[SFIColors ruleGraycolor]:[SFIColors ruleBlueColor];
-    xVal += triggerActionDimWidth;
+    //@FIXME : Should add entryPadding
+    xVal += dimFrameWidth-20+entryPadding;
     [triggersActionsScrollView addSubview:dimbutton];
     
 }
@@ -217,7 +218,7 @@ UILabel *topLabel;
 
 + (void)drawButton:(SFIButtonSubProperties*)subProperties isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString *)bottomText{
     if(isTrigger){
-        SwitchButton *switchButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, triggerActionBtnWidth, triggerActionBtnHeight)];
+        SwitchButton *switchButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, entryBtnWidth, entryBtnHeight)];
         switchButton.isTrigger = isTrigger;
         [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:bottomText isTrigger:isTrigger isDimButton:isDimmbutton insideText:subProperties.displayText];
         switchButton.subProperties = subProperties;
@@ -227,7 +228,7 @@ UILabel *topLabel;
         [switchButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         if(!isActive && isCrossHidden)
             switchButton.bgView.backgroundColor = [SFIColors ruleGraycolor];
-        xVal += triggerActionBtnWidth;
+        xVal += entryBtnWidth+entryPadding;
         [switchButton setButtonCross:isCrossHidden];
         switchButton.userInteractionEnabled = disableUserInteraction;
         [triggersActionsScrollView addSubview:switchButton];
@@ -264,7 +265,7 @@ UILabel *topLabel;
         }
         
         [switchButton->delayButton addTarget:self action:@selector(onActionDelayClicked:) forControlEvents:UIControlEventTouchUpInside];
-        xVal += rulesButtonsViewWidth;
+        xVal += rulesButtonsViewWidth + entryPadding;
         
         [triggersActionsScrollView addSubview:switchButton];
         
@@ -343,10 +344,12 @@ UILabel *topLabel;
 }
 
 + (void)drawImage:(NSString *)iconName {
-    SwitchButton *imageButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal,5, triggerActionBtnWidth, triggerActionBtnHeight)];//todo
-    [imageButton setupValues:[UIImage imageNamed:iconName] topText:@"" bottomText:@"" isTrigger:YES isDimButton:NO insideText:@""];
+    SwitchButton *imageButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal,5, separatorWidth, entryBtnHeight)];//todo
+   
+    [imageButton setImage:[UIImage imageNamed:iconName]];
     //image.image = [UIImage imageNamed:iconName];
-    xVal += triggerActionBtnWidth;
+    
+    xVal += separatorWidth+ entryPadding;
     [triggersActionsScrollView addSubview:imageButton];
     
 }

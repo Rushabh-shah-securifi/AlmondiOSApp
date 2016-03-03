@@ -461,7 +461,7 @@
                 s1.displayText=@"COOL";
                 s1.iconName = @"n_07_thermostat";
                 s1.layoutType=@"dimButton";
-                s1.displayText = @"COOL-";
+                s1.displayText = @"COOLING TEMP";
                 s1.minValue = 35;
                 s1.maxValue = 95;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
@@ -475,7 +475,7 @@
                 s1.matchData = @"70";
                 s1.layoutType=@"dimButton";
                 s1.iconName = @"n_07_thermostat";
-                s1.displayText = @"HEAT-";
+                s1.displayText = @"HEATING TEMP";
                 s1.minValue = 35;
                 s1.maxValue = 95;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;

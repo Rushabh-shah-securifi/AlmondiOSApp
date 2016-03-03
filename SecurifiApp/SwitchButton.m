@@ -55,14 +55,14 @@
 }
 
 
-- (void)addImage:(UIImage *)iconImage y:(int)y widthAndHeight:(int)widthAndHeight {
+- (void)addImage:(UIImage *)iconImage y:(int)y widthAndHeight:(int)widthAndHeight imageHeight:(int)imageHeight{
     imgIcon = [[UIImageView alloc] initWithFrame:CGRectMake(0, y, widthAndHeight, widthAndHeight)];
     imgIcon.userInteractionEnabled = NO;
     //img adjustments
     float height = iconImage.size.height;
     float width = iconImage.size.width;
     float scale;
-    int heightFactor = self.bgView.frame.size.height/imageHeightFactor;
+    int heightFactor = imageHeight/imageHeightFactor;
     scale = height/heightFactor;
     height = heightFactor;
     width /= scale;
@@ -91,13 +91,13 @@
     self.isTrigger = isTrigger;
     if(topText != nil){
         self.showTitle = YES;
-        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, triggerActionBtnWidth, triggerActionBtnHeight);
+        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, entryBtnWidth, entryBtnHeight);
         [self adDeviceName:topText];
-        [self addBgView:self.topLabel.frame.size.height widthAndHeight:triggerActionBtnWidth];
+        [self addBgView:self.topLabel.frame.size.height widthAndHeight:entryBtnWidth];
         if(isDimButton)
             [self mainLabel:@"" text:insideText];
         else
-            [self addImage:iconImage y:self.bgView.frame.origin.y widthAndHeight:self.bgView.frame.size.width];
+            [self addImage:iconImage y:self.bgView.frame.origin.y widthAndHeight:self.bgView.frame.size.width imageHeight:self.bgView.frame.size.height];
         if(isTrigger)
             [self addBottomText:bottomText x:0 y:self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding width:self.frame.size.width height:textHeight];
         
@@ -107,10 +107,25 @@
     }
     else{
        [self addBgView:0 widthAndHeight:self.frame.size.width-textHeight -10];
-        [self addImage:iconImage y:self.bgView.frame.origin.y - 10 widthAndHeight:self.frame.size.width-textHeight - 10];
+        [self addImage:iconImage y:self.bgView.frame.origin.y - 10 widthAndHeight:self.frame.size.width-textHeight - 10 imageHeight:self.bgView.frame.size.height];
         [self addBottomText:bottomText x:-5 y:self.bgView.frame.size.height+textPadding width:self.frame.size.width-textHeight height:textHeight];
         self.bgView.backgroundColor = [SFIColors ruleGraycolor];
     }
+}
+
+- (void)setImage:(UIImage*)iconImage{
+    
+    self.showTitle = YES;
+    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, separatorWidth, entryBtnHeight);
+    [self adDeviceName:@""];
+    
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0,self.topLabel.frame.size.height , separatorWidth,entryBtnWidth)];
+    self.bgView.userInteractionEnabled = NO;
+    [self addSubview:self.bgView];
+    
+    [self addImage:iconImage y:self.bgView.frame.origin.y widthAndHeight:separatorWidth imageHeight:entryBtnWidth-10];
+    [self addBottomText:@"" x:0 y:self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding width:self.frame.size.width height:textHeight];
+    
 }
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{
     
@@ -189,8 +204,8 @@
 - (void)mainLabel:(NSString *)suffix text:(NSString *)text {
     NSString *strTopTitleLabelText = [text stringByAppendingString:suffix];
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
-    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:15.0f]} range:NSMakeRange(0,text.length)]; //40
-    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:10.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,suffix.length)];
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:17.0f]} range:NSMakeRange(0,text.length)]; //40
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:12.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,suffix.length)];
     //lblmain
     lblMain = [[UILabel alloc] initWithFrame:self.bgView.frame];
     lblMain.textAlignment = NSTextAlignmentCenter;
