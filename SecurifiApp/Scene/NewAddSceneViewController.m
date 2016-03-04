@@ -242,6 +242,7 @@ UIAlertView *alert;
 
 -(BOOL) textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];
+    [alert dismissWithClickedButtonIndex:nil animated:YES];
     return YES;
 }
 
