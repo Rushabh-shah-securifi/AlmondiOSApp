@@ -44,7 +44,7 @@
     self.isTrigger = isTrigger;
     self.dimValue = text;
     self.backgroundColor = [UIColor clearColor];
-    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight + 5,self.frame.size.height-textHeight)];
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight + 5,self.frame.size.height-textHeight +5)];
     self.bgView.backgroundColor = [SFIColors ruleGraycolor];
     [self addSubview:self.bgView];
     
@@ -90,7 +90,7 @@
     self.backgroundColor = [UIColor clearColor];
     
     //self.bgView
-    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, lblDeviceName.frame.size.height, dimFrameWidth-20,entryBtnWidth )];
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, lblDeviceName.frame.size.height, dimFrameWidth-20,entryBtnWidth +5)];
     self.bgView.backgroundColor = [SFIColors ruleGraycolor];
     self.bgView.userInteractionEnabled = NO;
     [self addSubview:self.bgView];
@@ -211,7 +211,7 @@
     [crossButtonBGView addSubview:self.crossButtonImage];
 }
 -(void)setUpTextField:(NSString*)textFieldText displayText:(NSString*)displayText suffix:(NSString *)suffix{
-    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight,self.frame.size.height -textHeight)];
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight,self.frame.size.height -textHeight + 5)];
     self.bgView.backgroundColor = [UIColor clearColor];
     [self addSubview:self.bgView];
     self.prefix = suffix;

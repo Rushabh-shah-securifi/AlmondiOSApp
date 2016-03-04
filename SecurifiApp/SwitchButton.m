@@ -165,7 +165,7 @@
     [imgIcon setTintColor:color];
 }
 - (void)setButtonCross:(BOOL)isHidden{
-    crossButtonBGView = [[UIView alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 14, 23, countDiameter, countDiameter)];
+    crossButtonBGView = [[UIView alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 11, 18, countDiameter, countDiameter)];
     crossButtonBGView.userInteractionEnabled = NO;
     [self setLayer];
     [self addImage1:[UIImage imageNamed:@"icon_cross_gray"] y:crossButtonBGView.frame.origin.y widthAndHeight:countDiameter];

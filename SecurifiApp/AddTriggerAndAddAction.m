@@ -178,7 +178,7 @@ DimmerButton *dimerButton;
         }
     }
     CGSize scrollableSize = CGSizeMake(self.deviceIndexButtonScrollView.frame.size.width,
-                                       (frameSize + ROW_PADDING )*i + ROW_PADDING);
+                                       (frameSize + ROW_PADDING )*i + ROW_PADDING + 20);
     [self.deviceIndexButtonScrollView setContentSize:scrollableSize];
     [self.deviceIndexButtonScrollView flashScrollIndicators];
     self.deviceIndexButtonScrollView.showsVerticalScrollIndicator = YES;
@@ -284,7 +284,7 @@ DimmerButton *dimerButton;
         }
     }
     CGSize scrollableSize = CGSizeMake(self.deviceIndexButtonScrollView.frame.size.width,
-                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING);
+                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING +20);
     
     [self.deviceIndexButtonScrollView setContentSize:scrollableSize];
     [self.deviceIndexButtonScrollView flashScrollIndicators];

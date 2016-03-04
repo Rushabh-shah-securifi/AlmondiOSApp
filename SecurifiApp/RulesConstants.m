@@ -10,7 +10,7 @@
 
 @implementation RulesConstants
 
-const int textHeight = 25;
+const int textHeight = 20;
 const int frameSize = 70;
 const int indexButtonFrameSize = 90;
 const int dimFrameHeight = 75;
