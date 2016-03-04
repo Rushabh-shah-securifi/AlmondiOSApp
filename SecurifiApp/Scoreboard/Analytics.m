@@ -14,6 +14,7 @@
 #define SENSOR_ACTION @"Sensor Action"
 #define SCENE_ACTION @"Scene Action"
 #define ROUTER_ACTION @"Router Action"
+#define RULE_ACTION @"Rule Action"
 #define MEMORY_WARNING @"Warning"
 #define ACTION @"Action"
 
@@ -143,6 +144,22 @@
     [self markEvent:@"Update WifiClient" category:ROUTER_ACTION];
 }
 
+- (void)markActivateRule {
+    [self markEvent:@"Activate Rule" category:SCENE_ACTION];
+}
+
+- (void)markAddRule {
+    [self markEvent:@"Add Rule" category:SCENE_ACTION];
+}
+
+- (void)markUpdateRule {
+    [self markEvent:@"Edit Rule" category:SCENE_ACTION];
+}
+
+- (void)markDeleteRule {
+    [self markEvent:@"Remove Rule" category:SCENE_ACTION];
+}
+
 - (void)markEvent:(NSString *)eventName category:(NSString *)eventCategory {
     enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];
     if(mode == SFIAlmondConnectionMode_local){
@@ -209,6 +226,15 @@
 - (void)markRouterSettingsScreen {
     [self trackScreen:@"Router Settings"];
 }
+
+-(void)markRuleScreen{
+    [self trackScreen:@"Rules"];
+}
+
+-(void)markAddOrEditRuleScreen{
+    [self trackScreen:@"Add/Edit Rule"];
+}
+
 
 - (void)trackScreen:(NSString *)name {
     enum SFIAlmondConnectionMode mode = [[SecurifiToolkit sharedInstance] currentConnectionMode];

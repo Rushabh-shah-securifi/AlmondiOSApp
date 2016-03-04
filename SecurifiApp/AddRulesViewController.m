@@ -33,6 +33,7 @@
 #import "SFISubPropertyBuilder.h"
 #import "MBProgressHUD.h"
 #import "AddRuleSceneClass.h"
+#import "Analytics.h"
 
 @interface AddRulesViewController()<UIAlertViewDelegate>{
     sfi_id dc_id;
@@ -65,8 +66,9 @@ UITextField *textField;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    randomMobileInternalIndex = arc4random() % 10000;
     [super viewWillAppear:animated];
+    randomMobileInternalIndex = arc4random() % 10000;
+    [[Analytics sharedInstance] markAddOrEditRuleScreen];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -320,7 +322,7 @@ UITextField *textField;
         //cancel clicked ...do your action
     }else{
         self.rule.name = textField.text;
-        [self sendRuleCommand];
+        [self sendCreateRuleCommand];
     }
 }
 
@@ -330,7 +332,7 @@ UITextField *textField;
     
 }
 
--(void)sendRuleCommand{
+-(void)sendCreateRuleCommand{
     RulePayload *rulePayload = [RulePayload new];
     rulePayload.rule = self.rule;
     
@@ -341,16 +343,14 @@ UITextField *textField;
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
-    
-    ///
-    
+
     NSDictionary *payload = [rulePayload createRulePayload:randomMobileInternalIndex with:self.isInitialized valid:@"1"];
     
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_UPDATE_REQUEST;
     cloudCommand.command = [payload JSONString];
     [self asyncSendCommand:cloudCommand];
-    NSLog(@"rules payload %@",[payload JSONString]);
+    [[Analytics sharedInstance] markAddRule];
 }
 - (void)showHudWithTimeout {
     dispatch_async(dispatch_get_main_queue(), ^() {

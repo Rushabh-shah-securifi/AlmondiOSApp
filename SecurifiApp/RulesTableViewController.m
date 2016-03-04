@@ -17,6 +17,7 @@
 #import "MBProgressHUD.h"
 #import "RulePayload.h"
 #import "Colours.h"
+#import "Analytics.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
@@ -285,6 +286,7 @@ CGPoint tablePoint;
         cloudCommand.command = [payload JSONString];
         [self asyncSendCommand:cloudCommand];
     }
+    [[Analytics sharedInstance] markDeleteRule];
 }
 
 -(void)onRuleCommandResponse:(id)sender{ //for delete//need to be work
@@ -344,6 +346,7 @@ CGPoint tablePoint;
     
     addRuleController.rule = rule;
     addRuleController.isInitialized = YES;
+    [[Analytics sharedInstance] markUpdateRule];
     [self.navigationController pushViewController:addRuleController animated:YES];
 }
 
@@ -363,6 +366,7 @@ CGPoint tablePoint;
         cloudCommand.command = [payload JSONString];
         [self asyncSendCommand:cloudCommand];
     }
+    [[Analytics sharedInstance] markActivateRule];
 }
 
 -(void)setUpHUD{
