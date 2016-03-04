@@ -39,6 +39,7 @@ static const int sceneNameFont = 15;
                           @"Basement lights off",
                           @"Decorations On"];
     [self readSceneNameFileContents];
+    [self.sceneNameField becomeFirstResponder];
     [self.sceneNameField addTarget:self
                             action:@selector(editingChanged:)
                   forControlEvents:UIControlEventEditingChanged];
@@ -47,8 +48,8 @@ static const int sceneNameFont = 15;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    randomMobileInternalIndex = arc4random() % 10000;
     [super viewWillAppear:YES];
+    randomMobileInternalIndex = arc4random() % 10000;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
