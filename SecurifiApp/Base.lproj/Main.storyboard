@@ -9,7 +9,7 @@
         <!--Add Rules View Controller-->
         <scene sceneID="fMT-AV-vzo">
             <objects>
-                <viewController storyboardIdentifier="AddRulesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ZHC-dW-lqd" customClass="AddRulesViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddRulesViewController" hidesBottomBarWhenPushed="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="ZHC-dW-lqd" customClass="AddRulesViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Dn6-LF-leG"/>
                         <viewControllerLayoutGuide type="bottom" id="gNX-x7-Eb1"/>
