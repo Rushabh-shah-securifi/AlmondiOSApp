@@ -44,11 +44,11 @@
     self.isTrigger = isTrigger;
     self.dimValue = text;
     self.backgroundColor = [UIColor clearColor];
-    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight,self.frame.size.height-textHeight)];
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight + 5,self.frame.size.height-textHeight)];
     self.bgView.backgroundColor = [SFIColors ruleGraycolor];
     [self addSubview:self.bgView];
     
-    lblMain = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, self.frame.size.width-textHeight,self.frame.size.height-textHeight)];
+    lblMain = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, self.frame.size.width-textHeight + 5,self.frame.size.height-textHeight)];
     lblMain.textAlignment = NSTextAlignmentCenter;
     [self.bgView addSubview:lblMain];
     

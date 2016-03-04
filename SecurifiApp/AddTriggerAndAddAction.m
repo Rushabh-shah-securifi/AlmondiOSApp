@@ -481,9 +481,7 @@ DimmerButton *dimerButton;
                     view.frame = CGRectMake(0, yScale, self.parentView.frame.size.width, indexButtonFrameSize * 2);
                     [self buildSwitchButton:deviceIndex deviceType:deviceType deviceName:deviceName iVal:iVal deviceId:deviceId i:i view:view buttonY:indexButtonFrameSize];
                 }else{
-                    if(deviceType == SFIDeviceType_MultiLevelSwitch_2) //device 2, displaying only dimbutton
-                        continue;
-                    if((!self.isTrigger||self.isScene) && deviceType == SFIDeviceType_GarageDoorOpener_53 && !([iVal.matchData isEqualToString:@"0"] || [iVal.matchData isEqualToString:@"255"]))
+                    if([self specialCasesExistsForDeviceType:deviceType index:deviceIndex iVal:iVal])
                         continue;
                     [self buildSwitchButton:deviceIndex deviceType:deviceType deviceName:deviceName iVal:iVal deviceId:deviceId i:i view:view buttonY:0];
                 }
@@ -492,6 +490,18 @@ DimmerButton *dimerButton;
     }
     return view;
 }
+
+-(BOOL)specialCasesExistsForDeviceType:(int)deviceType index:(SFIDeviceIndex*)deviceIndex iVal:(IndexValueSupport*)iVal{
+    BOOL isTrue = NO;
+    if(deviceType == SFIDeviceType_MultiLevelSwitch_2) //device 2, displaying only dimbutton
+        isTrue = YES;
+    if((!self.isTrigger||self.isScene) && deviceType == SFIDeviceType_GarageDoorOpener_53 && !([iVal.matchData isEqualToString:@"0"] || [iVal.matchData isEqualToString:@"255"]))
+        isTrue = YES;
+    if((!self.isTrigger||self.isScene) && deviceType == SFIDeviceType_RollerShutter_52 && deviceIndex.indexID != 1)
+        isTrue = YES;
+    return isTrue;
+}
+
 - (void) shiftButtonsByWidth:(int)width View:(UIView *)view forIteration:(int)i{
     for (int j = 1; j < i; j++) {
         UIView *childView = [view subviews][j-1];
