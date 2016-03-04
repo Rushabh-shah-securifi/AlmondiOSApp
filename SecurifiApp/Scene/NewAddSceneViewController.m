@@ -102,8 +102,13 @@ UIAlertView *alert;
 #pragma mark button clicks
 -(void)btnSaveTap:(id)sender{
     if(self.scene.triggers.count > 0){
+        NSString *msg;
+        msg = @"If you want this scene name to be compatible with Amazon Echo Voice Control, click Next.\nIf not, just enter the name in the below text box and click Done.";
+        if(self.isInitialized && [self isSceneNameCompatibleWithAlexa]){
+            msg = @"Your current scene name is already compatible with Amazon Echo Voice Control.\nClick Done to keep it as it is or Click Next to change it to a different Echo compatible name.";
+        }
         alert = [[UIAlertView alloc] initWithTitle:@"Scene Name"
-                                           message:@"Would you like to have a scene name compatible with Amazon Echo voice control? If Yes, press Next, else enter Scene name below and press Done."
+                                           message:msg
                                           delegate:self
                                  cancelButtonTitle:@"Next"
                                  otherButtonTitles:@"Done",nil];
@@ -157,7 +162,7 @@ UIAlertView *alert;
 - (void)addDeleteSceneButton{
     if (!self.buttonDelete) {
         self.buttonDelete = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.buttonDelete.frame = CGRectMake(self.navigationController.view.frame.size.width - 50 - 10, self.navigationController.view.frame.size.height-110, 50, 50);
+        self.buttonDelete.frame = CGRectMake(self.navigationController.view.frame.size.width - 50 - 10, self.navigationController.view.frame.size.height-60, 50, 50);
         [self.buttonDelete setImage:[UIImage imageNamed: @"btnDel"] forState:UIControlStateNormal];
         self.buttonDelete.backgroundColor = [UIColor clearColor];
         [self.buttonDelete addTarget:self action:@selector(btnDeleteSceneTap:) forControlEvents:UIControlEventTouchUpInside];

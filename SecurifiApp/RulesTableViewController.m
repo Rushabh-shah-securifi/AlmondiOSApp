@@ -65,6 +65,7 @@ CGPoint tablePoint;
         [self markTitle: self.currentAlmond.almondplusName];
     }
     randomMobileInternalIndex = arc4random() % 10000;
+    [[Analytics sharedInstance] markRuleScreen];
 }
 -(BOOL)isLocal{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];

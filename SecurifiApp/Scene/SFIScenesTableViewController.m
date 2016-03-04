@@ -124,7 +124,6 @@
 
 
 - (void)sendGetAllScenesRequest {
-    NSLog(@"scenetableview - sendGetAllScenesRequest");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     if (!plus.almondplusMAC) {
@@ -422,12 +421,11 @@
 - (void)getAllScenes {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     scenesArray = [NSMutableArray arrayWithArray:toolkit.scenesArray];
+    NSLog(@"get all scenes - %@", scenesArray);
     [self.tableView reloadData];
-    NSLog(@"scenes array: %@", scenesArray);
 }
 
 - (void)gotResponseFor1064:(id)sender {
-    NSLog(@"gotResponseFor1064 - activatescene");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
@@ -444,8 +442,6 @@
     if (randomMobileInternalIndex != [[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
         return;
     }
-    NSLog(@"%@",mainDict);
-    
     [self hideHude];
 }
 

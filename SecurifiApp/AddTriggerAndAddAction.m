@@ -381,8 +381,18 @@ DimmerButton *dimerButton;
     dimbtn.frame=CGRectMake(dimbtn.frame.origin.x + ((i-1) * (dimFrameWidth/2))+textHeight/2, dimbtn.frame.origin.y, dimbtn.frame.size.width, dimbtn.frame.size.height);
     [self shiftButtonsByWidth:dimFrameWidth View:view forIteration:i];
     dimbtn.selected=[self setActionButtonCount:dimbtn isSlider:YES];
+    if(self.isTrigger)
+        [self getSelectedMatchData:dimbtn.subProperties];
     [view addSubview:dimbtn];
-    
+}
+
+-(void)getSelectedMatchData:(SFIButtonSubProperties*)subProperty{
+    NSMutableArray *list=self.isTrigger?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
+    for(SFIButtonSubProperties *buttonSubProperty in list){
+        if(buttonSubProperty.deviceId == subProperty.deviceId && buttonSubProperty.index == subProperty.index){
+            subProperty.matchData = buttonSubProperty.matchData;
+        }
+    }
 }
 
 - (void)buildTextButton:(SFIDeviceIndex *)deviceIndex iVal:(IndexValueSupport *)iVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
