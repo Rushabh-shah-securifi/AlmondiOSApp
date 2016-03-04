@@ -180,21 +180,7 @@ static const int sceneNameFont = 15;
     return isCompatible;
 }
 
-//-(void)setAlexaCompatibleSceneName{
-//    [self.scenePayload[@"Scenes"] setValue:self.sceneNameField.text forKey:@"Name"];
-//    [self.scenePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
-//}
-
 #pragma mark text field delegates
-
-- (void)textFieldDidEndEditing:(UITextField *)textField{
-    [textField resignFirstResponder];
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField{
-    textField.backgroundColor = [UIColor whiteColor];
-    return YES;
-}
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];

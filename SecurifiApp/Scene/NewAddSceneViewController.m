@@ -89,7 +89,7 @@ UIAlertView *alert;
 
 -(void) setUpNavigationBar{
     self.navigationController.navigationBar.translucent = YES;
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(btnSaveTap:)];
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(btnSaveTap:)];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
     self.navigationItem.leftBarButtonItem = leftBarButtonItem;
@@ -103,10 +103,10 @@ UIAlertView *alert;
 -(void)btnSaveTap:(id)sender{
     if(self.scene.triggers.count > 0){
         alert = [[UIAlertView alloc] initWithTitle:@"Scene Name"
-                                           message:@"Would you like to have a scene name compatible with Amazon Echo voice control? If Yes, press Next, else enter Scene name below and press Save."
+                                           message:@"Would you like to have a scene name compatible with Amazon Echo voice control? If Yes, press Next, else enter Scene name below and press Done."
                                           delegate:self
                                  cancelButtonTitle:@"Next"
-                                 otherButtonTitles:@"Save",nil];
+                                 otherButtonTitles:@"Done",nil];
         [alert setDelegate:self];
         alert.tag = kAlertViewSave;
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
@@ -124,7 +124,7 @@ UIAlertView *alert;
     }
     else
     {
-        alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"You cannot save Scene without selecting actions"
+        alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"Select atleast one Action."
                                           delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
         dispatch_async(dispatch_get_main_queue(), ^() {
             [alert show];
