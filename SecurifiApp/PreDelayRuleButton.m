@@ -71,7 +71,7 @@
     
     actionbutton = [[SwitchButton alloc] initWithFrame:CGRectMake(53, 0, entryBtnWidth,entryBtnWidth)];
     
-    [actionbutton setupValues:iconImage topText:@"" bottomText:bottomText isTrigger:NO isDimButton:isDimButton insideText:displayText];
+    [actionbutton setupValues:iconImage topText:@"" bottomText:bottomText isTrigger:NO isDimButton:isDimButton insideText:displayText isScene:NO];
     [self addSubview:actionbutton];
     
     

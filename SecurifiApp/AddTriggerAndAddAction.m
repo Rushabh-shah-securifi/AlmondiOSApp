@@ -86,7 +86,7 @@ DimmerButton *dimerButton;
     CGRect textRect = [self adjustDeviceNameWidth:deviceName];
     CGRect frame = CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight);
     RulesDeviceNameButton *deviceButton = [[RulesDeviceNameButton alloc]initWithFrame:frame];
-    [deviceButton deviceProperty:self.isTrigger deviceType:deviceType deviceName:deviceName deviceId:deviceID];
+    [deviceButton deviceProperty:self.isTrigger deviceType:deviceType deviceName:deviceName deviceId:deviceID isScene:self.isScene];
     
     
     if([deviceName isEqualToString:@"Time"]){
@@ -374,7 +374,7 @@ DimmerButton *dimerButton;
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
     
     [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [dimbtn setupValues:iVal.matchData Title:iVal.displayText suffix:iVal.valueFormatter.suffix isTrigger:self.isTrigger];
+    [dimbtn setupValues:iVal.matchData Title:iVal.displayText suffix:iVal.valueFormatter.suffix isTrigger:self.isTrigger isScene:self.isScene];
     //NSMutableDictionary *result=[self setButtonSelection:dimbtn isSlider:YES deviceIndex:deviceIndex deviceId:deviceId matchData:dimbtn.subProperties.matchData];
     dimbtn.center = CGPointMake(view.bounds.size.width/2,
                                 dimbtn.center.y);
@@ -416,7 +416,7 @@ DimmerButton *dimerButton;
     }
     [btnBinarySwitchOn addTarget:self action:@selector(onSwitchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    [btnBinarySwitchOn setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:self.isTrigger isDimButton:NO insideText:iVal.displayText];
+    [btnBinarySwitchOn setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:self.isTrigger isDimButton:NO insideText:iVal.displayText isScene:self.isScene];
     
     //set perv. count and highlight
     
@@ -755,7 +755,7 @@ DimmerButton *dimerButton;
     picker.layer.borderWidth = 1.5;
     picker.backgroundColor = [UIColor whiteColor];
     
-    if(self.isTrigger){
+    if(self.isTrigger && !self.isScene){
         picker.layer.borderColor = [SFIColors ruleBlueColor].CGColor;
         picker.selectedTextColor = [SFIColors ruleBlueColor];
     }
@@ -777,7 +777,7 @@ DimmerButton *dimerButton;
     const NSInteger element_width = [self horizontalPickerView:picker widthForElementAtIndex:0];
     SFIPickerIndicatorView1 *indicatorView = [[SFIPickerIndicatorView1 alloc] initWithFrame:CGRectMake(0, 0, element_width, 2)];
     picker.selectionPoint = CGPointMake((picker.frame.size.width) / 2, 0);
-    if(self.isTrigger){
+    if(self.isTrigger && !self.isScene){
         indicatorView.color1 = [SFIColors ruleBlueColor];
     }
     else{

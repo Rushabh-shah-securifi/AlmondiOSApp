@@ -34,12 +34,13 @@
 
 - (void)setSelected:(BOOL)selected{
     [super setSelected:selected];
-    [super changeBGColor:self.isTrigger clearColor:selected showTitle:NO];
+    [super changeBGColor:self.isTrigger clearColor:selected showTitle:NO isScene:self.isScene];
     //[self changeStyle];
 }
 
-- (void)setupValues:(NSString*)text  Title:(NSString*)title suffix:(NSString*)suffix isTrigger:(BOOL)isTrigger{
+- (void)setupValues:(NSString*)text  Title:(NSString*)title suffix:(NSString*)suffix isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene{
     //awakefromnib
+    self.isScene = isScene;
     self.isTrigger = isTrigger;
     self.dimValue = text;
     self.backgroundColor = [UIColor clearColor];

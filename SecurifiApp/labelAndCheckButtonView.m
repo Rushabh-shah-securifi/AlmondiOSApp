@@ -29,10 +29,7 @@ const int hueButtonSize = 20;
 }
 -(void)changeColor{
     if (self.selectButton.selected) {
-        if(self.isScene)
-            self.selectButton.backgroundColor = [SFIColors ruleBlueColor];
-        else
-            self.selectButton.backgroundColor = [SFIColors ruleOrangeColor];
+        self.selectButton.backgroundColor = [SFIColors ruleOrangeColor];
     }else{
         self.selectButton.backgroundColor = [UIColor clearColor];
     }

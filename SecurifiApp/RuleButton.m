@@ -11,8 +11,15 @@
 
 @implementation RuleButton
 
-- (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)selected showTitle:(BOOL)showTitle{
-    UIColor *color= isTrigger?[SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
+- (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)selected showTitle:(BOOL)showTitle isScene:(BOOL)isScene{
+    
+    UIColor *color ;//= (isTrigger && !isScene)?[SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
+    if(isTrigger && !isScene)
+        color = [SFIColors ruleBlueColor];
+    else if(!isTrigger || isScene)
+        color = [SFIColors ruleOrangeColor];
+    
+    
     color = !selected?[SFIColors ruleGraycolor]:color;
     
     UIColor *titleColor=showTitle?[SFIColors darkGrayColor]:color;

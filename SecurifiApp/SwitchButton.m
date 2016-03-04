@@ -29,7 +29,7 @@
 - (void)setSelected:(BOOL)selected{
     
     [super setSelected:selected];
-    [super changeBGColor:self.isTrigger clearColor:selected showTitle:self.showTitle];
+    [super changeBGColor:self.isTrigger clearColor:selected showTitle:self.showTitle isScene:self.isScene];
    
 }
 
@@ -87,8 +87,9 @@
     [self addSubview:self.bottomLabel];
 }
 
-- (void)setupValues:(UIImage*)iconImage topText:(NSString*)topText bottomText:(NSString *)bottomText isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimButton insideText:(NSString *)insideText{//upperScroll
+- (void)setupValues:(UIImage*)iconImage topText:(NSString*)topText bottomText:(NSString *)bottomText isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimButton insideText:(NSString *)insideText isScene:(BOOL)isScene{//upperScroll
     self.isTrigger = isTrigger;
+    self.isScene = isScene;
     if(topText != nil){
         self.showTitle = YES;
         self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, entryBtnWidth, entryBtnHeight);
@@ -101,9 +102,13 @@
         if(isTrigger)
             [self addBottomText:bottomText x:0 y:self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding width:self.frame.size.width height:textHeight];
         
-        if(topText.length >0 || !isTrigger)
-            self.bgView.backgroundColor = self.isTrigger?[SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
-         
+        if(topText.length >0 || !isTrigger){
+            if(self.isTrigger && !self.isScene)
+                self.bgView.backgroundColor = [SFIColors ruleBlueColor];
+            else if(!self.isTrigger || self.isScene)
+                self.bgView.backgroundColor = [SFIColors ruleOrangeColor];
+        }
+//            self.bgView.backgroundColor = (self.isTrigger)?[SFIColors ruleBlueColor]:[SFIColors ruleOrangeColor];
     }
     else{
        [self addBgView:0 widthAndHeight:self.frame.size.width-textHeight -10];
@@ -160,7 +165,7 @@
     [imgIcon setTintColor:color];
 }
 - (void)setButtonCross:(BOOL)isHidden{
-    crossButtonBGView = [[UIView alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 12, 16, countDiameter, countDiameter)];
+    crossButtonBGView = [[UIView alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 14, 23, countDiameter, countDiameter)];
     crossButtonBGView.userInteractionEnabled = NO;
     [self setLayer];
     [self addImage1:[UIImage imageNamed:@"icon_cross_gray"] y:crossButtonBGView.frame.origin.y widthAndHeight:countDiameter];

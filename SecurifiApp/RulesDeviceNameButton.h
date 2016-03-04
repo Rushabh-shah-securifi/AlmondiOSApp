@@ -15,7 +15,8 @@
 @property(nonatomic)SFIDeviceType deviceType;
 @property(nonatomic)NSString *deviceName;
 @property(nonatomic)BOOL isTrigger;
+@property (nonatomic)BOOL isScene;
 
--(void)deviceProperty:(BOOL)isTrigger deviceType:(SFIDeviceType)devicetype deviceName:(NSString*)deviceName deviceId:(int)deviceId;
+-(void)deviceProperty:(BOOL)isTrigger deviceType:(SFIDeviceType)devicetype deviceName:(NSString*)deviceName deviceId:(int)deviceId isScene:(BOOL)isScene;
 
 @end

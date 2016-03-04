@@ -17,7 +17,7 @@
 @property (nonatomic)RuleTextField *textField;
 
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden;
-- (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)clearColor showTitle:(BOOL)showTitle;
+- (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)clearColor showTitle:(BOOL)showTitle isScene:(BOOL)isScene;
 - (void)setNewValue:(NSString*)text;
 @property(nonatomic)SFIButtonSubProperties* subProperties;
 
