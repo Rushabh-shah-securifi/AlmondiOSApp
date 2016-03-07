@@ -293,7 +293,7 @@ UILabel *topLabel;
 
 + (void)onTriggerCrossButtonClicked:(SwitchButton*)switchButton{
     //includes mode
-    NSLog(@"onTriggerCrossButtonClicked ");
+
     if(delayPicker.isPresentDelayPicker){
         [delayPicker removeDelayView];
         deviceIndexButtonScrollView.userInteractionEnabled = YES;
