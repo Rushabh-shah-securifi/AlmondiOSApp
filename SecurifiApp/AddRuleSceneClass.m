@@ -9,6 +9,7 @@
 #import "AddRuleSceneClass.h"
 #import "AddTriggerAndAddAction.h"
 #import "SFISubPropertyBuilder.h"
+#import "SFIColors.h"
 
 @interface AddRuleSceneClass()<AddTriggerAndAddActionDelegate>
 @property(nonatomic)AddTriggerAndAddAction *addTriggerAction;
@@ -42,6 +43,7 @@
 }
 
 -(void)updateInfoLabel{
+    self.informationLabel.textColor = [SFIColors testGrayColor];
     if(self.isScene){
         if(self.triggers.count == 0){
             self.informationLabel.text = @"To get started, please select an action";

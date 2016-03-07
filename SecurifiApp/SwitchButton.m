@@ -118,20 +118,28 @@
     }
 }
 
-- (void)setImage:(UIImage*)iconImage{
-    
-    self.showTitle = YES;
-    self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, separatorWidth, entryBtnHeight);
-    [self adDeviceName:@""];
-    
-    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0,self.topLabel.frame.size.height , separatorWidth,entryBtnWidth)];
-    self.bgView.userInteractionEnabled = NO;
-    [self addSubview:self.bgView];
-    
-    [self addImage:iconImage y:self.bgView.frame.origin.y widthAndHeight:separatorWidth imageHeight:entryBtnWidth-10];
-    [self addBottomText:@"" x:0 y:self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding width:self.frame.size.width height:textHeight];
+- (void)setImage:(UIImage*)iconImage replace:(BOOL)replace{
+    if(!replace){
+        self.showTitle = YES;
+        self.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y, separatorWidth, entryBtnHeight);
+        [self adDeviceName:@""];
+        
+        self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0,self.topLabel.frame.size.height , separatorWidth,entryBtnWidth)];
+        self.bgView.userInteractionEnabled = NO;
+        [self addSubview:self.bgView];
+        [self addBottomText:@"" x:0 y:self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding width:self.frame.size.width height:textHeight];
+    }
+    else{
+        for (UIView *v in [self subviews]) {
+            if ([v isKindOfClass:[UIImageView class]])
+                [v removeFromSuperview];
+        }
+    }
+    if(iconImage!=nil)
+        [self addImage:iconImage y:self.bgView.frame.origin.y widthAndHeight:separatorWidth imageHeight:entryBtnWidth-10];
     
 }
+
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{
     
     if(countLable.text != nil){

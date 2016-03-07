@@ -86,19 +86,19 @@ UILabel *topLabel;
         [self addTopLabel];
     
     if(triggersList.count > 0){
-        [self buildEntryList:triggersList isTrigger:YES];
+        [self buildEntryList:triggersList isTrigger:YES ];
         if (!isScene) {
-            [self drawImage:@"arrow_icon"];
+           // [self drawImage:@"arrow_icon" withSubProperties:<#(SFIButtonSubProperties *)#> isTrigger:<#(BOOL)#>];
         }
     }
     if(actionsList.count>0){
-        [self buildEntryList:actionsList isTrigger:NO];
+        [self buildEntryList:actionsList isTrigger:NO ];
     }
     
     if(xVal > topScrollView.frame.size.width){
-        [topScrollView setContentOffset:CGPointMake(xVal-topScrollView.frame.size.width + 20, 0) animated:YES];
+        [topScrollView setContentOffset:CGPointMake(xVal-topScrollView.frame.size.width , 0) animated:YES];
     }
-    topScrollView.contentSize = CGSizeMake(xVal + 20, topScrollView.frame.size.height);//to do
+    topScrollView.contentSize = CGSizeMake(xVal, topScrollView.frame.size.height);//to do
 }
 
 + (void)clearTopScrollView{
@@ -115,28 +115,29 @@ UILabel *topLabel;
     topLabel.text = [NSString stringWithFormat:@"Your %@ will appear here.", isScene? @"Scene": @"Rule"];
     topLabel.textAlignment = NSTextAlignmentCenter;
     topLabel.font = [UIFont systemFontOfSize:15];
-    topLabel.textColor = [UIColor lightGrayColor];
+    topLabel.textColor = [SFIColors test1GrayColor];
     topLabel.center = CGPointMake(parentView.bounds.size.width/2, triggersActionsScrollView.bounds.size.height/2);
     [triggersActionsScrollView addSubview:topLabel];
 }
 
 
-+ (void)setIconAndText:(int)positionId buttonProperties:(SFIButtonSubProperties *)buttonProperties icon:(NSString *)icon text:(NSString*)text isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString*)bottomText{
++ (SwitchButton *)setIconAndText:(int)positionId buttonProperties:(SFIButtonSubProperties *)buttonProperties icon:(NSString *)icon text:(NSString*)text isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString*)bottomText{
     buttonProperties.positionId=positionId;
     buttonProperties.iconName=icon;
     buttonProperties.displayText=text;
-    if (positionId > 0)
-        [self drawImage: @"plus_icon" ];
     [self drawButton: buttonProperties isTrigger:isTrigger isDimButton:isDimmbutton bottomText:bottomText];
+    return [self drawImage: @"plus_icon" withSubProperties:buttonProperties isTrigger:isTrigger];
 }
 
-+ (BOOL)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId deviceIndexes:(NSArray *)deviceIndexes isTrigger:(BOOL)isTrigger{
++ (SwitchButton *)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId deviceIndexes:(NSArray *)deviceIndexes isTrigger:(BOOL)isTrigger{
+    
+    SwitchButton * imageButton =nil;
+    
     for(SFIDeviceIndex *deviceIndex in deviceIndexes){
         if (deviceIndex.indexID == buttonProperties.index) {
             if([buttonProperties.matchData isEqualToString:@"toggle"])
             {
-                [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"toggle_icon.png" text:@"Toggle" isTrigger:isTrigger isDimButton:NO bottomText:@"TOGGLE"];
-                return true;
+                return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"toggle_icon.png" text:@"Toggle" isTrigger:isTrigger isDimButton:NO bottomText:@"TOGGLE"];
             }
             NSArray *indexValues = deviceIndex.indexValues;
             for(IndexValueSupport *iVal in indexValues){
@@ -153,38 +154,41 @@ UILabel *topLabel;
                     }
                     else
                         bottomText = [iVal getDisplayText:buttonProperties.matchData];
-                    [self setIconAndText:positionId buttonProperties:buttonProperties icon:iVal.iconName text:bottomText isTrigger:isTrigger isDimButton:isDimButton bottomText:iVal.displayText];
                     
-                    return true;
+                    return [self setIconAndText:positionId buttonProperties:buttonProperties icon:iVal.iconName text:bottomText isTrigger:isTrigger isDimButton:isDimButton bottomText:iVal.displayText];
                 }
             }
-            return false;
+            return imageButton;
         }
     }
-    return false;
+    return imageButton;
 }
 
-+ (void)buildEntryList:(NSArray *)entries isTrigger:(BOOL)isTrigger{
++ (void)buildEntryList:(NSArray *)entries isTrigger:(BOOL)isTrigger {
     int positionId = 0;
+    SwitchButton *lastImageButton;
     for (SFIButtonSubProperties *buttonProperties in entries) {
         if(buttonProperties.time != nil && buttonProperties.time.segmentType!=0){
-            [self buildTime:buttonProperties isTrigger:isTrigger positionId:positionId];
+            lastImageButton=[self buildTime:buttonProperties isTrigger:isTrigger positionId:positionId];
             positionId++;
-            
         }else{
             NSArray *deviceIndexes=[self getDeviceIndexes:buttonProperties];
             if(deviceIndexes==nil || deviceIndexes.count<=0)
                 continue;
-            if([self buildEntry:buttonProperties positionId:positionId deviceIndexes:deviceIndexes isTrigger:isTrigger])
+            lastImageButton= [self buildEntry:buttonProperties positionId:positionId deviceIndexes:deviceIndexes isTrigger:isTrigger];
+            if(lastImageButton!=nil)
                 positionId++;
         }
         
     }
+    //Replace the end image with arrow or nothing appropriately
+    if(lastImageButton!=nil){
+        UIImage *lastImage= (isTrigger && actions.count>0)?[UIImage imageNamed:@"arrow_icon"]:nil;
+        [lastImageButton setImage:lastImage replace:YES];
+    }
 }
 
-+ (void)buildTime:(SFIButtonSubProperties *)timesubProperties isTrigger:(BOOL)isTrigger positionId:(int)positionId{
-    if(positionId > 0)
-        [self drawImage:@"plus_icon"];
++ (SwitchButton*)buildTime:(SFIButtonSubProperties *)timesubProperties isTrigger:(BOOL)isTrigger positionId:(int)positionId{
     DimmerButton *dimbutton=[[DimmerButton alloc]initWithFrame:CGRectMake(xVal, 5, dimFrameWidth, dimFrameHeight)];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"hh:mm aa"];
@@ -208,6 +212,7 @@ UILabel *topLabel;
     xVal += dimFrameWidth-20+entryPadding;
     [triggersActionsScrollView addSubview:dimbutton];
     
+    return [self drawImage:@"plus_icon" withSubProperties:timesubProperties isTrigger:isTrigger];
 }
 
 + (NSArray*)getDeviceIndexes:(SFIButtonSubProperties *)properties{
@@ -288,6 +293,7 @@ UILabel *topLabel;
 
 + (void)onTriggerCrossButtonClicked:(SwitchButton*)switchButton{
     //includes mode
+    NSLog(@"onTriggerCrossButtonClicked ");
     if(delayPicker.isPresentDelayPicker){
         [delayPicker removeDelayView];
         deviceIndexButtonScrollView.userInteractionEnabled = YES;
@@ -356,15 +362,16 @@ UILabel *topLabel;
     }
 }
 
-+ (void)drawImage:(NSString *)iconName {
++ (SwitchButton *)drawImage:(NSString *)iconName withSubProperties:(SFIButtonSubProperties*)subProperties isTrigger:(BOOL)isTrigger{
     SwitchButton *imageButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal,5, separatorWidth, entryBtnHeight)];//todo
-   
-    [imageButton setImage:[UIImage imageNamed:iconName]];
+    imageButton.isTrigger = isTrigger;
+    imageButton.subProperties = subProperties;
+    [imageButton setImage:[UIImage imageNamed:iconName] replace:NO];
     //image.image = [UIImage imageNamed:iconName];
-    
+    [imageButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     xVal += separatorWidth+ entryPadding;
     [triggersActionsScrollView addSubview:imageButton];
-    
+    return imageButton;
 }
 
 

@@ -31,6 +31,6 @@
 - (void)setupValues:(UIImage*)iconImage topText:(NSString*)topText bottomText:(NSString *)bottomText isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimButton insideText:(NSString *)insideText isScene:(BOOL)isScene;
 - (void)setButtonCross:(BOOL)isHidden;
 
-- (void)setImage:(UIImage*)iconImage;
+- (void)setImage:(UIImage*)iconImage replace:(BOOL)replace;
 
 @end

@@ -86,7 +86,13 @@
 + (UIColor *)darkGrayColor{
     return [UIColor colorFromHexString:@"212121"];
 }
++ (UIColor *)testGrayColor{
+    return [UIColor colorFromHexString:@"7E7E7E"];
+}
 
++ (UIColor *)test1GrayColor{
+    return [UIColor colorFromHexString:@"979797"];
+}
 + (UIColor *)lightGreenColor{
     return [UIColor colorFromHexString:@"a5d7a7"];
 }
