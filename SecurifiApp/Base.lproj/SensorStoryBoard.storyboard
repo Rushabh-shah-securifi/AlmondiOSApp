@@ -397,6 +397,48 @@
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wRs-c2-kBs">
                                 <rect key="frame" x="5" y="89" width="311" height="84"/>
                                 <subviews>
+                                    <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="g1D-dH-bpV">
+                                        <rect key="frame" x="0.0" y="-103" width="310" height="290"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <prototypes>
+                                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="SFIWiFiDeviceTypeSelectionCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="SFIWiFiDeviceTypeSelectionCell" id="vxi-1D-1kc" customClass="SFIWiFiDeviceTypeSelectionCell">
+                                                <rect key="frame" x="0.0" y="22" width="310" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vxi-1D-1kc" id="4mo-5c-5yV">
+                                                    <rect key="frame" x="0.0" y="0.0" width="310" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BS8-lS-m93">
+                                                            <rect key="frame" x="5" y="5" width="100" height="21"/>
+                                                            <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="13"/>
+                                                            <color key="textColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VRx-W5-TRk">
+                                                            <rect key="frame" x="260" y="7" width="30" height="30"/>
+                                                            <state key="normal">
+                                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="btnSelectTap:" destination="vxi-1D-1kc" eventType="touchUpInside" id="NLL-OX-xK6"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                </tableViewCellContentView>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <connections>
+                                                    <outlet property="btnSelect" destination="VRx-W5-TRk" id="Avu-YD-ecq"/>
+                                                    <outlet property="typeLabel" destination="BS8-lS-m93" id="XHQ-Mt-nmq"/>
+                                                </connections>
+                                            </tableViewCell>
+                                        </prototypes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="Rxx-GV-PAJ" id="ylT-sj-fmE"/>
+                                            <outlet property="delegate" destination="Rxx-GV-PAJ" id="Z9h-YJ-C9G"/>
+                                        </connections>
+                                    </tableView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F6G-Ao-HBp">
                                         <rect key="frame" x="8" y="8" width="159" height="21"/>
                                         <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
@@ -419,6 +461,7 @@
                         <outlet property="clientInfoView" destination="Htq-Oz-2qc" id="81N-8i-SG3"/>
                         <outlet property="indexLabel" destination="F6G-Ao-HBp" id="Hf8-KF-KFG"/>
                         <outlet property="indexView" destination="wRs-c2-kBs" id="Pjd-4U-zLB"/>
+                        <outlet property="tableType" destination="g1D-dH-bpV" id="kK6-aw-vlm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kMu-AG-FH1" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -12,6 +12,7 @@
 @interface SFIWiFiDeviceTypeSelectionCell() {
     IBOutlet UIButton *btnSelect;
 }
+@property (weak, nonatomic) IBOutlet UILabel *typeLabel;
 
 @end
 
@@ -38,25 +39,33 @@
 }
 
 - (void)layoutSubviews {
+    NSLog(@"layoutSubviews");
     [super layoutSubviews];
     btnSelect.layer.borderColor = [[UIColor whiteColor] CGColor];
     btnSelect.layer.borderWidth = 2.0f;
     btnSelect.layer.cornerRadius = btnSelect.frame.size.height/2;
     btnSelect.backgroundColor = [UIColor clearColor];
     
-    if ([[self.cellInfo valueForKey:@"selected"] boolValue]) {
-        btnSelect.backgroundColor = [UIColor whiteColor];
-    }
+//    if ([[self.cellInfo valueForKey:@"selected"] boolValue]) {
+//        btnSelect.backgroundColor = [UIColor whiteColor];
+//    }
     
 }
 
 - (void)createPropertyCell:(id)info {
+    NSLog(@"createPropertyCell");
     self.cellInfo = info;
     
+    
+}
+-(void)setTypeLabe:(NSString *)typeLabel{
+    NSLog(@"typeLabel %@",typeLabel);
+    self.typeLabel.text = typeLabel;
     
 }
 - (IBAction)btnSelectTap:(id)sender {
     btnSelect.backgroundColor = [UIColor whiteColor];
     [self.delegate btnSelectTypeTapped:self Info:self.cellInfo];
 }
+
 @end

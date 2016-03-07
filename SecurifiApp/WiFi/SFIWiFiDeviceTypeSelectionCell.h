@@ -18,5 +18,5 @@
 @property (weak) id<SFIWiFiDeviceTypeSelectionCellDelegate> delegate;
 @property(nonatomic)NSDictionary * cellInfo;
 - (void)createPropertyCell:(id)info;
-
+-(void)setTypeLabe:(NSString *)typeLabel;
 @end
