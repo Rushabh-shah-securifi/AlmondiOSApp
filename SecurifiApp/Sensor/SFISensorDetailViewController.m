@@ -307,7 +307,7 @@
                 break;
             case deviceHistoryIndexPathRow:{
                 
-                if(isLocal){
+                if(!isLocal){
                 [self configureDeviceHistoryCell:cell];
                 }
                 break;
@@ -357,7 +357,7 @@
             [self editProperty:indexPath.row];
             break;
         case deviceHistoryIndexPathRow:
-           if(isLocal)
+           if(!isLocal)
             [self showSensorLogs];
             break;
         

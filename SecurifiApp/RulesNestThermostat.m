@@ -9,10 +9,12 @@
 #import "RulesNestThermostat.h"
 #import "SFIDeviceIndex.h"
 #import "IndexValueSupport.h"
+#import "SFIButtonSubProperties.h"
 
 @implementation RulesNestThermostat
 
 -(NSArray*) createNestThermostatDeviceIndexes:(NSArray*) deviceIndexes deviceValue:(SFIDeviceValue*)deviceValue{
+    
     deviceIndexes = [self nestThermostat:deviceValue withDeviceIndexes:deviceIndexes];
     deviceIndexes = [self adjustCellIDs:deviceValue withDeviceIndexes:deviceIndexes];
     return deviceIndexes;
@@ -207,7 +209,59 @@
     return newDeviceIndexes;
 }
 
-
-
+-(NSArray*)filterIndexesBasedOnModeForIndexes:(NSArray*)deviceIndexes propertyList:(NSMutableArray*)propertyList deviceId:(sfi_id)deviceId{
+    NSString *matchData;
+    NSMutableArray *newIndexes = [deviceIndexes mutableCopy];
+    
+    for(SFIButtonSubProperties *subProperty in propertyList){
+        if(subProperty.deviceId == deviceId && subProperty.index == 2){
+            matchData = subProperty.matchData;
+        }
+    }
+    
+    if([matchData isEqualToString:@"heat"]){
+        for(SFIDeviceIndex *deviceIndex in deviceIndexes){
+            if(deviceIndex.indexID == 5 || deviceIndex.indexID ==6){
+                [newIndexes removeObject:deviceIndex];
+            }
+        }
+    }else if([matchData isEqualToString:@"cool"]){
+        for(SFIDeviceIndex *deviceIndex in deviceIndexes){
+            if(deviceIndex.indexID == 5 || deviceIndex.indexID ==6){
+                [newIndexes removeObject:deviceIndex];
+            }
+        }
+    }else if([matchData isEqualToString:@"heat-cool"]){
+        for(SFIDeviceIndex *deviceIndex in deviceIndexes){
+            if(deviceIndex.indexID == 3){
+                [newIndexes removeObject:deviceIndex];
+            }
+        }
+    }else{
+        for(SFIDeviceIndex *deviceIndex in deviceIndexes){
+            if(deviceIndex.indexID == 3 || deviceIndex.indexID == 5 || deviceIndex.indexID ==6){
+                [newIndexes removeObject:deviceIndex];
+            }
+        }
+    }
+    
+    return newIndexes;
+}
++(void)removeTemperatureIndexes:(int)deviceId mode:(NSString *)mode entries:(NSMutableArray *)entries{
+    NSMutableArray *newPropertyList = [NSMutableArray new];
+    
+    for(SFIButtonSubProperties *subProperty in entries){
+        if(subProperty.deviceId != deviceId)
+            continue;
+        if(([mode isEqualToString:@"heat"] || [mode isEqualToString:@"cool"]) &&(subProperty.index == 5 || subProperty.index ==6))
+            [newPropertyList addObject:subProperty];
+        else if([mode isEqualToString:@"heat-cool"] && subProperty.index == 3)
+            [newPropertyList addObject:subProperty];
+        else if([mode isEqualToString:@"off"] && (subProperty.index == 5 || subProperty.index ==6 ||subProperty.index == 3)){
+            [newPropertyList addObject:subProperty];
+        }
+    }
+    [entries removeObjectsInArray:newPropertyList];
+}
 
 @end

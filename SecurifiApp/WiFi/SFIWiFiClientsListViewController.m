@@ -781,6 +781,7 @@
 }
 
 - (void)onTabBarDidChange:(id)sender{
+    NSLog(@"OnTabBarDidChange");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (![[data valueForKey:@"title"] isEqualToString:@"Router"]) {

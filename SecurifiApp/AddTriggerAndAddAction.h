@@ -14,6 +14,7 @@
 
 @protocol AddTriggerAndAddActionDelegate
 -(void)updateTriggerAndActionDelegatePropertie:(BOOL)isTrigger;
+-(void)redrawDeviceIndexView:(sfi_id)deviceId clientEvent:(NSString*)eventType;
 @end
 
 @interface AddTriggerAndAddAction : NSObject

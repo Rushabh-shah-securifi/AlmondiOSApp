@@ -34,20 +34,21 @@
 
 - (void)setSelected:(BOOL)selected{
     [super setSelected:selected];
-    [super changeBGColor:self.isTrigger clearColor:selected showTitle:NO];
+    [super changeBGColor:self.isTrigger clearColor:selected showTitle:NO isScene:self.isScene];
     //[self changeStyle];
 }
 
-- (void)setupValues:(NSString*)text  Title:(NSString*)title suffix:(NSString*)suffix isTrigger:(BOOL)isTrigger{
+- (void)setupValues:(NSString*)text  Title:(NSString*)title suffix:(NSString*)suffix isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene{
     //awakefromnib
+    self.isScene = isScene;
     self.isTrigger = isTrigger;
     self.dimValue = text;
     self.backgroundColor = [UIColor clearColor];
-    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight,self.frame.size.height-textHeight)];
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight + 5,self.frame.size.height-textHeight +5)];
     self.bgView.backgroundColor = [SFIColors ruleGraycolor];
     [self addSubview:self.bgView];
     
-    lblMain = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, self.frame.size.width-textHeight,self.frame.size.height-textHeight)];
+    lblMain = [[UILabel alloc] initWithFrame:CGRectMake(0, 5, self.frame.size.width-textHeight + 5,self.frame.size.height-textHeight)];
     lblMain.textAlignment = NSTextAlignmentCenter;
     [self.bgView addSubview:lblMain];
     
@@ -78,10 +79,10 @@
     lblDeviceName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width,textHeight)];
     //    self.bottomLabel.font = self.titleLabel.font;
     lblDeviceName.text = title;
-    lblDeviceName.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:10];
+    lblDeviceName.font = [UIFont fontWithName:@"AvenirLTStd-Roman" size:topFontSize];
     lblDeviceName.numberOfLines=0;
     lblDeviceName.textAlignment = NSTextAlignmentCenter;
-    lblDeviceName.textColor = [SFIColors darkGrayColor];
+    lblDeviceName.textColor = [UIColor blackColor];
     [self addSubview:lblDeviceName];
     
     //set value
@@ -89,7 +90,7 @@
     self.backgroundColor = [UIColor clearColor];
     
     //self.bgView
-    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, lblDeviceName.frame.size.height, triggerActionDimWidth,triggerActionBtnWidth )];
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, lblDeviceName.frame.size.height, dimFrameWidth-20,entryBtnWidth +5)];
     self.bgView.backgroundColor = [SFIColors ruleGraycolor];
     self.bgView.userInteractionEnabled = NO;
     [self addSubview:self.bgView];
@@ -103,13 +104,12 @@
     //self.bottomLabel
     self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding, self.frame.size.width,textHeight)];
     self.bottomLabel.text = displayText;
-    [self.bottomLabel setFont: [self.bottomLabel.font fontWithSize: fontSize]];
+    self.bottomLabel.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:fontSize];
     self.bottomLabel.numberOfLines=0;
-    self.bottomLabel.textAlignment = NSTextAlignmentCenter;
     self.bottomLabel.textColor = [SFIColors ruleGraycolor];
     self.bottomLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:self.bottomLabel];
-    
+
     //lblmain adjutments
     self.prefix = suffix;
     NSString *strTopTitleLabelText = [text stringByAppendingString:suffix];
@@ -139,7 +139,7 @@
     [lblMain setAttributedText:strTemp];
 }
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{
-    countLable = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x + self.bgView.frame.size.width -10, -8, 16, 16)];
+    countLable = [[UILabel alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x + self.bgView.frame.size.width -9, -6, 16, 16)];
     
     CALayer * l1 = [countLable layer];
     [l1 setMasksToBounds:YES];
@@ -173,11 +173,12 @@
 //    if(self.crossButton.text != nil){
 //        self.crossButton.text =nil;
 //    }
-    crossButtonBGView = [[UIView alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 8, 12, countDiameter, countDiameter)];
+    crossButtonBGView = [[UIView alloc]initWithFrame:CGRectMake(self.bgView.frame.origin.x  + self.bgView.frame.size.width - 10, 13, countDiameter, countDiameter)];
     [self setLayer];
     [self addImage:[UIImage imageNamed:@"icon_cross_gray"] y:crossButtonBGView.frame.origin.y widthAndHeight:countDiameter];
     [crossButtonBGView setBackgroundColor:[SFIColors ruleLightGrayColor]];
     crossButtonBGView.hidden = isHidden;
+    crossButtonBGView.userInteractionEnabled = NO;
     [self addSubview:crossButtonBGView];
 }
 
@@ -210,7 +211,7 @@
     [crossButtonBGView addSubview:self.crossButtonImage];
 }
 -(void)setUpTextField:(NSString*)textFieldText displayText:(NSString*)displayText suffix:(NSString *)suffix{
-    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight,self.frame.size.height -textHeight)];
+    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight,self.frame.size.height -textHeight + 5)];
     self.bgView.backgroundColor = [UIColor clearColor];
     [self addSubview:self.bgView];
     self.prefix = suffix;

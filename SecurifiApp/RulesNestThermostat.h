@@ -14,5 +14,6 @@
 
 //altering device indexes as per the incoming conditions
 -(NSArray*) createNestThermostatDeviceIndexes:(NSArray*) deviceIndexes deviceValue:(SFIDeviceValue*)deviceValue;
-
+-(NSArray*)filterIndexesBasedOnModeForIndexes:(NSArray*)deviceIndexes propertyList:(NSArray*)propertyList deviceId:(sfi_id)deviceId;
++(void)removeTemperatureIndexes:(int)deviceId mode:(NSString *)mode entries:(NSMutableArray *)entries;
 @end

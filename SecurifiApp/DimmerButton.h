@@ -25,8 +25,9 @@
 @property(nonatomic) SFIDevice *device;
 @property(nonatomic)UIImageView *crossButtonImage;
 @property BOOL isTrigger;
+@property BOOL isScene;
 
-- (void)setupValues:(NSString*)text  Title:(NSString*)title suffix:(NSString*)prefix isTrigger:(BOOL)isTrigger;
+- (void)setupValues:(NSString*)text  Title:(NSString*)title suffix:(NSString*)prefix isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene;
 
 - (void)setupValues:(NSString*)text  Title:(NSString*)title displayText:(NSString*)displayText suffix:(NSString*)prefix;
 - (void)setButtonCross:(BOOL)isHidden;

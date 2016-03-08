@@ -17,6 +17,7 @@
     __weak IBOutlet UILabel *lblName;
     __weak IBOutlet UILabel *lblInfo;
     IBOutlet UIButton *btnActivate;
+    IBOutlet UIImageView *alexaImg;
 }
 
 @end
@@ -73,6 +74,12 @@
     }else{
         [btnActivate setImage:[UIImage imageNamed:@"iconSceneCircle"] forState:UIControlStateNormal];
     }
+    BOOL isCompatible = [self isSceneNameCompatibleWithAlexa];
+    if (isCompatible){//
+        alexaImg.image = [UIImage imageNamed:@"amazon-echo"];
+    }else{
+        alexaImg.image = nil;
+    }
     if (self.deviceIndexes.count>1) {
         lblInfo.text = [NSString stringWithFormat:NSLocalizedString(@"sensor.text.%ld SENSORS", "SENSORS"),(long)self.deviceIndexes.count];
     }else{
@@ -83,4 +90,22 @@
 - (IBAction)btnActivateTap:(id)sender {
     [self.delegate activateScene:self Info:self.cellInfo];
 }
+
+- (BOOL)isSceneNameCompatibleWithAlexa{
+    NSArray *sceneNameList;
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"scene_names" ofType:@"txt"];
+    NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    sceneNameList = [content componentsSeparatedByString:@","];
+    NSString *lowerCaseSceneName = lblName.text.lowercaseString;
+    BOOL isCompatible = NO;
+    for(NSString *name in sceneNameList){
+        if([name.lowercaseString isEqualToString:lowerCaseSceneName]){
+            isCompatible = YES;
+            break;
+        }
+    }
+    return isCompatible;
+}
+
+
 @end

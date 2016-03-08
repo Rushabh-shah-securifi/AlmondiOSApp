@@ -45,6 +45,15 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 
 - (void)markWifiClientUpdate;
 
+- (void)markActivateRule;
+
+- (void)markAddRule;
+
+- (void)markUpdateRule;
+
+- (void)markDeleteRule;
+
+//screen tracking
 - (void)markSensorClick:(SFIDeviceType)deviceType timeToComplete:(NSTimeInterval)resResTime;
 
 - (void)markSensorScreen;
@@ -72,5 +81,9 @@ hit, Track sensor, login , affiliation and Router, Sign up page hits.
 - (void)markLogoutAllScreen;
 
 - (void)markRouterSettingsScreen;
+
+-(void)markRuleScreen;
+
+-(void)markAddOrEditRuleScreen;
 
 @end
