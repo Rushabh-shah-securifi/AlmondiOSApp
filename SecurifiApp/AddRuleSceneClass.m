@@ -9,6 +9,7 @@
 #import "AddRuleSceneClass.h"
 #import "AddTriggerAndAddAction.h"
 #import "SFISubPropertyBuilder.h"
+#import "SFIColors.h"
 
 @interface AddRuleSceneClass()<AddTriggerAndAddActionDelegate>
 @property(nonatomic)AddTriggerAndAddAction *addTriggerAction;
@@ -42,11 +43,12 @@
 }
 
 -(void)updateInfoLabel{
+    self.informationLabel.textColor = [SFIColors testGrayColor];
     if(self.isScene){
         if(self.triggers.count == 0){
             self.informationLabel.text = @"To get started, please select an action";
         }else if(self.triggers.count >0){
-            self.informationLabel.text = @"Add another action or press SAVE to finalize the Scene";
+            self.informationLabel.text = @"Add another action or press Done to finalize the Scene";
         }
     }else{
         if(self.triggers.count == 0){
@@ -56,7 +58,7 @@
             self.informationLabel.text = @"Add another trigger or press THEN to define action";
         }
         else if (self.actions.count > 0){
-            self.informationLabel.text = @"Add another trigger/action or press SAVE to finalize the Rule";
+            self.informationLabel.text = @"Add another trigger/action or press Done to finalize the Rule";
         }
     }
 }

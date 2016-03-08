@@ -240,6 +240,8 @@
 		8467D8021BCBE33D00886D18 /* SFISensorDetailEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8467D8011BCBE33C00886D18 /* SFISensorDetailEditViewController.m */; };
 		84B9A2681B7F315100E44682 /* SFIHorizontalValueSelectorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B9A2671B7F315100E44682 /* SFIHorizontalValueSelectorView.m */; };
 		84D8160F1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D8160E1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m */; };
+		A536D3EF1C8EB96900FCC2A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A536D3ED1C8EB96900FCC2A7 /* Main.storyboard */; };
+		A536D3F21C8EB9ED00FCC2A7 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A536D3F01C8EB9ED00FCC2A7 /* Scenes_Iphone.storyboard */; };
 		A54D1C9B1C77401D00C191DB /* CommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = A54D1C9A1C77401D00C191DB /* CommonMethods.m */; };
 		A54D1C9C1C77401D00C191DB /* CommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = A54D1C9A1C77401D00C191DB /* CommonMethods.m */; };
 		A54EB0071C44FDC300CF2837 /* CustomCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EAFF71C44FDC300CF2837 /* CustomCellTableViewCell.m */; };
@@ -255,7 +257,6 @@
 		A54EB0311C44FDE000CF2837 /* DimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EB0231C44FDE000CF2837 /* DimmerButton.m */; };
 		A54EB0321C44FDE000CF2837 /* SwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EB0251C44FDE000CF2837 /* SwitchButton.m */; };
 		A54EB0351C45004B00CF2837 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A54EB0341C45004B00CF2837 /* Common-Images.xcassets */; };
-		A54EB0411C4506F900CF2837 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A54EB03F1C4506F900CF2837 /* Scenes_Iphone.storyboard */; };
 		A584C8401C5B8344006E02DB /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A584C83F1C5B8344006E02DB /* CollectionViewCell.m */; };
 		A58DB2611BB168C400717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB24F1BB168C400717C02 /* AccountsStoryboard_iPhone.strings */; };
 		A58DB2621BB168C400717C02 /* Almond-Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB2511BB168C400717C02 /* Almond-Localizable.strings */; };
@@ -464,11 +465,10 @@
 		CE5E60E01C7B37CB00622798 /* SensorTable.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5E60DE1C7B37CB00622798 /* SensorTable.m */; };
 		CE5EDF8B1C461FEE00A2829B /* RulePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8A1C461FEE00A2829B /* RulePayload.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
-		CEA4A82C1C86BEB00098C7BD /* SensorStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA4A82A1C86BEB00098C7BD /* SensorStoryBoard.storyboard */; settings = {ASSET_TAGS = (); }; };
-		CEA4A8311C86BEE30098C7BD /* ClientEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA4A82E1C86BEE30098C7BD /* ClientEditViewController.m */; settings = {ASSET_TAGS = (); }; };
-		CEA4A8321C86BEE30098C7BD /* ClientPropertiesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA4A8301C86BEE30098C7BD /* ClientPropertiesCell.m */; settings = {ASSET_TAGS = (); }; };
-		CEEB098D1C56039400F3E62E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEEB098B1C56039400F3E62E /* Main.storyboard */; };
-		CEEDBCD21C8712D400436220 /* ClientEditPropertiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEDBCD11C8712D400436220 /* ClientEditPropertiesViewController.m */; settings = {ASSET_TAGS = (); }; };
+		CEA4A82C1C86BEB00098C7BD /* SensorStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA4A82A1C86BEB00098C7BD /* SensorStoryBoard.storyboard */; };
+		CEA4A8311C86BEE30098C7BD /* ClientEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA4A82E1C86BEE30098C7BD /* ClientEditViewController.m */; };
+		CEA4A8321C86BEE30098C7BD /* ClientPropertiesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA4A8301C86BEE30098C7BD /* ClientPropertiesCell.m */; };
+		CEEDBCD21C8712D400436220 /* ClientEditPropertiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEDBCD11C8712D400436220 /* ClientEditPropertiesViewController.m */; };
 		CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEF425C1C47E0E300E36C9B /* ScenePayload.m */; };
 		CEF1354E1C509667009E4558 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1354D1C509667009E4558 /* RuleButton.m */; };
 		CEF1357D1C510969009E4558 /* SFISubPropertyBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1357C1C510969009E4558 /* SFISubPropertyBuilder.m */; };
@@ -735,6 +735,8 @@
 		84B9A2671B7F315100E44682 /* SFIHorizontalValueSelectorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIHorizontalValueSelectorView.m; sourceTree = "<group>"; };
 		84D8160D1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIDeviceProprtyEditViewController.h; sourceTree = "<group>"; };
 		84D8160E1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIDeviceProprtyEditViewController.m; sourceTree = "<group>"; };
+		A536D3EE1C8EB96900FCC2A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
+		A536D3F11C8EB9ED00FCC2A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Scenes_Iphone.storyboard; sourceTree = "<group>"; };
 		A54D1C991C77401D00C191DB /* CommonMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonMethods.h; sourceTree = "<group>"; };
 		A54D1C9A1C77401D00C191DB /* CommonMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonMethods.m; sourceTree = "<group>"; };
 		A54EAFF61C44FDC300CF2837 /* CustomCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellTableViewCell.h; sourceTree = "<group>"; };
@@ -762,7 +764,6 @@
 		A54EB0241C44FDE000CF2837 /* SwitchButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchButton.h; sourceTree = "<group>"; };
 		A54EB0251C44FDE000CF2837 /* SwitchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchButton.m; sourceTree = "<group>"; };
 		A54EB0341C45004B00CF2837 /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
-		A54EB0401C4506F900CF2837 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Scenes_Iphone.storyboard; sourceTree = "<group>"; };
 		A584C83E1C5B8344006E02DB /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		A584C83F1C5B8344006E02DB /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
 		A58DB2501BB168C400717C02 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = AccountsStoryboard_iPhone.strings; sourceTree = "<group>"; };
@@ -986,7 +987,6 @@
 		CEA4A82E1C86BEE30098C7BD /* ClientEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientEditViewController.m; sourceTree = "<group>"; };
 		CEA4A82F1C86BEE30098C7BD /* ClientPropertiesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientPropertiesCell.h; sourceTree = "<group>"; };
 		CEA4A8301C86BEE30098C7BD /* ClientPropertiesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientPropertiesCell.m; sourceTree = "<group>"; };
-		CEEB098C1C56039400F3E62E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
 		CEEDBCD01C8712D400436220 /* ClientEditPropertiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientEditPropertiesViewController.h; sourceTree = "<group>"; };
 		CEEDBCD11C8712D400436220 /* ClientEditPropertiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientEditPropertiesViewController.m; sourceTree = "<group>"; };
 		CEEF425B1C47E0E300E36C9B /* ScenePayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenePayload.h; sourceTree = "<group>"; };
@@ -1396,9 +1396,9 @@
 				1C21DAF91BA16FE100E4A088 /* Login_iPhone.storyboard */,
 				1C7E7E341A41A26A0026F0BA /* MainStoryboard_iPad.storyboard */,
 				1C7E7E361A41A26A0026F0BA /* MainStoryboard_iPhone.storyboard */,
-				A54EB03F1C4506F900CF2837 /* Scenes_Iphone.storyboard */,
-				CEEB098B1C56039400F3E62E /* Main.storyboard */,
 				CEA4A82A1C86BEB00098C7BD /* SensorStoryBoard.storyboard */,
+				A536D3ED1C8EB96900FCC2A7 /* Main.storyboard */,
+				A536D3F01C8EB9ED00FCC2A7 /* Scenes_Iphone.storyboard */,
 			);
 			path = Base.lproj;
 			sourceTree = "<group>";
@@ -2267,12 +2267,12 @@
 				A58DB3111BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB4541BB3CD3F00717C02 /* Login_iPhone.strings in Resources */,
 				846414DE1B736B80008AB07F /* AvenirLTStd-BookOblique.otf in Resources */,
-				A54EB0411C4506F900CF2837 /* Scenes_Iphone.storyboard in Resources */,
 				A58DB2F81BB16B9F00717C02 /* Localizable.strings in Resources */,
 				A58DB4191BB2CD7D00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3171BB16B9F00717C02 /* termsofuse.html in Resources */,
 				1C21DAFB1BA16FE100E4A088 /* Login_iPhone.storyboard in Resources */,
 				A58DB2EC1BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
+				A536D3F21C8EB9ED00FCC2A7 /* Scenes_Iphone.storyboard in Resources */,
 				A58DB2E91BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB4721BB3CD5200717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB4701BB3CD5200717C02 /* Login_iPhone.strings in Resources */,
@@ -2297,7 +2297,6 @@
 				A58DB46D1BB3CD5200717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2F41BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				1C7E7DFA1A41A0B30026F0BA /* Almond-Images.xcassets in Resources */,
-				CEEB098D1C56039400F3E62E /* Main.storyboard in Resources */,
 				A58DB30A1BB16B9F00717C02 /* Localizable.strings in Resources */,
 				A58DB3001BB16B9F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB2F71BB16B9F00717C02 /* InfoPlist.strings in Resources */,
@@ -2320,6 +2319,7 @@
 				A58DB3331BB16EAF00717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3161BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB4501BB3CD3F00717C02 /* Almond-Localizable.strings in Resources */,
+				A536D3EF1C8EB96900FCC2A7 /* Main.storyboard in Resources */,
 				A58DB30D1BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
 				846414DC1B736B80008AB07F /* AvenirLTStd-BlackOblique.otf in Resources */,
 				A58DB2FE1BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
@@ -2803,10 +2803,18 @@
 			name = termsofuse.html;
 			sourceTree = "<group>";
 		};
-		A54EB03F1C4506F900CF2837 /* Scenes_Iphone.storyboard */ = {
+		A536D3ED1C8EB96900FCC2A7 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				A54EB0401C4506F900CF2837 /* Base */,
+				A536D3EE1C8EB96900FCC2A7 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A536D3F01C8EB9ED00FCC2A7 /* Scenes_Iphone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A536D3F11C8EB9ED00FCC2A7 /* Base */,
 			);
 			name = Scenes_Iphone.storyboard;
 			sourceTree = "<group>";
@@ -4353,14 +4361,6 @@
 				CEA4A82B1C86BEB00098C7BD /* Base */,
 			);
 			name = SensorStoryBoard.storyboard;
-			sourceTree = "<group>";
-		};
-		CEEB098B1C56039400F3E62E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CEEB098C1C56039400F3E62E /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

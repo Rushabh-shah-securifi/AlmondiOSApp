@@ -70,7 +70,7 @@ DimmerButton *dimerButton;
 }
 
 -(CGRect)adjustDeviceNameWidth:(NSString*)deviceName{
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:12]};
+    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
     CGRect textRect;
     
     textRect.size = [deviceName sizeWithAttributes:attributes];
@@ -86,12 +86,12 @@ DimmerButton *dimerButton;
     CGRect textRect = [self adjustDeviceNameWidth:deviceName];
     CGRect frame = CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight);
     RulesDeviceNameButton *deviceButton = [[RulesDeviceNameButton alloc]initWithFrame:frame];
-    [deviceButton deviceProperty:self.isTrigger deviceType:deviceType deviceName:deviceName deviceId:deviceID];
+    [deviceButton deviceProperty:self.isTrigger deviceType:deviceType deviceName:deviceName deviceId:deviceID isScene:self.isScene];
     
     
     if([deviceName isEqualToString:@"Time"]){
         [deviceButton addTarget:self action:@selector(TimeEventClicked:) forControlEvents:UIControlEventTouchUpInside];
-    }else if([deviceName isEqualToString:@"Clients"]){
+    }else if([deviceName isEqualToString:@"Network Devices"]){
         [deviceButton addTarget:self action:@selector(wifiClientsClicked:) forControlEvents:UIControlEventTouchUpInside];}
     else
         [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -140,7 +140,7 @@ DimmerButton *dimerButton;
     xVal = [self addDeviceName:@"Mode" deviceID:1 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
     if(self.isTrigger && !self.isScene){//if Trigger Add time
         xVal = [self addDeviceName:@"Time" deviceID:0 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
-        xVal = [self addDeviceName:@"Clients" deviceID:0 deviceType:SFIDeviceType_WIFIClient xVal:xVal];
+        xVal = [self addDeviceName:@"Network Devices" deviceID:0 deviceType:SFIDeviceType_WIFIClient xVal:xVal];
         //same way we can we can do for client in trigger
     }
     
@@ -178,7 +178,7 @@ DimmerButton *dimerButton;
         }
     }
     CGSize scrollableSize = CGSizeMake(self.deviceIndexButtonScrollView.frame.size.width,
-                                       (frameSize + ROW_PADDING )*i + ROW_PADDING);
+                                       (frameSize + ROW_PADDING )*i + ROW_PADDING + 20);
     [self.deviceIndexButtonScrollView setContentSize:scrollableSize];
     [self.deviceIndexButtonScrollView flashScrollIndicators];
     self.deviceIndexButtonScrollView.showsVerticalScrollIndicator = YES;
@@ -255,6 +255,9 @@ DimmerButton *dimerButton;
             }
         }
         deviceIndexes = [rulesNestThermostatObject createNestThermostatDeviceIndexes:deviceIndexes deviceValue:nestThermostatDeviceValue];
+        if(self.isScene){
+            deviceIndexes = [rulesNestThermostatObject filterIndexesBasedOnModeForIndexes:deviceIndexes propertyList:self.selectedButtonsPropertiesArrayTrigger deviceId:deviceId];
+        }
         numberOfCells = [self maxCellId:deviceIndexes];//recalculating for nest
     }
     
@@ -281,7 +284,7 @@ DimmerButton *dimerButton;
         }
     }
     CGSize scrollableSize = CGSizeMake(self.deviceIndexButtonScrollView.frame.size.width,
-                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING);
+                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING +20);
     
     [self.deviceIndexButtonScrollView setContentSize:scrollableSize];
     [self.deviceIndexButtonScrollView flashScrollIndicators];
@@ -371,15 +374,25 @@ DimmerButton *dimerButton;
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
     
     [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [dimbtn setupValues:iVal.matchData Title:iVal.displayText suffix:iVal.valueFormatter.suffix isTrigger:self.isTrigger];
+    [dimbtn setupValues:iVal.matchData Title:iVal.displayText suffix:iVal.valueFormatter.suffix isTrigger:self.isTrigger isScene:self.isScene];
     //NSMutableDictionary *result=[self setButtonSelection:dimbtn isSlider:YES deviceIndex:deviceIndex deviceId:deviceId matchData:dimbtn.subProperties.matchData];
     dimbtn.center = CGPointMake(view.bounds.size.width/2,
                                 dimbtn.center.y);
     dimbtn.frame=CGRectMake(dimbtn.frame.origin.x + ((i-1) * (dimFrameWidth/2))+textHeight/2, dimbtn.frame.origin.y, dimbtn.frame.size.width, dimbtn.frame.size.height);
     [self shiftButtonsByWidth:dimFrameWidth View:view forIteration:i];
     dimbtn.selected=[self setActionButtonCount:dimbtn isSlider:YES];
+    if(self.isTrigger)
+        [self getSelectedMatchData:dimbtn.subProperties];
     [view addSubview:dimbtn];
-    
+}
+
+-(void)getSelectedMatchData:(SFIButtonSubProperties*)subProperty{
+    NSMutableArray *list=self.isTrigger?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
+    for(SFIButtonSubProperties *buttonSubProperty in list){
+        if(buttonSubProperty.deviceId == subProperty.deviceId && buttonSubProperty.index == subProperty.index){
+            subProperty.matchData = buttonSubProperty.matchData;
+        }
+    }
 }
 
 - (void)buildTextButton:(SFIDeviceIndex *)deviceIndex iVal:(IndexValueSupport *)iVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
@@ -413,7 +426,7 @@ DimmerButton *dimerButton;
     }
     [btnBinarySwitchOn addTarget:self action:@selector(onSwitchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    [btnBinarySwitchOn setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:self.isTrigger isDimButton:NO insideText:iVal.displayText];
+    [btnBinarySwitchOn setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:self.isTrigger isDimButton:NO insideText:iVal.displayText isScene:self.isScene];
     
     //set perv. count and highlight
     
@@ -478,9 +491,7 @@ DimmerButton *dimerButton;
                     view.frame = CGRectMake(0, yScale, self.parentView.frame.size.width, indexButtonFrameSize * 2);
                     [self buildSwitchButton:deviceIndex deviceType:deviceType deviceName:deviceName iVal:iVal deviceId:deviceId i:i view:view buttonY:indexButtonFrameSize];
                 }else{
-                    if(deviceType == SFIDeviceType_MultiLevelSwitch_2) //device 2, displaying only dimbutton
-                        continue;
-                    if((!self.isTrigger||self.isScene) && deviceType == SFIDeviceType_GarageDoorOpener_53 && !([iVal.matchData isEqualToString:@"0"] || [iVal.matchData isEqualToString:@"255"]))
+                    if([self specialCasesExistsForDeviceType:deviceType index:deviceIndex iVal:iVal])
                         continue;
                     [self buildSwitchButton:deviceIndex deviceType:deviceType deviceName:deviceName iVal:iVal deviceId:deviceId i:i view:view buttonY:0];
                 }
@@ -489,6 +500,18 @@ DimmerButton *dimerButton;
     }
     return view;
 }
+
+-(BOOL)specialCasesExistsForDeviceType:(int)deviceType index:(SFIDeviceIndex*)deviceIndex iVal:(IndexValueSupport*)iVal{
+    BOOL isTrue = NO;
+    if(deviceType == SFIDeviceType_MultiLevelSwitch_2) //device 2, displaying only dimbutton
+        isTrue = YES;
+    if((!self.isTrigger||self.isScene) && deviceType == SFIDeviceType_GarageDoorOpener_53 && !([iVal.matchData isEqualToString:@"0"] || [iVal.matchData isEqualToString:@"255"]))
+        isTrue = YES;
+    if((!self.isTrigger||self.isScene) && deviceType == SFIDeviceType_RollerShutter_52 && deviceIndex.indexID != 1)
+        isTrue = YES;
+    return isTrue;
+}
+
 - (void) shiftButtonsByWidth:(int)width View:(UIView *)view forIteration:(int)i{
     for (int j = 1; j < i; j++) {
         UIView *childView = [view subviews][j-1];
@@ -608,10 +631,17 @@ DimmerButton *dimerButton;
         [self removeTriggerIndex:buttonIndex buttonId:buttonId deviceType:indexSwitchButton.subProperties.deviceType];
         if (indexSwitchButton.selected)
             [self.selectedButtonsPropertiesArrayTrigger addObject:indexSwitchButton.subProperties];
-        [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
+        
+        if(self.isScene && indexSwitchButton.subProperties.deviceType == SFIDeviceType_NestThermostat_57 && indexSwitchButton.subProperties.index == 2){
+            //RulesNestThermostat *nest=[RulesNestThermostat new];
+            [RulesNestThermostat removeTemperatureIndexes:indexSwitchButton.subProperties.deviceId mode:indexSwitchButton.subProperties.matchData entries:self.selectedButtonsPropertiesArrayTrigger];
+            [self.delegate redrawDeviceIndexView:indexSwitchButton.subProperties.deviceId clientEvent:@""];
+        }else
+            [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
     }
     [self setActionButtonCount:indexSwitchButton isSlider:NO];
 }
+
 
 -(void)showPicker:(DimmerButton* )dimmer{
     [self removePickerFromView];
@@ -745,7 +775,7 @@ DimmerButton *dimerButton;
     picker.layer.borderWidth = 1.5;
     picker.backgroundColor = [UIColor whiteColor];
     
-    if(self.isTrigger){
+    if(self.isTrigger && !self.isScene){
         picker.layer.borderColor = [SFIColors ruleBlueColor].CGColor;
         picker.selectedTextColor = [SFIColors ruleBlueColor];
     }
@@ -754,7 +784,7 @@ DimmerButton *dimerButton;
         picker.selectedTextColor = [SFIColors ruleOrangeColor];
     }
     picker.elementFont = [UIFont systemFontOfSize:11];
-    picker.elementFont = [UIFont fontWithName:@"AvenirLTStd-Roman" size:11];
+    picker.elementFont = [UIFont fontWithName:@"AvenirLTStd-Roman" size:13];
     picker.textColor = [UIColor blackColor];
     picker.indicatorPosition = V8HorizontalPickerIndicatorBottom;
     picker.delegate = self;
@@ -767,7 +797,7 @@ DimmerButton *dimerButton;
     const NSInteger element_width = [self horizontalPickerView:picker widthForElementAtIndex:0];
     SFIPickerIndicatorView1 *indicatorView = [[SFIPickerIndicatorView1 alloc] initWithFrame:CGRectMake(0, 0, element_width, 2)];
     picker.selectionPoint = CGPointMake((picker.frame.size.width) / 2, 0);
-    if(self.isTrigger){
+    if(self.isTrigger && !self.isScene){
         indicatorView.color1 = [SFIColors ruleBlueColor];
     }
     else{

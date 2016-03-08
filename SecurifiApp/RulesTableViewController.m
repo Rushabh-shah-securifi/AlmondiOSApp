@@ -17,6 +17,7 @@
 #import "MBProgressHUD.h"
 #import "RulePayload.h"
 #import "Colours.h"
+#import "Analytics.h"
 
 #define AVENIR_ROMAN @"Avenir-Roman"
 
@@ -64,6 +65,7 @@ CGPoint tablePoint;
         [self markTitle: self.currentAlmond.almondplusName];
     }
     randomMobileInternalIndex = arc4random() % 10000;
+    [[Analytics sharedInstance] markRuleScreen];
 }
 -(BOOL)isLocal{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -123,7 +125,7 @@ CGPoint tablePoint;
 
 - (void)removeAddSceneButton{
     if(self.buttonAdd)
-    [self.buttonAdd removeFromSuperview];
+        [self.buttonAdd removeFromSuperview];
 }
 
 -(void)getRuleList{
@@ -168,7 +170,7 @@ CGPoint tablePoint;
     if([self isRuleArrayEmpty]){
         return 400;
     }
-    return 154; //height of the cell from story board
+    return 146; //height of the cell from story board
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -188,7 +190,7 @@ CGPoint tablePoint;
     [cell.activeDeactiveSwitch setSelected:rule.isActive];
     [cell.activeDeactiveSwitch setOn:rule.isActive animated:YES];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
+    
     [SFISubPropertyBuilder createEntryForView:cell.scrollView indexScrollView:nil parentView:nil parentClass:nil triggers:rule.triggers actions:rule.actions isCrossButtonHidden:YES isRuleActive:rule.isActive isScene:NO];
     
     // Configure the cell...
@@ -203,7 +205,7 @@ CGPoint tablePoint;
     lbl.textAlignment = NSTextAlignmentCenter;
     lbl.backgroundColor = [UIColor whiteColor];
     lbl.numberOfLines = 0;
-//    lbl.text = @"Triggers -> Actions";
+    //    lbl.text = @"Triggers -> Actions";
     return lbl;
     
     return nil;
@@ -232,28 +234,28 @@ CGPoint tablePoint;
 - (UITableViewCell *)createEmptyCell:(UITableView *)tableView {
     static NSString *empty_cell_id = @"EmptyCell";
     
-   // UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:empty_cell_id];
+    // UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:empty_cell_id];
     
     //if (cell == nil || ![self isLocal]) {
-        UITableViewCell *cell  = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:empty_cell_id];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
-        const CGFloat table_width = CGRectGetWidth(self.tableView.frame);
-        
-        UILabel *lblNewScene = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, table_width-20, 130)];
-        lblNewScene.textAlignment = NSTextAlignmentCenter;
-        [lblNewScene setFont:[UIFont fontWithName:AVENIR_ROMAN size:18]];
-        lblNewScene.text = ![self isLocal]?@"":@"New Rule";
-        lblNewScene.textColor = [UIColor grayColor];
-        [cell addSubview:lblNewScene];
-        
-        UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, table_width-20, 130)];
-        lblNoSensor.textAlignment = NSTextAlignmentCenter;
-        [lblNoSensor setFont:[UIFont fontWithName:AVENIR_ROMAN size:15]];
-        lblNoSensor.numberOfLines = 10;
-        lblNoSensor.text = ![self isLocal]?@"At this time, you can view, create and edit rules only in Local Connection":@"Tap on add button to create your rule";
-        lblNoSensor.textColor = [UIColor grayColor];
-        [cell addSubview:lblNoSensor];
+    UITableViewCell *cell  = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:empty_cell_id];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    const CGFloat table_width = CGRectGetWidth(self.tableView.frame);
+    
+    UILabel *lblNewScene = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, table_width-20, 130)];
+    lblNewScene.textAlignment = NSTextAlignmentCenter;
+    [lblNewScene setFont:[UIFont fontWithName:AVENIR_ROMAN size:18]];
+    lblNewScene.text = ![self isLocal]?@"":@"New Rule";
+    lblNewScene.textColor = [UIColor grayColor];
+    [cell addSubview:lblNewScene];
+    
+    UILabel *lblNoSensor = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, table_width-20, 130)];
+    lblNoSensor.textAlignment = NSTextAlignmentCenter;
+    [lblNoSensor setFont:[UIFont fontWithName:AVENIR_ROMAN size:15]];
+    lblNoSensor.numberOfLines = 10;
+    lblNoSensor.text = ![self isLocal]?@"At this time, you can view, create and edit rules only in Local Connection":@"Tap on add button to create your rule";
+    lblNoSensor.textColor = [UIColor grayColor];
+    [cell addSubview:lblNoSensor];
     //}
     if(![self isLocal]){
         [self removeAddSceneButton];
@@ -285,6 +287,7 @@ CGPoint tablePoint;
         cloudCommand.command = [payload JSONString];
         [self asyncSendCommand:cloudCommand];
     }
+    [[Analytics sharedInstance] markDeleteRule];
 }
 
 -(void)onRuleCommandResponse:(id)sender{ //for delete//need to be work
@@ -341,9 +344,10 @@ CGPoint tablePoint;
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     AddRulesViewController *addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
     Rule *rule = [self.rules[indexPath.row] createNew];
-
+    
     addRuleController.rule = rule;
     addRuleController.isInitialized = YES;
+    [[Analytics sharedInstance] markUpdateRule];
     [self.navigationController pushViewController:addRuleController animated:YES];
 }
 
@@ -363,6 +367,7 @@ CGPoint tablePoint;
         cloudCommand.command = [payload JSONString];
         [self asyncSendCommand:cloudCommand];
     }
+    [[Analytics sharedInstance] markActivateRule];
 }
 
 -(void)setUpHUD{
@@ -405,8 +410,12 @@ CGPoint tablePoint;
 #pragma mark asyncRequest methods
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    [[SecurifiToolkit sharedInstance] asyncSendToLocal:cloudCommand almondMac:plus.almondplusMAC];
+    SFIAlmondPlus *almond = [[SecurifiToolkit sharedInstance] currentAlmond];
+    if([self isLocal]){
+        [toolkit asyncSendToLocal:cloudCommand almondMac:almond.almondplusMAC];
+    }else{
+        [toolkit asyncSendToCloud:cloudCommand];
+    }
 }
 
 @end

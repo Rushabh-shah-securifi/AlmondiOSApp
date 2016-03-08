@@ -1,4 +1,4 @@
-//
+
 //  SFIAddSceneViewController.m
 //  Scenes
 //
@@ -18,6 +18,7 @@
 #import "Colours.h"
 #import "Analytics.h"
 #import "ScenePayload.h"
+#import "SceneNameViewController.h"
 
 #define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]//MD01
 
@@ -51,16 +52,7 @@
     self.sceneInfo = [self.originalSceneInfo copy];
     
     self.navigationController.navigationBar.translucent = NO;
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"scene.button.Save", @"Save") style:UIBarButtonItemStylePlain target:self action:@selector(btnSaveTap:)];
-    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
-    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"scene.button.Cancel", @"Cancel") style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
-    self.navigationItem.leftBarButtonItem = leftBarButtonItem;
-    
-    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName : UIColorFromRGB(0x02a8f3),
-                                                                                                       NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Roman" size:17.5f]} forState:UIControlStateNormal];
-    
-    
-    
+    [self setUpNavigationBar];
     
     // Ensure values have at least an empty list
     cellsInfoArray = [NSMutableArray new];
@@ -71,6 +63,15 @@
     // Do any additional setup after loading the view.
     [self initializeNotifications];
     [self initializeAlmondData];
+}
+-(void)setUpNavigationBar{
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"scene.button.Save", @"Save") style:UIBarButtonItemStylePlain target:self action:@selector(btnSaveTap:)];
+    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+    UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"scene.button.Cancel", @"Cancel") style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
+    self.navigationItem.leftBarButtonItem = leftBarButtonItem;
+    
+    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName : UIColorFromRGB(0x02a8f3),
+                                                                                                       NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Roman" size:17.5f]} forState:UIControlStateNormal];
 }
 #pragma mark
 - (void)viewWillAppear:(BOOL)animated
@@ -93,6 +94,7 @@
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    NSLog(@"addscene - viewWillDisappear");
     [super viewWillDisappear:animated];
     
     if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
@@ -119,7 +121,7 @@
 
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-   
+    
     [center addObserver:self
                selector:@selector(gotResponseFor1064:)
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
@@ -134,7 +136,7 @@
                    name:UIKeyboardDidHideNotification
                  object:nil];
     
-    }
+}
 
 
 
@@ -229,7 +231,7 @@
         //TEST
         [sceneEntryList removeAllObjects];
         if ([self.sceneInfo[@"SceneEntryList"] isKindOfClass:[NSArray class]]) {
-//            sceneEntryList = [[NSMutableArray arrayWithArray:self.sceneInfo[@"SceneEntryList"]] mutableCopy];
+            //            sceneEntryList = [[NSMutableArray arrayWithArray:self.sceneInfo[@"SceneEntryList"]] mutableCopy];
             for(NSDictionary *sceneEntry in self.sceneInfo[@"SceneEntryList"]){
                 NSMutableDictionary *mutableSceneEntry = [sceneEntry mutableCopy];
                 [sceneEntryList addObject:mutableSceneEntry];
@@ -238,7 +240,7 @@
             NSString * strSceneEntryList = self.sceneInfo[@"SceneEntryList"];
             strSceneEntryList = [strSceneEntryList stringByReplacingOccurrencesOfString:@"\\" withString:@""];
             NSData * data = [strSceneEntryList dataUsingEncoding:NSUTF8StringEncoding] ;
-//            sceneEntryList = [[NSMutableArray arrayWithArray:[data objectFromJSONData]] mutableCopy];
+            //            sceneEntryList = [[NSMutableArray arrayWithArray:[data objectFromJSONData]] mutableCopy];
             for(NSDictionary *sceneEntry in [data objectFromJSONData]){
                 NSMutableDictionary *mutableSceneEntry = [sceneEntry mutableCopy];
                 [sceneEntryList addObject:mutableSceneEntry];
@@ -373,7 +375,7 @@
                 
                 [arr addObject:indexDict];            }
                 break;
-           
+                
             default:
             {
                 NSLog(@" device-Name: %@",device.deviceName);
@@ -513,33 +515,38 @@
     return self.deviceValueTable[@(deviceId)];
 }
 
-
-- (void)btnSaveTap:(id)sender {
+-(BOOL)isLocalConnection{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *almond = [toolkit currentAlmond];
-    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
-   
-
-    [activeTextField resignFirstResponder];
+    return [toolkit useLocalNetwork:almond.almondplusMAC];
+}
+- (void)btnSaveTap:(id)sender {
+    //    [activeTextField resignFirstResponder];
     if (sceneName.length == 0) {
         [self showMessageBox:@"Please select Scene Name"];
         return;
     }
-    
-    
     
     if (sceneEntryList.count==0) {
         [self showMessageBox:NSLocalizedString(@"scene.msg.You have to select at least 1 value", @"You have to select at least 1 value")];
         return;
     }
     
+    if(![self isSceneNameCompatibleWithAlexa]){
+        [self showMessageForAlexaCompatibleSceneName:[NSString stringWithFormat:@"The scene name %@ isn't compatible with Amazon Echo Voice Control. Would you like to make it compatible?", sceneName]];
+        return;
+    }
     
-    NSMutableDictionary *newSceneInfo = [NSMutableDictionary new];
+    [self createPayloadAndSendCommand];
+}
+
+-(void)createPayloadAndSendCommand{
+    BOOL local = [self isLocalConnection];
     NSMutableDictionary *payloadDict = [NSMutableDictionary new];
     [self configuresCeneEntryListForSave];
     
     ScenePayload *scenePayLoad = [ScenePayload new];
-//    payloadDict = [scenePayLoad sendScenePayload:self.sceneInfo with:randomMobileInternalIndex with:_almond.almondplusMAC with:sceneEntryList with:sceneName isLocal:local];
+    // payloadDict = [scenePayLoad sendScenePayload:self.sceneInfo with:randomMobileInternalIndex with:_almond.almondplusMAC with:sceneEntryList with:sceneName isLocal:local];
     
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_UPDATE_REQUEST;
@@ -548,15 +555,14 @@
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
-     if (self.sceneInfo) {
-    _HUD.labelText = NSLocalizedString(@"scenes.hud.updatingScene", @"Updating Scene...");
-     }else{
-    _HUD.labelText = NSLocalizedString(@"scenes.hud.creatingScene", @"Creating Scene...");
-     }
+    if (self.sceneInfo) {
+        _HUD.labelText = NSLocalizedString(@"scenes.hud.updatingScene", @"Updating Scene...");
+    }else{
+        _HUD.labelText = NSLocalizedString(@"scenes.hud.creatingScene", @"Creating Scene...");
+    }
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
-    
     [self asyncSendCommand:cloudCommand];
 }
 
@@ -585,10 +591,52 @@
 
 - (void)showMessageBox:(NSString *)message {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Scenes" message:message delegate:nil cancelButtonTitle:NSLocalizedString(@"scene.cancel-title.OK", @"OK") otherButtonTitles:nil];
+        UIAlertView* alert = [[UIAlertView alloc] initWithTitle:@"Scenes"
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"scene.cancel-title.OK", @"OK")
+                                              otherButtonTitles:nil];
         [alert show];
         alert = nil;
+        
     });
+}
+
+
+- (void)showMessageForAlexaCompatibleSceneName:(NSString*)message{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Scene Name"
+                                                    message:message
+                                                   delegate:self
+                                          cancelButtonTitle:@"No"
+                                          otherButtonTitles:@"Yes", nil];
+    [alert setDelegate:self];
+    alert.tag = 2;
+    alert.alertViewStyle = UIAlertViewStyleDefault;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [alert show];
+    });
+    
+}
+
+#pragma mark alert view delegeate method
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    NSLog(@"clickedButtonAtIndex");
+    if (buttonIndex == [alertView cancelButtonIndex]){
+        if(alertView.tag == 2){
+            NSLog(@"tag2");
+            [self createPayloadAndSendCommand];
+        }else if(alertView.tag == 1){
+            NSLog(@"tag1");
+        }
+    }else{
+        SceneNameViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SceneNameViewController"];
+        [self configuresCeneEntryListForSave];
+        ScenePayload *scenePayLoad = [ScenePayload new];
+        BOOL local = [self isLocalConnection];
+        //viewController.scenePayload = [scenePayLoad sendScenePayload:self.sceneInfo with:randomMobileInternalIndex with:_almond.almondplusMAC with:sceneEntryList with:sceneName isLocal:local];
+        //        viewController.isInitialized = self.sceneInfo ? NO: YES;
+        [self.navigationController pushViewController:viewController animated:YES];
+    }
 }
 
 #pragma mark Drawer management
@@ -820,7 +868,7 @@
         
         UIImageView *imgRouter = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width / 2 - 50, 95, 86, 60)];
         imgRouter.userInteractionEnabled = NO;
-        [imgRouter setImage:[UIImage imageNamed:@"router_1"]];
+        [imgRouter setImage:[UIImage imageNamed:@"router_1.png"]];
         imgRouter.contentMode = UIViewContentModeScaleAspectFit;
         [cell addSubview:imgRouter];
         
@@ -999,7 +1047,6 @@
     [cellsInfoArray[indexPath.row] setValue:existingValues forKey:@"existingValues"];
 }
 
-
 #pragma mark - State
 
 - (BOOL)isDeviceListEmpty {
@@ -1009,6 +1056,22 @@
 
 - (BOOL)isNoAlmondMAC {
     return [self.almondMac isEqualToString:NO_ALMOND];
+}
+
+- (BOOL)isSceneNameCompatibleWithAlexa{
+    NSArray *sceneNameList;
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"scene_names" ofType:@"txt"];
+    NSString *content = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
+    sceneNameList = [content componentsSeparatedByString:@","];
+    NSString *lowerCaseSceneName = sceneName;
+    BOOL isCompatible = NO;
+    for(NSString *name in sceneNameList){
+        if([name.lowercaseString isEqualToString:lowerCaseSceneName]){
+            isCompatible = YES;
+            break;
+        }
+    }
+    return isCompatible;
 }
 
 #pragma mark
@@ -1023,6 +1086,7 @@
 }
 #pragma mark
 - (void)gotResponseFor1064:(id)sender {
+    NSLog(@"addscene - gotResponseFor1064");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
@@ -1035,7 +1099,7 @@
     }else{
         mainDict = [[data valueForKey:@"data"] objectFromJSONData];
     }
-
+    
     if (randomMobileInternalIndex!=[[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
         return;
     }
@@ -1057,6 +1121,7 @@
 #pragma mark - Keyboard handler
 
 - (void)onKeyboardDidShow:(id)notification {
+    NSLog(@"onKeyboardDidShow");
     if (originalTableViewFrame.size.height!= self.tableView.frame.size.height) {
         return;
     }
@@ -1072,6 +1137,7 @@
 }
 
 - (void)onKeyboardDidHide:(id)notification {
+    NSLog(@"onKeyboardDidHide");
     NSDictionary *info = [notification userInfo];
     CGSize kbSize = [info[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     CGRect fr = self.tableView.frame;

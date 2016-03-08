@@ -11,7 +11,7 @@
 @class Rule;
 
 @interface ScenePayload : NSObject
-+(NSDictionary*)getScenePayload:(Rule*)scene mobileInternalIndex:(int)mii isEdit:(BOOL)isEdit;
++(NSMutableDictionary*)getScenePayload:(Rule*)scene mobileInternalIndex:(int)mii isEdit:(BOOL)isEdit isSceneNameCompatibleWithAlexa:(BOOL)isCompatible;
 + (NSMutableDictionary*)getDeleteScenePayload:(Rule*)scene mobileInternalIndex:(int)mii;
 
 @end

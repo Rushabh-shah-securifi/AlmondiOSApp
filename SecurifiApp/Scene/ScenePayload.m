@@ -1,4 +1,3 @@
-//
 //  ScenePayload.m
 //  SecurifiApp
 //
@@ -10,14 +9,16 @@
 #import "Analytics.h"
 #import "SFIButtonSubProperties.h"
 
+
 @implementation ScenePayload
-+(NSDictionary*)getScenePayload:(Rule*)scene mobileInternalIndex:(int)mii isEdit:(BOOL)isEdit{
++(NSMutableDictionary*)getScenePayload:(Rule*)scene mobileInternalIndex:(int)mii isEdit:(BOOL)isEdit isSceneNameCompatibleWithAlexa:(BOOL)isCompatible{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     
     NSMutableDictionary *newSceneInfo = [NSMutableDictionary new];
     NSMutableDictionary *payloadDict = [NSMutableDictionary new];
-    
+    [payloadDict setValue:@(mii) forKey:@"MobileInternalIndex"];
+    [payloadDict setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
     if (isEdit) {
         [payloadDict setValue:@"UpdateScene" forKey:@"CommandType"];
         [newSceneInfo setValue:scene.ID forKey:@"ID"];
@@ -27,10 +28,9 @@
         [payloadDict setValue:@"AddScene" forKey:@"CommandType"];
         [[Analytics sharedInstance] markAddScene];
     }
-    [payloadDict setValue:@(mii) forKey:@"MobileInternalIndex"];
+    
     [newSceneInfo setValue:scene.name forKey:@"Name"];
-    [payloadDict setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
-
+    [newSceneInfo setValue:isCompatible? @"true": @"false" forKey:@"VoiceCompatible"];
     [newSceneInfo setValue:[self createSceneEntriesPayload:scene.triggers] forKey:@"SceneEntryList"];
     [payloadDict setValue:newSceneInfo forKey:@"Scenes"];
     
@@ -66,7 +66,7 @@
 + (NSMutableDictionary*)getDeleteScenePayload:(Rule*)scene mobileInternalIndex:(int)mii {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
-        
+    
     NSMutableDictionary *payloadDict = [NSMutableDictionary new];
     [payloadDict setValue:@"RemoveScene" forKey:@"CommandType"];
     [payloadDict setValue:@{@"ID":scene.ID} forKey:@"Scenes"];

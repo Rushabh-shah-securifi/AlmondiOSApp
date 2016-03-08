@@ -87,7 +87,7 @@
 
 - (void)initializeNotifications{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-
+    
     
     [center addObserver:self
                selector:@selector(onCurrentAlmondChanged:)
@@ -115,13 +115,15 @@
     }
 }
 -(void)updateSceneTableView:(id)sender{
-    [self getAllScenes];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self getAllScenes];
+    });
+    
     
 }
 
 
 - (void)sendGetAllScenesRequest {
-    NSLog(@"scenetableview - sendGetAllScenesRequest");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     if (!plus.almondplusMAC) {
@@ -222,7 +224,7 @@
     if ([self isNoAlmondMAC] || [self isSceneListEmpty]) {
         return;
     }
-
+    
     NewAddSceneViewController *newAddSceneViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewAddSceneViewController"];
     newAddSceneViewController.isInitialized = YES;
     newAddSceneViewController.scene = [self getScene:scenesArray[indexPath.row]];
@@ -247,9 +249,9 @@
         subProperties.matchData = [triggersDict valueForKey:@"Value"];
         
         subProperties.eventType = [triggersDict valueForKey:@"EventType"];
-//        subProperties.type = subProperties.deviceId==0?@"EventTrigger":@"DeviceTrigger";
-//        subProperties.delay=[triggersDict valueForKey:@"PreDelay"];
-//        [self addTime:triggersDict timeProperty:subProperties];
+        //        subProperties.type = subProperties.deviceId==0?@"EventTrigger":@"DeviceTrigger";
+        //        subProperties.delay=[triggersDict valueForKey:@"PreDelay"];
+        //        [self addTime:triggersDict timeProperty:subProperties];
         [triggers addObject:subProperties];
     }
 }
@@ -397,7 +399,7 @@
 - (void)onCurrentAlmondChanged:(id)sender {
     if (scenesArray!=nil && scenesArray.count>0)
         [scenesArray removeAllObjects];
-
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     
@@ -419,12 +421,11 @@
 - (void)getAllScenes {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     scenesArray = [NSMutableArray arrayWithArray:toolkit.scenesArray];
+    NSLog(@"get all scenes - %@", scenesArray);
     [self.tableView reloadData];
-    NSLog(@"scenes array: %@", scenesArray);
 }
 
 - (void)gotResponseFor1064:(id)sender {
-    NSLog(@"gotResponseFor1064 - activatescene");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     
@@ -437,12 +438,10 @@
     }else{
         mainDict = [[data valueForKey:@"data"] objectFromJSONData];
     }
-
+    
     if (randomMobileInternalIndex != [[mainDict valueForKey:@"MobileInternalIndex"] integerValue]) {
         return;
     }
-    NSLog(@"%@",mainDict);
-    
     [self hideHude];
 }
 

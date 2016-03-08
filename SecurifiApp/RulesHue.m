@@ -91,7 +91,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 buttonHue.deviceType = deviceType;
                 [buttonHue addTarget:self action:@selector(onHueButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                 
-                [buttonHue setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:self.isScene isDimButton:NO insideText:iVal.displayText];
+                [buttonHue setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:self.isScene isDimButton:NO insideText:iVal.displayText isScene:self.isScene];
                 [buttonHue changeImageColor:[UIColor whiteColor]];
                 
                 //set perv. count and highlight
@@ -272,7 +272,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 if(self.isScene){
                     [brightnessSlider setConvertedValue:preValue];
                 }else if(buttonClickCount > 0){
-                     [brightnessSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
+                    [brightnessSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
                 }
                 
                 
@@ -354,6 +354,15 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     
 }
 
+-(void)updateEntryForID:(sfi_id)deviceId index:(int)index matchData:(NSString*)matchData{
+    for(SFIButtonSubProperties *buttonProperties in self.triggers){
+        if(buttonProperties.deviceId == deviceId && buttonProperties.index == index){
+            buttonProperties.matchData = matchData;
+            [self.delegate updateArray];
+            break;
+        }
+    }
+}
 #pragma mark button click
 -(void) onHueButtonClick:(id)sender{
     [self.delegate onSwitchButtonClick:sender];
@@ -405,11 +414,15 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
     if(slider.propertyType == SFIDevicePropertyType_BRIGHTNESS){
         brightnessSlider.subProperties.matchData = newValue;
+        if(self.isScene){
+            [self updateEntryForID:brightnessSlider.subProperties.deviceId index:brightnessSlider.subProperties.index matchData:newValue];
+        }
     }else if(slider.propertyType == SFIDevicePropertyType_SATURATION){
         saturationSlider.subProperties.matchData = newValue;
+        if(self.isScene){
+            [self updateEntryForID:saturationSlider.subProperties.deviceId index:saturationSlider.subProperties.index matchData:newValue];
+        }
     }
-    
-    
 }
 
 - (void)onSliderDidEndSliding:(id)sender {
@@ -419,10 +432,15 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     
     if(slider.propertyType == SFIDevicePropertyType_BRIGHTNESS){
         brightnessSlider.subProperties.matchData = newValue;
+        if(self.isScene){
+            [self updateEntryForID:brightnessSlider.subProperties.deviceId index:brightnessSlider.subProperties.index matchData:newValue];
+        }
     }else if(slider.propertyType == SFIDevicePropertyType_SATURATION){
         saturationSlider.subProperties.matchData = newValue;
+        if(self.isScene){
+            [self updateEntryForID:saturationSlider.subProperties.deviceId index:saturationSlider.subProperties.index matchData:newValue];
+        }
     }
-    
 }
 
 #pragma mark slider clicks
@@ -451,7 +469,6 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
         [brightnessSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
         //    [brightnessSlider setConvertedValue:0];
     }
-    
     
     [self.delegate updateArray];
 }
@@ -515,14 +532,12 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     
     //    [huePickerView setConvertedValue:0];
     [self.delegate updateArray];
-    
-    
-
 }
 
 
 #pragma mark - ILHuePickerViewDelegate methods
 - (void)huePicked:(float)hue picker:(ILHuePickerView *)picker {
+    NSLog(@"hue picked");
     //    SFISlider *slider_saturation = [self sliderForDevicePropertyType:SFIDevicePropertyType_SATURATION];
     //    SFISlider *slider_brightness = [self sliderForDevicePropertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
     
@@ -531,6 +546,9 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     
     int sensor_value = [hue_picker convertToSensorValue];
     huePickerView.subProperties.matchData = @(sensor_value).stringValue ;
+    if(self.isScene){
+        [self updateEntryForID:huePickerView.subProperties.deviceId index:huePickerView.subProperties.index matchData:@(sensor_value).stringValue];
+    }
     //    [self processColorPropertyValueChange:hue_picker.propertyType newValue:sensor_value];
     //    [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)hue_picker.tag Value:[NSString stringWithFormat:@"%d",sensor_value]];
     

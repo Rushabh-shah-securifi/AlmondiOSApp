@@ -33,6 +33,7 @@
 #import "SFISubPropertyBuilder.h"
 #import "MBProgressHUD.h"
 #import "AddRuleSceneClass.h"
+#import "Analytics.h"
 
 @interface AddRulesViewController()<UIAlertViewDelegate>{
     sfi_id dc_id;
@@ -65,8 +66,9 @@ UITextField *textField;
 }
 
 -(void)viewWillAppear:(BOOL)animated{
-    randomMobileInternalIndex = arc4random() % 10000;
     [super viewWillAppear:animated];
+    randomMobileInternalIndex = arc4random() % 10000;
+    [[Analytics sharedInstance] markAddOrEditRuleScreen];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -75,6 +77,19 @@ UITextField *textField;
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
     }
+}
+
+- (void)onTabBarDidChange:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (![[data valueForKey:@"title"] isEqualToString:@"Scenes"]) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+    
+}
+
+- (IBAction)btnBackTap:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)didReceiveMemoryWarning {
@@ -89,6 +104,10 @@ UITextField *textField;
     //add, update, remove etc.
     [center addObserver:self selector:@selector(onRuleCommandResponse:) name:RULE_COMMAND_RESPONSE_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onRuleCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
+    [center addObserver:self
+               selector:@selector(onTabBarDidChange:)
+                   name:@"TAB_BAR_CHANGED"
+                 object:nil];
 }
 
 -(void)getWificlientsList{
@@ -141,14 +160,14 @@ UITextField *textField;
 
 -(void) setUpNavigationBar{
     self.navigationController.navigationBar.translucent = YES;
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(btnSaveTap:)];
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(btnSaveTap:)];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
     self.navigationItem.leftBarButtonItem = leftBarButtonItem;
     
     [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:@{NSForegroundColorAttributeName : UIColorFromRGB(0x02a8f3),
                                                                                                        NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Roman" size:17.5f]} forState:UIControlStateNormal];
-    self.title = self.isInitialized? [NSString stringWithFormat:@"Edit Rule - %@", self.rule.name]: @"New Rule";
+    self.title = self.isInitialized? [NSString stringWithFormat:@"%@", self.rule.name]: @"New Rule";
 }
 
 
@@ -178,7 +197,7 @@ UITextField *textField;
     }
     [self.addRuleScene updateInfoLabel];
     [self.addRuleScene getTriggersDeviceList:isTrigger];
-
+    
 }
 
 -(void) changeIFThenColors:(BOOL)ifClick clickedBtn:(UIButton *)clickedButton otherBtn:(UIButton *)otherButton{
@@ -266,7 +285,7 @@ UITextField *textField;
                                                         message:@""
                                                        delegate:self
                                               cancelButtonTitle:@"Cancel"
-                                              otherButtonTitles:@"Save", nil];
+                                              otherButtonTitles:@"Done", nil];
         [alert setDelegate:self];
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
         textField = [alert textFieldAtIndex:0];
@@ -283,7 +302,12 @@ UITextField *textField;
     }
     else
     {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:@"You cannot save rule without selecting triggers and actions"
+        NSString *msg;
+        if(self.rule.triggers.count == 0)
+            msg = @"Select atleast one Trigger.";
+        else if(self.rule.actions.count == 0)
+            msg = @"Select atleast one Action";
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Oops" message:msg
                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
         dispatch_async(dispatch_get_main_queue(), ^() {
             [alert show];
@@ -298,11 +322,17 @@ UITextField *textField;
         //cancel clicked ...do your action
     }else{
         self.rule.name = textField.text;
-        [self sendRuleCommand];
+        [self sendCreateRuleCommand];
     }
 }
 
--(void)sendRuleCommand{
+- (BOOL)alertViewShouldEnableFirstOtherButton:(UIAlertView *)alertView
+{
+    return ([[[alertView textFieldAtIndex:0] text] length]>0)?YES:NO;
+    
+}
+
+-(void)sendCreateRuleCommand{
     RulePayload *rulePayload = [RulePayload new];
     rulePayload.rule = self.rule;
     
@@ -314,15 +344,13 @@ UITextField *textField;
     [self.navigationController.view addSubview:_HUD];
     [self showHudWithTimeout];
     
-    ///
-    
     NSDictionary *payload = [rulePayload createRulePayload:randomMobileInternalIndex with:self.isInitialized valid:@"1"];
     
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_UPDATE_REQUEST;
     cloudCommand.command = [payload JSONString];
     [self asyncSendCommand:cloudCommand];
-    NSLog(@"rules payload %@",[payload JSONString]);
+    [[Analytics sharedInstance] markAddRule];
 }
 - (void)showHudWithTimeout {
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -339,7 +367,12 @@ UITextField *textField;
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
-    [[SecurifiToolkit sharedInstance] asyncSendToLocal:cloudCommand almondMac:plus.almondplusMAC];
+    BOOL local=[toolkit useLocalNetwork:plus.almondplusMAC];
+    if(local){
+        [toolkit asyncSendToLocal:cloudCommand almondMac:plus.almondplusMAC];
+    }else{
+        [toolkit asyncSendToCloud:cloudCommand];
+    }
 }
 
 

@@ -48,7 +48,7 @@ int mins;
         delayButton.backgroundColor = [SFIColors ruleLightOrangeColor];
         (ruleButton->actionbutton).userInteractionEnabled = NO;
         self.deviceIndexButtonScrollView.userInteractionEnabled = NO;
-       
+        
         delaySecs = [ruleButton.subProperties.delay intValue];
         
         pickerMinsRange = [[NSMutableArray alloc]init];
@@ -69,7 +69,7 @@ int mins;
         delayButton.backgroundColor = [UIColor colorFromHexString:@"FF9500"];
         [delayButton setBackgroundColor:[UIColor colorFromHexString:@"FF9500"]];
         ruleButton.subProperties.delay = [NSString stringWithFormat:@"%d", [self getDelay]];
-       
+        
     }
 }
 
@@ -78,7 +78,7 @@ int mins;
     
     UIPickerView *pickerRange = [self createPickerView:CGRectMake(lableWidth + pickerSpacing, 0, pickerRangeWidth, pickerRangeHeight*2)];
     [self transformPickerView:pickerRange];
-//    pickerRange.backgroundColor = [UIColor orangeColor];
+    //    pickerRange.backgroundColor = [UIColor orangeColor];
     mins = (int)[self getMinsRow];
     secs = (int)[self getSecsRow];
     [pickerRange selectRow:[self getMinsRow] inComponent:0 animated:YES];
@@ -102,7 +102,7 @@ int mins;
     [subView addSubview:minsLabel];
     [subView addSubview:pickerRange];
     [subView addSubview:secsLabel];
-//    subView.backgroundColor = [UIColor yellowColor];
+    //    subView.backgroundColor = [UIColor yellowColor];
     
     [actionSheet addSubview:subView];
     subView.center = CGPointMake(actionSheet.bounds.size.width/2,
