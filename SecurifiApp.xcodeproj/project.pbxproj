@@ -242,6 +242,8 @@
 		84D8160F1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D8160E1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m */; };
 		A536D3EF1C8EB96900FCC2A7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A536D3ED1C8EB96900FCC2A7 /* Main.storyboard */; };
 		A536D3F21C8EB9ED00FCC2A7 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A536D3F01C8EB9ED00FCC2A7 /* Scenes_Iphone.storyboard */; };
+		A54537291C8ED1ED00DC3EC8 /* SceneNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A54537281C8ED1ED00DC3EC8 /* SceneNameViewController.m */; };
+		A545372B1C8ED35C00DC3EC8 /* scene_names.txt in Resources */ = {isa = PBXBuildFile; fileRef = A545372A1C8ED35C00DC3EC8 /* scene_names.txt */; };
 		A54D1C9B1C77401D00C191DB /* CommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = A54D1C9A1C77401D00C191DB /* CommonMethods.m */; };
 		A54D1C9C1C77401D00C191DB /* CommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = A54D1C9A1C77401D00C191DB /* CommonMethods.m */; };
 		A54EB0071C44FDC300CF2837 /* CustomCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EAFF71C44FDC300CF2837 /* CustomCellTableViewCell.m */; };
@@ -737,6 +739,9 @@
 		84D8160E1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIDeviceProprtyEditViewController.m; sourceTree = "<group>"; };
 		A536D3EE1C8EB96900FCC2A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Main.storyboard; sourceTree = "<group>"; };
 		A536D3F11C8EB9ED00FCC2A7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Scenes_Iphone.storyboard; sourceTree = "<group>"; };
+		A54537271C8ED1ED00DC3EC8 /* SceneNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneNameViewController.h; sourceTree = "<group>"; };
+		A54537281C8ED1ED00DC3EC8 /* SceneNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneNameViewController.m; sourceTree = "<group>"; };
+		A545372A1C8ED35C00DC3EC8 /* scene_names.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scene_names.txt; sourceTree = "<group>"; };
 		A54D1C991C77401D00C191DB /* CommonMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonMethods.h; sourceTree = "<group>"; };
 		A54D1C9A1C77401D00C191DB /* CommonMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonMethods.m; sourceTree = "<group>"; };
 		A54EAFF61C44FDC300CF2837 /* CustomCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellTableViewCell.h; sourceTree = "<group>"; };
@@ -1077,6 +1082,8 @@
 				8443277B1B763AD700BF2355 /* SFIScenesTableViewController.m */,
 				A5F03F6A1C76E412006CB309 /* NewAddSceneViewController.h */,
 				A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */,
+				A54537271C8ED1ED00DC3EC8 /* SceneNameViewController.h */,
+				A54537281C8ED1ED00DC3EC8 /* SceneNameViewController.m */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -1125,6 +1132,7 @@
 			isa = PBXGroup;
 			children = (
 				A5E8041B1C75B0A4005A8DB3 /* GenericIndexData.json */,
+				A545372A1C8ED35C00DC3EC8 /* scene_names.txt */,
 				A54EB0341C45004B00CF2837 /* Common-Images.xcassets */,
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
 				A54EAFF31C44FDAF00CF2837 /* Rules */,
@@ -2260,6 +2268,7 @@
 				A58DB3151BB16B9F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				846414E61B736B80008AB07F /* AvenirLTStd-Roman.otf in Resources */,
 				A58DB41E1BB2CD7D00717C02 /* Scenes_Iphone.strings in Resources */,
+				A545372B1C8ED35C00DC3EC8 /* scene_names.txt in Resources */,
 				A58DB41C1BB2CD7D00717C02 /* Login_iPhone.strings in Resources */,
 				A58DB32E1BB16EAF00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2E71BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
@@ -2640,6 +2649,7 @@
 				1DF03A50177B8354D886E980 /* CircleView.m in Sources */,
 				1DF03ADB8A23D76AE9B67F13 /* SFINotificationStatusBarButtonItem.m in Sources */,
 				1DF032B24E580FC6CD86D379 /* CircleLabel.m in Sources */,
+				A54537291C8ED1ED00DC3EC8 /* SceneNameViewController.m in Sources */,
 				1DF0318D09F8B1DBAF74C090 /* SFINotificationTableViewHeaderFooter.m in Sources */,
 				1C2F60981B69E69D001CCA34 /* SFIScenesTableViewCell.m in Sources */,
 				CE1E91381C4FC24000208B44 /* RulesTableViewController.m in Sources */,
