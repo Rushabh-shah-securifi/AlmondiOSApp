@@ -725,7 +725,7 @@
     }
     NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:row];
     NSString *blockedVal = [blockedHours valueForKey:@(section).stringValue];
-    cell.dayTimeLable.text = @"";
+    cell.dayLabel.text = @"";
     cell.userInteractionEnabled = YES;
     if([blockedVal isEqualToString:@"1"]){
         cell.selected = YES;
