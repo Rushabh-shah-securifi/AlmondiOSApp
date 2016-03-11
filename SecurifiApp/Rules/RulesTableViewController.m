@@ -8,7 +8,7 @@
 
 #import "RulesTableViewController.h"
 #import "CustomCellTableViewCell.h"
-#import "SecurifiToolkit/Rule.h"
+#import "Rule.h"
 #import "SecurifiToolkit/GenericCommand.h"
 #import "SFIButtonSubProperties.h"
 #import "SecurifiToolkit/Parser.h"

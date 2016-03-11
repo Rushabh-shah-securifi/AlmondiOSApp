@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RulesTimeElement.h"
-#import "SecurifiToolkit/Rule.h"
+#import "Rule.h"
 
 @interface AddRulesViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIScrollView *deviceListScrollView;

@@ -1,0 +1,42 @@
+{
+	"1": {
+		"name": "Binary Switch",
+		"defaultIcon": "@drawable/switch_off_new",
+		"isActionDevice": "true",
+		"isActuator": "true",
+		"isTriggerDevice": "true",
+		"Indexes": {
+			"1": {
+				"row_no": "1",
+				"genericIndexID": "1"
+			}
+		}
+	},
+	"2":{
+	 	"name":"Multilevel Switch",
+        "defaultIcon":"@drawable/dimmer",
+        "isActionDevice":"true",
+        "isActuator":"true",
+        "isTriggerDevice":"true",
+        "Indexes": {
+			"1": {
+				"row_no": "1",
+				"genericIndexID": "17"
+			}
+		}
+	},
+	"3":{
+		"name":"Z-wave Door Sensor",
+        "defaultIcon":"@drawable/door_off",
+        "isActionDevice":"false",
+        "isActuator":"false",
+        "isTriggerDevice":"true",
+        "Indexes": {
+			"1": {
+				"row_no": "1",
+				"genericIndexID": "2"
+			}
+		}
+	}
+	
+}

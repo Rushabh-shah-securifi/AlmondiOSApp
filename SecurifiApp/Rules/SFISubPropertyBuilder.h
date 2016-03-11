@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SecurifiToolkit/Rule.h"
+#import "Rule.h"
 #import "RulesTimeElement.h"
 #import "AddRulesViewController.h"
 #import "IndexValueSupport.h"

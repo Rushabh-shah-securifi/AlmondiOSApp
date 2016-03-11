@@ -10,7 +10,9 @@
 #import "UIFont+Securifi.h"
 #import "SFIColors.h"
 #import "DeviceKnownValues.h"
-
+@interface SensorButtonView()
+@property (nonatomic) NSArray *valueArray;
+@end
 @implementation SensorButtonView
 -(id) initWithFrame:(CGRect)frame
 {
@@ -37,8 +39,8 @@
     [self drawButton:labelsArray selectedValue:selectedValue];
 }
 
--(void)drawButton:(NSArray*)array selectedValue:(int)selectedValue{
-    
+-(void)drawButton:(NSArray*)array selectedValue:(int)selectedValue{//here we have to pass many things like deviceIndexId,deviceID,...
+    self.valueArray = array;
     int xPos = -10;
     for(int i = 0; i<array.count;i++){
         CGRect textRect = [self adjustDeviceNameWidth:[array objectAtIndex:i]];
@@ -79,7 +81,6 @@
     return textRect;
 }
 -(void)onButtonClicked:(UIButton *)sender{
-    NSLog(@"onButtonClicked ");
     for(UIButton *button in [[sender superview] subviews]){
         if([button isKindOfClass:[UILabel class]])
             continue;
@@ -93,7 +94,9 @@
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [button setBackgroundColor:[self darkerColorForColor:self.color]];
         }
+        
     }
+    [self.delegate updateButtonStatus:[self.valueArray objectAtIndex:sender.tag]];
     //values delegate to super view class
 }
 - (UIColor *)lighterColorForColor:(UIColor *)c

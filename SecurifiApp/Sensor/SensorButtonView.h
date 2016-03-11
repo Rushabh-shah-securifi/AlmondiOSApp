@@ -10,12 +10,15 @@
 #import "Device.h"
 
 @protocol SensorButtonViewDelegate
--(void)updateButtonStatus;
+@optional
+-(void)updateButtonStatus:(NSString *)newValue;
 @end
+
 @interface SensorButtonView : UIView
 @property (nonatomic)UIColor *color;
 @property (nonatomic) NSDictionary *deviceValueDict;
 @property (nonatomic) Device *device;
+@property (nonatomic)id<SensorButtonViewDelegate> delegate;
 -(void)drawButton:(NSDictionary *)valuedict color:(UIColor *)color;
 -(void)drawButton:(NSArray*)array selectedValue:(int)selectedValue;
 @end

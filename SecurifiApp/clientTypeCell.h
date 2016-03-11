@@ -7,9 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@protocol clientTypeCellDelegate
+-(void)selectedTypes:(NSString*)typeName;
+@end
 @interface clientTypeCell : UITableViewCell
 @property (nonatomic) UIColor *color;
+@property (nonatomic,weak) id<clientTypeCellDelegate> delegate;
 -(void)setupLabel;
 -(void)writelabelName:(NSString*)name;
+-(void)changeButtonColor;
+
 @end

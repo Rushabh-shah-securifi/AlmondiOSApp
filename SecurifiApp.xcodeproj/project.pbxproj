@@ -244,20 +244,6 @@
 		A536D3F21C8EB9ED00FCC2A7 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A536D3F01C8EB9ED00FCC2A7 /* Scenes_Iphone.storyboard */; };
 		A54537291C8ED1ED00DC3EC8 /* SceneNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A54537281C8ED1ED00DC3EC8 /* SceneNameViewController.m */; };
 		A545372B1C8ED35C00DC3EC8 /* scene_names.txt in Resources */ = {isa = PBXBuildFile; fileRef = A545372A1C8ED35C00DC3EC8 /* scene_names.txt */; };
-		A54D1C9B1C77401D00C191DB /* CommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = A54D1C9A1C77401D00C191DB /* CommonMethods.m */; };
-		A54D1C9C1C77401D00C191DB /* CommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = A54D1C9A1C77401D00C191DB /* CommonMethods.m */; };
-		A54EB0071C44FDC300CF2837 /* CustomCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EAFF71C44FDC300CF2837 /* CustomCellTableViewCell.m */; };
-		A54EB0081C44FDC300CF2837 /* AddRulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EAFF91C44FDC300CF2837 /* AddRulesViewController.m */; };
-		A54EB00C1C44FDC300CF2837 /* DeviceListAndValues.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EB0011C44FDC300CF2837 /* DeviceListAndValues.m */; };
-		A54EB00D1C44FDC300CF2837 /* RulesNestThermostat.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EB0031C44FDC300CF2837 /* RulesNestThermostat.m */; };
-		A54EB00E1C44FDC300CF2837 /* RulesHue.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EB0051C44FDC300CF2837 /* RulesHue.m */; };
-		A54EB0281C44FDE000CF2837 /* PreDelayRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EB0111C44FDE000CF2837 /* PreDelayRuleButton.m */; };
-		A54EB0291C44FDE000CF2837 /* CrossButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EB0131C44FDE000CF2837 /* CrossButton.m */; };
-		A54EB02A1C44FDE000CF2837 /* labelAndCheckButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EB0151C44FDE000CF2837 /* labelAndCheckButtonView.m */; };
-		A54EB02F1C44FDE000CF2837 /* RulesConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EB01F1C44FDE000CF2837 /* RulesConstants.m */; };
-		A54EB0301C44FDE000CF2837 /* RulesDeviceNameButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EB0211C44FDE000CF2837 /* RulesDeviceNameButton.m */; };
-		A54EB0311C44FDE000CF2837 /* DimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EB0231C44FDE000CF2837 /* DimmerButton.m */; };
-		A54EB0321C44FDE000CF2837 /* SwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = A54EB0251C44FDE000CF2837 /* SwitchButton.m */; };
 		A54EB0351C45004B00CF2837 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A54EB0341C45004B00CF2837 /* Common-Images.xcassets */; };
 		A584C8401C5B8344006E02DB /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A584C83F1C5B8344006E02DB /* CollectionViewCell.m */; };
 		A58DB2611BB168C400717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB24F1BB168C400717C02 /* AccountsStoryboard_iPhone.strings */; };
@@ -453,36 +439,77 @@
 		A58DB4A91BB3CD7500717C02 /* MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49D1BB3CD7500717C02 /* MainStoryboard_iPhone.strings */; };
 		A58DB4AA1BB3CD7500717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49F1BB3CD7500717C02 /* Scenes_Iphone.strings */; };
 		A58DB4AB1BB3CD7500717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4A11BB3CD7500717C02 /* termsofuse.html */; };
-		A59133C91C64DFC0009FE159 /* RuleTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = A59133C81C64DFC0009FE159 /* RuleTextField.m */; };
-		A5C7AE461C7ED654007E630D /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C7AE451C7ED654007E630D /* AddRuleSceneClass.m */; };
-		A5C7AE471C7ED654007E630D /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = A5C7AE451C7ED654007E630D /* AddRuleSceneClass.m */; };
 		A5E8041C1C75B0A4005A8DB3 /* GenericIndexData.json in Resources */ = {isa = PBXBuildFile; fileRef = A5E8041B1C75B0A4005A8DB3 /* GenericIndexData.json */; };
 		A5F03F6C1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		A5F03F6D1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
-		CE1E91381C4FC24000208B44 /* RulesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1E91371C4FC24000208B44 /* RulesTableViewController.m */; };
-		CE1E91391C4FC24000208B44 /* RulesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE1E91371C4FC24000208B44 /* RulesTableViewController.m */; };
-		CE478C6E1C4D0BFE00247CC7 /* AddTriggerAndAddAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CE478C6D1C4D0BFE00247CC7 /* AddTriggerAndAddAction.m */; };
 		CE53CDCD1C7C6FB8001DE893 /* SensorEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE53CDCC1C7C6FB8001DE893 /* SensorEditViewController.m */; };
 		CE5E60DF1C7B37CB00622798 /* SensorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5E60DC1C7B37CB00622798 /* SensorCell.m */; };
 		CE5E60E01C7B37CB00622798 /* SensorTable.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5E60DE1C7B37CB00622798 /* SensorTable.m */; };
-		CE5EDF8B1C461FEE00A2829B /* RulePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8A1C461FEE00A2829B /* RulePayload.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
 		CEA4A82C1C86BEB00098C7BD /* SensorStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA4A82A1C86BEB00098C7BD /* SensorStoryBoard.storyboard */; };
 		CEA4A8311C86BEE30098C7BD /* ClientEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA4A82E1C86BEE30098C7BD /* ClientEditViewController.m */; };
 		CEA4A8321C86BEE30098C7BD /* ClientPropertiesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA4A8301C86BEE30098C7BD /* ClientPropertiesCell.m */; };
 		CEEBE6201C902D0400DC3E3F /* clientTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */; settings = {ASSET_TAGS = (); }; };
+		CEEBE6231C91A89500DC3E3F /* CommonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEBE6221C91A89500DC3E3F /* CommonCell.m */; settings = {ASSET_TAGS = (); }; };
+		CEEBE6251C91A8BE00DC3E3F /* CommonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEEBE6241C91A8BE00DC3E3F /* CommonCell.xib */; settings = {ASSET_TAGS = (); }; };
 		CEEDBCD21C8712D400436220 /* ClientEditPropertiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEDBCD11C8712D400436220 /* ClientEditPropertiesViewController.m */; };
 		CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEF425C1C47E0E300E36C9B /* ScenePayload.m */; };
-		CEF1354E1C509667009E4558 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1354D1C509667009E4558 /* RuleButton.m */; };
-		CEF1357D1C510969009E4558 /* SFISubPropertyBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1357C1C510969009E4558 /* SFISubPropertyBuilder.m */; };
-		CEF135801C525990009E4558 /* DelayPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1357F1C525990009E4558 /* DelayPicker.m */; };
 		CEF158491C7D868100E7B2E2 /* NameLocNotView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158481C7D868000E7B2E2 /* NameLocNotView.m */; };
 		CEF1584C1C7DBD2A00E7B2E2 /* HorzSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1584B1C7DBD2A00E7B2E2 /* HorzSlider.m */; };
 		CEF1584F1C7DC8B100E7B2E2 /* SensorButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1584E1C7DC8B100E7B2E2 /* SensorButtonView.m */; };
 		CEF158521C7DCFD900E7B2E2 /* HueColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158511C7DCFD900E7B2E2 /* HueColorPicker.m */; };
 		CEF158551C7DD5B400E7B2E2 /* HueSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158541C7DD5B400E7B2E2 /* HueSliderView.m */; };
 		CEF1585B1C7DDD0700E7B2E2 /* SensorTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1585A1C7DDD0700E7B2E2 /* SensorTextView.m */; };
-		CEF51A981C5365E9008510B9 /* TimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF51A971C5365E9008510B9 /* TimeView.m */; };
+		CEF6F4D81C92CAD600C68975 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4D91C92CAD600C68975 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4DA1C92CAD600C68975 /* AddRulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AE1C92CAD600C68975 /* AddRulesViewController.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4DB1C92CAD600C68975 /* AddRulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AE1C92CAD600C68975 /* AddRulesViewController.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4DC1C92CAD600C68975 /* AddTriggerAndAddAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B01C92CAD600C68975 /* AddTriggerAndAddAction.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4DD1C92CAD600C68975 /* AddTriggerAndAddAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B01C92CAD600C68975 /* AddTriggerAndAddAction.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4DE1C92CAD600C68975 /* CustomCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B21C92CAD600C68975 /* CustomCellTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4DF1C92CAD600C68975 /* CustomCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B21C92CAD600C68975 /* CustomCellTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4E01C92CAD600C68975 /* DelayPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B41C92CAD600C68975 /* DelayPicker.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4E11C92CAD600C68975 /* DelayPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B41C92CAD600C68975 /* DelayPicker.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4E21C92CAD600C68975 /* DeviceListAndValues.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B61C92CAD600C68975 /* DeviceListAndValues.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4E31C92CAD600C68975 /* DeviceListAndValues.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B61C92CAD600C68975 /* DeviceListAndValues.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4E41C92CAD600C68975 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B81C92CAD600C68975 /* RuleButton.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4E51C92CAD600C68975 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B81C92CAD600C68975 /* RuleButton.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4E61C92CAD600C68975 /* RulePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BA1C92CAD600C68975 /* RulePayload.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4E71C92CAD600C68975 /* RulePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BA1C92CAD600C68975 /* RulePayload.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4E81C92CAD600C68975 /* RulesHue.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BC1C92CAD600C68975 /* RulesHue.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4E91C92CAD600C68975 /* RulesHue.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BC1C92CAD600C68975 /* RulesHue.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4EA1C92CAD600C68975 /* RulesNestThermostat.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BE1C92CAD600C68975 /* RulesNestThermostat.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4EB1C92CAD600C68975 /* RulesNestThermostat.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BE1C92CAD600C68975 /* RulesNestThermostat.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4EC1C92CAD600C68975 /* RulesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C01C92CAD600C68975 /* RulesTableViewController.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4ED1C92CAD600C68975 /* RulesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C01C92CAD600C68975 /* RulesTableViewController.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4EE1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C21C92CAD600C68975 /* SFISubPropertyBuilder.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4EF1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C21C92CAD600C68975 /* SFISubPropertyBuilder.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4F01C92CAD600C68975 /* CommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C51C92CAD600C68975 /* CommonMethods.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4F11C92CAD600C68975 /* CommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C51C92CAD600C68975 /* CommonMethods.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4F21C92CAD600C68975 /* CrossButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C71C92CAD600C68975 /* CrossButton.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4F31C92CAD600C68975 /* CrossButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C71C92CAD600C68975 /* CrossButton.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4F41C92CAD600C68975 /* DimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C91C92CAD600C68975 /* DimmerButton.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4F51C92CAD600C68975 /* DimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C91C92CAD600C68975 /* DimmerButton.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4F61C92CAD600C68975 /* labelAndCheckButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CB1C92CAD600C68975 /* labelAndCheckButtonView.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4F71C92CAD600C68975 /* labelAndCheckButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CB1C92CAD600C68975 /* labelAndCheckButtonView.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4F81C92CAD600C68975 /* PreDelayRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CD1C92CAD600C68975 /* PreDelayRuleButton.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4F91C92CAD600C68975 /* PreDelayRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CD1C92CAD600C68975 /* PreDelayRuleButton.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4FA1C92CAD600C68975 /* RulesConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CF1C92CAD600C68975 /* RulesConstants.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4FB1C92CAD600C68975 /* RulesConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CF1C92CAD600C68975 /* RulesConstants.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4FC1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D11C92CAD600C68975 /* RulesDeviceNameButton.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4FD1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D11C92CAD600C68975 /* RulesDeviceNameButton.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4FE1C92CAD600C68975 /* RuleTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D31C92CAD600C68975 /* RuleTextField.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4FF1C92CAD600C68975 /* RuleTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D31C92CAD600C68975 /* RuleTextField.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F5001C92CAD600C68975 /* SwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D51C92CAD600C68975 /* SwitchButton.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F5011C92CAD600C68975 /* SwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D51C92CAD600C68975 /* SwitchButton.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F5021C92CAD600C68975 /* TimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D71C92CAD600C68975 /* TimeView.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F5031C92CAD600C68975 /* TimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D71C92CAD600C68975 /* TimeView.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F5061C92CD2400C68975 /* GenericIndexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F5071C92CD2400C68975 /* GenericIndexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */; settings = {ASSET_TAGS = (); }; };
+		CEF6F50A1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; settings = {ASSET_TAGS = (); }; };
+		CEF6F50B1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; settings = {ASSET_TAGS = (); }; };
+		CEF6F50C1C92CD3D00C68975 /* genericIndexJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5091C92CD3D00C68975 /* genericIndexJson.json */; settings = {ASSET_TAGS = (); }; };
+		CEF6F50D1C92CD3D00C68975 /* genericIndexJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5091C92CD3D00C68975 /* genericIndexJson.json */; settings = {ASSET_TAGS = (); }; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -743,32 +770,6 @@
 		A54537271C8ED1ED00DC3EC8 /* SceneNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneNameViewController.h; sourceTree = "<group>"; };
 		A54537281C8ED1ED00DC3EC8 /* SceneNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneNameViewController.m; sourceTree = "<group>"; };
 		A545372A1C8ED35C00DC3EC8 /* scene_names.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scene_names.txt; sourceTree = "<group>"; };
-		A54D1C991C77401D00C191DB /* CommonMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonMethods.h; sourceTree = "<group>"; };
-		A54D1C9A1C77401D00C191DB /* CommonMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonMethods.m; sourceTree = "<group>"; };
-		A54EAFF61C44FDC300CF2837 /* CustomCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellTableViewCell.h; sourceTree = "<group>"; };
-		A54EAFF71C44FDC300CF2837 /* CustomCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellTableViewCell.m; sourceTree = "<group>"; };
-		A54EAFF81C44FDC300CF2837 /* AddRulesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRulesViewController.h; sourceTree = "<group>"; };
-		A54EAFF91C44FDC300CF2837 /* AddRulesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRulesViewController.m; sourceTree = "<group>"; };
-		A54EB0001C44FDC300CF2837 /* DeviceListAndValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceListAndValues.h; sourceTree = "<group>"; };
-		A54EB0011C44FDC300CF2837 /* DeviceListAndValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceListAndValues.m; sourceTree = "<group>"; };
-		A54EB0021C44FDC300CF2837 /* RulesNestThermostat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesNestThermostat.h; sourceTree = "<group>"; };
-		A54EB0031C44FDC300CF2837 /* RulesNestThermostat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesNestThermostat.m; sourceTree = "<group>"; };
-		A54EB0041C44FDC300CF2837 /* RulesHue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesHue.h; sourceTree = "<group>"; };
-		A54EB0051C44FDC300CF2837 /* RulesHue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesHue.m; sourceTree = "<group>"; };
-		A54EB0101C44FDE000CF2837 /* PreDelayRuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreDelayRuleButton.h; sourceTree = "<group>"; };
-		A54EB0111C44FDE000CF2837 /* PreDelayRuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreDelayRuleButton.m; sourceTree = "<group>"; };
-		A54EB0121C44FDE000CF2837 /* CrossButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrossButton.h; sourceTree = "<group>"; };
-		A54EB0131C44FDE000CF2837 /* CrossButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrossButton.m; sourceTree = "<group>"; };
-		A54EB0141C44FDE000CF2837 /* labelAndCheckButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = labelAndCheckButtonView.h; sourceTree = "<group>"; };
-		A54EB0151C44FDE000CF2837 /* labelAndCheckButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = labelAndCheckButtonView.m; sourceTree = "<group>"; };
-		A54EB01E1C44FDE000CF2837 /* RulesConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesConstants.h; sourceTree = "<group>"; };
-		A54EB01F1C44FDE000CF2837 /* RulesConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesConstants.m; sourceTree = "<group>"; };
-		A54EB0201C44FDE000CF2837 /* RulesDeviceNameButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesDeviceNameButton.h; sourceTree = "<group>"; };
-		A54EB0211C44FDE000CF2837 /* RulesDeviceNameButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesDeviceNameButton.m; sourceTree = "<group>"; };
-		A54EB0221C44FDE000CF2837 /* DimmerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DimmerButton.h; sourceTree = "<group>"; };
-		A54EB0231C44FDE000CF2837 /* DimmerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DimmerButton.m; sourceTree = "<group>"; };
-		A54EB0241C44FDE000CF2837 /* SwitchButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchButton.h; sourceTree = "<group>"; };
-		A54EB0251C44FDE000CF2837 /* SwitchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchButton.m; sourceTree = "<group>"; };
 		A54EB0341C45004B00CF2837 /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
 		A584C83E1C5B8344006E02DB /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		A584C83F1C5B8344006E02DB /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
@@ -964,28 +965,17 @@
 		A58DB49E1BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
 		A58DB4A01BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
 		A58DB4A21BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "zh-Hans"; path = termsofuse.html; sourceTree = "<group>"; };
-		A59133C71C64DFC0009FE159 /* RuleTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleTextField.h; sourceTree = "<group>"; };
-		A59133C81C64DFC0009FE159 /* RuleTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleTextField.m; sourceTree = "<group>"; };
-		A5C7AE441C7ED654007E630D /* AddRuleSceneClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRuleSceneClass.h; sourceTree = "<group>"; };
-		A5C7AE451C7ED654007E630D /* AddRuleSceneClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRuleSceneClass.m; sourceTree = "<group>"; };
 		A5E8041B1C75B0A4005A8DB3 /* GenericIndexData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GenericIndexData.json; sourceTree = "<group>"; };
 		A5F03F6A1C76E412006CB309 /* NewAddSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewAddSceneViewController.h; sourceTree = "<group>"; };
 		A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewAddSceneViewController.m; sourceTree = "<group>"; };
 		C6A3307CA8D0945BEFE53A18 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		CE1E912E1C4FB77100208B44 /* RuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleButton.h; sourceTree = "<group>"; };
-		CE1E91361C4FC24000208B44 /* RulesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesTableViewController.h; sourceTree = "<group>"; };
-		CE1E91371C4FC24000208B44 /* RulesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesTableViewController.m; sourceTree = "<group>"; };
-		CE478C6C1C4D0BFE00247CC7 /* AddTriggerAndAddAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTriggerAndAddAction.h; sourceTree = "<group>"; };
-		CE478C6D1C4D0BFE00247CC7 /* AddTriggerAndAddAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTriggerAndAddAction.m; sourceTree = "<group>"; };
 		CE53CDCB1C7C6FB8001DE893 /* SensorEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorEditViewController.h; sourceTree = "<group>"; };
 		CE53CDCC1C7C6FB8001DE893 /* SensorEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorEditViewController.m; sourceTree = "<group>"; };
 		CE5E60DB1C7B37CB00622798 /* SensorCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorCell.h; sourceTree = "<group>"; };
 		CE5E60DC1C7B37CB00622798 /* SensorCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorCell.m; sourceTree = "<group>"; };
 		CE5E60DD1C7B37CB00622798 /* SensorTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorTable.h; sourceTree = "<group>"; };
 		CE5E60DE1C7B37CB00622798 /* SensorTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorTable.m; sourceTree = "<group>"; };
-		CE5EDF891C461FEE00A2829B /* RulePayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulePayload.h; sourceTree = "<group>"; };
-		CE5EDF8A1C461FEE00A2829B /* RulePayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulePayload.m; sourceTree = "<group>"; };
 		CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPickerIndicatorView1.h; sourceTree = "<group>"; };
 		CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPickerIndicatorView1.m; sourceTree = "<group>"; };
 		CEA4A82B1C86BEB00098C7BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SensorStoryBoard.storyboard; sourceTree = "<group>"; };
@@ -995,15 +985,13 @@
 		CEA4A8301C86BEE30098C7BD /* ClientPropertiesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientPropertiesCell.m; sourceTree = "<group>"; };
 		CEEBE61E1C902D0400DC3E3F /* clientTypeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = clientTypeCell.h; path = SecurifiApp/clientTypeCell.h; sourceTree = SOURCE_ROOT; };
 		CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = clientTypeCell.m; path = SecurifiApp/clientTypeCell.m; sourceTree = SOURCE_ROOT; };
+		CEEBE6211C91A89500DC3E3F /* CommonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonCell.h; sourceTree = "<group>"; };
+		CEEBE6221C91A89500DC3E3F /* CommonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonCell.m; sourceTree = "<group>"; };
+		CEEBE6241C91A8BE00DC3E3F /* CommonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommonCell.xib; sourceTree = "<group>"; };
 		CEEDBCD01C8712D400436220 /* ClientEditPropertiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientEditPropertiesViewController.h; sourceTree = "<group>"; };
 		CEEDBCD11C8712D400436220 /* ClientEditPropertiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientEditPropertiesViewController.m; sourceTree = "<group>"; };
 		CEEF425B1C47E0E300E36C9B /* ScenePayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenePayload.h; sourceTree = "<group>"; };
 		CEEF425C1C47E0E300E36C9B /* ScenePayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScenePayload.m; sourceTree = "<group>"; };
-		CEF1354D1C509667009E4558 /* RuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleButton.m; sourceTree = "<group>"; };
-		CEF1357B1C510969009E4558 /* SFISubPropertyBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISubPropertyBuilder.h; sourceTree = "<group>"; };
-		CEF1357C1C510969009E4558 /* SFISubPropertyBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISubPropertyBuilder.m; sourceTree = "<group>"; };
-		CEF1357E1C525990009E4558 /* DelayPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelayPicker.h; sourceTree = "<group>"; };
-		CEF1357F1C525990009E4558 /* DelayPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelayPicker.m; sourceTree = "<group>"; };
 		CEF158471C7D868000E7B2E2 /* NameLocNotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NameLocNotView.h; sourceTree = "<group>"; };
 		CEF158481C7D868000E7B2E2 /* NameLocNotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NameLocNotView.m; sourceTree = "<group>"; };
 		CEF1584A1C7DBD2A00E7B2E2 /* HorzSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HorzSlider.h; sourceTree = "<group>"; };
@@ -1016,8 +1004,54 @@
 		CEF158541C7DD5B400E7B2E2 /* HueSliderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HueSliderView.m; sourceTree = "<group>"; };
 		CEF158591C7DDD0700E7B2E2 /* SensorTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorTextView.h; sourceTree = "<group>"; };
 		CEF1585A1C7DDD0700E7B2E2 /* SensorTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorTextView.m; sourceTree = "<group>"; };
-		CEF51A961C5365E9008510B9 /* TimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeView.h; sourceTree = "<group>"; };
-		CEF51A971C5365E9008510B9 /* TimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeView.m; sourceTree = "<group>"; };
+		CEF6F4AB1C92CAD600C68975 /* AddRuleSceneClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRuleSceneClass.h; sourceTree = "<group>"; };
+		CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRuleSceneClass.m; sourceTree = "<group>"; };
+		CEF6F4AD1C92CAD600C68975 /* AddRulesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRulesViewController.h; sourceTree = "<group>"; };
+		CEF6F4AE1C92CAD600C68975 /* AddRulesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRulesViewController.m; sourceTree = "<group>"; };
+		CEF6F4AF1C92CAD600C68975 /* AddTriggerAndAddAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTriggerAndAddAction.h; sourceTree = "<group>"; };
+		CEF6F4B01C92CAD600C68975 /* AddTriggerAndAddAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTriggerAndAddAction.m; sourceTree = "<group>"; };
+		CEF6F4B11C92CAD600C68975 /* CustomCellTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCellTableViewCell.h; sourceTree = "<group>"; };
+		CEF6F4B21C92CAD600C68975 /* CustomCellTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCellTableViewCell.m; sourceTree = "<group>"; };
+		CEF6F4B31C92CAD600C68975 /* DelayPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DelayPicker.h; sourceTree = "<group>"; };
+		CEF6F4B41C92CAD600C68975 /* DelayPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DelayPicker.m; sourceTree = "<group>"; };
+		CEF6F4B51C92CAD600C68975 /* DeviceListAndValues.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceListAndValues.h; sourceTree = "<group>"; };
+		CEF6F4B61C92CAD600C68975 /* DeviceListAndValues.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceListAndValues.m; sourceTree = "<group>"; };
+		CEF6F4B71C92CAD600C68975 /* RuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleButton.h; sourceTree = "<group>"; };
+		CEF6F4B81C92CAD600C68975 /* RuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleButton.m; sourceTree = "<group>"; };
+		CEF6F4B91C92CAD600C68975 /* RulePayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulePayload.h; sourceTree = "<group>"; };
+		CEF6F4BA1C92CAD600C68975 /* RulePayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulePayload.m; sourceTree = "<group>"; };
+		CEF6F4BB1C92CAD600C68975 /* RulesHue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesHue.h; sourceTree = "<group>"; };
+		CEF6F4BC1C92CAD600C68975 /* RulesHue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesHue.m; sourceTree = "<group>"; };
+		CEF6F4BD1C92CAD600C68975 /* RulesNestThermostat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesNestThermostat.h; sourceTree = "<group>"; };
+		CEF6F4BE1C92CAD600C68975 /* RulesNestThermostat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesNestThermostat.m; sourceTree = "<group>"; };
+		CEF6F4BF1C92CAD600C68975 /* RulesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesTableViewController.h; sourceTree = "<group>"; };
+		CEF6F4C01C92CAD600C68975 /* RulesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesTableViewController.m; sourceTree = "<group>"; };
+		CEF6F4C11C92CAD600C68975 /* SFISubPropertyBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFISubPropertyBuilder.h; sourceTree = "<group>"; };
+		CEF6F4C21C92CAD600C68975 /* SFISubPropertyBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFISubPropertyBuilder.m; sourceTree = "<group>"; };
+		CEF6F4C41C92CAD600C68975 /* CommonMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonMethods.h; sourceTree = "<group>"; };
+		CEF6F4C51C92CAD600C68975 /* CommonMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonMethods.m; sourceTree = "<group>"; };
+		CEF6F4C61C92CAD600C68975 /* CrossButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CrossButton.h; sourceTree = "<group>"; };
+		CEF6F4C71C92CAD600C68975 /* CrossButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CrossButton.m; sourceTree = "<group>"; };
+		CEF6F4C81C92CAD600C68975 /* DimmerButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DimmerButton.h; sourceTree = "<group>"; };
+		CEF6F4C91C92CAD600C68975 /* DimmerButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DimmerButton.m; sourceTree = "<group>"; };
+		CEF6F4CA1C92CAD600C68975 /* labelAndCheckButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = labelAndCheckButtonView.h; sourceTree = "<group>"; };
+		CEF6F4CB1C92CAD600C68975 /* labelAndCheckButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = labelAndCheckButtonView.m; sourceTree = "<group>"; };
+		CEF6F4CC1C92CAD600C68975 /* PreDelayRuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreDelayRuleButton.h; sourceTree = "<group>"; };
+		CEF6F4CD1C92CAD600C68975 /* PreDelayRuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreDelayRuleButton.m; sourceTree = "<group>"; };
+		CEF6F4CE1C92CAD600C68975 /* RulesConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesConstants.h; sourceTree = "<group>"; };
+		CEF6F4CF1C92CAD600C68975 /* RulesConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesConstants.m; sourceTree = "<group>"; };
+		CEF6F4D01C92CAD600C68975 /* RulesDeviceNameButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RulesDeviceNameButton.h; sourceTree = "<group>"; };
+		CEF6F4D11C92CAD600C68975 /* RulesDeviceNameButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RulesDeviceNameButton.m; sourceTree = "<group>"; };
+		CEF6F4D21C92CAD600C68975 /* RuleTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleTextField.h; sourceTree = "<group>"; };
+		CEF6F4D31C92CAD600C68975 /* RuleTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleTextField.m; sourceTree = "<group>"; };
+		CEF6F4D41C92CAD600C68975 /* SwitchButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwitchButton.h; sourceTree = "<group>"; };
+		CEF6F4D51C92CAD600C68975 /* SwitchButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SwitchButton.m; sourceTree = "<group>"; };
+		CEF6F4D61C92CAD600C68975 /* TimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeView.h; sourceTree = "<group>"; };
+		CEF6F4D71C92CAD600C68975 /* TimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeView.m; sourceTree = "<group>"; };
+		CEF6F5041C92CD2400C68975 /* GenericIndexUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericIndexUtil.h; sourceTree = "<group>"; };
+		CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericIndexUtil.m; sourceTree = "<group>"; };
+		CEF6F5081C92CD3D00C68975 /* deviceListJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = deviceListJson.json; sourceTree = "<group>"; };
+		CEF6F5091C92CD3D00C68975 /* genericIndexJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = genericIndexJson.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1135,10 +1169,12 @@
 			isa = PBXGroup;
 			children = (
 				A5E8041B1C75B0A4005A8DB3 /* GenericIndexData.json */,
+				CEF6F5081C92CD3D00C68975 /* deviceListJson.json */,
+				CEF6F5091C92CD3D00C68975 /* genericIndexJson.json */,
 				A545372A1C8ED35C00DC3EC8 /* scene_names.txt */,
 				A54EB0341C45004B00CF2837 /* Common-Images.xcassets */,
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
-				A54EAFF31C44FDAF00CF2837 /* Rules */,
+				CEF6F4AA1C92CAD600C68975 /* Rules */,
 				1C7E7E2D1A41A26A0026F0BA /* Base.lproj */,
 				1C709A061B5A3157007D397C /* Link */,
 				1C7E7CF61A41A0990026F0BA /* Login */,
@@ -1551,6 +1587,9 @@
 				CEEDBCD11C8712D400436220 /* ClientEditPropertiesViewController.m */,
 				CEEBE61E1C902D0400DC3E3F /* clientTypeCell.h */,
 				CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */,
+				CEEBE6211C91A89500DC3E3F /* CommonCell.h */,
+				CEEBE6221C91A89500DC3E3F /* CommonCell.m */,
+				CEEBE6241C91A8BE00DC3E3F /* CommonCell.xib */,
 			);
 			path = Sensor;
 			sourceTree = "<group>";
@@ -1569,6 +1608,8 @@
 				1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */,
 				1DF0324593B3458764B0FB6F /* SFIDeviceIndex.h */,
 				1DF039EF47F24492C42B3E91 /* SFIDeviceIndex.m */,
+				CEF6F5041C92CD2400C68975 /* GenericIndexUtil.h */,
+				CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */,
 			);
 			path = SensorSupport;
 			sourceTree = "<group>";
@@ -1605,65 +1646,6 @@
 				846414DA1B736B80008AB07F /* AvenirLTStd-Roman.otf */,
 			);
 			path = Fonts;
-			sourceTree = "<group>";
-		};
-		A54EAFF31C44FDAF00CF2837 /* Rules */ = {
-			isa = PBXGroup;
-			children = (
-				A54EB00F1C44FDC900CF2837 /* Support */,
-				CE478C6C1C4D0BFE00247CC7 /* AddTriggerAndAddAction.h */,
-				CE478C6D1C4D0BFE00247CC7 /* AddTriggerAndAddAction.m */,
-				CE1E91371C4FC24000208B44 /* RulesTableViewController.m */,
-				CE1E91361C4FC24000208B44 /* RulesTableViewController.h */,
-				CE5EDF891C461FEE00A2829B /* RulePayload.h */,
-				CE5EDF8A1C461FEE00A2829B /* RulePayload.m */,
-				A54EAFF61C44FDC300CF2837 /* CustomCellTableViewCell.h */,
-				A54EAFF71C44FDC300CF2837 /* CustomCellTableViewCell.m */,
-				A54EAFF81C44FDC300CF2837 /* AddRulesViewController.h */,
-				A54EAFF91C44FDC300CF2837 /* AddRulesViewController.m */,
-				A54EB0001C44FDC300CF2837 /* DeviceListAndValues.h */,
-				A54EB0011C44FDC300CF2837 /* DeviceListAndValues.m */,
-				A54EB0021C44FDC300CF2837 /* RulesNestThermostat.h */,
-				A54EB0031C44FDC300CF2837 /* RulesNestThermostat.m */,
-				A54EB0041C44FDC300CF2837 /* RulesHue.h */,
-				A54EB0051C44FDC300CF2837 /* RulesHue.m */,
-				CE1E912E1C4FB77100208B44 /* RuleButton.h */,
-				CEF1354D1C509667009E4558 /* RuleButton.m */,
-				CEF1357B1C510969009E4558 /* SFISubPropertyBuilder.h */,
-				CEF1357C1C510969009E4558 /* SFISubPropertyBuilder.m */,
-				CEF1357E1C525990009E4558 /* DelayPicker.h */,
-				CEF1357F1C525990009E4558 /* DelayPicker.m */,
-				CEF51A961C5365E9008510B9 /* TimeView.h */,
-				CEF51A971C5365E9008510B9 /* TimeView.m */,
-				A5C7AE441C7ED654007E630D /* AddRuleSceneClass.h */,
-				A5C7AE451C7ED654007E630D /* AddRuleSceneClass.m */,
-			);
-			name = Rules;
-			sourceTree = "<group>";
-		};
-		A54EB00F1C44FDC900CF2837 /* Support */ = {
-			isa = PBXGroup;
-			children = (
-				A54EB0101C44FDE000CF2837 /* PreDelayRuleButton.h */,
-				A54EB0111C44FDE000CF2837 /* PreDelayRuleButton.m */,
-				A54EB0121C44FDE000CF2837 /* CrossButton.h */,
-				A54EB0131C44FDE000CF2837 /* CrossButton.m */,
-				A54EB0141C44FDE000CF2837 /* labelAndCheckButtonView.h */,
-				A54EB0151C44FDE000CF2837 /* labelAndCheckButtonView.m */,
-				A54EB01E1C44FDE000CF2837 /* RulesConstants.h */,
-				A54EB01F1C44FDE000CF2837 /* RulesConstants.m */,
-				A54EB0201C44FDE000CF2837 /* RulesDeviceNameButton.h */,
-				A54EB0211C44FDE000CF2837 /* RulesDeviceNameButton.m */,
-				A54EB0221C44FDE000CF2837 /* DimmerButton.h */,
-				A54EB0231C44FDE000CF2837 /* DimmerButton.m */,
-				A54EB0241C44FDE000CF2837 /* SwitchButton.h */,
-				A54EB0251C44FDE000CF2837 /* SwitchButton.m */,
-				A59133C71C64DFC0009FE159 /* RuleTextField.h */,
-				A59133C81C64DFC0009FE159 /* RuleTextField.m */,
-				A54D1C991C77401D00C191DB /* CommonMethods.h */,
-				A54D1C9A1C77401D00C191DB /* CommonMethods.m */,
-			);
-			name = Support;
 			sourceTree = "<group>";
 		};
 		A58DB24E1BB168C400717C02 /* nl.lproj */ = {
@@ -1986,6 +1968,65 @@
 			path = "zh-Hans.lproj";
 			sourceTree = "<group>";
 		};
+		CEF6F4AA1C92CAD600C68975 /* Rules */ = {
+			isa = PBXGroup;
+			children = (
+				CEF6F4AB1C92CAD600C68975 /* AddRuleSceneClass.h */,
+				CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */,
+				CEF6F4AD1C92CAD600C68975 /* AddRulesViewController.h */,
+				CEF6F4AE1C92CAD600C68975 /* AddRulesViewController.m */,
+				CEF6F4AF1C92CAD600C68975 /* AddTriggerAndAddAction.h */,
+				CEF6F4B01C92CAD600C68975 /* AddTriggerAndAddAction.m */,
+				CEF6F4B11C92CAD600C68975 /* CustomCellTableViewCell.h */,
+				CEF6F4B21C92CAD600C68975 /* CustomCellTableViewCell.m */,
+				CEF6F4B31C92CAD600C68975 /* DelayPicker.h */,
+				CEF6F4B41C92CAD600C68975 /* DelayPicker.m */,
+				CEF6F4B51C92CAD600C68975 /* DeviceListAndValues.h */,
+				CEF6F4B61C92CAD600C68975 /* DeviceListAndValues.m */,
+				CEF6F4B71C92CAD600C68975 /* RuleButton.h */,
+				CEF6F4B81C92CAD600C68975 /* RuleButton.m */,
+				CEF6F4B91C92CAD600C68975 /* RulePayload.h */,
+				CEF6F4BA1C92CAD600C68975 /* RulePayload.m */,
+				CEF6F4BB1C92CAD600C68975 /* RulesHue.h */,
+				CEF6F4BC1C92CAD600C68975 /* RulesHue.m */,
+				CEF6F4BD1C92CAD600C68975 /* RulesNestThermostat.h */,
+				CEF6F4BE1C92CAD600C68975 /* RulesNestThermostat.m */,
+				CEF6F4BF1C92CAD600C68975 /* RulesTableViewController.h */,
+				CEF6F4C01C92CAD600C68975 /* RulesTableViewController.m */,
+				CEF6F4C11C92CAD600C68975 /* SFISubPropertyBuilder.h */,
+				CEF6F4C21C92CAD600C68975 /* SFISubPropertyBuilder.m */,
+				CEF6F4C31C92CAD600C68975 /* Support */,
+				CEF6F4D61C92CAD600C68975 /* TimeView.h */,
+				CEF6F4D71C92CAD600C68975 /* TimeView.m */,
+			);
+			path = Rules;
+			sourceTree = "<group>";
+		};
+		CEF6F4C31C92CAD600C68975 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				CEF6F4C41C92CAD600C68975 /* CommonMethods.h */,
+				CEF6F4C51C92CAD600C68975 /* CommonMethods.m */,
+				CEF6F4C61C92CAD600C68975 /* CrossButton.h */,
+				CEF6F4C71C92CAD600C68975 /* CrossButton.m */,
+				CEF6F4C81C92CAD600C68975 /* DimmerButton.h */,
+				CEF6F4C91C92CAD600C68975 /* DimmerButton.m */,
+				CEF6F4CA1C92CAD600C68975 /* labelAndCheckButtonView.h */,
+				CEF6F4CB1C92CAD600C68975 /* labelAndCheckButtonView.m */,
+				CEF6F4CC1C92CAD600C68975 /* PreDelayRuleButton.h */,
+				CEF6F4CD1C92CAD600C68975 /* PreDelayRuleButton.m */,
+				CEF6F4CE1C92CAD600C68975 /* RulesConstants.h */,
+				CEF6F4CF1C92CAD600C68975 /* RulesConstants.m */,
+				CEF6F4D01C92CAD600C68975 /* RulesDeviceNameButton.h */,
+				CEF6F4D11C92CAD600C68975 /* RulesDeviceNameButton.m */,
+				CEF6F4D21C92CAD600C68975 /* RuleTextField.h */,
+				CEF6F4D31C92CAD600C68975 /* RuleTextField.m */,
+				CEF6F4D41C92CAD600C68975 /* SwitchButton.h */,
+				CEF6F4D51C92CAD600C68975 /* SwitchButton.m */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
 		D80BDC9A1350F01973273EA6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -2176,6 +2217,7 @@
 				1C21DAFC1BA17A9A00E4A088 /* Login_iPhone.storyboard in Resources */,
 				A58DB3D81BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3F51BB1960900717C02 /* Localizable.strings in Resources */,
+				CEF6F50D1C92CD3D00C68975 /* genericIndexJson.json in Resources */,
 				A58DB4A61BB3CD7500717C02 /* InfoPlist.strings in Resources */,
 				A58DB3D71BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3C21BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
@@ -2195,6 +2237,7 @@
 				A58DB3E11BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3DC1BB1960900717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB3F01BB1960900717C02 /* termsofuse.html in Resources */,
+				CEF6F50B1C92CD3D00C68975 /* deviceListJson.json in Resources */,
 				A58DB4871BB3CD6800717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3E91BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3CD1BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
@@ -2260,7 +2303,9 @@
 				CEA4A82C1C86BEB00098C7BD /* SensorStoryBoard.storyboard in Resources */,
 				A58DB2671BB168C400717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB2F91BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
+				CEEBE6251C91A8BE00DC3E3F /* CommonCell.xib in Resources */,
 				A58DB3041BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
+				CEF6F50A1C92CD3D00C68975 /* deviceListJson.json in Resources */,
 				1C7E7E751A41A7470026F0BA /* AccountsStoryboard_iPhone.storyboard in Resources */,
 				846414E31B736B80008AB07F /* AvenirLTStd-Medium.otf in Resources */,
 				A58DB2691BB168C400717C02 /* termsofuse.html in Resources */,
@@ -2275,6 +2320,7 @@
 				A58DB41E1BB2CD7D00717C02 /* Scenes_Iphone.strings in Resources */,
 				A545372B1C8ED35C00DC3EC8 /* scene_names.txt in Resources */,
 				A58DB41C1BB2CD7D00717C02 /* Login_iPhone.strings in Resources */,
+				CEF6F50C1C92CD3D00C68975 /* genericIndexJson.json in Resources */,
 				A58DB32E1BB16EAF00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2E71BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
 				A58DB2FD1BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
@@ -2487,16 +2533,20 @@
 			files = (
 				1C2F60AB1B69E69D001CCA34 /* SKSTableViewCellIndicator.m in Sources */,
 				1CF15BE31AFCF72D004BED16 /* MessageView.m in Sources */,
+				CEF6F4FD1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */,
 				1C7E7DD61A41A0990026F0BA /* UIViewController+Securifi.m in Sources */,
 				1C7E7DC81A41A0990026F0BA /* SFIMainViewController.m in Sources */,
 				1C7E7D8C1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
 				1C7E7DBE1A41A0990026F0BA /* SFICloudStatusBarButtonItem.m in Sources */,
 				1C7E7D861A41A0990026F0BA /* SFILogoutAllViewController.m in Sources */,
+				CEF6F4EB1C92CAD600C68975 /* RulesNestThermostat.m in Sources */,
+				CEF6F4F71C92CAD600C68975 /* labelAndCheckButtonView.m in Sources */,
+				CEF6F4DB1C92CAD600C68975 /* AddRulesViewController.m in Sources */,
 				1C2F60931B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */,
 				1C2F15271BA7FB67009DB175 /* SFIMessageViewController.m in Sources */,
+				CEF6F4FB1C92CAD600C68975 /* RulesConstants.m in Sources */,
 				1C2F60971B69E69D001CCA34 /* SFIDimmerButton.m in Sources */,
 				1C9B1D901A3EE9EF00097D8F /* main.m in Sources */,
-				A54D1C9C1C77401D00C191DB /* CommonMethods.m in Sources */,
 				1C7E7DAE1A41A0990026F0BA /* SFISignupViewController.m in Sources */,
 				1C7E7D921A41A0990026F0BA /* SFIRouterRebootTableViewCell.m in Sources */,
 				1C7E7DA61A41A0990026F0BA /* SFIAccountsTableViewController.m in Sources */,
@@ -2523,33 +2573,43 @@
 				1C7E7D821A41A0990026F0BA /* SFIActivationViewController.m in Sources */,
 				1C2F609F1B69E69D001CCA34 /* SFIWiFiClientListCell.m in Sources */,
 				1C7E7DAA1A41A0990026F0BA /* SFIUserProfile.m in Sources */,
+				CEF6F4E31C92CAD600C68975 /* DeviceListAndValues.m in Sources */,
 				1C7E7DA81A41A0990026F0BA /* SFIPasswordChangeViewController.m in Sources */,
 				1C7E7DC41A41A0990026F0BA /* SFICopyLabel.m in Sources */,
 				1C7E7DAC1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,
 				1C7E7D961A41A0990026F0BA /* SFIRouterTableViewController.m in Sources */,
+				CEF6F5011C92CAD600C68975 /* SwitchButton.m in Sources */,
 				1DF03AD70C1C051CA6F74073 /* SFIPreferences.m in Sources */,
 				1DF036E2B7339D81255297B9 /* NSData+Conversion.m in Sources */,
+				CEF6F4FF1C92CAD600C68975 /* RuleTextField.m in Sources */,
+				CEF6F4D91C92CAD600C68975 /* AddRuleSceneClass.m in Sources */,
 				1DF03C76A181214483FB8F70 /* SFICardViewSummaryCell.m in Sources */,
 				1DF030400DB881AFAEF263C4 /* UIImage+Securifi.m in Sources */,
+				CEF6F5071C92CD2400C68975 /* GenericIndexUtil.m in Sources */,
 				1DF0317AA50784DE447F9449 /* CircleView.m in Sources */,
 				1DF0369581F25A08C2D53894 /* SFINotificationStatusBarButtonItem.m in Sources */,
+				CEF6F4E91C92CAD600C68975 /* RulesHue.m in Sources */,
 				1C2F60991B69E69D001CCA34 /* SFIScenesTableViewCell.m in Sources */,
 				1DF03FBF0030A76DBCA3A828 /* CircleLabel.m in Sources */,
 				1DF03D1D08D853057CDED2DC /* SFINotificationTableViewHeaderFooter.m in Sources */,
+				CEF6F5031C92CAD600C68975 /* TimeView.m in Sources */,
 				1DF0364AEDD2A4A73832CE5D /* SensorSupport.m in Sources */,
 				1DF03DC0F53E38D2CB88F6BA /* ValueFormatter.m in Sources */,
 				1DF0347975CABF8F74C4905D /* IndexValueSupport.m in Sources */,
+				CEF6F4DF1C92CAD600C68975 /* CustomCellTableViewCell.m in Sources */,
 				1DF03A2A9BFA55B20A1D2609 /* SensorIndexSupport.m in Sources */,
 				1DF03733354F6CEF7D979D57 /* NotificationsTestStore.m in Sources */,
 				1DF03A76C404827BA9A6BF8C /* UIApplication+SecurifiNotifications.m in Sources */,
 				1C2F609D1B69E69D001CCA34 /* SFISwitchButton.m in Sources */,
+				CEF6F4E71C92CAD600C68975 /* RulePayload.m in Sources */,
 				1DF03B77AE6B540AFC5851BB /* DebugLogger.m in Sources */,
 				1DF03CC89074191AC5F942CA /* ScoreboardDebugLoggerViewController.m in Sources */,
 				842651AE1BE0C86C001F79C1 /* TimeText.m in Sources */,
 				1DF033F4DF8C6A502EB12289 /* ScoreboardTextEditorViewController.m in Sources */,
 				1C2F60A31B69E69D001CCA34 /* SFIWiFiDeviceProprtyEditViewController.m in Sources */,
-				CE1E91391C4FC24000208B44 /* RulesTableViewController.m in Sources */,
 				1DF031DB440397B975511290 /* UIColor+GetHSB.m in Sources */,
+				CEF6F4EF1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */,
+				CEF6F4F11C92CAD600C68975 /* CommonMethods.m in Sources */,
 				1C2F60951B69E69D001CCA34 /* SFIAddSceneViewController.m in Sources */,
 				1DF038A445EB0F3A6476DC32 /* SFIHuePickerView.m in Sources */,
 				1C2F60A11B69E69D001CCA34 /* SFIWiFiClientsListViewController.m in Sources */,
@@ -2557,22 +2617,28 @@
 				1C709A0A1B5A3157007D397C /* SFICloudLinkViewController.m in Sources */,
 				1DF0385A73D7AE7E9208F510 /* UIColor+Securifi.m in Sources */,
 				1DF03226BF3736722C0E7F17 /* SFISensorDetailView.m in Sources */,
+				CEF6F4F31C92CAD600C68975 /* CrossButton.m in Sources */,
 				1DF03D19D4E35617E92B8DDD /* SFISensorsViewController.m in Sources */,
+				CEF6F4F51C92CAD600C68975 /* DimmerButton.m in Sources */,
 				1DF03A5E4E35A0F781390B53 /* SFISensorTableViewCell.m in Sources */,
 				1DF03BDF11E412D1A07CE913 /* TableHeaderView.m in Sources */,
 				1C2F60A91B69E69D001CCA34 /* SKSTableViewCell.m in Sources */,
 				1DF038979554DAC51D42A7C8 /* SFIRouterSendLogsTableViewCell.m in Sources */,
 				1DF03DD5059A3900235BD95B /* SFIRouterVersionTableViewCell.m in Sources */,
 				1DF03678B3BE5D42EBE3DC2B /* TemperatureView.m in Sources */,
+				CEF6F4F91C92CAD600C68975 /* PreDelayRuleButton.m in Sources */,
 				A5F03F6D1C76E412006CB309 /* NewAddSceneViewController.m in Sources */,
+				CEF6F4E11C92CAD600C68975 /* DelayPicker.m in Sources */,
 				1DF03271B3B360C48DF81716 /* SFITextField.m in Sources */,
-				A5C7AE471C7ED654007E630D /* AddRuleSceneClass.m in Sources */,
 				1C2F60A51B69E69D001CCA34 /* SFIWiFiDeviceTypeSelectionCell.m in Sources */,
+				CEF6F4E51C92CAD600C68975 /* RuleButton.m in Sources */,
+				CEF6F4DD1C92CAD600C68975 /* AddTriggerAndAddAction.m in Sources */,
 				1DF034F099411CA60571A787 /* AlertView.m in Sources */,
 				1DF0322DC3176FDED2CFA324 /* AlertViewAction.m in Sources */,
 				1DF03A511BCC303474712681 /* RouterNetworkSettingsEditor.m in Sources */,
 				1DF0338430771644DAE94F36 /* SFIDeviceIndex.m in Sources */,
 				1DF03696C8628963DC4F23D6 /* SFIRouterClientsTableViewController.m in Sources */,
+				CEF6F4ED1C92CAD600C68975 /* RulesTableViewController.m in Sources */,
 				1DF038DE3C385FEC394F6D20 /* SFIRouterSettingsTableViewController.m in Sources */,
 				1DF03908300C35FF0720CB13 /* SFITabBarController.m in Sources */,
 			);
@@ -2582,18 +2648,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEEBE6231C91A89500DC3E3F /* CommonCell.m in Sources */,
 				1896B1DC1C5CA48B00C68501 /* SFIDimmerButton.m in Sources */,
 				1C2F60AA1B69E69D001CCA34 /* SKSTableViewCellIndicator.m in Sources */,
-				CE5EDF8B1C461FEE00A2829B /* RulePayload.m in Sources */,
 				1C7E7DAB1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,
 				1C7E7D8B1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
-				CEF135801C525990009E4558 /* DelayPicker.m in Sources */,
-				A54EB0301C44FDE000CF2837 /* RulesDeviceNameButton.m in Sources */,
 				1C7E7DCF1A41A0990026F0BA /* SFITableViewController.m in Sources */,
 				1C7E7DD11A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
+				CEF6F4FE1C92CAD600C68975 /* RuleTextField.m in Sources */,
 				1C7E7DC11A41A0990026F0BA /* SFIConstants.m in Sources */,
 				CEF158491C7D868100E7B2E2 /* NameLocNotView.m in Sources */,
-				A5C7AE461C7ED654007E630D /* AddRuleSceneClass.m in Sources */,
 				CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */,
 				1C7E7DBF1A41A0990026F0BA /* SFIColors.m in Sources */,
 				1C2F60921B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */,
@@ -2601,53 +2665,54 @@
 				1C7E7D891A41A0990026F0BA /* SFINotificationTableViewCell.m in Sources */,
 				CEF158521C7DCFD900E7B2E2 /* HueColorPicker.m in Sources */,
 				1C7E7DAF1A41A0990026F0BA /* DrawerViewController.m in Sources */,
-				CEF51A981C5365E9008510B9 /* TimeView.m in Sources */,
 				1C7E7D871A41A0990026F0BA /* SFINotificationsViewController.m in Sources */,
 				846414CB1B736B36008AB07F /* ILSaturationBrightnessPickerView.m in Sources */,
+				CEF6F4F61C92CAD600C68975 /* labelAndCheckButtonView.m in Sources */,
+				CEF6F5001C92CAD600C68975 /* SwitchButton.m in Sources */,
 				1C7E7DC51A41A0990026F0BA /* SFIHighlightedButton.m in Sources */,
 				1C7E7D831A41A0990026F0BA /* SFILoginViewController.m in Sources */,
 				CEF1584F1C7DC8B100E7B2E2 /* SensorButtonView.m in Sources */,
 				1C7E7DC71A41A0990026F0BA /* SFIMainViewController.m in Sources */,
+				CEF6F4DE1C92CAD600C68975 /* CustomCellTableViewCell.m in Sources */,
 				1C7E7DA71A41A0990026F0BA /* SFIPasswordChangeViewController.m in Sources */,
+				CEF6F4F81C92CAD600C68975 /* PreDelayRuleButton.m in Sources */,
 				1C7E7DCD1A41A0990026F0BA /* SFISlider.m in Sources */,
-				A54EB02F1C44FDE000CF2837 /* RulesConstants.m in Sources */,
+				CEF6F4FA1C92CAD600C68975 /* RulesConstants.m in Sources */,
 				1C7E7D911A41A0990026F0BA /* SFIRouterRebootTableViewCell.m in Sources */,
+				CEF6F5021C92CAD600C68975 /* TimeView.m in Sources */,
 				1C7E7DBB1A41A0990026F0BA /* SFICardView.m in Sources */,
 				1C7E7DD31A41A0990026F0BA /* UIView+Borders.m in Sources */,
 				1C7E7D8D1A41A0990026F0BA /* SFIRouterDevicesTableViewCell.m in Sources */,
 				1C7E7DBD1A41A0990026F0BA /* SFICloudStatusBarButtonItem.m in Sources */,
 				1C7E7D9B1A41A0990026F0BA /* ScoreboardEventViewController.m in Sources */,
-				A54D1C9B1C77401D00C191DB /* CommonMethods.m in Sources */,
 				1C7E7D931A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
 				1C7E7D9D1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
 				1C7E7DA51A41A0990026F0BA /* SFIAccountsTableViewController.m in Sources */,
 				846414CC1B736B36008AB07F /* ILView.m in Sources */,
 				1C7E7DC31A41A0990026F0BA /* SFICopyLabel.m in Sources */,
+				CEF6F4EC1C92CAD600C68975 /* RulesTableViewController.m in Sources */,
 				1C7E7D951A41A0990026F0BA /* SFIRouterTableViewController.m in Sources */,
 				1C7E7E061A41A0B30026F0BA /* main.m in Sources */,
+				CEF6F4FC1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */,
 				846414C91B736B36008AB07F /* ILHuePickerView.m in Sources */,
 				1C7E7D991A41A0990026F0BA /* Analytics.m in Sources */,
-				A54EB00E1C44FDC300CF2837 /* RulesHue.m in Sources */,
 				A5F03F6C1C76E412006CB309 /* NewAddSceneViewController.m in Sources */,
 				1C7E7DAD1A41A0990026F0BA /* SFISignupViewController.m in Sources */,
 				1C7E7DA91A41A0990026F0BA /* SFIUserProfile.m in Sources */,
-				CEF1357D1C510969009E4558 /* SFISubPropertyBuilder.m in Sources */,
 				84D8160F1B7E30F00044F9AD /* SFIDeviceProprtyEditViewController.m in Sources */,
 				1C7E7D811A41A0990026F0BA /* SFIActivationViewController.m in Sources */,
+				CEF6F4F21C92CAD600C68975 /* CrossButton.m in Sources */,
 				1C7E7DD51A41A0990026F0BA /* UIViewController+Securifi.m in Sources */,
-				A54EB0291C44FDE000CF2837 /* CrossButton.m in Sources */,
 				1C2F609E1B69E69D001CCA34 /* SFIWiFiClientListCell.m in Sources */,
 				1C7E7DB91A41A0990026F0BA /* SFICardTableViewCell.m in Sources */,
-				A54EB0281C44FDE000CF2837 /* PreDelayRuleButton.m in Sources */,
+				CEF6F4EA1C92CAD600C68975 /* RulesNestThermostat.m in Sources */,
 				CEA4A8321C86BEE30098C7BD /* ClientPropertiesCell.m in Sources */,
 				1C7E7D851A41A0990026F0BA /* SFILogoutAllViewController.m in Sources */,
-				A54EB00D1C44FDC300CF2837 /* RulesNestThermostat.m in Sources */,
 				1C7E7D8F1A41A0990026F0BA /* SFIRouterReboot.m in Sources */,
 				846414CA1B736B36008AB07F /* ILColorPickerView.m in Sources */,
 				1DF031661E380BA4D0E0EB07 /* SFIPreferences.m in Sources */,
 				CE53CDCD1C7C6FB8001DE893 /* SensorEditViewController.m in Sources */,
 				1DF0390452B5D28DECBE4F68 /* NSData+Conversion.m in Sources */,
-				A54EB0071C44FDC300CF2837 /* CustomCellTableViewCell.m in Sources */,
 				1DF0351F629E0103520602C3 /* SFICardViewSummaryCell.m in Sources */,
 				1DF03698BAF3152723335005 /* UIImage+Securifi.m in Sources */,
 				CE5E60E01C7B37CB00622798 /* SensorTable.m in Sources */,
@@ -2655,23 +2720,24 @@
 				1DF03ADB8A23D76AE9B67F13 /* SFINotificationStatusBarButtonItem.m in Sources */,
 				1DF032B24E580FC6CD86D379 /* CircleLabel.m in Sources */,
 				A54537291C8ED1ED00DC3EC8 /* SceneNameViewController.m in Sources */,
+				CEF6F4E61C92CAD600C68975 /* RulePayload.m in Sources */,
 				CEEBE6201C902D0400DC3E3F /* clientTypeCell.m in Sources */,
 				1DF0318D09F8B1DBAF74C090 /* SFINotificationTableViewHeaderFooter.m in Sources */,
 				1C2F60981B69E69D001CCA34 /* SFIScenesTableViewCell.m in Sources */,
-				CE1E91381C4FC24000208B44 /* RulesTableViewController.m in Sources */,
+				CEF6F4DC1C92CAD600C68975 /* AddTriggerAndAddAction.m in Sources */,
 				1C2F15261BA7FB67009DB175 /* SFIMessageViewController.m in Sources */,
+				CEF6F4EE1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */,
 				CEEDBCD21C8712D400436220 /* ClientEditPropertiesViewController.m in Sources */,
 				CEF158551C7DD5B400E7B2E2 /* HueSliderView.m in Sources */,
-				A54EB02A1C44FDE000CF2837 /* labelAndCheckButtonView.m in Sources */,
-				CE478C6E1C4D0BFE00247CC7 /* AddTriggerAndAddAction.m in Sources */,
 				1DF034DCCD17E1C36BA3BF00 /* SensorSupport.m in Sources */,
+				CEF6F5061C92CD2400C68975 /* GenericIndexUtil.m in Sources */,
 				1DF0383EBD135988AEA6DF73 /* ValueFormatter.m in Sources */,
 				1DF03A1D3210B9478AF1DAC3 /* IndexValueSupport.m in Sources */,
-				A54EB0311C44FDE000CF2837 /* DimmerButton.m in Sources */,
 				1DF0362BB7839519E771D769 /* SensorIndexSupport.m in Sources */,
 				1DF038B5E6A54CEEAFE1BE7F /* NotificationsTestStore.m in Sources */,
-				CEF1354E1C509667009E4558 /* RuleButton.m in Sources */,
 				1DF037534B2784850C9B047C /* UIApplication+SecurifiNotifications.m in Sources */,
+				CEF6F4E01C92CAD600C68975 /* DelayPicker.m in Sources */,
+				CEF6F4E81C92CAD600C68975 /* RulesHue.m in Sources */,
 				1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */,
 				1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */,
 				1C2F609C1B69E69D001CCA34 /* SFISwitchButton.m in Sources */,
@@ -2681,7 +2747,6 @@
 				1C2F60A21B69E69D001CCA34 /* SFIWiFiDeviceProprtyEditViewController.m in Sources */,
 				CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */,
 				8467D8021BCBE33D00886D18 /* SFISensorDetailEditViewController.m in Sources */,
-				A54EB0321C44FDE000CF2837 /* SwitchButton.m in Sources */,
 				1C2F60941B69E69D001CCA34 /* SFIAddSceneViewController.m in Sources */,
 				1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */,
 				1DF03A194CCC7A1DE3C2A4DC /* UIColor+Securifi.m in Sources */,
@@ -2690,25 +2755,29 @@
 				842651AD1BE0C86C001F79C1 /* TimeText.m in Sources */,
 				1C2F60A01B69E69D001CCA34 /* SFIWiFiClientsListViewController.m in Sources */,
 				1C2F60A61B69E69D001CCA34 /* SKSTableView.m in Sources */,
+				CEF6F4DA1C92CAD600C68975 /* AddRulesViewController.m in Sources */,
 				1C709A091B5A3157007D397C /* SFICloudLinkViewController.m in Sources */,
+				CEF6F4E21C92CAD600C68975 /* DeviceListAndValues.m in Sources */,
 				1DF03B73C95D8A41C9409EF3 /* SFISensorsViewController.m in Sources */,
+				CEF6F4E41C92CAD600C68975 /* RuleButton.m in Sources */,
 				1DF03247826CA943EDEE8741 /* SFISensorTableViewCell.m in Sources */,
+				CEF6F4F41C92CAD600C68975 /* DimmerButton.m in Sources */,
 				1DF035317380AA5E0BD86161 /* MessageView.m in Sources */,
 				1DF0358BE9EBF2A3821D948D /* TableHeaderView.m in Sources */,
 				1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */,
+				CEF6F4D81C92CAD600C68975 /* AddRuleSceneClass.m in Sources */,
 				1C2F60A81B69E69D001CCA34 /* SKSTableViewCell.m in Sources */,
 				8427D0111B7DDDE300E754DE /* SFISensorDetailViewController.m in Sources */,
 				CEF1585B1C7DDD0700E7B2E2 /* SensorTextView.m in Sources */,
 				A584C8401C5B8344006E02DB /* CollectionViewCell.m in Sources */,
 				1DF030E39A245683EABC61AE /* SFIRouterVersionTableViewCell.m in Sources */,
 				1DF031024A2F8810074C455A /* TemperatureView.m in Sources */,
-				A54EB00C1C44FDC300CF2837 /* DeviceListAndValues.m in Sources */,
-				A59133C91C64DFC0009FE159 /* RuleTextField.m in Sources */,
 				1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */,
 				1DF0333217E77760651C98F7 /* ScoreboardNetworkSettingsViewController.m in Sources */,
 				1C2F60A41B69E69D001CCA34 /* SFIWiFiDeviceTypeSelectionCell.m in Sources */,
 				CEA4A8311C86BEE30098C7BD /* ClientEditViewController.m in Sources */,
 				CE5E60DF1C7B37CB00622798 /* SensorCell.m in Sources */,
+				CEF6F4F01C92CAD600C68975 /* CommonMethods.m in Sources */,
 				1DF037452A64D0EE163B8173 /* AlertView.m in Sources */,
 				1DF0394349F84E2FCC5E25F9 /* AlertViewAction.m in Sources */,
 				1DF03B8FE78FA07C67A943CC /* RouterNetworkSettingsEditor.m in Sources */,
@@ -2716,7 +2785,6 @@
 				1DF0389E9743D1F55E76AC11 /* SFIRouterClientsTableViewController.m in Sources */,
 				1DF0391AFBAB20EA1FB28F60 /* SFIRouterSettingsTableViewController.m in Sources */,
 				1DF03C3105B3DC1477346284 /* SFITabBarController.m in Sources */,
-				A54EB0081C44FDC300CF2837 /* AddRulesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

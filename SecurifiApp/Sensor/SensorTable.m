@@ -12,8 +12,9 @@
 #import "SFIWiFiClientListCell.h"
 #import "UIFont+Securifi.h"
 #import "ClientEditViewController.h"
+#import "CommonCell.h"
 
-@interface SensorTable ()<UITableViewDataSource,UITableViewDelegate,SensorCellDelegate,SFIWiFiClientListCellDelegate>
+@interface SensorTable ()<UITableViewDataSource,UITableViewDelegate,SensorCellDelegate,SFIWiFiClientListCellDelegate,CommonCellDelegate>
 @property (nonatomic,strong)NSMutableArray *currentDeviceList;
 @property (nonatomic,strong)NSDictionary *deviceValueTable;
 @property(nonatomic, strong) NSMutableArray *connectedDevices;
@@ -104,6 +105,10 @@
     if (!cell){
         cell = [[SFIWiFiClientListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+        CommonCell * commonCell = [[CommonCell alloc]initWithFrame:CGRectMake(5, 5, cell.frame.size.width -10, cell.frame.size.height -10)];
+        commonCell.delegate = self;
+        commonCell.vCTypeEnum = table;
+        [cell addSubview:commonCell];
 //    if(self.connectedDevices.count <=indexPath.section)
 //        return cell;
     cell.delegate = self;
@@ -149,5 +154,12 @@
     [self.navigationController pushViewController:viewController animated:YES];
 
 
+}
+-(void)delegateSensorTable{
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
+    ClientEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ClientEditViewController"];
+//    viewController.connectedDevice = [self.connectedDevices objectAtIndex:0];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 @end

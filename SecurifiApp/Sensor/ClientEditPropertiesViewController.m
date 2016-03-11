@@ -16,10 +16,10 @@
 #import "UIFont+Securifi.h"
 #import "Colours.h"
 #import "CollectionViewCell.h"
+#import "CommonCell.h"
 
 
-
-@interface ClientEditPropertiesViewController ()<SFIWiFiDeviceTypeSelectionCellDelegate,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
+@interface ClientEditPropertiesViewController ()<SFIWiFiDeviceTypeSelectionCellDelegate,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,clientTypeCellDelegate,SensorButtonViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView *clientInfoView;
 @property (weak, nonatomic) IBOutlet UIView *indexView;
 @property (weak, nonatomic) IBOutlet UILabel *indexLabel;
@@ -29,15 +29,24 @@
 @property (nonatomic) UIView *clientTypesView;
 @property (nonatomic)UIView *allowOnNetworkView;
 @property (nonatomic)UICollectionView *collectionView;
+@property (nonatomic)NSString *selectedType;/*    NSMutableString *hexBlockedDays;
+*/
+@property (nonatomic)NSMutableString *hexBlockedDays;
 
 @end
 
 @implementation ClientEditPropertiesViewController
 static const float ITEM_SPACING = 2.0;
 NSMutableArray * blockedDaysArray;
+NSString *blockedType;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self drawViews];
+    self.selectedType = [self.deviceDict valueForKey:@"Type"];
+    CommonCell *commonView = [[CommonCell alloc]initWithFrame:CGRectMake(5, 18, self.view.frame.size.width -10, 70)];
+    [self.view addSubview:commonView];
+    
     // Do any additional setup after loading the view.
 }
 
@@ -49,7 +58,7 @@ NSMutableArray * blockedDaysArray;
     if([self.indexName isEqualToString:@"Name"]){
         self.indexLabel.text = self.indexName;
         
-        [self textFieldView:@"android 02#"];
+        [self textFieldView:[self.deviceDict valueForKey:self.indexName]];
     }
     else if ([self.indexName isEqualToString:@"Type"]){
         NSLog(@"types:");
@@ -74,17 +83,26 @@ NSMutableArray * blockedDaysArray;
         [self.view addSubview:self.clientTypesView];
     }
     
-    else if ([self.indexName isEqualToString:@"Allow"]){
+    else if ([self.indexName isEqualToString:@"AllowedType"]){
         [self gridView];
        
     }
     else if ([self.indexName isEqualToString:@"pesenceSensor"]){
+        NSArray *arr = @[@"YES",@"NO",@"ON",@"OFF"];
+        int currentValPos = 0;
+        for(NSString *str in arr){
+            if([str isEqualToString:[self.deviceDict valueForKey:self.indexName]])
+                break;
+        currentValPos++;
+            NSLog(@"currentValPos %d ",currentValPos);
+        }
         self.indexLabel.text = self.indexName;
-        [self buttonView];
+        
+        [self buttonView:arr selectedValue:currentValPos];
     }
     else if ([self.indexName isEqualToString:@"inActiveTimeOut"]){
         self.indexLabel.text = self.indexName;
-        [self textFieldView:@"2"];
+        [self textFieldView:[self.deviceDict valueForKey:self.indexName]];
     }
     else if ([self.indexName isEqualToString:@"Other"]){
         
@@ -105,11 +123,17 @@ NSMutableArray * blockedDaysArray;
 
 }
 
--(void)buttonView{
+-(void)buttonView:(NSArray*)arr selectedValue:(int)selectedVal{
+    
     SensorButtonView *presenceSensor = [[SensorButtonView alloc]initWithFrame:CGRectMake(5,40,self.indexView.frame.size.width - 8,30 )];
     presenceSensor.color = [SFIColors clientGreenColor];
-    [presenceSensor drawButton:@[@"YES",@"NO"] selectedValue:0];
+    [presenceSensor drawButton:arr selectedValue:selectedVal];
+    presenceSensor.delegate = self;
     [self.indexView addSubview:presenceSensor];
+}
+
+-(void)updateButtonStatus:(NSString *)newValue{//here we have to pass many things like deviceIndexId,deviceID,...
+    NSLog(@"newValue %@ ",newValue);
 }
 
 #pragma mark uitableView Delegate
@@ -132,11 +156,18 @@ NSMutableArray * blockedDaysArray;
         [cell setupLabel];
         //cell = [[SFISensorTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
+    int currentvalPos = 0;
+    for(NSString *str in type){
+        if([str isEqualToString:self.selectedType])
+            break;
+        currentvalPos++;
+    }
+    cell.delegate = self;
     cell.color = [SFIColors clientGreenColor];
     cell.backgroundColor = [SFIColors clientGreenColor];
-    
     [cell writelabelName:[type objectAtIndex:indexPath.row]];
-
+    if(currentvalPos == indexPath.row)
+        [cell changeButtonColor];
     return cell;
 
 
@@ -145,6 +176,14 @@ NSMutableArray * blockedDaysArray;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 45;
 }
+
+#pragma mark cell delegate
+-(void)selectedTypes:(NSString *)typeName{
+    self.selectedType = typeName;
+    NSLog(@"selectedTypes");
+    [self.tableType reloadData];
+}
+#pragma mark gridView
 -(void)gridView{
     [self addSegmentControll];
     
@@ -170,12 +209,30 @@ NSMutableArray * blockedDaysArray;
     self.allowOnNetworkSegment.tintColor = [UIColor whiteColor];
 //    self.allowOnNetworkSegment.segmentedControlStyle = UISegmentedControlStylePlain;
     [self.allowOnNetworkSegment addTarget:self action:@selector(segmentControllChanged:) forControlEvents: UIControlEventValueChanged];
-    self.allowOnNetworkSegment.selectedSegmentIndex = 1;
+    [self setUpAllowOnNetworkSegment];
     [self.allowOnNetworkView addSubview:self.allowOnNetworkSegment];
     
     //self.indexView.frame = CGRectMake(self.indexView.frame.origin.x, self.indexView.frame.origin.y, self.indexView.frame.size.width, 500);
 //    [self.view addSubview:self.indexView];
 }
+-(void)setUpAllowOnNetworkSegment{
+    if([[self.deviceDict valueForKey:@"AllowedType"] isEqualToString:@"0"]){
+        self.scrollView.hidden = YES;
+        self.allowOnNetworkSegment.selectedSegmentIndex = 0; //Always
+        blockedType = @"0";
+        self.hexBlockedDays = [@"000000,000000,000000,000000,000000,00000,00000" mutableCopy];
+    }else if([[self.deviceDict valueForKey:@"AllowedType"] isEqualToString:@"1"]){
+        self.scrollView.hidden = YES;
+        self.allowOnNetworkSegment.selectedSegmentIndex = 2; //Blocked
+        self.hexBlockedDays = [@"ffffff,ffffff,ffffff,ffffff,ffffff,ffffff,ffffff" mutableCopy];
+        blockedType = @"1";
+    }else{
+         self.scrollView.hidden = NO;
+        self.allowOnNetworkSegment.selectedSegmentIndex = 1; //OnSchedule
+        blockedType = @"2";
+    }
+}
+
 -(void)segmentControllChanged:(id)sender{
     switch (self.allowOnNetworkSegment.selectedSegmentIndex) {
         case 0:
@@ -270,6 +327,28 @@ NSMutableArray * blockedDaysArray;
         }
         [blockedDaysArray addObject:blockedHours];
     }
+    NSArray *strings = [[self.deviceDict valueForKey:@"Schedule"] componentsSeparatedByString:@","];
+    if([strings count] > 7){
+        return;
+    }
+    int dictCount = 1;
+    for(NSString *hex in strings){
+        NSUInteger hexAsInt;
+        NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:dictCount];
+        [[NSScanner scannerWithString:hex] scanHexInt:&hexAsInt];
+        NSString *binary = [NSString stringWithFormat:@"%@", [self toBinary:hexAsInt]];
+        int len = (int)binary.length;
+        for (NSInteger charIdx=len-1; charIdx>=0; charIdx--)
+            [blockedHours setValue:[NSString stringWithFormat:@"%c", [binary characterAtIndex:charIdx]] forKey:@(len-charIdx).stringValue];
+        dictCount++;
+    }
+
+}
+-(NSString *)toBinary:(NSUInteger)input
+{
+    if (input == 1 || input == 0)
+        return [NSString stringWithFormat:@"%lu", (unsigned long)input];
+    return [NSString stringWithFormat:@"%@%lu", [self toBinary:input / 2], input % 2];
 }
 
 #pragma mark collectionView delegates
@@ -365,10 +444,47 @@ NSMutableArray * blockedDaysArray;
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     [self selectionOfHoursForRow:row andSection:section collectionView:collectionView selected:@"0"];
+    [self convertDaysDictToHex];
 }
 
 -(BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(nonnull SEL)action forItemAtIndexPath:(nonnull NSIndexPath *)indexPath withSender:(nullable id)sender{
     return NO;
 }
-
+-(void)convertDaysDictToHex{
+    _hexBlockedDays = [@"" mutableCopy];
+    for(int i = 1; i <= 7; i++){
+        NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:i];
+        NSMutableString *boolStr = [NSMutableString new];
+        for(int j = 24; j >= 1; j--){
+            [boolStr appendString:[blockedHours valueForKey:@(j).stringValue]];
+        }
+        
+        NSMutableString *hexStr = [self boolStringToHex:[NSString stringWithString:boolStr]];
+        while(6-[hexStr length]){
+            [hexStr insertString:@"0" atIndex:0];
+        }
+        if(i == 1)
+            [_hexBlockedDays appendString:hexStr];
+        else
+            [_hexBlockedDays appendString:[NSString stringWithFormat:@",%@", hexStr]];
+    }
+    NSLog(@"_hexBlockedDays %@",_hexBlockedDays);
+}
+-(NSMutableString*)boolStringToHex:(NSString*)str{
+    char* cstr = [str cStringUsingEncoding: NSASCIIStringEncoding];
+    NSUInteger len = strlen(cstr);
+    char* lastChar = cstr + len - 1;
+    NSUInteger curVal = 1;
+    NSUInteger result = 0;
+    while (lastChar >= cstr) {
+        if (*lastChar == '1')
+        {
+            result += curVal;
+        }
+        lastChar--;
+        curVal <<= 1;
+    }
+    NSString *resultStr = [NSString stringWithFormat: @"%lx", (unsigned long)result];
+    return [resultStr mutableCopy];
+}
 @end

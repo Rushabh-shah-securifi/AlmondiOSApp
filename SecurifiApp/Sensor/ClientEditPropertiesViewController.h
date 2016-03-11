@@ -10,4 +10,6 @@
 
 @interface ClientEditPropertiesViewController : UIViewController
 @property (nonatomic)NSString *indexName;
+@property (nonatomic) NSDictionary *deviceDict;
+
 @end
