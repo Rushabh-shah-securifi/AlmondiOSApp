@@ -13,9 +13,9 @@
 @implementation GenericIndexUtil
 
 + (void)testGeenricIndexUtil{
-    [self getGenericIndexValueForID:1 index:1 value:@"true"];
-    [self getGenericIndexJsonForDeviceId:1 index:1];
-    [self getGenericIndexValueForGenericIndex:@"3" value:@"false"];
+    NSLog(@"getGenericIndexValueForID: %@", [self getGenericIndexValueForID:1 index:1 value:@"true"]);
+    NSLog(@"getGenericIndexJsonForDeviceId: %@", [self getGenericIndexJsonForDeviceId:1 index:1]);
+    NSLog(@"getGenericIndexValueForGenericIndex: %@", [self getGenericIndexValueForGenericIndex:@"2" value:@"false"]);
 }
 
 +(NSDictionary*)getGenericIndexValueForID:(sfi_id)deviceId index:(int)index value:(NSString*)value{
@@ -27,13 +27,14 @@
 +(NSDictionary *)getGenericIndexJsonForDeviceId:(sfi_id) deviceID index:(int) index{
     Device *device = [Device getDeviceForID:deviceID];
     if(device){
-        int deviceType = device.type;
+        int deviceType = 1;
         NSDictionary *deviceJson = [self getDeviceJsonForType:deviceType];
         NSDictionary *indexes = deviceJson[@"Indexes"];
         NSArray *indexesKeys = indexes.allKeys;
         for(NSString *key in indexesKeys){
             if(key.intValue == index){
-                return [self getGenericIndexJsonForIndex:indexes[@"genericIndexID"]];
+                NSDictionary *indexValDict = indexes[key];
+                return [self getGenericIndexJsonForIndex:indexValDict[@"genericIndexID"]];
             }
         }
     }

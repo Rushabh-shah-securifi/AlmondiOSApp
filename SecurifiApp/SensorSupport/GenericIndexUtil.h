@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface GenericIndexUtil : NSObject
-
++ (void)testGeenricIndexUtil;
 @end

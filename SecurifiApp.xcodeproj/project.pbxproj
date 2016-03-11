@@ -439,7 +439,10 @@
 		A58DB4A91BB3CD7500717C02 /* MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49D1BB3CD7500717C02 /* MainStoryboard_iPhone.strings */; };
 		A58DB4AA1BB3CD7500717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49F1BB3CD7500717C02 /* Scenes_Iphone.strings */; };
 		A58DB4AB1BB3CD7500717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4A11BB3CD7500717C02 /* termsofuse.html */; };
-		A5E8041C1C75B0A4005A8DB3 /* GenericIndexData.json in Resources */ = {isa = PBXBuildFile; fileRef = A5E8041B1C75B0A4005A8DB3 /* GenericIndexData.json */; };
+		A5C68C991C92D93000110B74 /* GenericIndexesData.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C981C92D93000110B74 /* GenericIndexesData.json */; };
+		A5C68C9A1C92D93000110B74 /* GenericIndexesData.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C981C92D93000110B74 /* GenericIndexesData.json */; };
+		A5C68C9C1C9303D300110B74 /* DeviceListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */; };
+		A5C68C9D1C9303D300110B74 /* DeviceListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */; };
 		A5F03F6C1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		A5F03F6D1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		CE53CDCD1C7C6FB8001DE893 /* SensorEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE53CDCC1C7C6FB8001DE893 /* SensorEditViewController.m */; };
@@ -449,9 +452,9 @@
 		CEA4A82C1C86BEB00098C7BD /* SensorStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA4A82A1C86BEB00098C7BD /* SensorStoryBoard.storyboard */; };
 		CEA4A8311C86BEE30098C7BD /* ClientEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA4A82E1C86BEE30098C7BD /* ClientEditViewController.m */; };
 		CEA4A8321C86BEE30098C7BD /* ClientPropertiesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEA4A8301C86BEE30098C7BD /* ClientPropertiesCell.m */; };
-		CEEBE6201C902D0400DC3E3F /* clientTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */; settings = {ASSET_TAGS = (); }; };
-		CEEBE6231C91A89500DC3E3F /* CommonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEBE6221C91A89500DC3E3F /* CommonCell.m */; settings = {ASSET_TAGS = (); }; };
-		CEEBE6251C91A8BE00DC3E3F /* CommonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEEBE6241C91A8BE00DC3E3F /* CommonCell.xib */; settings = {ASSET_TAGS = (); }; };
+		CEEBE6201C902D0400DC3E3F /* clientTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */; };
+		CEEBE6231C91A89500DC3E3F /* CommonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEBE6221C91A89500DC3E3F /* CommonCell.m */; };
+		CEEBE6251C91A8BE00DC3E3F /* CommonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEEBE6241C91A8BE00DC3E3F /* CommonCell.xib */; };
 		CEEDBCD21C8712D400436220 /* ClientEditPropertiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEDBCD11C8712D400436220 /* ClientEditPropertiesViewController.m */; };
 		CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEF425C1C47E0E300E36C9B /* ScenePayload.m */; };
 		CEF158491C7D868100E7B2E2 /* NameLocNotView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158481C7D868000E7B2E2 /* NameLocNotView.m */; };
@@ -460,56 +463,54 @@
 		CEF158521C7DCFD900E7B2E2 /* HueColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158511C7DCFD900E7B2E2 /* HueColorPicker.m */; };
 		CEF158551C7DD5B400E7B2E2 /* HueSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF158541C7DD5B400E7B2E2 /* HueSliderView.m */; };
 		CEF1585B1C7DDD0700E7B2E2 /* SensorTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF1585A1C7DDD0700E7B2E2 /* SensorTextView.m */; };
-		CEF6F4D81C92CAD600C68975 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4D91C92CAD600C68975 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4DA1C92CAD600C68975 /* AddRulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AE1C92CAD600C68975 /* AddRulesViewController.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4DB1C92CAD600C68975 /* AddRulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AE1C92CAD600C68975 /* AddRulesViewController.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4DC1C92CAD600C68975 /* AddTriggerAndAddAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B01C92CAD600C68975 /* AddTriggerAndAddAction.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4DD1C92CAD600C68975 /* AddTriggerAndAddAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B01C92CAD600C68975 /* AddTriggerAndAddAction.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4DE1C92CAD600C68975 /* CustomCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B21C92CAD600C68975 /* CustomCellTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4DF1C92CAD600C68975 /* CustomCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B21C92CAD600C68975 /* CustomCellTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4E01C92CAD600C68975 /* DelayPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B41C92CAD600C68975 /* DelayPicker.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4E11C92CAD600C68975 /* DelayPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B41C92CAD600C68975 /* DelayPicker.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4E21C92CAD600C68975 /* DeviceListAndValues.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B61C92CAD600C68975 /* DeviceListAndValues.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4E31C92CAD600C68975 /* DeviceListAndValues.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B61C92CAD600C68975 /* DeviceListAndValues.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4E41C92CAD600C68975 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B81C92CAD600C68975 /* RuleButton.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4E51C92CAD600C68975 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B81C92CAD600C68975 /* RuleButton.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4E61C92CAD600C68975 /* RulePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BA1C92CAD600C68975 /* RulePayload.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4E71C92CAD600C68975 /* RulePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BA1C92CAD600C68975 /* RulePayload.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4E81C92CAD600C68975 /* RulesHue.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BC1C92CAD600C68975 /* RulesHue.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4E91C92CAD600C68975 /* RulesHue.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BC1C92CAD600C68975 /* RulesHue.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4EA1C92CAD600C68975 /* RulesNestThermostat.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BE1C92CAD600C68975 /* RulesNestThermostat.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4EB1C92CAD600C68975 /* RulesNestThermostat.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BE1C92CAD600C68975 /* RulesNestThermostat.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4EC1C92CAD600C68975 /* RulesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C01C92CAD600C68975 /* RulesTableViewController.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4ED1C92CAD600C68975 /* RulesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C01C92CAD600C68975 /* RulesTableViewController.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4EE1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C21C92CAD600C68975 /* SFISubPropertyBuilder.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4EF1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C21C92CAD600C68975 /* SFISubPropertyBuilder.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4F01C92CAD600C68975 /* CommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C51C92CAD600C68975 /* CommonMethods.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4F11C92CAD600C68975 /* CommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C51C92CAD600C68975 /* CommonMethods.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4F21C92CAD600C68975 /* CrossButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C71C92CAD600C68975 /* CrossButton.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4F31C92CAD600C68975 /* CrossButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C71C92CAD600C68975 /* CrossButton.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4F41C92CAD600C68975 /* DimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C91C92CAD600C68975 /* DimmerButton.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4F51C92CAD600C68975 /* DimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C91C92CAD600C68975 /* DimmerButton.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4F61C92CAD600C68975 /* labelAndCheckButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CB1C92CAD600C68975 /* labelAndCheckButtonView.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4F71C92CAD600C68975 /* labelAndCheckButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CB1C92CAD600C68975 /* labelAndCheckButtonView.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4F81C92CAD600C68975 /* PreDelayRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CD1C92CAD600C68975 /* PreDelayRuleButton.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4F91C92CAD600C68975 /* PreDelayRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CD1C92CAD600C68975 /* PreDelayRuleButton.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4FA1C92CAD600C68975 /* RulesConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CF1C92CAD600C68975 /* RulesConstants.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4FB1C92CAD600C68975 /* RulesConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CF1C92CAD600C68975 /* RulesConstants.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4FC1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D11C92CAD600C68975 /* RulesDeviceNameButton.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4FD1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D11C92CAD600C68975 /* RulesDeviceNameButton.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4FE1C92CAD600C68975 /* RuleTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D31C92CAD600C68975 /* RuleTextField.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F4FF1C92CAD600C68975 /* RuleTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D31C92CAD600C68975 /* RuleTextField.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F5001C92CAD600C68975 /* SwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D51C92CAD600C68975 /* SwitchButton.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F5011C92CAD600C68975 /* SwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D51C92CAD600C68975 /* SwitchButton.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F5021C92CAD600C68975 /* TimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D71C92CAD600C68975 /* TimeView.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F5031C92CAD600C68975 /* TimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D71C92CAD600C68975 /* TimeView.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F5061C92CD2400C68975 /* GenericIndexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F5071C92CD2400C68975 /* GenericIndexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */; settings = {ASSET_TAGS = (); }; };
-		CEF6F50A1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; settings = {ASSET_TAGS = (); }; };
-		CEF6F50B1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; settings = {ASSET_TAGS = (); }; };
-		CEF6F50C1C92CD3D00C68975 /* genericIndexJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5091C92CD3D00C68975 /* genericIndexJson.json */; settings = {ASSET_TAGS = (); }; };
-		CEF6F50D1C92CD3D00C68975 /* genericIndexJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5091C92CD3D00C68975 /* genericIndexJson.json */; settings = {ASSET_TAGS = (); }; };
+		CEF6F4D81C92CAD600C68975 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */; };
+		CEF6F4D91C92CAD600C68975 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */; };
+		CEF6F4DA1C92CAD600C68975 /* AddRulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AE1C92CAD600C68975 /* AddRulesViewController.m */; };
+		CEF6F4DB1C92CAD600C68975 /* AddRulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AE1C92CAD600C68975 /* AddRulesViewController.m */; };
+		CEF6F4DC1C92CAD600C68975 /* AddTriggerAndAddAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B01C92CAD600C68975 /* AddTriggerAndAddAction.m */; };
+		CEF6F4DD1C92CAD600C68975 /* AddTriggerAndAddAction.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B01C92CAD600C68975 /* AddTriggerAndAddAction.m */; };
+		CEF6F4DE1C92CAD600C68975 /* CustomCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B21C92CAD600C68975 /* CustomCellTableViewCell.m */; };
+		CEF6F4DF1C92CAD600C68975 /* CustomCellTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B21C92CAD600C68975 /* CustomCellTableViewCell.m */; };
+		CEF6F4E01C92CAD600C68975 /* DelayPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B41C92CAD600C68975 /* DelayPicker.m */; };
+		CEF6F4E11C92CAD600C68975 /* DelayPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B41C92CAD600C68975 /* DelayPicker.m */; };
+		CEF6F4E21C92CAD600C68975 /* DeviceListAndValues.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B61C92CAD600C68975 /* DeviceListAndValues.m */; };
+		CEF6F4E31C92CAD600C68975 /* DeviceListAndValues.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B61C92CAD600C68975 /* DeviceListAndValues.m */; };
+		CEF6F4E41C92CAD600C68975 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B81C92CAD600C68975 /* RuleButton.m */; };
+		CEF6F4E51C92CAD600C68975 /* RuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4B81C92CAD600C68975 /* RuleButton.m */; };
+		CEF6F4E61C92CAD600C68975 /* RulePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BA1C92CAD600C68975 /* RulePayload.m */; };
+		CEF6F4E71C92CAD600C68975 /* RulePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BA1C92CAD600C68975 /* RulePayload.m */; };
+		CEF6F4E81C92CAD600C68975 /* RulesHue.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BC1C92CAD600C68975 /* RulesHue.m */; };
+		CEF6F4E91C92CAD600C68975 /* RulesHue.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BC1C92CAD600C68975 /* RulesHue.m */; };
+		CEF6F4EA1C92CAD600C68975 /* RulesNestThermostat.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BE1C92CAD600C68975 /* RulesNestThermostat.m */; };
+		CEF6F4EB1C92CAD600C68975 /* RulesNestThermostat.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4BE1C92CAD600C68975 /* RulesNestThermostat.m */; };
+		CEF6F4EC1C92CAD600C68975 /* RulesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C01C92CAD600C68975 /* RulesTableViewController.m */; };
+		CEF6F4ED1C92CAD600C68975 /* RulesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C01C92CAD600C68975 /* RulesTableViewController.m */; };
+		CEF6F4EE1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C21C92CAD600C68975 /* SFISubPropertyBuilder.m */; };
+		CEF6F4EF1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C21C92CAD600C68975 /* SFISubPropertyBuilder.m */; };
+		CEF6F4F01C92CAD600C68975 /* CommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C51C92CAD600C68975 /* CommonMethods.m */; };
+		CEF6F4F11C92CAD600C68975 /* CommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C51C92CAD600C68975 /* CommonMethods.m */; };
+		CEF6F4F21C92CAD600C68975 /* CrossButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C71C92CAD600C68975 /* CrossButton.m */; };
+		CEF6F4F31C92CAD600C68975 /* CrossButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C71C92CAD600C68975 /* CrossButton.m */; };
+		CEF6F4F41C92CAD600C68975 /* DimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C91C92CAD600C68975 /* DimmerButton.m */; };
+		CEF6F4F51C92CAD600C68975 /* DimmerButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4C91C92CAD600C68975 /* DimmerButton.m */; };
+		CEF6F4F61C92CAD600C68975 /* labelAndCheckButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CB1C92CAD600C68975 /* labelAndCheckButtonView.m */; };
+		CEF6F4F71C92CAD600C68975 /* labelAndCheckButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CB1C92CAD600C68975 /* labelAndCheckButtonView.m */; };
+		CEF6F4F81C92CAD600C68975 /* PreDelayRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CD1C92CAD600C68975 /* PreDelayRuleButton.m */; };
+		CEF6F4F91C92CAD600C68975 /* PreDelayRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CD1C92CAD600C68975 /* PreDelayRuleButton.m */; };
+		CEF6F4FA1C92CAD600C68975 /* RulesConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CF1C92CAD600C68975 /* RulesConstants.m */; };
+		CEF6F4FB1C92CAD600C68975 /* RulesConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4CF1C92CAD600C68975 /* RulesConstants.m */; };
+		CEF6F4FC1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D11C92CAD600C68975 /* RulesDeviceNameButton.m */; };
+		CEF6F4FD1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D11C92CAD600C68975 /* RulesDeviceNameButton.m */; };
+		CEF6F4FE1C92CAD600C68975 /* RuleTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D31C92CAD600C68975 /* RuleTextField.m */; };
+		CEF6F4FF1C92CAD600C68975 /* RuleTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D31C92CAD600C68975 /* RuleTextField.m */; };
+		CEF6F5001C92CAD600C68975 /* SwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D51C92CAD600C68975 /* SwitchButton.m */; };
+		CEF6F5011C92CAD600C68975 /* SwitchButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D51C92CAD600C68975 /* SwitchButton.m */; };
+		CEF6F5021C92CAD600C68975 /* TimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D71C92CAD600C68975 /* TimeView.m */; };
+		CEF6F5031C92CAD600C68975 /* TimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4D71C92CAD600C68975 /* TimeView.m */; };
+		CEF6F5061C92CD2400C68975 /* GenericIndexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */; };
+		CEF6F5071C92CD2400C68975 /* GenericIndexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */; };
+		CEF6F50A1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
+		CEF6F50B1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -965,7 +966,8 @@
 		A58DB49E1BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
 		A58DB4A01BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
 		A58DB4A21BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "zh-Hans"; path = termsofuse.html; sourceTree = "<group>"; };
-		A5E8041B1C75B0A4005A8DB3 /* GenericIndexData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GenericIndexData.json; sourceTree = "<group>"; };
+		A5C68C981C92D93000110B74 /* GenericIndexesData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GenericIndexesData.json; sourceTree = "<group>"; };
+		A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeviceListResponse.json; sourceTree = "<group>"; };
 		A5F03F6A1C76E412006CB309 /* NewAddSceneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewAddSceneViewController.h; sourceTree = "<group>"; };
 		A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewAddSceneViewController.m; sourceTree = "<group>"; };
 		C6A3307CA8D0945BEFE53A18 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -1051,7 +1053,6 @@
 		CEF6F5041C92CD2400C68975 /* GenericIndexUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericIndexUtil.h; sourceTree = "<group>"; };
 		CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericIndexUtil.m; sourceTree = "<group>"; };
 		CEF6F5081C92CD3D00C68975 /* deviceListJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = deviceListJson.json; sourceTree = "<group>"; };
-		CEF6F5091C92CD3D00C68975 /* genericIndexJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = genericIndexJson.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1168,9 +1169,9 @@
 		1C7E7CD71A41A0990026F0BA /* SecurifiApp */ = {
 			isa = PBXGroup;
 			children = (
-				A5E8041B1C75B0A4005A8DB3 /* GenericIndexData.json */,
+				A5C68C981C92D93000110B74 /* GenericIndexesData.json */,
 				CEF6F5081C92CD3D00C68975 /* deviceListJson.json */,
-				CEF6F5091C92CD3D00C68975 /* genericIndexJson.json */,
+				A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */,
 				A545372A1C8ED35C00DC3EC8 /* scene_names.txt */,
 				A54EB0341C45004B00CF2837 /* Common-Images.xcassets */,
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
@@ -2217,7 +2218,6 @@
 				1C21DAFC1BA17A9A00E4A088 /* Login_iPhone.storyboard in Resources */,
 				A58DB3D81BB1960900717C02 /* HomeScreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3F51BB1960900717C02 /* Localizable.strings in Resources */,
-				CEF6F50D1C92CD3D00C68975 /* genericIndexJson.json in Resources */,
 				A58DB4A61BB3CD7500717C02 /* InfoPlist.strings in Resources */,
 				A58DB3D71BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3C21BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
@@ -2230,6 +2230,7 @@
 				A58DB3E81BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB4A71BB3CD7500717C02 /* Localizable.strings in Resources */,
 				1C9B1DA41A3EEA1200097D8F /* termsofuse.html in Resources */,
+				A5C68C9D1C9303D300110B74 /* DeviceListResponse.json in Resources */,
 				A58DB3D41BB1960900717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3BF1BB1960900717C02 /* Localizable.strings in Resources */,
 				A58DB3F41BB1960900717C02 /* InfoPlist.strings in Resources */,
@@ -2242,6 +2243,7 @@
 				A58DB3E91BB1960900717C02 /* HomeScreen-Localizable.strings in Resources */,
 				A58DB3CD1BB1960900717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3E41BB1960900717C02 /* Login_iPhone.strings in Resources */,
+				A5C68C9A1C92D93000110B74 /* GenericIndexesData.json in Resources */,
 				A58DB4A51BB3CD7500717C02 /* Homescreen-MainStoryboard_iPhone.strings in Resources */,
 				A58DB4A91BB3CD7500717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB4031BB1974500717C02 /* Scenes_Iphone.strings in Resources */,
@@ -2290,6 +2292,7 @@
 				A58DB2EF1BB16B9F00717C02 /* Localizable.strings in Resources */,
 				846414E01B736B80008AB07F /* AvenirLTStd-HeavyOblique.otf in Resources */,
 				846414DD1B736B80008AB07F /* AvenirLTStd-Book.otf in Resources */,
+				A5C68C991C92D93000110B74 /* GenericIndexesData.json in Resources */,
 				A58DB4711BB3CD5200717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				A58DB32C1BB16EAF00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB2EA1BB16B9F00717C02 /* termsofuse.html in Resources */,
@@ -2319,8 +2322,8 @@
 				846414E61B736B80008AB07F /* AvenirLTStd-Roman.otf in Resources */,
 				A58DB41E1BB2CD7D00717C02 /* Scenes_Iphone.strings in Resources */,
 				A545372B1C8ED35C00DC3EC8 /* scene_names.txt in Resources */,
+				A5C68C9C1C9303D300110B74 /* DeviceListResponse.json in Resources */,
 				A58DB41C1BB2CD7D00717C02 /* Login_iPhone.strings in Resources */,
-				CEF6F50C1C92CD3D00C68975 /* genericIndexJson.json in Resources */,
 				A58DB32E1BB16EAF00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB2E71BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
 				A58DB2FD1BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
@@ -2341,7 +2344,6 @@
 				A58DB4521BB3CD3F00717C02 /* InfoPlist.strings in Resources */,
 				A58DB2661BB168C400717C02 /* Login_iPhone.strings in Resources */,
 				A58DB2E41BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
-				A5E8041C1C75B0A4005A8DB3 /* GenericIndexData.json in Resources */,
 				A58DB3011BB16B9F00717C02 /* Localizable.strings in Resources */,
 				A58DB2E31BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB4571BB3CD3F00717C02 /* termsofuse.html in Resources */,
