@@ -1,42 +1,139 @@
 {
-	"1": {
-		"name": "Binary Switch",
-		"defaultIcon": "@drawable/switch_off_new",
-		"isActionDevice": "true",
-		"isActuator": "true",
-		"isTriggerDevice": "true",
-		"Indexes": {
-			"1": {
-				"row_no": "1",
-				"genericIndexID": "1"
-			}
-		}
-	},
-	"2":{
-	 	"name":"Multilevel Switch",
+    "1": {
+        "name": "Binary Switch",
+        "defaultIcon": "@drawable/switch_off_new",
+        "Indexes": {
+            "1": {
+                "row_no": "1",
+                "genericIndexID": "1"
+            }
+        }
+    },
+    "2":{
+        "name":"Multilevel Switch",
         "defaultIcon":"@drawable/dimmer",
         "isActionDevice":"true",
         "isActuator":"true",
         "isTriggerDevice":"true",
         "Indexes": {
-			"1": {
-				"row_no": "1",
-				"genericIndexID": "17"
-			}
-		}
-	},
-	"3":{
-		"name":"Z-wave Door Sensor",
+            "1": {
+                "row_no": "1",
+                "genericIndexID": "17"
+            }
+        }
+    },
+    "3":{
+        "name":"Z-wave Door Sensor",
         "defaultIcon":"@drawable/door_off",
         "isActionDevice":"false",
         "isActuator":"false",
         "isTriggerDevice":"true",
         "Indexes": {
-			"1": {
-				"row_no": "1",
-				"genericIndexID": "2"
-			}
-		}
-	}
-	
+            "1": {
+                "row_no": "1",
+                "genericIndexID": "2"
+            }
+        }
+    },
+    "6":{
+        "name":"Alarm",
+        "defaultIcon":"@drawable/alarm_icon",
+        "isActionDevice":"false",
+        "isTriggerDevice":"true",
+        "Indexes":{
+            "1":{
+                "row_no": "1",
+                "genericIndexID": "14"
+            },
+            "2":{
+                "row_no": "2",
+                "genericIndexID": "50"
+            }
+        }
+    },
+    "11":{
+        "name":"Motion Sensor",
+        "defaultIcon":"@drawable/motion_off",
+        "isActionDevice":"false",
+        "isActuator":"false",
+        "isTriggerDevice":"true",
+        "Indexes":{
+            "1":{
+                "row_no": "1",
+                "genericIndexID": "3"
+            },
+            "2":{
+                "row_no": "2",
+                "genericIndexID": "12"
+            },
+            "3":{
+                "row_no": "2",
+                "genericIndexID": "9"
+            }
+        }
+    },
+    "12":{
+        "name":"Door Sensor",
+        "defaultIcon":"@drawable/door_off",
+        "isActionDevice":"false",
+        "isActuator":"false",
+        "isTriggerDevice":"true",
+        "Indexes":{
+            "1":{
+                "row_no": "1",
+                "genericIndexID": "4"
+            },
+            "2":{
+                "row_no": "2",
+                "genericIndexID": "12"
+            },
+            "3":{
+                "row_no": "2",
+                "genericIndexID": "9"
+            }
+        }
+    },
+    "14":{
+        "name":"Water Sensor",
+        "defaultIcon":"@drawable/water_off",
+        "isActionDevice":"false",
+        "isActuator":"false",
+        "isTriggerDevice":"true",
+        "Indexes":{
+            "1":{
+                "row_no": "1",
+                "genericIndexID": "6"
+            },
+            "2":{
+                "row_no": "2",
+                "genericIndexID": "12"
+            },
+            "3":{
+                "row_no": "2",
+                "genericIndexID": "9"
+            }
+        }
+    },
+    "19":{
+        "name":"KeyFob",
+        "defaultIcon":"@drawable/keyfob_off",
+        "isActionDevice":"false",
+        "isActuator":"false",
+        "isTriggerDevice":"true",
+        "Indexes":{
+            "1":{
+                "row_no": "1",
+                "genericIndexID": "24"
+            },
+            "2":{
+                "row_no": "2",
+                "genericIndexID": "10"
+            },
+            "3":{
+                "row_no": "2",
+                "genericIndexID": "11"
+            }
+        }
+    }
+    
 }
