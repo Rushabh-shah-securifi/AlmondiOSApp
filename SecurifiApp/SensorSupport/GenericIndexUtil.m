@@ -27,7 +27,7 @@
 +(NSDictionary *)getGenericIndexJsonForDeviceId:(sfi_id) deviceID index:(int) index{
     Device *device = [Device getDeviceForID:deviceID];
     if(device){
-        int deviceType = 1;
+        int deviceType = device.type;
         NSDictionary *deviceJson = [self getDeviceJsonForType:deviceType];
         NSDictionary *indexes = deviceJson[@"Indexes"];
         NSArray *indexesKeys = indexes.allKeys;
