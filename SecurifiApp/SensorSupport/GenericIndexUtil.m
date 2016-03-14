@@ -9,6 +9,18 @@
 #import "GenericIndexUtil.h"
 #import "SecurifiToolkit.h"
 #import "Device.h"
+#import "DeviceKnownValues.h"
+
+//devices json
+#define INDEXES @"Indexes"
+#define GENERIC_INDEX_ID @"genericIndexID"
+
+//generic index
+#define VALUES @"Values"
+#define PLACEMENT @"Placement"
+#define HEADER @"Header"
+#define ICON @"Icon"
+#define LABEL @"Label"
 
 @implementation GenericIndexUtil
 
@@ -20,7 +32,7 @@
 
 +(NSDictionary*)getGenericIndexValueForID:(sfi_id)deviceId index:(int)index value:(NSString*)value{
     NSDictionary *genericIndexJson = [self getGenericIndexJsonForDeviceId:deviceId index:index];
-    NSDictionary *values = genericIndexJson[@"Values"];
+    NSDictionary *values = genericIndexJson[VALUES];
     return values[value];
 }
 
@@ -29,12 +41,12 @@
     if(device){
         int deviceType = device.type;
         NSDictionary *deviceJson = [self getDeviceJsonForType:deviceType];
-        NSDictionary *indexes = deviceJson[@"Indexes"];
+        NSDictionary *indexes = deviceJson[INDEXES];
         NSArray *indexesKeys = indexes.allKeys;
         for(NSString *key in indexesKeys){
             if(key.intValue == index){
                 NSDictionary *indexValDict = indexes[key];
-                return [self getGenericIndexJsonForIndex:indexValDict[@"genericIndexID"]];
+                return [self getGenericIndexJsonForIndex:indexValDict[GENERIC_INDEX_ID]];
             }
         }
     }
@@ -43,12 +55,12 @@
 
 +(NSDictionary*)getGenericIndexValueForGenericIndex:(NSString*)genericIndex value:(NSString*)value{
     NSDictionary *genericIndexJson = [self getGenericIndexJsonForIndex:genericIndex];
-    NSDictionary *values = genericIndexJson[@"Values"];
+    NSDictionary *values = genericIndexJson[VALUES];
     return values[value];
 }
 
 
-+(NSDictionary*)getDeviceJsonForType:(int)type{
++ (NSDictionary*)getDeviceJsonForType:(int)type{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSDictionary *devicesJson = toolkit.devicesJSON;
     NSArray *devicesJsonKeys = devicesJson.allKeys;
@@ -60,9 +72,27 @@
     return nil;
 }
 
-+(NSDictionary*)getGenericIndexJsonForIndex:(NSString*)genericIndex{
++ (NSMutableArray*)getGenericIndexesForDevice:(Device*)device{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    NSDictionary *genericIndexesJson = toolkit.indexesJSON;
+    NSMutableArray *sortedGenericIndexes = [NSMutableArray new];
+    NSDictionary *deviceJson = [self getDeviceJsonForType:device.type];
+    NSDictionary *indexes = deviceJson[INDEXES];
+    NSArray *indexesKeys = indexes.allKeys;
+    NSArray *sortedPostKeys = [indexesKeys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [(NSString *)obj1 compare:(NSString *)obj2 options:NSNumericSearch];
+    }];
+    NSLog(@"sorted keys: %@", sortedPostKeys);
+    for(NSString *sortedIndex in sortedPostKeys){
+        NSDictionary *indexValDict = indexes[sortedIndex];
+        NSLog(@"genericindex: %@", toolkit.genericIndexesJson[indexValDict[GENERIC_INDEX_ID]]);
+        [sortedGenericIndexes addObject:toolkit.genericIndexesJson[indexValDict[GENERIC_INDEX_ID]]];
+    }
+    return sortedGenericIndexes;
+}
+
++ (NSDictionary*)getGenericIndexJsonForIndex:(NSString*)genericIndex{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSDictionary *genericIndexesJson = toolkit.genericIndexesJson;
     NSArray *indexKeys = genericIndexesJson.allKeys;
     for(NSString *genericIndexKey in indexKeys){
         if(genericIndexKey.intValue == genericIndex.intValue){
@@ -71,6 +101,27 @@
     }
     return nil;
 }
+
++ (NSString*)getHeaderGenericIndexForDevice:(Device*)device{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    for(DeviceKnownValues *knownValue in device.knownValues){
+        NSDictionary *genericIndex = toolkit.genericIndexesJson[@(knownValue.genericIndex).stringValue];
+        if([genericIndex[PLACEMENT] isEqualToString:@"Header"]){
+            return @(knownValue.genericIndex).stringValue;
+            
+        }
+    }
+    return nil;
+}
+
++ (NSString *)getIconImageFromGenericIndexDic:(NSDictionary *)genericIndexDict forValue:(NSString*)value{
+    return [[genericIndexDict[VALUES] valueForKey:value] valueForKey:ICON];
+}
+
++ (NSString *)getLabelValueFromGenericIndexDict:(NSDictionary *)genericIndexDict forValue:(NSString*)value{
+    return [[genericIndexDict[VALUES] valueForKey:value] valueForKey:LABEL];
+}
+
 
 /*
 {//devices json

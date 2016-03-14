@@ -1175,7 +1175,6 @@
 				A545372A1C8ED35C00DC3EC8 /* scene_names.txt */,
 				A54EB0341C45004B00CF2837 /* Common-Images.xcassets */,
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
-				CEF6F4AA1C92CAD600C68975 /* Rules */,
 				1C7E7E2D1A41A26A0026F0BA /* Base.lproj */,
 				1C709A061B5A3157007D397C /* Link */,
 				1C7E7CF61A41A0990026F0BA /* Login */,
@@ -1437,6 +1436,7 @@
 		1C7E7E2D1A41A26A0026F0BA /* Base.lproj */ = {
 			isa = PBXGroup;
 			children = (
+				CEF6F4AA1C92CAD600C68975 /* Rules */,
 				846414CE1B736B7F008AB07F /* Fonts */,
 				1C7E7E2E1A41A26A0026F0BA /* AccountsStoryboard_iPhone.storyboard */,
 				1C7E7E301A41A26A0026F0BA /* Common-Localizable.strings */,
@@ -2000,7 +2000,8 @@
 				CEF6F4D61C92CAD600C68975 /* TimeView.h */,
 				CEF6F4D71C92CAD600C68975 /* TimeView.m */,
 			);
-			path = Rules;
+			name = Rules;
+			path = ../Rules;
 			sourceTree = "<group>";
 		};
 		CEF6F4C31C92CAD600C68975 /* Support */ = {

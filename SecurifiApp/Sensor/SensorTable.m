@@ -13,6 +13,7 @@
 #import "UIFont+Securifi.h"
 #import "ClientEditViewController.h"
 #import "CommonCell.h"
+#import "DeviceParser.h"
 
 @interface SensorTable ()<UITableViewDataSource,UITableViewDelegate,SensorCellDelegate,SFIWiFiClientListCellDelegate,CommonCellDelegate>
 @property (nonatomic,strong)NSMutableArray *currentDeviceList;
@@ -24,8 +25,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [DeviceParser parseDeviceListAndDynamicDeviceResponse:nil];
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.currentDeviceList = [NSMutableArray arrayWithArray:[toolkit deviceList:[toolkit currentAlmond].almondplusMAC]];
+    self.currentDeviceList = toolkit.devices;
     [self setDeviceValues:[toolkit deviceValuesList:[toolkit currentAlmond].almondplusMAC]];
     self.connectedDevices = toolkit.wifiClientParser;
    // [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"reuseIdentifier"];
@@ -50,13 +53,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if(section == 0)
-        return 3;
+        return self.currentDeviceList.count;
     else
     return 4;
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if(section == 0)
-        return [NSString stringWithFormat:@"Sensors (%d)",1];
+        return [NSString stringWithFormat:@"Sensors (%ld)",self.currentDeviceList.count];
     else
         return [NSString stringWithFormat:@"Network devices (%d)",1];
 }
@@ -88,14 +91,11 @@
         cell = [[SensorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuseIdentifier"];
         //cell = [[SFISensorTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
-    SFIDevice *device = [[SFIDevice alloc]init];
-    NSLog(@"cell frame %f,%f,%f,%f",cell.frame.origin.x,cell.frame.origin.y,cell.frame.size.height,cell.frame.size.width);
-    // Configure the cell...
-    cell.delegate  = self;
-   cell.device = device;
-    cell.deviceValue = [self tryCurrentDeviceValues:device.deviceID];
-    //[cell cellInfo];
-    NSLog(@" cell.device name %@",cell.device.deviceName);
+        cell.device = [self.currentDeviceList objectAtIndex:indexPath.row];
+        [cell setCellInfo];
+      cell.delegate  = self;
+    
+
     return cell;
     }
     else
@@ -105,10 +105,10 @@
     if (!cell){
         cell = [[SFIWiFiClientListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-        CommonCell * commonCell = [[CommonCell alloc]initWithFrame:CGRectMake(5, 5, cell.frame.size.width -10, cell.frame.size.height -10)];
-        commonCell.delegate = self;
-        commonCell.vCTypeEnum = table;
-        [cell addSubview:commonCell];
+//        CommonCell * commonCell = [[CommonCell alloc]initWithFrame:CGRectMake(5, 5, cell.frame.size.width -10, cell.frame.size.height -10)];
+//        commonCell.delegate = self;
+//        commonCell.vCTypeEnum = table;
+//        [cell addSubview:commonCell];
 //    if(self.connectedDevices.count <=indexPath.section)
 //        return cell;
     cell.delegate = self;
@@ -135,12 +135,14 @@
 - (SFIDeviceValue *)tryCurrentDeviceValues:(int)deviceId {
     return self.deviceValueTable[@(deviceId)];
 }
--(void)onSettingButtonClicked:(Device*)device genericIndex:(NSArray*)genericIndexArray{
+-(void)onSettingButtonClicked:(Device*)device genericIndex:(NSMutableArray*)genericIndexArray{
     NSLog(@"onSettingButtonClicked");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
     SensorEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SensorEditViewController"];
     viewController.device = device;
-    viewController.genericIndexs = genericIndexArray;
+    
+    viewController.genericIndexArray = genericIndexArray;
+    NSLog(@"genericindexarray: %@", viewController.genericIndexArray);
     [self.navigationController pushViewController:viewController animated:YES];
 
 }

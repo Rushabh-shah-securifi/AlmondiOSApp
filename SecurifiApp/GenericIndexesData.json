@@ -66,12 +66,12 @@
         "Values":{
             "true":{
                 "ToggleValue":"NaN",
-                "Icon":"mdetected",
+                "Icon":"11_motion_true",
                 "Label":"MOTION DETECTED"
             },
             "false":{
                 "ToggleValue":"NaN",
-                "Icon":"nomotion",
+                "Icon":"11_motion_false",
                 "Label":"NO MOTION"
             }
         }
@@ -92,12 +92,12 @@
         "Values":{
             "true":{
                 "ToggleValue":"NaN",
-                "Icon":"doorunlocked",
+                "Icon":"05_door_lock_unlocked",
                 "Label":"OPEN"
             },
             "false":{
                 "ToggleValue":"NaN",
-                "Icon":"doorlocked",
+                "Icon":"05_door_lock_locked",
                 "Label":"CLOSED"
             }
         }

@@ -20,7 +20,7 @@
 #import "SensorTextView.h"
 
 @interface SensorEditViewController ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate,SensorButtonViewDelegate,SensorTextViewDelegate,HorzSliderDelegate,HueColorPickerDelegate,HorzSliderDelegate,HueSliderViewDelegate>
-@property(nonatomic,strong)NSMutableArray *genericIndexArray;//can be removed
+//can be removed
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
 
 
@@ -31,184 +31,26 @@
 }
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    self.genericIndexArray = [[NSMutableArray alloc]init];
-    pickerValuesArray1 = [[NSMutableArray alloc]init];
     NSLog(@"SensorEditViewController");
-    [self getGenericIndex];
-    [self drawIndexes];
+    [super viewDidLoad];
+    pickerValuesArray1 = [[NSMutableArray alloc]init];
     
+    [self drawIndexes];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     
 }
--(void)getGenericIndex{
-    NSDictionary *value1 = @{@"ToggleValue": @"NaN",
-                              @"Icon": @"binarysensoron",
-                              @"Label": @"ACTIVE"};
-    NSDictionary *value2 = @{@"ToggleValue": @"NaN",
-                             @"Icon": @"binarysensoroff",
-                             @"Label": @"INACTIVE"};
-    NSDictionary *value3 = @{@"ToggleValue": @"false",
-                             @"Icon": @"emergency",
-                             @"Label": @"Emergency Alarm"};
-    NSDictionary *value4 = @{@"ToggleValue": @"NaN",
-                             @"Icon": @"binarysensoroff",
-                             @"Label": @"INACTIVE"};
-    NSDictionary *dic1 = @{
-                           @"IndexName": @"SENSOR BINARY",
-                           @"IndexTypeEnum": @"2",
-                           @"IndexBehaviour": @"Sensor",
-                           @"DataType": @"Bool",
-                           @"ReadOnly": @"false",
-                           @"Placement": @"Header",
-                           @"SecondaryPlacement": @"NaN",
-                           @"Layout": @"Button",
-                           @"Min": @"10",
-                           @"Max": @"20",
-                           @"Range": @"NaN",
-                           @"Unit": @"NaN",
-                           @"GroupLabel": @"SENSOR",
-                           @"Conditional": @"false",
-                           @"UseInScenes": @"false",
-                           @"DefaultVisibility": @"true",
-                           @"Values": @{
-                               @"true": value1,
-                               @"false": value2
-                               }
-                           };
-    NSDictionary *dict2 = @{
-                            @"IndexName": @"EMER_ALARM",
-                            @"IndexTypeEnum": @"11",
-                            @"IndexBehaviour": @"Actuator",
-                            @"DataType": @"Bool",
-                            @"ReadOnly": @"false",
-                            @"Placement": @"Detail",
-                            @"SecondaryPlacement": @"NaN",
-                            @"Layout": @"HueSlider",
-                            @"Min": @"1",
-                            @"Max": @"100",
-                            @"Range": @"NaN",
-                            @"Unit": @"NaN",
-                            @"GroupLabel": @"STATUS ",
-                            @"Conditional": @"false",
-                            @"UseInScenes": @"false",
-                            @"DefaultVisibility": @"false",
-                            @"Values": @{
-                                @"true": value3,
-                                @"false": value4
-                                }
-                            };
-    NSDictionary *dict3 = @{
-                            @"IndexName": @"EMER_ALARM",
-                            @"IndexTypeEnum": @"11",
-                            @"IndexBehaviour": @"Actuator",
-                            @"DataType": @"Bool",
-                            @"ReadOnly": @"false",
-                            @"Placement": @"Detail",
-                            @"SecondaryPlacement": @"NaN",
-                            @"Layout": @"Slider",
-                            @"Min": @"1",
-                            @"Max": @"100",
-                            @"Range": @"NaN",
-                            @"Unit": @"NaN",
-                            @"GroupLabel": @"STATUS ",
-                            @"Conditional": @"false",
-                            @"UseInScenes": @"false",
-                            @"DefaultVisibility": @"false",
-                            @"Values": @{
-                                    @"0": value3,
-                                    @"1": value2,
-                                    @"254": value4,
-                                    @"255": value1
-                                    }
-                            };
-    NSDictionary *dict4 = @{
-                            @"IndexName": @"EMER_ALARM",
-                            @"IndexTypeEnum": @"11",
-                            @"IndexBehaviour": @"Actuator",
-                            @"DataType": @"Bool",
-                            @"ReadOnly": @"false",
-                            @"Placement": @"Detail",
-                            @"SecondaryPlacement": @"NaN",
-                            @"Layout": @"Hue",
-                            @"Min": @"1",
-                            @"Max": @"100",
-                            @"Range": @"NaN",
-                            @"Unit": @"NaN",
-                            @"GroupLabel": @"STATUS ",
-                            @"Conditional": @"false",
-                            @"UseInScenes": @"false",
-                            @"DefaultVisibility": @"false",
-                            @"Values": @{
-                                    @"0": value3,
-                                    @"1": value2,
-                                    @"254": value4,
-                                    @"255": value1
-                                    }
-                            };
-    NSDictionary *dict5 = @{
-                            @"IndexName": @"EMER_ALARM",
-                            @"IndexTypeEnum": @"11",
-                            @"IndexBehaviour": @"Actuator",
-                            @"DataType": @"Bool",
-                            @"ReadOnly": @"false",
-                            @"Placement": @"Detail",
-                            @"SecondaryPlacement": @"NaN",
-                            @"Layout": @"textInput",
-                            @"Min": @"1",
-                            @"Max": @"100",
-                            @"Range": @"NaN",
-                            @"Unit": @"NaN",
-                            @"GroupLabel": @"STATUS ",
-                            @"Conditional": @"false",
-                            @"UseInScenes": @"false",
-                            @"DefaultVisibility": @"false",
-                            @"Values": @{
-                                    @"0": value3,
-                                    @"1": value2,
-                                    @"254": value4,
-                                    @"255": value1
-                                    }
-                            };
-    NSDictionary *dict6 = @{
-                            @"IndexName": @"EMER_ALARM",
-                            @"IndexTypeEnum": @"11",
-                            @"IndexBehaviour": @"Actuator",
-                            @"DataType": @"Bool",
-                            @"ReadOnly": @"true",
-                            @"Placement": @"Detail",
-                            @"SecondaryPlacement": @"NaN",
-                            @"Layout": @"info",
-                            @"Min": @"1",
-                            @"Max": @"100",
-                            @"Range": @"NaN",
-                            @"Unit": @"NaN",
-                            @"GroupLabel": @"STATUS ",
-                            @"Conditional": @"false",
-                            @"UseInScenes": @"false",
-                            @"DefaultVisibility": @"false",
-                            @"Values": @{
-                                    @"0": value3,
-                                    }
-                            };
 
-
-    [self.genericIndexArray addObject:dic1];
-    [self.genericIndexArray addObject:dict2];
-    [self.genericIndexArray addObject:dict3];
-    [self.genericIndexArray addObject:dict4];
-    [self.genericIndexArray addObject:dict5];
-    [self.genericIndexArray addObject:dict6];
-}
 -(void)drawIndexes{
     int yPos = 10;
     CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericIndexArray.count * 80 + 210);
     [self.indexesScroll setContentSize:scrollableSize];
     [self.indexesScroll flashScrollIndicators];
+    NSLog(@"self.genericIndexArray %@",self.genericIndexArray);
     for(NSDictionary *dict in self.genericIndexArray){
+        
         NSString *propertyName = [dict valueForKey:@"GroupLabel"];
         if([[dict valueForKey:@"ReadOnly"] isEqualToString:@"true"]){
          UIView *view = [[UIView alloc]initWithFrame:CGRectMake(10 , yPos, self.indexesScroll.frame.size.width -10, 25)];
@@ -235,7 +77,7 @@
             
             UIView *view = [[UIView alloc]initWithFrame:CGRectMake(10 , yPos, self.indexesScroll.frame.size.width -10, 60)];
             view.backgroundColor = [UIColor clearColor];
-            [self.indexesScroll addSubview:view];
+            
             UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 15)];
             label.text = propertyName;
             label.font = [UIFont securifiBoldFont];
@@ -248,10 +90,13 @@
                 horzView.device = self.device;
                 horzView.delegate = self;
                 for (NSInteger i=[[dict valueForKey:@"Min"] integerValue]; i<=[[dict valueForKey:@"Max"] integerValue]; i++) {
-                    [horzView.componentArray addObject:[NSString stringWithFormat:@"%ld",i]];}
-                    horzView.color = [SFIColors ruleBlueColor];
-                    [horzView drawSlider];
+                    [horzView.componentArray addObject:[NSString stringWithFormat:@"%ld",i]];
+                }
+                horzView.color = [SFIColors ruleBlueColor];
+                [horzView drawSlider];
+                [self.indexesScroll addSubview:view];
                 [view addSubview:horzView];
+                yPos = yPos + view.frame.size.height;
                 }
             else if ([[dict valueForKey:@"Layout"] isEqualToString:@"Button"]){
                 SensorButtonView *buttonView = [[SensorButtonView alloc]initWithFrame:CGRectMake(0,19,view.frame.size.width -10,30)];
@@ -259,7 +104,9 @@
                 buttonView.device = self.device;
                 buttonView.color = [SFIColors ruleBlueColor];
                 [buttonView drawButton:[dict valueForKey:@"Values"] color:[SFIColors ruleBlueColor]];
+                [self.indexesScroll addSubview:view];
                 [view addSubview:buttonView];
+                yPos = yPos + view.frame.size.height;
             }
             else if ([[dict valueForKey:@"Layout"] isEqualToString:@"Hue"]){
                 HueColorPicker *HueView = [[HueColorPicker alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
@@ -267,25 +114,32 @@
                 HueView.delegate = self;
                 HueView.color = [SFIColors ruleBlueColor];
                 [HueView drawHueColorPicker];
+                [self.indexesScroll addSubview:view];
                 [view addSubview:HueView];
+                yPos = yPos + view.frame.size.height;
             }
             else if ([[dict valueForKey:@"Layout"] isEqualToString:@"HueSlider"]){
                 HueSliderView *HuesliderView = [[HueSliderView alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
                 HuesliderView.componentArray = [NSMutableArray new];
                 for (NSInteger i=[[dict valueForKey:@"Min"] integerValue]; i<=[[dict valueForKey:@"Max"] integerValue]; i++) {
-                    [HuesliderView.componentArray addObject:[NSString stringWithFormat:@"%ld",i]];}
+                    [HuesliderView.componentArray addObject:[NSString stringWithFormat:@"%ld",i]];
+                }
                 HuesliderView.color = [SFIColors ruleBlueColor];
                 HuesliderView.delegate = self;
                 [HuesliderView drawSlider];
+                [self.indexesScroll addSubview:view];
                 [view addSubview:HuesliderView];
+                yPos = yPos + view.frame.size.height;
             }
             else if ([[dict valueForKey:@"Layout"] isEqualToString:@"textInput"]){
                 SensorTextView *textView = [[SensorTextView alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
                 [textView drawTextField:@"124"];
+                [self.indexesScroll addSubview:view];
                 [view addSubview:textView];
+                yPos = yPos + view.frame.size.height;
             }
 
-            yPos = yPos + view.frame.size.height;
+            
         }
         
         }

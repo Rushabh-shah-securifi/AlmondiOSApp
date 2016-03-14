@@ -10,6 +10,7 @@
 #import "Device.h"
 #import "DeviceKnownValues.h"
 #import "SensorEditViewController.h"
+#import "GenericIndexUtil.h"
 
 @implementation SensorCell
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -22,10 +23,6 @@
     return self;
 }
 - (void)awakeFromNib {
-    // Initialization code
-    NSLog(@"awake nib %@",self.device.deviceName);
-    
-    self.deviceNameLable.text = @"locked";
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -76,34 +73,21 @@
     return deviceList;
 }
 
--(void) getCellInfo{
-    NSArray *devices=[self buildDeviceList];
-    NSArray *deviceIndex = [self deviceInfo];
-    NSDictionary *indexDict = [deviceIndex objectAtIndex:0];
-    NSDictionary *deviceDict = [deviceIndex objectAtIndex:1];
-    
-    NSDictionary *cellInfo = [NSMutableDictionary new];
-    
-    for(Device *device in devices ){
-        NSDictionary *deviceMetaData= [deviceDict valueForKey: @(device.type).stringValue];
-        NSArray *indexes=  [deviceMetaData valueForKey: @"indexes"];
-        for(int i =0;i < indexes.count ; i++){
-            NSString *genericIndex=[indexes objectAtIndex:i];
-            
-            
-      
-            
-            NSDictionary *indexMetaData= [indexDict valueForKey: genericIndex];
-            NSDictionary *indexValues=[indexMetaData valueForKey:@"Values"];
-            
-            
-        }
-    }
+-(void) setCellInfo{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSString *genericIndex = [GenericIndexUtil getHeaderGenericIndexForDevice:self.device];
+    NSLog(@"cell genericindex: %@", genericIndex);
+    NSDictionary *genericIndexDict = toolkit.genericIndexesJson[genericIndex];
+//    NSLog(@"cell generic index dict: %@", genericIndexDict);
+    NSString *value = [Device getValueForGenericIndex:genericIndex forDevice:self.device];
+    NSLog(@"value: %@", value);
+    self.deviceImage.image = [UIImage imageNamed:[GenericIndexUtil getIconImageFromGenericIndexDic:genericIndexDict forValue:value]];
+    self.deviceNameLable.text = self.device.name;
+    self.deviceStatusLabel.text = [GenericIndexUtil getLabelValueFromGenericIndexDict:genericIndexDict forValue:value];
+    NSLog(@"imagen name: %@, label: %@", [GenericIndexUtil getIconImageFromGenericIndexDic:genericIndexDict forValue:value],[GenericIndexUtil getLabelValueFromGenericIndexDict:genericIndexDict forValue:value] );
     
 }
-- (SFIDeviceKnownValues *)tryGetCurrentKnownValuesForDeviceState {
-    return [self.deviceValue knownValuesForProperty:self.device.statePropertyType];
-}
+
 -(NSDictionary*)getDeviceStatus:(SFIDeviceKnownValues *)values{
     NSDictionary *deviceInfo = [NSDictionary new];
     SecurifiToolkit *toolKit = [SecurifiToolkit sharedInstance];
@@ -113,31 +97,10 @@
     return deviceInfo;
 }
 - (IBAction)onSettingClicked:(id)sender {
-    NSLog(@" setting");
-    Device *device=[Device new];
-    device.name=@"Test1";
-    device.ID=1;
-    device.type=1;
-    device.location=@"location";
-    DeviceKnownValues *value1= [DeviceKnownValues new];
-    value1.index=1;
-    value1.genericIndex=1;
-    value1.value=@"true";
-    
-    device.knownValues=[NSMutableArray new];
-    [device.knownValues addObject:value1];
-    
-    DeviceKnownValues *value2= [DeviceKnownValues new];
-    value1.index=2;
-    value1.genericIndex=2;
-    value1.value=@"false";
-    [device.knownValues addObject:value2];
-    
-    NSArray *genericIndexArray = [[NSArray alloc]initWithObjects:@"1",@"2",nil];
-    
-    [self.delegate onSettingButtonClicked:device genericIndex:genericIndexArray];
-
+    NSMutableArray *genericIndexes = [GenericIndexUtil getGenericIndexesForDevice:self.device];
+    [self.delegate onSettingButtonClicked:self.device genericIndex:genericIndexes];
 }
+
 -(NSArray*)deviceInfo{
    
     NSDictionary *deviceIndex1 = @{
