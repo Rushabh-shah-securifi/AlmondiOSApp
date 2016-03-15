@@ -101,20 +101,16 @@
     else
     {
     static NSString *CellIdentifier = @"wifi";
-    SFIWiFiClientListCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (!cell){
-        cell = [[SFIWiFiClientListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-//        CommonCell * commonCell = [[CommonCell alloc]initWithFrame:CGRectMake(5, 5, cell.frame.size.width -10, cell.frame.size.height -10)];
-//        commonCell.delegate = self;
-//        commonCell.vCTypeEnum = table;
-//        [cell addSubview:commonCell];
-//    if(self.connectedDevices.count <=indexPath.section)
-//        return cell;
-    cell.delegate = self;
-//    [cell createClientCell:self.connectedDevices[indexPath.section]];
-//    [cell drawIndexes];
-    cell.expandable = YES;
+        CommonCell * commonCell = [[CommonCell alloc]initWithFrame:CGRectMake(5, 0, cell.frame.size.width -10, cell.frame.size.height -5)];
+        commonCell.delegate = self;
+        commonCell.cellType = ClientTable_Cell;
+        
+        [cell addSubview:commonCell];
+
     return cell;
     }
 }
@@ -146,7 +142,7 @@
     [self.navigationController pushViewController:viewController animated:YES];
 
 }
-
+#pragma mark clientCell delegate
 - (void)btnSettingTapped:(NSDictionary *)connectedDevice index:(NSArray*)indexArray{
     NSLog(@"onSettingButtonClicked");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];

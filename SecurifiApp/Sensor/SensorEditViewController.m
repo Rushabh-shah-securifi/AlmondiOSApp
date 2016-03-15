@@ -19,6 +19,27 @@
 #import "HueSliderView.h"
 #import "SensorTextView.h"
 
+#define GROUPLABEL @"GroupLabel"
+#define READONLY @"ReadOnly"
+#define TRUE_ @"true"
+#define SLIDER @"Slider"
+#define LAYOUT @"Layout"
+#define BUTTON @"Button"
+#define VALUES @"Values"
+#define HUE @"Hue"
+#define HUESLIDER @"HueSlider"
+#define TEXTINPUT @"textInput"
+#define MINIMUM @"Min"
+#define MAXIMUM @"Max"
+
+
+
+
+
+
+
+
+
 @interface SensorEditViewController ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate,SensorButtonViewDelegate,SensorTextViewDelegate,HorzSliderDelegate,HueColorPickerDelegate,HorzSliderDelegate,HueSliderViewDelegate>
 //can be removed
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
@@ -51,8 +72,8 @@
     NSLog(@"self.genericIndexArray %@",self.genericIndexArray);
     for(NSDictionary *dict in self.genericIndexArray){
         
-        NSString *propertyName = [dict valueForKey:@"GroupLabel"];
-        if([[dict valueForKey:@"ReadOnly"] isEqualToString:@"true"]){
+        NSString *propertyName = [dict valueForKey:GROUPLABEL];
+        if([[dict valueForKey:READONLY] isEqualToString:TRUE_]){
          UIView *view = [[UIView alloc]initWithFrame:CGRectMake(10 , yPos, self.indexesScroll.frame.size.width -10, 25)];
             view.backgroundColor = [UIColor clearColor];
             [self.indexesScroll addSubview:view];
@@ -84,12 +105,14 @@
             label.textColor = [UIColor whiteColor];
             
             [view addSubview:label];
-            if([[dict valueForKey:@"Layout"] isEqualToString:@"Slider"]){
+            if([[dict valueForKey:LAYOUT] isEqualToString:SLIDER]){
                 HorzSlider *horzView = [[HorzSlider alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
                 horzView.componentArray = [NSMutableArray new];
                 horzView.device = self.device;
                 horzView.delegate = self;
-                for (NSInteger i=[[dict valueForKey:@"Min"] integerValue]; i<=[[dict valueForKey:@"Max"] integerValue]; i++) {
+                NSDictionary *formattedValues = [[dict valueForKey:VALUES] valueForKey:@"Formatter"];
+                NSLog(@"formattedValues %@ ",formattedValues);
+                for (NSInteger i=[[formattedValues valueForKey:MINIMUM] integerValue]; i<=[[formattedValues valueForKey:MAXIMUM] integerValue]; i++) {
                     [horzView.componentArray addObject:[NSString stringWithFormat:@"%ld",i]];
                 }
                 horzView.color = [SFIColors ruleBlueColor];
@@ -98,17 +121,17 @@
                 [view addSubview:horzView];
                 yPos = yPos + view.frame.size.height;
                 }
-            else if ([[dict valueForKey:@"Layout"] isEqualToString:@"Button"]){
+            else if ([[dict valueForKey:LAYOUT] isEqualToString:BUTTON]){
                 SensorButtonView *buttonView = [[SensorButtonView alloc]initWithFrame:CGRectMake(0,19,view.frame.size.width -10,30)];
-                buttonView.deviceValueDict = [dict valueForKey:@"Values"];
+                buttonView.deviceValueDict = [dict valueForKey:VALUES];
                 buttonView.device = self.device;
                 buttonView.color = [SFIColors ruleBlueColor];
-                [buttonView drawButton:[dict valueForKey:@"Values"] color:[SFIColors ruleBlueColor]];
+                [buttonView drawButton:[dict valueForKey:VALUES] color:[SFIColors ruleBlueColor]];
                 [self.indexesScroll addSubview:view];
                 [view addSubview:buttonView];
                 yPos = yPos + view.frame.size.height;
             }
-            else if ([[dict valueForKey:@"Layout"] isEqualToString:@"Hue"]){
+            else if ([[dict valueForKey:LAYOUT] isEqualToString:HUE]){
                 HueColorPicker *HueView = [[HueColorPicker alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
                 HueView.device = self.device;// we should match index
                 HueView.delegate = self;
@@ -118,10 +141,12 @@
                 [view addSubview:HueView];
                 yPos = yPos + view.frame.size.height;
             }
-            else if ([[dict valueForKey:@"Layout"] isEqualToString:@"HueSlider"]){
+            else if ([[dict valueForKey:LAYOUT] isEqualToString:HUESLIDER]){
                 HueSliderView *HuesliderView = [[HueSliderView alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
                 HuesliderView.componentArray = [NSMutableArray new];
-                for (NSInteger i=[[dict valueForKey:@"Min"] integerValue]; i<=[[dict valueForKey:@"Max"] integerValue]; i++) {
+                NSDictionary *formattedValues = [[dict valueForKey:VALUES] valueForKey:@"Formatter"];
+                NSLog(@"formattedValues %@ ",formattedValues);
+                for (NSInteger i=[[formattedValues valueForKey:MINIMUM] integerValue]; i<=[[formattedValues valueForKey:MAXIMUM] integerValue]; i++) {
                     [HuesliderView.componentArray addObject:[NSString stringWithFormat:@"%ld",i]];
                 }
                 HuesliderView.color = [SFIColors ruleBlueColor];
@@ -131,7 +156,7 @@
                 [view addSubview:HuesliderView];
                 yPos = yPos + view.frame.size.height;
             }
-            else if ([[dict valueForKey:@"Layout"] isEqualToString:@"textInput"]){
+            else if ([[dict valueForKey:LAYOUT] isEqualToString:TEXTINPUT]){
                 SensorTextView *textView = [[SensorTextView alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
                 [textView drawTextField:@"124"];
                 [self.indexesScroll addSubview:view];

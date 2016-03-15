@@ -7,13 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-typedef NS_ENUM(NSUInteger, VCType) {
-    table,
-    edit,
-    editProperties
+typedef NS_ENUM(NSUInteger, CellType) {
+    SensorTable_Cell,
+    ClientTable_Cell,
+    SensorEdit_Cell,
+    ClientEdit_Cell,
+    ClientEditProperties_cell
+    
 };
 @protocol CommonCellDelegate <NSObject>
 -(void)delegateSensorTable;
+-(void)delegateClientEditTable;
 
 @end
 @interface CommonCell : UIView
@@ -23,7 +27,8 @@ typedef NS_ENUM(NSUInteger, VCType) {
 @property (weak, nonatomic) IBOutlet UILabel *deviceName;
 @property (weak, nonatomic) IBOutlet UILabel *deviceValue;
 @property (weak, nonatomic) IBOutlet UIView *view;
-@property (nonatomic)VCType vCTypeEnum;
+@property (nonatomic)CellType cellType;
 @property (nonatomic)id<CommonCellDelegate> delegate;
+-(void)setUpClientCell;
 
 @end

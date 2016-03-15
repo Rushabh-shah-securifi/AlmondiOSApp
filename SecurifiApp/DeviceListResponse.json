@@ -2,6 +2,39 @@
     "MobileInternalIndex":"<random key>",
     "CommandType":"DeviceList",
     "Devices":{
+        "19": {
+            "Name": "NestThermostat",
+            "FriendlyDeviceType": "Thermostat",
+            "Type": "12",
+            "deviceid": "2",
+            "Location": "Main door",
+            "DeviceValues": {
+                "1": {
+                    "Index": "1",
+                    "Name": "MODE",
+                    "Value": "Auto",
+                    "GenericIndex": "56"
+                },
+                "2": {
+                    "Index": "2",
+                    "Name": "TARGET",
+                    "Value": "92",
+                    "GenericIndex": "57"
+                },
+                "3": {
+                    "Index": "3",
+                    "Name": "RANGELOW",
+                    "Value": "25",
+                    "GenericIndex": "58"
+                }
+                "4": {
+                    "Index": "4",
+                    "Name": "RANGE",
+                    "Value": "75",
+                    "GenericIndex": "59"
+                }
+            }
+        },
             "18": {
                 "Name": "Contact switch",
                 "FriendlyDeviceType": "ContactSwitch",
@@ -40,7 +73,7 @@
                         "Index": "1",
                         "Name": "STATE",
                         "Value": "false",
-                        "GenericIndex": "3"
+                        "GenericIndex": "30"
                     },
                     "2": {
                         "Index": "2",
@@ -157,7 +190,7 @@
                         "Index": "1",
                         "Name": "ARMMODE",
                         "Value": "0",
-                        "GenericIndex": "24"
+                        "GenericIndex": "30"
                     },
                     "2": {
                         "Index": "2",

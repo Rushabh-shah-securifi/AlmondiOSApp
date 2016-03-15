@@ -45,16 +45,19 @@
 }
 
 - (IBAction)settingButtonClicked:(id)sender {
-    if(self.vCTypeEnum == table){
+    if(self.cellType == ClientTable_Cell){
         [self.delegate delegateSensorTable];
     }
-    else if (self.vCTypeEnum == edit){
-        
+    else if (self.cellType == SensorEdit_Cell){
+        [self.delegate delegateClientEditTable];
     }
     else {
         
     }
     
+}
+-(void)setUpClientCell{
+    // set up images and labels for clients
 }
 
 @end

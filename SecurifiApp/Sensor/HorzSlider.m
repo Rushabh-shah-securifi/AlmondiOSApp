@@ -61,7 +61,7 @@
 }
 
 - (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {
-    [self setDelegate:self.componentArray[index]];
+//    [self setDelegate:self.componentArray[index]];
 }
 -(void)setDelegate:(NSString*)finalValue{
     [self.delegate updatePickerValue:finalValue];

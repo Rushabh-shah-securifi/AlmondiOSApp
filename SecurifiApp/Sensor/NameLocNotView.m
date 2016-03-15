@@ -50,6 +50,7 @@
     Name.textColor = [UIColor whiteColor];
     [self addSubview:Name];
     SensorButtonView *sensorbuttons = [[SensorButtonView alloc]initWithFrame:CGRectMake(0,19,self.frame.size.width -10,30)];
+    sensorbuttons.color = [SFIColors ruleBlueColor];
     [sensorbuttons drawButton:array selectedValue:5];
     [self addSubview:sensorbuttons];
     

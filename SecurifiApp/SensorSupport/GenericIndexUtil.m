@@ -84,6 +84,7 @@
     NSLog(@"sorted keys: %@", sortedPostKeys);
     for(NSString *sortedIndex in sortedPostKeys){
         NSDictionary *indexValDict = indexes[sortedIndex];
+        NSLog(@" ondexValDict %@",indexValDict);
         NSLog(@"genericindex: %@", toolkit.genericIndexesJson[indexValDict[GENERIC_INDEX_ID]]);
         [sortedGenericIndexes addObject:toolkit.genericIndexesJson[indexValDict[GENERIC_INDEX_ID]]];
     }
