@@ -63,6 +63,7 @@
 + (NSDictionary*)getDeviceJsonForType:(int)type{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSDictionary *devicesJson = toolkit.devicesJSON;
+    NSLog(@"devicesJson %@",devicesJson);
     NSArray *devicesJsonKeys = devicesJson.allKeys;
     for(NSString *deviceTypeKey in devicesJsonKeys){
         if(deviceTypeKey.intValue == type){
@@ -76,8 +77,10 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSMutableArray *sortedGenericIndexes = [NSMutableArray new];
     NSDictionary *deviceJson = [self getDeviceJsonForType:device.type];
+    NSLog(@" deviceJson %d ",device.type);
     NSDictionary *indexes = deviceJson[INDEXES];
     NSArray *indexesKeys = indexes.allKeys;
+
     NSArray *sortedPostKeys = [indexesKeys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         return [(NSString *)obj1 compare:(NSString *)obj2 options:NSNumericSearch];
     }];

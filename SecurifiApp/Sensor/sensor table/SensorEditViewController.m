@@ -12,12 +12,12 @@
 #import "V8HorizontalPickerView.h"
 #import "SFIPickerIndicatorView1.h"
 #import "SFIColors.h"
-#import "NameLocNotView.h"
 #import "HorzSlider.h"
 #import "SensorButtonView.h"
 #import "HueColorPicker.h"
 #import "HueSliderView.h"
 #import "SensorTextView.h"
+#import "CommonCell.h"
 
 #define GROUPLABEL @"GroupLabel"
 #define READONLY @"ReadOnly"
@@ -40,7 +40,7 @@
 
 
 
-@interface SensorEditViewController ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate,SensorButtonViewDelegate,SensorTextViewDelegate,HorzSliderDelegate,HueColorPickerDelegate,HorzSliderDelegate,HueSliderViewDelegate>
+@interface SensorEditViewController ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate,SensorButtonViewDelegate,SensorTextViewDelegate,HorzSliderDelegate,HueColorPickerDelegate,HorzSliderDelegate,HueSliderViewDelegate,CommonCellDelegate>
 //can be removed
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
 
@@ -55,7 +55,11 @@
     NSLog(@"SensorEditViewController");
     [super viewDidLoad];
     pickerValuesArray1 = [[NSMutableArray alloc]init];
-    
+    CommonCell *commonView = [[CommonCell alloc]initWithFrame:CGRectMake(8, 10, self.view.frame.size.width -16, 60)];
+    commonView.delegate = self;
+    commonView.cellType = SensorEdit_Cell;
+    // set up images label and name
+    [self.view addSubview:commonView];
     [self drawIndexes];
 }
 
@@ -168,19 +172,46 @@
         }
         
         }
-    NSArray *array = @[@"NAME",@"LOCATION",@"NOTIFY ME"];
-    for(NSString *label in array){
-        NameLocNotView *nameAndLocView = [[NameLocNotView alloc]initWithFrame:CGRectMake(10, yPos, self.indexesScroll.frame.size.width -10, 60)];
-        
-        if([label isEqualToString:@"NOTIFY ME"])
-            [nameAndLocView notiFicationField:label andDevice:self.device color:[SFIColors ruleBlueColor]];
-        else
-        [nameAndLocView drawNameAndLoc:self.device.name labelText:label];
-        
-        yPos = yPos + 60;
-        [self.indexesScroll addSubview:nameAndLocView];
-        
-    }
+    [self nameLocNotifyViews:yPos];
+}
+
+-(int)nameLocField:(int)yPos andLabel:(NSString*)label{
+    UIView *viewName = [[UIView alloc]initWithFrame:CGRectMake(10 , yPos, self.indexesScroll.frame.size.width -10, 60)];
+    UILabel *Name = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 15)];
+    Name.text = @"NAME";
+    Name.font = [UIFont securifiBoldFont];
+    Name.textColor = [UIColor whiteColor];
+    [viewName addSubview:Name];
+    
+    SensorTextView *name = [[SensorTextView alloc]initWithFrame:CGRectMake(0,10,viewName.frame.size.width -10,30)];
+    [name drawTextField:self.device.name];
+    [self.indexesScroll addSubview:viewName];
+    [viewName addSubview:name];
+   return yPos = yPos + viewName.frame.size.height;
+}
+
+-(void)notifyField:(int)yPos{
+    UIView *viewNotify = [[UIView alloc]initWithFrame:CGRectMake(10 , yPos, self.indexesScroll.frame.size.width -10, 60)];
+    viewNotify.backgroundColor = [UIColor clearColor];
+    UILabel *notify = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 15)];
+    notify.text = @"NOTIFY ME";
+    notify.font = [UIFont securifiBoldFont];
+    notify.textColor = [UIColor whiteColor];
+    [viewNotify addSubview:notify];
+    
+    SensorButtonView *sensorbuttons = [[SensorButtonView alloc]initWithFrame:CGRectMake(0,20,viewNotify.frame.size.width -10,30)];
+    NSArray *array = @[@"Always",@"When I'm away",@"Never"];
+    sensorbuttons.color = [SFIColors ruleBlueColor];
+    [sensorbuttons drawButton:array selectedValue:5];
+    [self.indexesScroll addSubview:viewNotify];
+    [viewNotify addSubview:sensorbuttons];
+
+}
+-(void)nameLocNotifyViews:(int)yPos{
+    yPos = [self nameLocField:yPos andLabel:@"NAME"];
+    yPos = [self nameLocField:yPos andLabel:@"LOCATION"];
+    [self notifyField:yPos];
+
 }
 - (IBAction)onSeettingButtonClicked:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];

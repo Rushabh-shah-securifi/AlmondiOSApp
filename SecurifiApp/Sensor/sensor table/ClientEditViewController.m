@@ -28,8 +28,6 @@
 #import "CommonCell.h"
 
 @interface ClientEditViewController ()<UITableViewDelegate,UITableViewDataSource,CommonCellDelegate>
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollViewClientFields;
-
 @property (weak, nonatomic) IBOutlet UITableView *clientPropertiesTable;
 @property (nonatomic)NSMutableArray *orderedArray ;
 @property (nonatomic)NSDictionary *clientDeviceDict;
@@ -40,7 +38,7 @@ NSMutableArray * blockedDaysArray;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self dummyNetWorkDeviceList];
-    CommonCell *commonView = [[CommonCell alloc]initWithFrame:CGRectMake(5, 18, self.view.frame.size.width -10, 70)];
+    CommonCell *commonView = [[CommonCell alloc]initWithFrame:CGRectMake(5, 10, self.view.frame.size.width -10, 60)];
     commonView.delegate = self;
     commonView.cellType = ClientEdit_Cell;
     // set up images label and name
@@ -48,6 +46,7 @@ NSMutableArray * blockedDaysArray;
 }
 #pragma mark common cell delegate
 -(void)delegateClientEditTable{
+    NSLog(@"delegateClientEditTable ");
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)didReceiveMemoryWarning {

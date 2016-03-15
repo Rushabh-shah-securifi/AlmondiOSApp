@@ -7,6 +7,7 @@
 //
 
 #import "CommonCell.h"
+#import "GenericIndexUtil.h"
 
 @implementation CommonCell
 
@@ -48,16 +49,19 @@
     if(self.cellType == ClientTable_Cell){
         [self.delegate delegateSensorTable];
     }
-    else if (self.cellType == SensorEdit_Cell){
+    else if (self.cellType == ClientEdit_Cell){
         [self.delegate delegateClientEditTable];
     }
-    else {
-        
+    else if(self.cellType == SensorTable_Cell){
+         NSMutableArray *genericIndexes = [GenericIndexUtil getGenericIndexesForDevice:self.device];
+        [self.delegate delegateSensorTable:self.device withGenericIndex:(NSMutableArray *)genericIndexes];
     }
     
 }
 -(void)setUpClientCell{
     // set up images and labels for clients
 }
-
+-(void)setUPSensorCell{
+    // setup images
+}
 @end

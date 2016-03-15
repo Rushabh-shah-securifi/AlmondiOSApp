@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Device.h"
 typedef NS_ENUM(NSUInteger, CellType) {
     SensorTable_Cell,
     ClientTable_Cell,
@@ -16,8 +17,10 @@ typedef NS_ENUM(NSUInteger, CellType) {
     
 };
 @protocol CommonCellDelegate <NSObject>
+@optional
 -(void)delegateSensorTable;
 -(void)delegateClientEditTable;
+-(void)delegateSensorTable:(Device*)device withGenericIndex:(NSMutableArray *)genericIndexes;
 
 @end
 @interface CommonCell : UIView
@@ -28,7 +31,10 @@ typedef NS_ENUM(NSUInteger, CellType) {
 @property (weak, nonatomic) IBOutlet UILabel *deviceValue;
 @property (weak, nonatomic) IBOutlet UIView *view;
 @property (nonatomic)CellType cellType;
-@property (nonatomic)id<CommonCellDelegate> delegate;
+@property (weak,nonatomic)id<CommonCellDelegate> delegate;
+@property (nonatomic)Device *device;
+@property (nonatomic)UIColor *color;
 -(void)setUpClientCell;
+-(void)setUPSensorCell;
 
 @end

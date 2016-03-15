@@ -7,18 +7,18 @@
 //
 
 #import "SensorTable.h"
-#import "SensorCell.h"
 #import "SensorEditViewController.h"
-#import "SFIWiFiClientListCell.h"
 #import "UIFont+Securifi.h"
 #import "ClientEditViewController.h"
 #import "CommonCell.h"
 #import "DeviceParser.h"
+#define NO_ALMOND @"NO ALMOND"
 
-@interface SensorTable ()<UITableViewDataSource,UITableViewDelegate,SensorCellDelegate,SFIWiFiClientListCellDelegate,CommonCellDelegate>
+@interface SensorTable ()<UITableViewDataSource,UITableViewDelegate,CommonCellDelegate>
 @property (nonatomic,strong)NSMutableArray *currentDeviceList;
 @property (nonatomic,strong)NSDictionary *deviceValueTable;
 @property(nonatomic, strong) NSMutableArray *connectedDevices;
+@property SFIAlmondPlus *currentAlmond;
 @end
 
 @implementation SensorTable
@@ -26,18 +26,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [DeviceParser parseDeviceListAndDynamicDeviceResponse:nil];
+    self.tableView.separatorColor = [UIColor clearColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
+    self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentDeviceList = toolkit.devices;
+    NSLog(@" self.currentDeviceList %ld",self.currentDeviceList.count);
     [self setDeviceValues:[toolkit deviceValuesList:[toolkit currentAlmond].almondplusMAC]];
     self.connectedDevices = toolkit.wifiClientParser;
-   // [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"reuseIdentifier"];
+    self.currentAlmond = [toolkit currentAlmond];
+    if (self.currentAlmond == nil) {
+        [self markTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
+        [self markAlmondMac:NO_ALMOND];
+    }
+    else {
+        [self markAlmondMac:self.currentAlmond.almondplusMAC];
+        [self markTitle: self.currentAlmond.almondplusName];
+    }
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -86,15 +93,18 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"cellForRowAtIndexPath");
     if(indexPath.section == 0){
-    SensorCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
     if (cell == nil) {
-        cell = [[SensorCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuseIdentifier"];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuseIdentifier"];
         //cell = [[SFISensorTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
-        cell.device = [self.currentDeviceList objectAtIndex:indexPath.row];
-        [cell setCellInfo];
-      cell.delegate  = self;
-    
+        CommonCell *sensorCell = [[CommonCell alloc]initWithFrame:CGRectMake(5, 0, self.view.frame.size.width -10, 60)];
+        sensorCell.cellType = SensorTable_Cell;
+        sensorCell.delegate = self;
+        sensorCell.device = [self.currentDeviceList objectAtIndex:indexPath.row];
+        sensorCell.deviceName.text = sensorCell.device.name;
+        [sensorCell setUPSensorCell];
+        [cell addSubview:sensorCell];
 
     return cell;
     }
@@ -131,14 +141,12 @@
 - (SFIDeviceValue *)tryCurrentDeviceValues:(int)deviceId {
     return self.deviceValueTable[@(deviceId)];
 }
--(void)onSettingButtonClicked:(Device*)device genericIndex:(NSMutableArray*)genericIndexArray{
+-(void)delegateSensorTable:(Device*)device withGenericIndex:(NSMutableArray *)genericIndexes{
     NSLog(@"onSettingButtonClicked");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
     SensorEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SensorEditViewController"];
     viewController.device = device;
-    
-    viewController.genericIndexArray = genericIndexArray;
-    NSLog(@"genericindexarray: %@", viewController.genericIndexArray);
+    viewController.genericIndexArray = genericIndexes;
     [self.navigationController pushViewController:viewController animated:YES];
 
 }

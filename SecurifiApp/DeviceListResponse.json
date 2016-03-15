@@ -2,36 +2,42 @@
     "MobileInternalIndex":"<random key>",
     "CommandType":"DeviceList",
     "Devices":{
-        "19": {
-            "Name": "NestThermostat",
+        "111": {
+            "Name": "Thermostat21",
             "FriendlyDeviceType": "Thermostat",
-            "Type": "12",
-            "deviceid": "2",
+            "Type": "111",
+            "deviceid": "111",
             "Location": "Main door",
             "DeviceValues": {
                 "1": {
                     "Index": "1",
-                    "Name": "MODE",
+                    "Name": "SETPOINT COOLING",
                     "Value": "Auto",
-                    "GenericIndex": "56"
+                    "GenericIndex": "38"
                 },
                 "2": {
                     "Index": "2",
-                    "Name": "TARGET",
+                    "Name": "FAN MODE",
                     "Value": "92",
-                    "GenericIndex": "57"
+                    "GenericIndex": "39"
                 },
                 "3": {
                     "Index": "3",
                     "Name": "RANGELOW",
                     "Value": "25",
                     "GenericIndex": "58"
-                }
+                },
                 "4": {
                     "Index": "4",
                     "Name": "RANGE",
                     "Value": "75",
-                    "GenericIndex": "59"
+                    "GenericIndex": "32"
+                },
+                "5": {
+                    "Index": "4",
+                    "Name": "SETPOINT",
+                    "Value": "75",
+                    "GenericIndex": "30"
                 }
             }
         },

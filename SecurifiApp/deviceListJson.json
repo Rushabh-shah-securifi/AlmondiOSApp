@@ -144,7 +144,7 @@
         "Indexes":{
             "1":{
                 "row_no": "1",
-                "ge nericIndexID": "30"
+                "genericIndexID": "30"
             },
             "2":{
                 "row_no": "2",
@@ -153,6 +153,36 @@
             "3":{
                 "row_no": "2",
                 "genericIndexID": "11"
+            }
+        }
+    },
+    
+    "111":{
+        "name":"myDevice",
+        "defaultIcon":"@drawable/keyfob_off",
+        "isActionDevice":"false",
+        "isActuator":"false",
+        "isTriggerDevice":"true",
+        "Indexes":{
+            "1":{
+                "row_no": "1",
+                "genericIndexID": "38"
+            },
+            "2":{
+                "row_no": "2",
+                "genericIndexID": "39"
+            },
+            "3":{
+                "row_no": "3",
+                "genericIndexID": "58"
+            },
+            "4":{
+                "row_no": "4",
+                "genericIndexID": "32"
+            },
+            "5":{
+                "row_no": "5",
+                "genericIndexID": "30"
             }
         }
     }
