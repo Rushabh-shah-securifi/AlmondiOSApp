@@ -452,9 +452,6 @@
 		CEEC42191C98560500A2C35D /* ClientPropertiesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC420C1C98560500A2C35D /* ClientPropertiesCell.m */; settings = {ASSET_TAGS = (); }; };
 		CEEC421A1C98560500A2C35D /* SensorEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC420E1C98560500A2C35D /* SensorEditViewController.m */; settings = {ASSET_TAGS = (); }; };
 		CEEC421B1C98560500A2C35D /* SensorTable.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42101C98560500A2C35D /* SensorTable.m */; settings = {ASSET_TAGS = (); }; };
-		CEEC421C1C98560500A2C35D /* SensorTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42121C98560500A2C35D /* SensorTableCell.m */; settings = {ASSET_TAGS = (); }; };
-		CEEC421D1C98560500A2C35D /* SensorTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42141C98560500A2C35D /* SensorTableViewController.m */; settings = {ASSET_TAGS = (); }; };
-		CEEC421E1C98560500A2C35D /* SensorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42161C98560500A2C35D /* SensorViewController.m */; settings = {ASSET_TAGS = (); }; };
 		CEEC422D1C98560D00A2C35D /* CommonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42211C98560D00A2C35D /* CommonCell.m */; settings = {ASSET_TAGS = (); }; };
 		CEEC422E1C98560D00A2C35D /* CommonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEEC42221C98560D00A2C35D /* CommonCell.xib */; settings = {ASSET_TAGS = (); }; };
 		CEEC422F1C98560D00A2C35D /* HorzSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42241C98560D00A2C35D /* HorzSlider.m */; settings = {ASSET_TAGS = (); }; };
@@ -987,12 +984,6 @@
 		CEEC420E1C98560500A2C35D /* SensorEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorEditViewController.m; sourceTree = "<group>"; };
 		CEEC420F1C98560500A2C35D /* SensorTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorTable.h; sourceTree = "<group>"; };
 		CEEC42101C98560500A2C35D /* SensorTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorTable.m; sourceTree = "<group>"; };
-		CEEC42111C98560500A2C35D /* SensorTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorTableCell.h; sourceTree = "<group>"; };
-		CEEC42121C98560500A2C35D /* SensorTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorTableCell.m; sourceTree = "<group>"; };
-		CEEC42131C98560500A2C35D /* SensorTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorTableViewController.h; sourceTree = "<group>"; };
-		CEEC42141C98560500A2C35D /* SensorTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorTableViewController.m; sourceTree = "<group>"; };
-		CEEC42151C98560500A2C35D /* SensorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorViewController.h; sourceTree = "<group>"; };
-		CEEC42161C98560500A2C35D /* SensorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorViewController.m; sourceTree = "<group>"; };
 		CEEC42201C98560D00A2C35D /* CommonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonCell.h; sourceTree = "<group>"; };
 		CEEC42211C98560D00A2C35D /* CommonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonCell.m; sourceTree = "<group>"; };
 		CEEC42221C98560D00A2C35D /* CommonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommonCell.xib; sourceTree = "<group>"; };
@@ -1957,12 +1948,6 @@
 				CEEC420E1C98560500A2C35D /* SensorEditViewController.m */,
 				CEEC420F1C98560500A2C35D /* SensorTable.h */,
 				CEEC42101C98560500A2C35D /* SensorTable.m */,
-				CEEC42111C98560500A2C35D /* SensorTableCell.h */,
-				CEEC42121C98560500A2C35D /* SensorTableCell.m */,
-				CEEC42131C98560500A2C35D /* SensorTableViewController.h */,
-				CEEC42141C98560500A2C35D /* SensorTableViewController.m */,
-				CEEC42151C98560500A2C35D /* SensorViewController.h */,
-				CEEC42161C98560500A2C35D /* SensorViewController.m */,
 				CEEBE61E1C902D0400DC3E3F /* clientTypeCell.h */,
 				CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */,
 			);
@@ -2746,7 +2731,6 @@
 				1C2F60981B69E69D001CCA34 /* SFIScenesTableViewCell.m in Sources */,
 				CEF6F4DC1C92CAD600C68975 /* AddTriggerAndAddAction.m in Sources */,
 				1C2F15261BA7FB67009DB175 /* SFIMessageViewController.m in Sources */,
-				CEEC421E1C98560500A2C35D /* SensorViewController.m in Sources */,
 				CEF6F4EE1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */,
 				1DF034DCCD17E1C36BA3BF00 /* SensorSupport.m in Sources */,
 				CEF6F5061C92CD2400C68975 /* GenericIndexUtil.m in Sources */,
@@ -2767,9 +2751,7 @@
 				CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */,
 				8467D8021BCBE33D00886D18 /* SFISensorDetailEditViewController.m in Sources */,
 				1C2F60941B69E69D001CCA34 /* SFIAddSceneViewController.m in Sources */,
-				CEEC421D1C98560500A2C35D /* SensorTableViewController.m in Sources */,
 				1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */,
-				CEEC421C1C98560500A2C35D /* SensorTableCell.m in Sources */,
 				1DF03A194CCC7A1DE3C2A4DC /* UIColor+Securifi.m in Sources */,
 				1DF039D3E2A4A6FB292A99C3 /* SFISensorDetailView.m in Sources */,
 				CEEC42321C98560D00A2C35D /* SensorButtonView.m in Sources */,
