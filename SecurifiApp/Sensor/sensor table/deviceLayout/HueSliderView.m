@@ -30,19 +30,19 @@
     brightnessDim.image = [UIImage imageNamed:@"dimmer_min"];
     
     [self addSubview:brightnessDim];
-    UIImageView *brightnessFull = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width - self.frame.size.height +3, 3, self.frame.size.height -5, self.frame.size.height -5)];
+    UIImageView *brightnessFull = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width - self.frame.size.height, 3, self.frame.size.height -5, self.frame.size.height -5)];
     brightnessFull.image = [UIImage imageNamed:@"brightness-icon"];
     [self addSubview:brightnessFull];
-    SFISlider *brightnessSlider = [[SFISlider alloc]initWithFrame:CGRectMake(self.frame.size.height +3, 0, self.frame.size.width - (2*self.frame.size.height +3), self.frame.size.height)];
+    SFISlider *brightnessSlider = [[SFISlider alloc]initWithFrame:CGRectMake(self.frame.size.height , 0, self.frame.size.width - (2*self.frame.size.height), self.frame.size.height)];
     const CGFloat slider_x_offset = 10.0;
     const CGFloat slider_right_inset = 20.0;
-    float min = [[self.componentArray firstObject] floatValue];
-    float max = [[self.componentArray lastObject] floatValue];
+    float min = (float)self.min;
+    float max = (float)self.max;
     brightnessSlider = [self makeSlider:min maxValue:max propertyType:SFIDevicePropertyType_BRIGHTNESS sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset slider:brightnessSlider];
     
     brightnessSlider.continuous = YES;
     brightnessSlider.allowToSlide = YES;
-    brightnessSlider.sensorMaxValue = 255;
+    brightnessSlider.sensorMaxValue = max;
     brightnessSlider.convertedValue = 0; // to be assigned
     brightnessSlider.backgroundColor = [UIColor clearColor];
     [self addSubview:brightnessSlider];
@@ -51,7 +51,7 @@
     slider.propertyType = propertyType;
     slider.minimumValue = minVal;
     slider.maximumValue = maxValue;
-    slider.popUpViewColor = self.color;//[self.color complementaryColor];
+    slider.popUpViewColor = [self darkerColorForColor:self.color];//[self.color complementaryColor];
     slider.textColor = [UIColor whiteColor];//[slider.popUpViewColor blackOrWhiteContrastingColor];
     slider.font = [UIFont securifiBoldFont:12];
     [slider addTarget:self action:@selector(onSliderDidEndSliding:) forControlEvents:(UIControlEventTouchUpInside | UIControlEventTouchUpOutside)];
@@ -103,7 +103,16 @@
     NSLog(@"new values %@",newValue);
     [self.delegate updateSliderValue:newValue];
 }
-
+- (UIColor *)darkerColorForColor:(UIColor *)c
+{
+    CGFloat r, g, b, a;
+    if ([c getRed:&r green:&g blue:&b alpha:&a])
+        return [UIColor colorWithRed:MAX(r - 0.2, 0.0)
+                               green:MAX(g - 0.2, 0.0)
+                                blue:MAX(b - 0.2, 0.0)
+                               alpha:a];
+    return nil;
+}
 
 
 @end

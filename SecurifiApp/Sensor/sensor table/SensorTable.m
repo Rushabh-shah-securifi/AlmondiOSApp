@@ -13,6 +13,8 @@
 #import "CommonCell.h"
 #import "DeviceParser.h"
 #define NO_ALMOND @"NO ALMOND"
+#define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
+
 
 @interface SensorTable ()<UITableViewDataSource,UITableViewDelegate,CommonCellDelegate>
 @property (nonatomic,strong)NSMutableArray *currentDeviceList;
@@ -98,7 +100,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuseIdentifier"];
         //cell = [[SFISensorTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
-        CommonCell *sensorCell = [[CommonCell alloc]initWithFrame:CGRectMake(5, 0, self.view.frame.size.width -10, 60)];
+        CommonCell *sensorCell = [[CommonCell alloc]initWithFrame:CELLFRAME];
         sensorCell.cellType = SensorTable_Cell;
         sensorCell.delegate = self;
         sensorCell.device = [self.currentDeviceList objectAtIndex:indexPath.row];
@@ -115,7 +117,7 @@
     if (!cell){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-        CommonCell * commonCell = [[CommonCell alloc]initWithFrame:CGRectMake(5, 0, cell.frame.size.width -10, cell.frame.size.height -5)];
+        CommonCell * commonCell = [[CommonCell alloc]initWithFrame:CELLFRAME];
         commonCell.delegate = self;
         commonCell.cellType = ClientTable_Cell;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;

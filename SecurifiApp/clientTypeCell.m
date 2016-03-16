@@ -26,7 +26,7 @@
 }
 -(void)setupLabel{
     NSLog(@"setupLabel");
-    self.labelName = [[UILabel alloc]initWithFrame:CGRectMake(5, 5, 100, 20)];
+    self.labelName = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 100, 20)];
     self.labelName.textColor = [UIColor whiteColor];
     self.labelName.font = [UIFont securifiFont:14];
     

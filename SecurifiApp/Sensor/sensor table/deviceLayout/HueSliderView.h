@@ -7,13 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GenericProperty.h"
 @protocol HueSliderViewDelegate
 -(void)updateSliderValue:(NSString*)newvalue;
 @end
 @interface HueSliderView : UIView
-@property (nonatomic)NSMutableArray *componentArray;
 @property (nonatomic)UIColor *color;
+@property (nonatomic) NSInteger min;
+@property (nonatomic) NSInteger max;
 @property(nonatomic)id<HueSliderViewDelegate> delegate;
+
+@property (nonatomic)GenericProperty *deviceProperty;
 -(void)drawSlider;
 
 @end

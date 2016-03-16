@@ -66,8 +66,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="9l5-6M-te7">
-                                <rect key="frame" x="8" y="75" width="304" height="466"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="9l5-6M-te7">
+                                <rect key="frame" x="8" y="72" width="304" height="466"/>
                                 <color key="backgroundColor" red="0.0078431372549019607" green="0.6588235294117647" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
                             </scrollView>
                         </subviews>
@@ -95,14 +95,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="SKSTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="45" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rpr-zm-JGc">
-                                <rect key="frame" x="5" y="75" width="310" height="380"/>
+                                <rect key="frame" x="8" y="73" width="304" height="380"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ClientPropertiesCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="SKSTableViewCell" rowHeight="45" id="Zpg-Bl-N2s" customClass="ClientPropertiesCell">
-                                        <rect key="frame" x="0.0" y="28" width="310" height="45"/>
+                                        <rect key="frame" x="0.0" y="28" width="304" height="45"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zpg-Bl-N2s" id="Txf-Mv-Vxk">
-                                            <rect key="frame" x="0.0" y="0.0" width="310" height="45"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="304" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwf-Qb-oDU">
@@ -115,7 +115,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lzc-b1-Gp6">
-                                                    <rect key="frame" x="5" y="8" width="140" height="37"/>
+                                                    <rect key="frame" x="11" y="8" width="140" height="37"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="16"/>
                                                     <color key="textColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -125,10 +125,10 @@
                                                 <constraint firstItem="bwf-Qb-oDU" firstAttribute="top" secondItem="Txf-Mv-Vxk" secondAttribute="topMargin" constant="3" id="2Sw-Xy-ofq"/>
                                                 <constraint firstItem="Lzc-b1-Gp6" firstAttribute="top" secondItem="Txf-Mv-Vxk" secondAttribute="top" constant="8" id="G2w-KT-lts"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Lzc-b1-Gp6" secondAttribute="bottom" constant="-8" id="Nyw-He-Bf1"/>
-                                                <constraint firstItem="bwf-Qb-oDU" firstAttribute="leading" secondItem="Lzc-b1-Gp6" secondAttribute="trailing" constant="17" id="Pz6-W6-KhB"/>
-                                                <constraint firstItem="Lzc-b1-Gp6" firstAttribute="leading" secondItem="Txf-Mv-Vxk" secondAttribute="leadingMargin" constant="-3" id="lAP-TQ-QuE"/>
+                                                <constraint firstItem="bwf-Qb-oDU" firstAttribute="leading" secondItem="Lzc-b1-Gp6" secondAttribute="trailing" constant="11" id="Pz6-W6-KhB"/>
+                                                <constraint firstItem="Lzc-b1-Gp6" firstAttribute="leading" secondItem="Txf-Mv-Vxk" secondAttribute="leadingMargin" constant="3" id="lAP-TQ-QuE"/>
                                                 <constraint firstAttribute="height" secondItem="bwf-Qb-oDU" secondAttribute="height" constant="24" id="xZO-3c-WkB"/>
-                                                <constraint firstItem="bwf-Qb-oDU" firstAttribute="trailing" secondItem="Txf-Mv-Vxk" secondAttribute="trailingMargin" id="y2S-AC-MZv"/>
+                                                <constraint firstItem="bwf-Qb-oDU" firstAttribute="trailing" secondItem="Txf-Mv-Vxk" secondAttribute="trailingMargin" constant="6" id="y2S-AC-MZv"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.29411764709999999" green="0.68235294120000001" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

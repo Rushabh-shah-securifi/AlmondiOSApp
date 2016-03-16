@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Device.h"
+#import "GenericProperty.h"
 
 @protocol SensorButtonViewDelegate
 @optional
@@ -18,6 +19,7 @@
 @property (nonatomic)UIColor *color;
 @property (nonatomic) NSDictionary *deviceValueDict;
 @property (nonatomic) Device *device;
+@property (nonatomic)GenericProperty *deviceProperty;
 @property (nonatomic)id<SensorButtonViewDelegate> delegate;
 -(void)drawButton:(NSDictionary *)valuedict color:(UIColor *)color;
 -(void)drawButton:(NSArray*)array selectedValue:(int)selectedValue;

@@ -28,6 +28,8 @@
 #import "CommonCell.h"
 #import "SensorEditViewController.h"
 
+#define CELLFRAME CGRectMake(8, 11, self.view.frame.size.width -16, 60)
+
 @interface ClientEditViewController ()<UITableViewDelegate,UITableViewDataSource,CommonCellDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *clientPropertiesTable;
 @property (nonatomic)NSMutableArray *orderedArray ;
@@ -39,7 +41,7 @@ NSMutableArray * blockedDaysArray;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self dummyNetWorkDeviceList];
-    CommonCell *commonView = [[CommonCell alloc]initWithFrame:CGRectMake(5, 10, self.view.frame.size.width -10, 60)];
+    CommonCell *commonView = [[CommonCell alloc]initWithFrame:CELLFRAME];
     commonView.delegate = self;
     commonView.cellType = ClientEdit_Cell;
     // set up images label and name

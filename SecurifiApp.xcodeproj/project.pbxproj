@@ -460,6 +460,7 @@
 		CEEC42321C98560D00A2C35D /* SensorButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC422A1C98560D00A2C35D /* SensorButtonView.m */; settings = {ASSET_TAGS = (); }; };
 		CEEC42331C98560D00A2C35D /* SensorTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC422C1C98560D00A2C35D /* SensorTextView.m */; settings = {ASSET_TAGS = (); }; };
 		CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEF425C1C47E0E300E36C9B /* ScenePayload.m */; };
+		CEF2E8BC1C9958800082C320 /* GenericProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF2E8BB1C9958800082C320 /* GenericProperty.m */; settings = {ASSET_TAGS = (); }; };
 		CEF6F4D81C92CAD600C68975 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */; };
 		CEF6F4D91C92CAD600C68975 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */; };
 		CEF6F4DA1C92CAD600C68975 /* AddRulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AE1C92CAD600C68975 /* AddRulesViewController.m */; };
@@ -999,6 +1000,8 @@
 		CEEC422C1C98560D00A2C35D /* SensorTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorTextView.m; sourceTree = "<group>"; };
 		CEEF425B1C47E0E300E36C9B /* ScenePayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenePayload.h; sourceTree = "<group>"; };
 		CEEF425C1C47E0E300E36C9B /* ScenePayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScenePayload.m; sourceTree = "<group>"; };
+		CEF2E8BA1C9958800082C320 /* GenericProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericProperty.h; sourceTree = "<group>"; };
+		CEF2E8BB1C9958800082C320 /* GenericProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericProperty.m; sourceTree = "<group>"; };
 		CEF6F4AB1C92CAD600C68975 /* AddRuleSceneClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRuleSceneClass.h; sourceTree = "<group>"; };
 		CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRuleSceneClass.m; sourceTree = "<group>"; };
 		CEF6F4AD1C92CAD600C68975 /* AddRulesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRulesViewController.h; sourceTree = "<group>"; };
@@ -1950,6 +1953,8 @@
 				CEEC42101C98560500A2C35D /* SensorTable.m */,
 				CEEBE61E1C902D0400DC3E3F /* clientTypeCell.h */,
 				CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */,
+				CEF2E8BA1C9958800082C320 /* GenericProperty.h */,
+				CEF2E8BB1C9958800082C320 /* GenericProperty.m */,
 			);
 			path = "sensor table";
 			sourceTree = "<group>";
@@ -2741,6 +2746,7 @@
 				1DF037534B2784850C9B047C /* UIApplication+SecurifiNotifications.m in Sources */,
 				CEF6F4E01C92CAD600C68975 /* DelayPicker.m in Sources */,
 				CEF6F4E81C92CAD600C68975 /* RulesHue.m in Sources */,
+				CEF2E8BC1C9958800082C320 /* GenericProperty.m in Sources */,
 				CEEC42331C98560D00A2C35D /* SensorTextView.m in Sources */,
 				1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */,
 				1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */,

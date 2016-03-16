@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GenericProperty.h"
 @protocol SensorTextViewDelegate
 -(void)updateNewValue:(NSString *)newValue;
 @end
 @interface SensorTextView : UIView
 @property (nonatomic)UIColor *color;
 @property (nonatomic)id<SensorTextViewDelegate> delegate;
+@property (nonatomic)GenericProperty *deviceProperty;
 -(void)drawTextField:(NSString*)name;
 
 @end

@@ -29,8 +29,7 @@
     horzPicker.backgroundColor = [UIColor whiteColor];
 //    horzPicker.layer.borderColor = [SFIColors clientGreenColor].CGColor;
     horzPicker.selectedTextColor = self.color;
-    horzPicker.elementFont = [UIFont systemFontOfSize:11];
-    horzPicker.elementFont = [UIFont fontWithName:@"AvenirLTStd-Roman" size:11];
+    horzPicker.elementFont = [UIFont fontWithName:@"AvenirLTStd-Roman" size:13];
     horzPicker.textColor = self.color;
     horzPicker.indicatorPosition = V8HorizontalPickerIndicatorBottom;
     horzPicker.delegate = self;
@@ -39,7 +38,7 @@
     const NSInteger element_width = [self horizontalPickerView:horzPicker widthForElementAtIndex:0];
     SFIPickerIndicatorView1 *indicatorView = [[SFIPickerIndicatorView1 alloc] initWithFrame:CGRectMake(0, 0, element_width, 2)];
     horzPicker.selectionPoint = CGPointMake((horzPicker.frame.size.width) / 2, 0);
-    indicatorView.color1 = self.color;
+    indicatorView.color1 = [self darkerColorForColor:self.color];
     horzPicker.selectionIndicatorView = indicatorView;
     [self addSubview:horzPicker];
     
@@ -50,7 +49,7 @@
 
 
 - (NSInteger)numberOfElementsInHorizontalPickerView:(V8HorizontalPickerView *)picker {
-    return self.componentArray.count;
+    return (self.max - self.min);
 }
 
 - (NSString *)horizontalPickerView:(V8HorizontalPickerView *)picker titleForElementAtIndex:(NSInteger)index {
@@ -66,5 +65,14 @@
 -(void)setDelegate:(NSString*)finalValue{
     [self.delegate updatePickerValue:finalValue];
 }
-
+- (UIColor *)darkerColorForColor:(UIColor *)c
+{
+    CGFloat r, g, b, a;
+    if ([c getRed:&r green:&g blue:&b alpha:&a])
+        return [UIColor colorWithRed:MAX(r - 0.2, 0.0)
+                               green:MAX(g - 0.2, 0.0)
+                                blue:MAX(b - 0.2, 0.0)
+                               alpha:a];
+    return nil;
+}
 @end

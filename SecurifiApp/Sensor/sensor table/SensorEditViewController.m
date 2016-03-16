@@ -41,7 +41,7 @@
 
 
 #define ITEM_SPACING  2.0
-
+#define CELLFRAME CGRectMake(8, 10, self.view.frame.size.width -16, 60)
 
 
 @interface SensorEditViewController ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate,SensorButtonViewDelegate,SensorTextViewDelegate,HorzSliderDelegate,HueColorPickerDelegate,HorzSliderDelegate,HueSliderViewDelegate,CommonCellDelegate,SFIWiFiDeviceTypeSelectionCellDelegate,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,clientTypeCellDelegate,SensorButtonViewDelegate>
@@ -71,12 +71,13 @@
     NSMutableArray * pickerValuesArray1;
     NSMutableArray * blockedDaysArray;
     NSString *blockedType;
+    NSArray *type;
 }
 
 - (void)viewDidLoad {
     NSLog(@"SensorEditViewController");
     [super viewDidLoad];
-    CommonCell *commonView = [[CommonCell alloc]initWithFrame:CGRectMake(8, 10, self.view.frame.size.width -16, 60)];
+    CommonCell *commonView = [[CommonCell alloc]initWithFrame:CELLFRAME];
     commonView.delegate = self;
     [self.view addSubview:commonView];
     if(self.isSensor){
@@ -91,6 +92,7 @@
         commonView.cellType = ClientEditProperties_cell;
         [self drawViews];
         self.selectedType = [self.deviceDict valueForKey:@"Type"];
+        type = @[@"PC",@"smartPhone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"printer",@"Router_switch",@"Nest",@"Hub",@"Camara",@"ChromeCast",@"android_stick",@"amazone_exho",@"amazone-dash",@"Other"];
     }
 }
 
@@ -141,15 +143,11 @@
             
             [view addSubview:label];
             if([[dict valueForKey:LAYOUT] isEqualToString:SLIDER]){
-                HorzSlider *horzView = [[HorzSlider alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
-                horzView.componentArray = [NSMutableArray new];
-                horzView.device = self.device;
+                HorzSlider *horzView = [[HorzSlider alloc]initWithFrame:CGRectMake(0,12,view.frame.size.width -10,30)];
                 horzView.delegate = self;
                 NSDictionary *formattedValues = [[dict valueForKey:VALUES] valueForKey:@"Formatter"];
-                NSLog(@"formattedValues %@ ",formattedValues);
-                for (NSInteger i=[[formattedValues valueForKey:MINIMUM] integerValue]; i<=[[formattedValues valueForKey:MAXIMUM] integerValue]; i++) {
-                    [horzView.componentArray addObject:[NSString stringWithFormat:@"%ld",i]];
-                }
+                horzView.min = [[formattedValues valueForKey:MINIMUM] integerValue];
+                horzView.max = [[formattedValues valueForKey:MAXIMUM] integerValue];
                 horzView.color = [SFIColors ruleBlueColor];
                 [horzView drawSlider];
                 [self.indexesScroll addSubview:view];
@@ -157,7 +155,7 @@
                 yPos = yPos + view.frame.size.height;
                 }
             else if ([[dict valueForKey:LAYOUT] isEqualToString:BUTTON]){
-                SensorButtonView *buttonView = [[SensorButtonView alloc]initWithFrame:CGRectMake(0,19,view.frame.size.width -10,30)];
+                SensorButtonView *buttonView = [[SensorButtonView alloc]initWithFrame:CGRectMake(0,21,view.frame.size.width -10,30)];
                 buttonView.deviceValueDict = [dict valueForKey:VALUES];
                 buttonView.device = self.device;
                 buttonView.color = [SFIColors ruleBlueColor];
@@ -167,8 +165,7 @@
                 yPos = yPos + view.frame.size.height;
             }
             else if ([[dict valueForKey:LAYOUT] isEqualToString:HUE]){
-                HueColorPicker *HueView = [[HueColorPicker alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
-                HueView.device = self.device;// we should match index
+                HueColorPicker *HueView = [[HueColorPicker alloc]initWithFrame:CGRectMake(0,12,view.frame.size.width -10,30)];
                 HueView.delegate = self;
                 HueView.color = [SFIColors ruleBlueColor];
                 [HueView drawHueColorPicker];
@@ -177,13 +174,10 @@
                 yPos = yPos + view.frame.size.height;
             }
             else if ([[dict valueForKey:LAYOUT] isEqualToString:HUESLIDER]){
-                HueSliderView *HuesliderView = [[HueSliderView alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
-                HuesliderView.componentArray = [NSMutableArray new];
+                HueSliderView *HuesliderView = [[HueSliderView alloc]initWithFrame:CGRectMake(0,12,view.frame.size.width -10,30)];
                 NSDictionary *formattedValues = [[dict valueForKey:VALUES] valueForKey:@"Formatter"];
-                NSLog(@"formattedValues %@ ",formattedValues);
-                for (NSInteger i=[[formattedValues valueForKey:MINIMUM] integerValue]; i<=[[formattedValues valueForKey:MAXIMUM] integerValue]; i++) {
-                    [HuesliderView.componentArray addObject:[NSString stringWithFormat:@"%ld",i]];
-                }
+                HuesliderView.min = [[formattedValues valueForKey:MINIMUM] integerValue];
+                HuesliderView.max = [[formattedValues valueForKey:MAXIMUM] integerValue];
                 HuesliderView.color = [SFIColors ruleBlueColor];
                 HuesliderView.delegate = self;
                 [HuesliderView drawSlider];
@@ -192,7 +186,7 @@
                 yPos = yPos + view.frame.size.height;
             }
             else if ([[dict valueForKey:LAYOUT] isEqualToString:TEXTINPUT]){
-                SensorTextView *textView = [[SensorTextView alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
+                SensorTextView *textView = [[SensorTextView alloc]initWithFrame:CGRectMake(0,12,view.frame.size.width -10,30)];
                 [textView drawTextField:@"124"];
                 [self.indexesScroll addSubview:view];
                 [view addSubview:textView];
@@ -270,8 +264,9 @@
 
 #pragma mark wifiClients methods
 -(void)drawViews{
+    self.scrollView.backgroundColor = [UIColor clearColor];
     self.scrollView.hidden = YES;
-    self.indexView = [[UIView alloc]initWithFrame:CGRectMake(8 , 75, self.view.frame.size.width - 16, 74)];
+    self.indexView = [[UIView alloc]initWithFrame:CGRectMake(8 , 73, self.view.frame.size.width - 16, 74)];
     self.indexView.backgroundColor = [SFIColors clientGreenColor];
     [self.view addSubview:self.indexView];
     
@@ -351,7 +346,7 @@
 }
 -(void)buttonView:(NSArray*)arr selectedValue:(int)selectedVal{
     
-    SensorButtonView *presenceSensor = [[SensorButtonView alloc]initWithFrame:CGRectMake(5,40,self.indexView.frame.size.width - 8,40 )];
+    SensorButtonView *presenceSensor = [[SensorButtonView alloc]initWithFrame:CGRectMake(5,40,self.indexView.frame.size.width - 8,30 )];
     presenceSensor.color = [SFIColors clientGreenColor];
     [presenceSensor drawButton:arr selectedValue:selectedVal];
     presenceSensor.delegate = self;
@@ -368,13 +363,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSLog(@"numberOfRowsInSection");
-    NSArray *type = @[@"PC",@"smartPhone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"printer",@"Router_switch",@"Nest",@"Hub",@"Camara",@"ChromeCast",@"android_stick",@"amazone_exho",@"amazone-dash",@"Other"];
     return type.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSArray *type = @[@"PC",@"smartPhone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"printer",@"Router_switch",@"Nest",@"Hub",@"Camara",@"ChromeCast",@"android_stick",@"amazone_exho",@"amazone-dash",@"Other"];
+    
     clientTypeCell *cell = [tableView dequeueReusableCellWithIdentifier:@"clientTypeCell"];
     if (cell == nil) {
         cell = [[clientTypeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"clientTypeCell"];
@@ -388,6 +382,8 @@
         currentvalPos++;
     }
     cell.delegate = self;
+    cell.userInteractionEnabled = YES;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.color = [SFIColors clientGreenColor];
     cell.backgroundColor = [SFIColors clientGreenColor];
     [cell writelabelName:[type objectAtIndex:indexPath.row]];
@@ -402,6 +398,11 @@
     return 45;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath{
+    NSLog(@" didSelectRowAtIndexPath");
+    [self selectedTypes:[type objectAtIndex:indexPath.row]];
+    return;
+}
 #pragma mark cell delegate
 -(void)selectedTypes:(NSString *)typeName{
     self.selectedType = typeName;
