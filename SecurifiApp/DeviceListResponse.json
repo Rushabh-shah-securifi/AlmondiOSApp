@@ -155,6 +155,12 @@
                         "Name": "SWITCH BINARY",
                         "Value": "false",
                         "GenericIndex": "1"
+                    },
+                    "2": {
+                        "Index": "2",
+                        "Name": "SWITCH BINARY",
+                        "Value": "0",
+                        "GenericIndex": "9"
                     }
                 }
             },

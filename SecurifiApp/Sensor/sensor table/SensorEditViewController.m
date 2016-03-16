@@ -25,6 +25,9 @@
 #import "UIFont+Securifi.h"
 #import "Colours.h"
 #import "CollectionViewCell.h"
+#import "GenericIndexValue.h"
+#import "GenericIndexClass.h"
+#import "GenericIndexValue.h"
 
 #define GROUPLABEL @"GroupLabel"
 #define READONLY @"ReadOnly"
@@ -103,14 +106,15 @@
 
 -(void)drawIndexes{
     int yPos = 10;
-    CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericIndexArray.count * 80 + 210);
+    CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericIndexValues.count * 80 + 210);
     [self.indexesScroll setContentSize:scrollableSize];
     [self.indexesScroll flashScrollIndicators];
-    NSLog(@"self.genericIndexArray %@",self.genericIndexArray);
-    for(NSDictionary *dict in self.genericIndexArray){
+    NSLog(@"self.genericIndexArray %@",self.genericIndexValues);
+    for(GenericIndexValue *genericIndexValue in self.genericIndexValues){
+        GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
         
-        NSString *propertyName = [dict valueForKey:GROUPLABEL];
-        if([[dict valueForKey:READONLY] isEqualToString:TRUE_]){
+        NSString *propertyName = genericIndexObj.groupLabel;
+        if(genericIndexObj.readOnly){
          UIView *view = [[UIView alloc]initWithFrame:CGRectMake(10 , yPos, self.indexesScroll.frame.size.width -10, 25)];
             view.backgroundColor = [UIColor clearColor];
             [self.indexesScroll addSubview:view];
@@ -142,29 +146,29 @@
             label.textColor = [UIColor whiteColor];
             
             [view addSubview:label];
-            if([[dict valueForKey:LAYOUT] isEqualToString:SLIDER]){
+            if([genericIndexObj.layoutType isEqualToString:SLIDER]){
                 HorzSlider *horzView = [[HorzSlider alloc]initWithFrame:CGRectMake(0,12,view.frame.size.width -10,30)];
                 horzView.delegate = self;
-                NSDictionary *formattedValues = [[dict valueForKey:VALUES] valueForKey:@"Formatter"];
-                horzView.min = [[formattedValues valueForKey:MINIMUM] integerValue];
-                horzView.max = [[formattedValues valueForKey:MAXIMUM] integerValue];
+                Formatter *formatter = genericIndexObj.formatter;
+                horzView.min = formatter.min;
+                horzView.max = formatter.max;
                 horzView.color = [SFIColors ruleBlueColor];
                 [horzView drawSlider];
                 [self.indexesScroll addSubview:view];
                 [view addSubview:horzView];
                 yPos = yPos + view.frame.size.height;
-                }
-            else if ([[dict valueForKey:LAYOUT] isEqualToString:BUTTON]){
+            }
+            else if ([genericIndexObj.layoutType isEqualToString:BUTTON]){
                 SensorButtonView *buttonView = [[SensorButtonView alloc]initWithFrame:CGRectMake(0,21,view.frame.size.width -10,30)];
-                buttonView.deviceValueDict = [dict valueForKey:VALUES];
+                buttonView.deviceValueDict = genericIndexObj.values;
                 buttonView.device = self.device;
                 buttonView.color = [SFIColors ruleBlueColor];
-                [buttonView drawButton:[dict valueForKey:VALUES] color:[SFIColors ruleBlueColor]];
+                [buttonView drawButton:genericIndexObj.values color:[SFIColors ruleBlueColor]];
                 [self.indexesScroll addSubview:view];
                 [view addSubview:buttonView];
                 yPos = yPos + view.frame.size.height;
             }
-            else if ([[dict valueForKey:LAYOUT] isEqualToString:HUE]){
+            else if ([genericIndexObj.layoutType isEqualToString:HUE]){
                 HueColorPicker *HueView = [[HueColorPicker alloc]initWithFrame:CGRectMake(0,12,view.frame.size.width -10,30)];
                 HueView.delegate = self;
                 HueView.color = [SFIColors ruleBlueColor];
@@ -173,11 +177,11 @@
                 [view addSubview:HueView];
                 yPos = yPos + view.frame.size.height;
             }
-            else if ([[dict valueForKey:LAYOUT] isEqualToString:HUESLIDER]){
+            else if ([genericIndexObj.layoutType isEqualToString:HUESLIDER]){
                 HueSliderView *HuesliderView = [[HueSliderView alloc]initWithFrame:CGRectMake(0,12,view.frame.size.width -10,30)];
-                NSDictionary *formattedValues = [[dict valueForKey:VALUES] valueForKey:@"Formatter"];
-                HuesliderView.min = [[formattedValues valueForKey:MINIMUM] integerValue];
-                HuesliderView.max = [[formattedValues valueForKey:MAXIMUM] integerValue];
+                Formatter *formatter = genericIndexObj.formatter;
+                HuesliderView.min = formatter.min;
+                HuesliderView.max = formatter.max;
                 HuesliderView.color = [SFIColors ruleBlueColor];
                 HuesliderView.delegate = self;
                 [HuesliderView drawSlider];
@@ -185,7 +189,7 @@
                 [view addSubview:HuesliderView];
                 yPos = yPos + view.frame.size.height;
             }
-            else if ([[dict valueForKey:LAYOUT] isEqualToString:TEXTINPUT]){
+            else if ([genericIndexObj.layoutType isEqualToString:TEXTINPUT]){
                 SensorTextView *textView = [[SensorTextView alloc]initWithFrame:CGRectMake(0,12,view.frame.size.width -10,30)];
                 [textView drawTextField:@"124"];
                 [self.indexesScroll addSubview:view];

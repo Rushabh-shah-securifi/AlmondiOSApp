@@ -64,7 +64,7 @@
     if(section == 0)
         return self.currentDeviceList.count;
     else
-    return 4;
+        return 4;
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if(section == 0)
@@ -95,11 +95,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"cellForRowAtIndexPath");
     if(indexPath.section == 0){
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuseIdentifier"];
-        //cell = [[SFISensorTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
-    }
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuseIdentifier"];
+        }
         CommonCell *sensorCell = [[CommonCell alloc]initWithFrame:CELLFRAME];
         sensorCell.cellType = SensorTable_Cell;
         sensorCell.delegate = self;
@@ -108,22 +107,22 @@
         [sensorCell setUPSensorCell];
         [cell addSubview:sensorCell];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    return cell;
+        return cell;
     }
     else
     {
-    static NSString *CellIdentifier = @"wifi";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
+        static NSString *CellIdentifier = @"wifi";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (!cell){
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        }
         CommonCell * commonCell = [[CommonCell alloc]initWithFrame:CELLFRAME];
         commonCell.delegate = self;
         commonCell.cellType = ClientTable_Cell;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell addSubview:commonCell];
 
-    return cell;
+        return cell;
     }
 }
 
@@ -143,13 +142,13 @@
 - (SFIDeviceValue *)tryCurrentDeviceValues:(int)deviceId {
     return self.deviceValueTable[@(deviceId)];
 }
--(void)delegateSensorTable:(Device*)device withGenericIndex:(NSMutableArray *)genericIndexes{
+-(void)delegateSensorTable:(Device*)device withGenericIndexValues:(NSArray *)genericIndexValues{
     NSLog(@"onSettingButtonClicked");
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
     SensorEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SensorEditViewController"];
     viewController.device = device;
     viewController.isSensor = YES;
-    viewController.genericIndexArray = genericIndexes;
+    viewController.genericIndexValues = genericIndexValues;
     [self.navigationController pushViewController:viewController animated:YES];
 
 }

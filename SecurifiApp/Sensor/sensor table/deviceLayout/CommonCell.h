@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, CellType) {
 @optional
 -(void)delegateSensorTable;
 -(void)delegateClientEditTable;
--(void)delegateSensorTable:(Device*)device withGenericIndex:(NSMutableArray *)genericIndexes;
+-(void)delegateSensorTable:(Device*)device withGenericIndexValues:(NSArray *)genericIndexValues;
 
 @end
 @interface CommonCell : UIView

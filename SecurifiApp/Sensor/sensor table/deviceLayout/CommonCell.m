@@ -8,6 +8,7 @@
 
 #import "CommonCell.h"
 #import "GenericIndexUtil.h"
+#import "AlmondJsonCommandKeyConstants.h"
 
 @implementation CommonCell
 
@@ -53,15 +54,21 @@
         [self.delegate delegateClientEditTable];
     }
     else if(self.cellType == SensorTable_Cell){
-         NSMutableArray *genericIndexes = [GenericIndexUtil getGenericIndexesForDevice:self.device];
-        [self.delegate delegateSensorTable:self.device withGenericIndex:(NSMutableArray *)genericIndexes];
+        NSArray* genericIndexValues = [GenericIndexUtil getGenericIndexValuesByPlacementForDevice:self.device placement:DETAIL];
+        [self.delegate delegateSensorTable:self.device withGenericIndexValues:genericIndexValues];
     }
-    
 }
 -(void)setUpClientCell{
     // set up images and labels for clients
 }
+
+
 -(void)setUPSensorCell{
     // setup images
+    GenericValue *genericValue = [GenericIndexUtil getHeaderGenericValueForDevice:self.device];
+    self.deviceName.text = self.device.name;
+    self.deviceValue.text = genericValue.displayText;
+    self.deviceImage.image = [UIImage imageNamed:genericValue.icon];
+    
 }
 @end

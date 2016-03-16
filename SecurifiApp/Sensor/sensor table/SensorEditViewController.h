@@ -11,7 +11,7 @@
 
 @interface SensorEditViewController : UIViewController
 @property (nonatomic,strong)Device *device;
-@property(nonatomic,strong)NSMutableArray *genericIndexArray;
+@property(nonatomic,strong)NSArray *genericIndexValues;
 
 //wifi client edit properties
 @property (nonatomic)NSString *indexName;

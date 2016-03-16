@@ -1,190 +1,884 @@
 {
     "1": {
-        "name": "Binary Switch",
-        "defaultIcon": "@drawable/switch_off_new",
+        "isActionDevice": true,
         "Indexes": {
             "1": {
-                "row_no": "1",
-                "genericIndexID": "1"
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "2": {
+                "genericIndexID": "19",
+                "row_no": 2
             }
-        }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Binary Switch"
     },
-    "2":{
-        "name":"Multilevel Switch",
-        "defaultIcon":"@drawable/dimmer",
-        "isActionDevice":"true",
-        "isActuator":"true",
-        "isTriggerDevice":"true",
+    "2": {
+        "isActionDevice": true,
         "Indexes": {
             "1": {
-                "row_no": "1",
-                "genericIndexID": "17"
+                "genericIndexID": "17",
+                "row_no": 1
             }
-        }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Multilevel Switch"
     },
-    "3":{
-        "name":"Z-wave Door Sensor",
-        "defaultIcon":"@drawable/door_off",
-        "isActionDevice":"false",
-        "isActuator":"false",
-        "isTriggerDevice":"true",
+    "3": {
+        "isActionDevice": false,
         "Indexes": {
             "1": {
-                "row_no": "1",
-                "genericIndexID": "2"
+                "genericIndexID": "2",
+                "row_no": 1
             }
-        }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Z-wave Door Sensor"
     },
-    "6":{
-        "name":"Alarm",
-        "defaultIcon":"@drawable/alarm_icon",
-        "isActionDevice":"false",
-        "isTriggerDevice":"true",
-        "Indexes":{
-            "1":{
-                "row_no": "1",
-                "genericIndexID": "14"
+    "4": {
+        "isActionDevice": true,
+        "Indexes": {
+            "2": {
+                "genericIndexID": "1",
+                "row_no": 2
             },
-            "2":{
-                "row_no": "2",
-                "genericIndexID": "50"
+            "1": {
+                "genericIndexID": "18",
+                "row_no": 1
             }
-        }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "OnOffMultilevelSwitch"
     },
-    "11":{
-        "name":"Motion Sensor",
-        "defaultIcon":"@drawable/motion_off",
-        "isActionDevice":"false",
-        "isActuator":"false",
-        "isTriggerDevice":"true",
-        "Indexes":{
-            "1":{
-                "row_no": "1",
-                "genericIndexID": "3"
-            },
-            "2":{
-                "row_no": "2",
-                "genericIndexID": "12"
-            },
-            "3":{
-                "row_no": "2",
-                "genericIndexID": "9"
+    "5": {
+        "isActionDevice": true,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "22",
+                "row_no": 1
             }
-        }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Z-wave DoorLock"
     },
-    "12":{
-        "name":"Door Sensor",
-        "defaultIcon":"@drawable/door_off",
-        "isActionDevice":"false",
-        "isActuator":"false",
-        "isTriggerDevice":"true",
-        "Indexes":{
-            "1":{
-                "row_no": "1",
-                "genericIndexID": "4"
-            },
-            "2":{
-                "row_no": "2",
-                "genericIndexID": "12"
-            },
-            "3":{
-                "row_no": "2",
-                "genericIndexID": "9"
+    "6": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "14",
+                "row_no": 1
             }
-        }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Alarm"
     },
-    "14":{
-        "name":"Water Sensor",
-        "defaultIcon":"@drawable/water_off",
-        "isActionDevice":"false",
-        "isActuator":"false",
-        "isTriggerDevice":"true",
-        "Indexes":{
-            "1":{
-                "row_no": "1",
-                "genericIndexID": "6"
+    "7": {
+        "isActionDevice": true,
+        "Indexes": {
+            "3": {
+                "genericIndexID": "36",
+                "row_no": 1
             },
-            "2":{
-                "row_no": "2",
-                "genericIndexID": "12"
+            "2": {
+                "genericIndexID": "35",
+                "row_no": 3
             },
-            "3":{
-                "row_no": "2",
-                "genericIndexID": "9"
+            "1": {
+                "genericIndexID": "25",
+                "row_no": 1
+            },
+            "7": {
+                "genericIndexID": "40",
+                "row_no": 1
+            },
+            "6": {
+                "genericIndexID": "39",
+                "row_no": 4
+            },
+            "5": {
+                "genericIndexID": "37",
+                "row_no": 2
+            },
+            "4": {
+                "genericIndexID": "38",
+                "row_no": 2
             }
-        }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Themostat"
     },
-    "19":{
-        "name":"KeyFob",
-        "defaultIcon":"@drawable/keyfob_off",
-        "isActionDevice":"false",
-        "isActuator":"false",
-        "isTriggerDevice":"true",
-        "Indexes":{
-            "1":{
-                "row_no": "1",
-                "genericIndexID": "30"
-            },
-            "2":{
-                "row_no": "2",
-                "genericIndexID": "10"
-            },
-            "3":{
-                "row_no": "2",
-                "genericIndexID": "11"
+    "10": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
             }
-        }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "UnKnown Sensor"
     },
-    "5":{
-        "name":"KeyFob",
-        "defaultIcon":"@drawable/keyfob_off",
-        "isActionDevice":"false",
-        "isActuator":"false",
-        "isTriggerDevice":"true",
-        "Indexes":{
-            "1":{
-                "row_no": "1",
-                "genericIndexID": "30"
+    "11": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "3",
+                "row_no": 1
             },
-            "2":{
-                "row_no": "2",
-                "genericIndexID": "10"
-            },
-            "3":{
-                "row_no": "2",
-                "genericIndexID": "11"
+            "4": {
+                "genericIndexID": "25",
+                "row_no": 1
             }
-        }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Motion Sensor"
+    },
+    "12": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "4",
+                "row_no": 1
+            },
+            "4": {
+                "genericIndexID": "25",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Door Sensor"
+    },
+    "13": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "8",
+                "row_no": 1
+            },
+            "4": {
+                "genericIndexID": "25",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Fire Sensor"
+    },
+    "14": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "6",
+                "row_no": 1
+            },
+            "4": {
+                "genericIndexID": "25",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Water Sensor"
+    },
+    "15": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "7",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Gas Sensor"
+    },
+    "16": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": false,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "UnKnown Sensor"
+    },
+    "17": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "5",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Vibration Sensor"
+    },
+    "18": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": false,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "UnKnown Sensor"
+    },
+    "19": {
+        "isActionDevice": false,
+        "Indexes": {
+            "3": {
+                "genericIndexID": "24",
+                "row_no": 2
+            },
+            "2": {
+                "genericIndexID": "10",
+                "row_no": 2
+            },
+            "1": {
+                "genericIndexID": "11",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "KeyFob"
+    },
+    "20": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": false,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "UnKnown Sensor"
+    },
+    "21": {
+        "isActionDevice": true,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "13",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": false,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Alarm"
+    },
+    "22": {
+        "isActionDevice": true,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "AC Switch"
+    },
+    "24": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "3",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Occupancy Sensor"
+    },
+    "25": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Light Sensor"
+    },
+    "26": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": false,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Window Covering"
+    },
+    "27": {
+        "isActionDevice": false,
+        "Indexes": {
+            "2": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Temperature Sensor"
+    },
+    "28": {
+        "isActionDevice": true,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "ZigbeeDoorLock"
+    },
+    "29": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": false,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "ZigBee Temperature Sensor"
+    },
+    "32": {
+        "isActionDevice": false,
+        "Indexes": {
+            "3": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "2": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "5": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "4": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": false,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "ColorDimmableLight"
+    },
+    "36": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Z-wave Smoke Sensor"
+    },
+    "37": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Z-wave Water Sensor"
+    },
+    "38": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Vibration Sensor"
+    },
+    "39": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Door Sensor"
+    },
+    "40": {
+        "isActionDevice": false,
+        "Indexes": {
+            "2": {
+                "genericIndexID": "1",
+                "row_no": 2
+            },
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Moisture Sensor"
+    },
+    "41": {
+        "isActionDevice": false,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "4": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Motion Sensor"
+    },
+    "42": {
+        "isActionDevice": true,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Alarm"
+    },
+    "43": {
+        "isActionDevice": true,
+        "Indexes": {
+            "2": {
+                "genericIndexID": "1",
+                "row_no": 2
+            },
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "MultiSwitch"
+    },
+    "44": {
+        "isActionDevice": true,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "UnKnown Sensor"
+    },
+    "45": {
+        "isActionDevice": true,
+        "Indexes": {
+            "2": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 2
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Binary Power Switch"
     },
     
-    "111":{
-        "name":"myDevice",
-        "defaultIcon":"@drawable/keyfob_off",
-        "isActionDevice":"false",
-        "isActuator":"false",
-        "isTriggerDevice":"true",
-        "Indexes":{
-            "1":{
-                "row_no": "1",
-                "genericIndexID": "38"
+    "46": {
+        "isActionDevice": true,
+        "Indexes": {
+            "3": {
+                "genericIndexID": "1",
+                "row_no": 1
             },
-            "2":{
-                "row_no": "2",
-                "genericIndexID": "39"
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
             },
-            "3":{
-                "row_no": "3",
-                "genericIndexID": "58"
-            },
-            "4":{
-                "row_no": "4",
-                "genericIndexID": "32"
-            },
-            "5":{
-                "row_no": "5",
-                "genericIndexID": "30"
+            "4": {
+                "genericIndexID": "1",
+                "row_no": 1
             }
-        }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "SetPoint Thermostat"
+    },
+    "48": {
+        "isActionDevice": true,
+        "Indexes": {
+            "3": {
+                "genericIndexID": "1",
+                "row_no": 2
+            },
+            "2": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "5": {
+                "genericIndexID": "1",
+                "row_no": 4
+            },
+            "4": {
+                "genericIndexID": "1",
+                "row_no": 3
+            }
+        },
+        "isTriggerDevice": false,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Hue Lamp"
+    },
+    "49": {
+        "isActionDevice": false,
+        "Indexes": {
+            "3": {
+                "genericIndexID": "1",
+                "row_no": 2
+            },
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 3
+            },
+            "4": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "MultiSensor"
+    },
+    "50": {
+        "isActionDevice": true,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Peanut Switch"
+    },
+    "52": {
+        "isActionDevice": true,
+        "Indexes": {
+            "3": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "2": {
+                "genericIndexID": "1",
+                "row_no": 2
+            },
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "RollerShutter"
+    },
+    "53": {
+        "isActionDevice": true,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Garage Door Opener "
+    },
+    "54": {
+        "isActionDevice": true,
+        "Indexes": {
+            "3": {
+                "genericIndexID": "1",
+                "row_no": 2
+            },
+            "2": {
+                "genericIndexID": "1",
+                "row_no": 3
+            },
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "9": {
+                "genericIndexID": "1",
+                "row_no": 5
+            },
+            "8": {
+                "genericIndexID": "1",
+                "row_no": 5
+            },
+            "5": {
+                "genericIndexID": "1",
+                "row_no": 4
+            },
+            "4": {
+                "genericIndexID": "1",
+                "row_no": 2
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "ZWtoACIRExtender"
+    },
+    "55": {
+        "isActionDevice": true,
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "MultiSiren"
+    },
+    "56": {
+        "isActionDevice": false,
+        "Indexes": {
+            "3": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "2": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "7": {
+                "genericIndexID": "1",
+                "row_no": 3
+            },
+            "6": {
+                "genericIndexID": "1",
+                "row_no": 3
+            },
+            "5": {
+                "genericIndexID": "1",
+                "row_no": 2
+            },
+            "4": {
+                "genericIndexID": "1",
+                "row_no": 2
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "EnergyReader"
+    },
+    "57": {
+        "isActionDevice": true,
+        "Indexes": {
+            "18": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "15": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "16": {
+                "genericIndexID": "1",
+                "row_no": 5
+            },
+            "13": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "14": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "11": {
+                "genericIndexID": "1",
+                "row_no": 6
+            },
+            "12": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "3": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "2": {
+                "genericIndexID": "1",
+                "row_no": 4
+            },
+            "10": {
+                "genericIndexID": "1",
+                "row_no": 3
+            },
+            "6": {
+                "genericIndexID": "1",
+                "row_no": 2
+            },
+            "5": {
+                "genericIndexID": "1",
+                "row_no": 2
+            },
+            "4": {
+                "genericIndexID": "1",
+                "row_no": 3
+            },
+            "9": {
+                "genericIndexID": "1",
+                "row_no": 6
+            },
+            "8": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "NestThermostat"
+    },
+    "58": {
+        "isActionDevice": false,
+        "Indexes": {
+            "3": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "2": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "5": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "4": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": false,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "NestSmokeDetector"
+    },
+    "60": {
+        "isActionDevice": true,
+        "Indexes": {
+            "2": {
+                "genericIndexID": "1",
+                "row_no": 2
+            },
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            }
+        },
+        "isTriggerDevice": true,
+        "defaultIcon": "",
+        "isActuator": true,
+        "name": "Securifi Siren"
     }
-    
 }

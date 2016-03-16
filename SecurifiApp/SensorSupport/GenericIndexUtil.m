@@ -122,17 +122,18 @@
     GenericValue *genericValue;
     for(GenericIndexValue *genericIndexValue in genericIndexValues){
         if([genericIndexValue.genericIndex.placement isEqualToString:HEADER]){
+            NSLog(@"devicename:%@, genericValue %@",device.name, genericIndexValue.genericValue.displayText);
             headerText = genericIndexValue.genericValue.displayText;
             genericValue = genericIndexValue.genericValue;
         }else if([genericIndexValue.genericIndex.placement isEqualToString:DETAIL_HEADER]){
+            NSLog(@"");
             if(genericIndexValue.genericValue.isIconText)
-                detailText = [NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.label, genericIndexValue.genericValue.icon];
+                detailText = [NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.icon];
             else
-                detailText = genericIndexValue.genericIndex.label;
+                detailText = genericIndexValue.genericValue.displayText;
         }
     }
-    
-    return [[GenericValue alloc]initWithGenericValue:genericValue text:detailText];
+    return [[GenericValue alloc]initWithGenericValue:genericValue text:[NSString stringWithFormat:@"%@ %@",headerText,detailText]];
 }
 
 +(NSArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement{
@@ -143,7 +144,7 @@
     for(NSString *IndexId in deviceIndexes.allKeys){
         DeviceIndex *deviceIndex = deviceIndexes[IndexId];
         GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
-        if([genericIndexObj.placement isEqualToString:placement]){
+        if([genericIndexObj.placement rangeOfString:placement options:NSCaseInsensitiveSearch].location != NSNotFound){
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericIndexObj.ID
                                                                                forValue:[self getHeaderValueFromKnownValuesForDevice:device indexID:IndexId]];
             [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue]];
@@ -172,6 +173,7 @@
     else if(genericIndexObject.formatter != nil){
         GenericValue *genericValue = [GenericValue new];
         genericValue.isIconText = YES;
+        genericValue.value = value;
         genericValue.icon = [genericIndexObject.formatter transform:value];
         return genericValue;
     }
