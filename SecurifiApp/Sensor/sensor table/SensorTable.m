@@ -105,7 +105,7 @@
         sensorCell.deviceName.text = sensorCell.device.name;
         [sensorCell setUPSensorCell];
         [cell addSubview:sensorCell];
-
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
     }
     else
@@ -118,7 +118,7 @@
         CommonCell * commonCell = [[CommonCell alloc]initWithFrame:CGRectMake(5, 0, cell.frame.size.width -10, cell.frame.size.height -5)];
         commonCell.delegate = self;
         commonCell.cellType = ClientTable_Cell;
-        
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell addSubview:commonCell];
 
     return cell;
@@ -146,6 +146,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
     SensorEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SensorEditViewController"];
     viewController.device = device;
+    viewController.isSensor = YES;
     viewController.genericIndexArray = genericIndexes;
     [self.navigationController pushViewController:viewController animated:YES];
 

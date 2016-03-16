@@ -26,6 +26,7 @@
 #import "Colours.h"
 #import "CollectionViewCell.h"
 #import "CommonCell.h"
+#import "SensorEditViewController.h"
 
 @interface ClientEditViewController ()<UITableViewDelegate,UITableViewDataSource,CommonCellDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *clientPropertiesTable;
@@ -220,9 +221,10 @@ NSMutableArray * blockedDaysArray;
     ClientPropertiesCell *cell = (ClientPropertiesCell*)[tableView cellForRowAtIndexPath:indexPath];
     NSLog(@" cell.display label %@",cell.indexName);
     NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
-    ClientEditPropertiesViewController *ctrl = [self.storyboard instantiateViewControllerWithIdentifier:@"ClientEditPropertiesViewController"];
+    SensorEditViewController *ctrl = [self.storyboard instantiateViewControllerWithIdentifier:@"SensorEditViewController"];
     ctrl.indexName = cell.indexName;
     ctrl.deviceDict = self.clientDeviceDict;
+    ctrl.isSensor = NO;
     [self.navigationController pushViewController:ctrl animated:YES];
 //    self.indexName = cell.indexName;
 //    [self drawViews];
