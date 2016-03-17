@@ -79,7 +79,6 @@
     
     float sensorValue = [slider convertToSensorValue];
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
-    NSLog(@"new values %@",newValue);
     [self.delegate updateSliderValue:newValue];
     
 }
@@ -100,7 +99,6 @@
     
     float sensorValue = [slider convertToSensorValue];
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
-    NSLog(@"new values %@",newValue);
     [self.delegate updateSliderValue:newValue];
 }
 - (UIColor *)darkerColorForColor:(UIColor *)c

@@ -11,6 +11,6 @@
 #import "SKSTableView.h"
 
 @interface SensorTable : SFITableViewController
-@property (strong, nonatomic) IBOutlet SKSTableView *tblView;
+//@property (strong, nonatomic) IBOutlet SKSTableView *tblView;
 
 @end

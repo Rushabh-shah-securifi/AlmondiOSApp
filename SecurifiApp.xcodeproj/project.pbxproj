@@ -443,6 +443,7 @@
 		A5C68C9D1C9303D300110B74 /* DeviceListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */; };
 		A5F03F6C1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		A5F03F6D1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
+		CE08B3CC1C9A87C900ABAF6B /* DeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
 		CEA4A82C1C86BEB00098C7BD /* SensorStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA4A82A1C86BEB00098C7BD /* SensorStoryBoard.storyboard */; };
 		CEEBE6201C902D0400DC3E3F /* clientTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */; };
@@ -968,6 +969,8 @@
 		A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewAddSceneViewController.m; sourceTree = "<group>"; };
 		C6A3307CA8D0945BEFE53A18 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE08B3CA1C9A87C900ABAF6B /* DeviceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTableViewCell.h; sourceTree = "<group>"; };
+		CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTableViewCell.m; sourceTree = "<group>"; };
 		CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPickerIndicatorView1.h; sourceTree = "<group>"; };
 		CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPickerIndicatorView1.m; sourceTree = "<group>"; };
 		CEA4A82B1C86BEB00098C7BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SensorStoryBoard.storyboard; sourceTree = "<group>"; };
@@ -1950,6 +1953,8 @@
 				CEEC420D1C98560500A2C35D /* SensorEditViewController.h */,
 				CEEC420E1C98560500A2C35D /* SensorEditViewController.m */,
 				CEEC420F1C98560500A2C35D /* SensorTable.h */,
+				CE08B3CA1C9A87C900ABAF6B /* DeviceTableViewCell.h */,
+				CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */,
 				CEEC42101C98560500A2C35D /* SensorTable.m */,
 				CEEBE61E1C902D0400DC3E3F /* clientTypeCell.h */,
 				CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */,
@@ -2726,6 +2731,7 @@
 				1DF0390452B5D28DECBE4F68 /* NSData+Conversion.m in Sources */,
 				1DF0351F629E0103520602C3 /* SFICardViewSummaryCell.m in Sources */,
 				1DF03698BAF3152723335005 /* UIImage+Securifi.m in Sources */,
+				CE08B3CC1C9A87C900ABAF6B /* DeviceTableViewCell.m in Sources */,
 				1DF03A50177B8354D886E980 /* CircleView.m in Sources */,
 				1DF03ADB8A23D76AE9B67F13 /* SFINotificationStatusBarButtonItem.m in Sources */,
 				1DF032B24E580FC6CD86D379 /* CircleLabel.m in Sources */,

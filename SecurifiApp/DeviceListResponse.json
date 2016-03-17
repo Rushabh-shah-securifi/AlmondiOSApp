@@ -68,7 +68,7 @@
                     }
                 }
             },
-            "4": {
+            "999": {
                 "Name": "motion sensor",
                 "FriendlyDeviceType": "MotionSensor",
                 "Type": "11",
@@ -95,7 +95,7 @@
                     }
                 }
             },
-            "7": {
+            "987": {
                 "Name": "DoorSensor",
                 "FriendlyDeviceType": "BinarySensor",
                 "Type": "39",
@@ -155,12 +155,6 @@
                         "Name": "SWITCH BINARY",
                         "Value": "false",
                         "GenericIndex": "1"
-                    },
-                    "2": {
-                        "Index": "2",
-                        "Name": "SWITCH BINARY",
-                        "Value": "0",
-                        "GenericIndex": "9"
                     }
                 }
             },
@@ -218,7 +212,7 @@
                     }
                 }
             },
-            "32": {
+            "2": {
                 "Name": "Impo",
                 "FriendlyDeviceType": "MultilevelSwitch",
                 "Type": "2",
@@ -260,7 +254,7 @@
                     }
                 }
             },
-            "88": {
+            "6": {
                 "Name": "Alarm Sensor",
                 "FriendlyDeviceType": "Alarm",
                 "Type": "6",
@@ -416,7 +410,7 @@
                     }
                 }
             },
-            "180": {
+            "3": {
                 "Name": "BinarySensor #180",
                 "FriendlyDeviceType": "BinarySensor",
                 "Type": "3",
@@ -457,6 +451,94 @@
                         "GenericIndex": "19"
                     }
                 }
+            },
+        "4": {
+            "Name": "ON_OFFMultilevelSwitch #185",
+            "FriendlyDeviceType": "MultilevelSwitch",
+            "Type": "4",
+            "deviceid": "185",
+            "Location": "Default",
+            "DeviceValues": {
+                "1": {
+                    "Index": "1",
+                    "Name": "SWITCH MULTILEVEL",
+                    "Value": "0",
+                    "GenericIndex": "19"
+                },
+                "2": {
+                    "Index": "2",
+                    "Name": "DIMMER_LEVEL",
+                    "Value": "0",
+                    "GenericIndex": "18"
+                }
             }
+        },
+        "5": {
+            "Name": "DoorLock #186",
+            "FriendlyDeviceType": "dooelock",
+            "Type": "5",
+            "deviceid": "186",
+            "Location": "Default",
+            "DeviceValues": {
+                "1": {
+                    "Index": "1",
+                    "Name": "LOCK_STATE",
+                    "Value": "0",
+                    "GenericIndex": "22"
+                }
+            }
+        },
+            
+        "7": {
+            "Name": "Thermostat",
+            "FriendlyDeviceType": "thermostat",
+            "Type": "7",
+            "deviceid": "7",
+            "Location": "Default",
+            "DeviceValues": {
+                "1": {
+                    "Index": "1",
+                    "Name": "",
+                    "Value": "Cooling",
+                    "GenericIndex": "36"
+                },
+                "2": {
+                    "Index": "2",
+                    "Name": "thermostat mode",
+                    "Value": "Heat",
+                    "GenericIndex": "35"
+                },
+                "3": {
+                    "Index": "3",
+                    "Name": "temperrature",
+                    "Value": "50",
+                    "GenericIndex": "25"
+                },
+                "4": {
+                    "Index": "4",
+                    "Name": "fan state",
+                    "Value": "50",
+                    "GenericIndex": "40"
+                },
+                "5": {
+                    "Index": "5",
+                    "Name": "thermostat fan mode",
+                    "Value": "On low",
+                    "GenericIndex": "39"
+                },
+                "6": {
+                    "Index": "6",
+                    "Name": "thermostat heating",
+                    "Value": "40",
+                    "GenericIndex": "37"
+                },
+                "7": {
+                    "Index": "7",
+                    "Name": "thermostat cooling",
+                    "Value": "50",
+                    "GenericIndex": "38"
+                }
+            }
+        }
     }
 }

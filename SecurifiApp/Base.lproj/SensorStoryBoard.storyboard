@@ -6,54 +6,6 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Sensor Table-->
-        <scene sceneID="L10-Vg-iRo">
-            <objects>
-                <tableViewController storyboardIdentifier="SensorTable" useStoryboardIdentifierAsRestorationIdentifier="YES" id="VyC-YX-8Yd" customClass="SensorTable" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="bvw-Pj-CQD" customClass="SKSTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="GDO-e6-42E">
-                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GDO-e6-42E" id="rcy-sh-kAf">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SensorCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" rowHeight="60" id="RzF-nw-IDW">
-                                <rect key="frame" x="0.0" y="72" width="320" height="60"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RzF-nw-IDW" id="PQS-rL-pRz">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="WiFiClientListCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="wifi" rowHeight="65" id="hrU-dM-zkv">
-                                <rect key="frame" x="0.0" y="132" width="320" height="65"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hrU-dM-zkv" id="WBS-VR-mfZ">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="VyC-YX-8Yd" id="UN0-Zw-hTM"/>
-                            <outlet property="delegate" destination="VyC-YX-8Yd" id="Hk6-RA-Ka8"/>
-                        </connections>
-                    </tableView>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <connections>
-                        <outlet property="tblView" destination="bvw-Pj-CQD" id="3GH-a5-pYe"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="TjG-j0-cad" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="349" y="-414"/>
-        </scene>
         <!--Sensor Edit View Controller-->
         <scene sceneID="HTO-cJ-0jo">
             <objects>
@@ -66,15 +18,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="9l5-6M-te7">
-                                <rect key="frame" x="8" y="72" width="304" height="466"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="81a-Xa-YBP" customClass="CommonCell">
+                                <rect key="frame" x="8" y="8" width="304" height="70"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="XIY-gL-Vp9"/>
+                                </constraints>
+                            </view>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="9l5-6M-te7">
+                                <rect key="frame" x="8" y="80" width="304" height="490"/>
                                 <color key="backgroundColor" red="0.0078431372549019607" green="0.6588235294117647" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="2yF-Zk-Gms" firstAttribute="top" secondItem="9l5-6M-te7" secondAttribute="bottom" constant="-2" id="E3L-99-wbg"/>
+                            <constraint firstAttribute="trailing" secondItem="9l5-6M-te7" secondAttribute="trailing" constant="8" id="LRD-cW-LOJ"/>
+                            <constraint firstItem="81a-Xa-YBP" firstAttribute="top" secondItem="y17-32-z6d" secondAttribute="top" constant="8" id="T3A-TX-wrZ"/>
+                            <constraint firstAttribute="trailing" secondItem="81a-Xa-YBP" secondAttribute="trailing" constant="8" id="aNA-te-tWX"/>
+                            <constraint firstItem="9l5-6M-te7" firstAttribute="top" secondItem="81a-Xa-YBP" secondAttribute="bottom" constant="2" id="bbA-Og-hAl"/>
+                            <constraint firstItem="9l5-6M-te7" firstAttribute="leading" secondItem="y17-32-z6d" secondAttribute="leading" constant="8" id="cWU-9a-VWR"/>
+                            <constraint firstItem="81a-Xa-YBP" firstAttribute="leading" secondItem="y17-32-z6d" secondAttribute="leading" constant="8" id="uSB-AH-ZuF"/>
+                        </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="deviceEditHeaderCell" destination="81a-Xa-YBP" id="l5E-W5-LQ7"/>
                         <outlet property="indexesScroll" destination="9l5-6M-te7" id="6e1-ad-58I"/>
                     </connections>
                 </viewController>
@@ -191,6 +160,50 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kMu-AG-FH1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1406" y="-414"/>
+        </scene>
+        <!--Sensor Table-->
+        <scene sceneID="EEc-RD-HmK">
+            <objects>
+                <tableViewController storyboardIdentifier="SensorTable" useStoryboardIdentifierAsRestorationIdentifier="YES" id="hqx-i1-94L" customClass="SensorTable" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="bVG-s9-vBf">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="device_cell" rowHeight="75" id="hjI-eV-WWj" customClass="DeviceTableViewCell">
+                                <rect key="frame" x="0.0" y="28" width="320" height="75"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hjI-eV-WWj" id="any-Xi-r16">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pek-iK-xqV" customClass="CommonCell">
+                                            <rect key="frame" x="8" y="2" width="304" height="70"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Pek-iK-xqV" firstAttribute="top" secondItem="any-Xi-r16" secondAttribute="top" constant="2" id="1bl-ai-YiW"/>
+                                        <constraint firstAttribute="trailing" secondItem="Pek-iK-xqV" secondAttribute="trailing" constant="8" id="Ltv-rk-ZlG"/>
+                                        <constraint firstAttribute="bottom" secondItem="Pek-iK-xqV" secondAttribute="bottom" constant="3" id="nDv-xK-PQJ"/>
+                                        <constraint firstItem="Pek-iK-xqV" firstAttribute="leading" secondItem="any-Xi-r16" secondAttribute="leading" constant="8" id="pPM-ap-eqA"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="commonView" destination="Pek-iK-xqV" id="0hJ-z3-uem"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="hqx-i1-94L" id="EvH-ly-xnn"/>
+                            <outlet property="delegate" destination="hqx-i1-94L" id="7xo-vA-PKh"/>
+                        </connections>
+                    </tableView>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8rY-jO-YNS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
         </scene>
     </scenes>
 </document>

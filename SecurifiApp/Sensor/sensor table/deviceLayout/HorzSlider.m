@@ -23,7 +23,7 @@
 }
 -(void)drawSlider{// it will take color
     //self.componentArray = [NSMutableArray new];
-    V8HorizontalPickerView *horzPicker = [[V8HorizontalPickerView alloc]initWithFrame:self.frame];
+    V8HorizontalPickerView *horzPicker = [[V8HorizontalPickerView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
 //    horzPicker.layer.cornerRadius = 4;
 //    horzPicker.layer.borderWidth = 1.5;
     horzPicker.backgroundColor = [UIColor whiteColor];

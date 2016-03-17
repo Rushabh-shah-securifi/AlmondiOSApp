@@ -49,7 +49,6 @@ NSMutableArray * blockedDaysArray;
 }
 #pragma mark common cell delegate
 -(void)delegateClientEditTable{
-    NSLog(@"delegateClientEditTable ");
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)didReceiveMemoryWarning {
@@ -143,7 +142,6 @@ NSMutableArray * blockedDaysArray;
             return NSOrderedDescending;
         
     }]];
-    NSLog(@"self.orderedArray %@ ",self.orderedArray);
     
 }
 
@@ -166,7 +164,6 @@ NSMutableArray * blockedDaysArray;
     return self.orderedArray.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"cellForRowAtIndexPath");
    
         ClientPropertiesCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SKSTableViewCell" forIndexPath:indexPath];
         if (cell == nil) {
@@ -201,16 +198,13 @@ NSMutableArray * blockedDaysArray;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@" heightForRowAtIndexPath ");
     return 50;
 }
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
     //[self performSegueWithIdentifier:@"modaltodetails" sender:[self.eventsTable cellForRowAtIndexPath:indexPath]];
 }
 
 - (void)checkButtonTapped:(id)sender event:(id)event{
-    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
     NSSet *touches = [event allTouches];
     UITouch *touch = [touches anyObject];
     CGPoint currentTouchPosition = [touch locationInView:self.clientPropertiesTable];
@@ -221,8 +215,6 @@ NSMutableArray * blockedDaysArray;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
     ClientPropertiesCell *cell = (ClientPropertiesCell*)[tableView cellForRowAtIndexPath:indexPath];
-    NSLog(@" cell.display label %@",cell.indexName);
-    NSLog(@"reaching accessoryButtonTappedForRowWithIndexPath:");
     SensorEditViewController *ctrl = [self.storyboard instantiateViewControllerWithIdentifier:@"SensorEditViewController"];
     ctrl.indexName = cell.indexName;
     ctrl.deviceDict = self.clientDeviceDict;

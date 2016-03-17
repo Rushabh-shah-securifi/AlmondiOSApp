@@ -122,11 +122,9 @@
     GenericValue *genericValue;
     for(GenericIndexValue *genericIndexValue in genericIndexValues){
         if([genericIndexValue.genericIndex.placement isEqualToString:HEADER]){
-            NSLog(@"devicename:%@, genericValue %@",device.name, genericIndexValue.genericValue.displayText);
             headerText = genericIndexValue.genericValue.displayText;
             genericValue = genericIndexValue.genericValue;
         }else if([genericIndexValue.genericIndex.placement isEqualToString:DETAIL_HEADER]){
-            NSLog(@"");
             if(genericIndexValue.genericValue.isIconText)
                 detailText = [NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.icon];
             else
@@ -145,6 +143,7 @@
         DeviceIndex *deviceIndex = deviceIndexes[IndexId];
         GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
         if([genericIndexObj.placement rangeOfString:placement options:NSCaseInsensitiveSearch].location != NSNotFound){
+            NSLog(@"genericindex: %@", deviceIndex.genericIndex);
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericIndexObj.ID
                                                                                forValue:[self getHeaderValueFromKnownValuesForDevice:device indexID:IndexId]];
             [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue]];
@@ -159,6 +158,7 @@
 +(NSString*) getHeaderValueFromKnownValuesForDevice:(Device*)device indexID:(NSString*)indexID{
     for(DeviceKnownValues *knownValue in device.knownValues){
         if(knownValue.index == indexID.intValue){
+//            NSLog(@"knownValue: %@", knownValue.value);
             return knownValue.value;
         }
     }
@@ -166,6 +166,7 @@
 }
 
 +(GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value{
+//    NSLog(@"forValue :%@,genericIndexID %@ ",value,genericIndexID);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericIndexClass *genericIndexObject = toolkit.genericIndexes[genericIndexID];
     if(genericIndexObject == nil)
@@ -174,10 +175,11 @@
         GenericValue *genericValue = [GenericValue new];
         genericValue.isIconText = YES;
         genericValue.value = value;
+        NSLog(@"genericIndexID %@, value: %@", genericIndexID, value);
         genericValue.icon = [genericIndexObject.formatter transform:value];
+        NSLog(@"genericValue.icon %@", genericValue.icon);
         return genericValue;
     }
-    
     return genericIndexObject.values[value];
 }
 

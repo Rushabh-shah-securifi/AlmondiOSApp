@@ -10,6 +10,7 @@
 #import "UIFont+Securifi.h"
 #import "SFIColors.h"
 #import "DeviceKnownValues.h"
+#import "GenericValue.h"
 @interface SensorButtonView()
 @property (nonatomic) NSArray *valueArray;
 @end
@@ -34,7 +35,8 @@
         if([deviceValue.value isEqualToString:[allkeys objectAtIndex:i]]){
             selectedValue = i;
         }
-        [labelsArray addObject:[[valuedict valueForKey:[allkeys objectAtIndex:i]]valueForKey:@"Label"]];
+        GenericValue *gVal = [valuedict valueForKey:[allkeys objectAtIndex:i]];
+        [labelsArray addObject:gVal.displayText];
     }
     [self drawButton:labelsArray selectedValue:selectedValue];
 }
@@ -60,7 +62,6 @@
         }
         
         [button addTarget:self action:@selector(onButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        NSLog(@" button tags %ld",(long)button.tag);
         [self addSubview:button];
         xPos = xPos + button.frame.size.width ;
         

@@ -21,7 +21,7 @@
 }
 -(void)drawHueColorPicker{
     
-    SFIHuePickerView *huePickerView = [[SFIHuePickerView alloc]initWithFrame:self.frame];
+    SFIHuePickerView *huePickerView = [[SFIHuePickerView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
     huePickerView.convertedValue = 0;
     huePickerView.allowSelection = YES;
     huePickerView.delegate = self;
@@ -37,7 +37,6 @@
     
     SFIHuePickerView *hue_picker = (SFIHuePickerView *) picker;
      NSString *sensor_value = @([hue_picker convertToSensorValue]).stringValue;
-    NSLog(@"sensor_value %@ ",sensor_value);
     [self.delegate updateHueColorPicker:sensor_value];
     
     //    [self processColorTintChange:slider_brightness saturationSlider:slider_saturation huePicker:hue_picker];

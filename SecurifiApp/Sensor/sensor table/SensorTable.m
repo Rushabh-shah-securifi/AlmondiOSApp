@@ -12,9 +12,10 @@
 #import "ClientEditViewController.h"
 #import "CommonCell.h"
 #import "DeviceParser.h"
+#import "DeviceTableViewCell.h"
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
-
+#define CELL_IDENTIFIER @"device_cell"
 
 @interface SensorTable ()<UITableViewDataSource,UITableViewDelegate,CommonCellDelegate>
 @property (nonatomic,strong)NSMutableArray *currentDeviceList;
@@ -34,7 +35,6 @@
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentDeviceList = toolkit.devices;
-    NSLog(@" self.currentDeviceList %ld",self.currentDeviceList.count);
     [self setDeviceValues:[toolkit deviceValuesList:[toolkit currentAlmond].almondplusMAC]];
     self.connectedDevices = toolkit.wifiClientParser;
     self.currentAlmond = [toolkit currentAlmond];
@@ -93,42 +93,30 @@
     return vHeader;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"cellForRowAtIndexPath");
     if(indexPath.section == 0){
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reuseIdentifier" forIndexPath:indexPath];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"reuseIdentifier"];
-        }
-        CommonCell *sensorCell = [[CommonCell alloc]initWithFrame:CELLFRAME];
-        sensorCell.cellType = SensorTable_Cell;
-        sensorCell.delegate = self;
-        sensorCell.device = [self.currentDeviceList objectAtIndex:indexPath.row];
-        sensorCell.deviceName.text = sensorCell.device.name;
-        [sensorCell setUPSensorCell];
-        [cell addSubview:sensorCell];
+        DeviceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER forIndexPath:indexPath];
+        //cell.commonView.frame = CGRectMake(cell.commonView.frame.origin.x, cell.commonView.frame.origin.y, cell.commonView.frame.size.width, 80);
+        cell.commonView.cellType = SensorTable_Cell;
+        cell.commonView.delegate = self;
+        cell.commonView.device = [self.currentDeviceList objectAtIndex:indexPath.row];
+        NSLog(@"device id, name: %d, %@", cell.commonView.device.ID, cell.commonView.device.name);
+        [cell.commonView setUPSensorCell];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
     else
     {
-        static NSString *CellIdentifier = @"wifi";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (!cell){
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-        }
-        CommonCell * commonCell = [[CommonCell alloc]initWithFrame:CELLFRAME];
-        commonCell.delegate = self;
-        commonCell.cellType = ClientTable_Cell;
+        DeviceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER];
+        cell.commonView.delegate = self;
+        cell.commonView.cellType = ClientTable_Cell;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell addSubview:commonCell];
-
         return cell;
     }
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@" heightForRowAtIndexPath ");
-    return 65;
+    return 75;
 }
 - (void)setDeviceValues:(NSArray *)values {
     NSMutableDictionary *table = [NSMutableDictionary dictionary];
@@ -137,30 +125,33 @@
         table[key] = value;
     }
     _deviceValueTable = [NSDictionary dictionaryWithDictionary:table];
-    NSLog(@"_deviceValueTable  %@ ",_deviceValueTable);
 }
 - (SFIDeviceValue *)tryCurrentDeviceValues:(int)deviceId {
     return self.deviceValueTable[@(deviceId)];
 }
 -(void)delegateSensorTable:(Device*)device withGenericIndexValues:(NSArray *)genericIndexValues{
-    NSLog(@"onSettingButtonClicked");
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
-    SensorEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SensorEditViewController"];
-    viewController.device = device;
-    viewController.isSensor = YES;
-    viewController.genericIndexValues = genericIndexValues;
-    [self.navigationController pushViewController:viewController animated:YES];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
+        SensorEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"SensorEditViewController"];
+        viewController.device = device;
+        viewController.isSensor = YES;
+        viewController.genericIndexValues = genericIndexValues;
+        [self.navigationController pushViewController:viewController animated:YES];
+    });
+  
 
 }
 #pragma mark clientCell delegate
 - (void)btnSettingTapped:(NSDictionary *)connectedDevice index:(NSArray*)indexArray{
-    NSLog(@"onSettingButtonClicked");
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
-    ClientEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ClientEditViewController"];
-    viewController.connectedDevice = connectedDevice;
-    viewController.indexArray = indexArray;
-    [self.navigationController pushViewController:viewController animated:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
+        ClientEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ClientEditViewController"];
+        viewController.connectedDevice = connectedDevice;
+        viewController.indexArray = indexArray;
+        [self.navigationController pushViewController:viewController animated:YES];
 
+    });
 
 }
 -(void)delegateSensorTable{

@@ -61,7 +61,6 @@ NSString *blockedType;
         [self textFieldView:[self.deviceDict valueForKey:self.indexName]];
     }
     else if ([self.indexName isEqualToString:@"Type"]){
-        NSLog(@"types:");
         self.indexView.hidden = YES;
         CGRect fr = self.indexView.frame;
         fr.origin.x = self.indexView.frame.origin.x;
@@ -94,7 +93,6 @@ NSString *blockedType;
             if([str isEqualToString:[self.deviceDict valueForKey:self.indexName]])
                 break;
         currentValPos++;
-            NSLog(@"currentValPos %d ",currentValPos);
         }
         self.indexLabel.text = self.indexName;
         
@@ -110,7 +108,6 @@ NSString *blockedType;
 
 }
 -(void)textFieldView:(NSString *)name{
-    NSLog(@"self.indexName %@ ",self.indexName);
     SensorTextView *textView = [[SensorTextView alloc]initWithFrame:CGRectMake(4,20,self.indexView.frame.size.width - 8,40)];
     textView.color = [UIColor clearColor];
     [textView drawTextField:name];
@@ -133,7 +130,6 @@ NSString *blockedType;
 }
 
 -(void)updateButtonStatus:(NSString *)newValue{//here we have to pass many things like deviceIndexId,deviceID,...
-    NSLog(@"newValue %@ ",newValue);
 }
 
 #pragma mark uitableView Delegate
@@ -142,7 +138,6 @@ NSString *blockedType;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSLog(@"numberOfRowsInSection");
       NSArray *type = @[@"PC",@"smartPhone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"printer",@"Router_switch",@"Nest",@"Hub",@"Camara",@"ChromeCast",@"android_stick",@"amazone_exho",@"amazone-dash",@"Other"];
         return type.count;
 }
@@ -180,7 +175,6 @@ NSString *blockedType;
 #pragma mark cell delegate
 -(void)selectedTypes:(NSString *)typeName{
     self.selectedType = typeName;
-    NSLog(@"selectedTypes");
     [self.tableType reloadData];
 }
 #pragma mark gridView
@@ -189,7 +183,6 @@ NSString *blockedType;
     
 }
 -(void)addSegmentControll{
-    NSLog(@"addSegmentControll ");
     self.allowOnNetworkView = [[UIView alloc]initWithFrame:CGRectMake(self.indexView.frame.origin.x, self.indexView.frame.origin.y, self.indexView.frame.size.width, self.view.frame.size.height - self.indexView.frame.origin.y -150)];
     self.allowOnNetworkView.backgroundColor = [SFIColors clientGreenColor];
     [self.view addSubview:self.allowOnNetworkView];
@@ -383,7 +376,6 @@ NSString *blockedType;
 }
 
 -(UICollectionViewCell*) collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"cellForItemAtIndexPath %@",indexPath);
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     CollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"collectionViewCell" forIndexPath:indexPath];
@@ -398,12 +390,10 @@ NSString *blockedType;
     NSMutableDictionary *blockedHours = [blockedDaysArray objectAtIndex:row];
     NSString *blockedVal = [blockedHours valueForKey:@(section).stringValue];
     if([blockedVal isEqualToString:@"1"]){
-        NSLog(@"daytime if");
         cell.selected = YES;
         [collectionView selectItemAtIndexPath:indexPath animated:NO scrollPosition:UICollectionViewScrollPositionNone];
         [cell addDayTimeLable:indexPath isSelected:@"1"];
     }else{
-        NSLog(@"daytime else");
         [cell addDayTimeLable:indexPath isSelected:@"0"];
     }
     return cell;
@@ -468,7 +458,6 @@ NSString *blockedType;
         else
             [_hexBlockedDays appendString:[NSString stringWithFormat:@",%@", hexStr]];
     }
-    NSLog(@"_hexBlockedDays %@",_hexBlockedDays);
 }
 -(NSMutableString*)boolStringToHex:(NSString*)str{
     char* cstr = [str cStringUsingEncoding: NSASCIIStringEncoding];

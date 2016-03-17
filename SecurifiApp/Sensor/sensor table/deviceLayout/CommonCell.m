@@ -9,6 +9,11 @@
 #import "CommonCell.h"
 #import "GenericIndexUtil.h"
 #import "AlmondJsonCommandKeyConstants.h"
+@interface CommonCell()
+@property (weak, nonatomic) IBOutlet UILabel *deviceValueImgLable;
+    
+
+@end
 
 @implementation CommonCell
 
@@ -67,8 +72,24 @@
     // setup images
     GenericValue *genericValue = [GenericIndexUtil getHeaderGenericValueForDevice:self.device];
     self.deviceName.text = self.device.name;
-    self.deviceValue.text = genericValue.displayText;
-    self.deviceImage.image = [UIImage imageNamed:genericValue.icon];
-    
+    NSLog(@"icon: %@", genericValue.icon);
+    if(genericValue.isIconText){
+        self.deviceImage.hidden = YES;
+        self.deviceValueImgLable.hidden = NO;
+        [self addDeviceValueImgLabel:genericValue.icon suffix:@"%"];
+    }else{
+        self.deviceValueImgLable.hidden = YES;
+        self.deviceImage.hidden = NO;
+        self.deviceValue.text = genericValue.displayText;
+        self.deviceImage.image = [UIImage imageNamed:genericValue.icon];
+    }
+}
+
+-(void)addDeviceValueImgLabel:(NSString*)text suffix:(NSString*)suffix{
+    NSString *strTopTitleLabelText = [text stringByAppendingString:suffix];
+    NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:20.0f]} range:NSMakeRange(0,text.length)];
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:12.0f],NSBaselineOffsetAttributeName:@(10)} range:NSMakeRange(text.length,suffix.length)];
+    [self.deviceValueImgLable setAttributedText:strTemp];
 }
 @end
