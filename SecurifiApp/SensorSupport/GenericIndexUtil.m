@@ -166,7 +166,6 @@
 }
 
 +(GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value{
-//    NSLog(@"forValue :%@,genericIndexID %@ ",value,genericIndexID);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericIndexClass *genericIndexObject = toolkit.genericIndexes[genericIndexID];
     if(genericIndexObject == nil)
@@ -175,9 +174,7 @@
         GenericValue *genericValue = [GenericValue new];
         genericValue.isIconText = YES;
         genericValue.value = value;
-        NSLog(@"genericIndexID %@, value: %@", genericIndexID, value);
         genericValue.icon = [genericIndexObject.formatter transform:value];
-        NSLog(@"genericValue.icon %@", genericValue.icon);
         return genericValue;
     }
     return genericIndexObject.values[value];

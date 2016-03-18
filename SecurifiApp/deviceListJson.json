@@ -41,11 +41,11 @@
     "4": {
         "isActionDevice": true,
         "Indexes": {
-            "2": {
+            "1": {
                 "genericIndexID": "1",
                 "row_no": 2
             },
-            "1": {
+            "2": {
                 "genericIndexID": "18",
                 "row_no": 1
             }

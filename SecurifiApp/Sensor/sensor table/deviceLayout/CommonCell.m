@@ -76,7 +76,8 @@
     if(genericValue.isIconText){
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;
-        [self addDeviceValueImgLabel:genericValue.icon suffix:@"%"];
+        self.deviceValueImgLable.text = genericValue.icon;
+//        [self addDeviceValueImgLabel:genericValue.icon suffix:@"%"];
     }else{
         self.deviceValueImgLable.hidden = YES;
         self.deviceImage.hidden = NO;

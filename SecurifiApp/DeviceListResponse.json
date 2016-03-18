@@ -462,13 +462,13 @@
                 "1": {
                     "Index": "1",
                     "Name": "SWITCH MULTILEVEL",
-                    "Value": "0",
-                    "GenericIndex": "19"
+                    "Value": "false",
+                    "GenericIndex": "1"
                 },
                 "2": {
                     "Index": "2",
                     "Name": "DIMMER_LEVEL",
-                    "Value": "0",
+                    "Value": "20",
                     "GenericIndex": "18"
                 }
             }

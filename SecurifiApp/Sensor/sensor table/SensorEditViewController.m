@@ -35,10 +35,10 @@
 #define ITEM_SPACING  2.0
 
 #define VIEW_FRAME_SMALL CGRectMake(xIndent, yPos, self.indexesScroll.frame.size.width-xIndent, 25)
-#define VIEW_FRAME_LARGE CGRectMake(xIndent, yPos, self.indexesScroll.frame.size.width-xIndent, 60)
-#define LABEL_FRAME CGRectMake(0, 0, view.frame.size.width-16, 15)
-#define SLIDER_FRAME CGRectMake(0, 20,view.frame.size.width-10, 30)
-#define BUTTON_FRAME CGRectMake(0, 20,view.frame.size.width-10,  30)
+#define VIEW_FRAME_LARGE CGRectMake(xIndent, yPos, self.indexesScroll.frame.size.width-xIndent, 65)
+#define LABEL_FRAME CGRectMake(0, 0, view.frame.size.width-16, 20)
+#define SLIDER_FRAME CGRectMake(0, 25,view.frame.size.width-10, 35)
+#define BUTTON_FRAME CGRectMake(0, 25,view.frame.size.width-10,  35)
 static const int xIndent = 10;
 
 @interface SensorEditViewController ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate,SensorButtonViewDelegate,SensorTextViewDelegate,HorzSliderDelegate,HueColorPickerDelegate,HorzSliderDelegate,HueSliderViewDelegate,CommonCellDelegate,SFIWiFiDeviceTypeSelectionCellDelegate,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,clientTypeCellDelegate,SensorButtonViewDelegate>
@@ -148,10 +148,8 @@ static const int xIndent = 10;
         }
         else{
             UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_LARGE];
-            view.backgroundColor = [UIColor lightGrayColor];
             UILabel *label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
             [self setUpLable:label withPropertyName:propertyName];
-            label.backgroundColor = [UIColor orangeColor];
             [view addSubview:label];
             
             if([genericIndexObj.layoutType isEqualToString:SLIDER]){
@@ -223,7 +221,7 @@ static const int xIndent = 10;
     [self setUpLable:Name withPropertyName:labelText];
     [view addSubview:Name];
     
-    SensorTextView *name = [[SensorTextView alloc]initWithFrame:CGRectMake(0,10,view.frame.size.width -10,30)];
+    SensorTextView *name = [[SensorTextView alloc]initWithFrame:CGRectMake(0,15,view.frame.size.width -10,35)];
     [name drawTextField:self.device.name];
     [self.indexesScroll addSubview:view];
     [view addSubview:name];
@@ -231,15 +229,15 @@ static const int xIndent = 10;
 }
 
 -(void)notifyField:(int)yPos{
-    UIView *viewNotify = [[UIView alloc]initWithFrame:CGRectMake(10 , yPos, self.indexesScroll.frame.size.width -10, 60)];
+    UIView *viewNotify = [[UIView alloc]initWithFrame:CGRectMake(10 , yPos, self.indexesScroll.frame.size.width -10, 65)];
     viewNotify.backgroundColor = [UIColor clearColor];
-    UILabel *notify = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 15)];
+    UILabel *notify = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 20)];
     notify.text = @"NOTIFY ME";
     notify.font = [UIFont securifiBoldFont];
     notify.textColor = [UIColor whiteColor];
     [viewNotify addSubview:notify];
     
-    SensorButtonView *sensorbuttons = [[SensorButtonView alloc]initWithFrame:CGRectMake(0,20,viewNotify.frame.size.width -10,30)];
+    SensorButtonView *sensorbuttons = [[SensorButtonView alloc]initWithFrame:CGRectMake(0,25,viewNotify.frame.size.width -10,35)];
     NSArray *array = @[@"Always",@"When I'm away",@"Never"];
     sensorbuttons.color = [SFIColors ruleBlueColor];
     [sensorbuttons drawButton:array selectedValue:5];

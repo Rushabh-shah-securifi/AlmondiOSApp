@@ -432,7 +432,7 @@
         "Type": "Actuator",
         "DataType": "Int",
         "ReadOnly": "false",
-        "Placement": "Header",
+        "Placement": "DETAIL",
         "Layout": "Slider",
         "GroupLabel": "Dim",
         "Conditional": "true",
