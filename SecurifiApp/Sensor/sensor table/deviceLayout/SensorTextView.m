@@ -23,7 +23,7 @@
     deviceNameField.delegate = self;
     deviceNameField.backgroundColor = self.color;
     deviceNameField.textColor = [UIColor whiteColor];
-    deviceNameField.font = [UIFont securifiLightFont];
+    deviceNameField.font = [UIFont securifiLightFont:13];
     UIView *OnelineView = [[UIView alloc]initWithFrame:CGRectMake(deviceNameField.frame.origin.x, deviceNameField.frame.size.height , self.frame.size.width, 1)];
     OnelineView.backgroundColor = [UIColor whiteColor];
     OnelineView.alpha = 0.5;
@@ -42,7 +42,7 @@
     [self.delegate updateNewValue:textField.text];
 }
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
-    UIImageView *textCheckMarkView = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width - self.frame.size.height , self.frame.origin.y + 10, self.frame.size.height -20, self.frame.size.height -23)];
+    UIImageView *textCheckMarkView = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width - self.frame.size.height , 10, self.frame.size.height -30, self.frame.size.height -33)];
     textCheckMarkView.image = [UIImage imageNamed:@"iconSceneChekmark"];
     [self addSubview:textCheckMarkView];
 }
