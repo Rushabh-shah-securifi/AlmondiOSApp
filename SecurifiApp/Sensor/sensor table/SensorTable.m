@@ -11,7 +11,6 @@
 #import "UIFont+Securifi.h"
 #import "ClientEditViewController.h"
 #import "CommonCell.h"
-#import "DeviceParser.h"
 #import "DeviceTableViewCell.h"
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -27,8 +26,8 @@
 @implementation SensorTable
 
 - (void)viewDidLoad {
+    NSLog(@"sensor - viewDidLoad");
     [super viewDidLoad];
-    [DeviceParser parseDeviceListAndDynamicDeviceResponse:nil];
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -46,12 +45,28 @@
         [self markAlmondMac:self.currentAlmond.almondplusMAC];
         [self markTitle: self.currentAlmond.almondplusName];
     }
-
+    [self initializeNotifications];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    NSLog(@"sensor viewWillAppear");
+    [super viewWillAppear:YES];
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)initializeNotifications{
+    NSLog(@"initialize notifications sensor table");
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(onDeviceListAndDynamicResponseParsed:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
 }
 
 #pragma mark - Table view data source
@@ -160,5 +175,15 @@
     ClientEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ClientEditViewController"];
 //    viewController.connectedDevice = [self.connectedDevices objectAtIndex:0];
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+#pragma mark command responses
+-(void)onDeviceListAndDynamicResponseParsed:(id)sender{
+    NSLog(@"onDeviceListAndDynamicResponseParsed");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        //    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        [self.tableView reloadData];
+
+    });
 }
 @end
