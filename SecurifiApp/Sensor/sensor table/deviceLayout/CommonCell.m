@@ -70,19 +70,19 @@
 
 -(void)setUPSensorCell{
     // setup images
-    GenericValue *genericValue = [GenericIndexUtil getHeaderGenericValueForDevice:self.device];
+    GenericProperties *genericProperties = [GenericIndexUtil getHeaderGenericPropertiesForDevice:self.device];
     self.deviceName.text = self.device.name;
-    NSLog(@"icon: %@", genericValue.icon);
-    if(genericValue.isIconText){
+    NSLog(@"icon: %@", genericProperties.genericValue.icon);
+    if(genericProperties.genericValue.iconText){
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;
-        self.deviceValueImgLable.text = genericValue.icon;
+        self.deviceValueImgLable.text = genericProperties.genericValue.icon;
 //        [self addDeviceValueImgLabel:genericValue.icon suffix:@"%"];
     }else{
         self.deviceValueImgLable.hidden = YES;
         self.deviceImage.hidden = NO;
-        self.deviceValue.text = genericValue.displayText;
-        self.deviceImage.image = [UIImage imageNamed:genericValue.icon];
+        self.deviceValue.text = genericProperties.genericValue.displayText;
+        self.deviceImage.image = [UIImage imageNamed:genericProperties.genericValue.icon];
     }
 }
 

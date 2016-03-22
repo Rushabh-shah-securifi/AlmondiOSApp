@@ -20,26 +20,36 @@
 
 @implementation GenericIndexUtil
 
-+(GenericValue*)getHeaderGenericValueForDevice:(Device*)device{
+
++(GenericProperties*)getHeaderGenericPropertiesForDevice:(Device*)device{
     NSArray *genericIndexValues = [self getGenericIndexValuesByPlacementForDevice:device placement:HEADER];
     NSString *headerText = @"";
     NSString *detailText = @"";
+    int index = 0;
     GenericValue *genericValue;
     for(GenericIndexValue *genericIndexValue in genericIndexValues){
+        if(genericIndexValue.genericValue == nil)
+            continue;
         if([genericIndexValue.genericIndex.placement isEqualToString:HEADER]){
             headerText = genericIndexValue.genericValue.displayText;
             genericValue = genericIndexValue.genericValue;
+            index = genericIndexValue.index;
         }else if([genericIndexValue.genericIndex.placement isEqualToString:DETAIL_HEADER]){
-            if(genericIndexValue.genericValue.isIconText)
+            if(genericIndexValue.genericValue.iconText)
                 detailText = [NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.icon];
             else
                 detailText = genericIndexValue.genericValue.displayText;
         }
     }
-    return [[GenericValue alloc]initWithGenericValue:genericValue text:[NSString stringWithFormat:@"%@ %@",headerText,detailText]];
+    if(genericValue == nil)
+        genericValue = [GenericValue new];
+    if(detailText.length > 0)
+        genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:[NSString stringWithFormat:@"%@ %@", headerText, detailText]];
+    
+    return [[GenericProperties alloc]initWithDeviceID:device.ID index:index genericValue:genericValue];
 }
 
-+(NSArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement{
++(NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericDeviceClass *genericDevice = toolkit.genericDevices[@(device.type).stringValue];
     NSDictionary *deviceIndexes = genericDevice.Indexes;
@@ -51,11 +61,9 @@
             NSLog(@"genericindex: %@", deviceIndex.genericIndex);
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericIndexObj.ID
                                                                                forValue:[self getHeaderValueFromKnownValuesForDevice:device indexID:IndexId]];
-            [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue]];
+            [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue index:IndexId.intValue]];
         }
     }
-    
-    
     return genericIndexValues;
 }
 
@@ -63,7 +71,6 @@
 +(NSString*) getHeaderValueFromKnownValuesForDevice:(Device*)device indexID:(NSString*)indexID{
     for(DeviceKnownValues *knownValue in device.knownValues){
         if(knownValue.index == indexID.intValue){
-//            NSLog(@"knownValue: %@", knownValue.value);
             return knownValue.value;
         }
     }
@@ -73,16 +80,42 @@
 +(GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericIndexClass *genericIndexObject = toolkit.genericIndexes[genericIndexID];
-    if(genericIndexObject == nil)
+    if(genericIndexObject == nil || value == nil)
         return nil;
+    else if(genericIndexObject.values != nil){
+        return genericIndexObject.values[value];
+    }
     else if(genericIndexObject.formatter != nil){
-        GenericValue *genericValue = [GenericValue new];
-        genericValue.isIconText = YES;
-        genericValue.value = value;
-        genericValue.icon = [genericIndexObject.formatter transform:value];
+        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:[genericIndexObject.formatter transform:value] iconText:[genericIndexObject.formatter transform:value] value:value];
         return genericValue;
     }
-    return genericIndexObject.values[value];
+    return [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value];
+}
+
++ (NSMutableArray *)getDetailListForDevice:(Device*)device{
+    NSMutableArray *detailList = [self getGenericIndexValuesByPlacementForDevice:device placement:@"Detail"];
+    NSArray *commonList = [self getCommonGenericIndexValue:device];
+    [detailList addObject:commonList];
+    return detailList;
+}
+
++ (NSArray*)getCommonGenericIndexValue:(Device*)device{
+    NSMutableArray *genericIndexValues = [NSMutableArray new];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSDictionary *commonIndexDict = [self createCommonIndexes];
+    
+    for(NSString *key in [NSDictionary new].allKeys){
+        int genericIndex = [[commonIndexDict valueForKey:key] intValue];
+        NSString *value = [key isEqualToString:@"Name"]? device.name: device.location;
+        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value];
+        GenericIndexClass *genIndexObj = toolkit.genericIndexes[@(genericIndex).stringValue];
+        [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genIndexObj genericValue:genericValue index:0]];
+    }
+    return genericIndexValues;
+}
+
++(NSDictionary*)createCommonIndexes{
+    return @{@"Name":@"-1", @"Location":@"-2", @"NotifyMe":@"-3"};
 }
 
 /*
