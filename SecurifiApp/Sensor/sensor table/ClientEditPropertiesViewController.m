@@ -16,7 +16,7 @@
 #import "UIFont+Securifi.h"
 #import "Colours.h"
 #import "CollectionViewCell.h"
-#import "CommonCell.h"
+#import "DeviceHeaderView.h"
 
 
 @interface ClientEditPropertiesViewController ()<SFIWiFiDeviceTypeSelectionCellDelegate,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,clientTypeCellDelegate,SensorButtonViewDelegate>
@@ -44,7 +44,7 @@ NSString *blockedType;
     [super viewDidLoad];
     [self drawViews];
     self.selectedType = [self.deviceDict valueForKey:@"Type"];
-    CommonCell *commonView = [[CommonCell alloc]initWithFrame:CGRectMake(5, 18, self.view.frame.size.width -10, 70)];
+    DeviceHeaderView *commonView = [[DeviceHeaderView alloc]initWithFrame:CGRectMake(5, 18, self.view.frame.size.width -10, 70)];
     [self.view addSubview:commonView];
     
     // Do any additional setup after loading the view.

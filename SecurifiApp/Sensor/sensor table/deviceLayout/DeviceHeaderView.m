@@ -1,40 +1,36 @@
 //
-//  CommonCell.m
+//  DeviceHeaderView.h
 //  SecurifiApp
 //
 //  Created by Securifi-Mac2 on 10/03/16.
 //  Copyright © 2016 Securifi Ltd. All rights reserved.
 //
 
-#import "CommonCell.h"
+#import "DeviceHeaderView.h"
 #import "GenericIndexUtil.h"
 #import "AlmondJsonCommandKeyConstants.h"
-@interface CommonCell()
-@property (weak, nonatomic) IBOutlet UILabel *deviceValueImgLable;
-    
 
+@interface DeviceHeaderView()
+@property (weak, nonatomic) IBOutlet UILabel *deviceValueImgLable;
 @end
 
-@implementation CommonCell
+@implementation DeviceHeaderView
 
 - (id)initWithFrame:(CGRect)frame{
     self = [super initWithFrame:frame];
     if(self){
-        [[NSBundle mainBundle] loadNibNamed:@"CommonCell" owner:self options:nil];
+        [[NSBundle mainBundle] loadNibNamed:@"DeviceHeaderView" owner:self options:nil];
         [self addSubview:self.view];
         [self stretchToSuperView:self.view];
-        
     }
     return self;
 }
 -(id)initWithCoder:(NSCoder *)aDecoder{
     self = [super initWithCoder:aDecoder];
     if(self){
-    [[NSBundle mainBundle] loadNibNamed:@"CommonCell" owner:self options:nil];
+    [[NSBundle mainBundle] loadNibNamed:@"DeviceHeaderView" owner:self options:nil];
     [self addSubview:self.view];
-    [self stretchToSuperView:self.view];
-    
-        
+    [self stretchToSuperView:self.view];    
     }
     return  self;
 }
@@ -51,38 +47,25 @@
     
 }
 
-- (IBAction)settingButtonClicked:(id)sender {
-    if(self.cellType == ClientTable_Cell){
-        [self.delegate delegateSensorTable];
-    }
-    else if (self.cellType == ClientEdit_Cell){
-        [self.delegate delegateClientEditTable];
-    }
-    else if(self.cellType == SensorTable_Cell){
-        NSArray* genericIndexValues = [GenericIndexUtil getGenericIndexValuesByPlacementForDevice:self.device placement:DETAIL];
-        [self.delegate delegateSensorTable:self.device withGenericIndexValues:genericIndexValues];
-    }
-}
+
 -(void)setUpClientCell{
     // set up images and labels for clients
 }
 
 
 -(void)setUPSensorCell{
-    // setup images
-    GenericProperties *genericProperties = [GenericIndexUtil getHeaderGenericPropertiesForDevice:self.device];
+    NSLog(@"setUPSensorCell");
+    NSLog(@"icon: %@", self.genericIndexValue.genericValue.icon);
     self.deviceName.text = self.device.name;
-    NSLog(@"icon: %@", genericProperties.genericValue.icon);
-    if(genericProperties.genericValue.iconText){
+    if(_genericIndexValue.genericValue.iconText){
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;
-        self.deviceValueImgLable.text = genericProperties.genericValue.icon;
-//        [self addDeviceValueImgLabel:genericValue.icon suffix:@"%"];
+        self.deviceValueImgLable.text = self.genericIndexValue.genericValue.icon;
     }else{
         self.deviceValueImgLable.hidden = YES;
         self.deviceImage.hidden = NO;
-        self.deviceValue.text = genericProperties.genericValue.displayText;
-        self.deviceImage.image = [UIImage imageNamed:genericProperties.genericValue.icon];
+        self.deviceValue.text = self.genericIndexValue.genericValue.displayText;
+        self.deviceImage.image = [UIImage imageNamed:self.genericIndexValue.genericValue.icon];
     }
 }
 
@@ -93,4 +76,30 @@
     [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:12.0f],NSBaselineOffsetAttributeName:@(10)} range:NSMakeRange(text.length,suffix.length)];
     [self.deviceValueImgLable setAttributedText:strTemp];
 }
+
+#pragma mark button click
+- (IBAction)settingButtonClicked:(id)sender {
+    if(self.cellType == SensorTable_Cell){
+        NSArray* genericIndexValues = [GenericIndexUtil getGenericIndexValuesByPlacementForDevice:self.device placement:DETAIL];
+        GenericParams *genericParams = [[GenericParams alloc]initWithGenericIndexValue:self.genericIndexValue indexValueList:genericIndexValues device:self.device color:self.color];
+        [self.delegate delegateDeviceSettingButtonClick:genericParams];
+    }
+    else if(self.cellType == ClientTable_Cell){
+        [self.delegate delegateClientSettingButtonClick];
+    }
+    else if (self.cellType == ClientEdit_Cell){
+        [self.delegate delegateClientEditTable];
+    }
+    
+}
+
+- (IBAction)onSensorButtonClicked:(id)sender {
+    NSLog(@"onSensorButtonClicked");
+    if(self.cellType == SensorTable_Cell){
+        //change image to load
+        GenericIndexValue *genericIndexValue = [GenericIndexUtil getHeaderGenericIndexValueForDevice:self.device];
+        [self.delegate delegateDeviceButtonClickWithGenericProperies:genericIndexValue];
+    }
+}
+
 @end

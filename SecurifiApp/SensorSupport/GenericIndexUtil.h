@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 #import "GenericValue.h"
 #import "Device.h"
-#import "GenericProperties.h"
+#import "GenericIndexValue.h"
 
 @interface GenericIndexUtil : NSObject
 
 +(NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement;
-+(GenericProperties*)getHeaderGenericPropertiesForDevice:(Device*)device;
++(GenericIndexValue*)getHeaderGenericIndexValueForDevice:(Device*)device;
 @end

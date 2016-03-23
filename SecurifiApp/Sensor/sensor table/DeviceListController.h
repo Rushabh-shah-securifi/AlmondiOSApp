@@ -1,5 +1,5 @@
 //
-//  SensorTable.h
+//  DeviceListController.h
 //  SecurifiApp
 //
 //  Created by Securifi-Mac2 on 20/02/16.
@@ -10,7 +10,7 @@
 #import "SFITableViewController.h"
 #import "SKSTableView.h"
 
-@interface SensorTable : SFITableViewController
+@interface DeviceListController : SFITableViewController
 //@property (strong, nonatomic) IBOutlet SKSTableView *tblView;
 
 @end

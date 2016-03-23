@@ -21,18 +21,22 @@
 @implementation GenericIndexUtil
 
 
-+(GenericProperties*)getHeaderGenericPropertiesForDevice:(Device*)device{
++(GenericIndexValue*)getHeaderGenericIndexValueForDevice:(Device*)device{
     NSArray *genericIndexValues = [self getGenericIndexValuesByPlacementForDevice:device placement:HEADER];
     NSString *headerText = @"";
     NSString *detailText = @"";
     int index = 0;
     GenericValue *genericValue;
+    GenericIndexClass *genericIndex;
     for(GenericIndexValue *genericIndexValue in genericIndexValues){
         if(genericIndexValue.genericValue == nil)
             continue;
         if([genericIndexValue.genericIndex.placement isEqualToString:HEADER]){
             headerText = genericIndexValue.genericValue.displayText;
             genericValue = genericIndexValue.genericValue;
+            genericIndex = genericIndexValue.genericIndex;
+            if(genericIndexValue.genericValue.icon.length == 0)
+                headerText = @"";
             index = genericIndexValue.index;
         }else if([genericIndexValue.genericIndex.placement isEqualToString:DETAIL_HEADER]){
             if(genericIndexValue.genericValue.iconText)
@@ -45,8 +49,8 @@
         genericValue = [GenericValue new];
     if(detailText.length > 0)
         genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:[NSString stringWithFormat:@"%@ %@", headerText, detailText]];
-    
-    return [[GenericProperties alloc]initWithDeviceID:device.ID index:index genericValue:genericValue];
+//    return [[GenericProperties alloc]initWithDeviceID:device.ID index:index genericValue:genericValue];
+    return [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:index deviceID:device.ID];
 }
 
 +(NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement{
@@ -61,13 +65,12 @@
             NSLog(@"genericindex: %@", deviceIndex.genericIndex);
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericIndexObj.ID
                                                                                forValue:[self getHeaderValueFromKnownValuesForDevice:device indexID:IndexId]];
-            [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue index:IndexId.intValue]];
+            [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue index:IndexId.intValue deviceID:device.ID]];
         }
     }
     return genericIndexValues;
 }
 
-//
 +(NSString*) getHeaderValueFromKnownValuesForDevice:(Device*)device indexID:(NSString*)indexID{
     for(DeviceKnownValues *knownValue in device.knownValues){
         if(knownValue.index == indexID.intValue){
@@ -95,28 +98,32 @@
 + (NSMutableArray *)getDetailListForDevice:(Device*)device{
     NSMutableArray *detailList = [self getGenericIndexValuesByPlacementForDevice:device placement:@"Detail"];
     NSArray *commonList = [self getCommonGenericIndexValue:device];
-    [detailList addObject:commonList];
+    [detailList addObjectsFromArray:commonList];
     return detailList;
 }
 
 + (NSArray*)getCommonGenericIndexValue:(Device*)device{
     NSMutableArray *genericIndexValues = [NSMutableArray new];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    NSDictionary *commonIndexDict = [self createCommonIndexes];
+    NSDictionary *commonIndexDict = [Device getCommonIndexesDict];
     
     for(NSString *key in [NSDictionary new].allKeys){
         int genericIndex = [[commonIndexDict valueForKey:key] intValue];
-        NSString *value = [key isEqualToString:@"Name"]? device.name: device.location;
+        NSString *value;
+        if([key isEqualToString:@"Name"]){
+            value = device.name;
+        }else if([key isEqualToString:@"Location"]){
+            value = device.location;
+        }else{//notifyme
+//            value = device.
+        }
         GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value];
         GenericIndexClass *genIndexObj = toolkit.genericIndexes[@(genericIndex).stringValue];
-        [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genIndexObj genericValue:genericValue index:0]];
+        [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genIndexObj genericValue:genericValue index:0 deviceID:device.ID]];
     }
     return genericIndexValues;
 }
 
-+(NSDictionary*)createCommonIndexes{
-    return @{@"Name":@"-1", @"Location":@"-2", @"NotifyMe":@"-3"};
-}
 
 /*
  {//devices json

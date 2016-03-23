@@ -1,12 +1,12 @@
 //
-//  SensorEditViewController.m
+//  DeviceEditViewController.m
 //  SecurifiApp
 //
 //  Created by Securifi-Mac2 on 23/02/16.
 //  Copyright © 2016 Securifi Ltd. All rights reserved.
 //
 
-#import "SensorEditViewController.h"
+#import "DeviceEditViewController.h"
 #import "UIFont+Securifi.h"
 
 #import "V8HorizontalPickerView.h"
@@ -17,7 +17,7 @@
 #import "HueColorPicker.h"
 #import "HueSliderView.h"
 #import "SensorTextView.h"
-#import "CommonCell.h"
+#import "DeviceHeaderView.h"
 
 #import "SFIWiFiDeviceTypeSelectionCell.h"
 #import "clientTypeCell.h"
@@ -43,14 +43,14 @@
 #define BUTTON_FRAME CGRectMake(0, 25,view.frame.size.width-10,  35)
 static const int xIndent = 10;
 
-@interface SensorEditViewController ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate,SensorButtonViewDelegate,SensorTextViewDelegate,HorzSliderDelegate,HueColorPickerDelegate,HorzSliderDelegate,HueSliderViewDelegate,CommonCellDelegate,SFIWiFiDeviceTypeSelectionCellDelegate,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,clientTypeCellDelegate,SensorButtonViewDelegate>
+@interface DeviceEditViewController ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate,SensorButtonViewDelegate,SensorTextViewDelegate,HorzSliderDelegate,HueColorPickerDelegate,HorzSliderDelegate,HueSliderViewDelegate,DeviceHeaderViewDelegate,SFIWiFiDeviceTypeSelectionCellDelegate,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,clientTypeCellDelegate,SensorButtonViewDelegate>
 //can be removed
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
 
 //wifi client @property
 @property (nonatomic) IBOutlet UIView *indexView;
 @property (nonatomic) IBOutlet UILabel *indexLabel;
-@property (weak, nonatomic) IBOutlet CommonCell *deviceEditHeaderCell;
+@property (weak, nonatomic) IBOutlet DeviceHeaderView *deviceEditHeaderCell;
 
 
 @property (nonatomic) UITableView *tableType;
@@ -66,7 +66,7 @@ static const int xIndent = 10;
 
 @end
 
-@implementation SensorEditViewController{
+@implementation DeviceEditViewController{
     NSMutableArray * pickerValuesArray1;
     NSMutableArray * blockedDaysArray;
     NSString *blockedType;
@@ -80,8 +80,7 @@ static const int xIndent = 10;
         self.scrollView.hidden = NO;
         pickerValuesArray1 = [[NSMutableArray alloc]init];
         self.deviceEditHeaderCell.cellType = SensorEdit_Cell;
-        self.deviceEditHeaderCell.device = self.device;
-        self.deviceEditHeaderCell.deviceName.text = self.device.name;
+        self.deviceEditHeaderCell.device = self.genericParams.device;
         self.deviceEditHeaderCell.delegate = self;
         [self.deviceEditHeaderCell setUPSensorCell];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -93,8 +92,8 @@ static const int xIndent = 10;
         // wifi clients
         self.scrollView.hidden = YES;
         self.deviceEditHeaderCell.cellType = ClientEditProperties_cell;
-        [self drawViews];
-        self.selectedType = [self.deviceDict valueForKey:@"Type"];
+//        [self drawViews];
+//        self.selectedType = [self.deviceDict valueForKey:@"Type"];
         type = @[@"PC",@"smartPhone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"printer",@"Router_switch",@"Nest",@"Hub",@"Camara",@"ChromeCast",@"android_stick",@"amazone_exho",@"amazone-dash",@"Other"];
     }
 }
@@ -121,10 +120,10 @@ static const int xIndent = 10;
 
 -(void)drawIndexes{
     int yPos = 10;
-    CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericIndexValues.count * 80 + 210);
+    CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericParams.indexValueList.count * 80 + 210);
     [self.indexesScroll setContentSize:scrollableSize];
     [self.indexesScroll flashScrollIndicators];
-    for(GenericIndexValue *genericIndexValue in self.genericIndexValues){
+    for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList){
         GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
 
         if([genericIndexObj.layoutType isEqualToString:@"Info"] || [genericIndexObj.layoutType.lowercaseString isEqualToString:@"off"] || genericIndexObj.layoutType == nil || [genericIndexObj.layoutType isEqualToString:@"NaN"]){
@@ -132,7 +131,7 @@ static const int xIndent = 10;
         }
                 NSLog(@"genericIndexValue loop");
         NSString *propertyName = genericIndexObj.groupLabel;
-        if(genericIndexObj.readOnly){
+        if([genericIndexObj.type isEqualToString:SENSOR]){
             UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_SMALL];
             [self.indexesScroll addSubview:view];
             
@@ -168,7 +167,7 @@ static const int xIndent = 10;
             else if ([genericIndexObj.layoutType isEqualToString:BUTTON]){
                 SensorButtonView *buttonView = [[SensorButtonView alloc]initWithFrame:BUTTON_FRAME];
                 buttonView.deviceValueDict = genericIndexObj.values;
-                buttonView.device = self.device;
+                buttonView.device = self.genericParams.device;
                 buttonView.color = [SFIColors ruleBlueColor];
                 [buttonView drawButton:genericIndexObj.values color:[SFIColors ruleBlueColor]];
                 [view addSubview:buttonView];
@@ -224,7 +223,7 @@ static const int xIndent = 10;
     [view addSubview:Name];
     
     SensorTextView *name = [[SensorTextView alloc]initWithFrame:CGRectMake(0,15,view.frame.size.width -10,35)];
-    [name drawTextField:self.device.name];
+    [name drawTextField:self.genericParams.device.name];
     [self.indexesScroll addSubview:view];
     [view addSubview:name];
     return yPos = yPos + view.frame.size.height;
@@ -273,56 +272,56 @@ static const int xIndent = 10;
 
 
 #pragma mark wifiClients methods
--(void)drawViews{
-    self.scrollView.backgroundColor = [UIColor clearColor];
-    self.scrollView.hidden = YES;
-    self.indexView = [[UIView alloc]initWithFrame:CGRectMake(8 , 80, self.view.frame.size.width - 16, 74)];
-    self.indexView.backgroundColor = [SFIColors clientGreenColor];
-    [self.view addSubview:self.indexView];
-    
-    self.indexLabel = [[UILabel alloc]initWithFrame:CGRectMake(8, 8, 100, 25)];
-    self.indexLabel.backgroundColor = [UIColor clearColor];
-    self.indexLabel.textColor = [UIColor whiteColor];
-    self.indexLabel.text = self.indexName;
-    self.indexLabel.font = [UIFont securifiFont:15];
-    
-    [self.indexView addSubview:self.indexLabel];
-    
-    
-    if([self.indexName isEqualToString:@"Name"]){
-       // self.indexLabel.text = self.indexName;
-        
-        [self textFieldView:[self.deviceDict valueForKey:self.indexName]];
-    }
-    else if ([self.indexName isEqualToString:@"Type"]){
-        [self drawTypeTable];
-            }
-    
-    else if ([self.indexName isEqualToString:@"AllowedType"]){
-        [self gridView];
-        
-    }
-    else if ([self.indexName isEqualToString:@"pesenceSensor"]){
-        NSArray *arr = @[@"YES",@"NO",@"ON",@"OFF"];
-        int currentValPos = 0;
-            for(NSString *str in arr){
-                if([str isEqualToString:[self.deviceDict valueForKey:self.indexName]])
-                    break;
-                currentValPos++;
-            }
-        self.indexLabel.text = self.indexName;
-        
-        [self buttonView:arr selectedValue:currentValPos];
-    }
-    else if ([self.indexName isEqualToString:@"inActiveTimeOut"]){
-        self.indexLabel.text = self.indexName;
-        [self textFieldView:[self.deviceDict valueForKey:self.indexName]];
-    }
-    else if ([self.indexName isEqualToString:@"Other"]){
-        
-    }
-    
-}
+//-(void)drawViews{
+//    self.scrollView.backgroundColor = [UIColor clearColor];
+//    self.scrollView.hidden = YES;
+//    self.indexView = [[UIView alloc]initWithFrame:CGRectMake(8 , 80, self.view.frame.size.width - 16, 74)];
+//    self.indexView.backgroundColor = [SFIColors clientGreenColor];
+//    [self.view addSubview:self.indexView];
+//    
+//    self.indexLabel = [[UILabel alloc]initWithFrame:CGRectMake(8, 8, 100, 25)];
+//    self.indexLabel.backgroundColor = [UIColor clearColor];
+//    self.indexLabel.textColor = [UIColor whiteColor];
+//    self.indexLabel.text = self.indexName;
+//    self.indexLabel.font = [UIFont securifiFont:15];
+//    
+//    [self.indexView addSubview:self.indexLabel];
+//    
+//    
+//    if([self.indexName isEqualToString:@"Name"]){
+//       // self.indexLabel.text = self.indexName;
+//        
+//        [self textFieldView:[self.deviceDict valueForKey:self.indexName]];
+//    }
+//    else if ([self.indexName isEqualToString:@"Type"]){
+//        [self drawTypeTable];
+//            }
+//    
+//    else if ([self.indexName isEqualToString:@"AllowedType"]){
+//        [self gridView];
+//        
+//    }
+//    else if ([self.indexName isEqualToString:@"pesenceSensor"]){
+//        NSArray *arr = @[@"YES",@"NO",@"ON",@"OFF"];
+//        int currentValPos = 0;
+//            for(NSString *str in arr){
+//                if([str isEqualToString:[self.deviceDict valueForKey:self.indexName]])
+//                    break;
+//                currentValPos++;
+//            }
+//        self.indexLabel.text = self.indexName;
+//        
+//        [self buttonView:arr selectedValue:currentValPos];
+//    }
+//    else if ([self.indexName isEqualToString:@"inActiveTimeOut"]){
+//        self.indexLabel.text = self.indexName;
+//        [self textFieldView:[self.deviceDict valueForKey:self.indexName]];
+//    }
+//    else if ([self.indexName isEqualToString:@"Other"]){
+//        
+//    }
+//    
+//}
 #pragma mark typeTable
 -(void)drawTypeTable{
     self.indexView.hidden = YES;

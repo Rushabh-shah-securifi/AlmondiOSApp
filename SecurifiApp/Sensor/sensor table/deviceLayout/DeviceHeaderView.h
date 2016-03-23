@@ -1,5 +1,5 @@
 //
-//  CommonCell.h
+//  DeviceHeaderView.h
 //  SecurifiApp
 //
 //  Created by Securifi-Mac2 on 10/03/16.
@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "Device.h"
+#import "GenericIndexValue.h"
+#import "GenericParams.h"
+
 typedef NS_ENUM(NSUInteger, CellType) {
     SensorTable_Cell,
     ClientTable_Cell,
@@ -16,14 +19,15 @@ typedef NS_ENUM(NSUInteger, CellType) {
     ClientEditProperties_cell
     
 };
-@protocol CommonCellDelegate <NSObject>
+@protocol DeviceHeaderViewDelegate <NSObject>
 @optional
--(void)delegateSensorTable;
+-(void)delegateClientSettingButtonClick;
 -(void)delegateClientEditTable;
--(void)delegateSensorTable:(Device*)device withGenericIndex:(NSMutableArray *)genericIndexes;
-
+-(void)delegateDeviceSettingButtonClick:(GenericParams*)genericParams;
+-(void)delegateDeviceButtonClickWithGenericProperies:(GenericIndexValue*)genericIndexValue;
 @end
-@interface CommonCell : UIView
+
+@interface DeviceHeaderView : UIView
 @property (weak, nonatomic) IBOutlet UIButton *deviceButton;
 @property (weak, nonatomic) IBOutlet UIImageView *deviceImage;
 @property (weak, nonatomic) IBOutlet UIButton *settingButton;
@@ -31,7 +35,8 @@ typedef NS_ENUM(NSUInteger, CellType) {
 @property (weak, nonatomic) IBOutlet UILabel *deviceValue;
 @property (weak, nonatomic) IBOutlet UIView *view;
 @property (nonatomic)CellType cellType;
-@property (weak,nonatomic)id<CommonCellDelegate> delegate;
+@property (weak,nonatomic)id<DeviceHeaderViewDelegate> delegate;
+@property (nonatomic)GenericIndexValue *genericIndexValue;
 @property (nonatomic)Device *device;
 @property (nonatomic)UIColor *color;
 -(void)setUpClientCell;

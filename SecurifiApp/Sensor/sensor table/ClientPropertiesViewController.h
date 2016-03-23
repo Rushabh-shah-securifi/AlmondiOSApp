@@ -1,5 +1,5 @@
 //
-//  ClientEditViewController.h
+//  ClientPropertiesViewController.h
 //  SecurifiApp
 //
 //  Created by Securifi-Mac2 on 26/02/16.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ClientEditViewController : UIViewController
+@interface ClientPropertiesViewController : UIViewController
 @property(nonatomic)NSDictionary *connectedDevice;
 @property(nonatomic)NSMutableArray *indexArray;
 @property(nonatomic)NSDictionary *clientProperties;

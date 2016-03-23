@@ -1,25 +1,53 @@
 {
+    "-1": {
+        "Name": "Name",
+        "ReadOnly": "false",
+        "Placement": "Detail",
+        "Layout": "TextView",
+        "GroupLabel": "Name",
+        "CommandType": "NameChanged"
+    },
+    "-2": {
+        "Name": "Location",
+        "ReadOnly": "false",
+        "Placement": "Detail",
+        "Layout": "TextView",
+        "GroupLabel": "Location",
+        "CommandType": "LocationChanged"
+    },
+    "-3": {
+        "Name": "Notify Me",
+        "ReadOnly": "false",
+        "Placement": "Detail",
+        "Layout": "Toggle",
+        "GroupLabel": "Notify Me",
+        "CommandType": "NotifyMe"
+    },
+    "-4": {
+        "Name": "WifiClient",
+        "ReadOnly": "true",
+        "Placement": "Detail",
+        "Layout": "Toggle",
+        "GroupLabel": "WifiClient"
+    },
     "1": {
         "Name": "SWITCH BINARY",
         "Type": "Actuator",
-        "DataType": "Bool",
-        "ReadOnly": "false",
         "Placement": "Header",
         "Layout": "Toggle",
-        "GroupLabel": "SWITCH",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "true",
-        "DefaultIcon": "switch_on_new",
+        "showToggleInRules": "true",
+        "DefaultIcon": "switch_off",
         "Values": {
             "true": {
                 "ToggleValue": "false",
-                "Icon": "switch_on_new",
+                "Icon": "switch_on",
+                "AppLabel": "on",
                 "Label": "ON"
             },
             "false": {
                 "ToggleValue": "true",
-                "Icon": "switch_off_new",
+                "Icon": "switch_off",
+                "AppLabel": "off",
                 "Label": "OFF"
             }
         }
@@ -27,23 +55,18 @@
     "2": {
         "Name": "SENSOR BINARY",
         "Type": "Sensor",
-        "DataType": "Bool",
-        "ReadOnly": "true",
         "Placement": "Header",
         "Layout": "Toggle",
-        "GroupLabel": "SENSOR",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "DefaultIcon": "binarysensoron",
+        "DefaultIcon": "door_off",
         "Values": {
             "true": {
                 "Icon": "door_on",
+                "AppLabel": "door_on",
                 "Label": "ACTIVE"
             },
             "false": {
                 "Icon": "door_off",
+                "AppLabel": "door_off",
                 "Label": "INACTIVE"
             }
         }
@@ -51,24 +74,17 @@
     "3": {
         "Name": "MOTION_STATE",
         "Type": "Sensor",
-        "DataType": "Bool",
-        "ReadOnly": "true",
         "Placement": "Header",
         "Layout": "Toggle",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
         "DefaultIcon": "motion_on",
         "Values": {
             "true": {
-                "ToggleValue": "NaN",
+                "AppLabel": "motion_on",
                 "Icon": "motion_on",
                 "Label": "MOTION DETECTED"
             },
             "false": {
-                "ToggleValue": "NaN",
+                "AppLabel": "motion_off",
                 "Icon": "motion_off",
                 "Label": "NO MOTION"
             }
@@ -77,24 +93,17 @@
     "4": {
         "Name": "DOOR_STATE",
         "Type": "Sensor",
-        "DataType": "Bool",
-        "ReadOnly": "true",
         "Placement": "Header",
         "Layout": "Toggle",
-        "GroupLabel": "DOOR",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
         "DefaultIcon": "door_on",
         "Values": {
             "true": {
-                "ToggleValue": "NaN",
+                "AppLabel": "door_on",
                 "Icon": "door_on",
                 "Label": "OPEN"
             },
             "false": {
-                "ToggleValue": "NaN",
+                "AppLabel": "door_off",
                 "Icon": "door_off",
                 "Label": "CLOSED"
             }
@@ -103,25 +112,18 @@
     "5": {
         "Name": "VIBRATION_STATE",
         "Type": "Sensor",
-        "DataType": "Bool",
-        "ReadOnly": "true",
         "Placement": "Header",
         "Layout": "Toggle",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "DefaultIcon": "vibrationdetected",
+        "DefaultIcon": "vibration_off",
         "Values": {
             "true": {
-                "ToggleValue": "NaN",
-                "Icon": "vibrationdetected",
+                "AppLabel": "vibration_on",
+                "Icon": "vibration_on",
                 "Label": "VIBRATION DETECTED"
             },
             "false": {
-                "ToggleValue": "NaN",
-                "Icon": "binarysensoroff",
+                "AppLabel": "vibration_off",
+                "Icon": "vibration_off",
                 "Label": "NO VIBRATION"
             }
         }
@@ -129,24 +131,17 @@
     "6": {
         "Name": "WATER_STATE",
         "Type": "Sensor",
-        "DataType": "Bool",
-        "ReadOnly": "true",
         "Placement": "Header",
         "Layout": "Toggle",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
         "DefaultIcon": "water_off",
         "Values": {
             "true": {
-                "ToggleValue": "NaN",
+                "AppLabel": "water_on",
                 "Icon": "water_on",
                 "Label": "FLOODED"
             },
             "false": {
-                "ToggleValue": "NaN",
+                "AppLabel": "ok",
                 "Icon": "water_off",
                 "Label": "OK"
             }
@@ -155,25 +150,18 @@
     "7": {
         "Name": "GAS_STATE",
         "Type": "Sensor",
-        "DataType": "Bool",
-        "ReadOnly": "true",
         "Placement": "Header",
         "Layout": "Toggle",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "DefaultIcon": "firesensordetected",
+        "DefaultIcon": "fire_off",
         "Values": {
             "true": {
-                "ToggleValue": "NaN",
-                "Icon": "firesensordetected",
+                "AppLabel": "gas_on",
+                "Icon": "fire_on",
                 "Label": "GAS DETECTED"
             },
             "false": {
-                "ToggleValue": "NaN",
-                "Icon": "binarysensoroff",
+                "AppLabel": "ok",
+                "Icon": "fire_off",
                 "Label": "OK"
             }
         }
@@ -181,154 +169,117 @@
     "8": {
         "Name": "FIRE_STATE",
         "Type": "Sensor",
-        "DataType": "Bool",
-        "ReadOnly": "true",
         "Placement": "Header",
         "Layout": "Toggle",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "DefaultIcon": "firesensordetected",
+        "DefaultIcon": "fire_off",
         "Values": {
             "true": {
-                "ToggleValue": "NaN",
-                "Icon": "firesensordetected",
+                "AppLabel": "fire_on",
+                "Icon": "fire_on",
                 "Label": "FIRE DETECTED"
             },
             "false": {
-                "ToggleValue": "NaN",
-                "Icon": "binarysensoroff",
+                "AppLabel": "ok",
+                "Icon": "fire_off",
                 "Label": "OK"
             }
         }
     },
     "9": {
         "Name": "TAMPER",
-        "Type": "Actuator",
-        "DataType": "Bool",
-        "ReadOnly": "false",
-        "Placement": "Hidden",
-        "Layout": "Off",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "DefaultIcon": "tamper",
+        "Type": "Sensor",
+        "Placement": "Badge",
+        "Layout": "Toggle",
+        "GroupLabel": "Tamper",
         "Values": {
             "true": {
-                "ToggleValue": "false",
+                "AppLabel": "tampered",
                 "Icon": "tamper",
                 "Label": "Device has been tampered"
-            },
-            "false": {
-                "ToggleValue": "NaN",
-                "Icon": "tamper",
-                "Label": "NaN",
-                "ExcludeFrom": "scene_rule"
             }
         }
     },
     "10": {
         "Name": "PANIC_ALARM",
-        "Type": "Actuator",
-        "DataType": "Bool",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "Layout": "Off",
+        "Type": "Sensor",
+        "Placement": "Detail",
+        "Layout": "Toggle",
         "GroupLabel": "Panic Alarm",
-        "Conditional": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
+        "AppLabel": "paincAlarm",
         "ExcludeFrom": "scene",
-        "DefaultIcon": "panic_icon",
+        "DefaultIcon": "panic",
         "Values": {
             "true": {
-                "ToggleValue": "Nan",
-                "Icon": "panic_icon",
+                "Icon": "panic",
+                "AppLabel": "paincAlarm",
                 "Label": "Panic Alarm"
             },
             "false": {
-                "ToggleValue": "Nan",
-                "Icon": "panic_icon",
+                "Icon": "panic",
                 "Label": "NO",
-                "ExcludeFrom": "scene_rule"
+                "AppLabel": "no",
+                "ExcludeFrom": "Rule"
             }
         }
     },
     "11": {
         "Name": "EMER_ALARM",
-        "Type": "Actuator",
-        "DataType": "Bool",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "Layout": "Off",
+        "Type": "Sensor",
+        "Placement": "Detail",
+        "Layout": "Toggle",
         "GroupLabel": "Emergency Alarm",
-        "Conditional": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "DefaultIcon": "emergency_icon",
+        "AppLabel": "emergencyAlarm",
+        "DefaultIcon": "emergency",
         "Values": {
             "true": {
-                "ToggleValue": "Nan",
-                "Icon": "emergency_icon",
+                "Icon": "emergency",
+                "AppLabel": "emergencyAlarm",
                 "Label": "Emergency Alarm"
             },
             "false": {
-                "ToggleValue": "Nan",
-                "Icon": "emergency_icon",
+                "Icon": "emergency",
                 "Label": "NO",
-                "ExcludeFrom": "scene_rule"
+                "AppLabel": "no",
+                "ExcludeFrom": "Rule"
             }
         }
     },
     "12": {
         "Name": "LOW BATTERY",
         "Type": "Sensor",
-        "DataType": "Bool",
-        "ReadOnly": "true",
-        "Placement": "Hidden",
-        "Layout": "Info",
+        "Placement": "Badge",
+        "Layout": "Toggle",
         "GroupLabel": "LOW BATTERY",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "DefaultIcon": "lowbattery",
+        "AppLabel": "lowBattery",
         "Values": {
             "true": {
-                "ToggleValue": "NaN",
                 "Icon": "lowbattery",
-                "Label": "Battery Low"
-            },
-            "false": {
-                "ToggleValue": "NaN",
-                "Icon": "lowbattery",
-                "Label": "NaN",
-                "ExcludeFrom": "scene_rule"
+                "AppLabel": "lowBattery",
+                "Label": "Low Battery"
             }
         }
     },
     "13": {
         "Name": "ALARM_STATE",
         "Type": "Actuator",
-        "DataType": "Bool",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "Layout": "Input",
-        "Min": "NaN",
-        "Max": "NaN",
-        "Range": "NaN",
-        "Unit": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "Values": {}
+        "Placement": "Header_Detail",
+        "Layout": "Text_Text_Input",
+        "GroupLabel": "Ring alarm for",
+        "AppLabel": "set_alarm_for",
+        "ExcludeFrom": "Scene",
+        "DefaultIcon": "alarm_off",
+        "Values": {
+            "0": {
+                "Icon": "alarm_off",
+                "AppLabel": "off",
+                "Label": "Off"
+            },
+            "65535": {
+                "Icon": "alarm_on",
+                "AppLabel": "alarm_on",
+                "Label": "Ringing"
+            }
+        }
     },
     "14": {
         "Name": "BASIC",
@@ -346,12 +297,12 @@
         "Values": {
             "0": {
                 "ToggleValue": "NaN",
-                "Icon": "alarm_on",
+                "Icon": "alarm_on_new",
                 "Label": "INACTIVE"
             },
             "255": {
                 "ToggleValue": "NaN",
-                "Icon": "alarm_off",
+                "Icon": "alarm_icon",
                 "Label": "ACTIVE"
             }
         }
@@ -359,25 +310,19 @@
     "15": {
         "Name": "SMOKE_STATE",
         "Type": "Sensor",
-        "DataType": "Byte",
-        "ReadOnly": "true",
         "Placement": "Header",
         "Layout": "Toggle",
         "GroupLabel": "NaN",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "DefaultIcon": "binarysensoroff",
+        "DefaultIcon": "fire_off",
         "Values": {
             "0": {
-                "ToggleValue": "NaN",
-                "Icon": "binarysensoroff",
+                "Icon": "fire_off",
+                "AppLabel": "ok",
                 "Label": "Okay"
             },
             "255": {
-                "ToggleValue": "NaN",
-                "Icon": "firesensordetected",
+                "Icon": "fire_on",
+                "AppLabel": "smoke_on",
                 "Label": "Smoke Detected"
             }
         }
@@ -385,25 +330,18 @@
     "16": {
         "Name": "FLOOD_STATE",
         "Type": "Sensor",
-        "DataType": "Byte",
-        "ReadOnly": "true",
         "Placement": "Header",
         "Layout": "Toggle",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "DefaultIcon": "binarysensoroff",
+        "DefaultIcon": "water_off",
         "Values": {
             "0": {
-                "ToggleValue": "255",
-                "Icon": "binarysensoroff",
+                "AppLabel": "ok",
+                "Icon": "water_off",
                 "Label": "OK"
             },
             "255": {
-                "ToggleValue": "0",
-                "Icon": "waterdetected",
+                "AppLabel": "water_on",
+                "Icon": "water_on",
                 "Label": "FLOODED"
             }
         }
@@ -411,15 +349,11 @@
     "17": {
         "Name": "SWITCH MULTILEVEL",
         "Type": "Actuator",
-        "DataType": "Int",
-        "ReadOnly": "false",
-        "Placement": "Header",
+        "Placement": "Header_Detail",
         "Layout": "Slider",
         "GroupLabel": "Dimmer",
-        "Conditional": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "DefaultIcon": "switch_off_new",
+        "AppLabel": "dimmer",
+        "DefaultIcon": "switch_off",
         "Formatter": {
             "Min": "0",
             "Max": "100",
@@ -430,68 +364,65 @@
     "18": {
         "Name": "DIMMER_LEVEL",
         "Type": "Actuator",
-        "DataType": "Int",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
+        "Placement": "Detail",
         "Layout": "Slider",
-        "GroupLabel": "Dim",
-        "Conditional": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "DefaultIcon": "multilevel_switch_on",
+        "GroupLabel": "Dimmer",
+        "AppLabel": "dimmer",
         "Formatter": {
             "Min": "0",
             "Max": "255",
             "Unit": "%",
-            "Factor": "1"
+            "Factor": "0.392"
         }
     },
     "19": {
         "Name": "SWITCH_MULTISOUND",
         "Type": "Actuator",
-        "DataType": "Byte",
-        "ReadOnly": "false",
-        "Placement": "DETAIL_HEADER",
-        "Layout": "Button",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "DefaultIcon": "binarysensoroff",
+        "Placement": "Header_Detail",
+        "Layout": "Toggle|List",
+        "GroupLabel": "Start Alarm",
+        "AppLabel": "start_alarm",
+        "DefaultIcon": "alarm_off",
         "Values": {
             "0": {
-                "ToggleValue": "NaN",
-                "Icon": "binarysensoroff",
+                "Icon": "alarm_off",
+                "AppLabel": "stop",
                 "Label": "OFF"
             },
             "1": {
-                "ToggleValue": "NaN",
-                "Icon": "siren",
+                "ToggleValue": "0",
+                "Icon": "alarm_on",
+                "AppLabel": "emergency",
                 "Label": "EMERGENCY MODE: ON"
             },
             "2": {
-                "ToggleValue": "NaN",
-                "Icon": "siren",
+                "ToggleValue": "0",
+                "Icon": "alarm_on",
+                "AppLabel": "fire",
                 "Label": "FIRE MODE: ON"
             },
             "3": {
-                "ToggleValue": "NaN",
-                "Icon": "siren",
+                "ToggleValue": "0",
+                "Icon": "alarm_on",
+                "AppLabel": "ambulance",
                 "Label": "AMBULANCE MODE: ON"
             },
             "4": {
-                "ToggleValue": "NaN",
-                "Icon": "siren",
+                "Icon": "alarm_on",
+                "ToggleValue": "0",
+                "AppLabel": "police",
                 "Label": "POLICE MODE: ON"
             },
             "5": {
-                "ToggleValue": "NaN",
-                "Icon": "siren",
+                "Icon": "alarm_on",
+                "ToggleValue": "0",
+                "AppLabel": "door_chime",
                 "Label": "DOOR MODE: ON"
             },
             "6": {
-                "ToggleValue": "NaN",
-                "Icon": "siren",
+                "Icon": "alarm_on",
+                "ToggleValue": "0",
+                "AppLabel": "beep",
                 "Label": "BEEP MODE: ON"
             }
         }
@@ -499,54 +430,48 @@
     "20": {
         "Name": "SHUTTER_LEVEL",
         "Type": "Actuator",
-        "DataType": "Int",
-        "ReadOnly": "false",
         "Placement": "Header",
         "Layout": "Toggle",
-        "GroupLabel": "SHUTTER",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "DefaultIcon": "garagedoorclose",
+        "DefaultIcon": "garage_close",
         "Values": {
             "0": {
                 "ToggleValue": "99",
-                "Icon": "garagedoorclose",
-                "Label": "CLOSE"
+                "Icon": "garage_close",
+                "AppLabel": "closed",
+                "Label": "CLOSED"
             },
             "99": {
                 "ToggleValue": "0",
-                "Icon": "garagedooropen",
-                "Label": "OPEN"
+                "Icon": "garage_open",
+                "AppLabel": "opened",
+                "Label": "OPENED"
             },
             "254": {
-                "ToggleValue": "NaN",
-                "Icon": "garagedoorup",
-                "Label": "PROCESSING"
+                "Icon": "garage_open",
+                "AppLabel": "processing",
+                "Label": "PROCESSING",
+                "ExcludeFrom": "Rule|Scene"
             }
         }
     },
     "21": {
         "Name": "BASIC_EXTENDER",
         "Type": "Actuator",
-        "DataType": "Decimal",
-        "ReadOnly": "false",
         "Placement": "DETAIL",
-        "Layout": "Toggle",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "DefaultIcon": "thermostat_image",
+        "Layout": "Toggle|Multi_Input",
+        "GroupLabel": "Power",
+        "AppLabel": "power",
         "Values": {
             "0": {
                 "ToggleValue": "255",
-                "Icon": "NaN",
+                "Icon": "switch_off",
+                "AppLabel": "off",
                 "Label": "OFF"
             },
             "255": {
                 "ToggleValue": "0",
-                "Icon": "NaN",
+                "Icon": "switch_on",
+                "AppLabel": "on",
                 "Label": "ON"
             }
         }
@@ -554,106 +479,80 @@
     "22": {
         "Name": "LOCK_STATE",
         "Type": "Actuator",
-        "DataType": "Byte",
-        "ReadOnly": "false",
         "Placement": "Header",
         "Layout": "Toggle",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "true",
-        "DefaultIcon": "lock_open_icon",
+        "ShowToggleInRules": "true",
+        "DefaultIcon": "lock_open",
+        "ValuesArray": {
+            "indexValues": [17, 23, 26, 254],
+            "Icon": "lock_open",
+            "Label": "BOLT NOT FULLY EXTENDED",
+            "ExcludeFrom": "Scene|Rule"
+        },
         "Values": {
             "0": {
                 "ToggleValue": "255",
-                "Icon": "door_unlocked",
+                "Icon": "lock_open",
+                "AppLabel": "doorlock_off",
                 "Label": "UNLOCKED"
             },
             "255": {
                 "ToggleValue": "0",
-                "Icon": "door_locked",
+                "Icon": "lock_close",
+                "AppLabel": "doorlock_on",
                 "Label": "LOCKED"
-            },
-            "17": {
-                "ToggleValue": "NaN",
-                "Icon": "doorunlocked",
-                "Label": "BOLT NOT FULLY EXTENDED"
-            },
-            "23": {
-                "ToggleValue": "NaN",
-                "Icon": "doorunlocked",
-                "Label": "BOLT NOT FULLY EXTENDED"
-            },
-            "26": {
-                "ToggleValue": "NaN",
-                "Icon": "doorunlocked",
-                "Label": "BOLT NOT FULLY EXTENDED"
-            },
-            "254": {
-                "ToggleValue": "NaN",
-                "Icon": "doorunlocked",
-                "Label": "BOLT NOT FULLY EXTENDED"
             }
         }
     },
     "23": {
         "Name": "LOCK_STATE_ZB",
         "Type": "Actuator",
-        "DataType": "Int",
-        "ReadOnly": "false",
         "Placement": "Header",
         "Layout": "Toggle",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "true",
-        "DefaultIcon": "lock_open_icon",
+        "ShowToggleInRules": "true",
+        "DefaultIcon": "lock_open",
         "Values": {
             "1": {
                 "ToggleValue": "2",
-                "Icon": "doorunlocked",
+                "Icon": "lock_close",
+                "AppLabel": "doorlock_on",
                 "Label": "LOCKED"
             },
             "2": {
                 "ToggleValue": "1",
-                "Icon": "doorlocked",
+                "Icon": "lock_open",
+                "AppLabel": "doorlock_off",
                 "Label": "UNLOCKED"
             },
             "0": {
-                "ToggleValue": "NaN",
-                "Icon": "doorunlocked",
+                "ToggleValue": "1",
+                "Icon": "lock_open",
+                "AppLabel": "doorlock_partial",
                 "Label": "PARTIALLY LOCKED",
-                "ExcludeFrom": "scene"
+                "ExcludeFrom": "Scene|Rule"
             }
         }
     },
     "24": {
         "Name": "ARMMODE",
         "Type": "Sensor",
-        "DataType": "Int",
-        "ReadOnly": "true",
         "Placement": "Header",
-        "Layout": "Info",
-        "GroupLabel": "KEYFOB",
-        "Conditional": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
+        "Layout": "Toggle",
         "DefaultIcon": "keyfob_off",
         "Values": {
             "0": {
-                "ToggleValue": "NaN",
                 "Icon": "keyfob_off",
+                "AppLabel": "keyfob_disarmed",
                 "Label": "ALL DISARMED"
             },
             "2": {
-                "ToggleValue": "NaN",
                 "Icon": "arm_perimeter",
+                "AppLabel": "keyfob_permiter_armed",
                 "Label": "PERIMETER ARMED"
             },
             "3": {
-                "ToggleValue": "NaN",
                 "Icon": "keyfob_on",
+                "AppLabel": "keyfob_armed",
                 "Label": "ALL ARMED"
             }
         }
@@ -661,21 +560,14 @@
     "25": {
         "Name": "TEMPERATURE",
         "Type": "Sensor",
-        "DataType": "Decimal",
-        "ReadOnly": "true",
-        "Placement": "Header",
-        "Layout": "Info",
-        "GroupLabel": "NaN",
-        "Conditional": "true",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "DefaultIcon": "target_temperature",
+        "Placement": "Detail",
+        "Layout": "Slider",
+        "AppLabel": "temperature",
+        "GroupLabel": "Temperature",
         "Formatter": {
             "Min": "35",
             "Max": "95",
-            "Unit": "F/C",
+            "Unit": "\u00B0F",
             "Factor": "1"
         }
     },
@@ -702,16 +594,10 @@
     "27": {
         "Name": "HUMIDITY",
         "Type": "Sensor",
-        "DataType": "Short",
-        "ReadOnly": "true",
-        "Placement": "Header",
-        "Layout": "Info",
+        "Placement": "Detail",
+        "Layout": "Slider",
+        "AppLabel": "humidity",
         "GroupLabel": "HUMIDITY",
-        "Conditional": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "DefaultIcon": "humidity_icon",
         "Formatter": {
             "Min": "0",
             "Max": "100",
@@ -722,60 +608,42 @@
     "28": {
         "Name": "ILLUMINANCE",
         "Type": "Sensor",
-        "DataType": "Decimal",
-        "ReadOnly": "true",
         "Placement": "DETAIL",
-        "Layout": "Info",
+        "Layout": "Slider",
+        "AppLabel": "luminance",
         "GroupLabel": "ILLUMINANCE",
-        "Conditional": "true",
-        "DefaultVisibility": "true",
-        "ExcludeFrom": "scene",
-        "HasToggleIcon": "false",
-        "DefaultIcon": "target_temperature",
+        "DefaultIcon": "luminance",
         "Formatter": {
             "Min": "0",
             "Max": "3000",
             "Unit": "Lux",
             "Factor": "1"
         }
-				},
-				"29": {
-                    "Name": "ILLUMINANCE_PERCENT",
-                    "Type": "Sensor",
-                    "DataType": "Short",
-                    "ReadOnly": "true",
-                    "Placement": "DETAIL",
-                    "Layout": "Info",
-                    "GroupLabel": "ILLUMINANCE",
-                    "Conditional": "true",
-                    "DefaultVisibility": "true",
-                    "ExcludeFrom": "scene",
-                    "HasToggleIcon": "false",
-                    "DefaultIcon": "target_temperature",
-                    "Formatter": {
-                        "Min": "0",
-                        "Max": "100",
-                        "Unit": "%",
-                        "Factor": "1"
-                    }
-                },
+    },
+    "29": {
+        "Name": "ILLUMINANCE_PERCENT",
+        "Type": "Sensor",
+        "Placement": "DETAIL",
+        "Layout": "Slider",
+        "AppLabel": "luminance",
+        "GroupLabel": "ILLUMINANCE",
+        "DefaultIcon": "luminance",
+        "Formatter": {
+            "Min": "0",
+            "Max": "100",
+            "Unit": "%"
+        }
+    },
     "30": {
         "Name": "HUE",
         "Type": "Actuator",
-        "DataType": "Int",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
+        "Placement": "Detail",
         "Layout": "Hue",
-        "GroupLabel": "HueColor",
-        "Conditional": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "DefaultIcon": "light_on",
+        "AppLabel": "hue",
+        "GroupLabel": "Hue",
         "Formatter": {
             "Min": "0",
-            "Max": "65535",
-            "Unit": "NaN",
-            "Factor": "1"
+            "Max": "65535"
         }
     },
     "31": {
@@ -783,7 +651,7 @@
         "Type": "Actuator",
         "DataType": "Int",
         "ReadOnly": "false",
-        "Placement": "DETAIL",
+        "Placement": "Details",
         "SecondaryPlacement": "NaN",
         "Layout": "Slider",
         "GroupLabel": "NaN",
@@ -796,204 +664,131 @@
             "Max": "255",
             "Unit": "NaN",
             "Factor": "1"
-								}
+        }
     },
     "32": {
-								"Name": "SATURATION",
-								"Type": "Actuator",
-								"DataType": "Int",
-								"ReadOnly": "false",
-								"Placement": "DETAIL",
-								"SecondaryPlacement": "NaN",
-								"Layout": "Slider",
-								"GroupLabel": "NaN",
-								"Conditional": "true",
-								"UseInScenes": "true",
-								"DefaultVisibility": "true",
-								"HasToggleIcon": "false",
-								"Formatter": {
-                                    "Min": "0",
-                                    "Max": "255",
-                                    "Range": "255",
-                                    "Unit": "%"
-                                }
+        "Name": "SATURATION",
+        "Type": "Actuator",
+        "Placement": "Detail",
+        "Layout": "HueSlider",
+        "AppLabel": "saturation",
+        "GroupLabel": "Saturation",
+        "Formatter": {
+            "Min": "0",
+            "Max": "255",
+            "Factor": "0.392",
+            "Unit": "%"
+        }
     },
     "33": {
         "Name": "COLOR_TEMPERATURE",
         "Type": "Actuator",
-        "DataType": "Int",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Slider",
-        "GroupLabel": "NaN",
+        "Placement": "Detail",
+        "Layout": "Slider|Bar",
+        "GroupLabel": "Color Temperature",
+        "AppLabel": "color_temp",
         "Conditional": "true",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "Values": {
-            "Formatter": {
-                "Min": "1000",
-                "Max": "10000",
-                "Range": "9000",
-                "Unit": "K"
-            }
+        "Formatter": {
+            "Min": "1000",
+            "Max": "9000",
+            "Factor": "0.39",
+            "Unit": "%"
         }
     },
     "34": {
         "Name": "POWER",
         "Type": "Sensor",
-        "DataType": "Decimal",
-        "ReadOnly": "true",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Info",
-        "GroupLabel": "NaN",
+        "Placement": "Detail",
+        "Layout": "Slider",
+        "GroupLabel": "power",
+        "AppLabel": "powerLabel",
         "Conditional": "true",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "Values": {
-            "Formatter": {
-                "Min": "0",
-                "Max": "9999",
-                "Unit": "W"
-            }
+        "Formatter": {
+            "Min": "0",
+            "Max": "9999",
+            "Unit": "W"
         }
     },
     "35": {
         "Name": "THERMOSTAT MODE",
         "Type": "Actuator",
-        "DataType": "List",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Button",
+        "Placement": "Detail",
+        "Layout": "Toggle|Multi_Input",
+        "AppLabel": "mode",
         "GroupLabel": "Mode",
-        "Conditional": "false",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
         "Values": {
-												"Auto": {
-                                                    "ToggleValue": "NaN",
-                                                    "Icon": "NaN",
-                                                    "Label": "Auto"
-                                                },
-												"Cool": {
-                                                    "ToggleValue": "NaN",
-                                                    "Icon": "NaN",
-                                                    "Label": "Cool"
-                                                },
-												"Heat": {
-                                                    "ToggleValue": "NaN",
-                                                    "Icon": "07_thermostat",
-                                                    "Label": "Heat"
-                                                },
-												"Off": {
-                                                    "ToggleValue": "NaN",
-                                                    "Icon": "NaN",
-                                                    "Label": "Off"
-                                                }
+            "Auto": {
+                "Icon": "img_auto",
+                "AppLabel": "auto",
+                "Label": "Auto"
+            },
+            "Cool": {
+                "Icon": "img_cool",
+                "AppLabel": "cool",
+                "Label": "Cool"
+            },
+            "Heat": {
+                "Icon": "img_heat",
+                "AppLabel": "heat",
+                "Label": "Heat"
+            },
+            "Off": {
+                "Icon": "img_off",
+                "AppLabel": "button_off",
+                "Label": "Off"
+            }
         }
     },
     "36": {
         "Name": "THERMOSTAT OPERATING STATE",
         "Type": "Sensor",
-        "DataType": "String",
-        "ReadOnly": "true",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "DETAIL",
-        "Layout": "Info",
-        "GroupLabel": "Operating State",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "Values": {
-												"Cooling": {
-                                                    "ToggleValue": "NaN",
-                                                    "Icon": "imgCool",
-                                                    "Label": "Cooling"
-                                                },
-												"Heatig": {
-                                                    "ToggleValue": "NaN",
-                                                    "Icon": "imgHeat",
-                                                    "Label": "Heating"
-                                                },
-												"fan-only": {
-                                                    "ToggleValue": "NaN",
-                                                    "Icon": "imgFanOff",
-                                                    "Label": "Fan Only"
-                                                }
-        }
+        "Placement": "Header_Only",
+        "ExcludeFrom": "Rule"
     },
     "37": {
         "Name": "THERMOSTAT SETPOINT HEATING",
         "Type": "Actuator",
-        "DataType": "Decimal",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Slider",
-        "GroupLabel": "THERMOSTAT",
+        "Placement": "Detail",
+        "Layout": "Slider|Double_Temp",
+        "AppLabel": "high_temp",
+        "GroupLabel": "High Temperature",
         "Conditional": "true",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "Values": {
-												"Formatter": {
-                                                    "Min": "35",
-                                                    "Max": "95",
-                                                    "Unit": "F/C"
-                                                }
+        "Formatter": {
+            "Min": "35",
+            "Max": "95",
+            "Unit": "\u00B0F"
         }
     },
     "38": {
         "Name": "THERMOSTAT SETPOINT COOLING",
         "Type": "Actuator",
-        "DataType": "Decimal",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Slider",
-        "GroupLabel": "THERMOSTAT",
+        "Placement": "Detail",
+        "Layout": "Slider|Double_Temp",
+        "AppLabel": "low_temp",
+        "GroupLabel": "Low Temperature",
         "Conditional": "true",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "Values": {
-            "Formatter": {
-                "Min": "35",
-                "Max": "95",
-                "Unit": "F/C"
-            }
+        "Formatter": {
+            "Min": "35",
+            "Max": "95",
+            "Unit": "\u00B0F"
         }
     },
     "39": {
         "Name": "THERMOSTAT FAN MODE",
         "Type": "Actuator",
-        "DataType": "List",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Button",
+        "Placement": "Detail",
+        "Layout": "Toggle|Multi_Input",
         "GroupLabel": "Fan Mode",
-        "Conditional": "false",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
+        "AppLabel": "fan_mode",
         "Values": {
             "On low ": {
-                "ToggleValue": "Auto low",
-                "Icon": "imgFanOn",
+                "Icon": "btn_fan_off",
+                "AppLabel": "fan_on_low",
                 "Label": "On low "
             },
             "Auto low": {
-                "ToggleValue": "On low",
-                "Icon": "imgFanOff",
+                "Icon": "btn_fan_on",
+                "AppLabel": "fan_auto_low",
                 "Label": "Auto low"
             }
         }
@@ -1001,95 +796,57 @@
     "40": {
         "Name": "THERMOSTAT FAN STATE",
         "Type": "Sensor",
-        "DataType": "String",
-        "ReadOnly": "true",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "Fan State",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "Values": {
-            "Running": {
-                "ToggleValue": "NaN",
-                "Icon": "imgFanOn",
-                "Label": "Running"
-            },
-            "Idle": {
-                "ToggleValue": "NaN",
-                "Icon": "imgFanOff",
-                "Label": "Idle"
-            }
-        }
+        "Placement": "Detail",
+        "ExcludeFrom": "Rule"
     },
     "41": {
         "Name": "THERMOSTAT SETPOINT",
         "Type": "Actuator",
-        "DataType": "Decimal",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Slider",
-        "GroupLabel": "NaN",
+        "Placement": "Detail",
+        "Layout": "Slider|Single_Temp",
+        "GroupLabel": "Target Temperature",
+        "AppLabel": "target_temp",
         "Conditional": "true",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "Values": {
-            "Formatter": {
-                "Min": "5",
-                "Max": "40",
-                "Unit": "F/C"
-            }
+        "Formatter": {
+            "Min": "41",
+            "Max": "104",
+            "Unit": "\u00B0F"
         }
     },
     "42": {
         "Name": "UP_DOWN",
         "Type": "Actuator",
-        "DataType": "Byte",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Button",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
+        "Placement": "Detail",
+        "Layout": "List",
+        "GroupLabel": "Actions",
+        "AppLabel": "actions",
+        "ExcludeFrom": "Rule|Scene",
         "Values": {
             "0": {
                 "ToggleValue": "99",
-                "Icon": "garagedoordown",
+                "Icon": "garage_close_icon",
+                "AppLabel": "close",
                 "Label": "Down"
             },
             "99": {
                 "ToggleValue": "0",
-                "Icon": "garagedoorup",
-                "Label": "Up"
+                "Icon": "garage_open_icon",
+                "AppLabel": "open",
+                "Label": "Open"
             }
         }
     },
     "43": {
         "Name": "STOP",
         "Type": "Actuator",
-        "DataType": "Bool",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Off",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
+        "Placement": "Detail",
+        "GroupLabel": "Actions",
+        "AppLabel": "actions",
+        "ExcludeFrom": "Scene",
         "Values": {
             "true": {
-                "ToggleValue": "NaN",
-                "Icon": "nomotion",
+                "AppLabel": "stop_",
+                "Icon": "motion_off",
                 "Label": "Stop"
             }
         }
@@ -1097,40 +854,34 @@
     "44": {
         "Name": "BARRIER OPERATOR",
         "Type": "Actuator",
-        "DataType": "Byte",
-        "ReadOnly": "false",
         "Placement": "Header",
-        "SecondaryPlacement": "NaN",
         "Layout": "Toggle",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
         "Values": {
             "0": {
                 "ToggleValue": "255",
-                "Icon": "garagedoorclose",
+                "Icon": "garage_close_icon",
+                "AppLabel": "closed",
                 "Label": "CLOSED"
             },
             "252": {
-                "ToggleValue": "NaN",
-                "Icon": "garagedoordown",
+                "Icon": "icon_garage_door_down",
+                "AppLabel": "closing",
                 "Label": "CLOSING"
             },
             "253": {
-                "ToggleValue": "NaN",
-                "Icon": "nomotion",
+                "Icon": "garage_open_icon",
+                "AppLabel": "stopped",
                 "Label": "STOPPED"
             },
             "254": {
-                "ToggleValue": "NaN",
-                "Icon": "garagedoorup",
+                "Icon": "icon_garage_door_up",
+                "AppLabel": "opening",
                 "Label": "OPENING"
             },
             "255": {
                 "ToggleValue": "0",
-                "Icon": "garagedooropen",
+                "Icon": "garage_open_icon",
+                "AppLabel": "opened",
                 "Label": "OPENED"
             }
         }
@@ -1138,55 +889,49 @@
     "45": {
         "Name": "AC MODE",
         "Type": "Actuator",
-        "DataType": "List",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Button",
+        "Placement": "Detail",
+        "Layout": "List|Toggle",
+        "AppLabel": "mode",
         "GroupLabel": "Mode",
-        "Conditional": "false",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
         "Values": {
             "Auto": {
-                "ToggleValue": "NaN",
-                "Icon": "thernoauto",
+                "Icon": "img_auto",
+                "AppLabel": "auto",
                 "Label": "Auto"
             },
             "Cool": {
-                "ToggleValue": "NaN",
-                "Icon": "thermocool",
+                "Icon": "img_cool",
+                "AppLabel": "cool",
                 "Label": "Cool"
             },
             "Heat": {
-                "ToggleValue": "NaN",
-                "Icon": "thermoheat",
+                "Icon": "img_heat",
+                "AppLabel": "heat",
                 "Label": "Heat"
             },
             "Off": {
-                "ToggleValue": "NaN",
-                "Icon": "thermooff",
+                "Icon": "img_off",
+                "AppLabel": "offMode",
                 "Label": "Off"
             },
             "Resume": {
-                "ToggleValue": "NaN",
-                "Icon": "thernoauto",
+                "Icon": "resume_icon",
+                "AppLabel": "resume",
                 "Label": "Resume"
             },
             "Fan Only": {
-                "ToggleValue": "NaN",
-                "Icon": "thermofanon",
+                "Icon": "fan_off_icon",
+                "AppLabel": "fanOnly",
                 "Label": "Fan Only"
             },
             "Dry Air": {
-                "ToggleValue": "NaN",
-                "Icon": "thermofanon",
+                "Icon": "water_off",
+                "AppLabel": "dryAir",
                 "Label": "Dry Air"
             },
             "Auto Changeover": {
-                "ToggleValue": "NaN",
-                "Icon": "thernoauto",
+                "Icon": "img_auto",
+                "AppLabel": "autoChangeOver",
                 "Label": "Auto Changeover"
             }
         }
@@ -1194,77 +939,57 @@
     "46": {
         "Name": "AC SETPOINT HEATING",
         "Type": "Actuator",
-        "DataType": "Decimal",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Slider",
-        "GroupLabel": "NaN",
+        "Placement": "Detail",
+        "Layout": "Slider|Double_Temp",
+        "GroupLabel": "High Temperature",
+        "AppLabel": "high_temp",
         "Conditional": "true",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "Values": {
-            "Formatter": {
-                "Min": "60.8",
-                "Max": "86",
-                "Unit": "F/C"
-            }
+        "Formatter": {
+            "Min": "60",
+            "Max": "86",
+            "Unit": "\u00B0F"
         }
     },
     "47": {
         "Name": "AC SETPOINT COOLING",
         "Type": "Actuator",
-        "DataType": "Decimal",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Slider",
-        "GroupLabel": "NaN",
+        "Placement": "Detail",
+        "Layout": "Slider|Double_Temp",
+        "GroupLabel": "Low Temperature",
+        "AppLabel": "low_temp",
         "Conditional": "true",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "Values": {
-            "Formatter": {
-                "Min": "60.8",
-                "Max": "86",
-                "Unit": "F/C"
-            }
+        "Formatter": {
+            "Min": "60.8",
+            "Max": "86",
+            "Unit": "F/C"
         }
     },
     "48": {
         "Name": "AC FAN MODE",
         "Type": "Actuator",
-        "DataType": "List",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Button",
+        "Placement": "Detail",
+        "Layout": "List|Toggle",
         "GroupLabel": "Fan Mode",
-        "Conditional": "false",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
+        "AppLabel": "fan_mode",
         "Values": {
             "Auto Low": {
-                "ToggleValue": "NaN",
-                "Icon": "fanauto",
+                "Icon": "fan_auto",
+                "AppLabel": "fan_auto_low",
                 "Label": "Auto"
             },
             "On Low": {
-                "ToggleValue": "NaN",
-                "Icon": "thermofanon",
+                "Icon": "fan_low",
+                "AppLabel": "fan_on_low",
                 "Label": "Low"
             },
             "Unknown 5": {
-                "ToggleValue": "NaN",
-                "Icon": "fanmed",
+                "Icon": "fan_medium",
+                "AppLabel": "medium",
                 "Label": "Medium"
             },
             "On High": {
-                "ToggleValue": "NaN",
-                "Icon": "fanhi",
+                "Icon": "fan_high",
+                "AppLabel": "fan_on_high",
                 "Label": "High"
             }
         }
@@ -1272,25 +997,22 @@
     "49": {
         "Name": "AC SWING",
         "Type": "Actuator",
-        "DataType": "Byte",
         "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Button",
+        "Placement": "Detail",
+        "Layout": "Multi_Input|Toggle",
         "GroupLabel": "Swing",
-        "Conditional": "false",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
+        "AppLabel": "swing",
         "Values": {
             "0": {
                 "ToggleValue": "1",
-                "Icon": "acswingoff",
+                "Icon": "swingoff_icon",
+                "AppLabel": "off_camelcase",
                 "Label": "Off"
             },
             "1": {
                 "ToggleValue": "0",
-                "Icon": "acswingon",
+                "Icon": "swingon_icon",
+                "AppLabel": "on_camelcase",
                 "Label": "On"
             }
         }
@@ -1298,151 +1020,91 @@
     "50": {
         "Name": "BATTERY",
         "Type": "Sensor",
-        "DataType": "Byte",
         "ReadOnly": "true",
-        "Placement": "DETAIL",
-        "Layout": "Info",
-        "GroupLabel": "NaN",
+        "Placement": "Detail",
+        "Layout": "Text_View",
+        "GroupLabel": "Battery",
+        "AppLabel": "battery",
         "Conditional": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "DefaultIcon":"lowbattery",
         "Formatter": {
-            "Min": "0",
-            "Max": "100",
-            "Unit": "%",
-            "Factor": "1"
+            "Unit": "%"
         }
     },
     "51": {
         "Name": "IR CODE",
         "Type": "Actuator",
-        "DataType": "Short",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Input",
+        "Placement": "Detail",
+        "Layout": "Text_Input",
         "GroupLabel": "IR Code",
-        "Conditional": "false",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "Values": {
-            "Formatter": {
-                "Min": "0",
-                "Max": "999",
-                "Factor": "1"
-            }
+        "Formatter": {
+            "Min": "0",
+            "Max": "999",
+            "Factor": "1"
         }
     },
     "52": {
         "Name": "VOLTAGE",
         "Type": "Sensor",
-        "DataType": "Short",
-        "ReadOnly": "true",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
+        "Placement": "Detail",
+        "Layout": "Text_View",
+        "AppLabel": "voltage",
+        "GroupLabel": "Voltage",
         "Conditional": "true",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "Values": {
-            "Formatter": {
-                "Min": "NaN",
-                "Max": "NaN",
-                "Unit": "V"
-            }
+        "Formatter": {
+            "Unit": "V"
         }
     },
     "53": {
         "Name": "CURRENT",
         "Type": "Sensor",
-        "DataType": "Short",
-        "ReadOnly": "true",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
+        "Placement": "Detail",
+        "Layout": "Text_View",
+        "AppLabel": "current",
+        "GroupLabel": "Current",
         "Conditional": "true",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "Values": {
-            "Formatter": {
-                "Min": "NaN",
-                "Max": "NaN",
-                "Unit": "A"
-            }
+        "Formatter": {
+            "Unit": "A"
         }
     },
     "54": {
         "Name": "RETAIN_STATE",
         "Type": "Functional",
-        "DataType": "Short",
-        "ReadOnly": "false",
         "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
         "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "Values": {}
+        "GroupLabel": "NaN"
     },
     "55": {
         "Name": "NEST_ID",
         "Type": "Functional",
-        "DataType": "String",
         "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "Values": {}
+        "Placement": "Hidden"
     },
     "56": {
         "Name": "THERMOSTAT_MODE",
         "Type": "Actuator",
-        "DataType": "String",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Button",
+        "Placement": "Detail",
+        "Layout": "Multi_Input|Toggle",
         "GroupLabel": "Mode",
-        "Conditional": "false",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
+        "AppLabel": "mode",
         "Values": {
-            "Auto": {
-                "ToggleValue": "NaN",
-                "Icon": "thernoauto",
+            "heat-cool": {
+                "Icon": "img_auto",
+                "AppLabel": "nest_heat_cool",
                 "Label": "Auto"
             },
-            "Cool": {
-                "ToggleValue": "NaN",
-                "Icon": "thermocool",
+            "cool": {
+                "Icon": "img_cool",
+                "AppLabel": "ac_cool",
                 "Label": "Cool"
             },
-            "Heat": {
-                "ToggleValue": "NaN",
-                "Icon": "thermoheat",
+            "heat": {
+                "Icon": "img_heat",
+                "AppLabel": "heat",
                 "Label": "Heat"
             },
-            "Off": {
-                "ToggleValue": "NaN",
-                "Icon": "thermooff",
+            "off": {
+                "Icon": "img_off",
+                "AppLabel": "off",
                 "Label": "Off"
             }
         }
@@ -1450,152 +1112,105 @@
     "57": {
         "Name": "THERMOSTAT_TARGET",
         "Type": "Actuator",
-        "DataType": "Decimal",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Slider",
-        "GroupLabel": "NaN",
+        "Placement": "Detail",
+        "Layout": "Single_Temp|Slider",
+        "GroupLabel": "Target Temp",
+        "AppLabel": "target_temperature",
         "Conditional": "true",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "Values": {
-            "Formatter": {
-                "Min": "50",
-                "Max": "90",
-                "Unit": "F/C"
-            }
+        "Formatter": {
+            "Min": "50",
+            "Max": "90",
+            "Unit": "\u00B0F"
         }
     },
     "58": {
         "Name": "THERMOSTAT_RANGE_LOW",
         "Type": "Actuator",
-        "DataType": "Decimal",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Slider",
-        "GroupLabel": "NaN",
+        "Placement": "Detail",
+        "Layout": "Double_Temp|Slider",
+        "GroupLabel": "Low Temperature",
+        "AppLabel": "low_temp",
         "Conditional": "true",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "Values": {
-            "Formatter": {
-                "Min": "50",
-                "Max": "90",
-                "Unit": "F/C"
-            }
+        "Formatter": {
+            "Min": "50",
+            "Max": "87",
+            "Unit": "\u00B0F"
         }
     },
     "59": {
         "Name": "THERMOSTAT_RANGE_HIGH",
         "Type": "Actuator",
-        "DataType": "Decimal",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Slider",
-        "GroupLabel": "NaN",
+        "Placement": "Detail",
+        "Layout": "Double_Temp|Slider",
+        "GroupLabel": "High Temperature",
+        "AppLabel": "high_temp",
         "Conditional": "true",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "Values": {
-            "Formatter": {
-                "Min": "50",
-                "Max": "90",
-                "Unit": "F/C"
-            }
+        "Formatter": {
+            "Min": "53",
+            "Max": "90",
+            "Unit": "\u00B0F"
         }
     },
     "60": {
         "Name": "AWAY_MODE",
         "Type": "Actuator",
-        "DataType": "String",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Button",
-        "GroupLabel": "Presence Mode",
-        "Conditional": "false",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "rule",
+        "Placement": "Detail",
+        "Layout": "Multi_Input|Toggle",
+        "GroupLabel": "Nest Mode",
+        "AppLabel": "nest_label_away_mode",
+        "ExcludeFrom": "Scene",
         "Values": {
             "home": {
-                "ToggleValue": "NaN",
-                "Icon": "homemode",
-                "Label": "home"
+                "Icon": "home_white",
+                "AppLabel": "home",
+                "Label": "Home"
             },
             "away": {
-                "ToggleValue": "NaN",
-                "Icon": "awaymode",
-                "Label": "away"
+                "Icon": "away_white",
+                "AppLabel": "away",
+                "Label": "Away"
             },
             "auto-away": {
-                "ToggleValue": "NaN",
-                "Icon": "autoaway",
-                "Label": "auto-away"
-            },
-            "unknown": {
-                "ToggleValue": "NaN",
-                "Icon": "unknownhomemode",
-                "Label": "NaN"
+                "Icon": "away_white",
+                "AppLabel": "AUTOAWAY",
+                "Label": "Auto-away"
             }
         }
     },
     "61": {
         "Name": "THERMOSTAT_FAN_STATE",
         "Type": "Actuator",
-        "DataType": "String",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Button",
-        "GroupLabel": "Fan State",
-        "Conditional": "false",
-        "UseInScenes": "true",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
+        "Placement": "Detail",
+        "Layout": "Multi_Input|Toggle",
+        "GroupLabel": "Fan",
+        "AppLabel": "fan",
         "Values": {
             "true": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
+                "Icon": "btn_fan_on",
+                "AppLabel": "start",
                 "Label": "Start"
             },
             "false": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
+                "Icon": "btn_fan_off",
+                "AppLabel": "stop_",
                 "Label": "Stop"
             }
         }
     },
     "62": {
         "Name": "ISONLINE",
-        "Type": "Sensor",
-        "DataType": "String",
-        "ReadOnly": "true",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Info",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
+        "Type": "Functional",
+        "Placement": "Hidden",
+        "Layout": "Toggle",
         "Values": {
             "true": {
-                "ToggleValue": "NaN",
-                "Icon": "online",
+                "Icon": "online_icon",
+                "AppLabel": "online ",
                 "Label": "Online"
             },
             "false": {
-                "ToggleValue": "NaN",
-                "Icon": "offline",
+                "Icon": "offline_icon",
+                "AppLabel": "offline",
                 "Label": "Offline"
             }
         }
@@ -1603,150 +1218,47 @@
     "63": {
         "Name": "CAN_COOL",
         "Type": "Functional",
-        "DataType": "Bool",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
-        "Values": {
-            "true": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
-                "Label": "NaN"
-            },
-            "false": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
-                "Label": "NaN"
-            }
-        }
+        "Placement": "Hidden"
     },
     "64": {
         "Name": "CAN_HEAT",
         "Type": "Functional",
-        "DataType": "Bool",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
-        "Values": {
-            "true": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
-                "Label": "NaN"
-            },
-            "false": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
-                "Label": "NaN"
-            }
-        }
+        "Placement": "Hidden"
     },
     "65": {
         "Name": "IS_USING_EMERGENCY_HEAT",
-        "Type": "Sensor",
-        "DataType": "Bool",
-        "ReadOnly": "true",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
+        "Type": "Functional",
+        "Placement": "Detail",
         "Values": {
             "true": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Using Emergency Heat"
-            },
-            "false": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
-                "Label": "NaN"
             }
         }
     },
     "66": {
         "Name": "HAS_FAN",
-        
         "Type": "Functional",
-        "DataType": "Bool",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "Min": "NaN",
-        "Max": "NaN",
-        "Range": "NaN",
-        "Unit": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
-        "Values": {
-            "true": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
-                "Label": "NaN"
-            },
-            "false": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
-                "Label": "NaN"
-            }
-        }
+        "Placement": "Hidden"
     },
     "67": {
         "Name": "HVAC_STATE",
-        
         "Type": "Sensor",
-        "DataType": "String",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "Min": "NaN",
-        "Max": "NaN",
-        "Range": "NaN",
-        "Unit": "NaN",
-        "GroupLabel": "HVAC STATE",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        
+        "Placement": "Header",
+        "Layout": "Toggle",
         "Values": {
             "heating": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
+                "Icon": "img_heat",
+                "AppLabel": "heating",
                 "Label": "HEATING"
             },
             "cooling": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
+                "Icon": "img_cool",
+                "AppLabel": "cooling",
                 "Label": "COOLING"
             },
             "off": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
+                "Icon": "img_off",
+                "AppLabel": "off",
                 "Label": "IDLE"
             }
         }
@@ -1754,143 +1266,73 @@
     "68": {
         "Name": "HAS_LEAF",
         "Type": "Functional",
-        "DataType": "Bool",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
-        "Values": {
-            "true": {
-                "ToggleValue": "NaN",
-                "Icon": "ecoLeaf",
-                "Label": "NaN"
-            },
-            "false": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
-                "Label": "NaN"
-            }
-        }
+        "Placement": "Hidden"
     },
     "69": {
         "Name": "RESPONSE_CODE",
         "Type": "Info",
-        "DataType": "Int",
         "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
+        "Placement": "Message",
+        "ExcludeFrom": "Rule",
         "Values": {
             "-1": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Wrong mode selection"
             },
             "-2": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Cannot change target temperature while structure is away"
             },
             "-3": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Thermostat is not online"
             },
             "-4": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Cannot change fan_timer_active while structure is Away"
             },
             "-5": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "heat-cool mode 3 unit issue"
             },
             "-6": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Cannot change HVAC mode while thermostat lock is enabled"
             },
             "-7": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Cannot set c and f temperatures simultaneously"
             },
             "-8": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Cannot set target temperature closer than N degrees C/F"
             },
             "-9": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Temperature C/F value is too low"
             },
             "-10": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Temperature C/F value is too high"
             },
             "-11": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Temperature C/F value too low for lock temperature"
             },
             "-12": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Temperature C/F value too high for lock temperature"
             },
             "-13": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Cannot change HVAC mode during energy-saving events"
             },
             "-14": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
-                "Label": "Cannot change HVAC mode to [Heat/Cool/Heat ï Cool]; HVAC cannot [Heat/Cool]"
+                "Label": "Cannot change HVAC mode to [Heat/Cool/Heat • Cool]; HVAC cannot [Heat/Cool]"
             },
             "-15": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
-                "Label": "Invalid HVAC mode: [Heat/Cool/Heat ï Cool]"
+                "Label": "Invalid HVAC mode: [Heat/Cool/Heat • Cool]"
             },
             "-16": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Cannot activate fan during smoke/co safety shutoff"
             },
             "-17": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "fan_timer_active not set"
             },
             "-18": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Cannot change Away state while emergency heat is on"
             },
             "503": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Service Unavailable"
             },
             "429": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
                 "Label": "Too Many Requests"
             }
         }
@@ -1898,31 +1340,25 @@
     "70": {
         "Name": "CO_ALARM_STATE",
         "Type": "Sensor",
-        "DataType": "String",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "info",
+        "Placement": "Header_Detail",
         "GroupLabel": "CO Status",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
+        "AppLabel": "co_lable",
+        "Layout": "Text_View",
+        "ExcludeFrom": "Rule",
         "Values": {
             "ok": {
-                "ToggleValue": "NaN",
-                "Icon": "binarysensoroff",
+                "Icon": "nest_protect_icon",
+                "AppLabel": "ok",
                 "Label": "OK"
             },
             "warning": {
-                "ToggleValue": "NaN",
-                "Icon": "stop",
+                "Icon": "icon_tampered_yellow",
+                "AppLabel": "co_detected",
                 "Label": "WARNING"
             },
             "emergency": {
-                "ToggleValue": "NaN",
-                "Icon": "panic",
+                "Icon": "icon_tampered_red",
+                "AppLabel": "emergency_",
                 "Label": "EMERGENCY"
             }
         }
@@ -1930,31 +1366,25 @@
     "71": {
         "Name": "SMOKE_ALARM_STATE",
         "Type": "Sensor",
-        "DataType": "String",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "info",
+        "Placement": "Header_Detail",
+        "AppLabel": "smoke_lable",
         "GroupLabel": "Smoke Status",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
+        "Layout": "Text_View",
+        "ExcludeFrom": "Rule",
         "Values": {
             "ok": {
-                "ToggleValue": "NaN",
-                "Icon": "binarysensoroff",
+                "Icon": "nest_protect_icon",
+                "AppLabel": "ok",
                 "Label": "OK"
             },
             "warning": {
-                "ToggleValue": "NaN",
-                "Icon": "stop",
+                "Icon": "icon_tampered_yellow",
+                "AppLabel": "co_detected",
                 "Label": "WARNING"
             },
             "emergency": {
-                "ToggleValue": "NaN",
-                "Icon": "firesensordetected",
+                "Icon": "icon_tampered_red",
+                "AppLabel": "emergency_",
                 "Label": "EMERGENCY"
             }
         }
@@ -1962,307 +1392,129 @@
     "72": {
         "Name": "HUE_BRIDGE_ID",
         "Type": "Functional",
-        "DataType": "String",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
-        "Values": {}
+        "Placement": "Hidden",
+        "ExcludeFrom": "Rule"
     },
     "73": {
         "Name": "EFFECT",
         "Type": "Functional",
-        "DataType": "String",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
-        "Values": {}
+        "Placement": "Hidden"
     },
     "74": {
         "Name": "COLOUR_MODE",
         "Type": "Functional",
-        "DataType": "String",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
-        "Values": {}
+        "Placement": "Hidden"
     },
     "75": {
         "Name": "USER_NAME",
         "Type": "Functional",
-        "DataType": "String",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
-        
-        "Values": {}
-    },
-    "76": {
-        "Name": "USER_NAME",
-        "Type": "Functional",
-        "DataType": "String",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
-        "Values": {}
+        "Placement": "Hidden"
     },
     "77": {
         "Name": "REACHABLE",
         "Type": "Functional",
-        "DataType": "Bool",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
-        "Values": {
-            "true": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
-                "Label": "NaN"
-            },
-            "false": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
-                "Label": "NaN"
-            }
-        }
+        "Placement": "Hidden"
     },
     "78": {
         "Name": "BATTERY_NEST",
         "Type": "Sensor",
-        "DataType": "String",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
+        "Placement": "Detail",
+        "Layout": "Text_View",
+        "GroupLabel": "Battery",
         "ExcludeFrom": "scene_rule",
-        
         "Values": {
             "ok": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
-                "Label": "Battery"
+                "Label": "OK"
             },
             "Warning": {
-                "ToggleValue": "NaN",
-                "Icon": "NaN",
-                "Label": "Battery"
+                "Label": "REPLACE"
             }
         }
     },
     "79": {
         "Name": "MAXIMUM_USERS",
         "Type": "Functional",
-        "DataType": "Raw",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "false",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
-        "Values": {
-            "Formatter": {
-                "Min": "0",
-                "Max": "20",
-                "Factor": "1"
-            }
-        }
+        "Placement": "Hidden"
     },
     "80": {
         "Name": "ENERGY",
         "Type": "Sensor",
-        "DataType": "Decimal",
-        "ReadOnly": "true",
-        "Placement": "NaN",
-        "SecondaryPlacement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN",
+        "Placement": "Detail",
+        "Layout": "Slider",
+        "GroupLabel": "Energy",
+        "AppLabel": "energyLabel",
         "Conditional": "true",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "Values": {
-            "Formatter": {
-                "Min": "0",
-                "Max": "9999",
-                "Unit": "KWh"
-            }
+        "Formatter": {
+            "Min": "0",
+            "Max": "9999",
+            "Unit": "KWh"
         }
     },
     "81": {
         "Name": "USER_CODE",
         "Type": "Actuator",
-        "DataType": "Raw",
-        "ReadOnly": "false",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Input",
-        "GroupLabel": "NaN",
-        "Conditional": "false",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene_rule",
-        "Values": {}
+        "Placement": "Detail",
+        "Layout": "Text_Input"
     },
     "82": {
         "Name": "CLAMP1_POWER",
         "Type": "Sensor",
-        "DataType": "Decimal",
-        "ReadOnly": "true",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "info",
+        "Placement": "Detail",
+        "Layout": "Text_View|Text_Input",
         "GroupLabel": "POWER",
+        "AppLabel": "clamp1_power",
         "Conditional": "true",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "Values": {
-            "Formatter": {
-                "Min": "0",
-                "Max": "9999",
-                "Unit": "W"
-            }
+        "Formatter": {
+            "Min": "0",
+            "Max": "9999",
+            "Unit": "W"
         }
     },
     "83": {
         "Name": "CLAMP2_POWER",
         "Type": "Sensor",
-        "DataType": "Decimal",
-        "ReadOnly": "true",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "info",
+        "Placement": "Detail",
+        "Layout": "Text_View|Text_Input",
         "GroupLabel": "POWER",
+        "AppLabel": "clamp2_power",
         "Conditional": "true",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "Values": {
-            "Formatter": {
-                "Min": "0",
-                "Max": "9999",
-                "Unit": "W"
-            }
+        "Formatter": {
+            "Min": "0",
+            "Max": "9999",
+            "Unit": "W"
         }
     },
     "84": {
         "Name": "CLAMP1_ENERGY",
         "Type": "Sensor",
-        "DataType": "Decimal",
-        "ReadOnly": "true",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "info",
+        "Placement": "Detail",
+        "Layout": "Text_View|Text_Input",
         "GroupLabel": "ENERGY",
+        "AppLabel": "clamp1_energy",
         "Conditional": "true",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "Values": {
-            "Formatter": {
-                "Min": "0",
-                "Max": "9999",
-                "Unit": "KWh"
-            }
+        "Formatter": {
+            "Min": "0",
+            "Max": "9999",
+            "Unit": "kWh"
         }
     },
     "85": {
         "Name": "CLAMP2_ENERGY",
         "Type": "Sensor",
-        "DataType": "Decimal",
-        "ReadOnly": "true",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "info",
+        "Placement": "Detail",
+        "Layout": "Text_View|Text_Input",
         "GroupLabel": "ENERGY",
+        "AppLabel": "clamp2_energy",
         "Conditional": "true",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "Values": {
-            "Formatter": {
-                "Min": "0",
-                "Max": "9999",
-                "Unit": "KWh"
-            }
+        "Formatter": {
+            "Min": "0",
+            "Max": "9999",
+            "Unit": "kWh"
         }
     },
     "86": {
         "Name": "ACTIVE_POWER",
         "Type": "Sensor",
-        "DataType": "Short",
-        "ReadOnly": "true",
-        "Placement": "DETAIL",
-        "SecondaryPlacement": "NaN",
-        "Layout": "info",
-        "GroupLabel": "POWER",
-        "Conditional": "true",
-        "UseInScenes": "false",
-        "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
-        "Values": {
-            "Formatter": {
-                "Min": "0",
-                "Max": "9999",
-                "Unit": "W"
-            }
-        }
+        "Placement": "Detail"
     }
-    
 }

@@ -1,12 +1,12 @@
 //
-//  ClientEditViewController.m
+//  ClientPropertiesViewController.m
 //  SecurifiApp
 //
 //  Created by Securifi-Mac2 on 26/02/16.
 //  Copyright © 2016 Securifi Ltd. All rights reserved.
 //
 
-#import "ClientEditViewController.h"
+#import "ClientPropertiesViewController.h"
 #import "UIFont+Securifi.h"
 #import "SFIColors.h"
 #import "SKSTableView.h"
@@ -25,23 +25,23 @@
 #import "UIFont+Securifi.h"
 #import "Colours.h"
 #import "CollectionViewCell.h"
-#import "CommonCell.h"
-#import "SensorEditViewController.h"
+#import "DeviceHeaderView.h"
+#import "DeviceEditViewController.h"
 
 #define CELLFRAME CGRectMake(8, 11, self.view.frame.size.width -16, 60)
 
-@interface ClientEditViewController ()<UITableViewDelegate,UITableViewDataSource,CommonCellDelegate>
+@interface ClientPropertiesViewController ()<UITableViewDelegate,UITableViewDataSource,DeviceHeaderViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *clientPropertiesTable;
 @property (nonatomic)NSMutableArray *orderedArray ;
 @property (nonatomic)NSDictionary *clientDeviceDict;
 @end
 
-@implementation ClientEditViewController
+@implementation ClientPropertiesViewController
 NSMutableArray * blockedDaysArray;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self dummyNetWorkDeviceList];
-    CommonCell *commonView = [[CommonCell alloc]initWithFrame:CELLFRAME];
+    DeviceHeaderView *commonView = [[DeviceHeaderView alloc]initWithFrame:CELLFRAME];
     commonView.delegate = self;
     commonView.cellType = ClientEdit_Cell;
     // set up images label and name
@@ -215,9 +215,7 @@ NSMutableArray * blockedDaysArray;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
     ClientPropertiesCell *cell = (ClientPropertiesCell*)[tableView cellForRowAtIndexPath:indexPath];
-    SensorEditViewController *ctrl = [self.storyboard instantiateViewControllerWithIdentifier:@"SensorEditViewController"];
-    ctrl.indexName = cell.indexName;
-    ctrl.deviceDict = self.clientDeviceDict;
+    DeviceEditViewController *ctrl = [self.storyboard instantiateViewControllerWithIdentifier:@"DeviceEditViewController"];
     ctrl.isSensor = NO;
     [self.navigationController pushViewController:ctrl animated:YES];
 //    self.indexName = cell.indexName;

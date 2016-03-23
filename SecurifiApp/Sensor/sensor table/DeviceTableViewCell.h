@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CommonCell.h"
+#import "DeviceHeaderView.h"
 
 @interface DeviceTableViewCell : UITableViewCell
-@property (nonatomic, weak) IBOutlet CommonCell *commonView;
+@property (nonatomic, weak) IBOutlet DeviceHeaderView *commonView;
 @end

@@ -10,10 +10,8 @@
             "Location": "Main door",
             "DeviceValues": {
                 "1": {
-                    "Index": "1",
                     "Name": "SETPOINT COOLING",
                     "Value": "Auto",
-                    "GenericIndex": "38"
                 },
                 "2": {
                     "Index": "2",

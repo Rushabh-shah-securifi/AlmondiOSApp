@@ -13,7 +13,7 @@
 #import "RulesTableViewController.h"
 #import "SensorViewController.h"
 #import "SensorTableViewController.h"
-#import "SensorTable.h"
+#import "DeviceListController.h"
 
 #define TAB_BAR_DEVICES @"Devices"
 #define TAB_BAR_ROUTER @"Router"
@@ -239,7 +239,7 @@ typedef NS_ENUM(int, TabBarMode) {
     
     if (!_sensorTab) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
-        SensorTable *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"SensorTable"];
+        DeviceListController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"DeviceListController"];
         UIImage *icon = [UIImage imageNamed:@"icon_sensor"];
 //        SFISensorsViewController *ctrl = [SFISensorsViewController new];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
