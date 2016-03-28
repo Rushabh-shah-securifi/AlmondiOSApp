@@ -1,16 +1,16 @@
 //
-//  SensorTextView.m
+//  TextInput.m
 //  SecurifiApp
 //
 //  Created by Securifi-Mac2 on 24/02/16.
 //  Copyright © 2016 Securifi Ltd. All rights reserved.
 //
 
-#import "SensorTextView.h"
+#import "TextInput.h"
 #import "UIFont+Securifi.h"
-@interface SensorTextView ()<UITextFieldDelegate>
+@interface TextInput ()<UITextFieldDelegate>
 @end
-@implementation SensorTextView
+@implementation TextInput
 -(id) initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

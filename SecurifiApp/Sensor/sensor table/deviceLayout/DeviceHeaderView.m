@@ -9,6 +9,7 @@
 #import "DeviceHeaderView.h"
 #import "GenericIndexUtil.h"
 #import "AlmondJsonCommandKeyConstants.h"
+#import "Colours.h"
 
 @interface DeviceHeaderView()
 @property (weak, nonatomic) IBOutlet UILabel *deviceValueImgLable;

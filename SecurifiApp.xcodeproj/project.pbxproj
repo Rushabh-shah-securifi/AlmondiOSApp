@@ -452,7 +452,7 @@
 		CE08B3CC1C9A87C900ABAF6B /* DeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
 		CE810C5E1C9BDAA000F80777 /* GridView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C5D1C9BDAA000F80777 /* GridView.m */; };
-		CE810C611C9C15D100F80777 /* ClientTypeTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C601C9C15D100F80777 /* ClientTypeTableView.m */; };
+		CE810C611C9C15D100F80777 /* ListButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C601C9C15D100F80777 /* ListButtonView.m */; };
 		CEA4A82C1C86BEB00098C7BD /* SensorStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA4A82A1C86BEB00098C7BD /* SensorStoryBoard.storyboard */; };
 		CEEBE6201C902D0400DC3E3F /* clientTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */; };
 		CEEC42051C9828BA00A2C35D /* SFIWiFiClientListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42041C9828BA00A2C35D /* SFIWiFiClientListCell.m */; };
@@ -463,11 +463,11 @@
 		CEEC421B1C98560500A2C35D /* DeviceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42101C98560500A2C35D /* DeviceListController.m */; };
 		CEEC422D1C98560D00A2C35D /* DeviceHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42211C98560D00A2C35D /* DeviceHeaderView.m */; };
 		CEEC422E1C98560D00A2C35D /* DeviceHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CEEC42221C98560D00A2C35D /* DeviceHeaderView.xib */; };
-		CEEC422F1C98560D00A2C35D /* HorzSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42241C98560D00A2C35D /* HorzSlider.m */; };
+		CEEC422F1C98560D00A2C35D /* HorizontalPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42241C98560D00A2C35D /* HorizontalPicker.m */; };
 		CEEC42301C98560D00A2C35D /* HueColorPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42261C98560D00A2C35D /* HueColorPicker.m */; };
-		CEEC42311C98560D00A2C35D /* HueSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42281C98560D00A2C35D /* HueSliderView.m */; };
-		CEEC42321C98560D00A2C35D /* SensorButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC422A1C98560D00A2C35D /* SensorButtonView.m */; };
-		CEEC42331C98560D00A2C35D /* SensorTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC422C1C98560D00A2C35D /* SensorTextView.m */; };
+		CEEC42311C98560D00A2C35D /* Slider.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42281C98560D00A2C35D /* Slider.m */; };
+		CEEC42321C98560D00A2C35D /* MultiButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC422A1C98560D00A2C35D /* MultiButtonView.m */; };
+		CEEC42331C98560D00A2C35D /* TextInput.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC422C1C98560D00A2C35D /* TextInput.m */; };
 		CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEF425C1C47E0E300E36C9B /* ScenePayload.m */; };
 		CEF2E8BC1C9958800082C320 /* GenericProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF2E8BB1C9958800082C320 /* GenericProperty.m */; };
 		CEF6F4D81C92CAD600C68975 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */; };
@@ -989,8 +989,8 @@
 		CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPickerIndicatorView1.m; sourceTree = "<group>"; };
 		CE810C5C1C9BDAA000F80777 /* GridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridView.h; sourceTree = "<group>"; };
 		CE810C5D1C9BDAA000F80777 /* GridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridView.m; sourceTree = "<group>"; };
-		CE810C5F1C9C15D100F80777 /* ClientTypeTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientTypeTableView.h; sourceTree = "<group>"; };
-		CE810C601C9C15D100F80777 /* ClientTypeTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientTypeTableView.m; sourceTree = "<group>"; };
+		CE810C5F1C9C15D100F80777 /* ListButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListButtonView.h; sourceTree = "<group>"; };
+		CE810C601C9C15D100F80777 /* ListButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListButtonView.m; sourceTree = "<group>"; };
 		CEA4A82B1C86BEB00098C7BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SensorStoryBoard.storyboard; sourceTree = "<group>"; };
 		CEEBE61E1C902D0400DC3E3F /* clientTypeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = clientTypeCell.h; path = SecurifiApp/clientTypeCell.h; sourceTree = SOURCE_ROOT; };
 		CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = clientTypeCell.m; path = SecurifiApp/clientTypeCell.m; sourceTree = SOURCE_ROOT; };
@@ -1009,16 +1009,16 @@
 		CEEC42201C98560D00A2C35D /* DeviceHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceHeaderView.h; sourceTree = "<group>"; };
 		CEEC42211C98560D00A2C35D /* DeviceHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceHeaderView.m; sourceTree = "<group>"; };
 		CEEC42221C98560D00A2C35D /* DeviceHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DeviceHeaderView.xib; sourceTree = "<group>"; };
-		CEEC42231C98560D00A2C35D /* HorzSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HorzSlider.h; sourceTree = "<group>"; };
-		CEEC42241C98560D00A2C35D /* HorzSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HorzSlider.m; sourceTree = "<group>"; };
+		CEEC42231C98560D00A2C35D /* HorizontalPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HorizontalPicker.h; sourceTree = "<group>"; };
+		CEEC42241C98560D00A2C35D /* HorizontalPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HorizontalPicker.m; sourceTree = "<group>"; };
 		CEEC42251C98560D00A2C35D /* HueColorPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HueColorPicker.h; sourceTree = "<group>"; };
 		CEEC42261C98560D00A2C35D /* HueColorPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HueColorPicker.m; sourceTree = "<group>"; };
-		CEEC42271C98560D00A2C35D /* HueSliderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HueSliderView.h; sourceTree = "<group>"; };
-		CEEC42281C98560D00A2C35D /* HueSliderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HueSliderView.m; sourceTree = "<group>"; };
-		CEEC42291C98560D00A2C35D /* SensorButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorButtonView.h; sourceTree = "<group>"; };
-		CEEC422A1C98560D00A2C35D /* SensorButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorButtonView.m; sourceTree = "<group>"; };
-		CEEC422B1C98560D00A2C35D /* SensorTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorTextView.h; sourceTree = "<group>"; };
-		CEEC422C1C98560D00A2C35D /* SensorTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorTextView.m; sourceTree = "<group>"; };
+		CEEC42271C98560D00A2C35D /* Slider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Slider.h; sourceTree = "<group>"; };
+		CEEC42281C98560D00A2C35D /* Slider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Slider.m; sourceTree = "<group>"; };
+		CEEC42291C98560D00A2C35D /* MultiButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiButtonView.h; sourceTree = "<group>"; };
+		CEEC422A1C98560D00A2C35D /* MultiButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiButtonView.m; sourceTree = "<group>"; };
+		CEEC422B1C98560D00A2C35D /* TextInput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextInput.h; sourceTree = "<group>"; };
+		CEEC422C1C98560D00A2C35D /* TextInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextInput.m; sourceTree = "<group>"; };
 		CEEF425B1C47E0E300E36C9B /* ScenePayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenePayload.h; sourceTree = "<group>"; };
 		CEEF425C1C47E0E300E36C9B /* ScenePayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScenePayload.m; sourceTree = "<group>"; };
 		CEF2E8BA1C9958800082C320 /* GenericProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericProperty.h; sourceTree = "<group>"; };
@@ -1994,20 +1994,20 @@
 				CEEC42201C98560D00A2C35D /* DeviceHeaderView.h */,
 				CEEC42211C98560D00A2C35D /* DeviceHeaderView.m */,
 				CEEC42221C98560D00A2C35D /* DeviceHeaderView.xib */,
-				CEEC42231C98560D00A2C35D /* HorzSlider.h */,
-				CEEC42241C98560D00A2C35D /* HorzSlider.m */,
+				CEEC42231C98560D00A2C35D /* HorizontalPicker.h */,
+				CEEC42241C98560D00A2C35D /* HorizontalPicker.m */,
 				CEEC42251C98560D00A2C35D /* HueColorPicker.h */,
 				CEEC42261C98560D00A2C35D /* HueColorPicker.m */,
-				CEEC42271C98560D00A2C35D /* HueSliderView.h */,
-				CEEC42281C98560D00A2C35D /* HueSliderView.m */,
-				CEEC42291C98560D00A2C35D /* SensorButtonView.h */,
-				CEEC422A1C98560D00A2C35D /* SensorButtonView.m */,
-				CEEC422B1C98560D00A2C35D /* SensorTextView.h */,
-				CEEC422C1C98560D00A2C35D /* SensorTextView.m */,
+				CEEC42271C98560D00A2C35D /* Slider.h */,
+				CEEC42281C98560D00A2C35D /* Slider.m */,
+				CEEC42291C98560D00A2C35D /* MultiButtonView.h */,
+				CEEC422A1C98560D00A2C35D /* MultiButtonView.m */,
+				CEEC422B1C98560D00A2C35D /* TextInput.h */,
+				CEEC422C1C98560D00A2C35D /* TextInput.m */,
 				CE810C5C1C9BDAA000F80777 /* GridView.h */,
 				CE810C5D1C9BDAA000F80777 /* GridView.m */,
-				CE810C5F1C9C15D100F80777 /* ClientTypeTableView.h */,
-				CE810C601C9C15D100F80777 /* ClientTypeTableView.m */,
+				CE810C5F1C9C15D100F80777 /* ListButtonView.h */,
+				CE810C601C9C15D100F80777 /* ListButtonView.m */,
 			);
 			path = deviceLayout;
 			sourceTree = "<group>";
@@ -2699,7 +2699,7 @@
 				A5C7B4021CA14F5400E269A2 /* DevicePayload.m in Sources */,
 				1896B1DC1C5CA48B00C68501 /* SFIDimmerButton.m in Sources */,
 				1C2F60AA1B69E69D001CCA34 /* SKSTableViewCellIndicator.m in Sources */,
-				CEEC42311C98560D00A2C35D /* HueSliderView.m in Sources */,
+				CEEC42311C98560D00A2C35D /* Slider.m in Sources */,
 				1C7E7DAB1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,
 				1C7E7D8B1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
 				1C7E7DCF1A41A0990026F0BA /* SFITableViewController.m in Sources */,
@@ -2775,7 +2775,7 @@
 				1C2F60981B69E69D001CCA34 /* SFIScenesTableViewCell.m in Sources */,
 				CEF6F4DC1C92CAD600C68975 /* AddTriggerAndAddAction.m in Sources */,
 				1C2F15261BA7FB67009DB175 /* SFIMessageViewController.m in Sources */,
-				CE810C611C9C15D100F80777 /* ClientTypeTableView.m in Sources */,
+				CE810C611C9C15D100F80777 /* ListButtonView.m in Sources */,
 				CEF6F4EE1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */,
 				1DF034DCCD17E1C36BA3BF00 /* SensorSupport.m in Sources */,
 				CEF6F5061C92CD2400C68975 /* GenericIndexUtil.m in Sources */,
@@ -2787,7 +2787,7 @@
 				CEF6F4E01C92CAD600C68975 /* DelayPicker.m in Sources */,
 				CEF6F4E81C92CAD600C68975 /* RulesHue.m in Sources */,
 				CEF2E8BC1C9958800082C320 /* GenericProperty.m in Sources */,
-				CEEC42331C98560D00A2C35D /* SensorTextView.m in Sources */,
+				CEEC42331C98560D00A2C35D /* TextInput.m in Sources */,
 				1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */,
 				1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */,
 				1C2F609C1B69E69D001CCA34 /* SFISwitchButton.m in Sources */,
@@ -2801,10 +2801,10 @@
 				1DF03C638D19786AEAE43F3C /* SFIHuePickerView.m in Sources */,
 				1DF03A194CCC7A1DE3C2A4DC /* UIColor+Securifi.m in Sources */,
 				1DF039D3E2A4A6FB292A99C3 /* SFISensorDetailView.m in Sources */,
-				CEEC42321C98560D00A2C35D /* SensorButtonView.m in Sources */,
+				CEEC42321C98560D00A2C35D /* MultiButtonView.m in Sources */,
 				84B9A2681B7F315100E44682 /* SFIHorizontalValueSelectorView.m in Sources */,
 				842651AD1BE0C86C001F79C1 /* TimeText.m in Sources */,
-				CEEC422F1C98560D00A2C35D /* HorzSlider.m in Sources */,
+				CEEC422F1C98560D00A2C35D /* HorizontalPicker.m in Sources */,
 				1C2F60A01B69E69D001CCA34 /* SFIWiFiClientsListViewController.m in Sources */,
 				1C2F60A61B69E69D001CCA34 /* SKSTableView.m in Sources */,
 				CEF6F4DA1C92CAD600C68975 /* AddRulesViewController.m in Sources */,

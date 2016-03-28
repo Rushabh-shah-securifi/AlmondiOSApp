@@ -1,5 +1,5 @@
 //
-//  HorzSlider.h
+//  HorizontalPicker.h
 //  SecurifiApp
 //
 //  Created by Securifi-Mac2 on 24/02/16.
@@ -7,18 +7,16 @@
 //
 
 #import <V8HorizontalPickerView/V8HorizontalPickerView.h>
-#import "GenericProperty.h"
+#import "GenericIndexValue.h"
 #import "Device.h"
 @protocol HorzSliderDelegate
 -(void)updatePickerValue:(NSString *)newValue;
 @end
-@interface HorzSlider : UIView
-@property (nonatomic) NSInteger  min;
-@property (nonatomic) NSInteger max;
+@interface HorizontalPicker : UIView
 @property (nonatomic)id<HorzSliderDelegate> delegate;
 @property (nonatomic)UIColor *color;
-@property (nonatomic)GenericProperty *deviceProperty;
-
+@property (nonatomic)GenericIndexValue *genericIndexValue;
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue;
 
 -(void)drawSlider;
 @end

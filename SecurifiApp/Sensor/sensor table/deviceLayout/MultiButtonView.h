@@ -1,5 +1,5 @@
 //
-//  SensorButtonView.h
+//  MultiButtonView.h
 //  SecurifiApp
 //
 //  Created by Securifi-Mac2 on 24/02/16.
@@ -8,19 +8,21 @@
 
 #import <UIKit/UIKit.h>
 #import "Device.h"
-#import "GenericProperty.h"
+#import "GenericIndexValue.h"
 
-@protocol SensorButtonViewDelegate
+@protocol MultiButtonViewDelegate
 @optional
 -(void)updateButtonStatus:(NSString *)newValue;
 @end
 
-@interface SensorButtonView : UIView
+@interface MultiButtonView : UIView
 @property (nonatomic)UIColor *color;
 @property (nonatomic) NSDictionary *deviceValueDict;
 @property (nonatomic) Device *device;
-@property (nonatomic)GenericProperty *deviceProperty;
-@property (nonatomic)id<SensorButtonViewDelegate> delegate;
+@property (nonatomic)GenericIndexValue *genericIndexValue;
+@property (nonatomic)id<MultiButtonViewDelegate> delegate;
+
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue;
 -(void)drawButton:(NSDictionary *)valuedict color:(UIColor *)color;
 -(void)drawButton:(NSArray*)array selectedValue:(int)selectedValue;
 @end

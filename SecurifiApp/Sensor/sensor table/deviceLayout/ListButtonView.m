@@ -1,20 +1,20 @@
 //
-//  ClientTypeTableView.m
+//  ListButtonView.m
 //  SecurifiApp
 //
 //  Created by Securifi-Mac2 on 18/03/16.
 //  Copyright © 2016 Securifi Ltd. All rights reserved.
 //
 
-#import "ClientTypeTableView.h"
+#import "ListButtonView.h"
 #import "clientTypeCell.h"
 #import "SFIColors.h"
 #import "UIFont+Securifi.h"
-@interface ClientTypeTableView()<UITableViewDataSource,UITableViewDelegate,clientTypeCellDelegate>
+@interface ListButtonView()<UITableViewDataSource,UITableViewDelegate,clientTypeCellDelegate>
 @property (nonatomic) UITableView *tableType;
 @property (nonatomic)NSString *selectedType;
 @end
-@implementation ClientTypeTableView
+@implementation ListButtonView
 NSArray *type;
 
 -(void)drawTypeTable:selectedType{

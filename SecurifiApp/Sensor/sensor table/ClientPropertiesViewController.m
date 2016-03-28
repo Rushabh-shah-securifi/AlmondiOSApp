@@ -16,8 +16,8 @@
 
 
 #import "ClientEditPropertiesViewController.h"
-#import "SensorButtonView.h"
-#import "SensorTextView.h"
+#import "MultiButtonView.h"
+#import "TextInput.h"
 #import "SFIColors.h"
 #import "SFIWiFiDeviceTypeSelectionCell.h"
 #import "clientTypeCell.h"

@@ -6,20 +6,24 @@
 //  Copyright © 2016 Securifi Ltd. All rights reserved.
 //
 
-#import "SensorButtonView.h"
+#import "MultiButtonView.h"
 #import "UIFont+Securifi.h"
 #import "SFIColors.h"
 #import "DeviceKnownValues.h"
 #import "GenericValue.h"
-@interface SensorButtonView()
+@interface MultiButtonView()
 @property (nonatomic) NSArray *valueArray;
 @end
-@implementation SensorButtonView
--(id) initWithFrame:(CGRect)frame
+@implementation MultiButtonView
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(id)genericIndexValue
 {
     self = [super initWithFrame:frame];
+    if(self){
+        self.color = color;
+        self.genericIndexValue = genericIndexValue;
+    }
     return self;
-    //    return self;
+
 }
 -(void)drawButton:(NSDictionary *)valuedict color:(UIColor *)color{
     DeviceKnownValues *deviceValue = [DeviceKnownValues new];

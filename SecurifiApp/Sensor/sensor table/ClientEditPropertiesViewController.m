@@ -7,8 +7,8 @@
 //
 
 #import "ClientEditPropertiesViewController.h"
-#import "SensorButtonView.h"
-#import "SensorTextView.h"
+#import "MultiButtonView.h"
+#import "TextInput.h"
 #import "SFIColors.h"
 #import "SFIWiFiDeviceTypeSelectionCell.h"
 #import "clientTypeCell.h"
@@ -19,7 +19,7 @@
 #import "DeviceHeaderView.h"
 
 
-@interface ClientEditPropertiesViewController ()<SFIWiFiDeviceTypeSelectionCellDelegate,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,clientTypeCellDelegate,SensorButtonViewDelegate>
+@interface ClientEditPropertiesViewController ()<SFIWiFiDeviceTypeSelectionCellDelegate,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,clientTypeCellDelegate,MultiButtonViewDelegate>
 @property (weak, nonatomic) IBOutlet UIView *clientInfoView;
 @property (weak, nonatomic) IBOutlet UIView *indexView;
 @property (weak, nonatomic) IBOutlet UILabel *indexLabel;
@@ -108,7 +108,7 @@ NSString *blockedType;
 
 }
 -(void)textFieldView:(NSString *)name{
-    SensorTextView *textView = [[SensorTextView alloc]initWithFrame:CGRectMake(4,20,self.indexView.frame.size.width - 8,40)];
+    TextInput *textView = [[TextInput alloc]initWithFrame:CGRectMake(4,20,self.indexView.frame.size.width - 8,40)];
     textView.color = [UIColor clearColor];
     [textView drawTextField:name];
     CGRect fr = self.indexView.frame;
@@ -122,7 +122,7 @@ NSString *blockedType;
 
 -(void)buttonView:(NSArray*)arr selectedValue:(int)selectedVal{
     
-    SensorButtonView *presenceSensor = [[SensorButtonView alloc]initWithFrame:CGRectMake(5,40,self.indexView.frame.size.width - 8,30 )];
+    MultiButtonView *presenceSensor = [[MultiButtonView alloc]initWithFrame:CGRectMake(5,40,self.indexView.frame.size.width - 8,30 )];
     presenceSensor.color = [SFIColors clientGreenColor];
     [presenceSensor drawButton:arr selectedValue:selectedVal];
     presenceSensor.delegate = self;

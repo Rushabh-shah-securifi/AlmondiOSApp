@@ -1,5 +1,5 @@
 //
-//  HueSliderView.h
+//  Slider.h
 //  SecurifiApp
 //
 //  Created by Securifi-Mac2 on 24/02/16.
@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "GenericProperty.h"
-@protocol HueSliderViewDelegate
+@protocol SliderViewDelegate
 -(void)updateSliderValue:(NSString*)newvalue;
 @end
-@interface HueSliderView : UIView
+@interface Slider : UIView
 @property (nonatomic)UIColor *color;
 @property (nonatomic) NSInteger min;
 @property (nonatomic) NSInteger max;
-@property(nonatomic)id<HueSliderViewDelegate> delegate;
+@property(nonatomic)id<SliderViewDelegate> delegate;
 
 @property (nonatomic)GenericProperty *deviceProperty;
 -(void)drawSlider;

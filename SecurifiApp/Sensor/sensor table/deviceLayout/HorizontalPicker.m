@@ -6,19 +6,24 @@
 //  Copyright © 2016 Securifi Ltd. All rights reserved.
 //
 
-#import "HorzSlider.h"
+#import "HorizontalPicker.h"
 #import "V8HorizontalPickerView.h"
 #import "SFIColors.h"
 #import "SFIPickerIndicatorView1.h"
 
-@interface HorzSlider ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate>
+@interface HorizontalPicker ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate>
 @end
 
-@implementation HorzSlider
--(id) initWithFrame:(CGRect)frame
+@implementation HorizontalPicker
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue
 {
     self = [super initWithFrame:frame];
+    if(self){
+        self.color = color;
+        self.genericIndexValue = genericIndexValue;
+    }
     return self;
+    
     //    return self;
 }
 -(void)drawSlider{// it will take color

@@ -1,17 +1,17 @@
 //
-//  HueSliderView.m
+//  Slider.m
 //  SecurifiApp
 //
 //  Created by Securifi-Mac2 on 24/02/16.
 //  Copyright © 2016 Securifi Ltd. All rights reserved.
 //
 
-#import "HueSliderView.h"
+#import "Slider.h"
 #import "SFISlider.h"
 #import "UIFont+Securifi.h"
 #import "SFIColors.h"
 
-@implementation HueSliderView
+@implementation Slider
 -(id) initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

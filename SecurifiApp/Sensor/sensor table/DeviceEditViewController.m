@@ -12,11 +12,11 @@
 #import "V8HorizontalPickerView.h"
 #import "SFIPickerIndicatorView1.h"
 #import "SFIColors.h"
-#import "HorzSlider.h"
-#import "SensorButtonView.h"
+#import "HorizontalPicker.h"
+#import "MultiButtonView.h"
 #import "HueColorPicker.h"
-#import "HueSliderView.h"
-#import "SensorTextView.h"
+#import "Slider.h"
+#import "TextInput.h"
 #import "DeviceHeaderView.h"
 
 #import "SFIWiFiDeviceTypeSelectionCell.h"
@@ -30,7 +30,7 @@
 #import "GenericIndexValue.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "GridView.h"
-#import "ClientTypeTableView.h"
+#import "ListButtonView.h"
 
 
 
@@ -43,7 +43,7 @@
 #define BUTTON_FRAME CGRectMake(0, 25,view.frame.size.width-10,  35)
 static const int xIndent = 10;
 
-@interface DeviceEditViewController ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate,SensorButtonViewDelegate,SensorTextViewDelegate,HorzSliderDelegate,HueColorPickerDelegate,HorzSliderDelegate,HueSliderViewDelegate,DeviceHeaderViewDelegate,SFIWiFiDeviceTypeSelectionCellDelegate,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,clientTypeCellDelegate,SensorButtonViewDelegate>
+@interface DeviceEditViewController ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate,MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,HorzSliderDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,SFIWiFiDeviceTypeSelectionCellDelegate,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,clientTypeCellDelegate,MultiButtonViewDelegate>
 //can be removed
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
 
@@ -81,6 +81,7 @@ static const int xIndent = 10;
         pickerValuesArray1 = [[NSMutableArray alloc]init];
         self.deviceEditHeaderCell.cellType = SensorEdit_Cell;
         self.deviceEditHeaderCell.device = self.genericParams.device;
+        self.deviceEditHeaderCell.genericIndexValue = self.genericParams.headerGenericIndexValue;
         self.deviceEditHeaderCell.delegate = self;
         [self.deviceEditHeaderCell setUPSensorCell];
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -124,12 +125,12 @@ static const int xIndent = 10;
     [self.indexesScroll setContentSize:scrollableSize];
     [self.indexesScroll flashScrollIndicators];
     for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList){
+        NSLog(@"genericIndexValue loop");
         GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
-
         if([genericIndexObj.layoutType isEqualToString:@"Info"] || [genericIndexObj.layoutType.lowercaseString isEqualToString:@"off"] || genericIndexObj.layoutType == nil || [genericIndexObj.layoutType isEqualToString:@"NaN"]){
             continue;
         }
-                NSLog(@"genericIndexValue loop");
+        
         NSString *propertyName = genericIndexObj.groupLabel;
         if([genericIndexObj.type isEqualToString:SENSOR]){
             UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_SMALL];
@@ -154,18 +155,14 @@ static const int xIndent = 10;
             [view addSubview:label];
             
             if([genericIndexObj.layoutType isEqualToString:SLIDER]){
-                HorzSlider *horzView = [[HorzSlider alloc]initWithFrame:SLIDER_FRAME];
+                HorizontalPicker *horzView = [[HorizontalPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 horzView.delegate = self;
-                Formatter *formatter = genericIndexObj.formatter;
-                horzView.min = formatter.min;
-                horzView.max = formatter.max;
-                horzView.color = [SFIColors ruleBlueColor];
                 [horzView drawSlider];
                 horzView.backgroundColor = [UIColor yellowColor];
                 [view addSubview:horzView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:BUTTON]){
-                SensorButtonView *buttonView = [[SensorButtonView alloc]initWithFrame:BUTTON_FRAME];
+                MultiButtonView *buttonView = [[MultiButtonView alloc]initWithFrame:BUTTON_FRAME];
                 buttonView.deviceValueDict = genericIndexObj.values;
                 buttonView.device = self.genericParams.device;
                 buttonView.color = [SFIColors ruleBlueColor];
@@ -180,17 +177,17 @@ static const int xIndent = 10;
                 [view addSubview:HueView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:HUE_SLIDER]){
-                HueSliderView *HuesliderView = [[HueSliderView alloc]initWithFrame:SLIDER_FRAME];
+                Slider *sliderView = [[Slider alloc]initWithFrame:SLIDER_FRAME];
                 Formatter *formatter = genericIndexObj.formatter;
-                HuesliderView.min = formatter.min;
-                HuesliderView.max = formatter.max;
-                HuesliderView.color = [SFIColors ruleBlueColor];
-                HuesliderView.delegate = self;
-                [HuesliderView drawSlider];
-                [view addSubview:HuesliderView];
+                sliderView.min = formatter.min;
+                sliderView.max = formatter.max;
+                sliderView.color = [SFIColors ruleBlueColor];
+                sliderView.delegate = self;
+                [sliderView drawSlider];
+                [view addSubview:sliderView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:TEXT_INPUT]){
-                SensorTextView *textView = [[SensorTextView alloc]initWithFrame:SLIDER_FRAME];
+                TextInput *textView = [[TextInput alloc]initWithFrame:SLIDER_FRAME];
                 [textView drawTextField:@"124"];
                 [view addSubview:textView];
             }
@@ -198,7 +195,7 @@ static const int xIndent = 10;
             yPos = yPos + view.frame.size.height;
         }
     }
-    [self addNameLocationNotifyMeViews:yPos];
+//    [self addNameLocationNotifyMeViews:yPos];
 }
 
 
@@ -222,7 +219,7 @@ static const int xIndent = 10;
     [self setUpLable:Name withPropertyName:labelText];
     [view addSubview:Name];
     
-    SensorTextView *name = [[SensorTextView alloc]initWithFrame:CGRectMake(0,15,view.frame.size.width -10,35)];
+    TextInput *name = [[TextInput alloc]initWithFrame:CGRectMake(0,15,view.frame.size.width -10,35)];
     [name drawTextField:self.genericParams.device.name];
     [self.indexesScroll addSubview:view];
     [view addSubview:name];
@@ -238,7 +235,7 @@ static const int xIndent = 10;
     notify.textColor = [UIColor whiteColor];
     [viewNotify addSubview:notify];
     
-    SensorButtonView *sensorbuttons = [[SensorButtonView alloc]initWithFrame:CGRectMake(0,25,viewNotify.frame.size.width -10,35)];
+    MultiButtonView *sensorbuttons = [[MultiButtonView alloc]initWithFrame:CGRectMake(0,25,viewNotify.frame.size.width -10,35)];
     NSArray *array = @[@"Always",@"When I'm away",@"Never"];
     sensorbuttons.color = [SFIColors ruleBlueColor];
     [sensorbuttons drawButton:array selectedValue:5];
@@ -290,12 +287,11 @@ static const int xIndent = 10;
 //    
 //    if([self.indexName isEqualToString:@"Name"]){
 //       // self.indexLabel.text = self.indexName;
-//        
 //        [self textFieldView:[self.deviceDict valueForKey:self.indexName]];
 //    }
 //    else if ([self.indexName isEqualToString:@"Type"]){
 //        [self drawTypeTable];
-//            }
+//    }
 //    
 //    else if ([self.indexName isEqualToString:@"AllowedType"]){
 //        [self gridView];
@@ -325,13 +321,13 @@ static const int xIndent = 10;
 #pragma mark typeTable
 -(void)drawTypeTable{
     self.indexView.hidden = YES;
-    ClientTypeTableView * typeTableView = [[ClientTypeTableView alloc]initWithFrame:CGRectMake(self.indexView.frame.origin.x, self.indexView.frame.origin.y + 7, self.indexView.frame.size.width, self.view.frame.size.height - self.indexView.frame.origin.y - 5)];
+    ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(self.indexView.frame.origin.x, self.indexView.frame.origin.y + 7, self.indexView.frame.size.width, self.view.frame.size.height - self.indexView.frame.origin.y - 5)];
     [typeTableView drawTypeTable:@"MAC"];
     [self.view addSubview:typeTableView];
 
 }
 -(void)textFieldView:(NSString *)name{
-    SensorTextView *textView = [[SensorTextView alloc]initWithFrame:CGRectMake(8,25,self.indexView.frame.size.width - 8,50)];
+    TextInput *textView = [[TextInput alloc]initWithFrame:CGRectMake(8,25,self.indexView.frame.size.width - 8,50)];
     textView.color = [UIColor clearColor];
     [textView drawTextField:name];
     [self.indexView addSubview:textView];
@@ -339,7 +335,7 @@ static const int xIndent = 10;
 }
 -(void)buttonView:(NSArray*)arr selectedValue:(int)selectedVal{
     
-    SensorButtonView *presenceSensor = [[SensorButtonView alloc]initWithFrame:CGRectMake(5,40,self.indexView.frame.size.width - 8,30 )];
+    MultiButtonView *presenceSensor = [[MultiButtonView alloc]initWithFrame:CGRectMake(5,40,self.indexView.frame.size.width - 8,30 )];
     presenceSensor.color = [SFIColors clientGreenColor];
     [presenceSensor drawButton:arr selectedValue:selectedVal];
     presenceSensor.delegate = self;

@@ -1,5 +1,5 @@
 //
-//  ClientTypeTableView.h
+//  ListButtonView.h
 //  SecurifiApp
 //
 //  Created by Securifi-Mac2 on 18/03/16.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ClientTypeTableView : UIView
+@interface ListButtonView : UIView
 -(void)drawTypeTable:(NSString *)selectedType;
 @end

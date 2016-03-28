@@ -14,7 +14,7 @@
 @property(nonatomic) NSArray *indexValueList;
 @property(nonatomic) Device *device;
 @property(nonatomic) GenericIndexValue *headerGenericIndexValue;
-@property(nonatomic) NSString *color;
+@property(nonatomic) UIColor *color;
 
--(id)initWithGenericIndexValue:(GenericIndexValue*)headerGenericIndexValue indexValueList:(NSArray*)indexValueList device:(Device*)device color:(NSString*)color;
+-(id)initWithGenericIndexValue:(GenericIndexValue*)headerGenericIndexValue indexValueList:(NSArray*)indexValueList device:(Device*)device color:(UIColor*)color;
 @end
