@@ -2,12 +2,7 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "878-binoculars-1.pdf"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "878-binoculars.pdf",
-      "unassigned" : true
+      "filename" : "878-binoculars.pdf"
     }
   ],
   "info" : {

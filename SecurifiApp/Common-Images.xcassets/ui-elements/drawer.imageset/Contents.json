@@ -3,18 +3,6 @@
     {
       "idiom" : "universal",
       "filename" : "drawer.pdf"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "drawer.png",
-      "unassigned" : true,
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "drawer@2x.png",
-      "unassigned" : true,
-      "scale" : "2x"
     }
   ],
   "info" : {

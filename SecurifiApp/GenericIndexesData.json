@@ -368,6 +368,7 @@
         "Layout": "Slider",
         "GroupLabel": "Dimmer",
         "AppLabel": "dimmer",
+        "DefaultIcon": "multilevel_switch_on",
         "Formatter": {
             "Min": "0",
             "Max": "255",
@@ -436,13 +437,13 @@
         "Values": {
             "0": {
                 "ToggleValue": "99",
-                "Icon": "garage_close",
+                "Icon": "garage_close_icon",
                 "AppLabel": "closed",
                 "Label": "CLOSED"
             },
             "99": {
                 "ToggleValue": "0",
-                "Icon": "garage_open",
+                "Icon": "garage_open_icon",
                 "AppLabel": "opened",
                 "Label": "OPENED"
             },

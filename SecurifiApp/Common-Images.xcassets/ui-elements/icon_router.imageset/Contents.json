@@ -3,18 +3,6 @@
     {
       "idiom" : "universal",
       "filename" : "icon_router.pdf"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "icon_router.png",
-      "unassigned" : true,
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "icon_router@2x.png",
-      "unassigned" : true,
-      "scale" : "2x"
     }
   ],
   "info" : {

@@ -3,18 +3,6 @@
     {
       "idiom" : "universal",
       "filename" : "icon_rules.pdf"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "icon_rules.png",
-      "unassigned" : true,
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "icon_ruels@2x.png",
-      "unassigned" : true,
-      "scale" : "2x"
     }
   ],
   "info" : {

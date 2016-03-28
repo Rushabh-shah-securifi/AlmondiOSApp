@@ -3,12 +3,6 @@
     {
       "idiom" : "universal",
       "filename" : "icon_config.pdf"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "icon_config.png",
-      "unassigned" : true,
-      "scale" : "1x"
     }
   ],
   "info" : {
