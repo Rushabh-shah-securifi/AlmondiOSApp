@@ -117,13 +117,14 @@ int randomMobileInternalIndex;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.section == 0){
         DeviceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER forIndexPath:indexPath];
-//        GenericParams *genericParams = [[GenericParams alloc]initWithGenericIndexValue:self.genericIndexValue indexValueList:genericIndexValues device:self.device color:self.color];
-        
-        cell.commonView.cellType = SensorTable_Cell;
+        Device *device = [self.currentDeviceList objectAtIndex:indexPath.row];
+        GenericParams *genericParams = [[GenericParams alloc]
+                                        initWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device]
+                                                   indexValueList:nil
+                                                       deviceName:device.name
+                                                            color:[UIColor greenColor]];
+        [cell.commonView initializeSensorCellWithGenericParams:genericParams cellType:SensorTable_Cell];
         cell.commonView.delegate = self;
-        cell.commonView.device = [self.currentDeviceList objectAtIndex:indexPath.row];
-        cell.commonView.genericIndexValue = [GenericIndexUtil getHeaderGenericIndexValueForDevice:cell.commonView.device];
-        NSLog(@"device id, name: %d, %@", cell.commonView.device.ID, cell.commonView.device.name);
         [cell.commonView setUPSensorCell];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;

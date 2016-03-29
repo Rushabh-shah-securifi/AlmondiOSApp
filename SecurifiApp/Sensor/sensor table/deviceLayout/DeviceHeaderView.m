@@ -49,27 +49,30 @@
 }
 
 
--(void)setUpClientCell{
-    // set up images and labels for clients
+-(void)initializeSensorCellWithGenericParams:(GenericParams*)genericParams cellType:(CellType)cellType{
+    self.genericParams = genericParams;
+    self.cellType = cellType;
 }
-
 
 -(void)setUPSensorCell{
     NSLog(@"setUPSensorCell");
-    NSLog(@"icon: %@", self.genericIndexValue.genericValue.icon);
-    self.deviceName.text = self.device.name;
-    if(_genericIndexValue.genericValue.iconText){
+    self.deviceName.text = self.genericParams.deviceName;
+    if(_genericParams.headerGenericIndexValue.genericValue.iconText){
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;
-        self.deviceValueImgLable.text = self.genericIndexValue.genericValue.icon;
+        self.deviceValueImgLable.text = self.genericParams.headerGenericIndexValue.genericValue.icon;
     }else{
         self.deviceValueImgLable.hidden = YES;
         self.deviceImage.hidden = NO;
-        self.deviceValue.text = self.genericIndexValue.genericValue.displayText;
-        self.deviceImage.image = [UIImage imageNamed:self.genericIndexValue.genericValue.icon];
+        self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.displayText;
+        self.deviceImage.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
     }
 }
 
+
+-(void)setUpClientCell{
+    // set up images and labels for clients
+}
 -(void)addDeviceValueImgLabel:(NSString*)text suffix:(NSString*)suffix{
     NSString *strTopTitleLabelText = [text stringByAppendingString:suffix];
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
@@ -81,10 +84,9 @@
 #pragma mark button click
 - (IBAction)settingButtonClicked:(id)sender {
     if(self.cellType == SensorTable_Cell){
-        NSArray* genericIndexValues = [GenericIndexUtil getDetailListForDevice:self.genericIndexValue.deviceID];
-        NSLog(@" genericIndexValues %ld",genericIndexValues.count);
-        GenericParams *genericParams = [[GenericParams alloc]initWithGenericIndexValue:self.genericIndexValue indexValueList:genericIndexValues device:self.device color:self.color];
-        [self.delegate delegateDeviceSettingButtonClick:genericParams];
+        NSArray* genericIndexValues = [GenericIndexUtil getDetailListForDevice:self.genericParams.headerGenericIndexValue.deviceID];
+        self.genericParams.indexValueList = genericIndexValues;
+        [self.delegate delegateDeviceSettingButtonClick:_genericParams];
     }
     else if(self.cellType == ClientTable_Cell){
         [self.delegate delegateClientSettingButtonClick];
@@ -98,9 +100,8 @@
 - (IBAction)onSensorButtonClicked:(id)sender {
     NSLog(@"onSensorButtonClicked");
     if(self.cellType == SensorTable_Cell){
-        //change image to load
-        GenericIndexValue *genericIndexValue = [GenericIndexUtil getHeaderGenericIndexValueForDevice:self.device];
-        [self.delegate delegateDeviceButtonClickWithGenericProperies:genericIndexValue];
+        //to do change image to load
+        [self.delegate delegateDeviceButtonClickWithGenericProperies:self.genericParams.headerGenericIndexValue];
     }
 }
 

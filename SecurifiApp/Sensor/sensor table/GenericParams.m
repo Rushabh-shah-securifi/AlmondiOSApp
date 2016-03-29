@@ -10,12 +10,12 @@
 
 
 @implementation GenericParams
--(id)initWithGenericIndexValue:(GenericIndexValue*)headerGenericIndexValue indexValueList:(NSArray*)indexValueList device:(Device*)device color:(UIColor*)color{
+-(id)initWithGenericIndexValue:(GenericIndexValue*)headerGenericIndexValue indexValueList:(NSArray*)indexValueList deviceName:(NSString*)deviceName color:(UIColor*)color{
     self = [super init];
     if(self){
         self.headerGenericIndexValue = headerGenericIndexValue;
         self.indexValueList = indexValueList;
-        self.device = device;
+        self.deviceName = deviceName;
         self.color = color;
     }
     return self;

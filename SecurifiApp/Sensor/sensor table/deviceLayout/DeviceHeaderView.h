@@ -36,10 +36,10 @@ typedef NS_ENUM(NSUInteger, CellType) {
 @property (weak, nonatomic) IBOutlet UIView *view;
 @property (nonatomic)CellType cellType;
 @property (weak,nonatomic)id<DeviceHeaderViewDelegate> delegate;
-@property (nonatomic)GenericIndexValue *genericIndexValue;
-@property (nonatomic)Device *device;
-@property (nonatomic)UIColor *color;
+@property (nonatomic)GenericParams *genericParams;
+
 -(void)setUpClientCell;
 -(void)setUPSensorCell;
+-(void)initializeSensorCellWithGenericParams:(GenericParams*)genericParams cellType:(CellType)cellType;
 
 @end

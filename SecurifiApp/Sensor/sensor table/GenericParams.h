@@ -12,9 +12,9 @@
 
 @interface GenericParams : NSObject
 @property(nonatomic) NSArray *indexValueList;
-@property(nonatomic) Device *device;
+@property(nonatomic) NSString *deviceName;
 @property(nonatomic) GenericIndexValue *headerGenericIndexValue;
 @property(nonatomic) UIColor *color;
 
--(id)initWithGenericIndexValue:(GenericIndexValue*)headerGenericIndexValue indexValueList:(NSArray*)indexValueList device:(Device*)device color:(UIColor*)color;
+-(id)initWithGenericIndexValue:(GenericIndexValue*)headerGenericIndexValue indexValueList:(NSArray*)indexValueList deviceName:(NSString*)deviceName color:(UIColor*)color;
 @end
