@@ -82,6 +82,7 @@
 - (IBAction)settingButtonClicked:(id)sender {
     if(self.cellType == SensorTable_Cell){
         NSArray* genericIndexValues = [GenericIndexUtil getGenericIndexValuesByPlacementForDevice:self.device placement:DETAIL];
+        NSLog(@" genericIndexValues %ld",genericIndexValues.count);
         GenericParams *genericParams = [[GenericParams alloc]initWithGenericIndexValue:self.genericIndexValue indexValueList:genericIndexValues device:self.device color:self.color];
         [self.delegate delegateDeviceSettingButtonClick:genericParams];
     }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F1605" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -43,9 +43,9 @@
                     </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_smartphone" translatesAutoresizingMaskIntoConstraints="NO" id="MTY-vq-YbM">
-                    <rect key="frame" x="16" y="12" width="30" height="40"/>
+                    <rect key="frame" x="12" y="12" width="40" height="40"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="30" id="07i-Gj-yTm"/>
+                        <constraint firstAttribute="width" constant="40" id="07i-Gj-yTm"/>
                         <constraint firstAttribute="height" constant="40" id="kK1-ow-huO"/>
                     </constraints>
                 </imageView>
@@ -69,16 +69,6 @@
                         <constraint firstAttribute="width" constant="20" id="qwg-qU-svH"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OS7-Nq-qpX">
-                    <rect key="frame" x="0.0" y="0.0" width="62" height="64"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="62" id="bgp-gP-gPl"/>
-                        <constraint firstAttribute="height" constant="64" id="yz8-9Y-x6f"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OFF" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yrJ-vh-54N">
                     <rect key="frame" x="70" y="43" width="170" height="21"/>
                     <constraints>
@@ -86,6 +76,16 @@
                         <constraint firstAttribute="width" constant="170" id="KgG-2L-ZhG"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OS7-Nq-qpX">
+                    <rect key="frame" x="0.0" y="0.0" width="62" height="64"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="62" id="bgp-gP-gPl"/>
+                        <constraint firstAttribute="height" constant="64" id="yz8-9Y-x6f"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -98,7 +98,7 @@
                 <constraint firstItem="yrJ-vh-54N" firstAttribute="leading" secondItem="4cw-Ky-R3V" secondAttribute="trailing" constant="6" id="AK0-vm-Q22"/>
                 <constraint firstItem="4cw-Ky-R3V" firstAttribute="leading" secondItem="A4N-3J-OpT" secondAttribute="trailing" constant="-1" id="Se7-6F-e1N"/>
                 <constraint firstItem="LIr-It-ARc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="UP8-TY-pn4"/>
-                <constraint firstItem="MTY-vq-YbM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="Wh3-2G-g8Q"/>
+                <constraint firstItem="MTY-vq-YbM" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="12" id="Wh3-2G-g8Q"/>
                 <constraint firstAttribute="bottom" secondItem="4cw-Ky-R3V" secondAttribute="bottom" id="XaO-yz-jyE"/>
                 <constraint firstItem="rnu-yv-UlO" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="1" id="ZzN-ny-t0K"/>
                 <constraint firstItem="A4N-3J-OpT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cTg-h5-SKP"/>

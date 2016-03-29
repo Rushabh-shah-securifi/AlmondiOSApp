@@ -124,6 +124,7 @@ static const int xIndent = 10;
     CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericParams.indexValueList.count * 80 + 210);
     [self.indexesScroll setContentSize:scrollableSize];
     [self.indexesScroll flashScrollIndicators];
+    NSLog(@" self.genericParams.indexValueList  %ld",self.genericParams.indexValueList.count);
     for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList){
         NSLog(@"genericIndexValue loop");
         GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
@@ -186,7 +187,7 @@ static const int xIndent = 10;
                 [sliderView drawSlider];
                 [view addSubview:sliderView];
             }
-            else if ([genericIndexObj.layoutType isEqualToString:TEXT_INPUT]){
+            else if ([genericIndexObj.layoutType isEqualToString:TEXT_VIEW]){
                 TextInput *textView = [[TextInput alloc]initWithFrame:SLIDER_FRAME];
                 [textView drawTextField:@"124"];
                 [view addSubview:textView];

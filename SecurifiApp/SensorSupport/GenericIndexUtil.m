@@ -107,7 +107,7 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSDictionary *commonIndexDict = [Device getCommonIndexesDict];
     
-    for(NSString *key in [NSDictionary new].allKeys){
+    for(NSString *key in commonIndexDict.allKeys){
         int genericIndex = [[commonIndexDict valueForKey:key] intValue];
         NSString *value;
         if([key isEqualToString:@"Name"]){
@@ -121,6 +121,7 @@
         GenericIndexClass *genIndexObj = toolkit.genericIndexes[@(genericIndex).stringValue];
         [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genIndexObj genericValue:genericValue index:0 deviceID:device.ID]];
     }
+    
     return genericIndexValues;
 }
 
