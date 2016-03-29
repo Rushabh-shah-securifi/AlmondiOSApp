@@ -99,7 +99,7 @@
 
 - (IBAction)onSensorButtonClicked:(id)sender {
     NSLog(@"onSensorButtonClicked");
-    if(self.cellType == SensorTable_Cell){
+    if(self.cellType == SensorTable_Cell || self.cellType == SensorEdit_Cell){
         //to do change image to load
         [self.delegate delegateDeviceButtonClickWithGenericProperies:self.genericParams.headerGenericIndexValue];
     }

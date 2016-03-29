@@ -14,6 +14,7 @@
 #import "DeviceTableViewCell.h"
 #import "DevicePayload.h"
 #import "GenericIndexUtil.h"
+#import "DeviceParser.h"
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -21,7 +22,6 @@
 
 @interface DeviceListController ()<UITableViewDataSource,UITableViewDelegate,DeviceHeaderViewDelegate>
 @property (nonatomic,strong)NSMutableArray *currentDeviceList;
-@property (nonatomic,strong)NSDictionary *deviceValueTable;
 @property(nonatomic, strong) NSMutableArray *connectedDevices;
 @property SFIAlmondPlus *currentAlmond;
 @end
@@ -34,13 +34,8 @@ int randomMobileInternalIndex;
     [super viewDidLoad];
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.currentDeviceList = toolkit.devices;
-    [self setDeviceValues:[toolkit deviceValuesList:[toolkit currentAlmond].almondplusMAC]];
-    self.connectedDevices = toolkit.wifiClientParser;
-    self.currentAlmond = [toolkit currentAlmond];
+
     if (self.currentAlmond == nil) {
         [self markTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
         [self markAlmondMac:NO_ALMOND];
@@ -49,14 +44,25 @@ int randomMobileInternalIndex;
         [self markAlmondMac:self.currentAlmond.almondplusMAC];
         [self markTitle: self.currentAlmond.almondplusName];
     }
-    [self initializeNotifications];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     NSLog(@"sensor viewWillAppear");
     [super viewWillAppear:YES];
-    randomMobileInternalIndex = arc4random() % 10000;
+    DeviceParser *deviceparser = [[DeviceParser alloc]init];
+    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
     
+    randomMobileInternalIndex = arc4random() % 10000;
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    self.currentAlmond = [toolkit currentAlmond];
+    self.currentDeviceList = toolkit.devices;
+    self.connectedDevices = toolkit.wifiClientParser;
+    [self initializeNotifications];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+        
+    });
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -118,11 +124,15 @@ int randomMobileInternalIndex;
     if(indexPath.section == 0){
         DeviceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER forIndexPath:indexPath];
         Device *device = [self.currentDeviceList objectAtIndex:indexPath.row];
-        GenericParams *genericParams = [[GenericParams alloc]
-                                        initWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device]
-                                                   indexValueList:nil
-                                                       deviceName:device.name
-                                                            color:[UIColor greenColor]];
+        GenericParams *genericParams;
+//        if(cell.commonView.genericParams == nil){
+            NSLog(@"genericParams is nil");
+            genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[UIColor greenColor]];
+//        }else {
+//            NSLog(@"genericParams not nil");
+//            [genericParams setGenericParamsWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[UIColor greenColor]];
+//        }
+        
         [cell.commonView initializeSensorCellWithGenericParams:genericParams cellType:SensorTable_Cell];
         cell.commonView.delegate = self;
         [cell.commonView setUPSensorCell];
@@ -142,17 +152,6 @@ int randomMobileInternalIndex;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 75;
-}
-- (void)setDeviceValues:(NSArray *)values {
-    NSMutableDictionary *table = [NSMutableDictionary dictionary];
-    for (SFIDeviceValue *value in values) {
-        NSNumber *key = @(value.deviceID);
-        table[key] = value;
-    }
-    _deviceValueTable = [NSDictionary dictionaryWithDictionary:table];
-}
-- (SFIDeviceValue *)tryCurrentDeviceValues:(int)deviceId {
-    return self.deviceValueTable[@(deviceId)];
 }
 
 #pragma mark sensor cell(DeviceHeaderView) delegate

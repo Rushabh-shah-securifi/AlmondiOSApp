@@ -12,13 +12,11 @@
 
 @protocol MultiButtonViewDelegate
 @optional
--(void)updateButtonStatus:(NSString *)newValue;
+-(void)updateButtonStatus:(NSString *)newValue genericIndexValue:(GenericIndexValue*)genericIndexValue;
 @end
 
 @interface MultiButtonView : UIView
 @property (nonatomic)UIColor *color;
-@property (nonatomic) NSDictionary *deviceValueDict;
-@property (nonatomic) Device *device;
 @property (nonatomic)GenericIndexValue *genericIndexValue;
 @property (nonatomic)id<MultiButtonViewDelegate> delegate;
 

@@ -31,8 +31,8 @@
 #import "AlmondJsonCommandKeyConstants.h"
 #import "GridView.h"
 #import "ListButtonView.h"
-
-
+#import "DevicePayload.h"
+#import "GenericIndexUtil.h"
 
 #define ITEM_SPACING  2.0
 
@@ -43,7 +43,7 @@
 #define BUTTON_FRAME CGRectMake(0, 25,view.frame.size.width-10,  35)
 static const int xIndent = 10;
 
-@interface DeviceEditViewController ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate,MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,HorzSliderDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,SFIWiFiDeviceTypeSelectionCellDelegate,UITableViewDataSource,UITableViewDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,clientTypeCellDelegate,MultiButtonViewDelegate>
+@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,clientTypeCellDelegate,MultiButtonViewDelegate>
 //can be removed
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
 
@@ -71,6 +71,7 @@ static const int xIndent = 10;
     NSMutableArray * blockedDaysArray;
     NSString *blockedType;
     NSArray *type;
+    int randomMobileInternalIndex;
 }
 
 - (void)viewDidLoad {
@@ -79,15 +80,12 @@ static const int xIndent = 10;
     if(self.isSensor){
         self.scrollView.hidden = NO;
         pickerValuesArray1 = [[NSMutableArray alloc]init];
-        self.deviceEditHeaderCell.cellType = SensorEdit_Cell;
-        self.deviceEditHeaderCell.device = self.genericParams.device;
-        self.deviceEditHeaderCell.genericIndexValue = self.genericParams.headerGenericIndexValue;
+        [self.deviceEditHeaderCell initializeSensorCellWithGenericParams:self.genericParams cellType:SensorEdit_Cell];
         self.deviceEditHeaderCell.delegate = self;
         [self.deviceEditHeaderCell setUPSensorCell];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self drawIndexes];
         });
-        
     }
     else{
         // wifi clients
@@ -99,6 +97,12 @@ static const int xIndent = 10;
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    NSLog(@"sensor viewWillAppear");
+    [super viewWillAppear:YES];
+    randomMobileInternalIndex = arc4random() % 10000;
+    [self initializeNotifications];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     
@@ -106,9 +110,17 @@ static const int xIndent = 10;
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self clearAllViews];
 }
 
+-(void)initializeNotifications{
+    NSLog(@"initialize notifications sensor table");
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(onUpdateDeviceIndexResponse:) name:NOTIFICATION_UPDATE_DEVICE_INDEX_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onDeviceListAndDynamicResponseParsed:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onDeviceNameChanged:) name:NOTIFICATION_UPDATE_DEVICE_NAME_NOTIFIER object:nil];
+}
 - (void)clearAllViews{
     for(UIView *view in self.scrollView.subviews){
         [view removeFromSuperview];
@@ -162,11 +174,10 @@ static const int xIndent = 10;
                 horzView.backgroundColor = [UIColor yellowColor];
                 [view addSubview:horzView];
             }
-            else if ([genericIndexObj.layoutType isEqualToString:BUTTON]){
-                MultiButtonView *buttonView = [[MultiButtonView alloc]initWithFrame:BUTTON_FRAME];
-                buttonView.deviceValueDict = genericIndexObj.values;
-                buttonView.device = self.genericParams.device;
+            else if ([genericIndexObj.layoutType isEqualToString:Multi_Input]){
+                MultiButtonView *buttonView = [[MultiButtonView alloc]initWithFrame:BUTTON_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 buttonView.color = [SFIColors ruleBlueColor];
+                buttonView.delegate = self;
                 [buttonView drawButton:genericIndexObj.values color:[SFIColors ruleBlueColor]];
                 [view addSubview:buttonView];
             }
@@ -189,84 +200,26 @@ static const int xIndent = 10;
             }
             else if ([genericIndexObj.layoutType isEqualToString:TEXT_VIEW]){
                 TextInput *textView = [[TextInput alloc]initWithFrame:SLIDER_FRAME];
-                [textView drawTextField:@"124"];
+                [textView drawTextField:genericIndexValue.genericValue.value];
+                textView.delegate = self;
                 [view addSubview:textView];
             }
             [self.indexesScroll addSubview:view];
             yPos = yPos + view.frame.size.height;
         }
     }
-//    [self addNameLocationNotifyMeViews:yPos];
 }
-
-
-
 - (void)setUpLable:(UILabel*)label withPropertyName:(NSString*)propertyName{
     label.text = propertyName;
     label.font = [UIFont securifiBoldFont];
     label.textColor = [UIColor whiteColor];
 }
 
-
--(void)addNameLocationNotifyMeViews:(int)yPos{
-    yPos = [self nameLocField:yPos withLabelText:@"NAME"];
-    yPos = [self nameLocField:yPos withLabelText:@"LOCATION"];
-    [self notifyField:yPos];
-}
-
--(int)nameLocField:(int)yPos withLabelText:(NSString*)labelText{
-    UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_LARGE];
-    UILabel *Name = [[UILabel alloc]initWithFrame:LABEL_FRAME];
-    [self setUpLable:Name withPropertyName:labelText];
-    [view addSubview:Name];
-    
-    TextInput *name = [[TextInput alloc]initWithFrame:CGRectMake(0,15,view.frame.size.width -10,35)];
-    [name drawTextField:self.genericParams.device.name];
-    [self.indexesScroll addSubview:view];
-    [view addSubview:name];
-    return yPos = yPos + view.frame.size.height;
-}
-
--(void)notifyField:(int)yPos{
-    UIView *viewNotify = [[UIView alloc]initWithFrame:CGRectMake(10 , yPos, self.indexesScroll.frame.size.width -10, 65)];
-    viewNotify.backgroundColor = [UIColor clearColor];
-    UILabel *notify = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 20)];
-    notify.text = @"NOTIFY ME";
-    notify.font = [UIFont securifiBoldFont];
-    notify.textColor = [UIColor whiteColor];
-    [viewNotify addSubview:notify];
-    
-    MultiButtonView *sensorbuttons = [[MultiButtonView alloc]initWithFrame:CGRectMake(0,25,viewNotify.frame.size.width -10,35)];
-    NSArray *array = @[@"Always",@"When I'm away",@"Never"];
-    sensorbuttons.color = [SFIColors ruleBlueColor];
-    [sensorbuttons drawButton:array selectedValue:5];
-    [self.indexesScroll addSubview:viewNotify];
-    [viewNotify addSubview:sensorbuttons];
-    
-}
-
 - (IBAction)onSeettingButtonClicked:(id)sender {
-    [self.navigationController popViewControllerAnimated:YES];
+//    [self.navigationController popViewControllerAnimated:YES];
 }
 
 
-
-#pragma mark delegate callback methods
--(void)updateNewValue:(NSString *)newValue{
-    NSLog(@"updateNewValue");
-}
--(void)updateSliderValue:(NSString*)newvalue{
-    NSLog(@"updateSliderValue");
-}
--(void)updateHueColorPicker:(NSString *)newValue{
-    NSLog(@"updateHueColorPicker");
-}
--(void)updateButtonStatus{
-    NSLog(@"updateButtonStatus");
-}
--(void)updatePickerValue:(NSString *)newValue{
-    NSLog(@"updatePickerValue");
-}
 
 
 #pragma mark wifiClients methods
@@ -342,8 +295,7 @@ static const int xIndent = 10;
     presenceSensor.delegate = self;
     [self.indexView addSubview:presenceSensor];
 }
--(void)updateButtonStatus:(NSString *)newValue{//here we have to pass many things like deviceIndexId,deviceID,...
-}
+
 
 
 #pragma mark gridView
@@ -355,4 +307,81 @@ static const int xIndent = 10;
 //    [self addSegmentControll];
     
 }
+
+#pragma mark delegate callback methods
+-(void)updateNewValue:(NSString *)newValue{
+    NSLog(@"updateNewValue %@",newValue);
+    NSDictionary *payload = [DevicePayload getNameLocationChangePayloadForGenericProperty:self.genericParams.headerGenericIndexValue mii:randomMobileInternalIndex name:newValue location:@"my location"];
+    GenericCommand *command = [[GenericCommand alloc] init];
+    command.commandType = CommandType_UPDATE_DEVICE_NAME;
+    command.command = [payload JSONString];
+    
+    [self asyncSendCommand:command];
+}
+-(void)updateSliderValue:(NSString*)newvalue{
+    NSLog(@"updateSliderValue");
+}
+-(void)updateHueColorPicker:(NSString *)newValue{
+    NSLog(@"updateHueColorPicker");
+}
+
+-(void)updateButtonStatus:(NSString *)newValue genericIndexValue:(GenericIndexValue*)genericIndexValue{//here we have to pass many things like deviceIndexId,deviceID,...
+
+    NSLog(@" updateButtonStatus %@",newValue);
+    NSDictionary *payload = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
+    GenericCommand *command = [[GenericCommand alloc] init];
+    command.commandType = CommandType_UPDATE_DEVICE_INDEX;
+    command.command = [payload JSONString];
+    [self asyncSendCommand:command];
+}
+
+-(void)updatePickerValue:(NSString *)newValue genericIndexValue:(GenericIndexValue*)genericIndexValue{
+    NSLog(@"updatePickerValue");
+    NSDictionary *payload = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
+    GenericCommand *command = [[GenericCommand alloc] init];
+    command.commandType = CommandType_UPDATE_DEVICE_INDEX;
+    command.command = [payload JSONString];
+    [self asyncSendCommand:command];
+}
+
+#pragma mark sensor cell(DeviceHeaderView) delegate
+-(void)delegateDeviceButtonClickWithGenericProperies:(GenericIndexValue *)genericIndexValue{
+    NSLog(@"delegateSensorTableDeviceButtonClickWithGenericProperies");
+    NSDictionary *payload = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex];
+    GenericCommand *command = [[GenericCommand alloc] init];
+    command.commandType = CommandType_UPDATE_DEVICE_INDEX;
+    command.command = [payload JSONString];
+    
+    [self asyncSendCommand:command];
+}
+
+#pragma mark command responses
+-(void)onUpdateDeviceIndexResponse:(id)sender{
+    NSLog(@"device edit - onUpdateDeviceIndexResponse");
+}
+
+-(void)onDeviceListAndDynamicResponseParsed:(id)sender{
+    NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");
+//    [self.deviceEditHeaderCell initializeSensorCellWithGenericParams:self.genericParams cellType:SensorEdit_Cell];
+//    Device *device = [Device getDeviceForID:self.genericParams.headerGenericIndexValue.deviceID];
+//    [self.genericParams setGenericParamsWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[UIColor greenColor]];
+//    [self.deviceEditHeaderCell setUPSensorCell];
+}
+
+-(void)onDeviceNameChanged:(id)sender{
+    NSLog(@"onDeviceNameChanged - ");
+    
+}
+
+- (void)asyncSendCommand:(GenericCommand *)command {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    if(local){
+        [[SecurifiToolkit sharedInstance] asyncSendToLocal:command almondMac:almond.almondplusMAC];
+    }else{
+        [[SecurifiToolkit sharedInstance] asyncSendToCloud:command];
+    }
+}
+
 @end

@@ -26,17 +26,17 @@
 
 }
 -(void)drawButton:(NSDictionary *)valuedict color:(UIColor *)color{
-    DeviceKnownValues *deviceValue = [DeviceKnownValues new];
+    NSString *deviceValue = [NSString new];
     int selectedValue = 0;
-    if(self.device){
-        deviceValue  = [self.device.knownValues objectAtIndex:0];
+    if(self.genericIndexValue.genericValue.value){
+        deviceValue  = self.genericIndexValue.genericValue.value;
     }
     NSArray *allkeys = [valuedict allKeys];
     
     NSMutableArray *labelsArray = [[NSMutableArray alloc]init];
     
     for(int i =0;i < allkeys.count ;i++){
-        if([deviceValue.value isEqualToString:[allkeys objectAtIndex:i]]){
+        if([deviceValue isEqualToString:[allkeys objectAtIndex:i]]){
             selectedValue = i;
         }
         GenericValue *gVal = [valuedict valueForKey:[allkeys objectAtIndex:i]];
@@ -101,8 +101,7 @@
         }
         
     }
-    [self.delegate updateButtonStatus:[self.valueArray objectAtIndex:sender.tag]];
-    //values delegate to super view class
+    [self.delegate updateButtonStatus:[self.valueArray objectAtIndex:sender.tag] genericIndexValue:self.genericIndexValue];
 }
 - (UIColor *)lighterColorForColor:(UIColor *)c
 {

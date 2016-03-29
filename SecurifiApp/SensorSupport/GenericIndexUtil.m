@@ -109,7 +109,11 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSDictionary *commonIndexDict = [Device getCommonIndexesDict];
     
-    for(NSString *key in commonIndexDict.allKeys){
+    NSArray *orderedKeys = [commonIndexDict keysSortedByValueUsingComparator:^NSComparisonResult(id obj1, id obj2){
+        return [obj1 compare:obj2];
+    }];
+    
+    for(NSString *key in orderedKeys){
         int genericIndex = [[commonIndexDict valueForKey:key] intValue];
         NSString *value;
         if([key isEqualToString:@"Name"]){

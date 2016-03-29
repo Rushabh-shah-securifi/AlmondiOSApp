@@ -714,7 +714,7 @@
         "Name": "THERMOSTAT MODE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Toggle|Multi_Input",
+        "Layout": "Multi_Input",
         "AppLabel": "mode",
         "GroupLabel": "Mode",
         "Values": {
@@ -743,14 +743,14 @@
     "36": {
         "Name": "THERMOSTAT OPERATING STATE",
         "Type": "Sensor",
-        "Placement": "Header_Only",
+        "Placement": "Header",
         "ExcludeFrom": "Rule"
     },
     "37": {
         "Name": "THERMOSTAT SETPOINT HEATING",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Slider|Double_Temp",
+        "Layout": "Slider",
         "AppLabel": "high_temp",
         "GroupLabel": "High Temperature",
         "Conditional": "true",
@@ -764,7 +764,7 @@
         "Name": "THERMOSTAT SETPOINT COOLING",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Slider|Double_Temp",
+        "Layout": "Slider",
         "AppLabel": "low_temp",
         "GroupLabel": "Low Temperature",
         "Conditional": "true",
@@ -778,7 +778,7 @@
         "Name": "THERMOSTAT FAN MODE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Toggle|Multi_Input",
+        "Layout": "Multi_Input",
         "GroupLabel": "Fan Mode",
         "AppLabel": "fan_mode",
         "Values": {

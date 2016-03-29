@@ -54,7 +54,7 @@
 
 
 - (NSInteger)numberOfElementsInHorizontalPickerView:(V8HorizontalPickerView *)picker {
-    return 255;
+    return self.genericIndexValue.genericIndex.formatter.max - self.genericIndexValue.genericIndex.formatter.min;
 }
 
 - (NSString *)horizontalPickerView:(V8HorizontalPickerView *)picker titleForElementAtIndex:(NSInteger)index {
@@ -65,11 +65,9 @@
 }
 
 - (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {
-//    [self setDelegate:self.componentArray[index]];
+    [self.delegate updatePickerValue:@(self.genericIndexValue.genericIndex.formatter.min + index).stringValue genericIndexValue:self.genericIndexValue];
 }
--(void)setDelegate:(NSString*)finalValue{
-    [self.delegate updatePickerValue:finalValue];
-}
+
 - (UIColor *)darkerColorForColor:(UIColor *)c
 {
     CGFloat r, g, b, a;

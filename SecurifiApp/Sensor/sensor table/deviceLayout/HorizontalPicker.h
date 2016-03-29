@@ -10,7 +10,7 @@
 #import "GenericIndexValue.h"
 #import "Device.h"
 @protocol HorzSliderDelegate
--(void)updatePickerValue:(NSString *)newValue;
+-(void)updatePickerValue:(NSString *)newValue genericIndexValue:(GenericIndexValue*)genericIndexValue;
 @end
 @interface HorizontalPicker : UIView
 @property (nonatomic)id<HorzSliderDelegate> delegate;

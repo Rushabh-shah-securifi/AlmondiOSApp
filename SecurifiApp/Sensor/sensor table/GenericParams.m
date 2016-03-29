@@ -21,4 +21,10 @@
     return self;
 }
 
+-(void)setGenericParamsWithGenericIndexValue:(GenericIndexValue*)headerGenericIndexValue indexValueList:(NSArray*)indexValueList deviceName:(NSString*)deviceName color:(UIColor*)color{
+    self.headerGenericIndexValue = headerGenericIndexValue;
+    self.indexValueList = indexValueList;
+    self.deviceName = deviceName;
+    self.color = color;
+}
 @end
