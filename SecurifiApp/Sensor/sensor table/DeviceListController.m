@@ -117,6 +117,8 @@ int randomMobileInternalIndex;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.section == 0){
         DeviceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER forIndexPath:indexPath];
+//        GenericParams *genericParams = [[GenericParams alloc]initWithGenericIndexValue:self.genericIndexValue indexValueList:genericIndexValues device:self.device color:self.color];
+        
         cell.commonView.cellType = SensorTable_Cell;
         cell.commonView.delegate = self;
         cell.commonView.device = [self.currentDeviceList objectAtIndex:indexPath.row];
