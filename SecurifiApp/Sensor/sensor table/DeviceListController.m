@@ -123,6 +123,8 @@ int randomMobileInternalIndex;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.section == 0){
         DeviceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER forIndexPath:indexPath];
+        if(self.currentDeviceList == nil || self.currentDeviceList.count == 0)
+            return cell;
         Device *device = [self.currentDeviceList objectAtIndex:indexPath.row];
         GenericParams *genericParams;
 //        if(cell.commonView.genericParams == nil){

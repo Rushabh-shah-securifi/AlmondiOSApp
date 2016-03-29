@@ -515,7 +515,7 @@
                 "4": {
                     "Index": "4",
                     "Name": "fan state",
-                    "Value": "50",
+                    "Value": "20",
                     "GenericIndex": "40"
                 },
                 "5": {
@@ -533,7 +533,7 @@
                 "7": {
                     "Index": "7",
                     "Name": "thermostat cooling",
-                    "Value": "50",
+                    "Value": "70",
                     "GenericIndex": "38"
                 }
             }

@@ -16,7 +16,6 @@
     [payload setValue:@"UpdateDeviceIndex" forKey:@"CommandType"];
     [payload setValue:@(genericIndexValue.deviceID).stringValue forKey:@"ID"];
     [payload setValue:@(genericIndexValue.index).stringValue forKey:@"Index"];
-    if(genericIndexValue.genericValue.toggleValue)
     [payload setValue:genericIndexValue.genericValue.toggleValue forKey:@"Value"];
     return payload;
 }
@@ -27,7 +26,6 @@
     [payload setValue:@"UpdateDeviceIndex" forKey:@"CommandType"];
     [payload setValue:@(genericIndexValue.deviceID).stringValue forKey:@"ID"];
     [payload setValue:@(genericIndexValue.index).stringValue forKey:@"Index"];
-    if(genericIndexValue.genericValue.toggleValue)
         [payload setValue:value forKey:@"Value"];
     return payload;
 }

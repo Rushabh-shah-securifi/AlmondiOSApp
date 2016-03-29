@@ -10,6 +10,7 @@
 #import "V8HorizontalPickerView.h"
 #import "SFIColors.h"
 #import "SFIPickerIndicatorView1.h"
+#import "UIFont+Securifi.h"
 
 @interface HorizontalPicker ()<V8HorizontalPickerViewDataSource,V8HorizontalPickerViewDelegate>
 @end
@@ -34,7 +35,7 @@
     horzPicker.backgroundColor = [UIColor whiteColor];
 //    horzPicker.layer.borderColor = [SFIColors clientGreenColor].CGColor;
     horzPicker.selectedTextColor = self.color;
-    horzPicker.elementFont = [UIFont fontWithName:@"AvenirLTStd-Roman" size:13];
+    horzPicker.elementFont = [UIFont securifiFont:15];
     horzPicker.textColor = self.color;
     horzPicker.indicatorPosition = V8HorizontalPickerIndicatorBottom;
     horzPicker.delegate = self;

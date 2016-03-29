@@ -70,12 +70,12 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OFF" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yrJ-vh-54N">
-                    <rect key="frame" x="70" y="43" width="170" height="21"/>
+                    <rect key="frame" x="70" y="38" width="170" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="1AY-d7-as2"/>
                         <constraint firstAttribute="width" constant="170" id="KgG-2L-ZhG"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -111,7 +111,7 @@
                 <constraint firstAttribute="bottom" secondItem="j4p-JD-Gxj" secondAttribute="bottom" id="s5I-9r-JpQ"/>
                 <constraint firstItem="OS7-Nq-qpX" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="xFW-cR-B9b"/>
                 <constraint firstItem="4cw-Ky-R3V" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="xq1-Ce-M3X"/>
-                <constraint firstAttribute="bottom" secondItem="yrJ-vh-54N" secondAttribute="bottom" id="yIh-0l-vi7"/>
+                <constraint firstAttribute="bottom" secondItem="yrJ-vh-54N" secondAttribute="bottom" constant="5" id="yIh-0l-vi7"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>

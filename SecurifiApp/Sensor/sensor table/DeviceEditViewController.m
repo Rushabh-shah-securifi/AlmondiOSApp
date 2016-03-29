@@ -35,12 +35,15 @@
 #import "GenericIndexUtil.h"
 
 #define ITEM_SPACING  2.0
+#define LABELSPACING 20.0
+#define LABELVALUESPACING 10.0
+#define LABELHEIGHT 20.0
 
-#define VIEW_FRAME_SMALL CGRectMake(xIndent, yPos, self.indexesScroll.frame.size.width-xIndent, 25)
-#define VIEW_FRAME_LARGE CGRectMake(xIndent, yPos, self.indexesScroll.frame.size.width-xIndent, 65)
-#define LABEL_FRAME CGRectMake(0, 0, view.frame.size.width-16, 20)
-#define SLIDER_FRAME CGRectMake(0, 25,view.frame.size.width-10, 35)
-#define BUTTON_FRAME CGRectMake(0, 25,view.frame.size.width-10,  35)
+#define VIEW_FRAME_SMALL CGRectMake(xIndent, yPos, self.indexesScroll.frame.size.width-xIndent, LABELHEIGHT)
+#define VIEW_FRAME_LARGE CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, 65)
+#define LABEL_FRAME CGRectMake(0, 0, view.frame.size.width-16, LABELHEIGHT)
+#define SLIDER_FRAME CGRectMake(0, LABELHEIGHT + LABELVALUESPACING,view.frame.size.width-10, 35)
+#define BUTTON_FRAME CGRectMake(0, LABELHEIGHT + LABELVALUESPACING,view.frame.size.width-10,  35)
 static const int xIndent = 10;
 
 @interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,clientTypeCellDelegate,MultiButtonViewDelegate>
@@ -132,11 +135,10 @@ static const int xIndent = 10;
 
 
 -(void)drawIndexes{
-    int yPos = 10;
+    int yPos = LABELSPACING;
     CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericParams.indexValueList.count * 80 + 210);
     [self.indexesScroll setContentSize:scrollableSize];
     [self.indexesScroll flashScrollIndicators];
-    NSLog(@" self.genericParams.indexValueList  %ld",self.genericParams.indexValueList.count);
     for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList){
         NSLog(@"genericIndexValue loop");
         GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
@@ -159,7 +161,8 @@ static const int xIndent = 10;
             valueLabel.alpha = 0.5;
             [view addSubview:valueLabel];
             
-            yPos = yPos + view.frame.size.height;
+            yPos = yPos + view.frame.size.height + LABELSPACING;
+            NSLog(@" r-yPos %d",yPos);
         }
         else{
             UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_LARGE];
@@ -171,12 +174,10 @@ static const int xIndent = 10;
                 HorizontalPicker *horzView = [[HorizontalPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 horzView.delegate = self;
                 [horzView drawSlider];
-                horzView.backgroundColor = [UIColor yellowColor];
                 [view addSubview:horzView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:Multi_Input]){
                 MultiButtonView *buttonView = [[MultiButtonView alloc]initWithFrame:BUTTON_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
-                buttonView.color = [SFIColors ruleBlueColor];
                 buttonView.delegate = self;
                 [buttonView drawButton:genericIndexObj.values color:[SFIColors ruleBlueColor]];
                 [view addSubview:buttonView];
@@ -184,7 +185,6 @@ static const int xIndent = 10;
             else if ([genericIndexObj.layoutType isEqualToString:HUE]){
                 HueColorPicker *HueView = [[HueColorPicker alloc]initWithFrame:SLIDER_FRAME];
                 HueView.delegate = self;
-                HueView.color = [SFIColors ruleBlueColor];
                 [HueView drawHueColorPicker];
                 [view addSubview:HueView];
             }
@@ -205,13 +205,14 @@ static const int xIndent = 10;
                 [view addSubview:textView];
             }
             [self.indexesScroll addSubview:view];
-            yPos = yPos + view.frame.size.height;
+            yPos = yPos + view.frame.size.height + LABELSPACING;
+            NSLog(@" rw-yPos %d",yPos);
         }
     }
 }
 - (void)setUpLable:(UILabel*)label withPropertyName:(NSString*)propertyName{
     label.text = propertyName;
-    label.font = [UIFont securifiBoldFont];
+    label.font = [UIFont securifiBoldFontLarge];
     label.textColor = [UIColor whiteColor];
 }
 
