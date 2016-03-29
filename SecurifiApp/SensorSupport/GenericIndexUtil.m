@@ -95,7 +95,9 @@
     return [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value];
 }
 
-+ (NSMutableArray *)getDetailListForDevice:(Device*)device{
++ (NSMutableArray *)getDetailListForDevice:(int)deviceID{
+    Device *device = [Device getDeviceForID:deviceID];
+    
     NSMutableArray *detailList = [self getGenericIndexValuesByPlacementForDevice:device placement:@"Detail"];
     NSArray *commonList = [self getCommonGenericIndexValue:device];
     [detailList addObjectsFromArray:commonList];

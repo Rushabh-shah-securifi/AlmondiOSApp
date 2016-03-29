@@ -12,7 +12,7 @@
 #import "GenericIndexValue.h"
 
 @interface GenericIndexUtil : NSObject
-
++ (NSMutableArray *)getDetailListForDevice:(int)deviceID;
 +(NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement;
 +(GenericIndexValue*)getHeaderGenericIndexValueForDevice:(Device*)device;
 @end
