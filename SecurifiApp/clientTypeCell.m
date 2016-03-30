@@ -29,7 +29,7 @@
     self.labelName.textColor = [UIColor whiteColor];
     self.labelName.font = [UIFont securifiFont:14];
     
-    self.btnSelect = [[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width - 50, 5, 25 , 25)];
+    self.btnSelect = [[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width - 60, 5, 25 , 25)];
     
     self.btnSelect.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.btnSelect.layer.borderWidth = 2.0f;

@@ -346,7 +346,7 @@ UILabel *topLabel;
         buttonSubProperty.deviceType= SFIDeviceType_BinarySwitch_0;
         buttonSubProperty.deviceName = @"Mode";
     }else if(buttonSubProperty.index == 0 && buttonSubProperty.eventType !=nil && toolkit.wifiClientParser!=nil){
-        for(SFIConnectedDevice *connectedClient in toolkit.wifiClientParser){
+        for(ClientDevice *connectedClient in toolkit.wifiClientParser){
             if(buttonSubProperty.deviceId == connectedClient.deviceID.intValue){
                 buttonSubProperty.deviceType = SFIDeviceType_WIFIClient;
                 buttonSubProperty.deviceName = connectedClient.name;

@@ -45,83 +45,83 @@
         "GroupLabel": "TYPE",
         "Values": {
             "Tablet": {
-                "Icon": "switch_on_new",
+                "Icon": "icon_iphone",
                 "Label": "Tablet"
             },
             "PC": {
-                "Icon": "switch_off_new",
+                "Icon": "icon_pc",
                 "Label": "PC"
             },
             "Laptop": {
-                "Icon": "switch_on_new",
+                "Icon": "icon_laptop",
                 "Label": "Laptop"
             },
             "android_stick": {
-                "Icon": "switch_off_new",
+                "Icon": "icon_android_stick",
                 "Label": "Android Stick"
             },
             "Smartphone": {
-                "Icon": "switch_on_new",
+                "Icon": "icon_smartphone",
                 "Label": "Smart Phone"
             },
             "iPod": {
-                "Icon": "switch_off_new",
+                "Icon": "icon_iPod",
                 "Label": "iPod"
             },
             "iPad": {
-                "Icon": "switch_on_new",
+                "Icon": "icon_iPad",
                 "Label": "iPad"
             },
             "iPhone": {
-                "Icon": "switch_off_new",
+                "Icon": "icon_iphone",
                 "Label": "iPhone"
             },
             "MAC": {
-                "Icon": "switch_on_new",
+                "Icon": "icon_pc",
                 "Label": "MAC"
             },
             "appleTV": {
-                "Icon": "switch_off_new",
+                "Icon": "icon_appleTV",
                 "Label": "Apple TV"
             },
             "TV": {
-                "Icon": "switch_on_new",
+                "Icon": "icon_appleTV",
                 "Label": "TV"
             },
             "Printer": {
-                "Icon": "switch_off_new",
+                "Icon": "icon_printer",
                 "Label": "Printer"
             },
             "Router_switch": {
-                "Icon": "switch_on_new",
+                "Icon": "icon_hubrouter",
                 "Label": "Router Switch"
             },
             "Hub": {
-                "Icon": "switch_off_new",
+                "Icon": "icon_hubrouter",
                 "Label": "Hub"
             },
             "Camera": {
-                "Icon": "switch_on_new",
+                "Icon": "icon_camera",
                 "Label": "Camera"
             },
             "Nest": {
-                "Icon": "switch_off_new",
+                "Icon": "icon_nest_google",
                 "Label": "Nest"
             },
             "Chromecast": {
-                "Icon": "switch_on_new",
+                "Icon": "chromecast",
                 "Label": "Chromecast"
             },
             "amazon_dash": {
-                "Icon": "switch_off_new",
+                "Icon": "amazon-dash",
                 "Label": "Amazon Dash"
             },
             "amazon_echo": {
-                "Icon": "switch_on_new",
+                "Icon": "amazon-echo",
                 "Label": "Amazon Echo"
             },
             "Other":{
-                "Icon": "switch_on_new",
+                "Icon": "icon_help",
                 "Label": "Other"
             }
         }

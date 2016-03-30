@@ -38,8 +38,7 @@ typedef NS_ENUM(NSUInteger, CellType) {
 @property (weak,nonatomic)id<DeviceHeaderViewDelegate> delegate;
 @property (nonatomic)GenericParams *genericParams;
 
--(void)setUpClientCell;
--(void)setUPSensorCell;
+-(void)setUpDeviceCell;
 -(void)initializeSensorCellWithGenericParams:(GenericParams*)genericParams cellType:(CellType)cellType;
 
 @end

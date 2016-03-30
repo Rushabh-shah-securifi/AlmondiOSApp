@@ -26,8 +26,11 @@ NSArray *type;
     //        [self.tableType registerClass:[clientTypeCell class] forCellReuseIdentifier:@"clientTypeCell"];
     self.tableType.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableType.allowsSelection = NO;
-    
+    self.tableType.alwaysBounceVertical = NO ;
+    [self.tableType setAlwaysBounceVertical:NO];
+    self.tableType.alwaysBounceHorizontal = NO;
     [self.tableType reloadData];
+  
     //        self.indexView = self.tableType;
     [self addSubview:self.tableType];
     
@@ -71,7 +74,13 @@ NSArray *type;
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 45;
 }
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 0.001;
+}
 
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return 0.001;
+}
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath{
     NSLog(@"didSelectRowAtIndexPath ");
     [self selectedTypes:[type objectAtIndex:indexPath.row]];

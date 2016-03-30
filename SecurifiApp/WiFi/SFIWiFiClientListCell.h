@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-@class SFIConnectedDevice;
+@class ClientDevice;
 @class SFIWiFiClientListCell;
 
 @protocol SFIWiFiClientListCellDelegate
 - (void)btnSettingTapped:(NSDictionary *)connectedDevice index:(NSArray*)indexArray;
 @optional
-- (void)btnSettingTapped:(SFIWiFiClientListCell *)cell Info:(SFIConnectedDevice *)connectedDevice;
--(void)settingTapped:(SFIWiFiClientListCell*)cell Info:(SFIConnectedDevice*)connectedDevice;
+- (void)btnSettingTapped:(SFIWiFiClientListCell *)cell Info:(ClientDevice *)connectedDevice;
+-(void)settingTapped:(SFIWiFiClientListCell*)cell Info:(ClientDevice*)connectedDevice;
 @end
 
 @interface SFIWiFiClientListCell : UITableViewCell
@@ -22,14 +22,14 @@
 @property (weak) id<SFIWiFiClientListCellDelegate> delegate;
 @property (nonatomic, assign, getter = isExpandable) BOOL expandable;
 @property (nonatomic, assign, getter = isExpanded) BOOL expanded;
-@property (strong) SFIConnectedDevice* connectedDevice;
+@property (strong) ClientDevice* connectedDevice;
 
 - (void)addIndicatorView;
 - (void)removeIndicatorView;
 - (BOOL)containsIndicatorView;
 - (void)accessoryViewAnimation;
 
-- (void)createClientCell:(SFIConnectedDevice*)connectedDevice;
+- (void)createClientCell:(ClientDevice*)connectedDevice;
 - (void)drawIndexes;
 
 @end

@@ -28,7 +28,7 @@
 @interface SFIWiFiClientsListViewController ()<SFIWiFiDeviceProprtyEditViewDelegate,SKSTableViewDelegate,SFIWiFiClientListCellDelegate>{
     NSInteger randomMobileInternalIndex;
     IBOutlet SKSTableView *tblDevices;
-    SFIConnectedDevice * currentDevice;
+    ClientDevice * currentDevice;
     NSIndexPath * currentIndexPath;
     NSArray * propertyNames;
     NSString *userID;
@@ -147,7 +147,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForSubRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *MyIdentifier = @"deviceProperty";
-    SFIConnectedDevice * connectedDevice = self.connectedDevices[indexPath.section];
+    ClientDevice * connectedDevice = self.connectedDevices[indexPath.section];
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier];
     NSInteger subRowIndex = indexPath.subRow-1;
  
@@ -305,7 +305,7 @@
         }
         case lastActiveTimeIndexPathRow:
         {
-            if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive){
+            if (!((ClientDevice*)self.connectedDevices[indexPath.section]).isActive){
                 UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(tblDevices.frame.size.width - 215, 0, 200, propertyRowCellHeight)];
                 label.backgroundColor = [UIColor clearColor];
                 label.textColor = [UIColor whiteColor];
@@ -379,16 +379,16 @@
     return [toolkit useLocalNetwork:almond.almondplusMAC];
 }
 
--  (void)addCellLabel:(UITableViewCell*)cell IndexPath:(NSIndexPath *)indexPath connectDevice:(SFIConnectedDevice*)connectedDevice{
+-  (void)addCellLabel:(UITableViewCell*)cell IndexPath:(NSIndexPath *)indexPath connectDevice:(ClientDevice*)connectedDevice{
     NSInteger subRowIndex = indexPath.subRow-1;
     BOOL local=[self getLocalConnection];
     if(local && (subRowIndex==notifyMeIndexPathRow || subRowIndex == historyIndexPathRow))
         return;
     
-    if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && subRowIndex==historyIndexPathRow) {
+    if (!((ClientDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && subRowIndex==historyIndexPathRow) {
         return;
     }
-    if (((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive  && subRowIndex==lastActiveTimeIndexPathRow) {
+    if (((ClientDevice*)self.connectedDevices[indexPath.section]).isActive  && subRowIndex==lastActiveTimeIndexPathRow) {
         return;
     }
     UIView * bgView = [[UIView alloc] init];
@@ -455,10 +455,10 @@
     if(local && (subrowIndex==notifyMeIndexPathRow || subrowIndex == historyIndexPathRow))
         return 0;
     
-    if (!((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && subrowIndex==historyIndexPathRow) {
+    if (!((ClientDevice*)self.connectedDevices[indexPath.section]).deviceUseAsPresence && subrowIndex==historyIndexPathRow) {
         return 0;//will hide
     }
-    if (((SFIConnectedDevice*)self.connectedDevices[indexPath.section]).isActive  && subrowIndex==lastActiveTimeIndexPathRow) {
+    if (((ClientDevice*)self.connectedDevices[indexPath.section]).isActive  && subrowIndex==lastActiveTimeIndexPathRow) {
         return 0;
     }
     if (subrowIndex==removeButtonIndexPathRow) {
@@ -553,7 +553,7 @@
             if(!local){
                 SFIWiFiDeviceProprtyEditViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SFIWiFiDeviceProprtyEditViewController"];
                 viewController.userID = userID;
-                viewController.selectedNotificationType = [self getNotificationTypeForDevice:((SFIConnectedDevice*) self.connectedDevices[indexPath.section]).deviceID];
+                viewController.selectedNotificationType = [self getNotificationTypeForDevice:((ClientDevice*) self.connectedDevices[indexPath.section]).deviceID];
                 viewController.delegate = self;
                 viewController.editFieldIndex = subRowIndex;
                 viewController.connectedDevice = self.connectedDevices[indexPath.section];
@@ -595,7 +595,7 @@
 //    return;
 //}
 #pragma mark Cell Delegates
-- (void)btnSettingTapped:(SFIWiFiClientListCell *)cell Info:(SFIConnectedDevice *)connectedDevice{
+- (void)btnSettingTapped:(SFIWiFiClientListCell *)cell Info:(ClientDevice *)connectedDevice{
     NSIndexPath * indexPath = [tblDevices indexPathForCell:cell];
     currentIndexPath = indexPath;
     currentDevice = self.connectedDevices[indexPath.section];
@@ -736,7 +736,7 @@
     }
     int index = 0;
     
-    for (SFIConnectedDevice * device in self.connectedDevices) {
+    for (ClientDevice * device in self.connectedDevices) {
         if ([device.deviceID intValue]==[[preferenceInfo valueForKey:@"ClientID"] intValue]) {
             dispatch_async(dispatch_get_main_queue(), ^() {
                 [tblDevices refreshData];
@@ -795,7 +795,7 @@
     ctrl.enableDeleteNotification = NO;
     ctrl.markAllViewedOnDismiss = NO;
     ctrl.isForWifiClients = YES;
-    SFIConnectedDevice * connectedDevice = self.connectedDevices[indexPath.section];
+    ClientDevice * connectedDevice = self.connectedDevices[indexPath.section];
     ctrl.deviceID = (unsigned int)[connectedDevice.deviceID integerValue];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
@@ -823,7 +823,7 @@
     
 }
 #pragma mark Edit View delegates
-- (void)updateDeviceInfo:(SFIConnectedDevice *)deviceInfo{
+- (void)updateDeviceInfo:(ClientDevice *)deviceInfo{
     dispatch_async(dispatch_get_main_queue(), ^() {
         [tblDevices refreshDataWithScrollingToIndexPath:currentIndexPath];
     });

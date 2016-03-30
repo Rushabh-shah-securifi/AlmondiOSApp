@@ -118,7 +118,7 @@
     SFICardView *card = cell.cardView;
     card.backgroundColor = [UIColor securifiRouterTileBlueColor];
 
-    SFIConnectedDevice *device = [self tryGetRecord:indexPath.row];
+    ClientDevice *device = [self tryGetRecord:indexPath.row];
     if (device) {
         cell.allowedDevice = YES;
         cell.deviceIP = device.deviceIP;
@@ -129,7 +129,7 @@
     return cell;
 }
 
-- (SFIConnectedDevice *)tryGetRecord:(NSInteger)row {
+- (ClientDevice *)tryGetRecord:(NSInteger)row {
     NSArray *clients = self.connectedClients;
 
     if (row < 0) {

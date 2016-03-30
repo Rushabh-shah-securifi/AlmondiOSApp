@@ -70,7 +70,6 @@ static const int xIndent = 10;
 @end
 
 @implementation DeviceEditViewController{
-    NSMutableArray * pickerValuesArray1;
     NSMutableArray * blockedDaysArray;
     NSString *blockedType;
     NSArray *type;
@@ -82,10 +81,9 @@ static const int xIndent = 10;
     self.deviceEditHeaderCell.delegate = self;
     if(self.isSensor){
         self.scrollView.hidden = NO;
-        pickerValuesArray1 = [[NSMutableArray alloc]init];
         [self.deviceEditHeaderCell initializeSensorCellWithGenericParams:self.genericParams cellType:SensorEdit_Cell];
         self.deviceEditHeaderCell.delegate = self;
-        [self.deviceEditHeaderCell setUPSensorCell];
+        [self.deviceEditHeaderCell setUpDeviceCell];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self drawIndexes];
         });
@@ -156,7 +154,7 @@ static const int xIndent = 10;
             [view addSubview:label];
             
             UILabel *valueLabel = [[UILabel alloc]initWithFrame:CGRectMake(view.frame.size.width - 110, 0, 100, 15)];
-            [self setUpLable:valueLabel withPropertyName:propertyName];
+            [self setUpLable:valueLabel withPropertyName:genericIndexValue.genericValue.value];
             valueLabel.textAlignment = NSTextAlignmentRight;
             valueLabel.alpha = 0.5;
             [view addSubview:valueLabel];
@@ -175,10 +173,11 @@ static const int xIndent = 10;
                 horzView.delegate = self;
                 [horzView drawSlider];
                 [view addSubview:horzView];
-            }
+            }/*
             else if ([genericIndexObj.layoutType isEqualToString:Multi_Input]){
                 MultiButtonView *buttonView = [[MultiButtonView alloc]initWithFrame:BUTTON_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 buttonView.delegate = self;
+                buttonView.color = [SFIColors clientGreenColor];
                 [buttonView drawButton:genericIndexObj.values color:[SFIColors ruleBlueColor]];
                 [view addSubview:buttonView];
             }
@@ -203,7 +202,18 @@ static const int xIndent = 10;
                 [textView drawTextField:genericIndexValue.genericValue.value];
                 textView.delegate = self;
                 [view addSubview:textView];
+            }*/
+            else if ([genericIndexObj.layoutType isEqualToString:LIST]){
+                self.scrollView.hidden = YES;
+                view.frame = CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
+                //self.view.frame.size.height - view.frame.origin.y - 5
+                [self gridView:view];
             }
+            else if (1){
+                view.frame = CGRectMake(0, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
+                [self drawTypeTable:view];
+            }
+            
             [self.indexesScroll addSubview:view];
             yPos = yPos + view.frame.size.height + LABELSPACING;
             NSLog(@" rw-yPos %d",yPos);
@@ -274,11 +284,11 @@ static const int xIndent = 10;
 //    
 //}
 #pragma mark typeTable
--(void)drawTypeTable{
+-(void)drawTypeTable:(UIView *)view{
     self.indexView.hidden = YES;
-    ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(self.indexView.frame.origin.x, self.indexView.frame.origin.y + 7, self.indexView.frame.size.width, self.view.frame.size.height - self.indexView.frame.origin.y - 5)];
+    ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width , self.view.frame.size.height- 5)];
     [typeTableView drawTypeTable:@"MAC"];
-    [self.view addSubview:typeTableView];
+    [view addSubview:typeTableView];
 
 }
 -(void)textFieldView:(NSString *)name{
@@ -300,11 +310,11 @@ static const int xIndent = 10;
 
 
 #pragma mark gridView
--(void)gridView{
+-(void)gridView:(UIView *)view{
     self.indexView.hidden = YES;
-    GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(self.indexView.frame.origin.x, self.indexView.frame.origin.y + 5, self.indexView.frame.size.width, self.view.frame.size.height - self.indexView.frame.origin.y - 5)];
+    GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5)];
     [grid addSegmentControll];
-    [self.view addSubview:grid];
+    [view addSubview:grid];
 //    [self addSegmentControll];
     
 }

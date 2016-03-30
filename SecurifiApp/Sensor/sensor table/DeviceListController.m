@@ -22,7 +22,7 @@
 
 @interface DeviceListController ()<UITableViewDataSource,UITableViewDelegate,DeviceHeaderViewDelegate>
 @property (nonatomic,strong)NSMutableArray *currentDeviceList;
-@property(nonatomic, strong) NSMutableArray *connectedDevices;
+@property(nonatomic, strong) NSMutableArray *currentClientList;
 @property SFIAlmondPlus *currentAlmond;
 @end
 
@@ -57,7 +57,7 @@ int randomMobileInternalIndex;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     self.currentDeviceList = toolkit.devices;
-    self.connectedDevices = toolkit.wifiClientParser;
+    self.currentClientList = toolkit.wifiClientParser;
     [self initializeNotifications];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
@@ -136,16 +136,23 @@ int randomMobileInternalIndex;
 //        }
         
         [cell.commonView initializeSensorCellWithGenericParams:genericParams cellType:SensorTable_Cell];
+        
         cell.commonView.delegate = self;
-        [cell.commonView setUPSensorCell];
+        [cell.commonView setUpDeviceCell];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
     else
     {
         DeviceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER];
+        ClientDevice *client = [self.currentClientList objectAtIndex:indexPath.row];
+        
+        GenericParams *genericParams;
+        genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getClientHeaderGenericIndexValueForClient:client] indexValueList:nil deviceName:client.name color:[UIColor greenColor]];
+        [cell.commonView initializeSensorCellWithGenericParams:genericParams cellType:ClientTable_Cell];
+        
         cell.commonView.delegate = self;
-        cell.commonView.cellType = ClientTable_Cell;
+        [cell.commonView setUpDeviceCell];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }

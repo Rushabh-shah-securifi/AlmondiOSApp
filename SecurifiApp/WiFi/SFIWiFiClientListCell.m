@@ -139,7 +139,7 @@ static UIImage *_image = nil;
 }
 
 
-- (void)createClientCell:(SFIConnectedDevice*)connectedDevice{
+- (void)createClientCell:(ClientDevice*)connectedDevice{
     NSLog(@"createClientCell ");
     self.connectedDevice = connectedDevice;
     lblMAC.text = connectedDevice.name;
@@ -179,7 +179,7 @@ static UIImage *_image = nil;
                                        };
     
      NSArray *IndexArray = [[NSArray alloc]initWithObjects:@"1",@"2",nil];
-    self.connectedDevice = [[SFIConnectedDevice alloc]init];
+    self.connectedDevice = [[ClientDevice alloc]init];
     self.connectedDevice.name = @"smartPhone";
     self.connectedDevice.deviceID = @"12";
     self.connectedDevice.deviceIP = @"10.21.21.100";

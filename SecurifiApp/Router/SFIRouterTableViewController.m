@@ -793,7 +793,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     
     int activeClientsCount = 0;
     int inActiveClientsCount = 0;
-    for(SFIConnectedDevice *client in toolkit.wifiClientParser){
+    for(ClientDevice *client in toolkit.wifiClientParser){
         if (client.isActive) {
                             activeClientsCount++;
         }else{

@@ -54,7 +54,7 @@
     self.cellType = cellType;
 }
 
--(void)setUPSensorCell{
+-(void)setUpDeviceCell{
     NSLog(@"setUPSensorCell");
     self.deviceName.text = self.genericParams.deviceName;
     if(_genericParams.headerGenericIndexValue.genericValue.iconText){
