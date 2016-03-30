@@ -684,7 +684,7 @@
     
     NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, secondDescriptor, nil];
     
-    return [[toolkit.wifiClientParser sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+    return [[toolkit.clients sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
 }
 
 - (void)onGetClientsPreferences:(id)sender {

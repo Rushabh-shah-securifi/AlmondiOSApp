@@ -345,8 +345,8 @@ UILabel *topLabel;
     else if([buttonSubProperty.eventType isEqualToString:@"AlmondModeUpdated"]){
         buttonSubProperty.deviceType= SFIDeviceType_BinarySwitch_0;
         buttonSubProperty.deviceName = @"Mode";
-    }else if(buttonSubProperty.index == 0 && buttonSubProperty.eventType !=nil && toolkit.wifiClientParser!=nil){
-        for(ClientDevice *connectedClient in toolkit.wifiClientParser){
+    }else if(buttonSubProperty.index == 0 && buttonSubProperty.eventType !=nil && toolkit.clients!=nil){
+        for(ClientDevice *connectedClient in toolkit.clients){
             if(buttonSubProperty.deviceId == connectedClient.deviceID.intValue){
                 buttonSubProperty.deviceType = SFIDeviceType_WIFIClient;
                 buttonSubProperty.deviceName = connectedClient.name;

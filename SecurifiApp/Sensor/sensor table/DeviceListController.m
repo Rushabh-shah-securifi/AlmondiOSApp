@@ -57,7 +57,7 @@ int randomMobileInternalIndex;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     self.currentDeviceList = toolkit.devices;
-    self.currentClientList = toolkit.wifiClientParser;
+    self.currentClientList = toolkit.clients;
     [self initializeNotifications];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];

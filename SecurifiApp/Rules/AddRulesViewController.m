@@ -112,7 +112,7 @@ UITextField *textField;
 
 -(void)getWificlientsList{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.wifiClientsArray = toolkit.wifiClientParser;
+    self.wifiClientsArray = toolkit.clients;
 }
 
 -(void)onRuleCommandResponse:(id)sender{ //for add, update

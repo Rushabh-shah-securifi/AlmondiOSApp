@@ -366,7 +366,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (self.enableNewWifiClientsControl) {
         //        [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        NSMutableArray *wifiClientsArray = toolkit.wifiClientParser;
+        NSMutableArray *wifiClientsArray = toolkit.clients;
         if (wifiClientsArray.count==0) {
             return;
         }
@@ -793,7 +793,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     
     int activeClientsCount = 0;
     int inActiveClientsCount = 0;
-    for(ClientDevice *client in toolkit.wifiClientParser){
+    for(ClientDevice *client in toolkit.clients){
         if (client.isActive) {
                             activeClientsCount++;
         }else{

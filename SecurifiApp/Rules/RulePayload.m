@@ -57,8 +57,8 @@
     
     NSArray *devices =[toolkit deviceValuesList:plus.almondplusMAC];
     
-    [self removeInvalidEntries:self.rule.triggers devices:devices clients:toolkit.wifiClientParser];
-    [self removeInvalidEntries:self.rule.actions devices:devices clients:toolkit.wifiClientParser];
+    [self removeInvalidEntries:self.rule.triggers devices:devices clients:toolkit.clients];
+    [self removeInvalidEntries:self.rule.actions devices:devices clients:toolkit.clients];
     
     [rulePayload setValue:[self createTriggerPayload] forKey:@"Triggers"];
     [rulePayload setValue:[self createActionPayload] forKey:@"Results"];
