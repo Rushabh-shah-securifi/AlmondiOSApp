@@ -30,6 +30,177 @@
         "Layout": "Toggle",
         "GroupLabel": "WifiClient"
     },
+    "-11": {
+        "Name": "ClientName",
+        "ReadOnly": "false",
+        "Placement": "Detail",
+        "Layout": "TEXT_VIEW",
+        "GroupLabel": "Name"
+    },
+    "-12": {
+        "Name": "ClientType",
+        "ReadOnly": "false",
+        "Placement": "Detail_Header",
+        "Layout": "LIST",
+        "GroupLabel": "TYPE",
+        "Values": {
+            "Tablet": {
+                "Icon": "switch_on_new",
+                "Label": "Tablet"
+            },
+            "PC": {
+                "Icon": "switch_off_new",
+                "Label": "PC"
+            },
+            "Laptop": {
+                "Icon": "switch_on_new",
+                "Label": "Laptop"
+            },
+            "android_stick": {
+                "Icon": "switch_off_new",
+                "Label": "Android Stick"
+            },
+            "Smartphone": {
+                "Icon": "switch_on_new",
+                "Label": "Smart Phone"
+            },
+            "iPod": {
+                "Icon": "switch_off_new",
+                "Label": "iPod"
+            },
+            "iPad": {
+                "Icon": "switch_on_new",
+                "Label": "iPad"
+            },
+            "iPhone": {
+                "Icon": "switch_off_new",
+                "Label": "iPhone"
+            },
+            "MAC": {
+                "Icon": "switch_on_new",
+                "Label": "MAC"
+            },
+            "appleTV": {
+                "Icon": "switch_off_new",
+                "Label": "Apple TV"
+            },
+            "TV": {
+                "Icon": "switch_on_new",
+                "Label": "TV"
+            },
+            "Printer": {
+                "Icon": "switch_off_new",
+                "Label": "Printer"
+            },
+            "Router_switch": {
+                "Icon": "switch_on_new",
+                "Label": "Router Switch"
+            },
+            "Hub": {
+                "Icon": "switch_off_new",
+                "Label": "Hub"
+            },
+            "Camera": {
+                "Icon": "switch_on_new",
+                "Label": "Camera"
+            },
+            "Nest": {
+                "Icon": "switch_off_new",
+                "Label": "Nest"
+            },
+            "Chromecast": {
+                "Icon": "switch_on_new",
+                "Label": "Chromecast"
+            },
+            "amazon_dash": {
+                "Icon": "switch_off_new",
+                "Label": "Amazon Dash"
+            },
+            "amazon_echo": {
+                "Icon": "switch_on_new",
+                "Label": "Amazon Echo"
+            },
+            "Other":{
+                "Icon": "switch_on_new",
+                "Label": "Other"
+            }
+        }
+    },
+    "-13": {
+        "Name": "Manufacturer",
+        "ReadOnly": "true",
+        "Placement": "Detail",
+        "Layout": "TEXT_VIEW",
+        "GroupLabel": "Manufacturer"
+    },
+    "-14": {
+        "Name": "ClientMAC",
+        "ReadOnly": "true",
+        "Placement": "Detail",
+        "Layout": "TEXT_VIEW",
+        "GroupLabel": "MAC Address"
+    },
+    "-15": {
+        "Name": "LastKnownIP",
+        "ReadOnly": "true",
+        "Placement": "Detail",
+        "Layout": "TEXT_VIEW",
+        "GroupLabel": "Last Known IP"
+    },
+    "-16": {
+        "Name": "ClientConnection",
+        "ReadOnly": "true",
+        "Placement": "Detail",
+        "Layout": "TEXT_VIEW",
+        "GroupLabel": "Connection"
+    },
+    "-17": {
+        "Name": "UseAsPresence",
+        "ReadOnly": "false",
+        "Placement": "Detail",
+        "Layout": "MULTI_BUTTON",
+        "GroupLabel": "Use As Presence Sensor",
+        "Values":{
+            "true":{
+                "Label": "Yes"
+            },
+            "false":{
+                "Label": "No"
+            }
+        }
+    },
+    "-18": {
+        "Name": "InactiveGrace",
+        "ReadOnly": "fasle",
+        "Placement": "Detail",
+        "Layout": "TEXT_VIEW",
+        "GroupLabel": "Inactive Grace Period"
+    },
+    "-19": {
+        "Name": "AllowOnNetwork",
+        "ReadOnly": "false",
+        "Placement": "Detail",
+        "Layout": "GRID_VIEW",
+        "GroupLabel": "Allow On Network",
+        "Values":{
+            "0":{
+                "Label": "Always"
+            },
+            "1":{
+                "Label": "Blocked"
+            },
+            "2":{
+                "Label": "OnSchedule"
+            }
+        }
+    },
+    "-20": {
+        "Name": "SignalStrength",
+        "ReadOnly": "true",
+        "Placement": "Detail",
+        "Layout": "TEXT_VIEW",
+        "GroupLabel": "Signal Strength"
+    },
     "1": {
         "Name": "SWITCH BINARY",
         "Type": "Actuator",

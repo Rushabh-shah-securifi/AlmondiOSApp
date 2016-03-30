@@ -17,6 +17,7 @@
 #import "Formatter.h"
 #import "GenericIndexValue.h"
 #import "AlmondJsonCommandKeyConstants.h"
+#import "SFIConnectedDevice.h"
 
 @implementation GenericIndexUtil
 
@@ -131,8 +132,124 @@
     return genericIndexValues;
 }
 
++ (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(SFIConnectedDevice*) client{
+    NSString *status = client.deviceAllowedType==1 ? BLOCKED: client.isActive? ACTIVE: INACTIVE;
+    GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:@"-12" forValue:client.deviceType];
+    if(genericValue == nil){ //if devicetype is wronglysent only expected return is nil
+        genericValue = [[GenericValue alloc]initWithDisplayText:status icon:@"icon_help" toggleValue:nil value:client.deviceType];
+    }else{
+        genericValue.displayText = status;
+    }
+    return [[GenericIndexValue alloc]initWithGenericIndex:nil genericValue:genericValue index:client.deviceID.intValue deviceID:client.deviceID.intValue];
+}
+
++(NSArray*) getClientDetailGenericIndexValuesListForClientID:(NSString*)clientID{
+    NSMutableArray *genericIndexValues = [NSMutableArray new];
+    SFIConnectedDevice *client = [SFIConnectedDevice findClientByID:clientID];
+    NSArray *clientGenericIndexes = [self getClientGenericIndexes];
+    GenericIndexValue *genericIndexValue;
+    GenericIndexClass *genericIndex;
+    for(NSNumber *genericID in clientGenericIndexes){
+        genericIndex = [self getGenericIndexForID:genericID.stringValue];
+        if(genericIndex != nil){
+            GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericID.stringValue
+                                                                               forValue:[self getOrSetValueForClient:client genericIndex:genericID.intValue newValue:nil ifGet:YES]];
+            genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:clientID.intValue deviceID:clientID.intValue];
+            [genericIndexValues addObject:genericIndexValue];
+        }
+    }
+    
+    return genericIndexValues;
+}
+
++(GenericIndexClass*)getGenericIndexForID:(NSString*)genericIndexID{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    return toolkit.genericIndexes[genericIndexID];
+}
+
++(NSArray*) getClientGenericIndexes{
+    NSArray *genericIndexesArray = [NSArray arrayWithObjects:@-11,@-12,@-13,@-14,@-15,@-16,@-17,@-18,@-19,@-20,@-3, nil];
+    return genericIndexesArray;
+}
+
++(NSString*)getOrSetValueForClient:(SFIConnectedDevice*)client genericIndex:(int)genericIndex newValue:(NSString*)newValue ifGet:(BOOL)get{
+    if(genericIndex == -11){
+        if(get)
+            return client.name;
+        else
+            client.name = newValue;
+    }else if(genericIndex == -12){
+        if(get)
+            return client.deviceType;
+        else
+            client.deviceType = newValue;
+    }else if(genericIndex == -13){
+        if(get)
+            return client.manufacturer;
+        else
+            client.manufacturer = newValue;
+    }else if(genericIndex == -14){
+        if(get)
+            return client.deviceMAC;
+        else
+            client.deviceMAC = newValue;
+    }else if(genericIndex == -15){
+        if(get)
+            return client.deviceLastActiveTime;
+        else
+            client.deviceLastActiveTime = newValue;
+    }else if(genericIndex == -16){
+        if(get)
+            return client.deviceConnection;
+        else
+            client.deviceConnection = newValue;
+    }else if(genericIndex == -17){
+        if(get)
+            return client.deviceUseAsPresence? @"true" : @"false";
+        else
+            client.deviceUseAsPresence = newValue.boolValue;
+    }else if(genericIndex == -18){
+        if(get)
+            return @(client.timeout).stringValue;
+        else
+            client.timeout = newValue.integerValue;
+    }else if(genericIndex == -19){
+        if(get)
+            return @(client.deviceAllowedType).stringValue;
+        else
+            client.deviceAllowedType = newValue.integerValue;
+    }else if(genericIndex == -20){
+        if(get)
+            return client.rssi;
+        else
+            client.rssi = newValue;
+    }else if(genericIndex == -3){
+        if(get)
+            return @"always"; //todo
+//        else
+//            client.deviceType = newValue;
+    }
+    return nil;
+}
 
 /*
+ //connected json
+ @property(nonatomic, retain) NSString *name;
+ @property(nonatomic, retain) NSString *deviceIP;
+ @property(nonatomic, strong) NSString *manufacturer;
+ @property(nonatomic, strong) NSString *rssi;
+ @property(nonatomic, retain) NSString *deviceMAC;
+ @property(nonatomic, retain) NSString *deviceConnection;
+ @property(nonatomic, retain) NSString *deviceID;
+ @property(nonatomic, retain) NSString *deviceType;
+ @property(nonatomic, assign) NSInteger timeout;
+ @property(nonatomic, retain) NSString *deviceLastActiveTime;
+ @property(nonatomic, assign) BOOL deviceUseAsPresence;
+ @property(nonatomic, assign) BOOL isActive;
+ 
+ @property(nonatomic) DeviceAllowedType deviceAllowedType;
+ @property(nonatomic) NSString *deviceSchedule;
+ 
  {//devices json
  "1": {
  "name": "Binary Switch",
