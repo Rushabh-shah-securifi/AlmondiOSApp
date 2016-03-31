@@ -17,7 +17,7 @@
 #import "Formatter.h"
 #import "GenericIndexValue.h"
 #import "AlmondJsonCommandKeyConstants.h"
-#import "ClientDevice.h"
+#import "Client.h"
 
 @implementation GenericIndexUtil
 
@@ -132,7 +132,7 @@
     return genericIndexValues;
 }
 
-+ (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(ClientDevice*) client{
++ (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(Client*) client{
     NSString *status = client.deviceAllowedType==1 ? BLOCKED: client.isActive? ACTIVE: INACTIVE;
     GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:@"-12" forValue:client.deviceType];
     if(genericValue == nil){ //if devicetype is wronglysent only expected return is nil
@@ -145,7 +145,7 @@
 
 +(NSArray*) getClientDetailGenericIndexValuesListForClientID:(NSString*)clientID{
     NSMutableArray *genericIndexValues = [NSMutableArray new];
-    ClientDevice *client = [ClientDevice findClientByID:clientID];
+    Client *client = [Client findClientByID:clientID];
     NSArray *clientGenericIndexes = [self getClientGenericIndexes];
     GenericIndexValue *genericIndexValue;
     GenericIndexClass *genericIndex;
@@ -172,7 +172,7 @@
     return genericIndexesArray;
 }
 
-+(NSString*)getOrSetValueForClient:(ClientDevice*)client genericIndex:(int)genericIndex newValue:(NSString*)newValue ifGet:(BOOL)get{
++(NSString*)getOrSetValueForClient:(Client*)client genericIndex:(int)genericIndex newValue:(NSString*)newValue ifGet:(BOOL)get{
     if(genericIndex == -11){
         if(get)
             return client.name;

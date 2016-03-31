@@ -86,7 +86,7 @@
 }
 
 -(BOOL)findClient:(NSString *)mac devices:(NSArray *)clients{
-    for(ClientDevice *client in clients){
+    for(Client *client in clients){
         if([mac isEqualToString:client.deviceMAC])
             return YES;
     }

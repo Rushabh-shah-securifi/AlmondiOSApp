@@ -11,13 +11,13 @@
 static const float ITEM_SPACING = 2.0;
 
 @protocol SFIWiFiDeviceProprtyEditViewDelegate
-- (void)updateDeviceInfo:(ClientDevice *)deviceInfo;
+- (void)updateDeviceInfo:(Client *)deviceInfo;
 @end
 
 @interface SFIWiFiDeviceProprtyEditViewController : UIViewController
 @property (weak) id<SFIWiFiDeviceProprtyEditViewDelegate> delegate;
 @property(assign)NSInteger editFieldIndex;
-@property(strong)ClientDevice *connectedDevice;
+@property(strong)Client *connectedDevice;
 @property(strong)NSString* userID;
 @property(strong)NSString* selectedNotificationType;
 

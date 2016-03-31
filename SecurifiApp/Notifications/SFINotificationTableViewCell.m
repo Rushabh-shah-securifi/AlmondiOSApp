@@ -291,7 +291,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     //md01<<<
     if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
         NSArray * properties = [self.notification.deviceName componentsSeparatedByString:@"|"];
-        ClientDevice *device = [ClientDevice new];
+        Client *device = [Client new];
         device.deviceType = @"other";
         
         self.iconView.image = [UIImage imageNamed:[device iconName]];

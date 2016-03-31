@@ -161,7 +161,7 @@ DimmerButton *dimerButton;
     [self toggleHighlightForDeviceNameButton:deviceButton];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     int i =0;
-    for(ClientDevice *connectedClient in toolkit.clients){
+    for(Client *connectedClient in toolkit.clients){
         if(connectedClient.deviceUseAsPresence){
             int yScale = ROW_PADDING + (ROW_PADDING+frameSize)*i;
             [self addClientNameLabel:connectedClient.name yScale:yScale];

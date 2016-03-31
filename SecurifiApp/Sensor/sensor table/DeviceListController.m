@@ -145,7 +145,7 @@ int randomMobileInternalIndex;
     else
     {
         DeviceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER];
-        ClientDevice *client = [self.currentClientList objectAtIndex:indexPath.row];
+        Client *client = [self.currentClientList objectAtIndex:indexPath.row];
         
         GenericParams *genericParams;
         genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getClientHeaderGenericIndexValueForClient:client] indexValueList:nil deviceName:client.name color:[UIColor greenColor]];

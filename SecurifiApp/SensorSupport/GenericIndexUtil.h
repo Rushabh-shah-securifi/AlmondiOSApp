@@ -15,5 +15,5 @@
 + (NSMutableArray *)getDetailListForDevice:(int)deviceID;
 +(NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement;
 +(GenericIndexValue*)getHeaderGenericIndexValueForDevice:(Device*)device;
-+ (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(ClientDevice*) client;
++ (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(Client*) client;
 @end

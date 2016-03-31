@@ -793,7 +793,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     
     int activeClientsCount = 0;
     int inActiveClientsCount = 0;
-    for(ClientDevice *client in toolkit.clients){
+    for(Client *client in toolkit.clients){
         if (client.isActive) {
                             activeClientsCount++;
         }else{

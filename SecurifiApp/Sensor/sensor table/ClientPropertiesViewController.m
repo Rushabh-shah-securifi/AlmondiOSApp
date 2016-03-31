@@ -33,7 +33,7 @@
 @interface ClientPropertiesViewController ()<UITableViewDelegate,UITableViewDataSource,DeviceHeaderViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *clientPropertiesTable;
 @property (nonatomic)NSMutableArray *orderedArray ;
-@property (nonatomic)NSDictionary *clientDeviceDict;
+@property (nonatomic)NSDictionary *ClientDict;
 @end
 
 @implementation ClientPropertiesViewController
@@ -115,7 +115,7 @@ NSMutableArray * blockedDaysArray;
                                                    @"isEditable" : @"true"
                                                    },
                             };
-    self.clientDeviceDict = @{
+    self.ClientDict = @{
                               @"Name" : @"android02#",
                               @"Type" : @"TV",
                                @"Manufacture" : @"freedom",
@@ -182,12 +182,12 @@ NSMutableArray * blockedDaysArray;
     cell.indexName =[[self.clientProperties valueForKey:[self.orderedArray objectAtIndex:indexPath.row]]valueForKey:@"indexName"];
     //values
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    cell.vsluesLabel.text = [self.clientDeviceDict valueForKey:[[self.clientProperties valueForKey:[self.orderedArray objectAtIndex:indexPath.row]]valueForKey:@"indexName"]];
+    cell.vsluesLabel.text = [self.ClientDict valueForKey:[[self.clientProperties valueForKey:[self.orderedArray objectAtIndex:indexPath.row]]valueForKey:@"indexName"]];
                 if([[[self.clientProperties valueForKey:[self.orderedArray objectAtIndex:indexPath.row]]valueForKey:@"indexName"] isEqualToString:@"AllowedType"]){
-                    if([[self.clientDeviceDict valueForKey:@"AllowedType"] isEqualToString:@"0"])
+                    if([[self.ClientDict valueForKey:@"AllowedType"] isEqualToString:@"0"])
                        cell.vsluesLabel.text = @"Never";
                     
-                    else if([[self.clientDeviceDict valueForKey:@"AllowedType"] isEqualToString:@"1"])
+                    else if([[self.ClientDict valueForKey:@"AllowedType"] isEqualToString:@"1"])
                         cell.vsluesLabel.text = @"Blocked";
                     else
                         cell.vsluesLabel.text = @"onSchedule";
