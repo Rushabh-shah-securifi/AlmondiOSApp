@@ -33,6 +33,8 @@
 #import "TimeView.h"
 #import "RuleTextField.h"
 #import "CommonMethods.h"
+#import "UICommonMethods.h"
+
 
 @interface AddTriggerAndAddAction ()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,UITextFieldDelegate,TimeViewDelegate>
 @property (nonatomic)RulesHue *ruleHueObject;
@@ -69,21 +71,9 @@ DimmerButton *dimerButton;
     return self;
 }
 
--(CGRect)adjustDeviceNameWidth:(NSString*)deviceName{
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont systemFontOfSize:15]};
-    CGRect textRect;
-    
-    textRect.size = [deviceName sizeWithAttributes:attributes];
-    if(deviceName.length > 18){
-        NSString *temp=@"123456789012345678";
-        textRect.size = [temp sizeWithAttributes:attributes];
-    }
-    return textRect;
-}
-
 - (int)addDeviceName:(NSString *)deviceName deviceID:(int)deviceID deviceType:(unsigned int)deviceType  xVal:(int)xVal {
     double deviceButtonHeight = self.deviceListScrollView.frame.size.height;
-    CGRect textRect = [self adjustDeviceNameWidth:deviceName];
+    CGRect textRect = [UICommonMethods adjustDeviceNameWidth:deviceName fontSize:deviceNameFontSize maxLength:deviceNameMaxLength];
     CGRect frame = CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight);
     RulesDeviceNameButton *deviceButton = [[RulesDeviceNameButton alloc]initWithFrame:frame];
     [deviceButton deviceProperty:self.isTrigger deviceType:deviceType deviceName:deviceName deviceId:deviceID isScene:self.isScene];

@@ -29,7 +29,7 @@
 
 #import "SFIColors.h"
 #import "AddRulesViewController.h"
-#import "SecurifiToolkit/Parser.h"
+#import "SecurifiToolkit/ClientParser.h"
 
 #import "ValueFormatter.h"
 #import "IndexValueSupport.h"

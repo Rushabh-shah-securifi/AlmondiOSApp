@@ -9,22 +9,9 @@
 #import "ClientPropertiesViewController.h"
 #import "UIFont+Securifi.h"
 #import "SFIColors.h"
-#import "SKSTableView.h"
-#import "SKSTableViewCell.h"
-#import "SKSTableViewCellIndicator.h"
 #import "ClientPropertiesCell.h"
-
-
-#import "ClientEditPropertiesViewController.h"
-#import "MultiButtonView.h"
-#import "TextInput.h"
-#import "SFIColors.h"
-#import "SFIWiFiDeviceTypeSelectionCell.h"
-#import "clientTypeCell.h"
-#import "SFIColors.h"
 #import "UIFont+Securifi.h"
 #import "Colours.h"
-#import "CollectionViewCell.h"
 #import "DeviceHeaderView.h"
 #import "DeviceEditViewController.h"
 
@@ -143,18 +130,6 @@ NSMutableArray * blockedDaysArray;
         
     }]];
     
-}
-
--(CGRect)adjustDeviceNameWidth:(NSString*)deviceName{
-    NSDictionary *attributes = @{NSFontAttributeName: [UIFont securifiFont:16]};
-    CGRect textRect;
-    
-    textRect.size = [deviceName sizeWithAttributes:attributes];
-    if(deviceName.length > 18){
-        NSString *temp=@"123456789012345678";
-        textRect.size = [temp sizeWithAttributes:attributes];
-    }
-    return textRect;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;

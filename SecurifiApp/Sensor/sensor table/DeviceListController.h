@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "SFITableViewController.h"
-#import "SKSTableView.h"
 
 @interface DeviceListController : SFITableViewController
-//@property (strong, nonatomic) IBOutlet SKSTableView *tblView;
 
 @end

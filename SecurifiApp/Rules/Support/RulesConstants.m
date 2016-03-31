@@ -19,6 +19,8 @@ const int textPadding = 2;
 const int fontSize = 11;
 const int topFontSize = 12;
 float const imageHeightFactor = 1.6;
+const int deviceNameFontSize = 15;
+const int deviceNameMaxLength = 18;
 
 const int hueSubViewSize = 20;
 const int ROW_PADDING = 25;

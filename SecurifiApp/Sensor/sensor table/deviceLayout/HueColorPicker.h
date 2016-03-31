@@ -8,16 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "Device.h"
-#import "GenericProperty.h"
+#import "GenericIndexValue.h"
 
 @protocol HueColorPickerDelegate
 -(void)updateHueColorPicker:(NSString *)newValue;
 @end
 @interface HueColorPicker : UIView
 @property (nonatomic)UIColor *color;
-@property (nonatomic) int min;
-@property (nonatomic) int max;
 @property(nonatomic)id<HueColorPickerDelegate> delegate;
-@property (nonatomic)GenericProperty *deviceProperty;
--(void)drawHueColorPicker;
+@property (nonatomic)GenericIndexValue *genericIndexValue;
+
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue;
 @end

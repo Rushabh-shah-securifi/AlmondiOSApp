@@ -15,6 +15,8 @@
 #import "DevicePayload.h"
 #import "GenericIndexUtil.h"
 #import "DeviceParser.h"
+#import "AlmondJsonCommandKeyConstants.h"
+
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -57,7 +59,9 @@ int randomMobileInternalIndex;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     self.currentDeviceList = toolkit.devices;
-    self.currentClientList = toolkit.clients;
+    
+    
+    self.currentClientList = [self getSortedDevices];
     [self initializeNotifications];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
@@ -81,6 +85,15 @@ int randomMobileInternalIndex;
     [center addObserver:self selector:@selector(onUpdateDeviceIndexResponse:) name:NOTIFICATION_UPDATE_DEVICE_INDEX_NOTIFIER object:nil];
 }
 
+-(NSMutableArray*)getSortedDevices{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"isActive" ascending:NO];
+    NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
+    
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, secondDescriptor, nil];
+    
+    return [[toolkit.clients sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -92,13 +105,13 @@ int randomMobileInternalIndex;
     if(section == 0)
         return self.currentDeviceList.count;
     else
-        return 4;
+        return self.currentClientList.count;
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if(section == 0)
-        return [NSString stringWithFormat:@"Sensors (%d)",(int)self.currentDeviceList.count];
+        return [NSString stringWithFormat:@"Sensors (%ld)",self.currentDeviceList.count];
     else
-        return [NSString stringWithFormat:@"Network Devices (%d)",1];
+        return [NSString stringWithFormat:@"Network Devices (%ld)",self.currentClientList.count];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 30;
@@ -106,11 +119,8 @@ int randomMobileInternalIndex;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     static NSString *header = @"customHeader";
-    
     UITableViewHeaderFooterView *vHeader;
-    
     vHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:header];
-    
     if (!vHeader) {
         vHeader = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:header];
     }
@@ -145,6 +155,7 @@ int randomMobileInternalIndex;
     else
     {
         DeviceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER];
+        
         Client *client = [self.currentClientList objectAtIndex:indexPath.row];
         
         GenericParams *genericParams;

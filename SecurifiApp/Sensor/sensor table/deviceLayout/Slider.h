@@ -7,17 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GenericProperty.h"
+#import "GenericIndexValue.h"
+
 @protocol SliderViewDelegate
 -(void)updateSliderValue:(NSString*)newvalue;
 @end
+
 @interface Slider : UIView
 @property (nonatomic)UIColor *color;
-@property (nonatomic) NSInteger min;
-@property (nonatomic) NSInteger max;
 @property(nonatomic)id<SliderViewDelegate> delegate;
+@property (nonatomic)GenericIndexValue *genericIndexValue;
 
-@property (nonatomic)GenericProperty *deviceProperty;
--(void)drawSlider;
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue;
 
 @end

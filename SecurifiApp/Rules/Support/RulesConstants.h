@@ -20,6 +20,8 @@ extern int const topFontSize;
 extern float const imageHeightFactor;
 extern int const hueSubViewSize;
 extern int const ROW_PADDING;
+extern int const deviceNameFontSize;
+extern int const deviceNameMaxLength;
 
 extern int const countDiameter;
 extern int const TOPSCROLLPADDING;

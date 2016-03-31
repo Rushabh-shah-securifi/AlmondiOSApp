@@ -11,7 +11,7 @@
 #import "Rule.h"
 #import "SecurifiToolkit/GenericCommand.h"
 #import "SFIButtonSubProperties.h"
-#import "SecurifiToolkit/Parser.h"
+#import "SecurifiToolkit/ClientParser.h"
 #import "AlmondPlusConstants.h"
 #import "SFISubPropertyBuilder.h"
 #import "MBProgressHUD.h"

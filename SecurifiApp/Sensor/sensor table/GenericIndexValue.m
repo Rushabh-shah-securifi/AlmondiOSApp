@@ -8,6 +8,7 @@
 
 #import "GenericIndexValue.h"
 
+
 @implementation GenericIndexValue
 -(id)initWithGenericIndex:(GenericIndexClass*)genericIndex genericValue:(GenericValue*)genericValue index:(int)index deviceID:(int)deviceID{
     self = [super init];

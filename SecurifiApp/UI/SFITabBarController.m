@@ -11,8 +11,6 @@
 #import "MessageView.h"
 #import "SFIMessageViewController.h"
 #import "RulesTableViewController.h"
-#import "SensorViewController.h"
-#import "SensorTableViewController.h"
 #import "DeviceListController.h"
 
 #define TAB_BAR_DEVICES @"Devices"

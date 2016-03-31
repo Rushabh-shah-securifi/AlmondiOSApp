@@ -21,6 +21,4 @@
 @property (nonatomic)id<MultiButtonViewDelegate> delegate;
 
 -(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue;
--(void)drawButton:(NSDictionary *)valuedict color:(UIColor *)color;
--(void)drawButton:(NSArray*)array selectedValue:(int)selectedValue;
 @end

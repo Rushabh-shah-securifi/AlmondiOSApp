@@ -22,10 +22,9 @@
     if(self){
         self.color = color;
         self.genericIndexValue = genericIndexValue;
+        [self drawSlider];
     }
     return self;
-    
-    //    return self;
 }
 -(void)drawSlider{// it will take color
     //self.componentArray = [NSMutableArray new];

@@ -454,9 +454,9 @@
 		CE810C5E1C9BDAA000F80777 /* GridView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C5D1C9BDAA000F80777 /* GridView.m */; };
 		CE810C611C9C15D100F80777 /* ListButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C601C9C15D100F80777 /* ListButtonView.m */; };
 		CEA4A82C1C86BEB00098C7BD /* SensorStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA4A82A1C86BEB00098C7BD /* SensorStoryBoard.storyboard */; };
+		CEEAB7AD1CAD26A2003C5290 /* UICommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */; settings = {ASSET_TAGS = (); }; };
 		CEEBE6201C902D0400DC3E3F /* clientTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */; };
 		CEEC42051C9828BA00A2C35D /* SFIWiFiClientListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42041C9828BA00A2C35D /* SFIWiFiClientListCell.m */; };
-		CEEC42171C98560500A2C35D /* ClientEditPropertiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42081C98560500A2C35D /* ClientEditPropertiesViewController.m */; };
 		CEEC42181C98560500A2C35D /* ClientPropertiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC420A1C98560500A2C35D /* ClientPropertiesViewController.m */; };
 		CEEC42191C98560500A2C35D /* ClientPropertiesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC420C1C98560500A2C35D /* ClientPropertiesCell.m */; };
 		CEEC421A1C98560500A2C35D /* DeviceEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC420E1C98560500A2C35D /* DeviceEditViewController.m */; };
@@ -469,7 +469,6 @@
 		CEEC42321C98560D00A2C35D /* MultiButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC422A1C98560D00A2C35D /* MultiButtonView.m */; };
 		CEEC42331C98560D00A2C35D /* TextInput.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC422C1C98560D00A2C35D /* TextInput.m */; };
 		CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEF425C1C47E0E300E36C9B /* ScenePayload.m */; };
-		CEF2E8BC1C9958800082C320 /* GenericProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF2E8BB1C9958800082C320 /* GenericProperty.m */; };
 		CEF6F4D81C92CAD600C68975 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */; };
 		CEF6F4D91C92CAD600C68975 /* AddRuleSceneClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */; };
 		CEF6F4DA1C92CAD600C68975 /* AddRulesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F4AE1C92CAD600C68975 /* AddRulesViewController.m */; };
@@ -992,12 +991,12 @@
 		CE810C5F1C9C15D100F80777 /* ListButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListButtonView.h; sourceTree = "<group>"; };
 		CE810C601C9C15D100F80777 /* ListButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListButtonView.m; sourceTree = "<group>"; };
 		CEA4A82B1C86BEB00098C7BD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SensorStoryBoard.storyboard; sourceTree = "<group>"; };
+		CEEAB7AB1CAD26A2003C5290 /* UICommonMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UICommonMethods.h; sourceTree = "<group>"; };
+		CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UICommonMethods.m; sourceTree = "<group>"; };
 		CEEBE61E1C902D0400DC3E3F /* clientTypeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = clientTypeCell.h; path = SecurifiApp/clientTypeCell.h; sourceTree = SOURCE_ROOT; };
 		CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = clientTypeCell.m; path = SecurifiApp/clientTypeCell.m; sourceTree = SOURCE_ROOT; };
 		CEEC42031C9828BA00A2C35D /* SFIWiFiClientListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIWiFiClientListCell.h; sourceTree = "<group>"; };
 		CEEC42041C9828BA00A2C35D /* SFIWiFiClientListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIWiFiClientListCell.m; sourceTree = "<group>"; };
-		CEEC42071C98560500A2C35D /* ClientEditPropertiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientEditPropertiesViewController.h; sourceTree = "<group>"; };
-		CEEC42081C98560500A2C35D /* ClientEditPropertiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientEditPropertiesViewController.m; sourceTree = "<group>"; };
 		CEEC42091C98560500A2C35D /* ClientPropertiesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientPropertiesViewController.h; sourceTree = "<group>"; };
 		CEEC420A1C98560500A2C35D /* ClientPropertiesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientPropertiesViewController.m; sourceTree = "<group>"; };
 		CEEC420B1C98560500A2C35D /* ClientPropertiesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientPropertiesCell.h; sourceTree = "<group>"; };
@@ -1021,8 +1020,6 @@
 		CEEC422C1C98560D00A2C35D /* TextInput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextInput.m; sourceTree = "<group>"; };
 		CEEF425B1C47E0E300E36C9B /* ScenePayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenePayload.h; sourceTree = "<group>"; };
 		CEEF425C1C47E0E300E36C9B /* ScenePayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScenePayload.m; sourceTree = "<group>"; };
-		CEF2E8BA1C9958800082C320 /* GenericProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericProperty.h; sourceTree = "<group>"; };
-		CEF2E8BB1C9958800082C320 /* GenericProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericProperty.m; sourceTree = "<group>"; };
 		CEF6F4AB1C92CAD600C68975 /* AddRuleSceneClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRuleSceneClass.h; sourceTree = "<group>"; };
 		CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddRuleSceneClass.m; sourceTree = "<group>"; };
 		CEF6F4AD1C92CAD600C68975 /* AddRulesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddRulesViewController.h; sourceTree = "<group>"; };
@@ -1378,6 +1375,8 @@
 				1DF031A7883267D0FFC9E42C /* SFITabBarController.h */,
 				1C2F15241BA7FB67009DB175 /* SFIMessageViewController.h */,
 				1C2F15251BA7FB67009DB175 /* SFIMessageViewController.m */,
+				CEEAB7AB1CAD26A2003C5290 /* UICommonMethods.h */,
+				CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1962,8 +1961,6 @@
 			isa = PBXGroup;
 			children = (
 				CEEC421F1C98560D00A2C35D /* deviceLayout */,
-				CEEC42071C98560500A2C35D /* ClientEditPropertiesViewController.h */,
-				CEEC42081C98560500A2C35D /* ClientEditPropertiesViewController.m */,
 				CEEC42091C98560500A2C35D /* ClientPropertiesViewController.h */,
 				CEEC420A1C98560500A2C35D /* ClientPropertiesViewController.m */,
 				CEEC420B1C98560500A2C35D /* ClientPropertiesCell.h */,
@@ -1976,8 +1973,6 @@
 				CEEC42101C98560500A2C35D /* DeviceListController.m */,
 				CEEBE61E1C902D0400DC3E3F /* clientTypeCell.h */,
 				CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */,
-				CEF2E8BA1C9958800082C320 /* GenericProperty.h */,
-				CEF2E8BB1C9958800082C320 /* GenericProperty.m */,
 				A5C7B4001CA14F5400E269A2 /* DevicePayload.h */,
 				A5C7B4011CA14F5400E269A2 /* DevicePayload.m */,
 				A5C7B4041CA2677700E269A2 /* GenericParams.h */,
@@ -2698,6 +2693,7 @@
 			files = (
 				A5C7B4021CA14F5400E269A2 /* DevicePayload.m in Sources */,
 				1896B1DC1C5CA48B00C68501 /* SFIDimmerButton.m in Sources */,
+				CEEAB7AD1CAD26A2003C5290 /* UICommonMethods.m in Sources */,
 				1C2F60AA1B69E69D001CCA34 /* SKSTableViewCellIndicator.m in Sources */,
 				CEEC42311C98560D00A2C35D /* Slider.m in Sources */,
 				1C7E7DAB1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,
@@ -2744,7 +2740,6 @@
 				CEF6F4FC1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */,
 				A5C7B40A1CA28D6F00E269A2 /* GenericIndexValue.m in Sources */,
 				846414C91B736B36008AB07F /* ILHuePickerView.m in Sources */,
-				CEEC42171C98560500A2C35D /* ClientEditPropertiesViewController.m in Sources */,
 				1C7E7D991A41A0990026F0BA /* Analytics.m in Sources */,
 				A5F03F6C1C76E412006CB309 /* NewAddSceneViewController.m in Sources */,
 				1C7E7DAD1A41A0990026F0BA /* SFISignupViewController.m in Sources */,
@@ -2786,7 +2781,6 @@
 				1DF037534B2784850C9B047C /* UIApplication+SecurifiNotifications.m in Sources */,
 				CEF6F4E01C92CAD600C68975 /* DelayPicker.m in Sources */,
 				CEF6F4E81C92CAD600C68975 /* RulesHue.m in Sources */,
-				CEF2E8BC1C9958800082C320 /* GenericProperty.m in Sources */,
 				CEEC42331C98560D00A2C35D /* TextInput.m in Sources */,
 				1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */,
 				1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */,

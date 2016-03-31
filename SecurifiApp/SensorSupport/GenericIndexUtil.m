@@ -84,6 +84,7 @@
 +(GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericIndexClass *genericIndexObject = toolkit.genericIndexes[genericIndexID];
+    NSLog(@"genericindexobject, value: %@, %@", genericIndexObject, value);
     if(genericIndexObject == nil || value == nil)
         return nil;
     else if(genericIndexObject.values != nil){
@@ -134,8 +135,9 @@
 
 + (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(Client*) client{
     NSString *status = client.deviceAllowedType==1 ? BLOCKED: client.isActive? ACTIVE: INACTIVE;
-    GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:@"-12" forValue:client.deviceType];
+    GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:client.deviceType];
     if(genericValue == nil){ //if devicetype is wronglysent only expected return is nil
+        NSLog(@"genericvalue nil");
         genericValue = [[GenericValue alloc]initWithDisplayText:status icon:@"icon_help" toggleValue:nil value:client.deviceType];
     }else{
         genericValue.displayText = status;
@@ -146,14 +148,14 @@
 +(NSArray*) getClientDetailGenericIndexValuesListForClientID:(NSString*)clientID{
     NSMutableArray *genericIndexValues = [NSMutableArray new];
     Client *client = [Client findClientByID:clientID];
-    NSArray *clientGenericIndexes = [self getClientGenericIndexes];
+    NSArray *clientGenericIndexes = [Client getClientGenericIndexes];
     GenericIndexValue *genericIndexValue;
     GenericIndexClass *genericIndex;
     for(NSNumber *genericID in clientGenericIndexes){
         genericIndex = [self getGenericIndexForID:genericID.stringValue];
         if(genericIndex != nil){
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericID.stringValue
-                                                                               forValue:[self getOrSetValueForClient:client genericIndex:genericID.intValue newValue:nil ifGet:YES]];
+                                                                               forValue:[Client getOrSetValueForClient:client genericIndex:genericID.intValue newValue:nil ifGet:YES]];
             genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:clientID.intValue deviceID:clientID.intValue];
             [genericIndexValues addObject:genericIndexValue];
         }
@@ -167,70 +169,7 @@
     return toolkit.genericIndexes[genericIndexID];
 }
 
-+(NSArray*) getClientGenericIndexes{
-    NSArray *genericIndexesArray = [NSArray arrayWithObjects:@-11,@-12,@-13,@-14,@-15,@-16,@-17,@-18,@-19,@-20,@-3, nil];
-    return genericIndexesArray;
-}
 
-+(NSString*)getOrSetValueForClient:(Client*)client genericIndex:(int)genericIndex newValue:(NSString*)newValue ifGet:(BOOL)get{
-    if(genericIndex == -11){
-        if(get)
-            return client.name;
-        else
-            client.name = newValue;
-    }else if(genericIndex == -12){
-        if(get)
-            return client.deviceType;
-        else
-            client.deviceType = newValue;
-    }else if(genericIndex == -13){
-        if(get)
-            return client.manufacturer;
-        else
-            client.manufacturer = newValue;
-    }else if(genericIndex == -14){
-        if(get)
-            return client.deviceMAC;
-        else
-            client.deviceMAC = newValue;
-    }else if(genericIndex == -15){
-        if(get)
-            return client.deviceLastActiveTime;
-        else
-            client.deviceLastActiveTime = newValue;
-    }else if(genericIndex == -16){
-        if(get)
-            return client.deviceConnection;
-        else
-            client.deviceConnection = newValue;
-    }else if(genericIndex == -17){
-        if(get)
-            return client.deviceUseAsPresence? @"true" : @"false";
-        else
-            client.deviceUseAsPresence = newValue.boolValue;
-    }else if(genericIndex == -18){
-        if(get)
-            return @(client.timeout).stringValue;
-        else
-            client.timeout = newValue.integerValue;
-    }else if(genericIndex == -19){
-        if(get)
-            return @(client.deviceAllowedType).stringValue;
-        else
-            client.deviceAllowedType = newValue.integerValue;
-    }else if(genericIndex == -20){
-        if(get)
-            return client.rssi;
-        else
-            client.rssi = newValue;
-    }else if(genericIndex == -3){
-        if(get)
-            return @"always"; //todo
-//        else
-//            client.deviceType = newValue;
-    }
-    return nil;
-}
 
 /*
  //connected json

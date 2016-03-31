@@ -10,6 +10,7 @@
 #import "clientTypeCell.h"
 #import "SFIColors.h"
 #import "UIFont+Securifi.h"
+
 @interface ListButtonView()<UITableViewDataSource,UITableViewDelegate,clientTypeCellDelegate>
 @property (nonatomic) UITableView *tableType;
 @property (nonatomic)NSString *selectedType;

@@ -7,14 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "GenericProperty.h"
+#import "GenericIndexValue.h"
 @protocol TextInputDelegate
 -(void)updateNewValue:(NSString *)newValue;
 @end
 @interface TextInput : UIView
 @property (nonatomic)UIColor *color;
 @property (nonatomic)id<TextInputDelegate> delegate;
-@property (nonatomic)GenericProperty *deviceProperty;
--(void)drawTextField:(NSString*)name;
+@property (nonatomic)GenericIndexValue *genericIndexValue;
+
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue;
 
 @end

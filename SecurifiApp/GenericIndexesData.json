@@ -44,84 +44,84 @@
         "Layout": "LIST",
         "GroupLabel": "TYPE",
         "Values": {
-            "Tablet": {
-                "Icon": "icon_iphone",
+            "tablet": {
+                "Icon": "iphone_icon",
                 "Label": "Tablet"
             },
-            "PC": {
-                "Icon": "icon_pc",
+            "pc": {
+                "Icon": "pc_icon",
                 "Label": "PC"
             },
-            "Laptop": {
-                "Icon": "icon_laptop",
+            "laptop": {
+                "Icon": "laptop_icon",
                 "Label": "Laptop"
             },
             "android_stick": {
-                "Icon": "icon_android_stick",
+                "Icon": "android_stick_icon",
                 "Label": "Android Stick"
             },
-            "Smartphone": {
-                "Icon": "icon_smartphone",
+            "smartphone": {
+                "Icon": "smartphone_icon",
                 "Label": "Smart Phone"
             },
-            "iPod": {
-                "Icon": "icon_iPod",
+            "ipod": {
+                "Icon": "ipod_icon",
                 "Label": "iPod"
             },
-            "iPad": {
-                "Icon": "icon_iPad",
+            "ipad": {
+                "Icon": "ipad_icon",
                 "Label": "iPad"
             },
-            "iPhone": {
-                "Icon": "icon_iphone",
+            "iphone": {
+                "Icon": "iphone_icon",
                 "Label": "iPhone"
             },
-            "MAC": {
-                "Icon": "icon_pc",
+            "mac": {
+                "Icon": "pc_icon",
                 "Label": "MAC"
             },
             "appleTV": {
-                "Icon": "icon_appleTV",
+                "Icon": "appleTV_icon",
                 "Label": "Apple TV"
             },
-            "TV": {
-                "Icon": "icon_appleTV",
+            "tv": {
+                "Icon": "appletv_icon",
                 "Label": "TV"
             },
-            "Printer": {
-                "Icon": "icon_printer",
+            "printer": {
+                "Icon": "printer_icon",
                 "Label": "Printer"
             },
-            "Router_switch": {
-                "Icon": "icon_hubrouter",
+            "router_switch": {
+                "Icon": "hubrouter_icon",
                 "Label": "Router Switch"
             },
-            "Hub": {
-                "Icon": "icon_hubrouter",
+            "hub": {
+                "Icon": "hubrouter_icon",
                 "Label": "Hub"
             },
-            "Camera": {
-                "Icon": "icon_camera",
+            "camera": {
+                "Icon": "camera_icon",
                 "Label": "Camera"
             },
-            "Nest": {
-                "Icon": "icon_nest_google",
+            "nest": {
+                "Icon": "nest_google_icon",
                 "Label": "Nest"
             },
-            "Chromecast": {
-                "Icon": "chromecast",
+            "chromecast": {
+                "Icon": "chrome_cast_icon",
                 "Label": "Chromecast"
             },
             "amazon_dash": {
-                "Icon": "amazon-dash",
+                "Icon": "amazon_dash",
                 "Label": "Amazon Dash"
             },
             "amazon_echo": {
                 "Icon": "amazon-echo",
                 "Label": "Amazon Echo"
             },
-            "Other":{
-                "Icon": "icon_help",
+            "other":{
+                "Icon": "help_icon",
                 "Label": "Other"
             }
         }

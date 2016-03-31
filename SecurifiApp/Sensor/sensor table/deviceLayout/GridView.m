@@ -11,6 +11,7 @@
 #import "SFIColors.h"
 #import "Colours.h"
 #import "CollectionViewCell.h"
+
 #define ITEM_SPACING  2.0
 @interface GridView()<UICollectionViewDataSource,UICollectionViewDelegate>
 //wifi client @property

@@ -12,19 +12,17 @@
 #import "SFIColors.h"
 
 @implementation Slider
--(id) initWithFrame:(CGRect)frame
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue
 {
     self = [super initWithFrame:frame];
+    if(self){
+        self.color = color;
+        self.genericIndexValue = genericIndexValue;
+        [self drawSlider];
+    }
     return self;
-    //    return self;
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
+
 -(void)drawSlider{
     UIImageView *brightnessDim = [[UIImageView alloc]initWithFrame:CGRectMake(0, 3, self.frame.size.height, self.frame.size.height -3)];//dimmer_min
     brightnessDim.image = [UIImage imageNamed:@"dimmer_min"];
@@ -36,8 +34,8 @@
     SFISlider *brightnessSlider = [[SFISlider alloc]initWithFrame:CGRectMake(self.frame.size.height , 0, self.frame.size.width - (2*self.frame.size.height), self.frame.size.height)];
     const CGFloat slider_x_offset = 10.0;
     const CGFloat slider_right_inset = 20.0;
-    float min = (float)self.min;
-    float max = (float)self.max;
+    float min = (float)self.genericIndexValue.genericIndex.formatter.min;
+    float max = (float)self.genericIndexValue.genericIndex.formatter.max;
     brightnessSlider = [self makeSlider:min maxValue:max propertyType:SFIDevicePropertyType_BRIGHTNESS sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset slider:brightnessSlider];
     
     brightnessSlider.continuous = YES;

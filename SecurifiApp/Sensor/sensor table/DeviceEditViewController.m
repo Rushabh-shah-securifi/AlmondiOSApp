@@ -9,8 +9,6 @@
 #import "DeviceEditViewController.h"
 #import "UIFont+Securifi.h"
 
-#import "V8HorizontalPickerView.h"
-#import "SFIPickerIndicatorView1.h"
 #import "SFIColors.h"
 #import "HorizontalPicker.h"
 #import "MultiButtonView.h"
@@ -19,14 +17,9 @@
 #import "TextInput.h"
 #import "DeviceHeaderView.h"
 
-#import "SFIWiFiDeviceTypeSelectionCell.h"
 #import "clientTypeCell.h"
-#import "SFIColors.h"
-#import "UIFont+Securifi.h"
 #import "Colours.h"
 #import "CollectionViewCell.h"
-#import "GenericIndexValue.h"
-#import "GenericIndexClass.h"
 #import "GenericIndexValue.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "GridView.h"
@@ -55,23 +48,10 @@ static const int xIndent = 10;
 @property (nonatomic) IBOutlet UILabel *indexLabel;
 @property (weak, nonatomic) IBOutlet DeviceHeaderView *deviceEditHeaderCell;
 
-
-@property (nonatomic) UITableView *tableType;
-@property (strong ,nonatomic) UISegmentedControl *allowOnNetworkSegment;
 @property (nonatomic) UIScrollView *scrollView;
-@property (nonatomic) UIView *clientTypesView;
-@property (nonatomic)UIView *allowOnNetworkView;
-@property (nonatomic)UICollectionView *collectionView;
-@property (nonatomic)NSString *selectedType;/*    NSMutableString *hexBlockedDays;
-                                             */
-@property (nonatomic)NSMutableString *hexBlockedDays;
-
-
 @end
 
 @implementation DeviceEditViewController{
-    NSMutableArray * blockedDaysArray;
-    NSString *blockedType;
     NSArray *type;
     int randomMobileInternalIndex;
 }
@@ -171,52 +151,40 @@ static const int xIndent = 10;
             if([genericIndexObj.layoutType isEqualToString:SLIDER]){
                 HorizontalPicker *horzView = [[HorizontalPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 horzView.delegate = self;
-                [horzView drawSlider];
                 [view addSubview:horzView];
-            }/*
+            }
             else if ([genericIndexObj.layoutType isEqualToString:Multi_Input]){
                 MultiButtonView *buttonView = [[MultiButtonView alloc]initWithFrame:BUTTON_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 buttonView.delegate = self;
-                buttonView.color = [SFIColors clientGreenColor];
-                [buttonView drawButton:genericIndexObj.values color:[SFIColors ruleBlueColor]];
                 [view addSubview:buttonView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:HUE]){
-                HueColorPicker *HueView = [[HueColorPicker alloc]initWithFrame:SLIDER_FRAME];
-                HueView.delegate = self;
-                [HueView drawHueColorPicker];
-                [view addSubview:HueView];
+                HueColorPicker *hueView = [[HueColorPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
+                hueView.delegate = self;
+                [view addSubview:hueView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:HUE_SLIDER]){
-                Slider *sliderView = [[Slider alloc]initWithFrame:SLIDER_FRAME];
-                Formatter *formatter = genericIndexObj.formatter;
-                sliderView.min = formatter.min;
-                sliderView.max = formatter.max;
-                sliderView.color = [SFIColors ruleBlueColor];
+                Slider *sliderView = [[Slider alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 sliderView.delegate = self;
-                [sliderView drawSlider];
                 [view addSubview:sliderView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:TEXT_VIEW]){
-                TextInput *textView = [[TextInput alloc]initWithFrame:SLIDER_FRAME];
-                [textView drawTextField:genericIndexValue.genericValue.value];
+                TextInput *textView = [[TextInput alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 textView.delegate = self;
                 [view addSubview:textView];
-            }*/
-            else if ([genericIndexObj.layoutType isEqualToString:LIST]){
+            }
+            else if ([genericIndexObj.layoutType isEqualToString:GRIDVIEW]){
                 self.scrollView.hidden = YES;
                 view.frame = CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
-                //self.view.frame.size.height - view.frame.origin.y - 5
                 [self gridView:view];
             }
-            else if (1){
+            else if ([genericIndexObj.layoutType isEqualToString:LIST]){
                 view.frame = CGRectMake(0, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
                 [self drawTypeTable:view];
             }
             
             [self.indexesScroll addSubview:view];
             yPos = yPos + view.frame.size.height + LABELSPACING;
-            NSLog(@" rw-yPos %d",yPos);
         }
     }
 }
@@ -294,7 +262,6 @@ static const int xIndent = 10;
 -(void)textFieldView:(NSString *)name{
     TextInput *textView = [[TextInput alloc]initWithFrame:CGRectMake(8,25,self.indexView.frame.size.width - 8,50)];
     textView.color = [UIColor clearColor];
-    [textView drawTextField:name];
     [self.indexView addSubview:textView];
     
 }
@@ -302,7 +269,6 @@ static const int xIndent = 10;
     
     MultiButtonView *presenceSensor = [[MultiButtonView alloc]initWithFrame:CGRectMake(5,40,self.indexView.frame.size.width - 8,30 )];
     presenceSensor.color = [SFIColors clientGreenColor];
-    [presenceSensor drawButton:arr selectedValue:selectedVal];
     presenceSensor.delegate = self;
     [self.indexView addSubview:presenceSensor];
 }
@@ -315,7 +281,6 @@ static const int xIndent = 10;
     GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5)];
     [grid addSegmentControll];
     [view addSubview:grid];
-//    [self addSegmentControll];
     
 }
 

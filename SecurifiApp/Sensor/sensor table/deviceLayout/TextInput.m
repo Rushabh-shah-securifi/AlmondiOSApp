@@ -12,15 +12,19 @@
 @property (nonatomic)UITextField *deviceNameField;
 @end
 @implementation TextInput
--(id) initWithFrame:(CGRect)frame
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue
 {
     self = [super initWithFrame:frame];
+    if(self){
+        self.color = color;
+        self.genericIndexValue = genericIndexValue;
+        [self drawTextField];
+    }
     return self;
-    //    return self;
 }
--(void)drawTextField:(NSString*)name{
+-(void)drawTextField{
    self.deviceNameField = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height - 5)];
-    self.deviceNameField.text = name;
+    self.deviceNameField.text = self.genericIndexValue.genericValue.value;
     self.deviceNameField.delegate = self;
     self.deviceNameField.backgroundColor = self.color;
     self.deviceNameField.textColor = [UIColor whiteColor];

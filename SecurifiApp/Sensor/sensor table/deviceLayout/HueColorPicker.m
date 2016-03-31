@@ -13,11 +13,15 @@
 @end
 @implementation HueColorPicker
 
--(id) initWithFrame:(CGRect)frame
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue
 {
     self = [super initWithFrame:frame];
+    if(self){
+        self.color = color;
+        self.genericIndexValue = genericIndexValue;
+        [self drawHueColorPicker];
+    }
     return self;
-    //    return self;
 }
 -(void)drawHueColorPicker{
     
