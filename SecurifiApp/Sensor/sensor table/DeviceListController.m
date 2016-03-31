@@ -207,22 +207,12 @@ int randomMobileInternalIndex;
 }
 
 #pragma mark clientCell delegate
-- (void)btnSettingTapped:(NSDictionary *)connectedDevice index:(NSArray*)indexArray{
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
-        ClientPropertiesViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ClientPropertiesViewController"];
-        viewController.connectedDevice = connectedDevice;
-        viewController.indexArray = indexArray;
-        [self.navigationController pushViewController:viewController animated:YES];
 
-    });
-
-}
--(void)delegateClientSettingButtonClick{
+-(void)delegateClientSettingButtonClick:(GenericParams*)genericParams{
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
     ClientPropertiesViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ClientPropertiesViewController"];
-//    viewController.connectedDevice = [self.connectedDevices objectAtIndex:0];
+    viewController.genericParams = genericParams;
     [self.navigationController pushViewController:viewController animated:YES];
 }
 

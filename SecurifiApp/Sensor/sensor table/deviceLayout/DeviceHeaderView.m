@@ -90,7 +90,9 @@
         [self.delegate delegateDeviceSettingButtonClick:_genericParams];
     }
     else if(self.cellType == ClientTable_Cell){
-        [self.delegate delegateClientSettingButtonClick];
+        NSArray* genericIndexValues = [GenericIndexUtil getDetailListForDevice:self.genericParams.headerGenericIndexValue.deviceID];
+        self.genericParams.indexValueList = genericIndexValues;
+        [self.delegate delegateClientSettingButtonClick:self.genericParams];
     }
     else if (self.cellType == ClientEdit_Cell){
         [self.delegate delegateClientEditTable];

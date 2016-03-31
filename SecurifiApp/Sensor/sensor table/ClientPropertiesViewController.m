@@ -24,16 +24,18 @@
 @end
 
 @implementation ClientPropertiesViewController
-NSMutableArray * blockedDaysArray;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self dummyNetWorkDeviceList];
     DeviceHeaderView *commonView = [[DeviceHeaderView alloc]initWithFrame:CELLFRAME];
+    [commonView initializeSensorCellWithGenericParams:self.genericParams cellType:ClientEdit_Cell];
+    NSLog(@"self.genericParams %@ ",self.genericParams.deviceName);
     commonView.delegate = self;
-    commonView.cellType = ClientEdit_Cell;
+    [commonView setUpDeviceCell];
     // set up images label and name
     [self.view addSubview:commonView];
 }
+
 #pragma mark common cell delegate
 -(void)delegateClientEditTable{
     [self.navigationController popViewControllerAnimated:YES];
