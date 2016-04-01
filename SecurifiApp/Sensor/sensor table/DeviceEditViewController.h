@@ -10,7 +10,6 @@
 #import "GenericParams.h"
 
 @interface DeviceEditViewController : UIViewController
-//wifi client edit properties
 @property (nonatomic) GenericParams* genericParams;
 @property (nonatomic) BOOL isSensor;
 @end

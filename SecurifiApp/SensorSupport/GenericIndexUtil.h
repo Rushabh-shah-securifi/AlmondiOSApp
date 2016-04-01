@@ -13,7 +13,8 @@
 
 @interface GenericIndexUtil : NSObject
 + (NSMutableArray *)getDetailListForDevice:(int)deviceID;
-+(NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement;
-+(GenericIndexValue*)getHeaderGenericIndexValueForDevice:(Device*)device;
++ (NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement;
++ (GenericIndexValue*)getHeaderGenericIndexValueForDevice:(Device*)device;
 + (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(Client*) client;
++ (NSArray*) getClientDetailGenericIndexValuesListForClientID:(NSString*)clientID;
 @end

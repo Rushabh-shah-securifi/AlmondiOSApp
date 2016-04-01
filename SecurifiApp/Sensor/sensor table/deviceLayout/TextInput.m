@@ -26,7 +26,7 @@
    self.deviceNameField = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height - 5)];
     self.deviceNameField.text = self.genericIndexValue.genericValue.value;
     self.deviceNameField.delegate = self;
-    self.deviceNameField.backgroundColor = self.color;
+//    self.deviceNameField.backgroundColor = self.color;
     self.deviceNameField.textColor = [UIColor whiteColor];
     self.deviceNameField.font = [UIFont securifiFont:15];
     UIView *OnelineView = [[UIView alloc]initWithFrame:CGRectMake(self.deviceNameField.frame.origin.x, self.deviceNameField.frame.size.height , self.frame.size.width, 1)];

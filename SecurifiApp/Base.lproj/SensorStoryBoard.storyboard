@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14F1605" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -67,37 +67,37 @@
                                 <rect key="frame" x="8" y="73" width="304" height="380"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ClientPropertiesCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="SKSTableViewCell" rowHeight="45" id="Zpg-Bl-N2s" customClass="ClientPropertiesCell">
-                                        <rect key="frame" x="0.0" y="28" width="304" height="45"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ClientPropertiesCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="SKSTableViewCell" rowHeight="50" id="Zpg-Bl-N2s" customClass="ClientPropertiesCell">
+                                        <rect key="frame" x="0.0" y="28" width="304" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Zpg-Bl-N2s" id="Txf-Mv-Vxk">
-                                            <rect key="frame" x="0.0" y="0.0" width="304" height="45"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="304" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwf-Qb-oDU">
-                                                    <rect key="frame" x="162" y="11" width="140" height="21"/>
+                                                    <rect key="frame" x="193" y="0.0" width="104" height="50"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="140" id="J20-54-GJk"/>
+                                                        <constraint firstAttribute="width" constant="104" id="J20-54-GJk"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="15"/>
                                                     <color key="textColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lzc-b1-Gp6">
-                                                    <rect key="frame" x="11" y="8" width="140" height="37"/>
+                                                    <rect key="frame" x="11" y="0.0" width="161" height="50"/>
                                                     <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="16"/>
                                                     <color key="textColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="bwf-Qb-oDU" firstAttribute="top" secondItem="Txf-Mv-Vxk" secondAttribute="topMargin" constant="3" id="2Sw-Xy-ofq"/>
-                                                <constraint firstItem="Lzc-b1-Gp6" firstAttribute="top" secondItem="Txf-Mv-Vxk" secondAttribute="top" constant="8" id="G2w-KT-lts"/>
+                                                <constraint firstItem="bwf-Qb-oDU" firstAttribute="top" secondItem="Txf-Mv-Vxk" secondAttribute="topMargin" constant="-8" id="2Sw-Xy-ofq"/>
+                                                <constraint firstItem="Lzc-b1-Gp6" firstAttribute="top" secondItem="Txf-Mv-Vxk" secondAttribute="top" id="G2w-KT-lts"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Lzc-b1-Gp6" secondAttribute="bottom" constant="-8" id="Nyw-He-Bf1"/>
-                                                <constraint firstItem="bwf-Qb-oDU" firstAttribute="leading" secondItem="Lzc-b1-Gp6" secondAttribute="trailing" constant="11" id="Pz6-W6-KhB"/>
+                                                <constraint firstItem="bwf-Qb-oDU" firstAttribute="leading" secondItem="Lzc-b1-Gp6" secondAttribute="trailing" constant="21" id="Pz6-W6-KhB"/>
                                                 <constraint firstItem="Lzc-b1-Gp6" firstAttribute="leading" secondItem="Txf-Mv-Vxk" secondAttribute="leadingMargin" constant="3" id="lAP-TQ-QuE"/>
-                                                <constraint firstAttribute="height" secondItem="bwf-Qb-oDU" secondAttribute="height" constant="24" id="xZO-3c-WkB"/>
-                                                <constraint firstItem="bwf-Qb-oDU" firstAttribute="trailing" secondItem="Txf-Mv-Vxk" secondAttribute="trailingMargin" constant="6" id="y2S-AC-MZv"/>
+                                                <constraint firstAttribute="height" secondItem="bwf-Qb-oDU" secondAttribute="height" id="xZO-3c-WkB"/>
+                                                <constraint firstItem="bwf-Qb-oDU" firstAttribute="trailing" secondItem="Txf-Mv-Vxk" secondAttribute="trailingMargin" constant="1" id="y2S-AC-MZv"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.29411764709999999" green="0.68235294120000001" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -123,43 +123,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mxf-2a-uLK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1071" y="-414"/>
-        </scene>
-        <!--Client Edit Properties View Controller-->
-        <scene sceneID="17m-T8-oar">
-            <objects>
-                <viewController storyboardIdentifier="ClientEditPropertiesViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Rxx-GV-PAJ" customClass="ClientEditPropertiesViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="9aT-Kj-LVy"/>
-                        <viewControllerLayoutGuide type="bottom" id="G6i-LN-klm"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="ygc-Vb-cZz">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wRs-c2-kBs">
-                                <rect key="frame" x="5" y="89" width="311" height="74"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F6G-Ao-HBp">
-                                        <rect key="frame" x="8" y="8" width="159" height="21"/>
-                                        <fontDescription key="fontDescription" name="Avenir-Medium" family="Avenir" pointSize="17"/>
-                                        <color key="textColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" red="0.29411764709999999" green="0.68235294120000001" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <connections>
-                        <outlet property="indexLabel" destination="F6G-Ao-HBp" id="Hf8-KF-KFG"/>
-                        <outlet property="indexView" destination="wRs-c2-kBs" id="Pjd-4U-zLB"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kMu-AG-FH1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1406" y="-414"/>
         </scene>
         <!--Device List Controller-->
         <scene sceneID="EEc-RD-HmK">

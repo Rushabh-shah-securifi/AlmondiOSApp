@@ -679,6 +679,25 @@ DimmerButton *dimerButton;
         }
         
     }
+    
+//    for (UIView *v in deviceIndexButtons) {
+//        if ([v isKindOfClass:[DimmerButton class]]) { //to avoid removing scroll indicators
+//            DimmerButton *dim = (DimmerButton*)v;
+//            if(dim.subProperties.index == 6 && index == 5){
+//                if(dim.subProperties.matchData.intValue - value < 3){
+//                    [dim setNewValue:@(value+3).stringValue];
+//                    [self updateMatchData:dim.subProperties newValue:@(value+3).stringValue];
+//                }
+//            }else if(dim.subProperties.index == 5 && index == 6){
+//                if(value - dim.subProperties.matchData.intValue < 3){
+//                    [dim setNewValue:@(value-3).stringValue];
+//                    [self updateMatchData:dim.subProperties newValue:@(value-3).stringValue];
+//                }
+//            }
+//        }
+//    }
+    
+    
 }
 
 -(void)updateMatchData:(SFIButtonSubProperties *)dimmButtonSubProperty newValue:(NSString*)newValue{
@@ -712,7 +731,6 @@ DimmerButton *dimerButton;
         dimmer.subProperties.matchData = [dimmer scaledValue:newPickerValue];
         dimmer.subProperties.displayedData = newPickerValue;
     }
-    
     if(dimmer.subProperties.deviceType == SFIDeviceType_NestThermostat_57 && self.isTrigger){
         [self changeMinMaxValuesOfNestRangeLowHighForIndex:dimmer.subProperties.index value:dimmer.subProperties.matchData.intValue dimSuperView:[dimmer superview]];
     }

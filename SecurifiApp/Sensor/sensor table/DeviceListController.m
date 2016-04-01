@@ -16,6 +16,7 @@
 #import "GenericIndexUtil.h"
 #import "DeviceParser.h"
 #import "AlmondJsonCommandKeyConstants.h"
+#import "SFIColors.h"
 
 
 #define NO_ALMOND @"NO ALMOND"
@@ -52,6 +53,7 @@ int randomMobileInternalIndex;
 - (void)viewWillAppear:(BOOL)animated{
     NSLog(@"sensor viewWillAppear");
     [super viewWillAppear:YES];
+    [self initializeNotifications];
     DeviceParser *deviceparser = [[DeviceParser alloc]init];
     [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
     
@@ -59,10 +61,8 @@ int randomMobileInternalIndex;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     self.currentDeviceList = toolkit.devices;
-    
-    
     self.currentClientList = [self getSortedDevices];
-    [self initializeNotifications];
+
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
         
@@ -83,6 +83,7 @@ int randomMobileInternalIndex;
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onDeviceListAndDynamicResponseParsed:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onUpdateDeviceIndexResponse:) name:NOTIFICATION_UPDATE_DEVICE_INDEX_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onClientListAndDynamicResponse:) name:NOTIFICATION_DYNAMIC_CLIENTLIST_ADD_UPDATE_REMOVE_NOTIFIER object:nil];
 }
 
 -(NSMutableArray*)getSortedDevices{
@@ -91,7 +92,6 @@ int randomMobileInternalIndex;
     NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
     
     NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, secondDescriptor, nil];
-    
     return [[toolkit.clients sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
 }
 #pragma mark - Table view data source
@@ -109,9 +109,9 @@ int randomMobileInternalIndex;
 }
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
     if(section == 0)
-        return [NSString stringWithFormat:@"Sensors (%ld)",self.currentDeviceList.count];
+        return [NSString stringWithFormat:@"Sensors (%ld)",(long int)self.currentDeviceList.count];
     else
-        return [NSString stringWithFormat:@"Network Devices (%ld)",self.currentClientList.count];
+        return [NSString stringWithFormat:@"Network Devices (%ld)",(long int)self.currentClientList.count];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 30;
@@ -131,43 +131,33 @@ int randomMobileInternalIndex;
     return vHeader;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    DeviceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER forIndexPath:indexPath];
+    cell.commonView.delegate = self;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if(indexPath.section == 0){
-        DeviceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER forIndexPath:indexPath];
-        if(self.currentDeviceList == nil || self.currentDeviceList.count == 0)
-            return cell;
         Device *device = [self.currentDeviceList objectAtIndex:indexPath.row];
         GenericParams *genericParams;
 //        if(cell.commonView.genericParams == nil){
             NSLog(@"genericParams is nil");
-            genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[UIColor greenColor]];
+            genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[SFIColors clientGreenColor]];
 //        }else {
 //            NSLog(@"genericParams not nil");
-//            [genericParams setGenericParamsWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[UIColor greenColor]];
+//            [genericParams setGenericParamsWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[SFIColors clientGreenColor]];
 //        }
         
         [cell.commonView initializeSensorCellWithGenericParams:genericParams cellType:SensorTable_Cell];
-        
-        cell.commonView.delegate = self;
         [cell.commonView setUpDeviceCell];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
     else
     {
-        DeviceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER];
-        
         Client *client = [self.currentClientList objectAtIndex:indexPath.row];
-        
         GenericParams *genericParams;
-        genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getClientHeaderGenericIndexValueForClient:client] indexValueList:nil deviceName:client.name color:[UIColor greenColor]];
+        genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getClientHeaderGenericIndexValueForClient:client] indexValueList:nil deviceName:client.name color:[SFIColors clientGreenColor]];
         [cell.commonView initializeSensorCellWithGenericParams:genericParams cellType:ClientTable_Cell];
-        
-        cell.commonView.delegate = self;
         [cell.commonView setUpDeviceCell];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -219,12 +209,21 @@ int randomMobileInternalIndex;
 #pragma mark command responses
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"onDeviceListAndDynamicResponseParsed");
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    self.currentDeviceList = toolkit.devices;
     dispatch_async(dispatch_get_main_queue(), ^() {
-        //    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         [self.tableView reloadData];
 
     });
 }
+-(void)onClientListAndDynamicResponse:(id)sender{
+    self.currentClientList = [self getSortedDevices];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+        
+    });
+}
+
 -(void)onUpdateDeviceIndexResponse:(id)sender{
     NSLog(@"onUpdateDeviceIndexResponse");
     //update image

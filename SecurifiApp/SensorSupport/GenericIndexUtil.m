@@ -94,7 +94,7 @@
         GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:[genericIndexObject.formatter transform:value] iconText:[genericIndexObject.formatter transform:value] value:value];
         return genericValue;
     }
-    return [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value];
+    return [[GenericValue alloc]initWithDisplayText:value iconText:value value:value];
 }
 
 + (NSMutableArray *)getDetailListForDevice:(int)deviceID{
@@ -134,7 +134,7 @@
 }
 
 + (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(Client*) client{
-    NSString *status = client.deviceAllowedType==1 ? BLOCKED: client.isActive? ACTIVE: INACTIVE;
+    NSString *status = client.deviceAllowedType==1 ? ALLOWED_TYPE_BLOCKED: client.isActive? ACTIVE: INACTIVE;
     GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:client.deviceType];
     if(genericValue == nil){ //if devicetype is wronglysent only expected return is nil
         NSLog(@"genericvalue nil");
@@ -152,10 +152,12 @@
     GenericIndexValue *genericIndexValue;
     GenericIndexClass *genericIndex;
     for(NSNumber *genericID in clientGenericIndexes){
+        NSLog(@"clientGenericIndexes");
         genericIndex = [self getGenericIndexForID:genericID.stringValue];
         if(genericIndex != nil){
+            NSString *value = [Client getOrSetValueForClient:client genericIndex:genericID.intValue newValue:nil ifGet:YES];
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericID.stringValue
-                                                                               forValue:[Client getOrSetValueForClient:client genericIndex:genericID.intValue newValue:nil ifGet:YES]];
+                                                                               forValue:value];
             genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:clientID.intValue deviceID:clientID.intValue];
             [genericIndexValues addObject:genericIndexValue];
         }

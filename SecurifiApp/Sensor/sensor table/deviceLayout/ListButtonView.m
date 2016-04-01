@@ -24,15 +24,12 @@ NSArray *type;
     self.tableType = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height - 100)];
     [self.tableType setDataSource:self];
     [self.tableType setDelegate:self];
-    //        [self.tableType registerClass:[clientTypeCell class] forCellReuseIdentifier:@"clientTypeCell"];
     self.tableType.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableType.allowsSelection = NO;
     self.tableType.alwaysBounceVertical = NO ;
     [self.tableType setAlwaysBounceVertical:NO];
     self.tableType.alwaysBounceHorizontal = NO;
     [self.tableType reloadData];
-  
-    //        self.indexView = self.tableType;
     [self addSubview:self.tableType];
     
 }
@@ -51,7 +48,6 @@ NSArray *type;
     if (cell == nil) {
         cell = [[clientTypeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"clientTypeCell"];
         [cell setupLabel];
-        //cell = [[SFISensorTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cell_id];
     }
     int currentvalPos = 0;
     for(NSString *str in type){

@@ -48,7 +48,6 @@
     
 }
 
-
 -(void)initializeSensorCellWithGenericParams:(GenericParams*)genericParams cellType:(CellType)cellType{
     self.genericParams = genericParams;
     self.cellType = cellType;
@@ -70,10 +69,10 @@
     }
 }
 
-
 -(void)setUpClientCell{
     // set up images and labels for clients
 }
+
 -(void)addDeviceValueImgLabel:(NSString*)text suffix:(NSString*)suffix{
     NSString *strTopTitleLabelText = [text stringByAppendingString:suffix];
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
@@ -90,11 +89,11 @@
         [self.delegate delegateDeviceSettingButtonClick:_genericParams];
     }
     else if(self.cellType == ClientTable_Cell){
-        NSArray* genericIndexValues = [GenericIndexUtil getDetailListForDevice:self.genericParams.headerGenericIndexValue.deviceID];
+        NSArray* genericIndexValues = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
         self.genericParams.indexValueList = genericIndexValues;
         [self.delegate delegateClientSettingButtonClick:self.genericParams];
     }
-    else if (self.cellType == ClientEdit_Cell){
+    else if (self.cellType == ClientProperty_Cell){
         [self.delegate delegateClientEditTable];
     }
     

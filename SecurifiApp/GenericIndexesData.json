@@ -1,45 +1,45 @@
 {
     "-1": {
         "Name": "Name",
-        "ReadOnly": "false",
+        "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "TextView",
+        "Layout": "TEXT_VIEW",
         "GroupLabel": "Name",
         "CommandType": "NameChanged"
     },
     "-2": {
         "Name": "Location",
-        "ReadOnly": "false",
+        "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "TextView",
+        "Layout": "TEXT_VIEW",
         "GroupLabel": "Location",
         "CommandType": "LocationChanged"
     },
     "-3": {
         "Name": "Notify Me",
-        "ReadOnly": "false",
+        "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "GroupLabel": "Notify Me",
         "CommandType": "NotifyMe"
     },
     "-4": {
         "Name": "WifiClient",
-        "ReadOnly": "true",
+        "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "Toggle",
         "GroupLabel": "WifiClient"
     },
     "-11": {
         "Name": "ClientName",
-        "ReadOnly": "false",
+        "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Name"
     },
     "-12": {
         "Name": "ClientType",
-        "ReadOnly": "false",
+        "Type": "Actuator",
         "Placement": "Detail_Header",
         "Layout": "LIST",
         "GroupLabel": "TYPE",
@@ -128,57 +128,57 @@
     },
     "-13": {
         "Name": "Manufacturer",
-        "ReadOnly": "true",
+        "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Manufacturer"
     },
     "-14": {
         "Name": "ClientMAC",
-        "ReadOnly": "true",
+        "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "MAC Address"
     },
     "-15": {
         "Name": "LastKnownIP",
-        "ReadOnly": "true",
+        "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Last Known IP"
     },
     "-16": {
         "Name": "ClientConnection",
-        "ReadOnly": "true",
+        "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Connection"
     },
     "-17": {
         "Name": "UseAsPresence",
-        "ReadOnly": "false",
+        "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "GroupLabel": "Use As Presence Sensor",
         "Values":{
-            "true":{
+            "0":{
                 "Label": "Yes"
             },
-            "false":{
+            "1":{
                 "Label": "No"
             }
         }
     },
     "-18": {
         "Name": "InactiveGrace",
-        "ReadOnly": "fasle",
+        "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Inactive Grace Period"
     },
     "-19": {
         "Name": "AllowOnNetwork",
-        "ReadOnly": "false",
+        "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "GRID_VIEW",
         "GroupLabel": "Allow On Network",
@@ -196,7 +196,7 @@
     },
     "-20": {
         "Name": "SignalStrength",
-        "ReadOnly": "true",
+        "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Signal Strength"
@@ -630,7 +630,7 @@
         "Name": "BASIC_EXTENDER",
         "Type": "Actuator",
         "Placement": "DETAIL",
-        "Layout": "Toggle|Multi_Input",
+        "Layout": "Toggle|MULTI_BUTTON",
         "GroupLabel": "Power",
         "AppLabel": "power",
         "Values": {
@@ -885,7 +885,7 @@
         "Name": "THERMOSTAT MODE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Multi_Input",
+        "Layout": "MULTI_BUTTON",
         "AppLabel": "mode",
         "GroupLabel": "Mode",
         "Values": {
@@ -949,7 +949,7 @@
         "Name": "THERMOSTAT FAN MODE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Multi_Input",
+        "Layout": "MULTI_BUTTON",
         "GroupLabel": "Fan Mode",
         "AppLabel": "fan_mode",
         "Values": {
@@ -1171,7 +1171,7 @@
         "Type": "Actuator",
         "ReadOnly": "false",
         "Placement": "Detail",
-        "Layout": "Multi_Input|Toggle",
+        "Layout": "MULTI_BUTTON",
         "GroupLabel": "Swing",
         "AppLabel": "swing",
         "Values": {
@@ -1255,7 +1255,7 @@
         "Name": "THERMOSTAT_MODE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Multi_Input|Toggle",
+        "Layout": "MULTI_BUTTON",
         "GroupLabel": "Mode",
         "AppLabel": "mode",
         "Values": {
@@ -1327,7 +1327,7 @@
         "Name": "AWAY_MODE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Multi_Input|Toggle",
+        "Layout": "MULTI_BUTTON",
         "GroupLabel": "Nest Mode",
         "AppLabel": "nest_label_away_mode",
         "ExcludeFrom": "Scene",
@@ -1353,7 +1353,7 @@
         "Name": "THERMOSTAT_FAN_STATE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Multi_Input|Toggle",
+        "Layout": "MULTI_BUTTON",
         "GroupLabel": "Fan",
         "AppLabel": "fan",
         "Values": {

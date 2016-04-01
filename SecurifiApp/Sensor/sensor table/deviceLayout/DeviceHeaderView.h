@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, CellType) {
     SensorTable_Cell,
     ClientTable_Cell,
     SensorEdit_Cell,
-    ClientEdit_Cell,
+    ClientProperty_Cell,
     ClientEditProperties_cell
     
 };
