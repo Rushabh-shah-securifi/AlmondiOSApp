@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GenericIndexValue.h"
+
 
 @interface ListButtonView : UIView
--(void)drawTypeTable:(NSString *)selectedType;
+@property (nonatomic)UIColor *color;
+@property (nonatomic)GenericIndexValue *genericIndexValue;
+//@property (nonatomic)
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue;
 @end

@@ -16,19 +16,35 @@
 @property (nonatomic)NSString *selectedType;
 @end
 @implementation ListButtonView
-NSArray *type;
+NSMutableArray *type;
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue
+{
+    self = [super initWithFrame:frame];
+    if(self){
+        self.color = color;
+        self.genericIndexValue = genericIndexValue;
+        type = [[NSMutableArray alloc] init];
+        [self drawTypeTable];
+    }
+    return self;
+}
 
--(void)drawTypeTable:selectedType{
-    type = [[NSArray alloc]initWithObjects:@"PC",@"smartPhone",@"iPhone",@"iPad",@"iPod",@"MAC",@"TV",@"printer",@"Router_switch",@"Nest",@"Hub",@"Camara",@"ChromeCast",@"android_stick",@"amazone_exho",@"amazone-dash",@"Other", nil];
-    self.selectedType = selectedType;
+-(void)drawTypeTable{
+    for(NSString *key in self.genericIndexValue.genericIndex.values.allKeys){
+        
+        GenericValue *gVal = [self.genericIndexValue.genericIndex.values valueForKey:key];
+        NSLog(@" gval .value %@",gVal.value);
+        [type addObject:gVal.value];
+    }
+    NSLog(@"types %@",type);
+    self.selectedType = self.genericIndexValue.genericValue.value;
+    NSLog(@" self.genericIndexValue.genericValue.value %@",self.genericIndexValue.genericValue.value);
     self.tableType = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height - 100)];
     [self.tableType setDataSource:self];
     [self.tableType setDelegate:self];
     self.tableType.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableType.allowsSelection = NO;
     self.tableType.alwaysBounceVertical = NO ;
-    [self.tableType setAlwaysBounceVertical:NO];
-    self.tableType.alwaysBounceHorizontal = NO;
     [self.tableType reloadData];
     [self addSubview:self.tableType];
     
@@ -58,7 +74,7 @@ NSArray *type;
     cell.delegate = self;
     cell.userInteractionEnabled = YES;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.color = [SFIColors clientGreenColor];
+//    cell.color = [SFIColors clientGreenColor];
     cell.backgroundColor = [SFIColors clientGreenColor];
     [cell writelabelName:[type objectAtIndex:indexPath.row]];
     if(currentvalPos == indexPath.row)

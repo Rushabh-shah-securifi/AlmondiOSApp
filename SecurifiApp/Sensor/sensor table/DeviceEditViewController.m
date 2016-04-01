@@ -26,6 +26,7 @@
 #import "ListButtonView.h"
 #import "DevicePayload.h"
 #import "GenericIndexUtil.h"
+#import "ClientPayload.h"
 
 #define ITEM_SPACING  2.0
 #define LABELSPACING 20.0
@@ -118,6 +119,7 @@ static const int xIndent = 10;
     for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList){
         NSLog(@"genericIndexValue loop");
         GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
+
         if([genericIndexObj.layoutType isEqualToString:@"Info"] || [genericIndexObj.layoutType.lowercaseString isEqualToString:@"off"] || genericIndexObj.layoutType == nil || [genericIndexObj.layoutType isEqualToString:@"NaN"]){
             continue;
         }
@@ -132,6 +134,7 @@ static const int xIndent = 10;
             [view addSubview:label];
             
             UILabel *valueLabel = [[UILabel alloc]initWithFrame:CGRectMake(view.frame.size.width - 110, 0, 100, 15)];
+            
             [self setUpLable:valueLabel withPropertyName:genericIndexValue.genericValue.value];
             valueLabel.textAlignment = NSTextAlignmentRight;
             valueLabel.alpha = 0.5;
@@ -173,12 +176,20 @@ static const int xIndent = 10;
             }
             else if ([genericIndexObj.layoutType isEqualToString:GRID_VIEW]){
                 self.scrollView.hidden = YES;
+                 NSString *schedule = [Client getScheduleById:@(genericIndexValue.deviceID).stringValue];
+                NSLog(@" schedule %@",schedule);
                 view.frame = CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
-                [self gridView:view];
+
+                GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5) color:self.genericParams.color genericIndexValue:genericIndexValue onSchedule:(NSString*)schedule];
+                [view addSubview:grid];
             }
             else if ([genericIndexObj.layoutType isEqualToString:LIST]){
                 view.frame = CGRectMake(0, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
-                [self drawTypeTable:view];
+                NSLog(@"value : %@",genericIndexValue.genericValue.value);
+                ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width , self.view.frame.size.height- 5) color:self.genericParams.color genericIndexValue:genericIndexValue];
+                
+                
+                [view addSubview:typeTableView];
             }
             
             [self.indexesScroll addSubview:view];
@@ -198,13 +209,6 @@ static const int xIndent = 10;
 
 
 #pragma mark typeTable
--(void)drawTypeTable:(UIView *)view{
-    self.indexView.hidden = YES;
-    ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width , self.view.frame.size.height- 5)];
-    [typeTableView drawTypeTable:@"MAC"];
-    [view addSubview:typeTableView];
-
-}
 -(void)textFieldView:(NSString *)name{
     TextInput *textView = [[TextInput alloc]initWithFrame:CGRectMake(8,25,self.indexView.frame.size.width - 8,50)];
     textView.color = [UIColor clearColor];
@@ -225,10 +229,30 @@ static const int xIndent = 10;
 -(void)gridView:(UIView *)view{
     self.indexView.hidden = YES;
     GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5)];
-    [grid addSegmentControll];
     [view addSubview:grid];
     
 }
+#pragma mark delegate callback methods
+-(void)saveDeviceNewValue:(NSString *)newValue forIndex:(int)index{// index is genericindex for clients, normal index for sensors
+    NSLog(@"saveDeviceNewValue %@",newValue);
+    GenericCommand *command = [[GenericCommand alloc] init];
+    NSDictionary *payload;
+    if(self.isSensor){
+        //need to sync b/w name and location
+        payload = [DevicePayload getNameLocationChangePayloadForGenericProperty:self.genericParams.headerGenericIndexValue mii:randomMobileInternalIndex name:newValue location:@"my location"];
+        command.commandType = CommandType_UPDATE_DEVICE_NAME;
+    }else{
+        NSLog(@"saveDeviceNewValue - clients");
+        Client *client = [Client findClientByID:@(_genericParams.headerGenericIndexValue.deviceID).stringValue];
+        [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
+        payload = [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:randomMobileInternalIndex];
+        command.commandType = CommandType_UPDATE_CLIENT;
+        NSLog(@"payload client : %@", payload);
+    }
+    command.command = [payload JSONString];
+    [self asyncSendCommand:command];
+}
+
 
 #pragma mark delegate callback methods
 -(void)updateNewValue:(NSString *)newValue{

@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GenericIndexValue.h"
 
 @interface GridView : UIView
--(void)addSegmentControll;
+@property (nonatomic)UIColor *color;
+@property (nonatomic)GenericIndexValue *genericIndexValue;
+//@property (nonatomic)
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue onSchedule:(NSString*)schedule;
 @end

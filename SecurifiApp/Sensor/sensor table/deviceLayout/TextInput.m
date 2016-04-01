@@ -60,6 +60,6 @@
 }
 -(void)tapCheckMark{
     NSLog(@"tapCheckMark %@",self.deviceNameField.text);
-    [self.delegate updateNewValue:self.deviceNameField.text];
+    [self.delegate saveDeviceNewValue:self.deviceNameField.text forIndex:_genericIndexValue.index];
 }
 @end

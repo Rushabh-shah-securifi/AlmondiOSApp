@@ -19,36 +19,30 @@
 //@property (nonatomic)  UILabel *indexLabel;
 @property (strong ,nonatomic) UISegmentedControl *allowOnNetworkSegment;
 @property (nonatomic) UIScrollView *scrollView;
-@property (nonatomic) UIView *clientTypesView;
-@property (nonatomic)NSString *indexName;
-@property (nonatomic) NSDictionary *deviceDict;
 @property (nonatomic)NSMutableString *hexBlockedDays;
 @property (nonatomic)UICollectionView *collectionView;
+@property (nonatomic)NSString *schedule;
 
 @end
 @implementation GridView
 NSMutableArray * blockedDaysArray;
 NSString *blockedType;
--(id)initWithFrame:(CGRect)frame{
-    NSLog(@"initWithFrame ");
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue onSchedule:(NSString*)schedule
+{
     self = [super initWithFrame:frame];
-    if(!self){
-        
+    if(self){
+        self.color = color;
+        self.genericIndexValue = genericIndexValue;
+        self.schedule = schedule;
+        [self addSegmentControll];
     }
-    return  self;
+    return self;
 }
 
 -(void)addSegmentControll{
-    UILabel *indexLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, 20)];
-    indexLabel.textColor = [UIColor whiteColor];
-    indexLabel.font = [UIFont securifiFont:14];
-    indexLabel.text = @"Allow On network";
-    indexLabel.backgroundColor = [UIColor clearColor];
-    [self addSubview:indexLabel];
-    
     NSArray *itemArray = [NSArray arrayWithObjects: @"Always", @"Schedule", @"Block", nil];
     self.allowOnNetworkSegment = [[UISegmentedControl alloc]initWithItems:itemArray];
-    self.allowOnNetworkSegment.frame = CGRectMake(5, indexLabel.frame.size.height + 10, self.frame.size.width - 10, 25);
+    self.allowOnNetworkSegment.frame = CGRectMake(5,10, self.frame.size.width - 10, 25);
     self.allowOnNetworkSegment.center = CGPointMake(CGRectGetMidX(self.bounds), self.allowOnNetworkSegment.center.y);
     self.allowOnNetworkSegment.tintColor = [UIColor whiteColor];
     //    self.allowOnNetworkSegment.segmentedControlStyle = UISegmentedControlStylePlain;
@@ -60,12 +54,13 @@ NSString *blockedType;
     //    [self.view addSubview:self.indexView];
 }
 -(void)setUpAllowOnNetworkSegment{
-    if([[self.deviceDict valueForKey:@"AllowedType"] isEqualToString:@"0"]){
+    NSLog(@"self value %@",self.genericIndexValue.genericValue.value);
+    if([self.genericIndexValue.genericValue.value isEqualToString:@"0"]){
         self.scrollView.hidden = YES;
         self.allowOnNetworkSegment.selectedSegmentIndex = 0; //Always
         blockedType = @"0";
         self.hexBlockedDays = [@"000000,000000,000000,000000,000000,00000,00000" mutableCopy];
-    }else if([[self.deviceDict valueForKey:@"AllowedType"] isEqualToString:@"1"]){
+    }else if([self.genericIndexValue.genericValue.value isEqualToString:@"1"]){
         self.scrollView.hidden = YES;
         self.allowOnNetworkSegment.selectedSegmentIndex = 2; //Blocked
         self.hexBlockedDays = [@"ffffff,ffffff,ffffff,ffffff,ffffff,ffffff,ffffff" mutableCopy];
@@ -146,7 +141,7 @@ NSString *blockedType;
                           initWithFrame:CGRectMake(0, infoView.frame.size.height, self.scrollView.frame.size.width, 80)];
     infoLabel.text = @"Tap on the 24/7 grid to create a schedule during which this device is blocked/unblocked on the network. Also, you can tap on (Su,Mo..) to block/unblock device on that particular day or (0,1..) for particular hour.";
     infoLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    infoLabel.backgroundColor = [SFIColors clientGreenColor];
+    infoLabel.backgroundColor = [UIColor clearColor];
     infoLabel.font = [UIFont securifiLightFont:12];
     infoLabel.center = CGPointMake(CGRectGetMidX(self.scrollView.bounds), infoLabel.center.y);
     infoLabel.textColor = [UIColor whiteColor];
@@ -159,7 +154,7 @@ NSString *blockedType;
     [self.collectionView setDataSource:self];
     [self.collectionView setDelegate:self];
     [self.collectionView registerClass:[CollectionViewCell class] forCellWithReuseIdentifier:@"collectionViewCell"];
-    self.collectionView.backgroundColor = [SFIColors clientGreenColor];
+    self.collectionView.backgroundColor = [UIColor clearColor];
     self.collectionView.scrollEnabled = NO;
     self.collectionView.allowsMultipleSelection = YES;
     [self.scrollView addSubview:self.collectionView];
@@ -177,7 +172,7 @@ NSString *blockedType;
         }
         [blockedDaysArray addObject:blockedHours];
     }
-    NSArray *strings = [[self.deviceDict valueForKey:@"Schedule"] componentsSeparatedByString:@","];
+    NSArray *strings = [self.schedule componentsSeparatedByString:@","];
     if([strings count] > 7){
         return;
     }
@@ -214,7 +209,7 @@ NSString *blockedType;
 {
     //You may want to create a divider to scale the size by the way..
     float itemSize = self.collectionView.bounds.size.width/10;
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, 26*itemSize + 26*ITEM_SPACING + 180);
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, 26*itemSize + 26*ITEM_SPACING + 230);
     return CGSizeMake(itemSize, itemSize);
 }
 
