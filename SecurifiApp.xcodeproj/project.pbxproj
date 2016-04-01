@@ -242,6 +242,7 @@
 		A536D3F21C8EB9ED00FCC2A7 /* Scenes_Iphone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A536D3F01C8EB9ED00FCC2A7 /* Scenes_Iphone.storyboard */; };
 		A54537291C8ED1ED00DC3EC8 /* SceneNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A54537281C8ED1ED00DC3EC8 /* SceneNameViewController.m */; };
 		A545372B1C8ED35C00DC3EC8 /* scene_names.txt in Resources */ = {isa = PBXBuildFile; fileRef = A545372A1C8ED35C00DC3EC8 /* scene_names.txt */; };
+		A5488CB21CAE9120002B9F1C /* ClientPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = A5488CB11CAE9120002B9F1C /* ClientPayload.m */; };
 		A54EB0351C45004B00CF2837 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A54EB0341C45004B00CF2837 /* Common-Images.xcassets */; };
 		A584C8401C5B8344006E02DB /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A584C83F1C5B8344006E02DB /* CollectionViewCell.m */; };
 		A58DB2611BB168C400717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB24F1BB168C400717C02 /* AccountsStoryboard_iPhone.strings */; };
@@ -454,7 +455,7 @@
 		CE810C5E1C9BDAA000F80777 /* GridView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C5D1C9BDAA000F80777 /* GridView.m */; };
 		CE810C611C9C15D100F80777 /* ListButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C601C9C15D100F80777 /* ListButtonView.m */; };
 		CEA4A82C1C86BEB00098C7BD /* SensorStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CEA4A82A1C86BEB00098C7BD /* SensorStoryBoard.storyboard */; };
-		CEEAB7AD1CAD26A2003C5290 /* UICommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */; settings = {ASSET_TAGS = (); }; };
+		CEEAB7AD1CAD26A2003C5290 /* UICommonMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEAB7AC1CAD26A2003C5290 /* UICommonMethods.m */; };
 		CEEBE6201C902D0400DC3E3F /* clientTypeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEBE61F1C902D0400DC3E3F /* clientTypeCell.m */; };
 		CEEC42051C9828BA00A2C35D /* SFIWiFiClientListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC42041C9828BA00A2C35D /* SFIWiFiClientListCell.m */; };
 		CEEC42181C98560500A2C35D /* ClientPropertiesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CEEC420A1C98560500A2C35D /* ClientPropertiesViewController.m */; };
@@ -775,6 +776,8 @@
 		A54537271C8ED1ED00DC3EC8 /* SceneNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneNameViewController.h; sourceTree = "<group>"; };
 		A54537281C8ED1ED00DC3EC8 /* SceneNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneNameViewController.m; sourceTree = "<group>"; };
 		A545372A1C8ED35C00DC3EC8 /* scene_names.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scene_names.txt; sourceTree = "<group>"; };
+		A5488CB01CAE9120002B9F1C /* ClientPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientPayload.h; sourceTree = "<group>"; };
+		A5488CB11CAE9120002B9F1C /* ClientPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientPayload.m; sourceTree = "<group>"; };
 		A54EB0341C45004B00CF2837 /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
 		A584C83E1C5B8344006E02DB /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		A584C83F1C5B8344006E02DB /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
@@ -1979,6 +1982,8 @@
 				A5C7B4051CA2677700E269A2 /* GenericParams.m */,
 				A5C7B4081CA28D6F00E269A2 /* GenericIndexValue.h */,
 				A5C7B4091CA28D6F00E269A2 /* GenericIndexValue.m */,
+				A5488CB01CAE9120002B9F1C /* ClientPayload.h */,
+				A5488CB11CAE9120002B9F1C /* ClientPayload.m */,
 			);
 			path = "sensor table";
 			sourceTree = "<group>";
@@ -2730,6 +2735,7 @@
 				1C7E7DBD1A41A0990026F0BA /* SFICloudStatusBarButtonItem.m in Sources */,
 				1C7E7D9B1A41A0990026F0BA /* ScoreboardEventViewController.m in Sources */,
 				1C7E7D931A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
+				A5488CB21CAE9120002B9F1C /* ClientPayload.m in Sources */,
 				1C7E7D9D1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
 				1C7E7DA51A41A0990026F0BA /* SFIAccountsTableViewController.m in Sources */,
 				846414CC1B736B36008AB07F /* ILView.m in Sources */,

@@ -63,7 +63,6 @@
         DeviceIndex *deviceIndex = deviceIndexes[IndexId];
         GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
         if([genericIndexObj.placement rangeOfString:placement options:NSCaseInsensitiveSearch].location != NSNotFound){
-            NSLog(@"genericindex: %@", deviceIndex.genericIndex);
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericIndexObj.ID
                                                                                forValue:[self getHeaderValueFromKnownValuesForDevice:device indexID:IndexId]];
             [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue index:IndexId.intValue deviceID:device.ID]];
@@ -84,7 +83,6 @@
 +(GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericIndexClass *genericIndexObject = toolkit.genericIndexes[genericIndexID];
-    NSLog(@"genericindexobject, value: %@, %@", genericIndexObject, value);
     if(genericIndexObject == nil || value == nil)
         return nil;
     else if(genericIndexObject.values != nil){
@@ -127,7 +125,7 @@
         }
         GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value];
         GenericIndexClass *genIndexObj = toolkit.genericIndexes[@(genericIndex).stringValue];
-        [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genIndexObj genericValue:genericValue index:0 deviceID:device.ID]];
+        [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genIndexObj genericValue:genericValue index:genericIndex deviceID:device.ID]];
     }
     
     return genericIndexValues;
@@ -137,10 +135,9 @@
     NSString *status = client.deviceAllowedType==1 ? ALLOWED_TYPE_BLOCKED: client.isActive? ACTIVE: INACTIVE;
     GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:client.deviceType];
     if(genericValue == nil){ //if devicetype is wronglysent only expected return is nil
-        NSLog(@"genericvalue nil");
         genericValue = [[GenericValue alloc]initWithDisplayText:status icon:@"icon_help" toggleValue:nil value:client.deviceType];
     }else{
-        genericValue.displayText = status;
+        genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:status];
     }
     return [[GenericIndexValue alloc]initWithGenericIndex:nil genericValue:genericValue index:client.deviceID.intValue deviceID:client.deviceID.intValue];
 }
@@ -152,13 +149,12 @@
     GenericIndexValue *genericIndexValue;
     GenericIndexClass *genericIndex;
     for(NSNumber *genericID in clientGenericIndexes){
-        NSLog(@"clientGenericIndexes");
         genericIndex = [self getGenericIndexForID:genericID.stringValue];
         if(genericIndex != nil){
             NSString *value = [Client getOrSetValueForClient:client genericIndex:genericID.intValue newValue:nil ifGet:YES];
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericID.stringValue
                                                                                forValue:value];
-            genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:clientID.intValue deviceID:clientID.intValue];
+            genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:genericID.intValue deviceID:clientID.intValue];
             [genericIndexValues addObject:genericIndexValue];
         }
     }
