@@ -55,6 +55,7 @@
 
 -(void)setUpDeviceCell{
     NSLog(@"setUPSensorCell");
+    self.view.backgroundColor = _genericParams.color;
     self.deviceName.text = self.genericParams.deviceName;
     NSLog(@"devicename: %@, icon: %@, icontext: %@",self.deviceName.text, self.genericParams.headerGenericIndexValue.genericValue.icon, self.genericParams.headerGenericIndexValue.genericValue.iconText);
     if(_genericParams.headerGenericIndexValue.genericValue.iconText){

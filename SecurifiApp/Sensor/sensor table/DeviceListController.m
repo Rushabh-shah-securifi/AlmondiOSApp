@@ -28,6 +28,7 @@
 @property (nonatomic,strong)NSMutableArray *currentDeviceList;
 @property(nonatomic, strong) NSMutableArray *currentClientList;
 @property SFIAlmondPlus *currentAlmond;
+@property(nonatomic, readonly) SFIColors *almondColor;
 @end
 
 @implementation DeviceListController
@@ -36,6 +37,7 @@ int randomMobileInternalIndex;
 - (void)viewDidLoad {
     NSLog(@"sensor - viewDidLoad");
     [super viewDidLoad];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
@@ -49,6 +51,7 @@ int randomMobileInternalIndex;
         [self markTitle: self.currentAlmond.almondplusName];
     }
     
+    [self initializeColors:[toolkit currentAlmond]];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -63,7 +66,7 @@ int randomMobileInternalIndex;
     self.currentAlmond = [toolkit currentAlmond];
     self.currentDeviceList = toolkit.devices;
     self.currentClientList = [self getSortedDevices];
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
         
@@ -152,7 +155,7 @@ int randomMobileInternalIndex;
         GenericParams *genericParams;
 //        if(cell.commonView.genericParams == nil){
             NSLog(@"genericParams is nil");
-            genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[UIColor yellowColor]];
+        genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[self.almondColor makeGradatedColorForPositionIndex:indexPath.row]];
 //        }else {
 //            NSLog(@"genericParams not nil");
 //            [genericParams setGenericParamsWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[SFIColors clientGreenColor]];
@@ -166,7 +169,8 @@ int randomMobileInternalIndex;
     {
         Client *client = [self.currentClientList objectAtIndex:indexPath.row];
         GenericParams *genericParams;
-        genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getClientHeaderGenericIndexValueForClient:client] indexValueList:nil deviceName:client.name color:[SFIColors clientGreenColor]];
+        UIColor *clientCellColor = [self getClientCellColor:client];
+        genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getClientHeaderGenericIndexValueForClient:client] indexValueList:nil deviceName:client.name color:clientCellColor];
         [cell.commonView initializeSensorCellWithGenericParams:genericParams cellType:ClientTable_Cell];
         [cell.commonView setUpDeviceCell];
         return cell;
@@ -177,6 +181,21 @@ int randomMobileInternalIndex;
     return 75;
 }
 
+#pragma mark - Class Methods
+- (void)initializeColors:(SFIAlmondPlus *)almond {
+    NSUInteger colorCode = (NSUInteger) almond.colorCodeIndex;
+    _almondColor = [SFIColors colorForIndex:colorCode];
+}
+
+- (UIColor*) getClientCellColor:(Client*)client{
+    if(client.isActive)
+        return [SFIColors clientGreenColor];
+    else if(!client.isActive)
+        return [SFIColors clientInActiveGrayColor];
+    else if (client.deviceAllowedType == 1)
+        return [SFIColors clientBlockedGrayColor];
+    return [SFIColors clientGreenColor];
+}
 #pragma mark sensor cell(DeviceHeaderView) delegate
 -(void)delegateDeviceSettingButtonClick:(GenericParams*)genericParams{
     dispatch_async(dispatch_get_main_queue(), ^{

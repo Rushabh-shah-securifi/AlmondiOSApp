@@ -250,11 +250,8 @@ static const int xIndent = 10;
             command.commandType = CommandType_UPDATE_DEVICE_NAME;//same for location
  
         }else{
-            NSDictionary *payload = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
-            GenericCommand *command = [[GenericCommand alloc] init];
+            payload = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
             command.commandType = CommandType_UPDATE_DEVICE_INDEX;
-            NSLog(@"sensor update index payload: %@", payload);
-            [self asyncSendCommand:command];
         }
     }else{
         NSLog(@"saveDeviceNewValue - clients");

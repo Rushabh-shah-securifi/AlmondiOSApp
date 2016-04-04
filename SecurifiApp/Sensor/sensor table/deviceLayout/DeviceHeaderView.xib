@@ -24,7 +24,6 @@
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A4N-3J-OpT">
                     <rect key="frame" x="0.0" y="0.0" width="64" height="64"/>
-                    <color key="backgroundColor" red="0.29803921568627451" green="0.68627450980392157" blue="0.31372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="64" id="AnK-7K-jvC"/>
                     </constraints>
@@ -34,7 +33,6 @@
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j4p-JD-Gxj">
                     <rect key="frame" x="264" y="0.0" width="46" height="64"/>
-                    <color key="backgroundColor" red="0.29803921568627451" green="0.68627450980392157" blue="0.31372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="46" id="apx-vJ-paS"/>
                     </constraints>
@@ -90,7 +88,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="0.29803921568627451" green="0.68627450980392157" blue="0.31372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="MTY-vq-YbM" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="3hL-d1-cr3"/>
                 <constraint firstAttribute="trailing" secondItem="j4p-JD-Gxj" secondAttribute="trailing" id="4UU-4y-jts"/>
