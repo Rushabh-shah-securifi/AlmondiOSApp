@@ -12,7 +12,7 @@
 
 @protocol MultiButtonViewDelegate
 @optional
--(void)updateButtonStatus:(NSString *)newValue genericIndexValue:(GenericIndexValue*)genericIndexValue;
+-(void)saveDeviceNewValue:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue;
 @end
 
 @interface MultiButtonView : UIView

@@ -65,7 +65,7 @@
 }
 
 - (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {
-    [self.delegate updatePickerValue:@(self.genericIndexValue.genericIndex.formatter.min + index).stringValue genericIndexValue:self.genericIndexValue];
+    [self.delegate saveDeviceNewValue:@(self.genericIndexValue.genericIndex.formatter.min + index).stringValue forGenericIndexValue:_genericIndexValue];
 }
 
 - (UIColor *)darkerColorForColor:(UIColor *)c

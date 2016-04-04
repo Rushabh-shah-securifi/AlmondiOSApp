@@ -77,7 +77,7 @@
     
     float sensorValue = [slider convertToSensorValue];
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
-    [self.delegate updateSliderValue:newValue];
+    [self.delegate saveDeviceNewValue:newValue forGenericIndexValue:_genericIndexValue];
     
 }
 - (void)onSliderTapped:(id)sender {
@@ -97,7 +97,7 @@
     
     float sensorValue = [slider convertToSensorValue];
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
-    [self.delegate updateSliderValue:newValue];
+    [self.delegate saveDeviceNewValue:newValue forGenericIndexValue:_genericIndexValue];
 }
 - (UIColor *)darkerColorForColor:(UIColor *)c
 {

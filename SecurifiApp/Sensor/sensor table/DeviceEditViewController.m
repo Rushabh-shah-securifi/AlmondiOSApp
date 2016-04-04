@@ -233,21 +233,33 @@ static const int xIndent = 10;
     
 }
 #pragma mark delegate callback methods
--(void)saveDeviceNewValue:(NSString *)newValue forIndex:(int)index{// index is genericindex for clients, normal index for sensors
+-(void)saveDeviceNewValue:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue{// index is genericindex for clients, normal index for sensors
     NSLog(@"saveDeviceNewValue %@",newValue);
     GenericCommand *command = [[GenericCommand alloc] init];
     NSDictionary *payload;
+    int index = genericIndexValue.index;
     if(self.isSensor){
-        //need to sync b/w name and location
-        Device *device = [Device getDeviceForID:_genericParams.headerGenericIndexValue.deviceID];
-        device = [Device getDeviceCopy:device];
-        [Device setDeviceNameLocation:device forGenericID:index value:newValue];
-        payload = [DevicePayload getNameLocationChangePayloadForGenericProperty:self.genericParams.headerGenericIndexValue mii:randomMobileInternalIndex device:device];
-        NSLog(@"sensor payload: %@", payload);
-        command.commandType = CommandType_UPDATE_DEVICE_NAME;
+        DeviceCommandType deviceCmdType = genericIndexValue.genericIndex.commandType;
+        if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
+            Device *device = [Device getDeviceForID:_genericParams.headerGenericIndexValue.deviceID];
+            device = [Device getDeviceCopy:device];
+            [Device setDeviceNameLocation:device forGenericID:index value:newValue];
+            payload = [DevicePayload getNameLocationChangePayloadForGenericProperty:self.genericParams.headerGenericIndexValue mii:randomMobileInternalIndex device:device];
+            NSLog(@"sensor name location payload: %@", payload);
+            command.commandType = CommandType_UPDATE_DEVICE_NAME;//same for location
+
+        }else{
+            NSDictionary *payload = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
+            GenericCommand *command = [[GenericCommand alloc] init];
+            command.commandType = CommandType_UPDATE_DEVICE_INDEX;
+            command.command = [payload JSONString];
+            NSLog(@"sensor update index payload: %@", payload);
+            [self asyncSendCommand:command];
+        }
     }else{
         NSLog(@"saveDeviceNewValue - clients");
         Client *client = [Client findClientByID:@(_genericParams.headerGenericIndexValue.deviceID).stringValue];
+        //Need to create client copy and set.
         [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
         payload = [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:randomMobileInternalIndex];
         command.commandType = CommandType_UPDATE_CLIENT;
@@ -257,31 +269,12 @@ static const int xIndent = 10;
     [self asyncSendCommand:command];
 }
 
-
 #pragma mark delegate callback methods
 -(void)updateSliderValue:(NSString*)newvalue{
     NSLog(@"updateSliderValue");
 }
 -(void)updateHueColorPicker:(NSString *)newValue{
     NSLog(@"updateHueColorPicker");
-}
-
--(void)updateButtonStatus:(NSString *)newValue genericIndexValue:(GenericIndexValue*)genericIndexValue{//here we have to pass many things like deviceIndexId,deviceID,...
-    NSLog(@" updateButtonStatus %@",newValue);
-    NSDictionary *payload = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
-    GenericCommand *command = [[GenericCommand alloc] init];
-    command.commandType = CommandType_UPDATE_DEVICE_INDEX;
-    command.command = [payload JSONString];
-    [self asyncSendCommand:command];
-}
-
--(void)updatePickerValue:(NSString *)newValue genericIndexValue:(GenericIndexValue*)genericIndexValue{
-    NSLog(@"updatePickerValue");
-    NSDictionary *payload = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
-    GenericCommand *command = [[GenericCommand alloc] init];
-    command.commandType = CommandType_UPDATE_DEVICE_INDEX;
-    command.command = [payload JSONString];
-    [self asyncSendCommand:command];
 }
 
 #pragma mark sensor cell(DeviceHeaderView) delegate

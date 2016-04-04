@@ -41,7 +41,7 @@
     
     SFIHuePickerView *hue_picker = (SFIHuePickerView *) picker;
      NSString *sensor_value = @([hue_picker convertToSensorValue]).stringValue;
-    [self.delegate updateHueColorPicker:sensor_value];
+    [self.delegate saveDeviceNewValue:sensor_value forGenericIndexValue:_genericIndexValue];
     
     //    [self processColorTintChange:slider_brightness saturationSlider:slider_saturation huePicker:hue_picker];
     

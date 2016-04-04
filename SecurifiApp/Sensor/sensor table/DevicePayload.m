@@ -20,13 +20,14 @@
     return payload;
 }
 
+//have to combile both methods
 +(NSDictionary*)getSensorIndexUpdatePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value{
     NSMutableDictionary *payload = [NSMutableDictionary new];
     [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
     [payload setValue:@"UpdateDeviceIndex" forKey:@"CommandType"];
     [payload setValue:@(genericIndexValue.deviceID).stringValue forKey:@"ID"];
     [payload setValue:@(genericIndexValue.index).stringValue forKey:@"Index"];
-        [payload setValue:value forKey:@"Value"];
+    [payload setValue:value forKey:@"Value"];
     return payload;
 }
 

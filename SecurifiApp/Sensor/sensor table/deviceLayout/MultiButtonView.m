@@ -90,7 +90,7 @@
         }
         
     }
-    [self.delegate updateButtonStatus:[self.valueArray objectAtIndex:sender.tag] genericIndexValue:self.genericIndexValue];
+    [self.delegate saveDeviceNewValue:[self.valueArray objectAtIndex:sender.tag] forGenericIndexValue:_genericIndexValue];
 }
 - (UIColor *)lighterColorForColor:(UIColor *)c
 {

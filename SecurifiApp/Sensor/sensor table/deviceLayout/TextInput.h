@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GenericIndexValue.h"
 @protocol TextInputDelegate
--(void)saveDeviceNewValue:(NSString *)newValue forIndex:(int)index;
+-(void)saveDeviceNewValue:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue;
 @end
 @interface TextInput : UIView
 @property (nonatomic)UIColor *color;
