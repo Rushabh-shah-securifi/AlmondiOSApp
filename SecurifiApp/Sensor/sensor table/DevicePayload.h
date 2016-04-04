@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "GenericIndexValue.h"
+#import "Device.h"
+
 @interface DevicePayload : NSObject
-+(NSDictionary*)getSensorIndexUpdatePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii;
-+(NSDictionary*)getNameLocationChangePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii name:(NSString*)name location:(NSString*)location;
-+(NSDictionary*)getSensorIndexUpdatePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value;
++ (NSDictionary*)getSensorIndexUpdatePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii;
++ (NSDictionary*)getSensorIndexUpdatePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value;
++ (NSDictionary*)getNameLocationChangePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii device:(Device*)device;
 @end

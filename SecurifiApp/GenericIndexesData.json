@@ -468,12 +468,12 @@
         "Values": {
             "0": {
                 "ToggleValue": "NaN",
-                "Icon": "alarm_on_new",
+                "Icon": "alarm_on",
                 "Label": "INACTIVE"
             },
             "255": {
                 "ToggleValue": "NaN",
-                "Icon": "alarm_icon",
+                "Icon": "alarm_on",
                 "Label": "ACTIVE"
             }
         }
@@ -732,7 +732,7 @@
     "25": {
         "Name": "TEMPERATURE",
         "Type": "Sensor",
-        "Placement": "Detail",
+        "Placement": "Header",
         "Layout": "Slider",
         "AppLabel": "temperature",
         "GroupLabel": "Temperature",

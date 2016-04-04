@@ -41,13 +41,13 @@
  }"
  
  */
-+(NSDictionary*)getNameLocationChangePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii name:(NSString*)name location:(NSString*)location{
++(NSDictionary*)getNameLocationChangePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii device:(Device*)device{
     NSMutableDictionary *payload = [NSMutableDictionary new];
     [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
     [payload setValue:@"UpdateDeviceName" forKey:@"CommandType"];
     [payload setValue:@(genericIndexValue.deviceID).stringValue forKey:@"ID"];
-    [payload setValue:name forKey:@"Name"];
-    [payload setValue:location forKey:@"Location"];
+    [payload setValue:device.name forKey:@"Name"];
+    [payload setValue:device.location forKey:@"Location"];
     return payload;
 }
 

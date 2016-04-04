@@ -56,11 +56,11 @@
 -(void)setUpDeviceCell{
     NSLog(@"setUPSensorCell");
     self.deviceName.text = self.genericParams.deviceName;
-    NSLog(@"icon: %@", self.genericParams.headerGenericIndexValue.genericValue.icon);
+    NSLog(@"devicename: %@, icon: %@, icontext: %@",self.deviceName.text, self.genericParams.headerGenericIndexValue.genericValue.icon, self.genericParams.headerGenericIndexValue.genericValue.iconText);
     if(_genericParams.headerGenericIndexValue.genericValue.iconText){
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;
-        self.deviceValueImgLable.text = self.genericParams.headerGenericIndexValue.genericValue.icon;
+        self.deviceValueImgLable.text = self.genericParams.headerGenericIndexValue.genericValue.iconText;
     }else{
         self.deviceValueImgLable.hidden = YES;
         self.deviceImage.hidden = NO;

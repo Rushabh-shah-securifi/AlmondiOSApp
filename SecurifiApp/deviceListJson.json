@@ -47,11 +47,11 @@
         "defaultIcon": "dimmer",
         "Indexes": {
             "1": {
-                "genericIndexID": "18",
+                "genericIndexID": "1",
                 "row_no": 1
             },
             "2": {
-                "genericIndexID": "1",
+                "genericIndexID": "18",
                 "row_no": 2
             }
         }
@@ -105,14 +105,15 @@
                 "genericIndexID": "36",
                 "row_no": 1
             },
-            "5": {
-                "genericIndexID": "38",
-                "row_no": 2
-            },
             "4": {
                 "genericIndexID": "37",
                 "row_no": 2
             },
+            "5": {
+                "genericIndexID": "38",
+                "row_no": 2
+            },
+            
             "6": {
                 "genericIndexID": "39",
                 "row_no": 4

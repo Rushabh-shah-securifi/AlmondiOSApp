@@ -239,7 +239,11 @@ static const int xIndent = 10;
     NSDictionary *payload;
     if(self.isSensor){
         //need to sync b/w name and location
-        payload = [DevicePayload getNameLocationChangePayloadForGenericProperty:self.genericParams.headerGenericIndexValue mii:randomMobileInternalIndex name:newValue location:@"my location"];
+        Device *device = [Device getDeviceForID:_genericParams.headerGenericIndexValue.deviceID];
+        device = [Device getDeviceCopy:device];
+        [Device setDeviceNameLocation:device forGenericID:index value:newValue];
+        payload = [DevicePayload getNameLocationChangePayloadForGenericProperty:self.genericParams.headerGenericIndexValue mii:randomMobileInternalIndex device:device];
+        NSLog(@"sensor payload: %@", payload);
         command.commandType = CommandType_UPDATE_DEVICE_NAME;
     }else{
         NSLog(@"saveDeviceNewValue - clients");
@@ -247,7 +251,7 @@ static const int xIndent = 10;
         [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
         payload = [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:randomMobileInternalIndex];
         command.commandType = CommandType_UPDATE_CLIENT;
-        NSLog(@"payload client : %@", payload);
+        NSLog(@"client payload  : %@", payload);
     }
     command.command = [payload JSONString];
     [self asyncSendCommand:command];
@@ -255,15 +259,6 @@ static const int xIndent = 10;
 
 
 #pragma mark delegate callback methods
--(void)updateNewValue:(NSString *)newValue{
-    NSLog(@"updateNewValue %@",newValue);
-    NSDictionary *payload = [DevicePayload getNameLocationChangePayloadForGenericProperty:self.genericParams.headerGenericIndexValue mii:randomMobileInternalIndex name:newValue location:@"my location"];
-    GenericCommand *command = [[GenericCommand alloc] init];
-    command.commandType = CommandType_UPDATE_DEVICE_NAME;
-    command.command = [payload JSONString];
-    
-    [self asyncSendCommand:command];
-}
 -(void)updateSliderValue:(NSString*)newvalue{
     NSLog(@"updateSliderValue");
 }
@@ -272,7 +267,6 @@ static const int xIndent = 10;
 }
 
 -(void)updateButtonStatus:(NSString *)newValue genericIndexValue:(GenericIndexValue*)genericIndexValue{//here we have to pass many things like deviceIndexId,deviceID,...
-
     NSLog(@" updateButtonStatus %@",newValue);
     NSDictionary *payload = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
     GenericCommand *command = [[GenericCommand alloc] init];

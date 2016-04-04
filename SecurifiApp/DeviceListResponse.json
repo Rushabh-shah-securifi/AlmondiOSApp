@@ -11,7 +11,7 @@
             "DeviceValues": {
                 "1": {
                     "Name": "SETPOINT COOLING",
-                    "Value": "Auto",
+                    "Value": "Auto"
                 },
                 "2": {
                     "Index": "2",
@@ -460,7 +460,7 @@
                 "1": {
                     "Index": "1",
                     "Name": "SWITCH MULTILEVEL",
-                    "Value": "false",
+                    "Value": "true",
                     "GenericIndex": "1"
                 },
                 "2": {
@@ -496,9 +496,9 @@
             "DeviceValues": {
                 "1": {
                     "Index": "1",
-                    "Name": "",
-                    "Value": "Cooling",
-                    "GenericIndex": "36"
+                    "Name": "switch multilevel",
+                    "Value": "50",
+                    "GenericIndex": "25"
                 },
                 "2": {
                     "Index": "2",
@@ -508,33 +508,33 @@
                 },
                 "3": {
                     "Index": "3",
-                    "Name": "temperrature",
-                    "Value": "50",
-                    "GenericIndex": "25"
+                    "Name": "operating state",
+                    "Value": "",
+                    "GenericIndex": "36"
                 },
                 "4": {
                     "Index": "4",
-                    "Name": "fan state",
-                    "Value": "20",
-                    "GenericIndex": "40"
-                },
-                "5": {
-                    "Index": "5",
-                    "Name": "thermostat fan mode",
-                    "Value": "On low",
-                    "GenericIndex": "39"
-                },
-                "6": {
-                    "Index": "6",
                     "Name": "thermostat heating",
                     "Value": "40",
                     "GenericIndex": "37"
                 },
-                "7": {
-                    "Index": "7",
+                "5": {
+                    "Index": "5",
                     "Name": "thermostat cooling",
                     "Value": "70",
                     "GenericIndex": "38"
+                },
+                "6": {
+                    "Index": "6",
+                    "Name": "thermostat fan mode",
+                    "Value": "On low",
+                    "GenericIndex": "39"
+                },
+                "7": {
+                    "Index": "7",
+                    "Name": "fan state",
+                    "Value": "20",
+                    "GenericIndex": "40"
                 }
             }
         }
