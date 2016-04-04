@@ -344,5 +344,6 @@ NSString *blockedType;
 -(void)saveButtonTap:(id)sender{
     // delegate methods
     NSLog(@"saveButtonTap %@",_hexBlockedDays);
+    [self.delegate saveDeviceNewValue:_hexBlockedDays forGenericIndexValue:self.genericIndexValue];
 }
 @end

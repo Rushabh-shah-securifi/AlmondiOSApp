@@ -161,10 +161,10 @@
         "Layout": "MULTI_BUTTON",
         "GroupLabel": "Use As Presence Sensor",
         "Values":{
-            "0":{
+            "true":{
                 "Label": "Yes"
             },
-            "1":{
+            "false":{
                 "Label": "No"
             }
         }

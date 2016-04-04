@@ -40,7 +40,7 @@
 #define BUTTON_FRAME CGRectMake(0, LABELHEIGHT + LABELVALUESPACING,view.frame.size.width-10,  35)
 static const int xIndent = 10;
 
-@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,clientTypeCellDelegate,MultiButtonViewDelegate>
+@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,clientTypeCellDelegate,MultiButtonViewDelegate,GridViewDelegate,ListButtonDelegate>
 //can be removed
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
 
@@ -113,6 +113,7 @@ static const int xIndent = 10;
 
 -(void)drawIndexes{
     int yPos = LABELSPACING;
+    self.indexesScroll.backgroundColor = self.genericParams.color;
     CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericParams.indexValueList.count * 80 + 210);
     [self.indexesScroll setContentSize:scrollableSize];
     [self.indexesScroll flashScrollIndicators];
@@ -181,13 +182,13 @@ static const int xIndent = 10;
                 view.frame = CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
 
                 GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5) color:self.genericParams.color genericIndexValue:genericIndexValue onSchedule:(NSString*)schedule];
+                grid.delegate = self;
                 [view addSubview:grid];
             }
             else if ([genericIndexObj.layoutType isEqualToString:LIST]){
                 view.frame = CGRectMake(0, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
-                NSLog(@"value : %@",genericIndexValue.genericValue.value);
                 ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width , self.view.frame.size.height- 5) color:self.genericParams.color genericIndexValue:genericIndexValue];
-                
+                typeTableView.delegate = self;
                 
                 [view addSubview:typeTableView];
             }
@@ -247,12 +248,11 @@ static const int xIndent = 10;
             payload = [DevicePayload getNameLocationChangePayloadForGenericProperty:self.genericParams.headerGenericIndexValue mii:randomMobileInternalIndex device:device];
             NSLog(@"sensor name location payload: %@", payload);
             command.commandType = CommandType_UPDATE_DEVICE_NAME;//same for location
-
+ 
         }else{
             NSDictionary *payload = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
             GenericCommand *command = [[GenericCommand alloc] init];
             command.commandType = CommandType_UPDATE_DEVICE_INDEX;
-            command.command = [payload JSONString];
             NSLog(@"sensor update index payload: %@", payload);
             [self asyncSendCommand:command];
         }
@@ -263,6 +263,7 @@ static const int xIndent = 10;
         [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
         payload = [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:randomMobileInternalIndex];
         command.commandType = CommandType_UPDATE_CLIENT;
+        
         NSLog(@"client payload  : %@", payload);
     }
     command.command = [payload JSONString];

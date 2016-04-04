@@ -17,6 +17,7 @@
 #import "DeviceParser.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "SFIColors.h"
+#import "UIFont+Securifi.h"
 
 
 #define NO_ALMOND @"NO ALMOND"
@@ -107,26 +108,38 @@ int randomMobileInternalIndex;
     else
         return self.currentClientList.count;
 }
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    if(section == 0)
-        return [NSString stringWithFormat:@"Sensors (%ld)",(long int)self.currentDeviceList.count];
-    else
-        return [NSString stringWithFormat:@"Network Devices (%ld)",(long int)self.currentClientList.count];
-}
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 30;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    static NSString *header = @"customHeader";
-    UITableViewHeaderFooterView *vHeader;
-    vHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:header];
-    if (!vHeader) {
-        vHeader = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:header];
+{   NSString *header,*headerVal;
+    if(section == 0){
+        header = @"Sensors ";
+        headerVal = [NSString stringWithFormat:@"(%ld)",(long int)self.currentDeviceList.count];
     }
-    vHeader.textLabel.font = [UIFont securifiFont:16];
+    else{
+        headerVal = [NSString stringWithFormat:@"(%ld)",(long int)self.currentClientList.count];
+        header = @"Network Devices ";
+    }
+    
+    UIFont *lightFont = [UIFont securifiLightFont:16];
+    NSDictionary *arialDict = [NSDictionary dictionaryWithObject: lightFont forKey:NSFontAttributeName];
+    NSMutableAttributedString *aAttrString = [[NSMutableAttributedString alloc] initWithString:header attributes: arialDict];
+    
+    UIFont *securifiFont = [UIFont securifiFont:12];
+    NSDictionary *verdanaDict = [NSDictionary dictionaryWithObject:securifiFont forKey:NSFontAttributeName];
+    NSMutableAttributedString *vAttrString = [[NSMutableAttributedString alloc]initWithString:headerVal  attributes:verdanaDict];
+    [aAttrString appendAttributedString:vAttrString];
+
+//    static NSString *header = @"customHeader";
+    static NSString *headerView = @"customHeader";
+    UITableViewHeaderFooterView *vHeader;
+    vHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerView];
+    if (!vHeader) {
+        vHeader = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:headerView];
+    }
     vHeader.textLabel.textColor = [UIColor lightGrayColor];
-    vHeader.textLabel.text = [self tableView:tableView titleForHeaderInSection:section];
+    vHeader.textLabel.attributedText = aAttrString;
     
     return vHeader;
 }
@@ -139,7 +152,7 @@ int randomMobileInternalIndex;
         GenericParams *genericParams;
 //        if(cell.commonView.genericParams == nil){
             NSLog(@"genericParams is nil");
-            genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[SFIColors clientGreenColor]];
+            genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[UIColor yellowColor]];
 //        }else {
 //            NSLog(@"genericParams not nil");
 //            [genericParams setGenericParamsWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[SFIColors clientGreenColor]];

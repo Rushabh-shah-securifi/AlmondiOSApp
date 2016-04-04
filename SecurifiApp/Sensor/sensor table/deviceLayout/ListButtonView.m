@@ -104,6 +104,7 @@ NSMutableArray *type;
     NSLog(@" typeName %@",typeName);
     self.selectedType = typeName;
     [self.tableType reloadData];
+    [self.delegate saveDeviceNewValue:typeName forGenericIndexValue:self.genericIndexValue];
 }
 
 
