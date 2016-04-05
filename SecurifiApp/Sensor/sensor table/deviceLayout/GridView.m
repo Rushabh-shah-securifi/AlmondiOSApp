@@ -48,6 +48,7 @@ NSString *blockedType;
     //    self.allowOnNetworkSegment.segmentedControlStyle = UISegmentedControlStylePlain;
     [self.allowOnNetworkSegment addTarget:self action:@selector(segmentControllChanged:) forControlEvents: UIControlEventValueChanged];
     [self setUpAllowOnNetworkSegment];
+    [self initializeblockedDaysArray];
     [self addSubview:self.allowOnNetworkSegment];
     
     //self.indexView.frame = CGRectMake(self.indexView.frame.origin.x, self.indexView.frame.origin.y, self.indexView.frame.size.width, 500);
@@ -73,15 +74,18 @@ NSString *blockedType;
 }
 
 -(void)segmentControllChanged:(id)sender{
+    
     switch (self.allowOnNetworkSegment.selectedSegmentIndex) {
         case 0:
         {
             self.scrollView.hidden = YES;
             self.collectionView.hidden = YES;
+            _hexBlockedDays = [@"000000,000000,000000,000000,000000,00000,00000" mutableCopy];
             for(UIView *view in self.scrollView.subviews){
                 [view removeFromSuperview];
             }
             [self.scrollView removeFromSuperview];
+            [self.delegate saveDeviceNewValue:_hexBlockedDays forGenericIndexValue:self.genericIndexValue];
         }break;
         case 1:
         {
@@ -101,8 +105,10 @@ NSString *blockedType;
                 [view removeFromSuperview];
             }
             [self.scrollView removeFromSuperview];
+            _hexBlockedDays = [@"ffffff,ffffff,ffffff,ffffff,ffffff,ffffff,ffffff" mutableCopy];
             self.scrollView.hidden = YES;
             self.collectionView.hidden = YES;
+            [self.delegate saveDeviceNewValue:_hexBlockedDays forGenericIndexValue:self.genericIndexValue];
         }break;
         default:
             break;
@@ -286,7 +292,7 @@ NSString *blockedType;
     NSInteger row = indexPath.row;
     NSInteger section = indexPath.section;
     [self selectionOfHoursForRow:row andSection:section collectionView:collectionView selected:@"0"];
-    [self convertDaysDictToHex];
+    
 }
 
 -(BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(nonnull SEL)action forItemAtIndexPath:(nonnull NSIndexPath *)indexPath withSender:(nullable id)sender{
@@ -343,6 +349,7 @@ NSString *blockedType;
 }
 -(void)saveButtonTap:(id)sender{
     // delegate methods
+    [self convertDaysDictToHex];
     NSLog(@"saveButtonTap %@",_hexBlockedDays);
     [self.delegate saveDeviceNewValue:_hexBlockedDays forGenericIndexValue:self.genericIndexValue];
 }

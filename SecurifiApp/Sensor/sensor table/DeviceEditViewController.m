@@ -100,6 +100,7 @@ static const int xIndent = 10;
     [center addObserver:self selector:@selector(onUpdateDeviceIndexResponse:) name:NOTIFICATION_UPDATE_DEVICE_INDEX_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onDeviceListAndDynamicResponseParsed:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onDeviceNameChanged:) name:NOTIFICATION_UPDATE_DEVICE_NAME_NOTIFIER object:nil];
+    
 }
 - (void)clearAllViews{
     for(UIView *view in self.scrollView.subviews){
@@ -114,7 +115,7 @@ static const int xIndent = 10;
 -(void)drawIndexes{
     int yPos = LABELSPACING;
     self.indexesScroll.backgroundColor = self.genericParams.color;
-    CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericParams.indexValueList.count * 80 + 210);
+    CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericParams.indexValueList.count * 65 );
     [self.indexesScroll setContentSize:scrollableSize];
     [self.indexesScroll flashScrollIndicators];
     for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList){

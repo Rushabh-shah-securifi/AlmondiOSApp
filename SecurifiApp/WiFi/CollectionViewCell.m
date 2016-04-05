@@ -52,9 +52,9 @@
     }
 }
 -(void)handleCornerCells{
-//    self.dayLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-//    self.dayLabel.text = @"";
-//    self.backgroundColor = [UIColor clearColor];
+    self.dayLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    self.dayLabel.text = @"";
+    self.backgroundColor = [UIColor clearColor];
     self.userInteractionEnabled = NO;
 }
 -(void)setlabel{

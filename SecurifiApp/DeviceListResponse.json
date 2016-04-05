@@ -535,6 +535,12 @@
                     "Name": "fan state",
                     "Value": "20",
                     "GenericIndex": "40"
+                },
+                "8": {
+                    "Index": "8",
+                    "Name": "Battery",
+                    "Value": "20",
+                    "GenericIndex": "50"
                 }
             }
         }
