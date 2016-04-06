@@ -49,7 +49,6 @@
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self clearAllViews];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -98,17 +97,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
     NSLog(@"didSelectRowAtIndexPath");
     DeviceEditViewController *ctrl = [self.storyboard instantiateViewControllerWithIdentifier:@"DeviceEditViewController"];
-    ctrl.isSensor = NO;
     ctrl.genericParams = [[GenericParams alloc]initWithGenericIndexValue:self.genericParams.headerGenericIndexValue
                                                           indexValueList:[NSArray arrayWithObject:[self.genericParams.indexValueList objectAtIndex:indexPath.row]]
-                                                              deviceName:self.genericParams.deviceName color:self.genericParams.color];
+                                                              deviceName:self.genericParams.deviceName color:self.genericParams.color isSensor:NO];
     [self.navigationController pushViewController:ctrl animated:YES];
 }
--(void)clearAllViews{
-    NSLog(@"clearAllViews ");
-//    [self.clientPropertiesTable removeFromSuperview];
-//    for (UIView *view in [self.view subviews]) {
-//        [view removeFromSuperview];
-//    }
-}
+
 @end

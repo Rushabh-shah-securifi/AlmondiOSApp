@@ -17,4 +17,5 @@
 + (GenericIndexValue*)getHeaderGenericIndexValueForDevice:(Device*)device;
 + (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(Client*) client;
 + (NSArray*) getClientDetailGenericIndexValuesListForClientID:(NSString*)clientID;
+
 @end

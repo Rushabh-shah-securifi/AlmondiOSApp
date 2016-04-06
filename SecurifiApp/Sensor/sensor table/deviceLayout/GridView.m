@@ -89,14 +89,14 @@ NSString *blockedType;
         }break;
         case 1:
         {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            //dispatch_async(dispatch_get_main_queue(), ^{
                 self.scrollView.hidden = NO;
                 self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(self.frame.origin.x, self.allowOnNetworkSegment.frame.origin.y + self.allowOnNetworkSegment.frame.size.height + 10, self.frame.size.width - 15, self.frame.size.height - self.frame.origin.y - 100)];
                 self.scrollView.backgroundColor = [UIColor clearColor];
                 [self addSubview:self.scrollView];
                 [self addInfo];
                 [self addSaveButton];
-            });
+//            });
    
         }break;
         case 2:

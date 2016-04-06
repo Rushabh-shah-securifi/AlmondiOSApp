@@ -55,13 +55,13 @@
                     "2": {
                         "Index": "2",
                         "Name": "LOW BATTERY",
-                        "Value": "0",
+                        "Value": "true",
                         "GenericIndex": "12"
                     },
                     "3": {
                         "Index": "3",
                         "Name": "TAMPER",
-                        "Value": "false",
+                        "Value": "true",
                         "GenericIndex": "9"
                     }
                 }

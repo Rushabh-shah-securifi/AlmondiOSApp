@@ -11,7 +11,7 @@
 #import "AlmondJsonCommandKeyConstants.h"
 #import "Colours.h"
 
-@interface DeviceHeaderView()
+@interface DeviceHeaderView()<UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *deviceValueImgLable;
 @end
 
@@ -59,6 +59,7 @@
     self.view.backgroundColor = _genericParams.color;
     self.deviceName.text = self.genericParams.deviceName;
     self.settingButton.alpha = 1;
+    NSLog(@" indexvalue list %@",self.genericParams.indexValueList);
     NSLog(@"devicename: %@, icon: %@, icontext: %@",self.deviceName.text, self.genericParams.headerGenericIndexValue.genericValue.icon, self.genericParams.headerGenericIndexValue.genericValue.iconText);
     if(_genericParams.headerGenericIndexValue.genericValue.iconText){
         self.deviceImage.hidden = YES;
@@ -69,7 +70,12 @@
         self.deviceImage.hidden = NO;
         self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.displayText;
         self.deviceImage.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
+       
     }
+    self.lowBatteryImgView.hidden = YES;
+    self.tamperedImgView.hidden = YES;
+    if(self.genericParams.isSensor && self.cellType == SensorTable_Cell)
+        [self isTamper];
 }
 
 -(void)setUpClientCell{
@@ -82,6 +88,7 @@
     [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:20.0f]} range:NSMakeRange(0,text.length)];
     [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:12.0f],NSBaselineOffsetAttributeName:@(10)} range:NSMakeRange(text.length,suffix.length)];
     [self.deviceValueImgLable setAttributedText:strTemp];
+    
 }
 
 #pragma mark button click
@@ -96,6 +103,7 @@
         NSArray* genericIndexValues = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
         self.genericParams.indexValueList = genericIndexValues;
         [self.delegate delegateClientSettingButtonClick:self.genericParams];
+        
     }
     else if (self.cellType == ClientProperty_Cell){
         [self.delegate delegateClientEditTable];
@@ -115,4 +123,56 @@
     self.deviceImage.image = [UIImage imageNamed:@"00_wait_icon"];
 }
 
+-(void)isTamper{
+   
+    Device *device = [Device getDeviceForID:self.genericParams.headerGenericIndexValue.deviceID];
+    NSArray* genericIndexValues = [GenericIndexUtil getGenericIndexValuesByPlacementForDevice:device placement:@"Badge"];
+    
+    for(GenericIndexValue *genericIndexValue in genericIndexValues){
+        GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
+        NSLog(@"genericIndexObj ID %@ ",genericIndexObj.ID);
+        if([genericIndexObj.ID isEqualToString:@"9"]){//battery
+        if ([genericIndexValue.genericValue.value isEqualToString:@"true"]){
+                self.tamperedImgView.hidden = NO;
+                UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(batteryTapped:)];
+                singleTap.numberOfTapsRequired = 1;
+                [self.lowBatteryImgView setUserInteractionEnabled:YES];
+                [self.lowBatteryImgView addGestureRecognizer:singleTap];
+            }
+        }
+        if([genericIndexObj.ID isEqualToString:@"12"]){//tampered
+            if ([genericIndexValue.genericValue.value isEqualToString:@"true"]) {
+                self.lowBatteryImgView.hidden = NO;
+                UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tamperTapped:)];
+                singleTap.numberOfTapsRequired = 1;
+                [self.tamperedImgView setUserInteractionEnabled:YES];
+                [self.tamperedImgView addGestureRecognizer:singleTap];
+            }
+        }
+    }
+}
+-(void)tamperTapped:(id)sender{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Do you want to dismiss tamper ?"
+                                                    message:@""
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:@"YES", nil];
+    alert.delegate = self;
+    [alert show];
+    
+    NSLog(@"tamperTapped  ");
+}
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == [alertView cancelButtonIndex]){
+        //cancel clicked ...do your action
+    }else{
+        self.tamperedImgView.hidden = YES;
+        // make is tamper value to false
+        // delegate reload table
+    }
+}
+
+-(void)batteryTapped:(id)sender{
+    NSLog(@"batteryTapped");
+}
 @end

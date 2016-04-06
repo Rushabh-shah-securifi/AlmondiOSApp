@@ -37,6 +37,8 @@ typedef NS_ENUM(NSUInteger, CellType) {
 @property (nonatomic)CellType cellType;
 @property (weak,nonatomic)id<DeviceHeaderViewDelegate> delegate;
 @property (nonatomic)GenericParams *genericParams;
+@property (weak, nonatomic) IBOutlet UIImageView *lowBatteryImgView;
+@property (weak, nonatomic) IBOutlet UIImageView *tamperedImgView;
 
 -(void)initialize:(GenericParams*)genericParams cellType:(CellType)cellType;
 

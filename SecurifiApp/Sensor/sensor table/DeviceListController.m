@@ -60,8 +60,8 @@ int randomMobileInternalIndex;
     NSLog(@"sensor viewWillAppear");
     [super viewWillAppear:YES];
     [self initializeNotifications];
-//    DeviceParser *deviceparser = [[DeviceParser alloc]init];
-//    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
+    DeviceParser *deviceparser = [[DeviceParser alloc]init];
+    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
     
     randomMobileInternalIndex = arc4random() % 10000;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
