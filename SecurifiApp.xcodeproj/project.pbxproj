@@ -243,6 +243,7 @@
 		A54537291C8ED1ED00DC3EC8 /* SceneNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A54537281C8ED1ED00DC3EC8 /* SceneNameViewController.m */; };
 		A545372B1C8ED35C00DC3EC8 /* scene_names.txt in Resources */ = {isa = PBXBuildFile; fileRef = A545372A1C8ED35C00DC3EC8 /* scene_names.txt */; };
 		A5488CB21CAE9120002B9F1C /* ClientPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = A5488CB11CAE9120002B9F1C /* ClientPayload.m */; };
+		A54D74891CB51FD000EB46B6 /* RouterPayload.m in Sources */ = {isa = PBXBuildFile; fileRef = A54D74881CB51FD000EB46B6 /* RouterPayload.m */; };
 		A54EB0351C45004B00CF2837 /* Common-Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A54EB0341C45004B00CF2837 /* Common-Images.xcassets */; };
 		A584C8401C5B8344006E02DB /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A584C83F1C5B8344006E02DB /* CollectionViewCell.m */; };
 		A58DB2611BB168C400717C02 /* AccountsStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB24F1BB168C400717C02 /* AccountsStoryboard_iPhone.strings */; };
@@ -778,6 +779,8 @@
 		A545372A1C8ED35C00DC3EC8 /* scene_names.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = scene_names.txt; sourceTree = "<group>"; };
 		A5488CB01CAE9120002B9F1C /* ClientPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClientPayload.h; sourceTree = "<group>"; };
 		A5488CB11CAE9120002B9F1C /* ClientPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClientPayload.m; sourceTree = "<group>"; };
+		A54D74871CB51FD000EB46B6 /* RouterPayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RouterPayload.h; sourceTree = "<group>"; };
+		A54D74881CB51FD000EB46B6 /* RouterPayload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RouterPayload.m; sourceTree = "<group>"; };
 		A54EB0341C45004B00CF2837 /* Common-Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Common-Images.xcassets"; sourceTree = "<group>"; };
 		A584C83E1C5B8344006E02DB /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		A584C83F1C5B8344006E02DB /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
@@ -1278,6 +1281,8 @@
 				1DF0323920D3FEE1F480732C /* SFIRouterClientsTableViewController.m */,
 				1DF03B9DC7196F105322FC96 /* SFIRouterSettingsTableViewController.h */,
 				1DF031BA3DEFBBE00371A598 /* SFIRouterSettingsTableViewController.m */,
+				A54D74871CB51FD000EB46B6 /* RouterPayload.h */,
+				A54D74881CB51FD000EB46B6 /* RouterPayload.m */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -2827,6 +2832,7 @@
 				1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */,
 				1DF0333217E77760651C98F7 /* ScoreboardNetworkSettingsViewController.m in Sources */,
 				1C2F60A41B69E69D001CCA34 /* SFIWiFiDeviceTypeSelectionCell.m in Sources */,
+				A54D74891CB51FD000EB46B6 /* RouterPayload.m in Sources */,
 				CEF6F4F01C92CAD600C68975 /* CommonMethods.m in Sources */,
 				1DF037452A64D0EE163B8173 /* AlertView.m in Sources */,
 				CEEC421B1C98560500A2C35D /* DeviceListController.m in Sources */,

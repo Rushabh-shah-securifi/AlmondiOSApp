@@ -28,6 +28,8 @@
 #import "SFIWiFiClientsListViewController.h"
 #import "SFIRouterSettingsTableViewController.h"
 #import "SFIRouterClientsTableViewController.h"
+#import "RouterParser.h"
+#import "RouterPayload.h"
 
 #define DEF_NETWORKING_SECTION          0
 #define DEF_DEVICES_AND_USERS_SECTION   1
@@ -68,6 +70,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 @property enum RouterViewState routerViewState;
 
 @property(nonatomic, strong) SFIRouterSummary *routerSummary;
+@property(nonatomic) NSArray* wirelessSettings;
 
 @property NSNumber *currentExpandedSection; // nil == none expanded
 @property NSUInteger currentExpandedCount; // number of rows in expanded section
@@ -85,7 +88,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 @end
 
 @implementation SFIRouterTableViewController
-
+int mii;
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
     if (self) {
@@ -100,6 +103,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 - (void)viewDidLoad {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SecurifiConfigurator *configurator = toolkit.configuration;
+    
     self.enableRouterWirelessControl = configurator.enableRouterWirelessControl;
     self.enableNetworkingControl = configurator.enableLocalNetworking;
     self.enableNewWifiClientsControl = configurator.enableWifiClients;
@@ -114,11 +118,16 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [self initializeNotifications];
     
     [self initializeRouterSummaryAndSettings];
+    
+//    RouterParser *routerParser = [RouterParser new];
+//    [routerParser testRouterParser];
+//    self.routerSummary = toolkit.routerSummary;
+//    self.wirelessSettings = toolkit.wireLessSettings;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
+    mii = arc4random() % 10000;
     self.disposed = NO;
     [self initializeAlmondData:RouterViewReloadPolicy_on_state_change];
     if(self.currentConnectionMode == SFIAlmondConnectionMode_local)
@@ -152,6 +161,8 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidUpdateAlmondList object:nil];
     
     [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:kSFIDidReceiveGenericAlmondRouterResponse object:nil];
+    
+    [center addObserver:self selector:@selector(onRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
 }
 
 - (void)initializeRouterSummaryAndSettings {
@@ -197,7 +208,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     [self checkRouterViewState:refreshPolicy];
     
     // refresh data
-    [self sendRouterSummaryRequest];
+//    [self sendRouterSummaryRequest];
+    
+    [toolkit asyncSendCommand:[RouterPayload routerSummary:mii]];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -262,7 +275,9 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     if (self.routerViewState == RouterViewState_no_almond) {
         return;
     }
+    //summary
     [[SecurifiToolkit sharedInstance] asyncAlmondSummaryInfoRequest:self.almondMac];
+    //setting
     [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
 }
 
@@ -276,8 +291,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         [toolkit asyncAlmondStatusAndSettingsRequest:self.almondMac request:requestType];
     }
-    
-    
 }
 
 - (void)sendUpdateAlmondFirmwareCommand {
@@ -672,6 +685,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 - (UITableViewCell *)createNetworkSummaryCell:(UITableView *)tableView {
+    NSLog(@"createNetworkSummaryCell");
     NSString *const cell_id = @"network_summary";
     
     SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
@@ -685,29 +699,12 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     cell.cardView.backgroundColor = [UIColor securifiRouterTileGreenColor];
     cell.title = NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link");
     
-    //    SFIRouterSummary *summary = self.routerSummary;
-    
-    //    if (summary) {
-    //        host = summary.url;
-    //        if (!host) {
-    //            host = @"";
-    //        }
-    //
-    //        login = summary.login;
-    //        if (!login) {
-    //            login = @"";
-    //        }
-    //    }
-    //    else {
-    //    }
-    
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    
-    NSString *almondMac = self.almondMac;
-    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:almondMac];
-    
-    NSString *host = settings.host ? settings.host : @"";
-    NSString *login = settings.login ? settings.login : @"";
+//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+//    NSString *almondMac = self.almondMac;
+//    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:almondMac];
+    NSLog(@"self.routersummery.url: %@", self.routerSummary.url);
+    NSString *host = self.routerSummary.url ? self.routerSummary.url : @"";
+    NSString *login = self.routerSummary.login ? self.routerSummary.login : @"";
     
     cell.summaries = @[
                        [NSString stringWithFormat:NSLocalizedString(@"router.summary.IP Address : %@", @"IP Address"), host],
@@ -769,7 +766,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 - (UITableViewCell *)createDevicesAndUsersSummaryCell:(UITableView *)tableView {
-    SFIRouterSummary *routerSummary = self.routerSummary;
     //commented to allow to open clients list even if there is no connected or blocked clients
     //    if (!routerSummary) {
     //        return [self createEmptyWirelessSummaryCell:tableView
@@ -812,7 +808,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
     //                       ];
     
     cell.editTarget = self;
-    cell.editSelector = @selector(onEditDevicesAndUsersCard:);
+//    cell.editSelector = @selector(onEditDevicesAndUsersCard:);
     cell.expanded = NO;
     
     return cell;
@@ -1103,6 +1099,17 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 #pragma mark - Cloud command senders and handlers
+-(void)onRouterCommandResponse:(id)sender{
+    NSLog(@"onRouterCommandResponse - router parser");
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [toolkit tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:toolkit.routerSummary];
+    self.routerSummary = toolkit.routerSummary;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+        
+    });
+}
+
 - (void)onAlmondRouterCommandResponse:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
@@ -1115,6 +1122,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 }
 
 - (void)processRouterCommandResponse:(SFIGenericRouterCommand *)genericRouterCommand {
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
@@ -1176,9 +1184,11 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
                 }
                 
                 if (self.navigationController.topViewController == self) {
+                    NSLog(@"wireless settings response : %@", toolkit.wireLessSettings);
+                    NSLog(@"cloud settings: %@", settings);
                     SFIRouterSettingsTableViewController *ctrl = [SFIRouterSettingsTableViewController new];
                     ctrl.title = self.navigationItem.title;
-                    ctrl.wirelessSettings = settings;
+                    ctrl.wirelessSettings = self.wirelessSettings;
                     ctrl.almondMac = self.almondMac;
                     ctrl.enableRouterWirelessControl = self.enableRouterWirelessControl;
                     
@@ -1193,11 +1203,12 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
             }
                 
             case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
-                SFIRouterSummary *summary = (SFIRouterSummary *) genericRouterCommand.command;
+                NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
+//                SFIRouterSummary *summary = (SFIRouterSummary *) genericRouterCommand.command;
+//                self.routerSummary = summary;
+                self.routerSummary = toolkit.routerSummary;
                 
-                self.routerSummary = summary;
-                
-                NSString *currentVersion = summary.firmwareVersion;
+                NSString *currentVersion = self.routerSummary.firmwareVersion;
                 [self tryCheckAlmondVersion:currentVersion];
                 [self tryCheckSendLogsSupport:currentVersion];
                 
