@@ -10,7 +10,7 @@
 #import "GenericIndexValue.h"
 
 @protocol SliderViewDelegate
--(void)saveDeviceNewValue:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue;
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue;
 @end
 
 @interface Slider : UIView

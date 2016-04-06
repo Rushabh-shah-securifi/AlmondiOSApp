@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, CellType) {
 -(void)delegateClientSettingButtonClick:(GenericParams*)genericParams;
 -(void)delegateClientEditTable;
 -(void)delegateDeviceSettingButtonClick:(GenericParams*)genericParams;
--(void)delegateDeviceButtonClickWithGenericProperies:(GenericIndexValue*)genericIndexValue;
+-(void)toggle:(GenericIndexValue*)genericIndexValue;
 @end
 
 @interface DeviceHeaderView : UIView
@@ -38,7 +38,6 @@ typedef NS_ENUM(NSUInteger, CellType) {
 @property (weak,nonatomic)id<DeviceHeaderViewDelegate> delegate;
 @property (nonatomic)GenericParams *genericParams;
 
--(void)setUpDeviceCell;
--(void)initializeSensorCellWithGenericParams:(GenericParams*)genericParams cellType:(CellType)cellType;
+-(void)initialize:(GenericParams*)genericParams cellType:(CellType)cellType;
 
 @end

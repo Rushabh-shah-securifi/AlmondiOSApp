@@ -11,5 +11,4 @@
 
 @interface DeviceEditViewController : UIViewController
 @property (nonatomic) GenericParams* genericParams;
-@property (nonatomic) BOOL isSensor;
 @end

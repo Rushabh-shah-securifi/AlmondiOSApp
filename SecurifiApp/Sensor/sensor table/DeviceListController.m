@@ -23,6 +23,8 @@
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
 #define CELL_IDENTIFIER @"device_cell"
+#define HEADER_FONT_SIZE 16
+#define COUNT_FONT_SIZE 12
 
 @interface DeviceListController ()<UITableViewDataSource,UITableViewDelegate,DeviceHeaderViewDelegate>
 @property (nonatomic,strong)NSMutableArray *currentDeviceList;
@@ -58,14 +60,14 @@ int randomMobileInternalIndex;
     NSLog(@"sensor viewWillAppear");
     [super viewWillAppear:YES];
     [self initializeNotifications];
-    DeviceParser *deviceparser = [[DeviceParser alloc]init];
-    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
+//    DeviceParser *deviceparser = [[DeviceParser alloc]init];
+//    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
     
     randomMobileInternalIndex = arc4random() % 10000;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     self.currentDeviceList = toolkit.devices;
-    self.currentClientList = [self getSortedDevices];
+    self.currentClientList = toolkit.clients;
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
@@ -87,17 +89,8 @@ int randomMobileInternalIndex;
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onDeviceListAndDynamicResponseParsed:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onUpdateDeviceIndexResponse:) name:NOTIFICATION_UPDATE_DEVICE_INDEX_NOTIFIER object:nil];
-    [center addObserver:self selector:@selector(onClientListAndDynamicResponse:) name:NOTIFICATION_DYNAMIC_CLIENTLIST_ADD_UPDATE_REMOVE_NOTIFIER object:nil];
 }
 
--(NSMutableArray*)getSortedDevices{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"isActive" ascending:NO];
-    NSSortDescriptor *secondDescriptor = [[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES selector:@selector(caseInsensitiveCompare:)];
-    
-    NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, secondDescriptor, nil];
-    return [[toolkit.clients sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
-}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -106,14 +99,21 @@ int randomMobileInternalIndex;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSLog(@"numberOfRowsInSection");
-    if(section == 0)
-        return self.currentDeviceList.count;
-    else
-        return self.currentClientList.count;
+    
+    return (section == 0) ? self.currentDeviceList.count:self.currentClientList.count;
+    
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     return 30;
 }
+- (NSMutableAttributedString *)getAttributeString:(NSString *)header fontSize:(int)fontsize
+{
+    UIFont *lightFont = [UIFont securifiLightFont:fontsize];
+    NSDictionary *arialDict = [NSDictionary dictionaryWithObject: lightFont forKey:NSFontAttributeName];
+    NSMutableAttributedString *aAttrString = [[NSMutableAttributedString alloc] initWithString:header attributes: arialDict];
+    return aAttrString;
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {   NSString *header,*headerVal;
     if(section == 0){
@@ -125,16 +125,9 @@ int randomMobileInternalIndex;
         header = @"Network Devices ";
     }
     
-    UIFont *lightFont = [UIFont securifiLightFont:16];
-    NSDictionary *arialDict = [NSDictionary dictionaryWithObject: lightFont forKey:NSFontAttributeName];
-    NSMutableAttributedString *aAttrString = [[NSMutableAttributedString alloc] initWithString:header attributes: arialDict];
-    
-    UIFont *securifiFont = [UIFont securifiFont:12];
-    NSDictionary *verdanaDict = [NSDictionary dictionaryWithObject:securifiFont forKey:NSFontAttributeName];
-    NSMutableAttributedString *vAttrString = [[NSMutableAttributedString alloc]initWithString:headerVal  attributes:verdanaDict];
+    NSMutableAttributedString *aAttrString = [self getAttributeString:header fontSize:HEADER_FONT_SIZE];
+    NSMutableAttributedString *vAttrString = [self getAttributeString:headerVal fontSize:COUNT_FONT_SIZE];
     [aAttrString appendAttributedString:vAttrString];
-
-//    static NSString *header = @"customHeader";
     static NSString *headerView = @"customHeader";
     UITableViewHeaderFooterView *vHeader;
     vHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerView];
@@ -150,31 +143,22 @@ int randomMobileInternalIndex;
     DeviceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CELL_IDENTIFIER forIndexPath:indexPath];
     cell.commonView.delegate = self;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    GenericParams *genericParams;
     if(indexPath.section == 0){
         Device *device = [self.currentDeviceList objectAtIndex:indexPath.row];
-        GenericParams *genericParams;
-//        if(cell.commonView.genericParams == nil){
-            NSLog(@"genericParams is nil");
-        genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[self.almondColor makeGradatedColorForPositionIndex:indexPath.row]];
-//        }else {
-//            NSLog(@"genericParams not nil");
-//            [genericParams setGenericParamsWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[SFIColors clientGreenColor]];
-//        }
         
-        [cell.commonView initializeSensorCellWithGenericParams:genericParams cellType:SensorTable_Cell];
-        [cell.commonView setUpDeviceCell];
-        return cell;
+        genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[self.almondColor makeGradatedColorForPositionIndex:indexPath.row] isSensor:YES];
+        
+        [cell.commonView initialize:genericParams cellType:SensorTable_Cell];
     }
     else
     {
         Client *client = [self.currentClientList objectAtIndex:indexPath.row];
-        GenericParams *genericParams;
         UIColor *clientCellColor = [self getClientCellColor:client];
-        genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getClientHeaderGenericIndexValueForClient:client] indexValueList:nil deviceName:client.name color:clientCellColor];
-        [cell.commonView initializeSensorCellWithGenericParams:genericParams cellType:ClientTable_Cell];
-        [cell.commonView setUpDeviceCell];
-        return cell;
+        genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getClientHeaderGenericIndexValueForClient:client] indexValueList:nil deviceName:client.name color:clientCellColor isSensor:NO];
+        [cell.commonView initialize:genericParams cellType:ClientTable_Cell];
     }
+    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -202,30 +186,15 @@ int randomMobileInternalIndex;
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
         DeviceEditViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"DeviceEditViewController"];
         viewController.genericParams = genericParams;
-        viewController.isSensor = YES;
         [self.navigationController pushViewController:viewController animated:YES];
     });
 }
 
--(void)delegateDeviceButtonClickWithGenericProperies:(GenericIndexValue *)genericIndexValue{
+-(void)toggle:(GenericIndexValue *)genericIndexValue{
     NSLog(@"delegateSensorTableDeviceButtonClickWithGenericProperies");
-    NSDictionary *payload = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex];
-    GenericCommand *command = [[GenericCommand alloc] init];
-    command.commandType = CommandType_UPDATE_DEVICE_INDEX;
-    command.command = [payload JSONString];
     
-    [self asyncSendCommand:command];
-}
-
-- (void)asyncSendCommand:(GenericCommand *)command {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
-    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
-    if(local){
-        [[SecurifiToolkit sharedInstance] asyncSendToLocal:command almondMac:almond.almondplusMAC];
-    }else{
-        [[SecurifiToolkit sharedInstance] asyncSendToCloud:command];
-    }
+    GenericCommand *command = [DevicePayload getSensorIndexUpdate:genericIndexValue mii:randomMobileInternalIndex];
+    [[SecurifiToolkit sharedInstance] asyncSendCommand:command];
 }
 
 #pragma mark clientCell delegate
@@ -237,28 +206,21 @@ int randomMobileInternalIndex;
     viewController.genericParams = genericParams;
     [self.navigationController pushViewController:viewController animated:YES];
 }
-
 #pragma mark command responses
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"onDeviceListAndDynamicResponseParsed");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentDeviceList = toolkit.devices;
+    self.currentClientList = toolkit.clients;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
 
     });
 }
--(void)onClientListAndDynamicResponse:(id)sender{
-    self.currentClientList = [self getSortedDevices];
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-        
-    });
-}
 
--(void)onUpdateDeviceIndexResponse:(id)sender{
+-(void)onUpdateDeviceIndexResponse:(id)sender{ //mobile command
     NSLog(@"onUpdateDeviceIndexResponse");
-    //update image
+
 }
 
 @end

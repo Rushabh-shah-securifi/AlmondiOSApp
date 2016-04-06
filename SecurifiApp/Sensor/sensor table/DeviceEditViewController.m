@@ -66,15 +66,13 @@ static const int xIndent = 10;
 }
 
 -(void)setUpDeviceEditCell{
-    if(self.isSensor){
-        [self.deviceEditHeaderCell initializeSensorCellWithGenericParams:self.genericParams cellType:SensorEdit_Cell];
+    if(self.genericParams.isSensor){
+        [self.deviceEditHeaderCell initialize:self.genericParams cellType:SensorEdit_Cell];
     }
     else{
-        [self.deviceEditHeaderCell initializeSensorCellWithGenericParams:self.genericParams cellType:ClientEditProperties_cell];
+        [self.deviceEditHeaderCell initialize:self.genericParams cellType:ClientEditProperties_cell];
     }
     self.deviceEditHeaderCell.delegate = self;
-    [self.deviceEditHeaderCell setUpDeviceCell];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -97,8 +95,8 @@ static const int xIndent = 10;
 -(void)initializeNotifications{
     NSLog(@"initialize notifications sensor table");
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(onUpdateDeviceIndexResponse:) name:NOTIFICATION_UPDATE_DEVICE_INDEX_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onDeviceListAndDynamicResponseParsed:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onUpdateDeviceIndexResponse:) name:NOTIFICATION_UPDATE_DEVICE_INDEX_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onDeviceNameChanged:) name:NOTIFICATION_UPDATE_DEVICE_NAME_NOTIFIER object:nil];
     
 }
@@ -187,7 +185,7 @@ static const int xIndent = 10;
                 [view addSubview:grid];
             }
             else if ([genericIndexObj.layoutType isEqualToString:LIST]){
-                view.frame = CGRectMake(0, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
+                view.frame = CGRectMake(0, yPos , self.indexesScroll.frame.size.width, self.view.frame.size.height - view.frame.origin.y - 5);
                 ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width , self.view.frame.size.height- 5) color:self.genericParams.color genericIndexValue:genericIndexValue];
                 typeTableView.delegate = self;
                 
@@ -235,63 +233,44 @@ static const int xIndent = 10;
     
 }
 #pragma mark delegate callback methods
--(void)saveDeviceNewValue:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue{// index is genericindex for clients, normal index for sensors
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue{// index is genericindex for clients, normal index for sensors
     NSLog(@"saveDeviceNewValue %@",newValue);
-    GenericCommand *command = [[GenericCommand alloc] init];
+    GenericCommand *genericCommand;
     NSDictionary *payload;
     int index = genericIndexValue.index;
-    if(self.isSensor){
+    if(self.genericParams.isSensor){
         DeviceCommandType deviceCmdType = genericIndexValue.genericIndex.commandType;
         if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
-            Device *device = [Device getDeviceForID:_genericParams.headerGenericIndexValue.deviceID];
-            device = [Device getDeviceCopy:device];
-            [Device setDeviceNameLocation:device forGenericID:index value:newValue];
-            payload = [DevicePayload getNameLocationChangePayloadForGenericProperty:self.genericParams.headerGenericIndexValue mii:randomMobileInternalIndex device:device];
-            NSLog(@"sensor name location payload: %@", payload);
-            command.commandType = CommandType_UPDATE_DEVICE_NAME;//same for location
- 
+            genericCommand = [DevicePayload getNameLocationChange:genericIndexValue mii:randomMobileInternalIndex value:newValue];
         }else{
-            payload = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
-            command.commandType = CommandType_UPDATE_DEVICE_INDEX;
+            genericCommand = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
         }
     }else{
-        NSLog(@"saveDeviceNewValue - clients");
         Client *client = [Client findClientByID:@(_genericParams.headerGenericIndexValue.deviceID).stringValue];
         //Need to create client copy and set.
         [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
-        payload = [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:randomMobileInternalIndex];
-        command.commandType = CommandType_UPDATE_CLIENT;
-        
+        genericCommand = [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:randomMobileInternalIndex];
         NSLog(@"client payload  : %@", payload);
     }
-    command.command = [payload JSONString];
-    [self asyncSendCommand:command];
+    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCommand];
 }
 
-#pragma mark delegate callback methods
--(void)updateSliderValue:(NSString*)newvalue{
-    NSLog(@"updateSliderValue");
-}
--(void)updateHueColorPicker:(NSString *)newValue{
-    NSLog(@"updateHueColorPicker");
-}
 
 #pragma mark sensor cell(DeviceHeaderView) delegate
--(void)delegateDeviceButtonClickWithGenericProperies:(GenericIndexValue *)genericIndexValue{
+-(void)toggle:(GenericIndexValue *)genericIndexValue{
     NSLog(@"delegateSensorTableDeviceButtonClickWithGenericProperies");
-    NSDictionary *payload = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex];
-    GenericCommand *command = [[GenericCommand alloc] init];
-    command.commandType = CommandType_UPDATE_DEVICE_INDEX;
-    command.command = [payload JSONString];
-    
-    [self asyncSendCommand:command];
+    GenericCommand *genericCommand = [DevicePayload getSensorIndexUpdate:genericIndexValue mii:randomMobileInternalIndex];
+    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCommand];
 }
 
 #pragma mark command responses
--(void)onUpdateDeviceIndexResponse:(id)sender{
+-(void)onUpdateDeviceIndexResponse:(id)sender{ //mobile command
     NSLog(@"device edit - onUpdateDeviceIndexResponse");
 }
 
+-(void)onDeviceNameChanged:(id)sender{ // mobile commamd
+    
+}
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");
 //    [self.deviceEditHeaderCell initializeSensorCellWithGenericParams:self.genericParams cellType:SensorEdit_Cell];
@@ -300,20 +279,5 @@ static const int xIndent = 10;
 //    [self.deviceEditHeaderCell setUPSensorCell];
 }
 
--(void)onDeviceNameChanged:(id)sender{
-    NSLog(@"onDeviceNameChanged - ");
-    
-}
-
-- (void)asyncSendCommand:(GenericCommand *)command {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
-    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
-    if(local){
-        [[SecurifiToolkit sharedInstance] asyncSendToLocal:command almondMac:almond.almondplusMAC];
-    }else{
-        [[SecurifiToolkit sharedInstance] asyncSendToCloud:command];
-    }
-}
 
 @end

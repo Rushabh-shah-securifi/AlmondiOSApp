@@ -11,7 +11,7 @@
 #import "GenericIndexValue.h"
 
 @protocol HueColorPickerDelegate
--(void)saveDeviceNewValue:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue;
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue;
 @end
 @interface HueColorPicker : UIView
 @property (nonatomic)UIColor *color;

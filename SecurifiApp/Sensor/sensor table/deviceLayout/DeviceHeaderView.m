@@ -48,15 +48,17 @@
     
 }
 
--(void)initializeSensorCellWithGenericParams:(GenericParams*)genericParams cellType:(CellType)cellType{
+-(void)initialize:(GenericParams*)genericParams cellType:(CellType)cellType{
     self.genericParams = genericParams;
     self.cellType = cellType;
+    [self setUpDeviceCell];
 }
 
 -(void)setUpDeviceCell{
     NSLog(@"setUPSensorCell");
     self.view.backgroundColor = _genericParams.color;
     self.deviceName.text = self.genericParams.deviceName;
+    self.settingButton.alpha = 1;
     NSLog(@"devicename: %@, icon: %@, icontext: %@",self.deviceName.text, self.genericParams.headerGenericIndexValue.genericValue.icon, self.genericParams.headerGenericIndexValue.genericValue.iconText);
     if(_genericParams.headerGenericIndexValue.genericValue.iconText){
         self.deviceImage.hidden = YES;
@@ -84,6 +86,7 @@
 
 #pragma mark button click
 - (IBAction)settingButtonClicked:(id)sender {
+    self.settingButton.alpha = 0.5;
     if(self.cellType == SensorTable_Cell){
         NSArray* genericIndexValues = [GenericIndexUtil getDetailListForDevice:self.genericParams.headerGenericIndexValue.deviceID];
         self.genericParams.indexValueList = genericIndexValues;
@@ -104,8 +107,12 @@
     NSLog(@"onSensorButtonClicked");
     if(self.cellType == SensorTable_Cell || self.cellType == SensorEdit_Cell){
         //to do change image to load
-        [self.delegate delegateDeviceButtonClickWithGenericProperies:self.genericParams.headerGenericIndexValue];
+        [self changeImage];
+        [self.delegate toggle:self.genericParams.headerGenericIndexValue];
     }
+}
+-(void)changeImage{
+    self.deviceImage.image = [UIImage imageNamed:@"00_wait_icon"];
 }
 
 @end

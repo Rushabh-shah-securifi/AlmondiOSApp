@@ -10,21 +10,16 @@
 
 
 @implementation GenericParams
--(id)initWithGenericIndexValue:(GenericIndexValue*)headerGenericIndexValue indexValueList:(NSArray*)indexValueList deviceName:(NSString*)deviceName color:(UIColor*)color{
+-(id)initWithGenericIndexValue:(GenericIndexValue*)headerGenericIndexValue indexValueList:(NSArray*)indexValueList deviceName:(NSString*)deviceName color:(UIColor*)color isSensor:(BOOL)isSensor{
     self = [super init];
     if(self){
         self.headerGenericIndexValue = headerGenericIndexValue;
         self.indexValueList = indexValueList;
         self.deviceName = deviceName;
         self.color = color;
+        self.isSensor = isSensor;
     }
     return self;
 }
 
--(void)setGenericParamsWithGenericIndexValue:(GenericIndexValue*)headerGenericIndexValue indexValueList:(NSArray*)indexValueList deviceName:(NSString*)deviceName color:(UIColor*)color{
-    self.headerGenericIndexValue = headerGenericIndexValue;
-    self.indexValueList = indexValueList;
-    self.deviceName = deviceName;
-    self.color = color;
-}
 @end

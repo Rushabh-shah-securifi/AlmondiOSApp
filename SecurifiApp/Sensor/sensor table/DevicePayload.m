@@ -7,28 +7,37 @@
 //
 
 #import "DevicePayload.h"
+#import "AlmondJsonCommandKeyConstants.h"
 
 @implementation DevicePayload
 
-+(NSDictionary*)getSensorIndexUpdatePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii{
++(GenericCommand*)getSensorIndexUpdate:(GenericIndexValue*)genericIndexValue mii:(int)mii{
     NSMutableDictionary *payload = [NSMutableDictionary new];
-    [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
-    [payload setValue:@"UpdateDeviceIndex" forKey:@"CommandType"];
-    [payload setValue:@(genericIndexValue.deviceID).stringValue forKey:@"ID"];
-    [payload setValue:@(genericIndexValue.index).stringValue forKey:@"Index"];
-    [payload setValue:genericIndexValue.genericValue.toggleValue forKey:@"Value"];
-    return payload;
+    [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];
+    [payload setValue:UPDATE_DEVICE_INDEX forKey:@"CommandType"];
+    [payload setValue:@(genericIndexValue.deviceID).stringValue forKey:D_ID];
+    [payload setValue:@(genericIndexValue.index).stringValue forKey:INDEX];
+    [payload setValue:genericIndexValue.genericValue.toggleValue forKey:VALUE];
+    
+    GenericCommand *command = [[GenericCommand alloc] init];
+    command.commandType = CommandType_UPDATE_DEVICE_INDEX;
+    command.command = [payload JSONString];
+    return command;
 }
 
 //have to combile both methods
-+(NSDictionary*)getSensorIndexUpdatePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value{
++(GenericCommand*)getSensorIndexUpdatePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value{
     NSMutableDictionary *payload = [NSMutableDictionary new];
-    [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
-    [payload setValue:@"UpdateDeviceIndex" forKey:@"CommandType"];
-    [payload setValue:@(genericIndexValue.deviceID).stringValue forKey:@"ID"];
-    [payload setValue:@(genericIndexValue.index).stringValue forKey:@"Index"];
-    [payload setValue:value forKey:@"Value"];
-    return payload;
+    [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];
+    [payload setValue:UPDATE_DEVICE_INDEX forKey:@"CommandType"];
+    [payload setValue:@(genericIndexValue.deviceID).stringValue forKey:D_ID];
+    [payload setValue:@(genericIndexValue.index).stringValue forKey:INDEX];
+    [payload setValue:value forKey:VALUE];
+    
+    GenericCommand *command = [[GenericCommand alloc] init];
+    command.commandType = CommandType_UPDATE_DEVICE_INDEX;
+    command.command = [payload JSONString];
+    return command;
 }
 
 /*
@@ -42,14 +51,22 @@
  }"
  
  */
-+(NSDictionary*)getNameLocationChangePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii device:(Device*)device{
++(GenericCommand*)getNameLocationChange:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value{
+    
     NSMutableDictionary *payload = [NSMutableDictionary new];
-    [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
-    [payload setValue:@"UpdateDeviceName" forKey:@"CommandType"];
-    [payload setValue:@(genericIndexValue.deviceID).stringValue forKey:@"ID"];
-    [payload setValue:device.name forKey:@"Name"];
-    [payload setValue:device.location forKey:@"Location"];
-    return payload;
+    DeviceCommandType deviceCmdType = genericIndexValue.genericIndex.commandType;
+    [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];
+    [payload setValue:UPDATE_DEVICE_NAME forKey:@"CommandType"];
+    [payload setValue:@(genericIndexValue.deviceID).stringValue forKey:D_ID];
+    if(deviceCmdType == DeviceCommand_UpdateDeviceName)
+        [payload setValue:value forKey:INDEX_NAME];//will replace by @"Name"
+    else
+    [payload setValue:value forKey:LOCATION];
+    
+    GenericCommand *command = [[GenericCommand alloc] init];
+    command.commandType = CommandType_UPDATE_DEVICE_NAME;
+    command.command = [payload JSONString];
+    return command;
 }
 
 

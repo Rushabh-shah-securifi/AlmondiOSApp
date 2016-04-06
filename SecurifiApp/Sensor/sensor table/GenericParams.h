@@ -15,7 +15,8 @@
 @property(nonatomic) NSString *deviceName;
 @property(nonatomic) GenericIndexValue *headerGenericIndexValue;
 @property(nonatomic) UIColor *color;
+@property(nonatomic) BOOL isSensor;
 
--(id)initWithGenericIndexValue:(GenericIndexValue*)headerGenericIndexValue indexValueList:(NSArray*)indexValueList deviceName:(NSString*)deviceName color:(UIColor*)color;
--(void)setGenericParamsWithGenericIndexValue:(GenericIndexValue*)headerGenericIndexValue indexValueList:(NSArray*)indexValueList deviceName:(NSString*)deviceName color:(UIColor*)color;
+
+-(id)initWithGenericIndexValue:(GenericIndexValue*)headerGenericIndexValue indexValueList:(NSArray*)indexValueList deviceName:(NSString*)deviceName color:(UIColor*)color isSensor:(BOOL)isSensor;
 @end

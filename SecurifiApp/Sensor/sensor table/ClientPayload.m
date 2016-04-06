@@ -7,30 +7,35 @@
 //
 
 #import "ClientPayload.h"
+#import "AlmondJsonCommandKeyConstants.h"
 
 @implementation ClientPayload
 
-+(NSDictionary*)getUpdateClientPayloadForClient:(Client*)client mobileInternalIndex:(int)mii{
++(GenericCommand*)getUpdateClientPayloadForClient:(Client*)client mobileInternalIndex:(int)mii{
     NSMutableDictionary *payload = [NSMutableDictionary new];
-    [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
-    [payload setValue:@"UpdateClient" forKey:@"CommandType"];
+    [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];
+    [payload setValue: UPDATE_CLIENT forKey:@"CommandType"];
     
     NSDictionary * clients = @{
-                               @"ID":client.deviceID,
-                               @"Name":client.name,
-                               @"Connection":client.deviceConnection,
-                               @"MAC":client.deviceMAC,
-                               @"Type":client.deviceType,
-                               @"LastKnownIP":client.deviceIP,
-                               @"Active":client.isActive?@"true":@"false",
-                               @"UseAsPresence":client.deviceUseAsPresence?@"true":@"false",
-                               @"Wait":@(client.timeout).stringValue,
-                               @"Block":@(client.deviceAllowedType).stringValue,
-                               @"Schedule":client.deviceSchedule
+                               C_ID:client.deviceID,
+                               CLIENT_NAME:client.name,
+                               CONNECTION:client.deviceConnection,
+                               MAC:client.deviceMAC,
+                               CLIENT_TYPE:client.deviceType,
+                               LAST_KNOWN_IP:client.deviceIP,
+                               ACTIVE:client.isActive?@"true":@"false",
+                               USE_AS_PRESENCE:client.deviceUseAsPresence?@"true":@"false",
+                               WAIT:@(client.timeout).stringValue,
+                               BLOCK:@(client.deviceAllowedType).stringValue,
+                               SCHEDULE:client.deviceSchedule
                                //deliberaly left few keys, I think all readonly keys should be ommitted
                                };
-    [payload setValue:clients forKey:@"Clients"];
-    return payload;
+    [payload setValue:clients forKey:CLIENTS];
+    
+    GenericCommand *command = [[GenericCommand alloc] init];
+    command.commandType = CommandType_UPDATE_CLIENT;
+    command.command = [payload JSONString];
+    return command;
 }
 
 
