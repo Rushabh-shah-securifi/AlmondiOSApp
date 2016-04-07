@@ -187,8 +187,8 @@
 
         switch (genericRouterCommand.commandType) {
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
-                SFIDevicesList *ls = genericRouterCommand.command;
-                self.wirelessSettings = ls.deviceList;
+//                SFIDevicesList *ls = genericRouterCommand.command;
+                self.wirelessSettings = genericRouterCommand.command;
 
                 // settings was null, reload in case they are late arriving and the view is waiting for them
                 [self.tableView reloadData];

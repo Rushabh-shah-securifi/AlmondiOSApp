@@ -70,7 +70,6 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 @property enum RouterViewState routerViewState;
 
 @property(nonatomic, strong) SFIRouterSummary *routerSummary;
-@property(nonatomic) NSArray* wirelessSettings;
 
 @property NSNumber *currentExpandedSection; // nil == none expanded
 @property NSUInteger currentExpandedCount; // number of rows in expanded section
@@ -85,6 +84,7 @@ typedef NS_ENUM(unsigned int, AlmondSupportsSendLogs) {
 @property(nonatomic) BOOL enableNetworkingControl;
 @property(nonatomic) BOOL enableNewWifiClientsControl;
 @property(nonatomic) BOOL enableAlmondVersionRemoteUpdate;
+@property(nonatomic) BOOL isSimulator;
 @end
 
 @implementation SFIRouterTableViewController
@@ -109,6 +109,7 @@ int mii;
     self.enableNewWifiClientsControl = configurator.enableWifiClients;
     self.enableAlmondVersionRemoteUpdate = configurator.enableAlmondVersionRemoteUpdate;
     
+    self.isSimulator = YES;
     [super viewDidLoad];
     
     self.tableView.separatorColor = [UIColor clearColor];
@@ -160,9 +161,10 @@ int mii;
     [center addObserver:self selector:@selector(onCurrentAlmondChanged:) name:kSFIDidChangeCurrentAlmond object:nil];
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidUpdateAlmondList object:nil];
     
-    [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:kSFIDidReceiveGenericAlmondRouterResponse object:nil];
+//    [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:kSFIDidReceiveGenericAlmondRouterResponse object:nil];
     
-    [center addObserver:self selector:@selector(onRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
+    
 }
 
 - (void)initializeRouterSummaryAndSettings {
@@ -208,9 +210,7 @@ int mii;
     [self checkRouterViewState:refreshPolicy];
     
     // refresh data
-//    [self sendRouterSummaryRequest];
-    
-    [toolkit asyncSendCommand:[RouterPayload routerSummary:mii]];
+    [self sendRouterSummaryRequest];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -276,9 +276,13 @@ int mii;
         return;
     }
     //summary
-    [[SecurifiToolkit sharedInstance] asyncAlmondSummaryInfoRequest:self.almondMac];
+    if(_isSimulator)
+        [RouterParser sendrouterSummary];
+    else
+        [[SecurifiToolkit sharedInstance] asyncSendCommand:[RouterPayload routerSummary:mii]];
+//    [[SecurifiToolkit sharedInstance] asyncAlmondSummaryInfoRequest:self.almondMac];
     //setting
-    [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
+//    [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_wifi_clients];
 }
 
 - (void)sendRouterSettingsRequest:(enum SecurifiToolkitAlmondRouterRequest)requestType {
@@ -289,7 +293,11 @@ int mii;
     if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud && self.almondMac) {
         [self showLoadingRouterDataHUD];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        [toolkit asyncAlmondStatusAndSettingsRequest:self.almondMac request:requestType];
+        if(_isSimulator)
+            [RouterParser getWirelessSetting];
+        else
+            [toolkit asyncSendCommand:[RouterPayload getWirelessSettings:mii]];
+//        [toolkit asyncAlmondStatusAndSettingsRequest:self.almondMac request:requestType];
     }
 }
 
@@ -305,16 +313,22 @@ int mii;
     if (self.routerViewState == RouterViewState_no_almond) {
         return;
     }
-    
-    [[SecurifiToolkit sharedInstance] asyncRebootAlmond:self.almondMac];
+    if(self.isSimulator)
+        [RouterParser setRebootResponce];
+    else
+        [[SecurifiToolkit sharedInstance] asyncSendCommand:[RouterPayload routerReboot:mii]];
+//    [[SecurifiToolkit sharedInstance] asyncRebootAlmond:self.almondMac];
 }
 
 - (void)sendSendLogsCommand:(NSString *)description {
     if (self.routerViewState == RouterViewState_no_almond) {
         return;
     }
-    
-    [[SecurifiToolkit sharedInstance] asyncSendAlmondLogs:self.almondMac problemDescription:description];
+    if(self.isSimulator)
+        [RouterParser setLogsResponce];
+    else
+        [[SecurifiToolkit sharedInstance] asyncSendCommand:[RouterPayload sendLogs:description mii:mii]];
+//    [[SecurifiToolkit sharedInstance] asyncSendAlmondLogs:self.almondMac problemDescription:description];
 }
 
 #pragma mark HUD mgt
@@ -396,7 +410,7 @@ int mii;
         
     }
     else {
-        [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_connected_device];
+//        [self sendRouterSettingsRequest:SecurifiToolkitAlmondRouterRequest_connected_device];
     }
 }
 
@@ -547,6 +561,7 @@ int mii;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"cellForRowAtIndexPath indexpathrow: %lu", indexPath.row);
     switch (self.routerViewState) {
         case RouterViewState_no_almond: {
             tableView.scrollEnabled = NO;
@@ -1099,17 +1114,6 @@ int mii;
 }
 
 #pragma mark - Cloud command senders and handlers
--(void)onRouterCommandResponse:(id)sender{
-    NSLog(@"onRouterCommandResponse - router parser");
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [toolkit tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:toolkit.routerSummary];
-    self.routerSummary = toolkit.routerSummary;
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-        
-    });
-}
-
 - (void)onAlmondRouterCommandResponse:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
@@ -1122,20 +1126,16 @@ int mii;
 }
 
 - (void)processRouterCommandResponse:(SFIGenericRouterCommand *)genericRouterCommand {
+    NSLog(@"processRouterCommandResponse: %@", genericRouterCommand);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self) {
             return;
         }
-        
         if (self.disposed) {
             return;
         }
-        
-        if (![genericRouterCommand.almondMAC isEqualToString:self.almondMac]) {
-            return;
-        }
-        
+
         if (!genericRouterCommand.commandSuccess) {
             //todo push this string comparison logic into the generic router command
             self.isAlmondUnavailable = [genericRouterCommand.responseMessage.lowercaseString hasSuffix:NSLocalizedString(@"router.offline-msg. is offline", @" is offline")]; // almond is offline, homescreen is offline
@@ -1144,33 +1144,32 @@ int mii;
             [self.refreshControl endRefreshing];
             return;
         }
-        
+        NSLog(@"genericcommdntype: %d", genericRouterCommand.commandType);
         switch (genericRouterCommand.commandType) {
-            case SFIGenericRouterCommandType_CONNECTED_DEVICES: {
-                if (self.navigationController.topViewController == self) {
-                    SFIDevicesList *ls = genericRouterCommand.command;
-                    
-                    SFIRouterClientsTableViewController *ctrl = [SFIRouterClientsTableViewController new];
-                    ctrl.title = self.navigationItem.title;
-                    ctrl.connectedClients = ls.deviceList;
-                    ctrl.almondMac = self.almondMac;
-                    
-                    UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-                    [self presentViewController:nctrl animated:YES completion:nil];
-                }
-                
-                [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
-                break;
-            }
-                
-            case SFIGenericRouterCommandType_BLOCKED_MACS: {
-                // not handled
-                break;
-            }
+//            case SFIGenericRouterCommandType_CONNECTED_DEVICES: {
+//                if (self.navigationController.topViewController == self) {
+//                    SFIDevicesList *ls = genericRouterCommand.command;
+//                    
+//                    SFIRouterClientsTableViewController *ctrl = [SFIRouterClientsTableViewController new];
+//                    ctrl.title = self.navigationItem.title;
+//                    ctrl.connectedClients = ls.deviceList;
+//                    ctrl.almondMac = self.almondMac;
+//                    
+//                    UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+//                    [self presentViewController:nctrl animated:YES completion:nil];
+//                }
+//                
+//                [self syncCheckRouterViewState:RouterViewReloadPolicy_always];
+//                break;
+//            }
+//                
+//            case SFIGenericRouterCommandType_BLOCKED_MACS: {
+//                // not handled
+//                break;
+//            }
                 
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
-                SFIDevicesList *ls = genericRouterCommand.command;
-                NSArray *settings = ls.deviceList;
+                NSArray *settings = genericRouterCommand.command;
                 
                 if (self.currentConnectionMode == SFIAlmondConnectionMode_local) {
                     // protect against race condition: mode changed before this callback was received
@@ -1184,11 +1183,10 @@ int mii;
                 }
                 
                 if (self.navigationController.topViewController == self) {
-                    NSLog(@"wireless settings response : %@", toolkit.wireLessSettings);
                     NSLog(@"cloud settings: %@", settings);
                     SFIRouterSettingsTableViewController *ctrl = [SFIRouterSettingsTableViewController new];
                     ctrl.title = self.navigationItem.title;
-                    ctrl.wirelessSettings = self.wirelessSettings;
+                    ctrl.wirelessSettings = settings;
                     ctrl.almondMac = self.almondMac;
                     ctrl.enableRouterWirelessControl = self.enableRouterWirelessControl;
                     
@@ -1204,10 +1202,12 @@ int mii;
                 
             case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
                 NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
+                
 //                SFIRouterSummary *summary = (SFIRouterSummary *) genericRouterCommand.command;
 //                self.routerSummary = summary;
-                self.routerSummary = toolkit.routerSummary;
-                
+                self.routerSummary = (SFIRouterSummary *)genericRouterCommand.command;
+                [toolkit tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:self.routerSummary];
+                NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY, summary: %@", self.routerSummary);
                 NSString *currentVersion = self.routerSummary.firmwareVersion;
                 [self tryCheckAlmondVersion:currentVersion];
                 [self tryCheckSendLogsSupport:currentVersion];
