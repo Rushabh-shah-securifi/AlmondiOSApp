@@ -452,6 +452,7 @@
 		A5F03F6C1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		A5F03F6D1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		CE08B3CC1C9A87C900ABAF6B /* DeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */; };
+		CE20BF3B1CB6331A002737F4 /* PerformanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CE20BF3A1CB6331A002737F4 /* PerformanceTest.m */; settings = {ASSET_TAGS = (); }; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
 		CE810C5E1C9BDAA000F80777 /* GridView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C5D1C9BDAA000F80777 /* GridView.m */; };
 		CE810C611C9C15D100F80777 /* ListButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C601C9C15D100F80777 /* ListButtonView.m */; };
@@ -990,6 +991,8 @@
 		C7BE6C0BC2A24D858015ECCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE08B3CA1C9A87C900ABAF6B /* DeviceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceTableViewCell.h; sourceTree = "<group>"; };
 		CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTableViewCell.m; sourceTree = "<group>"; };
+		CE20BF391CB6331A002737F4 /* PerformanceTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceTest.h; sourceTree = "<group>"; };
+		CE20BF3A1CB6331A002737F4 /* PerformanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceTest.m; sourceTree = "<group>"; };
 		CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPickerIndicatorView1.h; sourceTree = "<group>"; };
 		CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPickerIndicatorView1.m; sourceTree = "<group>"; };
 		CE810C5C1C9BDAA000F80777 /* GridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridView.h; sourceTree = "<group>"; };
@@ -1989,6 +1992,8 @@
 				A5C7B4091CA28D6F00E269A2 /* GenericIndexValue.m */,
 				A5488CB01CAE9120002B9F1C /* ClientPayload.h */,
 				A5488CB11CAE9120002B9F1C /* ClientPayload.m */,
+				CE20BF391CB6331A002737F4 /* PerformanceTest.h */,
+				CE20BF3A1CB6331A002737F4 /* PerformanceTest.m */,
 			);
 			path = "sensor table";
 			sourceTree = "<group>";
@@ -2827,6 +2832,7 @@
 				8427D0111B7DDDE300E754DE /* SFISensorDetailViewController.m in Sources */,
 				A584C8401C5B8344006E02DB /* CollectionViewCell.m in Sources */,
 				1DF030E39A245683EABC61AE /* SFIRouterVersionTableViewCell.m in Sources */,
+				CE20BF3B1CB6331A002737F4 /* PerformanceTest.m in Sources */,
 				1DF031024A2F8810074C455A /* TemperatureView.m in Sources */,
 				CEEC421A1C98560500A2C35D /* DeviceEditViewController.m in Sources */,
 				1DF0314D9246328F1EA9DBEF /* SFITextField.m in Sources */,

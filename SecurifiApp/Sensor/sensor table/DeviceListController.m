@@ -18,6 +18,7 @@
 #import "AlmondJsonCommandKeyConstants.h"
 #import "SFIColors.h"
 #import "UIFont+Securifi.h"
+#import "PerformanceTest.h"
 
 
 #define NO_ALMOND @"NO ALMOND"
@@ -43,6 +44,8 @@ int randomMobileInternalIndex;
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
+    [PerformanceTest startTest];
+
 
     if (self.currentAlmond == nil) {
         [self markTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];

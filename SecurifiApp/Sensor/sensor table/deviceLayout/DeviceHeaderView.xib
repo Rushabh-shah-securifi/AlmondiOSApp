@@ -89,13 +89,11 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="low_battery" translatesAutoresizingMaskIntoConstraints="NO" id="cfV-XV-1jL">
-                    <rect key="frame" x="-6" y="-2" width="30" height="30"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                </imageView>
                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_tampered_orange" translatesAutoresizingMaskIntoConstraints="NO" id="lQZ-cc-ceE">
-                    <rect key="frame" x="283" y="-4" width="30" height="30"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="285" y="-4" width="30" height="30"/>
+                </imageView>
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="low_battery" translatesAutoresizingMaskIntoConstraints="NO" id="cfV-XV-1jL">
+                    <rect key="frame" x="-6" y="-3" width="30" height="30"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
