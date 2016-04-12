@@ -49,6 +49,7 @@
 + (UIColor *)gridBlockColor;
 
 + (UIColor *)testGrayColor;
+
 + (UIColor *)test1GrayColor;
 
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName;
@@ -64,5 +65,9 @@
 // Converts to a UIColor having the specified brightness.
 // Brightness value: 0 - 100.
 - (UIColor *)colorWithBrightness:(int)brightness;
+
++ (UIColor *)lighterColorForColor:(UIColor *)c;
+
++ (UIColor *)darkerColorForColor:(UIColor *)c;
 
 @end
