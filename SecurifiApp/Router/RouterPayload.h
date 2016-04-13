@@ -7,17 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SFIRouterTableViewController.h"
 
 @interface RouterPayload : NSObject
 
-+ (GenericCommand*)routerSummary:(int)mii;
-
-+ (GenericCommand*)getWirelessSettings:(int)mii;
-
-+ (GenericCommand*)setWirelessSettings:(int)mii wirelessSettings:(SFIWirelessSetting*)wirelessSettingObj isEnabled:(BOOL)isEnabled;
-
-+ (GenericCommand*)routerReboot:(int)mii;
-
-+ (GenericCommand*)sendLogs:(NSString*)message mii:(int)mii;
++ (void)sendRouterCommandForType:(RouterCmdType)type mii:(int)mii isSimulator:(BOOL)isSimulator mac:(NSString*)almondMac version:(NSString*)version message:(NSString*)message;
 
 @end

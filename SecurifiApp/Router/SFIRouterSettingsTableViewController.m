@@ -173,11 +173,7 @@
 
 - (void)processRouterCommandResponse:(SFIGenericRouterCommand *)genericRouterCommand {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        if (!self) {
-            return;
-        }
-
-        if (self.disposed) {
+        if (!self || self.disposed) {
             return;
         }
 
@@ -260,7 +256,7 @@
 
 #pragma mark - TableHeaderViewDelegate methods
 
-- (void)tableHeaderViewDidTapButton:(TableHeaderView *)view {
+- (void)dismissHeaderView:(TableHeaderView *)view {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [UIView animateWithDuration:0.75 animations:^() {
             self.tableView.tableHeaderView = nil;
