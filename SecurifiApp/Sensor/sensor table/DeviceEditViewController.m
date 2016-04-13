@@ -48,8 +48,10 @@ static const int xIndent = 10;
 @property (nonatomic) IBOutlet UIView *indexView;
 @property (nonatomic) IBOutlet UILabel *indexLabel;
 @property (weak, nonatomic) IBOutlet DeviceHeaderView *deviceEditHeaderCell;
-
+@property (nonatomic) UIView *dismisstamperedView;
 @property (nonatomic) UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *indexScrollTopConstraint;
+
 @end
 
 @implementation DeviceEditViewController{
@@ -119,7 +121,7 @@ static const int xIndent = 10;
     for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList){
         NSLog(@"genericIndexValue loop");
         GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
-
+        
         if([genericIndexObj.layoutType isEqualToString:@"Info"] || [genericIndexObj.layoutType.lowercaseString isEqualToString:@"off"] || genericIndexObj.layoutType == nil || [genericIndexObj.layoutType isEqualToString:@"NaN"]){
             continue;
         }
@@ -127,6 +129,12 @@ static const int xIndent = 10;
         NSString *propertyName = genericIndexObj.groupLabel;
         if([genericIndexObj.type isEqualToString:SENSOR]){
             UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_SMALL];
+            if([genericIndexObj.ID isEqualToString:@"9"] && [genericIndexValue.genericValue.value isEqualToString:@"true"]){
+                [self disMissTamperedView];
+                continue;
+            }
+             if([genericIndexObj.ID isEqualToString:@"12"])//skipping low battery
+                 continue;
             [self.indexesScroll addSubview:view];
             
             UILabel *label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
@@ -142,13 +150,15 @@ static const int xIndent = 10;
             
             yPos = yPos + view.frame.size.height + LABELSPACING;
             NSLog(@" r-yPos %d",yPos);
-        }
+                }
         else{
             UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_LARGE];
             UILabel *label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
             [self setUpLable:label withPropertyName:propertyName];
             [view addSubview:label];
             NSLog(@"layout type %@",genericIndexObj.layoutType );
+            
+           
             if([genericIndexObj.layoutType isEqualToString:SLIDER]){
                 HorizontalPicker *horzView = [[HorizontalPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 horzView.delegate = self;
@@ -254,8 +264,45 @@ static const int xIndent = 10;
     }
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCommand];
 }
+-(void)disMissTamperedView{
+    self.dismisstamperedView = [[UIView alloc]initWithFrame:CGRectMake(self.indexesScroll.frame.origin.x, self.deviceEditHeaderCell.frame.size.height + self.deviceEditHeaderCell.frame.origin.y + 5, self.indexesScroll.frame.size.width, 40)];
+    self.dismisstamperedView.backgroundColor = [SFIColors ruleOrangeColor];
+    UIImageView *tamperedImgView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 3, 30, 30)];
+    tamperedImgView.image = [UIImage imageNamed:@"tamper"];
+    [self.dismisstamperedView addSubview:tamperedImgView];
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(50, 3, self.dismisstamperedView.frame.size.width - 60, 30)];
+    label.text = @"Device has been tampered";
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont securifiFont:12];
+    [self.dismisstamperedView addSubview:label];
+    UIImageView *crossIcon = [[UIImageView alloc]initWithFrame:CGRectMake(self.dismisstamperedView.frame.size.width -45, 8, 20, 20)];
+    crossIcon.image = [UIImage imageNamed:@"cross_icon"];
+    crossIcon.alpha = 0.5;
+    
+    [self.dismisstamperedView addSubview:crossIcon];
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dimissTamperTap:)];
+    singleTap.numberOfTapsRequired = 1;
+    [self.dismisstamperedView setUserInteractionEnabled:YES];
+    [self.dismisstamperedView addGestureRecognizer:singleTap];
+    self.indexScrollTopConstraint.constant = 40;
+//    [self.indexesScroll addConstraint:self.indexScrollTopConstraint];
+//    self.indexesScroll.constraints = self.indexScrollTopConstraint;
+    [self.view addSubview:self.dismisstamperedView];
+}
 
-
+-(void)dimissTamperTap:(id)sender{
+    [UIView animateWithDuration:2 delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:15 options:nil animations:^() {
+        [self.dismisstamperedView removeFromSuperview];
+        self.deviceEditHeaderCell.tamperedImgView.hidden = YES;
+        self.indexScrollTopConstraint.constant = 2;
+    } completion:nil];
+//    [UIView animateWithDuration:2 animations:^() {
+//        [self.dismisstamperedView removeFromSuperview];
+//        self.indexScrollTopConstraint.constant = 2;
+//    }];
+   
+    
+}
 #pragma mark sensor cell(DeviceHeaderView) delegate
 -(void)toggle:(GenericIndexValue *)genericIndexValue{
     NSLog(@"delegateSensorTableDeviceButtonClickWithGenericProperies");

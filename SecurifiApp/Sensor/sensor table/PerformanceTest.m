@@ -25,8 +25,43 @@
                                              @"FriendlyDeviceType1":@"ContactSwitch",
                                              @"Type1":@"12",
                                              @"Location1":@"Default",
-                                             @"DeviceVa1lues":@"Vlues"
-                                                         };
+                                             @"DeviceVa1lues":@"Vlues",
+                                             @"Device":@{
+                                                     @"3":@{
+                                                             @"Name":@"ContactSwitch #1",
+                                                             @"FriendlyDeviceType":@"ContactSwitch",
+                                                             @"Type":@"12",
+                                                             @"Location":@"Default",
+                                                             @"DeviceValues":@{
+                                                                     @"1":@{
+                                                                             @"Name":@"STATE",
+                                                                             @"Value":@"true"
+                                                                             },
+                                                                     @"2":@{
+                                                                             @"Name":@"LOW BATTERY",
+                                                                             @"Value":@"0"
+                                                                             },
+                                                                     @"3":@{
+                                                                             @"Name":@"TAMPER",
+                                                                             @"Value":@"true"
+                                                                             }
+                                                                     }
+                                                             },
+                                                     @"4":@{
+                                                             @"Name":@"BinarySwitch #2",
+                                                             @"FriendlyDeviceType":@"BinarySwitch",
+                                                             @"Type":@"1",
+                                                             @"Location":@"Default",
+                                                             @"DeviceValues":@{
+                                                                     @"1":@{
+                                                                             @"Name":@"SWITCH BINARY",
+                                                                             @"Value":@"true"
+                                                                             }
+                                                                     }
+                                                             }
+                                                     
+                                                         }
+                                             };
     
     
     [self timeDictTest:dynamicDeviceAdded];
@@ -42,15 +77,16 @@
 + (void)timeDictTest:(NSDictionary*)deviceDict{
     CFTimeInterval start = CACurrentMediaTime();
     deviceDict[@"Name"];
+    deviceDict[@"DeviceVa1lues"];
+    deviceDict[@"Location1"];
+    deviceDict[@"Location"];
     deviceDict[@"Name"];
-    deviceDict[@"Name"];
-    deviceDict[@"Name"];
-    deviceDict[@"Name"];
+    deviceDict[@"Type"];
+    deviceDict[@"FriendlyDeviceType"];
+    deviceDict[@"DeviceVa1lues"];
     deviceDict[@"Type"];
     deviceDict[@"Type"];
-    deviceDict[@"Type"];
-    deviceDict[@"Type"];
-    deviceDict[@"Type"];
+    [[deviceDict[@"Device"]valueForKey:@"3"] valueForKey:@"Name"];
     
     float endTime = CACurrentMediaTime() - start;
     NSLog(@" dict time diff %.8f ",endTime);

@@ -59,8 +59,6 @@
     self.view.backgroundColor = _genericParams.color;
     self.deviceName.text = self.genericParams.deviceName;
     self.settingButton.alpha = 1;
-    NSLog(@" indexvalue list %@",self.genericParams.indexValueList);
-    NSLog(@"devicename: %@, icon: %@, icontext: %@",self.deviceName.text, self.genericParams.headerGenericIndexValue.genericValue.icon, self.genericParams.headerGenericIndexValue.genericValue.iconText);
     if(_genericParams.headerGenericIndexValue.genericValue.iconText){
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;
@@ -74,12 +72,8 @@
     }
     self.lowBatteryImgView.hidden = YES;
     self.tamperedImgView.hidden = YES;
-    if(self.genericParams.isSensor && self.cellType == SensorTable_Cell)
+    if(self.genericParams.isSensor)
         [self isTamper];
-}
-
--(void)setUpClientCell{
-    // set up images and labels for clients
 }
 
 -(void)addDeviceValueImgLabel:(NSString*)text suffix:(NSString*)suffix{
@@ -152,13 +146,13 @@
     }
 }
 -(void)tamperTapped:(id)sender{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Do you want to dismiss tamper ?"
-                                                    message:@""
-                                                   delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"YES", nil];
-    alert.delegate = self;
-    [alert show];
+//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Do you want to dismiss tamper ?"
+//                                                    message:@""
+//                                                   delegate:self
+//                                          cancelButtonTitle:@"Cancel"
+//                                          otherButtonTitles:@"YES", nil];
+//    alert.delegate = self;
+//    [alert show];
     
     NSLog(@"tamperTapped  ");
 }
