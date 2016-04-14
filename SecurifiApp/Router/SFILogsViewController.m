@@ -7,74 +7,141 @@
 //
 
 #import "SFILogsViewController.h"
+#import "SFITableViewController.h"
 #import "SFIColors.h"
 #import "UIFont+Securifi.h"
+#import "RouterPayload.h"
 
 @interface SFILogsViewController ()
-
+@property (nonatomic) UITextField *textField;
+@property (nonatomic) UIView *logView;
 @end
 
 @implementation SFILogsViewController
-
+int mii;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self setUpNavigationBar];
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(5, 70, self.view.frame.size.width - 10 , 250)];
-    view.backgroundColor = [[SFIColors yellowColor] color];
+    [self addLogsView];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    NSLog(@"logs - viewWillAppear");
+    [super viewWillAppear:animated];
+    mii = arc4random() % 10000;
+    [self initializeNotifications];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    NSLog(@"logs - view will disapper");
+    [super viewWillDisappear:animated];
     
-    UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 5, view.frame.size.width -10, 20)];
-    titleLabel.text = @"Repoart a problem";
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver:self];
+}
+
+- (void)initializeNotifications {
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(onLogsRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
+}
+
+-(void)addLogsView{
+    self.logView = [[UIView alloc]initWithFrame:CGRectMake(5, 70, self.view.frame.size.width - 10 , 250)];
+    self.logView.backgroundColor = [[SFIColors yellowColor] color];
+    
+    UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 5, self.logView.frame.size.width -10, 20)];
+    titleLabel.text = @"Report a problem";
     titleLabel.font = [UIFont securifiFont:16];
     titleLabel.textColor = [UIColor whiteColor];
-    [view addSubview:titleLabel];
+    [self.logView addSubview:titleLabel];
     
-    UITextView *textView = [[UITextView alloc]initWithFrame:CGRectMake(5, 35, view.frame.size.width -10, 100)];
-    textView.text = @"Aloong with your message,this will send Almond debug infiormation and logs to our cloud.This information will help us to resolve your problem faster.Please note that we do not send any sensitive information like your passwords.";
+    UILabel *msgLable = [[UILabel alloc]initWithFrame:CGRectMake(5, 35, self.logView.frame.size.width -10, 100)];
+    msgLable.text = @"Along with your message,this will send Almond debug infiormation and logs to our cloud.This information will help us to resolve your problem faster.Please note that we do not send any sensitive information like your passwords.";
+    msgLable.lineBreakMode = NSLineBreakByWordWrapping;
+    msgLable.numberOfLines = 0;
+    msgLable.font = [UIFont securifiLightFont:13];
+    msgLable.backgroundColor = [[SFIColors yellowColor] color];
+    msgLable.textColor = [UIColor whiteColor];
+    [self.logView addSubview:msgLable];
     
-    textView.textContainer.lineBreakMode = NSLineBreakByWordWrapping;
-    textView.font = [UIFont securifiLightFont:13];
-    textView.backgroundColor = [[SFIColors yellowColor] color];
-    textView.textColor = [UIColor whiteColor];
-    [view addSubview:textView];
+    self.textField = [[UITextField alloc]initWithFrame:CGRectMake(5, 145, self.logView.frame.size.width -10, 20)];
+    self.textField.placeholder = @"Describe your problem here";
+    self.textField.font = [UIFont securifiFont:14];
+    self.textField.textColor = [UIColor whiteColor];
+    [self.textField becomeFirstResponder];
+    self.textField.backgroundColor = [UIColor clearColor];
+    [self.logView addSubview:self.textField];
     
-    UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(5, 145, view.frame.size.width -10, 20)];
-    textField.placeholder = @"Describe your problem here";
-    textField.font = [UIFont securifiFont:14];
-    textField.textColor = [UIColor whiteColor];
-    [textField becomeFirstResponder];
-    textField.backgroundColor = [UIColor clearColor];
-    [view addSubview:textField];
-    
-    UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(5, 166, view.frame.size.width -10, 1)];
+    UIView *lineView = [[UIView alloc]initWithFrame:CGRectMake(5, 166, self.logView.frame.size.width -10, 1)];
     lineView.backgroundColor = [UIColor whiteColor];
-    [view addSubview:lineView];
+    [self.logView addSubview:lineView];
     
     
-    UIButton *doneButton = [[UIButton alloc]initWithFrame:CGRectMake(view.frame.size.width - 110 , 176,100, 40)];
+    UIButton *doneButton = [[UIButton alloc]initWithFrame:CGRectMake(self.logView.frame.size.width - 110 , 176,100, 40)];
     [doneButton setTitle:@"Done" forState:UIControlStateNormal];
     doneButton.backgroundColor = [UIColor whiteColor];
     [doneButton setTitleColor:[[SFIColors yellowColor] color] forState:UIControlStateNormal];
-    [view addSubview:doneButton];
+    [doneButton addTarget:self action:@selector(onSendLogsPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.logView addSubview:doneButton];
     
-    [self.view addSubview:view];
+    [self.view addSubview:self.logView];
+}
+-(void)addValidationLable{
+    UILabel *alertLable = [[UILabel alloc]initWithFrame:CGRectMake(5, 176, self.view.frame.size.width -120, 40)];
+    alertLable.text = @"Please write description between 10 and 180 characters.";
+    alertLable.lineBreakMode = NSLineBreakByWordWrapping;
+    alertLable.numberOfLines = 0;
+    alertLable.font = [UIFont securifiLightFont:13];
+    alertLable.backgroundColor = [[SFIColors yellowColor] color];
+    alertLable.textColor = [UIColor whiteColor];
+    [self.logView addSubview:alertLable];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 -(void) setUpNavigationBar{
     self.navigationController.navigationBar.translucent = YES;
-    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(btnSaveTap:)];
-    self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     UIBarButtonItem *leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(btnCancelTap:)];
     self.navigationItem.leftBarButtonItem = leftBarButtonItem;
-    
 }
 
 -(void)btnCancelTap:(id)sender{
     [self dismissViewControllerAnimated:NO completion:nil];
+}
+
+-(void)onSendLogsPressed:(id)sender{
+    if([_textField.text length] < 10){
+        [self addValidationLable];
+        [self.textField becomeFirstResponder];
+    }else{
+        [RouterPayload sendRouterCommandForType:RouterCmdType_SendLogsReq mii:mii isSimulator:YES mac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC  version:nil message:self.textField.text];
+    }
+}
+
+- (void)onLogsRouterCommandResponse:(id)sender {
+    NSLog(@"onLogsRouterCommandResponse");
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    SFIGenericRouterCommand *genericRouterCommand = (SFIGenericRouterCommand *) [data valueForKey:@"data"];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (!self || !genericRouterCommand.commandSuccess) {// || mii != genericRouterCommand.mii
+//            [self.HUD hide:YES];
+            return;
+        }
+        else if(genericRouterCommand.commandType == SFIGenericRouterCommandType_SEND_LOGS_RESPONSE){
+            NSLog(@"success true");
+             [self dismissViewControllerAnimated:NO completion:nil];
+        }
+        
+//        [self.HUD hide:YES];
+    });
 }
 
 @end

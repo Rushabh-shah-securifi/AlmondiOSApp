@@ -34,14 +34,17 @@
 #define DEF_ROUTER_REBOOT_SECTION       4
 #define DEF_ROUTER_SEND_LOGS_SECTION    5
 
-static const int networkingHeight = 125;
-static const int clientsHeight = 125;
-static const int settingsHeight = 120;
-static const int versionHeight = 100;
-static const int rebootHeight = 100;
+#define REBOOT_TAG 1
+#define FIRMWARE_UPDATE_TAG 2
+
+static const int networkingHeight = 100;
+static const int clientsHeight = 100;
+static const int settingsHeight = 100;
+static const int versionHeight = 110;
+static const int rebootHeight = 110;
 static const int logsHeight = 100;
 
-@interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate>{
+@interface SFIRouterTableViewController () <SFIRouterTableViewActions, MessageViewDelegate, AlmondVersionCheckerDelegate, TableHeaderViewDelegate,UIAlertViewDelegate>{
 
 }
 
@@ -87,8 +90,6 @@ int mii;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self addRefreshControl];
-    [self initializeNotifications];
-    
     [self initializeRouterSummaryAndSettings];
 }
 
@@ -96,6 +97,7 @@ int mii;
     NSLog(@"viewWillAppear");
     [super viewWillAppear:animated];
     mii = arc4random() % 10000;
+    [self initializeNotifications];
     [self initializeAlmondData];
 //    [self.tableView reloadData];
 }
@@ -169,11 +171,6 @@ int mii;
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark - Commands
-
-- (void)sendRebootAlmondCommand {//integrate with rushab
-    [RouterPayload sendRouterCommandForType:RouterCmdType_RebootReq mii:mii isSimulator:_isSimulator mac:self.almondMac version:nil message:nil];
-}
 #pragma mark HUD mgt
 
 - (void)showHudWithTimeout {
@@ -323,13 +320,16 @@ int mii;
             case DEF_ROUTER_VERSION_SECTION:{
                 NSString *title = self.newAlmondFirmwareVersionAvailable ? NSLocalizedString(@"router.software-version-new.title.Software Version *", @"Software Version *") : NSLocalizedString(@"router.software-version-new.title.Software Version", @"Software Version");
                 summaries = [self getRouterVersionSummary];
-                return [self createSummaryCell:tableView summaries:summaries title:title selector:nil cardColor:[UIColor securifiRouterTileYellowColor]];
+                SFICardViewSummaryCell *cell = (SFICardViewSummaryCell *)[self createSummaryCell:tableView summaries:summaries title:title selector:nil cardColor:[UIColor securifiRouterTileYellowColor]];
+                if(self.newAlmondFirmwareVersionAvailable)
+                    [self addButton:cell buttonLabel:@"UPDATE FIRMWARE" selector:@selector(onFirmwareUpdate:)];
+                return cell;
             }
                 
             case DEF_ROUTER_REBOOT_SECTION:{
                 summaries = [self getRebootSummary];
                 SFICardViewSummaryCell *cell = (SFICardViewSummaryCell *)[self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Router Reboot", @"Router Reboot") selector:nil cardColor:[UIColor securifiRouterTileRedColor]];
-                [self addRebootButton:cell];
+                [self addButton:cell buttonLabel:@"REBOOT NOW" selector:@selector(onRebootButtonPressed:)];
                 return cell;
             }
                 
@@ -379,51 +379,6 @@ int mii;
 }
 
 
--(void)addRebootButton:(SFICardViewSummaryCell*)cell{
-    UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(cell.cardView.frame.size.width - 150, rebootHeight - 25, 150, 20)];
-    //    button.enabled = YES;
-    button.titleLabel.textAlignment = NSTextAlignmentCenter;
-    button.titleLabel.font = [UIFont standardUIButtonFont];
-    //    [button setTitle:@"REBOOT NOW" forState:UIControlStateNormal];
-    NSDictionary *attrs = @{ NSForegroundColorAttributeName : [UIColor whiteColor],
-                             NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid)};
-    NSAttributedString *attrStr = [[NSAttributedString alloc] initWithString:@"REBOOT NOW" attributes:attrs];
-    //use the setAttributedTitle method
-    
-    [button setAttributedTitle:attrStr forState:UIControlStateNormal];
-    //    [button setcolo]
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [button setTitleColor:[SFIColors darkerColorForColor:[UIColor whiteColor]] forState:UIControlStateSelected];
-    [button addTarget:self action:@selector(onRebootButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [cell.cardView addSubview:button];
-}
-
--(void)onRebootButtonPressed:(id)sender{
-    NSLog(@"onRebootButtonPressed");
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Do you want to reboot ?"
-                                                    message:@""
-                                                   delegate:nil
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Reboot", nil];
-    
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [alert show];
-    });
-    
-}
-
--(void)onLogsCard:(id)sender{
-    if (self.navigationController.topViewController == self) {
-        SFILogsViewController *ctrl = [SFILogsViewController new];
-        ctrl.title = self.navigationItem.title;
-        UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-        [self presentViewController:nctrl animated:YES completion:nil];
-        
-        NSLog(@"onLogsCard");
-    }
-}
-
 -(NSArray*)getNetworkSummary{
     NSLog(@"self.routersummery.url: %@", self.routerSummary.url);
     NSString *host = self.routerSummary.url ? self.routerSummary.url : @"";
@@ -472,14 +427,13 @@ int mii;
     NSString *version = self.routerSummary.firmwareVersion;
     NSArray *summary;
     if (version) {
-        NSString *currentVersion_label = NSLocalizedString(@"router.software-version.Current version", @"Current version");
-        
+        NSString *currentVersion_label = [NSString stringWithFormat:@"%@: %@",NSLocalizedString(@"router.software-version.Current version", @"Current version"), version];
         if (self.newAlmondFirmwareVersionAvailable) {
             NSString *updateAvailable_label = NSLocalizedString(@"router.software-version.Update Available", @"Update Available");
-            summary = @[updateAvailable_label, currentVersion_label, version];
+            summary = @[updateAvailable_label, currentVersion_label];
         }
         else {
-            summary = @[currentVersion_label, version];
+            summary = @[currentVersion_label];
         }
         
     }else{
@@ -522,6 +476,74 @@ int mii;
 
 - (BOOL)isNoAlmondLoaded {
     return [self.almondMac isEqualToString:NO_ALMOND];
+}
+
+
+-(void)addButton:(SFICardViewSummaryCell*)cell buttonLabel:(NSString *)label selector:(SEL)selectorMethod{
+    UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(self.tableView.frame.size.width - 160, rebootHeight - 25, 140, 20)];
+    button.enabled = YES;
+    button.titleLabel.font = [UIFont standardUIButtonFont];
+    
+    NSDictionary *attrs = @{ NSForegroundColorAttributeName : [UIColor whiteColor],
+                             NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid)};
+    NSAttributedString *attrStr = [[NSAttributedString alloc] initWithString:label attributes:attrs];
+    //use the setAttributedTitle method
+    
+    [button setAttributedTitle:attrStr forState:UIControlStateNormal];
+    button.titleLabel.textAlignment = NSTextAlignmentRight;
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [button setTitleColor:[SFIColors darkerColorForColor:[UIColor whiteColor]] forState:UIControlStateSelected];
+    [button addTarget:self action:selectorMethod forControlEvents:UIControlEventTouchUpInside];
+    
+    [cell.cardView addSubview:button];
+}
+
+-(void)onRebootButtonPressed:(id)sender{
+    NSLog(@"onRebootButtonPressed");
+    [self createAlertViewForTitle:@"Are you sure, you want to Reboot?" otherTitle:@"Reboot" tag:REBOOT_TAG];
+}
+
+-(void)onFirmwareUpdate:(id)sender{
+    NSLog(@"onFirmwareUpdate");
+    [self createAlertViewForTitle:@"Are you sure, you want to Update Firmware?" otherTitle:@"Update" tag:FIRMWARE_UPDATE_TAG];
+}
+
+-(void)createAlertViewForTitle:(NSString*)title otherTitle:(NSString*)otherTitle tag:(int)tag{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:@""
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:otherTitle, nil];
+    alert.tag = tag;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [alert show];
+    });
+
+}
+
+#pragma mark alert view delegate method
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == [alertView cancelButtonIndex]){
+        //nothing
+    }else{
+        if(alertView.tag == FIRMWARE_UPDATE_TAG){
+            [self showHUD:NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.")];
+            [RouterPayload sendRouterCommandForType:RouterCmdType_UpdateFirmware mii:mii isSimulator:_isSimulator mac:self.almondMac version:self.latestAlmondVersionAvailable message:nil];
+        }else if(alertView.tag == REBOOT_TAG){
+//            [self showHUD:NSLocalizedString(@"router.hud.Router is rebooting.", @"Router is rebooting.")];
+            self.isRebooting = TRUE;
+            [RouterPayload sendRouterCommandForType:RouterCmdType_RebootReq mii:mii isSimulator:_isSimulator mac:self.almondMac version:nil message:nil];
+        }
+    }
+}
+
+-(void)onLogsCard:(id)sender{
+    if (self.navigationController.topViewController == self) {
+        SFILogsViewController *ctrl = [SFILogsViewController new];
+        ctrl.title = self.navigationItem.title;
+        UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+        [self presentViewController:nctrl animated:YES completion:nil];
+    }
 }
 
 - (UITableViewCell *)createNoAlmondCell:(UITableView *)tableView {
@@ -598,7 +620,7 @@ int mii;
 }
 
 
-#pragma mark - Cloud command senders and handlers
+#pragma mark - Cloud command response handlers
 - (void)onAlmondRouterCommandResponse:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
@@ -653,15 +675,7 @@ int mii;
                 }
                 break;
             }
-            case SFIGenericRouterCommandType_SEND_LOGS_RESPONSE: {
-                //will be handled in logs controller
-                break;
-            };
-                
             case SFIGenericRouterCommandType_UPDATE_FIRMWARE_RESPONSE: {
-                if (!genericRouterCommand.commandSuccess) {
-                    break;
-                }
                 unsigned int percentage = genericRouterCommand.completionPercentage;
                 if (percentage > 0) {
                     NSString *msg = NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.");
@@ -674,17 +688,14 @@ int mii;
             case SFIGenericRouterCommandType_REBOOT: {
                 BOOL wasRebooting = self.isRebooting;
                 self.isRebooting = NO;
-                
                 // protect against the cloud sending the same response more than once
                 if (wasRebooting) {
                     [RouterPayload sendRouterCommandForType:RouterCmdType_RouterSummaryReq mii:mii isSimulator:_isSimulator mac:self.almondMac version:nil message:nil];
                     //todo handle failure case
                     [self showHUD:NSLocalizedString(@"router.hud.Router is now online.", @"Router is now online.")];
                 }
-                
                 break;
             }
-                
             default:
                 break;
         }
@@ -729,30 +740,6 @@ int mii;
         }
         
         [self.tableView reloadData];
-    });
-}
-
-#pragma mark - SFIRouterTableViewActions protocol methods
-- (void)onRebootRouterActionCalled {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self showHUD:NSLocalizedString(@"router.hud.Router is rebooting.", @"Router is rebooting.")];
-        self.isRebooting = TRUE;
-        [RouterPayload sendRouterCommandForType:RouterCmdType_RouterSummaryReq mii:mii isSimulator:_isSimulator mac:self.almondMac version:nil message:nil];
-    });
-}
-
-- (void)onUpdateRouterFirmwareActionCalled {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self showHUD:NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.")];
-        [RouterPayload sendRouterCommandForType:RouterCmdType_UpdateFirmware mii:mii isSimulator:_isSimulator mac:self.almondMac version:self.latestAlmondVersionAvailable message:nil];
-    });
-}
-
-- (void)onSendLogsActionCalled:(NSString *)problemDescription {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self showHUD:NSLocalizedString(@"router.hud.Sending Logs.", @"Instructing router to send logs.")];
-        
-        [RouterPayload sendRouterCommandForType:RouterCmdType_SendLogsReq mii:mii isSimulator:_isSimulator mac:self.almondMac version:nil message:problemDescription];
     });
 }
 
