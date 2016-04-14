@@ -71,7 +71,15 @@ int randomMobileInternalIndex;
     self.currentAlmond = [toolkit currentAlmond];
     self.currentDeviceList = toolkit.devices;
     self.currentClientList = toolkit.clients;
-    
+    self.enableDrawer = YES; //to enable navigation top left button
+    if (self.currentAlmond == nil) {
+        [self markAlmondMac:NO_ALMOND];
+        [self markTitle:NSLocalizedString(@"router.nav-title.Get Started", @"Get Started")];
+    }
+    else {
+        [self markAlmondMac:self.currentAlmond.almondplusMAC];
+        [self markTitle:self.currentAlmond.almondplusName];
+    }
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
         
