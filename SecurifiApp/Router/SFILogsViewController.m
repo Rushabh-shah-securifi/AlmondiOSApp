@@ -11,10 +11,13 @@
 #import "SFIColors.h"
 #import "UIFont+Securifi.h"
 #import "RouterPayload.h"
+#import "MBProgressHUD.h"
 
 @interface SFILogsViewController ()
 @property (nonatomic) UITextField *textField;
 @property (nonatomic) UIView *logView;
+@property NSTimer *hudTimer;
+@property(nonatomic) MBProgressHUD *HUD;
 @end
 
 @implementation SFILogsViewController
@@ -36,9 +39,9 @@ int mii;
 - (void)viewWillDisappear:(BOOL)animated {
     NSLog(@"logs - view will disapper");
     [super viewWillDisappear:animated];
-    
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self];
+    [_hudTimer invalidate];
 }
 
 - (void)initializeNotifications {
@@ -110,7 +113,7 @@ int mii;
 }
 
 -(void)btnCancelTap:(id)sender{
-    [self dismissViewControllerAnimated:NO completion:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void)onSendLogsPressed:(id)sender{
@@ -118,7 +121,8 @@ int mii;
         [self addValidationLable];
         [self.textField becomeFirstResponder];
     }else{
-        [RouterPayload sendRouterCommandForType:RouterCmdType_SendLogsReq mii:mii isSimulator:YES mac:[[SecurifiToolkit sharedInstance] currentAlmond].almondplusMAC  version:nil message:self.textField.text];
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        [RouterPayload sendLogs:self.textField.text mii:mii isSimulator:toolkit.configuration.isSimulator mac:toolkit.currentAlmond.almondplusMAC];
     }
 }
 
@@ -126,22 +130,42 @@ int mii;
     NSLog(@"onLogsRouterCommandResponse");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
+    [self.HUD hide:YES];
     if (data == nil) {
         return;
     }
     SFIGenericRouterCommand *genericRouterCommand = (SFIGenericRouterCommand *) [data valueForKey:@"data"];
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self || !genericRouterCommand.commandSuccess) {// || mii != genericRouterCommand.mii
-//            [self.HUD hide:YES];
             return;
         }
         else if(genericRouterCommand.commandType == SFIGenericRouterCommandType_SEND_LOGS_RESPONSE){
             NSLog(@"success true");
-             [self dismissViewControllerAnimated:NO completion:nil];
-        }
-        
-//        [self.HUD hide:YES];
+             [self dismissViewControllerAnimated:YES completion:nil];
+        }  
     });
 }
 
+#pragma mark HUD mgt
+
+- (void)showHudWithTimeout:(NSString*)hudMsg {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:hudMsg];
+        self.hudTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(onHudTimeout:) userInfo:nil repeats:NO];
+    });
+}
+
+- (void)onHudTimeout:(id)sender {
+    [self.hudTimer invalidate];
+    self.hudTimer = nil;
+    
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
+    });
+}
+
+- (void)showHUD:(NSString *)text {
+    self.HUD.labelText = text;
+    [self.HUD show:YES];
+}
 @end

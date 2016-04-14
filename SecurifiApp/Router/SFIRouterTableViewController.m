@@ -150,7 +150,7 @@ int mii;
     if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud) {
         if (!self.shownHudOnce) {
             self.shownHudOnce = YES;
-            [self showHudWithTimeout];
+            [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
         }
     }
     
@@ -158,8 +158,7 @@ int mii;
     self.newAlmondFirmwareVersionAvailable = NO;
     self.tableView.tableHeaderView = nil;
     
-    // refresh data
-    [RouterPayload sendRouterCommandForType:RouterCmdType_RouterSummaryReq mii:mii isSimulator:_isSimulator mac:self.almondMac version:nil message:nil];
+    [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -173,9 +172,9 @@ int mii;
 
 #pragma mark HUD mgt
 
-- (void)showHudWithTimeout {
+- (void)showHudWithTimeout:(NSString*)hudMsg {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self showLoadingRouterDataHUD];
+        [self showHUD:hudMsg];
         self.hudTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(onHudTimeout:) userInfo:nil repeats:NO];
     });
 }
@@ -200,7 +199,7 @@ int mii;
 - (void)onConnectionModeDidChange:(id)notice {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
-        [RouterPayload sendRouterCommandForType:RouterCmdType_RouterSummaryReq mii:mii isSimulator:_isSimulator mac:self.almondMac version:nil message:nil];
+        [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
     });
 }
 
@@ -220,9 +219,8 @@ int mii;
 }
 
 - (void)onEditWirelessSettingsCard:(id)sender {
-    [self showLoadingRouterDataHUD];
-    [RouterPayload sendRouterCommandForType:RouterCmdType_GetWirelessSettingReq mii:mii isSimulator:_isSimulator mac:self.almondMac version:nil message:nil];
-    
+    [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
+    [RouterPayload getWirelessSettings:mii isSimulator:_isSimulator mac:self.almondMac];
 }
 
 #pragma mark - Refresh control methods
@@ -242,7 +240,7 @@ int mii;
     }
     
     // reset table view state when Refresh is called (and when current Almond is changed)
-    [RouterPayload sendRouterCommandForType:RouterCmdType_RouterSummaryReq mii:mii isSimulator:_isSimulator mac:self.almondMac version: nil message:nil];
+    [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
     
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
@@ -298,7 +296,7 @@ int mii;
     if([self isNoAlmondLoaded]){
         tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
-    }else if(self.isAlmondUnavailable || ![[SecurifiToolkit sharedInstance] isNetworkOnline]){
+    }else if(self.isAlmondUnavailable || ![[SecurifiToolkit sharedInstance] isNetworkOnline] || !_isSimulator){
         tableView.scrollEnabled = NO;
         return [self createAlmondOfflineCell:tableView];
     }else{
@@ -468,7 +466,7 @@ int mii;
 }
 
 -(BOOL)isNotConnectedToCloud{
-    if ([self isNoAlmondLoaded] || self.isAlmondUnavailable || ![[SecurifiToolkit sharedInstance] isNetworkOnline]) {
+    if ([self isNoAlmondLoaded] || self.isAlmondUnavailable || ![[SecurifiToolkit sharedInstance] isNetworkOnline] || !_isSimulator) {
         return YES;
     }
     return NO;
@@ -528,11 +526,11 @@ int mii;
     }else{
         if(alertView.tag == FIRMWARE_UPDATE_TAG){
             [self showHUD:NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.")];
-            [RouterPayload sendRouterCommandForType:RouterCmdType_UpdateFirmware mii:mii isSimulator:_isSimulator mac:self.almondMac version:self.latestAlmondVersionAvailable message:nil];
+            [RouterPayload updateFirmware:mii version:self.latestAlmondVersionAvailable isSimulator:_isSimulator mac:self.almondMac];
         }else if(alertView.tag == REBOOT_TAG){
-//            [self showHUD:NSLocalizedString(@"router.hud.Router is rebooting.", @"Router is rebooting.")];
+            [self showHUD:NSLocalizedString(@"router.hud.Router is rebooting.", @"Router is rebooting.")];
             self.isRebooting = TRUE;
-            [RouterPayload sendRouterCommandForType:RouterCmdType_RebootReq mii:mii isSimulator:_isSimulator mac:self.almondMac version:nil message:nil];
+            [RouterPayload routerReboot:mii isSimulator:_isSimulator mac:self.almondMac];
         }
     }
 }
@@ -690,9 +688,9 @@ int mii;
                 self.isRebooting = NO;
                 // protect against the cloud sending the same response more than once
                 if (wasRebooting) {
-                    [RouterPayload sendRouterCommandForType:RouterCmdType_RouterSummaryReq mii:mii isSimulator:_isSimulator mac:self.almondMac version:nil message:nil];
+                    [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
                     //todo handle failure case
-                    [self showHUD:NSLocalizedString(@"router.hud.Router is now online.", @"Router is now online.")];
+                    [self showHudWithTimeout:NSLocalizedString(@"router.hud.Router is now online.", @"Router is now online.")];
                 }
                 break;
             }
@@ -736,7 +734,7 @@ int mii;
         else {
             [self markAlmondMac:plus.almondplusMAC];
             self.navigationItem.title = plus.almondplusName;
-           [RouterPayload sendRouterCommandForType:RouterCmdType_RouterSummaryReq mii:mii isSimulator:_isSimulator mac:self.almondMac version:nil message:nil];
+           [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
         }
         
         [self.tableView reloadData];
@@ -744,7 +742,7 @@ int mii;
 }
 
 #pragma mark - MessageViewDelegate methods
-
+//on no almond view
 - (void)messageViewDidPressButton:(MessageView *)msgView {
     if ([self isNoAlmondLoaded]) {
         UIViewController *ctrl = [SFICloudLinkViewController cloudLinkController];
@@ -752,7 +750,7 @@ int mii;
     }
     else {
         //Get wireless settings
-        [RouterPayload sendRouterCommandForType:RouterCmdType_RouterSummaryReq mii:mii isSimulator:_isSimulator mac:self.almondMac version:nil message:nil];
+        [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
     }
 }
 
