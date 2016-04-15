@@ -9,5 +9,6 @@
 #import <Foundation/Foundation.h>
 
 @interface ClientPayload : NSObject
-+(GenericCommand*)getUpdateClientPayloadForClient:(Client*)client mobileInternalIndex:(int)mii;
++ (void)getUpdateClientPayloadForClient:(Client*)client mobileInternalIndex:(int)mii;
++ (void)clientListCommand;
 @end

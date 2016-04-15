@@ -49,13 +49,14 @@ int mii;
     UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(onDone)];
     self.navigationItem.rightBarButtonItem = done;
 
-    [self initializeNotifications];
+    
     
     [[Analytics sharedInstance] markRouterSettingsScreen];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:YES];
+    [self initializeNotifications];
     mii = arc4random()%10000;
 }
 - (void)onDone {
@@ -65,25 +66,21 @@ int mii;
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
 
-    if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
-        self.disposed = YES;
-
-        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-        [center removeObserver:self];
-
-        [self.HUD hide:NO];
-        [self.HUD removeFromSuperview];
-        _HUD = nil;
-    }
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver:self];
+    [self hideHUD];
 }
 
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
-//
-//    [center addObserver:self selector:@selector(onGenericResponseCallback:) name:GENERIC_COMMAND_NOTIFIER object:nil];
 //    [center addObserver:self selector:@selector(onGenericNotificationCallback:) name:GENERIC_COMMAND_CLOUD_NOTIFIER object:nil];
-//    [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:ALMOND_COMMAND_RESPONSE_NOTIFIER object:nil];
+}
+
+- (void)hideHUD{
+    [self.HUD hide:NO];
+    [self.HUD removeFromSuperview];
+    _HUD = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {

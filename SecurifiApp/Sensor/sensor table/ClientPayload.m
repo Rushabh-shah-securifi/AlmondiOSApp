@@ -10,8 +10,14 @@
 #import "AlmondJsonCommandKeyConstants.h"
 
 @implementation ClientPayload
++ (void)clientListCommand{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    //forboth cloud and local
+    GenericCommand *genericCmd = [GenericCommand cloudRequestAlmondWifiClients:toolkit.currentAlmond.almondplusMAC];
+    [toolkit asyncSendCommand:genericCmd];
+}
 
-+(GenericCommand*)getUpdateClientPayloadForClient:(Client*)client mobileInternalIndex:(int)mii{
++(void)getUpdateClientPayloadForClient:(Client*)client mobileInternalIndex:(int)mii{
     NSMutableDictionary *payload = [NSMutableDictionary new];
     [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];
     [payload setValue: UPDATE_CLIENT forKey:@"CommandType"];
@@ -32,10 +38,8 @@
                                };
     [payload setValue:clients forKey:CLIENTS];
     
-    GenericCommand *command = [[GenericCommand alloc] init];
-    command.commandType = CommandType_UPDATE_CLIENT;
-    command.command = [payload JSONString];
-    return command;
+    GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_CLIENT];
+    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
 }
 
 

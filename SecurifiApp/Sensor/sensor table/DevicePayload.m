@@ -11,22 +11,25 @@
 
 @implementation DevicePayload
 
-+(GenericCommand*)getSensorIndexUpdate:(GenericIndexValue*)genericIndexValue mii:(int)mii{
++ (void)deviceListCommand{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    GenericCommand *genericCmd = [GenericCommand requestSensorDeviceList:toolkit.currentAlmond.almondplusMAC];
+    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+}
+
++(void)getSensorIndexUpdate:(GenericIndexValue*)genericIndexValue mii:(int)mii{
     NSMutableDictionary *payload = [NSMutableDictionary new];
     [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];
     [payload setValue:UPDATE_DEVICE_INDEX forKey:@"CommandType"];
     [payload setValue:@(genericIndexValue.deviceID).stringValue forKey:D_ID];
     [payload setValue:@(genericIndexValue.index).stringValue forKey:INDEX];
     [payload setValue:genericIndexValue.genericValue.toggleValue forKey:VALUE];
-    
-    GenericCommand *command = [[GenericCommand alloc] init];
-    command.commandType = CommandType_UPDATE_DEVICE_INDEX;
-    command.command = [payload JSONString];
-    return command;
+    GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_DEVICE_INDEX];
+    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
 }
 
 //have to combile both methods
-+(GenericCommand*)getSensorIndexUpdatePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value{
++(void)getSensorIndexUpdatePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value{
     NSMutableDictionary *payload = [NSMutableDictionary new];
     [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];
     [payload setValue:UPDATE_DEVICE_INDEX forKey:@"CommandType"];
@@ -34,10 +37,8 @@
     [payload setValue:@(genericIndexValue.index).stringValue forKey:INDEX];
     [payload setValue:value forKey:VALUE];
     
-    GenericCommand *command = [[GenericCommand alloc] init];
-    command.commandType = CommandType_UPDATE_DEVICE_INDEX;
-    command.command = [payload JSONString];
-    return command;
+    GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_DEVICE_INDEX];
+    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
 }
 
 /*
@@ -51,7 +52,7 @@
  }"
  
  */
-+(GenericCommand*)getNameLocationChange:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value{
++(void)getNameLocationChange:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value{
     
     NSMutableDictionary *payload = [NSMutableDictionary new];
     DeviceCommandType deviceCmdType = genericIndexValue.genericIndex.commandType;
@@ -63,10 +64,8 @@
     else
     [payload setValue:value forKey:LOCATION];
     
-    GenericCommand *command = [[GenericCommand alloc] init];
-    command.commandType = CommandType_UPDATE_DEVICE_NAME;
-    command.command = [payload JSONString];
-    return command;
+    GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_DEVICE_NAME];
+    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
 }
 
 

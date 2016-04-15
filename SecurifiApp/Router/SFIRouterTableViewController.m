@@ -79,7 +79,6 @@ int mii;
 }
 
 - (void)viewDidLoad {
-    NSLog(@"router - viewdidload");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SecurifiConfigurator *configurator = toolkit.configuration;
     self.isSimulator = configurator.isSimulator;
@@ -94,12 +93,11 @@ int mii;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    NSLog(@"viewWillAppear");
     [super viewWillAppear:animated];
     mii = arc4random() % 10000;
     [self initializeNotifications];
     [self initializeAlmondData];
-//    [self.tableView reloadData];
+    //no need to reload tableview as initialize almond has Summaryrequest
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -108,7 +106,7 @@ int mii;
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self];
-    [self.hudTimer invalidate];
+    [self onHudTimeout:nil];
     
 }
 
@@ -188,7 +186,7 @@ int mii;
     });
 }
 
-#pragma mark - Event handlers
+#pragma mark - External Event handlers
 
 - (void)onNetworkChange:(id)notice {
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -214,13 +212,22 @@ int mii;
     });
 }
 
-- (void)onEditNetworkSettings:(id)sender {
-    [self presentLocalNetworkSettingsEditor];
-}
-
-- (void)onEditWirelessSettingsCard:(id)sender {
-    [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
-    [RouterPayload getWirelessSettings:mii isSimulator:_isSimulator mac:self.almondMac];
+- (void)onAlmondListDidChange:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        SFIAlmondPlus *plus = [toolkit currentAlmond];
+        
+        if (plus == nil) {
+            [self markAlmondMac:NO_ALMOND];
+            self.navigationItem.title = NSLocalizedString(@"router.no-almonds.nav-title.Get Started", @"Get Started");
+        }
+        else {
+            [self markAlmondMac:plus.almondplusMAC];
+            self.navigationItem.title = plus.almondplusName;
+            [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
+        }
+        [self.tableView reloadData];
+    });
 }
 
 #pragma mark - Refresh control methods
@@ -238,7 +245,6 @@ int mii;
     if ([self isNoAlmondLoaded]) {
         return;
     }
-    
     // reset table view state when Refresh is called (and when current Almond is changed)
     [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
     
@@ -376,7 +382,7 @@ int mii;
     return nil;
 }
 
-
+#pragma mark cell data methods
 -(NSArray*)getNetworkSummary{
     NSLog(@"self.routersummery.url: %@", self.routerSummary.url);
     NSString *host = self.routerSummary.url ? self.routerSummary.url : @"";
@@ -485,64 +491,14 @@ int mii;
     NSDictionary *attrs = @{ NSForegroundColorAttributeName : [UIColor whiteColor],
                              NSUnderlineStyleAttributeName : @(NSUnderlineStyleSingle | NSUnderlinePatternSolid)};
     NSAttributedString *attrStr = [[NSAttributedString alloc] initWithString:label attributes:attrs];
-    //use the setAttributedTitle method
-    
     [button setAttributedTitle:attrStr forState:UIControlStateNormal];
     button.titleLabel.textAlignment = NSTextAlignmentRight;
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    [button setTitleColor:[SFIColors darkerColorForColor:[UIColor whiteColor]] forState:UIControlStateSelected];
     [button addTarget:self action:selectorMethod forControlEvents:UIControlEventTouchUpInside];
-    
+
     [cell.cardView addSubview:button];
 }
 
--(void)onRebootButtonPressed:(id)sender{
-    NSLog(@"onRebootButtonPressed");
-    [self createAlertViewForTitle:@"Are you sure, you want to Reboot?" otherTitle:@"Reboot" tag:REBOOT_TAG];
-}
-
--(void)onFirmwareUpdate:(id)sender{
-    NSLog(@"onFirmwareUpdate");
-    [self createAlertViewForTitle:@"Are you sure, you want to Update Firmware?" otherTitle:@"Update" tag:FIRMWARE_UPDATE_TAG];
-}
-
--(void)createAlertViewForTitle:(NSString*)title otherTitle:(NSString*)otherTitle tag:(int)tag{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                    message:@""
-                                                   delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:otherTitle, nil];
-    alert.tag = tag;
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [alert show];
-    });
-
-}
-
-#pragma mark alert view delegate method
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == [alertView cancelButtonIndex]){
-        //nothing
-    }else{
-        if(alertView.tag == FIRMWARE_UPDATE_TAG){
-            [self showHUD:NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.")];
-            [RouterPayload updateFirmware:mii version:self.latestAlmondVersionAvailable isSimulator:_isSimulator mac:self.almondMac];
-        }else if(alertView.tag == REBOOT_TAG){
-            [self showHUD:NSLocalizedString(@"router.hud.Router is rebooting.", @"Router is rebooting.")];
-            self.isRebooting = TRUE;
-            [RouterPayload routerReboot:mii isSimulator:_isSimulator mac:self.almondMac];
-        }
-    }
-}
-
--(void)onLogsCard:(id)sender{
-    if (self.navigationController.topViewController == self) {
-        SFILogsViewController *ctrl = [SFILogsViewController new];
-        ctrl.title = self.navigationItem.title;
-        UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-        [self presentViewController:nctrl animated:YES completion:nil];
-    }
-}
 
 - (UITableViewCell *)createNoAlmondCell:(UITableView *)tableView {
     NSString *const cell_id = @"NoAlmondCell";
@@ -617,6 +573,62 @@ int mii;
     return cell;
 }
 
+#pragma mark internal event handlers
+
+- (void)onEditNetworkSettings:(id)sender {
+    [self presentLocalNetworkSettingsEditor];
+}
+
+- (void)onEditWirelessSettingsCard:(id)sender {
+    [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
+    [RouterPayload getWirelessSettings:mii isSimulator:_isSimulator mac:self.almondMac];
+}
+
+-(void)onFirmwareUpdate:(id)sender{
+    [self createAlertViewForTitle:@"Are you sure, you want to Update Firmware?" otherTitle:@"Update" tag:FIRMWARE_UPDATE_TAG];
+}
+
+-(void)onRebootButtonPressed:(id)sender{
+    [self createAlertViewForTitle:@"Are you sure, you want to Reboot?" otherTitle:@"Reboot" tag:REBOOT_TAG];
+}
+
+-(void)onLogsCard:(id)sender{
+    if (self.navigationController.topViewController == self) {
+        SFILogsViewController *ctrl = [SFILogsViewController new];
+        ctrl.title = self.navigationItem.title;
+        UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+        [self presentViewController:nctrl animated:YES completion:nil];
+    }
+}
+
+-(void)createAlertViewForTitle:(NSString*)title otherTitle:(NSString*)otherTitle tag:(int)tag{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                    message:@""
+                                                   delegate:self
+                                          cancelButtonTitle:@"Cancel"
+                                          otherButtonTitles:otherTitle, nil];
+    alert.tag = tag;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [alert show];
+    });
+    
+}
+
+#pragma mark alert view delegate method
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (buttonIndex == [alertView cancelButtonIndex]){
+        //nothing
+    }else{
+        if(alertView.tag == FIRMWARE_UPDATE_TAG){
+            [self showHUD:NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.")];
+            [RouterPayload updateFirmware:mii version:self.latestAlmondVersionAvailable isSimulator:_isSimulator mac:self.almondMac];
+        }else if(alertView.tag == REBOOT_TAG){
+            [self showHUD:NSLocalizedString(@"router.hud.Router is rebooting.", @"Router is rebooting.")];
+            self.isRebooting = TRUE;
+            [RouterPayload routerReboot:mii isSimulator:_isSimulator mac:self.almondMac];
+        }
+    }
+}
 
 #pragma mark - Cloud command response handlers
 - (void)onAlmondRouterCommandResponse:(id)sender {
@@ -702,43 +714,6 @@ int mii;
         [self.refreshControl endRefreshing];
         [self.tableView reloadData];
     });
-
-}
-
-// take into account table might be displaying static images and therefore reloading a specific section would not be appropriate
-- (void)tryReloadSection:(NSUInteger)section {
-    UITableView *tableView = self.tableView;
-    NSInteger numberOfSections = [tableView numberOfSections];
-    
-    if (numberOfSections == 0) {
-        return; // no op
-    }
-    
-    if (numberOfSections <= 1) {
-        [tableView reloadData];
-    }
-    else {
-        [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-}
-
-- (void)onAlmondListDidChange:(id)sender {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        SFIAlmondPlus *plus = [toolkit currentAlmond];
-        
-        if (plus == nil) {
-            [self markAlmondMac:NO_ALMOND];
-            self.navigationItem.title = NSLocalizedString(@"router.no-almonds.nav-title.Get Started", @"Get Started");
-        }
-        else {
-            [self markAlmondMac:plus.almondplusMAC];
-            self.navigationItem.title = plus.almondplusName;
-           [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
-        }
-        
-        [self.tableView reloadData];
-    });
 }
 
 #pragma mark - MessageViewDelegate methods
@@ -798,6 +773,22 @@ int mii;
             [self tryReloadSection:DEF_ROUTER_VERSION_SECTION];
         }
     });
+}
+
+
+// take into account table might be displaying static images and therefore reloading a specific section would not be appropriate
+- (void)tryReloadSection:(NSUInteger)section {
+    UITableView *tableView = self.tableView;
+    NSInteger numberOfSections = [tableView numberOfSections];
+    if (numberOfSections == 0) {
+        return; // no op
+    }
+    if (numberOfSections <= 1) {
+        [tableView reloadData];
+    }
+    else {
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:section] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
 }
 
 #pragma mark - TableHeaderViewDelegate methods

@@ -11,7 +11,8 @@
 #import "Device.h"
 
 @interface DevicePayload : NSObject
-+ (GenericCommand*)getSensorIndexUpdate:(GenericIndexValue*)genericIndexValue mii:(int)mii;
-+ (GenericCommand*)getSensorIndexUpdatePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value;
-+ (GenericCommand*)getNameLocationChange:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value;
++ (void)deviceListCommand;
++ (void)getSensorIndexUpdate:(GenericIndexValue*)genericIndexValue mii:(int)mii;
++ (void)getSensorIndexUpdatePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value;
++ (void)getNameLocationChange:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value;
 @end
