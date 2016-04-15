@@ -296,7 +296,7 @@ int mii;
     if([self isNoAlmondLoaded]){
         tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
-    }else if(self.isAlmondUnavailable || ![[SecurifiToolkit sharedInstance] isNetworkOnline] || !_isSimulator){
+    }else if(self.isAlmondUnavailable || (![[SecurifiToolkit sharedInstance] isNetworkOnline] && !_isSimulator)){
         tableView.scrollEnabled = NO;
         return [self createAlmondOfflineCell:tableView];
     }else{
@@ -466,7 +466,7 @@ int mii;
 }
 
 -(BOOL)isNotConnectedToCloud{
-    if ([self isNoAlmondLoaded] || self.isAlmondUnavailable || ![[SecurifiToolkit sharedInstance] isNetworkOnline] || !_isSimulator) {
+    if ([self isNoAlmondLoaded] || self.isAlmondUnavailable || (![[SecurifiToolkit sharedInstance] isNetworkOnline] && !_isSimulator)) {
         return YES;
     }
     return NO;

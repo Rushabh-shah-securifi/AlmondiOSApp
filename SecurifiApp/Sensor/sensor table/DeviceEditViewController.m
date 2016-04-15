@@ -40,7 +40,7 @@
 #define BUTTON_FRAME CGRectMake(0, LABELHEIGHT + LABELVALUESPACING,view.frame.size.width-10,  35)
 static const int xIndent = 10;
 
-@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,clientTypeCellDelegate,MultiButtonViewDelegate,GridViewDelegate,ListButtonDelegate>
+@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,MultiButtonViewDelegate,GridViewDelegate,ListButtonDelegate>
 //can be removed
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
 
@@ -256,14 +256,15 @@ static const int xIndent = 10;
             genericCommand = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
         }
     }else{
-        Client *client = [Client findClientByID:@(_genericParams.headerGenericIndexValue.deviceID).stringValue];
-        //Need to create client copy and set.
+        Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
+        client = [client copy];
         [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
         genericCommand = [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:randomMobileInternalIndex];
         NSLog(@"client payload  : %@", payload);
     }
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCommand];
 }
+
 -(void)disMissTamperedView{
     self.dismisstamperedView = [[UIView alloc]initWithFrame:CGRectMake(self.indexesScroll.frame.origin.x, self.deviceEditHeaderCell.frame.size.height + self.deviceEditHeaderCell.frame.origin.y + 5, self.indexesScroll.frame.size.width, 40)];
     self.dismisstamperedView.backgroundColor = [SFIColors ruleOrangeColor];
@@ -300,8 +301,6 @@ static const int xIndent = 10;
 //        [self.dismisstamperedView removeFromSuperview];
 //        self.indexScrollTopConstraint.constant = 2;
 //    }];
-   
-    
 }
 #pragma mark sensor cell(DeviceHeaderView) delegate
 -(void)toggle:(GenericIndexValue *)genericIndexValue{

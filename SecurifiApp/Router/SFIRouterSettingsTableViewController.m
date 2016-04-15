@@ -16,6 +16,7 @@
 #import "TableHeaderView.h"
 #import "UIFont+Securifi.h"
 #import "Analytics.h"
+#import "RouterPayload.h"
 
 @interface SFIRouterSettingsTableViewController () <SFIRouterTableViewActions, TableHeaderViewDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -24,7 +25,7 @@
 @end
 
 @implementation SFIRouterSettingsTableViewController
-
+int mii;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -53,6 +54,10 @@
     [[Analytics sharedInstance] markRouterSettingsScreen];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:YES];
+    mii = arc4random()%10000;
+}
 - (void)onDone {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -74,7 +79,7 @@
 
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:kSFIDidReceiveGenericAlmondRouterResponse object:nil];
+    [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
 //
 //    [center addObserver:self selector:@selector(onGenericResponseCallback:) name:GENERIC_COMMAND_NOTIFIER object:nil];
 //    [center addObserver:self selector:@selector(onGenericNotificationCallback:) name:GENERIC_COMMAND_CLOUD_NOTIFIER object:nil];
@@ -240,7 +245,9 @@
         }
 
         [self showUpdatingSettingsHUD];
-        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.almondMac wirelessSettings:copy];
+//        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.almondMac wirelessSettings:copy];
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        [RouterPayload setWirelessSettings:mii wirelessSettings:copy isSimulator:YES mac:toolkit.currentAlmond.almondplusMAC];
         [self.HUD hide:YES afterDelay:2];
     });
 }

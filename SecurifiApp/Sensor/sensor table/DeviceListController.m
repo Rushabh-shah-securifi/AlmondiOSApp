@@ -44,7 +44,7 @@ int randomMobileInternalIndex;
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
-    [PerformanceTest startTest];
+//    [PerformanceTest startTest];
 
 
     if (self.currentAlmond == nil) {
@@ -57,14 +57,14 @@ int randomMobileInternalIndex;
     }
     
     [self initializeColors:[toolkit currentAlmond]];
-}
+    }
 
 - (void)viewWillAppear:(BOOL)animated{
     NSLog(@"sensor viewWillAppear");
     [super viewWillAppear:YES];
     [self initializeNotifications];
-    DeviceParser *deviceparser = [[DeviceParser alloc]init];
-    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
+//    DeviceParser *deviceparser = [[DeviceParser alloc]init];
+//    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
     
     randomMobileInternalIndex = arc4random() % 10000;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -98,8 +98,35 @@ int randomMobileInternalIndex;
 -(void)initializeNotifications{
     NSLog(@"initialize notifications sensor table");
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(onDeviceListAndDynamicResponseParsed:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
-    [center addObserver:self selector:@selector(onUpdateDeviceIndexResponse:) name:NOTIFICATION_UPDATE_DEVICE_INDEX_NOTIFIER object:nil];
+    [center addObserver:self
+               selector:@selector(onDeviceListAndDynamicResponseParsed:)
+                   name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onUpdateDeviceIndexResponse:)
+                   name:NOTIFICATION_UPDATE_DEVICE_INDEX_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onCurrentAlmondChanged:)
+                   name:kSFIDidChangeCurrentAlmond
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onAlmondListDidChange:)
+                   name:kSFIDidUpdateAlmondList
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onAlmondNameDidChange:)
+                   name:kSFIDidChangeAlmondName
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onNotificationPrefDidChange:)
+                   name:kSFINotificationPreferencesDidChange
+                 object:nil];
 }
 
 #pragma mark - Table view data source
@@ -233,5 +260,41 @@ int randomMobileInternalIndex;
     NSLog(@"onUpdateDeviceIndexResponse");
 
 }
+
+#pragma mark cloud callbacks
+- (void)onCurrentAlmondChanged:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+//        [self initializeAlmondData];
+//        
+//        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    });
+}
+
+- (void)onAlmondListDidChange:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        //        [self initializeAlmondData];
+        //
+        //        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    });
+}
+
+- (void)onAlmondNameDidChange:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        //        [self initializeAlmondData];
+        //
+        //        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    });
+}
+
+- (void)onNotificationPrefDidChange:(id)sender {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        //        [self initializeAlmondData];
+        //
+        //        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    });
+}
+
+
+
 
 @end

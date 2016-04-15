@@ -100,7 +100,7 @@
 }
 
 
-+ (void)setWirelessSettings:(int)mii wirelessSettings:(SFIWirelessSetting*)wirelessSettingObj isEnabled:(BOOL)isEnabled isSimulator:(BOOL)isSimulator mac:(NSString*)almondMac{
++ (void)setWirelessSettings:(int)mii wirelessSettings:(SFIWirelessSetting*)wirelessSettingObj isSimulator:(BOOL)isSimulator mac:(NSString*)almondMac{
     if(isSimulator){
         [RouterParser setWirelessSetting];
     }else{
@@ -114,7 +114,7 @@
         
         NSMutableDictionary *wirelessSetting = [NSMutableDictionary new];
         [wirelessSetting setValue:wirelessSettingObj.type forKey:@"Type"];
-        [wirelessSetting setValue:isEnabled?@"true":@"false" forKey:@"Enabled"];
+        [wirelessSetting setValue:wirelessSettingObj.enabled?@"true":@"false" forKey:@"Enabled"];
         [wirelessSetting setValue:wirelessSettingObj.ssid forKey:@"SSID"];
         [wirelessSetting setValue:@(wirelessSettingObj.channel).stringValue forKey:@"Channel"];
         [wirelessSetting setValue:wirelessSettingObj.encryptionType forKey:@"EncryptionType"];
