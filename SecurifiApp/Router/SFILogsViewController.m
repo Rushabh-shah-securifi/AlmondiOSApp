@@ -37,13 +37,11 @@ int mii;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    NSLog(@"logs - view will disapper");
     [super viewWillDisappear:animated];
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self];
-    [_hudTimer invalidate];
+    [self onHudTimeout:nil];
 }
-
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onLogsRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];

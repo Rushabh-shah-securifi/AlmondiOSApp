@@ -8,7 +8,6 @@
 
 #import "DeviceEditViewController.h"
 #import "UIFont+Securifi.h"
-
 #import "SFIColors.h"
 #import "HorizontalPicker.h"
 #import "MultiButtonView.h"
@@ -16,7 +15,6 @@
 #import "Slider.h"
 #import "TextInput.h"
 #import "DeviceHeaderView.h"
-
 #import "clientTypeCell.h"
 #import "Colours.h"
 #import "CollectionViewCell.h"
@@ -46,7 +44,6 @@ static const int xIndent = 10;
 
 //wifi client @property
 @property (nonatomic) IBOutlet UIView *indexView;
-@property (nonatomic) IBOutlet UILabel *indexLabel;
 @property (weak, nonatomic) IBOutlet DeviceHeaderView *deviceEditHeaderCell;
 @property (nonatomic) UIView *dismisstamperedView;
 @property (nonatomic) UIScrollView *scrollView;
@@ -110,100 +107,88 @@ static const int xIndent = 10;
         [view removeFromSuperview];
     }
 }
-
-
+#pragma mark drawerMethods
 -(void)drawIndexes{
     int yPos = LABELSPACING;
     self.indexesScroll.backgroundColor = self.genericParams.color;
     CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericParams.indexValueList.count * 65 );
     [self.indexesScroll setContentSize:scrollableSize];
     [self.indexesScroll flashScrollIndicators];
-    for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList){
-        NSLog(@"genericIndexValue loop");
-        GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
+    for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList)
+    {
         
-        if([genericIndexObj.layoutType isEqualToString:@"Info"] || [genericIndexObj.layoutType.lowercaseString isEqualToString:@"off"] || genericIndexObj.layoutType == nil || [genericIndexObj.layoutType isEqualToString:@"NaN"]){
-            continue;
-        }
+    GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
         
-        NSString *propertyName = genericIndexObj.groupLabel;
-        if([genericIndexObj.type isEqualToString:SENSOR]){
+            if([genericIndexObj.layoutType isEqualToString:@"Info"] || [genericIndexObj.layoutType.lowercaseString isEqualToString:@"off"] || genericIndexObj.layoutType == nil || [genericIndexObj.layoutType isEqualToString:@"NaN"]){
+                continue;
+            }
+        
+    NSString *propertyName = genericIndexObj.groupLabel;
+            if([genericIndexObj.type isEqualToString:SENSOR]){
             UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_SMALL];
-            if([genericIndexObj.ID isEqualToString:@"9"] && [genericIndexValue.genericValue.value isEqualToString:@"true"]){
+                if([genericIndexObj.ID isEqualToString:@"9"] && [genericIndexValue.genericValue.value isEqualToString:@"true"]){
                 [self disMissTamperedView];
                 continue;
             }
-             if([genericIndexObj.ID isEqualToString:@"12"])//skipping low battery
-                 continue;
+            if([genericIndexObj.ID isEqualToString:@"12"])//skipping low battery
+                    continue;
             [self.indexesScroll addSubview:view];
-            
             UILabel *label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
             [self setUpLable:label withPropertyName:propertyName];
             [view addSubview:label];
-            
             UILabel *valueLabel = [[UILabel alloc]initWithFrame:CGRectMake(view.frame.size.width - 110, 0, 100, 15)];
-            
             [self setUpLable:valueLabel withPropertyName:genericIndexValue.genericValue.value];
             valueLabel.textAlignment = NSTextAlignmentRight;
             valueLabel.alpha = 0.5;
             [view addSubview:valueLabel];
-            
             yPos = yPos + view.frame.size.height + LABELSPACING;
-            NSLog(@" r-yPos %d",yPos);
-                }
+        }
         else{
             UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_LARGE];
             UILabel *label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
             [self setUpLable:label withPropertyName:propertyName];
             [view addSubview:label];
-            NSLog(@"layout type %@",genericIndexObj.layoutType );
-            
-           
-            if([genericIndexObj.layoutType isEqualToString:SLIDER]){
-                HorizontalPicker *horzView = [[HorizontalPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
-                horzView.delegate = self;
-                [view addSubview:horzView];
+                if([genericIndexObj.layoutType isEqualToString:SLIDER]){
+                    HorizontalPicker *horzView = [[HorizontalPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
+                    horzView.delegate = self;
+                    [view addSubview:horzView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:MULTI_BUTTON]){
-                MultiButtonView *buttonView = [[MultiButtonView alloc]initWithFrame:BUTTON_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
-                buttonView.delegate = self;
-                [view addSubview:buttonView];
+                    MultiButtonView *buttonView = [[MultiButtonView alloc]initWithFrame:BUTTON_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
+                    buttonView.delegate = self;
+                    [view addSubview:buttonView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:HUE]){
-                HueColorPicker *hueView = [[HueColorPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
-                hueView.delegate = self;
-                [view addSubview:hueView];
+                    HueColorPicker *hueView = [[HueColorPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
+                    hueView.delegate = self;
+                    [view addSubview:hueView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:HUE_SLIDER]){
-                Slider *sliderView = [[Slider alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
-                sliderView.delegate = self;
-                [view addSubview:sliderView];
+                    Slider *sliderView = [[Slider alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
+                    sliderView.delegate = self;
+                    [view addSubview:sliderView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:TEXT_VIEW]){
-                TextInput *textView = [[TextInput alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
-                textView.delegate = self;
-                [view addSubview:textView];
+                    TextInput *textView = [[TextInput alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
+                    textView.delegate = self;
+                    [view addSubview:textView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:GRID_VIEW]){
-                self.scrollView.hidden = YES;
-                 NSString *schedule = [Client getScheduleById:@(genericIndexValue.deviceID).stringValue];
-                NSLog(@" schedule %@",schedule);
-                view.frame = CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
-
-                GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5) color:self.genericParams.color genericIndexValue:genericIndexValue onSchedule:(NSString*)schedule];
-                grid.delegate = self;
-                [view addSubview:grid];
+                    self.scrollView.hidden = YES;
+                     NSString *schedule = [Client getScheduleById:@(genericIndexValue.deviceID).stringValue];
+                    view.frame = CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
+                    GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5) color:self.genericParams.color genericIndexValue:genericIndexValue onSchedule:(NSString*)schedule];
+                    grid.delegate = self;
+                    [view addSubview:grid];
             }
             else if ([genericIndexObj.layoutType isEqualToString:LIST]){
-                view.frame = CGRectMake(0, yPos , self.indexesScroll.frame.size.width, self.view.frame.size.height - view.frame.origin.y - 5);
-                ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width , self.view.frame.size.height- 5) color:self.genericParams.color genericIndexValue:genericIndexValue];
-                typeTableView.delegate = self;
-                
-                [view addSubview:typeTableView];
+                    view.frame = CGRectMake(0, yPos , self.indexesScroll.frame.size.width, self.view.frame.size.height - view.frame.origin.y - 5);
+                    ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width , self.view.frame.size.height- 5) color:self.genericParams.color genericIndexValue:genericIndexValue];
+                    typeTableView.delegate = self;
+                    [view addSubview:typeTableView];
             }
-            
-            [self.indexesScroll addSubview:view];
-            yPos = yPos + view.frame.size.height + LABELSPACING;
+        [self.indexesScroll addSubview:view];
+        yPos = yPos + view.frame.size.height + LABELSPACING;
         }
     }
 }
@@ -216,55 +201,6 @@ static const int xIndent = 10;
 - (IBAction)onSeettingButtonClicked:(id)sender {
 //    [self.navigationController popViewControllerAnimated:YES];
 }
-
-
-#pragma mark typeTable
--(void)textFieldView:(NSString *)name{
-    TextInput *textView = [[TextInput alloc]initWithFrame:CGRectMake(8,25,self.indexView.frame.size.width - 8,50)];
-    textView.color = [UIColor clearColor];
-    [self.indexView addSubview:textView];
-    
-}
--(void)buttonView:(NSArray*)arr selectedValue:(int)selectedVal{
-    
-    MultiButtonView *presenceSensor = [[MultiButtonView alloc]initWithFrame:CGRectMake(5,40,self.indexView.frame.size.width - 8,30 )];
-    presenceSensor.color = [SFIColors clientGreenColor];
-    presenceSensor.delegate = self;
-    [self.indexView addSubview:presenceSensor];
-}
-
-
-
-#pragma mark gridView
--(void)gridView:(UIView *)view{
-    self.indexView.hidden = YES;
-    GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5)];
-    [view addSubview:grid];
-    
-}
-#pragma mark delegate callback methods
--(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue{// index is genericindex for clients, normal index for sensors
-    NSLog(@"saveDeviceNewValue %@",newValue);
-    GenericCommand *genericCommand;
-    NSDictionary *payload;
-    int index = genericIndexValue.index;
-    if(self.genericParams.isSensor){
-        DeviceCommandType deviceCmdType = genericIndexValue.genericIndex.commandType;
-        if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
-            genericCommand = [DevicePayload getNameLocationChange:genericIndexValue mii:randomMobileInternalIndex value:newValue];
-        }else{
-            genericCommand = [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
-        }
-    }else{
-        Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
-        client = [client copy];
-        [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
-        genericCommand = [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:randomMobileInternalIndex];
-        NSLog(@"client payload  : %@", payload);
-    }
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCommand];
-}
-
 -(void)disMissTamperedView{
     self.dismisstamperedView = [[UIView alloc]initWithFrame:CGRectMake(self.indexesScroll.frame.origin.x, self.deviceEditHeaderCell.frame.size.height + self.deviceEditHeaderCell.frame.origin.y + 5, self.indexesScroll.frame.size.width, 40)];
     self.dismisstamperedView.backgroundColor = [SFIColors ruleOrangeColor];
@@ -279,15 +215,12 @@ static const int xIndent = 10;
     UIImageView *crossIcon = [[UIImageView alloc]initWithFrame:CGRectMake(self.dismisstamperedView.frame.size.width -45, 8, 20, 20)];
     crossIcon.image = [UIImage imageNamed:@"cross_icon"];
     crossIcon.alpha = 0.5;
-    
     [self.dismisstamperedView addSubview:crossIcon];
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dimissTamperTap:)];
     singleTap.numberOfTapsRequired = 1;
     [self.dismisstamperedView setUserInteractionEnabled:YES];
     [self.dismisstamperedView addGestureRecognizer:singleTap];
     self.indexScrollTopConstraint.constant = 40;
-//    [self.indexesScroll addConstraint:self.indexScrollTopConstraint];
-//    self.indexesScroll.constraints = self.indexScrollTopConstraint;
     [self.view addSubview:self.dismisstamperedView];
 }
 
@@ -297,16 +230,38 @@ static const int xIndent = 10;
         self.deviceEditHeaderCell.tamperedImgView.hidden = YES;
         self.indexScrollTopConstraint.constant = 2;
     } completion:nil];
-//    [UIView animateWithDuration:2 animations:^() {
-//        [self.dismisstamperedView removeFromSuperview];
-//        self.indexScrollTopConstraint.constant = 2;
-//    }];
 }
+
+#pragma mark gridView
+-(void)gridView:(UIView *)view{
+    self.indexView.hidden = YES;
+    GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5)];
+    [view addSubview:grid];
+    
+}
+#pragma mark delegate callback methods
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue{// index is genericindex for clients, normal index for sensors
+    int index = genericIndexValue.index;
+    if(self.genericParams.isSensor){
+        DeviceCommandType deviceCmdType = genericIndexValue.genericIndex.commandType;
+        if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
+            [DevicePayload getNameLocationChange:genericIndexValue mii:randomMobileInternalIndex value:newValue];
+        }else{
+            [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
+        }
+    }else{
+        Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
+        client = [client copy];
+        [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
+        [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:randomMobileInternalIndex];
+    }
+}
+
+
 #pragma mark sensor cell(DeviceHeaderView) delegate
 -(void)toggle:(GenericIndexValue *)genericIndexValue{
     NSLog(@"delegateSensorTableDeviceButtonClickWithGenericProperies");
-    GenericCommand *genericCommand = [DevicePayload getSensorIndexUpdate:genericIndexValue mii:randomMobileInternalIndex];
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCommand];
+    [DevicePayload getSensorIndexUpdate:genericIndexValue mii:randomMobileInternalIndex];
 }
 
 #pragma mark command responses
