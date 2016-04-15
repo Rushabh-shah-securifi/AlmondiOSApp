@@ -20,6 +20,7 @@
 #import "CollectionViewCell.h"
 #import "GenericIndexValue.h"
 #import "AlmondJsonCommandKeyConstants.h"
+#import "UIViewController+Securifi.h"
 #import "GridView.h"
 #import "ListButtonView.h"
 #import "DevicePayload.h"
@@ -225,6 +226,7 @@ static const int xIndent = 10;
 }
 
 -(void)dimissTamperTap:(id)sender{
+        [self showToast:@"Saving..."];
     [UIView animateWithDuration:2 delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:15 options:nil animations:^() {
         [self.dismisstamperedView removeFromSuperview];
         self.deviceEditHeaderCell.tamperedImgView.hidden = YES;

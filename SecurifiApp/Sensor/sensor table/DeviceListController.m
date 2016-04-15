@@ -22,6 +22,7 @@
 #import "ClientPayload.h"
 #import "MessageView.h"
 #import "SFICloudLinkViewController.h"
+#import "MBProgressHUD.h"
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -34,6 +35,8 @@
 @property(nonatomic, strong) NSArray *currentClientList;
 
 @property(nonatomic, readonly) SFIColors *almondColor;
+@property(nonatomic) NSTimer *mobileCommandTimer;
+
 @end
 
 @implementation DeviceListController
@@ -49,6 +52,7 @@ int randomMobileInternalIndex;
     //ensure list is empty initially
     self.currentDeviceList = @[];
     self.currentClientList = @[];
+    [self showHudWithTimeoutMsg:@"Loading Device data"];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -75,7 +79,7 @@ int randomMobileInternalIndex;
     NSString *const mac = (toolkit.currentAlmond == nil) ? NO_ALMOND : toolkit.currentAlmond.almondplusMAC;
     [self markAlmondMac:mac]; //setting self.almondmac
     
-    if (self.almondMac == nil) {
+    if ([self isNoAlmondMAC]) {
         [self markTitle:NSLocalizedString(@"router.nav-title.Get Started", @"Get Started")];
         self.currentDeviceList = @[];
         self.currentClientList = @[];
@@ -104,7 +108,7 @@ int randomMobileInternalIndex;
     NSLog(@"initialize notifications sensor table");
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
-               selector:@selector(onDeviceListAndDynamicResponseParsed:)
+               selector:@selector(onDeviceListAndDynamicResponseParsed:) //for both sensors and clients
                    name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
                  object:nil];
     
@@ -132,6 +136,14 @@ int randomMobileInternalIndex;
                selector:@selector(onNotificationPrefDidChange:)
                    name:kSFINotificationPreferencesDidChange
                  object:nil];
+}
+
+#pragma mark - HUD and Toast mgt
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:hudMsg];
+        [self.HUD hide:YES afterDelay:5];
+    });
 }
 
 #pragma mark - State
@@ -239,7 +251,6 @@ int randomMobileInternalIndex;
     cell.commonView.delegate = self;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     GenericParams *genericParams;
-    
     if(indexPath.section == 0){
         Device *device = [self.currentDeviceList objectAtIndex:indexPath.row];
         
@@ -326,9 +337,26 @@ int randomMobileInternalIndex;
 }
 
 -(void)toggle:(GenericIndexValue *)genericIndexValue{
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        //todo decide what to do about this
+        [self.mobileCommandTimer invalidate];
+        
+        self.mobileCommandTimer = [NSTimer scheduledTimerWithTimeInterval:30.0
+                                                                   target:self
+                                                                 selector:@selector(onToggleTimeout:)
+                                                                 userInfo:nil
+                                                                  repeats:NO];
+    });
     [DevicePayload getSensorIndexUpdate:genericIndexValue mii:randomMobileInternalIndex];
 }
 
+- (void)onToggleTimeout:(id)sender {
+    [self.mobileCommandTimer invalidate];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+//        [self.HUD hide:YES];
+    });
+}
 #pragma mark clientCell delegate
 
 -(void)delegateClientSettingButtonClick:(GenericParams*)genericParams{
@@ -340,7 +368,6 @@ int randomMobileInternalIndex;
 }
 #pragma mark command responses
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
-    NSLog(@"onDeviceListAndDynamicResponseParsed");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentDeviceList = toolkit.devices;
     self.currentClientList = toolkit.clients;
@@ -423,6 +450,5 @@ int randomMobileInternalIndex;
         [self.refreshControl endRefreshing];
     });
 }
-
 
 @end
