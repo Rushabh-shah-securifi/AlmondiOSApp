@@ -117,17 +117,16 @@ static const int xIndent = 10;
     [self.indexesScroll flashScrollIndicators];
     for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList)
     {
+        GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
+        if([genericIndexObj.layoutType isEqualToString:@"Info"] || [genericIndexObj.layoutType.lowercaseString isEqualToString:@"off"] || genericIndexObj.layoutType == nil || [genericIndexObj.layoutType isEqualToString:@"NaN"]){
+            continue;
+        }
+        NSString *propertyName = genericIndexObj.groupLabel;
         
-    GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
-        
-            if([genericIndexObj.layoutType isEqualToString:@"Info"] || [genericIndexObj.layoutType.lowercaseString isEqualToString:@"off"] || genericIndexObj.layoutType == nil || [genericIndexObj.layoutType isEqualToString:@"NaN"]){
-                continue;
-            }
-        
-    NSString *propertyName = genericIndexObj.groupLabel;
-            if([genericIndexObj.type isEqualToString:SENSOR]){
+        if([genericIndexObj.type isEqualToString:SENSOR] || genericIndexObj.readOnly){
             UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_SMALL];
-                if([genericIndexObj.ID isEqualToString:@"9"] && [genericIndexValue.genericValue.value isEqualToString:@"true"]){
+            if([genericIndexObj.ID isEqualToString:@"9"] && [genericIndexValue.genericValue.value isEqualToString:@"true"])
+            {
                 [self disMissTamperedView];
                 continue;
             }
@@ -144,52 +143,54 @@ static const int xIndent = 10;
             [view addSubview:valueLabel];
             yPos = yPos + view.frame.size.height + LABELSPACING;
         }
+        
         else{
             UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_LARGE];
             UILabel *label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
             [self setUpLable:label withPropertyName:propertyName];
             [view addSubview:label];
-                if([genericIndexObj.layoutType isEqualToString:SLIDER]){
-                    HorizontalPicker *horzView = [[HorizontalPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
-                    horzView.delegate = self;
-                    [view addSubview:horzView];
+            
+            if([genericIndexObj.layoutType isEqualToString:SLIDER]){
+                HorizontalPicker *horzView = [[HorizontalPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
+                horzView.delegate = self;
+                [view addSubview:horzView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:MULTI_BUTTON]){
-                    MultiButtonView *buttonView = [[MultiButtonView alloc]initWithFrame:BUTTON_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
-                    buttonView.delegate = self;
-                    [view addSubview:buttonView];
+                MultiButtonView *buttonView = [[MultiButtonView alloc]initWithFrame:BUTTON_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
+                buttonView.delegate = self;
+                [view addSubview:buttonView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:HUE]){
-                    HueColorPicker *hueView = [[HueColorPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
-                    hueView.delegate = self;
-                    [view addSubview:hueView];
+                HueColorPicker *hueView = [[HueColorPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
+                hueView.delegate = self;
+                [view addSubview:hueView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:HUE_SLIDER]){
-                    Slider *sliderView = [[Slider alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
-                    sliderView.delegate = self;
-                    [view addSubview:sliderView];
+                Slider *sliderView = [[Slider alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
+                sliderView.delegate = self;
+                [view addSubview:sliderView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:TEXT_VIEW]){
-                    TextInput *textView = [[TextInput alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
-                    textView.delegate = self;
-                    [view addSubview:textView];
+                TextInput *textView = [[TextInput alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
+                textView.delegate = self;
+                [view addSubview:textView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:GRID_VIEW]){
-                    self.scrollView.hidden = YES;
-                     NSString *schedule = [Client getScheduleById:@(genericIndexValue.deviceID).stringValue];
-                    view.frame = CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
-                    GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5) color:self.genericParams.color genericIndexValue:genericIndexValue onSchedule:(NSString*)schedule];
-                    grid.delegate = self;
-                    [view addSubview:grid];
+                self.scrollView.hidden = YES;
+                 NSString *schedule = [Client getScheduleById:@(genericIndexValue.deviceID).stringValue];
+                view.frame = CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
+                GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5) color:self.genericParams.color genericIndexValue:genericIndexValue onSchedule:(NSString*)schedule];
+                grid.delegate = self;
+                [view addSubview:grid];
             }
             else if ([genericIndexObj.layoutType isEqualToString:LIST]){
-                    view.frame = CGRectMake(0, yPos , self.indexesScroll.frame.size.width, self.view.frame.size.height - view.frame.origin.y - 5);
-                    ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width , self.view.frame.size.height- 5) color:self.genericParams.color genericIndexValue:genericIndexValue];
-                    typeTableView.delegate = self;
-                    [view addSubview:typeTableView];
+                view.frame = CGRectMake(5, yPos , self.indexesScroll.frame.size.width, self.view.frame.size.height - view.frame.origin.y - 5);
+                ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width , self.view.frame.size.height- 5) color:self.genericParams.color genericIndexValue:genericIndexValue];
+                typeTableView.delegate = self;
+                [view addSubview:typeTableView];
             }
-        [self.indexesScroll addSubview:view];
-        yPos = yPos + view.frame.size.height + LABELSPACING;
+            [self.indexesScroll addSubview:view];
+            yPos = yPos + view.frame.size.height + LABELSPACING;
         }
     }
 }
@@ -226,7 +227,7 @@ static const int xIndent = 10;
 }
 
 -(void)dimissTamperTap:(id)sender{
-        [self showToast:@"Saving..."];
+    [self showToast:@"Saving..."];
     [UIView animateWithDuration:2 delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:15 options:nil animations:^() {
         [self.dismisstamperedView removeFromSuperview];
         self.deviceEditHeaderCell.tamperedImgView.hidden = YES;

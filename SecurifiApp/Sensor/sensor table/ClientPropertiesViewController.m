@@ -65,7 +65,7 @@
     GenericIndexValue *genericIndexValue = [self.genericParams.indexValueList objectAtIndex:indexPath.row];
     cell.displayLabel.text = genericIndexValue.genericIndex.groupLabel;
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    if([genericIndexValue.genericIndex.type isEqualToString:ACTUATOR]){
+    if(genericIndexValue.genericIndex.readOnly == NO){
         cell.vsluesLabel.alpha = 1;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.userInteractionEnabled = YES;

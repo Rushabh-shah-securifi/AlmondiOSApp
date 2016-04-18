@@ -1,7 +1,7 @@
 {
     "-1": {
         "Name": "Name",
-        "Type": "Actuator",
+        "ReadOnly": "false",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Name",
@@ -9,7 +9,7 @@
     },
     "-2": {
         "Name": "Location",
-        "Type": "Actuator",
+        "ReadOnly": "false",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Location",
@@ -17,7 +17,7 @@
     },
     "-3": {
         "Name": "Notify Me",
-        "Type": "Actuator",
+        "ReadOnly": "false",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "GroupLabel": "Notify Me",
@@ -25,21 +25,21 @@
     },
     "-4": {
         "Name": "WifiClient",
-        "Type": "Sensor",
+        "ReadOnly": "true",
         "Placement": "Detail",
         "Layout": "Toggle",
         "GroupLabel": "WifiClient"
     },
     "-11": {
         "Name": "ClientName",
-        "Type": "Actuator",
+        "ReadOnly": "false",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Name"
     },
     "-12": {
         "Name": "ClientType",
-        "Type": "Actuator",
+        "ReadOnly": "false",
         "Placement": "Detail_Header",
         "Layout": "LIST",
         "GroupLabel": "TYPE",
@@ -128,35 +128,35 @@
     },
     "-13": {
         "Name": "Manufacturer",
-        "Type": "Sensor",
+        "ReadOnly": "true",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Manufacturer"
     },
     "-14": {
         "Name": "ClientMAC",
-        "Type": "Sensor",
+        "ReadOnly": "true",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "MAC Address"
     },
     "-15": {
         "Name": "LastKnownIP",
-        "Type": "Sensor",
+        "ReadOnly": "true",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Last Known IP"
     },
     "-16": {
         "Name": "ClientConnection",
-        "Type": "Sensor",
+        "ReadOnly": "true",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Connection"
     },
     "-17": {
         "Name": "UseAsPresence",
-        "Type": "Actuator",
+        "ReadOnly": "false",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "GroupLabel": "Use As Presence Sensor",
@@ -171,14 +171,14 @@
     },
     "-18": {
         "Name": "InactiveGrace",
-        "Type": "Actuator",
+        "ReadOnly": "false",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Inactive Grace Period"
     },
     "-19": {
         "Name": "AllowOnNetwork",
-        "Type": "Actuator",
+        "ReadOnly": "false",
         "Placement": "Detail",
         "Layout": "GRID_VIEW",
         "GroupLabel": "Allow On Network",
@@ -196,7 +196,7 @@
     },
     "-20": {
         "Name": "SignalStrength",
-        "Type": "Sensor",
+        "ReadOnly": "true",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Signal Strength"
@@ -205,7 +205,6 @@
         "Name": "CanBeBlocked",
         "ReadOnly": "true",
         "Placement": "Detail",
-        "Type": "Sensor",
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Can Be Blocked",
         "Values": {
@@ -226,7 +225,6 @@
         "ReadOnly": "false",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
-        "Type": "Actuator",
         "GroupLabel": "User Type",
         "Values": {
             "Kid": {
