@@ -45,6 +45,7 @@ NSMutableArray *type;
     self.tableType.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableType.allowsSelection = NO;
     self.tableType.alwaysBounceVertical = NO ;
+    self.tableType.backgroundColor = self.color;
     [self.tableType reloadData];
     [self addSubview:self.tableType];
     
@@ -63,6 +64,7 @@ NSMutableArray *type;
     clientTypeCell *cell = [tableView dequeueReusableCellWithIdentifier:@"clientTypeCell"];
     if (cell == nil) {
         cell = [[clientTypeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"clientTypeCell"];
+        cell.frame = CGRectMake(0, 0, tableView.frame.size.width, 45);
         [cell setupLabel];
     }
     int currentvalPos = 0;
@@ -71,10 +73,10 @@ NSMutableArray *type;
             break;
         currentvalPos++;
     }
+    
     cell.delegate = self;
     cell.userInteractionEnabled = YES;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//    cell.color = [SFIColors clientGreenColor];
     cell.backgroundColor = [SFIColors clientGreenColor];
     [cell writelabelName:[type objectAtIndex:indexPath.row]];
     if(currentvalPos == indexPath.row)

@@ -28,6 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.clientPropertiesTable.backgroundColor = self.genericParams.color;
     [self setHeaderCell];
 }
 
@@ -75,6 +76,7 @@
         cell.userInteractionEnabled = NO;
     }
     cell.vsluesLabel.text = genericIndexValue.genericValue.displayText;
+    cell.backgroundColor = self.genericParams.color;
     return cell;
 }
 

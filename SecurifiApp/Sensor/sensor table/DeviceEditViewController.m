@@ -44,7 +44,6 @@ static const int xIndent = 10;
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
 
 //wifi client @property
-@property (nonatomic) IBOutlet UIView *indexView;
 @property (weak, nonatomic) IBOutlet DeviceHeaderView *deviceEditHeaderCell;
 @property (nonatomic) UIView *dismisstamperedView;
 @property (nonatomic) UIScrollView *scrollView;
@@ -237,7 +236,6 @@ static const int xIndent = 10;
 
 #pragma mark gridView
 -(void)gridView:(UIView *)view{
-    self.indexView.hidden = YES;
     GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5)];
     [view addSubview:grid];
     

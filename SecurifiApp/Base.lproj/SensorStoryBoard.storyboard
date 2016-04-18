@@ -64,8 +64,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" restorationIdentifier="SKSTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="45" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rpr-zm-JGc">
-                                <rect key="frame" x="8" y="73" width="304" height="380"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SKSTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rpr-zm-JGc">
+                                <rect key="frame" x="8" y="92" width="304" height="458"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ClientPropertiesCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="SKSTableViewCell" rowHeight="50" id="Zpg-Bl-N2s" customClass="ClientPropertiesCell">
@@ -75,18 +75,18 @@
                                             <rect key="frame" x="0.0" y="0.0" width="304" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwf-Qb-oDU">
-                                                    <rect key="frame" x="193" y="0.0" width="104" height="50"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="104" id="J20-54-GJk"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="15"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lzc-b1-Gp6">
+                                                    <rect key="frame" x="11" y="0.0" width="151" height="50"/>
+                                                    <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="16"/>
                                                     <color key="textColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lzc-b1-Gp6">
-                                                    <rect key="frame" x="11" y="0.0" width="161" height="50"/>
-                                                    <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="16"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label  " textAlignment="right" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwf-Qb-oDU">
+                                                    <rect key="frame" x="170" y="0.0" width="126" height="50"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="126" id="J20-54-GJk"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Avenir-Light" family="Avenir" pointSize="15"/>
                                                     <color key="textColor" red="0.93333333330000001" green="0.93333333330000001" blue="0.93333333330000001" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -95,13 +95,12 @@
                                                 <constraint firstItem="bwf-Qb-oDU" firstAttribute="top" secondItem="Txf-Mv-Vxk" secondAttribute="topMargin" constant="-8" id="2Sw-Xy-ofq"/>
                                                 <constraint firstItem="Lzc-b1-Gp6" firstAttribute="top" secondItem="Txf-Mv-Vxk" secondAttribute="top" id="G2w-KT-lts"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Lzc-b1-Gp6" secondAttribute="bottom" constant="-8" id="Nyw-He-Bf1"/>
-                                                <constraint firstItem="bwf-Qb-oDU" firstAttribute="leading" secondItem="Lzc-b1-Gp6" secondAttribute="trailing" constant="21" id="Pz6-W6-KhB"/>
+                                                <constraint firstItem="bwf-Qb-oDU" firstAttribute="leading" secondItem="Lzc-b1-Gp6" secondAttribute="trailing" constant="8" id="Pz6-W6-KhB"/>
                                                 <constraint firstItem="Lzc-b1-Gp6" firstAttribute="leading" secondItem="Txf-Mv-Vxk" secondAttribute="leadingMargin" constant="3" id="lAP-TQ-QuE"/>
                                                 <constraint firstAttribute="height" secondItem="bwf-Qb-oDU" secondAttribute="height" id="xZO-3c-WkB"/>
-                                                <constraint firstItem="bwf-Qb-oDU" firstAttribute="trailing" secondItem="Txf-Mv-Vxk" secondAttribute="trailingMargin" constant="1" id="y2S-AC-MZv"/>
+                                                <constraint firstItem="bwf-Qb-oDU" firstAttribute="trailing" secondItem="Txf-Mv-Vxk" secondAttribute="trailingMargin" id="y2S-AC-MZv"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.29411764709999999" green="0.68235294120000001" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <outlet property="displayLabel" destination="Lzc-b1-Gp6" id="aYP-dA-tw0"/>
                                             <outlet property="vsluesLabel" destination="bwf-Qb-oDU" id="B6R-a1-U1c"/>
@@ -115,6 +114,12 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rpr-zm-JGc" firstAttribute="top" secondItem="ORz-GS-wMb" secondAttribute="bottom" constant="72" id="IVX-5a-2Yw"/>
+                            <constraint firstItem="Z1A-Gc-S4Y" firstAttribute="top" secondItem="rpr-zm-JGc" secondAttribute="bottom" constant="18" id="a1F-KJ-TQ9"/>
+                            <constraint firstItem="rpr-zm-JGc" firstAttribute="leading" secondItem="b6t-b6-Fg6" secondAttribute="leading" constant="8" id="hrp-le-xw0"/>
+                            <constraint firstAttribute="trailing" secondItem="rpr-zm-JGc" secondAttribute="trailing" constant="8" id="p6a-VV-itk"/>
+                        </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
