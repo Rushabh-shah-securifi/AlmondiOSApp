@@ -35,7 +35,7 @@
                                BLOCK:@(client.deviceAllowedType).stringValue,
                                SCHEDULE:client.deviceSchedule,
                                CAN_BE_BLOCKED:client.canBeBlocked?@"true":@"false",
-                               USER_TYPE:client.userType
+                               CATEGORY:client.category
                                //deliberaly left out few keys, I think all readonly keys should be ommitted
                                };
     [payload setValue:clients forKey:CLIENTS];

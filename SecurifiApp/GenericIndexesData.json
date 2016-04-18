@@ -209,48 +209,29 @@
         "GroupLabel": "Can Be Blocked",
         "Values": {
             "true": {
-                "ToggleValue": "false",
                 "AppLabel": "Yes",
                 "Label": "YES"
             },
             "false": {
-                "ToggleValue": "true",
                 "AppLabel": "No",
                 "Label": "No"
             }
         }
     },
     "-22":{
-        "Name": "UserType",
+        "Name": "Category",
         "ReadOnly": "false",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "GroupLabel": "User Type",
         "Values": {
-            "Kid": {
-                "ToggleValue": "Other",
-                "AppLabel": "Kid",
-                "Label": "Kid"
+            "Kids": {
+                "AppLabel": "Kids",
+                "Label": "Kids"
             },
-            "Type1": {
-                "ToggleValue": "Other",
-                "AppLabel": "Kid",
-                "Label": "Type1"
-            },
-            "Type2": {
-                "ToggleValue": "Other",
-                "AppLabel": "Kid",
-                "Label": "Type2"
-            },
-            "Type3": {
-                "ToggleValue": "Other",
-                "AppLabel": "Kid",
-                "Label": "Type3"
-            },
-            "Other": {
-                "ToggleValue": "Kid",
-                "AppLabel": "Other",
-                "Label": "Other"
+            "Others": {
+                "AppLabel": "Others",
+                "Label": "Others"
             }
         }
     },
