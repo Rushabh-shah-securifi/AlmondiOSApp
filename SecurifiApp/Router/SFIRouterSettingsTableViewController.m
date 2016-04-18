@@ -186,8 +186,7 @@ int mii;
         switch (genericRouterCommand.commandType) {
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
 //                SFIDevicesList *ls = genericRouterCommand.command;
-                self.wirelessSettings = genericRouterCommand.command;
-
+                self.wirelessSettings = [self processSettings:genericRouterCommand.command];
                 // settings was null, reload in case they are late arriving and the view is waiting for them
                 [self.tableView reloadData];
 
@@ -199,6 +198,20 @@ int mii;
 
         [self.HUD hide:YES];
     });
+}
+
+-(NSArray *)processSettings:(NSArray*)newSetting{
+    NSDictionary* newSettingDict = [newSetting objectAtIndex:0];//response will only have one obj
+    NSMutableArray *mutableSettings = [self.wirelessSettings mutableCopy];
+    NSInteger index = 0;
+    for(NSDictionary *setting in self.wirelessSettings){
+        if([setting[@"Type"] isEqualToString:newSettingDict[@"Type"]]){
+            index = [self.wirelessSettings indexOfObject:setting];
+            break;
+        }
+    }
+    [mutableSettings replaceObjectAtIndex:index withObject:newSettingDict];
+    return mutableSettings;
 }
 
 #pragma mark - SFIRouterTableViewActions protocol methods
@@ -223,28 +236,27 @@ int mii;
 - (void)onEnableDevice:(SFIWirelessSetting *)setting enabled:(BOOL)isEnabled {
     SFIWirelessSetting *copy = [setting copy];
     copy.enabled = isEnabled;
-    [self onUpdateWirelessSettings:copy];
+    [self onUpdateWirelessSettings:copy isTypeEnable:YES];
 }
 
 - (void)onChangeDeviceSSID:(SFIWirelessSetting *)setting newSSID:(NSString *)ssid {
     SFIWirelessSetting *copy = [setting copy];
     copy.ssid = ssid;
-    [self onUpdateWirelessSettings:copy];
+    [self onUpdateWirelessSettings:copy isTypeEnable:NO];
 }
 
 - (void)onEnableWirelessAccessForDevice:(NSString *)deviceMAC allow:(BOOL)isAllowed {
 }
 
-- (void)onUpdateWirelessSettings:(SFIWirelessSetting *)copy {
+- (void)onUpdateWirelessSettings:(SFIWirelessSetting *)copy isTypeEnable:(BOOL)isTypeEnable{
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (self.disposed) {
             return;
         }
-
         [self showUpdatingSettingsHUD];
 //        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.almondMac wirelessSettings:copy];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        [RouterPayload setWirelessSettings:mii wirelessSettings:copy isSimulator:YES mac:toolkit.currentAlmond.almondplusMAC];
+        [RouterPayload setWirelessSettings:mii wirelessSettings:copy isSimulator:_isSimulator mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:isTypeEnable];
         [self.HUD hide:YES afterDelay:2];
     });
 }

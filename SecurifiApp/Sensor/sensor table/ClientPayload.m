@@ -20,7 +20,7 @@
 +(void)getUpdateClientPayloadForClient:(Client*)client mobileInternalIndex:(int)mii{
     NSMutableDictionary *payload = [NSMutableDictionary new];
     [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];
-    [payload setValue: UPDATE_CLIENT forKey:@"CommandType"];
+    [payload setValue:UPDATE_CLIENT forKey:@"CommandType"];
     
     NSDictionary * clients = @{
                                C_ID:client.deviceID,
@@ -34,7 +34,6 @@
                                WAIT:@(client.timeout).stringValue,
                                BLOCK:@(client.deviceAllowedType).stringValue,
                                SCHEDULE:client.deviceSchedule,
-                               CAN_BE_BLOCKED:client.canBeBlocked?@"true":@"false",
                                CATEGORY:client.category
                                //deliberaly left out few keys, I think all readonly keys should be ommitted
                                };

@@ -21,7 +21,18 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "GroupLabel": "Notify Me",
-        "CommandType": "NotifyMe"
+        "CommandType": "NotifyMe",
+        "Values":{
+            "1": {
+                "Label": "Always"
+            },
+            "3": {
+                "Label": "When I'm Away"
+            },
+            "0": {
+                "Label": "Never"
+            }
+        }
     },
     "-4": {
         "Name": "WifiClient",

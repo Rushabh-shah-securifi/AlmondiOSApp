@@ -680,6 +680,7 @@ int mii;
                     ctrl.wirelessSettings = settings;
                     ctrl.almondMac = self.almondMac;
                     ctrl.enableRouterWirelessControl = YES;
+                    ctrl.isSimulator = self.isSimulator;
                     UINavigationController *nctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
                     [self presentViewController:nctrl animated:YES completion:nil];
                 }
