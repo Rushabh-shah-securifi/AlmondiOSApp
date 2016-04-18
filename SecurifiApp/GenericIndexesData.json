@@ -202,7 +202,7 @@
         "GroupLabel": "Signal Strength"
     },
     "-21":{
-        "Name": "CanBeBlocked",
+        "Name": "CanBlock",
         "ReadOnly": "true",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",

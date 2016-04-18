@@ -36,35 +36,12 @@
                                SCHEDULE:client.deviceSchedule,
                                CAN_BE_BLOCKED:client.canBeBlocked?@"true":@"false",
                                USER_TYPE:client.userType
-                               //deliberaly left few keys, I think all readonly keys should be ommitted
+                               //deliberaly left out few keys, I think all readonly keys should be ommitted
                                };
     [payload setValue:clients forKey:CLIENTS];
-    
+//    NSLog(@"client payload: %@", payload);
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_CLIENT];
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
 }
-
-
-//"{
-//""MobileInternalIndex"":""<random key>"",
-//""CommandType"":""UpdateClient"",
-//""Clients"":{
-//    ""ID"":""2"",
-//    ""Name"":""device1"",
-//    ""Connection"":""wired"",
-//    ""MAC"":""00:17:88:0a:04:41"",
-//    ""Type"":""tv"",
-//    ""LastKnownIP"":""10.2.2.11"",
-//    ""Active"":""false"",
-//    ""UseAsPresence"":""false"",
-//    ""Wait"":""6"",""RX"":""121212121"",
-//    ""TX"":""4232"",
-//    ""Block"":""1""
-//    ""Schedule"":""0,ffffff,0,0,0,0,0"",
-//    ""Manufacturer"":""AsusTek"",
-//    ""RSSI"":""-43"",
-//    ""ForceInactive"":""0""
-//}
-//}"
 
 @end
