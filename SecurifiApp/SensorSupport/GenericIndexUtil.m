@@ -147,7 +147,7 @@
 +(NSArray*) getClientDetailGenericIndexValuesListForClientID:(NSString*)clientID{
     NSMutableArray *genericIndexValues = [NSMutableArray new];
     Client *client = [Client findClientByID:clientID];
-    NSArray *clientGenericIndexes = [Client getClientGenericIndexes];
+    NSArray *clientGenericIndexes = [self clientGenericIndex:client];
     GenericIndexValue *genericIndexValue;
     GenericIndexClass *genericIndex;
     for(NSNumber *genericID in clientGenericIndexes){
@@ -162,6 +162,14 @@
     }
     
     return genericIndexValues;
+}
+
++(NSArray*)clientGenericIndex:(Client*)client{
+    NSMutableArray *clientGenericIndexes  = [[Client getClientGenericIndexes] mutableCopy];
+    if(!client.canBeBlocked){
+        [clientGenericIndexes removeObjectsInArray:@[@-19, @-22]];
+    }
+    return clientGenericIndexes;
 }
 
 +(GenericIndexClass*)getGenericIndexForID:(NSString*)genericIndexID{

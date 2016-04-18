@@ -205,20 +205,49 @@
         "Name": "CanBeBlocked",
         "ReadOnly": "true",
         "Placement": "Detail",
+        "Type": "Sensor",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Can Be Blocked"
+        "GroupLabel": "Can Be Blocked",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "AppLabel": "Yes",
+                "Label": "YES"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "AppLabel": "No",
+                "Label": "No"
+            }
+        }
     },
     "-22":{
         "Name": "UserType",
         "ReadOnly": "false",
         "Placement": "Detail",
-        "Layout": "LIST",
+        "Layout": "MULTI_BUTTON",
+        "Type": "Actuator",
         "GroupLabel": "User Type",
         "Values": {
             "Kid": {
                 "ToggleValue": "Other",
                 "AppLabel": "Kid",
                 "Label": "Kid"
+            },
+            "Type1": {
+                "ToggleValue": "Other",
+                "AppLabel": "Kid",
+                "Label": "Type1"
+            },
+            "Type2": {
+                "ToggleValue": "Other",
+                "AppLabel": "Kid",
+                "Label": "Type2"
+            },
+            "Type3": {
+                "ToggleValue": "Other",
+                "AppLabel": "Kid",
+                "Label": "Type3"
             },
             "Other": {
                 "ToggleValue": "Kid",
