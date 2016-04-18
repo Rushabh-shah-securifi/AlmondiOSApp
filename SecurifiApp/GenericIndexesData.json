@@ -201,6 +201,32 @@
         "Layout": "TEXT_VIEW",
         "GroupLabel": "Signal Strength"
     },
+    "-21":{
+        "Name": "CanBeBlocked",
+        "ReadOnly": "true",
+        "Placement": "Detail",
+        "Layout": "TEXT_VIEW",
+        "GroupLabel": "Can Be Blocked"
+    },
+    "-22":{
+        "Name": "UserType",
+        "ReadOnly": "false",
+        "Placement": "Detail",
+        "Layout": "LIST",
+        "GroupLabel": "User Type",
+        "Values": {
+            "Kid": {
+                "ToggleValue": "Other",
+                "AppLabel": "Kid",
+                "Label": "Kid"
+            },
+            "Other": {
+                "ToggleValue": "Kid",
+                "AppLabel": "Other",
+                "Label": "Other"
+            }
+        }
+    },
     "1": {
         "Name": "SWITCH BINARY",
         "Type": "Actuator",
