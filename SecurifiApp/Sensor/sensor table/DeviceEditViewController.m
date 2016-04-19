@@ -97,6 +97,7 @@ static const int xIndent = 10;
     [center addObserver:self selector:@selector(onDeviceListAndDynamicResponseParsed:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onUpdateDeviceIndexResponse:) name:NOTIFICATION_UPDATE_DEVICE_INDEX_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onDeviceNameChanged:) name:NOTIFICATION_UPDATE_DEVICE_NAME_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onClientUpdate:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
     
 }
 - (void)clearAllViews{
@@ -273,6 +274,12 @@ static const int xIndent = 10;
 -(void)onDeviceNameChanged:(id)sender{ // mobile commamd
     
 }
+
+-(void)onClientUpdate:(id)sender{
+    NSLog(@"onClientUpdate:");
+    
+}
+
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");
     [self.navigationController popToRootViewControllerAnimated:YES];
