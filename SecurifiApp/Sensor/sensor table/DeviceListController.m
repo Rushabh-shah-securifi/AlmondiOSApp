@@ -43,7 +43,7 @@
 int randomMobileInternalIndex;
 
 - (void)viewDidLoad {
-    NSLog(@"sensor - viewDidLoad");
+    NSLog(@"devicelist - viewDidLoad");
     [super viewDidLoad];
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -57,7 +57,7 @@ int randomMobileInternalIndex;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-    NSLog(@"sensor viewWillAppear");
+    NSLog(@"devicelist viewWillAppear");
     [super viewWillAppear:YES];
     [self initializeNotifications];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -377,6 +377,7 @@ int randomMobileInternalIndex;
     self.currentClientList = toolkit.clients;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
+        [self.HUD hide:YES];
         [self.refreshControl endRefreshing];
     });
 }
