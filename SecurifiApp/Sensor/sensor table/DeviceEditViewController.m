@@ -75,7 +75,7 @@ static const int xIndent = 10;
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-    NSLog(@"sensor viewWillAppear");
+    NSLog(@"deviceedit viewWillAppear");
     [super viewWillAppear:YES];
     randomMobileInternalIndex = arc4random() % 10000;
     [self initializeNotifications];
@@ -275,6 +275,8 @@ static const int xIndent = 10;
 }
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");
+    [self.navigationController popToRootViewControllerAnimated:YES];
+     
 //    [self.deviceEditHeaderCell initializeSensorCellWithGenericParams:self.genericParams cellType:SensorEdit_Cell];
 //    Device *device = [Device getDeviceForID:self.genericParams.headerGenericIndexValue.deviceID];
 //    [self.genericParams setGenericParamsWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[UIColor greenColor]];

@@ -60,7 +60,7 @@ int randomMobileInternalIndex;
     NSLog(@"sensor viewWillAppear");
     [super viewWillAppear:YES];
     [self initializeNotifications];
-
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 //    DeviceParser *deviceparser = [[DeviceParser alloc]init];
 //    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
     
@@ -68,6 +68,8 @@ int randomMobileInternalIndex;
     
     randomMobileInternalIndex = arc4random() % 10000;
     //need to reload tableview, as toolkit could have got updates
+    self.currentDeviceList = toolkit.devices;
+    self.currentClientList = toolkit.clients;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
         
@@ -369,6 +371,7 @@ int randomMobileInternalIndex;
 }
 #pragma mark command responses
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
+    NSLog(@"devicelist - onDeviceListAndDynamicResponseParsed");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentDeviceList = toolkit.devices;
     self.currentClientList = toolkit.clients;
