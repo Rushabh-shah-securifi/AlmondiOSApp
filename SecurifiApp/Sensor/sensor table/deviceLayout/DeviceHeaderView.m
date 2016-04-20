@@ -114,10 +114,8 @@
     }
 }
 -(void)changeImage{
-    self.deviceName.text = NSLocalizedString(@"tableviewcell-Updating sensor data.\nPlease wait.", @"Updating sensor data.\nPlease wait.");
     self.deviceImage.image = [UIImage imageNamed:@"00_wait_icon"];
-    self.deviceValue.text = @"";
-    NSLog(@"PRETTY function%s@",__PRETTY_FUNCTION__);
+    self.deviceValue.text = NSLocalizedString(@"tableviewcell-Updating sensor data.\nPlease wait.", @"Updating sensor data.\nPlease wait.");;
 }
 
 -(void)isTamper{

@@ -18,18 +18,24 @@
 }
 
 +(void)getSensorIndexUpdate:(GenericIndexValue*)genericIndexValue mii:(int)mii{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    
     NSMutableDictionary *payload = [NSMutableDictionary new];
     [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];
     [payload setValue:UPDATE_DEVICE_INDEX forKey:@"CommandType"];
     [payload setValue:@(genericIndexValue.deviceID).stringValue forKey:D_ID];
     [payload setValue:@(genericIndexValue.index).stringValue forKey:INDEX];
     [payload setValue:genericIndexValue.genericValue.toggleValue forKey:VALUE];
-    GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_DEVICE_INDEX];
+    [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:ALMONDMAC];
+    
+    GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
 }
 
 //have to combile both methods
 +(void)getSensorIndexUpdatePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    
     NSMutableDictionary *payload = [NSMutableDictionary new];
     [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];
     [payload setValue:UPDATE_DEVICE_INDEX forKey:@"CommandType"];
@@ -37,22 +43,13 @@
     [payload setValue:@(genericIndexValue.index).stringValue forKey:INDEX];
     [payload setValue:value forKey:VALUE];
     
-    GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_DEVICE_INDEX];
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+    [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:ALMONDMAC];
+    GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
+    [toolkit asyncSendCommand:genericCmd];
 }
 
-/*
- 
- "{
- ""MobileInternalIndex"":""<random key>"",
- ""CommandType"":""UpdateDeviceName"",
- ""ID"":""6"",
- ""Name"":""newswitchsss"",
- ""Location"":""default""
- }"
- 
- */
 +(void)getNameLocationChange:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     
     NSMutableDictionary *payload = [NSMutableDictionary new];
     DeviceCommandType deviceCmdType = genericIndexValue.genericIndex.commandType;
@@ -63,9 +60,10 @@
         [payload setValue:value forKey:INDEX_NAME];//will replace by @"Name"
     else
     [payload setValue:value forKey:LOCATION];
+    [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:ALMONDMAC];
     
-    GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_DEVICE_NAME];
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+    GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
+    [toolkit asyncSendCommand:genericCmd];
 }
 
 

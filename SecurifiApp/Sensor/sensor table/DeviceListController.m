@@ -117,7 +117,7 @@ int randomMobileInternalIndex;
     
     [center addObserver:self
                selector:@selector(onUpdateDeviceIndexResponse:)
-                   name:NOTIFICATION_UPDATE_DEVICE_INDEX_NOTIFIER
+                   name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER // for toggle
                  object:nil];
     
     [center addObserver:self
@@ -313,12 +313,13 @@ int randomMobileInternalIndex;
 }
 
 - (UIColor*) getClientCellColor:(Client*)client{
-    if(client.isActive)
+    if (client.deviceAllowedType == 1)
+        return [SFIColors clientBlockedGrayColor];
+    else if(client.isActive)
         return [SFIColors clientGreenColor];
     else if(!client.isActive)
         return [SFIColors clientInActiveGrayColor];
-    else if (client.deviceAllowedType == 1)
-        return [SFIColors clientBlockedGrayColor];
+
     return [SFIColors clientGreenColor];
 }
 
@@ -384,11 +385,30 @@ int randomMobileInternalIndex;
 
 -(void)onUpdateDeviceIndexResponse:(id)sender{ //mobile command
     NSLog(@"onUpdateDeviceIndexResponse");
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *almond = [toolkit currentAlmond];
+    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    NSDictionary *payload;
+    if(local){
+        payload = [dataInfo valueForKey:@"data"];
+    }else{
+        NSLog(@"cloud data");
+        payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
+    }
+    
+    //    payload = [self parseJson:@"DeviceListResponse"];
+    NSLog(@"devicelistcontroller - mobile - payload: %@", payload);
 
 }
 
 #pragma mark cloud callbacks
 - (void)onCurrentAlmondChanged:(id)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self initializeAlmondData];
         [self.tableView reloadData];
@@ -396,6 +416,7 @@ int randomMobileInternalIndex;
 }
 
 - (void)onAlmondListDidChange:(id)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     if (!self) {
         return;
     }
@@ -411,15 +432,16 @@ int randomMobileInternalIndex;
         if (!self || !self.isViewLoaded) {
             return;
         }
-//        [self.HUD show:YES];
+        [self.HUD show:YES];
         [self initializeAlmondData];
         [self.tableView reloadData];
-//        [self.HUD hide:YES afterDelay:1.5];
+        [self.HUD hide:YES afterDelay:1.5];
     });
 }
 
 
 - (void)onAlmondNameDidChange:(id)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
@@ -438,6 +460,7 @@ int randomMobileInternalIndex;
 
 
 - (void)onNotificationPrefDidChange:(id)sender {
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     dispatch_async(dispatch_get_main_queue(), ^() {
         
     });

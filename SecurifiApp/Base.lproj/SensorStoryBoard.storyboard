@@ -65,7 +65,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SKSTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rpr-zm-JGc">
-                                <rect key="frame" x="8" y="92" width="304" height="458"/>
+                                <rect key="frame" x="8" y="100" width="304" height="448"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ClientPropertiesCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="SKSTableViewCell" rowHeight="50" id="Zpg-Bl-N2s" customClass="ClientPropertiesCell">
@@ -115,8 +115,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="rpr-zm-JGc" firstAttribute="top" secondItem="ORz-GS-wMb" secondAttribute="bottom" constant="72" id="IVX-5a-2Yw"/>
-                            <constraint firstItem="Z1A-Gc-S4Y" firstAttribute="top" secondItem="rpr-zm-JGc" secondAttribute="bottom" constant="18" id="a1F-KJ-TQ9"/>
+                            <constraint firstItem="rpr-zm-JGc" firstAttribute="top" secondItem="ORz-GS-wMb" secondAttribute="bottom" constant="80" id="IVX-5a-2Yw"/>
+                            <constraint firstItem="Z1A-Gc-S4Y" firstAttribute="top" secondItem="rpr-zm-JGc" secondAttribute="bottom" constant="20" id="a1F-KJ-TQ9"/>
                             <constraint firstItem="rpr-zm-JGc" firstAttribute="leading" secondItem="b6t-b6-Fg6" secondAttribute="leading" constant="8" id="hrp-le-xw0"/>
                             <constraint firstAttribute="trailing" secondItem="rpr-zm-JGc" secondAttribute="trailing" constant="8" id="p6a-VV-itk"/>
                         </constraints>

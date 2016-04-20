@@ -16,7 +16,7 @@
 #import "DeviceEditViewController.h"
 #import "AlmondJsonCommandKeyConstants.h"
 
-#define CELLFRAME CGRectMake(8, 11, self.view.frame.size.width -16, 60)
+#define CELLFRAME CGRectMake(8, 8, self.view.frame.size.width -16, 70)
 
 @interface ClientPropertiesViewController ()<UITableViewDelegate,UITableViewDataSource,DeviceHeaderViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *clientPropertiesTable;

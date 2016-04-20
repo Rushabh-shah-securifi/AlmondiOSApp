@@ -95,18 +95,20 @@ static const int xIndent = 10;
     NSLog(@"initialize notifications sensor table");
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onDeviceListAndDynamicResponseParsed:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
-    [center addObserver:self selector:@selector(onUpdateDeviceIndexResponse:) name:NOTIFICATION_UPDATE_DEVICE_INDEX_NOTIFIER object:nil];
-    [center addObserver:self selector:@selector(onDeviceNameChanged:) name:NOTIFICATION_UPDATE_DEVICE_NAME_NOTIFIER object:nil];
+    [center addObserver:self selector:@selector(onCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil]; //indexupdate or name/location change both
+//    [center addObserver:self selector:@selector(onDeviceNameChanged:) name:NOTIFICATION_UPDATE_DEVICE_NAME_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onClientUpdate:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
     
 }
 - (void)clearAllViews{
-    for(UIView *view in self.scrollView.subviews){
-        [view removeFromSuperview];
-    }
-    for(UIView *view in self.view.subviews){
-        [view removeFromSuperview];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        for(UIView *view in self.scrollView.subviews){
+            [view removeFromSuperview];
+        }
+        for(UIView *view in self.view.subviews){
+            [view removeFromSuperview];
+        }
+    });
 }
 #pragma mark drawerMethods
 -(void)drawIndexes{
@@ -267,13 +269,13 @@ static const int xIndent = 10;
 }
 
 #pragma mark command responses
--(void)onUpdateDeviceIndexResponse:(id)sender{ //mobile command
+-(void)onCommandResponse:(id)sender{ //mobile command sensor and client
     NSLog(@"device edit - onUpdateDeviceIndexResponse");
 }
 
--(void)onDeviceNameChanged:(id)sender{ // mobile commamd
-    
-}
+//-(void)onDeviceNameChanged:(id)sender{ // mobile commamd
+//    
+//}
 
 -(void)onClientUpdate:(id)sender{
     NSLog(@"onClientUpdate:");
@@ -282,7 +284,10 @@ static const int xIndent = 10;
 
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    });
+    
      
 //    [self.deviceEditHeaderCell initializeSensorCellWithGenericParams:self.genericParams cellType:SensorEdit_Cell];
 //    Device *device = [Device getDeviceForID:self.genericParams.headerGenericIndexValue.deviceID];

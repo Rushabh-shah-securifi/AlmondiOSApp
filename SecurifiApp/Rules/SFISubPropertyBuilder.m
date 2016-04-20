@@ -129,6 +129,29 @@ UILabel *topLabel;
     return [self drawImage: @"plus_icon" withSubProperties:buttonProperties isTrigger:isTrigger];
 }
 
++ (void)buildEntryList:(NSArray *)entries isTrigger:(BOOL)isTrigger {
+    int positionId = 0;
+    SwitchButton *lastImageButton;
+    for (SFIButtonSubProperties *buttonProperties in entries) {
+        if(buttonProperties.time != nil && buttonProperties.time.segmentType!=0){
+            lastImageButton=[self buildTime:buttonProperties isTrigger:isTrigger positionId:positionId];
+            positionId++;
+        }else{
+            NSArray *deviceIndexes=[self getDeviceIndexes:buttonProperties];
+            if(deviceIndexes==nil || deviceIndexes.count<=0)
+                continue;
+            lastImageButton= [self buildEntry:buttonProperties positionId:positionId deviceIndexes:deviceIndexes isTrigger:isTrigger];
+            if(lastImageButton!=nil)
+                positionId++;
+        }
+    }
+    //Replace the end image with arrow or nothing appropriately
+    if(lastImageButton!=nil){
+        UIImage *lastImage= (isTrigger && actions.count>0)?[UIImage imageNamed:@"arrow_icon"]:nil;
+        [lastImageButton setImage:lastImage replace:YES];
+    }
+}
+
 + (SwitchButton *)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId deviceIndexes:(NSArray *)deviceIndexes isTrigger:(BOOL)isTrigger{
     
     SwitchButton * imageButton =nil;
@@ -164,29 +187,8 @@ UILabel *topLabel;
     return imageButton;
 }
 
-+ (void)buildEntryList:(NSArray *)entries isTrigger:(BOOL)isTrigger {
-    int positionId = 0;
-    SwitchButton *lastImageButton;
-    for (SFIButtonSubProperties *buttonProperties in entries) {
-        if(buttonProperties.time != nil && buttonProperties.time.segmentType!=0){
-            lastImageButton=[self buildTime:buttonProperties isTrigger:isTrigger positionId:positionId];
-            positionId++;
-        }else{
-            NSArray *deviceIndexes=[self getDeviceIndexes:buttonProperties];
-            if(deviceIndexes==nil || deviceIndexes.count<=0)
-                continue;
-            lastImageButton= [self buildEntry:buttonProperties positionId:positionId deviceIndexes:deviceIndexes isTrigger:isTrigger];
-            if(lastImageButton!=nil)
-                positionId++;
-        }
-        
-    }
-    //Replace the end image with arrow or nothing appropriately
-    if(lastImageButton!=nil){
-        UIImage *lastImage= (isTrigger && actions.count>0)?[UIImage imageNamed:@"arrow_icon"]:nil;
-        [lastImageButton setImage:lastImage replace:YES];
-    }
-}
+
+
 
 + (SwitchButton*)buildTime:(SFIButtonSubProperties *)timesubProperties isTrigger:(BOOL)isTrigger positionId:(int)positionId{
     DimmerButton *dimbutton=[[DimmerButton alloc]initWithFrame:CGRectMake(xVal, 5, dimFrameWidth, dimFrameHeight)];
