@@ -138,7 +138,7 @@
     GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:client.deviceType];
 
     if(genericValue == nil){ //if devicetype is wronglysent only expected return is nil
-        genericValue = [[GenericValue alloc]initWithDisplayText:status icon:@"help_icon" toggleValue:nil value:client.deviceType];
+        genericValue = [[GenericValue alloc]initWithDisplayText:status icon:@"help_icon" toggleValue:nil value:client.deviceType excludeFrom:nil];
     }else{
         genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:status];
     }
@@ -177,108 +177,5 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     return toolkit.genericIndexes[genericIndexID];
 }
-
-
-
-/*
- //connected json
- @property(nonatomic, retain) NSString *name;
- @property(nonatomic, retain) NSString *deviceIP;
- @property(nonatomic, strong) NSString *manufacturer;
- @property(nonatomic, strong) NSString *rssi;
- @property(nonatomic, retain) NSString *deviceMAC;
- @property(nonatomic, retain) NSString *deviceConnection;
- @property(nonatomic, retain) NSString *deviceID;
- @property(nonatomic, retain) NSString *deviceType;
- @property(nonatomic, assign) NSInteger timeout;
- @property(nonatomic, retain) NSString *deviceLastActiveTime;
- @property(nonatomic, assign) BOOL deviceUseAsPresence;
- @property(nonatomic, assign) BOOL isActive;
- 
- @property(nonatomic) DeviceAllowedType deviceAllowedType;
- @property(nonatomic) NSString *deviceSchedule;
- 
- {//devices json
- "1": {
- "name": "Binary Switch",
- "defaultIcon": "@drawable/switch_off_new",
- "isActionDevice": "true",
- "isActuator": "true",
- "isTriggerDevice": "true",
- "Indexes": {
- "1": {
- "row_no": "1",
- "genericIndexID": "1"
- }
- }
- },
- "2":{
- "name":"Multilevel Switch",
- "defaultIcon":"@drawable/dimmer",
- "isActionDevice":"true",
- "isActuator":"true",
- "isTriggerDevice":"true",
- "Indexes": {
- "1": {
- "row_no": "1",
- "genericIndexID": "17"
- }
- }
- }
- */
-/*
- {//Generic index json
- "1": {
- "Name": "SWITCH BINARY",
- "Type": "Actuator",
- "DataType": "Bool",
- "ReadOnly": "false",
- "Placement": "Header",
- "Layout": "Toggle",
- "GroupLabel": "SWITCH",
- "Conditional": "false",
- "DefaultVisibility": "true",
- "HasToggleIcon": "true",
- "DefaultIcon": "switchon",
- "Values": {
- "true": {
- "ToggleValue": "false",
- "Icon": "switchon",
- "Label": "ON"
- },
- "false": {
- "ToggleValue": "false",
- "Icon": "switchoff",
- "Label": "OFF"
- }
- }
- },
- "2": {
- "Name": "SENSOR BINARY",
- "Type": "Sensor",
- "DataType": "Bool",
- "ReadOnly": "true",
- "Placement": "Header",
- "Layout": "Toggle",
- "GroupLabel": "SENSOR",
- "Conditional": "false",
- "DefaultVisibility": "true",
- "HasToggleIcon": "false",
- "ExcludeFrom": "scene",
- "DefaultIcon": "binarysensoron",
- "Values": {
- "true": {
- "ToggleValue": "NaN",
- "Icon": "binarysensoron",
- "Label": "ACTIVE"
- },
- "false": {
- "ToggleValue": "NaN",
- "Icon": "binarysensoroff",
- "Label": "INACTIVE"
- }
- }
- }
- }*/
 
 @end

@@ -441,6 +441,7 @@
 		A58DB4A91BB3CD7500717C02 /* MainStoryboard_iPhone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49D1BB3CD7500717C02 /* MainStoryboard_iPhone.strings */; };
 		A58DB4AA1BB3CD7500717C02 /* Scenes_Iphone.strings in Resources */ = {isa = PBXBuildFile; fileRef = A58DB49F1BB3CD7500717C02 /* Scenes_Iphone.strings */; };
 		A58DB4AB1BB3CD7500717C02 /* termsofuse.html in Resources */ = {isa = PBXBuildFile; fileRef = A58DB4A11BB3CD7500717C02 /* termsofuse.html */; };
+		A5AC1E841CC7BA01009F362B /* RuleSceneUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = A5AC1E831CC7BA01009F362B /* RuleSceneUtil.m */; };
 		A5C68C991C92D93000110B74 /* GenericIndexesData.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C981C92D93000110B74 /* GenericIndexesData.json */; };
 		A5C68C9A1C92D93000110B74 /* GenericIndexesData.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C981C92D93000110B74 /* GenericIndexesData.json */; };
 		A5C68C9C1C9303D300110B74 /* DeviceListResponse.json in Resources */ = {isa = PBXBuildFile; fileRef = A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */; };
@@ -981,6 +982,8 @@
 		A58DB49E1BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = MainStoryboard_iPhone.strings; sourceTree = "<group>"; };
 		A58DB4A01BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = Scenes_Iphone.strings; sourceTree = "<group>"; };
 		A58DB4A21BB3CD7500717C02 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "zh-Hans"; path = termsofuse.html; sourceTree = "<group>"; };
+		A5AC1E821CC7BA01009F362B /* RuleSceneUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RuleSceneUtil.h; sourceTree = "<group>"; };
+		A5AC1E831CC7BA01009F362B /* RuleSceneUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RuleSceneUtil.m; sourceTree = "<group>"; };
 		A5C68C981C92D93000110B74 /* GenericIndexesData.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = GenericIndexesData.json; sourceTree = "<group>"; };
 		A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = DeviceListResponse.json; sourceTree = "<group>"; };
 		A5C7B4001CA14F5400E269A2 /* DevicePayload.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevicePayload.h; sourceTree = "<group>"; };
@@ -1205,6 +1208,7 @@
 				A54EB0341C45004B00CF2837 /* Common-Images.xcassets */,
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
 				1C7E7E2D1A41A26A0026F0BA /* Base.lproj */,
+				CEF6F4AA1C92CAD600C68975 /* Rules */,
 				1C709A061B5A3157007D397C /* Link */,
 				1C7E7CF61A41A0990026F0BA /* Login */,
 				1C7E7CFD1A41A0990026F0BA /* Notifications */,
@@ -1471,7 +1475,6 @@
 		1C7E7E2D1A41A26A0026F0BA /* Base.lproj */ = {
 			isa = PBXGroup;
 			children = (
-				CEF6F4AA1C92CAD600C68975 /* Rules */,
 				846414CE1B736B7F008AB07F /* Fonts */,
 				1C7E7E301A41A26A0026F0BA /* Common-Localizable.strings */,
 				1C7E7E321A41A26A0026F0BA /* Common-MainStoryboard_iPhone.strings */,
@@ -2031,8 +2034,11 @@
 		CEF6F4AA1C92CAD600C68975 /* Rules */ = {
 			isa = PBXGroup;
 			children = (
+				CEF6F4C31C92CAD600C68975 /* Support */,
 				CEF6F4AB1C92CAD600C68975 /* AddRuleSceneClass.h */,
 				CEF6F4AC1C92CAD600C68975 /* AddRuleSceneClass.m */,
+				A5AC1E821CC7BA01009F362B /* RuleSceneUtil.h */,
+				A5AC1E831CC7BA01009F362B /* RuleSceneUtil.m */,
 				CEF6F4AD1C92CAD600C68975 /* AddRulesViewController.h */,
 				CEF6F4AE1C92CAD600C68975 /* AddRulesViewController.m */,
 				CEF6F4AF1C92CAD600C68975 /* AddTriggerAndAddAction.h */,
@@ -2055,12 +2061,10 @@
 				CEF6F4C01C92CAD600C68975 /* RulesTableViewController.m */,
 				CEF6F4C11C92CAD600C68975 /* SFISubPropertyBuilder.h */,
 				CEF6F4C21C92CAD600C68975 /* SFISubPropertyBuilder.m */,
-				CEF6F4C31C92CAD600C68975 /* Support */,
 				CEF6F4D61C92CAD600C68975 /* TimeView.h */,
 				CEF6F4D71C92CAD600C68975 /* TimeView.m */,
 			);
-			name = Rules;
-			path = ../Rules;
+			path = Rules;
 			sourceTree = "<group>";
 		};
 		CEF6F4C31C92CAD600C68975 /* Support */ = {
@@ -2723,6 +2727,7 @@
 				1C7E7DCF1A41A0990026F0BA /* SFITableViewController.m in Sources */,
 				1C7E7DD11A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				CEF6F4FE1C92CAD600C68975 /* RuleTextField.m in Sources */,
+				A5AC1E841CC7BA01009F362B /* RuleSceneUtil.m in Sources */,
 				1C7E7DC11A41A0990026F0BA /* SFIConstants.m in Sources */,
 				CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */,
 				1C7E7DBF1A41A0990026F0BA /* SFIColors.m in Sources */,
