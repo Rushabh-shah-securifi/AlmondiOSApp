@@ -35,7 +35,12 @@
 #import "IndexValueSupport.h"
 #import "DelayPicker.h"
 #import "CommonMethods.h"
+#import "Device.h"
+#import "RuleSceneUtil.h"
 
+#import "GenericIndexValue.h"
+#import "GenericIndexClass.h"
+#import "GenericValue.h"
 
 @interface SFISubPropertyBuilder()
 
@@ -120,7 +125,6 @@ UILabel *topLabel;
     [triggersActionsScrollView addSubview:topLabel];
 }
 
-
 + (SwitchButton *)setIconAndText:(int)positionId buttonProperties:(SFIButtonSubProperties *)buttonProperties icon:(NSString *)icon text:(NSString*)text isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString*)bottomText{
     buttonProperties.positionId=positionId;
     buttonProperties.iconName=icon;
@@ -137,10 +141,10 @@ UILabel *topLabel;
             lastImageButton=[self buildTime:buttonProperties isTrigger:isTrigger positionId:positionId];
             positionId++;
         }else{
-            NSArray *deviceIndexes=[self getDeviceIndexes:buttonProperties];
-            if(deviceIndexes==nil || deviceIndexes.count<=0)
+            NSArray *genericIndexValues = [self getDeviceIndexes:buttonProperties isTrigger:isTrigger];
+            if(genericIndexValues == nil || genericIndexValues.count<=0)
                 continue;
-            lastImageButton= [self buildEntry:buttonProperties positionId:positionId deviceIndexes:deviceIndexes isTrigger:isTrigger];
+            lastImageButton= [self buildEntry:buttonProperties positionId:positionId genericIndexValues:genericIndexValues isTrigger:isTrigger];
             if(lastImageButton!=nil)
                 positionId++;
         }
@@ -152,35 +156,48 @@ UILabel *topLabel;
     }
 }
 
-+ (SwitchButton *)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId deviceIndexes:(NSArray *)deviceIndexes isTrigger:(BOOL)isTrigger{
++ (SwitchButton *)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId genericIndexValues:(NSArray *)genericIndexValues isTrigger:(BOOL)isTrigger{
     
     SwitchButton * imageButton =nil;
     
-    for(SFIDeviceIndex *deviceIndex in deviceIndexes){
-        if (deviceIndex.indexID == buttonProperties.index) {
+    
+    for(GenericIndexValue *indexValue in genericIndexValues){
+        GenericIndexClass *genericIndex = indexValue.genericIndex;
+        GenericValue *selectedValue = indexValue.genericValue;
+        NSDictionary *genericValueDic;
+        if(genericIndex.values == nil){
+            genericValueDic = [self formatterDict:genericIndex];
+        }else{
+            genericValueDic = genericIndex.values;
+        }
+        
+        NSArray *genericValueKeys = genericValueDic.allKeys;
+        
+        if (indexValue.index == buttonProperties.index) {
             if([buttonProperties.matchData isEqualToString:@"toggle"])
             {
                 return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"toggle_icon.png" text:@"Toggle" isTrigger:isTrigger isDimButton:NO bottomText:@"TOGGLE"];
             }
-            NSArray *indexValues = deviceIndex.indexValues;
-            for(IndexValueSupport *iVal in indexValues){
-                BOOL isDimButton=iVal.layoutType!=nil && ([iVal.layoutType isEqualToString:@"dimButton"] || [iVal.layoutType isEqualToString:@"textButton"]);
-                if([CommonMethods compareEntry:isDimButton matchData:iVal.matchData eventType:iVal.eventType buttonProperties:buttonProperties]){
+            
+            for (NSString *value in genericValueKeys) {
+                GenericValue *gVal = genericValueDic[value];
+                BOOL isDimButton = genericIndex.layoutType!=nil && ([self isDimmerLayout:genericIndex.layoutType] || [genericIndex.layoutType isEqualToString:@"textButton"]);
+                if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:indexValue.eventType buttonProperties:buttonProperties]){
                     NSString *bottomText;
                     
                     if(isDimButton){
-                        buttonProperties.displayedData=[iVal.valueFormatter scaledValue:buttonProperties.matchData];
-                        bottomText = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,iVal.valueFormatter.suffix];
+                        buttonProperties.displayedData = selectedValue.iconText;
+                        bottomText = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,genericIndex.formatter.units];
                         if(buttonProperties.deviceType == SFIDeviceType_HueLamp_48){
-                            bottomText = [NSString stringWithFormat:@"%@%@",@(buttonProperties.matchData.intValue * 100/255).stringValue,iVal.valueFormatter.suffix];
+                            bottomText = [NSString stringWithFormat:@"%@%@",@(buttonProperties.matchData.intValue * 100/255).stringValue,genericIndex.formatter.units];
                         }
                     }
                     else
-                        bottomText = [iVal getDisplayText:buttonProperties.matchData];
+                        bottomText = [self getDisplayText:genericIndex value:buttonProperties.matchData genericValue:gVal];
                     
-                    return [self setIconAndText:positionId buttonProperties:buttonProperties icon:iVal.iconName text:bottomText isTrigger:isTrigger isDimButton:isDimButton bottomText:iVal.displayText];
-                }
-            }
+                    return [self setIconAndText:positionId buttonProperties:buttonProperties icon:gVal.icon text:bottomText isTrigger:isTrigger isDimButton:isDimButton bottomText:gVal.displayText];
+                }//if
+            }//for
             return imageButton;
         }
     }
@@ -188,6 +205,29 @@ UILabel *topLabel;
 }
 
 
++(NSDictionary*)formatterDict:(GenericIndexClass*)genericIndex{
+    NSMutableDictionary *genericValueDic = [[NSMutableDictionary alloc]init];
+    [genericValueDic setValue:[[GenericValue alloc]initWithDisplayText:genericIndex.groupLabel iconText:@(genericIndex.formatter.min).stringValue value:@"" excludeFrom:@""] forKey:genericIndex.groupLabel];
+    return genericValueDic;
+}
+
++(BOOL)isDimmerLayout:(NSString*)genericLayout{
+    if(genericLayout  != nil){
+        NSLog(@"genericLayout %@",genericLayout);
+        if([genericLayout rangeOfString:@"Slider" options:NSCaseInsensitiveSearch].location != NSNotFound){// data string contains check string
+            return YES;
+        }
+    }
+    return NO;
+}
+
+
++(NSString*)getDisplayText:(GenericIndexClass*)genericIndex value:(NSString*)value genericValue:(GenericValue*)gVal{
+    if(genericIndex.layoutType!=nil && ([self isDimmerLayout:genericIndex.layoutType] || [genericIndex.layoutType isEqualToString:@"textButton"])){
+        return [NSString stringWithFormat:@"%@ %@%@", gVal.displayText, value, genericIndex.formatter.units];
+    }
+    return gVal.displayText;
+}
 
 
 + (SwitchButton*)buildTime:(SFIButtonSubProperties *)timesubProperties isTrigger:(BOOL)isTrigger positionId:(int)positionId{
@@ -217,8 +257,9 @@ UILabel *topLabel;
     return [self drawImage:@"plus_icon" withSubProperties:timesubProperties isTrigger:isTrigger];
 }
 
-+ (NSArray*)getDeviceIndexes:(SFIButtonSubProperties *)properties{
++ (NSArray*)getDeviceIndexes:(SFIButtonSubProperties *)properties isTrigger:(BOOL)isTrigger{
     [self getDeviceTypeFor:properties];
+    [RuleSceneUtil getGenericIndexValueArrayForID:properties.deviceId type:properties.deviceType isTrigger:isTrigger isScene:isScene triggers:triggers action:actions];
     SensorIndexSupport *Index=[[SensorIndexSupport alloc]init];
     return [Index getIndexesFor:properties.deviceType];
 }
@@ -340,6 +381,7 @@ UILabel *topLabel;
 
 + (void)getDeviceTypeFor:(SFIButtonSubProperties*)buttonSubProperty{
     buttonSubProperty.deviceType = SFIDeviceType_UnknownDevice_0;
+    
     if([buttonSubProperty.type isEqualToString:@"NetworkResult"]){
         buttonSubProperty.deviceType = SFIDeviceType_REBOOT_ALMOND;
         buttonSubProperty.index = 1;//as there is no index from cloud
@@ -355,10 +397,10 @@ UILabel *topLabel;
             }
         }
     }else{
-        for(SFIDevice *device in deviceArray){
-            if(buttonSubProperty.deviceId == device.deviceID){
-                buttonSubProperty.deviceType = device.deviceType;
-                buttonSubProperty.deviceName = device.deviceName;
+        for(Device *device in toolkit.devices){
+            if(buttonSubProperty.deviceId == device.ID){
+                buttonSubProperty.deviceType = device.type;
+                buttonSubProperty.deviceName = device.name;
             }
         }
     }
