@@ -136,6 +136,7 @@ UILabel *topLabel;
 + (void)buildEntryList:(NSArray *)entries isTrigger:(BOOL)isTrigger {
     int positionId = 0;
     SwitchButton *lastImageButton;
+    NSLog(@"entries: %@", entries);
     for (SFIButtonSubProperties *buttonProperties in entries) {
         if(buttonProperties.time != nil && buttonProperties.time.segmentType!=0){
             lastImageButton=[self buildTime:buttonProperties isTrigger:isTrigger positionId:positionId];
@@ -144,6 +145,7 @@ UILabel *topLabel;
             NSArray *genericIndexValues = [self getDeviceIndexes:buttonProperties isTrigger:isTrigger];
             if(genericIndexValues == nil || genericIndexValues.count<=0)
                 continue;
+            NSLog(@"button property: %@, genericindexvalues: %@", buttonProperties, genericIndexValues);
             lastImageButton= [self buildEntry:buttonProperties positionId:positionId genericIndexValues:genericIndexValues isTrigger:isTrigger];
             if(lastImageButton!=nil)
                 positionId++;
@@ -159,8 +161,6 @@ UILabel *topLabel;
 + (SwitchButton *)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId genericIndexValues:(NSArray *)genericIndexValues isTrigger:(BOOL)isTrigger{
     
     SwitchButton * imageButton =nil;
-    
-    
     for(GenericIndexValue *indexValue in genericIndexValues){
         GenericIndexClass *genericIndex = indexValue.genericIndex;
         GenericValue *selectedValue = indexValue.genericValue;
@@ -259,9 +259,8 @@ UILabel *topLabel;
 
 + (NSArray*)getDeviceIndexes:(SFIButtonSubProperties *)properties isTrigger:(BOOL)isTrigger{
     [self getDeviceTypeFor:properties];
-    [RuleSceneUtil getGenericIndexValueArrayForID:properties.deviceId type:properties.deviceType isTrigger:isTrigger isScene:isScene triggers:triggers action:actions];
-    SensorIndexSupport *Index=[[SensorIndexSupport alloc]init];
-    return [Index getIndexesFor:properties.deviceType];
+    NSLog(@"propertiesid: %d, properties type: %d, matchdata: %@", properties.deviceId, properties.deviceType, properties.matchData);
+    return [RuleSceneUtil getGenericIndexValueArrayForID:properties.deviceId type:properties.deviceType isTrigger:isTrigger isScene:isScene triggers:triggers action:actions];
 }
 
 + (void)drawButton:(SFIButtonSubProperties*)subProperties isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString *)bottomText{

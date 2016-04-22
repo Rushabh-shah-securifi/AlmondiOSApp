@@ -39,15 +39,15 @@
         NSArray *indexIDs = deviceIndexes.allKeys;
         for(NSString *indexID in indexIDs){
             DeviceIndex *deviceIndex = deviceIndexes[indexID];
-            GenericIndexClass *genericIndex = toolkit.genericIndexes[deviceIndex.genericIndex];
-            genericIndex.rowID = deviceIndex.rowID;
+            GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
+            genericIndexObj.rowID = deviceIndex.rowID;
             
-            if([genericIndex.type isEqualToString:ACTUATOR] && [self isToBeAdded:genericDevice.excludeFrom checkString:@"Scene"]){
+            if([genericIndexObj.type isEqualToString:ACTUATOR] && [self isToBeAdded:genericDevice.excludeFrom checkString:@"Scene"]){
                 SFIButtonSubProperties *subProperty = [self findSubProperty:triggers deviceID:deviceID index:indexID.intValue istrigger:isTrigger];
                 GenericValue *genericValue = nil;
                 if(subProperty != nil)
-                    genericValue = [GenericIndexUtil getMatchingGenericValueForGenericIndexID:genericIndex.ID forValue:subProperty.matchData];
-                GenericIndexValue *genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:indexID.intValue deviceID:deviceID];
+                    genericValue = [GenericIndexUtil getMatchingGenericValueForGenericIndexID:genericIndexObj.ID forValue:subProperty.matchData];
+                GenericIndexValue *genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue index:indexID.intValue deviceID:deviceID];
                 [genericIndexValues addObject:genericIndexValue];
             }
         }
