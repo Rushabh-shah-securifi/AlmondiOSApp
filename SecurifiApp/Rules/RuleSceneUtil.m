@@ -34,6 +34,7 @@
             
             if([genericIndex.type isEqualToString:ACTUATOR] && [self isToBeAdded:genericDevice.excludeFrom checkString:@"Scene"]){
                 SFIButtonSubProperties *subProperty = [self findSubProperty:triggers deviceID:deviceID index:indexID.intValue istrigger:isTrigger];
+                NSLog(@"Util generic index name %@ , type %@ ,layout type %@",genericIndex.groupLabel,genericIndex.type,genericIndex.layoutType);
                 GenericValue *genericValue = nil;
                 if(subProperty != nil)
                     genericValue = [GenericIndexUtil getMatchingGenericValueForGenericIndexID:genericIndex.ID forValue:subProperty.matchData];

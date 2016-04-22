@@ -52,7 +52,7 @@ int randomMobileInternalIndex;
     //ensure list is empty initially
     self.currentDeviceList = @[];
     self.currentClientList = @[];
-    [self initializeAlmondData];
+//    [self initializeAlmondData];
     [self showHudWithTimeoutMsg:@"Loading Device data"];
 }
 
@@ -61,9 +61,9 @@ int randomMobileInternalIndex;
     [super viewWillAppear:YES];
     [self initializeNotifications];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-//    DeviceParser *deviceparser = [[DeviceParser alloc]init];
-//    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
-    
+    DeviceParser *deviceparser = [[DeviceParser alloc]init];
+    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
+    [self initializeAlmondData];
     
     
     randomMobileInternalIndex = arc4random() % 10000;
@@ -95,7 +95,7 @@ int randomMobileInternalIndex;
         [self initializeColors:[toolkit currentAlmond]];
     }
     self.enableDrawer = YES; //to enable navigation top left button
-    [self tryInstallRefreshControl];
+//    [self tryInstallRefreshControl];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{

@@ -3,11 +3,12 @@
     "CommandType":"DeviceList",
     "Devices":{
         "111": {
-            "Name": "Thermostat21",
+           "Data":{ "Name": "Thermostat21",
             "FriendlyDeviceType": "Thermostat",
             "Type": "111",
             "deviceid": "111",
-            "Location": "Main door",
+            "Location": "Main door"
+           },
             "DeviceValues": {
                 "1": {
                     "Name": "SETPOINT COOLING",
@@ -40,11 +41,13 @@
             }
         },
             "18": {
+                "Data":{
                 "Name": "Contact switch",
                 "FriendlyDeviceType": "ContactSwitch",
                 "Type": "12",
                 "deviceid": "2",
-                "Location": "Main door",
+                "Location": "Main door"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -67,11 +70,13 @@
                 }
             },
             "999": {
+                "Data":{
                 "Name": "motion sensor",
                 "FriendlyDeviceType": "MotionSensor",
                 "Type": "11",
                 "deviceid": "4",
-                "Location": "Hall",
+                "Location": "Hall"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -121,11 +126,13 @@
                 }
             },
             "15": {
+                "Data":{
                 "Name": "SmokeDetector",
                 "FriendlyDeviceType": "Alarm",
                 "Type": "36",
                 "deviceid": "15",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -142,11 +149,13 @@
                 }
             },
             "1": {
+                "Data":{
                 "Name": "BinarySwitch 1",
                 "FriendlyDeviceType": "BinarySwitch",
                 "Type": "1",
                 "deviceid": "18",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -157,11 +166,13 @@
                 }
             },
             "26": {
+                "Data":{
                 "Name": "FloodSensor zigbee",
                 "FriendlyDeviceType": "WaterSensor",
                 "Type": "14",
                 "deviceid": "26",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -184,11 +195,13 @@
                 }
             },
             "27": {
+                "Data":{
                 "Name": "KeyFob ",
                 "FriendlyDeviceType": "KeyFob",
                 "Type": "19",
                 "deviceid": "27",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -211,11 +224,13 @@
                 }
             },
             "2": {
+                "Data":{
                 "Name": "Impo",
                 "FriendlyDeviceType": "MultilevelSwitch",
                 "Type": "2",
                 "deviceid": "32",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -226,11 +241,13 @@
                 }
             },
             "33": {
+                "Data":{
                 "Name": "StandardWarningDevice #33",
                 "FriendlyDeviceType": "StandardWarningDevice",
                 "Type": "21",
                 "deviceid": "33",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -253,11 +270,13 @@
                 }
             },
             "6": {
+                "Data":{
                 "Name": "Alarm Sensor",
                 "FriendlyDeviceType": "Alarm",
                 "Type": "6",
                 "deviceid": "88",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -274,11 +293,13 @@
                 }
             },
             "89": {
+                "Data":{
                 "Name": "DoorSensor #89",
                 "FriendlyDeviceType": "BinarySensor",
                 "Type": "39",
                 "deviceid": "89",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -301,11 +322,14 @@
                 }
             },
             "92": {
+                "Data":{
                 "Name": "GarageDoorOpener",
                 "FriendlyDeviceType": "GarageDoorOpener",
                 "Type": "53",
                 "deviceid": "92",
-                "Location": "Default",
+                "Location": "Default"
+                },
+                
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -316,11 +340,13 @@
                 }
             },
             "127": {
+                "Data":{
                 "Name": "SmokeDetector #127",
                 "FriendlyDeviceType": "Alarm",
                 "Type": "36",
                 "deviceid": "127",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -337,11 +363,13 @@
                 }
             },
             "129": {
+                "Data":{
                 "Name": "Alarm Sensor ",
                 "FriendlyDeviceType": "Alarm",
                 "Type": "6",
                 "deviceid": "129",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -358,11 +386,13 @@
                 }
             },
             "148": {
+                "Data":{
                 "Name": "MultilevelSwitch #148",
                 "FriendlyDeviceType": "MultilevelSwitch",
                 "Type": "2",
                 "deviceid": "148",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -373,11 +403,13 @@
                 }
             },
             "159": {
+                "Data":{
                 "Name": "BinaryPowerSwitch #159",
                 "FriendlyDeviceType": "BinaryPowerSwitch",
                 "Type": "45",
                 "deviceid": "159",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -394,11 +426,13 @@
                 }
             },
             "168": {
+                "Data":{
                 "Name": "DoorLock  ",
                 "FriendlyDeviceType": "ZigbeeDoorLock",
                 "Type": "28",
                 "deviceid": "168",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -409,11 +443,13 @@
                 }
             },
             "3": {
+                "Data":{
                 "Name": "BinarySensor #180",
                 "FriendlyDeviceType": "BinarySensor",
                 "Type": "3",
                 "deviceid": "180",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -436,11 +472,13 @@
                 }
             },
             "184": {
+                "Data":{
                 "Name": "MultiSoundSiren #184",
                 "FriendlyDeviceType": "MultilevelSwitch",
                 "Type": "55",
                 "deviceid": "184",
-                "Location": "Default",
+                "Location": "Default"
+                },
                 "DeviceValues": {
                     "1": {
                         "Index": "1",
@@ -451,11 +489,13 @@
                 }
             },
         "4": {
+            "Data":{
             "Name": "ON_OFFMultilevelSwitch #185",
             "FriendlyDeviceType": "MultilevelSwitch",
             "Type": "4",
             "deviceid": "185",
-            "Location": "Default",
+            "Location": "Default"
+            },
             "DeviceValues": {
                 "1": {
                     "Index": "1",
@@ -472,11 +512,13 @@
             }
         },
         "5": {
+            "Data":{
             "Name": "DoorLock #186",
             "FriendlyDeviceType": "dooelock",
             "Type": "5",
             "deviceid": "186",
-            "Location": "Default",
+            "Location": "Default"
+            },
             "DeviceValues": {
                 "1": {
                     "Index": "1",
@@ -488,11 +530,12 @@
         },
             
         "7": {
+            "Data":{
             "Name": "Thermostat",
             "FriendlyDeviceType": "thermostat",
             "Type": "7",
             "deviceid": "7",
-            "Location": "Default",
+            "Location": "Default"},
             "DeviceValues": {
                 "1": {
                     "Index": "1",

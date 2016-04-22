@@ -216,6 +216,15 @@ DimmerButton *dimerButton;
     [self toggleHighlightForDeviceNameButton:sender];
     
     NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForID:sender.deviceId type:sender.deviceType isTrigger:self.isTrigger isScene:self.isScene triggers:self.triggers action:self.actions];
+    NSArray *gIVals = [genericIndexValDic valueForKey:@"2"];
+    
+    for(GenericIndexValue *gIVal in gIVals){
+        NSLog(@"layout type: %@", gIVal.genericIndex.layoutType);
+    }
+    
+//    for(GenericIndexClass *gIndecx in gIVal.genericIndex)
+//    NSLog(@"genericIndexValDic %@ ",gIndecx);
+
 //    SensorIndexSupport *Index=[[SensorIndexSupport alloc]init];
 //    NSMutableArray *deviceIndexes=[NSMutableArray arrayWithArray:[Index getIndexesFor:sender.deviceType]];//need
     
@@ -372,7 +381,7 @@ DimmerButton *dimerButton;
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexVal.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
     
     [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [dimbtn setupValues:gVal.value Title:gVal.displayText suffix:genericIndexVal.genericIndex.formatter.units isTrigger:self.isTrigger isScene:self.isScene];
+    [dimbtn setupValues:gVal.iconText Title:gVal.displayText suffix:genericIndexVal.genericIndex.formatter.units isTrigger:self.isTrigger isScene:self.isScene];
     //NSMutableDictionary *result=[self setButtonSelection:dimbtn isSlider:YES deviceIndex:deviceIndex deviceId:deviceId matchData:dimbtn.subProperties.matchData];
     dimbtn.center = CGPointMake(view.bounds.size.width/2,
                                 dimbtn.center.y);
@@ -479,7 +488,13 @@ DimmerButton *dimerButton;
     
     for (GenericIndexValue *indexValue in deviceIndexValues) {
         GenericIndexClass *genericIndex =indexValue.genericIndex;
-        NSDictionary *genericValueDic = genericIndex.values;
+        
+        NSDictionary *genericValueDic;
+        if(genericIndex.values == nil){
+            genericValueDic = [self formatterDict:genericIndex];
+        }else{
+            genericValueDic = genericIndex.values;
+        }
         NSArray *genericValueKeys = genericValueDic.allKeys;
         
         for (NSString *value in genericValueKeys) {
@@ -487,7 +502,7 @@ DimmerButton *dimerButton;
             if  ([genericIndex.layoutType isEqualToString:@"textButton"]){
                 [self buildTextButton:indexValue gVal:genericValueDic[value] deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
-            else if ([genericIndex.layoutType isEqualToString:@"dimButton"])
+            else if ([self isDimmerLayout:genericIndex.layoutType])
                 [self buildDimButton:indexValue gVal:genericValueDic[value] deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             else{
                 if(i >= 5){
@@ -503,7 +518,12 @@ DimmerButton *dimerButton;
     }
     return view;
 }
-
+-(NSDictionary*)formatterDict:(GenericIndexClass*)genericIndex{
+    NSLog(@"genericIndex.formatter.min %d",genericIndex.formatter.min);
+    NSMutableDictionary *genericValueDic = [[NSMutableDictionary alloc]init];
+    [genericValueDic setValue:[[GenericValue alloc]initWithDisplayText:genericIndex.groupLabel iconText:@(genericIndex.formatter.min).stringValue value:@"" excludeFrom:@""] forKey:genericIndex.groupLabel];
+    return genericValueDic;
+}
 -(BOOL)specialCasesExistsForDeviceType:(int)deviceType index:(SFIDeviceIndex*)deviceIndex iVal:(IndexValueSupport*)iVal{
     BOOL isTrue = NO;
     if(deviceType == SFIDeviceType_MultiLevelSwitch_2) //device 2, displaying only dimbutton
@@ -639,6 +659,20 @@ DimmerButton *dimerButton;
     [self setActionButtonCount:indexSwitchButton isSlider:NO];
 }
 
+#pragma mark layoutType
+-(BOOL)isTextLayout:(NSString*)genericLayout{
+    
+    return YES;
+}
+-(BOOL)isDimmerLayout:(NSString*)genericLayout{
+    if(genericLayout  != nil){
+        NSLog(@"genericLayout %@",genericLayout);
+        if([genericLayout rangeOfString:@"Slider" options:NSCaseInsensitiveSearch].location != NSNotFound){// data string contains check string
+            return YES;
+        }
+    }
+    return NO;
+}
 
 -(void)showPicker:(DimmerButton* )dimmer{
     [self removePickerFromView];
