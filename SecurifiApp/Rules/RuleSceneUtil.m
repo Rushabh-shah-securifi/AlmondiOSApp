@@ -24,7 +24,7 @@
     
     NSMutableDictionary *rowIndexValDict = [NSMutableDictionary new];
     for(GenericIndexValue *genericIndexValue in genericIndexValues){
-        [self addToDictionary:rowIndexValDict GenericIndexVal:genericIndexValue rowID:genericIndexValue.genericIndex.rowID];
+        [self addToDictionary:rowIndexValDict GenericIndexVal:genericIndexValue rowID:genericIndexValue.genericIndex.rowID.intValue];
     }
     return rowIndexValDict;
 }
@@ -66,15 +66,16 @@
     return nil;
 }
 
-+(void)addToDictionary:(NSMutableDictionary *)rowIndexValDict GenericIndexVal:(GenericIndexValue *)genericIndexVal rowID:(NSString*)rowID{
-    NSMutableArray *augArray = [rowIndexValDict valueForKey:rowID];
+
++(void)addToDictionary:(NSMutableDictionary *)rowIndexValDict GenericIndexVal:(GenericIndexValue *)genericIndexVal rowID:(int)rowID{
+    NSMutableArray *augArray = [rowIndexValDict valueForKey:[NSString stringWithFormat:@"%d",rowID]];
     if(augArray != nil){
         [augArray addObject:genericIndexVal];
-        [rowIndexValDict setValue:augArray forKey:rowID];
+        [rowIndexValDict setValue:augArray forKey:[NSString stringWithFormat:@"%d",rowID]];
     }else{
         NSMutableArray *tempArray = [NSMutableArray new];
         [tempArray addObject:genericIndexVal];
-        [rowIndexValDict setValue:tempArray forKey:rowID];
+        [rowIndexValDict setValue:tempArray forKey:[NSString stringWithFormat:@"%d",rowID]];
     }
 }
 

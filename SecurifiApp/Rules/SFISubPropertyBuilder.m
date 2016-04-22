@@ -181,7 +181,7 @@ UILabel *topLabel;
             
             for (NSString *value in genericValueKeys) {
                 GenericValue *gVal = genericValueDic[value];
-                BOOL isDimButton = genericIndex.layoutType!=nil && ([self isDimmerLayout:genericIndex.layoutType] || [genericIndex.layoutType isEqualToString:@"textButton"]);
+                BOOL isDimButton = genericIndex.layoutType!=nil && ([self isDimmerLayout:genericIndex.layoutType] || [genericIndex.layoutType isEqualToString:@"Text_Text_Input"]);
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:indexValue.eventType buttonProperties:buttonProperties]){
                     NSString *bottomText;
                     
