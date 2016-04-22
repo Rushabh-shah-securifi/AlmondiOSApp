@@ -19,33 +19,41 @@
 
 @implementation RuleSceneUtil
 
-
-+(NSDictionary*)getIndexesDicForID:(int)deviceID type:(int)deviceType isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene triggers:(NSMutableArray*)triggers action:(NSMutableArray*)actions{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
++(NSDictionary*)getIndexesDicForID:(int)deviceID type:(int)deviceType isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene triggers:(NSMutableArray *)triggers action:(NSMutableArray *)actions{
+    NSArray *genericIndexValues = [self getGenericIndexValueArrayForID:deviceID type:deviceType isTrigger:isTrigger isScene:isScene triggers:triggers action:actions];
+    
     NSMutableDictionary *rowIndexValDict = [NSMutableDictionary new];
+    for(GenericIndexValue *genericIndexValue in genericIndexValues){
+        [self addToDictionary:rowIndexValDict GenericIndexVal:genericIndexValue rowID:genericIndexValue.genericIndex.rowID];
+    }
+    return rowIndexValDict;
+}
+
++(NSArray *)getGenericIndexValueArrayForID:(int)deviceID type:(int)deviceType isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene triggers:(NSMutableArray*)triggers action:(NSMutableArray*)actions{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSMutableArray *genericIndexValues = [NSMutableArray new];
+    
     GenericDeviceClass *genericDevice = toolkit.genericDevices[@(deviceType).stringValue];
     if(genericDevice != nil){
         NSDictionary *deviceIndexes = genericDevice.Indexes;
         NSArray *indexIDs = deviceIndexes.allKeys;
         for(NSString *indexID in indexIDs){
             DeviceIndex *deviceIndex = deviceIndexes[indexID];
-            int rowID = deviceIndex.rowID.intValue;
             GenericIndexClass *genericIndex = toolkit.genericIndexes[deviceIndex.genericIndex];
+            genericIndex.rowID = deviceIndex.rowID;
             
             if([genericIndex.type isEqualToString:ACTUATOR] && [self isToBeAdded:genericDevice.excludeFrom checkString:@"Scene"]){
                 SFIButtonSubProperties *subProperty = [self findSubProperty:triggers deviceID:deviceID index:indexID.intValue istrigger:isTrigger];
-                NSLog(@"Util generic index name %@ , type %@ ,layout type %@",genericIndex.groupLabel,genericIndex.type,genericIndex.layoutType);
                 GenericValue *genericValue = nil;
                 if(subProperty != nil)
                     genericValue = [GenericIndexUtil getMatchingGenericValueForGenericIndexID:genericIndex.ID forValue:subProperty.matchData];
                 GenericIndexValue *genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:indexID.intValue deviceID:deviceID];
-                [self addToDictionary:rowIndexValDict GenericIndexVal:genericIndexValue rowID:rowID];
+                [genericIndexValues addObject:genericIndexValue];
             }
         }
     }
-    return rowIndexValDict;
+    return genericIndexValues;
 }
-
 
 +(SFIButtonSubProperties *)findSubProperty:(NSArray*)triggers deviceID:(int)deviceID index:(int)index istrigger:(BOOL)isTrigger{
     if(isTrigger){
@@ -58,16 +66,16 @@
     return nil;
 }
 
-+(void)addToDictionary:(NSMutableDictionary *)rowIndexValDict GenericIndexVal:(GenericIndexValue *)genericIndexVal rowID:(int)rowID{
-        NSMutableArray *augArray = [rowIndexValDict valueForKey:[NSString stringWithFormat:@"%d",rowID]];
-        if(augArray != nil){
-            [augArray addObject:genericIndexVal];
-            [rowIndexValDict setValue:augArray forKey:[NSString stringWithFormat:@"%d",rowID]];
-        }else{
-            NSMutableArray *tempArray = [NSMutableArray new];
-            [tempArray addObject:genericIndexVal];
-            [rowIndexValDict setValue:tempArray forKey:[NSString stringWithFormat:@"%d",rowID]];
-        }
++(void)addToDictionary:(NSMutableDictionary *)rowIndexValDict GenericIndexVal:(GenericIndexValue *)genericIndexVal rowID:(NSString*)rowID{
+    NSMutableArray *augArray = [rowIndexValDict valueForKey:rowID];
+    if(augArray != nil){
+        [augArray addObject:genericIndexVal];
+        [rowIndexValDict setValue:augArray forKey:rowID];
+    }else{
+        NSMutableArray *tempArray = [NSMutableArray new];
+        [tempArray addObject:genericIndexVal];
+        [rowIndexValDict setValue:tempArray forKey:rowID];
+    }
 }
 
 

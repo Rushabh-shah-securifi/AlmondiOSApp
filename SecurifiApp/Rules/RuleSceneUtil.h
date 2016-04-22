@@ -1,3 +1,5 @@
+
+
 //
 //  RuleSceneUtil.h
 //  SecurifiApp
@@ -14,4 +16,6 @@
 +(BOOL)isTriggerDevice:(int)deviceType;
 
 +(NSDictionary*)getIndexesDicForID:(int)deviceID type:(int)deviceType isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene triggers:(NSMutableArray*)triggers action:(NSMutableArray*)actions;
+
++(NSArray *)getGenericIndexValueArrayForID:(int)deviceID type:(int)deviceType isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene triggers:(NSMutableArray*)triggers action:(NSMutableArray*)actions;
 @end
