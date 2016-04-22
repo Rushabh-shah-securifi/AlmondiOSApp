@@ -9,5 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @interface RuleSceneUtil : NSObject
++(BOOL)isActionDevice:(int) deviceType;
 
++(BOOL)isTriggerDevice:(int)deviceType;
+
++(NSDictionary*)getIndexesDicForID:(int)deviceID type:(int)deviceType isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene triggers:(NSMutableArray*)triggers action:(NSMutableArray*)actions;
 @end

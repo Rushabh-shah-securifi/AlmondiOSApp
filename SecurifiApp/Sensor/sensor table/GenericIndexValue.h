@@ -11,10 +11,11 @@
 #import "GenericValue.h"
 
 @interface GenericIndexValue : UIViewController
-@property GenericIndexClass *genericIndex;
-@property GenericValue *genericValue;
-@property int index;
-@property int deviceID;
+@property (nonatomic)GenericIndexClass *genericIndex;
+@property (nonatomic)GenericValue *genericValue;
+@property (nonatomic)int index;
+@property (nonatomic)int deviceID;
+@property (nonatomic)NSString* eventType;
 
 -(id)initWithGenericIndex:(GenericIndexClass*)genericIndex genericValue:(GenericValue*)genericValue index:(int)index deviceID:(int)deviceID;
 @end

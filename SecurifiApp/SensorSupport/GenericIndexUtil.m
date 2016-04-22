@@ -89,10 +89,13 @@
         return genericIndexObject.values[value];
     }
     else if(genericIndexObject.formatter != nil){
-        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:[genericIndexObject.formatter transform:value] iconText:[genericIndexObject.formatter transform:value] value:value];
+        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:genericIndexObject.groupLabel
+                                                                     iconText:[genericIndexObject.formatter transform:value]
+                                                                        value:value
+                                                                  excludeFrom:genericIndexObject.excludeFrom];
         return genericValue;
     }
-    return [[GenericValue alloc]initWithDisplayText:value iconText:value value:value];
+    return [[GenericValue alloc]initWithDisplayText:value icon:value toggleValue:value value:value excludeFrom:genericIndexObject.excludeFrom];
 }
 
 + (NSMutableArray *)getDetailListForDevice:(int)deviceID{
@@ -125,7 +128,7 @@
         }else{//notifyme
 //            value = device.
         }
-        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value];
+        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value excludeFrom:nil];
         GenericIndexClass *genIndexObj = toolkit.genericIndexes[@(genericIndex).stringValue];
         [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genIndexObj genericValue:genericValue index:genericIndex deviceID:device.ID]];
     }

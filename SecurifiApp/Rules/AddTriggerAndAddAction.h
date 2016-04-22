@@ -18,9 +18,6 @@
 @end
 
 @interface AddTriggerAndAddAction : NSObject
-@property (nonatomic, strong)NSMutableArray *selectedButtonsPropertiesArrayTrigger;
-@property (nonatomic, strong)NSMutableArray *selectedButtonsPropertiesArrayAction;
-
 @property (strong, nonatomic) UIScrollView *deviceListScrollView;
 @property (strong, nonatomic) UIScrollView *deviceIndexButtonScrollView;
 @property (strong, nonatomic) UIView *parentView;

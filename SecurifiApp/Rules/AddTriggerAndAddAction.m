@@ -34,9 +34,15 @@
 #import "RuleTextField.h"
 #import "CommonMethods.h"
 #import "UICommonMethods.h"
-
+#import "RuleSceneUtil.h"
+#import "GenericIndexValue.h"
+#import "GenericIndexClass.h"
+#import "GenericValue.h"
+#import "Device.h"
 
 @interface AddTriggerAndAddAction ()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,UITextFieldDelegate,TimeViewDelegate>
+@property (nonatomic, strong)NSMutableArray *triggers;
+@property (nonatomic, strong)NSMutableArray *actions;
 @property (nonatomic)RulesHue *ruleHueObject;
 @property TimeView *timeView;
 @end
@@ -64,8 +70,8 @@ DimmerButton *dimerButton;
         self.parentView = parentView;
         self.deviceIndexButtonScrollView = deviceIndexScrollView;
         self.deviceListScrollView = deviceListScrollView;
-        self.selectedButtonsPropertiesArrayTrigger = triggers;
-        self.selectedButtonsPropertiesArrayAction = actions;
+        self.triggers = triggers;
+        self.actions = actions;
         self.isScene = isScene;
     }
     return self;
@@ -101,21 +107,8 @@ DimmerButton *dimerButton;
     [self.timeView addTimeView];
     
 }
--(NSMutableArray *)getTriggerAndActionDeviceList {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    NSMutableArray *deviceArray = [NSMutableArray new];
-    for(SFIDevice *device in [toolkit deviceList:plus.almondplusMAC]){
-        if(self.isTrigger && !self.isScene && (device.deviceType != SFIDeviceType_HueLamp_48) && (device.deviceType != SFIDeviceType_NestSmokeDetector_58) && (device.deviceType != SFIDeviceType_StandardWarningDevice_21) )
-            [deviceArray addObject:device];
-        else if (device.isRuleActuator && (!self.isTrigger || self.isScene)){
-            if(self.isScene && SFIDeviceType_StandardWarningDevice_21 == device.deviceType)
-                continue;
-            [deviceArray addObject:device];
-        }
-    }
-    return deviceArray;
-}
+
+
 
 -(void)addDeviceNameList:(BOOL)isTrigger{
     self.isTrigger = isTrigger;
@@ -135,8 +128,8 @@ DimmerButton *dimerButton;
     }
     
     //for rest of the devices
-    for(SFIDevice *device in [self getTriggerAndActionDeviceList]){
-        xVal = [self addDeviceName:device.deviceName deviceID:device.deviceID deviceType:device.deviceType xVal:xVal];
+    for(Device *device in [self getCompatileDeviceList]){
+        xVal = [self addDeviceName:device.name deviceID:device.ID deviceType:device.type xVal:xVal];
     }
     if(!self.isTrigger){//add almond Reboot
         xVal = [self addDeviceName:@"Reboot Almond" deviceID:1 deviceType:SFIDeviceType_REBOOT_ALMOND xVal:xVal];
@@ -144,6 +137,36 @@ DimmerButton *dimerButton;
     self.deviceListScrollView.contentSize = CGSizeMake(xVal +10,self.deviceListScrollView.contentSize.height);
     [self.deviceIndexButtonScrollView flashScrollIndicators];
 }
+
+-(NSArray*)getCompatileDeviceList{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSMutableArray *deviceArray = [NSMutableArray new];
+    for(Device *device in toolkit.devices){
+        if((!self.isTrigger || self.isScene) && [RuleSceneUtil isActionDevice:device.type]){ //rule || action
+            [deviceArray addObject:device];
+        }
+        else if(self.isTrigger && !self.isScene && [RuleSceneUtil isTriggerDevice:device.type]){ //rule && trigger
+            [deviceArray addObject:device];
+        }
+    }
+    return deviceArray;
+}
+
+//-(NSMutableArray *)getTriggerAndActionDeviceList {
+//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+//    SFIAlmondPlus *plus = [toolkit currentAlmond];
+//    NSMutableArray *deviceArray = [NSMutableArray new];
+//    for(SFIDevice *device in [toolkit deviceList:plus.almondplusMAC]){
+//        if(self.isTrigger && !self.isScene && (device.deviceType != SFIDeviceType_HueLamp_48) && (device.deviceType != SFIDeviceType_NestSmokeDetector_58) && (device.deviceType != SFIDeviceType_StandardWarningDevice_21) )
+//            [deviceArray addObject:device];
+//        else if (device.isRuleActuator && (!self.isTrigger || self.isScene)){
+//            if(self.isScene && SFIDeviceType_StandardWarningDevice_21 == device.deviceType)
+//                continue;
+//            [deviceArray addObject:device];
+//        }
+//    }
+//    return deviceArray;
+//}
 
 
 -(void)wifiClientsClicked:(RulesDeviceNameButton*)deviceButton{
@@ -192,14 +215,15 @@ DimmerButton *dimerButton;
     //toggeling
     [self toggleHighlightForDeviceNameButton:sender];
     
-    SensorIndexSupport *Index=[[SensorIndexSupport alloc]init];
-    NSMutableArray *deviceIndexes=[NSMutableArray arrayWithArray:[Index getIndexesFor:sender.deviceType]];//need
+    NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForID:sender.deviceId type:sender.deviceType isTrigger:self.isTrigger isScene:self.isScene triggers:self.triggers action:self.actions];
+//    SensorIndexSupport *Index=[[SensorIndexSupport alloc]init];
+//    NSMutableArray *deviceIndexes=[NSMutableArray arrayWithArray:[Index getIndexesFor:sender.deviceType]];//need
     
-    if (!self.isTrigger &&[self istoggle:sender.deviceType]) {
-        NSArray *toggleIndexes = [self getToggelDeviceIndex:deviceIndexes];
-        [deviceIndexes addObjectsFromArray: toggleIndexes];
-    }
-    [self createDeviceIndexesLayoutForDeviceId:sender.deviceId deviceType:sender.deviceType deviceName:sender.deviceName deviceIndexes:deviceIndexes];
+//    if (!self.isTrigger &&[self istoggle:sender.deviceType]) {
+//        NSArray *toggleIndexes = [self getToggelDeviceIndex:deviceIndexes];
+//        [deviceIndexes addObjectsFromArray: toggleIndexes];
+//    }
+    [self createDeviceIndexesLayoutForDeviceId:sender.deviceId deviceType:sender.deviceType deviceName:sender.deviceName genericIndexValDic:genericIndexValDic];
 }
 
 
@@ -228,45 +252,42 @@ DimmerButton *dimerButton;
 }
 
 //on devicelist button click, calling this method
--(void) createDeviceIndexesLayoutForDeviceId:(int)deviceId deviceType:(SFIDeviceType)deviceType deviceName:(NSString*)deviceName deviceIndexes:(NSArray*)deviceIndexes{
-    int numberOfCells = [self maxCellId:deviceIndexes];
+-(void) createDeviceIndexesLayoutForDeviceId:(int)deviceId deviceType:(int)deviceType deviceName:(NSString*)deviceName genericIndexValDic:(NSDictionary*)genericIndexValDic{
+    NSInteger numberOfCells = [self maxCellId:genericIndexValDic];
     
-    if(deviceType == SFIDeviceType_NestThermostat_57){
-        RulesNestThermostat *rulesNestThermostatObject = [[RulesNestThermostat alloc]init];
-        
-        SFIDeviceValue *nestThermostatDeviceValue;
-        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        SFIAlmondPlus *plus = [toolkit currentAlmond];
-        
-        for(SFIDeviceValue *deviceValue in [toolkit deviceValuesList:plus.almondplusMAC]){
-            if(deviceValue.deviceID == deviceId){
-                nestThermostatDeviceValue = deviceValue;
-                break;
-            }
-        }
-        deviceIndexes = [rulesNestThermostatObject createNestThermostatDeviceIndexes:deviceIndexes deviceValue:nestThermostatDeviceValue];
-        if(self.isScene){
-            deviceIndexes = [rulesNestThermostatObject filterIndexesBasedOnModeForIndexes:deviceIndexes propertyList:self.selectedButtonsPropertiesArrayTrigger deviceId:deviceId];
-        }
-        numberOfCells = [self maxCellId:deviceIndexes];//recalculating for nest
-    }
+//    if(deviceType == SFIDeviceType_NestThermostat_57){
+//        RulesNestThermostat *rulesNestThermostatObject = [[RulesNestThermostat alloc]init];
+//        
+//        SFIDeviceValue *nestThermostatDeviceValue;
+//        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+//        SFIAlmondPlus *plus = [toolkit currentAlmond];
+//        
+//        for(SFIDeviceValue *deviceValue in [toolkit deviceValuesList:plus.almondplusMAC]){
+//            if(deviceValue.deviceID == deviceId){
+//                nestThermostatDeviceValue = deviceValue;
+//                break;
+//            }
+//        }
+//        deviceIndexes = [rulesNestThermostatObject createNestThermostatDeviceIndexes:deviceIndexes deviceValue:nestThermostatDeviceValue];
+//        if(self.isScene){
+//            deviceIndexes = [rulesNestThermostatObject filterIndexesBasedOnModeForIndexes:deviceIndexes propertyList:self.triggers deviceId:deviceId];
+//        }
+//        numberOfCells = [self maxCellId:deviceIndexes];//recalculating for nest
+//    }
     
     //dict - array of indexes for cellid
-    NSMutableDictionary *deviceIndexesDict = [NSMutableDictionary new];
-    for(SFIDeviceIndex *deviceIndex in deviceIndexes){
-        [self addArrayToDictionary:deviceIndexesDict deviceIndex:deviceIndex];
-    }
+
     //huelamp - 58
-    if(deviceType == SFIDeviceType_HueLamp_48){
-        self.ruleHueObject = [[RulesHue alloc] initWithPropertiesTrigger:self.selectedButtonsPropertiesArrayTrigger action:self.selectedButtonsPropertiesArrayAction isScene:self.isScene];
-        self.ruleHueObject.delegate = self;
-        [self.ruleHueObject createHueCellLayoutWithDeviceId:deviceId deviceType:deviceType deviceIndexes:deviceIndexes deviceName:deviceName scrollView:self.deviceIndexButtonScrollView cellCount:numberOfCells indexesDictionary:deviceIndexesDict];
-        return;
-    }
+//    if(deviceType == SFIDeviceType_HueLamp_48){
+//        self.ruleHueObject = [[RulesHue alloc] initWithPropertiesTrigger:self.triggers action:self.actions isScene:self.isScene];
+//        self.ruleHueObject.delegate = self;
+//        [self.ruleHueObject createHueCellLayoutWithDeviceId:deviceId deviceType:deviceType deviceIndexes:deviceIndexes deviceName:deviceName scrollView:self.deviceIndexButtonScrollView cellCount:numberOfCells indexesDictionary:deviceIndexesDict];
+//        return;
+//    }
     //else for rest of the devices
     int j=0;
     for(int i = 0; i < numberOfCells; i++){
-        NSArray *array = [deviceIndexesDict valueForKey:[NSString stringWithFormat:@"%d",i+1]];
+        NSArray *array = [genericIndexValDic valueForKey:[NSString stringWithFormat:@"%d",i+1]];
         if(array!=nil && array.count>0){
             
             [self addMyButtonwithYScale:ROW_PADDING+(ROW_PADDING+frameSize)*j withDeviceIndex:array deviceId:deviceId deviceType:deviceType deviceName:deviceName];
@@ -280,22 +301,9 @@ DimmerButton *dimerButton;
     [self.deviceIndexButtonScrollView flashScrollIndicators];
     self.deviceIndexButtonScrollView.showsVerticalScrollIndicator = YES;
 }
--(void)addArrayToDictionary:(NSMutableDictionary *)deviceIndexesDict deviceIndex:(SFIDeviceIndex *)deviceIndex{
-    
-    if((self.isTrigger && !self.isScene) ||((!self.isTrigger || self.isScene) && deviceIndex.isEditableIndex) ){
-        NSMutableArray *augArray = [deviceIndexesDict valueForKey:[NSString stringWithFormat:@"%d",deviceIndex.cellId]];
-        if(augArray != nil){
-            [augArray addObject:deviceIndex];
-            [deviceIndexesDict setValue:augArray forKey:[NSString stringWithFormat:@"%d",deviceIndex.cellId]];
-        }else{
-            NSMutableArray *tempArray = [NSMutableArray new];
-            [tempArray addObject:deviceIndex];
-            [deviceIndexesDict setValue:tempArray forKey:[NSString stringWithFormat:@"%d",deviceIndex.cellId]];
-        }
-    }
-}
+
 -(RulesTimeElement *)getRuleTime{
-    for(SFIButtonSubProperties *subProperties in self.selectedButtonsPropertiesArrayTrigger){
+    for(SFIButtonSubProperties *subProperties in self.triggers){
         if([subProperties.eventType isEqualToString:@"TimeTrigger"]){
             return subProperties.time;
         }
@@ -303,7 +311,7 @@ DimmerButton *dimerButton;
     SFIButtonSubProperties *subProperties=[SFIButtonSubProperties new];
     subProperties.time = [[RulesTimeElement alloc]init];
     subProperties.eventType = @"TimeTrigger";
-    [self.selectedButtonsPropertiesArrayTrigger addObject:subProperties];
+    [self.triggers addObject:subProperties];
     return subProperties.time;
 }
 - (NSMutableDictionary *)setButtonSelection:(RuleButton *)ruleButton isSlider:(BOOL)isSlider deviceIndex:(SFIDeviceIndex *)deviceIndex deviceId:(int)deviceId matchData:(NSString *)matchData{
@@ -311,7 +319,7 @@ DimmerButton *dimerButton;
     
     int count = 0;
     // NSString *matchData=nil;
-    NSMutableArray *list=(self.isTrigger)?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
+    NSMutableArray *list=(self.isTrigger)?self.triggers:self.actions;
     for(SFIButtonSubProperties *subProperty in list){ //to do - you can add count property to subproperties and iterate array in reverse
         if(subProperty.deviceId == deviceId && subProperty.index == deviceIndex.indexID && subProperty.matchData == matchData ){
             matchData = subProperty.matchData;
@@ -354,17 +362,17 @@ DimmerButton *dimerButton;
     textField.text = @"";
 }
 
-- (void)buildDimButton:(SFIDeviceIndex *)deviceIndex iVal:(IndexValueSupport *)iVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view {
+- (void)buildDimButton:(GenericIndexValue *)genericIndexVal gVal:(GenericValue*)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view {
     DimmerButton *dimbtn=[[DimmerButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,0 , dimFrameWidth, dimFrameHeight)];
     dimbtn.tag=i;
-    dimbtn.valueType=deviceIndex.valueType;
-    dimbtn.minValue = iVal.minValue;
-    dimbtn.maxValue = iVal.maxValue;
-    dimbtn.factor=iVal.valueFormatter.factor;
-    dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
+//    dimbtn.valueType=deviceIndex.valueType;
+    dimbtn.minValue = genericIndexVal.genericIndex.formatter.min;
+    dimbtn.maxValue = genericIndexVal.genericIndex.formatter.max;
+    dimbtn.factor=genericIndexVal.genericIndex.formatter.factor;
+    dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexVal.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
     
     [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [dimbtn setupValues:iVal.matchData Title:iVal.displayText suffix:iVal.valueFormatter.suffix isTrigger:self.isTrigger isScene:self.isScene];
+    [dimbtn setupValues:gVal.value Title:gVal.displayText suffix:genericIndexVal.genericIndex.formatter.units isTrigger:self.isTrigger isScene:self.isScene];
     //NSMutableDictionary *result=[self setButtonSelection:dimbtn isSlider:YES deviceIndex:deviceIndex deviceId:deviceId matchData:dimbtn.subProperties.matchData];
     dimbtn.center = CGPointMake(view.bounds.size.width/2,
                                 dimbtn.center.y);
@@ -377,7 +385,7 @@ DimmerButton *dimerButton;
 }
 
 -(void)getSelectedMatchData:(SFIButtonSubProperties*)subProperty{
-    NSMutableArray *list=self.isTrigger?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
+    NSMutableArray *list=self.isTrigger?self.triggers:self.actions;
     for(SFIButtonSubProperties *buttonSubProperty in list){
         if(buttonSubProperty.deviceId == subProperty.deviceId && buttonSubProperty.index == subProperty.index){
             subProperty.matchData = buttonSubProperty.matchData;
@@ -385,11 +393,11 @@ DimmerButton *dimerButton;
     }
 }
 
-- (void)buildTextButton:(SFIDeviceIndex *)deviceIndex iVal:(IndexValueSupport *)iVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
+- (void)buildTextButton:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
     DimmerButton *dimbtn=[[DimmerButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,0 , dimFrameWidth, dimFrameHeight)];
-    dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
+    dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
     [dimbtn addTarget:self action:@selector(onStdWarnDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [dimbtn setUpTextField:@"0" displayText:@"Enter 0-65535 Sec" suffix:iVal.valueFormatter.suffix];
+    [dimbtn setUpTextField:@"0" displayText:@"Enter 0-65535 Sec" suffix:@""]; // ?
     dimbtn.textField.delegate = self;
     
     dimbtn.center = CGPointMake(view.bounds.size.width/2,
@@ -402,13 +410,13 @@ DimmerButton *dimerButton;
     
 }
 
-- (void)buildSwitchButton:(SFIDeviceIndex *)deviceIndex deviceType:(int)deviceType deviceName:(NSString *)deviceName iVal:(IndexValueSupport *)iVal deviceId:(int)deviceId i:(int)i view:(UIView *)view buttonY:(float)buttonY{
+- (void)buildSwitchButton:(GenericIndexValue *)genericIndexValue deviceType:(int)deviceType deviceName:(NSString *)deviceName gVal:(GenericValue *)gVal deviceId:(int)deviceId i:(int)i view:(UIView *)view buttonY:(float)buttonY{
     
     SwitchButton *btnBinarySwitchOn = [[SwitchButton alloc] initWithFrame:CGRectMake(0,buttonY, indexButtonFrameSize, indexButtonFrameSize)];
     [view addSubview:btnBinarySwitchOn];
     btnBinarySwitchOn.tag = i;
-    btnBinarySwitchOn.valueType=deviceIndex.valueType;
-    btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:iVal.eventType deviceName:deviceName deviceType:deviceType];
+//    btnBinarySwitchOn.valueType=deviceIndex.valueType;
+    btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:genericIndexValue.eventType deviceName:deviceName deviceType:deviceType];
     btnBinarySwitchOn.deviceType = deviceType;
     
     if(deviceType == SFIDeviceType_REBOOT_ALMOND){
@@ -416,7 +424,7 @@ DimmerButton *dimerButton;
     }
     [btnBinarySwitchOn addTarget:self action:@selector(onSwitchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    [btnBinarySwitchOn setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:self.isTrigger isDimButton:NO insideText:iVal.displayText isScene:self.isScene];
+    [btnBinarySwitchOn setupValues:[UIImage imageNamed:gVal.icon] topText:nil bottomText:gVal.displayText isTrigger:self.isTrigger isDimButton:NO insideText:gVal.displayText isScene:self.isScene];
     
     //set perv. count and highlight
     
@@ -461,29 +469,34 @@ DimmerButton *dimerButton;
                       btnBinarySwitchOn.frame.size.height);
 }
 
-- (UIView *)addMyButtonwithYScale:(int)yScale withDeviceIndex:(NSArray *)deviceIndexes deviceId:(int)deviceId deviceType:(int)deviceType deviceName:(NSString*)deviceName{
+- (UIView *)addMyButtonwithYScale:(int)yScale withDeviceIndex:(NSArray *)deviceIndexValues deviceId:(int)deviceId deviceType:(int)deviceType deviceName:(NSString*)deviceName{
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                             yScale,
                                                             self.parentView.frame.size.width,
                                                             indexButtonFrameSize)];
     [self.deviceIndexButtonScrollView addSubview:view];
     int i=0;
-    for (SFIDeviceIndex *deviceIndex in deviceIndexes) {
-        for (IndexValueSupport *iVal in deviceIndex.indexValues) {
+    
+    for (GenericIndexValue *indexValue in deviceIndexValues) {
+        GenericIndexClass *genericIndex =indexValue.genericIndex;
+        NSDictionary *genericValueDic = genericIndex.values;
+        NSArray *genericValueKeys = genericValueDic.allKeys;
+        
+        for (NSString *value in genericValueKeys) {
             i++;
-            if  ([iVal.layoutType isEqualToString:@"textButton"]){
-                [self buildTextButton:deviceIndex iVal:iVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
+            if  ([genericIndex.layoutType isEqualToString:@"textButton"]){
+                [self buildTextButton:indexValue gVal:genericValueDic[value] deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
-            else if ([iVal.layoutType isEqualToString:@"dimButton"])
-                [self buildDimButton:deviceIndex iVal:iVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
+            else if ([genericIndex.layoutType isEqualToString:@"dimButton"])
+                [self buildDimButton:indexValue gVal:genericValueDic[value] deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             else{
                 if(i >= 5){
                     view.frame = CGRectMake(0, yScale, self.parentView.frame.size.width, indexButtonFrameSize * 2);
-                    [self buildSwitchButton:deviceIndex deviceType:deviceType deviceName:deviceName iVal:iVal deviceId:deviceId i:i view:view buttonY:indexButtonFrameSize];
+                    [self buildSwitchButton:indexValue deviceType:deviceType deviceName:deviceName gVal:genericValueDic[value] deviceId:deviceId i:i view:view buttonY:indexButtonFrameSize];
                 }else{
-                    if([self specialCasesExistsForDeviceType:deviceType index:deviceIndex iVal:iVal])
-                        continue;
-                    [self buildSwitchButton:deviceIndex deviceType:deviceType deviceName:deviceName iVal:iVal deviceId:deviceId i:i view:view buttonY:0];
+//                    if([self specialCasesExistsForDeviceType:deviceType index:indexValue iVal:genericValueDic[value]])
+//                        continue;
+                    [self buildSwitchButton:indexValue deviceType:deviceType deviceName:deviceName gVal:genericValueDic[value] deviceId:deviceId i:i view:view buttonY:0];
                 }
             }
         }
@@ -512,14 +525,8 @@ DimmerButton *dimerButton;
                                      childView.frame.size.height);
     }
 }
--(int)maxCellId:(NSArray*)deviceIndexes{
-    int numberOfCells = -1;
-    for (SFIDeviceIndex *deviceIndex in deviceIndexes) {
-        if(numberOfCells < deviceIndex.cellId){
-            numberOfCells = deviceIndex.cellId;
-        }
-    }
-    return numberOfCells;
+-(NSInteger)maxCellId:(NSDictionary*)deviceIndexes{
+    return  [[deviceIndexes allKeys]count];
 }
 -(NSMutableArray *)getToggelDeviceIndex:(NSArray *)deviceIndexes{
     IndexValueSupport *indexValue =[[IndexValueSupport alloc]init];
@@ -542,7 +549,7 @@ DimmerButton *dimerButton;
     return toggleIndexes;
 }
 
--(SFIButtonSubProperties*) addSubPropertiesFordeviceID:(sfi_id)deviceID index:(int)index matchData:(NSString*)matchData andEventType:(NSString *)eventType deviceName:(NSString*)deviceName deviceType:(SFIDeviceType)deviceType{ //overLoaded
+-(SFIButtonSubProperties*) addSubPropertiesFordeviceID:(sfi_id)deviceID index:(int)index matchData:(NSString*)matchData andEventType:(NSString *)eventType deviceName:(NSString*)deviceName deviceType:(int)deviceType{ //overLoaded
     SFIButtonSubProperties* subProperties = [[SFIButtonSubProperties alloc] init];
     subProperties.deviceId = deviceID;
     subProperties.index = index;
@@ -575,19 +582,19 @@ DimmerButton *dimerButton;
 - (void)removeTriggerIndex:(int)buttonIndex buttonId:(sfi_id)buttonId deviceType:(unsigned int)deviceType {
     NSMutableArray *toBeDeletedSubProperties = [[NSMutableArray alloc] init];
     
-    for(SFIButtonSubProperties *switchButtonProperty in self.selectedButtonsPropertiesArrayTrigger){
+    for(SFIButtonSubProperties *switchButtonProperty in self.triggers){
         if(((switchButtonProperty.deviceType == deviceType) && switchButtonProperty.deviceId == buttonId) && (switchButtonProperty.index == buttonIndex)){
             [toBeDeletedSubProperties addObject:switchButtonProperty];
         }
     }
     
-    [self.selectedButtonsPropertiesArrayTrigger removeObjectsInArray:toBeDeletedSubProperties];
+    [self.triggers removeObjectsInArray:toBeDeletedSubProperties];
 }
 
 - (BOOL)setActionButtonCount:(RuleButton *)indexButton isSlider:(BOOL)isSlider{
     int buttonClickCount = 0;
     BOOL selected=NO;
-    NSMutableArray *list=self.isTrigger?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
+    NSMutableArray *list=self.isTrigger?self.triggers:self.actions;
     for(SFIButtonSubProperties *dimButtonProperty in list){
         if(dimButtonProperty.deviceId==indexButton.subProperties.deviceId && dimButtonProperty.index==indexButton.subProperties.index && [CommonMethods compareEntry:isSlider matchData:indexButton.subProperties.matchData eventType:indexButton.subProperties.eventType buttonProperties:dimButtonProperty]){
             buttonClickCount++;
@@ -613,18 +620,18 @@ DimmerButton *dimerButton;
     int buttonIndex = indexSwitchButton.subProperties.index;
     if(!self.isTrigger){
         indexSwitchButton.selected = YES ;
-        [self.selectedButtonsPropertiesArrayAction addObject:[indexSwitchButton.subProperties createNew]];
+        [self.actions addObject:[indexSwitchButton.subProperties createNew]];
         [self.delegate updateTriggerAndActionDelegatePropertie:!self.isTrigger];
     }else{
         NSLog(@"onSwitchButtonClick - istrigger");
         [self toggleTriggerIndex:buttonIndex superView:[sender superview] indexButton:indexSwitchButton];
         [self removeTriggerIndex:buttonIndex buttonId:buttonId deviceType:indexSwitchButton.subProperties.deviceType];
         if (indexSwitchButton.selected)
-            [self.selectedButtonsPropertiesArrayTrigger addObject:indexSwitchButton.subProperties];
+            [self.triggers addObject:indexSwitchButton.subProperties];
         
         if(self.isScene && indexSwitchButton.subProperties.deviceType == SFIDeviceType_NestThermostat_57 && indexSwitchButton.subProperties.index == 2){
             //RulesNestThermostat *nest=[RulesNestThermostat new];
-            [RulesNestThermostat removeTemperatureIndexes:indexSwitchButton.subProperties.deviceId mode:indexSwitchButton.subProperties.matchData entries:self.selectedButtonsPropertiesArrayTrigger];
+            [RulesNestThermostat removeTemperatureIndexes:indexSwitchButton.subProperties.deviceId mode:indexSwitchButton.subProperties.matchData entries:self.triggers];
             [self.delegate redrawDeviceIndexView:indexSwitchButton.subProperties.deviceId clientEvent:@""];
         }else
             [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
@@ -701,7 +708,7 @@ DimmerButton *dimerButton;
 }
 
 -(void)updateMatchData:(SFIButtonSubProperties *)dimmButtonSubProperty newValue:(NSString*)newValue{
-    NSMutableArray *list=self.isTrigger?self.selectedButtonsPropertiesArrayTrigger:self.selectedButtonsPropertiesArrayAction;
+    NSMutableArray *list=self.isTrigger?self.triggers:self.actions;
     for(SFIButtonSubProperties *buttonSubProperty in list){
         if(buttonSubProperty.deviceId == dimmButtonSubProperty.deviceId && buttonSubProperty.index == dimmButtonSubProperty.index){
             buttonSubProperty.matchData = newValue;
@@ -740,9 +747,9 @@ DimmerButton *dimerButton;
 }
 -(void)addObject:(SFIButtonSubProperties *)subProperty{
     if(self.isTrigger)
-        [self.selectedButtonsPropertiesArrayTrigger addObject:subProperty];
+        [self.triggers addObject:subProperty];
     else
-        [self.selectedButtonsPropertiesArrayAction addObject:subProperty];
+        [self.actions addObject:subProperty];
 }
 
 -(void)onDimmerButtonClick:(id)sender{
