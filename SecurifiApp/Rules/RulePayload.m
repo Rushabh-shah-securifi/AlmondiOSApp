@@ -8,6 +8,7 @@
 
 #import "RulePayload.h"
 #import "SFIButtonSubProperties.h"
+#import "Device.h"
 
 @implementation RulePayload
 
@@ -53,7 +54,7 @@
         isInitilized = NO;//setting it to not to reflect
     }
     
-    NSArray *devices =[toolkit deviceValuesList:plus.almondplusMAC];
+    NSArray *devices =toolkit.devices;
     
     [self removeInvalidEntries:self.rule.triggers devices:devices clients:toolkit.clients];
     [self removeInvalidEntries:self.rule.actions devices:devices clients:toolkit.clients];
@@ -76,8 +77,8 @@
     return triggersArray;
 }
 -(BOOL)findDevice:(int)deviceId devices:(NSArray *)devices{
-    for(SFIDeviceValue *deviceValue in devices){
-        if(deviceValue.deviceID == deviceId)
+    for(Device *device in devices){
+        if(device.ID == deviceId)
             return YES;
     }
     return NO;
@@ -96,7 +97,7 @@
     for(SFIButtonSubProperties *properties in entries){
         properties.eventType=properties.eventType==nil?@"":properties.eventType;
         properties.type=properties.type==nil?@"":properties.type;
-        
+        NSLog(@"event type %@",properties.eventType);
         if([properties.eventType isEqualToString:@"TimeTrigger"]
            ||[properties.eventType isEqualToString:@"AlmondModeUpdated"]
            ||[properties.type isEqualToString:@"NetworkResult"])
@@ -112,6 +113,7 @@
     }
     if(invalidEntries.count>0)
         [entries removeObjectsInArray:invalidEntries ];
+    NSLog(@"self.rule.action count %ld",self.rule.actions.count);
 }
 -(NSDictionary *)createTriggerDeviceObject:(SFIButtonSubProperties*)property{
     property.eventType=property.eventType==nil?@"":property.eventType;
