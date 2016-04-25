@@ -15,7 +15,6 @@
 @property (nonatomic)GenericValue *genericValue;
 @property (nonatomic)int index;
 @property (nonatomic)int deviceID;
-@property (nonatomic)NSString* eventType;
 
 -(id)initWithGenericIndex:(GenericIndexClass*)genericIndex genericValue:(GenericValue*)genericValue index:(int)index deviceID:(int)deviceID;
 @end

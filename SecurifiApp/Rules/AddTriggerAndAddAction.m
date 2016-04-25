@@ -89,7 +89,7 @@ DimmerButton *dimerButton;
     }
     int xVal = 15;
     
-    xVal = [self addDeviceName:@"Mode" deviceID:-1 deviceType:0 xVal:xVal];
+    xVal = [self addDeviceName:@"Mode" deviceID:1 deviceType:0 xVal:xVal];
     if(self.isTrigger && !self.isScene){
         xVal = [self addDeviceName:@"Time" deviceID:0 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
         xVal = [self addDeviceName:@"Network Devices" deviceID:0 deviceType:SFIDeviceType_WIFIClient xVal:xVal];
@@ -138,23 +138,6 @@ DimmerButton *dimerButton;
     return deviceArray;
 }
 
-//-(NSMutableArray *)getTriggerAndActionDeviceList {
-//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-//    SFIAlmondPlus *plus = [toolkit currentAlmond];
-//    NSMutableArray *deviceArray = [NSMutableArray new];
-//    for(SFIDevice *device in [toolkit deviceList:plus.almondplusMAC]){
-//        if(self.isTrigger && !self.isScene && (device.deviceType != SFIDeviceType_HueLamp_48) && (device.deviceType != SFIDeviceType_NestSmokeDetector_58) && (device.deviceType != SFIDeviceType_StandardWarningDevice_21) )
-//            [deviceArray addObject:device];
-//        else if (device.isRuleActuator && (!self.isTrigger || self.isScene)){
-//            if(self.isScene && SFIDeviceType_StandardWarningDevice_21 == device.deviceType)
-//                continue;
-//            [deviceArray addObject:device];
-//        }
-//    }
-//    return deviceArray;
-//}
-
-
 -(void)TimeEventClicked:(id)sender{
     [self resetViews];
     [self toggleHighlightForDeviceNameButton:sender];
@@ -178,14 +161,15 @@ DimmerButton *dimerButton;
             int yScale = ROW_PADDING + (ROW_PADDING+frameSize)*i;
             [self addClientNameLabel:connectedClient.name yScale:yScale];
             
-            SensorIndexSupport *Index=[[SensorIndexSupport alloc]init];
-            NSArray *deviceIndexes= [Index getIndexesFor:SFIDeviceType_WIFIClient];
+            NSArray *genericIndexValues = [RuleSceneUtil getGenericIndexValueArrayForID:deviceButton.deviceId type:SFIDeviceType_WIFIClient isTrigger:self.isTrigger isScene:self.isScene triggers:self.triggers action:self.actions];
             
-            SFIDeviceIndex *deviceIndex = deviceIndexes[0];
-            for(IndexValueSupport *iVal in deviceIndex.indexValues){
-                iVal.matchData = connectedClient.deviceMAC;
+            GenericIndexValue *genericIndexVal = genericIndexValues[0];
+            NSDictionary *genericValueDict = genericIndexVal.genericIndex.values;
+            for(NSString *value in genericValueDict){
+                GenericValue *gVal = genericValueDict[value];
+                gVal.value = connectedClient.deviceMAC;
             }
-            [self addMyButtonwithYScale:yScale withDeviceIndex:deviceIndexes deviceId:connectedClient.deviceID.intValue deviceType:SFIDeviceType_WIFIClient deviceName:connectedClient.name];
+            [self addMyButtonwithYScale:yScale withDeviceIndex:genericIndexValues deviceId:connectedClient.deviceID.intValue deviceType:SFIDeviceType_WIFIClient deviceName:connectedClient.name];
             i++;
         }
     }
@@ -413,7 +397,7 @@ DimmerButton *dimerButton;
     [view addSubview:btnBinarySwitchOn];
     btnBinarySwitchOn.tag = i;
 //    btnBinarySwitchOn.valueType=deviceIndex.valueType;
-    btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:genericIndexValue.eventType deviceName:deviceName deviceType:deviceType];
+    btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:gVal.eventType deviceName:deviceName deviceType:deviceType];
     NSLog(@"gval.value: %@", gVal.value);
     btnBinarySwitchOn.deviceType = deviceType;
     
@@ -610,7 +594,6 @@ DimmerButton *dimerButton;
             selected=YES;
             [indexButton setNewValue:dimButtonProperty.displayedData];
         }
-        
     }
     if(selected &&!self.isTrigger)
         [indexButton setButtoncounter:buttonClickCount isCountImageHiddn:NO];

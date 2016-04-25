@@ -21,6 +21,17 @@
             }
         }
     },
+    "501": {
+        "name": "Reboot",
+        "isActuator": "true",
+        "defaultIcon": "switch_off",
+        "Indexes": {
+            "1": {
+                "genericIndexID": "-31",
+                "row_no": 1
+            }
+        }
+    },
     "1": {
         "name": "Binary Switch",
         "isActuator": "true",

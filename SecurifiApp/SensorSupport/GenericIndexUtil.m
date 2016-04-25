@@ -95,7 +95,7 @@
                                                                   excludeFrom:genericIndexObject.excludeFrom];
         return genericValue;
     }
-    return [[GenericValue alloc]initWithDisplayText:value icon:value toggleValue:value value:value excludeFrom:genericIndexObject.excludeFrom];
+    return [[GenericValue alloc]initWithDisplayText:value icon:value toggleValue:value value:value excludeFrom:genericIndexObject.excludeFrom eventType:nil];
 }
 
 + (NSMutableArray *)getDetailListForDevice:(int)deviceID{
@@ -141,7 +141,7 @@
     GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:client.deviceType];
 
     if(genericValue == nil){ //if devicetype is wronglysent only expected return is nil
-        genericValue = [[GenericValue alloc]initWithDisplayText:status icon:@"help_icon" toggleValue:nil value:client.deviceType excludeFrom:nil];
+        genericValue = [[GenericValue alloc]initWithDisplayText:status icon:@"help_icon" toggleValue:nil value:client.deviceType excludeFrom:nil eventType:nil];
     }else{
         genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:status];
     }

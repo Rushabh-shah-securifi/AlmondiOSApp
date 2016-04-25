@@ -49,10 +49,8 @@
     }
     else{
         [rulePayload setValue:@"UpdateRule" forKey:@"CommandType"];
-        [rulePayload setValue:self.rule.ID forKey:@"ID"];
         [rulePayload setValue:self.rule.ID forKey:@"ID"]; //Get From Rule instance
         isInitilized = NO;//setting it to not to reflect
-        
     }
     
     NSArray *devices =[toolkit deviceValuesList:plus.almondplusMAC];
@@ -77,7 +75,7 @@
     }
     return triggersArray;
 }
--(BOOL)findDevice:(int *)deviceId devices:(NSArray *)devices{
+-(BOOL)findDevice:(int)deviceId devices:(NSArray *)devices{
     for(SFIDeviceValue *deviceValue in devices){
         if(deviceValue.deviceID == deviceId)
             return YES;

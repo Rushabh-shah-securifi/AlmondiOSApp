@@ -47,6 +47,7 @@
         if(sceneEntry!=nil)
             [triggersArray addObject:sceneEntry];
     }
+    NSLog(@"scene payload: %@", triggersArray);
     return triggersArray;
 }
 

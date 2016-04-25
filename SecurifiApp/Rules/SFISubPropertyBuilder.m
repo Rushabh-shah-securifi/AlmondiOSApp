@@ -183,12 +183,12 @@ UILabel *topLabel;
                 GenericValue *gVal = genericValueDic[value];
                 BOOL isDimButton = genericIndex.layoutType!=nil && ([self isDimmerLayout:genericIndex.layoutType] || [genericIndex.layoutType isEqualToString:@"Text_Text_Input"]);
                 NSLog(@"gaval.value: %@, propertyvalue: %@", gVal.value, buttonProperties.matchData);
-                if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:indexValue.eventType buttonProperties:buttonProperties]){
+                if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties]){
                     NSLog(@"subpropertybuilder - compare entry");
                     NSString *bottomText;
                     
                     if(isDimButton){
-                        buttonProperties.displayedData = [NSString stringWithFormat:@"%@%@",@(buttonProperties.displayedData.intValue).stringValue,genericIndex.formatter.units];
+                        buttonProperties.displayedData = [NSString stringWithFormat:@"%@",@(buttonProperties.displayedData.intValue).stringValue];
                         bottomText = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,genericIndex.formatter.units];
                         if(buttonProperties.deviceType == SFIDeviceType_HueLamp_48){
                             bottomText = [NSString stringWithFormat:@"%@%@",@(buttonProperties.matchData.intValue * 100/255).stringValue,genericIndex.formatter.units];

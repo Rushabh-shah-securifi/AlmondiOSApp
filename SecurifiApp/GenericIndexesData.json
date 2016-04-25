@@ -248,20 +248,36 @@
     },
     "-30": {
         "Name": "ClientEvent",
-        "Type": "WIFICLIENT",
+        "Type": "Actuator",
         "Layout": "MULTI_BUTTON",
         "Values": {
             "ClientLeft": {
                 "ToggleValue": "ClientJoined",
                 "Icon": "client_left",
                 "AppLabel": "leaves",
-                "Label": "leaves"
+                "Label": "leaves",
+                "EventType": "ClientJoined"
             },
             "ClientJoined": {
                 "ToggleValue": "ClientLeft",
                 "Icon": "client_joined",
                 "AppLabel": "joins",
-                "Label": "joins"
+                "Label": "joins",
+                "EventType": "ClientLeft"
+            }
+        }
+    },
+    "-31": {
+        "Name": "Reboot",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "Values": {
+            "reboot": {
+                "ToggleValue": "reboot",
+                "Icon": "switch_off",
+                "AppLabel": "REBOOT ALMOND",
+                "Label": "REBOOT ALMOND",
+                "EventType": "AlmondModeUpdated"
             }
         }
     },
@@ -274,13 +290,15 @@
                 "ToggleValue": "away",
                 "Icon": "home_white",
                 "AppLabel": "home",
-                "Label": "HOME"
+                "Label": "HOME",
+                "EventType": "AlmondModeUpdated"
             },
             "away": {
                 "ToggleValue": "home",
                 "Icon": "away_white",
                 "AppLabel": "away",
-                "Label": "AWAY"
+                "Label": "AWAY",
+                "EventType": "AlmondModeUpdated"
             }
         }
     },
