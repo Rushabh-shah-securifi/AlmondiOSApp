@@ -246,6 +246,44 @@
             }
         }
     },
+    "-30": {
+        "Name": "ClientEvent",
+        "Type": "WIFICLIENT",
+        "Layout": "MULTI_BUTTON",
+        "Values": {
+            "ClientLeft": {
+                "ToggleValue": "ClientJoined",
+                "Icon": "client_left",
+                "AppLabel": "leaves",
+                "Label": "leaves"
+            },
+            "ClientJoined": {
+                "ToggleValue": "ClientLeft",
+                "Icon": "client_joined",
+                "AppLabel": "joins",
+                "Label": "joins"
+            }
+        }
+    },
+    "0":{
+        "Name": "Mode",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "Values": {
+            "home": {
+                "ToggleValue": "away",
+                "Icon": "home_white",
+                "AppLabel": "home",
+                "Label": "HOME"
+            },
+            "away": {
+                "ToggleValue": "home",
+                "Icon": "away_white",
+                "AppLabel": "away",
+                "Label": "AWAY"
+            }
+        }
+    },
     "1": {
         "Name": "SWITCH BINARY",
         "Type": "Actuator",

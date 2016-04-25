@@ -13,7 +13,7 @@
 + (void)clientListCommand{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     //forboth cloud and local
-    GenericCommand *genericCmd = [GenericCommand cloudRequestAlmondWifiClients:toolkit.currentAlmond.almondplusMAC];
+    GenericCommand *genericCmd = [GenericCommand requestAlmondClients:toolkit.currentAlmond.almondplusMAC];
     [toolkit asyncSendCommand:genericCmd];
 }
 

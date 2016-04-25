@@ -1,4 +1,16 @@
 {
+    "0": {
+        "name": "Mode",
+        "isActuator": "true",
+        "defaultIcon": "home_white",
+        "Indexes": {
+            "0": {
+                "genericIndexID": "0",
+                "row_no": 1
+            }
+        }
+    },
+
     "1": {
         "name": "Binary Switch",
         "isActuator": "true",

@@ -132,7 +132,7 @@
     
     
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand = [GenericCommand cloudSceneListCommand:plus.almondplusMAC];
+    cloudCommand = [GenericCommand requestSceneList:plus.almondplusMAC];
     
     // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
     //    self.HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
