@@ -10,7 +10,17 @@
             }
         }
     },
-
+    "500": {
+        "name": "Client",
+        "isActuator": "true",
+        "defaultIcon": "client_joined",
+        "Indexes": {
+            "0": {
+                "genericIndexID": "-30",
+                "row_no": 1
+            }
+        }
+    },
     "1": {
         "name": "Binary Switch",
         "isActuator": "true",

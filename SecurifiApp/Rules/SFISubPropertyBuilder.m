@@ -71,7 +71,7 @@ UILabel *topLabel;
     toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     deviceArray=[toolkit deviceList:plus.almondplusMAC];
-    
+    NSLog(@"triggers: %@", triggersList);
     xVal = 20;
     isCrossHidden = isHidden;
     isActive = isRuleActive;
@@ -182,11 +182,13 @@ UILabel *topLabel;
             for (NSString *value in genericValueKeys) {
                 GenericValue *gVal = genericValueDic[value];
                 BOOL isDimButton = genericIndex.layoutType!=nil && ([self isDimmerLayout:genericIndex.layoutType] || [genericIndex.layoutType isEqualToString:@"Text_Text_Input"]);
+                NSLog(@"gaval.value: %@, propertyvalue: %@", gVal.value, buttonProperties.matchData);
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:indexValue.eventType buttonProperties:buttonProperties]){
+                    NSLog(@"subpropertybuilder - compare entry");
                     NSString *bottomText;
                     
                     if(isDimButton){
-                        buttonProperties.displayedData = selectedValue.iconText;
+                        buttonProperties.displayedData = [NSString stringWithFormat:@"%@%@",@(buttonProperties.displayedData.intValue).stringValue,genericIndex.formatter.units];
                         bottomText = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,genericIndex.formatter.units];
                         if(buttonProperties.deviceType == SFIDeviceType_HueLamp_48){
                             bottomText = [NSString stringWithFormat:@"%@%@",@(buttonProperties.matchData.intValue * 100/255).stringValue,genericIndex.formatter.units];
@@ -258,6 +260,7 @@ UILabel *topLabel;
 }
 
 + (NSArray*)getDeviceIndexes:(SFIButtonSubProperties *)properties isTrigger:(BOOL)isTrigger{
+    NSLog(@"before propertiesid: %d, properties type: %d, matchdata: %@", properties.deviceId, properties.deviceType, properties.matchData);
     [self getDeviceTypeFor:properties];
     NSLog(@"propertiesid: %d, properties type: %d, matchdata: %@", properties.deviceId, properties.deviceType, properties.matchData);
     return [RuleSceneUtil getGenericIndexValueArrayForID:properties.deviceId type:properties.deviceType isTrigger:isTrigger isScene:isScene triggers:triggers action:actions];
@@ -382,13 +385,16 @@ UILabel *topLabel;
     buttonSubProperty.deviceType = SFIDeviceType_UnknownDevice_0;
     
     if([buttonSubProperty.type isEqualToString:@"NetworkResult"]){
+        NSLog(@"NetworkResult type");
         buttonSubProperty.deviceType = SFIDeviceType_REBOOT_ALMOND;
         buttonSubProperty.index = 1;//as there is no index from cloud
     }
     else if([buttonSubProperty.eventType isEqualToString:@"AlmondModeUpdated"]){
-        buttonSubProperty.deviceType= SFIDeviceType_BinarySwitch_0;
+        NSLog(@"AlmondModeUpdated type");
+        buttonSubProperty.deviceType= 0;
         buttonSubProperty.deviceName = @"Mode";
     }else if(buttonSubProperty.index == 0 && buttonSubProperty.eventType !=nil && toolkit.clients!=nil){
+        NSLog(@"client type");
         for(Client *connectedClient in toolkit.clients){
             if(buttonSubProperty.deviceId == connectedClient.deviceID.intValue){
                 buttonSubProperty.deviceType = SFIDeviceType_WIFIClient;
@@ -396,6 +402,7 @@ UILabel *topLabel;
             }
         }
     }else{
+        NSLog(@"else part type devices");
         for(Device *device in toolkit.devices){
             if(buttonSubProperty.deviceId == device.ID){
                 buttonSubProperty.deviceType = device.type;

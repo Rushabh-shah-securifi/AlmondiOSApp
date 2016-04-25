@@ -77,6 +77,34 @@ DimmerButton *dimerButton;
     return self;
 }
 
+
+
+-(void)addDeviceNameList:(BOOL)isTrigger{
+    self.isTrigger = isTrigger;
+    //clear view
+    NSArray *viewsToRemove = [self.deviceListScrollView subviews];
+    for (UIView *v in viewsToRemove) {
+        if (![v isKindOfClass:[UIImageView class]])
+            [v removeFromSuperview];
+    }
+    int xVal = 15;
+    
+    xVal = [self addDeviceName:@"Mode" deviceID:-1 deviceType:0 xVal:xVal];
+    if(self.isTrigger && !self.isScene){
+        xVal = [self addDeviceName:@"Time" deviceID:0 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
+        xVal = [self addDeviceName:@"Network Devices" deviceID:0 deviceType:SFIDeviceType_WIFIClient xVal:xVal];
+    }
+    
+    for(Device *device in [self getCompatileDeviceList]){
+        xVal = [self addDeviceName:device.name deviceID:device.ID deviceType:device.type xVal:xVal];
+    }
+    if(!self.isTrigger){
+        xVal = [self addDeviceName:@"Reboot Almond" deviceID:1 deviceType:SFIDeviceType_REBOOT_ALMOND xVal:xVal];
+    }
+    self.deviceListScrollView.contentSize = CGSizeMake(xVal +10,self.deviceListScrollView.contentSize.height);
+    [self.deviceIndexButtonScrollView flashScrollIndicators];
+}
+
 - (int)addDeviceName:(NSString *)deviceName deviceID:(int)deviceID deviceType:(unsigned int)deviceType  xVal:(int)xVal {
     double deviceButtonHeight = self.deviceListScrollView.frame.size.height;
     CGRect textRect = [UICommonMethods adjustDeviceNameWidth:deviceName fontSize:deviceNameFontSize maxLength:deviceNameMaxLength];
@@ -95,57 +123,15 @@ DimmerButton *dimerButton;
     
     return xVal + textRect.size.width +15;
 }
--(void)TimeEventClicked:(id)sender{
-    [self resetViews];
-    [self toggleHighlightForDeviceNameButton:sender];
-    self.timeView = [[TimeView alloc]init];
-    //    self.timeView.ruleTime = self.ruleTime;
-    self.timeView.delegate = self;
-    self.timeView.ruleTime = [self getRuleTime];
-    self.timeView.deviceIndexButtonScrollView = self.deviceIndexButtonScrollView;
-    
-    [self.timeView addTimeView];
-    
-}
-
-
-
--(void)addDeviceNameList:(BOOL)isTrigger{
-    self.isTrigger = isTrigger;
-    //clear view
-    NSArray *viewsToRemove = [self.deviceListScrollView subviews];
-    for (UIView *v in viewsToRemove) {
-        if (![v isKindOfClass:[UIImageView class]])
-            [v removeFromSuperview];
-    }
-    int xVal = 15;
-    
-    xVal = [self addDeviceName:@"Mode" deviceID:1 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
-    if(self.isTrigger && !self.isScene){//if Trigger Add time
-        xVal = [self addDeviceName:@"Time" deviceID:0 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
-        xVal = [self addDeviceName:@"Network Devices" deviceID:0 deviceType:SFIDeviceType_WIFIClient xVal:xVal];
-        //same way we can we can do for client in trigger
-    }
-    
-    //for rest of the devices
-    for(Device *device in [self getCompatileDeviceList]){
-        xVal = [self addDeviceName:device.name deviceID:device.ID deviceType:device.type xVal:xVal];
-    }
-    if(!self.isTrigger){//add almond Reboot
-        xVal = [self addDeviceName:@"Reboot Almond" deviceID:1 deviceType:SFIDeviceType_REBOOT_ALMOND xVal:xVal];
-    }
-    self.deviceListScrollView.contentSize = CGSizeMake(xVal +10,self.deviceListScrollView.contentSize.height);
-    [self.deviceIndexButtonScrollView flashScrollIndicators];
-}
 
 -(NSArray*)getCompatileDeviceList{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSMutableArray *deviceArray = [NSMutableArray new];
     for(Device *device in toolkit.devices){
-        if((!self.isTrigger || self.isScene) && [RuleSceneUtil isActionDevice:device.type]){ //rule || action
+        if((self.isScene || !self.isTrigger) && [RuleSceneUtil isActionDevice:device.type]){ // scene || action
             [deviceArray addObject:device];
         }
-        else if(self.isTrigger && !self.isScene && [RuleSceneUtil isTriggerDevice:device.type]){ //rule && trigger
+        else if(!self.isScene && self.isTrigger  && [RuleSceneUtil isTriggerDevice:device.type]){ //rule && trigger
             [deviceArray addObject:device];
         }
     }
@@ -168,6 +154,19 @@ DimmerButton *dimerButton;
 //    return deviceArray;
 //}
 
+
+-(void)TimeEventClicked:(id)sender{
+    [self resetViews];
+    [self toggleHighlightForDeviceNameButton:sender];
+    self.timeView = [[TimeView alloc]init];
+    //    self.timeView.ruleTime = self.ruleTime;
+    self.timeView.delegate = self;
+    self.timeView.ruleTime = [self getRuleTime];
+    self.timeView.deviceIndexButtonScrollView = self.deviceIndexButtonScrollView;
+    
+    [self.timeView addTimeView];
+    
+}
 
 -(void)wifiClientsClicked:(RulesDeviceNameButton*)deviceButton{
     [self resetViews];
@@ -215,19 +214,8 @@ DimmerButton *dimerButton;
     //toggeling
     [self toggleHighlightForDeviceNameButton:sender];
     
-    NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForID:sender.deviceId type:sender.deviceType isTrigger:self.isTrigger isScene:self.isScene triggers:self.triggers action:self.actions];
-    NSArray *gIVals = [genericIndexValDic valueForKey:@"2"];
-    
-    for(GenericIndexValue *gIVal in gIVals){
-        NSLog(@"layout type: %@", gIVal.genericIndex.layoutType);
-    }
-    
-//    for(GenericIndexClass *gIndecx in gIVal.genericIndex)
-//    NSLog(@"genericIndexValDic %@ ",gIndecx);
-
-//    SensorIndexSupport *Index=[[SensorIndexSupport alloc]init];
-//    NSMutableArray *deviceIndexes=[NSMutableArray arrayWithArray:[Index getIndexesFor:sender.deviceType]];//need
-    
+    NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForID:sender.deviceId type:sender.deviceType isTrigger:self.isTrigger isScene:self.isScene triggers:self.triggers action:self.actions];    
+    NSLog(@"GenericIndexValue: %@", genericIndexValDic);
 //    if (!self.isTrigger &&[self istoggle:sender.deviceType]) {
 //        NSArray *toggleIndexes = [self getToggelDeviceIndex:deviceIndexes];
 //        [deviceIndexes addObjectsFromArray: toggleIndexes];
@@ -378,7 +366,7 @@ DimmerButton *dimerButton;
     dimbtn.minValue = genericIndexVal.genericIndex.formatter.min;
     dimbtn.maxValue = genericIndexVal.genericIndex.formatter.max;
     dimbtn.factor=genericIndexVal.genericIndex.formatter.factor;
-    dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexVal.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
+    dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexVal.index matchData:gVal.iconText andEventType:nil deviceName:deviceName deviceType:deviceType];
     
     [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [dimbtn setupValues:gVal.iconText Title:gVal.displayText suffix:genericIndexVal.genericIndex.formatter.units isTrigger:self.isTrigger isScene:self.isScene];
@@ -426,6 +414,7 @@ DimmerButton *dimerButton;
     btnBinarySwitchOn.tag = i;
 //    btnBinarySwitchOn.valueType=deviceIndex.valueType;
     btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:genericIndexValue.eventType deviceName:deviceName deviceType:deviceType];
+    NSLog(@"gval.value: %@", gVal.value);
     btnBinarySwitchOn.deviceType = deviceType;
     
     if(deviceType == SFIDeviceType_REBOOT_ALMOND){
@@ -776,8 +765,8 @@ DimmerButton *dimerButton;
         [self changeMinMaxValuesOfNestRangeLowHighForIndex:dimmer.subProperties.index value:dimmer.subProperties.matchData.intValue dimSuperView:[dimmer superview]];
     }
     [self addObject:newProperty];
-    [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
     [self setActionButtonCount:dimmer isSlider:YES];
+    [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
 }
 -(void)addObject:(SFIButtonSubProperties *)subProperty{
     if(self.isTrigger)

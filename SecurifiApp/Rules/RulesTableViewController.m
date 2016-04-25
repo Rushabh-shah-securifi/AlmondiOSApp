@@ -38,12 +38,6 @@ CGPoint tablePoint;
     [self initializeNotifications];
     [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -51,9 +45,8 @@ CGPoint tablePoint;
     [super viewWillAppear:animated];
     self.enableDrawer = YES;
     [self getRuleList];
-    if([self isLocal]){
-        [self addAddRuleButton];
-    }
+    [self addAddRuleButton];
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     if (self.currentAlmond == nil) {
@@ -131,8 +124,6 @@ CGPoint tablePoint;
 -(void)getRuleList{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.rules = toolkit.ruleList;
-    
-    
     [self.tableView reloadData];
     self.tableView.contentOffset = tablePoint;
 }
@@ -174,7 +165,7 @@ CGPoint tablePoint;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if([self isRuleArrayEmpty] || ![self isLocal]){
+    if([self isRuleArrayEmpty]){
         return [self createEmptyCell:tableView];
     }
     static NSString *CellIdentifier;
@@ -233,10 +224,7 @@ CGPoint tablePoint;
 
 - (UITableViewCell *)createEmptyCell:(UITableView *)tableView {
     static NSString *empty_cell_id = @"EmptyCell";
-    
-    // UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:empty_cell_id];
-    
-    //if (cell == nil || ![self isLocal]) {
+
     UITableViewCell *cell  = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:empty_cell_id];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
@@ -245,7 +233,7 @@ CGPoint tablePoint;
     UILabel *lblNewScene = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, table_width-20, 130)];
     lblNewScene.textAlignment = NSTextAlignmentCenter;
     [lblNewScene setFont:[UIFont fontWithName:AVENIR_ROMAN size:18]];
-    lblNewScene.text = ![self isLocal]?@"":@"New Rule";
+    lblNewScene.text = @"New Rule";
     lblNewScene.textColor = [UIColor grayColor];
     [cell addSubview:lblNewScene];
     
@@ -253,15 +241,11 @@ CGPoint tablePoint;
     lblNoSensor.textAlignment = NSTextAlignmentCenter;
     [lblNoSensor setFont:[UIFont fontWithName:AVENIR_ROMAN size:15]];
     lblNoSensor.numberOfLines = 10;
-    lblNoSensor.text = ![self isLocal]?@"At this time, you can view, create and edit rules only in Local Connection":@"Tap on add button to create your rule";
+    lblNoSensor.text = @"Tap on add button to create your rule";
     lblNoSensor.textColor = [UIColor grayColor];
     [cell addSubview:lblNoSensor];
-    //}
-    if(![self isLocal]){
-        [self removeAddSceneButton];
-    }
-    else
-        [self addAddRuleButton];
+
+    [self addAddRuleButton];
     return cell;
 }
 
@@ -269,10 +253,7 @@ CGPoint tablePoint;
     [self.rules removeObjectAtIndex:indexPathRow];
 }
 
-
 #pragma mark custom cell Delegate methods
-
-
 - (void)deleteRule:(CustomCellTableViewCell *)cell{
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     if(self.rules==nil || self.rules.count==0 || self.rules.count<=indexPath.row)
@@ -377,36 +358,6 @@ CGPoint tablePoint;
     [self.navigationController.view addSubview:self.HUD];
 }
 
-///*
-// {
-// "CommandType":"ValidateRule",
-// "AlmondMAC":"25110100101010",
-// "ID":""1",
-// "Value":"1",
-// "MobileInternalIndex":"111"
-// }
-// */
-//-(NSDictionary *)getactivateRulePayload:(NSInteger)row activate:(NSString*)value{
-//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-//    SFIAlmondPlus *plus = [toolkit currentAlmond];
-//    if (!plus.almondplusMAC) {
-//        return nil;
-//    }
-//    NSMutableDictionary *rulePayload = [[NSMutableDictionary alloc]init];
-//    Rule *currentRule = self.rules[row];
-//    if(currentRule==nil ||currentRule.ID==nil)
-//        return nil;
-//
-//    [rulePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
-//    [rulePayload setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
-//    [rulePayload setValue:@"ValidateRule" forKey:@"CommandType"];
-//    [rulePayload setValue:value forKey:@"Value"];
-//    [rulePayload setValue:[self getRuleID:currentRule.ID] forKey:@"ID"]; //Get From Rule instance
-//
-//    return rulePayload;
-//
-//}
-//
 #pragma mark asyncRequest methods
 - (void)asyncSendCommand:(GenericCommand *)cloudCommand {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];

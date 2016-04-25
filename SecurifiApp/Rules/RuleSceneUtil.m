@@ -42,12 +42,23 @@
             GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
             genericIndexObj.rowID = deviceIndex.rowID;
             
-            if([genericIndexObj.type isEqualToString:ACTUATOR] && [self isToBeAdded:genericDevice.excludeFrom checkString:@"Scene"]){
-                SFIButtonSubProperties *subProperty = [self findSubProperty:triggers deviceID:deviceID index:indexID.intValue istrigger:isTrigger];
-                GenericValue *genericValue = nil;
-                if(subProperty != nil)
-                    genericValue = [GenericIndexUtil getMatchingGenericValueForGenericIndexID:genericIndexObj.ID forValue:subProperty.matchData];
-                GenericIndexValue *genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue index:indexID.intValue deviceID:deviceID];
+            NSString *checkString = isScene? @"Scene": @"Rule";
+
+            SFIButtonSubProperties *subProperty = [self findSubProperty:triggers actions:(NSArray*)actions deviceID:deviceID index:indexID.intValue istrigger:isTrigger];
+            GenericValue *genericValue = nil;
+            if(subProperty != nil)
+                genericValue = [GenericIndexUtil getMatchingGenericValueForGenericIndexID:genericIndexObj.ID forValue:subProperty.matchData];
+            GenericIndexValue *genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue index:indexID.intValue deviceID:deviceID];
+
+            
+            //rule trigger
+            if(!isScene && isTrigger && [self isToBeAdded:genericDevice.excludeFrom checkString:checkString]){
+                NSLog(@"util - rule trigger");
+                [genericIndexValues addObject:genericIndexValue];
+            }
+            //scene action, rule action
+            else if( (isScene || !isTrigger) && [genericIndexObj.type isEqualToString:ACTUATOR] && [self isToBeAdded:genericDevice.excludeFrom checkString:checkString]){
+                NSLog(@"util - scene/rule action");
                 [genericIndexValues addObject:genericIndexValue];
             }
         }
@@ -55,14 +66,14 @@
     return genericIndexValues;
 }
 
-+(SFIButtonSubProperties *)findSubProperty:(NSArray*)triggers deviceID:(int)deviceID index:(int)index istrigger:(BOOL)isTrigger{
-    if(isTrigger){
-        for(SFIButtonSubProperties *subProperty in triggers){
-            if(deviceID == subProperty.deviceId && index == subProperty.index){
-                return subProperty;
-            }
++(SFIButtonSubProperties *)findSubProperty:(NSArray*)triggers actions:(NSArray*)actions deviceID:(int)deviceID index:(int)index istrigger:(BOOL)isTrigger{
+    NSArray *list = isTrigger? triggers: actions;
+    for(SFIButtonSubProperties *subProperty in list){
+        if(deviceID == subProperty.deviceId && index == subProperty.index){
+            return subProperty;
         }
     }
+    
     return nil;
 }
 
