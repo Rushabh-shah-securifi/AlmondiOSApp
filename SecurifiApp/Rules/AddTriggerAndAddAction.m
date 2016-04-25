@@ -200,10 +200,7 @@ DimmerButton *dimerButton;
     
     NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForID:sender.deviceId type:sender.deviceType isTrigger:self.isTrigger isScene:self.isScene triggers:self.triggers action:self.actions];    
     NSLog(@"GenericIndexValue: %@", genericIndexValDic);
-//    if (!self.isTrigger &&[self istoggle:sender.deviceType]) {
-//        NSArray *toggleIndexes = [self getToggelDeviceIndex:deviceIndexes];
-//        [deviceIndexes addObjectsFromArray: toggleIndexes];
-//    }
+
     [self createDeviceIndexesLayoutForDeviceId:sender.deviceId deviceType:sender.deviceType deviceName:sender.deviceName genericIndexValDic:genericIndexValDic];
 }
 
@@ -472,40 +469,32 @@ DimmerButton *dimerButton;
         
         for (NSString *value in genericValueKeys) {
             i++;
+            GenericValue *genericVal = genericValueDic[value];
             if  ([genericIndex.layoutType isEqualToString:@"textButton"]){
-                [self buildTextButton:indexValue gVal:genericValueDic[value] deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
+                [self buildTextButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
             else if ([self isDimmerLayout:genericIndex.layoutType])
-                [self buildDimButton:indexValue gVal:genericValueDic[value] deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
+                [self buildDimButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             else{
                 if(i >= 5){
                     view.frame = CGRectMake(0, yScale, self.parentView.frame.size.width, indexButtonFrameSize * 2);
-                    [self buildSwitchButton:indexValue deviceType:deviceType deviceName:deviceName gVal:genericValueDic[value] deviceId:deviceId i:i view:view buttonY:indexButtonFrameSize];
+                    [self buildSwitchButton:indexValue deviceType:deviceType deviceName:deviceName gVal:genericVal deviceId:deviceId i:i view:view buttonY:indexButtonFrameSize];
                 }else{
-//                    if([self specialCasesExistsForDeviceType:deviceType index:indexValue iVal:genericValueDic[value]])
-//                        continue;
-                    [self buildSwitchButton:indexValue deviceType:deviceType deviceName:deviceName gVal:genericValueDic[value] deviceId:deviceId i:i view:view buttonY:0];
+                    if([RuleSceneUtil shouldYouSkipTheValue:genericVal isScene:_isScene])
+                        continue;
+                    [self buildSwitchButton:indexValue deviceType:deviceType deviceName:deviceName gVal:genericVal deviceId:deviceId i:i view:view buttonY:0];
                 }
             }
         }
     }
     return view;
 }
+
 -(NSDictionary*)formatterDict:(GenericIndexClass*)genericIndex{
     NSLog(@"genericIndex.formatter.min %d",genericIndex.formatter.min);
     NSMutableDictionary *genericValueDic = [[NSMutableDictionary alloc]init];
     [genericValueDic setValue:[[GenericValue alloc]initWithDisplayText:genericIndex.groupLabel iconText:@(genericIndex.formatter.min).stringValue value:@"" excludeFrom:@""] forKey:genericIndex.groupLabel];
     return genericValueDic;
-}
--(BOOL)specialCasesExistsForDeviceType:(int)deviceType index:(SFIDeviceIndex*)deviceIndex iVal:(IndexValueSupport*)iVal{
-    BOOL isTrue = NO;
-    if(deviceType == SFIDeviceType_MultiLevelSwitch_2) //device 2, displaying only dimbutton
-        isTrue = YES;
-    if((!self.isTrigger||self.isScene) && deviceType == SFIDeviceType_GarageDoorOpener_53 && !([iVal.matchData isEqualToString:@"0"] || [iVal.matchData isEqualToString:@"255"]))
-        isTrue = YES;
-    if((!self.isTrigger||self.isScene) && deviceType == SFIDeviceType_RollerShutter_52 && deviceIndex.indexID != 1)
-        isTrue = YES;
-    return isTrue;
 }
 
 - (void) shiftButtonsByWidth:(int)width View:(UIView *)view forIteration:(int)i{
@@ -518,28 +507,9 @@ DimmerButton *dimerButton;
                                      childView.frame.size.height);
     }
 }
--(NSInteger)maxCellId:(NSDictionary*)deviceIndexes{
-    return  [[deviceIndexes allKeys]count];
-}
--(NSMutableArray *)getToggelDeviceIndex:(NSArray *)deviceIndexes{
-    IndexValueSupport *indexValue =[[IndexValueSupport alloc]init];
-    indexValue.displayText = @"TOGGLE";
-    indexValue.iconName = @"toggle_icon";
-    indexValue.matchData = @"toggle";
-    NSArray *indexvaluearray = [[NSArray alloc]initWithObjects:indexValue, nil];
-    NSMutableArray *toggleIndexes = [[NSMutableArray alloc]init];
-    
-    for(SFIDeviceIndex *index in deviceIndexes){
-        if(index.isToggle){
-            SFIDeviceIndex *deviceIndex= [SFIDeviceIndex new];
-            deviceIndex.cellId = index.cellId;
-            deviceIndex.indexID = index.indexID;
-            deviceIndex.indexValues = indexvaluearray;
-            deviceIndex.isEditableIndex = YES;
-            [toggleIndexes addObject:deviceIndex];
-        }
-    }
-    return toggleIndexes;
+
+-(NSInteger)maxCellId:(NSDictionary*)genericIndexValDic{
+    return  [[genericIndexValDic allKeys]count];
 }
 
 -(SFIButtonSubProperties*) addSubPropertiesFordeviceID:(sfi_id)deviceID index:(int)index matchData:(NSString*)matchData andEventType:(NSString *)eventType deviceName:(NSString*)deviceName deviceType:(int)deviceType{ //overLoaded

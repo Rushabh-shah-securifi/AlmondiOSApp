@@ -15,7 +15,6 @@
 #import "GenericIndexValue.h"
 #import "SFIButtonSubProperties.h"
 #import "GenericIndexUtil.h"
-#import "GenericValue.h"
 
 @implementation RuleSceneUtil
 
@@ -24,9 +23,35 @@
     
     NSMutableDictionary *rowIndexValDict = [NSMutableDictionary new];
     for(GenericIndexValue *genericIndexValue in genericIndexValues){
+        if(genericIndexValue.genericIndex.showToggleInRules){
+            [self getToggleParms:genericIndexValue isTrigger:isTrigger isScene:isScene];
+        }
         [self addToDictionary:rowIndexValDict GenericIndexVal:genericIndexValue rowID:genericIndexValue.genericIndex.rowID.intValue];
     }
     return rowIndexValDict;
+}
+
++ (void)getToggleParms:(GenericIndexValue *)genericIndexValue isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene{
+    
+    GenericValue *toggleValue = [[GenericValue alloc]initWithDisplayText:@"TOGGLE" icon:@"toggle_icon" toggleValue:@"toggle" value:@"toggle" excludeFrom:nil eventType:nil];
+    NSMutableDictionary *valuesDict = [genericIndexValue.genericIndex.values mutableCopy];
+    [valuesDict setValue:toggleValue forKey:@"toggle"];
+    if(isScene || (isTrigger && !isScene))
+        [valuesDict removeObjectForKey:@"toggle"];
+    genericIndexValue.genericIndex.values = valuesDict;
+    
+}
+
++(void)addToDictionary:(NSMutableDictionary *)rowIndexValDict GenericIndexVal:(GenericIndexValue *)genericIndexVal rowID:(int)rowID{
+    NSMutableArray *augArray = [rowIndexValDict valueForKey:[NSString stringWithFormat:@"%d",rowID]];
+    if(augArray != nil){
+        [augArray addObject:genericIndexVal];
+        [rowIndexValDict setValue:augArray forKey:[NSString stringWithFormat:@"%d",rowID]];
+    }else{
+        NSMutableArray *tempArray = [NSMutableArray new];
+        [tempArray addObject:genericIndexVal];
+        [rowIndexValDict setValue:tempArray forKey:[NSString stringWithFormat:@"%d",rowID]];
+    }
 }
 
 +(NSArray *)getGenericIndexValueArrayForID:(int)deviceID type:(int)deviceType isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene triggers:(NSMutableArray*)triggers action:(NSMutableArray*)actions{
@@ -52,12 +77,12 @@
 
             
             //rule trigger
-            if(!isScene && isTrigger && [self isToBeAdded:genericDevice.excludeFrom checkString:checkString]){
+            if(!isScene && isTrigger && [self isToBeAdded:genericIndexObj.excludeFrom checkString:checkString]){
                 NSLog(@"util - rule trigger");
                 [genericIndexValues addObject:genericIndexValue];
             }
             //scene action, rule action
-            else if( (isScene || !isTrigger) && [genericIndexObj.type isEqualToString:ACTUATOR] && [self isToBeAdded:genericDevice.excludeFrom checkString:checkString]){
+            else if( (isScene || !isTrigger) && [genericIndexObj.type isEqualToString:ACTUATOR] && [self isToBeAdded:genericIndexObj.excludeFrom checkString:checkString]){
                 NSLog(@"util - scene/rule action");
                 [genericIndexValues addObject:genericIndexValue];
             }
@@ -73,23 +98,8 @@
             return subProperty;
         }
     }
-    
     return nil;
 }
-
-
-+(void)addToDictionary:(NSMutableDictionary *)rowIndexValDict GenericIndexVal:(GenericIndexValue *)genericIndexVal rowID:(int)rowID{
-    NSMutableArray *augArray = [rowIndexValDict valueForKey:[NSString stringWithFormat:@"%d",rowID]];
-    if(augArray != nil){
-        [augArray addObject:genericIndexVal];
-        [rowIndexValDict setValue:augArray forKey:[NSString stringWithFormat:@"%d",rowID]];
-    }else{
-        NSMutableArray *tempArray = [NSMutableArray new];
-        [tempArray addObject:genericIndexVal];
-        [rowIndexValDict setValue:tempArray forKey:[NSString stringWithFormat:@"%d",rowID]];
-    }
-}
-
 
 +(BOOL)isActionDevice:(int) deviceType{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -110,6 +120,14 @@
             return  YES;
         }
     }
+    return NO;
+}
+
++ (BOOL)shouldYouSkipTheValue:(GenericValue*)genericValue isScene:(BOOL)isScene{
+    if(isScene && ([RuleSceneUtil isToBeAdded:genericValue.excludeFrom checkString:@"Scene"] == NO))
+        return YES;
+    else if(!isScene && ([RuleSceneUtil isToBeAdded:genericValue.excludeFrom checkString:@"Rule"]) == NO)
+        return YES;
     return NO;
 }
 
