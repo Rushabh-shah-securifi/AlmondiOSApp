@@ -116,7 +116,7 @@ UIAlertView *alert;
         alert.tag = kAlertViewSave;
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
         textField = [alert textFieldAtIndex:0];
-        [alert textFieldAtIndex:0].delegate = self;
+        textField.delegate = self;
         
         if(self.isInitialized){
             textField.text = self.scene.name;

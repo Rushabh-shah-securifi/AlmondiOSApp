@@ -35,7 +35,7 @@
 #import "AddRuleSceneClass.h"
 #import "Analytics.h"
 
-@interface AddRulesViewController()<UIAlertViewDelegate>{
+@interface AddRulesViewController()<UIAlertViewDelegate, UITextFieldDelegate>{
     sfi_id dc_id;
     NSInteger randomMobileInternalIndex;
 }
@@ -49,6 +49,7 @@
 
 @implementation AddRulesViewController
 UITextField *textField;
+UIAlertView *alert;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -281,7 +282,7 @@ UITextField *textField;
         textField.text = self.rule.name;
     }
     if(self.rule.triggers.count > 0 && self.rule.actions.count > 0){
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Rule Name"
+        alert = [[UIAlertView alloc] initWithTitle:@"Rule Name"
                                                         message:@""
                                                        delegate:self
                                               cancelButtonTitle:@"Cancel"
@@ -289,6 +290,7 @@ UITextField *textField;
         [alert setDelegate:self];
         alert.alertViewStyle = UIAlertViewStylePlainTextInput;
         textField = [alert textFieldAtIndex:0];
+        textField.delegate = self;
         textField.frame = CGRectMake(alert.frame.origin.x, 25.0, alert.frame.size.width, 15.0);
         [textField setBackgroundColor:[UIColor whiteColor]];
         if(self.isInitialized){
@@ -331,7 +333,16 @@ UITextField *textField;
     return ([[[alertView textFieldAtIndex:0] text] length]>0)?YES:NO;
     
 }
+#pragma mark textfield delegate
+-(BOOL) textFieldShouldReturn:(UITextField *)textField{
+    NSLog(@"textFieldShouldReturn");
+    [textField resignFirstResponder];
+    [alert dismissWithClickedButtonIndex:0 animated:YES];
+    return YES;
+}
 
+
+#pragma mark commands
 -(void)sendCreateRuleCommand{
     RulePayload *rulePayload = [RulePayload new];
     rulePayload.rule = self.rule;
