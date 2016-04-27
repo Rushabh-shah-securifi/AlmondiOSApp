@@ -586,6 +586,42 @@
                     "GenericIndex": "50"
                 }
             }
+        },
+        "48": {
+            "Data":{
+                "Name": "Hue Lamp",
+                "FriendlyDeviceType": "hue lamp",
+                "Type": "48",
+                "deviceid": "187",
+                "Location": "Default"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Index": "1",
+                    "Name": "SWITCH BINARY",
+                    "Value": "true",
+                    "GenericIndex": "1"
+                },
+                "2": {
+                    "Index": "2",
+                    "Name": "HUE",
+                    "Value": "451",
+                    "GenericIndex": "30"
+                },
+                "3": {
+                    "Index": "3",
+                    "Name": "SWITCH MULTILEVEL",
+                    "Value": "85",
+                    "GenericIndex": "17"
+                },
+                "4": {
+                    "Index": "4",
+                    "Name": "SATURATION",
+                    "Value": "115",
+                    "GenericIndex": "32"
+                }
+
+            }
         }
     }
 }

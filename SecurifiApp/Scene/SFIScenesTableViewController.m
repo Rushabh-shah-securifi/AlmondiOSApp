@@ -115,13 +115,13 @@
     }
 }
 -(void)updateSceneTableView:(id)sender{
+    NSLog(@"updateSceneTableView ");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self getAllScenes];
     });
     
     
 }
-
 
 - (void)sendGetAllScenesRequest {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -244,7 +244,8 @@
 -(void)getEntriesList:(NSArray*)sceneEntryList list:(NSMutableArray *)triggers{
     for(NSDictionary *triggersDict in sceneEntryList){
         SFIButtonSubProperties* subProperties = [[SFIButtonSubProperties alloc] init];
-        subProperties.deviceId = [[triggersDict valueForKey:@"DeviceID"] intValue];
+        NSLog(@"triggersDict %@",triggersDict);
+        subProperties.deviceId = [[triggersDict valueForKey:@"ID"] intValue];
         subProperties.index = [[triggersDict valueForKey:@"Index"] intValue];
         subProperties.matchData = [triggersDict valueForKey:@"Value"];
         
@@ -420,6 +421,8 @@
 
 - (void)getAllScenes {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [scenesArray removeAllObjects];
+    scenesArray = nil;
     scenesArray = [NSMutableArray arrayWithArray:toolkit.scenesArray];
     NSLog(@"get all scenes - %@", scenesArray);
     [self.tableView reloadData];

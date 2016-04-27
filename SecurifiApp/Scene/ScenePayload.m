@@ -58,7 +58,7 @@
 
 +(NSDictionary*)createSceneEntry:(SFIButtonSubProperties*)subProperty{
     return @{
-             @"DeviceID" : @(subProperty.deviceId).stringValue,
+             @"ID" : @(subProperty.deviceId).stringValue,
              @"Index" : @(subProperty.index).stringValue,
              @"Value" : subProperty.matchData
              };

@@ -19,6 +19,7 @@
         self.color = color;
         self.genericIndexValue = genericIndexValue;
         [self drawSlider];
+        self.backgroundColor = self.color;
     }
     return self;
 }
@@ -30,6 +31,9 @@
     [self addSubview:brightnessDim];
     UIImageView *brightnessFull = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width - self.frame.size.height, 3, self.frame.size.height -5, self.frame.size.height -5)];
     brightnessFull.image = [UIImage imageNamed:@"brightness-icon"];
+//    brightnessDim.backgroundColor = [SFIColors ruleOrangeColor];
+//    brightnessFull.backgroundColor = [SFIColors ruleOrangeColor];
+
     [self addSubview:brightnessFull];
     SFISlider *brightnessSlider = [[SFISlider alloc]initWithFrame:CGRectMake(self.frame.size.height , 0, self.frame.size.width - (2*self.frame.size.height), self.frame.size.height)];
     const CGFloat slider_x_offset = 10.0;
@@ -42,10 +46,12 @@
     brightnessSlider.allowToSlide = YES;
     brightnessSlider.sensorMaxValue = max;
     brightnessSlider.convertedValue = 0; // to be assigned
-    brightnessSlider.backgroundColor = [UIColor clearColor];
+//    brightnessSlider.backgroundColor = [SFIColors ruleOrangeColor];
+    NSLog(@" brightness slider adding ");
     [self addSubview:brightnessSlider];
 }
 - (SFISlider *)makeSlider:(float)minVal maxValue:(float)maxValue propertyType:(SFIDevicePropertyType)propertyType sliderLeftInset:(CGFloat)sliderLeftInset sliderRightInset:(CGFloat)sliderRightInset slider:(SFISlider*) slider {
+    NSLog(@"drawSlider");
     slider.propertyType = propertyType;
     slider.minimumValue = minVal;
     slider.maximumValue = maxValue;
