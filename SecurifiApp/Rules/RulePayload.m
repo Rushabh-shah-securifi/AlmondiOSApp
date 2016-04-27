@@ -125,7 +125,7 @@
                  @"EventType" : @"AlmondModeUpdated",
                  @"Value" : property.matchData,
                  @"Grouping" : @"AND",
-                 @"Validation":@"true",
+                 @"Valid":@"true",
                  @"Condition" : @"eq"
                  };
        
@@ -137,7 +137,7 @@
                  @"EventType" : property.eventType,
                  @"Value" : property.matchData,
                  @"Grouping" : @"AND",
-                 @"Validation":@"",
+                 @"Valid":@"",
                  @"Condition" : @"eq"
                  };
        
@@ -156,7 +156,7 @@
                      @"DayOfWeek" : [self getDayOfWeek:property.time.dayOfWeek],
                      @"MonthOfYear" : @"*",
                      @"Grouping" : @"AND",
-                     @"Validation": @""
+                     @"Valid": @""
                      
                      };
         
@@ -169,7 +169,7 @@
                  @"Index" : @(property.index).stringValue,
                  @"Value" : property.matchData,
                  @"Grouping" : @"AND",
-                 @"Validation":@"",
+                 @"Valid":@"",
                  @"Condition" : @"eq"
                  };
     
@@ -195,7 +195,7 @@
                            @"EventType" : wiFiClientProperty.eventType,
                            @"Value" : wiFiClientProperty.matchData,
                            @"Grouping" : @"AND",
-                           @"Validation":@"",
+                           @"Valid":@"",
                            @"Condition" : @"eq"
                            };
     
@@ -219,7 +219,7 @@
                                @"Index":@(1).stringValue,
                                @"Value":@"reboot",
                                @"PreDelay":dimButtonProperty.delay,
-                               @"Validation": @"true"
+                               @"Valid": @"true"
                                };
         return dict;
         
@@ -231,7 +231,7 @@
                                @"EventType":@"AlmondModeUpdated",
                                @"Value":dimButtonProperty.matchData,
                                @"PreDelay":dimButtonProperty.delay,
-                               @"Validation": @"true"
+                               @"Valid": @"true"
                                };
         return dict;
     }
@@ -241,7 +241,7 @@
                            @"Index":@(dimButtonProperty.index).stringValue,
                            @"Value":dimButtonProperty.matchData,
                            @"PreDelay":dimButtonProperty.delay,
-                           @"Validation": @""
+                           @"Valid": @""
                            };
     return dict;
 }

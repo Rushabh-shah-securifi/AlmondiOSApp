@@ -71,21 +71,21 @@ UILabel *topLabel;
     toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
     deviceArray=[toolkit deviceList:plus.almondplusMAC];
-    NSLog(@"triggers: %@", triggersList);
     xVal = 20;
     isCrossHidden = isHidden;
     isActive = isRuleActive;
     isScene = isSceneFlag;
     disableUserInteraction = !isHidden;//for disable userInteraction in ruletableView
     triggersActionsScrollView = topScrollView;
+    triggers = triggersList;
+    actions = actionsList;
+    
     if (!isCrossHidden) {
-        triggers = triggersList;
-        actions = actionsList;
         deviceIndexButtonScrollView = indexScrollView;
         parentView = view;
         addRuleScene = parentClass;
     }
-    
+    NSLog(@"triggers: %@, actions: %@", triggersList, actionsList);
     [self clearTopScrollView];
     if(triggersList.count == 0 && actionsList.count == 0)
         [self addTopLabel];
@@ -93,7 +93,7 @@ UILabel *topLabel;
     if(triggersList.count > 0){
         [self buildEntryList:triggersList isTrigger:YES ];
         if (!isScene) {
-            // [self drawImage:@"arrow_icon" withSubProperties:<#(SFIButtonSubProperties *)#> isTrigger:<#(BOOL)#>];
+//             [self drawImage:@"arrow_icon" withSubProperties:<#(SFIButtonSubProperties *)#> isTrigger:<#(BOOL)#>];
         }
     }
     if(actionsList.count>0){
@@ -153,6 +153,7 @@ UILabel *topLabel;
     }
     //Replace the end image with arrow or nothing appropriately
     if(lastImageButton!=nil){
+        NSLog(@"istrigger: %d, actioncount:%ld", isTrigger, (unsigned long)actions.count);
         UIImage *lastImage= (isTrigger && actions.count>0)?[UIImage imageNamed:@"arrow_icon"]:nil;
         [lastImageButton setImage:lastImage replace:YES];
     }

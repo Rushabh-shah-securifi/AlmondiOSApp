@@ -37,6 +37,7 @@
 @property(nonatomic, readonly) SFIColors *almondColor;
 @property(nonatomic) NSTimer *mobileCommandTimer;
 
+@property(nonatomic) SecurifiToolkit *toolkit;
 @end
 
 @implementation DeviceListController
@@ -49,6 +50,7 @@ int randomMobileInternalIndex;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
     
+    self.toolkit = [SecurifiToolkit sharedInstance];
     //ensure list is empty initially
     self.currentDeviceList = @[];
     self.currentClientList = @[];
@@ -58,43 +60,39 @@ int randomMobileInternalIndex;
 
 - (void)viewWillAppear:(BOOL)animated{
     NSLog(@"devicelist viewWillAppear");
+    
     [super viewWillAppear:YES];
     [self initializeNotifications];
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 //    DeviceParser *deviceparser = [[DeviceParser alloc]init];
 //    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
 //    [self initializeAlmondData];
     
     randomMobileInternalIndex = arc4random() % 10000;
     //need to reload tableview, as toolkit could have got updates
-    self.currentDeviceList = toolkit.devices;
-    self.currentClientList = toolkit.clients;
+    self.currentDeviceList = self.toolkit.devices;
+    self.currentClientList = self.toolkit.clients;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
-        
     });
 }
 
 -(void)initializeAlmondData{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-
-    NSString *const mac = (toolkit.currentAlmond == nil) ? NO_ALMOND : toolkit.currentAlmond.almondplusMAC;
-    [self markAlmondMac:mac]; //setting self.almondmac
-    
-    if ([self isNoAlmondMAC]) {
+    if (self.toolkit.currentAlmond == nil) {
         [self markTitle:NSLocalizedString(@"router.nav-title.Get Started", @"Get Started")];
+        [self markAlmondMac:NO_ALMOND];
         self.currentDeviceList = @[];
         self.currentClientList = @[];
     }
     else {
-        [self markTitle:toolkit.currentAlmond.almondplusName];
-        self.currentDeviceList = toolkit.devices;
-        self.currentClientList = toolkit.clients;
+        [self markTitle:self.toolkit.currentAlmond.almondplusName];
+        [self markAlmondMac:self.toolkit.currentAlmond.almondplusMAC];
+        self.currentDeviceList = self.toolkit.devices;
+        self.currentClientList = self.toolkit.clients;
         
-        [self initializeColors:[toolkit currentAlmond]];
+        [self initializeColors:[self.toolkit currentAlmond]];
     }
     self.enableDrawer = YES; //to enable navigation top left button
-//    [self tryInstallRefreshControl];
+    [self tryInstallRefreshControl];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -372,9 +370,8 @@ int randomMobileInternalIndex;
 #pragma mark command responses
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"devicelist - onDeviceListAndDynamicResponseParsed");
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.currentDeviceList = toolkit.devices;
-    self.currentClientList = toolkit.clients;
+    self.currentDeviceList = self.toolkit.devices;
+    self.currentClientList = self.toolkit.clients;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
         [self.HUD hide:YES];
@@ -389,9 +386,8 @@ int randomMobileInternalIndex;
     if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
         return;
     }
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *almond = [toolkit currentAlmond];
-    BOOL local = [toolkit useLocalNetwork:almond.almondplusMAC];
+    SFIAlmondPlus *almond = [self.toolkit currentAlmond];
+    BOOL local = [self.toolkit useLocalNetwork:almond.almondplusMAC];
     NSDictionary *payload;
     if(local){
         payload = [dataInfo valueForKey:@"data"];
@@ -408,9 +404,16 @@ int randomMobileInternalIndex;
 #pragma mark cloud callbacks
 - (void)onCurrentAlmondChanged:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    if(self.toolkit.devices.count > 0)
+        [self.toolkit.devices removeAllObjects];
+    else if(self.toolkit.clients.count > 0)
+        [self.toolkit.clients removeAllObjects];
+        
+    [self initializeAlmondData];
+    [DevicePayload deviceListCommand];
+    [ClientPayload clientListCommand];
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self initializeAlmondData];
-        [self.tableView reloadData];
+        [self showHudWithTimeoutMsg:@"Loading Device data"];
     });
 }
 

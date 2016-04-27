@@ -96,9 +96,6 @@ static const int xIndent = 10;
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onDeviceListAndDynamicResponseParsed:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil]; //indexupdate or name/location change both
-//    [center addObserver:self selector:@selector(onDeviceNameChanged:) name:NOTIFICATION_UPDATE_DEVICE_NAME_NOTIFIER object:nil];
-    [center addObserver:self selector:@selector(onClientUpdate:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil];
-    
 }
 - (void)clearAllViews{
     dispatch_async(dispatch_get_main_queue(), ^(){
@@ -273,14 +270,6 @@ static const int xIndent = 10;
     NSLog(@"device edit - onUpdateDeviceIndexResponse");
 }
 
-//-(void)onDeviceNameChanged:(id)sender{ // mobile commamd
-//    
-//}
-
--(void)onClientUpdate:(id)sender{
-    NSLog(@"onClientUpdate:");
-    
-}
 
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");

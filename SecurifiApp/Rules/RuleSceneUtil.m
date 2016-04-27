@@ -62,7 +62,6 @@
         for(NSString *indexID in indexIDs){
             DeviceIndex *deviceIndex = deviceIndexes[indexID];
             GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
-            NSLog(@"%s - genericIndexObj: %@", __PRETTY_FUNCTION__, genericIndexObj);
             genericIndexObj.rowID = deviceIndex.rowID;
             
             NSString *checkString = isScene? @"Scene": @"Rule";
