@@ -39,8 +39,12 @@
 #import "GenericIndexClass.h"
 #import "GenericValue.h"
 #import "Device.h"
+#import "DeviceKnownValues.h"
+#import "Slider.h"
+#import "HueColorPicker.h"
+#import "labelAndCheckButtonView.h"
 
-@interface AddTriggerAndAddAction ()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,UITextFieldDelegate,TimeViewDelegate>
+@interface AddTriggerAndAddAction ()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,UITextFieldDelegate,TimeViewDelegate,SliderViewDelegate,HueColorPickerDelegate>
 @property (nonatomic, strong)NSMutableArray *triggers;
 @property (nonatomic, strong)NSMutableArray *actions;
 @property (nonatomic)RulesHue *ruleHueObject;
@@ -59,6 +63,7 @@ NSString *newPickerValue;
 int buttonClickCount;
 NSMutableArray * pickerValuesArray2;
 DimmerButton *dimerButton;
+labelAndCheckButtonView *labelView;
 
 -(id)initWithParentView:(UIView*)parentView deviceIndexScrollView:(UIScrollView*)deviceIndexScrollView deviceListScrollView:(UIScrollView*)deviceListScrollView triggers:(NSMutableArray*)triggers actions:(NSMutableArray*)actions isScene:(BOOL)isScene{
     if(self == [super init]){
@@ -111,7 +116,6 @@ DimmerButton *dimerButton;
     CGRect frame = CGRectMake(xVal, 0, textRect.size.width + 15, deviceButtonHeight);
     RulesDeviceNameButton *deviceButton = [[RulesDeviceNameButton alloc]initWithFrame:frame];
     [deviceButton deviceProperty:self.isTrigger deviceType:deviceType deviceName:deviceName deviceId:deviceID isScene:self.isScene];
-    
     
     if([deviceName isEqualToString:@"Time"]){
         [deviceButton addTarget:self action:@selector(TimeEventClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -191,17 +195,13 @@ DimmerButton *dimerButton;
     
 }
 
--(void)onDeviceButtonClick:(RulesDeviceNameButton *)sender{
+-(void)onDeviceButtonClick:(RulesDeviceNameButton *)deviceBtn{
     [self resetViews];
-    self.currentClickedButton = sender;
-    sender.selected = YES;
+    self.currentClickedButton = deviceBtn;
+    deviceBtn.selected = YES;
     //toggeling
-    [self toggleHighlightForDeviceNameButton:sender];
-    
-    NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForID:sender.deviceId type:sender.deviceType isTrigger:self.isTrigger isScene:self.isScene triggers:self.triggers action:self.actions];    
-    NSLog(@"GenericIndexValue: %@", genericIndexValDic);
-
-    [self createDeviceIndexesLayoutForDeviceId:sender.deviceId deviceType:sender.deviceType deviceName:sender.deviceName genericIndexValDic:genericIndexValDic];
+    [self toggleHighlightForDeviceNameButton:deviceBtn];
+    [self createDeviceIndexesLayoutForDeviceId:deviceBtn.deviceId deviceType:deviceBtn.deviceType deviceName:deviceBtn.deviceName];
 }
 
 
@@ -230,44 +230,21 @@ DimmerButton *dimerButton;
 }
 
 //on devicelist button click, calling this method
--(void) createDeviceIndexesLayoutForDeviceId:(int)deviceId deviceType:(int)deviceType deviceName:(NSString*)deviceName genericIndexValDic:(NSDictionary*)genericIndexValDic{
-    NSInteger numberOfCells = [self maxCellId:genericIndexValDic];
+-(void) createDeviceIndexesLayoutForDeviceId:(int)deviceId deviceType:(int)deviceType deviceName:(NSString*)deviceName{
+    NSArray *genericIndexValues = [RuleSceneUtil getGenericIndexValueArrayForID:deviceId type:deviceType isTrigger:self.isTrigger isScene:_isScene triggers:self.triggers action:self.actions];
     
-//    if(deviceType == SFIDeviceType_NestThermostat_57){
-//        RulesNestThermostat *rulesNestThermostatObject = [[RulesNestThermostat alloc]init];
-//        
-//        SFIDeviceValue *nestThermostatDeviceValue;
-//        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-//        SFIAlmondPlus *plus = [toolkit currentAlmond];
-//        
-//        for(SFIDeviceValue *deviceValue in [toolkit deviceValuesList:plus.almondplusMAC]){
-//            if(deviceValue.deviceID == deviceId){
-//                nestThermostatDeviceValue = deviceValue;
-//                break;
-//            }
-//        }
-//        deviceIndexes = [rulesNestThermostatObject createNestThermostatDeviceIndexes:deviceIndexes deviceValue:nestThermostatDeviceValue];
-//        if(self.isScene){
-//            deviceIndexes = [rulesNestThermostatObject filterIndexesBasedOnModeForIndexes:deviceIndexes propertyList:self.triggers deviceId:deviceId];
-//        }
-//        numberOfCells = [self maxCellId:deviceIndexes];//recalculating for nest
-//    }
-    
-    //dict - array of indexes for cellid
+    if(deviceType == SFIDeviceType_NestThermostat_57){
+        genericIndexValues = [RuleSceneUtil handleNestThermostat:deviceId genericIndexValues:genericIndexValues isScene:_isScene triggers:_triggers];
+    }
 
-    //huelamp - 58
-//    if(deviceType == SFIDeviceType_HueLamp_48){
-//        self.ruleHueObject = [[RulesHue alloc] initWithPropertiesTrigger:self.triggers action:self.actions isScene:self.isScene];
-//        self.ruleHueObject.delegate = self;
-//        [self.ruleHueObject createHueCellLayoutWithDeviceId:deviceId deviceType:deviceType deviceIndexes:deviceIndexes deviceName:deviceName scrollView:self.deviceIndexButtonScrollView cellCount:numberOfCells indexesDictionary:deviceIndexesDict];
-//        return;
-//    }
-    //else for rest of the devices
+    NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForArray:genericIndexValues isTrigger:self.isTrigger isScene:self.isScene];
+    NSInteger numberOfCells = [self maxCellId:genericIndexValDic];
+     NSLog(@"GenericIndexValueDict: %@", genericIndexValDic);
+    
     int j=0;
     for(int i = 0; i < numberOfCells; i++){
         NSArray *array = [genericIndexValDic valueForKey:[NSString stringWithFormat:@"%d",i+1]];
         if(array!=nil && array.count>0){
-            
             [self addMyButtonwithYScale:ROW_PADDING+(ROW_PADDING+frameSize)*j withDeviceIndex:array deviceId:deviceId deviceType:deviceType deviceName:deviceName];
             j++;
         }
@@ -279,6 +256,17 @@ DimmerButton *dimerButton;
     [self.deviceIndexButtonScrollView flashScrollIndicators];
     self.deviceIndexButtonScrollView.showsVerticalScrollIndicator = YES;
 }
+
+
+
+//huelamp - 58
+//    if(deviceType == SFIDeviceType_HueLamp_48){
+//        self.ruleHueObject = [[RulesHue alloc] initWithPropertiesTrigger:self.triggers action:self.actions isScene:self.isScene];
+//        self.ruleHueObject.delegate = self;
+//        [self.ruleHueObject createHueCellLayoutWithDeviceId:deviceId deviceType:deviceType deviceIndexes:deviceIndexes deviceName:deviceName scrollView:self.deviceIndexButtonScrollView cellCount:numberOfCells indexesDictionary:deviceIndexesDict];
+//        return;
+//    }
+
 
 -(RulesTimeElement *)getRuleTime{
     for(SFIButtonSubProperties *subProperties in self.triggers){
@@ -369,6 +357,33 @@ DimmerButton *dimerButton;
             subProperty.matchData = buttonSubProperty.matchData;
         }
     }
+}
+
+-(void)buildHueSliders:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
+    CGRect preframe = view.frame;
+    view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, view.frame.size.height - 35);
+    labelView = [[labelAndCheckButtonView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, 20)];
+    labelView.isScene = self.isScene;
+    [labelView setUpValues:genericIndexValue.genericIndex.groupLabel withSelectButtonTitle:@"Select"];
+    [labelView.selectButton addTarget:self action:@selector(onHueColorPickerSelectButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    Slider *hueSlider = [[Slider alloc]initWithFrame:CGRectMake(0, 20, view.frame.size.width, view.frame.size.height -20) color:[SFIColors ruleOrangeColor] genericIndexValue:genericIndexValue];
+    
+    hueSlider.delegate = self;
+    [view addSubview:labelView];
+    [view addSubview:hueSlider];
+    view.frame = preframe;
+    
+}
+-(void)buildHueColorPicker:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
+    labelView = [[labelAndCheckButtonView alloc]initWithFrame:CGRectMake(0, 0, view.frame.size.width, 20)];
+    labelView.isScene = self.isScene;
+    [labelView setUpValues:genericIndexValue.genericIndex.groupLabel withSelectButtonTitle:@"Select"];
+    [labelView.selectButton addTarget:self action:@selector(onHueColorPickerSelectButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    HueColorPicker *huePicker = [[HueColorPicker alloc]initWithFrame:CGRectMake(0, 20, view.frame.size.width, view.frame.size.height -20) color:[SFIColors ruleOrangeColor] genericIndexValue:genericIndexValue];
+    huePicker.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
+    huePicker.delegate = self;
+    [view addSubview:labelView];
+    [view addSubview:huePicker];
 }
 
 - (void)buildTextButton:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
@@ -472,6 +487,11 @@ DimmerButton *dimerButton;
             GenericValue *genericVal = genericValueDic[value];
             if  ([genericIndex.layoutType isEqualToString:@"textButton"]){
                 [self buildTextButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
+            }else if ([genericIndex.layoutType isEqualToString:@"HueColorPicker"]){
+                [self buildHueColorPicker:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
+            }
+            else if ([genericIndex.layoutType isEqualToString:@"BrighnessSlider"]){
+                [self buildHueSliders:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
             else if ([self isDimmerLayout:genericIndex.layoutType])
                 [self buildDimButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
@@ -628,7 +648,6 @@ DimmerButton *dimerButton;
     }
     isPresentHozPicker = YES;
     [self horizontalpicker:dimmer];
-    
 }
 
 -(void)changeMinMaxValuesOfNestRangeLowHighForIndex:(int)index value:(int)value dimSuperView:(UIView*)superView{
@@ -754,6 +773,13 @@ DimmerButton *dimerButton;
         
     }
 }
+
+-(void)onHueColorPickerSelectButtonClick:(id)sender{
+    NSLog(@"onHueColorPickerSelectButtonClick ");
+    if([labelView.genericIndexValue.genericIndex.ID isEqualToString:@"32"])
+        [labelView setSelected:YES];
+}
+
 #pragma mark horizontalpicker methods
 - (void)horizontalpicker:(DimmerButton*)dimButton{
     isPresentHozPicker = YES;
@@ -761,7 +787,8 @@ DimmerButton *dimerButton;
     // Picker
     picker = [[V8HorizontalPickerView alloc] initWithFrame:CGRectZero];
     picker.tag = 1; // we stored the type of property in the tag info; will use in delegate methods and callbacks
-    picker.frame = CGRectMake(self.deviceIndexButtonScrollView.frame.origin.x + 10,  dimButton.frame.origin.y + dimButton.frame.size.height +25, self.parentView.frame.size.width -20 , control_height);
+    UIView *parentView = [dimButton superview];
+    picker.frame = CGRectMake(self.deviceIndexButtonScrollView.frame.origin.x + 10,  parentView.frame.origin.y + parentView.frame.size.height, self.parentView.frame.size.width -20 , control_height);
     picker.layer.cornerRadius = 4;
     picker.layer.borderWidth = 1.5;
     picker.backgroundColor = [UIColor whiteColor];
@@ -854,5 +881,15 @@ DimmerButton *dimerButton;
 #pragma mark delegate methods - TimeView
 -(void)AddOrUpdateTime{
     [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
+}
+#pragma mark sliderdelegate methods
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue{// index is genericindex for clients, normal index for sensors
+    int index = genericIndexValue.index;
+    labelView.genericIndexValue = genericIndexValue;
+    labelView.value = newValue;
+    [self onHueColorPickerSelectButtonClick:nil];
+    NSLog(@"new value %@",newValue);
+    NSLog(@" g.index id %@",genericIndexValue.genericIndex.ID);
+    
 }
 @end

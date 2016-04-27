@@ -15,12 +15,11 @@
 #import "GenericIndexValue.h"
 #import "SFIButtonSubProperties.h"
 #import "GenericIndexUtil.h"
+#import "RulesNestThermostat.h"
 
 @implementation RuleSceneUtil
 
-+(NSDictionary*)getIndexesDicForID:(int)deviceID type:(int)deviceType isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene triggers:(NSMutableArray *)triggers action:(NSMutableArray *)actions{
-    NSArray *genericIndexValues = [self getGenericIndexValueArrayForID:deviceID type:deviceType isTrigger:isTrigger isScene:isScene triggers:triggers action:actions];
-    
++ (NSDictionary*)getIndexesDicForArray:(NSArray*)genericIndexValues isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene{    
     NSMutableDictionary *rowIndexValDict = [NSMutableDictionary new];
     for(GenericIndexValue *genericIndexValue in genericIndexValues){
         if(genericIndexValue.genericIndex.showToggleInRules){
@@ -32,14 +31,12 @@
 }
 
 + (void)getToggleParms:(GenericIndexValue *)genericIndexValue isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene{
-    
     GenericValue *toggleValue = [[GenericValue alloc]initWithDisplayText:@"TOGGLE" icon:@"toggle_icon" toggleValue:@"toggle" value:@"toggle" excludeFrom:nil eventType:nil];
     NSMutableDictionary *valuesDict = [genericIndexValue.genericIndex.values mutableCopy];
     [valuesDict setValue:toggleValue forKey:@"toggle"];
     if(isScene || (isTrigger && !isScene))
         [valuesDict removeObjectForKey:@"toggle"];
     genericIndexValue.genericIndex.values = valuesDict;
-    
 }
 
 +(void)addToDictionary:(NSMutableDictionary *)rowIndexValDict GenericIndexVal:(GenericIndexValue *)genericIndexVal rowID:(int)rowID{
@@ -65,6 +62,7 @@
         for(NSString *indexID in indexIDs){
             DeviceIndex *deviceIndex = deviceIndexes[indexID];
             GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
+            NSLog(@"%s - genericIndexObj: %@", __PRETTY_FUNCTION__, genericIndexObj);
             genericIndexObj.rowID = deviceIndex.rowID;
             
             NSString *checkString = isScene? @"Scene": @"Rule";
@@ -131,7 +129,7 @@
     return NO;
 }
 
-+(BOOL) isToBeAdded:(NSString*)dataString checkString:(NSString*)checkString{
++ (BOOL) isToBeAdded:(NSString*)dataString checkString:(NSString*)checkString{
     if(dataString  != nil){
         if([dataString rangeOfString:checkString options:NSCaseInsensitiveSearch].location != NSNotFound){// data string contains check string
             return NO;
@@ -140,6 +138,13 @@
     return  YES;
 }
 
-
++ (NSArray *)handleNestThermostat:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues isScene:(BOOL)isScene triggers:(NSMutableArray*)triggers{
+    RulesNestThermostat *rulesNestThermostatObject = [[RulesNestThermostat alloc]init];
+    NSArray *newGenIndexVals = [rulesNestThermostatObject createNestThermostatGenericIndexValues:genericIndexValues deviceID:deviceID];
+    if(isScene){
+        newGenIndexVals = [rulesNestThermostatObject filterIndexesBasedOnModeForIndexes:newGenIndexVals propertyList:triggers deviceId:deviceID];
+    }
+    return newGenIndexVals;
+}
 
 @end

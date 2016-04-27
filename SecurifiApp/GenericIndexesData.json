@@ -248,7 +248,7 @@
     },
     "-30": {
         "Name": "ClientEvent",
-        "Type": "Actuator",
+        "Type": "Sensor",
         "Layout": "MULTI_BUTTON",
         "Values": {
             "ClientLeft": {

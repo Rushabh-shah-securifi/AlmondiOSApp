@@ -12,15 +12,17 @@
 #import "GenericValue.h"
 
 @interface RuleSceneUtil : NSObject
-+(BOOL)isActionDevice:(int) deviceType;
++ (BOOL)isActionDevice:(int) deviceType;
 
-+(BOOL)isTriggerDevice:(int)deviceType;
++ (BOOL)isTriggerDevice:(int)deviceType;
 
-+(NSDictionary*)getIndexesDicForID:(int)deviceID type:(int)deviceType isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene triggers:(NSMutableArray*)triggers action:(NSMutableArray*)actions;
++ (NSDictionary*)getIndexesDicForArray:(NSArray*)genericIndexValues isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene;
 
-+(NSArray *)getGenericIndexValueArrayForID:(int)deviceID type:(int)deviceType isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene triggers:(NSMutableArray*)triggers action:(NSMutableArray*)actions;
++ (NSArray *)getGenericIndexValueArrayForID:(int)deviceID type:(int)deviceType isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene triggers:(NSMutableArray*)triggers action:(NSMutableArray*)actions;
 
-+(BOOL) isToBeAdded:(NSString*)dataString checkString:(NSString*)checkString;
++ (BOOL) isToBeAdded:(NSString*)dataString checkString:(NSString*)checkString;
 
 + (BOOL)shouldYouSkipTheValue:(GenericValue*)genericValue isScene:(BOOL)isScene;
+
++ (NSArray *)handleNestThermostat:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues isScene:(BOOL)isScene triggers:(NSMutableArray*)triggers;
 @end

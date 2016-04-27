@@ -52,7 +52,7 @@ int randomMobileInternalIndex;
     //ensure list is empty initially
     self.currentDeviceList = @[];
     self.currentClientList = @[];
-//    [self initializeAlmondData];
+    [self initializeAlmondData];
     [self showHudWithTimeoutMsg:@"Loading Device data"];
 }
 
@@ -61,10 +61,9 @@ int randomMobileInternalIndex;
     [super viewWillAppear:YES];
     [self initializeNotifications];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    DeviceParser *deviceparser = [[DeviceParser alloc]init];
-    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
-    [self initializeAlmondData];
-    
+//    DeviceParser *deviceparser = [[DeviceParser alloc]init];
+//    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
+//    [self initializeAlmondData];
     
     randomMobileInternalIndex = arc4random() % 10000;
     //need to reload tableview, as toolkit could have got updates

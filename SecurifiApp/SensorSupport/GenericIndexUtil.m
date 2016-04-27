@@ -23,6 +23,7 @@
 
 
 +(GenericIndexValue*)getHeaderGenericIndexValueForDevice:(Device*)device{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     NSArray *genericIndexValues = [self getGenericIndexValuesByPlacementForDevice:device placement:HEADER];
     NSString *headerText = @"";
     NSString *detailText = @"";
@@ -55,6 +56,7 @@
 }
 
 +(NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericDeviceClass *genericDevice = toolkit.genericDevices[@(device.type).stringValue];
     NSDictionary *deviceIndexes = genericDevice.Indexes;
@@ -99,6 +101,7 @@
 }
 
 + (NSMutableArray *)getDetailListForDevice:(int)deviceID{
+    NSLog(@"%s", __PRETTY_FUNCTION__);
     Device *device = [Device getDeviceForID:deviceID];
     
     NSMutableArray *detailList = [self getGenericIndexValuesByPlacementForDevice:device placement:@"Detail"];
