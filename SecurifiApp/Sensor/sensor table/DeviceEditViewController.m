@@ -228,6 +228,7 @@ static const int xIndent = 10;
 -(void)dimissTamperTap:(id)sender{
     [self showToast:@"Saving..."];
     [UIView animateWithDuration:2 delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:15 options:nil animations:^() {
+        ///[DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
         [self.dismisstamperedView removeFromSuperview];
         self.deviceEditHeaderCell.tamperedImgView.hidden = YES;
         self.indexScrollTopConstraint.constant = 2;

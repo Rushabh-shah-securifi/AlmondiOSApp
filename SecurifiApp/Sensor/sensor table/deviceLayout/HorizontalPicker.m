@@ -39,7 +39,7 @@
     horzPicker.indicatorPosition = V8HorizontalPickerIndicatorBottom;
     horzPicker.delegate = self;
     horzPicker.dataSource = self;
-    [horzPicker scrollToElement:49 animated:YES];// here value will be device knownVaklue.value
+    [horzPicker scrollToElement:[self.genericIndexValue.genericValue.value integerValue] animated:YES];// here value will be device knownVaklue.value
     const NSInteger element_width = [self horizontalPickerView:horzPicker widthForElementAtIndex:0];
     SFIPickerIndicatorView1 *indicatorView = [[SFIPickerIndicatorView1 alloc] initWithFrame:CGRectMake(0, 0, element_width, 2)];
     horzPicker.selectionPoint = CGPointMake((horzPicker.frame.size.width) / 2, 0);
@@ -61,7 +61,7 @@
     
     //return [NSString stringWithFormat:@"%ld\u00B0", (long) index];
     
-    return @(index).stringValue;
+    return @(index + self.genericIndexValue.genericIndex.formatter.min).stringValue ;
 }
 
 - (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {

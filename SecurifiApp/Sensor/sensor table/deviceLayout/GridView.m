@@ -96,7 +96,7 @@ NSString *blockedType;
                 self.scrollView.backgroundColor = [UIColor clearColor];
                 [self addSubview:self.scrollView];
                 [self addInfo];
-                [self addSaveButton];
+            
 //            });
    
         }break;
@@ -194,7 +194,7 @@ NSString *blockedType;
             [blockedHours setValue:[NSString stringWithFormat:@"%c", [binary characterAtIndex:charIdx]] forKey:@(len-charIdx).stringValue];
         dictCount++;
     }
-    
+  [self addSaveButton];
 }
 -(NSString *)toBinary:(NSUInteger)input
 {
@@ -336,7 +336,8 @@ NSString *blockedType;
     return [resultStr mutableCopy];
 }
 -(void)addSaveButton{
-    UIButton *saveButton = [[UIButton alloc]initWithFrame:CGRectMake(0,930 ,110,30)];
+    NSLog(@"self.collectionView.frame.size.height %f",self.collectionView.frame.size.height);
+    UIButton *saveButton = [[UIButton alloc]initWithFrame:CGRectMake(0,self.collectionView.frame.size.height - 100,110,30)];
     NSLog(@" savebutton frame %@",NSStringFromCGRect(saveButton.frame));
     saveButton.backgroundColor = [UIColor whiteColor];
     saveButton.titleLabel.font = [UIFont securifiFont:14];

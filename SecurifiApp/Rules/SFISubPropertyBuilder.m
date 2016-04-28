@@ -327,7 +327,7 @@ UILabel *topLabel;
             else if(subProperties.index == 3)
                 [switchButton->actionbutton changeImageColor:[UIColor colorFromHexString:[self getColorHex:subProperties.matchData]]];
         }
-        
+        (switchButton->delayButton).userInteractionEnabled = disableUserInteraction;
         [switchButton->delayButton addTarget:self action:@selector(onActionDelayClicked:) forControlEvents:UIControlEventTouchUpInside];
         xVal += rulesButtonsViewWidth + entryPadding;
         

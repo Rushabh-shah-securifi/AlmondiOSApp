@@ -628,7 +628,10 @@
     titleLabel.attributedText = str;
 
     [titleView addSubview:titleLabel];
-    self.navigationItem.titleView = titleView;
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        self.navigationItem.titleView = titleView;
+    });
+    
 }
 
 - (void)showHUD:(NSString *)text {
