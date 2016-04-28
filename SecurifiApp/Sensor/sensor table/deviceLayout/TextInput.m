@@ -29,7 +29,7 @@
 //    self.deviceNameField.backgroundColor = self.color;
     self.deviceNameField.textColor = [UIColor whiteColor];
     self.deviceNameField.font = [UIFont securifiFont:15];
-    [self.deviceNameField becomeFirstResponder];
+//    [self.deviceNameField becomeFirstResponder];
     UIView *OnelineView = [[UIView alloc]initWithFrame:CGRectMake(self.deviceNameField.frame.origin.x, self.deviceNameField.frame.size.height , self.frame.size.width, 1)];
     OnelineView.backgroundColor = [UIColor whiteColor];
     OnelineView.alpha = 0.5;

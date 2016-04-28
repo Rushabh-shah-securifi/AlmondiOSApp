@@ -28,7 +28,6 @@
 @property (nonatomic, strong)NSMutableArray *rules;
 @property SFIAlmondPlus *currentAlmond;
 @property UIButton *buttonAdd;
-@property(nonatomic, readonly) MBProgressHUD *HUD;
 @end
 
 @implementation RulesTableViewController
