@@ -70,6 +70,7 @@ NSString *blockedType;
         self.scrollView.hidden = NO;
         self.allowOnNetworkSegment.selectedSegmentIndex = 1; //OnSchedule
         blockedType = @"2";
+        [self segmentControllChanged:nil];
     }
 }
 
