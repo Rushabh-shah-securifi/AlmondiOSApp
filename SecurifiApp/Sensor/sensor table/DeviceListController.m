@@ -23,6 +23,7 @@
 #import "MessageView.h"
 #import "SFICloudLinkViewController.h"
 #import "MBProgressHUD.h"
+#import "RouterPayload.h"
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -41,7 +42,7 @@
 @end
 
 @implementation DeviceListController
-int randomMobileInternalIndex;
+int mii;
 
 - (void)viewDidLoad {
     NSLog(@"devicelist - viewDidLoad");
@@ -67,7 +68,7 @@ int randomMobileInternalIndex;
 //    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
 //    [self initializeAlmondData];
     
-    randomMobileInternalIndex = arc4random() % 10000;
+    mii = arc4random() % 10000;
     //need to reload tableview, as toolkit could have got updates
     self.currentDeviceList = self.toolkit.devices;
     self.currentClientList = self.toolkit.clients;
@@ -93,6 +94,7 @@ int randomMobileInternalIndex;
     }
     self.enableDrawer = YES; //to enable navigation top left button
     [self tryInstallRefreshControl];
+//    [RouterPayload routerSummary:mii isSimulator:NO mac:self.toolkit.currentAlmond.almondplusMAC];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -348,7 +350,7 @@ int randomMobileInternalIndex;
                                                                  userInfo:nil
                                                                   repeats:NO];
     });
-    [DevicePayload getSensorIndexUpdate:genericIndexValue mii:randomMobileInternalIndex];
+    [DevicePayload getSensorIndexUpdate:genericIndexValue mii:mii];
 }
 
 - (void)onToggleTimeout:(id)sender {

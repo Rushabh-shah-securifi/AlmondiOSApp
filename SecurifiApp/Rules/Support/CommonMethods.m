@@ -26,6 +26,8 @@
     NSMutableString *days = [NSMutableString new];
     int i=0;
     for(NSString *dayVal in earlierSelection){
+        if([dayVal isEqualToString:@""])
+            continue;
         NSString *value=[dayDict valueForKey:dayVal];
         [days appendString:(i==0)?value:[NSString stringWithFormat:@",%@", value]];
         i++;
