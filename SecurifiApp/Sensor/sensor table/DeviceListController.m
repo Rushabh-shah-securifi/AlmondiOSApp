@@ -78,6 +78,7 @@ int mii;
 }
 
 -(void)initializeAlmondData{
+    NSLog(@"%s, self.toolkit.currentAlmond: %@", __PRETTY_FUNCTION__, self.toolkit.currentAlmond);
     if (self.toolkit.currentAlmond == nil) {
         [self markTitle:NSLocalizedString(@"router.nav-title.Get Started", @"Get Started")];
         [self markAlmondMac:NO_ALMOND];
@@ -363,12 +364,12 @@ int mii;
 #pragma mark clientCell delegate
 
 -(void)delegateClientSettingButtonClick:(GenericParams*)genericParams{
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
     ClientPropertiesViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ClientPropertiesViewController"];
     viewController.genericParams = genericParams;
     [self.navigationController pushViewController:viewController animated:YES];
 }
+
 #pragma mark command responses
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"devicelist - onDeviceListAndDynamicResponseParsed");
@@ -416,11 +417,12 @@ int mii;
     [ClientPayload clientListCommand];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHudWithTimeoutMsg:@"Loading Device data"];
+        [self.tableView reloadData];
     });
 }
 
 - (void)onAlmondListDidChange:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSLog(@"%s 1", __PRETTY_FUNCTION__);
     if (!self) {
         return;
     }
@@ -432,10 +434,12 @@ int mii;
         // No reason to alert user
         return;
     }
+    NSLog(@"%s 2", __PRETTY_FUNCTION__);
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self || !self.isViewLoaded) {
             return;
         }
+        NSLog(@"%s 3", __PRETTY_FUNCTION__);
         [self.HUD show:YES];
         [self initializeAlmondData];
         [self.tableView reloadData];

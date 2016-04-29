@@ -64,8 +64,6 @@
             GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
             genericIndexObj.rowID = deviceIndex.rowID;
             
-            NSString *checkString = isScene? @"Scene": @"Rule";
-
             SFIButtonSubProperties *subProperty = [self findSubProperty:triggers actions:(NSArray*)actions deviceID:deviceID index:indexID.intValue istrigger:isTrigger];
             GenericValue *genericValue = nil;
             if(subProperty != nil)
@@ -73,13 +71,14 @@
             GenericIndexValue *genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue index:indexID.intValue deviceID:deviceID];
 
             
+            NSString *checkString = isTrigger? @"Rule": @"Scene";
             //rule trigger
-            if(!isScene && isTrigger && [self isToBeAdded:genericIndexObj.excludeFrom checkString:checkString]){
+            if(!isScene && isTrigger && [self isToBeAdded:genericIndexObj.excludeFrom checkString:@"Rule"]){
                 NSLog(@"util - rule trigger");
                 [genericIndexValues addObject:genericIndexValue];
             }
             //scene action, rule action
-            else if( (isScene || !isTrigger) && [genericIndexObj.type isEqualToString:ACTUATOR] && [self isToBeAdded:genericIndexObj.excludeFrom checkString:checkString]){
+            else if((isScene || !isTrigger) && [genericIndexObj.type isEqualToString:ACTUATOR] && [self isToBeAdded:genericIndexObj.excludeFrom checkString:checkString]){
                 NSLog(@"util - scene/rule action");
                 [genericIndexValues addObject:genericIndexValue];
             }
@@ -138,10 +137,9 @@
 }
 
 + (NSArray *)handleNestThermostat:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues isScene:(BOOL)isScene triggers:(NSMutableArray*)triggers{
-    RulesNestThermostat *rulesNestThermostatObject = [[RulesNestThermostat alloc]init];
-    NSArray *newGenIndexVals = [rulesNestThermostatObject createNestThermostatGenericIndexValues:genericIndexValues deviceID:deviceID];
+    NSArray *newGenIndexVals = [RulesNestThermostat createNestThermostatGenericIndexValues:genericIndexValues deviceID:deviceID];
     if(isScene){
-        newGenIndexVals = [rulesNestThermostatObject filterIndexesBasedOnModeForIndexes:newGenIndexVals propertyList:triggers deviceId:deviceID];
+        newGenIndexVals = [RulesNestThermostat filterIndexesBasedOnModeForIndexes:newGenIndexVals propertyList:triggers deviceId:deviceID];
     }
     return newGenIndexVals;
 }

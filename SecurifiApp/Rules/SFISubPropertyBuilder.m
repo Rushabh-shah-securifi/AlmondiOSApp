@@ -182,7 +182,7 @@ UILabel *topLabel;
             
             for (NSString *value in genericValueKeys) {
                 GenericValue *gVal = genericValueDic[value];
-                BOOL isDimButton = genericIndex.layoutType!=nil && ([self isDimmerLayout:genericIndex.layoutType] || [genericIndex.layoutType isEqualToString:@"Text_Text_Input"]);
+                BOOL isDimButton = genericIndex.layoutType!=nil && ([CommonMethods isDimmerLayout:genericIndex.layoutType] || [genericIndex.layoutType isEqualToString:@"Text_Text_Input"]);
                 NSLog(@"gaval.value: %@, propertyvalue: %@", gVal.value, buttonProperties.matchData);
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties]){
                     NSLog(@"subpropertybuilder - compare entry");
@@ -214,19 +214,11 @@ UILabel *topLabel;
     return genericValueDic;
 }
 
-+(BOOL)isDimmerLayout:(NSString*)genericLayout{
-    if(genericLayout  != nil){
-        NSLog(@"genericLayout %@",genericLayout);
-        if([genericLayout rangeOfString:@"Slider" options:NSCaseInsensitiveSearch].location != NSNotFound){// data string contains check string
-            return YES;
-        }
-    }
-    return NO;
-}
+
 
 
 +(NSString*)getDisplayText:(GenericIndexClass*)genericIndex value:(NSString*)value genericValue:(GenericValue*)gVal{
-    if(genericIndex.layoutType!=nil && ([self isDimmerLayout:genericIndex.layoutType] || [genericIndex.layoutType isEqualToString:@"textButton"])){
+    if(genericIndex.layoutType!=nil && ([CommonMethods isDimmerLayout:genericIndex.layoutType] || [genericIndex.layoutType isEqualToString:@"textButton"])){
         return [NSString stringWithFormat:@"%@ %@%@", gVal.displayText, value, genericIndex.formatter.units];
     }
     return gVal.displayText;

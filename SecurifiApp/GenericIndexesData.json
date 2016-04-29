@@ -281,6 +281,19 @@
             }
         }
     },
+    "-32": {
+        "Name": "ToggleIcon",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "Values": {
+            "toggle": {
+                "Icon": "toggle_icon",
+                "AppLabel": "Toggle",
+                "Label": "Toggle"
+            }
+        }
+        
+    },
     "0":{
         "Name": "Mode",
         "Type": "Actuator",
@@ -306,9 +319,10 @@
         "Name": "SWITCH BINARY",
         "Type": "Actuator",
         "Placement": "Header",
-        "Layout": "Toggle",
-        "showToggleInRules": "true",
-        "DefaultIcon": "switch_off",
+        "Layout": "MULTI_BUTTON",
+        "GroupLabel": "SWITCH",
+        "ShowToggleInRules": "true",
+        "DefaultIcon": "switch_on",
         "Values": {
             "true": {
                 "ToggleValue": "false",
@@ -328,7 +342,7 @@
         "Name": "SENSOR BINARY",
         "Type": "Sensor",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "DefaultIcon": "door_off",
         "Values": {
             "true": {
@@ -347,7 +361,7 @@
         "Name": "MOTION_STATE",
         "Type": "Sensor",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "DefaultIcon": "motion_on",
         "Values": {
             "true": {
@@ -366,7 +380,7 @@
         "Name": "DOOR_STATE",
         "Type": "Sensor",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "DefaultIcon": "door_on",
         "Values": {
             "true": {
@@ -385,7 +399,7 @@
         "Name": "VIBRATION_STATE",
         "Type": "Sensor",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "DefaultIcon": "vibration_off",
         "Values": {
             "true": {
@@ -404,7 +418,7 @@
         "Name": "WATER_STATE",
         "Type": "Sensor",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "DefaultIcon": "water_off",
         "Values": {
             "true": {
@@ -423,7 +437,7 @@
         "Name": "GAS_STATE",
         "Type": "Sensor",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "DefaultIcon": "fire_off",
         "Values": {
             "true": {
@@ -442,7 +456,7 @@
         "Name": "FIRE_STATE",
         "Type": "Sensor",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "DefaultIcon": "fire_off",
         "Values": {
             "true": {
@@ -461,7 +475,7 @@
         "Name": "TAMPER",
         "Type": "Sensor",
         "Placement": "Badge",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "GroupLabel": "Tamper",
         "Values": {
             "true": {
@@ -475,19 +489,19 @@
         "Name": "PANIC_ALARM",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "GroupLabel": "Panic Alarm",
         "AppLabel": "paincAlarm",
-        "ExcludeFrom": "scene",
-        "DefaultIcon": "panic",
+        "ExcludeFrom": "Scene",
+        "DefaultIcon": "panic_icon",
         "Values": {
             "true": {
-                "Icon": "panic",
+                "Icon": "panic_icon",
                 "AppLabel": "paincAlarm",
                 "Label": "Panic Alarm"
             },
             "false": {
-                "Icon": "panic",
+                "Icon": "panic_icon",
                 "Label": "NO",
                 "AppLabel": "no",
                 "ExcludeFrom": "Rule"
@@ -498,18 +512,18 @@
         "Name": "EMER_ALARM",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "GroupLabel": "Emergency Alarm",
         "AppLabel": "emergencyAlarm",
-        "DefaultIcon": "emergency",
+        "DefaultIcon": "emergency_icon",
         "Values": {
             "true": {
-                "Icon": "emergency",
+                "Icon": "emergency_icon",
                 "AppLabel": "emergencyAlarm",
                 "Label": "Emergency Alarm"
             },
             "false": {
-                "Icon": "emergency",
+                "Icon": "emergency_icon",
                 "Label": "NO",
                 "AppLabel": "no",
                 "ExcludeFrom": "Rule"
@@ -520,7 +534,7 @@
         "Name": "LOW BATTERY",
         "Type": "Sensor",
         "Placement": "Badge",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "GroupLabel": "LOW BATTERY",
         "AppLabel": "lowBattery",
         "Values": {
@@ -535,7 +549,7 @@
         "Name": "ALARM_STATE",
         "Type": "Actuator",
         "Placement": "Header_Detail",
-        "Layout": "Text_Text_Input",
+        "Layout": "TEXT_VIEW",
         "GroupLabel": "Ring alarm for",
         "AppLabel": "set_alarm_for",
         "ExcludeFrom": "Scene",
@@ -559,12 +573,11 @@
         "DataType": "Byte",
         "ReadOnly": "true",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "GroupLabel": "NaN",
         "Conditional": "false",
         "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
-        "ExcludeFrom": "scene",
+        "ExcludeFrom": "Scene",
         "DefaultIcon": "alarm_icon",
         "Values": {
             "0": {
@@ -574,7 +587,7 @@
             },
             "255": {
                 "ToggleValue": "NaN",
-                "Icon": "alarm_on",
+                "Icon": "alarm_icon",
                 "Label": "ACTIVE"
             }
         }
@@ -583,7 +596,7 @@
         "Name": "SMOKE_STATE",
         "Type": "Sensor",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "GroupLabel": "NaN",
         "DefaultIcon": "fire_off",
         "Values": {
@@ -603,7 +616,7 @@
         "Name": "FLOOD_STATE",
         "Type": "Sensor",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "DefaultIcon": "water_off",
         "Values": {
             "0": {
@@ -622,7 +635,7 @@
         "Name": "SWITCH MULTILEVEL",
         "Type": "Actuator",
         "Placement": "Header_Detail",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "GroupLabel": "Dimmer",
         "AppLabel": "dimmer",
         "DefaultIcon": "switch_off",
@@ -637,13 +650,12 @@
         "Name": "DIMMER_LEVEL",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "GroupLabel": "Dimmer",
         "AppLabel": "dimmer",
-        "DefaultIcon": "multilevel_switch_on",
         "Formatter": {
             "Min": "0",
-            "Max": "255",
+            "Max": "100",
             "Unit": "%",
             "Factor": "0.392"
         }
@@ -652,7 +664,7 @@
         "Name": "SWITCH_MULTISOUND",
         "Type": "Actuator",
         "Placement": "Header_Detail",
-        "Layout": "Toggle|List",
+        "Layout": "LIST",
         "GroupLabel": "Start Alarm",
         "AppLabel": "start_alarm",
         "DefaultIcon": "alarm_off",
@@ -704,18 +716,18 @@
         "Name": "SHUTTER_LEVEL",
         "Type": "Actuator",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "DefaultIcon": "garage_close",
         "Values": {
             "0": {
                 "ToggleValue": "99",
-                "Icon": "garage_close_icon",
+                "Icon": "garage_close",
                 "AppLabel": "closed",
                 "Label": "CLOSED"
             },
             "99": {
                 "ToggleValue": "0",
-                "Icon": "garage_open_icon",
+                "Icon": "garage_open",
                 "AppLabel": "opened",
                 "Label": "OPENED"
             },
@@ -731,7 +743,7 @@
         "Name": "BASIC_EXTENDER",
         "Type": "Actuator",
         "Placement": "DETAIL",
-        "Layout": "Toggle|MULTI_BUTTON",
+        "Layout": "MULTI_BUTTON",
         "GroupLabel": "Power",
         "AppLabel": "power",
         "Values": {
@@ -753,7 +765,7 @@
         "Name": "LOCK_STATE",
         "Type": "Actuator",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "ShowToggleInRules": "true",
         "DefaultIcon": "lock_open",
         "ValuesArray": {
@@ -781,7 +793,7 @@
         "Name": "LOCK_STATE_ZB",
         "Type": "Actuator",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "ShowToggleInRules": "true",
         "DefaultIcon": "lock_open",
         "Values": {
@@ -810,7 +822,7 @@
         "Name": "ARMMODE",
         "Type": "Sensor",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "DefaultIcon": "keyfob_off",
         "Values": {
             "0": {
@@ -833,10 +845,12 @@
     "25": {
         "Name": "TEMPERATURE",
         "Type": "Sensor",
-        "Placement": "Header",
-        "Layout": "Slider",
+        "Placement": "Detail",
+        "Layout": "SINGLE_TEMP",
         "AppLabel": "temperature",
         "GroupLabel": "Temperature",
+        "DefaultIcon": "target_temperature",
+        "ExcludeFrom": "Scene",
         "Formatter": {
             "Min": "35",
             "Max": "95",
@@ -850,12 +864,11 @@
         "DataType": "Short",
         "ReadOnly": "true",
         "Placement": "Header",
-        "Layout": "Info",
+        "Layout": "SLIDER",
         "GroupLabel": "PRESSURE",
         "Conditional": "true",
         "DefaultVisibility": "true",
-        "ExcludeFrom": "scene",
-        "HasToggleIcon": "false",
+        "ExcludeFrom": "Scene",
         "DefaultIcon": "pressure",
         "Formatter": {
             "Min": "-3276",
@@ -867,10 +880,11 @@
     "27": {
         "Name": "HUMIDITY",
         "Type": "Sensor",
-        "Placement": "Detail",
-        "Layout": "Slider",
+        "Placement": "Hidden",
+        "Layout": "SINGLE_TEMP",
         "AppLabel": "humidity",
         "GroupLabel": "HUMIDITY",
+        "ExcludeFrom": "Scene",
         "Formatter": {
             "Min": "0",
             "Max": "100",
@@ -882,7 +896,7 @@
         "Name": "ILLUMINANCE",
         "Type": "Sensor",
         "Placement": "DETAIL",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "AppLabel": "luminance",
         "GroupLabel": "ILLUMINANCE",
         "DefaultIcon": "luminance",
@@ -897,7 +911,7 @@
         "Name": "ILLUMINANCE_PERCENT",
         "Type": "Sensor",
         "Placement": "DETAIL",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "AppLabel": "luminance",
         "GroupLabel": "ILLUMINANCE",
         "DefaultIcon": "luminance",
@@ -911,7 +925,7 @@
         "Name": "HUE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Hue",
+        "Layout": "HUE",
         "AppLabel": "hue",
         "GroupLabel": "Hue",
         "Formatter": {
@@ -925,13 +939,11 @@
         "DataType": "Int",
         "ReadOnly": "false",
         "Placement": "Details",
-        "SecondaryPlacement": "NaN",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "GroupLabel": "NaN",
         "Conditional": "true",
         "UseInScenes": "true",
         "DefaultVisibility": "true",
-        "HasToggleIcon": "false",
         "Formatter": {
             "Min": "0",
             "Max": "255",
@@ -943,7 +955,7 @@
         "Name": "SATURATION",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "HueSlider",
+        "Layout": "SLIDER",
         "AppLabel": "saturation",
         "GroupLabel": "Saturation",
         "Formatter": {
@@ -957,7 +969,7 @@
         "Name": "COLOR_TEMPERATURE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Slider|Bar",
+        "Layout": "SLIDER",
         "GroupLabel": "Color Temperature",
         "AppLabel": "color_temp",
         "Conditional": "true",
@@ -972,7 +984,7 @@
         "Name": "POWER",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "GroupLabel": "power",
         "AppLabel": "powerLabel",
         "Conditional": "true",
@@ -1015,35 +1027,39 @@
     "36": {
         "Name": "THERMOSTAT OPERATING STATE",
         "Type": "Sensor",
-        "Placement": "Header",
+        "Placement": "Header_Detail",
+        "Layout": "TEXT_VIEW",
+        "GroupLabel": "Operating State",
         "ExcludeFrom": "Rule"
     },
     "37": {
         "Name": "THERMOSTAT SETPOINT HEATING",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Slider",
+        "Layout": "SINGLE_TEMP",
         "AppLabel": "high_temp",
-        "GroupLabel": "High Temperature",
+        "GroupLabel": "Heat Temp",
         "Conditional": "true",
         "Formatter": {
             "Min": "35",
             "Max": "95",
-            "Unit": "\u00B0F"
+            "Unit": "\u00B0F",
+            "Factor": "1"
         }
     },
     "38": {
         "Name": "THERMOSTAT SETPOINT COOLING",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Slider",
+        "Layout": "SINGLE_TEMP",
         "AppLabel": "low_temp",
         "GroupLabel": "Low Temperature",
         "Conditional": "true",
         "Formatter": {
             "Min": "35",
             "Max": "95",
-            "Unit": "\u00B0F"
+            "Unit": "F",
+            "Factor": "1"
         }
     },
     "39": {
@@ -1054,12 +1070,12 @@
         "GroupLabel": "Fan Mode",
         "AppLabel": "fan_mode",
         "Values": {
-            "On low ": {
+            "On Low ": {
                 "Icon": "btn_fan_off",
                 "AppLabel": "fan_on_low",
                 "Label": "On low "
             },
-            "Auto low": {
+            "Auto Low": {
                 "Icon": "btn_fan_on",
                 "AppLabel": "fan_auto_low",
                 "Label": "Auto low"
@@ -1070,13 +1086,15 @@
         "Name": "THERMOSTAT FAN STATE",
         "Type": "Sensor",
         "Placement": "Detail",
+        "Layout": "TEXT_VIEW",
+        "GroupLabel": "Fan State",
         "ExcludeFrom": "Rule"
     },
     "41": {
         "Name": "THERMOSTAT SETPOINT",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Slider|Single_Temp",
+        "Layout": "SINGLE_TEMP",
         "GroupLabel": "Target Temperature",
         "AppLabel": "target_temp",
         "Conditional": "true",
@@ -1090,7 +1108,7 @@
         "Name": "UP_DOWN",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "List",
+        "Layout": "LIST",
         "GroupLabel": "Actions",
         "AppLabel": "actions",
         "ExcludeFrom": "Rule|Scene",
@@ -1128,7 +1146,7 @@
         "Name": "BARRIER OPERATOR",
         "Type": "Actuator",
         "Placement": "Header",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
         "Values": {
             "0": {
                 "ToggleValue": "255",
@@ -1163,7 +1181,7 @@
         "Name": "AC MODE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "List|Toggle",
+        "Layout": "LIST",
         "AppLabel": "mode",
         "GroupLabel": "Mode",
         "Values": {
@@ -1213,7 +1231,7 @@
         "Name": "AC SETPOINT HEATING",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Slider|Double_Temp",
+        "Layout": "SLIDER",
         "GroupLabel": "High Temperature",
         "AppLabel": "high_temp",
         "Conditional": "true",
@@ -1227,7 +1245,7 @@
         "Name": "AC SETPOINT COOLING",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Slider|Double_Temp",
+        "Layout": "SLIDER",
         "GroupLabel": "Low Temperature",
         "AppLabel": "low_temp",
         "Conditional": "true",
@@ -1241,7 +1259,7 @@
         "Name": "AC FAN MODE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "List|Toggle",
+        "Layout": "LIST",
         "GroupLabel": "Fan Mode",
         "AppLabel": "fan_mode",
         "Values": {
@@ -1293,21 +1311,23 @@
     "50": {
         "Name": "BATTERY",
         "Type": "Sensor",
-        "ReadOnly": "true",
         "Placement": "Detail",
-        "Layout": "Text_View",
+        "Layout": "TEXT_VIEW",
         "GroupLabel": "Battery",
         "AppLabel": "battery",
         "Conditional": "true",
         "Formatter": {
-            "Unit": "%"
+            "Min": "0",
+            "Max": "100",
+            "Unit": "%",
+            "Factor": "1"
         }
     },
     "51": {
         "Name": "IR CODE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Text_Input",
+        "Layout": "TEXT_VIEW",
         "GroupLabel": "IR Code",
         "Formatter": {
             "Min": "0",
@@ -1319,7 +1339,7 @@
         "Name": "VOLTAGE",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "Text_View",
+        "Layout": "TEXT_VIEW",
         "AppLabel": "voltage",
         "GroupLabel": "Voltage",
         "Conditional": "true",
@@ -1331,7 +1351,7 @@
         "Name": "CURRENT",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "Text_View",
+        "Layout": "TEXT_VIEW",
         "AppLabel": "current",
         "GroupLabel": "Current",
         "Conditional": "true",
@@ -1350,7 +1370,8 @@
         "Name": "NEST_ID",
         "Type": "Functional",
         "ReadOnly": "true",
-        "Placement": "Hidden"
+        "Placement": "Hidden",
+        "ExcludeFrom": "Scene_Rule"
     },
     "56": {
         "Name": "THERMOSTAT_MODE",
@@ -1363,7 +1384,7 @@
             "heat-cool": {
                 "Icon": "img_auto",
                 "AppLabel": "nest_heat_cool",
-                "Label": "Auto"
+                "Label": "Heat-Cool"
             },
             "cool": {
                 "Icon": "img_cool",
@@ -1386,7 +1407,7 @@
         "Name": "THERMOSTAT_TARGET",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Single_Temp|Slider",
+        "Layout": "SINGLE_TEMP",
         "GroupLabel": "Target Temp",
         "AppLabel": "target_temperature",
         "Conditional": "true",
@@ -1400,7 +1421,7 @@
         "Name": "THERMOSTAT_RANGE_LOW",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Double_Temp|Slider",
+        "Layout": "SINGLE_TEMP",
         "GroupLabel": "Low Temperature",
         "AppLabel": "low_temp",
         "Conditional": "true",
@@ -1414,7 +1435,7 @@
         "Name": "THERMOSTAT_RANGE_HIGH",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Double_Temp|Slider",
+        "Layout": "SINGLE_TEMP",
         "GroupLabel": "High Temperature",
         "AppLabel": "high_temp",
         "Conditional": "true",
@@ -1431,7 +1452,7 @@
         "Layout": "MULTI_BUTTON",
         "GroupLabel": "Nest Mode",
         "AppLabel": "nest_label_away_mode",
-        "ExcludeFrom": "Scene",
+        "ExcludeFrom": "Scene_Rule",
         "Values": {
             "home": {
                 "Icon": "home_white",
@@ -1472,9 +1493,10 @@
     },
     "62": {
         "Name": "ISONLINE",
-        "Type": "Functional",
+        "Type": "Sensor",
         "Placement": "Hidden",
-        "Layout": "Toggle",
+        "Layout": "MULTI_BUTTON",
+        "ExcludeFrom": "Scene",
         "Values": {
             "true": {
                 "Icon": "online_icon",
@@ -1491,17 +1513,20 @@
     "63": {
         "Name": "CAN_COOL",
         "Type": "Functional",
-        "Placement": "Hidden"
+        "Placement": "Hidden",
+        "ExcludeFrom": "Scene_Rule"
     },
     "64": {
         "Name": "CAN_HEAT",
         "Type": "Functional",
-        "Placement": "Hidden"
+        "Placement": "Hidden",
+        "ExcludeFrom": "Scene_Rule"
     },
     "65": {
         "Name": "IS_USING_EMERGENCY_HEAT",
         "Type": "Functional",
         "Placement": "Detail",
+        "ExcludeFrom": "Scene_Rule",
         "Values": {
             "true": {
                 "Label": "Using Emergency Heat"
@@ -1511,13 +1536,15 @@
     "66": {
         "Name": "HAS_FAN",
         "Type": "Functional",
-        "Placement": "Hidden"
+        "Placement": "Hidden",
+        "ExcludeFrom": "Scene_Rule"
     },
     "67": {
         "Name": "HVAC_STATE",
         "Type": "Sensor",
-        "Placement": "Header",
-        "Layout": "Toggle",
+        "Placement": "HeaderOnly",
+        "Layout": "MULTI_BUTTON",
+        "ExcludeFrom": "Scene",
         "Values": {
             "heating": {
                 "Icon": "img_heat",
@@ -1539,14 +1566,15 @@
     "68": {
         "Name": "HAS_LEAF",
         "Type": "Functional",
-        "Placement": "Hidden"
+        "Placement": "Hidden",
+        "ExcludeFrom": "Scene_Rule"
     },
     "69": {
         "Name": "RESPONSE_CODE",
         "Type": "Info",
         "ReadOnly": "true",
         "Placement": "Message",
-        "ExcludeFrom": "Rule",
+        "ExcludeFrom": "Scene_Rule",
         "Values": {
             "-1": {
                 "Label": "Wrong mode selection"
@@ -1616,7 +1644,7 @@
         "Placement": "Header_Detail",
         "GroupLabel": "CO Status",
         "AppLabel": "co_lable",
-        "Layout": "Text_View",
+        "Layout": "TEXT_VIEW",
         "ExcludeFrom": "Rule",
         "Values": {
             "ok": {
@@ -1642,7 +1670,7 @@
         "Placement": "Header_Detail",
         "AppLabel": "smoke_lable",
         "GroupLabel": "Smoke Status",
-        "Layout": "Text_View",
+        "Layout": "TEXT_VIEW",
         "ExcludeFrom": "Rule",
         "Values": {
             "ok": {
@@ -1692,9 +1720,9 @@
         "Name": "BATTERY_NEST",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "Text_View",
+        "Layout": "TEXT_VIEW",
         "GroupLabel": "Battery",
-        "ExcludeFrom": "scene_rule",
+        "ExcludeFrom": "Scene_Rule",
         "Values": {
             "ok": {
                 "Label": "OK"
@@ -1713,7 +1741,7 @@
         "Name": "ENERGY",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "GroupLabel": "Energy",
         "AppLabel": "energyLabel",
         "Conditional": "true",
@@ -1727,13 +1755,13 @@
         "Name": "USER_CODE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Text_Input"
+        "Layout": "TEXT_VIEW"
     },
     "82": {
         "Name": "CLAMP1_POWER",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "Text_View|Text_Input",
+        "Layout": "TEXT_VIEW",
         "GroupLabel": "POWER",
         "AppLabel": "clamp1_power",
         "Conditional": "true",
@@ -1747,7 +1775,7 @@
         "Name": "CLAMP2_POWER",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "Text_View|Text_Input",
+        "Layout": "TEXT_VIEW",
         "GroupLabel": "POWER",
         "AppLabel": "clamp2_power",
         "Conditional": "true",
@@ -1761,7 +1789,7 @@
         "Name": "CLAMP1_ENERGY",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "Text_View|Text_Input",
+        "Layout": "TEXT_VIEW",
         "GroupLabel": "ENERGY",
         "AppLabel": "clamp1_energy",
         "Conditional": "true",
@@ -1775,7 +1803,7 @@
         "Name": "CLAMP2_ENERGY",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "Text_View|Text_Input",
+        "Layout": "TEXT_VIEW",
         "GroupLabel": "ENERGY",
         "AppLabel": "clamp2_energy",
         "Conditional": "true",
@@ -1788,6 +1816,6 @@
     "86": {
         "Name": "ACTIVE_POWER",
         "Type": "Sensor",
-        "Placement": "Detail"
+        "Placement": "Hidden"
     }
 }

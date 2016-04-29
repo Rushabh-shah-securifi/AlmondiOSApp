@@ -233,22 +233,35 @@ labelAndCheckButtonView *labelView;
 -(void) createDeviceIndexesLayoutForDeviceId:(int)deviceId deviceType:(int)deviceType deviceName:(NSString*)deviceName{
     NSArray *genericIndexValues = [RuleSceneUtil getGenericIndexValueArrayForID:deviceId type:deviceType isTrigger:self.isTrigger isScene:_isScene triggers:self.triggers action:self.actions];
     
+    //
+    NSDictionary *genericIndexValDicTemp = [RuleSceneUtil getIndexesDicForArray:genericIndexValues isTrigger:self.isTrigger isScene:self.isScene];
+    NSLog(@"GenericIndexValueDict before: %@", genericIndexValDicTemp);
+    //
+    
     if(deviceType == SFIDeviceType_NestThermostat_57){
         genericIndexValues = [RuleSceneUtil handleNestThermostat:deviceId genericIndexValues:genericIndexValues isScene:_isScene triggers:_triggers];
     }
 
     NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForArray:genericIndexValues isTrigger:self.isTrigger isScene:self.isScene];
     NSInteger numberOfCells = [self maxCellId:genericIndexValDic];
-     NSLog(@"GenericIndexValueDict: %@", genericIndexValDic);
-    
+    NSLog(@"GenericIndexValueDict after: %@", genericIndexValDic);
+    NSArray *sortedKeys = [genericIndexValDic.allKeys sortedArrayUsingSelector:@selector(compare:)];
     int j=0;
-    for(int i = 0; i < numberOfCells; i++){
-        NSArray *array = [genericIndexValDic valueForKey:[NSString stringWithFormat:@"%d",i+1]];
+    for(NSString *row in sortedKeys){
+        NSArray *array = genericIndexValDic[row];
         if(array!=nil && array.count>0){
             [self addMyButtonwithYScale:ROW_PADDING+(ROW_PADDING+frameSize)*j withDeviceIndex:array deviceId:deviceId deviceType:deviceType deviceName:deviceName];
             j++;
         }
     }
+//    int j=0;
+//    for(int i = 0; i < numberOfCells; i++){
+//        NSArray *array = [genericIndexValDic valueForKey:[NSString stringWithFormat:@"%d",i+1]];
+//        if(array!=nil && array.count>0){
+//            [self addMyButtonwithYScale:ROW_PADDING+(ROW_PADDING+frameSize)*j withDeviceIndex:array deviceId:deviceId deviceType:deviceType deviceName:deviceName];
+//            j++;
+//        }
+//    }
     CGSize scrollableSize = CGSizeMake(self.deviceIndexButtonScrollView.frame.size.width,
                                        (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING +20);
     
@@ -410,7 +423,7 @@ labelAndCheckButtonView *labelView;
     btnBinarySwitchOn.tag = i;
 //    btnBinarySwitchOn.valueType=deviceIndex.valueType;
     btnBinarySwitchOn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:gVal.eventType deviceName:deviceName deviceType:deviceType];
-    NSLog(@"gval.value: %@", gVal.value);
+    NSLog(@"gval.value: %@, icon: %@", gVal.value, gVal.icon);
     btnBinarySwitchOn.deviceType = deviceType;
     
     if(deviceType == SFIDeviceType_REBOOT_ALMOND){
@@ -472,6 +485,7 @@ labelAndCheckButtonView *labelView;
     int i=0;
     
     for (GenericIndexValue *indexValue in deviceIndexValues) {
+        NSLog(@"yscale index: %d", indexValue.index);
         GenericIndexClass *genericIndex =indexValue.genericIndex;
         
         NSDictionary *genericValueDic;
@@ -484,6 +498,7 @@ labelAndCheckButtonView *labelView;
         
         for (NSString *value in genericValueKeys) {
             i++;
+//            NSLog(@" i: %d, yscale value: %@", i, value);
             GenericValue *genericVal = genericValueDic[value];
             if  ([genericIndex.layoutType isEqualToString:@"textButton"]){
                 [self buildTextButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
@@ -493,7 +508,7 @@ labelAndCheckButtonView *labelView;
             else if ([genericIndex.layoutType isEqualToString:@"BrighnessSlider"]){
                 [self buildHueSliders:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
-            else if ([self isDimmerLayout:genericIndex.layoutType])
+            else if ([CommonMethods isDimmerLayout:genericIndex.layoutType])
                 [self buildDimButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             else{
                 if(i >= 5){
@@ -626,15 +641,7 @@ labelAndCheckButtonView *labelView;
     
     return YES;
 }
--(BOOL)isDimmerLayout:(NSString*)genericLayout{
-    if(genericLayout  != nil){
-        NSLog(@"genericLayout %@",genericLayout);
-        if([genericLayout rangeOfString:@"Slider" options:NSCaseInsensitiveSearch].location != NSNotFound){// data string contains check string
-            return YES;
-        }
-    }
-    return NO;
-}
+
 
 -(void)showPicker:(DimmerButton* )dimmer{
     [self removePickerFromView];

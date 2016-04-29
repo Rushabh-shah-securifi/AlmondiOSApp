@@ -46,4 +46,14 @@
     return dayDict;
 }
 
++(BOOL)isDimmerLayout:(NSString*)genericLayout{
+    if(genericLayout  != nil){
+        NSLog(@"genericLayout %@",genericLayout);
+        if([genericLayout rangeOfString:@"SINGLE_TEMP" options:NSCaseInsensitiveSearch].location != NSNotFound){// data string contains check string
+            return YES;
+        }
+    }
+    return NO;
+}
+
 @end

@@ -15,19 +15,18 @@
 
 @implementation RulesNestThermostat
 
--(NSArray*) createNestThermostatGenericIndexValues:(NSArray*)genericIndexValues deviceID:(int)deviceID{
++ (NSArray*) createNestThermostatGenericIndexValues:(NSArray*)genericIndexValues deviceID:(int)deviceID{
     NSArray* newGenericIndexValues = [self nestThermostat:deviceID withGenericIndexValues:genericIndexValues];
     [self adjustCellIDs:deviceID withGenericIndexValues:newGenericIndexValues];
     return newGenericIndexValues;
 }
 
-- (NSArray*)nestThermostat:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexVals{
-    NSString *value = [Device getValueForIndex:2 deviceID:deviceID];//2 is mode index
-    BOOL canCool = [self canCool:value];
-    BOOL canHeat = [self canHeat:value];
-    value = [Device getValueForIndex:9 deviceID:deviceID];//9 is fan index
-    BOOL hasFan = [self hasFan:value];
-    
++ (NSArray*)nestThermostat:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexVals{
+    NSLog(@"can cool value: %@", [Device getValueForIndex:12 deviceID:deviceID]);
+    BOOL canCool = [[Device getValueForIndex:12 deviceID:deviceID] isEqualToString:@"true"];
+    BOOL canHeat = [[Device getValueForIndex:13 deviceID:deviceID] isEqualToString:@"true"];
+    BOOL hasFan = [[Device getValueForIndex:15 deviceID:deviceID] isEqualToString:@"true"];//9 is fan index
+    NSLog(@"can cool: %d, can head: %d, hasfan: %d", canCool, canHeat, hasFan);
     NSMutableArray *newGenericIndexValues = [[NSMutableArray alloc] init];
     
     for(GenericIndexValue *genIndexVal in genericIndexVals){//strong because, deviceIndex will just be a pointer otherwise
@@ -89,7 +88,7 @@
 
 //edit array or create new device index
 //We can not just send valuetype, because we need to edit indexvalues
-- (GenericIndexValue *)indexValuesForHasHeatWithDeviceIndex:(GenericIndexValue *)genericIndexValue index:(int)index{
++ (GenericIndexValue *)indexValuesForHasHeatWithDeviceIndex:(GenericIndexValue *)genericIndexValue index:(int)index{
     GenericIndexClass *newGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexValue.genericIndex];
     
     NSMutableDictionary *newGenericValueDict = [NSMutableDictionary new];
@@ -122,7 +121,7 @@
 }
 
 
-- (GenericIndexValue *)indexValuesForHasCoolWithDeviceIndex:(GenericIndexValue *)genericIndexValue index:(int)index{
++ (GenericIndexValue *)indexValuesForHasCoolWithDeviceIndex:(GenericIndexValue *)genericIndexValue index:(int)index{
     GenericIndexClass *newGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexValue.genericIndex];
     
     NSMutableDictionary *newGenericValueDict = [NSMutableDictionary new];
@@ -154,12 +153,10 @@
 }
 
 
-- (void)adjustCellIDs:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexValues{
-    NSString *value = [Device getValueForIndex:2 deviceID:deviceID];//2 is mode index
-    BOOL canCool = [self canCool:value];
-    BOOL canHeat = [self canHeat:value];
-    value = [Device getValueForIndex:9 deviceID:deviceID];//9 is fan index
-    BOOL hasFan = [self hasFan:value];
++ (void)adjustCellIDs:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexValues{
+    BOOL canCool = [[Device getValueForIndex:12 deviceID:deviceID] isEqualToString:@"true"];
+    BOOL canHeat = [[Device getValueForIndex:13 deviceID:deviceID] isEqualToString:@"true"];
+    BOOL hasFan = [[Device getValueForIndex:15 deviceID:deviceID] isEqualToString:@"true"];//9 is fan index
     
     for(GenericIndexValue *genIndexVal in genericIndexValues){ //strong because, deviceIndex will just be a pointer otherwise
         /*****    faster   *****/
@@ -210,56 +207,39 @@
 }
 
 
-- (BOOL)canCool:(NSString*)value{
-    if([value.lowercaseString isEqualToString:@"cool"] || [value.lowercaseString isEqualToString:@"heat-cool"]){
-        return YES;
-    }
-    return NO;
-}
-
-- (BOOL)canHeat:(NSString*)value{
-    if([value.lowercaseString isEqualToString:@"heat"] || [value.lowercaseString isEqualToString:@"heat-cool"]){
-        return YES;
-    }
-    return NO;
-}
-
--(BOOL)hasFan:(NSString*)value{
-    return [value isEqualToString:@"true"];
-}
-
-
--(NSArray*)filterIndexesBasedOnModeForIndexes:(NSArray*)genericIndexValues propertyList:(NSMutableArray*)propertyList deviceId:(sfi_id)deviceId{
-    NSString *matchData;
++(NSArray*)filterIndexesBasedOnModeForIndexes:(NSArray*)genericIndexValues propertyList:(NSMutableArray*)propertyList deviceId:(sfi_id)deviceId{
+    NSString *matchData = nil;
     NSMutableArray *newGenericIndexValues = [genericIndexValues mutableCopy];
-    
+    NSLog(@"new genericindex values before : %@", newGenericIndexValues);
     for(SFIButtonSubProperties *subProperty in propertyList){
         if(subProperty.deviceId == deviceId && subProperty.index == 2){
             matchData = subProperty.matchData;
         }
     }
-    
-    if([matchData isEqualToString:@"heat"] || [matchData isEqualToString:@"cool"]){
-        for(GenericIndexValue *genIndexVal in genericIndexValues){
-            if(genIndexVal.index == 5 || genIndexVal.index ==6){
-                [newGenericIndexValues removeObject:genIndexVal];
+    if(matchData != nil){
+        if([matchData isEqualToString:@"heat"] || [matchData isEqualToString:@"cool"]){
+            for(GenericIndexValue *genIndexVal in genericIndexValues){
+                if(genIndexVal.index == 5 || genIndexVal.index ==6){
+                    [newGenericIndexValues removeObject:genIndexVal];
+                }
+            }
+        }
+        else if([matchData isEqualToString:@"heat-cool"]){
+            for(GenericIndexValue *genIndexVal in genericIndexValues){
+                if(genIndexVal.index == 3){
+                    [newGenericIndexValues removeObject:genIndexVal];
+                }
+            }
+        }else{
+            for(GenericIndexValue *genIndexVal in genericIndexValues){
+                if(genIndexVal.index == 3 || genIndexVal.index == 5 ||genIndexVal.index == 6){
+                    [newGenericIndexValues removeObject:genIndexVal];
+                }
             }
         }
     }
-    else if([matchData isEqualToString:@"heat-cool"]){
-        for(GenericIndexValue *genIndexVal in genericIndexValues){
-            if(genIndexVal.index == 3){
-                [newGenericIndexValues removeObject:genIndexVal];
-            }
-        }
-    }else{
-        for(GenericIndexValue *genIndexVal in genericIndexValues){
-            if(genIndexVal.index == 3 || genIndexVal.index == 5 ||genIndexVal.index == 6){
-                [newGenericIndexValues removeObject:genIndexVal];
-            }
-        }
-    }
     
+    NSLog(@"new genericindex values after : %@", newGenericIndexValues);
     return newGenericIndexValues;
 }
 
