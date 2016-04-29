@@ -38,11 +38,13 @@
     horzPicker.textColor = self.color;
     horzPicker.indicatorPosition = V8HorizontalPickerIndicatorBottom;
     horzPicker.delegate = self;
-    horzPicker.dataSource = self;
-    [horzPicker scrollToElement:[self.genericIndexValue.genericValue.value integerValue] animated:YES];// here value will be device knownVaklue.value
+    horzPicker.dataSource = self;//[self.genericIndexValue.genericValue.value integerValue] - self.genericIndexValue.genericIndex.formatter.min
+    horzPicker.selectionPoint = CGPointMake((horzPicker.frame.size.width) / 2, 0);
+    NSLog(@"self.genericIndexValue.genericValue.value %@",self.genericIndexValue.genericValue.value);
+    [horzPicker scrollToElement:[self.genericIndexValue.genericValue.value integerValue] - self.genericIndexValue.genericIndex.formatter.min  animated:YES];// here value will be device knownVaklue.value
     const NSInteger element_width = [self horizontalPickerView:horzPicker widthForElementAtIndex:0];
     SFIPickerIndicatorView1 *indicatorView = [[SFIPickerIndicatorView1 alloc] initWithFrame:CGRectMake(0, 0, element_width, 2)];
-    horzPicker.selectionPoint = CGPointMake((horzPicker.frame.size.width) / 2, 0);
+    
     indicatorView.color1 = [self darkerColorForColor:self.color];
     horzPicker.selectionIndicatorView = indicatorView;
     [self addSubview:horzPicker];

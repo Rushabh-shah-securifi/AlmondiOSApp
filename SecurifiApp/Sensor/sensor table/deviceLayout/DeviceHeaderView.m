@@ -59,6 +59,7 @@
     self.view.backgroundColor = _genericParams.color;
     self.deviceName.text = self.genericParams.deviceName;
     self.settingButton.alpha = 1;
+    NSLog(@"Icon text %@ vs index id %@ device id %d placement %@",_genericParams.headerGenericIndexValue.genericValue.iconText,_genericParams.headerGenericIndexValue.genericIndex.ID,_genericParams.headerGenericIndexValue.deviceID,_genericParams.headerGenericIndexValue.genericIndex.placement);
     if(_genericParams.headerGenericIndexValue.genericValue.iconText){
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;

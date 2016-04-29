@@ -33,8 +33,10 @@
     for(GenericIndexValue *genericIndexValue in genericIndexValues){
         if(genericIndexValue.genericValue == nil)
             continue;
+        
         if([genericIndexValue.genericIndex.placement isEqualToString:HEADER]){
             headerText = genericIndexValue.genericValue.displayText;
+           
             genericValue = genericIndexValue.genericValue;
             genericIndex = genericIndexValue.genericIndex;
             if(genericIndexValue.genericValue.icon.length == 0)
@@ -64,6 +66,13 @@
     for(NSString *IndexId in deviceIndexes.allKeys){
         DeviceIndex *deviceIndex = deviceIndexes[IndexId];
         GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
+//        if( !StringUtils.isEmpty(indexMetaData.placement))
+//            genericIndex = new GenericIndex(genericIndex, indexMetaData.placement)
+        if(deviceIndex.placement != nil){
+            genericIndexObj = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexObj];
+            NSLog(@" device index place ment %@",deviceIndex.placement);
+            genericIndexObj.placement = deviceIndex.placement;
+        }
         if([genericIndexObj.placement rangeOfString:placement options:NSCaseInsensitiveSearch].location != NSNotFound){
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericIndexObj.ID
                                                                                forValue:[self getHeaderValueFromKnownValuesForDevice:device indexID:IndexId]];

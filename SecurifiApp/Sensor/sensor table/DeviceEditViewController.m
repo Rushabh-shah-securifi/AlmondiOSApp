@@ -26,6 +26,7 @@
 #import "DevicePayload.h"
 #import "GenericIndexUtil.h"
 #import "ClientPayload.h"
+#import "CommonMethods.h"
 
 #define ITEM_SPACING  2.0
 #define LABELSPACING 20.0
@@ -111,12 +112,16 @@ static const int xIndent = 10;
 -(void)drawIndexes{
     int yPos = LABELSPACING;
     self.indexesScroll.backgroundColor = self.genericParams.color;
-    CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericParams.indexValueList.count * 65 );
+    NSLog(@"index count %ld",self.genericParams.indexValueList.count);
+    CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericParams.indexValueList.count  * 75 );
     [self.indexesScroll setContentSize:scrollableSize];
     [self.indexesScroll flashScrollIndicators];
+    
     for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList)
     {
+        
         GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
+        NSLog(@"layout type :- %@",genericIndexObj.layoutType);
         if([genericIndexObj.layoutType isEqualToString:@"Info"] || [genericIndexObj.layoutType.lowercaseString isEqualToString:@"off"] || genericIndexObj.layoutType == nil || [genericIndexObj.layoutType isEqualToString:@"NaN"]){
             continue;
         }
@@ -149,7 +154,7 @@ static const int xIndent = 10;
             [self setUpLable:label withPropertyName:propertyName];
             [view addSubview:label];
             
-            if([genericIndexObj.layoutType isEqualToString:SLIDER]){
+            if([CommonMethods isDimmerLayout:genericIndexObj.layoutType]){
                 HorizontalPicker *horzView = [[HorizontalPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 horzView.delegate = self;
                 [view addSubview:horzView];
