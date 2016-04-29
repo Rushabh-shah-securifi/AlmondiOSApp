@@ -1504,7 +1504,7 @@
                 "Label": "Online"
             },
             "false": {
-                "Icon": "offline_icon",
+                "Icon": "online_icon",
                 "AppLabel": "offline",
                 "Label": "Offline"
             }

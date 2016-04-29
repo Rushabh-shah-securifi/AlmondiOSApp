@@ -56,7 +56,7 @@
 
 
 - (NSInteger)numberOfElementsInHorizontalPickerView:(V8HorizontalPickerView *)picker {
-    return self.genericIndexValue.genericIndex.formatter.max - self.genericIndexValue.genericIndex.formatter.min;
+    return (self.genericIndexValue.genericIndex.formatter.max - self.genericIndexValue.genericIndex.formatter.min) + 1;
 }
 
 - (NSString *)horizontalPickerView:(V8HorizontalPickerView *)picker titleForElementAtIndex:(NSInteger)index {

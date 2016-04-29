@@ -4,7 +4,7 @@
         "isActuator": "true",
         "defaultIcon": "home_white",
         "Indexes": {
-            "0": {
+            "1": {
                 "genericIndexID": "0",
                 "row_no": 1
             }
@@ -161,7 +161,7 @@
             },
             "10": {
                 "genericIndexID": "27",
-                "row_no": 2
+                "row_no": 1
             }
         }
     },

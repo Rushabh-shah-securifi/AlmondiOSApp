@@ -12,5 +12,5 @@
 @interface CommonMethods : NSObject
 +(BOOL) compareEntry:(BOOL)isSlider matchData:(NSString *)matchData eventType:(NSString *)eventType buttonProperties:(SFIButtonSubProperties *)buttonProperties;
 +(NSString*)getDays:(NSArray*)earlierSelection;
-+(BOOL)isDimmerLayout:(NSString*)genericLayout;
++(BOOL)isDimmerLayout:(NSString*)genericLayout layout:(NSString *)layoutType;
 @end

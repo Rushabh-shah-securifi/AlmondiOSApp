@@ -165,6 +165,8 @@ UILabel *topLabel;
     for(GenericIndexValue *indexValue in genericIndexValues){
         GenericIndexClass *genericIndex = indexValue.genericIndex;
         GenericValue *selectedValue = indexValue.genericValue;
+        NSLog(@"genericIndexValues %@ ,%@,%@",genericIndexValues,buttonProperties.matchData,buttonProperties.displayText);
+        
         NSDictionary *genericValueDic;
         if(genericIndex.values == nil){
             genericValueDic = [self formatterDict:genericIndex];
@@ -173,7 +175,7 @@ UILabel *topLabel;
         }
         
         NSArray *genericValueKeys = genericValueDic.allKeys;
-        
+        NSLog(@"indexValue.index %d == %d",indexValue.index,buttonProperties.index);
         if (indexValue.index == buttonProperties.index) {
             if([buttonProperties.matchData isEqualToString:@"toggle"])
             {
@@ -182,7 +184,7 @@ UILabel *topLabel;
             
             for (NSString *value in genericValueKeys) {
                 GenericValue *gVal = genericValueDic[value];
-                BOOL isDimButton = genericIndex.layoutType!=nil && ([CommonMethods isDimmerLayout:genericIndex.layoutType] || [genericIndex.layoutType isEqualToString:@"Text_Text_Input"]);
+                BOOL isDimButton = genericIndex.layoutType!=nil && ([CommonMethods isDimmerLayout:genericIndex.layoutType layout:@"SINGLE_TEMP"] || [genericIndex.layoutType isEqualToString:@"Text_Text_Input"]);
                 NSLog(@"gaval.value: %@, propertyvalue: %@", gVal.value, buttonProperties.matchData);
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties]){
                     NSLog(@"subpropertybuilder - compare entry");
@@ -197,7 +199,7 @@ UILabel *topLabel;
                     }
                     else
                         bottomText = [self getDisplayText:genericIndex value:buttonProperties.matchData genericValue:gVal];
-                    
+                    NSLog(@"bottomText  %@",bottomText);
                     return [self setIconAndText:positionId buttonProperties:buttonProperties icon:gVal.icon text:bottomText isTrigger:isTrigger isDimButton:isDimButton bottomText:gVal.displayText];
                 }//if
             }//for
@@ -218,7 +220,7 @@ UILabel *topLabel;
 
 
 +(NSString*)getDisplayText:(GenericIndexClass*)genericIndex value:(NSString*)value genericValue:(GenericValue*)gVal{
-    if(genericIndex.layoutType!=nil && ([CommonMethods isDimmerLayout:genericIndex.layoutType] || [genericIndex.layoutType isEqualToString:@"textButton"])){
+    if(genericIndex.layoutType!=nil && ([CommonMethods isDimmerLayout:genericIndex.layoutType layout:@"SINGLE_TEMP"] || [genericIndex.layoutType isEqualToString:@"textButton"])){
         return [NSString stringWithFormat:@"%@ %@%@", gVal.displayText, value, genericIndex.formatter.units];
     }
     return gVal.displayText;
@@ -266,7 +268,7 @@ UILabel *topLabel;
         
         if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
             isDimmbutton = NO;//for we are putting images of hueLamp
-        
+        NSLog(@"subProperties.iconName %@",subProperties.iconName);
         [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:bottomText isTrigger:isTrigger isDimButton:isDimmbutton insideText:subProperties.displayText isScene:isScene];
         switchButton.subProperties = subProperties;
         switchButton.inScroll = YES;

@@ -27,6 +27,7 @@
 #import "GenericIndexUtil.h"
 #import "ClientPayload.h"
 #import "CommonMethods.h"
+#import "RulesNestThermostat.h"
 
 #define ITEM_SPACING  2.0
 #define LABELSPACING 20.0
@@ -119,7 +120,6 @@ static const int xIndent = 10;
     
     for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList)
     {
-        
         GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
         NSLog(@"layout type :- %@",genericIndexObj.layoutType);
         if([genericIndexObj.layoutType isEqualToString:@"Info"] || [genericIndexObj.layoutType.lowercaseString isEqualToString:@"off"] || genericIndexObj.layoutType == nil || [genericIndexObj.layoutType isEqualToString:@"NaN"]){
@@ -154,7 +154,7 @@ static const int xIndent = 10;
             [self setUpLable:label withPropertyName:propertyName];
             [view addSubview:label];
             
-            if([CommonMethods isDimmerLayout:genericIndexObj.layoutType]){
+            if([CommonMethods isDimmerLayout:genericIndexObj.layoutType layout:@"SINGLE_TEMP"]){
                 HorizontalPicker *horzView = [[HorizontalPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 horzView.delegate = self;
                 [view addSubview:horzView];
@@ -169,7 +169,7 @@ static const int xIndent = 10;
                 hueView.delegate = self;
                 [view addSubview:hueView];
             }
-            else if ([genericIndexObj.layoutType isEqualToString:HUE_SLIDER]){
+            else if ([CommonMethods isDimmerLayout:genericIndexObj.layoutType layout:@"SLIDER"]){
                 Slider *sliderView = [[Slider alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 sliderView.delegate = self;
                 [view addSubview:sliderView];
@@ -280,7 +280,7 @@ static const int xIndent = 10;
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");
     dispatch_async(dispatch_get_main_queue(), ^(){
-        [self.navigationController popToRootViewControllerAnimated:YES];
+//        [self.navigationController popToRootViewControllerAnimated:YES];
     });
     
      

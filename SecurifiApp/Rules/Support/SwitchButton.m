@@ -99,6 +99,7 @@
             [self mainLabel:@"" text:insideText];
         else
             [self addImage:iconImage y:self.bgView.frame.origin.y widthAndHeight:self.bgView.frame.size.width imageHeight:self.bgView.frame.size.height];
+        NSLog(@"self.bgView.frame.origin.y %f",self.bgView.frame.origin.y);
         if(isTrigger)
             [self addBottomText:bottomText x:0 y:self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding width:self.frame.size.width height:textHeight];
         

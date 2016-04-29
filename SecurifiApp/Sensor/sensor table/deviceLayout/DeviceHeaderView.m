@@ -64,6 +64,7 @@
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;
         self.deviceValueImgLable.text = self.genericParams.headerGenericIndexValue.genericValue.iconText;
+        self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.iconText;
     }else{
         self.deviceValueImgLable.hidden = YES;
         self.deviceImage.hidden = NO;

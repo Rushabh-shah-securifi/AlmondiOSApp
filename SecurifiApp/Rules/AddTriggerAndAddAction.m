@@ -430,7 +430,7 @@ labelAndCheckButtonView *labelView;
         btnBinarySwitchOn.subProperties.type = @"NetworkResult";
     }
     [btnBinarySwitchOn addTarget:self action:@selector(onSwitchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    
+    if(gVal.icon != nil)
     [btnBinarySwitchOn setupValues:[UIImage imageNamed:gVal.icon] topText:nil bottomText:gVal.displayText isTrigger:self.isTrigger isDimButton:NO insideText:gVal.displayText isScene:self.isScene];
     
     //set perv. count and highlight
@@ -508,7 +508,7 @@ labelAndCheckButtonView *labelView;
             else if ([genericIndex.layoutType isEqualToString:@"BrighnessSlider"]){
                 [self buildHueSliders:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
-            else if ([CommonMethods isDimmerLayout:genericIndex.layoutType])
+            else if ([CommonMethods isDimmerLayout:genericIndex.layoutType layout:@"SINGLE_TEMP"])
                 [self buildDimButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             else{
                 if(i >= 5){
