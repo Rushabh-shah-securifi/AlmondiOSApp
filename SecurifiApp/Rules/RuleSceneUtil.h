@@ -22,7 +22,9 @@
 
 + (BOOL) isToBeAdded:(NSString*)dataString checkString:(NSString*)checkString;
 
-+ (BOOL)shouldYouSkipTheValue:(GenericValue*)genericValue isScene:(BOOL)isScene;
++ (BOOL) showGenericDevice:(int)type isTrigger:(BOOL) isTrigger isScene:(BOOL)isScene;
+
++ (BOOL)showGenericValue:(GenericValue *)index isScene:(BOOL)isScene;
 
 + (NSArray *)handleNestThermostat:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues isScene:(BOOL)isScene triggers:(NSMutableArray*)triggers;
 @end

@@ -89,7 +89,7 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="low_battery" translatesAutoresizingMaskIntoConstraints="NO" id="cfV-XV-1jL">
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="low_battery_badge" translatesAutoresizingMaskIntoConstraints="NO" id="cfV-XV-1jL">
                     <rect key="frame" x="-9" y="-4" width="30" height="30"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="30" id="bId-kR-Bah"/>
@@ -141,7 +141,7 @@
     </objects>
     <resources>
         <image name="icon_tampered_orange" width="140" height="140"/>
-        <image name="low_battery" width="140" height="140"/>
+        <image name="low_battery_badge" width="140" height="140"/>
         <image name="settings" width="46" height="46"/>
         <image name="smartphone_icon" width="50" height="50"/>
     </resources>

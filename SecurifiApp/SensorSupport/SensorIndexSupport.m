@@ -447,7 +447,7 @@
                 s1.matchType = MatchType_any;
                 s1.matchData = @"Heating";
                 s1.displayText=@"";
-                s1.iconName = @"n_07_thermostat";
+                s1.iconName = @"thermostat";
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is ", @" is ");
@@ -459,7 +459,7 @@
                 s1.matchType = MatchType_any;
                 s1.matchData = @"70";
                 s1.displayText=@"COOL";
-                s1.iconName = @"n_07_thermostat";
+                s1.iconName = @"thermostat";
                 s1.layoutType=@"dimButton";
                 s1.displayText = @"COOLING TEMP";
                 s1.minValue = 35;
@@ -474,7 +474,7 @@
                 s1.matchType = MatchType_any;
                 s1.matchData = @"70";
                 s1.layoutType=@"dimButton";
-                s1.iconName = @"n_07_thermostat";
+                s1.iconName = @"thermostat";
                 s1.displayText = @"HEATING TEMP";
                 s1.minValue = 35;
                 s1.maxValue = 95;
@@ -1252,7 +1252,7 @@
                 s1.matchType = MatchType_any;
                 s1.matchData = @"0";
                 s1.layoutType=@"dimButton";
-                s1.iconName = @"n_07_thermostat";
+                s1.iconName = @"thermostat";
                 s1.displayText=@"TEMPERATURE";
                 s1.minValue = 0;
                 s1.maxValue = 122;
@@ -1420,7 +1420,7 @@
                 s1.matchType = MatchType_any;
                 s1.matchData = @"0";
                 s1.layoutType=@"dimButton";
-                s1.iconName = @"n_07_thermostat";
+                s1.iconName = @"thermostat";
                 s1.displayText=@"TEMPERATURE";
                 s1.minValue = 0;
                 s1.maxValue = 100;
@@ -1592,7 +1592,7 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.layoutType=@"dimButton";
-                s1.iconName = @"n_07_thermostat";
+                s1.iconName = @"thermostat";
                 s1.displayText=@"TEMPERATURE";
                 s1.minValue = 1000;
                 s1.maxValue = 9000;
@@ -1839,7 +1839,7 @@
                 s1.matchType = MatchType_any;
                 s1.matchData = @"0";
                 s1.layoutType=@"dimButton";
-                s1.iconName = @"n_07_thermostat";
+                s1.iconName = @"thermostat";
                 s1.displayText=@"TEMPERATURE";
                 s1.minValue = 0;
                 s1.maxValue = 100;
@@ -2121,7 +2121,7 @@
                 s1.matchType = MatchType_any;
                 s1.matchData = @"35";
                 s1.displayText=@"TEMPERATURE";
-                s1.iconName = @"n_07_thermostat";
+                s1.iconName = @"thermostat";
                 s1.layoutType=@"dimButton";
                 s1.minValue = 32;
                 s1.maxValue = 122;
@@ -2276,7 +2276,7 @@
                 s1.matchData = @"35";
                 s1.displayText=@"TEMPERATURE";
                 s1.layoutType=@"dimButton";
-                s1.iconName = @"n_07_thermostat";
+                s1.iconName = @"thermostat";
                 s1.minValue = 0;
                 s1.maxValue = 104;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
@@ -2829,7 +2829,7 @@
                 s1.matchType = MatchType_any;
                 s1.matchData = @"70";
                 s1.layoutType = @"dimButton";
-                s1.iconName = @"n_07_thermostat";
+                s1.iconName = @"thermostat";
                 s1.displayText = @"RANGE LOW";
                 s1.minValue = 50;
                 s1.maxValue = 87;
@@ -2845,7 +2845,7 @@
                 s1.matchType = MatchType_any;
                 s1.matchData = @"70";
                 s1.layoutType = @"dimButton";
-                s1.iconName = @"n_07_thermostat";
+                s1.iconName = @"thermostat";
                 s1.displayText = @"RANGE HIGH";
                 s1.minValue = 53;
                 s1.maxValue = 90;
@@ -2907,7 +2907,7 @@
                 s1.matchData = @"35";
                 s1.displayText=@"TEMP ";
                 s1.layoutType=@"dimButton";
-                s1.iconName = @"n_07_thermostat";
+                s1.iconName = @"thermostat";
                 s1.minValue = -4;
                 s1.maxValue = 140;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
@@ -3384,7 +3384,7 @@
             IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
             s1.matchType = MatchType_equals;
             s1.matchData = @"true";
-            s1.iconName = @"n_tamper";
+            s1.iconName = @"tamper";
             s1.displayText=@"TAMPER";
             s1.notificationText = NSLocalizedString(@" has been Tampered.", @" has been Tampered.");
             

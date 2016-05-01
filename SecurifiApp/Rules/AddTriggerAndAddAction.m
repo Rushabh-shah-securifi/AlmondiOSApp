@@ -99,9 +99,10 @@ labelAndCheckButtonView *labelView;
         xVal = [self addDeviceName:@"Time" deviceID:0 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
         xVal = [self addDeviceName:@"Network Devices" deviceID:0 deviceType:SFIDeviceType_WIFIClient xVal:xVal];
     }
-    
-    for(Device *device in [self getCompatileDeviceList]){
-        xVal = [self addDeviceName:device.name deviceID:device.ID deviceType:device.type xVal:xVal];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    for(Device *device in toolkit.devices){
+        if([RuleSceneUtil showGenericDevice:device.type isTrigger:self.isTrigger isScene:self.isScene])
+            xVal = [self addDeviceName:device.name deviceID:device.ID deviceType:device.type xVal:xVal];
     }
     if(!self.isTrigger){
         xVal = [self addDeviceName:@"Reboot Almond" deviceID:1 deviceType:SFIDeviceType_REBOOT_ALMOND xVal:xVal];
@@ -128,19 +129,6 @@ labelAndCheckButtonView *labelView;
     return xVal + textRect.size.width +15;
 }
 
--(NSArray*)getCompatileDeviceList{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    NSMutableArray *deviceArray = [NSMutableArray new];
-    for(Device *device in toolkit.devices){
-        if((self.isScene || !self.isTrigger) && [RuleSceneUtil isActionDevice:device.type]){ // scene || action
-            [deviceArray addObject:device];
-        }
-        else if(!self.isScene && self.isTrigger  && [RuleSceneUtil isTriggerDevice:device.type]){ //rule && trigger
-            [deviceArray addObject:device];
-        }
-    }
-    return deviceArray;
-}
 
 -(void)TimeEventClicked:(id)sender{
     [self resetViews];
@@ -233,11 +221,6 @@ labelAndCheckButtonView *labelView;
 -(void) createDeviceIndexesLayoutForDeviceId:(int)deviceId deviceType:(int)deviceType deviceName:(NSString*)deviceName{
     NSArray *genericIndexValues = [RuleSceneUtil getGenericIndexValueArrayForID:deviceId type:deviceType isTrigger:self.isTrigger isScene:_isScene triggers:self.triggers action:self.actions];
     
-    //
-    NSDictionary *genericIndexValDicTemp = [RuleSceneUtil getIndexesDicForArray:genericIndexValues isTrigger:self.isTrigger isScene:self.isScene];
-    NSLog(@"GenericIndexValueDict before: %@", genericIndexValDicTemp);
-    //
-    
     if(deviceType == SFIDeviceType_NestThermostat_57){
         genericIndexValues = [RuleSceneUtil handleNestThermostat:deviceId genericIndexValues:genericIndexValues isScene:_isScene triggers:_triggers];
     }
@@ -245,6 +228,7 @@ labelAndCheckButtonView *labelView;
     NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForArray:genericIndexValues isTrigger:self.isTrigger isScene:self.isScene];
     NSInteger numberOfCells = [self maxCellId:genericIndexValDic];
     NSLog(@"GenericIndexValueDict after: %@", genericIndexValDic);
+    
     NSArray *sortedKeys = [genericIndexValDic.allKeys sortedArrayUsingSelector:@selector(compare:)];
     int j=0;
     for(NSString *row in sortedKeys){
@@ -497,10 +481,12 @@ labelAndCheckButtonView *labelView;
         NSArray *genericValueKeys = genericValueDic.allKeys;
         
         for (NSString *value in genericValueKeys) {
-            i++;
-//            NSLog(@" i: %d, yscale value: %@", i, value);
             GenericValue *genericVal = genericValueDic[value];
-            if  ([genericIndex.layoutType isEqualToString:@"textButton"]){
+            if(![RuleSceneUtil showGenericValue:genericVal isScene:_isScene])
+                continue;
+            i++;
+            
+            if  ([genericIndex.layoutType isEqualToString:@"TEXT_VIEW"]){
                 [self buildTextButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }else if ([genericIndex.layoutType isEqualToString:@"HueColorPicker"]){
                 [self buildHueColorPicker:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
@@ -508,15 +494,13 @@ labelAndCheckButtonView *labelView;
             else if ([genericIndex.layoutType isEqualToString:@"BrighnessSlider"]){
                 [self buildHueSliders:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
-            else if ([CommonMethods isDimmerLayout:genericIndex.layoutType layout:@"SINGLE_TEMP"])
+            else if ([CommonMethods isDimmerLayout:genericIndex.layoutType layout:@"SINGLE_TEMP"] || [CommonMethods isDimmerLayout:genericIndex.layoutType layout:@"Slider"])
                 [self buildDimButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             else{
                 if(i >= 5){
                     view.frame = CGRectMake(0, yScale, self.parentView.frame.size.width, indexButtonFrameSize * 2);
                     [self buildSwitchButton:indexValue deviceType:deviceType deviceName:deviceName gVal:genericVal deviceId:deviceId i:i view:view buttonY:indexButtonFrameSize];
                 }else{
-                    if([RuleSceneUtil shouldYouSkipTheValue:genericVal isScene:_isScene])
-                        continue;
                     [self buildSwitchButton:indexValue deviceType:deviceType deviceName:deviceName gVal:genericVal deviceId:deviceId i:i view:view buttonY:0];
                 }
             }
@@ -623,6 +607,7 @@ labelAndCheckButtonView *labelView;
         NSLog(@"onSwitchButtonClick - istrigger");
         [self toggleTriggerIndex:buttonIndex superView:[sender superview] indexButton:indexSwitchButton];
         [self removeTriggerIndex:buttonIndex buttonId:buttonId deviceType:indexSwitchButton.subProperties.deviceType];
+        NSLog(@"index button subproperties %@,%@,%@,%@,%d",indexSwitchButton.subProperties.displayText,indexSwitchButton.subProperties.displayedData,indexSwitchButton.subProperties.matchData,indexSwitchButton.subProperties.eventType,indexSwitchButton.subProperties.deviceType);
         if (indexSwitchButton.selected)
             [self.triggers addObject:indexSwitchButton.subProperties];
         

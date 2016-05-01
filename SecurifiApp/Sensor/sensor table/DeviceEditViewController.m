@@ -126,15 +126,15 @@ static const int xIndent = 10;
             continue;
         }
         NSString *propertyName = genericIndexObj.groupLabel;
-        
-        if([genericIndexObj.type isEqualToString:SENSOR] || genericIndexObj.readOnly){
+        NSLog(@"read only %d,layouttype %@ ,type %@ ",genericIndexObj.readOnly,genericIndexObj.layoutType,genericIndexObj.type);
+        if(genericIndexObj.readOnly){
             UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_SMALL];
             if([genericIndexObj.ID isEqualToString:@"9"] && [genericIndexValue.genericValue.value isEqualToString:@"true"])
             {
                 [self disMissTamperedView];
                 continue;
             }
-            if([genericIndexObj.ID isEqualToString:@"12"])//skipping low battery
+            if([genericIndexObj.ID isEqualToString:@"12"] || [genericIndexObj.ID isEqualToString:@"9"])//skipping low battery
                     continue;
             [self.indexesScroll addSubview:view];
             UILabel *label = [[UILabel alloc]initWithFrame:LABEL_FRAME];

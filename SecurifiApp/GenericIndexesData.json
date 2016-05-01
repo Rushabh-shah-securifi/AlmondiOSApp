@@ -1,247 +1,250 @@
 {
     "-1": {
         "Name": "Name",
-        "ReadOnly": "false",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Name",
-        "CommandType": "NameChanged"
+        "Type": "Actuator",
+        "AppLabel": "name",
+        "CommandType": "NAME_CHANGE"
     },
     "-2": {
         "Name": "Location",
-        "ReadOnly": "false",
+        "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Location",
-        "CommandType": "LocationChanged"
+        "AppLabel": "location",
+        "CommandType": "LOCATION_CHANGE"
     },
     "-3": {
         "Name": "Notify Me",
-        "ReadOnly": "false",
+        "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "Notify Me",
-        "CommandType": "NotifyMe",
-        "Values":{
+        "AppLabel": "notifyMe",
+        "CommandType": "NOTIFICATION",
+        "Values": {
             "1": {
-                "Label": "Always"
+                "AppLabel": "always"
             },
             "3": {
-                "Label": "When I'm Away"
+                "AppLabel": "whenAway"
             },
             "0": {
-                "Label": "Never"
+                "AppLabel": "never"
             }
         }
     },
     "-4": {
         "Name": "WifiClient",
-        "ReadOnly": "true",
         "Placement": "Detail",
         "Layout": "Toggle",
         "GroupLabel": "WifiClient"
     },
     "-11": {
         "Name": "ClientName",
-        "ReadOnly": "false",
+        "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Name"
+        "AppLabel": "name"
     },
     "-12": {
         "Name": "ClientType",
-        "ReadOnly": "false",
-        "Placement": "Detail_Header",
+        "Type": "Actuator",
+        "Placement": "Header_Detail",
         "Layout": "LIST",
-        "GroupLabel": "TYPE",
+        "AppLabel": "type",
         "Values": {
             "tablet": {
-                "Icon": "iphone_icon",
-                "Label": "Tablet"
+                "Icon": "tablet_icon",
+                "AppLabel": "tablet"
             },
             "pc": {
                 "Icon": "pc_icon",
-                "Label": "PC"
+                "AppLabel": "pc"
             },
             "laptop": {
                 "Icon": "laptop_icon",
-                "Label": "Laptop"
+                "AppLabel": "laptop"
             },
             "android_stick": {
                 "Icon": "android_stick_icon",
-                "Label": "Android Stick"
+                "AppLabel": "androidStick"
             },
             "smartphone": {
                 "Icon": "smartphone_icon",
-                "Label": "Smart Phone"
+                "AppLabel": "smartphone"
             },
             "ipod": {
                 "Icon": "ipod_icon",
-                "Label": "iPod"
+                "AppLabel": "ipod"
             },
             "ipad": {
                 "Icon": "ipad_icon",
-                "Label": "iPad"
+                "AppLabel": "ipad"
             },
             "iphone": {
                 "Icon": "iphone_icon",
-                "Label": "iPhone"
+                "AppLabel": "iphone"
             },
             "mac": {
-                "Icon": "pc_icon",
-                "Label": "MAC"
+                "Icon": "mac_icon",
+                "AppLabel": "mac"
             },
             "appleTV": {
-                "Icon": "appleTV_icon",
-                "Label": "Apple TV"
+                "Icon": "appletv_icon",
+                "AppLabel": "appleTV"
             },
             "tv": {
                 "Icon": "appletv_icon",
-                "Label": "TV"
+                "AppLabel": "tv"
             },
             "printer": {
                 "Icon": "printer_icon",
-                "Label": "Printer"
+                "AppLabel": "printer"
             },
             "router_switch": {
                 "Icon": "hubrouter_icon",
-                "Label": "Router Switch"
+                "AppLabel": "routerSwitch"
             },
             "hub": {
                 "Icon": "hubrouter_icon",
-                "Label": "Hub"
+                "AppLabel": "hub"
             },
             "camera": {
                 "Icon": "camera_icon",
-                "Label": "Camera"
+                "AppLabel": "camera"
             },
             "nest": {
                 "Icon": "nest_google_icon",
-                "Label": "Nest"
+                "AppLabel": "nest"
             },
             "chromecast": {
                 "Icon": "chrome_cast_icon",
-                "Label": "Chromecast"
+                "AppLabel": "chromecast"
             },
             "amazon_dash": {
                 "Icon": "amazon_dash",
-                "Label": "Amazon Dash"
+                "AppLabel": "amazon_dash"
             },
             "amazon_echo": {
-                "Icon": "amazon-echo",
-                "Label": "Amazon Echo"
+                "Icon": "amazon_echo",
+                "AppLabel": "amazon_echo"
             },
-            "other":{
+            "other": {
                 "Icon": "help_icon",
-                "Label": "Other"
+                "AppLabel": "other"
             }
         }
     },
     "-13": {
         "Name": "Manufacturer",
-        "ReadOnly": "true",
+        "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Manufacturer"
+        "AppLabel": "manufacturer"
     },
     "-14": {
         "Name": "ClientMAC",
-        "ReadOnly": "true",
+        "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "MAC Address"
+        "AppLabel": "macAddress"
     },
     "-15": {
         "Name": "LastKnownIP",
-        "ReadOnly": "true",
+         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Last Known IP"
+        "AppLabel": "lastKnownIP"
     },
     "-16": {
         "Name": "ClientConnection",
-        "ReadOnly": "true",
+         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Connection"
+        "AppLabel": "connection"
     },
     "-17": {
         "Name": "UseAsPresence",
-        "ReadOnly": "false",
+         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "Use As Presence Sensor",
-        "Values":{
-            "true":{
-                "Label": "Yes"
+        "AppLabel": "presenceSensor",
+        "Values": {
+            "true": {
+                "AppLabel": "yes"
             },
-            "false":{
-                "Label": "No"
+            "false": {
+                "AppLabel": "noCamelCase"
             }
         }
     },
     "-18": {
         "Name": "InactiveGrace",
-        "ReadOnly": "false",
+        "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Inactive Grace Period"
+        "AppLabel": "inactiveGracePeriod"
     },
     "-19": {
         "Name": "AllowOnNetwork",
-        "ReadOnly": "false",
+        "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "GRID_VIEW",
-        "GroupLabel": "Allow On Network",
-        "Values":{
-            "0":{
-                "Label": "Always"
+        "AppLabel": "allowOnNetwork",
+        "Values": {
+            "0": {
+                "AppLabel": "always"
             },
-            "1":{
-                "Label": "Blocked"
+            "1": {
+                "AppLabel": "blocked_"
             },
-            "2":{
-                "Label": "OnSchedule"
+            "2": {
+                "AppLabel": "onSchedule"
             }
         }
     },
     "-20": {
         "Name": "SignalStrength",
-        "ReadOnly": "true",
+        "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Signal Strength"
+        "AppLabel": "signalStrength"
     },
-    "-21":{
+    "-21": {
         "Name": "CanBlock",
-        "ReadOnly": "true",
-        "Placement": "Detail",
+        "Type": "Sensor",
+        "Placement": "Hidden",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Can Be Blocked",
+        "AppLabel": "Can Be Blocked",
         "Values": {
             "true": {
-                "AppLabel": "Yes",
+                "ToggleValue": "false",
+                "AppLabel": "yes",
                 "Label": "YES"
             },
             "false": {
-                "AppLabel": "No",
+                "ToggleValue": "true",
+                "AppLabel": "noCamelCase",
                 "Label": "No"
             }
         }
     },
-    "-22":{
+    "-22": {
         "Name": "Category",
-        "ReadOnly": "false",
+        "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "User Type",
+        "AppLabel": "userCategory",
         "Values": {
             "Kids": {
-                "AppLabel": "Kids",
+                "ToggleValue": "Other",
+                "AppLabel": "kids",
                 "Label": "Kids"
             },
             "Others": {
-                "AppLabel": "Others",
+                "ToggleValue": "Kid",
+                "AppLabel": "others",
                 "Label": "Others"
             }
         }
@@ -267,34 +270,7 @@
             }
         }
     },
-    "-31": {
-        "Name": "Reboot",
-        "Type": "Actuator",
-        "Layout": "MULTI_BUTTON",
-        "Values": {
-            "reboot": {
-                "ToggleValue": "reboot",
-                "Icon": "switch_off",
-                "AppLabel": "REBOOT ALMOND",
-                "Label": "REBOOT ALMOND",
-                "EventType": "AlmondModeUpdated"
-            }
-        }
-    },
-    "-32": {
-        "Name": "ToggleIcon",
-        "Type": "Actuator",
-        "Layout": "MULTI_BUTTON",
-        "Values": {
-            "toggle": {
-                "Icon": "toggle_icon",
-                "AppLabel": "Toggle",
-                "Label": "Toggle"
-            }
-        }
-        
-    },
-    "0":{
+    "0": {
         "Name": "Mode",
         "Type": "Actuator",
         "Layout": "MULTI_BUTTON",
@@ -315,12 +291,39 @@
             }
         }
     },
+    "-31": {
+        "Name": "Reboot",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "Values": {
+            "reboot": {
+                "ToggleValue": "reboot",
+                "Icon": "switch_off",
+                "AppLabel": "rebootAlmond",
+                "Label": "REBOOT ALMOND",
+                "EventType": "AlmondModeUpdated"
+            }
+        }
+    },
+    "-32": {
+        "Name": "ToggleIcon",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "Values": {
+            "toggle": {
+                "Icon": "toggle_icon",
+                "AppLabel": "toggle",
+                "Label": "Toggle"
+            }
+        }
+        
+    },
     "1": {
         "Name": "SWITCH BINARY",
         "Type": "Actuator",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "SWITCH",
+        "AppLabel": "switch_off",
         "ShowToggleInRules": "true",
         "DefaultIcon": "switch_on",
         "Values": {
@@ -476,7 +479,7 @@
         "Type": "Sensor",
         "Placement": "Badge",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "Tamper",
+        "AppLabel": "tampered",
         "Values": {
             "true": {
                 "AppLabel": "tampered",
@@ -490,7 +493,6 @@
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "Panic Alarm",
         "AppLabel": "paincAlarm",
         "ExcludeFrom": "Scene",
         "DefaultIcon": "panic_icon",
@@ -513,7 +515,6 @@
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "Emergency Alarm",
         "AppLabel": "emergencyAlarm",
         "DefaultIcon": "emergency_icon",
         "Values": {
@@ -535,11 +536,10 @@
         "Type": "Sensor",
         "Placement": "Badge",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "LOW BATTERY",
         "AppLabel": "lowBattery",
         "Values": {
             "true": {
-                "Icon": "lowbattery",
+                "Icon": "low_battery",
                 "AppLabel": "lowBattery",
                 "Label": "Low Battery"
             }
@@ -550,7 +550,6 @@
         "Type": "Actuator",
         "Placement": "Header_Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Ring alarm for",
         "AppLabel": "set_alarm_for",
         "ExcludeFrom": "Scene",
         "DefaultIcon": "alarm_off",
@@ -570,25 +569,25 @@
     "14": {
         "Name": "BASIC",
         "Type": "Sensor",
-        "DataType": "Byte",
-        "ReadOnly": "true",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "NaN",
+        "AppLabel": "set_alarm_for",
         "Conditional": "false",
         "DefaultVisibility": "true",
         "ExcludeFrom": "Scene",
-        "DefaultIcon": "alarm_icon",
+        "DefaultIcon": "alarm_off",
         "Values": {
             "0": {
-                "ToggleValue": "NaN",
+                "ToggleValue": "255",
                 "Icon": "alarm_on",
-                "Label": "INACTIVE"
+                "Label": "INACTIVE",
+                "AppLabel": "alarm_on"
             },
             "255": {
-                "ToggleValue": "NaN",
-                "Icon": "alarm_icon",
-                "Label": "ACTIVE"
+                "ToggleValue": "0",
+                "Icon": "alarm_off",
+                "Label": "ACTIVE",
+                "AppLabel": "off"
             }
         }
     },
@@ -597,7 +596,6 @@
         "Type": "Sensor",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "NaN",
         "DefaultIcon": "fire_off",
         "Values": {
             "0": {
@@ -635,8 +633,7 @@
         "Name": "SWITCH MULTILEVEL",
         "Type": "Actuator",
         "Placement": "Header_Detail",
-        "Layout": "SLIDER",
-        "GroupLabel": "Dimmer",
+        "Layout": "Slider",
         "AppLabel": "dimmer",
         "DefaultIcon": "switch_off",
         "Formatter": {
@@ -650,14 +647,14 @@
         "Name": "DIMMER_LEVEL",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "SLIDER",
-        "GroupLabel": "Dimmer",
-        "AppLabel": "dimmer",
+        "Layout": "Slider",
+        "AppLabel": "brightness",
+        "DefaultIcon": "multilevel_switch_on",
         "Formatter": {
             "Min": "0",
             "Max": "100",
             "Unit": "%",
-            "Factor": "0.392"
+            "Factor": "2.55"
         }
     },
     "19": {
@@ -665,7 +662,6 @@
         "Type": "Actuator",
         "Placement": "Header_Detail",
         "Layout": "LIST",
-        "GroupLabel": "Start Alarm",
         "AppLabel": "start_alarm",
         "DefaultIcon": "alarm_off",
         "Values": {
@@ -735,17 +731,16 @@
                 "Icon": "garage_open",
                 "AppLabel": "processing",
                 "Label": "PROCESSING",
-                "ExcludeFrom": "Rule|Scene"
+                "ExcludeFrom": "Rule_Scene"
             }
         }
     },
     "21": {
         "Name": "BASIC_EXTENDER",
         "Type": "Actuator",
-        "Placement": "DETAIL",
+        "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "Power",
-        "AppLabel": "power",
+        "AppLabel": "powerLabel",
         "Values": {
             "0": {
                 "ToggleValue": "255",
@@ -767,12 +762,12 @@
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
         "ShowToggleInRules": "true",
-        "DefaultIcon": "lock_open",
+        "DefaultIcon": "lock_close",
         "ValuesArray": {
             "indexValues": [17, 23, 26, 254],
             "Icon": "lock_open",
-            "Label": "BOLT NOT FULLY EXTENDED",
-            "ExcludeFrom": "Scene|Rule"
+            "AppLabel": "notFullyLocked",
+            "ExcludeFrom": "Scene_Rule"
         },
         "Values": {
             "0": {
@@ -810,11 +805,10 @@
                 "Label": "UNLOCKED"
             },
             "0": {
-                "ToggleValue": "1",
                 "Icon": "lock_open",
                 "AppLabel": "doorlock_partial",
                 "Label": "PARTIALLY LOCKED",
-                "ExcludeFrom": "Scene|Rule"
+                "ExcludeFrom": "Scene_Rule"
             }
         }
     },
@@ -848,7 +842,6 @@
         "Placement": "Detail",
         "Layout": "SINGLE_TEMP",
         "AppLabel": "temperature",
-        "GroupLabel": "Temperature",
         "DefaultIcon": "target_temperature",
         "ExcludeFrom": "Scene",
         "Formatter": {
@@ -861,15 +854,14 @@
     "26": {
         "Name": "PRESSURE",
         "Type": "Sensor",
-        "DataType": "Short",
         "ReadOnly": "true",
         "Placement": "Header",
-        "Layout": "SLIDER",
-        "GroupLabel": "PRESSURE",
+        "Layout": "Slider",
+        "AppLabel": "pressure",
         "Conditional": "true",
         "DefaultVisibility": "true",
         "ExcludeFrom": "Scene",
-        "DefaultIcon": "pressure",
+        "DefaultIcon": "switch_off",
         "Formatter": {
             "Min": "-3276",
             "Max": "3276",
@@ -880,11 +872,11 @@
     "27": {
         "Name": "HUMIDITY",
         "Type": "Sensor",
-        "Placement": "Hidden",
+        "Placement": "Detail",
         "Layout": "SINGLE_TEMP",
         "AppLabel": "humidity",
-        "GroupLabel": "HUMIDITY",
         "ExcludeFrom": "Scene",
+        "DefaultIcon": "humidity",
         "Formatter": {
             "Min": "0",
             "Max": "100",
@@ -895,11 +887,10 @@
     "28": {
         "Name": "ILLUMINANCE",
         "Type": "Sensor",
-        "Placement": "DETAIL",
-        "Layout": "SLIDER",
+        "Placement": "Header",
+        "Layout": "Slider",
         "AppLabel": "luminance",
-        "GroupLabel": "ILLUMINANCE",
-        "DefaultIcon": "luminance",
+        "DefaultIcon": "light_on",
         "Formatter": {
             "Min": "0",
             "Max": "3000",
@@ -910,11 +901,10 @@
     "29": {
         "Name": "ILLUMINANCE_PERCENT",
         "Type": "Sensor",
-        "Placement": "DETAIL",
-        "Layout": "SLIDER",
+        "Placement": "Header",
+        "Layout": "Slider",
         "AppLabel": "luminance",
-        "GroupLabel": "ILLUMINANCE",
-        "DefaultIcon": "luminance",
+        "DefaultIcon": "light_on",
         "Formatter": {
             "Min": "0",
             "Max": "100",
@@ -927,7 +917,7 @@
         "Placement": "Detail",
         "Layout": "HUE",
         "AppLabel": "hue",
-        "GroupLabel": "Hue",
+        "DefaultIcon": "light_on",
         "Formatter": {
             "Min": "0",
             "Max": "65535"
@@ -936,18 +926,14 @@
     "31": {
         "Name": "HUE_ZB",
         "Type": "Actuator",
-        "DataType": "Int",
-        "ReadOnly": "false",
-        "Placement": "Details",
-        "Layout": "SLIDER",
-        "GroupLabel": "NaN",
+        "Placement": "Detail",
+        "Layout": "Slider",
+        "AppLabel": "hue",
         "Conditional": "true",
-        "UseInScenes": "true",
         "DefaultVisibility": "true",
         "Formatter": {
             "Min": "0",
             "Max": "255",
-            "Unit": "NaN",
             "Factor": "1"
         }
     },
@@ -955,9 +941,9 @@
         "Name": "SATURATION",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "SLIDER",
+        "Layout": "Slider",
         "AppLabel": "saturation",
-        "GroupLabel": "Saturation",
+        "DefaultIcon": "saturation_icon",
         "Formatter": {
             "Min": "0",
             "Max": "255",
@@ -969,10 +955,10 @@
         "Name": "COLOR_TEMPERATURE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "SLIDER",
-        "GroupLabel": "Color Temperature",
+        "Layout": "Slider",
         "AppLabel": "color_temp",
         "Conditional": "true",
+        "DefaultIcon": "saturation_icon",
         "Formatter": {
             "Min": "1000",
             "Max": "9000",
@@ -984,10 +970,10 @@
         "Name": "POWER",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "SLIDER",
-        "GroupLabel": "power",
+        "Layout": "Slider",
         "AppLabel": "powerLabel",
         "Conditional": "true",
+        "DefaultIcon": "online_icon",
         "Formatter": {
             "Min": "0",
             "Max": "9999",
@@ -1000,7 +986,6 @@
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "mode",
-        "GroupLabel": "Mode",
         "Values": {
             "Auto": {
                 "Icon": "img_auto",
@@ -1027,9 +1012,9 @@
     "36": {
         "Name": "THERMOSTAT OPERATING STATE",
         "Type": "Sensor",
-        "Placement": "Header_Detail",
+        "Placement": "Header_Only",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Operating State",
+        "AppLabel": "operating_state",
         "ExcludeFrom": "Rule"
     },
     "37": {
@@ -1038,8 +1023,8 @@
         "Placement": "Detail",
         "Layout": "SINGLE_TEMP",
         "AppLabel": "high_temp",
-        "GroupLabel": "Heat Temp",
         "Conditional": "true",
+        "DefaultIcon": "target_temperature",
         "Formatter": {
             "Min": "35",
             "Max": "95",
@@ -1053,12 +1038,12 @@
         "Placement": "Detail",
         "Layout": "SINGLE_TEMP",
         "AppLabel": "low_temp",
-        "GroupLabel": "Low Temperature",
         "Conditional": "true",
+        "DefaultIcon": "target_temperature",
         "Formatter": {
             "Min": "35",
             "Max": "95",
-            "Unit": "F",
+            "Unit": "\u00B0F",
             "Factor": "1"
         }
     },
@@ -1067,7 +1052,6 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "Fan Mode",
         "AppLabel": "fan_mode",
         "Values": {
             "On Low ": {
@@ -1087,7 +1071,7 @@
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Fan State",
+        "AppLabel": "fan_state",
         "ExcludeFrom": "Rule"
     },
     "41": {
@@ -1095,7 +1079,6 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "SINGLE_TEMP",
-        "GroupLabel": "Target Temperature",
         "AppLabel": "target_temp",
         "Conditional": "true",
         "Formatter": {
@@ -1109,19 +1092,18 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "LIST",
-        "GroupLabel": "Actions",
         "AppLabel": "actions",
-        "ExcludeFrom": "Rule|Scene",
+        "ExcludeFrom": "Rule_Scene",
         "Values": {
             "0": {
                 "ToggleValue": "99",
-                "Icon": "garage_close_icon",
+                "Icon": "garage_close",
                 "AppLabel": "close",
                 "Label": "Down"
             },
             "99": {
                 "ToggleValue": "0",
-                "Icon": "garage_open_icon",
+                "Icon": "garage_open",
                 "AppLabel": "open",
                 "Label": "Open"
             }
@@ -1131,7 +1113,6 @@
         "Name": "STOP",
         "Type": "Actuator",
         "Placement": "Detail",
-        "GroupLabel": "Actions",
         "AppLabel": "actions",
         "ExcludeFrom": "Scene",
         "Values": {
@@ -1150,28 +1131,31 @@
         "Values": {
             "0": {
                 "ToggleValue": "255",
-                "Icon": "garage_close_icon",
+                "Icon": "garage_close",
                 "AppLabel": "closed",
                 "Label": "CLOSED"
             },
             "252": {
+                "ToggleValue": "255",
                 "Icon": "icon_garage_door_down",
                 "AppLabel": "closing",
                 "Label": "CLOSING"
             },
             "253": {
-                "Icon": "garage_open_icon",
+                "ToggleValue": "0",
+                "Icon": "garage_open",
                 "AppLabel": "stopped",
                 "Label": "STOPPED"
             },
             "254": {
+                "ToggleValue": "0",
                 "Icon": "icon_garage_door_up",
                 "AppLabel": "opening",
                 "Label": "OPENING"
             },
             "255": {
                 "ToggleValue": "0",
-                "Icon": "garage_open_icon",
+                "Icon": "garage_open",
                 "AppLabel": "opened",
                 "Label": "OPENED"
             }
@@ -1183,7 +1167,6 @@
         "Placement": "Detail",
         "Layout": "LIST",
         "AppLabel": "mode",
-        "GroupLabel": "Mode",
         "Values": {
             "Auto": {
                 "Icon": "img_auto",
@@ -1211,7 +1194,7 @@
                 "Label": "Resume"
             },
             "Fan Only": {
-                "Icon": "fan_off_icon",
+                "Icon": "btn_fan_off",
                 "AppLabel": "fanOnly",
                 "Label": "Fan Only"
             },
@@ -1231,10 +1214,10 @@
         "Name": "AC SETPOINT HEATING",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "SLIDER",
-        "GroupLabel": "High Temperature",
+        "Layout": "SINGLE_TEMP",
         "AppLabel": "high_temp",
         "Conditional": "true",
+        "DefaultIcon": "thermostat_image",
         "Formatter": {
             "Min": "60",
             "Max": "86",
@@ -1245,14 +1228,14 @@
         "Name": "AC SETPOINT COOLING",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "SLIDER",
-        "GroupLabel": "Low Temperature",
+        "Layout": "SINGLE_TEMP",
         "AppLabel": "low_temp",
         "Conditional": "true",
+        "DefaultIcon": "thermostat_image",
         "Formatter": {
-            "Min": "60.8",
+            "Min": "60",
             "Max": "86",
-            "Unit": "F/C"
+            "Unit": "\u00B0F"
         }
     },
     "48": {
@@ -1260,7 +1243,6 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "LIST",
-        "GroupLabel": "Fan Mode",
         "AppLabel": "fan_mode",
         "Values": {
             "Auto Low": {
@@ -1288,10 +1270,8 @@
     "49": {
         "Name": "AC SWING",
         "Type": "Actuator",
-        "ReadOnly": "false",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "Swing",
         "AppLabel": "swing",
         "Values": {
             "0": {
@@ -1313,7 +1293,6 @@
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Battery",
         "AppLabel": "battery",
         "Conditional": "true",
         "Formatter": {
@@ -1328,11 +1307,10 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "IR Code",
+        "AppLabel": "irCode",
         "Formatter": {
             "Min": "0",
-            "Max": "999",
-            "Factor": "1"
+            "Max": "999"
         }
     },
     "52": {
@@ -1341,7 +1319,6 @@
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "voltage",
-        "GroupLabel": "Voltage",
         "Conditional": "true",
         "Formatter": {
             "Unit": "V"
@@ -1353,7 +1330,6 @@
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "current",
-        "GroupLabel": "Current",
         "Conditional": "true",
         "Formatter": {
             "Unit": "A"
@@ -1362,14 +1338,12 @@
     "54": {
         "Name": "RETAIN_STATE",
         "Type": "Functional",
-        "Placement": "NaN",
-        "Layout": "NaN",
-        "GroupLabel": "NaN"
+        "Placement": "Hidden",
+        "Layout": "NaN"
     },
     "55": {
         "Name": "NEST_ID",
         "Type": "Functional",
-        "ReadOnly": "true",
         "Placement": "Hidden",
         "ExcludeFrom": "Scene_Rule"
     },
@@ -1378,7 +1352,6 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "Mode",
         "AppLabel": "mode",
         "Values": {
             "heat-cool": {
@@ -1408,7 +1381,6 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "SINGLE_TEMP",
-        "GroupLabel": "Target Temp",
         "AppLabel": "target_temperature",
         "Conditional": "true",
         "Formatter": {
@@ -1422,7 +1394,6 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "SINGLE_TEMP",
-        "GroupLabel": "Low Temperature",
         "AppLabel": "low_temp",
         "Conditional": "true",
         "Formatter": {
@@ -1436,7 +1407,6 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "SINGLE_TEMP",
-        "GroupLabel": "High Temperature",
         "AppLabel": "high_temp",
         "Conditional": "true",
         "Formatter": {
@@ -1450,7 +1420,6 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "Nest Mode",
         "AppLabel": "nest_label_away_mode",
         "ExcludeFrom": "Scene_Rule",
         "Values": {
@@ -1467,6 +1436,7 @@
             "auto-away": {
                 "Icon": "away_white",
                 "AppLabel": "AUTOAWAY",
+                "ReadOnly":"true",
                 "Label": "Auto-away"
             }
         }
@@ -1476,7 +1446,6 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
-        "GroupLabel": "Fan",
         "AppLabel": "fan",
         "Values": {
             "true": {
@@ -1525,10 +1494,11 @@
     "65": {
         "Name": "IS_USING_EMERGENCY_HEAT",
         "Type": "Functional",
-        "Placement": "Detail",
+        "Placement": "Hidden",
         "ExcludeFrom": "Scene_Rule",
         "Values": {
             "true": {
+                "AppLabel":"emergency_heat",
                 "Label": "Using Emergency Heat"
             }
         }
@@ -1572,7 +1542,6 @@
     "69": {
         "Name": "RESPONSE_CODE",
         "Type": "Info",
-        "ReadOnly": "true",
         "Placement": "Message",
         "ExcludeFrom": "Scene_Rule",
         "Values": {
@@ -1616,10 +1585,10 @@
                 "Label": "Cannot change HVAC mode during energy-saving events"
             },
             "-14": {
-                "Label": "Cannot change HVAC mode to [Heat/Cool/Heat • Cool]; HVAC cannot [Heat/Cool]"
+                "Label": "Cannot change HVAC mode to Heat/Cool"
             },
             "-15": {
-                "Label": "Invalid HVAC mode: [Heat/Cool/Heat • Cool]"
+                "Label": "Invalid HVAC mode"
             },
             "-16": {
                 "Label": "Cannot activate fan during smoke/co safety shutoff"
@@ -1642,7 +1611,6 @@
         "Name": "CO_ALARM_STATE",
         "Type": "Sensor",
         "Placement": "Header_Detail",
-        "GroupLabel": "CO Status",
         "AppLabel": "co_lable",
         "Layout": "TEXT_VIEW",
         "ExcludeFrom": "Rule",
@@ -1654,7 +1622,7 @@
             },
             "warning": {
                 "Icon": "icon_tampered_yellow",
-                "AppLabel": "co_detected",
+                "AppLabel": "warning",
                 "Label": "WARNING"
             },
             "emergency": {
@@ -1669,7 +1637,6 @@
         "Type": "Sensor",
         "Placement": "Header_Detail",
         "AppLabel": "smoke_lable",
-        "GroupLabel": "Smoke Status",
         "Layout": "TEXT_VIEW",
         "ExcludeFrom": "Rule",
         "Values": {
@@ -1680,7 +1647,7 @@
             },
             "warning": {
                 "Icon": "icon_tampered_yellow",
-                "AppLabel": "co_detected",
+                "AppLabel": "warning",
                 "Label": "WARNING"
             },
             "emergency": {
@@ -1721,14 +1688,16 @@
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "Battery",
+        "AppLabel": "battery",
         "ExcludeFrom": "Scene_Rule",
         "Values": {
             "ok": {
-                "Label": "OK"
+                "Label": "OK",
+                "AppLabel":"ok"
             },
             "Warning": {
-                "Label": "REPLACE"
+                "Label": "REPLACE",
+                "AppLabel":"replace"
             }
         }
     },
@@ -1741,8 +1710,7 @@
         "Name": "ENERGY",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "SLIDER",
-        "GroupLabel": "Energy",
+        "Layout": "Slider",
         "AppLabel": "energyLabel",
         "Conditional": "true",
         "Formatter": {
@@ -1762,7 +1730,6 @@
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "POWER",
         "AppLabel": "clamp1_power",
         "Conditional": "true",
         "Formatter": {
@@ -1776,7 +1743,6 @@
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "POWER",
         "AppLabel": "clamp2_power",
         "Conditional": "true",
         "Formatter": {
@@ -1790,7 +1756,6 @@
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "ENERGY",
         "AppLabel": "clamp1_energy",
         "Conditional": "true",
         "Formatter": {
@@ -1804,7 +1769,6 @@
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "GroupLabel": "ENERGY",
         "AppLabel": "clamp2_energy",
         "Conditional": "true",
         "Formatter": {
@@ -1817,5 +1781,137 @@
         "Name": "ACTIVE_POWER",
         "Type": "Sensor",
         "Placement": "Hidden"
+    },
+    "87": {
+        "Name": "OCCUPANCY_STATE",
+        "Type": "Sensor",
+        "Placement": "Header",
+        "Layout": "MULTI_BUTTON",
+        "DefaultIcon": "motion_on",
+        "Values": {
+            "true": {
+                "AppLabel": "occupied",
+                "Icon": "motion_on",
+                "Label": "OCCUPIED"
+            },
+            "false": {
+                "AppLabel": "unoccupied",
+                "Icon": "motion_off",
+                "Label": "UNOCCUPIED"
+            }
+        }
+    },
+    "88": {
+        "Name": "ALARM_BINARY",
+        "Type": "Actuator",
+        "Placement": "Header",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "off",
+        "DefaultIcon": "alarm_off",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "alarm_on",
+                "AppLabel": "alarm_on",
+                "Label": "ON"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "alarm_off",
+                "AppLabel": "off",
+                "Label": "OFF"
+            }
+        }
+    },
+    "89": {
+        "Name": "AC_SWITCH BINARY",
+        "Type": "Actuator",
+        "Placement": "Header",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "off",
+        "DefaultIcon": "ac_switch_off",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "ac_switch_on",
+                "AppLabel": "on",
+                "Label": "ON"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "ac_switch_off",
+                "AppLabel": "off",
+                "Label": "OFF"
+            }
+        }
+    },
+    "90": {
+        "Name": "HUE_SWITCH BINARY",
+        "Type": "Actuator",
+        "Placement": "Header",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "hue",
+        "DefaultIcon": "light_off",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "light_on",
+                "AppLabel": "on",
+                "Label": "ON"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "light_off",
+                "AppLabel": "off",
+                "Label": "OFF"
+            }
+        }
+    },
+    "91": {
+        "Name": "TONE",
+        "Type": "Actuator",
+        "Placement": "Detail",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "ringTone",
+        "DefaultIcon": "alarm_on",
+        "Values": {
+            "1": {
+                "Icon": "alarm_on",
+                "AppLabel": "tone1",
+                "Label": "tone1"
+            },
+            "2": {
+                "Icon": "alarm_on",
+                "AppLabel": "tone2",
+                "Label": "tone2"
+            },
+            "3":{
+                "Icon": "alarm_on",
+                "AppLabel": "tone3",
+                "Label": "tone3"
+            }
+        }
+    },
+    "92": {
+        "Name": "MULTILEVEL BINARY",
+        "Type": "Actuator",
+        "Placement": "Header",
+        "Layout": "MULTI_BUTTON",
+        "ShowToggleInRules": "true",
+        "DefaultIcon": "dimmer",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "dimmer",
+                "AppLabel": "on",
+                "Label": "ON"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "switch_off",
+                "AppLabel": "off",
+                "Label": "OFF"
+            }
+        }
     }
 }

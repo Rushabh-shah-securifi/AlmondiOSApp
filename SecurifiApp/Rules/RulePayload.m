@@ -212,6 +212,7 @@
 }
 
 -(NSDictionary *)createActionDeviceObject:(SFIButtonSubProperties*)dimButtonProperty{
+    
     if(dimButtonProperty.type!=nil && [dimButtonProperty.type isEqualToString:@"NetworkResult"]){
         NSDictionary *dict = @{
                                @"Type":@"NetworkResult",

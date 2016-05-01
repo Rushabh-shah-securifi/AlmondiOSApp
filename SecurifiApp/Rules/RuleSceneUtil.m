@@ -56,33 +56,29 @@
     NSMutableArray *genericIndexValues = [NSMutableArray new];
     
     GenericDeviceClass *genericDevice = toolkit.genericDevices[@(deviceType).stringValue];
-    if(genericDevice != nil){
-        NSDictionary *deviceIndexes = genericDevice.Indexes;
-        NSArray *indexIDs = deviceIndexes.allKeys;
-        for(NSString *indexID in indexIDs){
-            DeviceIndex *deviceIndex = deviceIndexes[indexID];
-            GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
-            genericIndexObj.rowID = deviceIndex.rowID;
-            
-            SFIButtonSubProperties *subProperty = [self findSubProperty:triggers actions:(NSArray*)actions deviceID:deviceID index:indexID.intValue istrigger:isTrigger];
-            GenericValue *genericValue = nil;
-            if(subProperty != nil)
-                genericValue = [GenericIndexUtil getMatchingGenericValueForGenericIndexID:genericIndexObj.ID forValue:subProperty.matchData];
-            GenericIndexValue *genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue index:indexID.intValue deviceID:deviceID];
+    if(genericDevice==nil)
+        return genericIndexValues;
+    
+    NSDictionary *deviceIndexes = genericDevice.Indexes;
+    NSArray *indexIDs = deviceIndexes.allKeys;
+    for(NSString *indexID in indexIDs){
+        DeviceIndex *deviceIndex = deviceIndexes[indexID];
+        GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
+        NSLog(@" device Index %@ deviceType %@,devicename %@  generic index ID %@ istrigger %d ,istrigger %d",deviceIndex.index ,genericDevice.type ,genericDevice.name, genericIndexObj.ID,isTrigger,isScene);
+        if(![self showGenericIndex:genericIndexObj isTrigger:isTrigger isScene:isScene])
+            continue;
+        
+        genericIndexObj.rowID = deviceIndex.rowID;
+        
+        SFIButtonSubProperties *subProperty = [self findSubProperty:triggers actions:(NSArray*)actions deviceID:deviceID index:indexID.intValue istrigger:isTrigger];
+        GenericValue *genericValue = nil;
+        if(subProperty != nil)
+            genericValue = [GenericIndexUtil getMatchingGenericValueForGenericIndexID:genericIndexObj.ID forValue:subProperty.matchData];
+        
+        GenericIndexValue *genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue index:indexID.intValue deviceID:deviceID];
+        
+        [genericIndexValues addObject:genericIndexValue];
 
-            
-            NSString *checkString = isTrigger? @"Rule": @"Scene";
-            //rule trigger
-            if(!isScene && isTrigger && [self isToBeAdded:genericIndexObj.excludeFrom checkString:@"Rule"]){
-                NSLog(@"util - rule trigger");
-                [genericIndexValues addObject:genericIndexValue];
-            }
-            //scene action, rule action
-            else if((isScene || !isTrigger) && [genericIndexObj.type isEqualToString:ACTUATOR] && [self isToBeAdded:genericIndexObj.excludeFrom checkString:checkString]){
-                NSLog(@"util - scene/rule action");
-                [genericIndexValues addObject:genericIndexValue];
-            }
-        }
     }
     return genericIndexValues;
 }
@@ -97,35 +93,37 @@
     return nil;
 }
 
-+(BOOL)isActionDevice:(int) deviceType{
++(BOOL)showGenericDevice:(int)deviceType isTrigger:(BOOL) isTrigger isScene:(BOOL)isScene{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericDeviceClass *genericDevice = toolkit.genericDevices[@(deviceType).stringValue];
-    if(genericDevice != nil){
-        if(genericDevice.isActuator && [self isToBeAdded:genericDevice.excludeFrom checkString:@"Action"]){
-            return  YES;
-        }
+    if(genericDevice != nil && [self isToBeAdded:genericDevice.excludeFrom checkString:isScene?@"Scene":@"Rule"]){
+        if(isTrigger && genericDevice.isTrigger)
+           return YES;
+        else if (!isTrigger && genericDevice.isActuator)
+            return YES;
+        
     }
     return NO;
 }
 
-+(BOOL)isTriggerDevice:(int)deviceType{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    GenericDeviceClass *genericDevice = toolkit.genericDevices[@(deviceType).stringValue];
-    if(genericDevice != nil){
-        if([self isToBeAdded:genericDevice.excludeFrom checkString:@"Trigger"]){
-            return  YES;
-        }
++(BOOL)showGenericIndex:(GenericIndexClass *)index isTrigger:(BOOL) isTrigger isScene:(BOOL)isScene{
+    if([self isToBeAdded:index.excludeFrom checkString:isScene?@"Scene":@"Rule"] && ![index.placement isEqualToString:@"Hidden"]){
+        if(isTrigger)
+            return YES;
+        else if (!isTrigger && !index.readOnly)
+            return YES;
+        
     }
     return NO;
 }
 
-+ (BOOL)shouldYouSkipTheValue:(GenericValue*)genericValue isScene:(BOOL)isScene{
-    if(isScene && ([RuleSceneUtil isToBeAdded:genericValue.excludeFrom checkString:@"Scene"] == NO))
++ (BOOL)showGenericValue:(GenericValue *)index isScene:(BOOL)isScene{
+    if([self isToBeAdded:index.excludeFrom checkString:isScene?@"Scene":@"Rule"]){
         return YES;
-    else if(!isScene && ([RuleSceneUtil isToBeAdded:genericValue.excludeFrom checkString:@"Rule"]) == NO)
-        return YES;
+    }
     return NO;
 }
+
 
 + (BOOL) isToBeAdded:(NSString*)dataString checkString:(NSString*)checkString{
     if(dataString  != nil){

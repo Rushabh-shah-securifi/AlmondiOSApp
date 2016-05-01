@@ -142,6 +142,7 @@ UILabel *topLabel;
             lastImageButton=[self buildTime:buttonProperties isTrigger:isTrigger positionId:positionId];
             positionId++;
         }else{
+            NSLog(@"buttoon devicetype %d",buttonProperties.deviceType);
             NSArray *genericIndexValues = [self getDeviceIndexes:buttonProperties isTrigger:isTrigger];
             if(genericIndexValues == nil || genericIndexValues.count<=0)
                 continue;
@@ -163,6 +164,7 @@ UILabel *topLabel;
     
     SwitchButton * imageButton =nil;
     for(GenericIndexValue *indexValue in genericIndexValues){
+        NSLog(@"indexValue.deviceId %d",indexValue.deviceID);
         GenericIndexClass *genericIndex = indexValue.genericIndex;
         GenericValue *selectedValue = indexValue.genericValue;
         NSLog(@"genericIndexValues %@ ,%@,%@",genericIndexValues,buttonProperties.matchData,buttonProperties.displayText);
@@ -173,7 +175,7 @@ UILabel *topLabel;
         }else{
             genericValueDic = genericIndex.values;
         }
-        
+        NSLog(@"genericIndex.Id %@",genericIndex.ID);
         NSArray *genericValueKeys = genericValueDic.allKeys;
         NSLog(@"indexValue.index %d == %d",indexValue.index,buttonProperties.index);
         if (indexValue.index == buttonProperties.index) {
@@ -183,6 +185,7 @@ UILabel *topLabel;
             }
             
             for (NSString *value in genericValueKeys) {
+                NSLog(@"values %@",value);
                 GenericValue *gVal = genericValueDic[value];
                 BOOL isDimButton = genericIndex.layoutType!=nil && ([CommonMethods isDimmerLayout:genericIndex.layoutType layout:@"SINGLE_TEMP"] || [genericIndex.layoutType isEqualToString:@"Text_Text_Input"]);
                 NSLog(@"gaval.value: %@, propertyvalue: %@", gVal.value, buttonProperties.matchData);
@@ -388,7 +391,7 @@ UILabel *topLabel;
         NSLog(@"AlmondModeUpdated type");
         buttonSubProperty.deviceType= 0;
         buttonSubProperty.deviceName = @"Mode";
-    }else if(buttonSubProperty.index == 0 && buttonSubProperty.eventType !=nil && toolkit.clients!=nil){
+    }else if(buttonSubProperty.index == 1 && buttonSubProperty.eventType !=nil && toolkit.clients!=nil){
         NSLog(@"client type");
         for(Client *connectedClient in toolkit.clients){
             if(buttonSubProperty.deviceId == connectedClient.deviceID.intValue){
