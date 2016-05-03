@@ -175,7 +175,7 @@
                 "AppLabel": "yes"
             },
             "false": {
-                "AppLabel": "noCamelCase"
+                "AppLabel": "no"
             }
         }
     },
@@ -225,7 +225,7 @@
             },
             "false": {
                 "ToggleValue": "true",
-                "AppLabel": "noCamelCase",
+                "AppLabel": "no",
                 "Label": "No"
             }
         }
@@ -872,7 +872,7 @@
     "27": {
         "Name": "HUMIDITY",
         "Type": "Sensor",
-        "Placement": "Detail",
+        "Placement": "Header_Detail",
         "Layout": "SINGLE_TEMP",
         "AppLabel": "humidity",
         "ExcludeFrom": "Scene",
@@ -1020,7 +1020,7 @@
     "37": {
         "Name": "THERMOSTAT SETPOINT HEATING",
         "Type": "Actuator",
-        "Placement": "Detail",
+        "Placement": "Header_Detail",
         "Layout": "SINGLE_TEMP",
         "AppLabel": "high_temp",
         "Conditional": "true",
@@ -1035,7 +1035,7 @@
     "38": {
         "Name": "THERMOSTAT SETPOINT COOLING",
         "Type": "Actuator",
-        "Placement": "Detail",
+        "Placement": "Header_Detail",
         "Layout": "SINGLE_TEMP",
         "AppLabel": "low_temp",
         "Conditional": "true",
@@ -1321,6 +1321,8 @@
         "AppLabel": "voltage",
         "Conditional": "true",
         "Formatter": {
+            "Min": "0",
+            "Max": "100",
             "Unit": "V"
         }
     },
@@ -1332,6 +1334,8 @@
         "AppLabel": "current",
         "Conditional": "true",
         "Formatter": {
+            "Min": "0",
+            "Max": "100",
             "Unit": "A"
         }
     },
@@ -1780,7 +1784,16 @@
     "86": {
         "Name": "ACTIVE_POWER",
         "Type": "Sensor",
-        "Placement": "Hidden"
+        "Placement": "Detail",
+        "Layout": "TEXT_VIEW",
+        "AppLabel": "POWER",
+        "Conditional": "true",
+        "Formatter": {
+            "Min": "0",
+            "Max": "100",
+            "Unit": "W"
+        }
+
     },
     "87": {
         "Name": "OCCUPANCY_STATE",
@@ -1829,6 +1842,7 @@
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "off",
+        "ShowToggleInRules": "true",
         "DefaultIcon": "ac_switch_off",
         "Values": {
             "true": {

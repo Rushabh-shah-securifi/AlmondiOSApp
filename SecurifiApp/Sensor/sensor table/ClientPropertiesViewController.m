@@ -61,8 +61,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     SecurifiToolkit *toolkit=[SecurifiToolkit sharedInstance];
     self.isLocal = [toolkit useLocalNetwork:[toolkit currentAlmond].almondplusMAC];
-    NSLog(@"indexID = %@ islOCAL %d",self.genericParams.headerGenericIndexValue.genericIndex.ID,self.isLocal);
-    if([self.genericParams.headerGenericIndexValue.genericIndex.ID isEqualToString:@"-3"] && self.isLocal)
+    if(self.isLocal)
         return self.genericParams.indexValueList.count -1;
     return self.genericParams.indexValueList.count;
 }

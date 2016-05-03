@@ -65,6 +65,7 @@
 
 -(RulesDeviceNameButton*)getSelectedButton:(int)deviceId eventType:(NSString*)eventType{
     RulesDeviceNameButton *button = self.addTriggerAction.currentClickedButton;
+    NSLog(@"button.deviceId %d type %d",button.deviceId,button.deviceType);
     if(button.deviceId == deviceId && button.selected){
         return button;
     }
@@ -79,7 +80,9 @@
     [self updateInfoLabel];
     [self buildTriggersAndActions];
     RulesDeviceNameButton *deviceButton = [self getSelectedButton:deviceId eventType:eventType];
+    NSLog(@"deviceButton.deviceType  %d istrigger %d",deviceButton.deviceType ,deviceButton.isTrigger);
     if(deviceButton.deviceType == SFIDeviceType_WIFIClient && deviceButton.isTrigger){// wifi clients
+        NSLog(@"client cross button clicked");
         [self.addTriggerAction wifiClientsClicked:deviceButton];
         return;
     }
