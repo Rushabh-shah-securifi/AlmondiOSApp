@@ -41,6 +41,7 @@
 #import "GenericIndexValue.h"
 #import "GenericIndexClass.h"
 #import "GenericValue.h"
+#import "AlmondJsonCommandKeyConstants.h"
 
 @interface SFISubPropertyBuilder()
 
@@ -93,16 +94,16 @@ UILabel *topLabel;
     if(triggersList.count > 0){
         [self buildEntryList:triggersList isTrigger:YES ];
         if (!isScene) {
-//             [self drawImage:@"arrow_icon" withSubProperties:<#(SFIButtonSubProperties *)#> isTrigger:<#(BOOL)#>];
+            //             [self drawImage:@"arrow_icon" withSubProperties:<#(SFIButtonSubProperties *)#> isTrigger:<#(BOOL)#>];
         }
     }
     if(actionsList.count>0){
         [self buildEntryList:actionsList isTrigger:NO ];
     }
     
-    if(xVal > topScrollView.frame.size.width){
-        [topScrollView setContentOffset:CGPointMake(xVal-topScrollView.frame.size.width , 0) animated:YES];
-    }
+    //    if(xVal > topScrollView.frame.size.width){
+    //        [topScrollView setContentOffset:CGPointMake(xVal-topScrollView.frame.size.width , 0) animated:YES];
+    //    }
     topScrollView.contentSize = CGSizeMake(xVal, topScrollView.frame.size.height);//to do
 }
 
@@ -187,23 +188,22 @@ UILabel *topLabel;
             for (NSString *value in genericValueKeys) {
                 NSLog(@"values %@",value);
                 GenericValue *gVal = genericValueDic[value];
-                BOOL isDimButton = genericIndex.layoutType!=nil && ([CommonMethods isDimmerLayout:genericIndex.layoutType layout:@"SINGLE_TEMP"] || [genericIndex.layoutType isEqualToString:@"Text_Text_Input"]);
-                NSLog(@"gaval.value: %@, propertyvalue: %@", gVal.value, buttonProperties.matchData);
+                BOOL isDimButton = genericIndex.layoutType!=nil && ([CommonMethods isDimmerLayout:genericIndex.layoutType layout:SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW]);
+                
+                NSLog(@"gaval.value: %@, propertyvalue: %@, displayeddata: %@", gVal.value, buttonProperties.matchData, buttonProperties.displayedData);
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties]){
-                    NSLog(@"subpropertybuilder - compare entry");
-                    NSString *bottomText;
-                    
+                    NSString *text;
                     if(isDimButton){
-                        buttonProperties.displayedData = [NSString stringWithFormat:@"%@",@(buttonProperties.displayedData.intValue).stringValue];
-                        bottomText = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,genericIndex.formatter.units];
+                        buttonProperties.displayedData = [NSString stringWithFormat:@"%d",(int)([buttonProperties.matchData intValue]*genericIndex.formatter.factor)];
+                        text = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,genericIndex.formatter.units];
                         if(buttonProperties.deviceType == SFIDeviceType_HueLamp_48){
-                            bottomText = [NSString stringWithFormat:@"%@%@",@(buttonProperties.matchData.intValue * 100/255).stringValue,genericIndex.formatter.units];
+                            text = [NSString stringWithFormat:@"%@%@",@(buttonProperties.matchData.intValue * 100/255).stringValue,genericIndex.formatter.units];
                         }
                     }
                     else
-                        bottomText = [self getDisplayText:genericIndex value:buttonProperties.matchData genericValue:gVal];
-                    NSLog(@"bottomText  %@",bottomText);
-                    return [self setIconAndText:positionId buttonProperties:buttonProperties icon:gVal.icon text:bottomText isTrigger:isTrigger isDimButton:isDimButton bottomText:gVal.displayText];
+                        text = gVal.displayText;
+                    NSLog(@"bottomText  %@",text);
+                    return [self setIconAndText:positionId buttonProperties:buttonProperties icon:gVal.icon text:text isTrigger:isTrigger isDimButton:isDimButton bottomText:gVal.displayText];
                 }//if
             }//for
             return imageButton;
@@ -212,23 +212,11 @@ UILabel *topLabel;
     return imageButton;
 }
 
-
 +(NSDictionary*)formatterDict:(GenericIndexClass*)genericIndex{
     NSMutableDictionary *genericValueDic = [[NSMutableDictionary alloc]init];
     [genericValueDic setValue:[[GenericValue alloc]initWithDisplayText:genericIndex.groupLabel iconText:@(genericIndex.formatter.min).stringValue value:@"" excludeFrom:@""] forKey:genericIndex.groupLabel];
     return genericValueDic;
 }
-
-
-
-
-+(NSString*)getDisplayText:(GenericIndexClass*)genericIndex value:(NSString*)value genericValue:(GenericValue*)gVal{
-    if(genericIndex.layoutType!=nil && ([CommonMethods isDimmerLayout:genericIndex.layoutType layout:@"SINGLE_TEMP"] || [genericIndex.layoutType isEqualToString:@"textButton"])){
-        return [NSString stringWithFormat:@"%@ %@%@", gVal.displayText, value, genericIndex.formatter.units];
-    }
-    return gVal.displayText;
-}
-
 
 + (SwitchButton*)buildTime:(SFIButtonSubProperties *)timesubProperties isTrigger:(BOOL)isTrigger positionId:(int)positionId{
     DimmerButton *dimbutton=[[DimmerButton alloc]initWithFrame:CGRectMake(xVal, 5, dimFrameWidth, dimFrameHeight)];

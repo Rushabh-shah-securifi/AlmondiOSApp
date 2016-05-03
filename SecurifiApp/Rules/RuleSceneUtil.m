@@ -97,20 +97,21 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericDeviceClass *genericDevice = toolkit.genericDevices[@(deviceType).stringValue];
     if(genericDevice != nil && [self isToBeAdded:genericDevice.excludeFrom checkString:isScene?@"Scene":@"Rule"]){
-        if(isTrigger && genericDevice.isTrigger)
+        if((!isScene && isTrigger) && genericDevice.isTrigger)
            return YES;
-        else if (!isTrigger && genericDevice.isActuator)
+        else if ((!isTrigger || isScene) && genericDevice.isActuator)
             return YES;
         
     }
     return NO;
 }
 
+
 +(BOOL)showGenericIndex:(GenericIndexClass *)index isTrigger:(BOOL) isTrigger isScene:(BOOL)isScene{
-    if([self isToBeAdded:index.excludeFrom checkString:isScene?@"Scene":@"Rule"] && ![index.placement isEqualToString:@"Hidden"]){
-        if(isTrigger)
+    if([self isToBeAdded:index.excludeFrom checkString:isScene?@"Scene":@"Rule"]){
+        if(!isScene && isTrigger)
             return YES;
-        else if (!isTrigger && !index.readOnly)
+        else if ((!isTrigger || isScene) && !index.readOnly)
             return YES;
         
     }

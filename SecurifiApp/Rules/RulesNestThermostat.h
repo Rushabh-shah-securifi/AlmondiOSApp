@@ -18,5 +18,5 @@
 +(NSArray*)filterIndexesBasedOnModeForIndexes:(NSArray*)genericIndexValues propertyList:(NSMutableArray*)propertyList deviceId:(sfi_id)deviceId;
 
 +(void)removeTemperatureIndexes:(int)deviceId mode:(NSString *)mode entries:(NSMutableArray *)entries;
-+ (NSArray*)nestThermostat:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexVals;
++ (NSArray*)getNestGenericIndexVals:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexVals;
 @end

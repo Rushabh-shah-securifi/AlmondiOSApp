@@ -16,12 +16,12 @@
 @implementation RulesNestThermostat
 
 + (NSArray*) createNestThermostatGenericIndexValues:(NSArray*)genericIndexValues deviceID:(int)deviceID{
-    NSArray* newGenericIndexValues = [self nestThermostat:deviceID withGenericIndexValues:genericIndexValues];
+    NSArray* newGenericIndexValues = [self getNestGenericIndexVals:deviceID withGenericIndexValues:genericIndexValues];
     [self adjustCellIDs:deviceID withGenericIndexValues:newGenericIndexValues];
     return newGenericIndexValues;
 }
 
-+ (NSArray*)nestThermostat:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexVals{
++ (NSArray*)getNestGenericIndexVals:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexVals{
     NSLog(@"can cool value: %@", [Device getValueForIndex:12 deviceID:deviceID]);
     BOOL canCool = [[Device getValueForIndex:12 deviceID:deviceID] isEqualToString:@"true"];
     BOOL canHeat = [[Device getValueForIndex:13 deviceID:deviceID] isEqualToString:@"true"];

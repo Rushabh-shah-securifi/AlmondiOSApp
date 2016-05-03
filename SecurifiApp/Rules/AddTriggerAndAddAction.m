@@ -43,6 +43,7 @@
 #import "Slider.h"
 #import "HueColorPicker.h"
 #import "labelAndCheckButtonView.h"
+#import "AlmondJsonCommandKeyConstants.h"
 
 @interface AddTriggerAndAddAction ()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,UITextFieldDelegate,TimeViewDelegate,SliderViewDelegate,HueColorPickerDelegate>
 @property (nonatomic, strong)NSMutableArray *triggers;
@@ -173,7 +174,7 @@ labelAndCheckButtonView *labelView;
 }
 
 -(void)addClientNameLabel:(NSString*)clientName yScale:(int)yScale{
-    UILabel *clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, yScale-20, self.parentView.frame.size.width, 14)];
+    UILabel *clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, yScale-15, self.parentView.frame.size.width, 14)];
     clientNameLabel.text = clientName;
     clientNameLabel.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:12];
     clientNameLabel.backgroundColor = [UIColor clearColor];
@@ -387,7 +388,7 @@ labelAndCheckButtonView *labelView;
     DimmerButton *dimbtn=[[DimmerButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,0 , dimFrameWidth, dimFrameHeight)];
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
     [dimbtn addTarget:self action:@selector(onStdWarnDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [dimbtn setUpTextField:@"0" displayText:@"Enter 0-65535 Sec" suffix:@""]; // ?
+    [dimbtn setUpTextField:@"0" displayText:genericIndexValue.genericValue.displayText suffix:@""]; // ?
     dimbtn.textField.delegate = self;
     
     dimbtn.center = CGPointMake(view.bounds.size.width/2,
@@ -485,16 +486,19 @@ labelAndCheckButtonView *labelView;
             if(![RuleSceneUtil showGenericValue:genericVal isScene:_isScene])
                 continue;
             i++;
+            NSLog(@"genericIndex.ID = %@",genericIndex.ID);
             
-            if  ([genericIndex.layoutType isEqualToString:@"TEXT_VIEW"]){
-                [self buildTextButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
-            }else if ([genericIndex.layoutType isEqualToString:@"HueColorPicker"]){
-                [self buildHueColorPicker:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
+//            if  ([genericIndex.layoutType isEqualToString:@"TEXT_VIEW"]){
+//                [self buildTextButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
+//            }else
+            NSLog(@"layouyt type = %@",genericIndex.layoutType);
+            if ([genericIndex.layoutType isEqualToString:@"HueColorPicker"]){
+            [self buildHueColorPicker:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
             else if ([genericIndex.layoutType isEqualToString:@"BrighnessSlider"]){
                 [self buildHueSliders:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
-            else if ([CommonMethods isDimmerLayout:genericIndex.layoutType layout:@"SINGLE_TEMP"] || [CommonMethods isDimmerLayout:genericIndex.layoutType layout:@"Slider"])
+            else if ([genericIndex.layoutType isEqualToString:SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW])
                 [self buildDimButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             else{
                 if(i >= 5){
@@ -652,7 +656,7 @@ labelAndCheckButtonView *labelView;
                     if(dim.subProperties.matchData.intValue - value < 3){
                         [dim setNewValue:@(value+3).stringValue];
                         //                        dim.subProperties.matchData = @(value+3).stringValue;
-                        [self updateMatchData:dim.subProperties newValue:@(value+3).stringValue];
+                        [self updateMatchData:dim.subProperties newValue:@(value+3).stringValue dimButton:dim];
                     }
                 }
             }
@@ -666,7 +670,7 @@ labelAndCheckButtonView *labelView;
                     if(value - dim.subProperties.matchData.intValue < 3){
                         [dim setNewValue:@(value-3).stringValue];
                         //                        dim.subProperties.matchData = @(value-3).stringValue;
-                        [self updateMatchData:dim.subProperties newValue:@(value-3).stringValue];
+                        [self updateMatchData:dim.subProperties newValue:@(value-3).stringValue dimButton:dim];
                     }
                 }
             }
@@ -694,14 +698,19 @@ labelAndCheckButtonView *labelView;
     
 }
 
--(void)updateMatchData:(SFIButtonSubProperties *)dimmButtonSubProperty newValue:(NSString*)newValue{
+
+-(void)updateMatchData:(SFIButtonSubProperties *)dimmButtonSubProperty newValue:(NSString*)newValue dimButton:(DimmerButton*)dimBtn{
     NSMutableArray *list=self.isTrigger?self.triggers:self.actions;
     for(SFIButtonSubProperties *buttonSubProperty in list){
         if(buttonSubProperty.deviceId == dimmButtonSubProperty.deviceId && buttonSubProperty.index == dimmButtonSubProperty.index){
-            buttonSubProperty.matchData = newValue;
+            NSLog(@"newvalue: %@", newValue);
+            buttonSubProperty.matchData = [dimBtn scaledValue:newValue];
+            buttonSubProperty.displayedData = newValue;
         }
     }
 }
+
+
 
 -(void)removePickerFromView{
     isPresentHozPicker=NO;

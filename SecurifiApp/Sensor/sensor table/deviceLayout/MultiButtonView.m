@@ -14,7 +14,8 @@
 #define FONT_SIZE 16
 #define MAX_LENGTH 18
 @interface MultiButtonView()
-@property (nonatomic) NSArray *valueArray;
+@property (nonatomic) NSArray *displayValueArray;
+@property (nonatomic)NSArray *valueArray;
 @end
 @implementation MultiButtonView
 -(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue
@@ -34,22 +35,22 @@
     if(self.genericIndexValue.genericValue.value){
         deviceValue  = self.genericIndexValue.genericValue.value;
     }
-    NSArray *allkeys = [valuedict allKeys];
-    
+//    NSArray *allkeys = [valuedict allKeys];
+    self.valueArray = [valuedict allKeys];
     NSMutableArray *labelsArray = [[NSMutableArray alloc]init];
     
-    for(int i =0;i < allkeys.count ;i++){
-        if([deviceValue isEqualToString:[allkeys objectAtIndex:i]]){
+    for(int i =0;i < self.valueArray.count ;i++){
+        if([deviceValue isEqualToString:[self.valueArray objectAtIndex:i]]){
             selectedValue = i;
         }
-        GenericValue *gVal = [valuedict valueForKey:[allkeys objectAtIndex:i]];
+        GenericValue *gVal = [valuedict valueForKey:[self.valueArray objectAtIndex:i]];
         [labelsArray addObject:gVal.displayText];
     }
     [self drawButton:labelsArray selectedValue:selectedValue];
 }
 
 -(void)drawButton:(NSArray*)array selectedValue:(int)selectedValue{//here we have to pass many things like deviceIndexId,deviceID,...
-    self.valueArray = array;
+    self.displayValueArray = array;
     int xPos = -10;
     for(int i = 0; i<array.count;i++){
         CGRect textRect = [UICommonMethods adjustDeviceNameWidth:[array objectAtIndex:i] fontSize:FONT_SIZE maxLength:MAX_LENGTH];
@@ -75,7 +76,7 @@
 }
 
 -(void)onButtonClicked:(UIButton *)sender{
-    for(UIButton *button in [[sender superview] subviews]){
+    for(UIButton *button in [[sender superview] subviews ]){
         if([button isKindOfClass:[UILabel class]])
             continue;
         if( button.tag == sender.tag){

@@ -9,6 +9,7 @@
 #import "DeviceHeaderView.h"
 #import "GenericIndexUtil.h"
 #import "AlmondJsonCommandKeyConstants.h"
+#import "RulesNestThermostat.h"
 #import "Colours.h"
 
 @interface DeviceHeaderView()<UIAlertViewDelegate>
@@ -90,13 +91,18 @@
 #pragma mark button click
 - (IBAction)settingButtonClicked:(id)sender {
     self.settingButton.alpha = 0.5;
+    NSArray* genericIndexValues;
+    int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
     if(self.cellType == SensorTable_Cell){
-        NSArray* genericIndexValues = [GenericIndexUtil getDetailListForDevice:self.genericParams.headerGenericIndexValue.deviceID];
+        genericIndexValues = [GenericIndexUtil getDetailListForDevice:deviceID];
+        if([Device getTypeForID:deviceID] == SFIDeviceType_NestThermostat_57){
+            genericIndexValues = [RulesNestThermostat getNestGenericIndexVals:deviceID withGenericIndexValues:genericIndexValues];
+        }
         self.genericParams.indexValueList = genericIndexValues;
         [self.delegate delegateDeviceSettingButtonClick:_genericParams];
     }
     else if(self.cellType == ClientTable_Cell){
-        NSArray* genericIndexValues = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
+        genericIndexValues = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:@(deviceID).stringValue];
         self.genericParams.indexValueList = genericIndexValues;
         [self.delegate delegateClientSettingButtonClick:self.genericParams];
         
@@ -106,7 +112,6 @@
     }
     
 }
-
 - (IBAction)onSensorButtonClicked:(id)sender {
     NSLog(@"onSensorButtonClicked");
     if(self.cellType == SensorTable_Cell || self.cellType == SensorEdit_Cell){

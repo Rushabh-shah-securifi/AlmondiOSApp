@@ -523,7 +523,6 @@
 		CEF6F5071C92CD2400C68975 /* GenericIndexUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */; };
 		CEF6F50A1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
 		CEF6F50B1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
-		CEFB6B701CD4AE5B009E17B7 /* newGenericIndexJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEFB6B6F1CD4AE5B009E17B7 /* newGenericIndexJson.json */; };
 		D68A83C0FF154EB48DA37E09 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7BE6C0BC2A24D858015ECCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -1084,7 +1083,6 @@
 		CEF6F5041C92CD2400C68975 /* GenericIndexUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericIndexUtil.h; sourceTree = "<group>"; };
 		CEF6F5051C92CD2400C68975 /* GenericIndexUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericIndexUtil.m; sourceTree = "<group>"; };
 		CEF6F5081C92CD3D00C68975 /* deviceListJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = deviceListJson.json; sourceTree = "<group>"; };
-		CEFB6B6F1CD4AE5B009E17B7 /* newGenericIndexJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = newGenericIndexJson.json; path = ../../../../../Downloads/newGenericIndexJson.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1207,7 +1205,6 @@
 				CEF6F5081C92CD3D00C68975 /* deviceListJson.json */,
 				A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */,
 				A545372A1C8ED35C00DC3EC8 /* scene_names.txt */,
-				CEFB6B6F1CD4AE5B009E17B7 /* newGenericIndexJson.json */,
 				A54EB0341C45004B00CF2837 /* Common-Images.xcassets */,
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
 				1C7E7E2D1A41A26A0026F0BA /* Base.lproj */,
@@ -2396,7 +2393,6 @@
 				A58DB3111BB16B9F00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB4541BB3CD3F00717C02 /* Login_iPhone.strings in Resources */,
 				846414DE1B736B80008AB07F /* AvenirLTStd-BookOblique.otf in Resources */,
-				CEFB6B701CD4AE5B009E17B7 /* newGenericIndexJson.json in Resources */,
 				A58DB2F81BB16B9F00717C02 /* Localizable.strings in Resources */,
 				A58DB4191BB2CD7D00717C02 /* Almond-MainStoryboard_iPhone.strings in Resources */,
 				A58DB3171BB16B9F00717C02 /* termsofuse.html in Resources */,

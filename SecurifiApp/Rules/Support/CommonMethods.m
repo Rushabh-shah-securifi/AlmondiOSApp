@@ -20,7 +20,8 @@
 }
 
 +(NSString*)getDays:(NSArray*)earlierSelection{
-    if(earlierSelection==nil || earlierSelection.count==0)
+    NSLog(@"earlierSelection count %ld ",earlierSelection.count);
+    if(earlierSelection.count==7 || earlierSelection.count==0)
         return @"EveryDay";
     NSMutableDictionary *dayDict = [self setDayDict];
     //Loop through earlierSelection
@@ -55,6 +56,19 @@
         }
     }
     return NO;
+}
++(void)clearTopScroll:(UIScrollView *)top middleScroll:(UIScrollView*)middle bottomScroll:(UIScrollView*)bottom{
+    [self clearScrollView:top];
+    [self clearScrollView:middle];
+    [self clearScrollView:bottom];
+}
++ (void)clearScrollView:(UIScrollView*)scrollView{
+    NSLog(@"clearTopScrollView");
+    NSArray *viewsToRemove = [scrollView subviews];
+    for (UIView *v in viewsToRemove) {
+        if (![v isKindOfClass:[UIImageView class]])
+            [v removeFromSuperview];
+    }
 }
 
 @end

@@ -8,6 +8,7 @@
 
 #import <V8HorizontalPickerView/V8HorizontalPickerView.h>
 #import "GenericIndexValue.h"
+#import "V8HorizontalPickerView.h"
 #import "Device.h"
 @protocol HorzSliderDelegate
 -(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue;
@@ -16,6 +17,7 @@
 @property (nonatomic)id<HorzSliderDelegate> delegate;
 @property (nonatomic)UIColor *color;
 @property (nonatomic)GenericIndexValue *genericIndexValue;
+@property (nonatomic)V8HorizontalPickerView *horzPicker;
 -(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue;
 
 -(void)drawSlider;

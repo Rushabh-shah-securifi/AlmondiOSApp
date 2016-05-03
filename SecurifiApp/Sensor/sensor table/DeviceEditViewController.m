@@ -49,6 +49,7 @@ static const int xIndent = 10;
 @property (weak, nonatomic) IBOutlet DeviceHeaderView *deviceEditHeaderCell;
 @property (nonatomic) UIView *dismisstamperedView;
 @property (nonatomic) UIScrollView *scrollView;
+@property (nonatomic)BOOL isLocal;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *indexScrollTopConstraint;
 
 @end
@@ -81,6 +82,9 @@ static const int xIndent = 10;
     [super viewWillAppear:YES];
     randomMobileInternalIndex = arc4random() % 10000;
     [self initializeNotifications];
+    SecurifiToolkit *toolkit=[SecurifiToolkit sharedInstance];
+    self.isLocal = [toolkit useLocalNetwork:[toolkit currentAlmond].almondplusMAC];
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -121,6 +125,9 @@ static const int xIndent = 10;
     for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList)
     {
         GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
+        if(self.isLocal && [genericIndexObj.ID isEqualToString:@"-3"])
+            continue;
+        
         NSLog(@"layout type :- %@",genericIndexObj.layoutType);
         if([genericIndexObj.layoutType isEqualToString:@"Info"] || [genericIndexObj.layoutType.lowercaseString isEqualToString:@"off"] || genericIndexObj.layoutType == nil || [genericIndexObj.layoutType isEqualToString:@"NaN"]){
             continue;
@@ -141,7 +148,7 @@ static const int xIndent = 10;
             [self setUpLable:label withPropertyName:propertyName];
             [view addSubview:label];
             UILabel *valueLabel = [[UILabel alloc]initWithFrame:CGRectMake(view.frame.size.width - 110, 0, 100, 15)];
-            [self setUpLable:valueLabel withPropertyName:genericIndexValue.genericValue.value];
+            [self setUpLable:valueLabel withPropertyName:genericIndexValue.genericValue.iconText];
             valueLabel.textAlignment = NSTextAlignmentRight;
             valueLabel.alpha = 0.5;
             [view addSubview:valueLabel];
@@ -248,7 +255,11 @@ static const int xIndent = 10;
 }
 #pragma mark delegate callback methods
 -(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue{// index is genericindex for clients, normal index for sensors
+    NSLog(@"newvalue %@",newValue);
     int index = genericIndexValue.index;
+    if([Device getTypeForID:genericIndexValue.deviceID]){
+        [self handleNest3PointDiffForIndex:index newValue:newValue];
+    }
     if(self.genericParams.isSensor){
         DeviceCommandType deviceCmdType = genericIndexValue.genericIndex.commandType;
         if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
@@ -264,7 +275,28 @@ static const int xIndent = 10;
     }
 }
 
-
+-(void)handleNest3PointDiffForIndex:(int)index newValue:(NSString*)value{
+    NSLog(@"handleNest3PointDiffForIndex - index: %d, value: %@", index, value);
+    
+    for(UIView *view in [self.indexesScroll subviews]){
+        NSLog(@"view 1: %@, view 2: %@", [[view subviews] objectAtIndex:0],[[view subviews] objectAtIndex:1]);
+        UIView *insideView = [[view subviews] objectAtIndex:1];
+        if([insideView isKindOfClass:[HorizontalPicker class]]){
+            NSLog(@"horizantal picker");
+            HorizontalPicker *picker = (HorizontalPicker*)insideView;
+            if(picker.genericIndexValue.index == 6 && index == 5){
+                if([picker.genericIndexValue.genericValue.value intValue] - [value intValue] < 3){
+                    NSLog(@"updating value");
+                    [picker.horzPicker scrollToElement:([value intValue] + 3) + picker.genericIndexValue.genericIndex.formatter.min animated:YES];
+                }
+            }else if(picker.genericIndexValue.index == 5 && index == 6){
+                if([value intValue] - [picker.genericIndexValue.genericValue.value intValue]< 3){
+                    [picker.horzPicker scrollToElement:([value intValue]-3) + picker.genericIndexValue.genericIndex.formatter.min animated:YES];
+                }
+            }
+        }
+    }
+}
 #pragma mark sensor cell(DeviceHeaderView) delegate
 -(void)toggle:(GenericIndexValue *)genericIndexValue{
     NSLog(@"delegateSensorTableDeviceButtonClickWithGenericProperies");

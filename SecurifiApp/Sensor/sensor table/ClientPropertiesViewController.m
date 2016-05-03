@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *clientPropertiesTable;
 @property (nonatomic)NSMutableArray *orderedArray ;
 @property (nonatomic)NSDictionary *ClientDict;
+@property (nonatomic) BOOL isLocal;
 @end
 
 @implementation ClientPropertiesViewController
@@ -30,6 +31,8 @@
     [super viewDidLoad];
     self.clientPropertiesTable.backgroundColor = self.genericParams.color;
     [self setHeaderCell];
+    SecurifiToolkit *toolkit=[SecurifiToolkit sharedInstance];
+    self.isLocal = [toolkit useLocalNetwork:[toolkit currentAlmond].almondplusMAC];
 }
 
 #pragma mark common cell delegate
@@ -56,6 +59,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    SecurifiToolkit *toolkit=[SecurifiToolkit sharedInstance];
+    self.isLocal = [toolkit useLocalNetwork:[toolkit currentAlmond].almondplusMAC];
+    NSLog(@"indexID = %@ islOCAL %d",self.genericParams.headerGenericIndexValue.genericIndex.ID,self.isLocal);
+    if([self.genericParams.headerGenericIndexValue.genericIndex.ID isEqualToString:@"-3"] && self.isLocal)
+        return self.genericParams.indexValueList.count -1;
     return self.genericParams.indexValueList.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -71,7 +79,7 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.userInteractionEnabled = YES;
     }else{
-        cell.vsluesLabel.alpha = 0.5;
+        cell.vsluesLabel.alpha = 0.7;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.userInteractionEnabled = NO;
     }

@@ -7,7 +7,6 @@
 //
 
 #import "HorizontalPicker.h"
-#import "V8HorizontalPickerView.h"
 #import "SFIColors.h"
 #import "SFIPickerIndicatorView1.h"
 #import "UIFont+Securifi.h"
@@ -28,32 +27,32 @@
 }
 -(void)drawSlider{// it will take color
     //self.componentArray = [NSMutableArray new];
-    V8HorizontalPickerView *horzPicker = [[V8HorizontalPickerView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-//    horzPicker.layer.cornerRadius = 4;
-//    horzPicker.layer.borderWidth = 1.5;
-    horzPicker.backgroundColor = [UIColor whiteColor];
-//    horzPicker.layer.borderColor = [SFIColors clientGreenColor].CGColor;
-    horzPicker.selectedTextColor = self.color;
-    horzPicker.elementFont = [UIFont securifiFont:15];
-    horzPicker.textColor = self.color;
-    horzPicker.indicatorPosition = V8HorizontalPickerIndicatorBottom;
-    horzPicker.delegate = self;
-    horzPicker.dataSource = self;//[self.genericIndexValue.genericValue.value integerValue] - self.genericIndexValue.genericIndex.formatter.min
-    horzPicker.selectionPoint = CGPointMake((horzPicker.frame.size.width) / 2, 0);
+    self.horzPicker = [[V8HorizontalPickerView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    //    self.horzPicker.layer.cornerRadius = 4;
+    //    self.horzPicker.layer.borderWidth = 1.5;
+    self.horzPicker.backgroundColor = [UIColor whiteColor];
+    //    self.horzPicker.layer.borderColor = [SFIColors clientGreenColor].CGColor;
+    self.horzPicker.selectedTextColor = self.color;
+    self.horzPicker.elementFont = [UIFont securifiFont:15];
+    self.horzPicker.textColor = self.color;
+    self.horzPicker.indicatorPosition = V8HorizontalPickerIndicatorBottom;
+    self.horzPicker.delegate = self;
+    self.horzPicker.dataSource = self;
+    //    [self.genericIndexValue.genericValue.value integerValue] - self.genericIndexValue.genericIndex.formatter.min
+    self.horzPicker.selectionPoint = CGPointMake((self.horzPicker.frame.size.width) / 2, 0);
     NSLog(@"self.genericIndexValue.genericValue.value %@",self.genericIndexValue.genericValue.value);
-    [horzPicker scrollToElement:[self.genericIndexValue.genericValue.value integerValue] - self.genericIndexValue.genericIndex.formatter.min  animated:YES];// here value will be device knownVaklue.value
-    const NSInteger element_width = [self horizontalPickerView:horzPicker widthForElementAtIndex:0];
+    [self.horzPicker scrollToElement:[self.genericIndexValue.genericValue.value integerValue] - self.genericIndexValue.genericIndex.formatter.min  animated:YES];// here value will be device knownVaklue.value
+    const NSInteger element_width = [self horizontalPickerView:self.horzPicker widthForElementAtIndex:0];
     SFIPickerIndicatorView1 *indicatorView = [[SFIPickerIndicatorView1 alloc] initWithFrame:CGRectMake(0, 0, element_width, 2)];
     
     indicatorView.color1 = [self darkerColorForColor:self.color];
-    horzPicker.selectionIndicatorView = indicatorView;
-    [self addSubview:horzPicker];
-    
+    self.horzPicker.selectionIndicatorView = indicatorView;
+    [self addSubview:self.horzPicker];
 }
+
 - (NSInteger)horizontalPickerView:(V8HorizontalPickerView *)picker widthForElementAtIndex:(NSInteger)index {
     return 40;
 }
-
 
 - (NSInteger)numberOfElementsInHorizontalPickerView:(V8HorizontalPickerView *)picker {
     return (self.genericIndexValue.genericIndex.formatter.max - self.genericIndexValue.genericIndex.formatter.min) + 1;

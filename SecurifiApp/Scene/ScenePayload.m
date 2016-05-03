@@ -40,7 +40,8 @@
 +(NSMutableArray *)createSceneEntriesPayload:(NSArray*)sceneEntries{
     NSMutableArray * triggersArray = [[NSMutableArray alloc]init];
     for (SFIButtonSubProperties *subProperty in sceneEntries) {
-        if(subProperty.deviceId == 1 && subProperty.index == 0 && ([subProperty.matchData isEqualToString:@"home"] || [subProperty.matchData isEqualToString:@"away"])){
+        NSLog(@"sub scene payload property device id %d index %d",subProperty.deviceId,subProperty.index);
+        if(subProperty.deviceId == 1 && subProperty.index == 1 && ([subProperty.matchData isEqualToString:@"home"] || [subProperty.matchData isEqualToString:@"away"])){
             [self changeModeProperties:subProperty];
         }
         NSDictionary *sceneEntry = [self createSceneEntry:subProperty];

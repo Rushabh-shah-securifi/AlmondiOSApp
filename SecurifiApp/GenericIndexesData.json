@@ -152,21 +152,21 @@
     },
     "-15": {
         "Name": "LastKnownIP",
-         "Type": "Sensor",
+        "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "lastKnownIP"
     },
     "-16": {
         "Name": "ClientConnection",
-         "Type": "Sensor",
+        "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "connection"
     },
     "-17": {
         "Name": "UseAsPresence",
-         "Type": "Actuator",
+        "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "presenceSensor",
@@ -216,7 +216,7 @@
         "Type": "Sensor",
         "Placement": "Hidden",
         "Layout": "TEXT_VIEW",
-        "AppLabel": "Can Be Blocked",
+        "AppLabel": "canBeBlocked",
         "Values": {
             "true": {
                 "ToggleValue": "false",
@@ -259,14 +259,14 @@
                 "Icon": "client_left",
                 "AppLabel": "leaves",
                 "Label": "leaves",
-                "EventType": "ClientJoined"
+                "EventType": "ClientLeft"
             },
             "ClientJoined": {
                 "ToggleValue": "ClientLeft",
                 "Icon": "client_joined",
                 "AppLabel": "joins",
                 "Label": "joins",
-                "EventType": "ClientLeft"
+                "EventType": "ClientJoined"
             }
         }
     },
@@ -633,7 +633,7 @@
         "Name": "SWITCH MULTILEVEL",
         "Type": "Actuator",
         "Placement": "Header_Detail",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "AppLabel": "dimmer",
         "DefaultIcon": "switch_off",
         "Formatter": {
@@ -647,14 +647,14 @@
         "Name": "DIMMER_LEVEL",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "AppLabel": "brightness",
         "DefaultIcon": "multilevel_switch_on",
         "Formatter": {
             "Min": "0",
             "Max": "100",
             "Unit": "%",
-            "Factor": "2.55"
+            "Factor": "0.392"
         }
     },
     "19": {
@@ -856,7 +856,7 @@
         "Type": "Sensor",
         "ReadOnly": "true",
         "Placement": "Header",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "AppLabel": "pressure",
         "Conditional": "true",
         "DefaultVisibility": "true",
@@ -888,7 +888,7 @@
         "Name": "ILLUMINANCE",
         "Type": "Sensor",
         "Placement": "Header",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "AppLabel": "luminance",
         "DefaultIcon": "light_on",
         "Formatter": {
@@ -902,7 +902,7 @@
         "Name": "ILLUMINANCE_PERCENT",
         "Type": "Sensor",
         "Placement": "Header",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "AppLabel": "luminance",
         "DefaultIcon": "light_on",
         "Formatter": {
@@ -927,7 +927,7 @@
         "Name": "HUE_ZB",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "AppLabel": "hue",
         "Conditional": "true",
         "DefaultVisibility": "true",
@@ -941,7 +941,7 @@
         "Name": "SATURATION",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "AppLabel": "saturation",
         "DefaultIcon": "saturation_icon",
         "Formatter": {
@@ -955,7 +955,7 @@
         "Name": "COLOR_TEMPERATURE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "AppLabel": "color_temp",
         "Conditional": "true",
         "DefaultIcon": "saturation_icon",
@@ -970,7 +970,7 @@
         "Name": "POWER",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "AppLabel": "powerLabel",
         "Conditional": "true",
         "DefaultIcon": "online_icon",
@@ -1710,7 +1710,7 @@
         "Name": "ENERGY",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "Slider",
+        "Layout": "SLIDER",
         "AppLabel": "energyLabel",
         "Conditional": "true",
         "Formatter": {

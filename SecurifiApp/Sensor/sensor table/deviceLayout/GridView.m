@@ -353,6 +353,7 @@ NSString *blockedType;
     // delegate methods
     [self convertDaysDictToHex];
     NSLog(@"saveButtonTap %@",_hexBlockedDays);
+    
     [self.delegate save:_hexBlockedDays forGenericIndexValue:self.genericIndexValue];
 }
 @end

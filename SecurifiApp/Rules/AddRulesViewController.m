@@ -34,6 +34,7 @@
 #import "MBProgressHUD.h"
 #import "AddRuleSceneClass.h"
 #import "Analytics.h"
+#import "CommonMethods.h"
 
 @interface AddRulesViewController()<UIAlertViewDelegate, UITextFieldDelegate>{
     sfi_id dc_id;
@@ -74,10 +75,12 @@ UIAlertView *alert;
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
     if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
         [center removeObserver:self];
     }
+    [CommonMethods clearTopScroll:self.triggersActionsScrollView middleScroll:self.deviceListScrollView bottomScroll:self.deviceIndexButtonScrollView];
 }
 
 - (void)onTabBarDidChange:(id)sender{

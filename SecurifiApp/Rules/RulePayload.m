@@ -178,6 +178,8 @@
 -(NSString*)getDayOfWeek:(NSArray*)days{
     NSMutableString *dayOfWeek = [NSMutableString new];
     int i=0;
+    if(days.count == 0 || days == nil)
+        return @"*";
     for(NSString *day in days){
         if(i == 0){
             [dayOfWeek appendString:day];
