@@ -18,6 +18,7 @@
 @property (nonatomic)UIColor *color;
 @property (nonatomic)GenericIndexValue *genericIndexValue;
 @property (nonatomic)V8HorizontalPickerView *horzPicker;
+@property(nonatomic) BOOL isInitialised;
 -(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue;
 
 -(void)drawSlider;

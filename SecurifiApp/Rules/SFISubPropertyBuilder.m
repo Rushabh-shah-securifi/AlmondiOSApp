@@ -194,7 +194,8 @@ UILabel *topLabel;
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties]){
                     NSString *text;
                     if(isDimButton){
-                        buttonProperties.displayedData = [NSString stringWithFormat:@"%d",(int)([buttonProperties.matchData intValue]*genericIndex.formatter.factor)];
+                        buttonProperties.displayedData = [NSString stringWithFormat:@"%d",(int)ceil(([buttonProperties.matchData intValue]*genericIndex.formatter.factor))];
+                        
                         text = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,genericIndex.formatter.units];
                         if(buttonProperties.deviceType == SFIDeviceType_HueLamp_48){
                             text = [NSString stringWithFormat:@"%@%@",@(buttonProperties.matchData.intValue * 100/255).stringValue,genericIndex.formatter.units];

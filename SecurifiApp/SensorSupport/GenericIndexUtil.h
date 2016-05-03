@@ -18,4 +18,5 @@
 + (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(Client*) client;
 + (NSArray*) getClientDetailGenericIndexValuesListForClientID:(NSString*)clientID;
 + (GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value;
++ (NSString*)getStatus:(int)deviceID;
 @end

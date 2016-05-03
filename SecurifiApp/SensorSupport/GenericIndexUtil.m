@@ -72,8 +72,7 @@
     for(NSString *IndexId in deviceIndexes.allKeys){
         DeviceIndex *deviceIndex = deviceIndexes[IndexId];
         GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
-//        if( !StringUtils.isEmpty(indexMetaData.placement))
-//            genericIndex = new GenericIndex(genericIndex, indexMetaData.placement)
+
         if(deviceIndex.placement != nil){
             genericIndexObj = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexObj];
             NSLog(@" device index place ment %@",deviceIndex.placement);
@@ -202,4 +201,22 @@
     return toolkit.genericIndexes[genericIndexID];
 }
 
++ (NSString*)getStatus:(int)deviceID{
+    Device *device = [Device getDeviceForID:deviceID];
+    NSMutableArray *detailList = [self getGenericIndexValuesByPlacementForDevice:device placement:@"HeaderOnly"];
+    [detailList addObjectsFromArray:[self getGenericIndexValuesByPlacementForDevice:device placement:@"Header_Detail"]];
+    
+    NSMutableString *status;
+    int i = 0;
+    for(GenericIndexValue *genericIndexVal in detailList){
+        if(i==0){
+            [status appendString:[NSString stringWithFormat:@"%@: %@",genericIndexVal.genericIndex.groupLabel, genericIndexVal.genericValue.value]];
+        }
+        else{
+            [status appendString:[NSString stringWithFormat:@",%@: %@",genericIndexVal.genericIndex.groupLabel, genericIndexVal.genericValue.value]];
+        }
+        
+    }
+    return  status;
+}
 @end

@@ -741,8 +741,8 @@ Follow it, then login below.";
 "off"="Off";
 "door_on"="Door_on";
 "door_off"="Door_off";
-"motion_on"="Motion_on";
-"motion_off"="Motion_off";
+"motion_on"="MOTION DETECTED";
+"motion_off"="NO MOTION";
 "vibration_on"="Vibration_on";
 "vibration_off"="Vibration_off";
 "water_on" ="Water_on";
@@ -865,6 +865,7 @@ Follow it, then login below.";
 "tone1"="Tone1";
 "tone2"="Tone2";
 "tone3"="Tone3";
+"canBeBlocked" = "CanBeBlocked";
 /* */
 
 

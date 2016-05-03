@@ -207,15 +207,11 @@
 }
 
 
-+(NSArray*)filterIndexesBasedOnModeForIndexes:(NSArray*)genericIndexValues propertyList:(NSMutableArray*)propertyList deviceId:(sfi_id)deviceId{
-    NSString *matchData = nil;
++(NSArray*)filterIndexesBasedOnModeForIndexes:(NSArray*)genericIndexValues deviceId:(sfi_id)deviceId matchData:(NSString*)matchData{
+
     NSMutableArray *newGenericIndexValues = [genericIndexValues mutableCopy];
     NSLog(@"new genericindex values before : %@", newGenericIndexValues);
-    for(SFIButtonSubProperties *subProperty in propertyList){
-        if(subProperty.deviceId == deviceId && subProperty.index == 2){
-            matchData = subProperty.matchData;
-        }
-    }
+
     if(matchData != nil){
         if([matchData isEqualToString:@"heat"] || [matchData isEqualToString:@"cool"]){
             for(GenericIndexValue *genIndexVal in genericIndexValues){

@@ -10,6 +10,7 @@
 #import "GenericIndexUtil.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "RulesNestThermostat.h"
+#import "RuleSceneUtil.h"
 #import "Colours.h"
 
 @interface DeviceHeaderView()<UIAlertViewDelegate>
@@ -65,14 +66,19 @@
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;
         self.deviceValueImgLable.text = self.genericParams.headerGenericIndexValue.genericValue.iconText;
-        self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.iconText;
+        self.deviceValue.text = [GenericIndexUtil getStatus:self.genericParams.headerGenericIndexValue.deviceID];
     }else{
         self.deviceValueImgLable.hidden = YES;
         self.deviceImage.hidden = NO;
-        self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.displayText;
         self.deviceImage.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
+        self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.displayText;
        
     }
+    if(self.genericParams.headerGenericIndexValue.genericIndex.readOnly || self.cellType == ClientTable_Cell || _genericParams.headerGenericIndexValue.genericValue.iconText)
+        self.deviceButton.userInteractionEnabled = NO;
+    else
+        self.deviceButton.userInteractionEnabled = YES;
+    
     self.lowBatteryImgView.hidden = YES;
     self.tamperedImgView.hidden = YES;
     if(self.genericParams.isSensor)
@@ -95,8 +101,10 @@
     int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
     if(self.cellType == SensorTable_Cell){
         genericIndexValues = [GenericIndexUtil getDetailListForDevice:deviceID];
+        
         if([Device getTypeForID:deviceID] == SFIDeviceType_NestThermostat_57){
-            genericIndexValues = [RulesNestThermostat getNestGenericIndexVals:deviceID withGenericIndexValues:genericIndexValues];
+            genericIndexValues = [RuleSceneUtil handleNestThermostatForSensor:deviceID genericIndexValues:genericIndexValues];
+            
         }
         self.genericParams.indexValueList = genericIndexValues;
         [self.delegate delegateDeviceSettingButtonClick:_genericParams];

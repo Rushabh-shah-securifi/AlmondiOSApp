@@ -258,7 +258,7 @@ static const int xIndent = 10;
     NSLog(@"newvalue %@",newValue);
     int index = genericIndexValue.index;
     if([Device getTypeForID:genericIndexValue.deviceID]){
-        [self handleNest3PointDiffForIndex:index newValue:newValue];
+//        [self handleNest3PointDiffForIndex:index newValue:newValue];
     }
     if(self.genericParams.isSensor){
         DeviceCommandType deviceCmdType = genericIndexValue.genericIndex.commandType;
@@ -266,6 +266,7 @@ static const int xIndent = 10;
             [DevicePayload getNameLocationChange:genericIndexValue mii:randomMobileInternalIndex value:newValue];
         }else{
             [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
+        
         }
     }else{
         Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
@@ -275,28 +276,34 @@ static const int xIndent = 10;
     }
 }
 
--(void)handleNest3PointDiffForIndex:(int)index newValue:(NSString*)value{
-    NSLog(@"handleNest3PointDiffForIndex - index: %d, value: %@", index, value);
-    
-    for(UIView *view in [self.indexesScroll subviews]){
-        NSLog(@"view 1: %@, view 2: %@", [[view subviews] objectAtIndex:0],[[view subviews] objectAtIndex:1]);
-        UIView *insideView = [[view subviews] objectAtIndex:1];
-        if([insideView isKindOfClass:[HorizontalPicker class]]){
-            NSLog(@"horizantal picker");
-            HorizontalPicker *picker = (HorizontalPicker*)insideView;
-            if(picker.genericIndexValue.index == 6 && index == 5){
-                if([picker.genericIndexValue.genericValue.value intValue] - [value intValue] < 3){
-                    NSLog(@"updating value");
-                    [picker.horzPicker scrollToElement:([value intValue] + 3) + picker.genericIndexValue.genericIndex.formatter.min animated:YES];
-                }
-            }else if(picker.genericIndexValue.index == 5 && index == 6){
-                if([value intValue] - [picker.genericIndexValue.genericValue.value intValue]< 3){
-                    [picker.horzPicker scrollToElement:([value intValue]-3) + picker.genericIndexValue.genericIndex.formatter.min animated:YES];
-                }
-            }
-        }
-    }
-}
+
+//-(void)handleNest3PointDiffForIndex:(int)index newValue:(NSString*)value{
+//    NSLog(@"handleNest3PointDiffForIndex - index: %d, value: %@", index, value);
+//    NSArray *scrollSubViews = [self.indexesScroll subviews];
+//    for(UIView *view in scrollSubViews){
+//        NSLog(@"view: %@", view);
+//        if(![view isKindOfClass:[UIImageView class]]){
+//            UIView *insideView = [[view subviews] objectAtIndex:1];
+//            if([insideView isKindOfClass:[HorizontalPicker class]]){
+//                NSLog(@"horizantal picker");
+//                HorizontalPicker *picker = (HorizontalPicker*)insideView;
+//                
+//                if(picker.genericIndexValue.index == 6 && index == 5){
+//                    if([picker.genericIndexValue.genericValue.value intValue] - [value intValue] < 3){
+//                        NSLog(@"updating value");
+//                        [picker.horzPicker scrollToElement:([value intValue] + 3) + picker.genericIndexValue.genericIndex.formatter.min animated:YES];
+//                    }
+//                }else if(picker.genericIndexValue.index == 5 && index == 6){
+//                    if([value intValue] - [picker.genericIndexValue.genericValue.value intValue]< 3){
+//                        [picker.horzPicker scrollToElement:([value intValue]-3) + picker.genericIndexValue.genericIndex.formatter.min animated:YES];
+//                    }
+//                }
+//                
+//            }
+//        }
+//    }
+//}
+
 #pragma mark sensor cell(DeviceHeaderView) delegate
 -(void)toggle:(GenericIndexValue *)genericIndexValue{
     NSLog(@"delegateSensorTableDeviceButtonClickWithGenericProperies");

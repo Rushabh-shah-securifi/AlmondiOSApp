@@ -21,6 +21,7 @@
     if(self){
         self.color = color;
         self.genericIndexValue = genericIndexValue;
+        self.isInitialised = NO;
         [self drawSlider];
     }
     return self;
@@ -41,10 +42,12 @@
     //    [self.genericIndexValue.genericValue.value integerValue] - self.genericIndexValue.genericIndex.formatter.min
     self.horzPicker.selectionPoint = CGPointMake((self.horzPicker.frame.size.width) / 2, 0);
     NSLog(@"self.genericIndexValue.genericValue.value %@",self.genericIndexValue.genericValue.value);
+    
     [self.horzPicker scrollToElement:[self.genericIndexValue.genericValue.value integerValue] - self.genericIndexValue.genericIndex.formatter.min  animated:YES];// here value will be device knownVaklue.value
+    self.isInitialised = YES;
+    
     const NSInteger element_width = [self horizontalPickerView:self.horzPicker widthForElementAtIndex:0];
     SFIPickerIndicatorView1 *indicatorView = [[SFIPickerIndicatorView1 alloc] initWithFrame:CGRectMake(0, 0, element_width, 2)];
-    
     indicatorView.color1 = [self darkerColorForColor:self.color];
     self.horzPicker.selectionIndicatorView = indicatorView;
     [self addSubview:self.horzPicker];
@@ -59,14 +62,12 @@
 }
 
 - (NSString *)horizontalPickerView:(V8HorizontalPickerView *)picker titleForElementAtIndex:(NSInteger)index {
-    
-    //return [NSString stringWithFormat:@"%ld\u00B0", (long) index];
-    
     return @(index + self.genericIndexValue.genericIndex.formatter.min).stringValue ;
 }
 
 - (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {
-    [self.delegate save:@(self.genericIndexValue.genericIndex.formatter.min + index).stringValue forGenericIndexValue:_genericIndexValue];
+    if(self.isInitialised)
+        [self.delegate save:@(self.genericIndexValue.genericIndex.formatter.min + index).stringValue forGenericIndexValue:_genericIndexValue];
 }
 
 - (UIColor *)darkerColorForColor:(UIColor *)c
