@@ -148,7 +148,7 @@ static const int xIndent = 10;
             [self setUpLable:label withPropertyName:propertyName];
             [view addSubview:label];
             UILabel *valueLabel = [[UILabel alloc]initWithFrame:CGRectMake(view.frame.size.width - 110, 0, 100, 15)];
-            [self setUpLable:valueLabel withPropertyName:genericIndexValue.genericValue.iconText];
+            [self setUpLable:valueLabel withPropertyName:genericIndexValue.genericValue.displayText];
             valueLabel.textAlignment = NSTextAlignmentRight;
             valueLabel.alpha = 0.5;
             [view addSubview:valueLabel];

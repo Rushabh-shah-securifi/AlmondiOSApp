@@ -90,7 +90,7 @@
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericIndexObj.ID
                                                                                forValue:[self getHeaderValueFromKnownValuesForDevice:device indexID:IndexId]];
             NSLog(@"genericvalue: %@, genericValue.value: %@", genericValue, genericValue.value);
-            if(genericValue!=nil)
+            if(genericValue!=nil && [Device getValueForIndex:IndexId.intValue deviceID:device.ID] != nil) //check for index exists
                 [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue index:IndexId.intValue deviceID:device.ID]];
         }
     }
@@ -108,6 +108,9 @@
 
 +(GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value{
     NSLog(@"value: %@", value);
+    if(value.length == 0 || value == nil)
+        value = @"NaN";
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericIndexClass *genericIndexObject = toolkit.genericIndexes[genericIndexID];
     if(genericIndexObject == nil || value == nil)
@@ -131,7 +134,6 @@
     Device *device = [Device getDeviceForID:deviceID];
     
     NSMutableArray *detailList = [self getGenericIndexValuesByPlacementForDevice:device placement:@"Detail"];
-//    [detailList addObjectsFromArray:[self getGenericIndexValuesByPlacementForDevice:device placement:@"Header_Detail"]];
     [detailList addObjectsFromArray:[self getGenericIndexValuesByPlacementForDevice:device placement:@"Badge"]];
     NSLog(@"Detail list vals: %@", detailList);
     
