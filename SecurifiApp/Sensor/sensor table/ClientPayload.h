@@ -11,4 +11,5 @@
 @interface ClientPayload : NSObject
 + (void)getUpdateClientPayloadForClient:(Client*)client mobileInternalIndex:(int)mii;
 + (void)clientListCommand;
++ (void)resetClientCommand:(NSString *)mac clientID:(NSString*)clientID mii:(int)mii;
 @end

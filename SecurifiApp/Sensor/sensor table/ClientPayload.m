@@ -45,5 +45,28 @@
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
 }
-
++ (void)resetClientCommand:(NSString *)mac clientID:(NSString*)clientID mii:(int)mii{
+    NSMutableDictionary *payload = [NSMutableDictionary new];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];
+    [payload setValue:@"RemoveClient" forKey:@"CommandType"];
+    [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:@"AlmondMAC"];
+    NSDictionary *RemoveClient = @{
+                                   MAC : mac,
+                                   C_ID : clientID
+                                   };
+    
+    [payload setValue:RemoveClient forKey:CLIENTS];
+    GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
+    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+}
+/*
+ {
+ "CommandType":"RemoveClient",
+ "Clients":{ "ID": "1",
+ "MAC": "1c:75:08:32:2a:6d"},
+ "AlmondMAC": "251176214925585",
+ "MobileInternalIndex":"324"
+ }
+ */
 @end

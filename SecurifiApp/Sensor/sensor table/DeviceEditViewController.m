@@ -156,7 +156,7 @@ static const int xIndent = 10;
         }
         
         else{
-            UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_LARGE];
+            UIView *view = [[UIView alloc]initWithFrame:CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, 65)];
             UILabel *label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
             [self setUpLable:label withPropertyName:propertyName];
             [view addSubview:label];
@@ -182,6 +182,8 @@ static const int xIndent = 10;
                 [view addSubview:sliderView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:TEXT_VIEW]){
+            
+                NSLog(@"view frame %@ and ypos = %d",NSStringFromCGRect(view.frame),yPos);
                 TextInput *textView = [[TextInput alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 textView.delegate = self;
                 [view addSubview:textView];
@@ -195,13 +197,16 @@ static const int xIndent = 10;
                 [view addSubview:grid];
             }
             else if ([genericIndexObj.layoutType isEqualToString:LIST]){
+                 NSLog(@"before update view frame %@ ",NSStringFromCGRect(view.frame));
                 view.frame = CGRectMake(5, yPos , self.indexesScroll.frame.size.width, self.view.frame.size.height - view.frame.origin.y - 5);
+                 NSLog(@"after update view frame %@ ",NSStringFromCGRect(view.frame));
                 ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width , self.view.frame.size.height- 5) color:self.genericParams.color genericIndexValue:genericIndexValue];
                 typeTableView.delegate = self;
                 [view addSubview:typeTableView];
             }
             [self.indexesScroll addSubview:view];
             yPos = yPos + view.frame.size.height + LABELSPACING;
+            NSLog(@"ypos %d",yPos);
         }
     }
 }

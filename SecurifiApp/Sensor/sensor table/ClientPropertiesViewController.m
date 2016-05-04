@@ -15,6 +15,7 @@
 #import "DeviceHeaderView.h"
 #import "DeviceEditViewController.h"
 #import "AlmondJsonCommandKeyConstants.h"
+#import "ClientPayload.h"
 
 #define CELLFRAME CGRectMake(8, 8, self.view.frame.size.width -16, 70)
 
@@ -22,17 +23,22 @@
 @property (weak, nonatomic) IBOutlet UITableView *clientPropertiesTable;
 @property (nonatomic)NSMutableArray *orderedArray ;
 @property (nonatomic)NSDictionary *ClientDict;
+@property (weak, nonatomic) IBOutlet UIView *resetView;
+@property (weak, nonatomic) IBOutlet UIButton *resetButton;
 @property (nonatomic) BOOL isLocal;
 @end
 
 @implementation ClientPropertiesViewController
-
+NSInteger randomMobileInternalIndex;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.clientPropertiesTable.backgroundColor = self.genericParams.color;
+    self.resetView.backgroundColor = self.genericParams.color;
+    [self.resetButton setTitleColor: self.genericParams.color forState:UIControlStateNormal];
     [self setHeaderCell];
     SecurifiToolkit *toolkit=[SecurifiToolkit sharedInstance];
     self.isLocal = [toolkit useLocalNetwork:[toolkit currentAlmond].almondplusMAC];
+    randomMobileInternalIndex = arc4random() % 10000;
 }
 
 #pragma mark common cell delegate
@@ -82,6 +88,7 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.userInteractionEnabled = NO;
     }
+    NSLog(@"genericValue.displayText %@",genericIndexValue.genericValue.displayText);;
     cell.vsluesLabel.text = genericIndexValue.genericValue.displayText;
     cell.backgroundColor = self.genericParams.color;
     return cell;
@@ -110,6 +117,13 @@
                                                           indexValueList:[NSArray arrayWithObject:[self.genericParams.indexValueList objectAtIndex:indexPath.row]]
                                                               deviceName:self.genericParams.deviceName color:self.genericParams.color isSensor:NO];
     [self.navigationController pushViewController:ctrl animated:YES];
+}
+- (IBAction)resetButtontap:(id)sender {
+    Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
+    client = [client copy];
+    NSLog(@"client mac %@, client id %@",client.deviceMAC,client.deviceID);
+    [ClientPayload resetClientCommand:client.deviceMAC clientID:client.deviceID mii:randomMobileInternalIndex];
+    
 }
 
 @end

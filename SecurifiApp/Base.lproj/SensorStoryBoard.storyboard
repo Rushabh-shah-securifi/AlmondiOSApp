@@ -65,7 +65,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="SKSTableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rpr-zm-JGc">
-                                <rect key="frame" x="8" y="100" width="304" height="448"/>
+                                <rect key="frame" x="8" y="100" width="304" height="413"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="ClientPropertiesCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="SKSTableViewCell" rowHeight="50" id="Zpg-Bl-N2s" customClass="ClientPropertiesCell">
@@ -112,18 +112,42 @@
                                     <outlet property="delegate" destination="mYA-Fs-b9B" id="49X-hS-Ud9"/>
                                 </connections>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="22Y-vq-zpI">
+                                <rect key="frame" x="8" y="513" width="304" height="47"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JY5-iM-Qv5">
+                                        <rect key="frame" x="112" y="8" width="80" height="30"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="15"/>
+                                        <state key="normal" title="RESET">
+                                            <color key="titleColor" red="0.29411764709999999" green="0.68235294120000001" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="resetButtontap:" destination="mYA-Fs-b9B" eventType="touchUpInside" id="26m-GU-a19"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="47" id="6ui-L1-Bjo"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="rpr-zm-JGc" firstAttribute="top" secondItem="ORz-GS-wMb" secondAttribute="bottom" constant="80" id="IVX-5a-2Yw"/>
-                            <constraint firstItem="Z1A-Gc-S4Y" firstAttribute="top" secondItem="rpr-zm-JGc" secondAttribute="bottom" constant="20" id="a1F-KJ-TQ9"/>
-                            <constraint firstItem="rpr-zm-JGc" firstAttribute="leading" secondItem="b6t-b6-Fg6" secondAttribute="leading" constant="8" id="hrp-le-xw0"/>
-                            <constraint firstAttribute="trailing" secondItem="rpr-zm-JGc" secondAttribute="trailing" constant="8" id="p6a-VV-itk"/>
+                            <constraint firstItem="rpr-zm-JGc" firstAttribute="leading" secondItem="b6t-b6-Fg6" secondAttribute="leading" constant="8" id="V04-3t-31T"/>
+                            <constraint firstItem="Z1A-Gc-S4Y" firstAttribute="top" secondItem="22Y-vq-zpI" secondAttribute="bottom" constant="8" id="e9Y-X8-o4q"/>
+                            <constraint firstAttribute="trailing" secondItem="22Y-vq-zpI" secondAttribute="trailing" constant="8" id="hVC-mh-O5U"/>
+                            <constraint firstItem="rpr-zm-JGc" firstAttribute="top" secondItem="ORz-GS-wMb" secondAttribute="bottom" constant="80" id="nfH-Ol-5EJ"/>
+                            <constraint firstItem="22Y-vq-zpI" firstAttribute="leading" secondItem="b6t-b6-Fg6" secondAttribute="leading" constant="8" id="u2Y-kF-Vub"/>
+                            <constraint firstAttribute="trailing" secondItem="rpr-zm-JGc" secondAttribute="trailing" constant="8" id="udn-lU-mYI"/>
+                            <constraint firstItem="22Y-vq-zpI" firstAttribute="top" secondItem="rpr-zm-JGc" secondAttribute="bottom" id="z28-Zb-JoP"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="clientPropertiesTable" destination="rpr-zm-JGc" id="Prl-FW-bPs"/>
+                        <outlet property="resetButton" destination="JY5-iM-Qv5" id="FfR-RU-wDu"/>
+                        <outlet property="resetView" destination="22Y-vq-zpI" id="lPW-v6-mAR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mxf-2a-uLK" userLabel="First Responder" sceneMemberID="firstResponder"/>

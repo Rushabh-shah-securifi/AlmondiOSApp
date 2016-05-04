@@ -14,6 +14,7 @@
 @interface ListButtonView()<UITableViewDataSource,UITableViewDelegate,clientTypeCellDelegate>
 @property (nonatomic) UITableView *tableType;
 @property (nonatomic)NSString *selectedType;
+@property (nonatomic)NSMutableArray *displayArray;
 @end
 @implementation ListButtonView
 NSMutableArray *type;
@@ -24,6 +25,7 @@ NSMutableArray *type;
         self.color = color;
         self.genericIndexValue = genericIndexValue;
         type = [[NSMutableArray alloc] init];
+        self.displayArray = [[NSMutableArray alloc] init];
         [self drawTypeTable];
     }
     return self;
@@ -31,12 +33,12 @@ NSMutableArray *type;
 
 -(void)drawTypeTable{
     for(NSString *key in self.genericIndexValue.genericIndex.values.allKeys){
-        
         GenericValue *gVal = [self.genericIndexValue.genericIndex.values valueForKey:key];
-        NSLog(@" gval .value %@",gVal.value);
+        [self.displayArray addObject:gVal.displayText];
         [type addObject:gVal.value];
     }
-    NSLog(@"types %@",type);
+    
+    NSLog(@"types %@",self.displayArray);
     self.selectedType = self.genericIndexValue.genericValue.value;
     NSLog(@" self.genericIndexValue.genericValue.value %@",self.genericIndexValue.genericValue.value);
     self.tableType = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height - 100)];
@@ -77,8 +79,8 @@ NSMutableArray *type;
     cell.delegate = self;
     cell.userInteractionEnabled = YES;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.backgroundColor = [SFIColors clientGreenColor];
-    [cell writelabelName:[type objectAtIndex:indexPath.row]];
+    cell.backgroundColor = self.color;
+    [cell writelabelName:[self.displayArray objectAtIndex:indexPath.row]];
     if(currentvalPos == indexPath.row)
         [cell changeButtonColor];
     return cell;
