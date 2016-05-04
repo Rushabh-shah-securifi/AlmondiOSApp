@@ -622,6 +622,95 @@
                 }
 
             }
+        },
+        "825": {
+            "Data":{
+                "Name": "ZEXtender #825",
+                "FriendlyDeviceType": "StandardWarningDevice",
+                "Type": "54",
+                "deviceid": "825",
+                "Location": "Default"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Index": "1",
+                    "Name": "ALARM_STATE",
+                    "Value": "60",
+                    "GenericIndex": "25"
+                },
+                "2": {
+                    "Index": "2",
+                    "Name": "Heat",
+                    "Value": "Heat",
+                    "GenericIndex": "45"
+                },
+                "3": {
+                    "Index": "3",
+                    "Name": "TAMPER",
+                    "Value": "60",
+                    "GenericIndex": "46"
+                },
+                "4": {
+                    "Index": "4",
+                    "Name": "TAMPER",
+                    "Value": "60",
+                    "GenericIndex": "47"
+                },
+                
+                "5": {
+                    "Index": "5",
+                    "Name": "TAMPER",
+                    "Value": "On Low",
+                    "GenericIndex": "48"
+                },
+                "6": {
+                    "Index": "6",
+                    "Name": "TAMPER",
+                    "Value": "0",
+                    "GenericIndex": "49"
+                },
+                "7": {
+                    "Index": "7",
+                    "Name": "TAMPER",
+                    "Value": "10",
+                    "GenericIndex": "50"
+                },
+                "8": {
+                    "Index": "8",
+                    "Name": "TAMPER",
+                    "Value": "10",
+                    "GenericIndex": "51"
+                },
+                "9": {
+                    "Index": "9",
+                    "Name": "TAMPER",
+                    "Value": "10",
+                    "GenericIndex": "21"
+                }
+            }
+        },
+        "862": {
+            "Data":{
+                "Name": "multiswitch",
+                "FriendlyDeviceType": "multiswitch",
+                "Type": "43",
+                "deviceid": "862",
+                "Location": "Main door"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Index": "1",
+                    "Name": "STATE",
+                    "Value": "true",
+                    "GenericIndex": "1"
+                },
+                "2": {
+                    "Index": "2",
+                    "Name": "LOW BATTERY",
+                    "Value": "true",
+                    "GenericIndex": "1"
+                }
+            }
         }
     }
 }

@@ -118,8 +118,8 @@ static const int xIndent = 10;
     int yPos = LABELSPACING;
     self.indexesScroll.backgroundColor = self.genericParams.color;
     NSLog(@"index count %ld",self.genericParams.indexValueList.count);
-    CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericParams.indexValueList.count  * 75 );
-    [self.indexesScroll setContentSize:scrollableSize];
+//    CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericParams.indexValueList.count  * 75 );
+//    [self.indexesScroll setContentSize:scrollableSize];
     [self.indexesScroll flashScrollIndicators];
     
     for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList)
@@ -133,7 +133,7 @@ static const int xIndent = 10;
             continue;
         }
         NSString *propertyName = genericIndexObj.groupLabel;
-        NSLog(@"read only %d,layouttype %@ ,type %@ ",genericIndexObj.readOnly,genericIndexObj.layoutType,genericIndexObj.type);
+        NSLog(@"read only %d,layouttype %@ ,type %@ groupLabel %@",genericIndexObj.readOnly,genericIndexObj.layoutType,genericIndexObj.type,genericIndexObj.groupLabel);
         if(genericIndexObj.readOnly){
             UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_SMALL];
             if([genericIndexObj.ID isEqualToString:@"9"] && [genericIndexValue.genericValue.value isEqualToString:@"true"])
@@ -198,15 +198,20 @@ static const int xIndent = 10;
             }
             else if ([genericIndexObj.layoutType isEqualToString:LIST]){
                  NSLog(@"before update view frame %@ ",NSStringFromCGRect(view.frame));
-                view.frame = CGRectMake(5, yPos , self.indexesScroll.frame.size.width, self.view.frame.size.height - view.frame.origin.y - 5);
+                float height = genericIndexValue.genericIndex.values.allKeys.count *45;
+                view.frame = CGRectMake(5, yPos, self.indexesScroll.frame.size.width, height);
                  NSLog(@"after update view frame %@ ",NSStringFromCGRect(view.frame));
-                ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width , self.view.frame.size.height- 5) color:self.genericParams.color genericIndexValue:genericIndexValue];
+                ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0,LABELHEIGHT, view.frame.size.width , self.view.frame.size.height- 5) color:self.genericParams.color genericIndexValue:genericIndexValue];
+                NSLog(@"after update typeTableView frame %@ ",NSStringFromCGRect(typeTableView.frame));
                 typeTableView.delegate = self;
                 [view addSubview:typeTableView];
             }
             [self.indexesScroll addSubview:view];
-            yPos = yPos + view.frame.size.height + LABELSPACING;
+           
             NSLog(@"ypos %d",yPos);
+            CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,yPos + 60);
+             yPos = yPos + view.frame.size.height + LABELSPACING;
+            [self.indexesScroll setContentSize:scrollableSize];
         }
     }
 }
