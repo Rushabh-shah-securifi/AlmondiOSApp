@@ -24,11 +24,12 @@
 
 +(GenericIndexValue*)getHeaderGenericIndexValueForDevice:(Device*)device{
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSLog(@"devicename: %@, deviceid: %d", device.name, device.ID);
     NSArray *genericIndexValues = [self getGenericIndexValuesByPlacementForDevice:device placement:HEADER];
+    NSLog(@"generic index values header: %@", genericIndexValues);
     if([genericIndexValues count]<=0){
         return [[GenericIndexValue alloc]initWithGenericIndex:nil genericValue:[[GenericValue alloc]initUnknownDevice] index:0 deviceID:device.ID];
     }
-    
     
     NSString *headerText = @"";
     NSString *detailText = @"";
@@ -36,6 +37,7 @@
     GenericValue *genericValue;
     GenericIndexClass *genericIndex;
     for(GenericIndexValue *genericIndexValue in genericIndexValues){
+        
         if(genericIndexValue.genericValue == nil)
             continue;
         
@@ -47,17 +49,21 @@
             if(genericIndexValue.genericValue.icon.length == 0)
                 headerText = @"";
             index = genericIndexValue.index;
-        }else if([genericIndexValue.genericIndex.placement isEqualToString:HEADER_DETAIL] || [genericIndexValue.genericIndex.placement isEqualToString:@"HeaderOnly"]){
+        }else if([genericIndexValue.genericIndex.placement rangeOfString:HEADER options:NSCaseInsensitiveSearch].location != NSNotFound){ //contains
             if(genericIndexValue.genericValue.iconText)
                 detailText = [NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.iconText];
             else
                 detailText = genericIndexValue.genericValue.displayText;
         }
-    }
+        NSLog(@"header text: %@, detail text: %@", headerText, detailText);
+    }//for
+    NSLog(@"generic value: %@, generic Index: %@", genericValue, genericIndex);
+    NSLog(@"generic value display text before: %@", genericValue.displayText);
     if(genericValue == nil)
         genericValue = [GenericValue new];
     if(detailText.length > 0)
         genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:[NSString stringWithFormat:@"%@ %@", headerText, detailText]];
+    NSLog(@"generic value display text after: %@", genericValue.displayText);
 //    return [[GenericProperties alloc]initWithDeviceID:device.ID index:index genericValue:genericValue];
     return [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:index deviceID:device.ID];
 }
@@ -80,10 +86,10 @@
             genericIndexObj.placement = deviceIndex.placement;
         }
         if([genericIndexObj.placement rangeOfString:placement options:NSCaseInsensitiveSearch].location != NSNotFound){//contains
-            NSLog(@"inside placement");
+            NSLog(@"inside placement: %@", genericIndexObj.placement);
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericIndexObj.ID
                                                                                forValue:[self getHeaderValueFromKnownValuesForDevice:device indexID:IndexId]];
-            NSLog(@"genericvalue: %@", genericValue);
+            NSLog(@"genericvalue: %@, genericValue.value: %@", genericValue, genericValue.value);
             if(genericValue!=nil)
                 [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue index:IndexId.intValue deviceID:device.ID]];
         }

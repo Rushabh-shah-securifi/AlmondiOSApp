@@ -872,7 +872,7 @@
     "27": {
         "Name": "HUMIDITY",
         "Type": "Sensor",
-        "Placement": "Header_Detail",
+        "Placement": "Detail",
         "Layout": "SINGLE_TEMP",
         "AppLabel": "humidity",
         "ExcludeFrom": "Scene",
@@ -1012,7 +1012,7 @@
     "36": {
         "Name": "THERMOSTAT OPERATING STATE",
         "Type": "Sensor",
-        "Placement": "Header_Only",
+        "Placement": "HeaderOnly",
         "Layout": "TEXT_VIEW",
         "AppLabel": "operating_state",
         "ExcludeFrom": "Rule"
@@ -1020,7 +1020,7 @@
     "37": {
         "Name": "THERMOSTAT SETPOINT HEATING",
         "Type": "Actuator",
-        "Placement": "Header_Detail",
+        "Placement": "Detail",
         "Layout": "SINGLE_TEMP",
         "AppLabel": "high_temp",
         "Conditional": "true",
@@ -1035,7 +1035,7 @@
     "38": {
         "Name": "THERMOSTAT SETPOINT COOLING",
         "Type": "Actuator",
-        "Placement": "Header_Detail",
+        "Placement": "Detail",
         "Layout": "SINGLE_TEMP",
         "AppLabel": "low_temp",
         "Conditional": "true",
@@ -1114,6 +1114,7 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "AppLabel": "actions",
+        "LayoutType":"MULTI_BUTTON",
         "ExcludeFrom": "Scene",
         "Values": {
             "true": {
@@ -1473,7 +1474,7 @@
         "Values": {
             "true": {
                 "Icon": "online_icon",
-                "AppLabel": "online ",
+                "AppLabel": "online",
                 "Label": "Online"
             },
             "false": {
@@ -1714,9 +1715,10 @@
         "Name": "ENERGY",
         "Type": "Sensor",
         "Placement": "Detail",
-        "Layout": "SLIDER",
+        "Layout": "SLIDER_ICON",
         "AppLabel": "energyLabel",
         "Conditional": "true",
+        "DefaultIcon":"energyreader_icon",
         "Formatter": {
             "Min": "0",
             "Max": "9999",
@@ -1781,20 +1783,20 @@
             "Unit": "kWh"
         }
     },
-    "86": {
+    "86":{
         "Name": "ACTIVE_POWER",
         "Type": "Sensor",
         "Placement": "Detail",
         "Layout": "TEXT_VIEW",
-        "AppLabel": "POWER",
+        "AppLabel": "powerLabel",
         "Conditional": "true",
         "Formatter": {
             "Min": "0",
             "Max": "100",
             "Unit": "W"
         }
-
     },
+    
     "87": {
         "Name": "OCCUPANCY_STATE",
         "Type": "Sensor",
@@ -1865,6 +1867,7 @@
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "hue",
+        "ShowToggleInRules": "true",
         "DefaultIcon": "light_off",
         "Values": {
             "true": {
@@ -1929,3 +1932,6 @@
         }
     }
 }
+
+
+

@@ -25,8 +25,9 @@
     "501": {
         "name": "Reboot",
         "isActuator": "true",
+        "isTrigger":"false",
         "defaultIcon": "switch_off",
-        "ExcludeFrom":"trigger",
+        "ExcludeFrom":"Scene",
         "Indexes": {
             "1": {
                 "genericIndexID": "-31",
@@ -82,6 +83,7 @@
         "Indexes": {
             "1": {
                 "genericIndexID": "18",
+                "Placement": "Header_Detail",
                 "row_no": 1
             },
             "2": {
@@ -475,7 +477,7 @@
             },
             "2": {
                 "genericIndexID": "27",
-                "Placement":"Header_Only",
+                "Placement":"HeaderOnly",
                 "row_no": 1
             },
             "3": {
@@ -512,10 +514,11 @@
         "name": "ColorDimmableLight",
         "isActuator": "true",
         "defaultIcon": "light_off",
+        "ExcludeFrom":"Rule_Scene",
         "Indexes": {
             "1": {
                 "genericIndexID": "18",
-                "row_no": 1
+                "row_no": 3
             },
             "2": {
                 "genericIndexID": "90",
@@ -523,15 +526,15 @@
             },
             "3": {
                 "genericIndexID": "31",
-                "row_no": 1
+                "row_no": 2
             },
             "4": {
                 "genericIndexID": "32",
-                "row_no": 1
+                "row_no": 2
             },
             "5": {
                 "genericIndexID": "33",
-                "row_no": 1
+                "row_no": 3
             }
         }
     },
@@ -721,7 +724,6 @@
         "isActuator": "true",
         "isTrigger": "false",
         "defaultIcon": "light_on",
-        "ExcludeFrom":"trigger",
         "Indexes": {
             "3": {
                 "genericIndexID": "30",
@@ -776,19 +778,19 @@
         "Indexes": {
             "1": {
                 "genericIndexID": "89",
-                "row_no": 2
+                "row_no": 1
             },
             "11": {
                 "genericIndexID": "86",
-                "row_no": 1
+                "row_no": 2
             },
             "12": {
                 "genericIndexID": "52",
-                "row_no": 1
+                "row_no": 2
             },
             "13": {
                 "genericIndexID": "53",
-                "row_no": 1
+                "row_no": 3
             }
         }
     },
@@ -892,12 +894,12 @@
             },
             "2": {
                 "genericIndexID": "34",
-                "Placement":"Header",
+                "Placement":"HeaderOnly",
                 "row_no": 1
             },
             "3": {
                 "genericIndexID": "80",
-                "Placement":"HeaderOnly",
+                "Placement":"Header",
                 "row_no": 1
             },
             "4": {
@@ -1047,3 +1049,4 @@
         }
     }
 }
+
