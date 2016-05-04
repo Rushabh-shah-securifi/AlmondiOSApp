@@ -215,7 +215,7 @@ UILabel *topLabel;
 
 +(NSDictionary*)formatterDict:(GenericIndexClass*)genericIndex{
     NSMutableDictionary *genericValueDic = [[NSMutableDictionary alloc]init];
-    [genericValueDic setValue:[[GenericValue alloc]initWithDisplayText:genericIndex.groupLabel iconText:@(genericIndex.formatter.min).stringValue value:@"" excludeFrom:@""] forKey:genericIndex.groupLabel];
+    [genericValueDic setValue:[[GenericValue alloc]initWithDisplayText:genericIndex.groupLabel iconText:@(genericIndex.formatter.min).stringValue value:@"" excludeFrom:@"" transformedValue:@"0"] forKey:genericIndex.groupLabel];
     return genericValueDic;
 }
 

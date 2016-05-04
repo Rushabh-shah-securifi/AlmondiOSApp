@@ -47,6 +47,8 @@
     brightnessSlider.sensorMaxValue = max;
     brightnessSlider.convertedValue = 0; // to be assigned
 //    brightnessSlider.backgroundColor = [SFIColors ruleOrangeColor];
+    NSLog(@"slider transformed value: %d", [self.genericIndexValue.genericValue.transformedValue intValue]);
+    [brightnessSlider setValue:[self.genericIndexValue.genericValue.transformedValue intValue]];
     NSLog(@" brightness slider adding ");
     [self addSubview:brightnessSlider];
 }

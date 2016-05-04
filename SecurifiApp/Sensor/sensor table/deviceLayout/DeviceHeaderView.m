@@ -66,13 +66,14 @@
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;
         self.deviceValueImgLable.text = self.genericParams.headerGenericIndexValue.genericValue.iconText;
-        self.deviceValue.text = [GenericIndexUtil getStatus:self.genericParams.headerGenericIndexValue.deviceID];
+        self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.displayText;
+//        self.deviceValue.text = [GenericIndexUtil getStatus:self.genericParams.headerGenericIndexValue.deviceID value:nil];
     }else{
         self.deviceValueImgLable.hidden = YES;
         self.deviceImage.hidden = NO;
         self.deviceImage.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
         self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.displayText;
-       
+//        self.deviceValue.text = [GenericIndexUtil getStatus:self.genericParams.headerGenericIndexValue.deviceID value:self.genericParams.headerGenericIndexValue.genericValue.displayText];
     }
     if(self.genericParams.headerGenericIndexValue.genericIndex.readOnly || self.cellType == ClientTable_Cell || _genericParams.headerGenericIndexValue.genericValue.iconText)
         self.deviceButton.userInteractionEnabled = NO;
@@ -101,10 +102,9 @@
     int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
     if(self.cellType == SensorTable_Cell){
         genericIndexValues = [GenericIndexUtil getDetailListForDevice:deviceID];
-        
+        NSLog(@"gvalues: %@", genericIndexValues);
         if([Device getTypeForID:deviceID] == SFIDeviceType_NestThermostat_57){
             genericIndexValues = [RuleSceneUtil handleNestThermostatForSensor:deviceID genericIndexValues:genericIndexValues];
-            
         }
         self.genericParams.indexValueList = genericIndexValues;
         [self.delegate delegateDeviceSettingButtonClick:_genericParams];

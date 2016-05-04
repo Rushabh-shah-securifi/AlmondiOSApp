@@ -249,7 +249,7 @@ labelAndCheckButtonView *labelView;
 //        }
 //    }
     CGSize scrollableSize = CGSizeMake(self.deviceIndexButtonScrollView.frame.size.width,
-                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING +20);
+                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING +30);
     
     [self.deviceIndexButtonScrollView setContentSize:scrollableSize];
     [self.deviceIndexButtonScrollView flashScrollIndicators];
@@ -517,7 +517,7 @@ labelAndCheckButtonView *labelView;
 -(NSDictionary*)formatterDict:(GenericIndexClass*)genericIndex{
     NSLog(@"genericIndex.formatter.min %d",genericIndex.formatter.min);
     NSMutableDictionary *genericValueDic = [[NSMutableDictionary alloc]init];
-    [genericValueDic setValue:[[GenericValue alloc]initWithDisplayText:genericIndex.groupLabel iconText:@(genericIndex.formatter.min).stringValue value:@"" excludeFrom:@""] forKey:genericIndex.groupLabel];
+    [genericValueDic setValue:[[GenericValue alloc]initWithDisplayText:genericIndex.groupLabel iconText:@(genericIndex.formatter.min).stringValue value:@"" excludeFrom:@"" transformedValue:@"0"] forKey:genericIndex.groupLabel];
     return genericValueDic;
 }
 

@@ -29,6 +29,7 @@
         return [[GenericIndexValue alloc]initWithGenericIndex:nil genericValue:[[GenericValue alloc]initUnknownDevice] index:0 deviceID:device.ID];
     }
     
+    
     NSString *headerText = @"";
     NSString *detailText = @"";
     int index = 0;
@@ -40,13 +41,13 @@
         
         if([genericIndexValue.genericIndex.placement isEqualToString:HEADER]){
             headerText = genericIndexValue.genericValue.displayText;
-           
             genericValue = genericIndexValue.genericValue;
             genericIndex = genericIndexValue.genericIndex;
+            
             if(genericIndexValue.genericValue.icon.length == 0)
                 headerText = @"";
             index = genericIndexValue.index;
-        }else if([genericIndexValue.genericIndex.placement isEqualToString:HEADER_DETAIL]){
+        }else if([genericIndexValue.genericIndex.placement isEqualToString:HEADER_DETAIL] || [genericIndexValue.genericIndex.placement isEqualToString:@"HeaderOnly"]){
             if(genericIndexValue.genericValue.iconText)
                 detailText = [NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.iconText];
             else
@@ -78,9 +79,11 @@
             NSLog(@" device index place ment %@",deviceIndex.placement);
             genericIndexObj.placement = deviceIndex.placement;
         }
-        if([genericIndexObj.placement rangeOfString:placement options:NSCaseInsensitiveSearch].location != NSNotFound){
+        if([genericIndexObj.placement rangeOfString:placement options:NSCaseInsensitiveSearch].location != NSNotFound){//contains
+            NSLog(@"inside placement");
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:genericIndexObj.ID
                                                                                forValue:[self getHeaderValueFromKnownValuesForDevice:device indexID:IndexId]];
+            NSLog(@"genericvalue: %@", genericValue);
             if(genericValue!=nil)
                 [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue index:IndexId.intValue deviceID:device.ID]];
         }
@@ -98,6 +101,7 @@
 }
 
 +(GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value{
+    NSLog(@"value: %@", value);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericIndexClass *genericIndexObject = toolkit.genericIndexes[genericIndexID];
     if(genericIndexObject == nil || value == nil)
@@ -110,7 +114,7 @@
         GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:formattedValue
                                                                      iconText:formattedValue
                                                                         value:value
-                                                                  excludeFrom:genericIndexObject.excludeFrom];
+                                                                  excludeFrom:genericIndexObject.excludeFrom transformedValue:[genericIndexObject.formatter transformValue:value]];
         return genericValue;
     }
     return [[GenericValue alloc]initWithDisplayText:value icon:value toggleValue:value value:value excludeFrom:genericIndexObject.excludeFrom eventType:nil];
@@ -121,8 +125,9 @@
     Device *device = [Device getDeviceForID:deviceID];
     
     NSMutableArray *detailList = [self getGenericIndexValuesByPlacementForDevice:device placement:@"Detail"];
-    [detailList addObjectsFromArray:[self getGenericIndexValuesByPlacementForDevice:device placement:@"Header_Detail"]];
+//    [detailList addObjectsFromArray:[self getGenericIndexValuesByPlacementForDevice:device placement:@"Header_Detail"]];
     [detailList addObjectsFromArray:[self getGenericIndexValuesByPlacementForDevice:device placement:@"Badge"]];
+    NSLog(@"Detail list vals: %@", detailList);
     
     NSArray *commonList = [self getCommonGenericIndexValue:device];
     [detailList addObjectsFromArray:commonList];
@@ -148,7 +153,7 @@
         }else{//notifyme
 //            value = device.
         }
-        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value excludeFrom:nil];
+        GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value excludeFrom:nil transformedValue:nil];
         GenericIndexClass *genIndexObj = toolkit.genericIndexes[@(genericIndex).stringValue];
         [genericIndexValues addObject:[[GenericIndexValue alloc]initWithGenericIndex:genIndexObj genericValue:genericValue index:genericIndex deviceID:device.ID]];
     }
@@ -201,22 +206,34 @@
     return toolkit.genericIndexes[genericIndexID];
 }
 
-+ (NSString*)getStatus:(int)deviceID{
++ (NSString*)getStatus:(int)deviceID value:(NSString *)value{
     Device *device = [Device getDeviceForID:deviceID];
     NSMutableArray *detailList = [self getGenericIndexValuesByPlacementForDevice:device placement:@"HeaderOnly"];
     [detailList addObjectsFromArray:[self getGenericIndexValuesByPlacementForDevice:device placement:@"Header_Detail"]];
-    
-    NSMutableString *status;
-    int i = 0;
-    for(GenericIndexValue *genericIndexVal in detailList){
-        if(i==0){
-            [status appendString:[NSString stringWithFormat:@"%@: %@",genericIndexVal.genericIndex.groupLabel, genericIndexVal.genericValue.value]];
+    NSMutableString *status = [NSMutableString new];
+    NSLog(@"util value: %@", value);
+    if(value == nil){//has icon text
+        NSLog(@"has icon text util");
+        int i = 0;
+        for(GenericIndexValue *genericIndexVal in detailList){
+            if(i==0){
+                [status appendString:[NSString stringWithFormat:@"%@ %@",genericIndexVal.genericIndex.groupLabel, genericIndexVal.genericValue.value]];
+            }
+            else{
+                [status appendString:[NSString stringWithFormat:@", %@ %@",genericIndexVal.genericIndex.groupLabel, genericIndexVal.genericValue.value]];
+            }
+            i++;
         }
-        else{
-            [status appendString:[NSString stringWithFormat:@",%@: %@",genericIndexVal.genericIndex.groupLabel, genericIndexVal.genericValue.value]];
+    }else{
+        NSLog(@"no icon text util");
+        [status appendString:value];
+        for(GenericIndexValue *genericIndexVal in detailList){
+            [status appendString:[NSString stringWithFormat:@", %@", genericIndexVal.genericValue.value]];
         }
-        
     }
+    NSLog(@"status: %@", status);
     return  status;
 }
+
+
 @end
