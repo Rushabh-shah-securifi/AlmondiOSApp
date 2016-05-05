@@ -548,11 +548,11 @@
     "13": {
         "Name": "ALARM_STATE",
         "Type": "Actuator",
-        "Placement": "Header_Detail",
+        "Placement": "Header_Detail_Primary",
         "Layout": "TEXT_VIEW",
         "AppLabel": "set_alarm_for",
         "ExcludeFrom": "Scene",
-        "DefaultIcon": "alarm_off",
+        "DefaultIcon": "alarm_on",
         "Values": {
             "0": {
                 "Icon": "alarm_off",
@@ -633,9 +633,9 @@
         "Name": "SWITCH MULTILEVEL",
         "Type": "Actuator",
         "Placement": "Header_Detail",
-        "Layout": "SLIDER",
+        "Layout": "SLIDER_ICON",
         "AppLabel": "dimmer",
-        "DefaultIcon": "switch_off",
+        "DefaultIcon": "dimmer",
         "Formatter": {
             "Min": "0",
             "Max": "100",
@@ -660,7 +660,7 @@
     "19": {
         "Name": "SWITCH_MULTISOUND",
         "Type": "Actuator",
-        "Placement": "Header_Detail",
+        "Placement": "Header_Detail_Primary",
         "Layout": "LIST",
         "AppLabel": "start_alarm",
         "DefaultIcon": "alarm_off",
@@ -1127,8 +1127,9 @@
     "44": {
         "Name": "BARRIER OPERATOR",
         "Type": "Actuator",
-        "Placement": "Header",
-        "Layout": "MULTI_BUTTON",
+        "Placement": "Header_Detail_Primary",
+        "AppLabel":"actions",
+        "Layout": "LIST",
         "Values": {
             "0": {
                 "ToggleValue": "255",
@@ -1783,7 +1784,7 @@
             "Unit": "kWh"
         }
     },
-    "86":{
+    "86": {
         "Name": "ACTIVE_POWER",
         "Type": "Sensor",
         "Placement": "Detail",
@@ -1795,8 +1796,8 @@
             "Max": "100",
             "Unit": "W"
         }
+        
     },
-    
     "87": {
         "Name": "OCCUPANCY_STATE",
         "Type": "Sensor",
@@ -1930,8 +1931,52 @@
                 "Label": "OFF"
             }
         }
+    },
+    "93": {
+        "Name": "MULTI_SWITCH BINARY1",
+        "Type": "Actuator",
+        "Placement": "Header_Deatil",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "switch_off",
+        "ShowToggleInRules": "true",
+        "DefaultIcon": "switch_on",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "switch_on",
+                "AppLabel": "switch1_on",
+                "Label": "SWITCH1 ON"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "switch_off",
+                "AppLabel": "switch1_off",
+                "Label": "SWITCH1 OFF"
+            }
+        }
+    },
+    "94": {
+        "Name": "MULTI_SWITCH BINARY2",
+        "Type": "Actuator",
+        "Placement": "Header_Detail",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "switch_off",
+        "ShowToggleInRules": "true",
+        "DefaultIcon": "switch_on",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "switch_on",
+                "AppLabel": "switch2_on",
+                "Label": "SWITCH2 ON"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "switch_off",
+                "AppLabel": "switch2_off",
+                "Label": "SWITCH2 OFF"
+            }
+        }
     }
 }
-
-
 

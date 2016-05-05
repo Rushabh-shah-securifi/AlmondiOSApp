@@ -22,9 +22,10 @@ typedef NS_ENUM(NSUInteger, CellType) {
 @protocol DeviceHeaderViewDelegate <NSObject>
 @optional
 -(void)delegateClientSettingButtonClick:(GenericParams*)genericParams;
--(void)delegateClientEditTable;
 -(void)delegateDeviceSettingButtonClick:(GenericParams*)genericParams;
 -(void)toggle:(GenericIndexValue*)genericIndexValue;
+-(void)delegateClientPropertyEditSettingClick;
+-(void)delegateDeviceEditSettingClick;
 @end
 
 @interface DeviceHeaderView : UIView
@@ -41,5 +42,6 @@ typedef NS_ENUM(NSUInteger, CellType) {
 @property (weak, nonatomic) IBOutlet UIImageView *tamperedImgView;
 
 -(void)initialize:(GenericParams*)genericParams cellType:(CellType)cellType;
+-(void)reloadIconImage;
 
 @end

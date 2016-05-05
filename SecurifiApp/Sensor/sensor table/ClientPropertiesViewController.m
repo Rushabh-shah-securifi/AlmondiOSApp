@@ -42,9 +42,11 @@ NSInteger randomMobileInternalIndex;
 }
 
 #pragma mark common cell delegate
--(void)delegateClientEditTable{
+
+-(void)delegateClientPropertyEditSettingClick{
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }

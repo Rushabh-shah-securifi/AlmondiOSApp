@@ -61,7 +61,7 @@
     self.view.backgroundColor = _genericParams.color;
     self.deviceName.text = self.genericParams.deviceName;
     self.settingButton.alpha = 1;
-    NSLog(@"Icon text %@ vs index id %@ device id %d placement %@",_genericParams.headerGenericIndexValue.genericValue.iconText,_genericParams.headerGenericIndexValue.genericIndex.ID,_genericParams.headerGenericIndexValue.deviceID,_genericParams.headerGenericIndexValue.genericIndex.placement);
+    NSLog(@"device id %d, Icon text %@, icon: %@, index id %@, placement %@",_genericParams.headerGenericIndexValue.deviceID,_genericParams.headerGenericIndexValue.genericValue.iconText,_genericParams.headerGenericIndexValue.genericValue.icon,_genericParams.headerGenericIndexValue.genericIndex.ID,_genericParams.headerGenericIndexValue.genericIndex.placement);
     if(_genericParams.headerGenericIndexValue.genericValue.iconText){
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;
@@ -115,8 +115,11 @@
         [self.delegate delegateClientSettingButtonClick:self.genericParams];
         
     }
+    else if(self.cellType == SensorEdit_Cell || self.cellType == ClientEditProperties_cell){
+        [self.delegate delegateDeviceEditSettingClick];
+    }
     else if (self.cellType == ClientProperty_Cell){
-        [self.delegate delegateClientEditTable];
+        [self.delegate delegateClientPropertyEditSettingClick];
     }
     
 }
@@ -124,13 +127,13 @@
     NSLog(@"onSensorButtonClicked");
     if(self.cellType == SensorTable_Cell || self.cellType == SensorEdit_Cell){
         //to do change image to load
-        [self changeImage];
+        [self reloadIconImage];
         [self.delegate toggle:self.genericParams.headerGenericIndexValue];
     }
 }
--(void)changeImage{
+-(void)reloadIconImage{
     self.deviceImage.image = [UIImage imageNamed:@"00_wait_icon"];
-    self.deviceValue.text = NSLocalizedString(@"tableviewcell-Updating sensor data.\nPlease wait.", @"Updating sensor data.\nPlease wait.");;
+    self.deviceValue.text = @"Updating device data.\nPlease wait.";
 }
 
 -(void)isTamper{

@@ -266,6 +266,7 @@ static const int xIndent = 10;
 #pragma mark delegate callback methods
 -(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue{// index is genericindex for clients, normal index for sensors
     NSLog(@"newvalue %@",newValue);
+    [self.deviceEditHeaderCell reloadIconImage];
     int index = genericIndexValue.index;
     if([Device getTypeForID:genericIndexValue.deviceID]){
 //        [self handleNest3PointDiffForIndex:index newValue:newValue];
@@ -286,6 +287,9 @@ static const int xIndent = 10;
     }
 }
 
+-(void)delegateDeviceEditSettingClick{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 //-(void)handleNest3PointDiffForIndex:(int)index newValue:(NSString*)value{
 //    NSLog(@"handleNest3PointDiffForIndex - index: %d, value: %@", index, value);

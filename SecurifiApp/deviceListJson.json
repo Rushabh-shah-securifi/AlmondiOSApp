@@ -53,6 +53,7 @@
         "Indexes": {
             "1": {
                 "genericIndexID": "17",
+                "Placement":"Header_Detail_Primary",
                 "row_no": 1
             }
         }
@@ -387,7 +388,7 @@
         "isActuator": "true",
         "isTrigger": "false",
         "ExcludeFrom": "Scene",
-        "defaultIcon": "alarm_off",
+        "defaultIcon": "alarm_on",
         "Indexes": {
             "1": {
                 "genericIndexID": "13",
@@ -425,6 +426,8 @@
             },
             "2": {
                 "genericIndexID": "25",
+                "min":"14",
+                "max":"122",
                 "row_no": 2
             },
             "3": {
@@ -661,11 +664,11 @@
         "defaultIcon": "multiswitch_icon",
         "Indexes": {
             "2": {
-                "genericIndexID": "1",
+                "genericIndexID": "93",
                 "row_no": 2
             },
             "1": {
-                "genericIndexID": "1",
+                "genericIndexID": "94",
                 "row_no": 1
             }
         }
@@ -699,8 +702,9 @@
     
     "46": {
         "name": "SetPoint Thermostat",
-        "isActuator": "false",
+        "isActuator": "true",
         "defaultIcon": "thermostat_image",
+        "ExcludeFrom":"Scene",
         "Indexes": {
             "2": {
                 "genericIndexID": "50",
@@ -839,6 +843,7 @@
             },
             "2": {
                 "genericIndexID": "45",
+                "Placement": "Header_Detail",
                 "row_no": 3
             },
             "3": {
