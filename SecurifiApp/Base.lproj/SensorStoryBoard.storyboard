@@ -115,9 +115,13 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="22Y-vq-zpI">
                                 <rect key="frame" x="8" y="513" width="304" height="47"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JY5-iM-Qv5">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JY5-iM-Qv5">
                                         <rect key="frame" x="112" y="8" width="80" height="30"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="80" id="Pzo-bJ-eh3"/>
+                                            <constraint firstAttribute="height" constant="30" id="yuA-ar-Lly"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="15"/>
                                         <state key="normal" title="RESET">
                                             <color key="titleColor" red="0.29411764709999999" green="0.68235294120000001" blue="0.30980392159999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -129,6 +133,8 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="47" id="6ui-L1-Bjo"/>
+                                    <constraint firstItem="JY5-iM-Qv5" firstAttribute="top" secondItem="22Y-vq-zpI" secondAttribute="top" constant="8" id="P5R-gi-DGZ"/>
+                                    <constraint firstItem="JY5-iM-Qv5" firstAttribute="centerX" secondItem="22Y-vq-zpI" secondAttribute="centerX" id="aaH-MA-b8s"/>
                                 </constraints>
                             </view>
                         </subviews>

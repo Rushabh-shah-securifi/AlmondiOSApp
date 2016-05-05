@@ -69,7 +69,6 @@ labelAndCheckButtonView *labelView;
 -(id)initWithParentView:(UIView*)parentView deviceIndexScrollView:(UIScrollView*)deviceIndexScrollView deviceListScrollView:(UIScrollView*)deviceListScrollView triggers:(NSMutableArray*)triggers actions:(NSMutableArray*)actions isScene:(BOOL)isScene{
     if(self == [super init]){
         isPresentHozPicker = NO;
-        newPickerValue = @"50";
         isPresentHozPicker = NO;
         newPickerValue = [NSString new];
         
@@ -236,7 +235,10 @@ labelAndCheckButtonView *labelView;
     for(NSString *row in sortedKeys){
         NSArray *array = genericIndexValDic[row];
         if(array!=nil && array.count>0){
+            
             [self addMyButtonwithYScale:ROW_PADDING+(ROW_PADDING+frameSize)*j withDeviceIndex:array deviceId:deviceId deviceType:deviceType deviceName:deviceName];
+            if([self shouldDoubleFrame:array])
+                j++;
             j++;
         }
     }
@@ -249,14 +251,23 @@ labelAndCheckButtonView *labelView;
 //        }
 //    }
     CGSize scrollableSize = CGSizeMake(self.deviceIndexButtonScrollView.frame.size.width,
-                                       (frameSize + ROW_PADDING )*numberOfCells + ROW_PADDING +30);
+                                       (frameSize + ROW_PADDING )*j + ROW_PADDING +30);
     
     [self.deviceIndexButtonScrollView setContentSize:scrollableSize];
     [self.deviceIndexButtonScrollView flashScrollIndicators];
     self.deviceIndexButtonScrollView.showsVerticalScrollIndicator = YES;
 }
 
-
+-(BOOL)shouldDoubleFrame:(NSArray*)genericIndexVals{
+    int count = 0;
+    for(GenericIndexValue *genIndexVal in genericIndexVals){
+        count += genIndexVal.genericIndex.values.count;
+    }
+    if(count >= 5){
+        return YES;
+    }
+    return NO;
+}
 
 //huelamp - 58
 //    if(deviceType == SFIDeviceType_HueLamp_48){
@@ -389,7 +400,7 @@ labelAndCheckButtonView *labelView;
     DimmerButton *dimbtn=[[DimmerButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,0 , dimFrameWidth, dimFrameHeight)];
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
     [dimbtn addTarget:self action:@selector(onStdWarnDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [dimbtn setUpTextField:@"0" displayText:genericIndexValue.genericValue.displayText suffix:@""]; // ?
+    [dimbtn setUpTextField:gVal.value displayText:genericIndexValue.genericValue.displayText suffix:@""]; // ?
     dimbtn.textField.delegate = self;
     
     dimbtn.center = CGPointMake(view.bounds.size.width/2,
@@ -488,12 +499,9 @@ labelAndCheckButtonView *labelView;
                 continue;
             i++;
             NSLog(@"genericIndex.ID = %@",genericIndex.ID);
-            
-//            if  ([genericIndex.layoutType isEqualToString:@"TEXT_VIEW"]){
-//                [self buildTextButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
-//            }else
-            NSLog(@"layouyt type = %@",genericIndex.layoutType);
-            if ([genericIndex.layoutType isEqualToString:@"HueColorPicker"]){
+            if  ([genericIndex.layoutType isEqualToString:@"TEXT_FIELD"]){
+                [self buildTextButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
+            }else if ([genericIndex.layoutType isEqualToString:@"HueColorPicker"]){
             [self buildHueColorPicker:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
             else if ([genericIndex.layoutType isEqualToString:@"BrighnessSlider"]){

@@ -667,16 +667,16 @@
                     "Index": "6",
                     "Name": "TAMPER",
                     "Value": "0",
-                    "GenericIndex": "49"
-                },
-                "7": {
-                    "Index": "7",
-                    "Name": "TAMPER",
-                    "Value": "10",
                     "GenericIndex": "50"
                 },
                 "8": {
                     "Index": "8",
+                    "Name": "TAMPER",
+                    "Value": "0",
+                    "GenericIndex": "49"
+                },
+                "10": {
+                    "Index": "10",
                     "Name": "TAMPER",
                     "Value": "10",
                     "GenericIndex": "51"
@@ -709,6 +709,36 @@
                     "Name": "LOW BATTERY",
                     "Value": "true",
                     "GenericIndex": "1"
+                }
+            }
+        },
+        "863": {
+            "Data":{
+                "Name": "nestTT",
+                "FriendlyDeviceType": "multiswitch",
+                "Type": "46",
+                "deviceid": "863",
+                "Location": "Main door"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Index": "1",
+                    "Name": "STATE",
+                    "Value": "50",
+                    "GenericIndex": "50"
+                },
+                "2": {
+                    "Index": "2",
+                    "Name": "LOW BATTERY",
+                    "Value": "50",
+                    "GenericIndex": "41"
+                }
+                ,
+                "3": {
+                    "Index": "2",
+                    "Name": "LOW BATTERY",
+                    "Value": "50",
+                    "GenericIndex": "25"
                 }
             }
         }

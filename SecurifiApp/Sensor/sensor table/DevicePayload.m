@@ -50,21 +50,22 @@
 
 +(void)getNameLocationChange:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    Device *device = [Device getDeviceForID:genericIndexValue.deviceID];
+//    Device *device = [Device getDeviceForID:genericIndexValue.deviceID];
     
     NSMutableDictionary *payload = [NSMutableDictionary new];
     DeviceCommandType deviceCmdType = genericIndexValue.genericIndex.commandType;
     [payload setValue:@(mii).stringValue forKey:MOBILE_INTERNAL_INDEX];
     [payload setValue:UPDATE_DEVICE_NAME forKey:@"CommandType"];
     [payload setValue:@(genericIndexValue.deviceID).stringValue forKey:D_ID];
+    
     if(deviceCmdType == DeviceCommand_UpdateDeviceName){
         [payload setValue:value forKey:INDEX_NAME];//will replace by @"Name"
-        [payload setValue:device.location forKey:LOCATION];
+//        [payload setValue:device.location forKey:LOCATION];
     }
     
     else{
         [payload setValue:value forKey:LOCATION];
-        [payload setValue:device.name forKey:INDEX_NAME];//will replace by @"Name"
+//        [payload setValue:device.name forKey:INDEX_NAME];//will replace by @"Name"
     }
     
     [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:ALMONDMAC];

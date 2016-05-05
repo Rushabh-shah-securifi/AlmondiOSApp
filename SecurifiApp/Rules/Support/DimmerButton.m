@@ -64,8 +64,8 @@
     lblMain.userInteractionEnabled = NO;
     //awakefromnib
     
-    self.prefix = suffix;
-    NSString *strTopTitleLabelText = [text stringByAppendingString:suffix];
+    self.prefix = suffix = (suffix == nil)?@"":suffix;
+    NSString *strTopTitleLabelText = [text = (text == nil)?@"":text  stringByAppendingString:suffix];
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
     [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:40.0f]} range:NSMakeRange(0,text.length)];
     [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:24.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,suffix.length)];
@@ -129,14 +129,11 @@
 
 - (void)setNewValue:(NSString*)text{
     self.dimValue = text;
-    self.prefix= (self.prefix ==nil || self.prefix.length==0) ?@"":self.prefix;
-    NSString *strTopTitleLabelText = [text stringByAppendingString:self.prefix];
-    
-    NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
-    
+    self.prefix = (self.prefix ==nil || self.prefix.length==0) ?@"%":self.prefix;
+    NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:text];
+    NSLog(@"prefix %@",self.prefix);
     [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:40.0f]} range:NSMakeRange(0,text.length)];
-    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:24.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,self.prefix.length)];
-    
+//    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:24.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,self.prefix.length)];
     [lblMain setAttributedText:strTemp];
 }
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{

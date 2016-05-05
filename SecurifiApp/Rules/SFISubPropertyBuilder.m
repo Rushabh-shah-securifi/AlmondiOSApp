@@ -188,7 +188,7 @@ UILabel *topLabel;
             for (NSString *value in genericValueKeys) {
                 NSLog(@"values %@",value);
                 GenericValue *gVal = genericValueDic[value];
-                BOOL isDimButton = genericIndex.layoutType!=nil && ([CommonMethods isDimmerLayout:genericIndex.layoutType layout:SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW]);
+                BOOL isDimButton = genericIndex.layoutType!=nil && ([CommonMethods isDimmerLayout:genericIndex.layoutType layout:SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW] || [CommonMethods isDimmerLayout:genericIndex.layoutType layout:@"TEXT_FIELD"]);
                 
                 NSLog(@"gaval.value: %@, propertyvalue: %@, displayeddata: %@", gVal.value, buttonProperties.matchData, buttonProperties.displayedData);
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties]){
@@ -206,7 +206,7 @@ UILabel *topLabel;
                     NSLog(@"bottomText  %@",text);
                     return [self setIconAndText:positionId buttonProperties:buttonProperties icon:gVal.icon text:text isTrigger:isTrigger isDimButton:isDimButton bottomText:gVal.displayText];
                 }//if
-            }//for
+            }//for/*19455*/
             return imageButton;
         }
     }
