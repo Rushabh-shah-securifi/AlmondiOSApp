@@ -774,6 +774,48 @@
                     "GenericIndex": "43"
                 }
             }
+        },
+        "865": {
+            "Data":{
+                "Name": "Temperature sensor 27",
+                "FriendlyDeviceType": "Temperature sensor",
+                "Type": "27",
+                "deviceid": "865",
+                "Location": "Hall"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Name": "Temp",
+                    "Value": "50",
+                    "GenericIndex": "25"
+                },
+                "2": {
+                    "Name": "Humidity",
+                    "Value": "50",
+                    "GenericIndex": "27"
+                },
+                "3": {
+                    "Name": "Battery",
+                    "Value": "false",
+                    "GenericIndex": "50"
+                }
+            }
+        },
+        "866": {
+            "Data":{
+                "Name": "Temperature sensor 29",
+                "FriendlyDeviceType": "Temperature sensor",
+                "Type": "29",
+                "deviceid": "866",
+                "Location": "Hall"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Name": "Temp",
+                    "Value": "50",
+                    "GenericIndex": "25"
+                }
+            }
         }
     }
 }

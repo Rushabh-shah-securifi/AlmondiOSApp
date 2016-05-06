@@ -61,29 +61,113 @@
     self.view.backgroundColor = _genericParams.color;
     self.deviceName.text = self.genericParams.deviceName;
     self.settingButton.alpha = 1;
+    [self setTamper];
+    
+    
     NSLog(@"device id %d, Icon text %@, icon: %@, index id %@, placement %@",_genericParams.headerGenericIndexValue.deviceID,_genericParams.headerGenericIndexValue.genericValue.iconText,_genericParams.headerGenericIndexValue.genericValue.icon,_genericParams.headerGenericIndexValue.genericIndex.ID,_genericParams.headerGenericIndexValue.genericIndex.placement);
+    int deviceType = [Device getTypeForID:_genericParams.headerGenericIndexValue.deviceID];
+    int deviceID = _genericParams.headerGenericIndexValue.deviceID;
+    if(deviceType == SFIDeviceType_NestThermostat_57 || deviceType == SFIDeviceType_NestSmokeDetector_58 ){
+        [self handleNestThermostatAndSmokeDectect:deviceType deviceID:deviceID genericValue:_genericParams.headerGenericIndexValue.genericValue];
+    }
+    
     if(_genericParams.headerGenericIndexValue.genericValue.iconText){
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;
         self.deviceValueImgLable.text = self.genericParams.headerGenericIndexValue.genericValue.iconText;
         self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.displayText;
-//        self.deviceValue.text = [GenericIndexUtil getStatus:self.genericParams.headerGenericIndexValue.deviceID value:nil];
     }else{
         self.deviceValueImgLable.hidden = YES;
         self.deviceImage.hidden = NO;
         self.deviceImage.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
         self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.displayText;
-//        self.deviceValue.text = [GenericIndexUtil getStatus:self.genericParams.headerGenericIndexValue.deviceID value:self.genericParams.headerGenericIndexValue.genericValue.displayText];
     }
+    
     if(self.genericParams.headerGenericIndexValue.genericIndex.readOnly || self.cellType == ClientTable_Cell || _genericParams.headerGenericIndexValue.genericValue.iconText)
         self.deviceButton.userInteractionEnabled = NO;
     else
         self.deviceButton.userInteractionEnabled = YES;
     
+
+}
+
+
+-(void)setTamper{
     self.lowBatteryImgView.hidden = YES;
     self.tamperedImgView.hidden = YES;
     if(self.genericParams.isSensor)
         [self isTamper];
+}
+
+-(void)handleNestThermostatAndSmokeDectect:(int)deviceType deviceID:(int)deviceID genericValue:(GenericValue*)genericValue{
+
+    if(deviceType == SFIDeviceType_NestThermostat_57){
+        BOOL isNestOnline = [[Device getValueForIndex:11 deviceID:deviceID] isEqualToString:@"true"];
+//        BOOL isNestOnline = NO;
+        if(!isNestOnline){
+            genericValue.icon = @"offline_icon";
+            genericValue.iconText = nil;
+            genericValue.displayText = @"Offline";
+            if(deviceType == SFIDeviceType_NestThermostat_57){
+                self.tamperedImgView.hidden = NO;
+                self.tamperedImgView.image = [UIImage imageNamed:@"nest_offline"];
+            }
+        }
+    }else if(deviceType == SFIDeviceType_NestSmokeDetector_58){
+        BOOL isSmokeOnline =  [[Device getValueForIndex:5 deviceID:deviceID] isEqualToString:@"true"];
+        if(!isSmokeOnline){
+            genericValue.icon = @"offline_icon";
+            genericValue.iconText = nil;
+            genericValue.displayText = @"Offline";
+            if(deviceType == SFIDeviceType_NestThermostat_57){
+                self.tamperedImgView.hidden = NO;
+                self.tamperedImgView.image = [UIImage imageNamed:@"nest_offline"];
+            }
+        }
+        else if(isSmokeOnline){
+            genericValue.icon = @"nest_protect_icon";
+            genericValue.displayText = [self getSmokeStatus:deviceID];
+        }
+    }
+}
+
+-(NSString*)getSmokeStatus:(int)deviceID{
+    NSString *status = @"NaN";
+    NSString *emergency = @"emergency";
+    NSString *warning = @"warning";
+    NSString *replace = @"replace";
+    
+    NSString *coAlarm = [Device getValueForIndex:3 deviceID:deviceID];
+    NSString *smokeAlarm = [Device getValueForIndex:4 deviceID:deviceID];
+    NSString *batteryStat = [Device getValueForIndex:2 deviceID:deviceID];
+    
+    NSLog(@"coalarm: %@, smoke: %@", coAlarm, smokeAlarm);
+    if([coAlarm isEqualToString:smokeAlarm]){
+        status = [coAlarm isEqualToString:@"ok"]? @"OK": [NSString stringWithFormat:@"%@ %@", @"SMOKE & CO", coAlarm.uppercaseString];
+    }else{
+        if([coAlarm isEqualToString:emergency])
+            status = @"CO EMERGENCY";
+        else if([smokeAlarm isEqualToString:emergency])
+            status = @"SMOKE EMERGENCY";
+        else if([coAlarm isEqualToString:warning])
+            status = @"CO WARNING";
+        else if([smokeAlarm isEqualToString:warning])
+            status = @"SMOKE WARNING";
+    }
+    if([coAlarm isEqualToString:emergency] || [smokeAlarm isEqualToString:emergency]){
+        self.tamperedImgView.hidden = NO;
+        self.tamperedImgView.image = [UIImage imageNamed:@"icon_tampered_red"];
+    }
+    else if([coAlarm isEqualToString:warning] || [smokeAlarm isEqualToString:warning]){
+        self.tamperedImgView.hidden = NO;
+        self.tamperedImgView.image = [UIImage imageNamed:@"icon_tampered_yellow"];
+    }
+    
+    if([batteryStat isEqualToString:replace]){
+        self.lowBatteryImgView.hidden = NO;
+        self.lowBatteryImgView.image = [UIImage imageNamed:@"low_battery_badge"];
+    }
+    return status;
 }
 
 -(void)addDeviceValueImgLabel:(NSString*)text suffix:(NSString*)suffix{
@@ -132,12 +216,13 @@
     }
 }
 -(void)reloadIconImage{
+    self.deviceImage.hidden = NO;
+    self.deviceValueImgLable.hidden = YES;
     self.deviceImage.image = [UIImage imageNamed:@"00_wait_icon"];
     self.deviceValue.text = @"Updating device data.\nPlease wait.";
 }
 
 -(void)isTamper{
-   
     Device *device = [Device getDeviceForID:self.genericParams.headerGenericIndexValue.deviceID];
     NSArray* genericIndexValues = [GenericIndexUtil getGenericIndexValuesByPlacementForDevice:device placement:@"Badge"];
     
@@ -145,8 +230,9 @@
         GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
         NSLog(@"genericIndexObj ID %@ ",genericIndexObj.ID);
         if([genericIndexObj.ID isEqualToString:@"9"]){//battery
-        if ([genericIndexValue.genericValue.value isEqualToString:@"true"]){
+            if ([genericIndexValue.genericValue.value isEqualToString:@"true"]){
                 self.tamperedImgView.hidden = NO;
+                self.tamperedImgView.image = [UIImage imageNamed:@"icon_tampered_orange"];
                 UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(batteryTapped:)];
                 singleTap.numberOfTapsRequired = 1;
                 [self.lowBatteryImgView setUserInteractionEnabled:YES];
@@ -156,6 +242,7 @@
         if([genericIndexObj.ID isEqualToString:@"12"]){//tampered
             if ([genericIndexValue.genericValue.value isEqualToString:@"true"]) {
                 self.lowBatteryImgView.hidden = NO;
+                self.tamperedImgView.image = [UIImage imageNamed:@"low_battery_badge"];
                 UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tamperTapped:)];
                 singleTap.numberOfTapsRequired = 1;
                 [self.tamperedImgView setUserInteractionEnabled:YES];
@@ -164,6 +251,7 @@
         }
     }
 }
+
 -(void)tamperTapped:(id)sender{
 //    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Do you want to dismiss tamper ?"
 //                                                    message:@""
@@ -175,6 +263,7 @@
     
     NSLog(@"tamperTapped  ");
 }
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == [alertView cancelButtonIndex]){
         //cancel clicked ...do your action
@@ -188,4 +277,5 @@
 -(void)batteryTapped:(id)sender{
     NSLog(@"batteryTapped");
 }
+
 @end

@@ -35,7 +35,7 @@
         GenericIndexValue *newGenericIndexVal = nil;
         if(canCool == NO && canHeat == NO){
             if(genIndexVal.index == 2)//SFIDevicePropertyType_NEST_THERMOSTAT_MODE
-                continue;
+                newGenericIndexVal = [self addOnlyModeOff:genIndexVal];
             else if(genIndexVal.index == 3)//SFIDevicePropertyType_THERMOSTAT_TARGET
                 continue;
             else if(genIndexVal.index == 5)//SFIDevicePropertyType_THERMOSTAT_RANGE_LOW
@@ -73,17 +73,56 @@
                 newGenericIndexVal = [self indexValuesForHasCoolWithDeviceIndex:genIndexVal index:genIndexVal.index];
             }
         }
-        if(hasFan == NO){
-            if(genIndexVal.index == 9){//SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE
-                continue;
-            }
-        }
+        if(hasFan == NO && genIndexVal.index == 9)//SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE
+            continue;
+        if(genIndexVal.index == 8)//homeaway
+            newGenericIndexVal = [self removeAutoAwayMode:genIndexVal];
+        
         if(newGenericIndexVal == nil)
             [newGenericIndexValues addObject:genIndexVal];
         else
             [newGenericIndexValues addObject:newGenericIndexVal];
     }//for loop
     return newGenericIndexValues;
+}
+
++(GenericIndexValue *) removeAutoAwayMode:(GenericIndexValue *)genericIndexValue{
+    GenericIndexClass *newGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexValue.genericIndex];
+    
+    NSMutableDictionary *newGenericValueDict = [NSMutableDictionary new];
+    NSDictionary *currentGenericValueDict = genericIndexValue.genericIndex.values;
+    
+    for(NSString *keyValue in currentGenericValueDict){
+        GenericValue *gVal = currentGenericValueDict[keyValue];
+        if([gVal.value isEqualToString:@"home"]){
+            [newGenericValueDict setValue:gVal forKey:keyValue];
+        }else if([gVal.value isEqualToString:@"away"]){
+            [newGenericValueDict setValue:gVal forKey:keyValue];
+        }
+    }
+    
+    newGenericIndex.values = newGenericValueDict;
+    genericIndexValue.genericIndex = newGenericIndex;
+    return genericIndexValue;
+}
+
+//cancool-false, canheat-false -> show only mode "off" button
++ (GenericIndexValue *)addOnlyModeOff:(GenericIndexValue *)genericIndexValue{
+    GenericIndexClass *newGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexValue.genericIndex];
+    
+    NSMutableDictionary *newGenericValueDict = [NSMutableDictionary new];
+    NSDictionary *currentGenericValueDict = genericIndexValue.genericIndex.values;
+    
+    for(NSString *keyValue in currentGenericValueDict){
+        GenericValue *gVal = currentGenericValueDict[keyValue];
+        if([gVal.value isEqualToString:@"off"]){
+            [newGenericValueDict setValue:gVal forKey:keyValue];
+        }
+    }
+    
+    newGenericIndex.values = newGenericValueDict;
+    genericIndexValue.genericIndex = newGenericIndex;
+    return genericIndexValue;
 }
 
 //edit array or create new device index
