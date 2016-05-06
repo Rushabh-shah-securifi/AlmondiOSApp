@@ -12,6 +12,7 @@
 @property (nonatomic) UILabel *labelName;
 @property (nonatomic) UIButton *button;
 @property (nonatomic) UIButton *btnSelect;
+@property (nonatomic) NSString *valueString;
 @end
 @implementation clientTypeCell
 
@@ -39,14 +40,16 @@
     [self.contentView addSubview:self.labelName];
     [self.contentView addSubview:self.btnSelect];
 }
--(void)writelabelName:(NSString*)name{
+-(void)writelabelName:(NSString*)name value:(NSString *)value{
     self.labelName.text = name;
+    self.valueString = value;
     self.btnSelect.backgroundColor = [UIColor clearColor];
+    
 }
 
 -(void)typeButtonClicked:(id)sender{
     self.btnSelect.backgroundColor = [UIColor whiteColor];
-    [self.delegate selectedTypes:self.labelName.text];
+    [self.delegate selectedTypes:self.valueString];
     
 }
 -(void)changeButtonColor{

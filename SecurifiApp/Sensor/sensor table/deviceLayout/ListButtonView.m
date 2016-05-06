@@ -17,14 +17,14 @@
 @property (nonatomic)NSMutableArray *displayArray;
 @end
 @implementation ListButtonView
-NSMutableArray *type;
+NSMutableArray *types;
 -(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue
 {
     self = [super initWithFrame:frame];
     if(self){
         self.color = color;
         self.genericIndexValue = genericIndexValue;
-        type = [[NSMutableArray alloc] init];
+        types = [[NSMutableArray alloc] init];
         self.displayArray = [[NSMutableArray alloc] init];
         [self drawTypeTable];
     }
@@ -35,10 +35,10 @@ NSMutableArray *type;
     for(NSString *key in self.genericIndexValue.genericIndex.values.allKeys){
         GenericValue *gVal = [self.genericIndexValue.genericIndex.values valueForKey:key];
         [self.displayArray addObject:gVal.displayText];
-        [type addObject:gVal.value];
+        [types addObject:gVal.value];
     }
     
-    NSLog(@"types %@",self.displayArray);
+    NSLog(@"types %@",types);
     self.selectedType = self.genericIndexValue.genericValue.value;
     NSLog(@" self.genericIndexValue.genericValue.value %@",self.genericIndexValue.genericValue.value);
     self.tableType = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height - 100)];
@@ -57,7 +57,7 @@ NSMutableArray *type;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return type.count;
+    return types.count;
 }
 
 
@@ -70,7 +70,8 @@ NSMutableArray *type;
         [cell setupLabel];
     }
     int currentvalPos = 0;
-    for(NSString *str in type){
+    for(NSString *str in types){
+        
         if([str isEqualToString:self.selectedType])
             break;
         currentvalPos++;
@@ -80,7 +81,7 @@ NSMutableArray *type;
     cell.userInteractionEnabled = YES;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = self.color;
-    [cell writelabelName:[self.displayArray objectAtIndex:indexPath.row]];
+    [cell writelabelName:[self.displayArray objectAtIndex:indexPath.row] value:[types objectAtIndex:indexPath.row]];
     if(currentvalPos == indexPath.row)
         [cell changeButtonColor];
     return cell;
@@ -100,7 +101,7 @@ NSMutableArray *type;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath{
     NSLog(@"didSelectRowAtIndexPath ");
-    [self selectedTypes:[type objectAtIndex:indexPath.row]];
+//    [self selectedTypes:[types objectAtIndex:indexPath.row]];
     return;
 }
 #pragma mark cell delegate

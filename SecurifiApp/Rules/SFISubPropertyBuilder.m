@@ -145,6 +145,7 @@ UILabel *topLabel;
         }else{
             NSLog(@"buttoon devicetype %d",buttonProperties.deviceType);
             NSArray *genericIndexValues = [self getDeviceIndexes:buttonProperties isTrigger:isTrigger];
+            NSLog(@"genericIndexValues count %ld",genericIndexValues.count);
             if(genericIndexValues == nil || genericIndexValues.count<=0)
                 continue;
             NSLog(@"button property: %@, genericindexvalues: %@", buttonProperties, genericIndexValues);
@@ -188,15 +189,16 @@ UILabel *topLabel;
             for (NSString *value in genericValueKeys) {
                 NSLog(@"values %@",value);
                 GenericValue *gVal = genericValueDic[value];
-                BOOL isDimButton = genericIndex.layoutType!=nil && ([CommonMethods isDimmerLayout:genericIndex.layoutType layout:SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW] || [CommonMethods isDimmerLayout:genericIndex.layoutType layout:@"TEXT_FIELD"]);
+                BOOL isDimButton = genericIndex.layoutType!=nil && ([genericIndex.layoutType isEqualToString: SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW] || [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [genericIndex.layoutType isEqualToString:@"SLIDER_ICON"]);
                 
                 NSLog(@"gaval.value: %@, propertyvalue: %@, displayeddata: %@", gVal.value, buttonProperties.matchData, buttonProperties.displayedData);
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties]){
                     NSString *text;
                     if(isDimButton){
-                        buttonProperties.displayedData = [NSString stringWithFormat:@"%d",(int)ceil(([buttonProperties.matchData intValue]*genericIndex.formatter.factor))];
-                        
-                        text = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,genericIndex.formatter.units];
+                    buttonProperties.displayedData = [NSString stringWithFormat:@"%d",(int)ceil([buttonProperties.matchData intValue]*(genericIndex.formatter.factor == 0?1.0:genericIndex.formatter.factor))];
+                         NSLog(@"buttonProperties.displayedData %@", buttonProperties.displayedData);
+                        text = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,(genericIndex.formatter.units == nil?@"":genericIndex.formatter.units)];
+                         NSLog(@"is dim button text %@",text);
                         if(buttonProperties.deviceType == SFIDeviceType_HueLamp_48){
                             text = [NSString stringWithFormat:@"%@%@",@(buttonProperties.matchData.intValue * 100/255).stringValue,genericIndex.formatter.units];
                         }
@@ -247,7 +249,7 @@ UILabel *topLabel;
 }
 
 + (NSArray*)getDeviceIndexes:(SFIButtonSubProperties *)properties isTrigger:(BOOL)isTrigger{
-    NSLog(@"before propertiesid: %d, properties type: %d, matchdata: %@", properties.deviceId, properties.deviceType, properties.matchData);
+    NSLog(@"before propertiesid: %d, properties type: %d, matchdata: %@ , eventTYpe %@", properties.deviceId, properties.deviceType, properties.matchData,properties.eventType);
     [self getDeviceTypeFor:properties];
     NSLog(@"propertiesid: %d, properties type: %d, matchdata: %@", properties.deviceId, properties.deviceType, properties.matchData);
     return [RuleSceneUtil getGenericIndexValueArrayForID:properties.deviceId type:properties.deviceType isTrigger:isTrigger isScene:isScene triggers:triggers action:actions];

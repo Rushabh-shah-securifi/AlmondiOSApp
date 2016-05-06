@@ -14,7 +14,7 @@
 @property (nonatomic) UIColor *color;
 @property (nonatomic,weak) id<clientTypeCellDelegate> delegate;
 -(void)setupLabel;
--(void)writelabelName:(NSString*)name;
+-(void)writelabelName:(NSString*)name value:(NSString*)value;
 -(void)changeButtonColor;
 
 @end

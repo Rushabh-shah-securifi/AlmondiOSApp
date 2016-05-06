@@ -51,6 +51,7 @@ static const int xIndent = 10;
 @property (nonatomic) UIScrollView *scrollView;
 @property (nonatomic)BOOL isLocal;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *indexScrollTopConstraint;
+@property (nonatomic)GenericIndexValue *genericIndexVal;
 
 @end
 
@@ -133,11 +134,12 @@ static const int xIndent = 10;
             continue;
         }
         NSString *propertyName = genericIndexObj.groupLabel;
-        NSLog(@"read only %d,layouttype %@ ,type %@ groupLabel %@",genericIndexObj.readOnly,genericIndexObj.layoutType,genericIndexObj.type,genericIndexObj.groupLabel);
+        NSLog(@"read only %d,layouttype %@ ,type %@ groupLabel %@ GINDEX %@ Dindex %d",genericIndexObj.readOnly,genericIndexObj.layoutType,genericIndexObj.type,genericIndexObj.groupLabel,genericIndexObj.ID,genericIndexValue.index);
+        
         if(genericIndexObj.readOnly){
             UIView *view = [[UIView alloc]initWithFrame:VIEW_FRAME_SMALL];
             if([genericIndexObj.ID isEqualToString:@"9"] && [genericIndexValue.genericValue.value isEqualToString:@"true"])
-            {
+            {   self.genericIndexVal = genericIndexValue;
                 [self disMissTamperedView];
                 continue;
             }
@@ -161,7 +163,7 @@ static const int xIndent = 10;
             [self setUpLable:label withPropertyName:propertyName];
             [view addSubview:label];
             
-            if([CommonMethods isDimmerLayout:genericIndexObj.layoutType layout:@"SINGLE_TEMP"]){
+            if([genericIndexObj.layoutType isEqualToString:@"SINGLE_TEMP"]){
                 HorizontalPicker *horzView = [[HorizontalPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 horzView.delegate = self;
                 [view addSubview:horzView];
@@ -176,14 +178,12 @@ static const int xIndent = 10;
                 hueView.delegate = self;
                 [view addSubview:hueView];
             }
-            else if ([CommonMethods isDimmerLayout:genericIndexObj.layoutType layout:@"SLIDER"]){
+            else if ([genericIndexObj.layoutType isEqualToString: @"SLIDER"] || [genericIndexObj.layoutType isEqualToString:@"SLIDER_ICON"]){
                 Slider *sliderView = [[Slider alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 sliderView.delegate = self;
                 [view addSubview:sliderView];
             }
-            else if ([genericIndexObj.layoutType isEqualToString:TEXT_VIEW]){
-            
-                NSLog(@"view frame %@ and ypos = %d",NSStringFromCGRect(view.frame),yPos);
+            else if ([genericIndexObj.layoutType isEqualToString:TEXT_VIEW] || [genericIndexObj.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
                 TextInput *textView = [[TextInput alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 textView.delegate = self;
                 [view addSubview:textView];
@@ -249,6 +249,7 @@ static const int xIndent = 10;
 
 -(void)dimissTamperTap:(id)sender{
     [self showToast:@"Saving..."];
+    [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:self.genericIndexVal mii:randomMobileInternalIndex value:@"false"];
     [UIView animateWithDuration:2 delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:15 options:nil animations:^() {
         ///[DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
         [self.dismisstamperedView removeFromSuperview];
@@ -332,16 +333,27 @@ static const int xIndent = 10;
 
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");
-    dispatch_async(dispatch_get_main_queue(), ^(){
-//        [self.navigationController popToRootViewControllerAnimated:YES];
-    });
+    if(self.deviceEditHeaderCell.cellType == ClientEditProperties_cell){
+        dispatch_async(dispatch_get_main_queue(), ^(){
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        });
+    }
+    else if(self.deviceEditHeaderCell.cellType == SensorEdit_Cell){
+        //        NSArray* genericIndexValues = [GenericIndexUtil getDetailListForDevice:self.genericParams.headerGenericIndexValue.deviceID];
+        //        int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
+        //        NSLog(@"gvalues: %@", genericIndexValues);
+        //        if([Device getTypeForID:deviceID] == SFIDeviceType_NestThermostat_57){
+        //            genericIndexValues = [RuleSceneUtil handleNestThermostatForSensor:deviceID genericIndexValues:genericIndexValues];
+        //        }
+        //        self.genericParams.indexValueList = genericIndexValues;
+        //
+        //        dispatch_async(dispatch_get_main_queue(), ^{
+        //            [self clearAllViews];
+        //            [self setUpDeviceEditCell];
+        //            [self drawIndexes];
+        //        });
+    }
     
-     
-//    [self.deviceEditHeaderCell initializeSensorCellWithGenericParams:self.genericParams cellType:SensorEdit_Cell];
-//    Device *device = [Device getDeviceForID:self.genericParams.headerGenericIndexValue.deviceID];
-//    [self.genericParams setGenericParamsWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device] indexValueList:nil deviceName:device.name color:[UIColor greenColor]];
-//    [self.deviceEditHeaderCell setUPSensorCell];
 }
-
 
 @end

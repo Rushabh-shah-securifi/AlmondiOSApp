@@ -65,7 +65,7 @@
         DeviceIndex *deviceIndex = deviceIndexes[indexID];
         GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
         NSLog(@" device Index %@ deviceType %@,devicename %@  generic index ID %@ istrigger %d ,istrigger %d",deviceIndex.index ,genericDevice.type ,genericDevice.name, genericIndexObj.ID,isTrigger,isScene);
-        if([Device getValueForIndex:indexID.intValue deviceID:deviceID] == nil)
+        if([Device getValueForIndex:indexID.intValue deviceID:deviceID] == nil && !([genericDevice.type isEqualToString:@"0" ] || [genericDevice.type isEqualToString:@"500" ] || [genericDevice.type isEqualToString:@"501" ]))
             continue;
         if(![self showGenericIndex:genericIndexObj isTrigger:isTrigger isScene:isScene])
             continue;

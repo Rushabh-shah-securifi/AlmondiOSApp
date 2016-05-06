@@ -55,7 +55,7 @@ int mii;
     //ensure list is empty initially
     self.currentDeviceList = @[];
     self.currentClientList = @[];
-//    [self initializeAlmondData];
+    [self initializeAlmondData];
     [self showHudWithTimeoutMsg:@"Loading Device data"];
 }
 
@@ -64,10 +64,10 @@ int mii;
     
     [super viewWillAppear:YES];
     [self initializeNotifications];
-    DeviceParser *deviceparser = [[DeviceParser alloc]init];
-    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
-    [self initializeAlmondData];
-    
+//    DeviceParser *deviceparser = [[DeviceParser alloc]init];
+//    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
+//    [self initializeAlmondData];
+//    
     mii = arc4random() % 10000;
     //need to reload tableview, as toolkit could have got updates
     self.currentDeviceList = self.toolkit.devices;

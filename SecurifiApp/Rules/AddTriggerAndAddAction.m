@@ -251,7 +251,7 @@ labelAndCheckButtonView *labelView;
 //        }
 //    }
     CGSize scrollableSize = CGSizeMake(self.deviceIndexButtonScrollView.frame.size.width,
-                                       (frameSize + ROW_PADDING )*j + ROW_PADDING +30);
+                                       (frameSize + ROW_PADDING )*j + ROW_PADDING +60);
     
     [self.deviceIndexButtonScrollView setContentSize:scrollableSize];
     [self.deviceIndexButtonScrollView flashScrollIndicators];
@@ -312,11 +312,14 @@ labelAndCheckButtonView *labelView;
 }
 
 - (void)textFieldDidEndEditing:(RuleTextField *)textField{
+    NSLog(@"textfield text %@",textField.text);
     newPickerValue = textField.text;
     textField.subProperties.matchData = textField.text;
     [self addObject:[textField.subProperties createNew]];
+    NSLog(@"textField.subProperties.matchData %@",textField.subProperties.matchData);
     [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
     [self setActionButtonCount:dimerButton isSlider:YES];
+    dimerButton.isTrigger = self.isTrigger;
     dimerButton.selected = YES;
     
 }
@@ -499,15 +502,17 @@ labelAndCheckButtonView *labelView;
                 continue;
             i++;
             NSLog(@"genericIndex.ID = %@",genericIndex.ID);
-            if  ([genericIndex.layoutType isEqualToString:@"TEXT_FIELD"]){
+            NSLog(@"layouttype %@",genericIndex.layoutType );
+            if  ([genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
                 [self buildTextButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
+                break;
             }else if ([genericIndex.layoutType isEqualToString:@"HueColorPicker"]){
             [self buildHueColorPicker:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
             else if ([genericIndex.layoutType isEqualToString:@"BrighnessSlider"]){
                 [self buildHueSliders:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             }
-            else if ([genericIndex.layoutType isEqualToString:SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW])
+            else if ([genericIndex.layoutType isEqualToString:SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW] || [genericIndex.layoutType isEqualToString:@"SLIDER_ICON"])
                 [self buildDimButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
             else{
                 if(i >= 5){

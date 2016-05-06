@@ -413,10 +413,10 @@
         [self markAlmondMac:self.currentAlmond.almondplusMAC];
         [self markTitle: self.currentAlmond.almondplusName];
     }
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        
+//    dispatch_async(dispatch_get_main_queue(), ^() {
+    
         [self sendGetAllScenesRequest];
-    });
+//    });
 }
 
 - (void)getAllScenes {
