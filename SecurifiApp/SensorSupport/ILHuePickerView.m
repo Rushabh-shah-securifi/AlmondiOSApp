@@ -133,7 +133,7 @@
         _hue = p / b;
     }
 
-    [self.delegate huePicked:_hue picker:self];
+    
 
     [self setNeedsDisplay];
 }
@@ -157,6 +157,7 @@
         return;
     }
     [self handleTouches:touches withEvent:event];
+    [self.delegate huePicked:_hue picker:self];
 }
 
 #pragma mark - Property Setters

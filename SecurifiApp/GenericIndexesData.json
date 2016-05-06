@@ -920,7 +920,8 @@
         "DefaultIcon": "light_on",
         "Formatter": {
             "Min": "0",
-            "Max": "65535"
+            "Max": "65535",
+            "Unit": "%"
         }
     },
     "31": {
@@ -1479,7 +1480,7 @@
                 "Label": "Online"
             },
             "false": {
-                "Icon": "online_icon",
+                "Icon": "offline_icon",
                 "AppLabel": "offline",
                 "Label": "Offline"
             }

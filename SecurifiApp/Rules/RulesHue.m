@@ -23,9 +23,27 @@
 #import "SFIDeviceIndex.h"
 #import "IndexValueSupport.h"
 #import "ILHuePickerView.h"
+#import "Colours.h"
 
 #import "RulesConstants.h"
-
+#import "RuleButton.h"
+#import "DimmerButton.h"
+#import "SwitchButton.h"
+#import "RulesDeviceNameButton.h"
+#import "TimeView.h"
+#import "RuleTextField.h"
+#import "CommonMethods.h"
+#import "UICommonMethods.h"
+#import "RuleSceneUtil.h"
+#import "GenericIndexValue.h"
+#import "GenericIndexClass.h"
+#import "GenericValue.h"
+#import "Device.h"
+#import "DeviceKnownValues.h"
+#import "Slider.h"
+#import "HueColorPicker.h"
+#import "labelAndCheckButtonView.h"
+#import "AlmondJsonCommandKeyConstants.h"
 @interface RulesHue()<ILHuePickerViewDelegate>
 
 
@@ -58,6 +76,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 
 -(void) createHueCellLayoutWithDeviceId:(int)deviceId deviceType:(int)deviceType deviceIndexes:(NSArray*)deviceIndexes deviceName:(NSString*)deviceName scrollView:(UIScrollView *)scrollView cellCount:(int)numberOfCells indexesDictionary:(NSDictionary*)deviceIndexesDict{
     for(int i = 0; i < numberOfCells; i++){
+        NSLog(@"deviceIndexesDict %@",deviceIndexesDict);
         [self HueLayout:scrollView withYScale:ROW_PADDING+(ROW_PADDING+frameSize)*i  withDeviceIndex:[deviceIndexesDict valueForKey:[NSString stringWithFormat:@"%d", i+1]] deviceId:deviceId deviceType:deviceType deviceName:deviceName];
         
     }
@@ -74,31 +93,45 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     [scrollView addSubview:view];
     
     int i=0;
-    for (SFIDeviceIndex *deviceIndex in deviceIndexes) {
+    for (GenericIndexValue *indexValue in deviceIndexes) {
+        NSLog(@"yscale index: %d", indexValue.index);
+        GenericIndexClass *genericIndex =indexValue.genericIndex;
+        NSDictionary *genericValueDic;
+        if(genericIndex.values == nil){
+            genericValueDic = [self formatterDict:genericIndex];
+        }else{
+            genericValueDic = genericIndex.values;
+        }
+         NSArray *genericValueKeys = genericValueDic.allKeys;
+        for (NSString *value in genericValueKeys) {
+            GenericValue *genericVal = genericValueDic[value];
+            if(![RuleSceneUtil showGenericValue:genericVal isScene:_isScene])
+                continue;
+            i++;
         NSMutableArray *btnary=[[NSMutableArray alloc]init];
         int indexValCounter = 0;
-        for (IndexValueSupport *iVal in deviceIndex.indexValues) {
-            i++;
+
             indexValCounter++;
-            if(deviceIndex.valueType == SFIDevicePropertyType_SWITCH_BINARY){
+            if([genericIndex.ID isEqualToString:@"90"] ){
                 SwitchButton *buttonHue = [[SwitchButton alloc] initWithFrame:CGRectMake(view.frame.origin.x, 0, indexButtonFrameSize, indexButtonFrameSize)];
                 //                buttonHue.backgroundColor = [UIColor blackColor];
                 buttonHue.tag = indexValCounter;
-                buttonHue.valueType = deviceIndex.valueType;
+//                buttonHue.valueType = deviceIndex.valueType;
                 
                 //subproperties
-                buttonHue.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
+                buttonHue.subProperties = [self addSubPropertiesFordeviceID:deviceId index:indexValue.index matchData:genericVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
                 buttonHue.deviceType = deviceType;
+                
                 [buttonHue addTarget:self action:@selector(onHueButtonClick:) forControlEvents:UIControlEventTouchUpInside];
                 
-                [buttonHue setupValues:[UIImage imageNamed:iVal.iconName] topText:nil bottomText:iVal.displayText isTrigger:self.isScene isDimButton:NO insideText:iVal.displayText isScene:self.isScene];
+                [buttonHue setupValues:[UIImage imageNamed:genericVal.icon] topText:nil bottomText:genericVal.displayText isTrigger:self.isScene isDimButton:NO insideText:genericVal.displayText isScene:self.isScene];
                 [buttonHue changeImageColor:[UIColor whiteColor]];
                 
                 //set perv. count and highlight
                 int buttonClickCount = 0;
                 NSMutableArray *subProperties = self.isScene? self.triggers: self.actions;
                 for(SFIButtonSubProperties *hueButtonProperty in subProperties){ //to do - you can add count property to subproperties and iterate array in reverse
-                    if(hueButtonProperty.deviceId == deviceId && hueButtonProperty.index == deviceIndex.indexID && [hueButtonProperty.matchData isEqualToString:iVal.matchData]){
+                    if(hueButtonProperty.deviceId == deviceId && hueButtonProperty.index == indexValue.index && [hueButtonProperty.matchData isEqualToString:genericVal.value]){
                         buttonHue.selected = YES;
                         buttonClickCount++;
                     }
@@ -122,7 +155,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 [view addSubview:buttonHue];
             }
             
-            else if(deviceIndex.valueType == SFIDevicePropertyType_COLOR_HUE){
+            else if([genericIndex.ID isEqualToString:@"30"]){
                 //subview
                 hueColorPickupLabelView = [[labelAndCheckButtonView alloc]initWithFrame:CGRectMake(view.frame.origin.x, 0, view.frame.size.width, hueSubViewSize)];
                 hueColorPickupLabelView.isScene = self.isScene;
@@ -135,7 +168,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 huePickerView.allowSelection = YES;
                 huePickerView.delegate = self;
                 huePickerView.propertyType = SFIDevicePropertyType_COLOR_HUE;
-                huePickerView.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
+                huePickerView.subProperties = [self addSubPropertiesFordeviceID:deviceId index:indexValue.index matchData:genericVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
                 
                 //previous values
                 BOOL isSelected = NO;
@@ -143,7 +176,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 float preValue = 0;
                 NSMutableArray *subProperties = self.isScene? self.triggers: self.actions;
                 for(SFIButtonSubProperties *hueProperty in subProperties){ //to do - you can add count property to subproperties and iterate array in reverse
-                    if(hueProperty.deviceId == deviceId && hueProperty.index == deviceIndex.indexID){
+                    if(hueProperty.deviceId == deviceId && hueProperty.index == indexValue.index){
                         isSelected = YES;
                         preValue = hueProperty.matchData.floatValue;
                         buttonClickCount++;
@@ -165,7 +198,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 [view addSubview:huePickerView];
             }
             
-            else if(deviceIndex.valueType == SFIDevicePropertyType_SATURATION){
+            else if([genericIndex.ID isEqualToString:@"32"]){
                 view.frame = CGRectMake(0,
                                         yScale ,
                                         scrollView.frame.size.width,
@@ -187,13 +220,14 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 
                 
                 saturationSlider.continuous = YES;
+                saturationSlider.alpha = 0.3;
                 saturationSlider.allowToSlide = YES; // Initial value
                 saturationSlider.sensorMaxValue = 255;
                 saturationSlider.convertedValue = 0; // to be assigned
                 saturationSlider.backgroundColor = [UIColor grayColor];
                 
                 //slider view - sub-properties
-                saturationSlider.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
+                saturationSlider.subProperties = [self addSubPropertiesFordeviceID:deviceId index:indexValue.index matchData:genericVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
                 
                 //previous values
                 BOOL isSelected = NO;
@@ -201,7 +235,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 float preValue = 0;
                 NSMutableArray *subProperties = self.isScene? self.triggers: self.actions;
                 for(SFIButtonSubProperties *saturationProperty in subProperties){ //to do - you can add count property to subproperties and iterate array in reverse
-                    if(saturationProperty.deviceId == deviceId && saturationProperty.index == deviceIndex.indexID){
+                    if(saturationProperty.deviceId == deviceId && saturationProperty.index == indexValue.index){
                         isSelected = YES;
                         preValue = saturationProperty.matchData.floatValue;
                         buttonClickCount++;
@@ -224,7 +258,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 
             }
             
-            else if(deviceIndex.valueType == SFIDevicePropertyType_BRIGHTNESS){
+            else if([genericIndex.ID isEqualToString:@"18"]){
                 
                 view.frame = CGRectMake(0,
                                         yScale ,
@@ -246,13 +280,14 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 brightnessSlider = [self makeSlider:0 maxValue:100 propertyType:SFIDevicePropertyType_BRIGHTNESS sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset slider:brightnessSlider];
                 
                 brightnessSlider.continuous = YES;
+                brightnessSlider.alpha = 0.3;
                 brightnessSlider.allowToSlide = YES;
                 brightnessSlider.sensorMaxValue = 255;
                 brightnessSlider.convertedValue = 0; // to be assigned
                 brightnessSlider.backgroundColor = [UIColor grayColor];
                 
                 //slider view - sub-properties
-                brightnessSlider.subProperties = [self addSubPropertiesFordeviceID:deviceId index:deviceIndex.indexID matchData:iVal.matchData andEventType:nil deviceName:deviceName deviceType:deviceType];
+                brightnessSlider.subProperties = [self addSubPropertiesFordeviceID:deviceId index:indexValue.index matchData:genericVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
                 
                 //previous values
                 BOOL isSelected = NO;
@@ -260,7 +295,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 float preValue = 0;
                 NSMutableArray *subProperties = self.isScene? self.triggers: self.actions;
                 for(SFIButtonSubProperties *brightnessProperty in subProperties){ //to do - you can add count property to subproperties and iterate array in reverse
-                    if(brightnessProperty.deviceId == deviceId && brightnessProperty.index == deviceIndex.indexID){
+                    if(brightnessProperty.deviceId == deviceId && brightnessProperty.index == indexValue.index){
                         isSelected = YES;
                         preValue = brightnessProperty.matchData.floatValue;
                         buttonClickCount++;
@@ -412,6 +447,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     
     float sensorValue = [slider convertToSensorValue];
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
+//    brightnessSlider
     if(slider.propertyType == SFIDevicePropertyType_BRIGHTNESS){
         brightnessSlider.subProperties.matchData = newValue;
         if(self.isScene){
@@ -428,15 +464,18 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 - (void)onSliderDidEndSliding:(id)sender {
     SFISlider *slider = sender;
     float sensorValue = [slider convertToSensorValue];
-    NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
+    NSLog(@" sensor value %f",sensorValue);
+    NSString *newValue = [NSString stringWithFormat:@"%d", (int) ceil(sensorValue)];
     
     if(slider.propertyType == SFIDevicePropertyType_BRIGHTNESS){
+        brightnessSlider.alpha =  sensorValue / 255 + 0.3;
         brightnessSlider.subProperties.matchData = newValue;
         if(self.isScene){
             [self updateEntryForID:brightnessSlider.subProperties.deviceId index:brightnessSlider.subProperties.index matchData:newValue];
         }
     }else if(slider.propertyType == SFIDevicePropertyType_SATURATION){
         saturationSlider.subProperties.matchData = newValue;
+        saturationSlider.alpha =  sensorValue / 255 + 0.3;
         if(self.isScene){
             [self updateEntryForID:saturationSlider.subProperties.deviceId index:saturationSlider.subProperties.index matchData:newValue];
         }
@@ -447,6 +486,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 -(void)onBrightnessCheckButtonClick:(UIButton*)sender{ //This is enable button
     sfi_id sliderId = brightnessSlider.subProperties.deviceId;
     int sliderIndex = brightnessSlider.subProperties.index;
+    
     if(self.isScene){
         [brightnessSliderLabelView setSelected:!sender.selected];
         [self deleteFromTriggersArrayForID:sliderId index:sliderIndex];
@@ -546,6 +586,9 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     
     int sensor_value = [hue_picker convertToSensorValue];
     huePickerView.subProperties.matchData = @(sensor_value).stringValue ;
+    NSLog(@" sensor_value %d",sensor_value);
+    brightnessSlider.backgroundColor = [UIColor colorFromHexString:[self getColorHex:@(sensor_value).stringValue]];
+    saturationSlider.backgroundColor = [UIColor colorFromHexString:[self getColorHex:@(sensor_value).stringValue]];
     if(self.isScene){
         [self updateEntryForID:huePickerView.subProperties.deviceId index:huePickerView.subProperties.index matchData:@(sensor_value).stringValue];
     }
@@ -553,7 +596,20 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     //    [self.delegate tableViewCellValueDidChange:self CellInfo:self.cellInfo Index:(int)hue_picker.tag Value:[NSString stringWithFormat:@"%d",sensor_value]];
     
 }
-
-
+-(NSDictionary*)formatterDict:(GenericIndexClass*)genericIndex{
+    NSLog(@"genericIndex.formatter.min %d",genericIndex.formatter.min);
+    NSMutableDictionary *genericValueDic = [[NSMutableDictionary alloc]init];
+    [genericValueDic setValue:[[GenericValue alloc]initWithDisplayText:genericIndex.groupLabel iconText:@(genericIndex.formatter.min).stringValue value:@"" excludeFrom:@"" transformedValue:@"0"] forKey:genericIndex.groupLabel];
+    return genericValueDic;
+}
+- (NSString *)getColorHex:(NSString*)value {
+    if (!value) {
+        return @"";
+    }
+    float hue = [value floatValue];
+    hue = hue / 65535;
+    UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
+    return [color.hexString uppercaseString];
+};
 
 @end

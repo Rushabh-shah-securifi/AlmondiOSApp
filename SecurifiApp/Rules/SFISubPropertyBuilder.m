@@ -189,7 +189,7 @@ UILabel *topLabel;
             for (NSString *value in genericValueKeys) {
                 NSLog(@"values %@",value);
                 GenericValue *gVal = genericValueDic[value];
-                BOOL isDimButton = genericIndex.layoutType!=nil && ([genericIndex.layoutType isEqualToString: SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW] || [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [genericIndex.layoutType isEqualToString:@"SLIDER_ICON"]);
+                BOOL isDimButton = genericIndex.layoutType!=nil && ([genericIndex.layoutType isEqualToString: SINGLE_TEMP] || [genericIndex.layoutType isEqualToString:SLIDER] || [genericIndex.layoutType isEqualToString:TEXT_VIEW] || [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"] || [genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] || [genericIndex.layoutType isEqualToString:@"HUE"]);
                 
                 NSLog(@"gaval.value: %@, propertyvalue: %@, displayeddata: %@", gVal.value, buttonProperties.matchData, buttonProperties.displayedData);
                 if([CommonMethods compareEntry:isDimButton matchData:gVal.value eventType:gVal.eventType buttonProperties:buttonProperties]){
@@ -200,13 +200,17 @@ UILabel *topLabel;
                         text = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,(genericIndex.formatter.units == nil?@"":genericIndex.formatter.units)];
                          NSLog(@"is dim button text %@",text);
                         if(buttonProperties.deviceType == SFIDeviceType_HueLamp_48){
-                            text = [NSString stringWithFormat:@"%@%@",@(buttonProperties.matchData.intValue * 100/255).stringValue,genericIndex.formatter.units];
+                            text = [NSString stringWithFormat:@"%@%@",@((int)ceil(buttonProperties.matchData.intValue * 100/255)).stringValue,genericIndex.formatter.units];
                         }
                     }
                     else
                         text = gVal.displayText;
-                    NSLog(@"bottomText  %@",text);
-                    return [self setIconAndText:positionId buttonProperties:buttonProperties icon:gVal.icon text:text isTrigger:isTrigger isDimButton:isDimButton bottomText:gVal.displayText];
+                    
+                    
+                    NSLog(@"bottomText  %@ gval.icon %@",text,gVal.icon);
+                    NSString *icon = gVal.icon == nil?genericIndex.icon:gVal.icon;
+                    NSLog(@"icon %@",icon);
+                    return [self setIconAndText:positionId buttonProperties:buttonProperties icon:icon text:text isTrigger:isTrigger isDimButton:isDimButton bottomText:gVal.displayText];
                 }//if
             }//for/*19455*/
             return imageButton;

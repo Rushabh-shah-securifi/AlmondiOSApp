@@ -227,9 +227,16 @@ labelAndCheckButtonView *labelView;
     }
 
     NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForArray:genericIndexValues isTrigger:self.isTrigger isScene:self.isScene];
-    NSInteger numberOfCells = [self maxCellId:genericIndexValDic];
+    int numberOfCells = (int)[self maxCellId:genericIndexValDic];
     NSLog(@"GenericIndexValueDict after: %@", genericIndexValDic);
     
+    if(deviceType == SFIDeviceType_HueLamp_48){
+        self.ruleHueObject = [[RulesHue alloc] initWithPropertiesTrigger:self.triggers action:self.actions isScene:self.isScene];
+        self.ruleHueObject.delegate = self;
+        [self.ruleHueObject createHueCellLayoutWithDeviceId:deviceId deviceType:deviceType deviceIndexes:nil deviceName:deviceName scrollView:self.deviceIndexButtonScrollView cellCount:numberOfCells indexesDictionary:genericIndexValDic];
+        return;
+    }
+
     NSArray *sortedKeys = [genericIndexValDic.allKeys sortedArrayUsingSelector:@selector(compare:)];
     int j=0;
     for(NSString *row in sortedKeys){
