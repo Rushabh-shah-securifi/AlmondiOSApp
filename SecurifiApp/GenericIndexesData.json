@@ -549,7 +549,7 @@
         "Name": "ALARM_STATE",
         "Type": "Actuator",
         "Placement": "Header_Detail_Primary",
-        "Layout": "TEXT_VIEW",
+        "Layout": "TEXT_VIEW_ONLY",
         "AppLabel": "set_alarm_for",
         "ExcludeFrom": "Scene",
         "DefaultIcon": "alarm_on",
@@ -1054,7 +1054,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "fan_mode",
         "Values": {
-            "On Low ": {
+            "On Low": {
                 "Icon": "btn_fan_off",
                 "AppLabel": "fan_on_low",
                 "Label": "On low "
@@ -1114,8 +1114,8 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "AppLabel": "actions",
-        "LayoutType":"MULTI_BUTTON",
-        "ExcludeFrom": "Scene",
+        "Layout":"MULTI_BUTTON",
+        "ExcludeFrom": "Scene_Trigger",
         "Values": {
             "true": {
                 "AppLabel": "stop_",
@@ -1308,7 +1308,7 @@
         "Name": "IR CODE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "TEXT_VIEW",
+        "Layout": "TEXT_VIEW_ONLY",
         "AppLabel": "irCode",
         "Formatter": {
             "Min": "0",
@@ -1935,9 +1935,9 @@
     "93": {
         "Name": "MULTI_SWITCH BINARY1",
         "Type": "Actuator",
-        "Placement": "Header_Deatil",
+        "Placement": "Header_Detail",
         "Layout": "MULTI_BUTTON",
-        "AppLabel": "switch_off",
+        "AppLabel": "switch1",
         "ShowToggleInRules": "true",
         "DefaultIcon": "switch_on",
         "Values": {
@@ -1960,7 +1960,7 @@
         "Type": "Actuator",
         "Placement": "Header_Detail",
         "Layout": "MULTI_BUTTON",
-        "AppLabel": "switch_off",
+        "AppLabel": "switch2",
         "ShowToggleInRules": "true",
         "DefaultIcon": "switch_on",
         "Values": {

@@ -12,9 +12,6 @@
 #import "GenericValue.h"
 
 @interface RuleSceneUtil : NSObject
-+ (BOOL)isActionDevice:(int) deviceType;
-
-+ (BOOL)isTriggerDevice:(int)deviceType;
 
 + (NSDictionary*)getIndexesDicForArray:(NSArray*)genericIndexValues isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene;
 

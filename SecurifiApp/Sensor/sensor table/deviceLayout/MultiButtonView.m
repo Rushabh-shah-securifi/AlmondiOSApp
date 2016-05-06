@@ -31,7 +31,7 @@
 
 -(void)drawButton:(NSDictionary *)valuedict{
     NSString *deviceValue = [NSString new];
-    int selectedValue = 0;
+    int selectedValue = -1;
     if(self.genericIndexValue.genericValue.value){
         deviceValue  = self.genericIndexValue.genericValue.value;
     }

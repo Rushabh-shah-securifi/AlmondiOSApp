@@ -95,6 +95,12 @@
                         "Name": "TAMPER",
                         "Value": "false",
                         "GenericIndex": "9"
+                    },
+                    "4": {
+                        "Index": "4",
+                        "Name": "Temperature",
+                        "Value": "50",
+                        "GenericIndex": "25"
                     }
                 }
             },
@@ -714,7 +720,7 @@
         },
         "863": {
             "Data":{
-                "Name": "nestTT",
+                "Name": "setpoint thermostat",
                 "FriendlyDeviceType": "multiswitch",
                 "Type": "46",
                 "deviceid": "863",
@@ -725,20 +731,47 @@
                     "Index": "1",
                     "Name": "STATE",
                     "Value": "50",
-                    "GenericIndex": "50"
+                    "GenericIndex": "41"
                 },
                 "2": {
                     "Index": "2",
                     "Name": "LOW BATTERY",
                     "Value": "50",
-                    "GenericIndex": "41"
+                    "GenericIndex": "50"
                 }
                 ,
-                "3": {
+                "4": {
                     "Index": "2",
                     "Name": "LOW BATTERY",
                     "Value": "50",
                     "GenericIndex": "25"
+                }
+            }
+        },
+        "864": {
+            "Data":{
+                "Name": "roller shutter",
+                "FriendlyDeviceType": "roller",
+                "Type": "52",
+                "deviceid": "864",
+                "Location": "Main door"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Name": "STATE",
+                    "Value": "0",
+                    "GenericIndex": "20"
+                },
+                "2": {
+                    "Name": "LOW BATTERY",
+                    "Value": "0",
+                    "GenericIndex": "42"
+                }
+                ,
+                "3": {
+                    "Name": "LOW BATTERY",
+                    "Value": "true",
+                    "GenericIndex": "43"
                 }
             }
         }

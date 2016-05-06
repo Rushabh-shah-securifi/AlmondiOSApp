@@ -20,4 +20,6 @@
 +(void)removeTemperatureIndexes:(int)deviceId mode:(NSString *)mode entries:(NSMutableArray *)entries;
 
 + (NSArray*)getNestGenericIndexVals:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexVals;
+
++(NSArray*)filterDeviceMode:(NSArray*)genericIndexValues deviceId:(sfi_id)deviceId modeVal:(NSString*)modeVal;
 @end

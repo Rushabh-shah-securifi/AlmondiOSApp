@@ -768,7 +768,7 @@ Follow it, then login below.";
 "ambulance"="Ambulance";
 "police"="Police";
 "door_chime"="Door_Chime";
-"beep"="Deep";
+"beep"="Beep";
 "closed"="Closed";
 "opened"="Opened";
 "processing"="Processing";
@@ -866,6 +866,13 @@ Follow it, then login below.";
 "tone2"="Tone2";
 "tone3"="Tone3";
 "canBeBlocked" = "CanBeBlocked";
+"switch1" = "Switch 1";
+"switch2" = "Switch 2";
+"switch1_on" = "Switch1 On";
+"switch1_off" = "Switch1 Off";
+"switch2_on" = "Switch2 On";
+"switch2_off" = "Switch2 Off";
+
 /* */
 
 

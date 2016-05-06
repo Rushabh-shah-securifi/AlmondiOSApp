@@ -19,7 +19,7 @@
 
 @implementation RuleSceneUtil
 
-+ (NSDictionary*)getIndexesDicForArray:(NSArray*)genericIndexValues isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene{    
++ (NSDictionary*)getIndexesDicForArray:(NSArray*)genericIndexValues isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene{
     NSMutableDictionary *rowIndexValDict = [NSMutableDictionary new];
     for(GenericIndexValue *genericIndexValue in genericIndexValues){
         if(genericIndexValue.genericIndex.showToggleInRules){
@@ -64,23 +64,29 @@
     for(NSString *indexID in indexIDs){
         DeviceIndex *deviceIndex = deviceIndexes[indexID];
         GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
-        NSLog(@" device Index %@ deviceType %@,devicename %@  generic index ID %@ istrigger %d ,istrigger %d",deviceIndex.index ,genericDevice.type ,genericDevice.name, genericIndexObj.ID,isTrigger,isScene);
+        GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexObj];
+        NSLog(@" device Index %@ deviceType %@,devicename %@  generic index ID %@ istrigger %d ,isScene %d",deviceIndex.index ,genericDevice.type ,genericDevice.name, copyGenericIndex.ID,isTrigger,isScene);
         if([Device getValueForIndex:indexID.intValue deviceID:deviceID] == nil && !([genericDevice.type isEqualToString:@"0" ] || [genericDevice.type isEqualToString:@"500" ] || [genericDevice.type isEqualToString:@"501" ]))
             continue;
-        if(![self showGenericIndex:genericIndexObj isTrigger:isTrigger isScene:isScene])
+        if(![self showGenericIndex:copyGenericIndex isTrigger:isTrigger isScene:isScene])
             continue;
         
-        genericIndexObj.rowID = deviceIndex.rowID;
+        copyGenericIndex.rowID = deviceIndex.rowID;
         
         SFIButtonSubProperties *subProperty = [self findSubProperty:triggers actions:(NSArray*)actions deviceID:deviceID index:indexID.intValue istrigger:isTrigger];
         GenericValue *genericValue = nil;
         if(subProperty != nil)
-            genericValue = [GenericIndexUtil getMatchingGenericValueForGenericIndexID:genericIndexObj.ID forValue:subProperty.matchData];
+            genericValue = [GenericIndexUtil getMatchingGenericValueForGenericIndexID:copyGenericIndex.ID forValue:subProperty.matchData];
         
-        GenericIndexValue *genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:genericIndexObj genericValue:genericValue index:indexID.intValue deviceID:deviceID];
+        if(deviceIndex.min != nil && deviceIndex.max  != nil){
+            copyGenericIndex.formatter.min = deviceIndex.min.intValue;
+            copyGenericIndex.formatter.max = deviceIndex.max.intValue;
+        }
+        
+        GenericIndexValue *genericIndexValue = [[GenericIndexValue alloc]initWithGenericIndex:copyGenericIndex genericValue:genericValue index:indexID.intValue deviceID:deviceID];
         
         [genericIndexValues addObject:genericIndexValue];
-
+        
     }
     return genericIndexValues;
 }
@@ -100,7 +106,7 @@
     GenericDeviceClass *genericDevice = toolkit.genericDevices[@(deviceType).stringValue];
     if(genericDevice != nil && [self isToBeAdded:genericDevice.excludeFrom checkString:isScene?@"Scene":@"Rule"]){
         if((!isScene && isTrigger) && genericDevice.isTrigger)
-           return YES;
+            return YES;
         else if ((!isTrigger || isScene) && genericDevice.isActuator)
             return YES;
         
@@ -108,10 +114,11 @@
     return NO;
 }
 
-
+//if(!isScene && [self isToBeAdded:index.excludeFrom checkString:@"Trigger"])
 +(BOOL)showGenericIndex:(GenericIndexClass *)index isTrigger:(BOOL) isTrigger isScene:(BOOL)isScene{
-    if([self isToBeAdded:index.excludeFrom checkString:isScene?@"Scene":@"Rule"]){
-        if(!isScene && isTrigger)
+    NSString *checkString = isScene?@"Scene":@"Rule";
+    if([self isToBeAdded:index.excludeFrom checkString:checkString]){
+        if(!isScene && isTrigger && [self isToBeAdded:index.excludeFrom checkString:@"Trigger"])
             return YES;
         else if ((!isTrigger || isScene) && !index.readOnly)
             return YES;
@@ -153,7 +160,7 @@
 
 +(NSArray*)handleNestThermostatForSensor:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues{
     NSArray *newGenIndexVals = [RulesNestThermostat getNestGenericIndexVals:deviceID withGenericIndexValues:genericIndexValues];
-    newGenIndexVals = [RulesNestThermostat filterIndexesBasedOnModeForIndexes:newGenIndexVals deviceId:deviceID matchData:[Device getValueForIndex:2 deviceID:deviceID]];
+    newGenIndexVals = [RulesNestThermostat filterDeviceMode:newGenIndexVals deviceId:deviceID modeVal:[Device getValueForIndex:2 deviceID:deviceID]];
     return newGenIndexVals;
 }
 
