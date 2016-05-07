@@ -505,7 +505,7 @@ labelAndCheckButtonView *labelView;
         
         for (NSString *value in genericValueKeys) {
             GenericValue *genericVal = genericValueDic[value];
-            if(![RuleSceneUtil showGenericValue:genericVal isScene:_isScene])
+            if(![RuleSceneUtil showGenericValue:genericVal isScene:_isScene isTrigger:self.isTrigger])
                 continue;
             i++;
             NSLog(@"genericIndex.ID = %@",genericIndex.ID);
@@ -564,6 +564,7 @@ labelAndCheckButtonView *labelView;
     subProperties.eventType = eventType;
     subProperties.deviceName = deviceName;
     subProperties.deviceType = deviceType;
+    subProperties.valid = YES;
     
     return subProperties;
 }
@@ -771,6 +772,7 @@ labelAndCheckButtonView *labelView;
 
 -(void)onDimmerButtonClick:(id)sender{
     DimmerButton* dimmer = (DimmerButton *)sender;
+    
     if(self.isTrigger){
         if(!dimmer.selected){
             [self showPicker:dimmer];
@@ -778,6 +780,7 @@ labelAndCheckButtonView *labelView;
         }else{
             if(dimmer.pickerVisibility){
                 [self removePicker:dimmer];
+                newPickerValue = @"";
             }
             else{
                 dimmer.selected=NO;
@@ -790,6 +793,7 @@ labelAndCheckButtonView *labelView;
         dimmer.selected=YES;
         if(dimmer.pickerVisibility){
             [self removePicker:dimmer];
+            newPickerValue = @"";
         }else
             [self showPicker:dimmer];
         
@@ -829,7 +833,8 @@ labelAndCheckButtonView *labelView;
     picker.indicatorPosition = V8HorizontalPickerIndicatorBottom;
     picker.delegate = self;
     picker.dataSource = self;
-    //  [picker scrollToElement:dimButton.dimValue.intValue animated:YES];
+   
+//    [picker scrollToElement:dimButton.dimValue.intValue animated:YES];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.deviceIndexButtonScrollView addSubview:picker];
     });
@@ -844,7 +849,7 @@ labelAndCheckButtonView *labelView;
         indicatorView.color1 = [SFIColors ruleOrangeColor];
     }
     picker.selectionIndicatorView = indicatorView;
-    
+     [picker scrollToElement:0 animated:YES];
     
 }
 #pragma mark - V8HorizontalPickerView methods

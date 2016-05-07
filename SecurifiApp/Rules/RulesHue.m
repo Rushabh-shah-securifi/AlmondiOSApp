@@ -354,6 +354,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     subProperties.eventType = eventType;
     subProperties.deviceName = deviceName;
     subProperties.deviceType = deviceType;
+    subProperties.valid = YES;
     return subProperties;
 }
 

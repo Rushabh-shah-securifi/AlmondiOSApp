@@ -551,7 +551,7 @@
         "Placement": "Header_Detail_Primary",
         "Layout": "TEXT_VIEW_ONLY",
         "AppLabel": "set_alarm_for",
-        "ExcludeFrom": "Scene",
+        "ExcludeFrom": "Scene_Trigger",
         "DefaultIcon": "alarm_on",
         "Values": {
             "0": {
@@ -731,7 +731,7 @@
                 "Icon": "garage_open",
                 "AppLabel": "processing",
                 "Label": "PROCESSING",
-                "ExcludeFrom": "Rule_Scene"
+                "ExcludeFrom": "Scene_Action"
             }
         }
     },
@@ -920,8 +920,7 @@
         "DefaultIcon": "light_on",
         "Formatter": {
             "Min": "0",
-            "Max": "65535",
-            "Unit": "%"
+            "Max": "65535"
         }
     },
     "31": {
@@ -1083,7 +1082,7 @@
         "AppLabel": "target_temp",
         "Conditional": "true",
         "Formatter": {
-            "Min": "41",
+            "Min": "32",
             "Max": "104",
             "Unit": "\u00B0F"
         }

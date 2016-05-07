@@ -148,8 +148,9 @@ UILabel *topLabel;
             NSLog(@"genericIndexValues count %ld",genericIndexValues.count);
             if(genericIndexValues == nil || genericIndexValues.count<=0)
                 continue;
-            NSLog(@"button property: %@, genericindexvalues: %@", buttonProperties, genericIndexValues);
+            NSLog(@"button property: %@, genericindexvalues: %@ valid entry %d", buttonProperties, genericIndexValues,buttonProperties.valid);
             lastImageButton= [self buildEntry:buttonProperties positionId:positionId genericIndexValues:genericIndexValues isTrigger:isTrigger];
+            NSLog(@"lastImageButton %@",lastImageButton);
             if(lastImageButton!=nil)
                 positionId++;
         }
@@ -163,7 +164,11 @@ UILabel *topLabel;
 }
 
 + (SwitchButton *)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId genericIndexValues:(NSArray *)genericIndexValues isTrigger:(BOOL)isTrigger{
-    
+    NSLog(@"buildEntry: potionID %d",positionId);
+    if(buttonProperties.valid == NO){
+        buttonProperties.deviceName = @"UnKnown Device";
+        return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"default_device" text:@"UnKnown Device" isTrigger:isTrigger isDimButton:NO bottomText:@""];
+    }
     SwitchButton * imageButton =nil;
     for(GenericIndexValue *indexValue in genericIndexValues){
         NSLog(@"indexValue.deviceId %d",indexValue.deviceID);
@@ -200,7 +205,7 @@ UILabel *topLabel;
                         text = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,(genericIndex.formatter.units == nil?@"":genericIndex.formatter.units)];
                          NSLog(@"is dim button text %@",text);
                         if(buttonProperties.deviceType == SFIDeviceType_HueLamp_48){
-                            text = [NSString stringWithFormat:@"%@%@",@((int)ceil(buttonProperties.matchData.intValue * 100/255)).stringValue,genericIndex.formatter.units];
+                            text = [NSString stringWithFormat:@"%@%@",@((buttonProperties.matchData.intValue * 100/255)).stringValue,genericIndex.formatter.units];
                         }
                     }
                     else
@@ -210,6 +215,7 @@ UILabel *topLabel;
                     NSLog(@"bottomText  %@ gval.icon %@",text,gVal.icon);
                     NSString *icon = gVal.icon == nil?genericIndex.icon:gVal.icon;
                     NSLog(@"icon %@",icon);
+                    
                     return [self setIconAndText:positionId buttonProperties:buttonProperties icon:icon text:text isTrigger:isTrigger isDimButton:isDimButton bottomText:gVal.displayText];
                 }//if
             }//for/*19455*/
@@ -254,7 +260,9 @@ UILabel *topLabel;
 
 + (NSArray*)getDeviceIndexes:(SFIButtonSubProperties *)properties isTrigger:(BOOL)isTrigger{
     NSLog(@"before propertiesid: %d, properties type: %d, matchdata: %@ , eventTYpe %@", properties.deviceId, properties.deviceType, properties.matchData,properties.eventType);
+    
     [self getDeviceTypeFor:properties];
+    
     NSLog(@"propertiesid: %d, properties type: %d, matchdata: %@", properties.deviceId, properties.deviceType, properties.matchData);
     return [RuleSceneUtil getGenericIndexValueArrayForID:properties.deviceId type:properties.deviceType isTrigger:isTrigger isScene:isScene triggers:triggers action:actions];
 }

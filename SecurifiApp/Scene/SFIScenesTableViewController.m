@@ -248,7 +248,7 @@
         subProperties.deviceId = [[triggersDict valueForKey:@"ID"] intValue];
         subProperties.index = [[triggersDict valueForKey:@"Index"] intValue];
         subProperties.matchData = [triggersDict valueForKey:@"Value"];
-        
+        subProperties.valid = [[triggersDict valueForKey:@"Valid"] boolValue];
         subProperties.eventType = [triggersDict valueForKey:@"EventType"];
         //        subProperties.type = subProperties.deviceId==0?@"EventTrigger":@"DeviceTrigger";
         //        subProperties.delay=[triggersDict valueForKey:@"PreDelay"];
@@ -413,10 +413,11 @@
         [self markAlmondMac:self.currentAlmond.almondplusMAC];
         [self markTitle: self.currentAlmond.almondplusName];
     }
-//    dispatch_async(dispatch_get_main_queue(), ^() {
     
-        [self sendGetAllScenesRequest];
-//    });
+    [self sendGetAllScenesRequest];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+    [self.tableView reloadData];
+    });
 }
 
 - (void)getAllScenes {

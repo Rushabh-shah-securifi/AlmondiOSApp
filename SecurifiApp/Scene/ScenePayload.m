@@ -31,14 +31,32 @@
     
     [newSceneInfo setValue:scene.name forKey:@"Name"];
     [newSceneInfo setValue:isCompatible? @"true": @"false" forKey:@"VoiceCompatible"];
+    
+    [self removeInValidEntries:scene.triggers deviceList:toolkit.devices];
+    
     [newSceneInfo setValue:[self createSceneEntriesPayload:scene.triggers] forKey:@"SceneEntryList"];
     [payloadDict setValue:newSceneInfo forKey:@"Scenes"];
     
     return payloadDict;
 }
++ (void)removeInValidEntries:(NSMutableArray *)array deviceList:(NSArray *)devices{
+    
+    NSMutableArray *invalidEntries=[NSMutableArray new];
+    for(SFIButtonSubProperties *properties in array){
+        if(properties.deviceId == 1  && properties.index == 1 && ([properties.matchData isEqualToString:@"home"] || [properties.matchData isEqualToString:@"away"]))
+            continue;
+         else if([Device getDeviceForID:properties.deviceId] == nil)
+            [invalidEntries addObject:properties];
+    }
+    if(invalidEntries.count>0)
+        [array removeObjectsInArray:invalidEntries ];
+
+}
+
 
 +(NSMutableArray *)createSceneEntriesPayload:(NSArray*)sceneEntries{
     NSMutableArray * triggersArray = [[NSMutableArray alloc]init];
+    
     for (SFIButtonSubProperties *subProperty in sceneEntries) {
         NSLog(@"sub scene payload property device id %d index %d",subProperty.deviceId,subProperty.index);
         if(subProperty.deviceId == 1 && subProperty.index == 1 && ([subProperty.matchData isEqualToString:@"home"] || [subProperty.matchData isEqualToString:@"away"])){
