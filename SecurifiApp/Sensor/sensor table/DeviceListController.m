@@ -61,21 +61,19 @@ int mii;
 
 - (void)viewWillAppear:(BOOL)animated{
     NSLog(@"devicelist viewWillAppear");
-    
     [super viewWillAppear:YES];
-    [self initializeNotifications];
-
-    
     mii = arc4random() % 10000;
+    
+    [self markAlmondTitleAndMac];
+    [self initializeNotifications];
+    
     //need to reload tableview, as toolkit could have got updates
-    self.currentDeviceList = self.toolkit.devices;
-    self.currentClientList = self.toolkit.clients;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
 }
 
--(void)initializeAlmondData{
+-(void)markAlmondTitleAndMac{
     NSLog(@"%s, self.toolkit.currentAlmond: %@", __PRETTY_FUNCTION__, self.toolkit.currentAlmond);
     if (self.toolkit.currentAlmond == nil) {
         [self markTitle:NSLocalizedString(@"router.nav-title.Get Started", @"Get Started")];
@@ -88,11 +86,14 @@ int mii;
         [self markAlmondMac:self.toolkit.currentAlmond.almondplusMAC];
         self.currentDeviceList = self.toolkit.devices;
         self.currentClientList = self.toolkit.clients;
-        
-        [self initializeColors:[self.toolkit currentAlmond]];
     }
-    self.enableDrawer = YES; //to enable navigation top left button
     NSLog(@"devices: %@", self.toolkit.devices);
+}
+
+-(void)initializeAlmondData{
+    [self markAlmondTitleAndMac];
+    [self initializeColors:[self.toolkit currentAlmond]];
+    self.enableDrawer = YES; //to enable navigation top left button
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -373,7 +374,7 @@ int mii;
     NSLog(@"devicelist - onDeviceListAndDynamicResponseParsed");
     self.currentDeviceList = self.toolkit.devices;
     self.currentClientList = self.toolkit.clients;
-    if((![self isDeviceListEmpty] || ![self isClientListEmpty])  && self.refreshControl == nil){
+    if(self.refreshControl == nil){
         [self tryInstallRefreshControl];
     }
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -413,7 +414,6 @@ int mii;
         [self.toolkit.devices removeAllObjects];
     else if(self.toolkit.clients.count > 0)
         [self.toolkit.clients removeAllObjects];
-        
     
     [DevicePayload deviceListCommand];
     [ClientPayload clientListCommand];

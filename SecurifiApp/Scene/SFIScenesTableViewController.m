@@ -47,9 +47,26 @@
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
     // Do any additional setup after loading the view.
     
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [self initializeNotifications];
     
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.enableDrawer = YES;
+    randomMobileInternalIndex = arc4random() % 10000;
+    
+    [self getAllScenes];
+    [self addAddSceneButton];
+    [self markAlmondTitleAndMac];
+    
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+    });
+}
+
+-(void)markAlmondTitleAndMac{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
     if (self.currentAlmond == nil) {
         [self markTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
@@ -60,15 +77,6 @@
         [self markTitle: self.currentAlmond.almondplusName];
     }
 }
-
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    self.enableDrawer = YES;
-    randomMobileInternalIndex = arc4random() % 10000;
-    [self getAllScenes];
-    [self addAddSceneButton];
-}
-
 
 - (void)addAddSceneButton{
     if (!btnAdd) {
@@ -355,7 +363,6 @@
 }
 
 #pragma mark
-
 - (IBAction)btnAddNewSceneTap:(id)sender {
     NewAddSceneViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewAddSceneViewController"];
     viewController.scene = [[Rule alloc]init];
@@ -401,22 +408,10 @@
     if (scenesArray!=nil && scenesArray.count>0)
         [scenesArray removeAllObjects];
     
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.currentAlmond = [toolkit currentAlmond];
-    
-    
-    if (self.currentAlmond == nil) {
-        [self markTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
-        [self markAlmondMac:NO_ALMOND];
-    }
-    else {
-        [self markAlmondMac:self.currentAlmond.almondplusMAC];
-        [self markTitle: self.currentAlmond.almondplusName];
-    }
-    
+    [self markAlmondTitleAndMac];
     [self sendGetAllScenesRequest];
     dispatch_async(dispatch_get_main_queue(), ^() {
-    [self.tableView reloadData];
+        [self.tableView reloadData];
     });
 }
 
@@ -426,7 +421,6 @@
     scenesArray = nil;
     scenesArray = [NSMutableArray arrayWithArray:toolkit.scenesArray];
     NSLog(@"get all scenes - %@", scenesArray);
-    [self.tableView reloadData];
 }
 
 - (void)gotResponseFor1064:(id)sender {

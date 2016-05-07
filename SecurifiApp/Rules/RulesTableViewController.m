@@ -43,20 +43,15 @@ CGPoint tablePoint;
     //    [self.rules removeAllObjects];
     [super viewWillAppear:animated];
     self.enableDrawer = YES;
+    randomMobileInternalIndex = arc4random() % 10000;
+    
     [self getRuleList];
     [self addAddRuleButton];
+    [self markAlmondTitleAndMac];
     
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.currentAlmond = [toolkit currentAlmond];
-    if (self.currentAlmond == nil) {
-        [self markTitle: @"Get Started"];
-        [self markAlmondMac:NO_ALMOND];
-    }
-    else {
-        [self markAlmondMac:self.currentAlmond.almondplusMAC];
-        [self markTitle: self.currentAlmond.almondplusName];
-    }
-    randomMobileInternalIndex = arc4random() % 10000;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+    });
     [[Analytics sharedInstance] markRuleScreen];
 }
 -(BOOL)isLocal{
@@ -91,12 +86,11 @@ CGPoint tablePoint;
                  object:nil];
 }
 
-- (void)onCurrentAlmondChanged:(id)sender {
-    self.rules = nil;
-    
+
+-(void)markAlmondTitleAndMac{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
-
+    
     if (self.currentAlmond == nil) {
         [self markTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
         [self markAlmondMac:NO_ALMOND];
@@ -105,8 +99,12 @@ CGPoint tablePoint;
         [self markAlmondMac:self.currentAlmond.almondplusMAC];
         [self markTitle: self.currentAlmond.almondplusName];
     }
+
+}
+- (void)onCurrentAlmondChanged:(id)sender {
+    self.rules = nil;
+    [self markAlmondTitleAndMac];
     [self getRuleList];
-    
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
@@ -137,7 +135,6 @@ CGPoint tablePoint;
 -(void)getRuleList{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.rules = toolkit.ruleList;
-    [self.tableView reloadData];
     self.tableView.contentOffset = tablePoint;
 }
 
