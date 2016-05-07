@@ -321,6 +321,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 #pragma mark - Action handlers
 
 - (void)onLink {
+    NSLog(@"onLink");
     SFIAlmondLocalNetworkSettings *settings = self.workingSettings.copy;
     if (!settings.hasBasicCompleteSettings) {
         return;
@@ -336,10 +337,12 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
         switch (result) {
             case TestConnectionResult_success: {
+                
                 SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
 
                 SFIAlmondLocalNetworkSettings *old_settings = [toolkit localNetworkSettingsForAlmond:settings.almondplusMAC];
                 if (old_settings) {
+                    NSLog(@"settings already exists and");
                     // in "Link Mode" we believe this is Almond is unknown to the app/system. In this case, it turns
                     // out we already know about it (settings already on file). So, we refuse to "link" (overwrite
                     // the settings).

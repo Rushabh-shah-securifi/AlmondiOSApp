@@ -127,9 +127,13 @@
     return NO;
 }
 
-+ (BOOL)showGenericValue:(GenericValue *)index isScene:(BOOL)isScene{
++ (BOOL)showGenericValue:(GenericValue *)index isScene:(BOOL)isScene isTrigger:(BOOL)isTrigger{
+    //isrule and trigger -> do not add
     if([self isToBeAdded:index.excludeFrom checkString:isScene?@"Scene":@"Rule"]){
-        return YES;
+        if(isScene || (!isTrigger && [self isToBeAdded:index.excludeFrom checkString:@"Action"]))
+            return YES;
+        else if(isTrigger)
+            return YES;
     }
     return NO;
 }
@@ -163,8 +167,5 @@
     newGenIndexVals = [RulesNestThermostat filterDeviceMode:newGenIndexVals deviceId:deviceID modeVal:[Device getValueForIndex:2 deviceID:deviceID]];
     return newGenIndexVals;
 }
-
-
-
 
 @end

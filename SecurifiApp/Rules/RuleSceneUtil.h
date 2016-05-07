@@ -21,7 +21,7 @@
 
 + (BOOL) showGenericDevice:(int)type isTrigger:(BOOL) isTrigger isScene:(BOOL)isScene;
 
-+ (BOOL)showGenericValue:(GenericValue *)index isScene:(BOOL)isScene;
++ (BOOL)showGenericValue:(GenericValue *)index isScene:(BOOL)isScene isTrigger:(BOOL)isTrigger;
 
 + (NSArray *)handleNestThermostat:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues modeFilter:(BOOL)isScene triggers:(NSMutableArray*)triggers;
 

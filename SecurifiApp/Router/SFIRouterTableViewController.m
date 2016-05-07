@@ -26,6 +26,7 @@
 #import "RouterParser.h"
 #import "RouterPayload.h"
 #import "SFILogsViewController.h"
+#import "SFIAlmondLocalNetworkSettings.h"
 
 #define DEF_NETWORKING_SECTION          0
 #define DEF_DEVICES_AND_USERS_SECTION   1
@@ -97,7 +98,10 @@ int mii;
     mii = arc4random() % 10000;
     [self initializeNotifications];
     [self initializeAlmondData];
-    //no need to reload tableview as initialize almond has Summaryrequest
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.tableView reloadData];
+    });
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -129,6 +133,7 @@ int mii;
 - (void)initializeRouterSummaryAndSettings {
     self.isRebooting = NO;
     self.enableDrawer = YES; //to enable navigation top left button
+    self.routerSummary = nil;
 }
 
 - (void)initializeAlmondData {
@@ -189,15 +194,19 @@ int mii;
 #pragma mark - External Event handlers
 
 - (void)onNetworkChange:(id)notice {
+    NSLog(@"%s - onnetworkchange", __PRETTY_FUNCTION__);
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
 }
 
 - (void)onConnectionModeDidChange:(id)notice {
+    NSLog(@"sfiroutertableview - onconnectionmodedidchage");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
         [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
+        [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
+        
     });
 }
 
@@ -313,13 +322,13 @@ int mii;
                  summaries = [self getNetworkSummary];
                 return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Local Almond Link", @"Local Almond Link") selector:@selector(onEditNetworkSettings:) cardColor:[UIColor securifiRouterTileGreenColor]];
             }
-            case DEF_WIRELESS_SETTINGS_SECTION:{
-                summaries = [self getWirelessSettingsSummary];
-                return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings") selector:@selector(onEditWirelessSettingsCard:) cardColor:[UIColor securifiRouterTileSlateColor]];
-            }
             case DEF_DEVICES_AND_USERS_SECTION:{
                 summaries = [self getDevicesAndUsersSummary];
                 return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Devices & Users", @"Devices & Users") selector:nil cardColor:[UIColor securifiRouterTileBlueColor]];
+            }
+            case DEF_WIRELESS_SETTINGS_SECTION:{
+                summaries = [self getWirelessSettingsSummary];
+                return [self createSummaryCell:tableView summaries:summaries title:NSLocalizedString(@"router.card-title.Wireless Settings", @"Wireless Settings") selector:@selector(onEditWirelessSettingsCard:) cardColor:[UIColor securifiRouterTileSlateColor]];
             }
             case DEF_ROUTER_VERSION_SECTION:{
                 NSString *title = self.newAlmondFirmwareVersionAvailable ? NSLocalizedString(@"router.software-version-new.title.Software Version *", @"Software Version *") : NSLocalizedString(@"router.software-version-new.title.Software Version", @"Software Version");
@@ -385,8 +394,18 @@ int mii;
 #pragma mark cell data methods
 -(NSArray*)getNetworkSummary{
     NSLog(@"self.routersummery.url: %@", self.routerSummary.url);
-    NSString *host = self.routerSummary.url ? self.routerSummary.url : @"";
-    NSString *login = self.routerSummary.login ? self.routerSummary.login : @"";
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC];
+    NSString *host;
+    NSString *login;
+    if(self.currentConnectionMode == SFIAlmondConnectionMode_local){
+        host = settings.host? settings.host: @"";
+        login = settings.login? settings.login: @"";
+    }else{
+        host = self.routerSummary.url ? self.routerSummary.url : @"";
+        login = self.routerSummary.login ? self.routerSummary.login : @"";
+    }
+    
     return @[
            [NSString stringWithFormat:NSLocalizedString(@"router.summary.IP Address : %@", @"IP Address"), host],
            [NSString stringWithFormat:NSLocalizedString(@"router.summary.Admin Login : %@", @"Admin Login"), login],
@@ -413,6 +432,7 @@ int mii;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     int activeClientsCount = 0;
     int inActiveClientsCount = 0;
+    NSLog(@"sfiroutertableview - clients: %@", toolkit.clients);
     for(Client *client in toolkit.clients){
         if (client.isActive) {
             activeClientsCount++;

@@ -659,10 +659,10 @@
 
 - (void)presentLocalNetworkSettingsEditor {
     NSString *mac = self.almondMac;
-
+    
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:mac];
-
+    NSLog(@"sfitableview - presentlocalnetwork - mac: %@, settings: %@", mac, settings);
     if (!settings) {
         settings = [SFIAlmondLocalNetworkSettings new];
         settings.almondplusMAC = mac;

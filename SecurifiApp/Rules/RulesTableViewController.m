@@ -92,12 +92,26 @@ CGPoint tablePoint;
 }
 
 - (void)onCurrentAlmondChanged:(id)sender {
+    self.rules = nil;
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    self.currentAlmond = [toolkit currentAlmond];
+
+    if (self.currentAlmond == nil) {
+        [self markTitle: NSLocalizedString(@"scene.title.Get Started", @"Get Started")];
+        [self markAlmondMac:NO_ALMOND];
+    }
+    else {
+        [self markAlmondMac:self.currentAlmond.almondplusMAC];
+        [self markTitle: self.currentAlmond.almondplusName];
+    }
+    [self getRuleList];
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self getRuleList];
-        
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadData];
     });
 }
+
 -(void)initializeTableViewAttributes{
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

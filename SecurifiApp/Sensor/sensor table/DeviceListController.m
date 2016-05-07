@@ -64,10 +64,8 @@ int mii;
     
     [super viewWillAppear:YES];
     [self initializeNotifications];
-//    DeviceParser *deviceparser = [[DeviceParser alloc]init];
-//    [deviceparser parseDeviceListAndDynamicDeviceResponse:nil];
-//    [self initializeAlmondData];
-//    
+
+    
     mii = arc4random() % 10000;
     //need to reload tableview, as toolkit could have got updates
     self.currentDeviceList = self.toolkit.devices;
@@ -94,8 +92,7 @@ int mii;
         [self initializeColors:[self.toolkit currentAlmond]];
     }
     self.enableDrawer = YES; //to enable navigation top left button
-    [self tryInstallRefreshControl];
-//    [RouterPayload routerSummary:mii isSimulator:NO mac:self.toolkit.currentAlmond.almondplusMAC];
+    NSLog(@"devices: %@", self.toolkit.devices);
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -179,6 +176,7 @@ int mii;
 #pragma mark refresh control
 // controls installation and removal of refresh control
 - (void)tryInstallRefreshControl {
+    NSLog(@"tryInstallRefreshControl");
     if ([self isDeviceListEmpty] && [self isClientListEmpty]) {
         // Disable refresh when no devices to refresh
         self.refreshControl = nil;
@@ -375,6 +373,9 @@ int mii;
     NSLog(@"devicelist - onDeviceListAndDynamicResponseParsed");
     self.currentDeviceList = self.toolkit.devices;
     self.currentClientList = self.toolkit.clients;
+    if((![self isDeviceListEmpty] || ![self isClientListEmpty])  && self.refreshControl == nil){
+        [self tryInstallRefreshControl];
+    }
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
         [self.HUD hide:YES];
@@ -407,12 +408,13 @@ int mii;
 #pragma mark cloud callbacks
 - (void)onCurrentAlmondChanged:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    [self initializeAlmondData];
     if(self.toolkit.devices.count > 0)
         [self.toolkit.devices removeAllObjects];
     else if(self.toolkit.clients.count > 0)
         [self.toolkit.clients removeAllObjects];
         
-    [self initializeAlmondData];
+    
     [DevicePayload deviceListCommand];
     [ClientPayload clientListCommand];
     dispatch_async(dispatch_get_main_queue(), ^() {
