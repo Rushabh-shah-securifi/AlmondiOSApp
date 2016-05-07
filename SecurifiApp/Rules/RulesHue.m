@@ -105,7 +105,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
          NSArray *genericValueKeys = genericValueDic.allKeys;
         for (NSString *value in genericValueKeys) {
             GenericValue *genericVal = genericValueDic[value];
-            if(![RuleSceneUtil showGenericValue:genericVal isScene:_isScene])
+            if(![RuleSceneUtil showGenericValue:genericVal isScene:_isScene isTrigger:NO])
                 continue;
             i++;
         NSMutableArray *btnary=[[NSMutableArray alloc]init];

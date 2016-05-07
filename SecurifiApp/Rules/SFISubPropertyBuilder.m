@@ -162,12 +162,35 @@ UILabel *topLabel;
         [lastImageButton setImage:lastImage replace:YES];
     }
 }
++(BOOL)getDeviceExcludeMode:(int)deviceID matchData:(NSString*)matchData{
+    if(deviceID == 1 && ([matchData isEqualToString:@"home"] || [matchData isEqualToString:@"away"]))
+        return YES;
+    else if([Device getDeviceForID:deviceID] ==nil){
+        return YES;
+    }
+    return  NO;
+}
+
++(BOOL)isDeviceUnknown:(SFIButtonSubProperties*)properties{
+    if([properties.eventType isEqualToString:@"TimeTrigger"]
+       ||[properties.eventType isEqualToString:@"AlmondModeUpdated"]
+       ||[properties.type isEqualToString:@"NetworkResult"])
+        return NO;
+    
+    else if([properties.eventType isEqualToString:@"ClientJoined"] || [properties.eventType isEqualToString:@"ClientLeft"]){
+        if([Client findClientByID:@(properties.deviceId).stringValue] == nil)
+            return YES;
+    }
+    else if([Device getDeviceForID:properties.deviceId] == nil)
+        return YES;
+    return NO;
+}
 
 + (SwitchButton *)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId genericIndexValues:(NSArray *)genericIndexValues isTrigger:(BOOL)isTrigger{
     NSLog(@"buildEntry: potionID %d",positionId);
-    if(buttonProperties.valid == NO){
+    if(buttonProperties.valid == NO || [self isDeviceUnknown:buttonProperties]){
         buttonProperties.deviceName = @"UnKnown Device";
-        return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"default_device" text:@"UnKnown Device" isTrigger:isTrigger isDimButton:NO bottomText:@""];
+        return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"default_device" text:@"UnKnown Device" isTrigger:isTrigger isDimButton:NO bottomText:@"UnKnown Device"];
     }
     SwitchButton * imageButton =nil;
     for(GenericIndexValue *indexValue in genericIndexValues){
