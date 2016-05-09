@@ -94,6 +94,7 @@ int mii;
     [self markAlmondTitleAndMac];
     [self initializeColors:[self.toolkit currentAlmond]];
     self.enableDrawer = YES; //to enable navigation top left button
+    [self tryInstallRefreshControl];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -188,7 +189,9 @@ int mii;
         NSDictionary *attributes = self.navigationController.navigationBar.titleTextAttributes;
         refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force device data refresh" attributes:attributes];
         [refresh addTarget:self action:@selector(onRefreshSensorData:) forControlEvents:UIControlEventValueChanged];
+//        dispatch_async(dispatch_get_main_queue(), ^{
         self.refreshControl = refresh;
+//        });
     }
 }
 
@@ -374,14 +377,19 @@ int mii;
     NSLog(@"devicelist - onDeviceListAndDynamicResponseParsed");
     self.currentDeviceList = self.toolkit.devices;
     self.currentClientList = self.toolkit.clients;
-    if(self.refreshControl == nil){
-        [self tryInstallRefreshControl];
-    }
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
         [self.HUD hide:YES];
-        [self.refreshControl endRefreshing];
+        if(self.refreshControl == nil){
+            [self tryInstallRefreshControl];
+        }else{
+            [self.refreshControl endRefreshing];
+        }
+        
     });
+    
+    
 }
 
 -(void)onUpdateDeviceIndexResponse:(id)sender{ //mobile command
