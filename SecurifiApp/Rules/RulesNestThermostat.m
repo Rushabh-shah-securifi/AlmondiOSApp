@@ -17,7 +17,7 @@
 
 + (NSArray*) createNestThermostatGenericIndexValues:(NSArray*)genericIndexValues deviceID:(int)deviceID{
     NSArray* newGenericIndexValues = [self getNestGenericIndexVals:deviceID withGenericIndexValues:genericIndexValues];
-    [self adjustCellIDs:deviceID withGenericIndexValues:newGenericIndexValues];
+//    [self adjustCellIDs:deviceID withGenericIndexValues:newGenericIndexValues];
     return newGenericIndexValues;
 }
 

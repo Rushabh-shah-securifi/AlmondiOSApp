@@ -1194,6 +1194,7 @@
 }
 
 - (void)onAlmondNameDidChange:(id)sender {
+    NSLog(@"onAlmondNameDidChange");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {

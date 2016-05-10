@@ -294,6 +294,7 @@ labelAndCheckButtonView *labelView;
     SFIButtonSubProperties *subProperties=[SFIButtonSubProperties new];
     subProperties.time = [[RulesTimeElement alloc]init];
     subProperties.eventType = @"TimeTrigger";
+    subProperties.valid = YES;
     [self.triggers addObject:subProperties];
     return subProperties.time;
 }
@@ -406,11 +407,11 @@ labelAndCheckButtonView *labelView;
     [view addSubview:huePicker];
 }
 
-- (void)buildTextButton:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
+- (void)buildTextButton:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view indexName:(NSString*)indexName{
     DimmerButton *dimbtn=[[DimmerButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,0 , dimFrameWidth, dimFrameHeight)];
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
     [dimbtn addTarget:self action:@selector(onStdWarnDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [dimbtn setUpTextField:gVal.value displayText:genericIndexValue.genericValue.displayText suffix:@""]; // ?
+    [dimbtn setUpTextField:gVal.displayText displayText:indexName suffix:@""]; // ?
     dimbtn.textField.delegate = self;
     
     dimbtn.center = CGPointMake(view.bounds.size.width/2,
@@ -498,6 +499,7 @@ labelAndCheckButtonView *labelView;
         NSDictionary *genericValueDic;
         if(genericIndex.values == nil){
             genericValueDic = [self formatterDict:genericIndex];
+            NSLog(@"genericValueDic val = %@",genericValueDic);
         }else{
             genericValueDic = genericIndex.values;
         }
@@ -510,8 +512,9 @@ labelAndCheckButtonView *labelView;
             i++;
             NSLog(@"genericIndex.ID = %@",genericIndex.ID);
             NSLog(@"layouttype %@",genericIndex.layoutType );
+            NSString *indexName = [genericValueDic.allKeys objectAtIndex:0] == nil?@"0":[genericValueDic.allKeys objectAtIndex:0];
             if  ([genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
-                [self buildTextButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];
+                [self buildTextButton:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view indexName:indexName];
                 break;
             }else if ([genericIndex.layoutType isEqualToString:@"HueColorPicker"]){
             [self buildHueColorPicker:indexValue gVal:genericVal deviceType:deviceType deviceName:deviceName deviceId:deviceId i:i view:view];

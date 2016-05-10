@@ -187,7 +187,7 @@ UILabel *topLabel;
 }
 
 + (SwitchButton *)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId genericIndexValues:(NSArray *)genericIndexValues isTrigger:(BOOL)isTrigger{
-    NSLog(@"buildEntry: potionID %d",positionId);
+    NSLog(@"buildEntry: potionID %d,%@",positionId ,buttonProperties.eventType);
     if(buttonProperties.valid == NO || [self isDeviceUnknown:buttonProperties]){
         buttonProperties.deviceName = @"UnKnown Device";
         return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"default_device" text:@"UnKnown Device" isTrigger:isTrigger isDimButton:NO bottomText:@"UnKnown Device"];

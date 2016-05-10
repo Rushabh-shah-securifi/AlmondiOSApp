@@ -103,13 +103,14 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
             genericValueDic = genericIndex.values;
         }
          NSArray *genericValueKeys = genericValueDic.allKeys;
+        int indexValCounter = 0;
         for (NSString *value in genericValueKeys) {
             GenericValue *genericVal = genericValueDic[value];
             if(![RuleSceneUtil showGenericValue:genericVal isScene:_isScene isTrigger:NO])
                 continue;
             i++;
         NSMutableArray *btnary=[[NSMutableArray alloc]init];
-        int indexValCounter = 0;
+        
 
             indexValCounter++;
             if([genericIndex.ID isEqualToString:@"90"] ){

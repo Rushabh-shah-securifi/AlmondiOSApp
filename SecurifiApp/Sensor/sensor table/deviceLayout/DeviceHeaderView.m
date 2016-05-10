@@ -88,6 +88,7 @@
     else
         self.deviceButton.userInteractionEnabled = YES;
     
+    
 
 }
 
@@ -242,7 +243,7 @@
         if([genericIndexObj.ID isEqualToString:@"12"]){//tampered
             if ([genericIndexValue.genericValue.value isEqualToString:@"true"]) {
                 self.lowBatteryImgView.hidden = NO;
-                self.tamperedImgView.image = [UIImage imageNamed:@"low_battery_badge"];
+                self.lowBatteryImgView.image = [UIImage imageNamed:@"low_battery_badge"];
                 UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tamperTapped:)];
                 singleTap.numberOfTapsRequired = 1;
                 [self.tamperedImgView setUserInteractionEnabled:YES];
