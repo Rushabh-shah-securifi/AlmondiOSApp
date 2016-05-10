@@ -731,7 +731,7 @@
                 "Icon": "garage_open",
                 "AppLabel": "processing",
                 "Label": "PROCESSING",
-                "ExcludeFrom": "Scene_Action"
+                "ExcludeFrom": "Action_Scene"
             }
         }
     },
@@ -1057,7 +1057,7 @@
             "On Low": {
                 "Icon": "btn_fan_off",
                 "AppLabel": "fan_on_low",
-                "Label": "On low "
+                "Label": "On low"
             },
             "Auto Low": {
                 "Icon": "btn_fan_on",
@@ -1310,6 +1310,7 @@
         "Placement": "Detail",
         "Layout": "TEXT_VIEW_ONLY",
         "AppLabel": "irCode",
+        "ExcludeFrom":"Trigger",
         "Formatter": {
             "Min": "0",
             "Max": "999"
@@ -1977,6 +1978,14 @@
                 "Label": "SWITCH2 OFF"
             }
         }
+    },
+    "95": {
+        "Name": "Pin",
+        "Type": "Actuator",
+        "Placement": "Detail",
+        "Layout": "TEXT_VIEW",
+        "AppLabel": "pin",
+        "ExcludeFrom":"Scene_Rule"
     }
 }
 

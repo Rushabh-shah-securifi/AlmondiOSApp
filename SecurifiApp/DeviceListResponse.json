@@ -519,7 +519,7 @@
         },
         "5": {
             "Data":{
-            "Name": "DoorLock #186",
+            "Name": "DoorLock #5",
             "FriendlyDeviceType": "dooelock",
             "Type": "5",
             "deviceid": "186",
@@ -527,10 +527,39 @@
             },
             "DeviceValues": {
                 "1": {
-                    "Index": "1",
                     "Name": "LOCK_STATE",
                     "Value": "0",
                     "GenericIndex": "22"
+                },
+                "3": {
+                    "Name": "battery",
+                    "Value": "50",
+                    "GenericIndex": "50"
+                },
+                "4": {
+                    "Name": "max users",
+                    "Value": "4",
+                    "GenericIndex": "79"
+                },
+                "5": {
+                    "Name": "pin",
+                    "Value": "1234",
+                    "GenericIndex": "95"
+                },
+                "6": {
+                    "Name": "pin",
+                    "Value": "1234",
+                    "GenericIndex": "95"
+                },
+                "7": {
+                    "Name": "pin",
+                    "Value": "1234",
+                    "GenericIndex": "95"
+                },
+                "8": {
+                    "Name": "pin",
+                    "Value": "6789",
+                    "GenericIndex": "95"
                 }
             }
         },
@@ -802,6 +831,22 @@
             }
         },
         "866": {
+            "Data":{
+                "Name": "Temperature sensor 29",
+                "FriendlyDeviceType": "Temperature sensor",
+                "Type": "29",
+                "deviceid": "866",
+                "Location": "Hall"
+            },
+            "DeviceValues": {
+                "1": {
+                    "Name": "Temp",
+                    "Value": "50",
+                    "GenericIndex": "25"
+                }
+            }
+        },
+        "867": {
             "Data":{
                 "Name": "Temperature sensor 29",
                 "FriendlyDeviceType": "Temperature sensor",

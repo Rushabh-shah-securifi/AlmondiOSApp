@@ -52,6 +52,8 @@ static const int xIndent = 10;
 @property (nonatomic)BOOL isLocal;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *indexScrollTopConstraint;
 @property (nonatomic)GenericIndexValue *genericIndexVal;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *scrollViewBottom;
+@property (nonatomic) NSInteger keyBoardComp;
 
 @end
 
@@ -103,6 +105,16 @@ static const int xIndent = 10;
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(onDeviceListAndDynamicResponseParsed:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
     [center addObserver:self selector:@selector(onCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil]; //indexupdate or name/location change both
+    [center addObserver:self
+               selector:@selector(onKeyboardDidShow:)
+                   name:UIKeyboardDidShowNotification
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onKeyboardDidHide:)
+                   name:UIKeyboardDidHideNotification
+                 object:nil];
+    [center addObserver:self selector:@selector(keyboardOnScreen:) name:UIKeyboardDidShowNotification object:nil];
 }
 - (void)clearAllViews{
     dispatch_async(dispatch_get_main_queue(), ^(){
@@ -118,22 +130,25 @@ static const int xIndent = 10;
 -(void)drawIndexes{
     int yPos = LABELSPACING;
     self.indexesScroll.backgroundColor = self.genericParams.color;
-    NSLog(@"index count %ld",self.genericParams.indexValueList.count);
-//    CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.genericParams.indexValueList.count  * 75 );
-//    [self.indexesScroll setContentSize:scrollableSize];
+    NSLog(@"index count %ld",(unsigned long)self.genericParams.indexValueList.count);
     [self.indexesScroll flashScrollIndicators];
     
     for(GenericIndexValue *genericIndexValue in self.genericParams.indexValueList)
     {
         GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
-        if(self.isLocal && [genericIndexObj.ID isEqualToString:@"-3"])
+        if(self.isLocal && [genericIndexObj.ID isEqualToString:@"-3"]) //skip notify me in local
             continue;
         
         NSLog(@"layout type :- %@",genericIndexObj.layoutType);
         if([genericIndexObj.layoutType isEqualToString:@"Info"] || [genericIndexObj.layoutType.lowercaseString isEqualToString:@"off"] || genericIndexObj.layoutType == nil || [genericIndexObj.layoutType isEqualToString:@"NaN"]){
             continue;
         }
-        NSString *propertyName = genericIndexObj.groupLabel;
+        NSString *propertyName;
+        if([Device getTypeForID:genericIndexValue.deviceID] == SFIDeviceType_DoorLock_5)
+            propertyName = [NSString stringWithFormat:@"%@ %d", genericIndexObj.groupLabel, genericIndexValue.index-4];
+        else
+            propertyName = genericIndexObj.groupLabel;
+        
         NSLog(@"read only %d,layouttype %@ ,type %@ groupLabel %@ GINDEX %@ Dindex %d",genericIndexObj.readOnly,genericIndexObj.layoutType,genericIndexObj.type,genericIndexObj.groupLabel,genericIndexObj.ID,genericIndexValue.index);
         
         if(genericIndexObj.readOnly){
@@ -145,16 +160,20 @@ static const int xIndent = 10;
             }
             if([genericIndexObj.ID isEqualToString:@"12"] || [genericIndexObj.ID isEqualToString:@"9"])//skipping low battery
                     continue;
-            [self.indexesScroll addSubview:view];
+            
             UILabel *label = [[UILabel alloc]initWithFrame:LABEL_FRAME];
             [self setUpLable:label withPropertyName:propertyName];
             [view addSubview:label];
+            
             UILabel *valueLabel = [[UILabel alloc]initWithFrame:CGRectMake(view.frame.size.width - 110, 0, 100, 15)];
             [self setUpLable:valueLabel withPropertyName:genericIndexValue.genericValue.displayText];
             valueLabel.textAlignment = NSTextAlignmentRight;
             valueLabel.alpha = 0.5;
             [view addSubview:valueLabel];
+            
             yPos = yPos + view.frame.size.height + LABELSPACING;
+            [self.indexesScroll addSubview:view];
+            
         }
         
         else{
@@ -184,6 +203,7 @@ static const int xIndent = 10;
                 [view addSubview:sliderView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:TEXT_VIEW] || [genericIndexObj.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
+                
                 TextInput *textView = [[TextInput alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 textView.delegate = self;
                 [view addSubview:textView];
@@ -200,17 +220,20 @@ static const int xIndent = 10;
                  NSLog(@"before update view frame %@ ",NSStringFromCGRect(view.frame));
                 float height = genericIndexValue.genericIndex.values.allKeys.count *45;
                 view.frame = CGRectMake(5, yPos, self.indexesScroll.frame.size.width, height);
-                 NSLog(@"after update view frame %@ ",NSStringFromCGRect(view.frame));
-                ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0,LABELHEIGHT, view.frame.size.width , self.view.frame.size.height- 5) color:self.genericParams.color genericIndexValue:genericIndexValue];
+                ListButtonView * typeTableView = [[ListButtonView alloc]initWithFrame:CGRectMake(0,LABELHEIGHT, view.frame.size.width , self.view.frame.size.height- 5)
+                                                                                color:self.genericParams.color
+                                                                    genericIndexValue:genericIndexValue];
                 NSLog(@"after update typeTableView frame %@ ",NSStringFromCGRect(typeTableView.frame));
                 typeTableView.delegate = self;
                 [view addSubview:typeTableView];
             }
+            
             [self.indexesScroll addSubview:view];
            
             NSLog(@"ypos %d",yPos);
             CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,yPos + 60);
              yPos = yPos + view.frame.size.height + LABELSPACING;
+            self.keyBoardComp = yPos;
             [self.indexesScroll setContentSize:scrollableSize];
         }
     }
@@ -291,7 +314,32 @@ static const int xIndent = 10;
 -(void)delegateDeviceEditSettingClick{
     [self.navigationController popViewControllerAnimated:YES];
 }
-
+- (void)onKeyboardDidShow:(id)notification {
+    NSLog(@"%s",__PRETTY_FUNCTION__);
+    
+}
+- (void)onKeyboardDidHide:(id)notice {
+    NSLog(@"%s",__PRETTY_FUNCTION__);
+    self.indexScrollTopConstraint.constant = 2;
+    self.scrollViewBottom.constant = 8;
+    self.dismisstamperedView.frame = CGRectMake(self.indexesScroll.frame.origin.x, self.deviceEditHeaderCell.frame.size.height + self.deviceEditHeaderCell.frame.origin.y + 5, self.indexesScroll.frame.size.width, 40);
+}
+-(void)keyboardOnScreen:(NSNotification *)notification
+{
+    NSDictionary *info  = notification.userInfo;
+    NSValue      *value = info[UIKeyboardFrameEndUserInfoKey];
+    
+    CGRect rawFrame      = [value CGRectValue];
+    CGRect keyboardFrame = [self.view convertRect:rawFrame fromView:nil];
+    int constnt = self.keyBoardComp - keyboardFrame.origin.y + 70;
+    
+    if(constnt > (int)self.indexesScroll.frame.size.height)
+        constnt = (int)self.indexesScroll.frame.size.height - keyboardFrame.size.height;
+    
+    self.scrollViewBottom.constant = constnt ;
+    self.indexScrollTopConstraint.constant = -(constnt);
+    self.dismisstamperedView.frame = CGRectMake(0, 0, self.dismisstamperedView.frame.size.width, self.dismisstamperedView.frame.size.height);
+}
 //-(void)handleNest3PointDiffForIndex:(int)index newValue:(NSString*)value{
 //    NSLog(@"handleNest3PointDiffForIndex - index: %d, value: %@", index, value);
 //    NSArray *scrollSubViews = [self.indexesScroll subviews];

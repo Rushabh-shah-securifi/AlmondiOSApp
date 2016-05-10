@@ -868,10 +868,11 @@ Follow it, then login below.";
 "switch1_off" = "Switch-1 Off";
 "switch2_on" = "Switch-2 On";
 "switch2_off" = "Switch-2 Off";
-
-/* */
-
-
+"pin" = "Pin";
+"off_camelcase" = "Off";
+"on_camelcase" = "On";
+"autoChangeOver" = "Auto Changeover";
+"resume" = "Resume";
 
 /* ==================================================================== */
 

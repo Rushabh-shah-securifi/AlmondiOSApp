@@ -105,6 +105,90 @@
             "3": {
                 "genericIndexID": "50",
                 "row_no": 1
+            },
+            "4":{
+                "genericIndexID": "79",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "5":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "6":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "7":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "8":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "9":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "10":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "11":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "12":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "13":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "14":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "15":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "16":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "17":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "18":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "19":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "20":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "21":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "22":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "23":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
+            },
+            "24":{
+                "genericIndexID": "95",
+                "ExcludeFrom":"Scene_Rule"
             }
         }
     },
