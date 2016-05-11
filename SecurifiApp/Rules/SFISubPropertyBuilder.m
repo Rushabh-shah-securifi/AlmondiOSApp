@@ -178,8 +178,9 @@ UILabel *topLabel;
         return NO;
     
     else if([properties.eventType isEqualToString:@"ClientJoined"] || [properties.eventType isEqualToString:@"ClientLeft"]){
-        if([Client findClientByID:@(properties.deviceId).stringValue] == nil)
+        if([Client findClientByMAC:properties.matchData] == NO)
             return YES;
+        
     }
     else if([Device getDeviceForID:properties.deviceId] == nil)
         return YES;
@@ -420,7 +421,7 @@ UILabel *topLabel;
     }else if(buttonSubProperty.index == 1 && buttonSubProperty.eventType !=nil && toolkit.clients!=nil){
         NSLog(@"client type");
         for(Client *connectedClient in toolkit.clients){
-            if(buttonSubProperty.deviceId == connectedClient.deviceID.intValue){
+            if([buttonSubProperty.matchData isEqualToString:connectedClient.deviceMAC]){
                 buttonSubProperty.deviceType = SFIDeviceType_WIFIClient;
                 buttonSubProperty.deviceName = connectedClient.name;
             }

@@ -65,7 +65,7 @@
     //awakefromnib
     NSString *suf = (suffix == nil || suffix.length == 0)?@"":suffix;
     self.prefix = suf;
-    NSString *strTopTitleLabelText = [text = (text == nil)?@"":text  stringByAppendingString:suffix];
+    NSString *strTopTitleLabelText = [text = (text == nil)?@"":text  stringByAppendingString:suf];
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
     [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:40.0f]} range:NSMakeRange(0,text.length)];
     [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:24.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,suffix.length)];

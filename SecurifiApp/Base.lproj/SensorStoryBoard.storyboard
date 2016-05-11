@@ -44,6 +44,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="deviceEditHeaderCell" destination="81a-Xa-YBP" id="l5E-W5-LQ7"/>
+                        <outlet property="headerTopConstrain" destination="T3A-TX-wrZ" id="6jr-wT-Wr9"/>
                         <outlet property="indexScrollTopConstraint" destination="bbA-Og-hAl" id="6c2-sW-uSe"/>
                         <outlet property="indexesScroll" destination="9l5-6M-te7" id="6e1-ad-58I"/>
                         <outlet property="scrollViewBottom" destination="E3L-99-wbg" id="qZe-uj-l2N"/>

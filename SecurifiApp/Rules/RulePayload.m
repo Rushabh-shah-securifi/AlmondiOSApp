@@ -84,13 +84,7 @@
     return NO;
 }
 
--(BOOL)findClient:(NSString *)mac devices:(NSArray *)clients{
-    for(Client *client in clients){
-        if([mac isEqualToString:client.deviceMAC])
-            return YES;
-    }
-    return NO;
-}
+
 
 -(void)removeInvalidEntries:(NSMutableArray *)entries devices:(NSArray *)devices clients:(NSArray *)clients{
     NSMutableArray *invalidEntries=[NSMutableArray new];
@@ -104,8 +98,7 @@
             continue;
         
         else if([properties.eventType isEqualToString:@"ClientJoined"] || [properties.eventType isEqualToString:@"ClientLeft"]){
-            
-            if(![self findClient:properties.matchData devices:clients])
+            if(![Client findClientByMAC:properties.matchData])
                 [invalidEntries addObject:properties];
         }
         else if( ![self findDevice:properties.deviceId devices:devices])
