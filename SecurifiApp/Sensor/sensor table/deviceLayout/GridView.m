@@ -86,7 +86,7 @@ NSString *blockedType;
                 [view removeFromSuperview];
             }
             [self.scrollView removeFromSuperview];
-            [self.delegate save:_hexBlockedDays forGenericIndexValue:self.genericIndexValue];
+            [self.delegate save:_hexBlockedDays forGenericIndexValue:self.genericIndexValue currentView:nil];
         }break;
         case 1:
         {
@@ -109,7 +109,7 @@ NSString *blockedType;
             _hexBlockedDays = [@"ffffff,ffffff,ffffff,ffffff,ffffff,ffffff,ffffff" mutableCopy];
             self.scrollView.hidden = YES;
             self.collectionView.hidden = YES;
-            [self.delegate save:_hexBlockedDays forGenericIndexValue:self.genericIndexValue];
+            [self.delegate save:_hexBlockedDays forGenericIndexValue:self.genericIndexValue currentView:nil];
         }break;
         default:
             break;
@@ -354,6 +354,6 @@ NSString *blockedType;
     [self convertDaysDictToHex];
     NSLog(@"saveButtonTap %@",_hexBlockedDays);
     
-    [self.delegate save:_hexBlockedDays forGenericIndexValue:self.genericIndexValue];
+    [self.delegate save:_hexBlockedDays forGenericIndexValue:self.genericIndexValue currentView:nil];
 }
 @end

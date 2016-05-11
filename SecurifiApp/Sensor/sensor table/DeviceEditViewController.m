@@ -102,7 +102,7 @@ static const int xIndent = 10;
     [super viewWillDisappear:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self clearAllViews];
-    [self.toolkit.miiTable removeAllObjects];
+    [self.miiTable removeAllObjects];
 }
 
 -(void)initializeNotifications{
@@ -309,17 +309,17 @@ static const int xIndent = 10;
     NSLog(@"newvalue %@",newValue);
     mii = arc4random() % 10000;
 
-    genericIndexValue = [GenericIndexValue getLightCopy:genericIndexValue];
-    genericIndexValue.currentValue = newValue;
-    genericIndexValue.clickedView = currentView;
-    [self.toolkit.miiTable setValue:genericIndexValue forKey:@(mii).stringValue];
- 
     [self.deviceEditHeaderCell reloadIconImage];
-    int index = genericIndexValue.index;
+    
     if([Device getTypeForID:genericIndexValue.deviceID]){
 //        [self handleNest3PointDiffForIndex:index newValue:newValue];
     }
     if(self.genericParams.isSensor){
+        genericIndexValue = [GenericIndexValue getLightCopy:genericIndexValue];
+        genericIndexValue.currentValue = newValue;
+        genericIndexValue.clickedView = currentView;
+        [self.miiTable setValue:genericIndexValue forKey:@(mii).stringValue];
+        
         DeviceCommandType deviceCmdType = genericIndexValue.genericIndex.commandType;
         if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
             [DevicePayload getNameLocationChange:genericIndexValue mii:mii value:newValue];
@@ -329,6 +329,7 @@ static const int xIndent = 10;
         }
     }else{
         Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
+        int index = genericIndexValue.index;
         client = [client copy];
         [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
         [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
@@ -378,7 +379,7 @@ static const int xIndent = 10;
 -(void)toggle:(GenericIndexValue *)headerGenericIndexValue{
     NSLog(@"delegateSensorTableDeviceButtonClickWithGenericProperies");
     mii = arc4random()%10000;
-    [self.toolkit.miiTable setValue:headerGenericIndexValue forKey:@(mii).stringValue];
+    [self.miiTable setValue:headerGenericIndexValue forKey:@(mii).stringValue];
     [DevicePayload getSensorIndexUpdate:headerGenericIndexValue mii:mii];
 }
 
@@ -402,12 +403,12 @@ static const int xIndent = 10;
     }
 
     NSLog(@"payload mobile command: %@", payload);
-//    if (self.toolkit.miiTable[payload[@"MobileInternalIndex"]] == nil) {
+//    if (self.miiTable[payload[@"MobileInternalIndex"]] == nil) {
 //        return;
 //    }
 //    
 //    BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
-//    GenericIndexValue *genIndexVal = self.toolkit.miiTable[payload[@"MobileInternalIndex"]];
+//    GenericIndexValue *genIndexVal = self.miiTable[payload[@"MobileInternalIndex"]];
 //    NSLog(@"genIndexVal: %@", genIndexVal);
 //    if(isSuccessful == NO){
 //        [self revertToOldValue:genIndexVal];
@@ -426,7 +427,7 @@ static const int xIndent = 10;
 //    
 //    //Repaint header
 //    [self repaintHeader:genIndexVal];
-//    [self.toolkit.miiTable removeObjectForKey:payload[@"MobileInternalIndex"]];
+//    [self.miiTable removeObjectForKey:payload[@"MobileInternalIndex"]];
 }
 
 -(void)repaintHeader:(GenericIndexValue*)genIndexVal{

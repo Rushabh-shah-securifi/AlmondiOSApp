@@ -10,7 +10,7 @@
 #import "GenericIndexValue.h"
 
 @protocol GridViewDelegate
--(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue;
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue currentView:(UIView*)currentView;
 @end
 
 @interface GridView : UIView
