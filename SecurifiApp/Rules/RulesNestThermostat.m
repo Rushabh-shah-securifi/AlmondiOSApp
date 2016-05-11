@@ -363,4 +363,32 @@
  temperature - 10
  hvac - 16
  */
+
+//-(void)handleNest3PointDiffForIndex:(int)index newValue:(NSString*)value{
+//    NSLog(@"handleNest3PointDiffForIndex - index: %d, value: %@", index, value);
+//    NSArray *scrollSubViews = [self.indexesScroll subviews];
+//    for(UIView *view in scrollSubViews){
+//        NSLog(@"view: %@", view);
+//        if(![view isKindOfClass:[UIImageView class]]){
+//            UIView *insideView = [[view subviews] objectAtIndex:1];
+//            if([insideView isKindOfClass:[HorizontalPicker class]]){
+//                NSLog(@"horizantal picker");
+//                HorizontalPicker *picker = (HorizontalPicker*)insideView;
+//
+//                if(picker.genericIndexValue.index == 6 && index == 5){
+//                    if([picker.genericIndexValue.genericValue.value intValue] - [value intValue] < 3){
+//                        NSLog(@"updating value");
+//                        [picker.horzPicker scrollToElement:([value intValue] + 3) + picker.genericIndexValue.genericIndex.formatter.min animated:YES];
+//                    }
+//                }else if(picker.genericIndexValue.index == 5 && index == 6){
+//                    if([value intValue] - [picker.genericIndexValue.genericValue.value intValue]< 3){
+//                        [picker.horzPicker scrollToElement:([value intValue]-3) + picker.genericIndexValue.genericIndex.formatter.min animated:YES];
+//                    }
+//                }
+//
+//            }
+//        }
+//    }
+//}
+
 @end

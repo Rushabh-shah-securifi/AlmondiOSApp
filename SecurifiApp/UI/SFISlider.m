@@ -39,6 +39,11 @@
     return value;
 }
 
+-(int)getConvertedValue:(float)factor{
+    float slider_value = self.value;
+    return roundf(slider_value/factor);
+}
+
 - (NSString *)sliderFormattedValue {
     return [self.numberFormatter stringFromNumber:@(self.value)];
 }

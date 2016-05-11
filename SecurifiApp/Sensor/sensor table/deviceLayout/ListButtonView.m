@@ -17,6 +17,7 @@
 @property (nonatomic)NSMutableArray *displayArray;
 @property (nonatomic)NSMutableArray *valueArr;
 @end
+
 @implementation ListButtonView
 
 -(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue
@@ -33,7 +34,11 @@
 }
 
 -(void)drawTypeTable{
-    for(NSString *key in self.genericIndexValue.genericIndex.values.allKeys){
+    NSArray *devicePosKeys = self.genericIndexValue.genericIndex.values.allKeys;
+    NSArray *sortedKeys = [devicePosKeys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [(NSString *)obj1 compare:(NSString *)obj2 options:NSNumericSearch];
+    }];
+    for(NSString *key in sortedKeys){
         GenericValue *gVal = [self.genericIndexValue.genericIndex.values valueForKey:key];
         [self.displayArray addObject:gVal.displayText];
         [self.valueArr addObject:gVal.value];
@@ -109,8 +114,12 @@
     NSLog(@" typeName %@",typeName);
     self.selectedType = typeName;
     [self.tableType reloadData];
-    [self.delegate save:typeName forGenericIndexValue:self.genericIndexValue];
+    [self.delegate save:typeName forGenericIndexValue:self.genericIndexValue currentView:self];
 }
 
+-(void)setListValue:(NSString*)value{
+    self.selectedType = value;
+    [self.tableType reloadData];
+}
 
 @end

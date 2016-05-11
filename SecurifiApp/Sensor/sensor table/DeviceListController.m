@@ -215,11 +215,9 @@ int mii;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if ([self isNoAlmondMAC])
+    if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]))
         return 1;
-    
-    if([self isDeviceListEmpty] && [self isClientListEmpty])
-        return 1;
+
     
     return (section == 0) ? self.currentDeviceList.count:self.currentClientList.count;
     
@@ -237,6 +235,8 @@ int mii;
     if ([self showNeedsActivationHeader] && section == 0) {
         return [self createActivationNotificationHeader];
     }
+    else if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]))
+        return [UIView new];
     
     return [self deviceHeader:section tableView:tableView];
 }

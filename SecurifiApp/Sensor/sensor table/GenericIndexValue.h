@@ -15,6 +15,10 @@
 @property (nonatomic)GenericValue *genericValue;
 @property (nonatomic)int index;
 @property (nonatomic)int deviceID;
+@property (nonatomic)NSString *currentValue;
+@property (nonatomic)UIView *clickedView;
 
 -(id)initWithGenericIndex:(GenericIndexClass*)genericIndex genericValue:(GenericValue*)genericValue index:(int)index deviceID:(int)deviceID;
+
++(GenericIndexValue*)getLightCopy:(GenericIndexValue*)genIndexVal;
 @end

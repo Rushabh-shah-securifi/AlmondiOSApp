@@ -11,6 +11,10 @@
 #import "UIFont+Securifi.h"
 #import "SFIColors.h"
 
+@interface Slider()
+@property (nonatomic)SFISlider *brightnessSlider;
+@end
+
 @implementation Slider
 -(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue
 {
@@ -35,22 +39,22 @@
 //    brightnessFull.backgroundColor = [SFIColors ruleOrangeColor];
 
     [self addSubview:brightnessFull];
-    SFISlider *brightnessSlider = [[SFISlider alloc]initWithFrame:CGRectMake(self.frame.size.height , 0, self.frame.size.width - (2*self.frame.size.height), self.frame.size.height)];
+    self.brightnessSlider = [[SFISlider alloc]initWithFrame:CGRectMake(self.frame.size.height , 0, self.frame.size.width - (2*self.frame.size.height), self.frame.size.height)];
     const CGFloat slider_x_offset = 10.0;
     const CGFloat slider_right_inset = 20.0;
     float min = (float)self.genericIndexValue.genericIndex.formatter.min;
     float max = (float)self.genericIndexValue.genericIndex.formatter.max;
-    brightnessSlider = [self makeSlider:min maxValue:max propertyType:SFIDevicePropertyType_BRIGHTNESS sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset slider:brightnessSlider];
+    self.brightnessSlider = [self makeSlider:min maxValue:max propertyType:SFIDevicePropertyType_BRIGHTNESS sliderLeftInset:slider_x_offset sliderRightInset:slider_right_inset slider:self.brightnessSlider];
     
-    brightnessSlider.continuous = YES;
-    brightnessSlider.allowToSlide = YES;
-    brightnessSlider.sensorMaxValue = max;
-    brightnessSlider.convertedValue = 0; // to be assigned
+    self.brightnessSlider.continuous = YES;
+    self.brightnessSlider.allowToSlide = YES;
+    self.brightnessSlider.sensorMaxValue = max;
+    self.brightnessSlider.convertedValue = 0; // to be assigned
 //    brightnessSlider.backgroundColor = [SFIColors ruleOrangeColor];
     NSLog(@"slider transformed value: %d", [self.genericIndexValue.genericValue.transformedValue intValue]);
-    [brightnessSlider setValue:[self.genericIndexValue.genericValue.transformedValue intValue]];
+    [self.brightnessSlider setValue:[self.genericIndexValue.genericValue.transformedValue intValue]];
     NSLog(@" brightness slider adding ");
-    [self addSubview:brightnessSlider];
+    [self addSubview:self.brightnessSlider];
 }
 - (SFISlider *)makeSlider:(float)minVal maxValue:(float)maxValue propertyType:(SFIDevicePropertyType)propertyType sliderLeftInset:(CGFloat)sliderLeftInset sliderRightInset:(CGFloat)sliderRightInset slider:(SFISlider*) slider {
     NSLog(@"drawSlider");
@@ -80,12 +84,13 @@
     return slider;
 }
 
+
 - (void)onSliderDidEndSliding:(id)sender {
     SFISlider *slider = sender;
     
-    float sensorValue = [slider convertToSensorValue];
+    int sensorValue = [slider getConvertedValue:self.genericIndexValue.genericIndex.formatter.factor];
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
-    [self.delegate save:newValue forGenericIndexValue:_genericIndexValue];
+    [self.delegate save:newValue forGenericIndexValue:_genericIndexValue currentView:self];
     
 }
 - (void)onSliderTapped:(id)sender {
@@ -103,10 +108,12 @@
     CGFloat value = slider.minimumValue + delta;
     [slider setValue:value animated:YES];
     
-    float sensorValue = [slider convertToSensorValue];
+    int sensorValue = [slider getConvertedValue:self.genericIndexValue.genericIndex.formatter.factor];
     NSString *newValue = [NSString stringWithFormat:@"%d", (int) sensorValue];
-    [self.delegate save:newValue forGenericIndexValue:_genericIndexValue];
+    [self.delegate save:newValue forGenericIndexValue:_genericIndexValue currentView:self];
 }
+
+//-(int)getConvertedValue:(
 - (UIColor *)darkerColorForColor:(UIColor *)c
 {
     CGFloat r, g, b, a;
@@ -118,5 +125,8 @@
     return nil;
 }
 
+-(void)setSliderValue:(int)value{
+    [self.brightnessSlider setValue:value animated:YES];
+}
 
 @end

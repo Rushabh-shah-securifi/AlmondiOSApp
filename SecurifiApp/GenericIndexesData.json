@@ -214,7 +214,7 @@
     "-21": {
         "Name": "CanBlock",
         "Type": "Sensor",
-        "Placement": "Hidden",
+        "Placement": "Detail",
         "Layout": "TEXT_VIEW",
         "AppLabel": "canBeBlocked",
         "Values": {
@@ -1731,7 +1731,9 @@
         "Name": "USER_CODE",
         "Type": "Actuator",
         "Placement": "Detail",
-        "Layout": "TEXT_VIEW"
+        "Layout": "TEXT_VIEW",
+        "AppLabel": "pin",
+        "ExcludeFrom":"Scene_Rule"
     },
     "82": {
         "Name": "CLAMP1_POWER",
@@ -1978,14 +1980,6 @@
                 "Label": "SWITCH2 OFF"
             }
         }
-    },
-    "95": {
-        "Name": "Pin",
-        "Type": "Actuator",
-        "Placement": "Detail",
-        "Layout": "TEXT_VIEW",
-        "AppLabel": "pin",
-        "ExcludeFrom":"Scene_Rule"
     }
 }
 

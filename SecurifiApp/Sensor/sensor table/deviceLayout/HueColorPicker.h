@@ -10,9 +10,10 @@
 #import "Device.h"
 #import "GenericIndexValue.h"
 #import "SFIButtonSubProperties.h"
+#import "SFIHuePickerView.h"
 
 @protocol HueColorPickerDelegate
--(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue;
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue currentView:(UIView*)currentView;
 @end
 @interface HueColorPicker : UIView
 @property (nonatomic)UIColor *color;
@@ -20,6 +21,6 @@
 @property (nonatomic)GenericIndexValue *genericIndexValue;
 @property(nonatomic)SFIButtonSubProperties *subProperties;
 
-
+@property(nonatomic)SFIHuePickerView *huePickerView;
 -(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue;
 @end

@@ -54,17 +54,21 @@ static const int xIndent = 10;
 @property (nonatomic)GenericIndexValue *genericIndexVal;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *scrollViewBottom;
 @property (nonatomic) NSInteger keyBoardComp;
-
+@property (nonatomic) SecurifiToolkit *toolkit;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerTopConstrain;
+@property(nonatomic) NSMutableDictionary *miiTable;
 @end
 
 @implementation DeviceEditViewController{
     NSArray *type;
-    int randomMobileInternalIndex;
+    int mii;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.toolkit=[SecurifiToolkit sharedInstance];
     [self setUpDeviceEditCell];
+    self.miiTable = [NSMutableDictionary new];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self drawIndexes];
     });
@@ -83,10 +87,10 @@ static const int xIndent = 10;
 - (void)viewWillAppear:(BOOL)animated{
     NSLog(@"deviceedit viewWillAppear");
     [super viewWillAppear:YES];
-    randomMobileInternalIndex = arc4random() % 10000;
+    
     [self initializeNotifications];
-    SecurifiToolkit *toolkit=[SecurifiToolkit sharedInstance];
-    self.isLocal = [toolkit useLocalNetwork:[toolkit currentAlmond].almondplusMAC];
+    
+    self.isLocal = [self.toolkit useLocalNetwork:[self.toolkit currentAlmond].almondplusMAC];
     
 }
 - (void)didReceiveMemoryWarning {
@@ -98,13 +102,22 @@ static const int xIndent = 10;
     [super viewWillDisappear:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self clearAllViews];
+    [self.toolkit.miiTable removeAllObjects];
 }
 
 -(void)initializeNotifications{
     NSLog(@"initialize notifications sensor table");
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(onDeviceListAndDynamicResponseParsed:) name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER object:nil];
-    [center addObserver:self selector:@selector(onCommandResponse:) name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER object:nil]; //indexupdate or name/location change both
+    [center addObserver:self
+               selector:@selector(onDeviceListAndDynamicResponseParsed:)
+                   name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onCommandResponse:)
+                   name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
+                 object:nil]; //indexupdate or name/location change both
+    
     [center addObserver:self
                selector:@selector(onKeyboardDidShow:)
                    name:UIKeyboardDidShowNotification
@@ -114,8 +127,13 @@ static const int xIndent = 10;
                selector:@selector(onKeyboardDidHide:)
                    name:UIKeyboardDidHideNotification
                  object:nil];
-    [center addObserver:self selector:@selector(keyboardOnScreen:) name:UIKeyboardDidShowNotification object:nil];
+    
+    [center addObserver:self
+               selector:@selector(keyboardOnScreen:)
+                   name:UIKeyboardDidShowNotification
+                 object:nil];
 }
+
 - (void)clearAllViews{
     dispatch_async(dispatch_get_main_queue(), ^(){
         for(UIView *view in self.scrollView.subviews){
@@ -238,15 +256,13 @@ static const int xIndent = 10;
         }
     }
 }
+
 - (void)setUpLable:(UILabel*)label withPropertyName:(NSString*)propertyName{
     label.text = propertyName;
     label.font = [UIFont securifiBoldFontLarge];
     label.textColor = [UIColor whiteColor];
 }
 
-- (IBAction)onSeettingButtonClicked:(id)sender {
-//    [self.navigationController popViewControllerAnimated:YES];
-}
 -(void)disMissTamperedView{
     self.dismisstamperedView = [[UIView alloc]initWithFrame:CGRectMake(self.indexesScroll.frame.origin.x, self.deviceEditHeaderCell.frame.size.height + self.deviceEditHeaderCell.frame.origin.y + 5, self.indexesScroll.frame.size.width, 40)];
     self.dismisstamperedView.backgroundColor = [SFIColors ruleOrangeColor];
@@ -272,9 +288,10 @@ static const int xIndent = 10;
 
 -(void)dimissTamperTap:(id)sender{
     [self showToast:@"Saving..."];
-    [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:self.genericIndexVal mii:randomMobileInternalIndex value:@"false"];
+    mii = arc4random()%10000;
+    [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:self.genericIndexVal mii:mii value:@"false"];
     [UIView animateWithDuration:2 delay:0 usingSpringWithDamping:0.75 initialSpringVelocity:15 options:nil animations:^() {
-        ///[DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
+        ///[DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:mii value:newValue];
         [self.dismisstamperedView removeFromSuperview];
         self.deviceEditHeaderCell.tamperedImgView.hidden = YES;
         self.indexScrollTopConstraint.constant = 2;
@@ -285,11 +302,18 @@ static const int xIndent = 10;
 -(void)gridView:(UIView *)view{
     GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5)];
     [view addSubview:grid];
-    
 }
+
 #pragma mark delegate callback methods
--(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue{// index is genericindex for clients, normal index for sensors
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue currentView:(UIView*)currentView{// index is genericindex for clients, normal index for sensors
     NSLog(@"newvalue %@",newValue);
+    mii = arc4random() % 10000;
+
+    genericIndexValue = [GenericIndexValue getLightCopy:genericIndexValue];
+    genericIndexValue.currentValue = newValue;
+    genericIndexValue.clickedView = currentView;
+    [self.toolkit.miiTable setValue:genericIndexValue forKey:@(mii).stringValue];
+ 
     [self.deviceEditHeaderCell reloadIconImage];
     int index = genericIndexValue.index;
     if([Device getTypeForID:genericIndexValue.deviceID]){
@@ -298,32 +322,38 @@ static const int xIndent = 10;
     if(self.genericParams.isSensor){
         DeviceCommandType deviceCmdType = genericIndexValue.genericIndex.commandType;
         if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
-            [DevicePayload getNameLocationChange:genericIndexValue mii:randomMobileInternalIndex value:newValue];
+            [DevicePayload getNameLocationChange:genericIndexValue mii:mii value:newValue];
         }else{
-            [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:randomMobileInternalIndex value:newValue];
+            [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:mii value:newValue];
         
         }
     }else{
         Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
         client = [client copy];
         [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
-        [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:randomMobileInternalIndex];
+        [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
     }
 }
+
 
 -(void)delegateDeviceEditSettingClick{
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+#pragma  mark uiwindow delegate methods
 - (void)onKeyboardDidShow:(id)notification {
     NSLog(@"%s",__PRETTY_FUNCTION__);
-    
 }
+
 - (void)onKeyboardDidHide:(id)notice {
     NSLog(@"%s",__PRETTY_FUNCTION__);
-    self.indexScrollTopConstraint.constant = 2;
+    self.indexScrollTopConstraint.constant = 2 + self.dismisstamperedView.frame.size.height;
     self.scrollViewBottom.constant = 8;
-    self.dismisstamperedView.frame = CGRectMake(self.indexesScroll.frame.origin.x, self.deviceEditHeaderCell.frame.size.height + self.deviceEditHeaderCell.frame.origin.y + 5, self.indexesScroll.frame.size.width, 40);
+    self.headerTopConstrain.constant = 8;
+    //    self.dismisstamperedView.frame = CGRectMake(self.indexesScroll.frame.origin.x, self.deviceEditHeaderCell.frame.size.height + self.deviceEditHeaderCell.frame.origin.y + 5, self.indexesScroll.frame.size.width, 40);
+    self.dismisstamperedView.hidden = NO;
 }
+
 -(void)keyboardOnScreen:(NSNotification *)notification
 {
     NSDictionary *info  = notification.userInfo;
@@ -337,50 +367,155 @@ static const int xIndent = 10;
         constnt = (int)self.indexesScroll.frame.size.height - keyboardFrame.size.height;
     
     self.scrollViewBottom.constant = constnt ;
+    self.headerTopConstrain.constant = -(constnt);
     self.indexScrollTopConstraint.constant = -(constnt);
-    self.dismisstamperedView.frame = CGRectMake(0, 0, self.dismisstamperedView.frame.size.width, self.dismisstamperedView.frame.size.height);
+    self.dismisstamperedView.hidden = YES;
+    //    self.dismisstamperedView.frame = CGRectMake(0, self.indexesScroll.frame.origin.y, self.dismisstamperedView.frame.size.width, self.dismisstamperedView.frame.size.height);
 }
-//-(void)handleNest3PointDiffForIndex:(int)index newValue:(NSString*)value{
-//    NSLog(@"handleNest3PointDiffForIndex - index: %d, value: %@", index, value);
-//    NSArray *scrollSubViews = [self.indexesScroll subviews];
-//    for(UIView *view in scrollSubViews){
-//        NSLog(@"view: %@", view);
-//        if(![view isKindOfClass:[UIImageView class]]){
-//            UIView *insideView = [[view subviews] objectAtIndex:1];
-//            if([insideView isKindOfClass:[HorizontalPicker class]]){
-//                NSLog(@"horizantal picker");
-//                HorizontalPicker *picker = (HorizontalPicker*)insideView;
-//                
-//                if(picker.genericIndexValue.index == 6 && index == 5){
-//                    if([picker.genericIndexValue.genericValue.value intValue] - [value intValue] < 3){
-//                        NSLog(@"updating value");
-//                        [picker.horzPicker scrollToElement:([value intValue] + 3) + picker.genericIndexValue.genericIndex.formatter.min animated:YES];
-//                    }
-//                }else if(picker.genericIndexValue.index == 5 && index == 6){
-//                    if([value intValue] - [picker.genericIndexValue.genericValue.value intValue]< 3){
-//                        [picker.horzPicker scrollToElement:([value intValue]-3) + picker.genericIndexValue.genericIndex.formatter.min animated:YES];
-//                    }
-//                }
-//                
-//            }
-//        }
-//    }
-//}
+
 
 #pragma mark sensor cell(DeviceHeaderView) delegate
--(void)toggle:(GenericIndexValue *)genericIndexValue{
+-(void)toggle:(GenericIndexValue *)headerGenericIndexValue{
     NSLog(@"delegateSensorTableDeviceButtonClickWithGenericProperies");
-    [DevicePayload getSensorIndexUpdate:genericIndexValue mii:randomMobileInternalIndex];
+    mii = arc4random()%10000;
+    [self.toolkit.miiTable setValue:headerGenericIndexValue forKey:@(mii).stringValue];
+    [DevicePayload getSensorIndexUpdate:headerGenericIndexValue mii:mii];
 }
 
 #pragma mark command responses
--(void)onCommandResponse:(id)sender{ //mobile command sensor and client
+-(void)onCommandResponse:(id)sender{ //mobile command sensor and client 1064
     NSLog(@"device edit - onUpdateDeviceIndexResponse");
+    SFIAlmondPlus *almond = [self.toolkit currentAlmond];
+    BOOL local = [self.toolkit useLocalNetwork:almond.almondplusMAC];
+    NSDictionary *payload;
+
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    
+    if(local){
+        payload = dataInfo[@"data"];
+    }else{
+        payload = [dataInfo[@"data"] objectFromJSONData];
+    }
+
+    NSLog(@"payload mobile command: %@", payload);
+//    if (self.toolkit.miiTable[payload[@"MobileInternalIndex"]] == nil) {
+//        return;
+//    }
+//    
+//    BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
+//    GenericIndexValue *genIndexVal = self.toolkit.miiTable[payload[@"MobileInternalIndex"]];
+//    NSLog(@"genIndexVal: %@", genIndexVal);
+//    if(isSuccessful == NO){
+//        [self revertToOldValue:genIndexVal];
+//        [self showToast:[NSString stringWithFormat:@"Sorry, Could not update %@", genIndexVal.genericIndex.groupLabel]];
+//    }
+//    else{
+//        DeviceCommandType deviceCmdType = genIndexVal.genericIndex.commandType;
+//        if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
+//            [Device updateDeviceData:deviceCmdType value:genIndexVal.currentValue deviceID:genIndexVal.deviceID];
+//        }else{
+//            [Device updateValueForID:genIndexVal.deviceID index:genIndexVal.index value:genIndexVal.currentValue];
+//        }
+//        
+//        [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
+//    }
+//    
+//    //Repaint header
+//    [self repaintHeader:genIndexVal];
+//    [self.toolkit.miiTable removeObjectForKey:payload[@"MobileInternalIndex"]];
+}
+
+-(void)repaintHeader:(GenericIndexValue*)genIndexVal{
+    NSLog(@"repaintHeader");
+    Device *device = [Device getDeviceForID:genIndexVal.deviceID];
+    GenericIndexValue *headerGenIndexVal = [GenericIndexUtil getHeaderGenericIndexValueForDevice:device];
+    self.genericParams.headerGenericIndexValue = headerGenIndexVal;
+    self.genericParams.deviceName = device.name;
+    [self.deviceEditHeaderCell resetHeaderView];
+    
+    [self.deviceEditHeaderCell initialize:self.genericParams cellType:SensorEdit_Cell];
+}
+
+-(void)revertToOldValue:(GenericIndexValue*)genIndexVal{
+    if(genIndexVal == nil)
+        return;
+    NSString *layout = genIndexVal.genericIndex.layoutType;
+    NSString* value = [Device getValueForIndex:genIndexVal.index deviceID:genIndexVal.deviceID];
+    
+    if(layout){
+        if([layout isEqualToString:@"SINGLE_TEMP"]){
+            HorizontalPicker *horzPicker = (HorizontalPicker *)genIndexVal.clickedView;
+            [horzPicker.horzPicker scrollToElement:[value integerValue] - genIndexVal.genericIndex.formatter.min  animated:YES];
+        }
+        else if ([layout isEqualToString:MULTI_BUTTON]){
+            MultiButtonView *buttonView = (MultiButtonView *)genIndexVal.clickedView;
+            int selectedValuePos = -1;
+            NSString *deviceValue = value;
+
+            NSArray *devicePosKeys = genIndexVal.genericIndex.values.allKeys;
+            NSArray *valueArray = [devicePosKeys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+                return [(NSString *)obj1 compare:(NSString *)obj2 options:NSNumericSearch];
+            }];
+            
+            for(int i =0;i < valueArray.count ;i++){
+                if([deviceValue isEqualToString:[valueArray objectAtIndex:i]]){
+                    selectedValuePos = i;
+                }
+            }
+            for(UIButton *button in [buttonView subviews]){
+                if([button isKindOfClass:[UILabel class]])
+                    continue;
+                if( button.tag == selectedValuePos){
+                    button.selected = YES;
+                    [button setTitleColor:self.genericParams.color forState:UIControlStateNormal];
+                    [button setBackgroundColor:[UIColor whiteColor]];
+                }
+                else{
+                    button.selected = NO;
+                    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                    [button setBackgroundColor:[SFIColors darkerColorForColor:self.genericParams.color]];
+                }
+            }
+        }
+        else if ([layout isEqualToString:HUE]){
+            HueColorPicker *hueView = (HueColorPicker *)genIndexVal.clickedView;
+            float val = [value floatValue];
+            [hueView.huePickerView setConvertedValue:val];
+        }
+        else if ([layout isEqualToString: @"SLIDER"] || [layout isEqualToString:@"SLIDER_ICON"]){
+            Slider *sliderView = (Slider *)genIndexVal.clickedView;
+            [sliderView setSliderValue:[[genIndexVal.genericIndex.formatter transformValue:value] intValue]];
+        }
+        else if ([layout isEqualToString:TEXT_VIEW] || [layout isEqualToString:@"TEXT_VIEW_ONLY"]){
+            DeviceCommandType deviceCmdType = genIndexVal.genericIndex.commandType;
+            if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
+                Device *device = [Device getDeviceForID:genIndexVal.deviceID];
+                if(deviceCmdType == DeviceCommand_UpdateDeviceName)
+                    value = device.name;
+                else if(deviceCmdType == DeviceCommand_UpdateDeviceLocation)
+                    value = device.location;
+            }
+            
+            TextInput *textView = (TextInput *)genIndexVal.clickedView;
+            
+            NSLog(@"textviewValue: %@ - value : %@", textView, value);
+            [textView setTextFieldValue:value];
+        }
+        else if ([layout isEqualToString:LIST]){
+            ListButtonView * typeTableView = (ListButtonView *)genIndexVal.clickedView;
+            [typeTableView setListValue:value];
+        }
+    }
 }
 
 
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");
+    
     if(self.deviceEditHeaderCell.cellType == ClientEditProperties_cell){
         dispatch_async(dispatch_get_main_queue(), ^(){
             [self.navigationController popToRootViewControllerAnimated:YES];

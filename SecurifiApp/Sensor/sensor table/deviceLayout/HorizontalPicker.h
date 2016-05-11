@@ -11,7 +11,7 @@
 #import "V8HorizontalPickerView.h"
 #import "Device.h"
 @protocol HorzSliderDelegate
--(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue;
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue currentView:(UIView*)currentView;
 @end
 @interface HorizontalPicker : UIView
 @property (nonatomic)id<HorzSliderDelegate> delegate;

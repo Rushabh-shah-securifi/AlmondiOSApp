@@ -35,8 +35,12 @@
     if(self.genericIndexValue.genericValue.value){
         deviceValue  = self.genericIndexValue.genericValue.value;
     }
-//    NSArray *allkeys = [valuedict allKeys];
-    self.valueArray = [valuedict allKeys];
+
+    NSArray *devicePosKeys = valuedict.allKeys;
+    self.valueArray = [devicePosKeys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        return [(NSString *)obj1 compare:(NSString *)obj2 options:NSNumericSearch];
+    }];
+    
     NSMutableArray *labelsArray = [[NSMutableArray alloc]init];
     
     for(int i =0;i < self.valueArray.count ;i++){
@@ -89,9 +93,8 @@
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [button setBackgroundColor:[SFIColors darkerColorForColor:self.color]];
         }
-        
     }
-    [self.delegate save:[self.valueArray objectAtIndex:sender.tag] forGenericIndexValue:_genericIndexValue];
+    [self.delegate save:[self.valueArray objectAtIndex:sender.tag] forGenericIndexValue:_genericIndexValue currentView:self];
 }
 
 

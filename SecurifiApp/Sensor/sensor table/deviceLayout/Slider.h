@@ -10,7 +10,7 @@
 #import "GenericIndexValue.h"
 
 @protocol SliderViewDelegate
--(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue;
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue currentView:(UIView*)currentView;
 @end
 
 @interface Slider : UIView
@@ -20,4 +20,5 @@
 
 -(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue;
 
+-(void)setSliderValue:(int)value;
 @end

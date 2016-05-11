@@ -8,7 +8,7 @@
 
 #import "HueColorPicker.h"
 #import "ILHuePickerView.h"
-#import "SFIHuePickerView.h"
+
 @interface HueColorPicker ()<ILHuePickerViewDelegate>
 @end
 @implementation HueColorPicker
@@ -24,24 +24,24 @@
     return self;
 }
 -(void)drawHueColorPicker{
-    
-    SFIHuePickerView *huePickerView = [[SFIHuePickerView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-    huePickerView.convertedValue = 0;
-    huePickerView.allowSelection = YES;
-    huePickerView.delegate = self;
-    huePickerView.propertyType = SFIDevicePropertyType_COLOR_HUE;
-    [huePickerView setConvertedValue:50000];
-    [self addSubview:huePickerView];
-    
-    
+    self.huePickerView = [[SFIHuePickerView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    self.huePickerView.convertedValue = 0;
+    self.huePickerView.allowSelection = YES;
+    self.huePickerView.delegate = self;
+    self.huePickerView.propertyType = SFIDevicePropertyType_COLOR_HUE;
+    float val = self.genericIndexValue.genericValue.value.floatValue;
+    NSLog(@"hue value: %f", val);
+    [self.huePickerView setConvertedValue:val];
+    [self addSubview:self.huePickerView];
 }
+
 - (void)huePicked:(float)hue picker:(ILHuePickerView *)picker {
-    //    SFISlider *slider_saturation = [self sliderForDevicePropertyType:SFIDevicePropertyType_SATURATION];
+//        SFISlider *slider_saturation = [self sliderForDevicePropertyType:SFIDevicePropertyType_SATURATION];
     //    SFISlider *slider_brightness = [self sliderForDevicePropertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
     
     SFIHuePickerView *hue_picker = (SFIHuePickerView *) picker;
      NSString *sensor_value = @([hue_picker convertToSensorValue]).stringValue;
-    [self.delegate save:sensor_value forGenericIndexValue:_genericIndexValue];
+    [self.delegate save:sensor_value forGenericIndexValue:_genericIndexValue currentView:self];
     
     //    [self processColorTintChange:slider_brightness saturationSlider:slider_saturation huePicker:hue_picker];
     

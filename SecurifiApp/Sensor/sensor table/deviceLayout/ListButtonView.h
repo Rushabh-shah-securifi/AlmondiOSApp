@@ -10,7 +10,7 @@
 #import "GenericIndexValue.h"
 
 @protocol ListButtonDelegate
--(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue;
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue currentView:(UIView*)currentView;
 @end
 
 @interface ListButtonView : UIView
@@ -19,4 +19,6 @@
 @property (nonatomic)id<ListButtonDelegate> delegate;
 //@property (nonatomic)
 -(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue;
+
+-(void)setListValue:(NSString*)value;
 @end

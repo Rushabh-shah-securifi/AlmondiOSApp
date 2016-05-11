@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "GenericIndexValue.h"
 @protocol TextInputDelegate
--(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue;
+-(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue*)genericIndexValue currentView:(UIView*)currentView;
 @end
 @interface TextInput : UIView
 @property (nonatomic)UIColor *color;
@@ -18,4 +18,5 @@
 
 -(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue;
 
+-(void)setTextFieldValue:(NSString*)value;
 @end

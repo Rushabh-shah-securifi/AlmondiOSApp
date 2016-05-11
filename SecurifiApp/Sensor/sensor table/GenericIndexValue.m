@@ -20,4 +20,12 @@
     }
     return self;
 }
+
++(GenericIndexValue*)getLightCopy:(GenericIndexValue*)genIndexVal{
+    GenericIndexValue *copy = [[GenericIndexValue alloc]initWithGenericIndex:genIndexVal.genericIndex
+                                                                genericValue:genIndexVal.genericValue
+                                                                       index:genIndexVal.index
+                                                                    deviceID:genIndexVal.deviceID];
+    return  copy;
+}
 @end

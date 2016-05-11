@@ -87,11 +87,12 @@
         self.deviceButton.userInteractionEnabled = NO;
     else
         self.deviceButton.userInteractionEnabled = YES;
-    
-    
-
 }
 
+-(void)resetHeaderView{
+    self.deviceName.text = @"";
+    self.deviceValue.text = @"";
+}
 
 -(void)setTamper{
     self.lowBatteryImgView.hidden = YES;

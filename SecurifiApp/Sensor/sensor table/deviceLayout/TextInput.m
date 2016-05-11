@@ -62,6 +62,10 @@
 -(void)tapCheckMark{
     NSLog(@"tapCheckMark %@",self.deviceNameField.text);
 //    [self.delegate save:self.deviceNameField.text forIndex:_genericIndexValue.index deviceCommandType:_genericIndexValue.genericIndex.commandType];
-    [self.delegate save:self.deviceNameField.text forGenericIndexValue:_genericIndexValue];
+    [self.delegate save:self.deviceNameField.text forGenericIndexValue:_genericIndexValue currentView:self];
+}
+
+-(void)setTextFieldValue:(NSString*)value{
+    self.deviceNameField.text = value;
 }
 @end

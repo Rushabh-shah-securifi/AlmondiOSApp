@@ -32,6 +32,8 @@
 // Returns a string indicating the current slider value
 - (NSString *)sliderFormattedValue;
 
+-(int)getConvertedValue:(float)factor;
+
 //stores sub-properties deviceid, index, value
 @property(nonatomic) SFIButtonSubProperties* subProperties;
 

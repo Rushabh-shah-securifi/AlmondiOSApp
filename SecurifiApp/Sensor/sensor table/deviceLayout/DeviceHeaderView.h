@@ -42,6 +42,8 @@ typedef NS_ENUM(NSUInteger, CellType) {
 @property (weak, nonatomic) IBOutlet UIImageView *tamperedImgView;
 
 -(void)initialize:(GenericParams*)genericParams cellType:(CellType)cellType;
+
 -(void)reloadIconImage;
 
+-(void)resetHeaderView;
 @end
