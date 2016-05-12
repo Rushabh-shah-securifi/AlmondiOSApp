@@ -59,7 +59,7 @@ int mii;
     self.currentDeviceList = @[];
     self.currentClientList = @[];
     [self initializeAlmondData];
-    [self showHudWithTimeoutMsg:@"Loading Device data"];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -97,7 +97,11 @@ int mii;
     [self markAlmondTitleAndMac];
     [self initializeColors:[self.toolkit currentAlmond]];
     self.enableDrawer = YES; //to enable navigation top left button
-    [self tryInstallRefreshControl];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self tryInstallRefreshControl];
+        if([self isDeviceListEmpty] && [self isDeviceListEmpty])
+            [self showHudWithTimeoutMsg:@"Loading Device data"];
+    });
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -153,7 +157,7 @@ int mii;
 - (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:hudMsg];
-        [self.HUD hide:YES afterDelay:5];
+        [self.HUD hide:YES afterDelay:15];
     });
 }
 

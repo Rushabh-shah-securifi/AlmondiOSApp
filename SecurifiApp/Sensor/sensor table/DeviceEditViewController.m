@@ -28,6 +28,7 @@
 #import "ClientPayload.h"
 #import "CommonMethods.h"
 #import "RulesNestThermostat.h"
+#import "RuleSceneUtil.h"
 
 #define ITEM_SPACING  2.0
 #define LABELSPACING 20.0
@@ -48,7 +49,6 @@ static const int xIndent = 10;
 //wifi client @property
 @property (weak, nonatomic) IBOutlet DeviceHeaderView *deviceEditHeaderCell;
 @property (nonatomic) UIView *dismisstamperedView;
-@property (nonatomic) UIScrollView *scrollView;
 @property (nonatomic)BOOL isLocal;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *indexScrollTopConstraint;
 @property (nonatomic)GenericIndexValue *genericIndexVal;
@@ -101,7 +101,9 @@ static const int xIndent = 10;
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self clearAllViews];
+    dispatch_async(dispatch_get_main_queue(), ^(){
+        [self clearScrollView];
+    });
     [self.miiTable removeAllObjects];
 }
 
@@ -134,16 +136,6 @@ static const int xIndent = 10;
                  object:nil];
 }
 
-- (void)clearAllViews{
-    dispatch_async(dispatch_get_main_queue(), ^(){
-        for(UIView *view in self.scrollView.subviews){
-            [view removeFromSuperview];
-        }
-        for(UIView *view in self.view.subviews){
-            [view removeFromSuperview];
-        }
-    });
-}
 #pragma mark drawerMethods
 -(void)drawIndexes{
     int yPos = LABELSPACING;
@@ -227,7 +219,6 @@ static const int xIndent = 10;
                 [view addSubview:textView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:GRID_VIEW]){
-                self.scrollView.hidden = YES;
                  NSString *schedule = [Client getScheduleById:@(genericIndexValue.deviceID).stringValue];
                 view.frame = CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
                 GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5) color:self.genericParams.color genericIndexValue:genericIndexValue onSchedule:(NSString*)schedule];
@@ -403,31 +394,70 @@ static const int xIndent = 10;
     }
 
     NSLog(@"payload mobile command: %@", payload);
-//    if (self.miiTable[payload[@"MobileInternalIndex"]] == nil) {
-//        return;
-//    }
-//    
-//    BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
-//    GenericIndexValue *genIndexVal = self.miiTable[payload[@"MobileInternalIndex"]];
-//    NSLog(@"genIndexVal: %@", genIndexVal);
-//    if(isSuccessful == NO){
-//        [self revertToOldValue:genIndexVal];
-//        [self showToast:[NSString stringWithFormat:@"Sorry, Could not update %@", genIndexVal.genericIndex.groupLabel]];
-//    }
-//    else{
-//        DeviceCommandType deviceCmdType = genIndexVal.genericIndex.commandType;
-//        if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
-//            [Device updateDeviceData:deviceCmdType value:genIndexVal.currentValue deviceID:genIndexVal.deviceID];
-//        }else{
-//            [Device updateValueForID:genIndexVal.deviceID index:genIndexVal.index value:genIndexVal.currentValue];
-//        }
-//        
-//        [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
-//    }
-//    
-//    //Repaint header
-//    [self repaintHeader:genIndexVal];
-//    [self.miiTable removeObjectForKey:payload[@"MobileInternalIndex"]];
+   
+    //comment point
+    if (self.miiTable[payload[@"MobileInternalIndex"]] == nil) {
+        return;
+    }
+    
+    BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
+    GenericIndexValue *genIndexVal = self.miiTable[payload[@"MobileInternalIndex"]];
+    NSLog(@"genIndexVal: %@", genIndexVal);
+    if(isSuccessful == NO){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self revertToOldValue:genIndexVal];
+            [self showToast:[NSString stringWithFormat:@"Sorry, Could not update %@", genIndexVal.genericIndex.groupLabel]];
+        });
+    }
+    else{
+        NSLog(@"successful");
+        DeviceCommandType deviceCmdType = genIndexVal.genericIndex.commandType;
+        if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
+            [Device updateDeviceData:deviceCmdType value:genIndexVal.currentValue deviceID:genIndexVal.deviceID];
+        }else{
+            [Device updateValueForID:genIndexVal.deviceID index:genIndexVal.index value:genIndexVal.currentValue];
+        }
+        NSLog(@"updated value: %@", [Device getValueForIndex:genIndexVal.index deviceID:genIndexVal.deviceID]);
+        
+        if([Device getTypeForID:genIndexVal.deviceID] == SFIDeviceType_NestThermostat_57){
+            [self repaintBottomView];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
+        });
+    }
+    
+    //Repaint header
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self repaintHeader:genIndexVal];
+    });
+    
+    [self.miiTable removeObjectForKey:payload[@"MobileInternalIndex"]];
+    NSLog(@"end response");
+}
+
+-(void)repaintBottomView{
+    NSLog(@"repaintBottomView");
+    int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
+    NSArray* genericIndexValues = [GenericIndexUtil getDetailListForDevice:deviceID];
+    genericIndexValues = [RuleSceneUtil handleNestThermostatForSensor:deviceID genericIndexValues:genericIndexValues];
+    self.genericParams.indexValueList = genericIndexValues;
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self clearScrollView];
+        NSLog(@"draw indexes start");
+        [self drawIndexes];
+    });
+}
+
+- (void)clearScrollView{
+    NSLog(@"clearScrollView start");
+
+    for(UIView *view in self.indexesScroll.subviews){
+        if (![view isKindOfClass:[UIImageView class]])
+            [view removeFromSuperview];
+    }
+    NSLog(@"clearScrollView end");
 }
 
 -(void)repaintHeader:(GenericIndexValue*)genIndexVal{
@@ -436,20 +466,20 @@ static const int xIndent = 10;
     GenericIndexValue *headerGenIndexVal = [GenericIndexUtil getHeaderGenericIndexValueForDevice:device];
     self.genericParams.headerGenericIndexValue = headerGenIndexVal;
     self.genericParams.deviceName = device.name;
-    [self.deviceEditHeaderCell resetHeaderView];
     
+    [self.deviceEditHeaderCell resetHeaderView];
     [self.deviceEditHeaderCell initialize:self.genericParams cellType:SensorEdit_Cell];
 }
 
 -(void)revertToOldValue:(GenericIndexValue*)genIndexVal{
-    if(genIndexVal == nil)
-        return;
+    NSLog(@"revertToOldValue");
     NSString *layout = genIndexVal.genericIndex.layoutType;
     NSString* value = [Device getValueForIndex:genIndexVal.index deviceID:genIndexVal.deviceID];
     
     if(layout){
         if([layout isEqualToString:@"SINGLE_TEMP"]){
             HorizontalPicker *horzPicker = (HorizontalPicker *)genIndexVal.clickedView;
+            horzPicker.isInitialised = NO;
             [horzPicker.horzPicker scrollToElement:[value integerValue] - genIndexVal.genericIndex.formatter.min  animated:YES];
         }
         else if ([layout isEqualToString:MULTI_BUTTON]){
@@ -489,6 +519,7 @@ static const int xIndent = 10;
         }
         else if ([layout isEqualToString: @"SLIDER"] || [layout isEqualToString:@"SLIDER_ICON"]){
             Slider *sliderView = (Slider *)genIndexVal.clickedView;
+            NSLog(@"slider update");
             [sliderView setSliderValue:[[genIndexVal.genericIndex.formatter transformValue:value] intValue]];
         }
         else if ([layout isEqualToString:TEXT_VIEW] || [layout isEqualToString:@"TEXT_VIEW_ONLY"]){

@@ -104,6 +104,7 @@
 +(BOOL)showGenericDevice:(int)deviceType isTrigger:(BOOL) isTrigger isScene:(BOOL)isScene{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericDeviceClass *genericDevice = toolkit.genericDevices[@(deviceType).stringValue];
+    NSLog(@"devicetype: %d, istrigger: %d", deviceType, genericDevice.isTrigger);
     if(genericDevice != nil && [self isToBeAdded:genericDevice.excludeFrom checkString:isScene?@"Scene":@"Rule"]){
         if((!isScene && isTrigger) && genericDevice.isTrigger)
             return YES;

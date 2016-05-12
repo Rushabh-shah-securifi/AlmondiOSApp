@@ -89,7 +89,7 @@
     NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, nil];
     detailList = [[detailList sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
     
-    if((device.type == SFIDeviceType_NestThermostat_57 && [[Device getValueForIndex:11 deviceID:deviceID] isEqualToString:@"false"]) || (device.type == SFIDeviceType_NestSmokeDetector_58 && [[Device getValueForIndex:5 deviceID:deviceID] isEqualToString:@"false"])){
+    if((device.type == SFIDeviceType_NestThermostat_57 && [[Device getValueForIndex:11 deviceID:deviceID] isEqualToString:@"false"]) || (device.type == SFIDeviceType_NestSmokeDetector_58 && [[Device getValueForIndex:5 deviceID:deviceID] isEqualToString:@"false"])){//don't paint indexes on offline
         [detailList removeAllObjects];
     }
     NSArray *commonList = [self getCommonGenericIndexValue:device];

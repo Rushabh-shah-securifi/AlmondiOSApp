@@ -946,7 +946,7 @@
         "DefaultIcon": "saturation_icon",
         "Formatter": {
             "Min": "0",
-            "Max": "255",
+            "Max": "100",
             "Factor": "0.392",
             "Unit": "%"
         }

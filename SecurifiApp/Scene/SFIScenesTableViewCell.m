@@ -75,8 +75,8 @@
         [btnActivate setImage:[UIImage imageNamed:@"iconSceneCircle"] forState:UIControlStateNormal];
     }
     BOOL isCompatible = [self isSceneNameCompatibleWithAlexa];
-    if (isCompatible){//
-        alexaImg.image = [UIImage imageNamed:@"amazon-echo"];
+    if (isCompatible){
+        alexaImg.image = [UIImage imageNamed:@"amazon_echo_voice"];
     }else{
         alexaImg.image = nil;
     }

@@ -79,7 +79,11 @@ CGPoint tablePoint;
 
 -(void)initializeNotifications{
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(onRuleUpdateCommandResponse:) name:SAVED_TABLEVIEW_RULE_COMMAND object:nil];
+    [center addObserver:self
+               selector:@selector(onRuleUpdateCommandResponse:)
+                   name:SAVED_TABLEVIEW_RULE_COMMAND
+                 object:nil];
+    
     [center addObserver:self
                selector:@selector(onCurrentAlmondChanged:)
                    name:kSFIDidChangeCurrentAlmond
@@ -104,10 +108,28 @@ CGPoint tablePoint;
 - (void)onCurrentAlmondChanged:(id)sender {
     self.rules = nil;
     [self markAlmondTitleAndMac];
-    [self getRuleList];
+    [self sendGetAllRulesRequest];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
+}
+
+-(void)sendGetAllRulesRequest{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    if (!plus.almondplusMAC) {
+        return;
+    }
+    
+    GenericCommand *command = [[GenericCommand alloc] init];
+    command = [GenericCommand requestAlmondRules:plus.almondplusMAC];
+
+    [self setUpHUD];
+    self.HUD.labelText = @"Loading Rules...";
+    [self showHudWithTimeout];
+    
+    [self asyncSendCommand:command];
+
 }
 
 -(void)initializeTableViewAttributes{
@@ -117,10 +139,11 @@ CGPoint tablePoint;
 }
 
 - (void)onRuleUpdateCommandResponse:(id)sender{
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    self.rules =[NSMutableArray arrayWithArray:toolkit.ruleList];
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.HUD hide:YES];
-        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        self.rules =[NSMutableArray arrayWithArray:toolkit.ruleList];
         [self.tableView reloadData];
         self.tableView.contentOffset = tablePoint;
     });
@@ -257,10 +280,6 @@ CGPoint tablePoint;
 
     [self addAddRuleButton];
     return cell;
-}
-
--(void) removeRuleAtIndexPathRow:(NSInteger)indexPathRow{
-    [self.rules removeObjectAtIndex:indexPathRow];
 }
 
 #pragma mark custom cell Delegate methods

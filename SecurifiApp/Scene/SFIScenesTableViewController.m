@@ -101,6 +101,7 @@
                selector:@selector(onCurrentAlmondChanged:)
                    name:kSFIDidChangeCurrentAlmond
                  object:nil];
+    
     [center addObserver:self
                selector:@selector(gotResponseFor1064:)
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
@@ -124,11 +125,11 @@
 }
 -(void)updateSceneTableView:(id)sender{
     NSLog(@"updateSceneTableView ");
+    [self getAllScenes];
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self getAllScenes];
+        [self.tableView reloadData];
+        [self.HUD hide:YES];
     });
-    
-    
 }
 
 - (void)sendGetAllScenesRequest {

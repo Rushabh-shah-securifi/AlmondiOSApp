@@ -13,7 +13,7 @@
 #import "RuleSceneUtil.h"
 #import "Colours.h"
 
-@interface DeviceHeaderView()<UIAlertViewDelegate>
+@interface DeviceHeaderView()
 @property (weak, nonatomic) IBOutlet UILabel *deviceValueImgLable;
 @end
 
@@ -51,6 +51,7 @@
 }
 
 -(void)initialize:(GenericParams*)genericParams cellType:(CellType)cellType{
+    NSLog(@"headerview - initialize");
     self.genericParams = genericParams;
     self.cellType = cellType;
     [self setUpDeviceCell];
@@ -87,6 +88,7 @@
         self.deviceButton.userInteractionEnabled = NO;
     else
         self.deviceButton.userInteractionEnabled = YES;
+    NSLog(@"setUpDeviceCell end");
 }
 
 -(void)resetHeaderView{
@@ -235,49 +237,16 @@
             if ([genericIndexValue.genericValue.value isEqualToString:@"true"]){
                 self.tamperedImgView.hidden = NO;
                 self.tamperedImgView.image = [UIImage imageNamed:@"icon_tampered_orange"];
-                UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(batteryTapped:)];
-                singleTap.numberOfTapsRequired = 1;
-                [self.lowBatteryImgView setUserInteractionEnabled:YES];
-                [self.lowBatteryImgView addGestureRecognizer:singleTap];
             }
         }
         if([genericIndexObj.ID isEqualToString:@"12"]){//tampered
             if ([genericIndexValue.genericValue.value isEqualToString:@"true"]) {
                 self.lowBatteryImgView.hidden = NO;
                 self.lowBatteryImgView.image = [UIImage imageNamed:@"low_battery_badge"];
-                UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tamperTapped:)];
-                singleTap.numberOfTapsRequired = 1;
-                [self.tamperedImgView setUserInteractionEnabled:YES];
-                [self.tamperedImgView addGestureRecognizer:singleTap];
             }
         }
     }
 }
 
--(void)tamperTapped:(id)sender{
-//    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Do you want to dismiss tamper ?"
-//                                                    message:@""
-//                                                   delegate:self
-//                                          cancelButtonTitle:@"Cancel"
-//                                          otherButtonTitles:@"YES", nil];
-//    alert.delegate = self;
-//    [alert show];
-    
-    NSLog(@"tamperTapped  ");
-}
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
-    if (buttonIndex == [alertView cancelButtonIndex]){
-        //cancel clicked ...do your action
-    }else{
-        self.tamperedImgView.hidden = YES;
-        // make is tamper value to false
-        // delegate reload table
-    }
-}
-
--(void)batteryTapped:(id)sender{
-    NSLog(@"batteryTapped");
-}
 
 @end

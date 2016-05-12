@@ -26,19 +26,46 @@
 @property (weak, nonatomic) IBOutlet UIView *resetView;
 @property (weak, nonatomic) IBOutlet UIButton *resetButton;
 @property (nonatomic) BOOL isLocal;
+@property (nonatomic) DeviceHeaderView *commonView;
 @end
 
 @implementation ClientPropertiesViewController
-NSInteger randomMobileInternalIndex;
+int randomMobileInternalIndex;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.clientPropertiesTable.backgroundColor = self.genericParams.color;
     self.resetView.backgroundColor = self.genericParams.color;
     [self.resetButton setTitleColor: self.genericParams.color forState:UIControlStateNormal];
     [self setHeaderCell];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    NSLog(@"client properties - view will appear");
+    [super viewWillAppear:YES];
+    randomMobileInternalIndex = arc4random() % 10000;
+    [self initializeNotifications];
     SecurifiToolkit *toolkit=[SecurifiToolkit sharedInstance];
     self.isLocal = [toolkit useLocalNetwork:[toolkit currentAlmond].almondplusMAC];
-    randomMobileInternalIndex = arc4random() % 10000;
+}
+
+-(void)initializeNotifications{
+    NSLog(@"initialize notifications sensor table");
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self
+               selector:@selector(onDeviceListAndDynamicResponseParsed:)
+                   name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onCommandResponse:)
+                   name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
+                 object:nil]; //indexupdate
+    
+}
+
+-(void)viewWillDisappear{
+    [self viewWillDisappear:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark common cell delegate
@@ -52,11 +79,11 @@ NSInteger randomMobileInternalIndex;
 }
 
 -(void)setHeaderCell{
-    DeviceHeaderView *commonView = [[DeviceHeaderView alloc]initWithFrame:CELLFRAME];
-    [commonView initialize:self.genericParams cellType:ClientProperty_Cell];
-    commonView.delegate = self;
+    self.commonView= [[DeviceHeaderView alloc]initWithFrame:CELLFRAME];
+    [self.commonView initialize:self.genericParams cellType:ClientProperty_Cell];
+    self.commonView.delegate = self;
     // set up images label and name
-    [self.view addSubview:commonView];
+    [self.view addSubview:self.commonView];
 }
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
@@ -112,6 +139,7 @@ NSInteger randomMobileInternalIndex;
         [self tableView: self.clientPropertiesTable accessoryButtonTappedForRowWithIndexPath: indexPath];
     }
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
     NSLog(@"didSelectRowAtIndexPath");
     DeviceEditViewController *ctrl = [self.storyboard instantiateViewControllerWithIdentifier:@"DeviceEditViewController"];
@@ -120,12 +148,25 @@ NSInteger randomMobileInternalIndex;
                                                               deviceName:self.genericParams.deviceName color:self.genericParams.color isSensor:NO];
     [self.navigationController pushViewController:ctrl animated:YES];
 }
+
 - (IBAction)resetButtontap:(id)sender {
     Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
     client = [client copy];
     NSLog(@"client mac %@, client id %@",client.deviceMAC,client.deviceID);
     [ClientPayload resetClientCommand:client.deviceMAC clientID:client.deviceID mii:randomMobileInternalIndex];
-    
 }
 
+#pragma mark command resposne
+-(void)onDeviceListAndDynamicResponseParsed:(id)sender{
+    NSLog(@"client properties - onDeviceListAndDynamicResponseParsed");
+    if(self.commonView.cellType == ClientProperty_Cell){
+        dispatch_async(dispatch_get_main_queue(), ^(){
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        });
+    }
+}
+
+-(void)onCommandResponse:(id)sender{
+    NSLog(@"onCommandResponse");
+}
 @end

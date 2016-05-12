@@ -14,7 +14,7 @@
 - (void)showToast:(NSString *)msg {
     dispatch_async(dispatch_get_main_queue(), ^() {
         iToast *toast = [iToast makeText:msg];
-        toast = [toast setGravity:iToastGravityCenter];
+        toast = [toast setGravity:iToastGravityBottom];
         toast = [toast setDuration:2000];
         [toast show:iToastTypeWarning];
     });

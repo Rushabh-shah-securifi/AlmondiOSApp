@@ -44,7 +44,7 @@
     NSLog(@"self.genericIndexValue.genericValue.value %@",self.genericIndexValue.genericValue.value);
     
     [self.horzPicker scrollToElement:[self.genericIndexValue.genericValue.value integerValue] - self.genericIndexValue.genericIndex.formatter.min  animated:YES];// here value will be device knownVaklue.value
-    self.isInitialised = YES;
+    
     
     const NSInteger element_width = [self horizontalPickerView:self.horzPicker widthForElementAtIndex:0];
     SFIPickerIndicatorView1 *indicatorView = [[SFIPickerIndicatorView1 alloc] initWithFrame:CGRectMake(0, 0, element_width, 2)];
@@ -68,6 +68,7 @@
 - (void)horizontalPickerView:(V8HorizontalPickerView *)picker didSelectElementAtIndex:(NSInteger)index {
     if(self.isInitialised)
         [self.delegate save:@(self.genericIndexValue.genericIndex.formatter.min + index).stringValue forGenericIndexValue:_genericIndexValue currentView:self];
+    self.isInitialised = YES;
 }
 
 - (UIColor *)darkerColorForColor:(UIColor *)c
