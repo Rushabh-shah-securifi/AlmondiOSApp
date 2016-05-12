@@ -61,6 +61,7 @@
 }
 -(void)tapCheckMark{
     NSLog(@"tapCheckMark %@",self.deviceNameField.text);
+    [self.deviceNameField resignFirstResponder];
 //    [self.delegate save:self.deviceNameField.text forIndex:_genericIndexValue.index deviceCommandType:_genericIndexValue.genericIndex.commandType];
     [self.delegate save:self.deviceNameField.text forGenericIndexValue:_genericIndexValue currentView:self];
 }
