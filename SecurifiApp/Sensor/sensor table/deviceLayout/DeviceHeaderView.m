@@ -66,11 +66,14 @@
     
     
     NSLog(@"device id %d, Icon text %@, icon: %@, index id %@, placement %@",_genericParams.headerGenericIndexValue.deviceID,_genericParams.headerGenericIndexValue.genericValue.iconText,_genericParams.headerGenericIndexValue.genericValue.icon,_genericParams.headerGenericIndexValue.genericIndex.ID,_genericParams.headerGenericIndexValue.genericIndex.placement);
-    int deviceType = [Device getTypeForID:_genericParams.headerGenericIndexValue.deviceID];
-    int deviceID = _genericParams.headerGenericIndexValue.deviceID;
-    if(deviceType == SFIDeviceType_NestThermostat_57 || deviceType == SFIDeviceType_NestSmokeDetector_58 ){
-        [self handleNestThermostatAndSmokeDectect:deviceType deviceID:deviceID genericValue:_genericParams.headerGenericIndexValue.genericValue];
+    if(self.genericParams.isSensor){
+        int deviceType = [Device getTypeForID:_genericParams.headerGenericIndexValue.deviceID];
+        int deviceID = _genericParams.headerGenericIndexValue.deviceID;
+        if(deviceType == SFIDeviceType_NestThermostat_57 || deviceType == SFIDeviceType_NestSmokeDetector_58 ){
+            [self handleNestThermostatAndSmokeDectect:deviceType deviceID:deviceID genericValue:_genericParams.headerGenericIndexValue.genericValue];
+        }
     }
+    
     
     if(_genericParams.headerGenericIndexValue.genericValue.iconText){
         self.deviceImage.hidden = YES;

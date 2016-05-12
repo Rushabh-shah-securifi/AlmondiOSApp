@@ -198,13 +198,14 @@
 
 + (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(Client*) client{
     NSString *status = client.deviceAllowedType==1 ? ALLOWED_TYPE_BLOCKED: client.isActive? ACTIVE: INACTIVE;
-    GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:client.deviceType];
+    GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:client.deviceType]; //-12 client type - iphone, ipad etc.
 
     if(genericValue == nil){ //if devicetype is wronglysent only expected return is nil
         genericValue = [[GenericValue alloc]initWithDisplayText:status icon:@"help_icon" toggleValue:nil value:client.deviceType excludeFrom:nil eventType:nil];
     }else{
         genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:status];
     }
+    
     return [[GenericIndexValue alloc]initWithGenericIndex:nil genericValue:genericValue index:client.deviceID.intValue deviceID:client.deviceID.intValue];
 }
 
