@@ -29,4 +29,5 @@ typedef NS_ENUM(NSUInteger, SFICloudStatusState) {
 
 - (void)markState:(SFICloudStatusState)newState;
 
+- (void)modeUpdate:(UIImage *)image color:(UIColor *)color mode:(NSString *)mode;
 @end

@@ -17,6 +17,7 @@
 #import "UIApplication+SecurifiNotifications.h"
 #import "SFIHuePickerView.h"
 #import "AlertView.h"
+#import "MDJSON.h"
 #import "AlertViewAction.h"
 
 @interface SFITableViewController () <MBProgressHUDDelegate, SWRevealViewControllerDelegate, UIGestureRecognizerDelegate, AlertViewDelegate, UITabBarControllerDelegate>
@@ -95,84 +96,86 @@
 
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
 
-    [center addObserver:self
-               selector:@selector(onNetworkDownNotifier:)
-                   name:NETWORK_DOWN_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onNetworkConnectingNotifier:)
-                   name:NETWORK_CONNECTING_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onNetworkConnectingNotifier:)
-                   name:kSFIDidChangeAlmondConnectionMode
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onNetworkUpNotifier:)
-                   name:NETWORK_UP_NOTIFIER
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onReachabilityDidChange:)
-                   name:kSFIReachabilityChangedNotification
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onNotificationCountChanged:)
-                   name:kSFINotificationDidStore
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onNotificationCountChanged:)
-                   name:kSFINotificationBadgeCountDidChange
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onNotificationCountChanged:)
-                   name:kSFINotificationDidMarkViewed
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onAlmondModeChangeDidComplete:)
-                   name:kSFIDidChangeCurrentAlmond
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onAlmondModeChangeDidComplete:)
-                   name:kSFIDidCompleteAlmondModeChangeRequest
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onAlmondModeDidChange:)
-                   name:kSFIAlmondModeDidChange
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(onShowNotifications:)
-                   name:kApplicationDidBecomeActiveOnNotificationTap
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(keyboardWillShow:)
-                   name:UIKeyboardWillShowNotification
-                 object:nil];
-
-    [center addObserver:self
-               selector:@selector(keyboardWillHide:)
-                   name:UIKeyboardWillHideNotification
-                 object:nil];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self
+               selector:@selector(onAlmondModeDidChange:)
+                   name:kSFIAlmondModeDidChange
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onNetworkDownNotifier:)
+                   name:NETWORK_DOWN_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onNetworkConnectingNotifier:)
+                   name:NETWORK_CONNECTING_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onNetworkConnectingNotifier:)
+                   name:kSFIDidChangeAlmondConnectionMode
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onNetworkUpNotifier:)
+                   name:NETWORK_UP_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onReachabilityDidChange:)
+                   name:kSFIReachabilityChangedNotification
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationDidStore
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationBadgeCountDidChange
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationDidMarkViewed
+                 object:nil];
+    
+    //    [center addObserver:self
+    //               selector:@selector(onAlmondModeChangeDidComplete:)
+    //                   name:kSFIDidChangeCurrentAlmond
+    //                 object:nil];
+    //
+    //    [center addObserver:self
+    //               selector:@selector(onAlmondModeChangeDidComplete:)
+    //                   name:kSFIDidCompleteAlmondModeChangeRequest
+    //                 object:nil];
+    
+    
+    
+    [center addObserver:self
+               selector:@selector(onShowNotifications:)
+                   name:kApplicationDidBecomeActiveOnNotificationTap
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(keyboardWillShow:)
+                   name:UIKeyboardWillShowNotification
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(keyboardWillHide:)
+                   name:UIKeyboardWillHideNotification
+                 object:nil];
     // make sure status icon is up-to-date
     [self markNetworkStatusIcon];
     [self markNotificationStatusIcon];
-
+    
     // install self as delegate so this controller can enable/disable drawer
     SWRevealViewController *ctrl = [self revealViewController];
     ctrl.delegate = self;
@@ -181,6 +184,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
     if ([self isBeingDismissed] || [self isMovingFromParentViewController]) {
         // make sure HUD is released from nav controller
@@ -374,13 +378,13 @@
 }
 
 - (void)onAlmondModeButtonPressed:(id)sender {
-    if (!self.enableNotificationsView) {
-        return;
-    }
+//    if (!self.enableNotificationsView) {
+//        return;
+//    }
 
     SFICloudStatusBarButtonItem *button = self.almondModeBarButton;
     SFICloudStatusState state = button.state;
-
+    NSLog(@"onAlmondModeButtonPressed mode stat %lu",(unsigned long)state);
     enum SFIAlmondMode newMode;
     NSString *msg;
 
@@ -397,9 +401,9 @@
     }
 
     // if the hud is already being shown then ignore the button press
-    if (!self.isHudHidden) {
-        return;
-    }
+//    if (!self.isHudHidden) {
+//        return;
+//    }
 
     [self showHUD:msg];
     [self.HUD hide:YES afterDelay:10]; // in case the request times out
@@ -416,12 +420,46 @@
 }
 
 - (void)onAlmondModeDidChange:(id)sender {
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.presentedViewController != nil) {
-            return;
-        }
+    NSLog(@"%s",__PRETTY_FUNCTION__);
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+     NSLog(@"payload mode %@",dataInfo);
+    BOOL local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
+    NSDictionary *payload;
 
-        [self markNetworkStatusIcon];
+    if(local){
+         payload = [dataInfo valueForKey:@"data"];
+    }else{
+        NSLog(@"cloud data");
+//        payload = [dataInfo objectFromJSONData];
+    }
+
+    dispatch_async(dispatch_get_main_queue(), ^() {
+//        if (self.presentedViewController != nil) {
+//            return;
+//        }
+        self.HUD.hidden = YES;
+        NSLog(@"payload mode %@",payload);
+        NSString *m = payload[@"Mode"];
+        NSLog(@"m = %@",m);
+        NSLog(@"mode m= %ld",(long)[m integerValue]);
+        SFIAlmondMode mode = (unsigned)[m integerValue];
+        NSLog(@"almond mode change");
+        
+       NSString *name = [m isEqualToString:@"2"]?@"almond_mode_home":@"almond_mode_away";
+        
+        UIImage *image = [UIImage imageNamed:name];
+        UIColor *color = [UIColor blackColor];
+        [self.almondModeBarButton modeUpdate:image color:color mode:m];
+        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+        spacer.width = 20;
+   
+        self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.almondModeBarButton, spacer, self.notificationsStatusButton];
+        
+
+        
+//        [self markNetworkStatusIcon];
     });
 }
 
@@ -553,7 +591,7 @@
     UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     spacer.width = 20;
 
-    if (showAlmondHome) {
+    if (1) {
         self.navigationItem.rightBarButtonItems = @[self.connectionStatusBarButton, spacer, self.almondModeBarButton, spacer, self.notificationsStatusButton];
     }
     else {
@@ -571,12 +609,13 @@
 }
 
 - (void)showAlmondModeButton {
-    if (!self.enableNotificationsHomeAwayMode) {
-        return;
-    }
+//    if (!self.enableNotificationsHomeAwayMode) {
+//        return;
+//    }
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self setBarButtons:YES];
     });
+//    [self setBarButtons:NO];
 }
 
 #pragma mark Drawer management

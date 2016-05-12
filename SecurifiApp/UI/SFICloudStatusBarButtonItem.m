@@ -50,6 +50,14 @@
     button.tintColor = color;
     [button setImage:image forState:UIControlStateNormal];
 }
+- (void)modeUpdate:(UIImage *)image color:(UIColor *)color mode:(NSString *)mode{
+    _state = [mode isEqualToString:@"2"]?SFICloudStatusStateAtHome:SFICloudStatusStateAway;
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        NSLog(@"INside modeUpdate %@",mode);
+        self.button.tintColor = color;
+        [self.button setImage:image forState:UIControlStateNormal];
+    });
+}
 
 - (UIImage *)imageForState:(SFICloudStatusState)state localNetworkingMode:(BOOL)localNetworkingMode {
     enum UIImageRenderingMode mode = UIImageRenderingModeAlwaysTemplate;
@@ -101,6 +109,7 @@
     }
 
     UIImage *image = [UIImage imageNamed:name];
+    NSLog(@"image name %@",name);
     return [image imageWithRenderingMode:mode];
 }
 
