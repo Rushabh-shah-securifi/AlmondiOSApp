@@ -16,6 +16,7 @@
 #import "DeviceEditViewController.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "ClientPayload.h"
+#import "SFINotificationsViewController.h"
 
 #define CELLFRAME CGRectMake(8, 8, self.view.frame.size.width -16, 70)
 
@@ -25,8 +26,10 @@
 @property (nonatomic)NSDictionary *ClientDict;
 @property (weak, nonatomic) IBOutlet UIView *resetView;
 @property (weak, nonatomic) IBOutlet UIButton *resetButton;
+@property (weak, nonatomic) IBOutlet UIButton *historyButton;
 @property (nonatomic) BOOL isLocal;
 @property (nonatomic) DeviceHeaderView *commonView;
+@property (nonatomic)SecurifiToolkit *toolkit;
 @end
 
 @implementation ClientPropertiesViewController
@@ -44,8 +47,8 @@ int randomMobileInternalIndex;
     [super viewWillAppear:YES];
     randomMobileInternalIndex = arc4random() % 10000;
     [self initializeNotifications];
-    SecurifiToolkit *toolkit=[SecurifiToolkit sharedInstance];
-    self.isLocal = [toolkit useLocalNetwork:[toolkit currentAlmond].almondplusMAC];
+    _toolkit=[SecurifiToolkit sharedInstance];
+    self.isLocal = [_toolkit useLocalNetwork:[_toolkit currentAlmond].almondplusMAC];
 }
 
 -(void)initializeNotifications{
@@ -96,8 +99,10 @@ int randomMobileInternalIndex;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     SecurifiToolkit *toolkit=[SecurifiToolkit sharedInstance];
     self.isLocal = [toolkit useLocalNetwork:[toolkit currentAlmond].almondplusMAC];
-    if(self.isLocal)
+    if(self.isLocal){
         return self.genericParams.indexValueList.count -1;
+    }
+    self.historyButton.hidden = NO;
     return self.genericParams.indexValueList.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -148,6 +153,18 @@ int randomMobileInternalIndex;
                                                               deviceName:self.genericParams.deviceName color:self.genericParams.color isSensor:NO];
     [self.navigationController pushViewController:ctrl animated:YES];
 }
+- (IBAction)historyButtonTap:(id)sender {
+    SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    //        ctrl.enableDebugMode = YES; // can uncomment for development/test
+    ctrl.enableDeleteNotification = NO;
+    ctrl.markAllViewedOnDismiss = NO;
+    ctrl.deviceID = self.genericParams.headerGenericIndexValue.deviceID;
+    ctrl.almondMac = _toolkit.currentAlmond.almondplusMAC;
+    
+    UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    [self presentViewController:nav_ctrl animated:YES completion:nil];
+
+}
 
 - (IBAction)resetButtontap:(id)sender {
     Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
@@ -159,12 +176,31 @@ int randomMobileInternalIndex;
 #pragma mark command resposne
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"client properties - onDeviceListAndDynamicResponseParsed");
-    if(self.commonView.cellType == ClientProperty_Cell){
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    NSDictionary *payload = dataInfo[@"data"];
+    NSDictionary *clientPayload = payload[CLIENTS];
+    if(clientPayload == nil){//to handle removeall
         dispatch_async(dispatch_get_main_queue(), ^(){
             [self.navigationController popToRootViewControllerAnimated:YES];
         });
     }
+    else{
+        NSString *clientID = clientPayload.allKeys.firstObject;
+        if([clientID intValue] == self.genericParams.headerGenericIndexValue.deviceID){
+            dispatch_async(dispatch_get_main_queue(), ^(){
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            });
+        }
+    }
+    
 }
+
+
 
 -(void)onCommandResponse:(id)sender{
     NSLog(@"onCommandResponse");

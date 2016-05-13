@@ -432,7 +432,7 @@
          payload = [dataInfo valueForKey:@"data"];
     }else{
         NSLog(@"cloud data");
-//        payload = [dataInfo objectFromJSONData];
+       payload = [dataInfo valueForKey:@"data"];
     }
 
     dispatch_async(dispatch_get_main_queue(), ^() {

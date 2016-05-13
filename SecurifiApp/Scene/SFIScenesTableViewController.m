@@ -47,11 +47,12 @@
     self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
     // Do any additional setup after loading the view.
     
-    [self initializeNotifications];
+    
     
 }
 
 - (void)viewWillAppear:(BOOL)animated{
+    NSLog(@"scenes table viewwillappear");
     [super viewWillAppear:animated];
     self.enableDrawer = YES;
     randomMobileInternalIndex = arc4random() % 10000;
@@ -59,6 +60,7 @@
     [self getAllScenes];
     [self addAddSceneButton];
     [self markAlmondTitleAndMac];
+    [self initializeNotifications];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];

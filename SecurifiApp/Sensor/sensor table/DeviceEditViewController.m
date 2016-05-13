@@ -29,6 +29,8 @@
 #import "CommonMethods.h"
 #import "RulesNestThermostat.h"
 #import "RuleSceneUtil.h"
+#import "SFIHighlightedButton.h"
+#import "SFINotificationsViewController.h"
 
 #define ITEM_SPACING  2.0
 #define LABELSPACING 20.0
@@ -69,9 +71,7 @@ static const int xIndent = 10;
     self.toolkit=[SecurifiToolkit sharedInstance];
     [self setUpDeviceEditCell];
     self.miiTable = [NSMutableDictionary new];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self drawIndexes];
-    });
+    
 }
 
 -(void)setUpDeviceEditCell{
@@ -89,7 +89,9 @@ static const int xIndent = 10;
     [super viewWillAppear:YES];
     
     [self initializeNotifications];
-    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self drawIndexes];
+    });
     self.isLocal = [self.toolkit useLocalNetwork:[self.toolkit currentAlmond].almondplusMAC];
     
 }
@@ -245,7 +247,58 @@ static const int xIndent = 10;
             self.keyBoardComp = yPos;
             [self.indexesScroll setContentSize:scrollableSize];
         }
+        
     }
+    if(!self.isLocal && self.genericParams.isSensor){
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp, self.indexesScroll.frame.size.width-xIndent, 65)];
+        SFIHighlightedButton *historyButton = [[SFIHighlightedButton alloc]initWithFrame:CGRectMake(xIndent, 0, 100, 40)];
+        historyButton = [historyButton addButton:@"Device History" button:historyButton color:self.genericParams.color];
+        [historyButton addTarget:self action:@selector(onShowSensorLogs) forControlEvents:UIControlEventTouchUpInside];
+        CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.keyBoardComp + 60);
+        yPos = yPos + view.frame.size.height + LABELSPACING;
+        [self.indexesScroll setContentSize:scrollableSize];
+        [view addSubview:historyButton];
+        [self.indexesScroll addSubview:view];
+    }
+}
+-(void)onShowSensorLogs{
+    SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    //        ctrl.enableDebugMode = YES; // can uncomment for development/test
+    ctrl.enableDeleteNotification = NO;
+    ctrl.markAllViewedOnDismiss = NO;
+    ctrl.deviceID = self.genericParams.headerGenericIndexValue.deviceID;
+    ctrl.almondMac = _toolkit.currentAlmond.almondplusMAC;
+    
+    UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    [self presentViewController:nav_ctrl animated:YES completion:nil];
+
+}
+- (SFIHighlightedButton *)addButton:(NSString *)buttonName button:(SFIHighlightedButton *)button color:(UIColor *)color{
+    UIFont *heavy_font = [UIFont securifiBoldFontLarge];
+    
+    CGSize stringBoundingBox = [buttonName sizeWithAttributes:@{NSFontAttributeName : heavy_font}];
+    
+    int button_width = (int) (stringBoundingBox.width + 20);
+    if (button_width < 60) {
+        button_width = 60;
+    }
+    
+    int right_margin = 10;
+
+    button.titleLabel.font = heavy_font;
+    UIColor *whiteColor = [UIColor whiteColor];
+    UIColor *normalColor = self.genericParams.color;
+    UIColor *highlightColor = whiteColor;
+    button.normalBackgroundColor = normalColor;
+    button.highlightedBackgroundColor = highlightColor;
+    [button setTitle:buttonName forState:UIControlStateNormal];
+    [button setTitleColor:whiteColor forState:UIControlStateNormal];
+    [button setTitleColor:normalColor forState:UIControlStateHighlighted];
+    button.layer.borderWidth = 1.0f;
+    button.layer.borderColor = whiteColor.CGColor;
+    
+    return button;
+
 }
 
 - (void)setUpLable:(UILabel*)label withPropertyName:(NSString*)propertyName{
@@ -370,6 +423,11 @@ static const int xIndent = 10;
 -(void)toggle:(GenericIndexValue *)headerGenericIndexValue{
     NSLog(@"delegateSensorTableDeviceButtonClickWithGenericProperies");
     mii = arc4random()%10000;
+    
+    headerGenericIndexValue = [GenericIndexValue getLightCopy:headerGenericIndexValue];
+    headerGenericIndexValue.currentValue = headerGenericIndexValue.genericValue.toggleValue;
+    headerGenericIndexValue.clickedView = nil;
+    
     [self.miiTable setValue:headerGenericIndexValue forKey:@(mii).stringValue];
     [DevicePayload getSensorIndexUpdate:headerGenericIndexValue mii:mii];
 }
@@ -377,63 +435,70 @@ static const int xIndent = 10;
 #pragma mark command responses
 -(void)onCommandResponse:(id)sender{ //mobile command sensor and client 1064
     NSLog(@"device edit - onUpdateDeviceIndexResponse");
-    SFIAlmondPlus *almond = [self.toolkit currentAlmond];
-    BOOL local = [self.toolkit useLocalNetwork:almond.almondplusMAC];
-    NSDictionary *payload;
-
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *dataInfo = [notifier userInfo];
-    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
-        return;
-    }
     
-    if(local){
-        payload = dataInfo[@"data"];
-    }else{
-        payload = [dataInfo[@"data"] objectFromJSONData];
-    }
-
-    NSLog(@"payload mobile command: %@", payload);
-   
-    //comment point
-    if (self.miiTable[payload[@"MobileInternalIndex"]] == nil) {
-        return;
-    }
-    
-    BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
-    GenericIndexValue *genIndexVal = self.miiTable[payload[@"MobileInternalIndex"]];
-    NSLog(@"genIndexVal: %@", genIndexVal);
-    if(isSuccessful == NO){
+    if(self.genericParams.isSensor){
+        NSLog(@"sensor");
+        SFIAlmondPlus *almond = [self.toolkit currentAlmond];
+        BOOL local = [self.toolkit useLocalNetwork:almond.almondplusMAC];
+        NSDictionary *payload;
+        
+        NSNotification *notifier = (NSNotification *) sender;
+        NSDictionary *dataInfo = [notifier userInfo];
+        if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+            return;
+        }
+        
+        if(local){
+            payload = dataInfo[@"data"];
+        }else{
+            payload = [dataInfo[@"data"] objectFromJSONData];
+        }
+        
+        NSLog(@"payload mobile command: %@", payload);
+        
+        //comment point
+        if (self.miiTable[payload[@"MobileInternalIndex"]] == nil) {
+            return;
+        }
+        
+        BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
+        GenericIndexValue *genIndexVal = self.miiTable[payload[@"MobileInternalIndex"]];
+        NSLog(@"genIndexVal: %@", genIndexVal);
+        if(isSuccessful == NO){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self revertToOldValue:genIndexVal];
+                [self showToast:[NSString stringWithFormat:@"Sorry, Could not update %@", genIndexVal.genericIndex.groupLabel]];
+            });
+        }
+        else{
+            NSLog(@"successful");
+            DeviceCommandType deviceCmdType = genIndexVal.genericIndex.commandType;
+            if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
+                [Device updateDeviceData:deviceCmdType value:genIndexVal.currentValue deviceID:genIndexVal.deviceID];
+            }else{
+                [Device updateValueForID:genIndexVal.deviceID index:genIndexVal.index value:genIndexVal.currentValue];
+            }
+            NSLog(@"updated value: %@", [Device getValueForIndex:genIndexVal.index deviceID:genIndexVal.deviceID]);
+            
+            if([Device getTypeForID:genIndexVal.deviceID] == SFIDeviceType_NestThermostat_57){
+                [self repaintBottomView];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
+            });
+        }
+        
+        //Repaint header
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self revertToOldValue:genIndexVal];
-            [self showToast:[NSString stringWithFormat:@"Sorry, Could not update %@", genIndexVal.genericIndex.groupLabel]];
+            [self repaintHeader:genIndexVal];
         });
+        
+        [self.miiTable removeObjectForKey:payload[@"MobileInternalIndex"]];
+        NSLog(@"end response");
     }
     else{
-        NSLog(@"successful");
-        DeviceCommandType deviceCmdType = genIndexVal.genericIndex.commandType;
-        if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
-            [Device updateDeviceData:deviceCmdType value:genIndexVal.currentValue deviceID:genIndexVal.deviceID];
-        }else{
-            [Device updateValueForID:genIndexVal.deviceID index:genIndexVal.index value:genIndexVal.currentValue];
-        }
-        NSLog(@"updated value: %@", [Device getValueForIndex:genIndexVal.index deviceID:genIndexVal.deviceID]);
-        
-        if([Device getTypeForID:genIndexVal.deviceID] == SFIDeviceType_NestThermostat_57){
-            [self repaintBottomView];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
-        });
+        NSLog(@"client");
     }
-    
-    //Repaint header
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self repaintHeader:genIndexVal];
-    });
-    
-    [self.miiTable removeObjectForKey:payload[@"MobileInternalIndex"]];
-    NSLog(@"end response");
 }
 
 -(void)repaintBottomView{
@@ -473,6 +538,9 @@ static const int xIndent = 10;
 
 -(void)revertToOldValue:(GenericIndexValue*)genIndexVal{
     NSLog(@"revertToOldValue");
+    if(genIndexVal.clickedView == nil)
+        return;
+
     NSString *layout = genIndexVal.genericIndex.layoutType;
     NSString* value = [Device getValueForIndex:genIndexVal.index deviceID:genIndexVal.deviceID];
     
@@ -549,26 +617,31 @@ static const int xIndent = 10;
     NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");
     
     if(self.deviceEditHeaderCell.cellType == ClientEditProperties_cell){
-        dispatch_async(dispatch_get_main_queue(), ^(){
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        });
+        NSNotification *notifier = (NSNotification *) sender;
+        NSDictionary *dataInfo = [notifier userInfo];
+        if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+            return;
+        }
+        NSDictionary *payload = dataInfo[@"data"];
+        //        NSString *commandType = valueForKey:COMMAND_TYPE]
+        NSDictionary *clientPayload = payload[CLIENTS];
+        if(clientPayload == nil){//to handle removeall
+            dispatch_async(dispatch_get_main_queue(), ^(){
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            });
+        }
+        else{
+            NSString *clientID = clientPayload.allKeys.firstObject;
+            if([clientID intValue] == self.genericParams.headerGenericIndexValue.deviceID){
+                dispatch_async(dispatch_get_main_queue(), ^(){
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                });
+            }
+        }
     }
     else if(self.deviceEditHeaderCell.cellType == SensorEdit_Cell){
-        //        NSArray* genericIndexValues = [GenericIndexUtil getDetailListForDevice:self.genericParams.headerGenericIndexValue.deviceID];
-        //        int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
-        //        NSLog(@"gvalues: %@", genericIndexValues);
-        //        if([Device getTypeForID:deviceID] == SFIDeviceType_NestThermostat_57){
-        //            genericIndexValues = [RuleSceneUtil handleNestThermostatForSensor:deviceID genericIndexValues:genericIndexValues];
-        //        }
-        //        self.genericParams.indexValueList = genericIndexValues;
-        //
-        //        dispatch_async(dispatch_get_main_queue(), ^{
-        //            [self clearAllViews];
-        //            [self setUpDeviceEditCell];
-        //            [self drawIndexes];
-        //        });
+        
     }
     
 }
-
 @end

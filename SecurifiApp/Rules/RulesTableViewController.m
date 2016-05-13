@@ -34,7 +34,7 @@
 CGPoint tablePoint;
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self initializeNotifications];
+    
     [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
 }
@@ -48,6 +48,7 @@ CGPoint tablePoint;
     [self getRuleList];
     [self addAddRuleButton];
     [self markAlmondTitleAndMac];
+    [self initializeNotifications];
     
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];

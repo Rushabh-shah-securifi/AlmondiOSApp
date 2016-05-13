@@ -222,7 +222,7 @@
     self.textField.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2);
     self.textField.subProperties = self.subProperties;
     self.textField.keyboardType = UIKeyboardTypeDefault;
-    self.textField.text = @"0";
+    self.textField.text = @"";
     self.textField.textAlignment = NSTextAlignmentCenter;
     self.textField.textColor = [UIColor whiteColor];
     self.textField.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:15];
