@@ -455,7 +455,6 @@
     "21": {
         "name": "Alarm",
         "isActuator": "true",
-        "isTrigger": "false",
         "ExcludeFrom": "Scene",
         "defaultIcon": "alarm_on",
         "Indexes": {
@@ -567,7 +566,7 @@
         "Indexes": {
             "1": {
                 "genericIndexID": "23",
-                "row_no": 1
+                "row_no": 2
             },
             "2":{
                 "genericIndexID": "50",
@@ -703,7 +702,7 @@
         "Indexes": {
             "1": {
                 "genericIndexID": "16",
-                "row_no": 1
+                "row_no": 2
             },
             "2": {
                 "genericIndexID": "50",
@@ -848,7 +847,6 @@
         "name": "SetPoint Thermostat",
         "isActuator": "true",
         "defaultIcon": "thermostat_image",
-        "ExcludeFrom":"Scene",
         "Indexes": {
             "2": {
                 "genericIndexID": "50",

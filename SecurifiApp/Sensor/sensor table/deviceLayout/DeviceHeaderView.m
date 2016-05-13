@@ -87,11 +87,11 @@
         self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.displayText;
     }
     
-    if(self.genericParams.headerGenericIndexValue.genericIndex.readOnly || self.cellType == ClientTable_Cell || _genericParams.headerGenericIndexValue.genericValue.iconText)
+    // || self.genericParams.headerGenericIndexValue.genericIndex.readOnly || self.cellType == ClientTable_Cell || _genericParams.headerGenericIndexValue.genericValue.iconText)
+    if(self.genericParams.headerGenericIndexValue.genericValue.toggleValue == nil || self.genericParams.headerGenericIndexValue.genericValue.toggleValue.length == 0)
         self.deviceButton.userInteractionEnabled = NO;
     else
         self.deviceButton.userInteractionEnabled = YES;
-    NSLog(@"setUpDeviceCell end");
 }
 
 -(void)resetHeaderView{

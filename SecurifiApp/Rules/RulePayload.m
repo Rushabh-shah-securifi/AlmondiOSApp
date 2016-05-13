@@ -41,8 +41,8 @@
     }
     NSMutableDictionary *rulePayload = [[NSMutableDictionary alloc]init];
     
-    [rulePayload setValue:valid forKey:@"Valid"];
-    [rulePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
+    [rulePayload setValue:@([valid boolValue]) forKey:@"Valid"];
+    [rulePayload setValue:@(randomMobileInternalIndex) forKey:@"MobileInternalIndex"];
     [rulePayload setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
     [rulePayload setValue:self.rule.name forKey:@"Name"];
     if(!isInitilized){ //check if its in add state
@@ -106,7 +106,7 @@
     }
     if(invalidEntries.count>0)
         [entries removeObjectsInArray:invalidEntries ];
-    NSLog(@"self.rule.action count %ld",self.rule.actions.count);
+    NSLog(@"self.rule.action count %ld",(unsigned long)self.rule.actions.count);
 }
 -(NSDictionary *)createTriggerDeviceObject:(SFIButtonSubProperties*)property{
     property.eventType=property.eventType==nil?@"":property.eventType;
@@ -114,7 +114,7 @@
     if([property.eventType isEqualToString:@"AlmondModeUpdated"])
          return @{
                  @"Type" : @"EventTrigger",
-                 @"ID" : @(1).stringValue,
+                 @"ID" : @(1),
                  @"EventType" : @"AlmondModeUpdated",
                  @"Value" : property.matchData,
                  @"Grouping" : @"AND",
@@ -126,11 +126,11 @@
    else if([property.eventType isEqualToString:@"ClientJoined"] || [property.eventType isEqualToString:@"ClientLeft"])
         return @{
                  @"Type" : @"EventTrigger",
-                 @"ID" : @(property.deviceId).stringValue,
+                 @"ID" : @(property.deviceId),
                  @"EventType" : property.eventType,
                  @"Value" : property.matchData,
                  @"Grouping" : @"AND",
-                 @"Valid":@"",
+                 @"Valid":@"true",
                  @"Condition" : @"eq"
                  };
        
@@ -149,7 +149,7 @@
                      @"DayOfWeek" : [self getDayOfWeek:property.time.dayOfWeek],
                      @"MonthOfYear" : @"*",
                      @"Grouping" : @"AND",
-                     @"Valid": @""
+                     @"Valid": @"true"
                      
                      };
         
@@ -158,11 +158,11 @@
     else
         return @{
                  @"Type" : @"DeviceTrigger",
-                 @"ID" : @(property.deviceId).stringValue,
-                 @"Index" : @(property.index).stringValue,
+                 @"ID" : @(property.deviceId),
+                 @"Index" : @(property.index),
                  @"Value" : property.matchData,
                  @"Grouping" : @"AND",
-                 @"Valid":@"",
+                 @"Valid":@"true",
                  @"Condition" : @"eq"
                  };
     
@@ -183,19 +183,19 @@
     return [NSString stringWithString:dayOfWeek];
 }
 
--(NSDictionary *)createWiFiClientObject:(SFIButtonSubProperties*)wiFiClientProperty{
-    NSDictionary *dict = @{
-                           @"Type" : @"EventTrigger",
-                           @"ID" : @(wiFiClientProperty.index),
-                           @"EventType" : wiFiClientProperty.eventType,
-                           @"Value" : wiFiClientProperty.matchData,
-                           @"Grouping" : @"AND",
-                           @"Valid":@"",
-                           @"Condition" : @"eq"
-                           };
-    
-    return dict;
-}
+//-(NSDictionary *)createWiFiClientObject:(SFIButtonSubProperties*)wiFiClientProperty{
+//    NSDictionary *dict = @{
+//                           @"Type" : @"EventTrigger",
+//                           @"ID" : @(wiFiClientProperty.index),
+//                           @"EventType" : wiFiClientProperty.eventType,
+//                           @"Value" : wiFiClientProperty.matchData,
+//                           @"Grouping" : @"AND",
+//                           @"Valid":wiFiClientProperty.valid? @"true": @"false",
+//                           @"Condition" : @"eq"
+//                           };
+//    
+//    return dict;
+//}
 
 -(NSMutableArray *)createActionPayload{
     NSMutableArray * actionsArray = [[NSMutableArray alloc]init];
@@ -211,10 +211,10 @@
     if(dimButtonProperty.type!=nil && [dimButtonProperty.type isEqualToString:@"NetworkResult"]){
         NSDictionary *dict = @{
                                @"Type":@"NetworkResult",
-                               @"ID":@(1).stringValue,
-                               @"Index":@(1).stringValue,
+                               @"ID":@(1),
+                               @"Index":@(1),
                                @"Value":@"reboot",
-                               @"PreDelay":dimButtonProperty.delay,
+                               @"PreDelay":@(dimButtonProperty.delay.intValue),
                                @"Valid": @"true"
                                };
         return dict;
@@ -223,21 +223,21 @@
     else if(dimButtonProperty.eventType!=nil && [dimButtonProperty.eventType isEqualToString:@"AlmondModeUpdated"] ){
         NSDictionary *dict = @{
                                @"Type":@"EventResult",
-                               @"ID":@(1).stringValue,
+                               @"ID":@(1),
                                @"EventType":@"AlmondModeUpdated",
                                @"Value":dimButtonProperty.matchData,
-                               @"PreDelay":dimButtonProperty.delay,
+                               @"PreDelay":@(dimButtonProperty.delay.intValue),
                                @"Valid": @"true"
                                };
         return dict;
     }
     NSDictionary *dict = @{
                            @"Type":@"DeviceResult",
-                           @"ID":@(dimButtonProperty.deviceId).stringValue,
-                           @"Index":@(dimButtonProperty.index).stringValue,
+                           @"ID":@(dimButtonProperty.deviceId),
+                           @"Index":@(dimButtonProperty.index),
                            @"Value":dimButtonProperty.matchData,
-                           @"PreDelay":dimButtonProperty.delay,
-                           @"Valid": @""
+                           @"PreDelay":@(dimButtonProperty.delay.intValue),
+                           @"Valid": @"true"
                            };
     return dict;
 }

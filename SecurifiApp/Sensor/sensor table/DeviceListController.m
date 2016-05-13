@@ -99,7 +99,7 @@ int mii;
     self.enableDrawer = YES; //to enable navigation top left button
     dispatch_async(dispatch_get_main_queue(), ^{
         [self tryInstallRefreshControl];
-        if([self isDeviceListEmpty] && [self isDeviceListEmpty])
+        if([self isDeviceListEmpty] && [self isClientListEmpty])
             [self showHudWithTimeoutMsg:@"Loading Device data"];
     });
 }

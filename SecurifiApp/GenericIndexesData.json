@@ -713,6 +713,7 @@
         "Type": "Actuator",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
+        "AppLabel":"shutter",
         "DefaultIcon": "garage_close",
         "Values": {
             "0": {
@@ -762,6 +763,7 @@
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
         "ShowToggleInRules": "true",
+        "AppLabel":"lock_state",
         "DefaultIcon": "lock_close",
         "ValuesArray": {
             "indexValues": [17, 23, 26, 254],
@@ -790,6 +792,7 @@
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
         "ShowToggleInRules": "true",
+        "AppLabel":"lock_state",
         "DefaultIcon": "lock_open",
         "Values": {
             "1": {
@@ -888,7 +891,7 @@
         "Name": "ILLUMINANCE",
         "Type": "Sensor",
         "Placement": "Header",
-        "Layout": "SLIDER",
+        "Layout": "SLIDER_ICON",
         "AppLabel": "luminance",
         "DefaultIcon": "light_on",
         "Formatter": {
@@ -1711,7 +1714,8 @@
     "79": {
         "Name": "MAXIMUM_USERS",
         "Type": "Functional",
-        "Placement": "Hidden"
+        "Placement": "Hidden",
+        "ExcludeFrom":"Scene_Rule"
     },
     "80": {
         "Name": "ENERGY",
@@ -1825,7 +1829,7 @@
         "Type": "Actuator",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
-        "AppLabel": "off",
+        "AppLabel": "alarm",
         "DefaultIcon": "alarm_off",
         "Values": {
             "true": {
@@ -1847,7 +1851,7 @@
         "Type": "Actuator",
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
-        "AppLabel": "off",
+        "AppLabel": "ac_switch",
         "ShowToggleInRules": "true",
         "DefaultIcon": "ac_switch_off",
         "Values": {
@@ -1919,6 +1923,7 @@
         "Placement": "Header",
         "Layout": "MULTI_BUTTON",
         "ShowToggleInRules": "true",
+        "AppLabel":"multilevel_switch",
         "DefaultIcon": "dimmer",
         "Values": {
             "true": {

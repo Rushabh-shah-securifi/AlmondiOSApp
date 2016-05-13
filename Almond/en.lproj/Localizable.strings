@@ -741,20 +741,20 @@ Follow it, then login below.";
 "off"="Off";
 "door_on"="OPEN";
 "door_off"="CLOSED";
-"motion_on"="Motion Detected!";
-"motion_off"="No Motion";
-"vibration_on"="Vibration Detected!";
-"vibration_off"="No Vibration";
+"motion_on"="MOTION DETECTED!";
+"motion_off"="NO MOTION";
+"vibration_on"="VIBRATION DETECTED!";
+"vibration_off"="NO VIBRATION";
 "water_on" ="FLOODED";
 "ok"="Ok";
-"gas_on"="Gas Detected!";
+"gas_on"="GAS DETECTED!";
 "fire_on"="FIRE DETECTED!";
 "tampered"="Tampered";
 "paincAlarm"="PaincAlarm";
 "no"="No";
 "emergencyAlarm"="Emergency Alarm";
 "lowBattery"="Low Battery";
-"set_alarm_for"="Ring alarm for";
+"set_alarm_for"="Ring alarm for(Sec)";
 "alarm_on"="RINGING";
 "alarm"="Alarm";
 "alarm_off"="Silent";
@@ -873,6 +873,11 @@ Follow it, then login below.";
 "on_camelcase" = "On";
 "autoChangeOver" = "Auto Changeover";
 "resume" = "Resume";
+"shutter" = "Shutter";
+"lock_state" = "Lock State";
+"alarm" = "Alarm";
+"ac_switch" = "AC Switch";
+"multilevel_switch" = "Multilevel Switch";
 
 /* ==================================================================== */
 
