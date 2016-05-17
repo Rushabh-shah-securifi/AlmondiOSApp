@@ -137,7 +137,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
     [center addObserver:self
                selector:@selector(almondNameChangeResponseCallback:)
-                   name:ALMOND_NAME_CHANGE_NOTIFIER
+                   name:kSFIDidChangeAlmondName
                  object:nil];
 
     [center addObserver:self
@@ -2026,7 +2026,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
     if (!self.isAlmondNameChangeSuccessful) {
         [self.HUD hide:YES];
-        [[[iToast makeText:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        NSLog(@"onChangeAlmondNameTimeout nnnnnn");
+        [[[iToast makeText:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name111")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
 }
 
@@ -2034,16 +2035,16 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 - (void)almondNameChangeResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
+    NSLog(@"AlmondNameChangeResponse %@",data);
+    DynamicAlmondNameChangeResponse *obj = (DynamicAlmondNameChangeResponse *) [data valueForKey:@"data"];
 
-    AlmondNameChangeResponse *obj = (AlmondNameChangeResponse *) [data valueForKey:@"data"];
-
-    DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
-
+    //DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
+    
     // Timeout the commander timer
     [self.almondNameChangeTimer invalidate];
     self.isAlmondNameChangeSuccessful = TRUE;
-
-    if (obj.isSuccessful) {
+    
+    if (obj.almondplusMAC.length != 0) {
         if (nameChangedForAlmond == NAME_CHANGED_OWNED_ALMOND) {
             //Change Owned Almond Name
             for (SFIAlmondPlus *currentAlmond in ownedAlmondList) {
@@ -2071,7 +2072,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
     }
     else {
-        [[[iToast makeText:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        NSLog(@"almondNameChangeResponseCallback nnnnnn");
+        [[[iToast makeText:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name2222")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
     [self.HUD hide:YES];
 }
@@ -2079,7 +2081,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 - (void)mobileCommandResponseCallback:(id)sender {
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
-
+    
     MobileCommandResponse *obj = (MobileCommandResponse *) [data valueForKey:@"data"];
 
     DLog(@"%s: Successful : %d", __PRETTY_FUNCTION__, obj.isSuccessful);
@@ -2090,7 +2092,8 @@ static NSString *simpleTableIdentifier = @"AccountCell";
 
     if (!obj.isSuccessful) {
         NSString *failureReason = obj.reason;
-        [[[iToast makeText:[NSString stringWithFormat:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name. %@"), failureReason]] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        NSLog(@"mobileCommandResponseCallback nnnnnn");
+        [[[iToast makeText:[NSString stringWithFormat:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name3333. %@"), failureReason]] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
     [self.HUD hide:YES];
 }

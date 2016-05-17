@@ -402,6 +402,16 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 }
 #pragma mark button click
 -(void) onHueButtonClick:(id)sender{
+    SwitchButton * indexSwitchButton = (SwitchButton *)sender;
+    NSMutableArray *tobeDeleted = [NSMutableArray new];
+    for(SFIButtonSubProperties *buttonsubProperty in self.triggers){
+        if(buttonsubProperty.deviceType == SFIDeviceType_HueLamp_48 && [indexSwitchButton.subProperties.matchData isEqualToString:@"false"] && indexSwitchButton.subProperties.index == 2)
+            if(indexSwitchButton.subProperties.deviceId == buttonsubProperty.deviceId && buttonsubProperty.deviceType == SFIDeviceType_HueLamp_48 && (buttonsubProperty.index == 5 || buttonsubProperty.index == 3 || buttonsubProperty.index == 4)){
+                [tobeDeleted addObject:buttonsubProperty];
+            }
+    }
+    [self.triggers removeObjectsInArray:tobeDeleted];
+
     [self.delegate onSwitchButtonClick:sender];
 }
 
@@ -483,13 +493,24 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
         }
     }
 }
+- (BOOL )isOffIndexPresent:(int )deviceid{
+    for(SFIButtonSubProperties *buttonProperty in self.triggers){
+        if(buttonProperty.deviceId == deviceid && buttonProperty.index == 2 && [buttonProperty.matchData isEqualToString:@"false"]){
+            NSLog(@"returning...");
+            return YES;
+        }
+    }
 
+    return NO;
+}
 #pragma mark slider clicks
 -(void)onBrightnessCheckButtonClick:(UIButton*)sender{ //This is enable button
     sfi_id sliderId = brightnessSlider.subProperties.deviceId;
     int sliderIndex = brightnessSlider.subProperties.index;
     
     if(self.isScene){
+        if([ self isOffIndexPresent:sliderId])
+            return;
         [brightnessSliderLabelView setSelected:!sender.selected];
         [self deleteFromTriggersArrayForID:sliderId index:sliderIndex];
         if(sender.selected)
@@ -519,6 +540,8 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     sfi_id sliderId = saturationSlider.subProperties.deviceId;
     int sliderIndex = saturationSlider.subProperties.index;
     if(self.isScene){
+        if([ self isOffIndexPresent:sliderId])
+            return;
         [saturationSliderLabelView setSelected:!sender.selected];
         [self deleteFromTriggersArrayForID:sliderId index:sliderIndex];
         if(sender.selected)
@@ -552,6 +575,8 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     sfi_id pickerId = huePickerView.subProperties.deviceId;
     int pickerIndex = huePickerView.subProperties.index;
     if(self.isScene){
+        if([ self isOffIndexPresent:pickerId])
+            return;
         [hueColorPickupLabelView setSelected:!sender.selected];
         [self deleteFromTriggersArrayForID:pickerId index:pickerIndex];
         if(sender.selected)

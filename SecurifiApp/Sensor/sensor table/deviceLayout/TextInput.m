@@ -8,6 +8,8 @@
 
 #import "TextInput.h"
 #import "UIFont+Securifi.h"
+#import "UIViewController+Securifi.h"
+
 @interface TextInput ()<UITextFieldDelegate>
 @property (nonatomic)UITextField *deviceNameField;
 @end
@@ -63,6 +65,10 @@
     NSLog(@"tapCheckMark %@",self.deviceNameField.text);
     [self.deviceNameField resignFirstResponder];
 //    [self.delegate save:self.deviceNameField.text forIndex:_genericIndexValue.index deviceCommandType:_genericIndexValue.genericIndex.commandType];
+    if(self.deviceNameField.text.length == 0){
+//        [self showToast:[NSString stringWithFormat:@"Sorry, Could not update %@", genIndexVal.genericIndex.groupLabel]];
+    }
+    else
     [self.delegate save:self.deviceNameField.text forGenericIndexValue:_genericIndexValue currentView:self];
 }
 

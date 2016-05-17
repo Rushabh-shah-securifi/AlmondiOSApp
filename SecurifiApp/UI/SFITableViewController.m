@@ -216,6 +216,7 @@
     alert.backgroundColor = [UIColor whiteColor];
 
     SFICloudStatusState statusState = self.connectionStatusBarButton.state;
+    NSLog(@"statusState cloud status %lu",(unsigned long)statusState);
     switch (statusState) {
         case SFICloudStatusStateConnecting: {
             alert.message = NSLocalizedString(@"In process of connecting. Change connection method.", @"In process of connecting. Change connection method.");
@@ -373,8 +374,12 @@
 }
 
 - (void)configureNetworkSettings:(enum SFIAlmondConnectionMode)mode {
+    NSLog(@"configureNetworkSettings handler method ");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit setConnectionMode:mode forAlmond:self.almondMac];
+    [toolkit.clients removeAllObjects];
+    [toolkit.devices removeAllObjects ];
+    [self.tableView reloadData];
 }
 
 - (void)onAlmondModeButtonPressed:(id)sender {
@@ -404,9 +409,10 @@
 //    if (!self.isHudHidden) {
 //        return;
 //    }
-
+    NSLog(@"showHUD ");
+    
     [self showHUD:msg];
-    [self.HUD hide:YES afterDelay:10]; // in case the request times out
+//    [self.HUD hide:YES afterDelay:10]; // in case the request times out
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncRequestAlmondModeChange:self.almondMac mode:newMode];
@@ -434,12 +440,11 @@
         NSLog(@"cloud data");
        payload = [dataInfo valueForKey:@"data"];
     }
-
+    [self.HUD hide:YES];
     dispatch_async(dispatch_get_main_queue(), ^() {
 //        if (self.presentedViewController != nil) {
 //            return;
 //        }
-        self.HUD.hidden = YES;
         NSLog(@"payload mode %@",payload);
         NSString *m = payload[@"Mode"];
         NSLog(@"m = %@",m);

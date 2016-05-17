@@ -540,9 +540,11 @@
 }
 
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    dispatch_async(dispatch_get_main_queue(), ^() {
     [editor.navigationController dismissViewControllerAnimated:YES completion:^() {
         [self.delegate loginControllerDidCompleteLogin:self];
-    }];
+        }];
+    });
 }
 
 - (void)networkSettingsEditorDidCancel:(RouterNetworkSettingsEditor *)editor {
@@ -550,9 +552,12 @@
 }
 
 - (void)networkSettingsEditorDidComplete:(RouterNetworkSettingsEditor *)editor {
-    [editor.navigationController dismissViewControllerAnimated:YES completion:^() {
-        [self.delegate loginControllerDidCompleteLogin:self];
-    }];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [editor.navigationController dismissViewControllerAnimated:YES completion:^() {
+            [self.delegate loginControllerDidCompleteLogin:self];
+        }];
+
+    });
 }
 
 - (void)networkSettingsEditorDidUnlinkAlmond:(RouterNetworkSettingsEditor *)editor {

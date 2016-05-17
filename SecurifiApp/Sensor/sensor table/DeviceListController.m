@@ -27,6 +27,9 @@
 #import "UIImage+Securifi.h"
 #import "UIViewController+Securifi.h"
 #import "SFIPreferences.h"
+#import "SFIAlmondLocalNetworkSettings.h"
+#import "RouterParser.h"
+//#import "SFIRouterSummary.h"
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -59,6 +62,7 @@ int mii;
     self.currentDeviceList = @[];
     self.currentClientList = @[];
     [self initializeAlmondData];
+    [self showHUD:@"wait..."];
     
 }
 
@@ -69,7 +73,7 @@ int mii;
     
     [self markAlmondTitleAndMac];
     [self initializeNotifications];
-    
+//    [self initializeAlmondData];
     //need to reload tableview, as toolkit could have got updates
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
@@ -101,7 +105,9 @@ int mii;
         [self tryInstallRefreshControl];
         if([self isDeviceListEmpty] && [self isClientListEmpty])
             [self showHudWithTimeoutMsg:@"Loading Device data"];
+
     });
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -111,6 +117,38 @@ int mii;
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+- (void)tryUpdateLocalNetworkSettingsForAlmond:(NSString *)almondMac withRouterSummary:(const SFIRouterSummary *)summary {
+    NSLog(@"tryUpdateLocalNetworkSettingsForAlmond");
+    SFIAlmondLocalNetworkSettings *settings = [self.toolkit localNetworkSettingsForAlmond:almondMac];
+    if (!settings) {
+        settings = [SFIAlmondLocalNetworkSettings new];
+        settings.almondplusMAC = almondMac;
+        
+        // very important: copy name to settings, if possible
+        SFIAlmondPlus *plus = [_toolkit cloudAlmond:almondMac];
+        if (plus) {
+            settings.almondplusName = plus.almondplusName;
+        }
+    }
+    
+    if (summary.login) {
+        settings.login = summary.login;
+    }
+    if (summary.password) {
+        //        NSString *decrypted = [summary decryptPassword:almondMac];
+        //        if (decrypted) {
+        //            settings.password = decrypted;
+        settings.password = summary.password;
+        //        }
+    }
+    if (summary.url) {
+        settings.host = summary.url;
+    }
+    
+    [_toolkit setLocalNetworkSettings:settings];
 }
 
 -(void)initializeNotifications{
@@ -142,6 +180,11 @@ int mii;
                  object:nil];
     
     [center addObserver:self
+               selector:@selector(onGetClientsPreferences:)
+                   name:NOTIFICATION_WIFI_CLIENT_GET_PREFERENCE_REQUEST_NOTIFIER
+                 object:nil];
+
+    [center addObserver:self
                selector:@selector(onNotificationPrefDidChange:)
                    name:kSFINotificationPreferencesDidChange
                  object:nil];
@@ -150,6 +193,7 @@ int mii;
                selector:@selector(validateResponseCallback:)
                    name:VALIDATE_RESPONSE_NOTIFIER
                  object:nil];
+    [center addObserver:self selector:@selector(oRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
     
 }
 
@@ -203,6 +247,7 @@ int mii;
         refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force device data refresh" attributes:attributes];
         [refresh addTarget:self action:@selector(onRefreshSensorData:) forControlEvents:UIControlEventValueChanged];
         self.refreshControl = refresh;
+        [self.HUD show:YES];
     }
 }
 
@@ -222,7 +267,7 @@ int mii;
     if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]))
         return 1;
 
-    
+    NSLog(@"self.currentDeviceList.count %ld",self.currentDeviceList.count);
     return (section == 0) ? self.currentDeviceList.count:self.currentClientList.count;
     
 }
@@ -548,7 +593,7 @@ int mii;
         
     });
     
-    
+    [RouterParser sendrouterSummary];
 }
 
 -(void)onUpdateDeviceIndexResponse:(id)sender{ //mobile command
@@ -638,18 +683,89 @@ int mii;
 
 - (void)onNotificationPrefDidChange:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    NSString *cloudMAC = [data valueForKey:@"data"];
     dispatch_async(dispatch_get_main_queue(), ^() {
+        if (![self isSameAsCurrentMAC:cloudMAC]) {
+            return;
+        }
+        [self configureNotificationModesForDevices];
         
+        [self.refreshControl endRefreshing];
+        [self.tableView reloadData];
     });
+}
+
+- (void)onGetClientsPreferences:(id)sender {
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    
+    if ([[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
+        [self configureNotificationModesForClients:[mainDict valueForKey:@"ClientPreferences"]];
+    }
+}
+
+-(void)configureNotificationModesForClients:(NSArray*)clientsPreferences{
+    for(Client *client in self.toolkit.clients){
+        [self setClientPreference:client clientsPreferences:clientsPreferences];
+    }
+}
+
+-(void)setClientPreference:(Client*)client clientsPreferences:(NSArray*)clientsPreferences{
+    for (NSDictionary * dict in clientsPreferences) {
+        if ([[dict valueForKey:@"ClientID"] intValue]==[client.deviceID intValue]) {
+            client.notificationMode =  [dict[@"NotificationType"] intValue];
+            NSLog(@"clientname: %@, client notification mode: %d",client.name, client.notificationMode);
+            return;
+        }
+    }
+    client.notificationMode = SFINotificationMode_off;
+}
+
+-(void)configureNotificationModesForDevices{
+    NSArray *notificationList = [self.toolkit notificationPrefList:self.toolkit.currentAlmond.almondplusMAC];
+    for (Device *device in self.toolkit.devices) {
+        [self configureNotificationMode:device preferences:notificationList];
+    }
+}
+
+- (void)configureNotificationMode:(Device *)device preferences:(NSArray *)notificationList {
+    sfi_id device_id = device.ID;
+    
+    //Check if current device ID is in the notification list
+    for (SFINotificationDevice *currentDevice in notificationList) {
+        if (currentDevice.deviceID == device_id) {
+            //Set the notification mode for that notification preference
+            NSLog(@"device name: %@, current device notification mode: %d", device.name, currentDevice.notificationMode);
+            device.notificationMode = currentDevice.notificationMode;
+            return;
+        }
+    }
+    // missing preference means none has been set and is equivalent to 'off'
+    device.notificationMode = SFINotificationMode_off;
 }
 
 - (void)onRefreshSensorData:(id)sender {
     if (!self || [self isNoAlmondMAC]) {
         return;
     }
+    [self.toolkit.devices removeAllObjects];
+    [self.toolkit.clients removeAllObjects];
+    self.currentDeviceList = self.toolkit.devices ;
+    self.currentClientList = self.toolkit.clients;
+    [self.tableView reloadData];
     [DevicePayload deviceListCommand];
     [ClientPayload clientListCommand];
-    //request client list
+        //request client list
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
         [self.refreshControl endRefreshing];
@@ -709,6 +825,31 @@ int mii;
         
         [self showToast:failureReason];
     }
+}
+-(void)oRouterCommandResponse:(id)sender{
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+//    if (data == nil) {
+//        return;
+//    }
+    
+    SFIGenericRouterCommand *genericRouterCommand = (SFIGenericRouterCommand *) [data valueForKey:@"data"];
+    NSLog(@"[data valueForKey %@",[data valueForKey:@"data"]);
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    switch (genericRouterCommand.commandType) {
+        case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
+            NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
+            SFIRouterSummary *routerSummary = (SFIRouterSummary *)genericRouterCommand.command;
+            [toolkit tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:routerSummary];
+//            NSString *currentVersion = routerSummary.firmwareVersion;
+//            [toolkit tryCheckAlmondVersion:currentVersion];
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+    
 }
 
 @end

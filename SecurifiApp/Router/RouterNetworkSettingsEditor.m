@@ -326,6 +326,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
     if (!settings.hasBasicCompleteSettings) {
         return;
     }
+    NSLog(@"local netwok setting %@,%@,%@",settings.host,settings.login,settings.password);
 
     self.HUD.labelText = NSLocalizedString(@"router.hud.Establishing Local Link...", @"Establishing Local Link...");
     self.HUD.minShowTime = 2;
@@ -352,13 +353,14 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
                 // store the new/updated settings and update UI state; inform the delegate
                 [toolkit setLocalNetworkSettings:settings];
-
+                NSLog(@"storing local network %@",settings);
                 if (self.makeLinkedAlmondCurrentOne) {
                     SFIAlmondPlus *almond = settings.asLocalLinkAlmondPlus;
 
                     // switch the connection to Local
                     [toolkit setConnectionMode:SFIAlmondConnectionMode_local forAlmond:almond.almondplusMAC];
                     [toolkit setCurrentAlmond:almond];
+                    NSLog(@"switching to local  connection");
                 }
 
                 [self markSuccessOnLink];
