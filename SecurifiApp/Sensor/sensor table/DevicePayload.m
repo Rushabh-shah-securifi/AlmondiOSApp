@@ -60,18 +60,28 @@
     
     if(deviceCmdType == DeviceCommand_UpdateDeviceName){
         [payload setValue:value forKey:INDEX_NAME];//will replace by @"Name"
-//        [payload setValue:device.location forKey:LOCATION];
     }
     
     else{
         [payload setValue:value forKey:LOCATION];
-//        [payload setValue:device.name forKey:INDEX_NAME];//will replace by @"Name"
     }
     
     [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:ALMONDMAC];
     
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
     [toolkit asyncSendCommand:genericCmd];
+}
+
++ (void)sensorDidChangeNotificationSetting:(SFINotificationMode)newMode deviceID:(int)deviceID{
+    //Send command to set notification
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    
+    Device *device = [Device getDeviceForID:deviceID];
+    NSArray *notificationDeviceSettings = [device updateNotificationMode:newMode deviceValue:device.knownValues];
+    
+    NSString *action = (newMode == SFINotificationMode_off) ? kSFINotificationPreferenceChangeActionDelete : kSFINotificationPreferenceChangeActionAdd;
+    
+    [toolkit asyncRequestNotificationPreferenceChange:toolkit.currentAlmond.almondplusMAC deviceList:notificationDeviceSettings forAction:action];
 }
 
 

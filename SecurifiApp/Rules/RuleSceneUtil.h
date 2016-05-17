@@ -23,7 +23,4 @@
 
 + (BOOL)showGenericValue:(GenericValue *)index isScene:(BOOL)isScene isTrigger:(BOOL)isTrigger;
 
-+ (NSArray *)handleNestThermostat:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues modeFilter:(BOOL)isScene triggers:(NSMutableArray*)triggers;
-
-+ (NSArray*)handleNestThermostatForSensor:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues;
 @end

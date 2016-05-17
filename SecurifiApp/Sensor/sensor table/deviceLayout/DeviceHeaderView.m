@@ -195,7 +195,7 @@
         genericIndexValues = [GenericIndexUtil getDetailListForDevice:deviceID];
         NSLog(@"gvalues: %@", genericIndexValues);
         if([Device getTypeForID:deviceID] == SFIDeviceType_NestThermostat_57){
-            genericIndexValues = [RuleSceneUtil handleNestThermostatForSensor:deviceID genericIndexValues:genericIndexValues];
+            genericIndexValues = [RulesNestThermostat handleNestThermostatForSensor:deviceID genericIndexValues:genericIndexValues];
         }
         self.genericParams.indexValueList = genericIndexValues;
         [self.delegate delegateDeviceSettingButtonClick:_genericParams];

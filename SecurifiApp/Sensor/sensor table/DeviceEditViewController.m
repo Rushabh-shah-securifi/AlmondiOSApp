@@ -31,6 +31,7 @@
 #import "RuleSceneUtil.h"
 #import "SFIHighlightedButton.h"
 #import "SFINotificationsViewController.h"
+#import "Analytics.h"
 
 #define ITEM_SPACING  2.0
 #define LABELSPACING 20.0
@@ -59,6 +60,8 @@ static const int xIndent = 10;
 @property (nonatomic) SecurifiToolkit *toolkit;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerTopConstrain;
 @property(nonatomic) NSMutableDictionary *miiTable;
+@property (nonatomic) CGRect ViewFrame;
+
 @end
 
 @implementation DeviceEditViewController{
@@ -69,9 +72,9 @@ static const int xIndent = 10;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.toolkit=[SecurifiToolkit sharedInstance];
+    self.ViewFrame = self.view.frame;
     [self setUpDeviceEditCell];
     self.miiTable = [NSMutableDictionary new];
-    
 }
 
 -(void)setUpDeviceEditCell{
@@ -112,15 +115,26 @@ static const int xIndent = 10;
 -(void)initializeNotifications{
     NSLog(@"initialize notifications sensor table");
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self
+    
+    [center addObserver:self //common dynamic reponse handler for sensor and clients
                selector:@selector(onDeviceListAndDynamicResponseParsed:)
                    name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
                  object:nil];
     
-    [center addObserver:self
+    [center addObserver:self //indexupdate or name/location change both
                selector:@selector(onCommandResponse:)
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
-                 object:nil]; //indexupdate or name/location change both
+                 object:nil];
+    
+    [center addObserver:self //sensor notification response 114
+               selector:@selector(onNotificationPrefDidChange:)//should have ideally handled in another method, but combining it with onCommand response eases things a lot, onNotificationPrefDidChange (actual method)
+                   name:kSFINotificationPreferencesDidChange
+                 object:nil];
+    
+    [center addObserver:self //client notification response 1525
+               selector:@selector(onClientPreferenceUpdateResponse:)
+                   name:NOTIFICATION_WIFI_CLIENT_UPDATE_PREFERENCE_REQUEST_NOTIFIER
+                 object:nil];
     
     [center addObserver:self
                selector:@selector(onKeyboardDidShow:)
@@ -130,11 +144,6 @@ static const int xIndent = 10;
     [center addObserver:self
                selector:@selector(onKeyboardDidHide:)
                    name:UIKeyboardDidHideNotification
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(keyboardOnScreen:)
-                   name:UIKeyboardDidShowNotification
                  object:nil];
 }
 
@@ -354,31 +363,38 @@ static const int xIndent = 10;
     mii = arc4random() % 10000;
 
     [self.deviceEditHeaderCell reloadIconImage];
+
+    DeviceCommandType deviceCmdType = genericIndexValue.genericIndex.commandType;
+    genericIndexValue = [GenericIndexValue getLightCopy:genericIndexValue];
+    genericIndexValue.currentValue = newValue;
+    genericIndexValue.clickedView = currentView;
+    [self.miiTable setValue:genericIndexValue forKey:@(mii).stringValue];
     
-    if([Device getTypeForID:genericIndexValue.deviceID]){
-//        [self handleNest3PointDiffForIndex:index newValue:newValue];
-    }
     if(self.genericParams.isSensor){
-        genericIndexValue = [GenericIndexValue getLightCopy:genericIndexValue];
-        genericIndexValue.currentValue = newValue;
-        genericIndexValue.clickedView = currentView;
-        [self.miiTable setValue:genericIndexValue forKey:@(mii).stringValue];
-        
-        DeviceCommandType deviceCmdType = genericIndexValue.genericIndex.commandType;
         if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
             [DevicePayload getNameLocationChange:genericIndexValue mii:mii value:newValue];
-        }else{
+        }else if(deviceCmdType == DeviceCommand_NotifyMe){
+            NSLog(@"device - notifyme");
+            [DevicePayload sensorDidChangeNotificationSetting:newValue.intValue deviceID:genericIndexValue.deviceID];
+        }
+        else{
             [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:mii value:newValue];
-        
         }
     }else{
         Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
-        int index = genericIndexValue.index;
-        client = [client copy];
-        [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
-        [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
+        if(deviceCmdType == DeviceCommand_NotifyMe){
+            NSLog(@"client - notifyme");
+            [ClientPayload clientDidChangeNotificationSettings:client mii:mii newValue:newValue];
+        }else{
+            int index = genericIndexValue.index;
+            client = [client copy];
+            [Client getOrSetValueForClient:client genericIndex:index newValue:newValue ifGet:NO];
+            [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
+        }
     }
 }
+
+
 
 
 -(void)delegateDeviceEditSettingClick{
@@ -388,36 +404,28 @@ static const int xIndent = 10;
 #pragma  mark uiwindow delegate methods
 - (void)onKeyboardDidShow:(id)notification {
     NSLog(@"%s",__PRETTY_FUNCTION__);
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    if(self.keyBoardComp >  keyboardSize.height && self.keyBoardComp > 300){
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            CGRect f = self.view.frame;
+            CGFloat y = -keyboardSize.height ;
+            f.origin.y =  y + 80;
+            self.view.frame = f;
+            //        NSLog(@"keyboard frame %@",NSStringFromCGRect(self.parentView.frame));
+        }];
+    }
 }
 
-- (void)onKeyboardDidHide:(id)notice {
+-(void)onKeyboardDidHide:(id)notice {
     NSLog(@"%s",__PRETTY_FUNCTION__);
-    self.indexScrollTopConstraint.constant = 2 + self.dismisstamperedView.frame.size.height;
-    self.scrollViewBottom.constant = 8;
-    self.headerTopConstrain.constant = 8;
-    //    self.dismisstamperedView.frame = CGRectMake(self.indexesScroll.frame.origin.x, self.deviceEditHeaderCell.frame.size.height + self.deviceEditHeaderCell.frame.origin.y + 5, self.indexesScroll.frame.size.width, 40);
-    self.dismisstamperedView.hidden = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect f = self.view.frame;
+        f.origin.y = self.ViewFrame.origin.y + 64;
+        self.view.frame = f;
+    }];
 }
-
--(void)keyboardOnScreen:(NSNotification *)notification
-{
-    NSDictionary *info  = notification.userInfo;
-    NSValue      *value = info[UIKeyboardFrameEndUserInfoKey];
-    
-    CGRect rawFrame      = [value CGRectValue];
-    CGRect keyboardFrame = [self.view convertRect:rawFrame fromView:nil];
-    int constnt = self.keyBoardComp - keyboardFrame.origin.y + 70;
-    
-    if(constnt > (int)self.indexesScroll.frame.size.height)
-        constnt = (int)self.indexesScroll.frame.size.height - keyboardFrame.size.height;
-    
-    self.scrollViewBottom.constant = constnt ;
-    self.headerTopConstrain.constant = -(constnt);
-    self.indexScrollTopConstraint.constant = -(constnt);
-    self.dismisstamperedView.hidden = YES;
-    //    self.dismisstamperedView.frame = CGRectMake(0, self.indexesScroll.frame.origin.y, self.dismisstamperedView.frame.size.width, self.dismisstamperedView.frame.size.height);
-}
-
 
 #pragma mark sensor cell(DeviceHeaderView) delegate
 -(void)toggle:(GenericIndexValue *)headerGenericIndexValue{
@@ -473,7 +481,7 @@ static const int xIndent = 10;
         else{
             NSLog(@"successful");
             DeviceCommandType deviceCmdType = genIndexVal.genericIndex.commandType;
-            if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation){
+            if(deviceCmdType == DeviceCommand_UpdateDeviceName ||deviceCmdType == DeviceCommand_UpdateDeviceLocation || deviceCmdType == DeviceCommand_NotifyMe){
                 [Device updateDeviceData:deviceCmdType value:genIndexVal.currentValue deviceID:genIndexVal.deviceID];
             }else{
                 [Device updateValueForID:genIndexVal.deviceID index:genIndexVal.index value:genIndexVal.currentValue];
@@ -497,7 +505,7 @@ static const int xIndent = 10;
         NSLog(@"end response");
     }
     else{
-        NSLog(@"client");
+        NSLog(@"client mobile response - now only handling dynamic resposne");
     }
 }
 
@@ -505,7 +513,7 @@ static const int xIndent = 10;
     NSLog(@"repaintBottomView");
     int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
     NSArray* genericIndexValues = [GenericIndexUtil getDetailListForDevice:deviceID];
-    genericIndexValues = [RuleSceneUtil handleNestThermostatForSensor:deviceID genericIndexValues:genericIndexValues];
+    genericIndexValues = [RulesNestThermostat handleNestThermostatForSensor:deviceID genericIndexValues:genericIndexValues];
     self.genericParams.indexValueList = genericIndexValues;
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -612,11 +620,41 @@ static const int xIndent = 10;
     }
 }
 
+-(void)onNotificationPrefDidChange:(id)sender{//sensor
+    NSLog(@"device edit - onNotificationPrefDidChange");
+    
+    
+}
+
+-(void)onClientPreferenceUpdateResponse:(id)sender{//client
+    NSLog(@"device edit - onClientPreferenceUpdateResponse");
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *data = [notifier userInfo];
+    if (data == nil) {
+        return;
+    }
+    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
+    if ([[mainDict valueForKey:@"MobileInternalIndex"] integerValue] != mii) {
+        return;
+    }
+    if ([[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.navigationController popViewControllerAnimated:YES];
+        });
+        
+        return;
+    }
+}
 
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");
     
-    if(self.deviceEditHeaderCell.cellType == ClientEditProperties_cell){
+    if(self.genericParams.isSensor){
+        NSLog(@"device edit - dynamic response - currently handling only mobile response");
+        //perhaps you have to check device id of dynamic response and pop if matches, perhaps
+    }
+    
+    else{
         NSNotification *notifier = (NSNotification *) sender;
         NSDictionary *dataInfo = [notifier userInfo];
         if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
@@ -625,12 +663,12 @@ static const int xIndent = 10;
         NSDictionary *payload = dataInfo[@"data"];
         //        NSString *commandType = valueForKey:COMMAND_TYPE]
         NSDictionary *clientPayload = payload[CLIENTS];
-        if(clientPayload == nil){//to handle removeall
+        if(clientPayload == nil){//to handle removeall, I could have check command type aswell
             dispatch_async(dispatch_get_main_queue(), ^(){
                 [self.navigationController popToRootViewControllerAnimated:YES];
             });
         }
-        else{
+        else{ //checking if response is of only that particular client, only then pop
             NSString *clientID = clientPayload.allKeys.firstObject;
             if([clientID intValue] == self.genericParams.headerGenericIndexValue.deviceID){
                 dispatch_async(dispatch_get_main_queue(), ^(){
@@ -639,9 +677,7 @@ static const int xIndent = 10;
             }
         }
     }
-    else if(self.deviceEditHeaderCell.cellType == SensorEdit_Cell){
-        
-    }
+    
     
 }
 @end

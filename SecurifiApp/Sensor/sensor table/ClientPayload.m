@@ -8,6 +8,10 @@
 
 #import "ClientPayload.h"
 #import "AlmondJsonCommandKeyConstants.h"
+#import "KeyChainWrapper.h"
+
+#define SEC_SERVICE_NAME                                    @"securifiy.login_service"
+#define SEC_EMAIL                                           @"com.securifi.email"
 
 @implementation ClientPayload
 + (void)clientListCommand{
@@ -58,8 +62,29 @@
     
     [payload setValue:RemoveClient forKey:CLIENTS];
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
-    [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
+    [toolkit asyncSendCommand:genericCmd];
 }
+
++ (void)clientDidChangeNotificationSettings:(Client*)client mii:(int)mii newValue:(NSString*)notificaionVal{
+    NSMutableDictionary * updateClientInfo = [NSMutableDictionary new];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSString *userID = [KeyChainWrapper retrieveEntryForUser:SEC_EMAIL forService:SEC_SERVICE_NAME];
+    
+    [updateClientInfo setValue:@"UpdatePreference" forKey:@"CommandType"];
+    [updateClientInfo setValue:client.deviceID forKey:@"ClientID"];
+    [updateClientInfo setValue:notificaionVal forKey:@"NotificationType"];
+    [updateClientInfo setValue:userID forKey:@"UserID"];
+    
+    
+    [updateClientInfo setValue:toolkit.currentAlmond.almondplusMAC forKey:@"AlmondMAC"];
+    [updateClientInfo setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
+    
+    GenericCommand *cloudCommand = [GenericCommand jsonStringPayloadCommand:updateClientInfo commandType:CommandType_WIFI_CLIENT_UPDATE_PREFERENCE_REQUEST];
+    
+    [toolkit asyncSendCommand:cloudCommand];
+}
+
+
 /*
  {
  "CommandType":"RemoveClient",

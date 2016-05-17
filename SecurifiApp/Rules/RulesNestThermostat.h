@@ -11,15 +11,9 @@
 #import "SecurifiToolkit/SFIDeviceValue.h"
 
 @interface RulesNestThermostat : NSObject
-
-//altering device indexes as per the incoming conditions
-+(NSArray*)createNestThermostatGenericIndexValues:(NSArray*)genericIndexValues deviceID:(int)deviceID;
-
-+(NSArray*)filterIndexesBasedOnModeForIndexes:(NSArray*)genericIndexValues deviceId:(sfi_id)deviceId matchData:(NSString*)matchData;
-
 +(void)removeTemperatureIndexes:(int)deviceId mode:(NSString *)mode entries:(NSMutableArray *)entries;
 
-+ (NSArray*)getNestGenericIndexVals:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexVals;
++ (NSArray *)handleNestThermostat:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues modeFilter:(BOOL)isScene triggers:(NSMutableArray*)triggers;
 
-+(NSArray*)filterDeviceMode:(NSArray*)genericIndexValues deviceId:(sfi_id)deviceId modeVal:(NSString*)modeVal;
++ (NSArray*)handleNestThermostatForSensor:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues;
 @end

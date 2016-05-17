@@ -149,24 +149,4 @@
     return  YES;
 }
 
-+ (NSArray *)handleNestThermostat:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues modeFilter:(BOOL)modeFilter triggers:(NSMutableArray*)triggers{
-    NSArray *newGenIndexVals = [RulesNestThermostat createNestThermostatGenericIndexValues:genericIndexValues deviceID:deviceID];
-    if(modeFilter){
-        NSString *matchData = nil;
-        for(SFIButtonSubProperties *subProperty in triggers){
-            if(subProperty.deviceId == deviceID && subProperty.index == 2){
-                matchData = subProperty.matchData;
-            }
-        }
-        newGenIndexVals = [RulesNestThermostat filterIndexesBasedOnModeForIndexes:newGenIndexVals deviceId:deviceID matchData:matchData];
-    }
-    return newGenIndexVals;
-}
-
-+(NSArray*)handleNestThermostatForSensor:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues{
-    NSArray *newGenIndexVals = [RulesNestThermostat getNestGenericIndexVals:deviceID withGenericIndexValues:genericIndexValues];
-    newGenIndexVals = [RulesNestThermostat filterDeviceMode:newGenIndexVals deviceId:deviceID modeVal:[Device getValueForIndex:2 deviceID:deviceID]];
-    return newGenIndexVals;
-}
-
 @end

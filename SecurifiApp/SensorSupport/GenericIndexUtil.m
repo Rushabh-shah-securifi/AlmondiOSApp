@@ -184,7 +184,7 @@
         }else if([key isEqualToString:@"Location"]){
             value = device.location;
         }else{//notifyme
-//            value = device.
+            value = @(device.notificationMode).stringValue;
         }
         GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:nil iconText:value value:value excludeFrom:nil transformedValue:nil];
         GenericIndexClass *genIndexObj = toolkit.genericIndexes[@(genericIndex).stringValue];
@@ -225,7 +225,6 @@
             [genericIndexValues addObject:genericIndexValue];
         }
     }
-    
     return genericIndexValues;
 }
 

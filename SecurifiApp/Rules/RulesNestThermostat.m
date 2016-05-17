@@ -15,11 +15,44 @@
 
 @implementation RulesNestThermostat
 
-+ (NSArray*) createNestThermostatGenericIndexValues:(NSArray*)genericIndexValues deviceID:(int)deviceID{
-    NSArray* newGenericIndexValues = [self getNestGenericIndexVals:deviceID withGenericIndexValues:genericIndexValues];
-//    [self adjustCellIDs:deviceID withGenericIndexValues:newGenericIndexValues];
-    return newGenericIndexValues;
++ (NSArray *)handleNestThermostat:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues modeFilter:(BOOL)modeFilter triggers:(NSMutableArray*)triggers{
+    NSArray *newGenIndexVals = [self getNestGenericIndexVals:deviceID withGenericIndexValues:genericIndexValues];
+    if(modeFilter){
+        NSString *matchData = nil;
+        for(SFIButtonSubProperties *subProperty in triggers){
+            if(subProperty.deviceId == deviceID && subProperty.index == 2){
+                matchData = subProperty.matchData;
+            }
+        }
+        newGenIndexVals = [self filterIndexesBasedOnModeForIndexes:newGenIndexVals deviceId:deviceID matchData:matchData];
+    }
+    return newGenIndexVals;
 }
+
++(NSArray*)handleNestThermostatForSensor:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues{
+    NSArray *newGenIndexVals = [self getNestGenericIndexVals:deviceID withGenericIndexValues:genericIndexValues];
+    newGenIndexVals = [self filterIndexesBasedOnHomeAway:deviceID genericIndexVals:newGenIndexVals];
+    newGenIndexVals = [self filterDeviceMode:newGenIndexVals deviceId:deviceID modeVal:[Device getValueForIndex:2 deviceID:deviceID]];
+    return newGenIndexVals;
+}
+
+
++(NSArray*)filterIndexesBasedOnHomeAway:(int)deviceID genericIndexVals:(NSArray*)genericIndexVals{
+    BOOL isAway = [[Device getValueForIndex:8 deviceID:deviceID] isEqualToString:@"away"];//away_mode index
+    
+    if(isAway){
+        NSMutableArray *newGenericIndexValues = [[NSMutableArray alloc] init];
+        for(GenericIndexValue *genIndexVal in genericIndexVals){
+            int index = genIndexVal.index;
+            if(index == -1 || index == -2 || index == -3 || index == 8){
+                [newGenericIndexValues addObject:genIndexVal];
+            }
+        }
+        return newGenericIndexValues;
+    }
+    return genericIndexVals;
+}
+
 
 + (NSArray*)getNestGenericIndexVals:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexVals{
     NSLog(@"can cool value: %@", [Device getValueForIndex:12 deviceID:deviceID]);
@@ -192,60 +225,6 @@
 }
 
 
-+ (void)adjustCellIDs:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexValues{
-    BOOL canCool = [[Device getValueForIndex:12 deviceID:deviceID] isEqualToString:@"true"];
-    BOOL canHeat = [[Device getValueForIndex:13 deviceID:deviceID] isEqualToString:@"true"];
-    BOOL hasFan = [[Device getValueForIndex:15 deviceID:deviceID] isEqualToString:@"true"];//9 is fan index
-    
-    for(GenericIndexValue *genIndexVal in genericIndexValues){ //strong because, deviceIndex will just be a pointer otherwise
-        /*****    faster   *****/
-        GenericIndexClass *genericIndex = genIndexVal.genericIndex;
-        if(canCool == NO && canHeat == NO){
-            if(genIndexVal.index == 4){//SFIDevicePropertyType_HUMIDITY
-                genericIndex.rowID = @"1";
-            }
-            else if(genIndexVal.index == 10){//SFIDevicePropertyType_CURRENT_TEMPERATURE
-                genericIndex.rowID = @"1";
-            }
-            else if(genIndexVal.index == 11){//SFIDevicePropertyType_ISONLINE
-                genericIndex.rowID = @"2";
-            }
-            else if(genIndexVal.index == 9){//SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE
-                genericIndex.rowID = @"2";
-            }
-        }
-        else if((canCool == YES && canHeat == NO) || (canCool == NO && canHeat == YES)){
-            if(genIndexVal.index == 3){//SFIDevicePropertyType_THERMOSTAT_TARGET
-                genericIndex.rowID = @"2";
-            }
-            else if(genIndexVal.index == 4){//SFIDevicePropertyType_HUMIDITY
-                genericIndex.rowID = @"1";
-            }
-            else if(genIndexVal.index == 10){//SFIDevicePropertyType_CURRENT_TEMPERATURE
-                genericIndex.rowID = @"1";
-            }
-            else if(genIndexVal.index == 2){//SFIDevicePropertyType_NEST_THERMOSTAT_MODE
-                genericIndex.rowID = @"3";
-            }
-            else if(genIndexVal.index == 11){//SFIDevicePropertyType_ISONLINE
-                genericIndex.rowID = @"3";
-            }
-            else if(genIndexVal.index == 9){//SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE
-                genericIndex.rowID = @"4";
-            }
-            else if(genIndexVal.index == 16){//SFIDevicePropertyType_HVAC_STATE
-                genericIndex.rowID = @"4";
-            }
-        }
-        if(hasFan == NO){
-            if(genIndexVal.index == 4){//SFIDevicePropertyType_HUMIDITY
-                genericIndex.rowID = @"1";
-            }
-        }
-    }//for loop
-}
-
-
 +(NSArray*)filterIndexesBasedOnModeForIndexes:(NSArray*)genericIndexValues deviceId:(sfi_id)deviceId matchData:(NSString*)matchData{
     NSMutableArray *newGenericIndexValues = [genericIndexValues mutableCopy];
     NSLog(@"new genericindex values before : %@", newGenericIndexValues);
@@ -352,12 +331,15 @@
     }
     [entries removeObjectsInArray:newPropertyList];
 }
+
+
 /*
  mode - 2
  target - 3
  humidity - 4
  rangelow - 5
  rangehigh - 6
+ away_mode - 8
  isOnline - 11
  fanState - 9
  temperature - 10
@@ -390,5 +372,59 @@
 //        }
 //    }
 //}
+
++ (void)adjustCellIDs:(int)deviceID withGenericIndexValues:(NSArray*)genericIndexValues{
+    BOOL canCool = [[Device getValueForIndex:12 deviceID:deviceID] isEqualToString:@"true"];
+    BOOL canHeat = [[Device getValueForIndex:13 deviceID:deviceID] isEqualToString:@"true"];
+    BOOL hasFan = [[Device getValueForIndex:15 deviceID:deviceID] isEqualToString:@"true"];//9 is fan index
+    
+    for(GenericIndexValue *genIndexVal in genericIndexValues){ //strong because, deviceIndex will just be a pointer otherwise
+        /*****    faster   *****/
+        GenericIndexClass *genericIndex = genIndexVal.genericIndex;
+        if(canCool == NO && canHeat == NO){
+            if(genIndexVal.index == 4){//SFIDevicePropertyType_HUMIDITY
+                genericIndex.rowID = @"1";
+            }
+            else if(genIndexVal.index == 10){//SFIDevicePropertyType_CURRENT_TEMPERATURE
+                genericIndex.rowID = @"1";
+            }
+            else if(genIndexVal.index == 11){//SFIDevicePropertyType_ISONLINE
+                genericIndex.rowID = @"2";
+            }
+            else if(genIndexVal.index == 9){//SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE
+                genericIndex.rowID = @"2";
+            }
+        }
+        else if((canCool == YES && canHeat == NO) || (canCool == NO && canHeat == YES)){
+            if(genIndexVal.index == 3){//SFIDevicePropertyType_THERMOSTAT_TARGET
+                genericIndex.rowID = @"2";
+            }
+            else if(genIndexVal.index == 4){//SFIDevicePropertyType_HUMIDITY
+                genericIndex.rowID = @"1";
+            }
+            else if(genIndexVal.index == 10){//SFIDevicePropertyType_CURRENT_TEMPERATURE
+                genericIndex.rowID = @"1";
+            }
+            else if(genIndexVal.index == 2){//SFIDevicePropertyType_NEST_THERMOSTAT_MODE
+                genericIndex.rowID = @"3";
+            }
+            else if(genIndexVal.index == 11){//SFIDevicePropertyType_ISONLINE
+                genericIndex.rowID = @"3";
+            }
+            else if(genIndexVal.index == 9){//SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE
+                genericIndex.rowID = @"4";
+            }
+            else if(genIndexVal.index == 16){//SFIDevicePropertyType_HVAC_STATE
+                genericIndex.rowID = @"4";
+            }
+        }
+        if(hasFan == NO){
+            if(genIndexVal.index == 4){//SFIDevicePropertyType_HUMIDITY
+                genericIndex.rowID = @"1";
+            }
+        }
+    }//for loop
+}
+
 
 @end

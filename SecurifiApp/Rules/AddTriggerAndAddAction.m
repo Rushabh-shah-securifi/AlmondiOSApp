@@ -240,7 +240,7 @@ labelAndCheckButtonView *labelView;
     NSArray *genericIndexValues = [RuleSceneUtil getGenericIndexValueArrayForID:deviceId type:deviceType isTrigger:self.isTrigger isScene:_isScene triggers:self.triggers action:self.actions];
     
     if(deviceType == SFIDeviceType_NestThermostat_57){
-        genericIndexValues = [RuleSceneUtil handleNestThermostat:deviceId genericIndexValues:genericIndexValues modeFilter:_isScene triggers:_triggers];
+        genericIndexValues = [RulesNestThermostat handleNestThermostat:deviceId genericIndexValues:genericIndexValues modeFilter:_isScene triggers:_triggers];
     }
 
     NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForArray:genericIndexValues isTrigger:self.isTrigger isScene:self.isScene];

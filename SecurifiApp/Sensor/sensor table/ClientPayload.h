@@ -12,4 +12,5 @@
 + (void)getUpdateClientPayloadForClient:(Client*)client mobileInternalIndex:(int)mii;
 + (void)clientListCommand;
 + (void)resetClientCommand:(NSString *)mac clientID:(NSString*)clientID mii:(int)mii;
++ (void)clientDidChangeNotificationSettings:(Client*)client mii:(int)mii newValue:(NSString*)notificaionVal;
 @end

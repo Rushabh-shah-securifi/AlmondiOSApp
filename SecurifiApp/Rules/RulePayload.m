@@ -23,7 +23,7 @@
     NSMutableDictionary *rulePayload = [[NSMutableDictionary alloc]init];
     
     [rulePayload setValue:self.rule.ID forKey:@"ID"];
-//    [rulePayload setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
+    [rulePayload setValue:plus.almondplusMAC forKey:@"AlmondMAC"];
     [rulePayload setValue:valid forKey:@"Value"];
     [rulePayload setValue:@(randomMobileInternalIndex).stringValue forKey:@"MobileInternalIndex"];
     [rulePayload setValue:@"ValidateRule" forKey:@"CommandType"];
