@@ -63,7 +63,7 @@ int mii;
     self.currentDeviceList = @[];
     self.currentClientList = @[];
     [self initializeAlmondData];
-    [self showHUD:@"wait..."];
+
     
 }
 
@@ -92,8 +92,8 @@ int mii;
     else {
         [self markTitle:self.toolkit.currentAlmond.almondplusName];
         [self markAlmondMac:self.toolkit.currentAlmond.almondplusMAC];
-        self.currentDeviceList = self.toolkit.devices;
-        self.currentClientList = self.toolkit.clients;
+        self.currentDeviceList = [self.toolkit.devices copy];
+        self.currentClientList = [self.toolkit.clients copy];
     }
     NSLog(@"devices: %@", self.toolkit.devices);
 }
@@ -575,10 +575,11 @@ int mii;
 #pragma mark command responses
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"devicelist - onDeviceListAndDynamicResponseParsed");
-    self.currentDeviceList = self.toolkit.devices;
-    self.currentClientList = self.toolkit.clients;
+    
     
     dispatch_async(dispatch_get_main_queue(), ^() {
+        self.currentDeviceList = [self.toolkit.devices copy];
+        self.currentClientList = [self.toolkit.clients copy];
         [self.tableView reloadData];
         [self.HUD hide:YES];
         if(self.refreshControl == nil){
@@ -707,12 +708,14 @@ int mii;
     NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
     
     if ([[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
+        dispatch_async(dispatch_get_main_queue(), ^() {
         [self configureNotificationModesForClients:[mainDict valueForKey:@"ClientPreferences"]];
+         });
     }
 }
 
 -(void)configureNotificationModesForClients:(NSArray*)clientsPreferences{
-    for(Client *client in self.toolkit.clients){
+    for(Client *client in self.currentClientList){
         [self setClientPreference:client clientsPreferences:clientsPreferences];
     }
 }
@@ -730,7 +733,7 @@ int mii;
 
 -(void)configureNotificationModesForDevices{
     NSArray *notificationList = [self.toolkit notificationPrefList:self.toolkit.currentAlmond.almondplusMAC];
-    for (Device *device in self.toolkit.devices) {
+    for (Device *device in self.currentDeviceList) {
         [self configureNotificationMode:device preferences:notificationList];
     }
 }
@@ -757,16 +760,18 @@ int mii;
     }
     [self.toolkit.devices removeAllObjects];
     [self.toolkit.clients removeAllObjects];
-    self.currentDeviceList = self.toolkit.devices ;
-    self.currentClientList = self.toolkit.clients;
-    [self.tableView reloadData];
-    [DevicePayload deviceListCommand];
-    [ClientPayload clientListCommand];
+    /* */
+    
         //request client list
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
+        self.currentDeviceList = [self.toolkit.devices copy];
+        self.currentClientList = [self.toolkit.clients copy];
+        [self.tableView reloadData];
         [self.refreshControl endRefreshing];
     });
+    [DevicePayload deviceListCommand];
+    [ClientPayload clientListCommand];
 }
 
 #pragma mark - Activation Notification Header
