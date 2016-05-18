@@ -15,5 +15,5 @@
 + (void)getSensorIndexUpdate:(GenericIndexValue*)genericIndexValue mii:(int)mii;
 + (void)getSensorIndexUpdatePayloadForGenericProperty:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value;
 + (void)getNameLocationChange:(GenericIndexValue*)genericIndexValue mii:(int)mii value:(NSString*)value;
-+ (void)sensorDidChangeNotificationSetting:(SFINotificationMode)newMode deviceID:(int)deviceID;
++ (void)sensorDidChangeNotificationSetting:(SFINotificationMode)newMode deviceID:(int)deviceID mii:(int)mii;
 @end

@@ -80,7 +80,7 @@
     if(_genericParams.headerGenericIndexValue.genericValue.iconText){
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;
-        self.deviceValueImgLable.attributedText = [CommonMethods getAttributeString:self.genericParams.headerGenericIndexValue.genericValue.iconText fontSize:16];
+        self.deviceValueImgLable.attributedText = [CommonMethods getAttributeString:self.genericParams.headerGenericIndexValue.genericValue.iconText fontSize:20];
         
         self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.displayText;
     }else{

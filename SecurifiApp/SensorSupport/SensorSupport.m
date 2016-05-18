@@ -49,7 +49,8 @@
         name = defaultIconName;
     }
 
-    name = [@"n_" stringByAppendingString:name];
+//    name = [@"n_" stringByAppendingString:name];
+    NSLog(@"image name: %@", name);
     return [self imageNamed:name];
 }
 

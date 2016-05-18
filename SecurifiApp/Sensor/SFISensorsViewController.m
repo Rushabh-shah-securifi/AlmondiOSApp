@@ -800,7 +800,7 @@
 
     [self showSavingToast];
 
-    [[SecurifiToolkit sharedInstance] asyncRequestNotificationPreferenceChange:almondMAC deviceList:notificationDeviceSettings forAction:action];
+//    [[SecurifiToolkit sharedInstance] asyncRequestNotificationPreferenceChange:almondMAC deviceList:notificationDeviceSettings forAction:action];
 }
 
 #pragma mark - Class Methods

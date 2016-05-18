@@ -32,6 +32,7 @@
 #import "SFIHighlightedButton.h"
 #import "SFINotificationsViewController.h"
 #import "Analytics.h"
+#import "NotificationPreferenceResponse.h"
 
 #define ITEM_SPACING  2.0
 #define LABELSPACING 20.0
@@ -45,7 +46,8 @@
 #define BUTTON_FRAME CGRectMake(0, LABELHEIGHT + LABELVALUESPACING,view.frame.size.width-10,  35)
 static const int xIndent = 10;
 
-@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,MultiButtonViewDelegate,GridViewDelegate,ListButtonDelegate>
+@interface DeviceEditViewController ()<MultiButtonViewDelegate,TextInputDelegate,HorzSliderDelegate,HueColorPickerDelegate,SliderViewDelegate,DeviceHeaderViewDelegate,MultiButtonViewDelegate,GridViewDelegate,ListButtonDelegate,UIGestureRecognizerDelegate
+>
 //can be removed
 @property (weak, nonatomic) IBOutlet UIScrollView *indexesScroll;
 
@@ -61,6 +63,7 @@ static const int xIndent = 10;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *headerTopConstrain;
 @property(nonatomic) NSMutableDictionary *miiTable;
 @property (nonatomic) CGRect ViewFrame;
+@property (nonatomic) NSInteger touchComp;
 
 @end
 
@@ -75,6 +78,9 @@ static const int xIndent = 10;
     self.ViewFrame = self.view.frame;
     [self setUpDeviceEditCell];
     self.miiTable = [NSMutableDictionary new];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTest:)];
+    [tap setDelegate:self];
+    [self.indexesScroll addGestureRecognizer:tap];
 }
 
 -(void)setUpDeviceEditCell{
@@ -96,6 +102,7 @@ static const int xIndent = 10;
         [self drawIndexes];
     });
     self.isLocal = [self.toolkit useLocalNetwork:[self.toolkit currentAlmond].almondplusMAC];
+    
     
 }
 - (void)didReceiveMemoryWarning {
@@ -126,7 +133,7 @@ static const int xIndent = 10;
                    name:NOTIFICATION_COMMAND_RESPONSE_NOTIFIER
                  object:nil];
     
-    [center addObserver:self //sensor notification response 114
+    [center addObserver:self //sensor notification response 301
                selector:@selector(onNotificationPrefDidChange:)//should have ideally handled in another method, but combining it with onCommand response eases things a lot, onNotificationPrefDidChange (actual method)
                    name:kSFINotificationPreferencesDidChange
                  object:nil];
@@ -381,7 +388,7 @@ static const int xIndent = 10;
             [DevicePayload getNameLocationChange:genericIndexValue mii:mii value:newValue];
         }else if(deviceCmdType == DeviceCommand_NotifyMe){
             NSLog(@"device - notifyme");
-            [DevicePayload sensorDidChangeNotificationSetting:newValue.intValue deviceID:genericIndexValue.deviceID];
+            [DevicePayload sensorDidChangeNotificationSetting:newValue.intValue deviceID:genericIndexValue.deviceID mii:mii];
         }
         else{
             [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:mii value:newValue];
@@ -398,10 +405,20 @@ static const int xIndent = 10;
             [ClientPayload getUpdateClientPayloadForClient:client mobileInternalIndex:mii];
         }
     }
+    NSLog(@"save mii genindexval: %@", self.miiTable[@(mii).stringValue]);
 }
 
 -(void)delegateDeviceEditSettingClick{
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark gesture recognizer
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+- (void)tapTest:(UITapGestureRecognizer *)sender {
+    self.touchComp = [sender locationInView:self.view].y;
 }
 
 #pragma  mark uiwindow delegate methods
@@ -409,7 +426,7 @@ static const int xIndent = 10;
     NSLog(@"%s",__PRETTY_FUNCTION__);
     CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
-    if(self.keyBoardComp >  keyboardSize.height && self.keyBoardComp > 300){
+    if(self.touchComp  > keyboardSize.height){
         [UIView animateWithDuration:0.3 animations:^{
             
             CGRect f = self.view.frame;
@@ -455,6 +472,7 @@ static const int xIndent = 10;
         
         NSNotification *notifier = (NSNotification *) sender;
         NSDictionary *dataInfo = [notifier userInfo];
+        
         if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
             return;
         }
@@ -623,9 +641,46 @@ static const int xIndent = 10;
     }
 }
 
--(void)onNotificationPrefDidChange:(id)sender{//sensor individual 114
+-(void)onNotificationPrefDidChange:(id)sender{//sensor individual 301
     NSLog(@"device edit - onNotificationPrefDidChange");
     
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    NotificationPreferenceResponse* res = dataInfo[@"data"];
+    GenericIndexValue *genIndexVal = self.miiTable[res.internalIndex];
+    if (res.internalIndex == nil || genIndexVal == nil) {
+        return;
+    }
+    
+    NSLog(@"res mii: *%@*, actual: *%@*", res.internalIndex, @(mii).stringValue);
+    
+
+    if(res.isSuccessful == NO){
+        NSLog(@"notify unsuccessful");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self revertToOldValue:genIndexVal];
+            [self showToast:[NSString stringWithFormat:@"Sorry, Could not update %@", genIndexVal.genericIndex.groupLabel]];
+        });
+    }
+    else{
+        NSLog(@"notify successful - commandtype: %d", genIndexVal.genericIndex.commandType);
+        DeviceCommandType deviceCmdType = genIndexVal.genericIndex.commandType;
+
+        [Device updateDeviceData:deviceCmdType value:genIndexVal.currentValue deviceID:genIndexVal.deviceID];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
+        });
+    }
+    
+    //Repaint header
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self repaintHeader:genIndexVal];
+    });
+    
+    [self.miiTable removeObjectForKey:res.internalIndex];
 }
 
 -(void)onClientPreferenceUpdateResponse:(id)sender{//client individual 1525

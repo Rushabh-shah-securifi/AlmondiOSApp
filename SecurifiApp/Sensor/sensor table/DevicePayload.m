@@ -72,7 +72,7 @@
     [toolkit asyncSendCommand:genericCmd];
 }
 
-+ (void)sensorDidChangeNotificationSetting:(SFINotificationMode)newMode deviceID:(int)deviceID{
++ (void)sensorDidChangeNotificationSetting:(SFINotificationMode)newMode deviceID:(int)deviceID mii:(int)mii{
     //Send command to set notification
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     
@@ -81,7 +81,7 @@
     
     NSString *action = (newMode == SFINotificationMode_off) ? kSFINotificationPreferenceChangeActionDelete : kSFINotificationPreferenceChangeActionAdd;
     
-    [toolkit asyncRequestNotificationPreferenceChange:toolkit.currentAlmond.almondplusMAC deviceList:notificationDeviceSettings forAction:action];
+    [toolkit asyncRequestNotificationPreferenceChange:toolkit.currentAlmond.almondplusMAC deviceList:notificationDeviceSettings forAction:action mii:mii];
 }
 
 
