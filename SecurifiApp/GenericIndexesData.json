@@ -1144,19 +1144,22 @@
                 "ToggleValue": "255",
                 "Icon": "icon_garage_door_down",
                 "AppLabel": "closing",
-                "Label": "CLOSING"
+                "Label": "CLOSING",
+                "ExcludeFrom": "Scene"
             },
             "253": {
                 "ToggleValue": "0",
                 "Icon": "garage_open",
                 "AppLabel": "stopped",
-                "Label": "STOPPED"
+                "Label": "STOPPED",
+                "ExcludeFrom": "Scene"
             },
             "254": {
                 "ToggleValue": "0",
                 "Icon": "icon_garage_door_up",
                 "AppLabel": "opening",
-                "Label": "OPENING"
+                "Label": "OPENING",
+                "ExcludeFrom": "Scene"
             },
             "255": {
                 "ToggleValue": "0",

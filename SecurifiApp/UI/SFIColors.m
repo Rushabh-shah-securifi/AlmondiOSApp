@@ -130,16 +130,28 @@
 }
 
 - (UIColor *)makeGradatedColorForPositionIndex:(NSUInteger)index {
-    int positionIndex = index % 15;
-
+//    int positionIndex = index % 15; //need to remove for 0, 1, 7
+//
+//    int brightness = 0;
+//    if (positionIndex < 7) {
+//        brightness = self.brightness - (positionIndex * 10);
+//    }
+//    else {
+//        brightness = (self.brightness - 70) + ((positionIndex - 7) * 10);
+//    }
+//    NSLog(@"brightnes: %d", brightness);
+    
+    //
+    int positionIndex = index % 10;
+    
     int brightness = 0;
-    if (positionIndex < 7) {
-        brightness = self.brightness - (positionIndex * 10);
+    if (positionIndex < 5) {
+        brightness = (self.brightness - 20) - (positionIndex * 10);
     }
     else {
-        brightness = (self.brightness - 70) + ((positionIndex - 7) * 10);
+        brightness = (self.brightness - 60) + ((positionIndex - 5) * 10);
     }
-
+    NSLog(@"brightnes: %d", brightness);
     return [self colorWithBrightness:brightness];
 }
 

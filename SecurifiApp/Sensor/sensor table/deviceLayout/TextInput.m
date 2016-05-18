@@ -25,7 +25,12 @@
     return self;
 }
 -(void)drawTextField{
-   self.deviceNameField = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height - 5)];
+    int type = [Device getTypeForID:self.genericIndexValue.deviceID];
+    self.deviceNameField = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height - 5)];
+    if(type == SFIDeviceType_NestThermostat_57 || type == SFIDeviceType_NestSmokeDetector_58){
+        [self.deviceNameField setEnabled:NO];
+        self.deviceNameField.alpha = 0.5;
+    }
     self.deviceNameField.text = self.genericIndexValue.genericValue.value;
     self.deviceNameField.delegate = self;
 //    self.deviceNameField.backgroundColor = self.color;

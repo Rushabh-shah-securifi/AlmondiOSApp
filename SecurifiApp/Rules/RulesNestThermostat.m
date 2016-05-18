@@ -245,7 +245,7 @@
             }
         }else{
             for(GenericIndexValue *genIndexVal in genericIndexValues){
-                if(genIndexVal.index == 3 || genIndexVal.index == 5 ||genIndexVal.index == 6){
+                if(genIndexVal.index == 3 || genIndexVal.index == 5 ||genIndexVal.index == 6 ||genIndexVal.index == 9){
                     [newGenericIndexValues removeObject:genIndexVal];
                 }
             }
@@ -284,7 +284,7 @@
         else if([modeVal isEqualToString:@"off"]){
             NSLog(@"three");
             for(GenericIndexValue *genIndexVal in genericIndexValues){
-                if(genIndexVal.index == 3 || genIndexVal.index == 5 ||genIndexVal.index == 6){
+                if(genIndexVal.index == 3 || genIndexVal.index == 5 ||genIndexVal.index == 6||genIndexVal.index == 9){
                     [newGenericIndexValues removeObject:genIndexVal];
                 }
             }
@@ -325,7 +325,7 @@
             [newPropertyList addObject:subProperty];
         else if([mode isEqualToString:@"heat-cool"] && subProperty.index == 3)
             [newPropertyList addObject:subProperty];
-        else if([mode isEqualToString:@"off"] && (subProperty.index == 5 || subProperty.index ==6 ||subProperty.index == 3)){
+        else if([mode isEqualToString:@"off"] && (subProperty.index == 5 || subProperty.index ==6 ||subProperty.index == 3 || subProperty.index == 9)){
             [newPropertyList addObject:subProperty];
         }
     }

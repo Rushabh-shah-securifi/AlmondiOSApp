@@ -137,6 +137,11 @@ static const int xIndent = 10;
                  object:nil];
     
     [center addObserver:self
+               selector:@selector(onDynamicClientPreferenceUpdate:)
+                   name:NOTIFICATION_WIFI_CLIENT_PREFERENCE_DYNAMIC_UPDATE_NOTIFIER
+                 object:nil];
+    
+    [center addObserver:self
                selector:@selector(onKeyboardDidShow:)
                    name:UIKeyboardDidShowNotification
                  object:nil];
@@ -357,6 +362,7 @@ static const int xIndent = 10;
     [view addSubview:grid];
 }
 
+
 #pragma mark delegate callback methods
 -(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue currentView:(UIView*)currentView{// index is genericindex for clients, normal index for sensors
     NSLog(@"newvalue %@",newValue);
@@ -393,9 +399,6 @@ static const int xIndent = 10;
         }
     }
 }
-
-
-
 
 -(void)delegateDeviceEditSettingClick{
     [self.navigationController popViewControllerAnimated:YES];
@@ -620,29 +623,38 @@ static const int xIndent = 10;
     }
 }
 
--(void)onNotificationPrefDidChange:(id)sender{//sensor
+-(void)onNotificationPrefDidChange:(id)sender{//sensor individual 114
     NSLog(@"device edit - onNotificationPrefDidChange");
-    
     
 }
 
--(void)onClientPreferenceUpdateResponse:(id)sender{//client
+-(void)onClientPreferenceUpdateResponse:(id)sender{//client individual 1525
     NSLog(@"device edit - onClientPreferenceUpdateResponse");
+    //doing nothing currently, only handling dynamic response
+}
+
+- (void)onDynamicClientPreferenceUpdate:(id)sender {//client individual dynamic 93
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
         return;
     }
     NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    if ([[mainDict valueForKey:@"MobileInternalIndex"] integerValue] != mii) {
+    NSLog(@"client preferecne: %@", mainDict);
+    
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    SFIAlmondPlus *plus = [toolkit currentAlmond];
+    NSString *aMac = [mainDict valueForKey:@"AlmondMAC"];
+    int clientID = [mainDict[@"ClientID"] intValue];
+    if(![aMac isEqualToString:plus.almondplusMAC])
         return;
-    }
-    if ([[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
+    
+    if ([mainDict[@"CommandType"] isEqualToString:@"UpdatePreference"] && (clientID == self.genericParams.headerGenericIndexValue.deviceID)) {
+        Client *client = [Client findClientByID:@(clientID).stringValue];
+        client.notificationMode = [mainDict[@"NotificationType"] intValue];
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.navigationController popViewControllerAnimated:YES];
+            [self.navigationController popToRootViewControllerAnimated:YES];
         });
-        
-        return;
     }
 }
 
