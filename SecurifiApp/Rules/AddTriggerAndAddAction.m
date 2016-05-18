@@ -976,7 +976,8 @@ labelAndCheckButtonView *labelView;
     
 }
 - (void)onKeyboardDidShow:(id)notification {
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    if(self.currentClickedButton.deviceType == SFIDeviceType_StandardWarningDevice_21 || self.currentClickedButton.deviceType == SFIDeviceType_ZWtoACIRExtender_54){
+        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
         [UIView animateWithDuration:0.3 animations:^{
             NSLog(@"keyboard frame before %@",NSStringFromCGRect(self.parentView.frame));
             CGRect f = self.parentView.frame;
@@ -985,7 +986,7 @@ labelAndCheckButtonView *labelView;
             self.parentView.frame = f;
             NSLog(@"keyboard frame %@",NSStringFromCGRect(self.parentView.frame));
         }];
-
+    }
     NSLog(@"%s",__PRETTY_FUNCTION__);
 }
 - (BOOL)tapGestureTurnPage:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {

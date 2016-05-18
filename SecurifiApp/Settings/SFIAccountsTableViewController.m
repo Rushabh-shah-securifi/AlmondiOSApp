@@ -2073,6 +2073,7 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     }
     else {
         NSLog(@"almondNameChangeResponseCallback nnnnnn");
+        
         [[[iToast makeText:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name2222")] setGravity:iToastGravityBottom] show:iToastTypeWarning];
     }
     [self.HUD hide:YES];
@@ -2093,7 +2094,10 @@ static NSString *simpleTableIdentifier = @"AccountCell";
     if (!obj.isSuccessful) {
         NSString *failureReason = obj.reason;
         NSLog(@"mobileCommandResponseCallback nnnnnn");
-        [[[iToast makeText:[NSString stringWithFormat:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name3333. %@"), failureReason]] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [[[iToast makeText:[NSString stringWithFormat:NSLocalizedString(@"accounts.itoast.unableToChangeAlmondName", @"Sorry! We were unable to change Almond's name3333. %@"), failureReason]] setGravity:iToastGravityBottom] show:iToastTypeWarning];
+
+        });
     }
     [self.HUD hide:YES];
 }

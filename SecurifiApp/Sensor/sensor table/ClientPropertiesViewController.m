@@ -16,11 +16,13 @@
 #import "DeviceEditViewController.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "ClientPayload.h"
+#import "UIViewController+Securifi.h"
 #import "SFINotificationsViewController.h"
+#import "MBProgressHUD.h"
 
 #define CELLFRAME CGRectMake(8, 8, self.view.frame.size.width -16, 70)
 
-@interface ClientPropertiesViewController ()<UITableViewDelegate,UITableViewDataSource,DeviceHeaderViewDelegate>
+@interface ClientPropertiesViewController ()<UITableViewDelegate,MBProgressHUDDelegate,UITableViewDataSource,DeviceHeaderViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *clientPropertiesTable;
 @property (nonatomic)NSMutableArray *orderedArray ;
 @property (nonatomic)NSDictionary *ClientDict;
@@ -30,6 +32,7 @@
 @property (nonatomic) BOOL isLocal;
 @property (nonatomic) DeviceHeaderView *commonView;
 @property (nonatomic)SecurifiToolkit *toolkit;
+@property(nonatomic, readonly) MBProgressHUD *HUD;
 @end
 
 @implementation ClientPropertiesViewController
@@ -74,6 +77,7 @@ int randomMobileInternalIndex;
 #pragma mark common cell delegate
 
 -(void)delegateClientPropertyEditSettingClick{
+    [self.HUD hide:YES];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -158,6 +162,7 @@ int randomMobileInternalIndex;
     //        ctrl.enableDebugMode = YES; // can uncomment for development/test
     ctrl.enableDeleteNotification = NO;
     ctrl.markAllViewedOnDismiss = NO;
+    ctrl.isForWifiClients = YES;
     ctrl.deviceID = self.genericParams.headerGenericIndexValue.deviceID;
     ctrl.almondMac = _toolkit.currentAlmond.almondplusMAC;
     
@@ -170,6 +175,8 @@ int randomMobileInternalIndex;
     Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
     client = [client copy];
     NSLog(@"client mac %@, client id %@",client.deviceMAC,client.deviceID);
+//    [self]
+    [self showHudWithTimeoutMsg:[NSString stringWithFormat:@"reseting %@",client.name]];
     [ClientPayload resetClientCommand:client.deviceMAC clientID:client.deviceID mii:randomMobileInternalIndex];
 }
 
@@ -184,7 +191,9 @@ int randomMobileInternalIndex;
     }
     NSDictionary *payload = dataInfo[@"data"];
     NSDictionary *clientPayload = payload[CLIENTS];
+    [self.HUD hide:YES];
     if(clientPayload == nil){//to handle removeall
+        
         dispatch_async(dispatch_get_main_queue(), ^(){
             [self.navigationController popToRootViewControllerAnimated:YES];
         });
@@ -201,6 +210,16 @@ int randomMobileInternalIndex;
 }
 
 
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:hudMsg];
+        [self.HUD hide:YES afterDelay:15];
+    });
+}
+- (void)showHUD:(NSString *)text {
+    self.HUD.labelText = text;
+    [self.HUD show:YES];
+}
 
 -(void)onCommandResponse:(id)sender{
     NSLog(@"onCommandResponse");

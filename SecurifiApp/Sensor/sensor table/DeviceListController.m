@@ -29,6 +29,7 @@
 #import "SFIPreferences.h"
 #import "SFIAlmondLocalNetworkSettings.h"
 #import "RouterParser.h"
+#import "CommonMethods.h"
 //#import "SFIRouterSummary.h"
 
 #define NO_ALMOND @"NO ALMOND"
@@ -301,27 +302,22 @@ int mii;
         header = @"Network Devices ";
     }
     
-    NSMutableAttributedString *aAttrString = [self getAttributeString:header fontSize:HEADER_FONT_SIZE];
-    NSMutableAttributedString *vAttrString = [self getAttributeString:headerVal fontSize:COUNT_FONT_SIZE];
+    NSMutableAttributedString *aAttrString = [CommonMethods getAttributeString:header fontSize:HEADER_FONT_SIZE];
+    NSMutableAttributedString *vAttrString = [CommonMethods getAttributeString:headerVal fontSize:COUNT_FONT_SIZE];
     [aAttrString appendAttributedString:vAttrString];
     static NSString *headerView = @"customHeader";
     UITableViewHeaderFooterView *vHeader;
-    vHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerView];
-    if (!vHeader) {
+//    vHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerView];
+//    if (!vHeader) {
         vHeader = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:headerView];
-    }
+//    }
     vHeader.textLabel.textColor = [UIColor lightGrayColor];
     vHeader.textLabel.attributedText = aAttrString;
     
     return vHeader;
 }
 
-- (NSMutableAttributedString *)getAttributeString:(NSString *)header fontSize:(int)fontsize{
-    UIFont *lightFont = [UIFont securifiLightFont:fontsize];
-    NSDictionary *arialDict = [NSDictionary dictionaryWithObject: lightFont forKey:NSFontAttributeName];
-    NSMutableAttributedString *aAttrString = [[NSMutableAttributedString alloc] initWithString:header attributes: arialDict];
-    return aAttrString;
-}
+
 
 - (BOOL)showNeedsActivationHeader {
     BOOL isAccountActivated = [[SecurifiToolkit sharedInstance] isAccountActivated];
@@ -592,7 +588,8 @@ int mii;
         }
         
     });
-    
+    BOOL local = [self.toolkit useLocalNetwork:self.toolkit.currentAlmond.almondplusMAC];
+    if(!local)
     [RouterParser sendrouterSummary];
 }
 

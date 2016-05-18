@@ -7,6 +7,8 @@
 //
 
 #import "CommonMethods.h"
+#import "UIFont+Securifi.h"
+#import "Colours.h"
 
 @implementation CommonMethods
 
@@ -70,5 +72,19 @@
             [v removeFromSuperview];
     }
 }
-
++ (NSMutableAttributedString *)getAttributeString:(NSString *)header fontSize:(int)fontsize{
+    UIFont *lightFont = [UIFont securifiBoldFont:fontsize];
+    NSDictionary *arialDict = [NSDictionary dictionaryWithObject: lightFont forKey:NSFontAttributeName];
+    NSMutableAttributedString *aAttrString = [[NSMutableAttributedString alloc] initWithString:header attributes: arialDict];
+    return aAttrString;
+}
++ (NSString *)getColorHex:(NSString*)value {
+    if (!value) {
+        return @"";
+    }
+    float hue = [value floatValue];
+    hue = hue / 65535;
+    UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
+    return [color.hexString uppercaseString];
+};
 @end

@@ -12,6 +12,7 @@
 #import "RulesNestThermostat.h"
 #import "RuleSceneUtil.h"
 #import "Colours.h"
+#import "CommonMethods.h"
 
 @interface DeviceHeaderView()
 @property (weak, nonatomic) IBOutlet UILabel *deviceValueImgLable;
@@ -66,10 +67,11 @@
     
     
     NSLog(@"device id %d, Icon text %@, icon: %@, index id %@, placement %@",_genericParams.headerGenericIndexValue.deviceID,_genericParams.headerGenericIndexValue.genericValue.iconText,_genericParams.headerGenericIndexValue.genericValue.icon,_genericParams.headerGenericIndexValue.genericIndex.ID,_genericParams.headerGenericIndexValue.genericIndex.placement);
+    int deviceType = [Device getTypeForID:_genericParams.headerGenericIndexValue.deviceID];
+    int deviceID = _genericParams.headerGenericIndexValue.deviceID;
+
     if(self.genericParams.isSensor){
-        int deviceType = [Device getTypeForID:_genericParams.headerGenericIndexValue.deviceID];
-        int deviceID = _genericParams.headerGenericIndexValue.deviceID;
-        if(deviceType == SFIDeviceType_NestThermostat_57 || deviceType == SFIDeviceType_NestSmokeDetector_58 ){
+                if(deviceType == SFIDeviceType_NestThermostat_57 || deviceType == SFIDeviceType_NestSmokeDetector_58 ){
             [self handleNestThermostatAndSmokeDectect:deviceType deviceID:deviceID genericValue:_genericParams.headerGenericIndexValue.genericValue];
         }
     }
@@ -78,12 +80,18 @@
     if(_genericParams.headerGenericIndexValue.genericValue.iconText){
         self.deviceImage.hidden = YES;
         self.deviceValueImgLable.hidden = NO;
-        self.deviceValueImgLable.text = self.genericParams.headerGenericIndexValue.genericValue.iconText;
+        self.deviceValueImgLable.attributedText = [CommonMethods getAttributeString:self.genericParams.headerGenericIndexValue.genericValue.iconText fontSize:16];
+        
         self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.displayText;
     }else{
         self.deviceValueImgLable.hidden = YES;
         self.deviceImage.hidden = NO;
         self.deviceImage.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
+        
+            if(deviceType == SFIDeviceType_HueLamp_48 && [[Device getValueForIndex:2 deviceID:deviceID] isEqualToString:@"true"]){
+                self.deviceImage.image = [self.deviceImage.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+                [self.deviceImage setTintColor:[UIColor colorFromHexString:[CommonMethods getColorHex:[Device getValueForIndex:3 deviceID:deviceID]]]];
+            }
         self.deviceValue.text = self.genericParams.headerGenericIndexValue.genericValue.displayText;
     }
     
