@@ -122,7 +122,7 @@ int randomMobileInternalIndex;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.userInteractionEnabled = YES;
     }else{
-        cell.vsluesLabel.alpha = 0.7;
+        cell.vsluesLabel.alpha = 0.75;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.userInteractionEnabled = NO;
     }

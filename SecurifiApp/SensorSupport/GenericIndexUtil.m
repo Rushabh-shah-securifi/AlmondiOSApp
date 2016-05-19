@@ -23,10 +23,10 @@
 
 
 +(GenericIndexValue*)getHeaderGenericIndexValueForDevice:(Device*)device{
-    NSLog(@"devicename: %@, deviceid: %d", device.name, device.ID);
+    //NSLog(@"devicename: %@, deviceid: %d", device.name, device.ID);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSArray *genericIndexValues = [self getGenericIndexValuesByPlacementForDevice:device placement:HEADER];
-    NSLog(@"generic index values header: %@", genericIndexValues);
+    //NSLog(@"generic index values header: %@", genericIndexValues);
     if([genericIndexValues count]<=0){
         return [[GenericIndexValue alloc]initWithGenericIndex:nil genericValue:[[GenericValue alloc]initUnknownDevice] index:0 deviceID:device.ID];
     }
@@ -61,10 +61,10 @@
                 
                 [detailText appendString:[NSString stringWithFormat:@"%@ ", genericIndexValue.genericValue.displayText]];
         }
-        NSLog(@"header text: %@, detail text: %@", headerText, detailText);
+        //NSLog(@"header text: %@, detail text: %@", headerText, detailText);
     }//for
-    NSLog(@"generic value: %@, generic Index: %@", genericValue, genericIndex);
-    NSLog(@"generic value display text before: %@", genericValue.displayText);
+    //NSLog(@"generic value: %@, generic Index: %@", genericValue, genericIndex);
+    //NSLog(@"generic value display text before: %@", genericValue.displayText);
     if(genericValue == nil){
         genericValue = [GenericValue new];
         GenericDeviceClass *genericDevice = toolkit.genericDevices[@(device.type).stringValue];
@@ -74,21 +74,19 @@
     if(detailText.length > 0){
         genericValue = [[GenericValue alloc]initWithGenericValue:genericValue text:[NSString stringWithFormat:@"%@ %@", headerText, detailText]];
     }
-    NSLog(@"generic value display text after: %@", genericValue.displayText);
+    //NSLog(@"generic value display text after: %@", genericValue.displayText);
     return [[GenericIndexValue alloc]initWithGenericIndex:genericIndex genericValue:genericValue index:index deviceID:device.ID];
 }
 
 + (NSMutableArray *)getDetailListForDevice:(int)deviceID{
-    NSLog(@"%s", __PRETTY_FUNCTION__);
+    //NSLog(@"%s", __PRETTY_FUNCTION__);
     Device *device = [Device getDeviceForID:deviceID];
     
     NSMutableArray *detailList = [self getGenericIndexValuesByPlacementForDevice:device placement:@"Detail"];
     [detailList addObjectsFromArray:[self getGenericIndexValuesByPlacementForDevice:device placement:@"Badge"]];
-    NSLog(@"Detail list vals: %@", detailList);
-    NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
-    NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, nil];
-    detailList = [[detailList sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
-    
+    //NSLog(@"Detail list vals: %@", detailList);
+    detailList = [self getSortedIndexValues:detailList];
+    detailList = [self getIndexValuesBasedOnSortedReadOnly:detailList];
     if((device.type == SFIDeviceType_NestThermostat_57 && [[Device getValueForIndex:11 deviceID:deviceID] isEqualToString:@"false"]) || (device.type == SFIDeviceType_NestSmokeDetector_58 && [[Device getValueForIndex:5 deviceID:deviceID] isEqualToString:@"false"])){//don't paint indexes on offline
         [detailList removeAllObjects];
     }
@@ -97,8 +95,21 @@
     return detailList;
 }
 
++(NSMutableArray*)getSortedIndexValues:(NSMutableArray*)detailList{
+    NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, nil];
+    return [[detailList sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+}
+
++(NSMutableArray*)getIndexValuesBasedOnSortedReadOnly:(NSMutableArray*)detailList{
+    NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:@"genericIndex.readOnly" ascending:NO];
+    NSArray *sortDescriptors = [NSArray arrayWithObjects:firstDescriptor, nil];
+    return [[detailList sortedArrayUsingDescriptors:sortDescriptors] mutableCopy];
+}
+
+
 +(NSMutableArray*)getGenericIndexValuesByPlacementForDevice:(Device*)device placement:(NSString*)placement{
-    NSLog(@"%s, placement: %@", __PRETTY_FUNCTION__, placement);
+    //NSLog(@"%s, placement: %@", __PRETTY_FUNCTION__, placement);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericDeviceClass *genericDevice = toolkit.genericDevices[@(device.type).stringValue];
     if(genericDevice==nil)
@@ -110,14 +121,14 @@
         GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
         GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexObj];
         if(deviceIndex.placement != nil){
-            NSLog(@" device index place ment %@",deviceIndex.placement);
+            //NSLog(@" device index place ment %@",deviceIndex.placement);
             copyGenericIndex.placement = deviceIndex.placement;
         }
         if([copyGenericIndex.placement rangeOfString:placement options:NSCaseInsensitiveSearch].location != NSNotFound){//contains
-            NSLog(@"inside placement: %@", copyGenericIndex.placement);
+            //NSLog(@"inside placement: %@", copyGenericIndex.placement);
             GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:copyGenericIndex.ID
                                                                                forValue:[self getHeaderValueFromKnownValuesForDevice:device indexID:IndexId]];
-            NSLog(@"genericvalue: %@, genericValue.value: %@, transformedvalue: %@", genericValue, genericValue.value, genericValue.transformedValue);
+            //NSLog(@"genericvalue: %@, genericValue.value: %@, transformedvalue: %@", genericValue, genericValue.value, genericValue.transformedValue);
             if(deviceIndex.min != nil && deviceIndex.max  != nil){
                 copyGenericIndex.formatter.min = deviceIndex.min.intValue;
                 copyGenericIndex.formatter.max = deviceIndex.max.intValue;
@@ -139,7 +150,7 @@
 }
 
 +(GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value{
-    NSLog(@"value: %@", value);
+    //NSLog(@"value: %@", value);
     if(value.length == 0 || value == nil)
         value = @"NaN";
     
@@ -246,9 +257,9 @@
     NSMutableArray *detailList = [self getGenericIndexValuesByPlacementForDevice:device placement:@"HeaderOnly"];
     [detailList addObjectsFromArray:[self getGenericIndexValuesByPlacementForDevice:device placement:@"Header_Detail"]];
     NSMutableString *status = [NSMutableString new];
-    NSLog(@"util value: %@", value);
+    //NSLog(@"util value: %@", value);
     if(value == nil){//has icon text
-        NSLog(@"has icon text util");
+        //NSLog(@"has icon text util");
         int i = 0;
         for(GenericIndexValue *genericIndexVal in detailList){
             if(i==0){
@@ -260,13 +271,13 @@
             i++;
         }
     }else{
-        NSLog(@"no icon text util");
+        //NSLog(@"no icon text util");
         [status appendString:value];
         for(GenericIndexValue *genericIndexVal in detailList){
             [status appendString:[NSString stringWithFormat:@", %@", genericIndexVal.genericValue.value]];
         }
     }
-    NSLog(@"status: %@", status);
+    //NSLog(@"status: %@", status);
     return  status;
 }
 

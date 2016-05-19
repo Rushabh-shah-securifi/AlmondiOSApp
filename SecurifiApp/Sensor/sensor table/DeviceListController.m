@@ -63,8 +63,6 @@ int mii;
     self.currentDeviceList = @[];
     self.currentClientList = @[];
     [self initializeAlmondData];
-
-
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -196,14 +194,13 @@ int mii;
                    name:VALIDATE_RESPONSE_NOTIFIER
                  object:nil];
     [center addObserver:self selector:@selector(oRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
-    
 }
 
 #pragma mark - HUD and Toast mgt
 - (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:hudMsg];
-        [self.HUD hide:YES afterDelay:15];
+        [self.HUD hide:YES afterDelay:20];
     });
 }
 
@@ -339,6 +336,7 @@ int mii;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    //NSLog(@"self.almond mac: %@", self.almondMac);
     if ([self isNoAlmondMAC]) {
         tableView.scrollEnabled = NO;
         return [self createNoAlmondCell:tableView];
@@ -382,6 +380,7 @@ int mii;
 
 
 - (UITableViewCell *)createEmptyCell:(UITableView *)tableView {
+    NSLog(@"emptycell");
     static NSString *empty_cell_id = @"EmptyCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:empty_cell_id];
@@ -426,6 +425,7 @@ int mii;
 
 
 - (UITableViewCell *)createNoAlmondCell:(UITableView *)tableView {
+    NSLog(@"No almond cell");
     static NSString *no_almond_cell_id = @"NoAlmondCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:no_almond_cell_id];
@@ -763,9 +763,8 @@ int mii;
     }
     [self.toolkit.devices removeAllObjects];
     [self.toolkit.clients removeAllObjects];
-    /* */
     
-        //request client list
+    //request client list
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
 //        self.currentDeviceList = [self.toolkit.devices copy];
