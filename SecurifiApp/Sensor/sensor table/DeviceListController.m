@@ -765,9 +765,9 @@ int mii;
         //request client list
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
-        self.currentDeviceList = [self.toolkit.devices copy];
-        self.currentClientList = [self.toolkit.clients copy];
-        [self.tableView reloadData];
+//        self.currentDeviceList = [self.toolkit.devices copy];
+//        self.currentClientList = [self.toolkit.clients copy];
+//        [self.tableView reloadData];
         [self.refreshControl endRefreshing];
     });
     [DevicePayload deviceListCommand];

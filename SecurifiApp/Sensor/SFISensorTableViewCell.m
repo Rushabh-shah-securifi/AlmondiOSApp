@@ -366,10 +366,10 @@
             break;
         }
             
-        case SFIDeviceType_Shade_34: {
-            [self configureBinaryStateSensor:DT34_SHADE_TRUE imageNameFalse:DT34_SHADE_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.OPEN", @"OPEN") statusFalse:NSLocalizedString(@"sensor.status-label.CLOSED", @"CLOSED")];
-            break;
-        }
+//        case SFIDeviceType_Shade_34: {
+//            [self configureBinaryStateSensor:DT34_SHADE_TRUE imageNameFalse:DT34_SHADE_FALSE statusTrue:NSLocalizedString(@"sensor.status-label.OPEN", @"OPEN") statusFalse:NSLocalizedString(@"sensor.status-label.CLOSED", @"CLOSED")];
+//            break;
+//        }
             
         case SFIDeviceType_SmokeDetector_36: {
             [self configureBinaryStateSensorImageNameZeroValue:DT36_SMOKE_DETECTOR_FALSE imageNameNonZeroValue:DT36_SMOKE_DETECTOR_TRUE statusZeroValue:NSLocalizedString(@"sensor.status-label.OK", @"OK") statusNonZeroValue:NSLocalizedString(@"sensor.status-label.SMOKE DETECTED!", @"SMOKE DETECTED!")];

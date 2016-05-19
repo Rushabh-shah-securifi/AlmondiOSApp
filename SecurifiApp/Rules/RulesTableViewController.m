@@ -107,7 +107,7 @@ CGPoint tablePoint;
 
 }
 - (void)onCurrentAlmondChanged:(id)sender {
-    self.rules = nil;
+    [self.rules removeAllObjects];
     [self markAlmondTitleAndMac];
     [self sendGetAllRulesRequest];
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -141,11 +141,13 @@ CGPoint tablePoint;
 
 - (void)onRuleUpdateCommandResponse:(id)sender{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.rules =[NSMutableArray arrayWithArray:toolkit.ruleList];
+    NSLog(@"onRuleUpdateCommandResponse ");
     
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.HUD hide:YES];
+        self.rules =[NSMutableArray arrayWithArray:toolkit.ruleList];
+        
         [self.tableView reloadData];
+        [self.HUD hide:YES];
         self.tableView.contentOffset = tablePoint;
     });
     
@@ -188,6 +190,7 @@ CGPoint tablePoint;
     if([self isRuleArrayEmpty]){
         return 1;
     }
+    NSLog(@"row count: %lu", (unsigned long)self.rules.count);
     return self.rules.count;
 }
 

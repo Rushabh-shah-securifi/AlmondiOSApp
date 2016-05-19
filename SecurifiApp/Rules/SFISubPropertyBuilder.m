@@ -155,6 +155,7 @@ UILabel *topLabel;
                 positionId++;
         }
     }
+    NSLog(@"position id :: %d",positionId);
     //Replace the end image with arrow or nothing appropriately
     if(lastImageButton!=nil){
         NSLog(@"istrigger: %d, actioncount:%ld", isTrigger, (unsigned long)actions.count);
@@ -363,7 +364,9 @@ UILabel *topLabel;
 
 + (void)onTriggerCrossButtonClicked:(SwitchButton*)switchButton{
     //includes mode
-    
+    if(switchButton.subProperties.positionId >= triggers.count || switchButton.subProperties.positionId >= actions.count){
+        return;
+    }
     if(delayPicker.isPresentDelayPicker){
         [delayPicker removeDelayView];
         deviceIndexButtonScrollView.userInteractionEnabled = YES;
