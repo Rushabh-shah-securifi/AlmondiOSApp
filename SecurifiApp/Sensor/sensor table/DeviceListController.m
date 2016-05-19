@@ -64,7 +64,7 @@ int mii;
     self.currentClientList = @[];
     [self initializeAlmondData];
 
-    
+
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -84,6 +84,7 @@ int mii;
 -(void)markAlmondTitleAndMac{
     NSLog(@"%s, self.toolkit.currentAlmond: %@", __PRETTY_FUNCTION__, self.toolkit.currentAlmond);
     if (self.toolkit.currentAlmond == nil) {
+        NSLog(@"no almond");
         [self markTitle:NSLocalizedString(@"router.nav-title.Get Started", @"Get Started")];
         [self markAlmondMac:NO_ALMOND];
         self.currentDeviceList = @[];
@@ -268,9 +269,16 @@ int mii;
     if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]))
         return 1;
 
-    NSLog(@"self.currentDeviceList.count %ld",self.currentDeviceList.count);
+    NSLog(@"self.currentDeviceList.count %ld",(unsigned long)self.currentDeviceList.count);
     return (section == 0) ? self.currentDeviceList.count:self.currentClientList.count;
     
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty])) {
+        return 400;
+    }
+    return 75;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
@@ -371,12 +379,7 @@ int mii;
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if ([self isNoAlmondMAC]) {
-        return 400;
-    }
-    return 75;
-}
+
 
 - (UITableViewCell *)createEmptyCell:(UITableView *)tableView {
     static NSString *empty_cell_id = @"EmptyCell";
@@ -607,12 +610,12 @@ int mii;
     if(local){
         payload = [dataInfo valueForKey:@"data"];
     }else{
-        NSLog(@"cloud data");
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
     }
     
     //    payload = [self parseJson:@"DeviceListResponse"];
     NSLog(@"devicelistcontroller - mobile - payload: %@", payload);
+    //handle on false response
 
 }
 
@@ -629,7 +632,7 @@ int mii;
     [ClientPayload clientListCommand];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHudWithTimeoutMsg:@"Loading Device data"];
-        [self.tableView reloadData];
+//        [self.tableView reloadData];
     });
 }
 

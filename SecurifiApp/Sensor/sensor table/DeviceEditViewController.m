@@ -393,7 +393,8 @@ static const int xIndent = 10;
         else{
             [DevicePayload getSensorIndexUpdatePayloadForGenericProperty:genericIndexValue mii:mii value:newValue];
         }
-    }else{
+    }
+    else{
         Client *client = [Client findClientByID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
         if(deviceCmdType == DeviceCommand_NotifyMe){
             NSLog(@"client - notifyme");
@@ -463,36 +464,33 @@ static const int xIndent = 10;
 #pragma mark command responses
 -(void)onCommandResponse:(id)sender{ //mobile command sensor and client 1064
     NSLog(@"device edit - onUpdateDeviceIndexResponse");
+    SFIAlmondPlus *almond = [self.toolkit currentAlmond];
+    BOOL local = [self.toolkit useLocalNetwork:almond.almondplusMAC];
+    NSDictionary *payload;
+    
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    
+    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
+    }
+    
+    if(local){
+        payload = dataInfo[@"data"];
+    }else{
+        payload = [dataInfo[@"data"] objectFromJSONData];
+    }
+    
+    if (self.miiTable[payload[@"MobileInternalIndex"]] == nil) {
+        return;
+    }
+    NSLog(@"payload mobile command: %@", payload);
+    
+    BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
+    GenericIndexValue *genIndexVal = self.miiTable[payload[@"MobileInternalIndex"]];
     
     if(self.genericParams.isSensor){
         NSLog(@"sensor");
-        SFIAlmondPlus *almond = [self.toolkit currentAlmond];
-        BOOL local = [self.toolkit useLocalNetwork:almond.almondplusMAC];
-        NSDictionary *payload;
-        
-        NSNotification *notifier = (NSNotification *) sender;
-        NSDictionary *dataInfo = [notifier userInfo];
-        
-        if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
-            return;
-        }
-        
-        if(local){
-            payload = dataInfo[@"data"];
-        }else{
-            payload = [dataInfo[@"data"] objectFromJSONData];
-        }
-        
-        NSLog(@"payload mobile command: %@", payload);
-        
-        //comment point
-        if (self.miiTable[payload[@"MobileInternalIndex"]] == nil) {
-            return;
-        }
-        
-        BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
-        GenericIndexValue *genIndexVal = self.miiTable[payload[@"MobileInternalIndex"]];
-        NSLog(@"genIndexVal: %@", genIndexVal);
         if(isSuccessful == NO){
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self revertToOldValue:genIndexVal];
@@ -526,7 +524,11 @@ static const int xIndent = 10;
         NSLog(@"end response");
     }
     else{
-        NSLog(@"client mobile response - now only handling dynamic resposne");
+        if(isSuccessful == NO){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.navigationController popToRootViewControllerAnimated:YES];
+            });
+        }
     }
 }
 
@@ -637,6 +639,9 @@ static const int xIndent = 10;
         else if ([layout isEqualToString:LIST]){
             ListButtonView * typeTableView = (ListButtonView *)genIndexVal.clickedView;
             [typeTableView setListValue:value];
+        }
+        else if ([layout isEqualToString:GRID_VIEW]){
+            
         }
     }
 }
