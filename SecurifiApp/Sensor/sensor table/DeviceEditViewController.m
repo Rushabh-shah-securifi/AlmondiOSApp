@@ -201,7 +201,7 @@ static const int xIndent = 10;
             UILabel *valueLabel = [[UILabel alloc]initWithFrame:CGRectMake(view.frame.size.width - 110, 0, 100, 15)];
             [self setUpLable:valueLabel withPropertyName:genericIndexValue.genericValue.displayText];
             valueLabel.textAlignment = NSTextAlignmentRight;
-            valueLabel.alpha = 0.5;
+            valueLabel.alpha = 0.7;
             [view addSubview:valueLabel];
             
             yPos = yPos + view.frame.size.height + LABELSPACING;
@@ -648,44 +648,46 @@ static const int xIndent = 10;
 
 -(void)onNotificationPrefDidChange:(id)sender{//sensor individual 301
     NSLog(@"device edit - onNotificationPrefDidChange");
-    
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *dataInfo = [notifier userInfo];
-    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
-        return;
-    }
-    NotificationPreferenceResponse* res = dataInfo[@"data"];
-    GenericIndexValue *genIndexVal = self.miiTable[res.internalIndex];
-    if (res.internalIndex == nil || genIndexVal == nil) {
-        return;
-    }
-    
-    NSLog(@"res mii: *%@*, actual: *%@*", res.internalIndex, @(mii).stringValue);
-    
-
-    if(res.isSuccessful == NO){
-        NSLog(@"notify unsuccessful");
+    if(self.deviceEditHeaderCell.cellType == SensorEdit_Cell){
+        NSNotification *notifier = (NSNotification *) sender;
+        NSDictionary *dataInfo = [notifier userInfo];
+        if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+            return;
+        }
+        NotificationPreferenceResponse* res = dataInfo[@"data"];
+        GenericIndexValue *genIndexVal = self.miiTable[res.internalIndex];
+        if (res.internalIndex == nil || genIndexVal == nil) {
+            return;
+        }
+        
+        NSLog(@"res mii: *%@*, actual: *%@*", res.internalIndex, @(mii).stringValue);
+        
+        
+        if(res.isSuccessful == NO){
+            NSLog(@"notify unsuccessful");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self revertToOldValue:genIndexVal];
+                [self showToast:[NSString stringWithFormat:@"Sorry, Could not update %@", genIndexVal.genericIndex.groupLabel]];
+            });
+        }
+        else{
+            NSLog(@"notify successful - commandtype: %d", genIndexVal.genericIndex.commandType);
+            DeviceCommandType deviceCmdType = genIndexVal.genericIndex.commandType;
+            
+            [Device updateDeviceData:deviceCmdType value:genIndexVal.currentValue deviceID:genIndexVal.deviceID];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
+            });
+        }
+        
+        //Repaint header
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self revertToOldValue:genIndexVal];
-            [self showToast:[NSString stringWithFormat:@"Sorry, Could not update %@", genIndexVal.genericIndex.groupLabel]];
+            [self repaintHeader:genIndexVal];
         });
-    }
-    else{
-        NSLog(@"notify successful - commandtype: %d", genIndexVal.genericIndex.commandType);
-        DeviceCommandType deviceCmdType = genIndexVal.genericIndex.commandType;
-
-        [Device updateDeviceData:deviceCmdType value:genIndexVal.currentValue deviceID:genIndexVal.deviceID];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
-        });
+        
+        [self.miiTable removeObjectForKey:res.internalIndex];
     }
     
-    //Repaint header
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self repaintHeader:genIndexVal];
-    });
-    
-    [self.miiTable removeObjectForKey:res.internalIndex];
 }
 
 -(void)onClientPreferenceUpdateResponse:(id)sender{//client individual 1525

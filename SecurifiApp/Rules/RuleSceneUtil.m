@@ -65,7 +65,7 @@
         DeviceIndex *deviceIndex = deviceIndexes[indexID];
         GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
         GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexObj];
-        NSLog(@" device Index %@ deviceType %@,devicename %@  generic index ID %@ istrigger %d ,isScene %d",deviceIndex.index ,genericDevice.type ,genericDevice.name, copyGenericIndex.ID,isTrigger,isScene);
+        //NSLog(@" device Index %@ deviceType %@,devicename %@  generic index ID %@ istrigger %d ,isScene %d",deviceIndex.index ,genericDevice.type ,genericDevice.name, copyGenericIndex.ID,isTrigger,isScene);
         if([Device getValueForIndex:indexID.intValue deviceID:deviceID] == nil && !([genericDevice.type isEqualToString:@"0" ] || [genericDevice.type isEqualToString:@"500" ] || [genericDevice.type isEqualToString:@"501" ]))
             continue;
         if(![self showGenericIndex:copyGenericIndex isTrigger:isTrigger isScene:isScene])
@@ -104,7 +104,7 @@
 +(BOOL)showGenericDevice:(int)deviceType isTrigger:(BOOL) isTrigger isScene:(BOOL)isScene{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericDeviceClass *genericDevice = toolkit.genericDevices[@(deviceType).stringValue];
-    NSLog(@"devicetype: %d, istrigger: %d", deviceType, genericDevice.isTrigger);
+    //NSLog(@"devicetype: %d, istrigger: %d", deviceType, genericDevice.isTrigger);
     if(genericDevice != nil && [self isToBeAdded:genericDevice.excludeFrom checkString:isScene?@"Scene":@"Rule"]){
         if((!isScene && isTrigger) && genericDevice.isTrigger)
             return YES;

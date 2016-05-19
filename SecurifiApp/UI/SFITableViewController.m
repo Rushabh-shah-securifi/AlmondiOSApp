@@ -379,7 +379,9 @@
     [toolkit setConnectionMode:mode forAlmond:self.almondMac];
     [toolkit.clients removeAllObjects];
     [toolkit.devices removeAllObjects ];
-    [self.tableView reloadData];
+    [self.HUD show:YES];
+    [self.HUD hide:YES afterDelay:15    ]; // in case the request times out
+//    [self.tableView reloadData];
 }
 
 - (void)onAlmondModeButtonPressed:(id)sender {
@@ -440,12 +442,15 @@
         NSLog(@"cloud data");
        payload = [dataInfo valueForKey:@"data"];
     }
-    [self.HUD hide:YES];
+//    [self.HUD hide:YES];
     dispatch_async(dispatch_get_main_queue(), ^() {
 //        if (self.presentedViewController != nil) {
 //            return;
 //        }
         NSLog(@"payload mode %@",payload);
+        if([payload[@"CommandType"] isEqualToString:@"DynamicAlmondModeUpdated"]){
+          [self.HUD hide:YES];
+        }
         NSString *m = payload[@"Mode"];
         NSLog(@"m = %@",m);
         NSLog(@"mode m= %ld",(long)[m integerValue]);

@@ -50,7 +50,7 @@
 @property (nonatomic, strong)NSMutableArray *actions;
 @property (nonatomic)RulesHue *ruleHueObject;
 @property TimeView *timeView;
-@property (nonatomic)CGRect viewFrame;
+
 @end
 
 @implementation AddTriggerAndAddAction
@@ -74,7 +74,6 @@ labelAndCheckButtonView *labelView;
         newPickerValue = [NSString new];
         
         self.parentView = parentView;
-        self.viewFrame = self.parentView.frame;
         self.deviceIndexButtonScrollView = deviceIndexScrollView;
         self.deviceListScrollView = deviceListScrollView;
         self.triggers = triggers;
@@ -85,23 +84,7 @@ labelAndCheckButtonView *labelView;
 }
 
 
--(void)initializeNotifications{
-    NSLog(@"initialize notifications sensor table");
-    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self
-               selector:@selector(onKeyboardDidShow:)
-                   name:UIKeyboardDidShowNotification
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(onKeyboardDidHide:)
-                   name:UIKeyboardDidHideNotification
-                 object:nil];
-    
-}
-
 -(void)addDeviceNameList:(BOOL)isTrigger{
-    [self initializeNotifications];
     self.isTrigger = isTrigger;
     //clear view
     NSArray *viewsToRemove = [self.deviceListScrollView subviews];
@@ -166,7 +149,8 @@ labelAndCheckButtonView *labelView;
     [self toggleHighlightForDeviceNameButton:deviceButton];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     int i =0;
-    for(Client *connectedClient in toolkit.clients){
+    NSArray *clientsCopy = [toolkit.clients copy];
+    for(Client *connectedClient in clientsCopy){
         if(connectedClient.deviceUseAsPresence){
             int yScale = ROW_PADDING + (ROW_PADDING+frameSize)*i;
             [self addClientNameLabel:connectedClient.name yScale:yScale];
@@ -975,45 +959,6 @@ labelAndCheckButtonView *labelView;
     NSLog(@" g.index id %@",genericIndexValue.genericIndex.ID);
     
 }
-- (void)onKeyboardDidShow:(id)notification {
-    if(self.currentClickedButton.deviceType == SFIDeviceType_StandardWarningDevice_21 || self.currentClickedButton.deviceType == SFIDeviceType_ZWtoACIRExtender_54){
-        CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-        [UIView animateWithDuration:0.3 animations:^{
-            NSLog(@"keyboard frame before %@",NSStringFromCGRect(self.parentView.frame));
-            CGRect f = self.parentView.frame;
-            CGFloat y = -keyboardSize.height + 15;
-            f.origin.y = self.currentClickedButton.deviceType == SFIDeviceType_StandardWarningDevice_21? y/2: y;
-            self.parentView.frame = f;
-            NSLog(@"keyboard frame %@",NSStringFromCGRect(self.parentView.frame));
-        }];
-    }
-    NSLog(@"%s",__PRETTY_FUNCTION__);
-}
-- (BOOL)tapGestureTurnPage:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    
-    // Get the specific point that was touched
-    CGPoint point = [touch locationInView:self.parentView];
-    NSLog(@"X location: %f", point.x);
-    NSLog(@"Y Location: %f",point.y);
-    return YES;
-    
-}
-- (void)onKeyboardDidHide:(id)notification {
-    NSLog(@"%s",__PRETTY_FUNCTION__);
-    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    
-        [UIView animateWithDuration:0.3 animations:^{
-            CGRect f = self.parentView.frame;
-            f.origin.y = self.viewFrame.origin.y;
-            self.parentView.frame = f;
-        }];
 
-    /*
-     self.indexScrollTopConstraint.constant = 2 + self.dismisstamperedView.frame.size.height;
-     self.scrollViewBottom.constant = 8;
-     self.headerTopConstrain.constant = 8;
-     //    self.dismisstamperedView.frame = CGRectMake(self.indexesScroll.frame.origin.x, self.deviceEditHeaderCell.frame.size.height + self.deviceEditHeaderCell.frame.origin.y + 5, self.indexesScroll.frame.size.width, 40);
-     self.dismisstamperedView.hidden = NO;*/
-}
 
 @end

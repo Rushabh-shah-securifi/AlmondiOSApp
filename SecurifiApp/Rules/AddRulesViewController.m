@@ -36,7 +36,7 @@
 #import "Analytics.h"
 #import "CommonMethods.h"
 
-@interface AddRulesViewController()<UIAlertViewDelegate, UITextFieldDelegate>{
+@interface AddRulesViewController()<UIAlertViewDelegate, UITextFieldDelegate,UIGestureRecognizerDelegate>{
     sfi_id dc_id;
     NSInteger randomMobileInternalIndex;
 }
@@ -46,6 +46,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *ifThenTabSeperator;
 @property (nonatomic,strong)AddRuleSceneClass *addRuleScene;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
+@property (nonatomic) CGRect ViewFrame;
+@property (nonatomic) NSInteger touchComp;
 @end
 
 @implementation AddRulesViewController
@@ -65,6 +67,11 @@ UIAlertView *alert;
     self.addRuleScene = [[AddRuleSceneClass alloc]initWithParentView:self.view deviceIndexScrollView:self.deviceIndexButtonScrollView deviceListScrollView:self.deviceListScrollView topScrollView:self.triggersActionsScrollView informationLabel:self.informationLabel triggers:self.rule.triggers actions:self.rule.actions isScene:NO];
     [self.addRuleScene buildTriggersAndActions];
     [self ifThenClick:YES infoText:@"To get started, please select a trigger" infoText2:@"Add another trigger or press THEN to define action"];
+    self.ViewFrame = self.view.frame;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTest:)];
+    [tap setDelegate:self];
+    [self.view addGestureRecognizer:tap];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -112,6 +119,16 @@ UIAlertView *alert;
                selector:@selector(onTabBarDidChange:)
                    name:@"TAB_BAR_CHANGED"
                  object:nil];
+    [center addObserver:self
+               selector:@selector(onKeyboardDidShow:)
+                   name:UIKeyboardDidShowNotification
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onKeyboardDidHide:)
+                   name:UIKeyboardDidHideNotification
+                 object:nil];
+
 }
 
 -(void)getWificlientsList{
@@ -280,6 +297,7 @@ UIAlertView *alert;
 
 
 -(void)btnSaveTap:(id)sender{
+    self.touchComp = 1;
     textField = [[UITextField alloc]init];
     if(self.isInitialized){
         textField.text = self.rule.name;
@@ -388,7 +406,40 @@ UIAlertView *alert;
         [toolkit asyncSendToCloud:cloudCommand];
     }
 }
+#pragma mark gesture recognizer
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+- (void)tapTest:(UITapGestureRecognizer *)sender {
+    self.touchComp = [sender locationInView:self.view].y;
+    NSLog(@"self.touch %ld",self.touchComp);
+}
 
+#pragma  mark uiwindow delegate methods
+- (void)onKeyboardDidShow:(id)notification {
+    NSLog(@"%s",__PRETTY_FUNCTION__);
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    if(self.touchComp  > keyboardSize.height){
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            CGRect f = self.view.frame;
+            CGFloat y = -keyboardSize.height ;
+            f.origin.y =  y + 80;
+            self.view.frame = f;
+            //        NSLog(@"keyboard frame %@",NSStringFromCGRect(self.parentView.frame));
+        }];
+    }
+}
 
+-(void)onKeyboardDidHide:(id)notice {
+    NSLog(@"%s",__PRETTY_FUNCTION__);
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect f = self.view.frame;
+        f.origin.y = self.ViewFrame.origin.y;
+        self.view.frame = f;
+    }];
+}
 
 @end
