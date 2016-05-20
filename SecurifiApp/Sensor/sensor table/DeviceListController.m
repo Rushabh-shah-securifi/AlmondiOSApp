@@ -71,6 +71,10 @@ int mii;
     mii = arc4random() % 10000;
     
     [self markAlmondTitleAndMac];
+    if([self isDeviceListEmpty] && [self isClientListEmpty]){
+        NSLog(@"initializeAlmondData");
+        [self showHudWithTimeoutMsg:@"Loading Device data"];
+    }
     [self initializeNotifications];
 //    [self initializeAlmondData];
     //need to reload tableview, as toolkit could have got updates
@@ -103,9 +107,10 @@ int mii;
     self.enableDrawer = YES; //to enable navigation top left button
     dispatch_async(dispatch_get_main_queue(), ^{
         [self tryInstallRefreshControl];
-        if([self isDeviceListEmpty] && [self isClientListEmpty])
+        if([self isDeviceListEmpty] && [self isClientListEmpty]){
+            NSLog(@"initializeAlmondData");
             [self showHudWithTimeoutMsg:@"Loading Device data"];
-
+        }
     });
     
 }
