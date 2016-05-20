@@ -46,7 +46,7 @@
             genericValue = genericIndexValue.genericValue;
             genericIndex = genericIndexValue.genericIndex;
             
-            if([genericIndex.layoutType isEqualToString:@"SLIDER_ICON"]){
+            if([genericIndex.layoutType isEqualToString:@"SLIDER_ICON"] && [genericIndex.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
                 headerText = [NSString stringWithFormat:@"%@ %@", genericIndexValue.genericIndex.groupLabel, genericIndexValue.genericValue.displayText];
             }else{
                 headerText = genericIndexValue.genericValue.displayText;
@@ -161,7 +161,7 @@
     else if(genericIndexObject.values != nil){
         return genericIndexObject.values[value]? genericIndexObject.values[value]: [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:nil value:value excludeFrom:nil eventType:nil];
     }
-    else if(genericIndexObject.formatter != nil && ![genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"]){
+    else if(genericIndexObject.formatter != nil && ![genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] && ![genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
         NSString *formattedValue=[genericIndexObject.formatter transform:value];
         GenericValue *genericValue = [[GenericValue alloc]initWithDisplayText:formattedValue
                                                                      iconText:formattedValue
@@ -170,7 +170,7 @@
                                                              transformedValue:[genericIndexObject.formatter transformValue:value]];
         return genericValue;
     }
-    else if(genericIndexObject.formatter != nil && [genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"]){
+    else if(genericIndexObject.formatter != nil && [genericIndexObject.layoutType isEqualToString:@"SLIDER_ICON"] && [genericIndexObject.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
         return [[GenericValue alloc]initWithDisplayText:[genericIndexObject.formatter transform:value] icon:genericIndexObject.icon toggleValue:nil value:value excludeFrom:nil eventType:nil transformedValue:[genericIndexObject.formatter transformValue:value]]; //need icon aswell as transformedValue
     }
     return [[GenericValue alloc]initWithDisplayText:value icon:genericIndexObject.icon toggleValue:value value:value excludeFrom:genericIndexObject.excludeFrom eventType:nil];

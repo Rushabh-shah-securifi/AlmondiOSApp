@@ -178,7 +178,7 @@ int randomMobileInternalIndex;
 //    [self]
     [self showHudWithTimeoutMsg:[NSString stringWithFormat:@"reseting %@",client.name]];
     if(client.deviceID.length!=0  && client.deviceMAC.length!= 0)
-    [ClientPayload resetClientCommand:client.deviceMAC clientID:client.deviceID mii:randomMobileInternalIndex];
+        [ClientPayload resetClientCommand:client.deviceMAC clientID:client.deviceID mii:randomMobileInternalIndex];
 }
 
 #pragma mark command resposne

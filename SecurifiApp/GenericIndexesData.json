@@ -552,18 +552,10 @@
         "Layout": "TEXT_VIEW_ONLY",
         "AppLabel": "set_alarm_for",
         "ExcludeFrom": "Scene_Trigger",
-        "DefaultIcon": "alarm_on",
-        "Values": {
-            "0": {
-                "Icon": "alarm_off",
-                "AppLabel": "off",
-                "Label": "Off"
-            },
-            "65535": {
-                "Icon": "alarm_on",
-                "AppLabel": "alarm_on",
-                "Label": "Ringing"
-            }
+        "DefaultIcon": "alarm_off",
+        "Formatter": {
+            "Min": "0",
+            "Max": "65535"
         }
     },
     "14": {
@@ -1331,7 +1323,7 @@
         "Conditional": "true",
         "Formatter": {
             "Min": "0",
-            "Max": "100",
+            "Max": "240",
             "Unit": "V"
         }
     },
@@ -1344,7 +1336,7 @@
         "Conditional": "true",
         "Formatter": {
             "Min": "0",
-            "Max": "100",
+            "Max": "15",
             "Unit": "A"
         }
     },
@@ -1803,7 +1795,7 @@
         "Conditional": "true",
         "Formatter": {
             "Min": "0",
-            "Max": "100",
+            "Max": "1920",
             "Unit": "W"
         }
         
