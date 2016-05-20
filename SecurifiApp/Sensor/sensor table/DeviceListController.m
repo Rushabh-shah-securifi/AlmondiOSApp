@@ -81,6 +81,7 @@ int mii;
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
+    NSLog(@"view will appear end");
 }
 
 -(void)markAlmondTitleAndMac{
@@ -93,6 +94,7 @@ int mii;
         self.currentClientList = @[];
     }
     else {
+        NSLog(@"got almond");
         [self markTitle:self.toolkit.currentAlmond.almondplusName];
         [self markAlmondMac:self.toolkit.currentAlmond.almondplusMAC];
         self.currentDeviceList = [self.toolkit.devices copy];
@@ -102,17 +104,17 @@ int mii;
 }
 
 -(void)initializeAlmondData{
+    NSLog(@"initialize almond data");
     [self markAlmondTitleAndMac];
     [self initializeColors:[self.toolkit currentAlmond]];
     self.enableDrawer = YES; //to enable navigation top left button
     dispatch_async(dispatch_get_main_queue(), ^{
         [self tryInstallRefreshControl];
         if([self isDeviceListEmpty] && [self isClientListEmpty]){
-            NSLog(@"initializeAlmondData");
+            NSLog(@"device and client current list is empty");
             [self showHudWithTimeoutMsg:@"Loading Device data"];
         }
     });
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -203,9 +205,10 @@ int mii;
 
 #pragma mark - HUD and Toast mgt
 - (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
+    NSLog(@"showHudWithTimeoutMsg");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:hudMsg];
-        [self.HUD hide:YES afterDelay:20];
+        [self.HUD hide:YES afterDelay:15];
     });
 }
 
@@ -454,19 +457,17 @@ int mii;
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(5, 0, self.tableView.frame.size.width, 100)];
     view.backgroundColor = [UIColor whiteColor];
     
-    UIImageView *imgLine1 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 5, self.tableView.frame.size.width - 35, 1)];
+    UIImageView *imgLine1 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 3, self.tableView.frame.size.width - 35, 1)];
     imgLine1.image = [UIImage imageNamed:@"grey_line"];
     
-    UIImageView *imgCross = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 20, 12, 10, 10)];
+    UIImageView *imgCross = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 22, 8, 15, 15)];
     imgCross.image = [UIImage imageNamed:@"cross_icon"];
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onCloseNotificationClicked:)];
+    singleTap.numberOfTapsRequired = 1;
+    [imgCross setUserInteractionEnabled:YES];
+    [imgCross addGestureRecognizer:singleTap];
     
     [view addSubview:imgCross];
-    
-    UIButton *btnCloseNotification = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnCloseNotification.frame = CGRectMake(self.tableView.frame.size.width - 40, 12, 50, 30);
-    btnCloseNotification.backgroundColor = [UIColor clearColor];
-    [btnCloseNotification addTarget:self action:@selector(onCloseNotificationClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [view addSubview:btnCloseNotification];
     
     UILabel *lblConfirm = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, self.tableView.frame.size.width - 15, 20)];
     lblConfirm.font = [UIFont securifiBoldFont:13];
@@ -583,8 +584,6 @@ int mii;
 #pragma mark command responses
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"devicelist - onDeviceListAndDynamicResponseParsed");
-    
-    
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.currentDeviceList = [self.toolkit.devices copy];
         self.currentClientList = [self.toolkit.clients copy];
@@ -595,11 +594,7 @@ int mii;
         }else{
             [self.refreshControl endRefreshing];
         }
-        
     });
-    BOOL local = [self.toolkit useLocalNetwork:self.toolkit.currentAlmond.almondplusMAC];
-    if(!local)
-    [RouterParser sendrouterSummary];
 }
 
 -(void)onUpdateDeviceIndexResponse:(id)sender{ //mobile command
@@ -627,18 +622,15 @@ int mii;
 #pragma mark cloud callbacks
 - (void)onCurrentAlmondChanged:(id)sender {
     NSLog(@"%s", __PRETTY_FUNCTION__);
-    [self initializeAlmondData];
-    if(self.toolkit.devices.count > 0)
-        [self.toolkit.devices removeAllObjects];
-    else if(self.toolkit.clients.count > 0)
-        [self.toolkit.clients removeAllObjects];
+    [self.toolkit.devices removeAllObjects];
+    [self.toolkit.clients removeAllObjects];
     
-    [DevicePayload deviceListCommand];
-    [ClientPayload clientListCommand];
+    [self initializeAlmondData];
+
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self showHudWithTimeoutMsg:@"Loading Device data"];
-//        [self.tableView reloadData];
+        [self.tableView reloadData];
     });
+    //you dont have to send request, toolkit is sending it already
 }
 
 - (void)onAlmondListDidChange:(id)sender {
@@ -766,15 +758,10 @@ int mii;
     if (!self || [self isNoAlmondMAC]) {
         return;
     }
-    [self.toolkit.devices removeAllObjects];
-    [self.toolkit.clients removeAllObjects];
     
     //request client list
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
-//        self.currentDeviceList = [self.toolkit.devices copy];
-//        self.currentClientList = [self.toolkit.clients copy];
-//        [self.tableView reloadData];
         [self.refreshControl endRefreshing];
     });
     [DevicePayload deviceListCommand];

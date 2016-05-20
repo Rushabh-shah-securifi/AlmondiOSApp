@@ -377,11 +377,8 @@
     NSLog(@"configureNetworkSettings handler method ");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit setConnectionMode:mode forAlmond:self.almondMac];
-    [toolkit.clients removeAllObjects];
-    [toolkit.devices removeAllObjects ];
     [self.HUD show:YES];
-    [self.HUD hide:YES afterDelay:15    ]; // in case the request times out
-//    [self.tableView reloadData];
+    [self.HUD hide:YES afterDelay:10]; // in case the request times out
 }
 
 - (void)onAlmondModeButtonPressed:(id)sender {
@@ -490,22 +487,25 @@
 }
 
 - (void)onNetworkUpNotifier:(id)sender {
+    NSLog(@"onNetworkUpNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
-        [self.tableView reloadData];
-        [self.HUD hide:NO]; // make sure it is hidden
+//        [self.tableView reloadData];
+//        [self.HUD hide:YES]; // make sure it is hidden
     });
 }
 
 - (void)onNetworkDownNotifier:(id)sender {
+    NSLog(@"onNetworkDownNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
         [self.tableView reloadData];
-        [self.HUD hide:NO]; // make sure it is hidden
+        [self.HUD hide:YES]; // make sure it is hidden
     });
 }
 
 - (void)onNetworkConnectingNotifier:(id)notification {
+    NSLog(@"onNetworkConnectingNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
     });

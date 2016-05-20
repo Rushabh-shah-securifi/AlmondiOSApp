@@ -134,29 +134,6 @@
     });
 }
 
-- (void)sendGetAllScenesRequest {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    if (!plus.almondplusMAC) {
-        return;
-    }
-    
-    
-    GenericCommand *cloudCommand = [[GenericCommand alloc] init];
-    cloudCommand = [GenericCommand requestSceneList:plus.almondplusMAC];
-    
-    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
-    //    self.HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    self.HUD.removeFromSuperViewOnHide = NO;
-    self.HUD.labelText = NSLocalizedString(@"scenes.hud.loadingScenes", @"Loading Scenes...");
-    self.HUD.dimBackground = YES;
-    self.HUD.delegate = self;
-    [self.navigationController.view addSubview:self.HUD];
-    [self showHudWithTimeout];
-    
-    [self asyncSendCommand:cloudCommand];
-}
-
 #pragma mark
 
 - (void)didReceiveMemoryWarning {
@@ -351,15 +328,8 @@
     GenericCommand *cloudCommand = [[GenericCommand alloc] init];
     cloudCommand.commandType = CommandType_UPDATE_REQUEST;
     cloudCommand.command = [activateScenePayload JSONString];
-    
-    // Attach the HUD to the parent, not to the table view, so that user cannot scroll the table while it is presenting.
-    //    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
-    self.HUD.removeFromSuperViewOnHide = NO;
-    self.HUD.labelText = NSLocalizedString(@"scenes.hud.activatingScene", @"Activating scene...");
-    self.HUD.dimBackground = YES;
-    self.HUD.delegate = self;
-    [self.navigationController.view addSubview:self.HUD];
-    [self showHudWithTimeout];
+
+    [self showHudWithTimeoutMsg:NSLocalizedString(@"scenes.hud.activatingScene", @"Activating scene...")];
     [self asyncSendCommand:cloudCommand];
     
     [[Analytics sharedInstance] markActivateScene];
@@ -373,13 +343,14 @@
 }
 
 #pragma mark - HUD mgt
-
-- (void)showHudWithTimeout {
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
+    NSLog(@"showHudWithTimeoutMsg");
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.HUD show:YES];
+        [self showHUD:hudMsg];
         [self.HUD hide:YES afterDelay:5];
     });
 }
+
 
 -(BOOL)isLocal{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
@@ -399,20 +370,13 @@
     }
 }
 
-#pragma Event handling
-
-- (void)showHUD:(NSString *)text {
-    self.HUD.labelText = text;
-    [self.HUD show:YES];
-}
-
 #pragma mark Notifications
 - (void)onCurrentAlmondChanged:(id)sender {
     if (scenesArray!=nil && scenesArray.count>0)
         [scenesArray removeAllObjects];
     
     [self markAlmondTitleAndMac];
-    [self sendGetAllScenesRequest];
+    [self showHudWithTimeoutMsg:NSLocalizedString(@"scenes.hud.loadingScenes", @"Loading Scenes...")];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });

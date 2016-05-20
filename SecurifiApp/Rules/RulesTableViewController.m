@@ -109,28 +109,10 @@ CGPoint tablePoint;
 - (void)onCurrentAlmondChanged:(id)sender {
     [self.rules removeAllObjects];
     [self markAlmondTitleAndMac];
-    [self sendGetAllRulesRequest];
+    [self showHudWithTimeoutMsg:@"Loading Rules..."];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
-}
-
--(void)sendGetAllRulesRequest{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    if (!plus.almondplusMAC) {
-        return;
-    }
-    
-    GenericCommand *command = [[GenericCommand alloc] init];
-    command = [GenericCommand requestAlmondRules:plus.almondplusMAC];
-
-    [self setUpHUD];
-    self.HUD.labelText = @"Loading Rules...";
-    [self showHudWithTimeout];
-    
-    [self asyncSendCommand:command];
-
 }
 
 -(void)initializeTableViewAttributes{
@@ -175,12 +157,16 @@ CGPoint tablePoint;
     [self.navigationController.view addSubview:self.buttonAdd];
 }
 
-- (void)showHudWithTimeout {
+
+#pragma mark - HUD and Toast mgt
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
+    NSLog(@"showHudWithTimeoutMsg");
     dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.HUD show:YES];
-        [self.HUD hide:YES afterDelay:5];
+        [self showHUD:hudMsg];
+        [self.HUD hide:YES afterDelay:20];
     });
 }
+
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
@@ -291,9 +277,7 @@ CGPoint tablePoint;
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     if(self.rules==nil || self.rules.count==0 || self.rules.count<=indexPath.row)
         return;
-    [self setUpHUD];
-    self.HUD.labelText = [NSString stringWithFormat:@"Deleting rule %@...",cell.ruleNameLabel.text];
-    [self showHudWithTimeout];
+    [self showHudWithTimeoutMsg:[NSString stringWithFormat:@"Deleting rule %@...",cell.ruleNameLabel.text]];
     NSDictionary *payload = [self getDeleteRulePayload:indexPath.row];
     if(payload!=nil){
         GenericCommand *cloudCommand = [[GenericCommand alloc] init];
@@ -370,9 +354,8 @@ CGPoint tablePoint;
     if(self.rules==nil || self.rules.count==0 || self.rules.count<=indexPath.row)
         return;
     
-    [self setUpHUD];
-    self.HUD.labelText = cell.activeDeactiveSwitch.selected? [NSString stringWithFormat:@"Activating rule - %@...",cell.ruleNameLabel.text]: [NSString stringWithFormat:@"Deactivating rule - %@...",cell.ruleNameLabel.text];
-    [self showHudWithTimeout];
+    NSString *msg = cell.activeDeactiveSwitch.selected? [NSString stringWithFormat:@"Activating rule - %@...",cell.ruleNameLabel.text]: [NSString stringWithFormat:@"Deactivating rule - %@...",cell.ruleNameLabel.text];
+    [self showHudWithTimeoutMsg:msg];
     Rule *rule = self.rules[indexPath.row];
     RulePayload *rulePayload = [RulePayload new];
     rulePayload.rule = rule;
