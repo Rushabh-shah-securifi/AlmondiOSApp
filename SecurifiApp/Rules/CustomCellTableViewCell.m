@@ -66,6 +66,7 @@
 }
 
 - (IBAction)onActivateButtonTap:(id)sender {
+    [self.activeDeactiveSwitch setOn:self.activeDeactiveSwitch.selected animated:YES];
     self.activeDeactiveSwitch.selected = !self.activeDeactiveSwitch.selected;
     [self.delegate activateRule:self];
 }

@@ -12,7 +12,7 @@
 #import "UIFont+Securifi.h"
 
 @interface ListButtonView()<UITableViewDataSource,UITableViewDelegate,clientTypeCellDelegate>
-@property (nonatomic) UITableView *tableType;
+@property (nonatomic)UITableView *tableType;
 @property (nonatomic)NSString *selectedType;
 @property (nonatomic)NSMutableArray *displayArray;
 @property (nonatomic)NSMutableArray *valueArr;
@@ -56,8 +56,8 @@
     self.tableType.backgroundColor = self.color;
     [self.tableType reloadData];
     [self addSubview:self.tableType];
-    
 }
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -68,7 +68,6 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     clientTypeCell *cell = [tableView dequeueReusableCellWithIdentifier:@"clientTypeCell"];
     if (cell == nil) {
         cell = [[clientTypeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"clientTypeCell"];
@@ -90,8 +89,6 @@
     if(currentvalPos == indexPath.row)
         [cell changeButtonColor];
     return cell;
-    
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

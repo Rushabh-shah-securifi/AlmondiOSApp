@@ -377,7 +377,7 @@
     NSLog(@"configureNetworkSettings handler method ");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit setConnectionMode:mode forAlmond:self.almondMac];
-    [self.HUD show:YES];
+    [self showHUD:@"Connecting..."];
     [self.HUD hide:YES afterDelay:10]; // in case the request times out
 }
 
@@ -411,7 +411,7 @@
     NSLog(@"showHUD ");
     
     [self showHUD:msg];
-//    [self.HUD hide:YES afterDelay:10]; // in case the request times out
+    [self.HUD hide:YES afterDelay:10]; // in case the request times out
 
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit asyncRequestAlmondModeChange:self.almondMac mode:newMode];

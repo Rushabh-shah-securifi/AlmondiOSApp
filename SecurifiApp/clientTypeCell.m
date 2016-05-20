@@ -44,14 +44,13 @@
     self.labelName.text = name;
     self.valueString = value;
     self.btnSelect.backgroundColor = [UIColor clearColor];
-    
 }
 
 -(void)typeButtonClicked:(id)sender{
     self.btnSelect.backgroundColor = [UIColor whiteColor];
     [self.delegate selectedTypes:self.valueString];
-    
 }
+
 -(void)changeButtonColor{
     self.btnSelect.backgroundColor = [UIColor whiteColor];
 }

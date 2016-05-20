@@ -288,7 +288,7 @@ int mii;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if ([self showNeedsActivationHeader] && section == 0) {
-        return 85;
+        return 100;
     }
     
     return 30;
@@ -457,22 +457,25 @@ int mii;
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(5, 0, self.tableView.frame.size.width, 100)];
     view.backgroundColor = [UIColor whiteColor];
     
-    UIImageView *imgLine1 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 3, self.tableView.frame.size.width - 35, 1)];
+    UIImageView *imgLine1 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 5, self.tableView.frame.size.width - 35, 1)];
     imgLine1.image = [UIImage imageNamed:@"grey_line"];
     
-    UIImageView *imgCross = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 22, 8, 15, 15)];
+    UIImageView *imgCross = [[UIImageView alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width - 28, 12, 18, 18)];
     imgCross.image = [UIImage imageNamed:@"cross_icon"];
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onCloseNotificationClicked:)];
-    singleTap.numberOfTapsRequired = 1;
-    [imgCross setUserInteractionEnabled:YES];
-    [imgCross addGestureRecognizer:singleTap];
     
     [view addSubview:imgCross];
     
-    UILabel *lblConfirm = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, self.tableView.frame.size.width - 15, 20)];
+    UIButton *btnCloseNotification = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnCloseNotification.frame = CGRectMake(self.tableView.frame.size.width - 50, 10, 50, 50);
+    btnCloseNotification.backgroundColor = [UIColor clearColor];
+    [btnCloseNotification addTarget:self action:@selector(onCloseNotificationClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:btnCloseNotification];
+    
+    UILabel *lblConfirm = [[UILabel alloc] initWithFrame:CGRectMake(10, 30, self.tableView.frame.size.width - 15, 20)];
     lblConfirm.font = [UIFont securifiBoldFont:13];
     lblConfirm.textColor = [UIColor colorWithRed:(CGFloat) (119 / 255.0) green:(CGFloat) (119 / 255.0) blue:(CGFloat) (119 / 255.0) alpha:1.0];
     lblConfirm.textAlignment = NSTextAlignmentCenter;
+    
     int minsRemainingForUnactivatedAccount = [[SecurifiToolkit sharedInstance] minsRemainingForUnactivatedAccount];
     
     if (minsRemainingForUnactivatedAccount <= 1440) {
@@ -483,29 +486,29 @@ int mii;
         lblConfirm.text = [NSString stringWithFormat:NSLocalizedString(@"sensors.account-confirm.label.Please confirm your account (%d days left).", @"Please confirm your account (%d days left)."), daysRemaining];
     }
     
-    UILabel *lblInstructions = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, self.tableView.frame.size.width - 20, 20)];
+    UILabel *lblInstructions = [[UILabel alloc] initWithFrame:CGRectMake(10, 50, self.tableView.frame.size.width - 20, 20)];
     lblInstructions.font = [UIFont securifiBoldFont:13];
     lblInstructions.textColor = [UIColor colorWithRed:(CGFloat) (119 / 255.0) green:(CGFloat) (119 / 255.0) blue:(CGFloat) (119 / 255.0) alpha:1.0];
     lblInstructions.textAlignment = NSTextAlignmentCenter;
     lblInstructions.text = NSLocalizedString(@"sensors.account-confirm.label.Check activation email for instructions.", @"Check activation email for instructions.");
     
-    UIImageView *imgMail = [[UIImageView alloc] initWithFrame:CGRectMake(80, 65, 22, 16)];
+    UIImageView *imgMail = [[UIImageView alloc] initWithFrame:CGRectMake(80, 75, 22, 16)];
     imgMail.image = [UIImage imageNamed:@"Mail_icon.png"];
     [view addSubview:imgMail];
     
     UIButton *btnResendActivationMail = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnResendActivationMail.frame = CGRectMake(50, 45, self.tableView.frame.size.width - 90, 40);
+    btnResendActivationMail.frame = CGRectMake(50, 55, self.tableView.frame.size.width - 90, 40);
     btnResendActivationMail.backgroundColor = [UIColor clearColor];
     [btnResendActivationMail addTarget:self action:@selector(onResendActivationClicked:) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:btnResendActivationMail];
     
-    UILabel *lblResend = [[UILabel alloc] initWithFrame:CGRectMake(32, 65, self.tableView.frame.size.width - 20, 20)];
+    UILabel *lblResend = [[UILabel alloc] initWithFrame:CGRectMake(32, 75, self.tableView.frame.size.width - 20, 20)];
     lblResend.font = [UIFont securifiBoldFont:13];
     lblResend.textColor = [UIColor colorWithRed:(CGFloat) (0 / 255.0) green:(CGFloat) (173 / 255.0) blue:(CGFloat) (226 / 255.0) alpha:1.0];
     lblResend.textAlignment = NSTextAlignmentCenter;
     lblResend.text = NSLocalizedString(@"sensors.account-confirm.label.Resend activation email", @"Resend activation email");
     
-    UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 85, self.tableView.frame.size.width - 35, 1)];
+    UIImageView *imgLine2 = [[UIImageView alloc] initWithFrame:CGRectMake(15, 95, self.tableView.frame.size.width - 35, 1)];
     imgLine2.image = [UIImage imageNamed:@"grey_line.png"];
     
     [view addSubview:imgLine1];

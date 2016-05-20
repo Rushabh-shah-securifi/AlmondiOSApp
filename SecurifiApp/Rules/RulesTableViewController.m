@@ -341,9 +341,10 @@ CGPoint tablePoint;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     AddRulesViewController *addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
-    Rule *rule = [self.rules[indexPath.row] createNew];
-    
-    addRuleController.rule = rule;
+    if(self.rules.count > indexPath.row){
+        Rule *rule = [self.rules[indexPath.row] createNew];
+        addRuleController.rule = rule;
+    }
     addRuleController.isInitialized = YES;
     [[Analytics sharedInstance] markUpdateRule];
     [self.navigationController pushViewController:addRuleController animated:YES];
