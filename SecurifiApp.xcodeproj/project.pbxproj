@@ -456,6 +456,7 @@
 		A5F03F6D1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		CE08B3CC1C9A87C900ABAF6B /* DeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */; };
 		CE20BF3B1CB6331A002737F4 /* PerformanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CE20BF3A1CB6331A002737F4 /* PerformanceTest.m */; };
+		CE4DB3F61CEF340F00CBD6DE /* TriDimBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
 		CE810C5E1C9BDAA000F80777 /* GridView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C5D1C9BDAA000F80777 /* GridView.m */; };
 		CE810C611C9C15D100F80777 /* ListButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = CE810C601C9C15D100F80777 /* ListButtonView.m */; };
@@ -1000,6 +1001,8 @@
 		CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTableViewCell.m; sourceTree = "<group>"; };
 		CE20BF391CB6331A002737F4 /* PerformanceTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceTest.h; sourceTree = "<group>"; };
 		CE20BF3A1CB6331A002737F4 /* PerformanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceTest.m; sourceTree = "<group>"; };
+		CE4DB3F41CEF340D00CBD6DE /* TriDimBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriDimBtn.h; sourceTree = "<group>"; };
+		CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TriDimBtn.m; sourceTree = "<group>"; };
 		CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPickerIndicatorView1.h; sourceTree = "<group>"; };
 		CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SFIPickerIndicatorView1.m; sourceTree = "<group>"; };
 		CE810C5C1C9BDAA000F80777 /* GridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridView.h; sourceTree = "<group>"; };
@@ -2088,6 +2091,8 @@
 				CEF6F4D31C92CAD600C68975 /* RuleTextField.m */,
 				CEF6F4D41C92CAD600C68975 /* SwitchButton.h */,
 				CEF6F4D51C92CAD600C68975 /* SwitchButton.m */,
+				CE4DB3F41CEF340D00CBD6DE /* TriDimBtn.h */,
+				CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -2731,6 +2736,7 @@
 				1C7E7DC11A41A0990026F0BA /* SFIConstants.m in Sources */,
 				CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */,
 				1C7E7DBF1A41A0990026F0BA /* SFIColors.m in Sources */,
+				CE4DB3F61CEF340F00CBD6DE /* TriDimBtn.m in Sources */,
 				1C2F60921B69E69D001CCA34 /* SFIAddSceneTableViewCell.m in Sources */,
 				8443277C1B763AD700BF2355 /* SFIScenesTableViewController.m in Sources */,
 				1C7E7D891A41A0990026F0BA /* SFINotificationTableViewCell.m in Sources */,
