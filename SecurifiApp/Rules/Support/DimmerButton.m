@@ -51,11 +51,11 @@
     self.backgroundColor = [UIColor clearColor];
     if(self.isTrigger && !isScene){
         self.bgView = [[UIView alloc] initWithFrame:CGRectMake(65,0 , 65, 60)];
-        lblMain = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 64 ,70)];
+        lblMain = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 64 ,60)];
         self.conditionBtn = [[SwitchButton alloc]initWithFrame:CGRectMake(0, 0, 64,60)];
         [self.conditionBtn addBgView:0 widthAndHeight:60];
         NSLog(@"condition text %@",[self.subProperties getcondition]);
-        [self.conditionBtn mainLabel:@"" text:[self.subProperties getcondition] size:40.0f];
+        [self.conditionBtn mainLabel:@"" text:[self.subProperties getcondition] size:35.0f];
         self.conditionBtn.backgroundColor = [SFIColors ruleGraycolor];
         [self.conditionBtn addTarget: self action:@selector(onCondition:) forControlEvents:UIControlEventTouchUpInside];
         self.conditionBtn.subProperties = self.subProperties;
@@ -88,8 +88,8 @@
     self.prefix = suf;
     NSString *strTopTitleLabelText = [text = (text == nil)?@"":text  stringByAppendingString:suf];
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
-    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:isTrigger?30.0f:40.0f]} range:NSMakeRange(0,text.length)];
-    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:isTrigger?18.0f:24.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,suffix.length)];
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:isTrigger?25.0f:35.0f]} range:NSMakeRange(0,text.length)];
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:isTrigger?18.0f:20.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,suffix.length)];
     [lblMain setAttributedText:strTemp];
     
     self.bottomLabel.text = title;
@@ -151,13 +151,13 @@
 
 - (void)setNewValue:(NSString*)text subProperties:(SFIButtonSubProperties *)subProperty{
     self.dimValue = text;
-    [self.conditionBtn mainLabel:@"" text:[subProperty getcondition] size:40.0f];
+    [self.conditionBtn mainLabel:@"" text:[subProperty getcondition] size:35.0f];
     NSLog(@"condition label %@",[self.subProperties getcondition]);
     self.prefix = (self.prefix ==nil || self.prefix.length==0) ?@" ":self.prefix;
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",text,self.prefix]];
     NSLog(@"prefix %@",self.prefix);
-    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:self.isTrigger?30.0f:40.0f]} range:NSMakeRange(0,text.length)];
-    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:self.isTrigger?18.0f:24.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,self.prefix.length)];
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:self.isTrigger?25.0f:35.0f]} range:NSMakeRange(0,text.length)];
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:self.isTrigger?18.0f:20.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,self.prefix.length)];
     [lblMain setAttributedText:strTemp];
 }
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{
@@ -265,30 +265,30 @@
 -(void)onCondition:(id)sender{
     NSLog(@"onCondition");
     SwitchButton *button = (SwitchButton*)sender;
-    [self.conditionBtn mainLabel:@"" text:@" " size:40.f];
+    [self.conditionBtn mainLabel:@"" text:@" " size:35.f];
     int newValue = self.conditionBtn.subProperties.condition;
     NSLog(@"new val :%d",newValue++);
     self.conditionBtn.subProperties.condition = (newValue++) %5;
 
     switch (self.conditionBtn.subProperties.condition) {
         case isLessThan:{
-            [self.conditionBtn mainLabel:@"" text:@" < " size:40.f];
+            [self.conditionBtn mainLabel:@"" text:@" < " size:35.f];
             break;
         }
         case isGreaterThan:{
-            [self.conditionBtn mainLabel:@"" text:@" > " size:40.f];
+            [self.conditionBtn mainLabel:@"" text:@" > " size:35.f];
             break;
         }
         case isLessThanOrEqual:{
-            [self.conditionBtn mainLabel:@"" text:@">=" size:40.f];
+            [self.conditionBtn mainLabel:@"" text:@">=" size:35.f];
             break;
         }
         case isGreaterThanOrEqual:{
-            [self.conditionBtn mainLabel:@"" text:@"<=" size:40.f];
+            [self.conditionBtn mainLabel:@"" text:@"<=" size:35.f];
             break;
         }
         case isEqual:{
-            [self.conditionBtn mainLabel:@"" text:@" = " size:40.f];
+            [self.conditionBtn mainLabel:@"" text:@" = " size:35.f];
             break;
         }
         default:
