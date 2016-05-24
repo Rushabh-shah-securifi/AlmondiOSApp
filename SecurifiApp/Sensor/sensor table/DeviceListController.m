@@ -71,10 +71,6 @@ int mii;
     mii = arc4random() % 10000;
     
     [self markAlmondTitleAndMac];
-    if([self isDeviceListEmpty] && [self isClientListEmpty]){
-        NSLog(@"initializeAlmondData");
-        [self showHudWithTimeoutMsg:@"Loading Device data"];
-    }
     [self initializeNotifications];
 //    [self initializeAlmondData];
     //need to reload tableview, as toolkit could have got updates
@@ -646,19 +642,17 @@ int mii;
     
     SFIAlmondPlus *plus = [data valueForKey:@"data"];
     if (plus != nil && [self isSameAsCurrentMAC:plus.almondplusMAC]) {
-        // No reason to alert user
         return;
     }
+    
     NSLog(@"%s 2", __PRETTY_FUNCTION__);
+    [self initializeAlmondData];
     dispatch_async(dispatch_get_main_queue(), ^() {
         if (!self || !self.isViewLoaded) {
             return;
         }
         NSLog(@"%s 3", __PRETTY_FUNCTION__);
-        [self.HUD show:YES];
-        [self initializeAlmondData];
         [self.tableView reloadData];
-        [self.HUD hide:YES afterDelay:1.5];
     });
 }
 

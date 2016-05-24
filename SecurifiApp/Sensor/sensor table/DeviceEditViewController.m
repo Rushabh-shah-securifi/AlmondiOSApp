@@ -465,7 +465,7 @@ static const int xIndent = 10;
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
     
-    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+    if (dataInfo==nil || [dataInfo valueForKey:@"data"]==nil ) {
         return;
     }
     
@@ -475,9 +475,10 @@ static const int xIndent = 10;
         payload = [dataInfo[@"data"] objectFromJSONData];
     }
     
-    if (self.miiTable[payload[@"MobileInternalIndex"]] == nil) {
+    if (self.miiTable[payload[@"MobileInternalIndex"]] == nil || payload[@"MobileInternalIndex"] == nil) {
         return;
     }
+    
     NSLog(@"payload mobile command: %@", payload);
     
     BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
@@ -646,10 +647,9 @@ static const int xIndent = 10;
             return;
         }
         NotificationPreferenceResponse* res = dataInfo[@"data"];
-        GenericIndexValue *genIndexVal = self.miiTable[res.internalIndex];
-        if (res.internalIndex == nil || genIndexVal == nil) {
+        if (res.internalIndex == nil || self.miiTable[res.internalIndex] == nil)
             return;
-        }
+        GenericIndexValue *genIndexVal = self.miiTable[res.internalIndex];
         
         NSLog(@"res mii: *%@*, actual: *%@*", res.internalIndex, @(mii).stringValue);
         
