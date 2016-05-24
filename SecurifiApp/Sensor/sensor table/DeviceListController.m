@@ -827,15 +827,13 @@ int mii;
 //    }
     
     SFIGenericRouterCommand *genericRouterCommand = (SFIGenericRouterCommand *) [data valueForKey:@"data"];
-    NSLog(@"[data valueForKey %@",[data valueForKey:@"data"]);
+    NSLog(@"data valueForKey %@",[data valueForKey:@"data"]);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     switch (genericRouterCommand.commandType) {
         case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
             NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
             SFIRouterSummary *routerSummary = (SFIRouterSummary *)genericRouterCommand.command;
             [toolkit tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:routerSummary];
-//            NSString *currentVersion = routerSummary.firmwareVersion;
-//            [toolkit tryCheckAlmondVersion:currentVersion];
             break;
         }
         default: {
