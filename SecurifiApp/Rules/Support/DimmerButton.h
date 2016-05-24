@@ -12,8 +12,11 @@
 #import "RuleButton.h"
 #import "CrossButton.h"
 
-@interface DimmerButton : RuleButton
+@protocol DimmerButtonDelegate
+-(void)setSelectedCondition:(SFIButtonSubProperties*)subProperty;
+@end
 
+@interface DimmerButton : RuleButton
 @property(nonatomic)NSString* prefix;
 @property(nonatomic)BOOL pickerVisibility;
 @property(nonatomic)NSString* dimValue;
@@ -26,6 +29,7 @@
 @property(nonatomic)UIImageView *crossButtonImage;
 @property BOOL isTrigger;
 @property BOOL isScene;
+@property (nonatomic)id<DimmerButtonDelegate> delegate;
 
 - (void)setupValues:(NSString*)text  Title:(NSString*)title suffix:(NSString*)prefix isTrigger:(BOOL)isTrigger isScene:(BOOL)isScene;
 

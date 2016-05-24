@@ -44,8 +44,9 @@
 #import "HueColorPicker.h"
 #import "labelAndCheckButtonView.h"
 #import "AlmondJsonCommandKeyConstants.h"
+#import "TriDimBtn.h"
 
-@interface AddTriggerAndAddAction ()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,UITextFieldDelegate,TimeViewDelegate,SliderViewDelegate,HueColorPickerDelegate>
+@interface AddTriggerAndAddAction ()<RulesHueDelegate,V8HorizontalPickerViewDelegate,V8HorizontalPickerViewDataSource,UITextFieldDelegate,TimeViewDelegate,SliderViewDelegate,HueColorPickerDelegate,DimmerButtonDelegate>
 @property (nonatomic, strong)NSMutableArray *triggers;
 @property (nonatomic, strong)NSMutableArray *actions;
 @property (nonatomic)RulesHue *ruleHueObject;
@@ -98,6 +99,7 @@ labelAndCheckButtonView *labelView;
     if(self.isTrigger && !self.isScene){
         xVal = [self addDeviceName:@"Time" deviceID:0 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
         xVal = [self addDeviceName:@"Network Devices" deviceID:0 deviceType:SFIDeviceType_WIFIClient xVal:xVal];
+         //        xVal = [self addDeviceName:@"Weather" deviceID:-1 deviceType:SFIDeviceType_Weather xVal:xVal];
     }
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     for(Device *device in toolkit.devices){
@@ -122,7 +124,9 @@ labelAndCheckButtonView *labelView;
         [deviceButton addTarget:self action:@selector(TimeEventClicked:) forControlEvents:UIControlEventTouchUpInside];
     }else if([deviceName isEqualToString:@"Network Devices"]){
         [deviceButton addTarget:self action:@selector(wifiClientsClicked:) forControlEvents:UIControlEventTouchUpInside];}
-    else
+//    else if([deviceName isEqualToString:@"Weather"])
+//        [deviceButton addTarget:self action:@selector(onWeatherClick:) forControlEvents:UIControlEventTouchUpInside];
+    else //includes mode, weather, reboot and devices
         [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.deviceListScrollView addSubview:deviceButton];
     
@@ -173,6 +177,14 @@ labelAndCheckButtonView *labelView;
     [self.deviceIndexButtonScrollView flashScrollIndicators];
     self.deviceIndexButtonScrollView.showsVerticalScrollIndicator = YES;
 }
+
+
+//-(void)onWeatherClick:(RulesDeviceNameButton*)weatherBtn{
+//    self.currentClickedButton = weatherBtn;
+//    [self resetViews];
+//    [self toggleHighlightForDeviceNameButton:weatherBtn];
+//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+//}
 
 -(void)addClientNameLabel:(NSString*)clientName yScale:(int)yScale{
     UILabel *clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, yScale-15, self.parentView.frame.size.width, 14)];
@@ -385,6 +397,7 @@ labelAndCheckButtonView *labelView;
 
 - (void)buildDimButton:(GenericIndexValue *)genericIndexVal gVal:(GenericValue*)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view {
     DimmerButton *dimbtn=[[DimmerButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,0 , dimFrameWidth, dimFrameHeight)];
+    dimbtn.delegate = self;
     dimbtn.tag=i;
 //    dimbtn.valueType=deviceIndex.valueType;
     dimbtn.minValue = genericIndexVal.genericIndex.formatter.min;
@@ -392,7 +405,16 @@ labelAndCheckButtonView *labelView;
     dimbtn.factor=genericIndexVal.genericIndex.formatter.factor;
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexVal.index matchData:gVal.iconText andEventType:nil deviceName:deviceName deviceType:deviceType];
     
+//    if(self.isTrigger){
+//        dimbtn.dimbutton.minValue = genericIndexVal.genericIndex.formatter.min;
+//        dimbtn.dimbutton.maxValue = genericIndexVal.genericIndex.formatter.max;
+//        dimbtn.dimbutton.factor=genericIndexVal.genericIndex.formatter.factor;
+//        dimbtn.dimbutton.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexVal.index matchData:gVal.iconText andEventType:nil deviceName:deviceName deviceType:deviceType];
+//            [dimbtn.dimbutton addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    }
+//    else
     [dimbtn addTarget:self action:@selector(onDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    
     [dimbtn setupValues:gVal.iconText Title:gVal.displayText suffix:genericIndexVal.genericIndex.formatter.units isTrigger:self.isTrigger isScene:self.isScene];
     //NSMutableDictionary *result=[self setButtonSelection:dimbtn isSlider:YES deviceIndex:deviceIndex deviceId:deviceId matchData:dimbtn.subProperties.matchData];
     dimbtn.center = CGPointMake(view.bounds.size.width/2,
@@ -414,6 +436,14 @@ labelAndCheckButtonView *labelView;
     }
 }
 
+-(void)setSelectedCondition:(SFIButtonSubProperties*)subProperty{
+    NSMutableArray *list=self.isTrigger?self.triggers:self.actions;
+    for(SFIButtonSubProperties *buttonSubProperty in list){
+        if(buttonSubProperty.deviceId == subProperty.deviceId && buttonSubProperty.index == subProperty.index){
+            buttonSubProperty.condition = subProperty.condition;
+        }
+    }
+}
 -(void)buildHueSliders:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
     CGRect preframe = view.frame;
     view.frame = CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, view.frame.size.height - 35);
@@ -627,15 +657,23 @@ labelAndCheckButtonView *labelView;
         }
     }
 }
-- (void)removeTriggerIndex:(int)buttonIndex buttonId:(sfi_id)buttonId deviceType:(unsigned int)deviceType {
+- (void)removeTriggerIndex:(int)buttonIndex buttonId:(sfi_id)buttonId deviceType:(unsigned int)deviceType matchData:(NSString *)matchData{
     NSMutableArray *toBeDeletedSubProperties = [[NSMutableArray alloc] init];
-    
-    for(SFIButtonSubProperties *switchButtonProperty in self.triggers){
-        if(((switchButtonProperty.deviceType == deviceType) && switchButtonProperty.deviceId == buttonId) && (switchButtonProperty.index == buttonIndex)){
-            [toBeDeletedSubProperties addObject:switchButtonProperty];
+    if(deviceType == SFIDeviceType_WIFIClient){
+        for(SFIButtonSubProperties *switchButtonProperty in self.triggers){
+            if([switchButtonProperty.matchData isEqualToString:matchData] && (switchButtonProperty.index == buttonIndex)){
+                [toBeDeletedSubProperties addObject:switchButtonProperty];
+            }
+        }
+
+    }
+    else{
+        for(SFIButtonSubProperties *switchButtonProperty in self.triggers){
+            if((switchButtonProperty.deviceType == deviceType) && (switchButtonProperty.deviceId == buttonId) && (switchButtonProperty.index == buttonIndex)){
+                [toBeDeletedSubProperties addObject:switchButtonProperty];
+            }
         }
     }
-    
     [self.triggers removeObjectsInArray:toBeDeletedSubProperties];
 }
 
@@ -643,11 +681,20 @@ labelAndCheckButtonView *labelView;
     int buttonClickCount = 0;
     BOOL selected=NO;
     NSMutableArray *list=self.isTrigger?self.triggers:self.actions;
-    for(SFIButtonSubProperties *dimButtonProperty in list){
-        if(dimButtonProperty.deviceId==indexButton.subProperties.deviceId && dimButtonProperty.index==indexButton.subProperties.index && [CommonMethods compareEntry:isSlider matchData:indexButton.subProperties.matchData eventType:indexButton.subProperties.eventType buttonProperties:dimButtonProperty]){
-            buttonClickCount++;
-            selected=YES;
-            [indexButton setNewValue:dimButtonProperty.displayedData];
+    if(indexButton.subProperties.deviceType == SFIDeviceType_WIFIClient){
+        for(SFIButtonSubProperties *dimButtonProperty in list){
+            if([dimButtonProperty.matchData isEqualToString:indexButton.subProperties.matchData] && (dimButtonProperty.index == indexButton.subProperties.index) && [dimButtonProperty.eventType isEqualToString:indexButton.subProperties.eventType]){
+                selected=YES;
+            }
+        }
+    }
+    else{
+        for(SFIButtonSubProperties *dimButtonProperty in list){
+            if(dimButtonProperty.deviceId==indexButton.subProperties.deviceId && dimButtonProperty.index==indexButton.subProperties.index && [CommonMethods compareEntry:isSlider matchData:indexButton.subProperties.matchData eventType:indexButton.subProperties.eventType buttonProperties:dimButtonProperty]){
+                buttonClickCount++;
+                selected=YES;
+                [indexButton setNewValue:dimButtonProperty.displayedData subProperties:dimButtonProperty];
+            }
         }
     }
     if(selected &&!self.isTrigger)
@@ -665,6 +712,7 @@ labelAndCheckButtonView *labelView;
     
     sfi_id buttonId = indexSwitchButton.subProperties.deviceId;
     int buttonIndex = indexSwitchButton.subProperties.index;
+    NSString *matchData = indexSwitchButton.subProperties.matchData;
     if(!self.isTrigger){
         indexSwitchButton.selected = YES ;
         [self.actions addObject:[indexSwitchButton.subProperties createNew]];
@@ -672,7 +720,7 @@ labelAndCheckButtonView *labelView;
     }else{
         NSLog(@"onSwitchButtonClick - istrigger");
         [self toggleTriggerIndex:buttonIndex superView:[sender superview] indexButton:indexSwitchButton];
-        [self removeTriggerIndex:buttonIndex buttonId:buttonId deviceType:indexSwitchButton.subProperties.deviceType];
+        [self removeTriggerIndex:buttonIndex buttonId:buttonId deviceType:indexSwitchButton.subProperties.deviceType matchData:matchData];
         NSLog(@"index button subproperties %@,%@,%@,%@,%d",indexSwitchButton.subProperties.displayText,indexSwitchButton.subProperties.displayedData,indexSwitchButton.subProperties.matchData,indexSwitchButton.subProperties.eventType,indexSwitchButton.subProperties.deviceType);
         if (indexSwitchButton.selected)
             [self.triggers addObject:indexSwitchButton.subProperties];
@@ -716,7 +764,7 @@ labelAndCheckButtonView *labelView;
                 DimmerButton *dim = (DimmerButton*)v;
                 if(dim.subProperties.index == 6){
                     if(dim.subProperties.matchData.intValue - value < 3){
-                        [dim setNewValue:@(value+3).stringValue];
+                        [dim setNewValue:@(value+3).stringValue subProperties:dim.subProperties];
                         //                        dim.subProperties.matchData = @(value+3).stringValue;
                         [self updateMatchData:dim.subProperties newValue:@(value+3).stringValue dimButton:dim];
                     }
@@ -730,7 +778,7 @@ labelAndCheckButtonView *labelView;
                 DimmerButton *dim = (DimmerButton*)v;
                 if(dim.subProperties.index == 5){
                     if(value - dim.subProperties.matchData.intValue < 3){
-                        [dim setNewValue:@(value-3).stringValue];
+                        [dim setNewValue:@(value-3).stringValue subProperties:dim.subProperties];
                         //                        dim.subProperties.matchData = @(value-3).stringValue;
                         [self updateMatchData:dim.subProperties newValue:@(value-3).stringValue dimButton:dim];
                     }
@@ -811,6 +859,7 @@ labelAndCheckButtonView *labelView;
 }
 
 -(void)onDimmerButtonClick:(id)sender{
+    NSLog(@"onDimmerButtonClick");
     DimmerButton* dimmer = (DimmerButton *)sender;
     
     if(self.isTrigger){
@@ -824,7 +873,7 @@ labelAndCheckButtonView *labelView;
             }
             else{
                 dimmer.selected=NO;
-                [self removeTriggerIndex: dimmer.subProperties.index buttonId:dimmer.subProperties.deviceId deviceType:dimmer.subProperties.deviceType];
+                [self removeTriggerIndex: dimmer.subProperties.index buttonId:dimmer.subProperties.deviceId deviceType:dimmer.subProperties.deviceType matchData:@""];
                 [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
             }
             

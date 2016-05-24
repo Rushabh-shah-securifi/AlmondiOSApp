@@ -18,7 +18,7 @@
 
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden;
 - (void)changeBGColor:(BOOL)isTrigger clearColor:(BOOL)clearColor showTitle:(BOOL)showTitle isScene:(BOOL)isScene;
-- (void)setNewValue:(NSString*)text;
+- (void)setNewValue:(NSString*)text subProperties:(SFIButtonSubProperties *)subProperty;
 @property(nonatomic)SFIButtonSubProperties* subProperties;
 
 @end

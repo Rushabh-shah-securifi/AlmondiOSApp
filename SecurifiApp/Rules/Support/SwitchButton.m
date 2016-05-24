@@ -96,7 +96,7 @@
         [self adDeviceName:topText];
         [self addBgView:self.topLabel.frame.size.height widthAndHeight:entryBtnWidth];
         if(isDimButton)
-            [self mainLabel:@"" text:insideText];
+            [self mainLabel:@"" text:insideText size:15.0f];
         else
             [self addImage:iconImage y:self.bgView.frame.origin.y widthAndHeight:self.bgView.frame.size.width imageHeight:self.bgView.frame.size.height];
         NSLog(@"self.bgView.frame.origin.y %f",self.bgView.frame.origin.y);
@@ -191,7 +191,7 @@
     [l1 setBorderColor:[[UIColor whiteColor] CGColor]];//FF3B30
     [l1 setBorderWidth: 1.5];
 }
-- (void)setNewValue:(NSString*)text{
+- (void)setNewValue:(NSString*)text subProperties:(SFIButtonSubProperties *)subProperty{
     
 }
 -(void)addImage1:(UIImage *)iconImage y:(int)y widthAndHeight:(int)widthAndHeight {
@@ -215,15 +215,20 @@
     [crossButtonBGView addSubview:self.crossButtonImage];
 }
 
-- (void)mainLabel:(NSString *)suffix text:(NSString *)text {
+- (void)mainLabel:(NSString *)suffix text:(NSString *)text size:(CGFloat)size {
+    
     NSString *strTopTitleLabelText = [text stringByAppendingString:suffix];
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
-    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:17.0f]} range:NSMakeRange(0,text.length)]; //40
+    NSLog(@"strTemp = %@",strTemp);
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:size]} range:NSMakeRange(0,text.length)]; //40
     [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:12.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,suffix.length)];
     //lblmain
+    if(lblMain == nil)
     lblMain = [[UILabel alloc] initWithFrame:self.bgView.frame];
+    
     lblMain.textAlignment = NSTextAlignmentCenter;
     lblMain.userInteractionEnabled = NO;
+        
     [lblMain setAttributedText:strTemp];//24
     lblMain.lineBreakMode = NSLineBreakByWordWrapping;
     lblMain.numberOfLines = 0;

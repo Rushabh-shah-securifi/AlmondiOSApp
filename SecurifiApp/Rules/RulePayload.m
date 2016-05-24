@@ -163,7 +163,7 @@
                  @"Value" : property.matchData,
                  @"Grouping" : @"AND",
                  @"Valid":@"true",
-                 @"Condition" : @"eq"
+                 @"Condition" : [property getconditionPayload]
                  };
     
 }

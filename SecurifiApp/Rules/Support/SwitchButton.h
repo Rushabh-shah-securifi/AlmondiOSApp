@@ -32,5 +32,7 @@
 - (void)setButtonCross:(BOOL)isHidden;
 
 - (void)setImage:(UIImage*)iconImage replace:(BOOL)replace;
+- (void)addBgView:(int)y widthAndHeight:(int)widthAndHeight;
+- (void)mainLabel:(NSString *)suffix text:(NSString *)text size:(CGFloat)size;
 
 @end

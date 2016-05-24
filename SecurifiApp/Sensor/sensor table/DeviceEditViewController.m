@@ -80,7 +80,9 @@ static const int xIndent = 10;
     self.miiTable = [NSMutableDictionary new];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTest:)];
     [tap setDelegate:self];
-    [self.indexesScroll addGestureRecognizer:tap];
+    
+    if(self.genericParams.isSensor)
+        [self.indexesScroll addGestureRecognizer:tap];
 }
 
 -(void)setUpDeviceEditCell{
@@ -242,9 +244,10 @@ static const int xIndent = 10;
                 [view addSubview:textView];
             }
             else if ([genericIndexObj.layoutType isEqualToString:GRID_VIEW]){
-                 NSString *schedule = [Client getScheduleById:@(genericIndexValue.deviceID).stringValue];
+                NSString *schedule = [Client getScheduleById:@(genericIndexValue.deviceID).stringValue];
                 view.frame = CGRectMake(xIndent, yPos , self.indexesScroll.frame.size.width-xIndent, self.view.frame.size.height - view.frame.origin.y - 5);
                 GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5) color:self.genericParams.color genericIndexValue:genericIndexValue onSchedule:(NSString*)schedule];
+                grid.userInteractionEnabled = YES;
                 grid.delegate = self;
                 [view addSubview:grid];
             }
@@ -304,8 +307,6 @@ static const int xIndent = 10;
         button_width = 60;
     }
     
-    int right_margin = 10;
-
     button.titleLabel.font = heavy_font;
     UIColor *whiteColor = [UIColor whiteColor];
     UIColor *normalColor = self.genericParams.color;
@@ -362,13 +363,6 @@ static const int xIndent = 10;
         self.indexScrollTopConstraint.constant = 2;
     } completion:nil];
 }
-
-#pragma mark gridView
--(void)gridView:(UIView *)view{
-    GridView * grid = [[GridView alloc]initWithFrame:CGRectMake(0, view.frame.origin.y + 5, view.frame.size.width, self.view.frame.size.height - 5)];
-    [view addSubview:grid];
-}
-
 
 #pragma mark delegate callback methods
 -(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue currentView:(UIView*)currentView{// index is genericindex for clients, normal index for sensors
@@ -639,9 +633,6 @@ static const int xIndent = 10;
         else if ([layout isEqualToString:LIST]){
             ListButtonView * typeTableView = (ListButtonView *)genIndexVal.clickedView;
             [typeTableView setListValue:value];
-        }
-        else if ([layout isEqualToString:GRID_VIEW]){
-            
         }
     }
 }
