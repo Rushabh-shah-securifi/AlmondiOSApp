@@ -309,7 +309,7 @@ UILabel *topLabel;
         if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
             isDimmbutton = NO;//for we are putting images of hueLamp
         //NSLog(@"subProperties.iconName %@",subProperties.iconName);
-        NSString *insideDisplayText = isDimmbutton ? [NSString stringWithFormat:@"(%@)%@",[subProperties getcondition],subProperties.displayText]:subProperties.displayText ;
+        NSString *insideDisplayText = isDimmbutton ? [NSString stringWithFormat:@"%@%@",[subProperties getcondition],subProperties.displayText]:subProperties.displayText ;
         [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:bottomText isTrigger:isTrigger isDimButton:isDimmbutton insideText:insideDisplayText isScene:isScene];
         switchButton.subProperties = subProperties;
         switchButton.inScroll = YES;

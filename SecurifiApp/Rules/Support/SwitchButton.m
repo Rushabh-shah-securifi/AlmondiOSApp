@@ -96,7 +96,7 @@
         [self adDeviceName:topText];
         [self addBgView:self.topLabel.frame.size.height widthAndHeight:entryBtnWidth];
         if(isDimButton)
-            [self mainLabel:@"" text:insideText size:15.0f];
+            [self mainLabel:@"" text:insideText size:12.0f];
         else
             [self addImage:iconImage y:self.bgView.frame.origin.y widthAndHeight:self.bgView.frame.size.width imageHeight:self.bgView.frame.size.height];
         NSLog(@"self.bgView.frame.origin.y %f",self.bgView.frame.origin.y);

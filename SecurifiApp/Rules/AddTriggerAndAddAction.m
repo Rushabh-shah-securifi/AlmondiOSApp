@@ -441,7 +441,9 @@ labelAndCheckButtonView *labelView;
     for(SFIButtonSubProperties *buttonSubProperty in list){
         if(buttonSubProperty.deviceId == subProperty.deviceId && buttonSubProperty.index == subProperty.index){
             buttonSubProperty.condition = subProperty.condition;
+            [self updateArray];
         }
+        
     }
 }
 -(void)buildHueSliders:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view{
