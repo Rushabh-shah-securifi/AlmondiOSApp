@@ -88,7 +88,7 @@
         self.deviceImage.hidden = NO;
         self.deviceImage.image = [UIImage imageNamed:self.genericParams.headerGenericIndexValue.genericValue.icon];
         
-            if(deviceType == SFIDeviceType_HueLamp_48 && [[Device getValueForIndex:2 deviceID:deviceID] isEqualToString:@"true"]){
+            if(self.genericParams.isSensor && deviceType == SFIDeviceType_HueLamp_48 && [[Device getValueForIndex:2 deviceID:deviceID] isEqualToString:@"true"]){
                 self.deviceImage.image = [self.deviceImage.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
                 [self.deviceImage setTintColor:[UIColor colorFromHexString:[CommonMethods getColorHex:[Device getValueForIndex:3 deviceID:deviceID]]]];
             }
