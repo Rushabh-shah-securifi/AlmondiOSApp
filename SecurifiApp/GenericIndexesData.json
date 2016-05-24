@@ -316,7 +316,219 @@
                 "Label": "Toggle"
             }
         }
-        
+    },
+    "-33": {
+        "Name": "TwilightTime",
+        "Type": "Actuator",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "twilight_time",
+        "DefaultIcon": "weather_white",
+        "Values": {
+            "SunRiseTime": {
+                "Icon": "weather_white",
+                "AppLabel": "SunRiseTime",
+                "Label": "SunRiseTime"
+            },
+            "SunSetTime": {
+                "Icon": "weather_white",
+                "AppLabel": "SunSetTime",
+                "Label": "SunSetTime"
+            }
+        }
+    },
+    "-34": {
+        "Name": "WeatherCondition",
+        "Type": "Actuator",
+        "Layout": "TEXT_VIEW_ONLY",
+        "AppLabel": "Weather",
+        "DefaultIcon": "weather_white",
+        "Values": {
+            "chancerain": {
+                "Icon": "weather_white",
+                "AppLabel": "chancerain",
+                "Label": "Weather"
+            },
+            "rain": {
+                "Icon": "weather_white",
+                "AppLabel": "rain",
+                "Label": "Weather"
+            },
+            "clear": {
+                "Icon": "weather_white",
+                "AppLabel": "clear",
+                "Label": "Weather"
+            },
+            "cloudy": {
+                "Icon": "weather_white",
+                "AppLabel": "cloudy",
+                "Label": "Weather"
+            },
+            "tstorms": {
+                "Icon": "weather_white",
+                "AppLabel": "tstorms",
+                "Label": "Weather"
+            },
+            "chancesnow": {
+                "Icon": "weather_white",
+                "AppLabel": "chancesnow",
+                "Label": "Weather"
+            },
+            "chancesleet": {
+                "Icon": "weather_white",
+                "AppLabel": "chancesleet",
+                "Label": "Weather"
+            },
+            "chancetstorms": {
+                "Icon": "weather_white",
+                "AppLabel": "chancetstorms",
+                "Label": "Weather"
+            },
+            "flurries": {
+                "Icon": "weather_white",
+                "AppLabel": "flurries",
+                "Label": "Weather"
+            },
+            "fog": {
+                "Icon": "weather_white",
+                "AppLabel": "fog",
+                "Label": "Weather"
+            },
+            "hazy": {
+                "Icon": "weather_white",
+                "AppLabel": "hazy",
+                "Label": "Weather"
+            },
+            "mostlycloudy": {
+                "Icon": "weather_white",
+                "AppLabel": "mostlycloudy",
+                "Label": "Weather"
+            },
+            "mostlysunny": {
+                "Icon": "mostlysunny",
+                "AppLabel": "hazy",
+                "Label": "Weather"
+            },
+            "nt_chanceflurries": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_chanceflurries",
+                "Label": "Weather"
+            },
+            "nt_chancerain": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_chancerain",
+                "Label": "Weather"
+            },
+            "nt_chancesleet": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_chancesleet",
+                "Label": "Weather"
+            },
+            "nt_chancesnow": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_chancesnow",
+                "Label": "Weather"
+            },
+            "nt_chancetstorms": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_chancetstorms",
+                "Label": "Weather"
+            },
+            "nt_clear": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_clear",
+                "Label": "Weather"
+            },
+            "nt_cloudy": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_cloudy",
+                "Label": "Weather"
+            },
+            "nt_flurries": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_flurries",
+                "Label": "Weather"
+            },
+            "nt_fog": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_fog",
+                "Label": "Weather"
+            },
+            "nt_hazy": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_hazy",
+                "Label": "Weather"
+            },
+            "nt_mostlycloudy": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_mostlycloudy",
+                "Label": "Weather"
+            },
+            "nt_mostlysunny": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_mostlysunny",
+                "Label": "Weather"
+            },
+            "nt_partlycloudy": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_partlycloudy",
+                "Label": "Weather"
+            },
+            "nt_partlysunny": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_partlysunny",
+                "Label": "Weather"
+            },
+            "nt_rain": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_rain",
+                "Label": "Weather"
+            },
+            "nt_sleet": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_sleet",
+                "Label": "Weather"
+            },
+            "nt_snow": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_snow",
+                "Label": "Weather"
+            },
+            "nt_sunny": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_sunny",
+                "Label": "Weather"
+            },
+            "nt_tstorms": {
+                "Icon": "weather_white",
+                "AppLabel": "nt_tstorms",
+                "Label": "Weather"
+            },
+            "partlycloudy": {
+                "Icon": "weather_white",
+                "AppLabel": "partlycloudy",
+                "Label": "Weather"
+            },
+            "sleet": {
+                "Icon": "weather_white",
+                "AppLabel": "sleet",
+                "Label": "Weather"
+            },
+            "partlysunny": {
+                "Icon": "weather_white",
+                "AppLabel": "partlysunny",
+                "Label": "Weather"
+            },
+            "snow": {
+                "Icon": "weather_white",
+                "AppLabel": "snow",
+                "Label": "Weather"
+            },
+            "sunny": {
+                "Icon": "weather_white",
+                "AppLabel": "sunny",
+                "Label": "Weather"
+            }
+        }
     },
     "1": {
         "Name": "SWITCH BINARY",

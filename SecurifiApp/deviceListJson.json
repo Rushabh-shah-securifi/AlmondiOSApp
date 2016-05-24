@@ -9,7 +9,6 @@
                 "row_no": 1
             }
         }
-        
     },
     "500": {
         "name": "Client",
@@ -32,6 +31,36 @@
             "1": {
                 "genericIndexID": "-31",
                 "row_no": 1
+            }
+        }
+    },
+    "502":{
+        "name": "Weather",
+        "isActuator": "false",
+        "defaultIcon": "weather_white",
+        "ExcludeFrom":"Scene",
+        "Indexes": {
+            "1": {
+                "genericIndexID": "-33",
+                "row_no": 1
+            },
+            "2":{
+                "genericIndexID": "-34",
+                "row_no": 4
+            },
+            "3":{
+                "genericIndexID": "25",
+                "row_no": 2
+            },
+            "4":{
+                "genericIndexID": "27",
+                "row_no": 2
+            },
+            "5":{
+                "genericIndexID": "26",
+                "row_no": 3,
+                "min":"0",
+                "max":"9999"
             }
         }
     },
@@ -1076,73 +1105,75 @@
         "Indexes": {
             "1": {
                 "genericIndexID": "55",
-                "row_no": 5
+                "row_no": 6
             },
             "2": {
                 "genericIndexID": "56",
-                "row_no": 3
+                "row_no": 4
             },
             "3": {
                 "genericIndexID": "57",
-                "row_no": 1
+                "row_no": 2
             },
             "4": {
                 "genericIndexID": "27",
                 "Placement": "Detail",
-                "row_no": 1
+                "row_no": 2
             },
             "5": {
                 "genericIndexID": "58",
-                "row_no": 2
+                "row_no": 3
             },
             "6": {
                 "genericIndexID": "59",
-                "row_no": 2
+                "row_no": 3
             },
             "8": {
                 "genericIndexID": "60",
-                "row_no": 1
+                "row_no": 2
             },
             "9": {
                 "genericIndexID": "61",
-                "row_no": 5
+                "row_no": 6
             },
             "10": {
                 "genericIndexID": "25",
                 "Placement":"Header",
-                "row_no": 6
+                "min":"-4",
+                "max":"140",
+                "row_no": 1
             },
             "11": {
                 "genericIndexID": "62",
-                "row_no": 5
+                "row_no": 6
             },
             "12": {
                 "genericIndexID": "63",
-                "row_no": 1
+                "row_no": 2
             },
             "13": {
                 "genericIndexID": "64",
-                "row_no": 1
+                "row_no": 2
             },
             "14": {
                 "genericIndexID": "65",
-                "row_no": 1
+                "row_no": 2
             },
             "15": {
                 "genericIndexID": "66",
-                "row_no": 1
+                "row_no": 2
             },
             "16": {
                 "genericIndexID": "67",
-                "row_no": 4
+                "row_no": 5
             },
             "17": {
                 "genericIndexID": "68",
-                "row_no": 5
+                "row_no": 6
             },
             "18": {
                 "genericIndexID": "69",
-                "row_no": 1
+                "row_no": 2
             }
         }
     },

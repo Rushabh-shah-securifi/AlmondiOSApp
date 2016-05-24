@@ -145,12 +145,12 @@ UILabel *topLabel;
         }else{
             //NSLog(@"buttoon devicetype %d",buttonProperties.deviceType);
             NSArray *genericIndexValues = [self getDeviceIndexes:buttonProperties isTrigger:isTrigger];
-            //NSLog(@"genericIndexValues count %ld",genericIndexValues.count);
+            //NSLog(@"genericIndexValues count %ld",(unsigned long)genericIndexValues.count);
             if(genericIndexValues == nil || genericIndexValues.count<=0)
                 continue;
             //NSLog(@"button property: %@, genericindexvalues: %@ valid entry %d", buttonProperties, genericIndexValues,buttonProperties.valid);
             lastImageButton= [self buildEntry:buttonProperties positionId:positionId genericIndexValues:genericIndexValues isTrigger:isTrigger];
-            NSLog(@"position id :: %d",positionId);
+            //NSLog(@"position id :: %d",positionId);
             //NSLog(@"lastImageButton %@",lastImageButton);
             if(lastImageButton!=nil)
                 positionId++;
@@ -176,9 +176,12 @@ UILabel *topLabel;
 +(BOOL)isDeviceUnknown:(SFIButtonSubProperties*)properties{
     if([properties.eventType isEqualToString:@"TimeTrigger"]
        ||[properties.eventType isEqualToString:@"AlmondModeUpdated"]
-       ||[properties.type isEqualToString:@"NetworkResult"])
+       ||[properties.type isEqualToString:@"NetworkResult"]
+       )
         return NO;
-    
+    else if([properties.type isEqualToString:@"WeatherTrigger"]){
+        return YES;
+    }
     else if([properties.eventType isEqualToString:@"ClientJoined"] || [properties.eventType isEqualToString:@"ClientLeft"]){
         if([Client findClientByMAC:properties.matchData] == NO)
             return YES;
@@ -191,15 +194,20 @@ UILabel *topLabel;
 
 + (SwitchButton *)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId genericIndexValues:(NSArray *)genericIndexValues isTrigger:(BOOL)isTrigger{
     //NSLog(@"buildEntry: potionID %d,%@",positionId ,buttonProperties.eventType);
-    if(buttonProperties.valid == NO || [self isDeviceUnknown:buttonProperties]){
-        buttonProperties.deviceName = @"UnKnown Device";
-        return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"default_device" text:@"UnKnown Device" isTrigger:isTrigger isDimButton:NO bottomText:@"UnKnown Device"];
+    if((buttonProperties.valid == NO && ![buttonProperties.eventType isEqualToString:@"AlmondModeUpdated"])|| [self isDeviceUnknown:buttonProperties]){
+        if([buttonProperties.type isEqualToString:@"WeatherTrigger"]){
+            return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"weather_white" text:@"Weather" isTrigger:isTrigger isDimButton:NO bottomText:@""];
+        }
+        else{
+            buttonProperties.deviceName = @"UnKnown Device";
+            return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"default_device" text:@"UnKnown Device" isTrigger:isTrigger isDimButton:NO bottomText:@""];
+        }
     }
     SwitchButton * imageButton =nil;
     for(GenericIndexValue *indexValue in genericIndexValues){
         //NSLog(@"indexValue.deviceId %d",indexValue.deviceID);
         GenericIndexClass *genericIndex = indexValue.genericIndex;
-        GenericValue *selectedValue = indexValue.genericValue;
+//        GenericValue *selectedValue = indexValue.genericValue;
         //NSLog(@"genericIndexValues %@ ,%@,%@",genericIndexValues,buttonProperties.matchData,buttonProperties.displayText);
         
         NSDictionary *genericValueDic;
@@ -301,7 +309,8 @@ UILabel *topLabel;
         if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
             isDimmbutton = NO;//for we are putting images of hueLamp
         //NSLog(@"subProperties.iconName %@",subProperties.iconName);
-        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:bottomText isTrigger:isTrigger isDimButton:isDimmbutton insideText:subProperties.displayText isScene:isScene];
+        NSString *insideDisplayText = isDimmbutton ? [NSString stringWithFormat:@"(%@)%@",[subProperties getcondition],subProperties.displayText]:subProperties.displayText ;
+        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:bottomText isTrigger:isTrigger isDimButton:isDimmbutton insideText:insideDisplayText isScene:isScene];
         switchButton.subProperties = subProperties;
         switchButton.inScroll = YES;
         switchButton.userInteractionEnabled = YES;
@@ -364,7 +373,7 @@ UILabel *topLabel;
 
 
 + (void)onTriggerCrossButtonClicked:(SwitchButton*)switchButton{
-    NSLog(@"switch.position ID %d",switchButton.subProperties.positionId);
+    //NSLog(@"switch.position ID %d",switchButton.subProperties.positionId);
     //includes mode
 //    if(switchButton.subProperties.positionId >= triggers.count || switchButton.subProperties.positionId >= actions.count){
 //        return;
@@ -418,6 +427,10 @@ UILabel *topLabel;
     if([buttonSubProperty.type isEqualToString:@"NetworkResult"]){
         //NSLog(@"NetworkResult type");
         buttonSubProperty.deviceType = SFIDeviceType_REBOOT_ALMOND;
+        buttonSubProperty.index = 1;//as there is no index from cloud
+    }else if([buttonSubProperty.type isEqualToString:@"WeatherTrigger"]){
+        buttonSubProperty.deviceType= SFIDeviceType_Weather;
+        buttonSubProperty.deviceName = @"Weather";
         buttonSubProperty.index = 1;//as there is no index from cloud
     }
     else if([buttonSubProperty.eventType isEqualToString:@"AlmondModeUpdated"]){
