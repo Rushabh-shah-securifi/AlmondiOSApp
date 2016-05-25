@@ -71,14 +71,16 @@
 
     //
     if (self.enableNotificationsView) {
+        
         _notificationsStatusButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(onShowNotifications:)];
 
         NSInteger count = [toolkit countUnviewedNotifications];
         [self.notificationsStatusButton markNotificationCount:(NSUInteger) count];
 
         // make the button but do not install; will be installed after connection state is determined
+        NSLog(@"_almondModeBarButton");
         _almondModeBarButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onAlmondModeButtonPressed:) enableLocalNetworking:enableLocalNetworking];
-        [_almondModeBarButton markState:SFICloudStatusStateAlmondOffline];
+        [_almondModeBarButton markState:SFICloudStatusStateAtHome];
 
         [self setBarButtons:NO];
     }
