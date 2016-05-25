@@ -308,7 +308,7 @@ labelAndCheckButtonView *labelView;
     subProperties.time = [[RulesTimeElement alloc]init];
     subProperties.eventType = @"TimeTrigger";
     subProperties.valid = YES;
-    [self.triggers addObject:subProperties];
+    [self.triggers insertObject:subProperties atIndex:0];
     return subProperties.time;
 }
 - (NSMutableDictionary *)setButtonSelection:(RuleButton *)ruleButton isSlider:(BOOL)isSlider deviceIndex:(SFIDeviceIndex *)deviceIndex deviceId:(int)deviceId matchData:(NSString *)matchData{
@@ -345,7 +345,7 @@ labelAndCheckButtonView *labelView;
 }
 - (void)textFieldDidEndEditing:(RuleTextField *)textField{
 
-    NSLog(@" textvalue %ld, text: %@",[textField.text integerValue], textField.text);
+    NSLog(@" textvalue %ld, text: %@",(unsigned long)[textField.text integerValue], textField.text);
     if(textField.text.length == 0)
         [self showAlert:@"Please enter number"];
     

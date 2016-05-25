@@ -13,24 +13,30 @@
 @interface TextInput ()<UITextFieldDelegate>
 @property (nonatomic)UITextField *deviceNameField;
 @end
+
 @implementation TextInput
--(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue isSensor:(BOOL)isSensor
 {
     self = [super initWithFrame:frame];
     if(self){
         self.color = color;
         self.genericIndexValue = genericIndexValue;
+        self.isSensor = isSensor;
         [self drawTextField];
     }
     return self;
 }
 -(void)drawTextField{
-    int type = [Device getTypeForID:self.genericIndexValue.deviceID];
     self.deviceNameField = [[UITextField alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height - 5)];
-    if(type == SFIDeviceType_NestThermostat_57 || type == SFIDeviceType_NestSmokeDetector_58){
-        [self.deviceNameField setEnabled:NO];
-        self.deviceNameField.alpha = 0.5;
+
+    if(self.isSensor){
+        int type = [Device getTypeForID:self.genericIndexValue.deviceID];
+        if(type == SFIDeviceType_NestThermostat_57 || type == SFIDeviceType_NestSmokeDetector_58){
+            [self.deviceNameField setEnabled:NO];
+            self.deviceNameField.alpha = 0.7;
+        }
     }
+    
     self.deviceNameField.text = self.genericIndexValue.genericValue.value;
     self.deviceNameField.delegate = self;
 //    self.deviceNameField.backgroundColor = self.color;

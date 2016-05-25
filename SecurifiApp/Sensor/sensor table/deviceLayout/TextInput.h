@@ -15,8 +15,9 @@
 @property (nonatomic)UIColor *color;
 @property (nonatomic)id<TextInputDelegate> delegate;
 @property (nonatomic)GenericIndexValue *genericIndexValue;
+@property (nonatomic)BOOL isSensor;
 
--(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue;
+-(id) initWithFrame:(CGRect)frame color:(UIColor *)color genericIndexValue:(GenericIndexValue *)genericIndexValue isSensor:(BOOL)isSensor;
 
 -(void)setTextFieldValue:(NSString*)value;
 @end
