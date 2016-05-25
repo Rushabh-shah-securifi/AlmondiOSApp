@@ -239,7 +239,7 @@ static const int xIndent = 10;
             }
             else if ([genericIndexObj.layoutType isEqualToString:TEXT_VIEW] || [genericIndexObj.layoutType isEqualToString:@"TEXT_VIEW_ONLY"]){
                 
-                TextInput *textView = [[TextInput alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
+                TextInput *textView = [[TextInput alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue isSensor:self.genericParams.isSensor];
                 textView.delegate = self;
                 [view addSubview:textView];
             }
@@ -714,7 +714,7 @@ static const int xIndent = 10;
     NSLog(@"device edit - onDeviceListAndDynamicResponseParsed");
     
     if(self.genericParams.isSensor){
-        NSLog(@"device edit - dynamic response - currently handling only mobile response");
+        NSLog(@"device edit - dynamic response - currently handling only mobile response in controller");
         //perhaps you have to check device id of dynamic response and pop if matches, perhaps
     }
     

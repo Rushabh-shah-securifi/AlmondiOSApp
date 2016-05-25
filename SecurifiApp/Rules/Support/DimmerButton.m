@@ -280,11 +280,11 @@
             break;
         }
         case isLessThanOrEqual:{
-            [self.conditionBtn mainLabel:@"" text:@">=" size:35.f];
+            [self.conditionBtn mainLabel:@"" text:@"<=" size:35.f];
             break;
         }
         case isGreaterThanOrEqual:{
-            [self.conditionBtn mainLabel:@"" text:@"<=" size:35.f];
+            [self.conditionBtn mainLabel:@"" text:@">=" size:35.f];
             break;
         }
         case isEqual:{
