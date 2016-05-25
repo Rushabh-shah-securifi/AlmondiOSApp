@@ -257,14 +257,14 @@
             "ClientLeft": {
                 "ToggleValue": "ClientJoined",
                 "Icon": "client_left",
-                "AppLabel": "leaves",
+                "AppLabel": "inactive",
                 "Label": "leaves",
                 "EventType": "ClientLeft"
             },
             "ClientJoined": {
                 "ToggleValue": "ClientLeft",
                 "Icon": "client_joined",
-                "AppLabel": "joins",
+                "AppLabel": "active",
                 "Label": "joins",
                 "EventType": "ClientJoined"
             }
@@ -1286,7 +1286,7 @@
         "Type": "Actuator",
         "Placement": "Detail",
         "Layout": "SINGLE_TEMP",
-        "AppLabel": "target_temp",
+        "AppLabel": "setpoint_temp",
         "Conditional": "true",
         "Formatter": {
             "Min": "32",
