@@ -63,6 +63,7 @@ static const int logsHeight = 100;
 
 @property(nonatomic) BOOL enableAlmondVersionRemoteUpdate;
 @property(nonatomic) BOOL isSimulator;
+@property(nonatomic) BOOL local;
 @end
 
 @implementation SFIRouterTableViewController
@@ -83,6 +84,7 @@ int mii;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SecurifiConfigurator *configurator = toolkit.configuration;
     self.isSimulator = configurator.isSimulator;
+    self.local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
     
     [super viewDidLoad];
     
@@ -91,6 +93,7 @@ int mii;
     
     [self addRefreshControl];
     [self initializeRouterSummaryAndSettings];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -161,7 +164,8 @@ int mii;
     self.newAlmondFirmwareVersionAvailable = NO;
     self.tableView.tableHeaderView = nil;
     
-    [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
+    if(!self.local)
+        [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -204,7 +208,8 @@ int mii;
     NSLog(@"sfiroutertableview - onconnectionmodedidchage");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
-        [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
+        if(!self.local)
+            [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
         [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
         
     });
@@ -233,7 +238,8 @@ int mii;
         else {
             [self markAlmondMac:plus.almondplusMAC];
             self.navigationItem.title = plus.almondplusName;
-            [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
+            if(!self.local)
+                [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
         }
         [self.tableView reloadData];
     });
@@ -255,7 +261,8 @@ int mii;
         return;
     }
     // reset table view state when Refresh is called (and when current Almond is changed)
-    [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
+    if(!self.local)
+        [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
     
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 3 * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void) {
@@ -677,6 +684,7 @@ int mii;
             case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
                 NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
                 self.routerSummary = (SFIRouterSummary *)genericRouterCommand.command;
+                NSLog(@"routersummary: %@", self.routerSummary);
                 [toolkit tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:self.routerSummary];
                 NSString *currentVersion = self.routerSummary.firmwareVersion;
                 [self tryCheckAlmondVersion:currentVersion];

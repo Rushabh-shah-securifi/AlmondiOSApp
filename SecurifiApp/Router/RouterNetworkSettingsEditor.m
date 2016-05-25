@@ -54,7 +54,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.workingSettings = self.settings ? self.settings.copy : [SFIAlmondLocalNetworkSettings new];
-
+    //NSLog(@"working settings: %@", self.workingSettings);
     NSDictionary *titleAttributes = @{
             NSForegroundColorAttributeName : [UIColor colorWithRed:(CGFloat) (51.0 / 255.0) green:(CGFloat) (51.0 / 255.0) blue:(CGFloat) (51.0 / 255.0) alpha:1.0],
             NSFontAttributeName : [UIFont standardNavigationTitleFont]
@@ -189,6 +189,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
         }
         case TABLE_ROW_ADMIN_PWD: {
             NSString *cell_id = @"pwd";
+            //NSLog(@"router network setting - tableView: - password: %@", self.workingSettings.password);
             UITableViewCell *cell = [self makeNameValueCell:tableView id:cell_id fieldTag:row fieldLabel:NSLocalizedString(@"router.label.Admin Password", @"Admin Password") fieldValue:self.workingSettings.password secureField:YES];
             return cell;
         }
@@ -321,12 +322,12 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 #pragma mark - Action handlers
 
 - (void)onLink {
-    NSLog(@"onLink");
+    //NSLog(@"onLink");
     SFIAlmondLocalNetworkSettings *settings = self.workingSettings.copy;
     if (!settings.hasBasicCompleteSettings) {
         return;
     }
-    NSLog(@"local netwok setting %@,%@,%@",settings.host,settings.login,settings.password);
+    //NSLog(@"mac: %@, host %@, login %@, password %@", settings.almondplusMAC,settings.host,settings.login,settings.password);
 
     self.HUD.labelText = NSLocalizedString(@"router.hud.Establishing Local Link...", @"Establishing Local Link...");
     self.HUD.minShowTime = 2;
@@ -335,7 +336,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
         // Test the connection (and interrogate the remote Almond for info about itself; the almond Mac and name
         // will be reflected in the settings after the test
         enum TestConnectionResult result = [settings testConnection];
-
+        //NSLog(@"before switch");
         switch (result) {
             case TestConnectionResult_success: {
                 
@@ -343,7 +344,7 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
                 SFIAlmondLocalNetworkSettings *old_settings = [toolkit localNetworkSettingsForAlmond:settings.almondplusMAC];
                 if (old_settings) {
-                    NSLog(@"settings already exists and");
+                    //NSLog(@"settings already exists and");
                     // in "Link Mode" we believe this is Almond is unknown to the app/system. In this case, it turns
                     // out we already know about it (settings already on file). So, we refuse to "link" (overwrite
                     // the settings).
@@ -353,14 +354,14 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
                 // store the new/updated settings and update UI state; inform the delegate
                 [toolkit setLocalNetworkSettings:settings];
-                NSLog(@"storing local network %@",settings);
+                //NSLog(@"storing local network %@",settings);
                 if (self.makeLinkedAlmondCurrentOne) {
                     SFIAlmondPlus *almond = settings.asLocalLinkAlmondPlus;
 
                     // switch the connection to Local
                     [toolkit setConnectionMode:SFIAlmondConnectionMode_local forAlmond:almond.almondplusMAC];
                     [toolkit setCurrentAlmond:almond];
-                    NSLog(@"switching to local  connection");
+                    //NSLog(@"switching to local  connection");
                 }
 
                 [self markSuccessOnLink];
