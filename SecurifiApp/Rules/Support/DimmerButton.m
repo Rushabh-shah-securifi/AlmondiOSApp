@@ -88,8 +88,8 @@
     self.prefix = suf;
     NSString *strTopTitleLabelText = [text = (text == nil)?@"":text  stringByAppendingString:suf];
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:strTopTitleLabelText];
-    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:isTrigger?25.0f:35.0f]} range:NSMakeRange(0,text.length)];
-    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:isTrigger?18.0f:20.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,suffix.length)];
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:(isTrigger && !isScene)?25.0f:35.0f]} range:NSMakeRange(0,text.length)];
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:(isTrigger && !isScene)?18.0f:20.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,suffix.length)];
     [lblMain setAttributedText:strTemp];
     
     self.bottomLabel.text = title;
@@ -156,8 +156,8 @@
     self.prefix = (self.prefix ==nil || self.prefix.length==0) ?@" ":self.prefix;
     NSMutableAttributedString *strTemp = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@%@",text,self.prefix]];
     NSLog(@"prefix %@",self.prefix);
-    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:self.isTrigger?25.0f:35.0f]} range:NSMakeRange(0,text.length)];
-    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:self.isTrigger?18.0f:20.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,self.prefix.length)];
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:(_isTrigger && !_isScene)?25.0f:35.0f]} range:NSMakeRange(0,text.length)];
+    [strTemp addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Heavy" size:(_isTrigger && !_isScene)?18.0f:20.0f],NSBaselineOffsetAttributeName:@(12)} range:NSMakeRange(text.length,self.prefix.length)];
     [lblMain setAttributedText:strTemp];
 }
 - (void)setButtoncounter:(int)btnCount isCountImageHiddn:(BOOL)ishidden{

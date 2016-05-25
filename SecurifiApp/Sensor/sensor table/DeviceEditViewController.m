@@ -136,8 +136,8 @@ static const int xIndent = 10;
                  object:nil];
     
     [center addObserver:self //sensor notification response 301
-               selector:@selector(onNotificationPrefDidChange:)//should have ideally handled in another method, but combining it with onCommand response eases things a lot, onNotificationPrefDidChange (actual method)
-                   name:kSFINotificationPreferencesDidChange
+               selector:@selector(onNotificationPrefDidChange:)
+                   name:kSFINotificationPreferencesListDidChange
                  object:nil];
     
     [center addObserver:self //client notification response 1525
@@ -640,44 +640,43 @@ static const int xIndent = 10;
 
 -(void)onNotificationPrefDidChange:(id)sender{//sensor individual 301
     NSLog(@"device edit - onNotificationPrefDidChange");
-    if(self.deviceEditHeaderCell.cellType == SensorEdit_Cell){
-        NSNotification *notifier = (NSNotification *) sender;
-        NSDictionary *dataInfo = [notifier userInfo];
-        if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
-            return;
-        }
-        NotificationPreferenceResponse* res = dataInfo[@"data"];
-        if (res.internalIndex == nil || self.miiTable[res.internalIndex] == nil)
-            return;
-        GenericIndexValue *genIndexVal = self.miiTable[res.internalIndex];
-        
-        NSLog(@"res mii: *%@*, actual: *%@*", res.internalIndex, @(mii).stringValue);
-        
-        
-        if(res.isSuccessful == NO){
-            NSLog(@"notify unsuccessful");
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self revertToOldValue:genIndexVal];
-                [self showToast:[NSString stringWithFormat:@"Sorry, Could not update %@", genIndexVal.genericIndex.groupLabel]];
-            });
-        }
-        else{
-            NSLog(@"notify successful - commandtype: %d", genIndexVal.genericIndex.commandType);
-            DeviceCommandType deviceCmdType = genIndexVal.genericIndex.commandType;
-            
-            [Device updateDeviceData:deviceCmdType value:genIndexVal.currentValue deviceID:genIndexVal.deviceID];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
-            });
-        }
-        
-        //Repaint header
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self repaintHeader:genIndexVal];
-        });
-        
-        [self.miiTable removeObjectForKey:res.internalIndex];
+    NSNotification *notifier = (NSNotification *) sender;
+    NSDictionary *dataInfo = [notifier userInfo];
+    if (dataInfo == nil || [dataInfo valueForKey:@"data"]==nil ) {
+        return;
     }
+    NotificationPreferenceResponse* res = dataInfo[@"data"];
+    if (res.internalIndex == nil || self.miiTable[res.internalIndex] == nil)
+        return;
+    GenericIndexValue *genIndexVal = self.miiTable[res.internalIndex];
+    
+    NSLog(@"res mii: *%@*, actual: *%@*", res.internalIndex, @(mii).stringValue);
+    
+    
+    if(res.isSuccessful == NO){
+        NSLog(@"notify unsuccessful");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self revertToOldValue:genIndexVal];
+            [self showToast:[NSString stringWithFormat:@"Sorry, Could not update %@", genIndexVal.genericIndex.groupLabel]];
+        });
+    }
+    else{
+        NSLog(@"notify successful - commandtype: %d", genIndexVal.genericIndex.commandType);
+        DeviceCommandType deviceCmdType = genIndexVal.genericIndex.commandType;
+        
+        [Device updateDeviceData:deviceCmdType value:genIndexVal.currentValue deviceID:genIndexVal.deviceID];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
+        });
+    }
+    
+    //Repaint header
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self repaintHeader:genIndexVal];
+    });
+    
+    [self.miiTable removeObjectForKey:res.internalIndex];
+    
     
 }
 

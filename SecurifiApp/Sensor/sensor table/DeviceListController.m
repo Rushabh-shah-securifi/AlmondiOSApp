@@ -72,12 +72,10 @@ int mii;
     
     [self markAlmondTitleAndMac];
     [self initializeNotifications];
-//    [self initializeAlmondData];
-    //need to reload tableview, as toolkit could have got updates
+
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
-    NSLog(@"view will appear end");
 }
 
 -(void)markAlmondTitleAndMac{
@@ -182,21 +180,19 @@ int mii;
                    name:kSFIDidChangeAlmondName
                  object:nil];
     
-    [center addObserver:self
-               selector:@selector(onGetClientsPreferences:)
-                   name:NOTIFICATION_WIFI_CLIENT_GET_PREFERENCE_REQUEST_NOTIFIER
-                 object:nil];
+    
 
-    [center addObserver:self
-               selector:@selector(onNotificationPrefDidChange:)
-                   name:kSFINotificationPreferencesDidChange
-                 object:nil];
+
     
     [center addObserver:self
                selector:@selector(validateResponseCallback:)
                    name:VALIDATE_RESPONSE_NOTIFIER
                  object:nil];
-    [center addObserver:self selector:@selector(oRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
+    
+    [center addObserver:self
+               selector:@selector(oRouterCommandResponse:)
+                   name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER
+                 object:nil];
 }
 
 #pragma mark - HUD and Toast mgt
@@ -625,7 +621,6 @@ int mii;
     [self.toolkit.clients removeAllObjects];
     
     [self initializeAlmondData];
-
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
@@ -652,6 +647,7 @@ int mii;
             return;
         }
         NSLog(@"%s 3", __PRETTY_FUNCTION__);
+        
         [self.tableView reloadData];
     });
 }
@@ -676,80 +672,11 @@ int mii;
 }
 
 
-- (void)onNotificationPrefDidChange:(id)sender {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data == nil) {
-        return;
-    }
-    NSString *cloudMAC = [data valueForKey:@"data"];
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        if (![self isSameAsCurrentMAC:cloudMAC]) {
-            return;
-        }
-        [self configureNotificationModesForDevices];
-        
-        [self.refreshControl endRefreshing];
-        [self.tableView reloadData];
-    });
-}
 
-- (void)onGetClientsPreferences:(id)sender {
-    
-    NSNotification *notifier = (NSNotification *) sender;
-    NSDictionary *data = [notifier userInfo];
-    if (data == nil) {
-        return;
-    }
-    NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    
-    if ([[mainDict valueForKey:@"Success"] isEqualToString:@"true"]) {
-        dispatch_async(dispatch_get_main_queue(), ^() {
-        [self configureNotificationModesForClients:[mainDict valueForKey:@"ClientPreferences"]];
-         });
-    }
-}
 
--(void)configureNotificationModesForClients:(NSArray*)clientsPreferences{
-    for(Client *client in self.currentClientList){
-        [self setClientPreference:client clientsPreferences:clientsPreferences];
-    }
-}
 
--(void)setClientPreference:(Client*)client clientsPreferences:(NSArray*)clientsPreferences{
-    for (NSDictionary * dict in clientsPreferences) {
-        if ([[dict valueForKey:@"ClientID"] intValue]==[client.deviceID intValue]) {
-            client.notificationMode =  [dict[@"NotificationType"] intValue];
-            NSLog(@"clientname: %@, client notification mode: %d",client.name, client.notificationMode);
-            return;
-        }
-    }
-    client.notificationMode = SFINotificationMode_off;
-}
 
--(void)configureNotificationModesForDevices{
-    NSArray *notificationList = [self.toolkit notificationPrefList:self.toolkit.currentAlmond.almondplusMAC];
-    for (Device *device in self.currentDeviceList) {
-        [self configureNotificationMode:device preferences:notificationList];
-    }
-}
 
-- (void)configureNotificationMode:(Device *)device preferences:(NSArray *)notificationList {
-    sfi_id device_id = device.ID;
-    
-    //Check if current device ID is in the notification list
-    for (SFINotificationDevice *currentDevice in notificationList) {
-        if (currentDevice.deviceID == device_id) {
-            //Set the notification mode for that notification preference
-            NSLog(@"device name: %@, current device notification mode: %d", device.name, currentDevice.notificationMode);
-            device.notificationMode = currentDevice.notificationMode;
-            return;
-        }
-    }
-    // missing preference means none has been set and is equivalent to 'off'
-    device.notificationMode = SFINotificationMode_off;
-}
 
 - (void)onRefreshSensorData:(id)sender {
     if (!self || [self isNoAlmondMAC]) {
