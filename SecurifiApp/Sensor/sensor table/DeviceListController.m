@@ -246,7 +246,6 @@ int mii;
         refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Force device data refresh" attributes:attributes];
         [refresh addTarget:self action:@selector(onRefreshSensorData:) forControlEvents:UIControlEventValueChanged];
         self.refreshControl = refresh;
-        [self.HUD show:YES];
     }
 }
 
@@ -670,13 +669,6 @@ int mii;
         }
     });
 }
-
-
-
-
-
-
-
 
 - (void)onRefreshSensorData:(id)sender {
     if (!self || [self isNoAlmondMAC]) {

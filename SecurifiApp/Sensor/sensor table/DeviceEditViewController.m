@@ -275,13 +275,15 @@ static const int xIndent = 10;
     }
     if(!self.isLocal && self.genericParams.isSensor){
         UIView *view = [[UIView alloc]initWithFrame:CGRectMake(xIndent, self.keyBoardComp, self.indexesScroll.frame.size.width-xIndent, 65)];
-        SFIHighlightedButton *historyButton = [[SFIHighlightedButton alloc]initWithFrame:CGRectMake(xIndent, 0, 100, 40)];
+        
+        SFIHighlightedButton *historyButton = [[SFIHighlightedButton alloc]initWithFrame:CGRectMake(0, 0, 150, 40)];
         historyButton = [historyButton addButton:@"Device History" button:historyButton color:self.genericParams.color];
         [historyButton addTarget:self action:@selector(onShowSensorLogs) forControlEvents:UIControlEventTouchUpInside];
         CGSize scrollableSize = CGSizeMake(self.indexesScroll.frame.size.width,self.keyBoardComp + 60);
         yPos = yPos + view.frame.size.height + LABELSPACING;
         [self.indexesScroll setContentSize:scrollableSize];
         [view addSubview:historyButton];
+        
         [self.indexesScroll addSubview:view];
     }
 }
