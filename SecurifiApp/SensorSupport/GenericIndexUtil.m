@@ -208,7 +208,7 @@
 #pragma mark client
 
 + (GenericIndexValue *) getClientHeaderGenericIndexValueForClient:(Client*) client{
-    NSString *status = client.deviceAllowedType==1 ? ALLOWED_TYPE_BLOCKED: client.isActive? ACTIVE: INACTIVE;
+    NSString *status = client.deviceAllowedType==1 ? ALLOWED_TYPE_BLOCKED: client.isActive? @"ACTIVE": @"INACTIVE";
     GenericValue *genericValue = [self getMatchingGenericValueForGenericIndexID:@(-12).stringValue forValue:client.deviceType]; //-12 client type - iphone, ipad etc.
 
     if(genericValue == nil){ //if devicetype is wronglysent only expected return is nil
