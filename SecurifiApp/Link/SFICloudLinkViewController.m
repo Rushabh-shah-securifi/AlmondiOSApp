@@ -112,6 +112,7 @@ typedef NS_ENUM(unsigned int, SFICloudLinkViewControllerState) {
     RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
     editor.mode = RouterNetworkSettingsEditorMode_link;
     editor.delegate = self;
+    editor.makeLinkedAlmondCurrentOne = YES;
 
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:editor];
     [self presentViewController:nav animated:YES completion:nil];

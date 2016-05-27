@@ -474,6 +474,7 @@
 
 
 - (void)onSwitchServer {
+    NSLog(@"onSwitchServer method called");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     toolkit.useProductionCloud = !toolkit.useProductionCloud;
     [toolkit closeConnection];

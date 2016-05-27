@@ -261,6 +261,7 @@
             alert.actions = @[
                     [AlertViewAction actionWithTitle:NSLocalizedString(@"Alert view title-Retry Cloud Connection", "Retry Cloud Connection") handler:^(AlertViewAction *action) {
                         [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
+                        [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
                     }],
                     [AlertViewAction actionWithTitle:NSLocalizedString(@"Alert view title-Switch to Local Connection", @"Switch to Local Connection") handler:^(AlertViewAction *action) {
                         [self configureNetworkSettings:SFIAlmondConnectionMode_local];
@@ -380,7 +381,7 @@
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit setConnectionMode:mode forAlmond:self.almondMac];
     [self showHUD:@"Connecting..."];
-    [self.HUD hide:YES afterDelay:10]; // in case the request times out
+    [self.HUD hide:YES afterDelay:5]; // in case the request times out
 }
 
 - (void)onAlmondModeButtonPressed:(id)sender {
@@ -859,6 +860,7 @@
 }
 
 - (void)networkSettingsEditorDidChangeSettings:(RouterNetworkSettingsEditor *)editor settings:(SFIAlmondLocalNetworkSettings *)newSettings {
+    NSLog(@"networkSettingsEditorDidChangeSettings");
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit setLocalNetworkSettings:newSettings];
     [editor dismissViewControllerAnimated:YES completion:nil];
