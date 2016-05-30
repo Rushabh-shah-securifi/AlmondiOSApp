@@ -29,17 +29,17 @@
 @interface SFIScenesTableViewController ()<UITableViewDataSource,UITableViewDelegate,SFIScenesTableViewCellDelegate,MBProgressHUDDelegate,MessageViewDelegate> {
     
     IBOutlet UIButton *btnAdd;
-    NSMutableArray * scenesArray;
     NSInteger randomMobileInternalIndex;
 }
 @property SFIAlmondPlus *currentAlmond;
-
+@property(nonatomic) SecurifiToolkit *toolkit;
 @end
 
 @implementation SFIScenesTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.toolkit = [SecurifiToolkit sharedInstance];
     
     self.tableView.separatorColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -57,7 +57,6 @@
     self.enableDrawer = YES;
     randomMobileInternalIndex = arc4random() % 10000;
     
-    [self getAllScenes];
     [self addAddSceneButton];
     [self markAlmondTitleAndMac];
     [self initializeNotifications];
@@ -126,8 +125,7 @@
     }
 }
 -(void)updateSceneTableView:(id)sender{
-    NSLog(@"updateSceneTableView ");
-    [self getAllScenes];
+    NSLog(@"updateSceneTableView : %@",self.toolkit.scenesArray);
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
         [self.HUD hide:YES];
@@ -148,11 +146,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if ([self isNoAlmondMAC]) {
-        return 400;
-    }
-    
-    if ([self isSceneListEmpty]) {
+    if ([self isNoAlmondMAC] || [self isSceneListEmpty]) {
         return 400;
     }
     return 90.0f;
@@ -166,7 +160,7 @@
     if ([self isSceneListEmpty]) {
         return 1;
     }
-    return scenesArray.count;
+    return self.toolkit.scenesArray.count;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -181,7 +175,6 @@
     }
     
     tableView.scrollEnabled = YES;
-    
     SFIScenesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SFIScenesTableViewCell"];
     
     int colorIndex = indexPath.row%3;
@@ -203,8 +196,12 @@
     }
     
     cell.delegate = self;
-    if(indexPath.row < scenesArray.count)
-        [cell createScenesCell:scenesArray[indexPath.row]];
+    if(indexPath.row  > (int)self.toolkit.scenesArray.count - 1){
+        NSLog(@"scene reload");
+        return cell;
+    }
+    
+    [cell createScenesCell:self.toolkit.scenesArray[indexPath.row]];
     return cell;
 }
 
@@ -215,7 +212,7 @@
     
     NewAddSceneViewController *newAddSceneViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"NewAddSceneViewController"];
     newAddSceneViewController.isInitialized = YES;
-    newAddSceneViewController.scene = [self getScene:scenesArray[indexPath.row]];
+    newAddSceneViewController.scene = [self getScene:self.toolkit.scenesArray[indexPath.row]];
     [self.navigationController pushViewController:newAddSceneViewController animated:YES];
 }
 
@@ -372,22 +369,13 @@
 
 #pragma mark Notifications
 - (void)onCurrentAlmondChanged:(id)sender {
-    if (scenesArray!=nil && scenesArray.count>0)
-        [scenesArray removeAllObjects];
+    [self.toolkit.scenesArray removeAllObjects];
     
     [self markAlmondTitleAndMac];
     [self showHudWithTimeoutMsg:NSLocalizedString(@"scenes.hud.loadingScenes", @"Loading Scenes...")];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
-}
-
-- (void)getAllScenes {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    [scenesArray removeAllObjects];
-    scenesArray = nil;
-    scenesArray = [NSMutableArray arrayWithArray:toolkit.scenesArray];
-    NSLog(@"get all scenes - %@", scenesArray);
 }
 
 - (void)gotResponseFor1064:(id)sender {
@@ -413,7 +401,7 @@
 #pragma mark - State
 
 - (BOOL)isSceneListEmpty {
-    return scenesArray.count == 0;
+    return self.toolkit.scenesArray.count == 0;
 }
 
 - (BOOL)isNoAlmondMAC {

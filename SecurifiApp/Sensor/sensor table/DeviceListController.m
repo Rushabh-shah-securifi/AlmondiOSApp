@@ -23,14 +23,11 @@
 #import "MessageView.h"
 #import "SFICloudLinkViewController.h"
 #import "MBProgressHUD.h"
-#import "RouterPayload.h"
 #import "UIImage+Securifi.h"
 #import "UIViewController+Securifi.h"
 #import "SFIPreferences.h"
 #import "SFIAlmondLocalNetworkSettings.h"
-#import "RouterParser.h"
 #import "CommonMethods.h"
-//#import "SFIRouterSummary.h"
 
 #define NO_ALMOND @"NO ALMOND"
 #define CELLFRAME CGRectMake(5, 0, self.view.frame.size.width -10, 60)
@@ -39,11 +36,10 @@
 #define COUNT_FONT_SIZE 12
 
 @interface DeviceListController ()<UITableViewDataSource,UITableViewDelegate,DeviceHeaderViewDelegate,MessageViewDelegate>
-@property (nonatomic,strong)NSArray *currentDeviceList;
-@property(nonatomic, strong) NSArray *currentClientList;
 
 @property(nonatomic, readonly) SFIColors *almondColor;
 @property(nonatomic) NSTimer *mobileCommandTimer;
+
 
 @property(nonatomic) SecurifiToolkit *toolkit;
 @end
@@ -60,8 +56,6 @@ int mii;
     
     self.toolkit = [SecurifiToolkit sharedInstance];
     //ensure list is empty initially
-    self.currentDeviceList = @[];
-    self.currentClientList = @[];
     [self initializeAlmondData];
 }
 
@@ -72,7 +66,7 @@ int mii;
     
     [self markAlmondTitleAndMac];
     [self initializeNotifications];
-
+    
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
@@ -84,15 +78,11 @@ int mii;
         NSLog(@"no almond");
         [self markTitle:NSLocalizedString(@"router.nav-title.Get Started", @"Get Started")];
         [self markAlmondMac:NO_ALMOND];
-        self.currentDeviceList = @[];
-        self.currentClientList = @[];
     }
     else {
         NSLog(@"got almond");
         [self markTitle:self.toolkit.currentAlmond.almondplusName];
         [self markAlmondMac:self.toolkit.currentAlmond.almondplusMAC];
-        self.currentDeviceList = [self.toolkit.devices copy];
-        self.currentClientList = [self.toolkit.clients copy];
     }
     NSLog(@"devices: %@", self.toolkit.devices);
 }
@@ -102,28 +92,25 @@ int mii;
     [self markAlmondTitleAndMac];
     [self initializeColors:[self.toolkit currentAlmond]];
     self.enableDrawer = YES; //to enable navigation top left button
-    [RouterPayload routerSummary:mii isSimulator:NO mac:self.toolkit.currentAlmond.almondplusMAC];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self tryInstallRefreshControl];
         if([self isDeviceListEmpty] && [self isClientListEmpty]){
             NSLog(@"device and client current list is empty");
             [self showHudWithTimeoutMsg:@"Loading Device data"];
-           
         }
     });
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
-
 
 -(void)initializeNotifications{
     NSLog(@"initialize notifications sensor table");
@@ -154,17 +141,12 @@ int mii;
                  object:nil];
     
     
-
-
+    
+    
     
     [center addObserver:self
                selector:@selector(validateResponseCallback:)
                    name:VALIDATE_RESPONSE_NOTIFIER
-                 object:nil];
-    
-    [center addObserver:self
-               selector:@selector(oRouterCommandResponse:)
-                   name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER
                  object:nil];
 }
 
@@ -180,11 +162,11 @@ int mii;
 #pragma mark - State
 - (BOOL)isDeviceListEmpty {
     // don't show any tiles until there are values for the devices; no values == no way to fetch from almond
-    return self.currentDeviceList.count == 0;
+    return self.toolkit.devices.count == 0;
 }
 
 -(BOOL)isClientListEmpty{
-    return self.currentClientList.count == 0;
+    return self.toolkit.clients.count == 0;
 }
 
 - (BOOL)isNoAlmondMAC {
@@ -227,19 +209,19 @@ int mii;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if ([self isNoAlmondMAC])
         return 1;
-        
+    
     if([self isDeviceListEmpty] && [self isClientListEmpty])
         return 1;
-        
+    
     return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]))
         return 1;
-
-    NSLog(@"self.currentDeviceList.count %ld",(unsigned long)self.currentDeviceList.count);
-    return (section == 0) ? self.currentDeviceList.count:self.currentClientList.count;
+    
+    NSLog(@"self.devices.count %ld",(unsigned long)self.toolkit.devices.count);
+    return (section == 0) ? self.toolkit.devices.count:self.toolkit.clients.count;
     
 }
 
@@ -272,10 +254,10 @@ int mii;
     NSString *header,*headerVal;
     if(section == 0){
         header = @"Sensors ";
-        headerVal = [NSString stringWithFormat:@"(%ld)",(long int)self.currentDeviceList.count];
+        headerVal = [NSString stringWithFormat:@"(%ld)",(long int)self.toolkit.devices.count];
     }
     else{
-        headerVal = [NSString stringWithFormat:@"(%ld)",(long int)self.currentClientList.count];
+        headerVal = [NSString stringWithFormat:@"(%ld)",(long int)self.toolkit.clients.count];
         header = @"Network Devices ";
     }
     
@@ -284,10 +266,10 @@ int mii;
     [aAttrString appendAttributedString:vAttrString];
     static NSString *headerView = @"customHeader";
     UITableViewHeaderFooterView *vHeader;
-//    vHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerView];
-//    if (!vHeader) {
-        vHeader = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:headerView];
-//    }
+    //    vHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:headerView];
+    //    if (!vHeader) {
+    vHeader = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:headerView];
+    //    }
     vHeader.textLabel.textColor = [UIColor lightGrayColor];
     vHeader.textLabel.attributedText = aAttrString;
     
@@ -324,8 +306,13 @@ int mii;
     cell.commonView.delegate = self;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     GenericParams *genericParams;
+    
     if(indexPath.section == 0){
-        Device *device = [self.currentDeviceList objectAtIndex:indexPath.row];
+        if(indexPath.row  > (int)self.toolkit.devices.count - 1){
+            NSLog(@"device removed");
+            return cell;
+        }
+        Device *device = [self.toolkit.devices objectAtIndex:indexPath.row];
         
         genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getHeaderGenericIndexValueForDevice:device]
                                                          indexValueList:nil
@@ -337,7 +324,11 @@ int mii;
     }
     else
     {
-        Client *client = [self.currentClientList objectAtIndex:indexPath.row];
+        if(indexPath.row  > (int)self.toolkit.clients.count - 1){
+            NSLog(@"device removed");
+            return cell;
+        }
+        Client *client = [self.toolkit.clients objectAtIndex:indexPath.row];
         UIColor *clientCellColor = [self getClientCellColor:client];
         genericParams = [[GenericParams alloc]initWithGenericIndexValue:[GenericIndexUtil getClientHeaderGenericIndexValueForClient:client]
                                                          indexValueList:nil
@@ -497,7 +488,7 @@ int mii;
         return [SFIColors clientGreenColor];
     else if(!client.isActive)
         return [SFIColors clientInActiveGrayColor];
-
+    
     return [SFIColors clientGreenColor];
 }
 
@@ -532,11 +523,13 @@ int mii;
     [DevicePayload getSensorIndexUpdate:genericIndexValue mii:mii];
 }
 
+
+
 - (void)onToggleTimeout:(id)sender {
     [self.mobileCommandTimer invalidate];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
-//        [self.HUD hide:YES];
+        //        [self.HUD hide:YES];
     });
 }
 #pragma mark clientCell delegate
@@ -552,8 +545,6 @@ int mii;
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
     NSLog(@"devicelist - onDeviceListAndDynamicResponseParsed");
     dispatch_async(dispatch_get_main_queue(), ^() {
-        self.currentDeviceList = [self.toolkit.devices copy];
-        self.currentClientList = [self.toolkit.clients copy];
         [self.tableView reloadData];
         [self.HUD hide:YES];
         if(self.refreshControl == nil){
@@ -579,11 +570,14 @@ int mii;
     }else{
         payload = [[dataInfo valueForKey:@"data"] objectFromJSONData];
     }
-    
-    //    payload = [self parseJson:@"DeviceListResponse"];
     NSLog(@"devicelistcontroller - mobile - payload: %@", payload);
-    //handle on false response
-
+    BOOL isSuccessful = [[payload valueForKey:@"Success"] boolValue];
+    if(isSuccessful == NO){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+            [self showToast:@"Sorry, Could not update"];
+        });
+    }
 }
 
 #pragma mark cloud callbacks
@@ -710,29 +704,6 @@ int mii;
         
         [self showToast:failureReason];
     }
-}
--(void)oRouterCommandResponse:(id)sender{
-//    NSNotification *notifier = (NSNotification *) sender;
-//    NSDictionary *data = [notifier userInfo];
-////    if (data == nil) {
-////        return;
-////    }
-//    
-//    SFIGenericRouterCommand *genericRouterCommand = (SFIGenericRouterCommand *) [data valueForKey:@"data"];
-//    NSLog(@"data valueForKey %@",[data valueForKey:@"data"]);
-//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-//    switch (genericRouterCommand.commandType) {
-//        case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
-//            NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
-//            SFIRouterSummary *routerSummary = (SFIRouterSummary *)genericRouterCommand.command;
-//            [toolkit tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:routerSummary];
-//            break;
-//        }
-//        default: {
-//            break;
-//        }
-//    }
-    
 }
 
 @end
