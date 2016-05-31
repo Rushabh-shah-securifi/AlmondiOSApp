@@ -75,12 +75,13 @@
         [payload setValue:@"RouterSummary" forKey:@"CommandType"];
         [payload setValue:APP_ID forKey:@"AppID"];
         [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
-        
-        GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST];
+        [payload setValue:almondMac forKey:@"AlmondMAC"];
+        GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
+        NSLog(@"sending router summery request %@",payload);
         [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
     }
 
-}
+}/*251176215905264 251176215905264*/
 
 + (void)getWirelessSettings:(int)mii isSimulator:(BOOL)isSimulator mac:(NSString*)almondMac{
     if(isSimulator){
@@ -93,8 +94,9 @@
         [payload setValue:@"GetWirelessSettings" forKey:@"CommandType"];
         [payload setValue:APP_ID forKey:@"AppID"];
         [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
+        [payload setValue:almondMac forKey:@"AlmondMAC"];
         
-        GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST];
+        GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
         [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
     }
 }
@@ -111,6 +113,7 @@
         [payload setValue:@"SetWirelessSettings" forKey:@"CommandType"];
         [payload setValue:APP_ID forKey:@"AppID"];
         [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
+        [payload setValue:almondMac forKey:@"AlmondMAC"];
         
         NSMutableDictionary *wirelessSetting = [NSMutableDictionary new];
         [wirelessSetting setValue:wirelessSettingObj.type forKey:@"Type"];
@@ -121,7 +124,7 @@
         
         [payload setValue:wirelessSetting forKey:@"WirelessSetting"];
         
-        GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST];
+        GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
         [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
     }
 }
@@ -138,8 +141,9 @@
         [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
         [payload setValue:@"true" forKey:@"Available"];
         [payload setValue:version forKey:@"Version"];
+        [payload setValue:almondMac forKey:@"AlmondMAC"];
         
-        GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST];
+        GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
         [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
         [[Analytics sharedInstance] markRouterUpdateFirmware];
     }
@@ -156,8 +160,9 @@
         [payload setValue:@"RebootRouter" forKey:@"CommandType"];
         [payload setValue:APP_ID forKey:@"AppID"];
         [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
+        [payload setValue:almondMac forKey:@"AlmondMAC"];
         
-        GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST];
+        GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
         [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
         [[Analytics sharedInstance] markRouterReboot];
     }
@@ -175,8 +180,9 @@
         [payload setValue:APP_ID forKey:@"AppID"];
         [payload setValue:message forKey:@"Message"];
         [payload setValue:@(mii).stringValue forKey:@"MobileInternalIndex"];
+        [payload setValue:almondMac forKey:@"AlmondMAC"];
         
-        GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST];
+        GenericCommand *genericCmd = [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_ROUTER_COMMAND_REQUEST_RESPONSE];
         [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
         [[Analytics sharedInstance] markSendRouterLogs];
     }

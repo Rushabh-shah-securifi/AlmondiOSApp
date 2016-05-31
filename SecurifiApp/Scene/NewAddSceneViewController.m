@@ -34,12 +34,14 @@
 #define kAlertViewSave 1
 #define kAlertViewDelete 2
 
-@interface NewAddSceneViewController()<UITextFieldDelegate, UIAlertViewDelegate>{
+@interface NewAddSceneViewController()<UITextFieldDelegate, UIAlertViewDelegate,UIGestureRecognizerDelegate>{
     NSInteger randomMobileInternalIndex;
 }
 @property (nonatomic,strong)AddRuleSceneClass *addRuleScene;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property UIButton *buttonDelete;
+@property (nonatomic) CGRect ViewFrame;
+@property (nonatomic) NSInteger touchComp;
 @end
 
 @implementation NewAddSceneViewController
@@ -59,6 +61,11 @@ UIAlertView *alert;
     [self.addRuleScene buildTriggersAndActions];
     [self.addRuleScene getTriggersDeviceList:YES];
     self.automaticallyAdjustsScrollViewInsets = NO;
+    self.ViewFrame = self.view.frame;
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTest:)];
+    [tap setDelegate:self];
+    [self.view addGestureRecognizer:tap];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -79,6 +86,15 @@ UIAlertView *alert;
     [center addObserver:self
                selector:@selector(onTabBarDidChange:)
                    name:@"TAB_BAR_CHANGED"
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onKeyboardDidShow:)
+                   name:UIKeyboardDidShowNotification
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onKeyboardDidHide:)
+                   name:UIKeyboardDidHideNotification
                  object:nil];
 }
 
@@ -101,6 +117,7 @@ UIAlertView *alert;
 
 #pragma mark button clicks
 -(void)btnSaveTap:(id)sender{
+    self.touchComp = 1;
     if(self.scene.triggers.count > 0){
         NSString *msg;
         msg = @"If you want this scene name to be compatible with Amazon Echo Voice Control, click Next.\nIf not, just enter the name in the below text box and click Done.";
@@ -320,5 +337,39 @@ UIAlertView *alert;
         [self.HUD hide:YES afterDelay:5];
     });
 }
+#pragma mark gesture recognizer
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
+- (void)tapTest:(UITapGestureRecognizer *)sender {
+    self.touchComp = [sender locationInView:self.view].y;
+    NSLog(@"self.touch %ld",self.touchComp);
+}
 
+#pragma  mark uiwindow delegate methods
+- (void)onKeyboardDidShow:(id)notification {
+    NSLog(@"%s",__PRETTY_FUNCTION__);
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    if(self.touchComp  > keyboardSize.height){
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            CGRect f = self.view.frame;
+            CGFloat y = -keyboardSize.height ;
+            f.origin.y =  y + 80;
+            self.view.frame = f;
+            //        NSLog(@"keyboard frame %@",NSStringFromCGRect(self.parentView.frame));
+        }];
+    }
+}
+
+-(void)onKeyboardDidHide:(id)notice {
+    NSLog(@"%s",__PRETTY_FUNCTION__);
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect f = self.view.frame;
+        f.origin.y = self.ViewFrame.origin.y;
+        self.view.frame = f;
+    }];
+}
 @end

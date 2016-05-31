@@ -120,17 +120,11 @@ int mii;
 - (void)initializeNotifications {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     
-    [center addObserver:self selector:@selector(onNetworkChange:) name:NETWORK_DOWN_NOTIFIER object:nil];
-    [center addObserver:self selector:@selector(onNetworkChange:) name:NETWORK_UP_NOTIFIER object:nil];
-    
-    [center addObserver:self selector:@selector(onNetworkChange:) name:kSFIReachabilityChangedNotification object:nil];
-    [center addObserver:self selector:@selector(onConnectionModeDidChange:) name:kSFIDidChangeAlmondConnectionMode object:nil];
-    
     [center addObserver:self selector:@selector(onCurrentAlmondChanged:) name:kSFIDidChangeCurrentAlmond object:nil];
+    
     [center addObserver:self selector:@selector(onAlmondListDidChange:) name:kSFIDidUpdateAlmondList object:nil];
   
     [center addObserver:self selector:@selector(onAlmondRouterCommandResponse:) name:NOTIFICATION_ROUTER_RESPONSE_CONTROLLER_NOTIFIER object:nil];
-    
 }
 
 - (void)initializeRouterSummaryAndSettings {
@@ -197,24 +191,6 @@ int mii;
 
 #pragma mark - External Event handlers
 
-- (void)onNetworkChange:(id)notice {
-    NSLog(@"%s - onnetworkchange", __PRETTY_FUNCTION__);
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-    });
-}
-
-- (void)onConnectionModeDidChange:(id)notice {
-    NSLog(@"sfiroutertableview - onconnectionmodedidchage");
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.tableView reloadData];
-        if(!self.local)
-            [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
-        [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
-        
-    });
-}
-
 - (void)onCurrentAlmondChanged:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.shownHudOnce = NO;
@@ -238,8 +214,6 @@ int mii;
         else {
             [self markAlmondMac:plus.almondplusMAC];
             self.navigationItem.title = plus.almondplusName;
-            if(!self.local)
-                [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
         }
         [self.tableView reloadData];
     });

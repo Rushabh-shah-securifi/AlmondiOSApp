@@ -216,8 +216,10 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
         field.text = fieldValue;
         field.font = font;
         field.textAlignment = NSTextAlignmentRight;
+        field.autocapitalizationType = UITextAutocapitalizationTypeNone;
         field.secureTextEntry = secureField;
         field.tag = fieldTag;
+        field.autocorrectionType = UITextAutocorrectionTypeNo;
         field.returnKeyType = (fieldTag + 1 == TABLE_ROW_count) ? UIReturnKeyGo : UIReturnKeyNext;
 
         cell.textLabel.text = fieldLabel;
@@ -361,9 +363,9 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
                     // switch the connection to Local
                     [toolkit setConnectionMode:SFIAlmondConnectionMode_local forAlmond:almond.almondplusMAC];
                     [toolkit setCurrentAlmond:almond];
-                    //NSLog(@"switching to local  connection");
+                    NSLog(@"switching to local  connection");
                 }
-
+                
                 [self markSuccessOnLink];
                 [self.delegate networkSettingsEditorDidLinkAlmond:self settings:settings];
 

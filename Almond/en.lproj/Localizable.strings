@@ -730,6 +730,8 @@ Follow it, then login below.";
 "userCategory"="User Category";
 "kids"="Kids";
 "others"="Others";
+"leaves"="Leaves";
+"joins"="Joins";
 "active"="ACTIVE";
 "inactive"="INACTIVE";
 "home"="Home";

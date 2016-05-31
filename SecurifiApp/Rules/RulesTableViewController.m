@@ -25,15 +25,16 @@
     NSInteger randomMobileInternalIndex;
 }
 
-@property (nonatomic, strong)NSMutableArray *rules;
 @property SFIAlmondPlus *currentAlmond;
 @property UIButton *buttonAdd;
+@property(nonatomic) SecurifiToolkit *toolkit;
 @end
 
 @implementation RulesTableViewController
 CGPoint tablePoint;
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.toolkit = [SecurifiToolkit sharedInstance];
     
     [self initializeTableViewAttributes];
     tablePoint = self.tableView.contentOffset;
@@ -44,8 +45,9 @@ CGPoint tablePoint;
     [super viewWillAppear:animated];
     self.enableDrawer = YES;
     randomMobileInternalIndex = arc4random() % 10000;
+
+    self.tableView.contentOffset = tablePoint;
     
-    [self getRuleList];
     [self addAddRuleButton];
     [self markAlmondTitleAndMac];
     [self initializeNotifications];
@@ -91,7 +93,6 @@ CGPoint tablePoint;
                  object:nil];
 }
 
-
 -(void)markAlmondTitleAndMac{
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     self.currentAlmond = [toolkit currentAlmond];
@@ -107,7 +108,8 @@ CGPoint tablePoint;
 
 }
 - (void)onCurrentAlmondChanged:(id)sender {
-    [self.rules removeAllObjects];
+    [self.toolkit.ruleList removeAllObjects];
+    
     [self markAlmondTitleAndMac];
     [self showHudWithTimeoutMsg:@"Loading Rules..."];
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -122,17 +124,12 @@ CGPoint tablePoint;
 }
 
 - (void)onRuleUpdateCommandResponse:(id)sender{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     NSLog(@"onRuleUpdateCommandResponse ");
-    
     dispatch_async(dispatch_get_main_queue(), ^() {
-        self.rules =[NSMutableArray arrayWithArray:toolkit.ruleList];
-        
         [self.tableView reloadData];
         [self.HUD hide:YES];
         self.tableView.contentOffset = tablePoint;
     });
-    
 }
 
 - (void)removeAddSceneButton{
@@ -140,11 +137,6 @@ CGPoint tablePoint;
         [self.buttonAdd removeFromSuperview];
 }
 
--(void)getRuleList{
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    self.rules = toolkit.ruleList;
-    self.tableView.contentOffset = tablePoint;
-}
 
 - (void)addAddRuleButton{
     if (!self.buttonAdd) {
@@ -176,8 +168,8 @@ CGPoint tablePoint;
     if([self isRuleArrayEmpty]){
         return 1;
     }
-    NSLog(@"row count: %lu", (unsigned long)self.rules.count);
-    return self.rules.count;
+    NSLog(@"row count: %lu", (unsigned long)self.toolkit.ruleList.count);
+    return self.toolkit.ruleList.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -193,12 +185,19 @@ CGPoint tablePoint;
     }
     static NSString *CellIdentifier;
     CellIdentifier = [NSString stringWithFormat:@"Cell%ld",(long)indexPath.row];
-    Rule *rule = self.rules[indexPath.row];
+    
     CustomCellTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CustomCellTableViewCell"];
     if(cell==nil){//check out if this will ever get executed
         cell = [[CustomCellTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CustomCellTableViewCell"];
     }
     
+    
+    if(indexPath.row  > (int)self.toolkit.ruleList.count - 1){
+        NSLog(@"rule list empty");
+        return cell;
+    }
+    
+    Rule *rule = self.toolkit.ruleList[indexPath.row];
     cell.delegate = self;
     cell.ruleNameLabel.text = rule.name;
     [cell.activeDeactiveSwitch setSelected:rule.isActive];
@@ -242,7 +241,7 @@ CGPoint tablePoint;
 
 #pragma mark helper methods
 - (BOOL)isRuleArrayEmpty {
-    return self.rules.count == 0;
+    return self.toolkit.ruleList.count == 0;
 }
 
 - (UITableViewCell *)createEmptyCell:(UITableView *)tableView {
@@ -275,7 +274,7 @@ CGPoint tablePoint;
 #pragma mark custom cell Delegate methods
 - (void)deleteRule:(CustomCellTableViewCell *)cell{
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
-    if(self.rules==nil || self.rules.count==0 || self.rules.count<=indexPath.row)
+    if(self.toolkit.ruleList==nil || self.toolkit.ruleList.count==0 || indexPath.row >= self.toolkit.ruleList.count)
         return;
     [self showHudWithTimeoutMsg:[NSString stringWithFormat:@"Deleting rule %@...",cell.ruleNameLabel.text]];
     NSDictionary *payload = [self getDeleteRulePayload:indexPath.row];
@@ -318,7 +317,7 @@ CGPoint tablePoint;
         return nil;
     }
     NSMutableDictionary *rulePayload = [[NSMutableDictionary alloc]init];
-    Rule *currentRule = self.rules[row];
+    Rule *currentRule = self.toolkit.ruleList[row];
     if(currentRule==nil ||currentRule.ID==nil)
         return nil;
     
@@ -341,8 +340,8 @@ CGPoint tablePoint;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     AddRulesViewController *addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
-    if(self.rules.count > indexPath.row){
-        Rule *rule = [self.rules[indexPath.row] createNew];
+    if(indexPath.row < self.toolkit.ruleList.count){
+        Rule *rule = [self.toolkit.ruleList[indexPath.row] createNew];
         addRuleController.rule = rule;
     }
     addRuleController.isInitialized = YES;
@@ -352,12 +351,12 @@ CGPoint tablePoint;
 
 - (void)activateRule:(CustomCellTableViewCell *)cell{
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
-    if(self.rules==nil || self.rules.count==0 || self.rules.count<=indexPath.row)
+    if(self.toolkit.ruleList==nil || self.toolkit.ruleList.count==0 || indexPath.row >= self.toolkit.ruleList.count)
         return;
     
     NSString *msg = cell.activeDeactiveSwitch.selected? [NSString stringWithFormat:@"Activating rule - %@...",cell.ruleNameLabel.text]: [NSString stringWithFormat:@"Deactivating rule - %@...",cell.ruleNameLabel.text];
     [self showHudWithTimeoutMsg:msg];
-    Rule *rule = self.rules[indexPath.row];
+    Rule *rule = self.toolkit.ruleList[indexPath.row];
     RulePayload *rulePayload = [RulePayload new];
     rulePayload.rule = rule;
     NSDictionary *payload = [rulePayload validateRule:randomMobileInternalIndex valid:cell.activeDeactiveSwitch.selected?@"true":@"false"];
