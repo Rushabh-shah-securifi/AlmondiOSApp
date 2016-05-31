@@ -395,7 +395,7 @@ int mii;
 }
 
 -(NSArray*)getWirelessSettingsSummary{
-    
+    NSLog(@"getWirelessSettingsSummary");
     NSMutableArray *summary = [NSMutableArray array];
     if(self.routerSummary){
         for (SFIWirelessSummary *sum in self.routerSummary.wirelessSummaries) {
@@ -413,7 +413,6 @@ int mii;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     int activeClientsCount = 0;
     int inActiveClientsCount = 0;
-    NSLog(@"sfiroutertableview - clients: %@", toolkit.clients);
     for(Client *client in toolkit.clients){
         if (client.isActive) {
             activeClientsCount++;
@@ -671,10 +670,11 @@ int mii;
                     // do not show settings UI when the connection mode is local;
                     break;
                 }
-                if (self.routerSummary) {
-                    // keep the summary information up to date as settings are changed in the settings controller
-                    [self.routerSummary updateWirelessSummaryWithSettings:settings];
-                }
+//                if (self.routerSummary) {
+//                    // keep the summary information up to date as settings are changed in the settings controller
+//                    [self.routerSummary updateWirelessSummaryWithSettings:settings];
+//                }
+                
                 if (self.navigationController.topViewController == self) {
                     NSLog(@"cloud settings: %@", settings);
                     SFIRouterSettingsTableViewController *ctrl = [SFIRouterSettingsTableViewController new];
