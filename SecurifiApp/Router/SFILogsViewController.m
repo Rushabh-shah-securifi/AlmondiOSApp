@@ -13,7 +13,7 @@
 #import "RouterPayload.h"
 #import "MBProgressHUD.h"
 
-@interface SFILogsViewController ()
+@interface SFILogsViewController ()<MBProgressHUDDelegate>
 @property (nonatomic) UITextField *textField;
 @property (nonatomic) UIView *logView;
 @property NSTimer *hudTimer;
@@ -27,6 +27,12 @@ int mii;
     // Do any additional setup after loading the view.
     [self setUpNavigationBar];
     [self addLogsView];
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.dimBackground = YES;
+    _HUD.delegate = self;
+    [self.navigationController.view addSubview:_HUD];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -115,10 +121,12 @@ int mii;
 }
 
 -(void)onSendLogsPressed:(id)sender{
+   
     if([_textField.text length] < 10){
         [self addValidationLable];
         [self.textField becomeFirstResponder];
     }else{
+        [self showHudWithTimeout:@"Sending logs"];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         [RouterPayload sendLogs:self.textField.text mii:mii isSimulator:toolkit.configuration.isSimulator mac:toolkit.currentAlmond.almondplusMAC];
     }
