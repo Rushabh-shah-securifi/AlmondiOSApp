@@ -202,7 +202,7 @@ static const int xIndent = 10;
             UILabel *valueLabel = [[UILabel alloc]initWithFrame:CGRectMake(view.frame.size.width - 110, 0, 100, 15)];
             [self setUpLable:valueLabel withPropertyName:genericIndexValue.genericValue.displayText];
             valueLabel.textAlignment = NSTextAlignmentRight;
-            valueLabel.alpha = 0.7;
+            valueLabel.alpha = 0.85;
             [view addSubview:valueLabel];
             
             yPos = yPos + view.frame.size.height + LABELSPACING;

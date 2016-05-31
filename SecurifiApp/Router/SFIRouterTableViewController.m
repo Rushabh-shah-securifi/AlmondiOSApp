@@ -689,11 +689,15 @@ int mii;
                 break;
             }
             case SFIGenericRouterCommandType_UPDATE_FIRMWARE_RESPONSE: {
-                unsigned int percentage = genericRouterCommand.completionPercentage;
-                if (percentage > 0) {
-                    NSString *msg = NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.");
-                    msg = [msg stringByAppendingFormat:@" (%i%%)", percentage];
-                    [self showToast:msg];
+                if(genericRouterCommand.commandSuccess == NO){
+                    [self showToast:@"Sorry! Unable to update."];
+                }else{
+                    unsigned int percentage = genericRouterCommand.completionPercentage;
+                    if (percentage > 0) {
+                        NSString *msg = NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.");
+                        msg = [msg stringByAppendingFormat:@" (%i%%)", percentage];
+                        [self showToast:msg];
+                    }
                 }
                 break;
             };

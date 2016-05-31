@@ -27,12 +27,15 @@ int mii;
     // Do any additional setup after loading the view.
     [self setUpNavigationBar];
     [self addLogsView];
+    [self setUpHUD];
+}
+
+-(void)setUpHUD{
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.dimBackground = YES;
     _HUD.delegate = self;
     [self.navigationController.view addSubview:_HUD];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated {

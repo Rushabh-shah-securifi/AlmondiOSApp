@@ -118,9 +118,9 @@
         NSMutableDictionary *wirelessSetting = [NSMutableDictionary new];
         NSLog(@"type: %@", wirelessSettingObj.type);
         [wirelessSetting setValue:wirelessSettingObj.type forKey:@"Type"];
-//        if(isTypeEnable)
+        if(isTypeEnable)
             [wirelessSetting setValue:wirelessSettingObj.enabled?@"true":@"false" forKey:@"Enabled"];
-//        else
+        else
             [wirelessSetting setValue:wirelessSettingObj.ssid forKey:@"SSID"];
         
         [payload setValue:wirelessSetting forKey:@"WirelessSetting"];

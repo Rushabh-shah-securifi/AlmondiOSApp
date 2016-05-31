@@ -44,6 +44,15 @@ int randomMobileInternalIndex;
     [self.resetButton setTitleColor: self.genericParams.color forState:UIControlStateNormal];
     [self.historyButton setTitleColor: self.genericParams.color forState:UIControlStateNormal];
     [self setHeaderCell];
+    [self setUpHUD];
+}
+
+-(void)setUpHUD{
+    _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    _HUD.removeFromSuperViewOnHide = NO;
+    _HUD.dimBackground = YES;
+    _HUD.delegate = self;
+    [self.navigationController.view addSubview:_HUD];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -123,7 +132,7 @@ int randomMobileInternalIndex;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.userInteractionEnabled = YES;
     }else{
-        cell.vsluesLabel.alpha = 0.75;
+        cell.vsluesLabel.alpha = 0.85;
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.userInteractionEnabled = NO;
     }
@@ -177,7 +186,7 @@ int randomMobileInternalIndex;
     client = [client copy];
     NSLog(@"client mac %@, client id %@",client.deviceMAC,client.deviceID);
 //    [self]
-    [self showHudWithTimeoutMsg:[NSString stringWithFormat:@"reseting %@",client.name]];
+    [self showHudWithTimeoutMsg:[NSString stringWithFormat:@"Resetting %@",client.name]];
     if(client.deviceID.length!=0  && client.deviceMAC.length!= 0)
         [ClientPayload resetClientCommand:client.deviceMAC clientID:client.deviceID mii:randomMobileInternalIndex];
 }
@@ -215,7 +224,7 @@ int randomMobileInternalIndex;
 - (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:hudMsg];
-        [self.HUD hide:YES afterDelay:15];
+        [self.HUD hide:YES afterDelay:10];
     });
 }
 - (void)showHUD:(NSString *)text {
