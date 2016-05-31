@@ -47,7 +47,7 @@
     NSLog(@"types %@",self.displayArray);
     self.selectedType = self.genericIndexValue.genericValue.value;
     NSLog(@" self.genericIndexValue.genericValue.value %@",self.genericIndexValue.genericValue.value);
-    self.tableType = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height - 100)];
+    self.tableType = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height - 110)];
     [self.tableType setDataSource:self];
     [self.tableType setDelegate:self];
     self.tableType.separatorStyle = UITableViewCellSeparatorStyleNone;

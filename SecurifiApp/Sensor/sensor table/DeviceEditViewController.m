@@ -104,7 +104,6 @@ static const int xIndent = 10;
         [self drawIndexes];
     });
     self.isLocal = [self.toolkit useLocalNetwork:[self.toolkit currentAlmond].almondplusMAC];
-    self.navigationItem.titleView = nil;
 }
 
 - (void)didReceiveMemoryWarning {

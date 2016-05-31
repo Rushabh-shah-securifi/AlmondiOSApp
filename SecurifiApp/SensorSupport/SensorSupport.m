@@ -38,7 +38,7 @@
 }
 
 - (UIImage *)notificationImage {
-    NSString *const defaultIconName = @"n_default_device";
+    NSString *const defaultIconName = @"default_device";
 
     if (self.valueSupport == nil) {
         return [self imageNamed:defaultIconName];

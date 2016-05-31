@@ -42,6 +42,7 @@ int randomMobileInternalIndex;
     self.clientPropertiesTable.backgroundColor = self.genericParams.color;
     self.resetView.backgroundColor = self.genericParams.color;
     [self.resetButton setTitleColor: self.genericParams.color forState:UIControlStateNormal];
+    [self.historyButton setTitleColor: self.genericParams.color forState:UIControlStateNormal];
     [self setHeaderCell];
 }
 

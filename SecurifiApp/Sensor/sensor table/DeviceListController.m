@@ -632,7 +632,7 @@ int mii;
         }
         SFIAlmondPlus *obj = (SFIAlmondPlus *) [data valueForKey:@"data"];
         if ([self isSameAsCurrentMAC:obj.almondplusMAC]) {
-            self.navigationItem.title = obj.almondplusName;
+            [self markTitle:obj.almondplusName];
         }
     });
 }

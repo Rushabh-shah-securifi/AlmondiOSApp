@@ -40,7 +40,7 @@
 
 static const int networkingHeight = 100;
 static const int clientsHeight = 100;
-static const int settingsHeight = 100;
+static const int settingsHeight = 120;
 static const int versionHeight = 110;
 static const int rebootHeight = 110;
 static const int logsHeight = 100;
