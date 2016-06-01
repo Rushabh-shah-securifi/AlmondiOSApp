@@ -116,6 +116,7 @@
         [payload setValue:almondMac forKey:@"AlmondMAC"];
         
         NSMutableDictionary *wirelessSetting = [NSMutableDictionary new];
+        NSLog(@"type: %@", wirelessSettingObj.type);
         [wirelessSetting setValue:wirelessSettingObj.type forKey:@"Type"];
         if(isTypeEnable)
             [wirelessSetting setValue:wirelessSettingObj.enabled?@"true":@"false" forKey:@"Enabled"];

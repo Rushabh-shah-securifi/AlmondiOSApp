@@ -28,7 +28,7 @@
 -(void)setupLabel{
     self.labelName = [[UILabel alloc]initWithFrame:CGRectMake(10, 5, 100, 20)];
     self.labelName.textColor = [UIColor whiteColor];
-    self.labelName.font = [UIFont securifiFont:14];
+    self.labelName.font = [UIFont securifiFont:16];
     NSLog(@"cell frame width: %f", self.frame.size.width);
     self.btnSelect = [[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width - 40, 5, 25 , 25)];
     self.btnSelect.layer.borderColor = [[UIColor whiteColor] CGColor];

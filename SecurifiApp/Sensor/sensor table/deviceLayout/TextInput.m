@@ -62,9 +62,10 @@
 }
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
     
-    UIImageView *textCheckMarkView = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width - self.frame.size.height , 10, self.frame.size.height -10, self.frame.size.height -13)];
+    UIImageView *textCheckMarkView = [[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width - self.frame.size.height , 0, self.frame.size.height -10, self.frame.size.height -10)];
+    NSLog(@"frame width: %f, frame height: %f", self.frame.size.width, self.frame.size.height);
     textCheckMarkView.image = [UIImage imageNamed:@"iconSceneChekmark"];
-
+    
     UIButton *btnCloseNotification = [UIButton buttonWithType:UIButtonTypeCustom];
     btnCloseNotification.frame = CGRectMake(self.frame.size.width - self.frame.size.height - 20, 0, 60, 35);
     btnCloseNotification.backgroundColor = [UIColor clearColor];
