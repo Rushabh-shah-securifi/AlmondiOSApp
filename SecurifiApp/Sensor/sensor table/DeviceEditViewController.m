@@ -139,13 +139,13 @@ static const int xIndent = 10;
                    name:kSFINotificationPreferencesListDidChange
                  object:nil];
     
-    [center addObserver:self //client notification response 1525
+    [center addObserver:self //mobile response 1525 - client notification
                selector:@selector(onClientPreferenceUpdateResponse:)
                    name:NOTIFICATION_WIFI_CLIENT_UPDATE_PREFERENCE_REQUEST_NOTIFIER
                  object:nil];
     
     [center addObserver:self
-               selector:@selector(onDynamicClientPreferenceUpdate:)
+               selector:@selector(onDynamicClientPreferenceUpdate:) //dynamic 93 - need to put in device parser/ client parser
                    name:NOTIFICATION_WIFI_CLIENT_PREFERENCE_DYNAMIC_UPDATE_NOTIFIER
                  object:nil];
     
