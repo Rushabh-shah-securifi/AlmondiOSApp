@@ -81,11 +81,7 @@ int mii;
 }
 
 - (void)viewDidLoad {
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SecurifiConfigurator *configurator = toolkit.configuration;
-    self.isSimulator = configurator.isSimulator;
-    self.local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
-    
+    self.isSimulator = NO;
     [super viewDidLoad];
     
     self.tableView.separatorColor = [UIColor clearColor];
@@ -99,8 +95,11 @@ int mii;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     mii = arc4random() % 10000;
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    
     [self initializeNotifications];
     [self initializeAlmondData];
+    self.local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.tableView reloadData];
     });
@@ -147,17 +146,18 @@ int mii;
         [self markTitle:plus.almondplusName];
     }
     
-    if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud) {
-        if (!self.shownHudOnce) {
-            self.shownHudOnce = YES;
-            [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
-        }
-    }
-    
+//    if (self.currentConnectionMode == SFIAlmondConnectionMode_cloud) {
+//        if (!self.shownHudOnce) {
+//            self.shownHudOnce = YES;
+//            [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
+//        }
+//    }
+    [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
     // Reset New Version checking state and view
     self.newAlmondFirmwareVersionAvailable = NO;
     self.tableView.tableHeaderView = nil;
     
+    NSLog(@"connecton - is local: %d", self.local);
     if(!self.local)
         [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
 }
