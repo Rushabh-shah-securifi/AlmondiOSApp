@@ -1515,7 +1515,23 @@
             break;
         }
             
-        case SFIDeviceType_ColorControl_29:
+        case SFIDeviceType_ColorControl_29:{
+            if (type == SFIDevicePropertyType_TEMPERATURE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"0";
+                s1.layoutType=@"dimButton";
+                s1.iconName = @"thermostat";
+                s1.displayText=@"TEMPERATURE";
+                s1.minValue = 0;
+                s1.maxValue = 100;
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature changed to ", @"'s temperature changed to ");
+                s1.valueFormatter.suffix = NSLocalizedString(@"\u00B0F", @"\u00B0F");
+                
+                return @[s1];
+            }
+        }
             break;
         case SFIDeviceType_PressureSensor_30:
             break;
