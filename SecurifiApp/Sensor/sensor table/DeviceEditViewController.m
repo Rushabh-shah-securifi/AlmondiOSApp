@@ -144,10 +144,7 @@ static const int xIndent = 10;
                    name:NOTIFICATION_WIFI_CLIENT_UPDATE_PREFERENCE_REQUEST_NOTIFIER
                  object:nil];
     
-    [center addObserver:self
-               selector:@selector(onDynamicClientPreferenceUpdate:) //dynamic 93 - need to put in device parser/ client parser
-                   name:NOTIFICATION_WIFI_CLIENT_PREFERENCE_DYNAMIC_UPDATE_NOTIFIER
-                 object:nil];
+    
     
     [center addObserver:self
                selector:@selector(onKeyboardDidShow:)
@@ -522,6 +519,7 @@ static const int xIndent = 10;
     else{
         if(isSuccessful == NO){
             dispatch_async(dispatch_get_main_queue(), ^{
+                [self showToast:[NSString stringWithFormat:@"Sorry, Could not update."]];
                 [self.navigationController popToRootViewControllerAnimated:YES];
             });
         }
@@ -683,31 +681,21 @@ static const int xIndent = 10;
 
 -(void)onClientPreferenceUpdateResponse:(id)sender{//client individual 1525
     NSLog(@"device edit - onClientPreferenceUpdateResponse");
-    //doing nothing currently, only handling dynamic response
-}
-
-- (void)onDynamicClientPreferenceUpdate:(id)sender {//client individual dynamic 93
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
         return;
     }
     NSDictionary * mainDict = [[data valueForKey:@"data"] objectFromJSONData];
-    NSLog(@"client preferecne: %@", mainDict);
-    
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondPlus *plus = [toolkit currentAlmond];
-    NSString *aMac = [mainDict valueForKey:@"AlmondMAC"];
-    int clientID = [mainDict[@"ClientID"] intValue];
-    if(![aMac isEqualToString:plus.almondplusMAC])
+    if ([[mainDict valueForKey:@"MobileInternalIndex"] integerValue]!=mii) {
         return;
-    
-    if ([mainDict[@"CommandType"] isEqualToString:@"UpdatePreference"] && (clientID == self.genericParams.headerGenericIndexValue.deviceID)) {
-        Client *client = [Client findClientByID:@(clientID).stringValue];
-        client.notificationMode = [mainDict[@"NotificationType"] intValue];
+    }
+    if ([[mainDict valueForKey:@"Success"] isEqualToString:@"false"]) {
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.navigationController popToRootViewControllerAnimated:YES];
+            [self showToast:[NSString stringWithFormat:@"Sorry, Could not update."]];
+            [self.navigationController popViewControllerAnimated:YES];
         });
+        return;
     }
 }
 
@@ -726,14 +714,14 @@ static const int xIndent = 10;
             return;
         }
         NSDictionary *payload = dataInfo[@"data"];
-        //        NSString *commandType = valueForKey:COMMAND_TYPE]
-        NSDictionary *clientPayload = payload[CLIENTS];
-        if(clientPayload == nil){//to handle removeall, I could have check command type aswell
+        NSString *commandType = payload[COMMAND_TYPE];
+        if([commandType isEqualToString:@"DynamicAllClientsRemoved"] || [commandType isEqualToString:@"UpdatePreference"]){
             dispatch_async(dispatch_get_main_queue(), ^(){
                 [self.navigationController popToRootViewControllerAnimated:YES];
             });
         }
         else{ //checking if response is of only that particular client, only then pop
+            NSDictionary *clientPayload = payload[CLIENTS];
             NSString *clientID = clientPayload.allKeys.firstObject;
             if([clientID intValue] == self.genericParams.headerGenericIndexValue.deviceID){
                 dispatch_async(dispatch_get_main_queue(), ^(){
@@ -742,7 +730,6 @@ static const int xIndent = 10;
             }
         }
     }
-    
-    
 }
+
 @end
