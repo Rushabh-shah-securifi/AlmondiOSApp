@@ -151,7 +151,6 @@
     else {
         brightness = (self.brightness - 60) + ((positionIndex - 5) * 10);
     }
-    NSLog(@"brightnes: %d", brightness);
     return [self colorWithBrightness:brightness];
 }
 

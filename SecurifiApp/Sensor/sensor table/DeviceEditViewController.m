@@ -143,9 +143,7 @@ static const int xIndent = 10;
                selector:@selector(onClientPreferenceUpdateResponse:)
                    name:NOTIFICATION_WIFI_CLIENT_UPDATE_PREFERENCE_REQUEST_NOTIFIER
                  object:nil];
-    
-    
-    
+ 
     [center addObserver:self
                selector:@selector(onKeyboardDidShow:)
                    name:UIKeyboardDidShowNotification
