@@ -201,15 +201,16 @@ int randomMobileInternalIndex;
         return;
     }
     NSDictionary *payload = dataInfo[@"data"];
-    NSDictionary *clientPayload = payload[CLIENTS];
     [self.HUD hide:YES];
-    if(clientPayload == nil){//to handle removeall
-        
+    
+    NSString *commandType = payload[COMMAND_TYPE];
+    if([commandType isEqualToString:@"DynamicAllClientsRemoved"] || [commandType isEqualToString:@"UpdatePreference"]){
         dispatch_async(dispatch_get_main_queue(), ^(){
             [self.navigationController popToRootViewControllerAnimated:YES];
         });
     }
     else{
+        NSDictionary *clientPayload = payload[CLIENTS];
         NSString *clientID = clientPayload.allKeys.firstObject;
         if([clientID intValue] == self.genericParams.headerGenericIndexValue.deviceID){
             dispatch_async(dispatch_get_main_queue(), ^(){

@@ -40,7 +40,8 @@
     //    SFISlider *slider_brightness = [self sliderForDevicePropertyType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
     
     SFIHuePickerView *hue_picker = (SFIHuePickerView *) picker;
-     NSString *sensor_value = @([hue_picker convertToSensorValue]).stringValue;
+    float sensorValue = [hue_picker convertToSensorValue];
+    NSString *sensor_value = [NSString stringWithFormat:@"%d", (int) sensorValue];
     [self.delegate save:sensor_value forGenericIndexValue:_genericIndexValue currentView:self];
     
     //    [self processColorTintChange:slider_brightness saturationSlider:slider_saturation huePicker:hue_picker];

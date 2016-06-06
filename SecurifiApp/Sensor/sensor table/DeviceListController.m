@@ -84,7 +84,6 @@ int mii;
         [self markTitle:self.toolkit.currentAlmond.almondplusName];
         [self markAlmondMac:self.toolkit.currentAlmond.almondplusMAC];
     }
-    NSLog(@"devices: %@", self.toolkit.devices);
 }
 
 -(void)initializeAlmondData{
@@ -220,8 +219,8 @@ int mii;
     if ([self isNoAlmondMAC] || ([self isDeviceListEmpty] && [self isClientListEmpty]))
         return 1;
     
-    NSLog(@"self.devices.count %ld",(unsigned long)self.toolkit.devices.count);
-    return (section == 0) ? self.toolkit.devices.count:self.toolkit.clients.count;
+    NSLog(@"devices count %ld, client count: %ld",(unsigned long)self.toolkit.devices.count, (unsigned long)self.toolkit.clients.count);
+    return (section == 0) ? self.toolkit.devices.count: self.toolkit.clients.count;
     
 }
 
@@ -325,7 +324,7 @@ int mii;
     else
     {
         if(indexPath.row  > (int)self.toolkit.clients.count - 1){
-            NSLog(@"device removed");
+            NSLog(@"client removed");
             return cell;
         }
         Client *client = [self.toolkit.clients objectAtIndex:indexPath.row];

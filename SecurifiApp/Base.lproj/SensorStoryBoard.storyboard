@@ -118,11 +118,11 @@
                                 <rect key="frame" x="8" y="513" width="304" height="47"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JY5-iM-Qv5">
-                                        <rect key="frame" x="219" y="8" width="80" height="30"/>
+                                        <rect key="frame" x="212" y="8" width="80" height="30"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="80" id="Pzo-bJ-eh3"/>
-                                            <constraint firstAttribute="height" constant="30" id="yuA-ar-Lly"/>
+                                            <constraint firstAttribute="height" constant="30" id="C9m-hD-BqG"/>
+                                            <constraint firstAttribute="width" constant="80" id="bYe-cP-hEW"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="15"/>
                                         <state key="normal" title="Reset">
@@ -148,8 +148,8 @@
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="47" id="6ui-L1-Bjo"/>
-                                    <constraint firstItem="JY5-iM-Qv5" firstAttribute="top" secondItem="22Y-vq-zpI" secondAttribute="top" constant="8" id="P5R-gi-DGZ"/>
-                                    <constraint firstItem="JY5-iM-Qv5" firstAttribute="centerX" secondItem="22Y-vq-zpI" secondAttribute="centerX" constant="107" id="aaH-MA-b8s"/>
+                                    <constraint firstAttribute="trailing" secondItem="JY5-iM-Qv5" secondAttribute="trailing" constant="12" id="UZD-Z8-dby"/>
+                                    <constraint firstItem="JY5-iM-Qv5" firstAttribute="top" secondItem="22Y-vq-zpI" secondAttribute="top" constant="8" id="fRE-Xf-Wzk"/>
                                     <constraint firstItem="ZKU-PV-MZv" firstAttribute="top" secondItem="22Y-vq-zpI" secondAttribute="top" constant="8" id="lh8-bs-r03"/>
                                     <constraint firstItem="ZKU-PV-MZv" firstAttribute="leading" secondItem="22Y-vq-zpI" secondAttribute="leading" constant="12" id="p05-sO-3qT"/>
                                 </constraints>

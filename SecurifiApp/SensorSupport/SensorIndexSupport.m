@@ -1515,7 +1515,23 @@
             break;
         }
             
-        case SFIDeviceType_ColorControl_29:
+        case SFIDeviceType_ColorControl_29:{
+            if (type == SFIDevicePropertyType_TEMPERATURE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_any;
+                s1.matchData = @"0";
+                s1.layoutType=@"dimButton";
+                s1.iconName = @"thermostat";
+                s1.displayText=@"TEMPERATURE";
+                s1.minValue = 0;
+                s1.maxValue = 100;
+                s1.valueFormatter.action = ValueFormatterAction_formatString;
+                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s temperature changed to ", @"'s temperature changed to ");
+                s1.valueFormatter.suffix = NSLocalizedString(@"\u00B0F", @"\u00B0F");
+                
+                return @[s1];
+            }
+        }
             break;
         case SFIDeviceType_PressureSensor_30:
             break;
@@ -3238,19 +3254,19 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_equals;
                 s1.matchData = @"warning";
-                s1.iconName = @"nest_thermostat";
+                s1.iconName = @"icon_tampered_yellow";
                 s1.notificationText = @": CO Warning";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchType = MatchType_equals;
                 s2.matchData = @"emergency";
-                s2.iconName = @"nest_thermostat";
+                s2.iconName = @"icon_tampered_red";
                 s2.notificationText = @": CO Emergency";
                 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchType = MatchType_equals;
                 s3.matchData = @"ok";
-                s3.iconName = @"nest_thermostat";
+                s3.iconName = @"nest_protect_icon";
                 s3.notificationText = @" CO is not detected";
                 
                 
@@ -3261,19 +3277,19 @@
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_equals;
                 s1.matchData = @"warning";
-                s1.iconName = @"nest_thermostat";
+                s1.iconName = @"icon_tampered_yellow";
                 s1.notificationText = @": Smoke Warning";
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchType = MatchType_equals;
                 s2.matchData = @"emergency";
-                s2.iconName = @"nest_thermostat";
+                s2.iconName = @"icon_tampered_red";
                 s2.notificationText = @": Smoke Emergency";
                 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchType = MatchType_equals;
                 s3.matchData = @"ok";
-                s3.iconName = @"nest_thermostat";
+                s3.iconName = @"nest_protect_icon";
                 s3.notificationText = @" Smoke is not detected";
                 
                 return @[s1, s2, s3];

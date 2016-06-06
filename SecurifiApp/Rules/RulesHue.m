@@ -407,6 +407,19 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     for(SFIButtonSubProperties *buttonsubProperty in self.triggers){
         if(buttonsubProperty.deviceType == SFIDeviceType_HueLamp_48 && [indexSwitchButton.subProperties.matchData isEqualToString:@"false"] && indexSwitchButton.subProperties.index == 2)
             if(indexSwitchButton.subProperties.deviceId == buttonsubProperty.deviceId && buttonsubProperty.deviceType == SFIDeviceType_HueLamp_48 && (buttonsubProperty.index == 5 || buttonsubProperty.index == 3 || buttonsubProperty.index == 4)){
+                if(buttonsubProperty.index == 3){
+                    [hueColorPickupLabelView setSelected:NO];
+                    [huePickerView setConvertedValue:0];
+                    huePickerView.subProperties.matchData = @"0";
+                }else if(buttonsubProperty.index == 4){
+                    [saturationSliderLabelView setSelected:NO];
+                    [saturationSlider setConvertedValue:0];
+                    saturationSlider.subProperties.matchData = @"0";
+                }else if(buttonsubProperty.index == 5){
+                    [brightnessSliderLabelView setSelected:NO];
+                    [brightnessSlider setConvertedValue:0];
+                    brightnessSlider.subProperties.matchData = @"0";
+                }
                 [tobeDeleted addObject:buttonsubProperty];
             }
     }
@@ -509,14 +522,16 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     int sliderIndex = brightnessSlider.subProperties.index;
     
     if(self.isScene){
-        if([ self isOffIndexPresent:sliderId])
+        if([self isOffIndexPresent:sliderId])
             return;
         [brightnessSliderLabelView setSelected:!sender.selected];
         [self deleteFromTriggersArrayForID:sliderId index:sliderIndex];
         if(sender.selected)
             [self.triggers addObject:brightnessSlider.subProperties];
-        else
+        else{
+            brightnessSlider.subProperties.matchData = @"0";
             [brightnessSlider setConvertedValue:0];
+        }
     }else{
         [brightnessSliderLabelView setSelected:YES];
         
@@ -546,8 +561,11 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
         [self deleteFromTriggersArrayForID:sliderId index:sliderIndex];
         if(sender.selected)
             [self.triggers addObject:saturationSlider.subProperties];
-        else
+        else{
+            saturationSlider.subProperties.matchData = @"0";
             [saturationSlider setConvertedValue:0];
+        }
+        
     }else{
         [saturationSliderLabelView setSelected:YES];
         
@@ -581,8 +599,11 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
         [self deleteFromTriggersArrayForID:pickerId index:pickerIndex];
         if(sender.selected)
             [self.triggers addObject:huePickerView.subProperties];
-        else
+        else{
             [huePickerView setConvertedValue:0];
+            huePickerView.subProperties.matchData = @"0";
+        }
+        
     }else{
         [hueColorPickupLabelView setSelected:YES]; //will change color aswell
         //getting current value of hue

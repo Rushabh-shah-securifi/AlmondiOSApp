@@ -52,21 +52,21 @@
 }
 
 -(void)initialize:(GenericParams*)genericParams cellType:(CellType)cellType{
-    NSLog(@"headerview - initialize");
+    //NSLog(@"headerview - initialize");
     self.genericParams = genericParams;
     self.cellType = cellType;
     [self setUpDeviceCell];
 }
 
 -(void)setUpDeviceCell{
-    NSLog(@"setUPSensorCell");
+    //NSLog(@"setUPSensorCell");
     self.view.backgroundColor = _genericParams.color;
     self.deviceName.text = self.genericParams.deviceName;
     self.settingButton.alpha = 1;
     [self setTamper];
     
     
-    NSLog(@"device id %d, Icon text %@, icon: %@, index id %@, placement %@",_genericParams.headerGenericIndexValue.deviceID,_genericParams.headerGenericIndexValue.genericValue.iconText,_genericParams.headerGenericIndexValue.genericValue.icon,_genericParams.headerGenericIndexValue.genericIndex.ID,_genericParams.headerGenericIndexValue.genericIndex.placement);
+    //NSLog(@"device id %d, Icon text %@, icon: %@, index id %@, placement %@",_genericParams.headerGenericIndexValue.deviceID,_genericParams.headerGenericIndexValue.genericValue.iconText,_genericParams.headerGenericIndexValue.genericValue.icon,_genericParams.headerGenericIndexValue.genericIndex.ID,_genericParams.headerGenericIndexValue.genericIndex.placement);
     int deviceType = [Device getTypeForID:_genericParams.headerGenericIndexValue.deviceID];
     int deviceID = _genericParams.headerGenericIndexValue.deviceID;
 
@@ -156,7 +156,7 @@
     NSString *smokeAlarm = [Device getValueForIndex:4 deviceID:deviceID];
     NSString *batteryStat = [Device getValueForIndex:2 deviceID:deviceID];
     
-    NSLog(@"coalarm: %@, smoke: %@", coAlarm, smokeAlarm);
+    //NSLog(@"coalarm: %@, smoke: %@", coAlarm, smokeAlarm);
     if([coAlarm isEqualToString:smokeAlarm]){
         status = [coAlarm isEqualToString:@"ok"]? @"OK": [NSString stringWithFormat:@"%@ %@", @"SMOKE & CO", coAlarm.uppercaseString];
     }else{
@@ -201,7 +201,7 @@
     int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
     if(self.cellType == SensorTable_Cell){
         genericIndexValues = [GenericIndexUtil getDetailListForDevice:deviceID];
-        NSLog(@"gvalues: %@", genericIndexValues);
+        //NSLog(@"gvalues: %@", genericIndexValues);
         if([Device getTypeForID:deviceID] == SFIDeviceType_NestThermostat_57){
             genericIndexValues = [RulesNestThermostat handleNestThermostatForSensor:deviceID genericIndexValues:genericIndexValues];
         }
@@ -223,7 +223,7 @@
     
 }
 - (IBAction)onSensorButtonClicked:(id)sender {
-    NSLog(@"onSensorButtonClicked");
+    //NSLog(@"onSensorButtonClicked");
     if(self.cellType == SensorTable_Cell || self.cellType == SensorEdit_Cell){
         //to do change image to load
         [self reloadIconImage];
@@ -243,7 +243,7 @@
     
     for(GenericIndexValue *genericIndexValue in genericIndexValues){
         GenericIndexClass *genericIndexObj = genericIndexValue.genericIndex;
-        NSLog(@"genericIndexObj ID %@ ",genericIndexObj.ID);
+        //NSLog(@"genericIndexObj ID %@ ",genericIndexObj.ID);
         if([genericIndexObj.ID isEqualToString:@"9"]){//battery
             if ([genericIndexValue.genericValue.value isEqualToString:@"true"]){
                 self.tamperedImgView.hidden = NO;
