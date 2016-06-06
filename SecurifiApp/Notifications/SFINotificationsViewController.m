@@ -43,7 +43,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-
+    //NSLog(@"NotificationsViewController - ViewDidLoad");
     _store = [self pickNotificationStore];
 
     [self resetBucketsAndNotifications];
