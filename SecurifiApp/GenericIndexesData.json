@@ -319,214 +319,233 @@
     },
     "-33": {
         "Name": "TwilightTime",
-        "Type": "Actuator",
+        "Type": "Sensor",
         "Layout": "MULTI_BUTTON",
-        "AppLabel": "twilight_time",
-        "DefaultIcon": "weather_white",
+        "AppLabel": "twilightTime",
+        "DefaultIcon": "sunrise_icon",
         "Values": {
             "SunRiseTime": {
-                "Icon": "weather_white",
-                "AppLabel": "SunRiseTime",
+                "Icon": "sunrise_icon",
+                "AppLabel": "sunRiseTime",
                 "Label": "SunRiseTime"
             },
             "SunSetTime": {
-                "Icon": "weather_white",
-                "AppLabel": "SunSetTime",
+                "Icon": "sunset_icon",
+                "AppLabel": "sunSetTime",
                 "Label": "SunSetTime"
             }
         }
     },
     "-34": {
         "Name": "WeatherCondition",
-        "Type": "Actuator",
-        "Layout": "TEXT_VIEW_ONLY",
-        "AppLabel": "Weather",
-        "DefaultIcon": "weather_white",
+        "Type": "Sensor",
+        "Layout": "LIST",
+        "AppLabel": "weather",
+        "DefaultIcon": "condition_icon",
         "Values": {
             "chancerain": {
-                "Icon": "weather_white",
+                "Icon": "chane_of_rain",
                 "AppLabel": "chancerain",
                 "Label": "Weather"
             },
             "rain": {
-                "Icon": "weather_white",
+                "Icon": "raining",
                 "AppLabel": "rain",
                 "Label": "Weather"
             },
             "clear": {
-                "Icon": "weather_white",
+                "Icon": "clear_sky",
                 "AppLabel": "clear",
                 "Label": "Weather"
             },
             "cloudy": {
-                "Icon": "weather_white",
+                "Icon": "cloudy",
                 "AppLabel": "cloudy",
                 "Label": "Weather"
             },
             "tstorms": {
-                "Icon": "weather_white",
+                "Icon": "thunder_storms",
                 "AppLabel": "tstorms",
                 "Label": "Weather"
             },
             "chancesnow": {
-                "Icon": "weather_white",
+                "Icon": "chance_of_snow",
                 "AppLabel": "chancesnow",
                 "Label": "Weather"
             },
+            "chanceflurries":{
+                "AppLabel":"chanceflurries",
+                "Label": "Chance of Flurries",
+                "Icon": "chance_of_flurries"
+            },
             "chancesleet": {
-                "Icon": "weather_white",
+                "Icon": "chance_of_sleet",
                 "AppLabel": "chancesleet",
                 "Label": "Weather"
             },
             "chancetstorms": {
-                "Icon": "weather_white",
+                "Icon": "chance_of_storms",
                 "AppLabel": "chancetstorms",
                 "Label": "Weather"
             },
             "flurries": {
-                "Icon": "weather_white",
+                "Icon": "flurries",
                 "AppLabel": "flurries",
                 "Label": "Weather"
             },
             "fog": {
-                "Icon": "weather_white",
+                "Icon": "fog",
                 "AppLabel": "fog",
                 "Label": "Weather"
             },
             "hazy": {
-                "Icon": "weather_white",
+                "Icon": "hazy",
                 "AppLabel": "hazy",
                 "Label": "Weather"
             },
             "mostlycloudy": {
-                "Icon": "weather_white",
+                "Icon": "mostly_cloudy",
                 "AppLabel": "mostlycloudy",
                 "Label": "Weather"
             },
             "mostlysunny": {
-                "Icon": "mostlysunny",
-                "AppLabel": "hazy",
+                "Icon": "mostly_sunny",
+                "AppLabel": "mostlysunny",
                 "Label": "Weather"
             },
             "nt_chanceflurries": {
-                "Icon": "weather_white",
+                "Icon": "nt_chane_of_flurries",
                 "AppLabel": "nt_chanceflurries",
                 "Label": "Weather"
             },
             "nt_chancerain": {
-                "Icon": "weather_white",
+                "Icon": "nt_chance_of_rain",
                 "AppLabel": "nt_chancerain",
                 "Label": "Weather"
             },
             "nt_chancesleet": {
-                "Icon": "weather_white",
+                "Icon": "nt_chance_of_sleet",
                 "AppLabel": "nt_chancesleet",
                 "Label": "Weather"
             },
             "nt_chancesnow": {
-                "Icon": "weather_white",
+                "Icon": "nt_chance_of_snow",
                 "AppLabel": "nt_chancesnow",
                 "Label": "Weather"
             },
             "nt_chancetstorms": {
-                "Icon": "weather_white",
+                "Icon": "nt_chance_of_storms",
                 "AppLabel": "nt_chancetstorms",
                 "Label": "Weather"
             },
             "nt_clear": {
-                "Icon": "weather_white",
+                "Icon": "nt_clear_sky",
                 "AppLabel": "nt_clear",
                 "Label": "Weather"
             },
             "nt_cloudy": {
-                "Icon": "weather_white",
+                "Icon": "nt_cloudy",
                 "AppLabel": "nt_cloudy",
                 "Label": "Weather"
             },
             "nt_flurries": {
-                "Icon": "weather_white",
+                "Icon": "nt_flurries",
                 "AppLabel": "nt_flurries",
                 "Label": "Weather"
             },
             "nt_fog": {
-                "Icon": "weather_white",
+                "Icon": "nt_fog",
                 "AppLabel": "nt_fog",
                 "Label": "Weather"
             },
             "nt_hazy": {
-                "Icon": "weather_white",
+                "Icon": "nt_hazy",
                 "AppLabel": "nt_hazy",
                 "Label": "Weather"
             },
             "nt_mostlycloudy": {
-                "Icon": "weather_white",
+                "Icon": "nt_mostly_cloudy",
                 "AppLabel": "nt_mostlycloudy",
                 "Label": "Weather"
             },
             "nt_mostlysunny": {
-                "Icon": "weather_white",
+                "Icon": "nt_mostly_moony",
                 "AppLabel": "nt_mostlysunny",
                 "Label": "Weather"
             },
             "nt_partlycloudy": {
-                "Icon": "weather_white",
+                "Icon": "nt_partly_cloudy",
                 "AppLabel": "nt_partlycloudy",
                 "Label": "Weather"
             },
             "nt_partlysunny": {
-                "Icon": "weather_white",
+                "Icon": "nt_partly_moony",
                 "AppLabel": "nt_partlysunny",
                 "Label": "Weather"
             },
             "nt_rain": {
-                "Icon": "weather_white",
+                "Icon": "nt_rain",
                 "AppLabel": "nt_rain",
                 "Label": "Weather"
             },
             "nt_sleet": {
-                "Icon": "weather_white",
+                "Icon": "nt_sleet",
                 "AppLabel": "nt_sleet",
                 "Label": "Weather"
             },
             "nt_snow": {
-                "Icon": "weather_white",
+                "Icon": "nt_snow",
                 "AppLabel": "nt_snow",
                 "Label": "Weather"
             },
             "nt_sunny": {
-                "Icon": "weather_white",
+                "Icon": "nt_moony",
                 "AppLabel": "nt_sunny",
                 "Label": "Weather"
             },
             "nt_tstorms": {
-                "Icon": "weather_white",
+                "Icon": "nt_thunder_storms",
                 "AppLabel": "nt_tstorms",
                 "Label": "Weather"
             },
             "partlycloudy": {
-                "Icon": "weather_white",
+                "Icon": "partly_cloudy",
                 "AppLabel": "partlycloudy",
                 "Label": "Weather"
             },
             "sleet": {
-                "Icon": "weather_white",
+                "Icon": "sleet",
                 "AppLabel": "sleet",
                 "Label": "Weather"
             },
             "partlysunny": {
-                "Icon": "weather_white",
+                "Icon": "partly_sunny",
                 "AppLabel": "partlysunny",
                 "Label": "Weather"
             },
             "snow": {
-                "Icon": "weather_white",
+                "Icon": "snowing",
                 "AppLabel": "snow",
                 "Label": "Weather"
             },
             "sunny": {
-                "Icon": "weather_white",
+                "Icon": "sunny",
                 "AppLabel": "sunny",
                 "Label": "Weather"
+            }
+        }
+    },
+    "-35":{
+        "Name": "WeatherCondition",
+        "Type": "Sensor",
+        "Layout": "LIST",
+        "AppLabel": "sunnycondition",
+        "DefaultIcon": "condition_icon",
+        "Values": {
+            "condition": {
+                "Icon": "condition_icon",
+                "AppLabel": "sunnycondition",
+                "Label": "Condition"
             }
         }
     },

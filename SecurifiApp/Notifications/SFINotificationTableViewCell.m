@@ -121,7 +121,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     SFINotification *notification = self.notification;
     _sensorSupport = [SensorSupport new];
     [_sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
-    
+    //NSLog(@"Notification - Name: %@, type: %d", notification.deviceName, notification.deviceType);
     [self setDateLabelText:notification];
     [self setIcon];
     [self setMessageLabelText:notification];
@@ -197,6 +197,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
 }
 
 - (void)setMessageLabelText:(SFINotification *)notification {
+    //NSLog(@"Notification: %@", notification);
     if (notification == nil) {
         self.messageTextField.attributedText = [[NSAttributedString alloc] initWithString:@""];
         return;
@@ -213,6 +214,7 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
         NSString *deviceName = notification.deviceName;
     //md01<<<
     if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
+        //NSLog(@"client device name: %@", self.notification.deviceName);
         NSArray * properties = [self.notification.deviceName componentsSeparatedByString:@"|"];
         deviceName = properties[0];
     }
@@ -236,12 +238,13 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     switch (self.debugMessageMode) {
         case SFINotificationTableViewCellDebugMode_normal: {
             message = self.sensorSupport.notificationText;
+            
             //md01<<<
             
             if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
                 NSArray * properties = [self.notification.deviceName componentsSeparatedByString:@"|"];
                 message = properties[3];
-                
+                //NSLog(@"notification msg: %@", message);
                 NSRange nameRangeInMessage = [message rangeOfString:deviceName];
                 if (nameRangeInMessage.location != NSNotFound) {
                     mutableAttributedString = [[NSMutableAttributedString alloc] initWithString:message attributes:attr];
