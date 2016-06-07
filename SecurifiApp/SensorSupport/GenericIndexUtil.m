@@ -244,6 +244,8 @@
     if(!client.canBeBlocked){
         [clientGenericIndexes removeObjectsInArray:@[@-19, @-22]];
     }
+    if([client.deviceConnection isEqualToString:@"wired"])
+        [clientGenericIndexes removeObjectsInArray:@[@-20]];
     return clientGenericIndexes;
 }
 
