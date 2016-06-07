@@ -215,8 +215,11 @@ NSString *blockedType;
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     //You may want to create a divider to scale the size by the way..
-    float itemSize = self.collectionView.bounds.size.width/10;
+    NSLog(@"collection view size %@ screenSize %@",NSStringFromCGRect(self.collectionView.frame),NSStringFromCGRect([[UIScreen mainScreen] bounds]));
+    
+    float itemSize = 27.9000;
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, 26*itemSize + 26*ITEM_SPACING + 230);
+     NSLog(@"scrollview view size %@ itemsize %f",NSStringFromCGRect(self.scrollView.frame),itemSize);
     return CGSizeMake(itemSize, itemSize);
 }
 
