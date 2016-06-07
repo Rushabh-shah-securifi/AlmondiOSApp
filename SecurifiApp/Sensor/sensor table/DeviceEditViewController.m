@@ -504,6 +504,7 @@ static const int xIndent = 10;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
             });
+            [self updateGenericIndexValueList:genIndexVal];
         }
         
         //Repaint header
@@ -522,6 +523,15 @@ static const int xIndent = 10;
             });
         }
     }
+}
+
+-(void)updateGenericIndexValueList:(GenericIndexValue*)genIndexVal{
+    NSArray* genericIndexValues = [GenericIndexUtil getDetailListForDevice:genIndexVal.deviceID];
+    //NSLog(@"gvalues: %@", genericIndexValues);
+    if([Device getTypeForID:genIndexVal.deviceID] == SFIDeviceType_NestThermostat_57){
+        genericIndexValues = [RulesNestThermostat handleNestThermostatForSensor:genIndexVal.deviceID genericIndexValues:genericIndexValues];
+    }
+    self.genericParams.indexValueList = genericIndexValues;
 }
 
 -(void)repaintBottomView{
@@ -665,6 +675,7 @@ static const int xIndent = 10;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
         });
+        [self updateGenericIndexValueList:genIndexVal];
     }
     
     //Repaint header
@@ -672,7 +683,7 @@ static const int xIndent = 10;
         [self repaintHeader:genIndexVal];
     });
     
-    [self.miiTable removeObjectForKey:res.internalIndex];
+    [self.miiTable removeObjectForKey:res.internalIndex]; //internalIndex is nsstring
     
     
 }

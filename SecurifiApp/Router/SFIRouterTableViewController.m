@@ -152,14 +152,17 @@ int mii;
 //            [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
 //        }
 //    }
-    [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
+    
     // Reset New Version checking state and view
     self.newAlmondFirmwareVersionAvailable = NO;
     self.tableView.tableHeaderView = nil;
     
     NSLog(@"connecton - is local: %d", self.local);
-    if(!self.local)
+    if(!self.local){
+        [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
         [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
+    }
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {

@@ -2189,6 +2189,8 @@
                     //                    }
                     //                    NSAttributedString *a = [[NSAttributedString alloc] initWithString:@"\u25a1" attributes:attr];
                     
+                    
+                    
                     return [color.hexString uppercaseString];
                 };
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
@@ -2209,7 +2211,7 @@
                 s1.valueFormatter.suffix = @"%";
                 return @[s1];
             }
-            if (type == SFIDevicePropertyType_BRIGHTNESS) {
+            if (type == SFIDevicePropertyType_SWITCH_MULTILEVEL) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"0";
@@ -3362,7 +3364,6 @@
             
     }
     
-    NSLog(@"between switches");
     // Applicable to any device
     switch (type) {
         case SFIDevicePropertyType_BATTERY: {
@@ -4035,8 +4036,8 @@
             deviceIndex3.cellId = 3;
             deviceIndex3.isEditableIndex = YES;
             
-            SFIDeviceIndex *deviceIndex4 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_BRIGHTNESS];
-            deviceIndex4.indexValues = [self resolve:device index:SFIDevicePropertyType_BRIGHTNESS];
+            SFIDeviceIndex *deviceIndex4 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+            deviceIndex4.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_MULTILEVEL];
             deviceIndex4.indexID = 5;
             deviceIndex4.cellId = 4;
             deviceIndex4.isEditableIndex = YES;
