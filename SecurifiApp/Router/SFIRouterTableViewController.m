@@ -64,6 +64,7 @@ static const int logsHeight = 100;
 @property(nonatomic) BOOL enableAlmondVersionRemoteUpdate;
 @property(nonatomic) BOOL isSimulator;
 @property(nonatomic) BOOL local;
+
 @end
 
 @implementation SFIRouterTableViewController
@@ -71,7 +72,7 @@ int mii;
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
     if (self) {
-        NSLog(@"router initWithStyle");
+        //NSLog(@"router initWithStyle");
         // need to set initial state before the table view state is set up to ensure the correct view/layout is rendered.
         // the table's initial set up is done even prior to calling viewDidLoad
 //        [self checkRouterViewState:RouterViewReloadPolicy_never];
@@ -107,7 +108,7 @@ int mii;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    NSLog(@"view will disapper");
+    //NSLog(@"view will disapper");
     [super viewWillDisappear:animated];
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -155,9 +156,10 @@ int mii;
     
     // Reset New Version checking state and view
     self.newAlmondFirmwareVersionAvailable = NO;
+    self.isAlmondUnavailable = NO;
     self.tableView.tableHeaderView = nil;
     
-    NSLog(@"connecton - is local: %d", self.local);
+    //NSLog(@"connecton - is local: %d", self.local);
     if(!self.local){
         [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
         [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
@@ -175,6 +177,14 @@ int mii;
 }
 
 #pragma mark HUD mgt
+
+- (void)showHudWithTimeoutFirmwareMsg:(NSString*)hudMsg {
+    //NSLog(@"showHudWithTimeoutMsg");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self showHUD:hudMsg];
+        [self.HUD hide:YES afterDelay:120];
+    });
+}
 
 - (void)showHudWithTimeout:(NSString*)hudMsg {
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -251,7 +261,7 @@ int mii;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     if ([self isNotConnectedToCloud]) {
-        NSLog(@"numberOfRowsInSection isNotConnectedToCloud");
+        //NSLog(@"numberOfRowsInSection isNotConnectedToCloud");
         return 1;
     }
     
@@ -377,7 +387,7 @@ int mii;
 
 #pragma mark cell data methods
 -(NSArray*)getNetworkSummary{
-    NSLog(@"self.routersummery.url: %@", self.routerSummary.url);
+    //NSLog(@"self.routersummery.url: %@", self.routerSummary.url);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC];
     NSString *host;
@@ -398,7 +408,7 @@ int mii;
 }
 
 -(NSArray*)getWirelessSettingsSummary{
-    NSLog(@"getWirelessSettingsSummary");
+    //NSLog(@"getWirelessSettingsSummary");
     NSMutableArray *summary = [NSMutableArray array];
     if(self.routerSummary){
         for (SFIWirelessSummary *sum in self.routerSummary.wirelessSummaries) {
@@ -556,7 +566,7 @@ int mii;
 
 
 - (UITableViewCell *)createSummaryCell:(UITableView *)tableView summaries:(NSArray*)summaries title:(NSString*)title selector:(SEL)selector cardColor:color{
-    NSLog(@"createNetworkSummaryCell");
+    //NSLog(@"createNetworkSummaryCell");
     NSString *const cell_id = @"network_summary";
     
     SFICardViewSummaryCell *cell = [tableView dequeueReusableCellWithIdentifier:cell_id];
@@ -623,7 +633,7 @@ int mii;
         //nothing
     }else{
         if(alertView.tag == FIRMWARE_UPDATE_TAG){
-            [self showHUD:NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.")];
+            [self showHudWithTimeoutFirmwareMsg: @"Firmware update is in progress, it may take a while. Meanwhile, please don't turn off your Almond"];
             [RouterPayload updateFirmware:mii version:self.latestAlmondVersionAvailable isSimulator:_isSimulator mac:self.almondMac];
         }else if(alertView.tag == REBOOT_TAG){
             [self showHUD:NSLocalizedString(@"router.hud.Router is rebooting.", @"Router is rebooting.")];
@@ -635,6 +645,7 @@ int mii;
 
 #pragma mark - Cloud command response handlers
 - (void)onAlmondRouterCommandResponse:(id)sender {
+    //NSLog(@"Router - onAlmondRouterCommandResponse");
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *data = [notifier userInfo];
     if (data == nil) {
@@ -650,17 +661,21 @@ int mii;
         if (!genericRouterCommand.commandSuccess) {
             //todo push this string comparison logic into the generic router command
             self.isAlmondUnavailable = [genericRouterCommand.responseMessage.lowercaseString hasSuffix:NSLocalizedString(@"router.offline-msg. is offline", @" is offline")]; // almond is offline, homescreen is offline
+            //NSLog(@"self.isalmondunavailable: %d", self.isAlmondUnavailable);
+            if(genericRouterCommand.commandType == SFIGenericRouterCommandType_UPDATE_FIRMWARE_RESPONSE){
+                [self showToast:@"Sorry!, Unable to update."];
+            }
             [self.HUD hide:YES];
             [self.refreshControl endRefreshing];
             [self.tableView reloadData];
             return;
         }
-        NSLog(@"genericcommdntype: %d", genericRouterCommand.commandType);
+        //NSLog(@"genericcommdntype: %d", genericRouterCommand.commandType);
         switch (genericRouterCommand.commandType) {
             case SFIGenericRouterCommandType_WIRELESS_SUMMARY: {
-                NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
+                //NSLog(@"SFIGenericRouterCommandType_WIRELESS_SUMMARY - router summary");
                 self.routerSummary = (SFIRouterSummary *)genericRouterCommand.command;
-                NSLog(@"routersummary: %@", self.routerSummary);
+                //NSLog(@"routersummary: %@", self.routerSummary);
                 [toolkit tryUpdateLocalNetworkSettingsForAlmond:toolkit.currentAlmond.almondplusMAC withRouterSummary:self.routerSummary];
                 NSString *currentVersion = self.routerSummary.firmwareVersion;
                 [self tryCheckAlmondVersion:currentVersion];
@@ -679,7 +694,7 @@ int mii;
 //                }
                 
                 if (self.navigationController.topViewController == self) {
-                    NSLog(@"cloud settings: %@", settings);
+                    //NSLog(@"cloud settings: %@", settings);
                     SFIRouterSettingsTableViewController *ctrl = [SFIRouterSettingsTableViewController new];
                     ctrl.title = self.navigationItem.title;
                     ctrl.wirelessSettings = settings;
@@ -692,16 +707,17 @@ int mii;
                 break;
             }
             case SFIGenericRouterCommandType_UPDATE_FIRMWARE_RESPONSE: {
-                if(genericRouterCommand.commandSuccess == NO){
-                    [self showToast:@"Sorry! Unable to update."];
-                }else{
-                    unsigned int percentage = genericRouterCommand.completionPercentage;
-                    if (percentage > 0) {
-                        NSString *msg = NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.");
-                        msg = [msg stringByAppendingFormat:@" (%i%%)", percentage];
-                        [self showToast:msg];
-                    }
-                }
+                //NSLog(@"firmware update response");
+                
+//                unsigned int percentage = genericRouterCommand.completionPercentage;
+//                if (percentage > 0) {
+//                    NSString *msg = NSLocalizedString(@"router.hud.Updating router firmware.", @"Updating router firmware.");
+//                    msg = [msg stringByAppendingFormat:@" (%i%%)", percentage];
+//                    
+//                    [self showToast:msg];
+//                }
+                return; // to by-pass hud hide.
+                
                 break;
             };
                 
@@ -754,8 +770,9 @@ int mii;
 }
 
 - (void)versionCheckerDidQueryVersion:(SFIAlmondPlus *)checkedAlmond result:(enum AlmondVersionCheckerResult)result currentVersion:(NSString *)currentVersion latestVersion:(NSString *)latestAlmondVersion {
+    //NSLog(@"current version: %@, latest version: %@", currentVersion, latestAlmondVersion);
+
     BOOL newVersionAvailable = (result == AlmondVersionCheckerResult_currentOlderThanLatest);
-    
     dispatch_async(dispatch_get_main_queue(), ^() {
         SFIAlmondPlus *currentAlmond = self.currentAlmond;
         if (!currentAlmond || !checkedAlmond) {
