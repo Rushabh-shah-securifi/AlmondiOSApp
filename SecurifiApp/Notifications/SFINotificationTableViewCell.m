@@ -121,7 +121,8 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     SFINotification *notification = self.notification;
     _sensorSupport = [SensorSupport new];
     [_sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
-    //NSLog(@"Notification - Name: %@, type: %d", notification.deviceName, notification.deviceType);
+    NSLog(@"Notification - Name: %@, type: %d", notification.deviceName, notification.deviceType);
+    NSLog(@"sensorsupport icon");
     [self setDateLabelText:notification];
     [self setIcon];
     [self setMessageLabelText:notification];
@@ -294,10 +295,17 @@ typedef NS_ENUM(unsigned int, SFINotificationTableViewCellDebugMode) {
     //md01<<<
     if (self.notification.deviceType==SFIDeviceType_WIFIClient) {
         NSArray * properties = [self.notification.deviceName componentsSeparatedByString:@"|"];
-        Client *device = [Client new];
-        device.deviceType = @"other";
+        Client *client;
+        NSString *mac = [SFIAlmondPlus convertDecimalToMacHex:self.notification.almondMAC];
+        client = [Client getClientByMAC:mac];
+        NSLog(@"client: %@, client type: %@",client, client.deviceType);
+        if(client == nil){
+            client = [Client new];
+            client.deviceType = @"other";
+        }
         
-        self.iconView.image = [UIImage imageNamed:[device iconName]];
+        
+        self.iconView.image = [UIImage imageNamed:[client iconName]];
         return;
     }
     //md01>>>

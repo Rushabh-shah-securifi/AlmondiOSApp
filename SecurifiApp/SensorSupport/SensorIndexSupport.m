@@ -2181,19 +2181,34 @@
                     }
                     
                     float hue = [value floatValue];
-                    hue = hue / 65535;
+                    int intClolor = 65535/8;
                     
-                    UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
+                    
+                    UIColor *color = [UIColor colorWithHue:(hue/65535) saturation:100 brightness:100 alpha:1.0];
                     //                    NSDictionary *attr = @{
                     //                            NSBackgroundColorAttributeName : color,
                     //                    }
                     //                    NSAttributedString *a = [[NSAttributedString alloc] initWithString:@"\u25a1" attributes:attr];
-                    
-                    return [color.hexString uppercaseString];
+                    if(hue>=0 && hue <= 1*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"red shade",[color.hexString uppercaseString]];
+                    else if(hue>=1 && hue <= 2*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"orange shade",[color.hexString uppercaseString]];
+                    else if(hue>=2 && hue <= 3*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"yellow shade",[color.hexString uppercaseString]];
+                    else if(hue>=3 && hue <= 4*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"green shade",[color.hexString uppercaseString]];
+                    else if(hue>=5 && hue <= 6*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"indigo shade",[color.hexString uppercaseString]];
+                    else if(hue>=6 && hue <= 7*intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"violet shade",[color.hexString uppercaseString]];
+                    else if(hue > 7 *intClolor)
+                        return [NSString stringWithFormat:@"%@(%@)",@"reddish shade",[color.hexString uppercaseString]];
+                    else
+                        return [NSString stringWithFormat:@"(%@)",[color.hexString uppercaseString]];
                 };
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" hue color changed to ", @" hue color changed to ");
-                s1.valueFormatter.suffix = @" Color";
+                s1.valueFormatter.suffix = @"";
                 return @[s1];
             }
             if (type == SFIDevicePropertyType_SATURATION) {
@@ -2209,7 +2224,7 @@
                 s1.valueFormatter.suffix = @"%";
                 return @[s1];
             }
-            if (type == SFIDevicePropertyType_BRIGHTNESS) {
+            if (type == SFIDevicePropertyType_SWITCH_MULTILEVEL) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchType = MatchType_any;
                 s1.matchData = @"0";
@@ -3362,7 +3377,6 @@
             
     }
     
-    NSLog(@"between switches");
     // Applicable to any device
     switch (type) {
         case SFIDevicePropertyType_BATTERY: {
@@ -4035,8 +4049,8 @@
             deviceIndex3.cellId = 3;
             deviceIndex3.isEditableIndex = YES;
             
-            SFIDeviceIndex *deviceIndex4 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_BRIGHTNESS];
-            deviceIndex4.indexValues = [self resolve:device index:SFIDevicePropertyType_BRIGHTNESS];
+            SFIDeviceIndex *deviceIndex4 = [[SFIDeviceIndex alloc] initWithValueType:SFIDevicePropertyType_SWITCH_MULTILEVEL];
+            deviceIndex4.indexValues = [self resolve:device index:SFIDevicePropertyType_SWITCH_MULTILEVEL];
             deviceIndex4.indexID = 5;
             deviceIndex4.cellId = 4;
             deviceIndex4.isEditableIndex = YES;

@@ -498,12 +498,14 @@ static const int xIndent = 10;
             }
             NSLog(@"updated value: %@", [Device getValueForIndex:genIndexVal.index deviceID:genIndexVal.deviceID]);
             
-            if([Device getTypeForID:genIndexVal.deviceID] == SFIDeviceType_NestThermostat_57){
-                [self repaintBottomView];
+            int dType = [Device getTypeForID:genIndexVal.deviceID];
+            if(dType == SFIDeviceType_NestThermostat_57 || dType == SFIDeviceType_HueLamp_48){
+                [self repaintBottomView:dType];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
             });
+            [self updateGenericIndexValueList:genIndexVal];
         }
         
         //Repaint header
@@ -524,11 +526,21 @@ static const int xIndent = 10;
     }
 }
 
--(void)repaintBottomView{
+-(void)updateGenericIndexValueList:(GenericIndexValue*)genIndexVal{
+    NSArray* genericIndexValues = [GenericIndexUtil getDetailListForDevice:genIndexVal.deviceID];
+    //NSLog(@"gvalues: %@", genericIndexValues);
+    if([Device getTypeForID:genIndexVal.deviceID] == SFIDeviceType_NestThermostat_57){
+        genericIndexValues = [RulesNestThermostat handleNestThermostatForSensor:genIndexVal.deviceID genericIndexValues:genericIndexValues];
+    }
+    self.genericParams.indexValueList = genericIndexValues;
+}
+
+-(void)repaintBottomView:(int)dType{
     NSLog(@"repaintBottomView");
     int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
     NSArray* genericIndexValues = [GenericIndexUtil getDetailListForDevice:deviceID];
-    genericIndexValues = [RulesNestThermostat handleNestThermostatForSensor:deviceID genericIndexValues:genericIndexValues];
+    if(dType == SFIDeviceType_NestThermostat_57)
+        genericIndexValues = [RulesNestThermostat handleNestThermostatForSensor:deviceID genericIndexValues:genericIndexValues];
     self.genericParams.indexValueList = genericIndexValues;
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -665,6 +677,7 @@ static const int xIndent = 10;
         dispatch_async(dispatch_get_main_queue(), ^{
             [self showToast:[NSString stringWithFormat:@"%@ successfully updated", genIndexVal.genericIndex.groupLabel]];
         });
+        [self updateGenericIndexValueList:genIndexVal];
     }
     
     //Repaint header
@@ -672,7 +685,7 @@ static const int xIndent = 10;
         [self repaintHeader:genIndexVal];
     });
     
-    [self.miiTable removeObjectForKey:res.internalIndex];
+    [self.miiTable removeObjectForKey:res.internalIndex]; //internalIndex is nsstring
     
     
 }

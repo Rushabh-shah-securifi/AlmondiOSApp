@@ -90,6 +90,9 @@
     if((device.type == SFIDeviceType_NestThermostat_57 && [[Device getValueForIndex:11 deviceID:deviceID] isEqualToString:@"false"]) || (device.type == SFIDeviceType_NestSmokeDetector_58 && [[Device getValueForIndex:5 deviceID:deviceID] isEqualToString:@"false"])){//don't paint indexes on offline
         [detailList removeAllObjects];
     }
+    if(device.type == SFIDeviceType_HueLamp_48 && [[Device getValueForIndex:2 deviceID:deviceID] isEqualToString:@"false"]){
+        [detailList removeAllObjects];
+    }
     NSArray *commonList = [self getCommonGenericIndexValue:device];
     [detailList addObjectsFromArray:commonList];
     return detailList;
@@ -244,6 +247,8 @@
     if(!client.canBeBlocked){
         [clientGenericIndexes removeObjectsInArray:@[@-19, @-22]];
     }
+    if([client.deviceConnection isEqualToString:@"wired"])
+        [clientGenericIndexes removeObjectsInArray:@[@-20]];
     return clientGenericIndexes;
 }
 
