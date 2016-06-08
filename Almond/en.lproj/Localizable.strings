@@ -846,7 +846,7 @@ Follow it, then login below.";
 "cooling" ="COOLING";
 "idle"="IDLE";
 "co_lable"="CO STATUS";
-"ok"="Ok";
+"ok"="OK";
 "warning"="WARNING";
 "emergency_"="EMERGENCY";
 "smoke_lable"="SMOKE STATUS";
