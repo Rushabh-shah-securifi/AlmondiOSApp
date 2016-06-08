@@ -32,5 +32,6 @@
 
 -(id)initWithPropertiesTrigger:(NSMutableArray*)triggers action:(NSMutableArray*)actions isScene:(BOOL)isScene;
 -(void) createHueCellLayoutWithDeviceId:(int)deviceId deviceType:(int)deviceType deviceIndexes:(NSArray*)deviceIndexes deviceName:(NSString*)deviceName scrollView:(UIScrollView *)scrollView cellCount:(int)numberOfCells indexesDictionary:(NSDictionary*)deviceIndexesDict;
++(NSArray *)handleHue:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues modeFilter:(BOOL)modeFilter triggers:(NSMutableArray*)triggers;
 
 @end

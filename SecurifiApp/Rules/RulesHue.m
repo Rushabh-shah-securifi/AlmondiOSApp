@@ -404,6 +404,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 -(void) onHueButtonClick:(id)sender{
     SwitchButton * indexSwitchButton = (SwitchButton *)sender;
     NSMutableArray *tobeDeleted = [NSMutableArray new];
+    
     for(SFIButtonSubProperties *buttonsubProperty in self.triggers){
         if(buttonsubProperty.deviceType == SFIDeviceType_HueLamp_48 && [indexSwitchButton.subProperties.matchData isEqualToString:@"false"] && indexSwitchButton.subProperties.index == 2)
             if(indexSwitchButton.subProperties.deviceId == buttonsubProperty.deviceId && buttonsubProperty.deviceType == SFIDeviceType_HueLamp_48 && (buttonsubProperty.index == 5 || buttonsubProperty.index == 3 || buttonsubProperty.index == 4)){
@@ -659,5 +660,29 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
     UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
     return [color.hexString uppercaseString];
 };
+
++(NSArray *)handleHue:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues modeFilter:(BOOL)modeFilter triggers:(NSMutableArray*)triggers{
+    NSMutableArray *newGenIndexVals = [genericIndexValues mutableCopy];
+    if(modeFilter){
+        NSString *matchData = nil;
+        for(SFIButtonSubProperties *subProperty in triggers){
+            if(subProperty.deviceId == deviceID && subProperty.index == 2){
+                matchData = subProperty.matchData;
+            }
+        }
+        if(matchData == nil)
+            return newGenIndexVals;
+        
+        if([matchData isEqualToString:@"false"]){
+            NSMutableArray *toberemoved = [NSMutableArray new];
+            for(GenericIndexValue *genIndexVal in genericIndexValues){
+                if(genIndexVal.index != 2)
+                    [toberemoved addObject:genIndexVal];
+            }
+            [newGenIndexVals removeObjectsInArray:toberemoved];
+        }
+    }
+    return newGenIndexVals;
+}
 
 @end
