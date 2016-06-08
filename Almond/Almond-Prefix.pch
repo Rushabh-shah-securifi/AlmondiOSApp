@@ -17,6 +17,8 @@
 #import <CocoaLumberjack/CocoaLumberjack.h>
 #endif
 
+#define NSLog //
+
 #define ELog(args...) DDLogError(args)
 //#define NSLog(args...) DDLogInfo(args) //uncommenting it was disabling logs, look into it
 #define DLog(args...) DDLogDebug(args)

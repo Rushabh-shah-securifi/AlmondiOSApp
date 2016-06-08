@@ -352,7 +352,7 @@ labelAndCheckButtonView *labelView;
         [self showAlert:@"Please enter number"];
     
     else if ([self isAllDigits:textField.text]) {
-        if( dimerButton.subProperties.deviceType == SFIDeviceType_StandardWarningDevice_21 && ([textField.text integerValue] > 65536 || [textField.text integerValue] < 0 )){
+        if( dimerButton.subProperties.deviceType == SFIDeviceType_StandardWarningDevice_21 && ([textField.text integerValue] >= 65536 || [textField.text integerValue] < 0 )){
             [self showAlert:@"Please enter value between 0 - 65535"];
         }
         else if( dimerButton.subProperties.deviceType == SFIDeviceType_ZWtoACIRExtender_54 && ([textField.text integerValue] > 999 || [textField.text integerValue] < 0 )){

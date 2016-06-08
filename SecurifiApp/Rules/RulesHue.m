@@ -476,11 +476,13 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
 //    brightnessSlider
     if(slider.propertyType == SFIDevicePropertyType_BRIGHTNESS){
         brightnessSlider.subProperties.matchData = newValue;
+        brightnessSlider.alpha =  sensorValue / 255 + 0.3;
         if(self.isScene){
             [self updateEntryForID:brightnessSlider.subProperties.deviceId index:brightnessSlider.subProperties.index matchData:newValue];
         }
     }else if(slider.propertyType == SFIDevicePropertyType_SATURATION){
         saturationSlider.subProperties.matchData = newValue;
+        saturationSlider.alpha =  sensorValue / 255 + 0.3;
         if(self.isScene){
             [self updateEntryForID:saturationSlider.subProperties.deviceId index:saturationSlider.subProperties.index matchData:newValue];
         }
