@@ -2789,7 +2789,7 @@
             if (type == SFIDevicePropertyType_NEST_THERMOSTAT_MODE) {
                 
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchType = MatchType_any;
+                s1.matchType = MatchType_equals;
                 s1.matchData = @"heat";
                 s1.displayText=@"HEAT";
                 s1.iconName = @"img_heat";
@@ -2797,7 +2797,7 @@
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s mode set to", @"'s mode set to");
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.matchType = MatchType_any;
+                s2.matchType = MatchType_equals;
                 s2.matchData = @"cool";
                 s2.displayText = @"COOL";
                 s2.iconName = @"img_cool";
@@ -2805,7 +2805,7 @@
                 s2.valueFormatter.notificationPrefix = NSLocalizedString(@"'s mode set to", @"'s mode set to");
                 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
-                s3.matchType = MatchType_any;
+                s3.matchType = MatchType_equals;
                 s3.matchData = @"heat-cool";
                 s3.iconName = @"img_auto";
                 s3.displayText = @"HEAT-COOL";
@@ -2813,7 +2813,7 @@
                 s3.valueFormatter.notificationPrefix = NSLocalizedString(@"'s mode set to", @"'s mode set to");
                 
                 IndexValueSupport *s4 = [[IndexValueSupport alloc] initWithValueType:type];
-                s4.matchType = MatchType_any;
+                s4.matchType = MatchType_equals;
                 s4.matchData = @"off";
                 s4.iconName = @"img_off";
                 s4.displayText = @"OFF";
@@ -2890,12 +2890,14 @@
             if (type == SFIDevicePropertyType_AWAY_MODE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"home";
+                s1.matchType = MatchType_equals;
                 s1.iconName = @"home_white";
                 s1.displayText = @"HOME";
                 s1.notificationText = NSLocalizedString(@"HOME", @"HOME");
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"away";
+                s2.matchType = MatchType_equals;
                 s2.iconName = @"away_white";
                 s2.displayText = @"AWAY";
                 s2.notificationText = NSLocalizedString(@"AWAY", @"AWAY");
@@ -2919,12 +2921,14 @@
             if (type == SFIDevicePropertyType_NEST_THERMOSTAT_FAN_STATE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"true";
+                s1.matchType = MatchType_equals;
                 s1.iconName = @"btn_fan_on";
                 s1.displayText = @"FAN ON";
                 s1.notificationText = NSLocalizedString(@"'s Fan Started", @"'s Fan Started");
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"false";
+                s2.matchType = MatchType_equals;
                 s2.iconName = @"btn_fan_off";
                 s2.displayText = @"FAN OFF";
                 s2.notificationText = NSLocalizedString(@"'s Fan Stopped", @"'s Fan Stopped");
@@ -2959,7 +2963,7 @@
             
             if(type == SFIDevicePropertyType_HVAC_STATE){
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchType = MatchType_any;
+                s1.matchType = MatchType_equals;;
                 s1.matchData = @"heating";
                 s1.displayText = @"Heating";
                 s1.iconName = @"img_heat";
@@ -2967,7 +2971,7 @@
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is set to ", @" is set to ");
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.matchType = MatchType_any;
+                s2.matchType = MatchType_equals;
                 s2.matchData = @"cooling";
                 s2.iconName = @"img_cool";
                 s2.displayText = @"COOLING";
@@ -2975,7 +2979,7 @@
                 s2.valueFormatter.notificationPrefix = NSLocalizedString(@" is set to ", @" is set to ");
                 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
-                s3.matchType = MatchType_any;
+                s3.matchType = MatchType_equals;
                 s3.matchData = @"off";
                 s3.iconName = @"img_off";
                 s3.displayText = @"OFF";
