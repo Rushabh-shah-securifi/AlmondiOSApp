@@ -88,4 +88,15 @@
 -(void)setTextFieldValue:(NSString*)value{
     self.deviceNameField.text = value;
 }
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField.text.length >= 32 && range.length == 0)
+    {
+        return NO; // return NO to not change text
+    }
+    else
+    {
+        return YES;
+    }
+}
 @end
