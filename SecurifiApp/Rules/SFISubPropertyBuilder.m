@@ -200,7 +200,7 @@ UILabel *topLabel;
         }
         else{
             buttonProperties.deviceName = @"UnKnown Device";
-            return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"default_device" text:@"UnKnown Device" isTrigger:isTrigger isDimButton:NO bottomText:@""];
+            return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"default_device" text:@"Device not Found" isTrigger:isTrigger isDimButton:NO bottomText:@""];
         }
     }
     SwitchButton * imageButton =nil;
