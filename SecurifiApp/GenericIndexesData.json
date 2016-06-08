@@ -1931,7 +1931,7 @@
                 "Label": "OK",
                 "AppLabel":"ok"
             },
-            "Warning": {
+            "replace": {
                 "Label": "REPLACE",
                 "AppLabel":"replace"
             }

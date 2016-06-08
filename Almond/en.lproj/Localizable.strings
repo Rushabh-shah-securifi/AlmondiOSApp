@@ -839,7 +839,7 @@ Follow it, then login below.";
 "fan"="FAN";
 "start"="START";
 "stop_"="STOP";
-"online "= "ONLINE";
+"online"= "ONLINE";
 "offline"="OFFLINE";
 "emergency_heat" = "USING EMERGENCY HEAT";
 "heating"="HEATING";
