@@ -29,6 +29,9 @@
     [payload setValue:UPDATE_CLIENT forKey:@"CommandType"];
     [payload setValue:toolkit.currentAlmond.almondplusMAC forKey:@"AlmondMAC"];
     
+    if(![self hasCompleteData:client])
+        return;
+    
     NSDictionary * clients = @{
                                C_ID:client.deviceID,
                                CLIENT_NAME:client.name,
@@ -49,6 +52,14 @@
     GenericCommand *genericCmd =  [GenericCommand jsonStringPayloadCommand:payload commandType:CommandType_UPDATE_REQUEST];
     [[SecurifiToolkit sharedInstance] asyncSendCommand:genericCmd];
 }
+
++(BOOL)hasCompleteData:(Client*)client{
+    if(client.deviceID == nil || client.name == nil || client.deviceConnection == nil || client.deviceMAC == nil || client.deviceType == nil ||client.deviceIP == nil || client.deviceSchedule == nil || client.category== nil){
+        return NO;
+    }
+    return YES;
+}
+
 + (void)resetClientCommand:(NSString *)mac clientID:(NSString*)clientID mii:(int)mii{
     NSMutableDictionary *payload = [NSMutableDictionary new];
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];

@@ -93,6 +93,7 @@ NSString *blockedType;
             //dispatch_async(dispatch_get_main_queue(), ^{
                 self.scrollView.hidden = NO;
                 self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(self.frame.origin.x, self.allowOnNetworkSegment.frame.origin.y + self.allowOnNetworkSegment.frame.size.height + 10, self.frame.size.width - 15, self.frame.size.height - self.frame.origin.y - 100)];
+            
                 self.scrollView.backgroundColor = [UIColor clearColor];
                 [self addSubview:self.scrollView];
                 [self addInfo];
@@ -157,7 +158,10 @@ NSString *blockedType;
     infoLabel.textAlignment = NSTextAlignmentCenter;
     [self.scrollView addSubview:infoLabel];
     UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc] init];
-    self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, infoLabel.frame.size.height + infoView.frame.size.height +5, self.scrollView.frame.size.width, 1020) collectionViewLayout:layout];
+    float itemSize = 27.9000;
+    self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, infoLabel.frame.size.height + infoView.frame.size.height +5, 9*itemSize + 9*ITEM_SPACING, 1020) collectionViewLayout:layout];
+    self.collectionView.center = CGPointMake(CGRectGetMidX(self.scrollView.bounds), self.collectionView.center.y);
+    
     [self.collectionView setDataSource:self];
     [self.collectionView setDelegate:self];
     [self.collectionView registerClass:[CollectionViewCell class] forCellWithReuseIdentifier:@"collectionViewCell"];

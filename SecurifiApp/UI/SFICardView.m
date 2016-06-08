@@ -146,7 +146,7 @@
     else {
         msg = @"";
     }
-
+    NSLog(@"wireless sumery msg = %@",msg);
     NSUInteger lineCount = msgs.count;
     lineCount = (lineCount == 0) ? 1 : lineCount + 1;
 
@@ -359,6 +359,9 @@
 
     CGFloat width = CGRectGetWidth(self.frame) - offset;
     CGFloat height = textFont.pointSize * lineCount;
+    NSLog(@"title.length %ld",title.length);
+    if(title.length > 21)
+        height += lineCount +1;
     height += textFont.pointSize; // padding
     CGRect frame = CGRectMake(10, self.baseYCoordinate, width, height);
 

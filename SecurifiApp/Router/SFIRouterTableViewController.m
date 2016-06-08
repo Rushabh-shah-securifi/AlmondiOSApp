@@ -113,8 +113,6 @@ int mii;
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center removeObserver:self];
-    [self onHudTimeout:nil];
-    
 }
 
 - (void)initializeNotifications {
@@ -189,18 +187,10 @@ int mii;
 - (void)showHudWithTimeout:(NSString*)hudMsg {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:hudMsg];
-        self.hudTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(onHudTimeout:) userInfo:nil repeats:NO];
+        [self.HUD hide:YES afterDelay:5];
     });
 }
 
-- (void)onHudTimeout:(id)sender {
-    [self.hudTimer invalidate];
-    self.hudTimer = nil;
-    
-    dispatch_async(dispatch_get_main_queue(), ^() {
-        [self.HUD hide:YES];
-    });
-}
 
 #pragma mark - External Event handlers
 

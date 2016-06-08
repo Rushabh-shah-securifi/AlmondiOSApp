@@ -237,6 +237,8 @@ labelAndCheckButtonView *labelView;
     
     if(deviceType == SFIDeviceType_NestThermostat_57){
         genericIndexValues = [RulesNestThermostat handleNestThermostat:deviceId genericIndexValues:genericIndexValues modeFilter:_isScene triggers:_triggers];
+    }else if(deviceType == SFIDeviceType_HueLamp_48){
+        genericIndexValues = [RulesHue handleHue:deviceId genericIndexValues:genericIndexValues modeFilter:self.isScene triggers:self.triggers];
     }
 
     NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForArray:genericIndexValues isTrigger:self.isTrigger isScene:self.isScene];
@@ -730,6 +732,8 @@ labelAndCheckButtonView *labelView;
         if(self.isScene && indexSwitchButton.subProperties.deviceType == SFIDeviceType_NestThermostat_57 && indexSwitchButton.subProperties.index == 2){
             //RulesNestThermostat *nest=[RulesNestThermostat new];
             [RulesNestThermostat removeTemperatureIndexes:indexSwitchButton.subProperties.deviceId mode:indexSwitchButton.subProperties.matchData entries:self.triggers];
+            [self.delegate redrawDeviceIndexView:indexSwitchButton.subProperties.deviceId clientEvent:@""];
+        }else if(self.isScene && indexSwitchButton.subProperties.deviceType == SFIDeviceType_HueLamp_48 && indexSwitchButton.subProperties.index == 2){
             [self.delegate redrawDeviceIndexView:indexSwitchButton.subProperties.deviceId clientEvent:@""];
         }else
             [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
