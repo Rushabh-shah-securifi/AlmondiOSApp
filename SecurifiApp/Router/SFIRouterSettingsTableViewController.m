@@ -17,6 +17,7 @@
 #import "UIFont+Securifi.h"
 #import "Analytics.h"
 #import "RouterPayload.h"
+#import "UIViewController+Securifi.h"
 
 @interface SFIRouterSettingsTableViewController () <SFIRouterTableViewActions, TableHeaderViewDelegate>
 @property(nonatomic, readonly) MBProgressHUD *HUD;
@@ -178,16 +179,17 @@ int mii;
         if (!self || self.disposed) {
             return;
         }
-
-        if (![genericRouterCommand.almondMAC isEqualToString:self.almondMac]) {
+        if(!genericRouterCommand.commandSuccess){
+            [self showToast:@"Sorry!, unable to update."];
             return;
         }
-
+        NSLog(@"genericRouterCommand.commandType %d",genericRouterCommand.commandType);
         switch (genericRouterCommand.commandType) {
             case SFIGenericRouterCommandType_WIRELESS_SETTINGS: {
-//                SFIDevicesList *ls = genericRouterCommand.command;
-                self.wirelessSettings = [self processSettings:genericRouterCommand.command];
+                [self processSettings:genericRouterCommand.command];
                 // settings was null, reload in case they are late arriving and the view is waiting for them
+                NSLog(@"processRouterCommandResponse reload");
+                [self showToast:@"Successfully updated!"];
                 [self.tableView reloadData];
 
                 break;
@@ -200,18 +202,17 @@ int mii;
     });
 }
 
--(NSArray *)processSettings:(NSArray*)newSetting{
-    NSDictionary* newSettingDict = [newSetting objectAtIndex:0];//response will only have one obj
-    NSMutableArray *mutableSettings = [self.wirelessSettings mutableCopy];
-    NSInteger index = 0;
-    for(NSDictionary *setting in self.wirelessSettings){
-        if([setting[@"Type"] isEqualToString:newSettingDict[@"Type"]]){
-            index = [self.wirelessSettings indexOfObject:setting];
+-(void)processSettings:(NSArray*)newSetting{
+    SFIWirelessSetting *newSettingObj = newSetting.firstObject;
+    for(SFIWirelessSetting *setting in self.wirelessSettings){
+        if([setting.type isEqualToString:newSettingObj.type]){
+            setting.type = newSettingObj.type;
+            setting.ssid = newSettingObj.ssid;
+            setting.enabled = newSettingObj.enabled;
+            setting.password = newSettingObj.password;
             break;
         }
     }
-    [mutableSettings replaceObjectAtIndex:index withObject:newSettingDict];
-    return mutableSettings;
 }
 
 #pragma mark - SFIRouterTableViewActions protocol methods
@@ -257,7 +258,7 @@ int mii;
 //        [[SecurifiToolkit sharedInstance] asyncUpdateAlmondWirelessSettings:self.almondMac wirelessSettings:copy];
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
         [RouterPayload setWirelessSettings:mii wirelessSettings:copy isSimulator:_isSimulator mac:toolkit.currentAlmond.almondplusMAC isTypeEnable:isTypeEnable];
-        [self.HUD hide:YES afterDelay:2];
+        [self.HUD hide:YES afterDelay:5];
     });
 }
 
