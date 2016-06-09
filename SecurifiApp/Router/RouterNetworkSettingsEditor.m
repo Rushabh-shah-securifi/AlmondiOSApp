@@ -224,7 +224,10 @@ typedef NS_ENUM(unsigned int, RouterNetworkSettingsEditorState) {
 
         cell.textLabel.text = fieldLabel;
         cell.textLabel.font = font;
-
+        
+        UIView *underLineView = [[UIView alloc]initWithFrame:CGRectMake(width, 32, width - right_padding, 1)];
+        underLineView.backgroundColor = [UIColor lightGrayColor];
+        [cell.contentView addSubview:underLineView];
         [cell.contentView addSubview:field];
     }
 
