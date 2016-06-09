@@ -344,13 +344,13 @@
         "DefaultIcon": "condition_icon",
         "Values": {
             "chancerain": {
-                "Icon": "chane_of_rain",
+                "Icon": "chance_of_rain",
                 "AppLabel": "chancerain",
                 "Label": "Weather"
             },
             "rain": {
                 "Icon": "raining",
-                "AppLabel": "rain",
+                "AppLabel":"rain",
                 "Label": "Weather"
             },
             "clear": {
@@ -414,7 +414,7 @@
                 "Label": "Weather"
             },
             "nt_chanceflurries": {
-                "Icon": "nt_chane_of_flurries",
+                "Icon": "nt_chance_of_flurries",
                 "AppLabel": "nt_chanceflurries",
                 "Label": "Weather"
             },
@@ -541,6 +541,7 @@
         "Layout": "LIST",
         "AppLabel": "sunnycondition",
         "DefaultIcon": "condition_icon",
+        "ExcludeFrom":"rule",
         "Values": {
             "condition": {
                 "Icon": "condition_icon",
@@ -2211,6 +2212,36 @@
                 "Label": "SWITCH2 OFF"
             }
         }
+    },
+    "95": {
+        "Name": "PRESS",
+        "Type": "Actuator",
+        "Placement": "Header_Detail",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "switch1",
+        "ShowToggleInRules": "true",
+        "DefaultIcon": "switch_on",
+        "Values": {
+            "0": {
+                "Icon": "switch_on",
+                "AppLabel": "two_press",
+                "Label": "Two Press"
+            },
+            "2": {
+                "Icon": "switch_off",
+                "AppLabel": "long_press",
+                "Label": "Long Press"
+            },
+            "3": {
+                "Icon": "switch_on",
+                "AppLabel": "one_press",
+                "Label": "One Press"
+            },
+            "4": {
+                "Icon": "switch_off",
+                "AppLabel": "no_press",
+                "Label": "No Press"
+            }
+        }
     }
 }
-

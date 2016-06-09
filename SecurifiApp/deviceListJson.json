@@ -45,7 +45,7 @@
                 "row_no": 1
             },
             "2":{
-                "genericIndexID": "-34",
+                "genericIndexID": "-35",
                 "row_no": 4
             },
             "3":{
@@ -1228,6 +1228,64 @@
                 "row_no": 2
             }
         }
+    },
+    "61": {
+        "name": "Securifi Button",
+        "isActuator": "true",
+        "defaultIcon": "vibration_off",
+        "Indexes": {
+            "1": {
+                "genericIndexID": "95",
+                "row_no": 1
+            },
+            "2": {
+                "row_no": 2,
+                "genericIndexID": "12"
+            },
+            "3": {
+                "row_no": 2,
+                "genericIndexID": "9"
+            }
+        }
+    },
+    "62": {
+        "name": "Zen Thermostat",
+        "isActuator": "true",
+        "defaultIcon": "thermostat_image",
+        "Indexes": {
+            "1": {
+                "genericIndexID": "25",
+                "Placement": "Header",
+                "row_no": 4
+            },
+            "2": {
+                "genericIndexID": "35",
+                "row_no": 2
+            },
+            "3": {
+                "genericIndexID": "36",
+                "row_no": 1
+            },
+            "5": {
+                "genericIndexID": "38",
+                "row_no": 1
+            },
+            "4": {
+                "genericIndexID": "37",
+                "row_no": 1
+            },
+            "6": {
+                "genericIndexID": "39",
+                "row_no": 3
+            },
+            "7": {
+                "genericIndexID": "40",
+                "row_no": 1
+            },
+            "8": {
+                "genericIndexID": "50",
+                "row_no": 4
+            }
+        }
     }
 }
-
