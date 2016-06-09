@@ -348,7 +348,7 @@ NSString *blockedType;
     NSLog(@" savebutton frame %@",NSStringFromCGRect(saveButton.frame));
     saveButton.backgroundColor = [UIColor whiteColor];
     saveButton.titleLabel.font = [UIFont securifiFont:14];
-    [saveButton setTitleColor:[SFIColors clientGreenColor] forState:UIControlStateNormal];
+    [saveButton setTitleColor:self.color forState:UIControlStateNormal];
     [saveButton setTitle:@"SAVE" forState:UIControlStateNormal];
     [saveButton addTarget:self action:@selector(saveButtonTap:) forControlEvents:UIControlEventTouchUpInside];
     saveButton.center = CGPointMake(CGRectGetMidX(self.scrollView.bounds), saveButton.center.y);
