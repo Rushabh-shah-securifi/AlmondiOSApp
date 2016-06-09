@@ -38,7 +38,8 @@
 
 
 +(NSArray*)filterIndexesBasedOnHomeAway:(int)deviceID genericIndexVals:(NSArray*)genericIndexVals{
-    BOOL isAway = [[Device getValueForIndex:8 deviceID:deviceID] isEqualToString:@"away"];//away_mode index
+    NSString *awayMode = [Device getValueForIndex:8 deviceID:deviceID];
+    BOOL isAway = ([awayMode isEqualToString:@"away"] || [awayMode isEqualToString:@"auto-away"]);//away_mode index
     
     if(isAway){
         NSMutableArray *newGenericIndexValues = [[NSMutableArray alloc] init];
@@ -120,6 +121,8 @@
 }
 
 +(GenericIndexValue *) removeAutoAwayMode:(GenericIndexValue *)genericIndexValue{
+    NSString *awayMode = [Device getValueForIndex:8 deviceID:genericIndexValue.deviceID];
+    BOOL isAutoAway = [awayMode isEqualToString:@"auto-away"];
     GenericIndexClass *newGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexValue.genericIndex];
     
     NSMutableDictionary *newGenericValueDict = [NSMutableDictionary new];
@@ -127,10 +130,18 @@
     
     for(NSString *keyValue in currentGenericValueDict){
         GenericValue *gVal = currentGenericValueDict[keyValue];
-        if([gVal.value isEqualToString:@"home"]){
-            [newGenericValueDict setValue:gVal forKey:keyValue];
-        }else if([gVal.value isEqualToString:@"away"]){
-            [newGenericValueDict setValue:gVal forKey:keyValue];
+        if(isAutoAway){
+            if([gVal.value isEqualToString:@"home"]){
+                [newGenericValueDict setValue:gVal forKey:keyValue];
+            }else if([gVal.value isEqualToString:@"auto-away"]){
+                [newGenericValueDict setValue:gVal forKey:keyValue];
+            }
+        }else{
+            if([gVal.value isEqualToString:@"home"]){
+                [newGenericValueDict setValue:gVal forKey:keyValue];
+            }else if([gVal.value isEqualToString:@"away"]){
+                [newGenericValueDict setValue:gVal forKey:keyValue];
+            }
         }
     }
     

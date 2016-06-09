@@ -736,6 +736,7 @@ Follow it, then login below.";
 "inactive"="INACTIVE";
 "home"="Home";
 "away"="Away";
+"AUTOAWAY"="Auto-Away";
 "rebootAlmond"="Reboot Almond";
 "toggle"="Toggle";
 "switch_off"="Switch";
