@@ -2216,31 +2216,25 @@
     "95": {
         "Name": "PRESS",
         "Type": "Actuator",
-        "Placement": "Header_Detail",
+        "Placement": "Header_Detail_Primary",
         "Layout": "MULTI_BUTTON",
-        "AppLabel": "switch1",
-        "ShowToggleInRules": "true",
-        "DefaultIcon": "switch_on",
+        "AppLabel": "press",
+        "DefaultIcon": "vibration_off",
         "Values": {
             "0": {
-                "Icon": "switch_on",
+                "Icon": "resume_icon",
                 "AppLabel": "two_press",
                 "Label": "Two Press"
             },
             "2": {
-                "Icon": "switch_off",
+                "Icon": "vibration_on",
                 "AppLabel": "long_press",
                 "Label": "Long Press"
             },
             "3": {
-                "Icon": "switch_on",
+                "Icon": "vibration_off",
                 "AppLabel": "one_press",
                 "Label": "One Press"
-            },
-            "4": {
-                "Icon": "switch_off",
-                "AppLabel": "no_press",
-                "Label": "No Press"
             }
         }
     }
