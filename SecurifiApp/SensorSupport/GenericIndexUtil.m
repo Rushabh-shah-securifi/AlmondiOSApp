@@ -154,8 +154,8 @@
 
 +(GenericValue*)getMatchingGenericValueForGenericIndexID:(NSString*)genericIndexID forValue:(NSString*)value{
     //NSLog(@"value: %@", value);
-    if(value.length == 0 || value == nil)
-        value = @"NaN";
+//    if(value.length == 0 || value == nil)
+//        value = @"NaN";
     
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     GenericIndexClass *genericIndexObject = toolkit.genericIndexes[genericIndexID];
