@@ -881,6 +881,11 @@ Follow it, then login below.";
 "alarm" = "ALARM";
 "ac_switch" = "AC SWITCH";
 "multilevel_switch" = "MULTILEVEL SWITCH";
+"one_press" = "One Press";
+"two_press" = "Two Press";
+"long_press" = "Long Press";
+"no_press" = "No Press";
+"press" = "Press";
 
 /* ==================================================================== */
 

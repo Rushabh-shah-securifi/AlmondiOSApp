@@ -2215,11 +2215,11 @@
     },
     "95": {
         "Name": "PRESS",
-        "Type": "Actuator",
-        "Placement": "Header_Detail_Primary",
+        "Type": "Sensor",
+        "Placement": "Header",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "press",
-        "DefaultIcon": "vibration_off",
+        "DefaultIcon": "switch_off",
         "Values": {
             "0": {
                 "Icon": "resume_icon",
@@ -2235,6 +2235,11 @@
                 "Icon": "vibration_off",
                 "AppLabel": "one_press",
                 "Label": "One Press"
+            },
+            "4": {
+                "Icon": "switch_off",
+                "AppLabel": "no_press",
+                "Label": "No Press"
             }
         }
     }
