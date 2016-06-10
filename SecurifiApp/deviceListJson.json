@@ -38,7 +38,7 @@
         "name": "Weather",
         "isActuator": "false",
         "defaultIcon": "weather_white",
-        "ExcludeFrom":"Scene",
+        "ExcludeFrom":"Scene_Rule",
         "Indexes": {
             "1": {
                 "genericIndexID": "-33",
@@ -1231,8 +1231,8 @@
     },
     "61": {
         "name": "Securifi Button",
-        "isActuator": "true",
-        "defaultIcon": "vibration_off",
+        "isActuator": "false",
+        "defaultIcon": "switch_off",
         "Indexes": {
             "1": {
                 "genericIndexID": "95",
@@ -1289,3 +1289,4 @@
         }
     }
 }
+
