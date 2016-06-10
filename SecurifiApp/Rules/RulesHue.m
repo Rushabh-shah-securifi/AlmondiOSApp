@@ -225,7 +225,11 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 saturationSlider.allowToSlide = YES; // Initial value
                 saturationSlider.sensorMaxValue = 255;
                 saturationSlider.convertedValue = 0; // to be assigned
-                saturationSlider.backgroundColor = [UIColor grayColor];
+                int sensor_value = [huePickerView convertToSensorValue];
+                huePickerView.subProperties.matchData = @(sensor_value).stringValue ;
+                NSLog(@" sensor_value %d",sensor_value);
+                
+                saturationSlider.backgroundColor = [UIColor colorFromHexString:[self getColorHex:@(sensor_value).stringValue]];
                 
                 //slider view - sub-properties
                 saturationSlider.subProperties = [self addSubPropertiesFordeviceID:deviceId index:indexValue.index matchData:genericVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
@@ -246,6 +250,7 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 [saturationSliderLabelView setSelected:isSelected];
                 //previous count
                 if(self.isScene){
+//                    preValue = [saturationSlider convertToSensorValue];
                     [saturationSlider setConvertedValue:preValue];
                 }else if(buttonClickCount > 0){
                     [saturationSliderLabelView setButtoncounter:buttonClickCount isCountImageHiddn:NO];
@@ -285,7 +290,10 @@ labelAndCheckButtonView *brightnessSliderLabelView ;
                 brightnessSlider.allowToSlide = YES;
                 brightnessSlider.sensorMaxValue = 255;
                 brightnessSlider.convertedValue = 0; // to be assigned
-                brightnessSlider.backgroundColor = [UIColor grayColor];
+                int sensor_value = [huePickerView convertToSensorValue];
+                huePickerView.subProperties.matchData = @(sensor_value).stringValue ;
+                NSLog(@" sensor_value %d",sensor_value);
+                brightnessSlider.backgroundColor = [UIColor colorFromHexString:[self getColorHex:@(sensor_value).stringValue]];
                 
                 //slider view - sub-properties
                 brightnessSlider.subProperties = [self addSubPropertiesFordeviceID:deviceId index:indexValue.index matchData:genericVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
