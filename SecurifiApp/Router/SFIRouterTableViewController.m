@@ -99,6 +99,7 @@ int mii;
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     
     [self initializeNotifications];
+    self.routerSummary = nil;
     [self initializeAlmondData];
     self.local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -128,7 +129,7 @@ int mii;
 - (void)initializeRouterSummaryAndSettings {
     self.isRebooting = NO;
     self.enableDrawer = YES; //to enable navigation top left button
-    self.routerSummary = nil;
+   
 }
 
 - (void)initializeAlmondData {
@@ -160,6 +161,7 @@ int mii;
     //NSLog(@"connecton - is local: %d", self.local);
     if(!self.local){
         [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
+        
         [RouterPayload routerSummary:mii isSimulator:_isSimulator mac:self.almondMac];
     }
     
