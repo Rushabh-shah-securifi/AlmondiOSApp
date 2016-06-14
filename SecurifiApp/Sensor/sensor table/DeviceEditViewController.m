@@ -173,8 +173,18 @@ static const int xIndent = 10;
             continue;
         }
         NSString *propertyName;
-        if([Device getTypeForID:genericIndexValue.deviceID] == SFIDeviceType_DoorLock_5)
-            propertyName = [NSString stringWithFormat:@"%@ %d", genericIndexObj.groupLabel, genericIndexValue.index-4];
+        int deviceType = [Device getTypeForID:genericIndexValue.deviceID];
+        if(deviceType == SFIDeviceType_DoorLock_5 || deviceType == SFIDeviceType_ZigbeeDoorLock_28){
+            NSString *genId = genericIndexObj.ID;
+            if(![genId isEqualToString:@"-1"] && ![genId isEqualToString:@"-2"] && ![genId isEqualToString:@"-3"] && ![genId isEqualToString:@"50"]){
+                if(deviceType == SFIDeviceType_DoorLock_5)
+                    propertyName = [NSString stringWithFormat:@"%@ %d", genericIndexObj.groupLabel, genericIndexValue.index-4];
+                else
+                    propertyName = [NSString stringWithFormat:@"%@ %d", genericIndexObj.groupLabel, genericIndexValue.index-3];
+            }else
+                propertyName = genericIndexObj.groupLabel;
+        }
+        
         else
             propertyName = genericIndexObj.groupLabel;
         

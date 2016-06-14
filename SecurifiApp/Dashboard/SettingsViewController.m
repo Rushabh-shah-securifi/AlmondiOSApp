@@ -20,20 +20,20 @@
 @implementation SettingsViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    [Scroller setScrollEnabled:YES];
-    [Scroller setContentSize:CGSizeMake(320, 1000)];
-    
-    self.title = @"Almond Settings";
-    self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
-    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
-    
-    NetworkConfig = [[NSArray alloc] initWithObjects:@"DeviceMode",@"MasterDevice", nil];
-    NetworkConfig1 = [[NSArray alloc] initWithObjects:@"Slave",@"Almond_0d24", nil];
-    Preferences = [[NSArray alloc] initWithObjects:@"Language",@"TimeZone",@"Location",@"ShowTemperature", nil];
-    Preferences1 = [[NSArray alloc] initWithObjects:@"English",@"Bucharest",@"Timisoara,Romania",@"ºC", nil];
-    Notifications = [[NSArray alloc] initWithObjects:@"NetworkDevices",@"Smart home Device", nil];
-    Name = @"Almond_1880";
+//    [super viewDidLoad];
+//    [Scroller setScrollEnabled:YES];
+//    [Scroller setContentSize:CGSizeMake(320, 1000)];
+//    
+//    self.title = @"Almond Settings";
+//    self.navigationController.navigationBar.backgroundColor = [UIColor whiteColor];
+//    self.navigationController.navigationBar.barTintColor = [UIColor whiteColor];
+//    
+//    NetworkConfig = [[NSArray alloc] initWithObjects:@"DeviceMode",@"MasterDevice", nil];
+//    NetworkConfig1 = [[NSArray alloc] initWithObjects:@"Slave",@"Almond_0d24", nil];
+//    Preferences = [[NSArray alloc] initWithObjects:@"Language",@"TimeZone",@"Location",@"ShowTemperature", nil];
+//    Preferences1 = [[NSArray alloc] initWithObjects:@"English",@"Bucharest",@"Timisoara,Romania",@"ºC", nil];
+//    Notifications = [[NSArray alloc] initWithObjects:@"NetworkDevices",@"Smart home Device", nil];
+//    Name = @"Almond_1880";
     }
 
 - (void)didReceiveMemoryWarning {

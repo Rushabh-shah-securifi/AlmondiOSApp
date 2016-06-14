@@ -305,12 +305,14 @@
             if (type == SFIDevicePropertyType_LOCK_STATE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
                 s1.matchData = @"0";
+                s1.matchType = MatchType_equals;
                 s1.iconName = DT5_DOOR_LOCK_UNLOCKED;
                 s1.displayText=@"UNLOCKED";
                 s1.notificationText = NSLocalizedString(@" is Unlocked.", @" is Unlocked.");
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"255";
+                s2.matchType = MatchType_equals;
                 s2.displayText=@"LOCKED";
                 s2.iconName = DT5_DOOR_LOCK_LOCKED;
                 s2.notificationText = NSLocalizedString(@" is Locked.", @" is Locked.");
@@ -1487,14 +1489,16 @@
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"1";
+                s2.matchType = MatchType_equals;
                 s2.displayText=@"LOCKED";
-                s2.iconName = @"lock_open";//md01 was @"28_door_lock_locked";
+                s2.iconName = @"lock_close";//md01 was @"28_door_lock_locked";
                 s2.notificationText = NSLocalizedString(@" is Locked.", @" is Locked.");
                 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
                 s3.matchData = @"2";
+                s3.matchType = MatchType_equals;
                 s3.displayText=@"UNLOCKED";
-                s3.iconName = @"lock_close";//md01 was @"28_door_lock_unlocked";
+                s3.iconName = @"lock_open";//md01 was @"28_door_lock_unlocked";
                 s3.notificationText = NSLocalizedString(@" is Unlocked.", @" is Unlocked.");
                 
                 return @[s2, s3];
