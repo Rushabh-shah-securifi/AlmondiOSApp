@@ -887,6 +887,53 @@ Follow it, then login below.";
 "no_press" = "No Press";
 "press" = "Press";
 
+"sunRiseTime" = "SunRise";
+"sunSetTime" = "SunSet";
+"twilightTime" = "Twilight Time";
+"weather" = "Weather";
+"chancerain" = "Chance of Rain";
+"rain" = "Raining";
+"clear" = "Clear Sky";
+"cloudy" = "Cloudy";
+"tstorms" = "Thunder Storms";
+"chancesnow" = "Chance of Snow";
+"chanceflurries" = "Chance of Flurries";
+"chancesleet" = "Chance of Sleet";
+"chancetstorms" = "Chance of Storms";
+"flurries" = "Flurries";
+"fog" = "Fog";
+"hazy" = "Hazy";
+"mostlycloudy" = "Mostly Cloudy";
+"mostlysunny" = "Mostly Sunny";
+"nt_chanceflurries" = "Night: Chance of Flurries";
+"nt_chancerain" = "Night: Chance of Rain";
+"nt_chancesleet" = "Night: Chance of Sleet";
+"nt_chancesnow" = "Night: Chance of Snow";
+"nt_chancetstorms" = "Night: Chance of Storms";
+"nt_clear" = "Night: Clear Sky";
+"nt_cloudy" = "Night: Cloudy";
+"nt_flurries" = "Night: Flurries";
+"nt_fog" = "Night: Fog";
+"nt_hazy" = "Night: Hazy";
+"nt_mostlycloudy" = "Night: Mostly Cloudy";
+"nt_mostlysunny" = "Night: Mostly Moony";
+"nt_partlycloudy" = "Night: Partly Cloudy";
+"nt_partlysunny" = "Night: Partly Moony";
+"nt_rain" = "Night: Rain";
+"nt_sleet" = "Night: Sleet";
+"nt_snow" = "Night: Snow";
+"nt_sunny" = "Night: Moony";
+"nt_tstorms" = "Night: Thunder Storms";
+"partlycloudy" = "Partly Cloudy";
+"sleet" = "Sleet";
+"partlysunny" = "Partly Sunny";
+"snow" = "Snowing";
+"sunny" = "Sunny";
+"partlyMoony" = "Partly Moony";
+"mostlyMoony" = "Mostly Moony";
+"moony" = "Moony";
+"sunnycondition" = "Condition";
+
 /* ==================================================================== */
 
 /*

@@ -532,17 +532,7 @@
                 "Icon": "sunny",
                 "AppLabel": "sunny",
                 "Label": "Weather"
-            }
-        }
-    },
-    "-35":{
-        "Name": "WeatherCondition",
-        "Type": "Sensor",
-        "Layout": "LIST",
-        "AppLabel": "sunnycondition",
-        "DefaultIcon": "condition_icon",
-        "ExcludeFrom":"rule",
-        "Values": {
+            },
             "condition": {
                 "Icon": "condition_icon",
                 "AppLabel": "sunnycondition",

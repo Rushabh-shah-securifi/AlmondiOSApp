@@ -121,12 +121,10 @@ labelAndCheckButtonView *labelView;
     RulesDeviceNameButton *deviceButton = [[RulesDeviceNameButton alloc]initWithFrame:frame];
     [deviceButton deviceProperty:self.isTrigger deviceType:deviceType deviceName:deviceName deviceId:deviceID isScene:self.isScene];
     
-    if([deviceName isEqualToString:@"Time"]){
+    if([deviceName isEqualToString:@"Time"])
         [deviceButton addTarget:self action:@selector(TimeEventClicked:) forControlEvents:UIControlEventTouchUpInside];
-    }else if([deviceName isEqualToString:@"Network Devices"]){
+    else if([deviceName isEqualToString:@"Network Devices"]){
         [deviceButton addTarget:self action:@selector(wifiClientsClicked:) forControlEvents:UIControlEventTouchUpInside];}
-    else if([deviceName isEqualToString:@"Weather"])
-        [deviceButton addTarget:self action:@selector(onWeatherClick:) forControlEvents:UIControlEventTouchUpInside];
     else //includes mode, weather, reboot and devices
         [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.deviceListScrollView addSubview:deviceButton];
@@ -265,6 +263,8 @@ labelAndCheckButtonView *labelView;
         genericIndexValues = [RulesNestThermostat handleNestThermostat:deviceId genericIndexValues:genericIndexValues modeFilter:_isScene triggers:_triggers];
     }else if(deviceType == SFIDeviceType_HueLamp_48){
         genericIndexValues = [RulesHue handleHue:deviceId genericIndexValues:genericIndexValues modeFilter:self.isScene triggers:self.triggers];
+    }else if(deviceType == SFIDeviceType_Weather){
+        genericIndexValues =[self handleWeather:deviceId genericIndexValues:genericIndexValues triggers:self.triggers];
     }
 
     NSDictionary *genericIndexValDic = [RuleSceneUtil getIndexesDicForArray:genericIndexValues isTrigger:self.isTrigger isScene:self.isScene];
@@ -290,20 +290,59 @@ labelAndCheckButtonView *labelView;
             j++;
         }
     }
-//    int j=0;
-//    for(int i = 0; i < numberOfCells; i++){
-//        NSArray *array = [genericIndexValDic valueForKey:[NSString stringWithFormat:@"%d",i+1]];
-//        if(array!=nil && array.count>0){
-//            [self addMyButtonwithYScale:ROW_PADDING+(ROW_PADDING+frameSize)*j withDeviceIndex:array deviceId:deviceId deviceType:deviceType deviceName:deviceName];
-//            j++;
-//        }
-//    }
     CGSize scrollableSize = CGSizeMake(self.deviceIndexButtonScrollView.frame.size.width,
                                        (frameSize + ROW_PADDING )*j + ROW_PADDING +60);
     
     [self.deviceIndexButtonScrollView setContentSize:scrollableSize];
     [self.deviceIndexButtonScrollView flashScrollIndicators];
     self.deviceIndexButtonScrollView.showsVerticalScrollIndicator = YES;
+}
+
+-(NSArray*)handleWeather:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues triggers:(NSMutableArray*)triggers{
+    NSMutableArray *newGenericIndexValues = [[NSMutableArray alloc] init];
+    for(GenericIndexValue *genIndexVal in genericIndexValues){
+        GenericIndexValue *newGenericIndexVal = nil;
+        if(genIndexVal.index == 2)//condition
+            newGenericIndexVal = [self handleConditionIndex:genIndexVal triggers:triggers deviceid:deviceID];
+        if(newGenericIndexVal == nil)
+            [newGenericIndexValues addObject:genIndexVal];
+        else
+            [newGenericIndexValues addObject:newGenericIndexVal];
+    }
+    return newGenericIndexValues;
+}
+
+-(GenericIndexValue*)handleConditionIndex:(GenericIndexValue*)genericIndexValue triggers:(NSArray*)triggers deviceid:(int)deviceID{
+    GenericIndexClass *newGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexValue.genericIndex];
+    
+    NSMutableDictionary *newGenericValueDict = [NSMutableDictionary new];
+    NSDictionary *currentGenericValueDict = genericIndexValue.genericIndex.values;
+    
+    NSString *matchData = nil;
+    for(SFIButtonSubProperties *subProperty in triggers){
+        if(subProperty.deviceType == SFIDeviceType_Weather && subProperty.index == 2){
+            matchData = subProperty.matchData;
+        }
+    }
+    
+    NSString *value;
+    if(matchData == nil){
+        value = @"condition";
+    }else{
+        value = matchData;
+    }
+    
+    for(NSString *keyValue in currentGenericValueDict){
+        GenericValue *gVal = currentGenericValueDict[keyValue];
+        if([gVal.value isEqualToString:value]){
+            [newGenericValueDict setValue:gVal forKey:keyValue];
+            break;
+        }
+    }
+    
+    newGenericIndex.values = newGenericValueDict;
+    genericIndexValue.genericIndex = newGenericIndex;
+    return genericIndexValue;
 }
 
 -(BOOL)shouldDoubleFrame:(NSArray*)genericIndexVals{
