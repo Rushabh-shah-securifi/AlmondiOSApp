@@ -1,4 +1,5 @@
 PODS:
+  - ActionSheetPicker-3.0 (2.0.5)
   - ASValueTrackingSlider (0.11.2)
   - CocoaLumberjack (2.0.1):
     - CocoaLumberjack/Default (= 2.0.1)
@@ -22,6 +23,7 @@ PODS:
   - V8HorizontalPickerView (1.0.0)
 
 DEPENDENCIES:
+  - ActionSheetPicker-3.0
   - ASValueTrackingSlider
   - CocoaLumberjack
   - Colours (~> 5.5)
@@ -36,6 +38,7 @@ DEPENDENCIES:
   - V8HorizontalPickerView (~> 1.0)
 
 SPEC CHECKSUMS:
+  ActionSheetPicker-3.0: 8312778b6815578e6a86d630fbcf31dc94c534e7
   ASValueTrackingSlider: 45c9f78252da60de01d8f2afe869aaf90dd978d9
   CocoaLumberjack: 019d1361244274a6138c788c6cb80baabc13fb8f
   Colours: c186cc76afa2ca86f5ca5e68f610f9be17b48337
@@ -49,4 +52,6 @@ SPEC CHECKSUMS:
   UIImage-ResizeMagick: f08c2d14d1e8a5f0b402185408785540562f2fe7
   V8HorizontalPickerView: 6451e226ea7939c3499cefbbc0dcab85c941c28c
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 2eadd80d7c2f257a1828498b58efaf827bb0fd47
+
+COCOAPODS: 1.0.1

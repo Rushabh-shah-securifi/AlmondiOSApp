@@ -26,6 +26,7 @@
 @property(nonatomic)UIImageView *crossButtonImage;
 @property(nonatomic)NSString *dimValue;
 @property(nonatomic)NSString *prefix;
+@property(nonatomic)BOOL isWeather;
 
 - (void)changeImageColor:(UIColor*)color;
 - (void)setupValues:(UIImage*)iconImage topText:(NSString*)topText bottomText:(NSString *)bottomText isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimButton insideText:(NSString *)insideText isScene:(BOOL)isScene;

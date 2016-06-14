@@ -25,7 +25,8 @@
 #import "SFIPickerIndicatorView1.h"
 #import "ValueFormatter.h"
 #import "SFISubPropertyBuilder.h"
-
+#import "WeatherPicker.h"
+#import "ActionSheetPicker.h"
 #import "RuleButton.h"
 #import "DimmerButton.h"
 #import "SwitchButton.h"
@@ -99,7 +100,7 @@ labelAndCheckButtonView *labelView;
     if(self.isTrigger && !self.isScene){
         xVal = [self addDeviceName:@"Time" deviceID:0 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
         xVal = [self addDeviceName:@"Network Devices" deviceID:0 deviceType:SFIDeviceType_WIFIClient xVal:xVal];
-         //        xVal = [self addDeviceName:@"Weather" deviceID:-1 deviceType:SFIDeviceType_Weather xVal:xVal];
+                 xVal = [self addDeviceName:@"Weather" deviceID:-1 deviceType:SFIDeviceType_Weather xVal:xVal];
     }
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     for(Device *device in toolkit.devices){
@@ -124,8 +125,8 @@ labelAndCheckButtonView *labelView;
         [deviceButton addTarget:self action:@selector(TimeEventClicked:) forControlEvents:UIControlEventTouchUpInside];
     }else if([deviceName isEqualToString:@"Network Devices"]){
         [deviceButton addTarget:self action:@selector(wifiClientsClicked:) forControlEvents:UIControlEventTouchUpInside];}
-//    else if([deviceName isEqualToString:@"Weather"])
-//        [deviceButton addTarget:self action:@selector(onWeatherClick:) forControlEvents:UIControlEventTouchUpInside];
+    else if([deviceName isEqualToString:@"Weather"])
+        [deviceButton addTarget:self action:@selector(onWeatherClick:) forControlEvents:UIControlEventTouchUpInside];
     else //includes mode, weather, reboot and devices
         [deviceButton addTarget:self action:@selector(onDeviceButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.deviceListScrollView addSubview:deviceButton];
@@ -179,12 +180,37 @@ labelAndCheckButtonView *labelView;
 }
 
 
-//-(void)onWeatherClick:(RulesDeviceNameButton*)weatherBtn{
-//    self.currentClickedButton = weatherBtn;
-//    [self resetViews];
-//    [self toggleHighlightForDeviceNameButton:weatherBtn];
-//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-//}
+-(void)onWeatherClick:(RulesDeviceNameButton*)weatherBtn{
+    self.currentClickedButton = weatherBtn;
+    [self resetViews];
+    [self toggleHighlightForDeviceNameButton:weatherBtn];
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+//    WeatherPicker *picker = [[WeatherPicker alloc]init];//WithFrame:CGRectMake(0, 130, self.parentView.frame.size.width, self.parentView.frame.size.height)];
+////    picker.backgroundColor = [UIColor clearColor];
+////    [self.parentView addSubview : picker];
+//    picker.parentView = self.parentView;
+//    [picker createPickerView];
+    UIView *pickerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0 , self.deviceListScrollView.frame.size.width, 10)];
+    [self.parentView addSubview:pickerView];
+    NSArray *colors = [NSArray arrayWithObjects:@"Red", @"Green", @"Blue", @"Orange", nil];
+    
+    NSArray *rows = @[@[@"Day", @"Night"],@[@"C", @"Db", @"D", @"Eb", @"E", @"F", @"Gb", @"G", @"Ab", @"A", @"Bb", @"B"]];
+    NSArray *initialSelection = @[@2, @4];
+    [ActionSheetMultipleStringPicker showPickerWithTitle:@"Select scale"
+                                                    rows:rows
+                                        initialSelection:initialSelection
+                                               doneBlock:^(ActionSheetMultipleStringPicker *picker,
+                                                           NSArray *selectedIndexes,
+                                                           NSArray *selectedValues) {
+                                                   NSLog(@"%@", selectedIndexes);
+                                                   NSLog(@"%@", [selectedValues componentsJoinedByString:@", "]);
+                                               }
+                                             cancelBlock:^(ActionSheetMultipleStringPicker *picker) {
+                                                 NSLog(@"picker = %@", picker);
+                                             } origin:(UIView *)pickerView];
+    // You can also use self.view if you don't have a sender
+    
+}
 
 -(void)addClientNameLabel:(NSString*)clientName yScale:(int)yScale{
     UILabel *clientNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, yScale-15, self.parentView.frame.size.width, 14)];
@@ -1014,6 +1040,7 @@ labelAndCheckButtonView *labelView;
     NSLog(@" g.index id %@",genericIndexValue.genericIndex.ID);
     
 }
+
 
 
 @end

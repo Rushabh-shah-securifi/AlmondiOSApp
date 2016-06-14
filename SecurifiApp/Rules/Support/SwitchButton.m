@@ -103,8 +103,8 @@
         if(isTrigger)
             [self addBottomText:bottomText x:0 y:self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding width:self.frame.size.width height:textHeight];
         
-        if(topText.length >0 || !isTrigger){
-            if(self.isTrigger && !self.isScene)
+        if(topText.length >0 || !isTrigger ){
+            if((self.isTrigger || self.isWeather) && !self.isScene)
                 self.bgView.backgroundColor = [SFIColors ruleBlueColor];
             else if(!self.isTrigger || self.isScene)
                 self.bgView.backgroundColor = [SFIColors ruleOrangeColor];

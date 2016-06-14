@@ -49,6 +49,7 @@
     self.isTrigger = isTrigger;
     self.dimValue = text;
     self.backgroundColor = [UIColor clearColor];
+   
     if(self.isTrigger && !isScene){
         self.bgView = [[UIView alloc] initWithFrame:CGRectMake(65,0 , 65, 60)];
         lblMain = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 64 ,60)];

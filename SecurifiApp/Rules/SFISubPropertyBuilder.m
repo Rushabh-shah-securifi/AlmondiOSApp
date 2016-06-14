@@ -43,6 +43,8 @@
 #import "GenericValue.h"
 #import "AlmondJsonCommandKeyConstants.h"
 
+#import "WeatherRuleButton.h"
+
 @interface SFISubPropertyBuilder()
 
 @end
@@ -303,34 +305,40 @@ UILabel *topLabel;
 
 + (void)drawButton:(SFIButtonSubProperties*)subProperties isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString *)bottomText{
     if(isTrigger){
-        SwitchButton *switchButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, entryBtnWidth, entryBtnHeight)];
-        switchButton.isTrigger = isTrigger;
+        WeatherRuleButton *weatherButton = [[WeatherRuleButton alloc]initWithFrame:CGRectMake(xVal, 5, 42, 42)];
         
-        if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
-            isDimmbutton = NO;//for we are putting images of hueLamp
-        //NSLog(@"subProperties.iconName %@",subProperties.iconName);
+//        SwitchButton *switchButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, entryBtnWidth, entryBtnHeight)];
+//        switchButton.isTrigger = isTrigger;
+//        
+//        if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
+//            isDimmbutton = NO;//for we are putting images of hueLamp
+//        //NSLog(@"subProperties.iconName %@",subProperties.iconName);
         NSString *insideDisplayText = (isDimmbutton && !isScene) ? [NSString stringWithFormat:@"%@%@",[subProperties getcondition],subProperties.displayText]:subProperties.displayText ;
-        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:bottomText isTrigger:isTrigger isDimButton:isDimmbutton insideText:insideDisplayText isScene:isScene];
-        switchButton.subProperties = subProperties;
-        switchButton.inScroll = YES;
-        switchButton.userInteractionEnabled = YES;
-        
-        [switchButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        if(!isActive && isCrossHidden)
-            switchButton.bgView.backgroundColor = [SFIColors ruleGraycolor];
-        xVal += entryBtnWidth+entryPadding;
-        [switchButton setButtonCross:isCrossHidden];
-        switchButton.userInteractionEnabled = disableUserInteraction;
-        
-        if(subProperties.deviceType == SFIDeviceType_HueLamp_48){
-            if(subProperties.index == 2)
-                [switchButton changeImageColor:[UIColor whiteColor]];
-            else if(subProperties.index == 3)
-                [switchButton changeImageColor:[UIColor colorFromHexString:[self getColorHex:subProperties.matchData]]];
-        }
-        
-        [triggersActionsScrollView addSubview:switchButton];
-        
+        [weatherButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:subProperties.deviceName displayText:@"abc" isDimmer:isDimmbutton bottomText:bottomText insideText:insideDisplayText isHideCross:isCrossHidden];
+        weatherButton.subProperties = subProperties;
+        weatherButton.switchButtonRight.subProperties = subProperties;
+        [weatherButton.switchButtonRight addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+//        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:bottomText isTrigger:isTrigger isDimButton:isDimmbutton insideText:insideDisplayText isScene:isScene];
+//        switchButton.subProperties = subProperties;
+//        switchButton.inScroll = YES;
+//        switchButton.userInteractionEnabled = YES;
+//        
+//        [switchButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+//        if(!isActive && isCrossHidden)
+//            switchButton.bgView.backgroundColor = [SFIColors ruleGraycolor];
+//        xVal += entryBtnWidth+entryPadding;
+//        [switchButton setButtonCross:isCrossHidden];
+//        switchButton.userInteractionEnabled = disableUserInteraction;
+//        
+//        if(subProperties.deviceType == SFIDeviceType_HueLamp_48){
+//            if(subProperties.index == 2)
+//                [switchButton changeImageColor:[UIColor whiteColor]];
+//            else if(subProperties.index == 3)
+//                [switchButton changeImageColor:[UIColor colorFromHexString:[self getColorHex:subProperties.matchData]]];
+//        }
+//        
+        [triggersActionsScrollView addSubview:weatherButton];
+//
     }
     else{
         PreDelayRuleButton *switchButton = [[PreDelayRuleButton alloc] initWithFrame:CGRectMake(xVal, 5, rulesButtonsViewWidth, rulesButtonsViewHeight)];
