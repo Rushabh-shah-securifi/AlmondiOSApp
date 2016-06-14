@@ -12,11 +12,13 @@
 #import "SFIMessageViewController.h"
 #import "RulesTableViewController.h"
 #import "DeviceListController.h"
+#import "MainViewController.h"
 
 #define TAB_BAR_DEVICES @"Devices"
 #define TAB_BAR_ROUTER @"Router"
 #define TAB_BAR_SCENES @"Scenes"
 #define TAB_BAR_RULES @"Rules"
+#define TAB_BAR_DASHBOARD @"Dashboard"
 
 typedef NS_ENUM(int, TabBarMode) {
     TabBarMode_cloud = 1,
@@ -31,6 +33,7 @@ typedef NS_ENUM(int, TabBarMode) {
 @property(nonatomic) UIViewController *routerTab;
 @property(nonatomic) UIViewController *scenesTab;
 @property(nonatomic) UIViewController *rulesTab;
+@property(nonatomic) UIViewController *dashboardTab;
 
 @property(nonatomic) UIViewController *scoreboardTab;
 @property(nonatomic) BOOL isDismissed;
@@ -145,6 +148,7 @@ typedef NS_ENUM(int, TabBarMode) {
     
     if (configurator.enableScenes) {
         return @[
+                 self.dashboardTab,
                  self.sensorTab,
                  self.scenesTab,
                  self.rulesTab,
@@ -154,6 +158,7 @@ typedef NS_ENUM(int, TabBarMode) {
     }
     else {
         return @[
+                 self.dashboardTab,
                  self.sensorTab,
                  self.routerTab,
                  self.rulesTab,
@@ -164,6 +169,7 @@ typedef NS_ENUM(int, TabBarMode) {
 // tabs to be show when an Almond is using local connection
 - (NSArray *)localTabs {
     return @[
+             self.dashboardTab,
              self.sensorTab,
              self.scenesTab,
              self.rulesTab,
@@ -245,6 +251,19 @@ typedef NS_ENUM(int, TabBarMode) {
     }
     return _sensorTab;
 }
+
+- (UIViewController *)dashboardTab {
+    if (!_dashboardTab) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainDashboard" bundle:nil];
+        MainViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"MainViewController"];
+        UIImage *icon = [UIImage imageNamed:@"home_icon1"];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
+        nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_DASHBOARD image:icon selectedImage:icon];
+        self.dashboardTab = nav;
+    }
+    return _dashboardTab;
+}
+
 
 - (UIViewController *)messageTab {
     if (!_messageTab) {
