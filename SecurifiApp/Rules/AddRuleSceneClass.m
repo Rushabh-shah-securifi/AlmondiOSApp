@@ -72,6 +72,10 @@
     else if (button.deviceType == SFIDeviceType_WIFIClient && button.selected){
         return button;
     }
+    else if(button.deviceType == SFIDeviceType_WIFIClient && button.selected){
+        NSLog(@"button.deviceType  %d",button.deviceType );
+        return button;
+    }
     return nil;
 }
 
@@ -97,6 +101,7 @@
                 [self.addTriggerAction TimeEventClicked:deviceButton];
             }
         }else{
+            NSLog(@"deviceButton type %d",deviceButton.deviceType);
             [self.addTriggerAction onDeviceButtonClick:deviceButton];
         }
     }
