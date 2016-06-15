@@ -749,7 +749,7 @@ labelAndCheckButtonView *labelView;
     }
     else if(deviceType == SFIDeviceType_Weather){
         for(SFIButtonSubProperties *switchButtonProperty in self.triggers){
-            if(switchButtonProperty.index == buttonIndex){
+            if(switchButtonProperty.deviceType == SFIDeviceType_Weather && switchButtonProperty.index == buttonIndex){
                 [toBeDeletedSubProperties addObject:switchButtonProperty];
             }
         }
@@ -829,7 +829,7 @@ labelAndCheckButtonView *labelView;
                     [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
             }
                 else{
-                    [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
+                    [self.delegate redrawDeviceIndexView:indexSwitchButton.subProperties.deviceId clientEvent:@""];
                 }
             
         }else{
@@ -856,7 +856,7 @@ labelAndCheckButtonView *labelView;
         }];
         for (NSString *key in sortedKeys) {
             GenericValue *gVal = [genericIndexObj.values valueForKey:key];
-            if([key rangeOfString:@"nt_" options:NSCaseInsensitiveSearch].location != NSNotFound)
+            if([key rangeOfString:@"nt_" options:NSCaseInsensitiveSearch].location != NSNotFound || [key isEqualToString:@"condition"])
                 continue;
             [displayArr addObject:gVal.displayText];
             [valueArr addObject:key];
