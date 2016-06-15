@@ -228,6 +228,7 @@ labelAndCheckButtonView *labelView;
     deviceBtn.selected = YES;
     //toggeling
     [self toggleHighlightForDeviceNameButton:deviceBtn];
+    
     [self createDeviceIndexesLayoutForDeviceId:deviceBtn.deviceId deviceType:deviceBtn.deviceType deviceName:deviceBtn.deviceName];
 }
 
@@ -316,7 +317,7 @@ labelAndCheckButtonView *labelView;
 -(GenericIndexValue*)handleConditionIndex:(GenericIndexValue*)genericIndexValue triggers:(NSArray*)triggers deviceid:(int)deviceID{
     GenericIndexClass *newGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexValue.genericIndex];
     
-    NSMutableDictionary *newGenericValueDict = [NSMutableDictionary new];
+    
     NSDictionary *currentGenericValueDict = genericIndexValue.genericIndex.values;
     
     NSString *matchData = nil;
@@ -335,8 +336,11 @@ labelAndCheckButtonView *labelView;
         value = matchData;
     }
     
+    NSMutableDictionary *newGenericValueDict = [NSMutableDictionary new];
+    
     for(NSString *keyValue in currentGenericValueDict){
         GenericValue *gVal = currentGenericValueDict[keyValue];
+        NSLog(@"gval value: %@, subproperty value: %@", gVal.value, matchData);
         if([gVal.value isEqualToString:value]){
             [newGenericValueDict setValue:gVal forKey:keyValue];
             break;
@@ -474,7 +478,8 @@ labelAndCheckButtonView *labelView;
     dimbtn.maxValue = genericIndexVal.genericIndex.formatter.max;
     dimbtn.factor=genericIndexVal.genericIndex.formatter.factor;
     dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexVal.index matchData:gVal.iconText andEventType:nil deviceName:deviceName deviceType:deviceType];
-    
+    if(deviceType == SFIDeviceType_Weather)
+        dimbtn.subProperties.type = @"WeatherTrigger";
 //    if(self.isTrigger){
 //        dimbtn.dimbutton.minValue = genericIndexVal.genericIndex.formatter.min;
 //        dimbtn.dimbutton.maxValue = genericIndexVal.genericIndex.formatter.max;
@@ -573,7 +578,9 @@ labelAndCheckButtonView *labelView;
     
     if(deviceType == SFIDeviceType_REBOOT_ALMOND){
         btnBinarySwitchOn.subProperties.type = @"NetworkResult";
-    }
+    }else if(deviceType == SFIDeviceType_Weather)
+        btnBinarySwitchOn.subProperties.type = @"WeatherTrigger";
+        
     [btnBinarySwitchOn addTarget:self action:@selector(onSwitchButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     if(gVal.icon != nil)
     [btnBinarySwitchOn setupValues:[UIImage imageNamed:gVal.icon] topText:nil bottomText:gVal.displayText isTrigger:self.isTrigger isDimButton:NO insideText:gVal.displayText isScene:self.isScene];
@@ -740,6 +747,13 @@ labelAndCheckButtonView *labelView;
         }
 
     }
+    else if(deviceType == SFIDeviceType_Weather){
+        for(SFIButtonSubProperties *switchButtonProperty in self.triggers){
+            if(switchButtonProperty.index == buttonIndex){
+                [toBeDeletedSubProperties addObject:switchButtonProperty];
+            }
+        }
+    }
     else{
         for(SFIButtonSubProperties *switchButtonProperty in self.triggers){
             NSLog(@"IndexID : %d,devicetype = %d, matchData %@ dviceID %d",switchButtonProperty.index,switchButtonProperty.deviceType,switchButtonProperty.matchData,switchButtonProperty.deviceId );
@@ -810,12 +824,12 @@ labelAndCheckButtonView *labelView;
         }else if(self.isScene && indexSwitchButton.subProperties.deviceType == SFIDeviceType_HueLamp_48 && indexSwitchButton.subProperties.index == 2){
             [self.delegate redrawDeviceIndexView:indexSwitchButton.subProperties.deviceId clientEvent:@""];
         }else if(indexSwitchButton.subProperties.deviceType == SFIDeviceType_Weather){
-                if (indexSwitchButton.selected)
-                    [self presentWeatherPicker:indexSwitchButton.subProperties];
-                else{
-                    NSLog(@"trigger arr count %ld",self.triggers.count);
+            if (indexSwitchButton.selected){
+                    [self presentWeatherPicker:indexSwitchButton];
                     [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
-                    
+            }
+                else{
+                    [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
                 }
             
         }else{
@@ -826,7 +840,8 @@ labelAndCheckButtonView *labelView;
     [self setActionButtonCount:indexSwitchButton isSlider:NO];
 }
 
--(void)presentWeatherPicker:(SFIButtonSubProperties *)subproperties{
+-(void)presentWeatherPicker:(SwitchButton *)indexSwitchButton{
+    SFIButtonSubProperties *subproperties = indexSwitchButton.subProperties;
     NSArray *allKeys = [[NSArray alloc]init];
     NSMutableArray *displayArr = [[NSMutableArray alloc]init];
     NSMutableArray *valueArr = [[NSMutableArray alloc]init];
@@ -834,7 +849,6 @@ labelAndCheckButtonView *labelView;
     NSLog(@"index wth : %d",subproperties.index);
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     if(subproperties.index == 2){
-        
         GenericIndexClass *genericIndexObj = [toolkit.genericIndexes valueForKey:@"-34"];
         allKeys = genericIndexObj.values.allKeys;
         NSArray *sortedKeys = [allKeys sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
@@ -850,60 +864,69 @@ labelAndCheckButtonView *labelView;
         rows = @[displayArr,@[@"Day",@"Night"]];
     }
     if(subproperties.index == 1){
-        
         for(int i=0;i<60;i++){
             [displayArr addObject:@(i).stringValue];
         }
         rows = @[displayArr,@[@"Before",@"After"]];
     }
+//    valueArr enumerateObjectsUsingBlock:<#^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)block#>
+    NSLog(@"subproperties match data %@",subproperties.matchData);
     NSString *title = (subproperties.index == 2)?@"Condition":@"Minutes";
-    NSArray *initialSelection = @[@1,@4];
+    NSArray *initialSelection = @[@0,@0];
     [ActionSheetMultipleStringPicker showPickerWithTitle:title
                                                     rows:rows
                                         initialSelection:initialSelection
                                                doneBlock:^(ActionSheetMultipleStringPicker *picker,
                                                            NSArray *selectedIndexes,
                                                            NSArray *selectedValues) {
-                                                   NSLog(@"%@", selectedIndexes);// array of NSString
-                                                   NSLog(@"%@", [selectedValues componentsJoinedByString:@", "]);
-                                                   NSString *pos = [selectedIndexes objectAtIndex:1];
-                                                   NSString *posIndex = [selectedIndexes objectAtIndex:0];
-//                                                   NSLog(@"value : %@",[valueArr objectAtIndex:[pos integerValue]]);
-                                                   
-                                                   if([pos integerValue] == 1)//night and after
-                                                   {   if(subproperties.index == 2)
-                                                            subproperties.matchData = [NSString stringWithFormat:@"nt_%@",[valueArr objectAtIndex:[posIndex integerValue]]];
-                                                       else
-                                                           subproperties.delay = [displayArr objectAtIndex:[posIndex integerValue]];
-                                                   }
-                                                   else{// day and before
-                                                       if(subproperties.index == 2)
-                                                           subproperties.matchData = [valueArr objectAtIndex:[posIndex integerValue]];
-                                                       else{// negative value for before
-                                                           NSLog(@"displayArr %@",displayArr);
-                                                           subproperties.delay =[NSString stringWithFormat:@"-%@",[displayArr objectAtIndex:[posIndex integerValue]]];
-                                                       }
-                                                   }
-//                                                   [self addObject:subproperties];
-                                                   for(SFIButtonSubProperties *properties in self.triggers){
-                                                       if(properties.deviceType == SFIDeviceType_Weather && (properties.index == 1 || properties.index == 2))
-                                                           properties.matchData = subproperties.matchData;
-//                                                       properties.deviceType = SFIDeviceType_Weather;
-                                                   }
-//                                                   [self updateTriggerListFor:subproperties];
-                                                   [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
-                                                   [self.delegate redrawDeviceIndexView:subproperties.deviceId clientEvent:@""];
-                                                   NSLog(@"matchData %@",subproperties.matchData);
-                                                   NSLog(@"delay  %@",subproperties.delay);
+                                                   [self onDoneButtonClick:selectedIndexes values:selectedValues property:subproperties display:displayArr values:valueArr];
                                                }
                                              cancelBlock:^(ActionSheetMultipleStringPicker *picker) {
+                                                 [self removeTriggerIndex:subproperties.index buttonId:subproperties.deviceId deviceType:indexSwitchButton.subProperties.deviceType matchData:subproperties.matchData];
+                                                 [self.delegate redrawDeviceIndexView:subproperties.deviceId clientEvent:@""];
+                                                 indexSwitchButton.selected = NO;
                                                  NSLog(@"picker = %@", picker);
                                              } origin:(UIView *)self.parentView];
     NSLog(@"done");
 
 }
 
+-(void)onDoneButtonClick:(NSArray*)selectedIndexes values:(NSArray*)selectedValues property:(SFIButtonSubProperties*)subproperties display:(NSArray*)displayArr values:(NSArray*)valueArr{
+    NSLog(@"%@", selectedIndexes);// array of NSString
+    NSLog(@"%@", [selectedValues componentsJoinedByString:@", "]);
+    NSString *pos = [selectedIndexes objectAtIndex:1];
+    NSString *posIndex = [selectedIndexes objectAtIndex:0];
+    NSLog(@"subproperty index: %d", subproperties.index);
+    if([pos integerValue] == 1)//night and after
+    {
+        if(subproperties.index == 2)
+            subproperties.matchData = [NSString stringWithFormat:@"nt_%@",[valueArr objectAtIndex:[posIndex integerValue]]];
+        else
+            subproperties.delay = [displayArr objectAtIndex:[posIndex integerValue]];
+    }
+    else{// day and before
+        if(subproperties.index == 2)
+            subproperties.matchData = [valueArr objectAtIndex:[posIndex integerValue]];
+        else{// negative value for before
+            NSLog(@"displayArr %@",displayArr);
+            subproperties.delay =[NSString stringWithFormat:@"-%@",[displayArr objectAtIndex:[posIndex integerValue]]];
+        }
+    }
+    [self updateWeatherMatchData:subproperties];
+    
+    [self.delegate redrawDeviceIndexView:subproperties.deviceId clientEvent:@""];
 
+}
+
+-(void)updateWeatherMatchData:(SFIButtonSubProperties*)subproperties{
+    for(SFIButtonSubProperties *properties in self.triggers){
+        if(properties.deviceType == SFIDeviceType_Weather && (properties.index == subproperties.index))
+        {
+            properties.matchData = subproperties.matchData;
+            properties.deviceType = SFIDeviceType_Weather;
+        }
+    }
+}
 #pragma mark layoutType
 -(BOOL)isTextLayout:(NSString*)genericLayout{
     
