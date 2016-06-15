@@ -70,6 +70,7 @@ int xVal = 20;
 UILabel *topLabel;
 
 + (void)createEntryForView:(UIScrollView *)topScrollView indexScrollView:(UIScrollView*)indexScrollView parentView:(UIView*)view parentClass:(AddRuleSceneClass*)parentClass triggers:(NSMutableArray *)triggersList actions:(NSMutableArray *)actionsList isCrossButtonHidden:(BOOL)isHidden isRuleActive:(BOOL)isRuleActive isScene:(BOOL)isSceneFlag{
+    NSLog(@"createEntryForView");
     delayPicker = [DelayPicker new];
     toolkit = [SecurifiToolkit sharedInstance];
     SFIAlmondPlus *plus = [toolkit currentAlmond];
@@ -145,12 +146,12 @@ UILabel *topLabel;
             lastImageButton=[self buildTime:buttonProperties isTrigger:isTrigger positionId:positionId];
             positionId++;
         }else{
-            //NSLog(@"buttoon devicetype %d",buttonProperties.deviceType);
+            NSLog(@"Subproperty: devicetype %d, index: %d, value: %@",buttonProperties.deviceType, buttonProperties.index, buttonProperties.matchData);
             NSArray *genericIndexValues = [self getDeviceIndexes:buttonProperties isTrigger:isTrigger];
-            //NSLog(@"genericIndexValues count %ld",(unsigned long)genericIndexValues.count);
+            NSLog(@"genericIndexValues count %ld",(unsigned long)genericIndexValues.count);
             if(genericIndexValues == nil || genericIndexValues.count<=0)
                 continue;
-            //NSLog(@"button property: %@, genericindexvalues: %@ valid entry %d", buttonProperties, genericIndexValues,buttonProperties.valid);
+            NSLog(@"button property: %@, genericindexvalues: %@ valid entry %d", buttonProperties, genericIndexValues,buttonProperties.valid);
             lastImageButton= [self buildEntry:buttonProperties positionId:positionId genericIndexValues:genericIndexValues isTrigger:isTrigger];
             //NSLog(@"position id :: %d",positionId);
             //NSLog(@"lastImageButton %@",lastImageButton);
@@ -166,50 +167,18 @@ UILabel *topLabel;
         [lastImageButton setImage:lastImage replace:YES];
     }
 }
-+(BOOL)getDeviceExcludeMode:(int)deviceID matchData:(NSString*)matchData{
-    if(deviceID == 1 && ([matchData isEqualToString:@"home"] || [matchData isEqualToString:@"away"]))
-        return YES;
-    else if([Device getDeviceForID:deviceID] ==nil){
-        return YES;
-    }
-    return  NO;
-}
-
-+(BOOL)isDeviceUnknown:(SFIButtonSubProperties*)properties{
-    if([properties.eventType isEqualToString:@"TimeTrigger"]
-       ||[properties.eventType isEqualToString:@"AlmondModeUpdated"]
-       ||[properties.type isEqualToString:@"NetworkResult"]
-       )
-        return NO;
-    else if([properties.type isEqualToString:@"WeatherTrigger"]){
-        return YES;
-    }
-    else if([properties.eventType isEqualToString:@"ClientJoined"] || [properties.eventType isEqualToString:@"ClientLeft"]){
-        if([Client findClientByMAC:properties.matchData] == NO)
-            return YES;
-        
-    }
-    else if([Device getDeviceForID:properties.deviceId] == nil)
-        return YES;
-    return NO;
-}
 
 + (SwitchButton *)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId genericIndexValues:(NSArray *)genericIndexValues isTrigger:(BOOL)isTrigger{
     //NSLog(@"buildEntry: potionID %d,%@",positionId ,buttonProperties.eventType);
     if((buttonProperties.valid == NO && ![buttonProperties.eventType isEqualToString:@"AlmondModeUpdated"])|| [self isDeviceUnknown:buttonProperties]){
-        if([buttonProperties.type isEqualToString:@"WeatherTrigger"]){
-            return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"weather_white" text:@"Weather" isTrigger:isTrigger isDimButton:NO bottomText:@""];
-        }
-        else{
-            buttonProperties.deviceName = @"UnKnown Device";
-            return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"default_device" text:@"Device not Found" isTrigger:isTrigger isDimButton:NO bottomText:@""];
-        }
+        buttonProperties.deviceName = @"UnKnown Device";
+        return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"default_device" text:@"Device not Found" isTrigger:isTrigger isDimButton:NO bottomText:@""];
     }
     SwitchButton * imageButton =nil;
     for(GenericIndexValue *indexValue in genericIndexValues){
         //NSLog(@"indexValue.deviceId %d",indexValue.deviceID);
         GenericIndexClass *genericIndex = indexValue.genericIndex;
-//        GenericValue *selectedValue = indexValue.genericValue;
+        //GenericValue *selectedValue = indexValue.genericValue;
         //NSLog(@"genericIndexValues %@ ,%@,%@",genericIndexValues,buttonProperties.matchData,buttonProperties.displayText);
         
         NSDictionary *genericValueDic;
@@ -218,9 +187,9 @@ UILabel *topLabel;
         }else{
             genericValueDic = genericIndex.values;
         }
-        //NSLog(@"genericIndex.Id %@",genericIndex.ID);
+        NSLog(@"genericIndex.Id %@",genericIndex.ID);
         NSArray *genericValueKeys = genericValueDic.allKeys;
-        //NSLog(@"indexValue.index %d == %d",indexValue.index,buttonProperties.index);
+        NSLog(@"genericindex %d == subpropertyindex %d",indexValue.index,buttonProperties.index);
         if (indexValue.index == buttonProperties.index) {
             if([buttonProperties.matchData isEqualToString:@"toggle"])
             {
@@ -237,7 +206,7 @@ UILabel *topLabel;
                     NSString *text;
                     if(isDimButton){
                     buttonProperties.displayedData = [NSString stringWithFormat:@"%d",(int)ceil([buttonProperties.matchData intValue]*(genericIndex.formatter.factor == 0?1.0:genericIndex.formatter.factor))];
-                         //NSLog(@"buttonProperties.displayedData %@", buttonProperties.displayedData);
+                         NSLog(@"buttonProperties.displayedData %@", buttonProperties.displayedData);
                         text = [NSString stringWithFormat:@"%@%@", buttonProperties.displayedData,(genericIndex.formatter.units == nil?@"":genericIndex.formatter.units)];
                          //NSLog(@"is dim button text %@",text);
                         if(buttonProperties.deviceType == SFIDeviceType_HueLamp_48){
@@ -246,8 +215,7 @@ UILabel *topLabel;
                     }
                     else
                         text = gVal.displayText;
-                    
-                    
+
                     //NSLog(@"bottomText  %@ gval.icon %@",text,gVal.icon);
                     NSString *icon = gVal.icon == nil?genericIndex.icon:gVal.icon;
                     //NSLog(@"icon %@",icon);
@@ -259,6 +227,25 @@ UILabel *topLabel;
         }
     }
     return imageButton;
+}
+
++(BOOL)isDeviceUnknown:(SFIButtonSubProperties*)properties{
+    if([properties.eventType isEqualToString:@"TimeTrigger"]
+       ||[properties.eventType isEqualToString:@"AlmondModeUpdated"]
+       ||[properties.type isEqualToString:@"NetworkResult"]
+       )
+        return NO;
+    else if([properties.type isEqualToString:@"WeatherTrigger"]){
+        return NO;
+    }
+    else if([properties.eventType isEqualToString:@"ClientJoined"] || [properties.eventType isEqualToString:@"ClientLeft"]){
+        if([Client findClientByMAC:properties.matchData] == NO)
+            return YES;
+        
+    }
+    else if([Device getDeviceForID:properties.deviceId] == nil)
+        return YES;
+    return NO;
 }
 
 +(NSDictionary*)formatterDict:(GenericIndexClass*)genericIndex{
@@ -295,50 +282,60 @@ UILabel *topLabel;
 }
 
 + (NSArray*)getDeviceIndexes:(SFIButtonSubProperties *)properties isTrigger:(BOOL)isTrigger{
-    //NSLog(@"before propertiesid: %d, properties type: %d, matchdata: %@ , eventTYpe %@", properties.deviceId, properties.deviceType, properties.matchData,properties.eventType);
-    
+    NSLog(@"before propertiesid: %d, properties type: %d, matchdata: %@ , eventTYpe %@", properties.deviceId, properties.deviceType, properties.matchData,properties.eventType);
+
     [self getDeviceTypeFor:properties];
     
-    //NSLog(@"propertiesid: %d, properties type: %d, matchdata: %@", properties.deviceId, properties.deviceType, properties.matchData);
+    NSLog(@"propertiesid: %d, properties type: %d, matchdata: %@, index: %d", properties.deviceId, properties.deviceType, properties.matchData, properties.index);
     return [RuleSceneUtil getGenericIndexValueArrayForID:properties.deviceId type:properties.deviceType isTrigger:isTrigger isScene:isScene triggers:triggers action:actions];
 }
 
 + (void)drawButton:(SFIButtonSubProperties*)subProperties isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString *)bottomText{
     if(isTrigger){
-        WeatherRuleButton *weatherButton = [[WeatherRuleButton alloc]initWithFrame:CGRectMake(xVal, 5, 42, 42)];
+//        WeatherRuleButton *weatherButton = [[WeatherRuleButton alloc]initWithFrame:CGRectMake(xVal, 5, 42, 42)];
         
-//        SwitchButton *switchButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, entryBtnWidth, entryBtnHeight)];
-//        switchButton.isTrigger = isTrigger;
-//        
-//        if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
-//            isDimmbutton = NO;//for we are putting images of hueLamp
-//        //NSLog(@"subProperties.iconName %@",subProperties.iconName);
+        SwitchButton *switchButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, entryBtnWidth, entryBtnHeight)];
+        switchButton.isTrigger = isTrigger;
+        
+        NSString *toptext = subProperties.deviceName;
+        if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
+            isDimmbutton = NO;//for we are putting images of hueLamp
+        else if(subProperties.deviceType == SFIDeviceType_Weather && subProperties.index == 1){
+            NSLog(@"delay: %@", subProperties.delay);
+            toptext = [NSString stringWithFormat:@"%@ %@",toptext, bottomText];
+            if(subProperties.delay.integerValue != 0){
+                NSString *suffix = (subProperties.delay.integerValue > 0)? @"After": @"Before";
+                
+                bottomText = [NSString stringWithFormat:@"%@ Mins %@ %@", subProperties.delay, suffix, bottomText];
+            }
+        }
+        //NSLog(@"subProperties.iconName %@",subProperties.iconName);
         NSString *insideDisplayText = (isDimmbutton && !isScene) ? [NSString stringWithFormat:@"%@%@",[subProperties getcondition],subProperties.displayText]:subProperties.displayText ;
-        [weatherButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:subProperties.deviceName displayText:@"abc" isDimmer:isDimmbutton bottomText:bottomText insideText:insideDisplayText isHideCross:isCrossHidden];
-        weatherButton.subProperties = subProperties;
-        weatherButton.switchButtonRight.subProperties = subProperties;
-        [weatherButton.switchButtonRight addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-//        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:subProperties.deviceName bottomText:bottomText isTrigger:isTrigger isDimButton:isDimmbutton insideText:insideDisplayText isScene:isScene];
-//        switchButton.subProperties = subProperties;
-//        switchButton.inScroll = YES;
-//        switchButton.userInteractionEnabled = YES;
-//        
-//        [switchButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-//        if(!isActive && isCrossHidden)
-//            switchButton.bgView.backgroundColor = [SFIColors ruleGraycolor];
-//        xVal += entryBtnWidth+entryPadding;
-//        [switchButton setButtonCross:isCrossHidden];
-//        switchButton.userInteractionEnabled = disableUserInteraction;
-//        
-//        if(subProperties.deviceType == SFIDeviceType_HueLamp_48){
-//            if(subProperties.index == 2)
-//                [switchButton changeImageColor:[UIColor whiteColor]];
-//            else if(subProperties.index == 3)
-//                [switchButton changeImageColor:[UIColor colorFromHexString:[self getColorHex:subProperties.matchData]]];
-//        }
-//        
-        [triggersActionsScrollView addSubview:weatherButton];
-//
+//        [weatherButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:subProperties.deviceName displayText:@"abc" isDimmer:isDimmbutton bottomText:bottomText insideText:insideDisplayText isHideCross:isCrossHidden];
+//        weatherButton.subProperties = subProperties;
+//        weatherButton.switchButtonRight.subProperties = subProperties;
+//        [weatherButton.switchButtonRight addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:toptext bottomText:bottomText isTrigger:isTrigger isDimButton:isDimmbutton insideText:insideDisplayText isScene:isScene];
+        switchButton.subProperties = subProperties;
+        switchButton.inScroll = YES;
+        switchButton.userInteractionEnabled = YES;
+        
+        [switchButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        if(!isActive && isCrossHidden)
+            switchButton.bgView.backgroundColor = [SFIColors ruleGraycolor];
+        xVal += entryBtnWidth+entryPadding;
+        [switchButton setButtonCross:isCrossHidden];
+        switchButton.userInteractionEnabled = disableUserInteraction;
+        
+        if(subProperties.deviceType == SFIDeviceType_HueLamp_48){
+            if(subProperties.index == 2)
+                [switchButton changeImageColor:[UIColor whiteColor]];
+            else if(subProperties.index == 3)
+                [switchButton changeImageColor:[UIColor colorFromHexString:[self getColorHex:subProperties.matchData]]];
+        }
+        
+        [triggersActionsScrollView addSubview:switchButton];
+
     }
     else{
         PreDelayRuleButton *switchButton = [[PreDelayRuleButton alloc] initWithFrame:CGRectMake(xVal, 5, rulesButtonsViewWidth, rulesButtonsViewHeight)];
@@ -439,7 +436,6 @@ UILabel *topLabel;
     }else if([buttonSubProperty.type isEqualToString:@"WeatherTrigger"]){
         buttonSubProperty.deviceType= SFIDeviceType_Weather;
         buttonSubProperty.deviceName = @"Weather";
-        buttonSubProperty.index = 1;//as there is no index from cloud
     }
     else if([buttonSubProperty.eventType isEqualToString:@"AlmondModeUpdated"]){
         //NSLog(@"AlmondModeUpdated type");

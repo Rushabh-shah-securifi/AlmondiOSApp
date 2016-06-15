@@ -65,7 +65,7 @@
         DeviceIndex *deviceIndex = deviceIndexes[indexID];
         GenericIndexClass *genericIndexObj = toolkit.genericIndexes[deviceIndex.genericIndex];
         GenericIndexClass *copyGenericIndex = [[GenericIndexClass alloc]initWithGenericIndex:genericIndexObj];
-        //NSLog(@" device Index %@ deviceType %@,devicename %@  generic index ID %@ istrigger %d ,isScene %d",deviceIndex.index ,genericDevice.type ,genericDevice.name, copyGenericIndex.ID,isTrigger,isScene);
+        NSLog(@" device Index %@ deviceType %@,devicename %@  generic index ID %@ istrigger %d ,isScene %d",deviceIndex.index ,genericDevice.type ,genericDevice.name, copyGenericIndex.ID,isTrigger,isScene);
         int type = [genericDevice.type intValue];
         if([Device getValueForIndex:indexID.intValue deviceID:deviceID] == nil && !(type == 0 || type == 500 || type == 501 || type == 502))
             continue;

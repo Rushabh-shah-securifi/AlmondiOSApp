@@ -154,7 +154,9 @@ UIAlertView *alert;
     if (![success isEqualToString:@"true"]) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"scene.alert-title.Oops", @"Oops") message:NSLocalizedString(@"scene.alert-msg.Sorry, There was some problem with this request, try later!", @"Sorry, There was some problem with this request, try later!")
                                                        delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
-        [alert show];
+        dispatch_async(dispatch_get_main_queue(), ^() {
+            [alert show];
+        });
     }else{
         //        self.originalSceneInfo = [self.sceneInfo copy];
         //to do copy rules array

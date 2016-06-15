@@ -574,8 +574,10 @@ int mii;
     if(isSuccessful == NO){
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
-            [self showToast:@"Sorry, Could not update"];
+            [self showToast:@"Sorry, Could not update!"];
         });
+    }else{
+        [self showToast:@"Successfully updated!"];
     }
 }
 

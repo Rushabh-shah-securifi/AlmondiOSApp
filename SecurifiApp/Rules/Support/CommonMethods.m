@@ -13,12 +13,15 @@
 @implementation CommonMethods
 
 + (BOOL) compareEntry:(BOOL)isSlider matchData:(NSString *)matchData eventType:(NSString *)eventType buttonProperties:(SFIButtonSubProperties *)buttonProperties{
-    NSLog(@"match data %@ == %@ event type %@ == %@",buttonProperties.matchData , matchData,buttonProperties.eventType,eventType);
+    NSLog(@"(matchdata - property %@ == gval %@) (event type - property %@ == gval %@)",buttonProperties.matchData , matchData,buttonProperties.eventType,eventType);
     bool compareValue= isSlider || [matchData isEqualToString:buttonProperties.matchData];
     bool compareEvents=[eventType isEqualToString:buttonProperties.eventType];
     bool isWifiClient=![buttonProperties.eventType isEqualToString:@"AlmondModeUpdated"];
-    return (buttonProperties.eventType==nil && compareValue) ||(compareValue &&
-                                                                compareEvents) || (isWifiClient && compareEvents) ;
+    BOOL isWeather = [buttonProperties.type isEqualToString:@"WeatherTrigger"];
+    return (buttonProperties.eventType==nil && compareValue) ||
+            (compareValue && compareEvents) ||
+            (isWifiClient && compareEvents) ||
+            (isWeather && compareValue);
 }
 
 +(NSString*)getDays:(NSArray*)earlierSelection{
