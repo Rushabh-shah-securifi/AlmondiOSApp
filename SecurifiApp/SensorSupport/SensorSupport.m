@@ -11,7 +11,6 @@
 
 @interface SensorSupport ()
 @property(nonatomic) SFIDeviceType deviceType;
-@property(nonatomic, strong) IndexValueSupport *valueSupport;
 @property(nonatomic, copy) NSString *sensorValue;
 @end
 
@@ -50,7 +49,7 @@
     }
 
 //    name = [@"n_" stringByAppendingString:name];
-    NSLog(@"image name: %@", name);
+    //NSLog(@"image name : %@", name);
     return [self imageNamed:name];
 }
 

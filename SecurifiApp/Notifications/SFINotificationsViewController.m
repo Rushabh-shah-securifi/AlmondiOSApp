@@ -15,7 +15,7 @@
 #import "Analytics.h"
 
 @interface SFINotificationsViewController ()
-@property(nonatomic, readonly) id <SFINotificationStore> store;
+//@property(nonatomic, readonly) id <SFINotificationStore> store;
 @property(nonatomic) NSArray *buckets; // NSDate instances
 @property(nonatomic) NSDictionary *bucketCounts; // NSDate :: NSNumber
 @property(atomic) BOOL lockedToStoreUpdates;
@@ -33,6 +33,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
 
 - (instancetype)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
+    NSLog(@"SFINotificationsViewController initWithStyle");
     if (self) {
         self.enableDeleteNotification = YES;
         self.markAllViewedOnDismiss = YES;
@@ -41,8 +42,10 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     return self;
 }
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSLog(@"SFINotificationsViewController viewdid load");
     //NSLog(@"NotificationsViewController - ViewDidLoad");
     _store = [self pickNotificationStore];
 
@@ -170,6 +173,7 @@ Therefore, a locking procedure is implemented effectively blocking out table rel
     }
 
     cell.notification = notification;
+    
     cell.debugCellIndexNumber = (NSUInteger) indexPath.row;
 
     return cell;

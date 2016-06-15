@@ -29,11 +29,15 @@
 #import "RouterPayload.h"
 #import "SFINotificationsViewController.h"
 #import "SFINotificationStatusBarButtonItem.h"
+#import "SFINotificationTableViewCell.h"
 #import "AlertView.h"
 #import "AlertViewAction.h"
 #import "SFIAlmondLocalNetworkSettings.h"
 #import "SettingsViewController.h"
 #import "MainViewController.h"
+#import "NotificationsTestStore.h"
+#import "SensorSupport.h"
+
 
 @interface MainViewController (){
     NSArray *buttons;
@@ -46,6 +50,11 @@
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property(nonatomic, readonly) BOOL isHudHidden;
 @property (nonatomic, strong, nullable) UIRefreshControl *refreshControl NS_AVAILABLE_IOS(6_0) __TVOS_PROHIBITED;
+
+
+@property(nonatomic) SFINotificationsViewController *notify;
+@property(nonatomic) id <SFINotificationStore> store;
+//@property(nonatomic, strong, readonly) SensorSupport *sensorSupport;
 @end
 
 @implementation MainViewController
@@ -53,7 +62,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //image6 = [UIImage imageNamed:@"connection_local_success"];
+    self.notify = [[SFINotificationsViewController alloc] init];
+    _store = [self.notify pickNotificationStore];
+    self.notify.store = _store;
+    [self.notify resetBucketsAndNotifications];
+    
+    
+    
+    
     SecurifiConfigurator *configurator = _toolkit.configuration;
     _enableNotificationsView = configurator.enableNotifications;
     _enableNotificationsHomeAwayMode = configurator.enableNotificationsHomeAwayMode;
@@ -95,6 +111,7 @@
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.dimBackground = YES;
     [self.navigationController.view addSubview:_HUD];
+
 }
 
 -(void)initializeNotification{
@@ -119,6 +136,7 @@
     }
 }
 
+
 - (void)onCurrentAlmondChanged:(id)sender {
     [self.toolkit.devices removeAllObjects];
     [self.toolkit.clients removeAllObjects];
@@ -131,8 +149,7 @@
 -(void)initializeAlmondData{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self tryInstallRefreshControl];
-            [self viewWillAppear:YES];
-        });
+    });
 }
 
 - (BOOL)isDeviceListEmpty {
@@ -182,13 +199,36 @@
     }
 }
 
+-(void)onDeviceListAndDynamicResponseParsed:(id)sender{
+    NSLog(@"devicelist - onDeviceListAndDynamicResponseParsed");
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.dashboardTable reloadData];
+        _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.devices.count ];
+        _networkConnectedDevices.text =[NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.clients.count ];
+        _totalConnectedDevices.text = [NSString stringWithFormat: @"%ld", [_smartHomeConnectedDevices.text integerValue]+[_networkConnectedDevices.text integerValue]];
+        [self.HUD hide:YES];
+        if(self.refreshControl == nil){
+            [self tryInstallRefreshControl];
+        }else{
+            [self.refreshControl endRefreshing];
+        }
+    });
+}
+
 - (void)viewWillAppear:(BOOL)animated{
-    [self initializeNotification];
+    
     [super viewWillAppear:YES];
+    [self markNetworkStatusIcon];
+    [self initializeNotification];
+    
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
                selector:@selector(onAlmondModeDidChange:)
                    name:kSFIAlmondModeDidChange
+                 object:nil];
+    [center addObserver:self
+               selector:@selector(onDeviceListAndDynamicResponseParsed:) //for both sensors and clients
+                   name:NOTIFICATION_DEVICE_LIST_AND_DYNAMIC_RESPONSES_CONTROLLER_NOTIFIER
                  object:nil];
     [center addObserver:self
                selector:@selector(onCurrentAlmondChanged:)
@@ -213,22 +253,8 @@
                    name:kSFIReachabilityChangedNotification
                  object:nil];
     
-
-    [self markNetworkStatusIcon];
-
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.dashboardTable reloadData];
-        if(self.toolkit.devices.count == 0 ){
-            [self showHudWithTimeoutMsg:@"Loading Dashboard Devices"];
-            [self viewWillAppear:YES];
-            [self.dashboardTable reloadData];
-        }
-        if(self.toolkit.clients.count == 0 && self.toolkit.devices.count != 0){
-            [self showHudWithTimeoutMsg:@"Loading Dashboard Clients"];
-            [self viewWillAppear:YES];
-            [self.dashboardTable reloadData];
-        }
-
         _labelAlmond.text = self.toolkit.currentAlmond.almondplusName ;
         _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.devices.count ];
         _networkConnectedDevices.text =[NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.clients.count ];
@@ -257,20 +283,20 @@
    }
 
 - (void)onNetworkUpNotifier:(id)sender {
-    NSLog(@"onNetworkUpNotifier");
+    //NSLog(@"onNetworkUpNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
     });
 }
 - (void)onNetworkDownNotifier:(id)sender {
-    NSLog(@"onNetworkDownNotifier");
+   // NSLog(@"onNetworkDownNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
     });
 }
 
 - (void)onNetworkConnectingNotifier:(id)notification {
-    NSLog(@"onNetworkConnectingNotifier");
+    //NSLog(@"onNetworkConnectingNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
     });
@@ -403,7 +429,6 @@
 
 - (IBAction)homeawayMode:(id)sender {
     middleButton.image = [UIImage imageNamed:@"notification_away"];
-    
     UIImage *imgNav = [UIImage imageNamed:@"head_away"];
     [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
     _labelHomeAway.hidden = NO;
@@ -416,9 +441,19 @@
 }
 
 - (void)notificationAction:(id)sender {
-    SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
-    [self presentViewController:nav_ctrl animated:YES completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        if (self.presentedViewController != nil) {
+            return;
+        }
+        
+        SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+        
+        SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        ctrl.enableDebugMode = toolkit.configuration.enableNotificationsDebugMode;
+        
+        UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+        [self presentViewController:nav_ctrl animated:YES completion:nil];
+    });
 }
 
 - (void)settingsAction:(id)sender {
@@ -458,29 +493,54 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    SFINotification *notification = [self.notify notificationForIndexPath:indexPath];
+    NSLog(@"Notification - Name: %@, type: %d", notification.deviceName, notification.deviceType);
+   SensorSupport *sensorSupport = [SensorSupport new];
+    [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
+    NSLog(@"Notification - Name: %@, type: %d", notification.deviceName, notification.deviceType);
+    NSLog(@"sensorsupport icon");
+//    [self setDateLabelText:notification];
+//    [self setIcon];
+    
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     cell.textLabel.font = [UIFont fontWithName:@"AvenirLTStd-heavy" size:16];
     cell.detailTextLabel.textColor = [UIColor grayColor];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
     }
     if (indexPath.section == 0) {
-        Device *device = [_toolkit.devices objectAtIndex:indexPath.row];
-        cell.textLabel.text = [NSString stringWithFormat:@"%@",device.name];
+        //Device *device = [_toolkit.devices objectAtIndex:indexPath.row];
+        if ([notification.deviceName isEqualToString:@"nil"]) {
+            cell.imageView.image = [UIImage imageNamed:@"offline"];
+            cell.textLabel.text = @"No notifications";
+        }else{
+            NSLog(@"icon name :: %@",sensorSupport.valueSupport.iconName);
+//            cell.imageView.image = [UIImage imageNamed:sensorSupport.valueSupport.iconName];
+            cell.textLabel.text = notification.deviceName;
+//            cell.textLabel.text = [NSString stringWithFormat:@"%@",device.name];
+            cell.imageView.image = [UIImage imageNamed:@"arrow_icon"];
+        }
     }
     if(indexPath.section == 1){
         Client *client = [_toolkit.clients objectAtIndex:indexPath.row];
         cell.textLabel.text = [NSString stringWithFormat:@"%@",client.name];
+        if (client.isActive) {
+            cell.imageView.image = [UIImage imageNamed:@"online"];
+        }
+        else{
+            cell.imageView.image = [UIImage imageNamed:@"offline"];
+        }
+        // cell.textLabel.text = notification.deviceName;
     }
-    CGSize itemSize = CGSizeMake(25,25);
-    UIGraphicsBeginImageContext(itemSize);
-    CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
-    [cell.imageView.image drawInRect:imageRect];
-    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+//    CGSize itemSize = CGSizeMake(25,25);
+//    UIGraphicsBeginImageContext(itemSize);
+//    CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
+//    [cell.imageView.image drawInRect:imageRect];
+//    cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
     return cell;
 }
 
@@ -523,7 +583,7 @@
     //_leftButton.image = image6;
     
     SFICloudStatusState statusState = self.leftButton.state;
-    NSLog(@"statusState cloud status at dashboard %lu",(unsigned long)statusState);
+   // NSLog(@"statusState cloud status at dashboard %lu",(unsigned long)statusState);
     
     switch (statusState) {
         case SFICloudStatusStateConnecting: {
@@ -779,7 +839,7 @@
         }
     }
     image6 = [self imageForState:state localNetworkingMode:connectionMode];
-    NSLog(@"self.leftButton.image");
+   // NSLog(@"self.leftButton.image");
     self.leftButton.image = image6;
 }
 
@@ -832,7 +892,7 @@
         default:
             return nil;
     }
-    NSLog(@"Name of Image is : %@",name);
+    //NSLog(@"Name of Image is : %@",name);
     self.leftButton.image = [UIImage imageNamed:name];
     UIImage *image = [UIImage imageNamed:name];
     return [image imageWithRenderingMode:vers];
