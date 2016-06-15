@@ -94,7 +94,8 @@
         NSLog(@"event type %@",properties.eventType);
         if([properties.eventType isEqualToString:@"TimeTrigger"]
            ||[properties.eventType isEqualToString:@"AlmondModeUpdated"]
-           ||[properties.type isEqualToString:@"NetworkResult"])
+           ||[properties.type isEqualToString:@"NetworkResult"]
+           ||[properties.type isEqualToString:@"WeatherTrigger"])
             continue;
         
         else if([properties.eventType isEqualToString:@"ClientJoined"] || [properties.eventType isEqualToString:@"ClientLeft"]){
@@ -133,7 +134,42 @@
                  @"Valid":@"true",
                  @"Condition" : @"eq"
                  };
+    
+   else if([property.type isEqualToString:@"WeatherTrigger"]){
+       NSString *weatherType;
+       NSString *value = property.matchData;
+       NSString *condition = [property getconditionPayload];
        
+       if(property.index == 1){
+           weatherType = property.matchData;
+           value = property.delay;
+           condition = @"eq";
+       }else if(property.index == 2){
+           weatherType = @"WeatherCondition";
+           value = property.matchData;
+           condition = @"eq";
+       }else if(property.index == 3){
+           weatherType = @"Temperature";
+       }
+       else if(property.index == 4){
+           weatherType = @"Humidity";
+       }
+       else if(property.index == 5){
+           weatherType = @"Pressure";
+       }
+       
+           
+       return @{
+                @"Type" : @"WeatherTrigger",
+                @"WeatherType" : weatherType,
+                @"Duration":@"0",
+                @"Value" : value,
+                @"Grouping" : @"AND",
+                @"Condition" : condition,
+                @"Valid":@"true"
+                
+                };
+   }
     
 
     else if([property.eventType isEqualToString:@"TimeTrigger"]){

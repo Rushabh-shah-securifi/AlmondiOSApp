@@ -170,7 +170,7 @@ UILabel *topLabel;
 
 + (SwitchButton *)buildEntry:(SFIButtonSubProperties *)buttonProperties positionId:(int)positionId genericIndexValues:(NSArray *)genericIndexValues isTrigger:(BOOL)isTrigger{
     //NSLog(@"buildEntry: potionID %d,%@",positionId ,buttonProperties.eventType);
-    if((buttonProperties.valid == NO && ![buttonProperties.eventType isEqualToString:@"AlmondModeUpdated"])|| [self isDeviceUnknown:buttonProperties]){
+    if((buttonProperties.valid == NO )|| [self isDeviceUnknown:buttonProperties]){
         buttonProperties.deviceName = @"UnKnown Device";
         return [self setIconAndText:positionId buttonProperties:buttonProperties icon:@"default_device" text:@"Device not Found" isTrigger:isTrigger isDimButton:NO bottomText:@""];
     }
@@ -305,8 +305,8 @@ UILabel *topLabel;
             toptext = [NSString stringWithFormat:@"%@ %@",toptext, bottomText];
             if(subProperties.delay.integerValue != 0){
                 NSString *suffix = (subProperties.delay.integerValue > 0)? @"After": @"Before";
-                
-                bottomText = [NSString stringWithFormat:@"%@ Mins %@ %@", subProperties.delay, suffix, bottomText];
+                int delayVal = (subProperties.delay.integerValue < 0)? (subProperties.delay.intValue * -1): subProperties.delay.intValue;
+                bottomText = [NSString stringWithFormat:@"%d Mins %@ %@", delayVal, suffix, bottomText];
             }
         }
         //NSLog(@"subProperties.iconName %@",subProperties.iconName);
