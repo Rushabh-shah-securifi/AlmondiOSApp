@@ -35,6 +35,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *totalConnectedDevices;
 @property (strong, nonatomic) IBOutlet UILabel *smartHomeConnectedDevices;
 @property (strong, nonatomic) IBOutlet UILabel *networkConnectedDevices;
+- (IBAction)AlmondSelection:(UIButton *)sender;
 
 
 @property(nonatomic, readonly) BOOL enableNotificationsView;
