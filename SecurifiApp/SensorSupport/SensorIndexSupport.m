@@ -188,9 +188,7 @@
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"true";
-                s2.displayText=@"ON";
                 s2.displayText = @"OPEN";
-                s2.matchType = MatchType_not_equals;
                 s2.iconName = DT3_BINARY_SENSOR_TRUE;
                 s2.notificationText = NSLocalizedString(@" is Opened.", @" is Opened.");
                 
@@ -487,7 +485,7 @@
             }
             if (type == SFIDevicePropertyType_THERMOSTAT_MODE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchType = MatchType_any;
+                s1.matchType = MatchType_equals;
                 s1.matchData = @"Auto";
                 s1.displayText=@"AUTO";
                 s1.iconName = @"img_auto";
@@ -495,7 +493,7 @@
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" is set to ", @" is set to ");
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.matchType = MatchType_any;
+                s2.matchType = MatchType_equals;
                 s2.matchData = @"Heat";
                 s2.displayText = @"HEAT";
                 s2.iconName = @"img_heat";
@@ -503,7 +501,7 @@
                 s2.valueFormatter.notificationPrefix = NSLocalizedString(@" is set to ", @" is set to ");
                 
                 IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
-                s3.matchType = MatchType_any;
+                s3.matchType = MatchType_equals;
                 s3.matchData = @"Cool";
                 s3.iconName = @"img_cool";
                 s3.displayText = @"COOL";
@@ -511,7 +509,7 @@
                 s3.valueFormatter.notificationPrefix = NSLocalizedString(@" is set to ", @" is set to ");
                 
                 IndexValueSupport *s4 = [[IndexValueSupport alloc] initWithValueType:type];
-                s4.matchType = MatchType_any;
+                s4.matchType = MatchType_equals;
                 s4.matchData = @"Off";
                 s4.iconName = @"img_off";
                 s4.displayText = @"OFF";
@@ -523,7 +521,7 @@
             }
             if (type == SFIDevicePropertyType_THERMOSTAT_FAN_MODE) {
                 IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
-                s1.matchType = MatchType_any;
+                s1.matchType = MatchType_equals;
                 s1.matchData = @"Auto Low";
                 s1.iconName = @"btn_fan_on";
                 s1.displayText=@"AUTO";
@@ -531,7 +529,7 @@
                 s1.valueFormatter.notificationPrefix = NSLocalizedString(@" Fan is set to ", @" Fan is set to ");
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
-                s2.matchType = MatchType_any;
+                s2.matchType = MatchType_equals;
                 s2.matchData = @"On Low";
                 s2.iconName = @"btn_fan_off";
                 s2.displayText = @"ON LOW";
@@ -1128,7 +1126,7 @@
                 
                 IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
                 s2.matchData = @"1";
-                s2.matchType = MatchType_equals;
+                s2.matchType = MatchType_any;
                 s2.layoutType=@"textButton";
                 s2.iconName = DT21_STANDARD_WARNING_DEVICE_TRUE;
                 s2.displayText=@"ALARM";

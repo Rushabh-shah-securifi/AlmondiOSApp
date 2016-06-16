@@ -15,7 +15,7 @@
 #import "MainViewController.h"
 
 #define TAB_BAR_DEVICES @"Devices"
-#define TAB_BAR_ROUTER @"Router"
+#define TAB_BAR_ROUTER @"WiFi"
 #define TAB_BAR_SCENES @"Scenes"
 #define TAB_BAR_RULES @"Rules"
 #define TAB_BAR_DASHBOARD @"Dashboard"
@@ -256,7 +256,7 @@ typedef NS_ENUM(int, TabBarMode) {
     if (!_dashboardTab) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainDashboard" bundle:nil];
         MainViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"MainViewController"];
-        UIImage *icon = [UIImage imageNamed:@"home_icon1"];
+        UIImage *icon = [UIImage imageNamed:@"icon_dashboard"];
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:ctrl];
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:TAB_BAR_DASHBOARD image:icon selectedImage:icon];
         self.dashboardTab = nav;
