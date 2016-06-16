@@ -28,16 +28,9 @@ static const int sceneNameFont = 15;
     [self setUpNavigationBar];
     [self initializeNotifications];
     _filteredList = [NSMutableArray new];
-    _commonSceneNames = @[@"Good Morning",
-                          @"Bedroom Lights Off",
-                          @"All Lights On",
-                          @"Going away",
-                          @"Coming Home",
-                          @"lights on garage open",
-                          @"backyard lights on",
-                          @"cooling the house",
-                          @"Basement lights off",
-                          @"Decorations On"];
+    
+    
+    _commonSceneNames = @[@"Good morning",@"Bedroom lights off",@"Going on vacation",@"Good night",@"Close the garage",@"Open the garage",@"All backyard lights on",@"Cooling the house",@"Basement lights off",@"Decorations on",@"Turn on kitchen lights"];
     [self readSceneNameFileContents];
     [self.sceneNameField becomeFirstResponder];
     [self.sceneNameField addTarget:self
