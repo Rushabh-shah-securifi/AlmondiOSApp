@@ -540,6 +540,20 @@
             }
         }
     },
+    "-35":{
+        "Name": "WeatherCondition",
+        "Type": "Sensor",
+        "Layout": "LIST",
+        "AppLabel": "sunnycondition",
+        "DefaultIcon": "condition_icon",
+        "Values": {
+            "condition": {
+                "Icon": "condition_icon",
+                "AppLabel": "sunnycondition",
+                "Label": "Condition"
+            }
+        }
+    },
     "1": {
         "Name": "SWITCH BINARY",
         "Type": "Actuator",
@@ -1082,7 +1096,7 @@
         "Formatter": {
             "Min": "-3276",
             "Max": "3276",
-            "Unit": "kPa",
+            "Unit": "mb",
             "Factor": "1"
         }
     },
@@ -2231,6 +2245,103 @@
                 "AppLabel": "no_press",
                 "Label": "No Press"
             }
+        }
+    },
+    "96": {
+        "Name": "ENABLE",
+        "Type": "Actuator",
+        "Placement": "Header",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "enable",
+        "ShowToggleInRules": "true",
+        "DefaultIcon": "switch_on",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "switch_on",
+                "AppLabel": "enabled",
+                "Label": "Enabled"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "switch_off",
+                "AppLabel": "disabled",
+                "Label": "Disabled"
+            }
+        }
+    },
+    "97": {
+        "Name": "Volume",
+        "Type": "Actuator",
+        "Placement": "Detail",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "volume",
+        "DefaultIcon": "alarm_on",
+        "Values": {
+            "1": {
+                "Icon": "alarm_on",
+                "AppLabel": "low",
+                "Label": "Low"
+            },
+            "2": {
+                "Icon": "alarm_on",
+                "AppLabel": "medium",
+                "Label": "Medium"
+            },
+            "3":{
+                "Icon": "alarm_on",
+                "AppLabel": "high",
+                "Label": "High"
+            }
+        }
+    },
+    "98": {
+        "Name": "BLINK_STATE",
+        "Type": "Actuator",
+        "Placement": "Header",
+        "Layout": "MULTI_BUTTON",
+        "AppLabel": "blink",
+        "ShowToggleInRules": "true",
+        "DefaultIcon": "switch_on",
+        "Values": {
+            "true": {
+                "ToggleValue": "false",
+                "Icon": "switch_on",
+                "AppLabel": "blinking",
+                "Label": "Blinking"
+            },
+            "false": {
+                "ToggleValue": "true",
+                "Icon": "switch_off",
+                "AppLabel": "off_camelcase",
+                "Label": "Off"
+            }
+        }
+    },
+    "99": {
+        "Name": "RGB ",
+        "Type": "Actuator",
+        "Placement": "Detail",
+        "Layout": "TEXT_VIEW_ONLY",
+        "AppLabel": "rgb",
+        "ExcludeFrom": "Scene_Trigger",
+        "DefaultIcon": "alarm_off",
+        "Formatter": {
+            "Min": "0",
+            "Max": "65535"
+        }
+    },
+    "100": {
+        "Name": "SECONDS",
+        "Type": "Actuator",
+        "Placement": "Header",
+        "Layout": "TEXT_VIEW_ONLY",
+        "AppLabel": "seconds",
+        "ExcludeFrom": "Scene_Trigger",
+        "DefaultIcon": "alarm_off",
+        "Formatter": {
+            "Min": "0",
+            "Max": "65535"
         }
     }
 }

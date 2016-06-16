@@ -38,7 +38,7 @@
         "name": "Weather",
         "isActuator": "false",
         "defaultIcon": "weather_white",
-        "ExcludeFrom":"Scene_Rule",
+        "ExcludeFrom":"Scene",
         "Indexes": {
             "1": {
                 "genericIndexID": "-33",
@@ -50,6 +50,8 @@
             },
             "3":{
                 "genericIndexID": "25",
+                "min":"-40",
+                "max":"248",
                 "row_no": 3
             },
             "4":{
@@ -1287,6 +1289,56 @@
                 "row_no": 4
             }
         }
+    },
+    "63": {
+        "name": "AlmondSiren",
+        "isActuator": "false",
+        "defaultIcon": "switch_off",
+        "Indexes": {
+            "1": {
+                "genericIndexID": "96",
+                "row_no": 1
+            },
+            "2": {
+                "row_no": 2,
+                "genericIndexID": "88"
+            },
+            "3": {
+                "row_no": 3,
+                "genericIndexID": "91"
+            },
+            "4": {
+                "row_no": 4,
+                "genericIndexID": "97"
+            },
+            "5": {
+                "row_no": 5,
+                "genericIndexID": "13",
+                "Placement":"Header"
+            }
+        }
+    },
+    "64": {
+        "name": "AlmondBlink",
+        "isActuator": "false",
+        "defaultIcon": "switch_off",
+        "Indexes": {
+            "1": {
+                "genericIndexID": "1",
+                "row_no": 1
+            },
+            "2": {
+                "row_no": 2,
+                "genericIndexID": "98"
+            },
+            "3": {
+                "row_no": 3,
+                "genericIndexID": "99"
+            },
+            "4": {
+                "row_no": 4,
+                "genericIndexID": "100"
+            }
+        }
     }
 }
-
