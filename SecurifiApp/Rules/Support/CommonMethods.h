@@ -15,4 +15,5 @@
 +(void)clearTopScroll:(UIScrollView *)top middleScroll:(UIScrollView*)middle bottomScroll:(UIScrollView*)bottom;
 + (NSMutableAttributedString *)getAttributeString:(NSString *)header fontSize:(int)fontsize;
 + (NSString *)getColorHex:(NSString*)value;
++ (UIImage *)imageNamed:(NSString *)name withColor:(UIColor *)color;
 @end
