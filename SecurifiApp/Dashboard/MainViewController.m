@@ -5,7 +5,6 @@
 //  Created by Securifi Support on 03/05/16.
 //  Copyright © 2016 Securifi. All rights reserved.
 //
-#import <MBProgressHUD/MBProgressHUD.h>
 #import "SFIAlmondPlus.h"
 #import "SWRevealViewController.h"
 #import "DeviceListController.h"
@@ -37,9 +36,10 @@
 #import "MainViewController.h"
 #import "NotificationsTestStore.h"
 #import "SensorSupport.h"
+#import "SFIColors.h"
 
-
-@interface MainViewController (){
+#import "CommonMethods.h"
+@interface MainViewController ()<MBProgressHUDDelegate>{
     NSArray *buttons;
     UIBarButtonItem *rightButton, *middleButton;
     SFIAlmondMode mode;
@@ -47,38 +47,34 @@
 @property(nonatomic) SFICloudStatusBarButtonItem *leftButton;
 @property(nonatomic) SecurifiToolkit *toolkit;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
-@property(nonatomic, readonly) BOOL isHudHidden;
 @property (nonatomic, strong, nullable) UIRefreshControl *refreshControl NS_AVAILABLE_IOS(6_0) __TVOS_PROHIBITED;
 
 @property(nonatomic) SFINotificationsViewController *notify;
 @property(nonatomic) id <SFINotificationStore> store;
-//@property(nonatomic, strong, readonly) SensorSupport *sensorSupport;
+@property (nonatomic) NSMutableArray *clientNotificationArr;
+@property (nonatomic) NSMutableArray *deviceNotificationArr;
 @end
 
 @implementation MainViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+     self.toolkit = [SecurifiToolkit sharedInstance];
+    [self.toolkit tryRefreshNotifications];
     self.notify = [[SFINotificationsViewController alloc] init];
+    //NSLog(@"self.toolkit.currentAlmond.almondplusMAC %@",self.toolkit.currentAlmond.almondplusMAC);
     _store = [self.notify pickNotificationStore];
     self.notify.store = _store;
     [self.notify resetBucketsAndNotifications];
-    
-    
-    
-    
     SecurifiConfigurator *configurator = _toolkit.configuration;
     _enableNotificationsView = configurator.enableNotifications;
     _enableNotificationsHomeAwayMode = configurator.enableNotificationsHomeAwayMode;
-    //const BOOL enableLocalNetworking = configurator.enableLocalNetworking;
-
+    self.clientNotificationArr = [[NSMutableArray alloc]init];
+    self.deviceNotificationArr = [[NSMutableArray alloc]init];
+    [self getClientNotification];
+    [self getDeviceNotification];
     UIImage *imgNav = [UIImage imageNamed:@"1224"];
     [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
-//    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"1224"] forBarMetrics:UIBarMetricsDefault];
-//    [[UIImage imageNamed:@"nav-image-portrait"]
-//     resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0) resizingMode:UIImageResizingModeStretch];
-    
     [self.navigationItem setTitle:@"Dashboard"];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     
@@ -90,6 +86,7 @@
     rightButton.tintColor = [UIColor whiteColor];
     self.navigationItem.rightBarButtonItem = rightButton;
     _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES];
+     self.leftButton.isDashBoard = YES;
     middleButton = [[UIBarButtonItem alloc]
                     initWithImage:[UIImage imageNamed:@"notification_home"]
                     style:UIBarButtonItemStylePlain
@@ -99,41 +96,22 @@
     buttons = @[_leftButton, middleButton];
     self.navigationItem.leftBarButtonItems = buttons;
     _labelAlmond.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(goAlmond:)];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(AlmondSelection:)];
     [_labelAlmond addGestureRecognizer:tapGesture];
     [Scroller setScrollEnabled:YES];
     self.toolkit = [SecurifiToolkit sharedInstance];
-    [self initializeNotification];
     [self markNetworkStatusIcon];
+    [self initializeHUD];
+
+}
+-(void)initializeHUD{
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
     _HUD.dimBackground = YES;
+    _HUD.delegate = self;
     [self.navigationController.view addSubview:_HUD];
-
+    
 }
-
--(void)initializeNotification{
-    if (self.toolkit.mode_src == 2) {
-        middleButton.image = [UIImage imageNamed:@"notification_home"];
-        UIImage *imgNav = [UIImage imageNamed:@"1224"];
-        [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
-        _labelHomeAway.hidden = YES;
-        _labelHome.hidden = NO;
-        [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.012 green:0.663 blue:0.957 alpha:1] ];
-        [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
-        self.bannerImage.image = [UIImage imageNamed:@"1225"];
-    }else if(self.toolkit.mode_src == 3){
-        middleButton.image = [UIImage imageNamed:@"notification_away"];
-        UIImage *imgNav = [UIImage imageNamed:@"head_away"];
-        [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
-        _labelHomeAway.hidden = NO;
-        _labelHome.hidden = YES;
-        [self.buttonHomeAway setBackgroundColor:[UIColor colorWithRed:1 green:0.596 blue:0 alpha:1]];
-        [self.buttonHome setBackgroundColor:[UIColor clearColor]];
-        self.bannerImage.image = [UIImage imageNamed:@"main"];
-    }
-}
-
 
 - (void)onCurrentAlmondChanged:(id)sender {
     [self.toolkit.devices removeAllObjects];
@@ -172,21 +150,16 @@
     }
 }
 
-- (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
+#pragma mark HUD
+- (void)showHudWithTimeoutMsg:(NSString*)hudMsg delay:(int)delay{
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:hudMsg];
-        [self.HUD hide:YES afterDelay:5];
+        [self.HUD hide:YES afterDelay:delay];
     });
 }
-
 - (void)showHUD:(NSString *)text {
-    _isHudHidden = NO;
     self.HUD.labelText = text;
     [self.HUD show:YES];
-}
-
-- (void)hudWasHidden:(MBProgressHUD *)hud {
-    _isHudHidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -198,7 +171,7 @@
 }
 
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
-    NSLog(@"devicelist - onDeviceListAndDynamicResponseParsed");
+    //NSLog(@"devicelist - onDeviceListAndDynamicResponseParsed");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.dashboardTable reloadData];
         _labelAlmond.text = self.toolkit.currentAlmond.almondplusName ;
@@ -218,8 +191,6 @@
     
     [super viewWillAppear:YES];
     [self markNetworkStatusIcon];
-    [self initializeNotification];
-    
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
                selector:@selector(onAlmondModeDidChange:)
@@ -251,51 +222,43 @@
                selector:@selector(onReachabilityDidChange:)
                    name:kSFIReachabilityChangedNotification
                  object:nil];
-    
+     [center addObserver:self
+                selector:@selector(onDidReceiveNotifications)
+                    name:kSFINotificationDidStore
+                  object:nil];
+    NSLog(@"tryRefreshNotifications");
+    [self.toolkit tryRefreshNotifications];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.dashboardTable reloadData];
-        _labelAlmond.text = self.toolkit.currentAlmond.almondplusName ;
-        _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.devices.count ];
-        _networkConnectedDevices.text =[NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.clients.count ];
-        _totalConnectedDevices.text = [NSString stringWithFormat: @"%ld", [_smartHomeConnectedDevices.text integerValue]+[_networkConnectedDevices.text integerValue]];
-        if (self.toolkit.mode_src == 2) {
-            middleButton.image = [UIImage imageNamed:@"notification_home"];
-            UIImage *imgNav = [UIImage imageNamed:@"1224"];
-            [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
-            _labelHomeAway.hidden = YES;
-            _labelHome.hidden = NO;
-            [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.012 green:0.663 blue:0.957 alpha:1] ];
-            [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
-            self.bannerImage.image = [UIImage imageNamed:@"1225"];
-        }else if(self.toolkit.mode_src == 3){
-            middleButton.image = [UIImage imageNamed:@"notification_away"];
-            UIImage *imgNav = [UIImage imageNamed:@"head_away"];
-            [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
-            _labelHomeAway.hidden = NO;
-            _labelHome.hidden = YES;
-            [self.buttonHomeAway setBackgroundColor:[UIColor colorWithRed:1 green:0.596 blue:0 alpha:1]];
-            [self.buttonHome setBackgroundColor:[UIColor clearColor]];
-            self.bannerImage.image = [UIImage imageNamed:@"main"];
-        }
-
+        
     });
    }
-
+-(void)onDidReceiveNotifications{
+    NSLog(@"onDidReceiveNotifications almondplusMAC %@",self.toolkit.currentAlmond.almondplusMAC);
+    _store = [self.notify pickNotificationStore];
+    self.notify.store = _store;
+    [self.notify resetBucketsAndNotifications];
+    [self getClientNotification];
+    [self getDeviceNotification];
+    dispatch_async(dispatch_get_main_queue(), ^{
+    [self.dashboardTable reloadData];
+         });
+}
 - (void)onNetworkUpNotifier:(id)sender {
-    //NSLog(@"onNetworkUpNotifier");
+    ////NSLog(@"onNetworkUpNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
     });
 }
 - (void)onNetworkDownNotifier:(id)sender {
-   // NSLog(@"onNetworkDownNotifier");
+   // //NSLog(@"onNetworkDownNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
     });
 }
 
 - (void)onNetworkConnectingNotifier:(id)notification {
-    //NSLog(@"onNetworkConnectingNotifier");
+    ////NSLog(@"onNetworkConnectingNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
     });
@@ -326,7 +289,11 @@
             UIImage *imgNav = [UIImage imageNamed:@"1224"];
             [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
             _labelHomeAway.hidden = YES;
+            
             _labelHome.hidden = NO;
+            [self.buttonHome setImage:[UIImage imageNamed:@"home_icon1"] forState:UIControlStateNormal];
+            [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
+
             [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.012 green:0.663 blue:0.957 alpha:1] ];
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
             self.bannerImage.image = [UIImage imageNamed:@"1225"];
@@ -336,6 +303,8 @@
             [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
             _labelHomeAway.hidden = NO;
             _labelHome.hidden = YES;
+            [self.buttonHomeAway setImage:[UIImage imageNamed:@"homeaway_icon1"] forState:UIControlStateNormal];
+            [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
             [self.buttonHomeAway setBackgroundColor:[UIColor colorWithRed:1 green:0.596 blue:0 alpha:1]];
             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
             self.bannerImage.image = [UIImage imageNamed:@"main"];
@@ -343,13 +312,13 @@
     });
 }
 
--(void)goAlmond:(id)sender {
+- (IBAction)AlmondSelection:(UIButton *)sender {
     enum SFIAlmondConnectionMode modeValue = [self.toolkit currentConnectionMode];
     NSArray *almondList = [self buildAlmondList:modeValue];
     
     UIAlertController *viewC;
-    UIImage *image = [UIImage imageNamed:@"home_icon1"];
-    viewC = [UIAlertController alertControllerWithTitle:@"selectAlmond" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    UIImage *image = [UIImage imageNamed:@"almondHome"];
+    viewC = [UIAlertController alertControllerWithTitle:@"Select Almond" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     //viewC.view.tintColor = [UIColor colorWithWhite:0.5f alpha:1.0f];
     
     for(SFIAlmondPlus *name in almondList){
@@ -384,7 +353,6 @@
                             }];
     [viewC addAction:AddNew];
     [viewC addAction:Check];
-    [self initializeNotification];
     [self presentViewController:viewC animated:YES completion:nil];
 }
 - (NSArray *)buildAlmondList:(enum SFIAlmondConnectionMode)mode5 {
@@ -414,27 +382,13 @@
 }
 
 - (IBAction)homeMode:(id)sender {
-    middleButton.image = [UIImage imageNamed:@"notification_home"];
-    UIImage *imgNav = [UIImage imageNamed:@"1224"];
-    [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
-    _labelHomeAway.hidden = YES;
-    _labelHome.hidden = NO;
-    [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.012 green:0.663 blue:0.957 alpha:1] ];
-    [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
-    self.bannerImage.image = [UIImage imageNamed:@"1225"];
+    [self showHudWithTimeoutMsg:@"Setting Almond to home mode." delay:5];
     mode = SFIAlmondMode_home;
     [_toolkit asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:mode];
 }
 
 - (IBAction)homeawayMode:(id)sender {
-    middleButton.image = [UIImage imageNamed:@"notification_away"];
-    UIImage *imgNav = [UIImage imageNamed:@"head_away"];
-    [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
-    _labelHomeAway.hidden = NO;
-    _labelHome.hidden = YES;
-    [self.buttonHomeAway setBackgroundColor:[UIColor colorWithRed:1 green:0.596 blue:0 alpha:1]];
-    [self.buttonHome setBackgroundColor:[UIColor clearColor]];
-    self.bannerImage.image = [UIImage imageNamed:@"main"];
+    [self showHudWithTimeoutMsg:@"Setting Almond to away mode." delay:5];
     mode = SFIAlmondMode_away;
     [_toolkit asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:mode];
 }
@@ -461,83 +415,93 @@
     [self presentViewController:root animated:YES completion:nil];
 }
 
+-(void )getDeviceNotification{
+    [self.deviceNotificationArr removeAllObjects];
+    for(int j = 0; j<10;j++){// for 10 days
+        for (int i =0; i<100; i++) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:j];
+            SFINotification *notification = [self.notify notificationForIndexPath:indexPath];
+                if(notification.deviceType != SFIDeviceType_WIFIClient && notification!=Nil){
+                    [self.deviceNotificationArr addObject:notification];
+                    //NSLog(@"getDeviceNotification");
+                    if(self.deviceNotificationArr.count > 2)
+                    return ;
+                }
+         }
+    }
+    
+}
+-(void )getClientNotification{
+    [self.clientNotificationArr removeAllObjects];
+    for(int j = 0; j<10;j++){// for 10 days
+        for (int i =0; i<100; i++) {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:j];
+            SFINotification *notification = [self.notify notificationForIndexPath:indexPath];
+            if(notification.deviceType == SFIDeviceType_WIFIClient && notification!=Nil){
+                [self.clientNotificationArr addObject:notification];
+                if(self.clientNotificationArr.count > 1)
+                    return ;
+            }
+        }
+    }
+}
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 3;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (section == 0 && _toolkit.devices.count > 0){
-        if (_toolkit.devices.count==1) {
-            return 1;
-        }
-        if (_toolkit.devices.count==2) {
-            return 2;
-        }
-        else{
-            return 3;
-        }
-    }
-    if (section == 1 && _toolkit.clients.count > 0){
-        if (_toolkit.clients.count==1) {
-            return 1;
-        }
-        if (_toolkit.clients.count==2) {
-            return 2;
-        }
-        else{
-            return 2;
-        }
-    }
-    return 0;
+   
+    if (section == 0 )
+        return self.deviceNotificationArr.count;
+    else if (section == 1 )
+        return self.clientNotificationArr.count;
+    else
+        return 0;
+    
 }
-
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    SFINotification *notification = [self.notify notificationForIndexPath:indexPath];
     SensorSupport *sensorSupport = [SensorSupport new];
-    NSString *message;
-    [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
-    NSLog(@"Notification - Name: %@, type: %d", notification.deviceName, notification.deviceType);
-    NSLog(@"Notification - details : %@",notification);
-
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-   
-
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
     }
+   
     if (indexPath.section == 0) {
-        //Device *device = [_toolkit.devices objectAtIndex:indexPath.row];
+        SFINotification *notification = [self.deviceNotificationArr objectAtIndex:indexPath.row];
+        [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
         if ([notification.deviceName isEqualToString:@"nil"]) {
-            cell.imageView.image = [UIImage imageNamed:@"offline"];
+            cell.imageView.image = [CommonMethods imageNamed:@"default_device" withColor:[SFIColors ruleBlueColor]];
             cell.textLabel.text = @"No notifications";
         }else{
-            NSLog(@"icon name :: %@",sensorSupport.valueSupport.iconName);
-            cell.textLabel.text = notification.deviceName;
-            cell.imageView.image = [UIImage imageNamed:@"home_away"];
+            //NSLog(@"icon name :: %@",sensorSupport.valueSupport.iconName);
+            cell.textLabel.attributedText = [self setMessageLabelText:notification sensorSupport:sensorSupport];
+            cell.imageView.image = [CommonMethods imageNamed:sensorSupport.valueSupport.iconName withColor:[SFIColors ruleBlueColor]];
+            cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
         }
     }
-    if(indexPath.section == 1){
-        if (notification.deviceType==SFIDeviceType_WIFIClient) {
-            NSArray *properties = [notification.deviceName componentsSeparatedByString:@"|"];
-            NSLog(@"properties : %@",properties);
-            message = properties[3];
-            cell.textLabel.text = message;
-        }
-        Client *client = [_toolkit.clients objectAtIndex:indexPath.row];
-        cell.textLabel.text = [NSString stringWithFormat:@"%@",client.name];
-        if (client.isActive) {
+    else if(indexPath.section == 1){
+        SFINotification *notification = [self.clientNotificationArr objectAtIndex:indexPath.row];
+        [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
+        //NSLog(@"devicename --%@",notification.deviceName);
+        if ([notification.deviceName rangeOfString:@"joined" options:NSCaseInsensitiveSearch].location != NSNotFound){
             cell.imageView.image = [UIImage imageNamed:@"online"];
+            cell.textLabel.attributedText = [self setMessageLabelText:notification sensorSupport:sensorSupport];
+            cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
         }
         else{
             cell.imageView.image = [UIImage imageNamed:@"offline"];
+            cell.textLabel.attributedText = [self setMessageLabelText:notification sensorSupport:sensorSupport];
+            cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
         }
         // cell.textLabel.text = notification.deviceName;
     }
-    cell.textLabel.font = [UIFont fontWithName:@"AvenirLTStd-heavy" size:16];
-    cell.detailTextLabel.textColor = [UIColor grayColor];
+    cell.textLabel.font = [UIFont systemFontOfSize:12];
+    cell.detailTextLabel.textColor = [SFIColors ruleGraycolor];
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:10];
     //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    CGSize itemSize = CGSizeMake(20,20);
+    CGSize itemSize = CGSizeMake(25,25);
     UIGraphicsBeginImageContext(itemSize);
     CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
     [cell.imageView.image drawInRect:imageRect];
@@ -574,17 +538,10 @@
 
 - (void)onConnectionStatusButtonPressed:(id)sender {
     UIAlertController *alert1 = [UIAlertController alertControllerWithTitle:@"Almond Connection" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *Close = [UIAlertAction
-                            actionWithTitle:@"Close"
-                            style:UIAlertActionStyleDefault
-                            handler:^(UIAlertAction * action)
-                            {
-                                [alert1 dismissViewControllerAnimated:YES completion:nil];
-                            }];
-    [alert1 addAction:Close];
+  
     
     SFICloudStatusState statusState = self.leftButton.state;
-   // NSLog(@"statusState cloud status at dashboard %lu",(unsigned long)statusState);
+   // //NSLog(@"statusState cloud status at dashboard %lu",(unsigned long)statusState);
     
     switch (statusState) {
         case SFICloudStatusStateConnecting: {
@@ -779,14 +736,26 @@
         default:
             return;
     }
+    UIAlertAction *Close = [UIAlertAction
+                            actionWithTitle:@"Close"
+                            style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action)
+                            {
+                                [alert1 dismissViewControllerAnimated:YES completion:nil];
+                            }];
+    [alert1 addAction:Close];
     
 }
 
 - (void)configureNetworkSettings:(enum SFIAlmondConnectionMode)mode1 {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit setConnectionMode:mode1 forAlmond:self.toolkit.currentAlmond.almondplusMAC];
+    [self showHudWithTimeoutMsg:@"Connecting..." delay:2];
+    [toolkit.devices removeAllObjects];
     [toolkit.clients removeAllObjects];
-    [toolkit.devices removeAllObjects ];
+    [toolkit.scenesArray removeAllObjects];
+    [toolkit.ruleList removeAllObjects];
+    
 }
 
 - (void)presentLocalNetworkSettingsEditor {
@@ -891,7 +860,7 @@
         default:
             return nil;
     }
-    NSLog(@"Name of Image is : %@",name);
+    //NSLog(@"Name of Image is : %@",name);
     //enum SFICloudStatusState initialState = SFICloudStatusStateConnected;
     UIImage *image = [UIImage imageNamed:name];
     return [image imageWithRenderingMode:vers];
@@ -899,6 +868,93 @@
 
 
 
+- (NSAttributedString *)setMessageLabelText:(SFINotification *)notification sensorSupport:(SensorSupport*)sensorSupport {
+    ////NSLog(@"Notification: %@", notification);
+    NSDictionary *attr;
+    UIFont *bold_font = [UIFont securifiBoldFont];
+    UIFont *normal_font = [UIFont securifiNormalFont];
+    attr = @{
+             NSFontAttributeName : bold_font,
+             NSForegroundColorAttributeName : [UIColor blackColor],
+             };
+    if (notification == nil) {
+        return [[NSAttributedString alloc] initWithString:@"" attributes:attr];
+    }
+    
+    NSString *deviceName = notification.deviceName;
+    
+    if (notification.deviceType==SFIDeviceType_WIFIClient) {
+        //NSLog(@"client device name: %@",notification.deviceName);
+        NSArray * properties = [notification.deviceName componentsSeparatedByString:@"|"];
+        NSString *name = properties[3];
+        if([name rangeOfString:@"An unknown device" options:NSCaseInsensitiveSearch].location != NSNotFound){
+            NSArray *nameArr = [name componentsSeparatedByString:@"An unknown device"];
+            deviceName = nameArr[1];
+        }else
+        deviceName = name;
+      
+    }
+    //NSLog(@"notification value %@",notification.value);
+    
+    NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:deviceName attributes:attr];
+    
+    attr = @{
+             NSFontAttributeName : bold_font,
+             NSForegroundColorAttributeName : [UIColor lightGrayColor],
+             };
+    
+    NSString *message;
+    message = sensorSupport.notificationText;
+    NSMutableAttributedString *mutableAttributedString = nil;
+    if (message == nil) {
+        message = @"";
+    }
+    if (!mutableAttributedString) {
+        NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:message attributes:attr];
+        NSMutableAttributedString *container = [NSMutableAttributedString new];
+        [container appendAttributedString:nameStr];
+        [container appendAttributedString:eventStr];
+        
+        return  container;
+    }else{
+        return  mutableAttributedString;
+    }
+}
+- (NSAttributedString *)setDateLabelText:(SFINotification *)notification {
+    
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:notification.time];
+    
+    NSDictionary *attr;
+    NSString *str;
+    
+    attr = @{
+             NSFontAttributeName : [UIFont securifiBoldFontLarge],
+             NSForegroundColorAttributeName : [UIColor grayColor],
+             };
+    if (notification == nil) {
+        return [[NSAttributedString alloc] initWithString:@"" attributes:attr];
+    }
+    
+    formatter.dateFormat = @"dd/MM - hh:mm";
+    str = [formatter stringFromDate:date];
+    NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:str attributes:attr];
+    
+    attr = @{
+             NSFontAttributeName : [UIFont securifiBoldFontLarge],
+             NSForegroundColorAttributeName : [UIColor lightGrayColor],
+             };
+    formatter.dateFormat = @"a";
+    str = [formatter stringFromDate:date];
+    NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:str attributes:attr];
+    
+    NSMutableAttributedString *container = [NSMutableAttributedString new];
+    [container appendAttributedString:nameStr];
+    [container appendAttributedString:eventStr];
+    
+    return container;
+//    self.dateLabel.textAlignment = NSTextAlignmentRight;
+}
 
 
 @end

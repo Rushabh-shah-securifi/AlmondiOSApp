@@ -45,6 +45,7 @@
 - (SFINotification *)tryGetNotificationForBucket:(NSDate *)bucket row:(NSInteger)row ;
 - (SFINotification *)notificationForIndexPath:(NSIndexPath *)path;
 - (NotificationsTestStore *)pickNotificationStore;
+- (NSInteger)tryGetCachedNotificationCount:(NSDate *)bucket ;
 @end
 
 
