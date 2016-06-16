@@ -26,6 +26,7 @@
         _button = button;
         _state = initialState;
         _enableLocalNetworking = enableLocal;
+        _isDashBoard = NO;
 
         [self setStatusImage:initialState];
     }
@@ -47,9 +48,10 @@
     UIColor *color = [self tintForState:state localNetworkMode:localNetworking];
 
     UIButton *button = self.button;
-    button.tintColor = color;
+    button.tintColor = self.isDashBoard? [UIColor whiteColor]: color;
     [button setImage:image forState:UIControlStateNormal];
 }
+
 - (void)modeUpdate:(UIImage *)image color:(UIColor *)color mode:(NSString *)mode{
     _state = [mode isEqualToString:@"2"]?SFICloudStatusStateAtHome:SFICloudStatusStateAway;
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -66,14 +68,14 @@
     switch (state) {
         case SFICloudStatusStateDisconnected:
             name = localNetworkingMode ? @"connection_cloud_error" : @"connection_status_01";
-            if (localNetworkingMode) mode = UIImageRenderingModeAlwaysOriginal;
+            if (localNetworkingMode) mode = self.isDashBoard? UIImageRenderingModeAlwaysTemplate: UIImageRenderingModeAlwaysOriginal;
             break;
         case SFICloudStatusStateConnecting:
             name = @"connection_status_02";
             break;
         case SFICloudStatusStateConnected:
-            name = localNetworkingMode ? @"connection_cloud_success" : @"connection_status_03";
-            if (localNetworkingMode) mode = UIImageRenderingModeAlwaysOriginal;
+            name = localNetworkingMode ?@"connection_cloud_success" : @"connection_status_03";
+            if (localNetworkingMode) mode = self.isDashBoard? UIImageRenderingModeAlwaysTemplate:UIImageRenderingModeAlwaysOriginal;
             break;
         case SFICloudStatusStateAlmondOffline:
             name = @"connection_status_04";
@@ -86,15 +88,15 @@
             break;
         case SFICloudStatusStateConnectionError:
             name = @"connection_error_icon";
-            if (localNetworkingMode) mode = UIImageRenderingModeAlwaysOriginal;
+            if (localNetworkingMode) mode = self.isDashBoard? UIImageRenderingModeAlwaysTemplate: UIImageRenderingModeAlwaysOriginal;
             break;
         case SFICloudStatusStateLocalConnection:
             name = @"connection_local_success";
-            mode = UIImageRenderingModeAlwaysOriginal;
+            mode = self.isDashBoard? UIImageRenderingModeAlwaysTemplate:UIImageRenderingModeAlwaysOriginal;
             break;
         case SFICloudStatusStateLocalConnectionOffline:
             name = @"connection_local_error";
-            mode = UIImageRenderingModeAlwaysOriginal;
+            mode = self.isDashBoard? UIImageRenderingModeAlwaysTemplate:UIImageRenderingModeAlwaysOriginal;
             break;
         case SFICloudStatusStateCloudConnectionNotSupported:
             name = @"connection_error_icon";

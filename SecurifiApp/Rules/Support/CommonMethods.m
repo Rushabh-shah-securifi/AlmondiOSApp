@@ -41,6 +41,7 @@
     }
     return [NSString stringWithString:days];
 }
+
 +(NSMutableDictionary*)setDayDict{
     NSMutableDictionary *dayDict = [NSMutableDictionary new];
     [dayDict setValue:@"Sun" forKey:@(0).stringValue];
@@ -62,11 +63,13 @@
     }
     return NO;
 }
+
 +(void)clearTopScroll:(UIScrollView *)top middleScroll:(UIScrollView*)middle bottomScroll:(UIScrollView*)bottom{
     [self clearScrollView:top];
     [self clearScrollView:middle];
     [self clearScrollView:bottom];
 }
+
 + (void)clearScrollView:(UIScrollView*)scrollView{
     NSLog(@"clearTopScrollView");
     NSArray *viewsToRemove = [scrollView subviews];
@@ -75,6 +78,7 @@
             [v removeFromSuperview];
     }
 }
+
 + (NSMutableAttributedString *)getAttributeString:(NSString *)header fontSize:(int)fontsize{
     UIFont *lightFont = [UIFont securifiBoldFont:fontsize];
     NSDictionary *arialDict = [NSDictionary dictionaryWithObject: lightFont forKey:NSFontAttributeName];
@@ -89,7 +93,8 @@
     hue = hue / 65535;
     UIColor *color = [UIColor colorWithHue:hue saturation:100 brightness:100 alpha:1.0];
     return [color.hexString uppercaseString];
-};
+}
+
 + (UIImage *)imageNamed:(NSString *)name withColor:(UIColor *)color {
     // load the image
     UIImage *img = [UIImage imageNamed:name];
