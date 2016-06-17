@@ -95,7 +95,7 @@
     [_labelAlmond addGestureRecognizer:tapGesture];
     [Scroller setScrollEnabled:YES];
     [self markNetworkStatusIcon];
-    //[self initializeNotification];
+    [self initializeNotification];
     [self initializeHUD];
     
 }
@@ -108,37 +108,51 @@
 }
 
 -(void)initializeNotification{
-    
-    _labelAlmond.text = self.toolkit.currentAlmond.almondplusName ;
-    _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.devices.count ];
-    _networkConnectedDevices.text =[NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.clients.count ];
-    _totalConnectedDevices.text = [NSString stringWithFormat: @"%ld", [_smartHomeConnectedDevices.text integerValue]+[_networkConnectedDevices.text integerValue]];
-    
-    NSLog(@"Why almond mode is Not changing ");
-    NSLog(@"%d",self.toolkit.mode_src);
-    
-    if (self.toolkit.mode_src == 2) {
-        middleButton.image = [UIImage imageNamed:@"notification_home"];
-        UIImage *imgNav = [UIImage imageNamed:@"1224"];
-        [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
-        _labelHomeAway.hidden = YES;
-        _labelHome.hidden = NO;
-        [self.buttonHome setImage:[UIImage imageNamed:@"home_icon1"] forState:UIControlStateNormal];
-        [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
-        [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.012 green:0.663 blue:0.957 alpha:1] ];
-        [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
-        self.bannerImage.image = [UIImage imageNamed:@"1225"];
-    }else if(self.toolkit.mode_src  == 3){
-        middleButton.image = [UIImage imageNamed:@"notification_away"];
-        UIImage *imgNav = [UIImage imageNamed:@"head_away"];
-        [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
-        _labelHomeAway.hidden = NO;
-        _labelHome.hidden = YES;
-        [self.buttonHomeAway setImage:[UIImage imageNamed:@"homeaway_icon1"] forState:UIControlStateNormal];
-        [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
-        [self.buttonHomeAway setBackgroundColor:[UIColor colorWithRed:1 green:0.596 blue:0 alpha:1]];
-        [self.buttonHome setBackgroundColor:[UIColor clearColor]];
-        self.bannerImage.image = [UIImage imageNamed:@"main"];
+    if(self.toolkit.currentAlmond != nil){
+        _labelAlmond.text = self.toolkit.currentAlmond.almondplusName ;
+        _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.devices.count ];
+        _networkConnectedDevices.text =[NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.clients.count ];
+        _totalConnectedDevices.text = [NSString stringWithFormat: @"%ld", [_smartHomeConnectedDevices.text integerValue]+[_networkConnectedDevices.text integerValue]];
+        
+        NSLog(@"Why almond mode is Not changing ");
+        NSLog(@"%d",self.toolkit.mode_src);
+        
+        if (self.toolkit.mode_src == 2) {
+            middleButton.image = [UIImage imageNamed:@"notification_home"];
+            UIImage *imgNav = [UIImage imageNamed:@"1224"];
+            [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
+            _labelHomeAway.hidden = YES;
+            _labelHome.hidden = NO;
+            [self.buttonHome setImage:[UIImage imageNamed:@"home_icon1"] forState:UIControlStateNormal];
+            [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
+            [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.012 green:0.663 blue:0.957 alpha:1] ];
+            [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
+            self.bannerImage.image = [UIImage imageNamed:@"1225"];
+        }else if(self.toolkit.mode_src  == 3){
+            middleButton.image = [UIImage imageNamed:@"notification_away"];
+            UIImage *imgNav = [UIImage imageNamed:@"head_away"];
+            [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
+            _labelHomeAway.hidden = NO;
+            _labelHome.hidden = YES;
+            [self.buttonHomeAway setImage:[UIImage imageNamed:@"homeaway_icon1"] forState:UIControlStateNormal];
+            [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
+            [self.buttonHomeAway setBackgroundColor:[UIColor colorWithRed:1 green:0.596 blue:0 alpha:1]];
+            [self.buttonHome setBackgroundColor:[UIColor clearColor]];
+            self.bannerImage.image = [UIImage imageNamed:@"main"];
+        }
+    }else{
+             _labelAlmond.text = @"AddAlmond";
+            _labelHomeAway.hidden = YES;
+            _labelHome.hidden = YES;
+             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
+        
+             [self.buttonHomeAway setImage:[UIImage imageNamed:@"homeaway_icon1"] forState:UIControlStateNormal];
+             [self.buttonHome setImage:[UIImage imageNamed:@"home_icon1"] forState:UIControlStateNormal];
+             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
+            _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%d ",0 ];
+            _networkConnectedDevices.text =[NSString stringWithFormat:@"%d ",0 ];
+            _totalConnectedDevices.text = [NSString stringWithFormat: @"%d",0];
+
     }
 }
 
@@ -413,15 +427,19 @@
 }
 
 - (IBAction)homeMode:(id)sender {
-    [self showHudWithTimeoutMsg:@"Setting Almond to home mode." delay:5];
-    mode = SFIAlmondMode_home;
-    [_toolkit asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:mode];
+     if(self.toolkit.currentAlmond != nil){
+        [self showHudWithTimeoutMsg:@"Setting Almond to home mode." delay:5];
+        mode = SFIAlmondMode_home;
+        [_toolkit asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:mode];
+     }
 }
 
 - (IBAction)homeawayMode:(id)sender {
-    [self showHudWithTimeoutMsg:@"Setting Almond to away mode." delay:5];
-    mode = SFIAlmondMode_away;
-    [_toolkit asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:mode];
+     if(self.toolkit.currentAlmond != nil){
+        [self showHudWithTimeoutMsg:@"Setting Almond to away mode." delay:5];
+        mode = SFIAlmondMode_away;
+        [_toolkit asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:mode];
+     }
 }
 
 - (void)notificationAction:(id)sender {

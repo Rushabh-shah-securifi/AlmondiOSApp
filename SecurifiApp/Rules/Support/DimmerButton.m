@@ -53,6 +53,8 @@
     if(self.isTrigger && !isScene){
         self.bgView = [[UIView alloc] initWithFrame:CGRectMake(65,0 , 65, 60)];
         lblMain = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 64 ,60)];
+        lblMain.numberOfLines = 2;
+        lblMain.lineBreakMode = NSLineBreakByWordWrapping;
         self.conditionBtn = [[SwitchButton alloc]initWithFrame:CGRectMake(0, 0, 64,60)];
         [self.conditionBtn addBgView:0 widthAndHeight:60];
         NSLog(@"condition text %@",[self.subProperties getcondition]);
