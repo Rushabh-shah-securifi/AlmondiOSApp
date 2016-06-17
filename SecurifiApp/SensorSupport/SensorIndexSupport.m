@@ -2282,7 +2282,7 @@
                 s2.maxValue = 100;
                 s2.valueFormatter.action = ValueFormatterAction_formatString;
                 s2.valueFormatter.notificationPrefix = NSLocalizedString(@"'s light reading changed to ", @"'s light reading changed to ");
-                s2.valueFormatter.suffix = @"%";
+                s2.valueFormatter.suffix = @"LUX";
                 return @[s2];
                 
             }
@@ -2329,7 +2329,7 @@
                 s1.minValue = 0;
                 s1.maxValue = 100;
                 s1.valueFormatter.action = ValueFormatterAction_formatString;
-                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s humidiy changed to ", @"'s humidiy changed to ");
+                s1.valueFormatter.notificationPrefix = NSLocalizedString(@"'s humidity changed to ", @"'s humidiy changed to ");
                 s1.valueFormatter.suffix = @"%";
                 
                 return @[s1];

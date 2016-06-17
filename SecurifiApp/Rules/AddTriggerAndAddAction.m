@@ -856,20 +856,22 @@ labelAndCheckButtonView *labelView;
         }];
         for (NSString *key in sortedKeys) {
             GenericValue *gVal = [genericIndexObj.values valueForKey:key];
-            if([key rangeOfString:@"nt_" options:NSCaseInsensitiveSearch].location != NSNotFound || [key isEqualToString:@"condition"])
+            if([key isEqualToString:@"condition"])
                 continue;
             [displayArr addObject:gVal.displayText];
             [valueArr addObject:key];
         }
-        rows = @[displayArr,@[@"Day",@"Night"]];
+        rows = @[displayArr];
     }
+    
     if(subproperties.index == 1){
         for(int i=0;i<60;i++){
             [displayArr addObject:@(i).stringValue];
         }
         rows = @[displayArr,@[@"Before",@"After"]];
     }
-//    valueArr enumerateObjectsUsingBlock:<#^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop)block#>
+    
+//    valueArr enumerateObjectsUsingBlock:
     NSLog(@"subproperties match data %@",subproperties.matchData);
     NSString *title = (subproperties.index == 2)?@"Condition":@"Minutes";
     NSArray *initialSelection = @[@0,@0];
@@ -894,26 +896,26 @@ labelAndCheckButtonView *labelView;
 -(void)onDoneButtonClick:(NSArray*)selectedIndexes values:(NSArray*)selectedValues property:(SFIButtonSubProperties*)subproperties display:(NSArray*)displayArr values:(NSArray*)valueArr{
     NSLog(@"%@", selectedIndexes);// array of NSString
     NSLog(@"%@", [selectedValues componentsJoinedByString:@", "]);
-    NSString *pos = [selectedIndexes objectAtIndex:1];
     NSString *posIndex = [selectedIndexes objectAtIndex:0];
-    NSLog(@"subproperty index: %d", subproperties.index);
-    if([pos integerValue] == 1)//night and after
-    {
-        if(subproperties.index == 2)
-            subproperties.matchData = [NSString stringWithFormat:@"nt_%@",[valueArr objectAtIndex:[posIndex integerValue]]];
-        else
-            subproperties.delay = [displayArr objectAtIndex:[posIndex integerValue]];
+    
+    if(selectedIndexes.count == 1){
+        subproperties.matchData = [valueArr objectAtIndex:[posIndex integerValue]];
     }
-    else{// day and before
-        if(subproperties.index == 2)
-            subproperties.matchData = [valueArr objectAtIndex:[posIndex integerValue]];
-        else{// negative value for before
+    
+    else{
+        NSString *pos = [selectedIndexes objectAtIndex:1];
+        NSLog(@"subproperty index: %d", subproperties.index);
+        if([pos integerValue] == 1)//night and after
+        {
+            subproperties.delay = [displayArr objectAtIndex:[posIndex integerValue]];
+        }
+        else{// day and before
             NSLog(@"displayArr %@",displayArr);
             subproperties.delay =[NSString stringWithFormat:@"-%@",[displayArr objectAtIndex:[posIndex integerValue]]];
         }
     }
-    [self updateWeatherMatchData:subproperties];
     
+    [self updateWeatherMatchData:subproperties];
     [self.delegate redrawDeviceIndexView:subproperties.deviceId clientEvent:@""];
 
 }

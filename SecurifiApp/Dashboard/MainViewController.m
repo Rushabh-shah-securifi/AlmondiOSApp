@@ -468,7 +468,7 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
     }
    
-    if (indexPath.section == 0) {
+    if (indexPath.section == 0 && self.clientNotificationArr.count > indexPath.row) {
         SFINotification *notification = [self.deviceNotificationArr objectAtIndex:indexPath.row];
         [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
         if ([notification.deviceName isEqualToString:@"nil"]) {
@@ -481,7 +481,7 @@
             cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
         }
     }
-    else if(indexPath.section == 1){
+    else if(indexPath.section == 1 && self.clientNotificationArr.count > indexPath.row){
         SFINotification *notification = [self.clientNotificationArr objectAtIndex:indexPath.row];
         [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
         //NSLog(@"devicename --%@",notification.deviceName);
