@@ -624,7 +624,7 @@
     cell.detailTextLabel.textColor = [SFIColors ruleGraycolor];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:10];
     //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    CGSize itemSize = CGSizeMake(28,28);
+    CGSize itemSize = CGSizeMake(30,30);
     UIGraphicsBeginImageContext(itemSize);
     CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
     [cell.imageView.image drawInRect:imageRect];
@@ -920,11 +920,16 @@
         case SFIAlmondConnectionStatus_connected: {
             state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateConnected : SFICloudStatusStateLocalConnection;
             [self.leftButton markState:state];
-            if(self.toolkit.mode_src==2)
+            if(self.toolkit.mode_src==2){
                 [self changeColorOfNavigationItam:@"1224" andbannerImage:@"1225"];
-            else
+                [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.012 green:0.663 blue:0.957 alpha:1] ];
+                [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
+            }
+            else{
                 [self changeColorOfNavigationItam:@"head_away" andbannerImage:@"main"];
-            
+                [self.buttonHomeAway setBackgroundColor:[UIColor colorWithRed:1 green:0.596 blue:0 alpha:1] ];
+                [self.buttonHome setBackgroundColor:[UIColor clearColor]];
+            }
             break;
         };
         case SFIAlmondConnectionStatus_error: {
@@ -945,10 +950,14 @@
     [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
 
     self.bannerImage.image = [UIImage imageNamed:img2];
-    
-    [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.012 green:0.663 blue:0.957 alpha:1] ];
-    [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
-
+    if (self.toolkit.mode_src ==2) {
+        [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.537 green:0.549 blue:0.565 alpha:1] ];
+        [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
+    }
+    else{
+        [self.buttonHomeAway setBackgroundColor:[UIColor colorWithRed:0.537 green:0.549 blue:0.565 alpha:1] ];
+        [self.buttonHome setBackgroundColor:[UIColor clearColor]];
+    }
 }
 
 - (UIImage *)imageForState:(SFICloudStatusState)state localNetworkingMode:(BOOL)localNetworkingMode {
