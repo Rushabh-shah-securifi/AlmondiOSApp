@@ -818,7 +818,7 @@ Follow it, then login below.";
 "dryAir" ="Dry Air";
 "AutoChangeover"="Auto ChangeOver";
 
-"medium" ="MEDIUM";
+"medium" ="Medium";
 "fan_on_high" ="ON HIGH";
 
 
@@ -861,9 +861,9 @@ Follow it, then login below.";
 "occupied"="OCCUPIED";
 "unoccupied"="UNOCCUPIED";
 "ringTone"="RING TONE";
-"tone1"="Tone1";
-"tone2"="Tone2";
-"tone3"="Tone3";
+"tone1"="Alarm";
+"tone2"="Siren";
+"tone3"="Door-Bell";
 "canBeBlocked" = "Can Be Blocked";
 "switch1" = "Switch 1";
 "switch2" = "Switch 2";
@@ -933,6 +933,15 @@ Follow it, then login below.";
 "mostlyMoony" = "Mostly Moony";
 "moony" = "Moony";
 "sunnycondition" = "Condition";
+
+"enable" = "ENABLE";
+"enabled" = "Enabled";
+"disabled" = "Disabled";
+"volume" = "VOLUME";
+"low" = "Low";
+"high" = "High";
+
+
 
 /* ==================================================================== */
 

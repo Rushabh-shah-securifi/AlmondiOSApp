@@ -61,8 +61,7 @@
     
     [rulePayload setValue:[self createTriggerPayload] forKey:@"Triggers"];
     [rulePayload setValue:[self createActionPayload] forKey:@"Results"];
-    
-
+    NSLog(@"rule payload: %@", rulePayload);
     return rulePayload;
     
 }

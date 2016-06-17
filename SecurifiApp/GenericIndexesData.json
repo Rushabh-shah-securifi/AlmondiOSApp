@@ -2130,6 +2130,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "ringTone",
         "DefaultIcon": "alarm_on",
+        "ExcludeFrom": "Trigger",
         "Values": {
             "1": {
                 "Icon": "alarm_on",
@@ -2250,7 +2251,7 @@
     "96": {
         "Name": "ENABLE",
         "Type": "Actuator",
-        "Placement": "Header",
+        "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "enable",
         "ShowToggleInRules": "true",
@@ -2277,6 +2278,7 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "volume",
         "DefaultIcon": "alarm_on",
+        "ExcludeFrom": "Trigger",
         "Values": {
             "1": {
                 "Icon": "alarm_on",

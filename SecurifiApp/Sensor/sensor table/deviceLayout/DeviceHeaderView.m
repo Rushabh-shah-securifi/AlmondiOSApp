@@ -71,7 +71,7 @@
     int deviceID = _genericParams.headerGenericIndexValue.deviceID;
 
     if(self.genericParams.isSensor){
-                if(deviceType == SFIDeviceType_NestThermostat_57 || deviceType == SFIDeviceType_NestSmokeDetector_58 ){
+        if(deviceType == SFIDeviceType_NestThermostat_57 || deviceType == SFIDeviceType_NestSmokeDetector_58 ){
             [self handleNestThermostatAndSmokeDectect:deviceType deviceID:deviceID genericValue:_genericParams.headerGenericIndexValue.genericValue];
         }
     }
@@ -202,7 +202,7 @@
     if(self.cellType == SensorTable_Cell){
         genericIndexValues = [GenericIndexUtil getDetailListForDevice:deviceID];
         //NSLog(@"gvalues: %@", genericIndexValues);
-        if([Device getTypeForID:deviceID] == SFIDeviceType_NestThermostat_57){
+        if([Device getTypeForID:deviceID] == SFIDeviceType_NestThermostat_57){ //mk move this to util
             genericIndexValues = [RulesNestThermostat handleNestThermostatForSensor:deviceID genericIndexValues:genericIndexValues];
         }
         self.genericParams.indexValueList = genericIndexValues;

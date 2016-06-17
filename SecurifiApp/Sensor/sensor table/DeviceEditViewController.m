@@ -509,7 +509,7 @@ static const int xIndent = 10;
             NSLog(@"updated value: %@", [Device getValueForIndex:genIndexVal.index deviceID:genIndexVal.deviceID]);
             
             int dType = [Device getTypeForID:genIndexVal.deviceID];
-            if(dType == SFIDeviceType_NestThermostat_57 || dType == SFIDeviceType_HueLamp_48){
+            if(dType == SFIDeviceType_NestThermostat_57 || dType == SFIDeviceType_HueLamp_48 || dType == SFIDeviceType_AlmondSiren_63){
                 [self repaintBottomView:dType];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -549,7 +549,7 @@ static const int xIndent = 10;
     NSLog(@"repaintBottomView");
     int deviceID = self.genericParams.headerGenericIndexValue.deviceID;
     NSArray* genericIndexValues = [GenericIndexUtil getDetailListForDevice:deviceID];
-    if(dType == SFIDeviceType_NestThermostat_57)
+    if(dType == SFIDeviceType_NestThermostat_57) //mk - move this to util
         genericIndexValues = [RulesNestThermostat handleNestThermostatForSensor:deviceID genericIndexValues:genericIndexValues];
     self.genericParams.indexValueList = genericIndexValues;
     

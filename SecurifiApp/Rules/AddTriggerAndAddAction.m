@@ -100,7 +100,7 @@ labelAndCheckButtonView *labelView;
     if(self.isTrigger && !self.isScene){
         xVal = [self addDeviceName:@"Time" deviceID:0 deviceType:SFIDeviceType_BinarySwitch_0 xVal:xVal];
         xVal = [self addDeviceName:@"Network Devices" deviceID:0 deviceType:SFIDeviceType_WIFIClient xVal:xVal];
-                 xVal = [self addDeviceName:@"Weather" deviceID:-1 deviceType:SFIDeviceType_Weather xVal:xVal];
+        xVal = [self addDeviceName:@"Weather" deviceID:-1 deviceType:SFIDeviceType_Weather xVal:xVal];
     }
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     for(Device *device in toolkit.devices){
@@ -259,6 +259,7 @@ labelAndCheckButtonView *labelView;
 
 //on devicelist button click, calling this method
 -(void) createDeviceIndexesLayoutForDeviceId:(int)deviceId deviceType:(int)deviceType deviceName:(NSString*)deviceName{
+    NSLog(@"");
     NSArray *genericIndexValues = [RuleSceneUtil getGenericIndexValueArrayForID:deviceId type:deviceType isTrigger:self.isTrigger isScene:_isScene triggers:self.triggers action:self.actions];
     
     if(deviceType == SFIDeviceType_NestThermostat_57){
@@ -301,6 +302,7 @@ labelAndCheckButtonView *labelView;
 }
 #pragma mark handleWeather
 -(NSArray*)handleWeather:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues triggers:(NSMutableArray*)triggers{
+    NSLog(@"handle weather");
     NSMutableArray *newGenericIndexValues = [[NSMutableArray alloc] init];
     for(GenericIndexValue *genIndexVal in genericIndexValues){
         GenericIndexValue *newGenericIndexVal = nil;
@@ -323,8 +325,7 @@ labelAndCheckButtonView *labelView;
     NSString *matchData = nil;
    
     for(SFIButtonSubProperties *subProperty in self.triggers){
-         NSLog(@"subproperty match data = %@ type =%d %d ",subProperty.matchData,subProperty.deviceType,subProperty.index);
-        if(subProperty.index == 2){
+        if(subProperty.deviceType == SFIDeviceType_Weather && subProperty.index == 2){
             matchData = subProperty.matchData;
         }
     }

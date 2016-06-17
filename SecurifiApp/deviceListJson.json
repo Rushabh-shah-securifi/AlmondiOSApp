@@ -1292,16 +1292,18 @@
     },
     "63": {
         "name": "AlmondSiren",
-        "isActuator": "false",
+        "isActuator": "true",
         "defaultIcon": "switch_off",
         "Indexes": {
             "1": {
                 "genericIndexID": "96",
-                "row_no": 1
+                "row_no": 1,
+                "Placement":"Header_Detail"
             },
             "2": {
                 "row_no": 2,
-                "genericIndexID": "88"
+                "genericIndexID": "88",
+                "Placement":"Header"
             },
             "3": {
                 "row_no": 3,
@@ -1314,7 +1316,7 @@
             "5": {
                 "row_no": 5,
                 "genericIndexID": "13",
-                "Placement":"Header"
+                "Placement":"Detail"
             }
         }
     },

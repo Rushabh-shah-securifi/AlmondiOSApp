@@ -87,12 +87,15 @@
     //NSLog(@"Detail list vals: %@", detailList);
     detailList = [self getSortedIndexValues:detailList];
     detailList = [self getIndexValuesBasedOnSortedReadOnly:detailList];
+    
     if((device.type == SFIDeviceType_NestThermostat_57 && [[Device getValueForIndex:11 deviceID:deviceID] isEqualToString:@"false"]) || (device.type == SFIDeviceType_NestSmokeDetector_58 && [[Device getValueForIndex:5 deviceID:deviceID] isEqualToString:@"false"])){//don't paint indexes on offline
         [detailList removeAllObjects];
     }
-    if(device.type == SFIDeviceType_HueLamp_48 && [[Device getValueForIndex:2 deviceID:deviceID] isEqualToString:@"false"]){
+    else if(device.type == SFIDeviceType_HueLamp_48 && [[Device getValueForIndex:2 deviceID:deviceID] isEqualToString:@"false"]){
         [detailList removeAllObjects];
-    }
+    }else if(device.type == SFIDeviceType_AlmondSiren_63)
+        detailList = [self handleAlmondSiren:deviceID genericIndexValues:detailList];
+    
     NSArray *commonList = [self getCommonGenericIndexValue:device];
     [detailList addObjectsFromArray:commonList];
     return detailList;
@@ -284,6 +287,20 @@
     }
     //NSLog(@"status: %@", status);
     return  status;
+}
+
+
++(NSMutableArray*)handleAlmondSiren:(int)deviceID genericIndexValues:(NSArray*)genericIndexValues{
+    //for index 1 if value is false remove [2-4] indexes.
+    BOOL isDisabled = [[Device getValueForIndex:1 deviceID:deviceID] isEqualToString:@"false"];
+    NSMutableArray *newGenericIndexValues = [genericIndexValues mutableCopy];
+    if(isDisabled){
+        for(GenericIndexValue *genIndexVal in genericIndexValues){
+            if(genIndexVal.index != 1)
+                [newGenericIndexValues removeObject:genIndexVal];
+        }
+    }
+    return newGenericIndexValues;
 }
 
 
