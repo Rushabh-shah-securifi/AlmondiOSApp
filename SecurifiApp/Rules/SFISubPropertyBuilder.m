@@ -310,7 +310,7 @@ UILabel *topLabel;
             }
         }
         //NSLog(@"subProperties.iconName %@",subProperties.iconName);
-        NSString *insideDisplayText = (isDimmbutton && !isScene) ? [NSString stringWithFormat:@"%@%@",[subProperties getcondition],subProperties.displayText]:subProperties.displayText ;
+        NSString *insideDisplayText = (isDimmbutton && !isScene) ? [NSString stringWithFormat:@"%@ %@",[subProperties getcondition],subProperties.displayText]:subProperties.displayText ;
 //        [weatherButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:subProperties.deviceName displayText:@"abc" isDimmer:isDimmbutton bottomText:bottomText insideText:insideDisplayText isHideCross:isCrossHidden];
 //        weatherButton.subProperties = subProperties;
 //        weatherButton.switchButtonRight.subProperties = subProperties;

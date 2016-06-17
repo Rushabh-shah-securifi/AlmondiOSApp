@@ -941,6 +941,10 @@ Follow it, then login below.";
 "low" = "Low";
 "high" = "High";
 
+"blink" = "Blink";
+"rgb" = "RGB";
+"seconds" = "SECONDS";
+"blinking" = "Blinking";
 
 
 /* ==================================================================== */

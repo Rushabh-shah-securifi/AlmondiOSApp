@@ -2130,7 +2130,6 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "ringTone",
         "DefaultIcon": "alarm_on",
-        "ExcludeFrom": "Trigger",
         "Values": {
             "1": {
                 "Icon": "alarm_on",
@@ -2256,6 +2255,7 @@
         "AppLabel": "enable",
         "ShowToggleInRules": "true",
         "DefaultIcon": "switch_on",
+        "ExcludeFrom": "Scene_Rule",
         "Values": {
             "true": {
                 "ToggleValue": "false",
@@ -2278,7 +2278,6 @@
         "Layout": "MULTI_BUTTON",
         "AppLabel": "volume",
         "DefaultIcon": "alarm_on",
-        "ExcludeFrom": "Trigger",
         "Values": {
             "1": {
                 "Icon": "alarm_on",
@@ -2300,7 +2299,7 @@
     "98": {
         "Name": "BLINK_STATE",
         "Type": "Actuator",
-        "Placement": "Header",
+        "Placement": "Detail",
         "Layout": "MULTI_BUTTON",
         "AppLabel": "blink",
         "ShowToggleInRules": "true",
@@ -2326,7 +2325,7 @@
         "Placement": "Detail",
         "Layout": "TEXT_VIEW_ONLY",
         "AppLabel": "rgb",
-        "ExcludeFrom": "Scene_Trigger",
+        "ExcludeFrom": "Scene_Rule",
         "DefaultIcon": "alarm_off",
         "Formatter": {
             "Min": "0",
@@ -2336,10 +2335,10 @@
     "100": {
         "Name": "SECONDS",
         "Type": "Actuator",
-        "Placement": "Header",
+        "Placement": "Detail",
         "Layout": "TEXT_VIEW_ONLY",
         "AppLabel": "seconds",
-        "ExcludeFrom": "Scene_Trigger",
+        "ExcludeFrom": "Scene_Rule",
         "DefaultIcon": "alarm_off",
         "Formatter": {
             "Min": "0",

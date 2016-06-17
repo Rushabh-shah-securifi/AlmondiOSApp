@@ -1322,7 +1322,7 @@
     },
     "64": {
         "name": "AlmondBlink",
-        "isActuator": "false",
+        "isActuator": "true",
         "defaultIcon": "switch_off",
         "Indexes": {
             "1": {
