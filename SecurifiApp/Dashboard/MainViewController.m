@@ -37,11 +37,15 @@
 #import "NotificationsTestStore.h"
 #import "SensorSupport.h"
 #import "SFIColors.h"
+#import "CircleLabel.h"
+#import "Colours.h"
+#import "SFINotificationStatusBarButtonItem.h"
 
 #import "CommonMethods.h"
 @interface MainViewController ()<MBProgressHUDDelegate>{
     NSArray *buttons;
-    UIBarButtonItem *rightButton, *middleButton;
+    UIBarButtonItem *rightButton;
+    SFINotificationStatusBarButtonItem *middleButton;
     SFIAlmondMode mode;
 }
 @property(nonatomic) SFICloudStatusBarButtonItem *leftButton;
@@ -53,12 +57,17 @@
 @property(nonatomic) id <SFINotificationStore> store;
 @property (nonatomic) NSMutableArray *clientNotificationArr;
 @property (nonatomic) NSMutableArray *deviceNotificationArr;
+
+
+@property(nonatomic, readonly) CircleLabel *countLabel;
+@property(nonatomic, readonly) UIButton *countButton;
 @end
 
 @implementation MainViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.navigationBar.clipsToBounds = YES;
     self.toolkit = [SecurifiToolkit sharedInstance];
     [self.toolkit tryRefreshNotifications];
     self.notify = [[SFINotificationsViewController alloc] init];
@@ -73,23 +82,31 @@
     self.deviceNotificationArr = [[NSMutableArray alloc]init];
     [self getClientNotification];
     [self getDeviceNotification];
-    UIImage *imgNav = [UIImage imageNamed:@"1224"];
     
-    [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsCompact];
+    UIImage *imgNav = [UIImage imageNamed:@"1224"];
+    [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
     [self.navigationItem setTitle:@"Dashboard"];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     
     _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES];
     self.leftButton.isDashBoard = YES;
     
-    middleButton = [[UIBarButtonItem alloc]
+    middleButton = [[SFINotificationStatusBarButtonItem alloc]
                     initWithImage:[UIImage imageNamed:@"notification_home"]
                     style:UIBarButtonItemStylePlain
                     target:self
                     action:@selector(notificationAction:)];
+    
+    middleButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(notificationAction:)];
+    NSInteger count = [_toolkit countUnviewedNotifications];
+    [middleButton markNotificationCount:(NSUInteger) count];
+    
+    
     middleButton.tintColor = [UIColor whiteColor];
+    middleButton.isDashBoard = YES;
     buttons = @[_leftButton, middleButton];
     self.navigationItem.leftBarButtonItems = buttons;
+    
     _labelAlmond.userInteractionEnabled = YES;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(AlmondSelection:)];
     [_labelAlmond addGestureRecognizer:tapGesture];
@@ -99,6 +116,21 @@
     [self initializeHUD];
     
 }
+
+- (CircleLabel *)makeCountLabel {
+    
+    CGRect frame = CGRectMake(12, 1, 10, 10);
+    CircleLabel *label = [[CircleLabel alloc] initWithFrame:frame];
+    label.cornerRadius = 12.5;
+    label.textColor = [UIColor whiteColor];
+    label.font = [UIFont standardUILabelFont];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.backgroundColor = /*orange*/[UIColor colorFromHexString:@"ff8500"];
+    NSLog(@"Circle Image should come from here");
+    NSLog(@"label is ");
+    return label;
+}
+
 -(void)initializeHUD{
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
@@ -129,7 +161,7 @@
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
             self.bannerImage.image = [UIImage imageNamed:@"1225"];
         }else if(self.toolkit.mode_src  == 3){
-            middleButton.image = [UIImage imageNamed:@"notification_away"];
+            middleButton.image = [UIImage imageNamed:@"notification_home"];
             UIImage *imgNav = [UIImage imageNamed:@"head_away"];
             [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
             _labelHomeAway.hidden = NO;
@@ -274,6 +306,21 @@
                selector:@selector(onDidReceiveNotifications)
                    name:kSFINotificationDidStore
                  object:nil];
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationDidStore
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationBadgeCountDidChange
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(onNotificationCountChanged:)
+                   name:kSFINotificationDidMarkViewed
+                 object:nil];
+
     // NSLog(@"tryRefreshNotifications");
     [self.toolkit tryRefreshNotifications];
     [self initializeNotification];
@@ -281,6 +328,29 @@
         [self.dashboardTable reloadData];
     });
 }
+
+- (void)onNotificationCountChanged:(id)event {
+    NSLog(@"Notification count icon");
+    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+    NSInteger badgeCount = [toolkit notificationsBadgeCount];
+    NSLog(@"Notifications are : %ld",(long)badgeCount);
+    if(badgeCount >0){
+        middleButton.image = [UIImage imageNamed:@"bell_icon_tilted"];
+        _countLabel = [self makeCountLabel];
+        
+        [middleButton markNotificationCount:(NSUInteger) badgeCount];
+//        [middleButton addSubView:];
+
+    }else{
+        if (self.toolkit.mode_src ==2) {
+            middleButton.image = [UIImage imageNamed:@"notification_home"];
+        }
+        if (self.toolkit.mode_src ==3) {
+            middleButton.image = [UIImage imageNamed:@"notification_home"];
+        }
+    }
+}
+
 -(void)onDidReceiveNotifications{
     _store = [self.notify pickNotificationStore];
     self.notify.store = _store;
@@ -344,7 +414,7 @@
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
             self.bannerImage.image = [UIImage imageNamed:@"1225"];
         }else if(mode == 3){
-            middleButton.image = [UIImage imageNamed:@"notification_away"];
+            middleButton.image = [UIImage imageNamed:@"notification_home"];
             UIImage *imgNav = [UIImage imageNamed:@"head_away"];
             [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
             _labelHomeAway.hidden = NO;
@@ -361,13 +431,14 @@
 - (IBAction)AlmondSelection:(UIButton *)sender {
     enum SFIAlmondConnectionMode modeValue = [self.toolkit currentConnectionMode];
     NSArray *almondList = [self buildAlmondList:modeValue];
-    
     UIAlertController *viewC;
-    UIImage *image = [UIImage imageNamed:@"almondHome"];
+    UIImage *image = [UIImage imageNamed:@"home_icon1"];
     viewC = [UIAlertController alertControllerWithTitle:@"Select Almond" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
     for(SFIAlmondPlus *name in almondList){
-        UIAlertAction *Aname = [UIAlertAction
+        if ([name.almondplusName isEqualToString:_labelAlmond.text]) {
+            viewC.view.tintColor = [UIColor blackColor];
+        }
+            UIAlertAction *Aname = [UIAlertAction
                                 actionWithTitle:name.almondplusName
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action){
@@ -378,6 +449,7 @@
                                     _labelAlmond.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:18];
                                 }];
         [Aname setValue:image forKey:@"image"];
+        
         [viewC addAction:Aname];
     }
     UIAlertAction *AddNew = [UIAlertAction
@@ -454,7 +526,10 @@
         ctrl.enableDebugMode = toolkit.configuration.enableNotificationsDebugMode;
         
         UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+        middleButton.image = [UIImage imageNamed:@"notification_home"];
+        
         [self presentViewController:nav_ctrl animated:YES completion:nil];
+        [middleButton markNotificationCount:0];
     });
 }
 
@@ -549,7 +624,7 @@
     cell.detailTextLabel.textColor = [SFIColors ruleGraycolor];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:10];
     //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    CGSize itemSize = CGSizeMake(25,25);
+    CGSize itemSize = CGSizeMake(28,28);
     UIGraphicsBeginImageContext(itemSize);
     CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
     [cell.imageView.image drawInRect:imageRect];
@@ -826,39 +901,55 @@
 
 - (void)markNetworkStatusIcon {
     NSString *const almondMac = self.toolkit.currentAlmond.almondplusMAC;
-    
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    enum SFIAlmondConnectionMode connectionMode = [toolkit connectionModeForAlmond:almondMac];
-    enum SFIAlmondConnectionStatus status = [toolkit connectionStatusForAlmond:almondMac];
+    NSLog(@"markNetworkStatusIcon");
+    enum SFIAlmondConnectionMode connectionMode = [_toolkit connectionModeForAlmond:almondMac];
+    enum SFIAlmondConnectionStatus status = [_toolkit connectionStatusForAlmond:almondMac];
     enum SFICloudStatusState state;
     switch (status) {
         case SFIAlmondConnectionStatus_disconnected: {
             state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateDisconnected : SFICloudStatusStateLocalConnectionOffline;
             [self.leftButton markState:state];
+            [self changeColorOfNavigationItam:@"header_Gray" andbannerImage:@"home_Gray"];
             break;
         };
         case SFIAlmondConnectionStatus_connecting: {
             [self.leftButton markState:SFICloudStatusStateConnecting];
+            [self changeColorOfNavigationItam:@"header_Gray" andbannerImage:@"home_Gray"];
             break;
         };
         case SFIAlmondConnectionStatus_connected: {
             state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateConnected : SFICloudStatusStateLocalConnection;
             [self.leftButton markState:state];
+            if(self.toolkit.mode_src==2)
+                [self changeColorOfNavigationItam:@"1224" andbannerImage:@"1225"];
+            else
+                [self changeColorOfNavigationItam:@"head_away" andbannerImage:@"main"];
             
             break;
         };
         case SFIAlmondConnectionStatus_error: {
+            [self changeColorOfNavigationItam:@"header_Gray" andbannerImage:@"home_Gray"];
             break;
         };
         case SFIAlmondConnectionStatus_error_mode: {
             state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateCloudConnectionNotSupported : SFICloudStatusStateLocalConnectionNotSupported;
             [self.leftButton markState:state];
+            [self changeColorOfNavigationItam:@"header_Gray" andbannerImage:@"home_Gray"];
             break;
         }
     }
     self.leftButton.image = [self imageForState:state localNetworkingMode:connectionMode];
 }
+-(void)changeColorOfNavigationItam:(NSString *)img1 andbannerImage:(NSString*)img2 {
+    UIImage *imgNav = [UIImage imageNamed:img1];
+    [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
 
+    self.bannerImage.image = [UIImage imageNamed:img2];
+    
+    [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.012 green:0.663 blue:0.957 alpha:1] ];
+    [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
+
+}
 
 - (UIImage *)imageForState:(SFICloudStatusState)state localNetworkingMode:(BOOL)localNetworkingMode {
     enum UIImageRenderingMode vers = UIImageRenderingModeAlwaysTemplate;
