@@ -2280,17 +2280,17 @@
         "DefaultIcon": "alarm_on",
         "Values": {
             "1": {
-                "Icon": "alarm_on",
+                "Icon": "low-volume-icon",
                 "AppLabel": "low",
                 "Label": "Low"
             },
             "2": {
-                "Icon": "alarm_on",
+                "Icon": "medium-volume-icon",
                 "AppLabel": "medium",
                 "Label": "Medium"
             },
             "3":{
-                "Icon": "alarm_on",
+                "Icon": "high-volume-icon",
                 "AppLabel": "high",
                 "Label": "High"
             }

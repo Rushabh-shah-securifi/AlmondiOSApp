@@ -270,7 +270,7 @@
 - (void)viewWillAppear:(BOOL)animated{
     
     [super viewWillAppear:YES];
-    [self markNetworkStatusIcon];
+    
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
                selector:@selector(onAlmondModeDidChange:)
@@ -327,6 +327,7 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.dashboardTable reloadData];
     });
+    [self markNetworkStatusIcon];
 }
 
 - (void)onNotificationCountChanged:(id)event {
@@ -425,6 +426,7 @@
             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
             self.bannerImage.image = [UIImage imageNamed:@"main"];
         }
+        [self.HUD hide:YES];
     });
 }
 
@@ -922,13 +924,17 @@
             [self.leftButton markState:state];
             if(self.toolkit.mode_src==2){
                 [self changeColorOfNavigationItam:@"1224" andbannerImage:@"1225"];
-                [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.012 green:0.663 blue:0.957 alpha:1] ];
-                [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.012 green:0.663 blue:0.957 alpha:1] ];
+                    [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
+                });
             }
             else{
                 [self changeColorOfNavigationItam:@"head_away" andbannerImage:@"main"];
-                [self.buttonHomeAway setBackgroundColor:[UIColor colorWithRed:1 green:0.596 blue:0 alpha:1] ];
-                [self.buttonHome setBackgroundColor:[UIColor clearColor]];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.buttonHomeAway setBackgroundColor:[UIColor colorWithRed:1 green:0.596 blue:0 alpha:1] ];
+                    [self.buttonHome setBackgroundColor:[UIColor clearColor]];
+                    });
             }
             break;
         };
@@ -946,18 +952,20 @@
     self.leftButton.image = [self imageForState:state localNetworkingMode:connectionMode];
 }
 -(void)changeColorOfNavigationItam:(NSString *)img1 andbannerImage:(NSString*)img2 {
-    UIImage *imgNav = [UIImage imageNamed:img1];
-    [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
-
-    self.bannerImage.image = [UIImage imageNamed:img2];
-    if (self.toolkit.mode_src ==2) {
-        [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.537 green:0.549 blue:0.565 alpha:1] ];
-        [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
-    }
-    else{
-        [self.buttonHomeAway setBackgroundColor:[UIColor colorWithRed:0.537 green:0.549 blue:0.565 alpha:1] ];
-        [self.buttonHome setBackgroundColor:[UIColor clearColor]];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIImage *imgNav = [UIImage imageNamed:img1];
+        [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
+        
+        self.bannerImage.image = [UIImage imageNamed:img2];
+        if (self.toolkit.mode_src ==2) {
+            [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.537 green:0.549 blue:0.565 alpha:1] ];
+            [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
+        }
+        else{
+            [self.buttonHomeAway setBackgroundColor:[UIColor colorWithRed:0.537 green:0.549 blue:0.565 alpha:1] ];
+            [self.buttonHome setBackgroundColor:[UIColor clearColor]];
+        }
+    });
 }
 
 - (UIImage *)imageForState:(SFICloudStatusState)state localNetworkingMode:(BOOL)localNetworkingMode {

@@ -3377,6 +3377,120 @@
             break;
             
         }
+        case SFIDeviceType_AlmondSiren_63: {
+            
+            if (type == SFIDevicePropertyType_ENABLE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"false";
+                s1.iconName =@"switch_off";
+                s1.notificationText = @" is Disabled.";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"true";
+                s2.iconName = @"switch_on";
+                s2.notificationText = @" is Enabled.";
+                return @[s1, s2];
+            }
+            
+            if (type == SFIDevicePropertyType_BUZZ_STATE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"false";
+                s1.iconName =@"alarm_off";
+                s1.notificationText = @" is Off.";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"true";
+                s2.iconName = @"alarm_on";
+                s2.notificationText = @" is Ringing.";
+                return @[s1, s2];
+            }
+
+            if (type == SFIDevicePropertyType_TONE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_equals;
+                s1.matchData = @"1";
+                s1.iconName = @"alarm_on";
+                s1.valueFormatter.notificationPrefix = @"set to Alarm.";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchType = MatchType_equals;
+                s2.matchData = @"2";
+                s2.iconName = @"alarm_on";
+                s2.valueFormatter.notificationPrefix = @"set to Siren.";
+                
+                IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
+                s3.matchType = MatchType_equals;
+                s3.matchData = @"3";
+                s3.iconName = @"alarm_on";
+                s3.valueFormatter.notificationPrefix = @"set to Door-Bell.";
+                return @[s1, s2, s3];
+            }
+            
+            if (type == SFIDevicePropertyType_VOLUME) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_equals;
+                s1.matchData = @"1";
+                s1.iconName = @"low-volume-icon";
+                s1.valueFormatter.notificationPrefix = @"set to Low.";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchType = MatchType_equals;
+                s2.matchData = @"2";
+                s2.iconName = @"medium-volume-icon";
+                s2.valueFormatter.notificationPrefix = @"set to Medium.";
+                
+                IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
+                s3.matchType = MatchType_equals;
+                s3.matchData = @"3";
+                s3.iconName = @"high-volume-icon";
+                s3.valueFormatter.notificationPrefix = @"set to High.";
+                return @[s1, s2, s3];
+            }
+            
+            
+            break;
+            
+        }
+        case SFIDeviceType_AlmondBlink_64: {
+            
+            if (type == SFIDevicePropertyType_ALARM_STATE) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchData = @"false";
+                s1.iconName =@"alarm_off";
+                s1.notificationText = @" is Silent.";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchData = @"true";
+                s2.iconName = @"alarm_on";
+                s2.notificationText = @" is Ringing.";
+                return @[s1, s2];
+            }
+            
+            if (type == SFIDevicePropertyType_TONE_SELECTED) {
+                IndexValueSupport *s1 = [[IndexValueSupport alloc] initWithValueType:type];
+                s1.matchType = MatchType_equals;
+                s1.matchData = @"1";
+                s1.iconName = @"alarm_on";
+                s1.valueFormatter.notificationPrefix = @"tone 1";
+                
+                IndexValueSupport *s2 = [[IndexValueSupport alloc] initWithValueType:type];
+                s2.matchType = MatchType_equals;
+                s2.matchData = @"2";
+                s2.iconName = @"alarm_on";
+                s2.valueFormatter.notificationPrefix = @"tone 2";
+                
+                IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
+                s3.matchType = MatchType_equals;
+                s3.matchData = @"3";
+                s3.iconName = @"alarm_on";
+                s3.valueFormatter.notificationPrefix = @"tone 3";
+                return @[s1, s2, s3];
+            }
+            
+            break;
+            
+        }
+            
             
         case SFIDeviceType_count:
             break;
