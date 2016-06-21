@@ -4,7 +4,6 @@
 //
 
 #import "SFITabBarController.h"
-#import "SFISensorsViewController.h"
 #import "SFIRouterTableViewController.h"
 #import "SFIScenesTableViewController.h"
 #import "ScoreboardViewController.h"
@@ -214,7 +213,7 @@ typedef NS_ENUM(int, TabBarMode) {
 
 - (UIViewController *)rulesTab {
     if (!_rulesTab) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Rules" bundle:nil];
         RulesTableViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"RulesTableViewController"];
         UIImage *icon = [UIImage imageNamed:@"icon_rules"];
         

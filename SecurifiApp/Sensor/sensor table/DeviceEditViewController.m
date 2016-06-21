@@ -17,7 +17,6 @@
 #import "DeviceHeaderView.h"
 #import "clientTypeCell.h"
 #import "Colours.h"
-#import "CollectionViewCell.h"
 #import "GenericIndexValue.h"
 #import "AlmondJsonCommandKeyConstants.h"
 #import "UIViewController+Securifi.h"

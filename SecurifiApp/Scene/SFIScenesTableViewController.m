@@ -7,7 +7,6 @@
 //
 
 #import "SFIScenesTableViewController.h"
-#import "SFIAddSceneViewController.h"
 #import "SFICloudStatusBarButtonItem.h"
 #import "SFINotificationsViewController.h"
 #import "SFINotificationStatusBarButtonItem.h"

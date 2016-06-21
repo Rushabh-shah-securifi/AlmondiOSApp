@@ -231,7 +231,7 @@ CGPoint tablePoint;
 
 #pragma mark button taps
 - (void)btnAddNewRuleTap:(id)sender {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Rules" bundle:nil];
     AddRulesViewController * addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
     addRuleController.rule = [[Rule alloc]init];
     [self.navigationController pushViewController:addRuleController animated:YES];
@@ -336,7 +336,7 @@ CGPoint tablePoint;
     return dict;
 }
 - (void)editRule:(CustomCellTableViewCell *)cell{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Rules" bundle:nil];
     NSIndexPath* indexPath = [self.tableView indexPathForCell:cell];
     AddRulesViewController *addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
     if(indexPath.row < self.toolkit.ruleList.count){

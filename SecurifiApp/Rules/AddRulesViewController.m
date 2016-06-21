@@ -14,7 +14,6 @@
 #import "SFIDeviceIndex.h"
 #import "SensorIndexSupport.h"
 #import "IndexValueSupport.h"
-#import "SFIDimmerButton.h"
 #import "ValueFormatter.h"
 #import "RulesConstants.h"
 #import "SFIButtonSubProperties.h"
@@ -24,7 +23,6 @@
 #import "RulesTableViewController.h"
 #import "SFISubPropertyBuilder.h"
 //for wifi clients
-#import "SFIWiFiClientsListViewController.h"
 #import "GenericCommand.h"
 #import "SecurifiToolkit/SFIDevice.h"
 #import "SFIRouterClientsTableViewController.h"
