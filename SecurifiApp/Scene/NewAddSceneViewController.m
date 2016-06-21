@@ -219,9 +219,9 @@ UIAlertView *alert;
         return;
     }
     
-    [self.HUD hide:YES];
     NSString * success = [mainDict valueForKey:@"Success"];
     dispatch_async(dispatch_get_main_queue(), ^() {
+        [self.HUD hide:YES];
         if (![success isEqualToString:@"true"]) {
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"scene.alert-title.Oops", @"Oops") message:NSLocalizedString(@"scene.alert-msg.Sorry, There was some problem with this request, try later!", @"Sorry, There was some problem with this request, try later!")
                                                            delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];

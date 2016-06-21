@@ -416,9 +416,13 @@
 }
 
 - (void)hideHude{
-    [self.HUD hide:YES];
-    if ([[self.navigationController topViewController] isKindOfClass:[SFIScenesTableViewController class]]) {
-        [self addAddSceneButton];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.HUD hide:YES];
+        if ([[self.navigationController topViewController] isKindOfClass:[SFIScenesTableViewController class]]) {
+            [self addAddSceneButton];
+        }
+    });
+    
+    
 }
 @end

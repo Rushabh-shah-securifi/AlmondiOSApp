@@ -292,49 +292,61 @@ UILabel *topLabel;
 
 + (void)drawButton:(SFIButtonSubProperties*)subProperties isTrigger:(BOOL)isTrigger isDimButton:(BOOL)isDimmbutton bottomText:(NSString *)bottomText{
     if(isTrigger){
-//        WeatherRuleButton *weatherButton = [[WeatherRuleButton alloc]initWithFrame:CGRectMake(xVal, 5, 42, 42)];
-        
-        SwitchButton *switchButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, entryBtnWidth, entryBtnHeight)];
-        switchButton.isTrigger = isTrigger;
-        
         NSString *toptext = subProperties.deviceName;
+        NSString *insideDisplayText = (isDimmbutton && !isScene) ? [NSString stringWithFormat:@"%@ %@",[subProperties getcondition],subProperties.displayText]:subProperties.displayText ;
+        
         if(subProperties.deviceType == SFIDeviceType_HueLamp_48 && subProperties.index == 3)
             isDimmbutton = NO;//for we are putting images of hueLamp
-        else if(subProperties.deviceType == SFIDeviceType_Weather && subProperties.index == 1){
+        
+        if(subProperties.deviceType == SFIDeviceType_Weather && subProperties.index == 1){
             NSLog(@"delay: %@", subProperties.delay);
-            toptext = [NSString stringWithFormat:@"%@ %@",toptext, bottomText];
+            WeatherRuleButton *weatherButton = [[WeatherRuleButton alloc]initWithFrame:CGRectMake(xVal, 5, 42, 42)];
+            
+            NSString *insideText = @"0 min after";
             if(subProperties.delay.integerValue != 0){
-                NSString *suffix = (subProperties.delay.integerValue > 0)? @"After": @"Before";
+                NSString *suffix = (subProperties.delay.integerValue > 0)? @"after": @"before";
                 int delayVal = (subProperties.delay.integerValue < 0)? (subProperties.delay.intValue * -1): subProperties.delay.intValue;
-                bottomText = [NSString stringWithFormat:@"%d Mins %@ %@", delayVal, suffix, bottomText];
+                insideText = [NSString stringWithFormat:@"%d min %@", delayVal, suffix];
             }
+            
+            [weatherButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:toptext displayText:@"display" isDimmer:isDimmbutton bottomText:bottomText insideText:insideText isHideCross:isCrossHidden];
+            weatherButton.switchButtonRight.subProperties = subProperties;
+            weatherButton.switchButtonRight.isTrigger = YES;
+            [weatherButton.switchButtonRight addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            if(!isActive && isCrossHidden){
+                weatherButton.switchButtonRight.bgView.backgroundColor = [SFIColors ruleGraycolor];
+                weatherButton.switchButtonLeft.bgView.backgroundColor = [SFIColors ruleGraycolor];
+            }
+            
+            xVal += (entryBtnWidth*2)+entryPadding;
+            [weatherButton.switchButtonRight setButtonCross:isCrossHidden];
+            weatherButton.switchButtonRight.userInteractionEnabled = disableUserInteraction;
+            [triggersActionsScrollView addSubview:weatherButton];
         }
-        //NSLog(@"subProperties.iconName %@",subProperties.iconName);
-        NSString *insideDisplayText = (isDimmbutton && !isScene) ? [NSString stringWithFormat:@"%@ %@",[subProperties getcondition],subProperties.displayText]:subProperties.displayText ;
-//        [weatherButton setupValues:[UIImage imageNamed:subProperties.iconName] Title:subProperties.deviceName displayText:@"abc" isDimmer:isDimmbutton bottomText:bottomText insideText:insideDisplayText isHideCross:isCrossHidden];
-//        weatherButton.subProperties = subProperties;
-//        weatherButton.switchButtonRight.subProperties = subProperties;
-//        [weatherButton.switchButtonRight addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:toptext bottomText:bottomText isTrigger:isTrigger isDimButton:isDimmbutton insideText:insideDisplayText isScene:isScene];
-        switchButton.subProperties = subProperties;
-        switchButton.inScroll = YES;
-        switchButton.userInteractionEnabled = YES;
-        
-        [switchButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-        if(!isActive && isCrossHidden)
-            switchButton.bgView.backgroundColor = [SFIColors ruleGraycolor];
-        xVal += entryBtnWidth+entryPadding;
-        [switchButton setButtonCross:isCrossHidden];
-        switchButton.userInteractionEnabled = disableUserInteraction;
-        
-        if(subProperties.deviceType == SFIDeviceType_HueLamp_48){
-            if(subProperties.index == 2)
-                [switchButton changeImageColor:[UIColor whiteColor]];
-            else if(subProperties.index == 3)
-                [switchButton changeImageColor:[UIColor colorFromHexString:[self getColorHex:subProperties.matchData]]];
+        else{
+            SwitchButton *switchButton = [[SwitchButton alloc] initWithFrame:CGRectMake(xVal, 5, entryBtnWidth, entryBtnHeight)];
+            switchButton.isTrigger = isTrigger;
+            
+            [switchButton setupValues:[UIImage imageNamed:subProperties.iconName] topText:toptext bottomText:bottomText isTrigger:isTrigger isDimButton:isDimmbutton insideText:insideDisplayText isScene:isScene];
+            switchButton.subProperties = subProperties;
+            switchButton.inScroll = YES;
+            switchButton.userInteractionEnabled = YES;
+            
+            [switchButton addTarget:self action:@selector(onTriggerCrossButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            if(!isActive && isCrossHidden)
+                switchButton.bgView.backgroundColor = [SFIColors ruleGraycolor];
+            xVal += entryBtnWidth+entryPadding;
+            [switchButton setButtonCross:isCrossHidden];
+            switchButton.userInteractionEnabled = disableUserInteraction;
+            
+            if(subProperties.deviceType == SFIDeviceType_HueLamp_48){
+                if(subProperties.index == 2)
+                    [switchButton changeImageColor:[UIColor whiteColor]];
+                else if(subProperties.index == 3)
+                    [switchButton changeImageColor:[UIColor colorFromHexString:[self getColorHex:subProperties.matchData]]];
+            }
+            [triggersActionsScrollView addSubview:switchButton];
         }
-        
-        [triggersActionsScrollView addSubview:switchButton];
 
     }
     else{
@@ -378,11 +390,8 @@ UILabel *topLabel;
 
 
 + (void)onTriggerCrossButtonClicked:(SwitchButton*)switchButton{
-    //NSLog(@"switch.position ID %d",switchButton.subProperties.positionId);
-    //includes mode
-//    if(switchButton.subProperties.positionId >= triggers.count || switchButton.subProperties.positionId >= actions.count){
-//        return;
-//    }
+    NSLog(@"istrigger: %d, switch.position ID %d",switchButton.isTrigger, switchButton.subProperties.positionId);
+
     if(delayPicker.isPresentDelayPicker){
         [delayPicker removeDelayView];
         deviceIndexButtonScrollView.userInteractionEnabled = YES;

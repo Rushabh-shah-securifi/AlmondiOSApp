@@ -162,8 +162,9 @@ UIAlertView *alert;
         //        self.originalSceneInfo = [self.sceneInfo copy];
         //to do copy rules array
         //        if(self.rule.ID != NULL){
-        [self.HUD hide:YES];
+        
         dispatch_async(dispatch_get_main_queue(), ^() {
+            [self.HUD hide:YES];
             [self.navigationController popViewControllerAnimated:YES];
         });
         //        }

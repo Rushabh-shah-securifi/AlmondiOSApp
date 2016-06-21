@@ -231,7 +231,6 @@ CGPoint tablePoint;
 
 #pragma mark button taps
 - (void)btnAddNewRuleTap:(id)sender {
-    [self.HUD hide:YES];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     AddRulesViewController * addRuleController = [storyboard instantiateViewControllerWithIdentifier:@"AddRulesViewController"];
     addRuleController.rule = [[Rule alloc]init];
