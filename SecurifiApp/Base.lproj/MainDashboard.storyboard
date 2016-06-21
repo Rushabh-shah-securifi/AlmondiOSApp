@@ -137,7 +137,7 @@
                             <scrollView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afY-Gl-ZDn">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="61C4B682-F648-4B09-9A6B-BC1AB7737D06" translatesAutoresizingMaskIntoConstraints="NO" id="Jow-Db-Und">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="E01C82BD-19F7-4C37-A3F8-F0C94D2763AB" translatesAutoresizingMaskIntoConstraints="NO" id="Jow-Db-Und">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="128" id="qhX-Px-5jR"/>
@@ -450,7 +450,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="61C4B682-F648-4B09-9A6B-BC1AB7737D06" width="414" height="165">
+        <image name="E01C82BD-19F7-4C37-A3F8-F0C94D2763AB" width="414" height="165">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGQkNYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QDwcI
 ERYbHCUmJygwMzY8P1UkbnVsbNQJCgsMDQ4PEFYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVwc1dOU0Nv
