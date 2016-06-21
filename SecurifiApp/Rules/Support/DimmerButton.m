@@ -235,26 +235,57 @@
     self.crossButtonImage.center = CGPointMake(crossButtonBGView.bounds.size.width/2, crossButtonBGView.bounds.size.height/2);
     [crossButtonBGView addSubview:self.crossButtonImage];
 }
--(void)setUpTextField:(NSString*)textFieldText displayText:(NSString*)displayText suffix:(NSString *)suffix{
-    self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight,self.frame.size.height -textHeight + 5)];
-    self.bgView.backgroundColor = [UIColor clearColor];
-    [self addSubview:self.bgView];
-    self.prefix = suffix;
-    self.textField = [[RuleTextField alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-60,textHeight)];
-    CALayer *bottomBorder = [CALayer layer];
-    bottomBorder.frame = CGRectMake(0.0f, self.textField.frame.size.height - 1, self.textField.frame.size.width, 1.0f);
-    bottomBorder.backgroundColor = [UIColor whiteColor].CGColor;
-    [self.textField.layer addSublayer:bottomBorder];
-    
-    self.textField.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2);
-    self.textField.subProperties = self.subProperties;
-    self.textField.keyboardType = UIKeyboardTypeDefault;
-    self.textField.text = @"";
-    self.textField.textAlignment = NSTextAlignmentCenter;
-    self.textField.textColor = [UIColor whiteColor];
-    self.textField.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:15];
-    [self.bgView addSubview:self.textField];
-    
+-(void)setUpTextField:(NSString*)textFieldText displayText:(NSString*)displayText suffix:(NSString *)suffix isScene:(BOOL)isScene isTrigger:(BOOL)isTrigger{
+  
+    if(isTrigger && !isScene){
+        self.bgView = [[UIView alloc] initWithFrame:CGRectMake(65,0 , 65, 60)];
+        self.bgView.backgroundColor = [UIColor clearColor];
+        [self addSubview:self.bgView];
+        self.textField = [[RuleTextField alloc] initWithFrame:CGRectMake(0, 0, 64 ,textHeight)];
+        CALayer *bottomBorder = [CALayer layer];
+        bottomBorder.frame = CGRectMake(0.0f, self.textField.frame.size.height - 1, self.textField.frame.size.width, 1.0f);
+        bottomBorder.backgroundColor = [UIColor whiteColor].CGColor;
+        [self.textField.layer addSublayer:bottomBorder];
+        
+        self.textField.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2);
+        self.textField.subProperties = self.subProperties;
+        self.textField.keyboardType = UIKeyboardTypeDefault;
+        self.textField.text = @"";
+        self.textField.textAlignment = NSTextAlignmentCenter;
+        self.textField.textColor = [UIColor whiteColor];
+        self.textField.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:15];
+        [self.bgView addSubview:self.textField];
+        self.conditionBtn = [[SwitchButton alloc]initWithFrame:CGRectMake(0, 0, 64,60)];
+        [self.conditionBtn addBgView:0 widthAndHeight:60];
+        NSLog(@"condition text %@",[self.subProperties getcondition]);
+        [self.conditionBtn mainLabel:@"" text:[self.subProperties getcondition] size:35.0f];
+        self.conditionBtn.backgroundColor = [SFIColors ruleGraycolor];
+        [self.conditionBtn addTarget: self action:@selector(onCondition:) forControlEvents:UIControlEventTouchUpInside];
+        self.conditionBtn.subProperties = self.subProperties;
+        [self addSubview:self.conditionBtn];
+
+    }
+    else
+    {
+        self.bgView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-textHeight,self.frame.size.height -textHeight + 5)];
+        self.bgView.backgroundColor = [UIColor clearColor];
+        [self addSubview:self.bgView];
+        self.prefix = suffix;
+        self.textField = [[RuleTextField alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width-60,textHeight)];
+        CALayer *bottomBorder = [CALayer layer];
+        bottomBorder.frame = CGRectMake(0.0f, self.textField.frame.size.height - 1, self.textField.frame.size.width, 1.0f);
+        bottomBorder.backgroundColor = [UIColor whiteColor].CGColor;
+        [self.textField.layer addSublayer:bottomBorder];
+        
+        self.textField.center = CGPointMake(self.bgView.bounds.size.width/2, self.bgView.bounds.size.height/2);
+        self.textField.subProperties = self.subProperties;
+        self.textField.keyboardType = UIKeyboardTypeDefault;
+        self.textField.text = @"";
+        self.textField.textAlignment = NSTextAlignmentCenter;
+        self.textField.textColor = [UIColor whiteColor];
+        self.textField.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:15];
+        [self.bgView addSubview:self.textField];
+    }
     self.bottomLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, self.bgView.frame.origin.y + self.bgView.frame.size.height + textPadding, self.frame.size.width,textHeight)];
     self.bottomLabel.text = displayText;
     [self.bottomLabel setFont: [self.bottomLabel.font fontWithSize: fontSize]];

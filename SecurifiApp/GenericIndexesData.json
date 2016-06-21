@@ -1087,7 +1087,7 @@
         "Type": "Sensor",
         "ReadOnly": "true",
         "Placement": "Header",
-        "Layout": "SLIDER",
+        "Layout": "TEXT_VIEW_ONLY",
         "AppLabel": "pressure",
         "Conditional": "true",
         "DefaultVisibility": "true",

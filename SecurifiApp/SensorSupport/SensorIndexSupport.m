@@ -2379,8 +2379,13 @@
                 s2.displayText=@"OPEN";
                 s2.iconName = DT53_GARAGE_SENSOR_OPEN;
                 s2.notificationText = NSLocalizedString(@" is Open.", @" is Open.");
+                IndexValueSupport *s3 = [[IndexValueSupport alloc] initWithValueType:type];
+                s3.matchData = @"254";
+                s3.displayText=@"PROCESSING";
+                s3.iconName = DT53_GARAGE_SENSOR_OPEN;
+                s3.notificationText =@" is Processing.";// NSLocalizedString(@" is Processing.", @" is Open.");
                 
-                return @[s1, s2];
+                return @[s1, s2, s3];
                 
             }
             

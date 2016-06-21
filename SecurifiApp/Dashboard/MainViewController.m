@@ -80,8 +80,7 @@
     _enableNotificationsHomeAwayMode = configurator.enableNotificationsHomeAwayMode;
     self.clientNotificationArr = [[NSMutableArray alloc]init];
     self.deviceNotificationArr = [[NSMutableArray alloc]init];
-    [self getClientNotification];
-    [self getDeviceNotification];
+    
     
     UIImage *imgNav = [UIImage imageNamed:@"1224"];
     [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
@@ -197,6 +196,7 @@
     [self initializeAlmondData];
     [self initializeNotification];
     [self markNetworkStatusIcon];
+    [self.toolkit tryRefreshNotifications];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.dashboardTable reloadData];
     });
@@ -327,6 +327,8 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.dashboardTable reloadData];
     });
+    [self getClientNotification];
+    [self getDeviceNotification];
     [self markNetworkStatusIcon];
 }
 
@@ -434,7 +436,7 @@
     enum SFIAlmondConnectionMode modeValue = [self.toolkit currentConnectionMode];
     NSArray *almondList = [self buildAlmondList:modeValue];
     UIAlertController *viewC;
-    UIImage *image = [UIImage imageNamed:@"home_icon1"];
+    UIImage *image = [UIImage imageNamed:@"icon_dashboard"];
     viewC = [UIAlertController alertControllerWithTitle:@"Select Almond" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     for(SFIAlmondPlus *name in almondList){
         if ([name.almondplusName isEqualToString:_labelAlmond.text]) {
@@ -540,10 +542,10 @@
     if(self.toolkit.currentAlmond != nil){
         
         for(int j = 0; j<10;j++){// for 10 days
-            for (int i =0; i<100; i++) {
+            for (int i =0; i<150; i++) {
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:j];
                 SFINotification *notification = [self.notify notificationForIndexPath:indexPath];
-                if(notification.deviceType != SFIDeviceType_WIFIClient && notification!=Nil){
+                if(notification.deviceType != SFIDeviceType_WIFIClient && notification!=Nil && [notification.almondMAC isEqualToString: self.toolkit.currentAlmond.almondplusMAC]){
                     [self.deviceNotificationArr addObject:notification];
                     //NSLog(@"getDeviceNotification");
                     if(self.deviceNotificationArr.count > 2)
@@ -558,10 +560,10 @@
     [self.clientNotificationArr removeAllObjects];
     if(self.toolkit.currentAlmond != nil){
         for(int j = 0; j<10;j++){// for 10 days
-            for (int i =0; i<100; i++) {
+            for (int i =0; i<150; i++) {
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:j];
                 SFINotification *notification = [self.notify notificationForIndexPath:indexPath];
-                if(notification.deviceType == SFIDeviceType_WIFIClient && notification!=Nil){
+                if(notification.deviceType == SFIDeviceType_WIFIClient && notification!=Nil && [notification.almondMAC isEqualToString: self.toolkit.currentAlmond.almondplusMAC]){
                     [self.clientNotificationArr addObject:notification];
                     if(self.clientNotificationArr.count > 1)
                         return ;
@@ -591,7 +593,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
-    }
+    }//indexPath.row  > (int)self.toolkit.devices.count - 1
     
     if (indexPath.section == 0 && self.deviceNotificationArr.count > indexPath.row) {
         SFINotification *notification = [self.deviceNotificationArr objectAtIndex:indexPath.row];

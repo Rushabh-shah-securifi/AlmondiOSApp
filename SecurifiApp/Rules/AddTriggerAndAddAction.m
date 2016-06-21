@@ -182,15 +182,9 @@ labelAndCheckButtonView *labelView;
     self.currentClickedButton = weatherBtn;
     [self resetViews];
     [self toggleHighlightForDeviceNameButton:weatherBtn];
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-//    WeatherPicker *picker = [[WeatherPicker alloc]init];//WithFrame:CGRectMake(0, 130, self.parentView.frame.size.width, self.parentView.frame.size.height)];
-////    picker.backgroundColor = [UIColor clearColor];
-////    [self.parentView addSubview : picker];
-//    picker.parentView = self.parentView;
-//    [picker createPickerView];
     UIView *pickerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0 , self.deviceListScrollView.frame.size.width, 10)];
     [self.parentView addSubview:pickerView];
-    NSArray *colors = [NSArray arrayWithObjects:@"Red", @"Green", @"Blue", @"Orange", nil];
+
     
     NSArray *rows = @[@[@"Day", @"Night"],@[@"C", @"Db", @"D", @"Eb", @"E", @"F", @"Gb", @"G", @"Ab", @"A", @"Bb", @"B"]];
     NSArray *initialSelection = @[@2, @4];
@@ -223,6 +217,12 @@ labelAndCheckButtonView *labelView;
 
 -(void)onDeviceButtonClick:(RulesDeviceNameButton *)deviceBtn{
     NSLog(@"onDeviceButtonClick");
+    if(deviceBtn.deviceType == SFIDeviceType_HueLamp_48)
+        [self.parentView removeGestureRecognizer:self.tap];
+    else
+        [self.parentView addGestureRecognizer:self.tap];
+    NSLog(@"subivews count: %d", self.parentView.subviews.count);
+    
     [self resetViews];
     self.currentClickedButton = deviceBtn;
     deviceBtn.selected = YES;
@@ -418,8 +418,11 @@ labelAndCheckButtonView *labelView;
         delegate:self cancelButtonTitle:NSLocalizedString(@"scene.alert-button.OK", @"OK") otherButtonTitles: nil];
     [alert show];
 }
+#pragma mark RuleTextField delegate
 - (void)textFieldDidEndEditing:(RuleTextField *)textField{
-
+    if (!dimerButton.selected && self.isTrigger)
+        [self removeTriggerIndex:textField.subProperties.index buttonId:textField.subProperties.index deviceType:textField.subProperties.deviceType matchData:textField.text];
+    
     NSLog(@" textvalue %ld, text: %@",(unsigned long)[textField.text integerValue], textField.text);
     if(textField.text.length == 0)
         [self showAlert:@"Please enter number"];
@@ -430,23 +433,37 @@ labelAndCheckButtonView *labelView;
         }
         else if( dimerButton.subProperties.deviceType == SFIDeviceType_ZWtoACIRExtender_54 && ([textField.text integerValue] > 999 || [textField.text integerValue] < 0 )){
             [self showAlert:@"Please enter value between 0 - 999"];
+        }else if( dimerButton.subProperties.deviceType == SFIDeviceType_Weather && ([textField.text integerValue] > 9999 || [textField.text integerValue] < 0 )){
+            [self showAlert:@"Please enter value between 0 - 9999"];
         }
         else
         {
             NSLog(@"textfield text %@",textField.text);
             newPickerValue = textField.text;
             textField.subProperties.matchData = textField.text;
-            [self addObject:[textField.subProperties createNew]];
-            NSLog(@"textField.subProperties.matchData %@",textField.subProperties.matchData);
-            [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
-            [self setActionButtonCount:dimerButton isSlider:YES];
-            dimerButton.isTrigger = self.isTrigger;
-            dimerButton.selected = YES;
+          
+             if(!self.isTrigger){
+                 [self.actions addObject:[textField.subProperties createNew]];
+                 [self.delegate updateTriggerAndActionDelegatePropertie:!self.isTrigger];
+                 [self setActionButtonCount:dimerButton isSlider:YES];
+                 dimerButton.selected = YES;
+             }
+             else{
+                
+                 NSLog(@"onSwitchButtonClick - istrigger");
+                if (dimerButton.selected)
+                 [self.triggers addObject:textField.subProperties];
+//                 else
+//                     [self removeTriggerIndex:textField.subProperties.index buttonId:textField.subProperties.index deviceType:textField.subProperties.deviceType matchData:textField.text];
+                 
+                  [self.delegate updateTriggerAndActionDelegatePropertie:self.isTrigger];
+             }
+   
         }
 
     }
     else {
-        [self showAlert:@"Please enter only number"];
+        [self showAlert:@"Please enter only numbers"];
         // ( or ) are present
     }
     
@@ -466,6 +483,9 @@ labelAndCheckButtonView *labelView;
     [self setActionButtonCount:dimmer isSlider:YES];
 }
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
+    if(self.isTrigger)
+    dimerButton.selected = !dimerButton.selected;
+    
     textField.placeholder = textField.text;
     textField.text = @"";
 }
@@ -552,17 +572,25 @@ labelAndCheckButtonView *labelView;
 - (void)buildTextButton:(GenericIndexValue *)genericIndexValue gVal:(GenericValue *)gVal deviceType:(int)deviceType deviceName:(NSString *)deviceName deviceId:(int)deviceId i:(int)i view:(UIView *)view indexName:(NSString*)indexName{
     NSLog(@"indexname = %@ ",indexName);
     DimmerButton *dimbtn=[[DimmerButton alloc]initWithFrame:CGRectMake(view.frame.origin.x,0 , dimFrameWidth, dimFrameHeight)];
-    dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:genericIndexValue.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
+    dimbtn.subProperties = [self addSubPropertiesFordeviceID:deviceId index:
+                            genericIndexValue.index matchData:gVal.value andEventType:nil deviceName:deviceName deviceType:deviceType];
+    
+    if(deviceType == SFIDeviceType_Weather)
+        dimbtn.subProperties.type = @"WeatherTrigger";
+    dimbtn.delegate = self;
+    
     [dimbtn addTarget:self action:@selector(onStdWarnDimmerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [dimbtn setUpTextField:gVal.displayText displayText:indexName suffix:@""]; // ?
+    [dimbtn setUpTextField:gVal.displayText displayText:indexName suffix:@"" isScene:self.isScene isTrigger:self.isTrigger]; // ?
     dimbtn.textField.delegate = self;
     dimbtn.textField.returnKeyType = UIReturnKeyDone;
     dimbtn.center = CGPointMake(view.bounds.size.width/2,
                                 dimbtn.center.y);
     dimbtn.frame=CGRectMake(dimbtn.frame.origin.x + ((i-1) * (dimFrameWidth/2))+textHeight/2, dimbtn.frame.origin.y, dimbtn.frame.size.width, dimbtn.frame.size.height);
     [self shiftButtonsByWidth:dimFrameWidth View:view forIteration:i];
-    dimbtn.selected=[self setActionButtonCount:dimbtn isSlider:YES];
+    dimbtn.isTrigger = self.isTrigger;
     dimerButton = dimbtn;
+    dimbtn.selected=[self setActionButtonCount:dimbtn isSlider:YES];
+    
     [view addSubview:dimbtn];
     
 }
@@ -813,7 +841,6 @@ labelAndCheckButtonView *labelView;
         NSLog(@"onSwitchButtonClick - istrigger");
         [self toggleTriggerIndex:buttonIndex superView:[sender superview] indexButton:indexSwitchButton];
         [self removeTriggerIndex:buttonIndex buttonId:buttonId deviceType:indexSwitchButton.subProperties.deviceType matchData:matchData];
-        NSLog(@"index button subproperties %@,%@,%@,%@,%d",indexSwitchButton.subProperties.displayText,indexSwitchButton.subProperties.displayedData,indexSwitchButton.subProperties.matchData,indexSwitchButton.subProperties.eventType,indexSwitchButton.subProperties.deviceType);
         if (indexSwitchButton.selected)
             [self.triggers addObject:indexSwitchButton.subProperties];
         
@@ -1195,7 +1222,6 @@ labelAndCheckButtonView *labelView;
 }
 #pragma mark sliderdelegate methods
 -(void)save:(NSString *)newValue forGenericIndexValue:(GenericIndexValue *)genericIndexValue{// index is genericindex for clients, normal index for sensors
-    int index = genericIndexValue.index;
     labelView.genericIndexValue = genericIndexValue;
     labelView.value = newValue;
     [self onHueColorPickerSelectButtonClick:nil];
