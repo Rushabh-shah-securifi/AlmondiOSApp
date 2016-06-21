@@ -429,7 +429,7 @@ static const int xIndent = 10;
     if(!CGRectIsEmpty(self.hueBounds)){
         NSLog(@"hue bounds: %@, \ntouch point: %@", NSStringFromCGRect(self.hueBounds), NSStringFromCGPoint([touch locationInView:self.view]));
         CGRect actualFrame = self.hueBounds;
-        actualFrame.origin = CGPointMake(0.0, 85.0); //includeing height of header
+        actualFrame.origin = CGPointMake(10.0, 105.0); //includeing height of header
         NSLog(@"actual frame: %@", NSStringFromCGRect(actualFrame));
         if (CGRectContainsPoint(actualFrame, [touch locationInView:self.view])){
             NSLog(@"contains point");
