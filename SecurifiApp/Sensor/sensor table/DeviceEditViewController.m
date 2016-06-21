@@ -64,6 +64,7 @@ static const int xIndent = 10;
 @property(nonatomic) NSMutableDictionary *miiTable;
 @property (nonatomic) CGRect ViewFrame;
 @property (nonatomic) NSInteger touchComp;
+@property (nonatomic) CGRect hueBounds;
 
 @end
 
@@ -234,6 +235,7 @@ static const int xIndent = 10;
             else if ([genericIndexObj.layoutType isEqualToString:HUE]){
                 HueColorPicker *hueView = [[HueColorPicker alloc]initWithFrame:SLIDER_FRAME color:self.genericParams.color genericIndexValue:genericIndexValue];
                 hueView.delegate = self;
+                self.hueBounds = view.bounds;
                 [view addSubview:hueView];
             }
             else if ([genericIndexObj.layoutType isEqualToString: @"SLIDER"] || [genericIndexObj.layoutType isEqualToString:@"SLIDER_ICON"]){
@@ -420,6 +422,24 @@ static const int xIndent = 10;
 }
 - (void)tapTest:(UITapGestureRecognizer *)sender {
     self.touchComp = [sender locationInView:self.view].y;
+}
+
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if(!CGRectIsEmpty(self.hueBounds)){
+        NSLog(@"hue bounds: %@, \ntouch point: %@", NSStringFromCGRect(self.hueBounds), NSStringFromCGPoint([touch locationInView:self.view]));
+        CGRect actualFrame = self.hueBounds;
+        actualFrame.origin = CGPointMake(0.0, 85.0); //includeing height of header
+        NSLog(@"actual frame: %@", NSStringFromCGRect(actualFrame));
+        if (CGRectContainsPoint(actualFrame, [touch locationInView:self.view])){
+            NSLog(@"contains point");
+            return NO;
+        }
+    }
+   
+    
+    
+    return YES;
 }
 
 #pragma  mark uiwindow delegate methods

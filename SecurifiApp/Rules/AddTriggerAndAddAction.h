@@ -28,6 +28,7 @@
 @property (nonatomic) bool isAction;
 @property (nonatomic) BOOL isScene;
 @property RulesDeviceNameButton *currentClickedButton;
+@property (nonatomic) UITapGestureRecognizer *tap;
 
 -(id)initWithParentView:(UIView*)parentView deviceIndexScrollView:(UIScrollView*)deviceIndexScrollView deviceListScrollView:(UIScrollView*)deviceListScrollView triggers:(NSMutableArray*)triggers actions:(NSMutableArray*)actions isScene:(BOOL)isScene;
 -(void)addDeviceNameList:(BOOL)isTrigger;

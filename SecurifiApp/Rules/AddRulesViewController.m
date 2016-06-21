@@ -65,13 +65,14 @@ UIAlertView *alert;
     [self setUpNavigationBar];
     
     self.addRuleScene = [[AddRuleSceneClass alloc]initWithParentView:self.view deviceIndexScrollView:self.deviceIndexButtonScrollView deviceListScrollView:self.deviceListScrollView topScrollView:self.triggersActionsScrollView informationLabel:self.informationLabel triggers:self.rule.triggers actions:self.rule.actions isScene:NO];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTest:)];
+    [tap setDelegate:self];
+    self.addRuleScene.tap = tap;
+    
     [self.addRuleScene buildTriggersAndActions];
     [self ifThenClick:YES infoText:@"To get started, please select a trigger" infoText2:@"Add another trigger or press THEN to define action"];
     self.ViewFrame = self.view.frame;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTest:)];
-    [tap setDelegate:self];
-    [self.view addGestureRecognizer:tap];
-
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -409,13 +410,13 @@ UIAlertView *alert;
     }
 }
 #pragma mark gesture recognizer
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
     return YES;
 }
+
 - (void)tapTest:(UITapGestureRecognizer *)sender {
     self.touchComp = [sender locationInView:self.view].y;
-    NSLog(@"self.touch %ld",self.touchComp);
+    NSLog(@"add rules self.touch %ld",self.touchComp);
 }
 
 #pragma  mark uiwindow delegate methods

@@ -33,8 +33,13 @@
 
 
 - (void)getTriggersDeviceList:(BOOL)isTrigger{
-    self.addTriggerAction = [[AddTriggerAndAddAction alloc]initWithParentView:self.parentView deviceIndexScrollView:self.deviceIndexScrollView deviceListScrollView:self.deviceListScrollView triggers:self.triggers actions:self.actions isScene:self.isScene];
+    self.addTriggerAction = [[AddTriggerAndAddAction alloc]initWithParentView:self.parentView
+                                                        deviceIndexScrollView:self.deviceIndexScrollView
+                                                         deviceListScrollView:self.deviceListScrollView
+                                                                     triggers:self.triggers actions:self.actions
+                                                                      isScene:self.isScene];
     self.addTriggerAction.delegate = self;
+    self.addTriggerAction.tap = self.tap;
     [self.addTriggerAction addDeviceNameList:isTrigger];
 }
 

@@ -56,16 +56,24 @@ UIAlertView *alert;
     [self initializeNotifications];
     [self setUpNavigationBar];
     
-    self.addRuleScene = [[AddRuleSceneClass alloc]initWithParentView:self.view deviceIndexScrollView:self.deviceIndexButtonScrollView deviceListScrollView:self.deviceListScrollView topScrollView:self.triggersActionsScrollView informationLabel:self.informationLabel triggers:self.scene.triggers actions:self.scene.actions isScene:YES];
+    self.addRuleScene = [[AddRuleSceneClass alloc]initWithParentView:self.view
+                                               deviceIndexScrollView:self.deviceIndexButtonScrollView
+                                                deviceListScrollView:self.deviceListScrollView
+                                                       topScrollView:self.triggersActionsScrollView
+                                                    informationLabel:self.informationLabel
+                                                            triggers:self.scene.triggers
+                                                             actions:self.scene.actions
+                                                             isScene:YES];
+    UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTest:)];
+    [tap setDelegate:self];
+    self.addRuleScene.tap = tap;
+    
     [self.addRuleScene updateInfoLabel];
     [self.addRuleScene buildTriggersAndActions];
     [self.addRuleScene getTriggersDeviceList:YES];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.ViewFrame = self.view.frame;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapTest:)];
-    [tap setDelegate:self];
-    [self.view addGestureRecognizer:tap];
-
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -337,14 +345,16 @@ UIAlertView *alert;
         [self.HUD hide:YES afterDelay:5];
     });
 }
+
 #pragma mark gesture recognizer
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+    NSLog(@"gestureRecognizer:");
     return YES;
 }
+
 - (void)tapTest:(UITapGestureRecognizer *)sender {
     self.touchComp = [sender locationInView:self.view].y;
-    NSLog(@"self.touch %ld",self.touchComp);
+    NSLog(@"new add scene self.touch %ld",(long)self.touchComp);
 }
 
 #pragma  mark uiwindow delegate methods

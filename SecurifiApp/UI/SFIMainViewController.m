@@ -163,7 +163,10 @@
 
 - (void)onNetworkUpNotifier:(id)sender {
     if ([[SecurifiToolkit sharedInstance] isCloudOnline]) {
-        [self.HUD hide:YES];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.HUD hide:YES];
+        });
+        
     }
 }
 
