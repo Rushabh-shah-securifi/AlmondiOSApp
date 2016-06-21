@@ -69,7 +69,6 @@
     [super viewDidLoad];
     self.navigationController.navigationBar.clipsToBounds = YES;
     self.toolkit = [SecurifiToolkit sharedInstance];
-    [self.toolkit tryRefreshNotifications];
     self.notify = [[SFINotificationsViewController alloc] init];
     //NSLog(@"self.toolkit.currentAlmond.almondplusMAC %@",self.toolkit.currentAlmond.almondplusMAC);
     _store = [self.notify pickNotificationStore];
@@ -926,10 +925,14 @@
             [self.leftButton markState:state];
             if(self.toolkit.mode_src==2){
                 [self changeColorOfNavigationItam:@"1224" andbannerImage:@"1225"];
+                [self getClientNotification];
+                [self getDeviceNotification];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.buttonHome setBackgroundColor:[UIColor colorWithRed:0.012 green:0.663 blue:0.957 alpha:1] ];
                     [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
+                    [self.dashboardTable reloadData];
                 });
+                
             }
             else{
                 [self changeColorOfNavigationItam:@"head_away" andbannerImage:@"main"];
