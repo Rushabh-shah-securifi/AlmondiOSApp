@@ -35,6 +35,7 @@
 @property (nonatomic) NSMutableArray *deviceNotificationArr;
 @property(nonatomic, readonly) CircleLabel *countLabel;
 @property(nonatomic, readonly) UIButton *countButton;
+@property(nonatomic) UIImageView *navigationImg;
 
 @end
 
@@ -61,8 +62,9 @@
 
 #pragma mark Navigation UI
 -(void)navigationBarStyle{
-    UIImage *imgNav = [UIImage imageNamed:@"1224"];
-    [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
+    self.navigationImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"head_away"]];
+    self.navigationImg.frame = CGRectMake(0, 0, self.navigationController.navigationBar.frame.size.width, self.navigationController.navigationBar.frame.size.height);
+    [self.navigationController.navigationBar addSubview:self.navigationImg];
     
     [self.navigationItem setTitle:@"Dashboard"];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
@@ -99,7 +101,7 @@
         dispatch_async(dispatch_get_main_queue(), ^() {
             _labelHomeAway.hidden = YES;
             _labelHome.hidden = NO;
-            [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"1224"] forBarMetrics:UIBarMetricsDefault];
+            self.navigationImg.image = [UIImage imageNamed:@"1224"];
             self.bannerImage.image = [UIImage imageNamed:@"1225"];
             [self.buttonHome setBackgroundColor:[SFIColors lightBlueColor]];
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
@@ -111,7 +113,7 @@
         dispatch_async(dispatch_get_main_queue(), ^() {
             _labelHomeAway.hidden = NO;
             _labelHome.hidden = YES;
-            [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"head_away"] forBarMetrics:UIBarMetricsDefault];
+            self.navigationImg.image = [UIImage imageNamed:@"head_away"];
             self.bannerImage.image = [UIImage imageNamed:@"main"];
             [self.buttonHomeAway setBackgroundColor:[SFIColors lightOrangeDashColor]];
             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
