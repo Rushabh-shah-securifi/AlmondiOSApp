@@ -10,10 +10,11 @@
 #import "GenericParams.h"
 
 @interface ClientPropertiesViewController : UIViewController
-@property(nonatomic)NSDictionary *connectedDevice;
-@property(nonatomic)NSMutableArray *indexArray;
-@property(nonatomic)NSDictionary *clientProperties;
+//@property(nonatomic)NSDictionary *connectedDevice;
+//@property(nonatomic)NSMutableArray *indexArray;
+//@property(nonatomic)NSDictionary *clientProperties;
 
 @property (nonatomic)GenericParams *genericParams;
+@property (nonatomic) BOOL isInitialized;
 
 @end

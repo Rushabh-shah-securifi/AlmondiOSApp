@@ -19,6 +19,8 @@
 #import "UIViewController+Securifi.h"
 #import "SFINotificationsViewController.h"
 #import "MBProgressHUD.h"
+#import "GenericIndexUtil.h"
+
 
 #define CELLFRAME CGRectMake(8, 8, self.view.frame.size.width -16, 70)
 
@@ -62,7 +64,17 @@ int randomMobileInternalIndex;
     [self initializeNotifications];
     _toolkit=[SecurifiToolkit sharedInstance];
     self.isLocal = [_toolkit useLocalNetwork:[_toolkit currentAlmond].almondplusMAC];
+    
+    if(!_isInitialized){ //to avoid call it first time
+        NSLog(@"isInitialized");
+        self.genericParams.indexValueList = [GenericIndexUtil getClientDetailGenericIndexValuesListForClientID:@(self.genericParams.headerGenericIndexValue.deviceID).stringValue];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self repaintHeader:self.genericParams.headerGenericIndexValue];
+            [self.clientPropertiesTable reloadData];
+        });
+    }
 }
+
 
 -(void)initializeNotifications{
     NSLog(@"initialize notifications sensor table");
@@ -84,28 +96,19 @@ int randomMobileInternalIndex;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark common cell delegate
 
--(void)delegateClientPropertyEditSettingClick{
-    [self.HUD hide:YES];
-    [self.navigationController popViewControllerAnimated:YES];
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:YES];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
--(void)setHeaderCell{
-    self.commonView= [[DeviceHeaderView alloc]initWithFrame:CELLFRAME];
-    [self.commonView initialize:self.genericParams cellType:ClientProperty_Cell];
-    self.commonView.delegate = self;
-    // set up images label and name
-    [self.view addSubview:self.commonView];
-}
-- (void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:YES];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
+#pragma mark table delegate methods 
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -119,7 +122,9 @@ int randomMobileInternalIndex;
     self.historyButton.hidden = NO;
     return self.genericParams.indexValueList.count;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"client properties cell for row");
     ClientPropertiesCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SKSTableViewCell" forIndexPath:indexPath];
     if (cell == nil) {
         cell = [[ClientPropertiesCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SKSTableViewCell"];
@@ -149,6 +154,45 @@ int randomMobileInternalIndex;
     //[self performSegueWithIdentifier:@"modaltodetails" sender:[self.eventsTable cellForRowAtIndexPath:indexPath]];
 }
 
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
+    NSLog(@"didSelectRowAtIndexPath");
+    DeviceEditViewController *ctrl = [self.storyboard instantiateViewControllerWithIdentifier:@"DeviceEditViewController"];
+    self.isInitialized = NO;
+    ctrl.genericParams = [[GenericParams alloc]initWithGenericIndexValue:self.genericParams.headerGenericIndexValue
+                                                          indexValueList:[NSArray arrayWithObject:[self.genericParams.indexValueList objectAtIndex:indexPath.row]]
+                                                              deviceName:self.genericParams.deviceName color:self.genericParams.color isSensor:NO];
+    [self.navigationController pushViewController:ctrl animated:YES];
+}
+
+#pragma mark common cell delegate
+
+-(void)delegateClientPropertyEditSettingClick{
+    [self.HUD hide:YES];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark setups
+-(void)setHeaderCell{
+    self.commonView= [[DeviceHeaderView alloc]initWithFrame:CELLFRAME];
+    [self.commonView initialize:self.genericParams cellType:ClientProperty_Cell];
+    self.commonView.delegate = self;
+    // set up images label and name
+    [self.view addSubview:self.commonView];
+}
+
+-(void)repaintHeader:(GenericIndexValue*)genIndexVal{
+    NSLog(@"repaintHeader");
+    Client *client = [Client findClientByID:@(genIndexVal.deviceID).stringValue];
+    GenericIndexValue *headerGenIndexVal = [GenericIndexUtil getClientHeaderGenericIndexValueForClient:client];
+    self.genericParams.headerGenericIndexValue = headerGenIndexVal;
+    self.genericParams.deviceName = client.name;
+    [self.commonView initialize:self.genericParams cellType:ClientProperty_Cell];
+}
+
+
+#pragma mark button taps
+
 - (void)checkButtonTapped:(id)sender event:(id)event{
     NSSet *touches = [event allTouches];
     UITouch *touch = [touches anyObject];
@@ -159,14 +203,6 @@ int randomMobileInternalIndex;
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-    NSLog(@"didSelectRowAtIndexPath");
-    DeviceEditViewController *ctrl = [self.storyboard instantiateViewControllerWithIdentifier:@"DeviceEditViewController"];
-    ctrl.genericParams = [[GenericParams alloc]initWithGenericIndexValue:self.genericParams.headerGenericIndexValue
-                                                          indexValueList:[NSArray arrayWithObject:[self.genericParams.indexValueList objectAtIndex:indexPath.row]]
-                                                              deviceName:self.genericParams.deviceName color:self.genericParams.color isSensor:NO];
-    [self.navigationController pushViewController:ctrl animated:YES];
-}
 - (IBAction)historyButtonTap:(id)sender {
     SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
     //        ctrl.enableDebugMode = YES; // can uncomment for development/test
@@ -204,24 +240,33 @@ int randomMobileInternalIndex;
     [self.HUD hide:YES];
     
     NSString *commandType = payload[COMMAND_TYPE];
-    if([commandType isEqualToString:@"DynamicAllClientsRemoved"] || [commandType isEqualToString:@"UpdatePreference"]){
-        dispatch_async(dispatch_get_main_queue(), ^(){
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        });
-    }
-    else{
+    if([commandType isEqualToString:@"DynamicAllClientsRemoved"] || [commandType isEqualToString:@"DynamicClientRemoved"]){
         NSDictionary *clientPayload = payload[CLIENTS];
         NSString *clientID = clientPayload.allKeys.firstObject;
+        NSLog(@"response client id: %@, present client id: %d", clientID, self.genericParams.headerGenericIndexValue.deviceID);
         if([clientID intValue] == self.genericParams.headerGenericIndexValue.deviceID){
             dispatch_async(dispatch_get_main_queue(), ^(){
                 [self.navigationController popToRootViewControllerAnimated:YES];
             });
         }
     }
+//    else{
+//        NSDictionary *clientPayload = payload[CLIENTS];
+//        NSString *clientID = clientPayload.allKeys.firstObject;
+//        if([clientID intValue] == self.genericParams.headerGenericIndexValue.deviceID){
+//            dispatch_async(dispatch_get_main_queue(), ^(){
+//                [self.navigationController popToRootViewControllerAnimated:YES];
+//            });
+//        }
+//    }
     
 }
 
+-(void)onCommandResponse:(id)sender{
+    NSLog(@"onCommandResponse");
+}
 
+#pragma HUD methods
 - (void)showHudWithTimeoutMsg:(NSString*)hudMsg {
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self showHUD:hudMsg];
@@ -233,7 +278,5 @@ int randomMobileInternalIndex;
     [self.HUD show:YES];
 }
 
--(void)onCommandResponse:(id)sender{
-    NSLog(@"onCommandResponse");
-}
+
 @end

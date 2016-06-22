@@ -755,21 +755,30 @@ static const int xIndent = 10;
         }
         NSDictionary *payload = dataInfo[@"data"];
         NSString *commandType = payload[COMMAND_TYPE];
-        if([commandType isEqualToString:@"DynamicAllClientsRemoved"] || [commandType isEqualToString:@"UpdatePreference"]){
+        if([commandType isEqualToString:@"DynamicAllClientsRemoved"]){
             dispatch_async(dispatch_get_main_queue(), ^(){
                 [self.navigationController popToRootViewControllerAnimated:YES];
             });
         }
         else{ //checking if response is of only that particular client, only then pop
-            NSDictionary *clientPayload = payload[CLIENTS];
-            NSString *clientID = clientPayload.allKeys.firstObject;
-            if([clientID intValue] == self.genericParams.headerGenericIndexValue.deviceID){
-                dispatch_async(dispatch_get_main_queue(), ^(){
-                    [self.navigationController popToRootViewControllerAnimated:YES];
-                });
+            if(payload[CLIENTS]){
+                NSDictionary *clientPayload = payload[CLIENTS];
+                NSString *clientID = clientPayload.allKeys.firstObject;
+                [self popViewController:[clientID intValue] curClientID:self.genericParams.headerGenericIndexValue.deviceID];
+            }else{//for notify me
+                int clientID = [payload[@"ClientID"] intValue];
+                [self popViewController:clientID curClientID:self.genericParams.headerGenericIndexValue.deviceID];
             }
         }
     }
 }
 
+-(void)popViewController:(int)resClientID curClientID:(int)curClientID{
+    if(resClientID == curClientID){
+        dispatch_async(dispatch_get_main_queue(), ^(){
+            //                    [self.navigationController popToRootViewControllerAnimated:YES];
+            [self.navigationController popViewControllerAnimated:YES];
+        });
+    }
+}
 @end

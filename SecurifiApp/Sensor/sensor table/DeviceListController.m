@@ -538,6 +538,7 @@ int mii;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"SensorStoryBoard" bundle:nil];
     ClientPropertiesViewController *viewController = [storyboard instantiateViewControllerWithIdentifier:@"ClientPropertiesViewController"];
     viewController.genericParams = genericParams;
+    viewController.isInitialized = YES;
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
