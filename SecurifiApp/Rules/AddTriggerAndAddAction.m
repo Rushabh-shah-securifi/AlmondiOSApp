@@ -420,8 +420,6 @@ labelAndCheckButtonView *labelView;
 }
 #pragma mark RuleTextField delegate
 - (void)textFieldDidEndEditing:(RuleTextField *)textField{
-    if (!dimerButton.selected && self.isTrigger)
-        [self removeTriggerIndex:textField.subProperties.index buttonId:textField.subProperties.index deviceType:textField.subProperties.deviceType matchData:textField.text];
     
     NSLog(@" textvalue %ld, text: %@",(unsigned long)[textField.text integerValue], textField.text);
     if(textField.text.length == 0)
@@ -430,11 +428,17 @@ labelAndCheckButtonView *labelView;
     else if ([self isAllDigits:textField.text]) {
         if( dimerButton.subProperties.deviceType == SFIDeviceType_StandardWarningDevice_21 && ([textField.text integerValue] >= 65536 || [textField.text integerValue] < 0 )){
             [self showAlert:@"Please enter value between 0 - 65535"];
+            if(self.isTrigger)
+            dimerButton.selected = NO;
         }
         else if( dimerButton.subProperties.deviceType == SFIDeviceType_ZWtoACIRExtender_54 && ([textField.text integerValue] > 999 || [textField.text integerValue] < 0 )){
             [self showAlert:@"Please enter value between 0 - 999"];
+            if(self.isTrigger)
+            dimerButton.selected = NO;
         }else if( dimerButton.subProperties.deviceType == SFIDeviceType_Weather && ([textField.text integerValue] > 9999 || [textField.text integerValue] < 0 )){
             [self showAlert:@"Please enter value between 0 - 9999"];
+            if(self.isTrigger)
+            dimerButton.selected = NO;
         }
         else
         {
@@ -482,11 +486,15 @@ labelAndCheckButtonView *labelView;
     [dimmer.textField resignFirstResponder];
     [self setActionButtonCount:dimmer isSlider:YES];
 }
-- (void)textFieldDidBeginEditing:(UITextField *)textField {
+- (void)textFieldDidBeginEditing:(RuleTextField *)textField {
     if(self.isTrigger)
     dimerButton.selected = !dimerButton.selected;
+    if (!dimerButton.selected && self.isTrigger){
+        [self removeTriggerIndex:textField.subProperties.index buttonId:textField.subProperties.index deviceType:textField.subProperties.deviceType matchData:textField.text];
+        [textField resignFirstResponder];
+    }
     
-    textField.placeholder = textField.text;
+    textField.placeholder = @"";
     textField.text = @"";
 }
 
