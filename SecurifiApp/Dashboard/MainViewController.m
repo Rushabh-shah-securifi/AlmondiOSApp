@@ -133,7 +133,7 @@
             _labelAlmond.text = self.toolkit.currentAlmond.almondplusName ;
             _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.devices.count ];
             _networkConnectedDevices.text =[NSString stringWithFormat:@"%d ",[Client activeClientCount] ];
-            _totalConnectedDevices.text = [NSString stringWithFormat: @"%u", [_smartHomeConnectedDevices.text integerValue]+self.toolkit.clients.count];
+            _totalConnectedDevices.text = [NSString stringWithFormat: @"%lu", [_smartHomeConnectedDevices.text integerValue]+self.toolkit.clients.count];
         });
     }
     else
@@ -445,18 +445,20 @@
 
 -(void )getDeviceClientNotification{
     [self.deviceNotificationArr removeAllObjects];
+     [self.clientNotificationArr removeAllObjects];
     if(self.toolkit.currentAlmond != nil){
         for(int j = 0; j<10;j++){// for 10 days
             for (int i =0; i<150; i++) {
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:j];
                 SFINotification *notification = [self.notify notificationForIndexPath:indexPath];
+                
                 if(notification.deviceType != SFIDeviceType_WIFIClient && notification!=Nil && [notification.almondMAC isEqualToString: self.toolkit.currentAlmond.almondplusMAC]){
                     if(self.deviceNotificationArr.count < 3)
                         [self.deviceNotificationArr addObject:notification];
                     else if (self.deviceNotificationArr.count > 3 && self.clientNotificationArr.count > 2)
                         return;
                 }
-                else{
+                else if(notification!=Nil && [notification.almondMAC isEqualToString: self.toolkit.currentAlmond.almondplusMAC]){
                     if(self.clientNotificationArr.count < 2)
                         [self.clientNotificationArr addObject:notification];
                     else if (self.deviceNotificationArr.count > 3 && self.clientNotificationArr.count > 2)
@@ -472,8 +474,8 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    int deviceRowCount = [self isSensorNotificationEmpty]? 1: self.deviceNotificationArr.count;
-    int clientRowCount = [self isClientNotificationEmpty]? 1: self.clientNotificationArr.count;
+    NSInteger deviceRowCount = [self isSensorNotificationEmpty]? 1: self.deviceNotificationArr.count;
+    NSInteger clientRowCount = [self isClientNotificationEmpty]? 1: self.clientNotificationArr.count;
     
     return (section ==0)? deviceRowCount: clientRowCount;
 }
