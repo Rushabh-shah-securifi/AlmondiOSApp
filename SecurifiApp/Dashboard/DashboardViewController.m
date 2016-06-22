@@ -1,5 +1,5 @@
 //
-//  MainViewController.m
+//  DashboardViewController.m
 //  Dashbord
 //
 //  Created by Securifi Support on 03/05/16.
@@ -11,7 +11,7 @@
 #import "MBProgressHUD.h"
 #import "SFINotificationsViewController.h"
 #import "SFIAlmondLocalNetworkSettings.h"
-#import "MainViewController.h"
+#import "DashboardViewController.h"
 #import "NotificationsTestStore.h"
 #import "SensorSupport.h"
 #import "SFIColors.h"
@@ -22,7 +22,7 @@
 #import "UILabel+ActionSheet.h"
 #import "UIFont+Securifi.h"
 
-@interface MainViewController ()<MBProgressHUDDelegate>
+@interface DashboardViewController ()<MBProgressHUDDelegate>
 
 @property(nonatomic) SFICloudStatusBarButtonItem *leftButton;
 @property (nonatomic) SFINotificationStatusBarButtonItem *notificationButton;
@@ -39,7 +39,7 @@
 
 @end
 
-@implementation MainViewController
+@implementation DashboardViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

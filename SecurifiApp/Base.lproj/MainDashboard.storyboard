@@ -122,10 +122,10 @@
             </objects>
             <point key="canvasLocation" x="-615" y="-1276.5"/>
         </scene>
-        <!--Main View Controller-->
+        <!--Dashboard View Controller-->
         <scene sceneID="yLK-b9-7aL">
             <objects>
-                <viewController storyboardIdentifier="MainViewController" id="R9I-V5-k50" customClass="MainViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DashboardViewController" id="R9I-V5-k50" customClass="DashboardViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="f5G-1y-CDc"/>
                         <viewControllerLayoutGuide type="bottom" id="Z57-X0-Dt1"/>

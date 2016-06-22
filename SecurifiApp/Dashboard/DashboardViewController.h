@@ -1,5 +1,5 @@
 //
-//  MainViewController.h
+//  DashboardViewController.h
 //  Dashbord
 //
 //  Created by Securifi Support on 03/05/16.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SFITabBarController.h"
 
-@interface MainViewController : UIViewController<UITableViewDataSource , UITableViewDelegate>{
+@interface DashboardViewController : UIViewController<UITableViewDataSource , UITableViewDelegate>{
     IBOutlet UIScrollView *Scroller;
 }
 //@property (strong, nonatomic) IBOutlet UIImageView *headerImage;

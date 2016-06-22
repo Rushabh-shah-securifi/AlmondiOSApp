@@ -189,8 +189,8 @@
 		1DF03F8D2E72BA7407CD3680 /* SFIRouterSendLogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF039D08131F3EA14BFDD9F /* SFIRouterSendLogsTableViewCell.m */; };
 		1DF03FBF0030A76DBCA3A828 /* CircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DF033B55E920DA89560E84B /* CircleLabel.m */; };
 		23C39F99DC85F9571BCF46E1 /* libPods-Almond.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AEB56C2FEAC393F7D8DE45B3 /* libPods-Almond.a */; };
-		2A4C24371D0FC3FA001191E8 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A4C24361D0FC3FA001191E8 /* MainViewController.m */; };
-		2A4C24381D0FC3FA001191E8 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A4C24361D0FC3FA001191E8 /* MainViewController.m */; };
+		2A4C24371D0FC3FA001191E8 /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A4C24361D0FC3FA001191E8 /* DashboardViewController.m */; };
+		2A4C24381D0FC3FA001191E8 /* DashboardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A4C24361D0FC3FA001191E8 /* DashboardViewController.m */; };
 		2A4C243B1D0FC412001191E8 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A4C243A1D0FC412001191E8 /* SettingsViewController.m */; };
 		2A4C243C1D0FC412001191E8 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A4C243A1D0FC412001191E8 /* SettingsViewController.m */; };
 		2A4C243F1D0FC450001191E8 /* MainDashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2A4C243D1D0FC450001191E8 /* MainDashboard.storyboard */; };
@@ -697,8 +697,8 @@
 		1DF03F08B83C656D188AD890 /* SensorIndexSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SensorIndexSupport.m; sourceTree = "<group>"; };
 		1DF03F453DC0B72C7436B9E8 /* MessageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageView.m; sourceTree = "<group>"; };
 		1DF03F524BE952202AA5335B /* IndexValueSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexValueSupport.h; sourceTree = "<group>"; };
-		2A4C24351D0FC3EB001191E8 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = Dashboard/MainViewController.h; sourceTree = "<group>"; };
-		2A4C24361D0FC3FA001191E8 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = Dashboard/MainViewController.m; sourceTree = "<group>"; };
+		2A4C24351D0FC3EB001191E8 /* DashboardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DashboardViewController.h; path = Dashboard/DashboardViewController.h; sourceTree = "<group>"; };
+		2A4C24361D0FC3FA001191E8 /* DashboardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DashboardViewController.m; path = Dashboard/DashboardViewController.m; sourceTree = "<group>"; };
 		2A4C24391D0FC403001191E8 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingsViewController.h; path = Dashboard/SettingsViewController.h; sourceTree = "<group>"; };
 		2A4C243A1D0FC412001191E8 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingsViewController.m; path = Dashboard/SettingsViewController.m; sourceTree = "<group>"; };
 		2A4C243E1D0FC450001191E8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = MainDashboard.storyboard; sourceTree = "<group>"; };
@@ -1544,8 +1544,8 @@
 			children = (
 				2A4C243A1D0FC412001191E8 /* SettingsViewController.m */,
 				2A4C24391D0FC403001191E8 /* SettingsViewController.h */,
-				2A4C24361D0FC3FA001191E8 /* MainViewController.m */,
-				2A4C24351D0FC3EB001191E8 /* MainViewController.h */,
+				2A4C24361D0FC3FA001191E8 /* DashboardViewController.m */,
+				2A4C24351D0FC3EB001191E8 /* DashboardViewController.h */,
 				CE65C48F1D1A67B200C2E1C0 /* UILabel+ActionSheet.h */,
 				CE65C4901D1A67B200C2E1C0 /* UILabel+ActionSheet.m */,
 			);
@@ -2557,7 +2557,7 @@
 				1C7E7D881A41A0990026F0BA /* SFINotificationsViewController.m in Sources */,
 				1C7E7D9A1A41A0990026F0BA /* Analytics.m in Sources */,
 				1C7E7D9E1A41A0990026F0BA /* ScoreboardViewController.m in Sources */,
-				2A4C24381D0FC3FA001191E8 /* MainViewController.m in Sources */,
+				2A4C24381D0FC3FA001191E8 /* DashboardViewController.m in Sources */,
 				1C7E7DD21A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				1C7E7D941A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
 				1C7E7D9C1A41A0990026F0BA /* ScoreboardEventViewController.m in Sources */,
@@ -2716,7 +2716,7 @@
 				1DF03A50177B8354D886E980 /* CircleView.m in Sources */,
 				1DF03ADB8A23D76AE9B67F13 /* SFINotificationStatusBarButtonItem.m in Sources */,
 				1DF032B24E580FC6CD86D379 /* CircleLabel.m in Sources */,
-				2A4C24371D0FC3FA001191E8 /* MainViewController.m in Sources */,
+				2A4C24371D0FC3FA001191E8 /* DashboardViewController.m in Sources */,
 				A54537291C8ED1ED00DC3EC8 /* SceneNameViewController.m in Sources */,
 				CEF6F4E61C92CAD600C68975 /* RulePayload.m in Sources */,
 				CEEBE6201C902D0400DC3E3F /* clientTypeCell.m in Sources */,
