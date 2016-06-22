@@ -62,12 +62,15 @@
 
 #pragma mark Navigation UI
 -(void)navigationBarStyle{
-    self.navigationImg = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"head_away"]];
+    self.navigationImg = [[UIImageView alloc] initWithImage:[CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]]];
+    self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
+    
     self.navigationImg.frame = CGRectMake(0, 0, self.navigationController.navigationBar.frame.size.width, self.navigationController.navigationBar.frame.size.height);
     [self.navigationController.navigationBar addSubview:self.navigationImg];
     
     [self.navigationItem setTitle:@"Dashboard"];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    
     [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
     [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
     
@@ -103,9 +106,8 @@
         dispatch_async(dispatch_get_main_queue(), ^() {
             _labelHomeAway.hidden = YES;
             _labelHome.hidden = NO;
-            self.navigationImg.image = [UIImage imageNamed:@"1224"];
-//            self.navigationImg.image = [CommonMethods MultiplyImageByConstantColor:[UIImage imageNamed:@"1224"] andColor:[UIColor whiteColor]];
-            self.bannerImage.image = [UIImage imageNamed:@"1225"];
+            self.navigationImg.image = [CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightBlueColor]];
+            self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightBlueColor]];
             [self.buttonHome setBackgroundColor:[SFIColors lightBlueColor]];
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
             [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
@@ -116,8 +118,8 @@
         dispatch_async(dispatch_get_main_queue(), ^() {
             _labelHomeAway.hidden = NO;
             _labelHome.hidden = YES;
-            self.navigationImg.image = [UIImage imageNamed:@"head_away"];
-            self.bannerImage.image = [UIImage imageNamed:@"main"];
+            self.navigationImg.image = [CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]];
+            self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
             [self.buttonHomeAway setBackgroundColor:[SFIColors lightOrangeDashColor]];
             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
             [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1_white" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
@@ -775,12 +777,12 @@
         case SFIAlmondConnectionStatus_disconnected: {
             state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateDisconnected : SFICloudStatusStateLocalConnectionOffline;
             [self.leftButton markState:state];
-            [self changeColorOfNavigationItam:@"header_Gray" andbannerImage:@"home_Gray"];
+            [self changeColorOfNavigationItam];
             break;
         };
         case SFIAlmondConnectionStatus_connecting: {
             [self.leftButton markState:SFICloudStatusStateConnecting];
-            [self changeColorOfNavigationItam:@"header_Gray" andbannerImage:@"home_Gray"];
+            [self changeColorOfNavigationItam];
             break;
         };
         case SFIAlmondConnectionStatus_connected: {
@@ -794,22 +796,22 @@
             break;
         };
         case SFIAlmondConnectionStatus_error: {
-            [self changeColorOfNavigationItam:@"header_Gray" andbannerImage:@"home_Gray"];
+            [self changeColorOfNavigationItam];
             break;
         };
         case SFIAlmondConnectionStatus_error_mode: {
             state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateCloudConnectionNotSupported : SFICloudStatusStateLocalConnectionNotSupported;
             [self.leftButton markState:state];
-            [self changeColorOfNavigationItam:@"header_Gray" andbannerImage:@"home_Gray"];
+            [self changeColorOfNavigationItam];
             break;
         }
     }
 }
 
--(void)changeColorOfNavigationItam:(NSString *)img1 andbannerImage:(NSString*)img2 {
+-(void)changeColorOfNavigationItam {
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.navigationImg.image = [UIImage imageNamed:img1];
-        self.bannerImage.image = [UIImage imageNamed:img2];
+        self.navigationImg.image = [CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightGrayColor]];
+        self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightGrayColor]];
         if (self.toolkit.mode_src ==2) {
             [self.buttonHome setBackgroundColor:[SFIColors lightGrayColor] ];
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];

@@ -14,7 +14,7 @@
 #import "MainViewController.h"
 
 #define TAB_BAR_DEVICES @"Devices"
-#define TAB_BAR_ROUTER @"Router"
+#define TAB_BAR_ROUTER @"WiFi"
 #define TAB_BAR_SCENES @"Scenes"
 #define TAB_BAR_RULES @"Rules"
 #define TAB_BAR_DASHBOARD @"Dashboard"
