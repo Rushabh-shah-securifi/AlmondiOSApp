@@ -133,7 +133,7 @@
             _labelAlmond.text = self.toolkit.currentAlmond.almondplusName ;
             _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.devices.count ];
             _networkConnectedDevices.text =[NSString stringWithFormat:@"%d ",[Client activeClientCount] ];
-            _totalConnectedDevices.text = [NSString stringWithFormat: @"%lu", [_smartHomeConnectedDevices.text integerValue]+self.toolkit.clients.count];
+            _totalConnectedDevices.text = [NSString stringWithFormat: @"%lu", (unsigned long)(self.toolkit.devices.count + self.toolkit.clients.count)];
         });
     }
     else
