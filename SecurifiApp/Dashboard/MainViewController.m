@@ -19,6 +19,8 @@
 #import "Colours.h"
 #import "SFINotificationStatusBarButtonItem.h"
 #import "CommonMethods.h"
+#import "UILabel+ActionSheet.h"
+#import "UIFont+Securifi.h"
 
 @interface MainViewController ()<MBProgressHUDDelegate>
 
@@ -27,20 +29,20 @@
 @property(nonatomic) SecurifiToolkit *toolkit;
 @property(nonatomic, readonly) MBProgressHUD *HUD;
 @property (nonatomic, strong, nullable) UIRefreshControl *refreshControl NS_AVAILABLE_IOS(6_0) __TVOS_PROHIBITED;
-
 @property(nonatomic) SFINotificationsViewController *notify;
 @property(nonatomic) id <SFINotificationStore> store;
 @property (nonatomic) NSMutableArray *clientNotificationArr;
 @property (nonatomic) NSMutableArray *deviceNotificationArr;
-
-
 @property(nonatomic, readonly) CircleLabel *countLabel;
 @property(nonatomic, readonly) UIButton *countButton;
+
 @end
 
 @implementation MainViewController
+
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     self.navigationController.navigationBar.clipsToBounds = YES;
     self.toolkit = [SecurifiToolkit sharedInstance];
     [self loadNotification];
@@ -56,6 +58,7 @@
     [self initializeNotification];
     [self initializeHUD];
 }
+
 #pragma mark Navigation UI
 -(void)navigationBarStyle{
     UIImage *imgNav = [UIImage imageNamed:@"1224"];
@@ -64,19 +67,13 @@
     [self.navigationItem setTitle:@"Dashboard"];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
     
-_leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES];
+    _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES];
     self.leftButton.isDashBoard = YES;
     
-    _notificationButton = [[SFINotificationStatusBarButtonItem alloc]
-                           initWithImage:[UIImage imageNamed:@"bell_empty"]
-                           style:UIBarButtonItemStylePlain
-                           target:self
-                           action:@selector(notificationAction:)];
-    
     _notificationButton = [[SFINotificationStatusBarButtonItem alloc] initWithTarget:self action:@selector(notificationAction:)];
+    
     NSInteger count = [_toolkit countUnviewedNotifications];
     [_notificationButton markNotificationCount:(NSUInteger) count];
-    _notificationButton.tintColor = [UIColor whiteColor];
     _notificationButton.isDashBoard = YES;
     self.navigationItem.leftBarButtonItems = @[_leftButton, _notificationButton];
 }
@@ -89,17 +86,6 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
     [self.notify resetBucketsAndNotifications];
 }
 
-- (CircleLabel *)makeCountLabel {
-    CGRect frame = CGRectMake(12, 1, 10, 10);
-    CircleLabel *label = [[CircleLabel alloc] initWithFrame:frame];
-    label.cornerRadius = 12.5;
-    label.textColor = [UIColor whiteColor];
-    label.font = [UIFont standardUILabelFont];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.backgroundColor = /*orange*/[UIColor colorFromHexString:@"ff8500"];
-    return label;
-}
-
 -(void)initializeHUD{
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     _HUD.removeFromSuperViewOnHide = NO;
@@ -107,34 +93,34 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
     _HUD.delegate = self;
     [self.navigationController.view addSubview:_HUD];
 }
+
 -(void)updateMode:(int )mode{
     if (mode == 2) {
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"1224"] forBarMetrics:UIBarMetricsDefault];
             _labelHomeAway.hidden = YES;
             _labelHome.hidden = NO;
+            [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"1224"] forBarMetrics:UIBarMetricsDefault];
+            self.bannerImage.image = [UIImage imageNamed:@"1225"];
+            [self.buttonHome setBackgroundColor:[SFIColors lightBlueColor]];
+            [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
             [self.buttonHome setImage:[UIImage imageNamed:@"home_icon1"] forState:UIControlStateNormal];
             [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
-            [self.buttonHome setBackgroundColor:[UIColor colorFromHexString:@"#03a9f4"] ];
-            [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
-            self.bannerImage.image = [UIImage imageNamed:@"1225"];
         });
     }
-    else
-    {
+    else{
         dispatch_async(dispatch_get_main_queue(), ^() {
-            [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"head_away"] forBarMetrics:UIBarMetricsDefault];
             _labelHomeAway.hidden = NO;
             _labelHome.hidden = YES;
+            [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"head_away"] forBarMetrics:UIBarMetricsDefault];
+            self.bannerImage.image = [UIImage imageNamed:@"main"];
+            [self.buttonHomeAway setBackgroundColor:[SFIColors lightOrangeDashColor]];
+            [self.buttonHome setBackgroundColor:[UIColor clearColor]];
             [self.buttonHomeAway setImage:[UIImage imageNamed:@"homeaway_icon1"] forState:UIControlStateNormal];
             [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
-            [self.buttonHomeAway setBackgroundColor:[UIColor colorFromHexString:@"#ff9800"]];
-            [self.buttonHome setBackgroundColor:[UIColor clearColor]];
-            self.bannerImage.image = [UIImage imageNamed:@"main"];
         });
     }
-
 }
+
 -(void)initializeNotification{
     [self updateMode:self.toolkit.mode_src];
     [self updateDeviceClientListCount];
@@ -163,7 +149,6 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
             _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%d ",0 ];
             _networkConnectedDevices.text =[NSString stringWithFormat:@"%d ",0 ];
             _totalConnectedDevices.text = [NSString stringWithFormat: @"%d",0];
-            
         });
     }
 }
@@ -179,6 +164,7 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
         [self.dashboardTable reloadData];
     });
 }
+
 -(void)initializeAlmondData{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self tryInstallRefreshControl];
@@ -186,7 +172,6 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
 }
 
 - (BOOL)isDeviceListEmpty {
-    // don't show any tiles until there are values for the devices; no values == no way to fetch from almond
     return self.toolkit.devices.count == 0;
 }
 
@@ -213,6 +198,7 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
         [self.HUD hide:YES afterDelay:delay];
     });
 }
+
 - (void)showHUD:(NSString *)text {
     self.HUD.labelText = text;
     [self.HUD show:YES];
@@ -240,7 +226,6 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
 }
 
 - (void)viewWillAppear:(BOOL)animated{
-    
     [super viewWillAppear:YES];
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -260,12 +245,10 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
                selector:@selector(onNetworkUpNotifier:)
                    name:NETWORK_UP_NOTIFIER
                  object:nil];
-    
     [center addObserver:self
                selector:@selector(onNetworkDownNotifier:)
                    name:NETWORK_DOWN_NOTIFIER
                  object:nil];
-    
     [center addObserver:self
                selector:@selector(onNetworkConnectingNotifier:)
                    name:NETWORK_CONNECTING_NOTIFIER
@@ -282,67 +265,50 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
                selector:@selector(onNotificationCountChanged:)
                    name:kSFINotificationDidStore
                  object:nil];
-    
     [center addObserver:self
                selector:@selector(onNotificationCountChanged:)
                    name:kSFINotificationBadgeCountDidChange
                  object:nil];
-    
     [center addObserver:self
                selector:@selector(onNotificationCountChanged:)
                    name:kSFINotificationDidMarkViewed
                  object:nil];
-
-    // NSLog(@"tryRefreshNotifications");
     [self.toolkit tryRefreshNotifications];
     [self initializeNotification];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.dashboardTable reloadData];
     });
-    [self getClientNotification];
-    [self getDeviceNotification];
+    [self getDeviceClientNotification];
     [self markNetworkStatusIcon];
 }
 
 - (void)onNotificationCountChanged:(id)event {
-    NSLog(@"Notification count icon");
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    NSInteger badgeCount = [toolkit notificationsBadgeCount];
-    NSLog(@"Notifications are : %ld",(long)badgeCount);
-    if(badgeCount >0){
-        _notificationButton.image = [UIImage imageNamed:@"bell_icon_tilted"];
-        _countLabel = [self makeCountLabel];
-        [_notificationButton markNotificationCount:(NSUInteger) badgeCount];
-    }else{
-            _notificationButton.image = [UIImage imageNamed:@"bell_empty"];
-    }
+    [self.notificationButton markNotificationCount:(NSUInteger) [self.toolkit notificationsBadgeCount]];
 }
 
 -(void)onDidReceiveNotifications{
     _store = [self.notify pickNotificationStore];
     self.notify.store = _store;
     [self.notify resetBucketsAndNotifications];
-    [self getClientNotification];
-    [self getDeviceNotification];
+    [self getDeviceClientNotification];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.dashboardTable reloadData];
     });
 }
+
 - (void)onNetworkUpNotifier:(id)sender {
-    ////NSLog(@"onNetworkUpNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
     });
 }
+
 - (void)onNetworkDownNotifier:(id)sender {
-    // //NSLog(@"onNetworkDownNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
     });
 }
 
 - (void)onNetworkConnectingNotifier:(id)notification {
-    ////NSLog(@"onNetworkConnectingNotifier");
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self markNetworkStatusIcon];
     });
@@ -377,13 +343,16 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
     enum SFIAlmondConnectionMode modeValue = [self.toolkit currentConnectionMode];
     NSArray *almondList = [self buildAlmondList:modeValue];
     UIAlertController *viewC;
-    UIImage *image = [UIImage imageNamed:@"icon_dashboard"];
     viewC = [UIAlertController alertControllerWithTitle:@"Select Almond" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UILabel * appearanceLabel = [UILabel appearanceWhenContainedIn:UIAlertController.class, nil];
+    [appearanceLabel setAppearanceFont:[UIFont securifiLightFont:14]];
+    
     for(SFIAlmondPlus *name in almondList){
         if ([name.almondplusName isEqualToString:_labelAlmond.text]) {
             viewC.view.tintColor = [UIColor blackColor];
         }
-            UIAlertAction *Aname = [UIAlertAction
+        UIAlertAction *Aname = [UIAlertAction
                                 actionWithTitle:name.almondplusName
                                 style:UIAlertActionStyleDefault
                                 handler:^(UIAlertAction * action){
@@ -393,7 +362,12 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
                                     _labelAlmondStatus.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:14];
                                     _labelAlmond.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:18];
                                 }];
-        [Aname setValue:image forKey:@"image"];
+        if ([name.almondplusMAC isEqualToString:self.toolkit.currentAlmond.almondplusMAC]) {
+            UIColor *color = [SFIColors ruleBlueColor];
+            [Aname setValue:color forKey:@"titleTextColor"];
+        }
+        
+        [Aname setValue:[UIImage imageNamed:@"icon_dashboard"] forKey:@"image"];
         
         [viewC addAction:Aname];
     }
@@ -414,6 +388,7 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
     [viewC addAction:AddNew];
     [viewC addAction:Check];
     [self presentViewController:viewC animated:YES completion:nil];
+    
 }
 
 - (NSArray *)buildAlmondList:(enum SFIAlmondConnectionMode)mode5 {
@@ -421,16 +396,14 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
     switch (mode5) {
         case SFIAlmondConnectionMode_cloud: {
             NSArray *cloud = [toolkit almondList];
-            if (!cloud) {
+            if (!cloud)
                 cloud = @[];
-            }
             return cloud;
         }
         case SFIAlmondConnectionMode_local: {
             NSArray *local = [toolkit localLinkedAlmondList];
-            if (!local) {
+            if (!local)
                 local = @[];
-            }
             return local;
         }
         default:
@@ -458,24 +431,19 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
 
 - (void)notificationAction:(id)sender {
     dispatch_async(dispatch_get_main_queue(), ^() {
-        if (self.presentedViewController != nil) {
+        if (self.presentedViewController != nil)
             return;
-        }
-        
         SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-        
         SFINotificationsViewController *ctrl = [[SFINotificationsViewController alloc] initWithStyle:UITableViewStyleGrouped];
         ctrl.enableDebugMode = toolkit.configuration.enableNotificationsDebugMode;
-        
         UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
         _notificationButton.image = [UIImage imageNamed:@"bell_empty"];
-        
         [self presentViewController:nav_ctrl animated:YES completion:nil];
         [_notificationButton markNotificationCount:0];
     });
 }
-//make these two methods are refactor
--(void )getDeviceNotification{
+
+-(void )getDeviceClientNotification{
     [self.deviceNotificationArr removeAllObjects];
     if(self.toolkit.currentAlmond != nil){
         for(int j = 0; j<10;j++){// for 10 days
@@ -483,26 +451,16 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
                 NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:j];
                 SFINotification *notification = [self.notify notificationForIndexPath:indexPath];
                 if(notification.deviceType != SFIDeviceType_WIFIClient && notification!=Nil && [notification.almondMAC isEqualToString: self.toolkit.currentAlmond.almondplusMAC]){
-                    [self.deviceNotificationArr addObject:notification];
-                    if(self.deviceNotificationArr.count > 2)
-                        return ;
+                    if(self.deviceNotificationArr.count < 3)
+                        [self.deviceNotificationArr addObject:notification];
+                    else if (self.deviceNotificationArr.count > 3 && self.clientNotificationArr.count > 2)
+                        return;
                 }
-            }
-        }
-    }
-    
-}
--(void )getClientNotification{
-    [self.clientNotificationArr removeAllObjects];
-    if(self.toolkit.currentAlmond != nil){
-        for(int j = 0; j<10;j++){// for 10 days
-            for (int i =0; i<150; i++) {
-                NSIndexPath *indexPath = [NSIndexPath indexPathForItem:i inSection:j];
-                SFINotification *notification = [self.notify notificationForIndexPath:indexPath];
-                if(notification.deviceType == SFIDeviceType_WIFIClient && notification!=Nil && [notification.almondMAC isEqualToString: self.toolkit.currentAlmond.almondplusMAC]){
-                    [self.clientNotificationArr addObject:notification];
-                    if(self.clientNotificationArr.count > 1)
-                        return ;
+                else{
+                    if(self.clientNotificationArr.count < 2)
+                        [self.clientNotificationArr addObject:notification];
+                    else if (self.deviceNotificationArr.count > 3 && self.clientNotificationArr.count > 2)
+                        return;
                 }
             }
         }
@@ -516,14 +474,14 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return (section ==0)?self.deviceNotificationArr.count:self.clientNotificationArr.count;
 }
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     SensorSupport *sensorSupport = [SensorSupport new];
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier ];
-    }//indexPath.row  > (int)self.toolkit.devices.count - 1
-    
+    }
     if (indexPath.section == 0 && self.deviceNotificationArr.count > indexPath.row) {
         SFINotification *notification = [self.deviceNotificationArr objectAtIndex:indexPath.row];
         [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
@@ -531,7 +489,6 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
             cell.imageView.image = [CommonMethods imageNamed:@"default_device" withColor:[SFIColors ruleBlueColor]];
             cell.textLabel.text = @"No notifications";
         }else{
-            //NSLog(@"icon name :: %@",sensorSupport.valueSupport.iconName);
             cell.textLabel.attributedText = [self setMessageLabelText:notification sensorSupport:sensorSupport];
             cell.imageView.image = [CommonMethods imageNamed:sensorSupport.valueSupport.iconName withColor:[SFIColors ruleBlueColor]];
             cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
@@ -540,7 +497,6 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
     else if(indexPath.section == 1 && self.clientNotificationArr.count > indexPath.row){
         SFINotification *notification = [self.clientNotificationArr objectAtIndex:indexPath.row];
         [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
-        //NSLog(@"devicename --%@",notification.deviceName);
         if ([notification.deviceName rangeOfString:@"joined" options:NSCaseInsensitiveSearch].location != NSNotFound){
             cell.imageView.image = [UIImage imageNamed:@"online"];
             cell.textLabel.attributedText = [self setMessageLabelText:notification sensorSupport:sensorSupport];
@@ -551,12 +507,10 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
             cell.textLabel.attributedText = [self setMessageLabelText:notification sensorSupport:sensorSupport];
             cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
         }
-        // cell.textLabel.text = notification.deviceName;
     }
     cell.textLabel.font = [UIFont systemFontOfSize:12];
     cell.detailTextLabel.textColor = [SFIColors ruleGraycolor];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:10];
-    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     CGSize itemSize = CGSizeMake(30,30);
     UIGraphicsBeginImageContext(itemSize);
     CGRect imageRect = CGRectMake(0.0,0.0, itemSize.width, itemSize.height);
@@ -591,216 +545,169 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
     [view addSubview:label];
     return view;
 }
-#pragma onConnectionStatus
-//-(void)omConnection:
 
-- (void)onConnectionStatusButtonPressed:(id)sender {
-    UIAlertController *alert1 = [UIAlertController alertControllerWithTitle:@"Almond Connection" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    SFICloudStatusState statusState = self.leftButton.state;
-    switch (statusState) {
-        case SFICloudStatusStateConnecting: {
-            alert1.title = NSLocalizedString(@"In process of connecting. Change connection method.", @"In process of connecting. Change connection method.");
-            UIAlertAction *Check = [UIAlertAction
-                                    actionWithTitle:@"Cloud Connection"
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action)
-                                    {
-                                        [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
-                                    }];
-            [alert1 addAction:Check];
-            UIAlertAction *Check1 = [UIAlertAction
-                                     actionWithTitle:@"Local Connection"
-                                     style:UIAlertActionStyleDefault
-                                     handler:^(UIAlertAction * action)
-                                     {
-                                         [self configureNetworkSettings:SFIAlmondConnectionMode_local];
-                                     }];
-            [alert1 addAction:Check1];
-            [self presentViewController:alert1 animated:YES completion:nil];
-            break;
-        };
-        case SFICloudStatusStateConnected: {
-            SFIAlmondLocalNetworkSettings *settings = [[SecurifiToolkit sharedInstance] localNetworkSettingsForAlmond:self.toolkit.currentAlmond.almondplusMAC];
-            if (settings) {
-                alert1.title = NSLocalizedString(@"alert.message-Connected to your Almond via cloud.", @"Connected to your Almond via cloud.");
-                UIAlertAction *Check = [UIAlertAction
-                                        actionWithTitle:@"Switch to Local Connection"
-                                        style:UIAlertActionStyleDefault
-                                        handler:^(UIAlertAction * action)
-                                        {
-                                            [self configureNetworkSettings:SFIAlmondConnectionMode_local];
-                                        }];
-                [alert1 addAction:Check];
-                [self presentViewController:alert1 animated:YES completion:nil];
-            }
-            else{
-                alert1.title = NSLocalizedString(@"alertview -Connected to your Almond via cloud.", @"Connected to your Almond via cloud.");
-                UIAlertAction *Check = [UIAlertAction
-                                        actionWithTitle:@"Add Local Connection Settings"
-                                        style:UIAlertActionStyleDefault
-                                        handler:^(UIAlertAction * action)
-                                        {
-                                            [self presentLocalNetworkSettingsEditor];
-                                        }];
-                [alert1 addAction:Check];
-                [self presentViewController:alert1 animated:YES completion:nil];
-            }
-            break;
-        };
-        case SFICloudStatusStateAlmondOffline: {
-            alert1.title = NSLocalizedString(@"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection.", @"Cloud connection to your Almond failed. Tap retry or switch to local connection.");
-            UIAlertAction *Check = [UIAlertAction
-                                    actionWithTitle:@"Switch to Local Connection"
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action)
-                                    {
-                                        [self configureNetworkSettings:SFIAlmondConnectionMode_local];
-                                    }];
-            [alert1 addAction:Check];
-            UIAlertAction *Check1 = [UIAlertAction
-                                     actionWithTitle:@"Switch to Cloud Connection"
-                                     style:UIAlertActionStyleDefault
-                                     handler:^(UIAlertAction * action)
-                                     {
-                                         [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
-                                     }];
-            [alert1 addAction:Check1];
-            [self presentViewController:alert1 animated:YES completion:nil];
-            
-            break;
-        };
-        case SFICloudStatusStateDisconnected:
-        case SFICloudStatusStateAway:
-        case SFICloudStatusStateAtHome:
-            return;
-        case SFICloudStatusStateConnectionError: {
-            alert1.title = NSLocalizedString(@"alertview Can't connect to your Almond. Please select a connection method.", @"Can't connect to your Almond. Please select a connection method.");
-            UIAlertAction *Check = [UIAlertAction
-                                    actionWithTitle:@"Switch to Cloud Connection"
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction * action)
-                                    {
-                                        [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
-                                    }];
-            [alert1 addAction:Check];
-            UIAlertAction *Check1 = [UIAlertAction
-                                     actionWithTitle:@"Switch to Local Connection"
-                                     style:UIAlertActionStyleDefault
-                                     handler:^(UIAlertAction * action)
-                                     {
-                                         [self configureNetworkSettings:SFIAlmondConnectionMode_local];
-                                     }];
-            [alert1 addAction:Check1];
-            
-            [self presentViewController:alert1 animated:YES completion:nil];
-            break;
-        };
-        case SFICloudStatusStateLocalConnection: {
-            SFIAlmondLocalNetworkSettings *settings = [[SecurifiToolkit sharedInstance] localNetworkSettingsForAlmond:self.toolkit.currentAlmond.almondplusMAC];
-            if(settings){
-                alert1.title = NSLocalizedString(@"alertview localconnection_Connected to your Almond locally.", @"Connected to your Almond locally.");
-                UIAlertAction *Check = [UIAlertAction
-                                        actionWithTitle:NSLocalizedString(@"alertview localconnection_Switch to Cloud Connection", @"Switch to Cloud Connection")
-                                        style:UIAlertActionStyleDefault
-                                        handler:^(UIAlertAction *action)
-                                        {
-                                            [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
-                                        }
-                                        ];
-                [alert1 addAction:Check];
-                [self presentViewController:alert1 animated:YES completion:nil];
-                
-                break;
-            }
-            else{
-                alert1.title = NSLocalizedString(@"alertview Local connection settings are missing.", @"Local connection settings are missing.");
-                UIAlertAction *Check = [UIAlertAction
-                                        actionWithTitle:NSLocalizedString(@"alertview title Add Local Connection Settings", @"Add Local Connection Settings")
-                                        style:UIAlertActionStyleDefault
-                                        handler:^(UIAlertAction *action)
-                                        {
-                                            [self presentLocalNetworkSettingsEditor];
-                                        }
-                                        ];
-                [alert1 addAction:Check];
-                [self presentViewController:alert1 animated:YES completion:nil];
-                
-                break;
-            }
-        };
-        case SFICloudStatusStateLocalConnectionOffline: {
-            alert1.title = NSLocalizedString(@"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection.", "Local connection to your Almond failed. Tap retry or switch to cloud connection.");
-            UIAlertAction *Check = [UIAlertAction
-                                    actionWithTitle:NSLocalizedString(@"alert title offline Local Retry Local Connection", @"Retry Local Connection")
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction *action)
-                                    {
-                                        [self configureNetworkSettings:SFIAlmondConnectionMode_local];
-                                    }
-                                    ];
-            UIAlertAction *Check1 = [UIAlertAction
-                                     actionWithTitle:NSLocalizedString(@"alert title offline Local Switch to Cloud Connection", @"Switch to Cloud Connection")
-                                     style:UIAlertActionStyleDefault
-                                     handler:^(UIAlertAction *action)
-                                     {
-                                         [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
-                                     }
-                                     ];
-            [alert1 addAction:Check];
-            [alert1 addAction:Check1];
-            [self presentViewController:alert1 animated:YES completion:nil];
-            
-            break;
-            
-        };
-        case SFICloudStatusStateCloudConnectionNotSupported: {
-            alert1.title = NSLocalizedString(@"alert msg offline Cloud connection not supported.", "Your Almond is not affiliated with the cloud. Only local connection to your Almond is supported.");
-            UIAlertAction *Check = [UIAlertAction
-                                    actionWithTitle:NSLocalizedString(@"Alert view title-Switch to Local Connection", @"Switch to Local Connection")
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction *action)
-                                    {
-                                        [self configureNetworkSettings:SFIAlmondConnectionMode_local];
-                                    }
-                                    ];
-            [alert1 addAction:Check];
-            [self presentViewController:alert1 animated:YES completion:nil];
-            
-            break;
-        }
-        case SFICloudStatusStateLocalConnectionNotSupported: {
-            alert1.title = NSLocalizedString(@"alert msg offline Local connection not supported.", "Can't connect to your Almond because local connection settings are missing. Tap edit to add settings.");
-            UIAlertAction *Check = [UIAlertAction
-                                    actionWithTitle:NSLocalizedString(@"alert title offline Local Switch to Cloud Connection", @"Switch to Cloud Connection")
-                                    style:UIAlertActionStyleDefault
-                                    handler:^(UIAlertAction *action)
-                                    {
-                                        [self configureNetworkSettings:SFIAlmondConnectionMode_cloud];
-                                    }
-                                    ];
-            [alert1 addAction:Check];
-            [self presentViewController:alert1 animated:YES completion:nil];
-            
-            break;
-        }
-        default:
-            return;
-    }
+#pragma onConnectionStatus
+-(void)onConnection:(NSString *)Title subTitle:(NSString *)subTitle stmt:(enum SFIAlmondConnectionMode)mode{
+    UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:@"Almond Connection" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    almondSelect.title = Title;
+    UIAlertAction *Check = [UIAlertAction
+                            actionWithTitle:subTitle
+                            style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action)
+                            {
+                                [self configureNetworkSettings:mode];
+                            }];
+    [almondSelect addAction:Check];
+    [self presentViewController:almondSelect animated:YES completion:nil];
     UIAlertAction *Close = [UIAlertAction
                             actionWithTitle:@"Close"
                             style:UIAlertActionStyleDefault
                             handler:^(UIAlertAction * action)
                             {
-                                [alert1 dismissViewControllerAnimated:YES completion:nil];
+                                [almondSelect dismissViewControllerAnimated:YES completion:nil];
                             }];
-    [alert1 addAction:Close];
+    [almondSelect addAction:Close];
+}
+
+-(void)onConnection2:(NSString *)Title subTitle1:(NSString *)subTitle1 subTitle2:(NSString *)subTitle2 stmt1:(enum SFIAlmondConnectionMode)mode1 stmt2:(enum SFIAlmondConnectionMode)mode2{
+    UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:@"Almond Connection" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    almondSelect.title = Title;
+    UIAlertAction *Check1 = [UIAlertAction
+                            actionWithTitle:subTitle1
+                            style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action)
+                            {
+                                [self configureNetworkSettings:mode1];
+                            }];
+    [almondSelect addAction:Check1];
+    UIAlertAction *Check2 = [UIAlertAction
+                            actionWithTitle:subTitle2
+                            style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action)
+                            {
+                                [self configureNetworkSettings:mode2];
+                            }];
+    [almondSelect addAction:Check2];
+    [self presentViewController:almondSelect animated:YES completion:nil];
+    UIAlertAction *Close = [UIAlertAction
+                            actionWithTitle:@"Close"
+                            style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action)
+                            {
+                                [almondSelect dismissViewControllerAnimated:YES completion:nil];
+                            }];
+    [almondSelect addAction:Close];
+}
+
+-(void)onConnection3:(NSString *)Title subTitle:(NSString *)subTitle{
+    UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:@"Almond Connection" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    almondSelect.title = Title;
+    UIAlertAction *Check = [UIAlertAction
+                            actionWithTitle:subTitle
+                            style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action)
+                            {
+                                [self presentLocalNetworkSettingsEditor];
+                            }];
+    [almondSelect addAction:Check];
+    [self presentViewController:almondSelect animated:YES completion:nil];
+    UIAlertAction *Close = [UIAlertAction
+                            actionWithTitle:@"Close"
+                            style:UIAlertActionStyleDefault
+                            handler:^(UIAlertAction * action)
+                            {
+                                [almondSelect dismissViewControllerAnimated:YES completion:nil];
+                            }];
+    [almondSelect addAction:Close];
+}
+
+- (void)onConnectionStatusButtonPressed:(id)sender {
+    NSString *Title;
+    NSString *subTitle1, *subTitle2;
+    SFICloudStatusState statusState = self.leftButton.state;
+    switch (statusState) {
+        case SFICloudStatusStateCloudConnectionNotSupported: {
+            Title =NSLocalizedString(@"alert msg offline Cloud connection not supported.", "Your Almond is not affiliated with the cloud. Only local connection to your Almond is supported.");
+            subTitle1 = NSLocalizedString(@"Alert view title-Switch to Local Connection", @"Switch to Local Connection");
+            [self onConnection:Title subTitle: subTitle1 stmt: SFIAlmondConnectionMode_local ];
+            break;
+        }
+        case SFICloudStatusStateLocalConnectionNotSupported: {
+            Title = NSLocalizedString(@"alert msg offline Local connection not supported.", "Can't connect to your Almond because local connection settings are missing. Tap edit to add settings.");
+            subTitle1 =NSLocalizedString(@"alert title offline Local Switch to Cloud Connection", @"Switch to Cloud Connection") ;
+            [self onConnection:Title subTitle:subTitle1 stmt: SFIAlmondConnectionMode_cloud ];
+            break;
+        }
+        case SFICloudStatusStateConnecting: {
+            Title = NSLocalizedString(@"In process of connecting. Change connection method.", @"In process of connecting. Change connection method.");
+            subTitle1 = @"Cloud Connection";
+            subTitle2 = @"Local Connection";
+            [self onConnection2:Title subTitle1:subTitle1 subTitle2:subTitle2 stmt1:SFIAlmondConnectionMode_cloud stmt2:SFIAlmondConnectionMode_local];
+            break;
+        };
+        case SFICloudStatusStateDisconnected:
+        case SFICloudStatusStateAlmondOffline: {
+            Title = NSLocalizedString(@"Alert view fail-Cloud connection to your Almond failed. Tap retry or switch to local connection.", @"Cloud connection to your Almond failed. Tap retry or switch to local connection.");
+            subTitle1 = @"Switch to Local Connection";
+            subTitle2 = @"Switch to Cloud Connection";
+            [self onConnection2:Title subTitle1:subTitle1 subTitle2:subTitle2 stmt1:SFIAlmondConnectionMode_local stmt2:SFIAlmondConnectionMode_cloud];
+            break;
+        };
+        case SFICloudStatusStateConnectionError: {
+            Title = NSLocalizedString(@"alertview Can't connect to your Almond. Please select a connection method.", @"Can't connect to your Almond. Please select a connection method.");
+            subTitle1 = @"Cloud Connection";
+            subTitle2 = @"Local Connection";
+            [self onConnection2:Title subTitle1:subTitle1 subTitle2:subTitle2 stmt1:SFIAlmondConnectionMode_cloud stmt2:SFIAlmondConnectionMode_local];
+            break;
+        };
+        case SFICloudStatusStateLocalConnectionOffline: {
+            Title = NSLocalizedString(@"alert msg offline Local connection to your Almond failed. Tap retry or switch to cloud connection.", "Local connection to your Almond failed. Tap retry or switch to cloud connection.");
+            subTitle1 = NSLocalizedString(@"alert title offline Local Retry Local Connection", @"Retry Local Connection");
+            subTitle2 = NSLocalizedString(@"alert title offline Local Switch to Cloud Connection", @"Switch to Cloud Connection");
+            [self onConnection2:Title subTitle1:subTitle1 subTitle2:subTitle2 stmt1:SFIAlmondConnectionMode_local stmt2:SFIAlmondConnectionMode_cloud];
+            break;
+        };
+        case SFICloudStatusStateConnected: {
+            SFIAlmondLocalNetworkSettings *settings = [[SecurifiToolkit sharedInstance] localNetworkSettingsForAlmond:self.toolkit.currentAlmond.almondplusMAC];
+            if (settings) {
+                Title = NSLocalizedString(@"alert.message-Connected to your Almond via cloud.", @"Connected to your Almond via cloud.");
+                subTitle1 = @"Switch to Local Connection";
+                [self onConnection:Title subTitle:subTitle1 stmt:SFIAlmondConnectionMode_local];
+            }
+            else{
+                Title = NSLocalizedString(@"alertview -Connected to your Almond via cloud.", @"Connected to your Almond via cloud.");
+                subTitle1 = @"Add Local Connection Settings";
+                [self onConnection3:Title subTitle:subTitle1];
+            }
+            break;
+        };
+        case SFICloudStatusStateLocalConnection: {
+            SFIAlmondLocalNetworkSettings *settings = [[SecurifiToolkit sharedInstance] localNetworkSettingsForAlmond:self.toolkit.currentAlmond.almondplusMAC];
+            if(settings){
+                Title = NSLocalizedString(@"alertview localconnection_Connected to your Almond locally.", @"Connected to your Almond locally.");
+                subTitle1 = NSLocalizedString(@"alertview localconnection_Switch to Cloud Connection", @"Switch to Cloud Connection");
+                [self onConnection:Title subTitle:subTitle1 stmt:SFIAlmondConnectionMode_cloud];
+                break;
+            }
+            else{
+                Title = NSLocalizedString(@"alertview Local connection settings are missing.", @"Local connection settings are missing.");
+                subTitle1 = NSLocalizedString(@"alertview title Add Local Connection Settings", @"Add Local Connection Settings");
+                [self onConnection3:Title subTitle:subTitle1];
+                break;
+            }
+        };
+        case SFICloudStatusStateAway:
+        case SFICloudStatusStateAtHome:
+            return;
+        default:
+            return;
+    }
 }
 
 - (void)configureNetworkSettings:(enum SFIAlmondConnectionMode)mode {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     [toolkit setConnectionMode:mode forAlmond:self.toolkit.currentAlmond.almondplusMAC];
-    [self showHudWithTimeoutMsg:@"Connecting..." delay:2];
+    [self showHudWithTimeoutMsg:@"Connecting..." delay:1];
     [toolkit.devices removeAllObjects];
     [toolkit.clients removeAllObjects];
     [toolkit.scenesArray removeAllObjects];
@@ -843,23 +750,11 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
         case SFIAlmondConnectionStatus_connected: {
             state = (connectionMode == SFIAlmondConnectionMode_cloud) ? SFICloudStatusStateConnected : SFICloudStatusStateLocalConnection;
             [self.leftButton markState:state];
-            if(self.toolkit.mode_src==2){
-                [self changeColorOfNavigationItam:@"1224" andbannerImage:@"1225"];
-                [self getClientNotification];
-                [self getDeviceNotification];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.buttonHome setBackgroundColor:[UIColor colorFromHexString:@"#03a9f4"]];
-                    [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
-                    [self.dashboardTable reloadData];
-                });
-            }
-            else{
-                [self changeColorOfNavigationItam:@"head_away" andbannerImage:@"main"];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.buttonHomeAway setBackgroundColor:[UIColor colorFromHexString:@"#ff9800"] ];
-                    [self.buttonHome setBackgroundColor:[UIColor clearColor]];
-                    });
-            }
+            [self getDeviceClientNotification];
+            [self updateMode:self.toolkit.mode_src];
+            dispatch_async(dispatch_get_main_queue(), ^() {
+                [self.dashboardTable reloadData];
+            });
             break;
         };
         case SFIAlmondConnectionStatus_error: {
@@ -874,17 +769,17 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
         }
     }
 }
+
 -(void)changeColorOfNavigationItam:(NSString *)img1 andbannerImage:(NSString*)img2 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIImage *imgNav = [UIImage imageNamed:img1];
-        [self.navigationController.navigationBar setBackgroundImage:imgNav forBarMetrics:UIBarMetricsDefault];
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:img1] forBarMetrics:UIBarMetricsDefault];
         self.bannerImage.image = [UIImage imageNamed:img2];
         if (self.toolkit.mode_src ==2) {
-            [self.buttonHome setBackgroundColor:[UIColor colorFromHexString:@"#898C90"] ];
+            [self.buttonHome setBackgroundColor:[SFIColors lightGrayColor] ];
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
         }
         else{
-            [self.buttonHomeAway setBackgroundColor:[UIColor colorFromHexString:@"#898C90"] ];
+            [self.buttonHomeAway setBackgroundColor:[SFIColors lightGrayColor] ];
             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
         }
     });
@@ -893,7 +788,6 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
 - (NSAttributedString *)setMessageLabelText:(SFINotification *)notification sensorSupport:(SensorSupport*)sensorSupport {
     NSDictionary *attr;
     UIFont *bold_font = [UIFont securifiBoldFont];
-    //UIFont *normal_font = [UIFont securifiNormalFont];
     attr = @{
              NSFontAttributeName : bold_font,
              NSForegroundColorAttributeName : [UIColor blackColor],
@@ -901,9 +795,7 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
     if (notification == nil) {
         return [[NSAttributedString alloc] initWithString:@"" attributes:attr];
     }
-    
     NSString *deviceName = notification.deviceName;
-    
     if (notification.deviceType==SFIDeviceType_WIFIClient) {
         NSArray * properties = [notification.deviceName componentsSeparatedByString:@"|"];
         NSString *name = properties[3];
@@ -914,12 +806,10 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
             deviceName = name;
     }
     NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:deviceName attributes:attr];
-    
     attr = @{
              NSFontAttributeName : bold_font,
              NSForegroundColorAttributeName : [UIColor lightGrayColor],
              };
-    
     NSString *message;
     message = sensorSupport.notificationText;
     NSMutableAttributedString *mutableAttributedString = nil;
@@ -936,36 +826,29 @@ _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@s
         return  mutableAttributedString;
     }
 }
+
 - (NSAttributedString *)setDateLabelText:(SFINotification *)notification {
-    
     NSDateFormatter *formatter = [NSDateFormatter new];
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:notification.time];
     NSDictionary *attr;
     NSString *str;
-    
     attr = @{
              NSFontAttributeName : [UIFont securifiBoldFontLarge],
              NSForegroundColorAttributeName : [UIColor grayColor],
              };
-    
     if (notification == nil)
         return [[NSAttributedString alloc] initWithString:@"" attributes:attr];
-
     formatter.dateFormat = @"dd/MM - hh:mm";
     str = [formatter stringFromDate:date];
     NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:str attributes:attr];
-    
     attr = @{
              NSFontAttributeName : [UIFont securifiBoldFontLarge],
              NSForegroundColorAttributeName : [UIColor lightGrayColor],
-             };
-    
+            };
     formatter.dateFormat = @"a";
     str = [formatter stringFromDate:date];
-    
     NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:str attributes:attr];
     NSMutableAttributedString *container = [NSMutableAttributedString new];
-    
     [container appendAttributedString:nameStr];
     [container appendAttributedString:eventStr];
     return container;

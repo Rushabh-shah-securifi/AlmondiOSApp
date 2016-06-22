@@ -114,6 +114,18 @@
     return [UIColor colorFromHexString:@"dadadc"];
 }
 
++ (UIColor *)lightBlueColor{
+    return [UIColor colorFromHexString:@"03a9f4"];
+}
+
++ (UIColor *)lightOrangeDashColor{
+    return [UIColor colorFromHexString:@"ff9800"];
+}
+
++ (UIColor *)lightGrayColor{
+    return [UIColor colorFromHexString:@"898C90"];
+}
+
 + (UIColor *)disableGreenColor{
     return [UIColor colorWithRed:168/255.0f green:218/255.0f blue:170/255.0f alpha:1];
 }

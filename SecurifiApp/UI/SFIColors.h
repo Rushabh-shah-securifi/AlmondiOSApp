@@ -52,6 +52,12 @@
 
 + (UIColor *)test1GrayColor;
 
++ (UIColor *)lightBlueColor;
+
++ (UIColor *)lightOrangeDashColor;
+
++ (UIColor *)lightGrayColor;
+
 - (instancetype)initWithHue:(int)hue saturation:(int)saturation brightness:(int)brightness colorName:(NSString *)colorName;
 
 // Returns a UIColor whose brightness is computed as an incrementally gradation on the position index.
