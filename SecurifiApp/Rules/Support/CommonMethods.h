@@ -21,4 +21,6 @@
 + (NSString *)getColorHex:(NSString*)value;
 
 + (UIImage *)imageNamed:(NSString *)name withColor:(UIColor *)color;
+
++(UIImage *)MultiplyImageByConstantColor:(UIImage*)image andColor:(UIColor *)color;
 @end

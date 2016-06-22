@@ -68,6 +68,8 @@
     
     [self.navigationItem setTitle:@"Dashboard"];
     [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
+    [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
     
     _leftButton = [[SFICloudStatusBarButtonItem alloc] initWithTarget:self action:@selector(onConnectionStatusButtonPressed:) enableLocalNetworking:YES];
     self.leftButton.isDashBoard = YES;
@@ -102,11 +104,12 @@
             _labelHomeAway.hidden = YES;
             _labelHome.hidden = NO;
             self.navigationImg.image = [UIImage imageNamed:@"1224"];
+//            self.navigationImg.image = [CommonMethods MultiplyImageByConstantColor:[UIImage imageNamed:@"1224"] andColor:[UIColor whiteColor]];
             self.bannerImage.image = [UIImage imageNamed:@"1225"];
             [self.buttonHome setBackgroundColor:[SFIColors lightBlueColor]];
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
-            [self.buttonHome setImage:[UIImage imageNamed:@"home_icon1"] forState:UIControlStateNormal];
-            [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
+            [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
+            [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
         });
     }
     else{
@@ -117,8 +120,8 @@
             self.bannerImage.image = [UIImage imageNamed:@"main"];
             [self.buttonHomeAway setBackgroundColor:[SFIColors lightOrangeDashColor]];
             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
-            [self.buttonHomeAway setImage:[UIImage imageNamed:@"homeaway_icon1"] forState:UIControlStateNormal];
-            [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
+            [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1_white" withColor:[UIColor clearColor]] forState:UIControlStateNormal];
+            [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
         });
     }
 }
@@ -144,8 +147,8 @@
             _labelAlmond.text = @"AddAlmond";
             _labelHomeAway.hidden = YES;
             _labelHome.hidden = YES;
-            [self.buttonHomeAway setImage:[UIImage imageNamed:@"homeaway_icon1"] forState:UIControlStateNormal];
-            [self.buttonHome setImage:[UIImage imageNamed:@"home_icon1"] forState:UIControlStateNormal];
+            [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
+            [self.buttonHome setImage:[CommonMethods imageNamed:@"home_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
             [self.buttonHome setBackgroundColor:[UIColor clearColor]];
             [self.buttonHomeAway setBackgroundColor:[UIColor clearColor]];
             _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%d ",0 ];
@@ -498,14 +501,12 @@
     if (indexPath.section == 0 && self.deviceNotificationArr.count > indexPath.row) {
         SFINotification *notification = [self.deviceNotificationArr objectAtIndex:indexPath.row];
         [sensorSupport resolveNotification:notification.deviceType index:notification.valueType value:notification.value];
-        if ([notification.deviceName isEqualToString:@"nil"]) {
-            cell.imageView.image = [CommonMethods imageNamed:@"default_device" withColor:[SFIColors ruleBlueColor]];
-            cell.textLabel.text = @"No notifications";
-        }else{
-            cell.textLabel.attributedText = [self setMessageLabelText:notification sensorSupport:sensorSupport];
-            cell.imageView.image = [CommonMethods imageNamed:sensorSupport.valueSupport.iconName withColor:[SFIColors ruleBlueColor]];
-            cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
-        }
+        cell.textLabel.attributedText = [self setMessageLabelText:notification sensorSupport:sensorSupport];
+        NSString *iconName = @"default_device";
+        if(sensorSupport.valueSupport != nil)
+            iconName = sensorSupport.valueSupport.iconName;
+        cell.imageView.image = [CommonMethods imageNamed:iconName withColor:[SFIColors ruleBlueColor]];
+        cell.detailTextLabel.attributedText = [self setDateLabelText:notification];
     }
     else if(indexPath.section == 1 && self.clientNotificationArr.count > indexPath.row){
         SFINotification *notification = [self.clientNotificationArr objectAtIndex:indexPath.row];
@@ -807,7 +808,7 @@
 
 -(void)changeColorOfNavigationItam:(NSString *)img1 andbannerImage:(NSString*)img2 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:img1] forBarMetrics:UIBarMetricsDefault];
+        self.navigationImg.image = [UIImage imageNamed:img1];
         self.bannerImage.image = [UIImage imageNamed:img2];
         if (self.toolkit.mode_src ==2) {
             [self.buttonHome setBackgroundColor:[SFIColors lightGrayColor] ];
@@ -834,10 +835,13 @@
     if (notification.deviceType==SFIDeviceType_WIFIClient) {
         NSArray * properties = [notification.deviceName componentsSeparatedByString:@"|"];
         NSString *name = properties[3];
+        NSLog(@" name notification Name == %@",name);
         if([name rangeOfString:@"An unknown device" options:NSCaseInsensitiveSearch].location != NSNotFound){
             NSArray *nameArr = [name componentsSeparatedByString:@"An unknown device"];
             deviceName = nameArr[1];
         }else
+            deviceName = name;
+        if(deviceName ==Nil)
             deviceName = name;
     }
     NSAttributedString *nameStr = [[NSAttributedString alloc] initWithString:deviceName attributes:attr];

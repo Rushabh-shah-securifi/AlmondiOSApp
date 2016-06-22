@@ -129,5 +129,40 @@
     //return the color-burned image
     return coloredImg;
 }
++(UIImage *)MultiplyImageByConstantColor:(UIImage*)image andColor:(UIColor *)color {
+    
+    CGSize backgroundSize = image.size;
+    UIGraphicsBeginImageContext(backgroundSize);
+    
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    
+    CGRect backgroundRect;
+    backgroundRect.size = backgroundSize;
+    backgroundRect.origin.x = 0;
+    backgroundRect.origin.y = 0;
+    
+    CGFloat r,g,b,a;
+    [color getRed:&r green:&g blue:&b alpha:&a];
+    CGContextSetRGBFillColor(ctx, r, g, b, a);
+    CGContextFillRect(ctx, backgroundRect);
+    
+    CGRect imageRect;
+    imageRect.size = image.size;
+    imageRect.origin.x = (backgroundSize.width - image.size.width)/2;
+    imageRect.origin.y = (backgroundSize.height - image.size.height)/2;
+    
+    // Unflip the image
+    CGContextTranslateCTM(ctx, 0, backgroundSize.height);
+    CGContextScaleCTM(ctx, 1.0, -1.0);
+    
+    CGContextSetBlendMode(ctx, kCGBlendModeMultiply);
+    CGContextDrawImage(ctx, imageRect, image.CGImage);
+    
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
 
 @end
