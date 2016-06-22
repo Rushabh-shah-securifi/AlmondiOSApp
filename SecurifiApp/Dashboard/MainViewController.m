@@ -472,10 +472,19 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return (section ==0)?self.deviceNotificationArr.count:self.clientNotificationArr.count;
+    int deviceRowCount = [self isSensorNotificationEmpty]? 1: self.deviceNotificationArr.count;
+    int clientRowCount = [self isClientNotificationEmpty]? 1: self.clientNotificationArr.count;
+    
+    return (section ==0)? deviceRowCount: clientRowCount;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if(indexPath.section == 0 && [self isSensorNotificationEmpty]){
+        return [self createEmptyCell:tableView isSensor:YES];
+    }else if(indexPath.section == 1 && [self isClientNotificationEmpty]){
+        return [self createEmptyCell:tableView isSensor:NO];
+    }
+    
     SensorSupport *sensorSupport = [SensorSupport new];
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -523,7 +532,7 @@
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 25)];
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, tableView.frame.size.width, 18)];
-    [label setFont:[UIFont boldSystemFontOfSize:12]];
+    [label setFont:[UIFont boldSystemFontOfSize:14]];
     if (section >0) {
         UITableViewHeaderFooterView *foot = (UITableViewHeaderFooterView *)view;
         CGRect sepFrame = CGRectMake(0, 0, 415, 1);
@@ -544,6 +553,28 @@
     label.textColor = [UIColor grayColor];
     [view addSubview:label];
     return view;
+}
+
+-(UITableViewCell*)createEmptyCell:(UITableView *)tableView isSensor:(BOOL)isSensor{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"Cell" ];
+    }
+    cell.imageView.image = [UIImage imageNamed:@"default_device"];
+    cell.textLabel.font = [UIFont systemFontOfSize:12];
+    cell.textLabel.text = isSensor? @"No Recent SmartHome Activity": @"No Recent Network Activity";
+    cell.detailTextLabel.text = @"";
+    
+    
+    return cell;
+}
+
+-(BOOL)isSensorNotificationEmpty{
+    return self.deviceNotificationArr.count == 0;
+}
+
+-(BOOL)isClientNotificationEmpty{
+    return self.clientNotificationArr.count == 0;
 }
 
 #pragma onConnectionStatus

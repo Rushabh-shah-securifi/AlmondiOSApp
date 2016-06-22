@@ -137,7 +137,7 @@
                             <scrollView autoresizesSubviews="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afY-Gl-ZDn">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="EA113B8A-EF45-44F7-8B34-7F79C8F5C3C7" translatesAutoresizingMaskIntoConstraints="NO" id="Jow-Db-Und">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="7CC047BC-BA31-43BA-AC0E-B7F4F95B6300" translatesAutoresizingMaskIntoConstraints="NO" id="Jow-Db-Und">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="128"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="128" id="qhX-Px-5jR"/>
@@ -390,7 +390,7 @@
                                             <constraint firstItem="0Bt-RZ-zWg" firstAttribute="top" secondItem="WYV-NT-HnS" secondAttribute="top" constant="1" id="zCt-pZ-S4k"/>
                                         </constraints>
                                     </view>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="dashboardTable" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BSm-N8-ckF">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="dashboardTable" alwaysBounceVertical="YES" scrollEnabled="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="BSm-N8-ckF">
                                         <rect key="frame" x="0.0" y="310" width="375" height="273"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -450,7 +450,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="EA113B8A-EF45-44F7-8B34-7F79C8F5C3C7" width="414" height="165">
+        <image name="7CC047BC-BA31-43BA-AC0E-B7F4F95B6300" width="414" height="165">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGQkNYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QDwcI
 ERYbHCUmJygwMzY8P1UkbnVsbNQJCgsMDQ4PEFYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVwc1dOU0Nv
