@@ -2579,7 +2579,7 @@
                 s1.matchData = @"0";
                 s1.iconName = @"swingon_icon";
                 s1.displayText=@"SWING ON";
-                s1.notificationText = @" AC set to ON";
+                s1.notificationText = @" AC SWING is set to ON";
 //                s1.valueFormatter.action = ValueFormatterAction_formatString;
 //                s1.valueFormatter.notificationPrefix = @" AC is set to ";
                 
@@ -2587,7 +2587,7 @@
                 s2.matchData = @"1";
                 s2.iconName = @"swingoff_icon";
                 s2.displayText = @"SWING OFF";
-                s2.notificationText = @" AC is set to OFF";
+                s2.notificationText = @" AC SWING is set to OFF";
 //                s2.valueFormatter.action = ValueFormatterAction_formatString;
 //                s2.valueFormatter.notificationPrefix = @" AC is set to ";
                 
