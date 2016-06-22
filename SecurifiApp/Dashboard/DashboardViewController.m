@@ -353,7 +353,7 @@
     viewC = [UIAlertController alertControllerWithTitle:@"Select Almond" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     UILabel * appearanceLabel = [UILabel appearanceWhenContainedIn:UIAlertController.class, nil];
-    [appearanceLabel setAppearanceFont:[UIFont securifiLightFont:14]];
+    [appearanceLabel setAppearanceFont:[UIFont securifiLightFont:16]];
     
     for(SFIAlmondPlus *name in almondList){
         if ([name.almondplusName isEqualToString:_labelAlmond.text]) {
