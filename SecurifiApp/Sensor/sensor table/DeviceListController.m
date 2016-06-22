@@ -256,7 +256,8 @@ int mii;
         headerVal = [NSString stringWithFormat:@"(%ld)",(long int)self.toolkit.devices.count];
     }
     else{
-        headerVal = [NSString stringWithFormat:@"(%ld)",(long int)self.toolkit.clients.count];
+        //headerVal = [NSString stringWithFormat:@"(%ld )",(long int)self.toolkit.clients.count];
+         headerVal = [NSString stringWithFormat:@"(%d Active)",[Client activeClientCount]];
         header = @"Network Devices ";
     }
     

@@ -80,7 +80,8 @@
 
 - (UIImage *)iconForNotificationCount:(NSUInteger)count {
     if (count == 0) {
-        return [UIImage imageNamed:self.isDashBoard?@"notification_home":@"bell_empty"];
+        //self.isDashBoard?@"notification_home":
+        return [UIImage imageNamed:@"bell_empty"];
     }
     else {
         return [UIImage imageNamed:self.isDashBoard?@"bell_icon_White":@"bell_icon_tilted"];
