@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -12,9 +11,9 @@
             <string>AvenirLTStd-Heavy</string>
             <string>AvenirLTStd-Heavy</string>
             <string>AvenirLTStd-Heavy</string>
-            <string>AvenirLTStd-Heavy</string>
         </mutableArray>
         <mutableArray key="AvenirLTStd-Light.otf">
+            <string>AvenirLTStd-Light</string>
             <string>AvenirLTStd-Light</string>
             <string>AvenirLTStd-Light</string>
             <string>AvenirLTStd-Light</string>
@@ -146,21 +145,25 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cy3-qg-eGW" userLabel="ModeDetailedView">
                                         <rect key="frame" x="92" y="24" width="194" height="166"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add-Almond" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bwj-sc-rU0">
-                                                <rect key="frame" x="22" y="8" width="123" height="21"/>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xkz-Xh-1r6">
+                                                <rect key="frame" x="22" y="7" width="150" height="21"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="123" id="At2-A5-pfl"/>
-                                                    <constraint firstAttribute="height" constant="21" id="zEX-G4-7KG"/>
+                                                    <constraint firstAttribute="height" constant="21" id="W49-i3-EGV"/>
+                                                    <constraint firstAttribute="width" constant="150" id="kuY-k5-OGg"/>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="tOZ-ap-uoe"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="18"/>
-                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            </label>
+                                                <fontDescription key="fontDescription" name="AvenirLTStd-Light" family="Avenir LT Std" pointSize="18"/>
+                                                <state key="normal" title="Add Almond">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="AlmondSelection:" destination="R9I-V5-k50" eventType="touchUpInside" id="1Uu-d2-d3P"/>
+                                                </connections>
+                                            </button>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MASTER" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GMh-sX-mwO">
                                                 <rect key="frame" x="36" y="30" width="123" height="21"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="BYh-ye-H7y"/>
-                                                    <constraint firstAttribute="width" constant="123" id="w5h-Bi-0Bt"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name="AvenirLTStd-Heavy" family="Avenir LT Std" pointSize="14"/>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -249,28 +252,17 @@
                                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wiD-GB-ivw">
-                                                <rect key="frame" x="139" y="2" width="33" height="33"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="33" id="bwR-1k-FlB"/>
-                                                    <constraint firstAttribute="height" constant="33" id="hhE-6K-lrw"/>
-                                                </constraints>
-                                                <state key="normal" image="arrow_drop_down_black"/>
-                                                <connections>
-                                                    <action selector="AlmondSelection:" destination="R9I-V5-k50" eventType="touchUpInside" id="Uuw-vU-uOh"/>
-                                                </connections>
-                                            </button>
                                         </subviews>
                                         <constraints>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="166" id="15B-0d-LT0"/>
-                                            <constraint firstItem="bwj-sc-rU0" firstAttribute="centerX" secondItem="Cy3-qg-eGW" secondAttribute="centerX" constant="-13.5" id="3s8-4E-9bj"/>
-                                            <constraint firstItem="bwj-sc-rU0" firstAttribute="width" secondItem="Cy3-qg-eGW" secondAttribute="height" multiplier="123:166" id="7fj-gP-nsN"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="194" id="87z-2p-A6p"/>
+                                            <constraint firstItem="Xkz-Xh-1r6" firstAttribute="leading" secondItem="Cy3-qg-eGW" secondAttribute="leading" constant="22" id="Arx-yN-Pls"/>
+                                            <constraint firstItem="wmQ-Wm-9ba" firstAttribute="top" secondItem="QzF-MZ-zZN" secondAttribute="bottom" constant="8" symbolic="YES" id="Cbz-pw-tgm"/>
                                             <constraint firstAttribute="trailing" secondItem="QzF-MZ-zZN" secondAttribute="trailing" constant="22" id="D8F-pi-dfE"/>
-                                            <constraint firstItem="wiD-GB-ivw" firstAttribute="leading" secondItem="bwj-sc-rU0" secondAttribute="trailing" constant="-6" id="DBL-jE-M3L"/>
+                                            <constraint firstItem="GMh-sX-mwO" firstAttribute="top" secondItem="Xkz-Xh-1r6" secondAttribute="bottom" constant="2" id="G8z-Qj-xM1"/>
                                             <constraint firstItem="wmQ-Wm-9ba" firstAttribute="top" secondItem="3CK-OQ-lob" secondAttribute="bottom" constant="15" id="J8O-Mo-lit"/>
-                                            <constraint firstItem="GMh-sX-mwO" firstAttribute="leading" secondItem="bwj-sc-rU0" secondAttribute="leading" constant="14" id="NcO-ci-hlP"/>
-                                            <constraint firstItem="GMh-sX-mwO" firstAttribute="top" secondItem="bwj-sc-rU0" secondAttribute="bottom" constant="1" id="QJZ-iQ-JeZ"/>
+                                            <constraint firstItem="GMh-sX-mwO" firstAttribute="centerX" secondItem="QzF-MZ-zZN" secondAttribute="centerX" id="Jap-aY-zIV"/>
+                                            <constraint firstItem="Xkz-Xh-1r6" firstAttribute="leading" secondItem="Cy3-qg-eGW" secondAttribute="leading" constant="22" id="Qj3-zo-29F"/>
                                             <constraint firstItem="wMA-qN-Fdi" firstAttribute="leading" secondItem="wmQ-Wm-9ba" secondAttribute="trailing" constant="39" id="U88-Xj-WOz"/>
                                             <constraint firstAttribute="width" relation="lessThanOrEqual" constant="194" id="VFa-Gm-bTx"/>
                                             <constraint firstAttribute="bottom" secondItem="QzF-MZ-zZN" secondAttribute="bottom" constant="29" id="WGc-uN-Js5"/>
@@ -278,10 +270,10 @@
                                             <constraint firstItem="QzF-MZ-zZN" firstAttribute="top" secondItem="GMh-sX-mwO" secondAttribute="bottom" constant="2" id="YTE-bQ-ZqK"/>
                                             <constraint firstAttribute="height" constant="166" id="d4J-Ct-L7W"/>
                                             <constraint firstItem="wmQ-Wm-9ba" firstAttribute="leading" secondItem="Cy3-qg-eGW" secondAttribute="leading" constant="44" id="d5j-32-GiK"/>
-                                            <constraint firstItem="bwj-sc-rU0" firstAttribute="top" secondItem="Cy3-qg-eGW" secondAttribute="topMargin" id="hkV-Ak-AbW"/>
                                             <constraint firstItem="QzF-MZ-zZN" firstAttribute="leading" secondItem="Cy3-qg-eGW" secondAttribute="leading" constant="22" id="l3n-nJ-4y2"/>
                                             <constraint firstAttribute="width" constant="194" id="nv4-vv-ki2"/>
-                                            <constraint firstItem="wiD-GB-ivw" firstAttribute="top" secondItem="Cy3-qg-eGW" secondAttribute="top" constant="2" id="xDY-YL-1i9"/>
+                                            <constraint firstItem="GMh-sX-mwO" firstAttribute="height" secondItem="Xkz-Xh-1r6" secondAttribute="height" id="oqh-8Q-MzD"/>
+                                            <constraint firstItem="GMh-sX-mwO" firstAttribute="leading" secondItem="Cy3-qg-eGW" secondAttribute="leading" constant="36" id="psd-Ev-gxI"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WYV-NT-HnS">
@@ -431,12 +423,12 @@
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="AddAlmond" destination="Xkz-Xh-1r6" id="fHf-El-cgw"/>
                         <outlet property="Scroller" destination="afY-Gl-ZDn" id="6pH-Vv-zxb"/>
                         <outlet property="bannerImage" destination="Jow-Db-Und" id="maU-l1-qXr"/>
                         <outlet property="buttonHome" destination="3CK-OQ-lob" id="GP7-Ox-XuS"/>
                         <outlet property="buttonHomeAway" destination="aCO-CR-KQe" id="W0v-ed-ti7"/>
                         <outlet property="dashboardTable" destination="BSm-N8-ckF" id="RSA-sM-ADk"/>
-                        <outlet property="labelAlmond" destination="bwj-sc-rU0" id="kkS-5c-JlF"/>
                         <outlet property="labelAlmondStatus" destination="GMh-sX-mwO" id="Cid-wx-wFz"/>
                         <outlet property="labelHome" destination="wmQ-Wm-9ba" id="ccZ-5Q-uU9"/>
                         <outlet property="labelHomeAway" destination="wMA-qN-Fdi" id="AJN-uG-nwY"/>
@@ -453,7 +445,6 @@
     <resources>
         <image name="Main" width="28" height="56"/>
         <image name="MainBackground" width="500" height="166"/>
-        <image name="arrow_drop_down_black" width="64" height="64"/>
         <image name="home_icon1_white" width="42" height="42"/>
         <image name="homeaway_icon1_white" width="42" height="42"/>
     </resources>

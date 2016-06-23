@@ -51,9 +51,9 @@
     self.deviceNotificationArr = [[NSMutableArray alloc]init];
     [self navigationBarStyle];
     
-    _labelAlmond.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(AlmondSelection:)];
-    [_labelAlmond addGestureRecognizer:tapGesture];
+    //    _labelAlmond.userInteractionEnabled = YES;
+    //    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(AlmondSelection:)];
+    //    [_labelAlmond addGestureRecognizer:tapGesture];
     
     [self markNetworkStatusIcon];
     [self initializeNotification];
@@ -62,6 +62,13 @@
 
 #pragma mark Navigation UI
 -(void)navigationBarStyle{
+    
+    [self.AddAlmond setImage:[UIImage imageNamed:@"arrow_drop_down_black"] forState:UIControlStateNormal];
+    self.AddAlmond.transform = CGAffineTransformMakeScale(-1.0, 1.5);
+    self.AddAlmond.titleLabel.transform = CGAffineTransformMakeScale(-1.0, 1.0);
+    self.AddAlmond.imageView.transform = CGAffineTransformMakeScale(-0.5, 0.5);
+    
+    
     self.navigationImg = [[UIImageView alloc] initWithImage:[CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]]];
     self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
     
@@ -137,7 +144,8 @@
     if(self.toolkit.currentAlmond != nil)
     {
         dispatch_async(dispatch_get_main_queue(), ^() {
-            _labelAlmond.text = self.toolkit.currentAlmond.almondplusName ;
+            //_labelAlmond.text = self.toolkit.currentAlmond.almondplusName ;
+            [self.AddAlmond setTitle:self.toolkit.currentAlmond.almondplusName forState:UIControlStateNormal];
             _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.devices.count ];
             _networkConnectedDevices.text =[NSString stringWithFormat:@"%d ",[Client activeClientCount] ];
             _totalConnectedDevices.text = [NSString stringWithFormat: @"%lu", (unsigned long)(self.toolkit.devices.count + self.toolkit.clients.count)];
@@ -146,7 +154,8 @@
     else
     {
         dispatch_async(dispatch_get_main_queue(), ^() {
-            _labelAlmond.text = @"AddAlmond";
+            [self.AddAlmond setTitle:@"AddAlmond" forState:UIControlStateNormal];
+            //_labelAlmond.text = @"AddAlmond";
             _labelHomeAway.hidden = YES;
             _labelHome.hidden = YES;
             [self.buttonHomeAway setImage:[CommonMethods imageNamed:@"homeaway_icon1_white" withColor:[UIColor grayColor]] forState:UIControlStateNormal];
@@ -220,7 +229,7 @@
 }
 
 -(void)onDeviceListAndDynamicResponseParsed:(id)sender{
-        [self updateDeviceClientListCount];
+    [self updateDeviceClientListCount];
     dispatch_async(dispatch_get_main_queue(), ^() {
         [self.dashboardTable reloadData];
         [self.HUD hide:YES];
@@ -328,7 +337,7 @@
 }
 
 - (void)onAlmondModeDidChange:(id)sender {
-    NSLog(@"Almond mode is changing %d",self.toolkit.mode_src);
+    //    NSLog(@"Almond mode is changing %d",self.toolkit.mode_src);
     [self markNetworkStatusIcon];
     NSNotification *notifier = (NSNotification *) sender;
     NSDictionary *dataInfo = [notifier userInfo];
@@ -353,7 +362,7 @@
     viewC = [UIAlertController alertControllerWithTitle:@"Select Almond" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
     UILabel * appearanceLabel = [UILabel appearanceWhenContainedIn:UIAlertController.class, nil];
-    [appearanceLabel setAppearanceFont:[UIFont securifiLightFont:16]];
+    [appearanceLabel setAppearanceFont:[UIFont securifiLightFont:14]];
     
     for(SFIAlmondPlus *name in almondList){
         if ([name.almondplusName isEqualToString:_labelAlmond.text]) {
@@ -365,7 +374,8 @@
                                 handler:^(UIAlertAction * action){
                                     SFIAlmondPlus *currentAlmond = name;
                                     [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
-                                    _labelAlmond.text = name.almondplusName;
+                                    [self.AddAlmond setTitle:name.almondplusName forState:UIControlStateNormal];
+                                    //_labelAlmond.text = name.almondplusName;
                                     _labelAlmondStatus.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:14];
                                     _labelAlmond.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:18];
                                 }];
@@ -423,17 +433,17 @@
 }
 
 - (IBAction)homeMode:(id)sender {
-     if(self.toolkit.currentAlmond != nil){
+    if(self.toolkit.currentAlmond != nil){
         [self showHudWithTimeoutMsg:@"Setting Almond to home mode." delay:5];
         [_toolkit asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:SFIAlmondMode_home];
-     }
+    }
 }
 
 - (IBAction)homeawayMode:(id)sender {
-     if(self.toolkit.currentAlmond != nil){
+    if(self.toolkit.currentAlmond != nil){
         [self showHudWithTimeoutMsg:@"Setting Almond to away mode." delay:5];
         [_toolkit asyncRequestAlmondModeChange:self.toolkit.currentAlmond.almondplusMAC mode:SFIAlmondMode_away];
-     }
+    }
 }
 
 - (void)notificationAction:(id)sender {
@@ -452,7 +462,7 @@
 
 -(void )getDeviceClientNotification{
     [self.deviceNotificationArr removeAllObjects];
-     [self.clientNotificationArr removeAllObjects];
+    [self.clientNotificationArr removeAllObjects];
     if(self.toolkit.currentAlmond != nil){
         for(int j = 0; j<10;j++){// for 10 days
             for (int i =0; i<150; i++) {
@@ -611,20 +621,20 @@
     UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:@"Almond Connection" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     almondSelect.title = Title;
     UIAlertAction *Check1 = [UIAlertAction
-                            actionWithTitle:subTitle1
-                            style:UIAlertActionStyleDefault
-                            handler:^(UIAlertAction * action)
-                            {
-                                [self configureNetworkSettings:mode1];
-                            }];
+                             actionWithTitle:subTitle1
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [self configureNetworkSettings:mode1];
+                             }];
     [almondSelect addAction:Check1];
     UIAlertAction *Check2 = [UIAlertAction
-                            actionWithTitle:subTitle2
-                            style:UIAlertActionStyleDefault
-                            handler:^(UIAlertAction * action)
-                            {
-                                [self configureNetworkSettings:mode2];
-                            }];
+                             actionWithTitle:subTitle2
+                             style:UIAlertActionStyleDefault
+                             handler:^(UIAlertAction * action)
+                             {
+                                 [self configureNetworkSettings:mode2];
+                             }];
     [almondSelect addAction:Check2];
     [self presentViewController:almondSelect animated:YES completion:nil];
     UIAlertAction *Close = [UIAlertAction
@@ -769,7 +779,7 @@
 
 - (void)markNetworkStatusIcon {
     NSString *const almondMac = self.toolkit.currentAlmond.almondplusMAC;
-    NSLog(@"markNetworkStatusIcon");
+    //    NSLog(@"markNetworkStatusIcon");
     enum SFIAlmondConnectionMode connectionMode = [_toolkit connectionModeForAlmond:almondMac];
     enum SFIAlmondConnectionStatus status = [_toolkit connectionStatusForAlmond:almondMac];
     enum SFICloudStatusState state;
@@ -837,7 +847,7 @@
     if (notification.deviceType==SFIDeviceType_WIFIClient) {
         NSArray * properties = [notification.deviceName componentsSeparatedByString:@"|"];
         NSString *name = properties[3];
-        NSLog(@" name notification Name == %@",name);
+        //        NSLog(@" name notification Name == %@",name);
         if([name rangeOfString:@"An unknown device" options:NSCaseInsensitiveSearch].location != NSNotFound){
             NSArray *nameArr = [name componentsSeparatedByString:@"An unknown device"];
             deviceName = nameArr[1];
@@ -885,7 +895,7 @@
     attr = @{
              NSFontAttributeName : [UIFont securifiBoldFontLarge],
              NSForegroundColorAttributeName : [UIColor lightGrayColor],
-            };
+             };
     formatter.dateFormat = @"a";
     str = [formatter stringFromDate:date];
     NSAttributedString *eventStr = [[NSAttributedString alloc] initWithString:str attributes:attr];
