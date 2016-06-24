@@ -22,7 +22,9 @@
 #import "UILabel+ActionSheet.h"
 #import "UIFont+Securifi.h"
 
-@interface DashboardViewController ()<MBProgressHUDDelegate>
+@interface DashboardViewController ()<MBProgressHUDDelegate>{
+    UIButton *button, *button1;
+}
 
 @property(nonatomic) SFICloudStatusBarButtonItem *leftButton;
 @property (nonatomic) SFINotificationStatusBarButtonItem *notificationButton;
@@ -36,6 +38,7 @@
 @property(nonatomic, readonly) CircleLabel *countLabel;
 @property(nonatomic, readonly) UIButton *countButton;
 @property(nonatomic) UIImageView *navigationImg;
+@property(nonatomic) SFITableViewController * ref;
 
 @end
 
@@ -50,25 +53,35 @@
     self.clientNotificationArr = [[NSMutableArray alloc]init];
     self.deviceNotificationArr = [[NSMutableArray alloc]init];
     [self navigationBarStyle];
-    
-    //    _labelAlmond.userInteractionEnabled = YES;
-    //    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(AlmondSelection:)];
-    //    [_labelAlmond addGestureRecognizer:tapGesture];
+   
+    button = [[UIButton alloc]init];
+    button1 = [[UIButton alloc]init];
+    button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button addTarget:self action:@selector(AlmondSelection:) forControlEvents:UIControlEventTouchUpInside];
+    button1 = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button1 addTarget:self action:@selector(AlmondSelection:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
+    [self.view addSubview:button1];
+    [self SelectAlmond:@"AddAlmond"];
     
     [self markNetworkStatusIcon];
     [self initializeNotification];
     [self initializeHUD];
 }
 
+-(void)SelectAlmond : (NSString *)title{
+    CGFloat strikeWidth;
+    CGSize textSize;
+    textSize = [title sizeWithAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"AvenirLTStd-Medium" size:18]}];
+    strikeWidth = textSize.width;
+    button.frame = CGRectMake(self.view.frame.size.width/2 - strikeWidth/2, 40.0,strikeWidth, 21.0);
+    button1.frame = CGRectMake(button.frame.origin.x+strikeWidth, button.frame.origin.y, 21.0, 21.0);
+    [button setTitle:title forState:UIControlStateNormal];
+    [button1 setBackgroundImage:[UIImage imageNamed:@"arrow_drop_down_black.pdf"] forState:UIControlStateNormal];
+}
+
 #pragma mark Navigation UI
 -(void)navigationBarStyle{
-    
-    [self.AddAlmond setImage:[UIImage imageNamed:@"arrow_drop_down_black"] forState:UIControlStateNormal];
-    self.AddAlmond.transform = CGAffineTransformMakeScale(-1.0, 1.5);
-    self.AddAlmond.titleLabel.transform = CGAffineTransformMakeScale(-1.0, 1.0);
-    self.AddAlmond.imageView.transform = CGAffineTransformMakeScale(-0.5, 0.5);
-    
-    
     self.navigationImg = [[UIImageView alloc] initWithImage:[CommonMethods imageNamed:@"NavigationBackground" withColor:[SFIColors lightOrangeDashColor]]];
     self.bannerImage.image = [CommonMethods imageNamed:@"MainBackground" withColor:[SFIColors lightOrangeDashColor]];
     
@@ -145,6 +158,7 @@
     {
         dispatch_async(dispatch_get_main_queue(), ^() {
             //_labelAlmond.text = self.toolkit.currentAlmond.almondplusName ;
+            [self SelectAlmond:self.toolkit.currentAlmond.almondplusName];
             [self.AddAlmond setTitle:self.toolkit.currentAlmond.almondplusName forState:UIControlStateNormal];
             _smartHomeConnectedDevices.text = [NSString stringWithFormat:@"%lu ",(unsigned long)self.toolkit.devices.count ];
             _networkConnectedDevices.text =[NSString stringWithFormat:@"%d ",[Client activeClientCount] ];
@@ -154,6 +168,7 @@
     else
     {
         dispatch_async(dispatch_get_main_queue(), ^() {
+            [self SelectAlmond:@"AddAlmond"];
             [self.AddAlmond setTitle:@"AddAlmond" forState:UIControlStateNormal];
             //_labelAlmond.text = @"AddAlmond";
             _labelHomeAway.hidden = YES;
@@ -374,6 +389,7 @@
                                 handler:^(UIAlertAction * action){
                                     SFIAlmondPlus *currentAlmond = name;
                                     [[SecurifiToolkit sharedInstance] setCurrentAlmond:currentAlmond];
+                                    [self SelectAlmond:name.almondplusName];
                                     [self.AddAlmond setTitle:name.almondplusName forState:UIControlStateNormal];
                                     //_labelAlmond.text = name.almondplusName;
                                     _labelAlmondStatus.font = [UIFont fontWithName:@"AvenirLTStd-Heavy" size:14];
@@ -648,6 +664,7 @@
 }
 
 -(void)onConnection3:(NSString *)Title subTitle:(NSString *)subTitle{
+    self.ref = [[SFITableViewController alloc]init];
     UIAlertController *almondSelect = [UIAlertController alertControllerWithTitle:@"Almond Connection" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     almondSelect.title = Title;
     UIAlertAction *Check = [UIAlertAction
@@ -655,7 +672,7 @@
                             style:UIAlertActionStyleDefault
                             handler:^(UIAlertAction * action)
                             {
-                                [self presentLocalNetworkSettingsEditor];
+                                [self.ref presentLocalNetworkSettingsEditor];
                             }];
     [almondSelect addAction:Check];
     [self presentViewController:almondSelect animated:YES completion:nil];
@@ -762,20 +779,21 @@
     [toolkit.ruleList removeAllObjects];
 }
 
-- (void)presentLocalNetworkSettingsEditor {
-    NSString *mac = self.toolkit.currentAlmond.almondplusMAC;
-    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
-    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:mac];
-    if (!settings) {
-        settings = [SFIAlmondLocalNetworkSettings new];
-        settings.almondplusMAC = mac;
-    }
-    RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
-    editor.settings = settings;
-    editor.enableUnlinkActionButton = ![toolkit almondExists:mac]; // only allowed to unlink local almonds that are not affiliated with the cloud
-    UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
-    [self presentViewController:ctrl animated:YES completion:nil];
-}
+
+//- (void)presentLocalNetworkSettingsEditor {
+//    NSString *mac = self.toolkit.currentAlmond.almondplusMAC;
+//    SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
+//    SFIAlmondLocalNetworkSettings *settings = [toolkit localNetworkSettingsForAlmond:mac];
+//    if (!settings) {
+//        settings = [SFIAlmondLocalNetworkSettings new];
+//        settings.almondplusMAC = mac;
+//    }
+//    RouterNetworkSettingsEditor *editor = [RouterNetworkSettingsEditor new];
+//    editor.settings = settings;
+//    editor.enableUnlinkActionButton = ![toolkit almondExists:mac]; // only allowed to unlink local almonds that are not affiliated with the cloud
+//    UINavigationController *ctrl = [[UINavigationController alloc] initWithRootViewController:editor];
+//    [self presentViewController:ctrl animated:YES completion:nil];
+//}
 
 - (void)markNetworkStatusIcon {
     NSString *const almondMac = self.toolkit.currentAlmond.almondplusMAC;

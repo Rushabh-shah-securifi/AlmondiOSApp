@@ -243,13 +243,13 @@
     CGFloat width = CGRectGetWidth(self.frame);
     CGRect frame = CGRectMake(width - 40, 37, 23, 23);
 
-    UIImage *image = [UIImage imageNamed:@"icon_config"];
+   // UIImage *image = [UIImage imageNamed:@"icon_config"];
 
     UIButton *settingsButton = [UIButton buttonWithType:UIButtonTypeCustom];
     settingsButton.frame = frame;
     settingsButton.backgroundColor = [UIColor clearColor];
     [settingsButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
-    [settingsButton setImage:image forState:UIControlStateNormal];
+    [settingsButton setImage:[UIImage imageNamed:@"icon_config"] forState:UIControlStateNormal];
 
     self.settingsButton = settingsButton;
     [self setEditIconEditing:editing];

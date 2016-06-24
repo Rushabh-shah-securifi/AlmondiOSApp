@@ -65,6 +65,8 @@ static const int logsHeight = 100;
 @property(nonatomic) BOOL isSimulator;
 @property(nonatomic) BOOL local;
 
+@property(nonatomic) BOOL isBUG;
+
 @end
 
 @implementation SFIRouterTableViewController
@@ -100,6 +102,8 @@ int mii;
     
     [self initializeNotifications];
     self.routerSummary = nil;
+    
+    self.isBUG = NO;
     [self initializeAlmondData];
     self.local = [toolkit useLocalNetwork:toolkit.currentAlmond.almondplusMAC];
     dispatch_async(dispatch_get_main_queue(), ^() {
@@ -585,6 +589,7 @@ int mii;
 }
 
 - (void)onEditWirelessSettingsCard:(id)sender {
+    self.isBUG = YES;
     [self showHudWithTimeout:NSLocalizedString(@"mainviewcontroller hud Loading router data", @"Loading router data")];
     [RouterPayload getWirelessSettings:mii isSimulator:_isSimulator mac:self.almondMac];
 }
@@ -685,7 +690,7 @@ int mii;
 //                    [self.routerSummary updateWirelessSummaryWithSettings:settings];
 //                }
                 
-                if (self.navigationController.topViewController == self) {
+                if (self.navigationController.topViewController == self  && self.isBUG) {
                     //NSLog(@"cloud settings: %@", settings);
                     SFIRouterSettingsTableViewController *ctrl = [SFIRouterSettingsTableViewController new];
                     ctrl.title = self.navigationItem.title;
