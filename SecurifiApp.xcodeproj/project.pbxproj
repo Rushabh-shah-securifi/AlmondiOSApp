@@ -437,7 +437,6 @@
 		CE57E5321D1BBCC400493460 /* HistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE57E5301D1BBCC400493460 /* HistoryCell.xib */; };
 		CE57E5371D1BE02900493460 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57E5351D1BE02900493460 /* HistoryCell.m */; };
 		CE57E53E1D1BE50C00493460 /* BrowsingHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57E53D1D1BE50C00493460 /* BrowsingHistoryViewController.m */; };
-		CE57E5401D1BFE2E00493460 /* favicon.ico in Resources */ = {isa = PBXBuildFile; fileRef = CE57E53F1D1BFE2E00493460 /* favicon.ico */; };
 		CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58276B1D10127400843B4C /* WeatherRuleButton.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
 		CE65C4911D1A67B200C2E1C0 /* UILabel+ActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = CE65C4901D1A67B200C2E1C0 /* UILabel+ActionSheet.m */; };
@@ -963,7 +962,6 @@
 		CE57E5351D1BE02900493460 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
 		CE57E53C1D1BE50C00493460 /* BrowsingHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistoryViewController.h; sourceTree = "<group>"; };
 		CE57E53D1D1BE50C00493460 /* BrowsingHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistoryViewController.m; sourceTree = "<group>"; };
-		CE57E53F1D1BFE2E00493460 /* favicon.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = favicon.ico; sourceTree = "<group>"; };
 		CE58276A1D10127400843B4C /* WeatherRuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherRuleButton.h; sourceTree = "<group>"; };
 		CE58276B1D10127400843B4C /* WeatherRuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherRuleButton.m; sourceTree = "<group>"; };
 		CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPickerIndicatorView1.h; sourceTree = "<group>"; };
@@ -1939,7 +1937,6 @@
 				CE57E5301D1BBCC400493460 /* HistoryCell.xib */,
 				CE57E53C1D1BE50C00493460 /* BrowsingHistoryViewController.h */,
 				CE57E53D1D1BE50C00493460 /* BrowsingHistoryViewController.m */,
-				CE57E53F1D1BFE2E00493460 /* favicon.ico */,
 			);
 			name = SiteMap;
 			sourceTree = "<group>";
@@ -2399,7 +2396,6 @@
 				2A4C243F1D0FC450001191E8 /* MainDashboard.storyboard in Resources */,
 				A58DB32D1BB16EAF00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB3101BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
-				CE57E5401D1BFE2E00493460 /* favicon.ico in Resources */,
 				A58DB4551BB3CD3F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				CEEC422E1C98560D00A2C35D /* DeviceHeaderView.xib in Resources */,
 				A58DB30B1BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
