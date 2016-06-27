@@ -16,7 +16,7 @@
 
 + (void)clearTopScroll:(UIScrollView *)top middleScroll:(UIScrollView*)middle bottomScroll:(UIScrollView*)bottom;
 
-+ (NSMutableAttributedString *)getAttributeString:(NSString *)header fontSize:(int)fontsize;
++ (NSMutableAttributedString *)getAttributeString:(NSString *)header fontSize:(int)fontsize LightFont:(BOOL)lightFontneed;
 
 + (NSString *)getColorHex:(NSString*)value;
 

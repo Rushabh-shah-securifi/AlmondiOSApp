@@ -261,8 +261,8 @@ int mii;
         header = @"Network Devices ";
     }
     
-    NSMutableAttributedString *aAttrString = [CommonMethods getAttributeString:header fontSize:HEADER_FONT_SIZE];
-    NSMutableAttributedString *vAttrString = [CommonMethods getAttributeString:headerVal fontSize:COUNT_FONT_SIZE];
+    NSMutableAttributedString *aAttrString = [CommonMethods getAttributeString:header fontSize:HEADER_FONT_SIZE LightFont:NO];
+    NSMutableAttributedString *vAttrString = [CommonMethods getAttributeString:headerVal fontSize:COUNT_FONT_SIZE LightFont:NO];
     [aAttrString appendAttributedString:vAttrString];
     static NSString *headerView = @"customHeader";
     UITableViewHeaderFooterView *vHeader;

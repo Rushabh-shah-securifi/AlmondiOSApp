@@ -79,8 +79,8 @@
     }
 }
 
-+ (NSMutableAttributedString *)getAttributeString:(NSString *)header fontSize:(int)fontsize{
-    UIFont *lightFont = [UIFont securifiBoldFont:fontsize];
++ (NSMutableAttributedString *)getAttributeString:(NSString *)header fontSize:(int)fontsize LightFont:(BOOL)lightFontneed{
+    UIFont *lightFont = lightFontneed?[UIFont securifiLightFont:fontsize]:[UIFont securifiBoldFont:fontsize];
     NSDictionary *arialDict = [NSDictionary dictionaryWithObject: lightFont forKey:NSFontAttributeName];
     NSMutableAttributedString *aAttrString = [[NSMutableAttributedString alloc] initWithString:header attributes: arialDict];
     return aAttrString;

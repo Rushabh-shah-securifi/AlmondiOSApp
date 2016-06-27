@@ -20,6 +20,7 @@
 #import "SFINotificationsViewController.h"
 #import "MBProgressHUD.h"
 #import "GenericIndexUtil.h"
+#import "BrowsingHistoryViewController.h"
 
 
 #define CELLFRAME CGRectMake(8, 8, self.view.frame.size.width -16, 70)
@@ -129,6 +130,7 @@ int randomMobileInternalIndex;
     if (cell == nil) {
         cell = [[ClientPropertiesCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"SKSTableViewCell"];
     }
+    
     GenericIndexValue *genericIndexValue = [self.genericParams.indexValueList objectAtIndex:indexPath.row];
     cell.displayLabel.text = genericIndexValue.genericIndex.groupLabel;
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
@@ -157,12 +159,22 @@ int randomMobileInternalIndex;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
     NSLog(@"didSelectRowAtIndexPath");
-    DeviceEditViewController *ctrl = [self.storyboard instantiateViewControllerWithIdentifier:@"DeviceEditViewController"];
-    self.isInitialized = NO;
-    ctrl.genericParams = [[GenericParams alloc]initWithGenericIndexValue:self.genericParams.headerGenericIndexValue
-                                                          indexValueList:[NSArray arrayWithObject:[self.genericParams.indexValueList objectAtIndex:indexPath.row]]
-                                                              deviceName:self.genericParams.deviceName color:self.genericParams.color isSensor:NO];
-    [self.navigationController pushViewController:ctrl animated:YES];
+    GenericIndexValue *gIval = [self.genericParams.indexValueList objectAtIndex:indexPath.row];
+    if([gIval.genericIndex.groupLabel isEqualToString:@"Browsing History"]){
+       UIStoryboard *storyboard=[UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:[NSBundle mainBundle]];
+            BrowsingHistoryViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
+        [self.navigationController pushViewController:ctrl animated:YES];
+        
+    }
+    else
+    {
+        DeviceEditViewController *ctrl = [self.storyboard instantiateViewControllerWithIdentifier:@"DeviceEditViewController"];
+        self.isInitialized = NO;
+        ctrl.genericParams = [[GenericParams alloc]initWithGenericIndexValue:self.genericParams.headerGenericIndexValue
+                                                              indexValueList:[NSArray arrayWithObject:[self.genericParams.indexValueList objectAtIndex:indexPath.row]]
+                                                                  deviceName:self.genericParams.deviceName color:self.genericParams.color isSensor:NO];
+        [self.navigationController pushViewController:ctrl animated:YES];
+    }
 }
 
 #pragma mark common cell delegate

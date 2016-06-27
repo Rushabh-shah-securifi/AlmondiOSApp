@@ -433,6 +433,11 @@
 		CE08B3CC1C9A87C900ABAF6B /* DeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */; };
 		CE20BF3B1CB6331A002737F4 /* PerformanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CE20BF3A1CB6331A002737F4 /* PerformanceTest.m */; };
 		CE4DB3F61CEF340F00CBD6DE /* TriDimBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */; };
+		CE57E52F1D1BB82800493460 /* SiteMapStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE57E52D1D1BB82800493460 /* SiteMapStoryBoard.storyboard */; };
+		CE57E5321D1BBCC400493460 /* HistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE57E5301D1BBCC400493460 /* HistoryCell.xib */; };
+		CE57E5371D1BE02900493460 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57E5351D1BE02900493460 /* HistoryCell.m */; };
+		CE57E53E1D1BE50C00493460 /* BrowsingHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57E53D1D1BE50C00493460 /* BrowsingHistoryViewController.m */; };
+		CE57E5401D1BFE2E00493460 /* favicon.ico in Resources */ = {isa = PBXBuildFile; fileRef = CE57E53F1D1BFE2E00493460 /* favicon.ico */; };
 		CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58276B1D10127400843B4C /* WeatherRuleButton.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
 		CE65C4911D1A67B200C2E1C0 /* UILabel+ActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = CE65C4901D1A67B200C2E1C0 /* UILabel+ActionSheet.m */; };
@@ -952,6 +957,13 @@
 		CE20BF3A1CB6331A002737F4 /* PerformanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceTest.m; sourceTree = "<group>"; };
 		CE4DB3F41CEF340D00CBD6DE /* TriDimBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriDimBtn.h; sourceTree = "<group>"; };
 		CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TriDimBtn.m; sourceTree = "<group>"; };
+		CE57E52E1D1BB82800493460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SiteMapStoryBoard.storyboard; sourceTree = "<group>"; };
+		CE57E5311D1BBCC400493460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = HistoryCell.xib; sourceTree = "<group>"; };
+		CE57E5341D1BE02900493460 /* HistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCell.h; sourceTree = "<group>"; };
+		CE57E5351D1BE02900493460 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
+		CE57E53C1D1BE50C00493460 /* BrowsingHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistoryViewController.h; sourceTree = "<group>"; };
+		CE57E53D1D1BE50C00493460 /* BrowsingHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistoryViewController.m; sourceTree = "<group>"; };
+		CE57E53F1D1BFE2E00493460 /* favicon.ico */ = {isa = PBXFileReference; lastKnownFileType = image.ico; path = favicon.ico; sourceTree = "<group>"; };
 		CE58276A1D10127400843B4C /* WeatherRuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherRuleButton.h; sourceTree = "<group>"; };
 		CE58276B1D10127400843B4C /* WeatherRuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherRuleButton.m; sourceTree = "<group>"; };
 		CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPickerIndicatorView1.h; sourceTree = "<group>"; };
@@ -1128,6 +1140,7 @@
 		1C7E7CD71A41A0990026F0BA /* SecurifiApp */ = {
 			isa = PBXGroup;
 			children = (
+				CE57E5331D1BDF9500493460 /* SiteMap */,
 				2A4C24341D0FC3BF001191E8 /* Dashboard */,
 				A5C68C981C92D93000110B74 /* GenericIndexesData.json */,
 				CEF6F5081C92CD3D00C68975 /* deviceListJson.json */,
@@ -1414,6 +1427,7 @@
 				CEA4A82A1C86BEB00098C7BD /* SensorStoryBoard.storyboard */,
 				A536D3ED1C8EB96900FCC2A7 /* Rules.storyboard */,
 				A536D3F01C8EB9ED00FCC2A7 /* Scenes_Iphone.storyboard */,
+				CE57E52D1D1BB82800493460 /* SiteMapStoryBoard.storyboard */,
 			);
 			path = Base.lproj;
 			sourceTree = "<group>";
@@ -1917,6 +1931,19 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		CE57E5331D1BDF9500493460 /* SiteMap */ = {
+			isa = PBXGroup;
+			children = (
+				CE57E5341D1BE02900493460 /* HistoryCell.h */,
+				CE57E5351D1BE02900493460 /* HistoryCell.m */,
+				CE57E5301D1BBCC400493460 /* HistoryCell.xib */,
+				CE57E53C1D1BE50C00493460 /* BrowsingHistoryViewController.h */,
+				CE57E53D1D1BE50C00493460 /* BrowsingHistoryViewController.m */,
+				CE57E53F1D1BFE2E00493460 /* favicon.ico */,
+			);
+			name = SiteMap;
+			sourceTree = "<group>";
+		};
 		CEEC42061C98560500A2C35D /* sensor table */ = {
 			isa = PBXGroup;
 			children = (
@@ -2282,6 +2309,7 @@
 				A58DB3061BB16B9F00717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
 				A58DB3301BB16EAF00717C02 /* Localizable.strings in Resources */,
 				A58DB46B1BB3CD5200717C02 /* AccountsStoryboard_iPhone.strings in Resources */,
+				CE57E5321D1BBCC400493460 /* HistoryCell.xib in Resources */,
 				A58DB32F1BB16EAF00717C02 /* InfoPlist.strings in Resources */,
 				A58DB4731BB3CD5200717C02 /* termsofuse.html in Resources */,
 				A58DB2E61BB16B9F00717C02 /* Localizable.strings in Resources */,
@@ -2371,6 +2399,7 @@
 				2A4C243F1D0FC450001191E8 /* MainDashboard.storyboard in Resources */,
 				A58DB32D1BB16EAF00717C02 /* Almond-Localizable.strings in Resources */,
 				A58DB3101BB16B9F00717C02 /* Almond-Localizable.strings in Resources */,
+				CE57E5401D1BFE2E00493460 /* favicon.ico in Resources */,
 				A58DB4551BB3CD3F00717C02 /* MainStoryboard_iPhone.strings in Resources */,
 				CEEC422E1C98560D00A2C35D /* DeviceHeaderView.xib in Resources */,
 				A58DB30B1BB16B9F00717C02 /* Login_iPhone.strings in Resources */,
@@ -2382,6 +2411,7 @@
 				A58DB3331BB16EAF00717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB3161BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
 				A58DB4501BB3CD3F00717C02 /* Almond-Localizable.strings in Resources */,
+				CE57E52F1D1BB82800493460 /* SiteMapStoryBoard.storyboard in Resources */,
 				A536D3EF1C8EB96900FCC2A7 /* Rules.storyboard in Resources */,
 				A58DB30D1BB16B9F00717C02 /* Scenes_Iphone.strings in Resources */,
 				846414DC1B736B80008AB07F /* AvenirLTStd-BlackOblique.otf in Resources */,
@@ -2650,6 +2680,7 @@
 				1C7E7DAB1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,
 				1C7E7D8B1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
 				1C7E7DCF1A41A0990026F0BA /* SFITableViewController.m in Sources */,
+				CE57E53E1D1BE50C00493460 /* BrowsingHistoryViewController.m in Sources */,
 				1C7E7DD11A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				CEF6F4FE1C92CAD600C68975 /* RuleTextField.m in Sources */,
 				A5AC1E841CC7BA01009F362B /* RuleSceneUtil.m in Sources */,
@@ -2734,6 +2765,7 @@
 				1DF0383EBD135988AEA6DF73 /* ValueFormatter.m in Sources */,
 				1DF03A1D3210B9478AF1DAC3 /* IndexValueSupport.m in Sources */,
 				1DF0362BB7839519E771D769 /* SensorIndexSupport.m in Sources */,
+				CE57E5371D1BE02900493460 /* HistoryCell.m in Sources */,
 				1DF038B5E6A54CEEAFE1BE7F /* NotificationsTestStore.m in Sources */,
 				1DF037534B2784850C9B047C /* UIApplication+SecurifiNotifications.m in Sources */,
 				CEF6F4E01C92CAD600C68975 /* DelayPicker.m in Sources */,
@@ -4437,6 +4469,23 @@
 				A58DB4A21BB3CD7500717C02 /* zh-Hans */,
 			);
 			name = termsofuse.html;
+			sourceTree = "<group>";
+		};
+		CE57E52D1D1BB82800493460 /* SiteMapStoryBoard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE57E52E1D1BB82800493460 /* Base */,
+			);
+			name = SiteMapStoryBoard.storyboard;
+			sourceTree = "<group>";
+		};
+		CE57E5301D1BBCC400493460 /* HistoryCell.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE57E5311D1BBCC400493460 /* Base */,
+			);
+			name = HistoryCell.xib;
+			path = Base.lproj;
 			sourceTree = "<group>";
 		};
 		CEA4A82A1C86BEB00098C7BD /* SensorStoryBoard.storyboard */ = {

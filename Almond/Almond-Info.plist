@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>6092</string>
+	<string>6226</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -38,6 +38,23 @@
 	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>cdn.tutsplus.com</key>
+			<string></string>
+			<key>localhost</key>
+			<dict>
+				<key>NSExceptionAllowInsecureHTTPLoads</key>
+				<true/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AvenirLTStd-Heavy.otf</string>

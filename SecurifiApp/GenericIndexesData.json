@@ -249,6 +249,13 @@
             }
         }
     },
+    "-23": {
+        "Name": "BrowsingHistory",
+         "Type": "Actuator",
+        "Placement": "Detail",
+        "Layout": "/",
+        "AppLabel": "Browsing History"
+    },
     "-30": {
         "Name": "ClientEvent",
         "Type": "Sensor",

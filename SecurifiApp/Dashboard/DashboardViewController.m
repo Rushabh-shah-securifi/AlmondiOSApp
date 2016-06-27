@@ -394,10 +394,20 @@
                             }];
     [viewC addAction:AddNew];
     [viewC addAction:Check];
+    viewC.popoverPresentationController.sourceRect = CGRectMake(self.view.bounds.size.width / 2.0, self.view.bounds.size.height / 2.0, 1.0, 1.0);
+    viewC.popoverPresentationController.sourceView = self.view;
+    viewC.popoverPresentationController.permittedArrowDirections = 0;
     [self presentViewController:viewC animated:YES completion:nil];
+
     
 }
-
+- (CGRect)sourceRectForCenteredAlertController
+{
+    CGRect sourceRect = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    sourceRect.origin.x = CGRectGetMidX(self.view.bounds)-self.view.frame.origin.x;
+    sourceRect.origin.y = CGRectGetMidY(self.view.bounds)-self.view.frame.origin.y;
+    return sourceRect;
+}
 - (NSArray *)buildAlmondList:(enum SFIAlmondConnectionMode)mode5 {
     SecurifiToolkit *toolkit = [SecurifiToolkit sharedInstance];
     switch (mode5) {

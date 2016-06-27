@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--Browsing History View Controller-->
+        <scene sceneID="f3O-7b-ubb">
+            <objects>
+                <viewController storyboardIdentifier="BrowsingHistoryViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1nw-me-1sv" customClass="BrowsingHistoryViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HGt-l4-24c"/>
+                        <viewControllerLayoutGuide type="bottom" id="dw2-jV-lbW"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ogf-5p-TpX">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" dataMode="prototypes" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rj2-Du-dFq">
+                                <rect key="frame" x="5" y="125" width="365" height="511"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="HistorytableCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="historyTableCell" id="yUh-Sz-VD3" customClass="HistoryCell">
+                                        <rect key="frame" x="0.0" y="28" width="365" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yUh-Sz-VD3" id="YEu-bD-Tgj">
+                                            <rect key="frame" x="0.0" y="0.0" width="365" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="1nw-me-1sv" id="fsQ-Ca-8cz"/>
+                                    <outlet property="delegate" destination="1nw-me-1sv" id="I2P-cw-793"/>
+                                </connections>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nJv-XA-uyf">
+                                <rect key="frame" x="0.0" y="20" width="375" height="105"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ju0-Vw-hMt">
+                                        <rect key="frame" x="67" y="0.0" width="240" height="105"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="smartphone_icon" translatesAutoresizingMaskIntoConstraints="NO" id="UXg-4z-KzI">
+                                                <rect key="frame" x="104" y="6" width="32" height="28"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Matt's iPhone" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uS8-tU-adC">
+                                                <rect key="frame" x="50" y="39" width="141" height="32"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="18"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Last seen 1 minute ago." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7al-AZ-9MN">
+                                                <rect key="frame" x="34" y="75" width="172" height="21"/>
+                                                <fontDescription key="fontDescription" name="Avenir-Roman" family="Avenir" pointSize="12"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="240" id="Yz2-0n-j1q"/>
+                                            <constraint firstAttribute="height" constant="105" id="c7w-xn-yY4"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="105" id="BII-KA-UWK"/>
+                                    <constraint firstItem="ju0-Vw-hMt" firstAttribute="top" secondItem="nJv-XA-uyf" secondAttribute="top" id="PVe-Gw-MXM"/>
+                                    <constraint firstItem="ju0-Vw-hMt" firstAttribute="centerX" secondItem="nJv-XA-uyf" secondAttribute="centerX" id="vVq-sm-8n6"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="rj2-Du-dFq" secondAttribute="trailing" constant="5" id="AxL-zK-3iY"/>
+                            <constraint firstItem="nJv-XA-uyf" firstAttribute="top" secondItem="HGt-l4-24c" secondAttribute="bottom" id="Eqk-rA-mAJ"/>
+                            <constraint firstItem="rj2-Du-dFq" firstAttribute="leading" secondItem="ogf-5p-TpX" secondAttribute="leading" constant="5" id="Fg8-L3-MW7"/>
+                            <constraint firstItem="nJv-XA-uyf" firstAttribute="leading" secondItem="ogf-5p-TpX" secondAttribute="leading" id="SUH-XJ-qZX"/>
+                            <constraint firstAttribute="trailing" secondItem="nJv-XA-uyf" secondAttribute="trailing" id="Uza-uh-lNc"/>
+                            <constraint firstItem="dw2-jV-lbW" firstAttribute="top" secondItem="rj2-Du-dFq" secondAttribute="bottom" constant="31" id="Y2e-un-n77"/>
+                            <constraint firstItem="rj2-Du-dFq" firstAttribute="top" secondItem="nJv-XA-uyf" secondAttribute="bottom" id="ZNl-q4-otq"/>
+                            <constraint firstAttribute="trailing" secondItem="rj2-Du-dFq" secondAttribute="trailing" constant="5" id="fLu-Ul-wAl"/>
+                            <constraint firstItem="dw2-jV-lbW" firstAttribute="top" secondItem="rj2-Du-dFq" secondAttribute="bottom" constant="31" id="r8M-6f-152"/>
+                            <constraint firstItem="rj2-Du-dFq" firstAttribute="leading" secondItem="ogf-5p-TpX" secondAttribute="leading" constant="5" id="yIE-sv-4Jm"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="browsingTable" destination="rj2-Du-dFq" id="dJk-b2-6k1"/>
+                        <outlet property="headerView" destination="nJv-XA-uyf" id="bsA-Wi-G6Q"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tlV-G2-rLe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="627.5" y="340.5"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="smartphone_icon" width="50" height="50"/>
+    </resources>
+</document>
