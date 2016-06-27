@@ -21,7 +21,7 @@
 #import "MBProgressHUD.h"
 #import "GenericIndexUtil.h"
 #import "BrowsingHistoryViewController.h"
-
+#import "BrowsingHistory.h"
 
 #define CELLFRAME CGRectMake(8, 8, self.view.frame.size.width -16, 70)
 
@@ -35,7 +35,9 @@
 @property (nonatomic) BOOL isLocal;
 @property (nonatomic) DeviceHeaderView *commonView;
 @property (nonatomic)SecurifiToolkit *toolkit;
-@property(nonatomic, readonly) MBProgressHUD *HUD;
+@property (nonatomic, readonly) MBProgressHUD *HUD;
+@property (nonatomic) NSMutableArray *browsingData;
+@property (nonatomic) dispatch_queue_t imageDownloadQueue;
 @end
 
 @implementation ClientPropertiesViewController
@@ -46,8 +48,65 @@ int randomMobileInternalIndex;
     self.resetView.backgroundColor = self.genericParams.color;
     [self.resetButton setTitleColor: self.genericParams.color forState:UIControlStateNormal];
     [self.historyButton setTitleColor: self.genericParams.color forState:UIControlStateNormal];
+    
     [self setHeaderCell];
     [self setUpHUD];
+    self.imageDownloadQueue = dispatch_queue_create("img_download", DISPATCH_QUEUE_SERIAL);
+    dispatch_async(self.imageDownloadQueue, ^{
+        [self getBrowserHistoryImages];
+    });
+}
+
+-(void)getBrowserHistoryImages{
+    //sort url based on time -> sorted urls
+    //
+    
+    
+    self.browsingData = [NSMutableArray new];
+    
+    NSArray *history = @[@{@"url": @"https://www.apple.com/favicon.ico",
+                       @"epoc": @"1"},
+                     @{@"url": @"https://www.facebook.com/favicon.ico",
+                       @"epoc": @"2"},
+                     @{@"url": @"https://www.google.com/favicon.ico",
+                       @"epoc": @"3"},
+                     @{@"url": @"https://www.securifi.com/favicon.ico",
+                       @"epoc": @"4"},
+                     @{@"url": @"https://en.wikipedia.org/favicon.ico",
+                       @"epoc": @"5"},
+                     @{@"url": @"https://en.wikipedia.org/favicon.ico",
+                       @"epoc": @"5"},
+                     @{@"url": @"https://en.wikipedia.org/favicon.ico",
+                       @"epoc": @"5"},
+                     @{@"url": @"https://en.wikipedia.org/favicon.ico",
+                       @"epoc": @"5"},
+                     @{@"url": @"https://en.wikipedia.org/favicon.ico",
+                       @"epoc": @"5"},
+                     @{@"url": @"https://en.wikipedia.org/favicon.ico",
+                       @"epoc": @"5"},
+                     @{@"url": @"https://en.wikipedia.org/favicon.ico",
+                       @"epoc": @"5"},
+                     @{@"url": @"https://en.wikipedia.org/favicon.ico",
+                       @"epoc": @"5"}] ;
+    
+//    NSArray *httpArr = @[@"https://www.apple.com/favicon.ico",
+//                 @"https://www.facebook.com/favicon.ico",
+//                 @"https://www.google.com/favicon.ico",
+//                 @"https://www.securifi.com/favicon.ico",
+//                 @"https://en.wikipedia.org/favicon.ico"];
+    
+    for(NSDictionary *hisDict in history){
+        BrowsingHistory *browsHistory = [BrowsingHistory new];
+        browsHistory.url = hisDict[@"url"];
+        browsHistory.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:hisDict[@"url"]]]];
+        browsHistory.time = hisDict[@"epoc"];
+        [self.browsingData addObject:browsHistory];
+    }
+    NSLog(@"browsing data: %@", self.browsingData);
+//    NSData * data = [NSPropertyListSerialization dataFromPropertyList:self.urlToImage
+//                                                               format:NSPropertyListBinaryFormat_v1_0 errorDescription:NULL];
+//    NSLog(@"size: %d", [data length]);
+    
 }
 
 -(void)setUpHUD{
@@ -162,7 +221,8 @@ int randomMobileInternalIndex;
     GenericIndexValue *gIval = [self.genericParams.indexValueList objectAtIndex:indexPath.row];
     if([gIval.genericIndex.groupLabel isEqualToString:@"Browsing History"]){
        UIStoryboard *storyboard=[UIStoryboard storyboardWithName:@"SiteMapStoryBoard" bundle:[NSBundle mainBundle]];
-            BrowsingHistoryViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
+        BrowsingHistoryViewController *ctrl = [storyboard instantiateViewControllerWithIdentifier:@"BrowsingHistoryViewController"];
+        ctrl.browsingData = self.browsingData;
         [self.navigationController pushViewController:ctrl animated:YES];
         
     }

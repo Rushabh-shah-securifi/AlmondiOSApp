@@ -21,11 +21,11 @@
 
     // Configure the view for the selected state
 }
--(void)setCell:(NSString *)httpReq{
+-(void)setCell:(NSString *)httpUrlReq Image:(UIImage*)image{
     dispatch_async(dispatch_get_main_queue(), ^() {
-    self.webImg.image = [UIImage imageWithData: [NSData dataWithContentsOfURL: [NSURL URLWithString:httpReq]]];;
-    NSArray * properties = [httpReq componentsSeparatedByString:@"/"];
-    NSLog(@"_httpString %@,%@,%@,%@,%@",httpReq,properties[0],properties[1],properties[2],properties[3]);
+    self.webImg.image = image;
+    NSArray * properties = [httpUrlReq componentsSeparatedByString:@"/"];
+    NSLog(@"_httpString %@,%@,%@,%@,%@",httpUrlReq,properties[0],properties[1],properties[2],properties[3]);
     self.siteName.text = properties[2];
     });
 }

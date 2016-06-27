@@ -11,29 +11,18 @@
 #import "CommonMethods.h"
 #import "SFIColors.h"
 #import "UIFont+Securifi.h"
+#import "BrowsingHistory.h"
 
 @interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *browsingTable;
 @property (weak, nonatomic) IBOutlet UIView *headerView;
-@property (nonatomic) NSArray *httpArr;
+
 @end
 
 @implementation BrowsingHistoryViewController
 
 - (void)viewDidLoad {
-    _httpArr = @[@"https://www.apple.com/favicon.ico",
-                 @"https://www.facebook.com/favicon.ico",
-                 @"https://www.google.com/favicon.ico",
-                 @"https://www.securifi.com/favicon.ico",
-                 @"https://en.wikipedia.org/favicon.ico"];
-    /*,
-     @"https://www.snapdeal.com/favicon.ico",
-     @"https://www.lg.com/favicon.ico",
-     @"https://www.whatsapp.com/favicon.ico",
-     @"https://www.hdfcbank.com/favicon.ico",
-     @"https://www.gujarattourism.com/favicon.ico",
-     @"https://www.narendramodi.in/favicon.ico",
-     @"https://www.bcci.tv/favicon.ico"*/
+
     self.headerView.backgroundColor = [SFIColors clientGreenColor];
     self.navigationController.navigationBar.clipsToBounds = YES;
     self.navigationController.view.backgroundColor = [SFIColors clientGreenColor];
@@ -52,7 +41,6 @@
        NSFontAttributeName:[UIFont securifiBoldFont:14]}];
     self.title = @"Browsing history";
     [self.browsingTable registerNib:[UINib nibWithNibName:@"HistoryCell" bundle:nil] forCellReuseIdentifier:@"HistorytableCell"];
-    NSLog(@"_httpArr = %@",_httpArr);
     [self.browsingTable reloadData];
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -79,7 +67,7 @@
     return 40;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _httpArr.count;
+    return self.browsingData.count;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
@@ -92,24 +80,28 @@
     
     return [self deviceHeader:section tableView:tableView];
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
      HistoryCell *cell = [tableView dequeueReusableCellWithIdentifier:@"HistorytableCell" forIndexPath:indexPath];
     if (cell == nil){
-         cell.httpString = [_httpArr objectAtIndex:indexPath.row];
         cell = [[HistoryCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"HistorytableCell"];
     }
-    [cell setCell:[_httpArr objectAtIndex:indexPath.row]];
+    BrowsingHistory *browsHist = [self.browsingData objectAtIndex:indexPath.row];
+    [cell setCell:browsHist.url Image:browsHist.image];
     return cell;
 }
+
 - (BOOL)allowsHeaderViewsToFloat{
     return NO;
 }
+
 - (BOOL)allowsFooterViewToFloat{
     return NO;
 }
+
 -(UIView*)deviceHeader:(NSInteger)section tableView:(UITableView*)tableView{
-    NSString *header = @"Thu 23 June";
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 25)];
+    view.backgroundColor = [UIColor whiteColor];
     if (section >0) {
         UITableViewHeaderFooterView *foot = (UITableViewHeaderFooterView *)view;
         CGRect sepFrame = CGRectMake(0, 0, tableView.frame.size.width, 1);
@@ -118,16 +110,18 @@
         [foot addSubview:seperatorView];
     }
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
-    [label setFont:[UIFont securifiBoldFont:12]];
-    label.text = header;
+    [label setFont:[UIFont securifiBoldFont:13]];
+    label.text = @"Thu 23 June";
     label.textColor = [UIColor grayColor];
     [view addSubview:label];
+    
     CGRect sepFrame = CGRectMake(0, 32, tableView.frame.size.width, 1);
     UIView *seperatorView =[[UIView alloc] initWithFrame:sepFrame];
     seperatorView.backgroundColor = [UIColor colorWithWhite:224.0/255.0 alpha:0.5];
     [view addSubview:seperatorView];
     return view;
 }
+
 #pragma mark click handler
 - (void)onSearchButton{
     

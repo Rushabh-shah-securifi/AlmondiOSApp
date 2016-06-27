@@ -15,6 +15,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *lastActTime;//temp
 @property (weak, nonatomic) IBOutlet UIImageView *settingImg;//temp
 @property (nonatomic) NSString *httpString;
--(void)setCell:(NSString*)httpReq;
+-(void)setCell:(NSString *)httpUrlReq Image:(UIImage*)image;
 
 @end
