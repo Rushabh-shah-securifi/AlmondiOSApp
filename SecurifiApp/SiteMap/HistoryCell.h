@@ -17,5 +17,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *settingImg;//temp
 @property (nonatomic) NSString *httpString;
 -(void)setCell:(URIData*)uri;
+-(void)setName:(URIData*)uri;
 
 @end

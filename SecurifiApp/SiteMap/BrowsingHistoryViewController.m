@@ -14,6 +14,7 @@
 #import "URIData.h"
 #import "BrowsingHistory.h"
 #import "NSDate+Convenience.h"
+#import "SearchTableViewController.h"
 
 @interface BrowsingHistoryViewController ()<UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *browsingTable;
@@ -49,6 +50,7 @@
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+     [self initializeNotification];
 }
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:YES];
@@ -64,6 +66,12 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+- (void)initializeNotification{
+    NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
+    
+    [notification addObserver:self selector:@selector(onImageFetch:) name:NOTIFICATION_IMAGE_FETCH object:nil];
+}
+
 #pragma mark tabledelegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 40;
@@ -117,7 +125,8 @@
     }
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 9, tableView.frame.size.width, 18)];
     [label setFont:[UIFont securifiBoldFont:13]];
-    label.text = [self getHeaderDate:section];
+    NSString *headerDate = [self getHeaderDate:section];
+    label.text = section == 0? [NSString stringWithFormat:@"Today, %@",headerDate]: headerDate;
     label.textColor = [UIColor grayColor];
     [view addSubview:label];
     
@@ -129,7 +138,6 @@
 }
 
 -(NSString*)getHeaderDate:(NSInteger)section{
-    NSDate *date = [[NSDate alloc]init];
     BrowsingHistory *browsHistory = self.browsingHistoryDayWise[section];
     return [browsHistory.date getDayMonthFormat];
 }
@@ -137,9 +145,22 @@
 #pragma mark click handler
 - (void)onSearchButton{
     
+    SearchTableViewController *ctrl = [[SearchTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    UINavigationController *nav_ctrl = [[UINavigationController alloc] initWithRootViewController:ctrl];
+    ctrl.browsingHistoryDayWise = self.browsingHistoryDayWise;
+    [self presentViewController:nav_ctrl animated:YES completion:nil];
 }
 - (void)onBackButton{
     [self.navigationController popViewControllerAnimated:YES];
 }
+
+#pragma mark notification call backs
+-(void)onImageFetch:(id)sender{
+    NSLog(@"onImageFetch");
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.browsingTable reloadData];
+    });
+}
+
 
 @end

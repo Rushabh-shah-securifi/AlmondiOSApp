@@ -432,11 +432,15 @@
 		A5F03F6D1C76E412006CB309 /* NewAddSceneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A5F03F6B1C76E412006CB309 /* NewAddSceneViewController.m */; };
 		CE08B3CC1C9A87C900ABAF6B /* DeviceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */; };
 		CE20BF3B1CB6331A002737F4 /* PerformanceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CE20BF3A1CB6331A002737F4 /* PerformanceTest.m */; };
+		CE40BF131D225791007C2148 /* BrowsingHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF0A1D225791007C2148 /* BrowsingHistory.m */; };
+		CE40BF141D225791007C2148 /* BrowsingHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF0C1D225791007C2148 /* BrowsingHistoryViewController.m */; };
+		CE40BF151D225791007C2148 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF0E1D225791007C2148 /* HistoryCell.m */; };
+		CE40BF161D225791007C2148 /* SearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF101D225791007C2148 /* SearchTableViewController.m */; };
+		CE40BF171D225791007C2148 /* URIData.m in Sources */ = {isa = PBXBuildFile; fileRef = CE40BF121D225791007C2148 /* URIData.m */; };
+		CE40BF1C1D22867B007C2148 /* temp.json in Resources */ = {isa = PBXBuildFile; fileRef = CE40BF1A1D228650007C2148 /* temp.json */; };
 		CE4DB3F61CEF340F00CBD6DE /* TriDimBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */; };
 		CE57E52F1D1BB82800493460 /* SiteMapStoryBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE57E52D1D1BB82800493460 /* SiteMapStoryBoard.storyboard */; };
 		CE57E5321D1BBCC400493460 /* HistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CE57E5301D1BBCC400493460 /* HistoryCell.xib */; };
-		CE57E5371D1BE02900493460 /* HistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57E5351D1BE02900493460 /* HistoryCell.m */; };
-		CE57E53E1D1BE50C00493460 /* BrowsingHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CE57E53D1D1BE50C00493460 /* BrowsingHistoryViewController.m */; };
 		CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = CE58276B1D10127400843B4C /* WeatherRuleButton.m */; };
 		CE5EDF8E1C46343D00A2829B /* SFIPickerIndicatorView1.m in Sources */ = {isa = PBXBuildFile; fileRef = CE5EDF8D1C46343D00A2829B /* SFIPickerIndicatorView1.m */; };
 		CE65C4911D1A67B200C2E1C0 /* UILabel+ActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = CE65C4901D1A67B200C2E1C0 /* UILabel+ActionSheet.m */; };
@@ -507,10 +511,6 @@
 		CEF6F50B1C92CD3D00C68975 /* deviceListJson.json in Resources */ = {isa = PBXBuildFile; fileRef = CEF6F5081C92CD3D00C68975 /* deviceListJson.json */; };
 		F426AE2D1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
 		F426AE2E1D19515500AE60C8 /* CollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */; };
-		F4B656101D210CCF0047A3F8 /* URIData.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B6560F1D210CCF0047A3F8 /* URIData.m */; };
-		F4B656111D210CCF0047A3F8 /* URIData.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B6560F1D210CCF0047A3F8 /* URIData.m */; };
-		F4B656141D223BD70047A3F8 /* BrowsingHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B656131D223BD70047A3F8 /* BrowsingHistory.m */; };
-		F4B656151D223BD70047A3F8 /* BrowsingHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = F4B656131D223BD70047A3F8 /* BrowsingHistory.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -958,14 +958,21 @@
 		CE08B3CB1C9A87C900ABAF6B /* DeviceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceTableViewCell.m; sourceTree = "<group>"; };
 		CE20BF391CB6331A002737F4 /* PerformanceTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceTest.h; sourceTree = "<group>"; };
 		CE20BF3A1CB6331A002737F4 /* PerformanceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceTest.m; sourceTree = "<group>"; };
+		CE40BF091D225791007C2148 /* BrowsingHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistory.h; sourceTree = "<group>"; };
+		CE40BF0A1D225791007C2148 /* BrowsingHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistory.m; sourceTree = "<group>"; };
+		CE40BF0B1D225791007C2148 /* BrowsingHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistoryViewController.h; sourceTree = "<group>"; };
+		CE40BF0C1D225791007C2148 /* BrowsingHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistoryViewController.m; sourceTree = "<group>"; };
+		CE40BF0D1D225791007C2148 /* HistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCell.h; sourceTree = "<group>"; };
+		CE40BF0E1D225791007C2148 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
+		CE40BF0F1D225791007C2148 /* SearchTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewController.h; sourceTree = "<group>"; };
+		CE40BF101D225791007C2148 /* SearchTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewController.m; sourceTree = "<group>"; };
+		CE40BF111D225791007C2148 /* URIData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URIData.h; sourceTree = "<group>"; };
+		CE40BF121D225791007C2148 /* URIData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URIData.m; sourceTree = "<group>"; };
+		CE40BF1A1D228650007C2148 /* temp.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = temp.json; sourceTree = "<group>"; };
 		CE4DB3F41CEF340D00CBD6DE /* TriDimBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriDimBtn.h; sourceTree = "<group>"; };
 		CE4DB3F51CEF340D00CBD6DE /* TriDimBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TriDimBtn.m; sourceTree = "<group>"; };
 		CE57E52E1D1BB82800493460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = SiteMapStoryBoard.storyboard; sourceTree = "<group>"; };
 		CE57E5311D1BBCC400493460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = HistoryCell.xib; sourceTree = "<group>"; };
-		CE57E5341D1BE02900493460 /* HistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryCell.h; sourceTree = "<group>"; };
-		CE57E5351D1BE02900493460 /* HistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryCell.m; sourceTree = "<group>"; };
-		CE57E53C1D1BE50C00493460 /* BrowsingHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistoryViewController.h; sourceTree = "<group>"; };
-		CE57E53D1D1BE50C00493460 /* BrowsingHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistoryViewController.m; sourceTree = "<group>"; };
 		CE58276A1D10127400843B4C /* WeatherRuleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeatherRuleButton.h; sourceTree = "<group>"; };
 		CE58276B1D10127400843B4C /* WeatherRuleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeatherRuleButton.m; sourceTree = "<group>"; };
 		CE5EDF8C1C46343D00A2829B /* SFIPickerIndicatorView1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SFIPickerIndicatorView1.h; sourceTree = "<group>"; };
@@ -1053,10 +1060,6 @@
 		CEF6F5081C92CD3D00C68975 /* deviceListJson.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = deviceListJson.json; sourceTree = "<group>"; };
 		F426AE2B1D19515500AE60C8 /* CollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectionViewCell.h; sourceTree = "<group>"; };
 		F426AE2C1D19515500AE60C8 /* CollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectionViewCell.m; sourceTree = "<group>"; };
-		F4B6560E1D210CCF0047A3F8 /* URIData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URIData.h; sourceTree = "<group>"; };
-		F4B6560F1D210CCF0047A3F8 /* URIData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URIData.m; sourceTree = "<group>"; };
-		F4B656121D223BD70047A3F8 /* BrowsingHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BrowsingHistory.h; sourceTree = "<group>"; };
-		F4B656131D223BD70047A3F8 /* BrowsingHistory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BrowsingHistory.m; sourceTree = "<group>"; };
 		F65023B0DECE8F15E5353C48 /* Pods-Almond.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Almond.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Almond/Pods-Almond.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1146,12 +1149,13 @@
 		1C7E7CD71A41A0990026F0BA /* SecurifiApp */ = {
 			isa = PBXGroup;
 			children = (
-				CE57E5331D1BDF9500493460 /* SiteMap */,
+				CE40BF081D225791007C2148 /* SiteMap */,
 				2A4C24341D0FC3BF001191E8 /* Dashboard */,
 				A5C68C981C92D93000110B74 /* GenericIndexesData.json */,
 				CEF6F5081C92CD3D00C68975 /* deviceListJson.json */,
 				A5C68C9B1C9303D300110B74 /* DeviceListResponse.json */,
 				A545372A1C8ED35C00DC3EC8 /* scene_names.txt */,
+				CE40BF1A1D228650007C2148 /* temp.json */,
 				A54EB0341C45004B00CF2837 /* Common-Images.xcassets */,
 				1C7E7CD81A41A0990026F0BA /* AlmondPlusConstants.h */,
 				1C7E7E2D1A41A26A0026F0BA /* Base.lproj */,
@@ -1434,6 +1438,7 @@
 				A536D3ED1C8EB96900FCC2A7 /* Rules.storyboard */,
 				A536D3F01C8EB9ED00FCC2A7 /* Scenes_Iphone.storyboard */,
 				CE57E52D1D1BB82800493460 /* SiteMapStoryBoard.storyboard */,
+				CE57E5301D1BBCC400493460 /* HistoryCell.xib */,
 			);
 			path = Base.lproj;
 			sourceTree = "<group>";
@@ -1937,20 +1942,21 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		CE57E5331D1BDF9500493460 /* SiteMap */ = {
+		CE40BF081D225791007C2148 /* SiteMap */ = {
 			isa = PBXGroup;
 			children = (
-				CE57E5341D1BE02900493460 /* HistoryCell.h */,
-				CE57E5351D1BE02900493460 /* HistoryCell.m */,
-				CE57E5301D1BBCC400493460 /* HistoryCell.xib */,
-				CE57E53C1D1BE50C00493460 /* BrowsingHistoryViewController.h */,
-				CE57E53D1D1BE50C00493460 /* BrowsingHistoryViewController.m */,
-				F4B6560E1D210CCF0047A3F8 /* URIData.h */,
-				F4B6560F1D210CCF0047A3F8 /* URIData.m */,
-				F4B656121D223BD70047A3F8 /* BrowsingHistory.h */,
-				F4B656131D223BD70047A3F8 /* BrowsingHistory.m */,
+				CE40BF091D225791007C2148 /* BrowsingHistory.h */,
+				CE40BF0A1D225791007C2148 /* BrowsingHistory.m */,
+				CE40BF0B1D225791007C2148 /* BrowsingHistoryViewController.h */,
+				CE40BF0C1D225791007C2148 /* BrowsingHistoryViewController.m */,
+				CE40BF0D1D225791007C2148 /* HistoryCell.h */,
+				CE40BF0E1D225791007C2148 /* HistoryCell.m */,
+				CE40BF0F1D225791007C2148 /* SearchTableViewController.h */,
+				CE40BF101D225791007C2148 /* SearchTableViewController.m */,
+				CE40BF111D225791007C2148 /* URIData.h */,
+				CE40BF121D225791007C2148 /* URIData.m */,
 			);
-			name = SiteMap;
+			path = SiteMap;
 			sourceTree = "<group>";
 		};
 		CEEC42061C98560500A2C35D /* sensor table */ = {
@@ -2298,6 +2304,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE40BF1C1D22867B007C2148 /* temp.json in Resources */,
 				1C7E7E711A41A73B0026F0BA /* MainStoryboard_iPhone.storyboard in Resources */,
 				A58DB41A1BB2CD7D00717C02 /* InfoPlist.strings in Resources */,
 				A58DB2E51BB16B9F00717C02 /* InfoPlist.strings in Resources */,
@@ -2645,10 +2652,8 @@
 				CEF6F4E71C92CAD600C68975 /* RulePayload.m in Sources */,
 				A5C7B4031CA14F5400E269A2 /* DevicePayload.m in Sources */,
 				1DF03B77AE6B540AFC5851BB /* DebugLogger.m in Sources */,
-				F4B656111D210CCF0047A3F8 /* URIData.m in Sources */,
 				1DF03CC89074191AC5F942CA /* ScoreboardDebugLoggerViewController.m in Sources */,
 				842651AE1BE0C86C001F79C1 /* TimeText.m in Sources */,
-				F4B656151D223BD70047A3F8 /* BrowsingHistory.m in Sources */,
 				1DF033F4DF8C6A502EB12289 /* ScoreboardTextEditorViewController.m in Sources */,
 				1DF031DB440397B975511290 /* UIColor+GetHSB.m in Sources */,
 				CEF6F4EF1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */,
@@ -2690,10 +2695,11 @@
 				1C7E7DAB1A41A0990026F0BA /* SFIAppDelegate.m in Sources */,
 				1C7E7D8B1A41A0990026F0BA /* NSString+ASBase64.m in Sources */,
 				1C7E7DCF1A41A0990026F0BA /* SFITableViewController.m in Sources */,
-				CE57E53E1D1BE50C00493460 /* BrowsingHistoryViewController.m in Sources */,
+				CE40BF141D225791007C2148 /* BrowsingHistoryViewController.m in Sources */,
 				1C7E7DD11A41A0990026F0BA /* UIFont+Securifi.m in Sources */,
 				CEF6F4FE1C92CAD600C68975 /* RuleTextField.m in Sources */,
 				A5AC1E841CC7BA01009F362B /* RuleSceneUtil.m in Sources */,
+				CE40BF151D225791007C2148 /* HistoryCell.m in Sources */,
 				1C7E7DC11A41A0990026F0BA /* SFIConstants.m in Sources */,
 				CEEF425D1C47E0E300E36C9B /* ScenePayload.m in Sources */,
 				1C7E7DBF1A41A0990026F0BA /* SFIColors.m in Sources */,
@@ -2722,6 +2728,7 @@
 				1C7E7DD31A41A0990026F0BA /* UIView+Borders.m in Sources */,
 				1C7E7D8D1A41A0990026F0BA /* SFIRouterDevicesTableViewCell.m in Sources */,
 				1C7E7DBD1A41A0990026F0BA /* SFICloudStatusBarButtonItem.m in Sources */,
+				CE40BF161D225791007C2148 /* SearchTableViewController.m in Sources */,
 				1C7E7D9B1A41A0990026F0BA /* ScoreboardEventViewController.m in Sources */,
 				1C7E7D931A41A0990026F0BA /* SFIRouterSettingsTableViewCell.m in Sources */,
 				A5488CB21CAE9120002B9F1C /* ClientPayload.m in Sources */,
@@ -2733,7 +2740,6 @@
 				CEF6F4EC1C92CAD600C68975 /* RulesTableViewController.m in Sources */,
 				1C7E7D951A41A0990026F0BA /* SFIRouterTableViewController.m in Sources */,
 				1C7E7E061A41A0B30026F0BA /* main.m in Sources */,
-				F4B656101D210CCF0047A3F8 /* URIData.m in Sources */,
 				CEF6F4FC1C92CAD600C68975 /* RulesDeviceNameButton.m in Sources */,
 				A5C7B40A1CA28D6F00E269A2 /* GenericIndexValue.m in Sources */,
 				846414C91B736B36008AB07F /* ILHuePickerView.m in Sources */,
@@ -2769,6 +2775,7 @@
 				CE810C611C9C15D100F80777 /* ListButtonView.m in Sources */,
 				A5217EF61CBE29810089A8C3 /* SFILogsViewController.m in Sources */,
 				CEF6F4EE1C92CAD600C68975 /* SFISubPropertyBuilder.m in Sources */,
+				CE40BF171D225791007C2148 /* URIData.m in Sources */,
 				1DF034DCCD17E1C36BA3BF00 /* SensorSupport.m in Sources */,
 				CE65C4911D1A67B200C2E1C0 /* UILabel+ActionSheet.m in Sources */,
 				CE58276C1D10127400843B4C /* WeatherRuleButton.m in Sources */,
@@ -2776,15 +2783,14 @@
 				1DF0383EBD135988AEA6DF73 /* ValueFormatter.m in Sources */,
 				1DF03A1D3210B9478AF1DAC3 /* IndexValueSupport.m in Sources */,
 				1DF0362BB7839519E771D769 /* SensorIndexSupport.m in Sources */,
-				CE57E5371D1BE02900493460 /* HistoryCell.m in Sources */,
 				1DF038B5E6A54CEEAFE1BE7F /* NotificationsTestStore.m in Sources */,
 				1DF037534B2784850C9B047C /* UIApplication+SecurifiNotifications.m in Sources */,
 				CEF6F4E01C92CAD600C68975 /* DelayPicker.m in Sources */,
+				CE40BF131D225791007C2148 /* BrowsingHistory.m in Sources */,
 				CEF6F4E81C92CAD600C68975 /* RulesHue.m in Sources */,
 				CEEC42331C98560D00A2C35D /* TextInput.m in Sources */,
 				1DF03C46BBFE9F837F90B059 /* DebugLogger.m in Sources */,
 				1DF03A29F9D174FB71DB8654 /* ScoreboardDebugLoggerViewController.m in Sources */,
-				F4B656141D223BD70047A3F8 /* BrowsingHistory.m in Sources */,
 				1DF03C13BACFD0556A34D0DF /* ScoreboardTextEditorViewController.m in Sources */,
 				1DF03362BD21FBCC972B0B9C /* UIColor+GetHSB.m in Sources */,
 				A5C7B4061CA2677700E269A2 /* GenericParams.m in Sources */,
@@ -4497,7 +4503,6 @@
 				CE57E5311D1BBCC400493460 /* Base */,
 			);
 			name = HistoryCell.xib;
-			path = Base.lproj;
 			sourceTree = "<group>";
 		};
 		CEA4A82A1C86BEB00098C7BD /* SensorStoryBoard.storyboard */ = {

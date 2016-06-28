@@ -25,10 +25,26 @@
     dispatch_async(dispatch_get_main_queue(), ^() {
         self.webImg.image = uri.image;
         self.siteName.text = uri.hostName;
-        self.countLbl.text = @(uri.count).stringValue;
+        self.countLbl.text = [self getCounttext:uri.count];
         self.lastActTime.text = [uri.lastActiveTime stringFromDate];
         
     });
+}
+-(void)setName:(URIData *)uri{
+    dispatch_async(dispatch_get_main_queue(), ^() {
+        self.siteName.text = uri.hostName;
+        NSLog(@"uri.hostName %@",uri.hostName);
+    });
+}
+
+-(NSString*)getCounttext:(int)count{
+    if(count >= 0 && count <= 999)
+        return @(count).stringValue;
+    else{
+        count /= 1000;
+        return [NSString stringWithFormat:@"%dK", count];
+    }
+    return @"";
 }
 
 @end

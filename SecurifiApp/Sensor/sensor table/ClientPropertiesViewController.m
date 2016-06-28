@@ -40,6 +40,7 @@
 @property (nonatomic, readonly) MBProgressHUD *HUD;
 @property (nonatomic) NSMutableArray *browsingHistoryDayWise;
 @property (nonatomic) dispatch_queue_t imageDownloadQueue;
+@property (nonatomic) NSMutableDictionary *urlToImageDict;
 @end
 
 @implementation ClientPropertiesViewController
@@ -62,15 +63,20 @@ int randomMobileInternalIndex;
 }
 
 -(void)getBrowserHistoryImages{
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:@"https://push-data-mehnaazm.c9users.io/history"]];
-    [request setHTTPMethod:@"POST"];
-
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
-    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+    NSLog(@"getBrowserHistoryImages");
+    self.urlToImageDict = [NSMutableDictionary new];
+    
+//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+//    [request setURL:[NSURL URLWithString:@"https://push-data-mehnaazm.c9users.io/history"]];
+//    [request setHTTPMethod:@"POST"];
+//
+//    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+//    [[session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(self.imageDownloadQueue, ^{
-            NSDictionary *historyData;
-            historyData = [data objectFromJSONData];
+            NSDictionary *historyData = @{};
+
+            historyData = [self parseJson:@"temp"];
+            
             NSLog(@"historyData: %@", historyData);
             
             
@@ -88,9 +94,7 @@ int randomMobileInternalIndex;
                 for(NSDictionary *uriDict in URIs){
                     URIData *uri = [URIData new];
                     uri.hostName = uriDict[@"Hostname"];
-                    NSString *iconUrl = [NSString stringWithFormat:@"https://%@/favicon.ico", uriDict[@"Hostname"]];
-                    NSLog(@"iconurl : %@", iconUrl);
-                    uri.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+                    uri.image = [self getImage:uriDict[@"Hostname"]];
                     uri.lastActiveTime = [NSDate getDateFromEpoch:uriDict[@"Epoch"]];
                     uri.count = [uriDict[@"Count"] intValue];
                     NSLog(@"host: %@, image: %@, lasttime: %@, count: %d", uri.hostName, uri.image, uri.lastActiveTime, uri.count);
@@ -99,16 +103,43 @@ int randomMobileInternalIndex;
                 
                 browsingHist.URIs = urisArray;
                 [self.browsingHistoryDayWise addObject:browsingHist];
+                [[NSNotificationCenter defaultCenter] postNotificationName:NOTIFICATION_IMAGE_FETCH object:nil];
             }
         });
       
         
    
-    }] resume];
+//    }] resume];
     
     
     
 }
+
+-(UIImage*)getImage:(NSString*)hostName{
+    NSLog(@"getImage");
+    UIImage *img;
+    if(self.urlToImageDict[hostName]){
+        NSLog(@"one");
+        return self.urlToImageDict[hostName];
+    }else{
+        NSLog(@"two");
+        NSString *iconUrl = [NSString stringWithFormat:@"http://%@/favicon.ico", hostName];
+        img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+        //        if(!img){
+        //            NSLog(@"three");
+        //            iconUrl = [NSString stringWithFormat:@"https://%@/favicon.ico", hostName];
+        //            img = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:iconUrl]]];
+        //        }
+        if(!img){
+            NSLog(@"four");
+            img = [UIImage imageNamed:@"Mail_icon"];
+        }
+        NSLog(@"five");
+        self.urlToImageDict[hostName] = img;
+        return img;
+    }
+}
+
 
 -(void)setUpHUD{
     _HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -351,5 +382,19 @@ int randomMobileInternalIndex;
     [self.HUD show:YES];
 }
 
+- (NSDictionary*)parseJson:(NSString*)fileName{
+    NSError *error = nil;
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:fileName
+                                                         ofType:@"json"];
+    NSData *dataFromFile = [NSData dataWithContentsOfFile:filePath];
+    NSDictionary *data = [NSJSONSerialization JSONObjectWithData:dataFromFile
+                                                         options:kNilOptions
+                                                           error:&error];
+    
+    if (error != nil) {
+        NSLog(@"Error: was not able to load json file: %@.",fileName);
+    }
+    return data;
+}
 
 @end
